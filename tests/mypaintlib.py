@@ -5,6 +5,7 @@
 from __future__ import division, print_function
 from time import time
 from os.path import join
+from itertools import product
 import unittest
 import sys
 import os
@@ -385,20 +386,18 @@ class Frame (unittest.TestCase):
         positions = list(range(-1, +2))
         positions.extend(range(-N - 1, -N + 2))
         positions.extend(range(+N - 1, +N + 2))
-        for x1 in positions:
-            for x2 in positions:
-                for y1 in positions:
-                    for y2 in positions:
-                        if x2 <= x1 or y2 <= y1:
-                            continue
-                        cnt += 1
-                        x, y, w, h = x1, y1, x2 - x1, y2 - y1
-                        # print x, y, w, h
-                        s.save_as_png('test_saveFrame_s.png', x, y, w, h)
-                        doc.update_frame(x=x, y=y, width=w, height=h)
-                        # doc.save('test_saveFrame_doc_%dx%d.png' % (w,h))
-                        doc.save('test_saveFrame_doc.png')
-                        doc.save('test_saveFrame_doc.jpg')
+
+        def valid(c):
+            x1, y1, x2, y2 = c
+            return x1 < x2 and y1 < y2
+
+        for x1, y1, x2, y2 in filter(valid, product(positions, repeat=4)):
+            cnt += 1
+            x, y, w, h = x1, y1, x2 - x1, y2 - y1
+            s.save_as_png('test_saveFrame_s.png', x, y, w, h)
+            doc.update_frame(x=x, y=y, width=w, height=h)
+            doc.save('test_saveFrame_doc.png')
+            doc.save('test_saveFrame_doc.jpg')
         print(
             "saved %d frames in %0.2fs, " % (cnt, time() - t0),
             end="",
