@@ -15,6 +15,7 @@ tags
 brushlib/*-gen.h
 brushlib/mypaint-config.h
 desktop/mypaint-ora-thumbnailer
+lib/config.py
 lib/test-python-surface
 lib/mypaintlib.py
 lib/mypaintlib_wrap.cc
