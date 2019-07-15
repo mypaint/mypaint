@@ -83,26 +83,23 @@ class BuildConfig (Command):
     """
 
     description = "build config.py"
-    user_options = []
+    user_options = [
+        ("brushdir-path=", None,
+         "Use the given string as brush directory path"),
+    ]
 
     def initialize_options(self):
-        pass
+        self.brushdir_path = None
 
     def finalize_options(self):
         pass
 
     def run(self):
-        try:
-            cmd = [
-                'pkg-config', '--variable=brushesdir', 'mypaint-brushes-2.0'
-            ]
-            mypaint_brushdir = subprocess.check_output(cmd).decode()
-        except subprocess.CalledProcessError:
-            sys.stderr.write(
-                'pkg-config could not find package mypaint-brushes-2.0'
-            )
-            sys.exit(os.EX_CANTCREAT)
-        mypaint_brushdir = mypaint_brushdir.strip()
+        if self.brushdir_path is not None:
+            mypaint_brushdir = self.brushdir_path
+        else:
+            mypaint_brushdir = self.pkgconf_brushdir_path()
+
         files = {
             'config.py.in': 'lib/config.py',
         }
@@ -110,6 +107,19 @@ class BuildConfig (Command):
             '@MYPAINT_BRUSHDIR@': mypaint_brushdir,
         }
         self.replace(files, replacements)
+
+    def pkgconf_brushdir_path(self):
+        try:
+            cmd = [
+                'pkg-config', '--variable=brushesdir', 'mypaint-brushes-2.0'
+            ]
+            return subprocess.check_output(cmd).decode().strip()
+        except subprocess.CalledProcessError as e:
+            sys.stderr.write(
+                str(e) +
+                'pkg-config could not find package mypaint-brushes-2.0'
+            )
+            sys.exit(os.EX_CANTCREAT)
 
     def replace(self, files, replacements):
         for f in files:
