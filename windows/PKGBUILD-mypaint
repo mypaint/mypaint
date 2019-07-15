@@ -63,7 +63,9 @@ prepare() {
 build() {
     cd "${srcdir}/${_realname}"
     ${MINGW_PREFIX}/bin/python2 setup.py clean --all
-    ${MINGW_PREFIX}/bin/python2 setup.py build
+
+    REL_BRUSH_PATH=".${MINGW_PREFIX}/share/mypaint-data/2.0/brushes"
+    ${MINGW_PREFIX}/bin/python2 setup.py build_config --brushdir-path="${REL_BRUSH_PATH}" build
 }
 
 package() {
