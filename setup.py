@@ -82,17 +82,26 @@ class BuildConfig (Command):
 
     """
 
-    description = "build config.py"
+    description = "generate lib/config.py using fetched or provided values"
     user_options = [
         ("brushdir-path=", None,
-         "Use the given string as brush directory path"),
+         "use the provided argument as brush directory path"),
     ]
+
+    WARNING_TEMPLATE = (
+        "# == THIS FILE IS GENERATED ==\n"
+        "# DO NOT EDIT OR ADD TO VERSION CONTROL\n"
+        "# The structure is defined in {input_file}\n"
+        "# The generation is done by the {command_name} command in {script}\n"
+        "\n"
+    )
 
     def initialize_options(self):
         self.brushdir_path = None
 
     def finalize_options(self):
-        pass
+        if self.brushdir_path and self.brushdir_path.strip()[0] == '/':
+            print("WARNING: supplied brush directory path is not relative")
 
     def run(self):
         if self.brushdir_path is not None:
@@ -130,8 +139,14 @@ class BuildConfig (Command):
                 # Make the necessary replacements.
                 for r in replacements:
                     contents = contents.replace(r, replacements[r])
+                warning = self.WARNING_TEMPLATE.format(
+                    input_file=f,
+                    command_name=self.__class__.__name__,
+                    script=__file__
+                )
                 fd.truncate(0)
                 fd.seek(0)
+                fd.write(warning)
                 fd.write(contents)
                 fd.flush()
                 fd.close()
