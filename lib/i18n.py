@@ -23,6 +23,16 @@ import logging
 logger = logging.getLogger(__name__)
 
 
+def getdefaultlocale():
+    """Return default locale or None
+    """
+    try:
+        return locale.getdefaultlocale()
+    except Exception:
+        logger.exception("Exception when getting default locale!")
+        return None
+
+
 def bcp47_to_language(code):
     """Takes a BCP 47 language identifier and returns a value suitable for the
     LANGUAGE env var.
@@ -105,7 +115,8 @@ def set_i18n_envvars():
         # above doesn't set anything up. Note that some users have to
         # fudge their "Formats" setting in order to get 3rd party
         # software to work without crashing.
-        deflocale = locale.getdefaultlocale()
+        deflocale = getdefaultlocale()
+
         if deflocale:
             lang = deflocale[0]
             if lang not in langs:
