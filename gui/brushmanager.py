@@ -606,7 +606,7 @@ class BrushManager (object):
 
             readme = None
             if _BRUSHPACK_README in names:
-                readme = zf.read(_BRUSHPACK_README)
+                readme = zf.read(_BRUSHPACK_README).decode("utf-8")
 
             if _BRUSHPACK_ORDERCONF not in names:
                 raise InvalidBrushpack(C_(
