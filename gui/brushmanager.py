@@ -395,7 +395,15 @@ class BrushManager (object):
             elif name.startswith(_BRUSH_HISTORY_NAME_PREFIX):
                 i_str = name.replace(_BRUSH_HISTORY_NAME_PREFIX, '')
                 i = int(i_str)
-                self.history[i] = b
+                if 0 <= i < _BRUSH_HISTORY_SIZE:
+                    self.history[i] = b
+                else:
+                    logger.warning(
+                        "Brush history item %s "
+                        "(entry %d): index outside of history range (0-%d)!",
+                        name, i,
+                        _BRUSH_HISTORY_SIZE - 1
+                    )
             else:
                 if not self.is_in_brushlist(b):
                     logger.info("Unassigned brush %r: assigning to %r",
