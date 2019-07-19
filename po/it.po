@@ -8,16 +8,16 @@ msgstr ""
 "Project-Id-Version: 0.7.1-git\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-07-11 21:24+0100\n"
-"PO-Revision-Date: 2015-11-26 21:15+0000\n"
-"Last-Translator: Andrew Chadwick <a.t.chadwick@gmail.com>\n"
-"Language-Team: Italian "
-"<https://hosted.weblate.org/projects/mypaint/mypaint/it/>\n"
+"PO-Revision-Date: 2019-02-06 22:10+0000\n"
+"Last-Translator: albanobattistella <albano_battistella@hotmail.com>\n"
+"Language-Team: Italian <https://hosted.weblate.org/projects/mypaint/mypaint/"
+"it/>\n"
 "Language: it\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 2.5-dev\n"
+"X-Generator: Weblate 3.5-dev\n"
 "X-Poedit-Language: Italian\n"
 "X-Poedit-Country: ITALY\n"
 "X-Poedit-SourceCharset: utf-8\n"
@@ -1136,12 +1136,12 @@ msgstr "Penna"
 #: ../gui/device.py:66
 msgctxt "prefs: device's type label"
 msgid "Touchpad"
-msgstr ""
+msgstr "Touchpad"
 
 #: ../gui/device.py:70
 msgctxt "prefs: device's type label"
 msgid "Touchscreen"
-msgstr ""
+msgstr "Touchscreen"
 
 #: ../gui/device.py:90
 msgctxt "device settings: allowed usage"
@@ -1342,14 +1342,15 @@ msgstr ""
 
 #. TRANSLATORS: window title for use with a filename
 #: ../gui/drawwindow.py:298
-#, python-format
+#, fuzzy, python-format
 msgid "%s - MyPaint"
-msgstr ""
+msgstr "%s - MyPaint"
 
 #. TRANSLATORS: window title for use without a filename
 #: ../gui/drawwindow.py:301 ../po/tmp/mypaint.glade.h:1
+#, fuzzy
 msgid "MyPaint"
-msgstr ""
+msgstr "MyPaint"
 
 #: ../gui/drawwindow.py:564
 msgid "Set current color"
@@ -2347,7 +2348,7 @@ msgstr "Visuale (Ripristino)"
 
 #: ../gui/topbar.py:91
 msgid "<b>MyPaint</b>"
-msgstr ""
+msgstr "<b>MyPaint</b>"
 
 #: ../gui/viewmanip.py:39
 msgid "Scroll View"
@@ -3310,7 +3311,7 @@ msgstr "Preleva impostazioni, colore del tratto e livello della pennellata"
 #: ../po/tmp/preferenceswindow.glade.h:1
 msgctxt "Prefs Dialog|Saving|Save Formats and Locations|Default|"
 msgid "OpenRaster (*.ora)"
-msgstr ""
+msgstr "OpenRaster (*.ora)"
 
 #: ../po/tmp/preferenceswindow.glade.h:2
 msgctxt "Prefs Dialog|Saving|Save Formats and Locations|Default|"
