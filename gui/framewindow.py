@@ -761,11 +761,12 @@ class FrameOverlay (Overlay):
         tdw = self.doc.tdw
         alloc = tdw.get_allocation()
         w, h = alloc.width, alloc.height
+        margin = 5 * self.OUTLINE_WIDTH
         canvas_bbox = (
-            -5 * self.OUTLINE_WIDTH,
-            -5 * self.OUTLINE_WIDTH,
-            w + 5 * self.OUTLINE_WIDTH,
-            h + 5 * self.OUTLINE_WIDTH,
+            0 - margin,
+            0 - margin,
+            2 * margin + w,
+            2 * margin + h,
         )
         cr.rectangle(*canvas_bbox)
         view_x0, view_y0 = alloc.x, alloc.y
