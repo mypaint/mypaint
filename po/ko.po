@@ -5,16 +5,16 @@ msgstr ""
 "Project-Id-Version: 0.9.0 -git\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-07-11 21:24+0100\n"
-"PO-Revision-Date: 2016-06-01 09:54+0000\n"
-"Last-Translator: Sahamie <ginny0611@naver.com>\n"
-"Language-Team: Korean "
-"<https://hosted.weblate.org/projects/mypaint/mypaint/ko/>\n"
+"PO-Revision-Date: 2018-11-20 15:08+0000\n"
+"Last-Translator: 송태섭 <xotjq237@gmail.com>\n"
+"Language-Team: Korean <https://hosted.weblate.org/projects/mypaint/mypaint/"
+"ko/>\n"
 "Language: ko\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 2.7-dev\n"
+"X-Generator: Weblate 3.3-dev\n"
 "X-Poedit-SourceCharset: utf-8\n"
 
 #: ../gui/accelmap.py:55
@@ -1574,7 +1574,7 @@ msgid ""
 "underneath the current layer"
 msgstr ""
 "채우기 툴을 사용하기 전, 현재 레이어 아래에\n"
-"표시된 레이어를 일시적으로 합쳐놓으세요."
+"표시된 레이어를 일시적으로 합쳐놓으세요"
 
 #: ../gui/fill.py:226
 msgid "Target:"
@@ -2341,7 +2341,7 @@ msgstr "정의되지 않음 (명령은 아직 시작되지 않음)"
 #: ../lib/command.py:279
 #, python-brace-format
 msgid "{seconds:.01f}s of painting with {brush_name}"
-msgstr ""
+msgstr "{brush_name}로 {seconds:.01f}초간 칠하기"
 
 #: ../lib/command.py:522
 msgid "Trim Layer"
@@ -2490,7 +2490,7 @@ msgstr ""
 #, python-brace-format
 msgctxt "Document autosave descriptions"
 msgid "Incomplete backup updated {last_modified_time} {ago}"
-msgstr ""
+msgstr "불완전 백업 {last_modified_time}{ago} 업데이트됨"
 
 #: ../lib/document.py:208
 #, python-brace-format
@@ -2503,7 +2503,7 @@ msgid ""
 msgstr ""
 "백업 파일 {last_modified_time}{ago}에 업데이트됨\n"
 "크기: {autosave.width}×{autosave.height}픽셀, 레이어: {autosave.num_layers}\n"
-"{unsaved_time}동안의 저장되지 않은 그림 포함"
+"{unsaved_time}동안의 저장되지 않은 그림 포함."
 
 #: ../lib/document.py:1209
 #, python-brace-format
@@ -2672,9 +2672,8 @@ msgid "Pass-through"
 msgstr "통과를 통해"
 
 #: ../lib/modes.py:37
-#, fuzzy
 msgid "Group contents apply directly to the group's backdrop"
-msgstr "그룹 안의 요소는 그룹의 배경에 직접 적용됩니다."
+msgstr "그룹 안의 요소들은 그룹의 배경에 직접 적용됩니다"
 
 #: ../lib/modes.py:41
 msgid "Normal"
@@ -2782,7 +2781,7 @@ msgstr "제외"
 
 #: ../lib/modes.py:85
 msgid "Similar to the 'Difference' mode, but lower in contrast."
-msgstr ""
+msgstr "'차이'모드와 비슷하지만 그에 비해서는 더 낮습니다."
 
 #: ../lib/modes.py:88
 msgid "Hue"
@@ -2792,7 +2791,7 @@ msgstr "색조"
 msgid ""
 "Combines the hue of the top layer with the saturation and luminosity of the "
 "backdrop."
-msgstr "배경의 채도 및 광도와 상단 층의 색상이 조화를 이루고 있습니다."
+msgstr "배경의 채도와 밝기를 맨 위 레이어의 색조와 결합합니다."
 
 #: ../lib/modes.py:92
 msgid "Saturation"
@@ -2802,13 +2801,13 @@ msgstr "채도"
 msgid ""
 "Applies the saturation of the top layer's colors to the hue and luminosity "
 "of the backdrop."
-msgstr ""
+msgstr "맨 위 레이어 색상의 채도를 배경의 색조와 밝기에 적용합니다."
 
 #: ../lib/modes.py:97
 msgid ""
 "Applies the hue and saturation of the top layer to the luminosity of the "
 "backdrop."
-msgstr ""
+msgstr "맨 위 레이어의 채도와 색조를 배경의 밝기에 적용합니다."
 
 #: ../lib/modes.py:100
 msgid "Luminosity"
@@ -2818,7 +2817,7 @@ msgstr "밝기"
 msgid ""
 "Applies the luminosity of the top layer to the hue and saturation of the "
 "backdrop."
-msgstr ""
+msgstr "맨 위 레이어의 밝기를 배경의 채도와 색조에 적용합니다."
 
 #: ../lib/modes.py:105
 msgid "Plus"
@@ -2836,7 +2835,7 @@ msgstr "아래가 들어오게"
 msgid ""
 "Uses the backdrop only where this layer covers it. Everything else is "
 "ignored."
-msgstr ""
+msgstr "레이어가 덮은 배경만을 사용합니다. 다른 모든 것은 무시됩니다."
 
 #: ../lib/modes.py:112
 msgid "Destination Out"
@@ -2846,7 +2845,7 @@ msgstr "아래가 나가게"
 msgid ""
 "Uses the backdrop only where this layer doesn't cover it. Everything else is "
 "ignored."
-msgstr ""
+msgstr "레이어가 덮지 않은 배경만을 사용합니다. 다른 모든 것은 무시됩니다."
 
 #: ../lib/modes.py:116
 msgid "Source Atop"
@@ -2856,7 +2855,7 @@ msgstr "여기 위에다"
 msgid ""
 "Source which overlaps the destination, replaces the destination. Destination "
 "is placed elsewhere."
-msgstr ""
+msgstr "목적지가 겹쳐진 소스는 목적지를 바꿉니다. 목적지는 다른 곳으로 지정되었습니다."
 
 #: ../lib/modes.py:120
 msgid "Destination Atop"
@@ -2866,14 +2865,14 @@ msgstr "아래 위에다"
 msgid ""
 "Destination which overlaps the source replaces the source. Source is placed "
 "elsewhere."
-msgstr ""
+msgstr "소스가 겹쳐진 목적지는 소스를 바꿉니다. 소스는 다른 곳으로 지정되었습니다."
 
 #: ../lib/pixbufsurface.py:35
 msgctxt "user-facing error texts"
 msgid ""
 "Unable to construct a vital internal object. Your system may not have enough "
 "memory to perform this operation."
-msgstr ""
+msgstr "필수적인 내부 객체를 구성할 수 없습니다. 사용자의 시스템이 이 작업을 할 수 있을 정도의 메모리를 갖고 있지 않습니다."
 
 #: ../lib/surface.py:325
 #, python-brace-format
@@ -2884,6 +2883,10 @@ msgid ""
 "Reason: {err}\n"
 "Target folder: “{dirname}”."
 msgstr ""
+"기록 실패함 “{basename}”.\n"
+"\n"
+"이유:{err}\n"
+"대상 폴더: “{dirname}”."
 
 #: ../lib/tiledsurface.py:542
 #, python-format
@@ -2903,7 +2906,7 @@ msgstr "_복구 및 저장..."
 #: ../po/tmp/autorecover.glade.h:4
 msgctxt "Autosave Recovery dialog|Recover and Save|"
 msgid "Save this backup to disk, then continue working on it."
-msgstr ""
+msgstr "이 백업을 디스크에 저장합니다. 그 뒤 이 파일로 계속 작업할 수 있습니다."
 
 #: ../po/tmp/autorecover.glade.h:5
 msgctxt "Autosave Recovery dialog|"
@@ -2921,6 +2924,8 @@ msgid ""
 "MyPaint crashed with unsaved work, but it made backups. You can recover a "
 "file now, or leave it till you start MyPaint again."
 msgstr ""
+"MYPanit가 저장되지 않은 작업으로 작동이 중단됬지만 백업 파일을 만들어 두었습니다. 당신은 파일을 당장 되살리거나, 적어도 당신이 "
+"다시 MYPaint를 킬 때까지 보관해 놓을수 있습니다."
 
 #: ../po/tmp/autorecover.glade.h:8
 msgid "Thumbnail"
@@ -2940,7 +2945,7 @@ msgstr "새로운 브러시에 현재 설정과 현재의 브러시의 아이콘
 
 #: ../po/tmp/brusheditor.glade.h:4
 msgid "Rename this brush"
-msgstr "이 브러쉬의 이름을 바꿉니다"
+msgstr "이 브러시의 이름을 바꿉니다"
 
 #: ../po/tmp/brusheditor.glade.h:5
 msgid "Edit Icon"
@@ -2950,7 +2955,7 @@ msgstr "아이콘을 편집"
 msgid ""
 "Edit this brush's icon in a separate window (you will be able to use any "
 "brush to draw it)"
-msgstr ""
+msgstr "별도의 창에서 이 브러시의 아이콘을 편집 (어떤 브러시라도 편집에 사용 가능)"
 
 #: ../po/tmp/brusheditor.glade.h:7
 msgid "Delete"
@@ -2968,7 +2973,7 @@ msgstr "실시간 업데이트"
 msgid ""
 "Update the last stroke on the canvas with the settings in this window, in "
 "real time"
-msgstr "실시간, 이 창의 설정으로 캔버스의 마지막 스트로크 업데이트"
+msgstr "실시간으로, 이 창의 설정으로 캔버스의 마지막 스트로크를 업데이트"
 
 #: ../po/tmp/brusheditor.glade.h:12
 msgid "Save these settings to the brush"
@@ -2992,7 +2997,7 @@ msgstr "설명:"
 #: ../po/tmp/brusheditor.glade.h:17
 msgctxt "brush editor|metadata settings|labels for widgets|tooltips|"
 msgid "Brush developer's notes"
-msgstr "브러쉬 개발자의 노트"
+msgstr "브러시 개발자의 노트"
 
 #. Notes for developers
 #: ../po/tmp/brusheditor.glade.h:19
@@ -3008,7 +3013,7 @@ msgstr "설정 이름:"
 #: ../po/tmp/brusheditor.glade.h:22
 msgid ""
 "Starting value for this brush setting. The brush dynamics below act on this."
-msgstr ""
+msgstr "이 브러시 설정의 시작 값입니다. 아래의 브러시 역학이 이에 따라 행동합니다."
 
 #. field label
 #: ../po/tmp/brusheditor.glade.h:24
