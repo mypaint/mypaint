@@ -9,3 +9,7 @@
 # (at your option) any later version
 
 mypaint_brushdir = u'@MYPAINT_BRUSHDIR@'
+# List of locales for which translation files are available
+supported_locales = [
+@SUPPORTED_LOCALES@
+]

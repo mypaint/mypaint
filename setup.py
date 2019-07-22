@@ -7,6 +7,7 @@ import subprocess
 import glob
 import os
 import os.path
+import pprint
 import sys
 import textwrap
 import tempfile
@@ -144,16 +145,24 @@ class BuildConfig (Command):
             print("WARNING: supplied brush directory path is not relative")
 
     def run(self):
+        # Determine path to the brushes directory
         if self.brushdir_path is not None:
             mypaint_brushdir = self.brushdir_path
         else:
             mypaint_brushdir = self.pkgconf_brushdir_path()
+
+        # Determine which locales are supported, based
+        # on existing *.po translation files
+        locales = [f[:-3] for f in os.listdir("./po/") if f.endswith('.po')]
+        # Pretty print sorted locales to individual lines in list
+        locstring = " " + pprint.pformat(sorted(locales), indent=4)[1:-1] + ","
 
         files = {
             'config.py.in': 'lib/config.py',
         }
         replacements = {
             '@MYPAINT_BRUSHDIR@': mypaint_brushdir,
+            '@SUPPORTED_LOCALES@': locstring,
         }
         self.replace(files, replacements)
 
