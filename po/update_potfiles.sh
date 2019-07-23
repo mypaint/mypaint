@@ -20,9 +20,14 @@ git grep --full-name --files-with-matches "^from lib.gettext import" .. \
 # Builder XML and resource definitions are converted to a .h file in
 # po/tmp which intltool-update can then work on.
 
+command intltool-extract >/dev/null 2>&1 ||
+    (echo >&2 "Install intltool (>= 0.30) to run this script!" && exit 1)
+intltool-extract --help | grep "\--local" >/dev/null 2>&1 ||
+    (echo >&2 "Need a more recent version of intltool (>= 0.30)!" && exit 1)
+
 for ui_file in ../gui/resources.xml ../gui/*.glade; do
     echo "Extracting strings from $ui_file..."
-    intltool-extract --type=gettext/glade "$ui_file"
+    intltool-extract --local --type=gettext/glade "$ui_file"
     tmp_h=`basename "$ui_file"`.h
     if ! test -f "tmp/$tmp_h"; then
         echo >&2 "warning: intltool-extract did not create tmp/$tmp_h"
