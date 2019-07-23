@@ -59,7 +59,13 @@ def _init_gtk_workarounds():
     logger.debug("GTK workarounds added.")
 
 
-def main(datapath, iconspath, oldstyle_confpath=None, version=MYPAINT_VERSION):
+def main(
+        datapath,
+        iconspath,
+        localepath,
+        oldstyle_confpath=None,
+        version=MYPAINT_VERSION,
+):
     """Run MyPaint with `sys.argv_unicode`, called from the "mypaint" script.
 
     :param unicode datapath: The app's read-only data location.
@@ -99,48 +105,7 @@ def main(datapath, iconspath, oldstyle_confpath=None, version=MYPAINT_VERSION):
     # with non-ASCII character in %USERPROFILE% will break.
     lib.glib.init_user_dir_caches()
 
-    # mypaintlib import is performed first in gui.application now.
-    from gui import application
-
-    # Default logfile basename.
-    # If it's relative, it's resolved relative to the user config path.
-    default_logfile = None
-
-    # Parse command line
-    parser = OptionParser('usage: %prog [options] [FILE]')
-    parser.add_option(
-        '-c',
-        '--config',
-        metavar='DIR',
-        default=oldstyle_confpath,
-        help='use old-style merged config directory DIR, e.g. ~/.mypaint'
-    )
-    parser.add_option(
-        '-l',
-        '--logfile',
-        metavar='FILE',
-        default=default_logfile,
-        help='log console messages to FILE (rel. to config location)'
-    )
-    parser.add_option(
-        '-t',
-        '--trace',
-        action="store_true",
-        help='print all executed Python statements'
-    )
-    parser.add_option(
-        '-f',
-        '--fullscreen',
-        action="store_true",
-        help='start in fullscreen mode'
-    )
-    parser.add_option(
-        "-V",
-        '--version',
-        action="store_true",
-        help='print version information and exit'
-    )
-    options, args = parser.parse_args(sys.argv_unicode[1:])
+    options, args = parsed_cmdline_arguments(oldstyle_confpath)
 
     # XDG support for new users on POSIX platforms
     if options.config is None:
@@ -184,6 +149,13 @@ def main(datapath, iconspath, oldstyle_confpath=None, version=MYPAINT_VERSION):
         logger.debug('user_datapath: %r', userdatapath)
         logger.debug('user_confpath: %r', userconfpath)
 
+        # Locale setting
+        from lib.gettext_setup import init_gettext
+        init_gettext(localepath)
+
+        # mypaintlib import is performed first in gui.application now.
+        from gui import application
+
         app_state_dirs = application.StateDirs(
             app_data = datapath,
             app_icons = iconspath,
@@ -218,3 +190,45 @@ def main(datapath, iconspath, oldstyle_confpath=None, version=MYPAINT_VERSION):
         tracer.runfunc(run)
     else:
         run()
+
+
+def parsed_cmdline_arguments(default_confpath):
+    """Parse command line arguments and return result
+
+    :return: (options, positional arguments)
+    """
+    parser = OptionParser('usage: %prog [options] [FILE]')
+    parser.add_option(
+        '-c',
+        '--config',
+        metavar='DIR',
+        default=default_confpath,
+        help='use old-style merged config directory DIR, e.g. ~/.mypaint'
+    )
+    parser.add_option(
+        '-l',
+        '--logfile',
+        metavar='FILE',
+        default=None,
+        help='log console messages to FILE (rel. to config location)'
+    )
+    parser.add_option(
+        '-t',
+        '--trace',
+        action="store_true",
+        help='print all executed Python statements'
+    )
+    parser.add_option(
+        '-f',
+        '--fullscreen',
+        action="store_true",
+        help='start in fullscreen mode'
+    )
+    parser.add_option(
+        "-V",
+        '--version',
+        action="store_true",
+        help='print version information and exit'
+    )
+
+    return parser.parse_args(sys.argv_unicode[1:])
