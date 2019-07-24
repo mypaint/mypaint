@@ -17,6 +17,10 @@ from gettext import gettext as _
 
 from gi.repository import Gtk
 
+import lib.config
+import lib.localecodes
+from lib.i18n import USER_LOCALE_PREF
+from lib.gettext import C_
 from . import windowing
 
 
@@ -57,6 +61,10 @@ class PreferencesWindow (windowing.Dialog):
         self._builder = builder
 
         getobj = builder.get_object
+
+        # Populate locale/language combo box
+        locale_combo = getobj("locale_combobox")
+        setup_locale_combobox(locale_combo)
 
         # Notebook
         nb = getobj("prefs_notebook")
@@ -113,6 +121,14 @@ class PreferencesWindow (windowing.Dialog):
         # prefix for saving scarps
         entry = getobj("scrap_prefix_entry")
         entry.set_text(p['saving.scrap_prefix'])
+
+        # Locale/language
+        locale_combo = getobj("locale_combobox")
+        active_locale = p.get(USER_LOCALE_PREF, None)
+        if active_locale is None:
+            locale_combo.set_active(0)
+        else:
+            locale_combo.set_active_id(active_locale)
 
         # Zoom
         zoom_float = p.get('view.default_zoom', 1.0)
@@ -329,3 +345,86 @@ class PreferencesWindow (windowing.Dialog):
     def blink_layers_toggled_cb(self, checkbut):
         blink = bool(checkbut.get_active())
         self.app.preferences["ui.blink_layers"] = blink
+
+    def locale_changed_cb(self, combo):
+        active = combo.get_active()
+        locale = combo.get_model()[active][0]
+        if locale is None:
+            self.app.preferences.pop(USER_LOCALE_PREF, None)
+        else:
+            self.app.preferences[USER_LOCALE_PREF] = locale
+
+
+def setup_locale_combobox(locale_combo):
+    # Set up locales liststore
+    locale_liststore = Gtk.ListStore()
+    default_loc = C_(
+        "Language preferences menu - default option",
+        # TRANSLATORS: This option means that MyPaint will try to use
+        # TRANSLATORS: the language the system tells it to use.
+        "System Language"
+    )
+    # Default value - use the system locale
+    locale_liststore.set_column_types((str, str, str))
+    locale_liststore.append((None, default_loc, default_loc))
+
+    loc_names = lib.localecodes.LOCALE_DICT
+    # Base language - US english
+    base_locale = "en_US"
+    locale_liststore.append((base_locale, loc_names[base_locale][0], ""))
+
+    # Separator
+    locale_liststore.append((None, None, None))
+
+    supported_locales = lib.config.supported_locales
+
+    def tuplify(loc):
+        if loc in loc_names:
+            name_en, name_native = loc_names[loc]
+            return loc, name_en, name_native
+        else:
+            logger.warning("Locale name not found: (%s)", loc)
+            return loc, loc, loc
+
+    # Sort alphabetically on english name of language
+    for i in sorted(map(tuplify, supported_locales), key=lambda a: a[1]):
+        locale_liststore.append(i)
+
+    def sep_func(model, it):
+        return model[it][1] is None
+
+    def render_language_names(_, name_cell, model, it):
+        locale, lang_en, lang_nat = model[it][:3]
+        # Mark default with bold font
+        if locale is None:
+            name_cell.set_property(
+                "markup", "<b>{lang_en}</b>".format(lang_en=lang_en)
+            )
+        # If a language does not have its native spelling
+        # available, only show its name in english.
+        elif lang_en == lang_nat or lang_nat == "":
+            name_cell.set_property(
+                "text", lang_en
+            )
+        else:
+            name_cell.set_property(
+                "text", C_(
+                    "Prefs Dialog|View|Interface - menu entries",
+                    # TRANSLATORS: lang_en is the english name of the language
+                    # TRANSLATORS: lang_nat is the native name of the language
+                    # TRANSLATORS: in that _same language_.
+                    # TRANSLATORS: This can just be copied most of the time.
+                    "{lang_en} - ({lang_nat})"
+                ).format(
+                    lang_en=lang_en, lang_nat=lang_nat
+                )
+            )
+
+    # Remove the existing cell renderer
+    locale_combo.clear()
+    locale_combo.set_row_separator_func(sep_func)
+
+    cell = Gtk.CellRendererText()
+    locale_combo.pack_start(cell, True)
+    locale_combo.set_cell_data_func(cell, render_language_names)
+    locale_combo.set_model(locale_liststore)

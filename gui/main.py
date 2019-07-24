@@ -19,12 +19,14 @@ import logging
 import warnings
 
 import lib.gichecks
-from gi.repository import Gtk
 from gi.repository import GdkPixbuf
 from optparse import OptionParser
 
-from lib.meta import MYPAINT_VERSION
+import lib.config
 import lib.glib
+from lib.i18n import USER_LOCALE_PREF
+from lib.meta import MYPAINT_VERSION
+import gui.userconfig
 
 logger = logging.getLogger(__name__)
 
@@ -57,6 +59,30 @@ def _init_gtk_workarounds():
         os.environ['GDK_BACKEND'] = 'x11'
 
     logger.debug("GTK workarounds added.")
+
+
+def set_user_configured_locale(userconfpath):
+    """If configured, set envvars for a custom locale
+    The user can choose to not use their system locale
+    by explicitly choosing another, and restarting.
+    """
+    settings = gui.userconfig.get_json_config(userconfpath)
+    if USER_LOCALE_PREF in settings:
+        user_locale = settings[USER_LOCALE_PREF]
+        supported = ["en", "en_US"] + lib.config.supported_locales
+        if user_locale not in supported:
+            logger.warning("Locale not supported: %s", user_locale)
+        else:
+            # GIMP, Krita and Inkscape will all ignore the LANGUAGE
+            # variable when a user has chosen a language explicitly.
+            # For better or worse, we follow their example
+            # (this may change in the future).
+            logger.info("Using locale: (%s)", user_locale)
+            if "LANGUAGE" in os.environ:
+                logger.warning("LANGUAGE envvar is overridden by user setting")
+            os.environ["LANGUAGE"] = user_locale
+    else:
+        logger.info("No locale setting found, using system locale")
 
 
 def main(
@@ -149,6 +175,9 @@ def main(
         logger.debug('user_datapath: %r', userdatapath)
         logger.debug('user_confpath: %r', userconfpath)
 
+        # User-configured locale (if enabled by user)
+        set_user_configured_locale(userconfpath)
+
         # Locale setting
         from lib.gettext_setup import init_gettext
         init_gettext(localepath)
@@ -169,6 +198,10 @@ def main(
             fullscreen = options.fullscreen,
         )
 
+        # Gtk must not be imported before init_gettext
+        # has been run - else locales will not be set
+        # up properly (e.g: left-to-right interfaces for right-to-left scripts)
+        from gi.repository import Gtk
         settings = Gtk.Settings.get_default()
         dark = app.preferences.get("ui.dark_theme_variant", True)
         settings.set_property("gtk-application-prefer-dark-theme", dark)

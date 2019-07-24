@@ -22,6 +22,8 @@ import locale
 import logging
 logger = logging.getLogger(__name__)
 
+USER_LOCALE_PREF = "lib.i18n.userlocale"
+
 
 def getdefaultlocale():
     """Return default locale or None
