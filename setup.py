@@ -19,6 +19,7 @@ from setuptools import setup
 from setuptools import Extension
 from setuptools import Command
 from setuptools.command.build_ext import build_ext
+from setuptools.command.install import install
 from setuptools.command.install_scripts import install_scripts
 
 
@@ -33,7 +34,30 @@ class BuildTranslations (Command):
 
     """
 
+    @staticmethod
+    def get_translation_paths(command):
+        """Returns paths for building and installing message catalogs
+
+        The returned data is a tuple with two lists.
+        The first contains (source, destination) pairs for building
+        *.mo files from *.po files (relative paths).
+        The second contains (gen_mo_src_dir, [mo_target_path]) tuples
+        that are used by the 'install' command.
+        """
+        tmpdir = command.get_finalized_command("build").build_temp
+
+        msg_path_pairs = []
+        data_path_pairs = []
+        for po_path in glob.glob("po/*.po"):
+            lang = os.path.basename(po_path)[:-3]
+            mo_dir = os.path.join("locale", lang, "LC_MESSAGES")
+            targ = os.path.join(tmpdir, mo_dir, "mypaint.mo")
+            msg_path_pairs.append((po_path, targ))
+            data_path_pairs.append((mo_dir, [targ]))
+        return (msg_path_pairs, data_path_pairs)
+
     description = "build binary message catalogs (*.mo)"
+
     user_options = []
 
     def initialize_options(self):
@@ -43,35 +67,29 @@ class BuildTranslations (Command):
         pass
 
     def run(self):
-        build = self.get_finalized_command("build")
-        for src in glob.glob("po/*.po"):
-            data_files = self._compile_message_catalog(src, build.build_temp)
-            if not self.dry_run:
-                self.distribution.data_files.extend(data_files)
+        msg_paths, data_paths = BuildTranslations.get_translation_paths(self)
+        for po_path, mo_path in msg_paths:
+            self._compile_message_catalog(po_path, mo_path)
+        if not self.dry_run:
+            self.distribution.data_files.extend(data_paths)
 
-    def _compile_message_catalog(self, src, temp):
-        lang = os.path.basename(src)[:-3]
-        targ_dir = os.path.join(temp, "locale", lang, "LC_MESSAGES")
-        targ = os.path.join(targ_dir, "mypaint.mo")
-        install_dir = os.path.join("locale", lang, "LC_MESSAGES")
-
-        needs_update = True
-        if os.path.exists(targ):
-            if os.stat(targ).st_mtime >= os.stat(src).st_mtime:
-                needs_update = False
+    def _compile_message_catalog(self, po_file_path, mo_file_path):
+        needs_update = not (
+            os.path.exists(mo_file_path) and
+            os.stat(mo_file_path).st_mtime >=
+            os.stat(po_file_path).st_mtime
+        )
 
         if needs_update:
-            cmd = ("msgfmt", src, "-o", targ)
+            cmd = ("msgfmt", po_file_path, "-o", mo_file_path)
             if self.dry_run:
                 self.announce("would run %s" % (" ".join(cmd),), level=2)
-                return []
-            self.announce("running %s" % (" ".join(cmd),), level=2)
+            else:
+                self.announce("running %s" % (" ".join(cmd),), level=2)
+                self.mkpath(os.path.dirname(mo_file_path))
+                subprocess.check_call(cmd)
 
-            self.mkpath(targ_dir)
-            subprocess.check_call(cmd)
-
-        assert os.path.exists(targ)
-        return [(install_dir, [targ])]
+                assert os.path.exists(mo_file_path)
 
 
 class BuildConfig (Command):
@@ -226,6 +244,20 @@ class BuildExt (build_ext):
             ccflags.append("-O3")
 
         return build_ext.build_extension(self, ext)
+
+
+class Install (install):
+    """Custom install to handle translation files
+    Same options as the regular install command.
+    """
+
+    def run(self):
+        # Without this, using --skip-build will result in the locale
+        # files not being installed, even if they have been generated.
+        if "build_translations" not in self.distribution.have_run:
+            data_paths = BuildTranslations.get_translation_paths(self)[1]
+            self.distribution.data_files.extend(data_paths)
+        install.run(self)
 
 
 class Clean (clean):
@@ -715,6 +747,7 @@ setup(
         "build_translations": BuildTranslations,
         "build_config": BuildConfig,
         "demo": Demo,
+        "install": Install,
         "managed_install": ManagedInstall,
         "managed_uninstall": ManagedUninstall,
         "install_scripts": InstallScripts,
