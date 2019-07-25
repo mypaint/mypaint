@@ -25,6 +25,19 @@ from setuptools.command.install_scripts import install_scripts
 
 # Helper classes and routines:
 
+
+def pkgconf():
+    """Returns the name used to execute pkg-config
+    """
+    return os.getenv("PKGCONFIG", "pkg-config")
+
+
+def msgfmt():
+    """Returns the name used to execute msgfmt
+    """
+    return os.getenv("MSGFMT", "msgfmt")
+
+
 class BuildTranslations (Command):
     """Builds binary message catalogs for installation.
 
@@ -81,7 +94,7 @@ class BuildTranslations (Command):
         )
 
         if needs_update:
-            cmd = ("msgfmt", po_file_path, "-o", mo_file_path)
+            cmd = (msgfmt(), po_file_path, "-o", mo_file_path)
             if self.dry_run:
                 self.announce("would run %s" % (" ".join(cmd),), level=2)
             else:
@@ -138,7 +151,7 @@ class BuildConfig (Command):
     def pkgconf_brushdir_path(self):
         try:
             cmd = [
-                'pkg-config', '--variable=brushesdir', 'mypaint-brushes-2.0'
+                pkgconf(), '--variable=brushesdir', 'mypaint-brushes-2.0'
             ]
             return subprocess.check_output(cmd).decode().strip()
         except subprocess.CalledProcessError as e:
@@ -585,7 +598,7 @@ def pkgconfig(packages, **kwopts):
         "--cflags": "extra_compile_args",
     }
     for (pc_arg, extras_key) in extra_args_map.items():
-        cmd = ["pkg-config", pc_arg] + list(packages)
+        cmd = [pkgconf(), pc_arg] + list(packages)
         cmd_output = subprocess.check_output(
             cmd,
             universal_newlines=True,
