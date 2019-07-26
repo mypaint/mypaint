@@ -28,8 +28,9 @@ from setuptools.command.install_scripts import install_scripts
 
 def pkgconf():
     """Returns the name used to execute pkg-config
+    Uses the value of the PKG_CONFIG environment variable if it is set.
     """
-    return os.getenv("PKGCONFIG", "pkg-config")
+    return os.getenv("PKG_CONFIG", "pkg-config")
 
 
 def msgfmt():
