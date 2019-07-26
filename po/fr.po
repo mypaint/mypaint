@@ -9,16 +9,16 @@ msgstr ""
 "Project-Id-Version: 0.7.1-git\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-07-11 21:24+0100\n"
-"PO-Revision-Date: 2016-04-11 16:28+0000\n"
-"Last-Translator: Kaerhon <kaerhon@gmail.com>\n"
-"Language-Team: French "
-"<https://hosted.weblate.org/projects/mypaint/mypaint/fr/>\n"
+"PO-Revision-Date: 2019-02-23 08:18+0000\n"
+"Last-Translator: glixx <roman_romul@mail.ru>\n"
+"Language-Team: French <https://hosted.weblate.org/projects/mypaint/mypaint/"
+"fr/>\n"
 "Language: fr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n > 1;\n"
-"X-Generator: Weblate 2.6-dev\n"
+"X-Generator: Weblate 3.5-dev\n"
 
 #: ../gui/accelmap.py:55
 #, python-brace-format
@@ -965,9 +965,10 @@ msgid "Fill Gap (RGB)"
 msgstr "Remplir l'espace (RGB)"
 
 #: ../gui/colors/paletteview.py:818
+#, fuzzy
 msgctxt "palette view: context menu"
 msgid "Fill Gap (HCY)"
-msgstr ""
+msgstr "Remplir l'espace (HCY)"
 
 #: ../gui/colors/paletteview.py:824
 msgctxt "palette view: context menu"
@@ -1091,9 +1092,10 @@ msgid "Liquid Wash"
 msgstr "Adoucir"
 
 #: ../gui/colortools.py:152
+#, fuzzy
 msgctxt "color changer dock panels: tab tooltip description"
 msgid "Change color using a liquid-like wash of nearby colors."
-msgstr ""
+msgstr "Change la couleur par un adoucissement des couleurs proches."
 
 #: ../gui/colortools.py:162
 msgctxt "color changer dock panels: tab tooltip title"
@@ -1388,9 +1390,8 @@ msgid "Quit"
 msgstr "Quitter"
 
 #: ../gui/drawwindow.py:740
-#, fuzzy
 msgid "Really Quit?"
-msgstr "Souhaitez-vous vraiment quitter ?"
+msgstr "Désirez-vous vraiment quitter ?"
 
 #: ../gui/drawwindow.py:754
 msgid "Import brush package..."
@@ -1804,9 +1805,8 @@ msgstr ""
 
 #. only development and prereleases
 #: ../gui/gtkexcepthook.py:168
-#, fuzzy
 msgid "Report..."
-msgstr "Exporter…"
+msgstr "Reporter..."
 
 #: ../gui/gtkexcepthook.py:170
 msgid "Ignore Error"
@@ -2054,7 +2054,6 @@ msgstr ""
 "Martin Renold et l'équipe de développement de MyPaint"
 
 #: ../gui/meta.py:36
-#, fuzzy
 msgctxt "About dialog: license summary"
 msgid ""
 "This program is free software; you can redistribute it and/or modify it "
@@ -2068,7 +2067,7 @@ msgstr ""
 "Ce programme est un logiciel libre : Vous pouvez le redistribuer et/ou le "
 "modifier sous les termes de la Licence publique générale GNU comme publié "
 "par la Free Software Foundation ; soit en version 2 de la licence, ou (à "
-"votre convenance) dans une version ultérieure.\n"
+"votre convenance)  dans une version ultérieure.\n"
 "\n"
 "Ce programme est distribué dans l'espoir d'être utile, mais SANS AUCUNE "
 "GARANTIE. Voir le fichier COPYING pour plus de détails."
@@ -3374,10 +3373,9 @@ msgstr ""
 
 #. Tab label in preferences dialog
 #: ../po/tmp/preferenceswindow.glade.h:27
-#, fuzzy
 msgctxt "Prefs Dialog|"
 msgid "Pressure"
-msgstr "Pression :"
+msgstr "Pression"
 
 #: ../po/tmp/preferenceswindow.glade.h:28
 msgctxt "Prefs Dialog|Devices|"
@@ -3826,7 +3824,6 @@ msgid "Export your work to a file, but keep working on the same file."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:18
-#, fuzzy
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "Save As Scrap"
 msgstr "Enregistrer comme Croquis"
@@ -3837,7 +3834,6 @@ msgid "Save to a new scrap file, or save a new revision if already a scrap."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:20
-#, fuzzy
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "Open Previous Scrap"
 msgstr "Ouvrir le Croquis précédent"
@@ -3849,7 +3845,6 @@ msgid "Load the scrap file before the current one."
 msgstr "Charger le croquis suivant, remplace l'image actuelle"
 
 #: ../po/tmp/resources.xml.h:22
-#, fuzzy
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "Open Next Scrap"
 msgstr "Ouvrir le Croquis suivant"
@@ -4469,10 +4464,9 @@ msgid "Increase magnification."
 msgstr "Augmenter l'agrandissement"
 
 #: ../po/tmp/resources.xml.h:134
-#, fuzzy
 msgctxt "Menu→View→Adjust View (labels), Accel Editor (labels)"
 msgid "Zoom Out"
-msgstr "Rapetisser"
+msgstr "Zoom arrière"
 
 #: ../po/tmp/resources.xml.h:135
 #, fuzzy
@@ -4481,7 +4475,6 @@ msgid "Decrease magnification."
 msgstr "Diminuer l'agrandissement"
 
 #: ../po/tmp/resources.xml.h:136
-#, fuzzy
 msgctxt "Menu→View→Adjust View (labels), Accel Editor (labels)"
 msgid "Rotate Counterclockwise"
 msgstr "Tourner sens anti-horaire"
@@ -4493,7 +4486,6 @@ msgid "Rotate the view counterclockwise."
 msgstr "Tourner la vue dans le sens anti-horaire"
 
 #: ../po/tmp/resources.xml.h:138
-#, fuzzy
 msgctxt "Menu→View→Adjust View (labels), Accel Editor (labels)"
 msgid "Rotate Clockwise"
 msgstr "Tourner sens horaire"
@@ -4529,7 +4521,6 @@ msgid "Flip the view upside-down."
 msgstr "Retourner la vue de haut en bas"
 
 #: ../po/tmp/resources.xml.h:144
-#, fuzzy
 msgctxt "Menu→View (labels), Accel Editor (labels)"
 msgid "Layer Solo"
 msgstr "Calque seul"
@@ -4575,7 +4566,6 @@ msgid "Show the brush engine’s internally generated inputs on the console."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:152
-#, fuzzy
 msgctxt "Menu→Help→Debug (labels), Accel Editor (labels)"
 msgid "Visualize Rendering"
 msgstr "Visualiser le rendu"

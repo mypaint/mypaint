@@ -8,17 +8,17 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-07-11 21:24+0100\n"
-"PO-Revision-Date: 2016-12-10 20:23+0000\n"
-"Last-Translator: Nazar Bulavko <zliyengi@gmail.com>\n"
-"Language-Team: Ukrainian "
-"<https://hosted.weblate.org/projects/mypaint/mypaint/uk/>\n"
+"PO-Revision-Date: 2019-05-14 16:49+0000\n"
+"Last-Translator: prolinux ukraine <prolinux@ukr.net>\n"
+"Language-Team: Ukrainian <https://hosted.weblate.org/projects/mypaint/"
+"mypaint/uk/>\n"
 "Language: uk\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<="
 "4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
-"X-Generator: Weblate 2.10-dev\n"
+"X-Generator: Weblate 3.7-dev\n"
 
 #: ../gui/accelmap.py:55
 #, python-brace-format
@@ -191,7 +191,7 @@ msgstr "Непрозорість"
 #: ../gui/brusheditor.py:312
 msgctxt "brush settings list: setting group"
 msgid "Dabs"
-msgstr ""
+msgstr "Мазки"
 
 #: ../gui/brusheditor.py:323
 msgctxt "brush settings list: setting group"
@@ -556,46 +556,47 @@ msgid ""
 "Hold down modifier keys, and press a button over this text to set a new "
 "binding."
 msgstr ""
+"Щоб створити прив’язування, затисніть клавіші-модифікатори та натисніть на "
+"кнопку над цим текстом."
 
 #: ../gui/buttonmap.py:559
 #, python-brace-format
 msgid ""
 "{button} cannot be bound without modifier keys (its meaning is fixed, sorry)"
-msgstr ""
+msgstr "{button} не може бути прив’язаною без модифікаторів"
 
 #: ../gui/buttonmap.py:574
 #, python-brace-format
 msgid "{button_combination} is already bound to the action '{action_name}'"
-msgstr ""
+msgstr "{button_combination} уже прив’язана до дії ’{action_name}’"
 
 #: ../gui/colorpicker.py:71
-#, fuzzy
 msgid "Pick Color"
-msgstr "Взяти колір"
+msgstr "Обрати колір"
 
 #: ../gui/colorpicker.py:74
 msgid "Set the color used for painting"
-msgstr ""
+msgstr "Обрати колір для малювання"
 
 #: ../gui/colors/adjbases.py:707
-#, fuzzy
 msgid "Color details"
-msgstr "значення кольору"
+msgstr "Деталі  кольору"
 
 #: ../gui/colors/adjbases.py:831
 msgid "Current brush color, and the color most recently used for painting"
-msgstr ""
+msgstr "Поточний колір пензля та останній використаний колір"
 
 #: ../gui/colors/hcywheel.py:48
 msgctxt "Online help pages"
 msgid ""
 "https://github.com/mypaint/mypaint/wiki/v1.2-HCY-Wheel-and-Gamut-Mask-Editor"
 msgstr ""
+"https://github.com/mypaint/mypaint/wiki/v1.2-HCY-Wheel-and-Gamut-Mask-Editor"
 
 #: ../gui/colors/hcywheel.py:86
 msgctxt "Color Wheels: activity toggle: action title"
 msgid "Gamut Mask Active"
-msgstr ""
+msgstr "Маска Gamut активна"
 
 #: ../gui/colors/hcywheel.py:90
 msgctxt "Color Wheels: activity toggle: action tooltip"
@@ -605,7 +606,7 @@ msgstr ""
 #: ../gui/colors/hcywheel.py:355
 msgctxt "HCY Color Wheel: tooltip"
 msgid "HCY hue and chroma."
-msgstr ""
+msgstr "Тон і насиченість HCY."
 
 #: ../gui/colors/hcywheel.py:411
 msgctxt "HCY Mask Editor Wheel: tooltip"
@@ -617,7 +618,7 @@ msgstr ""
 #: ../gui/colors/hcywheel.py:893
 msgctxt "HCY Gamut Mask template name"
 msgid "Atmospheric Triad"
-msgstr ""
+msgstr "Атмосферна тріада"
 
 #: ../gui/colors/hcywheel.py:897
 msgctxt "HCY Gamut Mask template description"
@@ -629,15 +630,14 @@ msgstr ""
 #: ../gui/colors/hcywheel.py:905
 msgctxt "HCY Gamut Mask template name"
 msgid "Shifted Triad"
-msgstr ""
+msgstr "Зсунута тріада"
 
 #: ../gui/colors/hcywheel.py:909
 msgctxt "HCY Gamut Mask template description"
 msgid "Weighted more strongly towards the dominant color."
-msgstr ""
+msgstr "Зміщена до домінантного кольору."
 
 #: ../gui/colors/hcywheel.py:920
-#, fuzzy
 msgctxt "HCY Gamut Mask template name"
 msgid "Complementary"
 msgstr "Додатковий колір"
@@ -662,10 +662,9 @@ msgid ""
 msgstr ""
 
 #: ../gui/colors/hcywheel.py:953
-#, fuzzy
 msgctxt "HCY Gamut Mask template name"
 msgid "Split Complementary"
-msgstr "Додатковий суміщений"
+msgstr ""
 
 #: ../gui/colors/hcywheel.py:957
 msgctxt "HCY Gamut Mask template description"
@@ -687,13 +686,12 @@ msgstr ""
 #: ../gui/colors/hcywheel.py:1061
 msgctxt "HCY Gamut Mask Editor dialog: mask-is-active checkbox"
 msgid "Active"
-msgstr ""
+msgstr "Активні"
 
 #: ../gui/colors/hcywheel.py:1085
-#, fuzzy
 msgctxt "HCY Mask Editor: action button labels"
 msgid "Help…"
-msgstr "Довідка"
+msgstr "Довідка…"
 
 #: ../gui/colors/hcywheel.py:1091
 msgctxt "HCY Mask Editor: action button tooltips"
@@ -701,16 +699,14 @@ msgid "Create mask from template."
 msgstr ""
 
 #: ../gui/colors/hcywheel.py:1095
-#, fuzzy
 msgctxt "HCY Mask Editor: action button tooltips"
 msgid "Load mask from a GIMP palette file."
-msgstr "зберегти як типовий"
+msgstr ""
 
 #: ../gui/colors/hcywheel.py:1099
-#, fuzzy
 msgctxt "HCY Mask Editor: action button tooltips"
 msgid "Save mask to a GIMP palette file."
-msgstr "зберегти як типовий"
+msgstr ""
 
 #: ../gui/colors/hcywheel.py:1103
 msgctxt "HCY Mask Editor: action button tooltips"
@@ -723,16 +719,14 @@ msgid "Open the online help for this dialog in a web browser."
 msgstr ""
 
 #: ../gui/colors/hcywheel.py:1174
-#, fuzzy
 msgctxt "HCY Gamut Mask load dialog: window title"
 msgid "Save Mask as a GIMP Palette"
-msgstr "зберегти як типовий"
+msgstr ""
 
 #: ../gui/colors/hcywheel.py:1191
-#, fuzzy
 msgctxt "HCY Gamut Mask load dialog: window title"
 msgid "Load Mask from a GIMP Palette"
-msgstr "зберегти як типовий"
+msgstr ""
 
 #: ../gui/colors/hcywheel.py:1257
 msgctxt "HCY Wheel color adjuster page: properties tooltip."
@@ -761,14 +755,12 @@ msgid "HSV Saturation"
 msgstr ""
 
 #: ../gui/colors/hsvcube.py:39
-#, fuzzy
 msgid "HSV Value"
-msgstr "Основне значення"
+msgstr ""
 
 #: ../gui/colors/hsvcube.py:40 ../gui/colors/hsvsquare.py:130
-#, fuzzy
 msgid "HSV Saturation and Value"
-msgstr "Змінити значення/насиченість"
+msgstr ""
 
 #: ../gui/colors/hsvcube.py:41
 msgid "HSV Hue and Value"
@@ -791,32 +783,28 @@ msgid "An HSV cube which can be rotated to show different planar slices."
 msgstr ""
 
 #: ../gui/colors/hsvsquare.py:57
-#, fuzzy
 msgid "HSV Square"
-msgstr "Квадрат"
+msgstr ""
 
 #: ../gui/colors/hsvsquare.py:61
 msgid "An HSV Square which can be rotated to show different hues."
 msgstr ""
 
 #: ../gui/colors/hsvtriangle.py:47
-#, fuzzy
 msgid "HSV Triangle"
-msgstr "Трикутник кольорів…"
+msgstr ""
 
 #: ../gui/colors/hsvtriangle.py:51
-#, fuzzy
 msgid "The standard GTK color selector"
-msgstr "Вибір кольору MyPaint"
+msgstr ""
 
 #: ../gui/colors/hsvwheel.py:89
 msgid "HSV Wheel"
 msgstr ""
 
 #: ../gui/colors/hsvwheel.py:93
-#, fuzzy
 msgid "Saturation and Value color changer."
-msgstr "Змінити значення/насиченість"
+msgstr ""
 
 #: ../gui/colors/paletteview.py:72
 msgctxt "palette panel: properties button tooltip"
@@ -824,10 +812,9 @@ msgid "Palette properties"
 msgstr ""
 
 #: ../gui/colors/paletteview.py:81
-#, fuzzy
 msgctxt "palette panel tab tooltip title"
 msgid "Palette"
-msgstr "Шари"
+msgstr ""
 
 #: ../gui/colors/paletteview.py:87
 msgctxt "palette panel tab tooltip description"
@@ -845,16 +832,14 @@ msgid "Palette Editor"
 msgstr ""
 
 #: ../gui/colors/paletteview.py:166
-#, fuzzy
 msgctxt "palette editor dialog: action buttons: tooltips"
 msgid "Load from a GIMP palette file"
-msgstr "зберегти як типовий"
+msgstr ""
 
 #: ../gui/colors/paletteview.py:170
-#, fuzzy
 msgctxt "palette editor dialog: action buttons: tooltips"
 msgid "Save to a GIMP palette file"
-msgstr "зберегти як типовий"
+msgstr ""
 
 #: ../gui/colors/paletteview.py:174
 msgctxt "palette editor dialog: action buttons: tooltips"
@@ -862,16 +847,14 @@ msgid "Add a new empty swatch"
 msgstr ""
 
 #: ../gui/colors/paletteview.py:178
-#, fuzzy
 msgctxt "palette editor dialog: action buttons: tooltips"
 msgid "Remove the current swatch"
-msgstr "Відкрити недавні файли"
+msgstr ""
 
 #: ../gui/colors/paletteview.py:182
-#, fuzzy
 msgctxt "palette editor dialog: action buttons: tooltips"
 msgid "Remove all swatches"
-msgstr "Відкрити недавні файли"
+msgstr ""
 
 #: ../gui/colors/paletteview.py:196
 msgctxt "palette editor dialog: palette name/title entry: label"
@@ -894,16 +877,14 @@ msgid "Number of columns"
 msgstr ""
 
 #: ../gui/colors/paletteview.py:233
-#, fuzzy
 msgctxt "palette editor dialog: color name entry: label"
 msgid "Color name:"
-msgstr "Пробник кольорів…"
+msgstr ""
 
 #: ../gui/colors/paletteview.py:237
-#, fuzzy
 msgctxt "palette editor dialog: color name entry: tooltip"
 msgid "Current color's name"
-msgstr "Взяти колір"
+msgstr ""
 
 #: ../gui/colors/paletteview.py:328
 msgctxt "palette editor dialog: color name entry"
@@ -911,16 +892,14 @@ msgid "Empty palette slot"
 msgstr ""
 
 #: ../gui/colors/paletteview.py:384
-#, fuzzy
 msgctxt "palette load dialog: title"
 msgid "Load palette"
-msgstr "Шари"
+msgstr ""
 
 #: ../gui/colors/paletteview.py:397
-#, fuzzy
 msgctxt "palette save dialog: title"
 msgid "Save palette"
-msgstr "зберегти налаштування"
+msgstr ""
 
 #: ../gui/colors/paletteview.py:549
 msgctxt "palette view"
@@ -966,28 +945,24 @@ msgid "Fill Gap (HSV)"
 msgstr ""
 
 #: ../gui/colors/paletteview.py:1282
-#, fuzzy
 msgctxt "palette load dialog: filters"
 msgid "GIMP palette file (*.gpl)"
-msgstr "зберегти як типовий"
+msgstr ""
 
 #: ../gui/colors/paletteview.py:1289
-#, fuzzy
 msgctxt "palette load dialog: filters"
 msgid "All files (*)"
-msgstr "Файл"
+msgstr ""
 
 #: ../gui/colors/paletteview.py:1331
-#, fuzzy
 msgctxt "palette save dialog: filters"
 msgid "GIMP palette file (*.gpl)"
-msgstr "зберегти як типовий"
+msgstr ""
 
 #: ../gui/colors/paletteview.py:1338
-#, fuzzy
 msgctxt "palette save dialog: filters"
 msgid "All files (*)"
-msgstr "Файл"
+msgstr ""
 
 #: ../gui/colors/picker.py:100
 msgid "Pick a color from the screen"
@@ -1049,22 +1024,19 @@ msgid "RGB Blue"
 msgstr ""
 
 #: ../gui/colors/sliders.py:211
-#, fuzzy
 msgctxt "color component slider: tooltip"
 msgid "HSV Hue"
-msgstr "Основне значення"
+msgstr ""
 
 #: ../gui/colors/sliders.py:224
-#, fuzzy
 msgctxt "color component slider: tooltip"
 msgid "HSV Saturation"
-msgstr "Змінити значення/насиченість"
+msgstr ""
 
 #: ../gui/colors/sliders.py:236
-#, fuzzy
 msgctxt "color component slider: tooltip"
 msgid "HSV Value"
-msgstr "Основне значення"
+msgstr ""
 
 #: ../gui/colors/sliders.py:248
 msgctxt "color component slider: tooltip"
@@ -1117,10 +1089,9 @@ msgid "Cursor/puck"
 msgstr ""
 
 #: ../gui/device.py:50
-#, fuzzy
 msgctxt "prefs: device's type label"
 msgid "Eraser"
-msgstr "гумка"
+msgstr "Гумка"
 
 #: ../gui/device.py:54
 msgctxt "prefs: device's type label"
@@ -1133,10 +1104,9 @@ msgid "Mouse"
 msgstr ""
 
 #: ../gui/device.py:62
-#, fuzzy
 msgctxt "prefs: device's type label"
 msgid "Pen"
-msgstr "Візерунок"
+msgstr ""
 
 #: ../gui/device.py:66
 msgctxt "prefs: device's type label"
@@ -1144,10 +1114,9 @@ msgid "Touchpad"
 msgstr ""
 
 #: ../gui/device.py:70
-#, fuzzy
 msgctxt "prefs: device's type label"
 msgid "Touchscreen"
-msgstr "На повний екран"
+msgstr ""
 
 #: ../gui/device.py:90
 msgctxt "device settings: allowed usage"
@@ -1170,16 +1139,14 @@ msgid "Navigation only"
 msgstr ""
 
 #: ../gui/device.py:127
-#, fuzzy
 msgctxt "device settings: unmodified scroll action"
 msgid "Zoom"
-msgstr "Зменшити"
+msgstr ""
 
 #: ../gui/device.py:128
-#, fuzzy
 msgctxt "device settings: unmodified scroll action"
 msgid "Pan"
-msgstr "Візерунок"
+msgstr ""
 
 #: ../gui/device.py:405
 msgctxt "prefs: devices table: column header"
@@ -1219,18 +1186,16 @@ msgid "Replace"
 msgstr ""
 
 #: ../gui/dialogs.py:121 ../gui/dialogs.py:180 ../po/tmp/brusheditor.glade.h:3
-#, fuzzy
 msgid "Rename"
-msgstr "перейменувати…"
+msgstr "Перейменувати"
 
 #: ../gui/dialogs.py:124
 msgid "Replace all"
 msgstr ""
 
 #: ../gui/dialogs.py:126
-#, fuzzy
 msgid "Rename all"
-msgstr "Перейменувати пензель"
+msgstr "Перейменувати всі"
 
 #: ../gui/dialogs.py:141
 msgid "Imported brush"
@@ -1290,18 +1255,18 @@ msgid "Save to Brush %d"
 msgstr "Зберегти до пензля %d"
 
 #: ../gui/document.py:538
-#, fuzzy, python-format
+#, python-format
 msgid "Undo %s"
-msgstr "Вернути"
+msgstr "Відмінити %s"
 
 #: ../gui/document.py:540
 msgid "Undo"
 msgstr "Вернути"
 
 #: ../gui/document.py:550
-#, fuzzy, python-format
+#, python-format
 msgid "Redo %s"
-msgstr "Повторити"
+msgstr "Повторити %s"
 
 #: ../gui/document.py:552
 msgid "Redo"
@@ -1330,9 +1295,8 @@ msgid "With {modifiers} held down:  {button_actions}."
 msgstr ""
 
 #: ../gui/document.py:1244
-#, fuzzy
 msgid "Layer Name"
-msgstr "Шари"
+msgstr ""
 
 #. TRANSLATORS: footer icon tooltip markup for the current mode
 #. TRANSLATORS: tooltip for the layer mode dropdown (markup)
@@ -1345,33 +1309,28 @@ msgstr ""
 
 #. TRANSLATORS: window title for use with a filename
 #: ../gui/drawwindow.py:298
-#, fuzzy, python-format
+#, python-format
 msgid "%s - MyPaint"
-msgstr "Про MyPaint"
+msgstr ""
 
 #. TRANSLATORS: window title for use without a filename
 #: ../gui/drawwindow.py:301 ../po/tmp/mypaint.glade.h:1
-#, fuzzy
 msgid "MyPaint"
-msgstr "Про MyPaint"
+msgstr ""
 
 #: ../gui/drawwindow.py:564
-#, fuzzy
 msgid "Set current color"
-msgstr "Взяти колір"
+msgstr ""
 
 #: ../gui/drawwindow.py:607
-#, fuzzy
 msgid "Leave Fullscreen Mode"
-msgstr "На повний екран"
+msgstr ""
 
 #: ../gui/drawwindow.py:608
-#, fuzzy
 msgid "Leave Fullscreen"
-msgstr "На повний екран"
+msgstr ""
 
 #: ../gui/drawwindow.py:611
-#, fuzzy
 msgid "Enter Fullscreen Mode"
 msgstr "На повний екран"
 
@@ -1433,9 +1392,8 @@ msgid ""
 msgstr ""
 
 #: ../gui/externalapp.py:56
-#, fuzzy
 msgid "Open With..."
-msgstr "Відкрити…"
+msgstr ""
 
 #: ../gui/externalapp.py:107
 msgid "Icon"
@@ -1488,23 +1446,21 @@ msgid "Save..."
 msgstr "Зберегти…"
 
 #: ../gui/filehandling.py:177
-#, fuzzy
 msgid "Format to save as:"
-msgstr "Не вдалося зберегти: %s"
+msgstr ""
 
 #: ../gui/filehandling.py:203
 msgid "Confirm"
 msgstr ""
 
 #: ../gui/filehandling.py:204
-#, fuzzy
 msgid "Really continue?"
-msgstr "Справді вийти?"
+msgstr ""
 
 #: ../gui/filehandling.py:234
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgid "This will discard {abbreviated_time} of unsaved painting"
-msgstr "%d хвилина незбереженого малюнка буде скасовано."
+msgstr ""
 
 #: ../gui/filehandling.py:243
 msgid "_Save as Scrap"
@@ -1569,9 +1525,8 @@ msgid "Open..."
 msgstr "Відкрити…"
 
 #: ../gui/filehandling.py:552
-#, fuzzy
 msgid "Open Scratchpad..."
-msgstr "Відкрити наступну чернетку"
+msgstr "Відкрити чернетку..."
 
 #: ../gui/filehandling.py:845
 #, python-format
@@ -1696,33 +1651,28 @@ msgid "Dots Per Inch (really Pixels Per Inch)"
 msgstr ""
 
 #: ../gui/framewindow.py:460
-#, fuzzy
 msgid "Color:"
-msgstr "Колір"
+msgstr "Колір:"
 
 #: ../gui/framewindow.py:497
-#, fuzzy
 msgid "Frame Color"
-msgstr "зміна відтінку кольору"
+msgstr ""
 
 #: ../gui/framewindow.py:520
-#, fuzzy
 msgid "<b>Frame dimensions</b>"
-msgstr "На повний екран"
+msgstr ""
 
 #: ../gui/framewindow.py:534
 msgid "<b>Pixel density</b>"
 msgstr ""
 
 #: ../gui/framewindow.py:562
-#, fuzzy
 msgid "Set Frame to Layer"
-msgstr "Вилучити"
+msgstr ""
 
 #: ../gui/framewindow.py:563
-#, fuzzy
 msgid "Set frame to the extents of the current layer"
-msgstr "Відкрити недавні файли"
+msgstr ""
 
 #: ../gui/framewindow.py:565
 msgid "Set Frame to Document"
@@ -1733,9 +1683,8 @@ msgid "Set frame to the combination of all layers"
 msgstr ""
 
 #: ../gui/framewindow.py:576
-#, fuzzy
 msgid "Trim Layer to Frame"
-msgstr "Шари"
+msgstr ""
 
 #: ../gui/framewindow.py:577
 msgid "Trim parts of the current layer which lie outside the frame"
@@ -1799,7 +1748,6 @@ msgstr ""
 
 #. only development and prereleases
 #: ../gui/gtkexcepthook.py:168
-#, fuzzy
 msgid "Report..."
 msgstr "Звіт…"
 
@@ -1808,9 +1756,8 @@ msgid "Ignore Error"
 msgstr ""
 
 #: ../gui/gtkexcepthook.py:171
-#, fuzzy
 msgid "Quit MyPaint"
-msgstr "Про MyPaint"
+msgstr ""
 
 #: ../gui/gtkexcepthook.py:181
 msgid "Details..."
@@ -1860,14 +1807,12 @@ msgid "Input Device Test"
 msgstr ""
 
 #: ../gui/inputtestwindow.py:57
-#, fuzzy
 msgid "(no pressure)"
-msgstr "Тиск"
+msgstr ""
 
 #: ../gui/inputtestwindow.py:58
-#, fuzzy
 msgid "Pressure:"
-msgstr "Тиск"
+msgstr "Тиск:"
 
 #: ../gui/inputtestwindow.py:60
 msgid "(no tilt)"
@@ -1878,9 +1823,8 @@ msgid "Tilt:"
 msgstr ""
 
 #: ../gui/inputtestwindow.py:66
-#, fuzzy
 msgid "(no device)"
-msgstr "(без назви)"
+msgstr ""
 
 #: ../gui/inputtestwindow.py:67
 msgid "Device:"
@@ -1889,14 +1833,12 @@ msgstr ""
 #. TRANSLATORS: Command to move a layer in the horizontal plane,
 #. TRANSLATORS: preserving its position in the stack.
 #: ../gui/layermanip.py:47 ../lib/command.py:899
-#, fuzzy
 msgid "Move Layer"
-msgstr "Вилучити"
+msgstr ""
 
 #: ../gui/layermanip.py:50
-#, fuzzy
 msgid "Move the current layer"
-msgstr "Відкрити недавні файли"
+msgstr ""
 
 #. # Module vars
 #. TRANSLATORS: Display name template for otherwise anonymous layers
@@ -1933,9 +1875,8 @@ msgstr ""
 
 #. TRANSLATORS: status bar messages for drag, without/with modifiers
 #: ../gui/layerswindow.py:91
-#, fuzzy
 msgid "Move layer in stack..."
-msgstr "Шари"
+msgstr ""
 
 #: ../gui/layerswindow.py:92
 msgid ""
@@ -1943,9 +1884,8 @@ msgid ""
 msgstr ""
 
 #: ../gui/layerswindow.py:131
-#, fuzzy
 msgid "Layer"
-msgstr "Шари"
+msgstr ""
 
 #: ../gui/layerswindow.py:145
 msgid "Mode:"
@@ -1967,27 +1907,24 @@ msgid ""
 msgstr ""
 
 #: ../gui/linemode.py:37
-#, fuzzy
 msgid "Entrance Pressure"
-msgstr "Тиск"
+msgstr ""
 
 #: ../gui/linemode.py:38
 msgid "Stroke entrance pressure for line tools"
 msgstr ""
 
 #: ../gui/linemode.py:39
-#, fuzzy
 msgid "Midpoint Pressure"
-msgstr "Тиск"
+msgstr ""
 
 #: ../gui/linemode.py:40
 msgid "Mid-Stroke pressure for line tools"
 msgstr ""
 
 #: ../gui/linemode.py:41
-#, fuzzy
 msgid "Exit Pressure"
-msgstr "Тиск"
+msgstr ""
 
 #: ../gui/linemode.py:42
 msgid "Stroke exit pressure for line tools"
@@ -1998,9 +1935,8 @@ msgid "Head"
 msgstr ""
 
 #: ../gui/linemode.py:44
-#, fuzzy
 msgid "Stroke lead-in end"
-msgstr "час утримування штриха"
+msgstr ""
 
 #: ../gui/linemode.py:45
 msgid "Tail"
@@ -2044,17 +1980,15 @@ msgid "Draw ellipses; Shift rotates, Ctrl constrains ratio/angle"
 msgstr ""
 
 #: ../gui/meta.py:30
-#, fuzzy
 msgctxt "About dialog: copyright statement"
 msgid ""
 "Copyright (C) 2005-2015\n"
 "Martin Renold and the MyPaint Development Team"
 msgstr ""
 "© Martin Renold і Команда розробників MyPaint,\n"
-"2005–2010"
+"2005–2015"
 
 #: ../gui/meta.py:36
-#, fuzzy
 msgctxt "About dialog: license summary"
 msgid ""
 "This program is free software; you can redistribute it and/or modify it "
@@ -2074,13 +2008,11 @@ msgstr ""
 "ГАРАНТІЙ. Докладніше про це у файлі COPYING."
 
 #: ../gui/meta.py:51
-#, fuzzy
 msgctxt "About dialog: credits: tasks"
 msgid "programming"
 msgstr "програмування"
 
 #: ../gui/meta.py:55
-#, fuzzy
 msgctxt "About dialog: credits: tasks"
 msgid "portability"
 msgstr "придатність до портування"
@@ -2091,34 +2023,29 @@ msgid "project management"
 msgstr ""
 
 #: ../gui/meta.py:63
-#, fuzzy
 msgctxt "About dialog: credits: tasks: brush presets and icons"
 msgid "brushes"
 msgstr "пензлі"
 
 #: ../gui/meta.py:67
-#, fuzzy
 msgctxt "About dialog: credits: tasks: background paper textures"
 msgid "patterns"
-msgstr "Візерунок"
+msgstr ""
 
 #: ../gui/meta.py:71
-#, fuzzy
 msgctxt "About dialog: credits: tasks: icons for internal tools"
 msgid "tool icons"
-msgstr "піктограма стільниці"
+msgstr ""
 
 #: ../gui/meta.py:75
-#, fuzzy
 msgctxt "About dialog: credits: tasks: the main application icon"
 msgid "desktop icon"
 msgstr "піктограма стільниці"
 
 #: ../gui/meta.py:79
-#, fuzzy
 msgctxt "About dialog: credits: tasks: palettes"
 msgid "palettes"
-msgstr "Шари"
+msgstr ""
 
 #: ../gui/meta.py:84
 msgctxt "About dialog: credits: tasks: docs, manuals and HOWTOs"
@@ -2157,9 +2084,8 @@ msgstr ""
 
 #. TRANSLATORS: "Brush opacity" for the options panel. Short.
 #: ../gui/mode.py:564
-#, fuzzy
 msgid "Opaque:"
-msgstr "Менше прозорості"
+msgstr ""
 
 #. TRANSLATORS: "Brush hardness/sharpness" for the options panel. Short.
 #: ../gui/mode.py:566
@@ -2172,10 +2098,9 @@ msgid "Gain:"
 msgstr ""
 
 #: ../gui/optionspanel.py:46
-#, fuzzy
 msgctxt "options panel: tab tooltip: title"
 msgid "Tool Options"
-msgstr "піктограма стільниці"
+msgstr ""
 
 #: ../gui/optionspanel.py:50
 msgctxt "options panel: tab tooltip: description"
@@ -2204,10 +2129,9 @@ msgid "Pick brushstroke settings, stroke color, and layer…"
 msgstr ""
 
 #: ../gui/picker.py:495
-#, fuzzy
 msgctxt "color picker: statusbar text during grab"
 msgid "Pick color…"
-msgstr "Взяти колір"
+msgstr "Взяти колір…"
 
 #: ../gui/preferenceswindow.py:40
 msgid "Preferences"
@@ -2225,9 +2149,8 @@ msgstr ""
 #. TRANSLATORS: The preview panel shows where the "camera" of the
 #. TRANSLATORS: main view is pointing.
 #: ../gui/previewwindow.py:259
-#, fuzzy
 msgid "Show Viewfinder"
-msgstr "Увімкнути/Вимкнути підвікна"
+msgstr ""
 
 #: ../gui/scratchwindow.py:36
 msgid "Scratchpad"
@@ -2255,16 +2178,14 @@ msgid "Place axis"
 msgstr ""
 
 #: ../gui/symmetry.py:80
-#, fuzzy
 msgctxt "symmetry axis edit mode: instructions shown in statusbar"
 msgid "Move axis"
-msgstr "Вилучити"
+msgstr ""
 
 #: ../gui/symmetry.py:84
-#, fuzzy
 msgctxt "symmetry axis edit mode: instructions shown in statusbar"
 msgid "Remove axis"
-msgstr "Вилучити"
+msgstr ""
 
 #: ../gui/symmetry.py:96
 msgctxt "symmetry axis edit mode: mode name (tooltips)"
@@ -2324,9 +2245,8 @@ msgid "Blend Modes"
 msgstr ""
 
 #: ../gui/toolbar.py:36
-#, fuzzy
 msgid "Line Modes"
-msgstr "Тиск"
+msgstr ""
 
 #: ../gui/toolbar.py:37
 msgid "View (Main)"
@@ -2341,9 +2261,8 @@ msgid "View (Resetting)"
 msgstr ""
 
 #: ../gui/topbar.py:91
-#, fuzzy
 msgid "<b>MyPaint</b>"
-msgstr "Про MyPaint"
+msgstr ""
 
 #: ../gui/viewmanip.py:39
 msgid "Scroll View"
@@ -2354,23 +2273,20 @@ msgid "Drag the canvas view"
 msgstr ""
 
 #: ../gui/viewmanip.py:77
-#, fuzzy
 msgid "Zoom View"
-msgstr "Зменшити"
+msgstr ""
 
 #: ../gui/viewmanip.py:80
 msgid "Zoom the canvas view"
 msgstr ""
 
 #: ../gui/viewmanip.py:119
-#, fuzzy
 msgid "Rotate View"
-msgstr "Обернути за годинниковою стрілкою"
+msgstr ""
 
 #: ../gui/viewmanip.py:122
-#, fuzzy
 msgid "Rotate the canvas view"
-msgstr "Обернути проти годинникової стрілки"
+msgstr ""
 
 #: ../gui/workspace.py:1211
 #, python-format
@@ -2399,42 +2315,35 @@ msgid "{seconds:.01f}s of painting with {brush_name}"
 msgstr ""
 
 #: ../lib/command.py:522
-#, fuzzy
 msgid "Trim Layer"
-msgstr "Спорожнити"
+msgstr ""
 
 #: ../lib/command.py:542
-#, fuzzy
 msgid "Clear Layer"
-msgstr "Спорожнити"
+msgstr ""
 
 #. This is used by Paste layer as well as when loading from a PNG
 #. file. However in the latter case, the undo stack is reset
 #. immediately afterward.
 #: ../lib/command.py:566
-#, fuzzy
 msgid "Paste Layer"
-msgstr "Вилучити"
+msgstr ""
 
 #: ../lib/command.py:589
-#, fuzzy
 msgid "New Layer from Visible"
-msgstr "Видимість шару"
+msgstr ""
 
 #: ../lib/command.py:631
-#, fuzzy
 msgid "Merge Visible Layers"
-msgstr "Шари"
+msgstr ""
 
 #: ../lib/command.py:705
-#, fuzzy
 msgid "Merge Down"
 msgstr "Об'єднати з нижнім"
 
 #: ../lib/command.py:754
-#, fuzzy
 msgid "Normalize Layer Mode"
-msgstr "Спорожнити"
+msgstr ""
 
 #: ../lib/command.py:797
 #, python-brace-format
@@ -2442,53 +2351,44 @@ msgid "Add {layer_default_name}"
 msgstr ""
 
 #: ../lib/command.py:820
-#, fuzzy
 msgid "Remove Layer"
-msgstr "Вилучити"
+msgstr ""
 
 #: ../lib/command.py:867
-#, fuzzy
 msgid "Select Layer"
-msgstr "Позначити шар під вказівником"
+msgstr ""
 
 #: ../lib/command.py:996
 msgid "Duplicate Layer"
 msgstr ""
 
 #: ../lib/command.py:1019
-#, fuzzy
 msgid "Move Layer Up"
-msgstr "Вилучити"
+msgstr ""
 
 #: ../lib/command.py:1033
-#, fuzzy
 msgid "Move Layer Down"
-msgstr "Вилучити"
+msgstr ""
 
 #: ../lib/command.py:1060
-#, fuzzy
 msgid "Move Layer in Stack"
-msgstr "Вилучити"
+msgstr ""
 
 #: ../lib/command.py:1181
-#, fuzzy
 msgid "Rename Layer"
-msgstr "Вилучити"
+msgstr ""
 
 #: ../lib/command.py:1232
-#, fuzzy
 msgid "Make Layer Visible"
-msgstr "Видимість шару"
+msgstr ""
 
 #: ../lib/command.py:1234
-#, fuzzy
 msgid "Make Layer Invisible"
-msgstr "Видимість шару"
+msgstr ""
 
 #: ../lib/command.py:1272
-#, fuzzy
 msgid "Lock Layer"
-msgstr "Шари"
+msgstr ""
 
 #: ../lib/command.py:1274
 msgid "Unlock Layer"
@@ -2504,9 +2404,9 @@ msgid "Unknown Mode"
 msgstr ""
 
 #: ../lib/command.py:1332
-#, fuzzy, python-format
+#, python-format
 msgid "Set Layer Mode: %s"
-msgstr "Спорожнити"
+msgstr ""
 
 #: ../lib/command.py:1356
 msgid "Enable Frame"
@@ -2525,10 +2425,10 @@ msgid "Edit Layer Externally"
 msgstr ""
 
 #: ../lib/document.py:70
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgctxt "Document IO: common error strings: {error_loading_common}"
 msgid "Error loading “{basename}”."
-msgstr "Помилка під час завантаження: GError %s"
+msgstr "Помилка під час завантаження: “{basename}”."
 
 #: ../lib/document.py:74
 msgctxt "Document IO: common error strings: {see_logs}"
@@ -2571,13 +2471,13 @@ msgid ""
 msgstr ""
 
 #: ../lib/document.py:1209
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgctxt "Document IO: hint templates for user-facing exceptions"
 msgid ""
 "Unable to write “{filename}”: {err}\n"
 "Do you have enough space left on the device?"
 msgstr ""
-"Не вдалося зберегти %s\n"
+"Не вдалося зберегти “{filename}”: {err}\n"
 "Чи достатньо місця на вашому диску?"
 
 #: ../lib/document.py:1215 ../lib/document.py:1225
@@ -2595,12 +2495,14 @@ msgid ""
 msgstr ""
 
 #: ../lib/document.py:1264
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgctxt "Document IO: loading errors"
 msgid ""
 "{error_loading_common}\n"
 "You do not have the permissions needed to open this file."
-msgstr "У вас недостатньо прав для відкриття файла: %s"
+msgstr ""
+"{error_loading_common}\n"
+"У вас недостатньо прав для відкриття файла."
 
 #: ../lib/document.py:1289
 #, python-brace-format
@@ -2614,12 +2516,14 @@ msgid ""
 msgstr ""
 
 #: ../lib/document.py:1313
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgctxt "Document IO: loading errors"
 msgid ""
 "{error_loading_common}\n"
 "Unknown file format extension: “{ext}”"
-msgstr "Невідоме розширення формату файлів: %s"
+msgstr ""
+"{error_loading_common}\n"
+"Невідоме розширення формату файлів: “{ext}”"
 
 #: ../lib/document.py:1384
 #, python-brace-format
@@ -2663,10 +2567,9 @@ msgid "{seconds}s"
 msgstr ""
 
 #: ../lib/layer/core.py:73 ../lib/layer/data.py:1221
-#, fuzzy
 msgctxt "layer default names"
 msgid "Layer"
-msgstr "Шари"
+msgstr ""
 
 #: ../lib/layer/core.py:85
 #, python-format
@@ -2680,10 +2583,9 @@ msgid "^(.*?)\\s*(\\d+)$"
 msgstr ""
 
 #: ../lib/layer/data.py:1107
-#, fuzzy
 msgctxt "layer default names"
 msgid "Vector Layer"
-msgstr "Позначити шар під вказівником"
+msgstr ""
 
 #: ../lib/layer/data.py:1153
 msgctxt "layer default names"
@@ -2691,10 +2593,9 @@ msgid "Unknown Bitmap Layer"
 msgstr ""
 
 #: ../lib/layer/data.py:1169
-#, fuzzy
 msgctxt "layer default names"
 msgid "Unknown Data Layer"
-msgstr "Шари"
+msgstr ""
 
 #: ../lib/layer/group.py:59
 msgctxt "layer default names"
@@ -2743,9 +2644,8 @@ msgid ""
 msgstr ""
 
 #: ../lib/modes.py:48
-#, fuzzy
 msgid "Screen"
-msgstr "На повний екран"
+msgstr "Екран"
 
 #: ../lib/modes.py:49
 msgid ""
@@ -2764,7 +2664,6 @@ msgid ""
 msgstr ""
 
 #: ../lib/modes.py:57
-#, fuzzy
 msgid "Darken"
 msgstr "Темніше"
 
@@ -2773,7 +2672,6 @@ msgid "The top layer is used where it is darker than the backdrop."
 msgstr ""
 
 #: ../lib/modes.py:61
-#, fuzzy
 msgid "Lighten"
 msgstr "Яскравіше"
 
@@ -2820,9 +2718,8 @@ msgid "Like shining a diffuse spotlight onto the backdrop."
 msgstr ""
 
 #: ../lib/modes.py:81
-#, fuzzy
 msgid "Difference"
-msgstr "Параметри"
+msgstr ""
 
 #: ../lib/modes.py:82
 msgid "Subtracts the darker color from the lighter of the two."
@@ -2991,14 +2888,12 @@ msgid "Copy these settings and the current brush's icon to a new brush"
 msgstr ""
 
 #: ../po/tmp/brusheditor.glade.h:4
-#, fuzzy
 msgid "Rename this brush"
 msgstr "Перейменувати пензель"
 
 #: ../po/tmp/brusheditor.glade.h:5
-#, fuzzy
 msgid "Edit Icon"
-msgstr "Вибір пензля"
+msgstr ""
 
 #: ../po/tmp/brusheditor.glade.h:6
 msgid ""
@@ -3007,34 +2902,30 @@ msgid ""
 msgstr ""
 
 #: ../po/tmp/brusheditor.glade.h:7
-#, fuzzy
 msgid "Delete"
-msgstr "вилучено"
+msgstr ""
 
 #: ../po/tmp/brusheditor.glade.h:8
-#, fuzzy
 msgid "Delete this brush from the disk"
-msgstr "Бажаєте вилучити цей пензель?"
+msgstr ""
 
 #: ../po/tmp/brusheditor.glade.h:9
 msgid "Live update"
 msgstr ""
 
 #: ../po/tmp/brusheditor.glade.h:10
-#, fuzzy
 msgid ""
 "Update the last stroke on the canvas with the settings in this window, in "
 "real time"
-msgstr "інтерактивне оновлення останнього штриха на полотні"
+msgstr ""
 
 #: ../po/tmp/brusheditor.glade.h:12
 msgid "Save these settings to the brush"
 msgstr ""
 
 #: ../po/tmp/brusheditor.glade.h:13
-#, fuzzy
 msgid "Brush Setting"
-msgstr "Налаштування пензля…"
+msgstr "Налаштування пензля"
 
 #: ../po/tmp/brusheditor.glade.h:14
 msgctxt "brush editor|metadata settings|labels for widgets|tooltips|"
@@ -3060,9 +2951,8 @@ msgstr ""
 
 #. field label (non-editable)
 #: ../po/tmp/brusheditor.glade.h:21
-#, fuzzy
 msgid "Setting name:"
-msgstr "Налаштування пензля…"
+msgstr ""
 
 #: ../po/tmp/brusheditor.glade.h:22
 msgid ""
@@ -3071,9 +2961,8 @@ msgstr ""
 
 #. field label
 #: ../po/tmp/brusheditor.glade.h:24
-#, fuzzy
 msgid "Base value:"
-msgstr "Основне значення"
+msgstr "Основне значення:"
 
 #: ../po/tmp/brusheditor.glade.h:25
 msgid "Reset the base value to its default"
@@ -3148,14 +3037,12 @@ msgid "Brush Dynamics"
 msgstr ""
 
 #: ../po/tmp/brusheditor.glade.h:45
-#, fuzzy
 msgid "Basic details for this setting"
-msgstr "Параметри пензля"
+msgstr ""
 
 #: ../po/tmp/brusheditor.glade.h:46
-#, fuzzy
 msgid "Edit Setting"
-msgstr "зберегти налаштування"
+msgstr ""
 
 #: ../po/tmp/brusheditor.glade.h:47
 msgid "Adjust this input mapping in detail"
@@ -3176,10 +3063,9 @@ msgid "Pressure value for the current point"
 msgstr ""
 
 #: ../po/tmp/inktool.glade.h:2
-#, fuzzy
 msgctxt "Inking tool options: point value sliders: labels"
 msgid "Press:"
-msgstr "Тиск"
+msgstr "Тиск:"
 
 #. The meaning of negative values is *not* affected by text direction.&#10;The widget's RTL/LTR layout, however, *is* affected.&#10;The value (and signs) *is* shown.
 #: ../po/tmp/inktool.glade.h:4
@@ -3215,34 +3101,29 @@ msgid "Time:"
 msgstr ""
 
 #: ../po/tmp/inktool.glade.h:12
-#, fuzzy
 msgctxt "Inking tool options: node delete button: label"
 msgid "Delete Point"
-msgstr "Вилучити групу…"
+msgstr ""
 
 #: ../po/tmp/inktool.glade.h:13
-#, fuzzy
 msgctxt "Inking tool options: node delete button: tooltip"
 msgid "Delete the currently selected point"
-msgstr "Відкрити недавні файли"
+msgstr ""
 
 #: ../po/tmp/mypaint.glade.h:2
-#, fuzzy
 msgctxt "footer: color picker button: tooltip"
 msgid "Pick color"
 msgstr "Взяти колір"
 
 #: ../po/tmp/mypaint.glade.h:3
-#, fuzzy
 msgctxt "Footerbar|"
 msgid "Edit the current color in detail"
-msgstr "Взяти колір"
+msgstr ""
 
 #: ../po/tmp/mypaint.glade.h:4
-#, fuzzy
 msgctxt "Footerbar|"
 msgid "Add the current color to the palette"
-msgstr "додати колір до візерунків"
+msgstr ""
 
 #: ../po/tmp/mypaint.glade.h:5
 msgctxt "Footerbar|"
@@ -3264,7 +3145,6 @@ msgid "Pick brushstroke settings, stroke color, and layer"
 msgstr ""
 
 #: ../po/tmp/preferenceswindow.glade.h:1
-#, fuzzy
 msgctxt "Prefs Dialog|Saving|Save Formats and Locations|Default|"
 msgid "OpenRaster (*.ora)"
 msgstr "OpenRaster (*.ora)"
@@ -3275,7 +3155,7 @@ msgid "PNG solid with background (*.png)"
 msgstr ""
 
 #: ../po/tmp/preferenceswindow.glade.h:4
-#, fuzzy, no-c-format
+#, no-c-format
 msgctxt "Prefs Dialog|Saving|Save Formats and Locations|Default|"
 msgid "JPEG 90% quality (*.jpg; *.jpeg)"
 msgstr "JPEG 90% якості (*.jpg; *.jpeg)"
@@ -3326,17 +3206,15 @@ msgstr ""
 
 #. Graph x-axis label
 #: ../po/tmp/preferenceswindow.glade.h:18
-#, fuzzy
 msgctxt "Prefs Dialog|Pen Input|Input Device Settings|Pressure Mapping|"
 msgid "Input Pressure"
-msgstr "Тиск"
+msgstr ""
 
 #. Graph y-axis label
 #: ../po/tmp/preferenceswindow.glade.h:20
-#, fuzzy
 msgctxt "Prefs Dialog|Pen Input|Input Device Settings|Pressure Mapping|"
 msgid "Brush Pressure"
-msgstr "Тиск"
+msgstr ""
 
 #. Graph label, range (0...1)
 #: ../po/tmp/preferenceswindow.glade.h:22
@@ -3357,7 +3235,6 @@ msgstr ""
 
 #. Tab label in preferences dialog
 #: ../po/tmp/preferenceswindow.glade.h:27
-#, fuzzy
 msgctxt "Prefs Dialog|"
 msgid "Pressure"
 msgstr "Тиск"
@@ -3406,10 +3283,9 @@ msgid "Keys"
 msgstr ""
 
 #: ../po/tmp/preferenceswindow.glade.h:38
-#, fuzzy
 msgctxt "Prefs Dialog|Load & Save|Saving|"
 msgid "Default file format:"
-msgstr "типовий"
+msgstr ""
 
 #: ../po/tmp/preferenceswindow.glade.h:39
 msgctxt "Prefs Dialog|Load & Save|Saving|"
@@ -3422,10 +3298,9 @@ msgid "<b>Saving</b>"
 msgstr ""
 
 #: ../po/tmp/preferenceswindow.glade.h:41
-#, fuzzy
 msgctxt "Prefs Dialog|Load & Save|"
 msgid "<b>Color Management</b>"
-msgstr "На повний екран"
+msgstr ""
 
 #: ../po/tmp/preferenceswindow.glade.h:42
 msgctxt "Prefs Dialog|Load & Save|Color Management|"
@@ -3497,10 +3372,9 @@ msgstr ""
 
 #. Tab label in preferences dialog
 #: ../po/tmp/preferenceswindow.glade.h:58
-#, fuzzy
 msgctxt "Prefs Dialog|"
 msgid "Load & Save"
-msgstr "Шари"
+msgstr ""
 
 #: ../po/tmp/preferenceswindow.glade.h:59
 msgctxt "Prefs Dialog|View|"
@@ -3508,9 +3382,8 @@ msgid "<b>Zoom and Rendering</b>"
 msgstr ""
 
 #: ../po/tmp/preferenceswindow.glade.h:60
-#, fuzzy
 msgid "Default zoom level:"
-msgstr "типовий"
+msgstr ""
 
 #: ../po/tmp/preferenceswindow.glade.h:61
 msgctxt "Prefs Dialog|View|"
@@ -3518,10 +3391,9 @@ msgid "<b>Interface</b>"
 msgstr ""
 
 #: ../po/tmp/preferenceswindow.glade.h:62
-#, fuzzy
 msgctxt "Prefs Dialog|View|Interface|"
 msgid "Toolbar icon size:"
-msgstr "піктограма стільниці"
+msgstr ""
 
 #: ../po/tmp/preferenceswindow.glade.h:63
 msgctxt "Prefs Dialog|View|Interface|"
@@ -3555,7 +3427,6 @@ msgid "Large (requires recent GTK3)"
 msgstr ""
 
 #: ../po/tmp/preferenceswindow.glade.h:69
-#, fuzzy
 msgctxt "Prefs Dialog|View|Interface|Icon size|"
 msgid "Small"
 msgstr "Менше"
@@ -3608,7 +3479,6 @@ msgstr ""
 
 #. Tab label in preferences dialog&#10;
 #: ../po/tmp/preferenceswindow.glade.h:83
-#, fuzzy
 msgctxt "Prefs Dialog|"
 msgid "View"
 msgstr "Перегляд"
@@ -3690,14 +3560,12 @@ msgstr ""
 
 #. Options affecting color wheels
 #: ../po/tmp/preferenceswindow.glade.h:98
-#, fuzzy
 msgctxt "Prefs Dialog|Color|"
 msgid "<b>Color Wheel</b>"
-msgstr "На повний екран"
+msgstr ""
 
 #. Tab label in preferences dialog
 #: ../po/tmp/preferenceswindow.glade.h:100
-#, fuzzy
 msgctxt "Prefs Dialog|"
 msgid "Color"
 msgstr "Колір"
@@ -3718,16 +3586,14 @@ msgid "Window (not recommended)"
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:1
-#, fuzzy
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "New"
 msgstr "Створити"
 
 #: ../po/tmp/resources.xml.h:2
-#, fuzzy
 msgctxt "Toolbar (short labels)"
 msgid "New"
-msgstr "Створити"
+msgstr ""
 
 #: ../po/tmp/resources.xml.h:3
 msgctxt "Toolbar (tooltips), Accel Editor (descriptions)"
@@ -3737,13 +3603,12 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:4
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "Open…"
-msgstr ""
+msgstr "Відкрити…"
 
 #: ../po/tmp/resources.xml.h:5
-#, fuzzy
 msgctxt "Toolbar (short labels)"
 msgid "Open"
-msgstr "Відкрити…"
+msgstr "Відкрити"
 
 #: ../po/tmp/resources.xml.h:6
 msgctxt "Toolbar (tooltips), Accel Editor (descriptions)"
@@ -3751,7 +3616,6 @@ msgid "Load a file to work on."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:7
-#, fuzzy
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "Open Most Recent"
 msgstr "Відкрити недавні"
@@ -3762,7 +3626,6 @@ msgid "Load the file you saved most recently."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:9
-#, fuzzy
 msgctxt "Menu→File (labels)"
 msgid "Open Recent"
 msgstr "Відкрити недавні"
@@ -3778,19 +3641,16 @@ msgid "Reload the file your current work was loaded from."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:12
-#, fuzzy
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "Save"
 msgstr "Зберегти"
 
 #: ../po/tmp/resources.xml.h:13
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Save your work to a file."
-msgstr "зберегти як типовий"
+msgstr ""
 
 #: ../po/tmp/resources.xml.h:14
-#, fuzzy
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "Save As…"
 msgstr "Зберегти як…"
@@ -3801,17 +3661,15 @@ msgid "Save your work to a file, assigning it a new name."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:16
-#, fuzzy
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "Export…"
-msgstr "Звіт…"
+msgstr ""
 
 #: ../po/tmp/resources.xml.h:17
 msgid "Export your work to a file, but keep working on the same file."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:18
-#, fuzzy
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "Save As Scrap"
 msgstr "Зберегти як чернетку"
@@ -3822,7 +3680,6 @@ msgid "Save to a new scrap file, or save a new revision if already a scrap."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:20
-#, fuzzy
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "Open Previous Scrap"
 msgstr "Відкрити попередню чернетку"
@@ -3833,7 +3690,6 @@ msgid "Load the scrap file before the current one."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:22
-#, fuzzy
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "Open Next Scrap"
 msgstr "Відкрити наступну чернетку"
@@ -3854,13 +3710,11 @@ msgid "Try to save and resume interrupted unsaved work."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:26
-#, fuzzy
 msgctxt "Menu→Brush (label)"
 msgid "Brush Groups"
-msgstr "Пензлі"
+msgstr ""
 
 #: ../po/tmp/resources.xml.h:27
-#, fuzzy
 msgctxt "Toolbar (short labels)"
 msgid "Brushes"
 msgstr "Пензлі"
@@ -3871,16 +3725,14 @@ msgid "List of brush groups."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:29
-#, fuzzy
 msgctxt "Toolbar (label)"
 msgid "Color Adjusters"
-msgstr "значення кольору"
+msgstr ""
 
 #: ../po/tmp/resources.xml.h:30
-#, fuzzy
 msgctxt "Toolbar (short labels)"
 msgid "Colors"
-msgstr "Колір"
+msgstr "Кольори"
 
 #: ../po/tmp/resources.xml.h:31
 msgctxt "Toolbar (tooltips)"
@@ -3903,10 +3755,9 @@ msgid "The current layer's compositing mode."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:35
-#, fuzzy
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
 msgid "Increase Brush Size"
-msgstr "Зменшити прозорість шару"
+msgstr ""
 
 #: ../po/tmp/resources.xml.h:36
 msgctxt "Accel Editor (descriptions)"
@@ -3914,10 +3765,9 @@ msgid "Make the working brush bigger."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:37
-#, fuzzy
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
 msgid "Decrease Brush Size"
-msgstr "Збільшити прозорість шару"
+msgstr ""
 
 #: ../po/tmp/resources.xml.h:38
 msgctxt "Accel Editor (descriptions)"
@@ -3925,10 +3775,9 @@ msgid "Make the working brush smaller."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:39
-#, fuzzy
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
 msgid "Increase Brush Opacity"
-msgstr "Зменшити прозорість шару"
+msgstr ""
 
 #: ../po/tmp/resources.xml.h:40
 msgctxt "Accel Editor (descriptions)"
@@ -3936,10 +3785,9 @@ msgid "Make the working brush more opaque."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:41
-#, fuzzy
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
 msgid "Decrease Brush Opacity"
-msgstr "Збільшити прозорість шару"
+msgstr ""
 
 #: ../po/tmp/resources.xml.h:42
 msgctxt "Accel Editor (descriptions)"
@@ -3967,22 +3815,19 @@ msgid "Decrease the lightness of the current painting color."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:47
-#, fuzzy
 msgctxt "Menu→Color→Adjust Color (labels), Accel Editor (labels)"
 msgid "Change Hue Anticlockwise"
-msgstr "Обернути проти годинникової стрілки"
+msgstr ""
 
 #: ../po/tmp/resources.xml.h:48
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Rotate the painting color’s hue anticlockwise on the color wheel."
-msgstr "Обернути проти годинникової стрілки"
+msgstr ""
 
 #: ../po/tmp/resources.xml.h:49
-#, fuzzy
 msgctxt "Menu→Color→Adjust Color (labels), Accel Editor (labels)"
 msgid "Change Hue Clockwise"
-msgstr "зміна значення кольору (ВНЗ)"
+msgstr ""
 
 #: ../po/tmp/resources.xml.h:50
 msgctxt "Accel Editor (descriptions)"
@@ -3990,10 +3835,9 @@ msgid "Rotate the painting color’s hue clockwise on the color wheel."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:51
-#, fuzzy
 msgctxt "Menu→Color→Adjust Color (labels), Accel Editor (labels)"
 msgid "Increase Saturation"
-msgstr "Зменшити прозорість шару"
+msgstr ""
 
 #: ../po/tmp/resources.xml.h:52
 msgctxt "Accel Editor (descriptions)"
@@ -4001,10 +3845,9 @@ msgid "Make the painting color more saturated (more colorful, purer)."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:53
-#, fuzzy
 msgctxt "Menu→Color→Adjust Color (labels), Accel Editor (labels)"
 msgid "Decrease Saturation"
-msgstr "Збільшити прозорість шару"
+msgstr ""
 
 #: ../po/tmp/resources.xml.h:54
 msgctxt "Accel Editor (descriptions)"
@@ -4012,10 +3855,9 @@ msgid "Make the painting color less saturated (grayer)."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:55
-#, fuzzy
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
 msgid "Reload Brush Settings"
-msgstr "Налаштування пензля…"
+msgstr ""
 
 #: ../po/tmp/resources.xml.h:56
 msgctxt "Accel Editor (descriptions)"
@@ -4045,34 +3887,29 @@ msgid ""
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:61
-#, fuzzy
 msgctxt "Menu→Brush→Shortcut Keys (labels), Accel Editor (labels)"
 msgid "Save Brush to Most Recent Shortcut Key"
-msgstr "Зберегти до попередньої відновленої"
+msgstr ""
 
 #: ../po/tmp/resources.xml.h:62
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Save brush settings to the most recently used shortcut key."
-msgstr "Зберегти до попередньої відновленої"
+msgstr ""
 
 #: ../po/tmp/resources.xml.h:63
-#, fuzzy
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Clear Layer"
-msgstr "Спорожнити"
+msgstr "Очистити шар"
 
 #: ../po/tmp/resources.xml.h:64
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Clear the current layer’s content."
-msgstr "Відкрити недавні файли"
+msgstr ""
 
 #: ../po/tmp/resources.xml.h:65
-#, fuzzy
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Trim Layer to Frame"
-msgstr "Шари"
+msgstr ""
 
 #: ../po/tmp/resources.xml.h:66
 msgctxt "Accel Editor (descriptions)"
@@ -4080,10 +3917,9 @@ msgid "Erase parts of the current layer which lie outside the frame."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:67
-#, fuzzy
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Copy Layer to Clipboard"
-msgstr "Скопіювати до буфера"
+msgstr ""
 
 #: ../po/tmp/resources.xml.h:68
 msgctxt "Accel Editor (descriptions)"
@@ -4091,10 +3927,9 @@ msgid "Copy the current layer’s contents to the clipboard."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:69
-#, fuzzy
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Paste Layer from Clipboard"
-msgstr "Скопіювати до буфера"
+msgstr ""
 
 #: ../po/tmp/resources.xml.h:70
 msgctxt "Accel Editor (descriptions)"
@@ -4122,10 +3957,9 @@ msgid "Commit changes saved from the external app (normally automatic)."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:75
-#, fuzzy
 msgctxt "Menu→Layer→Go to Layer (labels), Accel Editor (labels)"
 msgid "Go to Layer at Cursor"
-msgstr "Позначити шар під вказівником"
+msgstr ""
 
 #: ../po/tmp/resources.xml.h:76
 msgctxt "Accel Editor (descriptions)"
@@ -4133,10 +3967,9 @@ msgid "Select a layer by picking an object on it."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:77
-#, fuzzy
 msgctxt "Menu→Layer→Go to Layer (labels), Accel Editor (labels)"
 msgid "Go to Layer Above"
-msgstr "Шари"
+msgstr ""
 
 #: ../po/tmp/resources.xml.h:78
 msgctxt "Accel Editor (descriptions)"
@@ -4144,10 +3977,9 @@ msgid "Go one layer up in the layer stack."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:79
-#, fuzzy
 msgctxt "Menu→Layer→Go to Layer (labels), Accel Editor (labels)"
 msgid "Go to Layer Below"
-msgstr "Шари"
+msgstr ""
 
 #: ../po/tmp/resources.xml.h:80
 msgctxt "Accel Editor (descriptions)"
@@ -4160,16 +3992,14 @@ msgid "New Painting Layer"
 msgstr "Новий шар"
 
 #: ../po/tmp/resources.xml.h:82
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Add a new painting layer above the current layer."
-msgstr "Відкрити недавні файли"
+msgstr ""
 
 #: ../po/tmp/resources.xml.h:83
-#, fuzzy
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "New Vector Layer…"
-msgstr "Позначити шар під вказівником"
+msgstr ""
 
 #: ../po/tmp/resources.xml.h:84
 msgctxt "Accel Editor (descriptions)"
@@ -4177,16 +4007,14 @@ msgid "Add a new vector layer above the current layer, and begin editing it."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:85
-#, fuzzy
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "New Layer Group"
-msgstr "Створити групу…"
+msgstr "Створити групу"
 
 #: ../po/tmp/resources.xml.h:86
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Add a new layer group above the current layer."
-msgstr "Відкрити недавні файли"
+msgstr ""
 
 #: ../po/tmp/resources.xml.h:87
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
@@ -4194,10 +4022,9 @@ msgid "New Painting Layer Below"
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:88
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Add a new painting layer below the current layer."
-msgstr "Відкрити недавні файли"
+msgstr ""
 
 #: ../po/tmp/resources.xml.h:89
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
@@ -4215,16 +4042,14 @@ msgid "New Layer Group Below"
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:92
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Add a new layer group below the current layer."
-msgstr "Відкрити недавні файли"
+msgstr ""
 
 #: ../po/tmp/resources.xml.h:93
-#, fuzzy
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Merge Layer Down"
-msgstr "Шари"
+msgstr ""
 
 #: ../po/tmp/resources.xml.h:94
 msgctxt "Accel Editor (descriptions)"
@@ -4232,10 +4057,9 @@ msgid "Merge the current layer with the layer beneath it."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:95
-#, fuzzy
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Merge Visible Layers"
-msgstr "Шари"
+msgstr ""
 
 #: ../po/tmp/resources.xml.h:96
 msgctxt "Accel Editor (descriptions)"
@@ -4243,10 +4067,9 @@ msgid "Consolidate all visible layers, and delete the originals."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:97
-#, fuzzy
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "New Layer from Visible"
-msgstr "Видимість шару"
+msgstr ""
 
 #: ../po/tmp/resources.xml.h:98
 msgctxt "Accel Editor (descriptions)"
@@ -4254,16 +4077,14 @@ msgid "Like ‘Merge Visible Layers’, but doesn’t delete the originals."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:99
-#, fuzzy
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Delete Layer"
-msgstr "Позначити шар під вказівником"
+msgstr "Видалити шар"
 
 #: ../po/tmp/resources.xml.h:100
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Remove the current layer from the layer stack."
-msgstr "Відкрити недавні файли"
+msgstr ""
 
 #: ../po/tmp/resources.xml.h:101
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
@@ -4278,10 +4099,9 @@ msgid ""
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:103
-#, fuzzy
 msgctxt "Menu→Layer→Opacity (labels), Accel Editor (labels)"
 msgid "Increase Layer’s Opacity"
-msgstr "Зменшити прозорість шару"
+msgstr "Збільшити прозорість шару"
 
 #: ../po/tmp/resources.xml.h:104
 msgctxt "Accel Editor (descriptions)"
@@ -4289,10 +4109,9 @@ msgid "Make the layer less transparent."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:105
-#, fuzzy
 msgctxt "Menu→Layer→Opacity (labels), Accel Editor (labels)"
 msgid "Reduce Layer’s Opacity"
-msgstr "Збільшити прозорість шару"
+msgstr "Зменшити прозорість шару"
 
 #: ../po/tmp/resources.xml.h:106
 msgctxt "Accel Editor (descriptions)"
@@ -4300,10 +4119,9 @@ msgid "Make the layer more transparent."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:107
-#, fuzzy
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Raise Layer"
-msgstr "Вилучити"
+msgstr ""
 
 #: ../po/tmp/resources.xml.h:108
 msgctxt "Accel Editor (descriptions)"
@@ -4311,10 +4129,9 @@ msgid "Raise the current layer one step in the layer stack."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:109
-#, fuzzy
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Lower Layer"
-msgstr "Шари"
+msgstr ""
 
 #: ../po/tmp/resources.xml.h:110
 msgctxt "Accel Editor (descriptions)"
@@ -4322,34 +4139,29 @@ msgid "Lower the current layer one step in the layer stack."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:111
-#, fuzzy
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Duplicate Layer"
-msgstr "Позначити шар під вказівником"
+msgstr ""
 
 #: ../po/tmp/resources.xml.h:112
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Make an exact clone of the current layer."
-msgstr "Відкрити недавні файли"
+msgstr ""
 
 #: ../po/tmp/resources.xml.h:113
-#, fuzzy
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Rename Layer…"
-msgstr "Вилучити"
+msgstr ""
 
 #: ../po/tmp/resources.xml.h:114
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Enter a new name for the current layer."
-msgstr "Відкрити недавні файли"
+msgstr ""
 
 #: ../po/tmp/resources.xml.h:115
-#, fuzzy
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Layer Locked"
-msgstr "Шари"
+msgstr ""
 
 #: ../po/tmp/resources.xml.h:116
 msgctxt "Accel Editor (descriptions)"
@@ -4358,7 +4170,6 @@ msgid ""
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:117
-#, fuzzy
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Layer Visible"
 msgstr "Видимість шару"
@@ -4369,10 +4180,9 @@ msgid "Toggle the current layer’s visibility state, making it hidden."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:119
-#, fuzzy
 msgctxt "Menu→View (labels), Accel Editor (labels)"
 msgid "Show Background"
-msgstr "Тло"
+msgstr ""
 
 #: ../po/tmp/resources.xml.h:120
 msgctxt "Accel Editor (descriptions)"
@@ -4380,10 +4190,9 @@ msgid "Toggle the background layer’s visibility."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:121
-#, fuzzy
 msgctxt "Menu→View (labels), Accel Editor (labels)"
 msgid "Reset and Center View"
-msgstr "Обернути за годинниковою стрілкою"
+msgstr ""
 
 #: ../po/tmp/resources.xml.h:122
 msgctxt "Accel Editor (descriptions)"
@@ -4391,10 +4200,9 @@ msgid "Reset Zoom, Rotation and Mirroring, and recenter the document."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:123
-#, fuzzy
 msgctxt "Menu→View (labels), Accel Editor (labels)"
 msgid "Fit to View"
-msgstr "Обернути за годинниковою стрілкою"
+msgstr "За розміром зображення"
 
 #: ../po/tmp/resources.xml.h:124
 msgctxt "Accel Editor (descriptions)"
@@ -4437,52 +4245,44 @@ msgid "Turn off mirroring of the view."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:132
-#, fuzzy
 msgctxt "Menu→View→Adjust View (labels), Accel Editor (labels)"
 msgid "Zoom In"
-msgstr "Зменшити"
+msgstr "Збільшити"
 
 #: ../po/tmp/resources.xml.h:133
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Increase magnification."
-msgstr "Зменшити прозорість шару"
+msgstr ""
 
 #: ../po/tmp/resources.xml.h:134
-#, fuzzy
 msgctxt "Menu→View→Adjust View (labels), Accel Editor (labels)"
 msgid "Zoom Out"
 msgstr "Зменшити"
 
 #: ../po/tmp/resources.xml.h:135
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Decrease magnification."
-msgstr "Збільшити прозорість шару"
+msgstr ""
 
 #: ../po/tmp/resources.xml.h:136
-#, fuzzy
 msgctxt "Menu→View→Adjust View (labels), Accel Editor (labels)"
 msgid "Rotate Counterclockwise"
 msgstr "Обернути проти годинникової стрілки"
 
 #: ../po/tmp/resources.xml.h:137
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Rotate the view counterclockwise."
-msgstr "Обернути проти годинникової стрілки"
+msgstr ""
 
 #: ../po/tmp/resources.xml.h:138
-#, fuzzy
 msgctxt "Menu→View→Adjust View (labels), Accel Editor (labels)"
 msgid "Rotate Clockwise"
 msgstr "Обернути за годинниковою стрілкою"
 
 #: ../po/tmp/resources.xml.h:139
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Rotate the view clockwise."
-msgstr "Обернути проти годинникової стрілки"
+msgstr ""
 
 #: ../po/tmp/resources.xml.h:140
 msgctxt "Menu→View→Adjust View (labels), Accel Editor (labels)"
@@ -4505,16 +4305,14 @@ msgid "Flip the view upside-down."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:144
-#, fuzzy
 msgctxt "Menu→View (labels), Accel Editor (labels)"
 msgid "Layer Solo"
-msgstr "Лише поточний шар"
+msgstr ""
 
 #: ../po/tmp/resources.xml.h:145
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Toggle whether only the current layer is shown."
-msgstr "Відкрити недавні файли"
+msgstr ""
 
 #: ../po/tmp/resources.xml.h:146
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
@@ -4537,10 +4335,9 @@ msgid "Toggle visibility of the document frame."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:150
-#, fuzzy
 msgctxt "Menu→Help→Debug (labels), Accel Editor (labels)"
 msgid "Print Brush Input Values to Console"
-msgstr "Вивести вхідні значення пензля у стандартний вивід"
+msgstr ""
 
 #: ../po/tmp/resources.xml.h:151
 msgctxt "Accel Editor (descriptions)"
@@ -4548,7 +4345,6 @@ msgid "Show the brush engine’s internally generated inputs on the console."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:152
-#, fuzzy
 msgctxt "Menu→Help→Debug (labels), Accel Editor (labels)"
 msgid "Visualize Rendering"
 msgstr "Візуалізувати відтворення"
@@ -4559,10 +4355,9 @@ msgid "Show rendering updates on-screen, for debugging."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:154
-#, fuzzy
 msgctxt "Menu→Help→Debug (labels), Accel Editor (labels)"
 msgid "No Double Buffering"
-msgstr "Вимкнути подвійну буферизацію GTK"
+msgstr ""
 
 #: ../po/tmp/resources.xml.h:155
 msgctxt "Accel Editor (descriptions)"
@@ -4570,10 +4365,9 @@ msgid "Turn off GTK’s double buffering, normally enabled."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:156
-#, fuzzy
 msgctxt "Menu→Brush (labels)"
 msgid "Paint Mode"
-msgstr "Перейменувати пензель"
+msgstr ""
 
 #: ../po/tmp/resources.xml.h:157
 msgctxt "Menu→Brush→Blend Mode (labels), Accel Editor (labels)"
@@ -4593,37 +4387,37 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:160
 msgctxt "Accel Editor (descriptions)"
 msgid "Erase using the current brush."
-msgstr ""
+msgstr "Стирати активним пензлем."
 
 #: ../po/tmp/resources.xml.h:161
 msgctxt "Menu→Brush→Blend Mode (labels), Accel Editor (labels)"
 msgid "Paint Mode: Lock Alpha"
-msgstr ""
+msgstr "Режим Малювання: Альфа Зафіксоване"
 
 #: ../po/tmp/resources.xml.h:162
 msgctxt "Accel Editor (descriptions)"
 msgid "Applying the brush doesn't change the layer’s opacity."
-msgstr ""
+msgstr "Застосування пензля не впливає на прозорість прошарку."
 
 #: ../po/tmp/resources.xml.h:163
 msgctxt "Menu→Brush→Blend Mode (labels), Accel Editor (labels)"
 msgid "Paint Mode: Colorize"
-msgstr ""
+msgstr "Режим Малювання: Розфарбовування"
 
 #: ../po/tmp/resources.xml.h:164
 msgctxt "Accel Editor (descriptions)"
 msgid ""
 "Apply color to the current layer without affecting its brightness or opacity."
 msgstr ""
+"Застосувати колір до поточного шару без впливу на його яскравість або "
+"прозорість."
 
 #: ../po/tmp/resources.xml.h:165
-#, fuzzy
 msgctxt "Menu (labels)"
 msgid "File"
 msgstr "Файл"
 
 #: ../po/tmp/resources.xml.h:166
-#, fuzzy
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "Quit"
 msgstr "Вийти"
@@ -4631,37 +4425,32 @@ msgstr "Вийти"
 #: ../po/tmp/resources.xml.h:167
 msgctxt "Accel Editor (descriptions)"
 msgid "Close main window and exit the app."
-msgstr ""
+msgstr "Закрити головне вікно і вийти з програми."
 
 #: ../po/tmp/resources.xml.h:168
-#, fuzzy
 msgctxt "Menu (labels)"
 msgid "Edit"
 msgstr "Змінити"
 
 #: ../po/tmp/resources.xml.h:169
-#, fuzzy
 msgctxt "Menu→Edit (labels)"
 msgid "Current Tool"
-msgstr "Перейменувати пензель"
+msgstr "Вибраний Інструмент"
 
 #: ../po/tmp/resources.xml.h:170
-#, fuzzy
 msgctxt "Menu (labels)"
 msgid "Color"
 msgstr "Колір"
 
 #: ../po/tmp/resources.xml.h:171
-#, fuzzy
 msgctxt "Menu→Color (labels)"
 msgid "Adjust Color"
-msgstr "Відновити пензель %d"
+msgstr "Коректувати Колір"
 
 #: ../po/tmp/resources.xml.h:172
-#, fuzzy
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "Color History Popup"
-msgstr "Журнал кольорів"
+msgstr "Історія Вибору Кольорів"
 
 #: ../po/tmp/resources.xml.h:173
 msgctxt "Accel Editor (descriptions)"
@@ -4669,10 +4458,9 @@ msgid "Pop up a timeline of recent colors under the cursor."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:174
-#, fuzzy
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "Color Details Dialog"
-msgstr "Подробиці"
+msgstr ""
 
 #: ../po/tmp/resources.xml.h:175
 msgctxt "Accel Editor (descriptions)"
@@ -4700,10 +4488,9 @@ msgid "Set painting color to the previous color in the palette."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:180
-#, fuzzy
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "Add Color to Palette"
-msgstr "додати колір до візерунків"
+msgstr ""
 
 #: ../po/tmp/resources.xml.h:181
 msgctxt "Accel Editor (descriptions)"
@@ -4711,28 +4498,24 @@ msgid "Append the current painting color to the palette."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:182
-#, fuzzy
 msgctxt "Menu (labels)"
 msgid "Layer"
 msgstr "Шари"
 
 #: ../po/tmp/resources.xml.h:183
-#, fuzzy
 msgctxt "Menu→Layer→Properties (labels)"
 msgid "Opacity"
-msgstr "Непрозорість:"
+msgstr "Непрозорість"
 
 #: ../po/tmp/resources.xml.h:184
-#, fuzzy
 msgctxt "Menu→Layer (labels)"
 msgid "Go to Layer"
-msgstr "Шари"
+msgstr ""
 
 #: ../po/tmp/resources.xml.h:185
-#, fuzzy
 msgctxt "Menu→Layer (labels)"
 msgid "New Layer Below"
-msgstr "Лише поточний шар"
+msgstr ""
 
 #: ../po/tmp/resources.xml.h:186
 msgctxt "Menu→Layer (labels)"
@@ -4740,16 +4523,14 @@ msgid "Properties"
 msgstr "Властивості"
 
 #: ../po/tmp/resources.xml.h:187
-#, fuzzy
 msgctxt "Menu (labels)"
 msgid "Scratchpad"
-msgstr "Відкрити наступну чернетку"
+msgstr "Записник"
 
 #: ../po/tmp/resources.xml.h:188
-#, fuzzy
 msgctxt "Menu→Scratchpad (labels), Accel Editor (labels)"
 msgid "New Scratchpad"
-msgstr "Відкрити наступну чернетку"
+msgstr ""
 
 #: ../po/tmp/resources.xml.h:189
 msgctxt "Accel Editor (descriptions)"
@@ -4757,10 +4538,9 @@ msgid "Load the default scratchpad as a new scratchpad canvas."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:190
-#, fuzzy
 msgctxt "Menu→Scratchpad (labels), Accel Editor (labels)"
 msgid "Open Scratchpad…"
-msgstr "Відкрити наступну чернетку"
+msgstr "Відкрити чернетку…"
 
 #: ../po/tmp/resources.xml.h:191
 msgctxt "Accel Editor (descriptions)"
@@ -4768,10 +4548,9 @@ msgid "Load an image file on disk into the scratchpad."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:192
-#, fuzzy
 msgctxt "Menu→Scratchpad (labels), Accel Editor (labels)"
 msgid "Save Scratchpad"
-msgstr "Зберегти як…"
+msgstr "Зберегти чернетку"
 
 #: ../po/tmp/resources.xml.h:193
 msgctxt "Accel Editor (descriptions)"
@@ -4779,10 +4558,9 @@ msgid "Save the scratchpad to its existing file on disk."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:194
-#, fuzzy
 msgctxt "Menu→Scratchpad (labels), Accel Editor (labels)"
 msgid "Export Scratchpad As…"
-msgstr "Зберегти як…"
+msgstr ""
 
 #: ../po/tmp/resources.xml.h:195
 msgctxt "Accel Editor (descriptions)"
@@ -4790,10 +4568,9 @@ msgid "Export the scratchpad to disk, under a file name of your choice."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:196
-#, fuzzy
 msgctxt "Menu→Scratchpad (labels), Accel Editor (labels)"
 msgid "Revert Scratchpad"
-msgstr "Відкрити наступну чернетку"
+msgstr ""
 
 #: ../po/tmp/resources.xml.h:197
 msgctxt "Accel Editor (descriptions)"
@@ -4801,10 +4578,9 @@ msgid "Revert the scratchpad to its last saved state."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:198
-#, fuzzy
 msgctxt "Menu→Scratchpad (labels), Accel Editor (labels)"
 msgid "Save Scratchpad as Default"
-msgstr "зберегти як типовий"
+msgstr "Зберегти чернетку як типовий"
 
 #: ../po/tmp/resources.xml.h:199
 msgctxt "Accel Editor (descriptions)"
@@ -4812,10 +4588,9 @@ msgid "Save the scratchpad as the default for ‘New Scratchpad’."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:200
-#, fuzzy
 msgctxt "Menu→Scratchpad (labels), Accel Editor (labels)"
 msgid "Clear Default Scratchpad"
-msgstr "зберегти як типовий"
+msgstr ""
 
 #: ../po/tmp/resources.xml.h:201
 msgctxt "Accel Editor (descriptions)"
@@ -4823,10 +4598,9 @@ msgid "Clear the default scratchpad to a blank canvas."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:202
-#, fuzzy
 msgctxt "Menu→Scratchpad (labels), Accel Editor (labels)"
 msgid "Copy Main Background to Scratchpad"
-msgstr "Тло"
+msgstr ""
 
 #: ../po/tmp/resources.xml.h:203
 msgctxt "Accel Editor (descriptions)"
@@ -4835,28 +4609,24 @@ msgid ""
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:204
-#, fuzzy
 msgctxt "Menu (labels)"
 msgid "Window"
-msgstr "Кільце кольорів"
+msgstr "Вікно"
 
 #: ../po/tmp/resources.xml.h:205
-#, fuzzy
 msgctxt "Menu→Brush (labels)"
 msgid "Brush"
 msgstr "Пензель"
 
 #: ../po/tmp/resources.xml.h:206
-#, fuzzy
 msgctxt "Menu→Brush (labels)"
 msgid "Shortcut Keys"
-msgstr "Скорочення"
+msgstr ""
 
 #: ../po/tmp/resources.xml.h:207
-#, fuzzy
 msgctxt "Menu→Brush→Shortcut Keys (labels), Accel Editor (labels)"
 msgid "Brush Shortcut Keys Help"
-msgstr "Скорочення"
+msgstr ""
 
 #: ../po/tmp/resources.xml.h:208
 msgctxt "Accel Editor (descriptions)"
@@ -4864,10 +4634,9 @@ msgid "Show an explanation of how the shortcut keys work."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:209
-#, fuzzy
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
 msgid "Change Brush…"
-msgstr "зміна відтінку кольору"
+msgstr "Зміна пензля…"
 
 #: ../po/tmp/resources.xml.h:210
 msgctxt "Accel Editor (descriptions)"
@@ -4875,10 +4644,9 @@ msgid "Pop up a brush changer under the cursor."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:211
-#, fuzzy
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "Change Color…"
-msgstr "зміна відтінку кольору"
+msgstr "Зміна кольору…"
 
 #: ../po/tmp/resources.xml.h:212
 msgctxt "Accel Editor (descriptions)"
@@ -4887,10 +4655,9 @@ msgid ""
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:213
-#, fuzzy
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "Change Color (fast subset)…"
-msgstr "зміна відтінку кольору"
+msgstr "Зміна кольору (швидкий вибір)…"
 
 #: ../po/tmp/resources.xml.h:214
 msgctxt "Accel Editor (descriptions)"
@@ -4900,10 +4667,9 @@ msgid ""
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:215
-#, fuzzy
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
 msgid "Get More Brushes…"
-msgstr "Відновити пензель %d"
+msgstr "Отримати більше пензлів…"
 
 #: ../po/tmp/resources.xml.h:216
 msgctxt "Accel Editor (descriptions)"
@@ -4911,19 +4677,16 @@ msgid "Download brushpacks from the MyPaint wiki."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:217
-#, fuzzy
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
 msgid "Import Brushes…"
-msgstr "Пензлі"
+msgstr ""
 
 #: ../po/tmp/resources.xml.h:218
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Load a brushpack from disk."
-msgstr "Бажаєте вилучити цей пензель?"
+msgstr ""
 
 #: ../po/tmp/resources.xml.h:219
-#, fuzzy
 msgctxt "Menu (labels)"
 msgid "Help"
 msgstr "Довідка"
@@ -4939,7 +4702,6 @@ msgid "Go to MyPaint’s documentation wiki."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:222
-#, fuzzy
 msgctxt "Menu→Help (labels), Accel Editor (labels)"
 msgid "About MyPaint"
 msgstr "Про MyPaint"
@@ -4950,13 +4712,11 @@ msgid "Show MyPaint’s license, version number, and credits."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:224
-#, fuzzy
 msgctxt "Menu→Help (labels)"
 msgid "Debug"
-msgstr "Зневадження"
+msgstr "Зневаджування"
 
 #: ../po/tmp/resources.xml.h:225
-#, fuzzy
 msgctxt "Menu→Help→Debug (labels), Accel Editor (labels)"
 msgid "Print Memory Leak Info to Console (Slow!)"
 msgstr "Вивести дані щодо витоку пам'яті до стандартного виводу (Повільно!)"
@@ -4967,7 +4727,6 @@ msgid "Debug memory leaks."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:227
-#, fuzzy
 msgctxt "Menu→Help→Debug (labels), Accel Editor (labels)"
 msgid "Run Garbage Collector Now"
 msgstr "Розпочати вилучення зайвих даних (сміття) зараз"
@@ -4998,7 +4757,6 @@ msgid "Raise a Python exception, to test the crash dialog."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:233
-#, fuzzy
 msgctxt "Menu (labels)"
 msgid "View"
 msgstr "Перегляд"
@@ -5014,10 +4772,9 @@ msgid "Adjust View"
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:236
-#, fuzzy
 msgctxt "Menu→View (labels), Accel Editor (labels)"
 msgid "Popup Menu"
-msgstr "Показати меню"
+msgstr ""
 
 #: ../po/tmp/resources.xml.h:237
 msgctxt "Accel Editor (descriptions)"
@@ -5025,7 +4782,6 @@ msgid "Show the main menu as a popup."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:238
-#, fuzzy
 msgctxt "Menu→View (labels), Accel Editor (labels)"
 msgid "Fullscreen"
 msgstr "На повний екран"
@@ -5036,7 +4792,6 @@ msgid "Toggle between full-screen and windowed mode."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:240
-#, fuzzy
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
 msgid "Edit Preferences"
 msgstr "Параметри"
@@ -5047,10 +4802,9 @@ msgid "Edit MyPaint’s global settings."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:242
-#, fuzzy
 msgctxt "Help→Debug (labels), Accel Editor (labels)"
 msgid "Test Input Devices"
-msgstr "Режим пристроїв введення: "
+msgstr ""
 
 #: ../po/tmp/resources.xml.h:243
 msgctxt "Accel Editor (descriptions)"
@@ -5058,10 +4812,9 @@ msgid "Show a dialog which captures all events your input devices send."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:244
-#, fuzzy
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Background Chooser"
-msgstr "Тло"
+msgstr ""
 
 #: ../po/tmp/resources.xml.h:245
 msgctxt "Accel Editor (descriptions)"
@@ -5069,31 +4822,26 @@ msgid "Change the background paper texture."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:246
-#, fuzzy
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
 msgid "Brush Settings Editor"
-msgstr "Налаштування пензля…"
+msgstr "Редактор налаштування пензля"
 
 #: ../po/tmp/resources.xml.h:247
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Edit the active brush’s settings."
-msgstr "Налаштування пензля…"
+msgstr ""
 
 #: ../po/tmp/resources.xml.h:248
-#, fuzzy
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
 msgid "Brush Icon Editor"
-msgstr "Список пензлів…"
+msgstr ""
 
 #: ../po/tmp/resources.xml.h:249
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Edit brush icons."
-msgstr "Вибір пензля"
+msgstr ""
 
 #: ../po/tmp/resources.xml.h:250
-#, fuzzy
 msgctxt "Menu→Window (labels), Toolbar (labels), Accel Editor (labels)"
 msgid "Layers Panel"
 msgstr "Шари"
@@ -5126,10 +4874,9 @@ msgid ""
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:256
-#, fuzzy
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "Color Palette"
-msgstr "додати колір до візерунків"
+msgstr "Палітра"
 
 #: ../po/tmp/resources.xml.h:257
 msgctxt "Accel Editor (descriptions)"
@@ -5142,16 +4889,14 @@ msgid "HSV Wheel"
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:259
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Dockable saturation and Value color changer."
-msgstr "Змінити значення/насиченість"
+msgstr ""
 
 #: ../po/tmp/resources.xml.h:260
-#, fuzzy
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "HSV Triangle"
-msgstr "Трикутник кольорів…"
+msgstr ""
 
 #: ../po/tmp/resources.xml.h:261
 msgctxt "Accel Editor (descriptions)"
@@ -5159,10 +4904,9 @@ msgid "Dockable color selector: the old GTK color triangle."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:262
-#, fuzzy
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "HSV Cube"
-msgstr "Основне значення"
+msgstr ""
 
 #: ../po/tmp/resources.xml.h:263
 msgctxt "Accel Editor (descriptions)"
@@ -5172,10 +4916,9 @@ msgid ""
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:264
-#, fuzzy
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "HSV Square"
-msgstr "Квадрат"
+msgstr ""
 
 #: ../po/tmp/resources.xml.h:265
 msgctxt "Accel Editor (descriptions)"
@@ -5225,10 +4968,9 @@ msgid "Dockable color selector with HSV ramps crossing a radial bowl of color."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:274
-#, fuzzy
 msgctxt "Menu→Window (labels), Accel Editor (labels)"
 msgid "Scratchpad Panel"
-msgstr "Відкрити наступну чернетку"
+msgstr ""
 
 #: ../po/tmp/resources.xml.h:275
 msgctxt "Accel Editor (descriptions)"
@@ -5236,10 +4978,9 @@ msgid "Toggle the Scratchpad dockpanel (mix colors and make sketches)."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:276
-#, fuzzy
 msgctxt "Menu→Scratchpad (labels), Accel Editor (labels)"
 msgid "Show Scratchpad Panel"
-msgstr "зберегти як типовий"
+msgstr "Показати панель із записником"
 
 #: ../po/tmp/resources.xml.h:277
 msgctxt "Accel Editor (descriptions)"
@@ -5287,10 +5028,9 @@ msgid "Reveal the Tool Options dockpanel (options for the current tool)."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:286
-#, fuzzy
 msgctxt "Menu→Window (labels), Toolbar (labels), Accel Editor (labels)"
 msgid "Brush & Color History Panel"
-msgstr "Журнал кольорів"
+msgstr "Історія пензлів та кольорів"
 
 #: ../po/tmp/resources.xml.h:287
 msgctxt "Accel Editor (descriptions)"
@@ -5298,10 +5038,9 @@ msgid "Toggle the History panel (recently used brushes and colors)."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:288
-#, fuzzy
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
 msgid "Recent Brushes & Colors"
-msgstr "Відновити пензель %d"
+msgstr "Нещодавні пензлі та кольори"
 
 #: ../po/tmp/resources.xml.h:289
 msgctxt "Accel Editor (descriptions)"
@@ -5430,16 +5169,14 @@ msgid "Draw and paint freely, without geometric constraints."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:314
-#, fuzzy
 msgctxt "Menu→Edit→Current Mode (labels)"
 msgid "Pan View"
-msgstr "Перегляд"
+msgstr ""
 
 #: ../po/tmp/resources.xml.h:315
-#, fuzzy
 msgctxt "Toolbar (short labels)"
 msgid "Pan"
-msgstr "Візерунок"
+msgstr ""
 
 #: ../po/tmp/resources.xml.h:316
 msgctxt "Toolbar (tooltips)"
@@ -5447,10 +5184,9 @@ msgid "Pan View: move your view of the canvas horizontally or vertically."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:317
-#, fuzzy
 msgctxt "Menu→View (labels), Accel Editor (labels)"
 msgid "Pan View"
-msgstr "Перегляд"
+msgstr ""
 
 #: ../po/tmp/resources.xml.h:318
 msgctxt "Accel Editor (descriptions)"
@@ -5458,16 +5194,14 @@ msgid "Interactively move your view of the canvas horizontally or vertically."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:319
-#, fuzzy
 msgctxt "Menu→Edit→Current Mode (labels)"
 msgid "Rotate View"
-msgstr "Обернути за годинниковою стрілкою"
+msgstr ""
 
 #: ../po/tmp/resources.xml.h:320
-#, fuzzy
 msgctxt "Toolbar (short labels)"
 msgid "Rotate"
-msgstr "Обернути за годинниковою стрілкою"
+msgstr "Обернути"
 
 #: ../po/tmp/resources.xml.h:321
 msgctxt "Toolbar (tooltips)"
@@ -5475,10 +5209,9 @@ msgid "Rotate View: tilt your view of the canvas."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:322
-#, fuzzy
 msgctxt "Menu→View (labels), Accel Editor (labels)"
 msgid "Rotate View"
-msgstr "Обернути за годинниковою стрілкою"
+msgstr ""
 
 #: ../po/tmp/resources.xml.h:323
 msgctxt "Accel Editor (descriptions)"
@@ -5486,16 +5219,14 @@ msgid "Interactively rotate your view of the canvas."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:324
-#, fuzzy
 msgctxt "Menu→Edit→Current Mode (labels)"
 msgid "Zoom View"
-msgstr "Зменшити"
+msgstr ""
 
 #: ../po/tmp/resources.xml.h:325
-#, fuzzy
 msgctxt "Toolbar (short labels)"
 msgid "Zoom"
-msgstr "Зменшити"
+msgstr ""
 
 #: ../po/tmp/resources.xml.h:326
 msgctxt "Toolbar (tooltips)"
@@ -5503,10 +5234,9 @@ msgid "Zoom View: zoom into or out of the canvas."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:327
-#, fuzzy
 msgctxt "Menu→View (labels), Accel Editor (labels)"
 msgid "Zoom View"
-msgstr "Зменшити"
+msgstr ""
 
 #: ../po/tmp/resources.xml.h:328
 msgctxt "Accel Editor (descriptions)"
@@ -5594,7 +5324,6 @@ msgid "Inking"
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:345
-#, fuzzy
 msgctxt "Toolbar (short labels)"
 msgid "Ink"
 msgstr "чорнило"
@@ -5615,16 +5344,14 @@ msgid "Draw smooth controlled lines."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:349
-#, fuzzy
 msgctxt "Menu→Edit→Current Mode (labels)"
 msgid "Reposition Layer"
-msgstr "Шари"
+msgstr ""
 
 #: ../po/tmp/resources.xml.h:350
-#, fuzzy
 msgctxt "Toolbar (short labels)"
 msgid "Layer Pos."
-msgstr "Шари"
+msgstr ""
 
 #: ../po/tmp/resources.xml.h:351
 msgctxt "Toolbar (tooltips)"
@@ -5647,10 +5374,9 @@ msgid "Edit Frame"
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:355
-#, fuzzy
 msgctxt "Toolbar (short labels)"
 msgid "Frame"
-msgstr "зміна відтінку кольору"
+msgstr ""
 
 #: ../po/tmp/resources.xml.h:356
 msgctxt "Toolbar (tooltips)"
@@ -5677,7 +5403,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:360
 msgctxt "Toolbar (short labels)"
 msgid "Symmetry"
-msgstr ""
+msgstr "Симетрія"
 
 #: ../po/tmp/resources.xml.h:361
 msgctxt "Toolbar (tooltips)"
@@ -5695,16 +5421,14 @@ msgid "Interactively adjust the axis used for symmetrical painting."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:364
-#, fuzzy
 msgctxt "Menu→Edit→Current Mode (labels)"
 msgid "Pick Color"
 msgstr "Взяти колір"
 
 #: ../po/tmp/resources.xml.h:365
-#, fuzzy
 msgctxt "Toolbar (short labels)"
 msgid "Pick Col."
-msgstr "Взяти колір"
+msgstr "Взяти колір."
 
 #: ../po/tmp/resources.xml.h:366
 msgctxt "Toolbar (tooltips)"

@@ -9,16 +9,16 @@ msgstr ""
 "Project-Id-Version: MyPaint 0.7.1+git\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-07-11 21:24+0100\n"
-"PO-Revision-Date: 2016-08-25 00:15+0000\n"
-"Last-Translator: Swyter <swyterzone@gmail.com>\n"
-"Language-Team: Spanish "
-"<https://hosted.weblate.org/projects/mypaint/mypaint/es/>\n"
+"PO-Revision-Date: 2019-05-03 16:49+0000\n"
+"Last-Translator: Rui Mendes <xz9@protonmail.com>\n"
+"Language-Team: Spanish <https://hosted.weblate.org/projects/mypaint/mypaint/"
+"es/>\n"
 "Language: es\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bits\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 2.8-dev\n"
+"X-Generator: Weblate 3.7-dev\n"
 
 #: ../gui/accelmap.py:55
 #, python-brace-format
@@ -2002,7 +2002,7 @@ msgstr "Presión de salida"
 
 #: ../gui/linemode.py:42
 msgid "Stroke exit pressure for line tools"
-msgstr "Presión al final para herramientas de línea\""
+msgstr "Presión al final para herramientas de línea"
 
 #: ../gui/linemode.py:43
 msgid "Head"
@@ -3518,7 +3518,7 @@ msgstr ""
 "guardaran sin información de gestión de color.\n"
 "\n"
 "Esto es un comportamiento antiguo de MyPaint y puede ser utilizado como un "
-"substituto para trabajar sin sRGB ."
+"substituto para trabajar sin sRGB."
 
 #: ../po/tmp/preferenceswindow.glade.h:51
 msgctxt "Prefs Dialog|Load & Save|"
