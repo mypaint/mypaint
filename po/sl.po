@@ -8,17 +8,17 @@ msgstr ""
 "Project-Id-Version: 0.9.0-git\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-07-11 21:24+0100\n"
-"PO-Revision-Date: 2015-12-24 14:31+0000\n"
-"Last-Translator: Aljosa <agapetos.typhonis@gmail.com>\n"
-"Language-Team: Slovenian "
-"<https://hosted.weblate.org/projects/mypaint/mypaint/sl/>\n"
+"PO-Revision-Date: 2019-02-23 08:18+0000\n"
+"Last-Translator: glixx <roman_romul@mail.ru>\n"
+"Language-Team: Slovenian <https://hosted.weblate.org/projects/mypaint/"
+"mypaint/sl/>\n"
 "Language: sl\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=4; plural=n%100==1 ? 0 : n%100==2 ? 1 : n%100==3 || "
 "n%100==4 ? 2 : 3;\n"
-"X-Generator: Weblate 2.5-dev\n"
+"X-Generator: Weblate 3.5-dev\n"
 "X-Poedit-Language: Slovenian\n"
 "X-Poedit-Country: SLOVENIA\n"
 
@@ -71,11 +71,11 @@ msgstr "Tipka:"
 
 #: ../gui/accelmap.py:363
 msgid "Press keys to update this assignment"
-msgstr ""
+msgstr "Pritisnite ustrezne tipke, da spremenite to nastavitev"
 
 #: ../gui/accelmap.py:416
 msgid "Unknown Action"
-msgstr ""
+msgstr "Neznano dejanje"
 
 #: ../gui/accelmap.py:425
 #, python-brace-format
@@ -83,6 +83,8 @@ msgid ""
 "<b>{accel} is already in use for '{action}'. The existing assignment will be "
 "replaced.</b>"
 msgstr ""
+"<b>{accel} je že v uporabi za \"{action}\". Trenutna nastavitev bo "
+"zamenjana.</b>"
 
 #: ../gui/application.py:634
 #, python-brace-format
@@ -94,7 +96,7 @@ msgstr ""
 #. naturally at the end of the flow.
 #: ../gui/application.py:642
 msgid "OK"
-msgstr ""
+msgstr "V redu"
 
 #: ../gui/autorecover.py:70
 msgid "No backups were found in the cache."
@@ -102,7 +104,7 @@ msgstr ""
 
 #: ../gui/autorecover.py:71
 msgid "No Available Backups"
-msgstr ""
+msgstr "Na voljo ni nobena varnostna kopija"
 
 #: ../gui/autorecover.py:74
 msgid "Open the Cache Folder…"
@@ -122,7 +124,6 @@ msgid "Recovered file from {iso_datetime}.ora"
 msgstr ""
 
 #: ../gui/backgroundwindow.py:51
-#, fuzzy
 msgid "Save as Default"
 msgstr "shrani kot privzeto"
 
@@ -139,7 +140,6 @@ msgid "Color"
 msgstr "Barva"
 
 #: ../gui/backgroundwindow.py:93
-#, fuzzy
 msgid "Add color to Patterns"
 msgstr "dodaj barvo med vzorce"
 
@@ -201,10 +201,9 @@ msgid "Dabs"
 msgstr ""
 
 #: ../gui/brusheditor.py:323
-#, fuzzy
 msgctxt "brush settings list: setting group"
 msgid "Smudge"
-msgstr "Razmaži"
+msgstr "razmaži"
 
 #: ../gui/brusheditor.py:334
 msgctxt "brush settings list: setting group"
@@ -218,7 +217,6 @@ msgid "Tracking"
 msgstr "Šum sledenja"
 
 #: ../gui/brusheditor.py:359
-#, fuzzy
 msgctxt "brush settings list: setting group"
 msgid "Stroke"
 msgstr "Poteg"
@@ -230,7 +228,6 @@ msgid "Color"
 msgstr "Barva"
 
 #: ../gui/brusheditor.py:385
-#, fuzzy
 msgctxt "brush settings list: setting group"
 msgid "Custom"
 msgstr "Poljubno"
@@ -248,13 +245,11 @@ msgid "No brush selected!"
 msgstr "Čopič ni izbran!"
 
 #: ../gui/brusheditor.py:488
-#, fuzzy
 msgctxt "brush settings editor: rename brush: dialog title"
 msgid "Rename Brush"
 msgstr "Preimenuj čopič"
 
 #: ../gui/brusheditor.py:505
-#, fuzzy
 msgctxt "brush settings editor: rename brush: error message"
 msgid "A brush with this name already exists!"
 msgstr "Čopič s tem imenom že obstaja!"
@@ -418,7 +413,6 @@ msgid "Experimental"
 msgstr "eksperimentalni"
 
 #: ../gui/brushmanager.py:109
-#, fuzzy
 msgid "New"
 msgstr "Nova slika"
 
@@ -455,7 +449,6 @@ msgid "Delete"
 msgstr "izbrisani"
 
 #: ../gui/brushselectionwindow.py:241
-#, fuzzy
 msgctxt "brush list commands"
 msgid "Really delete brush from disk?"
 msgstr "Želite res izbrisati ta čopič?"
@@ -500,7 +493,6 @@ msgid "Rename Group"
 msgstr "Preimenuj skupino"
 
 #: ../gui/brushselectionwindow.py:382
-#, fuzzy
 msgctxt "brush group rename"
 msgid "A group with this name already exists!"
 msgstr "Skupina s tem imenom že obstaja!"
@@ -532,7 +524,6 @@ msgid "MyPaint brush package (*.zip)"
 msgstr "MyPaint čopič paket (*.zip)"
 
 #: ../gui/brushselectionwindow.py:445
-#, fuzzy
 msgctxt "brush groups menu"
 msgid "New Group..."
 msgstr "Nova skupina ..."
@@ -550,7 +541,6 @@ msgid "Get More Brushes..."
 msgstr "Obnovi čopič %d"
 
 #: ../gui/brushselectionwindow.py:465
-#, fuzzy
 msgctxt "new brush group dialog: title"
 msgid "Create Group"
 msgstr "Ustvari skupino"
@@ -604,7 +594,6 @@ msgid "{button_combination} is already bound to the action '{action_name}'"
 msgstr ""
 
 #: ../gui/colorpicker.py:71
-#, fuzzy
 msgid "Pick Color"
 msgstr "Izberi barvo"
 
@@ -1156,10 +1145,9 @@ msgid "Cursor/puck"
 msgstr ""
 
 #: ../gui/device.py:50
-#, fuzzy
 msgctxt "prefs: device's type label"
 msgid "Eraser"
-msgstr "Radirka"
+msgstr "radirka"
 
 #: ../gui/device.py:54
 msgctxt "prefs: device's type label"
@@ -1844,9 +1832,8 @@ msgstr ""
 
 #. only development and prereleases
 #: ../gui/gtkexcepthook.py:168
-#, fuzzy
 msgid "Report..."
-msgstr "Poročaj ... "
+msgstr "Poročaj ..."
 
 #: ../gui/gtkexcepthook.py:170
 msgid "Ignore Error"
@@ -2096,7 +2083,6 @@ msgstr ""
 "Martin Renold in MyPaint razvijalska skupina"
 
 #: ../gui/meta.py:36
-#, fuzzy
 msgctxt "About dialog: license summary"
 msgid ""
 "This program is free software; you can redistribute it and/or modify it "
@@ -2108,22 +2094,20 @@ msgid ""
 "ANY WARRANTY. See the COPYING file for more details."
 msgstr ""
 "Ta program spada med prosto programje; lahko ga razširjate in/ali "
-"spreminjate pod pogoji Splošnega dovoljenja GNU (GNU General Public "
-"License), kot ga je objavila ustanova Free Software Foundation; bodisi "
-"različice 2 ali (po vaši izbiri) katerekoli poznejše različice.\n"
+"spreminjate pod pogoji Splošnega dovoljenja GNU (GNU General Public License)"
+", kot ga je objavila ustanova Free Software Foundation; bodisi različice 2 "
+"ali (po vaši izbiri) katerekoli poznejše različice.\n"
 "\n"
 "Ta program se razširja v upanju, da bo uporaben, vendar BREZ VSAKRŠNEGA "
 "JAMSTVA; tudi brez posredne zagotovitve CENOVNE VREDNOSTI ali PRIMERNOSTI ZA "
 "DOLOČEN NAMEN. Za podrobnosti glejte besedilo v datoteki COPYING."
 
 #: ../gui/meta.py:51
-#, fuzzy
 msgctxt "About dialog: credits: tasks"
 msgid "programming"
 msgstr "programiranje"
 
 #: ../gui/meta.py:55
-#, fuzzy
 msgctxt "About dialog: credits: tasks"
 msgid "portability"
 msgstr "prenosljivost"
@@ -2152,7 +2136,6 @@ msgid "tool icons"
 msgstr "Namizna ikona"
 
 #: ../gui/meta.py:75
-#, fuzzy
 msgctxt "About dialog: credits: tasks: the main application icon"
 msgid "desktop icon"
 msgstr "Namizna ikona"
@@ -2472,7 +2455,6 @@ msgid "Merge Visible Layers"
 msgstr "Plasti"
 
 #: ../lib/command.py:705
-#, fuzzy
 msgid "Merge Down"
 msgstr "Spoji navzdol"
 
@@ -3407,10 +3389,9 @@ msgstr ""
 
 #. Tab label in preferences dialog
 #: ../po/tmp/preferenceswindow.glade.h:27
-#, fuzzy
 msgctxt "Prefs Dialog|"
 msgid "Pressure"
-msgstr "Pritisk:"
+msgstr "Pritisk"
 
 #: ../po/tmp/preferenceswindow.glade.h:28
 msgctxt "Prefs Dialog|Devices|"
@@ -3815,7 +3796,6 @@ msgid "Load the file you saved most recently."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:9
-#, fuzzy
 msgctxt "Menu→File (labels)"
 msgid "Open Recent"
 msgstr "Odpri nedavne"
@@ -3862,7 +3842,6 @@ msgid "Export your work to a file, but keep working on the same file."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:18
-#, fuzzy
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "Save As Scrap"
 msgstr "Shrani kot skico"
@@ -3873,7 +3852,6 @@ msgid "Save to a new scrap file, or save a new revision if already a scrap."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:20
-#, fuzzy
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "Open Previous Scrap"
 msgstr "Odpri prejšnjo skico"
@@ -3884,7 +3862,6 @@ msgid "Load the scrap file before the current one."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:22
-#, fuzzy
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "Open Next Scrap"
 msgstr "Odpri naslednjo skico"
@@ -4498,7 +4475,6 @@ msgid "Increase magnification."
 msgstr "Zmanjšaj prosojnost plasti"
 
 #: ../po/tmp/resources.xml.h:134
-#, fuzzy
 msgctxt "Menu→View→Adjust View (labels), Accel Editor (labels)"
 msgid "Zoom Out"
 msgstr "Oddalji"
@@ -4510,7 +4486,6 @@ msgid "Decrease magnification."
 msgstr "Povečaj prosojnost plasti"
 
 #: ../po/tmp/resources.xml.h:136
-#, fuzzy
 msgctxt "Menu→View→Adjust View (labels), Accel Editor (labels)"
 msgid "Rotate Counterclockwise"
 msgstr "Zasukaj v obratni smeri urinega kazalca"
@@ -4522,7 +4497,6 @@ msgid "Rotate the view counterclockwise."
 msgstr "Zasukaj v obratni smeri urinega kazalca"
 
 #: ../po/tmp/resources.xml.h:138
-#, fuzzy
 msgctxt "Menu→View→Adjust View (labels), Accel Editor (labels)"
 msgid "Rotate Clockwise"
 msgstr "Zasukaj v smeri urinega kazalca"
@@ -4556,7 +4530,6 @@ msgid "Flip the view upside-down."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:144
-#, fuzzy
 msgctxt "Menu→View (labels), Accel Editor (labels)"
 msgid "Layer Solo"
 msgstr "Samo ta plast"
@@ -4600,7 +4573,6 @@ msgid "Show the brush engine’s internally generated inputs on the console."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:152
-#, fuzzy
 msgctxt "Menu→Help→Debug (labels), Accel Editor (labels)"
 msgid "Visualize Rendering"
 msgstr "Vizualiziraj izris"
@@ -4988,7 +4960,6 @@ msgid "Show MyPaint’s license, version number, and credits."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:224
-#, fuzzy
 msgctxt "Menu→Help (labels)"
 msgid "Debug"
 msgstr "Sporočila za razvijalce (debug)"
@@ -5638,7 +5609,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:347
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
 msgid "Inking"
-msgstr ""
+msgstr "Risanje s črnilom"
 
 #: ../po/tmp/resources.xml.h:348
 msgctxt "Accel Editor (descriptions)"
@@ -5767,7 +5738,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:372
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
 msgid "Flood Fill"
-msgstr ""
+msgstr "Zapolni"
 
 #: ../po/tmp/resources.xml.h:373
 msgctxt "Accel Editor (descriptions)"
