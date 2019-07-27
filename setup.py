@@ -22,6 +22,14 @@ from setuptools.command.build_ext import build_ext
 from setuptools.command.install import install
 from setuptools.command.install_scripts import install_scripts
 
+# Constants
+
+
+# Some versions of clang requires different flag configurations than gcc
+# to link correctly, so we enable configuration via environemnt variables.
+OPENMP_CFLAG = os.getenv("OPENMP_CFLAG", "-fopenmp")
+OPENMP_LDFLAG = os.getenv("OPENMP_LDFLAG", "-fopenmp")
+
 
 # Helper classes and routines:
 
@@ -220,11 +228,14 @@ class BuildExt (build_ext):
     user_options = [
         ("set-rpath", "f",
          "[MyPaint] Add dependency library paths from pkg-config "
-         "to the rpath of mypaintlib (linux only)")
+         "to the rpath of mypaintlib (linux only)"),
+        ("disable-openmp", None,
+         "Don't use openmp, even if the platform supports it."),
     ] + build_ext.user_options
 
     def initialize_options(self):
         self.set_rpath = False
+        self.disable_openmp = False
         build_ext.initialize_options(self)
 
     def finalize_options(self):
@@ -241,6 +252,10 @@ class BuildExt (build_ext):
     def build_extension(self, ext):
         ccflags = ext.extra_compile_args
         linkflags = ext.extra_link_args
+
+        if sys.platform != "darwin" and not self.disable_openmp:
+            linkflags.append(OPENMP_CFLAG)
+            ccflags.append(OPENMP_LDFLAG)
 
         if self.debug:
             skip = ["-DNDEBUG"]
@@ -635,10 +650,6 @@ def get_ext_modules():
         '-g',  # always include symbols, for profiling
     ]
     extra_link_args = []
-
-    if sys.platform != "darwin":
-        extra_link_args.append("-fopenmp")
-        extra_compile_args.append("-fopenmp")
 
     if sys.platform == "darwin":
         pass
