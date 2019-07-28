@@ -8,8 +8,8 @@ msgstr ""
 "Project-Id-Version: 0.9.0-git\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-07-11 21:24+0100\n"
-"PO-Revision-Date: 2019-05-03 16:49+0000\n"
-"Last-Translator: Rui Mendes <xz9@protonmail.com>\n"
+"PO-Revision-Date: 2019-08-01 05:10+0000\n"
+"Last-Translator: Neymar Junior <wizureye@nextmail.in>\n"
 "Language-Team: Portuguese (Brazil) <https://hosted.weblate.org/projects/"
 "mypaint/mypaint/pt_BR/>\n"
 "Language: pt_BR\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n > 1;\n"
-"X-Generator: Weblate 3.7-dev\n"
+"X-Generator: Weblate 3.8-dev\n"
 "X-Poedit-Language: Brazilian Portuguese\n"
 "X-Poedit-Country: BRAZIL\n"
 "X-Poedit-SourceCharset: utf-8\n"
@@ -3388,7 +3388,7 @@ msgstr ""
 #: ../po/tmp/preferenceswindow.glade.h:25
 msgctxt "Prefs Dialog|Pen Input|"
 msgid "<b>Global Pressure Mapping</b>"
-msgstr ""
+msgstr "<b>Mapeamento da Pressão Global</b>"
 
 #. Tab label in preferences dialog
 #: ../po/tmp/preferenceswindow.glade.h:27
@@ -3402,6 +3402,8 @@ msgid ""
 "Here you can restrict pointing devices to specific tasks on the canvas, or "
 "have them ignored completely if they glitch your drawing."
 msgstr ""
+"Aqui você pode restringir dispositivos apontadores para tarefas específicas "
+"na tela, ou ignorá-los completamente se eles bugam seu desenho."
 
 #: ../po/tmp/preferenceswindow.glade.h:29
 msgctxt "Prefs Dialog|Button|"
@@ -3440,7 +3442,7 @@ msgstr "<b>Mapeamentos do Teclado</b>"
 
 #: ../po/tmp/preferenceswindow.glade.h:37
 msgid "Keys"
-msgstr ""
+msgstr "Chaves"
 
 #: ../po/tmp/preferenceswindow.glade.h:38
 msgctxt "Prefs Dialog|Load & Save|Saving|"
@@ -3450,7 +3452,7 @@ msgstr "Formato de arquivo padrão:"
 #: ../po/tmp/preferenceswindow.glade.h:39
 msgctxt "Prefs Dialog|Load & Save|Saving|"
 msgid "Prefix when saving scraps:"
-msgstr ""
+msgstr "Prefixo para quando salvar scraps:"
 
 #: ../po/tmp/preferenceswindow.glade.h:40
 msgctxt "Prefs Dialog|Load & Save|"
@@ -3470,7 +3472,7 @@ msgstr ""
 #: ../po/tmp/preferenceswindow.glade.h:43
 msgctxt "Prefs Dialog|Load & Save|Color Management|"
 msgid "Convert to sRGB when loading; mark as sRGB when saving"
-msgstr ""
+msgstr "Converter para sRGB quando carregar; marcar como sRGB quando salvar"
 
 #: ../po/tmp/preferenceswindow.glade.h:44
 msgctxt "Prefs Dialog|Load & Save|Color Management|"
@@ -3508,23 +3510,28 @@ msgid ""
 "This is MyPaint's old behaviour, and can be used as a stopgap for non-sRGB "
 "working."
 msgstr ""
+"Nenhuma conversão de cor é executado durante o carregamento, e arquivos são "
+"salvos sem as informações de gerenciamento de cores.\n"
+"\n"
+"Esse é o comportamento padrão antigo do MyPaint, e pode ser usado como "
+"stopgap para trabalhos não-sRGB."
 
 #: ../po/tmp/preferenceswindow.glade.h:51
 msgctxt "Prefs Dialog|Load & Save|"
 msgid "<b>Automated Backups</b>"
-msgstr ""
+msgstr "<b>Backups Automatizados</b>"
 
 #: ../po/tmp/preferenceswindow.glade.h:52
 msgctxt "Prefs Dialog|Load & Save|Automated Backups|switch label"
 msgid "Back up unsaved work:"
-msgstr ""
+msgstr "Fazer backup de arquivos não-salvos:"
 
 #. In seconds. Lowest value is 5, highest is 300 (5 minutes). Only matters when enabled.
 #: ../po/tmp/preferenceswindow.glade.h:54
 msgctxt ""
 "Prefs Dialog|Load & Save|Automated Backups|interval spinbox units suffix"
 msgid "seconds of inactivity"
-msgstr ""
+msgstr "segundos de inatividade"
 
 #: ../po/tmp/preferenceswindow.glade.h:55
 msgctxt "Prefs Dialog|Load & Save|Automated Backups|switch tooltip"
@@ -3533,11 +3540,13 @@ msgid ""
 "the program crashes, you'll have a chance to restore what you were working "
 "on."
 msgstr ""
+"Faz backup em segundo plano do trabalho para o cache de disco do MyPaint. Se "
+"o programar travar, você terá chance de restaurar o que você estava fazendo."
 
 #: ../po/tmp/preferenceswindow.glade.h:56
 msgctxt "Prefs Dialog|Load & Save|Automated Backups|interval label"
 msgid "Time between backups:"
-msgstr ""
+msgstr "Tempo entre backups:"
 
 #. Tab label in preferences dialog
 #: ../po/tmp/preferenceswindow.glade.h:58
@@ -3548,7 +3557,7 @@ msgstr "Carregar e Salvar"
 #: ../po/tmp/preferenceswindow.glade.h:59
 msgctxt "Prefs Dialog|View|"
 msgid "<b>Zoom and Rendering</b>"
-msgstr ""
+msgstr "<b>Zoom e Renderização</b>"
 
 #: ../po/tmp/preferenceswindow.glade.h:60
 msgid "Default zoom level:"
@@ -3572,12 +3581,12 @@ msgstr ""
 #: ../po/tmp/preferenceswindow.glade.h:64
 msgctxt "Prefs Dialog|View|Interface|"
 msgid "Dark theme variant:"
-msgstr ""
+msgstr "Variante com Tema Escuro:"
 
 #: ../po/tmp/preferenceswindow.glade.h:65
 msgctxt "Prefs Dialog|View|Interface|Dark theme variant|"
 msgid "If available in GTK3 theme (needs restart)"
-msgstr ""
+msgstr "Se estiver disponível no tema GTK3 (necessita reiniciar)"
 
 #: ../po/tmp/preferenceswindow.glade.h:66
 msgctxt "Prefs Dialog|View|Interface|Dark theme variant|checkbox tooltip"
@@ -3588,7 +3597,7 @@ msgstr ""
 
 #: ../po/tmp/preferenceswindow.glade.h:67
 msgid "Some of these settings require MyPaint to be restarted."
-msgstr ""
+msgstr "Algumas dessas opções necessitam que o MyPaint seja reiniciado."
 
 #: ../po/tmp/preferenceswindow.glade.h:68
 msgctxt "Prefs Dialog|View|Interface|Icon size|"
@@ -3644,7 +3653,7 @@ msgstr ""
 
 #: ../po/tmp/preferenceswindow.glade.h:81
 msgid "Hide cursor while painting"
-msgstr ""
+msgstr "Ocultar cursor quando estiver pintando"
 
 #. Tab label in preferences dialog&#10;
 #: ../po/tmp/preferenceswindow.glade.h:83
