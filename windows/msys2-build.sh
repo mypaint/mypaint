@@ -267,13 +267,13 @@ bundle_mypaint() {
 
 build_for_testing() {
     loginfo "Building MyPaint from source"
-    python setup.py build
+    python2 setup.py build
     logok "Build finished."
 }
 
 clean_local_repo() {
     loginfo "Cleaning local build"
-    python setup.py clean --all
+    python2 setup.py clean --all
     rm -vf lib/*_wrap.c*
     logok "Clean finished."
 }
@@ -281,8 +281,8 @@ clean_local_repo() {
 install_test(){
     # TODO: Look into this to find out why it is failing.
     loginfo "Testing setup.py managed installation commands"
-    python setup.py managed_install
-    python setup.py managed_uninstall
+    python2 setup.py managed_install
+    python2 setup.py managed_uninstall
     logok "Install-test finished finished."
 }
 
@@ -292,13 +292,13 @@ install_test(){
 
 run_doctest() {
     loginfo "Running unit tests."
-    python setup.py nosetests --tests lib
+    python2 setup.py nosetests --tests lib
     logok "Unit tests done."
 }
 
 run_tests() {
     loginfo "Running conformance tests."
-    python setup.py test
+    python2 setup.py test
     logok "Tests done."
 }
 
