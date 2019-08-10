@@ -8,16 +8,16 @@ msgstr ""
 "Project-Id-Version: 0.9.0-git\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-07-11 21:24+0100\n"
-"PO-Revision-Date: 2016-11-25 20:50+0000\n"
-"Last-Translator: Michal Čihař <michal@cihar.com>\n"
-"Language-Team: Portuguese (Brazil) "
-"<https://hosted.weblate.org/projects/mypaint/mypaint/pt_BR/>\n"
+"PO-Revision-Date: 2019-08-01 05:10+0000\n"
+"Last-Translator: Neymar Junior <wizureye@nextmail.in>\n"
+"Language-Team: Portuguese (Brazil) <https://hosted.weblate.org/projects/"
+"mypaint/mypaint/pt_BR/>\n"
 "Language: pt_BR\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n > 1;\n"
-"X-Generator: Weblate 2.10-dev\n"
+"X-Generator: Weblate 3.8-dev\n"
 "X-Poedit-Language: Brazilian Portuguese\n"
 "X-Poedit-Country: BRAZIL\n"
 "X-Poedit-SourceCharset: utf-8\n"
@@ -928,7 +928,7 @@ msgid ""
 msgstr ""
 "Paleta de cores.\n"
 "Solte cores aqui e \n"
-"arraste-as para organiza-las."
+"arraste-as para organizá-las."
 
 #: ../gui/colors/paletteview.py:704
 msgctxt "palette view"
@@ -1477,7 +1477,7 @@ msgstr "JPEG com qualidade de 90% (*.jpg; *.jpeg)"
 
 #: ../gui/filehandling.py:166
 msgid "Save..."
-msgstr "Salvar"
+msgstr "Salvar..."
 
 #: ../gui/filehandling.py:177
 msgid "Format to save as:"
@@ -1774,7 +1774,7 @@ msgstr "Bug Detectado"
 
 #: ../gui/gtkexcepthook.py:155
 msgid "<big><b>A programming error has been detected.</b></big>"
-msgstr "<big><b>Um erro de programação foi detectado</b></big>"
+msgstr "<big><b>Um erro de programação foi detectado.</b></big>"
 
 #: ../gui/gtkexcepthook.py:158
 msgid ""
@@ -1792,7 +1792,7 @@ msgstr ""
 
 #: ../gui/gtkexcepthook.py:166
 msgid "Search Tracker..."
-msgstr "Pesquisar Rastreador ..."
+msgstr "Pesquisar Rastreador..."
 
 #. only development and prereleases
 #: ../gui/gtkexcepthook.py:168
@@ -2708,7 +2708,7 @@ msgstr "Marcador de posição"
 #: ../lib/layer/tree.py:92
 msgctxt "layer default names"
 msgid "Root"
-msgstr "Raíz"
+msgstr "Raiz"
 
 #: ../lib/layer/tree.py:1684 ../lib/layer/tree.py:1738
 msgctxt "layer default names: joiner punctuation for merged layers"
@@ -2765,7 +2765,7 @@ msgid ""
 "highlights and shadows. This is the inverse of 'Hard Light'."
 msgstr ""
 "Sobrepõe a imagem abaixo com a camada de cima, preservando as regiões de "
-"alto brilho e sombras da imagem abaixo.  É o inverso de 'Luz forte'."
+"alto brilho e sombras da imagem abaixo. É o inverso de 'Luz forte'."
 
 #: ../lib/modes.py:57
 msgid "Darken"
@@ -2969,7 +2969,7 @@ msgstr ""
 #: ../lib/tiledsurface.py:542
 #, python-format
 msgid "PNG reader failed: %s"
-msgstr "leitor de PNG falhou: %s"
+msgstr "Leitura de PNG falhou: %s"
 
 #: ../po/tmp/autorecover.glade.h:1
 msgid "Recover interrupted work?"
@@ -3051,7 +3051,7 @@ msgstr "Apagar este pincel do disco"
 
 #: ../po/tmp/brusheditor.glade.h:9
 msgid "Live update"
-msgstr "atualização instantânea"
+msgstr "Atualização instantânea"
 
 #: ../po/tmp/brusheditor.glade.h:10
 msgid ""
@@ -3063,7 +3063,7 @@ msgstr ""
 
 #: ../po/tmp/brusheditor.glade.h:12
 msgid "Save these settings to the brush"
-msgstr "Grave estas configurações no pincel"
+msgstr "Salve estas configurações no pincel"
 
 #: ../po/tmp/brusheditor.glade.h:13
 msgid "Brush Setting"
@@ -3100,7 +3100,7 @@ msgstr "Nome da configuração:"
 msgid ""
 "Starting value for this brush setting. The brush dynamics below act on this."
 msgstr ""
-"valor inicial para a configuração deste pincel. A dinâmica do pincel acima "
+"Valor inicial para a configuração deste pincel. A dinâmica do pincel acima "
 "age neste aqui."
 
 #. field label
@@ -3133,6 +3133,8 @@ msgid ""
 "Maximum value for the output axis.\n"
 "This can be set using the main slider for {dname}."
 msgstr ""
+"Valor máximo do eixo de resultado.\n"
+"Isto pode ser definido usando a barra de rolagem principal para {dname}."
 
 #: ../po/tmp/brusheditor.glade.h:32
 msgid "<ymax>"
@@ -3140,7 +3142,7 @@ msgstr "<ymax>"
 
 #: ../po/tmp/brusheditor.glade.h:33
 msgid "Output"
-msgstr ""
+msgstr "Resultado"
 
 #: ../po/tmp/brusheditor.glade.h:34
 msgid "Input"
@@ -3152,13 +3154,15 @@ msgstr "Ajusta o valor máximo"
 
 #: ../po/tmp/brusheditor.glade.h:36
 msgid "Adjusts the minimum value"
-msgstr "Ajusta o valor minímo"
+msgstr "Ajusta o valor mínimo"
 
 #: ../po/tmp/brusheditor.glade.h:37
 msgid ""
 "Minimum value for the input axis.\n"
 "Use the popup scale to adjust this."
 msgstr ""
+"Valor mínimo para o eixo de entrada.\n"
+"Use a escala que surge para ajustar isto."
 
 #: ../po/tmp/brusheditor.glade.h:39
 msgid "<xmin>"
@@ -3169,6 +3173,8 @@ msgid ""
 "Maximum value for the input axis.\n"
 "Use the popup scale to adjust this."
 msgstr ""
+"Valor máximo para o eixo de entrada.\n"
+"Use a escala que surge para ajustar isto."
 
 #: ../po/tmp/brusheditor.glade.h:42
 msgid "<xmax>"
@@ -3177,6 +3183,7 @@ msgstr "<xmax>"
 #: ../po/tmp/brusheditor.glade.h:43
 msgid "Variation of the base value by stylus input and other criteria"
 msgstr ""
+"Variação do valor de base pela entrada por caneta digital e outros critérios"
 
 #: ../po/tmp/brusheditor.glade.h:44
 msgid "Brush Dynamics"
@@ -3192,16 +3199,16 @@ msgstr "Editar Configuração"
 
 #: ../po/tmp/brusheditor.glade.h:47
 msgid "Adjust this input mapping in detail"
-msgstr ""
+msgstr "Ajustar este mapeamento de entrada em detalhes"
 
 #: ../po/tmp/brusheditor.glade.h:48
 msgid "{tooltip}"
-msgstr ""
+msgstr "{dica de ferramenta}"
 
 #. field name (template)
 #: ../po/tmp/brusheditor.glade.h:50
 msgid "{dname}:"
-msgstr ""
+msgstr "{dname}:"
 
 #: ../po/tmp/inktool.glade.h:1
 msgctxt "Inking tool options: point value sliders: labels: tooltips"
@@ -3238,12 +3245,12 @@ msgstr "Inclinação-Y:"
 
 #: ../po/tmp/inktool.glade.h:9
 msgid "Tilt in the canvas Y axis"
-msgstr ""
+msgstr "Inclinação na tela verticalmente"
 
 #: ../po/tmp/inktool.glade.h:10
 msgctxt "Inking tool options: point value sliders: labels: tooltips"
 msgid "Time since the previous point, in seconds"
-msgstr "Tempo desde o ultimo ponto,em segundos."
+msgstr "Tempo desde o último ponto, em segundos"
 
 #: ../po/tmp/inktool.glade.h:11
 msgctxt "Inking tool options: point value sliders: labels"
@@ -3370,7 +3377,7 @@ msgstr "Pressão do Pincel"
 #: ../po/tmp/preferenceswindow.glade.h:22
 msgctxt "Prefs Dialog|Pen Input|Input Device Settings|Pressure Mapping|"
 msgid "0.0"
-msgstr ""
+msgstr "0.0"
 
 #. Graph label, range (0...1)
 #: ../po/tmp/preferenceswindow.glade.h:24
@@ -3381,7 +3388,7 @@ msgstr ""
 #: ../po/tmp/preferenceswindow.glade.h:25
 msgctxt "Prefs Dialog|Pen Input|"
 msgid "<b>Global Pressure Mapping</b>"
-msgstr ""
+msgstr "<b>Mapeamento da Pressão Global</b>"
 
 #. Tab label in preferences dialog
 #: ../po/tmp/preferenceswindow.glade.h:27
@@ -3395,6 +3402,8 @@ msgid ""
 "Here you can restrict pointing devices to specific tasks on the canvas, or "
 "have them ignored completely if they glitch your drawing."
 msgstr ""
+"Aqui você pode restringir dispositivos apontadores para tarefas específicas "
+"na tela, ou ignorá-los completamente se eles bugam seu desenho."
 
 #: ../po/tmp/preferenceswindow.glade.h:29
 msgctxt "Prefs Dialog|Button|"
@@ -3411,14 +3420,14 @@ msgid ""
 "• The space bar can be used like Button2.\n"
 "• Some tablet pads' buttons cannot be held down when pressed."
 msgstr ""
-"• A barra de espaço pode ser usado como Botão2.\n"
-"• Alguns botões de mesa de captura não podem ser considerados para baixo "
+"• A barra de espaço pode ser usada como Botão2.\n"
+"• Alguns botões de mesas digitalizadoras não podem ser mantidos pressionados "
 "quando pressionados."
 
 #: ../po/tmp/preferenceswindow.glade.h:33
 msgctxt "Prefs Dialog|Button|"
 msgid "<b>Pointer Button Mappings</b>"
-msgstr "<b>Mapeamentos de caneta e mouse</b>"
+msgstr "<b>Mapeamentos de botões do dispositivo</b>"
 
 #. Tab label in preferences dialog
 #: ../po/tmp/preferenceswindow.glade.h:35
@@ -3433,7 +3442,7 @@ msgstr "<b>Mapeamentos do Teclado</b>"
 
 #: ../po/tmp/preferenceswindow.glade.h:37
 msgid "Keys"
-msgstr ""
+msgstr "Chaves"
 
 #: ../po/tmp/preferenceswindow.glade.h:38
 msgctxt "Prefs Dialog|Load & Save|Saving|"
@@ -3443,7 +3452,7 @@ msgstr "Formato de arquivo padrão:"
 #: ../po/tmp/preferenceswindow.glade.h:39
 msgctxt "Prefs Dialog|Load & Save|Saving|"
 msgid "Prefix when saving scraps:"
-msgstr ""
+msgstr "Prefixo para quando salvar scraps:"
 
 #: ../po/tmp/preferenceswindow.glade.h:40
 msgctxt "Prefs Dialog|Load & Save|"
@@ -3463,7 +3472,7 @@ msgstr ""
 #: ../po/tmp/preferenceswindow.glade.h:43
 msgctxt "Prefs Dialog|Load & Save|Color Management|"
 msgid "Convert to sRGB when loading; mark as sRGB when saving"
-msgstr ""
+msgstr "Converter para sRGB quando carregar; marcar como sRGB quando salvar"
 
 #: ../po/tmp/preferenceswindow.glade.h:44
 msgctxt "Prefs Dialog|Load & Save|Color Management|"
@@ -3479,8 +3488,8 @@ msgid ""
 msgstr ""
 "Imagens contendo informações de cores <i>completa</i> serão convertidas para "
 "sRGB quando forem carregadas no MyPaint. Quando o MyPaint salva uma imagem, "
-"sugestões serão adicionadas no mesmo para que outros programas possam abri-"
-"lo corretamente.\n"
+"sugestões serão adicionadas na mesma para que outros programas possam abri-"
+"la corretamente.\n"
 "\n"
 "Isso pressupõe que a tela é calibrada para algo próximo ao sRGB, o espaço de "
 "cor padrão para a web e uma aproximação pessimista da maioria dos monitores "
@@ -3490,7 +3499,7 @@ msgstr ""
 #: ../po/tmp/preferenceswindow.glade.h:47
 msgctxt "Prefs Dialog|Load & Save|Color Management|"
 msgid "No automatic conversions or tagging"
-msgstr ""
+msgstr "Sem conversões automáticas ou marcações"
 
 #: ../po/tmp/preferenceswindow.glade.h:48
 msgctxt "Prefs Dialog|Load & Save|Color Management|"
@@ -3501,23 +3510,28 @@ msgid ""
 "This is MyPaint's old behaviour, and can be used as a stopgap for non-sRGB "
 "working."
 msgstr ""
+"Nenhuma conversão de cor é executado durante o carregamento, e arquivos são "
+"salvos sem as informações de gerenciamento de cores.\n"
+"\n"
+"Esse é o comportamento padrão antigo do MyPaint, e pode ser usado como "
+"stopgap para trabalhos não-sRGB."
 
 #: ../po/tmp/preferenceswindow.glade.h:51
 msgctxt "Prefs Dialog|Load & Save|"
 msgid "<b>Automated Backups</b>"
-msgstr ""
+msgstr "<b>Backups Automatizados</b>"
 
 #: ../po/tmp/preferenceswindow.glade.h:52
 msgctxt "Prefs Dialog|Load & Save|Automated Backups|switch label"
 msgid "Back up unsaved work:"
-msgstr ""
+msgstr "Fazer backup de arquivos não-salvos:"
 
 #. In seconds. Lowest value is 5, highest is 300 (5 minutes). Only matters when enabled.
 #: ../po/tmp/preferenceswindow.glade.h:54
 msgctxt ""
 "Prefs Dialog|Load & Save|Automated Backups|interval spinbox units suffix"
 msgid "seconds of inactivity"
-msgstr ""
+msgstr "segundos de inatividade"
 
 #: ../po/tmp/preferenceswindow.glade.h:55
 msgctxt "Prefs Dialog|Load & Save|Automated Backups|switch tooltip"
@@ -3526,22 +3540,24 @@ msgid ""
 "the program crashes, you'll have a chance to restore what you were working "
 "on."
 msgstr ""
+"Faz backup em segundo plano do trabalho para o cache de disco do MyPaint. Se "
+"o programar travar, você terá chance de restaurar o que você estava fazendo."
 
 #: ../po/tmp/preferenceswindow.glade.h:56
 msgctxt "Prefs Dialog|Load & Save|Automated Backups|interval label"
 msgid "Time between backups:"
-msgstr ""
+msgstr "Tempo entre backups:"
 
 #. Tab label in preferences dialog
 #: ../po/tmp/preferenceswindow.glade.h:58
 msgctxt "Prefs Dialog|"
 msgid "Load & Save"
-msgstr "Carregar & Salvar"
+msgstr "Carregar e Salvar"
 
 #: ../po/tmp/preferenceswindow.glade.h:59
 msgctxt "Prefs Dialog|View|"
 msgid "<b>Zoom and Rendering</b>"
-msgstr ""
+msgstr "<b>Zoom e Renderização</b>"
 
 #: ../po/tmp/preferenceswindow.glade.h:60
 msgid "Default zoom level:"
@@ -3565,12 +3581,12 @@ msgstr ""
 #: ../po/tmp/preferenceswindow.glade.h:64
 msgctxt "Prefs Dialog|View|Interface|"
 msgid "Dark theme variant:"
-msgstr ""
+msgstr "Variante com Tema Escuro:"
 
 #: ../po/tmp/preferenceswindow.glade.h:65
 msgctxt "Prefs Dialog|View|Interface|Dark theme variant|"
 msgid "If available in GTK3 theme (needs restart)"
-msgstr ""
+msgstr "Se estiver disponível no tema GTK3 (necessita reiniciar)"
 
 #: ../po/tmp/preferenceswindow.glade.h:66
 msgctxt "Prefs Dialog|View|Interface|Dark theme variant|checkbox tooltip"
@@ -3581,7 +3597,7 @@ msgstr ""
 
 #: ../po/tmp/preferenceswindow.glade.h:67
 msgid "Some of these settings require MyPaint to be restarted."
-msgstr ""
+msgstr "Algumas dessas opções necessitam que o MyPaint seja reiniciado."
 
 #: ../po/tmp/preferenceswindow.glade.h:68
 msgctxt "Prefs Dialog|View|Interface|Icon size|"
@@ -3637,7 +3653,7 @@ msgstr ""
 
 #: ../po/tmp/preferenceswindow.glade.h:81
 msgid "Hide cursor while painting"
-msgstr ""
+msgstr "Ocultar cursor quando estiver pintando"
 
 #. Tab label in preferences dialog&#10;
 #: ../po/tmp/preferenceswindow.glade.h:83
@@ -3929,7 +3945,7 @@ msgstr "Faz o pincel atual ficar maior."
 #: ../po/tmp/resources.xml.h:37
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
 msgid "Decrease Brush Size"
-msgstr "Diminuir o Tamanho do Pincel"
+msgstr "Diminuir Tamanho do Pincel"
 
 #: ../po/tmp/resources.xml.h:38
 msgctxt "Accel Editor (descriptions)"
@@ -4099,7 +4115,7 @@ msgstr "Copia o conteúdo da camada ativa para a área de transferência."
 #: ../po/tmp/resources.xml.h:69
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Paste Layer from Clipboard"
-msgstr "Colar Camada da Área de Transferência."
+msgstr "Colar Camada da Área de Transferência"
 
 #: ../po/tmp/resources.xml.h:70
 msgctxt "Accel Editor (descriptions)"
@@ -4109,7 +4125,7 @@ msgstr "Substitui a camada ativa pelo conteúdo na área de transferência."
 #: ../po/tmp/resources.xml.h:71
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Edit Layer in External App…"
-msgstr "Editar Camada em uma Aplicação Externa..."
+msgstr "Editar Camada em uma Aplicação Externa…"
 
 #: ../po/tmp/resources.xml.h:72
 msgctxt "Accel Editor (descriptions)"
@@ -4188,7 +4204,7 @@ msgstr "Adicionar uma nova camada acima da camada atual"
 #: ../po/tmp/resources.xml.h:85
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "New Layer Group"
-msgstr "Novo grupo de camadas"
+msgstr "Novo Grupo de Camada"
 
 #: ../po/tmp/resources.xml.h:86
 #, fuzzy
@@ -4469,7 +4485,6 @@ msgid "Increase magnification."
 msgstr "Aumentar a ampliação"
 
 #: ../po/tmp/resources.xml.h:134
-#, fuzzy
 msgctxt "Menu→View→Adjust View (labels), Accel Editor (labels)"
 msgid "Zoom Out"
 msgstr "Reduzir"
@@ -4912,7 +4927,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:213
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "Change Color (fast subset)…"
-msgstr "Mudar Cor (paleta simples)"
+msgstr "Mudar Cor (paleta simples)…"
 
 #: ../po/tmp/resources.xml.h:214
 msgctxt "Accel Editor (descriptions)"
@@ -4969,10 +4984,9 @@ msgid "Show MyPaint’s license, version number, and credits."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:224
-#, fuzzy
 msgctxt "Menu→Help (labels)"
 msgid "Debug"
-msgstr "Debug"
+msgstr "Depurar"
 
 #: ../po/tmp/resources.xml.h:225
 #, fuzzy
@@ -5276,7 +5290,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:278
 msgctxt "Menu→Window (labels), Toolbar (labels), Accel Editor (labels)"
 msgid "Preview Panel"
-msgstr "painel de previsualização"
+msgstr "Painel de pré-visualização"
 
 #: ../po/tmp/resources.xml.h:279
 msgctxt "Accel Editor (descriptions)"
@@ -5316,7 +5330,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:286
 msgctxt "Menu→Window (labels), Toolbar (labels), Accel Editor (labels)"
 msgid "Brush & Color History Panel"
-msgstr "Painel de Histórico de Cores & Pincéis"
+msgstr "Painel de Histórico de Cores e Pincéis"
 
 #: ../po/tmp/resources.xml.h:287
 msgctxt "Accel Editor (descriptions)"
@@ -5326,7 +5340,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:288
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
 msgid "Recent Brushes & Colors"
-msgstr "Cores & Pincéis Recentes"
+msgstr "Cores e Pincéis Recentes"
 
 #: ../po/tmp/resources.xml.h:289
 msgctxt "Accel Editor (descriptions)"
@@ -5603,12 +5617,12 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:337
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
 msgid "Connected Lines"
-msgstr "Linhas Seqüenciais"
+msgstr "Linhas Sequenciais"
 
 #: ../po/tmp/resources.xml.h:338
 msgctxt "Accel Editor (descriptions)"
 msgid "Draw sequences of straight or curved lines."
-msgstr ""
+msgstr "Desenhar sequências de linhas retas ou curvas."
 
 #: ../po/tmp/resources.xml.h:339
 #, fuzzy
@@ -5617,16 +5631,14 @@ msgid "Ellipses and Circles"
 msgstr "Elipses e Círculos"
 
 #: ../po/tmp/resources.xml.h:340
-#, fuzzy
 msgctxt "Toolbar (short labels)"
 msgid "Ellipse"
 msgstr "Elipse"
 
 #: ../po/tmp/resources.xml.h:341
-#, fuzzy
 msgctxt "Toolbar (tooltips)"
 msgid "Ellipses and Circles: draw rounded shapes."
-msgstr "Elipses e Círculos"
+msgstr "Elipses e Círculos: desenhar formas arredondadas."
 
 #: ../po/tmp/resources.xml.h:342
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
@@ -5636,12 +5648,12 @@ msgstr "Elipses e Círculos"
 #: ../po/tmp/resources.xml.h:343
 msgctxt "Accel Editor (descriptions)"
 msgid "Draw circles and ellipses."
-msgstr ""
+msgstr "Desenhar círculos e elipses."
 
 #: ../po/tmp/resources.xml.h:344
 msgctxt "Menu→Edit→Current Mode (labels)"
 msgid "Inking"
-msgstr ""
+msgstr "Arte-finalizar"
 
 #: ../po/tmp/resources.xml.h:345
 #, fuzzy
@@ -5652,7 +5664,7 @@ msgstr "Tinta"
 #: ../po/tmp/resources.xml.h:346
 msgctxt "Toolbar (tooltips)"
 msgid "Inking: draw smooth controlled lines."
-msgstr ""
+msgstr "Arte-finalizar: desenhar linhas com suavização controlada."
 
 #: ../po/tmp/resources.xml.h:347
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
@@ -5662,13 +5674,12 @@ msgstr "Arte-finalizar"
 #: ../po/tmp/resources.xml.h:348
 msgctxt "Accel Editor (descriptions)"
 msgid "Draw smooth controlled lines."
-msgstr ""
+msgstr "Desenhar linhas com suavização controlada."
 
 #: ../po/tmp/resources.xml.h:349
-#, fuzzy
 msgctxt "Menu→Edit→Current Mode (labels)"
 msgid "Reposition Layer"
-msgstr "Ir para Camada"
+msgstr "Reposicionar Camada"
 
 #: ../po/tmp/resources.xml.h:350
 #, fuzzy
