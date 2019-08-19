@@ -641,8 +641,11 @@ class FloodFillOptionsWidget (Gtk.Grid):
         combo.set_tooltip_text(C_(
             "floodfill option tooltip text - blend modes",
             "Blend mode used when filling"))
-        active = prefs.get(self.BLEND_MODE_PREF, self.DEFAULT_BLEND_MODE)
-        active = int(active)
+        # Reinstate the last _mode id_ independent of mode-list order
+        mode_type = prefs.get(self.BLEND_MODE_PREF, self.DEFAULT_BLEND_MODE)
+        mode_dict = {mode: index for index, mode, in enumerate(modes)}
+        # Fallback is only necessary for compat. if a mode is ever removed
+        active = mode_dict.get(int(mode_type), self.DEFAULT_BLEND_MODE)
         combo.set_active(active)
         combo.connect(
             "changed", self._bm_combo_changed_cb
