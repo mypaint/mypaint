@@ -206,10 +206,22 @@ def get_paths():
     # There is no need to return the datadir of mypaint-data.
     # It will be set at build time. I still check brushes presence.
     import lib.config
-    if not os.path.isdir(lib.config.mypaint_brushdir):
+    # Allow brushdir path to be set relative to the installation prefix
+    # Use string-formatting *syntax*, but not actual formatting. This is
+    # to not have to deal with the remote possibility of a legitimate
+    # brushdir path with brace-enclosed components (legal UNIX-paths).
+    brushdir_path = lib.config.mypaint_brushdir
+    pref_key = "{installation-prefix}/"
+    if brushdir_path.startswith(pref_key):
+        logger.info("Using brushdir path relative to installation-prefix")
+        brushdir_path = join(prefix, brushdir_path[len(pref_key):])
+    if not os.path.isdir(brushdir_path):
         logger.critical('Default brush collection not found!')
-        logger.critical('It should have been here: %r', lib.config.mypaint_brushdir)
+        logger.critical('It should have been here: %r', brushdir_path)
         sys.exit(1)
+
+    # When using a prefix-relative path, replace it with the absolute path
+    lib.config.mypaint_brushdir = brushdir_path
 
     # Old style config file and user data locations.
     # Return None if using XDG will be correct.
