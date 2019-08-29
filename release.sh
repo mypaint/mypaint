@@ -154,7 +154,7 @@ mkdir -p "$exportdir_location"
 git checkout-index -a -f --prefix="$exportdir_path/"
 
 # Tidy up release tmpdir, and record info in it about what was used.  If
-# the release_info file exists in a build tree, scons will write it into
+# the release_info file exists in a build tree, values from it will be used in
 # the generated ./mypaint script in place of information it would
 # otherwise glean from .git.
 cd "$exportdir_path"

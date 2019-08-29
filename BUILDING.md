@@ -159,10 +159,13 @@ this step.
 
 ## Migration from SCons
 
-We've just moved the build system from SCons for portability reasons,
+We've moved the build system from SCons for portability reasons,
 and things may be a bit rough in comparison. If you have an old
 installation managed by SCons, please uninstall it before installing
 with `setup.py`.
+
+> The SCons files are no longer present in the repository, checkout
+> a revision older than `87ec2b3df30f07387a1d` to access them.
 
 Real Pythonistas™ might expect `pip` to work. It doesn't, not yet:
 MyPaint has way too many support files that have to be in special

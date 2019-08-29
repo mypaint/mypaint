@@ -13,10 +13,19 @@ and to a dialog within the application.
 To debug segfaults in C/C++ code, use `gdb` with a debug build,
 after first making sure you have debugging symbols for Python and GTK3.
 
-    sudo apt-get install gdb python2.7-dbg libgtk-3-0-dbg
-    scons debug=1
-    export MYPAINT_DEBUG=1
-    gdb -ex r --args python ./mypaint -c /tmp/cfgtmp_throwaway_2
+```
+sudo apt-get install gdb python2.7-dbg libgtk-3-0-dbg
+DEST=$(mktemp -d)
+python setup.py build_ext --debug --force install --root=$DEST --prefix=.
+echo "Debug build installed in $DEST"
+MYPAINT_DEBUG=1 gdb -ex run --args python $DEST/bin/mypaint -c $DEST
+```
+
+> Omit the --force flag if you don't need to rebuild mypaintlib.
+>
+> Install pythonX-dbg depending on the version of python you use.
+>
+> Check the version by running `python --version`
 
 Execute ``bt`` within the gdb environment for a full backtrace.
 See also: https://wiki.python.org/moin/DebuggingWithGdb
