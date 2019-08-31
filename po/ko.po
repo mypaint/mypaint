@@ -5,7 +5,7 @@ msgstr ""
 "Project-Id-Version: 0.9.0 -git\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-07-11 21:24+0100\n"
-"PO-Revision-Date: 2019-08-31 18:22+0000\n"
+"PO-Revision-Date: 2019-08-31 19:09+0000\n"
 "Last-Translator: geun-tak Jeong <beroberos@gmail.com>\n"
 "Language-Team: Korean <https://hosted.weblate.org/projects/mypaint/mypaint/"
 "ko/>\n"
@@ -564,7 +564,7 @@ msgstr "{button_combination}는 이미 '{action_name}'을 작업할 가능성이
 
 #: ../gui/colorpicker.py:71
 msgid "Pick Color"
-msgstr "색상을 고르기"
+msgstr "색상을 선택"
 
 #: ../gui/colorpicker.py:74
 msgid "Set the color used for painting"
@@ -2677,7 +2677,7 @@ msgstr "그룹 안의 요소들은 그룹의 배경에 직접 적용됩니다"
 
 #: ../lib/modes.py:41
 msgid "Normal"
-msgstr "표준"
+msgstr "노멀"
 
 #: ../lib/modes.py:42
 msgid "The top layer only, without blending colors."
@@ -2872,7 +2872,7 @@ msgctxt "user-facing error texts"
 msgid ""
 "Unable to construct a vital internal object. Your system may not have enough "
 "memory to perform this operation."
-msgstr "필수적인 내부 객체를 구성할 수 없습니다. 사용자의 시스템이 이 작업을 할 수 있을 정도의 메모리를 갖고 있지 않습니다."
+msgstr "필수 내부 오브젝트 생성이 불가능합니다. 당신의 시스템이 작동을 실행하기에 필요한 충분한 메모리가 없습니다."
 
 #: ../lib/surface.py:325
 #, python-brace-format
@@ -3033,6 +3033,8 @@ msgid ""
 "Minimum value for the output axis.\n"
 "This can be set using the main slider for {dname}."
 msgstr ""
+"출력 축의 최소값입니다.\n"
+"{dname}의 메인 슬라이더를 사용하여 설정할 수 있습니다."
 
 #: ../po/tmp/brusheditor.glade.h:29
 msgid "<ymin>"
@@ -3043,6 +3045,8 @@ msgid ""
 "Maximum value for the output axis.\n"
 "This can be set using the main slider for {dname}."
 msgstr ""
+"출력 축의 최대값입니다.\n"
+"{dname}의 메인 슬라이더를 사용하여 설정할 수 있습니다."
 
 #: ../po/tmp/brusheditor.glade.h:32
 msgid "<ymax>"
@@ -3069,6 +3073,8 @@ msgid ""
 "Minimum value for the input axis.\n"
 "Use the popup scale to adjust this."
 msgstr ""
+"입력 축의 최소값입니다.\n"
+"팝업 스케일을 사용하여 이를 조절합니다."
 
 #: ../po/tmp/brusheditor.glade.h:39
 msgid "<xmin>"
@@ -3079,6 +3085,8 @@ msgid ""
 "Maximum value for the input axis.\n"
 "Use the popup scale to adjust this."
 msgstr ""
+"입력 축의 최대값입니다.\n"
+"팝업 스케일을 사용하여 이를 조절합니다."
 
 #: ../po/tmp/brusheditor.glade.h:42
 msgid "<xmax>"
@@ -3086,7 +3094,7 @@ msgstr "<xmax>"
 
 #: ../po/tmp/brusheditor.glade.h:43
 msgid "Variation of the base value by stylus input and other criteria"
-msgstr ""
+msgstr "스타일러스 입력 및 기타 기준에 따른 베이스 값의 변화"
 
 #: ../po/tmp/brusheditor.glade.h:44
 msgid "Brush Dynamics"
@@ -3131,6 +3139,9 @@ msgid ""
 "A value of 0 means that the pen is vertical.\n"
 "Negative values mean leftwards tilts."
 msgstr ""
+"캔버스의 X 축 방향으로 기울입니다.\n"
+"값이 0이면 펜이 수직임을 나타냅니다.\n"
+"음수 값은 왼쪽 기울기를 의미합니다."
 
 #: ../po/tmp/inktool.glade.h:7
 msgctxt "Inking tool options: point value sliders: labels"
@@ -3149,7 +3160,7 @@ msgstr "캔버스 Y 축에 기울기"
 #: ../po/tmp/inktool.glade.h:10
 msgctxt "Inking tool options: point value sliders: labels: tooltips"
 msgid "Time since the previous point, in seconds"
-msgstr ""
+msgstr "이전 지점으로부터의 시간 (초)"
 
 #: ../po/tmp/inktool.glade.h:11
 msgctxt "Inking tool options: point value sliders: labels"
@@ -3169,7 +3180,7 @@ msgstr "현재 선택된 포인트을 삭제"
 #: ../po/tmp/mypaint.glade.h:2
 msgctxt "footer: color picker button: tooltip"
 msgid "Pick color"
-msgstr "색상을 고르기"
+msgstr "색상을 선택"
 
 #: ../po/tmp/mypaint.glade.h:3
 msgctxt "Footerbar|"
@@ -3200,7 +3211,7 @@ msgstr ""
 #: ../po/tmp/mypaint.glade.h:10
 msgctxt "footer: context picker button: tooltip"
 msgid "Pick brushstroke settings, stroke color, and layer"
-msgstr "브러시 획 설정, 스트로크 색상 및 레이어 선택"
+msgstr "브러시 스트로크 설정, 스트로크 색상 및 레이어를 선택"
 
 #: ../po/tmp/preferenceswindow.glade.h:1
 msgctxt "Prefs Dialog|Saving|Save Formats and Locations|Default|"
@@ -3303,6 +3314,8 @@ msgid ""
 "Here you can restrict pointing devices to specific tasks on the canvas, or "
 "have them ignored completely if they glitch your drawing."
 msgstr ""
+"여기서 당신은 마우스 포인터를 캔버스의 특정 지역만 사용가능하게 제한하거나 포인터가 드로잉에 작은 문제가 된다면 무시하게 만들 수 "
+"있습니다."
 
 #: ../po/tmp/preferenceswindow.glade.h:29
 msgctxt "Prefs Dialog|Button|"
@@ -3319,6 +3332,8 @@ msgid ""
 "• The space bar can be used like Button2.\n"
 "• Some tablet pads' buttons cannot be held down when pressed."
 msgstr ""
+"• 스페이바를 button2 처럼 사용할 수 있습니다.\n"
+"• 몇몇의 타블랫 패드의 버튼은 눌렀어도 작동이 되지 않을 수 있습니다."
 
 #: ../po/tmp/preferenceswindow.glade.h:33
 msgctxt "Prefs Dialog|Button|"
@@ -3382,6 +3397,12 @@ msgid ""
 "monitors. If you know your display is radically different from this, use the "
 "\"no automatic conversions or tagging\" setting instead."
 msgstr ""
+"<i>전체</i> 색상 공간 정보가 포함된 이미지를 MyPaint에 불러올 때 이미지의 색상 공간을 sRGB로 변환합니다. "
+"MyPaint가 이미지를 저장하면 다른 프로그램이 올바르게 렌더링 할 수 있도록 힌트를 이미지에 추가합니다.\n"
+"\n"
+"MyPaint에서는 디스플레이가 웹의 표준 색 공간 인 sRGB에 가까운 색상 공간으로 보정되고 대부분의 사용자 PC 모니터가 비관 "
+"근사치로 사용된다고 가정하고 있기 때문입니다. 사용하는 디스플레이가 이와 완전히 다른 경우 \"자동 전환 또는 태그 없음\" 설정을 대신 "
+"사용하십시오."
 
 #: ../po/tmp/preferenceswindow.glade.h:47
 msgctxt "Prefs Dialog|Load & Save|Color Management|"
@@ -3562,6 +3583,8 @@ msgid ""
 "The set of colors to show as primary on disk-style color wheels.\n"
 "Different traditions have different color harmonies."
 msgstr ""
+"디스크 스타일 색상환에 기본 색상으로 표시할 색상 설정입니다.\n"
+"다른 전통은 다른 색상 조화를 가지고 있습니다."
 
 #. Arrangement of MyPaint's custom colour wheels
 #: ../po/tmp/preferenceswindow.glade.h:87
@@ -3578,14 +3601,14 @@ msgstr "표준 디지털 레드/그린/ 블루"
 msgid ""
 "The red, green, and blue &apos;computer monitor&apos; primaries, evenly "
 "arranged around the circle. Green is opposite magenta."
-msgstr ""
+msgstr "레드, 그린 및 블루 &apos;컴퓨터 모니터&apos;기본, 원 주위에 균일하게 배열되어있다. 그린은 마젠타 반대입니다."
 
 #: ../po/tmp/preferenceswindow.glade.h:90
 msgctxt "Prefs Dialog|Color|Color Wheel|Primaries|RGB|"
 msgid ""
 "The red, green, and blue 'computer monitor' primaries, evenly arranged "
 "around the circle. Green is opposite magenta."
-msgstr ""
+msgstr "레드, 그린 및 블루 '컴퓨터 모니터' 원색이 원 주위에 고르게 배열되어 있습니다. 그린은 마젠타의 보색입니다."
 
 #: ../po/tmp/preferenceswindow.glade.h:91
 msgctxt "Prefs Dialog|Color|Color Wheel|Primaries|"
@@ -3608,6 +3631,8 @@ msgid ""
 "since the 18th century, approximated with pure display colors evenly "
 "arranged around the circle. Green is opposite red."
 msgstr ""
+"18세기 이후 많은 예술가들이 사용했던 전통적인 배치로 레드/옐로/블루 휠은 원 주위에 균등하게 배열된 순수한 표시 색상으로 근사됩니다. "
+"그린은 레드의 보색입니다."
 
 #: ../po/tmp/preferenceswindow.glade.h:94
 msgctxt "Prefs Dialog|Color|Color Wheel|Primaries|"
@@ -3713,7 +3738,7 @@ msgstr "되돌리기"
 #: ../po/tmp/resources.xml.h:11
 msgctxt "Accel Editor (descriptions)"
 msgid "Reload the file your current work was loaded from."
-msgstr ""
+msgstr "현재 작업이 불러와진 파일을 다시 불러옵니다."
 
 #: ../po/tmp/resources.xml.h:12
 msgctxt "Menu→File (labels), Accel Editor (labels)"
@@ -3742,7 +3767,7 @@ msgstr "내보내기…"
 
 #: ../po/tmp/resources.xml.h:17
 msgid "Export your work to a file, but keep working on the same file."
-msgstr ""
+msgstr "작업을 파일로 내보내지만 사용자는 동일한 파일에서 계속 작업을 진행합니다."
 
 #: ../po/tmp/resources.xml.h:18
 msgctxt "Menu→File (labels), Accel Editor (labels)"
@@ -3752,7 +3777,7 @@ msgstr "다른 스크랩으로 저장"
 #: ../po/tmp/resources.xml.h:19
 msgctxt "Accel Editor (descriptions)"
 msgid "Save to a new scrap file, or save a new revision if already a scrap."
-msgstr ""
+msgstr "새로운 스크랩 파일에 저장하거나 이미 스크랩이 존재하는 경우 변화된 새로운 파일을 저장합니다."
 
 #: ../po/tmp/resources.xml.h:20
 msgctxt "Menu→File (labels), Accel Editor (labels)"
@@ -3777,12 +3802,12 @@ msgstr "현재 이후 스크랩 파일을 불러옵니다."
 #: ../po/tmp/resources.xml.h:24
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "Recover File from an Automated Backup…"
-msgstr ""
+msgstr "자동 백업파일에서 파일 복구를 진행합니다…"
 
 #: ../po/tmp/resources.xml.h:25
 msgctxt "Accel Editor (descriptions)"
 msgid "Try to save and resume interrupted unsaved work."
-msgstr ""
+msgstr "저장되지 않는 작업을 중단하고 다시 저장을 진행하세요."
 
 #: ../po/tmp/resources.xml.h:26
 msgctxt "Menu→Brush (label)"
@@ -3947,7 +3972,7 @@ msgstr "선및 및 레이어를 선택"
 #: ../po/tmp/resources.xml.h:58
 msgctxt "Accel Editor (descriptions)"
 msgid "Pick a brushstroke from the canvas: restores brush, color, and layer."
-msgstr ""
+msgstr "캔버스에서 브러시 스트로크 선택: 브러시, 색상과 레이어를 복원합니다."
 
 #: ../po/tmp/resources.xml.h:59
 msgctxt "Menu→Brush→Shortcut Keys (labels), Accel Editor (labels)"
@@ -3959,7 +3984,7 @@ msgctxt "Accel Editor (descriptions)"
 msgid ""
 "Toggle whether restoring the brush from a shortcut key also restores the "
 "saved color."
-msgstr ""
+msgstr "바로 가기 키에서 브러시를 복원해도 저장된 색상이 복원되는지 여부를 토글합니다."
 
 #: ../po/tmp/resources.xml.h:61
 msgctxt "Menu→Brush→Shortcut Keys (labels), Accel Editor (labels)"
@@ -4149,7 +4174,7 @@ msgstr "표시 상태에서 새 레이어"
 #: ../po/tmp/resources.xml.h:98
 msgctxt "Accel Editor (descriptions)"
 msgid "Like ‘Merge Visible Layers’, but doesn’t delete the originals."
-msgstr ""
+msgstr "'보이는 레이어 병합'과 비슷하지만, 원본을 삭제하지 않습니다."
 
 #: ../po/tmp/resources.xml.h:99
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
@@ -4171,7 +4196,7 @@ msgctxt "Accel Editor (descriptions)"
 msgid ""
 "Convert the current layer or group to a painting layer in ‘Normal’ mode, "
 "preserving its appearance."
-msgstr ""
+msgstr "현재의 모습은 유치하면서 현재의 레이어 또는 그룹을 '노멀'모드의 페인팅 레이어로 변환합니다."
 
 #: ../po/tmp/resources.xml.h:103
 msgctxt "Menu→Layer→Opacity (labels), Accel Editor (labels)"
@@ -4242,7 +4267,7 @@ msgstr "잠긴 레이어"
 msgctxt "Accel Editor (descriptions)"
 msgid ""
 "Toggle the current layer’s locked state. Locked layers cannot be modified."
-msgstr ""
+msgstr "현재 레이어의 잠금 상태를 토글합니다. 잠긴 레이어는 수정할 수 없습니다."
 
 #: ../po/tmp/resources.xml.h:117
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
@@ -4272,7 +4297,7 @@ msgstr "재설정 및 중앙을 보기"
 #: ../po/tmp/resources.xml.h:122
 msgctxt "Accel Editor (descriptions)"
 msgid "Reset Zoom, Rotation and Mirroring, and recenter the document."
-msgstr ""
+msgstr "확대/축소, 회전 및 미러링을 재설정하고 문서를 가운데로 설정합니다."
 
 #: ../po/tmp/resources.xml.h:123
 msgctxt "Menu→View (labels), Accel Editor (labels)"
@@ -4397,7 +4422,7 @@ msgstr "대칭 페인팅 활성"
 #: ../po/tmp/resources.xml.h:147
 msgctxt "Accel Editor (descriptions)"
 msgid "Mirror brushstrokes along the axis of symmetry"
-msgstr ""
+msgstr "대칭 축을 따라 브러쉬 스트로크를 미러합니다"
 
 #: ../po/tmp/resources.xml.h:148
 msgctxt "Menu→File (labels), Accel Editor (labels)"
@@ -4417,7 +4442,7 @@ msgstr "콘솔에 브러시 입력 값을 출력"
 #: ../po/tmp/resources.xml.h:151
 msgctxt "Accel Editor (descriptions)"
 msgid "Show the brush engine’s internally generated inputs on the console."
-msgstr ""
+msgstr "콘솔에 브러시 엔진의 내부 생성 입력을 표시합니다."
 
 #: ../po/tmp/resources.xml.h:152
 msgctxt "Menu→Help→Debug (labels), Accel Editor (labels)"
@@ -4437,7 +4462,7 @@ msgstr "이중 버퍼링이 없음"
 #: ../po/tmp/resources.xml.h:155
 msgctxt "Accel Editor (descriptions)"
 msgid "Turn off GTK’s double buffering, normally enabled."
-msgstr ""
+msgstr "일반적으로 활성화된 GTK의 이중 버퍼링을 끕니다."
 
 #: ../po/tmp/resources.xml.h:156
 msgctxt "Menu→Brush (labels)"
@@ -4447,7 +4472,7 @@ msgstr "페인트 모드"
 #: ../po/tmp/resources.xml.h:157
 msgctxt "Menu→Brush→Blend Mode (labels), Accel Editor (labels)"
 msgid "Paint Mode: Normal"
-msgstr "페인트 모드: 일반"
+msgstr "페인트 모드: 노멀"
 
 #: ../po/tmp/resources.xml.h:158
 msgctxt "Accel Editor (descriptions)"
@@ -4807,7 +4832,7 @@ msgstr "지금 가비지 수집기를 실행"
 #: ../po/tmp/resources.xml.h:228
 msgctxt "Accel Editor (descriptions)"
 msgid "Free memory used for Python objects which are no longer in use."
-msgstr ""
+msgstr "더 이상 사용하지 않는 Python 객체에 사용되는 사용 가능한 메모리."
 
 #: ../po/tmp/resources.xml.h:229
 msgctxt "Menu→Help→Debug (labels), Accel Editor (labels)"
@@ -4827,7 +4852,7 @@ msgstr "충돌을 시뮬레이션…"
 #: ../po/tmp/resources.xml.h:232
 msgctxt "Accel Editor (descriptions)"
 msgid "Raise a Python exception, to test the crash dialog."
-msgstr ""
+msgstr "크래시 대화 상자를 테스트하기 위해 Python 예외를 발생시킵니다."
 
 #: ../po/tmp/resources.xml.h:233
 msgctxt "Menu (labels)"
@@ -4944,7 +4969,7 @@ msgctxt "Accel Editor (descriptions)"
 msgid ""
 "Dockable cylindrical hue/chroma/luma color selector. The circular slices are "
 "equiluminant."
-msgstr ""
+msgstr "고정 가능한 원통형 색조/크로마/루마 색상 선택기. 원형 조각은 동일합니다."
 
 #: ../po/tmp/resources.xml.h:256
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
@@ -5018,7 +5043,7 @@ msgstr "액체 담채"
 #: ../po/tmp/resources.xml.h:269
 msgctxt "Accel Editor (descriptions)"
 msgid "Dockable color selector showing a liquid-like wash of nearby colors."
-msgstr ""
+msgstr "액체 처럼 씻은 인근 색상을 보여주는 고정 가능한 색상 선택기."
 
 #: ../po/tmp/resources.xml.h:270
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
@@ -5028,7 +5053,7 @@ msgstr "동심 링"
 #: ../po/tmp/resources.xml.h:271
 msgctxt "Accel Editor (descriptions)"
 msgid "Dockable color selector with concentric HSV rings."
-msgstr ""
+msgstr "동심 HSV 링이있는 고정 가능한 색상 선택기."
 
 #: ../po/tmp/resources.xml.h:272
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
@@ -5038,7 +5063,7 @@ msgstr "교차 그릇"
 #: ../po/tmp/resources.xml.h:273
 msgctxt "Accel Editor (descriptions)"
 msgid "Dockable color selector with HSV ramps crossing a radial bowl of color."
-msgstr ""
+msgstr "방사형 색상 그릇을 가로 지르는 HSV 램프가 있는 고정 가능한 색상 선택기."
 
 #: ../po/tmp/resources.xml.h:274
 msgctxt "Menu→Window (labels), Accel Editor (labels)"
@@ -5108,7 +5133,7 @@ msgstr "브러시 & 색상 기록 패널"
 #: ../po/tmp/resources.xml.h:287
 msgctxt "Accel Editor (descriptions)"
 msgid "Toggle the History panel (recently used brushes and colors)."
-msgstr ""
+msgstr "작업 내역 패널(최근에 사용 된 브러시 및 색상)을 토글합니다."
 
 #: ../po/tmp/resources.xml.h:288
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
@@ -5118,7 +5143,7 @@ msgstr "최근 브러쉬 & 색상"
 #: ../po/tmp/resources.xml.h:289
 msgctxt "Accel Editor (descriptions)"
 msgid "Reveal the History panel (recently used brushes and colors)."
-msgstr ""
+msgstr "작업 내역 패널(최근에 사용된 브러시 및 색상)을 표시합니다."
 
 #: ../po/tmp/resources.xml.h:290
 msgctxt "Menu→View (labels), Accel Editor (labels)"
@@ -5128,7 +5153,7 @@ msgstr "전체 화면에서 컨트롤을 숨기기"
 #: ../po/tmp/resources.xml.h:291
 msgctxt "Accel Editor (descriptions)"
 msgid "Toggle automatic hiding of the user interface in fullscreen."
-msgstr ""
+msgstr "사용자 인터페이스 자동 숨기는 전체 화면으로 토글합니다."
 
 #: ../po/tmp/resources.xml.h:292
 msgctxt "Menu→View→Feedback (labels), Accel Editor (labels)"
@@ -5148,7 +5173,7 @@ msgstr "마지막 패인팅 위치를 표시"
 #: ../po/tmp/resources.xml.h:295
 msgctxt "Accel Editor (descriptions)"
 msgid "Toggle feedback showing where the last stroke ended."
-msgstr ""
+msgstr "마지막 스트로크가 끝난 위치를 보여주는 피드백을 토글합니다."
 
 #: ../po/tmp/resources.xml.h:296
 msgctxt "Menu→View (labels)"
@@ -5188,33 +5213,33 @@ msgstr "필터 색상 : 비디오를 반전. 검은 색은 흰색과 빨간색�
 #: ../po/tmp/resources.xml.h:303
 msgctxt "Menu→View→Display Filter (labels), Accel Editor (labels)"
 msgid "Display Colors with Simulated Insensitivity to Red"
-msgstr ""
+msgstr "레드에 대한 모의 감도가 없는 디스플레이 색상"
 
 #: ../po/tmp/resources.xml.h:304
 msgctxt "Accel Editor (descriptions)"
 msgid ""
 "Filter colors to simulate deuteranopia, a common form of color blindness."
-msgstr ""
+msgstr "색맹의 일반적인 형태인 제2색약(녹색약)을 시뮬레이션하기 위해 색상을 필터링합니다."
 
 #: ../po/tmp/resources.xml.h:305
 msgctxt "Menu→View→Display Filter (labels), Accel Editor (labels)"
 msgid "Display Colors with Simulated Insensitivity to Green"
-msgstr ""
+msgstr "그린에 대한 모의 감도가없는 디스플레이 색상"
 
 #: ../po/tmp/resources.xml.h:306
 msgctxt "Accel Editor (descriptions)"
 msgid "Filter colors to simulate protanopia, a common form of color blindness."
-msgstr ""
+msgstr "색맹의 일반적인 형태인 제1색맹(적색맹)을 시뮬레이션하기 위해 색상을 필터링합니다."
 
 #: ../po/tmp/resources.xml.h:307
 msgctxt "Menu→View→Display Filter (labels), Accel Editor (labels)"
 msgid "Display Colors with Simulated Insensitivity to Blue"
-msgstr ""
+msgstr "블루에 대한 모의 감도가없는 디스플레이 색상"
 
 #: ../po/tmp/resources.xml.h:308
 msgctxt "Accel Editor (descriptions)"
 msgid "Filter colors to simulate tritanopia, a rare form of color blindness."
-msgstr ""
+msgstr "드문 형태의 색맹인 제3색맹(청색맹)를 시뮬레이션하기 위해 색상을 필터링합니다."
 
 #: ../po/tmp/resources.xml.h:309
 msgctxt "Menu→Edit→Current Mode (labels)"
@@ -5239,7 +5264,7 @@ msgstr "자유형"
 #: ../po/tmp/resources.xml.h:313
 msgctxt "Accel Editor (descriptions)"
 msgid "Draw and paint freely, without geometric constraints."
-msgstr ""
+msgstr "기하학적 제약없이 자유롭게 그리고 페인트 할 수 있습니다."
 
 #: ../po/tmp/resources.xml.h:314
 msgctxt "Menu→Edit→Current Mode (labels)"
@@ -5466,7 +5491,7 @@ msgstr "프레임 편집"
 msgctxt "Accel Editor (descriptions)"
 msgid ""
 "Interactively define a frame around the document to give it a finite size."
-msgstr ""
+msgstr "문서 주위에 프레임을 대화식으로 정의하여 유한한 캔퍼스 크기를 정의합니다."
 
 #: ../po/tmp/resources.xml.h:359
 msgctxt "Menu→Edit→Current Mode (labels)"
@@ -5491,7 +5516,7 @@ msgstr "페인팅 대칭을 편집"
 #: ../po/tmp/resources.xml.h:363
 msgctxt "Accel Editor (description)"
 msgid "Interactively adjust the axis used for symmetrical painting."
-msgstr ""
+msgstr "대칭 페인팅에 사용되는 축을 대화식으로 조정합니다."
 
 #: ../po/tmp/resources.xml.h:364
 msgctxt "Menu→Edit→Current Mode (labels)"
@@ -5511,7 +5536,7 @@ msgstr "색상을 선택 : 화면 픽셀에서 페인팅 색상을 설정합니�
 #: ../po/tmp/resources.xml.h:367
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "Pick Color"
-msgstr "색상 선택"
+msgstr "색상을 선택"
 
 #: ../po/tmp/resources.xml.h:368
 msgctxt "Accel Editor (descriptions)"
