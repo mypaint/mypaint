@@ -1099,11 +1099,11 @@ Scrolling to pan the view needs this setting to be turned on, and for your devic
         </child>
         <child>
           <object class="GtkCheckButton" id="blink_layers_checkbutton">
-            <property name="label" translatable="yes" context="Prefs Dialog|View|Interface|Handle smooth scrolling events|checkbox label">Enabled</property>
+            <property name="label" translatable="yes" context="Prefs Dialog|View|Interface|Blink layers on creation/selection|checkbox label">Enabled</property>
             <property name="visible">True</property>
             <property name="can_focus">True</property>
             <property name="receives_default">False</property>
-            <property name="tooltip_text" translatable="yes" context="Prefs Dialog|View|Interface|Handle smooth scrolling events|checkbox tooltip">When layers are created and selected, show that layer in isolation for a short time period.</property>
+            <property name="tooltip_text" translatable="yes" context="Prefs Dialog|View|Interface|Blink layers on creation/selection|checkbox tooltip">When a layer is created or selected, show only that layer for a short time period.</property>
             <property name="hexpand">True</property>
             <property name="vexpand">False</property>
             <property name="xalign">0</property>

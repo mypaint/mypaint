@@ -571,9 +571,15 @@ class FileHandler (object):
 
     def init_save_dialog(self, export):
         if export:
-            save_dialog_name = C_("Dialogs: Save As...", u"Export")
+            save_dialog_name = C_(
+                "Dialogs (window title): File→Export...",
+                u"Export"
+            )
         else:
-            save_dialog_name = C_("Dialogs: Save As...", u"Save")
+            save_dialog_name = C_(
+                "Dialogs (window title): File→Save As...",
+                u"Save As"
+            )
         dialog = Gtk.FileChooserDialog(
             save_dialog_name,
             self.app.drawWindow,
@@ -591,7 +597,7 @@ class FileHandler (object):
         box = Gtk.HBox()
         box.set_spacing(12)
         label = Gtk.Label(C_(
-            "save dialogs: formats and options: label",
+            "save dialogs: formats and options: (label)",
             u"Format to save as:",
         ))
         label.set_alignment(0.0, 0.5)
@@ -725,7 +731,7 @@ class FileHandler (object):
             file_basename = None
         warning_msg_tmpl = C_(
             "Destructive action confirm dialog: warning message",
-            u"You risk losing {abbreviated_time} of unsaved painting. "
+            u"You risk losing {abbreviated_time} of unsaved painting."
         )
         markup_tmpl = warning_msg_tmpl
         d.set_markup(markup_tmpl.format(
