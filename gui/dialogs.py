@@ -220,7 +220,7 @@ def confirm_rewrite_group(window, groupname, deleted_groupname):
         u"<b>A group named “{groupname}” already exists.</b>\n"
         u"Do you want to replace it, or should the new group be renamed?\n"
         u"If you replace it, the brushes may be moved to a group called"
-        u"“{deleted_groupname}”."
+        u" “{deleted_groupname}”."
     ).format(
         groupname=groupname,
         deleted_groupname=deleted_groupname,
