@@ -694,7 +694,7 @@ class DrawWindow (Gtk.Window):
 
     def import_brush_pack_cb(self, *junk):
         format_id, filename = dialogs.open_dialog(
-            _("Import brush package..."), self,
+            _(u"Import brush package…"), self,
             [(_("MyPaint brush package (*.zip)"), "*.zip")]
         )
         if not filename:

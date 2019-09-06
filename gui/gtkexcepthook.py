@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 # (c) 2003 Gustavo J A M Carneiro gjc at inescporto.pt
 #     2004-2005 Filip Van Raemdonck
 #
@@ -173,9 +174,9 @@ def _info(exctyp, value, tb):
     dialog.set_markup(primary)
     dialog.format_secondary_text(secondary)
 
-    dialog.add_button(_("Search Tracker..."), RESPONSE_SEARCH)
+    dialog.add_button(_(u"Search Tracker…"), RESPONSE_SEARCH)
     if "-" in lib.meta.MYPAINT_VERSION:  # only development and prereleases
-        dialog.add_button(_("Report..."), RESPONSE_REPORT)
+        dialog.add_button(_("Report…"), RESPONSE_REPORT)
         dialog.set_response_sensitive(RESPONSE_REPORT, False)
     dialog.add_button(_("Ignore Error"), Gtk.ResponseType.CLOSE)
     dialog.add_button(_("Quit MyPaint"), RESPONSE_QUIT)
@@ -188,7 +189,7 @@ def _info(exctyp, value, tb):
         else:
             dialog.set_resizable(False)
     details_expander = Gtk.Expander()
-    details_expander.set_label(_("Details..."))
+    details_expander.set_label(_(u"Details…"))
     details_expander.connect("notify::expanded", expander_cb)
 
     textview = Gtk.TextView()

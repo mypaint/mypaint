@@ -1,4 +1,5 @@
 # This file is part of MyPaint.
+# -*- coding: utf-8 -*-
 # Copyright (C) 2014-2018 by the MyPaint Development Team.
 #
 # This program is free software; you can redistribute it and/or modify
@@ -478,7 +479,7 @@ class SettingsEditor (Gtk.Grid):
         # TRANSLATORS: tasks for the row's device to be configured.
         col = Gtk.TreeViewColumn(C_(
             "prefs: devices table: column header",
-            "Use for...",
+            u"Use for…",
         ))
         col.set_min_width(100)
         col.set_resizable(True)
@@ -508,7 +509,7 @@ class SettingsEditor (Gtk.Grid):
         # TRANSLATORS: interpreted normally.
         col = Gtk.TreeViewColumn(C_(
             "prefs: devices table: column header",
-            "Scroll...",
+            u"Scroll…",
         ))
         col.set_min_width(100)
         col.set_resizable(True)
