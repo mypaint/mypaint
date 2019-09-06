@@ -531,13 +531,13 @@ class BrushGroupsMenu (Gtk.Menu):
         # Static items
         item = Gtk.SeparatorMenuItem()
         self.append(item)
-        item = Gtk.MenuItem(C_("brush groups menu", "New Group..."))
+        item = Gtk.MenuItem(C_("brush groups menu", "New Group…"))
         item.connect("activate", self._new_brush_group_cb)
         self.append(item)
-        item = Gtk.MenuItem(C_("brush groups menu", "Import Brushes..."))
+        item = Gtk.MenuItem(C_("brush groups menu", "Import Brushes…"))
         item.connect("activate", self.app.drawWindow.import_brush_pack_cb)
         self.append(item)
-        item = Gtk.MenuItem(C_("brush groups menu", "Get More Brushes..."))
+        item = Gtk.MenuItem(C_("brush groups menu", "Get More Brushes…"))
         item.connect("activate", self.app.drawWindow.download_brush_pack_cb)
         self.append(item)
         # Dynamic items
