@@ -478,7 +478,7 @@ class SettingsEditor (Gtk.Grid):
         # TRANSLATORS: tasks for the row's device to be configured.
         col = Gtk.TreeViewColumn(C_(
             "prefs: devices table: column header",
-            "Use for...",
+            "Use for…",
         ))
         col.set_min_width(100)
         col.set_resizable(True)
@@ -508,7 +508,7 @@ class SettingsEditor (Gtk.Grid):
         # TRANSLATORS: interpreted normally.
         col = Gtk.TreeViewColumn(C_(
             "prefs: devices table: column header",
-            "Scroll...",
+            "Scroll…",
         ))
         col.set_min_width(100)
         col.set_resizable(True)
