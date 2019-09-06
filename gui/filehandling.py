@@ -1054,7 +1054,7 @@ class FileHandler (object):
         dialog = Gtk.FileChooserDialog(
             C_(
                 "load dialogs: title",
-                u"Open Scratchpad...",
+                u"Open Scratchpad…",
             ),
             self.app.drawWindow,
             Gtk.FileChooserAction.OPEN,

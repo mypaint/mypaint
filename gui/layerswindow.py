@@ -106,7 +106,7 @@ class LayersTool (SizedVBoxToolWidget):
     STATUSBAR_CONTEXT = 'layerstool-dnd'
 
     # TRANSLATORS: status bar messages for drag, without/with modifiers
-    STATUSBAR_DRAG_MSG = _("Move layer in stack...")
+    STATUSBAR_DRAG_MSG = _(u"Move layer in stack…")
     STATUSBAR_DRAG_INTO_MSG = _("Move layer in stack (dropping into a "
                                 "regular layer will create a new group)")
 

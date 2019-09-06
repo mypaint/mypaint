@@ -68,7 +68,7 @@ class OpenWithDialog (Gtk.Dialog):
 
     def __init__(self, content_type, specific_file=False):
         Gtk.Dialog.__init__(self)
-        self.set_title(_("Open With..."))
+        self.set_title(_(u"Open With…"))
         self.add_button(Gtk.STOCK_CANCEL, Gtk.ResponseType.CANCEL)
         self.add_button(Gtk.STOCK_OK, Gtk.ResponseType.OK)
         self.set_default_response(Gtk.ResponseType.CANCEL)

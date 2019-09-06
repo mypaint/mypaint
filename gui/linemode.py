@@ -1,4 +1,5 @@
 # This file is part of MyPaint.
+# -*- coding: utf-8 -*-
 # Copyright (C) 2012 by Richard Jones
 # Copyright (C) 2012-2018 by the MyPaint Development Team.
 #
@@ -170,7 +171,7 @@ class LineModeOptionsWidget (gui.mode.PaintingModeOptionsWidgetBase):
         curve.set_size_request(175, 125)
         self._curve = curve
         exp = Gtk.Expander()
-        exp.set_label(_("Pressure variation..."))
+        exp.set_label(_(u"Pressure variation…"))
         exp.set_use_markup(False)
         exp.add(curve)
         self.attach(exp, 0, row, 2, 1)
