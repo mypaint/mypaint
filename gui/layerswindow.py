@@ -123,8 +123,7 @@ class LayersTool (SizedVBoxToolWidget):
         view_scroll.set_hexpand(True)
         view_scroll.set_vexpand(True)
         # Context menu
-        ui_dir = os.path.dirname(os.path.abspath(__file__))
-        ui_path = os.path.join(ui_dir, "layerswindow.xml")
+        ui_path = os.path.join(self.app.datapath, "gui/layerswindow.xml")
         self.app.ui_manager.add_ui_from_file(ui_path)
         menu = self.app.ui_manager.get_widget("/LayersWindowPopup")
         menu.set_title(_("Layer"))

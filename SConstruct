@@ -141,7 +141,6 @@ env.Execute(Delete([
     'libmypaintlib.so',
     'libmypaint.a',
     'libmypaint-tests.a',
-    'lib/_mypaintlib.so',
     ]))
 
 
