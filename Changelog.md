@@ -1,3 +1,7 @@
+Version 1.2.2:
+* No added or removed features
+* Change installation layout to enable builds w. swig >= 4.
+
 Version 1.2.1:
 * Fix failure to start under GLib 2.48.
 * Fix failure to start when config and user data dirs are missing.
