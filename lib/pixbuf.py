@@ -83,8 +83,9 @@ def load_from_file(filename, feedback_cb=None):
     :rtype: GdkPixbuf.Pixbuf
     :returns: the loaded pixbuf
 
-    >>> load_from_file("pixmaps/mypaint_logo.png")  # doctest: +ELLIPSIS
-    <Pixbuf...>
+    >>> p = load_from_file("pixmaps/mypaint_logo.png")
+    >>> isinstance(p, GdkPixbuf.Pixbuf)
+    True
 
     """
     with open(filename, 'rb') as fp:
@@ -100,8 +101,9 @@ def load_from_stream(fp, feedback_cb=None):
     :returns: the loaded pixbuf
 
     >>> fp = open("pixmaps/mypaint_logo.png", "rb")
-    >>> load_from_stream(fp)   # doctest: +ELLIPSIS
-    <Pixbuf...>
+    >>> p = load_from_stream(fp)
+    >>> isinstance(p, GdkPixbuf.Pixbuf)
+    True
 
     """
     loader = GdkPixbuf.PixbufLoader()
@@ -127,8 +129,9 @@ def load_from_zipfile(datazip, filename, feedback_cb=None):
 
     >>> import zipfile
     >>> z = zipfile.ZipFile("tests/smallimage.ora", mode="r")
-    >>> load_from_zipfile(z, "Thumbnails/thumbnail.png")  # doctest: +ELLIPSIS
-    <Pixbuf...>
+    >>> p = load_from_zipfile(z, "Thumbnails/thumbnail.png")
+    >>> isinstance(p, GdkPixbuf.Pixbuf)
+    True
 
     """
     try:

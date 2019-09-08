@@ -1581,7 +1581,7 @@ def _save_layers_to_new_orazip(root_stack, filename, bbox=None, xres=None, yres=
     :param int yres: nominal Y resolution for the doc
     :param frame_active: True if the frame is enabled
     :param \*\*kwargs: Passed through to root_stack.save_to_openraster()
-    :rtype: GdkPixbuf
+    :rtype: GdkPixbuf.Pixbuf
     :returns: Thumbnail preview image (256x256 max) of what was saved
 
     >>> from lib.layer.test import make_test_stack
@@ -1589,8 +1589,9 @@ def _save_layers_to_new_orazip(root_stack, filename, bbox=None, xres=None, yres=
     >>> import tempfile
     >>> tmpdir = tempfile.mkdtemp()
     >>> orafile = os.path.join(tmpdir, "test.ora")
-    >>> _save_layers_to_new_orazip(root, orafile)  # doctest: +ELLIPSIS
-    <Pixbuf...>
+    >>> p = _save_layers_to_new_orazip(root, orafile)
+    >>> isinstance(p, GdkPixbuf.Pixbuf)
+    True
     >>> assert os.path.isfile(orafile)
     >>> shutil.rmtree(tmpdir)
     >>> assert not os.path.exists(tmpdir)

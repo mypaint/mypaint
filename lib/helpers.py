@@ -293,10 +293,12 @@ def get_pixbuf(filename):
     :returns: Thumbnail puixbuf, or None.
     :rtype: GdkPixbuf.Pixbuf
 
-    >>> get_pixbuf("pixmaps/mypaint_logo.png")  # doctest: +ELLIPSIS
-    <Pixbuf ...>
-    >>> get_pixbuf("tests/bigimage.ora")  # doctest: +ELLIPSIS
-    <Pixbuf ...>
+    >>> p = get_pixbuf("pixmaps/mypaint_logo.png")
+    >>> isinstance(p, GdkPixbuf.Pixbuf)
+    True
+    >>> p = get_pixbuf("tests/bigimage.ora")
+    >>> isinstance(p, GdkPixbuf.Pixbuf)
+    True
     >>> get_pixbuf("desktop/icons")   # Non-files return None.
     >>> get_pixbuf("pixmaps/nonexistent.foo")  # None also.
 
