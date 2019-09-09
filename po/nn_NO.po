@@ -531,17 +531,17 @@ msgstr "MyPaint penselpakke (*.zip)"
 
 #: ../gui/brushselectionwindow.py:534
 msgctxt "brush groups menu"
-msgid "New Group..."
+msgid "New Group…"
 msgstr "Ny gruppe …"
 
 #: ../gui/brushselectionwindow.py:537
 msgctxt "brush groups menu"
-msgid "Import Brushes..."
+msgid "Import Brushes…"
 msgstr "Importer penslar …"
 
 #: ../gui/brushselectionwindow.py:540
 msgctxt "brush groups menu"
-msgid "Get More Brushes..."
+msgid "Get More Brushes…"
 msgstr "Få fleire penslar …"
 
 #: ../gui/brushselectionwindow.py:554
@@ -1223,12 +1223,12 @@ msgstr "Type"
 
 #: ../gui/device.py:481
 msgctxt "prefs: devices table: column header"
-msgid "Use for..."
+msgid "Use for…"
 msgstr "Bruk for …"
 
 #: ../gui/device.py:511
 msgctxt "prefs: devices table: column header"
-msgid "Scroll..."
+msgid "Scroll…"
 msgstr "Rulling …"
 
 #. Name and preview column: will be indented
@@ -1452,7 +1452,7 @@ msgid "_Quit"
 msgstr "Avslutt"
 
 #: ../gui/drawwindow.py:697
-msgid "Import brush package..."
+msgid "Import brush package…"
 msgstr "Importer penselpakke …"
 
 #: ../gui/drawwindow.py:698
@@ -1508,7 +1508,7 @@ msgstr ""
 "«{type_name}» ({content_type})?"
 
 #: ../gui/externalapp.py:71
-msgid "Open With..."
+msgid "Open With…"
 msgstr "Opne med …"
 
 #: ../gui/externalapp.py:123
@@ -1702,13 +1702,13 @@ msgstr "JPEG 90% kvalitet (*.jpg; *.jpeg)"
 
 #: ../gui/filehandling.py:576
 #, fuzzy
-msgctxt "Dialogs (window title): File→Export..."
+msgctxt "Dialogs (window title): File→Export…"
 msgid "Export"
 msgstr "Eksporter …"
 
 #: ../gui/filehandling.py:581
 #, fuzzy
-msgctxt "Dialogs (window title): File→Save As..."
+msgctxt "Dialogs (window title): File→Save As…"
 msgid "Save As"
 msgstr "Lagre som …"
 
@@ -1781,7 +1781,7 @@ msgstr "Opne nyleg brukte filer"
 #: ../gui/filehandling.py:1057
 #, fuzzy
 msgctxt "load dialogs: title"
-msgid "Open Scratchpad..."
+msgid "Open Scratchpad…"
 msgstr "Opne rableblokk …"
 
 #: ../gui/filehandling.py:1099
@@ -2230,12 +2230,12 @@ msgstr ""
 "feilrapporteringssystemet dersom ingen andre har rapportert det enno."
 
 #: ../gui/gtkexcepthook.py:176
-msgid "Search Tracker..."
+msgid "Search Tracker…"
 msgstr "Søk i feilrapporteringssystemet …"
 
 #. only development and prereleases
 #: ../gui/gtkexcepthook.py:178
-msgid "Report..."
+msgid "Report…"
 msgstr "Rapporter …"
 
 #: ../gui/gtkexcepthook.py:180
@@ -2247,7 +2247,7 @@ msgid "Quit MyPaint"
 msgstr "Avslutt MyPaint"
 
 #: ../gui/gtkexcepthook.py:191
-msgid "Details..."
+msgid "Details…"
 msgstr "Detaljar …"
 
 #: ../gui/gtkexcepthook.py:218 ../gui/gtkexcepthook.py:221
@@ -2437,7 +2437,7 @@ msgstr ""
 
 #. TRANSLATORS: status bar messages for drag, without/with modifiers
 #: ../gui/layerswindow.py:109
-msgid "Move layer in stack..."
+msgid "Move layer in stack…"
 msgstr "Flytt laget i stabelen …"
 
 #: ../gui/layerswindow.py:110
@@ -2509,7 +2509,7 @@ msgid "Stroke trail-off beginning"
 msgstr "Byrjinga på slutten av stroket"
 
 #: ../gui/linemode.py:173
-msgid "Pressure variation..."
+msgid "Pressure variation…"
 msgstr "Trykkvariasjon …"
 
 #: ../gui/linemode.py:219 ../gui/linemode.py:777

@@ -531,18 +531,18 @@ msgstr "MyPaint penselpaket (*.zip)"
 
 #: ../gui/brushselectionwindow.py:534
 msgctxt "brush groups menu"
-msgid "New Group..."
-msgstr "Ny uppsättning..."
+msgid "New Group…"
+msgstr "Ny uppsättning…"
 
 #: ../gui/brushselectionwindow.py:537
 msgctxt "brush groups menu"
-msgid "Import Brushes..."
-msgstr "Importera penslar..."
+msgid "Import Brushes…"
+msgstr "Importera penslar…"
 
 #: ../gui/brushselectionwindow.py:540
 msgctxt "brush groups menu"
-msgid "Get More Brushes..."
-msgstr "Hämta fler penslar..."
+msgid "Get More Brushes…"
+msgstr "Hämta fler penslar…"
 
 #: ../gui/brushselectionwindow.py:554
 msgctxt "new brush group dialog: title"
@@ -1223,12 +1223,12 @@ msgstr "Typ"
 
 #: ../gui/device.py:481
 msgctxt "prefs: devices table: column header"
-msgid "Use for..."
-msgstr "Använd för..."
+msgid "Use for…"
+msgstr "Använd för…"
 
 #: ../gui/device.py:511
 msgctxt "prefs: devices table: column header"
-msgid "Scroll..."
+msgid "Scroll…"
 msgstr "Bläddra…"
 
 #. Name and preview column: will be indented
@@ -1452,8 +1452,8 @@ msgid "_Quit"
 msgstr "Avsluta"
 
 #: ../gui/drawwindow.py:697
-msgid "Import brush package..."
-msgstr "Importera penselpaket..."
+msgid "Import brush package…"
+msgstr "Importera penselpaket…"
 
 #: ../gui/drawwindow.py:698
 msgid "MyPaint brush package (*.zip)"
@@ -1510,7 +1510,7 @@ msgstr ""
 "“{type_name}” ({content_type})?"
 
 #: ../gui/externalapp.py:71
-msgid "Open With..."
+msgid "Open With…"
 msgstr "Öppna med…"
 
 #: ../gui/externalapp.py:123
@@ -1704,13 +1704,13 @@ msgstr "JPEG 90% kvalitet (*.jpg; *.jpeg)"
 
 #: ../gui/filehandling.py:576
 #, fuzzy
-msgctxt "Dialogs (window title): File→Export..."
+msgctxt "Dialogs (window title): File→Export…"
 msgid "Export"
 msgstr "Exportera…"
 
 #: ../gui/filehandling.py:581
 #, fuzzy
-msgctxt "Dialogs (window title): File→Save As..."
+msgctxt "Dialogs (window title): File→Save As…"
 msgid "Save As"
 msgstr "Spara som…"
 
@@ -1783,8 +1783,8 @@ msgstr "Öppna senaste filer"
 #: ../gui/filehandling.py:1057
 #, fuzzy
 msgctxt "load dialogs: title"
-msgid "Open Scratchpad..."
-msgstr "Öppna kladdblock..."
+msgid "Open Scratchpad…"
+msgstr "Öppna kladdblock…"
 
 #: ../gui/filehandling.py:1099
 #, fuzzy
@@ -2241,13 +2241,13 @@ msgstr ""
 "om ingen annan har rapporterat det än."
 
 #: ../gui/gtkexcepthook.py:176
-msgid "Search Tracker..."
+msgid "Search Tracker…"
 msgstr "Spårningssökare…"
 
 #. only development and prereleases
 #: ../gui/gtkexcepthook.py:178
-msgid "Report..."
-msgstr "Rapport..."
+msgid "Report…"
+msgstr "Rapport…"
 
 #: ../gui/gtkexcepthook.py:180
 msgid "Ignore Error"
@@ -2258,8 +2258,8 @@ msgid "Quit MyPaint"
 msgstr "Avsluta MyPaint"
 
 #: ../gui/gtkexcepthook.py:191
-msgid "Details..."
-msgstr "Detaljer..."
+msgid "Details…"
+msgstr "Detaljer…"
 
 #: ../gui/gtkexcepthook.py:218 ../gui/gtkexcepthook.py:221
 msgid "Exception while analyzing the exception."
@@ -2469,7 +2469,7 @@ msgstr ""
 
 #. TRANSLATORS: status bar messages for drag, without/with modifiers
 #: ../gui/layerswindow.py:109
-msgid "Move layer in stack..."
+msgid "Move layer in stack…"
 msgstr "Flytta på lager i grupp…"
 
 #: ../gui/layerswindow.py:110
@@ -2542,7 +2542,7 @@ msgid "Stroke trail-off beginning"
 msgstr "Penseldrag, början av uttunning"
 
 #: ../gui/linemode.py:173
-msgid "Pressure variation..."
+msgid "Pressure variation…"
 msgstr "Tryckvariation…"
 
 #: ../gui/linemode.py:219 ../gui/linemode.py:777
@@ -3726,7 +3726,7 @@ msgstr "Ta bort penseln från hårddisken"
 #, fuzzy
 msgctxt "Autosave Recovery dialog|"
 msgid "_Recover & Save…"
-msgstr "_Återställ och spara..."
+msgstr "_Återställ och spara…"
 
 #: ../po/tmp/autorecover.glade.h:12
 #, fuzzy
@@ -5849,7 +5849,7 @@ msgstr "Ladda standard-kladdblocket."
 #: ../po/tmp/resources.xml.h:225
 msgctxt "Menu→Scratchpad (labels), Accel Editor (labels)"
 msgid "Open Scratchpad…"
-msgstr "Öppna kladdblock …"
+msgstr "Öppna kladdblock…"
 
 #: ../po/tmp/resources.xml.h:226
 msgctxt "Accel Editor (descriptions)"

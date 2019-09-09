@@ -537,18 +537,18 @@ msgstr "Balík štetcov MyPaint (*.zip)"
 
 #: ../gui/brushselectionwindow.py:534
 msgctxt "brush groups menu"
-msgid "New Group..."
-msgstr "Nová skupina..."
+msgid "New Group…"
+msgstr "Nová skupina…"
 
 #: ../gui/brushselectionwindow.py:537
 msgctxt "brush groups menu"
-msgid "Import Brushes..."
-msgstr "Importovať štetce..."
+msgid "Import Brushes…"
+msgstr "Importovať štetce…"
 
 #: ../gui/brushselectionwindow.py:540
 msgctxt "brush groups menu"
-msgid "Get More Brushes..."
-msgstr "Získať viac štetcov..."
+msgid "Get More Brushes…"
+msgstr "Získať viac štetcov…"
 
 #: ../gui/brushselectionwindow.py:554
 msgctxt "new brush group dialog: title"
@@ -1232,13 +1232,13 @@ msgstr "Typ"
 
 #: ../gui/device.py:481
 msgctxt "prefs: devices table: column header"
-msgid "Use for..."
-msgstr "Použiť pre..."
+msgid "Use for…"
+msgstr "Použiť pre…"
 
 #: ../gui/device.py:511
 msgctxt "prefs: devices table: column header"
-msgid "Scroll..."
-msgstr "Posunúť..."
+msgid "Scroll…"
+msgstr "Posunúť…"
 
 #. Name and preview column: will be indented
 #: ../gui/dialogs.py:74 ../gui/externalapp.py:136 ../gui/layers.py:405
@@ -1461,8 +1461,8 @@ msgid "_Quit"
 msgstr "Ukončenie"
 
 #: ../gui/drawwindow.py:697
-msgid "Import brush package..."
-msgstr "Import balíka štetcov..."
+msgid "Import brush package…"
+msgstr "Import balíka štetcov…"
 
 #: ../gui/drawwindow.py:698
 msgid "MyPaint brush package (*.zip)"
@@ -1517,8 +1517,8 @@ msgstr ""
 "„{type_name}” ({content_type})?"
 
 #: ../gui/externalapp.py:71
-msgid "Open With..."
-msgstr "Otvorenie pomocou..."
+msgid "Open With…"
+msgstr "Otvorenie pomocou…"
 
 #: ../gui/externalapp.py:123
 msgid "Icon"
@@ -1709,13 +1709,13 @@ msgstr "JPEG 90% kvalita (*.jpg; *.jpeg)"
 
 #: ../gui/filehandling.py:576
 #, fuzzy
-msgctxt "Dialogs (window title): File→Export..."
+msgctxt "Dialogs (window title): File→Export…"
 msgid "Export"
 msgstr "Exportovať…"
 
 #: ../gui/filehandling.py:581
 #, fuzzy
-msgctxt "Dialogs (window title): File→Save As..."
+msgctxt "Dialogs (window title): File→Save As…"
 msgid "Save As"
 msgstr "Uložiť ako…"
 
@@ -1787,8 +1787,8 @@ msgstr "Otvoriť"
 #: ../gui/filehandling.py:1057
 #, fuzzy
 msgctxt "load dialogs: title"
-msgid "Open Scratchpad..."
-msgstr "Otvorenie náčrtníka..."
+msgid "Open Scratchpad…"
+msgstr "Otvorenie náčrtníka…"
 
 #: ../gui/filehandling.py:1099
 #, fuzzy
@@ -2241,13 +2241,13 @@ msgstr ""
 "sledovanie chýb, ak to už niekto nespravil."
 
 #: ../gui/gtkexcepthook.py:176
-msgid "Search Tracker..."
+msgid "Search Tracker…"
 msgstr ""
 
 #. only development and prereleases
 #: ../gui/gtkexcepthook.py:178
-msgid "Report..."
-msgstr "Nahlásiť..."
+msgid "Report…"
+msgstr "Nahlásiť…"
 
 #: ../gui/gtkexcepthook.py:180
 msgid "Ignore Error"
@@ -2258,8 +2258,8 @@ msgid "Quit MyPaint"
 msgstr "Ukončiť MyPaint"
 
 #: ../gui/gtkexcepthook.py:191
-msgid "Details..."
-msgstr "Podrobnosti..."
+msgid "Details…"
+msgstr "Podrobnosti…"
 
 #: ../gui/gtkexcepthook.py:218 ../gui/gtkexcepthook.py:221
 msgid "Exception while analyzing the exception."
@@ -2467,8 +2467,8 @@ msgstr ""
 
 #. TRANSLATORS: status bar messages for drag, without/with modifiers
 #: ../gui/layerswindow.py:109
-msgid "Move layer in stack..."
-msgstr "Presunúť vrstvu v zásobníku..."
+msgid "Move layer in stack…"
+msgstr "Presunúť vrstvu v zásobníku…"
 
 #: ../gui/layerswindow.py:110
 msgid ""
@@ -2540,8 +2540,8 @@ msgid "Stroke trail-off beginning"
 msgstr ""
 
 #: ../gui/linemode.py:173
-msgid "Pressure variation..."
-msgstr "Variácia tlaku..."
+msgid "Pressure variation…"
+msgstr "Variácia tlaku…"
 
 #: ../gui/linemode.py:219 ../gui/linemode.py:777
 msgid "Lines and Curves"
@@ -3720,7 +3720,7 @@ msgstr "Odstráni tento štetec z disku"
 #, fuzzy
 msgctxt "Autosave Recovery dialog|"
 msgid "_Recover & Save…"
-msgstr "_Obnoviť a uložiť..."
+msgstr "_Obnoviť a uložiť…"
 
 #: ../po/tmp/autorecover.glade.h:12
 #, fuzzy

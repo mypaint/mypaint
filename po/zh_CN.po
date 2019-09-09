@@ -89,7 +89,7 @@ msgstr "备份恢复失败"
 
 #: ../gui/autorecover.py:174
 msgid "Open the Backup’s Folder…"
-msgstr "打开备份文件夹 …"
+msgstr "打开备份文件夹…"
 
 #: ../gui/autorecover.py:182
 #, python-brace-format
@@ -527,18 +527,18 @@ msgstr "MyPaint 笔刷套件 (*.zip)"
 
 #: ../gui/brushselectionwindow.py:534
 msgctxt "brush groups menu"
-msgid "New Group..."
-msgstr "新建组..."
+msgid "New Group…"
+msgstr "新建组…"
 
 #: ../gui/brushselectionwindow.py:537
 msgctxt "brush groups menu"
-msgid "Import Brushes..."
-msgstr "导入笔刷..."
+msgid "Import Brushes…"
+msgstr "导入笔刷…"
 
 #: ../gui/brushselectionwindow.py:540
 msgctxt "brush groups menu"
-msgid "Get More Brushes..."
-msgstr "获取更多笔刷..."
+msgid "Get More Brushes…"
+msgstr "获取更多笔刷…"
 
 #: ../gui/brushselectionwindow.py:554
 msgctxt "new brush group dialog: title"
@@ -1206,13 +1206,13 @@ msgstr "类型"
 
 #: ../gui/device.py:481
 msgctxt "prefs: devices table: column header"
-msgid "Use for..."
-msgstr "用作..."
+msgid "Use for…"
+msgstr "用作…"
 
 #: ../gui/device.py:511
 msgctxt "prefs: devices table: column header"
-msgid "Scroll..."
-msgstr "滚动..."
+msgid "Scroll…"
+msgstr "滚动…"
 
 #. Name and preview column: will be indented
 #: ../gui/dialogs.py:74 ../gui/externalapp.py:136 ../gui/layers.py:405
@@ -1435,8 +1435,8 @@ msgid "_Quit"
 msgstr "离开"
 
 #: ../gui/drawwindow.py:697
-msgid "Import brush package..."
-msgstr "汇入笔刷套件..."
+msgid "Import brush package…"
+msgstr "汇入笔刷套件…"
 
 #: ../gui/drawwindow.py:698
 msgid "MyPaint brush package (*.zip)"
@@ -1488,8 +1488,8 @@ msgstr ""
 "MyPaint 应该使用什么应用程序编辑类型为“{type_name}” ({content_type})的文件？"
 
 #: ../gui/externalapp.py:71
-msgid "Open With..."
-msgstr "打开通过..."
+msgid "Open With…"
+msgstr "打开通过…"
 
 #: ../gui/externalapp.py:123
 msgid "Icon"
@@ -1681,13 +1681,13 @@ msgstr "JPEG 90% 品质 (*.jpg; *.jpeg)"
 
 #: ../gui/filehandling.py:576
 #, fuzzy
-msgctxt "Dialogs (window title): File→Export..."
+msgctxt "Dialogs (window title): File→Export…"
 msgid "Export"
 msgstr "导出…"
 
 #: ../gui/filehandling.py:581
 #, fuzzy
-msgctxt "Dialogs (window title): File→Save As..."
+msgctxt "Dialogs (window title): File→Save As…"
 msgid "Save As"
 msgstr "另存为…"
 
@@ -1758,8 +1758,8 @@ msgstr "开启最近的档案"
 #: ../gui/filehandling.py:1057
 #, fuzzy
 msgctxt "load dialogs: title"
-msgid "Open Scratchpad..."
-msgstr "开启便条纸..."
+msgid "Open Scratchpad…"
+msgstr "开启便条纸…"
 
 #: ../gui/filehandling.py:1099
 #, fuzzy
@@ -2207,13 +2207,13 @@ msgstr ""
 "如果还没有其他人报告过这个问题，请通过问题跟踪器把问题告诉开发人员。"
 
 #: ../gui/gtkexcepthook.py:176
-msgid "Search Tracker..."
-msgstr "搜索跟踪器......"
+msgid "Search Tracker…"
+msgstr "搜索跟踪器...…"
 
 #. only development and prereleases
 #: ../gui/gtkexcepthook.py:178
-msgid "Report..."
-msgstr "报告中......"
+msgid "Report…"
+msgstr "报告中...…"
 
 #: ../gui/gtkexcepthook.py:180
 msgid "Ignore Error"
@@ -2224,8 +2224,8 @@ msgid "Quit MyPaint"
 msgstr "退出 MyPaint"
 
 #: ../gui/gtkexcepthook.py:191
-msgid "Details..."
-msgstr "详细资讯..."
+msgid "Details…"
+msgstr "详细资讯…"
 
 #: ../gui/gtkexcepthook.py:218 ../gui/gtkexcepthook.py:221
 msgid "Exception while analyzing the exception."
@@ -2429,8 +2429,8 @@ msgstr ""
 
 #. TRANSLATORS: status bar messages for drag, without/with modifiers
 #: ../gui/layerswindow.py:109
-msgid "Move layer in stack..."
-msgstr "在栈中移动图层......"
+msgid "Move layer in stack…"
+msgstr "在栈中移动图层...…"
 
 #: ../gui/layerswindow.py:110
 msgid ""
@@ -2500,8 +2500,8 @@ msgid "Stroke trail-off beginning"
 msgstr "笔划开始逐渐消失"
 
 #: ../gui/linemode.py:173
-msgid "Pressure variation..."
-msgstr "压力变化......"
+msgid "Pressure variation…"
+msgstr "压力变化...…"
 
 #: ../gui/linemode.py:219 ../gui/linemode.py:777
 msgid "Lines and Curves"
@@ -3665,7 +3665,7 @@ msgstr "从磁盘上删除此画笔"
 #, fuzzy
 msgctxt "Autosave Recovery dialog|"
 msgid "_Recover & Save…"
-msgstr "恢复与保存..."
+msgstr "恢复与保存…"
 
 #: ../po/tmp/autorecover.glade.h:12
 #, fuzzy

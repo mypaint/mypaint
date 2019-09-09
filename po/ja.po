@@ -540,18 +540,18 @@ msgstr "MyPaint ブラシパッケージ (*.zip)"
 
 #: ../gui/brushselectionwindow.py:534
 msgctxt "brush groups menu"
-msgid "New Group..."
-msgstr "新しいグループ..."
+msgid "New Group…"
+msgstr "新しいグループ…"
 
 #: ../gui/brushselectionwindow.py:537
 msgctxt "brush groups menu"
-msgid "Import Brushes..."
-msgstr "ブラシをインポート..."
+msgid "Import Brushes…"
+msgstr "ブラシをインポート…"
 
 #: ../gui/brushselectionwindow.py:540
 msgctxt "brush groups menu"
-msgid "Get More Brushes..."
-msgstr "追加のブラシを入手..."
+msgid "Get More Brushes…"
+msgstr "追加のブラシを入手…"
 
 #: ../gui/brushselectionwindow.py:554
 msgctxt "new brush group dialog: title"
@@ -1238,13 +1238,13 @@ msgstr "種類"
 
 #: ../gui/device.py:481
 msgctxt "prefs: devices table: column header"
-msgid "Use for..."
-msgstr "用途は..."
+msgid "Use for…"
+msgstr "用途は…"
 
 #: ../gui/device.py:511
 msgctxt "prefs: devices table: column header"
-msgid "Scroll..."
-msgstr "スクロール機能は..."
+msgid "Scroll…"
+msgstr "スクロール機能は…"
 
 #. Name and preview column: will be indented
 #: ../gui/dialogs.py:74 ../gui/externalapp.py:136 ../gui/layers.py:405
@@ -1468,8 +1468,8 @@ msgid "_Quit"
 msgstr "終了"
 
 #: ../gui/drawwindow.py:697
-msgid "Import brush package..."
-msgstr "ブラシパッケージのインポート..."
+msgid "Import brush package…"
+msgstr "ブラシパッケージのインポート…"
 
 #: ../gui/drawwindow.py:698
 msgid "MyPaint brush package (*.zip)"
@@ -1525,8 +1525,8 @@ msgstr ""
 "プリケーションを使用しますか？"
 
 #: ../gui/externalapp.py:71
-msgid "Open With..."
-msgstr "他のアプリケーションで編集..."
+msgid "Open With…"
+msgstr "他のアプリケーションで編集…"
 
 #: ../gui/externalapp.py:123
 msgid "Icon"
@@ -1718,13 +1718,13 @@ msgstr "JPEG (90%の品質) (*.jpg; *.jpeg)"
 
 #: ../gui/filehandling.py:576
 #, fuzzy
-msgctxt "Dialogs (window title): File→Export..."
+msgctxt "Dialogs (window title): File→Export…"
 msgid "Export"
 msgstr "エクスポート…"
 
 #: ../gui/filehandling.py:581
 #, fuzzy
-msgctxt "Dialogs (window title): File→Save As..."
+msgctxt "Dialogs (window title): File→Save As…"
 msgid "Save As"
 msgstr "名前を付けて保存…"
 
@@ -1795,8 +1795,8 @@ msgstr "最近開いたファイル"
 #: ../gui/filehandling.py:1057
 #, fuzzy
 msgctxt "load dialogs: title"
-msgid "Open Scratchpad..."
-msgstr "作業パレットを開く..."
+msgid "Open Scratchpad…"
+msgstr "作業パレットを開く…"
 
 #: ../gui/filehandling.py:1099
 #, fuzzy
@@ -2251,13 +2251,13 @@ msgstr ""
 "を追跡する仕組みです) を使って知らせてくださると幸いです。"
 
 #: ../gui/gtkexcepthook.py:176
-msgid "Search Tracker..."
-msgstr "トラッカーを検索..."
+msgid "Search Tracker…"
+msgstr "トラッカーを検索…"
 
 #. only development and prereleases
 #: ../gui/gtkexcepthook.py:178
-msgid "Report..."
-msgstr "エラーを報告..."
+msgid "Report…"
+msgstr "エラーを報告…"
 
 #: ../gui/gtkexcepthook.py:180
 msgid "Ignore Error"
@@ -2268,8 +2268,8 @@ msgid "Quit MyPaint"
 msgstr "MyPaint を終了"
 
 #: ../gui/gtkexcepthook.py:191
-msgid "Details..."
-msgstr "詳細..."
+msgid "Details…"
+msgstr "詳細…"
 
 #: ../gui/gtkexcepthook.py:218 ../gui/gtkexcepthook.py:221
 msgid "Exception while analyzing the exception."
@@ -2481,8 +2481,8 @@ msgstr ""
 
 #. TRANSLATORS: status bar messages for drag, without/with modifiers
 #: ../gui/layerswindow.py:109
-msgid "Move layer in stack..."
-msgstr "レイヤーの並び替え..."
+msgid "Move layer in stack…"
+msgstr "レイヤーの並び替え…"
 
 #: ../gui/layerswindow.py:110
 msgid ""
@@ -2553,8 +2553,8 @@ msgid "Stroke trail-off beginning"
 msgstr "「抜き」の開始点"
 
 #: ../gui/linemode.py:173
-msgid "Pressure variation..."
-msgstr "筆圧の変動グラフ..."
+msgid "Pressure variation…"
+msgstr "筆圧の変動グラフ…"
 
 #: ../gui/linemode.py:219 ../gui/linemode.py:777
 msgid "Lines and Curves"
@@ -3744,7 +3744,7 @@ msgstr "このブラシをディスクから削除"
 #, fuzzy
 msgctxt "Autosave Recovery dialog|"
 msgid "_Recover & Save…"
-msgstr "バックアップから保存(_R)..."
+msgstr "バックアップから保存(_R)…"
 
 #: ../po/tmp/autorecover.glade.h:12
 #, fuzzy

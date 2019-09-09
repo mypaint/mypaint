@@ -82,7 +82,7 @@ msgstr "אין אפשרויות גיבוי זמינות"
 
 #: ../gui/autorecover.py:142
 msgid "Open the Cache Folder…"
-msgstr "פתח את תיקיית המטמון …"
+msgstr "פתח את תיקיית המטמון…"
 
 #: ../gui/autorecover.py:171
 msgid "Backup Recovery Failed"
@@ -522,18 +522,18 @@ msgstr "חבילת מברשות MyPaint (*.zip)"
 
 #: ../gui/brushselectionwindow.py:534
 msgctxt "brush groups menu"
-msgid "New Group..."
-msgstr "קבוצה חדשה..."
+msgid "New Group…"
+msgstr "קבוצה חדשה…"
 
 #: ../gui/brushselectionwindow.py:537
 msgctxt "brush groups menu"
-msgid "Import Brushes..."
-msgstr "ייבוא מברשות..."
+msgid "Import Brushes…"
+msgstr "ייבוא מברשות…"
 
 #: ../gui/brushselectionwindow.py:540
 msgctxt "brush groups menu"
-msgid "Get More Brushes..."
-msgstr "קבל עוד מברשות ..."
+msgid "Get More Brushes…"
+msgstr "קבל עוד מברשות…"
 
 #: ../gui/brushselectionwindow.py:554
 msgctxt "new brush group dialog: title"
@@ -1198,13 +1198,13 @@ msgstr "סוג"
 
 #: ../gui/device.py:481
 msgctxt "prefs: devices table: column header"
-msgid "Use for..."
-msgstr "השתמש עבור..."
+msgid "Use for…"
+msgstr "השתמש עבור…"
 
 #: ../gui/device.py:511
 msgctxt "prefs: devices table: column header"
-msgid "Scroll..."
-msgstr "גלול..."
+msgid "Scroll…"
+msgstr "גלול…"
 
 #. Name and preview column: will be indented
 #: ../gui/dialogs.py:74 ../gui/externalapp.py:136 ../gui/layers.py:405
@@ -1386,7 +1386,7 @@ msgstr ""
 #, fuzzy
 msgctxt "Open dragged file confirm dialog: continue button"
 msgid "_Open"
-msgstr "פתיחה..."
+msgstr "פתיחה…"
 
 #: ../gui/drawwindow.py:486
 msgid "Set current color"
@@ -1421,7 +1421,7 @@ msgid "_Quit"
 msgstr "יציאה"
 
 #: ../gui/drawwindow.py:697
-msgid "Import brush package..."
+msgid "Import brush package…"
 msgstr ""
 
 #: ../gui/drawwindow.py:698
@@ -1471,7 +1471,7 @@ msgid ""
 msgstr ""
 
 #: ../gui/externalapp.py:71
-msgid "Open With..."
+msgid "Open With…"
 msgstr ""
 
 #: ../gui/externalapp.py:123
@@ -1656,13 +1656,13 @@ msgstr ""
 
 #: ../gui/filehandling.py:576
 #, fuzzy
-msgctxt "Dialogs (window title): File→Export..."
+msgctxt "Dialogs (window title): File→Export…"
 msgid "Export"
 msgstr "תמיכה"
 
 #: ../gui/filehandling.py:581
 #, fuzzy
-msgctxt "Dialogs (window title): File→Save As..."
+msgctxt "Dialogs (window title): File→Save As…"
 msgid "Save As"
 msgstr "שמירה בשם…"
 
@@ -1731,7 +1731,7 @@ msgstr "קובץ"
 #: ../gui/filehandling.py:1057
 #, fuzzy
 msgctxt "load dialogs: title"
-msgid "Open Scratchpad..."
+msgid "Open Scratchpad…"
 msgstr "לוח סרטוט"
 
 #: ../gui/filehandling.py:1099
@@ -1749,7 +1749,7 @@ msgstr ""
 #, fuzzy
 msgctxt "File→Open Recent→* confirm dialog: continue button"
 msgid "_Open"
-msgstr "פתיחה..."
+msgstr "פתיחה…"
 
 #: ../gui/filehandling.py:1427
 #, fuzzy
@@ -1761,7 +1761,7 @@ msgstr "פתח אחרונים"
 #, fuzzy
 msgctxt "File→Open Most Recent→* confirm dialog: continue button"
 msgid "_Open"
-msgstr "פתיחה..."
+msgstr "פתיחה…"
 
 #: ../gui/filehandling.py:1446
 msgctxt "File→Open Next/Prev Scrap: error message"
@@ -1782,7 +1782,7 @@ msgstr ""
 #, fuzzy
 msgctxt "File→Open Next/Prev Scrap confirm dialog: continue button"
 msgid "_Open"
-msgstr "פתיחה..."
+msgstr "פתיחה…"
 
 #: ../gui/filehandling.py:1487
 msgctxt "File→Revert: status message: canvas has no filename yet"
@@ -2161,12 +2161,12 @@ msgid ""
 msgstr ""
 
 #: ../gui/gtkexcepthook.py:176
-msgid "Search Tracker..."
+msgid "Search Tracker…"
 msgstr ""
 
 #. only development and prereleases
 #: ../gui/gtkexcepthook.py:178
-msgid "Report..."
+msgid "Report…"
 msgstr ""
 
 #: ../gui/gtkexcepthook.py:180
@@ -2178,8 +2178,8 @@ msgid "Quit MyPaint"
 msgstr ""
 
 #: ../gui/gtkexcepthook.py:191
-msgid "Details..."
-msgstr "פרטים..."
+msgid "Details…"
+msgstr "פרטים…"
 
 #: ../gui/gtkexcepthook.py:218 ../gui/gtkexcepthook.py:221
 msgid "Exception while analyzing the exception."
@@ -2366,7 +2366,7 @@ msgstr ""
 
 #. TRANSLATORS: status bar messages for drag, without/with modifiers
 #: ../gui/layerswindow.py:109
-msgid "Move layer in stack..."
+msgid "Move layer in stack…"
 msgstr ""
 
 #: ../gui/layerswindow.py:110
@@ -2437,7 +2437,7 @@ msgid "Stroke trail-off beginning"
 msgstr ""
 
 #: ../gui/linemode.py:173
-msgid "Pressure variation..."
+msgid "Pressure variation…"
 msgstr ""
 
 #: ../gui/linemode.py:219 ../gui/linemode.py:777

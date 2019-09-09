@@ -536,18 +536,18 @@ msgstr "MyPaint pacchetto pennelli (*.zip)"
 
 #: ../gui/brushselectionwindow.py:534
 msgctxt "brush groups menu"
-msgid "New Group..."
-msgstr "Nuovo Gruppo..."
+msgid "New Group…"
+msgstr "Nuovo Gruppo…"
 
 #: ../gui/brushselectionwindow.py:537
 msgctxt "brush groups menu"
-msgid "Import Brushes..."
-msgstr "Importa Pennelli..."
+msgid "Import Brushes…"
+msgstr "Importa Pennelli…"
 
 #: ../gui/brushselectionwindow.py:540
 msgctxt "brush groups menu"
-msgid "Get More Brushes..."
-msgstr "Ottieni Altri Pennelli..."
+msgid "Get More Brushes…"
+msgstr "Ottieni Altri Pennelli…"
 
 #: ../gui/brushselectionwindow.py:554
 msgctxt "new brush group dialog: title"
@@ -1234,13 +1234,13 @@ msgstr "Tipo"
 
 #: ../gui/device.py:481
 msgctxt "prefs: devices table: column header"
-msgid "Use for..."
-msgstr "Usa per..."
+msgid "Use for…"
+msgstr "Usa per…"
 
 #: ../gui/device.py:511
 msgctxt "prefs: devices table: column header"
-msgid "Scroll..."
-msgstr "Scorri..."
+msgid "Scroll…"
+msgstr "Scorri…"
 
 #. Name and preview column: will be indented
 #: ../gui/dialogs.py:74 ../gui/externalapp.py:136 ../gui/layers.py:405
@@ -1464,8 +1464,8 @@ msgid "_Quit"
 msgstr "Esci"
 
 #: ../gui/drawwindow.py:697
-msgid "Import brush package..."
-msgstr "Importa pacchetto pennelli..."
+msgid "Import brush package…"
+msgstr "Importa pacchetto pennelli…"
 
 #: ../gui/drawwindow.py:698
 msgid "MyPaint brush package (*.zip)"
@@ -1519,8 +1519,8 @@ msgstr ""
 "“{type_name}” ({content_type})?"
 
 #: ../gui/externalapp.py:71
-msgid "Open With..."
-msgstr "Apri Con..."
+msgid "Open With…"
+msgstr "Apri Con…"
 
 #: ../gui/externalapp.py:123
 msgid "Icon"
@@ -1713,13 +1713,13 @@ msgstr "JPEG qualità 90% (*.jpg; *.jpeg)"
 
 #: ../gui/filehandling.py:576
 #, fuzzy
-msgctxt "Dialogs (window title): File→Export..."
+msgctxt "Dialogs (window title): File→Export…"
 msgid "Export"
 msgstr "Esporta…"
 
 #: ../gui/filehandling.py:581
 #, fuzzy
-msgctxt "Dialogs (window title): File→Save As..."
+msgctxt "Dialogs (window title): File→Save As…"
 msgid "Save As"
 msgstr "Salva Come…"
 
@@ -1792,8 +1792,8 @@ msgstr "Apri File Recenti"
 #: ../gui/filehandling.py:1057
 #, fuzzy
 msgctxt "load dialogs: title"
-msgid "Open Scratchpad..."
-msgstr "Apri Blocco Schizzi..."
+msgid "Open Scratchpad…"
+msgstr "Apri Blocco Schizzi…"
 
 #: ../gui/filehandling.py:1099
 #, fuzzy
@@ -2249,13 +2249,13 @@ msgstr ""
 "nessun'altro ha già riportato questo problema."
 
 #: ../gui/gtkexcepthook.py:176
-msgid "Search Tracker..."
-msgstr "Tracciatore Ricerca..."
+msgid "Search Tracker…"
+msgstr "Tracciatore Ricerca…"
 
 #. only development and prereleases
 #: ../gui/gtkexcepthook.py:178
-msgid "Report..."
-msgstr "Rapporto..."
+msgid "Report…"
+msgstr "Rapporto…"
 
 #: ../gui/gtkexcepthook.py:180
 msgid "Ignore Error"
@@ -2266,8 +2266,8 @@ msgid "Quit MyPaint"
 msgstr "Termina MyPaint"
 
 #: ../gui/gtkexcepthook.py:191
-msgid "Details..."
-msgstr "Dettagli..."
+msgid "Details…"
+msgstr "Dettagli…"
 
 #: ../gui/gtkexcepthook.py:218 ../gui/gtkexcepthook.py:221
 msgid "Exception while analyzing the exception."
@@ -2475,8 +2475,8 @@ msgstr ""
 
 #. TRANSLATORS: status bar messages for drag, without/with modifiers
 #: ../gui/layerswindow.py:109
-msgid "Move layer in stack..."
-msgstr "Sposta il livello nella pila..."
+msgid "Move layer in stack…"
+msgstr "Sposta il livello nella pila…"
 
 #: ../gui/layerswindow.py:110
 msgid ""
@@ -2548,8 +2548,8 @@ msgid "Stroke trail-off beginning"
 msgstr "Inizio del tratto finale"
 
 #: ../gui/linemode.py:173
-msgid "Pressure variation..."
-msgstr "Variazione pressione..."
+msgid "Pressure variation…"
+msgstr "Variazione pressione…"
 
 #: ../gui/linemode.py:219 ../gui/linemode.py:777
 msgid "Lines and Curves"
@@ -3747,7 +3747,7 @@ msgstr "Elimina questo pennello dal disco"
 #, fuzzy
 msgctxt "Autosave Recovery dialog|"
 msgid "_Recover & Save…"
-msgstr "_Recupera e Salva..."
+msgstr "_Recupera e Salva…"
 
 #: ../po/tmp/autorecover.glade.h:12
 #, fuzzy

@@ -535,18 +535,18 @@ msgstr "MyPaint fırça paketi (*.zip)"
 
 #: ../gui/brushselectionwindow.py:534
 msgctxt "brush groups menu"
-msgid "New Group..."
-msgstr "Yeni Grup..."
+msgid "New Group…"
+msgstr "Yeni Grup…"
 
 #: ../gui/brushselectionwindow.py:537
 msgctxt "brush groups menu"
-msgid "Import Brushes..."
-msgstr "Fırçaları İçe Aktar..."
+msgid "Import Brushes…"
+msgstr "Fırçaları İçe Aktar…"
 
 #: ../gui/brushselectionwindow.py:540
 msgctxt "brush groups menu"
-msgid "Get More Brushes..."
-msgstr "Daha Fazla Fırça Edin..."
+msgid "Get More Brushes…"
+msgstr "Daha Fazla Fırça Edin…"
 
 #: ../gui/brushselectionwindow.py:554
 msgctxt "new brush group dialog: title"
@@ -1225,12 +1225,12 @@ msgstr "Tür"
 
 #: ../gui/device.py:481
 msgctxt "prefs: devices table: column header"
-msgid "Use for..."
+msgid "Use for…"
 msgstr "Kullanım Amacı"
 
 #: ../gui/device.py:511
 msgctxt "prefs: devices table: column header"
-msgid "Scroll..."
+msgid "Scroll…"
 msgstr "Kaydır"
 
 #. Name and preview column: will be indented
@@ -1454,8 +1454,8 @@ msgid "_Quit"
 msgstr "Çıkış"
 
 #: ../gui/drawwindow.py:697
-msgid "Import brush package..."
-msgstr "Fırça paketini içe aktar..."
+msgid "Import brush package…"
+msgstr "Fırça paketini içe aktar…"
 
 #: ../gui/drawwindow.py:698
 msgid "MyPaint brush package (*.zip)"
@@ -1513,8 +1513,8 @@ msgstr ""
 "hangi uygulamayı kullansın?"
 
 #: ../gui/externalapp.py:71
-msgid "Open With..."
-msgstr "Birlikte Aç..."
+msgid "Open With…"
+msgstr "Birlikte Aç…"
 
 #: ../gui/externalapp.py:123
 msgid "Icon"
@@ -1704,13 +1704,13 @@ msgstr "JPEG %90 kalite (*.jpg; *.jpeg)"
 
 #: ../gui/filehandling.py:576
 #, fuzzy
-msgctxt "Dialogs (window title): File→Export..."
+msgctxt "Dialogs (window title): File→Export…"
 msgid "Export"
 msgstr "Dışa Aktar…"
 
 #: ../gui/filehandling.py:581
 #, fuzzy
-msgctxt "Dialogs (window title): File→Save As..."
+msgctxt "Dialogs (window title): File→Save As…"
 msgid "Save As"
 msgstr "Farklı Kaydet…"
 
@@ -1781,8 +1781,8 @@ msgstr "Aç"
 #: ../gui/filehandling.py:1057
 #, fuzzy
 msgctxt "load dialogs: title"
-msgid "Open Scratchpad..."
-msgstr "Karalama Defteri Aç..."
+msgid "Open Scratchpad…"
+msgstr "Karalama Defteri Aç…"
 
 #: ../gui/filehandling.py:1099
 #, fuzzy
@@ -2238,13 +2238,13 @@ msgstr ""
 "geliştiricilere bilgi verebilirsin."
 
 #: ../gui/gtkexcepthook.py:176
-msgid "Search Tracker..."
+msgid "Search Tracker…"
 msgstr "Hata Takipçisinde Ara"
 
 #. only development and prereleases
 #: ../gui/gtkexcepthook.py:178
-msgid "Report..."
-msgstr "Raporla..."
+msgid "Report…"
+msgstr "Raporla…"
 
 #: ../gui/gtkexcepthook.py:180
 msgid "Ignore Error"
@@ -2255,8 +2255,8 @@ msgid "Quit MyPaint"
 msgstr "MyPaint'den Çık"
 
 #: ../gui/gtkexcepthook.py:191
-msgid "Details..."
-msgstr "Ayrıntılar..."
+msgid "Details…"
+msgstr "Ayrıntılar…"
 
 #: ../gui/gtkexcepthook.py:218 ../gui/gtkexcepthook.py:221
 msgid "Exception while analyzing the exception."
@@ -2461,8 +2461,8 @@ msgstr ""
 
 #. TRANSLATORS: status bar messages for drag, without/with modifiers
 #: ../gui/layerswindow.py:109
-msgid "Move layer in stack..."
-msgstr "Katmanı yığında taşı..."
+msgid "Move layer in stack…"
+msgstr "Katmanı yığında taşı…"
 
 #: ../gui/layerswindow.py:110
 msgid ""
@@ -2532,7 +2532,7 @@ msgid "Stroke trail-off beginning"
 msgstr "Başlangıçtan azalarak yok olan darbe"
 
 #: ../gui/linemode.py:173
-msgid "Pressure variation..."
+msgid "Pressure variation…"
 msgstr "Basınç Çeşitliliği"
 
 #: ../gui/linemode.py:219 ../gui/linemode.py:777

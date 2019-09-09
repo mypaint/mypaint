@@ -64,7 +64,7 @@ msgstr ""
 #: ../gui/application.py:702
 #, python-brace-format
 msgid "Open Folder “{folder_basename}”…"
-msgstr "باز کردن پوشه “{folder_basename}” …"
+msgstr "باز کردن پوشه “{folder_basename}”…"
 
 #. ... so that the main actions end up in the bottom-right of the
 #. dialog (reversed for rtl scripts), where the eye ends up
@@ -534,18 +534,18 @@ msgstr "مجموعه قلم مای پینت"
 
 #: ../gui/brushselectionwindow.py:534
 msgctxt "brush groups menu"
-msgid "New Group..."
-msgstr "ایجاد گروه جدید..."
+msgid "New Group…"
+msgstr "ایجاد گروه جدید…"
 
 #: ../gui/brushselectionwindow.py:537
 msgctxt "brush groups menu"
-msgid "Import Brushes..."
-msgstr "وارد کردن قلم های خارجی..."
+msgid "Import Brushes…"
+msgstr "وارد کردن قلم های خارجی…"
 
 #: ../gui/brushselectionwindow.py:540
 msgctxt "brush groups menu"
-msgid "Get More Brushes..."
-msgstr "دریافت قلم های بیشتر..."
+msgid "Get More Brushes…"
+msgstr "دریافت قلم های بیشتر…"
 
 #: ../gui/brushselectionwindow.py:554
 msgctxt "new brush group dialog: title"
@@ -1210,12 +1210,12 @@ msgstr "نوع"
 
 #: ../gui/device.py:481
 msgctxt "prefs: devices table: column header"
-msgid "Use for..."
-msgstr "استفاده برای..."
+msgid "Use for…"
+msgstr "استفاده برای…"
 
 #: ../gui/device.py:511
 msgctxt "prefs: devices table: column header"
-msgid "Scroll..."
+msgid "Scroll…"
 msgstr ""
 
 #. Name and preview column: will be indented
@@ -1433,8 +1433,8 @@ msgid "_Quit"
 msgstr "خروج"
 
 #: ../gui/drawwindow.py:697
-msgid "Import brush package..."
-msgstr "وارد کردن بسته های قلم..."
+msgid "Import brush package…"
+msgstr "وارد کردن بسته های قلم…"
 
 #: ../gui/drawwindow.py:698
 msgid "MyPaint brush package (*.zip)"
@@ -1483,8 +1483,8 @@ msgid ""
 msgstr ""
 
 #: ../gui/externalapp.py:71
-msgid "Open With..."
-msgstr "باز کردن با..."
+msgid "Open With…"
+msgstr "باز کردن با…"
 
 #: ../gui/externalapp.py:123
 msgid "Icon"
@@ -1510,7 +1510,7 @@ msgstr ""
 #, fuzzy, python-brace-format
 msgctxt "Document I/O: message shown while working"
 msgid "Saving {files_summary}…"
-msgstr "ذخیره“{file_basename}” …"
+msgstr "ذخیره“{file_basename}”…"
 
 #: ../gui/filehandling.py:138
 #, fuzzy, python-brace-format
@@ -1670,15 +1670,15 @@ msgstr "JPEG کیفیت%90 (*.jpg; *.jpeg)"
 
 #: ../gui/filehandling.py:576
 #, fuzzy
-msgctxt "Dialogs (window title): File→Export..."
+msgctxt "Dialogs (window title): File→Export…"
 msgid "Export"
 msgstr "صادر کردن…"
 
 #: ../gui/filehandling.py:581
 #, fuzzy
-msgctxt "Dialogs (window title): File→Save As..."
+msgctxt "Dialogs (window title): File→Save As…"
 msgid "Save As"
-msgstr "ذخیره کردن در …"
+msgstr "ذخیره کردن در…"
 
 #: ../gui/filehandling.py:601
 #, fuzzy
@@ -1747,8 +1747,8 @@ msgstr "باز کردن"
 #: ../gui/filehandling.py:1057
 #, fuzzy
 msgctxt "load dialogs: title"
-msgid "Open Scratchpad..."
-msgstr "باز کردن چرک نویس..."
+msgid "Open Scratchpad…"
+msgstr "باز کردن چرک نویس…"
 
 #: ../gui/filehandling.py:1099
 #, fuzzy
@@ -2186,13 +2186,13 @@ msgid ""
 msgstr ""
 
 #: ../gui/gtkexcepthook.py:176
-msgid "Search Tracker..."
-msgstr "جستجوی رهگیر ها..."
+msgid "Search Tracker…"
+msgstr "جستجوی رهگیر ها…"
 
 #. only development and prereleases
 #: ../gui/gtkexcepthook.py:178
-msgid "Report..."
-msgstr "گزارش..."
+msgid "Report…"
+msgstr "گزارش…"
 
 #: ../gui/gtkexcepthook.py:180
 msgid "Ignore Error"
@@ -2203,8 +2203,8 @@ msgid "Quit MyPaint"
 msgstr "خروج ازMyPaint"
 
 #: ../gui/gtkexcepthook.py:191
-msgid "Details..."
-msgstr "جزئیات..."
+msgid "Details…"
+msgstr "جزئیات…"
 
 #: ../gui/gtkexcepthook.py:218 ../gui/gtkexcepthook.py:221
 msgid "Exception while analyzing the exception."
@@ -2392,7 +2392,7 @@ msgstr ""
 
 #. TRANSLATORS: status bar messages for drag, without/with modifiers
 #: ../gui/layerswindow.py:109
-msgid "Move layer in stack..."
+msgid "Move layer in stack…"
 msgstr ""
 
 #: ../gui/layerswindow.py:110
@@ -2463,7 +2463,7 @@ msgid "Stroke trail-off beginning"
 msgstr ""
 
 #: ../gui/linemode.py:173
-msgid "Pressure variation..."
+msgid "Pressure variation…"
 msgstr ""
 
 #: ../gui/linemode.py:219 ../gui/linemode.py:777
@@ -3596,7 +3596,7 @@ msgstr "حذف قلم از روی رایانه"
 #, fuzzy
 msgctxt "Autosave Recovery dialog|"
 msgid "_Recover & Save…"
-msgstr "ـگرفتن پشتیبان و ذخیره کردن..."
+msgstr "ـگرفتن پشتیبان و ذخیره کردن…"
 
 #: ../po/tmp/autorecover.glade.h:12
 #, fuzzy
@@ -4534,7 +4534,7 @@ msgstr ""
 #, fuzzy
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "Import Layers…"
-msgstr "وارد کردن مجموعه قلم …"
+msgstr "وارد کردن مجموعه قلم…"
 
 #: ../po/tmp/resources.xml.h:13
 msgctxt "Accel Editor (descriptions)"
@@ -4554,7 +4554,7 @@ msgstr "ذخیره کردن کار در یک پرونده جدید."
 #: ../po/tmp/resources.xml.h:16
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "Save As…"
-msgstr "ذخیره کردن در …"
+msgstr "ذخیره کردن در…"
 
 #: ../po/tmp/resources.xml.h:17
 msgctxt "Accel Editor (descriptions)"
@@ -5637,7 +5637,7 @@ msgstr "برگشت قاب چرک نویس به حالت پیش فرض"
 #: ../po/tmp/resources.xml.h:225
 msgctxt "Menu→Scratchpad (labels), Accel Editor (labels)"
 msgid "Open Scratchpad…"
-msgstr "باز کردن چرک نویس …"
+msgstr "باز کردن چرک نویس…"
 
 #: ../po/tmp/resources.xml.h:226
 msgctxt "Accel Editor (descriptions)"
@@ -5777,7 +5777,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:252
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
 msgid "Import Brushes…"
-msgstr "وارد کردن مجموعه قلم …"
+msgstr "وارد کردن مجموعه قلم…"
 
 #: ../po/tmp/resources.xml.h:253
 msgctxt "Accel Editor (descriptions)"

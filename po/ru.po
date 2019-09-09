@@ -542,17 +542,17 @@ msgstr "Пакет кистей MyPaint (*.zip)"
 
 #: ../gui/brushselectionwindow.py:534
 msgctxt "brush groups menu"
-msgid "New Group..."
+msgid "New Group…"
 msgstr "Новая группа…"
 
 #: ../gui/brushselectionwindow.py:537
 msgctxt "brush groups menu"
-msgid "Import Brushes..."
+msgid "Import Brushes…"
 msgstr "Импортировать кисти…"
 
 #: ../gui/brushselectionwindow.py:540
 msgctxt "brush groups menu"
-msgid "Get More Brushes..."
+msgid "Get More Brushes…"
 msgstr "Найти больше кистей…"
 
 #: ../gui/brushselectionwindow.py:554
@@ -1238,12 +1238,12 @@ msgstr "Тип"
 
 #: ../gui/device.py:481
 msgctxt "prefs: devices table: column header"
-msgid "Use for..."
+msgid "Use for…"
 msgstr "Использовать для…"
 
 #: ../gui/device.py:511
 msgctxt "prefs: devices table: column header"
-msgid "Scroll..."
+msgid "Scroll…"
 msgstr "Прокрутка…"
 
 #. Name and preview column: will be indented
@@ -1467,7 +1467,7 @@ msgid "_Quit"
 msgstr "Выход"
 
 #: ../gui/drawwindow.py:697
-msgid "Import brush package..."
+msgid "Import brush package…"
 msgstr "Импортировать пакет кистей…"
 
 #: ../gui/drawwindow.py:698
@@ -1524,7 +1524,7 @@ msgstr ""
 "“{type_name}” ({content_type})?"
 
 #: ../gui/externalapp.py:71
-msgid "Open With..."
+msgid "Open With…"
 msgstr "Открыть с помощью…"
 
 #: ../gui/externalapp.py:123
@@ -1719,13 +1719,13 @@ msgstr "JPEG с качеством 90% (*.jpg; *.jpeg)"
 
 #: ../gui/filehandling.py:576
 #, fuzzy
-msgctxt "Dialogs (window title): File→Export..."
+msgctxt "Dialogs (window title): File→Export…"
 msgid "Export"
 msgstr "Экспортировать…"
 
 #: ../gui/filehandling.py:581
 #, fuzzy
-msgctxt "Dialogs (window title): File→Save As..."
+msgctxt "Dialogs (window title): File→Save As…"
 msgid "Save As"
 msgstr "Сохранить как…"
 
@@ -1796,7 +1796,7 @@ msgstr "Открыть недавние рисунки"
 #: ../gui/filehandling.py:1057
 #, fuzzy
 msgctxt "load dialogs: title"
-msgid "Open Scratchpad..."
+msgid "Open Scratchpad…"
 msgstr "Открыть блокнот…"
 
 #: ../gui/filehandling.py:1099
@@ -2251,12 +2251,12 @@ msgstr ""
 "этого не сделал."
 
 #: ../gui/gtkexcepthook.py:176
-msgid "Search Tracker..."
+msgid "Search Tracker…"
 msgstr "Искать по трекеру…"
 
 #. only development and prereleases
 #: ../gui/gtkexcepthook.py:178
-msgid "Report..."
+msgid "Report…"
 msgstr "Сообщить о баге…"
 
 #: ../gui/gtkexcepthook.py:180
@@ -2268,7 +2268,7 @@ msgid "Quit MyPaint"
 msgstr "Выйти из MyPaint"
 
 #: ../gui/gtkexcepthook.py:191
-msgid "Details..."
+msgid "Details…"
 msgstr "Подробнее…"
 
 #: ../gui/gtkexcepthook.py:218 ../gui/gtkexcepthook.py:221
@@ -2480,7 +2480,7 @@ msgstr ""
 
 #. TRANSLATORS: status bar messages for drag, without/with modifiers
 #: ../gui/layerswindow.py:109
-msgid "Move layer in stack..."
+msgid "Move layer in stack…"
 msgstr "Переместить слой в стопке…"
 
 #: ../gui/layerswindow.py:110
@@ -2551,7 +2551,7 @@ msgid "Stroke trail-off beginning"
 msgstr "Конец штриха"
 
 #: ../gui/linemode.py:173
-msgid "Pressure variation..."
+msgid "Pressure variation…"
 msgstr "Вариация силы нажатия…"
 
 #: ../gui/linemode.py:219 ../gui/linemode.py:777

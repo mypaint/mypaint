@@ -536,18 +536,18 @@ msgstr "MyPaint sada štětců (*.zip)"
 
 #: ../gui/brushselectionwindow.py:534
 msgctxt "brush groups menu"
-msgid "New Group..."
-msgstr "Nová skupina..."
+msgid "New Group…"
+msgstr "Nová skupina…"
 
 #: ../gui/brushselectionwindow.py:537
 msgctxt "brush groups menu"
-msgid "Import Brushes..."
-msgstr "Zavést štětce..."
+msgid "Import Brushes…"
+msgstr "Zavést štětce…"
 
 #: ../gui/brushselectionwindow.py:540
 msgctxt "brush groups menu"
-msgid "Get More Brushes..."
-msgstr "Dostat další štětce..."
+msgid "Get More Brushes…"
+msgstr "Dostat další štětce…"
 
 #: ../gui/brushselectionwindow.py:554
 msgctxt "new brush group dialog: title"
@@ -1230,13 +1230,13 @@ msgstr "Typ"
 
 #: ../gui/device.py:481
 msgctxt "prefs: devices table: column header"
-msgid "Use for..."
-msgstr "Použít pro..."
+msgid "Use for…"
+msgstr "Použít pro…"
 
 #: ../gui/device.py:511
 msgctxt "prefs: devices table: column header"
-msgid "Scroll..."
-msgstr "Posunovat..."
+msgid "Scroll…"
+msgstr "Posunovat…"
 
 #. Name and preview column: will be indented
 #: ../gui/dialogs.py:74 ../gui/externalapp.py:136 ../gui/layers.py:405
@@ -1459,8 +1459,8 @@ msgid "_Quit"
 msgstr "Ukončit"
 
 #: ../gui/drawwindow.py:697
-msgid "Import brush package..."
-msgstr "Zavést sadu štětců..."
+msgid "Import brush package…"
+msgstr "Zavést sadu štětců…"
 
 #: ../gui/drawwindow.py:698
 msgid "MyPaint brush package (*.zip)"
@@ -1514,8 +1514,8 @@ msgstr ""
 "“{type_name}” ({content_type})?"
 
 #: ../gui/externalapp.py:71
-msgid "Open With..."
-msgstr "Otevřít s..."
+msgid "Open With…"
+msgstr "Otevřít s…"
 
 #: ../gui/externalapp.py:123
 msgid "Icon"
@@ -1583,13 +1583,13 @@ msgstr "Uložit paletu"
 #, fuzzy
 msgctxt "Document I/O: fail dialog title"
 msgid "Export failed"
-msgstr "Exportovat paletu..."
+msgstr "Exportovat paletu…"
 
 #: ../gui/filehandling.py:172
 #, fuzzy
 msgctxt "Document I/O: fail dialog title"
 msgid "Import Layers failed"
-msgstr "Exportovat paletu..."
+msgstr "Exportovat paletu…"
 
 #: ../gui/filehandling.py:176
 #, fuzzy
@@ -1709,13 +1709,13 @@ msgstr "JPEG 90% kvalita (*.jpg; *.jpeg)"
 
 #: ../gui/filehandling.py:576
 #, fuzzy
-msgctxt "Dialogs (window title): File→Export..."
+msgctxt "Dialogs (window title): File→Export…"
 msgid "Export"
 msgstr "Vyvést…"
 
 #: ../gui/filehandling.py:581
 #, fuzzy
-msgctxt "Dialogs (window title): File→Save As..."
+msgctxt "Dialogs (window title): File→Save As…"
 msgid "Save As"
 msgstr "Uložit jako…"
 
@@ -1786,8 +1786,8 @@ msgstr "Naposledy otevřené"
 #: ../gui/filehandling.py:1057
 #, fuzzy
 msgctxt "load dialogs: title"
-msgid "Open Scratchpad..."
-msgstr "Otevřít náčrtník..."
+msgid "Open Scratchpad…"
+msgstr "Otevřít náčrtník…"
 
 #: ../gui/filehandling.py:1099
 #, fuzzy
@@ -2243,13 +2243,13 @@ msgstr ""
 "nikdo nenahlásil."
 
 #: ../gui/gtkexcepthook.py:176
-msgid "Search Tracker..."
-msgstr "Hledat sledování..."
+msgid "Search Tracker…"
+msgstr "Hledat sledování…"
 
 #. only development and prereleases
 #: ../gui/gtkexcepthook.py:178
-msgid "Report..."
-msgstr "Hlášení..."
+msgid "Report…"
+msgstr "Hlášení…"
 
 #: ../gui/gtkexcepthook.py:180
 msgid "Ignore Error"
@@ -2260,8 +2260,8 @@ msgid "Quit MyPaint"
 msgstr "O programu MyPaint"
 
 #: ../gui/gtkexcepthook.py:191
-msgid "Details..."
-msgstr "Podrobnosti..."
+msgid "Details…"
+msgstr "Podrobnosti…"
 
 #: ../gui/gtkexcepthook.py:218 ../gui/gtkexcepthook.py:221
 msgid "Exception while analyzing the exception."
@@ -2472,8 +2472,8 @@ msgstr ""
 
 #. TRANSLATORS: status bar messages for drag, without/with modifiers
 #: ../gui/layerswindow.py:109
-msgid "Move layer in stack..."
-msgstr "Přesunout vrstvu v zásobníku..."
+msgid "Move layer in stack…"
+msgstr "Přesunout vrstvu v zásobníku…"
 
 #: ../gui/layerswindow.py:110
 msgid ""
@@ -2544,8 +2544,8 @@ msgid "Stroke trail-off beginning"
 msgstr "Začátek konce tahu"
 
 #: ../gui/linemode.py:173
-msgid "Pressure variation..."
-msgstr "Změna tlaku..."
+msgid "Pressure variation…"
+msgstr "Změna tlaku…"
 
 #: ../gui/linemode.py:219 ../gui/linemode.py:777
 msgid "Lines and Curves"
@@ -3725,7 +3725,7 @@ msgstr "Smazat tento štětec z disku"
 #, fuzzy
 msgctxt "Autosave Recovery dialog|"
 msgid "_Recover & Save…"
-msgstr "_Obnovit a uložit..."
+msgstr "_Obnovit a uložit…"
 
 #: ../po/tmp/autorecover.glade.h:12
 #, fuzzy

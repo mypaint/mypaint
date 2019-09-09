@@ -534,17 +534,17 @@ msgstr "Paquet de brosses MyPaint (au format .zip)"
 
 #: ../gui/brushselectionwindow.py:534
 msgctxt "brush groups menu"
-msgid "New Group..."
+msgid "New Group…"
 msgstr "Nouveau groupe…"
 
 #: ../gui/brushselectionwindow.py:537
 msgctxt "brush groups menu"
-msgid "Import Brushes..."
+msgid "Import Brushes…"
 msgstr "Importer des brosses…"
 
 #: ../gui/brushselectionwindow.py:540
 msgctxt "brush groups menu"
-msgid "Get More Brushes..."
+msgid "Get More Brushes…"
 msgstr "Récupérer d'autres brosses…"
 
 #: ../gui/brushselectionwindow.py:554
@@ -1245,13 +1245,13 @@ msgstr "Type"
 
 #: ../gui/device.py:481
 msgctxt "prefs: devices table: column header"
-msgid "Use for..."
-msgstr "Utiliser pour..."
+msgid "Use for…"
+msgstr "Utiliser pour…"
 
 #: ../gui/device.py:511
 msgctxt "prefs: devices table: column header"
-msgid "Scroll..."
-msgstr "Défilement..."
+msgid "Scroll…"
+msgstr "Défilement…"
 
 #. Name and preview column: will be indented
 #: ../gui/dialogs.py:74 ../gui/externalapp.py:136 ../gui/layers.py:405
@@ -1476,7 +1476,7 @@ msgid "_Quit"
 msgstr "Quitter"
 
 #: ../gui/drawwindow.py:697
-msgid "Import brush package..."
+msgid "Import brush package…"
 msgstr "Importer un paquet de brosses…"
 
 #: ../gui/drawwindow.py:698
@@ -1535,7 +1535,7 @@ msgstr ""
 "“{type_name}” ({content_type})?"
 
 #: ../gui/externalapp.py:71
-msgid "Open With..."
+msgid "Open With…"
 msgstr "Ouvrir avec…"
 
 #: ../gui/externalapp.py:123
@@ -1729,13 +1729,13 @@ msgstr "JPEG qualité 90% (*.jpg, *.jpeg)"
 
 #: ../gui/filehandling.py:576
 #, fuzzy
-msgctxt "Dialogs (window title): File→Export..."
+msgctxt "Dialogs (window title): File→Export…"
 msgid "Export"
 msgstr "Exporter…"
 
 #: ../gui/filehandling.py:581
 #, fuzzy
-msgctxt "Dialogs (window title): File→Save As..."
+msgctxt "Dialogs (window title): File→Save As…"
 msgid "Save As"
 msgstr "Enregistrer sous…"
 
@@ -1806,7 +1806,7 @@ msgstr "Ouvrir un fichier récent"
 #: ../gui/filehandling.py:1057
 #, fuzzy
 msgctxt "load dialogs: title"
-msgid "Open Scratchpad..."
+msgid "Open Scratchpad…"
 msgstr "Ouvrir un carnet de croquis…"
 
 #: ../gui/filehandling.py:1099
@@ -2246,13 +2246,13 @@ msgid ""
 msgstr ""
 
 #: ../gui/gtkexcepthook.py:176
-msgid "Search Tracker..."
+msgid "Search Tracker…"
 msgstr ""
 
 #. only development and prereleases
 #: ../gui/gtkexcepthook.py:178
-msgid "Report..."
-msgstr "Reporter..."
+msgid "Report…"
+msgstr "Reporter…"
 
 #: ../gui/gtkexcepthook.py:180
 msgid "Ignore Error"
@@ -2263,7 +2263,7 @@ msgid "Quit MyPaint"
 msgstr "Quittez MyPaint"
 
 #: ../gui/gtkexcepthook.py:191
-msgid "Details..."
+msgid "Details…"
 msgstr "Détails…"
 
 #: ../gui/gtkexcepthook.py:218 ../gui/gtkexcepthook.py:221
@@ -2453,8 +2453,8 @@ msgstr ""
 
 #. TRANSLATORS: status bar messages for drag, without/with modifiers
 #: ../gui/layerswindow.py:109
-msgid "Move layer in stack..."
-msgstr "Réordonner les calques en pile..."
+msgid "Move layer in stack…"
+msgstr "Réordonner les calques en pile…"
 
 #: ../gui/layerswindow.py:110
 msgid ""
@@ -2524,8 +2524,8 @@ msgid "Stroke trail-off beginning"
 msgstr "Début de la queue du tracé"
 
 #: ../gui/linemode.py:173
-msgid "Pressure variation..."
-msgstr "Variation de pression..."
+msgid "Pressure variation…"
+msgstr "Variation de pression…"
 
 #: ../gui/linemode.py:219 ../gui/linemode.py:777
 msgid "Lines and Curves"
@@ -3713,7 +3713,7 @@ msgstr "Supprimer cette brosse du disque"
 #, fuzzy
 msgctxt "Autosave Recovery dialog|"
 msgid "_Recover & Save…"
-msgstr "_Récupérer et Enregistrer..."
+msgstr "_Récupérer et Enregistrer…"
 
 #: ../po/tmp/autorecover.glade.h:12
 #, fuzzy
@@ -5891,7 +5891,7 @@ msgstr "Exporter le carnet de croquis en tant que…"
 #: ../po/tmp/resources.xml.h:230
 msgctxt "Accel Editor (descriptions)"
 msgid "Export the scratchpad to disk, under a file name of your choice."
-msgstr "Exporter le carnet de croquis en choisissant l'extension..."
+msgstr "Exporter le carnet de croquis en choisissant l'extension…"
 
 #: ../po/tmp/resources.xml.h:231
 #, fuzzy
@@ -6016,7 +6016,7 @@ msgstr "Importer des brosses…"
 #: ../po/tmp/resources.xml.h:253
 msgctxt "Accel Editor (descriptions)"
 msgid "Load a brushpack from disk."
-msgstr "Charger un pack de brosses sur le disque..."
+msgstr "Charger un pack de brosses sur le disque…"
 
 #: ../po/tmp/resources.xml.h:254
 msgctxt "Menu (labels)"
@@ -6041,7 +6041,7 @@ msgstr "À propos de MyPaint"
 #: ../po/tmp/resources.xml.h:258
 msgctxt "Accel Editor (descriptions)"
 msgid "Show MyPaint’s license, version number, and credits."
-msgstr "A propos de MyPaint...license, version, crédits..."
+msgstr "A propos de MyPaint...license, version, crédits…"
 
 #: ../po/tmp/resources.xml.h:259
 msgctxt "Menu→Help (labels)"
