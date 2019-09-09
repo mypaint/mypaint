@@ -554,20 +554,20 @@ msgstr "Pachetul de pensule Mypaint(*.zip)"
 
 #: ../gui/brushselectionwindow.py:534
 msgctxt "brush groups menu"
-msgid "New Group..."
-msgstr "Grup nou..."
+msgid "New Group…"
+msgstr "Grup nou…"
 
 #: ../gui/brushselectionwindow.py:537
 #, fuzzy
 msgctxt "brush groups menu"
-msgid "Import Brushes..."
-msgstr "Importă pensule..."
+msgid "Import Brushes…"
+msgstr "Importă pensule…"
 
 #: ../gui/brushselectionwindow.py:540
 #, fuzzy
 msgctxt "brush groups menu"
-msgid "Get More Brushes..."
-msgstr "Obține mai multe pensule..."
+msgid "Get More Brushes…"
+msgstr "Obține mai multe pensule…"
 
 #: ../gui/brushselectionwindow.py:554
 msgctxt "new brush group dialog: title"
@@ -1322,13 +1322,13 @@ msgstr ""
 
 #: ../gui/device.py:481
 msgctxt "prefs: devices table: column header"
-msgid "Use for..."
+msgid "Use for…"
 msgstr ""
 
 #: ../gui/device.py:511
 #, fuzzy
 msgctxt "prefs: devices table: column header"
-msgid "Scroll..."
+msgid "Scroll…"
 msgstr "Defilare"
 
 #. Name and preview column: will be indented
@@ -1517,7 +1517,7 @@ msgstr ""
 #, fuzzy
 msgctxt "Open dragged file confirm dialog: continue button"
 msgid "_Open"
-msgstr "Deschide..."
+msgstr "Deschide…"
 
 #: ../gui/drawwindow.py:486
 msgid "Set current color"
@@ -1553,8 +1553,8 @@ msgid "_Quit"
 msgstr "Ieșire"
 
 #: ../gui/drawwindow.py:697
-msgid "Import brush package..."
-msgstr "Importă pachet de pensule..."
+msgid "Import brush package…"
+msgstr "Importă pachet de pensule…"
 
 #: ../gui/drawwindow.py:698
 msgid "MyPaint brush package (*.zip)"
@@ -1604,8 +1604,8 @@ msgstr ""
 
 #: ../gui/externalapp.py:71
 #, fuzzy
-msgid "Open With..."
-msgstr "Deschide..."
+msgid "Open With…"
+msgstr "Deschide…"
 
 #: ../gui/externalapp.py:123
 msgid "Icon"
@@ -1795,13 +1795,13 @@ msgstr "JPEG calitate 90% (*.jpg; *.jpeg)"
 
 #: ../gui/filehandling.py:576
 #, fuzzy
-msgctxt "Dialogs (window title): File→Export..."
+msgctxt "Dialogs (window title): File→Export…"
 msgid "Export"
-msgstr "Exportă..."
+msgstr "Exportă…"
 
 #: ../gui/filehandling.py:581
 #, fuzzy
-msgctxt "Dialogs (window title): File→Save As..."
+msgctxt "Dialogs (window title): File→Save As…"
 msgid "Save As"
 msgstr "Salvează ca…"
 
@@ -1872,8 +1872,8 @@ msgstr "Deschide fișierele recente"
 #: ../gui/filehandling.py:1057
 #, fuzzy
 msgctxt "load dialogs: title"
-msgid "Open Scratchpad..."
-msgstr "Deschide caiet de ciorne..."
+msgid "Open Scratchpad…"
+msgstr "Deschide caiet de ciorne…"
 
 #: ../gui/filehandling.py:1099
 #, fuzzy
@@ -1890,7 +1890,7 @@ msgstr ""
 #, fuzzy
 msgctxt "File→Open Recent→* confirm dialog: continue button"
 msgid "_Open"
-msgstr "Deschide..."
+msgstr "Deschide…"
 
 #: ../gui/filehandling.py:1427
 #, fuzzy
@@ -1902,7 +1902,7 @@ msgstr "Deschide cel mai recent"
 #, fuzzy
 msgctxt "File→Open Most Recent→* confirm dialog: continue button"
 msgid "_Open"
-msgstr "Deschide..."
+msgstr "Deschide…"
 
 #: ../gui/filehandling.py:1446
 #, fuzzy
@@ -1926,7 +1926,7 @@ msgstr "Deschide rebutul anterior"
 #, fuzzy
 msgctxt "File→Open Next/Prev Scrap confirm dialog: continue button"
 msgid "_Open"
-msgstr "Deschide..."
+msgstr "Deschide…"
 
 #: ../gui/filehandling.py:1487
 msgctxt "File→Revert: status message: canvas has no filename yet"
@@ -2318,14 +2318,14 @@ msgid ""
 msgstr ""
 
 #: ../gui/gtkexcepthook.py:176
-msgid "Search Tracker..."
+msgid "Search Tracker…"
 msgstr ""
 
 #. only development and prereleases
 #: ../gui/gtkexcepthook.py:178
 #, fuzzy
-msgid "Report..."
-msgstr "Exportă..."
+msgid "Report…"
+msgstr "Exportă…"
 
 #: ../gui/gtkexcepthook.py:180
 msgid "Ignore Error"
@@ -2337,8 +2337,8 @@ msgid "Quit MyPaint"
 msgstr "Despre MyPaint"
 
 #: ../gui/gtkexcepthook.py:191
-msgid "Details..."
-msgstr "Detalii..."
+msgid "Details…"
+msgstr "Detalii…"
 
 #: ../gui/gtkexcepthook.py:218 ../gui/gtkexcepthook.py:221
 msgid "Exception while analyzing the exception."
@@ -2529,7 +2529,7 @@ msgstr ""
 #. TRANSLATORS: status bar messages for drag, without/with modifiers
 #: ../gui/layerswindow.py:109
 #, fuzzy
-msgid "Move layer in stack..."
+msgid "Move layer in stack…"
 msgstr "Reordonează stratul pe stivă"
 
 #: ../gui/layerswindow.py:110
@@ -2601,7 +2601,7 @@ msgid "Stroke trail-off beginning"
 msgstr "Începutul dârei de tușă"
 
 #: ../gui/linemode.py:173
-msgid "Pressure variation..."
+msgid "Pressure variation…"
 msgstr ""
 
 #: ../gui/linemode.py:219 ../gui/linemode.py:777
@@ -4748,7 +4748,7 @@ msgstr "Deschide…"
 #, fuzzy
 msgctxt "Toolbar (short labels)"
 msgid "Open"
-msgstr "Deschide..."
+msgstr "Deschide…"
 
 #: ../po/tmp/resources.xml.h:6
 msgctxt "Toolbar (tooltips), Accel Editor (descriptions)"
@@ -4786,7 +4786,7 @@ msgstr ""
 #, fuzzy
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "Import Layers…"
-msgstr "Importă pensule..."
+msgstr "Importă pensule…"
 
 #: ../po/tmp/resources.xml.h:13
 msgctxt "Accel Editor (descriptions)"
@@ -4819,7 +4819,7 @@ msgstr "Salvează într-un fișier cu un nou nume"
 #, fuzzy
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "Export…"
-msgstr "Exportă..."
+msgstr "Exportă…"
 
 #: ../po/tmp/resources.xml.h:19
 msgid "Export your work to a file, but keep working on the same file."
@@ -5989,7 +5989,7 @@ msgstr ""
 #, fuzzy
 msgctxt "Menu→Scratchpad (labels), Accel Editor (labels)"
 msgid "Open Scratchpad…"
-msgstr "Deschide caiet de ciorne..."
+msgstr "Deschide caiet de ciorne…"
 
 #: ../po/tmp/resources.xml.h:226
 msgctxt "Accel Editor (descriptions)"
@@ -6141,7 +6141,7 @@ msgstr ""
 #, fuzzy
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
 msgid "Import Brushes…"
-msgstr "Importă pensule..."
+msgstr "Importă pensule…"
 
 #: ../po/tmp/resources.xml.h:253
 #, fuzzy

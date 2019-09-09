@@ -549,19 +549,19 @@ msgstr "MyPaint čopič paket (*.zip)"
 
 #: ../gui/brushselectionwindow.py:534
 msgctxt "brush groups menu"
-msgid "New Group..."
+msgid "New Group…"
 msgstr "Nova skupina ..."
 
 #: ../gui/brushselectionwindow.py:537
 #, fuzzy
 msgctxt "brush groups menu"
-msgid "Import Brushes..."
+msgid "Import Brushes…"
 msgstr "Uvozi paket s čopičem..."
 
 #: ../gui/brushselectionwindow.py:540
 #, fuzzy
 msgctxt "brush groups menu"
-msgid "Get More Brushes..."
+msgid "Get More Brushes…"
 msgstr "Obnovi čopič %d"
 
 #: ../gui/brushselectionwindow.py:554
@@ -1261,12 +1261,12 @@ msgstr ""
 
 #: ../gui/device.py:481
 msgctxt "prefs: devices table: column header"
-msgid "Use for..."
+msgid "Use for…"
 msgstr ""
 
 #: ../gui/device.py:511
 msgctxt "prefs: devices table: column header"
-msgid "Scroll..."
+msgid "Scroll…"
 msgstr ""
 
 #. Name and preview column: will be indented
@@ -1496,7 +1496,7 @@ msgid "_Quit"
 msgstr "Izhod"
 
 #: ../gui/drawwindow.py:697
-msgid "Import brush package..."
+msgid "Import brush package…"
 msgstr "Uvozi paket s čopičem..."
 
 #: ../gui/drawwindow.py:698
@@ -1547,7 +1547,7 @@ msgstr ""
 
 #: ../gui/externalapp.py:71
 #, fuzzy
-msgid "Open With..."
+msgid "Open With…"
 msgstr "Odpri ..."
 
 #: ../gui/externalapp.py:123
@@ -1820,7 +1820,7 @@ msgstr "Odpri nedavne datoteke"
 #: ../gui/filehandling.py:1057
 #, fuzzy
 msgctxt "load dialogs: title"
-msgid "Open Scratchpad..."
+msgid "Open Scratchpad…"
 msgstr "Odpri naslednjo skico"
 
 #: ../gui/filehandling.py:1099
@@ -2261,12 +2261,12 @@ msgid ""
 msgstr ""
 
 #: ../gui/gtkexcepthook.py:176
-msgid "Search Tracker..."
+msgid "Search Tracker…"
 msgstr ""
 
 #. only development and prereleases
 #: ../gui/gtkexcepthook.py:178
-msgid "Report..."
+msgid "Report…"
 msgstr "Poročaj ..."
 
 #: ../gui/gtkexcepthook.py:180
@@ -2279,7 +2279,7 @@ msgid "Quit MyPaint"
 msgstr "O programu MyPaint"
 
 #: ../gui/gtkexcepthook.py:191
-msgid "Details..."
+msgid "Details…"
 msgstr "Podrobnosti ..."
 
 #: ../gui/gtkexcepthook.py:218 ../gui/gtkexcepthook.py:221
@@ -2470,7 +2470,7 @@ msgstr ""
 #. TRANSLATORS: status bar messages for drag, without/with modifiers
 #: ../gui/layerswindow.py:109
 #, fuzzy
-msgid "Move layer in stack..."
+msgid "Move layer in stack…"
 msgstr "Plasti"
 
 #: ../gui/layerswindow.py:110
@@ -2546,7 +2546,7 @@ msgid "Stroke trail-off beginning"
 msgstr ""
 
 #: ../gui/linemode.py:173
-msgid "Pressure variation..."
+msgid "Pressure variation…"
 msgstr ""
 
 #: ../gui/linemode.py:219 ../gui/linemode.py:777

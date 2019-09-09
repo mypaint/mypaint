@@ -530,18 +530,18 @@ msgstr "MyPaint penselpakke (*.zip)"
 
 #: ../gui/brushselectionwindow.py:534
 msgctxt "brush groups menu"
-msgid "New Group..."
+msgid "New Group…"
 msgstr "Ny gruppe…"
 
 #: ../gui/brushselectionwindow.py:537
 msgctxt "brush groups menu"
-msgid "Import Brushes..."
-msgstr "Importer penselpakke..."
+msgid "Import Brushes…"
+msgstr "Importer penselpakke…"
 
 #: ../gui/brushselectionwindow.py:540
 msgctxt "brush groups menu"
-msgid "Get More Brushes..."
-msgstr "Last ned flere pensler..."
+msgid "Get More Brushes…"
+msgstr "Last ned flere pensler…"
 
 #: ../gui/brushselectionwindow.py:554
 msgctxt "new brush group dialog: title"
@@ -767,7 +767,7 @@ msgstr "Opprett ny maske fra mal."
 #: ../gui/colors/hcywheel.py:1112
 msgctxt "HCY Mask Editor: action button tooltips"
 msgid "Load mask from a GIMP palette file."
-msgstr "Last palett fil..."
+msgstr "Last palett fil…"
 
 #: ../gui/colors/hcywheel.py:1116
 #, fuzzy
@@ -1225,12 +1225,12 @@ msgstr "Type"
 
 #: ../gui/device.py:481
 msgctxt "prefs: devices table: column header"
-msgid "Use for..."
+msgid "Use for…"
 msgstr "Bruk for…"
 
 #: ../gui/device.py:511
 msgctxt "prefs: devices table: column header"
-msgid "Scroll..."
+msgid "Scroll…"
 msgstr "Rulling…"
 
 #. Name and preview column: will be indented
@@ -1419,7 +1419,7 @@ msgstr ""
 #, fuzzy
 msgctxt "Open dragged file confirm dialog: continue button"
 msgid "_Open"
-msgstr "Åpne..."
+msgstr "Åpne…"
 
 #: ../gui/drawwindow.py:486
 msgid "Set current color"
@@ -1454,8 +1454,8 @@ msgid "_Quit"
 msgstr "Avslutt"
 
 #: ../gui/drawwindow.py:697
-msgid "Import brush package..."
-msgstr "Importer penselpakke..."
+msgid "Import brush package…"
+msgstr "Importer penselpakke…"
 
 #: ../gui/drawwindow.py:698
 msgid "MyPaint brush package (*.zip)"
@@ -1504,8 +1504,8 @@ msgid ""
 msgstr ""
 
 #: ../gui/externalapp.py:71
-msgid "Open With..."
-msgstr "Åpne..."
+msgid "Open With…"
+msgstr "Åpne…"
 
 #: ../gui/externalapp.py:123
 msgid "Icon"
@@ -1698,13 +1698,13 @@ msgstr "JPEG 90% kvalitet (*.jpg; *.jpeg)"
 
 #: ../gui/filehandling.py:576
 #, fuzzy
-msgctxt "Dialogs (window title): File→Export..."
+msgctxt "Dialogs (window title): File→Export…"
 msgid "Export"
 msgstr "Eksporter…"
 
 #: ../gui/filehandling.py:581
 #, fuzzy
-msgctxt "Dialogs (window title): File→Save As..."
+msgctxt "Dialogs (window title): File→Save As…"
 msgid "Save As"
 msgstr "Lagre som…"
 
@@ -1777,8 +1777,8 @@ msgstr "Åpne nylige filer"
 #: ../gui/filehandling.py:1057
 #, fuzzy
 msgctxt "load dialogs: title"
-msgid "Open Scratchpad..."
-msgstr "Åpne kladdebok..."
+msgid "Open Scratchpad…"
+msgstr "Åpne kladdebok…"
 
 #: ../gui/filehandling.py:1099
 #, fuzzy
@@ -1795,7 +1795,7 @@ msgstr ""
 #, fuzzy
 msgctxt "File→Open Recent→* confirm dialog: continue button"
 msgid "_Open"
-msgstr "Åpne..."
+msgstr "Åpne…"
 
 #: ../gui/filehandling.py:1427
 #, fuzzy
@@ -1807,7 +1807,7 @@ msgstr "Åpne nylig brukte"
 #, fuzzy
 msgctxt "File→Open Most Recent→* confirm dialog: continue button"
 msgid "_Open"
-msgstr "Åpne..."
+msgstr "Åpne…"
 
 #: ../gui/filehandling.py:1446
 #, fuzzy
@@ -1832,7 +1832,7 @@ msgstr "Åpne forrige kladd"
 #, fuzzy
 msgctxt "File→Open Next/Prev Scrap confirm dialog: continue button"
 msgid "_Open"
-msgstr "Åpne..."
+msgstr "Åpne…"
 
 #: ../gui/filehandling.py:1487
 msgctxt "File→Revert: status message: canvas has no filename yet"
@@ -2223,12 +2223,12 @@ msgid ""
 msgstr ""
 
 #: ../gui/gtkexcepthook.py:176
-msgid "Search Tracker..."
+msgid "Search Tracker…"
 msgstr ""
 
 #. only development and prereleases
 #: ../gui/gtkexcepthook.py:178
-msgid "Report..."
+msgid "Report…"
 msgstr "Rapporter…"
 
 #: ../gui/gtkexcepthook.py:180
@@ -2240,8 +2240,8 @@ msgid "Quit MyPaint"
 msgstr "Om MyPaint"
 
 #: ../gui/gtkexcepthook.py:191
-msgid "Details..."
-msgstr "Detaljer..."
+msgid "Details…"
+msgstr "Detaljer…"
 
 #: ../gui/gtkexcepthook.py:218 ../gui/gtkexcepthook.py:221
 msgid "Exception while analyzing the exception."
@@ -2430,8 +2430,8 @@ msgstr ""
 
 #. TRANSLATORS: status bar messages for drag, without/with modifiers
 #: ../gui/layerswindow.py:109
-msgid "Move layer in stack..."
-msgstr "Endre lagets nivå..."
+msgid "Move layer in stack…"
+msgstr "Endre lagets nivå…"
 
 #: ../gui/layerswindow.py:110
 msgid ""
@@ -2502,7 +2502,7 @@ msgid "Stroke trail-off beginning"
 msgstr "Strøkets uttoningsbegynnelse"
 
 #: ../gui/linemode.py:173
-msgid "Pressure variation..."
+msgid "Pressure variation…"
 msgstr "Trykkvariasjon…"
 
 #: ../gui/linemode.py:219 ../gui/linemode.py:777
@@ -4548,7 +4548,7 @@ msgstr "Åpne…"
 #: ../po/tmp/resources.xml.h:5
 msgctxt "Toolbar (short labels)"
 msgid "Open"
-msgstr "Åpne..."
+msgstr "Åpne…"
 
 #: ../po/tmp/resources.xml.h:6
 msgctxt "Toolbar (tooltips), Accel Editor (descriptions)"

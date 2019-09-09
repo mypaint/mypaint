@@ -528,17 +528,17 @@ msgstr "Paket kuas MyPaint (*.zip)"
 
 #: ../gui/brushselectionwindow.py:534
 msgctxt "brush groups menu"
-msgid "New Group..."
-msgstr "Kelompok Baru..."
+msgid "New Group…"
+msgstr "Kelompok Baru…"
 
 #: ../gui/brushselectionwindow.py:537
 msgctxt "brush groups menu"
-msgid "Import Brushes..."
-msgstr "Impor Kuas..."
+msgid "Import Brushes…"
+msgstr "Impor Kuas…"
 
 #: ../gui/brushselectionwindow.py:540
 msgctxt "brush groups menu"
-msgid "Get More Brushes..."
+msgid "Get More Brushes…"
 msgstr "Dapatkan Beberapa Kuas…"
 
 #: ../gui/brushselectionwindow.py:554
@@ -1216,13 +1216,13 @@ msgstr "Jenis"
 
 #: ../gui/device.py:481
 msgctxt "prefs: devices table: column header"
-msgid "Use for..."
-msgstr "Gunakan untuk..."
+msgid "Use for…"
+msgstr "Gunakan untuk…"
 
 #: ../gui/device.py:511
 msgctxt "prefs: devices table: column header"
-msgid "Scroll..."
-msgstr "Gulir..."
+msgid "Scroll…"
+msgstr "Gulir…"
 
 #. Name and preview column: will be indented
 #: ../gui/dialogs.py:74 ../gui/externalapp.py:136 ../gui/layers.py:405
@@ -1408,7 +1408,7 @@ msgstr ""
 #, fuzzy
 msgctxt "Open dragged file confirm dialog: continue button"
 msgid "_Open"
-msgstr "Buka..."
+msgstr "Buka…"
 
 #: ../gui/drawwindow.py:486
 msgid "Set current color"
@@ -1443,8 +1443,8 @@ msgid "_Quit"
 msgstr "Keluar"
 
 #: ../gui/drawwindow.py:697
-msgid "Import brush package..."
-msgstr "Impor paket kuas..."
+msgid "Import brush package…"
+msgstr "Impor paket kuas…"
 
 #: ../gui/drawwindow.py:698
 msgid "MyPaint brush package (*.zip)"
@@ -1493,8 +1493,8 @@ msgid ""
 msgstr ""
 
 #: ../gui/externalapp.py:71
-msgid "Open With..."
-msgstr "Buka..."
+msgid "Open With…"
+msgstr "Buka…"
 
 #: ../gui/externalapp.py:123
 msgid "Icon"
@@ -1562,13 +1562,13 @@ msgstr "Simpan Pengaturan"
 #, fuzzy
 msgctxt "Document I/O: fail dialog title"
 msgid "Export failed"
-msgstr "Ekspor palet..."
+msgstr "Ekspor palet…"
 
 #: ../gui/filehandling.py:172
 #, fuzzy
 msgctxt "Document I/O: fail dialog title"
 msgid "Import Layers failed"
-msgstr "Ekspor palet..."
+msgstr "Ekspor palet…"
 
 #: ../gui/filehandling.py:176
 #, fuzzy
@@ -1686,13 +1686,13 @@ msgstr "JPEG kualitas 90% (*.jpg; *.jpeg)"
 
 #: ../gui/filehandling.py:576
 #, fuzzy
-msgctxt "Dialogs (window title): File→Export..."
+msgctxt "Dialogs (window title): File→Export…"
 msgid "Export"
 msgstr "Ekspor…"
 
 #: ../gui/filehandling.py:581
 #, fuzzy
-msgctxt "Dialogs (window title): File→Save As..."
+msgctxt "Dialogs (window title): File→Save As…"
 msgid "Save As"
 msgstr "Simpan Sebagai…"
 
@@ -1763,8 +1763,8 @@ msgstr "Buka Berkas Terdahulu"
 #: ../gui/filehandling.py:1057
 #, fuzzy
 msgctxt "load dialogs: title"
-msgid "Open Scratchpad..."
-msgstr "Buka Scratchpad..."
+msgid "Open Scratchpad…"
+msgstr "Buka Scratchpad…"
 
 #: ../gui/filehandling.py:1099
 #, fuzzy
@@ -1781,7 +1781,7 @@ msgstr ""
 #, fuzzy
 msgctxt "File→Open Recent→* confirm dialog: continue button"
 msgid "_Open"
-msgstr "Buka..."
+msgstr "Buka…"
 
 #: ../gui/filehandling.py:1427
 #, fuzzy
@@ -1793,7 +1793,7 @@ msgstr "Buka yg Terdahulu"
 #, fuzzy
 msgctxt "File→Open Most Recent→* confirm dialog: continue button"
 msgid "_Open"
-msgstr "Buka..."
+msgstr "Buka…"
 
 #: ../gui/filehandling.py:1446
 #, fuzzy
@@ -1817,7 +1817,7 @@ msgstr "Buka Scrap Terdahulu"
 #, fuzzy
 msgctxt "File→Open Next/Prev Scrap confirm dialog: continue button"
 msgid "_Open"
-msgstr "Buka..."
+msgstr "Buka…"
 
 #: ../gui/filehandling.py:1487
 msgctxt "File→Revert: status message: canvas has no filename yet"
@@ -2203,13 +2203,13 @@ msgid ""
 msgstr ""
 
 #: ../gui/gtkexcepthook.py:176
-msgid "Search Tracker..."
+msgid "Search Tracker…"
 msgstr ""
 
 #. only development and prereleases
 #: ../gui/gtkexcepthook.py:178
-msgid "Report..."
-msgstr "Laporkan..."
+msgid "Report…"
+msgstr "Laporkan…"
 
 #: ../gui/gtkexcepthook.py:180
 msgid "Ignore Error"
@@ -2220,8 +2220,8 @@ msgid "Quit MyPaint"
 msgstr "Tentang MyPaint"
 
 #: ../gui/gtkexcepthook.py:191
-msgid "Details..."
-msgstr "Detil..."
+msgid "Details…"
+msgstr "Detil…"
 
 #: ../gui/gtkexcepthook.py:218 ../gui/gtkexcepthook.py:221
 msgid "Exception while analyzing the exception."
@@ -2409,7 +2409,7 @@ msgstr ""
 
 #. TRANSLATORS: status bar messages for drag, without/with modifiers
 #: ../gui/layerswindow.py:109
-msgid "Move layer in stack..."
+msgid "Move layer in stack…"
 msgstr ""
 
 #: ../gui/layerswindow.py:110
@@ -2480,7 +2480,7 @@ msgid "Stroke trail-off beginning"
 msgstr ""
 
 #: ../gui/linemode.py:173
-msgid "Pressure variation..."
+msgid "Pressure variation…"
 msgstr ""
 
 #: ../gui/linemode.py:219 ../gui/linemode.py:777
@@ -4504,7 +4504,7 @@ msgstr "Buka…"
 #: ../po/tmp/resources.xml.h:5
 msgctxt "Toolbar (short labels)"
 msgid "Open"
-msgstr "Buka..."
+msgstr "Buka…"
 
 #: ../po/tmp/resources.xml.h:6
 msgctxt "Toolbar (tooltips), Accel Editor (descriptions)"

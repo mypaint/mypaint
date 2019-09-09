@@ -530,17 +530,17 @@ msgstr "گورزەی فڵچەی مای پەینت )*.zip("
 
 #: ../gui/brushselectionwindow.py:534
 msgctxt "brush groups menu"
-msgid "New Group..."
+msgid "New Group…"
 msgstr "دەستەی نوێ…"
 
 #: ../gui/brushselectionwindow.py:537
 msgctxt "brush groups menu"
-msgid "Import Brushes..."
+msgid "Import Brushes…"
 msgstr "هاوردەکردنی فڵچەکان…"
 
 #: ../gui/brushselectionwindow.py:540
 msgctxt "brush groups menu"
-msgid "Get More Brushes..."
+msgid "Get More Brushes…"
 msgstr "فڵچەی زیاتر بەدەست بهێنە…"
 
 #: ../gui/brushselectionwindow.py:554
@@ -1203,12 +1203,12 @@ msgstr ""
 
 #: ../gui/device.py:481
 msgctxt "prefs: devices table: column header"
-msgid "Use for..."
+msgid "Use for…"
 msgstr ""
 
 #: ../gui/device.py:511
 msgctxt "prefs: devices table: column header"
-msgid "Scroll..."
+msgid "Scroll…"
 msgstr ""
 
 #. Name and preview column: will be indented
@@ -1425,7 +1425,7 @@ msgid "_Quit"
 msgstr "دەرچوون"
 
 #: ../gui/drawwindow.py:697
-msgid "Import brush package..."
+msgid "Import brush package…"
 msgstr ""
 
 #: ../gui/drawwindow.py:698
@@ -1475,7 +1475,7 @@ msgid ""
 msgstr ""
 
 #: ../gui/externalapp.py:71
-msgid "Open With..."
+msgid "Open With…"
 msgstr ""
 
 #: ../gui/externalapp.py:123
@@ -1653,13 +1653,13 @@ msgid "JPEG 90% quality (*.jpg; *.jpeg)"
 msgstr ""
 
 #: ../gui/filehandling.py:576
-msgctxt "Dialogs (window title): File→Export..."
+msgctxt "Dialogs (window title): File→Export…"
 msgid "Export"
 msgstr ""
 
 #: ../gui/filehandling.py:581
 #, fuzzy
-msgctxt "Dialogs (window title): File→Save As..."
+msgctxt "Dialogs (window title): File→Save As…"
 msgid "Save As"
 msgstr "پاشەکەوتکردن وەک…"
 
@@ -1726,7 +1726,7 @@ msgstr "کردنەوە"
 
 #: ../gui/filehandling.py:1057
 msgctxt "load dialogs: title"
-msgid "Open Scratchpad..."
+msgid "Open Scratchpad…"
 msgstr ""
 
 #: ../gui/filehandling.py:1099
@@ -2153,12 +2153,12 @@ msgid ""
 msgstr ""
 
 #: ../gui/gtkexcepthook.py:176
-msgid "Search Tracker..."
+msgid "Search Tracker…"
 msgstr ""
 
 #. only development and prereleases
 #: ../gui/gtkexcepthook.py:178
-msgid "Report..."
+msgid "Report…"
 msgstr ""
 
 #: ../gui/gtkexcepthook.py:180
@@ -2170,7 +2170,7 @@ msgid "Quit MyPaint"
 msgstr ""
 
 #: ../gui/gtkexcepthook.py:191
-msgid "Details..."
+msgid "Details…"
 msgstr ""
 
 #: ../gui/gtkexcepthook.py:218 ../gui/gtkexcepthook.py:221
@@ -2357,7 +2357,7 @@ msgstr ""
 
 #. TRANSLATORS: status bar messages for drag, without/with modifiers
 #: ../gui/layerswindow.py:109
-msgid "Move layer in stack..."
+msgid "Move layer in stack…"
 msgstr ""
 
 #: ../gui/layerswindow.py:110
@@ -2428,7 +2428,7 @@ msgid "Stroke trail-off beginning"
 msgstr ""
 
 #: ../gui/linemode.py:173
-msgid "Pressure variation..."
+msgid "Pressure variation…"
 msgstr ""
 
 #: ../gui/linemode.py:219 ../gui/linemode.py:777

@@ -536,18 +536,18 @@ msgstr "Pacote de pincéis do MyPaint (*.zip)"
 
 #: ../gui/brushselectionwindow.py:534
 msgctxt "brush groups menu"
-msgid "New Group..."
-msgstr "Novo Grupo..."
+msgid "New Group…"
+msgstr "Novo Grupo…"
 
 #: ../gui/brushselectionwindow.py:537
 msgctxt "brush groups menu"
-msgid "Import Brushes..."
-msgstr "Importar Pincéis..."
+msgid "Import Brushes…"
+msgstr "Importar Pincéis…"
 
 #: ../gui/brushselectionwindow.py:540
 msgctxt "brush groups menu"
-msgid "Get More Brushes..."
-msgstr "Obter Mais Pincéis..."
+msgid "Get More Brushes…"
+msgstr "Obter Mais Pincéis…"
 
 #: ../gui/brushselectionwindow.py:554
 msgctxt "new brush group dialog: title"
@@ -1231,13 +1231,13 @@ msgstr "Tipo"
 
 #: ../gui/device.py:481
 msgctxt "prefs: devices table: column header"
-msgid "Use for..."
-msgstr "Use para..."
+msgid "Use for…"
+msgstr "Use para…"
 
 #: ../gui/device.py:511
 msgctxt "prefs: devices table: column header"
-msgid "Scroll..."
-msgstr "Move..."
+msgid "Scroll…"
+msgstr "Move…"
 
 #. Name and preview column: will be indented
 #: ../gui/dialogs.py:74 ../gui/externalapp.py:136 ../gui/layers.py:405
@@ -1460,8 +1460,8 @@ msgid "_Quit"
 msgstr "Sair"
 
 #: ../gui/drawwindow.py:697
-msgid "Import brush package..."
-msgstr "Importar pacote de pincéis..."
+msgid "Import brush package…"
+msgstr "Importar pacote de pincéis…"
 
 #: ../gui/drawwindow.py:698
 msgid "MyPaint brush package (*.zip)"
@@ -1515,8 +1515,8 @@ msgstr ""
 "“{type_name}” ({content_type})?"
 
 #: ../gui/externalapp.py:71
-msgid "Open With..."
-msgstr "Abrir Com..."
+msgid "Open With…"
+msgstr "Abrir Com…"
 
 #: ../gui/externalapp.py:123
 msgid "Icon"
@@ -1709,13 +1709,13 @@ msgstr "JPEG com qualidade de 90% (*.jpg; *.jpeg)"
 
 #: ../gui/filehandling.py:576
 #, fuzzy
-msgctxt "Dialogs (window title): File→Export..."
+msgctxt "Dialogs (window title): File→Export…"
 msgid "Export"
 msgstr "Exportar…"
 
 #: ../gui/filehandling.py:581
 #, fuzzy
-msgctxt "Dialogs (window title): File→Save As..."
+msgctxt "Dialogs (window title): File→Save As…"
 msgid "Save As"
 msgstr "Salvar Como…"
 
@@ -1786,7 +1786,7 @@ msgstr "Abrir Arquivos Recentes"
 #: ../gui/filehandling.py:1057
 #, fuzzy
 msgctxt "load dialogs: title"
-msgid "Open Scratchpad..."
+msgid "Open Scratchpad…"
 msgstr "Abrir Painel de Rascunho"
 
 #: ../gui/filehandling.py:1099
@@ -2243,13 +2243,13 @@ msgstr ""
 "problemas, se mais ninguém relatou ainda."
 
 #: ../gui/gtkexcepthook.py:176
-msgid "Search Tracker..."
-msgstr "Pesquisar Rastreador..."
+msgid "Search Tracker…"
+msgstr "Pesquisar Rastreador…"
 
 #. only development and prereleases
 #: ../gui/gtkexcepthook.py:178
-msgid "Report..."
-msgstr "Reportar..."
+msgid "Report…"
+msgstr "Reportar…"
 
 #: ../gui/gtkexcepthook.py:180
 msgid "Ignore Error"
@@ -2260,8 +2260,8 @@ msgid "Quit MyPaint"
 msgstr "Sair do MyPaint"
 
 #: ../gui/gtkexcepthook.py:191
-msgid "Details..."
-msgstr "Detalhes..."
+msgid "Details…"
+msgstr "Detalhes…"
 
 #: ../gui/gtkexcepthook.py:218 ../gui/gtkexcepthook.py:221
 msgid "Exception while analyzing the exception."
@@ -2470,8 +2470,8 @@ msgstr ""
 
 #. TRANSLATORS: status bar messages for drag, without/with modifiers
 #: ../gui/layerswindow.py:109
-msgid "Move layer in stack..."
-msgstr "Reordenar Camada na Pilha..."
+msgid "Move layer in stack…"
+msgstr "Reordenar Camada na Pilha…"
 
 #: ../gui/layerswindow.py:110
 msgid ""
@@ -2543,8 +2543,8 @@ msgid "Stroke trail-off beginning"
 msgstr "Traçado saindo do começo"
 
 #: ../gui/linemode.py:173
-msgid "Pressure variation..."
-msgstr "Variação de pressão..."
+msgid "Pressure variation…"
+msgstr "Variação de pressão…"
 
 #: ../gui/linemode.py:219 ../gui/linemode.py:777
 msgid "Lines and Curves"
@@ -3738,7 +3738,7 @@ msgstr "Apagar este pincel do disco"
 #, fuzzy
 msgctxt "Autosave Recovery dialog|"
 msgid "_Recover & Save…"
-msgstr "_Recuperar e Salvar..."
+msgstr "_Recuperar e Salvar…"
 
 #: ../po/tmp/autorecover.glade.h:12
 #, fuzzy
@@ -4719,7 +4719,7 @@ msgstr ""
 #, fuzzy
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "Import Layers…"
-msgstr "Importar Pincéis..."
+msgstr "Importar Pincéis…"
 
 #: ../po/tmp/resources.xml.h:13
 msgctxt "Accel Editor (descriptions)"
@@ -5885,7 +5885,7 @@ msgstr ""
 #, fuzzy
 msgctxt "Menu→Scratchpad (labels), Accel Editor (labels)"
 msgid "Open Scratchpad…"
-msgstr "Abrir Painel de Rascunho..."
+msgstr "Abrir Painel de Rascunho…"
 
 #: ../po/tmp/resources.xml.h:226
 msgctxt "Accel Editor (descriptions)"
@@ -6034,7 +6034,7 @@ msgstr ""
 #, fuzzy
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
 msgid "Import Brushes…"
-msgstr "Importar Pincéis..."
+msgstr "Importar Pincéis…"
 
 #: ../po/tmp/resources.xml.h:253
 #, fuzzy

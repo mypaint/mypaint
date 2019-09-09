@@ -527,18 +527,18 @@ msgstr "MyPaint penslapakki (*.zip)"
 
 #: ../gui/brushselectionwindow.py:534
 msgctxt "brush groups menu"
-msgid "New Group..."
-msgstr "Nýr hópur..."
+msgid "New Group…"
+msgstr "Nýr hópur…"
 
 #: ../gui/brushselectionwindow.py:537
 msgctxt "brush groups menu"
-msgid "Import Brushes..."
-msgstr "Flytja inn pensla..."
+msgid "Import Brushes…"
+msgstr "Flytja inn pensla…"
 
 #: ../gui/brushselectionwindow.py:540
 msgctxt "brush groups menu"
-msgid "Get More Brushes..."
-msgstr "Ná í fleiri pensla..."
+msgid "Get More Brushes…"
+msgstr "Ná í fleiri pensla…"
 
 #: ../gui/brushselectionwindow.py:554
 msgctxt "new brush group dialog: title"
@@ -1220,13 +1220,13 @@ msgstr "Tegund"
 
 #: ../gui/device.py:481
 msgctxt "prefs: devices table: column header"
-msgid "Use for..."
-msgstr "Nota fyrir..."
+msgid "Use for…"
+msgstr "Nota fyrir…"
 
 #: ../gui/device.py:511
 msgctxt "prefs: devices table: column header"
-msgid "Scroll..."
-msgstr "Skruna..."
+msgid "Scroll…"
+msgstr "Skruna…"
 
 #. Name and preview column: will be indented
 #: ../gui/dialogs.py:74 ../gui/externalapp.py:136 ../gui/layers.py:405
@@ -1449,8 +1449,8 @@ msgid "_Quit"
 msgstr "Hætta"
 
 #: ../gui/drawwindow.py:697
-msgid "Import brush package..."
-msgstr "Flytja inn penslapakka..."
+msgid "Import brush package…"
+msgstr "Flytja inn penslapakka…"
 
 #: ../gui/drawwindow.py:698
 msgid "MyPaint brush package (*.zip)"
@@ -1505,8 +1505,8 @@ msgstr ""
 "“{type_name}” ({content_type})?"
 
 #: ../gui/externalapp.py:71
-msgid "Open With..."
-msgstr "Opna með..."
+msgid "Open With…"
+msgstr "Opna með…"
 
 #: ../gui/externalapp.py:123
 msgid "Icon"
@@ -1696,13 +1696,13 @@ msgstr "JPEG 90% gæði (*.jpg; *.jpeg)"
 
 #: ../gui/filehandling.py:576
 #, fuzzy
-msgctxt "Dialogs (window title): File→Export..."
+msgctxt "Dialogs (window title): File→Export…"
 msgid "Export"
 msgstr "Flytja út…"
 
 #: ../gui/filehandling.py:581
 #, fuzzy
-msgctxt "Dialogs (window title): File→Save As..."
+msgctxt "Dialogs (window title): File→Save As…"
 msgid "Save As"
 msgstr "Vista sem…"
 
@@ -1773,8 +1773,8 @@ msgstr "Opna"
 #: ../gui/filehandling.py:1057
 #, fuzzy
 msgctxt "load dialogs: title"
-msgid "Open Scratchpad..."
-msgstr "Opna krassblað..."
+msgid "Open Scratchpad…"
+msgstr "Opna krassblað…"
 
 #: ../gui/filehandling.py:1099
 #, fuzzy
@@ -2230,13 +2230,13 @@ msgstr ""
 "annar er þegar búinn að tilkynna þetta."
 
 #: ../gui/gtkexcepthook.py:176
-msgid "Search Tracker..."
-msgstr "Leita í villuskrá..."
+msgid "Search Tracker…"
+msgstr "Leita í villuskrá…"
 
 #. only development and prereleases
 #: ../gui/gtkexcepthook.py:178
-msgid "Report..."
-msgstr "Skýrsla..."
+msgid "Report…"
+msgstr "Skýrsla…"
 
 #: ../gui/gtkexcepthook.py:180
 msgid "Ignore Error"
@@ -2247,8 +2247,8 @@ msgid "Quit MyPaint"
 msgstr "Hætta í MyPaint"
 
 #: ../gui/gtkexcepthook.py:191
-msgid "Details..."
-msgstr "Nánar..."
+msgid "Details…"
+msgstr "Nánar…"
 
 #: ../gui/gtkexcepthook.py:218 ../gui/gtkexcepthook.py:221
 msgid "Exception while analyzing the exception."
@@ -2437,8 +2437,8 @@ msgstr ""
 
 #. TRANSLATORS: status bar messages for drag, without/with modifiers
 #: ../gui/layerswindow.py:109
-msgid "Move layer in stack..."
-msgstr "Flytja lag í stafla..."
+msgid "Move layer in stack…"
+msgstr "Flytja lag í stafla…"
 
 #: ../gui/layerswindow.py:110
 msgid ""
@@ -2508,8 +2508,8 @@ msgid "Stroke trail-off beginning"
 msgstr "Endi við lok stroklínu"
 
 #: ../gui/linemode.py:173
-msgid "Pressure variation..."
-msgstr "Breytileiki þrýstings..."
+msgid "Pressure variation…"
+msgstr "Breytileiki þrýstings…"
 
 #: ../gui/linemode.py:219 ../gui/linemode.py:777
 msgid "Lines and Curves"
@@ -3686,7 +3686,7 @@ msgstr "Eyða þessum pensli af diski"
 #, fuzzy
 msgctxt "Autosave Recovery dialog|"
 msgid "_Recover & Save…"
-msgstr "Endu_rheimta og vista..."
+msgstr "Endu_rheimta og vista…"
 
 #: ../po/tmp/autorecover.glade.h:12
 #, fuzzy

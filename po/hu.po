@@ -519,18 +519,18 @@ msgstr "MyPaint ecsetcsomag (*.zip)"
 
 #: ../gui/brushselectionwindow.py:534
 msgctxt "brush groups menu"
-msgid "New Group..."
-msgstr "Új csoport..."
+msgid "New Group…"
+msgstr "Új csoport…"
 
 #: ../gui/brushselectionwindow.py:537
 msgctxt "brush groups menu"
-msgid "Import Brushes..."
-msgstr "Ecsetek importálása..."
+msgid "Import Brushes…"
+msgstr "Ecsetek importálása…"
 
 #: ../gui/brushselectionwindow.py:540
 msgctxt "brush groups menu"
-msgid "Get More Brushes..."
-msgstr "További ecsetek beszerzése..."
+msgid "Get More Brushes…"
+msgstr "További ecsetek beszerzése…"
 
 #: ../gui/brushselectionwindow.py:554
 msgctxt "new brush group dialog: title"
@@ -1203,13 +1203,13 @@ msgstr ""
 
 #: ../gui/device.py:481
 msgctxt "prefs: devices table: column header"
-msgid "Use for..."
+msgid "Use for…"
 msgstr ""
 
 #: ../gui/device.py:511
 msgctxt "prefs: devices table: column header"
-msgid "Scroll..."
-msgstr "Görgetés..."
+msgid "Scroll…"
+msgstr "Görgetés…"
 
 #. Name and preview column: will be indented
 #: ../gui/dialogs.py:74 ../gui/externalapp.py:136 ../gui/layers.py:405
@@ -1395,7 +1395,7 @@ msgstr ""
 #, fuzzy
 msgctxt "Open dragged file confirm dialog: continue button"
 msgid "_Open"
-msgstr "Megnyitás..."
+msgstr "Megnyitás…"
 
 #: ../gui/drawwindow.py:486
 msgid "Set current color"
@@ -1430,8 +1430,8 @@ msgid "_Quit"
 msgstr "Kilépés"
 
 #: ../gui/drawwindow.py:697
-msgid "Import brush package..."
-msgstr "Ecsetcsomag importálása..."
+msgid "Import brush package…"
+msgstr "Ecsetcsomag importálása…"
 
 #: ../gui/drawwindow.py:698
 msgid "MyPaint brush package (*.zip)"
@@ -1480,8 +1480,8 @@ msgid ""
 msgstr ""
 
 #: ../gui/externalapp.py:71
-msgid "Open With..."
-msgstr "Megnyitás..."
+msgid "Open With…"
+msgstr "Megnyitás…"
 
 #: ../gui/externalapp.py:123
 msgid "Icon"
@@ -1674,13 +1674,13 @@ msgstr "JPEG 90%-os minőség (*.jpg; *.jpeg)"
 
 #: ../gui/filehandling.py:576
 #, fuzzy
-msgctxt "Dialogs (window title): File→Export..."
+msgctxt "Dialogs (window title): File→Export…"
 msgid "Export"
 msgstr "Exportálás…"
 
 #: ../gui/filehandling.py:581
 #, fuzzy
-msgctxt "Dialogs (window title): File→Save As..."
+msgctxt "Dialogs (window title): File→Save As…"
 msgid "Save As"
 msgstr "Mentés másként…"
 
@@ -1740,7 +1740,7 @@ msgstr ""
 #, fuzzy
 msgctxt "File→Open: confirm dialog: continue button"
 msgid "_Open…"
-msgstr "Megnyitás..."
+msgstr "Megnyitás…"
 
 #: ../gui/filehandling.py:1015
 #, fuzzy
@@ -1751,8 +1751,8 @@ msgstr "Legutóbbi fájlok megnyitása"
 #: ../gui/filehandling.py:1057
 #, fuzzy
 msgctxt "load dialogs: title"
-msgid "Open Scratchpad..."
-msgstr "Vázlattömb megnyitása..."
+msgid "Open Scratchpad…"
+msgstr "Vázlattömb megnyitása…"
 
 #: ../gui/filehandling.py:1099
 #, fuzzy
@@ -1769,7 +1769,7 @@ msgstr ""
 #, fuzzy
 msgctxt "File→Open Recent→* confirm dialog: continue button"
 msgid "_Open"
-msgstr "Megnyitás..."
+msgstr "Megnyitás…"
 
 #: ../gui/filehandling.py:1427
 #, fuzzy
@@ -1781,7 +1781,7 @@ msgstr "Legutóbbi megnyitása"
 #, fuzzy
 msgctxt "File→Open Most Recent→* confirm dialog: continue button"
 msgid "_Open"
-msgstr "Megnyitás..."
+msgstr "Megnyitás…"
 
 #: ../gui/filehandling.py:1446
 #, fuzzy
@@ -1805,7 +1805,7 @@ msgstr "Előző vázlat betöltése"
 #, fuzzy
 msgctxt "File→Open Next/Prev Scrap confirm dialog: continue button"
 msgid "_Open"
-msgstr "Megnyitás..."
+msgstr "Megnyitás…"
 
 #: ../gui/filehandling.py:1487
 msgctxt "File→Revert: status message: canvas has no filename yet"
@@ -2185,13 +2185,13 @@ msgid ""
 msgstr ""
 
 #: ../gui/gtkexcepthook.py:176
-msgid "Search Tracker..."
+msgid "Search Tracker…"
 msgstr ""
 
 #. only development and prereleases
 #: ../gui/gtkexcepthook.py:178
-msgid "Report..."
-msgstr "Jelentés..."
+msgid "Report…"
+msgstr "Jelentés…"
 
 #: ../gui/gtkexcepthook.py:180
 msgid "Ignore Error"
@@ -2202,8 +2202,8 @@ msgid "Quit MyPaint"
 msgstr "Névjegy"
 
 #: ../gui/gtkexcepthook.py:191
-msgid "Details..."
-msgstr "Részletek..."
+msgid "Details…"
+msgstr "Részletek…"
 
 #: ../gui/gtkexcepthook.py:218 ../gui/gtkexcepthook.py:221
 msgid "Exception while analyzing the exception."
@@ -2391,8 +2391,8 @@ msgstr ""
 
 #. TRANSLATORS: status bar messages for drag, without/with modifiers
 #: ../gui/layerswindow.py:109
-msgid "Move layer in stack..."
-msgstr "Rétegek átrendezése a veremben..."
+msgid "Move layer in stack…"
+msgstr "Rétegek átrendezése a veremben…"
 
 #: ../gui/layerswindow.py:110
 msgid ""
@@ -2462,7 +2462,7 @@ msgid "Stroke trail-off beginning"
 msgstr "Ecsetvonás levezető részének kezdete"
 
 #: ../gui/linemode.py:173
-msgid "Pressure variation..."
+msgid "Pressure variation…"
 msgstr ""
 
 #: ../gui/linemode.py:219 ../gui/linemode.py:777
@@ -4509,7 +4509,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:5
 msgctxt "Toolbar (short labels)"
 msgid "Open"
-msgstr "Megnyitás..."
+msgstr "Megnyitás…"
 
 #: ../po/tmp/resources.xml.h:6
 msgctxt "Toolbar (tooltips), Accel Editor (descriptions)"
