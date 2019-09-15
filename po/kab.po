@@ -8,8 +8,8 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2019-09-08 22:53+0200\n"
-"PO-Revision-Date: 2018-08-22 12:38+0000\n"
-"Last-Translator: ButterflyOfFire <ButterflyOfFire@protonmail.com>\n"
+"PO-Revision-Date: 2019-09-16 20:23+0000\n"
+"Last-Translator: Yuba Wissin <chafikamazigh92@gmail.com>\n"
 "Language-Team: Kabyle <https://hosted.weblate.org/projects/mypaint/mypaint/"
 "kab/>\n"
 "Language: kab\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n > 1;\n"
-"X-Generator: Weblate 3.2-dev\n"
+"X-Generator: Weblate 3.9-dev\n"
 
 #: ../gui/accelmap.py:99 ../gui/buttonmap.py:280
 msgid "Action"
@@ -147,7 +147,7 @@ msgstr ""
 #: ../gui/brusheditor.py:267
 msgctxt "brush settings list: brush metadata texts group"
 msgid "About"
-msgstr ""
+msgstr "Ɣef"
 
 #: ../gui/brusheditor.py:278
 msgctxt "brush settings list: setting group"
@@ -6145,9 +6145,10 @@ msgid "Rotate View"
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:353
+#, fuzzy
 msgctxt "Toolbar (short labels)"
 msgid "Rotate"
-msgstr ""
+msgstr "Bren"
 
 #: ../po/tmp/resources.xml.h:354
 msgctxt "Toolbar (tooltips)"
@@ -6430,9 +6431,10 @@ msgid "Flood Fill"
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:409
+#, fuzzy
 msgctxt "Toolbar (short labels)"
 msgid "Fill"
-msgstr ""
+msgstr "Ččar"
 
 #: ../po/tmp/resources.xml.h:410
 msgctxt "Toolbar (tooltips)"
