@@ -1743,13 +1743,13 @@ msgstr "JPEG z 90% kvaliteto kompresije (*.jpg; *.jpeg)"
 
 #: ../gui/filehandling.py:576
 #, fuzzy
-msgctxt "Dialogs (window title): File→Export..."
+msgctxt "Dialogs (window title): File→Export…"
 msgid "Export"
 msgstr "Poročaj ... "
 
 #: ../gui/filehandling.py:581
 #, fuzzy
-msgctxt "Dialogs (window title): File→Save As..."
+msgctxt "Dialogs (window title): File→Save As…"
 msgid "Save As"
 msgstr "Shrani kot …"
 

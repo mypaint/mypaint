@@ -572,12 +572,12 @@ class FileHandler (object):
     def init_save_dialog(self, export):
         if export:
             save_dialog_name = C_(
-                "Dialogs (window title): File→Export...",
+                "Dialogs (window title): File→Export…",
                 u"Export"
             )
         else:
             save_dialog_name = C_(
-                "Dialogs (window title): File→Save As...",
+                "Dialogs (window title): File→Save As…",
                 u"Save As"
             )
         dialog = Gtk.FileChooserDialog(

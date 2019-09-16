@@ -1630,12 +1630,12 @@ msgid "JPEG 90% quality (*.jpg; *.jpeg)"
 msgstr ""
 
 #: ../gui/filehandling.py:576
-msgctxt "Dialogs (window title): File→Export..."
+msgctxt "Dialogs (window title): File→Export…"
 msgid "Export"
 msgstr ""
 
 #: ../gui/filehandling.py:581
-msgctxt "Dialogs (window title): File→Save As..."
+msgctxt "Dialogs (window title): File→Save As…"
 msgid "Save As"
 msgstr ""
 
