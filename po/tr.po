@@ -8,8 +8,8 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2019-09-08 22:53+0200\n"
-"PO-Revision-Date: 2019-08-27 08:23+0000\n"
-"Last-Translator: leela <53352@protonmail.com>\n"
+"PO-Revision-Date: 2019-09-20 17:27+0000\n"
+"Last-Translator: Sabri Ünal <libreajans@gmail.com>\n"
 "Language-Team: Turkish <https://hosted.weblate.org/projects/mypaint/mypaint/"
 "tr/>\n"
 "Language: tr\n"
@@ -188,7 +188,7 @@ msgstr "Hız"
 #: ../gui/brusheditor.py:352
 msgctxt "brush settings list: setting group"
 msgid "Directional Offsets"
-msgstr ""
+msgstr "Yön Konumları"
 
 #: ../gui/brusheditor.py:370
 msgctxt "brush settings list: setting group"
@@ -208,7 +208,7 @@ msgstr "Renk"
 #: ../gui/brusheditor.py:407
 msgctxt "brush settings list: setting group"
 msgid "GridMap"
-msgstr ""
+msgstr "Izgara Eşlemi"
 
 #: ../gui/brusheditor.py:418
 msgctxt "brush settings list: setting group"
@@ -398,7 +398,7 @@ msgstr "Yeni"
 #, python-brace-format
 msgctxt "brushpack import failure messages"
 msgid "No file named “{order_conf_file}”. This is not a brushpack."
-msgstr ""
+msgstr "“{order_conf_file}” adında bir dosya yok. Bu bir fırça paketi değil."
 
 #: ../gui/brushmanager.py:639
 #, python-brace-format
@@ -407,6 +407,8 @@ msgid ""
 "Brush “{brush_name}” is listed in “{order_conf_file}”, but it does not exist "
 "in the zipfile."
 msgstr ""
+"“{brush_name}” fırçası “{order_conf_file}” içinde listelenmiş, fakat zip "
+"dosyası içinde yok."
 
 #: ../gui/brushmanager.py:652
 #, python-brace-format
@@ -415,58 +417,56 @@ msgid ""
 "Brush “{brush_name}” exists in the zipfile, but it is not listed in "
 "“{order_conf_file}”."
 msgstr ""
+"“{brush_name}” fırçası zip dosyası içinde var, fakat “{order_conf_file}” "
+"içinde listelenmemiş."
 
 #: ../gui/brushmanager.py:1258 ../gui/footer.py:62
 msgid "Unknown Brush"
 msgstr "Bilinmeyen Fırça"
 
 #: ../gui/brushselectionwindow.py:220
-#, fuzzy
 msgctxt "brush group: context menu for a single brush"
 msgid "Add to Favorites"
 msgstr "Yer İmlerine Ekle"
 
 #: ../gui/brushselectionwindow.py:227
-#, fuzzy
 msgctxt "brush group: context menu for a single brush"
 msgid "Remove from Favorites"
 msgstr "Yer İmlerinden Kaldır"
 
 #: ../gui/brushselectionwindow.py:235
-#, fuzzy
 msgctxt "brush group: context menu for a single brush"
 msgid "Clone"
 msgstr "Kopyala"
 
 #: ../gui/brushselectionwindow.py:242
-#, fuzzy
 msgctxt "brush group: context menu for a single brush"
 msgid "Edit Brush Settings"
 msgstr "Fırça Ayarlarını Düzenle"
 
 #: ../gui/brushselectionwindow.py:250
-#, fuzzy
 msgctxt "brush group: context menu for a single brush"
 msgid "Remove from Group"
-msgstr "Grubu Yeniden Adlandır"
+msgstr "Gruptan Kaldır"
 
 #: ../gui/brushselectionwindow.py:290
 #, python-brace-format
 msgctxt "brush group: context menu: unique names for cloned brushes"
 msgid "{original_name} copy"
-msgstr ""
+msgstr "{original_name} kopyası"
 
 #: ../gui/brushselectionwindow.py:299
 #, python-brace-format
 msgctxt "brush group: context menu: unique names for cloned brushes"
 msgid "{original_name} copy {n}"
-msgstr ""
+msgstr "{original_name} kopyası {n}"
 
 #: ../gui/brushselectionwindow.py:325
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgctxt "brush group: context menu: remove from group"
 msgid "Really remove brush “{brush_name}” from group “{group_name}”?"
-msgstr "\"{brush_name}\" fırçası gerçekten silinsin mi?"
+msgstr ""
+"“{brush_name}” fırçasını “{group_name}” grubundan gerçekten silinsin mi?"
 
 #. TRANSLATORS: number of brushes in a brush group, for tooltips
 #: ../gui/brushselectionwindow.py:381
@@ -546,7 +546,7 @@ msgstr "Fırçaları İçe Aktar…"
 #: ../gui/brushselectionwindow.py:540
 msgctxt "brush groups menu"
 msgid "Get More Brushes…"
-msgstr "Daha Fazla Fırça Edin…"
+msgstr "Daha Fazla Fırça…"
 
 #: ../gui/brushselectionwindow.py:554
 msgctxt "new brush group dialog: title"
@@ -614,31 +614,27 @@ msgstr "Boyama için kullanılacak Rengi seç"
 
 #: ../gui/colorpicker.py:270
 msgid "Pick Hue"
-msgstr ""
+msgstr "Ton Seç"
 
 #: ../gui/colorpicker.py:273
-#, fuzzy
 msgid "Set the color Hue used for painting"
-msgstr "Boyama için kullanılacak Rengi seç"
+msgstr "Boyama için kullanılacak Tonu seç"
 
 #: ../gui/colorpicker.py:293
-#, fuzzy
 msgid "Pick Chroma"
-msgstr "Renk Seç"
+msgstr "Renk Saflığı Seç"
 
 #: ../gui/colorpicker.py:296
-#, fuzzy
 msgid "Set the color Chroma used for painting"
-msgstr "Boyama için kullanılacak Rengi seç"
+msgstr "Boyama için kullanılacak Renk Saflığını seç"
 
 #: ../gui/colorpicker.py:316
 msgid "Pick Luma"
-msgstr ""
+msgstr "Renk Parlaklığı Seç"
 
 #: ../gui/colorpicker.py:319
-#, fuzzy
 msgid "Set the color Luma used for painting"
-msgstr "Boyama için kullanılacak Rengi seç"
+msgstr "Boyama için kullanılacak Renk Parlaklığını seç"
 
 #: ../gui/colors/adjbases.py:699
 msgid "Color details"
@@ -714,6 +710,8 @@ msgid ""
 "Contrasting opposites, balanced by having central neutrals between them on "
 "the color wheel."
 msgstr ""
+"Karşıt renkler, aralarında renk tekerleğinde merkezi nötrler bulunan "
+"dengeler."
 
 #: ../gui/colors/hcywheel.py:957
 msgctxt "HCY Gamut Mask template name"
@@ -1267,39 +1265,40 @@ msgid "Existing brush"
 msgstr "Varolan fırça"
 
 #: ../gui/dialogs.py:166
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgid ""
 "<b>A brush named “{brush_name}” already exists.</b>\n"
 "Do you want to replace it, or should the new brush be renamed?"
 msgstr ""
-"<b>%s adında bir fırça zaten var.</b>\n"
-"Olanı değiştirmek mi, veya yeni fırçayı yeniden adlandırmak mı istersiniz?"
+"<b>“{brush_name}” adında bir fırça zaten var.</b>\n"
+"Olan fırçayı değiştirmek mi, veya yeni fırçayı yeniden adlandırmak mı "
+"istersin?"
 
 #: ../gui/dialogs.py:196
 msgid "Overwrite brush group?"
 msgstr "Fırça grubunun üzerine yazılsın mı?"
 
 #: ../gui/dialogs.py:220
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgid ""
 "<b>A group named “{groupname}” already exists.</b>\n"
 "Do you want to replace it, or should the new group be renamed?\n"
 "If you replace it, the brushes may be moved to a group called "
 "“{deleted_groupname}”."
 msgstr ""
-"<b>{groupname} adında bir grup zaten var.</b>\n"
-"Olanı değiştirmek mi, yoksa yeni grubu yeniden adlandırmak mı istersiniz?\n"
-"Eğer değiştirirseniz, fırçalar {deleted_groupname} adındaki gruba "
-"aktarılabilir."
+"<b>“{groupname}” adında bir grup zaten var.</b>\n"
+"Olanı değiştirmek mi, yoksa yeni grubu yeniden adlandırmak mı istersin?\n"
+"Eğer değiştirirsen, fırçalar “{deleted_groupname}”adındaki gruba taşınır."
 
 #: ../gui/dialogs.py:326
 msgid "Import brush package?"
 msgstr "Fırça paketi içe aktarılsın mı?"
 
 #: ../gui/dialogs.py:357
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgid "<b>Do you really want to import package “{brushpack_name}”?</b>"
-msgstr "<b>`%s' paketini içeri almayı gerçekten istiyor musunuz?</b>"
+msgstr ""
+"<b>“{brushpack_name}” paketini gerçekten içe aktarmak istiyor musun?</b>"
 
 #: ../gui/document.py:453
 #, python-format
@@ -1364,40 +1363,40 @@ msgstr "{modifiers} basılı tutulduğunda: {button_actions}."
 #: ../gui/document.py:897
 msgctxt "Statusbar message: copy result"
 msgid "Empty document, nothing copied."
-msgstr ""
+msgstr "Boş belge, hiçbir şey kopyalanmadı."
 
 #: ../gui/document.py:909
 #, python-brace-format
 msgctxt "Statusbar message: copy result"
 msgid "Copied layer as {w}×{h} image."
-msgstr ""
+msgstr "Katman {w}×{h} görüntü olarak kopyalandı."
 
 #: ../gui/document.py:926
 msgctxt "Statusbar message: paste result"
 msgid "Nothing on clipboard."
-msgstr ""
+msgstr "Pano boş."
 
 #: ../gui/document.py:935
 msgctxt "Statusbar message: paste result"
 msgid "Clipboard does not contain an image."
-msgstr ""
+msgstr "Panoda görüntü yok."
 
 #: ../gui/document.py:946
 msgctxt "Statusbar message: paste result"
 msgid "Cannot paste into this type of layer."
-msgstr ""
+msgstr "Bu tür katmana yapıştırılamaz."
 
 #: ../gui/document.py:951
 #, python-brace-format
 msgctxt "Statusbar message: paste result"
 msgid "Pasted {w}×{h} image."
-msgstr ""
+msgstr "{w}×{h} görüntü yapıştırıldı."
 
 #: ../gui/document.py:2037
 #, python-brace-format
 msgctxt "Statusbar message: vacuum document"
 msgid "Vacuum: discarded {removed} of {total} tiles."
-msgstr ""
+msgstr "Temizle: {total} döşemenin {removed} tanesi temizlendi."
 
 #. TRANSLATORS: window title for use with a filename
 #: ../gui/drawwindow.py:269
@@ -1413,13 +1412,12 @@ msgstr "MyPaint"
 #: ../gui/drawwindow.py:289
 msgctxt "Open dragged file confirm dialog: title"
 msgid "Open Dragged File?"
-msgstr ""
+msgstr "Sürüklenen Dosyayı Aç"
 
 #: ../gui/drawwindow.py:293
-#, fuzzy
 msgctxt "Open dragged file confirm dialog: continue button"
 msgid "_Open"
-msgstr "Aç"
+msgstr "_Aç"
 
 #: ../gui/drawwindow.py:486
 msgid "Set current color"
@@ -1442,20 +1440,18 @@ msgid "Fullscreen"
 msgstr "Tam Ekran"
 
 #: ../gui/drawwindow.py:675
-#, fuzzy
 msgctxt "Quit confirm dialog: title"
 msgid "Really Quit?"
 msgstr "Çıkış"
 
 #: ../gui/drawwindow.py:679
-#, fuzzy
 msgctxt "Quit confirm dialog: continue button"
 msgid "_Quit"
-msgstr "Çıkış"
+msgstr "Çı_kış"
 
 #: ../gui/drawwindow.py:697
 msgid "Import brush package…"
-msgstr "Fırça paketini içe aktar…"
+msgstr "Fırça paketi içe aktarılsın mı?"
 
 #: ../gui/drawwindow.py:698
 msgid "MyPaint brush package (*.zip)"
@@ -1525,203 +1521,186 @@ msgid "no description"
 msgstr "açıklama yok"
 
 #: ../gui/filehandling.py:126
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgctxt "Document I/O: message shown while working"
 msgid "Loading {files_summary}…"
-msgstr "“{file_basename}” dosyası yükleniyor…"
+msgstr "{files_summary} dosyası yükleniyor…"
 
 #: ../gui/filehandling.py:130
 #, python-brace-format
 msgctxt "Document I/O: message shown while working"
 msgid "Importing layers from {files_summary}…"
-msgstr ""
+msgstr "Katmanlar {files_summary} dosyasından içe aktarılıyor…"
 
 #: ../gui/filehandling.py:134
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgctxt "Document I/O: message shown while working"
 msgid "Saving {files_summary}…"
-msgstr "“{file_basename}” dosyası kaydediliyor…"
+msgstr "{files_summary} dosyası kaydediliyor…"
 
 #: ../gui/filehandling.py:138
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgctxt "Document I/O: message shown while working"
 msgid "Exporting to {files_summary}…"
-msgstr "“{file_basename}” dosyasına dışa aktarılıyor…"
+msgstr "{files_summary} dosyasına dışa aktarılıyor…"
 
 #: ../gui/filehandling.py:145
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgctxt "Document I/O: fail message"
 msgid "Failed to export to {files_summary}."
-msgstr "“{file_basename}” dosyasına dışa aktarılamadı."
+msgstr "{files_summary} dosyasına dışa aktarılamadı."
 
 #: ../gui/filehandling.py:149
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgctxt "Document I/O: fail message"
 msgid "Failed to save {files_summary}."
-msgstr "“{file_basename}” dosyasına kaydedilemedi."
+msgstr "{files_summary} dosyasına kaydedilemedi."
 
 #: ../gui/filehandling.py:153
 #, python-brace-format
 msgctxt "Document I/O: fail message"
 msgid "Could not import layers from {files_summary}."
-msgstr ""
+msgstr "Katmanlar {files_summary} dosyasından içe aktarılamadı."
 
 #: ../gui/filehandling.py:157
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgctxt "Document I/O: fail message"
 msgid "Could not load {files_summary}."
-msgstr "“{file_basename}” dosyası yüklenemedi."
+msgstr "{files_summary} dosyası yüklenemedi."
 
 #: ../gui/filehandling.py:164
-#, fuzzy
 msgctxt "Document I/O: fail dialog title"
 msgid "Save failed"
-msgstr "Paleti kaydet"
+msgstr "Kaydedilemedi"
 
 #: ../gui/filehandling.py:168
 msgctxt "Document I/O: fail dialog title"
 msgid "Export failed"
-msgstr ""
+msgstr "Dışa aktarılamadı"
 
 #: ../gui/filehandling.py:172
 msgctxt "Document I/O: fail dialog title"
 msgid "Import Layers failed"
-msgstr ""
+msgstr "Katmanlar içe aktarılamadı"
 
 #: ../gui/filehandling.py:176
 msgctxt "Document I/O: fail dialog title"
 msgid "Open failed"
-msgstr ""
+msgstr "Açılamadı"
 
 #: ../gui/filehandling.py:183
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgctxt "Document I/O: success"
 msgid "Exported to {files_summary} successfully."
-msgstr "“{file_basename}” dosyasına dışa aktarıldı."
+msgstr "{files_summary} dosyasınıa dışa aktarıldı."
 
 #: ../gui/filehandling.py:187
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgctxt "Document I/O: success"
 msgid "Saved {files_summary} successfully."
-msgstr "“{file_basename}” dosyası kaydedildi."
+msgstr "{files_summary} dosyasına kaydedildi."
 
 #: ../gui/filehandling.py:191
 #, python-brace-format
 msgctxt "Document I/O: success"
 msgid "Imported layers from {files_summary}."
-msgstr ""
+msgstr "Katmanlar {files_summary} dosyasından içe aktarıldı."
 
 #: ../gui/filehandling.py:195
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgctxt "Document I/O: success"
 msgid "Loaded {files_summary}."
-msgstr "“{file_basename}” dosyası yüklendi."
+msgstr "{files_summary} dosyası yüklendi."
 
 #: ../gui/filehandling.py:213
 #, python-brace-format
 msgid "{n} file"
 msgid_plural "{n} files"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "{n} dosya"
+msgstr[1] "{n} dosya"
 
 #: ../gui/filehandling.py:221
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgctxt "Document I/O: the {files_summary} for a single file"
 msgid "“{basename}”"
-msgstr "“{file_basename}” dosyası yüklendi."
+msgstr "“{basename}”"
 
 #: ../gui/filehandling.py:427
-#, fuzzy
 msgctxt "save/load dialogs: filter patterns"
 msgid "All Recognized Formats"
 msgstr "Tüm Tanınan Biçimler"
 
 #: ../gui/filehandling.py:432
-#, fuzzy
 msgctxt "save/load dialogs: filter patterns"
 msgid "OpenRaster (*.ora)"
 msgstr "OpenRaster (*.ora)"
 
 #: ../gui/filehandling.py:437
-#, fuzzy
 msgctxt "save/load dialogs: filter patterns"
 msgid "PNG (*.png)"
 msgstr "PNG (*.png)"
 
 #: ../gui/filehandling.py:442
-#, fuzzy
 msgctxt "save/load dialogs: filter patterns"
 msgid "JPEG (*.jpg; *.jpeg)"
 msgstr "JPEG (*.jpg; *.jpeg)"
 
 #: ../gui/filehandling.py:490
-#, fuzzy
 msgctxt "save dialogs: save formats and options"
 msgid "By extension (prefer default format)"
 msgstr "Uzantıya göre (varsayılan biçimi tercih et)"
 
 #: ../gui/filehandling.py:494
-#, fuzzy
 msgctxt "save dialogs: save formats and options"
 msgid "OpenRaster (*.ora)"
 msgstr "OpenRaster (*.ora)"
 
 #: ../gui/filehandling.py:498
-#, fuzzy
 msgctxt "save dialogs: save formats and options"
 msgid "PNG, respecting “Show Background” (*.png)"
-msgstr "PNG artalanla birlikte görünür (* .png)"
+msgstr "PNG, “Arkaplanı Göster” değerini koruyarak (* .png)"
 
 #: ../gui/filehandling.py:502
-#, fuzzy
 msgctxt "save dialogs: save formats and options"
 msgid "PNG, solid RGB (*.png)"
-msgstr "PNG (*.png)"
+msgstr "PNG, düz RGB (*.png)"
 
 #: ../gui/filehandling.py:506
-#, fuzzy
 msgctxt "save dialogs: save formats and options"
 msgid "PNG, transparent RGBA (*.png)"
-msgstr "PNG saydam (*.png)"
+msgstr "PNG, saydam RGBA (*.png)"
 
 #: ../gui/filehandling.py:510
-#, fuzzy
 msgctxt "save dialogs: save formats and options"
 msgid "Multiple PNGs, by layer (*.NUM.png)"
-msgstr "Çoklu PNG saydam (*.XXX.png)"
+msgstr "PNG'leri katmana göre çogalt (*.NUM.png)"
 
 #: ../gui/filehandling.py:514
-#, fuzzy
 msgctxt "save dialogs: save formats and options"
 msgid "Multiple PNGs, by view (*.NAME.png)"
-msgstr "Çoklu PNG saydam (*.XXX.png)"
+msgstr "PNG'leri görünüme göre çoğalt (*.NAME.png)"
 
 #: ../gui/filehandling.py:518
-#, fuzzy
 msgctxt "save dialogs: save formats and options"
 msgid "JPEG 90% quality (*.jpg; *.jpeg)"
 msgstr "JPEG %90 kalite (*.jpg; *.jpeg)"
 
 #: ../gui/filehandling.py:576
-#, fuzzy
 msgctxt "Dialogs (window title): File→Export…"
 msgid "Export"
-msgstr "Dışa Aktar…"
+msgstr "Dışa Aktar"
 
 #: ../gui/filehandling.py:581
-#, fuzzy
 msgctxt "Dialogs (window title): File→Save As…"
 msgid "Save As"
-msgstr "Farklı Kaydet…"
+msgstr "Farklı Kaydet"
 
 #: ../gui/filehandling.py:601
-#, fuzzy
 msgctxt "save dialogs: formats and options: (label)"
 msgid "Format to save as:"
 msgstr "Farklı kaydetme biçimi:"
 
 #: ../gui/filehandling.py:668
-#, fuzzy
 msgctxt ""
 "Destructive action confirm dialog: fallback title (normally overridden)"
 msgid "Really Continue?"
@@ -1730,131 +1709,118 @@ msgstr "Devam Etmek İstiyor Musun?"
 #: ../gui/filehandling.py:701
 msgctxt "Destructive action confirm dialog: cancel button"
 msgid "_Cancel"
-msgstr ""
+msgstr "İptal Et"
 
 #: ../gui/filehandling.py:705
-#, fuzzy
 msgctxt "Destructive action confirm dialog: save checkbox"
 msgid "_Save to Scraps first"
-msgstr "_Karalama Olarak Kaydet"
+msgstr "Önce _Karalamaya Kaydet"
 
 #: ../gui/filehandling.py:711
 msgctxt ""
 "Destructive action confirm dialog: fallback continue button (normally "
 "overridden)"
 msgid "Co_ntinue"
-msgstr ""
+msgstr "_Devam Et"
 
 #: ../gui/filehandling.py:734
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgctxt "Destructive action confirm dialog: warning message"
 msgid "You risk losing {abbreviated_time} of unsaved painting."
-msgstr "Bu kaydedilmemiş boyamanın {abbreviated_time} zamanından vazgeçecek"
+msgstr ""
+"Kaydedilmemiş boyamanın {abbreviated_time} süren kısmını kaybetme riski var."
 
 #: ../gui/filehandling.py:799
 msgctxt "File→New: confirm dialog: title question"
 msgid "New Canvas?"
-msgstr ""
+msgstr "Yeni Tuval"
 
 #: ../gui/filehandling.py:803
 msgctxt "File→New: confirm dialog: continue button"
 msgid "_New Canvas"
-msgstr ""
+msgstr "_Yeni Tuval"
 
 #: ../gui/filehandling.py:1003
 msgctxt "File→Open: confirm dialog: title question"
 msgid "Open File?"
-msgstr ""
+msgstr "Dosya Aç"
 
 #: ../gui/filehandling.py:1007
-#, fuzzy
 msgctxt "File→Open: confirm dialog: continue button"
 msgid "_Open…"
-msgstr "Aç…"
+msgstr "_Aç…"
 
 #: ../gui/filehandling.py:1015
-#, fuzzy
 msgctxt "File→Open: file chooser dialog: title"
 msgid "Open File"
-msgstr "Aç"
+msgstr "Dosya Aç"
 
 #: ../gui/filehandling.py:1057
-#, fuzzy
 msgctxt "load dialogs: title"
 msgid "Open Scratchpad…"
 msgstr "Karalama Defteri Aç…"
 
 #: ../gui/filehandling.py:1099
-#, fuzzy
 msgctxt "Layers→Import Layers: files-chooser dialog: title"
 msgid "Import Layers"
-msgstr "İçe aktarılmış fırça"
+msgstr "Katmanları İçe Aktar"
 
 #: ../gui/filehandling.py:1408
 msgctxt "File→Open Recent→* confirm dialog: title"
 msgid "Open File?"
-msgstr ""
+msgstr "Dosya Aç"
 
 #: ../gui/filehandling.py:1412
-#, fuzzy
 msgctxt "File→Open Recent→* confirm dialog: continue button"
 msgid "_Open"
-msgstr "Aç"
+msgstr "_Aç"
 
 #: ../gui/filehandling.py:1427
-#, fuzzy
 msgctxt "File→Open Most Recent confirm dialog: title"
 msgid "Open Most Recent File?"
 msgstr "Son Kullanılan Dosyayı Aç"
 
 #: ../gui/filehandling.py:1432
-#, fuzzy
 msgctxt "File→Open Most Recent→* confirm dialog: continue button"
 msgid "_Open"
-msgstr "Aç"
+msgstr "_Aç"
 
 #: ../gui/filehandling.py:1446
-#, fuzzy
 msgctxt "File→Open Next/Prev Scrap: error message"
 msgid "There are no scrap files yet. Try saving one first."
-msgstr "\"%s\" adında bir karalama dosyası henüz yok."
+msgstr "Henüz bir karalama dosyası yok. Önce bir tane kaydetmeyi dene."
 
 #: ../gui/filehandling.py:1455
-#, fuzzy
 msgctxt "File→Open Next/Prev Scrap confirm dialog: title"
 msgid "Open Next Scrap?"
 msgstr "Sonraki Karalamayı Aç"
 
 #: ../gui/filehandling.py:1463
-#, fuzzy
 msgctxt "File→Open Next/Prev Scrap confirm dialog: title"
 msgid "Open Previous Scrap?"
 msgstr "Önceki Karalamayı Aç"
 
 #: ../gui/filehandling.py:1472
-#, fuzzy
 msgctxt "File→Open Next/Prev Scrap confirm dialog: continue button"
 msgid "_Open"
-msgstr "Aç"
+msgstr "_Aç"
 
 #: ../gui/filehandling.py:1487
 msgctxt "File→Revert: status message: canvas has no filename yet"
 msgid "Cannot revert: canvas has not been saved to a file yet."
-msgstr ""
+msgstr "Geri döndürülemez: tuval henüz dosyaya kaydedilmedi."
 
 #: ../gui/filehandling.py:1494
 msgctxt "File→Revert confirm dialog: title"
 msgid "Revert Changes?"
-msgstr ""
+msgstr "Değişlikleri Geri Döndür"
 
 #: ../gui/filehandling.py:1499
-#, fuzzy
 msgctxt "File→Revert confirm dialog: continue button"
 msgid "_Revert"
-msgstr "Geri döndür"
+msgstr "_Geri Döndür"
 
 #: ../gui/fill.py:121
-#, fuzzy
 msgctxt ""
 "Name of the fill mode\n"
 "In other software, 'Flood Fill' is also known as 'Bucket Fill' or just 'Fill'"
@@ -1862,13 +1828,11 @@ msgid "Flood Fill"
 msgstr "Akıcı Dolgu"
 
 #: ../gui/fill.py:127
-#, fuzzy
 msgctxt "Usage description of the Flood Fill mode"
 msgid "Fill areas with color"
 msgstr "Alanları renkle doldur"
 
 #: ../gui/fill.py:508
-#, fuzzy
 msgctxt ""
 "fill options: numeric value that determines whether tested pixels will be "
 "included in the fill, based on color difference"
@@ -1876,7 +1840,6 @@ msgid "Tolerance:"
 msgstr "Tolerans:"
 
 #: ../gui/fill.py:513
-#, fuzzy
 msgctxt ""
 "fill options: Tolerance (tooltip) Note: 'the start' refers to the color of "
 "the starting point (pixel) of the fill"
@@ -1884,11 +1847,10 @@ msgid ""
 "How much pixel colors are allowed to vary from the start\n"
 "before Flood Fill will refuse to fill them"
 msgstr ""
-"Akıcı Dolgusu bunları doldurmayı reddetmeden önce piksel \n"
+"Akıcı Dolgu bunları doldurmayı reddetmeden önce piksel \n"
 "renklerinin başlangıçtan ne kadar farklı olmasına izin verilir"
 
 #: ../gui/fill.py:537
-#, fuzzy
 msgctxt ""
 "fill options: option category (label) Options under this category relate to "
 "what the fill isbased on, not where the actual fill ends up."
@@ -1898,15 +1860,14 @@ msgstr "Kaynak:"
 #: ../gui/fill.py:540
 msgctxt "fill options: 'Source:' category (tooltip)"
 msgid "The input that the fill will be based on"
-msgstr ""
+msgstr "Dolgunun temel alacağı girdi"
 
 #: ../gui/fill.py:584
 msgctxt "fill options: 'Source' category: Layer dropdown (tooltip)"
 msgid "Select a specific layer you want the fill to be based on"
-msgstr ""
+msgstr "Dolgunun temel alınacağı katmanı belirtin"
 
 #: ../gui/fill.py:602
-#, fuzzy
 msgctxt ""
 "fill options: 'Source:' category: toggle (label)\n"
 "When this option is enabled, the fill is based\n"
@@ -1915,22 +1876,20 @@ msgid "Sample Merged"
 msgstr "Birleştirme Örneği"
 
 #: ../gui/fill.py:606
-#, fuzzy
 msgctxt "fill options: Sample Merged (tooltip)"
 msgid ""
 "When considering which area to fill, use a\n"
 "temporary merge of all the visible layers\n"
 "underneath the current layer"
 msgstr ""
-"Hangi alanı doldurmanız gerektiğini düşünürken, \n"
+"Hangi alanın doldurulması gerektiğini hesaplarken, \n"
 "geçerli katmanın altındaki tüm görünür katmanların \n"
 "geçici birleştirilmesini kullan"
 
 #: ../gui/fill.py:622
-#, fuzzy
 msgctxt "fill options: toggle whether the fill will be limited by the viewport"
 msgid "Limit to View"
-msgstr "Görünüme Sığdır"
+msgstr "Görünüme Sınırla"
 
 #: ../gui/fill.py:628
 msgctxt ""
@@ -1942,9 +1901,11 @@ msgid ""
 "If the view is rotated, the fill will be limited to the\n"
 "smallest canvas-aligned rectangle that can fit the view."
 msgstr ""
+"Görüntü alanını temel alarak doldurulabilecek alanı sınırla.\n"
+"Görünüm döndürülürse, dolgu görünüme sığabilecek \n"
+"en küçük, tuval hizalı dikdörtgen olur."
 
 #: ../gui/fill.py:645
-#, fuzzy
 msgctxt ""
 "fill options: option category (label)\n"
 "Options under this category relate to where the fill will end up (default: "
@@ -1953,13 +1914,11 @@ msgid "Target:"
 msgstr "Hedef:"
 
 #: ../gui/fill.py:648
-#, fuzzy
 msgctxt "fill options: 'Target:' category (tooltip)"
 msgid "Where the output should go"
 msgstr "Çıktının kaydedileceği konum"
 
 #: ../gui/fill.py:657
-#, fuzzy
 msgctxt ""
 "fill options: Target | toggle (label)\n"
 "When this option is enabled, the fill will be placed on a new\n"
@@ -1968,7 +1927,6 @@ msgid "New Layer (once)"
 msgstr "Yeni Katman (bir kere)"
 
 #: ../gui/fill.py:662
-#, fuzzy
 msgctxt "fill options: Target | New Layer (tooltip)"
 msgid ""
 "Create a new layer with the results of the fill.\n"
@@ -1980,12 +1938,12 @@ msgstr ""
 #: ../gui/fill.py:674
 msgctxt "fill options: Target | Blend Mode dropdown - warning text"
 msgid "This mode does nothing when alpha locking is enabled!"
-msgstr ""
+msgstr "Alfa kilitleme etkin olduğunda bu kip hiçbir şey yapmaz!"
 
 #: ../gui/fill.py:688
 msgctxt "fill options: Target | Blend Mode dropdown (tooltip)"
 msgid "Blend mode used when filling"
-msgstr ""
+msgstr "Doldurma için kullanılacak harmanlama kipi"
 
 #: ../gui/fill.py:703
 msgid "Opacity:"
@@ -1994,32 +1952,32 @@ msgstr "Matlık:"
 #: ../gui/fill.py:706
 msgctxt "fill options: Opacity slider (tooltip)"
 msgid "Opacity of the fill"
-msgstr ""
+msgstr "Dolgu matlığı"
 
 #: ../gui/fill.py:729
 msgctxt "fill options: numeric option - grow/shrink fill (label)"
 msgid "Offset:"
-msgstr ""
+msgstr "Uzaklık:"
 
 #: ../gui/fill.py:745
 msgctxt "fill options: Offset (tooltip)"
 msgid "The distance in pixels to grow or shrink the fill"
-msgstr ""
+msgstr "Dolguyu büyütmek veya küçültmek için piksel cinsinden uzaklık"
 
 #: ../gui/fill.py:756
 msgctxt "fill options: numeric option for blurring fill (label)"
 msgid "Feather:"
-msgstr ""
+msgstr "Tüyleme:"
 
 #: ../gui/fill.py:771
 msgctxt "fill options: Feather (tooltip)"
 msgid "The amount of blur to apply to the fill"
-msgstr ""
+msgstr "Dolguya uygulanacak bulanıklık miktarı"
 
 #: ../gui/fill.py:787
 msgctxt "fill options: gap detection toggle (label)"
 msgid "Use Gap Detection"
-msgstr ""
+msgstr "Boşluk Algılama Kullan"
 
 #: ../gui/fill.py:792
 msgctxt "fill options: Use Gap Detection (tooltip)"
@@ -2028,11 +1986,14 @@ msgid ""
 "Note: This can be a lot slower than the regular fill, only enable when you "
 "need it."
 msgstr ""
+"Boşlukları algılamaya ve onları geçmemeye çalış.\n"
+"Not: Bu normal dolgudan çok daha yavaş olabilir, yalnızca ihtiyacınız "
+"olduğunda etkinleştirin."
 
 #: ../gui/fill.py:810
 msgctxt "fill options: gap-detection sub-option, numeric setting (label)"
 msgid "Max Gap Size:"
-msgstr ""
+msgstr "Azami Boşluk Boyutu:"
 
 #: ../gui/fill.py:825
 msgctxt "fill options: Max Gap Size (tooltip)"
@@ -2040,6 +2001,8 @@ msgid ""
 "The size of the largest gaps that can be detected.\n"
 "Using large values can make the fill run a lot slower."
 msgstr ""
+"Algılanabilecek azami boşluk boyutu.\n"
+"Büyük değer kullanmak dolgunun yavaş çalışmasına neden olabilir."
 
 #: ../gui/fill.py:838
 msgctxt ""
@@ -2047,7 +2010,7 @@ msgctxt ""
 "When enabled, if the fill stops after going past a detected gap, it 'pulls' "
 "the fill back out of the gap to the other side of it."
 msgid "Prevent seeping"
-msgstr ""
+msgstr "Sızmayı önle"
 
 #: ../gui/fill.py:845
 msgctxt "fill options: Prevent seeping (tooltip)"
@@ -2055,22 +2018,22 @@ msgid ""
 "Try to prevent the fill from seeping into the gaps.\n"
 "If a fill starts in a detected gap, this option will do nothing."
 msgstr ""
+"Dolgunun boşluklara sızmasını önlemeye çalış.\n"
+"Eğer doldurma algılanan bir boşlukta başlarsa, bu seçenek hiçbir şey yapmaz."
 
 #: ../gui/fill.py:855 ../gui/mode.py:627
 msgid "Reset"
 msgstr "Sıfırla"
 
 #: ../gui/fill.py:859
-#, fuzzy
 msgctxt "fill options: Reset button (tooltip)"
 msgid "Reset options to their defaults"
 msgstr "Seçenekleri varsayılanlarına sıfırla"
 
 #: ../gui/fill.py:1037
-#, fuzzy
 msgctxt "fill option: default option in the Source Layer dropdown"
 msgid "Selected Layer"
-msgstr "Katman Seç"
+msgstr "Seçili Katman"
 
 #: ../gui/footer.py:191
 #, python-brace-format
@@ -2213,7 +2176,7 @@ msgstr "Basınç:"
 #. TRANSLATORS: This is used on the options panel.
 #: ../gui/freehand.py:614
 msgid "Twist:"
-msgstr ""
+msgstr "Bük:"
 
 #: ../gui/gtkexcepthook.py:162
 msgid "Bug Detected"
@@ -2244,7 +2207,7 @@ msgstr "Hata Takipçisinde Ara"
 #. only development and prereleases
 #: ../gui/gtkexcepthook.py:178
 msgid "Report…"
-msgstr "Raporla…"
+msgstr "Raporla"
 
 #: ../gui/gtkexcepthook.py:180
 msgid "Ignore Error"
@@ -2256,7 +2219,7 @@ msgstr "MyPaint'den Çık"
 
 #: ../gui/gtkexcepthook.py:191
 msgid "Details…"
-msgstr "Ayrıntılar…"
+msgstr "Ayrıntılar"
 
 #: ../gui/gtkexcepthook.py:218 ../gui/gtkexcepthook.py:221
 msgid "Exception while analyzing the exception."
@@ -2339,12 +2302,11 @@ msgstr "Aygıt:"
 
 #: ../gui/inputtestwindow.py:73
 msgid "(No Barrel Rotation)"
-msgstr ""
+msgstr "(Barrel Döndürmesi Yok)"
 
 #: ../gui/inputtestwindow.py:74
-#, fuzzy
 msgid "Barrel Rotation:"
-msgstr "Döndürmeyi Sıfırla"
+msgstr "Barrel Döndürmesi:"
 
 #. TRANSLATORS: Command to move a layer in the horizontal plane,
 #. TRANSLATORS: preserving its position in the stack.
@@ -2359,23 +2321,22 @@ msgstr "Geçerli katmanı taşı"
 #: ../gui/layerprops.py:356
 msgctxt "layer properties dialog: name entry: icon tooltip"
 msgid "Layer names cannot be empty."
-msgstr ""
+msgstr "Katman adları boş olamaz."
 
 #: ../gui/layerprops.py:361
 msgctxt "layer properties dialog: name entry: icon tooltip"
 msgid "Layer name is not unique."
-msgstr ""
+msgstr "Katman adı eşsiz değil."
 
 #: ../gui/layerprops.py:377
-#, fuzzy
 msgctxt "layer properties dialog: title"
 msgid "Layer Properties"
-msgstr "Özellikler"
+msgstr "Katman Özellikleri"
 
 #: ../gui/layerprops.py:381
 msgctxt "layer properties dialog: done button"
 msgid "Done"
-msgstr ""
+msgstr "Bitti"
 
 #. Visibility flag column
 #: ../gui/layers.py:394
@@ -2385,32 +2346,30 @@ msgstr "Görünür"
 #. Other flags column
 #: ../gui/layers.py:426
 msgid "Flags"
-msgstr ""
+msgstr "Bayraklar"
 
 #: ../gui/layers.py:925
-#, fuzzy
 msgctxt "Layers: description: no layer (\"never happens\" condition!)"
 msgid "?layer"
-msgstr "Katman"
+msgstr "?katman"
 
 #: ../gui/layers.py:945
 msgctxt "Layers: description parts: unknown mode (fallback str!)"
 msgid "?mode"
-msgstr ""
+msgstr "?kip"
 
 #: ../gui/layers.py:952
 msgctxt "Layers: description parts: layer hidden"
 msgid "Hidden"
-msgstr ""
+msgstr "Gizli"
 
 #: ../gui/layers.py:957
 #, python-format
 msgctxt "Layers: description parts: opacity percentage"
 msgid "%d%% opaque"
-msgstr ""
+msgstr "%%%d mat"
 
 #: ../gui/layers.py:964
-#, fuzzy
 msgctxt "Layers dockable: description parts: layer locked flag"
 msgid "Locked"
 msgstr "Kilitli"
@@ -2418,19 +2377,18 @@ msgstr "Kilitli"
 #: ../gui/layers.py:975
 msgctxt "Layers: description parts: unknown type (fallback str!)"
 msgid "?type"
-msgstr ""
+msgstr "?tür"
 
 #: ../gui/layers.py:982
-#, fuzzy
 msgctxt "Layers dockable: description parts joiner text"
 msgid ", "
 msgstr ", "
 
 #: ../gui/layers.py:990
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgctxt "Layers dockable: markup for a layer with no description"
 msgid "{layer_name}"
-msgstr "{layer_default_name} Ekle"
+msgstr "{layer_name}"
 
 #: ../gui/layers.py:995
 #, python-brace-format
@@ -2439,6 +2397,8 @@ msgid ""
 "<span size=\"smaller\">{layer_name}\n"
 "<span size=\"smaller\" alpha=\"50%\">{layer_description}</span></span>"
 msgstr ""
+"<span size=\"smaller\">{layer_name}\n"
+"<span size=\"smaller\" alpha=\"50%\">{layer_description}</span></span>"
 
 #: ../gui/layerswindow.py:95
 msgid "Layers"
@@ -2457,7 +2417,7 @@ msgstr "Katman matlığı: %%%d"
 #: ../gui/layerswindow.py:102
 #, python-format
 msgid "%d%%"
-msgstr ""
+msgstr "%%%d"
 
 #. TRANSLATORS: status bar messages for drag, without/with modifiers
 #: ../gui/layerswindow.py:109
@@ -2474,22 +2434,21 @@ msgid "Layer"
 msgstr "Katman"
 
 #: ../gui/layervis.py:53
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgctxt "view controls: dropdown: item markup"
 msgid "<i>{builtin_view_name}</i>"
-msgstr "<b>{brush_name}</b>"
+msgstr "<i>{builtin_view_name}</i>"
 
 #: ../gui/layervis.py:125
 #, python-brace-format
 msgctxt "view controls: dropdown: item markup"
 msgid "{user_chosen_view_name}"
-msgstr ""
+msgstr "{user_chosen_view_name}"
 
 #: ../gui/layervis.py:187
-#, fuzzy
 msgctxt "view controls: rename view dialog"
 msgid "Rename View"
-msgstr "Görünümü Döndür"
+msgstr "Görünümü Yeniden Adlandır"
 
 #: ../gui/linemode.py:40
 msgid "Entrance Pressure"
@@ -2565,14 +2524,13 @@ msgid "Draw ellipses; Shift rotates, Ctrl constrains ratio/angle"
 msgstr "Elips çiz; Shift döndürür, Ctrl en boy oranı/açıyı kısıtlar"
 
 #: ../gui/meta.py:39
-#, fuzzy
 msgctxt "About dialog: copyright statement"
 msgid ""
 "Copyright (C) 2005-2017\n"
 "Martin Renold and the MyPaint Development Team"
 msgstr ""
 "Copyright (C) 2005-2019\n"
-"Martin Renold ve the MyPaint Geliştirme Ekibi"
+"Martin Renold ve MyPaint Geliştirme Ekibi"
 
 #: ../gui/meta.py:45
 msgctxt "About dialog: license summary"
@@ -2700,7 +2658,7 @@ msgstr "Kazanç:"
 #. TRANSLATORS:"Paint Pigment Mode" for the options panel. Short.
 #: ../gui/mode.py:590
 msgid "Pigment:"
-msgstr ""
+msgstr "Pigment:"
 
 #: ../gui/optionspanel.py:47
 msgctxt "options panel: tab tooltip: title"
@@ -2803,16 +2761,14 @@ msgid "Adjust the painting symmetry axis."
 msgstr "Boyama simetri eksenini ayarla."
 
 #: ../gui/symmetry.py:356
-#, fuzzy
 msgctxt "symmetry axis options panel: labels"
 msgid "X Position:"
-msgstr "Pozisyon:"
+msgstr "X Konumu:"
 
 #: ../gui/symmetry.py:360
-#, fuzzy
 msgctxt "symmetry axis options panel: labels"
 msgid "Y Position:"
-msgstr "Pozisyon:"
+msgstr "Y Konumu:"
 
 #: ../gui/symmetry.py:364
 msgctxt "symmetry axis options panel: position button: no axis pos."
@@ -2831,27 +2787,24 @@ msgid "Alpha:"
 msgstr "Alfa:"
 
 #: ../gui/symmetry.py:376
-#, fuzzy
 msgctxt "symmetry axis options panel: labels"
 msgid "Symmetry Type:"
-msgstr "Simetri"
+msgstr "Simetri Türü:"
 
 #: ../gui/symmetry.py:380
 msgctxt "symmetry axis options panel: labels"
 msgid "Rotational lines:"
-msgstr ""
+msgstr "Döndürme satırları:"
 
 #: ../gui/symmetry.py:446
-#, fuzzy
 msgctxt "symmetry axis options panel: axis position dialog: window title"
 msgid "X axis Position"
-msgstr "Eksen Konumu"
+msgstr "X ekseni Konumu"
 
 #: ../gui/symmetry.py:477
-#, fuzzy
 msgctxt "symmetry axis options panel: axis position dialog: window title"
 msgid "Y axis Position"
-msgstr "Eksen Konumu"
+msgstr "Y ekseni Konumu"
 
 #: ../gui/symmetry.py:605
 msgctxt "symmetry axis options panel: axis active checkbox"
@@ -2919,22 +2872,22 @@ msgid "Rotate the canvas view"
 msgstr "Tuval görünümünü döndür"
 
 #: ../gui/workspace.py:1313
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgctxt "workspace: sidebar tabs: button tooltips"
 msgid "{tab_title}: close tab"
-msgstr "%s: sekmeyi kapat"
+msgstr "{tab_title}: sekmeyi kapat"
 
 #: ../gui/workspace.py:1317
 #, python-brace-format
 msgctxt "workspace: sidebar tabs: button tooltips"
 msgid "{tab_title}: tab options and properties"
-msgstr ""
+msgstr "{tab_title}: sekme seçenekleri ve özellikler"
 
 #: ../gui/workspace.py:1321
 #, python-brace-format
 msgctxt "workspace: sidebar tabs: button tooltips"
 msgid "{tab_title}: move tab to other sidebar"
-msgstr ""
+msgstr "{tab_title}: sekmeyi diğer kaydırma çubuğuna taşı"
 
 #: ../lib/command.py:181
 msgid "Unknown Command"
@@ -2962,12 +2915,11 @@ msgstr "Katmanı Kırp"
 
 #: ../lib/command.py:636
 msgid "Uniquify Layer Pixels"
-msgstr ""
+msgstr "Katman Piksellerini Benzersizleştir"
 
 #: ../lib/command.py:659
-#, fuzzy
 msgid "Refactor Group"
-msgstr "Grubu Yeniden Adlandır"
+msgstr "Grubu Yeniden Düzenle"
 
 #: ../lib/command.py:682
 msgid "Clear Layer"
@@ -2997,9 +2949,8 @@ msgid "Normalize Layer Mode"
 msgstr "Katman Kipini Normalleştir"
 
 #: ../lib/command.py:947
-#, fuzzy
 msgid "Import Layers"
-msgstr "İçe aktarılmış fırça"
+msgstr "Katmanları İçe Aktar"
 
 #: ../lib/command.py:949
 #, python-brace-format
@@ -3197,10 +3148,9 @@ msgstr ""
 "Bilinmeyen dosya biçimi uzantısı: “{ext}”"
 
 #: ../lib/document.py:1565
-#, fuzzy
 msgctxt "Document IO: group name for Import Layers"
 msgid "Imported layers"
-msgstr "İçe aktarılmış fırça"
+msgstr "İçe aktarılmış katmanlar"
 
 #: ../lib/document.py:1732
 #, python-brace-format
@@ -3233,56 +3183,55 @@ msgstr ""
 "{see_logs}"
 
 #: ../lib/floodfill.py:131
-#, fuzzy
 msgctxt "floodfill status message: use active tense"
 msgid "Filling"
-msgstr "Doldur"
+msgstr "Dolduruluyor"
 
 #: ../lib/floodfill.py:132
 msgctxt "floodfill status message: use active tense"
 msgid "Morphing"
-msgstr ""
+msgstr "Dönüştürülüyor"
 
 #: ../lib/floodfill.py:133
 msgctxt "floodfill status message: use active tense"
 msgid "Blurring"
-msgstr ""
+msgstr "Bulanıklaştırılıyor"
 
 #: ../lib/floodfill.py:134
 msgctxt "floodfill status message: use active tense"
 msgid "Compositing"
-msgstr ""
+msgstr "Birleştiriliyor"
 
 #: ../lib/floodfill.py:135
 msgctxt "floodfill status message: use active tense"
 msgid "Finishing up"
-msgstr ""
+msgstr "Tamamlanıyor"
 
 #: ../lib/floodfill.py:137
 msgctxt "uniform square region of pixels, plural noun"
 msgid "tiles"
-msgstr ""
+msgstr "Döşemeler"
 
 #: ../lib/helpers.py:535
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgctxt "Time period abbreviations"
 msgid "{days}d{hours}h"
 msgstr "{days} gün {hours} sa"
 
 #: ../lib/helpers.py:537
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgctxt "Time period abbreviations"
 msgid "{hours}h{minutes}m"
 msgstr "{hours} sa {minutes} dk"
 
 #: ../lib/helpers.py:539
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgctxt "Time period abbreviation"
 msgid "{minutes}m{seconds}s"
 msgstr "{minutes} dk {seconds} sn"
 
 #: ../lib/helpers.py:541
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgctxt "Time period abbreviation"
 msgid "{seconds}s"
 msgstr "{seconds} sn"
@@ -3293,13 +3242,11 @@ msgid "Layer"
 msgstr "Katman"
 
 #: ../lib/layer/data.py:1153
-#, fuzzy
 msgctxt "layer default names"
 msgid "Vectors"
-msgstr "Vektör Katmanı"
+msgstr "Vektörler"
 
 #: ../lib/layer/data.py:1158
-#, fuzzy
 msgctxt "layer type descriptions"
 msgid "Vector Layer"
 msgstr "Vektör Katmanı"
@@ -3307,29 +3254,27 @@ msgstr "Vektör Katmanı"
 #: ../lib/layer/data.py:1223
 msgctxt "layer default names"
 msgid "Bitmap"
-msgstr ""
+msgstr "Bit Eşlem"
 
 #: ../lib/layer/data.py:1228
 msgctxt "layer type descriptions"
 msgid "Bitmap Data"
-msgstr ""
+msgstr "Bit Eşlem Verisi"
 
 #: ../lib/layer/data.py:1244
 msgctxt "layer default names"
 msgid "Data"
-msgstr ""
+msgstr "Veri"
 
 #: ../lib/layer/data.py:1249
-#, fuzzy
 msgctxt "layer type descriptions"
 msgid "Unknown Data"
-msgstr "Bilinmeyen Veri Katmanı"
+msgstr "Bilinmeyen Veri"
 
 #: ../lib/layer/data.py:1300
-#, fuzzy
 msgctxt "layer type descriptions"
 msgid "Painting Layer"
-msgstr "Yeni Boyama Katmanı"
+msgstr "Boyama Katmanı"
 
 #: ../lib/layer/group.py:69
 msgctxt "layer default names"
@@ -3337,10 +3282,9 @@ msgid "Group"
 msgstr "Grup"
 
 #: ../lib/layer/group.py:74
-#, fuzzy
 msgctxt "layer type descriptions"
 msgid "Layer Group"
-msgstr "Yeni Katman Grubu"
+msgstr "Katman Grubu"
 
 #: ../lib/layer/tree.py:70
 msgctxt "layer default names"
@@ -3360,10 +3304,9 @@ msgstr ", "
 #: ../lib/layer/tree.py:2321
 msgctxt "layer default names: refactor: name of the common areas layer"
 msgid "Common"
-msgstr ""
+msgstr "Genel"
 
 #: ../lib/layervis.py:44
-#, fuzzy
 msgctxt "layer visibility sets: default name for a user-managed view"
 msgid "View"
 msgstr "Görünüm"
@@ -3371,37 +3314,33 @@ msgstr "Görünüm"
 #: ../lib/layervis.py:49
 msgctxt "layer visibility sets: text shown when no user-managed view is active"
 msgid "No active view"
-msgstr ""
+msgstr "Etkin görünüm yok"
 
 #: ../lib/layervis.py:579
-#, fuzzy
 msgctxt "layer views: commands: add"
 msgid "Add Layer View"
-msgstr "Katman Görünür"
+msgstr "Katman Görünümü Ekle"
 
 #: ../lib/layervis.py:604 ../lib/layervis.py:633
-#, fuzzy
 msgctxt "layer views: commands: remove"
 msgid "Remove Layer View"
-msgstr "Katmanı Kaldır"
+msgstr "Katman Görünümünü Kaldır"
 
 #: ../lib/layervis.py:663
 #, python-brace-format
 msgctxt "layer views: commands: activate"
 msgid "Activate Layer View “{name}”"
-msgstr ""
+msgstr "Katman Görünümünü Etkinleştir “{name}”"
 
 #: ../lib/layervis.py:692
-#, fuzzy
 msgctxt "layer views: commands: set active view's lock flag"
 msgid "Lock Layer View"
-msgstr "Katmanı Kilitle"
+msgstr "Katman Görünümünü Kilitle"
 
 #: ../lib/layervis.py:697
-#, fuzzy
 msgctxt "layer views: commands: set active view's lock flag"
 msgid "Unlock Layer View"
-msgstr "Katmanın Kilidini Aç"
+msgstr "Katman Görünümünün Kilidini Aç"
 
 #: ../lib/modes.py:38
 msgid "Pass-through"
@@ -3421,12 +3360,14 @@ msgstr "Renkleri harmanlamadan sadece en üst katman."
 
 #: ../lib/modes.py:46
 msgid "Pigment"
-msgstr ""
+msgstr "Pigment"
 
 #: ../lib/modes.py:47
 msgid ""
 "Similar to mixing actual pigments by upsampling to 10 spectral channels."
 msgstr ""
+"10 spektral kanala örnekleme yaparak gerçek pigmentlerin karıştırılmasına "
+"benzer."
 
 #: ../lib/modes.py:50
 msgid "Multiply"
@@ -3636,15 +3577,15 @@ msgstr ""
 "konumlandırılır."
 
 #: ../lib/naming.py:22
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgctxt "unique names: serial number needed: template"
 msgid "{name} {number}"
-msgstr "%(name)s %(number)d"
+msgstr "{name} {number}"
 
 #: ../lib/naming.py:29
 msgctxt "unique names: regex matching a string with a serial number"
 msgid "^(?P<name>.*?)\\s+(?P<number>\\d+)$"
-msgstr ""
+msgstr "^(?P<name>.*?)\\s+(?P<number>\\d+)$"
 
 #: ../lib/pixbufsurface.py:38
 msgctxt "user-facing error texts"
@@ -3670,27 +3611,24 @@ msgstr ""
 "Hedef klasör: “{dirname}”."
 
 #: ../lib/tiledsurface.py:48
-#, fuzzy
 msgid "Vertical"
-msgstr "Dikey Çevir"
+msgstr "Dikey"
 
 #: ../lib/tiledsurface.py:49
-#, fuzzy
 msgid "Horizontal"
-msgstr "Yatay Çevir"
+msgstr "Yatay"
 
 #: ../lib/tiledsurface.py:50
 msgid "Vertical and horizontal"
-msgstr ""
+msgstr "Dikey ve yatay"
 
 #: ../lib/tiledsurface.py:51
-#, fuzzy
 msgid "Rotational"
-msgstr "Döndürmeyi Sıfırla"
+msgstr "Dönüşlü"
 
 #: ../lib/tiledsurface.py:52
 msgid "Snowflake"
-msgstr ""
+msgstr "Kar Tanesi"
 
 #: ../lib/tiledsurface.py:627
 #, python-format
@@ -3698,15 +3636,14 @@ msgid "PNG reader failed: %s"
 msgstr "PNG okuyucu başarısız oldu: %s"
 
 #: ../po/tmp/autorecover.glade.h:1
-#, fuzzy
 msgid "Recover interrupted work?"
-msgstr "Kesintiye işe kurtarmak?"
+msgstr "Yarıda Kesilmiş Çalışma"
 
 #. Whether to show the dialog when MyPaint starts
 #: ../po/tmp/autorecover.glade.h:3
 msgctxt "Autosave Recovery dialog|"
 msgid "_Look for backups at startup"
-msgstr ""
+msgstr "_Başlangıçta yedekleri ara"
 
 #: ../po/tmp/autorecover.glade.h:4
 msgctxt "Autosave Recovery dialog|Show Dialog at Startup checkbutton|"
@@ -3717,29 +3654,29 @@ msgid ""
 "You can always launch this dialog from the ‘File’ menu when MyPaint is "
 "running."
 msgstr ""
+"Kurtarılacak dosyalar varsa, bu kurtarma iletişim kutusunu otomatik çalıştır."
+"\n"
+"\n"
+"MyPaint çalışırken, bu iletişim kutusuna ‘Dosya’ menüsünden erişebilirsin."
 
 #. Deletes the selected autosave backup file.
 #: ../po/tmp/autorecover.glade.h:8
-#, fuzzy
 msgctxt "Autosave Recovery dialog|"
 msgid "_Delete…"
-msgstr "Sil"
+msgstr "_Sil"
 
 #: ../po/tmp/autorecover.glade.h:9
-#, fuzzy
 msgctxt "Autosave Recovery dialog|Delete button|"
 msgid "Delete this backup from the disk."
-msgstr "Bu fırçayı diskten sil"
+msgstr "Bu yedeği diskten sil."
 
 #. Recover in the sense or retrieval or salvage from a backup file. The user is asked to save the retrieved file immediately afterwards, hence the ellipsis.
 #: ../po/tmp/autorecover.glade.h:11
-#, fuzzy
 msgctxt "Autosave Recovery dialog|"
 msgid "_Recover & Save…"
 msgstr "_Kurtar ve Kaydet"
 
 #: ../po/tmp/autorecover.glade.h:12
-#, fuzzy
 msgctxt "Autosave Recovery dialog|Recover button|"
 msgid "Save this backup to disk, then continue working on it."
 msgstr "Bu yedeği diske kaydet ve üzerinde çalışmaya devam et."
@@ -3748,7 +3685,7 @@ msgstr "Bu yedeği diske kaydet ve üzerinde çalışmaya devam et."
 #: ../po/tmp/autorecover.glade.h:14
 msgctxt "Autosave Recovery dialog|"
 msgid "Decide _Later"
-msgstr ""
+msgstr "_Sonra Karar Ver"
 
 #: ../po/tmp/autorecover.glade.h:15
 msgctxt "Autosave Recovery dialog|Cancel button|"
@@ -3756,15 +3693,15 @@ msgid "Start work on a new canvas. These backups will be retained."
 msgstr "Yedekleri koru ve yeni tuval üstünde çalışmaya başla."
 
 #: ../po/tmp/autorecover.glade.h:16
-#, fuzzy
 msgctxt "Autosave Recovery dialog|"
 msgid ""
 "MyPaint crashed with unsaved work, but it makes rolling backups. You can "
 "recover a working file from one of these automated backups now. You’ll be "
 "asked where to save it before continuing."
 msgstr ""
-"MyPaint kaydedilmemiş çalışma ile çöktü, ancak yedekleme yaptı. Dosyayı "
-"şimdi kurtarabilir veya MyPaint'i yeniden başlatana kadar erteleyebilirsiniz."
+"MyPaint kaydedilmemiş çalışmalarla çöktü, ancak artımsal yedekleme "
+"çalışıyordu. Çalışma dosyasını aşağıdaki otomatik yedeklemelerden birinden "
+"kurtarabilirsin. Devam etmeden önce nereye kaydetmek istediğin sorulacak."
 
 #: ../po/tmp/autorecover.glade.h:17
 msgid "Thumbnail"
@@ -3857,9 +3794,8 @@ msgstr ""
 
 #. field label
 #: ../po/tmp/brusheditor.glade.h:22
-#, fuzzy
 msgid "Value:"
-msgstr "HSV Değeri"
+msgstr "Değer:"
 
 #: ../po/tmp/brusheditor.glade.h:23
 msgid "Reset this input to have no effect on the setting"
@@ -3935,14 +3871,12 @@ msgid "{dname}:"
 msgstr "{dname}:"
 
 #: ../po/tmp/brusheditor.glade.h:42
-#, fuzzy
 msgid "Brush dynamics are not available for this setting."
-msgstr "Bu ayar için genel detaylar"
+msgstr "Fırça hareketleri bu ayar için kullanılamaz."
 
 #: ../po/tmp/brusheditor.glade.h:43
-#, fuzzy
 msgid "<big><b>No Brush Dynamics</b></big>"
-msgstr "<big><b>{accel_label}</b></big>"
+msgstr "<big><b>Fırça Hareketi Yok</b></big>"
 
 #: ../po/tmp/inktool.glade.h:1
 msgctxt "Inking tool options: point value sliders: labels: tooltips"
@@ -4001,34 +3935,31 @@ msgid "Delete the currently selected point"
 msgstr "Geçerli seçilmiş noktayı sil"
 
 #: ../po/tmp/inktool.glade.h:14 ../po/tmp/resources.xml.h:184
-#, fuzzy
 msgid "Insert Point"
-msgstr "Satır Ekle"
+msgstr "Nokta Ekle"
 
 #: ../po/tmp/inktool.glade.h:15 ../po/tmp/resources.xml.h:188
 msgid "Simplify Points"
-msgstr ""
+msgstr "Noktaları Basitleştir"
 
 #: ../po/tmp/inktool.glade.h:16
 msgid "Simplify the curve using the Reumann-Witkam algorithm."
-msgstr ""
+msgstr "Eğrileri basitleştir, Reumann-Witkam algoritmasını kullanarak."
 
 #: ../po/tmp/inktool.glade.h:17 ../po/tmp/resources.xml.h:190
-#, fuzzy
 msgid "Cull Points"
-msgstr "Noktayı Sil"
+msgstr "Noktaları Ayır"
 
 #: ../po/tmp/inktool.glade.h:18
 msgid "Cull every other point from the curve."
-msgstr ""
+msgstr "Diğer tüm noktaları eğriden ayır."
 
 #: ../po/tmp/layerprops.glade.h:1
 msgctxt "Layer properties widget → Name → label tooltip"
 msgid "The layer’s unique name."
-msgstr ""
+msgstr "Katmanın eşsiz adı."
 
 #: ../po/tmp/layerprops.glade.h:2
-#, fuzzy
 msgctxt "Layer properties widget → <category labels>"
 msgid "Name"
 msgstr "Ad"
@@ -4042,9 +3973,12 @@ msgid ""
 "Each mode has a different visual effect. Refer to the dropdown’s tooltip for "
 "each one to discover what they all do."
 msgstr ""
+"Katman, arkasındaki katman ile nasıl birleştirilir.\n"
+"\n"
+"Her kipin farklı bir görsel etkisi vardır. Her birinin ne yaptığını "
+"keşfetmek için açılır listenin ipucuna bakın."
 
 #: ../po/tmp/layerprops.glade.h:7
-#, fuzzy
 msgctxt "Layer properties widget → <category labels>"
 msgid "Mode"
 msgstr "Kip"
@@ -4057,9 +3991,11 @@ msgid ""
 "\n"
 "At 0%, the layer doesn’t contribute at all."
 msgstr ""
+"Katman, arkasındaki katman ile ne kadar birleştirilir.\n"
+"\n"
+"%0 olarak ayarlanırsa katman hiçbir katkıda bulunmaz."
 
 #: ../po/tmp/layerprops.glade.h:12
-#, fuzzy
 msgctxt "Layer properties widget → <category labels>"
 msgid "Opacity"
 msgstr "Matlık"
@@ -4071,11 +4007,14 @@ msgid ""
 "\n"
 "Refer to each button’s tooltip to find out what each flag does."
 msgstr ""
+"Özel katman bayrakları.\n"
+"\n"
+"Her bayrağın ne anlama geldiğini öğrenmek için her düğmenin ipucuna bakın."
 
 #: ../po/tmp/layerprops.glade.h:16
 msgctxt "Layer properties widget → <category labels>"
 msgid "Flags"
-msgstr ""
+msgstr "Bayraklar"
 
 #: ../po/tmp/layerprops.glade.h:17
 msgctxt "Layer properties widget → Flags → Eye togglebutton → tooltip"
@@ -4091,6 +4030,15 @@ msgid ""
 "When a layer group is hidden, all of the layers inside it are made invisible "
 "too."
 msgstr ""
+"Katman görünür veya gizli.\n"
+"\n"
+"Açık göz simgesi, katmanın görünür, kapalı göz simgesi gizli olduğu "
+"anlamındadır. \n"
+"\n"
+"Gizli katmanlar tamamen görünmez olur ve görüntülenmeyi etkilemez. Güvenlik "
+"için gizli katmanlar boyanamaz.\n"
+"\n"
+"Katman grubu gizlendiğinde, içindeki tüm katmanlar da görünmez olur."
 
 #: ../po/tmp/layerprops.glade.h:24
 msgctxt "Layer properties widget → Flags → Padlock togglebutton → tooltip"
@@ -4105,35 +4053,40 @@ msgid ""
 "\n"
 "When a layer group is locked, none of the layers inside it can be edited."
 msgstr ""
+"Katman düzenlenebilir veya kilitli.\n"
+"\n"
+"Açık asma kilit simgesi, katmanın düzenlenebilir olduğu anlamındadır.\n"
+"\n"
+"Katman kilitlendiğinde, katmanı boyayamaz veya bir başka şekilde piksel "
+"içeriğini değiştiremezsin. Ayrıca darbe de seçemezsin, bu nedenle çizim "
+"altında boyama yaparken kullanışlıdır.\n"
+"\n"
+"Katman grubu kilitlendiğinde, içindeki katmanların hiçbiri düzenlenemez."
 
 #: ../po/tmp/layervis.glade.h:1
-#, fuzzy
 msgctxt "Layers window: view list controls: tooltips"
 msgid "The currently active view."
-msgstr "Geçerli katmanın harmanlama kipi."
+msgstr "Geçerli etkin görünüm."
 
 #: ../po/tmp/layervis.glade.h:2
-#, fuzzy
 msgctxt "Layers window: view list controls: tooltips"
 msgid "Rename the active view."
-msgstr "Tuval görünümünü döndür"
+msgstr "Etkin görünümü yeniden adlandır."
 
 #: ../po/tmp/layervis.glade.h:3
-#, fuzzy
 msgctxt "Layers window: view list controls: tooltips"
 msgid "Remove the active view."
-msgstr "Tuval görünümünü döndür"
+msgstr "Etkin görünümü kaldır."
 
 #: ../po/tmp/layervis.glade.h:4
-#, fuzzy
 msgctxt "Layers window: view list controls: tooltips"
 msgid "Snapshot visible layers as a new view."
-msgstr "Hangi görünür katmanlar doldurulmalı"
+msgstr "Görünür katmanları yeni görünüm olarak anlık görüntüle."
 
 #: ../po/tmp/layervis.glade.h:5
 msgctxt "Layers window: view list controls: tooltips"
 msgid "Lock or unlock the active view."
-msgstr ""
+msgstr "Etkin görünümü kilitle veya kilidini aç."
 
 #: ../po/tmp/mypaint.glade.h:2
 msgctxt "footer: color picker button: tooltip"
@@ -4449,7 +4402,7 @@ msgstr "Serbest imleç türü:"
 #: ../po/tmp/preferenceswindow.glade.h:64
 msgctxt "Prefs Dialog|View|Interface|"
 msgid "Dark theme variant:"
-msgstr "Karanlık tema çeşidi:"
+msgstr "Koyu tema çeşidi:"
 
 #: ../po/tmp/preferenceswindow.glade.h:65
 msgctxt "Prefs Dialog|View|Interface|Dark theme variant|"
@@ -4539,7 +4492,6 @@ msgid "Hide cursor while painting"
 msgstr "Boyarken imleci gizle"
 
 #: ../po/tmp/preferenceswindow.glade.h:82
-#, fuzzy
 msgctxt ""
 "Prefs Dialog|View|Interface|Blink layers on creation/selection|checkbox label"
 msgid "Enabled"
@@ -4553,11 +4505,13 @@ msgid ""
 "When a layer is created or selected, show only that layer for a short time "
 "period."
 msgstr ""
+"Bir katman oluşturulduğunda veya seçildiğinde, yalnızca o katmanı kısa bir "
+"süreliğine göster."
 
 #: ../po/tmp/preferenceswindow.glade.h:84
 msgctxt "Prefs Dialog|View|Interface|"
 msgid "Blink layers on creation/selection:"
-msgstr ""
+msgstr "Katman gözkırpması (oluştururken/seçerken):"
 
 #. Tab label in preferences dialog&#10;
 #: ../po/tmp/preferenceswindow.glade.h:86
@@ -4747,15 +4701,14 @@ msgid "Reload the file your current work was loaded from."
 msgstr "Geçerli çalışmanın yüklendiği dosyayı yeniden yükle."
 
 #: ../po/tmp/resources.xml.h:12
-#, fuzzy
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "Import Layers…"
-msgstr "Fırçaları İçe Aktar…"
+msgstr "Katmanları İçe Aktar…"
 
 #: ../po/tmp/resources.xml.h:13
 msgctxt "Accel Editor (descriptions)"
 msgid "Import layers from one or more files."
-msgstr ""
+msgstr "Katmanları dosyadan içe aktar."
 
 #: ../po/tmp/resources.xml.h:14
 msgctxt "Menu→File (labels), Accel Editor (labels)"
@@ -4875,48 +4828,46 @@ msgid "The current layer's compositing mode."
 msgstr "Geçerli katmanın harmanlama kipi."
 
 #: ../po/tmp/resources.xml.h:37
-#, fuzzy
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
 msgid "Increase Fake Pressure"
-msgstr "Giriş Basıncı"
+msgstr "Sahte Basıncı Artır"
 
 #: ../po/tmp/resources.xml.h:38
 msgctxt "Accel Editor (descriptions)"
 msgid "Send harder pressure for devices that don't support pressure input."
-msgstr ""
+msgstr "Basınç girdisini desteklemeyen aygıtlara daha fazla basınç gönder."
 
 #: ../po/tmp/resources.xml.h:39
-#, fuzzy
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
 msgid "Decrease Fake Pressure"
-msgstr "Giriş Basıncı"
+msgstr "Sahte Basıncı Azalt"
 
 #: ../po/tmp/resources.xml.h:40
 msgctxt "Accel Editor (descriptions)"
 msgid "Send softer pressure for devices that don't support pressure input."
-msgstr ""
+msgstr "Basınç girdisini desteklemeyen aygıtlara daha az basınç gönder."
 
 #: ../po/tmp/resources.xml.h:41
-#, fuzzy
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
 msgid "Increase Fake Rotation"
-msgstr "Doygunluğu Artır"
+msgstr "Sahte Döndürmeyi Artır"
 
 #: ../po/tmp/resources.xml.h:42
 msgctxt "Accel Editor (descriptions)"
 msgid "Increase barrel rotation for devices that don't support rotation input."
 msgstr ""
+"Döndürme girdisini desteklemeyen aygıtlar için barrel döndürmesini artır."
 
 #: ../po/tmp/resources.xml.h:43
-#, fuzzy
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
 msgid "Decrease Fake Rotation"
-msgstr "Doygunluğu Azalt"
+msgstr "Sahte Döndürmeyi Azalt"
 
 #: ../po/tmp/resources.xml.h:44
 msgctxt "Accel Editor (descriptions)"
 msgid "Decrease barrel rotation for devices that don't support rotation input."
 msgstr ""
+"Döndürme girdisini desteklemeyen aygıtlar için barrel döndürmesini azalt."
 
 #: ../po/tmp/resources.xml.h:45
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
@@ -5034,7 +4985,6 @@ msgid "Pick Stroke and Layer"
 msgstr "Darbe ve Katman Seç"
 
 #: ../po/tmp/resources.xml.h:68
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid ""
 "Pick a brushstroke from the canvas, which restores brush, color, and layer."
@@ -5070,19 +5020,16 @@ msgid "Clear Layer"
 msgstr "Katmanı Temizle"
 
 #: ../po/tmp/resources.xml.h:74
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Clear the active layer’s content."
-msgstr "Geçerli katmanın içeriğini temizle."
+msgstr "Etkin katmanın içeriğini temizle."
 
 #: ../po/tmp/resources.xml.h:75
-#, fuzzy
 msgctxt "Menu→Layer (labels)"
 msgid "Slice Operations"
-msgstr "Araç Seçenekleri"
+msgstr "Dilimlere İşlemleri"
 
 #: ../po/tmp/resources.xml.h:76
-#, fuzzy
 msgctxt "Menu→Layer→Slice (labels), Accel Editor (labels)"
 msgid "Trim Layer to Frame"
 msgstr "Katmanı Çerçeveye Kırp"
@@ -5095,43 +5042,41 @@ msgstr "Geçerli katmanın çerçevesinin dışında kalan kısımlarını sil."
 #: ../po/tmp/resources.xml.h:78
 msgctxt "Menu→Layer→Slice (labels), Accel Editor (labels)"
 msgid "Uniquify Layer Pixels"
-msgstr ""
+msgstr "Katman Piksellerini Benzersizleştir"
 
 #: ../po/tmp/resources.xml.h:79
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Delete parts of the current layer which do not vary from the backdrop."
-msgstr "Geçerli katmanın çerçevesinin dışında kalan kısımlarını sil."
+msgstr "Geçerli katmanın zeminden farklı olmayan kısımlarını sil."
 
 #: ../po/tmp/resources.xml.h:80
 msgctxt "Menu→Layer→Slice (labels), Accel Editor (labels)"
 msgid "Uniquify Layer Tiles"
-msgstr ""
+msgstr "Katman Döşemelerini Benzersizleştir"
 
 #: ../po/tmp/resources.xml.h:81
 msgctxt "Accel Editor (descriptions)"
 msgid ""
 "Delete whole tiles from the current layer which do not vary from the "
 "backdrop."
-msgstr ""
+msgstr "Zeminden farklı olmayan tüm döşemeleri geçerli katmandan sil."
 
 #: ../po/tmp/resources.xml.h:82
-#, fuzzy
 msgctxt "Menu→Layer→Slice (labels), Accel Editor (labels)"
 msgid "Refactor Layer Group Pixels"
-msgstr "Altına Yeni Katman Grubu"
+msgstr "Katman Grubu Piksellerini Yeniden Düzenle"
 
 #: ../po/tmp/resources.xml.h:83
 msgctxt "Accel Editor (descriptions)"
 msgid ""
 "Normalize child layers, then factor out common parts to a new child layer."
 msgstr ""
+"Alt katmanları normalleştir, ardından ortak parçaları yeni alt katmana ayır."
 
 #: ../po/tmp/resources.xml.h:84
-#, fuzzy
 msgctxt "Menu→Layer→Slice (labels), Accel Editor (labels)"
 msgid "Refactor Layer Group Tiles"
-msgstr "Altına Yeni Katman Grubu"
+msgstr "Katman Grubu Döşemelerini Yeniden Düzenle"
 
 #: ../po/tmp/resources.xml.h:85
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
@@ -5159,10 +5104,9 @@ msgid "Edit Layer in External App…"
 msgstr "Katmanı Harici Uygulamayla Düzenle…"
 
 #: ../po/tmp/resources.xml.h:90
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Edit the active layer in an external application."
-msgstr "Geçerli katmanı harici uygulamayla düzenlemeye başla."
+msgstr "Etkin katmanı harici uygulamayla düzenle."
 
 #: ../po/tmp/resources.xml.h:91
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
@@ -5182,10 +5126,9 @@ msgid "Go to Layer at Cursor"
 msgstr "İmleçteki Katmana Git"
 
 #: ../po/tmp/resources.xml.h:94
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Select a layer by picking something [drawn] on it."
-msgstr "Üstünden bir nesne alarak katmn seç."
+msgstr "Bir şey seçerek [veya üzerine bir şey çizerek] bir katman seç."
 
 #: ../po/tmp/resources.xml.h:95
 msgctxt "Menu→Layer→Go to Layer (labels), Accel Editor (labels)"
@@ -5372,16 +5315,15 @@ msgid "Make an exact clone of the current layer."
 msgstr "Geçerli katmanın tam bir kopyasını oluştur."
 
 #: ../po/tmp/resources.xml.h:131
-#, fuzzy
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Layer Properties…"
-msgstr "Özellikler"
+msgstr "Katman Özellikleri"
 
 #: ../po/tmp/resources.xml.h:132
 msgctxt "Accel Editor (descriptions)"
 msgid ""
 "Change the layer’s properties (name, mode, visibility, locked, opacity)."
-msgstr ""
+msgstr "Katman özelliklerini değiştir (ad, kip, görünürlük, kilit, matlık)."
 
 #: ../po/tmp/resources.xml.h:133
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
@@ -5418,13 +5360,12 @@ msgstr "Arkaplan katmanının görünürlüğünü değiştir."
 #: ../po/tmp/resources.xml.h:139
 msgctxt "Menu→Help→Debug (labels), Accel Editor (labels)"
 msgid "Vacuum Empty Tiles"
-msgstr ""
+msgstr "Boş Döşemeleri Temizle"
 
 #: ../po/tmp/resources.xml.h:140
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Remove empty tiles from the document."
-msgstr "Geçerli katmanı katman yığınından kaldır."
+msgstr "Boş döşemeleri belgeden kaldır."
 
 #: ../po/tmp/resources.xml.h:141
 msgctxt "Menu→View (labels), Accel Editor (labels)"
@@ -5460,10 +5401,9 @@ msgid "Reset Zoom"
 msgstr "Yakınlaştırmayı Sıfırla"
 
 #: ../po/tmp/resources.xml.h:147
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Reset view zoom level to default."
-msgstr "Görünüm yakınlaştırmasını varsayılan değerlerine geri yükle."
+msgstr "Görünüm yakınlaştırmasını varsayılan değerlere sıfırla."
 
 #: ../po/tmp/resources.xml.h:148
 msgctxt "Menu→View→Reset (labels), Accel Editor (labels)"
@@ -5471,7 +5411,6 @@ msgid "Reset Rotation"
 msgstr "Döndürmeyi Sıfırla"
 
 #: ../po/tmp/resources.xml.h:149
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Reset the view’s rotation to 0°"
 msgstr "Görünümün döndürmesini 0 dereceye sıfırla"
@@ -5482,10 +5421,9 @@ msgid "Reset Mirroring"
 msgstr "Çevirmeyi Sıfırla"
 
 #: ../po/tmp/resources.xml.h:151
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Reset the view's mirroring."
-msgstr "Çevirmeyi Sıfırla"
+msgstr "Görünümün çevirmesini sıfırla."
 
 #: ../po/tmp/resources.xml.h:152
 msgctxt "Menu→View→Adjust View (labels), Accel Editor (labels)"
@@ -5508,51 +5446,44 @@ msgid "Decrease magnification."
 msgstr "Yakınlaştırmayı azalt."
 
 #: ../po/tmp/resources.xml.h:156
-#, fuzzy
 msgctxt "Menu→View→Adjust View (labels), Accel Editor (labels)"
 msgid "Pan Left"
-msgstr "Görünümü Kaydır"
+msgstr "Sola Kaydır"
 
 #: ../po/tmp/resources.xml.h:157
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Move your view of the canvas to the left."
-msgstr "Görünümü Döndür: tuval görünümünü eğ."
+msgstr "Tuval görünümünü sola taşı."
 
 #: ../po/tmp/resources.xml.h:158
-#, fuzzy
 msgctxt "Menu→View→Adjust View (labels), Accel Editor (labels)"
 msgid "Pan Right"
-msgstr "Sert Işık"
+msgstr "Sağa Kaydır"
 
 #: ../po/tmp/resources.xml.h:159
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Move your view of the canvas to the right."
-msgstr "Görünümü Kaydır: görünümü tuval üzerinde yatay ve dikey taşı."
+msgstr "Tuval görünümünü sağa taşı."
 
 #: ../po/tmp/resources.xml.h:160
 msgctxt "Menu→View→Adjust View (labels), Accel Editor (labels)"
 msgid "Pan Up"
-msgstr ""
+msgstr "Yukarı Kaydır"
 
 #: ../po/tmp/resources.xml.h:161
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Move your view of the canvas upwards."
-msgstr "Görünümü Döndür: tuval görünümünü eğ."
+msgstr "Tuval görünümünü yukarı taşı."
 
 #: ../po/tmp/resources.xml.h:162
-#, fuzzy
 msgctxt "Menu→View→Adjust View (labels), Accel Editor (labels)"
 msgid "Pan Down"
-msgstr "Görünümü Kaydır"
+msgstr "Aşağı Kaydır"
 
 #: ../po/tmp/resources.xml.h:163
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Move your view of the canvas downwards."
-msgstr "Görünümü Döndür: tuval görünümünü eğ."
+msgstr "Tuval görünümünü aşağı taşı."
 
 #: ../po/tmp/resources.xml.h:164
 msgctxt "Menu→View→Adjust View (labels), Accel Editor (labels)"
@@ -5560,10 +5491,9 @@ msgid "Rotate Clockwise"
 msgstr "Saat Yönünde Döndür"
 
 #: ../po/tmp/resources.xml.h:165
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Rotate the canvas clockwise."
-msgstr "Görünümü saat yönünde çevir."
+msgstr "Görünümü saat yönünde döndür."
 
 #: ../po/tmp/resources.xml.h:166
 msgctxt "Menu→View→Adjust View (labels), Accel Editor (labels)"
@@ -5571,10 +5501,9 @@ msgid "Rotate Counterclockwise"
 msgstr "Saat Yönünün Tersine Döndür"
 
 #: ../po/tmp/resources.xml.h:167
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Rotate the canvas counter-clockwise."
-msgstr "Görünümü saat yönünün tersine çevir."
+msgstr "Görünümü saat yönünün tersine döndür."
 
 #: ../po/tmp/resources.xml.h:168
 msgctxt "Menu→View→Adjust View (labels), Accel Editor (labels)"
@@ -5662,28 +5591,28 @@ msgid ""
 "Insert a point next to the currently selected point in the direction of the "
 "stroke."
 msgstr ""
+"Seçili noktaya, geçerli noktanın yanına ve darbe yönünde bir nokta ekle."
 
 #: ../po/tmp/resources.xml.h:186
-#, fuzzy
 msgid "Delete Point"
 msgstr "Noktayı Sil"
 
 #: ../po/tmp/resources.xml.h:187
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Delete currently selected point on the ink stroke."
-msgstr "Geçerli seçilmiş noktayı sil"
+msgstr "Mürekkep darbesindeki geçerli seçili noktayı sil."
 
 #: ../po/tmp/resources.xml.h:189
 msgctxt "Accel Editor (descriptions)"
 msgid ""
 "Simplify and delete points according to angle and distance between nodes."
 msgstr ""
+"Düğümler arasındaki açıya ve mesafeye göre noktaları basitleştir ve sil."
 
 #: ../po/tmp/resources.xml.h:191
 msgctxt "Accel Editor (descriptions)"
 msgid "Delete every other point on the ink stroke."
-msgstr ""
+msgstr "Mürekkep darbesindeki diğer tüm noktaları sil."
 
 #: ../po/tmp/resources.xml.h:192
 msgctxt "Menu→Brush (labels)"
@@ -6060,7 +5989,7 @@ msgstr "Artık kullanılmayan Python nesneleri için kullanılan boş bellek."
 #: ../po/tmp/resources.xml.h:264
 msgctxt "Menu→Help→Debug (labels), Accel Editor (labels)"
 msgid "Start/Stop Profiling…"
-msgstr "Profillemeyi Başlat/Durdur…"
+msgstr "Profillemeyi Başlat/Durdur"
 
 #: ../po/tmp/resources.xml.h:265
 msgctxt "Accel Editor (descriptions)"
@@ -6070,7 +5999,7 @@ msgstr "Python Profillemeyi Başlat veya Durdur (cProfile)"
 #: ../po/tmp/resources.xml.h:266
 msgctxt "Menu→Help→Debug (labels), Accel Editor (labels)"
 msgid "Simulate a Crash…"
-msgstr "Çökmeyi Taklit Et…"
+msgstr "Çökmeyi Taklit Et"
 
 #: ../po/tmp/resources.xml.h:267
 msgctxt "Accel Editor (descriptions)"
@@ -6094,10 +6023,9 @@ msgid "Adjust View"
 msgstr "Görünümü Ayarla"
 
 #: ../po/tmp/resources.xml.h:271
-#, fuzzy
 msgctxt "Menu→View (labels), Accel Editor (labels)"
 msgid "Popup Main Menu"
-msgstr "Menüyü Aç"
+msgstr "Açılır Pencere Ana Menüsü"
 
 #: ../po/tmp/resources.xml.h:272
 msgctxt "Accel Editor (descriptions)"
@@ -6166,7 +6094,6 @@ msgid "Edit brush icons."
 msgstr "Fırça simgelerini düzenle."
 
 #: ../po/tmp/resources.xml.h:285
-#, fuzzy
 msgctxt ""
 "Menu→Layer (labels), Menu→Window (labels), Toolbar (labels), Accel Editor "
 "(labels)"
@@ -6176,7 +6103,7 @@ msgstr "Katman Paneli"
 #: ../po/tmp/resources.xml.h:286
 msgctxt "Accel Editor (descriptions)"
 msgid "Dockable panel for managing layers."
-msgstr ""
+msgstr "Katmanları yönetmek için sabitlenebilir panel."
 
 #: ../po/tmp/resources.xml.h:287
 msgctxt "Menu→Layers (labels), Accel Editor (labels)"
@@ -6242,7 +6169,6 @@ msgid "HSV Square"
 msgstr "HSV Karesi"
 
 #: ../po/tmp/resources.xml.h:298
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Dockable color selector: HSV square with Hue ring."
 msgstr "Eşmerkezli HSV halkalarından oluşan, sabitlenebilir renk seçici."
@@ -6299,7 +6225,7 @@ msgstr "Karalama Paneli"
 #: ../po/tmp/resources.xml.h:308
 msgctxt "Accel Editor (descriptions)"
 msgid "Dockable Panel for mixing colors and testing brushes."
-msgstr ""
+msgstr "Renkleri karıştırmak ve fırçaları test etmek için sabitlenebilir panel."
 
 #: ../po/tmp/resources.xml.h:309
 msgctxt "Menu→Scratchpad (labels), Accel Editor (labels)"
@@ -6319,7 +6245,7 @@ msgstr "Önizleme Paneli"
 #: ../po/tmp/resources.xml.h:312
 msgctxt "Accel Editor (descriptions)"
 msgid "Dockable panel for an overview and navigation of the whole canvas."
-msgstr ""
+msgstr "Tuval genel görünümü ve gezinti için sabitlenebilir panel."
 
 #: ../po/tmp/resources.xml.h:313
 msgctxt "Menu→View (labels), Accel Editor (labels)"
@@ -6339,7 +6265,7 @@ msgstr "Araç Seçenekleri Paneli"
 #: ../po/tmp/resources.xml.h:316
 msgctxt "Accel Editor (descriptions)"
 msgid "Dockable panel for adjusting the options with the activated tool."
-msgstr ""
+msgstr "Geçerli araç seçeneklerini ayarlamak için sabitlenebilir panel."
 
 #: ../po/tmp/resources.xml.h:317
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
@@ -6360,6 +6286,8 @@ msgstr "Fırça ve Renk Geçmişi Paneli"
 msgctxt "Accel Editor (descriptions)"
 msgid "Dockable panel for viewing recently changed colors and brushes."
 msgstr ""
+"Son değiştirilen renkleri ve fırçaları görüntülemek için sabitlenebilir "
+"panel."
 
 #: ../po/tmp/resources.xml.h:321
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
@@ -6775,43 +6703,43 @@ msgid "Pick Color: set the painting color from screen pixels."
 msgstr "Renk Seç: ekran pikselinden boyama rengi seç."
 
 #: ../po/tmp/resources.xml.h:400
-#, fuzzy
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "Pick Color Hue"
-msgstr "Renk Seç"
+msgstr "Renk Tonu Seç"
 
 #: ../po/tmp/resources.xml.h:401
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid ""
 "Set the painting Hue from screen pixels while preserving the Chroma and Luma."
-msgstr "Boyama rengini ekran piksellerinden seç."
+msgstr ""
+"Renk Saflığını ve Renk Parlaklığını korurken boyama Tonunu ekran "
+"piksellerinden seç."
 
 #: ../po/tmp/resources.xml.h:402
-#, fuzzy
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "Pick Color Chroma"
-msgstr "Renk Seç"
+msgstr "Renk Saflığı Seç"
 
 #: ../po/tmp/resources.xml.h:403
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid ""
 "Set the painting Chroma from screen pixels while preserving the Hue and Luma."
-msgstr "Boyama rengini ekran piksellerinden seç."
+msgstr ""
+"Tonu ve Renk Parlaklığını korurken boyama Renk Saflığını ekran "
+"piksellerinden seç."
 
 #: ../po/tmp/resources.xml.h:404
-#, fuzzy
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "Pick Color Luma"
-msgstr "Renk Seç"
+msgstr "Renk Parlaklığını Seç"
 
 #: ../po/tmp/resources.xml.h:405
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid ""
 "Set the painting Luma from screen pixels while preserving the Hue and Chroma."
-msgstr "Boyama rengini ekran piksellerinden seç."
+msgstr ""
+"Tonu ve Renk Saflığını korurken boyama Renk Parlaklığını ekran "
+"piksellerinden seç."
 
 #: ../po/tmp/resources.xml.h:406
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
