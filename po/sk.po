@@ -7,8 +7,8 @@ msgstr ""
 "Project-Id-Version: libmypaint for mypaint 1.2.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2019-09-08 22:53+0200\n"
-"PO-Revision-Date: 2016-04-05 07:52+0000\n"
-"Last-Translator: Dušan Kazik <prescott66@gmail.com>\n"
+"PO-Revision-Date: 2019-09-20 17:28+0000\n"
+"Last-Translator: Blake <adam.otruba@protonmail.com>\n"
 "Language-Team: Slovak <https://hosted.weblate.org/projects/mypaint/mypaint/"
 "sk/>\n"
 "Language: sk\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
-"X-Generator: Weblate 2.6-dev\n"
+"X-Generator: Weblate 3.9-dev\n"
 
 #: ../gui/accelmap.py:99 ../gui/buttonmap.py:280
 msgid "Action"
@@ -246,7 +246,7 @@ msgstr "Nie je vybraný žiadny štetec!"
 #, python-brace-format
 msgctxt "brush settings editor: delete brush: confirm dialog question"
 msgid "Really delete brush “{brush_name}” from disk?"
-msgstr "Skutočne odstrániť štetec „{brush_name}“ z disku?"
+msgstr "Naozaj odstrániť štetec „{brush_name}“ z disku?"
 
 #: ../gui/brusheditor.py:695
 msgctxt "brush settings editor: header: fallback name"
@@ -399,7 +399,7 @@ msgstr "Nové"
 #, python-brace-format
 msgctxt "brushpack import failure messages"
 msgid "No file named “{order_conf_file}”. This is not a brushpack."
-msgstr ""
+msgstr "Žiaden súbor s menom „{order_conf_file}“. Toto nie je balík štetcov."
 
 #: ../gui/brushmanager.py:639
 #, python-brace-format
@@ -408,6 +408,8 @@ msgid ""
 "Brush “{brush_name}” is listed in “{order_conf_file}”, but it does not exist "
 "in the zipfile."
 msgstr ""
+"Štetec „{brush_name}“ je v zozname „{order_conf_file}“, ale nie je prítomný "
+"v zip archíve."
 
 #: ../gui/brushmanager.py:652
 #, python-brace-format
@@ -416,58 +418,55 @@ msgid ""
 "Brush “{brush_name}” exists in the zipfile, but it is not listed in "
 "“{order_conf_file}”."
 msgstr ""
+"Štetec „{brush_name}“ je prítomný v zip archíve, ale nie je v zozname "
+"„{order_conf_file}“."
 
 #: ../gui/brushmanager.py:1258 ../gui/footer.py:62
 msgid "Unknown Brush"
 msgstr "Neznámy štetec"
 
 #: ../gui/brushselectionwindow.py:220
-#, fuzzy
 msgctxt "brush group: context menu for a single brush"
 msgid "Add to Favorites"
 msgstr "Pridať medzi obľúbené"
 
 #: ../gui/brushselectionwindow.py:227
-#, fuzzy
 msgctxt "brush group: context menu for a single brush"
 msgid "Remove from Favorites"
 msgstr "Odstrániť z obľúbených"
 
 #: ../gui/brushselectionwindow.py:235
-#, fuzzy
 msgctxt "brush group: context menu for a single brush"
 msgid "Clone"
 msgstr "Klonovať"
 
 #: ../gui/brushselectionwindow.py:242
-#, fuzzy
 msgctxt "brush group: context menu for a single brush"
 msgid "Edit Brush Settings"
 msgstr "Upraviť nastavenia štetca"
 
 #: ../gui/brushselectionwindow.py:250
-#, fuzzy
 msgctxt "brush group: context menu for a single brush"
 msgid "Remove from Group"
-msgstr "Premenovať skupinu"
+msgstr "Odstrániť zo skupiny"
 
 #: ../gui/brushselectionwindow.py:290
 #, python-brace-format
 msgctxt "brush group: context menu: unique names for cloned brushes"
 msgid "{original_name} copy"
-msgstr ""
+msgstr "Kópia {original_name}"
 
 #: ../gui/brushselectionwindow.py:299
 #, python-brace-format
 msgctxt "brush group: context menu: unique names for cloned brushes"
 msgid "{original_name} copy {n}"
-msgstr ""
+msgstr "Kópia {n} {original_name}"
 
 #: ../gui/brushselectionwindow.py:325
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgctxt "brush group: context menu: remove from group"
 msgid "Really remove brush “{brush_name}” from group “{group_name}”?"
-msgstr "Skutočne odstrániť štetec „{brush_name}“ z disku?"
+msgstr "Naozaj odstrániť štetec „{brush_name}“ zo skupiny „{group_name}“?"
 
 #. TRANSLATORS: number of brushes in a brush group, for tooltips
 #: ../gui/brushselectionwindow.py:381
@@ -513,7 +512,7 @@ msgstr "Skupina s týmto názvom už existuje!"
 #, python-brace-format
 msgctxt "brush group delete"
 msgid "Really delete group “{group_name}”?"
-msgstr "Skutočne odstrániť skupinu „{group_name}“?"
+msgstr "Naozaj odstrániť skupinu „{group_name}“?"
 
 #: ../gui/brushselectionwindow.py:494
 #, python-brace-format
@@ -611,35 +610,31 @@ msgstr "Vybrať farbu"
 
 #: ../gui/colorpicker.py:68
 msgid "Set the color used for painting"
-msgstr "Nastaví farbu použitý pri kreslení"
+msgstr "Nastaviť farbu použitú pri kreslení"
 
 #: ../gui/colorpicker.py:270
 msgid "Pick Hue"
-msgstr ""
+msgstr "Vybrať odtieň"
 
 #: ../gui/colorpicker.py:273
-#, fuzzy
 msgid "Set the color Hue used for painting"
-msgstr "Nastaví farbu použitý pri kreslení"
+msgstr "Nastaví odtieň farby použitý pri kreslení"
 
 #: ../gui/colorpicker.py:293
-#, fuzzy
 msgid "Pick Chroma"
-msgstr "Vyberie farbu."
+msgstr "Vybrať farebnosť"
 
 #: ../gui/colorpicker.py:296
-#, fuzzy
 msgid "Set the color Chroma used for painting"
-msgstr "Nastaví farbu použitý pri kreslení"
+msgstr "Nastaví farebnosť použitú pri kreslení"
 
 #: ../gui/colorpicker.py:316
 msgid "Pick Luma"
-msgstr ""
+msgstr "Vybrať svetlosť"
 
 #: ../gui/colorpicker.py:319
-#, fuzzy
 msgid "Set the color Luma used for painting"
-msgstr "Nastaví farbu použitý pri kreslení"
+msgstr "Nastaví svetlosť farby použitú pri kreslení"
 
 #: ../gui/colors/adjbases.py:699
 msgid "Color details"
@@ -1274,20 +1269,20 @@ msgid "Existing brush"
 msgstr "Existujúci štetec"
 
 #: ../gui/dialogs.py:166
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgid ""
 "<b>A brush named “{brush_name}” already exists.</b>\n"
 "Do you want to replace it, or should the new brush be renamed?"
 msgstr ""
-"<b>Štetec s názvom „%s“ už existuje.</b>\n"
-"Chcete ho nahradiť, alebo by sa má nový štetec premenovať?"
+"<b>Štetec s názvom „{brush_name}“ už existuje.</b>\n"
+"Chcete ho nahradiť, alebo nový štetec premenovať?"
 
 #: ../gui/dialogs.py:196
 msgid "Overwrite brush group?"
 msgstr "Prepísať skupinu štetcov?"
 
 #: ../gui/dialogs.py:220
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgid ""
 "<b>A group named “{groupname}” already exists.</b>\n"
 "Do you want to replace it, or should the new group be renamed?\n"
@@ -1295,7 +1290,7 @@ msgid ""
 "“{deleted_groupname}”."
 msgstr ""
 "<b>Skupina s názvom „{groupname}“ už existuje.</b>\n"
-"Chcete ju nahradiť, alebo sa má nová skupina premenovať?\n"
+"Chcete ju nahradiť, alebo novú skupinu premenovať?\n"
 "Ak ju nahradíte, štetce môžu byť presunuté do skupiny s názvom "
 "„{deleted_groupname}“."
 
@@ -1304,9 +1299,9 @@ msgid "Import brush package?"
 msgstr "Importovať balík štetcov?"
 
 #: ../gui/dialogs.py:357
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgid "<b>Do you really want to import package “{brushpack_name}”?</b>"
-msgstr "<b>Skutočne chcete importovať balík „%s“?</b>"
+msgstr "<b>Naozaj chcete importovať balík „{brushpack_name}“?</b>"
 
 #: ../gui/document.py:453
 #, python-format
@@ -1371,40 +1366,40 @@ msgstr "Stlačením klávesov {modifiers} :  {button_actions}."
 #: ../gui/document.py:897
 msgctxt "Statusbar message: copy result"
 msgid "Empty document, nothing copied."
-msgstr ""
+msgstr "Prázdny dokument, kopírovanie neprebehlo."
 
 #: ../gui/document.py:909
 #, python-brace-format
 msgctxt "Statusbar message: copy result"
 msgid "Copied layer as {w}×{h} image."
-msgstr ""
+msgstr "Vrstva skopírovaná ako obrázok {w}x{h}."
 
 #: ../gui/document.py:926
 msgctxt "Statusbar message: paste result"
 msgid "Nothing on clipboard."
-msgstr ""
+msgstr "Schránka je prázdna."
 
 #: ../gui/document.py:935
 msgctxt "Statusbar message: paste result"
 msgid "Clipboard does not contain an image."
-msgstr ""
+msgstr "Schránka neobsahuje obrázok."
 
 #: ../gui/document.py:946
 msgctxt "Statusbar message: paste result"
 msgid "Cannot paste into this type of layer."
-msgstr ""
+msgstr "Nie je možné vkladať do vrstvy tohto typu."
 
 #: ../gui/document.py:951
 #, python-brace-format
 msgctxt "Statusbar message: paste result"
 msgid "Pasted {w}×{h} image."
-msgstr ""
+msgstr "Obrázok {w}x{h} vložený."
 
 #: ../gui/document.py:2037
 #, python-brace-format
 msgctxt "Statusbar message: vacuum document"
 msgid "Vacuum: discarded {removed} of {total} tiles."
-msgstr ""
+msgstr "Vysávač: zahodených {removed} z {total} dlaždíc."
 
 #. TRANSLATORS: window title for use with a filename
 #: ../gui/drawwindow.py:269
@@ -1420,13 +1415,12 @@ msgstr "MyPaint"
 #: ../gui/drawwindow.py:289
 msgctxt "Open dragged file confirm dialog: title"
 msgid "Open Dragged File?"
-msgstr ""
+msgstr "Otvoriť pretiahnutý súbor?"
 
 #: ../gui/drawwindow.py:293
-#, fuzzy
 msgctxt "Open dragged file confirm dialog: continue button"
 msgid "_Open"
-msgstr "Otvoriť"
+msgstr "_Otvoriť"
 
 #: ../gui/drawwindow.py:486
 msgid "Set current color"
@@ -1449,16 +1443,14 @@ msgid "Fullscreen"
 msgstr "Režim na celú obrazovku"
 
 #: ../gui/drawwindow.py:675
-#, fuzzy
 msgctxt "Quit confirm dialog: title"
 msgid "Really Quit?"
-msgstr "Skutočne ukončiť?"
+msgstr "Naozaj ukončiť?"
 
 #: ../gui/drawwindow.py:679
-#, fuzzy
 msgctxt "Quit confirm dialog: continue button"
 msgid "_Quit"
-msgstr "Ukončenie"
+msgstr "_Ukončiť"
 
 #: ../gui/drawwindow.py:697
 msgid "Import brush package…"
@@ -1518,7 +1510,7 @@ msgstr ""
 
 #: ../gui/externalapp.py:71
 msgid "Open With…"
-msgstr "Otvorenie pomocou…"
+msgstr "Otvoriť pomocou…"
 
 #: ../gui/externalapp.py:123
 msgid "Icon"
@@ -1529,338 +1521,306 @@ msgid "no description"
 msgstr "bez popisu"
 
 #: ../gui/filehandling.py:126
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgctxt "Document I/O: message shown while working"
 msgid "Loading {files_summary}…"
-msgstr "Načítava sa súbor „{file_basename}“…"
+msgstr "Načítava sa „{files_summary}“…"
 
 #: ../gui/filehandling.py:130
 #, python-brace-format
 msgctxt "Document I/O: message shown while working"
 msgid "Importing layers from {files_summary}…"
-msgstr ""
+msgstr "Importujú sa vrstvy z „{files_summary}“…"
 
 #: ../gui/filehandling.py:134
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgctxt "Document I/O: message shown while working"
 msgid "Saving {files_summary}…"
-msgstr "Ukladá sa súbor „{file_basename}”…"
+msgstr "Ukladá sa „{files_summary}”…"
 
 #: ../gui/filehandling.py:138
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgctxt "Document I/O: message shown while working"
 msgid "Exporting to {files_summary}…"
-msgstr "Exportuje sa do súboru „{file_basename}”…"
+msgstr "Exportuje sa do „{files_summary}”…"
 
 #: ../gui/filehandling.py:145
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgctxt "Document I/O: fail message"
 msgid "Failed to export to {files_summary}."
-msgstr "Zlyhalo exportovanie do súboru „{file_basename}“."
+msgstr "Zlyhalo exportovanie do „{files_summary}“."
 
 #: ../gui/filehandling.py:149
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgctxt "Document I/O: fail message"
 msgid "Failed to save {files_summary}."
-msgstr "Zlyhalo uloženie súboru „{file_basename}“."
+msgstr "Zlyhalo uloženie „{files_summary}“."
 
 #: ../gui/filehandling.py:153
 #, python-brace-format
 msgctxt "Document I/O: fail message"
 msgid "Could not import layers from {files_summary}."
-msgstr ""
+msgstr "Nebolo možné importovať vrstvy z „{files_summary}“."
 
 #: ../gui/filehandling.py:157
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgctxt "Document I/O: fail message"
 msgid "Could not load {files_summary}."
-msgstr "Nepodarilo sa načítať súbor „{file_basename}”."
+msgstr "Nepodarilo sa načítať „{files_summary}“."
 
 #: ../gui/filehandling.py:164
-#, fuzzy
 msgctxt "Document I/O: fail dialog title"
 msgid "Save failed"
-msgstr "Uloženie palety"
+msgstr "Uloženie zlyhalo"
 
 #: ../gui/filehandling.py:168
 msgctxt "Document I/O: fail dialog title"
 msgid "Export failed"
-msgstr ""
+msgstr "Export zlyhal"
 
 #: ../gui/filehandling.py:172
 msgctxt "Document I/O: fail dialog title"
 msgid "Import Layers failed"
-msgstr ""
+msgstr "Import vrstiev zlyhal"
 
 #: ../gui/filehandling.py:176
 msgctxt "Document I/O: fail dialog title"
 msgid "Open failed"
-msgstr ""
+msgstr "Otvorenie zlyhalo"
 
 #: ../gui/filehandling.py:183
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgctxt "Document I/O: success"
 msgid "Exported to {files_summary} successfully."
-msgstr "Úspešne exportované do súboru „{file_basename}“."
+msgstr "Úspešne exportované do „{files_summary}“."
 
 #: ../gui/filehandling.py:187
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgctxt "Document I/O: success"
 msgid "Saved {files_summary} successfully."
-msgstr "Úspešne uložené do súboru „{file_basename}“."
+msgstr "Úspešne uložené do „{files_summary}“."
 
 #: ../gui/filehandling.py:191
 #, python-brace-format
 msgctxt "Document I/O: success"
 msgid "Imported layers from {files_summary}."
-msgstr ""
+msgstr "Vrstvy úspešne importované z „{files_summary}“."
 
 #: ../gui/filehandling.py:195
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgctxt "Document I/O: success"
 msgid "Loaded {files_summary}."
-msgstr "Načítaný súbor „{file_basename}”."
+msgstr "Načítané „{files_summary}”."
 
 #: ../gui/filehandling.py:213
-#, python-brace-format
+#, fuzzy, python-brace-format
 msgid "{n} file"
 msgid_plural "{n} files"
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
+msgstr[0] "{n} súbor"
+msgstr[1] "{n} súbory"
+msgstr[2] "{n} súborov"
 
 #: ../gui/filehandling.py:221
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgctxt "Document I/O: the {files_summary} for a single file"
 msgid "“{basename}”"
-msgstr "Načítaný súbor „{file_basename}”."
+msgstr "„{basename}“"
 
 #: ../gui/filehandling.py:427
-#, fuzzy
 msgctxt "save/load dialogs: filter patterns"
 msgid "All Recognized Formats"
 msgstr "Všetky známe formáty"
 
 #: ../gui/filehandling.py:432
-#, fuzzy
 msgctxt "save/load dialogs: filter patterns"
 msgid "OpenRaster (*.ora)"
 msgstr "OpenRaster (*.ora)"
 
 #: ../gui/filehandling.py:437
-#, fuzzy
 msgctxt "save/load dialogs: filter patterns"
 msgid "PNG (*.png)"
 msgstr "PNG (*.png)"
 
 #: ../gui/filehandling.py:442
-#, fuzzy
 msgctxt "save/load dialogs: filter patterns"
 msgid "JPEG (*.jpg; *.jpeg)"
 msgstr "JPEG (*.jpg; *.jpeg)"
 
 #: ../gui/filehandling.py:490
-#, fuzzy
 msgctxt "save dialogs: save formats and options"
 msgid "By extension (prefer default format)"
 msgstr "Podľa prípony (uprednostniť predvolený formát)"
 
 #: ../gui/filehandling.py:494
-#, fuzzy
 msgctxt "save dialogs: save formats and options"
 msgid "OpenRaster (*.ora)"
 msgstr "OpenRaster (*.ora)"
 
 #: ../gui/filehandling.py:498
-#, fuzzy
 msgctxt "save dialogs: save formats and options"
 msgid "PNG, respecting “Show Background” (*.png)"
 msgstr "PNG s pevným pozadím (*.png)"
 
 #: ../gui/filehandling.py:502
-#, fuzzy
 msgctxt "save dialogs: save formats and options"
 msgid "PNG, solid RGB (*.png)"
 msgstr "PNG (*.png)"
 
 #: ../gui/filehandling.py:506
-#, fuzzy
 msgctxt "save dialogs: save formats and options"
 msgid "PNG, transparent RGBA (*.png)"
 msgstr "Priehľadné PNG (*.png)"
 
 #: ../gui/filehandling.py:510
-#, fuzzy
 msgctxt "save dialogs: save formats and options"
 msgid "Multiple PNGs, by layer (*.NUM.png)"
-msgstr "Viacero priehľadných PNG (*.XXX.png)"
+msgstr "Viacero PNG, po vrstvách (*.XXX.png)"
 
 #: ../gui/filehandling.py:514
-#, fuzzy
 msgctxt "save dialogs: save formats and options"
 msgid "Multiple PNGs, by view (*.NAME.png)"
-msgstr "Viacero priehľadných PNG (*.XXX.png)"
+msgstr "Viacero PNG, podľa pohľadu (*.XXX.png)"
 
 #: ../gui/filehandling.py:518
-#, fuzzy
 msgctxt "save dialogs: save formats and options"
 msgid "JPEG 90% quality (*.jpg; *.jpeg)"
-msgstr "JPEG 90% kvalita (*.jpg; *.jpeg)"
+msgstr "JPEG, 90% kvalita (*.jpg; *.jpeg)"
 
 #: ../gui/filehandling.py:576
-#, fuzzy
 msgctxt "Dialogs (window title): File→Export…"
 msgid "Export"
-msgstr "Exportovať…"
+msgstr "Export"
 
 #: ../gui/filehandling.py:581
-#, fuzzy
 msgctxt "Dialogs (window title): File→Save As…"
 msgid "Save As"
-msgstr "Uložiť ako…"
+msgstr "Uložiť ako"
 
 #: ../gui/filehandling.py:601
-#, fuzzy
 msgctxt "save dialogs: formats and options: (label)"
 msgid "Format to save as:"
 msgstr "Formát na uloženie:"
 
 #: ../gui/filehandling.py:668
-#, fuzzy
 msgctxt ""
 "Destructive action confirm dialog: fallback title (normally overridden)"
 msgid "Really Continue?"
-msgstr "Skutočne pokračovať?"
+msgstr "Naozaj pokračovať?"
 
 #: ../gui/filehandling.py:701
 msgctxt "Destructive action confirm dialog: cancel button"
 msgid "_Cancel"
-msgstr ""
+msgstr "_Zrušiť"
 
 #: ../gui/filehandling.py:705
-#, fuzzy
 msgctxt "Destructive action confirm dialog: save checkbox"
 msgid "_Save to Scraps first"
-msgstr "_Uložiť ako nákres"
+msgstr "_Uložiť najprv ako nákres"
 
 #: ../gui/filehandling.py:711
 msgctxt ""
 "Destructive action confirm dialog: fallback continue button (normally "
 "overridden)"
 msgid "Co_ntinue"
-msgstr ""
+msgstr "_Pokračovať"
 
 #: ../gui/filehandling.py:734
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgctxt "Destructive action confirm dialog: warning message"
 msgid "You risk losing {abbreviated_time} of unsaved painting."
-msgstr ""
-"Týmto sa zahodí neuložené kreslenie, ktoré vám trvalo {abbreviated_time}"
+msgstr "Týmto sa zahodí neuložené kreslenie trvajúce {abbreviated_time}."
 
 #: ../gui/filehandling.py:799
 msgctxt "File→New: confirm dialog: title question"
 msgid "New Canvas?"
-msgstr ""
+msgstr "Nové plátno?"
 
 #: ../gui/filehandling.py:803
 msgctxt "File→New: confirm dialog: continue button"
 msgid "_New Canvas"
-msgstr ""
+msgstr "_Nové plátno"
 
 #: ../gui/filehandling.py:1003
 msgctxt "File→Open: confirm dialog: title question"
 msgid "Open File?"
-msgstr ""
+msgstr "Otvoriť súbor?"
 
 #: ../gui/filehandling.py:1007
-#, fuzzy
 msgctxt "File→Open: confirm dialog: continue button"
 msgid "_Open…"
-msgstr "Otvoriť…"
+msgstr "_Otvoriť…"
 
 #: ../gui/filehandling.py:1015
-#, fuzzy
 msgctxt "File→Open: file chooser dialog: title"
 msgid "Open File"
-msgstr "Otvoriť"
+msgstr "Otvoriť súbor"
 
 #: ../gui/filehandling.py:1057
-#, fuzzy
 msgctxt "load dialogs: title"
 msgid "Open Scratchpad…"
 msgstr "Otvorenie náčrtníka…"
 
 #: ../gui/filehandling.py:1099
-#, fuzzy
 msgctxt "Layers→Import Layers: files-chooser dialog: title"
 msgid "Import Layers"
-msgstr "Importovaný štetec"
+msgstr "Import štetca"
 
 #: ../gui/filehandling.py:1408
 msgctxt "File→Open Recent→* confirm dialog: title"
 msgid "Open File?"
-msgstr ""
+msgstr "Otvoriť súbor?"
 
 #: ../gui/filehandling.py:1412
-#, fuzzy
 msgctxt "File→Open Recent→* confirm dialog: continue button"
 msgid "_Open"
-msgstr "Otvoriť"
+msgstr "_Otvoriť"
 
 #: ../gui/filehandling.py:1427
-#, fuzzy
 msgctxt "File→Open Most Recent confirm dialog: title"
 msgid "Open Most Recent File?"
-msgstr "Otvoriť posledný"
+msgstr "Otvoriť posledný súbor?"
 
 #: ../gui/filehandling.py:1432
-#, fuzzy
 msgctxt "File→Open Most Recent→* confirm dialog: continue button"
 msgid "_Open"
-msgstr "Otvoriť"
+msgstr "_Otvoriť"
 
 #: ../gui/filehandling.py:1446
-#, fuzzy
 msgctxt "File→Open Next/Prev Scrap: error message"
 msgid "There are no scrap files yet. Try saving one first."
-msgstr "Zatiaľ neexistuje žiadny súbor nákresu s názvom „%s“."
+msgstr "Neexistuje žiadny súbor nákresu. Skúste jeden uložiť."
 
 #: ../gui/filehandling.py:1455
-#, fuzzy
 msgctxt "File→Open Next/Prev Scrap confirm dialog: title"
 msgid "Open Next Scrap?"
-msgstr "Otvoriť nasledujúci nákres"
+msgstr "Otvoriť nasledujúci nákres?"
 
 #: ../gui/filehandling.py:1463
-#, fuzzy
 msgctxt "File→Open Next/Prev Scrap confirm dialog: title"
 msgid "Open Previous Scrap?"
-msgstr "Otvoriť predchádzajúci nákres"
+msgstr "Otvoriť predchádzajúci nákres?"
 
 #: ../gui/filehandling.py:1472
-#, fuzzy
 msgctxt "File→Open Next/Prev Scrap confirm dialog: continue button"
 msgid "_Open"
-msgstr "Otvoriť"
+msgstr "_Otvoriť"
 
 #: ../gui/filehandling.py:1487
 msgctxt "File→Revert: status message: canvas has no filename yet"
 msgid "Cannot revert: canvas has not been saved to a file yet."
-msgstr ""
+msgstr "Nie je možné vrátiť: plátno zatiaľ nebolo uložené do súboru."
 
 #: ../gui/filehandling.py:1494
 msgctxt "File→Revert confirm dialog: title"
 msgid "Revert Changes?"
-msgstr ""
+msgstr "Vrátiť zmeny?"
 
 #: ../gui/filehandling.py:1499
-#, fuzzy
 msgctxt "File→Revert confirm dialog: continue button"
 msgid "_Revert"
-msgstr "Vráti"
+msgstr "_Vrátiť"
 
 #: ../gui/fill.py:121
-#, fuzzy
 msgctxt ""
 "Name of the fill mode\n"
 "In other software, 'Flood Fill' is also known as 'Bucket Fill' or just 'Fill'"
@@ -1868,13 +1828,11 @@ msgid "Flood Fill"
 msgstr "Vyplnenie"
 
 #: ../gui/fill.py:127
-#, fuzzy
 msgctxt "Usage description of the Flood Fill mode"
 msgid "Fill areas with color"
 msgstr "Vyplní oblasti farbou"
 
 #: ../gui/fill.py:508
-#, fuzzy
 msgctxt ""
 "fill options: numeric value that determines whether tested pixels will be "
 "included in the fill, based on color difference"
@@ -1889,9 +1847,10 @@ msgid ""
 "How much pixel colors are allowed to vary from the start\n"
 "before Flood Fill will refuse to fill them"
 msgstr ""
+"Koľko pixelov sa smú farby líšiť od počiatočného\n"
+"bodu, kým ich nástroj odmietne vyplniť"
 
 #: ../gui/fill.py:537
-#, fuzzy
 msgctxt ""
 "fill options: option category (label) Options under this category relate to "
 "what the fill isbased on, not where the actual fill ends up."
@@ -1901,24 +1860,22 @@ msgstr "Zdroj:"
 #: ../gui/fill.py:540
 msgctxt "fill options: 'Source:' category (tooltip)"
 msgid "The input that the fill will be based on"
-msgstr ""
+msgstr "Vstup na základe ktorého bude nástroj vypĺňať"
 
 #: ../gui/fill.py:584
 msgctxt "fill options: 'Source' category: Layer dropdown (tooltip)"
 msgid "Select a specific layer you want the fill to be based on"
-msgstr ""
+msgstr "Zvoľte konkrétnu vrstvu, na základe ktorej má nástroj vypĺňať"
 
 #: ../gui/fill.py:602
-#, fuzzy
 msgctxt ""
 "fill options: 'Source:' category: toggle (label)\n"
 "When this option is enabled, the fill is based\n"
 "on the combination of all visible layers"
 msgid "Sample Merged"
-msgstr "Zlúčená vzorka"
+msgstr "Vzorkovať zlúčené"
 
 #: ../gui/fill.py:606
-#, fuzzy
 msgctxt "fill options: Sample Merged (tooltip)"
 msgid ""
 "When considering which area to fill, use a\n"
@@ -1926,14 +1883,12 @@ msgid ""
 "underneath the current layer"
 msgstr ""
 "Pri rozhodovaní, ktorá oblasť bude vyplnená, dočasne\n"
-"zlúčiťvvšetky viditeľné vrstvy pod\n"
-"aktuálnou vrstvou"
+"zlúčiť všetky viditeľné vrstvy pod aktuálnou"
 
 #: ../gui/fill.py:622
-#, fuzzy
 msgctxt "fill options: toggle whether the fill will be limited by the viewport"
 msgid "Limit to View"
-msgstr "Prispôsobiť zobrazeniu"
+msgstr "Ohraničiť zobrazením"
 
 #: ../gui/fill.py:628
 msgctxt ""
@@ -1945,9 +1900,11 @@ msgid ""
 "If the view is rotated, the fill will be limited to the\n"
 "smallest canvas-aligned rectangle that can fit the view."
 msgstr ""
+"Ohraničí oblasť, ktorú možno vyplniť na základe zobrazenia.\n"
+"Ak je pohľad otočený, vyplnenie bude ohraničené najmenším\n"
+"obdĺžnikom orientovaným podľa plátna, ktorý sa zmestí do pohľadu."
 
 #: ../gui/fill.py:645
-#, fuzzy
 msgctxt ""
 "fill options: option category (label)\n"
 "Options under this category relate to where the fill will end up (default: "
@@ -1956,10 +1913,9 @@ msgid "Target:"
 msgstr "Cieľ:"
 
 #: ../gui/fill.py:648
-#, fuzzy
 msgctxt "fill options: 'Target:' category (tooltip)"
 msgid "Where the output should go"
-msgstr "Kde má ísť výstup"
+msgstr "Kam má ísť výstup"
 
 #: ../gui/fill.py:657
 #, fuzzy
@@ -1971,7 +1927,6 @@ msgid "New Layer (once)"
 msgstr "Nová vrstva (raz)"
 
 #: ../gui/fill.py:662
-#, fuzzy
 msgctxt "fill options: Target | New Layer (tooltip)"
 msgid ""
 "Create a new layer with the results of the fill.\n"
@@ -1997,7 +1952,7 @@ msgstr "Krytie:"
 #: ../gui/fill.py:706
 msgctxt "fill options: Opacity slider (tooltip)"
 msgid "Opacity of the fill"
-msgstr ""
+msgstr "Krytie vyplnenia"
 
 #: ../gui/fill.py:729
 msgctxt "fill options: numeric option - grow/shrink fill (label)"
