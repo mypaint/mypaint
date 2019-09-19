@@ -79,19 +79,33 @@ you can run MyPaint in demo mode to see the changes:
 
     python setup.py demo
 
-To run MyPaint with a specific translation on Linux,
-you can use the LANG environment variable
+If you want to run MyPaint with a specific translation on Linux,
+here are two ways of doing so:
+
+You can either use the LANG environment variable
 like this (the locale needs to be supported):
 
-    LANG=ll_CC.utf8 ./mypaint
+	LANG=ll_CC.utf8 python setup.py demo
 
 where "ll" is a [language code][ll], and and "CC" is a [country code][CC].
-Your working directory must be the root directory of the mypaint source.
+
+If you don't have to locale of the language you want
+to test installed, you can use the LANGUAGE variable
+instead:
+
+	LANGUAGE=ll_CC python setup.py demo
+
+> You don't have to supply the country code (CC) if you
+> don't need to disambiguate multiple dialects.
+
+> When using `LANGUAGE` without having the locale installed,
+> some strings that are not part of MyPaint will not be translated.
+> For example, button strings in file chooser dialogs.
 
 To run MyPaint with the original strings, for comparison,
 you can use the `LC_MESSAGES` variable like this:
 
-    LC_MESSAGES=C ./mypaint
+    LC_MESSAGES=C python setup.py demo
 
 ## Send changes (manual)
 
@@ -100,9 +114,14 @@ your changes are based on the
 current development (git) version of MyPaint.
 
 We prefer changes as [Github pull requests][PR],
-but if you do not know git just send
-either a unified diff or the updated .po file
-along with your name to: *a.t.chadwick (AT) gmail.com*.
+but if you do not know git you can also [open a new issue on github][NEW_ISSUE]
+and attach either a unified diff or the new/updated .po file to it.
+
+## Weblate
+
+Weblate provides a browser-based interface for adding, editing
+and updating translations. It's a very good way to provide
+translations without having to worry about the technical details.
 
 If you are interested in keeping the transalations up to date,
 please subscribe to the MyPaint project on WebLate:
@@ -114,3 +133,4 @@ please subscribe to the MyPaint project on WebLate:
 [ll]: http://www.gnu.org/software/hello/manual/gettext/Usual-Language-Codes.html#Usual-Language-Codes ("ll" options)
 [CC]: http://www.gnu.org/software/hello/manual/gettext/Country-Codes.html#Country-Codes ("CC" options)
 [PR]: https://help.github.com/articles/using-pull-requests/
+[NEW_ISSUE]: https://github.com/mypaint/mypaint/issues/new?title=Manual+translations+for:+LANGUAGE&body=New%2Fupdated+translations+for+%2E%2E%2E
