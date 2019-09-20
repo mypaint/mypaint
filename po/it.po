@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: 0.7.1-git\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2019-09-08 22:53+0200\n"
-"PO-Revision-Date: 2019-02-06 22:10+0000\n"
+"PO-Revision-Date: 2019-09-21 05:53+0000\n"
 "Last-Translator: albanobattistella <albano_battistella@hotmail.com>\n"
 "Language-Team: Italian <https://hosted.weblate.org/projects/mypaint/mypaint/"
 "it/>\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 3.5-dev\n"
+"X-Generator: Weblate 3.9-dev\n"
 "X-Poedit-Language: Italian\n"
 "X-Poedit-Country: ITALY\n"
 "X-Poedit-SourceCharset: utf-8\n"
@@ -209,7 +209,7 @@ msgstr "Colore"
 #: ../gui/brusheditor.py:407
 msgctxt "brush settings list: setting group"
 msgid "GridMap"
-msgstr ""
+msgstr "Griglia Mappa"
 
 #: ../gui/brusheditor.py:418
 msgctxt "brush settings list: setting group"
@@ -399,7 +399,7 @@ msgstr "Nuovo"
 #, python-brace-format
 msgctxt "brushpack import failure messages"
 msgid "No file named “{order_conf_file}”. This is not a brushpack."
-msgstr ""
+msgstr "Nessun file denominato \"{order_conf_file}\". Questo non è un pennello."
 
 #: ../gui/brushmanager.py:639
 #, python-brace-format
@@ -408,6 +408,8 @@ msgid ""
 "Brush “{brush_name}” is listed in “{order_conf_file}”, but it does not exist "
 "in the zipfile."
 msgstr ""
+"Il pennello \"{brush_name}\" è elencato in \"{order_conf_file}\", ma non "
+"esiste nel file zip."
 
 #: ../gui/brushmanager.py:652
 #, python-brace-format
@@ -416,6 +418,8 @@ msgid ""
 "Brush “{brush_name}” exists in the zipfile, but it is not listed in "
 "“{order_conf_file}”."
 msgstr ""
+"Il pennello \"{brush_name}\" esiste nel file zip, ma non è elencato in \""
+"{order_conf_file}\"."
 
 #: ../gui/brushmanager.py:1258 ../gui/footer.py:62
 msgid "Unknown Brush"
@@ -446,28 +450,29 @@ msgid "Edit Brush Settings"
 msgstr "Modifica Impostazioni Pennello"
 
 #: ../gui/brushselectionwindow.py:250
-#, fuzzy
 msgctxt "brush group: context menu for a single brush"
 msgid "Remove from Group"
-msgstr "Rinomina Gruppo"
+msgstr "Rimuovi dal Gruppo"
 
 #: ../gui/brushselectionwindow.py:290
 #, python-brace-format
 msgctxt "brush group: context menu: unique names for cloned brushes"
 msgid "{original_name} copy"
-msgstr ""
+msgstr "{original_name} copia"
 
 #: ../gui/brushselectionwindow.py:299
 #, python-brace-format
 msgctxt "brush group: context menu: unique names for cloned brushes"
 msgid "{original_name} copy {n}"
-msgstr ""
+msgstr "{original_name} copia {n}"
 
 #: ../gui/brushselectionwindow.py:325
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgctxt "brush group: context menu: remove from group"
 msgid "Really remove brush “{brush_name}” from group “{group_name}”?"
-msgstr "Vuoi veramente eliminare “{brush_name}” dal disco?"
+msgstr ""
+"Vuoi veramente eliminare il pennello “{brush_name}” dal gruppo "
+"“{group_name}”?"
 
 #. TRANSLATORS: number of brushes in a brush group, for tooltips
 #: ../gui/brushselectionwindow.py:381
@@ -615,12 +620,11 @@ msgstr "Imposta il colore usato per dipingere"
 
 #: ../gui/colorpicker.py:270
 msgid "Pick Hue"
-msgstr ""
+msgstr "Scegli tonalità"
 
 #: ../gui/colorpicker.py:273
-#, fuzzy
 msgid "Set the color Hue used for painting"
-msgstr "Imposta il colore usato per dipingere"
+msgstr "Imposta la tonalità del colore utilizzata per la pittura"
 
 #: ../gui/colorpicker.py:293
 #, fuzzy
@@ -1306,19 +1310,19 @@ msgid "Import brush package?"
 msgstr "Importare pacchetto pennelli?"
 
 #: ../gui/dialogs.py:357
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgid "<b>Do you really want to import package “{brushpack_name}”?</b>"
-msgstr "<b>Vuoi veramente importare il pacchetto `%s'?</b>"
+msgstr "<b>Vuoi veramente importare il pacchetto “{brushpack_name}”?</b>"
 
 #: ../gui/document.py:453
 #, python-format
 msgid "Load brush settings from shortcut slot %d"
-msgstr "Carica le impostazioni pennello dallo spazio scorciatoia %d"
+msgstr "Carica le impostazioni del pennello dallo slot di scelta rapida  %d"
 
 #: ../gui/document.py:454
 #, python-format
 msgid "Store brush settings in shortcut slot %d"
-msgstr "Salva impostazioni pennello nello spazio scorciatoia %d"
+msgstr "Memorizza le impostazioni del pennello nello slot di scelta rapida %d"
 
 #: ../gui/document.py:455
 #, python-format
