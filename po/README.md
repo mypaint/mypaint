@@ -153,6 +153,10 @@ The `.pot` file alone can be updated by running
 just the first command,
 if all you want to do is compare diffs.
 
+The `update_metadata.sh` script does not need to be run on a regular basis.
+It is just a convenience for generating generic headers for new language files
+and for updating the version field of existing language files.
+
 # Information for translators
 
 ## New translation (manual)
