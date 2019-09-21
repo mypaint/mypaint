@@ -28,7 +28,7 @@ intltool-extract --help | grep "\--local" >/dev/null 2>&1 ||
 for ui_file in ../gui/resources.xml ../gui/*.glade; do
     echo "Extracting strings from $ui_file..."
     intltool-extract --local --type=gettext/glade "$ui_file"
-    tmp_h=`basename "$ui_file"`.h
+    tmp_h=$(basename "$ui_file").h
     if ! test -f "tmp/$tmp_h"; then
         echo >&2 "warning: intltool-extract did not create tmp/$tmp_h"
         continue
@@ -46,4 +46,3 @@ sort "$TMPFILE" > "$OUTFILE"
 # new languages.
 
 intltool-update --verbose --gettext-package mypaint --pot
-
