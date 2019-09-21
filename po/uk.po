@@ -5,7 +5,7 @@
 # Daniel Korostil <ted.korostiled@gmail.com>, 2010.
 msgid ""
 msgstr ""
-"Project-Id-Version: \n"
+"Project-Id-Version: mypaint v2.0.0-alpha.11-2-g0673fe8\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2019-09-08 22:53+0200\n"
 "PO-Revision-Date: 2019-05-14 16:49+0000\n"

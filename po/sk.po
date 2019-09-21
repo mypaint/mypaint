@@ -4,7 +4,7 @@
 # Dušan Kazik <prescott66@gmail.com>, 2015.
 msgid ""
 msgstr ""
-"Project-Id-Version: libmypaint for mypaint 1.2.0\n"
+"Project-Id-Version: mypaint v2.0.0-alpha.12-343-g82b4fc5\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2019-09-08 22:53+0200\n"
 "PO-Revision-Date: 2019-09-20 17:28+0000\n"

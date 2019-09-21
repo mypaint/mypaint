@@ -5,7 +5,7 @@
 # Cheng-Chia Tseng, 2011.
 msgid ""
 msgstr ""
-"Project-Id-Version: mypaint\n"
+"Project-Id-Version: mypaint v1.2.0-586-g70ce73d\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2019-09-08 22:53+0200\n"
 "PO-Revision-Date: 2017-08-02 06:48+0000\n"

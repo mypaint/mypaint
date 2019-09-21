@@ -5,7 +5,7 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: 1.0+git\n"
+"Project-Id-Version: mypaint v1.2.0-576-g1f679d0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2019-09-08 22:53+0200\n"
 "PO-Revision-Date: 2017-07-21 00:13+0000\n"

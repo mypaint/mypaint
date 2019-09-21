@@ -1,7 +1,7 @@
 # Sveinn í Felli <sv1@fellsnet.is>, 2018.
 msgid ""
 msgstr ""
-"Project-Id-Version: Icelandic (MyPaint)\n"
+"Project-Id-Version: mypaint v2.0.0-alpha.8-1-g4490f06\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2019-09-08 22:53+0200\n"
 "PO-Revision-Date: 2019-02-27 14:19+0000\n"

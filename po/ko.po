@@ -2,7 +2,7 @@
 # Copyright (C) 2009 Jon Nordby
 msgid ""
 msgstr ""
-"Project-Id-Version: 0.9.0 -git\n"
+"Project-Id-Version: mypaint v2.0.0-alpha.12-327-ga332f03\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2019-09-08 22:53+0200\n"
 "PO-Revision-Date: 2019-08-31 19:09+0000\n"

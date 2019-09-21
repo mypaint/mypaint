@@ -5,7 +5,7 @@
 # Pavel Fric <pavelfric@seznam.cz>, 2013, 2016.
 msgid ""
 msgstr ""
-"Project-Id-Version: 0.7.1-git\n"
+"Project-Id-Version: mypaint v1.2.0-636-g046ec8f\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2019-09-08 22:53+0200\n"
 "PO-Revision-Date: 2018-01-24 12:06+0000\n"
