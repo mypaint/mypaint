@@ -6,7 +6,7 @@ msgstr ""
 "Project-Id-Version: mypaint v2.0.0-alpha.12-343-g82b4fc5\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2019-09-24 12:10+0200\n"
-"PO-Revision-Date: 2019-09-20 17:28+0000\n"
+"PO-Revision-Date: 2019-09-24 10:18+0000\n"
 "Last-Translator: Jesper Lloyd <jpl.lloyd@gmail.com>\n"
 "Language-Team: Swedish <https://hosted.weblate.org/projects/mypaint/mypaint/"
 "sv/>\n"
@@ -1752,12 +1752,12 @@ msgstr "Du riskerar att förlora {abbreviated_time} av osparat målande."
 #: ../gui/filehandling.py:800
 msgctxt "File→New: confirm dialog: title question"
 msgid "New Canvas?"
-msgstr "Ny målarduk?"
+msgstr "Ny arbetsyta?"
 
 #: ../gui/filehandling.py:804
 msgctxt "File→New: confirm dialog: continue button"
 msgid "_New Canvas"
-msgstr "_Ny målarduk"
+msgstr "_Ny arbetsyta"
 
 #: ../gui/filehandling.py:1004
 msgctxt "File→Open: confirm dialog: title question"
@@ -1829,7 +1829,7 @@ msgstr "_Öppna"
 #: ../gui/filehandling.py:1488
 msgctxt "File→Revert: status message: canvas has no filename yet"
 msgid "Cannot revert: canvas has not been saved to a file yet."
-msgstr "Kan inte återställa: målarduken har ännu inte sparats till en fil."
+msgstr "Kan inte återställa: arbetsytan har ännu inte sparats till en fil."
 
 #: ../gui/filehandling.py:1495
 msgctxt "File→Revert confirm dialog: title"
@@ -1922,8 +1922,10 @@ msgid ""
 "smallest canvas-aligned rectangle that can fit the view."
 msgstr ""
 "Begränsa området som kan fyllas, baserat på vyporten.\n"
-"Om vyn är roterad kommer området att begränsas till den\n"
-"minsta vinkelrätt orienterade rektangeln som vyn får plats i."
+"Om vyn är roterad kommer området att begränsas till den minsta vinkelrätt "
+"orienterade\n"
+"rektangeln som vyn får plats i (vinkelrät i förhållande till arbetsytans "
+"grundvinkel)."
 
 #: ../gui/fill.py:645
 msgctxt ""
@@ -2875,7 +2877,7 @@ msgstr "Bläddringsvy"
 
 #: ../gui/viewmanip.py:43
 msgid "Drag the canvas view"
-msgstr "Dra arbetsytans vy"
+msgstr "Förflytta arbetsytans vy"
 
 #: ../gui/viewmanip.py:78
 msgid "Zoom View"
@@ -3937,8 +3939,8 @@ msgid ""
 "Negative values mean leftwards tilts."
 msgstr ""
 "Lutning i arbetsytans X-axelriktning.\n"
-"Värdet 0 betyder att pennan är vertikal.\n"
-"Negativa värden menar vänsterriktad lutning."
+"Värdet 0 innebär att pennan är vertikal.\n"
+"Negativa värden innebär vänsterriktad lutning."
 
 #: ../po/tmp/inktool.glade.h:7
 msgctxt "Inking tool options: point value sliders: labels"
@@ -4267,7 +4269,7 @@ msgid ""
 "have them ignored completely if they glitch your drawing."
 msgstr ""
 "Här kan du begränsa pekenheter till specifika uppgifter på arbetsytan, eller "
-"få dem att helt ignoreras om de gör fel när du målar."
+"få dem att helt ignoreras om de orsakar problem när du målar."
 
 #: ../po/tmp/preferenceswindow.glade.h:29
 msgctxt "Prefs Dialog|Button|"
