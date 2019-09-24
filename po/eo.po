@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mypaint v2.0.0-alpha.8-1-g4490f06\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-09-08 22:53+0200\n"
+"POT-Creation-Date: 2019-09-24 12:10+0200\n"
 "PO-Revision-Date: 2019-02-27 14:18+0000\n"
 "Last-Translator: glixx <roman_romul@mail.ru>\n"
 "Language-Team: Esperanto <https://hosted.weblate.org/projects/mypaint/"
@@ -290,6 +290,7 @@ msgid ""
 "<small>Click ‘Edit’ to make changes to the icon</small>"
 msgstr ""
 
+#. TRANSLATORS: begin editing a brush's preview icon
 #: ../gui/brushiconeditor.py:157
 msgid "Edit"
 msgstr "Redakti"
@@ -298,6 +299,7 @@ msgstr "Redakti"
 msgid "Begin editing this preview icon"
 msgstr ""
 
+#. TRANSLATORS: revert edits to a brush icon
 #: ../gui/brushiconeditor.py:165
 msgid "Revert"
 msgstr "Malfari"
@@ -306,6 +308,7 @@ msgstr "Malfari"
 msgid "Discard changes, and cancel editing"
 msgstr ""
 
+#. TRANSLATORS: clear the brush preview icon being edited
 #: ../gui/brushiconeditor.py:174
 msgid "Clear"
 msgstr "Forviŝi"
@@ -314,6 +317,7 @@ msgstr "Forviŝi"
 msgid "Clear the preview icon"
 msgstr ""
 
+#. TRANSLATORS: set the brush icon to a built-in default
 #: ../gui/brushiconeditor.py:182
 msgid "Auto"
 msgstr ""
@@ -322,6 +326,7 @@ msgstr ""
 msgid "Use the default icon"
 msgstr ""
 
+#. TRANSLATORS: save edits to a brush icon
 #: ../gui/brushiconeditor.py:190 ../po/tmp/brusheditor.glade.h:3
 msgid "Save"
 msgstr "Konservi"
@@ -459,44 +464,45 @@ msgid_plural "%d brushes"
 msgstr[0] "%d peniko"
 msgstr[1] "%d penikoj"
 
-#: ../gui/brushselectionwindow.py:407
+#. TRANSLATORS: properties dialog for the current brush group
+#: ../gui/brushselectionwindow.py:406
 #, python-brace-format
 msgctxt "brush group properties dialog: title"
 msgid "Group “{group_name}”"
 msgstr "Grupo “{group_name}”"
 
-#: ../gui/brushselectionwindow.py:417
+#: ../gui/brushselectionwindow.py:418
 msgctxt "brush group properties dialog: action buttons"
 msgid "Rename Group"
 msgstr "Renomi grupon"
 
-#: ../gui/brushselectionwindow.py:423
+#: ../gui/brushselectionwindow.py:424
 msgctxt "brush group properties dialog: action buttons"
 msgid "Export as Zipped Brushset"
 msgstr ""
 
-#: ../gui/brushselectionwindow.py:429
+#: ../gui/brushselectionwindow.py:430
 msgctxt "brush group properties dialog: action buttons"
 msgid "Delete Group"
 msgstr "Forigi grupon"
 
-#: ../gui/brushselectionwindow.py:449
+#: ../gui/brushselectionwindow.py:450
 msgctxt "brush group rename dialog: title"
 msgid "Rename Group"
 msgstr "Renomi grupon"
 
-#: ../gui/brushselectionwindow.py:467
+#: ../gui/brushselectionwindow.py:468
 msgctxt "brush group rename"
 msgid "A group with this name already exists!"
 msgstr ""
 
-#: ../gui/brushselectionwindow.py:476
+#: ../gui/brushselectionwindow.py:477
 #, python-brace-format
 msgctxt "brush group delete"
 msgid "Really delete group “{group_name}”?"
 msgstr ""
 
-#: ../gui/brushselectionwindow.py:494
+#: ../gui/brushselectionwindow.py:495
 #, python-brace-format
 msgctxt "brush group delete"
 msgid ""
@@ -504,32 +510,32 @@ msgid ""
 "Some special groups cannot be deleted."
 msgstr ""
 
-#: ../gui/brushselectionwindow.py:509
+#: ../gui/brushselectionwindow.py:510
 msgctxt "brush group export dialog: title"
 msgid "Export Brushes"
 msgstr "Eksporti penikojn"
 
-#: ../gui/brushselectionwindow.py:514
+#: ../gui/brushselectionwindow.py:515
 msgctxt "brush group export dialog"
 msgid "MyPaint brush package (*.zip)"
 msgstr ""
 
-#: ../gui/brushselectionwindow.py:534
+#: ../gui/brushselectionwindow.py:535
 msgctxt "brush groups menu"
 msgid "New Group…"
 msgstr "Nova grupo…"
 
-#: ../gui/brushselectionwindow.py:537
+#: ../gui/brushselectionwindow.py:538
 msgctxt "brush groups menu"
 msgid "Import Brushes…"
 msgstr "Importi penikojn…"
 
-#: ../gui/brushselectionwindow.py:540
+#: ../gui/brushselectionwindow.py:541
 msgctxt "brush groups menu"
 msgid "Get More Brushes…"
 msgstr ""
 
-#: ../gui/brushselectionwindow.py:554
+#: ../gui/brushselectionwindow.py:555
 msgctxt "new brush group dialog: title"
 msgid "Create Group"
 msgstr "Krei grupon"
@@ -941,52 +947,58 @@ msgctxt "palette view"
 msgid "Empty palette slot (drag a color here)"
 msgstr ""
 
+#. TRANSLATORS: inserting gaps (empty color swatches)
 #: ../gui/colors/paletteview.py:786
 msgctxt "palette view: context menu"
 msgid "Add Empty Slot"
 msgstr ""
 
-#: ../gui/colors/paletteview.py:792
+#. TRANSLATORS: inserting gaps (empty color swatches)
+#: ../gui/colors/paletteview.py:793
 msgctxt "palette view: context menu"
 msgid "Insert Row"
 msgstr ""
 
-#: ../gui/colors/paletteview.py:798
+#. TRANSLATORS: inserting gaps (empty color swatches)
+#: ../gui/colors/paletteview.py:800
 msgctxt "palette view: context menu"
 msgid "Insert Column"
 msgstr ""
 
-#: ../gui/colors/paletteview.py:806
+#. TRANSLATORS: Color interpolations
+#: ../gui/colors/paletteview.py:808
 msgctxt "palette view: context menu"
 msgid "Fill Gap (RGB)"
 msgstr ""
 
-#: ../gui/colors/paletteview.py:812
+#. TRANSLATORS: Color interpolations
+#: ../gui/colors/paletteview.py:815
 msgctxt "palette view: context menu"
 msgid "Fill Gap (HCY)"
 msgstr ""
 
-#: ../gui/colors/paletteview.py:818
+#. TRANSLATORS: Color interpolations
+#: ../gui/colors/paletteview.py:822
 msgctxt "palette view: context menu"
 msgid "Fill Gap (HSV)"
 msgstr ""
 
-#: ../gui/colors/paletteview.py:1276
+#: ../gui/colors/paletteview.py:1280
 msgctxt "palette load dialog: filters"
 msgid "GIMP palette file (*.gpl)"
 msgstr ""
 
-#: ../gui/colors/paletteview.py:1283
+#: ../gui/colors/paletteview.py:1287
 msgctxt "palette load dialog: filters"
 msgid "All files (*)"
 msgstr "Ĉiuj dosieroj (*)"
 
-#: ../gui/colors/paletteview.py:1325
+#: ../gui/colors/paletteview.py:1329
 msgctxt "palette save dialog: filters"
 msgid "GIMP palette file (*.gpl)"
 msgstr ""
 
-#: ../gui/colors/paletteview.py:1332
+#: ../gui/colors/paletteview.py:1336
 msgctxt "palette save dialog: filters"
 msgid "All files (*)"
 msgstr "Ĉiuj dosieroj (*)"
@@ -1106,98 +1118,106 @@ msgctxt "color changer dock panels: tab tooltip description"
 msgid "Change color with HSV ramps crossing a radial bowl of color."
 msgstr ""
 
-#: ../gui/device.py:47
+#: ../gui/device.py:48
 msgctxt "prefs: device's type label"
 msgid "Cursor/puck"
 msgstr ""
 
-#: ../gui/device.py:51
+#: ../gui/device.py:52
 msgctxt "prefs: device's type label"
 msgid "Eraser"
 msgstr "Skrapgumo"
 
-#: ../gui/device.py:55
+#: ../gui/device.py:56
 msgctxt "prefs: device's type label"
 msgid "Keyboard"
 msgstr "Klavaro"
 
-#: ../gui/device.py:59
+#: ../gui/device.py:60
 msgctxt "prefs: device's type label"
 msgid "Mouse"
 msgstr "Muso"
 
-#: ../gui/device.py:63
+#: ../gui/device.py:64
 msgctxt "prefs: device's type label"
 msgid "Pen"
 msgstr ""
 
-#: ../gui/device.py:67
+#: ../gui/device.py:68
 msgctxt "prefs: device's type label"
 msgid "Touchpad"
 msgstr "Tuŝplato"
 
-#: ../gui/device.py:71
+#: ../gui/device.py:72
 msgctxt "prefs: device's type label"
 msgid "Touchscreen"
 msgstr "Tuŝekrano"
 
-#: ../gui/device.py:91
+#: ../gui/device.py:92
 msgctxt "device settings: allowed usage"
 msgid "Ignore"
 msgstr "Malatenti"
 
-#: ../gui/device.py:95
+#: ../gui/device.py:96
 msgctxt "device settings: allowed usage"
 msgid "Any Task"
 msgstr ""
 
-#: ../gui/device.py:99
+#: ../gui/device.py:100
 msgctxt "device settings: allowed usage"
 msgid "Non-painting tasks"
 msgstr ""
 
-#: ../gui/device.py:103
+#: ../gui/device.py:104
 msgctxt "device settings: allowed usage"
 msgid "Navigation only"
 msgstr ""
 
-#: ../gui/device.py:128
+#: ../gui/device.py:129
 msgctxt "device settings: unmodified scroll action"
 msgid "Zoom"
 msgstr ""
 
-#: ../gui/device.py:129
+#: ../gui/device.py:130
 msgctxt "device settings: unmodified scroll action"
 msgid "Pan"
 msgstr ""
 
-#: ../gui/device.py:430
+#. TRANSLATORS: Column's data is the device's name
+#: ../gui/device.py:431
 msgctxt "prefs: devices table: column header"
 msgid "Device"
 msgstr "Aparato"
 
-#: ../gui/device.py:444
+#. TRANSLATORS: Column's data is the number of axes (an integer)
+#: ../gui/device.py:445
 msgctxt "prefs: devices table: column header"
 msgid "Axes"
 msgstr "Aksoj"
 
-#: ../gui/device.py:458
+#. TRANSLATORS: Column shows type labels ("Touchscreen", "Pen" etc.)
+#: ../gui/device.py:459
 msgctxt "prefs: devices table: column header"
 msgid "Type"
 msgstr "Tipo"
 
-#: ../gui/device.py:481
+#. TRANSLATORS: Column's data is a dropdown allowing the allowed
+#. TRANSLATORS: tasks for the row's device to be configured.
+#: ../gui/device.py:482
 msgctxt "prefs: devices table: column header"
 msgid "Use for…"
 msgstr ""
 
-#: ../gui/device.py:511
+#. TRANSLATORS: Column's data is a dropdown for how the device's
+#. TRANSLATORS: scroll wheel or scroll-gesture events are to be
+#. TRANSLATORS: interpreted normally.
+#: ../gui/device.py:512
 msgctxt "prefs: devices table: column header"
 msgid "Scroll…"
 msgstr "Rulumo…"
 
 #. Name and preview column: will be indented
-#: ../gui/dialogs.py:74 ../gui/externalapp.py:136 ../gui/layers.py:405
+#: ../gui/dialogs.py:74 ../gui/externalapp.py:135 ../gui/layers.py:405
 msgid "Name"
 msgstr "Nomo"
 
@@ -1304,53 +1324,56 @@ msgstr "Refari"
 msgid "{button_combination} is {resultant_action}"
 msgstr "{button_combination} estas {resultant_action}"
 
+#. TRANSLATORS: This is a separator for the list of button actions
+#. TRANSLATORS: that appears when a modifier key is held down.
+#. TRANSLATORS: search for " held down: " (incl spaces) for the context
+#: ../gui/document.py:872
+msgid ";  "
+msgstr ";  "
+
 #. TRANSLATORS: "With <current-modifiers> held down: <separated-list>"
 #. TRANSLATORS: Action names may contain coordinating conjunctions such
 #. TRANSLATORS: as the English "and", so use appropriate punctuation or
 #. TRANSLATORS: wording for the separator. Also a little more spacing
 #. TRANSLATORS: than normal looks good here.
-#: ../gui/document.py:874
-msgid ";  "
-msgstr ";  "
-
-#: ../gui/document.py:875
+#: ../gui/document.py:878
 #, python-brace-format
 msgid "With {modifiers} held down:  {button_actions}."
 msgstr ""
 
-#: ../gui/document.py:897
+#: ../gui/document.py:900
 msgctxt "Statusbar message: copy result"
 msgid "Empty document, nothing copied."
 msgstr ""
 
-#: ../gui/document.py:909
+#: ../gui/document.py:912
 #, python-brace-format
 msgctxt "Statusbar message: copy result"
 msgid "Copied layer as {w}×{h} image."
 msgstr ""
 
-#: ../gui/document.py:926
+#: ../gui/document.py:929
 msgctxt "Statusbar message: paste result"
 msgid "Nothing on clipboard."
 msgstr ""
 
-#: ../gui/document.py:935
+#: ../gui/document.py:938
 msgctxt "Statusbar message: paste result"
 msgid "Clipboard does not contain an image."
 msgstr ""
 
-#: ../gui/document.py:946
+#: ../gui/document.py:949
 msgctxt "Statusbar message: paste result"
 msgid "Cannot paste into this type of layer."
 msgstr ""
 
-#: ../gui/document.py:951
+#: ../gui/document.py:954
 #, python-brace-format
 msgctxt "Statusbar message: paste result"
 msgid "Pasted {w}×{h} image."
 msgstr ""
 
-#: ../gui/document.py:2037
+#: ../gui/document.py:2040
 #, python-brace-format
 msgctxt "Statusbar message: vacuum document"
 msgid "Vacuum: discarded {removed} of {total} tiles."
@@ -1418,56 +1441,56 @@ msgid "MyPaint brush package (*.zip)"
 msgstr ""
 
 #. # UI string consts
-#: ../gui/externalapp.py:36
+#: ../gui/externalapp.py:35
 #, python-brace-format
 msgid "Launched {app_name} to edit layer “{layer_name}”"
 msgstr ""
 
-#: ../gui/externalapp.py:37
+#: ../gui/externalapp.py:36
 #, python-brace-format
 msgid "Error: failed to launch {app_name} to edit layer “{layer_name}”"
 msgstr ""
 
-#: ../gui/externalapp.py:39
+#: ../gui/externalapp.py:38
 #, python-brace-format
 msgid ""
 "Editing cancelled. You can still edit “{layer_name}” from the Layers menu."
 msgstr ""
 
-#: ../gui/externalapp.py:41
+#: ../gui/externalapp.py:40
 #, python-brace-format
 msgid "Updated layer “{layer_name}” with external edits"
 msgstr ""
 
-#: ../gui/externalapp.py:48
+#: ../gui/externalapp.py:47
 #, python-brace-format
 msgctxt "file handling: open failed (statusbar)"
 msgid "Could not load “{file_basename}”."
 msgstr ""
 
-#: ../gui/externalapp.py:61
+#: ../gui/externalapp.py:60
 #, python-brace-format
 msgid ""
 "MyPaint needs to edit a file of type “{type_name}” ({content_type}). What "
 "application should it use?"
 msgstr ""
 
-#: ../gui/externalapp.py:65
+#: ../gui/externalapp.py:64
 #, python-brace-format
 msgid ""
 "What application should MyPaint use for editing files of type "
 "“{type_name}” ({content_type})?"
 msgstr ""
 
-#: ../gui/externalapp.py:71
+#: ../gui/externalapp.py:70
 msgid "Open With…"
 msgstr ""
 
-#: ../gui/externalapp.py:123
+#: ../gui/externalapp.py:122
 msgid "Icon"
 msgstr "Bildsimbolo"
 
-#: ../gui/externalapp.py:166
+#: ../gui/externalapp.py:165
 msgid "no description"
 msgstr ""
 
@@ -1564,226 +1587,228 @@ msgctxt "Document I/O: success"
 msgid "Loaded {files_summary}."
 msgstr ""
 
-#: ../gui/filehandling.py:213
+#. TRANSLATORS: formatting for {files_summary} for multiple files.
+#. TRANSLATORS: corresponding msgid for single files: "“{basename}”"
+#: ../gui/filehandling.py:214
 #, python-brace-format
 msgid "{n} file"
 msgid_plural "{n} files"
 msgstr[0] ""
 msgstr[1] ""
 
-#: ../gui/filehandling.py:221
+#: ../gui/filehandling.py:222
 #, python-brace-format
 msgctxt "Document I/O: the {files_summary} for a single file"
 msgid "“{basename}”"
 msgstr ""
 
-#: ../gui/filehandling.py:427
+#: ../gui/filehandling.py:428
 msgctxt "save/load dialogs: filter patterns"
 msgid "All Recognized Formats"
 msgstr ""
 
-#: ../gui/filehandling.py:432
+#: ../gui/filehandling.py:433
 #, fuzzy
 msgctxt "save/load dialogs: filter patterns"
 msgid "OpenRaster (*.ora)"
 msgstr "OpenRaster (*.ora)"
 
-#: ../gui/filehandling.py:437
+#: ../gui/filehandling.py:438
 #, fuzzy
 msgctxt "save/load dialogs: filter patterns"
 msgid "PNG (*.png)"
 msgstr "PNG (*.png)"
 
-#: ../gui/filehandling.py:442
+#: ../gui/filehandling.py:443
 #, fuzzy
 msgctxt "save/load dialogs: filter patterns"
 msgid "JPEG (*.jpg; *.jpeg)"
 msgstr "JPEG (*.jpg; *.jpeg)"
 
-#: ../gui/filehandling.py:490
+#: ../gui/filehandling.py:491
 msgctxt "save dialogs: save formats and options"
 msgid "By extension (prefer default format)"
 msgstr ""
 
-#: ../gui/filehandling.py:494
+#: ../gui/filehandling.py:495
 #, fuzzy
 msgctxt "save dialogs: save formats and options"
 msgid "OpenRaster (*.ora)"
 msgstr "OpenRaster (*.ora)"
 
-#: ../gui/filehandling.py:498
+#: ../gui/filehandling.py:499
 msgctxt "save dialogs: save formats and options"
 msgid "PNG, respecting “Show Background” (*.png)"
 msgstr ""
 
-#: ../gui/filehandling.py:502
+#: ../gui/filehandling.py:503
 #, fuzzy
 msgctxt "save dialogs: save formats and options"
 msgid "PNG, solid RGB (*.png)"
 msgstr "PNG (*.png)"
 
-#: ../gui/filehandling.py:506
+#: ../gui/filehandling.py:507
 #, fuzzy
 msgctxt "save dialogs: save formats and options"
 msgid "PNG, transparent RGBA (*.png)"
 msgstr "Travidebla PNG (*.png)"
 
-#: ../gui/filehandling.py:510
+#: ../gui/filehandling.py:511
 msgctxt "save dialogs: save formats and options"
 msgid "Multiple PNGs, by layer (*.NUM.png)"
 msgstr ""
 
-#: ../gui/filehandling.py:514
+#: ../gui/filehandling.py:515
 msgctxt "save dialogs: save formats and options"
 msgid "Multiple PNGs, by view (*.NAME.png)"
 msgstr ""
 
-#: ../gui/filehandling.py:518
+#: ../gui/filehandling.py:519
 #, fuzzy
 msgctxt "save dialogs: save formats and options"
 msgid "JPEG 90% quality (*.jpg; *.jpeg)"
 msgstr "JPEG (*.jpg; *.jpeg)"
 
-#: ../gui/filehandling.py:576
+#: ../gui/filehandling.py:577
 #, fuzzy
 msgctxt "Dialogs (window title): File→Export…"
 msgid "Export"
 msgstr "subteno"
 
-#: ../gui/filehandling.py:581
+#: ../gui/filehandling.py:582
 #, fuzzy
 msgctxt "Dialogs (window title): File→Save As…"
 msgid "Save As"
 msgstr "Konservi kiel…"
 
-#: ../gui/filehandling.py:601
+#: ../gui/filehandling.py:602
 msgctxt "save dialogs: formats and options: (label)"
 msgid "Format to save as:"
 msgstr ""
 
-#: ../gui/filehandling.py:668
+#: ../gui/filehandling.py:669
 msgctxt ""
 "Destructive action confirm dialog: fallback title (normally overridden)"
 msgid "Really Continue?"
 msgstr ""
 
-#: ../gui/filehandling.py:701
+#: ../gui/filehandling.py:702
 msgctxt "Destructive action confirm dialog: cancel button"
 msgid "_Cancel"
 msgstr ""
 
-#: ../gui/filehandling.py:705
+#: ../gui/filehandling.py:706
 msgctxt "Destructive action confirm dialog: save checkbox"
 msgid "_Save to Scraps first"
 msgstr ""
 
-#: ../gui/filehandling.py:711
+#: ../gui/filehandling.py:712
 msgctxt ""
 "Destructive action confirm dialog: fallback continue button (normally "
 "overridden)"
 msgid "Co_ntinue"
 msgstr ""
 
-#: ../gui/filehandling.py:734
+#: ../gui/filehandling.py:735
 #, python-brace-format
 msgctxt "Destructive action confirm dialog: warning message"
 msgid "You risk losing {abbreviated_time} of unsaved painting."
 msgstr ""
 
-#: ../gui/filehandling.py:799
+#: ../gui/filehandling.py:800
 msgctxt "File→New: confirm dialog: title question"
 msgid "New Canvas?"
 msgstr ""
 
-#: ../gui/filehandling.py:803
+#: ../gui/filehandling.py:804
 msgctxt "File→New: confirm dialog: continue button"
 msgid "_New Canvas"
 msgstr ""
 
-#: ../gui/filehandling.py:1003
+#: ../gui/filehandling.py:1004
 msgctxt "File→Open: confirm dialog: title question"
 msgid "Open File?"
 msgstr ""
 
-#: ../gui/filehandling.py:1007
+#: ../gui/filehandling.py:1008
 #, fuzzy
 msgctxt "File→Open: confirm dialog: continue button"
 msgid "_Open…"
 msgstr "Malfermi…"
 
-#: ../gui/filehandling.py:1015
+#: ../gui/filehandling.py:1016
 #, fuzzy
 msgctxt "File→Open: file chooser dialog: title"
 msgid "Open File"
 msgstr "Malfermi"
 
-#: ../gui/filehandling.py:1057
+#: ../gui/filehandling.py:1058
 #, fuzzy
 msgctxt "load dialogs: title"
 msgid "Open Scratchpad…"
 msgstr "Notlibro"
 
-#: ../gui/filehandling.py:1099
+#: ../gui/filehandling.py:1100
 #, fuzzy
 msgctxt "Layers→Import Layers: files-chooser dialog: title"
 msgid "Import Layers"
 msgstr "Forigi tavolon"
 
-#: ../gui/filehandling.py:1408
+#: ../gui/filehandling.py:1409
 msgctxt "File→Open Recent→* confirm dialog: title"
 msgid "Open File?"
 msgstr ""
 
-#: ../gui/filehandling.py:1412
+#: ../gui/filehandling.py:1413
 #, fuzzy
 msgctxt "File→Open Recent→* confirm dialog: continue button"
 msgid "_Open"
 msgstr "Malfermi"
 
-#: ../gui/filehandling.py:1427
+#: ../gui/filehandling.py:1428
 #, fuzzy
 msgctxt "File→Open Most Recent confirm dialog: title"
 msgid "Open Most Recent File?"
 msgstr "Malfermi lastajn"
 
-#: ../gui/filehandling.py:1432
+#: ../gui/filehandling.py:1433
 #, fuzzy
 msgctxt "File→Open Most Recent→* confirm dialog: continue button"
 msgid "_Open"
 msgstr "Malfermi"
 
-#: ../gui/filehandling.py:1446
+#: ../gui/filehandling.py:1447
 msgctxt "File→Open Next/Prev Scrap: error message"
 msgid "There are no scrap files yet. Try saving one first."
 msgstr ""
 
-#: ../gui/filehandling.py:1455
+#: ../gui/filehandling.py:1456
 msgctxt "File→Open Next/Prev Scrap confirm dialog: title"
 msgid "Open Next Scrap?"
 msgstr ""
 
-#: ../gui/filehandling.py:1463
+#: ../gui/filehandling.py:1464
 msgctxt "File→Open Next/Prev Scrap confirm dialog: title"
 msgid "Open Previous Scrap?"
 msgstr ""
 
-#: ../gui/filehandling.py:1472
+#: ../gui/filehandling.py:1473
 #, fuzzy
 msgctxt "File→Open Next/Prev Scrap confirm dialog: continue button"
 msgid "_Open"
 msgstr "Malfermi"
 
-#: ../gui/filehandling.py:1487
+#: ../gui/filehandling.py:1488
 msgctxt "File→Revert: status message: canvas has no filename yet"
 msgid "Cannot revert: canvas has not been saved to a file yet."
 msgstr ""
 
-#: ../gui/filehandling.py:1494
+#: ../gui/filehandling.py:1495
 msgctxt "File→Revert confirm dialog: title"
 msgid "Revert Changes?"
 msgstr ""
 
-#: ../gui/filehandling.py:1499
+#: ../gui/filehandling.py:1500
 #, fuzzy
 msgctxt "File→Revert confirm dialog: continue button"
 msgid "_Revert"
@@ -2136,15 +2161,15 @@ msgstr ""
 msgid "Twist:"
 msgstr ""
 
-#: ../gui/gtkexcepthook.py:162
+#: ../gui/gtkexcepthook.py:163
 msgid "Bug Detected"
 msgstr ""
 
-#: ../gui/gtkexcepthook.py:165
+#: ../gui/gtkexcepthook.py:166
 msgid "<big><b>A programming error has been detected.</b></big>"
 msgstr ""
 
-#: ../gui/gtkexcepthook.py:168
+#: ../gui/gtkexcepthook.py:169
 msgid ""
 "You may be able to ignore this error and carry on working, but you should "
 "probably save your work soon.\n"
@@ -2153,35 +2178,35 @@ msgid ""
 "has reported it yet."
 msgstr ""
 
-#: ../gui/gtkexcepthook.py:176
+#: ../gui/gtkexcepthook.py:177
 msgid "Search Tracker…"
 msgstr ""
 
 #. only development and prereleases
-#: ../gui/gtkexcepthook.py:178
+#: ../gui/gtkexcepthook.py:179
 msgid "Report…"
 msgstr ""
 
-#: ../gui/gtkexcepthook.py:180
+#: ../gui/gtkexcepthook.py:181
 msgid "Ignore Error"
 msgstr "Malatenti eraron"
 
-#: ../gui/gtkexcepthook.py:181
+#: ../gui/gtkexcepthook.py:182
 msgid "Quit MyPaint"
 msgstr ""
 
-#: ../gui/gtkexcepthook.py:191
+#: ../gui/gtkexcepthook.py:192
 msgid "Details…"
 msgstr ""
 
-#: ../gui/gtkexcepthook.py:218 ../gui/gtkexcepthook.py:221
+#: ../gui/gtkexcepthook.py:219 ../gui/gtkexcepthook.py:222
 msgid "Exception while analyzing the exception."
 msgstr ""
 
 #. TRANSLATORS: Crash report template for github, preceding a traceback.
 #. TRANSLATORS: Please ask users kindly to supply at least an English
 #. TRANSLATORS: title if they are able.
-#: ../gui/gtkexcepthook.py:270
+#: ../gui/gtkexcepthook.py:271
 msgid ""
 "            #### Description\n"
 "\n"
@@ -2247,7 +2272,8 @@ msgstr ""
 
 #. TRANSLATORS: Command to move a layer in the horizontal plane,
 #. TRANSLATORS: preserving its position in the stack.
-#: ../gui/layermanip.py:47 ../lib/command.py:1052
+#. TRANSLATORS: Note "in the horizontal plane" - not "horizontally".
+#: ../gui/layermanip.py:47 ../lib/command.py:1053
 msgid "Move Layer"
 msgstr "Movi tavolon"
 
@@ -2348,27 +2374,31 @@ msgid "Arrange layers and assign effects"
 msgstr ""
 
 #. TRANSLATORS: tooltip for the opacity slider (text)
-#: ../gui/layerswindow.py:101
+#. TRANSLATORS: note that "%%" turns into "%"
+#: ../gui/layerswindow.py:102
 #, python-format
 msgid "Layer opacity: %d%%"
 msgstr "Tavola opakeco: %d%%"
 
-#: ../gui/layerswindow.py:102
+#. TRANSLATORS: label for the opacity slider (text)
+#. TRANSLATORS: note that "%%" turns into "%"
+#. TRANSLATORS: most of the time this can just be copied, or left alone
+#: ../gui/layerswindow.py:107
 #, python-format
 msgid "%d%%"
 msgstr ""
 
 #. TRANSLATORS: status bar messages for drag, without/with modifiers
-#: ../gui/layerswindow.py:109
+#: ../gui/layerswindow.py:114
 msgid "Move layer in stack…"
 msgstr ""
 
-#: ../gui/layerswindow.py:110
+#: ../gui/layerswindow.py:115
 msgid ""
 "Move layer in stack (dropping into a regular layer will create a new group)"
 msgstr ""
 
-#: ../gui/layerswindow.py:151
+#: ../gui/layerswindow.py:156
 msgid "Layer"
 msgstr "Tavolo"
 
@@ -2390,76 +2420,76 @@ msgctxt "view controls: rename view dialog"
 msgid "Rename View"
 msgstr "Renomi"
 
-#: ../gui/linemode.py:40
+#: ../gui/linemode.py:41
 msgid "Entrance Pressure"
 msgstr ""
 
-#: ../gui/linemode.py:41
+#: ../gui/linemode.py:42
 msgid "Stroke entrance pressure for line tools"
 msgstr ""
 
-#: ../gui/linemode.py:42
+#: ../gui/linemode.py:43
 msgid "Midpoint Pressure"
 msgstr ""
 
-#: ../gui/linemode.py:43
+#: ../gui/linemode.py:44
 msgid "Mid-Stroke pressure for line tools"
 msgstr ""
 
-#: ../gui/linemode.py:44
+#: ../gui/linemode.py:45
 msgid "Exit Pressure"
 msgstr ""
 
-#: ../gui/linemode.py:45
+#: ../gui/linemode.py:46
 msgid "Stroke exit pressure for line tools"
 msgstr ""
 
-#: ../gui/linemode.py:46
+#: ../gui/linemode.py:47
 msgid "Head"
 msgstr ""
 
-#: ../gui/linemode.py:47
+#: ../gui/linemode.py:48
 msgid "Stroke lead-in end"
 msgstr ""
 
-#: ../gui/linemode.py:48
+#: ../gui/linemode.py:49
 msgid "Tail"
 msgstr ""
 
-#: ../gui/linemode.py:49
+#: ../gui/linemode.py:50
 msgid "Stroke trail-off beginning"
 msgstr ""
 
-#: ../gui/linemode.py:173
+#: ../gui/linemode.py:174
 msgid "Pressure variation…"
 msgstr ""
 
-#: ../gui/linemode.py:219 ../gui/linemode.py:777
+#: ../gui/linemode.py:220 ../gui/linemode.py:778
 msgid "Lines and Curves"
 msgstr ""
 
 #. TRANSLATORS: users should never see this message
-#: ../gui/linemode.py:223
+#: ../gui/linemode.py:224
 msgid "Generic line/curve mode"
 msgstr ""
 
-#: ../gui/linemode.py:780
+#: ../gui/linemode.py:781
 msgid "Draw straight lines; Shift adds curves, Ctrl constrains angle"
 msgstr ""
 
-#: ../gui/linemode.py:790
+#: ../gui/linemode.py:791
 msgid "Connected Lines"
 msgstr ""
 
-#: ../gui/linemode.py:793
+#: ../gui/linemode.py:794
 msgid "Draw a sequence of lines; Shift adds curves, Ctrl constrains angle"
 msgstr ""
 
-#: ../gui/linemode.py:803
+#: ../gui/linemode.py:804
 msgid "Ellipses and Circles"
 msgstr "Elipsoj kaj cirkloj"
 
-#: ../gui/linemode.py:806
+#: ../gui/linemode.py:807
 msgid "Draw ellipses; Shift rotates, Ctrl constrains ratio/angle"
 msgstr ""
 
@@ -2892,69 +2922,69 @@ msgstr "Forigi tavolon"
 msgid "Select Layer"
 msgstr "Elekti tavolon"
 
-#: ../lib/command.py:1149
+#: ../lib/command.py:1150
 msgid "Duplicate Layer"
 msgstr ""
 
-#: ../lib/command.py:1173
+#: ../lib/command.py:1174
 msgid "Move Layer Up"
 msgstr ""
 
-#: ../lib/command.py:1187
+#: ../lib/command.py:1188
 msgid "Move Layer Down"
 msgstr ""
 
-#: ../lib/command.py:1214
+#: ../lib/command.py:1215
 msgid "Move Layer in Stack"
 msgstr ""
 
-#: ../lib/command.py:1333
+#: ../lib/command.py:1334
 msgid "Rename Layer"
 msgstr "Renomi tavolon"
 
-#: ../lib/command.py:1391
+#: ../lib/command.py:1392
 msgid "Make Layer Visible"
 msgstr ""
 
-#: ../lib/command.py:1393
+#: ../lib/command.py:1394
 msgid "Make Layer Invisible"
 msgstr ""
 
-#: ../lib/command.py:1431
+#: ../lib/command.py:1432
 msgid "Lock Layer"
 msgstr "Ŝlosi tavolon"
 
-#: ../lib/command.py:1433
+#: ../lib/command.py:1434
 msgid "Unlock Layer"
 msgstr "Malŝlosi tavolon"
 
-#: ../lib/command.py:1451
+#: ../lib/command.py:1452
 #, python-format
 msgid "Set Layer Opacity: %0.1f%%"
 msgstr ""
 
-#: ../lib/command.py:1490
+#: ../lib/command.py:1491
 msgid "Unknown Mode"
 msgstr "Nekonata reĝimo"
 
-#: ../lib/command.py:1491
+#: ../lib/command.py:1492
 #, python-format
 msgid "Set Layer Mode: %s"
 msgstr ""
 
-#: ../lib/command.py:1515
+#: ../lib/command.py:1516
 msgid "Enable Frame"
 msgstr ""
 
-#: ../lib/command.py:1517
+#: ../lib/command.py:1518
 msgid "Disable Frame"
 msgstr ""
 
-#: ../lib/command.py:1535
+#: ../lib/command.py:1536
 msgid "Update Frame"
 msgstr ""
 
-#: ../lib/command.py:1564
+#: ../lib/command.py:1565
 msgid "Edit Layer Externally"
 msgstr ""
 
@@ -2969,17 +2999,21 @@ msgctxt "Document IO: common error strings: {see_logs}"
 msgid "The logs may have more detail about this error."
 msgstr ""
 
-#: ../lib/document.py:194
+#. TRANSLATORS: string used in e.g. "3h42m from now"
+#: ../lib/document.py:195
 msgctxt "Document autosave descriptions: the {ago} string: future"
 msgid "from now"
 msgstr ""
 
-#: ../lib/document.py:199
+#. TRANSLATORS: string used in e.g. "8s ago"
+#: ../lib/document.py:201
 msgctxt "Document autosave descriptions: the {ago} string: past"
 msgid "ago"
 msgstr ""
 
-#: ../lib/document.py:207
+#. TRANSLATORS: String descriptions for an autosaved backup.
+#. TRANSLATORS: Time strings are localized: e.g. "3h42m" or "8s"
+#: ../lib/document.py:209
 #, python-brace-format
 msgctxt "Document autosave descriptions"
 msgid ""
@@ -2988,13 +3022,17 @@ msgid ""
 "Close app and wait {cache_update_interval}s to retry."
 msgstr ""
 
-#: ../lib/document.py:214
+#: ../lib/document.py:216
 #, python-brace-format
 msgctxt "Document autosave descriptions"
 msgid "Incomplete backup updated {last_modified_time} {ago}"
 msgstr ""
 
-#: ../lib/document.py:219
+#. TRANSLATORS: The {ago} variable is a translated string.
+#. TRANSLATORS: Look for the msgids "from now" and "ago"
+#. TRANSLATORS: (with context starting w. "Document autosave")
+#. TRANSLATORS: to make sure their translations match this one.
+#: ../lib/document.py:225
 #, python-brace-format
 msgctxt "Document autosave descriptions"
 msgid ""
@@ -3004,7 +3042,7 @@ msgid ""
 "Contains {unsaved_time} of unsaved painting."
 msgstr ""
 
-#: ../lib/document.py:1426
+#: ../lib/document.py:1432
 #, python-brace-format
 msgctxt "Document IO: hint templates for user-facing exceptions"
 msgid ""
@@ -3012,13 +3050,13 @@ msgid ""
 "Do you have enough space left on the device?"
 msgstr ""
 
-#: ../lib/document.py:1432 ../lib/document.py:1442
+#: ../lib/document.py:1438 ../lib/document.py:1448
 #, python-brace-format
 msgctxt "Document IO: hint templates for user-facing exceptions"
 msgid "Unable to write “{filename}”: {err}"
 msgstr ""
 
-#: ../lib/document.py:1478
+#: ../lib/document.py:1484
 #, python-brace-format
 msgctxt "Document IO: loading errors"
 msgid ""
@@ -3026,7 +3064,7 @@ msgid ""
 "The file does not exist."
 msgstr ""
 
-#: ../lib/document.py:1485
+#: ../lib/document.py:1491
 #, python-brace-format
 msgctxt "Document IO: loading errors"
 msgid ""
@@ -3034,7 +3072,7 @@ msgid ""
 "You do not have the permissions needed to open this file."
 msgstr ""
 
-#: ../lib/document.py:1510
+#: ../lib/document.py:1516
 #, python-brace-format
 msgctxt "Document IO: loading errors"
 msgid ""
@@ -3050,7 +3088,7 @@ msgstr ""
 "\n"
 "{see_logs}"
 
-#: ../lib/document.py:1534
+#: ../lib/document.py:1540
 #, python-brace-format
 msgctxt "Document IO: loading errors"
 msgid ""
@@ -3058,12 +3096,12 @@ msgid ""
 "Unknown file format extension: “{ext}”"
 msgstr ""
 
-#: ../lib/document.py:1565
+#: ../lib/document.py:1571
 msgctxt "Document IO: group name for Import Layers"
 msgid "Imported layers"
 msgstr ""
 
-#: ../lib/document.py:1732
+#: ../lib/document.py:1738
 #, python-brace-format
 msgctxt "Document IO: hint templates for user-facing exceptions"
 msgid ""
@@ -3073,7 +3111,7 @@ msgid ""
 "memory. MyPaint’s PNG save function is more efficient."
 msgstr ""
 
-#: ../lib/document.py:1862
+#: ../lib/document.py:1868
 #, python-brace-format
 msgctxt "Document autosave: restoring: errors"
 msgid ""
@@ -3115,6 +3153,8 @@ msgctxt "uniform square region of pixels, plural noun"
 msgid "tiles"
 msgstr ""
 
+#. TRANSLATORS: Assumption for all "Time period abbreviations":
+#. TRANSLATORS: they don't need ngettext (to support plural/singular)
 #: ../lib/helpers.py:535
 #, fuzzy, python-brace-format
 msgctxt "Time period abbreviations"
@@ -3139,50 +3179,55 @@ msgctxt "Time period abbreviation"
 msgid "{seconds}s"
 msgstr "{seconds}s"
 
-#: ../lib/layer/core.py:66 ../lib/layer/data.py:1295
+#. TRANSLATORS: Default name for new normal, paintable layers
+#: ../lib/layer/core.py:66 ../lib/layer/data.py:1296
 msgctxt "layer default names"
 msgid "Layer"
 msgstr "Tavolo"
 
-#: ../lib/layer/data.py:1153
+#. TRANSLATORS: Short default name for vector (SVG/Inkscape) layers
+#: ../lib/layer/data.py:1154
 #, fuzzy
 msgctxt "layer default names"
 msgid "Vectors"
 msgstr "Vektora tavolo"
 
-#: ../lib/layer/data.py:1158
+#: ../lib/layer/data.py:1159
 #, fuzzy
 msgctxt "layer type descriptions"
 msgid "Vector Layer"
 msgstr "Vektora tavolo"
 
-#: ../lib/layer/data.py:1223
+#. TRANSLATORS: Short default name for renderable fallback layers
+#: ../lib/layer/data.py:1224
 msgctxt "layer default names"
 msgid "Bitmap"
 msgstr ""
 
-#: ../lib/layer/data.py:1228
+#: ../lib/layer/data.py:1229
 msgctxt "layer type descriptions"
 msgid "Bitmap Data"
 msgstr ""
 
-#: ../lib/layer/data.py:1244
+#. TRANSLATORS: Short default name for non-renderable fallback layers
+#: ../lib/layer/data.py:1245
 msgctxt "layer default names"
 msgid "Data"
 msgstr ""
 
-#: ../lib/layer/data.py:1249
+#: ../lib/layer/data.py:1250
 #, fuzzy
 msgctxt "layer type descriptions"
 msgid "Unknown Data"
 msgstr "Nekonata Ago"
 
-#: ../lib/layer/data.py:1300
+#: ../lib/layer/data.py:1301
 #, fuzzy
 msgctxt "layer type descriptions"
 msgid "Painting Layer"
 msgstr "Nova Pentraĵo Tavolo"
 
+#. TRANSLATORS: Short default name for layer groups.
 #: ../lib/layer/group.py:69
 msgctxt "layer default names"
 msgid "Group"
@@ -3194,6 +3239,8 @@ msgctxt "layer type descriptions"
 msgid "Layer Group"
 msgstr "Nova Tavolo grupon"
 
+#. TRANSLATORS: Short default name for temporary placeholder layers.
+#. TRANSLATORS: (The user should never see this except in error cases)
 #: ../lib/layer/tree.py:70
 msgctxt "layer default names"
 msgid "Placeholder"
@@ -3463,13 +3510,20 @@ msgid ""
 "elsewhere."
 msgstr ""
 
+#. TRANSLATORS: UNIQUE_NAME_TEMPLATE. Must match its regex.
+#. TRANSLATORS: Leave this untranslated if you are unsure.
+#. TRANSLATORS: Change only if your lang *REQUIRES* a different order or
+#. TRANSLATORS: if raw digits and a space aren't enough.
 #: ../lib/naming.py:22
 #, fuzzy, python-brace-format
 msgctxt "unique names: serial number needed: template"
 msgid "{name} {number}"
 msgstr "%(name)s %(number)d"
 
-#: ../lib/naming.py:29
+#. TRANSLATORS: UNIQUE_NAME_REGEX - regex for UNIQUE_NAME_TEMPLATE
+#. TRANSLATORS: Must match its template (msgid: '{name} {number}')
+#. TRANSLATORS: Leave this untranslated (or copy it) if you are unsure.
+#: ../lib/naming.py:30
 msgctxt "unique names: regex matching a string with a serial number"
 msgid "^(?P<name>.*?)\\s+(?P<number>\\d+)$"
 msgstr ""
