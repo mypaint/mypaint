@@ -1,6 +1,6 @@
 # This file is part of MyPaint.
 # -*- coding: utf-8 -*-
-# Copyright (C) 2014-2018 by the MyPaint Development Team
+# Copyright (C) 2014-2019 by the MyPaint Development Team
 # Copyright (C) 2009 by Ilya Portnov <portnov@bk.ru>
 #
 # This program is free software; you can redistribute it and/or modify
@@ -98,7 +98,12 @@ class LayersTool (SizedVBoxToolWidget):
     LAYER_MODE_TOOLTIP_MARKUP_TEMPLATE = "<b>{name}</b>\n{description}"
 
     # TRANSLATORS: tooltip for the opacity slider (text)
+    # TRANSLATORS: note that "%%" turns into "%"
     OPACITY_SCALE_TOOLTIP_TEXT_TEMPLATE = _("Layer opacity: %d%%")
+
+    # TRANSLATORS: label for the opacity slider (text)
+    # TRANSLATORS: note that "%%" turns into "%"
+    # TRANSLATORS: most of the time this can just be copied, or left alone
     OPACITY_LABEL_TEXT_TEMPLATE = _(u"%d%%")
 
     __gtype_name__ = 'MyPaintLayersTool'

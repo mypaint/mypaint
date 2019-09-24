@@ -1,6 +1,6 @@
 # This file is part of MyPaint.
 # -*- coding: utf-8 -*-
-# Copyright (C) 2014-2018 by the MyPaint Development Team.
+# Copyright (C) 2014-2019 by the MyPaint Development Team.
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -425,9 +425,9 @@ class SettingsEditor (Gtk.Grid):
         self._devices_store = Gtk.ListStore(object)
         self._devices_view = Gtk.TreeView(self._devices_store)
 
-        # TRANSLATORS: Column's data is the device's name
         col = Gtk.TreeViewColumn(C_(
             "prefs: devices table: column header",
+            # TRANSLATORS: Column's data is the device's name
             "Device",
         ))
         col.set_min_width(200)
@@ -439,9 +439,9 @@ class SettingsEditor (Gtk.Grid):
         col.pack_start(cell, True)
         col.set_cell_data_func(cell, self._device_name_datafunc)
 
-        # TRANSLATORS: Column's data is an integer count of the number of axes
         col = Gtk.TreeViewColumn(C_(
             "prefs: devices table: column header",
+            # TRANSLATORS: Column's data is the number of axes (an integer)
             "Axes",
         ))
         col.set_min_width(30)
@@ -453,9 +453,9 @@ class SettingsEditor (Gtk.Grid):
         col.pack_start(cell, True)
         col.set_cell_data_func(cell, self._device_axes_datafunc)
 
-        # TRANSLATORS: Column shows type labels ("Touchscreen", "Pen" etc.)
         col = Gtk.TreeViewColumn(C_(
             "prefs: devices table: column header",
+            # TRANSLATORS: Column shows type labels ("Touchscreen", "Pen" etc.)
             "Type",
         ))
         col.set_min_width(120)
@@ -475,10 +475,10 @@ class SettingsEditor (Gtk.Grid):
             store.append([conf_val, string])
         self._usage_store = store
 
-        # TRANSLATORS: Column's data is a dropdown allowing the allowed
-        # TRANSLATORS: tasks for the row's device to be configured.
         col = Gtk.TreeViewColumn(C_(
             "prefs: devices table: column header",
+            # TRANSLATORS: Column's data is a dropdown allowing the allowed
+            # TRANSLATORS: tasks for the row's device to be configured.
             u"Use for…",
         ))
         col.set_min_width(100)
@@ -504,11 +504,11 @@ class SettingsEditor (Gtk.Grid):
             store.append([conf_val, string])
         self._scroll_store = store
 
-        # TRANSLATORS: Column's data is a dropdown for how the device's
-        # TRANSLATORS: scroll wheel or scroll-gesture events are to be
-        # TRANSLATORS: interpreted normally.
         col = Gtk.TreeViewColumn(C_(
             "prefs: devices table: column header",
+            # TRANSLATORS: Column's data is a dropdown for how the device's
+            # TRANSLATORS: scroll wheel or scroll-gesture events are to be
+            # TRANSLATORS: interpreted normally.
             u"Scroll…",
         ))
         col.set_min_width(100)

@@ -1,5 +1,5 @@
 # This file is part of MyPaint.
-# Copyright (C) 2011-2018 by the MyPaint Development Team
+# Copyright (C) 2011-2019 by the MyPaint Development Team
 # Copyright (C) 2007-2012 by Martin Renold <martinxyz@gmx.ch>
 #
 # This program is free software; you can redistribute it and/or modify
@@ -63,9 +63,9 @@ class LayerStack (core.LayerBase, lib.autosave.Autosaveable):
 
     ## Class constants
 
-    # TRANSLATORS: Short default name for layer groups.
     DEFAULT_NAME = C_(
         "layer default names",
+        # TRANSLATORS: Short default name for layer groups.
         "Group",
     )
 

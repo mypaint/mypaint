@@ -1,5 +1,5 @@
 # This file is part of MyPaint.
-# Copyright (C) 2017-2018 by the MyPaint Development Team.
+# Copyright (C) 2017-2019 by the MyPaint Development Team.
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -13,19 +13,20 @@ import re
 from lib.gettext import C_
 from lib.pycompat import unicode
 
-# TRANSLATORS: UNIQUE_NAME_TEMPLATE. Must match its regex.
-# TRANSLATORS: Leave this untranslated if you are unsure.
-# TRANSLATORS: Change only if your lang *REQUIRES* a different order or
-# TRANSLATORS: if raw digits and a space aren't enough.
 UNIQUE_NAME_TEMPLATE = C_(
     "unique names: serial number needed: template",
+    # TRANSLATORS: UNIQUE_NAME_TEMPLATE. Must match its regex.
+    # TRANSLATORS: Leave this untranslated if you are unsure.
+    # TRANSLATORS: Change only if your lang *REQUIRES* a different order or
+    # TRANSLATORS: if raw digits and a space aren't enough.
     u'{name} {number}',
 )
 
-# TRANSLATORS: UNIQUE_NAME_REGEX. Must match its template.
-# TRANSLATORS: Leave this untranslated if you are unsure.
 UNIQUE_NAME_REGEX = re.compile(C_(
     "unique names: regex matching a string with a serial number",
+    # TRANSLATORS: UNIQUE_NAME_REGEX - regex for UNIQUE_NAME_TEMPLATE
+    # TRANSLATORS: Must match its template (msgid: '{name} {number}')
+    # TRANSLATORS: Leave this untranslated (or copy it) if you are unsure.
     u'^(?P<name>.*?)\\s+(?P<number>\\d+)$',
 ))
 

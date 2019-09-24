@@ -1,6 +1,6 @@
 # This file is part of MyPaint.
 # -*- coding: utf-8 -*-
-# Copyright (C) 2010-2018 by the MyPaint Development Team.
+# Copyright (C) 2010-2019 by the MyPaint Development Team.
 # Copyright (C) 2007-2012 by Martin Renold <martinxyz@gmx.ch>
 #
 # This program is free software; you can redistribute it and/or modify
@@ -1049,6 +1049,7 @@ class MoveLayer (Command):
 
     # TRANSLATORS: Command to move a layer in the horizontal plane,
     # TRANSLATORS: preserving its position in the stack.
+    # TRANSLATORS: Note "in the horizontal plane" - not "horizontally".
     display_name = _("Move Layer")
 
     def __init__(self, doc, layer_path, x0, y0, **kwds):

@@ -1,7 +1,7 @@
 # This file is part of MyPaint.
 # -*- coding: utf-8 -*-
 # Copyright (C) 2007-2013 by Martin Renold <martinxyz@gmx.ch>
-# Copyright (C) 2009-2018 by the MyPaint Development Team.
+# Copyright (C) 2009-2019 by the MyPaint Development Team.
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -399,15 +399,16 @@ class BrushGroupTool (SizedVBoxToolWidget):
     def tool_widget_properties(self):
         """Run the properties dialog"""
         if not self._dialog:
-            # TRANSLATORS: properties dialog for the current brush group
             buttons = (Gtk.STOCK_CANCEL, Gtk.ResponseType.REJECT)
+            title = C_(
+                "brush group properties dialog: title",
+                # TRANSLATORS: properties dialog for the current brush group
+                u"Group \u201C{group_name}\u201D",
+            ).format(
+                group_name = self._group,
+            )
             dia = Gtk.Dialog(
-                title=C_(
-                    "brush group properties dialog: title",
-                    u"Group \u201C{group_name}\u201D",
-                ).format(
-                    group_name = self._group,
-                ),
+                title=title,
                 modal=True,
                 destroy_with_parent=True,
                 window_position=Gtk.WindowPosition.MOUSE,

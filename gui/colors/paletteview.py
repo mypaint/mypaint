@@ -1,5 +1,5 @@
 # This file is part of MyPaint.
-# Copyright (C) 2012-2018 by the MyPaint Development Team.
+# Copyright (C) 2012-2019 by the MyPaint Development Team.
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -781,40 +781,44 @@ class _PaletteGridLayout (ColorAdjusterWidget):
         palette = self.get_color_manager().palette
         empty_range = self._get_empty_range(i)
         item_defs = [
-            # TRANSLATORS: inserting gaps (empty color swatches)
             (
+                # TRANSLATORS: inserting gaps (empty color swatches)
                 C_("palette view: context menu", "Add Empty Slot"),
                 self._insert_empty_slot_cb,
                 True,
                 [i],
             ),
             (
+                # TRANSLATORS: inserting gaps (empty color swatches)
                 C_("palette view: context menu", "Insert Row"),
                 self._insert_empty_row_cb,
                 True,
                 [i],
             ),
             (
+                # TRANSLATORS: inserting gaps (empty color swatches)
                 C_("palette view: context menu", "Insert Column"),
                 self._insert_empty_column_cb,
                 bool(palette.get_columns()),
                 [i],
             ),
             None,
-            # TRANSLATORS: Color interpolations
             (
+                # TRANSLATORS: Color interpolations
                 C_("palette view: context menu", "Fill Gap (RGB)"),
                 self._interpolate_empty_range_cb,
                 bool(empty_range),
                 [RGBColor, empty_range],
             ),
             (
+                # TRANSLATORS: Color interpolations
                 C_("palette view: context menu", "Fill Gap (HCY)"),
                 self._interpolate_empty_range_cb,
                 bool(empty_range),
                 [HCYColor, empty_range],
             ),
             (
+                # TRANSLATORS: Color interpolations
                 C_("palette view: context menu", "Fill Gap (HSV)"),
                 self._interpolate_empty_range_cb,
                 bool(empty_range),

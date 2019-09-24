@@ -1,6 +1,6 @@
 # -*- encoding: utf-8 -*-
 # This file is part of MyPaint.
-# Copyright (C) 2014-2015 by the MyPaint Development Team
+# Copyright (C) 2014-2019 by the MyPaint Development Team
 # Copyright (C) 2014 by Andrew Chadwick <a.t.chadwick@gmail.com>
 #
 # This program is free software; you can redistribute it and/or modify
@@ -10,12 +10,10 @@
 
 """External application launching and monitoring"""
 
-
 ## Imports
+
 from __future__ import division, print_function
 
-import logging
-logger = logging.getLogger(__name__)
 import weakref
 import os.path
 import os
@@ -25,11 +23,12 @@ from lib.gettext import C_
 
 from gi.repository import Gio
 from gi.repository import Pango
-from gi.repository import Gdk
 from gi.repository import Gtk
 
 import lib.xml
 
+import logging
+logger = logging.getLogger(__name__)
 
 ## UI string consts
 
@@ -60,11 +59,11 @@ class OpenWithDialog (Gtk.Dialog):
     SPECIFIC_FILE_MSG = _(
         u"MyPaint needs to edit a file of type \u201c{type_name}\u201d "
         u"({content_type}). What application should it use?"
-        )
+    )
     GENERIC_MSG = _(
         u"What application should MyPaint use for editing files of "
         u"type \u201c{type_name}\u201d ({content_type})?"
-        )
+    )
 
     def __init__(self, content_type, specific_file=False):
         Gtk.Dialog.__init__(self)

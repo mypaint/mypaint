@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 # This file is part of MyPaint.
-# Copyright (C) 2010-2018 by the MyPaint Development Team.
+# Copyright (C) 2010-2019 by the MyPaint Development Team.
 # Copyright (C) 2007-2013 by Martin Renold <martinxyz@gmx.ch>
 #
 # This program is free software; you can redistribute it and/or modify
@@ -866,12 +866,15 @@ class Document (CanvasController):  # TODO: rename to "DocumentController"
                 poss_msgs.append(msg)
         if not poss_msgs:
             return
+        # TRANSLATORS: This is a separator for the list of button actions
+        # TRANSLATORS: that appears when a modifier key is held down.
+        # TRANSLATORS: search for " held down: " (incl spaces) for the context
+        sep = _(";  ")
         # TRANSLATORS: "With <current-modifiers> held down: <separated-list>"
         # TRANSLATORS: Action names may contain coordinating conjunctions such
         # TRANSLATORS: as the English "and", so use appropriate punctuation or
         # TRANSLATORS: wording for the separator. Also a little more spacing
         # TRANSLATORS: than normal looks good here.
-        sep = _(";  ")
         msg = _("With {modifiers} held down:  {button_actions}.").format(
             modifiers=Gtk.accelerator_get_label(0, mods),
             button_actions=sep.join(poss_msgs),

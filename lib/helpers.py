@@ -1,5 +1,5 @@
 # This file is part of MyPaint.
-# Copyright (C) 2012-2018 by the MyPaint Development Team.
+# Copyright (C) 2012-2019 by the MyPaint Development Team.
 # Copyright (C) 2007-2012 by Martin Renold <martinxyz@gmx.ch>
 #
 # This program is free software; you can redistribute it and/or modify
@@ -529,9 +529,9 @@ def fmt_time_period_abbr(t):
     hours = int(t - days * 24 * 60 * 60) // (60 * 60)
     minutes = int(t - hours * 60 * 60) // 60
     seconds = int(t - minutes * 60)
-    # TRANSLATORS: I'm assuming that abbreviated time periods
-    # TRANSLATORS: don't need ngettext()
     if t > 24 * 60 * 60:
+        # TRANSLATORS: Assumption for all "Time period abbreviations":
+        # TRANSLATORS: they don't need ngettext (to support plural/singular)
         template = C_("Time period abbreviations", u"{days}d{hours}h")
     elif t > 60 * 60:
         template = C_("Time period abbreviations", u"{hours}h{minutes}m")

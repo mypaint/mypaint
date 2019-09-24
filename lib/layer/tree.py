@@ -1,6 +1,6 @@
 # This file is part of MyPaint.
 # -*- encoding: utf-8 -*-
-# Copyright (C) 2011-2018 by the MyPaint Development Team.
+# Copyright (C) 2011-2019 by the MyPaint Development Team.
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -63,10 +63,10 @@ class PlaceholderLayer (group.LayerStack):
     swapping nodes in the tree or handling drags.
     """
 
-    # TRANSLATORS: Short default name for temporary placeholder layers.
-    # TRANSLATORS: (The user should never see this except in error cases)
     DEFAULT_NAME = C_(
         "layer default names",
+        # TRANSLATORS: Short default name for temporary placeholder layers.
+        # TRANSLATORS: (The user should never see this except in error cases)
         u"Placeholder",
     )
 

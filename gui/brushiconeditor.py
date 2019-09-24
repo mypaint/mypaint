@@ -1,7 +1,7 @@
 # -*- encoding: utf-8 -*-
 # This file is part of MyPaint.
 # Copyright (C) 2009-2013 by Martin Renold <martinxyz@gmx.ch>
-# Copyright (C) 2013-2018 by the MyPaint Development Team.
+# Copyright (C) 2013-2019 by the MyPaint Development Team.
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -152,16 +152,16 @@ class BrushIconEditor (Gtk.Grid):
         button_box.set_layout(Gtk.ButtonBoxStyle.START)
         button_box.set_spacing(4)
 
-        # TRANSLATORS: begin editing a brush's preview icon
         b = self._make_image_button(
+            # TRANSLATORS: begin editing a brush's preview icon
             _('Edit'), "mypaint-freehand-symbolic", self._edit_cb
         )
         b.set_tooltip_text(_("Begin editing this preview icon"))
         button_box.pack_start(b, False, True, 0)
         self._edit_button = b
 
-        # TRANSLATORS: revert edits to a brush icon
         b = self._make_image_button(
+            # TRANSLATORS: revert edits to a brush icon
             _('Revert'), "mypaint-document-revert-symbolic", self._revert_cb
         )
         b.set_tooltip_text(_("Discard changes, and cancel editing"))
@@ -169,24 +169,24 @@ class BrushIconEditor (Gtk.Grid):
         button_box.set_child_secondary(b, False)
         self._revert_button = b
 
-        # TRANSLATORS: clear the brush preview icon being edited
         b = self._make_image_button(
+            # TRANSLATORS: clear the brush preview icon being edited
             _('Clear'), "mypaint-clear-all-symbolic", self._clear_cb
         )
         b.set_tooltip_text(_("Clear the preview icon"))
         button_box.pack_start(b, False, True, 0)
         self._clear_button = b
 
-        # TRANSLATORS: set the brush icon to a built-in default
         b = self._make_image_button(
+            # TRANSLATORS: set the brush icon to a built-in default
             _('Auto'), "mypaint-document-new-symbolic", self._default_cb
         )
         b.set_tooltip_text(_("Use the default icon"))
         button_box.pack_start(b, False, True, 0)
         self._default_button = b
 
-        # TRANSLATORS: save edits to a brush icon
         b = self._make_image_button(
+            # TRANSLATORS: save edits to a brush icon
             _('Save'), "mypaint-document-save-symbolic", self._save_cb
         )
         b.set_tooltip_text(_("Save this preview icon, and finish editing"))

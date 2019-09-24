@@ -265,9 +265,9 @@ def _dialog_response_cb(dialog, resp, trace, exctyp, value):
         if "-" in lib.meta.MYPAINT_VERSION:
             dialog.set_response_sensitive(RESPONSE_REPORT, True)
     elif resp == RESPONSE_REPORT:
-        #TRANSLATORS: Crash report template for github, preceding a traceback.
-        #TRANSLATORS: Please ask users kindly to supply at least an English
-        #TRANSLATORS: title if they are able.
+        # TRANSLATORS: Crash report template for github, preceding a traceback.
+        # TRANSLATORS: Please ask users kindly to supply at least an English
+        # TRANSLATORS: title if they are able.
         body = _(u"""\
             #### Description
 

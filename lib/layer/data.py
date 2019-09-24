@@ -1,5 +1,6 @@
 # This file is part of MyPaint.
 # -*- coding: utf-8 -*-
+# Copyright (C) 2019 by The Mypaint Development Team
 # Copyright (C) 2011-2017 by Andrew Chadwick <a.t.chadwick@gmail.com>
 # Copyright (C) 2007-2012 by Martin Renold <martinxyz@gmx.ch>
 #
@@ -1147,9 +1148,9 @@ class VectorLayer (FileBackedLayer):
 
     """
 
-    # TRANSLATORS: Short default name for vector (SVG/Inkscape) layers
     DEFAULT_NAME = C_(
         "layer default names",
+        # TRANSLATORS: Short default name for vector (SVG/Inkscape) layers
         u"Vectors",
     )
 
@@ -1217,9 +1218,9 @@ class FallbackBitmapLayer (FileBackedLayer):
     def get_icon_name(self):
         return "mypaint-layer-fallback-symbolic"
 
-    # TRANSLATORS: Short default name for renderable fallback layers
     DEFAULT_NAME = C_(
         "layer default names",
+        # TRANSLATORS: Short default name for renderable fallback layers
         "Bitmap",
     )
 
@@ -1238,9 +1239,9 @@ class FallbackDataLayer (FileBackedLayer):
     def get_icon_name(self):
         return "mypaint-layer-fallback-symbolic"
 
-    # TRANSLATORS: Short default name for non-renderable fallback layers
     DEFAULT_NAME = C_(
         "layer default names",
+        # TRANSLATORS: Short default name for non-renderable fallback layers
         u"Data",
     )
 
@@ -1289,9 +1290,9 @@ class SimplePaintingLayer (SurfaceBackedLayer):
 
     ALLOWED_SUFFIXES = [".png"]
 
-    # TRANSLATORS: Default name for new normal, paintable layers
     DEFAULT_NAME = C_(
         "layer default names",
+        # TRANSLATORS: Default name for new normal, paintable layers
         u"Layer",
     )
 

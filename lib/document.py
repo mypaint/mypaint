@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 # This file is part of MyPaint.
-# Copyright (C) 2010-2018 by the MyPaint Development Team
+# Copyright (C) 2010-2019 by the MyPaint Development Team
 # Copyright (C) 2007-2013 by Martin Renold <martinxyz@gmx.ch>
 #
 # This program is free software; you can redistribute it and/or modify
@@ -187,23 +187,25 @@ class AutosaveInfo (namedtuple("AutosaveInfo", _AUTOSAVE_INFO_FIELDS)):
         fmt_time = lib.helpers.fmt_time_period_abbr
         unsaved_time_str = fmt_time(self.unsaved_painting_time)
         last_modif_dt = (datetime.now() - self.last_modified).seconds
-        # TRANSLATORS: string used in "3h42m from now", "8s ago" constructs
+        # TODO: Look into whether breaking out these strings causes problems
         if last_modif_dt < 0:
             last_modif_ago_str = C_(
                 "Document autosave descriptions: the {ago} string: future",
+                # TRANSLATORS: string used in e.g. "3h42m from now"
                 u"from now"
             )
         else:
             last_modif_ago_str = C_(
                 "Document autosave descriptions: the {ago} string: past",
+                # TRANSLATORS: string used in e.g. "8s ago"
                 u"ago"
             )
         last_modif_str = fmt_time(abs(last_modif_dt))
-        # TRANSLATORS: String descriptions for an autosaved backup file.
-        # TRANSLATORS: Time strings are localized "3h42m" or "8s" things.
         if self.cache_in_use:
             template = C_(
                 "Document autosave descriptions",
+                # TRANSLATORS: String descriptions for an autosaved backup.
+                # TRANSLATORS: Time strings are localized: e.g. "3h42m" or "8s"
                 u"Cache folder still may be in use.\n"
                 u"Are you running more than once instance of MyPaint?\n"
                 u"Close app and wait {cache_update_interval}s to retry."
@@ -216,6 +218,10 @@ class AutosaveInfo (namedtuple("AutosaveInfo", _AUTOSAVE_INFO_FIELDS)):
         else:
             template = C_(
                 "Document autosave descriptions",
+                # TRANSLATORS: The {ago} variable is a translated string.
+                # TRANSLATORS: Look for the msgids "from now" and "ago"
+                # TRANSLATORS: (with context starting w. "Document autosave")
+                # TRANSLATORS: to make sure their translations match this one.
                 u"Backup updated {last_modified_time} {ago}\n"
                 u"Size: {autosave.width}×{autosave.height} pixels, "
                 u"Layers: {autosave.num_layers}\n"
