@@ -8,8 +8,8 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2019-09-24 12:10+0200\n"
-"PO-Revision-Date: 2019-09-24 10:18+0000\n"
-"Last-Translator: Alfredo Rafael Vicente Boix <alviboi@gmail.com>\n"
+"PO-Revision-Date: 2019-09-30 10:55+0000\n"
+"Last-Translator: Allan Nordhøy <epost@anotheragency.no>\n"
 "Language-Team: Valencian <https://hosted.weblate.org/projects/mypaint/"
 "mypaint/ca@valencia/>\n"
 "Language: ca@valencia\n"
@@ -1549,7 +1549,7 @@ msgstr "Sense descripció"
 #, python-brace-format
 msgctxt "Document I/O: message shown while working"
 msgid "Loading {files_summary}…"
-msgstr "S'està carregant {files_summari}…"
+msgstr "S'està carregant {files_summary}…"
 
 #: ../gui/filehandling.py:130
 #, python-brace-format
