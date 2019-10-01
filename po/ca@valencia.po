@@ -8,8 +8,8 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2019-09-24 12:10+0200\n"
-"PO-Revision-Date: 2019-09-30 10:55+0000\n"
-"Last-Translator: Allan Nordhøy <epost@anotheragency.no>\n"
+"PO-Revision-Date: 2019-10-02 19:19+0000\n"
+"Last-Translator: Ecron <ecron_89@hotmail.com>\n"
 "Language-Team: Valencian <https://hosted.weblate.org/projects/mypaint/"
 "mypaint/ca@valencia/>\n"
 "Language: ca@valencia\n"
@@ -46,7 +46,7 @@ msgstr "Tecla:"
 
 #: ../gui/accelmap.py:388
 msgid "Press keys to update this assignment"
-msgstr "Premeu les tecles per actualitzar aquesta tasca"
+msgstr "Premeu les tecles per a actualitzar aquesta tasca"
 
 #: ../gui/accelmap.py:443
 msgid "Unknown Action"
@@ -116,7 +116,7 @@ msgstr "Color"
 
 #: ../gui/backgroundwindow.py:97
 msgid "Add color to Patterns"
-msgstr "Afig color als patrons"
+msgstr "Afig el color als patrons"
 
 #: ../gui/backgroundwindow.py:261
 msgid "One or more backgrounds could not be loaded"
@@ -247,17 +247,17 @@ msgstr "Segur que voleu suprimir el pinzell «{brush_name}» del disc?"
 #: ../gui/brusheditor.py:695
 msgctxt "brush settings editor: header: fallback name"
 msgid "(Unnamed brush)"
-msgstr "(Pinzell Sense Nom)"
+msgstr "(Pinzell sense nom)"
 
 #: ../gui/brusheditor.py:702
 #, python-brace-format
 msgctxt "brush settings editor: header: is-modified hint"
 msgid "{brush_name} [unsaved]"
-msgstr "{brush_name}1 [unsaved]"
+msgstr "{brush_name} [no s'ha desat]"
 
 #: ../gui/brushiconeditor.py:36
 msgid "Brush Icon"
-msgstr "Icona de Pinzell"
+msgstr "Icona de pinzell"
 
 #: ../gui/brushiconeditor.py:37
 msgid "Brush Icon (editing)"
@@ -301,7 +301,7 @@ msgid ""
 "<small>Click ‘Edit’ to make changes to the icon</small>"
 msgstr ""
 "<b>%s</b>\n"
-"<small>Prem «Edita» per aplicar els canvis en la Icona</small>"
+"<small>Prem «Edita» per a aplicar els canvis en la Icona</small>"
 
 #. TRANSLATORS: begin editing a brush's preview icon
 #: ../gui/brushiconeditor.py:157
@@ -324,11 +324,11 @@ msgstr "Descarta els canvis i cancel·la l'edició"
 #. TRANSLATORS: clear the brush preview icon being edited
 #: ../gui/brushiconeditor.py:174
 msgid "Clear"
-msgstr "Neteja"
+msgstr "Esborra"
 
 #: ../gui/brushiconeditor.py:176
 msgid "Clear the preview icon"
-msgstr "Neteja la icona de vista prèvia"
+msgstr "Esborra la icona de vista prèvia"
 
 #. TRANSLATORS: set the brush icon to a built-in default
 #: ../gui/brushiconeditor.py:182
@@ -346,11 +346,11 @@ msgstr "Guarda"
 
 #: ../gui/brushiconeditor.py:192
 msgid "Save this preview icon, and finish editing"
-msgstr "Guarda aquesta icona de vista prèvia i finalitza l'edició"
+msgstr "Guarda esta icona de vista prèvia i finalitza l'edició"
 
 #: ../gui/brushmanager.py:128
 msgid "Lost & Found"
-msgstr "Perdut i Trobat"
+msgstr "Perduts i trobats"
 
 #: ../gui/brushmanager.py:129
 msgid "Deleted"
@@ -412,7 +412,7 @@ msgid ""
 "in the zipfile."
 msgstr ""
 "El pinzell «{brush_name}» està llistat en «{order_conf_file}», però no "
-"existeix en el but it does not exist en el fitxer zip."
+"existeix en el fitxer zip."
 
 #: ../gui/brushmanager.py:652
 #, python-brace-format
@@ -431,12 +431,12 @@ msgstr "Pinzell desconegut"
 #: ../gui/brushselectionwindow.py:220
 msgctxt "brush group: context menu for a single brush"
 msgid "Add to Favorites"
-msgstr "Afig a favorits"
+msgstr "Afig als favorits"
 
 #: ../gui/brushselectionwindow.py:227
 msgctxt "brush group: context menu for a single brush"
 msgid "Remove from Favorites"
-msgstr "Suprimeix de favorits"
+msgstr "Suprimeix dels favorits"
 
 #: ../gui/brushselectionwindow.py:235
 msgctxt "brush group: context menu for a single brush"
@@ -451,7 +451,7 @@ msgstr "Edita la configuració de pinzell"
 #: ../gui/brushselectionwindow.py:250
 msgctxt "brush group: context menu for a single brush"
 msgid "Remove from Group"
-msgstr "Canvia el nom al grup"
+msgstr "Suprimeix del grup"
 
 #: ../gui/brushselectionwindow.py:290
 #, python-brace-format
@@ -490,7 +490,7 @@ msgstr "Grup «{group_name}»"
 #: ../gui/brushselectionwindow.py:418
 msgctxt "brush group properties dialog: action buttons"
 msgid "Rename Group"
-msgstr "Canvia el nom al grup"
+msgstr "Canvia el nom del grup"
 
 #: ../gui/brushselectionwindow.py:424
 msgctxt "brush group properties dialog: action buttons"
@@ -510,13 +510,13 @@ msgstr "Canvi del nom del grup"
 #: ../gui/brushselectionwindow.py:468
 msgctxt "brush group rename"
 msgid "A group with this name already exists!"
-msgstr "Ja existeix un grup amb aquest nom."
+msgstr "Ja existeix un grup amb este nom."
 
 #: ../gui/brushselectionwindow.py:477
 #, python-brace-format
 msgctxt "brush group delete"
 msgid "Really delete group “{group_name}”?"
-msgstr "Segur que voleu eliminar el grup «{group_name}»?"
+msgstr "Segur que voleu suprimir el grup «{group_name}»?"
 
 #: ../gui/brushselectionwindow.py:495
 #, python-brace-format
@@ -525,8 +525,8 @@ msgid ""
 "Could not delete group “{group_name}”.\n"
 "Some special groups cannot be deleted."
 msgstr ""
-"No es pot eliminar el grup «{group_name}».\n"
-"Alguns grups especials no poden ser eliminats."
+"No s'ha pogut suprimir el grup «{group_name}».\n"
+"Alguns grups especials no es poden suprimir."
 
 #: ../gui/brushselectionwindow.py:510
 msgctxt "brush group export dialog: title"
@@ -569,7 +569,7 @@ msgstr "Bt"
 
 #: ../gui/buttonmap.py:295
 msgid "Button press"
-msgstr "Prem el botó"
+msgstr "Premuda de botó"
 
 #: ../gui/buttonmap.py:313
 msgid "Add a new binding"
@@ -601,7 +601,7 @@ msgstr ""
 msgid ""
 "{button} cannot be bound without modifier keys (its meaning is fixed, sorry)"
 msgstr ""
-"{button} no pot ser enllaçat sense les tecles de modificació (això significa "
+"{button} no es pot enllaçar sense les tecles de modificació (això significa "
 "que és fix)"
 
 #: ../gui/buttonmap.py:584
@@ -679,8 +679,8 @@ msgid ""
 "Gamut mask editor. Click in the middle to create or manipulate shapes, or "
 "rotate the mask using the edges of the disc."
 msgstr ""
-"Editor de màscara Gamut. Clica al mig per crear, manipular formes o girar la "
-"màscara utilitzant les vores del disc."
+"Editor de màscara Gamut. Feu clic en el mig per a crear, manipular formes o "
+"girar la màscara utilitzant les vores del disc."
 
 #: ../gui/colors/hcywheel.py:910
 msgctxt "HCY Gamut Mask template name"
@@ -699,7 +699,7 @@ msgstr ""
 #: ../gui/colors/hcywheel.py:922
 msgctxt "HCY Gamut Mask template name"
 msgid "Shifted Triad"
-msgstr "Triada desplaçada"
+msgstr "Tríada desplaçada"
 
 #: ../gui/colors/hcywheel.py:926
 msgctxt "HCY Gamut Mask template description"
@@ -717,7 +717,7 @@ msgid ""
 "Contrasting opposites, balanced by having central neutrals between them on "
 "the color wheel."
 msgstr ""
-"Contrastos oposats, equilibrats en tindre els neutrals centrals entre ells "
+"Contrastos oposats, equilibrats per tindre els neutrals centrals entre ells "
 "sobre la roda de color."
 
 #: ../gui/colors/hcywheel.py:957
@@ -776,12 +776,12 @@ msgstr "Crea la màscara a partir de la plantilla."
 #: ../gui/colors/hcywheel.py:1112
 msgctxt "HCY Mask Editor: action button tooltips"
 msgid "Load mask from a GIMP palette file."
-msgstr "Carrega la màscara a partir del fitxer de la paleta de Gimp."
+msgstr "Carrega la màscara a partir d'un fitxer de paleta del Gimp."
 
 #: ../gui/colors/hcywheel.py:1116
 msgctxt "HCY Mask Editor: action button tooltips"
 msgid "Save mask to a GIMP palette file."
-msgstr "Guarda la màscara com a un fitxer paleta de Gimp."
+msgstr "Guarda la màscara com a un fitxer de paleta del Gimp."
 
 #: ../gui/colors/hcywheel.py:1120
 msgctxt "HCY Mask Editor: action button tooltips"
@@ -791,17 +791,17 @@ msgstr "Suprimeix la màscara."
 #: ../gui/colors/hcywheel.py:1124
 msgctxt "HCY Mask Editor: action button tooltips"
 msgid "Open the online help for this dialog in a web browser."
-msgstr "Obri l'ajuda en línia d'aquest diàleg en un navegador web."
+msgstr "Obri l'ajuda en línia d'este diàleg en un navegador web."
 
 #: ../gui/colors/hcywheel.py:1191
 msgctxt "HCY Gamut Mask load dialog: window title"
 msgid "Save Mask as a GIMP Palette"
-msgstr "Guarda la màscara com a paleta de GIMP"
+msgstr "Guarda la màscara com a paleta del GIMP"
 
 #: ../gui/colors/hcywheel.py:1208
 msgctxt "HCY Gamut Mask load dialog: window title"
 msgid "Load Mask from a GIMP Palette"
-msgstr "Carrega la màscara a partir d'una paleta GIMP"
+msgstr "Carrega la màscara a partir d'una paleta del GIMP"
 
 #: ../gui/colors/hcywheel.py:1275
 msgctxt "HCY Wheel color adjuster page: properties tooltip."
@@ -1376,7 +1376,7 @@ msgstr "{button_combination} és {resultant_action}"
 #. TRANSLATORS: search for " held down: " (incl spaces) for the context
 #: ../gui/document.py:872
 msgid ";  "
-msgstr ""
+msgstr ";  "
 
 #. TRANSLATORS: "With <current-modifiers> held down: <separated-list>"
 #. TRANSLATORS: Action names may contain coordinating conjunctions such
@@ -1402,12 +1402,12 @@ msgstr "S'ha copiat la capa com una imatge {w}×{h}."
 #: ../gui/document.py:929
 msgctxt "Statusbar message: paste result"
 msgid "Nothing on clipboard."
-msgstr "No hi ha res en el porta-retalls"
+msgstr "No hi ha res en el porta-retalls."
 
 #: ../gui/document.py:938
 msgctxt "Statusbar message: paste result"
 msgid "Clipboard does not contain an image."
-msgstr "El porta-retalls no conté cap imatge"
+msgstr "El porta-retalls no conté cap imatge."
 
 #: ../gui/document.py:949
 msgctxt "Statusbar message: paste result"
@@ -1998,7 +1998,7 @@ msgstr "Ploma:"
 #: ../gui/fill.py:771
 msgctxt "fill options: Feather (tooltip)"
 msgid "The amount of blur to apply to the fill"
-msgstr "La quantitat de difuminat que s'aplica a l'ompliment."
+msgstr "La quantitat de difuminat que s'aplica a l'ompliment"
 
 #: ../gui/fill.py:787
 msgctxt "fill options: gap detection toggle (label)"
@@ -2014,7 +2014,7 @@ msgid ""
 msgstr ""
 "Intenta detectar els buits i no omplir-los.\n"
 "Nota: pot ser més lent que l'ompliment normal, activeu-lo sols si el "
-"necessiteu. "
+"necessiteu."
 
 #: ../gui/fill.py:810
 msgctxt "fill options: gap-detection sub-option, numeric setting (label)"
@@ -2202,7 +2202,7 @@ msgstr "Pressió:"
 #. TRANSLATORS: This is used on the options panel.
 #: ../gui/freehand.py:614
 msgid "Twist:"
-msgstr "Torsió"
+msgstr "Torsió:"
 
 #: ../gui/gtkexcepthook.py:163
 msgid "Bug Detected"
@@ -2352,7 +2352,7 @@ msgstr "Mou la capa actual"
 #: ../gui/layerprops.py:356
 msgctxt "layer properties dialog: name entry: icon tooltip"
 msgid "Layer names cannot be empty."
-msgstr "Els noms de les capes no poden estar buits"
+msgstr "Els noms de les capes no poden estar buits."
 
 #: ../gui/layerprops.py:361
 msgctxt "layer properties dialog: name entry: icon tooltip"
@@ -2413,7 +2413,7 @@ msgstr "?tipus"
 #: ../gui/layers.py:982
 msgctxt "Layers dockable: description parts joiner text"
 msgid ", "
-msgstr ""
+msgstr ", "
 
 #: ../gui/layers.py:990
 #, python-brace-format
@@ -2567,7 +2567,7 @@ msgid ""
 "Martin Renold and the MyPaint Development Team"
 msgstr ""
 "Copyright (C) 2005-2017\n"
-"Martin Renold and the MyPaint Development Team"
+"Martin Renold i l'equip de desenvolupament del MyPaint"
 
 #: ../gui/meta.py:45
 msgctxt "About dialog: license summary"
@@ -3408,7 +3408,7 @@ msgid ""
 "Similar to mixing actual pigments by upsampling to 10 spectral channels."
 msgstr ""
 "Semblant a barrejar els pigments reals en prendre mostres de 10 canals "
-"espectrals"
+"espectrals."
 
 #: ../lib/modes.py:50
 msgid "Multiply"
@@ -3712,12 +3712,12 @@ msgstr ""
 #: ../po/tmp/autorecover.glade.h:8
 msgctxt "Autosave Recovery dialog|"
 msgid "_Delete…"
-msgstr "_Suprimeix..."
+msgstr "_Suprimeix…"
 
 #: ../po/tmp/autorecover.glade.h:9
 msgctxt "Autosave Recovery dialog|Delete button|"
 msgid "Delete this backup from the disk."
-msgstr "Suprimeix aquesta còpia de seguretat del disc"
+msgstr "Suprimeix aquesta còpia de seguretat del disc."
 
 #. Recover in the sense or retrieval or salvage from a backup file. The user is asked to save the retrieved file immediately afterwards, hence the ellipsis.
 #: ../po/tmp/autorecover.glade.h:11
@@ -3800,7 +3800,7 @@ msgstr "Suprimeix aquest pinzell del disc"
 
 #: ../po/tmp/brusheditor.glade.h:9
 msgid "Copy to New"
-msgstr "Copia en un pinzell nou "
+msgstr "Copia en un nou"
 
 #: ../po/tmp/brusheditor.glade.h:10
 msgid "Copy these settings and the current brush's icon to a new brush"
@@ -3842,7 +3842,7 @@ msgid ""
 "Starting value for this brush setting. The brush dynamics below act on this."
 msgstr ""
 "Valor inicial per a aquest paràmetre del pinzell. La dinàmica del pinzell "
-"variarà en conseqüència. "
+"variarà en conseqüència."
 
 #. field label
 #: ../po/tmp/brusheditor.glade.h:22
@@ -3925,11 +3925,11 @@ msgstr "{dname}:"
 
 #: ../po/tmp/brusheditor.glade.h:42
 msgid "Brush dynamics are not available for this setting."
-msgstr "La dinàmica del pinzell no està disponible en aquesta configuració"
+msgstr "La dinàmica del pinzell no està disponible per a esta configuració."
 
 #: ../po/tmp/brusheditor.glade.h:43
 msgid "<big><b>No Brush Dynamics</b></big>"
-msgstr ""
+msgstr "<big><b>Sense dinàmiques de pinzell</b></big>"
 
 #: ../po/tmp/inktool.glade.h:1
 msgctxt "Inking tool options: point value sliders: labels: tooltips"
@@ -3997,7 +3997,7 @@ msgstr "Simplifica els punts"
 
 #: ../po/tmp/inktool.glade.h:16
 msgid "Simplify the curve using the Reumann-Witkam algorithm."
-msgstr "Simplifica la corba utilitzant l'algoritme de Reumann-Witkam"
+msgstr "Simplifica la corba utilitzant l'algoritme de Reumann-Witkam."
 
 #: ../po/tmp/inktool.glade.h:17 ../po/tmp/resources.xml.h:190
 msgid "Cull Points"
@@ -4115,7 +4115,7 @@ msgstr ""
 "dels seus píxels. Tampoc podeu agafar-ne traços, de manera que serà molt "
 "útil en pintar sota un croquis.\n"
 "\n"
-"Quan un grup de capes està bloquejada, cap de les seues capes pot editar-se. "
+"Quan un grup de capes està bloquejada, cap de les seues capes pot editar-se."
 
 #: ../po/tmp/layervis.glade.h:1
 msgctxt "Layers window: view list controls: tooltips"
@@ -4125,12 +4125,12 @@ msgstr "La vista activa actualment."
 #: ../po/tmp/layervis.glade.h:2
 msgctxt "Layers window: view list controls: tooltips"
 msgid "Rename the active view."
-msgstr "Canvia el nom de la vista activa"
+msgstr "Canvia el nom de la vista activa."
 
 #: ../po/tmp/layervis.glade.h:3
 msgctxt "Layers window: view list controls: tooltips"
 msgid "Remove the active view."
-msgstr "Elimina la vista activa"
+msgstr "Elimina la vista activa."
 
 #: ../po/tmp/layervis.glade.h:4
 msgctxt "Layers window: view list controls: tooltips"
@@ -4150,7 +4150,7 @@ msgstr "Captura el color"
 #: ../po/tmp/mypaint.glade.h:3
 msgctxt "Footerbar|"
 msgid "Edit the current color in detail"
-msgstr "Edita el color actual "
+msgstr "Edita el color actual en detall"
 
 #: ../po/tmp/mypaint.glade.h:4
 msgctxt "Footerbar|"
@@ -4279,8 +4279,8 @@ msgid ""
 "Here you can restrict pointing devices to specific tasks on the canvas, or "
 "have them ignored completely if they glitch your drawing."
 msgstr ""
-"Ací podeu restringir els dispositius de punter per a tasques específiques "
-"del llenç o bé ignorar-los completament si provoquen problemes en el dibuix. "
+"Ací podeu restringir els dispositius apuntadors per a tasques específiques "
+"del llenç o bé ignorar-los completament si provoquen problemes en el dibuix."
 
 #: ../po/tmp/preferenceswindow.glade.h:29
 msgctxt "Prefs Dialog|Button|"
@@ -4762,7 +4762,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:12
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "Import Layers…"
-msgstr "Importa capes..."
+msgstr "Importa capes…"
 
 #: ../po/tmp/resources.xml.h:13
 msgctxt "Accel Editor (descriptions)"
@@ -4918,7 +4918,7 @@ msgstr "Augmenta el gir simulat"
 #: ../po/tmp/resources.xml.h:42
 msgctxt "Accel Editor (descriptions)"
 msgid "Increase barrel rotation for devices that don't support rotation input."
-msgstr "Augmenta el gir per a dispositius que no admeten l'entrada de gir"
+msgstr "Augmenta el gir per a dispositius que no admeten l'entrada de gir."
 
 #: ../po/tmp/resources.xml.h:43
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
@@ -5315,7 +5315,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:117
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Delete Layer"
-msgstr "Suprimeix capa"
+msgstr "Suprimeix la capa"
 
 #: ../po/tmp/resources.xml.h:118
 msgctxt "Accel Editor (descriptions)"
@@ -5389,7 +5389,7 @@ msgstr "Fes una còpia exacta de la capa actual."
 #: ../po/tmp/resources.xml.h:131
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Layer Properties…"
-msgstr "Propietats de la capa..."
+msgstr "Propietats de la capa…"
 
 #: ../po/tmp/resources.xml.h:132
 msgctxt "Accel Editor (descriptions)"
@@ -5608,7 +5608,7 @@ msgstr "Capa sola"
 #: ../po/tmp/resources.xml.h:173
 msgctxt "Accel Editor (descriptions)"
 msgid "Toggle whether only the current layer is shown."
-msgstr "Commuta quan sols es mostra la capa actual. "
+msgstr "Commuta quan es mostra només la capa actual."
 
 #: ../po/tmp/resources.xml.h:174
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
@@ -6038,7 +6038,7 @@ msgstr "Ves a la documentació del wiki de MyPaint."
 #: ../po/tmp/resources.xml.h:257
 msgctxt "Menu→Help (labels), Accel Editor (labels)"
 msgid "About MyPaint"
-msgstr "Quant a MyPaint"
+msgstr "Quant al MyPaint"
 
 #: ../po/tmp/resources.xml.h:258
 msgctxt "Accel Editor (descriptions)"
@@ -6291,7 +6291,8 @@ msgstr "Anells concèntrics"
 msgctxt "Accel Editor (descriptions)"
 msgid "Dockable color selector with concentric HSV rings."
 msgstr ""
-"Selector de color acoblable amb anells concèntrics HSV( to, saturació, valor)"
+"Selector de color acoblable amb anells concèntrics HSV (to, saturació, "
+"valor)."
 
 #: ../po/tmp/resources.xml.h:305
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
@@ -6313,7 +6314,7 @@ msgstr "Tauler de bloc d'esbossos"
 #: ../po/tmp/resources.xml.h:308
 msgctxt "Accel Editor (descriptions)"
 msgid "Dockable Panel for mixing colors and testing brushes."
-msgstr "Tauler acoblable per a mesclar colors i provar els pinzells"
+msgstr "Tauler acoblable per a mesclar colors i provar els pinzells."
 
 #: ../po/tmp/resources.xml.h:309
 msgctxt "Menu→Scratchpad (labels), Accel Editor (labels)"
@@ -6335,8 +6336,8 @@ msgstr "Tauler de previsualització"
 msgctxt "Accel Editor (descriptions)"
 msgid "Dockable panel for an overview and navigation of the whole canvas."
 msgstr ""
-"Tauler acoblable per a obtindre una visió general de tot el llenç i la "
-"navegar-hi. "
+"Tauler acoblable per a obtindre una visió general de tot el llenç i navegar-"
+"hi."
 
 #: ../po/tmp/resources.xml.h:313
 msgctxt "Menu→View (labels), Accel Editor (labels)"
@@ -6358,7 +6359,7 @@ msgstr "Tauler d'opcions d'eines"
 #: ../po/tmp/resources.xml.h:316
 msgctxt "Accel Editor (descriptions)"
 msgid "Dockable panel for adjusting the options with the activated tool."
-msgstr "Tauler acoblable per a ajustar les opcions amb l'eina activada"
+msgstr "Tauler acoblable per a ajustar les opcions amb l'eina activada."
 
 #: ../po/tmp/resources.xml.h:317
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
