@@ -9,8 +9,8 @@ msgstr ""
 "Project-Id-Version: mypaint v2.0.0-alpha.8-1-g4490f06\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2019-09-24 12:10+0200\n"
-"PO-Revision-Date: 2019-02-23 08:18+0000\n"
-"Last-Translator: glixx <roman_romul@mail.ru>\n"
+"PO-Revision-Date: 2019-10-02 19:19+0000\n"
+"Last-Translator: Robert <chouvalbwa@free.fr>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/mypaint/mypaint/"
 "fr/>\n"
 "Language: fr\n"
@@ -18,7 +18,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n > 1;\n"
-"X-Generator: Weblate 3.5-dev\n"
+"X-Generator: Weblate 3.9-dev\n"
 
 #: ../gui/accelmap.py:99 ../gui/buttonmap.py:280
 msgid "Action"
@@ -6085,7 +6085,7 @@ msgstr "Aide en ligne"
 #: ../po/tmp/resources.xml.h:256
 msgctxt "Accel Editor (descriptions)"
 msgid "Go to MyPaint’s documentation wiki."
-msgstr ""
+msgstr "Se connecter à la documentation MyPaint wiki"
 
 #: ../po/tmp/resources.xml.h:257
 msgctxt "Menu→Help (labels), Accel Editor (labels)"
@@ -6095,7 +6095,7 @@ msgstr "À propos de MyPaint"
 #: ../po/tmp/resources.xml.h:258
 msgctxt "Accel Editor (descriptions)"
 msgid "Show MyPaint’s license, version number, and credits."
-msgstr "A propos de MyPaint...license, version, crédits…"
+msgstr "Informations sur MyPaint...license, version, crédits..."
 
 #: ../po/tmp/resources.xml.h:259
 msgctxt "Menu→Help (labels)"
