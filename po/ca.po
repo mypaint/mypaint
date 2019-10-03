@@ -8,8 +8,8 @@ msgstr ""
 "Project-Id-Version: mypaint v2.0.0-alpha.8-1-g4490f06\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2019-09-24 12:10+0200\n"
-"PO-Revision-Date: 2019-10-02 19:19+0000\n"
-"Last-Translator: Ecron <ecron_89@hotmail.com>\n"
+"PO-Revision-Date: 2019-10-04 15:56+0000\n"
+"Last-Translator: Joan Montané <joan@montane.cat>\n"
 "Language-Team: Catalan <https://hosted.weblate.org/projects/mypaint/mypaint/"
 "ca/>\n"
 "Language: ca\n"
@@ -424,34 +424,29 @@ msgid "Unknown Brush"
 msgstr "Pinzell desconegut"
 
 #: ../gui/brushselectionwindow.py:220
-#, fuzzy
 msgctxt "brush group: context menu for a single brush"
 msgid "Add to Favorites"
-msgstr "Afegeix a fovorits"
+msgstr "Afegeix als preferits"
 
 #: ../gui/brushselectionwindow.py:227
-#, fuzzy
 msgctxt "brush group: context menu for a single brush"
 msgid "Remove from Favorites"
-msgstr "Suprimeix de favorits"
+msgstr "Suprimeix dels favorits"
 
 #: ../gui/brushselectionwindow.py:235
-#, fuzzy
 msgctxt "brush group: context menu for a single brush"
 msgid "Clone"
 msgstr "Clona"
 
 #: ../gui/brushselectionwindow.py:242
-#, fuzzy
 msgctxt "brush group: context menu for a single brush"
 msgid "Edit Brush Settings"
-msgstr "Edita la configuració de pinzell"
+msgstr "Edita la configuració del pinzell"
 
 #: ../gui/brushselectionwindow.py:250
-#, fuzzy
 msgctxt "brush group: context menu for a single brush"
 msgid "Remove from Group"
-msgstr "Canvia nom al grup"
+msgstr "Suprimeix del grup"
 
 #: ../gui/brushselectionwindow.py:290
 #, python-brace-format
@@ -466,10 +461,11 @@ msgid "{original_name} copy {n}"
 msgstr ""
 
 #: ../gui/brushselectionwindow.py:325
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgctxt "brush group: context menu: remove from group"
 msgid "Really remove brush “{brush_name}” from group “{group_name}”?"
-msgstr "Segur que voleu suprimir el pinzell “{brush_name}”del disc?"
+msgstr ""
+"Segur que voleu suprimir el pinzell “{brush_name}” del grup \"{group_name}\"?"
 
 #. TRANSLATORS: number of brushes in a brush group, for tooltips
 #: ../gui/brushselectionwindow.py:381
@@ -646,11 +642,11 @@ msgstr "Estableix el color utilitzat per pintar"
 
 #: ../gui/colors/adjbases.py:699
 msgid "Color details"
-msgstr "Detalls del Color"
+msgstr "Detalls del color"
 
 #: ../gui/colors/adjbases.py:872
 msgid "Current brush color, and the color most recently used for painting"
-msgstr "Color de pinzell actual, i el color més recent usat per pintar"
+msgstr "Color de pinzell actual, i el color més recent usat per a pintar"
 
 #: ../gui/colors/hcywheel.py:49
 msgctxt "Online help pages"
