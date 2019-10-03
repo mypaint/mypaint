@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: mypaint v2.0.0-alpha.8-1-g4490f06\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2019-09-24 12:10+0200\n"
-"PO-Revision-Date: 2019-02-27 14:18+0000\n"
+"PO-Revision-Date: 2019-10-04 15:56+0000\n"
 "Last-Translator: Yaron Shahrabani <sh.yaron@gmail.com>\n"
 "Language-Team: Hebrew <https://hosted.weblate.org/projects/mypaint/mypaint/"
 "he/>\n"
@@ -18,7 +18,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=4; plural=(n == 1) ? 0 : ((n == 2) ? 1 : ((n > 10 && "
 "n % 10 == 0) ? 2 : 3));\n"
-"X-Generator: Weblate 3.5-dev\n"
+"X-Generator: Weblate 3.9-dev\n"
 
 #: ../gui/accelmap.py:99 ../gui/buttonmap.py:280
 msgid "Action"
@@ -465,8 +465,10 @@ msgstr "האם באמת למחק מברשת “{brush_name}” מהדיסק?"
 #, python-format
 msgid "%d brush"
 msgid_plural "%d brushes"
-msgstr[0] "%d מברשת"
+msgstr[0] "מברשת אחת"
 msgstr[1] "%d מברשות"
+msgstr[2] "%d מברשות"
+msgstr[3] "%d מברשות"
 
 #. TRANSLATORS: properties dialog for the current brush group
 #: ../gui/brushselectionwindow.py:406
@@ -1016,7 +1018,7 @@ msgstr "כל הקבצים (*)"
 #: ../gui/colors/sliders.py:45
 msgctxt "color sliders panel: red/green/blue: slider label"
 msgid "R"
-msgstr ""
+msgstr "R"
 
 #: ../gui/colors/sliders.py:49
 msgctxt "color sliders panel: red/green/blue: slider label"
@@ -1393,12 +1395,12 @@ msgstr ""
 #: ../gui/drawwindow.py:269
 #, python-format
 msgid "%s - MyPaint"
-msgstr ""
+msgstr "%s - MyPaint"
 
 #. TRANSLATORS: window title for use without a filename
 #: ../gui/drawwindow.py:272 ../po/tmp/mypaint.glade.h:1
 msgid "MyPaint"
-msgstr ""
+msgstr "MyPaint"
 
 #: ../gui/drawwindow.py:289
 msgctxt "Open dragged file confirm dialog: title"
@@ -2128,27 +2130,27 @@ msgstr "מופעל"
 #: ../gui/framewindow.py:718
 #, python-brace-format
 msgid "{width:g}×{height:g} {units}"
-msgstr ""
+msgstr "{width:g}×{height:g} {units}"
 
 #: ../gui/framewindow.py:909
 msgid "inch"
-msgstr "אינץ'"
+msgstr "אינץ׳"
 
 #: ../gui/framewindow.py:910
 msgid "cm"
-msgstr "סמ'"
+msgstr "ס״מ"
 
 #: ../gui/framewindow.py:911
 msgid "mm"
-msgstr "ממ'"
+msgstr "מ״מ"
 
 #: ../gui/freehand.py:86
 msgid "Freehand Drawing"
-msgstr "ציור Freehand"
+msgstr "ציור ביד חופשית"
 
 #: ../gui/freehand.py:89
 msgid "Paint free-form brush strokes"
-msgstr ""
+msgstr "ציור במשיכות מכחול ביד חופשית"
 
 #. TRANSLATORS: Short alias for "Slow position tracking". This is
 #. TRANSLATORS: used on the options panel.
@@ -2452,7 +2454,7 @@ msgstr ""
 
 #: ../gui/linemode.py:47
 msgid "Head"
-msgstr ""
+msgstr "ראש"
 
 #: ../gui/linemode.py:48
 msgid "Stroke lead-in end"
@@ -2737,7 +2739,7 @@ msgstr ""
 #, python-format
 msgctxt "symmetry axis options panel: position button: axis pos. in pixels"
 msgid "%d px"
-msgstr ""
+msgstr "%d פיקסלים"
 
 #: ../gui/symmetry.py:372
 msgctxt "symmetry axis options panel: labels"
