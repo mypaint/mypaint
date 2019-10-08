@@ -50,6 +50,12 @@ def _init_gtk_workarounds():
                 )
                 setattr(cls, name, func)
 
+    # Wayland "workaround" to avoid input freeze on pointer grabs.
+    # Respect existing envvars for testing (and general courtesy).
+    # This relies on XWayland being available.
+    if sys.platform.startswith("linux") and 'GDK_BACKEND' not in os.environ:
+        os.environ['GDK_BACKEND'] = 'x11'
+
     logger.debug("GTK workarounds added.")
 
 
