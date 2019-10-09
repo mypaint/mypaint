@@ -8,8 +8,8 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2019-09-24 12:10+0200\n"
-"PO-Revision-Date: 2019-10-08 19:00+0000\n"
-"Last-Translator: Alfredo Rafael Vicente Boix <alviboi@gmail.com>\n"
+"PO-Revision-Date: 2019-10-10 14:05+0000\n"
+"Last-Translator: Ecron <ecron_89@hotmail.com>\n"
 "Language-Team: Valencian <https://hosted.weblate.org/projects/mypaint/"
 "mypaint/ca@valencia/>\n"
 "Language: ca@valencia\n"
@@ -586,7 +586,7 @@ msgstr "Edita la vinculació per a «%s»"
 
 #: ../gui/buttonmap.py:504
 msgid "Button press:"
-msgstr "Prem el botó:"
+msgstr "Botó premut:"
 
 #: ../gui/buttonmap.py:541
 msgid ""
