@@ -3,6 +3,7 @@
 # Imports:
 
 from __future__ import print_function
+from contextlib import contextmanager
 import subprocess
 import glob
 import os
@@ -15,6 +16,7 @@ import shutil
 
 from distutils.command.build import build
 from distutils.command.clean import clean
+from distutils.dir_util import mkpath
 
 from setuptools import setup
 from setuptools import Extension
@@ -58,7 +60,11 @@ class BuildTranslations (Command):
     """
 
     @staticmethod
-    def get_translation_paths(command):
+    def all_locales():
+        return [f[:-3] for f in os.listdir("./po/") if f.endswith('.po')]
+
+    @staticmethod
+    def get_translation_paths(command, lang_codes=None):
         """Returns paths for building and installing message catalogs
 
         The returned data is a tuple with two lists.
@@ -67,12 +73,13 @@ class BuildTranslations (Command):
         The second contains (gen_mo_src_dir, [mo_target_path]) tuples
         that are used by the 'install' command.
         """
+        lang_codes = lang_codes or BuildTranslations.all_locales()
         tmpdir = command.get_finalized_command("build").build_temp
 
         msg_path_pairs = []
         data_path_pairs = []
-        for po_path in glob.glob("po/*.po"):
-            lang = os.path.basename(po_path)[:-3]
+        for lang in lang_codes:
+            po_path = os.path.join("po", lang + ".po")
             mo_dir = os.path.join("locale", lang, "LC_MESSAGES")
             targ = os.path.join(tmpdir, mo_dir, "mypaint.mo")
             msg_path_pairs.append((po_path, targ))
@@ -90,11 +97,9 @@ class BuildTranslations (Command):
         pass
 
     def run(self):
-        msg_paths, data_paths = BuildTranslations.get_translation_paths(self)
+        msg_paths = BuildTranslations.get_translation_paths(self)[0]
         for po_path, mo_path in msg_paths:
             self._compile_message_catalog(po_path, mo_path)
-        if not self.dry_run:
-            self.distribution.data_files.extend(data_paths)
 
     def _compile_message_catalog(self, po_file_path, mo_file_path):
         needs_update = not (
@@ -118,17 +123,24 @@ class BuildTranslations (Command):
 class BuildConfig (Command):
     """Builds configuration file config.py.
 
-    This will allow python files to know where to find data when it is
+    This allows python files to know where to find data when it is
     provided as a separate package, i.e. the brushes.
 
+    It also handles which translation files will be included
+    (all of them, for non-release builds)
     """
 
     description = "generate lib/config.py using fetched or provided values"
     user_options = [
         ("brushdir-path=", None,
          "use the provided argument as brush directory path"),
+        ("translation-threshold=", None,
+         "Limit translations to those with a completion percentage"
+         "at or above the given threshold. Argument range: [0..100]"),
     ]
 
+    LOCALE_CACHE = "locale_cache"
+    COMPLETION_THRESHOLD = 75
     WARNING_TEMPLATE = (
         "# == THIS FILE IS GENERATED ==\n"
         "# DO NOT EDIT OR ADD TO VERSION CONTROL\n"
@@ -139,10 +151,13 @@ class BuildConfig (Command):
 
     def initialize_options(self):
         self.brushdir_path = None
+        self.translation_threshold = 0
 
     def finalize_options(self):
         if self.brushdir_path and self.brushdir_path.strip()[0] == '/':
             print("WARNING: supplied brush directory path is not relative")
+        self.translation_threshold = int(self.translation_threshold)
+        assert(0 <= self.translation_threshold <= 100)
 
     def run(self):
         # Determine path to the brushes directory
@@ -151,9 +166,9 @@ class BuildConfig (Command):
         else:
             mypaint_brushdir = self.pkgconf_brushdir_path()
 
-        # Determine which locales are supported, based
-        # on existing *.po translation files
-        locales = [f[:-3] for f in os.listdir("./po/") if f.endswith('.po')]
+        # Determine which locales are supported, based on existing po files
+        # and optionally their level of completeness (% of strings translated)
+        locales = self._get_locales()
         # Pretty print sorted locales to individual lines in list
         locstring = " " + pprint.pformat(sorted(locales), indent=4)[1:-1] + ","
 
@@ -165,6 +180,110 @@ class BuildConfig (Command):
             '@SUPPORTED_LOCALES@': locstring,
         }
         self.replace(files, replacements)
+
+    @staticmethod
+    def translation_completion_func():
+        """Get a function for calculating translation completeness
+
+        Tries to use polib if possible, but falls back to a shell script
+        that only uses existing dependencies if polib is not installed.
+
+        :return: Function calculating po translation completeness
+        """
+        try:
+            import polib
+
+            def py_completion(_, path, template=False):
+                po = polib.pofile(path)
+                if template:
+                    return len(po)
+                else:
+                    return len(po.translated_entries())
+            return py_completion
+        except ImportError:
+            print("polib not installed, falling back to shellscript!")
+
+            def sh_completion(loc, _, template=False):
+                cmd = [os.path.join("po", "num_strings_translated.sh")]
+                if not template:
+                    cmd.append(loc)
+                return int(subprocess.check_output(cmd))
+            return sh_completion
+
+    def _get_locales(self):
+        """Return a list of locales to use/install
+
+        If no limitation is set (default) all locales are based solely on
+        the existing *.po-files in the po directory. If limitation is enabled,
+        the list is filtered based on the percentage of strings translated
+        for each translation file.
+
+        :return: A list of locales
+        """
+        locales = BuildTranslations.all_locales()
+        if not self.translation_threshold:
+            # No limit - just return all of them
+            return locales
+
+        # Get the completion percentage for translation files
+        # and cache the result to allow for partial updates
+        static_linguas_path = os.path.join("po", "STATIC_LINGUAS")
+        with open(static_linguas_path, "r") as sl_file:
+            static_linguas = sl_file.read().strip().split("\n")
+        completion = BuildConfig.translation_completion_func()
+        template_path = os.path.join("po", "mypaint.pot")
+        total = float(completion(None, template_path, template=True))
+        # Read/update cache
+        with self._get_locale_data_cache() as cache:
+            for loc in locales:
+                # For static always-include locales, set a faux percentage of
+                # 100, but set timestamp to 0 to force calculation on removal
+                # from the STATIC_LINGUAS locale list.
+                if loc in static_linguas:
+                    cache[loc] = (100, 0)
+                    continue
+                po_path = os.path.join("po", loc + ".po")
+                po_modified_time = os.stat(po_path).st_mtime
+                if loc not in cache or cache[loc][1] < po_modified_time:
+                    print("Updating cache:", loc)
+                    num = completion(loc, po_path)
+                    percentage = 100 * num / total
+                    # Add some margin to avoid rounding problems
+                    cache[loc] = (percentage, po_modified_time + 0.1)
+
+        thresh = self.translation_threshold
+        return [k for k, v in cache.items() if v[0] > thresh]
+
+    @contextmanager
+    def _get_locale_data_cache(self):
+        """Retrieve/update locale info cache
+
+        The locale cache holds cached information about the
+        level of completion for individual locales, along
+        with a timestamp for when this completion was last
+        calculated.
+        """
+        build_tmp_dir = self.get_finalized_command("build").build_temp
+        cache_file = os.path.join(build_tmp_dir, self.LOCALE_CACHE)
+        if not os.path.isfile(cache_file):
+            info_dict = dict()
+        else:
+            # Read in file to a list of lines
+            with open(cache_file, "r") as f:
+                info_lines = f.read().strip().split("\n")
+            # Turn list of lines into a dict of (completion, timestamp)
+            # tuples, keyed by the locale code.
+            info_line_lists = [l.split(" ") for l in info_lines]
+            info_dict = {loc: (float(completion), float(timestamp))
+                         for loc, completion, timestamp in info_line_lists}
+        yield info_dict
+        # Turn the (modified) dict back into space-separated values
+        # and overwrite the cache file (cache file timestamp is irrelevant)
+        out = [str(loc) + " " + str(v[0]) + " " + str(v[1])
+               for loc, v in info_dict.items()]
+        mkpath(build_tmp_dir)
+        with open(cache_file, "w") as f:
+            f.write("\n".join(out))
 
     def pkgconf_brushdir_path(self):
         try:
@@ -290,11 +409,14 @@ class Install (install):
     """
 
     def run(self):
-        # Without this, using --skip-build will result in the locale
-        # files not being installed, even if they have been generated.
-        if "build_translations" not in self.distribution.have_run:
-            data_paths = BuildTranslations.get_translation_paths(self)[1]
-            self.distribution.data_files.extend(data_paths)
+        # lib.config is a module generated as part of the build process,
+        # and may not exist when the setup script is run,
+        # hence it should not (and often cannot) be a top-level import.
+        import lib.config
+        # We only install the locales added in the build_config step.
+        locales = lib.config.supported_locales
+        data_paths = BuildTranslations.get_translation_paths(self, locales)[1]
+        self.distribution.data_files.extend(data_paths)
         install.run(self)
 
 
