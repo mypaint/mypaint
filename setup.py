@@ -100,6 +100,18 @@ class BuildTranslations (Command):
         msg_paths = BuildTranslations.get_translation_paths(self)[0]
         for po_path, mo_path in msg_paths:
             self._compile_message_catalog(po_path, mo_path)
+        tmp_dir = self.get_finalized_command("build").build_temp
+
+        # Create a symlink to the locale directory to enable
+        # use of translations when running from the source dir.
+        # For now only enabled on OS's w. py symlinking available.
+        if hasattr(os, "symlink"):
+            base, tmp = os.path.split(tmp_dir)
+            link_dest = os.path.join(base, "locale")
+            link_src = os.path.join(tmp, "locale")
+            if os.path.exists(link_dest):
+                os.remove(link_dest)
+            os.symlink(link_src, link_dest)
 
     def _compile_message_catalog(self, po_file_path, mo_file_path):
         needs_update = not (

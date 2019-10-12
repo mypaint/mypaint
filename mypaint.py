@@ -180,7 +180,7 @@ def get_paths():
         prefix = None
         libpath = u'.'
         iconspath = u'desktop/icons'
-        localepath = 'po'
+        localepath = os.path.join('build', 'locale')
         logger.info("Installation layout: not installed, "
                     "testing from within the source tree")
     elif sys.platform == 'win32':
