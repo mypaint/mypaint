@@ -2644,7 +2644,7 @@ msgstr ""
 #: ../gui/preferenceswindow.py:365
 msgctxt "Language preferences menu - default option"
 msgid "System Language"
-msgstr ""
+msgstr "Sistemos kalba"
 
 #. TRANSLATORS: lang_en is the english name of the language
 #. TRANSLATORS: lang_nat is the native name of the language

@@ -19,8 +19,8 @@ msgstr ""
 "Plural-Forms: nplurals=3; plural=n==1 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 "
 "|| n%100>=20) ? 1 : 2;\n"
 "X-Generator: Weblate 2.8-dev\n"
-"X-Poedit-Language: Polish\n"
 "X-Poedit-Country: Polski\n"
+"X-Poedit-Language: Polish\n"
 "X-Poedit-SourceCharset: utf-8\n"
 
 #. TRANSLATORS: Name of first column in the button map preferences.
@@ -2793,7 +2793,7 @@ msgstr "Ustawienia"
 #: ../gui/preferenceswindow.py:365
 msgctxt "Language preferences menu - default option"
 msgid "System Language"
-msgstr ""
+msgstr "Język systemowy"
 
 #. TRANSLATORS: lang_en is the english name of the language
 #. TRANSLATORS: lang_nat is the native name of the language
