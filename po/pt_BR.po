@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mypaint v2.0.0-alpha.12-33-gd8e7364\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-09-24 12:10+0200\n"
+"POT-Creation-Date: 2019-10-13 09:15+0200\n"
 "PO-Revision-Date: 2019-08-01 05:10+0000\n"
 "Last-Translator: Neymar Junior <wizureye@nextmail.in>\n"
 "Language-Team: Portuguese (Brazil) <https://hosted.weblate.org/projects/"
@@ -22,7 +22,9 @@ msgstr ""
 "X-Poedit-Country: BRAZIL\n"
 "X-Poedit-SourceCharset: utf-8\n"
 
-#: ../gui/accelmap.py:99 ../gui/buttonmap.py:280
+#. TRANSLATORS: Name of first column in the button map preferences.
+#. TRANSLATORS: Refers to an action bound to a mod+button combination.
+#: ../gui/accelmap.py:99 ../gui/buttonmap.py:284
 msgid "Action"
 msgstr "Ação"
 
@@ -35,7 +37,11 @@ msgstr "Combinação de teclas"
 msgid "Edit Key for '%s'"
 msgstr "Editar Tecla para '%s'"
 
-#: ../gui/accelmap.py:326 ../gui/buttonmap.py:491
+#. TRANSLATORS: Part of interface when adding a new button map binding.
+#. TRANSLATORS: It's a label for the action part of the combination.
+#. TRANSLATORS: Probably always the same as the column name
+#. TRANSLATORS: "Action" with a trailing ":" or lang-specific symbol
+#: ../gui/accelmap.py:326 ../gui/buttonmap.py:502
 msgid "Action:"
 msgstr "Ação:"
 
@@ -560,37 +566,46 @@ msgctxt "new brush group dialog: title"
 msgid "Create Group"
 msgstr "Criar Grupo"
 
-#: ../gui/buttonmap.py:58
+#. TRANSLATORS: "Button" refers to a mouse button
+#. TRANSLATORS: It is part of a button map label.
+#: ../gui/buttonmap.py:60
 msgid "Button"
 msgstr "Botão"
 
 #. TRANSLATORS: abbreviated "Button <number>" for forms like "Alt+Btn1"
-#: ../gui/buttonmap.py:61
+#: ../gui/buttonmap.py:63
 msgid "Btn"
 msgstr "Botão"
 
-#: ../gui/buttonmap.py:295
+#. TRANSLATORS: Name of second column in the button map preferences.
+#. TRANSLATORS: Column lists mod+button combinations (bound to actions)
+#. TRANSLATORS: E.g. Button1 or Ctrl+Button2 or Alt+Button3
+#: ../gui/buttonmap.py:302
 msgid "Button press"
 msgstr "Botão pressionado"
 
-#: ../gui/buttonmap.py:313
+#: ../gui/buttonmap.py:320
 msgid "Add a new binding"
 msgstr "Adicionar uma nova associação"
 
-#: ../gui/buttonmap.py:321
+#: ../gui/buttonmap.py:328
 msgid "Remove the current binding"
 msgstr "Remover a associação atual"
 
-#: ../gui/buttonmap.py:468
+#: ../gui/buttonmap.py:475
 #, python-format
 msgid "Edit binding for '%s'"
 msgstr "Editar associação para '%s'"
 
-#: ../gui/buttonmap.py:504
+#. TRANSLATORS: Part of interface when adding a new button map binding.
+#. TRANSLATORS: It's a label for the mod+button part of the combination.
+#. TRANSLATORS: Probably always the same as "Button press" (column name)
+#. TRANSLATORS: but with a trailing ":" or other lang-specific symbol.
+#: ../gui/buttonmap.py:519
 msgid "Button press:"
 msgstr "Botão pressionado:"
 
-#: ../gui/buttonmap.py:541
+#: ../gui/buttonmap.py:556
 msgid ""
 "Hold down modifier keys, and press a button over this text to set a new "
 "binding."
@@ -598,14 +613,16 @@ msgstr ""
 "Mantenha as teclas modificadoras pressionadas, e pressione um botão sobre "
 "este texto para definir uma nova associação."
 
-#: ../gui/buttonmap.py:569
+#. TRANSLATORS: "fixed" in the sense of "static" -
+#. TRANSLATORS: something which cannot be changed
+#: ../gui/buttonmap.py:586
 #, python-brace-format
 msgid ""
 "{button} cannot be bound without modifier keys (its meaning is fixed, sorry)"
 msgstr ""
 "{button} não pode ser vinculado sem teclas modificadoras (é fixo, desculpe)"
 
-#: ../gui/buttonmap.py:584
+#: ../gui/buttonmap.py:601
 #, python-brace-format
 msgid "{button_combination} is already bound to the action '{action_name}'"
 msgstr "{button_combination} já está associado à ação '{action_name}'"

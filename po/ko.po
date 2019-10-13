@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mypaint v2.0.0-alpha.12-327-ga332f03\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-09-24 12:10+0200\n"
+"POT-Creation-Date: 2019-10-13 09:15+0200\n"
 "PO-Revision-Date: 2019-08-31 19:09+0000\n"
 "Last-Translator: geun-tak Jeong <beroberos@gmail.com>\n"
 "Language-Team: Korean <https://hosted.weblate.org/projects/mypaint/mypaint/"
@@ -17,7 +17,9 @@ msgstr ""
 "X-Generator: Weblate 3.9-dev\n"
 "X-Poedit-SourceCharset: utf-8\n"
 
-#: ../gui/accelmap.py:99 ../gui/buttonmap.py:280
+#. TRANSLATORS: Name of first column in the button map preferences.
+#. TRANSLATORS: Refers to an action bound to a mod+button combination.
+#: ../gui/accelmap.py:99 ../gui/buttonmap.py:284
 msgid "Action"
 msgstr "작업"
 
@@ -30,7 +32,11 @@ msgstr "단축키"
 msgid "Edit Key for '%s'"
 msgstr "'%s'에 대한 단축키 편집"
 
-#: ../gui/accelmap.py:326 ../gui/buttonmap.py:491
+#. TRANSLATORS: Part of interface when adding a new button map binding.
+#. TRANSLATORS: It's a label for the action part of the combination.
+#. TRANSLATORS: Probably always the same as the column name
+#. TRANSLATORS: "Action" with a trailing ":" or lang-specific symbol
+#: ../gui/accelmap.py:326 ../gui/buttonmap.py:502
 msgid "Action:"
 msgstr "작업:"
 
@@ -553,37 +559,46 @@ msgctxt "new brush group dialog: title"
 msgid "Create Group"
 msgstr "그룹을 만들기"
 
-#: ../gui/buttonmap.py:58
+#. TRANSLATORS: "Button" refers to a mouse button
+#. TRANSLATORS: It is part of a button map label.
+#: ../gui/buttonmap.py:60
 msgid "Button"
 msgstr "버튼"
 
 #. TRANSLATORS: abbreviated "Button <number>" for forms like "Alt+Btn1"
-#: ../gui/buttonmap.py:61
+#: ../gui/buttonmap.py:63
 msgid "Btn"
 msgstr "Btn"
 
-#: ../gui/buttonmap.py:295
+#. TRANSLATORS: Name of second column in the button map preferences.
+#. TRANSLATORS: Column lists mod+button combinations (bound to actions)
+#. TRANSLATORS: E.g. Button1 or Ctrl+Button2 or Alt+Button3
+#: ../gui/buttonmap.py:302
 msgid "Button press"
 msgstr "버튼 누르기"
 
-#: ../gui/buttonmap.py:313
+#: ../gui/buttonmap.py:320
 msgid "Add a new binding"
 msgstr "새로운 바인딩을 추가"
 
-#: ../gui/buttonmap.py:321
+#: ../gui/buttonmap.py:328
 msgid "Remove the current binding"
 msgstr "현재 바인딩을 제거"
 
-#: ../gui/buttonmap.py:468
+#: ../gui/buttonmap.py:475
 #, python-format
 msgid "Edit binding for '%s'"
 msgstr "'%s'의 바인딩 편집"
 
-#: ../gui/buttonmap.py:504
+#. TRANSLATORS: Part of interface when adding a new button map binding.
+#. TRANSLATORS: It's a label for the mod+button part of the combination.
+#. TRANSLATORS: Probably always the same as "Button press" (column name)
+#. TRANSLATORS: but with a trailing ":" or other lang-specific symbol.
+#: ../gui/buttonmap.py:519
 msgid "Button press:"
 msgstr "버튼 누르기:"
 
-#: ../gui/buttonmap.py:541
+#: ../gui/buttonmap.py:556
 msgid ""
 "Hold down modifier keys, and press a button over this text to set a new "
 "binding."
@@ -591,14 +606,16 @@ msgstr ""
 "새로운 바인딩을 설정하려면, 보조 키를 누른 채로 이 텍스트위의 단추를 누릅니"
 "다."
 
-#: ../gui/buttonmap.py:569
+#. TRANSLATORS: "fixed" in the sense of "static" -
+#. TRANSLATORS: something which cannot be changed
+#: ../gui/buttonmap.py:586
 #, python-brace-format
 msgid ""
 "{button} cannot be bound without modifier keys (its meaning is fixed, sorry)"
 msgstr ""
 "{button}은(는) 보조 키 없이 바인팅될 수 없습니다 (고정을 의미, 죄송합니다)"
 
-#: ../gui/buttonmap.py:584
+#: ../gui/buttonmap.py:601
 #, python-brace-format
 msgid "{button_combination} is already bound to the action '{action_name}'"
 msgstr "{button_combination}는 이미 '{action_name}'을 작업할 가능성이 큽니다"

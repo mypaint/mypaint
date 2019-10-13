@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-09-24 12:10+0200\n"
+"POT-Creation-Date: 2019-10-13 09:15+0200\n"
 "PO-Revision-Date: 2019-10-10 14:05+0000\n"
 "Last-Translator: Ecron <ecron_89@hotmail.com>\n"
 "Language-Team: Valencian <https://hosted.weblate.org/projects/mypaint/"
@@ -19,7 +19,9 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 "X-Generator: Weblate 3.9-dev\n"
 
-#: ../gui/accelmap.py:99 ../gui/buttonmap.py:280
+#. TRANSLATORS: Name of first column in the button map preferences.
+#. TRANSLATORS: Refers to an action bound to a mod+button combination.
+#: ../gui/accelmap.py:99 ../gui/buttonmap.py:284
 msgid "Action"
 msgstr "Acció"
 
@@ -32,7 +34,11 @@ msgstr "Combinació de tecles"
 msgid "Edit Key for '%s'"
 msgstr "Edita la tecla per a «%s»"
 
-#: ../gui/accelmap.py:326 ../gui/buttonmap.py:491
+#. TRANSLATORS: Part of interface when adding a new button map binding.
+#. TRANSLATORS: It's a label for the action part of the combination.
+#. TRANSLATORS: Probably always the same as the column name
+#. TRANSLATORS: "Action" with a trailing ":" or lang-specific symbol
+#: ../gui/accelmap.py:326 ../gui/buttonmap.py:502
 msgid "Action:"
 msgstr "Acció:"
 
@@ -130,8 +136,8 @@ msgstr "S'ha produït un error en carregar els fons"
 msgid ""
 "Please remove the unloadable files, or check your libgdkpixbuf installation."
 msgstr ""
-"Elimineu els fitxers que no es puguen carregar, o comproveu la vostra instal·"
-"lació de libgdkpixbuf."
+"Elimineu els fitxers que no es puguen carregar, o comproveu la vostra "
+"instal·lació de libgdkpixbuf."
 
 #: ../gui/backgroundwindow.py:377
 #, python-brace-format
@@ -558,37 +564,46 @@ msgctxt "new brush group dialog: title"
 msgid "Create Group"
 msgstr "Crea un grup"
 
-#: ../gui/buttonmap.py:58
+#. TRANSLATORS: "Button" refers to a mouse button
+#. TRANSLATORS: It is part of a button map label.
+#: ../gui/buttonmap.py:60
 msgid "Button"
 msgstr "Botó"
 
 #. TRANSLATORS: abbreviated "Button <number>" for forms like "Alt+Btn1"
-#: ../gui/buttonmap.py:61
+#: ../gui/buttonmap.py:63
 msgid "Btn"
 msgstr "Bt"
 
-#: ../gui/buttonmap.py:295
+#. TRANSLATORS: Name of second column in the button map preferences.
+#. TRANSLATORS: Column lists mod+button combinations (bound to actions)
+#. TRANSLATORS: E.g. Button1 or Ctrl+Button2 or Alt+Button3
+#: ../gui/buttonmap.py:302
 msgid "Button press"
 msgstr "Prem el botó"
 
-#: ../gui/buttonmap.py:313
+#: ../gui/buttonmap.py:320
 msgid "Add a new binding"
 msgstr "Afig una nova vinculació"
 
-#: ../gui/buttonmap.py:321
+#: ../gui/buttonmap.py:328
 msgid "Remove the current binding"
 msgstr "Suprimeix la vinculació actual"
 
-#: ../gui/buttonmap.py:468
+#: ../gui/buttonmap.py:475
 #, python-format
 msgid "Edit binding for '%s'"
 msgstr "Edita la vinculació per a «%s»"
 
-#: ../gui/buttonmap.py:504
+#. TRANSLATORS: Part of interface when adding a new button map binding.
+#. TRANSLATORS: It's a label for the mod+button part of the combination.
+#. TRANSLATORS: Probably always the same as "Button press" (column name)
+#. TRANSLATORS: but with a trailing ":" or other lang-specific symbol.
+#: ../gui/buttonmap.py:519
 msgid "Button press:"
 msgstr "Botó premut:"
 
-#: ../gui/buttonmap.py:541
+#: ../gui/buttonmap.py:556
 msgid ""
 "Hold down modifier keys, and press a button over this text to set a new "
 "binding."
@@ -596,7 +611,9 @@ msgstr ""
 "Manteniu pressionades les tecles de modificació i premeu un botó sobre "
 "aquest text per configurar una nova vinculació."
 
-#: ../gui/buttonmap.py:569
+#. TRANSLATORS: "fixed" in the sense of "static" -
+#. TRANSLATORS: something which cannot be changed
+#: ../gui/buttonmap.py:586
 #, python-brace-format
 msgid ""
 "{button} cannot be bound without modifier keys (its meaning is fixed, sorry)"
@@ -604,7 +621,7 @@ msgstr ""
 "{button} no es pot enllaçar sense les tecles de modificació (això significa "
 "que és fix)"
 
-#: ../gui/buttonmap.py:584
+#: ../gui/buttonmap.py:601
 #, python-brace-format
 msgid "{button_combination} is already bound to the action '{action_name}'"
 msgstr "{button_combination} ja està vinculat a l'acció «{action_name}»"
@@ -1530,8 +1547,8 @@ msgid ""
 "What application should MyPaint use for editing files of type "
 "“{type_name}” ({content_type})?"
 msgstr ""
-"Quina aplicació ha d'emprar per a editar fitxers del tipus «{type_name}» "
-"({content_type})?"
+"Quina aplicació ha d'emprar per a editar fitxers del tipus "
+"«{type_name}» ({content_type})?"
 
 #: ../gui/externalapp.py:70
 msgid "Open With…"
@@ -3113,8 +3130,8 @@ msgid ""
 "Contains {unsaved_time} of unsaved painting."
 msgstr ""
 "Copia de seguretat actualitzada {last_modified_time} {ago}\n"
-"Mida: {autosave.width}×{autosave.height} píxels, Capes: {autosave.num_layers}"
-"\n"
+"Mida: {autosave.width}×{autosave.height} píxels, Capes: {autosave."
+"num_layers}\n"
 "Conté {unsaved_time} de dibuixos no guardats."
 
 #: ../lib/document.py:1432
@@ -3602,8 +3619,8 @@ msgid ""
 "Source which overlaps the destination, replaces the destination. Destination "
 "is placed elsewhere."
 msgstr ""
-"La font que se superposa a la destinació, la reemplaça. La destinació es col·"
-"loca en un altre lloc."
+"La font que se superposa a la destinació, la reemplaça. La destinació es "
+"col·loca en un altre lloc."
 
 #: ../lib/modes.py:126
 msgid "Destination Atop"

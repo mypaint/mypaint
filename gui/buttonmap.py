@@ -55,6 +55,8 @@ def button_press_displayname(button, mods, shorten = False):
     separator = ""
     if modif_label:
         separator = u"+"
+    # TRANSLATORS: "Button" refers to a mouse button
+    # TRANSLATORS: It is part of a button map label.
     mouse_button_label = _("Button")
     if shorten:
         # TRANSLATORS: abbreviated "Button <number>" for forms like "Alt+Btn1"
@@ -277,6 +279,8 @@ class ButtonMappingEditor (Gtk.EventBox):
         cell.set_property("editable", True)
         cell.set_property("has-entry", False)
         cell.connect("changed", self._action_cell_changed_cb)
+        # TRANSLATORS: Name of first column in the button map preferences.
+        # TRANSLATORS: Refers to an action bound to a mod+button combination.
         col = Gtk.TreeViewColumn(_("Action"), cell)
         col.set_cell_data_func(cell, self._liststore_action_datafunc)
         col.set_min_width(150)
@@ -292,6 +296,9 @@ class ButtonMappingEditor (Gtk.EventBox):
         cell.set_property("editable", True)
         cell.connect("edited", self._bp_cell_edited_cb)
         cell.connect("editing-started", self._bp_cell_editing_started_cb)
+        # TRANSLATORS: Name of second column in the button map preferences.
+        # TRANSLATORS: Column lists mod+button combinations (bound to actions)
+        # TRANSLATORS: E.g. Button1 or Ctrl+Button2 or Alt+Button3
         col = Gtk.TreeViewColumn(_("Button press"), cell)
         col.add_attribute(cell, "text", self.bpd_column)
         col.set_expand(True)
@@ -488,6 +495,10 @@ class ButtonMappingEditor (Gtk.EventBox):
         row = 0
         label = Gtk.Label()
         label.set_alignment(0, 0.5)
+        # TRANSLATORS: Part of interface when adding a new button map binding.
+        # TRANSLATORS: It's a label for the action part of the combination.
+        # TRANSLATORS: Probably always the same as the column name
+        # TRANSLATORS: "Action" with a trailing ":" or lang-specific symbol
         label.set_text(_("Action:"))
         table.attach(label, 0, 1, row, row + 1, Gtk.AttachOptions.FILL)
 
@@ -501,6 +512,10 @@ class ButtonMappingEditor (Gtk.EventBox):
         row += 1
         label = Gtk.Label()
         label.set_alignment(0, 0.5)
+        # TRANSLATORS: Part of interface when adding a new button map binding.
+        # TRANSLATORS: It's a label for the mod+button part of the combination.
+        # TRANSLATORS: Probably always the same as "Button press" (column name)
+        # TRANSLATORS: but with a trailing ":" or other lang-specific symbol.
         label.set_text(_("Button press:"))
         table.attach(label, 0, 1, row, row + 1, Gtk.AttachOptions.FILL)
 
@@ -566,6 +581,8 @@ class ButtonMappingEditor (Gtk.EventBox):
         if modifiers == 0 and event.button == 1:
             self._bp_edit_dialog_set_error(
                 dialog,
+                # TRANSLATORS: "fixed" in the sense of "static" -
+                # TRANSLATORS: something which cannot be changed
                 _("{button} cannot be bound without modifier keys "
                   "(its meaning is fixed, sorry)")
                 .format(
