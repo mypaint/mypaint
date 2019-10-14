@@ -16,7 +16,6 @@ import shutil
 
 from distutils.command.build import build
 from distutils.command.clean import clean
-from distutils.dir_util import mkpath
 
 from setuptools import setup
 from setuptools import Extension
@@ -239,9 +238,10 @@ class BuildConfig (Command):
 
         # Get the completion percentage for translation files
         # and cache the result to allow for partial updates
-        static_linguas_path = os.path.join("po", "STATIC_LINGUAS")
-        with open(static_linguas_path, "r") as sl_file:
-            static_linguas = sl_file.read().strip().split("\n")
+        always_include = [
+            "en_CA",
+            "en_GB",
+        ]
         completion = BuildConfig.translation_completion_func()
         template_path = os.path.join("po", "mypaint.pot")
         total = float(completion(None, template_path, template=True))
@@ -249,9 +249,9 @@ class BuildConfig (Command):
         with self._get_locale_data_cache() as cache:
             for loc in locales:
                 # For static always-include locales, set a faux percentage of
-                # 100, but set timestamp to 0 to force calculation on removal
-                # from the STATIC_LINGUAS locale list.
-                if loc in static_linguas:
+                # 100, but set timestamp to 0 to force calculation if they are
+                # removed from the list.
+                if loc in always_include:
                     cache[loc] = (100, 0)
                     continue
                 po_path = os.path.join("po", loc + ".po")
@@ -275,8 +275,10 @@ class BuildConfig (Command):
         with a timestamp for when this completion was last
         calculated.
         """
-        build_tmp_dir = self.get_finalized_command("build").build_temp
-        cache_file = os.path.join(build_tmp_dir, self.LOCALE_CACHE)
+        # Place the cache file directly under the build dir
+        # to share it between python versions.
+        build_dir = self.get_finalized_command("build").build_base
+        cache_file = os.path.join(build_dir, self.LOCALE_CACHE)
         if not os.path.isfile(cache_file):
             info_dict = dict()
         else:
@@ -293,7 +295,7 @@ class BuildConfig (Command):
         # and overwrite the cache file (cache file timestamp is irrelevant)
         out = [str(loc) + " " + str(v[0]) + " " + str(v[1])
                for loc, v in info_dict.items()]
-        mkpath(build_tmp_dir)
+        self.mkpath(build_dir)
         with open(cache_file, "w") as f:
             f.write("\n".join(out))
 

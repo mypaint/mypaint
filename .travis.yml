@@ -57,6 +57,7 @@ script:
     - python -m this
     - python --version
     - python setup.py build
+    - python setup.py build_config --translation-threshold=75
     - python setup.py nosetests --tests lib
     - python setup.py test
     - sudo python setup.py managed_install
