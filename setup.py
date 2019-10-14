@@ -35,6 +35,9 @@ OPENMP_LDFLAG = os.getenv("OPENMP_LDFLAG", "-fopenmp")
 
 # Helper classes and routines:
 
+def print_err(msg):
+    print(msg, file=sys.stderr)
+
 
 def pkgconf():
     """Returns the name used to execute pkg-config
@@ -155,8 +158,8 @@ class BuildConfig (Command):
     WARNING_TEMPLATE = (
         "# == THIS FILE IS GENERATED ==\n"
         "# DO NOT EDIT OR ADD TO VERSION CONTROL\n"
-        "# The structure is defined in {input_file}\n"
-        "# The generation is done by the {command_name} command in {script}\n"
+        "# The structure is defined in {input}\n"
+        "# The generation is done by the {cmd} command in {script}\n"
         "\n"
     )
 
@@ -172,10 +175,7 @@ class BuildConfig (Command):
 
     def run(self):
         # Determine path to the brushes directory
-        if self.brushdir_path is not None:
-            mypaint_brushdir = self.brushdir_path
-        else:
-            mypaint_brushdir = self.pkgconf_brushdir_path()
+        brushdir = self.brushdir_path or BuildConfig.pkgconf_brushdir_path()
 
         # Determine which locales are supported, based on existing po files
         # and optionally their level of completeness (% of strings translated)
@@ -183,14 +183,11 @@ class BuildConfig (Command):
         # Pretty print sorted locales to individual lines in list
         locstring = " " + pprint.pformat(sorted(locales), indent=4)[1:-1] + ","
 
-        files = {
-            'config.py.in': 'lib/config.py',
+        conf_vars = {
+            'mypaint_brushdir': brushdir,
+            'supported_locales': locstring,
         }
-        replacements = {
-            '@MYPAINT_BRUSHDIR@': mypaint_brushdir,
-            '@SUPPORTED_LOCALES@': locstring,
-        }
-        self.replace(files, replacements)
+        self.instantiate_template('config.py.in', 'lib/config.py', conf_vars)
 
     @staticmethod
     def translation_completion_func():
@@ -299,45 +296,44 @@ class BuildConfig (Command):
         with open(cache_file, "w") as f:
             f.write("\n".join(out))
 
-    def pkgconf_brushdir_path(self):
+    @staticmethod
+    def pkgconf_brushdir_path():
         try:
             cmd = [
                 pkgconf(), '--variable=brushesdir', 'mypaint-brushes-2.0'
             ]
             return subprocess.check_output(cmd).decode().strip()
         except subprocess.CalledProcessError as e:
-            sys.stderr.write(
-                str(e) +
-                'pkg-config could not find package mypaint-brushes-2.0'
-            )
-            sys.exit(os.EX_CANTCREAT)
+            print_err(e)
+            print_err('pkg-config could not find package mypaint-brushes-2.0')
+            sys.exit(1)
 
-    def replace(self, files, replacements):
-        for f in files:
-            try:
-                shutil.copyfile(f, files[f])
-                fd = open(files[f], 'r+')
-                contents = fd.read()
-                # Make the necessary replacements.
-                for r in replacements:
-                    contents = contents.replace(r, replacements[r])
-                warning = self.WARNING_TEMPLATE.format(
-                    input_file=f,
-                    command_name=self.__class__.__name__,
-                    script=__file__
-                )
-                fd.truncate(0)
-                fd.seek(0)
-                fd.write(warning)
-                fd.write(contents)
-                fd.flush()
-                fd.close()
-            except IOError:
-                sys.stderr.write(
-                    'The script {} failed to update. '
-                    'Check your permissions.'.format(f)
-                )
-                sys.exit(os.EX_CANTCREAT)
+    def instantiate_template(self, template_path, output_path, substitutions):
+        """Instantiate a template and write result to a file
+
+        :param template_path: The path of the template file
+        :param output_path: The path of the instantiated output file
+        :param substitutions: A dictionary of substitutions that fully
+            cover the {keyword} instances in the template file contents.
+        """
+        warning = self.WARNING_TEMPLATE.format(
+            input=template_path, cmd=self.__class__.__name__, script=__file__
+        )
+        try:
+            with open(template_path, "r") as template:
+                template_string = template.read()
+            with open(output_path, "w") as output_file:
+                output_file.write(warning)
+                output_file.write(template_string.format(**substitutions))
+        except IOError as e:
+            print_err(e)
+            msg = 'Failed to instantiate "{}" to "{}". Check permissions.'
+            print_err(msg.format(template_path, output_path))
+            sys.exit(1)
+        except KeyError as e:
+            print_err(e)
+            print_err("Template key not provided!")
+            sys.exit(1)
 
 
 class Build (build):

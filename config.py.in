@@ -8,8 +8,8 @@
 # the Free Software Foundation; either version 2 of the License, or
 # (at your option) any later version
 
-mypaint_brushdir = u'@MYPAINT_BRUSHDIR@'
+mypaint_brushdir = u'{mypaint_brushdir}'
 # List of locales for which translation files are available
 supported_locales = [
-@SUPPORTED_LOCALES@
+{supported_locales}
 ]
