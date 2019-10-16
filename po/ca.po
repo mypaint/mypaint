@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: mypaint v2.0.0-alpha.8-1-g4490f06\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2019-10-13 12:13+0200\n"
-"PO-Revision-Date: 2019-10-04 15:56+0000\n"
+"PO-Revision-Date: 2019-10-16 14:19+0000\n"
 "Last-Translator: Joan Montané <joan@montane.cat>\n"
 "Language-Team: Catalan <https://hosted.weblate.org/projects/mypaint/mypaint/"
 "ca/>\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 3.9-dev\n"
+"X-Generator: Weblate 3.9\n"
 
 #. TRANSLATORS: Name of first column in the button map preferences.
 #. TRANSLATORS: Refers to an action bound to a mod+button combination.
@@ -458,13 +458,13 @@ msgstr "Suprimeix del grup"
 #, python-brace-format
 msgctxt "brush group: context menu: unique names for cloned brushes"
 msgid "{original_name} copy"
-msgstr ""
+msgstr "{original_name} - còpia"
 
 #: ../gui/brushselectionwindow.py:299
 #, python-brace-format
 msgctxt "brush group: context menu: unique names for cloned brushes"
 msgid "{original_name} copy {n}"
-msgstr ""
+msgstr "{original_name} - còpia {n}"
 
 #: ../gui/brushselectionwindow.py:325
 #, python-brace-format
@@ -1417,7 +1417,7 @@ msgstr ""
 #: ../gui/document.py:929
 msgctxt "Statusbar message: paste result"
 msgid "Nothing on clipboard."
-msgstr ""
+msgstr "No hi ha res en el porta-retalls."
 
 #: ../gui/document.py:938
 msgctxt "Statusbar message: paste result"
@@ -1458,10 +1458,9 @@ msgid "Open Dragged File?"
 msgstr ""
 
 #: ../gui/drawwindow.py:293
-#, fuzzy
 msgctxt "Open dragged file confirm dialog: continue button"
 msgid "_Open"
-msgstr "Obre"
+msgstr "_Obre"
 
 #: ../gui/drawwindow.py:486
 msgid "Set current color"
@@ -1490,10 +1489,9 @@ msgid "Really Quit?"
 msgstr "Realment voleu sortir?"
 
 #: ../gui/drawwindow.py:679
-#, fuzzy
 msgctxt "Quit confirm dialog: continue button"
 msgid "_Quit"
-msgstr "Surt"
+msgstr "_Surt"
 
 #: ../gui/drawwindow.py:697
 msgid "Import brush package…"
@@ -1564,10 +1562,10 @@ msgid "no description"
 msgstr "Sense descripció"
 
 #: ../gui/filehandling.py:126
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgctxt "Document I/O: message shown while working"
 msgid "Loading {files_summary}…"
-msgstr "S'està carregant “{file_basename}”…"
+msgstr "S'estan carregant {files_summary}…"
 
 #: ../gui/filehandling.py:130
 #, python-brace-format
@@ -1576,16 +1574,16 @@ msgid "Importing layers from {files_summary}…"
 msgstr ""
 
 #: ../gui/filehandling.py:134
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgctxt "Document I/O: message shown while working"
 msgid "Saving {files_summary}…"
-msgstr "S'està desant “{file_basename}”…"
+msgstr "S'està desant {files_summary}…"
 
 #: ../gui/filehandling.py:138
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgctxt "Document I/O: message shown while working"
 msgid "Exporting to {files_summary}…"
-msgstr "S'està exportant a “{file_basename}”…"
+msgstr "S'està exportant a {files_summary}…"
 
 #: ../gui/filehandling.py:145
 #, fuzzy, python-brace-format
@@ -1662,8 +1660,8 @@ msgstr "S'ha carregat “{file_basename}”."
 #, python-brace-format
 msgid "{n} file"
 msgid_plural "{n} files"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "{n} fitxer"
+msgstr[1] "{n} fitxers"
 
 #: ../gui/filehandling.py:222
 #, fuzzy, python-brace-format
@@ -1684,13 +1682,11 @@ msgid "OpenRaster (*.ora)"
 msgstr "OpenRaster (*.ora)"
 
 #: ../gui/filehandling.py:438
-#, fuzzy
 msgctxt "save/load dialogs: filter patterns"
 msgid "PNG (*.png)"
 msgstr "PNG (*.png)"
 
 #: ../gui/filehandling.py:443
-#, fuzzy
 msgctxt "save/load dialogs: filter patterns"
 msgid "JPEG (*.jpg; *.jpeg)"
 msgstr "JPEG (*.jpg; *.jpeg)"
@@ -1744,16 +1740,14 @@ msgid "JPEG 90% quality (*.jpg; *.jpeg)"
 msgstr "JPEG qualitat 90%  (*.jpg; *.jpeg)"
 
 #: ../gui/filehandling.py:577
-#, fuzzy
 msgctxt "Dialogs (window title): File→Export…"
 msgid "Export"
-msgstr "Exporta…"
+msgstr "Exporta"
 
 #: ../gui/filehandling.py:582
-#, fuzzy
 msgctxt "Dialogs (window title): File→Save As…"
 msgid "Save As"
-msgstr "Anomena i desa…"
+msgstr "Anomena i desa"
 
 #: ../gui/filehandling.py:602
 #, fuzzy
@@ -1771,7 +1765,7 @@ msgstr "Realment voleu continuar?"
 #: ../gui/filehandling.py:702
 msgctxt "Destructive action confirm dialog: cancel button"
 msgid "_Cancel"
-msgstr ""
+msgstr "_Cancel·la"
 
 #: ../gui/filehandling.py:706
 #, fuzzy
@@ -1784,7 +1778,7 @@ msgctxt ""
 "Destructive action confirm dialog: fallback continue button (normally "
 "overridden)"
 msgid "Co_ntinue"
-msgstr ""
+msgstr "Co_ntinua"
 
 #: ../gui/filehandling.py:735
 #, fuzzy, python-brace-format
@@ -1805,7 +1799,7 @@ msgstr ""
 #: ../gui/filehandling.py:1004
 msgctxt "File→Open: confirm dialog: title question"
 msgid "Open File?"
-msgstr ""
+msgstr "Voleu obrir el fitxer?"
 
 #: ../gui/filehandling.py:1008
 #, fuzzy
@@ -1814,10 +1808,9 @@ msgid "_Open…"
 msgstr "Obre…"
 
 #: ../gui/filehandling.py:1016
-#, fuzzy
 msgctxt "File→Open: file chooser dialog: title"
 msgid "Open File"
-msgstr "Obre"
+msgstr "Obre el fitxer"
 
 #: ../gui/filehandling.py:1058
 #, fuzzy
@@ -1826,33 +1819,29 @@ msgid "Open Scratchpad…"
 msgstr "Obre el quadre d'esborranys…"
 
 #: ../gui/filehandling.py:1100
-#, fuzzy
 msgctxt "Layers→Import Layers: files-chooser dialog: title"
 msgid "Import Layers"
-msgstr "Importa pinzell"
+msgstr "Importa capes"
 
 #: ../gui/filehandling.py:1409
 msgctxt "File→Open Recent→* confirm dialog: title"
 msgid "Open File?"
-msgstr ""
+msgstr "Voleu obrir el fitxer?"
 
 #: ../gui/filehandling.py:1413
-#, fuzzy
 msgctxt "File→Open Recent→* confirm dialog: continue button"
 msgid "_Open"
-msgstr "Obre"
+msgstr "_Obre"
 
 #: ../gui/filehandling.py:1428
-#, fuzzy
 msgctxt "File→Open Most Recent confirm dialog: title"
 msgid "Open Most Recent File?"
-msgstr "Obre el més recent"
+msgstr "Voleu obrir el fitxer més recent?"
 
 #: ../gui/filehandling.py:1433
-#, fuzzy
 msgctxt "File→Open Most Recent→* confirm dialog: continue button"
 msgid "_Open"
-msgstr "Obre"
+msgstr "_Obre"
 
 #: ../gui/filehandling.py:1447
 #, fuzzy
@@ -1873,10 +1862,9 @@ msgid "Open Previous Scrap?"
 msgstr "Obre esbós previ"
 
 #: ../gui/filehandling.py:1473
-#, fuzzy
 msgctxt "File→Open Next/Prev Scrap confirm dialog: continue button"
 msgid "_Open"
-msgstr "Obre"
+msgstr "_Obre"
 
 #: ../gui/filehandling.py:1488
 msgctxt "File→Revert: status message: canvas has no filename yet"
@@ -1886,7 +1874,7 @@ msgstr ""
 #: ../gui/filehandling.py:1495
 msgctxt "File→Revert confirm dialog: title"
 msgid "Revert Changes?"
-msgstr ""
+msgstr "Voleu revertir els canvis?"
 
 #: ../gui/filehandling.py:1500
 #, fuzzy
@@ -1909,7 +1897,6 @@ msgid "Fill areas with color"
 msgstr "Omple les àrees amb color"
 
 #: ../gui/fill.py:508
-#, fuzzy
 msgctxt ""
 "fill options: numeric value that determines whether tested pixels will be "
 "included in the fill, based on color difference"
@@ -1929,7 +1916,6 @@ msgstr ""
 "abans que el farciment total refusi omplir-los"
 
 #: ../gui/fill.py:537
-#, fuzzy
 msgctxt ""
 "fill options: option category (label) Options under this category relate to "
 "what the fill isbased on, not where the actual fill ends up."
@@ -1985,7 +1971,6 @@ msgid ""
 msgstr ""
 
 #: ../gui/fill.py:645
-#, fuzzy
 msgctxt ""
 "fill options: option category (label)\n"
 "Options under this category relate to where the fill will end up (default: "
@@ -2108,10 +2093,9 @@ msgid "Reset options to their defaults"
 msgstr "Reinicia les opcions als valors predeterminats"
 
 #: ../gui/fill.py:1037
-#, fuzzy
 msgctxt "fill option: default option in the Source Layer dropdown"
 msgid "Selected Layer"
-msgstr "Selecciona capa"
+msgstr "Capa seleccionada"
 
 #: ../gui/footer.py:191
 #, python-brace-format
@@ -2413,15 +2397,14 @@ msgid "Layer name is not unique."
 msgstr ""
 
 #: ../gui/layerprops.py:377
-#, fuzzy
 msgctxt "layer properties dialog: title"
 msgid "Layer Properties"
-msgstr "Propietats"
+msgstr "Propietats de la capa"
 
 #: ../gui/layerprops.py:381
 msgctxt "layer properties dialog: done button"
 msgid "Done"
-msgstr ""
+msgstr "Fet"
 
 #. Visibility flag column
 #: ../gui/layers.py:394
@@ -2456,10 +2439,9 @@ msgid "%d%% opaque"
 msgstr ""
 
 #: ../gui/layers.py:964
-#, fuzzy
 msgctxt "Layers dockable: description parts: layer locked flag"
 msgid "Locked"
-msgstr "Bloquejat"
+msgstr "Blocat"
 
 #: ../gui/layers.py:975
 msgctxt "Layers: description parts: unknown type (fallback str!)"
@@ -2467,16 +2449,15 @@ msgid "?type"
 msgstr ""
 
 #: ../gui/layers.py:982
-#, fuzzy
 msgctxt "Layers dockable: description parts joiner text"
 msgid ", "
 msgstr ", "
 
 #: ../gui/layers.py:990
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgctxt "Layers dockable: markup for a layer with no description"
 msgid "{layer_name}"
-msgstr "Afegeix {layer_default_name}"
+msgstr "{layer_name}"
 
 #: ../gui/layers.py:995
 #, python-brace-format
@@ -2507,7 +2488,7 @@ msgstr "Opacitat de la capa: %d%%"
 #: ../gui/layerswindow.py:107
 #, python-format
 msgid "%d%%"
-msgstr ""
+msgstr "%d%%"
 
 #. TRANSLATORS: status bar messages for drag, without/with modifiers
 #: ../gui/layerswindow.py:114
@@ -2538,10 +2519,9 @@ msgid "{user_chosen_view_name}"
 msgstr ""
 
 #: ../gui/layervis.py:187
-#, fuzzy
 msgctxt "view controls: rename view dialog"
 msgid "Rename View"
-msgstr "Gira la visualització"
+msgstr "Canvia el nom de la visualització"
 
 #: ../gui/linemode.py:41
 msgid "Entrance Pressure"
@@ -2618,13 +2598,12 @@ msgid "Draw ellipses; Shift rotates, Ctrl constrains ratio/angle"
 msgstr "Dibuixa el·lipses; Maj gira, Ctrl disminueix la ràtio/angle"
 
 #: ../gui/meta.py:39
-#, fuzzy
 msgctxt "About dialog: copyright statement"
 msgid ""
 "Copyright (C) 2005-2017\n"
 "Martin Renold and the MyPaint Development Team"
 msgstr ""
-"Copyright (C) 2005-2015\n"
+"Copyright (C) 2005-2017\n"
 "Martin Renold i l'equip de desenvolupament de MyPaint"
 
 #: ../gui/meta.py:45
@@ -2796,7 +2775,7 @@ msgstr "Idioma"
 #, python-brace-format
 msgctxt "Prefs Dialog|View|Interface - menu entries"
 msgid "{lang_en} - ({lang_nat})"
-msgstr ""
+msgstr "{lang_en} - ({lang_nat})"
 
 #. TRANSLATORS: title of panel showing an overview of the whole canvas
 #: ../gui/previewwindow.py:202
@@ -2859,16 +2838,14 @@ msgid "Adjust the painting symmetry axis."
 msgstr "Ajusta l'eix de simetria del dibuix."
 
 #: ../gui/symmetry.py:356
-#, fuzzy
 msgctxt "symmetry axis options panel: labels"
 msgid "X Position:"
-msgstr "Posició:"
+msgstr "Posició X:"
 
 #: ../gui/symmetry.py:360
-#, fuzzy
 msgctxt "symmetry axis options panel: labels"
 msgid "Y Position:"
-msgstr "Posició:"
+msgstr "Posició Y:"
 
 #: ../gui/symmetry.py:364
 msgctxt "symmetry axis options panel: position button: no axis pos."
@@ -2887,10 +2864,9 @@ msgid "Alpha:"
 msgstr "Alfa:"
 
 #: ../gui/symmetry.py:376
-#, fuzzy
 msgctxt "symmetry axis options panel: labels"
 msgid "Symmetry Type:"
-msgstr "Simetria"
+msgstr "Tipus de simetria:"
 
 #: ../gui/symmetry.py:380
 msgctxt "symmetry axis options panel: labels"
@@ -2898,16 +2874,14 @@ msgid "Rotational lines:"
 msgstr ""
 
 #: ../gui/symmetry.py:446
-#, fuzzy
 msgctxt "symmetry axis options panel: axis position dialog: window title"
 msgid "X axis Position"
-msgstr "Posició de l'eix"
+msgstr "Posició de l'eix X"
 
 #: ../gui/symmetry.py:477
-#, fuzzy
 msgctxt "symmetry axis options panel: axis position dialog: window title"
 msgid "Y axis Position"
-msgstr "Posició de l'eix"
+msgstr "Posició de l'eix Y"
 
 #: ../gui/symmetry.py:605
 msgctxt "symmetry axis options panel: axis active checkbox"
@@ -3261,10 +3235,9 @@ msgstr ""
 "Extensió de format de fitxer desconegut: “{ext}”"
 
 #: ../lib/document.py:1571
-#, fuzzy
 msgctxt "Document IO: group name for Import Layers"
 msgid "Imported layers"
-msgstr "Importa pinzell"
+msgstr "Capes importades"
 
 #: ../lib/document.py:1738
 #, python-brace-format
@@ -3367,7 +3340,6 @@ msgid "Vectors"
 msgstr "Capa vectorial"
 
 #: ../lib/layer/data.py:1159
-#, fuzzy
 msgctxt "layer type descriptions"
 msgid "Vector Layer"
 msgstr "Capa vectorial"
@@ -3408,10 +3380,9 @@ msgid "Group"
 msgstr "Grup"
 
 #: ../lib/layer/group.py:74
-#, fuzzy
 msgctxt "layer type descriptions"
 msgid "Layer Group"
-msgstr "Grup de capes nou"
+msgstr "Grup de capes"
 
 #. TRANSLATORS: Short default name for temporary placeholder layers.
 #. TRANSLATORS: (The user should never see this except in error cases)
@@ -3436,7 +3407,6 @@ msgid "Common"
 msgstr ""
 
 #: ../lib/layervis.py:44
-#, fuzzy
 msgctxt "layer visibility sets: default name for a user-managed view"
 msgid "View"
 msgstr "Visualització"
@@ -3756,9 +3726,8 @@ msgid "Vertical"
 msgstr "Emmirallat vertical"
 
 #: ../lib/tiledsurface.py:49
-#, fuzzy
 msgid "Horizontal"
-msgstr "Emmirallat horizontal"
+msgstr "Horitzontal"
 
 #: ../lib/tiledsurface.py:50
 msgid "Vertical and horizontal"
@@ -3800,10 +3769,9 @@ msgstr ""
 
 #. Deletes the selected autosave backup file.
 #: ../po/tmp/autorecover.glade.h:8
-#, fuzzy
 msgctxt "Autosave Recovery dialog|"
 msgid "_Delete…"
-msgstr "Suprimeix"
+msgstr "_Suprimeix…"
 
 #: ../po/tmp/autorecover.glade.h:9
 #, fuzzy
@@ -3813,7 +3781,6 @@ msgstr "Suprimeix aquest pinzell del disc"
 
 #. Recover in the sense or retrieval or salvage from a backup file. The user is asked to save the retrieved file immediately afterwards, hence the ellipsis.
 #: ../po/tmp/autorecover.glade.h:11
-#, fuzzy
 msgctxt "Autosave Recovery dialog|"
 msgid "_Recover & Save…"
 msgstr "_Recupera i desa…"
@@ -3940,9 +3907,8 @@ msgstr ""
 
 #. field label
 #: ../po/tmp/brusheditor.glade.h:22
-#, fuzzy
 msgid "Value:"
-msgstr "Valor HSV"
+msgstr "Valor:"
 
 #: ../po/tmp/brusheditor.glade.h:23
 msgid "Reset this input to have no effect on the setting"
@@ -4111,7 +4077,6 @@ msgid "The layer’s unique name."
 msgstr ""
 
 #: ../po/tmp/layerprops.glade.h:2
-#, fuzzy
 msgctxt "Layer properties widget → <category labels>"
 msgid "Name"
 msgstr "Nom"
@@ -4127,7 +4092,6 @@ msgid ""
 msgstr ""
 
 #: ../po/tmp/layerprops.glade.h:7
-#, fuzzy
 msgctxt "Layer properties widget → <category labels>"
 msgid "Mode"
 msgstr "Mode"
@@ -4649,7 +4613,7 @@ msgstr ""
 #: ../po/tmp/preferenceswindow.glade.h:85
 msgctxt "Prefs Dialog|View|Interface|"
 msgid "Language:"
-msgstr ""
+msgstr "Llengua:"
 
 #: ../po/tmp/preferenceswindow.glade.h:86
 msgctxt "Prefs Dialog|View|Interface|"
@@ -4844,10 +4808,9 @@ msgid "Reload the file your current work was loaded from."
 msgstr "Torneu a carregar el fitxer del qual s'ha carregat el treball actual."
 
 #: ../po/tmp/resources.xml.h:12
-#, fuzzy
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "Import Layers…"
-msgstr "Importa pinzells…"
+msgstr "Importa capes…"
 
 #: ../po/tmp/resources.xml.h:13
 msgctxt "Accel Editor (descriptions)"
