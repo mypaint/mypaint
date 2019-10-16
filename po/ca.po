@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: mypaint v2.0.0-alpha.8-1-g4490f06\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2019-10-13 12:13+0200\n"
-"PO-Revision-Date: 2019-10-16 14:19+0000\n"
+"PO-Revision-Date: 2019-10-17 14:52+0000\n"
 "Last-Translator: Ecron <ecron_89@hotmail.com>\n"
 "Language-Team: Catalan <https://hosted.weblate.org/projects/mypaint/mypaint/"
 "ca/>\n"
@@ -1695,46 +1695,39 @@ msgid "By extension (prefer default format)"
 msgstr "Per extensió (prefereix el format per defecte)"
 
 #: ../gui/filehandling.py:495
-#, fuzzy
 msgctxt "save dialogs: save formats and options"
 msgid "OpenRaster (*.ora)"
 msgstr "OpenRaster (*.ora)"
 
 #: ../gui/filehandling.py:499
-#, fuzzy
 msgctxt "save dialogs: save formats and options"
 msgid "PNG, respecting “Show Background” (*.png)"
-msgstr "PNG sòlid amb fons (*.png)"
+msgstr "PNG, respectant «Mostra el fons» (*.png)"
 
 #: ../gui/filehandling.py:503
-#, fuzzy
 msgctxt "save dialogs: save formats and options"
 msgid "PNG, solid RGB (*.png)"
-msgstr "PNG (*.png)"
+msgstr "PNG, RGB sòlid (*.png)"
 
 #: ../gui/filehandling.py:507
-#, fuzzy
 msgctxt "save dialogs: save formats and options"
 msgid "PNG, transparent RGBA (*.png)"
-msgstr "PNG transparent (*.png)"
+msgstr "PNG,RGBA transparent (*.png)"
 
 #: ../gui/filehandling.py:511
-#, fuzzy
 msgctxt "save dialogs: save formats and options"
 msgid "Multiple PNGs, by layer (*.NUM.png)"
-msgstr "PNG múltiple transparent (*.XXX.png)"
+msgstr "Múltiples PNG, per capa (*.NUM.png)"
 
 #: ../gui/filehandling.py:515
-#, fuzzy
 msgctxt "save dialogs: save formats and options"
 msgid "Multiple PNGs, by view (*.NAME.png)"
-msgstr "PNG múltiple transparent (*.XXX.png)"
+msgstr "Múltiples PNG, per vista (*.NAME.png)"
 
 #: ../gui/filehandling.py:519
-#, fuzzy
 msgctxt "save dialogs: save formats and options"
 msgid "JPEG 90% quality (*.jpg; *.jpeg)"
-msgstr "JPEG qualitat 90%  (*.jpg; *.jpeg)"
+msgstr "JPEG qualitat 90% (*.jpg; *.jpeg)"
 
 #: ../gui/filehandling.py:577
 msgctxt "Dialogs (window title): File→Export…"
@@ -1747,13 +1740,11 @@ msgid "Save As"
 msgstr "Anomena i desa"
 
 #: ../gui/filehandling.py:602
-#, fuzzy
 msgctxt "save dialogs: formats and options: (label)"
 msgid "Format to save as:"
-msgstr "Formatació per desar com:"
+msgstr "Formata per anomenar i guardar:"
 
 #: ../gui/filehandling.py:669
-#, fuzzy
 msgctxt ""
 "Destructive action confirm dialog: fallback title (normally overridden)"
 msgid "Really Continue?"
@@ -1765,10 +1756,9 @@ msgid "_Cancel"
 msgstr "_Cancel·la"
 
 #: ../gui/filehandling.py:706
-#, fuzzy
 msgctxt "Destructive action confirm dialog: save checkbox"
 msgid "_Save to Scraps first"
-msgstr "De_sa com esbós"
+msgstr "_Guarda primer en proves"
 
 #: ../gui/filehandling.py:712
 msgctxt ""
@@ -1778,20 +1768,20 @@ msgid "Co_ntinue"
 msgstr "Co_ntinua"
 
 #: ../gui/filehandling.py:735
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgctxt "Destructive action confirm dialog: warning message"
 msgid "You risk losing {abbreviated_time} of unsaved painting."
-msgstr "Això descarregarà en {abbreviated_time} les imatges no desades"
+msgstr "Us arrisqueu a perdre {abbreviated_time} les imatges no guardades."
 
 #: ../gui/filehandling.py:800
 msgctxt "File→New: confirm dialog: title question"
 msgid "New Canvas?"
-msgstr ""
+msgstr "Voleu un llenç nou?"
 
 #: ../gui/filehandling.py:804
 msgctxt "File→New: confirm dialog: continue button"
 msgid "_New Canvas"
-msgstr ""
+msgstr "_Nou llenç"
 
 #: ../gui/filehandling.py:1004
 msgctxt "File→Open: confirm dialog: title question"
@@ -1799,10 +1789,9 @@ msgid "Open File?"
 msgstr "Voleu obrir el fitxer?"
 
 #: ../gui/filehandling.py:1008
-#, fuzzy
 msgctxt "File→Open: confirm dialog: continue button"
 msgid "_Open…"
-msgstr "Obre…"
+msgstr "_Obri…"
 
 #: ../gui/filehandling.py:1016
 msgctxt "File→Open: file chooser dialog: title"
@@ -1810,10 +1799,9 @@ msgid "Open File"
 msgstr "Obre el fitxer"
 
 #: ../gui/filehandling.py:1058
-#, fuzzy
 msgctxt "load dialogs: title"
 msgid "Open Scratchpad…"
-msgstr "Obre el quadre d'esborranys…"
+msgstr "Obri el bloc d'esbossos…"
 
 #: ../gui/filehandling.py:1100
 msgctxt "Layers→Import Layers: files-chooser dialog: title"
@@ -1841,22 +1829,19 @@ msgid "_Open"
 msgstr "_Obre"
 
 #: ../gui/filehandling.py:1447
-#, fuzzy
 msgctxt "File→Open Next/Prev Scrap: error message"
 msgid "There are no scrap files yet. Try saving one first."
-msgstr "Encara no hi ha fitxers esbossos anomenats \"%s\"."
+msgstr "Encara no hi ha cap fitxer de proves. Intenteu guardar-ne un primer."
 
 #: ../gui/filehandling.py:1456
-#, fuzzy
 msgctxt "File→Open Next/Prev Scrap confirm dialog: title"
 msgid "Open Next Scrap?"
-msgstr "Obre esbós nou"
+msgstr "Voleu obrir la següent prova?"
 
 #: ../gui/filehandling.py:1464
-#, fuzzy
 msgctxt "File→Open Next/Prev Scrap confirm dialog: title"
 msgid "Open Previous Scrap?"
-msgstr "Obre esbós previ"
+msgstr "Voleu obrir la prova anterior?"
 
 #: ../gui/filehandling.py:1473
 msgctxt "File→Open Next/Prev Scrap confirm dialog: continue button"
@@ -1866,7 +1851,7 @@ msgstr "_Obre"
 #: ../gui/filehandling.py:1488
 msgctxt "File→Revert: status message: canvas has no filename yet"
 msgid "Cannot revert: canvas has not been saved to a file yet."
-msgstr ""
+msgstr "No es pot revertir: el llenç encara no s'ha guardat en un fitxer."
 
 #: ../gui/filehandling.py:1495
 msgctxt "File→Revert confirm dialog: title"
@@ -1874,24 +1859,21 @@ msgid "Revert Changes?"
 msgstr "Voleu revertir els canvis?"
 
 #: ../gui/filehandling.py:1500
-#, fuzzy
 msgctxt "File→Revert confirm dialog: continue button"
 msgid "_Revert"
-msgstr "Reverteix"
+msgstr "_Reverteix"
 
 #: ../gui/fill.py:121
-#, fuzzy
 msgctxt ""
 "Name of the fill mode\n"
 "In other software, 'Flood Fill' is also known as 'Bucket Fill' or just 'Fill'"
 msgid "Flood Fill"
-msgstr "Farciment total"
+msgstr "Pot de pintura"
 
 #: ../gui/fill.py:127
-#, fuzzy
 msgctxt "Usage description of the Flood Fill mode"
 msgid "Fill areas with color"
-msgstr "Omple les àrees amb color"
+msgstr "Ompli les àrees amb color"
 
 #: ../gui/fill.py:508
 msgctxt ""
@@ -1901,7 +1883,6 @@ msgid "Tolerance:"
 msgstr "Tolerància:"
 
 #: ../gui/fill.py:513
-#, fuzzy
 msgctxt ""
 "fill options: Tolerance (tooltip) Note: 'the start' refers to the color of "
 "the starting point (pixel) of the fill"
@@ -1909,8 +1890,8 @@ msgid ""
 "How much pixel colors are allowed to vary from the start\n"
 "before Flood Fill will refuse to fill them"
 msgstr ""
-"Quants píxels de colors es poden variar des del principi\n"
-"abans que el farciment total refusi omplir-los"
+"El nombre de píxels de colors que poden variar des de l'inici\n"
+"abans que el pot de pintura es negue a omplir-los"
 
 #: ../gui/fill.py:537
 msgctxt ""
@@ -1922,36 +1903,33 @@ msgstr "Font:"
 #: ../gui/fill.py:540
 msgctxt "fill options: 'Source:' category (tooltip)"
 msgid "The input that the fill will be based on"
-msgstr ""
+msgstr "L'entrada en què es basarà l'ompliment"
 
 #: ../gui/fill.py:584
 msgctxt "fill options: 'Source' category: Layer dropdown (tooltip)"
 msgid "Select a specific layer you want the fill to be based on"
-msgstr ""
+msgstr "Seleccioneu la capa específica en què vulgueu que es base l'ompliment"
 
 #: ../gui/fill.py:602
-#, fuzzy
 msgctxt ""
 "fill options: 'Source:' category: toggle (label)\n"
 "When this option is enabled, the fill is based\n"
 "on the combination of all visible layers"
 msgid "Sample Merged"
-msgstr "Mostra fusionada"
+msgstr "Mostra combinada"
 
 #: ../gui/fill.py:606
-#, fuzzy
 msgctxt "fill options: Sample Merged (tooltip)"
 msgid ""
 "When considering which area to fill, use a\n"
 "temporary merge of all the visible layers\n"
 "underneath the current layer"
 msgstr ""
-"Quan es consideri l'àrea a omplir, utilitzeu\n"
-"una mescla temporal de totes les\n"
-"capes visibles sota la capa actual"
+"Quan tingueu en compte quina àrea s'ha d'omplir, utilitzeu\n"
+"una combinació temporal de totes les\n"
+"capes visibles davall de la capa actual"
 
 #: ../gui/fill.py:622
-#, fuzzy
 msgctxt "fill options: toggle whether the fill will be limited by the viewport"
 msgid "Limit to View"
 msgstr "Ajusta a la visualització"
@@ -1966,6 +1944,9 @@ msgid ""
 "If the view is rotated, the fill will be limited to the\n"
 "smallest canvas-aligned rectangle that can fit the view."
 msgstr ""
+"Limita l'àrea que pot ser omplida, segons l'àrea de visualització.\n"
+"Si la vista es gira, l'ompliment es limitarà al\n"
+"rectangle del llenç alineat més menut que s'ajuste a la vista."
 
 #: ../gui/fill.py:645
 msgctxt ""
@@ -1976,13 +1957,11 @@ msgid "Target:"
 msgstr "Objectiu:"
 
 #: ../gui/fill.py:648
-#, fuzzy
 msgctxt "fill options: 'Target:' category (tooltip)"
 msgid "Where the output should go"
-msgstr "On ha d'anar la sortida"
+msgstr "On ha d'anar l'eixida"
 
 #: ../gui/fill.py:657
-#, fuzzy
 msgctxt ""
 "fill options: Target | toggle (label)\n"
 "When this option is enabled, the fill will be placed on a new\n"
@@ -1991,24 +1970,23 @@ msgid "New Layer (once)"
 msgstr "Capa nova (una vegada)"
 
 #: ../gui/fill.py:662
-#, fuzzy
 msgctxt "fill options: Target | New Layer (tooltip)"
 msgid ""
 "Create a new layer with the results of the fill.\n"
 "This is turned off automatically after use."
 msgstr ""
-"Creeu una nova capa amb els resultats de l'emplenament.\n"
-"Això s'apagarà automàticament després d'usar-ho."
+"Creeu una nova capa amb els resultats de l'ompliment.\n"
+"Açò es desactiva automàticament després d'usar-ho."
 
 #: ../gui/fill.py:674
 msgctxt "fill options: Target | Blend Mode dropdown - warning text"
 msgid "This mode does nothing when alpha locking is enabled!"
-msgstr ""
+msgstr "Aquest mode no funciona quan el bloqueig alfa està activat."
 
 #: ../gui/fill.py:688
 msgctxt "fill options: Target | Blend Mode dropdown (tooltip)"
 msgid "Blend mode used when filling"
-msgstr ""
+msgstr "Mode de barreja utilitzat en l'ompliment"
 
 #: ../gui/fill.py:703
 msgid "Opacity:"
@@ -2017,32 +1995,32 @@ msgstr "Opacitat:"
 #: ../gui/fill.py:706
 msgctxt "fill options: Opacity slider (tooltip)"
 msgid "Opacity of the fill"
-msgstr ""
+msgstr "Opacitat de l'ompliment"
 
 #: ../gui/fill.py:729
 msgctxt "fill options: numeric option - grow/shrink fill (label)"
 msgid "Offset:"
-msgstr ""
+msgstr "Desplaçament:"
 
 #: ../gui/fill.py:745
 msgctxt "fill options: Offset (tooltip)"
 msgid "The distance in pixels to grow or shrink the fill"
-msgstr ""
+msgstr "La distància en píxels per a engrandir o encollir l'ompliment"
 
 #: ../gui/fill.py:756
 msgctxt "fill options: numeric option for blurring fill (label)"
 msgid "Feather:"
-msgstr ""
+msgstr "Ploma:"
 
 #: ../gui/fill.py:771
 msgctxt "fill options: Feather (tooltip)"
 msgid "The amount of blur to apply to the fill"
-msgstr ""
+msgstr "La quantitat de difuminat que s'aplica a l'ompliment"
 
 #: ../gui/fill.py:787
 msgctxt "fill options: gap detection toggle (label)"
 msgid "Use Gap Detection"
-msgstr ""
+msgstr "Utilitza la detecció de buits"
 
 #: ../gui/fill.py:792
 msgctxt "fill options: Use Gap Detection (tooltip)"
@@ -2051,11 +2029,14 @@ msgid ""
 "Note: This can be a lot slower than the regular fill, only enable when you "
 "need it."
 msgstr ""
+"Intenta detectar els buits i no omplir-los.\n"
+"Nota: pot ser més lent que l'ompliment normal, activeu-lo sols si el "
+"necessiteu."
 
 #: ../gui/fill.py:810
 msgctxt "fill options: gap-detection sub-option, numeric setting (label)"
 msgid "Max Gap Size:"
-msgstr ""
+msgstr "Mida màxima del buit:"
 
 #: ../gui/fill.py:825
 msgctxt "fill options: Max Gap Size (tooltip)"
@@ -2063,6 +2044,8 @@ msgid ""
 "The size of the largest gaps that can be detected.\n"
 "Using large values can make the fill run a lot slower."
 msgstr ""
+"La mida dels buits més grans que es poden detectar.\n"
+"Si s'empren valors alts, l'omplimet pot ser molt més lent."
 
 #: ../gui/fill.py:838
 msgctxt ""
@@ -2070,7 +2053,7 @@ msgctxt ""
 "When enabled, if the fill stops after going past a detected gap, it 'pulls' "
 "the fill back out of the gap to the other side of it."
 msgid "Prevent seeping"
-msgstr ""
+msgstr "Prevín la filtració"
 
 #: ../gui/fill.py:845
 msgctxt "fill options: Prevent seeping (tooltip)"
@@ -2078,13 +2061,14 @@ msgid ""
 "Try to prevent the fill from seeping into the gaps.\n"
 "If a fill starts in a detected gap, this option will do nothing."
 msgstr ""
+"Intenta previndre que l'ompliment es filtre en els buits.\n"
+"Si un ompliment comença en un buit detectat, aquesta opció no funciona."
 
 #: ../gui/fill.py:855 ../gui/mode.py:627
 msgid "Reset"
 msgstr "Reinicia"
 
 #: ../gui/fill.py:859
-#, fuzzy
 msgctxt "fill options: Reset button (tooltip)"
 msgid "Reset options to their defaults"
 msgstr "Reinicia les opcions als valors predeterminats"
@@ -2235,7 +2219,7 @@ msgstr "Pressió:"
 #. TRANSLATORS: This is used on the options panel.
 #: ../gui/freehand.py:614
 msgid "Twist:"
-msgstr ""
+msgstr "Torsió:"
 
 #: ../gui/gtkexcepthook.py:163
 msgid "Bug Detected"
@@ -2365,12 +2349,11 @@ msgstr "Dispositiu:"
 
 #: ../gui/inputtestwindow.py:73
 msgid "(No Barrel Rotation)"
-msgstr ""
+msgstr "(sense gir)"
 
 #: ../gui/inputtestwindow.py:74
-#, fuzzy
 msgid "Barrel Rotation:"
-msgstr "Reinicia la rotació"
+msgstr "Gir:"
 
 #. TRANSLATORS: Command to move a layer in the horizontal plane,
 #. TRANSLATORS: preserving its position in the stack.
@@ -2386,12 +2369,12 @@ msgstr "Mou la capa actual"
 #: ../gui/layerprops.py:356
 msgctxt "layer properties dialog: name entry: icon tooltip"
 msgid "Layer names cannot be empty."
-msgstr ""
+msgstr "Els noms de les capes no poden estar buits."
 
 #: ../gui/layerprops.py:361
 msgctxt "layer properties dialog: name entry: icon tooltip"
 msgid "Layer name is not unique."
-msgstr ""
+msgstr "El nom de la capa no és únic."
 
 #: ../gui/layerprops.py:377
 msgctxt "layer properties dialog: title"
@@ -2411,29 +2394,28 @@ msgstr "Visible"
 #. Other flags column
 #: ../gui/layers.py:426
 msgid "Flags"
-msgstr ""
+msgstr "Indicadors"
 
 #: ../gui/layers.py:925
-#, fuzzy
 msgctxt "Layers: description: no layer (\"never happens\" condition!)"
 msgid "?layer"
-msgstr "Capa"
+msgstr "?capa"
 
 #: ../gui/layers.py:945
 msgctxt "Layers: description parts: unknown mode (fallback str!)"
 msgid "?mode"
-msgstr ""
+msgstr "?mode"
 
 #: ../gui/layers.py:952
 msgctxt "Layers: description parts: layer hidden"
 msgid "Hidden"
-msgstr ""
+msgstr "Oculta"
 
 #: ../gui/layers.py:957
 #, python-format
 msgctxt "Layers: description parts: opacity percentage"
 msgid "%d%% opaque"
-msgstr ""
+msgstr "%d%% opaca"
 
 #: ../gui/layers.py:964
 msgctxt "Layers dockable: description parts: layer locked flag"
@@ -2443,7 +2425,7 @@ msgstr "Blocat"
 #: ../gui/layers.py:975
 msgctxt "Layers: description parts: unknown type (fallback str!)"
 msgid "?type"
-msgstr ""
+msgstr "?tipus"
 
 #: ../gui/layers.py:982
 msgctxt "Layers dockable: description parts joiner text"
@@ -2463,6 +2445,8 @@ msgid ""
 "<span size=\"smaller\">{layer_name}\n"
 "<span size=\"smaller\" alpha=\"50%\">{layer_description}</span></span>"
 msgstr ""
+"<span size=\"smaller\">{layer_name}\n"
+"<span size=\"smaller\" alpha=\"50%\">{layer_description}</span></span>"
 
 #: ../gui/layerswindow.py:95
 msgid "Layers"
@@ -2504,16 +2488,16 @@ msgid "Layer"
 msgstr "Capa"
 
 #: ../gui/layervis.py:53
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgctxt "view controls: dropdown: item markup"
 msgid "<i>{builtin_view_name}</i>"
-msgstr "<b>{brush_name}</b>"
+msgstr "<i>{builtin_view_name}</i>"
 
 #: ../gui/layervis.py:125
 #, python-brace-format
 msgctxt "view controls: dropdown: item markup"
 msgid "{user_chosen_view_name}"
-msgstr ""
+msgstr "{user_chosen_view_name}"
 
 #: ../gui/layervis.py:187
 msgctxt "view controls: rename view dialog"
@@ -2715,7 +2699,7 @@ msgstr "Guany:"
 #. TRANSLATORS:"Paint Pigment Mode" for the options panel. Short.
 #: ../gui/mode.py:590
 msgid "Pigment:"
-msgstr ""
+msgstr "Pigment:"
 
 #: ../gui/optionspanel.py:47
 msgctxt "options panel: tab tooltip: title"
@@ -2868,7 +2852,7 @@ msgstr "Tipus de simetria:"
 #: ../gui/symmetry.py:380
 msgctxt "symmetry axis options panel: labels"
 msgid "Rotational lines:"
-msgstr ""
+msgstr "Línies de rotació:"
 
 #: ../gui/symmetry.py:446
 msgctxt "symmetry axis options panel: axis position dialog: window title"
@@ -2946,22 +2930,22 @@ msgid "Rotate the canvas view"
 msgstr "Gira la visualització del llenç"
 
 #: ../gui/workspace.py:1313
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgctxt "workspace: sidebar tabs: button tooltips"
 msgid "{tab_title}: close tab"
-msgstr "%s: tanca la pestanya"
+msgstr "{tab_title}: tanca pestanya"
 
 #: ../gui/workspace.py:1317
 #, python-brace-format
 msgctxt "workspace: sidebar tabs: button tooltips"
 msgid "{tab_title}: tab options and properties"
-msgstr ""
+msgstr "{tab_title}: opcions i propietats de pestanya"
 
 #: ../gui/workspace.py:1321
 #, python-brace-format
 msgctxt "workspace: sidebar tabs: button tooltips"
 msgid "{tab_title}: move tab to other sidebar"
-msgstr ""
+msgstr "{tab_title}: mou la pestanya a altra barra lateral"
 
 #: ../lib/command.py:181
 msgid "Unknown Command"
@@ -2989,12 +2973,11 @@ msgstr "Talla la capa"
 
 #: ../lib/command.py:636
 msgid "Uniquify Layer Pixels"
-msgstr ""
+msgstr "Elimina els píxels duplicats de la capa"
 
 #: ../lib/command.py:659
-#, fuzzy
 msgid "Refactor Group"
-msgstr "Canvia nom al grup"
+msgstr "Reestructura el grup"
 
 #: ../lib/command.py:682
 msgid "Clear Layer"
@@ -3024,9 +3007,8 @@ msgid "Normalize Layer Mode"
 msgstr "Normalitza el mode capa"
 
 #: ../lib/command.py:947
-#, fuzzy
 msgid "Import Layers"
-msgstr "Importa pinzell"
+msgstr "Importa capes"
 
 #: ../lib/command.py:949
 #, python-brace-format
@@ -3267,58 +3249,57 @@ msgstr ""
 "{see_logs}"
 
 #: ../lib/floodfill.py:131
-#, fuzzy
 msgctxt "floodfill status message: use active tense"
 msgid "Filling"
-msgstr "Omple"
+msgstr "Ompli"
 
 #: ../lib/floodfill.py:132
 msgctxt "floodfill status message: use active tense"
 msgid "Morphing"
-msgstr ""
+msgstr "Transforma"
 
 #: ../lib/floodfill.py:133
 msgctxt "floodfill status message: use active tense"
 msgid "Blurring"
-msgstr ""
+msgstr "Difumina"
 
 #: ../lib/floodfill.py:134
 msgctxt "floodfill status message: use active tense"
 msgid "Compositing"
-msgstr ""
+msgstr "Compon"
 
 #: ../lib/floodfill.py:135
 msgctxt "floodfill status message: use active tense"
 msgid "Finishing up"
-msgstr ""
+msgstr "Acaba"
 
 #: ../lib/floodfill.py:137
 msgctxt "uniform square region of pixels, plural noun"
 msgid "tiles"
-msgstr ""
+msgstr "Mosaic"
 
 #. TRANSLATORS: Assumption for all "Time period abbreviations":
 #. TRANSLATORS: they don't need ngettext (to support plural/singular)
 #: ../lib/helpers.py:535
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgctxt "Time period abbreviations"
 msgid "{days}d{hours}h"
 msgstr "{days}d{hours}h"
 
 #: ../lib/helpers.py:537
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgctxt "Time period abbreviations"
 msgid "{hours}h{minutes}m"
 msgstr "{hours}h{minutes}m"
 
 #: ../lib/helpers.py:539
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgctxt "Time period abbreviation"
 msgid "{minutes}m{seconds}s"
 msgstr "{minutes}m{seconds}s"
 
 #: ../lib/helpers.py:541
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgctxt "Time period abbreviation"
 msgid "{seconds}s"
 msgstr "{seconds}s"
@@ -3331,7 +3312,6 @@ msgstr "Capa"
 
 #. TRANSLATORS: Short default name for vector (SVG/Inkscape) layers
 #: ../lib/layer/data.py:1154
-#, fuzzy
 msgctxt "layer default names"
 msgid "Vectors"
 msgstr "Capa vectorial"
@@ -3345,27 +3325,25 @@ msgstr "Capa vectorial"
 #: ../lib/layer/data.py:1224
 msgctxt "layer default names"
 msgid "Bitmap"
-msgstr ""
+msgstr "Mapa de bits"
 
 #: ../lib/layer/data.py:1229
 msgctxt "layer type descriptions"
 msgid "Bitmap Data"
-msgstr ""
+msgstr "Dades del mapa de bits"
 
 #. TRANSLATORS: Short default name for non-renderable fallback layers
 #: ../lib/layer/data.py:1245
 msgctxt "layer default names"
 msgid "Data"
-msgstr ""
+msgstr "Dades"
 
 #: ../lib/layer/data.py:1250
-#, fuzzy
 msgctxt "layer type descriptions"
 msgid "Unknown Data"
 msgstr "Capa de dades desconeguda"
 
 #: ../lib/layer/data.py:1301
-#, fuzzy
 msgctxt "layer type descriptions"
 msgid "Painting Layer"
 msgstr "Capa de pintura nova"
@@ -3401,7 +3379,7 @@ msgstr ", "
 #: ../lib/layer/tree.py:2321
 msgctxt "layer default names: refactor: name of the common areas layer"
 msgid "Common"
-msgstr ""
+msgstr "Comú"
 
 #: ../lib/layervis.py:44
 msgctxt "layer visibility sets: default name for a user-managed view"
@@ -3411,34 +3389,30 @@ msgstr "Visualització"
 #: ../lib/layervis.py:49
 msgctxt "layer visibility sets: text shown when no user-managed view is active"
 msgid "No active view"
-msgstr ""
+msgstr "Visualització no activa"
 
 #: ../lib/layervis.py:579
-#, fuzzy
 msgctxt "layer views: commands: add"
 msgid "Add Layer View"
-msgstr "Capa visible"
+msgstr "Afig una capa"
 
 #: ../lib/layervis.py:604 ../lib/layervis.py:633
-#, fuzzy
 msgctxt "layer views: commands: remove"
 msgid "Remove Layer View"
-msgstr "Suprimeix capa"
+msgstr "Suprimeix una capa"
 
 #: ../lib/layervis.py:663
 #, python-brace-format
 msgctxt "layer views: commands: activate"
 msgid "Activate Layer View “{name}”"
-msgstr ""
+msgstr "Activate una capa «{name}»"
 
 #: ../lib/layervis.py:692
-#, fuzzy
 msgctxt "layer views: commands: set active view's lock flag"
 msgid "Lock Layer View"
 msgstr "Bloqueja la capa"
 
 #: ../lib/layervis.py:697
-#, fuzzy
 msgctxt "layer views: commands: set active view's lock flag"
 msgid "Unlock Layer View"
 msgstr "Desbloqueja la capa"
@@ -3461,12 +3435,14 @@ msgstr "La capa superior només, sense barrejar colors."
 
 #: ../lib/modes.py:46
 msgid "Pigment"
-msgstr ""
+msgstr "Pigment"
 
 #: ../lib/modes.py:47
 msgid ""
 "Similar to mixing actual pigments by upsampling to 10 spectral channels."
 msgstr ""
+"Semblant a barrejar els pigments reals en prendre mostres de 10 canals "
+"espectrals."
 
 #: ../lib/modes.py:50
 msgid "Multiply"
@@ -3681,10 +3657,10 @@ msgstr ""
 #. TRANSLATORS: Change only if your lang *REQUIRES* a different order or
 #. TRANSLATORS: if raw digits and a space aren't enough.
 #: ../lib/naming.py:22
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgctxt "unique names: serial number needed: template"
 msgid "{name} {number}"
-msgstr "%(name)s %(number)d"
+msgstr "{name} {number}"
 
 #. TRANSLATORS: UNIQUE_NAME_REGEX - regex for UNIQUE_NAME_TEMPLATE
 #. TRANSLATORS: Must match its template (msgid: '{name} {number}')
@@ -3692,7 +3668,7 @@ msgstr "%(name)s %(number)d"
 #: ../lib/naming.py:30
 msgctxt "unique names: regex matching a string with a serial number"
 msgid "^(?P<name>.*?)\\s+(?P<number>\\d+)$"
-msgstr ""
+msgstr "^(?P<name>.*?)\\s+(?P<number>\\d+)$"
 
 #: ../lib/pixbufsurface.py:38
 msgctxt "user-facing error texts"
@@ -3718,9 +3694,8 @@ msgstr ""
 "Carpeta objectiu: “{dirname}”."
 
 #: ../lib/tiledsurface.py:48
-#, fuzzy
 msgid "Vertical"
-msgstr "Emmirallat vertical"
+msgstr "Vertical"
 
 #: ../lib/tiledsurface.py:49
 msgid "Horizontal"
@@ -3728,16 +3703,15 @@ msgstr "Horitzontal"
 
 #: ../lib/tiledsurface.py:50
 msgid "Vertical and horizontal"
-msgstr ""
+msgstr "Vertical i horitzontal"
 
 #: ../lib/tiledsurface.py:51
-#, fuzzy
 msgid "Rotational"
-msgstr "Reinicia la rotació"
+msgstr "Giratori"
 
 #: ../lib/tiledsurface.py:52
 msgid "Snowflake"
-msgstr ""
+msgstr "Floc de neu"
 
 #: ../lib/tiledsurface.py:627
 #, python-format
@@ -3752,7 +3726,7 @@ msgstr "Recuperem el treball interromput?"
 #: ../po/tmp/autorecover.glade.h:3
 msgctxt "Autosave Recovery dialog|"
 msgid "_Look for backups at startup"
-msgstr ""
+msgstr "_ Busca les còpies de seguretat en iniciar"
 
 #: ../po/tmp/autorecover.glade.h:4
 msgctxt "Autosave Recovery dialog|Show Dialog at Startup checkbutton|"
@@ -3763,6 +3737,11 @@ msgid ""
 "You can always launch this dialog from the ‘File’ menu when MyPaint is "
 "running."
 msgstr ""
+"Executeu aquest diàleg de recuperació automàtica quan s'inicie MyPaint, si "
+"hi ha fitxers perrecuperar. \n"
+"\n"
+"Podeu iniciar sempre aquest diàleg des del menú «Fitxer» quan s'execute "
+"MyPaint."
 
 #. Deletes the selected autosave backup file.
 #: ../po/tmp/autorecover.glade.h:8
@@ -3771,10 +3750,9 @@ msgid "_Delete…"
 msgstr "_Suprimeix…"
 
 #: ../po/tmp/autorecover.glade.h:9
-#, fuzzy
 msgctxt "Autosave Recovery dialog|Delete button|"
 msgid "Delete this backup from the disk."
-msgstr "Suprimeix aquest pinzell del disc"
+msgstr "Suprimeix aquesta còpia de seguretat del disc."
 
 #. Recover in the sense or retrieval or salvage from a backup file. The user is asked to save the retrieved file immediately afterwards, hence the ellipsis.
 #: ../po/tmp/autorecover.glade.h:11
@@ -3783,16 +3761,15 @@ msgid "_Recover & Save…"
 msgstr "_Recupera i desa…"
 
 #: ../po/tmp/autorecover.glade.h:12
-#, fuzzy
 msgctxt "Autosave Recovery dialog|Recover button|"
 msgid "Save this backup to disk, then continue working on it."
-msgstr "Desa aquesta copia de seguretat al disc, i continua treballant en ell."
+msgstr "Guarda aquesta còpia de seguretat en el disc i continua treballant-hi."
 
 #. Do not recover any autosaves; take no action.
 #: ../po/tmp/autorecover.glade.h:14
 msgctxt "Autosave Recovery dialog|"
 msgid "Decide _Later"
-msgstr ""
+msgstr "Decideix _més endavant"
 
 #: ../po/tmp/autorecover.glade.h:15
 msgctxt "Autosave Recovery dialog|Cancel button|"
@@ -3802,15 +3779,15 @@ msgstr ""
 "conservaran."
 
 #: ../po/tmp/autorecover.glade.h:16
-#, fuzzy
 msgctxt "Autosave Recovery dialog|"
 msgid ""
 "MyPaint crashed with unsaved work, but it makes rolling backups. You can "
 "recover a working file from one of these automated backups now. You’ll be "
 "asked where to save it before continuing."
 msgstr ""
-"MyPaint ha fallat amb treball no desat, però hi han copies de seguretat. "
-"Podeu recuperar un fitxer ara o deixeu-lo fins que torneu a iniciar MyPaint."
+"MyPaint ha fallat amb treball no desat, però n'hi ha còpies de seguretat. "
+"Podeu recuperar un fitxer des d'una d'aquestes còpies ara. Se us preguntarà "
+"on voleu guardar-lo abans de continuar."
 
 #: ../po/tmp/autorecover.glade.h:17
 msgid "Thumbnail"
@@ -3981,14 +3958,12 @@ msgid "{dname}:"
 msgstr "{dname}:"
 
 #: ../po/tmp/brusheditor.glade.h:42
-#, fuzzy
 msgid "Brush dynamics are not available for this setting."
-msgstr "Detalls bàsics per a aquest paràmetre"
+msgstr "La dinàmica del pinzell no està disponible per a esta configuració."
 
 #: ../po/tmp/brusheditor.glade.h:43
-#, fuzzy
 msgid "<big><b>No Brush Dynamics</b></big>"
-msgstr "<big><b>{accel_label}</b></big>"
+msgstr "<big><b>Sense dinàmiques de pinzell</b></big>"
 
 #: ../po/tmp/inktool.glade.h:1
 msgctxt "Inking tool options: point value sliders: labels: tooltips"
@@ -4047,31 +4022,29 @@ msgid "Delete the currently selected point"
 msgstr "Suprimeix el punt seleccionat"
 
 #: ../po/tmp/inktool.glade.h:14 ../po/tmp/resources.xml.h:184
-#, fuzzy
 msgid "Insert Point"
-msgstr "Insereix fila"
+msgstr "Insereix un punt"
 
 #: ../po/tmp/inktool.glade.h:15 ../po/tmp/resources.xml.h:188
 msgid "Simplify Points"
-msgstr ""
+msgstr "Simplifica els punts"
 
 #: ../po/tmp/inktool.glade.h:16
 msgid "Simplify the curve using the Reumann-Witkam algorithm."
-msgstr ""
+msgstr "Simplifica la corba utilitzant l'algoritme de Reumann-Witkam."
 
 #: ../po/tmp/inktool.glade.h:17 ../po/tmp/resources.xml.h:190
-#, fuzzy
 msgid "Cull Points"
-msgstr "Suprimeix punt"
+msgstr "Elimina els punts"
 
 #: ../po/tmp/inktool.glade.h:18
 msgid "Cull every other point from the curve."
-msgstr ""
+msgstr "Elimina tots els altres punts de la corba."
 
 #: ../po/tmp/layerprops.glade.h:1
 msgctxt "Layer properties widget → Name → label tooltip"
 msgid "The layer’s unique name."
-msgstr ""
+msgstr "L'únic nom de la capa."
 
 #: ../po/tmp/layerprops.glade.h:2
 msgctxt "Layer properties widget → <category labels>"
@@ -4087,6 +4060,10 @@ msgid ""
 "Each mode has a different visual effect. Refer to the dropdown’s tooltip for "
 "each one to discover what they all do."
 msgstr ""
+"La manera en què la capa es combina amb el que n'hi ha darrere.\n"
+"\n"
+"Cada mode té un efecte visual diferent. Consulteu l'indicador de funció "
+"desplegable de cadascú per descobrir què fan tots."
 
 #: ../po/tmp/layerprops.glade.h:7
 msgctxt "Layer properties widget → <category labels>"
@@ -4101,9 +4078,11 @@ msgid ""
 "\n"
 "At 0%, the layer doesn’t contribute at all."
 msgstr ""
+"En quina quantitat la capa es combina amb el que n'hi ha darrere.\n"
+"\n"
+"Al 0%, la capa no contribueix en absolut."
 
 #: ../po/tmp/layerprops.glade.h:12
-#, fuzzy
 msgctxt "Layer properties widget → <category labels>"
 msgid "Opacity"
 msgstr "Opacitat"
@@ -4115,11 +4094,15 @@ msgid ""
 "\n"
 "Refer to each button’s tooltip to find out what each flag does."
 msgstr ""
+"Indicadors de capa especial.\n"
+"\n"
+"Consulteu l'indicador de funció de cada botó per esbrinar què fa cada "
+"indicador."
 
 #: ../po/tmp/layerprops.glade.h:16
 msgctxt "Layer properties widget → <category labels>"
 msgid "Flags"
-msgstr ""
+msgstr "Indicadors"
 
 #: ../po/tmp/layerprops.glade.h:17
 msgctxt "Layer properties widget → Flags → Eye togglebutton → tooltip"
@@ -4135,6 +4118,15 @@ msgid ""
 "When a layer group is hidden, all of the layers inside it are made invisible "
 "too."
 msgstr ""
+"Capa visible o oculta.\n"
+"\n"
+"La icona d'un ull obert indica que la capa és visible.\n"
+"\n"
+"Quan es mostra la icona d'un ull tancat, la capa està oculta. Les capes "
+"ocultes són completament invisibles: no tenen cap efecte sobre el que es "
+"mostra. No podeu pintar sobre les capes ocultes per seguretat.\n"
+"\n"
+"Quan un grup de capes està ocult, totes les seues capes també són invisibles."
 
 #: ../po/tmp/layerprops.glade.h:24
 msgctxt "Layer properties widget → Flags → Padlock togglebutton → tooltip"
@@ -4149,35 +4141,40 @@ msgid ""
 "\n"
 "When a layer group is locked, none of the layers inside it can be edited."
 msgstr ""
+"Capa editable o bloquejada.\n"
+"\n"
+"La icona d'un cadenat obert indica que la capa es pot editar.\n"
+"\n"
+"Quan una capa està bloquejada, no podeu pintar-hi ni canviar el contingut "
+"dels seus píxels. Tampoc podeu agafar-ne traços, de manera que serà molt "
+"útil en pintar sota un croquis.\n"
+"\n"
+"Quan un grup de capes està bloquejada, cap de les seues capes pot editar-se."
 
 #: ../po/tmp/layervis.glade.h:1
-#, fuzzy
 msgctxt "Layers window: view list controls: tooltips"
 msgid "The currently active view."
-msgstr "Mode de composició de la capa actual."
+msgstr "La vista activa actualment."
 
 #: ../po/tmp/layervis.glade.h:2
-#, fuzzy
 msgctxt "Layers window: view list controls: tooltips"
 msgid "Rename the active view."
-msgstr "Gira la visualització del llenç"
+msgstr "Canvia el nom de la vista activa."
 
 #: ../po/tmp/layervis.glade.h:3
-#, fuzzy
 msgctxt "Layers window: view list controls: tooltips"
 msgid "Remove the active view."
-msgstr "Gira la visualització del llenç"
+msgstr "Elimina la vista activa."
 
 #: ../po/tmp/layervis.glade.h:4
-#, fuzzy
 msgctxt "Layers window: view list controls: tooltips"
 msgid "Snapshot visible layers as a new view."
-msgstr "Quines capes visibles s'han d'omplir"
+msgstr "Capa visible de captura de pantalla com a nova vista."
 
 #: ../po/tmp/layervis.glade.h:5
 msgctxt "Layers window: view list controls: tooltips"
 msgid "Lock or unlock the active view."
-msgstr ""
+msgstr "Bloqueja o desbloqueja la vista activa."
 
 #: ../po/tmp/mypaint.glade.h:2
 msgctxt "footer: color picker button: tooltip"
@@ -4587,7 +4584,6 @@ msgid "Hide cursor while painting"
 msgstr "Amaga el cursor mentre es pinta"
 
 #: ../po/tmp/preferenceswindow.glade.h:82
-#, fuzzy
 msgctxt ""
 "Prefs Dialog|View|Interface|Blink layers on creation/selection|checkbox label"
 msgid "Enabled"
@@ -4601,11 +4597,13 @@ msgid ""
 "When a layer is created or selected, show only that layer for a short time "
 "period."
 msgstr ""
+"Quan es cree o se seleccione una capa, mostra sols aquesta capa per un "
+"període curt de temps."
 
 #: ../po/tmp/preferenceswindow.glade.h:84
 msgctxt "Prefs Dialog|View|Interface|"
 msgid "Blink layers on creation/selection:"
-msgstr ""
+msgstr "Capes intermitents en la creació/selecció:"
 
 #: ../po/tmp/preferenceswindow.glade.h:85
 msgctxt "Prefs Dialog|View|Interface|"
@@ -4615,7 +4613,7 @@ msgstr "Llengua:"
 #: ../po/tmp/preferenceswindow.glade.h:86
 msgctxt "Prefs Dialog|View|Interface|"
 msgid "(needs restart)"
-msgstr ""
+msgstr "(cal reiniciar)"
 
 #. Tab label in preferences dialog&#10;
 #: ../po/tmp/preferenceswindow.glade.h:88
@@ -4812,7 +4810,7 @@ msgstr "Importa capes…"
 #: ../po/tmp/resources.xml.h:13
 msgctxt "Accel Editor (descriptions)"
 msgid "Import layers from one or more files."
-msgstr ""
+msgstr "Importa capes des d'un o més fitxers."
 
 #: ../po/tmp/resources.xml.h:14
 msgctxt "Menu→File (labels), Accel Editor (labels)"
@@ -4931,48 +4929,48 @@ msgid "The current layer's compositing mode."
 msgstr "Mode de composició de la capa actual."
 
 #: ../po/tmp/resources.xml.h:37
-#, fuzzy
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
 msgid "Increase Fake Pressure"
-msgstr "Pressió d'entrada"
+msgstr "Augmenta la pressió d'entrada simulada"
 
 #: ../po/tmp/resources.xml.h:38
 msgctxt "Accel Editor (descriptions)"
 msgid "Send harder pressure for devices that don't support pressure input."
 msgstr ""
+"Envia una pressió més forta als dispositius que no admeten l'entrada de "
+"pressió."
 
 #: ../po/tmp/resources.xml.h:39
-#, fuzzy
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
 msgid "Decrease Fake Pressure"
-msgstr "Pressió d'entrada"
+msgstr "Disminueix la pressió d'entrada simulada"
 
 #: ../po/tmp/resources.xml.h:40
 msgctxt "Accel Editor (descriptions)"
 msgid "Send softer pressure for devices that don't support pressure input."
 msgstr ""
+"Envia una pressió més suau als dispositius que no admeten l'entrada de "
+"pressió."
 
 #: ../po/tmp/resources.xml.h:41
-#, fuzzy
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
 msgid "Increase Fake Rotation"
-msgstr "Incrementa la saturació"
+msgstr "Augmenta el gir simulat"
 
 #: ../po/tmp/resources.xml.h:42
 msgctxt "Accel Editor (descriptions)"
 msgid "Increase barrel rotation for devices that don't support rotation input."
-msgstr ""
+msgstr "Augmenta el gir per a dispositius que no admeten l'entrada de gir."
 
 #: ../po/tmp/resources.xml.h:43
-#, fuzzy
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
 msgid "Decrease Fake Rotation"
-msgstr "Disminueix la saturació"
+msgstr "Disminueix el gir simulat"
 
 #: ../po/tmp/resources.xml.h:44
 msgctxt "Accel Editor (descriptions)"
 msgid "Decrease barrel rotation for devices that don't support rotation input."
-msgstr ""
+msgstr "Disminueix el gir per a dispositius que no admeten l'entrada de gir."
 
 #: ../po/tmp/resources.xml.h:45
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
@@ -5094,13 +5092,12 @@ msgid "Pick Stroke and Layer"
 msgstr "Tria traç i capa"
 
 #: ../po/tmp/resources.xml.h:68
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid ""
 "Pick a brushstroke from the canvas, which restores brush, color, and layer."
 msgstr ""
-"Tria una configuració del pinzell del llenç: restaura el pinzell, color i "
-"capa."
+"Trieu una configuració del pinzell del llenç que restaure el pinzell, el "
+"color i la capa."
 
 #: ../po/tmp/resources.xml.h:69
 msgctxt "Menu→Brush→Shortcut Keys (labels), Accel Editor (labels)"
@@ -5132,22 +5129,19 @@ msgid "Clear Layer"
 msgstr "Neteja la capa"
 
 #: ../po/tmp/resources.xml.h:74
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Clear the active layer’s content."
-msgstr "Neteja el contingut de la capa actual."
+msgstr "Neteja el contingut de la capa activa."
 
 #: ../po/tmp/resources.xml.h:75
-#, fuzzy
 msgctxt "Menu→Layer (labels)"
 msgid "Slice Operations"
-msgstr "Opcions d'eina"
+msgstr "Operacions de divisió"
 
 #: ../po/tmp/resources.xml.h:76
-#, fuzzy
 msgctxt "Menu→Layer→Slice (labels), Accel Editor (labels)"
 msgid "Trim Layer to Frame"
-msgstr "Retalla la capa al marc"
+msgstr "Retalla la capa del marc"
 
 #: ../po/tmp/resources.xml.h:77
 msgctxt "Accel Editor (descriptions)"
@@ -5157,43 +5151,42 @@ msgstr "Esborra parts de la capa actual que es troben fora del marc."
 #: ../po/tmp/resources.xml.h:78
 msgctxt "Menu→Layer→Slice (labels), Accel Editor (labels)"
 msgid "Uniquify Layer Pixels"
-msgstr ""
+msgstr "Elimina els píxels duplicats de la capa"
 
 #: ../po/tmp/resources.xml.h:79
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Delete parts of the current layer which do not vary from the backdrop."
-msgstr "Esborra parts de la capa actual que es troben fora del marc."
+msgstr "Elimina les parts de la capa actual que no varien del fons."
 
 #: ../po/tmp/resources.xml.h:80
 msgctxt "Menu→Layer→Slice (labels), Accel Editor (labels)"
 msgid "Uniquify Layer Tiles"
-msgstr ""
+msgstr "Elimina els mosaics duplicats de la capa"
 
 #: ../po/tmp/resources.xml.h:81
 msgctxt "Accel Editor (descriptions)"
 msgid ""
 "Delete whole tiles from the current layer which do not vary from the "
 "backdrop."
-msgstr ""
+msgstr "Elimina tot el mosaic de la capa actual que no varie del fons."
 
 #: ../po/tmp/resources.xml.h:82
-#, fuzzy
 msgctxt "Menu→Layer→Slice (labels), Accel Editor (labels)"
 msgid "Refactor Layer Group Pixels"
-msgstr "Grup de capes nou a sota"
+msgstr "Reestructura els píxels del grup de capes"
 
 #: ../po/tmp/resources.xml.h:83
 msgctxt "Accel Editor (descriptions)"
 msgid ""
 "Normalize child layers, then factor out common parts to a new child layer."
 msgstr ""
+"Normalitza les capes filles i, a continuació, exclou les parts comunes en "
+"una nova capa secundària."
 
 #: ../po/tmp/resources.xml.h:84
-#, fuzzy
 msgctxt "Menu→Layer→Slice (labels), Accel Editor (labels)"
 msgid "Refactor Layer Group Tiles"
-msgstr "Grup de capes nou a sota"
+msgstr "Reestructura els mosaics del grup de capes"
 
 #: ../po/tmp/resources.xml.h:85
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
@@ -5221,10 +5214,9 @@ msgid "Edit Layer in External App…"
 msgstr "Edita la capa en un aplicació externa…"
 
 #: ../po/tmp/resources.xml.h:90
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Edit the active layer in an external application."
-msgstr "Comença editant la capa actual en una aplicació externa."
+msgstr "Edita la capa actual en una aplicació externa."
 
 #: ../po/tmp/resources.xml.h:91
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
@@ -5243,10 +5235,9 @@ msgid "Go to Layer at Cursor"
 msgstr "Vés a la capa al cursor"
 
 #: ../po/tmp/resources.xml.h:94
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Select a layer by picking something [drawn] on it."
-msgstr "Selecciona una capa triant un objecte en ella."
+msgstr "Selecciona una capa triant un objecte [dibuixat] en ella."
 
 #: ../po/tmp/resources.xml.h:95
 msgctxt "Menu→Layer→Go to Layer (labels), Accel Editor (labels)"
@@ -5436,16 +5427,17 @@ msgid "Make an exact clone of the current layer."
 msgstr "Fes una copia exacta de la capa actual."
 
 #: ../po/tmp/resources.xml.h:131
-#, fuzzy
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Layer Properties…"
-msgstr "Propietats"
+msgstr "Propietats de la capa…"
 
 #: ../po/tmp/resources.xml.h:132
 msgctxt "Accel Editor (descriptions)"
 msgid ""
 "Change the layer’s properties (name, mode, visibility, locked, opacity)."
 msgstr ""
+"Canvia les propietats de la capa (nom, mode, visibilitat, bloqueig, "
+"opacitat)."
 
 #: ../po/tmp/resources.xml.h:133
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
@@ -5483,13 +5475,12 @@ msgstr "Commuta la visibilitat de la capa de fons."
 #: ../po/tmp/resources.xml.h:139
 msgctxt "Menu→Help→Debug (labels), Accel Editor (labels)"
 msgid "Vacuum Empty Tiles"
-msgstr ""
+msgstr "Neteja els mosaics buits"
 
 #: ../po/tmp/resources.xml.h:140
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Remove empty tiles from the document."
-msgstr "Suprimeix la capa actual des de la pila de capes."
+msgstr "Suprimeix els mosaics buits del document."
 
 #: ../po/tmp/resources.xml.h:141
 msgctxt "Menu→View (labels), Accel Editor (labels)"
@@ -5526,7 +5517,6 @@ msgid "Reset Zoom"
 msgstr "Reinicia l'ampliació/reducció"
 
 #: ../po/tmp/resources.xml.h:147
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Reset view zoom level to default."
 msgstr "Restaura l'ampliació/reducció al valor per defecte."
@@ -5537,10 +5527,9 @@ msgid "Reset Rotation"
 msgstr "Reinicia la rotació"
 
 #: ../po/tmp/resources.xml.h:149
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Reset the view’s rotation to 0°"
-msgstr "Restaura la rotació a 0°"
+msgstr "Restaura el gir a 0°"
 
 #: ../po/tmp/resources.xml.h:150
 msgctxt "Menu→View→Reset (labels), Accel Editor (labels)"
@@ -5548,10 +5537,9 @@ msgid "Reset Mirroring"
 msgstr "Reinicia l'emmirallat"
 
 #: ../po/tmp/resources.xml.h:151
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Reset the view's mirroring."
-msgstr "Reinicia l'emmirallat"
+msgstr "Restaura la reflexió de la visualització."
 
 #: ../po/tmp/resources.xml.h:152
 msgctxt "Menu→View→Adjust View (labels), Accel Editor (labels)"
@@ -5574,53 +5562,44 @@ msgid "Decrease magnification."
 msgstr "Disminueix l'ampliació."
 
 #: ../po/tmp/resources.xml.h:156
-#, fuzzy
 msgctxt "Menu→View→Adjust View (labels), Accel Editor (labels)"
 msgid "Pan Left"
-msgstr "Visualització panoràmica"
+msgstr "Panoràmica a l'esquerra"
 
 #: ../po/tmp/resources.xml.h:157
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Move your view of the canvas to the left."
-msgstr "Gira la visualització: inclineu la vostra visualització del llenç."
+msgstr "Mou la visualització del llenç a l'esquerra."
 
 #: ../po/tmp/resources.xml.h:158
-#, fuzzy
 msgctxt "Menu→View→Adjust View (labels), Accel Editor (labels)"
 msgid "Pan Right"
-msgstr "Llum dura"
+msgstr "Panoràmica a la dreta"
 
 #: ../po/tmp/resources.xml.h:159
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Move your view of the canvas to the right."
-msgstr ""
-"Visualització panoràmica: moveu horitzontalment o verticalment la vostra "
-"visualització del llenç."
+msgstr "Mou la visualització del llenç a la dreta."
 
 #: ../po/tmp/resources.xml.h:160
 msgctxt "Menu→View→Adjust View (labels), Accel Editor (labels)"
 msgid "Pan Up"
-msgstr ""
+msgstr "Panoràmica cap amunt"
 
 #: ../po/tmp/resources.xml.h:161
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Move your view of the canvas upwards."
-msgstr "Gira la visualització: inclineu la vostra visualització del llenç."
+msgstr "Mou la visualització del llenç cap amunt."
 
 #: ../po/tmp/resources.xml.h:162
-#, fuzzy
 msgctxt "Menu→View→Adjust View (labels), Accel Editor (labels)"
 msgid "Pan Down"
-msgstr "Visualització panoràmica"
+msgstr "Panoràmica cap avall"
 
 #: ../po/tmp/resources.xml.h:163
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Move your view of the canvas downwards."
-msgstr "Gira la visualització: inclineu la vostra visualització del llenç."
+msgstr "Mou la visualització del llenç cap avall."
 
 #: ../po/tmp/resources.xml.h:164
 msgctxt "Menu→View→Adjust View (labels), Accel Editor (labels)"
@@ -5628,10 +5607,9 @@ msgid "Rotate Clockwise"
 msgstr "Gira en sentit horari"
 
 #: ../po/tmp/resources.xml.h:165
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Rotate the canvas clockwise."
-msgstr "Gira la visualització en sentit horari."
+msgstr "Gira el llenç en sentit horari."
 
 #: ../po/tmp/resources.xml.h:166
 msgctxt "Menu→View→Adjust View (labels), Accel Editor (labels)"
@@ -5639,10 +5617,9 @@ msgid "Rotate Counterclockwise"
 msgstr "Gira en sentit antihorari"
 
 #: ../po/tmp/resources.xml.h:167
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Rotate the canvas counter-clockwise."
-msgstr "Gira la visualització en sentit antihorari."
+msgstr "Gira el llenç en sentit antihorari."
 
 #: ../po/tmp/resources.xml.h:168
 msgctxt "Menu→View→Adjust View (labels), Accel Editor (labels)"
@@ -5732,28 +5709,29 @@ msgid ""
 "Insert a point next to the currently selected point in the direction of the "
 "stroke."
 msgstr ""
+"Insereix un punt al costat del punt seleccionat actualment en la direcció "
+"del traç."
 
 #: ../po/tmp/resources.xml.h:186
-#, fuzzy
 msgid "Delete Point"
-msgstr "Suprimeix punt"
+msgstr "Suprimeix un put"
 
 #: ../po/tmp/resources.xml.h:187
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Delete currently selected point on the ink stroke."
-msgstr "Suprimeix el punt seleccionat"
+msgstr "Suprimeix el punt seleccionat actualment en el traç de tinta."
 
 #: ../po/tmp/resources.xml.h:189
 msgctxt "Accel Editor (descriptions)"
 msgid ""
 "Simplify and delete points according to angle and distance between nodes."
 msgstr ""
+"Simplifica i elimina els punts segons l'angle i la distància entre nodes."
 
 #: ../po/tmp/resources.xml.h:191
 msgctxt "Accel Editor (descriptions)"
 msgid "Delete every other point on the ink stroke."
-msgstr ""
+msgstr "Elimina la resta de punts en el traç de tinta."
 
 #: ../po/tmp/resources.xml.h:192
 msgctxt "Menu→Brush (labels)"
@@ -6166,10 +6144,9 @@ msgid "Adjust View"
 msgstr "Ajusta la visualització"
 
 #: ../po/tmp/resources.xml.h:271
-#, fuzzy
 msgctxt "Menu→View (labels), Accel Editor (labels)"
 msgid "Popup Main Menu"
-msgstr "Menú emergent"
+msgstr "Menú principal emergent"
 
 #: ../po/tmp/resources.xml.h:272
 msgctxt "Accel Editor (descriptions)"
@@ -6239,17 +6216,16 @@ msgid "Edit brush icons."
 msgstr "Edita les icones del pinzell."
 
 #: ../po/tmp/resources.xml.h:285
-#, fuzzy
 msgctxt ""
 "Menu→Layer (labels), Menu→Window (labels), Toolbar (labels), Accel Editor "
 "(labels)"
 msgid "Layers Panel"
-msgstr "Panell de capes"
+msgstr "Tauler de capes"
 
 #: ../po/tmp/resources.xml.h:286
 msgctxt "Accel Editor (descriptions)"
 msgid "Dockable panel for managing layers."
-msgstr ""
+msgstr "Tauler acoblable per a la gestió de capes."
 
 #: ../po/tmp/resources.xml.h:287
 msgctxt "Menu→Layers (labels), Accel Editor (labels)"
@@ -6315,10 +6291,9 @@ msgid "HSV Square"
 msgstr "Quadrat HSV"
 
 #: ../po/tmp/resources.xml.h:298
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Dockable color selector: HSV square with Hue ring."
-msgstr "Selector de color acoblable amb anells concèntrics HSV."
+msgstr "Selector de color acoblable: quadrat HSV amb anells de to."
 
 #: ../po/tmp/resources.xml.h:299
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
@@ -6369,7 +6344,7 @@ msgstr "Panell del quadre d'esborranys"
 #: ../po/tmp/resources.xml.h:308
 msgctxt "Accel Editor (descriptions)"
 msgid "Dockable Panel for mixing colors and testing brushes."
-msgstr ""
+msgstr "Tauler acoblable per a mesclar colors i provar els pinzells."
 
 #: ../po/tmp/resources.xml.h:309
 msgctxt "Menu→Scratchpad (labels), Accel Editor (labels)"
@@ -6392,6 +6367,8 @@ msgstr "Panell de previsualització"
 msgctxt "Accel Editor (descriptions)"
 msgid "Dockable panel for an overview and navigation of the whole canvas."
 msgstr ""
+"Tauler acoblable per a obtindre una visió general de tot el llenç i navegar-"
+"hi."
 
 #: ../po/tmp/resources.xml.h:313
 msgctxt "Menu→View (labels), Accel Editor (labels)"
@@ -6413,7 +6390,7 @@ msgstr "Panell d'opcions d'eines"
 #: ../po/tmp/resources.xml.h:316
 msgctxt "Accel Editor (descriptions)"
 msgid "Dockable panel for adjusting the options with the activated tool."
-msgstr ""
+msgstr "Tauler acoblable per a ajustar les opcions amb l'eina activada."
 
 #: ../po/tmp/resources.xml.h:317
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
@@ -6435,6 +6412,8 @@ msgstr "Pinzell i panell d'historial del color"
 msgctxt "Accel Editor (descriptions)"
 msgid "Dockable panel for viewing recently changed colors and brushes."
 msgstr ""
+"Tauler acoblable per a la visualització dels colors i els pinzells canviats "
+"recentment."
 
 #: ../po/tmp/resources.xml.h:321
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
@@ -6854,43 +6833,42 @@ msgstr ""
 "pantalla."
 
 #: ../po/tmp/resources.xml.h:400
-#, fuzzy
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "Pick Color Hue"
-msgstr "Tria el Color"
+msgstr "Trieu el to del color"
 
 #: ../po/tmp/resources.xml.h:401
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid ""
 "Set the painting Hue from screen pixels while preserving the Chroma and Luma."
-msgstr "Configura el color de pintat des dels píxels de la pantalla."
+msgstr ""
+"Configureu el to del color de la pintura des dels píxels de la pantalla."
 
 #: ../po/tmp/resources.xml.h:402
-#, fuzzy
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "Pick Color Chroma"
-msgstr "Tria el Color"
+msgstr "Trieu el croma del color"
 
 #: ../po/tmp/resources.xml.h:403
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid ""
 "Set the painting Chroma from screen pixels while preserving the Hue and Luma."
-msgstr "Configura el color de pintat des dels píxels de la pantalla."
+msgstr ""
+"Configureu el croma del color de la pintura des dels píxels de la pantalla "
+"mentre preserveu el to i la luminància."
 
 #: ../po/tmp/resources.xml.h:404
-#, fuzzy
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "Pick Color Luma"
-msgstr "Tria el Color"
+msgstr "Trieu la luminància del color"
 
 #: ../po/tmp/resources.xml.h:405
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid ""
 "Set the painting Luma from screen pixels while preserving the Hue and Chroma."
-msgstr "Configura el color de pintat des dels píxels de la pantalla."
+msgstr ""
+"Configureu la luminància del color de la pintura des dels píxels de la "
+"pantalla."
 
 #: ../po/tmp/resources.xml.h:406
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
