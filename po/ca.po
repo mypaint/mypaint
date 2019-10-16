@@ -9,7 +9,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2019-10-13 12:13+0200\n"
 "PO-Revision-Date: 2019-10-16 14:19+0000\n"
-"Last-Translator: Joan Montané <joan@montane.cat>\n"
+"Last-Translator: Ecron <ecron_89@hotmail.com>\n"
 "Language-Team: Catalan <https://hosted.weblate.org/projects/mypaint/mypaint/"
 "ca/>\n"
 "Language: ca\n"
@@ -193,7 +193,7 @@ msgstr "Velocitat"
 #: ../gui/brusheditor.py:352
 msgctxt "brush settings list: setting group"
 msgid "Directional Offsets"
-msgstr ""
+msgstr "Desplaçaments direccionals"
 
 #: ../gui/brusheditor.py:370
 msgctxt "brush settings list: setting group"
@@ -213,7 +213,7 @@ msgstr "Color"
 #: ../gui/brusheditor.py:407
 msgctxt "brush settings list: setting group"
 msgid "GridMap"
-msgstr ""
+msgstr "Mapa de graella"
 
 #: ../gui/brusheditor.py:418
 msgctxt "brush settings list: setting group"
@@ -408,6 +408,8 @@ msgstr "Nou"
 msgctxt "brushpack import failure messages"
 msgid "No file named “{order_conf_file}”. This is not a brushpack."
 msgstr ""
+"No hi ha cap fitxer anomenat «{order_conf_file}». Açò no és un paquet de "
+"pinzells."
 
 #: ../gui/brushmanager.py:639
 #, python-brace-format
@@ -416,6 +418,8 @@ msgid ""
 "Brush “{brush_name}” is listed in “{order_conf_file}”, but it does not exist "
 "in the zipfile."
 msgstr ""
+"El pinzell «{brush_name}» està llistat en «{order_conf_file}», però no "
+"existeix en el fitxer zip."
 
 #: ../gui/brushmanager.py:652
 #, python-brace-format
@@ -424,6 +428,8 @@ msgid ""
 "Brush “{brush_name}” exists in the zipfile, but it is not listed in "
 "“{order_conf_file}”."
 msgstr ""
+"El pinzell «{brush_name}» existeix en el fitxer zip, però no està llistat en "
+"«{order_conf_file}»."
 
 #: ../gui/brushmanager.py:1258 ../gui/footer.py:62
 msgid "Unknown Brush"
@@ -631,31 +637,27 @@ msgstr "Estableix el color utilitzat per pintar"
 
 #: ../gui/colorpicker.py:270
 msgid "Pick Hue"
-msgstr ""
+msgstr "Trieu el to"
 
 #: ../gui/colorpicker.py:273
-#, fuzzy
 msgid "Set the color Hue used for painting"
-msgstr "Estableix el color utilitzat per pintar"
+msgstr "Estableix el to de color utilitzat per a pintar"
 
 #: ../gui/colorpicker.py:293
-#, fuzzy
 msgid "Pick Chroma"
-msgstr "Trieu col."
+msgstr "Trieu el croma"
 
 #: ../gui/colorpicker.py:296
-#, fuzzy
 msgid "Set the color Chroma used for painting"
-msgstr "Estableix el color utilitzat per pintar"
+msgstr "Estableix el croma utilitzat per a pintar"
 
 #: ../gui/colorpicker.py:316
 msgid "Pick Luma"
-msgstr ""
+msgstr "Trieu la luminància"
 
 #: ../gui/colorpicker.py:319
-#, fuzzy
 msgid "Set the color Luma used for painting"
-msgstr "Estableix el color utilitzat per pintar"
+msgstr "Estableix la luminància utilitzada per a pintar"
 
 #: ../gui/colors/adjbases.py:699
 msgid "Color details"
@@ -1306,39 +1308,39 @@ msgid "Existing brush"
 msgstr "Pinzell existent"
 
 #: ../gui/dialogs.py:166
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgid ""
 "<b>A brush named “{brush_name}” already exists.</b>\n"
 "Do you want to replace it, or should the new brush be renamed?"
 msgstr ""
-"<b>Ja existeix un pinzell anomenat «%s».</b>\n"
-"Voleu reemplaçar-lo, o voleu canviar el nom al pinzell nou?"
+"<b>Ja existeix un pinzell anomenat «{brush_name}».</b>\n"
+"Voleu reemplaçar-lo, o voleu canviar el nom del pinzell nou?"
 
 #: ../gui/dialogs.py:196
 msgid "Overwrite brush group?"
 msgstr "Sobreescriviu el grup del pinzell?"
 
 #: ../gui/dialogs.py:220
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgid ""
 "<b>A group named “{groupname}” already exists.</b>\n"
 "Do you want to replace it, or should the new group be renamed?\n"
 "If you replace it, the brushes may be moved to a group called "
 "“{deleted_groupname}”."
 msgstr ""
-"<b>Ja existeix un grup anomenat `{groupname}'.</b>\n"
-"Voleu reemplaçar-lo, o hauríeu de canviar al grup el nom?\n"
+"<b>Ja existeix un grup anomenat «{groupname}».</b>\n"
+"Voleu reemplaçar-lo, o voleu canviar el nom del grup nou?\n"
 "Si el reemplaceu, els pinzells es mouran al grup anomenat "
-"`{deleted_groupname}'."
+"«{deleted_groupname}»."
 
 #: ../gui/dialogs.py:326
 msgid "Import brush package?"
 msgstr "Importeu el paquet del pinzell?"
 
 #: ../gui/dialogs.py:357
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgid "<b>Do you really want to import package “{brushpack_name}”?</b>"
-msgstr "<b>Voleu de veritat importar el paquet «%s»?</b>"
+msgstr "<b>Segur que voleu importar el paquet «{brushpack_name}»?</b>"
 
 #: ../gui/document.py:453
 #, python-format
@@ -1406,13 +1408,13 @@ msgstr "Amb {modifiers} premuts:  {button_actions}."
 #: ../gui/document.py:900
 msgctxt "Statusbar message: copy result"
 msgid "Empty document, nothing copied."
-msgstr ""
+msgstr "Document buit, no s'ha copiat res."
 
 #: ../gui/document.py:912
 #, python-brace-format
 msgctxt "Statusbar message: copy result"
 msgid "Copied layer as {w}×{h} image."
-msgstr ""
+msgstr "S'ha copiat la capa com una imatge {w}×{h}."
 
 #: ../gui/document.py:929
 msgctxt "Statusbar message: paste result"
@@ -1422,24 +1424,24 @@ msgstr "No hi ha res en el porta-retalls."
 #: ../gui/document.py:938
 msgctxt "Statusbar message: paste result"
 msgid "Clipboard does not contain an image."
-msgstr ""
+msgstr "El porta-retalls no conté cap imatge."
 
 #: ../gui/document.py:949
 msgctxt "Statusbar message: paste result"
 msgid "Cannot paste into this type of layer."
-msgstr ""
+msgstr "No es pot apegar dins d'aquest tipus de capa."
 
 #: ../gui/document.py:954
 #, python-brace-format
 msgctxt "Statusbar message: paste result"
 msgid "Pasted {w}×{h} image."
-msgstr ""
+msgstr "S'ha apegat la imatge {w}×{h}."
 
 #: ../gui/document.py:2040
 #, python-brace-format
 msgctxt "Statusbar message: vacuum document"
 msgid "Vacuum: discarded {removed} of {total} tiles."
-msgstr ""
+msgstr "Neteja: descartats {removed} de {total} mosaics."
 
 #. TRANSLATORS: window title for use with a filename
 #: ../gui/drawwindow.py:269
@@ -1455,7 +1457,7 @@ msgstr "MyPaint"
 #: ../gui/drawwindow.py:289
 msgctxt "Open dragged file confirm dialog: title"
 msgid "Open Dragged File?"
-msgstr ""
+msgstr "Voleu obrir el fitxer arrossegat?"
 
 #: ../gui/drawwindow.py:293
 msgctxt "Open dragged file confirm dialog: continue button"
@@ -1483,10 +1485,9 @@ msgid "Fullscreen"
 msgstr "Pantalla completa"
 
 #: ../gui/drawwindow.py:675
-#, fuzzy
 msgctxt "Quit confirm dialog: title"
 msgid "Really Quit?"
-msgstr "Realment voleu sortir?"
+msgstr "Realment voleu eixir?"
 
 #: ../gui/drawwindow.py:679
 msgctxt "Quit confirm dialog: continue button"
@@ -1571,7 +1572,7 @@ msgstr "S'estan carregant {files_summary}…"
 #, python-brace-format
 msgctxt "Document I/O: message shown while working"
 msgid "Importing layers from {files_summary}…"
-msgstr ""
+msgstr "S'estan important capes des de {files_summary}…"
 
 #: ../gui/filehandling.py:134
 #, python-brace-format
@@ -1586,73 +1587,72 @@ msgid "Exporting to {files_summary}…"
 msgstr "S'està exportant a {files_summary}…"
 
 #: ../gui/filehandling.py:145
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgctxt "Document I/O: fail message"
 msgid "Failed to export to {files_summary}."
-msgstr "Errada en exportar a “{file_basename}”."
+msgstr "No s'ha pogut exportar a {files_summary}."
 
 #: ../gui/filehandling.py:149
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgctxt "Document I/O: fail message"
 msgid "Failed to save {files_summary}."
-msgstr "Errada en desar “{file_basename}”."
+msgstr "No s'ha pogut guardar {files_summary}."
 
 #: ../gui/filehandling.py:153
 #, python-brace-format
 msgctxt "Document I/O: fail message"
 msgid "Could not import layers from {files_summary}."
-msgstr ""
+msgstr "No s'han pogut importar capes des de {files_summary}."
 
 #: ../gui/filehandling.py:157
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgctxt "Document I/O: fail message"
 msgid "Could not load {files_summary}."
-msgstr "No es pot carregar “{file_basename}”."
+msgstr "No es pot carregar {files_summary}."
 
 #: ../gui/filehandling.py:164
-#, fuzzy
 msgctxt "Document I/O: fail dialog title"
 msgid "Save failed"
-msgstr "Desa la paleta"
+msgstr "No s'ha pogut guardar"
 
 #: ../gui/filehandling.py:168
 msgctxt "Document I/O: fail dialog title"
 msgid "Export failed"
-msgstr ""
+msgstr "No s'ha pogut exportar"
 
 #: ../gui/filehandling.py:172
 msgctxt "Document I/O: fail dialog title"
 msgid "Import Layers failed"
-msgstr ""
+msgstr "No s'han pogut importar les capes"
 
 #: ../gui/filehandling.py:176
 msgctxt "Document I/O: fail dialog title"
 msgid "Open failed"
-msgstr ""
+msgstr "No s'ha pogut obrir"
 
 #: ../gui/filehandling.py:183
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgctxt "Document I/O: success"
 msgid "Exported to {files_summary} successfully."
-msgstr "S'ha exportat amb èxit a “{file_basename}”."
+msgstr "S'ha exportat amb èxit a {files_summary}."
 
 #: ../gui/filehandling.py:187
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgctxt "Document I/O: success"
 msgid "Saved {files_summary} successfully."
-msgstr "S'ha desat amb èxit “{file_basename}”."
+msgstr "S'ha guardat amb èxit {files_summary}."
 
 #: ../gui/filehandling.py:191
 #, python-brace-format
 msgctxt "Document I/O: success"
 msgid "Imported layers from {files_summary}."
-msgstr ""
+msgstr "S'han importat les capes des de {files_summary}."
 
 #: ../gui/filehandling.py:195
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgctxt "Document I/O: success"
 msgid "Loaded {files_summary}."
-msgstr "S'ha carregat “{file_basename}”."
+msgstr "S'ha carregat {files_summary}."
 
 #. TRANSLATORS: formatting for {files_summary} for multiple files.
 #. TRANSLATORS: corresponding msgid for single files: "“{basename}”"
@@ -1664,19 +1664,17 @@ msgstr[0] "{n} fitxer"
 msgstr[1] "{n} fitxers"
 
 #: ../gui/filehandling.py:222
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgctxt "Document I/O: the {files_summary} for a single file"
 msgid "“{basename}”"
-msgstr "S'ha carregat “{file_basename}”."
+msgstr "«{basename}»"
 
 #: ../gui/filehandling.py:428
-#, fuzzy
 msgctxt "save/load dialogs: filter patterns"
 msgid "All Recognized Formats"
 msgstr "Tots els formats reconeguts"
 
 #: ../gui/filehandling.py:433
-#, fuzzy
 msgctxt "save/load dialogs: filter patterns"
 msgid "OpenRaster (*.ora)"
 msgstr "OpenRaster (*.ora)"
@@ -1692,10 +1690,9 @@ msgid "JPEG (*.jpg; *.jpeg)"
 msgstr "JPEG (*.jpg; *.jpeg)"
 
 #: ../gui/filehandling.py:491
-#, fuzzy
 msgctxt "save dialogs: save formats and options"
 msgid "By extension (prefer default format)"
-msgstr "Per extensió (prefereix el format predeterminat)"
+msgstr "Per extensió (prefereix el format per defecte)"
 
 #: ../gui/filehandling.py:495
 #, fuzzy
