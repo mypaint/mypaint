@@ -22,6 +22,11 @@
 * Brush settings stored with each stroke on the canvas
 * Layers, various modes, and layer groups
 
+## Install via Chocolatey
+* To install the current stable version run `choco install mypaint'
+* To install the latest version run `choco install mypaint --pre 
+
+
 ## Build/Test/Install
 
 MyPaint depends on its brushstroke rendering library,
