@@ -105,7 +105,8 @@ install_dependencies() {
         ${PKG_PREFIX}-binutils \
         ${PKG_PREFIX}-python3 \
         ${PKG_PREFIX}-python3-pip \
-        zip
+        zip \
+        p7zip
 
     logok "Dependencies installed."
 }
@@ -228,7 +229,7 @@ bundle_mypaint() {
             git pull
         else
             loginfo "Cloning managed Styrene source"
-            git clone https://github.com/achadwick/styrene.git
+            git clone https://github.com/mypaint/mypaint-styrene.git styrene
             pushd styrene
         fi
         loginfo "Installing styrene with pip3..."
@@ -244,14 +245,16 @@ bundle_mypaint() {
     tmpdir="/tmp/styrene.$$"
     mkdir -p "$tmpdir"
     styrene --colour=yes \
-        --pkg-dir="$OUTPUT_ROOT/pkgs" \
-        --output-dir="$tmpdir" \
-        "$TOPDIR/windows/styrene/mypaint.cfg"
+	    --no-zip \
+	    --7z \
+	    --pkg-dir="$OUTPUT_ROOT/pkgs" \
+	    --output-dir="$tmpdir" \
+            "$TOPDIR/windows/styrene/mypaint.cfg"
 
     output_version=$(echo $BUNDLE_ARCH-$APPVEYOR_BUILD_VERSION | sed -e 's/[^a-zA-Z0-9._-]/-/g')
 
-    mv -v "$tmpdir"/*-standalone.zip \
-        "$OUTPUT_ROOT/bundles/mypaint-git-$output_version-standalone.zip"
+    mv -v "$tmpdir"/*-standalone.7z \
+        "$OUTPUT_ROOT/bundles/mypaint-git-$output_version-standalone.7z"
     mv -v "$tmpdir"/*-installer.exe  \
         "$OUTPUT_ROOT/bundles/mypaint-git-$output_version-installer.exe"
 
