@@ -215,14 +215,14 @@ class BrushPopupMenu (Gtk.Menu):
         self._app = bl.app
         faves = bl.bm.get_group_brushes(brushmanager.FAVORITES_BRUSH_GROUP)
         if brush not in faves:
-            item = Gtk.MenuItem(C_(
+            item = Gtk.MenuItem(label=C_(
                 "brush group: context menu for a single brush",
                 "Add to Favorites",
             ))
             item.connect("activate", self._favorite_cb)
             self.append(item)
         else:
-            item = Gtk.MenuItem(C_(
+            item = Gtk.MenuItem(label=C_(
                 "brush group: context menu for a single brush",
                 "Remove from Favorites",
             ))
@@ -230,14 +230,14 @@ class BrushPopupMenu (Gtk.Menu):
             self.append(item)
 
         if bl.group != brushmanager.FAVORITES_BRUSH_GROUP:
-            item = Gtk.MenuItem(C_(
+            item = Gtk.MenuItem(label=C_(
                 "brush group: context menu for a single brush",
                 "Clone",
             ))
             item.connect("activate", self._clone_cb)
             self.append(item)
 
-        item = Gtk.MenuItem(C_(
+        item = Gtk.MenuItem(label=C_(
             "brush group: context menu for a single brush",
             "Edit Brush Settings",
         ))
@@ -245,7 +245,7 @@ class BrushPopupMenu (Gtk.Menu):
         self.append(item)
 
         if bl.group != brushmanager.FAVORITES_BRUSH_GROUP:
-            item = Gtk.MenuItem(C_(
+            item = Gtk.MenuItem(label=C_(
                 "brush group: context menu for a single brush",
                 "Remove from Group",
             ))
@@ -363,7 +363,7 @@ class BrushGroupTool (SizedVBoxToolWidget):
             self._scrolls.remove(viewport)
             viewport.destroy()
         self._brush_list = BrushList(self._app, self._group)
-        self._scrolls.add_with_viewport(self._brush_list)
+        self._scrolls.add(self._brush_list)
         self._brush_list.show_all()
 
     ## Tool widget properties and methods
@@ -413,19 +413,19 @@ class BrushGroupTool (SizedVBoxToolWidget):
                 destroy_with_parent=True,
                 window_position=Gtk.WindowPosition.MOUSE,
                 buttons=buttons)
-            btn = Gtk.Button(C_(
+            btn = Gtk.Button(label=C_(
                 "brush group properties dialog: action buttons",
                 "Rename Group",
             ))
             btn.connect("clicked", self._rename_cb)
             dia.vbox.pack_start(btn, False, False, 0)
-            btn = Gtk.Button(C_(
+            btn = Gtk.Button(label=C_(
                 "brush group properties dialog: action buttons",
                 "Export as Zipped Brushset",
             ))
             btn.connect("clicked", self._export_cb)
             dia.vbox.pack_start(btn, False, False, 0)
-            btn = Gtk.Button(C_(
+            btn = Gtk.Button(label=C_(
                 "brush group properties dialog: action buttons",
                 "Delete Group",
             ))
@@ -532,13 +532,15 @@ class BrushGroupsMenu (Gtk.Menu):
         # Static items
         item = Gtk.SeparatorMenuItem()
         self.append(item)
-        item = Gtk.MenuItem(C_("brush groups menu", u"New Group…"))
+        item = Gtk.MenuItem(label=C_("brush groups menu", u"New Group…"))
         item.connect("activate", self._new_brush_group_cb)
         self.append(item)
-        item = Gtk.MenuItem(C_("brush groups menu", u"Import Brushes…"))
+        item = Gtk.MenuItem(label=C_("brush groups menu", u"Import Brushes…"))
         item.connect("activate", self.app.drawWindow.import_brush_pack_cb)
         self.append(item)
-        item = Gtk.MenuItem(C_("brush groups menu", u"Get More Brushes…"))
+        item = Gtk.MenuItem(label=C_(
+            "brush groups menu", u"Get More Brushes…")
+        )
         item.connect("activate", self.app.drawWindow.download_brush_pack_cb)
         self.append(item)
         # Dynamic items

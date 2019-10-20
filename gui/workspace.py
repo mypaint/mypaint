@@ -139,9 +139,9 @@ class Workspace (Gtk.VBox, Gtk.Buildable):
     __gtype_name__ = 'MyPaintWorkspace'
 
     #: Title suffix property for floating windows.
-    floating_window_title_suffix = GObject.property(
+    floating_window_title_suffix = GObject.Property(
         type=str,
-        flags=GObject.PARAM_READWRITE,
+        flags=GObject.ParamFlags.READWRITE,
         nick='Floating window title suffix',
         blurb='The suffix to append to floating windows: typically a '
               'hyphen followed by the application name.',
@@ -149,9 +149,9 @@ class Workspace (Gtk.VBox, Gtk.Buildable):
     )
 
     #: Title separator property for floating windows.
-    floating_window_title_separator = GObject.property(
+    floating_window_title_separator = GObject.Property(
         type=str,
-        flags=GObject.PARAM_READWRITE,
+        flags=GObject.ParamFlags.READWRITE,
         nick='Floating window title separator',
         blurb='String used to separate the names of tools in a '
               'floating window. By default, a comma is used.',
@@ -160,9 +160,9 @@ class Workspace (Gtk.VBox, Gtk.Buildable):
 
     #: Header bar widget, to be hidden when entering fullscreen mode. This
     #: widget should be packed externally to the workspace, and to its top.
-    header_bar = GObject.property(
+    header_bar = GObject.Property(
         type=Gtk.Widget,
-        flags=GObject.PARAM_READWRITE,
+        flags=GObject.ParamFlags.READWRITE,
         nick='Header bar widget',
         blurb="External Menubar/toolbar widget to be hidden when "
               "entering fullscreen mode, and re-shown when leaving "
@@ -173,9 +173,9 @@ class Workspace (Gtk.VBox, Gtk.Buildable):
 
     #: Footer bar widget, to be hidden when entering fullscreen mode. This
     #: widget should be packed externally to the workspace, and to its bottom.
-    footer_bar = GObject.property(
+    footer_bar = GObject.Property(
         type=Gtk.Widget,
-        flags=GObject.PARAM_READWRITE,
+        flags=GObject.ParamFlags.READWRITE,
         nick='Footer bar widget',
         blurb="External footer bar widget to be hidden when entering "
               "fullscreen mode, and re-shown when leaving it. The "
@@ -1027,7 +1027,7 @@ class ToolStack (Gtk.EventBox):
 
     workspace = GObject.Property(
         type=Workspace,
-        flags=GObject.PARAM_READWRITE,
+        flags=GObject.ParamFlags.READWRITE,
         nick='Workspace',
         blurb='The central Workspace object, used to coordinate drags',
         default=None
@@ -2393,7 +2393,7 @@ def _test():
         logger.debug("FLOATING-WINDOW-CREATED %r", a)
     workspace = Workspace()
     workspace.floating_window_title_suffix = u" - Test"
-    button = Gtk.Button("Click to close this demo")
+    button = Gtk.Button(label="Click to close this demo")
     frame = Gtk.Frame()
     frame.add(button)
     frame.set_shadow_type(Gtk.ShadowType.IN)

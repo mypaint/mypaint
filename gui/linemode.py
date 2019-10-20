@@ -73,7 +73,7 @@ class LineModeSettings (object):
             prefs_key = "linemode.%s" % cname
             value = float(self.app.preferences.get(prefs_key, default))
             adj = Gtk.Adjustment(value=value, lower=min_, upper=max_,
-                                 step_incr=0.01, page_incr=0.1)
+                                 step_increment=0.01, page_increment=0.1)
             adj.connect("value-changed", self._value_changed_cb, prefs_key)
             self.adjustments[cname] = adj
 

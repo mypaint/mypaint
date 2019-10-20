@@ -598,7 +598,7 @@ class FreehandOptionsWidget (gui.mode.PaintingModeOptionsWidgetBase):
         label.set_hexpand(False)
         changed_cb = self._fakepressure_value_changed_cb
         adj = Gtk.Adjustment(value=0.5, lower=0.0, upper=1.0,
-                             step_incr=0.01, page_incr=0.1)
+                             step_increment=0.01, page_increment=0.1)
         self.app.fake_adjustment['fakepressure'] = adj
         adj.connect("value-changed", changed_cb)
         scale = Gtk.Scale.new(Gtk.Orientation.HORIZONTAL, adj)
@@ -616,7 +616,7 @@ class FreehandOptionsWidget (gui.mode.PaintingModeOptionsWidgetBase):
         label.set_hexpand(False)
         changed_cb = self._fakerotation_value_changed_cb
         adj = Gtk.Adjustment(value=0.5, lower=0.0, upper=1.0,
-                             step_incr=0.0625, page_incr=0.25)
+                             step_increment=0.0625, page_increment=0.25)
         self.app.fake_adjustment['fakerotation'] = adj
         adj.connect("value-changed", changed_cb)
         scale = Gtk.Scale.new(Gtk.Orientation.HORIZONTAL, adj)

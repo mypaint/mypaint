@@ -107,7 +107,7 @@ class BrushIconEditor (Gtk.Grid):
 
     @staticmethod
     def _make_image_button(text, icon_name, cb):
-        b = Gtk.Button(text)
+        b = Gtk.Button(label=text)
         i = Gtk.Image()
         i.set_from_icon_name(icon_name, Gtk.IconSize.BUTTON)
         b.set_image(i)

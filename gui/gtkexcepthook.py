@@ -159,7 +159,7 @@ def _info(exctyp, value, tb):
 
     exception_dialog_active = True
     # Create the dialog
-    dialog = Gtk.MessageDialog(type=Gtk.MessageType.WARNING)
+    dialog = Gtk.MessageDialog(message_type=Gtk.MessageType.WARNING)
     dialog.set_title(_("Bug Detected"))
 
     primary = _(
@@ -324,7 +324,7 @@ if __name__ == '__main__':
     win = Gtk.Window()
     win.set_size_request(200, 150)
     win.set_title(os.path.basename(sys.argv[0]))
-    btn = Gtk.Button("Break it")
+    btn = Gtk.Button(label="Break it")
     btn.connect("clicked", _test_button_clicked_cb)
     win.add(btn)
     win.connect("destroy", lambda *a: Gtk.main_quit())

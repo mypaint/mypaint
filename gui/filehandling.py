@@ -332,7 +332,7 @@ class _IOProgressUI:
                     title=self._fail_dialog_title,
                     text=self._fail_msg,
                     secondary_text=unicode(e),
-                    type=Gtk.MessageType.ERROR,
+                    message_type=Gtk.MessageType.ERROR,
                 )
             self.success = False
         else:
@@ -352,12 +352,11 @@ class _IOProgressUI:
         if self._progress_bar is None:
             now = time.clock()
             if (now - self._start_time) > 0.25:
-                flags = (Gtk.DialogFlags.MODAL |
-                         Gtk.DialogFlags.DESTROY_WITH_PARENT)
                 dialog = Gtk.Dialog(
                     title=self._duration_msg,
-                    parent=self._app.drawWindow,
-                    flags=flags,
+                    transient_for=self._app.drawWindow,
+                    modal=True,
+                    destroy_with_parent=True,
                     buttons=[],
                 )
                 dialog.set_position(Gtk.WindowPosition.CENTER_ON_PARENT)
@@ -692,7 +691,7 @@ class FileHandler (object):
         d = Gtk.MessageDialog(
             title = title,
             parent = self.app.drawWindow,
-            type = Gtk.MessageType.QUESTION,
+            message_type = Gtk.MessageType.QUESTION,
             flags = Gtk.DialogFlags.MODAL,
         )
 
@@ -881,7 +880,10 @@ class FileHandler (object):
             self.app.preferences["scratchpad.last_opened_scratchpad"] \
                 = self.app.scratchpad_filename
         except (FileHandlingError, AllocationError, MemoryError) as e:
-            self.app.message_dialog(unicode(e), type=Gtk.MessageType.ERROR)
+            self.app.message_dialog(
+                unicode(e),
+                message_type=Gtk.MessageType.ERROR
+            )
         else:
             self.app.scratchpad_filename = os.path.abspath(filename)
             self.app.preferences["scratchpad.last_opened_scratchpad"] \
@@ -1446,7 +1448,7 @@ class FileHandler (object):
                 'File→Open Next/Prev Scrap: error message',
                 u"There are no scrap files yet. Try saving one first.",
             )
-            self.app.message_dialog(msg, Gtk.MessageType.WARNING)
+            self.app.message_dialog(msg, message_type=Gtk.MessageType.WARNING)
             return
         next = action.get_name() == 'NextScrap'
         if next:

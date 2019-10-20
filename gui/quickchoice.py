@@ -97,7 +97,7 @@ class QuickBrushChooser (Gtk.VBox):
 
         scrolledwin = Gtk.ScrolledWindow()
         scrolledwin.set_policy(Gtk.PolicyType.NEVER, Gtk.PolicyType.ALWAYS)
-        scrolledwin.add_with_viewport(self.brushlist)
+        scrolledwin.add(self.brushlist)
         w = int(self.ICON_SIZE * 4.5)
         h = int(self.ICON_SIZE * 5.0)
         scrolledwin.set_min_content_width(w)

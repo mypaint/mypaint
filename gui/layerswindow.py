@@ -184,7 +184,7 @@ class LayersTool (SizedVBoxToolWidget):
 
         # Opacity widgets
         adj = Gtk.Adjustment(lower=0, upper=100,
-                             step_incr=1, page_incr=10)
+                             step_increment=1, page_increment=10)
         sbut = Gtk.ScaleButton()
         sbut.set_adjustment(adj)
         sbut.remove(sbut.get_child())

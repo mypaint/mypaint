@@ -199,7 +199,7 @@ class PaletteEditorDialog (Gtk.Dialog):
         self._palette_name_entry = palette_name_entry
         self._columns_adj = Gtk.Adjustment(
             value=0, lower=0, upper=99,
-            step_incr=1, page_incr=1, page_size=0
+            step_increment=1, page_increment=1, page_size=0
         )
         self._columns_adj.connect("value-changed", self._columns_changed_cb)
         columns_label = Gtk.Label(C_(

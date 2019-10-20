@@ -624,7 +624,7 @@ class PaintingModeOptionsWidgetBase (Gtk.Grid):
         align = Gtk.Alignment.new(0.5, 1.0, 1.0, 0.0)
         align.set_vexpand(True)
         self.attach(align, 0, row, 2, 1)
-        button = Gtk.Button(_("Reset"))
+        button = Gtk.Button(label=_("Reset"))
         button.connect("clicked", self.reset_button_clicked_cb)
         align.add(button)
         row += 1

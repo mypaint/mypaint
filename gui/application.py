@@ -518,7 +518,7 @@ class Application (object):
         changed_cb = self._brush_adjustment_value_changed_cb
         for s in brushsettings.settings_visible:
             adj = Gtk.Adjustment(value=s.default, lower=s.min, upper=s.max,
-                                 step_incr=0.01, page_incr=0.1)
+                                 step_increment=0.01, page_increment=0.1)
             self.brush_adjustment[s.cname] = adj
             adj.connect("value-changed", changed_cb, s.cname)
         self.brush.observers.append(self._brush_modified_cb)
@@ -577,15 +577,14 @@ class Application (object):
         self.preferences["workspace.layout"] = wkspace.get_layout()
         self.save_settings()
 
-    def message_dialog(self, text, type=Gtk.MessageType.INFO, flags=0,
+    def message_dialog(self, text,
                        secondary_text=None, long_text=None, title=None,
-                       investigate_dir=None, investigate_str=None):
+                       investigate_dir=None, investigate_str=None, **kwds):
         """Utility function to show a message/information dialog"""
         d = Gtk.MessageDialog(
-            parent=self.drawWindow,
-            flags=flags,
-            type=type,
+            transient_for=self.drawWindow,
             buttons=[],
+            **kwds
         )
         # Auxiliary actions first...
         if investigate_dir and os.path.isdir(investigate_dir):

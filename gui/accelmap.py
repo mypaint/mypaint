@@ -88,7 +88,6 @@ class AccelMapEditor (Gtk.Grid):
         view.set_enable_search(True)
         view.set_search_column(self._SEARCH_TEXT_COLUMN)
         view.set_search_equal_func(self._view_search_equal_cb)
-        view.set_rules_hint(True)
         self._view = view
 
         cell = Gtk.CellRendererText()

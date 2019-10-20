@@ -51,7 +51,6 @@ class BackgroundWindow (windowing.Dialog):
 
         self._current_background_pixbuf = None  # set when changed
 
-        flags = Gtk.DialogFlags.DESTROY_WITH_PARENT
         buttons = [
             _('Save as Default'), RESPONSE_SAVE_AS_DEFAULT,
             Gtk.STOCK_OK, Gtk.ResponseType.ACCEPT,
@@ -60,8 +59,8 @@ class BackgroundWindow (windowing.Dialog):
             self,
             app=app,
             title=_('Background'),
-            parent=app.drawWindow,
-            flags=flags,
+            transient_for=app.drawWindow,
+            modal=True,
             buttons=buttons,
         )
 
@@ -94,7 +93,7 @@ class BackgroundWindow (windowing.Dialog):
         self.cs.connect('color-changed', self._color_changed_cb)
         color_vbox.pack_start(self.cs, True, True, 0)
 
-        b = Gtk.Button(_('Add color to Patterns'))
+        b = Gtk.Button(label=_('Add color to Patterns'))
         b.connect('clicked', self._add_color_to_patterns_cb)
         color_vbox.pack_start(b, False, True, 0)
 
@@ -263,8 +262,8 @@ class BackgroundList (pixbuflist.PixbufList):
                 secondary_text=_("Please remove the unloadable files, or "
                                  "check your libgdkpixbuf installation."),
                 long_text=msg,
-                type=Gtk.MessageType.WARNING,
-                flags=Gtk.DialogFlags.MODAL,
+                message_type=Gtk.MessageType.WARNING,
+                modal=True,
             )
 
         logger.info("Loaded %d of %d background(s), with %d error(s)",

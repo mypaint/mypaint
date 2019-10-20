@@ -400,8 +400,8 @@ class SymmetryEditOptionsWidget (Gtk.Alignment):
             rootstack.symmetry_x,
             upper=32000,
             lower=-32000,
-            step_incr=1,
-            page_incr=100,
+            step_increment=1,
+            page_increment=100,
         )
         self._axis_pos_adj_x.connect(
             'value-changed',
@@ -411,8 +411,8 @@ class SymmetryEditOptionsWidget (Gtk.Alignment):
             rootstack.symmetry_y,
             upper=32000,
             lower=-32000,
-            step_incr=1,
-            page_incr=100,
+            step_increment=1,
+            page_increment=100,
         )
         self._axis_pos_adj_y.connect(
             'value-changed',
@@ -422,8 +422,8 @@ class SymmetryEditOptionsWidget (Gtk.Alignment):
             rootstack.rot_symmetry_lines,
             upper=50,
             lower=2,
-            step_incr=1,
-            page_incr=3,
+            step_increment=1,
+            page_increment=3,
         )
         self._axis_rot_symmetry_lines.connect(
             'value-changed',
@@ -574,7 +574,7 @@ class SymmetryEditOptionsWidget (Gtk.Alignment):
         label = Gtk.Label(self._POSITION_LABEL_X_TEXT)
         label.set_hexpand(False)
         label.set_halign(Gtk.Align.START)
-        button = Gtk.Button(self._POSITION_BUTTON_TEXT_INACTIVE)
+        button = Gtk.Button(label=self._POSITION_BUTTON_TEXT_INACTIVE)
         button.set_vexpand(False)
         button.connect("clicked", self._axis_pos_x_button_clicked_cb)
         button.set_hexpand(True)
@@ -587,7 +587,7 @@ class SymmetryEditOptionsWidget (Gtk.Alignment):
         label = Gtk.Label(self._POSITION_LABEL_Y_TEXT)
         label.set_hexpand(False)
         label.set_halign(Gtk.Align.START)
-        button = Gtk.Button(self._POSITION_BUTTON_TEXT_INACTIVE)
+        button = Gtk.Button(label=self._POSITION_BUTTON_TEXT_INACTIVE)
         button.set_vexpand(False)
         button.connect("clicked", self._axis_pos_y_button_clicked_cb)
         button.set_hexpand(True)

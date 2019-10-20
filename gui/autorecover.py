@@ -137,9 +137,9 @@ class Presenter (object):
                 self._app.message_dialog(
                     _(u"No backups were found in the cache."),
                     title = _(u"No Available Backups"),
-                    type = Gtk.MessageType.ERROR,
                     investigate_dir = cache_root,
-                    investigate_str = _(u"Open the Cache Folder…")
+                    investigate_str = _(u"Open the Cache Folder…"),
+                    message_type = Gtk.MessageType.ERROR,
                 )
             return
         doc = self._app.doc
@@ -169,9 +169,9 @@ class Presenter (object):
             self._app.message_dialog(
                 unicode(error),
                 title = _(u"Backup Recovery Failed"),
-                type = Gtk.MessageType.ERROR,
                 investigate_dir = error.investigate_dir,
-                investigate_str = _(u"Open the Backup’s Folder…")
+                investigate_str = _(u"Open the Backup’s Folder…"),
+                message_type = Gtk.MessageType.ERROR,
             )
         # If it loaded OK, get the user to save the recovered file ASAP.
         elif autosave:

@@ -512,7 +512,7 @@ class ColorAdjusterWidget (CachedBgDrawingArea, ColorAdjuster):
         'color-manager': (ColorManager,
                           "Color manager",
                           "The ColorManager owning the color to be adjusted",
-                          GObject.PARAM_READWRITE),
+                          GObject.ParamFlags.READWRITE),
     }
 
     ## Construction (TODO: rename internals at some point)

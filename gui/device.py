@@ -423,7 +423,7 @@ class SettingsEditor (Gtk.Grid):
         self._monitor = monitor
 
         self._devices_store = Gtk.ListStore(object)
-        self._devices_view = Gtk.TreeView(self._devices_store)
+        self._devices_view = Gtk.TreeView(model=self._devices_store)
 
         col = Gtk.TreeViewColumn(C_(
             "prefs: devices table: column header",

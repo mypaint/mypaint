@@ -434,17 +434,17 @@ class FrameEditOptionsWidget (Gtk.Alignment):
 
         self.width_adj = UnitAdjustment(
             w, upper=32000, lower=1,
-            step_incr=1, page_incr=128,
+            step_increment=1, page_increment=128,
             dpi=dpi
         )
         self.height_adj = UnitAdjustment(
             h, upper=32000, lower=1,
-            step_incr=1, page_incr=128,
+            step_increment=1, page_increment=128,
             dpi=dpi
         )
         self.dpi_adj = Gtk.Adjustment(dpi, upper=9600, lower=1,
-                                      step_incr=76,  # hack: 3 clicks 72->300
-                                      page_incr=dpi)
+                                      step_increment=76,  # hack: 3 clicks 72->300
+                                      page_increment=dpi)
 
         docmodel.frame_updated += self._frame_updated_cb
 
@@ -570,7 +570,7 @@ class FrameEditOptionsWidget (Gtk.Alignment):
         xpad = ypad = 3
 
         row = 0
-        size_button = Gtk.Button("<size-summary>")
+        size_button = Gtk.Button(label="<size-summary>")
         self._size_button = size_button
         size_button.connect("clicked", self._size_button_clicked_cb)
         opts_table.attach(size_button, 0, 2, row, row+1,
@@ -582,10 +582,10 @@ class FrameEditOptionsWidget (Gtk.Alignment):
         opts_table.attach(color_align, 1, 2, row, row+1,
                           xopts, yopts, xpad, ypad)
 
-        crop_layer_button = Gtk.Button(_('Set Frame to Layer'))
+        crop_layer_button = Gtk.Button(label=_('Set Frame to Layer'))
         crop_layer_button.set_tooltip_text(_("Set frame to the extents of "
                                              "the current layer"))
-        crop_document_button = Gtk.Button(_('Set Frame to Document'))
+        crop_document_button = Gtk.Button(label=_('Set Frame to Document'))
         crop_document_button.set_tooltip_text(_("Set frame to the combination "
                                                 "of all layers"))
         crop_layer_button.connect('clicked', self.crop_frame_cb,
@@ -911,8 +911,8 @@ class UnitAdjustment(Gtk.Adjustment):
         _('mm'): (25.4, 5000, 1, 1, 10, 0),
     }
 
-    def __init__(self, value=0, lower=0, upper=0, step_incr=0,
-                 page_incr=0, page_size=0, dpi=DEFAULT_RESOLUTION):
+    def __init__(self, value=0, lower=0, upper=0, step_increment=0,
+                 page_increment=0, page_size=0, dpi=DEFAULT_RESOLUTION):
         Gtk.Adjustment.__init__(self, value, lower, upper, step_incr,
                                 page_incr, page_size)
         self.px_value = value
