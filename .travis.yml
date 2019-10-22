@@ -5,7 +5,7 @@ compiler:
 
 sudo: required
 
-dist: trusty
+dist: xenial
 
 addons:
   apt:
