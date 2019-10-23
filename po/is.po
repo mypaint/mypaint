@@ -4,7 +4,7 @@ msgstr ""
 "Project-Id-Version: mypaint v2.0.0-alpha.8-1-g4490f06\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2019-10-13 12:13+0200\n"
-"PO-Revision-Date: 2019-10-14 17:52+0000\n"
+"PO-Revision-Date: 2019-10-24 16:53+0000\n"
 "Last-Translator: Sveinn í Felli <sv1@fellsnet.is>\n"
 "Language-Team: Icelandic <https://hosted.weblate.org/projects/mypaint/"
 "mypaint/is/>\n"
@@ -13,7 +13,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n % 10 != 1 || n % 100 == 11;\n"
-"X-Generator: Weblate 3.9-dev\n"
+"X-Generator: Weblate 3.9.1-dev\n"
 
 #. TRANSLATORS: Name of first column in the button map preferences.
 #. TRANSLATORS: Refers to an action bound to a mod+button combination.
@@ -631,23 +631,20 @@ msgid "Set the color Hue used for painting"
 msgstr "Veldu litblæ til að mála með"
 
 #: ../gui/colorpicker.py:293
-#, fuzzy
 msgid "Pick Chroma"
-msgstr "Veldu lit"
+msgstr "Veldu litgildi (chroma)"
 
 #: ../gui/colorpicker.py:296
-#, fuzzy
 msgid "Set the color Chroma used for painting"
-msgstr "Veldu lit til að mála með"
+msgstr "Veldu litgildi litar til að mála með"
 
 #: ../gui/colorpicker.py:316
 msgid "Pick Luma"
-msgstr ""
+msgstr "Veldu ljóma (luma)"
 
 #: ../gui/colorpicker.py:319
-#, fuzzy
 msgid "Set the color Luma used for painting"
-msgstr "Veldu lit til að mála með"
+msgstr "Veldu ljóma (luma) litar til að mála með"
 
 #: ../gui/colors/adjbases.py:699
 msgid "Color details"
@@ -1293,12 +1290,12 @@ msgid "Existing brush"
 msgstr "Fyrirliggjandi pensill"
 
 #: ../gui/dialogs.py:166
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgid ""
 "<b>A brush named “{brush_name}” already exists.</b>\n"
 "Do you want to replace it, or should the new brush be renamed?"
 msgstr ""
-"<b>Pensill með heitinu `%s' er þegar til.</b>\n"
+"<b>Pensill með heitinu “{brush_name}” er þegar til.</b>\n"
 "Viltu skipta honum út, eða ætti að endurnefna nýja pensilinn?"
 
 #: ../gui/dialogs.py:196
@@ -1306,26 +1303,26 @@ msgid "Overwrite brush group?"
 msgstr "Skrifa yfir pensilhóp?"
 
 #: ../gui/dialogs.py:220
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgid ""
 "<b>A group named “{groupname}” already exists.</b>\n"
 "Do you want to replace it, or should the new group be renamed?\n"
 "If you replace it, the brushes may be moved to a group called "
 "“{deleted_groupname}”."
 msgstr ""
-"<b>Hópur með heitinu `{groupname}' er þegar til.</b>\n"
+"<b>Hópur með heitinu \"{groupname}\" er þegar til.</b>\n"
 "Viltu skipta honum út, eða ætti að endurnefna nýja hópinn?\n"
-"Ef þú skiptir honum út, gætu penslarnir verið færðir í hóp með heitinu "
-"`{deleted_groupname}'."
+"Ef þú skiptir honum út, gætu penslarnir verið færðir í hóp með heitinu \""
+"{deleted_groupname}\"."
 
 #: ../gui/dialogs.py:326
 msgid "Import brush package?"
 msgstr "Flytja inn penslapakka?"
 
 #: ../gui/dialogs.py:357
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgid "<b>Do you really want to import package “{brushpack_name}”?</b>"
-msgstr "<b>Ertu viss um að þú viljir flytja inn pakkann `%s'?</b>"
+msgstr "<b>Ertu viss um að þú viljir flytja inn pakkann “{brushpack_name}”?</b>"
 
 #: ../gui/document.py:453
 #, python-format
@@ -1445,10 +1442,9 @@ msgid "Open Dragged File?"
 msgstr ""
 
 #: ../gui/drawwindow.py:293
-#, fuzzy
 msgctxt "Open dragged file confirm dialog: continue button"
 msgid "_Open"
-msgstr "Opna"
+msgstr "_Opna"
 
 #: ../gui/drawwindow.py:486
 msgid "Set current color"
@@ -1471,16 +1467,14 @@ msgid "Fullscreen"
 msgstr "Skjáfylli"
 
 #: ../gui/drawwindow.py:675
-#, fuzzy
 msgctxt "Quit confirm dialog: title"
 msgid "Really Quit?"
-msgstr "Hætta í alvöru?"
+msgstr "Hætta í alvörunni?"
 
 #: ../gui/drawwindow.py:679
-#, fuzzy
 msgctxt "Quit confirm dialog: continue button"
 msgid "_Quit"
-msgstr "Hætta"
+msgstr "_Hætta"
 
 #: ../gui/drawwindow.py:697
 msgid "Import brush package…"
@@ -1551,10 +1545,10 @@ msgid "no description"
 msgstr "engin lýsing"
 
 #: ../gui/filehandling.py:126
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgctxt "Document I/O: message shown while working"
 msgid "Loading {files_summary}…"
-msgstr "Hleð inn “{file_basename}”…"
+msgstr "Hleð inn {files_summary}…"
 
 #: ../gui/filehandling.py:130
 #, python-brace-format
@@ -1563,28 +1557,28 @@ msgid "Importing layers from {files_summary}…"
 msgstr ""
 
 #: ../gui/filehandling.py:134
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgctxt "Document I/O: message shown while working"
 msgid "Saving {files_summary}…"
-msgstr "Vista “{file_basename}”…"
+msgstr "Vista {files_summary}…"
 
 #: ../gui/filehandling.py:138
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgctxt "Document I/O: message shown while working"
 msgid "Exporting to {files_summary}…"
-msgstr "Flyt út í “{file_basename}”…"
+msgstr "Flyt út í {files_summary}…"
 
 #: ../gui/filehandling.py:145
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgctxt "Document I/O: fail message"
 msgid "Failed to export to {files_summary}."
-msgstr "Mistókst að flytja út í “{file_basename}”."
+msgstr "Mistókst að flytja út í {files_summary}."
 
 #: ../gui/filehandling.py:149
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgctxt "Document I/O: fail message"
 msgid "Failed to save {files_summary}."
-msgstr "Mistókst að vista “{file_basename}”."
+msgstr "Mistókst að vista {files_summary}."
 
 #: ../gui/filehandling.py:153
 #, python-brace-format
@@ -1593,16 +1587,15 @@ msgid "Could not import layers from {files_summary}."
 msgstr ""
 
 #: ../gui/filehandling.py:157
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgctxt "Document I/O: fail message"
 msgid "Could not load {files_summary}."
-msgstr "Gat ekki hlaðið inn “{file_basename}”."
+msgstr "Gat ekki hlaðið inn {files_summary}."
 
 #: ../gui/filehandling.py:164
-#, fuzzy
 msgctxt "Document I/O: fail dialog title"
 msgid "Save failed"
-msgstr "Vista litaspjald"
+msgstr "Vistun mistókst"
 
 #: ../gui/filehandling.py:168
 msgctxt "Document I/O: fail dialog title"
@@ -1620,16 +1613,16 @@ msgid "Open failed"
 msgstr ""
 
 #: ../gui/filehandling.py:183
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgctxt "Document I/O: success"
 msgid "Exported to {files_summary} successfully."
-msgstr "Það tókst að flytja út í “{file_basename}”."
+msgstr "Það tókst að flytja út í {files_summary}."
 
 #: ../gui/filehandling.py:187
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgctxt "Document I/O: success"
 msgid "Saved {files_summary} successfully."
-msgstr "Það tókst að vista “{file_basename}”."
+msgstr "Það tókst að vista {files_summary}."
 
 #: ../gui/filehandling.py:191
 #, python-brace-format
@@ -1638,10 +1631,10 @@ msgid "Imported layers from {files_summary}."
 msgstr ""
 
 #: ../gui/filehandling.py:195
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgctxt "Document I/O: success"
 msgid "Loaded {files_summary}."
-msgstr "Hlóð inn “{file_basename}”."
+msgstr "Hlóð inn {files_summary}."
 
 #. TRANSLATORS: formatting for {files_summary} for multiple files.
 #. TRANSLATORS: corresponding msgid for single files: "“{basename}”"
@@ -1653,43 +1646,37 @@ msgstr[0] ""
 msgstr[1] ""
 
 #: ../gui/filehandling.py:222
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgctxt "Document I/O: the {files_summary} for a single file"
 msgid "“{basename}”"
-msgstr "Hlóð inn “{file_basename}”."
+msgstr "“{basename}”"
 
 #: ../gui/filehandling.py:428
-#, fuzzy
 msgctxt "save/load dialogs: filter patterns"
 msgid "All Recognized Formats"
 msgstr "Öll þekkt skráasnið"
 
 #: ../gui/filehandling.py:433
-#, fuzzy
 msgctxt "save/load dialogs: filter patterns"
 msgid "OpenRaster (*.ora)"
 msgstr "OpenRaster (*.ora)"
 
 #: ../gui/filehandling.py:438
-#, fuzzy
 msgctxt "save/load dialogs: filter patterns"
 msgid "PNG (*.png)"
 msgstr "PNG (*.png)"
 
 #: ../gui/filehandling.py:443
-#, fuzzy
 msgctxt "save/load dialogs: filter patterns"
 msgid "JPEG (*.jpg; *.jpeg)"
 msgstr "JPEG (*.jpg; *.jpeg)"
 
 #: ../gui/filehandling.py:491
-#, fuzzy
 msgctxt "save dialogs: save formats and options"
 msgid "By extension (prefer default format)"
 msgstr "Eftir skráarendingu (velja helst sjálfgefið snið)"
 
 #: ../gui/filehandling.py:495
-#, fuzzy
 msgctxt "save dialogs: save formats and options"
 msgid "OpenRaster (*.ora)"
 msgstr "OpenRaster (*.ora)"
