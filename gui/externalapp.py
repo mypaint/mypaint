@@ -1,4 +1,4 @@
-# -*- encoding: utf-8 -*-
+# -*- coding: utf-8 -*-
 # This file is part of MyPaint.
 # Copyright (C) 2014-2019 by the MyPaint Development Team
 # Copyright (C) 2014 by Andrew Chadwick <a.t.chadwick@gmail.com>

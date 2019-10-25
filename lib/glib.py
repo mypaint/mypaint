@@ -1,5 +1,5 @@
 # This file is part of MyPaint.
-# -*- encoding: utf-8 -*-
+# -*- coding: utf-8 -*-
 # Copyright (C) 2015-2018 by the MyPaint Development Team.
 #
 # This program is free software; you can redistribute it and/or modify
