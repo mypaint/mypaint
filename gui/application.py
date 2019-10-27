@@ -583,7 +583,7 @@ class Application (object):
         """Utility function to show a message/information dialog"""
         d = Gtk.MessageDialog(
             transient_for=self.drawWindow,
-            buttons=[],
+            buttons=Gtk.ButtonsType.NONE,
             **kwds
         )
         # Auxiliary actions first...

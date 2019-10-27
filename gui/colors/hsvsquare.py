@@ -36,7 +36,7 @@ class HSVSquarePage (CombinedAdjusterPage, IconRenderable):
 
     def __init__(self):
         self._faces = ['h', 's', 'v']
-        table = Gtk.Table(rows=1, columns=1)
+        table = Gtk.Table(n_rows=1, n_columns=1)
 
         xopts = Gtk.AttachOptions.FILL | Gtk.AttachOptions.EXPAND
         yopts = Gtk.AttachOptions.FILL | Gtk.AttachOptions.EXPAND

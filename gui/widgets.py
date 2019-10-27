@@ -76,7 +76,7 @@ def set_margins(widget, all_=0, tb=None, lr=None,
                 t=None, b=None, l=None, r=None):  # noqa: E741
     """Set margins compatibly on a widget.
 
-    >>> w = Gtk.Label("i have wide margins")
+    >>> w = Gtk.Label(label="i have wide margins")
     >>> set_margins(w, 42)
 
     Works around Gtk's deprecation of gtk_widget_set_margin_{left,right}

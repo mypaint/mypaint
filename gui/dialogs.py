@@ -71,7 +71,7 @@ def ask_for_name(widget, title, default):
     hbox.set_border_width(widgets.SPACING)
 
     d.vbox.pack_start(hbox, True, True, 0)
-    hbox.pack_start(Gtk.Label(_('Name')), False, False, 0)
+    hbox.pack_start(Gtk.Label(label=_('Name')), False, False, 0)
 
     if default is None:
         default = ""
@@ -162,7 +162,7 @@ def confirm_rewrite_brush(window, brushname, existing_preview_pixbuf,
     label_l = Gtk.Label(label=_("Imported brush"))
     label_r = Gtk.Label(label=_("Existing brush"))
 
-    question = Gtk.Label(_(
+    question = Gtk.Label(label=_(
         u"<b>A brush named “{brush_name}” already exists.</b>\n"
         u"Do you want to replace it, "
         u"or should the new brush be renamed?"
@@ -216,7 +216,7 @@ def confirm_rewrite_group(window, groupname, deleted_groupname):
     for button, code in buttons:
         dialog.add_action_widget(button, code)
 
-    question = Gtk.Label(_(
+    question = Gtk.Label(label=_(
         u"<b>A group named “{groupname}” already exists.</b>\n"
         u"Do you want to replace it, or should the new group be renamed?\n"
         u"If you replace it, the brushes may be moved to a group called"

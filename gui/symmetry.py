@@ -21,7 +21,6 @@ import gui.widgets
 import gui.windowing
 import gui.tileddrawwidget
 import lib.alg
-from lib.color import RGBColor
 import lib.helpers
 import lib.mypaintlib
 import lib.tiledsurface
@@ -130,11 +129,11 @@ class SymmetryEditMode (gui.mode.ScrollableModeMixin, gui.mode.DragMode):
     def enter(self, doc, **kwds):
         """Enter the mode"""
         super(SymmetryEditMode, self).enter(doc, **kwds)
+
         # Initialize/fetch cursors
-        mkcursor = lambda name: doc.app.cursors.get_action_cursor(
-            self.ACTION_NAME,
-            name,
-        )
+        def mkcursor(name):
+            return doc.app.cursors.get_action_cursor(self.ACTION_NAME, name)
+
         self._move_cursors = {}
         self.cursor_remove = mkcursor(gui.cursor.Name.ARROW)
         self.cursor_add = mkcursor(gui.cursor.Name.ADD)
@@ -442,7 +441,8 @@ class SymmetryEditOptionsWidget (Gtk.Alignment):
         buttons = (Gtk.STOCK_OK, Gtk.ResponseType.ACCEPT)
         dialog = gui.windowing.Dialog(
             app, C_(
-                "symmetry axis options panel: axis position dialog: window title",
+                "symmetry axis options panel: "
+                "axis position dialog: window title",
                 u"X axis Position",
             ),
             app.drawWindow,
@@ -453,7 +453,7 @@ class SymmetryEditOptionsWidget (Gtk.Alignment):
         grid.set_border_width(gui.widgets.SPACING_LOOSE)
         grid.set_column_spacing(gui.widgets.SPACING)
         grid.set_row_spacing(gui.widgets.SPACING)
-        label = Gtk.Label(self._POSITION_LABEL_X_TEXT)
+        label = Gtk.Label(label=self._POSITION_LABEL_X_TEXT)
         label.set_hexpand(False)
         label.set_vexpand(False)
         grid.attach(label, 0, 0, 1, 1)
@@ -473,7 +473,8 @@ class SymmetryEditOptionsWidget (Gtk.Alignment):
         buttons = (Gtk.STOCK_OK, Gtk.ResponseType.ACCEPT)
         dialog = gui.windowing.Dialog(
             app, C_(
-                "symmetry axis options panel: axis position dialog: window title",
+                "symmetry axis options panel: "
+                "axis position dialog: window title",
                 u"Y axis Position",
             ),
             app.drawWindow,
@@ -484,7 +485,7 @@ class SymmetryEditOptionsWidget (Gtk.Alignment):
         grid.set_border_width(gui.widgets.SPACING_LOOSE)
         grid.set_column_spacing(gui.widgets.SPACING)
         grid.set_row_spacing(gui.widgets.SPACING)
-        label = Gtk.Label(self._POSITION_LABEL_Y_TEXT)
+        label = Gtk.Label(label=self._POSITION_LABEL_Y_TEXT)
         label.set_hexpand(False)
         label.set_vexpand(False)
         grid.attach(label, 0, 0, 1, 1)
@@ -509,7 +510,7 @@ class SymmetryEditOptionsWidget (Gtk.Alignment):
         self.add(grid)
 
         row += 1
-        label = Gtk.Label(self._ALPHA_LABEL_TEXT)
+        label = Gtk.Label(label=self._ALPHA_LABEL_TEXT)
         label.set_hexpand(False)
         label.set_halign(Gtk.Align.START)
         grid.attach(label, 0, row, 1, 1)
@@ -551,16 +552,18 @@ class SymmetryEditOptionsWidget (Gtk.Alignment):
         cell = Gtk.CellRendererText()
         self._symmetry_type_combo.pack_start(cell, True)
         self._symmetry_type_combo.add_attribute(cell, "text", 1)
-        self._symmetry_type_combo.connect('changed',
-                   self._symmetry_type_combo_changed_cb)
-        label = Gtk.Label(self._SYMMETRY_TYPE_TEXT)
+        self._symmetry_type_combo.connect(
+            'changed',
+            self._symmetry_type_combo_changed_cb
+        )
+        label = Gtk.Label(label=self._SYMMETRY_TYPE_TEXT)
         label.set_hexpand(False)
         label.set_halign(Gtk.Align.START)
         grid.attach(label, 0, row, 1, 1)
         grid.attach(self._symmetry_type_combo, 1, row, 1, 1)
 
         row += 1
-        label = Gtk.Label(self._SYMMETRY_ROT_LINES_TEXT)
+        label = Gtk.Label(label=self._SYMMETRY_ROT_LINES_TEXT)
         label.set_hexpand(False)
         label.set_halign(Gtk.Align.START)
         self._axis_rot_sym_lines_entry = Gtk.SpinButton(
@@ -571,7 +574,7 @@ class SymmetryEditOptionsWidget (Gtk.Alignment):
         grid.attach(self._axis_rot_sym_lines_entry, 1, row, 1, 1)
 
         row += 1
-        label = Gtk.Label(self._POSITION_LABEL_X_TEXT)
+        label = Gtk.Label(label=self._POSITION_LABEL_X_TEXT)
         label.set_hexpand(False)
         label.set_halign(Gtk.Align.START)
         button = Gtk.Button(label=self._POSITION_BUTTON_TEXT_INACTIVE)
@@ -584,7 +587,7 @@ class SymmetryEditOptionsWidget (Gtk.Alignment):
         self._axis_pos_x_button = button
 
         row += 1
-        label = Gtk.Label(self._POSITION_LABEL_Y_TEXT)
+        label = Gtk.Label(label=self._POSITION_LABEL_Y_TEXT)
         label.set_hexpand(False)
         label.set_halign(Gtk.Align.START)
         button = Gtk.Button(label=self._POSITION_BUTTON_TEXT_INACTIVE)

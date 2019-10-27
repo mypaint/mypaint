@@ -399,7 +399,6 @@ class BrushGroupTool (SizedVBoxToolWidget):
     def tool_widget_properties(self):
         """Run the properties dialog"""
         if not self._dialog:
-            buttons = (Gtk.STOCK_CANCEL, Gtk.ResponseType.REJECT)
             title = C_(
                 "brush group properties dialog: title",
                 # TRANSLATORS: properties dialog for the current brush group
@@ -412,7 +411,8 @@ class BrushGroupTool (SizedVBoxToolWidget):
                 modal=True,
                 destroy_with_parent=True,
                 window_position=Gtk.WindowPosition.MOUSE,
-                buttons=buttons)
+            )
+            dia.add_button(Gtk.STOCK_CANCEL, Gtk.ResponseType.REJECT)
             btn = Gtk.Button(label=C_(
                 "brush group properties dialog: action buttons",
                 "Rename Group",

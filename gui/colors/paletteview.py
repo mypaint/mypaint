@@ -109,16 +109,15 @@ class PaletteEditorDialog (Gtk.Dialog):
     )
 
     def __init__(self, parent, target_color_manager):
-        flags = Gtk.DialogFlags.MODAL | Gtk.DialogFlags.DESTROY_WITH_PARENT
         Gtk.Dialog.__init__(
             self,
-            C_("palette editor dialog: title", "Palette Editor"),
-            parent,
-            flags,
-            buttons=(
-                Gtk.STOCK_CANCEL, Gtk.ResponseType.REJECT,
-                Gtk.STOCK_OK, Gtk.ResponseType.ACCEPT,
-            ))
+            title=C_("palette editor dialog: title", "Palette Editor"),
+            transient_for=parent,
+            modal=True,
+            destroy_with_parent=True,
+        )
+        self.add_button(Gtk.STOCK_CANCEL, Gtk.ResponseType.REJECT)
+        self.add_button(Gtk.STOCK_OK, Gtk.ResponseType.ACCEPT)
         self.set_position(Gtk.WindowPosition.MOUSE)
 
         assert isinstance(target_color_manager, ColorManager)
@@ -186,7 +185,7 @@ class PaletteEditorDialog (Gtk.Dialog):
 
         # Palette name and number of entries
         palette_details_hbox = Gtk.HBox()
-        palette_name_label = Gtk.Label(C_(
+        palette_name_label = Gtk.Label(label=C_(
             "palette editor dialog: palette name/title entry: label",
             "Title:",
         ))
@@ -202,7 +201,7 @@ class PaletteEditorDialog (Gtk.Dialog):
             step_increment=1, page_increment=1, page_size=0
         )
         self._columns_adj.connect("value-changed", self._columns_changed_cb)
-        columns_label = Gtk.Label(C_(
+        columns_label = Gtk.Label(label=C_(
             "palette editor dialog: number-of-columns spinbutton: title",
             "Columns:"
         ))
@@ -223,7 +222,7 @@ class PaletteEditorDialog (Gtk.Dialog):
         palette_details_hbox.pack_start(columns_spinbutton, False, False, 0)
 
         color_name_hbox = Gtk.HBox()
-        color_name_label = Gtk.Label(C_(
+        color_name_label = Gtk.Label(label=C_(
             "palette editor dialog: color name entry: label",
             "Color name:",
         ))
@@ -424,7 +423,7 @@ class PaletteView (ColorAdjuster, Gtk.ScrolledWindow):
         Gtk.ScrolledWindow.__init__(self)
         self.grid = _PaletteGridLayout()
         self.set_policy(Gtk.PolicyType.NEVER, Gtk.PolicyType.AUTOMATIC)
-        self.add_with_viewport(self.grid)
+        self.add(self.grid)
 
     def set_color_manager(self, mgr):
         self.grid.set_color_manager(mgr)
@@ -1259,11 +1258,11 @@ def palette_load_via_dialog(title, parent=None, preview=None,
     """
     dialog = Gtk.FileChooserDialog(
         title=title,
-        parent=parent,
+        transient_for=parent,
         action=Gtk.FileChooserAction.OPEN,
-        buttons=(Gtk.STOCK_CANCEL, Gtk.ResponseType.REJECT,
-                 Gtk.STOCK_OPEN, Gtk.ResponseType.ACCEPT),
     )
+    dialog.add_button(Gtk.STOCK_CANCEL, Gtk.ResponseType.REJECT)
+    dialog.add_button(Gtk.STOCK_OPEN, Gtk.ResponseType.ACCEPT)
     if preview is not None:
         dialog.set_preview_widget(preview)
         dialog.connect("update-preview",
@@ -1311,11 +1310,11 @@ def palette_save_via_dialog(palette, title, parent=None, preview=None):
     """
     dialog = Gtk.FileChooserDialog(
         title=title,
-        parent=parent,
+        transient_for=parent,
         action=Gtk.FileChooserAction.SAVE,
-        buttons=(Gtk.STOCK_CANCEL, Gtk.ResponseType.REJECT,
-                 Gtk.STOCK_SAVE, Gtk.ResponseType.ACCEPT),
     )
+    dialog.add_button(Gtk.STOCK_CANCEL, Gtk.ResponseType.REJECT)
+    dialog.add_button(Gtk.STOCK_SAVE, Gtk.ResponseType.ACCEPT)
     if preview is not None:
         dialog.set_preview_widget(preview)
         dialog.connect("update-preview",

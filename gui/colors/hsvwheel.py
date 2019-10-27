@@ -71,7 +71,7 @@ class HSVAdjusterPage (CombinedAdjusterPage):
 
         self.__hs_adj = HSVHueSaturationWheel()
 
-        table = Gtk.Table(rows=1, columns=2)
+        table = Gtk.Table(n_rows=1, n_columns=2)
         row = 0
         xopts = Gtk.AttachOptions.FILL | Gtk.AttachOptions.EXPAND
         yopts = Gtk.AttachOptions.FILL | Gtk.AttachOptions.EXPAND
