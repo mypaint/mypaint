@@ -49,20 +49,16 @@ class BackgroundWindow (windowing.Dialog):
         app = application.get_app()
         assert app is not None
 
-        self._current_background_pixbuf = None  # set when changed
-
-        buttons = [
-            _('Save as Default'), RESPONSE_SAVE_AS_DEFAULT,
-            Gtk.STOCK_OK, Gtk.ResponseType.ACCEPT,
-        ]
         windowing.Dialog.__init__(
             self,
             app=app,
             title=_('Background'),
-            transient_for=app.drawWindow,
-            modal=True,
-            buttons=buttons,
+            modal=True
         )
+        self.add_button(_('Save as Default'), RESPONSE_SAVE_AS_DEFAULT)
+        self.add_button(Gtk.STOCK_OK, Gtk.ResponseType.ACCEPT)
+
+        self._current_background_pixbuf = None  # set when changed
 
         # Set up window.
         self.connect('response', self._response_cb)
@@ -76,10 +72,10 @@ class BackgroundWindow (windowing.Dialog):
             Gtk.PolicyType.NEVER,
             Gtk.PolicyType.AUTOMATIC,
         )
-        notebook.append_page(patterns_scroll, Gtk.Label(_('Pattern')))
+        notebook.append_page(patterns_scroll, Gtk.Label(label=_('Pattern')))
 
         self.bgl = BackgroundList(self)
-        patterns_scroll.add_with_viewport(self.bgl)
+        patterns_scroll.add(self.bgl)
 
         self.connect("realize", self._realize_cb)
         self.connect("show", self._show_cb)
@@ -87,7 +83,7 @@ class BackgroundWindow (windowing.Dialog):
 
         # Set up colors tab.
         color_vbox = Gtk.VBox()
-        notebook.append_page(color_vbox, Gtk.Label(_('Color')))
+        notebook.append_page(color_vbox, Gtk.Label(label=_('Color')))
 
         self.cs = Gtk.ColorSelection()
         self.cs.connect('color-changed', self._color_changed_cb)

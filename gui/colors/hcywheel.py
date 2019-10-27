@@ -988,8 +988,8 @@ class HCYMaskTemplateDialog (Gtk.Dialog):
             modal=True,
             destroy_with_parent=True,
             window_position=Gtk.WindowPosition.MOUSE,
-            buttons=(Gtk.STOCK_CANCEL, Gtk.ResponseType.REJECT),
         )
+        self.add_button(Gtk.STOCK_CANCEL, Gtk.ResponseType.REJECT)
         target_mgr = target.get_color_manager()
         prefs_ro = deepcopy(target_mgr.get_prefs())
         datapath = target_mgr.get_data_path()

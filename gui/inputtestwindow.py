@@ -50,7 +50,7 @@ class InputTestWindow (windowing.SubWindow):
         vbox.pack_start(table, False, True, 0)
 
         def add(row, name, value_widget):
-            l1 = Gtk.Label(name)
+            l1 = Gtk.Label(label=name)
             l1.set_justify(Gtk.Justification.LEFT)
             l1.set_alignment(0.0, 0.5)
             l2 = value_widget
@@ -58,20 +58,21 @@ class InputTestWindow (windowing.SubWindow):
             table.attach(l1, 0, 1, row, row+1, Gtk.AttachOptions.FILL, 0, 5, 0)
             table.attach(l2, 1, 2, row, row+1, Gtk.AttachOptions.FILL, 0, 5, 0)
 
-        label = self.pressure_label = Gtk.Label(_('(no pressure)'))
+        label = self.pressure_label = Gtk.Label(label=_('(no pressure)'))
         add(0, _('Pressure:'), label)
 
-        label = self.tilt_label = Gtk.Label(_('(no tilt)'))
+        label = self.tilt_label = Gtk.Label(label=_('(no tilt)'))
         add(1, _('Tilt:'), label)
 
         label = self.motion_event_counter_label = Gtk.Label()
         add(2, 'Motion:', label)
 
-        label = self.device_label = Gtk.Label(_('(no device)'))
+        label = self.device_label = Gtk.Label(label=_('(no device)'))
         add(3, _('Device:'), label)
 
-        l = self.barrel_rotation_label = Gtk.Label(_('(No Barrel Rotation)'))
-        add(4, _('Barrel Rotation:'), l)
+        label = Gtk.Label(label=_('(No Barrel Rotation)'))
+        self.barrel_rotation_label = label
+        add(4, _('Barrel Rotation:'), label)
 
         vbox.pack_start(Gtk.HSeparator(), False, False, 0)
 

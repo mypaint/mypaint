@@ -357,7 +357,6 @@ class _IOProgressUI:
                     transient_for=self._app.drawWindow,
                     modal=True,
                     destroy_with_parent=True,
-                    buttons=[],
                 )
                 dialog.set_position(Gtk.WindowPosition.CENTER_ON_PARENT)
                 dialog.set_decorated(False)
@@ -596,7 +595,7 @@ class FileHandler (object):
         # Add widget for selecting save format
         box = Gtk.HBox()
         box.set_spacing(12)
-        label = Gtk.Label(C_(
+        label = Gtk.Label(label=C_(
             "save dialogs: formats and options: (label)",
             u"Format to save as:",
         ))
@@ -689,10 +688,10 @@ class FileHandler (object):
 
         # Dialog setup.
         d = Gtk.MessageDialog(
-            title = title,
-            parent = self.app.drawWindow,
-            message_type = Gtk.MessageType.QUESTION,
-            flags = Gtk.DialogFlags.MODAL,
+            title=title,
+            transient_for=self.app.drawWindow,
+            message_type=Gtk.MessageType.QUESTION,
+            modal=True
         )
 
         # Translated strings for things
@@ -1013,17 +1012,15 @@ class FileHandler (object):
         if not ok_to_open:
             return
         dialog = Gtk.FileChooserDialog(
-            title = C_(
+            title=C_(
                 u'File→Open: file chooser dialog: title',
                 u"Open File",
             ),
-            parent = self.app.drawWindow,
-            action = Gtk.FileChooserAction.OPEN,
-            buttons = [
-                Gtk.STOCK_CANCEL, Gtk.ResponseType.CANCEL,
-                Gtk.STOCK_OPEN, Gtk.ResponseType.OK,
-            ]
+            transient_for=self.app.drawWindow,
+            action=Gtk.FileChooserAction.OPEN,
         )
+        dialog.add_button(Gtk.STOCK_CANCEL, Gtk.ResponseType.CANCEL)
+        dialog.add_button(Gtk.STOCK_OPEN, Gtk.ResponseType.OK)
         dialog.set_default_response(Gtk.ResponseType.OK)
 
         preview = Gtk.Image()
@@ -1103,11 +1100,9 @@ class FileHandler (object):
             ),
             parent = self.app.drawWindow,
             action = Gtk.FileChooserAction.OPEN,
-            buttons = [
-                Gtk.STOCK_CANCEL, Gtk.ResponseType.CANCEL,
-                Gtk.STOCK_OPEN, Gtk.ResponseType.OK,
-            ]
         )
+        dialog.add_button(Gtk.STOCK_CANCEL, Gtk.ResponseType.CANCEL)
+        dialog.add_button(Gtk.STOCK_OPEN, Gtk.ResponseType.OK)
         dialog.set_default_response(Gtk.ResponseType.OK)
 
         dialog.set_select_multiple(True)

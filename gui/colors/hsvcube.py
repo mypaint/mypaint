@@ -64,7 +64,7 @@ class HSVCubePage (CombinedAdjusterPage):
         s_align = Gtk.Alignment(xalign=0.5, yalign=0, xscale=0, yscale=1)
         s_align.add(self.__slider)
 
-        table = Gtk.Table(rows=2, columns=2)
+        table = Gtk.Table(n_rows=2, n_columns=2)
 
         xopts = Gtk.AttachOptions.FILL | Gtk.AttachOptions.EXPAND
         yopts = Gtk.AttachOptions.FILL | Gtk.AttachOptions.EXPAND
