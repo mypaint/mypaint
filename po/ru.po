@@ -12,17 +12,17 @@ msgstr ""
 "Project-Id-Version: mypaint v2.0.0-alpha.11-2-g0673fe8\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2019-10-13 12:13+0200\n"
-"PO-Revision-Date: 2019-05-14 16:49+0000\n"
-"Last-Translator: Tolstovka <tolstovka@tuta.io>\n"
+"PO-Revision-Date: 2019-10-31 20:03+0000\n"
+"Last-Translator: Niara <kitekatkek@gmail.com>\n"
 "Language-Team: Russian <https://hosted.weblate.org/projects/mypaint/mypaint/"
 "ru/>\n"
 "Language: ru\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
-"%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
-"X-Generator: Weblate 3.7-dev\n"
+"Plural-Forms: nplurals=3; plural=n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<="
+"4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
+"X-Generator: Weblate 3.10-dev\n"
 
 #. TRANSLATORS: Name of first column in the button map preferences.
 #. TRANSLATORS: Refers to an action bound to a mod+button combination.
@@ -217,9 +217,10 @@ msgid "Color"
 msgstr "Цвет"
 
 #: ../gui/brusheditor.py:407
+#, fuzzy
 msgctxt "brush settings list: setting group"
 msgid "GridMap"
-msgstr ""
+msgstr "GridMap"
 
 #: ../gui/brusheditor.py:418
 msgctxt "brush settings list: setting group"
@@ -438,34 +439,29 @@ msgid "Unknown Brush"
 msgstr "Неизвестная кисть"
 
 #: ../gui/brushselectionwindow.py:220
-#, fuzzy
 msgctxt "brush group: context menu for a single brush"
 msgid "Add to Favorites"
 msgstr "Добавить в избранное"
 
 #: ../gui/brushselectionwindow.py:227
-#, fuzzy
 msgctxt "brush group: context menu for a single brush"
 msgid "Remove from Favorites"
 msgstr "Удалить из избранного"
 
 #: ../gui/brushselectionwindow.py:235
-#, fuzzy
 msgctxt "brush group: context menu for a single brush"
 msgid "Clone"
 msgstr "Дублировать"
 
 #: ../gui/brushselectionwindow.py:242
-#, fuzzy
 msgctxt "brush group: context menu for a single brush"
 msgid "Edit Brush Settings"
 msgstr "Редактировать параметры кисти"
 
 #: ../gui/brushselectionwindow.py:250
-#, fuzzy
 msgctxt "brush group: context menu for a single brush"
 msgid "Remove from Group"
-msgstr "Переименовать группу"
+msgstr "Убрать из Группы"
 
 #: ../gui/brushselectionwindow.py:290
 #, python-brace-format
@@ -480,10 +476,10 @@ msgid "{original_name} copy {n}"
 msgstr ""
 
 #: ../gui/brushselectionwindow.py:325
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgctxt "brush group: context menu: remove from group"
 msgid "Really remove brush “{brush_name}” from group “{group_name}”?"
-msgstr "Действительно удалить кисть “{brush_name}”?"
+msgstr "Действительно удалить кисть “{brush_name}” из группы “{group_name}”?"
 
 #. TRANSLATORS: number of brushes in a brush group, for tooltips
 #: ../gui/brushselectionwindow.py:381
@@ -642,31 +638,27 @@ msgstr "Выбрать цвет, используемый для рисован�
 
 #: ../gui/colorpicker.py:270
 msgid "Pick Hue"
-msgstr ""
+msgstr "Выбрать тон"
 
 #: ../gui/colorpicker.py:273
-#, fuzzy
 msgid "Set the color Hue used for painting"
-msgstr "Выбрать цвет, используемый для рисования"
+msgstr "Выбрать оттенок цвета, используемый для рисования"
 
 #: ../gui/colorpicker.py:293
-#, fuzzy
 msgid "Pick Chroma"
-msgstr "Пипетка"
+msgstr "Установить насыщенность"
 
 #: ../gui/colorpicker.py:296
-#, fuzzy
 msgid "Set the color Chroma used for painting"
-msgstr "Выбрать цвет, используемый для рисования"
+msgstr "Выбрать насыщенность цвета, используемого для рисования"
 
 #: ../gui/colorpicker.py:316
 msgid "Pick Luma"
-msgstr ""
+msgstr "Установить яркость"
 
 #: ../gui/colorpicker.py:319
-#, fuzzy
 msgid "Set the color Luma used for painting"
-msgstr "Выбрать цвет, используемый для рисования"
+msgstr "Выберите яркость цвета, используемого для рисования"
 
 #: ../gui/colors/adjbases.py:699
 msgid "Color details"
@@ -1317,12 +1309,12 @@ msgid "Existing brush"
 msgstr "Существующая кисть"
 
 #: ../gui/dialogs.py:166
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgid ""
 "<b>A brush named “{brush_name}” already exists.</b>\n"
 "Do you want to replace it, or should the new brush be renamed?"
 msgstr ""
-"<b>Кисть под именем '%s' уже существует.</b>\n"
+"<b>Кисть под именем “{brush_name}” уже существует.</b>\n"
 "Хотите ли вы заменить её, или переименовать новую кисть?"
 
 #: ../gui/dialogs.py:196
@@ -1330,26 +1322,26 @@ msgid "Overwrite brush group?"
 msgstr "Перезаписать группу кистей?"
 
 #: ../gui/dialogs.py:220
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgid ""
 "<b>A group named “{groupname}” already exists.</b>\n"
 "Do you want to replace it, or should the new group be renamed?\n"
 "If you replace it, the brushes may be moved to a group called "
 "“{deleted_groupname}”."
 msgstr ""
-"<b>Группа под именем '{groupname}' уже существует.</b>\n"
+"<b>Группа под именем “{groupname}” уже существует.</b>\n"
 "Хотите ли вы заменить её, или переименовать новую группу?\n"
 "Если вы замените группу, кисти из неё будут перемещены в группу "
-"'{deleted_groupname}'."
+"“{deleted_groupname}”."
 
 #: ../gui/dialogs.py:326
 msgid "Import brush package?"
 msgstr "Импортировать пакет с кистями?"
 
 #: ../gui/dialogs.py:357
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgid "<b>Do you really want to import package “{brushpack_name}”?</b>"
-msgstr "<b>Вы действительно хотите импортировать пакет '%s'?</b>"
+msgstr "<b>Вы действительно хотите импортировать пакет “{brushpack_name}”?</b>"
 
 #: ../gui/document.py:453
 #, python-format
@@ -1417,40 +1409,40 @@ msgstr "Зажать {modifiers} с:  {button_actions}."
 #: ../gui/document.py:900
 msgctxt "Statusbar message: copy result"
 msgid "Empty document, nothing copied."
-msgstr ""
+msgstr "Пустой документ, ничего не скопировано."
 
 #: ../gui/document.py:912
 #, python-brace-format
 msgctxt "Statusbar message: copy result"
 msgid "Copied layer as {w}×{h} image."
-msgstr ""
+msgstr "Копированный слой в виде {w}×{h} изображения."
 
 #: ../gui/document.py:929
 msgctxt "Statusbar message: paste result"
 msgid "Nothing on clipboard."
-msgstr ""
+msgstr "В буфере обмена ничего нет."
 
 #: ../gui/document.py:938
 msgctxt "Statusbar message: paste result"
 msgid "Clipboard does not contain an image."
-msgstr ""
+msgstr "Буфер обмена не содержит изображения."
 
 #: ../gui/document.py:949
 msgctxt "Statusbar message: paste result"
 msgid "Cannot paste into this type of layer."
-msgstr ""
+msgstr "Не удается вставить в этот тип слоя."
 
 #: ../gui/document.py:954
 #, python-brace-format
 msgctxt "Statusbar message: paste result"
 msgid "Pasted {w}×{h} image."
-msgstr ""
+msgstr "Вставленное {w}×{h} изображение."
 
 #: ../gui/document.py:2040
 #, python-brace-format
 msgctxt "Statusbar message: vacuum document"
 msgid "Vacuum: discarded {removed} of {total} tiles."
-msgstr ""
+msgstr "Вакуум: удалено {removed} из {total} плиток."
 
 #. TRANSLATORS: window title for use with a filename
 #: ../gui/drawwindow.py:269
@@ -1466,13 +1458,12 @@ msgstr "MyPaint"
 #: ../gui/drawwindow.py:289
 msgctxt "Open dragged file confirm dialog: title"
 msgid "Open Dragged File?"
-msgstr ""
+msgstr "Открыть перетаскиваемый файл?"
 
 #: ../gui/drawwindow.py:293
-#, fuzzy
 msgctxt "Open dragged file confirm dialog: continue button"
 msgid "_Open"
-msgstr "Открыть"
+msgstr "_Открыть"
 
 #: ../gui/drawwindow.py:486
 msgid "Set current color"
@@ -1495,16 +1486,14 @@ msgid "Fullscreen"
 msgstr "Во весь экран"
 
 #: ../gui/drawwindow.py:675
-#, fuzzy
 msgctxt "Quit confirm dialog: title"
 msgid "Really Quit?"
 msgstr "Действительно выйти?"
 
 #: ../gui/drawwindow.py:679
-#, fuzzy
 msgctxt "Quit confirm dialog: continue button"
 msgid "_Quit"
-msgstr "Выход"
+msgstr "_Выход"
 
 #: ../gui/drawwindow.py:697
 msgid "Import brush package…"
@@ -1576,100 +1565,96 @@ msgid "no description"
 msgstr "нет описания"
 
 #: ../gui/filehandling.py:126
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgctxt "Document I/O: message shown while working"
 msgid "Loading {files_summary}…"
-msgstr "Загрузка “{file_basename}”…"
+msgstr "Загрузка {files_summary}…"
 
 #: ../gui/filehandling.py:130
 #, python-brace-format
 msgctxt "Document I/O: message shown while working"
 msgid "Importing layers from {files_summary}…"
-msgstr ""
+msgstr "Импорт слоев из {files_summary}.…"
 
 #: ../gui/filehandling.py:134
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgctxt "Document I/O: message shown while working"
 msgid "Saving {files_summary}…"
-msgstr "Сохранение “{file_basename}”…"
+msgstr "Сохранение {files_summary}…"
 
 #: ../gui/filehandling.py:138
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgctxt "Document I/O: message shown while working"
 msgid "Exporting to {files_summary}…"
-msgstr "Экспорт в “{file_basename}”…"
+msgstr "Экспорт в {files_summary}…"
 
 #: ../gui/filehandling.py:145
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgctxt "Document I/O: fail message"
 msgid "Failed to export to {files_summary}."
-msgstr "Экспорт в “{file_basename}” не удался."
+msgstr "Экспорт в {files_summary} не удался."
 
 #: ../gui/filehandling.py:149
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgctxt "Document I/O: fail message"
 msgid "Failed to save {files_summary}."
-msgstr "Сохранение “{file_basename}” не удалось."
+msgstr "Сохранение {files_summary} не удалось."
 
 #: ../gui/filehandling.py:153
 #, python-brace-format
 msgctxt "Document I/O: fail message"
 msgid "Could not import layers from {files_summary}."
-msgstr ""
+msgstr "Невозможно импортировать слои из {files_summary}."
 
 #: ../gui/filehandling.py:157
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgctxt "Document I/O: fail message"
 msgid "Could not load {files_summary}."
-msgstr "Невозможно загрузить “{file_basename}”."
+msgstr "Невозможно загрузить {files_summary}."
 
 #: ../gui/filehandling.py:164
-#, fuzzy
 msgctxt "Document I/O: fail dialog title"
 msgid "Save failed"
-msgstr "Сохранить палитру"
+msgstr "Ошибка сохранения"
 
 #: ../gui/filehandling.py:168
-#, fuzzy
 msgctxt "Document I/O: fail dialog title"
 msgid "Export failed"
-msgstr "Экспортировать в файл"
+msgstr "Ошибка экспорта"
 
 #: ../gui/filehandling.py:172
-#, fuzzy
 msgctxt "Document I/O: fail dialog title"
 msgid "Import Layers failed"
-msgstr "Экспортировать в файл"
+msgstr "Ошибка импорта слоя"
 
 #: ../gui/filehandling.py:176
-#, fuzzy
 msgctxt "Document I/O: fail dialog title"
 msgid "Open failed"
-msgstr "Открыть недавние рисунки"
+msgstr "Открыть не удалось"
 
 #: ../gui/filehandling.py:183
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgctxt "Document I/O: success"
 msgid "Exported to {files_summary} successfully."
-msgstr "Экспорт в “{file_basename}” успешно завершен."
+msgstr "Экспорт в {files_summary} успешно завершен."
 
 #: ../gui/filehandling.py:187
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgctxt "Document I/O: success"
 msgid "Saved {files_summary} successfully."
-msgstr "“{file_basename}” успешно сохранен."
+msgstr "{files_summary} успешно сохранен."
 
 #: ../gui/filehandling.py:191
 #, python-brace-format
 msgctxt "Document I/O: success"
 msgid "Imported layers from {files_summary}."
-msgstr ""
+msgstr "Импортированные слои из {files_summary}."
 
 #: ../gui/filehandling.py:195
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgctxt "Document I/O: success"
 msgid "Loaded {files_summary}."
-msgstr "“{file_basename}” успешно загружен."
+msgstr "{files_summary} успешно загружен."
 
 #. TRANSLATORS: formatting for {files_summary} for multiple files.
 #. TRANSLATORS: corresponding msgid for single files: "“{basename}”"
@@ -1677,108 +1662,92 @@ msgstr "“{file_basename}” успешно загружен."
 #, python-brace-format
 msgid "{n} file"
 msgid_plural "{n} files"
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
+msgstr[0] "{n} файл"
+msgstr[1] "{n} файла"
+msgstr[2] "{n} файлов"
 
 #: ../gui/filehandling.py:222
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgctxt "Document I/O: the {files_summary} for a single file"
 msgid "“{basename}”"
-msgstr "“{file_basename}” успешно загружен."
+msgstr "“{basename}”"
 
 #: ../gui/filehandling.py:428
-#, fuzzy
 msgctxt "save/load dialogs: filter patterns"
 msgid "All Recognized Formats"
-msgstr "Все известные форматы"
+msgstr "Все Распознанные форматы"
 
 #: ../gui/filehandling.py:433
-#, fuzzy
 msgctxt "save/load dialogs: filter patterns"
 msgid "OpenRaster (*.ora)"
 msgstr "OpenRaster (*.ora)"
 
 #: ../gui/filehandling.py:438
-#, fuzzy
 msgctxt "save/load dialogs: filter patterns"
 msgid "PNG (*.png)"
 msgstr "PNG (*.png)"
 
 #: ../gui/filehandling.py:443
-#, fuzzy
 msgctxt "save/load dialogs: filter patterns"
 msgid "JPEG (*.jpg; *.jpeg)"
 msgstr "JPEG (*.jpg; *.jpeg)"
 
 #: ../gui/filehandling.py:491
-#, fuzzy
 msgctxt "save dialogs: save formats and options"
 msgid "By extension (prefer default format)"
-msgstr "По расширению"
+msgstr "По расширению (преимущественно стандартный формат)"
 
 #: ../gui/filehandling.py:495
-#, fuzzy
 msgctxt "save dialogs: save formats and options"
 msgid "OpenRaster (*.ora)"
 msgstr "OpenRaster (*.ora)"
 
 #: ../gui/filehandling.py:499
-#, fuzzy
 msgctxt "save dialogs: save formats and options"
 msgid "PNG, respecting “Show Background” (*.png)"
 msgstr "PNG с непрозрачным фоном (*.png)"
 
 #: ../gui/filehandling.py:503
-#, fuzzy
 msgctxt "save dialogs: save formats and options"
 msgid "PNG, solid RGB (*.png)"
-msgstr "PNG (*.png)"
+msgstr "PNG, сплошной RGB (*.png)"
 
 #: ../gui/filehandling.py:507
-#, fuzzy
 msgctxt "save dialogs: save formats and options"
 msgid "PNG, transparent RGBA (*.png)"
 msgstr "Прозрачный PNG (*.png)"
 
 #: ../gui/filehandling.py:511
-#, fuzzy
 msgctxt "save dialogs: save formats and options"
 msgid "Multiple PNGs, by layer (*.NUM.png)"
-msgstr "Серия прозрачных PNG (*.XXX.png)"
+msgstr "Серия PNG, по слою(*.NUM.png)"
 
 #: ../gui/filehandling.py:515
-#, fuzzy
 msgctxt "save dialogs: save formats and options"
 msgid "Multiple PNGs, by view (*.NAME.png)"
-msgstr "Серия прозрачных PNG (*.XXX.png)"
+msgstr "Серия PNG, по просмотру (*.XXX.png)"
 
 #: ../gui/filehandling.py:519
-#, fuzzy
 msgctxt "save dialogs: save formats and options"
 msgid "JPEG 90% quality (*.jpg; *.jpeg)"
 msgstr "JPEG с качеством 90% (*.jpg; *.jpeg)"
 
 #: ../gui/filehandling.py:577
-#, fuzzy
 msgctxt "Dialogs (window title): File→Export…"
 msgid "Export"
-msgstr "Экспортировать…"
+msgstr "Экспортировать"
 
 #: ../gui/filehandling.py:582
-#, fuzzy
 msgctxt "Dialogs (window title): File→Save As…"
 msgid "Save As"
 msgstr "Сохранить как…"
 
 #: ../gui/filehandling.py:602
-#, fuzzy
 msgctxt "save dialogs: formats and options: (label)"
 msgid "Format to save as:"
 msgstr "Формат для сохранения:"
 
 #: ../gui/filehandling.py:669
-#, fuzzy
 msgctxt ""
 "Destructive action confirm dialog: fallback title (normally overridden)"
 msgid "Really Continue?"
@@ -1787,10 +1756,9 @@ msgstr "Вы действительно хотите продолжить?"
 #: ../gui/filehandling.py:702
 msgctxt "Destructive action confirm dialog: cancel button"
 msgid "_Cancel"
-msgstr ""
+msgstr "_Отмена"
 
 #: ../gui/filehandling.py:706
-#, fuzzy
 msgctxt "Destructive action confirm dialog: save checkbox"
 msgid "_Save to Scraps first"
 msgstr "Сохранить как _черновик"
@@ -1800,118 +1768,105 @@ msgctxt ""
 "Destructive action confirm dialog: fallback continue button (normally "
 "overridden)"
 msgid "Co_ntinue"
-msgstr ""
+msgstr "Про_должить"
 
 #: ../gui/filehandling.py:735
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgctxt "Destructive action confirm dialog: warning message"
 msgid "You risk losing {abbreviated_time} of unsaved painting."
-msgstr "Это отменит {abbreviated_time} несохранённого рисования"
+msgstr "Вы потеряете {abbreviated_time} несохранённой картины."
 
 #: ../gui/filehandling.py:800
 msgctxt "File→New: confirm dialog: title question"
 msgid "New Canvas?"
-msgstr ""
+msgstr "Новый холст?"
 
 #: ../gui/filehandling.py:804
 msgctxt "File→New: confirm dialog: continue button"
 msgid "_New Canvas"
-msgstr ""
+msgstr "_Новый Холст"
 
 #: ../gui/filehandling.py:1004
 msgctxt "File→Open: confirm dialog: title question"
 msgid "Open File?"
-msgstr ""
+msgstr "Открыть Файл?"
 
 #: ../gui/filehandling.py:1008
-#, fuzzy
 msgctxt "File→Open: confirm dialog: continue button"
 msgid "_Open…"
-msgstr "Открыть…"
+msgstr "_Открыть…"
 
 #: ../gui/filehandling.py:1016
-#, fuzzy
 msgctxt "File→Open: file chooser dialog: title"
 msgid "Open File"
-msgstr "Открыть недавние рисунки"
+msgstr "Открыть Файл"
 
 #: ../gui/filehandling.py:1058
-#, fuzzy
 msgctxt "load dialogs: title"
 msgid "Open Scratchpad…"
 msgstr "Открыть блокнот…"
 
 #: ../gui/filehandling.py:1100
-#, fuzzy
 msgctxt "Layers→Import Layers: files-chooser dialog: title"
 msgid "Import Layers"
-msgstr "Импортированная кисть"
+msgstr "Импортированный Слой"
 
 #: ../gui/filehandling.py:1409
 msgctxt "File→Open Recent→* confirm dialog: title"
 msgid "Open File?"
-msgstr ""
+msgstr "Открыть Файл?"
 
 #: ../gui/filehandling.py:1413
-#, fuzzy
 msgctxt "File→Open Recent→* confirm dialog: continue button"
 msgid "_Open"
-msgstr "Открыть"
+msgstr "_Открыть"
 
 #: ../gui/filehandling.py:1428
-#, fuzzy
 msgctxt "File→Open Most Recent confirm dialog: title"
 msgid "Open Most Recent File?"
-msgstr "Открыть последний"
+msgstr "Открыть недавний файл?"
 
 #: ../gui/filehandling.py:1433
-#, fuzzy
 msgctxt "File→Open Most Recent→* confirm dialog: continue button"
 msgid "_Open"
-msgstr "Открыть"
+msgstr "_Открыть"
 
 #: ../gui/filehandling.py:1447
-#, fuzzy
 msgctxt "File→Open Next/Prev Scrap: error message"
 msgid "There are no scrap files yet. Try saving one first."
-msgstr "Файлы черновиков с приставкой '%s' пока отсутствуют."
+msgstr "У вас ещё нет файлов черновиков. Сохраните один для начала."
 
 #: ../gui/filehandling.py:1456
-#, fuzzy
 msgctxt "File→Open Next/Prev Scrap confirm dialog: title"
 msgid "Open Next Scrap?"
-msgstr "Открыть следующий черновик"
+msgstr "Открыть следующий черновик?"
 
 #: ../gui/filehandling.py:1464
-#, fuzzy
 msgctxt "File→Open Next/Prev Scrap confirm dialog: title"
 msgid "Open Previous Scrap?"
-msgstr "Открыть предыдущий черновик"
+msgstr "Открыть предыдущий черновик?"
 
 #: ../gui/filehandling.py:1473
-#, fuzzy
 msgctxt "File→Open Next/Prev Scrap confirm dialog: continue button"
 msgid "_Open"
-msgstr "Открыть"
+msgstr "_Открыть"
 
 #: ../gui/filehandling.py:1488
 msgctxt "File→Revert: status message: canvas has no filename yet"
 msgid "Cannot revert: canvas has not been saved to a file yet."
-msgstr ""
+msgstr "Невозможно обратить: холст не сохранён в файл."
 
 #: ../gui/filehandling.py:1495
 msgctxt "File→Revert confirm dialog: title"
 msgid "Revert Changes?"
-msgstr ""
+msgstr "Отменить изменения?"
 
 #: ../gui/filehandling.py:1500
-#, fuzzy
 msgctxt "File→Revert confirm dialog: continue button"
 msgid "_Revert"
-msgstr "Вернуть"
+msgstr "_Вернуть"
 
 #: ../gui/fill.py:121
-#, fuzzy
 msgctxt ""
 "Name of the fill mode\n"
 "In other software, 'Flood Fill' is also known as 'Bucket Fill' or just 'Fill'"
@@ -1919,13 +1874,11 @@ msgid "Flood Fill"
 msgstr "Заливка"
 
 #: ../gui/fill.py:127
-#, fuzzy
 msgctxt "Usage description of the Flood Fill mode"
 msgid "Fill areas with color"
 msgstr "Заливка областей цветом"
 
 #: ../gui/fill.py:508
-#, fuzzy
 msgctxt ""
 "fill options: numeric value that determines whether tested pixels will be "
 "included in the fill, based on color difference"
@@ -1933,7 +1886,6 @@ msgid "Tolerance:"
 msgstr "Порог:"
 
 #: ../gui/fill.py:513
-#, fuzzy
 msgctxt ""
 "fill options: Tolerance (tooltip) Note: 'the start' refers to the color of "
 "the starting point (pixel) of the fill"
@@ -1945,12 +1897,11 @@ msgstr ""
 "которое заливка откажется заливать"
 
 #: ../gui/fill.py:537
-#, fuzzy
 msgctxt ""
 "fill options: option category (label) Options under this category relate to "
 "what the fill isbased on, not where the actual fill ends up."
 msgid "Source:"
-msgstr "Основа:"
+msgstr "Источник:"
 
 #: ../gui/fill.py:540
 msgctxt "fill options: 'Source:' category (tooltip)"
