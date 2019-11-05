@@ -9,8 +9,8 @@ msgstr ""
 "Project-Id-Version: mypaint v2.0.0-alpha.8-1-g4490f06\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2019-10-13 12:13+0200\n"
-"PO-Revision-Date: 2019-10-02 19:19+0000\n"
-"Last-Translator: Robert <chouvalbwa@free.fr>\n"
+"PO-Revision-Date: 2019-11-06 01:03+0000\n"
+"Last-Translator: Alain <adoring@club.fr>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/mypaint/mypaint/"
 "fr/>\n"
 "Language: fr\n"
@@ -18,7 +18,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n > 1;\n"
-"X-Generator: Weblate 3.9-dev\n"
+"X-Generator: Weblate 3.10-dev\n"
 
 #. TRANSLATORS: Name of first column in the button map preferences.
 #. TRANSLATORS: Refers to an action bound to a mod+button combination.
@@ -191,9 +191,10 @@ msgid "Speed"
 msgstr "Vitesse"
 
 #: ../gui/brusheditor.py:352
+#, fuzzy
 msgctxt "brush settings list: setting group"
 msgid "Directional Offsets"
-msgstr ""
+msgstr "Décalage Directionnel"
 
 #: ../gui/brusheditor.py:370
 msgctxt "brush settings list: setting group"
@@ -211,9 +212,10 @@ msgid "Color"
 msgstr "Couleur"
 
 #: ../gui/brusheditor.py:407
+#, fuzzy
 msgctxt "brush settings list: setting group"
 msgid "GridMap"
-msgstr ""
+msgstr "Quadrillage"
 
 #: ../gui/brusheditor.py:418
 msgctxt "brush settings list: setting group"
@@ -458,7 +460,7 @@ msgstr "Éditer les Réglages de la Brosse"
 #, fuzzy
 msgctxt "brush group: context menu for a single brush"
 msgid "Remove from Group"
-msgstr "Renommer un groupe"
+msgstr "Retirer du groupe"
 
 #: ../gui/brushselectionwindow.py:290
 #, python-brace-format
@@ -476,7 +478,7 @@ msgstr ""
 #, fuzzy, python-brace-format
 msgctxt "brush group: context menu: remove from group"
 msgid "Really remove brush “{brush_name}” from group “{group_name}”?"
-msgstr "Effacer cette brosse “{brush_name}” ?"
+msgstr "Effacer la brosse “{brush_name}” ?"
 
 #. TRANSLATORS: number of brushes in a brush group, for tooltips
 #: ../gui/brushselectionwindow.py:381
@@ -635,8 +637,9 @@ msgid "Set the color used for painting"
 msgstr "Définir la couleur utiliser pour peindre"
 
 #: ../gui/colorpicker.py:270
+#, fuzzy
 msgid "Pick Hue"
-msgstr ""
+msgstr "Choisir la Teinte"
 
 #: ../gui/colorpicker.py:273
 #, fuzzy
@@ -1424,36 +1427,37 @@ msgid "With {modifiers} held down:  {button_actions}."
 msgstr "Avec {modifiers} enfoncé: {button_actions}."
 
 #: ../gui/document.py:900
+#, fuzzy
 msgctxt "Statusbar message: copy result"
 msgid "Empty document, nothing copied."
-msgstr ""
+msgstr "Document vide, rien à copier"
 
 #: ../gui/document.py:912
-#, python-brace-format
+#, fuzzy, python-brace-format
 msgctxt "Statusbar message: copy result"
 msgid "Copied layer as {w}×{h} image."
-msgstr ""
+msgstr "Calque copié comme {w}×{h} image."
 
 #: ../gui/document.py:929
 msgctxt "Statusbar message: paste result"
 msgid "Nothing on clipboard."
-msgstr ""
+msgstr "Rien dans le presse-papier."
 
 #: ../gui/document.py:938
 msgctxt "Statusbar message: paste result"
 msgid "Clipboard does not contain an image."
-msgstr ""
+msgstr "Le presse-papier ne contient pas d'image."
 
 #: ../gui/document.py:949
 msgctxt "Statusbar message: paste result"
 msgid "Cannot paste into this type of layer."
-msgstr ""
+msgstr "Impossible de coller dans ce type de calque."
 
 #: ../gui/document.py:954
 #, python-brace-format
 msgctxt "Statusbar message: paste result"
 msgid "Pasted {w}×{h} image."
-msgstr ""
+msgstr "Image collée {w}×{h}."
 
 #: ../gui/document.py:2040
 #, python-brace-format
@@ -1551,10 +1555,10 @@ msgstr ""
 "Le calque “{layer_name}” a été mise à jour avec les modifications externes"
 
 #: ../gui/externalapp.py:47
-#, python-brace-format
+#, fuzzy, python-brace-format
 msgctxt "file handling: open failed (statusbar)"
 msgid "Could not load “{file_basename}”."
-msgstr ""
+msgstr "Impossible de charger “{file_basename}”."
 
 #: ../gui/externalapp.py:60
 #, python-brace-format
@@ -1590,37 +1594,37 @@ msgstr "sans description"
 #, fuzzy, python-brace-format
 msgctxt "Document I/O: message shown while working"
 msgid "Loading {files_summary}…"
-msgstr "Chargement  de “{file_basename}”…"
+msgstr "Chargement  de {files_summary}…"
 
 #: ../gui/filehandling.py:130
-#, python-brace-format
+#, fuzzy, python-brace-format
 msgctxt "Document I/O: message shown while working"
 msgid "Importing layers from {files_summary}…"
-msgstr ""
+msgstr "Importer des calques de {files_summary}…"
 
 #: ../gui/filehandling.py:134
 #, fuzzy, python-brace-format
 msgctxt "Document I/O: message shown while working"
 msgid "Saving {files_summary}…"
-msgstr "Sauvegarde de “{file_basename}”…"
+msgstr "Sauvegarde de {files_summary}…"
 
 #: ../gui/filehandling.py:138
 #, fuzzy, python-brace-format
 msgctxt "Document I/O: message shown while working"
 msgid "Exporting to {files_summary}…"
-msgstr "Exportation jusque “{file_basename}”…"
+msgstr "Exportation vers {files_summary}…"
 
 #: ../gui/filehandling.py:145
 #, fuzzy, python-brace-format
 msgctxt "Document I/O: fail message"
 msgid "Failed to export to {files_summary}."
-msgstr "Échec de l'export vers “{file_basename}”."
+msgstr "Échec de l'export vers {files_summary}."
 
 #: ../gui/filehandling.py:149
 #, fuzzy, python-brace-format
 msgctxt "Document I/O: fail message"
 msgid "Failed to save {files_summary}."
-msgstr "Échec de la sauvegarde de “{file_basename}”."
+msgstr "Échec de la sauvegarde de {files_summary}."
 
 #: ../gui/filehandling.py:153
 #, python-brace-format
@@ -1629,58 +1633,58 @@ msgid "Could not import layers from {files_summary}."
 msgstr ""
 
 #: ../gui/filehandling.py:157
-#, python-brace-format
+#, fuzzy, python-brace-format
 msgctxt "Document I/O: fail message"
 msgid "Could not load {files_summary}."
-msgstr ""
+msgstr "Impossible de charger {files_summary}."
 
 #: ../gui/filehandling.py:164
 #, fuzzy
 msgctxt "Document I/O: fail dialog title"
 msgid "Save failed"
-msgstr "Enregistrer la palette"
+msgstr "Échec de la sauvegarde"
 
 #: ../gui/filehandling.py:168
 #, fuzzy
 msgctxt "Document I/O: fail dialog title"
 msgid "Export failed"
-msgstr "Exporter dans un fichier"
+msgstr "Echec de l'exportation"
 
 #: ../gui/filehandling.py:172
 #, fuzzy
 msgctxt "Document I/O: fail dialog title"
 msgid "Import Layers failed"
-msgstr "Exporter dans un fichier"
+msgstr "L'importation des calques a échoué"
 
 #: ../gui/filehandling.py:176
 #, fuzzy
 msgctxt "Document I/O: fail dialog title"
 msgid "Open failed"
-msgstr "Ouvrir un fichier récent"
+msgstr "L'ouverture a échoué"
 
 #: ../gui/filehandling.py:183
 #, fuzzy, python-brace-format
 msgctxt "Document I/O: success"
 msgid "Exported to {files_summary} successfully."
-msgstr "Exporté jusque “{file_basename}” avec succés."
+msgstr "Exporté vers “{file_basename}” avec succés."
 
 #: ../gui/filehandling.py:187
 #, fuzzy, python-brace-format
 msgctxt "Document I/O: success"
 msgid "Saved {files_summary} successfully."
-msgstr "“{file_basename}” sauvegardé avec succès."
+msgstr "{files_summary} sauvegardé avec succès."
 
 #: ../gui/filehandling.py:191
-#, python-brace-format
+#, fuzzy, python-brace-format
 msgctxt "Document I/O: success"
 msgid "Imported layers from {files_summary}."
-msgstr ""
+msgstr "Calques importés  de {fichiers_summary}."
 
 #: ../gui/filehandling.py:195
-#, python-brace-format
+#, fuzzy, python-brace-format
 msgctxt "Document I/O: success"
 msgid "Loaded {files_summary}."
-msgstr ""
+msgstr "{files_summary} chargé"
 
 #. TRANSLATORS: formatting for {files_summary} for multiple files.
 #. TRANSLATORS: corresponding msgid for single files: "“{basename}”"
