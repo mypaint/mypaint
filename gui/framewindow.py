@@ -913,8 +913,8 @@ class UnitAdjustment(Gtk.Adjustment):
 
     def __init__(self, value=0, lower=0, upper=0, step_increment=0,
                  page_increment=0, page_size=0, dpi=DEFAULT_RESOLUTION):
-        Gtk.Adjustment.__init__(self, value, lower, upper, step_incr,
-                                page_incr, page_size)
+        Gtk.Adjustment.__init__(self, value, lower, upper, step_increment,
+                                page_increment, page_size)
         self.px_value = value
         self.unit_value = value
         self.active_unit = _('px')
