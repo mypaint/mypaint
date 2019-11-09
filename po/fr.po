@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: mypaint v2.0.0-alpha.8-1-g4490f06\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2019-10-13 12:13+0200\n"
-"PO-Revision-Date: 2019-11-06 01:03+0000\n"
+"PO-Revision-Date: 2019-11-12 16:04+0000\n"
 "Last-Translator: Alain <adoring@club.fr>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/mypaint/mypaint/"
 "fr/>\n"
@@ -191,7 +191,6 @@ msgid "Speed"
 msgstr "Vitesse"
 
 #: ../gui/brusheditor.py:352
-#, fuzzy
 msgctxt "brush settings list: setting group"
 msgid "Directional Offsets"
 msgstr "Décalage Directionnel"
@@ -212,7 +211,6 @@ msgid "Color"
 msgstr "Couleur"
 
 #: ../gui/brusheditor.py:407
-#, fuzzy
 msgctxt "brush settings list: setting group"
 msgid "GridMap"
 msgstr "Quadrillage"
@@ -411,6 +409,8 @@ msgstr "Nouveau"
 msgctxt "brushpack import failure messages"
 msgid "No file named “{order_conf_file}”. This is not a brushpack."
 msgstr ""
+"Aucun fichier nommé “{order_conf_file}”. Ceci n'est pas un ensemble de "
+"pinceaux."
 
 #: ../gui/brushmanager.py:639
 #, python-brace-format
@@ -419,6 +419,8 @@ msgid ""
 "Brush “{brush_name}” is listed in “{order_conf_file}”, but it does not exist "
 "in the zipfile."
 msgstr ""
+"Le pinceau “{brush_name}” est référencé dans “{order_conf_file}”,, mais il "
+"n'existe pas dans le fichier compressé."
 
 #: ../gui/brushmanager.py:652
 #, python-brace-format
@@ -427,37 +429,34 @@ msgid ""
 "Brush “{brush_name}” exists in the zipfile, but it is not listed in "
 "“{order_conf_file}”."
 msgstr ""
+"Le pinceau “{brush_name}” existe dans le fichier compressé mais il n'est pas "
+"référencé dans “{order_conf_file}”."
 
 #: ../gui/brushmanager.py:1258 ../gui/footer.py:62
 msgid "Unknown Brush"
 msgstr "Brosse inconnue"
 
 #: ../gui/brushselectionwindow.py:220
-#, fuzzy
 msgctxt "brush group: context menu for a single brush"
 msgid "Add to Favorites"
 msgstr "Ajouter aux Favoris"
 
 #: ../gui/brushselectionwindow.py:227
-#, fuzzy
 msgctxt "brush group: context menu for a single brush"
 msgid "Remove from Favorites"
 msgstr "Supprimer des favoris"
 
 #: ../gui/brushselectionwindow.py:235
-#, fuzzy
 msgctxt "brush group: context menu for a single brush"
 msgid "Clone"
 msgstr "Cloner"
 
 #: ../gui/brushselectionwindow.py:242
-#, fuzzy
 msgctxt "brush group: context menu for a single brush"
 msgid "Edit Brush Settings"
 msgstr "Éditer les Réglages de la Brosse"
 
 #: ../gui/brushselectionwindow.py:250
-#, fuzzy
 msgctxt "brush group: context menu for a single brush"
 msgid "Remove from Group"
 msgstr "Retirer du groupe"
@@ -466,19 +465,19 @@ msgstr "Retirer du groupe"
 #, python-brace-format
 msgctxt "brush group: context menu: unique names for cloned brushes"
 msgid "{original_name} copy"
-msgstr ""
+msgstr "Copie {original_name}"
 
 #: ../gui/brushselectionwindow.py:299
 #, python-brace-format
 msgctxt "brush group: context menu: unique names for cloned brushes"
 msgid "{original_name} copy {n}"
-msgstr ""
+msgstr "{original_name} copie {n}"
 
 #: ../gui/brushselectionwindow.py:325
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgctxt "brush group: context menu: remove from group"
 msgid "Really remove brush “{brush_name}” from group “{group_name}”?"
-msgstr "Effacer la brosse “{brush_name}” ?"
+msgstr "Effacer la brosse “{brush_name}” du groupe {group_name} ?"
 
 #. TRANSLATORS: number of brushes in a brush group, for tooltips
 #: ../gui/brushselectionwindow.py:381
@@ -637,33 +636,30 @@ msgid "Set the color used for painting"
 msgstr "Définir la couleur utiliser pour peindre"
 
 #: ../gui/colorpicker.py:270
-#, fuzzy
 msgid "Pick Hue"
 msgstr "Choisir la Teinte"
 
 #: ../gui/colorpicker.py:273
-#, fuzzy
 msgid "Set the color Hue used for painting"
 msgstr "Définir la couleur utiliser pour peindre"
 
 #: ../gui/colorpicker.py:293
-#, fuzzy
 msgid "Pick Chroma"
 msgstr "Pipette à couleur"
 
 #: ../gui/colorpicker.py:296
 #, fuzzy
 msgid "Set the color Chroma used for painting"
-msgstr "Définir la couleur utiliser pour peindre"
+msgstr "Définir la couleur utilisée pour peindre"
 
 #: ../gui/colorpicker.py:316
 msgid "Pick Luma"
-msgstr ""
+msgstr "Choisir Luma"
 
 #: ../gui/colorpicker.py:319
 #, fuzzy
 msgid "Set the color Luma used for painting"
-msgstr "Définir la couleur utiliser pour peindre"
+msgstr "Définir la couleur utilisée pour peindre"
 
 #: ../gui/colors/adjbases.py:699
 msgid "Color details"
@@ -843,13 +839,12 @@ msgid "HCY Wheel"
 msgstr "Cercle chromatique HCY"
 
 #: ../gui/colors/hcywheel.py:1300
-#, fuzzy
 msgctxt "HCY Wheel color adjuster page: description for tooltips etc."
 msgid ""
 "Set the color using cylindrical hue/chroma/luma space. The circular slices "
 "are equiluminant."
 msgstr ""
-"Régler les couleurs par l'espace cylindrique teinte/chroma/luma. Les "
+"Régler les couleurs pour l'espace cylindrique teinte/chroma/luma. Les "
 "tranches circulaires ont la même luminosité."
 
 #. Tooltip mappings, indexed by whatever the slider currently represents
@@ -1044,7 +1039,6 @@ msgstr "Remplir l'espace (RGB)"
 
 #. TRANSLATORS: Color interpolations
 #: ../gui/colors/paletteview.py:815
-#, fuzzy
 msgctxt "palette view: context menu"
 msgid "Fill Gap (HCY)"
 msgstr "Remplir l'espace (HCY)"
@@ -1106,10 +1100,9 @@ msgid "Y"
 msgstr "Y"
 
 #: ../gui/colors/sliders.py:109
-#, fuzzy
 msgctxt "color sliders panel: tab title (in tooltip)"
 msgid "Component Sliders"
-msgstr "Curseurs de composantes"
+msgstr "Réglages de composantes"
 
 #: ../gui/colors/sliders.py:116
 msgctxt "color sliders panel: tab description (in tooltip)"
@@ -1162,13 +1155,11 @@ msgid "HCY Luma (Y')"
 msgstr "Luminance HCY (Y')"
 
 #: ../gui/colortools.py:141
-#, fuzzy
 msgctxt "color changer dock panels: tab tooltip title"
 msgid "Liquid Wash"
 msgstr "Adoucir"
 
 #: ../gui/colortools.py:145
-#, fuzzy
 msgctxt "color changer dock panels: tab tooltip description"
 msgid "Change color using a liquid-like wash of nearby colors."
 msgstr "Change la couleur par un adoucissement des couleurs proches."
@@ -1179,20 +1170,20 @@ msgid "Concentric Rings"
 msgstr "Cercles concentriques"
 
 #: ../gui/colortools.py:159
-#, fuzzy
 msgctxt "color changer dock panels: tab tooltip description"
 msgid "Change color using concentric HSV rings."
-msgstr "fenêtre modale de modificateur de couleur (cercles concentriques)"
+msgstr "Changer la couleur en utilisant des cercles concentriques HSV."
 
 #: ../gui/colortools.py:169
 msgctxt "color changer dock panels: tab tooltip title"
 msgid "Crossed Bowl"
-msgstr ""
+msgstr "Palette Couleur"
 
 #: ../gui/colortools.py:173
 msgctxt "color changer dock panels: tab tooltip description"
 msgid "Change color with HSV ramps crossing a radial bowl of color."
 msgstr ""
+"Changement de couleur avec les rampes HSV sur palette de couleur radial."
 
 #: ../gui/device.py:48
 msgctxt "prefs: device's type label"
@@ -1327,12 +1318,12 @@ msgid "Existing brush"
 msgstr "Brosse existante"
 
 #: ../gui/dialogs.py:166
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgid ""
 "<b>A brush named “{brush_name}” already exists.</b>\n"
 "Do you want to replace it, or should the new brush be renamed?"
 msgstr ""
-"<b>Une brosse nommée « %s » existe déjà.</b>\n"
+"<b>Une brosse nommée «{brush_name}» existe déjà.</b>\n"
 "Désirez vous la remplacer ou la nouvelle brosse doit-elle être renommée ?"
 
 #: ../gui/dialogs.py:196
@@ -1340,7 +1331,7 @@ msgid "Overwrite brush group?"
 msgstr "Remplacer le groupe de brosse ?"
 
 #: ../gui/dialogs.py:220
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgid ""
 "<b>A group named “{groupname}” already exists.</b>\n"
 "Do you want to replace it, or should the new group be renamed?\n"
@@ -1357,9 +1348,9 @@ msgid "Import brush package?"
 msgstr "Importer un paquet de brosses ?"
 
 #: ../gui/dialogs.py:357
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgid "<b>Do you really want to import package “{brushpack_name}”?</b>"
-msgstr "<b>Souhaitez-vous vraiment importer le paquet « %s » ?</b>"
+msgstr "<b>Souhaitez-vous vraiment importer le paquet «{brushpack_name}» ?</b>"
 
 #: ../gui/document.py:453
 #, python-format
@@ -1405,7 +1396,7 @@ msgstr "Refaire"
 #. TRANSLATORS: combinations used to access modes/tools/actions.
 #. TRANSLATORS: "With <current-modifiers> held down: <list>"
 #: ../gui/document.py:862
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgid "{button_combination} is {resultant_action}"
 msgstr "{button_combination} est {resultant_action}"
 
@@ -1427,13 +1418,12 @@ msgid "With {modifiers} held down:  {button_actions}."
 msgstr "Avec {modifiers} enfoncé: {button_actions}."
 
 #: ../gui/document.py:900
-#, fuzzy
 msgctxt "Statusbar message: copy result"
 msgid "Empty document, nothing copied."
-msgstr "Document vide, rien à copier"
+msgstr "Document vide, rien à copier."
 
 #: ../gui/document.py:912
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgctxt "Statusbar message: copy result"
 msgid "Copied layer as {w}×{h} image."
 msgstr "Calque copié comme {w}×{h} image."
@@ -1479,10 +1469,9 @@ msgstr "MyPaint"
 #: ../gui/drawwindow.py:289
 msgctxt "Open dragged file confirm dialog: title"
 msgid "Open Dragged File?"
-msgstr ""
+msgstr "Ouvrir le fichier déposé ?"
 
 #: ../gui/drawwindow.py:293
-#, fuzzy
 msgctxt "Open dragged file confirm dialog: continue button"
 msgid "_Open"
 msgstr "Ouvrir"
@@ -1508,13 +1497,11 @@ msgid "Fullscreen"
 msgstr "Plein écran"
 
 #: ../gui/drawwindow.py:675
-#, fuzzy
 msgctxt "Quit confirm dialog: title"
 msgid "Really Quit?"
 msgstr "Désirez-vous vraiment quitter ?"
 
 #: ../gui/drawwindow.py:679
-#, fuzzy
 msgctxt "Quit confirm dialog: continue button"
 msgid "_Quit"
 msgstr "Quitter"
@@ -1555,7 +1542,7 @@ msgstr ""
 "Le calque “{layer_name}” a été mise à jour avec les modifications externes"
 
 #: ../gui/externalapp.py:47
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgctxt "file handling: open failed (statusbar)"
 msgid "Could not load “{file_basename}”."
 msgstr "Impossible de charger “{file_basename}”."
@@ -1591,37 +1578,37 @@ msgid "no description"
 msgstr "sans description"
 
 #: ../gui/filehandling.py:126
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgctxt "Document I/O: message shown while working"
 msgid "Loading {files_summary}…"
-msgstr "Chargement  de {files_summary}…"
+msgstr "Chargement de {files_summary}…"
 
 #: ../gui/filehandling.py:130
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgctxt "Document I/O: message shown while working"
 msgid "Importing layers from {files_summary}…"
 msgstr "Importer des calques de {files_summary}…"
 
 #: ../gui/filehandling.py:134
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgctxt "Document I/O: message shown while working"
 msgid "Saving {files_summary}…"
 msgstr "Sauvegarde de {files_summary}…"
 
 #: ../gui/filehandling.py:138
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgctxt "Document I/O: message shown while working"
 msgid "Exporting to {files_summary}…"
 msgstr "Exportation vers {files_summary}…"
 
 #: ../gui/filehandling.py:145
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgctxt "Document I/O: fail message"
 msgid "Failed to export to {files_summary}."
 msgstr "Échec de l'export vers {files_summary}."
 
 #: ../gui/filehandling.py:149
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgctxt "Document I/O: fail message"
 msgid "Failed to save {files_summary}."
 msgstr "Échec de la sauvegarde de {files_summary}."
@@ -1630,61 +1617,57 @@ msgstr "Échec de la sauvegarde de {files_summary}."
 #, python-brace-format
 msgctxt "Document I/O: fail message"
 msgid "Could not import layers from {files_summary}."
-msgstr ""
+msgstr "Impossible d'importer des calques de {files_summary}."
 
 #: ../gui/filehandling.py:157
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgctxt "Document I/O: fail message"
 msgid "Could not load {files_summary}."
 msgstr "Impossible de charger {files_summary}."
 
 #: ../gui/filehandling.py:164
-#, fuzzy
 msgctxt "Document I/O: fail dialog title"
 msgid "Save failed"
 msgstr "Échec de la sauvegarde"
 
 #: ../gui/filehandling.py:168
-#, fuzzy
 msgctxt "Document I/O: fail dialog title"
 msgid "Export failed"
 msgstr "Echec de l'exportation"
 
 #: ../gui/filehandling.py:172
-#, fuzzy
 msgctxt "Document I/O: fail dialog title"
 msgid "Import Layers failed"
 msgstr "L'importation des calques a échoué"
 
 #: ../gui/filehandling.py:176
-#, fuzzy
 msgctxt "Document I/O: fail dialog title"
 msgid "Open failed"
 msgstr "L'ouverture a échoué"
 
 #: ../gui/filehandling.py:183
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgctxt "Document I/O: success"
 msgid "Exported to {files_summary} successfully."
-msgstr "Exporté vers “{file_basename}” avec succés."
+msgstr "Exporté vers {files_summary} avec succés."
 
 #: ../gui/filehandling.py:187
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgctxt "Document I/O: success"
 msgid "Saved {files_summary} successfully."
 msgstr "{files_summary} sauvegardé avec succès."
 
 #: ../gui/filehandling.py:191
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgctxt "Document I/O: success"
 msgid "Imported layers from {files_summary}."
-msgstr "Calques importés  de {fichiers_summary}."
+msgstr "Calques importés de {files_summary}."
 
 #: ../gui/filehandling.py:195
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgctxt "Document I/O: success"
 msgid "Loaded {files_summary}."
-msgstr "{files_summary} chargé"
+msgstr "{files_summary} chargé."
 
 #. TRANSLATORS: formatting for {files_summary} for multiple files.
 #. TRANSLATORS: corresponding msgid for single files: "“{basename}”"
@@ -1692,8 +1675,8 @@ msgstr "{files_summary} chargé"
 #, python-brace-format
 msgid "{n} file"
 msgid_plural "{n} files"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "{n} fichier"
+msgstr[1] "{n} fichiers"
 
 #: ../gui/filehandling.py:222
 #, fuzzy, python-brace-format
@@ -1702,7 +1685,6 @@ msgid "“{basename}”"
 msgstr "Erreur lors du chargement de “{basename}”."
 
 #: ../gui/filehandling.py:428
-#, fuzzy
 msgctxt "save/load dialogs: filter patterns"
 msgid "All Recognized Formats"
 msgstr "Tous les formats reconnus"
@@ -1714,19 +1696,16 @@ msgid "OpenRaster (*.ora)"
 msgstr "OpenRaster (*.ora)"
 
 #: ../gui/filehandling.py:438
-#, fuzzy
 msgctxt "save/load dialogs: filter patterns"
 msgid "PNG (*.png)"
 msgstr "PNG (*.png)"
 
 #: ../gui/filehandling.py:443
-#, fuzzy
 msgctxt "save/load dialogs: filter patterns"
 msgid "JPEG (*.jpg; *.jpeg)"
-msgstr "JPEG (*.jpg; *.jpeg)"
+msgstr "JPEG (*.jpg, *.jpeg)"
 
 #: ../gui/filehandling.py:491
-#, fuzzy
 msgctxt "save dialogs: save formats and options"
 msgid "By extension (prefer default format)"
 msgstr "Par extension (préfère le format par défaut)"
@@ -1768,31 +1747,26 @@ msgid "Multiple PNGs, by view (*.NAME.png)"
 msgstr "Multiple PNG transparent (*.XXX.png)"
 
 #: ../gui/filehandling.py:519
-#, fuzzy
 msgctxt "save dialogs: save formats and options"
 msgid "JPEG 90% quality (*.jpg; *.jpeg)"
 msgstr "JPEG qualité 90% (*.jpg, *.jpeg)"
 
 #: ../gui/filehandling.py:577
-#, fuzzy
 msgctxt "Dialogs (window title): File→Export…"
 msgid "Export"
-msgstr "Exporter…"
+msgstr "Exporter"
 
 #: ../gui/filehandling.py:582
-#, fuzzy
 msgctxt "Dialogs (window title): File→Save As…"
 msgid "Save As"
-msgstr "Enregistrer sous…"
+msgstr "Enregistrer sous"
 
 #: ../gui/filehandling.py:602
-#, fuzzy
 msgctxt "save dialogs: formats and options: (label)"
 msgid "Format to save as:"
 msgstr "Format d'enregistrement :"
 
 #: ../gui/filehandling.py:669
-#, fuzzy
 msgctxt ""
 "Destructive action confirm dialog: fallback title (normally overridden)"
 msgid "Really Continue?"
@@ -1801,7 +1775,7 @@ msgstr "Désirez-vous vraiment continuer ?"
 #: ../gui/filehandling.py:702
 msgctxt "Destructive action confirm dialog: cancel button"
 msgid "_Cancel"
-msgstr ""
+msgstr "Annuler"
 
 #: ../gui/filehandling.py:706
 #, fuzzy
@@ -1814,7 +1788,7 @@ msgctxt ""
 "Destructive action confirm dialog: fallback continue button (normally "
 "overridden)"
 msgid "Co_ntinue"
-msgstr ""
+msgstr "Continuer"
 
 #: ../gui/filehandling.py:735
 #, fuzzy, python-brace-format
@@ -1825,12 +1799,12 @@ msgstr "Cela va détruire {abbreviated_time} d'actions non-enregistrée."
 #: ../gui/filehandling.py:800
 msgctxt "File→New: confirm dialog: title question"
 msgid "New Canvas?"
-msgstr ""
+msgstr "Nouvelle toile ?"
 
 #: ../gui/filehandling.py:804
 msgctxt "File→New: confirm dialog: continue button"
 msgid "_New Canvas"
-msgstr ""
+msgstr "Nouvelle toile"
 
 #: ../gui/filehandling.py:1004
 msgctxt "File→Open: confirm dialog: title question"
@@ -2135,7 +2109,7 @@ msgstr "Sélectionner un calque"
 #, python-brace-format
 msgctxt "current brush indicator: tooltip (no-description case)"
 msgid "<b>{brush_name}</b>"
-msgstr ""
+msgstr "<b>{brush_name}</b>"
 
 #: ../gui/footer.py:196
 #, python-brace-format
@@ -2144,6 +2118,8 @@ msgid ""
 "<b>{brush_name}</b>\n"
 "{brush_desc}"
 msgstr ""
+"<b>{brush_name}</b>\n"
+"{brush_desc}"
 
 #: ../gui/framewindow.py:99
 msgid "Edit Frame"
@@ -2179,7 +2155,7 @@ msgstr "Résolution :"
 
 #: ../gui/framewindow.py:475
 msgid "DPI"
-msgstr ""
+msgstr "DPI"
 
 #: ../gui/framewindow.py:480
 msgid "Dots Per Inch (really Pixels Per Inch)"
@@ -2202,7 +2178,6 @@ msgid "<b>Pixel density</b>"
 msgstr "<b>Densité des pixels</b>"
 
 #: ../gui/framewindow.py:585
-#, fuzzy
 msgid "Set Frame to Layer"
 msgstr "Appliquer le Cadre au Calque"
 
@@ -2588,11 +2563,10 @@ msgid "Generic line/curve mode"
 msgstr ""
 
 #: ../gui/linemode.py:781
-#, fuzzy
 msgid "Draw straight lines; Shift adds curves, Ctrl constrains angle"
 msgstr ""
-"Dessiner des lignes droites; Shift ajouter des courbes, Ctrl contraindre sur "
-"les angles"
+"Dessine des lignes droites, Shift ajoute des courbes, Ctrl contraint sur les "
+"angles"
 
 #: ../gui/linemode.py:791
 msgid "Connected Lines"
@@ -4014,10 +3988,9 @@ msgid "<big><b>No Brush Dynamics</b></big>"
 msgstr "<big><b>{accel_label}</b></big>"
 
 #: ../po/tmp/inktool.glade.h:1
-#, fuzzy
 msgctxt "Inking tool options: point value sliders: labels: tooltips"
 msgid "Pressure value for the current point"
-msgstr "Entrer un nouveau nom pour le calque actuel"
+msgstr "Valeur de pression pour le point actuel"
 
 #: ../po/tmp/inktool.glade.h:2
 #, fuzzy
@@ -4413,10 +4386,11 @@ msgid "Color space conversions:"
 msgstr ""
 
 #: ../po/tmp/preferenceswindow.glade.h:43
-#, fuzzy
 msgctxt "Prefs Dialog|Load & Save|Color Management|"
 msgid "Convert to sRGB when loading; mark as sRGB when saving"
-msgstr "Conversion de la colorimétrie"
+msgstr ""
+"Convertion en sRGB lors du chargement, marque comme sRGB lors de la "
+"sauvegarde"
 
 #: ../po/tmp/preferenceswindow.glade.h:44
 msgctxt "Prefs Dialog|Load & Save|Color Management|"
@@ -4484,10 +4458,9 @@ msgid "Load & Save"
 msgstr "Charger le calque"
 
 #: ../po/tmp/preferenceswindow.glade.h:59
-#, fuzzy
 msgctxt "Prefs Dialog|View|"
 msgid "<b>Zoom and Rendering</b>"
-msgstr "<b>Zoom et Rendu<b>"
+msgstr "<b> Zoom et Rendu <b>"
 
 #: ../po/tmp/preferenceswindow.glade.h:60
 msgid "Default zoom level:"
@@ -4524,6 +4497,9 @@ msgid ""
 "Use a light-on-dark theme variant, when it's supported by the GTK theme. "
 "This is generally sensible for image editors and media viewers."
 msgstr ""
+"Utilisez une variante de thème clair sur sombre, lorsqu'elle est prise en "
+"charge par le thème GTK. Ceci est généralement utile pour les éditeurs d’"
+"images et les lecteurs de contenu multimédia."
 
 #: ../po/tmp/preferenceswindow.glade.h:67
 msgid "Some of these settings require MyPaint to be restarted."
@@ -4657,7 +4633,6 @@ msgstr ""
 "d'un cercle. Le vert est l'opposé du magenta."
 
 #: ../po/tmp/preferenceswindow.glade.h:96
-#, fuzzy
 msgctxt "Prefs Dialog|Color|Color Wheel|Primaries|"
 msgid "Traditional artist's Red/Yellow/Blue"
 msgstr "Rouge/Jaune/Bleu artistique traditionnel"
@@ -5811,7 +5786,7 @@ msgstr "Retire les tracés en utilisant la brosse actuelle."
 #: ../po/tmp/resources.xml.h:197
 msgctxt "Menu→Brush→Blend Mode (labels), Accel Editor (labels)"
 msgid "Paint Mode: Lock Alpha"
-msgstr ""
+msgstr "Mode de peinture : Verrouiller Alpha"
 
 #: ../po/tmp/resources.xml.h:198
 msgctxt "Accel Editor (descriptions)"
@@ -5828,6 +5803,8 @@ msgctxt "Accel Editor (descriptions)"
 msgid ""
 "Apply color to the current layer without affecting its brightness or opacity."
 msgstr ""
+"Appliquez une couleur au calque actuel sans affecter sa luminosité ni son "
+"opacité."
 
 #: ../po/tmp/resources.xml.h:201
 msgctxt "Menu (labels)"
@@ -5842,7 +5819,7 @@ msgstr "Quitter"
 #: ../po/tmp/resources.xml.h:203
 msgctxt "Accel Editor (descriptions)"
 msgid "Close main window and exit the app."
-msgstr ""
+msgstr "Fermez la fenêtre principale et quittez l'application."
 
 #: ../po/tmp/resources.xml.h:204
 msgctxt "Menu (labels)"
@@ -5869,7 +5846,7 @@ msgstr "Historique de couleur"
 #: ../po/tmp/resources.xml.h:208
 msgctxt "Accel Editor (descriptions)"
 msgid "Pop up a timeline of recent colors under the cursor."
-msgstr ""
+msgstr "Ouvre un ensemble de couleurs récentes sous le curseur."
 
 #: ../po/tmp/resources.xml.h:209
 #, fuzzy
@@ -5878,10 +5855,10 @@ msgid "Color Details Dialog"
 msgstr "Détails de la couleur"
 
 #: ../po/tmp/resources.xml.h:210
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Show a color details dialog with text entry."
-msgstr "Dialogue des détails de couleur avec champs de saisie texte."
+msgstr ""
+"Affiche une boîte de dialogue de détail de couleur avec saisie de texte."
 
 #: ../po/tmp/resources.xml.h:211
 #, fuzzy
@@ -5890,10 +5867,9 @@ msgid "Next Palette Color"
 msgstr "Couleur de la palette suivante "
 
 #: ../po/tmp/resources.xml.h:212
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Set painting color to the next color in the palette."
-msgstr "Couleur suivante de la palette"
+msgstr "Choisi la couleur suivante de la palette."
 
 #: ../po/tmp/resources.xml.h:213
 #, fuzzy
@@ -5902,10 +5878,9 @@ msgid "Previous Palette Color"
 msgstr "Couleur de la palette précédente"
 
 #: ../po/tmp/resources.xml.h:214
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Set painting color to the previous color in the palette."
-msgstr "Couleur précédente de la palette"
+msgstr "Choisi la couleur précédente de la palette."
 
 #: ../po/tmp/resources.xml.h:215
 #, fuzzy
@@ -5916,7 +5891,7 @@ msgstr "Ajouter une couleur à la palette"
 #: ../po/tmp/resources.xml.h:216
 msgctxt "Accel Editor (descriptions)"
 msgid "Append the current painting color to the palette."
-msgstr ""
+msgstr "Ajouter la couleur actuelle à la palette."
 
 #: ../po/tmp/resources.xml.h:217
 msgctxt "Menu (labels)"
@@ -5936,10 +5911,9 @@ msgid "Go to Layer"
 msgstr "Aller au calque"
 
 #: ../po/tmp/resources.xml.h:220
-#, fuzzy
 msgctxt "Menu→Layer (labels)"
 msgid "New Layer Below"
-msgstr "Calque seul"
+msgstr "Nouvelle couche en dessous"
 
 #: ../po/tmp/resources.xml.h:221
 #, fuzzy
@@ -5993,7 +5967,7 @@ msgstr "Exporter le carnet de croquis en tant que…"
 #: ../po/tmp/resources.xml.h:230
 msgctxt "Accel Editor (descriptions)"
 msgid "Export the scratchpad to disk, under a file name of your choice."
-msgstr "Exporter le carnet de croquis en choisissant l'extension…"
+msgstr "Exporter le carnet de croquis en choisissant un nom."
 
 #: ../po/tmp/resources.xml.h:231
 #, fuzzy
@@ -6060,12 +6034,12 @@ msgstr "Raccourcis clavier"
 #, fuzzy
 msgctxt "Menu→Brush→Shortcut Keys (labels), Accel Editor (labels)"
 msgid "Brush Shortcut Keys Help"
-msgstr "Raccourcis claviers"
+msgstr "Aide raccourcis claviers pinceau"
 
 #: ../po/tmp/resources.xml.h:243
 msgctxt "Accel Editor (descriptions)"
 msgid "Show an explanation of how the shortcut keys work."
-msgstr ""
+msgstr "Affiche une explication sur le fonctionnement des raccourcis clavier."
 
 #: ../po/tmp/resources.xml.h:244
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
@@ -6075,7 +6049,7 @@ msgstr "Changer de Brosse…"
 #: ../po/tmp/resources.xml.h:245
 msgctxt "Accel Editor (descriptions)"
 msgid "Pop up a brush changer under the cursor."
-msgstr ""
+msgstr "Affiche un changeur de brosse sous le curseur."
 
 #: ../po/tmp/resources.xml.h:246
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
@@ -6087,6 +6061,8 @@ msgctxt "Accel Editor (descriptions)"
 msgid ""
 "Pop up a color changer under the cursor, with all color selectors listed."
 msgstr ""
+"Affiche un changeur de couleurs sous le curseur, avec tous les sélecteurs de "
+"couleurs répertoriés."
 
 #: ../po/tmp/resources.xml.h:248
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
@@ -6099,6 +6075,8 @@ msgid ""
 "Pop up a color changer under the cursor, with only single-click selectors "
 "listed."
 msgstr ""
+"Affiche un changeur de couleur sous le curseur, avec les sélecteurs "
+"répertoriés en un seul clic."
 
 #: ../po/tmp/resources.xml.h:250
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
@@ -6118,7 +6096,7 @@ msgstr "Importer des brosses…"
 #: ../po/tmp/resources.xml.h:253
 msgctxt "Accel Editor (descriptions)"
 msgid "Load a brushpack from disk."
-msgstr "Charger un pack de brosses sur le disque…"
+msgstr "Charger un pack de brosses."
 
 #: ../po/tmp/resources.xml.h:254
 msgctxt "Menu (labels)"
@@ -6133,7 +6111,7 @@ msgstr "Aide en ligne"
 #: ../po/tmp/resources.xml.h:256
 msgctxt "Accel Editor (descriptions)"
 msgid "Go to MyPaint’s documentation wiki."
-msgstr "Se connecter à la documentation MyPaint wiki"
+msgstr "Se connecter à la documentation MyPaint wiki."
 
 #: ../po/tmp/resources.xml.h:257
 msgctxt "Menu→Help (labels), Accel Editor (labels)"
@@ -6171,6 +6149,7 @@ msgstr "Lancer le ramasse-miette maintenant"
 msgctxt "Accel Editor (descriptions)"
 msgid "Free memory used for Python objects which are no longer in use."
 msgstr ""
+"Mémoire libre utilisée pour les objets Python qui ne sont plus utilisés."
 
 #: ../po/tmp/resources.xml.h:264
 #, fuzzy
@@ -6187,7 +6166,7 @@ msgstr "Démarrer/Arrêter le profilage Python (cProfile)"
 #: ../po/tmp/resources.xml.h:266
 msgctxt "Menu→Help→Debug (labels), Accel Editor (labels)"
 msgid "Simulate a Crash…"
-msgstr ""
+msgstr "Simule un accident…"
 
 #: ../po/tmp/resources.xml.h:267
 msgctxt "Accel Editor (descriptions)"
@@ -6229,7 +6208,7 @@ msgstr "Plein écran"
 #: ../po/tmp/resources.xml.h:274
 msgctxt "Accel Editor (descriptions)"
 msgid "Toggle between full-screen and windowed mode."
-msgstr ""
+msgstr "Bascule entre le mode plein écran et le mode fenêtre."
 
 #: ../po/tmp/resources.xml.h:275
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
@@ -6360,10 +6339,9 @@ msgstr ""
 "Un cube TSV pouvant être tourné afin d'afficher différentes coupes planes."
 
 #: ../po/tmp/resources.xml.h:297
-#, fuzzy
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "HSV Square"
-msgstr "Carré"
+msgstr "HSV Carré"
 
 #: ../po/tmp/resources.xml.h:298
 #, fuzzy
@@ -6373,10 +6351,9 @@ msgstr ""
 "Un cube TSV pouvant être tourné affin d'afficher différentes coupes planes"
 
 #: ../po/tmp/resources.xml.h:299
-#, fuzzy
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "Component Sliders"
-msgstr "Curseurs de composantes"
+msgstr "Curseurs de composants"
 
 #: ../po/tmp/resources.xml.h:300
 #, fuzzy
@@ -6397,12 +6374,12 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:303
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "Concentric Rings"
-msgstr ""
+msgstr "Anneaux concentriques"
 
 #: ../po/tmp/resources.xml.h:304
 msgctxt "Accel Editor (descriptions)"
 msgid "Dockable color selector with concentric HSV rings."
-msgstr ""
+msgstr "sélecteur de couleur ancrable avec des anneaux concentriques HSV ."
 
 #: ../po/tmp/resources.xml.h:305
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
@@ -6413,6 +6390,8 @@ msgstr ""
 msgctxt "Accel Editor (descriptions)"
 msgid "Dockable color selector with HSV ramps crossing a radial bowl of color."
 msgstr ""
+"Sélecteur de couleur ancrable avec des rampes HSV au travers d'une palette "
+"de couleurs radiale."
 
 #: ../po/tmp/resources.xml.h:307
 #, fuzzy
@@ -6579,7 +6558,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:338
 msgctxt "Menu→View→Display Filter (labels), Accel Editor (labels)"
 msgid "Display Colors with Simulated Insensitivity to Green"
-msgstr "Afficher les couleurs avec une simulation du vert plus intense"
+msgstr "Affiche les couleurs avec une simulation du vert plus intense"
 
 #: ../po/tmp/resources.xml.h:339
 msgctxt "Accel Editor (descriptions)"
@@ -6854,13 +6833,12 @@ msgid "Frame"
 msgstr "Cadre"
 
 #: ../po/tmp/resources.xml.h:389
-#, fuzzy
 msgctxt "Toolbar (tooltips)"
 msgid ""
 "Edit Frame: define a frame around the document to give it a finite size."
 msgstr ""
 "Éditer le cadre : Défini un cadre autour du document afin de lui donner une "
-"taille déterminée. Le cadre est utilisé lors de l'exportation."
+"taille déterminée."
 
 #: ../po/tmp/resources.xml.h:390
 msgctxt "Menu→File (labels), Accel Editor (labels)"
@@ -6981,7 +6959,7 @@ msgstr "Remplir"
 #: ../po/tmp/resources.xml.h:410
 msgctxt "Toolbar (tooltips)"
 msgid "Flood Fill: fill an area with color."
-msgstr ""
+msgstr "Remplissage : remplit une zone de couleur."
 
 #: ../po/tmp/resources.xml.h:411
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
