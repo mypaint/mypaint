@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: mypaint v2.0.0-alpha.12-345-g9079adb\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2019-10-13 12:13+0200\n"
-"PO-Revision-Date: 2019-09-21 05:53+0000\n"
+"PO-Revision-Date: 2019-11-11 21:53+0200\n"
 "Last-Translator: albanobattistella <albano_battistella@hotmail.com>\n"
 "Language-Team: Italian <https://hosted.weblate.org/projects/mypaint/mypaint/"
 "it/>\n"
@@ -195,7 +195,7 @@ msgstr "Velocità"
 #: ../gui/brusheditor.py:352
 msgctxt "brush settings list: setting group"
 msgid "Directional Offsets"
-msgstr ""
+msgstr "Offset Direzionale"
 
 #: ../gui/brusheditor.py:370
 msgctxt "brush settings list: setting group"
@@ -662,7 +662,7 @@ msgstr "Imposta il colore usato per dipingere"
 
 #: ../gui/colorpicker.py:316
 msgid "Pick Luma"
-msgstr ""
+msgstr "Preleva Luma"
 
 #: ../gui/colorpicker.py:319
 #, fuzzy
@@ -1418,40 +1418,40 @@ msgstr "Con {modifiers} premuto:  {button_actions}."
 #: ../gui/document.py:900
 msgctxt "Statusbar message: copy result"
 msgid "Empty document, nothing copied."
-msgstr ""
+msgstr "Documento vuoto, niente di copiato."
 
 #: ../gui/document.py:912
 #, python-brace-format
 msgctxt "Statusbar message: copy result"
 msgid "Copied layer as {w}×{h} image."
-msgstr ""
+msgstr "Livello copiato come immagine {w}×{h}."
 
 #: ../gui/document.py:929
 msgctxt "Statusbar message: paste result"
 msgid "Nothing on clipboard."
-msgstr ""
+msgstr "Niente negli appunti."
 
 #: ../gui/document.py:938
 msgctxt "Statusbar message: paste result"
 msgid "Clipboard does not contain an image."
-msgstr ""
+msgstr "Gli Appunti non contengono un'immagine."
 
 #: ../gui/document.py:949
 msgctxt "Statusbar message: paste result"
 msgid "Cannot paste into this type of layer."
-msgstr ""
+msgstr "Impossibile incollare in questo tipo di livello."
 
 #: ../gui/document.py:954
 #, python-brace-format
 msgctxt "Statusbar message: paste result"
 msgid "Pasted {w}×{h} image."
-msgstr ""
+msgstr "Immagine {w}×{h} incollata."
 
 #: ../gui/document.py:2040
 #, python-brace-format
 msgctxt "Statusbar message: vacuum document"
 msgid "Vacuum: discarded {removed} of {total} tiles."
-msgstr ""
+msgstr "Vuoto: scartato {rimosso} di {totale} tessere."
 
 #. TRANSLATORS: window title for use with a filename
 #: ../gui/drawwindow.py:269
@@ -1468,7 +1468,7 @@ msgstr "MyPaint"
 #: ../gui/drawwindow.py:289
 msgctxt "Open dragged file confirm dialog: title"
 msgid "Open Dragged File?"
-msgstr ""
+msgstr "Aprire File trascinato?"
 
 #: ../gui/drawwindow.py:293
 #, fuzzy
@@ -1585,7 +1585,7 @@ msgstr "Sto caricando “{file_basename}”…"
 #, python-brace-format
 msgctxt "Document I/O: message shown while working"
 msgid "Importing layers from {files_summary}…"
-msgstr ""
+msgstr "Importazione di livelli da {files_summary}..."
 
 #: ../gui/filehandling.py:134
 #, fuzzy, python-brace-format
@@ -1615,7 +1615,7 @@ msgstr "Fallito nel salvare “{file_basename}”."
 #, python-brace-format
 msgctxt "Document I/O: fail message"
 msgid "Could not import layers from {files_summary}."
-msgstr ""
+msgstr "Impossibile importare layer da {files_summary}."
 
 #: ../gui/filehandling.py:157
 #, fuzzy, python-brace-format
@@ -1663,7 +1663,7 @@ msgstr "Salvato “{file_basename}” con successo."
 #, python-brace-format
 msgctxt "Document I/O: success"
 msgid "Imported layers from {files_summary}."
-msgstr ""
+msgstr "Livelli importati da {files_summary}."
 
 #: ../gui/filehandling.py:195
 #, fuzzy, python-brace-format
@@ -1677,8 +1677,8 @@ msgstr "Ho caricato “{file_basename}”."
 #, python-brace-format
 msgid "{n} file"
 msgid_plural "{n} files"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "{n} file"
+msgstr[1] "{n} files"
 
 #: ../gui/filehandling.py:222
 #, fuzzy, python-brace-format
@@ -1786,7 +1786,7 @@ msgstr "Vuoi veramente continuare?"
 #: ../gui/filehandling.py:702
 msgctxt "Destructive action confirm dialog: cancel button"
 msgid "_Cancel"
-msgstr ""
+msgstr "Cancella"
 
 #: ../gui/filehandling.py:706
 #, fuzzy
@@ -1799,7 +1799,7 @@ msgctxt ""
 "Destructive action confirm dialog: fallback continue button (normally "
 "overridden)"
 msgid "Co_ntinue"
-msgstr ""
+msgstr "Co_ntinua"
 
 #: ../gui/filehandling.py:735
 #, fuzzy, python-brace-format
@@ -1812,17 +1812,17 @@ msgstr ""
 #: ../gui/filehandling.py:800
 msgctxt "File→New: confirm dialog: title question"
 msgid "New Canvas?"
-msgstr ""
+msgstr "Nuova Tela?"
 
 #: ../gui/filehandling.py:804
 msgctxt "File→New: confirm dialog: continue button"
 msgid "_New Canvas"
-msgstr ""
+msgstr "_Nuova tela?"
 
 #: ../gui/filehandling.py:1004
 msgctxt "File→Open: confirm dialog: title question"
 msgid "Open File?"
-msgstr ""
+msgstr "Apri File?"
 
 #: ../gui/filehandling.py:1008
 #, fuzzy
@@ -1851,7 +1851,7 @@ msgstr "Pennello Importato"
 #: ../gui/filehandling.py:1409
 msgctxt "File→Open Recent→* confirm dialog: title"
 msgid "Open File?"
-msgstr ""
+msgstr "Apri File?"
 
 #: ../gui/filehandling.py:1413
 #, fuzzy
@@ -1898,12 +1898,12 @@ msgstr "Apri"
 #: ../gui/filehandling.py:1488
 msgctxt "File→Revert: status message: canvas has no filename yet"
 msgid "Cannot revert: canvas has not been saved to a file yet."
-msgstr ""
+msgstr "Impossibile ripristinare: la tela non è stato ancora salvata in un file."
 
 #: ../gui/filehandling.py:1495
 msgctxt "File→Revert confirm dialog: title"
 msgid "Revert Changes?"
-msgstr ""
+msgstr "Annulla Modifiche?"
 
 #: ../gui/filehandling.py:1500
 #, fuzzy
@@ -1956,12 +1956,12 @@ msgstr "Sorgente:"
 #: ../gui/fill.py:540
 msgctxt "fill options: 'Source:' category (tooltip)"
 msgid "The input that the fill will be based on"
-msgstr ""
+msgstr "L'ingresso del riempimento si baserà su"
 
 #: ../gui/fill.py:584
 msgctxt "fill options: 'Source' category: Layer dropdown (tooltip)"
 msgid "Select a specific layer you want the fill to be based on"
-msgstr ""
+msgstr "Seleziona un livello specifico su cui vuoi basare il riempimento"
 
 #: ../gui/fill.py:602
 #, fuzzy
@@ -2000,6 +2000,9 @@ msgid ""
 "If the view is rotated, the fill will be limited to the\n"
 "smallest canvas-aligned rectangle that can fit the view."
 msgstr ""
+"Limita l'area che può essere riempita, in base alla finestra.\n"
+"Se la vista viene ruotata, il riempimento sarà limitato al\n"
+"più piccolo rettangolo allineato sulla tela che può adattarsi alla vista."
 
 #: ../gui/fill.py:645
 #, fuzzy
@@ -2038,12 +2041,12 @@ msgstr ""
 #: ../gui/fill.py:674
 msgctxt "fill options: Target | Blend Mode dropdown - warning text"
 msgid "This mode does nothing when alpha locking is enabled!"
-msgstr ""
+msgstr "Questa modalità non fa nulla quando il blocco alfa è abilitato!"
 
 #: ../gui/fill.py:688
 msgctxt "fill options: Target | Blend Mode dropdown (tooltip)"
 msgid "Blend mode used when filling"
-msgstr ""
+msgstr "Modalità di fusione utilizzata durante il riempimento"
 
 #: ../gui/fill.py:703
 msgid "Opacity:"
@@ -2052,7 +2055,7 @@ msgstr "Opacità:"
 #: ../gui/fill.py:706
 msgctxt "fill options: Opacity slider (tooltip)"
 msgid "Opacity of the fill"
-msgstr ""
+msgstr "Opacità del riempimento"
 
 #: ../gui/fill.py:729
 msgctxt "fill options: numeric option - grow/shrink fill (label)"
@@ -2062,22 +2065,22 @@ msgstr ""
 #: ../gui/fill.py:745
 msgctxt "fill options: Offset (tooltip)"
 msgid "The distance in pixels to grow or shrink the fill"
-msgstr ""
+msgstr "La distanza in pixel per aumentare o ridurre il riempimento"
 
 #: ../gui/fill.py:756
 msgctxt "fill options: numeric option for blurring fill (label)"
 msgid "Feather:"
-msgstr ""
+msgstr "Piuma:"
 
 #: ../gui/fill.py:771
 msgctxt "fill options: Feather (tooltip)"
 msgid "The amount of blur to apply to the fill"
-msgstr ""
+msgstr "La quantità di sfocatura da applicare al riempimento"
 
 #: ../gui/fill.py:787
 msgctxt "fill options: gap detection toggle (label)"
 msgid "Use Gap Detection"
-msgstr ""
+msgstr "Usa il rilevamento dei vuoti"
 
 #: ../gui/fill.py:792
 msgctxt "fill options: Use Gap Detection (tooltip)"
