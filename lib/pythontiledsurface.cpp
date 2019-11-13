@@ -8,6 +8,15 @@
  */
 
 #include "pythontiledsurface.h"
+#include "surface.hpp"
+
+#define NPY_NO_DEPRECATED_API NPY_1_7_API_VERSION
+#define NO_IMPORT_ARRAY
+#include <numpy/arrayobject.h>
+#include <numpy/ndarraytypes.h>
+
+#include <mypaint-tiled-surface.h>
+
 
 struct MyPaintPythonTiledSurface {
     MyPaintTiledSurface parent;

@@ -7,7 +7,17 @@
  * (at your option) any later version.
  */
 
+
+#include "surface.hpp"
+
 #include <mypaint-tiled-surface.h>
+#include <Python.h>
+
+#include <cstdio>
+#include <vector>
+
+// Implementation of tiled surface backend
+#include "pythontiledsurface.cpp"
 
 enum SymmetryType
 {
@@ -22,10 +32,6 @@ enum SymmetryType
 static const int TILE_SIZE = MYPAINT_TILE_SIZE;
 static const int MAX_MIPMAP_LEVEL = MYPAINT_MAX_MIPMAP_LEVEL;
 
-// Implementation of tiled surface backend
-#include "pythontiledsurface.cpp"
-
-#include <vector>
 
 // Interface class, wrapping the backend the way MyPaint wants to use it
 class TiledSurface : public Surface {
@@ -142,7 +148,7 @@ extern "C" {
 MyPaintSurface *
 mypaint_python_surface_factory(gpointer user_data)
 {
-    PyObject *module = get_module("lib.tiledsurface");
+    PyObject *module = get_module((char*)"lib.tiledsurface");
     PyObject *instance = new_py_tiled_surface(module);
     assert(instance != NULL);
     // Py_DECREF(module);

@@ -1,6 +1,7 @@
 #ifndef PYTHONTILEDSURFACE_H
 #define PYTHONTILEDSURFACE_H
 
+#include <Python.h>
 #include <mypaint-surface.h>
 
 #ifdef __cplusplus
