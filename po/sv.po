@@ -6,8 +6,8 @@ msgstr ""
 "Project-Id-Version: mypaint v2.0.0-alpha.12-343-g82b4fc5\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2019-10-13 12:13+0200\n"
-"PO-Revision-Date: 2019-10-14 17:52+0000\n"
-"Last-Translator: Jesper Lloyd <jpl.lloyd@gmail.com>\n"
+"PO-Revision-Date: 2019-11-14 23:25+0000\n"
+"Last-Translator: Henrik Cederblad <msg@henrikcederblad.com>\n"
 "Language-Team: Swedish <https://hosted.weblate.org/projects/mypaint/mypaint/"
 "sv/>\n"
 "Language: sv\n"
@@ -15,7 +15,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 3.9-dev\n"
+"X-Generator: Weblate 3.10-dev\n"
 
 #. TRANSLATORS: Name of first column in the button map preferences.
 #. TRANSLATORS: Refers to an action bound to a mod+button combination.
@@ -5715,12 +5715,12 @@ msgstr "Ta bort varannan punkt i penseldraget."
 #: ../po/tmp/resources.xml.h:192
 msgctxt "Menu→Brush (labels)"
 msgid "Paint Mode"
-msgstr "Målningsläge"
+msgstr "Ritläge"
 
 #: ../po/tmp/resources.xml.h:193
 msgctxt "Menu→Brush→Blend Mode (labels), Accel Editor (labels)"
 msgid "Paint Mode: Normal"
-msgstr "Normalt"
+msgstr "Ritläge: Normalt"
 
 #: ../po/tmp/resources.xml.h:194
 msgctxt "Accel Editor (descriptions)"
@@ -5730,7 +5730,7 @@ msgstr "Applicera färg normalt vid målning."
 #: ../po/tmp/resources.xml.h:195
 msgctxt "Menu→Brush→Blend Mode (labels), Accel Editor (labels)"
 msgid "Paint Mode: Eraser"
-msgstr "Suddgummi"
+msgstr "Ritläge: Sudda"
 
 #: ../po/tmp/resources.xml.h:196
 msgctxt "Accel Editor (descriptions)"
@@ -5740,7 +5740,7 @@ msgstr "Sudda med den aktuella penseln."
 #: ../po/tmp/resources.xml.h:197
 msgctxt "Menu→Brush→Blend Mode (labels), Accel Editor (labels)"
 msgid "Paint Mode: Lock Alpha"
-msgstr "Alfa låst"
+msgstr "Ritläge: Lås alfa"
 
 #: ../po/tmp/resources.xml.h:198
 msgctxt "Accel Editor (descriptions)"
@@ -5750,7 +5750,7 @@ msgstr "Målning påverkar inte lagrets opacitet."
 #: ../po/tmp/resources.xml.h:199
 msgctxt "Menu→Brush→Blend Mode (labels), Accel Editor (labels)"
 msgid "Paint Mode: Colorize"
-msgstr "Färgläggning"
+msgstr "Ritläge: Färglägg"
 
 #: ../po/tmp/resources.xml.h:200
 msgctxt "Accel Editor (descriptions)"
