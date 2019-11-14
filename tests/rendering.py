@@ -15,7 +15,7 @@ from . import paths
 import lib.gichecks
 from lib import mypaintlib
 from lib.document import Document
-from lib.pycompat import xrange
+from lib.pycompat import xrange, PY3
 
 
 TEST_BIGIMAGE = "bigimage.ora"
@@ -61,7 +61,8 @@ def _scroll(tdw, model, width=1920, height=1080,
     tdw.set_mirrored(mirrored)
     tdw.recenter_document()
 
-    start = time.clock()
+    clock_func = time.perf_counter if PY3 else time.clock
+    start = clock_func()
     cx, cy = tdw.get_center()
     last_x = cx
     last_y = cy
@@ -85,7 +86,7 @@ def _scroll(tdw, model, width=1920, height=1080,
                 filename = "/tmp/scroll-%03d-%03d.png" % (turn_i, step_i)
                 surf.write_to_png(filename)
             nframes += 1
-    dt = time.clock() - start
+    dt = clock_func() - start
     for i in range(num_undos_needed):
         model.undo()
     if set_modes:
