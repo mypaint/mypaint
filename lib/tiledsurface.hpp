@@ -19,6 +19,8 @@
 // Implementation of tiled surface backend
 #include "pythontiledsurface.cpp"
 
+#define BBOXES 50
+
 enum SymmetryType
 {
         SymmetryVertical,
@@ -58,13 +60,21 @@ public:
   void begin_atomic() {
       mypaint_surface_begin_atomic((MyPaintSurface *)c_surface);
   }
-  std::vector<int> end_atomic() {
-      MyPaintRectangle bbox_rect;
-      mypaint_surface_end_atomic((MyPaintSurface *)c_surface, &bbox_rect);
-      std::vector<int> bbox = std::vector<int>(4, 0);
-      bbox[0] = bbox_rect.x;     bbox[1] = bbox_rect.y;
-      bbox[2] = bbox_rect.width; bbox[3] = bbox_rect.height;
-      return bbox;
+  std::vector<std::vector<int>> end_atomic() {
+      MyPaintRectangle* rects = this->bbox_rectangles;
+      MyPaintRectangles bboxes = {BBOXES, rects};
+
+      mypaint_surface_end_atomic((MyPaintSurface *)c_surface, &bboxes);
+
+      // The capacity of the bounding box array will most often exceed the number
+      // of rectangles that are actually used. The call to mypaint_surface_end_atomic
+      // sets the num_rectangles field to N to indicate that the first N rectangles
+      // were modified during the call.
+      std::vector<std::vector<int>> out_bboxes = std::vector<std::vector<int>>(bboxes.num_rectangles);
+      for(int i = 0; i < bboxes.num_rectangles; ++i) {
+        out_bboxes[i] = {rects[i].x, rects[i].y, rects[i].width, rects[i].height};
+      }
+      return out_bboxes;
   }
 
   // returns true if the surface was modified
@@ -106,6 +116,7 @@ public:
   }
 
 private:
+    MyPaintRectangle bbox_rectangles[BBOXES];
     MyPaintPythonTiledSurface *c_surface;
     MyPaintTileRequest tile_request;
     bool tile_request_in_progress;

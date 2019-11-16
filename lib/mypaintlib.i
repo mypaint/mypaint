@@ -13,6 +13,7 @@
 %include "std_vector.i"
 namespace std {
    %template(IntVector) vector<int>;
+   %template(RectVector) vector<vector<int>>;
    %template(DoubleVector) vector<double>;
 }
 

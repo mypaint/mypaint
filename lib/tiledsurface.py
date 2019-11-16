@@ -181,9 +181,10 @@ class MyPaintSurface (TileAccessible, TileBlittable, TileCompositable):
         return mipmaps
 
     def end_atomic(self):
-        bbox = self._backend.end_atomic()
-        if (bbox[2] > 0 and bbox[3] > 0):
-            self.notify_observers(*bbox)
+        bboxes = self._backend.end_atomic()
+        for bbox in bboxes:
+            if (bbox[2] > 0 and bbox[3] > 0):
+                self.notify_observers(*bbox)
 
     @property
     def backend(self):
