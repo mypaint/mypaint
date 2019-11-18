@@ -65,7 +65,7 @@ installed before you can build it.
 - pygobject
 - gtk3 (>= 3.12)
 - python (>= 2.7.4)
-- swig
+- swig (>= 3)
 - numpy
 - pycairo (>= 1.4)
 
