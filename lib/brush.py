@@ -16,6 +16,7 @@ import json
 from lib import mypaintlib
 from lib import helpers
 from lib import brushsettings
+from lib.eotf import eotf
 from lib.pycompat import unicode
 from lib.pycompat import PY3
 
@@ -203,12 +204,6 @@ class BrushInfo (object):
         self.pending_updates = set()
         if string:
             self.load_from_string(string)
-        from gui.application import get_app
-        self.app = get_app()
-        try:
-            self.EOTF = self.app.preferences['display.colorspace_EOTF']
-        except: 
-            self.EOTF = 2.2
 
     def settings_changed_cb(self, settings):
         self.cache_str = None
@@ -532,7 +527,7 @@ class BrushInfo (object):
                 f(pending)
 
     def get_color_hsv(self):
-        tf = self.EOTF
+        tf = eotf()
         h = self.get_base_value('color_h')
         s = self.get_base_value('color_s')
         v = self.get_base_value('color_v')
@@ -544,7 +539,7 @@ class BrushInfo (object):
         return (h, s, v)
 
     def set_color_hsv(self, hsv):
-        tf = self.EOTF
+        tf = eotf()
         if not hsv:
             return
         self.begin_atomic()

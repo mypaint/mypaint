@@ -47,6 +47,7 @@ from gettext import gettext as _
 import lib.observable
 import lib.cache
 import lib.document
+import lib.eotf
 from lib import brush
 from lib import helpers
 from lib import mypaintlib
@@ -275,6 +276,10 @@ class Application (object):
         self._preferences = lib.observable.ObservableDict()
         self.load_settings()
 
+        # Initiate eotf
+        lib.eotf.set_eotf(self.eotf_default)
+        lib.eotf.set_base_eotf(self.eotf_default)
+
         # Unmanaged main brush.
         # Always the same instance (we can attach settings_observers).
         # This brush is where temporary changes (color, size...) happen.
@@ -426,6 +431,29 @@ class Application (object):
 
         """
         return self._preferences
+
+    @property
+    def eotf(self):
+        """Electro-optical transfer function
+
+        Used for transforming pixel data on loading and rendering.
+        Ora files created in MyPaint <= 1.2.1 need this value to be
+        set to 1.0 rather than the current default (2.2) in order to
+        look the same as they did in the older version of MyPaint.
+        :rtype: float
+        """
+        return lib.eotf.eotf()
+
+    @property
+    def eotf_default(self):
+        """Electro-optical transfer function default value
+
+        This is the default value in terms of user settings,
+        it is session-default, but not necessarily constant.
+        """
+        return self._preferences.get(
+            'display.colorspace_EOTF', lib.eotf.DEFAULT_EOTF
+        )
 
     def _at_application_start(self, filenames, fullscreen):
         col = self.brush_color_manager.get_color()
