@@ -27,6 +27,7 @@ from gi.repository import GdkPixbuf
 from gi.repository import GLib
 import numpy as np
 
+from lib.eotf import eotf
 from lib.gettext import C_
 import lib.mypaintlib
 import lib.tiledsurface as tiledsurface
@@ -125,12 +126,6 @@ class RootLayerStack (group.LayerStack):
         """
         super(RootLayerStack, self).__init__(**kwargs)
         self.doc = doc
-        from gui.application import get_app
-        self.app = get_app()
-        try:
-            self.EOTF = self.app.preferences['display.colorspace_EOTF']
-        except: 
-            self.EOTF = 2.2
         self._render_cache = lib.cache.LRUCache(capacity=cache_size)
         # Background
         default_bg = (255, 255, 255)
@@ -530,7 +525,7 @@ class RootLayerStack (group.LayerStack):
                         conv = lib.mypaintlib.tile_convert_rgba16_to_rgba8
                     else:
                         conv = lib.mypaintlib.tile_convert_rgbu16_to_rgbu8
-                    conv(dst, dst_8bpc_orig, self.EOTF)
+                    conv(dst, dst_8bpc_orig, eotf())
 
                     if use_cache:
                         self._render_cache_set(key1, key2, dst_8bpc_orig)
@@ -700,7 +695,7 @@ class RootLayerStack (group.LayerStack):
                 conv = lib.mypaintlib.tile_convert_rgba16_to_rgba8
             else:
                 conv = lib.mypaintlib.tile_convert_rgbu16_to_rgbu8
-            conv(dst, dst_8bpc_orig, self.EOTF)
+            conv(dst, dst_8bpc_orig, eotf())
             dst = dst_8bpc_orig
 
     def _validate_layer_bbox_arg(self, layer, bbox,
@@ -2796,7 +2791,7 @@ class _TileRenderWrapper (TileAccessible, TileBlittable):
                 conv = lib.mypaintlib.tile_convert_rgba16_to_rgba8
             else:
                 conv = lib.mypaintlib.tile_convert_rgbu16_to_rgbu8
-            conv(src, dst, self.EOTF)
+            conv(src, dst, eotf())
 
     def __getattr__(self, attr):
         """Pass through calls to other methods"""

@@ -20,6 +20,7 @@ import cairo
 
 from . import mypaintlib
 from . import helpers
+from lib.eotf import eotf
 import lib.surface
 from lib.surface import TileAccessible, TileBlittable
 from lib.errors import AllocationError
@@ -72,15 +73,7 @@ class Surface (TileAccessible, TileBlittable):
 
         self.ew = tw * N
         self.eh = th * N
-        
-        from gui.application import get_app
-        self.app = get_app()
-        try:
-            self.EOTF = self.app.preferences['display.colorspace_EOTF']
-        except: 
-            self.EOTF = 2.2
 
-        # OPTIMIZE: remove assertions here?
         assert self.ew >= w and self.eh >= h
         assert self.ex <= x and self.ey <= y
 
@@ -165,7 +158,7 @@ class Surface (TileAccessible, TileBlittable):
         assert dst.dtype == 'uint16', '16 bit dst expected'
         src = self.tile_memory_dict[(tx, ty)]
         assert src.shape[2] == 4, 'alpha required'
-        mypaintlib.tile_convert_rgba8_to_rgba16(src, dst, self.EOTF)
+        mypaintlib.tile_convert_rgba8_to_rgba16(src, dst, eotf())
 
     @contextlib.contextmanager
     def cairo_request(self):

@@ -16,7 +16,7 @@ import logging
 from gi.repository import GLib
 
 import lib.glib
-
+from lib.eotf import DEFAULT_EOTF
 
 logger = logging.getLogger(__name__)
 
@@ -95,7 +95,7 @@ def default_configuration():
         'document.autosave_interval': 10,
 
         # configurable EOTF.  Set to 1.0 for legacy non-linear behaviour
-        'display.colorspace_EOTF': 2.2,
+        'display.colorspace_EOTF': DEFAULT_EOTF,
         'display.colorspace': "srgb",
         # sRGB is a good default even for OS X since v10.6 / Snow
         # Leopard: http://support.apple.com/en-us/HT3712.
