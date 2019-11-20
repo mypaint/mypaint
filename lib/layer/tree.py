@@ -37,7 +37,6 @@ import lib.helpers as helpers
 from lib.observable import event
 import lib.pixbuf
 import lib.cache
-from lib.modes import DEFAULT_MODE
 from lib.modes import PASS_THROUGH_MODE
 from lib.modes import MODES_DECREASING_BACKDROP_ALPHA
 from . import data

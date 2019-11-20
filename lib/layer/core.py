@@ -29,10 +29,10 @@ import lib.fileutils
 import lib.pixbuf
 from lib.modes import PASS_THROUGH_MODE
 from lib.modes import STANDARD_MODES
-from lib.modes import DEFAULT_MODE
 from lib.modes import ORA_MODES_BY_OPNAME
 from lib.modes import MODES_EFFECTIVE_AT_ZERO_ALPHA
 from lib.modes import MODES_DECREASING_BACKDROP_ALPHA
+import lib.modes
 import lib.xml
 import lib.tiledsurface
 from .rendering import Renderable
@@ -70,7 +70,6 @@ class LayerBase (Renderable):
     TYPE_DESCRIPTION = None
 
     PERMITTED_MODES = set(STANDARD_MODES)
-    INITIAL_MODE = DEFAULT_MODE
 
     ## Construction, loading, other lifecycle stuff
 
@@ -89,7 +88,7 @@ class LayerBase (Renderable):
         self._name = name
         self._visible = True
         self._locked = False
-        self._mode = self.INITIAL_MODE
+        self._mode = lib.modes.default_mode()
         self._group_ref = None
         self._root_ref = None
         self._thumbnail = None
@@ -176,7 +175,7 @@ class LayerBase (Renderable):
         attrs = elem.attrib
         self.name = unicode(attrs.get('name', ''))
         compop = str(attrs.get('composite-op', ''))
-        self.mode = ORA_MODES_BY_OPNAME.get(compop, DEFAULT_MODE)
+        self.mode = ORA_MODES_BY_OPNAME.get(compop, lib.modes.default_mode())
         self.opacity = helpers.clamp(float(attrs.get('opacity', '1.0')),
                                      0.0, 1.0)
         visible = attrs.get('visibility', 'visible').lower()
@@ -481,7 +480,7 @@ class LayerBase (Renderable):
     def mode(self, mode):
         mode = int(mode)
         if mode not in self.PERMITTED_MODES:
-            mode = DEFAULT_MODE
+            mode = lib.modes.default_mode()
         if mode == self._mode:
             return
         # Forcing the opacity for layer groups here allows a redraw to

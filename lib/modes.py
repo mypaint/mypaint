@@ -13,14 +13,9 @@ from __future__ import division, print_function
 from gettext import gettext as _
 import lib.mypaintlib
 
-
 #: Additional pass-through mode for layer groups (not saved, but reflected
 #: into other flags which are saved)
 PASS_THROUGH_MODE = -1
-
-
-#: The default layer combine mode
-DEFAULT_MODE = lib.mypaintlib.CombineSpectralWGM
 
 
 #: Valid modes for all layers
@@ -31,13 +26,26 @@ STANDARD_MODES = tuple(range(lib.mypaintlib.NumCombineModes))
 STACK_MODES = (PASS_THROUGH_MODE,)
 
 
+#: The default layer combine mode - overrideable
+_DEFAULT_MODE = lib.mypaintlib.CombineSpectralWGM
+
+
+def set_default_mode(mode):
+    assert mode in STANDARD_MODES
+    global _DEFAULT_MODE
+    _DEFAULT_MODE = mode
+
+
+def default_mode():
+    return _DEFAULT_MODE
+
+
 #: UI strings (label, tooltip) for the layer modes
 MODE_STRINGS = {
     # Group modes
     PASS_THROUGH_MODE: (
         _("Pass-through"),
-        _("Group contents apply directly to the group's backdrop"),
-        ),
+        _("Group contents apply directly to the group's backdrop")),
     # Standard blend modes (using src-over compositing)
     lib.mypaintlib.CombineNormal: (
         _("Normal"),
@@ -156,5 +164,7 @@ MODES_EFFECTIVE_AT_ZERO_ALPHA = {
 #: if their own alpha is zero.
 MODES_CLEARING_BACKDROP_AT_ZERO_ALPHA = {
     m for m in range(lib.mypaintlib.NumCombineModes)
-    if lib.mypaintlib.combine_mode_get_info(m).get("zero_alpha_clears_backdrop")
+    if lib.mypaintlib.combine_mode_get_info(m).get(
+        "zero_alpha_clears_backdrop"
+    )
 }

@@ -19,11 +19,9 @@ from copy import copy
 
 from lib.gettext import C_
 import lib.mypaintlib
-import lib.tiledsurface as tiledsurface
 import lib.pixbufsurface
 import lib.helpers as helpers
 import lib.fileutils
-from lib.modes import DEFAULT_MODE
 from lib.modes import STANDARD_MODES
 from lib.modes import STACK_MODES
 from lib.modes import PASS_THROUGH_MODE
@@ -75,7 +73,6 @@ class LayerStack (core.LayerBase, lib.autosave.Autosaveable):
     )
 
     PERMITTED_MODES = set(STANDARD_MODES + STACK_MODES)
-    INITIAL_MODE = lib.mypaintlib.CombineSpectralWGM
 
     ## Construction and other lifecycle stuff
 
@@ -125,7 +122,8 @@ class LayerStack (core.LayerBase, lib.autosave.Autosaveable):
         # under the OpenRaster and W3C definition. Represented
         # internally with a special mode to make the UI prettier.
         isolated_flag = unicode(elem.attrib.get("isolation", "auto"))
-        is_pass_through = (self.mode == DEFAULT_MODE
+        # TODO: Check if this applies to CombineSpectralWGM as well
+        is_pass_through = (self.mode == lib.mypaintlib.CombineNormal
                            and self.opacity == 1.0
                            and (isolated_flag.lower() == "auto"))
         if is_pass_through:
@@ -181,7 +179,8 @@ class LayerStack (core.LayerBase, lib.autosave.Autosaveable):
         y += int(elem.attrib.get("y", 0))
         # Convert normal+nonisolated to the internal pass-thru mode
         isolated_flag = unicode(elem.attrib.get("isolation", "auto"))
-        is_pass_through = (self.mode == DEFAULT_MODE
+        # TODO: Check if this applies to CombineSpectralWGM as well
+        is_pass_through = (self.mode == lib.mypaintlib.CombineNormal
                            and self.opacity == 1.0
                            and (isolated_flag.lower() == "auto"))
         if is_pass_through:
