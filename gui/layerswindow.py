@@ -32,7 +32,7 @@ from lib.modes import STACK_MODES
 from lib.modes import STANDARD_MODES
 from lib.modes import MODE_STRINGS
 from lib.modes import PASS_THROUGH_MODE
-from lib.modes import DEFAULT_MODE
+import lib.modes
 import gui.layervis
 
 logger = getLogger(__name__)
@@ -176,8 +176,8 @@ class LayersTool (SizedVBoxToolWidget):
         row += 1
         # ComboBox w/ list model (mode_num, label, sensitive, scale)
         modes = list(STACK_MODES + STANDARD_MODES)
-        modes.remove(DEFAULT_MODE)
-        modes.insert(0, DEFAULT_MODE)
+        modes.remove(lib.mypaintlib.CombineSpectralWGM)
+        modes.insert(0, lib.mypaintlib.CombineSpectralWGM)
         combo = layers.new_blend_mode_combo(modes, MODE_STRINGS)
         self._layer_mode_combo = combo
         grid.attach(combo, 0, row, 5, 1)

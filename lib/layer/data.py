@@ -350,7 +350,7 @@ class SurfaceBackedLayer (core.LayerBase, lib.autosave.Autosaveable):
             if self not in spec.layers:
                 return []
 
-        mode_default = lib.modes.DEFAULT_MODE
+        mode_default = lib.modes.default_mode()
         if spec.previewing:
             mode = mode_default
             opacity = 1.0
@@ -1385,7 +1385,7 @@ class SimplePaintingLayer (SurfaceBackedLayer):
         return split
 
     @contextlib.contextmanager
-    def cairo_request(self, x, y, w, h, mode=lib.modes.DEFAULT_MODE):
+    def cairo_request(self, x, y, w, h, mode=lib.modes.default_mode):
         """Get a Cairo context for a given area, then put back changes.
 
         See lib.tiledsurface.MyPaintSurface.cairo_request() for details.

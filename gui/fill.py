@@ -678,8 +678,8 @@ class FloodFillOptionsWidget (Gtk.Grid):
         self._bm_warning_label = (label, 0, row, 1, 1)
 
         modes = list(lib.modes.STANDARD_MODES)
-        modes.remove(lib.modes.DEFAULT_MODE)
-        modes.insert(0, lib.modes.DEFAULT_MODE)
+        modes.remove(lib.mypaintlib.CombineSpectralWGM)
+        modes.insert(0, lib.mypaintlib.CombineSpectralWGM)
         combo = gui.layers.new_blend_mode_combo(modes, lib.modes.MODE_STRINGS)
         combo.set_tooltip_text(C_(
             "fill options: Target | Blend Mode dropdown (tooltip)",

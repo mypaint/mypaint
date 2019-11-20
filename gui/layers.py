@@ -936,7 +936,7 @@ class RootStackTreeView (Gtk.TreeView):
 
             # Mode (if it's interesting)
             if layer.mode in lib.modes.MODE_STRINGS:
-                if layer.mode != lib.modes.DEFAULT_MODE:
+                if layer.mode != lib.modes.default_mode():
                     s, d = lib.modes.MODE_STRINGS[layer.mode]
                     desc_parts.append(s)
             else:

@@ -22,7 +22,6 @@ from gettext import gettext as _
 import numpy as np
 
 from . import mypaintlib
-from . import helpers
 from . import pixbufsurface
 from lib.eotf import eotf
 import lib.surface
@@ -731,7 +730,7 @@ class MyPaintSurface (TileAccessible, TileBlittable, TileCompositable):
         return flood_fill(self, fill_args, dst)
 
     @contextlib.contextmanager
-    def cairo_request(self, x, y, w, h, mode=lib.modes.DEFAULT_MODE):
+    def cairo_request(self, x, y, w, h, mode=lib.modes.default_mode):
         """Get a Cairo context for a given area, then put back changes.
 
         :param int x: Request area's X coordinate.
@@ -791,6 +790,9 @@ class MyPaintSurface (TileAccessible, TileBlittable, TileCompositable):
         """
 
         # Normalize and validate args
+        if callable(mode):
+            mode = mode()
+
         if mode is not None:
             if mode == lib.modes.PASS_THROUGH_MODE:
                 mode = None
