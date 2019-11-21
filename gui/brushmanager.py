@@ -14,6 +14,7 @@
 
 from __future__ import division, print_function
 
+from itertools import chain
 import os
 import zipfile
 from os.path import basename
@@ -206,6 +207,9 @@ class BrushManager (object):
 
         """
         super(BrushManager, self).__init__()
+
+        # Default pigment setting when not specified by the brush
+        self.pigment_by_default = True
         self.stock_brushpath = stock_brushpath
         self.user_brushpath = user_brushpath
         self.app = app
@@ -564,6 +568,48 @@ class BrushManager (object):
         erasing = ["eraser", "kneaded", "smudge"]
         return self._get_matching_brush(name=_DEFAULT_ERASER, keywords=erasing,
                                         fallback_eraser=1.0)
+
+    def set_pigment_by_default(self, pigment_by_default):
+        """Change the default pigment setting to on/off
+
+        This updates loaded managed brushes as well, if they
+        do not have the pigment setting set explicitly.
+        """
+        if self.pigment_by_default != pigment_by_default:
+            self.pigment_by_default = pigment_by_default
+            self._reset_pigment_setting()
+
+    def default_pigment_setting(self, setting_info):
+        """Pigment (paint_mode) setting override
+        """
+        if self.pigment_by_default:
+            return setting_info.default
+        else:
+            return setting_info.min
+
+    def _reset_pigment_setting(self):
+        appbrush = ()
+        if self.app:
+            appbrush = (self.app.brush,)
+        # Reset the pigment setting for any cached brushes
+        # that may have been loaded with the other default - this
+        # will not affect brushes that have the pigment setting
+        # defined explicitly.
+        to_reset = chain(
+            # Alter both the current working brush and the selected brush
+            appbrush,
+            (self.selected_brush.get_brushinfo(),),
+            # Also the brush history
+            [mb.get_brushinfo() for mb in self.history
+             if mb is not None and mb.loaded()],
+            # And any other loaded brush
+            [mb.get_brushinfo()
+             for v in self.groups.values()
+             for mb in v if mb.loaded()]
+        )
+        for bi in to_reset:
+            bi.reset_if_undefined('paint_mode')
+
 
     ## Brushpack import and export
 
@@ -1118,7 +1164,9 @@ class ManagedBrush(object):
         super(ManagedBrush, self).__init__()
         self.bm = brushmanager
         self._preview = None
-        self._brushinfo = BrushInfo()
+        self._brushinfo = BrushInfo(default_overrides={
+            'paint_mode': self.bm.default_pigment_setting
+        })
 
         #: The brush's relative filename, sans extension.
         self.name = name
@@ -1138,6 +1186,9 @@ class ManagedBrush(object):
         if persistent:
             self._get_fileprefix()
             assert self.name is not None
+
+    def loaded(self):
+        return self._settings_loaded
 
     ## Preview image: loaded on demand
 
