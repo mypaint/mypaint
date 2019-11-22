@@ -27,6 +27,7 @@ from gui.blendmodehandler import BlendModes
 import gui.layers
 import gui.overlays
 
+import lib.eotf
 import lib.floodfill
 import lib.helpers
 import lib.mypaintlib
@@ -211,7 +212,7 @@ class FloodFillMode (
         rootstack = tdw.doc.layer_stack
         if not rootstack.current.get_fillable():
             make_new_layer = True
-        eotf = self.app.eotf
+        eotf = lib.eotf.eotf()
         rgb = color.get_rgb()
         if eotf != 1.0:
             rgb = (rgb[0]**eotf, rgb[1]**eotf, rgb[2]**eotf)

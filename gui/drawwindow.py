@@ -29,6 +29,7 @@ import xml.etree.ElementTree as ET
 from gi.repository import Gtk
 from gi.repository import Gdk
 
+from . import compatibility
 from . import historypopup
 from . import stategroup
 from . import colorpicker  # noqa: F401 (registration of GObject classes)
@@ -266,10 +267,16 @@ class DrawWindow (Gtk.Window):
     def update_title(self, filename):
         if filename:
             # TRANSLATORS: window title for use with a filename
-            self.set_title(_("%s - MyPaint") % os.path.basename(filename))
+            title_base = _("%s - MyPaint") % os.path.basename(filename)
         else:
             # TRANSLATORS: window title for use without a filename
-            self.set_title(_("MyPaint"))
+            title_base = _("MyPaint")
+        # Show whether legacy 1.x compatibility mode is active
+        if self.app.compat_mode == compatibility.C1X:
+            compat_str = " (%s)" % C_("Prefs Dialog|Compatibility", "1.x")
+        else:
+            compat_str = ""
+        self.set_title(title_base + compat_str)
 
     def _drag_data_received_cb(self, widget, context, x, y, data, info, time):
         """Handles data being received"""

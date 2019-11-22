@@ -17,6 +17,7 @@ from gi.repository import GLib
 
 import lib.glib
 from lib.eotf import DEFAULT_EOTF
+from gui.compatibility import DEFAULT_CONFIG as COMPAT_CONFIG
 
 logger = logging.getLogger(__name__)
 
@@ -127,6 +128,7 @@ def default_configuration():
             'Button3': 'ShowPopupMenu',
         },
     }
+    default_config.update(COMPAT_CONFIG)
     if sys.platform == 'win32':
         # The Linux wacom driver inverts the button numbers of the
         # pen flip button, because middle-click is the more useful

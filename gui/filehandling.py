@@ -30,6 +30,7 @@ from lib import helpers
 from lib import fileutils
 from lib.errors import FileHandlingError
 from lib.errors import AllocationError
+import gui.compatibility as compat
 from gui.widgets import with_wait_cursor
 from lib import mypaintlib
 from lib.gettext import ngettext
@@ -805,6 +806,7 @@ class FileHandler (object):
         )
         if not ok_to_start_new_doc:
             return
+        self.app.reset_compat_mode()
         self.doc.reset_background()
         self.doc.model.clear()
         self.filename = None
@@ -816,7 +818,7 @@ class FileHandler (object):
         while Gtk.events_pending():
             Gtk.main_iteration()
 
-    def open_file(self, filename):
+    def open_file(self, filename, **kwargs):
         """Load a file, replacing the current working document."""
         if not self._call_doc_load_method(
                 self.doc.model.load, filename, False):
@@ -825,6 +827,7 @@ class FileHandler (object):
             # TODO: Improve the control flow to permit a less draconian
             # approach, for exceptions occurring prior to any doc-changes.
             self.filename = None
+            self.app.reset_compat_mode()
             self.doc.model.clear()
             return
 
@@ -853,7 +856,8 @@ class FileHandler (object):
             return
         logger.info('Imported layers from %r', filenames)
 
-    def _call_doc_load_method(self, method, arg, is_import):
+    def _call_doc_load_method(
+            self, method, arg, is_import, compat_handler=None):
         """Internal: common GUI aspects of loading or importing files.
 
         Calls a document model loader method (on lib.document.Document)
@@ -861,6 +865,8 @@ class FileHandler (object):
         shows appropriate error messages.
 
         """
+        if not compat_handler:
+            compat_handler = compat.ora_compat_handler(self.app)
         prefs = self.app.preferences
         display_colorspace_setting = prefs["display.colorspace"]
 
@@ -871,6 +877,7 @@ class FileHandler (object):
         ioui.call(
             method, arg,
             convert_to_srgb=(display_colorspace_setting == "srgb"),
+            compat_handler=compat_handler
         )
         return ioui.success
 
