@@ -179,12 +179,61 @@ static void precalculate_dithering_noise_if_required()
 // can be transparent areas in the output.
 
 static inline void
+tile_convert_rgba16_to_rgba8_const_c (const uint16_t* const src,
+				      const int src_strides,
+				      const uint8_t* dst,
+				      const int dst_strides)
+{
+  precalculate_dithering_noise_if_required();
+
+  for (int y=0; y<MYPAINT_TILE_SIZE; y++) {
+    int noise_idx = y*MYPAINT_TILE_SIZE*4;
+    const uint16_t *src_p = (uint16_t*)((char *)src + y*src_strides);
+    uint8_t *dst_p = (uint8_t*)((char *)dst + y*dst_strides);
+    for (int x=0; x<MYPAINT_TILE_SIZE; x++) {
+      uint32_t r, g, b, a;
+      r = *src_p++;
+      g = *src_p++;
+      b = *src_p++;
+      a = *src_p++;
+      // un-premultiply alpha (with rounding)
+      if (a != 0) {
+        const uint32_t rnd_a = a/2;
+        r = ((r << 15) + rnd_a) / a;
+        g = ((g << 15) + rnd_a) / a;
+        b = ((b << 15) + rnd_a) / a;
+      } else {
+        r = g = b = 0;
+      }
+      const uint32_t add_r = dithering_noise[noise_idx+0];
+      const uint32_t add_g = add_r; // hm... do not produce too much color noise
+      const uint32_t add_b = add_r;
+      const uint32_t add_a = dithering_noise[noise_idx+1];
+      noise_idx += 4;
+
+
+      *dst_p++ = (r * 255 + add_r) / (1<<15);
+      *dst_p++ = (g * 255 + add_g) / (1<<15);
+      *dst_p++ = (b * 255 + add_b) / (1<<15);
+      *dst_p++ = (a * 255 + add_a) / (1<<15);
+    }
+    src_p += src_strides;
+    dst_p += dst_strides;
+  }
+}
+
+
+static inline void
 tile_convert_rgba16_to_rgba8_c (const uint16_t* const src,
                                 const int src_strides,
                                 const uint8_t* dst,
                                 const int dst_strides,
                                 const float EOTF)
 {
+  if (EOTF == 1.0) {
+    tile_convert_rgba16_to_rgba8_const_c(src, src_strides, dst, dst_strides);
+    return;
+  }
   precalculate_dithering_noise_if_required();
 
   for (int y=0; y<MYPAINT_TILE_SIZE; y++) {
@@ -310,12 +359,45 @@ tile_convert_rgba16_to_rgba8 (PyObject *src,
 }
 
 static inline void
+tile_convert_rgbu16_to_rgbu8_const_c(const uint16_t *const src,
+                                     const int src_strides,
+				     const uint8_t *dst,
+                                     const int dst_strides)
+{
+  precalculate_dithering_noise_if_required();
+
+  for (int y=0; y<MYPAINT_TILE_SIZE; y++) {
+    int noise_idx = y*MYPAINT_TILE_SIZE*4;
+    const uint16_t *src_p = (uint16_t*)((char *)src + y*src_strides);
+    uint8_t *dst_p = (uint8_t*)((char *)dst + y*dst_strides);
+    for (int x=0; x<MYPAINT_TILE_SIZE; x++) {
+      uint32_t r, g, b;
+      r = *src_p++;
+      g = *src_p++;
+      b = *src_p++;
+      src_p++;
+      const uint32_t add = dithering_noise[noise_idx++];
+      *dst_p++ = (r * 255 + add) / (1<<15);
+      *dst_p++ = (g * 255 + add) / (1<<15);
+      *dst_p++ = (b * 255 + add) / (1<<15);
+      *dst_p++ = 255;
+    }
+    src_p += src_strides;
+    dst_p += dst_strides;
+  }
+}
+
+static inline void
 tile_convert_rgbu16_to_rgbu8_c(const uint16_t* const src,
                                const int src_strides,
                                const uint8_t* dst,
                                const int dst_strides,
                                const float EOTF)
 {
+  if (EOTF == 1.0) {
+    tile_convert_rgbu16_to_rgbu8_const_c(src, src_strides, dst, dst_strides);
+    return;
+  }
   precalculate_dithering_noise_if_required();
 
   for (int y=0; y<MYPAINT_TILE_SIZE; y++) {
@@ -384,9 +466,42 @@ void tile_convert_rgbu16_to_rgbu8(PyObject * src, PyObject * dst, const float EO
                                   EOTF);
 }
 
+void tile_convert_rgba8_to_rgba16_const(PyObject * src, PyObject * dst) {
+  PyArrayObject* src_arr = ((PyArrayObject*)src);
+  PyArrayObject* dst_arr = ((PyArrayObject*)dst);
+  for (int y=0; y<MYPAINT_TILE_SIZE; y++) {
+    uint8_t  * src_p = (uint8_t*)((char *)PyArray_DATA(src_arr) + y*PyArray_STRIDES(src_arr)[0]);
+    uint16_t * dst_p = (uint16_t*)((char *)PyArray_DATA(dst_arr) + y*PyArray_STRIDES(dst_arr)[0]);
+    for (int x=0; x<MYPAINT_TILE_SIZE; x++) {
+      uint32_t r, g, b, a;
+      r = *src_p++;
+      g = *src_p++;
+      b = *src_p++;
+      a = *src_p++;
+
+      // convert to fixed point (with rounding)
+      r = (r * (1<<15) + 255/2) / 255;
+      g = (g * (1<<15) + 255/2) / 255;
+      b = (b * (1<<15) + 255/2) / 255;
+      a = (a * (1<<15) + 255/2) / 255;
+
+      // premultiply alpha (with rounding), save back
+      *dst_p++ = (r * a + (1<<15)/2) / (1<<15);
+      *dst_p++ = (g * a + (1<<15)/2) / (1<<15);
+      *dst_p++ = (b * a + (1<<15)/2) / (1<<15);
+      *dst_p++ = a;
+    }
+  }
+}
+
 
 // used mainly for loading layers (transparent PNG)
 void tile_convert_rgba8_to_rgba16(PyObject * src, PyObject * dst, const float EOTF) {
+
+  if (EOTF == 1.0) {
+    tile_convert_rgba8_to_rgba16_const(src, dst);
+    return;
+  }
   PyArrayObject* src_arr = ((PyArrayObject*)src);
   PyArrayObject* dst_arr = ((PyArrayObject*)dst);
 
