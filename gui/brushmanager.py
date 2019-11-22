@@ -209,7 +209,8 @@ class BrushManager (object):
         super(BrushManager, self).__init__()
 
         # Default pigment setting when not specified by the brush
-        self.pigment_by_default = True
+        self.pigment_by_default = None
+
         self.stock_brushpath = stock_brushpath
         self.user_brushpath = user_brushpath
         self.app = app
@@ -576,6 +577,9 @@ class BrushManager (object):
         do not have the pigment setting set explicitly.
         """
         if self.pigment_by_default != pigment_by_default:
+            msg = "Switching default pigment setting to {state}"
+            logger.info(msg.format(
+                state="On" if pigment_by_default else "Off"))
             self.pigment_by_default = pigment_by_default
             self._reset_pigment_setting()
 

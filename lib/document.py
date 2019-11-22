@@ -92,6 +92,10 @@ _ORA_UNSAVED_PAINTING_TIME_ATTR \
 _ORA_JSON_SETTINGS_ATTR \
     = "{%s}json-settings" % (lib.xml.OPENRASTER_MYPAINT_NS,)
 
+_ORA_EOTF_ATTR \
+    = "{%s}eotf" % (lib.xml.OPENRASTER_MYPAINT_NS,)
+
+
 _ORA_JSON_SETTINGS_ZIP_PATH = "data/mypaint-settings.json"
 
 ## Class defs
@@ -630,6 +634,7 @@ class Document (object):
         image_elem = ET.Element('image')
         image_elem.attrib['w'] = str(w0)
         image_elem.attrib['h'] = str(h0)
+        image_elem.attrib[_ORA_EOTF_ATTR] = str(lib.eotf.eotf())
         frame_active_value = ("true" if self.frame_enabled else "false")
         image_elem.attrib[_ORA_FRAME_ACTIVE_ATTR] = frame_active_value
         image_elem.append(root_elem)
@@ -1792,6 +1797,11 @@ class Document (object):
         image_xres = max(0, int(image_elem.attrib.get('xres', 0)))
         image_yres = max(0, int(image_elem.attrib.get('yres', 0)))
 
+        # Determine which compatibility mode the file should be opened with
+        if 'compat_handler' in kwargs:
+            eotf = image_elem.attrib.get(_ORA_EOTF_ATTR, None)
+            kwargs['compat_handler'](eotf, root_stack_elem)
+
         # Delegate loading of image data to the layers tree itself
         self.layer_stack.load_from_openraster(
             orazip,
@@ -2043,6 +2053,7 @@ def _save_layers_to_new_orazip(root_stack, filename, bbox=None,
     x0, y0, w0, h0 = bbox
     image.attrib['w'] = str(w0)
     image.attrib['h'] = str(h0)
+    image.attrib[_ORA_EOTF_ATTR] = str(lib.eotf.eotf())
     root_stack_path = ()
     root_stack_elem = root_stack.save_to_openraster(
         orazip, tempdir, root_stack_path,

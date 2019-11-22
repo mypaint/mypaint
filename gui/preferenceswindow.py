@@ -17,6 +17,7 @@ from gettext import gettext as _
 
 from gi.repository import Gtk
 
+from gui.compatibility import CompatibilityPreferences
 import lib.config
 import lib.localecodes
 from lib.i18n import USER_LOCALE_PREF
@@ -61,6 +62,7 @@ class PreferencesWindow (windowing.Dialog):
         self._builder = builder
 
         getobj = builder.get_object
+        self.compat_preferences = CompatibilityPreferences(app, builder)
 
         # Populate locale/language combo box
         locale_combo = getobj("locale_combobox")
@@ -215,6 +217,8 @@ class PreferencesWindow (windowing.Dialog):
         autosave_interval_adj = getobj("autosave_interval_adjustment")
         autosave_interval_adj.set_value(autosave_interval)
         self._autosave_interval_spinbutton.set_sensitive(autosave)
+
+        self.compat_preferences.update_ui()
 
         self.in_update_ui = False
 
