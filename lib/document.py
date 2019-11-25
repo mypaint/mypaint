@@ -40,6 +40,7 @@ import lib.brush as brush
 from lib.observable import event
 from lib.observable import ObservableDict
 import lib.pixbuf
+from lib.cache import DEFAULT_CACHE_SIZE
 from lib.errors import FileHandlingError
 from lib.errors import AllocationError
 import lib.idletask
@@ -265,12 +266,14 @@ class Document (object):
 
     ## Initialization and cleanup
 
-    def __init__(self, brushinfo=None, painting_only=False, cache_dir=None):
+    def __init__(self, brushinfo=None, painting_only=False,
+                 cache_dir=None, cache_size=DEFAULT_CACHE_SIZE):
         """Initialize
 
         :param brushinfo: the lib.brush.BrushInfo instance to use
         :param painting_only: only use painting layers
         :param cache_dir: use an existing cache dir
+        :param cache_size: size of the layer render cache
 
         If painting_only is true, then no tempdir will be created by the
         document when it is initialized or cleared.
@@ -285,7 +288,7 @@ class Document (object):
         if not brushinfo:
             brushinfo = brush.BrushInfo()
             brushinfo.load_defaults()
-        self._layers = layer.RootLayerStack(self)
+        self._layers = layer.RootLayerStack(self, cache_size=cache_size)
         self._layers.layer_content_changed += self._canvas_modified_cb
         self.brush = brush.Brush(brushinfo)
         self.brush.brushinfo.observers.append(self.brushsettings_changed_cb)

@@ -113,25 +113,25 @@ class RootLayerStack (group.LayerStack):
 
     ## Initialization
 
-    def __init__(self, doc=None, **kwargs):
+    def __init__(self, doc=None,
+                 cache_size=lib.cache.DEFAULT_CACHE_SIZE,
+                 **kwargs):
         """Construct, as part of a model
 
         :param doc: The model document. May be None for testing.
         :type doc: lib.document.Document
+        :param cache_size: size of the layer render cache
+        :type cache_size: int
         """
         super(RootLayerStack, self).__init__(**kwargs)
         self.doc = doc
         from gui.application import get_app
         self.app = get_app()
         try:
-            cachesize = self.app.preferences['ui.rendered_tile_cache_size']
-        except: 
-            cachesize = 16384
-        try:
             self.EOTF = self.app.preferences['display.colorspace_EOTF']
         except: 
             self.EOTF = 2.2
-        self._render_cache = lib.cache.LRUCache(capacity=cachesize)
+        self._render_cache = lib.cache.LRUCache(capacity=cache_size)
         # Background
         default_bg = (255, 255, 255)
         self._default_background = default_bg

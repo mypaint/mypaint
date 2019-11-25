@@ -10,6 +10,8 @@ from __future__ import division, print_function
 
 from collections import OrderedDict
 
+DEFAULT_CACHE_SIZE = 16384
+
 
 class LRUCache (object):
     """Least-recently-used cache with dict-like usage"""
@@ -18,7 +20,7 @@ class LRUCache (object):
 
     _SENTINEL = object()
 
-    def __init__(self, capacity=16384):
+    def __init__(self, capacity=DEFAULT_CACHE_SIZE):
         self._capacity = capacity
         self._cache = OrderedDict()
         self._hits = 0

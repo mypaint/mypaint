@@ -45,6 +45,7 @@ from gi.repository import GLib
 from gettext import gettext as _
 
 import lib.observable
+import lib.cache
 import lib.document
 from lib import brush
 from lib import helpers
@@ -321,7 +322,10 @@ class Application (object):
         app_canvas = self.builder.get_object("app_canvas")
 
         # Working document: model and controller
-        model = lib.document.Document(self.brush)
+        cache_size = self.preferences.get(
+            'ui.rendered_tile_cache_size', lib.cache.DEFAULT_CACHE_SIZE
+        )
+        model = lib.document.Document(self.brush, cache_size=cache_size)
         self.doc = document.Document(self, app_canvas, model)
         app_canvas.set_model(model)
 
@@ -329,8 +333,10 @@ class Application (object):
         signal_callback_objs.append(self.doc.modes)
 
         self.scratchpad_filename = ""
-        scratchpad_model = lib.document.Document(self.brush,
-                                                 painting_only=True)
+        scratchpad_model = lib.document.Document(
+            self.brush, painting_only=True,
+            cache_size=lib.cache.DEFAULT_CACHE_SIZE/4
+        )
         scratchpad_tdw = tileddrawwidget.TiledDrawWidget()
         scratchpad_tdw.scroll_on_allocate = False
         scratchpad_tdw.set_model(scratchpad_model)
