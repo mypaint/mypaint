@@ -35,6 +35,7 @@ import lib.helpers as helpers
 import lib.fileutils
 import lib.pixbuf
 import lib.modes
+import lib.mypaintlib
 from . import core
 import lib.layer.error
 import lib.autosave
@@ -1031,6 +1032,7 @@ class BackgroundLayer (SurfaceBackedLayer):
                                               surface=surface, **kwargs)
         self.locked = False
         self.visible = True
+        self.mode = lib.mypaintlib.CombineNormal
         self.opacity = 1.0
 
     def set_surface(self, surface):
