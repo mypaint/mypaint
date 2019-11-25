@@ -31,6 +31,7 @@ from lib.naming import make_unique_name
 from gi.repository import GObject
 from gi.repository import GLib
 
+import lib.meta
 import lib.helpers as helpers
 import lib.fileutils as fileutils
 import lib.tiledsurface as tiledsurface
@@ -78,6 +79,9 @@ _ERROR_SEE_LOGS_LINE = C_(
 )
 
 # OpenRaster dialect consts
+
+_ORA_MYPAINT_VERSION \
+    = "{%s}version" % (lib.xml.OPENRASTER_MYPAINT_NS,)
 
 _ORA_FRAME_ACTIVE_ATTR \
     = "{%s}frame-active" % (lib.xml.OPENRASTER_MYPAINT_NS,)
@@ -643,6 +647,8 @@ class Document (object):
             )
             image_elem.attrib[_ORA_JSON_SETTINGS_ATTR] = settings_file_rel
             manifest.add(settings_file_rel)
+        # Store version of MyPaint the file was saved with
+        image_elem.attrib[_ORA_MYPAINT_VERSION] = lib.meta.MYPAINT_VERSION
         # Thumbnail generation.
         rootstack_sshot = self.layer_stack.save_snapshot()
         rootstack_clone = layer.RootLayerStack(doc=None)
@@ -2062,6 +2068,9 @@ def _save_layers_to_new_orazip(root_stack, filename, bbox=None,
         zip_path = _ORA_JSON_SETTINGS_ZIP_PATH
         helpers.zipfile_writestr(orazip, zip_path, json_data)
         image.attrib[_ORA_JSON_SETTINGS_ATTR] = zip_path
+
+    # MyPaint version
+    image.attrib[_ORA_MYPAINT_VERSION] = lib.meta.MYPAINT_VERSION
 
     # Resolution info
     if xres and yres:
