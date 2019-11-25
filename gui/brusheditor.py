@@ -131,9 +131,12 @@ class BrushEditorWindow (SubWindow):
             self._input_y_adj[name] = adj
             lower = -20.0
             upper = +20.0
-            if inp.hard_min is not None:
+            # Pre-libmypaint split, the limits were read from json and could be
+            # None. Now that cannot be checked directly, so instead check if
+            # the limits are extreme (in libmypaint, they are set to +-FLT_MAX)
+            if abs(inp.hard_min) < 1e16:
                 lower = inp.hard_min
-            if inp.hard_max is not None:
+            if abs(inp.hard_max) < 1e16:
                 upper = inp.hard_max
             adj = Gtk.Adjustment(value=inp.soft_min,
                                  lower=lower, upper=upper - 0.1,
