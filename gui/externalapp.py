@@ -32,22 +32,28 @@ logger = logging.getLogger(__name__)
 
 ## UI string consts
 
+# TRANSLATORS: Statusbar message when "Edit in External App"
+# TRANSLATORS: (for a layer) is successfully initiated.
 _LAUNCH_SUCCESS_MSG = _(u"Launched {app_name} to edit layer “{layer_name}”")
+
+# TRANSLATORS: Statusbar message shown when the app chosen for
+# TRANSLATORS: "Edit in External App" (for a layer) failed to open.
 _LAUNCH_FAILED_MSG = _(u"Error: failed to launch {app_name} to edit "
                        u"layer “{layer_name}”")
+
+# TRANSLATORS: Statusbar message for when an "Edit in External App"
+# TRANSLATORS: operation is cancelled by the user before it starts.
 _LAUNCH_CANCELLED_MSG = _(u"Editing cancelled. You can still edit "
                           u"“{layer_name}” from the Layers menu.")
+
+# TRANSLATORS: This is a statusbar message shown when
+# TRANSLATORS:  a layer is updated from an external edit
 _LAYER_UPDATED_MSG = _(u"Updated layer “{layer_name}” with external edits")
 
-# XXX: Stolen from gui.filehandling during string freeze for v1.2.0.
-# TRANSLATORS: This is a pretty gross abuse of context, but the content
-# TRANSLATORS: is hopefully sufficiently similar to excuse it.
 _LAYER_UPDATE_FAILED_MSG = C_(
-    "file handling: open failed (statusbar)",
-    u"Could not load “{file_basename}”.",
+    "Edit in External App (statusbar message)",
+    u"Failed to update layer with external edits from “{file_basename}”.",
 )
-# TODO: This string should be updated with better context & content after
-# TODO: the release, and similar contexts added to the ones above too.
 
 
 ## Class definitions
