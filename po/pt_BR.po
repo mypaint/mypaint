@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mypaint v2.0.0-alpha.12-33-gd8e7364\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-10-13 12:13+0200\n"
+"POT-Creation-Date: 2019-11-26 21:32+0100\n"
 "PO-Revision-Date: 2019-08-01 05:10+0000\n"
 "Last-Translator: Neymar Junior <wizureye@nextmail.in>\n"
 "Language-Team: Portuguese (Brazil) <https://hosted.weblate.org/projects/"
@@ -24,15 +24,15 @@ msgstr ""
 
 #. TRANSLATORS: Name of first column in the button map preferences.
 #. TRANSLATORS: Refers to an action bound to a mod+button combination.
-#: ../gui/accelmap.py:99 ../gui/buttonmap.py:284
+#: ../gui/accelmap.py:98 ../gui/buttonmap.py:284
 msgid "Action"
 msgstr "Ação"
 
-#: ../gui/accelmap.py:114
+#: ../gui/accelmap.py:113
 msgid "Key combination"
 msgstr "Combinação de teclas"
 
-#: ../gui/accelmap.py:295
+#: ../gui/accelmap.py:294
 #, python-format
 msgid "Edit Key for '%s'"
 msgstr "Editar Tecla para '%s'"
@@ -41,27 +41,27 @@ msgstr "Editar Tecla para '%s'"
 #. TRANSLATORS: It's a label for the action part of the combination.
 #. TRANSLATORS: Probably always the same as the column name
 #. TRANSLATORS: "Action" with a trailing ":" or lang-specific symbol
-#: ../gui/accelmap.py:326 ../gui/buttonmap.py:502
+#: ../gui/accelmap.py:325 ../gui/buttonmap.py:502
 msgid "Action:"
 msgstr "Ação:"
 
-#: ../gui/accelmap.py:339
+#: ../gui/accelmap.py:338
 msgid "Path:"
 msgstr "Caminho:"
 
-#: ../gui/accelmap.py:350
+#: ../gui/accelmap.py:349
 msgid "Key:"
 msgstr "Tecla:"
 
-#: ../gui/accelmap.py:388
+#: ../gui/accelmap.py:387
 msgid "Press keys to update this assignment"
 msgstr "Pressione as teclas para modificar esta atribuição"
 
-#: ../gui/accelmap.py:443
+#: ../gui/accelmap.py:442
 msgid "Unknown Action"
 msgstr "Ação Desconhecida"
 
-#: ../gui/accelmap.py:452
+#: ../gui/accelmap.py:451
 #, python-brace-format
 msgid ""
 "<b>{accel} is already in use for '{action}'. The existing assignment will be "
@@ -70,7 +70,7 @@ msgstr ""
 "<b>{accel} já está em uso por '{action}'. A atribuição existente será "
 "substituída.</b>"
 
-#: ../gui/application.py:593
+#: ../gui/application.py:598
 #, python-brace-format
 msgid "Open Folder “{folder_basename}”…"
 msgstr "Abrir Pasta “{folder_basename}”…"
@@ -78,7 +78,7 @@ msgstr "Abrir Pasta “{folder_basename}”…"
 #. ... so that the main actions end up in the bottom-right of the
 #. dialog (reversed for rtl scripts), where the eye ends up
 #. naturally at the end of the flow.
-#: ../gui/application.py:601
+#: ../gui/application.py:606
 msgid "OK"
 msgstr "OK"
 
@@ -90,7 +90,7 @@ msgstr "Não foram encontrados backups no cache."
 msgid "No Available Backups"
 msgstr "Sem Backups Disponíveis"
 
-#: ../gui/autorecover.py:142
+#: ../gui/autorecover.py:141
 msgid "Open the Cache Folder…"
 msgstr "Abrir a Pasta de Cache…"
 
@@ -98,7 +98,7 @@ msgstr "Abrir a Pasta de Cache…"
 msgid "Backup Recovery Failed"
 msgstr "Falha na Recuperação do Backup"
 
-#: ../gui/autorecover.py:174
+#: ../gui/autorecover.py:173
 msgid "Open the Backup’s Folder…"
 msgstr "Abrir a Pasta de Backup…"
 
@@ -107,48 +107,48 @@ msgstr "Abrir a Pasta de Backup…"
 msgid "Recovered file from {iso_datetime}.ora"
 msgstr "Arquivo recuperado de {iso_datetime}.ora"
 
-#: ../gui/backgroundwindow.py:56
-msgid "Save as Default"
-msgstr "Salvar como Padrão"
-
-#: ../gui/backgroundwindow.py:62
+#: ../gui/backgroundwindow.py:55
 msgid "Background"
 msgstr "Fundo"
 
-#: ../gui/backgroundwindow.py:80
+#: ../gui/backgroundwindow.py:58
+msgid "Save as Default"
+msgstr "Salvar como Padrão"
+
+#: ../gui/backgroundwindow.py:75
 msgid "Pattern"
 msgstr "Textura"
 
-#: ../gui/backgroundwindow.py:91 ../lib/modes.py:102
+#: ../gui/backgroundwindow.py:86 ../lib/modes.py:102
 msgid "Color"
 msgstr "Cor"
 
-#: ../gui/backgroundwindow.py:97
+#: ../gui/backgroundwindow.py:92
 msgid "Add color to Patterns"
 msgstr "Adicionar cor às Texturas"
 
-#: ../gui/backgroundwindow.py:261
+#: ../gui/backgroundwindow.py:256
 msgid "One or more backgrounds could not be loaded"
 msgstr "Uma ou mais imagens de fundo não puderam ser carregadas"
 
-#: ../gui/backgroundwindow.py:262
+#: ../gui/backgroundwindow.py:257
 msgid "Error loading backgrounds"
 msgstr "Erro ao carregar imagens de fundo"
 
-#: ../gui/backgroundwindow.py:263
+#: ../gui/backgroundwindow.py:258
 msgid ""
 "Please remove the unloadable files, or check your libgdkpixbuf installation."
 msgstr ""
 "Favor remover os arquivos que não puderam ser carregados, ou verifique a sua "
 "instalação de libgdkpixbuf."
 
-#: ../gui/backgroundwindow.py:377
+#: ../gui/backgroundwindow.py:372
 #, python-brace-format
 msgid "Gdk-Pixbuf couldn't load \"{filename}\", and reported \"{error}\""
 msgstr ""
 "Gdk-pixbuf não pôde carregar \"{filename}\", e deu a mensagem \"{error}\""
 
-#: ../gui/backgroundwindow.py:387
+#: ../gui/backgroundwindow.py:382
 #, python-brace-format
 msgid "{filename} has zero size (w={w}, h={h})"
 msgstr "{filename} tem tamanho zero (w={w}, h={h})"
@@ -158,108 +158,108 @@ msgctxt "brush settings editor: subwindow title"
 msgid "Brush Settings Editor"
 msgstr "Editor de Configurações de Pincel"
 
-#: ../gui/brusheditor.py:267
+#: ../gui/brusheditor.py:270
 msgctxt "brush settings list: brush metadata texts group"
 msgid "About"
 msgstr "Sobre"
 
-#: ../gui/brusheditor.py:278
+#: ../gui/brusheditor.py:281
 msgctxt "brush settings list: setting group"
 msgid "Experimental"
 msgstr "Experimental"
 
-#: ../gui/brusheditor.py:285
+#: ../gui/brusheditor.py:288
 msgctxt "brush settings list: setting group"
 msgid "Basic"
 msgstr "Básico"
 
-#: ../gui/brusheditor.py:304
+#: ../gui/brusheditor.py:307
 msgctxt "brush settings list: setting group"
 msgid "Opacity"
 msgstr "Opacidade"
 
-#: ../gui/brusheditor.py:316
+#: ../gui/brusheditor.py:319
 msgctxt "brush settings list: setting group"
 msgid "Dabs"
 msgstr "Pincelada"
 
-#: ../gui/brusheditor.py:327
+#: ../gui/brusheditor.py:330
 msgctxt "brush settings list: setting group"
 msgid "Smudge"
 msgstr "Borrar"
 
-#: ../gui/brusheditor.py:338
+#: ../gui/brusheditor.py:341
 msgctxt "brush settings list: setting group"
 msgid "Speed"
 msgstr "Velocidade"
 
-#: ../gui/brusheditor.py:352
+#: ../gui/brusheditor.py:355
 msgctxt "brush settings list: setting group"
 msgid "Directional Offsets"
 msgstr ""
 
-#: ../gui/brusheditor.py:370
+#: ../gui/brusheditor.py:373
 msgctxt "brush settings list: setting group"
 msgid "Tracking"
 msgstr "Acompanhamento"
 
-#: ../gui/brusheditor.py:381
+#: ../gui/brusheditor.py:384
 msgctxt "brush settings list: setting group"
 msgid "Stroke"
 msgstr "Traço"
 
-#: ../gui/brusheditor.py:392
+#: ../gui/brusheditor.py:395
 msgctxt "brush settings list: setting group"
 msgid "Color"
 msgstr "Cor"
 
-#: ../gui/brusheditor.py:407
+#: ../gui/brusheditor.py:410
 msgctxt "brush settings list: setting group"
 msgid "GridMap"
 msgstr ""
 
-#: ../gui/brusheditor.py:418
+#: ../gui/brusheditor.py:421
 msgctxt "brush settings list: setting group"
 msgid "Custom"
 msgstr "Personalizado"
 
-#: ../gui/brusheditor.py:484
+#: ../gui/brusheditor.py:487
 msgctxt "brush settings editor: save brush: error message"
 msgid "No brush selected, please use “Add As New” instead."
 msgstr "Nenhum pincel selecionado, favor usar \"Adicionar Como Novo\"."
 
-#: ../gui/brusheditor.py:509
+#: ../gui/brusheditor.py:512
 msgctxt "brush settings editor: rename brush: error message"
 msgid "No brush selected!"
 msgstr "Nenhum pincel selecionado!"
 
-#: ../gui/brusheditor.py:518
+#: ../gui/brusheditor.py:521
 msgctxt "brush settings editor: rename brush: dialog title"
 msgid "Rename Brush"
 msgstr "Renomear Pincel"
 
-#: ../gui/brusheditor.py:536
+#: ../gui/brusheditor.py:539
 msgctxt "brush settings editor: rename brush: error message"
 msgid "A brush with this name already exists!"
 msgstr "Um pincel com este nome já existe!"
 
-#: ../gui/brusheditor.py:570
+#: ../gui/brusheditor.py:573
 msgctxt "brush settings editor: delete brush: error message"
 msgid "No brush selected!"
 msgstr "Nenhum pincel selecionado!"
 
-#: ../gui/brusheditor.py:576
+#: ../gui/brusheditor.py:579
 #, python-brace-format
 msgctxt "brush settings editor: delete brush: confirm dialog question"
 msgid "Really delete brush “{brush_name}” from disk?"
 msgstr "Realmente excluir o pincel “{brush_name}” do disco?"
 
-#: ../gui/brusheditor.py:695
+#: ../gui/brusheditor.py:698
 msgctxt "brush settings editor: header: fallback name"
 msgid "(Unnamed brush)"
 msgstr "(Pincel sem nome)"
 
-#: ../gui/brusheditor.py:702
+#: ../gui/brusheditor.py:705
 #, python-brace-format
 msgctxt "brush settings editor: header: is-modified hint"
 msgid "{brush_name} [unsaved]"
@@ -489,7 +489,7 @@ msgstr[0] "%d pincel"
 msgstr[1] "%d pincéis"
 
 #. TRANSLATORS: properties dialog for the current brush group
-#: ../gui/brushselectionwindow.py:406
+#: ../gui/brushselectionwindow.py:405
 #, python-brace-format
 msgctxt "brush group properties dialog: title"
 msgid "Group “{group_name}”"
@@ -556,12 +556,12 @@ msgctxt "brush groups menu"
 msgid "Import Brushes…"
 msgstr "Importar Pincéis…"
 
-#: ../gui/brushselectionwindow.py:541
+#: ../gui/brushselectionwindow.py:542
 msgctxt "brush groups menu"
 msgid "Get More Brushes…"
 msgstr "Obter Mais Pincéis…"
 
-#: ../gui/brushselectionwindow.py:555
+#: ../gui/brushselectionwindow.py:557
 msgctxt "new brush group dialog: title"
 msgid "Create Group"
 msgstr "Criar Grupo"
@@ -916,82 +916,82 @@ msgctxt "palette editor dialog: palette name entry"
 msgid "Untitled Palette"
 msgstr "Camada Sem Título"
 
-#: ../gui/colors/paletteview.py:115
+#: ../gui/colors/paletteview.py:114
 msgctxt "palette editor dialog: title"
 msgid "Palette Editor"
 msgstr "Editor de Paleta"
 
-#: ../gui/colors/paletteview.py:161
+#: ../gui/colors/paletteview.py:160
 msgctxt "palette editor dialog: action buttons: tooltips"
 msgid "Load from a GIMP palette file"
 msgstr "Carregar a partir de um arquivo de paleta do GIMP"
 
-#: ../gui/colors/paletteview.py:165
+#: ../gui/colors/paletteview.py:164
 msgctxt "palette editor dialog: action buttons: tooltips"
 msgid "Save to a GIMP palette file"
 msgstr "Salvar para um arquivo de paleta do GIMP"
 
-#: ../gui/colors/paletteview.py:169
+#: ../gui/colors/paletteview.py:168
 msgctxt "palette editor dialog: action buttons: tooltips"
 msgid "Add a new empty swatch"
 msgstr "Adicionar uma nova amostra de cor vazia"
 
-#: ../gui/colors/paletteview.py:173
+#: ../gui/colors/paletteview.py:172
 msgctxt "palette editor dialog: action buttons: tooltips"
 msgid "Remove the current swatch"
 msgstr "Remover a amostra de cor atual"
 
-#: ../gui/colors/paletteview.py:177
+#: ../gui/colors/paletteview.py:176
 msgctxt "palette editor dialog: action buttons: tooltips"
 msgid "Remove all swatches"
 msgstr "Remover todas as amostras de cores"
 
-#: ../gui/colors/paletteview.py:191
+#: ../gui/colors/paletteview.py:190
 msgctxt "palette editor dialog: palette name/title entry: label"
 msgid "Title:"
 msgstr "Título:"
 
-#: ../gui/colors/paletteview.py:195
+#: ../gui/colors/paletteview.py:194
 msgctxt "palette editor dialog: palette name/title entry: tooltip"
 msgid "Name or description for this palette"
 msgstr "Nome ou descrição para esta paleta"
 
-#: ../gui/colors/paletteview.py:207
+#: ../gui/colors/paletteview.py:206
 msgctxt "palette editor dialog: number-of-columns spinbutton: title"
 msgid "Columns:"
 msgstr "Colunas:"
 
-#: ../gui/colors/paletteview.py:211
+#: ../gui/colors/paletteview.py:210
 msgctxt "palette editor dialog: number-of-columns spinbutton: tooltip"
 msgid "Number of columns"
 msgstr "Número de colunas"
 
-#: ../gui/colors/paletteview.py:228
+#: ../gui/colors/paletteview.py:227
 msgctxt "palette editor dialog: color name entry: label"
 msgid "Color name:"
 msgstr "Nome da cor:"
 
-#: ../gui/colors/paletteview.py:232
+#: ../gui/colors/paletteview.py:231
 msgctxt "palette editor dialog: color name entry: tooltip"
 msgid "Current color's name"
 msgstr "Nome da cor atual"
 
-#: ../gui/colors/paletteview.py:323
+#: ../gui/colors/paletteview.py:322
 msgctxt "palette editor dialog: color name entry"
 msgid "Empty palette slot"
 msgstr "Entrada de paleta vazia"
 
-#: ../gui/colors/paletteview.py:379
+#: ../gui/colors/paletteview.py:378
 msgctxt "palette load dialog: title"
 msgid "Load palette"
 msgstr "Carregar paleta"
 
-#: ../gui/colors/paletteview.py:392
+#: ../gui/colors/paletteview.py:391
 msgctxt "palette save dialog: title"
 msgid "Save palette"
 msgstr "Salvar paleta"
 
-#: ../gui/colors/paletteview.py:544
+#: ../gui/colors/paletteview.py:543
 msgctxt "palette view"
 msgid ""
 "Color swatch palette.\n"
@@ -1002,63 +1002,63 @@ msgstr ""
 "Solte cores aqui e \n"
 "arraste-as para organizá-las."
 
-#: ../gui/colors/paletteview.py:699
+#: ../gui/colors/paletteview.py:698
 msgctxt "palette view"
 msgid "Empty palette slot (drag a color here)"
 msgstr "Entrada de paleta vazia (arraste uma cor para cá)"
 
 #. TRANSLATORS: inserting gaps (empty color swatches)
-#: ../gui/colors/paletteview.py:786
+#: ../gui/colors/paletteview.py:785
 msgctxt "palette view: context menu"
 msgid "Add Empty Slot"
 msgstr "Adicionar Entrada Vazia"
 
 #. TRANSLATORS: inserting gaps (empty color swatches)
-#: ../gui/colors/paletteview.py:793
+#: ../gui/colors/paletteview.py:792
 msgctxt "palette view: context menu"
 msgid "Insert Row"
 msgstr "Inserir Linha"
 
 #. TRANSLATORS: inserting gaps (empty color swatches)
-#: ../gui/colors/paletteview.py:800
+#: ../gui/colors/paletteview.py:799
 msgctxt "palette view: context menu"
 msgid "Insert Column"
 msgstr "Inserir Coluna"
 
 #. TRANSLATORS: Color interpolations
-#: ../gui/colors/paletteview.py:808
+#: ../gui/colors/paletteview.py:807
 msgctxt "palette view: context menu"
 msgid "Fill Gap (RGB)"
 msgstr "Preencher Lacuna (RGB)"
 
 #. TRANSLATORS: Color interpolations
-#: ../gui/colors/paletteview.py:815
+#: ../gui/colors/paletteview.py:814
 msgctxt "palette view: context menu"
 msgid "Fill Gap (HCY)"
 msgstr "Preencher Lacuna (HCY)"
 
 #. TRANSLATORS: Color interpolations
-#: ../gui/colors/paletteview.py:822
+#: ../gui/colors/paletteview.py:821
 msgctxt "palette view: context menu"
 msgid "Fill Gap (HSV)"
 msgstr "Preencher Lacuna (HSV)"
 
-#: ../gui/colors/paletteview.py:1280
+#: ../gui/colors/paletteview.py:1279
 msgctxt "palette load dialog: filters"
 msgid "GIMP palette file (*.gpl)"
 msgstr "Arquivo de paleta do GIMP (*.gpl)"
 
-#: ../gui/colors/paletteview.py:1287
+#: ../gui/colors/paletteview.py:1286
 msgctxt "palette load dialog: filters"
 msgid "All files (*)"
 msgstr "Todos os arquivos (*)"
 
-#: ../gui/colors/paletteview.py:1329
+#: ../gui/colors/paletteview.py:1328
 msgctxt "palette save dialog: filters"
 msgid "GIMP palette file (*.gpl)"
 msgstr "Arquivo de paleta do GIMP (*.gpl)"
 
-#: ../gui/colors/paletteview.py:1336
+#: ../gui/colors/paletteview.py:1335
 msgctxt "palette save dialog: filters"
 msgid "All files (*)"
 msgstr "Todos os arquivos (*)"
@@ -1277,7 +1277,7 @@ msgid "Scroll…"
 msgstr "Move…"
 
 #. Name and preview column: will be indented
-#: ../gui/dialogs.py:74 ../gui/externalapp.py:135 ../gui/layers.py:405
+#: ../gui/dialogs.py:74 ../gui/externalapp.py:141 ../gui/layers.py:405
 msgid "Name"
 msgstr "Nome"
 
@@ -1508,35 +1508,43 @@ msgid "MyPaint brush package (*.zip)"
 msgstr "Pacote de pincéis do MyPaint (*.zip)"
 
 #. # UI string consts
-#: ../gui/externalapp.py:35
+#. TRANSLATORS: Statusbar message when "Edit in External App"
+#. TRANSLATORS: (for a layer) is successfully initiated.
+#: ../gui/externalapp.py:37
 #, python-brace-format
 msgid "Launched {app_name} to edit layer “{layer_name}”"
 msgstr "{app_name} aberto para editar a camada “{layer_name}”"
 
-#: ../gui/externalapp.py:36
+#. TRANSLATORS: Statusbar message shown when the app chosen for
+#. TRANSLATORS: "Edit in External App" (for a layer) failed to open.
+#: ../gui/externalapp.py:41
 #, python-brace-format
 msgid "Error: failed to launch {app_name} to edit layer “{layer_name}”"
 msgstr "Erro: falha ao abrir {app_name} para editar a camada “{layer_name}”"
 
-#: ../gui/externalapp.py:38
+#. TRANSLATORS: Statusbar message for when an "Edit in External App"
+#. TRANSLATORS: operation is cancelled by the user before it starts.
+#: ../gui/externalapp.py:46
 #, python-brace-format
 msgid ""
 "Editing cancelled. You can still edit “{layer_name}” from the Layers menu."
 msgstr ""
 "Edição cancelada. Você ainda pode editar “{layer_name}” no menu Camadas."
 
-#: ../gui/externalapp.py:40
+#. TRANSLATORS: This is a statusbar message shown when
+#. TRANSLATORS:  a layer is updated from an external edit
+#: ../gui/externalapp.py:51
 #, python-brace-format
 msgid "Updated layer “{layer_name}” with external edits"
 msgstr "Camada “{layer_name}” atualizada com edições externas"
 
-#: ../gui/externalapp.py:47
+#: ../gui/externalapp.py:55
 #, python-brace-format
-msgctxt "file handling: open failed (statusbar)"
-msgid "Could not load “{file_basename}”."
-msgstr "Não foi possível carregar “{file_basename}”."
+msgctxt "Edit in External App (statusbar message)"
+msgid "Failed to update layer with external edits from “{file_basename}”."
+msgstr ""
 
-#: ../gui/externalapp.py:60
+#: ../gui/externalapp.py:66
 #, python-brace-format
 msgid ""
 "MyPaint needs to edit a file of type “{type_name}” ({content_type}). What "
@@ -1545,7 +1553,7 @@ msgstr ""
 "O MyPaint precisa editar um arquivo do tipo “{type_name}” ({content_type}). "
 "Que programa ele deve usar?"
 
-#: ../gui/externalapp.py:64
+#: ../gui/externalapp.py:70
 #, python-brace-format
 msgid ""
 "What application should MyPaint use for editing files of type "
@@ -1554,15 +1562,15 @@ msgstr ""
 "Qual programa o MyPaint deve utilizar para edição de arquivos do tipo "
 "“{type_name}” ({content_type})?"
 
-#: ../gui/externalapp.py:70
+#: ../gui/externalapp.py:76
 msgid "Open With…"
 msgstr "Abrir Com…"
 
-#: ../gui/externalapp.py:122
+#: ../gui/externalapp.py:128
 msgid "Icon"
 msgstr "Ícone"
 
-#: ../gui/externalapp.py:165
+#: ../gui/externalapp.py:171
 msgid "no description"
 msgstr "sem descrição"
 
@@ -1677,149 +1685,149 @@ msgctxt "Document I/O: the {files_summary} for a single file"
 msgid "“{basename}”"
 msgstr "“{file_basename}” carregado."
 
-#: ../gui/filehandling.py:428
+#: ../gui/filehandling.py:427
 #, fuzzy
 msgctxt "save/load dialogs: filter patterns"
 msgid "All Recognized Formats"
 msgstr "Todos os Formatos Conhecidos"
 
-#: ../gui/filehandling.py:433
+#: ../gui/filehandling.py:432
 #, fuzzy
 msgctxt "save/load dialogs: filter patterns"
 msgid "OpenRaster (*.ora)"
 msgstr "OpenRaster (*.ora)"
 
-#: ../gui/filehandling.py:438
+#: ../gui/filehandling.py:437
 #, fuzzy
 msgctxt "save/load dialogs: filter patterns"
 msgid "PNG (*.png)"
 msgstr "PNG (*.png)"
 
-#: ../gui/filehandling.py:443
+#: ../gui/filehandling.py:442
 #, fuzzy
 msgctxt "save/load dialogs: filter patterns"
 msgid "JPEG (*.jpg; *.jpeg)"
 msgstr "JPEG (*.jpg; *.jpeg)"
 
-#: ../gui/filehandling.py:491
+#: ../gui/filehandling.py:490
 #, fuzzy
 msgctxt "save dialogs: save formats and options"
 msgid "By extension (prefer default format)"
 msgstr "Por extensão (preferir formato padrão)"
 
-#: ../gui/filehandling.py:495
+#: ../gui/filehandling.py:494
 #, fuzzy
 msgctxt "save dialogs: save formats and options"
 msgid "OpenRaster (*.ora)"
 msgstr "OpenRaster (*.ora)"
 
-#: ../gui/filehandling.py:499
+#: ../gui/filehandling.py:498
 #, fuzzy
 msgctxt "save dialogs: save formats and options"
 msgid "PNG, respecting “Show Background” (*.png)"
 msgstr "PNG sólido com fundo (*.png)"
 
-#: ../gui/filehandling.py:503
+#: ../gui/filehandling.py:502
 #, fuzzy
 msgctxt "save dialogs: save formats and options"
 msgid "PNG, solid RGB (*.png)"
 msgstr "PNG (*.png)"
 
-#: ../gui/filehandling.py:507
+#: ../gui/filehandling.py:506
 #, fuzzy
 msgctxt "save dialogs: save formats and options"
 msgid "PNG, transparent RGBA (*.png)"
 msgstr "PNG transparente (*.png)"
 
-#: ../gui/filehandling.py:511
+#: ../gui/filehandling.py:510
 #, fuzzy
 msgctxt "save dialogs: save formats and options"
 msgid "Multiple PNGs, by layer (*.NUM.png)"
 msgstr "Múltiplos PNG transparentes (*.XXX.png)"
 
-#: ../gui/filehandling.py:515
+#: ../gui/filehandling.py:514
 #, fuzzy
 msgctxt "save dialogs: save formats and options"
 msgid "Multiple PNGs, by view (*.NAME.png)"
 msgstr "Múltiplos PNG transparentes (*.XXX.png)"
 
-#: ../gui/filehandling.py:519
+#: ../gui/filehandling.py:518
 #, fuzzy
 msgctxt "save dialogs: save formats and options"
 msgid "JPEG 90% quality (*.jpg; *.jpeg)"
 msgstr "JPEG com qualidade de 90% (*.jpg; *.jpeg)"
 
-#: ../gui/filehandling.py:577
+#: ../gui/filehandling.py:576
 #, fuzzy
 msgctxt "Dialogs (window title): File→Export…"
 msgid "Export"
 msgstr "Exportar…"
 
-#: ../gui/filehandling.py:582
+#: ../gui/filehandling.py:581
 #, fuzzy
 msgctxt "Dialogs (window title): File→Save As…"
 msgid "Save As"
 msgstr "Salvar Como…"
 
-#: ../gui/filehandling.py:602
+#: ../gui/filehandling.py:601
 #, fuzzy
 msgctxt "save dialogs: formats and options: (label)"
 msgid "Format to save as:"
 msgstr "Formato a salvar como:"
 
-#: ../gui/filehandling.py:669
+#: ../gui/filehandling.py:668
 #, fuzzy
 msgctxt ""
 "Destructive action confirm dialog: fallback title (normally overridden)"
 msgid "Really Continue?"
 msgstr "Realmente continuar?"
 
-#: ../gui/filehandling.py:702
+#: ../gui/filehandling.py:701
 msgctxt "Destructive action confirm dialog: cancel button"
 msgid "_Cancel"
 msgstr ""
 
-#: ../gui/filehandling.py:706
+#: ../gui/filehandling.py:705
 #, fuzzy
 msgctxt "Destructive action confirm dialog: save checkbox"
 msgid "_Save to Scraps first"
 msgstr "_Salvar como Rascunho"
 
-#: ../gui/filehandling.py:712
+#: ../gui/filehandling.py:711
 msgctxt ""
 "Destructive action confirm dialog: fallback continue button (normally "
 "overridden)"
 msgid "Co_ntinue"
 msgstr ""
 
-#: ../gui/filehandling.py:735
+#: ../gui/filehandling.py:734
 #, fuzzy, python-brace-format
 msgctxt "Destructive action confirm dialog: warning message"
 msgid "You risk losing {abbreviated_time} of unsaved painting."
 msgstr "Isto irá descartar {abbreviated_time} de pintura não salva"
 
-#: ../gui/filehandling.py:800
+#: ../gui/filehandling.py:799
 msgctxt "File→New: confirm dialog: title question"
 msgid "New Canvas?"
 msgstr ""
 
-#: ../gui/filehandling.py:804
+#: ../gui/filehandling.py:803
 msgctxt "File→New: confirm dialog: continue button"
 msgid "_New Canvas"
 msgstr ""
 
-#: ../gui/filehandling.py:1004
+#: ../gui/filehandling.py:1006
 msgctxt "File→Open: confirm dialog: title question"
 msgid "Open File?"
 msgstr ""
 
-#: ../gui/filehandling.py:1008
+#: ../gui/filehandling.py:1010
 #, fuzzy
 msgctxt "File→Open: confirm dialog: continue button"
 msgid "_Open…"
 msgstr "Abrir…"
 
-#: ../gui/filehandling.py:1016
+#: ../gui/filehandling.py:1018
 #, fuzzy
 msgctxt "File→Open: file chooser dialog: title"
 msgid "Open File"
@@ -1837,64 +1845,64 @@ msgctxt "Layers→Import Layers: files-chooser dialog: title"
 msgid "Import Layers"
 msgstr "Pincel importado"
 
-#: ../gui/filehandling.py:1409
+#: ../gui/filehandling.py:1407
 msgctxt "File→Open Recent→* confirm dialog: title"
 msgid "Open File?"
 msgstr ""
 
-#: ../gui/filehandling.py:1413
+#: ../gui/filehandling.py:1411
 #, fuzzy
 msgctxt "File→Open Recent→* confirm dialog: continue button"
 msgid "_Open"
 msgstr "Abrir"
 
-#: ../gui/filehandling.py:1428
+#: ../gui/filehandling.py:1426
 #, fuzzy
 msgctxt "File→Open Most Recent confirm dialog: title"
 msgid "Open Most Recent File?"
 msgstr "Abrir o Mais Recente"
 
-#: ../gui/filehandling.py:1433
+#: ../gui/filehandling.py:1431
 #, fuzzy
 msgctxt "File→Open Most Recent→* confirm dialog: continue button"
 msgid "_Open"
 msgstr "Abrir"
 
-#: ../gui/filehandling.py:1447
+#: ../gui/filehandling.py:1445
 #, fuzzy
 msgctxt "File→Open Next/Prev Scrap: error message"
 msgid "There are no scrap files yet. Try saving one first."
 msgstr "Não há arquivos de rascunho chamados \"%s\" ainda."
 
-#: ../gui/filehandling.py:1456
+#: ../gui/filehandling.py:1454
 #, fuzzy
 msgctxt "File→Open Next/Prev Scrap confirm dialog: title"
 msgid "Open Next Scrap?"
 msgstr "Abrir Próximo Rascunho"
 
-#: ../gui/filehandling.py:1464
+#: ../gui/filehandling.py:1462
 #, fuzzy
 msgctxt "File→Open Next/Prev Scrap confirm dialog: title"
 msgid "Open Previous Scrap?"
 msgstr "Abrir Rascunho Anterior"
 
-#: ../gui/filehandling.py:1473
+#: ../gui/filehandling.py:1471
 #, fuzzy
 msgctxt "File→Open Next/Prev Scrap confirm dialog: continue button"
 msgid "_Open"
 msgstr "Abrir"
 
-#: ../gui/filehandling.py:1488
+#: ../gui/filehandling.py:1486
 msgctxt "File→Revert: status message: canvas has no filename yet"
 msgid "Cannot revert: canvas has not been saved to a file yet."
 msgstr ""
 
-#: ../gui/filehandling.py:1495
+#: ../gui/filehandling.py:1493
 msgctxt "File→Revert confirm dialog: title"
 msgid "Revert Changes?"
 msgstr ""
 
-#: ../gui/filehandling.py:1500
+#: ../gui/filehandling.py:1498
 #, fuzzy
 msgctxt "File→Revert confirm dialog: continue button"
 msgid "_Revert"
@@ -2392,7 +2400,7 @@ msgstr "Dispositivo:"
 msgid "(No Barrel Rotation)"
 msgstr ""
 
-#: ../gui/inputtestwindow.py:74
+#: ../gui/inputtestwindow.py:75
 #, fuzzy
 msgid "Barrel Rotation:"
 msgstr "Rotação"
@@ -2840,66 +2848,66 @@ msgstr "Próximo item"
 msgid "(Nothing to show)"
 msgstr "(Nada a mostrar)"
 
-#: ../gui/symmetry.py:80
+#: ../gui/symmetry.py:79
 msgctxt "symmetry axis edit mode: instructions shown in statusbar"
 msgid "Place axis"
 msgstr "Posicionar eixo"
 
-#: ../gui/symmetry.py:84
+#: ../gui/symmetry.py:83
 msgctxt "symmetry axis edit mode: instructions shown in statusbar"
 msgid "Move axis"
 msgstr "Mover Eixo"
 
-#: ../gui/symmetry.py:88
+#: ../gui/symmetry.py:87
 msgctxt "symmetry axis edit mode: instructions shown in statusbar"
 msgid "Remove axis"
 msgstr "Remover eixo"
 
-#: ../gui/symmetry.py:100
+#: ../gui/symmetry.py:99
 msgctxt "symmetry axis edit mode: mode name (tooltips)"
 msgid "Edit Symmetry Axis"
 msgstr "Editar o Eixo de Simetria"
 
-#: ../gui/symmetry.py:106
+#: ../gui/symmetry.py:105
 msgctxt "symmetry axis edit mode: mode description (tooltips)"
 msgid "Adjust the painting symmetry axis."
 msgstr "Ajustar o Eixo de Simetria da pintura."
 
-#: ../gui/symmetry.py:356
+#: ../gui/symmetry.py:355
 #, fuzzy
 msgctxt "symmetry axis options panel: labels"
 msgid "X Position:"
 msgstr "Posição:"
 
-#: ../gui/symmetry.py:360
+#: ../gui/symmetry.py:359
 #, fuzzy
 msgctxt "symmetry axis options panel: labels"
 msgid "Y Position:"
 msgstr "Posição:"
 
-#: ../gui/symmetry.py:364
+#: ../gui/symmetry.py:363
 msgctxt "symmetry axis options panel: position button: no axis pos."
 msgid "None"
 msgstr "Nenhum"
 
-#: ../gui/symmetry.py:368
+#: ../gui/symmetry.py:367
 #, python-format
 msgctxt "symmetry axis options panel: position button: axis pos. in pixels"
 msgid "%d px"
 msgstr "%d px"
 
-#: ../gui/symmetry.py:372
+#: ../gui/symmetry.py:371
 msgctxt "symmetry axis options panel: labels"
 msgid "Alpha:"
 msgstr "Alfa:"
 
-#: ../gui/symmetry.py:376
+#: ../gui/symmetry.py:375
 #, fuzzy
 msgctxt "symmetry axis options panel: labels"
 msgid "Symmetry Type:"
 msgstr "Eixo de Simetria"
 
-#: ../gui/symmetry.py:380
+#: ../gui/symmetry.py:379
 msgctxt "symmetry axis options panel: labels"
 msgid "Rotational lines:"
 msgstr ""
@@ -2910,13 +2918,13 @@ msgctxt "symmetry axis options panel: axis position dialog: window title"
 msgid "X axis Position"
 msgstr "Posição do eixo"
 
-#: ../gui/symmetry.py:477
+#: ../gui/symmetry.py:478
 #, fuzzy
 msgctxt "symmetry axis options panel: axis position dialog: window title"
 msgid "Y axis Position"
 msgstr "Posição do eixo"
 
-#: ../gui/symmetry.py:605
+#: ../gui/symmetry.py:608
 msgctxt "symmetry axis options panel: axis active checkbox"
 msgid "Enabled"
 msgstr "Ativada"
@@ -3143,32 +3151,32 @@ msgstr "Atualizar Moldura"
 msgid "Edit Layer Externally"
 msgstr "Editar camada externamente"
 
-#: ../lib/document.py:71
+#: ../lib/document.py:73
 #, python-brace-format
 msgctxt "Document IO: common error strings: {error_loading_common}"
 msgid "Error loading “{basename}”."
 msgstr "Erro ao carregar “{basename}”."
 
-#: ../lib/document.py:75
+#: ../lib/document.py:77
 msgctxt "Document IO: common error strings: {see_logs}"
 msgid "The logs may have more detail about this error."
 msgstr "Os registros podem conter mais detalhes sobre este erro."
 
 #. TRANSLATORS: string used in e.g. "3h42m from now"
-#: ../lib/document.py:195
+#: ../lib/document.py:200
 msgctxt "Document autosave descriptions: the {ago} string: future"
 msgid "from now"
 msgstr "a partir de agora"
 
 #. TRANSLATORS: string used in e.g. "8s ago"
-#: ../lib/document.py:201
+#: ../lib/document.py:206
 msgctxt "Document autosave descriptions: the {ago} string: past"
 msgid "ago"
 msgstr "atrás"
 
 #. TRANSLATORS: String descriptions for an autosaved backup.
 #. TRANSLATORS: Time strings are localized: e.g. "3h42m" or "8s"
-#: ../lib/document.py:209
+#: ../lib/document.py:214
 #, python-brace-format
 msgctxt "Document autosave descriptions"
 msgid ""
@@ -3180,7 +3188,7 @@ msgstr ""
 "Você está executando mais de uma instância do MyPaint?\n"
 "Feche o aplicativo e aguarde  {cache_update_interval}s para tentar novamente."
 
-#: ../lib/document.py:216
+#: ../lib/document.py:221
 #, python-brace-format
 msgctxt "Document autosave descriptions"
 msgid "Incomplete backup updated {last_modified_time} {ago}"
@@ -3190,7 +3198,7 @@ msgstr "Backup incompleto atualizado {last_modified_time} {ago}"
 #. TRANSLATORS: Look for the msgids "from now" and "ago"
 #. TRANSLATORS: (with context starting w. "Document autosave")
 #. TRANSLATORS: to make sure their translations match this one.
-#: ../lib/document.py:225
+#: ../lib/document.py:230
 #, python-brace-format
 msgctxt "Document autosave descriptions"
 msgid ""
@@ -3204,7 +3212,7 @@ msgstr ""
 "num_layers}\n"
 "Contém  {unsaved_time} de pintura ainda não salvos."
 
-#: ../lib/document.py:1432
+#: ../lib/document.py:1441
 #, python-brace-format
 msgctxt "Document IO: hint templates for user-facing exceptions"
 msgid ""
@@ -3214,13 +3222,13 @@ msgstr ""
 "Não foi possível salvar “{filename}”: {err}\n"
 "Você tem espaço suficiente no dispositivo?"
 
-#: ../lib/document.py:1438 ../lib/document.py:1448
+#: ../lib/document.py:1447 ../lib/document.py:1457
 #, python-brace-format
 msgctxt "Document IO: hint templates for user-facing exceptions"
 msgid "Unable to write “{filename}”: {err}"
 msgstr "Não foi possível escrever \"{filename}\": {err}"
 
-#: ../lib/document.py:1484
+#: ../lib/document.py:1493
 #, python-brace-format
 msgctxt "Document IO: loading errors"
 msgid ""
@@ -3230,7 +3238,7 @@ msgstr ""
 "{error_loading_common}\n"
 "O arquivo não existe."
 
-#: ../lib/document.py:1491
+#: ../lib/document.py:1500
 #, python-brace-format
 msgctxt "Document IO: loading errors"
 msgid ""
@@ -3240,7 +3248,7 @@ msgstr ""
 "{error_loading_common}\n"
 "Você não possui as permissões necessárias para abrir o arquivo."
 
-#: ../lib/document.py:1516
+#: ../lib/document.py:1525
 #, python-brace-format
 msgctxt "Document IO: loading errors"
 msgid ""
@@ -3256,7 +3264,7 @@ msgstr ""
 "\n"
 "{see_logs}"
 
-#: ../lib/document.py:1540
+#: ../lib/document.py:1549
 #, python-brace-format
 msgctxt "Document IO: loading errors"
 msgid ""
@@ -3266,13 +3274,13 @@ msgstr ""
 "{error_loading_common}\n"
 "Extensão de formato de arquivo desconhecida: “{ext}”"
 
-#: ../lib/document.py:1571
+#: ../lib/document.py:1580
 #, fuzzy
 msgctxt "Document IO: group name for Import Layers"
 msgid "Imported layers"
 msgstr "Pincel importado"
 
-#: ../lib/document.py:1738
+#: ../lib/document.py:1747
 #, python-brace-format
 msgctxt "Document IO: hint templates for user-facing exceptions"
 msgid ""
@@ -3286,7 +3294,7 @@ msgstr ""
 "Em vez disso, tente salvar no formato PNG se o seu computador não tem "
 "bastante memória. A função de salvar como PNG do MyPaint é mais eficiente."
 
-#: ../lib/document.py:1868
+#: ../lib/document.py:1877
 #, python-brace-format
 msgctxt "Document autosave: restoring: errors"
 msgid ""
@@ -3360,48 +3368,48 @@ msgid "{seconds}s"
 msgstr "{seconds}s"
 
 #. TRANSLATORS: Default name for new normal, paintable layers
-#: ../lib/layer/core.py:66 ../lib/layer/data.py:1296
+#: ../lib/layer/core.py:66 ../lib/layer/data.py:1300
 msgctxt "layer default names"
 msgid "Layer"
 msgstr "Camada"
 
 #. TRANSLATORS: Short default name for vector (SVG/Inkscape) layers
-#: ../lib/layer/data.py:1154
+#: ../lib/layer/data.py:1158
 #, fuzzy
 msgctxt "layer default names"
 msgid "Vectors"
 msgstr "Camada Vetorial"
 
-#: ../lib/layer/data.py:1159
+#: ../lib/layer/data.py:1163
 #, fuzzy
 msgctxt "layer type descriptions"
 msgid "Vector Layer"
 msgstr "Camada Vetorial"
 
 #. TRANSLATORS: Short default name for renderable fallback layers
-#: ../lib/layer/data.py:1224
+#: ../lib/layer/data.py:1228
 msgctxt "layer default names"
 msgid "Bitmap"
 msgstr ""
 
-#: ../lib/layer/data.py:1229
+#: ../lib/layer/data.py:1233
 msgctxt "layer type descriptions"
 msgid "Bitmap Data"
 msgstr ""
 
 #. TRANSLATORS: Short default name for non-renderable fallback layers
-#: ../lib/layer/data.py:1245
+#: ../lib/layer/data.py:1249
 msgctxt "layer default names"
 msgid "Data"
 msgstr ""
 
-#: ../lib/layer/data.py:1250
+#: ../lib/layer/data.py:1254
 #, fuzzy
 msgctxt "layer type descriptions"
 msgid "Unknown Data"
 msgstr "Camada de dados desconhecida"
 
-#: ../lib/layer/data.py:1301
+#: ../lib/layer/data.py:1305
 #, fuzzy
 msgctxt "layer type descriptions"
 msgid "Painting Layer"
@@ -3783,7 +3791,7 @@ msgstr "Rotação"
 msgid "Snowflake"
 msgstr ""
 
-#: ../lib/tiledsurface.py:627
+#: ../lib/tiledsurface.py:628
 #, python-format
 msgid "PNG reader failed: %s"
 msgstr "Leitura de PNG falhou: %s"
@@ -7024,6 +7032,10 @@ msgstr "Preenchimento"
 msgctxt "Accel Editor (descriptions)"
 msgid "Fill an area with color."
 msgstr ""
+
+#~ msgctxt "file handling: open failed (statusbar)"
+#~ msgid "Could not load “{file_basename}”."
+#~ msgstr "Não foi possível carregar “{file_basename}”."
 
 #~ msgctxt "Accelerator map editor: action column markup"
 #~ msgid ""
