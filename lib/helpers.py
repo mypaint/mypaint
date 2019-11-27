@@ -193,6 +193,36 @@ class Rect (object):
     expandToIncludeRect = expand_to_include_rect
 
 
+def coordinate_bounds(tile_coords):
+    """Find min/max x, y bounds of (x, y) pairs
+
+    If the input iterable's length is 0, None is returned
+    :param iterable tile_coords: iterable of (x, y)
+    :returns: (min x, min y, max x, max y) or None
+    :rtype: (int, int, int, int) | None
+
+    >>> coordinate_bounds([])
+    >>> coordinate_bounds([(0, 0)])
+    (0, 0, 0, 0)
+    >>> coordinate_bounds([(-10, 5), (0, 0)])
+    (-10, 0, 0, 5)
+    >>> coordinate_bounds([(3, 5), (0, 0), (-3, 7), (20, -10)])
+    (-3, -10, 20, 7)
+    """
+    lim = float('inf')
+    min_x, min_y, max_x, max_y = lim, lim, -lim, -lim
+    # Determine minima and maxima in one pass
+    for x, y in tile_coords:
+        min_x = min(min_x, x)
+        min_y = min(min_y, y)
+        max_x = max(max_x, x)
+        max_y = max(max_y, y)
+    if min_x == lim:
+        return None
+    else:
+        return min_x, min_y, max_x, max_y
+
+
 def rotated_rectangle_bbox(corners):
     list_y = [y for (x, y) in corners]
     list_x = [x for (x, y) in corners]

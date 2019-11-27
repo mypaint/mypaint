@@ -131,16 +131,29 @@ class TileCompositable (Bounded):
         """
 
 
-def get_tiles_bbox(tcoords):
+def get_tiles_bbox(tile_coords):
     """Convert tile coords to a data bounding box
 
-    :param tcoords: iterable of (tx, ty) coordinate pairs
+    :param tile_coords: iterable of (tx, ty) coordinate pairs
 
+    >>> coords = [(0, 0), (-10, 4), (5, -2), (-3, 7)]
+    >>> get_tiles_bbox(coords[0:1])
+    Rect(0, 0, 64, 64)
+    >>> get_tiles_bbox(coords)
+    Rect(-640, -128, 1024, 640)
+    >>> get_tiles_bbox(coords[1:])
+    Rect(-640, -128, 1024, 640)
+    >>> get_tiles_bbox(coords[1:-1])
+    Rect(-640, -128, 1024, 448)
     """
-    res = lib.helpers.Rect()
-    for tx, ty in tcoords:
-        res.expandToIncludeRect(lib.helpers.Rect(N*tx, N*ty, N, N))
-    return res
+    bounds = lib.helpers.coordinate_bounds(tile_coords)
+    if bounds is None:
+        return lib.helpers.Rect()
+    else:
+        x0, y0, x1, y1 = bounds
+        return lib.helpers.Rect(
+            N * x0, N * y0, N * (x1 - x0 + 1), N * (y1 - y0 + 1)
+        )
 
 
 def scanline_strips_iter(surface, rect, alpha=False,
@@ -308,3 +321,8 @@ def save_as_png(surface, filename, *rect, **kwargs):
         # Other possible exceptions include TypeError, ValueError, but
         # those indicate incorrect coding usually; just raise them
         # normally.
+
+
+if __name__ == "__main__":
+    import doctest
+    doctest.testmod()
