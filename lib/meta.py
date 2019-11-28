@@ -103,15 +103,123 @@ from __future__ import division, print_function
 MYPAINT_PROGRAM_NAME = "MyPaint"
 
 
+MAJOR = 2
+MINOR = 0
+PATCH = 0
+PREREL = '-alpha'
+
+# Verify the version fields
+for part in (MAJOR, MINOR, PATCH):
+    assert isinstance(part, int) and part >= 0
+assert PREREL in {'', '-alpha', '-beta'}
+
 #: Base version string.
 #: This is required to match a tag in git for formal releases. However
 #: for pre-release (hyphenated) base versions, the formal version will
 #: be further decorated with the number of commits following the tag.
-MYPAINT_VERSION = '2.0.0-alpha'
+MYPAINT_VERSION = '{major}.{minor}.{patch}{prerel}'.format(
+    major=MAJOR, minor=MINOR, patch=PATCH, prerel=PREREL
+)
 
 
-## Release building magic
+def _parse_version_string(version_string):
+    """Parse version string into fields
 
+    If the string is not a valid version string, None is returned.
+
+    :param version_string: version string to parse
+    :return: the four version fields as a tuple, or None if input is invalid
+    :rtype: (int, int, int, str) | None
+
+    >>> # Invalid input strings
+    >>> _parse_version_string("1.0.2.3-alpha")
+    >>> _parse_version_string('2.0-beta')
+    >>> _parse_version_string('2.0.3-gamma')
+    >>> _parse_version_string('1.-2.3')
+    >>> # Valid input strings
+    >>> _parse_version_string("1.0.2-alpha")
+    (1, 0, 2, '-alpha')
+    >>> _parse_version_string('3.1.5')
+    (3, 1, 5, '')
+    >>> _parse_version_string('2.0.1-alpha')
+    (2, 0, 1, '-alpha')
+    """
+    if '-' in version_string:
+        i = version_string.index('-')
+        prerel = version_string[i:]
+        version_string = version_string[:i]
+    else:
+        prerel = ''
+    try:
+        assert prerel in {'', '-alpha', '-beta'}
+        major, minor, patch = (int(f) for f in version_string.split('.'))
+        return major, minor, patch, prerel
+    except (ValueError, AssertionError):
+        return None
+
+
+class Compatibility:
+    """ Enum-like class holding only compatibility type constants
+    """
+    # app major version < file major version
+    INCOMPATIBLE = 1
+    # app major version = file major version and
+    # app minor version < file minor version
+    PARTIALLY = 2
+    # app major version >= file major version and
+    # app minor version >= file minor version
+    FULLY = 3
+
+
+def compatibility(target_version_string):
+    """ Check if the current version is compatible
+
+    :param target_version_string: Version string to test against
+    :return: The compatibility of the current version with the target version
+       as a tuple of a compatibility type constant and a boolean indicating
+       whether the target version is a prerelease.
+    :rtype: (int, bool) | None
+    """
+    target = _parse_version_string(target_version_string)
+    return target and _compatibility(target, (MAJOR, MINOR, PATCH, PREREL))
+
+
+def _compatibility(target_version_fields, current_version_fields):
+    """ Internal implementation of version compatibility check
+
+    >>> C = Compatibility
+    >>> _compatibility((1,0,0,''), (1,0,0,'')) == (C.FULLY, False)
+    True
+    >>> _compatibility((1,0,0,'-alpha'), (1,0,0,'')) == (C.FULLY, True)
+    True
+    >>> _compatibility((1,0,0,''), (1,0,0,'-beta')) == (C.FULLY, False)
+    True
+    >>> _compatibility((2,0,1,''), (2,1,0,'-beta')) == (C.FULLY, False)
+    True
+    >>> _compatibility((2,3,1,''), (2,2,5,'')) == (C.PARTIALLY, False)
+    True
+    >>> _compatibility((1,3,1,'-alpha'), (1,3,0,'')) == (C.FULLY, True)
+    True
+    >>> _compatibility((2,0,1,'-alpha'), (1,3,0,'')) == (C.INCOMPATIBLE, True)
+    True
+    """
+    t_major, t_minor, t_patch, t_prerel = target_version_fields
+    c_major, c_minor, c_patch, c_prerel = current_version_fields
+    C = Compatibility
+    if t_major > c_major:
+        comp = C.INCOMPATIBLE
+    elif t_major < c_major:
+        comp = C.FULLY
+    elif t_minor < c_minor:
+        comp = C.FULLY
+    elif t_minor > c_minor:
+        comp = C.PARTIALLY
+    else:
+        comp = C.FULLY
+    return (comp, t_prerel != '')
+
+
+# Release building magic
 
 def _get_versions(gitprefix="gitexport"):
     """Gets all version strings for use in release/build scripting.
@@ -301,4 +409,8 @@ def _get_release_info_script(gitprefix="gitexport"):
 # makes.
 
 if __name__ == '__main__':
-    print(_get_release_info_script(), end=' ')
+    import doctest
+    if doctest.testmod()[0] == 0:
+        print(_get_release_info_script(), end=' ')
+    else:
+        exit(1)
