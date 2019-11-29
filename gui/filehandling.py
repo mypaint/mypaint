@@ -818,8 +818,14 @@ class FileHandler (object):
 
     def open_file(self, filename):
         """Load a file, replacing the current working document."""
-        if not self._call_doc_load_method(self.doc.model.load, filename,
-                                          False):
+        if not self._call_doc_load_method(
+                self.doc.model.load, filename, False):
+            # Without knowledge of _when_ the process failed, clear
+            # the document to make sure we're not in an inconsistent state.
+            # TODO: Improve the control flow to permit a less draconian
+            # approach, for exceptions occurring prior to any doc-changes.
+            self.filename = None
+            self.doc.model.clear()
             return
 
         self.filename = os.path.abspath(filename)
