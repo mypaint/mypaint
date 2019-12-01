@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 # This file is part of MyPaint.
 # Copyright (C) 2019 by the MyPaint Development Team
 #
@@ -12,6 +13,7 @@ from gi.repository import Gtk
 
 import lib.eotf
 from lib.layer.data import BackgroundLayer
+from lib.meta import Compatibility, PREREL, MYPAINT_VERSION
 from lib.modes import MODE_STRINGS, set_default_mode
 from lib.mypaintlib import CombineNormal, CombineSpectralWGM
 from lib.mypaintlib import combine_mode_get_info
@@ -22,6 +24,10 @@ logger = getLogger(__name__)
 # Keys for settings in the user preferences
 DEFAULT_COMPAT = 'default_compatibility_mode'
 COMPAT_SETTINGS = 'compability_settings'
+FILE_WARNINGS = {
+    Compatibility.INCOMPATIBLE: 'ui.file_compat_warning_severe',
+    Compatibility.PARTIALLY: 'ui.file_compat_warning_mild',
+}
 
 # Keys for compat mode sub-options in the user preferences
 PIGMENT_BY_DEFAULT = 'pigment_on_by_default'
@@ -30,6 +36,34 @@ PIGMENT_LAYER_BY_DEFAULT = 'pigment_layer_is_default'
 C1X = '1.x'
 C2X = '2.x'
 
+FILE_WARNING_MSGS = {
+    Compatibility.INCOMPATIBLE: C_(
+        "file compatibility warning",
+        # TRANSLATORS: This is probably a rare warning, and it will not
+        # TRANSLATORS: really be shown at all before the release of 3.0
+        u"“{filename}” was saved with <b>MyPaint {new_version}</b>."
+        " It may be <b>incompatible</b> with <b>MyPaint {current_version}</b>."
+        "\n\n"
+        "Editing this file with this version of MyPaint is not guaranteed"
+        " to work, and may even result in crashes."
+        "\n\n"
+        "It is <b>strongly recommended</b> to upgrade to <b>MyPaint"
+        " {new_version}</b> or newer if you want to edit this file!"),
+    Compatibility.PARTIALLY: C_(
+        "file compatibility warning",
+        u"“{filename}” was saved with <b>MyPaint {new_version}</b>. "
+        "It may not be fully compatible with <b>Mypaint {current_version}</b>."
+        "\n\n"
+        "Saving it with this version of MyPaint may result in data"
+        " that is only supported by the newer version being lost."
+        "\n\n"
+        "To be safe you should upgrade to MyPaint {new_version} or newer."),
+}
+
+OPEN_ANYWAY = C_(
+    "file compatibility question",
+    "Do you want to open this file anyway?"
+)
 
 _PIGMENT_OP = combine_mode_get_info(CombineSpectralWGM)['name']
 
@@ -49,6 +83,99 @@ def has_pigment_layers(elem):
         return False
     op = elem.attrib.get('composite-op', None)
     return op == _PIGMENT_OP or any([has_pigment_layers(c) for c in elem])
+
+
+def incompatible_ora_cb(app):
+    def cb(comp_type, prerel, filename, target_version):
+        """ Internal: callback that may show a confirmation/warning dialog
+
+        Unless disabled in settings, when a potentially
+        incompatible ora is opened, a warning dialog is
+        shown, allowing users to cancel the loading.
+
+        """
+        if comp_type == Compatibility.FULLY:
+            return True
+        logger.warning(
+            "Loaded file “{filename}” may be {compat_desc}!\n"
+            "App version: {version}, File version: {file_version}".format(
+                filename=filename,
+                compat_desc=Compatibility.DESC[comp_type],
+                version=lib.meta.MYPAINT_VERSION,
+                file_version=target_version
+            ))
+        if prerel and comp_type > Compatibility.INCOMPATIBLE and PREREL != '':
+            logger.info("Warning dialog skipped in prereleases.")
+            return True
+        return incompatible_ora_warning_dialog(
+            comp_type, prerel, filename, target_version, app)
+    return cb
+
+
+def incompatible_ora_warning_dialog(
+        comp_type, prerel, filename, target_version, app):
+    # Skip the dialog if the user has disabled the warning
+    # for this level of incompatibility
+    warn = app.preferences.get(FILE_WARNINGS[comp_type], True)
+    if not warn:
+        return True
+
+    # Toggle allowing users to disable future warnings directly
+    # in the dialog, this is configurable in the settings too.
+    # The checkbutton code is pretty much copied from the filehandling
+    # save-to-scrap checkbutton; a lot of duplication.
+    skip_warning_text = C_(
+        "Version compat warning toggle",
+        u"Don't show this warning again"
+    )
+    skip_warning_button = Gtk.CheckButton.new()
+    skip_warning_button.set_label(skip_warning_text)
+    skip_warning_button.set_hexpand(False)
+    skip_warning_button.set_vexpand(False)
+    skip_warning_button.set_halign(Gtk.Align.END)
+    skip_warning_button.set_margin_top(12)
+    skip_warning_button.set_margin_bottom(12)
+    skip_warning_button.set_margin_start(12)
+    skip_warning_button.set_margin_end(12)
+    skip_warning_button.set_can_focus(False)
+
+    def skip_warning_toggled(checkbut):
+        app.preferences[FILE_WARNINGS[comp_type]] = not checkbut.get_active()
+        app.preferences_window.compat_preferences.update_ui()
+    skip_warning_button.connect("toggled", skip_warning_toggled)
+
+    def_msg = "Invalid key, report this! key={key}".format(key=comp_type)
+    msg_markup = FILE_WARNING_MSGS.get(comp_type, def_msg).format(
+        filename=filename,
+        new_version=target_version,
+        current_version=MYPAINT_VERSION
+    ) + "\n\n" + OPEN_ANYWAY
+    d = Gtk.MessageDialog(
+        transient_for=app.drawWindow,
+        buttons=Gtk.ButtonsType.NONE,
+        modal=True,
+        message_type=Gtk.MessageType.WARNING,
+    )
+    d.set_markup(msg_markup)
+
+    vbox = d.get_content_area()
+    vbox.set_spacing(0)
+    vbox.set_margin_top(12)
+    vbox.pack_start(skip_warning_button, False, True, 0)
+
+    d.add_button(Gtk.STOCK_NO, Gtk.ResponseType.REJECT)
+    d.add_button(Gtk.STOCK_YES, Gtk.ResponseType.ACCEPT)
+    d.set_default_response(Gtk.ResponseType.REJECT)
+
+    # Without this, the check button takes initial focus
+    def show_checkbut(*args):
+        skip_warning_button.show()
+        skip_warning_button.set_can_focus(True)
+    d.connect("show", show_checkbut)
+
+    response = d.run()
+    d.destroy()
+    return response == Gtk.ResponseType.ACCEPT
 
 
 class CompatFileBehavior:
@@ -185,6 +312,19 @@ class CompatibilityPreferences:
         self.normal_radio_1_x = getobj('def_new_layer_normal_1_x')
         self.normal_radio_2_x = getobj('def_new_layer_normal_2_x')
 
+        def file_warning_cb(level):
+            def cb(checkbut):
+                app.preferences[FILE_WARNINGS[level]] = checkbut.get_active()
+            return cb
+
+        self.file_warning_mild = getobj('file_compat_warning_mild')
+        self.file_warning_mild.connect(
+            "toggled", file_warning_cb(Compatibility.PARTIALLY))
+
+        self.file_warning_severe = getobj('file_compat_warning_severe')
+        self.file_warning_severe.connect(
+            "toggled", file_warning_cb(Compatibility.INCOMPATIBLE))
+
         self.compat_file_behavior = CompatFileBehavior(
             getobj('compat_file_behavior_combobox'), self.app.preferences)
         # Initialize widgets and callbacks
@@ -233,6 +373,12 @@ class CompatibilityPreferences:
 
     def update_ui(self):
         prefs = self.app.preferences
+        # File warnings update (can be changed from confirmation dialogs)
+        self.file_warning_mild.set_active(
+            prefs.get(FILE_WARNINGS[Compatibility.PARTIALLY], True))
+        self.file_warning_severe.set_active(
+            prefs.get(FILE_WARNINGS[Compatibility.INCOMPATIBLE], True))
+
         # Even in a radio button group with 2 widgets, using set_active(False)
         # will not toggle the other button on, hence this ugly pattern.
         if prefs.get(DEFAULT_COMPAT, C2X) == C1X:

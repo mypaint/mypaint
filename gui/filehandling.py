@@ -338,11 +338,15 @@ class _IOProgressUI:
                 )
             self.success = False
         else:
-            logger.info("IO succeeded: %s", self._success_msg)
+            if result is False:
+                logger.info("IO operation was cancelled by the user")
+            else:
+                logger.info("IO succeeded: %s", self._success_msg)
             if self._use_statusbar:
                 statusbar.remove_all(cid)
-                self._app.show_transient_message(self._success_msg)
-            self.success = True
+                if result is not False:
+                    self._app.show_transient_message(self._success_msg)
+            self.success = result is not False
         finally:
             if self._progress_bar is not None:
                 self._progress_dialog.destroy()
@@ -874,12 +878,13 @@ class FileHandler (object):
 
         files_summary = _IOProgressUI.format_files_summary(arg)
         ioui = _IOProgressUI(self.app, op_type, files_summary)
-        ioui.call(
+        result = ioui.call(
             method, arg,
             convert_to_srgb=(display_colorspace_setting == "srgb"),
-            compat_handler=compat_handler
+            compat_handler=compat_handler,
+            incompatible_ora_cb=compat.incompatible_ora_cb(self.app)
         )
-        return ioui.success
+        return (result is not False) and ioui.success
 
     def open_scratchpad(self, filename):
         no_ui_progress = lib.feedback.Progress()

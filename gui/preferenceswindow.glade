@@ -1362,15 +1362,16 @@ Different traditions have different color harmonies.</property>
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="row_spacing">12</property>
+                <property name="column_spacing">12</property>
                 <child>
                   <object class="GtkLabel" id="def_compat_label">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
-                    <property name="margin_right">12</property>
-                    <property name="label" translatable="yes">Default Compatibility Mode:</property>
+                    <property name="margin_left">12</property>
+                    <property name="label" translatable="yes" context="Prefs Dialog|Compatibility">Default Compatibility Mode:</property>
                     <property name="justify">right</property>
                     <property name="ellipsize">end</property>
-                    <property name="xalign">1</property>
+                    <property name="xalign">0</property>
                   </object>
                   <packing>
                     <property name="left_attach">0</property>
@@ -1384,7 +1385,7 @@ Different traditions have different color harmonies.</property>
                   </object>
                   <packing>
                     <property name="left_attach">0</property>
-                    <property name="top_attach">2</property>
+                    <property name="top_attach">1</property>
                     <property name="width">2</property>
                   </packing>
                 </child>
@@ -1398,7 +1399,7 @@ Different traditions have different color harmonies.</property>
                   </object>
                   <packing>
                     <property name="left_attach">0</property>
-                    <property name="top_attach">3</property>
+                    <property name="top_attach">2</property>
                     <property name="width">2</property>
                   </packing>
                 </child>
@@ -1412,7 +1413,7 @@ Different traditions have different color harmonies.</property>
                   </object>
                   <packing>
                     <property name="left_attach">0</property>
-                    <property name="top_attach">8</property>
+                    <property name="top_attach">7</property>
                     <property name="width">2</property>
                   </packing>
                 </child>
@@ -1424,7 +1425,7 @@ Different traditions have different color harmonies.</property>
                   </object>
                   <packing>
                     <property name="left_attach">0</property>
-                    <property name="top_attach">7</property>
+                    <property name="top_attach">6</property>
                     <property name="width">2</property>
                   </packing>
                 </child>
@@ -1436,21 +1437,21 @@ Different traditions have different color harmonies.</property>
                   </object>
                   <packing>
                     <property name="left_attach">1</property>
-                    <property name="top_attach">4</property>
+                    <property name="top_attach">3</property>
                   </packing>
                 </child>
                 <child>
                   <object class="GtkLabel" id="pigm_brsh_label1">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
-                    <property name="margin_right">12</property>
-                    <property name="label" translatable="yes" context="Prefs Dialog|Compat">Default New Layer Type:</property>
+                    <property name="margin_left">12</property>
+                    <property name="label" translatable="yes" context="Prefs Dialog|Compatibility">Default New Layer Type:</property>
                     <property name="ellipsize">middle</property>
-                    <property name="xalign">1</property>
+                    <property name="xalign">0</property>
                   </object>
                   <packing>
                     <property name="left_attach">0</property>
-                    <property name="top_attach">5</property>
+                    <property name="top_attach">4</property>
                     <property name="height">2</property>
                   </packing>
                 </child>
@@ -1466,7 +1467,7 @@ Different traditions have different color harmonies.</property>
                   </object>
                   <packing>
                     <property name="left_attach">1</property>
-                    <property name="top_attach">5</property>
+                    <property name="top_attach">4</property>
                   </packing>
                 </child>
                 <child>
@@ -1482,49 +1483,49 @@ Different traditions have different color harmonies.</property>
                   </object>
                   <packing>
                     <property name="left_attach">1</property>
-                    <property name="top_attach">6</property>
+                    <property name="top_attach">5</property>
                   </packing>
                 </child>
                 <child>
                   <object class="GtkLabel" id="pigm_brsh_label">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
-                    <property name="margin_right">12</property>
-                    <property name="label" translatable="yes" context="Prefs Dialog|Compat" comments="Make sure to be consistent w. other occurences of 1.x">Default Pigment Brush Setting:</property>
+                    <property name="margin_left">12</property>
+                    <property name="label" translatable="yes" context="Prefs Dialog|Compatibility">Default Pigment Brush Setting:</property>
                     <property name="ellipsize">middle</property>
-                    <property name="xalign">1</property>
+                    <property name="xalign">0</property>
                   </object>
                   <packing>
                     <property name="left_attach">0</property>
-                    <property name="top_attach">4</property>
+                    <property name="top_attach">3</property>
                   </packing>
                 </child>
                 <child>
                   <object class="GtkLabel" id="pigm_brsh_label2">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
-                    <property name="margin_right">12</property>
-                    <property name="label" translatable="yes" context="Prefs Dialog|Compat">Default Pigment Brush Setting:</property>
+                    <property name="margin_left">12</property>
+                    <property name="label" translatable="yes" context="Prefs Dialog|Compatibility">Default Pigment Brush Setting:</property>
                     <property name="ellipsize">end</property>
-                    <property name="xalign">1</property>
+                    <property name="xalign">0</property>
                   </object>
                   <packing>
                     <property name="left_attach">0</property>
-                    <property name="top_attach">9</property>
+                    <property name="top_attach">8</property>
                   </packing>
                 </child>
                 <child>
                   <object class="GtkLabel" id="pigm_brsh_label3">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
-                    <property name="margin_right">12</property>
-                    <property name="label" translatable="yes" context="Prefs Dialog|Compat">Default New Layer Type:</property>
+                    <property name="margin_left">12</property>
+                    <property name="label" translatable="yes" context="Prefs Dialog|Compatibility">Default New Layer Type:</property>
                     <property name="ellipsize">middle</property>
-                    <property name="xalign">1</property>
+                    <property name="xalign">0</property>
                   </object>
                   <packing>
                     <property name="left_attach">0</property>
-                    <property name="top_attach">10</property>
+                    <property name="top_attach">9</property>
                     <property name="height">2</property>
                   </packing>
                 </child>
@@ -1540,7 +1541,7 @@ Different traditions have different color harmonies.</property>
                   </object>
                   <packing>
                     <property name="left_attach">1</property>
-                    <property name="top_attach">10</property>
+                    <property name="top_attach">9</property>
                   </packing>
                 </child>
                 <child>
@@ -1555,7 +1556,7 @@ Different traditions have different color harmonies.</property>
                   </object>
                   <packing>
                     <property name="left_attach">1</property>
-                    <property name="top_attach">11</property>
+                    <property name="top_attach">10</property>
                   </packing>
                 </child>
                 <child>
@@ -1568,7 +1569,7 @@ Different traditions have different color harmonies.</property>
                   </object>
                   <packing>
                     <property name="left_attach">1</property>
-                    <property name="top_attach">9</property>
+                    <property name="top_attach">8</property>
                   </packing>
                 </child>
                 <child>
@@ -1618,30 +1619,104 @@ Different traditions have different color harmonies.</property>
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkLabel" id="compat_file_behavior_label">
+                  <object class="GtkSeparator" id="separator2">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
-                    <property name="margin_right">12</property>
-                    <property name="label" translatable="yes" context="Prefs Dialog|Compatibility" comments="Label to the options of how to handle files which do not have a mode specified (whether they should be opened in 1.x compatibility mode, or 2.x mode)">When Not Specified in File:</property>
-                    <property name="ellipsize">end</property>
-                    <property name="xalign">1</property>
+                    <property name="valign">start</property>
+                    <property name="margin_top">1</property>
                   </object>
                   <packing>
                     <property name="left_attach">0</property>
-                    <property name="top_attach">1</property>
+                    <property name="top_attach">11</property>
+                    <property name="width">2</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkCheckButton" id="file_compat_warning_mild">
+                    <property name="label" translatable="yes" context="Prefs Dialog|Compatibility">Show warning for files that may be partially incompatible</property>
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="receives_default">False</property>
+                    <property name="xalign">0</property>
+                    <property name="draw_indicator">True</property>
+                  </object>
+                  <packing>
+                    <property name="left_attach">1</property>
+                    <property name="top_attach">14</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkLabel" id="file_warnings">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="margin_left">12</property>
+                    <property name="label" translatable="yes" context="Prefs Dialog|Compatibility" comments="Label for a set of options">File compatibility warnings:</property>
+                    <property name="ellipsize">middle</property>
+                    <property name="xalign">0</property>
+                  </object>
+                  <packing>
+                    <property name="left_attach">0</property>
+                    <property name="top_attach">14</property>
+                    <property name="height">2</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkCheckButton" id="file_compat_warning_severe">
+                    <property name="label" translatable="yes" context="Prefs Dialog|Compatibility">Show warning for files that may be fully incompatible</property>
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="receives_default">False</property>
+                    <property name="xalign">0</property>
+                    <property name="draw_indicator">True</property>
+                  </object>
+                  <packing>
+                    <property name="left_attach">1</property>
+                    <property name="top_attach">15</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkLabel" id="compat_file_behavior_label">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="tooltip_text" translatable="yes" context="Prefs|Compatibility" comments="This is a tooltip for the file behavior options label.">This will only apply to files saved with versions of MyPaint older than 2.0. When you save an OpenRaster file with MyPaint 2.0 or newer the active compatibility mode will be written to the file.</property>
+                    <property name="margin_left">12</property>
+                    <property name="label" translatable="yes" context="Prefs Dialog|Compatibility" comments="Label to the options for how to handle files which do not have a compatibility mode specified (whether they should be opened in 1.x compatibility mode, or 2.x mode)">When Mode is Unspecified:</property>
+                    <property name="ellipsize">end</property>
+                    <property name="xalign">0</property>
+                  </object>
+                  <packing>
+                    <property name="left_attach">0</property>
+                    <property name="top_attach">13</property>
                   </packing>
                 </child>
                 <child>
                   <object class="GtkComboBox" id="compat_file_behavior_combobox">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
+                    <property name="halign">start</property>
                     <property name="active">0</property>
                     <property name="popup_fixed_width">False</property>
                     <property name="id_column">0</property>
                   </object>
                   <packing>
                     <property name="left_attach">1</property>
-                    <property name="top_attach">1</property>
+                    <property name="top_attach">13</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkLabel" id="compat_frame_label1">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="label" translatable="yes" context="Prefs|Compatibility" comments="This label indicates a subsection of the compatibility settings related to loading files.">&lt;b&gt;File loading&lt;/b&gt;</property>
+                    <property name="use_markup">True</property>
+                    <property name="ellipsize">middle</property>
+                    <property name="xalign">0</property>
+                    <property name="yalign">0</property>
+                  </object>
+                  <packing>
+                    <property name="left_attach">0</property>
+                    <property name="top_attach">12</property>
+                    <property name="width">2</property>
                   </packing>
                 </child>
               </object>
