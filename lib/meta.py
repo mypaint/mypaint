@@ -170,6 +170,12 @@ class Compatibility:
     # app minor version >= file minor version
     FULLY = 3
 
+    DESC = {
+        INCOMPATIBLE: 'incompatible',
+        PARTIALLY: 'only partially compatible',
+        FULLY: 'compatible',
+    }
+
 
 def compatibility(target_version_string):
     """ Check if the current version is compatible

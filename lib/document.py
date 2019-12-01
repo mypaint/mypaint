@@ -468,6 +468,7 @@ class Document (object):
         >>> doc1.cleanup()
         >>> doc2 = Document(painting_only=True)
         >>> doc2.load(file1)
+        True
         >>> sorted([i for i in doc1.settings.items()
         ...         if i[0].startswith("T.")]) == expected
         True
@@ -1480,6 +1481,7 @@ class Document (object):
 
         >>> doc = Document()
         >>> doc.load("tests/smallimage.ora")
+        True
         >>> doc.cleanup()
 
         """
@@ -1518,8 +1520,9 @@ class Document (object):
             kwargs,
         )
         error_str = None
+        result = None
         try:
-            load_method(filename, **kwargs)
+            result = load_method(filename, **kwargs)
         except (GObject.GError, IOError) as e:
             logger.exception("Error when loading %r", filename)
             error_str = unicode(e)
@@ -1537,6 +1540,7 @@ class Document (object):
             raise FileHandlingError(error_str)
         self.command_stack.clear()
         self.unsaved_painting_time = 0.0
+        return result
 
     def _unsupported(self, filename, *args, **kwargs):
         stemname, ext = os.path.splitext(filename)
@@ -1780,6 +1784,21 @@ class Document (object):
         logger.info('%.3fs save_ora total', time.time() - t0)
         return thumbnail
 
+    @staticmethod
+    def _compat_check(image_elem, filename, **kwargs):
+        target_version = image_elem.attrib.get(_ORA_MYPAINT_VERSION, None)
+        if not target_version:
+            return True
+        result = lib.meta.compatibility(target_version)
+        if not result:
+            return True
+        compat_type, prerel = result
+
+        def ignore(*a, **kw):
+            return True
+        cb = kwargs.get('incompatible_ora_cb', ignore)
+        return cb(compat_type, prerel, filename, target_version)
+
     def load_ora(self, filename, progress=None, **kwargs):
         """Loads from an OpenRaster file"""
         logger.info('load_ora: %r', filename)
@@ -1791,6 +1810,10 @@ class Document (object):
         xml = orazip.read('stack.xml')
         image_elem = ET.fromstring(xml)
         root_stack_elem = image_elem.find('stack')
+        # Compatibility check
+        if not Document._compat_check(image_elem, filename, **kwargs):
+            return False
+
         image_width = max(0, int(image_elem.attrib.get('w', 0)))
         image_height = max(0, int(image_elem.attrib.get('h', 0)))
         # Resolution: false value, 0 specifically, means unspecified
@@ -1857,6 +1880,7 @@ class Document (object):
         orazip.close()
 
         logger.info('%.3fs load_ora total', time.time() - t0)
+        return True
 
     def resume_from_autosave(self, autosave_dir, progress=None):
         """Resume using an autosave dir (and its parent cache dir)"""
