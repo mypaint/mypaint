@@ -12,16 +12,16 @@ msgstr ""
 "Project-Id-Version: mypaint v2.0.0-alpha.11-2-g0673fe8\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2019-11-26 21:32+0100\n"
-"PO-Revision-Date: 2019-11-17 06:36+0000\n"
-"Last-Translator: Niara <kitekatkek@gmail.com>\n"
+"PO-Revision-Date: 2019-12-04 20:05+0000\n"
+"Last-Translator: Nikolay Korotkiy <sikmir@gmail.com>\n"
 "Language-Team: Russian <https://hosted.weblate.org/projects/mypaint/mypaint/"
 "ru/>\n"
 "Language: ru\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
-"%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
+"Plural-Forms: nplurals=3; plural=n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<="
+"4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
 "X-Generator: Weblate 3.10-dev\n"
 
 #. TRANSLATORS: Name of first column in the button map preferences.
@@ -5416,10 +5416,9 @@ msgid "Make an exact clone of the current layer."
 msgstr "Создать точную копию текущего слоя."
 
 #: ../po/tmp/resources.xml.h:131
-#, fuzzy
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Layer Properties…"
-msgstr "Свойства"
+msgstr "Свойства слоя…"
 
 #: ../po/tmp/resources.xml.h:132
 msgctxt "Accel Editor (descriptions)"
