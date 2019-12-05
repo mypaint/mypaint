@@ -487,6 +487,11 @@ def hsv_to_rgb(h, s, v):
     return colorsys.hsv_to_rgb(h, s, v)
 
 
+def transform_hsv(hsv, eotf):
+    r, g, b = hsv_to_rgb(*hsv)
+    return rgb_to_hsv(r**eotf, g**eotf, b**eotf)
+
+
 def zipfile_writestr(z, arcname, data):
     """Write a string into a zipfile entry, with standard permissions
 

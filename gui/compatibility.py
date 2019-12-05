@@ -472,6 +472,8 @@ def set_compat_mode(app, compat_mode, custom_eotf=None, update=True):
     if update and changed:
         # Reload scratchpad (with new eotf)
         app.drawWindow.revert_current_scratchpad_cb(None)
+        for f in app.brush.observers:
+            f({'color_h', 'color_s', 'color_v'})
         update_default_layer_type(app)
         update_default_pigment_setting(app)
 
