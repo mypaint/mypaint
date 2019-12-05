@@ -7,8 +7,8 @@ msgstr ""
 "Project-Id-Version: mypaint v2.0.0-alpha.8-1-g4490f06\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2019-11-26 21:32+0100\n"
-"PO-Revision-Date: 2019-02-27 14:19+0000\n"
-"Last-Translator: glixx <roman_romul@mail.ru>\n"
+"PO-Revision-Date: 2019-12-07 18:53+0000\n"
+"Last-Translator: Prachi Joshi <josprachi@yahoo.com>\n"
 "Language-Team: Marathi <https://hosted.weblate.org/projects/mypaint/mypaint/"
 "mr/>\n"
 "Language: mr\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n > 1;\n"
-"X-Generator: Weblate 3.5-dev\n"
+"X-Generator: Weblate 3.10-dev\n"
 
 #. TRANSLATORS: Name of first column in the button map preferences.
 #. TRANSLATORS: Refers to an action bound to a mod+button combination.
@@ -1313,7 +1313,7 @@ msgstr ""
 #: ../gui/document.py:555
 #, python-format
 msgid "Undo %s"
-msgstr ""
+msgstr "%s पूर्ववत करा"
 
 #: ../gui/document.py:557
 msgid "Undo"
@@ -4464,7 +4464,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:1
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "New"
-msgstr ""
+msgstr "नवीन"
 
 #: ../po/tmp/resources.xml.h:2
 msgctxt "Toolbar (short labels)"
@@ -4479,7 +4479,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:4
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "Open…"
-msgstr ""
+msgstr "उघडा…"
 
 #: ../po/tmp/resources.xml.h:5
 msgctxt "Toolbar (short labels)"
@@ -4529,7 +4529,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:14
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "Save"
-msgstr ""
+msgstr "जतन करा"
 
 #: ../po/tmp/resources.xml.h:15
 msgctxt "Accel Editor (descriptions)"
@@ -4539,7 +4539,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:16
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "Save As…"
-msgstr ""
+msgstr "म्हणून जतन करा…"
 
 #: ../po/tmp/resources.xml.h:17
 msgctxt "Accel Editor (descriptions)"
@@ -4826,7 +4826,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:73
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Clear Layer"
-msgstr ""
+msgstr "स्तर साफ करा"
 
 #: ../po/tmp/resources.xml.h:74
 msgctxt "Accel Editor (descriptions)"
@@ -4959,7 +4959,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:99
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "New Painting Layer"
-msgstr ""
+msgstr "नवीन चित्राचा थर"
 
 #: ../po/tmp/resources.xml.h:100
 msgctxt "Accel Editor (descriptions)"
@@ -4979,7 +4979,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:103
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "New Layer Group"
-msgstr ""
+msgstr "नवीन थराचा गट"
 
 #: ../po/tmp/resources.xml.h:104
 msgctxt "Accel Editor (descriptions)"
@@ -5049,7 +5049,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:117
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Delete Layer"
-msgstr ""
+msgstr "थर मिटवा"
 
 #: ../po/tmp/resources.xml.h:118
 msgctxt "Accel Editor (descriptions)"
@@ -5476,12 +5476,12 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:204
 msgctxt "Menu (labels)"
 msgid "Edit"
-msgstr ""
+msgstr "संपादित करा"
 
 #: ../po/tmp/resources.xml.h:205
 msgctxt "Menu (labels)"
 msgid "Color"
-msgstr ""
+msgstr "रंग"
 
 #: ../po/tmp/resources.xml.h:206
 msgctxt "Menu→Color (labels)"
@@ -5541,7 +5541,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:217
 msgctxt "Menu (labels)"
 msgid "Layer"
-msgstr ""
+msgstr "थर"
 
 #: ../po/tmp/resources.xml.h:218
 msgctxt "Menu→Layer→Properties (labels)"
@@ -5566,7 +5566,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:222
 msgctxt "Menu (labels)"
 msgid "Scratchpad"
-msgstr ""
+msgstr "स्क्रॅचपॅड"
 
 #: ../po/tmp/resources.xml.h:223
 msgctxt "Menu→Scratchpad (labels), Accel Editor (labels)"
@@ -5652,12 +5652,12 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:239
 msgctxt "Menu (labels)"
 msgid "Window"
-msgstr ""
+msgstr "विंडो"
 
 #: ../po/tmp/resources.xml.h:240
 msgctxt "Menu→Brush (labels)"
 msgid "Brush"
-msgstr ""
+msgstr "ब्रश"
 
 #: ../po/tmp/resources.xml.h:241
 msgctxt "Menu→Brush (labels)"
@@ -5730,7 +5730,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:254
 msgctxt "Menu (labels)"
 msgid "Help"
-msgstr ""
+msgstr "मदत"
 
 #: ../po/tmp/resources.xml.h:255
 msgctxt "Menu→Help (labels), Accel Editor (labels)"
@@ -5800,7 +5800,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:268
 msgctxt "Menu (labels)"
 msgid "View"
-msgstr ""
+msgstr "पहा"
 
 #: ../po/tmp/resources.xml.h:269
 msgctxt "Menu→View (labels)"
