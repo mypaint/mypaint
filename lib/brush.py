@@ -560,26 +560,17 @@ class BrushInfo (object):
                 f(pending)
 
     def get_color_hsv(self):
-        tf = eotf()
         h = self.get_base_value('color_h')
         s = self.get_base_value('color_s')
         v = self.get_base_value('color_v')
-        rgb = helpers.hsv_to_rgb(h, s, v)
-        rgb = rgb[0]**(1 / tf), rgb[1]**(1 / tf), rgb[2]**(1 / tf)
-        hsv = helpers.rgb_to_hsv(*rgb)
-        h, s, v = hsv
         assert not math.isnan(h)
-        return (h, s, v)
+        return h, s, v
 
     def set_color_hsv(self, hsv):
-        tf = eotf()
         if not hsv:
             return
         self.begin_atomic()
         try:
-            rgb = helpers.hsv_to_rgb(*hsv)
-            rgb = rgb[0]**tf, rgb[1]**tf, rgb[2]**tf
-            hsv = helpers.rgb_to_hsv(*rgb)
             h, s, v = hsv
             self.set_base_value('color_h', h)
             self.set_base_value('color_s', s)
@@ -620,6 +611,9 @@ class Brush (mypaintlib.PythonBrush):
 
     """
 
+    HSV_CNAMES = ('color_h', 'color_s', 'color_v')
+    HSV_SET = set(HSV_CNAMES)
+
     def __init__(self, brushinfo):
         super(Brush, self).__init__()
         self.brushinfo = brushinfo
@@ -628,8 +622,32 @@ class Brush (mypaintlib.PythonBrush):
 
     def _update_from_brushinfo(self, settings):
         """Updates changed low-level settings from the BrushInfo"""
+
+        # When eotf != 1.0, store transformed hsv values in the backend.
+        transform = eotf() != 1.0
+        if transform and any(hsv in settings for hsv in self.HSV_CNAMES):
+            self._transform_brush_color()
+            # Clear affected settings so the transformation
+            # is not undone in the next step.
+            # Note: x = x - y is not equivalent to x -= y here.
+            settings = settings - self.HSV_SET
+
         for cname in settings:
             self._update_setting_from_brushinfo(cname)
+
+    def _transform_brush_color(self):
+        """ Apply eotf transform to the backend color.
+
+        By only applying the transform here, the issue of
+        strokemap and brush color consistency between new
+        and old color rendering modes does not arise.
+        """
+        hsv_orig = (self.brushinfo.get_base_value(k) for k in self.HSV_CNAMES)
+        h, s, v = helpers.transform_hsv(hsv_orig, eotf())
+        settings_dict = brushsettings.settings_dict
+        self.set_base_value(settings_dict['color_h'].index, h)
+        self.set_base_value(settings_dict['color_s'].index, s)
+        self.set_base_value(settings_dict['color_v'].index, v)
 
     def _update_setting_from_brushinfo(self, cname):
         setting = brushsettings.settings_dict.get(cname)
