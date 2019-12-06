@@ -27,6 +27,7 @@ import uuid
 import struct
 import contextlib
 
+from lib.brush import BrushInfo
 from lib.gettext import C_
 from lib.tiledsurface import N
 import lib.tiledsurface as tiledsurface
@@ -1451,7 +1452,7 @@ class StrokemappedPaintingLayer (SimplePaintingLayer):
         self.strokes = []
 
     def load_from_openraster(self, orazip, elem, cache_dir, progress,
-                             x=0, y=0, **kwargs):
+                             x=0, y=0, invert_strokemaps=False, **kwargs):
         """Loads layer flags, PNG data, and strokemap from a .ora zipfile"""
         # Load layer tile data and flags
         super(StrokemappedPaintingLayer, self).load_from_openraster(
@@ -1462,7 +1463,9 @@ class StrokemappedPaintingLayer (SimplePaintingLayer):
             x=x, y=y,
             **kwargs
         )
-        self._load_strokemap_from_ora(elem, x, y, orazip=orazip)
+        self._load_strokemap_from_ora(
+            elem, x, y, invert_strokemaps, orazip=orazip
+        )
 
     def load_from_openraster_dir(self, oradir, elem, cache_dir, progress,
                                  x=0, y=0, **kwargs):
@@ -1476,9 +1479,11 @@ class StrokemappedPaintingLayer (SimplePaintingLayer):
             x=x, y=y,
             **kwargs
         )
-        self._load_strokemap_from_ora(elem, x, y, oradir=oradir)
+        self._load_strokemap_from_ora(elem, x, y, False, oradir=oradir)
 
-    def _load_strokemap_from_ora(self, elem, x, y, orazip=None, oradir=None):
+    def _load_strokemap_from_ora(
+            self, elem, x, y, invert=False, orazip=None, oradir=None
+    ):
         """Load the strokemap from a layer elem & an ora{zip|dir}."""
         attrs = elem.attrib
         x += int(attrs.get('x', 0))
@@ -1500,17 +1505,22 @@ class StrokemappedPaintingLayer (SimplePaintingLayer):
             break
         if strokemap_name is None:
             return
+        # This is a hacky way of identifying files which need their stroke
+        # maps inverted, due to storing visually inconsistent colors.
+        # These files are distinguished by lacking both the legacy strokemap
+        # attribute and the eotf attribute. This support will be temporary.
+        invert = invert and not attrs.get(self._ORA_STROKEMAP_LEGACY_ATTR)
         if orazip:
             if PY3:
                 ioclass = BytesIO
             else:
                 ioclass = StringIO
             sio = ioclass(orazip.read(strokemap_name))
-            self._load_strokemap_from_file(sio, x, y)
+            self._load_strokemap_from_file(sio, x, y, invert)
             sio.close()
         elif oradir:
             with open(os.path.join(oradir, strokemap_name), "rb") as sfp:
-                self._load_strokemap_from_file(sfp, x, y)
+                self._load_strokemap_from_file(sfp, x, y, invert)
         else:
             raise ValueError("either orazip or oradir must be specified")
 
@@ -1576,7 +1586,7 @@ class StrokemappedPaintingLayer (SimplePaintingLayer):
 
     ## Strokemap load and save
 
-    def _load_strokemap_from_file(self, f, translate_x, translate_y):
+    def _load_strokemap_from_file(self, f, translate_x, translate_y, invert):
         assert not self.strokes
         brushes = []
         x = int(translate_x // N) * N
@@ -1588,7 +1598,10 @@ class StrokemappedPaintingLayer (SimplePaintingLayer):
             if t == b"b":
                 length, = struct.unpack('>I', f.read(4))
                 tmp = f.read(length)
-                brushes.append(zlib.decompress(tmp))
+                b_string = zlib.decompress(tmp)
+                if invert:
+                    b_string = BrushInfo.brush_string_inverted_eotf(b_string)
+                brushes.append(b_string)
             elif t == b"s":
                 brush_id, length = struct.unpack('>II', f.read(2 * 4))
                 stroke = lib.strokemap.StrokeShape()
