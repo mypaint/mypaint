@@ -825,7 +825,7 @@ class FileHandler (object):
     def open_file(self, filename, **kwargs):
         """Load a file, replacing the current working document."""
         if not self._call_doc_load_method(
-                self.doc.model.load, filename, False):
+                self.doc.model.load, filename, False, **kwargs):
             # Without knowledge of _when_ the process failed, clear
             # the document to make sure we're not in an inconsistent state.
             # TODO: Improve the control flow to permit a less draconian
@@ -1042,6 +1042,11 @@ class FileHandler (object):
         dialog.add_button(Gtk.STOCK_OPEN, Gtk.ResponseType.OK)
         dialog.set_default_response(Gtk.ResponseType.OK)
 
+        # Compatibility override options for .ora files
+        selector = compat.CompatSelector(self.app)
+        dialog.connect('selection-changed', selector.file_selection_changed_cb)
+        dialog.set_extra_widget(selector.widget)
+
         preview = Gtk.Image()
         dialog.set_preview_widget(preview)
         dialog.connect("update-preview", self.update_preview_cb, preview)
@@ -1065,7 +1070,10 @@ class FileHandler (object):
                 dialog.hide()
                 filename = dialog.get_filename()
                 filename = filename_to_unicode(filename)
-                self.open_file(filename)
+                self.open_file(
+                    filename,
+                    compat_handler=selector.compat_function
+                )
         finally:
             dialog.destroy()
 
