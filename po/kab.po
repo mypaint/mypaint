@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: mypaint v2.0.0-alpha.12-342-gc134f1a\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2019-11-26 21:32+0100\n"
-"PO-Revision-Date: 2019-09-16 20:23+0000\n"
+"PO-Revision-Date: 2019-12-07 18:53+0000\n"
 "Last-Translator: Yuba Wissin <chafikamazigh92@gmail.com>\n"
 "Language-Team: Kabyle <https://hosted.weblate.org/projects/mypaint/mypaint/"
 "kab/>\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n > 1;\n"
-"X-Generator: Weblate 3.9-dev\n"
+"X-Generator: Weblate 3.10-dev\n"
 
 #. TRANSLATORS: Name of first column in the button map preferences.
 #. TRANSLATORS: Refers to an action bound to a mod+button combination.
@@ -210,9 +210,10 @@ msgid "GridMap"
 msgstr ""
 
 #: ../gui/brusheditor.py:421
+#, fuzzy
 msgctxt "brush settings list: setting group"
 msgid "Custom"
-msgstr ""
+msgstr "Udmawan"
 
 #: ../gui/brusheditor.py:487
 msgctxt "brush settings editor: save brush: error message"
@@ -3066,12 +3067,14 @@ msgid "Unable to write “{filename}”: {err}"
 msgstr ""
 
 #: ../lib/document.py:1493
-#, python-brace-format
+#, fuzzy, python-brace-format
 msgctxt "Document IO: loading errors"
 msgid ""
 "{error_loading_common}\n"
 "The file does not exist."
 msgstr ""
+"{error_loading_common}\n"
+"Ulac afaylu-agi."
 
 #: ../lib/document.py:1500
 #, python-brace-format
