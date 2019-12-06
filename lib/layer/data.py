@@ -1423,12 +1423,13 @@ class StrokemappedPaintingLayer (SimplePaintingLayer):
 
     # The un-namespaced legacy attribute name is deprecated since
     # MyPaint v1.2.0, and painting layers in OpenRaster files will not
-    # be saved with it beginning with v1.3.0 at the earliest.
+    # be saved with it beginning with v2.0.0.
     # MyPaint will support reading .ora files using the legacy strokemap
     # attribute (and the "v2" strokemap format, if the format changes)
-    # until v2.0.0.
+    # throughout v2.x.
 
     _ORA_STROKEMAP_ATTR = "{%s}strokemap" % (lib.xml.OPENRASTER_MYPAINT_NS,)
+    _ORA_STROKEMAP_LEGACY_ATTR = "mypaint_strokemap_v2"
 
     ## Initializing & resetting
 
@@ -1484,6 +1485,7 @@ class StrokemappedPaintingLayer (SimplePaintingLayer):
         y += int(attrs.get('y', 0))
         supported_strokemap_attrs = [
             self._ORA_STROKEMAP_ATTR,
+            self._ORA_STROKEMAP_LEGACY_ATTR,
         ]
         strokemap_name = None
         for attr_qname in supported_strokemap_attrs:
