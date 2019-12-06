@@ -36,6 +36,12 @@ PIGMENT_LAYER_BY_DEFAULT = 'pigment_layer_is_default'
 C1X = '1.x'
 C2X = '2.x'
 
+_FILE_OPEN_OPTIONS = [
+    ('', C_("File Load Compat Options", "Based on file")),
+    (C1X, C_("Prefs Dialog|Compatibility", "1.x")),
+    (C2X, C_("Prefs Dialog|Compatibility", "2.x")),
+]
+
 FILE_WARNING_MSGS = {
     Compatibility.INCOMPATIBLE: C_(
         "file compatibility warning",
@@ -499,3 +505,68 @@ def update_default_pigment_setting(app):
     app.brushmanager.set_pigment_by_default(
         mode_settings[PIGMENT_BY_DEFAULT]
     )
+
+
+class CompatSelector:
+    """ A dropdown menu with file loading compatibility options
+
+    If a file was accidentally set to use the wrong mode, these
+    options are used to force opening in a particular mode.
+    """
+
+    def __init__(self, app):
+        self.app = app
+        combo = Gtk.ComboBox()
+        store = Gtk.ListStore()
+        store.set_column_types((str, str))
+        for k, v in _FILE_OPEN_OPTIONS:
+            store.append((k, v))
+        combo.set_model(store)
+        combo.set_active(0)
+        cell = Gtk.CellRendererText()
+        combo.pack_start(cell, True)
+        combo.add_attribute(cell, 'text', 1)
+        combo_label = Gtk.Label(
+            # TRANSLATORS: This is a label for a dropdown menu in the
+            # TRANSLATORS: file chooser dialog when loading .ora files.
+            label=C_("File Load Compat Options", "Compatibility mode:")
+        )
+        hbox = Gtk.HBox()
+        hbox.set_spacing(6)
+        hbox.pack_start(combo_label, False, False, 0)
+        hbox.pack_start(combo, False, False, 0)
+        hbox.show_all()
+        hbox.set_visible(False)
+        self._compat_override = None
+        self._combo = combo
+        combo.connect('changed', self._combo_changed_cb)
+        self._widget = hbox
+
+    def _combo_changed_cb(self, combo):
+        idx = combo.get_active()
+        if idx >= 0:
+            self._compat_override = _FILE_OPEN_OPTIONS[idx][0]
+        else:
+            self._compat_override = None
+
+    def file_selection_changed_cb(self, chooser):
+        """ Show/hide widget and enable/disable override
+        """
+        fn = chooser.get_filename()
+        applicable = fn is not None and fn.endswith('.ora')
+        self.widget.set_visible(applicable)
+        if not applicable:
+            self._compat_override = None
+        else:
+            self._combo_changed_cb(self._combo)
+
+    @property
+    def widget(self):
+        return self._widget
+
+    @property
+    def compat_function(self):
+        """ Returns an overriding compatibility handler or None
+        """
+        if self._compat_override:
+            return lambda *a: set_compat_mode(self.app, self._compat_override)
