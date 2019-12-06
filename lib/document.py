@@ -1821,8 +1821,8 @@ class Document (object):
         image_yres = max(0, int(image_elem.attrib.get('yres', 0)))
 
         # Determine which compatibility mode the file should be opened with
+        eotf = image_elem.attrib.get(_ORA_EOTF_ATTR, None)
         if 'compat_handler' in kwargs:
-            eotf = image_elem.attrib.get(_ORA_EOTF_ATTR, None)
             kwargs['compat_handler'](eotf, root_stack_elem)
 
         # Delegate loading of image data to the layers tree itself
@@ -1832,6 +1832,7 @@ class Document (object):
             cache_dir,
             progress,
             x=0, y=0,
+            invert_strokemaps=(eotf is None),
             **kwargs
         )
         assert len(self.layer_stack) > 0

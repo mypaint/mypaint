@@ -345,6 +345,22 @@ class BrushInfo (object):
         # FIXME: Brush groups are stored externally in order.conf,
         # FIXME: is that one redundant?
 
+    @staticmethod
+    def brush_string_inverted_eotf(brush_string):
+        try:
+            brush = json.loads(brush_string)
+            bsett = brush['settings']
+            k = 'base_value'
+            hsv = bsett['color_h'][k], bsett['color_s'][k], bsett['color_v'][k]
+            h, s, v = helpers.transform_hsv(hsv, 1.0 / 2.2)
+            bsett['color_h'][k] = h
+            bsett['color_s'][k] = s
+            bsett['color_v'][k] = v
+            return json.dumps(brush)
+        except Exception:
+            logger.exception("Failed to invert color in brush string")
+            return brush_string
+
     def load_from_string(self, settings_str):
         """Load a setting string, overwriting all current settings."""
 
