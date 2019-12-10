@@ -993,7 +993,7 @@ class RootStackTreeView (Gtk.TreeView):
             markup_template = C_(
                 "Layers dockable: markup for a layer with a description",
                 '<span size="smaller">{layer_name}\n'
-                '<span size="smaller" alpha="50%">{layer_description}</span>'
+                '<span size="smaller">{layer_description}</span>'
                 '</span>'
             )
 
