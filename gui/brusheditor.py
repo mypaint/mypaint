@@ -332,7 +332,10 @@ class BrushEditorWindow (SubWindow):
                 'settings': [
                     'smudge',
                     'smudge_length',
+                    'smudge_length_log',
                     'smudge_radius_log',
+                    'smudge_transparency',
+                    'smudge_bucket'
                 ],
             }, {
                 'id': 'speed',
@@ -395,6 +398,7 @@ class BrushEditorWindow (SubWindow):
                     'Color',
                 ),
                 'settings': [
+                    'paint_mode',
                     'change_color_h',
                     'change_color_l',
                     'change_color_hsl_s',
@@ -402,6 +406,8 @@ class BrushEditorWindow (SubWindow):
                     'change_color_hsv_s',
                     'restore_color',
                     'colorize',
+                    'posterize',
+                    'posterize_num',
                 ],
             }, {
                 'id': 'gridmap',
