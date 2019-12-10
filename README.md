@@ -22,6 +22,44 @@
 * Brush settings stored with each stroke on the canvas
 * Layers, various modes, and layer groups
 
+## Download
+
+[Latest stable release.](https://github.com/mypaint/mypaint/releases/latest)
+
+Releases and prereleases contain links to standalone packages
+(and installers for full releases) for Windows, and AppImage files for Linux.
+
+### Nightly releases
+
+_Using alpha releases comes with its own risks.
+Sometimes bugs can sneak in that causes crashes, so don't be too surprised by that.
+If you come across any, please do [report those bugs][trackerlink] so they can be dealt with._
+
+**Linux**
+
+If you don't want to [build from source](#buildtestinstall),
+the latest AppImage files can be found in a
+[rolling release](https://github.com/mypaint/mypaint-appimage/releases/tag/continuous).
+Just download the `.AppImage` file and make it executable.
+
+**Windows**
+
+The nightly installers and standalone archives can be downloaded from the
+[AppVeyor CI](https://ci.appveyor.com/project/achadwick/mypaint)
+
+Click on the link matching your architecture (32 or 64), then the tab named "Artifacts"
+to get the file list. Only one of the files ending in `.exe` or `.7z` are needed.
+Using the standalone archive (7z) is recommended.
+
+### Chocolatey (windows)
+
+If you prefer to use the Chocolatey repository, both
+[stable releases][choco_prerel] and [pre-releases][choco_stable]
+can be found there.
+
+[choco_prerel]: https://chocolatey.org/packages/mypaint/
+[choco_stable]: https://chocolatey.org/packages/mypaint/1.2.1
+
 ## Build/Test/Install
 
 MyPaint depends on its brushstroke rendering library,
@@ -53,9 +91,10 @@ Please see the [Contributing Guide](CONTRIBUTING.md) for full details of how you
 
 * Website: [mypaint.org](http://mypaint.org/)
 * Twitter: [@MyPaintApp](https://twitter.com/MyPaintApp)
+* Discord: [MyPaint](https://discord.gg/vbB434p)
 * Github:
   - [Development "master" branch](https://github.com/mypaint/mypaint)
-  - [Issue tracker](https://github.com/mypaint/mypaint/issues)
+  - [Issue tracker][trackerlink]
 * Other resources:
   - [Wiki](https://github.com/mypaint/mypaint/wiki)
   - [Community Forums](https://community.mypaint.org)
@@ -66,3 +105,5 @@ Please see the [Contributing Guide](CONTRIBUTING.md) for full details of how you
 MyPaint is Free/Libre/Open Source software.  See [Licenses and
 Copyrights](Licenses.md) for a summary of its licensing.  A list of
 contributors can be found in the about dialog.
+
+[trackerlink]: https://github.com/mypaint/mypaint/issues
