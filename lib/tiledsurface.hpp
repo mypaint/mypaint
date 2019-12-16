@@ -52,8 +52,10 @@ public:
   void set_symmetry_state(bool active,
         float center_x, float center_y,
         enum SymmetryType symmetry_type, int rot_symmetry_lines) {
+    float symmetry_angle = 0.0;
     mypaint_tiled_surface_set_symmetry_state((MyPaintTiledSurface *)c_surface, active,
         center_x, center_y,
+        symmetry_angle,
         (MyPaintSymmetryType)symmetry_type, rot_symmetry_lines);
   }
 
