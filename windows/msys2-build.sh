@@ -84,15 +84,15 @@ install_dependencies() {
         ${PKG_PREFIX}-gtk3 \
         ${PKG_PREFIX}-json-c \
         ${PKG_PREFIX}-lcms2 \
-        ${PKG_PREFIX}-python2-cairo \
+        ${PKG_PREFIX}-python3-cairo \
         ${PKG_PREFIX}-pygobject-devel \
-        ${PKG_PREFIX}-python2-gobject \
-        ${PKG_PREFIX}-python2-numpy \
+        ${PKG_PREFIX}-python3-gobject \
+        ${PKG_PREFIX}-python3-numpy \
         ${PKG_PREFIX}-hicolor-icon-theme \
         ${PKG_PREFIX}-librsvg \
         ${PKG_PREFIX}-gobject-introspection \
-        ${PKG_PREFIX}-python2-nose \
-        ${PKG_PREFIX}-python2-setuptools \
+        ${PKG_PREFIX}-python3-nose \
+        ${PKG_PREFIX}-python3-setuptools \
         ${PKG_PREFIX}-swig \
         ${PKG_PREFIX}-gsettings-desktop-schemas \
         base-devel \
@@ -270,13 +270,13 @@ bundle_mypaint() {
 
 build_for_testing() {
     loginfo "Building MyPaint from source"
-    python2 setup.py build
+    python3 setup.py build
     logok "Build finished."
 }
 
 clean_local_repo() {
     loginfo "Cleaning local build"
-    python2 setup.py clean --all
+    python3 setup.py clean --all
     rm -vf lib/*_wrap.c*
     logok "Clean finished."
 }
@@ -284,8 +284,8 @@ clean_local_repo() {
 install_test(){
     # TODO: Look into this to find out why it is failing.
     loginfo "Testing setup.py managed installation commands"
-    python2 setup.py managed_install
-    python2 setup.py managed_uninstall
+    python3 setup.py managed_install
+    python3 setup.py managed_uninstall
     logok "Install-test finished finished."
 }
 
@@ -295,13 +295,13 @@ install_test(){
 
 run_doctest() {
     loginfo "Running unit tests."
-    python2 setup.py nosetests --tests lib
+    python3 setup.py nosetests --tests lib
     logok "Unit tests done."
 }
 
 run_tests() {
     loginfo "Running conformance tests."
-    python2 setup.py test
+    python3 setup.py test
     logok "Tests done."
 }
 

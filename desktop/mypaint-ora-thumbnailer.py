@@ -1,4 +1,4 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python
 # Thumbnailer for GNOME/Cinnamon Nautilus, and compatible desktops.
 #
 # Copyright (c)  2010 Jon Nordby <jononor@gmail.com>

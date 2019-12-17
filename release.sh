@@ -115,7 +115,7 @@ fi
 # Extract versions, either from the code and .git, or from release_info
 # if it exists.
 
-PYTHONPATH=. python2 lib/meta.py > "./.release_info.TMP"
+PYTHONPATH=. python lib/meta.py > "./.release_info.TMP"
 . "./.release_info.TMP"
 
 # Base version; a string like "1.1.0" for stable releases or "1.1.1-alpha"
@@ -190,14 +190,14 @@ else
     echo "Making debug build inside $exportdir_path ..."
     # TODO: Probably need to update this part for setuptools.
     cd "$exportdir_path"
-    python2 setup.py build
+    python setup.py build
     echo "Running tests ..."
-    python2 tests/test_mypaintlib.py
-    python2 tests/test_compositeops.py
-    python2 tests/test_rendering.py
+    python tests/test_mypaintlib.py
+    python tests/test_compositeops.py
+    python tests/test_rendering.py
     if ! $HEADLESS; then
-        python2 tests/test_performance.py -a -c 1
-        python2 tests/test_memory_leak.py -a -e
+        python tests/test_performance.py -a -c 1
+        python tests/test_memory_leak.py -a -e
     fi
     echo "Done testing."
 fi

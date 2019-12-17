@@ -16,11 +16,11 @@ pkgdesc="Simple drawing & painting program that works well with Wacom-style grap
 depends=(
     "${MINGW_PACKAGE_PREFIX}-libmypaint-git"
     "${MINGW_PACKAGE_PREFIX}-gtk3"
-    "${MINGW_PACKAGE_PREFIX}-python2-numpy"
+    "${MINGW_PACKAGE_PREFIX}-python3-numpy"
     "${MINGW_PACKAGE_PREFIX}-json-c"
     "${MINGW_PACKAGE_PREFIX}-lcms2"
-    "${MINGW_PACKAGE_PREFIX}-python2-cairo"
-    "${MINGW_PACKAGE_PREFIX}-python2-gobject"
+    "${MINGW_PACKAGE_PREFIX}-python3-cairo"
+    "${MINGW_PACKAGE_PREFIX}-python3-gobject"
     "${MINGW_PACKAGE_PREFIX}-adwaita-icon-theme"
     "${MINGW_PACKAGE_PREFIX}-librsvg"
     "${MINGW_PACKAGE_PREFIX}-gcc-libs"
@@ -32,8 +32,8 @@ makedepends=(
     "${MINGW_PACKAGE_PREFIX}-swig"
     "${MINGW_PACKAGE_PREFIX}-pkg-config"
     "${MINGW_PACKAGE_PREFIX}-pygobject-devel"
-    "${MINGW_PACKAGE_PREFIX}-python2"
-    "${MINGW_PACKAGE_PREFIX}-python2-setuptools"
+    "${MINGW_PACKAGE_PREFIX}-python3"
+    "${MINGW_PACKAGE_PREFIX}-python3-setuptools"
     "swig"
 )
 options=('!strip' 'debug' 'staticlibs')
@@ -48,7 +48,7 @@ CXXFLAGS="-Ofast -ftree-vectorize -fopt-info-vec-optimized -funsafe-math-optimiz
 
 pkgver() {
     cd "${srcdir}"/${_realname}
-    eval `python2 lib/meta.py`
+    eval `python3 lib/meta.py`
     echo "$MYPAINT_VERSION_CEREMONIAL" \
       | sed 's,-\(alpha\),\1.'`date +d%Y%m%d`',' \
       | sed 's,-\(beta\|rc\),\1,' \
@@ -62,10 +62,10 @@ prepare() {
 
 build() {
     cd "${srcdir}/${_realname}"
-    ${MINGW_PREFIX}/bin/python2 setup.py clean --all
+    ${MINGW_PREFIX}/bin/python3 setup.py clean --all
 
     REL_BRUSH_PATH=".${MINGW_PREFIX}/share/mypaint-data/2.0/brushes"
-    ${MINGW_PREFIX}/bin/python2 setup.py build_config --brushdir-path="${REL_BRUSH_PATH}" build
+    ${MINGW_PREFIX}/bin/python3 setup.py build_config --brushdir-path="${REL_BRUSH_PATH}" build
 }
 
 package() {
@@ -74,7 +74,7 @@ package() {
     echo "root: ${pkgdir}"
 
     MSYS2_ARG_CONV_EXCL="--prefix=;--install-scripts=;--install-platlib=;--install-purelib=;--install-data=" \
-    ${MINGW_PREFIX}/bin/python2 setup.py install \
+    ${MINGW_PREFIX}/bin/python3 setup.py install \
 	--prefix=${MINGW_PREFIX} --root="${pkgdir}" \
 	--optimize=1 \
 	--skip-build
