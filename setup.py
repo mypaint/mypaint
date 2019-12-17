@@ -104,16 +104,22 @@ class BuildTranslations (Command):
             self._compile_message_catalog(po_path, mo_path)
         tmp_dir = self.get_finalized_command("build").build_temp
 
-        # Create a symlink to the locale directory to enable
+        # Try to create a symlink to the locale directory to enable
         # use of translations when running from the source dir.
-        # For now only enabled on OS's w. py symlinking available.
-        if hasattr(os, "symlink"):
-            base, tmp = os.path.split(tmp_dir)
-            link_dest = os.path.join(base, "locale")
-            link_src = os.path.join(tmp, "locale")
+        base, tmp = os.path.split(tmp_dir)
+        link_dest = os.path.join(base, "locale")
+        link_src = os.path.join(tmp, "locale")
+        try:
             if os.path.exists(link_dest):
                 os.remove(link_dest)
             os.symlink(link_src, link_dest)
+        except Exception:
+            msg = ("Could not make symlink: {symlink}\n"
+                   "In order to get working translations when running "
+                   "from the source directory, a corresponding link or "
+                   "copy needs to be created.")
+            symlink = str(link_dest) + " --> " + str(link_src)
+            print_err(msg.format(symlink=symlink))
 
     def _compile_message_catalog(self, po_file_path, mo_file_path):
         needs_update = not (
