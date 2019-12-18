@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: mypaint v2.0.0-alpha.8-1-g4490f06\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2019-11-26 21:32+0100\n"
-"PO-Revision-Date: 2019-10-04 15:56+0000\n"
+"PO-Revision-Date: 2019-12-19 16:38+0000\n"
 "Last-Translator: Yaron Shahrabani <sh.yaron@gmail.com>\n"
 "Language-Team: Hebrew <https://hosted.weblate.org/projects/mypaint/mypaint/"
 "he/>\n"
@@ -18,7 +18,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=4; plural=(n == 1) ? 0 : ((n == 2) ? 1 : ((n > 10 && "
 "n % 10 == 0) ? 2 : 3));\n"
-"X-Generator: Weblate 3.9-dev\n"
+"X-Generator: Weblate 3.10-dev\n"
 
 #. TRANSLATORS: Name of first column in the button map preferences.
 #. TRANSLATORS: Refers to an action bound to a mod+button combination.
@@ -150,7 +150,7 @@ msgstr "{filename}יש גודל אפסי (w={w}, h={h})"
 #: ../gui/brusheditor.py:90
 msgctxt "brush settings editor: subwindow title"
 msgid "Brush Settings Editor"
-msgstr "עורך הגדרות מברשת"
+msgstr "עורך הגדרות מכחול"
 
 #: ../gui/brusheditor.py:270
 msgctxt "brush settings list: brush metadata texts group"
@@ -220,38 +220,38 @@ msgstr "הגדרות אישיות"
 #: ../gui/brusheditor.py:487
 msgctxt "brush settings editor: save brush: error message"
 msgid "No brush selected, please use “Add As New” instead."
-msgstr "לא נבחרה מברשת, השתמש ב \"הוסף חדש\" במקום."
+msgstr "לא נבחר מכחול, נא להשתמש ב„הוספה כחדש” במקום."
 
 #: ../gui/brusheditor.py:512
 msgctxt "brush settings editor: rename brush: error message"
 msgid "No brush selected!"
-msgstr "לא נבחרה מברשת!"
+msgstr "לא נבחר מכחול!"
 
 #: ../gui/brusheditor.py:521
 msgctxt "brush settings editor: rename brush: dialog title"
 msgid "Rename Brush"
-msgstr "שנה את שם המברשת"
+msgstr "שינוי שם המכחול"
 
 #: ../gui/brusheditor.py:539
 msgctxt "brush settings editor: rename brush: error message"
 msgid "A brush with this name already exists!"
-msgstr "מברשת עם השם הזה כבר קיימת!"
+msgstr "כבר קיים מכחול בשם הזה!"
 
 #: ../gui/brusheditor.py:573
 msgctxt "brush settings editor: delete brush: error message"
 msgid "No brush selected!"
-msgstr "לא נבחרה מברשת!"
+msgstr "לא נבחר מכחול!"
 
 #: ../gui/brusheditor.py:579
 #, python-brace-format
 msgctxt "brush settings editor: delete brush: confirm dialog question"
 msgid "Really delete brush “{brush_name}” from disk?"
-msgstr "האם באמת למחק מברשת “{brush_name}” מהדיסק?"
+msgstr "למחוק את המכחול „{brush_name}” מהכונן?"
 
 #: ../gui/brusheditor.py:698
 msgctxt "brush settings editor: header: fallback name"
 msgid "(Unnamed brush)"
-msgstr "(מברשת ללא שם)"
+msgstr "(מכחול ללא שם)"
 
 #: ../gui/brusheditor.py:705
 #, python-brace-format
@@ -261,22 +261,24 @@ msgstr "{brush_name} [שלא נשמר]"
 
 #: ../gui/brushiconeditor.py:36
 msgid "Brush Icon"
-msgstr "סמל מברשת"
+msgstr "סמל מכחול"
 
 #: ../gui/brushiconeditor.py:37
 msgid "Brush Icon (editing)"
-msgstr "סמל מברשת (עריכה)"
+msgstr "סמל מכחול (עריכה)"
 
 #: ../gui/brushiconeditor.py:74
 msgid "No brush selected"
-msgstr "אין מברשת מסומנת"
+msgstr "לא נבחר מכחול"
 
 #: ../gui/brushiconeditor.py:76
 #, python-format
 msgid ""
 "<b>%s</b>\n"
 "<small>Select a valid brush first</small>"
-msgstr "<b>%s</b><small>בחר מברשת תקפה קודם</small>"
+msgstr ""
+"<b>%s</b>\n"
+"<small>תחילה יש לבחור במכחול תקף</small>"
 
 #: ../gui/brushiconeditor.py:79
 #, python-format
@@ -290,7 +292,9 @@ msgstr "<b>%s</b><i>(הותאם)</i><small>השינויים עדיין לא נש
 msgid ""
 "<b>%s</b> (editing)\n"
 "<small>Paint with any brush or color</small>"
-msgstr "<b>%s</b>(עריכה)<small>צבע עם מברשת או צבע</small>"
+msgstr ""
+"<b>%s</b>(עריכה)\n"
+"<small>צביעה עם מכחול או צבע</small>"
 
 #: ../gui/brushiconeditor.py:85
 #, python-format
@@ -366,23 +370,23 @@ msgstr "קלאסי"
 
 #: ../gui/brushmanager.py:133
 msgid "Set#1"
-msgstr "סט #1"
+msgstr "ערכה מס׳ 1"
 
 #: ../gui/brushmanager.py:134
 msgid "Set#2"
-msgstr "סט #2"
+msgstr "ערכה מס׳ 2"
 
 #: ../gui/brushmanager.py:135
 msgid "Set#3"
-msgstr "סט #3"
+msgstr "ערכה מס׳ 3"
 
 #: ../gui/brushmanager.py:136
 msgid "Set#4"
-msgstr "סט #4"
+msgstr "ערכה מס׳ 4"
 
 #: ../gui/brushmanager.py:137
 msgid "Set#5"
-msgstr "סט #5"
+msgstr "ערכה מס׳ 5"
 
 #: ../gui/brushmanager.py:138
 msgid "Experimental"
@@ -396,7 +400,7 @@ msgstr "חדש"
 #, python-brace-format
 msgctxt "brushpack import failure messages"
 msgid "No file named “{order_conf_file}”. This is not a brushpack."
-msgstr ""
+msgstr "אין קובץ בשם „{order_conf_file}”. זאת אינה ערכת מכחולים."
 
 #: ../gui/brushmanager.py:639
 #, python-brace-format
@@ -405,6 +409,8 @@ msgid ""
 "Brush “{brush_name}” is listed in “{order_conf_file}”, but it does not exist "
 "in the zipfile."
 msgstr ""
+"המכחול „{brush_name}” מופיע תחת „{order_conf_file}” אך הוא לא קיים בקובץ "
+"ה־zip."
 
 #: ../gui/brushmanager.py:652
 #, python-brace-format
@@ -413,40 +419,37 @@ msgid ""
 "Brush “{brush_name}” exists in the zipfile, but it is not listed in "
 "“{order_conf_file}”."
 msgstr ""
+"המכחול „{brush_name}” קיים בקובץ ה־zip, אך אינו מופיע תחת "
+"„{order_conf_file}”."
 
 #: ../gui/brushmanager.py:1258 ../gui/footer.py:62
 msgid "Unknown Brush"
-msgstr "מברשת לא ידוע"
+msgstr "מכחול לא ידוע"
 
 #: ../gui/brushselectionwindow.py:220
-#, fuzzy
 msgctxt "brush group: context menu for a single brush"
 msgid "Add to Favorites"
-msgstr "הוסף למועדפים"
+msgstr "הוספה למועדפים"
 
 #: ../gui/brushselectionwindow.py:227
-#, fuzzy
 msgctxt "brush group: context menu for a single brush"
 msgid "Remove from Favorites"
-msgstr "הסר ממועדפים"
+msgstr "הסרה מהמועדפים"
 
 #: ../gui/brushselectionwindow.py:235
-#, fuzzy
 msgctxt "brush group: context menu for a single brush"
 msgid "Clone"
-msgstr "שכפל"
+msgstr "שכפול"
 
 #: ../gui/brushselectionwindow.py:242
-#, fuzzy
 msgctxt "brush group: context menu for a single brush"
 msgid "Edit Brush Settings"
-msgstr "עריכת הגדרות מברשת"
+msgstr "עריכת הגדרות מכחול"
 
 #: ../gui/brushselectionwindow.py:250
-#, fuzzy
 msgctxt "brush group: context menu for a single brush"
 msgid "Remove from Group"
-msgstr "שינוי שם קבוצה"
+msgstr "הסרה מקבוצה"
 
 #: ../gui/brushselectionwindow.py:290
 #, python-brace-format
@@ -461,20 +464,20 @@ msgid "{original_name} copy {n}"
 msgstr ""
 
 #: ../gui/brushselectionwindow.py:325
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgctxt "brush group: context menu: remove from group"
 msgid "Really remove brush “{brush_name}” from group “{group_name}”?"
-msgstr "האם באמת למחק מברשת “{brush_name}” מהדיסק?"
+msgstr "למחוק את המכחול „{brush_name}” מהקבוצה „{group_name}”?"
 
 #. TRANSLATORS: number of brushes in a brush group, for tooltips
 #: ../gui/brushselectionwindow.py:381
 #, python-format
 msgid "%d brush"
 msgid_plural "%d brushes"
-msgstr[0] "מברשת אחת"
-msgstr[1] "%d מברשות"
-msgstr[2] "%d מברשות"
-msgstr[3] "%d מברשות"
+msgstr[0] "מכחול אחד"
+msgstr[1] "%d מכחולים"
+msgstr[2] "%d מכחולים"
+msgstr[3] "%d מכחולים"
 
 #. TRANSLATORS: properties dialog for the current brush group
 #: ../gui/brushselectionwindow.py:405
@@ -527,12 +530,12 @@ msgstr ""
 #: ../gui/brushselectionwindow.py:510
 msgctxt "brush group export dialog: title"
 msgid "Export Brushes"
-msgstr "לייצא מברשות"
+msgstr "ייצוא מכחולים"
 
 #: ../gui/brushselectionwindow.py:515
 msgctxt "brush group export dialog"
 msgid "MyPaint brush package (*.zip)"
-msgstr "חבילת מברשות MyPaint (*.zip)"
+msgstr "חבילת מכחולי MyPaint‏ (‎*.zip)"
 
 #: ../gui/brushselectionwindow.py:535
 msgctxt "brush groups menu"
@@ -542,12 +545,12 @@ msgstr "קבוצה חדשה…"
 #: ../gui/brushselectionwindow.py:538
 msgctxt "brush groups menu"
 msgid "Import Brushes…"
-msgstr "ייבוא מברשות…"
+msgstr "ייבוא מכחולים…"
 
 #: ../gui/brushselectionwindow.py:542
 msgctxt "brush groups menu"
 msgid "Get More Brushes…"
-msgstr "קבל עוד מברשות…"
+msgstr "הורדת מכחולים נוספים…"
 
 #: ../gui/brushselectionwindow.py:557
 msgctxt "new brush group dialog: title"
@@ -625,9 +628,8 @@ msgid "Pick Hue"
 msgstr ""
 
 #: ../gui/colorpicker.py:273
-#, fuzzy
 msgid "Set the color Hue used for painting"
-msgstr "הגדר את הצבע המשמש לציור"
+msgstr "הגדרת גוון הצבע המשמש לציור"
 
 #: ../gui/colorpicker.py:293
 #, fuzzy
@@ -654,7 +656,7 @@ msgstr "פרטי צבע"
 
 #: ../gui/colors/adjbases.py:872
 msgid "Current brush color, and the color most recently used for painting"
-msgstr "צבע המברשת הנוכחי, ואת הצבע שהיה בשימוש לאחרונה לצביעה"
+msgstr "צבע המכחול הנוכחי ואת הצבע שהיה בשימוש לאחרונה לצביעה"
 
 #: ../gui/colors/hcywheel.py:49
 msgctxt "Online help pages"
@@ -1276,7 +1278,7 @@ msgstr ""
 
 #: ../gui/dialogs.py:163
 msgid "Existing brush"
-msgstr "מברשת קיימת"
+msgstr "מכחול קיים"
 
 #: ../gui/dialogs.py:166
 #, python-brace-format
@@ -1300,7 +1302,7 @@ msgstr ""
 
 #: ../gui/dialogs.py:326
 msgid "Import brush package?"
-msgstr "לייבא חבילת מברשות?"
+msgstr "לייבא חבילת מכחולים?"
 
 #: ../gui/dialogs.py:357
 #, python-brace-format
@@ -1320,7 +1322,7 @@ msgstr ""
 #: ../gui/document.py:455
 #, python-format
 msgid "Restore Brush %d"
-msgstr "שחזור מברשת %d"
+msgstr "לשחזר מכחול %d"
 
 #: ../gui/document.py:457
 #, python-format
@@ -2566,7 +2568,7 @@ msgstr "ניהול פרויקט"
 #: ../gui/meta.py:72
 msgctxt "About dialog: credits: tasks: brush presets and icons"
 msgid "brushes"
-msgstr "מברשות"
+msgstr "מכחולים"
 
 #: ../gui/meta.py:76
 msgctxt "About dialog: credits: tasks: background paper textures"
@@ -5726,7 +5728,7 @@ msgstr "חלון"
 #: ../po/tmp/resources.xml.h:240
 msgctxt "Menu→Brush (labels)"
 msgid "Brush"
-msgstr "מברשת"
+msgstr "מכחול"
 
 #: ../po/tmp/resources.xml.h:241
 msgctxt "Menu→Brush (labels)"
@@ -5746,7 +5748,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:244
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
 msgid "Change Brush…"
-msgstr "שנה מברשת…"
+msgstr "החלפת מכחול…"
 
 #: ../po/tmp/resources.xml.h:245
 msgctxt "Accel Editor (descriptions)"
@@ -5779,7 +5781,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:250
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
 msgid "Get More Brushes…"
-msgstr "קבל עוד מברשות…"
+msgstr "הורדת מכחולים נוספים…"
 
 #: ../po/tmp/resources.xml.h:251
 msgctxt "Accel Editor (descriptions)"
@@ -5934,7 +5936,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:281
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
 msgid "Brush Settings Editor"
-msgstr "עורך הגדרות מברשת"
+msgstr "עורך הגדרות מכחול"
 
 #: ../po/tmp/resources.xml.h:282
 msgctxt "Accel Editor (descriptions)"
@@ -6131,7 +6133,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:319
 msgctxt "Menu→Window (labels), Toolbar (labels), Accel Editor (labels)"
 msgid "Brush & Color History Panel"
-msgstr "מסך היסטוריית המברשת והצבע"
+msgstr "לוח היסטוריית מכחול וצבע"
 
 #: ../po/tmp/resources.xml.h:320
 msgctxt "Accel Editor (descriptions)"
@@ -6141,7 +6143,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:321
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
 msgid "Recent Brushes & Colors"
-msgstr "מברשות וצבע שהשתמשת בהם לאחרונה"
+msgstr "מכחולים וצבעים ששימשו אותך לאחרונה"
 
 #: ../po/tmp/resources.xml.h:322
 msgctxt "Accel Editor (descriptions)"
