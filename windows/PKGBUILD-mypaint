@@ -16,6 +16,7 @@ pkgdesc="Simple drawing & painting program that works well with Wacom-style grap
 depends=(
     "${MINGW_PACKAGE_PREFIX}-libmypaint-git"
     "${MINGW_PACKAGE_PREFIX}-gtk3"
+    "${MINGW_PACKAGE_PREFIX}-python3"
     "${MINGW_PACKAGE_PREFIX}-python3-numpy"
     "${MINGW_PACKAGE_PREFIX}-json-c"
     "${MINGW_PACKAGE_PREFIX}-lcms2"
