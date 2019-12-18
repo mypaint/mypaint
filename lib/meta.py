@@ -415,8 +415,4 @@ def _get_release_info_script(gitprefix="gitexport"):
 # makes.
 
 if __name__ == '__main__':
-    import doctest
-    if doctest.testmod()[0] == 0:
-        print(_get_release_info_script(), end=' ')
-    else:
-        exit(1)
+    print(_get_release_info_script(), end=' ')
