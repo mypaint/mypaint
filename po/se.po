@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mypaint v2.0.0-alpha.8-1-g4490f06\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-12-20 08:35+0100\n"
+"POT-Creation-Date: 2019-12-20 19:50+0100\n"
 "PO-Revision-Date: 2019-02-27 14:19+0000\n"
 "Last-Translator: glixx <roman_romul@mail.ru>\n"
 "Language-Team: Northern Sami <https://hosted.weblate.org/projects/mypaint/"
@@ -24,11 +24,16 @@ msgstr ""
 msgid "Action"
 msgstr ""
 
-#: ../gui/accelmap.py:113
+#. TRANSLATORS: Refers to a keyboard key combination, such as "Ctrl+G".
+#. TRANSLATORS: Second column label in the keybinding preferences tab.
+#: ../gui/accelmap.py:115
 msgid "Key combination"
 msgstr ""
 
-#: ../gui/accelmap.py:294
+#. TRANSLATORS: Window title for the keybinding dialog. The %s is
+#. TRANSLATORS: replaced with the name of the action that the key
+#. TRANSLATORS: combination is being bound to, e.g. "Fit to View".
+#: ../gui/accelmap.py:299
 #, python-format
 msgid "Edit Key for '%s'"
 msgstr ""
@@ -37,27 +42,42 @@ msgstr ""
 #. TRANSLATORS: It's a label for the action part of the combination.
 #. TRANSLATORS: Probably always the same as the column name
 #. TRANSLATORS: "Action" with a trailing ":" or lang-specific symbol
-#: ../gui/accelmap.py:325 ../gui/buttonmap.py:502
+#: ../gui/accelmap.py:330 ../gui/buttonmap.py:502
 msgid "Action:"
 msgstr ""
 
-#: ../gui/accelmap.py:338
+#. TRANSLATORS: Path refers to an "action path" that is part of an
+#. TRANSLATORS: accelerator (keybinding). Found in the dialog for
+#. TRANSLATORS: adding new keybindings. This is a technical field
+#. TRANSLATORS: that probably shouldn't even be part of the gui,
+#. TRANSLATORS: so don't worry too much about the translation.
+#: ../gui/accelmap.py:348
 msgid "Path:"
 msgstr ""
 
-#: ../gui/accelmap.py:349
+#. TRANSLATORS: Key refers to a key on the keyboard, this is a label
+#. TRANSLATORS: in the dialog for adding new keyboard bindings.
+#: ../gui/accelmap.py:361
 msgid "Key:"
 msgstr ""
 
-#: ../gui/accelmap.py:387
+#. TRANSLATORS: "keys" refers to keyboard keys, assignment refers
+#. TRANSLATORS: to an assignment of a keyboard key combination to
+#. TRANSLATORS: an action. This is an instructive message in the
+#. TRANSLATORS: keybinding dialog (Preferences | Keys).
+#: ../gui/accelmap.py:403
 msgid "Press keys to update this assignment"
 msgstr ""
 
-#: ../gui/accelmap.py:442
+#. TRANSLATORS: Part of the keybinding dialog, refers
+#. TRANSLATORS: to an action bound to a key combination.
+#: ../gui/accelmap.py:460
 msgid "Unknown Action"
 msgstr ""
 
-#: ../gui/accelmap.py:451
+#. TRANSLATORS: Warning message when attempting to assign a
+#. TRANSLATORS: keyboard combination that is already used.
+#: ../gui/accelmap.py:471
 #, python-brace-format
 msgid ""
 "<b>{accel} is already in use for '{action}'. The existing assignment will be "
