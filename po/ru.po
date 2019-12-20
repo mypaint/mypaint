@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mypaint v2.0.0-alpha.11-2-g0673fe8\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-11-26 21:32+0100\n"
+"POT-Creation-Date: 2019-12-20 08:35+0100\n"
 "PO-Revision-Date: 2019-12-04 20:05+0000\n"
 "Last-Translator: Nikolay Korotkiy <sikmir@gmail.com>\n"
 "Language-Team: Russian <https://hosted.weblate.org/projects/mypaint/mypaint/"
@@ -20,8 +20,8 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<="
-"4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
+"Plural-Forms: nplurals=3; plural=n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
+"%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
 "X-Generator: Weblate 3.10-dev\n"
 
 #. TRANSLATORS: Name of first column in the button map preferences.
@@ -72,7 +72,7 @@ msgstr ""
 "<b>{accel} уже используется для '{action}'. Существующая привязка будет "
 "замещена.</b>"
 
-#: ../gui/application.py:598
+#: ../gui/application.py:615
 #, python-brace-format
 msgid "Open Folder “{folder_basename}”…"
 msgstr "Открыть папку “{folder_basename}”…"
@@ -80,7 +80,7 @@ msgstr "Открыть папку “{folder_basename}”…"
 #. ... so that the main actions end up in the bottom-right of the
 #. dialog (reversed for rtl scripts), where the eye ends up
 #. naturally at the end of the flow.
-#: ../gui/application.py:606
+#: ../gui/application.py:623
 msgid "OK"
 msgstr "OK"
 
@@ -121,7 +121,7 @@ msgstr "Сохранить по умолчанию"
 msgid "Pattern"
 msgstr "Текстура"
 
-#: ../gui/backgroundwindow.py:86 ../lib/modes.py:102
+#: ../gui/backgroundwindow.py:86 ../lib/modes.py:110
 msgid "Color"
 msgstr "Цвет"
 
@@ -191,80 +191,80 @@ msgctxt "brush settings list: setting group"
 msgid "Smudge"
 msgstr "Размазывание"
 
-#: ../gui/brusheditor.py:341
+#: ../gui/brusheditor.py:344
 msgctxt "brush settings list: setting group"
 msgid "Speed"
 msgstr "Скорость"
 
-#: ../gui/brusheditor.py:355
+#: ../gui/brusheditor.py:358
 msgctxt "brush settings list: setting group"
 msgid "Directional Offsets"
 msgstr ""
 
-#: ../gui/brusheditor.py:373
+#: ../gui/brusheditor.py:376
 msgctxt "brush settings list: setting group"
 msgid "Tracking"
 msgstr "Отслеживание указателя"
 
-#: ../gui/brusheditor.py:384
+#: ../gui/brusheditor.py:387
 msgctxt "brush settings list: setting group"
 msgid "Stroke"
 msgstr "Штрих"
 
-#: ../gui/brusheditor.py:395
+#: ../gui/brusheditor.py:398
 msgctxt "brush settings list: setting group"
 msgid "Color"
 msgstr "Цвет"
 
-#: ../gui/brusheditor.py:410
+#: ../gui/brusheditor.py:416
 msgctxt "brush settings list: setting group"
 msgid "GridMap"
 msgstr "Сетка"
 
-#: ../gui/brusheditor.py:421
+#: ../gui/brusheditor.py:427
 msgctxt "brush settings list: setting group"
 msgid "Custom"
 msgstr "Пользовательский"
 
-#: ../gui/brusheditor.py:487
+#: ../gui/brusheditor.py:493
 msgctxt "brush settings editor: save brush: error message"
 msgid "No brush selected, please use “Add As New” instead."
 msgstr ""
 "Кисть не выбрана. Пожалуйста, используйте вместо этого \"Добавить как новую"
 "\"."
 
-#: ../gui/brusheditor.py:512
+#: ../gui/brusheditor.py:518
 msgctxt "brush settings editor: rename brush: error message"
 msgid "No brush selected!"
 msgstr "Кисть не выбрана!"
 
-#: ../gui/brusheditor.py:521
+#: ../gui/brusheditor.py:527
 msgctxt "brush settings editor: rename brush: dialog title"
 msgid "Rename Brush"
 msgstr "Переименовать кисть"
 
-#: ../gui/brusheditor.py:539
+#: ../gui/brusheditor.py:545
 msgctxt "brush settings editor: rename brush: error message"
 msgid "A brush with this name already exists!"
 msgstr "Кисть с таким именем уже существует!"
 
-#: ../gui/brusheditor.py:573
+#: ../gui/brusheditor.py:579
 msgctxt "brush settings editor: delete brush: error message"
 msgid "No brush selected!"
 msgstr "Кисть не выбрана!"
 
-#: ../gui/brusheditor.py:579
+#: ../gui/brusheditor.py:585
 #, python-brace-format
 msgctxt "brush settings editor: delete brush: confirm dialog question"
 msgid "Really delete brush “{brush_name}” from disk?"
 msgstr "Действительно удалить кисть “{brush_name}”?"
 
-#: ../gui/brusheditor.py:698
+#: ../gui/brusheditor.py:704
 msgctxt "brush settings editor: header: fallback name"
 msgid "(Unnamed brush)"
 msgstr "(Безымянная кисть)"
 
-#: ../gui/brusheditor.py:705
+#: ../gui/brusheditor.py:711
 #, python-brace-format
 msgctxt "brush settings editor: header: is-modified hint"
 msgid "{brush_name} [unsaved]"
@@ -363,61 +363,61 @@ msgstr "Сохранить"
 msgid "Save this preview icon, and finish editing"
 msgstr "Сохранить и закончить редактирование"
 
-#: ../gui/brushmanager.py:128
+#: ../gui/brushmanager.py:129
 msgid "Lost & Found"
 msgstr "Потерянные"
 
-#: ../gui/brushmanager.py:129
+#: ../gui/brushmanager.py:130
 msgid "Deleted"
 msgstr "Удалённые"
 
-#: ../gui/brushmanager.py:130
+#: ../gui/brushmanager.py:131
 msgid "Favorites"
 msgstr "Избранное"
 
-#: ../gui/brushmanager.py:131
+#: ../gui/brushmanager.py:132
 msgid "Ink"
 msgstr "Чернила"
 
-#: ../gui/brushmanager.py:132
+#: ../gui/brushmanager.py:133
 msgid "Classic"
 msgstr "Классические"
 
-#: ../gui/brushmanager.py:133
+#: ../gui/brushmanager.py:134
 msgid "Set#1"
 msgstr "Набор 1"
 
-#: ../gui/brushmanager.py:134
+#: ../gui/brushmanager.py:135
 msgid "Set#2"
 msgstr "Набор 2"
 
-#: ../gui/brushmanager.py:135
+#: ../gui/brushmanager.py:136
 msgid "Set#3"
 msgstr "Набор 3"
 
-#: ../gui/brushmanager.py:136
+#: ../gui/brushmanager.py:137
 msgid "Set#4"
 msgstr "Набор 4"
 
-#: ../gui/brushmanager.py:137
+#: ../gui/brushmanager.py:138
 msgid "Set#5"
 msgstr "Набор 5"
 
-#: ../gui/brushmanager.py:138
+#: ../gui/brushmanager.py:139
 msgid "Experimental"
 msgstr "Экспериментальные"
 
-#: ../gui/brushmanager.py:139
+#: ../gui/brushmanager.py:140
 msgid "New"
 msgstr "Создать"
 
-#: ../gui/brushmanager.py:614
+#: ../gui/brushmanager.py:664
 #, python-brace-format
 msgctxt "brushpack import failure messages"
 msgid "No file named “{order_conf_file}”. This is not a brushpack."
 msgstr "Нет файла под названием “{order_conf_file}„. Это не кисти."
 
-#: ../gui/brushmanager.py:639
+#: ../gui/brushmanager.py:689
 #, python-brace-format
 msgctxt "brushpack import failure messages"
 msgid ""
@@ -427,7 +427,7 @@ msgstr ""
 "Кисть “{brush_name}„ отображается в списке “{order_conf_file}», но не в "
 "архиве."
 
-#: ../gui/brushmanager.py:652
+#: ../gui/brushmanager.py:702
 #, python-brace-format
 msgctxt "brushpack import failure messages"
 msgid ""
@@ -437,7 +437,7 @@ msgstr ""
 "Кисть “{brush_name}„ отображается в архиве, но не указана в "
 "“{order_conf_file}„."
 
-#: ../gui/brushmanager.py:1258 ../gui/footer.py:62
+#: ../gui/brushmanager.py:1313 ../gui/footer.py:62
 msgid "Unknown Brush"
 msgstr "Неизвестная кисть"
 
@@ -1180,6 +1180,95 @@ msgstr ""
 "Выбрать цвет с помощью HSV наклонных перекрещивающих лучеобразную чашу с "
 "цветом."
 
+#: ../gui/compatibility.py:40
+msgctxt "File Load Compat Options"
+msgid "Based on file"
+msgstr ""
+
+#. This refers to a version of MyPaint like 1.0, 1.1, 1.2 etc
+#: ../gui/compatibility.py:41 ../gui/drawwindow.py:276
+#: ../po/tmp/preferenceswindow.glade.h:113
+#, fuzzy
+msgctxt "Prefs Dialog|Compatibility"
+msgid "1.x"
+msgstr "1.0"
+
+#. This refers to a version of MyPaint like 1.0, 1.1, 1.2 etc
+#: ../gui/compatibility.py:42 ../po/tmp/preferenceswindow.glade.h:117
+msgctxt "Prefs Dialog|Compatibility"
+msgid "2.x"
+msgstr ""
+
+#. TRANSLATORS: This is probably a rare warning, and it will not
+#. TRANSLATORS: really be shown at all before the release of 3.0
+#: ../gui/compatibility.py:50
+#, python-brace-format
+msgctxt "file compatibility warning"
+msgid ""
+"“{filename}” was saved with <b>MyPaint {new_version}</b>. It may be "
+"<b>incompatible</b> with <b>MyPaint {current_version}</b>.\n"
+"\n"
+"Editing this file with this version of MyPaint is not guaranteed to work, "
+"and may even result in crashes.\n"
+"\n"
+"It is <b>strongly recommended</b> to upgrade to <b>MyPaint {new_version}</b> "
+"or newer if you want to edit this file!"
+msgstr ""
+
+#: ../gui/compatibility.py:60
+#, python-brace-format
+msgctxt "file compatibility warning"
+msgid ""
+"“{filename}” was saved with <b>MyPaint {new_version}</b>. It may not be "
+"fully compatible with <b>Mypaint {current_version}</b>.\n"
+"\n"
+"Saving it with this version of MyPaint may result in data that is only "
+"supported by the newer version being lost.\n"
+"\n"
+"To be safe you should upgrade to MyPaint {new_version} or newer."
+msgstr ""
+
+#: ../gui/compatibility.py:71
+msgctxt "file compatibility question"
+msgid "Do you want to open this file anyway?"
+msgstr ""
+
+#: ../gui/compatibility.py:135
+msgctxt "Version compat warning toggle"
+msgid "Don't show this warning again"
+msgstr ""
+
+#. TRANSLATORS: One of the options for the
+#. TRANSLATORS: "When Not Specified in File"
+#. TRANSLATORS: compatibility setting.
+#: ../gui/compatibility.py:211
+msgctxt "Prefs Dialog|Compatibility"
+msgid "Always open in 1.x mode"
+msgstr ""
+
+#. TRANSLATORS: One of the options for the
+#. TRANSLATORS: "When Not Specified in File"
+#. TRANSLATORS: compatibility setting.
+#: ../gui/compatibility.py:220
+msgctxt "Prefs Dialog|Compatibility"
+msgid "Always open in 2.x mode"
+msgstr ""
+
+#. TRANSLATORS: One of the options for the
+#. TRANSLATORS: "When Not Specified in File"
+#. TRANSLATORS: compatibility setting.
+#: ../gui/compatibility.py:229
+msgctxt "Prefs Dialog|Compatibility"
+msgid "Open in 1.x mode unless file contains pigment layers"
+msgstr ""
+
+#. TRANSLATORS: This is a label for a dropdown menu in the
+#. TRANSLATORS: file chooser dialog when loading .ora files.
+#: ../gui/compatibility.py:532
+msgctxt "File Load Compat Options"
+msgid "Compatibility mode:"
+msgstr ""
+
 #: ../gui/device.py:48
 msgctxt "prefs: device's type label"
 msgid "Cursor/puck"
@@ -1448,61 +1537,61 @@ msgid "Vacuum: discarded {removed} of {total} tiles."
 msgstr "Вакуум: удалено {removed} из {total} плиток."
 
 #. TRANSLATORS: window title for use with a filename
-#: ../gui/drawwindow.py:269
+#: ../gui/drawwindow.py:270
 #, python-format
 msgid "%s - MyPaint"
 msgstr "%s - MyPaint"
 
 #. TRANSLATORS: window title for use without a filename
-#: ../gui/drawwindow.py:272 ../po/tmp/mypaint.glade.h:1
+#: ../gui/drawwindow.py:273 ../po/tmp/mypaint.glade.h:1
 msgid "MyPaint"
 msgstr "MyPaint"
 
-#: ../gui/drawwindow.py:289
+#: ../gui/drawwindow.py:296
 msgctxt "Open dragged file confirm dialog: title"
 msgid "Open Dragged File?"
 msgstr "Открыть перетаскиваемый файл?"
 
-#: ../gui/drawwindow.py:293
+#: ../gui/drawwindow.py:300
 msgctxt "Open dragged file confirm dialog: continue button"
 msgid "_Open"
 msgstr "_Открыть"
 
-#: ../gui/drawwindow.py:486
+#: ../gui/drawwindow.py:493
 msgid "Set current color"
 msgstr "Выбрать текущий цвет"
 
-#: ../gui/drawwindow.py:531
+#: ../gui/drawwindow.py:538
 msgid "Leave Fullscreen Mode"
 msgstr "Покинуть полноэкранный режим"
 
-#: ../gui/drawwindow.py:532
+#: ../gui/drawwindow.py:539
 msgid "Leave Fullscreen"
 msgstr "Покинуть полноэкранный режим"
 
-#: ../gui/drawwindow.py:535
+#: ../gui/drawwindow.py:542
 msgid "Enter Fullscreen Mode"
 msgstr "Перейти в полноэкранный режим"
 
-#: ../gui/drawwindow.py:536
+#: ../gui/drawwindow.py:543
 msgid "Fullscreen"
 msgstr "Во весь экран"
 
-#: ../gui/drawwindow.py:675
+#: ../gui/drawwindow.py:682
 msgctxt "Quit confirm dialog: title"
 msgid "Really Quit?"
 msgstr "Действительно выйти?"
 
-#: ../gui/drawwindow.py:679
+#: ../gui/drawwindow.py:686
 msgctxt "Quit confirm dialog: continue button"
 msgid "_Quit"
 msgstr "_Выход"
 
-#: ../gui/drawwindow.py:697
+#: ../gui/drawwindow.py:704
 msgid "Import brush package…"
 msgstr "Импортировать пакет кистей…"
 
-#: ../gui/drawwindow.py:698
+#: ../gui/drawwindow.py:705
 msgid "MyPaint brush package (*.zip)"
 msgstr "Пакет кистей MyPaint (*.zip)"
 
@@ -1575,93 +1664,93 @@ msgstr "Значок"
 msgid "no description"
 msgstr "нет описания"
 
-#: ../gui/filehandling.py:126
+#: ../gui/filehandling.py:127
 #, python-brace-format
 msgctxt "Document I/O: message shown while working"
 msgid "Loading {files_summary}…"
 msgstr "Загрузка {files_summary}…"
 
-#: ../gui/filehandling.py:130
+#: ../gui/filehandling.py:131
 #, python-brace-format
 msgctxt "Document I/O: message shown while working"
 msgid "Importing layers from {files_summary}…"
 msgstr "Импорт слоев из {files_summary}.…"
 
-#: ../gui/filehandling.py:134
+#: ../gui/filehandling.py:135
 #, python-brace-format
 msgctxt "Document I/O: message shown while working"
 msgid "Saving {files_summary}…"
 msgstr "Сохранение {files_summary}…"
 
-#: ../gui/filehandling.py:138
+#: ../gui/filehandling.py:139
 #, python-brace-format
 msgctxt "Document I/O: message shown while working"
 msgid "Exporting to {files_summary}…"
 msgstr "Экспорт в {files_summary}…"
 
-#: ../gui/filehandling.py:145
+#: ../gui/filehandling.py:146
 #, python-brace-format
 msgctxt "Document I/O: fail message"
 msgid "Failed to export to {files_summary}."
 msgstr "Экспорт в {files_summary} не удался."
 
-#: ../gui/filehandling.py:149
+#: ../gui/filehandling.py:150
 #, python-brace-format
 msgctxt "Document I/O: fail message"
 msgid "Failed to save {files_summary}."
 msgstr "Сохранение {files_summary} не удалось."
 
-#: ../gui/filehandling.py:153
+#: ../gui/filehandling.py:154
 #, python-brace-format
 msgctxt "Document I/O: fail message"
 msgid "Could not import layers from {files_summary}."
 msgstr "Невозможно импортировать слои из {files_summary}."
 
-#: ../gui/filehandling.py:157
+#: ../gui/filehandling.py:158
 #, python-brace-format
 msgctxt "Document I/O: fail message"
 msgid "Could not load {files_summary}."
 msgstr "Невозможно загрузить {files_summary}."
 
-#: ../gui/filehandling.py:164
+#: ../gui/filehandling.py:165
 msgctxt "Document I/O: fail dialog title"
 msgid "Save failed"
 msgstr "Ошибка сохранения"
 
-#: ../gui/filehandling.py:168
+#: ../gui/filehandling.py:169
 msgctxt "Document I/O: fail dialog title"
 msgid "Export failed"
 msgstr "Ошибка экспорта"
 
-#: ../gui/filehandling.py:172
+#: ../gui/filehandling.py:173
 msgctxt "Document I/O: fail dialog title"
 msgid "Import Layers failed"
 msgstr "Ошибка импорта слоя"
 
-#: ../gui/filehandling.py:176
+#: ../gui/filehandling.py:177
 msgctxt "Document I/O: fail dialog title"
 msgid "Open failed"
 msgstr "Открыть не удалось"
 
-#: ../gui/filehandling.py:183
+#: ../gui/filehandling.py:184
 #, python-brace-format
 msgctxt "Document I/O: success"
 msgid "Exported to {files_summary} successfully."
 msgstr "Экспорт в {files_summary} успешно завершен."
 
-#: ../gui/filehandling.py:187
+#: ../gui/filehandling.py:188
 #, python-brace-format
 msgctxt "Document I/O: success"
 msgid "Saved {files_summary} successfully."
 msgstr "{files_summary} успешно сохранен."
 
-#: ../gui/filehandling.py:191
+#: ../gui/filehandling.py:192
 #, python-brace-format
 msgctxt "Document I/O: success"
 msgid "Imported layers from {files_summary}."
 msgstr "Импортированные слои из {files_summary}."
 
-#: ../gui/filehandling.py:195
+#: ../gui/filehandling.py:196
 #, python-brace-format
 msgctxt "Document I/O: success"
 msgid "Loaded {files_summary}."
@@ -1669,7 +1758,7 @@ msgstr "{files_summary} успешно загружен."
 
 #. TRANSLATORS: formatting for {files_summary} for multiple files.
 #. TRANSLATORS: corresponding msgid for single files: "“{basename}”"
-#: ../gui/filehandling.py:214
+#: ../gui/filehandling.py:215
 #, python-brace-format
 msgid "{n} file"
 msgid_plural "{n} files"
@@ -1677,226 +1766,226 @@ msgstr[0] "{n} файл"
 msgstr[1] "{n} файла"
 msgstr[2] "{n} файлов"
 
-#: ../gui/filehandling.py:222
+#: ../gui/filehandling.py:223
 #, python-brace-format
 msgctxt "Document I/O: the {files_summary} for a single file"
 msgid "“{basename}”"
 msgstr "“{basename}”"
 
-#: ../gui/filehandling.py:427
+#: ../gui/filehandling.py:432
 msgctxt "save/load dialogs: filter patterns"
 msgid "All Recognized Formats"
 msgstr "Все Распознанные форматы"
 
-#: ../gui/filehandling.py:432
+#: ../gui/filehandling.py:437
 msgctxt "save/load dialogs: filter patterns"
 msgid "OpenRaster (*.ora)"
 msgstr "OpenRaster (*.ora)"
 
-#: ../gui/filehandling.py:437
+#: ../gui/filehandling.py:442
 msgctxt "save/load dialogs: filter patterns"
 msgid "PNG (*.png)"
 msgstr "PNG (*.png)"
 
-#: ../gui/filehandling.py:442
+#: ../gui/filehandling.py:447
 msgctxt "save/load dialogs: filter patterns"
 msgid "JPEG (*.jpg; *.jpeg)"
 msgstr "JPEG (*.jpg; *.jpeg)"
 
-#: ../gui/filehandling.py:490
+#: ../gui/filehandling.py:495
 msgctxt "save dialogs: save formats and options"
 msgid "By extension (prefer default format)"
 msgstr "По расширению (преимущественно стандартный формат)"
 
-#: ../gui/filehandling.py:494
+#: ../gui/filehandling.py:499
 msgctxt "save dialogs: save formats and options"
 msgid "OpenRaster (*.ora)"
 msgstr "OpenRaster (*.ora)"
 
-#: ../gui/filehandling.py:498
+#: ../gui/filehandling.py:503
 msgctxt "save dialogs: save formats and options"
 msgid "PNG, respecting “Show Background” (*.png)"
 msgstr "PNG с непрозрачным фоном (*.png)"
 
-#: ../gui/filehandling.py:502
+#: ../gui/filehandling.py:507
 msgctxt "save dialogs: save formats and options"
 msgid "PNG, solid RGB (*.png)"
 msgstr "PNG, сплошной RGB (*.png)"
 
-#: ../gui/filehandling.py:506
+#: ../gui/filehandling.py:511
 msgctxt "save dialogs: save formats and options"
 msgid "PNG, transparent RGBA (*.png)"
 msgstr "Прозрачный PNG (*.png)"
 
-#: ../gui/filehandling.py:510
+#: ../gui/filehandling.py:515
 msgctxt "save dialogs: save formats and options"
 msgid "Multiple PNGs, by layer (*.NUM.png)"
 msgstr "Серия PNG, по слою(*.NUM.png)"
 
-#: ../gui/filehandling.py:514
+#: ../gui/filehandling.py:519
 msgctxt "save dialogs: save formats and options"
 msgid "Multiple PNGs, by view (*.NAME.png)"
 msgstr "Серия PNG, по просмотру (*.XXX.png)"
 
-#: ../gui/filehandling.py:518
+#: ../gui/filehandling.py:523
 msgctxt "save dialogs: save formats and options"
 msgid "JPEG 90% quality (*.jpg; *.jpeg)"
 msgstr "JPEG с качеством 90% (*.jpg; *.jpeg)"
 
-#: ../gui/filehandling.py:576
+#: ../gui/filehandling.py:581
 msgctxt "Dialogs (window title): File→Export…"
 msgid "Export"
 msgstr "Экспортировать"
 
-#: ../gui/filehandling.py:581
+#: ../gui/filehandling.py:586
 msgctxt "Dialogs (window title): File→Save As…"
 msgid "Save As"
 msgstr "Сохранить как…"
 
-#: ../gui/filehandling.py:601
+#: ../gui/filehandling.py:606
 msgctxt "save dialogs: formats and options: (label)"
 msgid "Format to save as:"
 msgstr "Формат для сохранения:"
 
-#: ../gui/filehandling.py:668
+#: ../gui/filehandling.py:673
 msgctxt ""
 "Destructive action confirm dialog: fallback title (normally overridden)"
 msgid "Really Continue?"
 msgstr "Вы действительно хотите продолжить?"
 
-#: ../gui/filehandling.py:701
+#: ../gui/filehandling.py:706
 msgctxt "Destructive action confirm dialog: cancel button"
 msgid "_Cancel"
 msgstr "_Отмена"
 
-#: ../gui/filehandling.py:705
+#: ../gui/filehandling.py:710
 msgctxt "Destructive action confirm dialog: save checkbox"
 msgid "_Save to Scraps first"
 msgstr "Сохранить как _черновик"
 
-#: ../gui/filehandling.py:711
+#: ../gui/filehandling.py:716
 msgctxt ""
 "Destructive action confirm dialog: fallback continue button (normally "
 "overridden)"
 msgid "Co_ntinue"
 msgstr "Про_должить"
 
-#: ../gui/filehandling.py:734
+#: ../gui/filehandling.py:739
 #, python-brace-format
 msgctxt "Destructive action confirm dialog: warning message"
 msgid "You risk losing {abbreviated_time} of unsaved painting."
 msgstr "Вы потеряете {abbreviated_time} несохранённой картины."
 
-#: ../gui/filehandling.py:799
+#: ../gui/filehandling.py:804
 msgctxt "File→New: confirm dialog: title question"
 msgid "New Canvas?"
 msgstr "Новый холст?"
 
-#: ../gui/filehandling.py:803
+#: ../gui/filehandling.py:808
 msgctxt "File→New: confirm dialog: continue button"
 msgid "_New Canvas"
 msgstr "_Новый Холст"
 
-#: ../gui/filehandling.py:1006
+#: ../gui/filehandling.py:1024
 msgctxt "File→Open: confirm dialog: title question"
 msgid "Open File?"
 msgstr "Открыть Файл?"
 
-#: ../gui/filehandling.py:1010
+#: ../gui/filehandling.py:1028
 msgctxt "File→Open: confirm dialog: continue button"
 msgid "_Open…"
 msgstr "_Открыть…"
 
-#: ../gui/filehandling.py:1018
+#: ../gui/filehandling.py:1036
 msgctxt "File→Open: file chooser dialog: title"
 msgid "Open File"
 msgstr "Открыть Файл"
 
-#: ../gui/filehandling.py:1058
+#: ../gui/filehandling.py:1084
 msgctxt "load dialogs: title"
 msgid "Open Scratchpad…"
 msgstr "Открыть блокнот…"
 
-#: ../gui/filehandling.py:1100
+#: ../gui/filehandling.py:1126
 msgctxt "Layers→Import Layers: files-chooser dialog: title"
 msgid "Import Layers"
 msgstr "Импортированный Слой"
 
-#: ../gui/filehandling.py:1407
+#: ../gui/filehandling.py:1433
 msgctxt "File→Open Recent→* confirm dialog: title"
 msgid "Open File?"
 msgstr "Открыть Файл?"
 
-#: ../gui/filehandling.py:1411
+#: ../gui/filehandling.py:1437
 msgctxt "File→Open Recent→* confirm dialog: continue button"
 msgid "_Open"
 msgstr "_Открыть"
 
-#: ../gui/filehandling.py:1426
+#: ../gui/filehandling.py:1452
 msgctxt "File→Open Most Recent confirm dialog: title"
 msgid "Open Most Recent File?"
 msgstr "Открыть недавний файл?"
 
-#: ../gui/filehandling.py:1431
+#: ../gui/filehandling.py:1457
 msgctxt "File→Open Most Recent→* confirm dialog: continue button"
 msgid "_Open"
 msgstr "_Открыть"
 
-#: ../gui/filehandling.py:1445
+#: ../gui/filehandling.py:1471
 msgctxt "File→Open Next/Prev Scrap: error message"
 msgid "There are no scrap files yet. Try saving one first."
 msgstr "У вас ещё нет файлов черновиков. Сохраните один для начала."
 
-#: ../gui/filehandling.py:1454
+#: ../gui/filehandling.py:1480
 msgctxt "File→Open Next/Prev Scrap confirm dialog: title"
 msgid "Open Next Scrap?"
 msgstr "Открыть следующий черновик?"
 
-#: ../gui/filehandling.py:1462
+#: ../gui/filehandling.py:1488
 msgctxt "File→Open Next/Prev Scrap confirm dialog: title"
 msgid "Open Previous Scrap?"
 msgstr "Открыть предыдущий черновик?"
 
-#: ../gui/filehandling.py:1471
+#: ../gui/filehandling.py:1497
 msgctxt "File→Open Next/Prev Scrap confirm dialog: continue button"
 msgid "_Open"
 msgstr "_Открыть"
 
-#: ../gui/filehandling.py:1486
+#: ../gui/filehandling.py:1512
 msgctxt "File→Revert: status message: canvas has no filename yet"
 msgid "Cannot revert: canvas has not been saved to a file yet."
 msgstr "Невозможно обратить: холст не сохранён в файл."
 
-#: ../gui/filehandling.py:1493
+#: ../gui/filehandling.py:1519
 msgctxt "File→Revert confirm dialog: title"
 msgid "Revert Changes?"
 msgstr "Отменить изменения?"
 
-#: ../gui/filehandling.py:1498
+#: ../gui/filehandling.py:1524
 msgctxt "File→Revert confirm dialog: continue button"
 msgid "_Revert"
 msgstr "_Вернуть"
 
-#: ../gui/fill.py:121
+#: ../gui/fill.py:122
 msgctxt ""
 "Name of the fill mode\n"
 "In other software, 'Flood Fill' is also known as 'Bucket Fill' or just 'Fill'"
 msgid "Flood Fill"
 msgstr "Заливка"
 
-#: ../gui/fill.py:127
+#: ../gui/fill.py:128
 msgctxt "Usage description of the Flood Fill mode"
 msgid "Fill areas with color"
 msgstr "Заливка областей цветом"
 
-#: ../gui/fill.py:508
+#: ../gui/fill.py:507
 msgctxt ""
 "fill options: numeric value that determines whether tested pixels will be "
 "included in the fill, based on color difference"
 msgid "Tolerance:"
 msgstr "Порог:"
 
-#: ../gui/fill.py:513
+#: ../gui/fill.py:512
 msgctxt ""
 "fill options: Tolerance (tooltip) Note: 'the start' refers to the color of "
 "the starting point (pixel) of the fill"
@@ -1907,24 +1996,24 @@ msgstr ""
 "Допустимое отклонение количества цветов пикселов, \n"
 "которое заливка откажется заливать"
 
-#: ../gui/fill.py:537
+#: ../gui/fill.py:536
 msgctxt ""
 "fill options: option category (label) Options under this category relate to "
 "what the fill isbased on, not where the actual fill ends up."
 msgid "Source:"
 msgstr "Источник:"
 
-#: ../gui/fill.py:540
+#: ../gui/fill.py:539
 msgctxt "fill options: 'Source:' category (tooltip)"
 msgid "The input that the fill will be based on"
 msgstr "Ввод, на котором будет основана заливка"
 
-#: ../gui/fill.py:584
+#: ../gui/fill.py:583
 msgctxt "fill options: 'Source' category: Layer dropdown (tooltip)"
 msgid "Select a specific layer you want the fill to be based on"
 msgstr "Выберите конкретный слой, на котором будет основана заливка"
 
-#: ../gui/fill.py:602
+#: ../gui/fill.py:601
 msgctxt ""
 "fill options: 'Source:' category: toggle (label)\n"
 "When this option is enabled, the fill is based\n"
@@ -1932,7 +2021,7 @@ msgctxt ""
 msgid "Sample Merged"
 msgstr "Выборочное объединение"
 
-#: ../gui/fill.py:606
+#: ../gui/fill.py:605
 msgctxt "fill options: Sample Merged (tooltip)"
 msgid ""
 "When considering which area to fill, use a\n"
@@ -1943,12 +2032,12 @@ msgstr ""
 "временное объединение всех видимых слоев \n"
 "под нынешним слоем"
 
-#: ../gui/fill.py:622
+#: ../gui/fill.py:621
 msgctxt "fill options: toggle whether the fill will be limited by the viewport"
 msgid "Limit to View"
 msgstr "Лимит Просмотра"
 
-#: ../gui/fill.py:628
+#: ../gui/fill.py:627
 msgctxt ""
 "fill options: Limit to View (tooltip)\n"
 "Note: 'that can fit the view' is equivalent to: 'in which the entire visible "
@@ -1963,7 +2052,7 @@ msgstr ""
 "наименьшим прямоугольником, выровненным по холсту, чтобы соответствовать "
 "виду."
 
-#: ../gui/fill.py:645
+#: ../gui/fill.py:644
 msgctxt ""
 "fill options: option category (label)\n"
 "Options under this category relate to where the fill will end up (default: "
@@ -1971,12 +2060,12 @@ msgctxt ""
 msgid "Target:"
 msgstr "Цель:"
 
-#: ../gui/fill.py:648
+#: ../gui/fill.py:647
 msgctxt "fill options: 'Target:' category (tooltip)"
 msgid "Where the output should go"
 msgstr "Где должен быть результат"
 
-#: ../gui/fill.py:657
+#: ../gui/fill.py:656
 msgctxt ""
 "fill options: Target | toggle (label)\n"
 "When this option is enabled, the fill will be placed on a new\n"
@@ -1984,7 +2073,7 @@ msgctxt ""
 msgid "New Layer (once)"
 msgstr "Новый слой (единожды)"
 
-#: ../gui/fill.py:662
+#: ../gui/fill.py:661
 msgctxt "fill options: Target | New Layer (tooltip)"
 msgid ""
 "Create a new layer with the results of the fill.\n"
@@ -1993,51 +2082,51 @@ msgstr ""
 "Создать новый слой с результатами заливки.\n"
 "Отключается автоматически после использования."
 
-#: ../gui/fill.py:674
+#: ../gui/fill.py:673
 msgctxt "fill options: Target | Blend Mode dropdown - warning text"
 msgid "This mode does nothing when alpha locking is enabled!"
 msgstr "Этот режим не работает со включённой альфа-блокировкой!"
 
-#: ../gui/fill.py:688
+#: ../gui/fill.py:687
 msgctxt "fill options: Target | Blend Mode dropdown (tooltip)"
 msgid "Blend mode used when filling"
 msgstr "Режим смешивания используется при заполнении"
 
-#: ../gui/fill.py:703
+#: ../gui/fill.py:702
 msgid "Opacity:"
 msgstr "Непрозрачность:"
 
-#: ../gui/fill.py:706
+#: ../gui/fill.py:705
 msgctxt "fill options: Opacity slider (tooltip)"
 msgid "Opacity of the fill"
 msgstr "Непрозрачность заливки"
 
-#: ../gui/fill.py:729
+#: ../gui/fill.py:728
 msgctxt "fill options: numeric option - grow/shrink fill (label)"
 msgid "Offset:"
 msgstr "Смещение:"
 
-#: ../gui/fill.py:745
+#: ../gui/fill.py:744
 msgctxt "fill options: Offset (tooltip)"
 msgid "The distance in pixels to grow or shrink the fill"
 msgstr "Расстояние в пикселях для увеличения или уменьшения заливки"
 
-#: ../gui/fill.py:756
+#: ../gui/fill.py:755
 msgctxt "fill options: numeric option for blurring fill (label)"
 msgid "Feather:"
 msgstr "Перо:"
 
-#: ../gui/fill.py:771
+#: ../gui/fill.py:770
 msgctxt "fill options: Feather (tooltip)"
 msgid "The amount of blur to apply to the fill"
 msgstr "Степень размытия для заливки"
 
-#: ../gui/fill.py:787
+#: ../gui/fill.py:786
 msgctxt "fill options: gap detection toggle (label)"
 msgid "Use Gap Detection"
 msgstr "Использовать обнаружение пробелов"
 
-#: ../gui/fill.py:792
+#: ../gui/fill.py:791
 msgctxt "fill options: Use Gap Detection (tooltip)"
 msgid ""
 "Try to detect gaps and not fill past them.\n"
@@ -2048,12 +2137,12 @@ msgstr ""
 "Примечание: Этот способ гораздо медленней обычной заливки, включайте его "
 "только тогда, когда нужно."
 
-#: ../gui/fill.py:810
+#: ../gui/fill.py:809
 msgctxt "fill options: gap-detection sub-option, numeric setting (label)"
 msgid "Max Gap Size:"
 msgstr "Максимальный Размер Пробела:"
 
-#: ../gui/fill.py:825
+#: ../gui/fill.py:824
 msgctxt "fill options: Max Gap Size (tooltip)"
 msgid ""
 "The size of the largest gaps that can be detected.\n"
@@ -2062,7 +2151,7 @@ msgstr ""
 "Наибольший размер пробела, , которое может быть обнаружено.\n"
 "При больших значениях заливка может идти медленнее."
 
-#: ../gui/fill.py:838
+#: ../gui/fill.py:837
 msgctxt ""
 "fill options: on/off sub-option, numeric (label)\n"
 "When enabled, if the fill stops after going past a detected gap, it 'pulls' "
@@ -2070,7 +2159,7 @@ msgctxt ""
 msgid "Prevent seeping"
 msgstr "Предотвратить просачивание"
 
-#: ../gui/fill.py:845
+#: ../gui/fill.py:844
 msgctxt "fill options: Prevent seeping (tooltip)"
 msgid ""
 "Try to prevent the fill from seeping into the gaps.\n"
@@ -2080,16 +2169,16 @@ msgstr ""
 "Если заливка начинается в обнаруженных пробелах, то эта опция ничего не "
 "сделает."
 
-#: ../gui/fill.py:855 ../gui/mode.py:627
+#: ../gui/fill.py:854 ../gui/mode.py:627
 msgid "Reset"
 msgstr "Сбросить"
 
-#: ../gui/fill.py:859
+#: ../gui/fill.py:858
 msgctxt "fill options: Reset button (tooltip)"
 msgid "Reset options to their defaults"
 msgstr "Сбросить к значениям по умолчанию"
 
-#: ../gui/fill.py:1037
+#: ../gui/fill.py:1036
 msgctxt "fill option: default option in the Source Layer dropdown"
 msgid "Selected Layer"
 msgstr "Выбранный слой"
@@ -2767,13 +2856,13 @@ msgctxt "color picker: statusbar text during grab"
 msgid "Pick color…"
 msgstr "Выбрать цвет…"
 
-#: ../gui/preferenceswindow.py:42
+#: ../gui/preferenceswindow.py:43
 msgid "Preferences"
 msgstr "Параметры"
 
 #. TRANSLATORS: This option means that MyPaint will try to use
 #. TRANSLATORS: the language the system tells it to use.
-#: ../gui/preferenceswindow.py:365
+#: ../gui/preferenceswindow.py:369
 msgctxt "Language preferences menu - default option"
 msgid "System Language"
 msgstr "Как в системе"
@@ -2782,7 +2871,7 @@ msgstr "Как в системе"
 #. TRANSLATORS: lang_nat is the native name of the language
 #. TRANSLATORS: in that _same language_.
 #. TRANSLATORS: This can just be copied most of the time.
-#: ../gui/preferenceswindow.py:417
+#: ../gui/preferenceswindow.py:421
 #, python-brace-format
 msgctxt "Prefs Dialog|View|Interface - menu entries"
 msgid "{lang_en} - ({lang_nat})"
@@ -3131,20 +3220,20 @@ msgid "The logs may have more detail about this error."
 msgstr "Логи могут содержать больше информации о данной ошибке."
 
 #. TRANSLATORS: string used in e.g. "3h42m from now"
-#: ../lib/document.py:200
+#: ../lib/document.py:204
 msgctxt "Document autosave descriptions: the {ago} string: future"
 msgid "from now"
 msgstr "с этого момента"
 
 #. TRANSLATORS: string used in e.g. "8s ago"
-#: ../lib/document.py:206
+#: ../lib/document.py:210
 msgctxt "Document autosave descriptions: the {ago} string: past"
 msgid "ago"
 msgstr "назад"
 
 #. TRANSLATORS: String descriptions for an autosaved backup.
 #. TRANSLATORS: Time strings are localized: e.g. "3h42m" or "8s"
-#: ../lib/document.py:214
+#: ../lib/document.py:218
 #, python-brace-format
 msgctxt "Document autosave descriptions"
 msgid ""
@@ -3156,7 +3245,7 @@ msgstr ""
 "Возможно запущено несколько экземпляров MyPaint?\n"
 "Закройте программу и ждите {cache_update_interval}с перед повторной попыткой."
 
-#: ../lib/document.py:221
+#: ../lib/document.py:225
 #, python-brace-format
 msgctxt "Document autosave descriptions"
 msgid "Incomplete backup updated {last_modified_time} {ago}"
@@ -3166,7 +3255,7 @@ msgstr "Незавершенная резервная копия обновле�
 #. TRANSLATORS: Look for the msgids "from now" and "ago"
 #. TRANSLATORS: (with context starting w. "Document autosave")
 #. TRANSLATORS: to make sure their translations match this one.
-#: ../lib/document.py:230
+#: ../lib/document.py:234
 #, python-brace-format
 msgctxt "Document autosave descriptions"
 msgid ""
@@ -3180,7 +3269,7 @@ msgstr ""
 "num_layers}\n"
 "Содержит {unsaved_time} несохраненного рисования."
 
-#: ../lib/document.py:1441
+#: ../lib/document.py:1447
 #, python-brace-format
 msgctxt "Document IO: hint templates for user-facing exceptions"
 msgid ""
@@ -3190,13 +3279,13 @@ msgstr ""
 "Не удается сохранить “{filename}”: {err}\n"
 "Достаточно ли места на диске?"
 
-#: ../lib/document.py:1447 ../lib/document.py:1457
+#: ../lib/document.py:1453 ../lib/document.py:1463
 #, python-brace-format
 msgctxt "Document IO: hint templates for user-facing exceptions"
 msgid "Unable to write “{filename}”: {err}"
 msgstr "Не удается сохранить “{filename}”: {err}"
 
-#: ../lib/document.py:1493
+#: ../lib/document.py:1500
 #, python-brace-format
 msgctxt "Document IO: loading errors"
 msgid ""
@@ -3206,7 +3295,7 @@ msgstr ""
 "{error_loading_common}\n"
 "Файл не существует."
 
-#: ../lib/document.py:1500
+#: ../lib/document.py:1507
 #, python-brace-format
 msgctxt "Document IO: loading errors"
 msgid ""
@@ -3216,7 +3305,7 @@ msgstr ""
 "{error_loading_common}\n"
 "У вас недостаточно прав для открытия файла."
 
-#: ../lib/document.py:1525
+#: ../lib/document.py:1533
 #, python-brace-format
 msgctxt "Document IO: loading errors"
 msgid ""
@@ -3232,7 +3321,7 @@ msgstr ""
 "\n"
 "{see_logs}"
 
-#: ../lib/document.py:1549
+#: ../lib/document.py:1558
 #, python-brace-format
 msgctxt "Document IO: loading errors"
 msgid ""
@@ -3242,12 +3331,12 @@ msgstr ""
 "{error_loading_common}\n"
 "Неизвестное расширение: “{ext}”"
 
-#: ../lib/document.py:1580
+#: ../lib/document.py:1589
 msgctxt "Document IO: group name for Import Layers"
 msgid "Imported layers"
 msgstr "Импортированный слой"
 
-#: ../lib/document.py:1747
+#: ../lib/document.py:1756
 #, python-brace-format
 msgctxt "Document IO: hint templates for user-facing exceptions"
 msgid ""
@@ -3261,7 +3350,7 @@ msgstr ""
 "Вместо этого попробуйте сохранить в PNG, если у вашего устройства немного "
 "памяти. Функция сохранения в PNG у MyPaint более эффективная."
 
-#: ../lib/document.py:1877
+#: ../lib/document.py:1912
 #, python-brace-format
 msgctxt "Document autosave: restoring: errors"
 msgid ""
@@ -3310,81 +3399,81 @@ msgstr "Плитки"
 
 #. TRANSLATORS: Assumption for all "Time period abbreviations":
 #. TRANSLATORS: they don't need ngettext (to support plural/singular)
-#: ../lib/helpers.py:535
+#: ../lib/helpers.py:570
 #, python-brace-format
 msgctxt "Time period abbreviations"
 msgid "{days}d{hours}h"
 msgstr "{days}д{hours}ч"
 
-#: ../lib/helpers.py:537
+#: ../lib/helpers.py:572
 #, python-brace-format
 msgctxt "Time period abbreviations"
 msgid "{hours}h{minutes}m"
 msgstr "{hours}ч{minutes}м"
 
-#: ../lib/helpers.py:539
+#: ../lib/helpers.py:574
 #, python-brace-format
 msgctxt "Time period abbreviation"
 msgid "{minutes}m{seconds}s"
 msgstr "{minutes}м{seconds}с"
 
-#: ../lib/helpers.py:541
+#: ../lib/helpers.py:576
 #, python-brace-format
 msgctxt "Time period abbreviation"
 msgid "{seconds}s"
 msgstr "{seconds}с"
 
 #. TRANSLATORS: Default name for new normal, paintable layers
-#: ../lib/layer/core.py:66 ../lib/layer/data.py:1300
+#: ../lib/layer/core.py:66 ../lib/layer/data.py:1301
 msgctxt "layer default names"
 msgid "Layer"
 msgstr "Слой"
 
 #. TRANSLATORS: Short default name for vector (SVG/Inkscape) layers
-#: ../lib/layer/data.py:1158
+#: ../lib/layer/data.py:1159
 msgctxt "layer default names"
 msgid "Vectors"
 msgstr "Векторы"
 
-#: ../lib/layer/data.py:1163
+#: ../lib/layer/data.py:1164
 msgctxt "layer type descriptions"
 msgid "Vector Layer"
 msgstr "Векторный слой"
 
 #. TRANSLATORS: Short default name for renderable fallback layers
-#: ../lib/layer/data.py:1228
+#: ../lib/layer/data.py:1229
 msgctxt "layer default names"
 msgid "Bitmap"
 msgstr ""
 
-#: ../lib/layer/data.py:1233
+#: ../lib/layer/data.py:1234
 msgctxt "layer type descriptions"
 msgid "Bitmap Data"
 msgstr ""
 
 #. TRANSLATORS: Short default name for non-renderable fallback layers
-#: ../lib/layer/data.py:1249
+#: ../lib/layer/data.py:1250
 msgctxt "layer default names"
 msgid "Data"
 msgstr ""
 
-#: ../lib/layer/data.py:1254
+#: ../lib/layer/data.py:1255
 msgctxt "layer type descriptions"
 msgid "Unknown Data"
 msgstr "Неизвестные данные"
 
-#: ../lib/layer/data.py:1305
+#: ../lib/layer/data.py:1306
 msgctxt "layer type descriptions"
 msgid "Painting Layer"
 msgstr "Картинный слой"
 
 #. TRANSLATORS: Short default name for layer groups.
-#: ../lib/layer/group.py:69
+#: ../lib/layer/group.py:67
 msgctxt "layer default names"
 msgid "Group"
 msgstr "Группа"
 
-#: ../lib/layer/group.py:74
+#: ../lib/layer/group.py:72
 msgctxt "layer type descriptions"
 msgid "Layer Group"
 msgstr "Группа слоёв"
@@ -3401,12 +3490,12 @@ msgctxt "layer default names"
 msgid "Root"
 msgstr "Корень"
 
-#: ../lib/layer/tree.py:2133 ../lib/layer/tree.py:2199
+#: ../lib/layer/tree.py:2127 ../lib/layer/tree.py:2193
 msgctxt "layer default names: joiner punctuation for merged layers"
 msgid ", "
 msgstr ", "
 
-#: ../lib/layer/tree.py:2321
+#: ../lib/layer/tree.py:2315
 msgctxt "layer default names: refactor: name of the common areas layer"
 msgid "Common"
 msgstr "Обычный"
@@ -3447,47 +3536,47 @@ msgctxt "layer views: commands: set active view's lock flag"
 msgid "Unlock Layer View"
 msgstr "Разблокировать вид слоя"
 
-#: ../lib/modes.py:38
+#: ../lib/modes.py:47
 msgid "Pass-through"
 msgstr "Сквозной"
 
-#: ../lib/modes.py:39
+#: ../lib/modes.py:48
 msgid "Group contents apply directly to the group's backdrop"
 msgstr "Содержимое группы применяется непосредственно на нижний слой"
 
-#: ../lib/modes.py:43
+#: ../lib/modes.py:51
 msgid "Normal"
 msgstr "Нормальный"
 
-#: ../lib/modes.py:44
+#: ../lib/modes.py:52
 msgid "The top layer only, without blending colors."
 msgstr "Только верхний слой, без смешивания цветов."
 
-#: ../lib/modes.py:46
+#: ../lib/modes.py:54
 msgid "Pigment"
 msgstr "Пигмент"
 
-#: ../lib/modes.py:47
+#: ../lib/modes.py:55
 msgid ""
 "Similar to mixing actual pigments by upsampling to 10 spectral channels."
 msgstr ""
 
-#: ../lib/modes.py:50
+#: ../lib/modes.py:58
 msgid "Multiply"
 msgstr "Умножение"
 
-#: ../lib/modes.py:51
+#: ../lib/modes.py:59
 msgid ""
 "Similar to loading two slides into a projector and projecting the combined "
 "result."
 msgstr ""
 "Похоже на работу проектора, в который вставили два слайда одновременно."
 
-#: ../lib/modes.py:54
+#: ../lib/modes.py:62
 msgid "Screen"
 msgstr "Экран"
 
-#: ../lib/modes.py:55
+#: ../lib/modes.py:63
 msgid ""
 "Like shining two separate slide projectors onto a screen simultaneously. "
 "This is the inverse of 'Multiply'."
@@ -3495,11 +3584,11 @@ msgstr ""
 "Аналогично направлению двух различных проекторов на один экран одновременно. "
 "Противоположность 'Умножению'."
 
-#: ../lib/modes.py:58
+#: ../lib/modes.py:66
 msgid "Overlay"
 msgstr "Перекрытие"
 
-#: ../lib/modes.py:59
+#: ../lib/modes.py:67
 msgid ""
 "Overlays the backdrop with the top layer, preserving the backdrop's "
 "highlights and shadows. This is the inverse of 'Hard Light'."
@@ -3507,27 +3596,27 @@ msgstr ""
 "Перекрывает нижний слой верхним, сохраняя яркие участки и тени нижнего слоя. "
 "Противоположность 'Жесткому свету'."
 
-#: ../lib/modes.py:63
+#: ../lib/modes.py:71
 msgid "Darken"
 msgstr "Темнее"
 
-#: ../lib/modes.py:64
+#: ../lib/modes.py:72
 msgid "The top layer is used where it is darker than the backdrop."
 msgstr "Верхний слой используется только там, где он темнее, чем нижний слой."
 
-#: ../lib/modes.py:67
+#: ../lib/modes.py:75
 msgid "Lighten"
 msgstr "Светлее"
 
-#: ../lib/modes.py:68
+#: ../lib/modes.py:76
 msgid "The top layer is used where it is lighter than the backdrop."
 msgstr "Верхний слой используется только там, где он светлее, чем нижний слой."
 
-#: ../lib/modes.py:71
+#: ../lib/modes.py:79
 msgid "Dodge"
 msgstr "Осветление"
 
-#: ../lib/modes.py:72
+#: ../lib/modes.py:80
 msgid ""
 "Brightens the backdrop using the top layer. The effect is similar to the "
 "photographic darkroom technique of the same name which is used for improving "
@@ -3537,11 +3626,11 @@ msgstr ""
 "комнате для фотографий с тем же названием, которая используется для "
 "исправления контраста в тенях."
 
-#: ../lib/modes.py:76
+#: ../lib/modes.py:84
 msgid "Burn"
 msgstr "Затемнение"
 
-#: ../lib/modes.py:77
+#: ../lib/modes.py:85
 msgid ""
 "Darkens the backdrop using the top layer. The effect looks similar to the "
 "photographic darkroom technique of the same name which is used for reducing "
@@ -3551,54 +3640,54 @@ msgstr ""
 "комнате для фотографий с тем же названием, которая используется для "
 "ослабления засвеченных участков."
 
-#: ../lib/modes.py:81
+#: ../lib/modes.py:89
 msgid "Hard Light"
 msgstr "Жёсткий свет"
 
-#: ../lib/modes.py:82
+#: ../lib/modes.py:90
 msgid "Similar to shining a harsh spotlight onto the backdrop."
 msgstr "Похоже на направление резкого луча света на нижний слой."
 
-#: ../lib/modes.py:84
+#: ../lib/modes.py:92
 msgid "Soft Light"
 msgstr "Мягкий свет"
 
-#: ../lib/modes.py:85
+#: ../lib/modes.py:93
 msgid "Like shining a diffuse spotlight onto the backdrop."
 msgstr "Аналогично направлению рассеянного света на нижний слой."
 
-#: ../lib/modes.py:87
+#: ../lib/modes.py:95
 msgid "Difference"
 msgstr "Разница"
 
-#: ../lib/modes.py:88
+#: ../lib/modes.py:96
 msgid "Subtracts the darker color from the lighter of the two."
 msgstr "Вычитает более темный цвет из более светлого."
 
-#: ../lib/modes.py:90
+#: ../lib/modes.py:98
 msgid "Exclusion"
 msgstr "Исключение"
 
-#: ../lib/modes.py:91
+#: ../lib/modes.py:99
 msgid "Similar to the 'Difference' mode, but lower in contrast."
 msgstr "Похоже на режим 'Разница', но результат менее контрастный."
 
-#: ../lib/modes.py:94
+#: ../lib/modes.py:102
 msgid "Hue"
 msgstr "Тон"
 
-#: ../lib/modes.py:95
+#: ../lib/modes.py:103
 msgid ""
 "Combines the hue of the top layer with the saturation and luminosity of the "
 "backdrop."
 msgstr ""
 "Объединяет оттенок верхнего слоя с насыщенностью и светлотой нижнего слоя."
 
-#: ../lib/modes.py:98
+#: ../lib/modes.py:106
 msgid "Saturation"
 msgstr "Насыщенность"
 
-#: ../lib/modes.py:99
+#: ../lib/modes.py:107
 msgid ""
 "Applies the saturation of the top layer's colors to the hue and luminosity "
 "of the backdrop."
@@ -3606,36 +3695,36 @@ msgstr ""
 "Применяет насыщенность цветов верхнего слоя к оттенку и светлоте нижнего "
 "слоя."
 
-#: ../lib/modes.py:103
+#: ../lib/modes.py:111
 msgid ""
 "Applies the hue and saturation of the top layer to the luminosity of the "
 "backdrop."
 msgstr ""
 "Применяет оттенок и насыщенность верхнего слоя к светлоте нижнего слоя."
 
-#: ../lib/modes.py:106
+#: ../lib/modes.py:114
 msgid "Luminosity"
 msgstr "Яркость"
 
-#: ../lib/modes.py:107
+#: ../lib/modes.py:115
 msgid ""
 "Applies the luminosity of the top layer to the hue and saturation of the "
 "backdrop."
 msgstr "Применяет яркость верхнего слоя к оттенку и насыщенности нижнего слоя."
 
-#: ../lib/modes.py:111
+#: ../lib/modes.py:119
 msgid "Plus"
 msgstr "Добавление"
 
-#: ../lib/modes.py:112
+#: ../lib/modes.py:120
 msgid "This layer and its backdrop are simply added together."
 msgstr "Этот слой и нижний просто добавляются друг к другу."
 
-#: ../lib/modes.py:114
+#: ../lib/modes.py:122
 msgid "Destination In"
 msgstr "Цель внутри"
 
-#: ../lib/modes.py:115
+#: ../lib/modes.py:123
 msgid ""
 "Uses the backdrop only where this layer covers it. Everything else is "
 "ignored."
@@ -3643,11 +3732,11 @@ msgstr ""
 "Использует нижний слой только там где этот слой его перекрывает. Все "
 "остальное игнорируется."
 
-#: ../lib/modes.py:118
+#: ../lib/modes.py:126
 msgid "Destination Out"
 msgstr "Цель снаружи"
 
-#: ../lib/modes.py:119
+#: ../lib/modes.py:127
 msgid ""
 "Uses the backdrop only where this layer doesn't cover it. Everything else is "
 "ignored."
@@ -3655,22 +3744,22 @@ msgstr ""
 "Использует нижний слой только там где этот слой его не перекрывает. Все "
 "остальное игнорируется."
 
-#: ../lib/modes.py:122
+#: ../lib/modes.py:130
 msgid "Source Atop"
 msgstr "Основа сверху"
 
-#: ../lib/modes.py:123
+#: ../lib/modes.py:131
 msgid ""
 "Source which overlaps the destination, replaces the destination. Destination "
 "is placed elsewhere."
 msgstr ""
 "Основа перекрывающая цель, заменяет цель. Цель размещается в другом месте."
 
-#: ../lib/modes.py:126
+#: ../lib/modes.py:134
 msgid "Destination Atop"
 msgstr "Цель сверху"
 
-#: ../lib/modes.py:127
+#: ../lib/modes.py:135
 msgid ""
 "Destination which overlaps the source replaces the source. Source is placed "
 "elsewhere."
@@ -3696,7 +3785,7 @@ msgctxt "unique names: regex matching a string with a serial number"
 msgid "^(?P<name>.*?)\\s+(?P<number>\\d+)$"
 msgstr "^(?P<name>.*?)\\s+(?P<number>\\d+)$"
 
-#: ../lib/pixbufsurface.py:38
+#: ../lib/pixbufsurface.py:39
 msgctxt "user-facing error texts"
 msgid ""
 "Unable to construct a vital internal object. Your system may not have enough "
@@ -3705,7 +3794,7 @@ msgstr ""
 "Не удается создать важный внутренний объект. Возможно в вашей системе "
 "недостаточно памяти для выполнения данной операции."
 
-#: ../lib/surface.py:300
+#: ../lib/surface.py:313
 #, python-brace-format
 msgctxt "low-level PNG writer failure report (dialog)"
 msgid ""
@@ -4727,16 +4816,111 @@ msgid "Color"
 msgstr "Цвет"
 
 #: ../po/tmp/preferenceswindow.glade.h:106
+msgctxt "Prefs Dialog|Compatibility"
+msgid "Default Compatibility Mode:"
+msgstr ""
+
+#: ../po/tmp/preferenceswindow.glade.h:107
+#, fuzzy
+msgctxt "Prefs Dialog|Compatibility"
+msgid "<b>1.x Settings</b>"
+msgstr "<b>Сохранение</b>"
+
+#. Make sure to be consistent w. other occurences of 2.x
+#: ../po/tmp/preferenceswindow.glade.h:109
+#, fuzzy
+msgctxt "Prefs Dialog|Compatibility"
+msgid "<b>2.x Settings</b>"
+msgstr "<b>Сохранение</b>"
+
+#: ../po/tmp/preferenceswindow.glade.h:110
+#, fuzzy
+msgctxt "Prefs Dialog|Compatibility"
+msgid "Default New Layer Type:"
+msgstr "Удалить слой"
+
+#: ../po/tmp/preferenceswindow.glade.h:111
+#, fuzzy
+msgctxt "Prefs Dialog|Compatibility"
+msgid "Default Pigment Brush Setting:"
+msgstr "Редактировать параметры кисти"
+
+#. Label description for the 1.x compatibility-mode-by-default setting
+#: ../po/tmp/preferenceswindow.glade.h:115
+msgctxt "Prefs Dialog|Compatibility"
+msgid ""
+"When creating new documents, use the legacy 1.x compatibility mode by "
+"default. In this mode 1.x .ora files will look the same as they did in older "
+"versions, but pigment blending will not work well."
+msgstr ""
+
+#: ../po/tmp/preferenceswindow.glade.h:118
+msgctxt "Prefs Dialog|Compatibility"
+msgid ""
+"When creating new documents, use the regular 2.x compatibility mode by "
+"default. Old documents will often look different in this mode."
+msgstr ""
+
+#: ../po/tmp/preferenceswindow.glade.h:119
+msgctxt "Prefs Dialog|Compatibility"
+msgid "Show warning for files that may be partially incompatible"
+msgstr ""
+
+#. Label for a set of options
+#: ../po/tmp/preferenceswindow.glade.h:121
+msgctxt "Prefs Dialog|Compatibility"
+msgid "File compatibility warnings:"
+msgstr ""
+
+#: ../po/tmp/preferenceswindow.glade.h:122
+msgctxt "Prefs Dialog|Compatibility"
+msgid "Show warning for files that may be fully incompatible"
+msgstr ""
+
+#. This is a tooltip for the file behavior options label.
+#: ../po/tmp/preferenceswindow.glade.h:124
+msgctxt "Prefs|Compatibility"
+msgid ""
+"This will only apply to files saved with versions of MyPaint older than 2.0. "
+"When you save an OpenRaster file with MyPaint 2.0 or newer the active "
+"compatibility mode will be written to the file."
+msgstr ""
+
+#. Label to the options for how to handle files which do not have a compatibility mode specified (whether they should be opened in 1.x compatibility mode, or 2.x mode)
+#: ../po/tmp/preferenceswindow.glade.h:126
+msgctxt "Prefs Dialog|Compatibility"
+msgid "When Mode is Unspecified:"
+msgstr ""
+
+#. This label indicates a subsection of the compatibility settings related to loading files.
+#: ../po/tmp/preferenceswindow.glade.h:128
+#, fuzzy
+msgctxt "Prefs|Compatibility"
+msgid "<b>File loading</b>"
+msgstr "<b>Сохранение</b>"
+
+#: ../po/tmp/preferenceswindow.glade.h:129
+msgid "<b>Compatibility settings</b>"
+msgstr ""
+
+#. Tab label in preferences dialog
+#: ../po/tmp/preferenceswindow.glade.h:131
+#, fuzzy
+msgctxt "Prefs Dialog|"
+msgid "Compatibility"
+msgstr "портируемость"
+
+#: ../po/tmp/preferenceswindow.glade.h:132
 msgctxt "Prefs Dialog|Pen Input|Mode|"
 msgid "Screen (normal)"
 msgstr "Экран (обычный)"
 
-#: ../po/tmp/preferenceswindow.glade.h:107
+#: ../po/tmp/preferenceswindow.glade.h:133
 msgctxt "Prefs Dialog|Pen Input|Mode|"
 msgid "Disabled (no pressure sensitivity)"
 msgstr "Отключено (без чувствительности к силе нажатия)"
 
-#: ../po/tmp/preferenceswindow.glade.h:108
+#: ../po/tmp/preferenceswindow.glade.h:134
 msgctxt "Prefs Dialog|Pen Input|Mode|"
 msgid "Window (not recommended)"
 msgstr "Окно (не рекомендуется)"

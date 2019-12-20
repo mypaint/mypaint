@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mypaint v2.0.0-alpha.12-327-ga332f03\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-11-26 21:32+0100\n"
+"POT-Creation-Date: 2019-12-20 08:35+0100\n"
 "PO-Revision-Date: 2019-08-31 19:09+0000\n"
 "Last-Translator: geun-tak Jeong <beroberos@gmail.com>\n"
 "Language-Team: Korean <https://hosted.weblate.org/projects/mypaint/mypaint/"
@@ -65,7 +65,7 @@ msgstr ""
 "<b>{accel}은(는) '{action}'의 단축키로 이미 사용중입니다. 기존 키와 대체합니"
 "다.</b>"
 
-#: ../gui/application.py:598
+#: ../gui/application.py:615
 #, python-brace-format
 msgid "Open Folder “{folder_basename}”…"
 msgstr "폴더를 열기 “{folder_basename}”…"
@@ -73,7 +73,7 @@ msgstr "폴더를 열기 “{folder_basename}”…"
 #. ... so that the main actions end up in the bottom-right of the
 #. dialog (reversed for rtl scripts), where the eye ends up
 #. naturally at the end of the flow.
-#: ../gui/application.py:606
+#: ../gui/application.py:623
 msgid "OK"
 msgstr "OK"
 
@@ -114,7 +114,7 @@ msgstr "기본 값으로 저장"
 msgid "Pattern"
 msgstr "패턴"
 
-#: ../gui/backgroundwindow.py:86 ../lib/modes.py:102
+#: ../gui/backgroundwindow.py:86 ../lib/modes.py:110
 msgid "Color"
 msgstr "색상"
 
@@ -181,79 +181,79 @@ msgctxt "brush settings list: setting group"
 msgid "Smudge"
 msgstr "자국"
 
-#: ../gui/brusheditor.py:341
+#: ../gui/brusheditor.py:344
 msgctxt "brush settings list: setting group"
 msgid "Speed"
 msgstr "속도"
 
-#: ../gui/brusheditor.py:355
+#: ../gui/brusheditor.py:358
 #, fuzzy
 msgctxt "brush settings list: setting group"
 msgid "Directional Offsets"
 msgstr "방향 필터"
 
-#: ../gui/brusheditor.py:373
+#: ../gui/brusheditor.py:376
 msgctxt "brush settings list: setting group"
 msgid "Tracking"
 msgstr "트래킹"
 
-#: ../gui/brusheditor.py:384
+#: ../gui/brusheditor.py:387
 msgctxt "brush settings list: setting group"
 msgid "Stroke"
 msgstr "선획"
 
-#: ../gui/brusheditor.py:395
+#: ../gui/brusheditor.py:398
 msgctxt "brush settings list: setting group"
 msgid "Color"
 msgstr "색상"
 
-#: ../gui/brusheditor.py:410
+#: ../gui/brusheditor.py:416
 msgctxt "brush settings list: setting group"
 msgid "GridMap"
 msgstr ""
 
-#: ../gui/brusheditor.py:421
+#: ../gui/brusheditor.py:427
 msgctxt "brush settings list: setting group"
 msgid "Custom"
 msgstr "사용자 정의"
 
-#: ../gui/brusheditor.py:487
+#: ../gui/brusheditor.py:493
 msgctxt "brush settings editor: save brush: error message"
 msgid "No brush selected, please use “Add As New” instead."
 msgstr "목록에 해당 브러시가 없습니다. \"브러시 추가\"를 먼저 하십시오."
 
-#: ../gui/brusheditor.py:512
+#: ../gui/brusheditor.py:518
 msgctxt "brush settings editor: rename brush: error message"
 msgid "No brush selected!"
 msgstr "선택한 브러시가 없음!"
 
-#: ../gui/brusheditor.py:521
+#: ../gui/brusheditor.py:527
 msgctxt "brush settings editor: rename brush: dialog title"
 msgid "Rename Brush"
 msgstr "브러쉬 이름 변경"
 
-#: ../gui/brusheditor.py:539
+#: ../gui/brusheditor.py:545
 msgctxt "brush settings editor: rename brush: error message"
 msgid "A brush with this name already exists!"
 msgstr "이 이름을 가진 브러시가 이미 존재합니다!"
 
-#: ../gui/brusheditor.py:573
+#: ../gui/brusheditor.py:579
 msgctxt "brush settings editor: delete brush: error message"
 msgid "No brush selected!"
 msgstr "브러시 선택이 없음!"
 
-#: ../gui/brusheditor.py:579
+#: ../gui/brusheditor.py:585
 #, python-brace-format
 msgctxt "brush settings editor: delete brush: confirm dialog question"
 msgid "Really delete brush “{brush_name}” from disk?"
 msgstr "정말 디스크에서 \"{brush_name}” 브러시를 삭제 하시겠습니까?"
 
-#: ../gui/brusheditor.py:698
+#: ../gui/brusheditor.py:704
 msgctxt "brush settings editor: header: fallback name"
 msgid "(Unnamed brush)"
 msgstr "(이름 없는 브러시)"
 
-#: ../gui/brusheditor.py:705
+#: ../gui/brusheditor.py:711
 #, python-brace-format
 msgctxt "brush settings editor: header: is-modified hint"
 msgid "{brush_name} [unsaved]"
@@ -352,61 +352,61 @@ msgstr "저장"
 msgid "Save this preview icon, and finish editing"
 msgstr "미리보기 아이콘을 저장하고 편집을 완료"
 
-#: ../gui/brushmanager.py:128
+#: ../gui/brushmanager.py:129
 msgid "Lost & Found"
 msgstr "마지막 & 찾기"
 
-#: ../gui/brushmanager.py:129
+#: ../gui/brushmanager.py:130
 msgid "Deleted"
 msgstr "삭제된"
 
-#: ../gui/brushmanager.py:130
+#: ../gui/brushmanager.py:131
 msgid "Favorites"
 msgstr "즐겨 찾기"
 
-#: ../gui/brushmanager.py:131
+#: ../gui/brushmanager.py:132
 msgid "Ink"
 msgstr "잉크"
 
-#: ../gui/brushmanager.py:132
+#: ../gui/brushmanager.py:133
 msgid "Classic"
 msgstr "클래식"
 
-#: ../gui/brushmanager.py:133
+#: ../gui/brushmanager.py:134
 msgid "Set#1"
 msgstr "설정#1"
 
-#: ../gui/brushmanager.py:134
+#: ../gui/brushmanager.py:135
 msgid "Set#2"
 msgstr "설정#2"
 
-#: ../gui/brushmanager.py:135
+#: ../gui/brushmanager.py:136
 msgid "Set#3"
 msgstr "설정#3"
 
-#: ../gui/brushmanager.py:136
+#: ../gui/brushmanager.py:137
 msgid "Set#4"
 msgstr "설정#4"
 
-#: ../gui/brushmanager.py:137
+#: ../gui/brushmanager.py:138
 msgid "Set#5"
 msgstr "설정#5"
 
-#: ../gui/brushmanager.py:138
+#: ../gui/brushmanager.py:139
 msgid "Experimental"
 msgstr "실험"
 
-#: ../gui/brushmanager.py:139
+#: ../gui/brushmanager.py:140
 msgid "New"
 msgstr "새로 작성"
 
-#: ../gui/brushmanager.py:614
+#: ../gui/brushmanager.py:664
 #, python-brace-format
 msgctxt "brushpack import failure messages"
 msgid "No file named “{order_conf_file}”. This is not a brushpack."
 msgstr ""
 
-#: ../gui/brushmanager.py:639
+#: ../gui/brushmanager.py:689
 #, python-brace-format
 msgctxt "brushpack import failure messages"
 msgid ""
@@ -414,7 +414,7 @@ msgid ""
 "in the zipfile."
 msgstr ""
 
-#: ../gui/brushmanager.py:652
+#: ../gui/brushmanager.py:702
 #, python-brace-format
 msgctxt "brushpack import failure messages"
 msgid ""
@@ -422,7 +422,7 @@ msgid ""
 "“{order_conf_file}”."
 msgstr ""
 
-#: ../gui/brushmanager.py:1258 ../gui/footer.py:62
+#: ../gui/brushmanager.py:1313 ../gui/footer.py:62
 msgid "Unknown Brush"
 msgstr "알 수없는 브러쉬"
 
@@ -1167,6 +1167,95 @@ msgctxt "color changer dock panels: tab tooltip description"
 msgid "Change color with HSV ramps crossing a radial bowl of color."
 msgstr "이 레이어 커버만 배경을 사용합니다. 다른 모든 것은 무시됩니다."
 
+#: ../gui/compatibility.py:40
+msgctxt "File Load Compat Options"
+msgid "Based on file"
+msgstr ""
+
+#. This refers to a version of MyPaint like 1.0, 1.1, 1.2 etc
+#: ../gui/compatibility.py:41 ../gui/drawwindow.py:276
+#: ../po/tmp/preferenceswindow.glade.h:113
+#, fuzzy
+msgctxt "Prefs Dialog|Compatibility"
+msgid "1.x"
+msgstr "1.0"
+
+#. This refers to a version of MyPaint like 1.0, 1.1, 1.2 etc
+#: ../gui/compatibility.py:42 ../po/tmp/preferenceswindow.glade.h:117
+msgctxt "Prefs Dialog|Compatibility"
+msgid "2.x"
+msgstr ""
+
+#. TRANSLATORS: This is probably a rare warning, and it will not
+#. TRANSLATORS: really be shown at all before the release of 3.0
+#: ../gui/compatibility.py:50
+#, python-brace-format
+msgctxt "file compatibility warning"
+msgid ""
+"“{filename}” was saved with <b>MyPaint {new_version}</b>. It may be "
+"<b>incompatible</b> with <b>MyPaint {current_version}</b>.\n"
+"\n"
+"Editing this file with this version of MyPaint is not guaranteed to work, "
+"and may even result in crashes.\n"
+"\n"
+"It is <b>strongly recommended</b> to upgrade to <b>MyPaint {new_version}</b> "
+"or newer if you want to edit this file!"
+msgstr ""
+
+#: ../gui/compatibility.py:60
+#, python-brace-format
+msgctxt "file compatibility warning"
+msgid ""
+"“{filename}” was saved with <b>MyPaint {new_version}</b>. It may not be "
+"fully compatible with <b>Mypaint {current_version}</b>.\n"
+"\n"
+"Saving it with this version of MyPaint may result in data that is only "
+"supported by the newer version being lost.\n"
+"\n"
+"To be safe you should upgrade to MyPaint {new_version} or newer."
+msgstr ""
+
+#: ../gui/compatibility.py:71
+msgctxt "file compatibility question"
+msgid "Do you want to open this file anyway?"
+msgstr ""
+
+#: ../gui/compatibility.py:135
+msgctxt "Version compat warning toggle"
+msgid "Don't show this warning again"
+msgstr ""
+
+#. TRANSLATORS: One of the options for the
+#. TRANSLATORS: "When Not Specified in File"
+#. TRANSLATORS: compatibility setting.
+#: ../gui/compatibility.py:211
+msgctxt "Prefs Dialog|Compatibility"
+msgid "Always open in 1.x mode"
+msgstr ""
+
+#. TRANSLATORS: One of the options for the
+#. TRANSLATORS: "When Not Specified in File"
+#. TRANSLATORS: compatibility setting.
+#: ../gui/compatibility.py:220
+msgctxt "Prefs Dialog|Compatibility"
+msgid "Always open in 2.x mode"
+msgstr ""
+
+#. TRANSLATORS: One of the options for the
+#. TRANSLATORS: "When Not Specified in File"
+#. TRANSLATORS: compatibility setting.
+#: ../gui/compatibility.py:229
+msgctxt "Prefs Dialog|Compatibility"
+msgid "Open in 1.x mode unless file contains pigment layers"
+msgstr ""
+
+#. TRANSLATORS: This is a label for a dropdown menu in the
+#. TRANSLATORS: file chooser dialog when loading .ora files.
+#: ../gui/compatibility.py:532
+msgctxt "File Load Compat Options"
+msgid "Compatibility mode:"
+msgstr ""
+
 #: ../gui/device.py:48
 msgctxt "prefs: device's type label"
 msgid "Cursor/puck"
@@ -1434,64 +1523,64 @@ msgid "Vacuum: discarded {removed} of {total} tiles."
 msgstr ""
 
 #. TRANSLATORS: window title for use with a filename
-#: ../gui/drawwindow.py:269
+#: ../gui/drawwindow.py:270
 #, python-format
 msgid "%s - MyPaint"
 msgstr "%s - MyPaint"
 
 #. TRANSLATORS: window title for use without a filename
-#: ../gui/drawwindow.py:272 ../po/tmp/mypaint.glade.h:1
+#: ../gui/drawwindow.py:273 ../po/tmp/mypaint.glade.h:1
 msgid "MyPaint"
 msgstr "MyPaint"
 
-#: ../gui/drawwindow.py:289
+#: ../gui/drawwindow.py:296
 msgctxt "Open dragged file confirm dialog: title"
 msgid "Open Dragged File?"
 msgstr ""
 
-#: ../gui/drawwindow.py:293
+#: ../gui/drawwindow.py:300
 #, fuzzy
 msgctxt "Open dragged file confirm dialog: continue button"
 msgid "_Open"
 msgstr "열기"
 
-#: ../gui/drawwindow.py:486
+#: ../gui/drawwindow.py:493
 msgid "Set current color"
 msgstr "현재 색상을 설정"
 
-#: ../gui/drawwindow.py:531
+#: ../gui/drawwindow.py:538
 msgid "Leave Fullscreen Mode"
 msgstr "전체 화면 모드를 종료"
 
-#: ../gui/drawwindow.py:532
+#: ../gui/drawwindow.py:539
 msgid "Leave Fullscreen"
 msgstr "전체 화면 종료"
 
-#: ../gui/drawwindow.py:535
+#: ../gui/drawwindow.py:542
 msgid "Enter Fullscreen Mode"
 msgstr "전체 화면 모드로 전환"
 
-#: ../gui/drawwindow.py:536
+#: ../gui/drawwindow.py:543
 msgid "Fullscreen"
 msgstr "전체 화면"
 
-#: ../gui/drawwindow.py:675
+#: ../gui/drawwindow.py:682
 #, fuzzy
 msgctxt "Quit confirm dialog: title"
 msgid "Really Quit?"
 msgstr "정말로 종료합니까?"
 
-#: ../gui/drawwindow.py:679
+#: ../gui/drawwindow.py:686
 #, fuzzy
 msgctxt "Quit confirm dialog: continue button"
 msgid "_Quit"
 msgstr "종료"
 
-#: ../gui/drawwindow.py:697
+#: ../gui/drawwindow.py:704
 msgid "Import brush package…"
 msgstr "브러쉬 패키지 불러오기…"
 
-#: ../gui/drawwindow.py:698
+#: ../gui/drawwindow.py:705
 msgid "MyPaint brush package (*.zip)"
 msgstr "MyPaint 브러시 패키지 (*.zip)"
 
@@ -1565,97 +1654,97 @@ msgstr "아이콘"
 msgid "no description"
 msgstr "설명이 없습니다"
 
-#: ../gui/filehandling.py:126
+#: ../gui/filehandling.py:127
 #, fuzzy, python-brace-format
 msgctxt "Document I/O: message shown while working"
 msgid "Loading {files_summary}…"
 msgstr "불러오기 “{file_basename}”…"
 
-#: ../gui/filehandling.py:130
+#: ../gui/filehandling.py:131
 #, python-brace-format
 msgctxt "Document I/O: message shown while working"
 msgid "Importing layers from {files_summary}…"
 msgstr ""
 
-#: ../gui/filehandling.py:134
+#: ../gui/filehandling.py:135
 #, fuzzy, python-brace-format
 msgctxt "Document I/O: message shown while working"
 msgid "Saving {files_summary}…"
 msgstr "“{file_basename}”을 저장하기…"
 
-#: ../gui/filehandling.py:138
+#: ../gui/filehandling.py:139
 #, fuzzy, python-brace-format
 msgctxt "Document I/O: message shown while working"
 msgid "Exporting to {files_summary}…"
 msgstr "“{file_basename}”로 내보내기…"
 
-#: ../gui/filehandling.py:145
+#: ../gui/filehandling.py:146
 #, fuzzy, python-brace-format
 msgctxt "Document I/O: fail message"
 msgid "Failed to export to {files_summary}."
 msgstr "“{file_basename}”로 내보내기 실패함."
 
-#: ../gui/filehandling.py:149
+#: ../gui/filehandling.py:150
 #, fuzzy, python-brace-format
 msgctxt "Document I/O: fail message"
 msgid "Failed to save {files_summary}."
 msgstr "“{file_basename}”로 저장하기 실패함."
 
-#: ../gui/filehandling.py:153
+#: ../gui/filehandling.py:154
 #, python-brace-format
 msgctxt "Document I/O: fail message"
 msgid "Could not import layers from {files_summary}."
 msgstr ""
 
-#: ../gui/filehandling.py:157
+#: ../gui/filehandling.py:158
 #, fuzzy, python-brace-format
 msgctxt "Document I/O: fail message"
 msgid "Could not load {files_summary}."
 msgstr "“{file_basename}”을 로드할 수 없습니다."
 
-#: ../gui/filehandling.py:164
+#: ../gui/filehandling.py:165
 #, fuzzy
 msgctxt "Document I/O: fail dialog title"
 msgid "Save failed"
 msgstr "팔레트 저장하기"
 
-#: ../gui/filehandling.py:168
+#: ../gui/filehandling.py:169
 #, fuzzy
 msgctxt "Document I/O: fail dialog title"
 msgid "Export failed"
 msgstr "파일로 내보내기"
 
-#: ../gui/filehandling.py:172
+#: ../gui/filehandling.py:173
 #, fuzzy
 msgctxt "Document I/O: fail dialog title"
 msgid "Import Layers failed"
 msgstr "파일로 내보내기"
 
-#: ../gui/filehandling.py:176
+#: ../gui/filehandling.py:177
 #, fuzzy
 msgctxt "Document I/O: fail dialog title"
 msgid "Open failed"
 msgstr "최근 파일 열기"
 
-#: ../gui/filehandling.py:183
+#: ../gui/filehandling.py:184
 #, fuzzy, python-brace-format
 msgctxt "Document I/O: success"
 msgid "Exported to {files_summary} successfully."
 msgstr "“{file_basename}”을 성공적으로 내보냄."
 
-#: ../gui/filehandling.py:187
+#: ../gui/filehandling.py:188
 #, fuzzy, python-brace-format
 msgctxt "Document I/O: success"
 msgid "Saved {files_summary} successfully."
 msgstr "“{file_basename}”을 저장함."
 
-#: ../gui/filehandling.py:191
+#: ../gui/filehandling.py:192
 #, python-brace-format
 msgctxt "Document I/O: success"
 msgid "Imported layers from {files_summary}."
 msgstr ""
 
-#: ../gui/filehandling.py:195
+#: ../gui/filehandling.py:196
 #, fuzzy, python-brace-format
 msgctxt "Document I/O: success"
 msgid "Loaded {files_summary}."
@@ -1663,242 +1752,242 @@ msgstr "“{file_basename}”을 불러옴."
 
 #. TRANSLATORS: formatting for {files_summary} for multiple files.
 #. TRANSLATORS: corresponding msgid for single files: "“{basename}”"
-#: ../gui/filehandling.py:214
+#: ../gui/filehandling.py:215
 #, python-brace-format
 msgid "{n} file"
 msgid_plural "{n} files"
 msgstr[0] ""
 
-#: ../gui/filehandling.py:222
+#: ../gui/filehandling.py:223
 #, fuzzy, python-brace-format
 msgctxt "Document I/O: the {files_summary} for a single file"
 msgid "“{basename}”"
 msgstr "“{file_basename}”을 불러옴."
 
-#: ../gui/filehandling.py:427
+#: ../gui/filehandling.py:432
 #, fuzzy
 msgctxt "save/load dialogs: filter patterns"
 msgid "All Recognized Formats"
 msgstr "모든 인식 가능한 형식"
 
-#: ../gui/filehandling.py:432
+#: ../gui/filehandling.py:437
 #, fuzzy
 msgctxt "save/load dialogs: filter patterns"
 msgid "OpenRaster (*.ora)"
 msgstr "OpenRaster (*.ora)"
 
-#: ../gui/filehandling.py:437
+#: ../gui/filehandling.py:442
 #, fuzzy
 msgctxt "save/load dialogs: filter patterns"
 msgid "PNG (*.png)"
 msgstr "PNG (*.png)"
 
-#: ../gui/filehandling.py:442
+#: ../gui/filehandling.py:447
 #, fuzzy
 msgctxt "save/load dialogs: filter patterns"
 msgid "JPEG (*.jpg; *.jpeg)"
 msgstr "JPEG (*.jpg; *.jpeg)"
 
-#: ../gui/filehandling.py:490
+#: ../gui/filehandling.py:495
 #, fuzzy
 msgctxt "save dialogs: save formats and options"
 msgid "By extension (prefer default format)"
 msgstr "선택안함 (기본 저장 형식)"
 
-#: ../gui/filehandling.py:494
+#: ../gui/filehandling.py:499
 #, fuzzy
 msgctxt "save dialogs: save formats and options"
 msgid "OpenRaster (*.ora)"
 msgstr "OpenRaster (*.ora)"
 
-#: ../gui/filehandling.py:498
+#: ../gui/filehandling.py:503
 #, fuzzy
 msgctxt "save dialogs: save formats and options"
 msgid "PNG, respecting “Show Background” (*.png)"
 msgstr "배경과 그림이 하나인 이미지 (*.png)"
 
-#: ../gui/filehandling.py:502
+#: ../gui/filehandling.py:507
 #, fuzzy
 msgctxt "save dialogs: save formats and options"
 msgid "PNG, solid RGB (*.png)"
 msgstr "PNG (*.png)"
 
-#: ../gui/filehandling.py:506
+#: ../gui/filehandling.py:511
 #, fuzzy
 msgctxt "save dialogs: save formats and options"
 msgid "PNG, transparent RGBA (*.png)"
 msgstr "투명 배경 이미지 (*.png)"
 
-#: ../gui/filehandling.py:510
+#: ../gui/filehandling.py:515
 #, fuzzy
 msgctxt "save dialogs: save formats and options"
 msgid "Multiple PNGs, by layer (*.NUM.png)"
 msgstr "레이어를 여러개의 이미지로 나누어 저장 (*.XXX.png)"
 
-#: ../gui/filehandling.py:514
+#: ../gui/filehandling.py:519
 #, fuzzy
 msgctxt "save dialogs: save formats and options"
 msgid "Multiple PNGs, by view (*.NAME.png)"
 msgstr "레이어를 여러개의 이미지로 나누어 저장 (*.XXX.png)"
 
-#: ../gui/filehandling.py:518
+#: ../gui/filehandling.py:523
 #, fuzzy
 msgctxt "save dialogs: save formats and options"
 msgid "JPEG 90% quality (*.jpg; *.jpeg)"
 msgstr "JPEG 90% 품질의 이미지 (*.jpg; *.jpeg)"
 
-#: ../gui/filehandling.py:576
+#: ../gui/filehandling.py:581
 #, fuzzy
 msgctxt "Dialogs (window title): File→Export…"
 msgid "Export"
 msgstr "내보내기…"
 
-#: ../gui/filehandling.py:581
+#: ../gui/filehandling.py:586
 #, fuzzy
 msgctxt "Dialogs (window title): File→Save As…"
 msgid "Save As"
 msgstr "다른 이름으로 저장…"
 
-#: ../gui/filehandling.py:601
+#: ../gui/filehandling.py:606
 #, fuzzy
 msgctxt "save dialogs: formats and options: (label)"
 msgid "Format to save as:"
 msgstr "저장하는 형식 :"
 
-#: ../gui/filehandling.py:668
+#: ../gui/filehandling.py:673
 #, fuzzy
 msgctxt ""
 "Destructive action confirm dialog: fallback title (normally overridden)"
 msgid "Really Continue?"
 msgstr "정말 계속하시겠습니까?"
 
-#: ../gui/filehandling.py:701
+#: ../gui/filehandling.py:706
 msgctxt "Destructive action confirm dialog: cancel button"
 msgid "_Cancel"
 msgstr ""
 
-#: ../gui/filehandling.py:705
+#: ../gui/filehandling.py:710
 #, fuzzy
 msgctxt "Destructive action confirm dialog: save checkbox"
 msgid "_Save to Scraps first"
 msgstr "스크랩으로 저장(_S)"
 
-#: ../gui/filehandling.py:711
+#: ../gui/filehandling.py:716
 msgctxt ""
 "Destructive action confirm dialog: fallback continue button (normally "
 "overridden)"
 msgid "Co_ntinue"
 msgstr ""
 
-#: ../gui/filehandling.py:734
+#: ../gui/filehandling.py:739
 #, fuzzy, python-brace-format
 msgctxt "Destructive action confirm dialog: warning message"
 msgid "You risk losing {abbreviated_time} of unsaved painting."
 msgstr "{abbreviated_time} 시간만큼 작업한 내용을 잃어버리게 될 것입니다"
 
-#: ../gui/filehandling.py:799
+#: ../gui/filehandling.py:804
 msgctxt "File→New: confirm dialog: title question"
 msgid "New Canvas?"
 msgstr ""
 
-#: ../gui/filehandling.py:803
+#: ../gui/filehandling.py:808
 msgctxt "File→New: confirm dialog: continue button"
 msgid "_New Canvas"
 msgstr ""
 
-#: ../gui/filehandling.py:1006
+#: ../gui/filehandling.py:1024
 msgctxt "File→Open: confirm dialog: title question"
 msgid "Open File?"
 msgstr ""
 
-#: ../gui/filehandling.py:1010
+#: ../gui/filehandling.py:1028
 #, fuzzy
 msgctxt "File→Open: confirm dialog: continue button"
 msgid "_Open…"
 msgstr "열기…"
 
-#: ../gui/filehandling.py:1018
+#: ../gui/filehandling.py:1036
 #, fuzzy
 msgctxt "File→Open: file chooser dialog: title"
 msgid "Open File"
 msgstr "최근 파일 열기"
 
-#: ../gui/filehandling.py:1058
+#: ../gui/filehandling.py:1084
 #, fuzzy
 msgctxt "load dialogs: title"
 msgid "Open Scratchpad…"
 msgstr "스크래치 패드 열기…"
 
-#: ../gui/filehandling.py:1100
+#: ../gui/filehandling.py:1126
 #, fuzzy
 msgctxt "Layers→Import Layers: files-chooser dialog: title"
 msgid "Import Layers"
 msgstr "불러온 브러시"
 
-#: ../gui/filehandling.py:1407
+#: ../gui/filehandling.py:1433
 msgctxt "File→Open Recent→* confirm dialog: title"
 msgid "Open File?"
 msgstr ""
 
-#: ../gui/filehandling.py:1411
+#: ../gui/filehandling.py:1437
 #, fuzzy
 msgctxt "File→Open Recent→* confirm dialog: continue button"
 msgid "_Open"
 msgstr "열기"
 
-#: ../gui/filehandling.py:1426
+#: ../gui/filehandling.py:1452
 #, fuzzy
 msgctxt "File→Open Most Recent confirm dialog: title"
 msgid "Open Most Recent File?"
 msgstr "가장 최근 작업을 열기"
 
-#: ../gui/filehandling.py:1431
+#: ../gui/filehandling.py:1457
 #, fuzzy
 msgctxt "File→Open Most Recent→* confirm dialog: continue button"
 msgid "_Open"
 msgstr "열기"
 
-#: ../gui/filehandling.py:1445
+#: ../gui/filehandling.py:1471
 #, fuzzy
 msgctxt "File→Open Next/Prev Scrap: error message"
 msgid "There are no scrap files yet. Try saving one first."
 msgstr "스크랩 파일 \"%s\"이(가) 생성되지 않았습니다."
 
-#: ../gui/filehandling.py:1454
+#: ../gui/filehandling.py:1480
 #, fuzzy
 msgctxt "File→Open Next/Prev Scrap confirm dialog: title"
 msgid "Open Next Scrap?"
 msgstr "다음 스크랩을 열기"
 
-#: ../gui/filehandling.py:1462
+#: ../gui/filehandling.py:1488
 #, fuzzy
 msgctxt "File→Open Next/Prev Scrap confirm dialog: title"
 msgid "Open Previous Scrap?"
 msgstr "이전 스크랩을 열기"
 
-#: ../gui/filehandling.py:1471
+#: ../gui/filehandling.py:1497
 #, fuzzy
 msgctxt "File→Open Next/Prev Scrap confirm dialog: continue button"
 msgid "_Open"
 msgstr "열기"
 
-#: ../gui/filehandling.py:1486
+#: ../gui/filehandling.py:1512
 msgctxt "File→Revert: status message: canvas has no filename yet"
 msgid "Cannot revert: canvas has not been saved to a file yet."
 msgstr ""
 
-#: ../gui/filehandling.py:1493
+#: ../gui/filehandling.py:1519
 msgctxt "File→Revert confirm dialog: title"
 msgid "Revert Changes?"
 msgstr ""
 
-#: ../gui/filehandling.py:1498
+#: ../gui/filehandling.py:1524
 #, fuzzy
 msgctxt "File→Revert confirm dialog: continue button"
 msgid "_Revert"
 msgstr "되돌리기"
 
-#: ../gui/fill.py:121
+#: ../gui/fill.py:122
 #, fuzzy
 msgctxt ""
 "Name of the fill mode\n"
@@ -1906,13 +1995,13 @@ msgctxt ""
 msgid "Flood Fill"
 msgstr "색상 영역 채우기"
 
-#: ../gui/fill.py:127
+#: ../gui/fill.py:128
 #, fuzzy
 msgctxt "Usage description of the Flood Fill mode"
 msgid "Fill areas with color"
 msgstr "색상 영역 채우기"
 
-#: ../gui/fill.py:508
+#: ../gui/fill.py:507
 #, fuzzy
 msgctxt ""
 "fill options: numeric value that determines whether tested pixels will be "
@@ -1920,7 +2009,7 @@ msgctxt ""
 msgid "Tolerance:"
 msgstr "오차 범위:"
 
-#: ../gui/fill.py:513
+#: ../gui/fill.py:512
 #, fuzzy
 msgctxt ""
 "fill options: Tolerance (tooltip) Note: 'the start' refers to the color of "
@@ -1930,7 +2019,7 @@ msgid ""
 "before Flood Fill will refuse to fill them"
 msgstr "채우기 툴이 적용될 색상 범위 조절"
 
-#: ../gui/fill.py:537
+#: ../gui/fill.py:536
 #, fuzzy
 msgctxt ""
 "fill options: option category (label) Options under this category relate to "
@@ -1938,17 +2027,17 @@ msgctxt ""
 msgid "Source:"
 msgstr "소스:"
 
-#: ../gui/fill.py:540
+#: ../gui/fill.py:539
 msgctxt "fill options: 'Source:' category (tooltip)"
 msgid "The input that the fill will be based on"
 msgstr ""
 
-#: ../gui/fill.py:584
+#: ../gui/fill.py:583
 msgctxt "fill options: 'Source' category: Layer dropdown (tooltip)"
 msgid "Select a specific layer you want the fill to be based on"
 msgstr ""
 
-#: ../gui/fill.py:602
+#: ../gui/fill.py:601
 #, fuzzy
 msgctxt ""
 "fill options: 'Source:' category: toggle (label)\n"
@@ -1957,7 +2046,7 @@ msgctxt ""
 msgid "Sample Merged"
 msgstr "샘플 합침"
 
-#: ../gui/fill.py:606
+#: ../gui/fill.py:605
 #, fuzzy
 msgctxt "fill options: Sample Merged (tooltip)"
 msgid ""
@@ -1968,13 +2057,13 @@ msgstr ""
 "채우기 툴을 사용하기 전, 현재 레이어 아래에\n"
 "표시된 레이어를 일시적으로 합쳐놓으세요"
 
-#: ../gui/fill.py:622
+#: ../gui/fill.py:621
 #, fuzzy
 msgctxt "fill options: toggle whether the fill will be limited by the viewport"
 msgid "Limit to View"
 msgstr "보기에 맞춤"
 
-#: ../gui/fill.py:628
+#: ../gui/fill.py:627
 msgctxt ""
 "fill options: Limit to View (tooltip)\n"
 "Note: 'that can fit the view' is equivalent to: 'in which the entire visible "
@@ -1985,7 +2074,7 @@ msgid ""
 "smallest canvas-aligned rectangle that can fit the view."
 msgstr ""
 
-#: ../gui/fill.py:645
+#: ../gui/fill.py:644
 #, fuzzy
 msgctxt ""
 "fill options: option category (label)\n"
@@ -1994,13 +2083,13 @@ msgctxt ""
 msgid "Target:"
 msgstr "대상:"
 
-#: ../gui/fill.py:648
+#: ../gui/fill.py:647
 #, fuzzy
 msgctxt "fill options: 'Target:' category (tooltip)"
 msgid "Where the output should go"
 msgstr "결과물의 위치"
 
-#: ../gui/fill.py:657
+#: ../gui/fill.py:656
 #, fuzzy
 msgctxt ""
 "fill options: Target | toggle (label)\n"
@@ -2009,7 +2098,7 @@ msgctxt ""
 msgid "New Layer (once)"
 msgstr "새로운 레이어 (한번)"
 
-#: ../gui/fill.py:662
+#: ../gui/fill.py:661
 #, fuzzy
 msgctxt "fill options: Target | New Layer (tooltip)"
 msgid ""
@@ -2019,52 +2108,52 @@ msgstr ""
 "색 채우기를 한 상태로 새 레이어를 생성.\n"
 "사용 후 자동으로 해제됩니다."
 
-#: ../gui/fill.py:674
+#: ../gui/fill.py:673
 msgctxt "fill options: Target | Blend Mode dropdown - warning text"
 msgid "This mode does nothing when alpha locking is enabled!"
 msgstr ""
 
-#: ../gui/fill.py:688
+#: ../gui/fill.py:687
 msgctxt "fill options: Target | Blend Mode dropdown (tooltip)"
 msgid "Blend mode used when filling"
 msgstr ""
 
-#: ../gui/fill.py:703
+#: ../gui/fill.py:702
 msgid "Opacity:"
 msgstr "불투명도 :"
 
-#: ../gui/fill.py:706
+#: ../gui/fill.py:705
 #, fuzzy
 msgctxt "fill options: Opacity slider (tooltip)"
 msgid "Opacity of the fill"
 msgstr "불투명도 곱하기"
 
-#: ../gui/fill.py:729
+#: ../gui/fill.py:728
 msgctxt "fill options: numeric option - grow/shrink fill (label)"
 msgid "Offset:"
 msgstr ""
 
-#: ../gui/fill.py:745
+#: ../gui/fill.py:744
 msgctxt "fill options: Offset (tooltip)"
 msgid "The distance in pixels to grow or shrink the fill"
 msgstr ""
 
-#: ../gui/fill.py:756
+#: ../gui/fill.py:755
 msgctxt "fill options: numeric option for blurring fill (label)"
 msgid "Feather:"
 msgstr ""
 
-#: ../gui/fill.py:771
+#: ../gui/fill.py:770
 msgctxt "fill options: Feather (tooltip)"
 msgid "The amount of blur to apply to the fill"
 msgstr ""
 
-#: ../gui/fill.py:787
+#: ../gui/fill.py:786
 msgctxt "fill options: gap detection toggle (label)"
 msgid "Use Gap Detection"
 msgstr ""
 
-#: ../gui/fill.py:792
+#: ../gui/fill.py:791
 msgctxt "fill options: Use Gap Detection (tooltip)"
 msgid ""
 "Try to detect gaps and not fill past them.\n"
@@ -2072,19 +2161,19 @@ msgid ""
 "need it."
 msgstr ""
 
-#: ../gui/fill.py:810
+#: ../gui/fill.py:809
 msgctxt "fill options: gap-detection sub-option, numeric setting (label)"
 msgid "Max Gap Size:"
 msgstr ""
 
-#: ../gui/fill.py:825
+#: ../gui/fill.py:824
 msgctxt "fill options: Max Gap Size (tooltip)"
 msgid ""
 "The size of the largest gaps that can be detected.\n"
 "Using large values can make the fill run a lot slower."
 msgstr ""
 
-#: ../gui/fill.py:838
+#: ../gui/fill.py:837
 msgctxt ""
 "fill options: on/off sub-option, numeric (label)\n"
 "When enabled, if the fill stops after going past a detected gap, it 'pulls' "
@@ -2092,24 +2181,24 @@ msgctxt ""
 msgid "Prevent seeping"
 msgstr ""
 
-#: ../gui/fill.py:845
+#: ../gui/fill.py:844
 msgctxt "fill options: Prevent seeping (tooltip)"
 msgid ""
 "Try to prevent the fill from seeping into the gaps.\n"
 "If a fill starts in a detected gap, this option will do nothing."
 msgstr ""
 
-#: ../gui/fill.py:855 ../gui/mode.py:627
+#: ../gui/fill.py:854 ../gui/mode.py:627
 msgid "Reset"
 msgstr "초기화"
 
-#: ../gui/fill.py:859
+#: ../gui/fill.py:858
 #, fuzzy
 msgctxt "fill options: Reset button (tooltip)"
 msgid "Reset options to their defaults"
 msgstr "옵션을 기본 값으로 초기화"
 
-#: ../gui/fill.py:1037
+#: ../gui/fill.py:1036
 #, fuzzy
 msgctxt "fill option: default option in the Source Layer dropdown"
 msgid "Selected Layer"
@@ -2777,13 +2866,13 @@ msgctxt "color picker: statusbar text during grab"
 msgid "Pick color…"
 msgstr "색상을 선택…"
 
-#: ../gui/preferenceswindow.py:42
+#: ../gui/preferenceswindow.py:43
 msgid "Preferences"
 msgstr "환경 설정"
 
 #. TRANSLATORS: This option means that MyPaint will try to use
 #. TRANSLATORS: the language the system tells it to use.
-#: ../gui/preferenceswindow.py:365
+#: ../gui/preferenceswindow.py:369
 msgctxt "Language preferences menu - default option"
 msgid "System Language"
 msgstr "시스템 언어"
@@ -2792,7 +2881,7 @@ msgstr "시스템 언어"
 #. TRANSLATORS: lang_nat is the native name of the language
 #. TRANSLATORS: in that _same language_.
 #. TRANSLATORS: This can just be copied most of the time.
-#: ../gui/preferenceswindow.py:417
+#: ../gui/preferenceswindow.py:421
 #, python-brace-format
 msgctxt "Prefs Dialog|View|Interface - menu entries"
 msgid "{lang_en} - ({lang_nat})"
@@ -3148,20 +3237,20 @@ msgid "The logs may have more detail about this error."
 msgstr "이 에러에 대한 자세한 사항은 로그를 참고해주세요."
 
 #. TRANSLATORS: string used in e.g. "3h42m from now"
-#: ../lib/document.py:200
+#: ../lib/document.py:204
 msgctxt "Document autosave descriptions: the {ago} string: future"
 msgid "from now"
 msgstr "지금부터"
 
 #. TRANSLATORS: string used in e.g. "8s ago"
-#: ../lib/document.py:206
+#: ../lib/document.py:210
 msgctxt "Document autosave descriptions: the {ago} string: past"
 msgid "ago"
 msgstr "전에"
 
 #. TRANSLATORS: String descriptions for an autosaved backup.
 #. TRANSLATORS: Time strings are localized: e.g. "3h42m" or "8s"
-#: ../lib/document.py:214
+#: ../lib/document.py:218
 #, python-brace-format
 msgctxt "Document autosave descriptions"
 msgid ""
@@ -3173,7 +3262,7 @@ msgstr ""
 "MyPaint를 여러 번 실행하셨나요?\n"
 "애플리케이션을 닫고 {cache_update_interval}초 후 다시 시도하세요."
 
-#: ../lib/document.py:221
+#: ../lib/document.py:225
 #, python-brace-format
 msgctxt "Document autosave descriptions"
 msgid "Incomplete backup updated {last_modified_time} {ago}"
@@ -3183,7 +3272,7 @@ msgstr "불완전 백업 {last_modified_time}{ago} 업데이트됨"
 #. TRANSLATORS: Look for the msgids "from now" and "ago"
 #. TRANSLATORS: (with context starting w. "Document autosave")
 #. TRANSLATORS: to make sure their translations match this one.
-#: ../lib/document.py:230
+#: ../lib/document.py:234
 #, python-brace-format
 msgctxt "Document autosave descriptions"
 msgid ""
@@ -3196,7 +3285,7 @@ msgstr ""
 "크기: {autosave.width}×{autosave.height}픽셀, 레이어: {autosave.num_layers}\n"
 "{unsaved_time}동안의 저장되지 않은 그림 포함."
 
-#: ../lib/document.py:1441
+#: ../lib/document.py:1447
 #, python-brace-format
 msgctxt "Document IO: hint templates for user-facing exceptions"
 msgid ""
@@ -3206,13 +3295,13 @@ msgstr ""
 "“{filename}”을(를) 저장할 수 없습니다: {err}\n"
 "저장장치에 남은 공간이 충분합니까?"
 
-#: ../lib/document.py:1447 ../lib/document.py:1457
+#: ../lib/document.py:1453 ../lib/document.py:1463
 #, python-brace-format
 msgctxt "Document IO: hint templates for user-facing exceptions"
 msgid "Unable to write “{filename}”: {err}"
 msgstr "“{filename}”으로 저장할 수 없습니다: {err}"
 
-#: ../lib/document.py:1493
+#: ../lib/document.py:1500
 #, python-brace-format
 msgctxt "Document IO: loading errors"
 msgid ""
@@ -3222,7 +3311,7 @@ msgstr ""
 "{error_loading_common}\n"
 "파일이 존재하지 않습니다."
 
-#: ../lib/document.py:1500
+#: ../lib/document.py:1507
 #, python-brace-format
 msgctxt "Document IO: loading errors"
 msgid ""
@@ -3232,7 +3321,7 @@ msgstr ""
 "{error_loading_common}\n"
 "파일을 여는 데 필요한 권한이 없습니다."
 
-#: ../lib/document.py:1525
+#: ../lib/document.py:1533
 #, python-brace-format
 msgctxt "Document IO: loading errors"
 msgid ""
@@ -3248,7 +3337,7 @@ msgstr ""
 "\n"
 "{see_logs}"
 
-#: ../lib/document.py:1549
+#: ../lib/document.py:1558
 #, python-brace-format
 msgctxt "Document IO: loading errors"
 msgid ""
@@ -3258,13 +3347,13 @@ msgstr ""
 "{error_loading_common}\n"
 "알 수 없는 파일 형식 확장명: {ext}"
 
-#: ../lib/document.py:1580
+#: ../lib/document.py:1589
 #, fuzzy
 msgctxt "Document IO: group name for Import Layers"
 msgid "Imported layers"
 msgstr "불러온 브러시"
 
-#: ../lib/document.py:1747
+#: ../lib/document.py:1756
 #, python-brace-format
 msgctxt "Document IO: hint templates for user-facing exceptions"
 msgid ""
@@ -3278,7 +3367,7 @@ msgstr ""
 "기기의 메모리가 충분치 않다면, PNG 확장자로 대신 저장해보십시오. MyPaint의 "
 "PNG 저장 기능은 더 효율적입니다."
 
-#: ../lib/document.py:1877
+#: ../lib/document.py:1912
 #, python-brace-format
 msgctxt "Document autosave: restoring: errors"
 msgid ""
@@ -3327,85 +3416,85 @@ msgstr ""
 
 #. TRANSLATORS: Assumption for all "Time period abbreviations":
 #. TRANSLATORS: they don't need ngettext (to support plural/singular)
-#: ../lib/helpers.py:535
+#: ../lib/helpers.py:570
 #, fuzzy, python-brace-format
 msgctxt "Time period abbreviations"
 msgid "{days}d{hours}h"
 msgstr "{days}일 {hours}시"
 
-#: ../lib/helpers.py:537
+#: ../lib/helpers.py:572
 #, fuzzy, python-brace-format
 msgctxt "Time period abbreviations"
 msgid "{hours}h{minutes}m"
 msgstr "{hours}시 {minutes}분"
 
-#: ../lib/helpers.py:539
+#: ../lib/helpers.py:574
 #, fuzzy, python-brace-format
 msgctxt "Time period abbreviation"
 msgid "{minutes}m{seconds}s"
 msgstr "{minutes}분 {seconds}초"
 
-#: ../lib/helpers.py:541
+#: ../lib/helpers.py:576
 #, fuzzy, python-brace-format
 msgctxt "Time period abbreviation"
 msgid "{seconds}s"
 msgstr "{seconds}초"
 
 #. TRANSLATORS: Default name for new normal, paintable layers
-#: ../lib/layer/core.py:66 ../lib/layer/data.py:1300
+#: ../lib/layer/core.py:66 ../lib/layer/data.py:1301
 msgctxt "layer default names"
 msgid "Layer"
 msgstr "레이어"
 
 #. TRANSLATORS: Short default name for vector (SVG/Inkscape) layers
-#: ../lib/layer/data.py:1158
+#: ../lib/layer/data.py:1159
 #, fuzzy
 msgctxt "layer default names"
 msgid "Vectors"
 msgstr "벡터 레이어"
 
-#: ../lib/layer/data.py:1163
+#: ../lib/layer/data.py:1164
 #, fuzzy
 msgctxt "layer type descriptions"
 msgid "Vector Layer"
 msgstr "벡터 레이어"
 
 #. TRANSLATORS: Short default name for renderable fallback layers
-#: ../lib/layer/data.py:1228
+#: ../lib/layer/data.py:1229
 msgctxt "layer default names"
 msgid "Bitmap"
 msgstr ""
 
-#: ../lib/layer/data.py:1233
+#: ../lib/layer/data.py:1234
 msgctxt "layer type descriptions"
 msgid "Bitmap Data"
 msgstr ""
 
 #. TRANSLATORS: Short default name for non-renderable fallback layers
-#: ../lib/layer/data.py:1249
+#: ../lib/layer/data.py:1250
 msgctxt "layer default names"
 msgid "Data"
 msgstr ""
 
-#: ../lib/layer/data.py:1254
+#: ../lib/layer/data.py:1255
 #, fuzzy
 msgctxt "layer type descriptions"
 msgid "Unknown Data"
 msgstr "알 수 없는 데이터 레이어"
 
-#: ../lib/layer/data.py:1305
+#: ../lib/layer/data.py:1306
 #, fuzzy
 msgctxt "layer type descriptions"
 msgid "Painting Layer"
 msgstr "새로운 페인트 레이어"
 
 #. TRANSLATORS: Short default name for layer groups.
-#: ../lib/layer/group.py:69
+#: ../lib/layer/group.py:67
 msgctxt "layer default names"
 msgid "Group"
 msgstr "그룹"
 
-#: ../lib/layer/group.py:74
+#: ../lib/layer/group.py:72
 #, fuzzy
 msgctxt "layer type descriptions"
 msgid "Layer Group"
@@ -3423,12 +3512,12 @@ msgctxt "layer default names"
 msgid "Root"
 msgstr "루트"
 
-#: ../lib/layer/tree.py:2133 ../lib/layer/tree.py:2199
+#: ../lib/layer/tree.py:2127 ../lib/layer/tree.py:2193
 msgctxt "layer default names: joiner punctuation for merged layers"
 msgid ", "
 msgstr ", "
 
-#: ../lib/layer/tree.py:2321
+#: ../lib/layer/tree.py:2315
 msgctxt "layer default names: refactor: name of the common areas layer"
 msgid "Common"
 msgstr ""
@@ -3474,47 +3563,47 @@ msgctxt "layer views: commands: set active view's lock flag"
 msgid "Unlock Layer View"
 msgstr "레이어 잠금 해제"
 
-#: ../lib/modes.py:38
+#: ../lib/modes.py:47
 msgid "Pass-through"
 msgstr "통과를 통해"
 
-#: ../lib/modes.py:39
+#: ../lib/modes.py:48
 msgid "Group contents apply directly to the group's backdrop"
 msgstr "그룹 안의 요소들은 그룹의 배경에 직접 적용됩니다"
 
-#: ../lib/modes.py:43
+#: ../lib/modes.py:51
 msgid "Normal"
 msgstr "노멀"
 
-#: ../lib/modes.py:44
+#: ../lib/modes.py:52
 msgid "The top layer only, without blending colors."
 msgstr "혼합 색상이 없는 유일한 상단 레이어."
 
-#: ../lib/modes.py:46
+#: ../lib/modes.py:54
 msgid "Pigment"
 msgstr ""
 
-#: ../lib/modes.py:47
+#: ../lib/modes.py:55
 msgid ""
 "Similar to mixing actual pigments by upsampling to 10 spectral channels."
 msgstr ""
 
-#: ../lib/modes.py:50
+#: ../lib/modes.py:58
 msgid "Multiply"
 msgstr "곱하기"
 
-#: ../lib/modes.py:51
+#: ../lib/modes.py:59
 msgid ""
 "Similar to loading two slides into a projector and projecting the combined "
 "result."
 msgstr ""
 "프로젝터에 슬라이드 두 개를 불러와 합친 결과를 보여주는 것과 비슷합니다."
 
-#: ../lib/modes.py:54
+#: ../lib/modes.py:62
 msgid "Screen"
 msgstr "스크린"
 
-#: ../lib/modes.py:55
+#: ../lib/modes.py:63
 msgid ""
 "Like shining two separate slide projectors onto a screen simultaneously. "
 "This is the inverse of 'Multiply'."
@@ -3522,11 +3611,11 @@ msgstr ""
 "각각 다른 두 개의 슬라이드 프로젝터를 스크린 하나에 동시에 비추는 것과 같습니"
 "다. '곱하기'의 반대와 같습니다."
 
-#: ../lib/modes.py:58
+#: ../lib/modes.py:66
 msgid "Overlay"
 msgstr "오버레이"
 
-#: ../lib/modes.py:59
+#: ../lib/modes.py:67
 msgid ""
 "Overlays the backdrop with the top layer, preserving the backdrop's "
 "highlights and shadows. This is the inverse of 'Hard Light'."
@@ -3534,27 +3623,27 @@ msgstr ""
 "배경의 하이라이트와 그림자를 보존한 상태로, 위쪽 레이어를 덮어씌웁니다. '하"
 "드 라이트'의 반대의 기능을 합니다."
 
-#: ../lib/modes.py:63
+#: ../lib/modes.py:71
 msgid "Darken"
 msgstr "어둡게"
 
-#: ../lib/modes.py:64
+#: ../lib/modes.py:72
 msgid "The top layer is used where it is darker than the backdrop."
 msgstr "위쪽 레이어가 배경보다 색이 어두운 곳에 사용됩니다."
 
-#: ../lib/modes.py:67
+#: ../lib/modes.py:75
 msgid "Lighten"
 msgstr "밝게"
 
-#: ../lib/modes.py:68
+#: ../lib/modes.py:76
 msgid "The top layer is used where it is lighter than the backdrop."
 msgstr "위쪽 레이어가 배경보다 밝은 곳에 사용됩니다."
 
-#: ../lib/modes.py:71
+#: ../lib/modes.py:79
 msgid "Dodge"
 msgstr "닷지"
 
-#: ../lib/modes.py:72
+#: ../lib/modes.py:80
 msgid ""
 "Brightens the backdrop using the top layer. The effect is similar to the "
 "photographic darkroom technique of the same name which is used for improving "
@@ -3562,11 +3651,11 @@ msgid ""
 msgstr ""
 "위쪽 레이어를 이용해 배경을 밝게 합니다. 이 효과는 그림자의 대비를 높입니다."
 
-#: ../lib/modes.py:76
+#: ../lib/modes.py:84
 msgid "Burn"
 msgstr "번"
 
-#: ../lib/modes.py:77
+#: ../lib/modes.py:85
 msgid ""
 "Darkens the backdrop using the top layer. The effect looks similar to the "
 "photographic darkroom technique of the same name which is used for reducing "
@@ -3575,107 +3664,107 @@ msgstr ""
 "위쪽 레이어를 사용해 배경을 어둡게 합니다. 과도하게 밝은 하이라이트를 줄입니"
 "다."
 
-#: ../lib/modes.py:81
+#: ../lib/modes.py:89
 msgid "Hard Light"
 msgstr "하드 라이트"
 
-#: ../lib/modes.py:82
+#: ../lib/modes.py:90
 msgid "Similar to shining a harsh spotlight onto the backdrop."
 msgstr "배경에 강한 스포트라이트를 비추는 것과 비슷합니다."
 
-#: ../lib/modes.py:84
+#: ../lib/modes.py:92
 msgid "Soft Light"
 msgstr "소프트 라이트"
 
-#: ../lib/modes.py:85
+#: ../lib/modes.py:93
 msgid "Like shining a diffuse spotlight onto the backdrop."
 msgstr "배경에 확산광 스포트라이트 (diffuse spotlight)를 비추는 것과 같습니다."
 
-#: ../lib/modes.py:87
+#: ../lib/modes.py:95
 msgid "Difference"
 msgstr "차이"
 
-#: ../lib/modes.py:88
+#: ../lib/modes.py:96
 msgid "Subtracts the darker color from the lighter of the two."
 msgstr "두 가지 라이터에서 어두운 색상을 뺍니다."
 
-#: ../lib/modes.py:90
+#: ../lib/modes.py:98
 msgid "Exclusion"
 msgstr "제외"
 
-#: ../lib/modes.py:91
+#: ../lib/modes.py:99
 msgid "Similar to the 'Difference' mode, but lower in contrast."
 msgstr "'차이'모드와 비슷하지만 그에 비해서는 더 낮습니다."
 
-#: ../lib/modes.py:94
+#: ../lib/modes.py:102
 msgid "Hue"
 msgstr "색조"
 
-#: ../lib/modes.py:95
+#: ../lib/modes.py:103
 msgid ""
 "Combines the hue of the top layer with the saturation and luminosity of the "
 "backdrop."
 msgstr "배경의 채도와 밝기를 맨 위 레이어의 색조와 결합합니다."
 
-#: ../lib/modes.py:98
+#: ../lib/modes.py:106
 msgid "Saturation"
 msgstr "채도"
 
-#: ../lib/modes.py:99
+#: ../lib/modes.py:107
 msgid ""
 "Applies the saturation of the top layer's colors to the hue and luminosity "
 "of the backdrop."
 msgstr "맨 위 레이어 색상의 채도를 배경의 색조와 밝기에 적용합니다."
 
-#: ../lib/modes.py:103
+#: ../lib/modes.py:111
 msgid ""
 "Applies the hue and saturation of the top layer to the luminosity of the "
 "backdrop."
 msgstr "맨 위 레이어의 채도와 색조를 배경의 밝기에 적용합니다."
 
-#: ../lib/modes.py:106
+#: ../lib/modes.py:114
 msgid "Luminosity"
 msgstr "밝기"
 
-#: ../lib/modes.py:107
+#: ../lib/modes.py:115
 msgid ""
 "Applies the luminosity of the top layer to the hue and saturation of the "
 "backdrop."
 msgstr "맨 위 레이어의 밝기를 배경의 채도와 색조에 적용합니다."
 
-#: ../lib/modes.py:111
+#: ../lib/modes.py:119
 msgid "Plus"
 msgstr "더하기"
 
-#: ../lib/modes.py:112
+#: ../lib/modes.py:120
 msgid "This layer and its backdrop are simply added together."
 msgstr "이 계층과 그 배경은 단순히 함께 추가됩니다."
 
-#: ../lib/modes.py:114
+#: ../lib/modes.py:122
 msgid "Destination In"
 msgstr "아래가 들어오게"
 
-#: ../lib/modes.py:115
+#: ../lib/modes.py:123
 msgid ""
 "Uses the backdrop only where this layer covers it. Everything else is "
 "ignored."
 msgstr "레이어가 덮은 배경만을 사용합니다. 다른 모든 것은 무시됩니다."
 
-#: ../lib/modes.py:118
+#: ../lib/modes.py:126
 msgid "Destination Out"
 msgstr "아래가 나가게"
 
-#: ../lib/modes.py:119
+#: ../lib/modes.py:127
 msgid ""
 "Uses the backdrop only where this layer doesn't cover it. Everything else is "
 "ignored."
 msgstr "레이어가 덮지 않은 배경만을 사용합니다. 다른 모든 것은 무시됩니다."
 
-#: ../lib/modes.py:122
+#: ../lib/modes.py:130
 msgid "Source Atop"
 msgstr "여기 위에다"
 
-#: ../lib/modes.py:123
+#: ../lib/modes.py:131
 msgid ""
 "Source which overlaps the destination, replaces the destination. Destination "
 "is placed elsewhere."
@@ -3683,11 +3772,11 @@ msgstr ""
 "목적지가 겹쳐진 소스는 목적지를 바꿉니다. 목적지는 다른 곳으로 지정되었습니"
 "다."
 
-#: ../lib/modes.py:126
+#: ../lib/modes.py:134
 msgid "Destination Atop"
 msgstr "아래 위에다"
 
-#: ../lib/modes.py:127
+#: ../lib/modes.py:135
 msgid ""
 "Destination which overlaps the source replaces the source. Source is placed "
 "elsewhere."
@@ -3712,7 +3801,7 @@ msgctxt "unique names: regex matching a string with a serial number"
 msgid "^(?P<name>.*?)\\s+(?P<number>\\d+)$"
 msgstr ""
 
-#: ../lib/pixbufsurface.py:38
+#: ../lib/pixbufsurface.py:39
 msgctxt "user-facing error texts"
 msgid ""
 "Unable to construct a vital internal object. Your system may not have enough "
@@ -3721,7 +3810,7 @@ msgstr ""
 "필수 내부 오브젝트 생성이 불가능합니다. 당신의 시스템이 작동을 실행하기에 필"
 "요한 충분한 메모리가 없습니다."
 
-#: ../lib/surface.py:300
+#: ../lib/surface.py:313
 #, python-brace-format
 msgctxt "low-level PNG writer failure report (dialog)"
 msgid ""
@@ -4736,16 +4825,111 @@ msgid "Color"
 msgstr "색상"
 
 #: ../po/tmp/preferenceswindow.glade.h:106
+msgctxt "Prefs Dialog|Compatibility"
+msgid "Default Compatibility Mode:"
+msgstr ""
+
+#: ../po/tmp/preferenceswindow.glade.h:107
+#, fuzzy
+msgctxt "Prefs Dialog|Compatibility"
+msgid "<b>1.x Settings</b>"
+msgstr "<b>저장하기</b>"
+
+#. Make sure to be consistent w. other occurences of 2.x
+#: ../po/tmp/preferenceswindow.glade.h:109
+#, fuzzy
+msgctxt "Prefs Dialog|Compatibility"
+msgid "<b>2.x Settings</b>"
+msgstr "<b>저장하기</b>"
+
+#: ../po/tmp/preferenceswindow.glade.h:110
+#, fuzzy
+msgctxt "Prefs Dialog|Compatibility"
+msgid "Default New Layer Type:"
+msgstr "레이어를 삭제"
+
+#: ../po/tmp/preferenceswindow.glade.h:111
+#, fuzzy
+msgctxt "Prefs Dialog|Compatibility"
+msgid "Default Pigment Brush Setting:"
+msgstr "브러시 설정을 편집"
+
+#. Label description for the 1.x compatibility-mode-by-default setting
+#: ../po/tmp/preferenceswindow.glade.h:115
+msgctxt "Prefs Dialog|Compatibility"
+msgid ""
+"When creating new documents, use the legacy 1.x compatibility mode by "
+"default. In this mode 1.x .ora files will look the same as they did in older "
+"versions, but pigment blending will not work well."
+msgstr ""
+
+#: ../po/tmp/preferenceswindow.glade.h:118
+msgctxt "Prefs Dialog|Compatibility"
+msgid ""
+"When creating new documents, use the regular 2.x compatibility mode by "
+"default. Old documents will often look different in this mode."
+msgstr ""
+
+#: ../po/tmp/preferenceswindow.glade.h:119
+msgctxt "Prefs Dialog|Compatibility"
+msgid "Show warning for files that may be partially incompatible"
+msgstr ""
+
+#. Label for a set of options
+#: ../po/tmp/preferenceswindow.glade.h:121
+msgctxt "Prefs Dialog|Compatibility"
+msgid "File compatibility warnings:"
+msgstr ""
+
+#: ../po/tmp/preferenceswindow.glade.h:122
+msgctxt "Prefs Dialog|Compatibility"
+msgid "Show warning for files that may be fully incompatible"
+msgstr ""
+
+#. This is a tooltip for the file behavior options label.
+#: ../po/tmp/preferenceswindow.glade.h:124
+msgctxt "Prefs|Compatibility"
+msgid ""
+"This will only apply to files saved with versions of MyPaint older than 2.0. "
+"When you save an OpenRaster file with MyPaint 2.0 or newer the active "
+"compatibility mode will be written to the file."
+msgstr ""
+
+#. Label to the options for how to handle files which do not have a compatibility mode specified (whether they should be opened in 1.x compatibility mode, or 2.x mode)
+#: ../po/tmp/preferenceswindow.glade.h:126
+msgctxt "Prefs Dialog|Compatibility"
+msgid "When Mode is Unspecified:"
+msgstr ""
+
+#. This label indicates a subsection of the compatibility settings related to loading files.
+#: ../po/tmp/preferenceswindow.glade.h:128
+#, fuzzy
+msgctxt "Prefs|Compatibility"
+msgid "<b>File loading</b>"
+msgstr "<b>저장하기</b>"
+
+#: ../po/tmp/preferenceswindow.glade.h:129
+msgid "<b>Compatibility settings</b>"
+msgstr ""
+
+#. Tab label in preferences dialog
+#: ../po/tmp/preferenceswindow.glade.h:131
+#, fuzzy
+msgctxt "Prefs Dialog|"
+msgid "Compatibility"
+msgstr "호환성"
+
+#: ../po/tmp/preferenceswindow.glade.h:132
 msgctxt "Prefs Dialog|Pen Input|Mode|"
 msgid "Screen (normal)"
 msgstr "스크린 (노멀)"
 
-#: ../po/tmp/preferenceswindow.glade.h:107
+#: ../po/tmp/preferenceswindow.glade.h:133
 msgctxt "Prefs Dialog|Pen Input|Mode|"
 msgid "Disabled (no pressure sensitivity)"
 msgstr "장애 (어떤 압력 감도 없음)"
 
-#: ../po/tmp/preferenceswindow.glade.h:108
+#: ../po/tmp/preferenceswindow.glade.h:134
 msgctxt "Prefs Dialog|Pen Input|Mode|"
 msgid "Window (not recommended)"
 msgstr "창 (권장하지 않음)"
