@@ -107,9 +107,10 @@ MAJOR = 2
 MINOR = 0
 PATCH = 0
 PREREL = '-alpha'
+PREREL_NUM = 13
 
 # Verify the version fields
-for part in (MAJOR, MINOR, PATCH):
+for part in (MAJOR, MINOR, PATCH, PREREL_NUM):
     assert isinstance(part, int) and part >= 0
 assert PREREL in {'', '-alpha', '-beta'}
 
@@ -118,7 +119,8 @@ assert PREREL in {'', '-alpha', '-beta'}
 #: for pre-release (hyphenated) base versions, the formal version will
 #: be further decorated with the number of commits following the tag.
 MYPAINT_VERSION = '{major}.{minor}.{patch}{prerel}'.format(
-    major=MAJOR, minor=MINOR, patch=PATCH, prerel=PREREL
+    major=MAJOR, minor=MINOR, patch=PATCH,
+    prerel=PREREL and PREREL+'.'+str(PREREL_NUM)
 )
 
 
@@ -148,6 +150,9 @@ def _parse_version_string(version_string):
         i = version_string.index('-')
         prerel = version_string[i:]
         version_string = version_string[:i]
+        # Strip prerelease number
+        if '.' in prerel:
+            prerel = prerel[:prerel.index('.')]
     else:
         prerel = ''
     try:
