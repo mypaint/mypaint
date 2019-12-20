@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: mypaint v2.0.0-alpha.8-1-g4490f06\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2019-11-26 21:32+0100\n"
-"PO-Revision-Date: 2019-12-07 18:53+0000\n"
+"PO-Revision-Date: 2019-12-19 16:38+0000\n"
 "Last-Translator: Prachi Joshi <josprachi@yahoo.com>\n"
 "Language-Team: Marathi <https://hosted.weblate.org/projects/mypaint/mypaint/"
 "mr/>\n"
@@ -123,11 +123,11 @@ msgstr ""
 
 #: ../gui/backgroundwindow.py:256
 msgid "One or more backgrounds could not be loaded"
-msgstr ""
+msgstr "एक किंवा अधिक पार्श्वभूमी लोड करणे शक्य नाही"
 
 #: ../gui/backgroundwindow.py:257
 msgid "Error loading backgrounds"
-msgstr ""
+msgstr "पार्श्वभूमी लोड करण्यात त्रुटी"
 
 #: ../gui/backgroundwindow.py:258
 msgid ""
@@ -147,27 +147,27 @@ msgstr ""
 #: ../gui/brusheditor.py:90
 msgctxt "brush settings editor: subwindow title"
 msgid "Brush Settings Editor"
-msgstr ""
+msgstr "ब्रश सेटिंग्ज संपादक"
 
 #: ../gui/brusheditor.py:270
 msgctxt "brush settings list: brush metadata texts group"
 msgid "About"
-msgstr ""
+msgstr "बद्दल"
 
 #: ../gui/brusheditor.py:281
 msgctxt "brush settings list: setting group"
 msgid "Experimental"
-msgstr ""
+msgstr "प्रायोगिक"
 
 #: ../gui/brusheditor.py:288
 msgctxt "brush settings list: setting group"
 msgid "Basic"
-msgstr ""
+msgstr "मूलभूत"
 
 #: ../gui/brusheditor.py:307
 msgctxt "brush settings list: setting group"
 msgid "Opacity"
-msgstr ""
+msgstr "अस्पष्टता"
 
 #: ../gui/brusheditor.py:319
 msgctxt "brush settings list: setting group"
@@ -182,7 +182,7 @@ msgstr ""
 #: ../gui/brusheditor.py:341
 msgctxt "brush settings list: setting group"
 msgid "Speed"
-msgstr ""
+msgstr "वेग"
 
 #: ../gui/brusheditor.py:355
 msgctxt "brush settings list: setting group"
@@ -254,19 +254,19 @@ msgstr ""
 #, python-brace-format
 msgctxt "brush settings editor: header: is-modified hint"
 msgid "{brush_name} [unsaved]"
-msgstr ""
+msgstr "{brush_name} [जतन न केलेले]"
 
 #: ../gui/brushiconeditor.py:36
 msgid "Brush Icon"
-msgstr ""
+msgstr "ब्रश चिन्ह"
 
 #: ../gui/brushiconeditor.py:37
 msgid "Brush Icon (editing)"
-msgstr ""
+msgstr "ब्रश चिन्ह (संपादन)"
 
 #: ../gui/brushiconeditor.py:74
 msgid "No brush selected"
-msgstr ""
+msgstr "ब्रश निवडलेला नाही"
 
 #: ../gui/brushiconeditor.py:76
 #, python-format
@@ -5466,7 +5466,7 @@ msgstr "फाइल"
 #: ../po/tmp/resources.xml.h:202
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "Quit"
-msgstr ""
+msgstr "बाहेर पडा"
 
 #: ../po/tmp/resources.xml.h:203
 msgctxt "Accel Editor (descriptions)"
@@ -5677,7 +5677,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:244
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
 msgid "Change Brush…"
-msgstr ""
+msgstr "ब्रश बदला…"
 
 #: ../po/tmp/resources.xml.h:245
 msgctxt "Accel Editor (descriptions)"
@@ -5687,7 +5687,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:246
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "Change Color…"
-msgstr ""
+msgstr "रंग बदला…"
 
 #: ../po/tmp/resources.xml.h:247
 msgctxt "Accel Editor (descriptions)"
@@ -5698,7 +5698,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:248
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "Change Color (fast subset)…"
-msgstr ""
+msgstr "रंग बदला (वेगवान उपसेट)…"
 
 #: ../po/tmp/resources.xml.h:249
 msgctxt "Accel Editor (descriptions)"
@@ -5710,7 +5710,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:250
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
 msgid "Get More Brushes…"
-msgstr ""
+msgstr "अधिक ब्रशेस मिळवा …"
 
 #: ../po/tmp/resources.xml.h:251
 msgctxt "Accel Editor (descriptions)"
@@ -5735,7 +5735,7 @@ msgstr "मदत"
 #: ../po/tmp/resources.xml.h:255
 msgctxt "Menu→Help (labels), Accel Editor (labels)"
 msgid "Online Help"
-msgstr ""
+msgstr "ऑनलाईन मदत"
 
 #: ../po/tmp/resources.xml.h:256
 msgctxt "Accel Editor (descriptions)"
@@ -5745,7 +5745,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:257
 msgctxt "Menu→Help (labels), Accel Editor (labels)"
 msgid "About MyPaint"
-msgstr ""
+msgstr "मायपेंट बद्दल"
 
 #: ../po/tmp/resources.xml.h:258
 msgctxt "Accel Editor (descriptions)"
@@ -5825,7 +5825,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:273
 msgctxt "Menu→View (labels), Accel Editor (labels)"
 msgid "Fullscreen"
-msgstr ""
+msgstr "पूर्णस्क्रीन"
 
 #: ../po/tmp/resources.xml.h:274
 msgctxt "Accel Editor (descriptions)"
@@ -5835,7 +5835,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:275
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
 msgid "Edit Preferences"
-msgstr ""
+msgstr "प्राधान्ये संपादित करा"
 
 #: ../po/tmp/resources.xml.h:276
 msgctxt "Accel Editor (descriptions)"
@@ -5865,7 +5865,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:281
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
 msgid "Brush Settings Editor"
-msgstr ""
+msgstr "ब्रश सेटिंग्ज संपादक"
 
 #: ../po/tmp/resources.xml.h:282
 msgctxt "Accel Editor (descriptions)"
@@ -5898,7 +5898,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:287
 msgctxt "Menu→Layers (labels), Accel Editor (labels)"
 msgid "Show Layers Panel"
-msgstr ""
+msgstr "स्तर पॅनेल दर्शवा"
 
 #: ../po/tmp/resources.xml.h:288
 msgctxt "Accel Editor (descriptions)"
@@ -5920,7 +5920,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:291
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "Color Palette"
-msgstr ""
+msgstr "रंग पॅलेट"
 
 #: ../po/tmp/resources.xml.h:292
 msgctxt "Accel Editor (descriptions)"
@@ -6012,7 +6012,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:309
 msgctxt "Menu→Scratchpad (labels), Accel Editor (labels)"
 msgid "Show Scratchpad Panel"
-msgstr ""
+msgstr "स्क्रॅचपॅड पॅनेल दर्शवा"
 
 #: ../po/tmp/resources.xml.h:310
 msgctxt "Accel Editor (descriptions)"
@@ -6022,7 +6022,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:311
 msgctxt "Menu→Window (labels), Toolbar (labels), Accel Editor (labels)"
 msgid "Preview Panel"
-msgstr ""
+msgstr "पूर्वावलोकन पॅनेल"
 
 #: ../po/tmp/resources.xml.h:312
 msgctxt "Accel Editor (descriptions)"
@@ -6032,7 +6032,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:313
 msgctxt "Menu→View (labels), Accel Editor (labels)"
 msgid "Preview"
-msgstr ""
+msgstr "पूर्वावलोकन"
 
 #: ../po/tmp/resources.xml.h:314
 msgctxt "Accel Editor (descriptions)"
@@ -6042,7 +6042,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:315
 msgctxt "Menu→Window (labels), Toolbar (labels), Accel Editor (labels)"
 msgid "Tool Options Panel"
-msgstr ""
+msgstr "साधन पर्याय पॅनेल"
 
 #: ../po/tmp/resources.xml.h:316
 msgctxt "Accel Editor (descriptions)"
@@ -6052,7 +6052,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:317
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
 msgid "Show Tool Options Panel"
-msgstr ""
+msgstr "साधन पर्याय पॅनेल दर्शवा"
 
 #: ../po/tmp/resources.xml.h:318
 msgctxt "Accel Editor (descriptions)"
@@ -6062,7 +6062,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:319
 msgctxt "Menu→Window (labels), Toolbar (labels), Accel Editor (labels)"
 msgid "Brush & Color History Panel"
-msgstr ""
+msgstr "ब्रश आणि रंग इतिहास पॅनेल"
 
 #: ../po/tmp/resources.xml.h:320
 msgctxt "Accel Editor (descriptions)"
@@ -6072,7 +6072,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:321
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
 msgid "Recent Brushes & Colors"
-msgstr ""
+msgstr "अलीकडील ब्रशेस आणि रंग"
 
 #: ../po/tmp/resources.xml.h:322
 msgctxt "Accel Editor (descriptions)"
@@ -6178,7 +6178,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:342
 msgctxt "Menu→Edit→Current Mode (labels)"
 msgid "Freehand"
-msgstr ""
+msgstr "फ्रीहँड"
 
 #: ../po/tmp/resources.xml.h:343
 msgctxt "Toolbar (short labels)"
@@ -6193,7 +6193,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:345
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
 msgid "Freehand"
-msgstr ""
+msgstr "फ्रीहँड"
 
 #: ../po/tmp/resources.xml.h:346
 msgctxt "Accel Editor (descriptions)"
@@ -6293,7 +6293,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:365
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
 msgid "Lines and Curves"
-msgstr ""
+msgstr "ओळी आणि वक्र"
 
 #: ../po/tmp/resources.xml.h:366
 msgctxt "Accel Editor (descriptions)"
@@ -6318,7 +6318,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:370
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
 msgid "Connected Lines"
-msgstr ""
+msgstr "जोडलेल्या ओळी"
 
 #: ../po/tmp/resources.xml.h:371
 msgctxt "Accel Editor (descriptions)"
@@ -6343,7 +6343,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:375
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
 msgid "Ellipses and Circles"
-msgstr ""
+msgstr "लंबवर्तुळ आणि मंडळे"
 
 #: ../po/tmp/resources.xml.h:376
 msgctxt "Accel Editor (descriptions)"
@@ -6419,7 +6419,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:390
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "Edit Frame"
-msgstr ""
+msgstr "फ्रेम संपादित करा"
 
 #: ../po/tmp/resources.xml.h:391
 msgctxt "Accel Editor (descriptions)"
@@ -6445,7 +6445,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:395
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "Edit Painting Symmetry"
-msgstr ""
+msgstr "चित्रकला सममिती संपादित करा"
 
 #: ../po/tmp/resources.xml.h:396
 msgctxt "Accel Editor (description)"
@@ -6503,7 +6503,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:406
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "Pick Color"
-msgstr ""
+msgstr "रंग निवडा"
 
 #: ../po/tmp/resources.xml.h:407
 msgctxt "Accel Editor (descriptions)"
