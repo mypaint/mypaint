@@ -106,8 +106,8 @@ MYPAINT_PROGRAM_NAME = "MyPaint"
 MAJOR = 2
 MINOR = 0
 PATCH = 0
-PREREL = '-alpha'
-PREREL_NUM = 13
+PREREL = '-beta'
+PREREL_NUM = 0
 
 # Verify the version fields
 for part in (MAJOR, MINOR, PATCH, PREREL_NUM):
