@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: mypaint v2.0.0-alpha.8-1-g4490f06\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2019-12-20 19:50+0100\n"
-"PO-Revision-Date: 2019-12-19 16:38+0000\n"
+"PO-Revision-Date: 2019-12-22 08:48+0000\n"
 "Last-Translator: Prachi Joshi <josprachi@yahoo.com>\n"
 "Language-Team: Marathi <https://hosted.weblate.org/projects/mypaint/mypaint/"
 "mr/>\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n > 1;\n"
-"X-Generator: Weblate 3.10-dev\n"
+"X-Generator: Weblate 3.10\n"
 
 #. TRANSLATORS: Name of first column in the button map preferences.
 #. TRANSLATORS: Refers to an action bound to a mod+button combination.
@@ -207,27 +207,27 @@ msgstr "वेग"
 #: ../gui/brusheditor.py:358
 msgctxt "brush settings list: setting group"
 msgid "Directional Offsets"
-msgstr ""
+msgstr "निदेशक ऑफसेट"
 
 #: ../gui/brusheditor.py:376
 msgctxt "brush settings list: setting group"
 msgid "Tracking"
-msgstr ""
+msgstr "ट्रॅकिंग"
 
 #: ../gui/brusheditor.py:387
 msgctxt "brush settings list: setting group"
 msgid "Stroke"
-msgstr ""
+msgstr "स्ट्रोक"
 
 #: ../gui/brusheditor.py:398
 msgctxt "brush settings list: setting group"
 msgid "Color"
-msgstr ""
+msgstr "रंग"
 
 #: ../gui/brusheditor.py:416
 msgctxt "brush settings list: setting group"
 msgid "GridMap"
-msgstr ""
+msgstr "ग्रिडमॅप"
 
 #: ../gui/brusheditor.py:427
 msgctxt "brush settings list: setting group"
@@ -237,7 +237,7 @@ msgstr "स्वपसंत"
 #: ../gui/brusheditor.py:493
 msgctxt "brush settings editor: save brush: error message"
 msgid "No brush selected, please use “Add As New” instead."
-msgstr ""
+msgstr "कोणताही ब्रश निवडलेला नाही, कृपया त्याऐवजी “नवीन म्हणून जोडा” वापरा."
 
 #: ../gui/brusheditor.py:518
 msgctxt "brush settings editor: rename brush: error message"
@@ -247,12 +247,12 @@ msgstr ""
 #: ../gui/brusheditor.py:527
 msgctxt "brush settings editor: rename brush: dialog title"
 msgid "Rename Brush"
-msgstr ""
+msgstr "ब्रशचे नाव बदला"
 
 #: ../gui/brusheditor.py:545
 msgctxt "brush settings editor: rename brush: error message"
 msgid "A brush with this name already exists!"
-msgstr ""
+msgstr "या नावाचा ब्रश आधीच अस्तित्वात आहे!"
 
 #: ../gui/brusheditor.py:579
 msgctxt "brush settings editor: delete brush: error message"
@@ -268,7 +268,7 @@ msgstr ""
 #: ../gui/brusheditor.py:704
 msgctxt "brush settings editor: header: fallback name"
 msgid "(Unnamed brush)"
-msgstr ""
+msgstr "(अनामित ब्रश)"
 
 #: ../gui/brusheditor.py:711
 #, python-brace-format
