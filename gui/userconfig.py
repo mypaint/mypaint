@@ -17,7 +17,7 @@ from gi.repository import GLib
 
 import lib.glib
 from lib.eotf import DEFAULT_EOTF
-from gui.compatibility import DEFAULT_CONFIG as COMPAT_CONFIG
+from gui.compatconfig import DEFAULT_CONFIG as COMPAT_CONFIG
 
 logger = logging.getLogger(__name__)
 

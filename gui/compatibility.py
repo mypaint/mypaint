@@ -11,6 +11,10 @@ from logging import getLogger
 
 from gi.repository import Gtk
 
+from . import compatconfig as config
+
+from .compatconfig import C1X, C2X, COMPAT_SETTINGS, DEFAULT_COMPAT
+
 import lib.eotf
 from lib.layer.data import BackgroundLayer
 from lib.meta import Compatibility, PREREL, MYPAINT_VERSION
@@ -21,20 +25,10 @@ from lib.gettext import C_
 
 logger = getLogger(__name__)
 
-# Keys for settings in the user preferences
-DEFAULT_COMPAT = 'default_compatibility_mode'
-COMPAT_SETTINGS = 'compability_settings'
 FILE_WARNINGS = {
     Compatibility.INCOMPATIBLE: 'ui.file_compat_warning_severe',
     Compatibility.PARTIALLY: 'ui.file_compat_warning_mild',
 }
-
-# Keys for compat mode sub-options in the user preferences
-PIGMENT_BY_DEFAULT = 'pigment_on_by_default'
-PIGMENT_LAYER_BY_DEFAULT = 'pigment_layer_is_default'
-
-C1X = '1.x'
-C2X = '2.x'
 
 _FILE_OPEN_OPTIONS = [
     ('', C_("File Load Compat Options", "Based on file")),
@@ -184,25 +178,17 @@ def incompatible_ora_warning_dialog(
     return response == Gtk.ResponseType.ACCEPT
 
 
-class CompatFileBehavior:
+class CompatFileBehavior(config.CompatFileBehaviorConfig):
     """ Holds data and functions related to per-file choice of compat mode
     """
-
-    # Key for the behavior setting in user preferences
-    SETTING = 'compat_behavior_when_unknown'
-
-    # Setting options
-    ALWAYS_1X = 'always-1.x'
-    ALWAYS_2X = 'always-2.x'
-    UNLESS_PIGMENT_LAYER_1X = 'unless-pigment-layer-1.x'
-
+    _CFBC = config.CompatFileBehaviorConfig
     _OPTIONS = [
-        ALWAYS_1X,
-        ALWAYS_2X,
-        UNLESS_PIGMENT_LAYER_1X,
+        _CFBC.ALWAYS_1X,
+        _CFBC.ALWAYS_2X,
+        _CFBC.UNLESS_PIGMENT_LAYER_1X,
     ]
     _LABELS = {
-        ALWAYS_1X: (
+        _CFBC.ALWAYS_1X: (
             C_(
                 "Prefs Dialog|Compatibility",
                 # TRANSLATORS: One of the options for the
@@ -211,7 +197,7 @@ class CompatFileBehavior:
                 "Always open in 1.x mode"
             )
         ),
-        ALWAYS_2X: (
+        _CFBC.ALWAYS_2X: (
             C_(
                 "Prefs Dialog|Compatibility",
                 # TRANSLATORS: One of the options for the
@@ -220,7 +206,7 @@ class CompatFileBehavior:
                 "Always open in 2.x mode"
             )
         ),
-        UNLESS_PIGMENT_LAYER_1X: (
+        _CFBC.UNLESS_PIGMENT_LAYER_1X: (
             C_(
                 "Prefs Dialog|Compatibility",
                 # TRANSLATORS: One of the options for the
@@ -275,23 +261,6 @@ class CompatFileBehavior:
             msg = "Unknown file compat setting: {setting}, using default mode."
             logger.warning(msg.format(setting=setting))
             return default
-
-
-# Default compatibility settings
-DEFAULT_CONFIG = {
-    CompatFileBehavior.SETTING: CompatFileBehavior.UNLESS_PIGMENT_LAYER_1X,
-    DEFAULT_COMPAT: C2X,
-    COMPAT_SETTINGS: {
-        C1X: {
-            PIGMENT_BY_DEFAULT: False,
-            PIGMENT_LAYER_BY_DEFAULT: False,
-        },
-        C2X: {
-            PIGMENT_BY_DEFAULT: True,
-            PIGMENT_LAYER_BY_DEFAULT: True,
-        },
-    },
-}
 
 
 class CompatibilityPreferences:
@@ -394,15 +363,15 @@ class CompatibilityPreferences:
         mode_settings = prefs[COMPAT_SETTINGS]
         # 1.x
         self.pigment_switch_1_x.set_active(
-            mode_settings[C1X][PIGMENT_BY_DEFAULT])
-        if mode_settings[C1X][PIGMENT_LAYER_BY_DEFAULT]:
+            mode_settings[C1X][config.PIGMENT_BY_DEFAULT])
+        if mode_settings[C1X][config.PIGMENT_LAYER_BY_DEFAULT]:
             self.pigment_radio_1_x.set_active(True)
         else:
             self.normal_radio_1_x.set_active(True)
         # 2.x
         self.pigment_switch_2_x.set_active(
-            mode_settings[C2X][PIGMENT_BY_DEFAULT])
-        if mode_settings[C2X][PIGMENT_LAYER_BY_DEFAULT]:
+            mode_settings[C2X][config.PIGMENT_BY_DEFAULT])
+        if mode_settings[C2X][config.PIGMENT_LAYER_BY_DEFAULT]:
             self.pigment_radio_2_x.set_active(True)
         else:
             self.normal_radio_2_x.set_active(True)
@@ -417,11 +386,11 @@ class CompatibilityPreferences:
         self.app.preferences[DEFAULT_COMPAT] = compat_mode
 
     def set_compat_layer_type_cb(self, btn, mode, use_pigment):
-        self._update_prefs(mode, PIGMENT_LAYER_BY_DEFAULT, use_pigment)
+        self._update_prefs(mode, config.PIGMENT_LAYER_BY_DEFAULT, use_pigment)
         update_default_layer_type(self.app)
 
     def default_pigment_changed_cb(self, switch, use_pigment, mode):
-        self._update_prefs(mode, PIGMENT_BY_DEFAULT, use_pigment)
+        self._update_prefs(mode, config.PIGMENT_BY_DEFAULT, use_pigment)
         update_default_pigment_setting(self.app)
 
 
@@ -489,7 +458,7 @@ def update_default_layer_type(app):
     """
     prefs = app.preferences
     mode_settings = prefs[COMPAT_SETTINGS][app.compat_mode]
-    if mode_settings[PIGMENT_LAYER_BY_DEFAULT]:
+    if mode_settings[config.PIGMENT_LAYER_BY_DEFAULT]:
         logger.info("Setting default layer type to Pigment")
         set_default_mode(CombineSpectralWGM)
     else:
@@ -503,7 +472,7 @@ def update_default_pigment_setting(app):
     prefs = app.preferences
     mode_settings = prefs[COMPAT_SETTINGS][app.compat_mode]
     app.brushmanager.set_pigment_by_default(
-        mode_settings[PIGMENT_BY_DEFAULT]
+        mode_settings[config.PIGMENT_BY_DEFAULT]
     )
 
 
