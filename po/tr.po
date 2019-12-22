@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: mypaint v2.0.0-alpha.12-343-g82b4fc5\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2019-12-20 19:50+0100\n"
-"PO-Revision-Date: 2019-12-15 18:21+0000\n"
+"PO-Revision-Date: 2019-12-22 10:31+0000\n"
 "Last-Translator: Sabri Ünal <libreajans@gmail.com>\n"
 "Language-Team: Turkish <https://hosted.weblate.org/projects/mypaint/mypaint/"
 "tr/>\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 3.10-dev\n"
+"X-Generator: Weblate 3.10\n"
 
 #. TRANSLATORS: Name of first column in the button map preferences.
 #. TRANSLATORS: Refers to an action bound to a mod+button combination.
@@ -1193,21 +1193,20 @@ msgstr "Radyal bir renk kabının üstünden geçen HSV rampalarla renk değişt
 #: ../gui/compatibility.py:40
 msgctxt "File Load Compat Options"
 msgid "Based on file"
-msgstr ""
+msgstr "Dosya temelli"
 
 #. This refers to a version of MyPaint like 1.0, 1.1, 1.2 etc
 #: ../gui/compatibility.py:41 ../gui/drawwindow.py:276
 #: ../po/tmp/preferenceswindow.glade.h:113
-#, fuzzy
 msgctxt "Prefs Dialog|Compatibility"
 msgid "1.x"
-msgstr "1,0"
+msgstr "1.x"
 
 #. This refers to a version of MyPaint like 1.0, 1.1, 1.2 etc
 #: ../gui/compatibility.py:42 ../po/tmp/preferenceswindow.glade.h:117
 msgctxt "Prefs Dialog|Compatibility"
 msgid "2.x"
-msgstr ""
+msgstr "2.x"
 
 #. TRANSLATORS: This is probably a rare warning, and it will not
 #. TRANSLATORS: really be shown at all before the release of 3.0
@@ -1224,6 +1223,14 @@ msgid ""
 "It is <b>strongly recommended</b> to upgrade to <b>MyPaint {new_version}</b> "
 "or newer if you want to edit this file!"
 msgstr ""
+"“{filename}” dosyası <b>MyPaint {new_version}</b> ile kaydedilmiş ve <b>"
+"MyPaint {current_version}</b> ile <b>uyumlu</b> olmayabilir.\n"
+"\n"
+"Dosyayı MyPaint'in bu sürümüyle düzenlemek çalışmasını garanti etmez ve "
+"hatta çökmelere neden olabilir.\n"
+"\n"
+"Dosyayı düzenlemek istiyorsanız <b>MyPaint {new_version}</b> veya daha üst "
+"bir sürüme güncellemeniz <b>kesinlikle</b> önerilir!"
 
 #: ../gui/compatibility.py:60
 #, python-brace-format
@@ -1237,16 +1244,24 @@ msgid ""
 "\n"
 "To be safe you should upgrade to MyPaint {new_version} or newer."
 msgstr ""
+"“{filename}” dosyası <b>MyPaint {new_version}</b> ile kaydedilmiş ve <b>"
+"Mypaint {current_version}</b> ile tamamen uyumlu olabilir.\n"
+"\n"
+"Bu MyPaint sürümüyle kaydetmek, yalnızca yeni sürüm tarafından desteklenen "
+"verilerin kaybolmasına neden olabilir.\n"
+"\n"
+"Güvenli yol olarak MyPaint {new_version} veya daha güncel bir sürüme "
+"güncellemeniz önerilir."
 
 #: ../gui/compatibility.py:71
 msgctxt "file compatibility question"
 msgid "Do you want to open this file anyway?"
-msgstr ""
+msgstr "Bu dosyayı yine de açmak istiyor musun?"
 
 #: ../gui/compatibility.py:135
 msgctxt "Version compat warning toggle"
 msgid "Don't show this warning again"
-msgstr ""
+msgstr "Bu uyarıyı bir daha gösterme"
 
 #. TRANSLATORS: One of the options for the
 #. TRANSLATORS: "When Not Specified in File"
@@ -1254,7 +1269,7 @@ msgstr ""
 #: ../gui/compatibility.py:211
 msgctxt "Prefs Dialog|Compatibility"
 msgid "Always open in 1.x mode"
-msgstr ""
+msgstr "Her zaman 1.x kipinde aç"
 
 #. TRANSLATORS: One of the options for the
 #. TRANSLATORS: "When Not Specified in File"
@@ -1262,7 +1277,7 @@ msgstr ""
 #: ../gui/compatibility.py:220
 msgctxt "Prefs Dialog|Compatibility"
 msgid "Always open in 2.x mode"
-msgstr ""
+msgstr "Her zaman 2.x kipinde aç"
 
 #. TRANSLATORS: One of the options for the
 #. TRANSLATORS: "When Not Specified in File"
@@ -1270,14 +1285,14 @@ msgstr ""
 #: ../gui/compatibility.py:229
 msgctxt "Prefs Dialog|Compatibility"
 msgid "Open in 1.x mode unless file contains pigment layers"
-msgstr ""
+msgstr "Dosya pigment katmanları içermiyorsa 1.x kipinde aç"
 
 #. TRANSLATORS: This is a label for a dropdown menu in the
 #. TRANSLATORS: file chooser dialog when loading .ora files.
 #: ../gui/compatibility.py:532
 msgctxt "File Load Compat Options"
 msgid "Compatibility mode:"
-msgstr ""
+msgstr "Uyumluluk kipi:"
 
 #: ../gui/device.py:48
 msgctxt "prefs: device's type label"
@@ -4850,32 +4865,28 @@ msgstr "Renk"
 #: ../po/tmp/preferenceswindow.glade.h:106
 msgctxt "Prefs Dialog|Compatibility"
 msgid "Default Compatibility Mode:"
-msgstr ""
+msgstr "Öntanımlı uyumluluk kipi:"
 
 #: ../po/tmp/preferenceswindow.glade.h:107
-#, fuzzy
 msgctxt "Prefs Dialog|Compatibility"
 msgid "<b>1.x Settings</b>"
-msgstr "<b>Kaydetme</b>"
+msgstr "<b>1.x Ayarları</b>"
 
 #. Make sure to be consistent w. other occurences of 2.x
 #: ../po/tmp/preferenceswindow.glade.h:109
-#, fuzzy
 msgctxt "Prefs Dialog|Compatibility"
 msgid "<b>2.x Settings</b>"
-msgstr "<b>Kaydetme</b>"
+msgstr "<b>2.x Ayarları</b>"
 
 #: ../po/tmp/preferenceswindow.glade.h:110
-#, fuzzy
 msgctxt "Prefs Dialog|Compatibility"
 msgid "Default New Layer Type:"
-msgstr "Katmanı Sil"
+msgstr "Öntanımlı yeni katman türü:"
 
 #: ../po/tmp/preferenceswindow.glade.h:111
-#, fuzzy
 msgctxt "Prefs Dialog|Compatibility"
 msgid "Default Pigment Brush Setting:"
-msgstr "Fırça Ayarlarını Düzenle"
+msgstr "Öntanımlı pigment fırça ayarları:"
 
 #. Label description for the 1.x compatibility-mode-by-default setting
 #: ../po/tmp/preferenceswindow.glade.h:115
@@ -4885,6 +4896,9 @@ msgid ""
 "default. In this mode 1.x .ora files will look the same as they did in older "
 "versions, but pigment blending will not work well."
 msgstr ""
+"Yeni belge oluştururken, öntanımlı olarak eski 1.x uyumluluk kipini kullan. "
+"Bu kipte 1.x .ora dosyaları eski sürümlerde oldukları gibi görünür, ancak "
+"pigment harmanlama iyi çalışmaz."
 
 #: ../po/tmp/preferenceswindow.glade.h:118
 msgctxt "Prefs Dialog|Compatibility"
@@ -4892,22 +4906,24 @@ msgid ""
 "When creating new documents, use the regular 2.x compatibility mode by "
 "default. Old documents will often look different in this mode."
 msgstr ""
+"Yeni belge oluştururken, öntanımlı olarak normal 2.x uyumluluk kipini "
+"kullan. Eski belgeler bu kipte genellikle farklı görünür."
 
 #: ../po/tmp/preferenceswindow.glade.h:119
 msgctxt "Prefs Dialog|Compatibility"
 msgid "Show warning for files that may be partially incompatible"
-msgstr ""
+msgstr "Kısmen uyumsuz olabilecek dosyalar için uyarı göster"
 
 #. Label for a set of options
 #: ../po/tmp/preferenceswindow.glade.h:121
 msgctxt "Prefs Dialog|Compatibility"
 msgid "File compatibility warnings:"
-msgstr ""
+msgstr "Dosya uyumluluk uyarıları:"
 
 #: ../po/tmp/preferenceswindow.glade.h:122
 msgctxt "Prefs Dialog|Compatibility"
 msgid "Show warning for files that may be fully incompatible"
-msgstr ""
+msgstr "Tamamen uyumsuz olabilecek dosyalar için uyarı göster"
 
 #. This is a tooltip for the file behavior options label.
 #: ../po/tmp/preferenceswindow.glade.h:124
@@ -4917,30 +4933,31 @@ msgid ""
 "When you save an OpenRaster file with MyPaint 2.0 or newer the active "
 "compatibility mode will be written to the file."
 msgstr ""
+"Bu yalnızca MyPaint 2.0'dan eski sürümlerle kaydedilmiş dosyalar için "
+"uygulanır. Bir OpenRaster dosyasını MyPaint 2.0 veya daha yeni sürümüyle "
+"kaydettiğinizde, etkin uyumluluk kipi dosyaya yazılır."
 
 #. Label to the options for how to handle files which do not have a compatibility mode specified (whether they should be opened in 1.x compatibility mode, or 2.x mode)
 #: ../po/tmp/preferenceswindow.glade.h:126
 msgctxt "Prefs Dialog|Compatibility"
 msgid "When Mode is Unspecified:"
-msgstr ""
+msgstr "Kip belirtilmediğinde:"
 
 #. This label indicates a subsection of the compatibility settings related to loading files.
 #: ../po/tmp/preferenceswindow.glade.h:128
-#, fuzzy
 msgctxt "Prefs|Compatibility"
 msgid "<b>File loading</b>"
-msgstr "<b>Kaydetme</b>"
+msgstr "<b>Dosya Yükleme</b>"
 
 #: ../po/tmp/preferenceswindow.glade.h:129
 msgid "<b>Compatibility settings</b>"
-msgstr ""
+msgstr "<b>Uyumluluk ayarları</b>"
 
 #. Tab label in preferences dialog
 #: ../po/tmp/preferenceswindow.glade.h:131
-#, fuzzy
 msgctxt "Prefs Dialog|"
 msgid "Compatibility"
-msgstr "taşınabilirlik"
+msgstr "Uyumluluk"
 
 #: ../po/tmp/preferenceswindow.glade.h:132
 msgctxt "Prefs Dialog|Pen Input|Mode|"
@@ -6483,7 +6500,7 @@ msgstr "HSV Karesi"
 #: ../po/tmp/resources.xml.h:298
 msgctxt "Accel Editor (descriptions)"
 msgid "Dockable color selector: HSV square with Hue ring."
-msgstr "Eşmerkezli HSV halkalarından oluşan, sabitlenebilir renk seçici."
+msgstr "Eşmerkezli HSV Ton halkalarından oluşan, sabitlenebilir renk seçici."
 
 #: ../po/tmp/resources.xml.h:299
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
