@@ -21,7 +21,7 @@ import numpy as np
 from . import mypaintlib
 from . import tiledsurface
 from . import idletask
-from lib.pycompat import PY3
+from lib.pycompat import PY3, iteritems
 
 logger = getLogger(__name__)
 TILE_SIZE = N = mypaintlib.TILE_SIZE
@@ -127,11 +127,7 @@ class StrokeShape (object):
         translate_y = int(translate_y // N)
         self.tasks.finish_all()
         data = b''
-        if PY3:
-            sm_iter = self.strokemap.items()
-        else:
-            sm_iter = self.strokemap.iteritems()
-        for (tx, ty), tile in sm_iter:
+        for (tx, ty), tile in iteritems(self.strokemap):
             compressed_bitmap = tile.to_bytes()
             tx = int(tx + translate_x)
             ty = int(ty + translate_y)

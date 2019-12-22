@@ -63,3 +63,21 @@ def add_metaclass(metaclass):
         orig_vars.pop('__weakref__', None)
         return metaclass(cls.__name__, cls.__bases__, orig_vars)
     return wrapper
+
+
+# Convenience wrappers for iteritems->items, itervalues->values transition
+
+def iteritems(container):
+    """Returns the iterate method of the given container"""
+    if PY3:
+        return container.items()
+    else:
+        return container.iteritems()
+
+
+def itervalues(container):
+    """Returns the value iteration method of the given container"""
+    if PY3:
+        return container.values()
+    else:
+        return container.itervalues()

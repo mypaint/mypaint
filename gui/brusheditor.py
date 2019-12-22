@@ -18,12 +18,14 @@ from __future__ import division, print_function
 import os
 import logging
 
-from lib.gettext import C_
 from gi.repository import Gtk
 from gi.repository import Pango
 from gi.repository import GLib
 from gi.repository import GdkPixbuf
+
+from lib.gettext import C_
 from lib import brushsettings
+from lib.pycompat import iteritems, itervalues
 
 import lib.brush
 from . import dialogs
@@ -120,7 +122,7 @@ class BrushEditorWindow (SubWindow):
                                      step_increment=0.01, page_increment=0.1)
                 self._base_adj[s.cname] = adj
             changed_cb = self._testmode_base_value_adj_changed_cb
-            for cname, adj in self._base_adj.iteritems():
+            for cname, adj in iteritems(self._base_adj):
                 adj.connect('value-changed', changed_cb, cname)
         # Per-input scale maxima and minima
         for inp in brushsettings.inputs:
@@ -533,7 +535,8 @@ class BrushEditorWindow (SubWindow):
         dst_name = dst_name.replace(' ', '_')
         # ensure we don't overwrite an existing brush by accident
         dst_deleted = None
-        for group, brushes in bm.groups.iteritems():
+
+        for group, brushes in iteritems(bm.groups):
             for b2 in brushes:
                 if b2.name == dst_name:
                     if group == brushmanager.DELETED_BRUSH_GROUP:
@@ -1023,7 +1026,7 @@ class BrushEditorWindow (SubWindow):
 
     def _delete_brush(self, b, replacement=None):
         bm = self.app.brushmanager
-        for brushes in bm.groups.itervalues():
+        for brushes in itervalues(bm.groups):
             if b in brushes:
                 idx = brushes.index(b)
                 if replacement:

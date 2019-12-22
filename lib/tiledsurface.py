@@ -34,7 +34,7 @@ import lib.modes
 import lib.feedback
 import lib.floodfill
 from lib.pycompat import xrange
-from lib.pycompat import PY3
+from lib.pycompat import PY3, itervalues
 
 logger = logging.getLogger(__name__)
 
@@ -449,11 +449,7 @@ class MyPaintSurface (TileAccessible, TileBlittable, TileCompositable):
 
         """
         sshot = _SurfaceSnapshot()
-        if PY3:
-            tiles_iter = self.tiledict.values()
-        else:
-            tiles_iter = self.tiledict.itervalues()
-        for t in tiles_iter:
+        for t in itervalues(self.tiledict):
             t.readonly = True
         sshot.tiledict = self.tiledict.copy()
         return sshot
