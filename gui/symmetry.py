@@ -396,7 +396,7 @@ class SymmetryEditOptionsWidget (Gtk.Alignment):
         self.app = get_app()
         rootstack = self.app.doc.model.layer_stack
         self._axis_pos_adj_x = Gtk.Adjustment(
-            rootstack.symmetry_x,
+            value=rootstack.symmetry_x,
             upper=32000,
             lower=-32000,
             step_increment=1,
@@ -407,7 +407,7 @@ class SymmetryEditOptionsWidget (Gtk.Alignment):
             self._axis_pos_adj_x_changed,
         )
         self._axis_pos_adj_y = Gtk.Adjustment(
-            rootstack.symmetry_y,
+            value=rootstack.symmetry_y,
             upper=32000,
             lower=-32000,
             step_increment=1,
@@ -418,7 +418,7 @@ class SymmetryEditOptionsWidget (Gtk.Alignment):
             self._axis_pos_adj_y_changed,
         )
         self._axis_rot_symmetry_lines = Gtk.Adjustment(
-            rootstack.rot_symmetry_lines,
+            value=rootstack.rot_symmetry_lines,
             upper=50,
             lower=2,
             step_increment=1,
