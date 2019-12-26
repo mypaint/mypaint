@@ -23,8 +23,24 @@ a stable version of MyPaint.
 ## Install libmypaint and mypaint-brushes
 
 MyPaint depends on its brushstroke rendering library,
-[**libmypaint**](https://github.com/mypaint/libmypaint),
-at version 2.0.0-alpha or later, as well as the default brush collection
+[**libmypaint**](https://github.com/mypaint/libmypaint).
+<details>
+  <summary>Which version of libmypaint should I build against?</summary>
+
+When building the latest master, the rule of thumb is to build against
+the latest master of libmypaint.
+
+Stable releases should be built against a
+compatible stable releases of libmypaint.
+
+If you need to build a commit from the commit history, use `git log`
+after having checked out the commit, and search for libmypaint to infer
+which commit of libmypaint you should build against.
+This is not always specified explicitly, but should always be inferrable by
+cross-referencing the commit log of libmypaint (by date or keyword search).
+</details>
+
+MyPaint also depends on the default brush collection
 [**mypaint-brushes**](https://github.com/mypaint/mypaint-brushes).
 These have to be built from scratch for most systems, see the links
 below for details on how to do this.
