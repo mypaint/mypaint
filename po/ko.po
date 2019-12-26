@@ -5,7 +5,7 @@ msgstr ""
 "Project-Id-Version: mypaint v2.0.0-alpha.12-327-ga332f03\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2019-12-20 19:50+0100\n"
-"PO-Revision-Date: 2019-12-23 09:02+0000\n"
+"PO-Revision-Date: 2019-12-27 16:26+0000\n"
 "Last-Translator: geun-tak Jeong <beroberos@gmail.com>\n"
 "Language-Team: Korean <https://hosted.weblate.org/projects/mypaint/mypaint/"
 "ko/>\n"
@@ -4753,6 +4753,9 @@ msgid ""
 "and yellow is opposite blue. CIECAM02 and NCS present a similar model. Here "
 "we use pure display red, yellow etc. as the four primaries."
 msgstr ""
+"카디날 포인트에서 반대 쌍으로 배열 된 4개의 &apos;심리적 원색 &apos;또는&apos; 독특한 색조&apos;를 사용하는 색상 "
+"이론에 기반하는 휠의 빠르고 더러운 근사치. 레드는 그린의 반대, 예로우는 블루의 반대입니다. CIECAM02와 NCS는 유사한 모델을 "
+"제시합니다. 여기서는 순수한 디스플레이 레드, 예로우 등을 네 개의 기본으로 사용합니다."
 
 #: ../po/tmp/preferenceswindow.glade.h:101
 msgctxt "Prefs Dialog|Color|Color Wheel|Primaries|RYGB|"
@@ -4763,6 +4766,9 @@ msgid ""
 "blue. CIECAM02 and NCS present a similar model. Here we use pure display "
 "red, yellow etc. as the four primaries."
 msgstr ""
+"카디날 포인트에서 반대 쌍으로 배열 된 4 개의 '심리적 기본 요소'또는 '고유 한 색조'를 사용하는 색상 이론에 의해 알려지는 휠의 "
+"빠르고 더러운 근사치. 빨간색은 녹색 반대, 노란색은 파란색 반대입니다. CIECAM02와 NCS는 유사한 모델을 제시합니다. 여기서는 "
+"순수한 디스플레이 빨강, 노랑 등을 네 개의 기본으로 사용합니다."
 
 #. Options affecting color wheels
 #: ../po/tmp/preferenceswindow.glade.h:103
