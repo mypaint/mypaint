@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: mypaint v2.0.0-alpha.8-1-g4490f06\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2019-12-20 19:50+0100\n"
-"PO-Revision-Date: 2019-12-22 08:48+0000\n"
+"PO-Revision-Date: 2019-12-27 16:26+0000\n"
 "Last-Translator: Prachi Joshi <josprachi@yahoo.com>\n"
 "Language-Team: Marathi <https://hosted.weblate.org/projects/mypaint/mypaint/"
 "mr/>\n"
@@ -114,7 +114,7 @@ msgstr ""
 
 #: ../gui/autorecover.py:173
 msgid "Open the Backup’s Folder…"
-msgstr ""
+msgstr "बॅकअप फोल्डर उघडा…"
 
 #: ../gui/autorecover.py:182
 #, python-brace-format
@@ -123,11 +123,11 @@ msgstr ""
 
 #: ../gui/backgroundwindow.py:55
 msgid "Background"
-msgstr ""
+msgstr "पार्श्वभूमी"
 
 #: ../gui/backgroundwindow.py:58
 msgid "Save as Default"
-msgstr ""
+msgstr "डीफॉल्ट म्हणून जतन करा"
 
 #: ../gui/backgroundwindow.py:75
 msgid "Pattern"
