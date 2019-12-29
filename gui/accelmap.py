@@ -143,7 +143,6 @@ class AccelMapEditor (Gtk.Grid):
         for group in self.ui_manager.get_action_groups():
             group_name = group.get_name()
             for action in group.list_actions():
-
                 action_name = _udecode(action.get_name())
                 path = u"<Actions>/%s/%s" % (group_name, action_name)
                 if isinstance(action, Gtk.RecentAction):
@@ -155,6 +154,19 @@ class AccelMapEditor (Gtk.Grid):
 
                 action_label = _udecode(action.get_label())
                 if not action_label:
+                    # TODO: Find better place for the label/tooltip copying,
+                    # or a better way to do this in general.
+                    action_suffix = "Centered"
+                    if action_name.endswith(action_suffix):
+                        src_name = action_name[:-len(action_suffix)]
+                        logger.debug(
+                            "Excluding toolbar-specific action: %s, but copy "
+                            "tooltip/label from %s."
+                            % (action_name, src_name)
+                        )
+                        src_action = group.get_action(src_name)
+                        action.set_tooltip(src_action.get_tooltip())
+                        action.set_label(src_action.get_label())
                     continue
 
                 action_desc = _udecode(action.get_tooltip())

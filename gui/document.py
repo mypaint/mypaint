@@ -1808,6 +1808,13 @@ class Document (CanvasController):  # TODO: rename to "DocumentController"
             direction = self.ZOOM_OUTWARDS
         self.zoom(direction)
 
+    def zoom_centered_cb(self, action):
+        """Callback for Zoom{In,Out}Centered GtkActions"""
+        direction = self.ZOOM_INWARDS
+        if action.get_name() == 'ZoomOutCentered':
+            direction = self.ZOOM_OUTWARDS
+        self.zoom(direction, center=self.CENTER_ON_VIEWPORT)
+
     def pan_cb(self, action):
         """Callback for Pan{Left,Right,Up,Down} GtkActions"""
         direction = self.PAN_LEFT
@@ -1825,6 +1832,13 @@ class Document (CanvasController):  # TODO: rename to "DocumentController"
         if action.get_name() == 'RotateRight':
             direction = self.ROTATE_ANTICLOCKWISE
         self.rotate(direction)
+
+    def rotate_centered_cb(self, action, *test):
+        """Callback for Rotate{Left,Right}Centered GtkActions"""
+        direction = self.ROTATE_CLOCKWISE
+        if action.get_name() == 'RotateRightCentered':
+            direction = self.ROTATE_ANTICLOCKWISE
+        self.rotate(direction, center=self.CENTER_ON_VIEWPORT)
 
     ## Symmetry
 

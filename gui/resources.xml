@@ -726,7 +726,6 @@ Vocabulary
       </child>
       <child>
         <object class="GtkAction" id="ZoomIn">
-          <property name="icon-name">mypaint-view-zoom-more-symbolic</property>
           <property name="label" translatable="yes" context="Menu→View→Adjust View (labels), Accel Editor (labels)">Zoom In</property>
           <property name="tooltip" translatable="yes" context="Accel Editor (descriptions)">Increase magnification.</property>
           <signal name="activate" handler="zoom_cb"/>
@@ -735,12 +734,24 @@ Vocabulary
       </child>
       <child>
         <object class="GtkAction" id="ZoomOut">
-          <property name="icon-name">mypaint-view-zoom-less-symbolic</property>
           <property name="label" translatable="yes" context="Menu→View→Adjust View (labels), Accel Editor (labels)">Zoom Out</property>
           <property name="tooltip" translatable="yes" context="Accel Editor (descriptions)">Decrease magnification.</property>
           <signal name="activate" handler="zoom_cb"/>
         </object>
         <accelerator key="comma"/>
+      </child>
+      <!-- Toolbar zoom actions: labels and tooltips are copied from Zoom(In/Out) -->
+      <child>
+	<object class="GtkAction" id="ZoomInCentered">
+          <property name="icon-name">mypaint-view-zoom-more-symbolic</property>
+          <signal name="activate" handler="zoom_centered_cb"/>
+	</object>
+      </child>
+      <child>
+	<object class="GtkAction" id="ZoomOutCentered">
+          <property name="icon-name">mypaint-view-zoom-less-symbolic</property>
+          <signal name="activate" handler="zoom_centered_cb"/>
+	</object>
       </child>
       <child>
         <object class="GtkAction" id="PanLeft">
@@ -776,7 +787,6 @@ Vocabulary
       </child>
       <child>
         <object class="GtkAction" id="RotateLeft">
-          <property name="icon-name">mypaint-view-rotate-clockwise-symbolic</property>
           <!--
             Note: the object we've agreed to present as being rotated
             by "RotateLeft and "RotateRight" is the *canvas*,
@@ -792,8 +802,20 @@ Vocabulary
         <accelerator key="Left" modifiers="GDK_CONTROL_MASK"/>
       </child>
       <child>
-        <object class="GtkAction" id="RotateRight">
+	<!-- Toolbar rotation actions: labels and tooltips are copied from Rotate(Right/Left) -->
+        <object class="GtkAction" id="RotateLeftCentered">
+          <property name="icon-name">mypaint-view-rotate-clockwise-symbolic</property>
+          <signal name="activate" handler="rotate_centered_cb"/>
+	</object>
+      </child>
+      <child>
+        <object class="GtkAction" id="RotateRightCentered">
           <property name="icon-name">mypaint-view-rotate-anticlockwise-symbolic</property>
+          <signal name="activate" handler="rotate_centered_cb"/>
+	</object>
+      </child>
+      <child>
+        <object class="GtkAction" id="RotateRight">
           <property name="label" translatable="yes" context="Menu→View→Adjust View (labels), Accel Editor (labels)">Rotate Counterclockwise</property>
           <property name="tooltip" translatable="yes" context="Accel Editor (descriptions)">Rotate the canvas counter-clockwise.</property>
           <signal name="activate" handler="rotate_cb"/>

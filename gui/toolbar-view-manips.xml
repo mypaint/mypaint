@@ -14,10 +14,10 @@ the Free Software Foundation; either version 2 of the License, or
     <placeholder name="view-manips-toolitems">
       <!-- single action buttons, as an alternative to the main set -->
       <!-- toolitem action="MirrorVertical" -->
-      <toolitem action="ZoomIn"/>
-      <toolitem action="ZoomOut"/>
-      <toolitem action="RotateLeft"/>
-      <toolitem action="RotateRight"/>
+      <toolitem action="ZoomInCentered"/>
+      <toolitem action="ZoomOutCentered"/>
+      <toolitem action="RotateLeftCentered"/>
+      <toolitem action="RotateRightCentered"/>
     </placeholder>
 
   </toolbar>
