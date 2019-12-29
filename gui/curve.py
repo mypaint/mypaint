@@ -1,5 +1,7 @@
 # This file is part of MyPaint.
 # Copyright (C) 2007-2011 by Martin Renold <martinxyz@gmx.ch>
+# Copyright (C) 2011-2013 by Andrew Chadwick <a.t.chadwick@gmail.com>
+# Copyright (C) 2014-2019 by The MyPaint Team
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -8,11 +10,13 @@
 
 from __future__ import division, print_function
 
-from warnings import warn
 import logging
-logger = logging.getLogger(__name__)
 
 from gi.repository import Gtk, Gdk
+
+from lib.helpers import clamp
+
+logger = logging.getLogger(__name__)
 
 RADIUS = 2
 
@@ -21,13 +25,13 @@ class CurveWidget(Gtk.DrawingArea):
     """Widget for modifying a (restricted) nonlinear curve.
     """
     __gtype_name__ = 'CurveWidget'
-    _SNAP_TO = (0.0, 0.05, 0.10, 0.15, 0.20, 0.25, 0.30, 0.35, 0.40, 0.45, 0.50, 0.55, 0.60, 0.65, 0.70, 0.75, 0.80, 0.85, 0.90, 0.95, 1.0)
+    _SNAP_TO = tuple(float(n)/100 for n in range(0, 105, 5))
     _WHINED_ABOUT_ALPHA = False
 
     def __init__(self, changed_cb=None, magnetic=True, npoints=None,
                  ylockgroups=()):
         Gtk.DrawingArea.__init__(self)
-        self.points = [(0.0, 0.2), (.25, .5), (.75, .75), (1.0, 1.0)]  # doesn't matter
+        self.points = [(0.0, 0.2), (.25, .5), (.75, .75), (1.0, 1.0)]
         self._ylock = {}
         self.ylockgroups = ylockgroups
 
@@ -57,30 +61,47 @@ class CurveWidget(Gtk.DrawingArea):
 
     @property
     def npoints(self):
+        """If the curve contains a fixed number of points, return that number.
+
+        :return: The point count if the count is fixed, otherwise None
+        :rtype: int | None
+        """
         return self._npoints
 
     @npoints.setter
     def npoints(self, n):
+        """Set the number of points for a fixed curve, or disable fixedness.
+
+        :param n: The number of points, or None to disable
+        :type n: int | None
+        """
         self._npoints = n
         self.maxpoints = 64 if not n else n
 
     @property
-    def ylock(self):
-        warn("Deprecated, use ylockgroups instead", DeprecationWarning)
-        return self._ylock
-
-    @property
     def ylockgroups(self):
-        return keys(self._ylock)
+        """Get a copy of the y-lock groups used by the curve.
+
+        :return: Dictionary of index-> (i1, i2, ...) associations
+        :rtype: dict
+        """
+        return {k: w for k, w in self._ylock.items()}
 
     @ylockgroups.setter
     def ylockgroups(self, ylockgroups):
+        """Set y-lock groups from a list of index tuples.
+
+        Each tuple should contain a up a set of indices that represent curve
+        points that will share the same y-value. When the y-value of one point
+        in a group is changed, all other points in that same group are changed.
+
+        :param ylockgroups: List of tuples of indices
+        :type ylockgroups: [(int, int, ..)]
+        """
         self._ylock.clear()
-        for items in ylockgroups:
-            for thisitem in items:
-                others = list(items)
-                others.remove(thisitem)
-                self._ylock[thisitem] = tuple(others)
+        for group in ylockgroups:
+            for idx in group:
+                self._ylock[idx] = tuple(i for i in group if i != idx)
 
     def eventpoint(self, event_x, event_y):
         width, height = self.get_display_area()
@@ -89,7 +110,7 @@ class CurveWidget(Gtk.DrawingArea):
         y -= RADIUS
         x = x / width
         y = y / height
-        return (x, y)
+        return x, y
 
     def get_display_area(self):
         alloc = self.get_allocation()
@@ -103,53 +124,39 @@ class CurveWidget(Gtk.DrawingArea):
     def set_point(self, index, value):
         y = value[1]
         self.points[index] = value
-        if index in self.ylock:
-            for lockedto in self.ylock[index]:
-                self.points[lockedto] = (self.points[lockedto][0], y)
+        if index in self._ylock:
+            for locked_to in self._ylock[index]:
+                self.points[locked_to] = (self.points[locked_to][0], y)
 
     def button_press_cb(self, widget, event):
-        if not event.button == 1:
+        if not (self.points or event.button == 1):
             return
         x, y = self.eventpoint(event.x, event.y)
-        nearest = None
-        for i in range(len(self.points)):
-            px, py = self.points[i]
-            dist = abs(px - x) + 0.5*abs(py - y)
-            if nearest is None or dist < mindist:
-                mindist = dist
-                nearest = i
-        if not self.npoints and mindist > 0.05 and len(self.points) < self.maxpoints:
-            insertpos = 0
-            for i in range(len(self.points)):
-                if self.points[i][0] < x:
-                    insertpos = i + 1
-            if insertpos > 0 and insertpos < len(self.points):
-                if y > 1.0:
-                    y = 1.0
-                if y < 0.0:
-                    y = 0.0
-                self.points.insert(insertpos, (x, y))
-                # XXX and update ylockgroups?
-                #
-                nearest = insertpos
+
+        # Note: Squared distance used for comparisons
+        def dist_squared(p):
+            return abs(x - p[0])**2 + abs(y - p[1])**2
+        points = self.points
+        dsq, pos = min((dist_squared(p), i) for i, p in enumerate(points))
+
+        # Unless the number of points are fixed, maxed out, or the intent
+        # was to move an existing point, insert a new curve point.
+        if not (self.npoints or dsq <= 0.003 or len(points) >= self.maxpoints):
+            candidates = [i+1 for i, (px, _) in enumerate(points) if px < x]
+            insert_pos = candidates and candidates[-1]
+            if insert_pos and insert_pos < len(points):
+                points.insert(insert_pos, (x, clamp(y, 0.0, 1.0)))
+                pos = insert_pos
                 self.queue_draw()
 
-        #if nearest == 0:
-        #    # first point cannot be grabbed
-        #    display = gdk.display_get_default()
-        #    display.beep()
-        #else:
-        #assert self.grabbed is None # This did happen. I think it's save to ignore?
-        # I guess it's because gtk can generate button press event without corresponding release.
-        self.grabbed = nearest
+        self.grabbed = pos
 
     def button_release_cb(self, widget, event):
         if not event.button == 1:
             return
         if self.grabbed:
-            i = self.grabbed
-            if self.points[i] is None:
-                self.points.pop(i)
+            if self.points[self.grabbed] is None:
+                self.points.pop(self.grabbed)
         self.grabbed = None
         # notify user of the widget
         self.changed_cb(self)
@@ -159,48 +166,43 @@ class CurveWidget(Gtk.DrawingArea):
             return
         x, y = self.eventpoint(event.x, event.y)
         i = self.grabbed
+        points = self.points
         # XXX this may fail for non contiguous groups.
-        if i in self.ylock:
-            possiblei = None
-            if x > self.points[max(self.ylock[i])][0]:
-                possiblei = max((i,) + self.ylock[i])
-            elif x < self.points[min(self.ylock[i])][0]:
-                possiblei = min((i,) + self.ylock[i])
-            if (possiblei is not None and
-                    abs(self.points[i][0] - self.points[possiblei][0]) < 0.001):
-                i = possiblei
-        out = False  # by default, the point cannot be removed by drawing it out
-        if i == len(self.points)-1:
+        if i in self._ylock:
+            i_candidate = None
+            if x > points[max(self._ylock[i])][0]:
+                i_candidate = max((i,) + self._ylock[i])
+            elif x < points[min(self._ylock[i])][0]:
+                i_candidate = min((i,) + self._ylock[i])
+            if (i_candidate is not None and
+                    abs(points[i][0] - points[i_candidate][0]) < 0.001):
+                i = i_candidate
+        out = False  # by default, points cannot be removed
+        if i == len(points) - 1:
             # last point stays right
-            leftbound = rightbound = 1.0
+            left_bound = right_bound = 1.0
         elif i == 0:
             # first point stays left
-            leftbound = rightbound = 0.0
+            left_bound = right_bound = 0.0
         else:
             # other points can be dragged out
-            if not self.npoints and (y > 1.1 or y < -0.1):
-                out = True
-            leftbound = self.points[i-1][0]
-            rightbound = self.points[i+1][0]
-            if not self.npoints and (x <= leftbound - 0.02 or x >= rightbound + 0.02):
-                out = True
+            left_bound = points[i-1][0]
+            right_bound = points[i+1][0]
+            margin = 0.02
+            inside_x_bounds = left_bound - margin < x < right_bound + margin
+            inside_y_bounds = -0.1 <= y <= 1.1
+            out = not (self.npoints or (inside_x_bounds and inside_y_bounds))
         if out:
-            self.points[i] = None
+            points[i] = None
         else:
-            if y > 1.0:
-                y = 1.0
-            if y < 0.0:
-                y = 0.0
+            y = clamp(y, 0.0, 1.0)
             if self.magnetic:
-                xdiff = [abs(x - v) for v in self._SNAP_TO]
-                ydiff = [abs(y - v) for v in self._SNAP_TO]
-                if min(xdiff) < 0.015 and min(ydiff) < 0.015:
-                    y = self._SNAP_TO[ydiff.index(min(ydiff))]
-                    x = self._SNAP_TO[xdiff.index(min(xdiff))]
-            if x < leftbound:
-                x = leftbound
-            if x > rightbound:
-                x = rightbound
+                x_diff = [abs(x - v) for v in self._SNAP_TO]
+                y_diff = [abs(y - v) for v in self._SNAP_TO]
+                if min(x_diff) < 0.015 and min(y_diff) < 0.015:
+                    y = self._SNAP_TO[y_diff.index(min(y_diff))]
+                    x = self._SNAP_TO[x_diff.index(min(x_diff))]
+            x = clamp(x, left_bound, right_bound)
             self.set_point(i, (x, y))
         self.queue_draw()
 
@@ -214,7 +216,7 @@ class CurveWidget(Gtk.DrawingArea):
                                'widget. Adwaita is thought not to suffer from '
                                'this problem.')
                 self.__class__._WHINED_ABOUT_ALPHA = True
-            return (c.red, c.green, c.blue)
+            return c.red, c.green, c.blue
         style = widget.get_style_context()
         state = widget.get_state_flags()
         fg = gdk2rgb(style.get_color(state))
@@ -244,13 +246,14 @@ class CurveWidget(Gtk.DrawingArea):
             x1, y1 = self.graypoint
             x1 = int(x1*width) + RADIUS
             y1 = int(y1*height) + RADIUS
-            cr.rectangle(x1-RADIUS-1+0.5, y1-RADIUS-1+0.5, 2*RADIUS+1, 2*RADIUS+1)
+            cr.rectangle(
+                x1-RADIUS-1+0.5, y1-RADIUS-1+0.5, 2*RADIUS+1, 2*RADIUS+1)
             cr.fill()
 
         cr.set_source_rgb(*fg)
 
         # draw points
-        current_x = current_y = prev_x = prev_y = 0
+        prev_x = prev_y = 0
         for p in self.points:
             if p is None:
                 continue
@@ -274,15 +277,23 @@ class CurveWidget(Gtk.DrawingArea):
         return True
 
 
-if __name__ == '__main__':
+def _test(case=1):
     logging.basicConfig()
     win = Gtk.Window()
     curve = CurveWidget()
-    curve.ylockgroups = [(1, 2), (3, 4)]
-    curve.npoints = 6
-    curve.points = [(0., 0.), (.2, .5), (.4, .75), (.6, .5), (.8, .3), (1., 1.)]
+    if case == 1:
+        curve.ylockgroups = [(1, 2), (3, 4)]
+        curve.npoints = 6
+        curve.points = [
+            (0., 0.), (.2, .5), (.4, .75), (.6, .5), (.8, .3), (1., 1.)
+        ]
+        curve.graypoint = (0.5, 0.0)
     win.add(curve)
     win.set_title("curve test")
     win.connect("destroy", lambda *a: Gtk.main_quit())
     win.show_all()
     Gtk.main()
+
+
+if __name__ == '__main__':
+    _test()
