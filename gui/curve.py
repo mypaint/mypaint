@@ -11,6 +11,7 @@
 from __future__ import division, print_function
 
 import logging
+from math import pi
 
 from gi.repository import Gtk, Gdk
 
@@ -239,18 +240,25 @@ class CurveWidget(Gtk.DrawingArea):
             cr.line_to(i*width/10 + RADIUS, height + RADIUS)
             cr.stroke()
 
-        # back to regular weight
-        cr.set_line_width(1.0)
-
+        # The graypoint is represented by a dashed vertical line spanning the
+        # entire graph, with a gap where a circle marks the vertical position.
         if self.graypoint:
             x1, y1 = self.graypoint
             x1 = int(x1*width) + RADIUS
             y1 = int(y1*height) + RADIUS
-            cr.rectangle(
-                x1-RADIUS-1+0.5, y1-RADIUS-1+0.5, 2*RADIUS+1, 2*RADIUS+1)
-            cr.fill()
+            cr.set_line_width(0.5)
+            cr.set_dash([height/50.0])
+            cr.move_to(x1, RADIUS)
+            cr.line_to(x1, y1 - 2 * RADIUS)
+            cr.move_to(x1, y1 + 2 * RADIUS)
+            cr.line_to(x1, height + RADIUS)
+            cr.stroke()
+            cr.set_dash([])
+            cr.arc(x1, y1, 2 * RADIUS, 0, 2*pi)
+            cr.stroke()
 
-        cr.set_source_rgb(*fg)
+        # back to regular weight
+        cr.set_line_width(1.0)
 
         # draw points
         prev_x = prev_y = 0
