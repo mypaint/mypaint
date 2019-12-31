@@ -5,7 +5,7 @@ msgstr ""
 "Project-Id-Version: mypaint v2.0.0-alpha.12-327-ga332f03\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2019-12-20 19:50+0100\n"
-"PO-Revision-Date: 2019-12-27 16:26+0000\n"
+"PO-Revision-Date: 2019-12-31 09:48+0000\n"
 "Last-Translator: geun-tak Jeong <beroberos@gmail.com>\n"
 "Language-Team: Korean <https://hosted.weblate.org/projects/mypaint/mypaint/"
 "ko/>\n"
@@ -1876,7 +1876,7 @@ msgstr "계속(_N)"
 #, python-brace-format
 msgctxt "Destructive action confirm dialog: warning message"
 msgid "You risk losing {abbreviated_time} of unsaved painting."
-msgstr "저장하지 않은 그림의 {abbreviated_time}을 잃을 위험이 있습니다."
+msgstr "저장하지 않은 그림의 약 {abbreviated_time} 정도를 잃을 위험이 있습니다."
 
 #: ../gui/filehandling.py:804
 msgctxt "File→New: confirm dialog: title question"
