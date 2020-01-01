@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: mypaint v2.0.0-alpha.8-1-g4490f06\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2019-12-20 19:50+0100\n"
-"PO-Revision-Date: 2019-12-27 16:26+0000\n"
+"PO-Revision-Date: 2020-01-02 20:21+0000\n"
 "Last-Translator: Prachi Joshi <josprachi@yahoo.com>\n"
 "Language-Team: Marathi <https://hosted.weblate.org/projects/mypaint/mypaint/"
 "mr/>\n"
@@ -2826,38 +2826,38 @@ msgstr ""
 #: ../gui/symmetry.py:355
 msgctxt "symmetry axis options panel: labels"
 msgid "X Position:"
-msgstr ""
+msgstr "X स्थान:"
 
 #: ../gui/symmetry.py:359
 msgctxt "symmetry axis options panel: labels"
 msgid "Y Position:"
-msgstr ""
+msgstr "Y स्थान:"
 
 #: ../gui/symmetry.py:363
 msgctxt "symmetry axis options panel: position button: no axis pos."
 msgid "None"
-msgstr ""
+msgstr "काहीही नाही"
 
 #: ../gui/symmetry.py:367
 #, python-format
 msgctxt "symmetry axis options panel: position button: axis pos. in pixels"
 msgid "%d px"
-msgstr ""
+msgstr "%d px"
 
 #: ../gui/symmetry.py:371
 msgctxt "symmetry axis options panel: labels"
 msgid "Alpha:"
-msgstr ""
+msgstr "अल्फा:"
 
 #: ../gui/symmetry.py:375
 msgctxt "symmetry axis options panel: labels"
 msgid "Symmetry Type:"
-msgstr ""
+msgstr "सममिती प्रकार:"
 
 #: ../gui/symmetry.py:379
 msgctxt "symmetry axis options panel: labels"
 msgid "Rotational lines:"
-msgstr ""
+msgstr "फिरत्या रेषा:"
 
 #: ../gui/symmetry.py:446
 msgctxt "symmetry axis options panel: axis position dialog: window title"
