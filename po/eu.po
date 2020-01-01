@@ -7,8 +7,8 @@ msgstr ""
 "Project-Id-Version: mypaint v2.0.0-alpha.8-1-g4490f06\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2019-12-20 19:50+0100\n"
-"PO-Revision-Date: 2019-02-23 08:18+0000\n"
-"Last-Translator: glixx <roman_romul@mail.ru>\n"
+"PO-Revision-Date: 2020-01-02 20:21+0000\n"
+"Last-Translator: Asier Sarasua Garmendia <asier.sarasua@gmail.com>\n"
 "Language-Team: Basque <https://hosted.weblate.org/projects/mypaint/mypaint/"
 "eu/>\n"
 "Language: eu\n"
@@ -16,19 +16,19 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 3.5-dev\n"
+"X-Generator: Weblate 3.10\n"
 
 #. TRANSLATORS: Name of first column in the button map preferences.
 #. TRANSLATORS: Refers to an action bound to a mod+button combination.
 #: ../gui/accelmap.py:98 ../gui/buttonmap.py:284
 msgid "Action"
-msgstr ""
+msgstr "Ekintza"
 
 #. TRANSLATORS: Refers to a keyboard key combination, such as "Ctrl+G".
 #. TRANSLATORS: Second column label in the keybinding preferences tab.
 #: ../gui/accelmap.py:115
 msgid "Key combination"
-msgstr ""
+msgstr "Tekla-konbinazioa"
 
 #. TRANSLATORS: Window title for the keybinding dialog. The %s is
 #. TRANSLATORS: replaced with the name of the action that the key
@@ -44,7 +44,7 @@ msgstr ""
 #. TRANSLATORS: "Action" with a trailing ":" or lang-specific symbol
 #: ../gui/accelmap.py:330 ../gui/buttonmap.py:502
 msgid "Action:"
-msgstr ""
+msgstr "Ekintza:"
 
 #. TRANSLATORS: Path refers to an "action path" that is part of an
 #. TRANSLATORS: accelerator (keybinding). Found in the dialog for
@@ -53,13 +53,13 @@ msgstr ""
 #. TRANSLATORS: so don't worry too much about the translation.
 #: ../gui/accelmap.py:348
 msgid "Path:"
-msgstr ""
+msgstr "Bidea:"
 
 #. TRANSLATORS: Key refers to a key on the keyboard, this is a label
 #. TRANSLATORS: in the dialog for adding new keyboard bindings.
 #: ../gui/accelmap.py:361
 msgid "Key:"
-msgstr ""
+msgstr "Tekla:"
 
 #. TRANSLATORS: "keys" refers to keyboard keys, assignment refers
 #. TRANSLATORS: to an assignment of a keyboard key combination to
@@ -73,7 +73,7 @@ msgstr ""
 #. TRANSLATORS: to an action bound to a key combination.
 #: ../gui/accelmap.py:460
 msgid "Unknown Action"
-msgstr ""
+msgstr "Ekintza ezezaguna"
 
 #. TRANSLATORS: Warning message when attempting to assign a
 #. TRANSLATORS: keyboard combination that is already used.
@@ -87,14 +87,14 @@ msgstr ""
 #: ../gui/application.py:615
 #, python-brace-format
 msgid "Open Folder “{folder_basename}”…"
-msgstr ""
+msgstr "Ireki “{folder_basename}” karpeta…"
 
 #. ... so that the main actions end up in the bottom-right of the
 #. dialog (reversed for rtl scripts), where the eye ends up
 #. naturally at the end of the flow.
 #: ../gui/application.py:623
 msgid "OK"
-msgstr ""
+msgstr "Ados"
 
 #: ../gui/autorecover.py:138
 msgid "No backups were found in the cache."
@@ -1421,7 +1421,7 @@ msgstr ""
 #: ../gui/document.py:555
 #, python-format
 msgid "Undo %s"
-msgstr ""
+msgstr "Desegin %s"
 
 #: ../gui/document.py:557
 msgid "Undo"
@@ -4667,7 +4667,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:1
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "New"
-msgstr ""
+msgstr "Berria"
 
 #: ../po/tmp/resources.xml.h:2
 msgctxt "Toolbar (short labels)"
@@ -4682,7 +4682,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:4
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "Open…"
-msgstr ""
+msgstr "Ireki…"
 
 #: ../po/tmp/resources.xml.h:5
 msgctxt "Toolbar (short labels)"
@@ -4732,7 +4732,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:14
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "Save"
-msgstr ""
+msgstr "Gorde"
 
 #: ../po/tmp/resources.xml.h:15
 msgctxt "Accel Editor (descriptions)"
@@ -4742,7 +4742,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:16
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "Save As…"
-msgstr ""
+msgstr "Gorde honela…"
 
 #: ../po/tmp/resources.xml.h:17
 msgctxt "Accel Editor (descriptions)"
@@ -5029,7 +5029,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:73
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Clear Layer"
-msgstr ""
+msgstr "Garbitu geruza"
 
 #: ../po/tmp/resources.xml.h:74
 msgctxt "Accel Editor (descriptions)"
@@ -5162,7 +5162,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:99
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "New Painting Layer"
-msgstr ""
+msgstr "Margotze-geruza berria"
 
 #: ../po/tmp/resources.xml.h:100
 msgctxt "Accel Editor (descriptions)"
@@ -5182,7 +5182,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:103
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "New Layer Group"
-msgstr ""
+msgstr "Geruza talde berria"
 
 #: ../po/tmp/resources.xml.h:104
 msgctxt "Accel Editor (descriptions)"
@@ -5252,7 +5252,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:117
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Delete Layer"
-msgstr ""
+msgstr "Ezabatu geruza"
 
 #: ../po/tmp/resources.xml.h:118
 msgctxt "Accel Editor (descriptions)"
@@ -5669,7 +5669,7 @@ msgstr "Fitxategia"
 #: ../po/tmp/resources.xml.h:202
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "Quit"
-msgstr ""
+msgstr "Irten"
 
 #: ../po/tmp/resources.xml.h:203
 msgctxt "Accel Editor (descriptions)"
@@ -5679,12 +5679,12 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:204
 msgctxt "Menu (labels)"
 msgid "Edit"
-msgstr ""
+msgstr "Editatu"
 
 #: ../po/tmp/resources.xml.h:205
 msgctxt "Menu (labels)"
 msgid "Color"
-msgstr ""
+msgstr "Kolorea"
 
 #: ../po/tmp/resources.xml.h:206
 msgctxt "Menu→Color (labels)"
@@ -5744,7 +5744,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:217
 msgctxt "Menu (labels)"
 msgid "Layer"
-msgstr ""
+msgstr "Geruza"
 
 #: ../po/tmp/resources.xml.h:218
 msgctxt "Menu→Layer→Properties (labels)"
@@ -5855,12 +5855,12 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:239
 msgctxt "Menu (labels)"
 msgid "Window"
-msgstr ""
+msgstr "Leihoa"
 
 #: ../po/tmp/resources.xml.h:240
 msgctxt "Menu→Brush (labels)"
 msgid "Brush"
-msgstr ""
+msgstr "Brotxa"
 
 #: ../po/tmp/resources.xml.h:241
 msgctxt "Menu→Brush (labels)"
@@ -5880,7 +5880,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:244
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
 msgid "Change Brush…"
-msgstr ""
+msgstr "Aldatu brotxa…"
 
 #: ../po/tmp/resources.xml.h:245
 msgctxt "Accel Editor (descriptions)"
@@ -5890,7 +5890,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:246
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "Change Color…"
-msgstr ""
+msgstr "Aldatu kolorea…"
 
 #: ../po/tmp/resources.xml.h:247
 msgctxt "Accel Editor (descriptions)"
@@ -5913,7 +5913,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:250
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
 msgid "Get More Brushes…"
-msgstr ""
+msgstr "Eskuratu brotxa gehiago…"
 
 #: ../po/tmp/resources.xml.h:251
 msgctxt "Accel Editor (descriptions)"
@@ -5938,7 +5938,7 @@ msgstr "Laguntza"
 #: ../po/tmp/resources.xml.h:255
 msgctxt "Menu→Help (labels), Accel Editor (labels)"
 msgid "Online Help"
-msgstr ""
+msgstr "Lineako laguntza"
 
 #: ../po/tmp/resources.xml.h:256
 msgctxt "Accel Editor (descriptions)"
@@ -5948,7 +5948,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:257
 msgctxt "Menu→Help (labels), Accel Editor (labels)"
 msgid "About MyPaint"
-msgstr ""
+msgstr "MyPaint aplikazioari buruz"
 
 #: ../po/tmp/resources.xml.h:258
 msgctxt "Accel Editor (descriptions)"
@@ -6003,7 +6003,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:268
 msgctxt "Menu (labels)"
 msgid "View"
-msgstr ""
+msgstr "Ikusi"
 
 #: ../po/tmp/resources.xml.h:269
 msgctxt "Menu→View (labels)"
@@ -6028,7 +6028,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:273
 msgctxt "Menu→View (labels), Accel Editor (labels)"
 msgid "Fullscreen"
-msgstr ""
+msgstr "Pantaila osoa"
 
 #: ../po/tmp/resources.xml.h:274
 msgctxt "Accel Editor (descriptions)"
@@ -6038,7 +6038,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:275
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
 msgid "Edit Preferences"
-msgstr ""
+msgstr "Editatu hobespenak"
 
 #: ../po/tmp/resources.xml.h:276
 msgctxt "Accel Editor (descriptions)"
@@ -6068,7 +6068,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:281
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
 msgid "Brush Settings Editor"
-msgstr ""
+msgstr "Brotxa-ezarpenen editorea"
 
 #: ../po/tmp/resources.xml.h:282
 msgctxt "Accel Editor (descriptions)"
@@ -6101,7 +6101,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:287
 msgctxt "Menu→Layers (labels), Accel Editor (labels)"
 msgid "Show Layers Panel"
-msgstr ""
+msgstr "Erakutsi geruzen panela"
 
 #: ../po/tmp/resources.xml.h:288
 msgctxt "Accel Editor (descriptions)"
@@ -6123,7 +6123,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:291
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "Color Palette"
-msgstr ""
+msgstr "Kolore-paleta"
 
 #: ../po/tmp/resources.xml.h:292
 msgctxt "Accel Editor (descriptions)"
@@ -6225,7 +6225,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:311
 msgctxt "Menu→Window (labels), Toolbar (labels), Accel Editor (labels)"
 msgid "Preview Panel"
-msgstr ""
+msgstr "Aurrebista-panela"
 
 #: ../po/tmp/resources.xml.h:312
 msgctxt "Accel Editor (descriptions)"
@@ -6235,7 +6235,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:313
 msgctxt "Menu→View (labels), Accel Editor (labels)"
 msgid "Preview"
-msgstr ""
+msgstr "Aurrebista"
 
 #: ../po/tmp/resources.xml.h:314
 msgctxt "Accel Editor (descriptions)"
@@ -6245,7 +6245,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:315
 msgctxt "Menu→Window (labels), Toolbar (labels), Accel Editor (labels)"
 msgid "Tool Options Panel"
-msgstr ""
+msgstr "Tresna-aukeren panela"
 
 #: ../po/tmp/resources.xml.h:316
 msgctxt "Accel Editor (descriptions)"
@@ -6255,7 +6255,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:317
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
 msgid "Show Tool Options Panel"
-msgstr ""
+msgstr "Erakutsi tresna-aukeren panela"
 
 #: ../po/tmp/resources.xml.h:318
 msgctxt "Accel Editor (descriptions)"
@@ -6496,7 +6496,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:365
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
 msgid "Lines and Curves"
-msgstr ""
+msgstr "Lerroak eta kurbak"
 
 #: ../po/tmp/resources.xml.h:366
 msgctxt "Accel Editor (descriptions)"
@@ -6521,7 +6521,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:370
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
 msgid "Connected Lines"
-msgstr ""
+msgstr "Konektatutako lerroak"
 
 #: ../po/tmp/resources.xml.h:371
 msgctxt "Accel Editor (descriptions)"
@@ -6546,7 +6546,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:375
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
 msgid "Ellipses and Circles"
-msgstr ""
+msgstr "Elipseak eta zirkuluak"
 
 #: ../po/tmp/resources.xml.h:376
 msgctxt "Accel Editor (descriptions)"
@@ -6622,7 +6622,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:390
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "Edit Frame"
-msgstr ""
+msgstr "Editatu markoa"
 
 #: ../po/tmp/resources.xml.h:391
 msgctxt "Accel Editor (descriptions)"
@@ -6706,7 +6706,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:406
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "Pick Color"
-msgstr ""
+msgstr "Aukeratu kolorea"
 
 #: ../po/tmp/resources.xml.h:407
 msgctxt "Accel Editor (descriptions)"
