@@ -12,8 +12,6 @@
 
 from __future__ import division, print_function
 from warnings import warn
-import sys
-import math
 import logging
 
 from gi.repository import GObject
@@ -2173,6 +2171,52 @@ def _tool_widget_get_icon(widget, icon_size):
     return (None, icon_name)
 
 
+def _final_rectangle(
+        x, y, w, h, screen_w, screen_h, targ_geom, min_usable_size):
+    """ Tries to create sensible (x, y, w, h) window pos/dim
+    """
+    # Generate a sensible, positive x and y position
+    final_x, final_y, final_w, final_h = None, None, None, None
+    if x is not None and y is not None:
+        if x >= 0:
+            final_x = x
+        else:
+            assert w is not None
+            assert w > 0
+            final_x = targ_geom.x + (targ_geom.w - w - abs(x))
+        if y >= 0:
+            final_y = y
+        else:
+            assert h is not None
+            assert h > 0
+            final_y = targ_geom.y + (targ_geom.h - h - abs(y))
+        if final_x < 0 or final_x > screen_w - min_usable_size:
+            final_x = None
+        if final_y < 0 or final_y > screen_h - min_usable_size:
+            final_y = None
+    # and a sensible, positive width and height
+    if w is not None and h is not None:
+        final_w = w
+        final_h = h
+        if w < 0 or h < 0:
+            if w < 0:
+                if x is not None:
+                    final_w = max(0, targ_geom.w - abs(x) - abs(w))
+                else:
+                    final_w = max(0, targ_geom.w - 2*abs(w))
+            if h < 0:
+                if x is not None:
+                    final_h = max(0, targ_geom.h - abs(y) - abs(h))
+                else:
+                    final_h = max(0, targ_geom.h - 2*abs(h))
+        if final_w > screen_w or final_w < min_usable_size:
+            final_w = None
+        if final_h > screen_h or final_h < min_usable_size:
+            final_h = None
+
+    return final_x, final_y, final_w, final_h
+
+
 def set_initial_window_position(win, pos):
     """Set the position of a Gtk.Window, used during initial positioning.
 
@@ -2210,16 +2254,6 @@ def set_initial_window_position(win, pos):
 
     min_usable_size = 100
 
-    # Final calculated positions
-    final_x, final_y = None, None
-    final_w, final_h = None, None
-
-    # Positioning arguments
-    x = pos.get("x", None)
-    y = pos.get("y", None)
-    w = pos.get("w", None)
-    h = pos.get("h", None)
-
     # Where the mouse is right now - identifies the current monitor.
     ptr_x, ptr_y = 0, 0
     screen = win.get_screen()
@@ -2248,44 +2282,10 @@ def set_initial_window_position(win, pos):
     targ_mon_num = screen.get_monitor_at_point(ptr_x, ptr_y)
     targ_geom = _get_target_area_geometry(screen, targ_mon_num)
 
-    # Generate a sensible, positive x and y position
-    if x is not None and y is not None:
-        if x >= 0:
-            final_x = x
-        else:
-            assert w is not None
-            assert w > 0
-            final_x = targ_geom.x + (targ_geom.w - w - abs(x))
-        if y >= 0:
-            final_y = y
-        else:
-            assert h is not None
-            assert h > 0
-            final_y = targ_geom.y + (targ_geom.h - h - abs(y))
-        if final_x < 0 or final_x > screen_w - min_usable_size:
-            final_x = None
-        if final_y < 0 or final_y > screen_h - min_usable_size:
-            final_y = None
-
-    # And a sensible, positive width and height
-    if w is not None and h is not None:
-        final_w = w
-        final_h = h
-        if w < 0 or h < 0:
-            if w < 0:
-                if x is not None:
-                    final_w = max(0, targ_geom.w - abs(x) - abs(w))
-                else:
-                    final_w = max(0, targ_geom.w - 2*abs(w))
-            if h < 0:
-                if x is not None:
-                    final_h = max(0, targ_geom.h - abs(y) - abs(h))
-                else:
-                    final_h = max(0, targ_geom.h - 2*abs(h))
-        if final_w > screen_w or final_w < min_usable_size:
-            final_w = None
-        if final_h > screen_h or final_h < min_usable_size:
-            final_h = None
+    # Positioning arguments
+    x, y, w, h = (pos.get(k, None) for k in ("x", "y", "w", "h"))
+    final_x, final_y, final_w, final_h = _final_rectangle(
+        x, y, w, h, screen_w, screen_h, targ_geom, min_usable_size)
 
     # If the window is positioned, make sure it's on a monitor which still
     # exists. Users change display layouts...
