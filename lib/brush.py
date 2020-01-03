@@ -347,6 +347,8 @@ class BrushInfo (object):
 
     @staticmethod
     def brush_string_inverted_eotf(brush_string):
+        if isinstance(brush_string, bytes):
+            brush_string = brush_string.decode("utf-8")
         try:
             brush = json.loads(brush_string)
             bsett = brush['settings']

@@ -477,7 +477,7 @@ class _Tile:
         if self._all:
             array = np.ones((N, N), 'uint8')
         else:
-            array = np.fromstring(
+            array = np.frombuffer(
                 zlib.decompress(self._zdata),
                 dtype='uint8',
             )
