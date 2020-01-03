@@ -15,8 +15,7 @@ from __future__ import division, print_function
 import logging
 
 from lib.gettext import gettext as _
-from .workspace import SizedVBoxToolWidget
-from .workspace import TOOL_WIDGET_NATURAL_HEIGHT_SHORT
+from .toolstack import SizedVBoxToolWidget, TOOL_WIDGET_NATURAL_HEIGHT_SHORT
 from .widgets import inline_toolbar
 
 from gi.repository import Gtk

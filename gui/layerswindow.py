@@ -26,7 +26,7 @@ import lib.layer
 import lib.xml
 from . import widgets
 from .widgets import inline_toolbar
-from .workspace import SizedVBoxToolWidget
+from .toolstack import SizedVBoxToolWidget
 from . import layers
 from lib.modes import STACK_MODES
 from lib.modes import STANDARD_MODES

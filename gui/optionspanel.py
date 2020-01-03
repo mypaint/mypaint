@@ -13,7 +13,7 @@
 from __future__ import division, print_function
 import logging
 
-from . import workspace
+from .toolstack import SizedVBoxToolWidget, TOOL_WIDGET_NATURAL_HEIGHT_SHORT
 import lib.xml
 from lib.gettext import C_
 
@@ -24,7 +24,7 @@ logger = logging.getLogger(__name__)
 
 ## Class defs
 
-class ModeOptionsTool (workspace.SizedVBoxToolWidget):
+class ModeOptionsTool (SizedVBoxToolWidget):
     """Dockable panel showing options for the current mode
 
     This panel has a title and an icon reflecting the current mode, and
@@ -39,7 +39,7 @@ class ModeOptionsTool (workspace.SizedVBoxToolWidget):
 
     ## Class constants
 
-    SIZED_VBOX_NATURAL_HEIGHT = workspace.TOOL_WIDGET_NATURAL_HEIGHT_SHORT
+    SIZED_VBOX_NATURAL_HEIGHT = TOOL_WIDGET_NATURAL_HEIGHT_SHORT
 
     tool_widget_icon_name = "mypaint-options-symbolic"
     tool_widget_title = C_(
@@ -66,7 +66,7 @@ class ModeOptionsTool (workspace.SizedVBoxToolWidget):
 
     def __init__(self):
         """Construct, and connect internal signals & callbacks"""
-        workspace.SizedVBoxToolWidget.__init__(self)
+        SizedVBoxToolWidget.__init__(self)
         from gui.application import get_app
         self._app = get_app()
         self._app.doc.modes.changed += self._modestack_changed_cb

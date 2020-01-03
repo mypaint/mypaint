@@ -23,8 +23,7 @@ import cairo
 import gui.mode
 from . import overlays
 from . import tileddrawwidget
-from .workspace import SizedVBoxToolWidget
-from .workspace import TOOL_WIDGET_NATURAL_HEIGHT_SHORT
+from .toolstack import SizedVBoxToolWidget, TOOL_WIDGET_NATURAL_HEIGHT_SHORT
 import lib.alg as geom
 import gui.cursor
 import gui.drawutils

@@ -15,8 +15,8 @@ from gi.repository import Gtk
 
 from lib.gettext import C_
 
-from . import workspace
 from . import widgets
+from .toolstack import TOOL_WIDGET_MIN_WIDTH
 from gui.colors.hcywheel import HCYAdjusterPage
 from gui.colors.hsvwheel import HSVAdjusterPage
 from gui.colors.paletteview import PalettePage
@@ -63,7 +63,7 @@ class _PageToolAdapter (Gtk.VBox, ColorAdjuster):
         self._app = get_app()
         self.set_color_manager(self._app.brush_color_manager)
         # Sizing.
-        size = workspace.TOOL_WIDGET_MIN_WIDTH
+        size = TOOL_WIDGET_MIN_WIDTH
         self.set_size_request(size, size*0.9)
 
     def set_color_manager(self, manager):

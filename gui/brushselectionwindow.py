@@ -30,7 +30,7 @@ from lib.gettext import ngettext
 from . import pixbuflist
 from . import dialogs
 from . import brushmanager
-from .workspace import SizedVBoxToolWidget
+from .toolstack import SizedVBoxToolWidget
 from . import widgets
 
 logger = logging.getLogger(__name__)

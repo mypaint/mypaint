@@ -18,7 +18,7 @@ from gi.repository import Gtk
 from gi.repository import Gdk
 from gi.repository import GLib
 
-from lib.helpers import clamp
+from lib.helpers import clamp, Rect
 
 logger = logging.getLogger(__name__)
 
@@ -618,3 +618,190 @@ class ChooserPopup (Gtk.Window):
         if outside_tolerance:
             self.hide()
             return True
+
+
+# Window positioning helper functions
+
+def _final_rectangle(
+        x, y, w, h, screen_w, screen_h, targ_geom, min_usable_size):
+    """ Tries to create sensible (x, y, w, h) window pos/dim
+    """
+    # Generate a sensible, positive x and y position
+    final_x, final_y, final_w, final_h = None, None, None, None
+    if x is not None and y is not None:
+        if x >= 0:
+            final_x = x
+        else:
+            assert w is not None
+            assert w > 0
+            final_x = targ_geom.x + (targ_geom.w - w - abs(x))
+        if y >= 0:
+            final_y = y
+        else:
+            assert h is not None
+            assert h > 0
+            final_y = targ_geom.y + (targ_geom.h - h - abs(y))
+        if final_x < 0 or final_x > screen_w - min_usable_size:
+            final_x = None
+        if final_y < 0 or final_y > screen_h - min_usable_size:
+            final_y = None
+    # and a sensible, positive width and height
+    if w is not None and h is not None:
+        final_w = w
+        final_h = h
+        if w < 0 or h < 0:
+            if w < 0:
+                if x is not None:
+                    final_w = max(0, targ_geom.w - abs(x) - abs(w))
+                else:
+                    final_w = max(0, targ_geom.w - 2*abs(w))
+            if h < 0:
+                if x is not None:
+                    final_h = max(0, targ_geom.h - abs(y) - abs(h))
+                else:
+                    final_h = max(0, targ_geom.h - 2*abs(h))
+        if final_w > screen_w or final_w < min_usable_size:
+            final_w = None
+        if final_h > screen_h or final_h < min_usable_size:
+            final_h = None
+
+    return final_x, final_y, final_w, final_h
+
+
+def set_initial_window_position(win, pos):
+    """Set the position of a Gtk.Window, used during initial positioning.
+
+    This is used both for restoring a saved window position, and for the
+    application-wide defaults. The ``pos`` argument is a dict containing the
+    following optional keys
+
+        "w": <int>
+        "h": <int>
+            If positive, the size of the window.
+            If negative, size is calculated based on the size of the
+            monitor with the pointer on it, and x (or y) if given, e.g.
+
+                width = mouse_mon_w -  abs(x) + abs(w)   # or (if no x)
+                width = mouse_mon_w - (2 * abs(w))
+
+            The same is true of calculated heights.
+
+        "x": <int>
+        "y": <int>
+            If positive, the left/top of the window.
+            If negative, the bottom/right of the window on the monitor
+            with the pointer on it: you MUST provide a positive w and h
+            if you do this.
+
+    If the window's calculated top-left would place it offscreen, it will be
+    placed in its default, window manager provided position. If its calculated
+    size is larger than the screen, the window will be given its natural size
+    instead.
+
+    Returns the final, chosen (x, y) pair for forcing the window position on
+    first map, or None if defaults are being used.
+
+    """
+
+    min_usable_size = 100
+
+    # Where the mouse is right now - identifies the current monitor.
+    ptr_x, ptr_y = 0, 0
+    screen = win.get_screen()
+    display = win.get_display()
+    devmgr = display and display.get_device_manager() or None
+    ptrdev = devmgr and devmgr.get_client_pointer() or None
+    if ptrdev:
+        ptr_screen, ptr_x, ptr_y = ptrdev.get_position()
+        assert ptr_screen is screen, (
+            "Screen containing core pointer != screen containing "
+            "the window for positioning (%r != %r)" % (ptr_screen, screen)
+        )
+        logger.debug("Core pointer position from display: %r", (ptr_x, ptr_y))
+    else:
+        logger.warning(
+            "Could not determine core pointer position from display. "
+            "Using %r instead.",
+            (ptr_x, ptr_y),
+        )
+    screen_w = screen.get_width()
+    screen_h = screen.get_height()
+    assert screen_w > min_usable_size
+    assert screen_h > min_usable_size
+
+    # The target area is ideally the current monitor.
+    targ_mon_num = screen.get_monitor_at_point(ptr_x, ptr_y)
+    targ_geom = _get_target_area_geometry(screen, targ_mon_num)
+
+    # Positioning arguments
+    x, y, w, h = (pos.get(k, None) for k in ("x", "y", "w", "h"))
+    final_x, final_y, final_w, final_h = _final_rectangle(
+        x, y, w, h, screen_w, screen_h, targ_geom, min_usable_size)
+
+    # If the window is positioned, make sure it's on a monitor which still
+    # exists. Users change display layouts...
+    if None not in (final_x, final_y):
+        onscreen = False
+        for mon_num in xrange(screen.get_n_monitors()):
+            targ_geom = _get_target_area_geometry(screen, mon_num)
+            in_targ_geom = (
+                final_x < (targ_geom.x + targ_geom.w)
+                and final_y < (targ_geom.x + targ_geom.h)
+                and final_x >= targ_geom.x
+                and final_y >= targ_geom.y
+            )
+            if in_targ_geom:
+                onscreen = True
+                break
+        if not onscreen:
+            logger.warning("Calculated window position is offscreen; "
+                           "ignoring %r" % ((final_x, final_y), ))
+            final_x = None
+            final_y = None
+
+    # Attempt to set up with a geometry string first. Repeats the block below
+    # really, but this helps smaller windows receive the right position in
+    # xfwm (at least), possibly because the right window hints will be set.
+    if None not in (final_w, final_h, final_x, final_y):
+        geom_str = "%dx%d+%d+%d" % (final_w, final_h, final_x, final_y)
+        win.connect("realize", lambda *a: win.parse_geometry(geom_str))
+
+    # Set what we can now.
+    if None not in (final_w, final_h):
+        win.set_default_size(final_w, final_h)
+    if None not in (final_x, final_y):
+        win.move(final_x, final_y)
+        return final_x, final_y
+
+    return None
+
+
+def _get_target_area_geometry(screen, mon_num):
+    """Get a rect for putting windows in: normally based on monitor.
+
+    :param Gdk.Screen screen: Target screen.
+    :param int mon_num: Monitor number, e.g. that of the pointer.
+    :returns: A hopefully usable target area.
+    :rtype: lib.helpers.Rect
+
+    This function operates like gdk_screen_get_monitor_geometry(), but
+    falls back to the screen geometry for cases when that returns NULL.
+    It also returns a type which has (around GTK 3.18.x) fewer weird
+    typelib issues with construction or use.
+
+    Ref: https://github.com/mypaint/mypaint/issues/424
+    Ref: https://github.com/mypaint/mypaint/issues/437
+
+    """
+    geom = None
+    if mon_num >= 0:
+        geom = screen.get_monitor_geometry(mon_num)
+    if geom is not None:
+        geom = Rect.new_from_gdk_rectangle(geom)
+    else:
+        logger.warning(
+            "gdk_screen_get_monitor_geometry() returned NULL: "
+            "using screen size instead as a fallback."
+        )
+        geom = Rect(0, 0, screen.get_width(), screen.get_height())
+    return geom
