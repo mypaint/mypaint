@@ -747,6 +747,22 @@ class ToolStack (Gtk.EventBox):
             return True
         return False
 
+    def remove_all_tool_widgets(self):
+        """Remove all tool widgets in the stack, without cleanup
+
+        This method is only intended to be used right before the
+        parent of a ToolStack is destroyed. It does not remove
+        any placeholders, only the individual tool widgets.
+        """
+        for notebook in self._get_notebooks():
+            for index in xrange(notebook.get_n_pages()):
+                page = notebook.get_nth_page(index)
+                widget = page.get_child()
+                widget.hide()
+                page.remove(widget)
+                if self.workspace:
+                    self.workspace.tool_widget_removed(widget)
+
     def is_empty(self):
         """Returns true if this stack contains only a tab drop placeholder"""
         widget = self.get_child()
@@ -971,6 +987,7 @@ class ToolStackWindow (Gtk.Window):
         self.set_deletable(False)
         self.connect("realize", self._realize_cb)
         self.connect("destroy", self._destroy_cb)
+        self.connect("delete-event", self._delete_cb)
         self.stack = ToolStack(workspace)  #: The ToolStack child of the window
         self.add(self.stack)
         self.update_title([])
@@ -1093,6 +1110,9 @@ class ToolStackWindow (Gtk.Window):
                self._layout_position.get("y", None))
         if None not in pos:
             self._onmap_position = pos
+
+    def _delete_cb(self, widget, event):
+        self.stack.remove_all_tool_widgets()
 
     def _destroy_cb(self, widget):
         workspace = self.stack.workspace
