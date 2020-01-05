@@ -19,6 +19,7 @@ from gi.repository import Gdk
 from gi.repository import GLib
 
 from lib.helpers import clamp, Rect
+from lib.pycompat import xrange
 
 logger = logging.getLogger(__name__)
 
