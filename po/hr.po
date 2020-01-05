@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: mypaint v2.0.0-alpha.8-1-g4490f06\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2019-12-20 19:50+0100\n"
-"PO-Revision-Date: 2020-01-05 00:19+0000\n"
+"PO-Revision-Date: 2020-01-08 13:22+0000\n"
 "Last-Translator: Milo Ivir <mail@milotype.de>\n"
 "Language-Team: Croatian <https://hosted.weblate.org/projects/mypaint/mypaint/"
 "hr/>\n"
@@ -17,19 +17,19 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<="
 "4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
-"X-Generator: Weblate 3.10\n"
+"X-Generator: Weblate 3.10.1-dev\n"
 
 #. TRANSLATORS: Name of first column in the button map preferences.
 #. TRANSLATORS: Refers to an action bound to a mod+button combination.
 #: ../gui/accelmap.py:98 ../gui/buttonmap.py:284
 msgid "Action"
-msgstr ""
+msgstr "Radnja"
 
 #. TRANSLATORS: Refers to a keyboard key combination, such as "Ctrl+G".
 #. TRANSLATORS: Second column label in the keybinding preferences tab.
 #: ../gui/accelmap.py:115
 msgid "Key combination"
-msgstr ""
+msgstr "Kombinacija tipki"
 
 #. TRANSLATORS: Window title for the keybinding dialog. The %s is
 #. TRANSLATORS: replaced with the name of the action that the key
@@ -37,7 +37,7 @@ msgstr ""
 #: ../gui/accelmap.py:299
 #, python-format
 msgid "Edit Key for '%s'"
-msgstr ""
+msgstr "Uredi tipku za „%s”"
 
 #. TRANSLATORS: Part of interface when adding a new button map binding.
 #. TRANSLATORS: It's a label for the action part of the combination.
@@ -45,7 +45,7 @@ msgstr ""
 #. TRANSLATORS: "Action" with a trailing ":" or lang-specific symbol
 #: ../gui/accelmap.py:330 ../gui/buttonmap.py:502
 msgid "Action:"
-msgstr ""
+msgstr "Radnja:"
 
 #. TRANSLATORS: Path refers to an "action path" that is part of an
 #. TRANSLATORS: accelerator (keybinding). Found in the dialog for
@@ -54,13 +54,13 @@ msgstr ""
 #. TRANSLATORS: so don't worry too much about the translation.
 #: ../gui/accelmap.py:348
 msgid "Path:"
-msgstr ""
+msgstr "Staza:"
 
 #. TRANSLATORS: Key refers to a key on the keyboard, this is a label
 #. TRANSLATORS: in the dialog for adding new keyboard bindings.
 #: ../gui/accelmap.py:361
 msgid "Key:"
-msgstr ""
+msgstr "Tipka:"
 
 #. TRANSLATORS: "keys" refers to keyboard keys, assignment refers
 #. TRANSLATORS: to an assignment of a keyboard key combination to
@@ -68,13 +68,13 @@ msgstr ""
 #. TRANSLATORS: keybinding dialog (Preferences | Keys).
 #: ../gui/accelmap.py:403
 msgid "Press keys to update this assignment"
-msgstr ""
+msgstr "Pritisni tipke za aktualiziranje zadatka"
 
 #. TRANSLATORS: Part of the keybinding dialog, refers
 #. TRANSLATORS: to an action bound to a key combination.
 #: ../gui/accelmap.py:460
 msgid "Unknown Action"
-msgstr ""
+msgstr "Nepoznata radnja"
 
 #. TRANSLATORS: Warning message when attempting to assign a
 #. TRANSLATORS: keyboard combination that is already used.
@@ -84,55 +84,57 @@ msgid ""
 "<b>{accel} is already in use for '{action}'. The existing assignment will be "
 "replaced.</b>"
 msgstr ""
+"<b>{accel} sse već koristi za „{action}”. Postojeći zadatak će se "
+"zamijeniti.</b>"
 
 #: ../gui/application.py:615
 #, python-brace-format
 msgid "Open Folder “{folder_basename}”…"
-msgstr ""
+msgstr "Otvori mapu „{folder_basename}” …"
 
 #. ... so that the main actions end up in the bottom-right of the
 #. dialog (reversed for rtl scripts), where the eye ends up
 #. naturally at the end of the flow.
 #: ../gui/application.py:623
 msgid "OK"
-msgstr ""
+msgstr "U redu"
 
 #: ../gui/autorecover.py:138
 msgid "No backups were found in the cache."
-msgstr ""
+msgstr "U međuspremniku nisu nađene sigurnosne kopije."
 
 #: ../gui/autorecover.py:139
 msgid "No Available Backups"
-msgstr ""
+msgstr "Nema dostupnih sigurnosnih kopija"
 
 #: ../gui/autorecover.py:141
 msgid "Open the Cache Folder…"
-msgstr ""
+msgstr "Otvori mapu međuspremnika …"
 
 #: ../gui/autorecover.py:171
 msgid "Backup Recovery Failed"
-msgstr ""
+msgstr "Obnavljanje sigurnosnom kopijom neuspjelo"
 
 #: ../gui/autorecover.py:173
 msgid "Open the Backup’s Folder…"
-msgstr ""
+msgstr "Otvori mapu sigurnosnih kopija …"
 
 #: ../gui/autorecover.py:182
 #, python-brace-format
 msgid "Recovered file from {iso_datetime}.ora"
-msgstr ""
+msgstr "Obnovljena datoteka iz {iso_datetime}.ora"
 
 #: ../gui/backgroundwindow.py:55
 msgid "Background"
-msgstr ""
+msgstr "Pozadina"
 
 #: ../gui/backgroundwindow.py:58
 msgid "Save as Default"
-msgstr ""
+msgstr "Spremi kao standardno"
 
 #: ../gui/backgroundwindow.py:75
 msgid "Pattern"
-msgstr ""
+msgstr "Uzorak"
 
 #: ../gui/backgroundwindow.py:86 ../lib/modes.py:110
 msgid "Color"
@@ -140,154 +142,156 @@ msgstr "Boja"
 
 #: ../gui/backgroundwindow.py:92
 msgid "Add color to Patterns"
-msgstr ""
+msgstr "Dodaj boju u uzorke"
 
 #: ../gui/backgroundwindow.py:256
 msgid "One or more backgrounds could not be loaded"
-msgstr ""
+msgstr "Nije bilo moguće učitati jednu ili više pozadina"
 
 #: ../gui/backgroundwindow.py:257
 msgid "Error loading backgrounds"
-msgstr ""
+msgstr "Greška prilikom učitavanja pozadina"
 
 #: ../gui/backgroundwindow.py:258
 msgid ""
 "Please remove the unloadable files, or check your libgdkpixbuf installation."
 msgstr ""
+"Ukloni datoteke koje nije moguće učitati ili provjeri libgdkpixbuf "
+"instalaciju."
 
 #: ../gui/backgroundwindow.py:372
 #, python-brace-format
 msgid "Gdk-Pixbuf couldn't load \"{filename}\", and reported \"{error}\""
-msgstr ""
+msgstr "Gdk-Pixbuf nije mogao učitati „{filename}”, i javio je „{error}”"
 
 #: ../gui/backgroundwindow.py:382
 #, python-brace-format
 msgid "{filename} has zero size (w={w}, h={h})"
-msgstr ""
+msgstr "{filename} ima veličinu od nula (š={w}, v={h})"
 
 #: ../gui/brusheditor.py:90
 msgctxt "brush settings editor: subwindow title"
 msgid "Brush Settings Editor"
-msgstr ""
+msgstr "Uređivač postavki kistova"
 
 #: ../gui/brusheditor.py:270
 msgctxt "brush settings list: brush metadata texts group"
 msgid "About"
-msgstr ""
+msgstr "Informacije"
 
 #: ../gui/brusheditor.py:281
 msgctxt "brush settings list: setting group"
 msgid "Experimental"
-msgstr ""
+msgstr "Eksperimentalno"
 
 #: ../gui/brusheditor.py:288
 msgctxt "brush settings list: setting group"
 msgid "Basic"
-msgstr ""
+msgstr "Osnovno"
 
 #: ../gui/brusheditor.py:307
 msgctxt "brush settings list: setting group"
 msgid "Opacity"
-msgstr ""
+msgstr "Prozirnost"
 
 #: ../gui/brusheditor.py:319
 msgctxt "brush settings list: setting group"
 msgid "Dabs"
-msgstr ""
+msgstr "Otisci"
 
 #: ../gui/brusheditor.py:330
 msgctxt "brush settings list: setting group"
 msgid "Smudge"
-msgstr ""
+msgstr "Mrljanje"
 
 #: ../gui/brusheditor.py:344
 msgctxt "brush settings list: setting group"
 msgid "Speed"
-msgstr ""
+msgstr "Brzina"
 
 #: ../gui/brusheditor.py:358
 msgctxt "brush settings list: setting group"
 msgid "Directional Offsets"
-msgstr ""
+msgstr "Odmaci smjera"
 
 #: ../gui/brusheditor.py:376
 msgctxt "brush settings list: setting group"
 msgid "Tracking"
-msgstr ""
+msgstr "Praćenje"
 
 #: ../gui/brusheditor.py:387
 msgctxt "brush settings list: setting group"
 msgid "Stroke"
-msgstr ""
+msgstr "Potez"
 
 #: ../gui/brusheditor.py:398
 msgctxt "brush settings list: setting group"
 msgid "Color"
-msgstr ""
+msgstr "Boja"
 
 #: ../gui/brusheditor.py:416
 msgctxt "brush settings list: setting group"
 msgid "GridMap"
-msgstr ""
+msgstr "Mreža"
 
 #: ../gui/brusheditor.py:427
 msgctxt "brush settings list: setting group"
 msgid "Custom"
-msgstr "Prilagodi"
+msgstr "Prilagođeno"
 
 #: ../gui/brusheditor.py:493
 msgctxt "brush settings editor: save brush: error message"
 msgid "No brush selected, please use “Add As New” instead."
-msgstr ""
+msgstr "Nijedan kist nije odabran. Umjesto toga koristi „Dodaj kao novi”."
 
 #: ../gui/brusheditor.py:518
 msgctxt "brush settings editor: rename brush: error message"
 msgid "No brush selected!"
-msgstr ""
+msgstr "Nema odabranog kista!"
 
 #: ../gui/brusheditor.py:527
 msgctxt "brush settings editor: rename brush: dialog title"
 msgid "Rename Brush"
-msgstr ""
+msgstr "Preimenuj kist"
 
 #: ../gui/brusheditor.py:545
 msgctxt "brush settings editor: rename brush: error message"
 msgid "A brush with this name already exists!"
-msgstr ""
+msgstr "Kist s ovim imenom već postoji!"
 
 #: ../gui/brusheditor.py:579
 msgctxt "brush settings editor: delete brush: error message"
 msgid "No brush selected!"
-msgstr ""
+msgstr "Nema odabranog kista!"
 
 #: ../gui/brusheditor.py:585
 #, python-brace-format
 msgctxt "brush settings editor: delete brush: confirm dialog question"
 msgid "Really delete brush “{brush_name}” from disk?"
-msgstr ""
+msgstr "Stvarno ukloniti kist „{brush_name}” s diska?"
 
 #: ../gui/brusheditor.py:704
 msgctxt "brush settings editor: header: fallback name"
 msgid "(Unnamed brush)"
-msgstr ""
+msgstr "(Neimenovani kist)"
 
 #: ../gui/brusheditor.py:711
 #, python-brace-format
 msgctxt "brush settings editor: header: is-modified hint"
 msgid "{brush_name} [unsaved]"
-msgstr ""
+msgstr "{brush_name} [nespremljeno]"
 
 #: ../gui/brushiconeditor.py:36
 msgid "Brush Icon"
-msgstr ""
+msgstr "Ikona kista"
 
 #: ../gui/brushiconeditor.py:37
 msgid "Brush Icon (editing)"
-msgstr ""
+msgstr "Ikona kista (uređivanje)"
 
 #: ../gui/brushiconeditor.py:74
 msgid "No brush selected"
-msgstr ""
+msgstr "Nema odabranog kista"
 
 #: ../gui/brushiconeditor.py:76
 #, python-format
@@ -295,6 +299,8 @@ msgid ""
 "<b>%s</b>\n"
 "<small>Select a valid brush first</small>"
 msgstr ""
+"<b>%s</b>\n"
+"<small>Najprije odaberi jedan ispravni kist</small>"
 
 #: ../gui/brushiconeditor.py:79
 #, python-format
@@ -302,6 +308,8 @@ msgid ""
 "<b>%s</b> <i>(modified)</i>\n"
 "<small>Changes are not yet saved</small>"
 msgstr ""
+"<b>%s</b> <i>(promijenjeno)</i>\n"
+"<small>Promjene još nisu spremljene</small>"
 
 #: ../gui/brushiconeditor.py:82
 #, python-format
@@ -309,6 +317,8 @@ msgid ""
 "<b>%s</b> (editing)\n"
 "<small>Paint with any brush or color</small>"
 msgstr ""
+"<b>%s</b> (urešivanje)\n"
+"<small>Slikaj s bilo kojim kistom ili bojom</small>"
 
 #: ../gui/brushiconeditor.py:85
 #, python-format
@@ -316,6 +326,8 @@ msgid ""
 "<b>%s</b>\n"
 "<small>Click ‘Edit’ to make changes to the icon</small>"
 msgstr ""
+"<b>%s</b>\n"
+"<small>Klikni „Uredi” za mijenjenje ikone</small>"
 
 #. TRANSLATORS: begin editing a brush's preview icon
 #: ../gui/brushiconeditor.py:157
@@ -324,16 +336,16 @@ msgstr "Uredi"
 
 #: ../gui/brushiconeditor.py:159
 msgid "Begin editing this preview icon"
-msgstr ""
+msgstr "Počni uređivati ovu ikonu pretprikaza"
 
 #. TRANSLATORS: revert edits to a brush icon
 #: ../gui/brushiconeditor.py:165
 msgid "Revert"
-msgstr ""
+msgstr "Obnovi"
 
 #: ../gui/brushiconeditor.py:167
 msgid "Discard changes, and cancel editing"
-msgstr ""
+msgstr "Odbaci promjene i prekini uređivanje"
 
 #. TRANSLATORS: clear the brush preview icon being edited
 #: ../gui/brushiconeditor.py:174
@@ -342,16 +354,16 @@ msgstr "Izbriši"
 
 #: ../gui/brushiconeditor.py:176
 msgid "Clear the preview icon"
-msgstr ""
+msgstr "Ukloni ikonu pretprikaza"
 
 #. TRANSLATORS: set the brush icon to a built-in default
 #: ../gui/brushiconeditor.py:182
 msgid "Auto"
-msgstr ""
+msgstr "Automatski"
 
 #: ../gui/brushiconeditor.py:184
 msgid "Use the default icon"
-msgstr ""
+msgstr "Koristi standardnu ikonu"
 
 #. TRANSLATORS: save edits to a brush icon
 #: ../gui/brushiconeditor.py:190 ../po/tmp/brusheditor.glade.h:3
@@ -360,51 +372,51 @@ msgstr "Spremi"
 
 #: ../gui/brushiconeditor.py:192
 msgid "Save this preview icon, and finish editing"
-msgstr ""
+msgstr "Spremi ikonu pretprikaza i završi uređivanje"
 
 #: ../gui/brushmanager.py:129
 msgid "Lost & Found"
-msgstr ""
+msgstr "Izgubljeno i nađeno"
 
 #: ../gui/brushmanager.py:130
 msgid "Deleted"
-msgstr ""
+msgstr "Izbrisano"
 
 #: ../gui/brushmanager.py:131
 msgid "Favorites"
-msgstr ""
+msgstr "Favoriti"
 
 #: ../gui/brushmanager.py:132
 msgid "Ink"
-msgstr ""
+msgstr "Tinta"
 
 #: ../gui/brushmanager.py:133
 msgid "Classic"
-msgstr ""
+msgstr "Klasično"
 
 #: ../gui/brushmanager.py:134
 msgid "Set#1"
-msgstr ""
+msgstr "Skup br. 1"
 
 #: ../gui/brushmanager.py:135
 msgid "Set#2"
-msgstr ""
+msgstr "Skup br. 2"
 
 #: ../gui/brushmanager.py:136
 msgid "Set#3"
-msgstr ""
+msgstr "Skup br. 3"
 
 #: ../gui/brushmanager.py:137
 msgid "Set#4"
-msgstr ""
+msgstr "Skup br. 4"
 
 #: ../gui/brushmanager.py:138
 msgid "Set#5"
-msgstr ""
+msgstr "Skup br. 5"
 
 #: ../gui/brushmanager.py:139
 msgid "Experimental"
-msgstr ""
+msgstr "Eksperimentalno"
 
 #: ../gui/brushmanager.py:140
 msgid "New"
@@ -414,7 +426,7 @@ msgstr "Novo"
 #, python-brace-format
 msgctxt "brushpack import failure messages"
 msgid "No file named “{order_conf_file}”. This is not a brushpack."
-msgstr ""
+msgstr "Nema datoteke s imenom „{order_conf_file}”. Ovo nije paket kistova."
 
 #: ../gui/brushmanager.py:689
 #, python-brace-format
@@ -423,6 +435,8 @@ msgid ""
 "Brush “{brush_name}” is listed in “{order_conf_file}”, but it does not exist "
 "in the zipfile."
 msgstr ""
+"Kist „{brush_name}” je naveden u „{order_conf_file}”, ali ne postoji u zip-"
+"datoteci."
 
 #: ../gui/brushmanager.py:702
 #, python-brace-format
@@ -431,100 +445,102 @@ msgid ""
 "Brush “{brush_name}” exists in the zipfile, but it is not listed in "
 "“{order_conf_file}”."
 msgstr ""
+"Kist „{brush_name}” postoji u zip-datoteci, ali nije naveden u "
+"„{order_conf_file}”."
 
 #: ../gui/brushmanager.py:1313 ../gui/footer.py:62
 msgid "Unknown Brush"
-msgstr ""
+msgstr "Nepoznati kist"
 
 #: ../gui/brushselectionwindow.py:220
 msgctxt "brush group: context menu for a single brush"
 msgid "Add to Favorites"
-msgstr ""
+msgstr "Dodaj u omiljene"
 
 #: ../gui/brushselectionwindow.py:227
 msgctxt "brush group: context menu for a single brush"
 msgid "Remove from Favorites"
-msgstr ""
+msgstr "Ukloni iz favorita"
 
 #: ../gui/brushselectionwindow.py:235
 msgctxt "brush group: context menu for a single brush"
 msgid "Clone"
-msgstr ""
+msgstr "Kloniraj"
 
 #: ../gui/brushselectionwindow.py:242
 msgctxt "brush group: context menu for a single brush"
 msgid "Edit Brush Settings"
-msgstr ""
+msgstr "Uredi postavke kista"
 
 #: ../gui/brushselectionwindow.py:250
 msgctxt "brush group: context menu for a single brush"
 msgid "Remove from Group"
-msgstr ""
+msgstr "Ukloni iz grupe"
 
 #: ../gui/brushselectionwindow.py:290
 #, python-brace-format
 msgctxt "brush group: context menu: unique names for cloned brushes"
 msgid "{original_name} copy"
-msgstr ""
+msgstr "{original_name} kopija"
 
 #: ../gui/brushselectionwindow.py:299
 #, python-brace-format
 msgctxt "brush group: context menu: unique names for cloned brushes"
 msgid "{original_name} copy {n}"
-msgstr ""
+msgstr "{original_name} kopija {n}"
 
 #: ../gui/brushselectionwindow.py:325
 #, python-brace-format
 msgctxt "brush group: context menu: remove from group"
 msgid "Really remove brush “{brush_name}” from group “{group_name}”?"
-msgstr ""
+msgstr "Stvarno ukloniti kist „{brush_name}” iz grupe „{group_name}”?"
 
 #. TRANSLATORS: number of brushes in a brush group, for tooltips
 #: ../gui/brushselectionwindow.py:381
 #, python-format
 msgid "%d brush"
 msgid_plural "%d brushes"
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
+msgstr[0] "%d kist"
+msgstr[1] "%d kista"
+msgstr[2] "%d kistova"
 
 #. TRANSLATORS: properties dialog for the current brush group
 #: ../gui/brushselectionwindow.py:405
 #, python-brace-format
 msgctxt "brush group properties dialog: title"
 msgid "Group “{group_name}”"
-msgstr ""
+msgstr "Grupa „{group_name}”"
 
 #: ../gui/brushselectionwindow.py:418
 msgctxt "brush group properties dialog: action buttons"
 msgid "Rename Group"
-msgstr ""
+msgstr "Preimenuj grupu"
 
 #: ../gui/brushselectionwindow.py:424
 msgctxt "brush group properties dialog: action buttons"
 msgid "Export as Zipped Brushset"
-msgstr ""
+msgstr "Izvezi kao zip-komprimirane skupove kistova"
 
 #: ../gui/brushselectionwindow.py:430
 msgctxt "brush group properties dialog: action buttons"
 msgid "Delete Group"
-msgstr ""
+msgstr "Izbriši grupu"
 
 #: ../gui/brushselectionwindow.py:450
 msgctxt "brush group rename dialog: title"
 msgid "Rename Group"
-msgstr ""
+msgstr "Preimenuj grupu"
 
 #: ../gui/brushselectionwindow.py:468
 msgctxt "brush group rename"
 msgid "A group with this name already exists!"
-msgstr ""
+msgstr "Grupa s ovim imenom već postoji!"
 
 #: ../gui/brushselectionwindow.py:477
 #, python-brace-format
 msgctxt "brush group delete"
 msgid "Really delete group “{group_name}”?"
-msgstr ""
+msgstr "Stvarno izbrisati grupu „{group_name}”?"
 
 #: ../gui/brushselectionwindow.py:495
 #, python-brace-format
@@ -533,67 +549,69 @@ msgid ""
 "Could not delete group “{group_name}”.\n"
 "Some special groups cannot be deleted."
 msgstr ""
+"Nije moguće izbrisati grupu „{group_name}”.\n"
+"Neke posebne grupe se ne mogu izbrisati."
 
 #: ../gui/brushselectionwindow.py:510
 msgctxt "brush group export dialog: title"
 msgid "Export Brushes"
-msgstr ""
+msgstr "Izvezi kistove"
 
 #: ../gui/brushselectionwindow.py:515
 msgctxt "brush group export dialog"
 msgid "MyPaint brush package (*.zip)"
-msgstr ""
+msgstr "Paket MyPaint kistova (*.zip)"
 
 #: ../gui/brushselectionwindow.py:535
 msgctxt "brush groups menu"
 msgid "New Group…"
-msgstr ""
+msgstr "Nova grupa …"
 
 #: ../gui/brushselectionwindow.py:538
 msgctxt "brush groups menu"
 msgid "Import Brushes…"
-msgstr ""
+msgstr "Uvezi kistove …"
 
 #: ../gui/brushselectionwindow.py:542
 msgctxt "brush groups menu"
 msgid "Get More Brushes…"
-msgstr ""
+msgstr "Preuzmi daljnje kistove …"
 
 #: ../gui/brushselectionwindow.py:557
 msgctxt "new brush group dialog: title"
 msgid "Create Group"
-msgstr ""
+msgstr "Stvori grupu"
 
 #. TRANSLATORS: "Button" refers to a mouse button
 #. TRANSLATORS: It is part of a button map label.
 #: ../gui/buttonmap.py:60
 msgid "Button"
-msgstr ""
+msgstr "Gumb"
 
 #. TRANSLATORS: abbreviated "Button <number>" for forms like "Alt+Btn1"
 #: ../gui/buttonmap.py:63
 msgid "Btn"
-msgstr ""
+msgstr "Gumb"
 
 #. TRANSLATORS: Name of second column in the button map preferences.
 #. TRANSLATORS: Column lists mod+button combinations (bound to actions)
 #. TRANSLATORS: E.g. Button1 or Ctrl+Button2 or Alt+Button3
 #: ../gui/buttonmap.py:302
 msgid "Button press"
-msgstr ""
+msgstr "Pritisak gumba"
 
 #: ../gui/buttonmap.py:320
 msgid "Add a new binding"
-msgstr ""
+msgstr "Dodaj novi prečac"
 
 #: ../gui/buttonmap.py:328
 msgid "Remove the current binding"
-msgstr ""
+msgstr "Ukloni trenutačni prečac"
 
 #: ../gui/buttonmap.py:475
 #, python-format
 msgid "Edit binding for '%s'"
-msgstr ""
+msgstr "Uredi prečac za „%s”"
 
 #. TRANSLATORS: Part of interface when adding a new button map binding.
 #. TRANSLATORS: It's a label for the mod+button part of the combination.
@@ -601,13 +619,15 @@ msgstr ""
 #. TRANSLATORS: but with a trailing ":" or other lang-specific symbol.
 #: ../gui/buttonmap.py:519
 msgid "Button press:"
-msgstr ""
+msgstr "Pritisak gumba:"
 
 #: ../gui/buttonmap.py:556
 msgid ""
 "Hold down modifier keys, and press a button over this text to set a new "
 "binding."
 msgstr ""
+"Drži modifikatorsku tipku pritisnutom i pritisni gumb iznad ovog teksta za "
+"postavljanje novog prečaca."
 
 #. TRANSLATORS: "fixed" in the sense of "static" -
 #. TRANSLATORS: something which cannot be changed
@@ -616,62 +636,65 @@ msgstr ""
 msgid ""
 "{button} cannot be bound without modifier keys (its meaning is fixed, sorry)"
 msgstr ""
+"{button} nije moguće povezati bez modifikatorskih tipki (značenje se ne može "
+"mijenjati, žao nam je)"
 
 #: ../gui/buttonmap.py:601
 #, python-brace-format
 msgid "{button_combination} is already bound to the action '{action_name}'"
-msgstr ""
+msgstr "{button_combination} je već povezan s radnjom „{action_name}”"
 
 #: ../gui/colorpicker.py:65
 msgid "Pick Color"
-msgstr ""
+msgstr "Odaberi boju"
 
 #: ../gui/colorpicker.py:68
 msgid "Set the color used for painting"
-msgstr ""
+msgstr "Postavi boju za slikanje"
 
 #: ../gui/colorpicker.py:270
 msgid "Pick Hue"
-msgstr ""
+msgstr "Odaberi nijansu"
 
 #: ../gui/colorpicker.py:273
 msgid "Set the color Hue used for painting"
-msgstr ""
+msgstr "Postavi nijansu boje za slikanje"
 
 #: ../gui/colorpicker.py:293
 msgid "Pick Chroma"
-msgstr ""
+msgstr "Odaberi kromatičnost"
 
 #: ../gui/colorpicker.py:296
 msgid "Set the color Chroma used for painting"
-msgstr ""
+msgstr "Postavi kromatičnost boje za slikanje"
 
 #: ../gui/colorpicker.py:316
 msgid "Pick Luma"
-msgstr ""
+msgstr "Odaberi svjetljivost"
 
 #: ../gui/colorpicker.py:319
 msgid "Set the color Luma used for painting"
-msgstr ""
+msgstr "Postavi svjetljivost boje za slikanje"
 
 #: ../gui/colors/adjbases.py:699
 msgid "Color details"
-msgstr ""
+msgstr "Pojedinosti boje"
 
 #: ../gui/colors/adjbases.py:872
 msgid "Current brush color, and the color most recently used for painting"
-msgstr ""
+msgstr "Trenutačna boja kista i zadnja korištena boja za slikanje"
 
 #: ../gui/colors/hcywheel.py:49
 msgctxt "Online help pages"
 msgid ""
 "https://github.com/mypaint/mypaint/wiki/v1.2-HCY-Wheel-and-Gamut-Mask-Editor"
 msgstr ""
+"https://github.com/mypaint/mypaint/wiki/v1.2-HCY-Wheel-and-Gamut-Mask-Editor"
 
 #: ../gui/colors/hcywheel.py:87
 msgctxt "Color Wheels: activity toggle: action title"
 msgid "Gamut Mask Active"
-msgstr ""
+msgstr "Maska gamuta aktivna"
 
 #: ../gui/colors/hcywheel.py:91
 msgctxt "Color Wheels: activity toggle: action tooltip"
@@ -681,7 +704,7 @@ msgstr ""
 #: ../gui/colors/hcywheel.py:355
 msgctxt "HCY Color Wheel: tooltip"
 msgid "HCY hue and chroma."
-msgstr ""
+msgstr "HCY nijansa i kromatičnost boje."
 
 #: ../gui/colors/hcywheel.py:412
 msgctxt "HCY Mask Editor Wheel: tooltip"
@@ -693,7 +716,7 @@ msgstr ""
 #: ../gui/colors/hcywheel.py:910
 msgctxt "HCY Gamut Mask template name"
 msgid "Atmospheric Triad"
-msgstr ""
+msgstr "Atmosferska trijada"
 
 #: ../gui/colors/hcywheel.py:914
 msgctxt "HCY Gamut Mask template description"
@@ -705,7 +728,7 @@ msgstr ""
 #: ../gui/colors/hcywheel.py:922
 msgctxt "HCY Gamut Mask template name"
 msgid "Shifted Triad"
-msgstr ""
+msgstr "Pomaknuta trijada"
 
 #: ../gui/colors/hcywheel.py:926
 msgctxt "HCY Gamut Mask template description"
@@ -715,7 +738,7 @@ msgstr ""
 #: ../gui/colors/hcywheel.py:937
 msgctxt "HCY Gamut Mask template name"
 msgid "Complementary"
-msgstr ""
+msgstr "Komplementarna"
 
 #: ../gui/colors/hcywheel.py:941
 msgctxt "HCY Gamut Mask template description"
@@ -727,7 +750,7 @@ msgstr ""
 #: ../gui/colors/hcywheel.py:957
 msgctxt "HCY Gamut Mask template name"
 msgid "Mood and Accent"
-msgstr ""
+msgstr "Tonalitet i naglašavanje"
 
 #: ../gui/colors/hcywheel.py:961
 msgctxt "HCY Gamut Mask template description"
@@ -739,7 +762,7 @@ msgstr ""
 #: ../gui/colors/hcywheel.py:970
 msgctxt "HCY Gamut Mask template name"
 msgid "Split Complementary"
-msgstr ""
+msgstr "Podijeljena komplementarna"
 
 #: ../gui/colors/hcywheel.py:974
 msgctxt "HCY Gamut Mask template description"
@@ -751,67 +774,67 @@ msgstr ""
 #: ../gui/colors/hcywheel.py:985
 msgctxt "HCY Gamut Mask new-from-template dialog: window title"
 msgid "New Gamut Mask from Template"
-msgstr ""
+msgstr "Nova maska gamuta iz predloška"
 
 #: ../gui/colors/hcywheel.py:1054
 msgctxt "HCY Gamut Mask Editor dialog: window title"
 msgid "Gamut Mask Editor"
-msgstr ""
+msgstr "Uređivač maske gamuta"
 
 #: ../gui/colors/hcywheel.py:1078
 msgctxt "HCY Gamut Mask Editor dialog: mask-is-active checkbox"
 msgid "Active"
-msgstr ""
+msgstr "Aktivno"
 
 #: ../gui/colors/hcywheel.py:1102
 msgctxt "HCY Mask Editor: action button labels"
 msgid "Help…"
-msgstr ""
+msgstr "Pomoć …"
 
 #: ../gui/colors/hcywheel.py:1108
 msgctxt "HCY Mask Editor: action button tooltips"
 msgid "Create mask from template."
-msgstr ""
+msgstr "Stvori masku iz predloška."
 
 #: ../gui/colors/hcywheel.py:1112
 msgctxt "HCY Mask Editor: action button tooltips"
 msgid "Load mask from a GIMP palette file."
-msgstr ""
+msgstr "Učitaj masku iz GIMP datoteke paleta."
 
 #: ../gui/colors/hcywheel.py:1116
 msgctxt "HCY Mask Editor: action button tooltips"
 msgid "Save mask to a GIMP palette file."
-msgstr ""
+msgstr "Spremi u GIMP datoteku paleta."
 
 #: ../gui/colors/hcywheel.py:1120
 msgctxt "HCY Mask Editor: action button tooltips"
 msgid "Erase the mask."
-msgstr ""
+msgstr "Izbriši masku."
 
 #: ../gui/colors/hcywheel.py:1124
 msgctxt "HCY Mask Editor: action button tooltips"
 msgid "Open the online help for this dialog in a web browser."
-msgstr ""
+msgstr "Otvori pomoć na internetu za ovaj dijalog u web pregledniku."
 
 #: ../gui/colors/hcywheel.py:1191
 msgctxt "HCY Gamut Mask load dialog: window title"
 msgid "Save Mask as a GIMP Palette"
-msgstr ""
+msgstr "Spremi masku kao GIMP paletu"
 
 #: ../gui/colors/hcywheel.py:1208
 msgctxt "HCY Gamut Mask load dialog: window title"
 msgid "Load Mask from a GIMP Palette"
-msgstr ""
+msgstr "Učitaj masku iz GIMP palete"
 
 #: ../gui/colors/hcywheel.py:1275
 msgctxt "HCY Wheel color adjuster page: properties tooltip."
 msgid "Set gamut mask."
-msgstr ""
+msgstr "Postavi masku gamuta."
 
 #: ../gui/colors/hcywheel.py:1293
 msgctxt "HCY Wheel color adjuster page: title for tooltips etc."
 msgid "HCY Wheel"
-msgstr ""
+msgstr "HCY kotač"
 
 #: ../gui/colors/hcywheel.py:1300
 msgctxt "HCY Wheel color adjuster page: description for tooltips etc."
@@ -823,35 +846,35 @@ msgstr ""
 #. Tooltip mappings, indexed by whatever the slider currently represents
 #: ../gui/colors/hsvcube.py:46 ../gui/colors/hsvsquare.py:133
 msgid "HSV Hue"
-msgstr ""
+msgstr "HSV nijansa"
 
 #: ../gui/colors/hsvcube.py:47
 msgid "HSV Saturation"
-msgstr ""
+msgstr "HSV zasićenost"
 
 #: ../gui/colors/hsvcube.py:48
 msgid "HSV Value"
-msgstr ""
+msgstr "HSV vrijednost"
 
 #: ../gui/colors/hsvcube.py:49 ../gui/colors/hsvsquare.py:134
 msgid "HSV Saturation and Value"
-msgstr ""
+msgstr "HSV zasićenost i vrijednost"
 
 #: ../gui/colors/hsvcube.py:50
 msgid "HSV Hue and Value"
-msgstr ""
+msgstr "HSV nijansa i vrijednost"
 
 #: ../gui/colors/hsvcube.py:51 ../gui/colors/hsvwheel.py:31
 msgid "HSV Hue and Saturation"
-msgstr ""
+msgstr "HSV nijansa i zasićenost"
 
 #: ../gui/colors/hsvcube.py:59
 msgid "Rotate cube (show different axes)"
-msgstr ""
+msgstr "Okreni kocku (prikaži razne osi)"
 
 #: ../gui/colors/hsvcube.py:86
 msgid "HSV Cube"
-msgstr ""
+msgstr "HSV kocka"
 
 #: ../gui/colors/hsvcube.py:90
 msgid "An HSV cube which can be rotated to show different planar slices."
@@ -859,7 +882,7 @@ msgstr ""
 
 #: ../gui/colors/hsvsquare.py:56
 msgid "HSV Square"
-msgstr ""
+msgstr "HSV kvadrat"
 
 #: ../gui/colors/hsvsquare.py:60
 msgid "An HSV Square which can be rotated to show different hues."
@@ -867,106 +890,106 @@ msgstr ""
 
 #: ../gui/colors/hsvwheel.py:91
 msgid "HSV Wheel"
-msgstr ""
+msgstr "HSV kotač"
 
 #: ../gui/colors/hsvwheel.py:95
 msgid "Saturation and Value color changer."
-msgstr ""
+msgstr "Mijenjanje zasićenosti i vrijednosti boje."
 
 #: ../gui/colors/paletteview.py:67
 msgctxt "palette panel: properties button tooltip"
 msgid "Palette properties"
-msgstr ""
+msgstr "Svojstva palete"
 
 #: ../gui/colors/paletteview.py:76
 msgctxt "palette panel tab tooltip title"
 msgid "Palette"
-msgstr ""
+msgstr "Paleta boja"
 
 #: ../gui/colors/paletteview.py:82
 msgctxt "palette panel tab tooltip description"
 msgid "Set the color from a loadable, editable palette."
-msgstr ""
+msgstr "Postavi boju iz učitajuće, uredive palete."
 
 #: ../gui/colors/paletteview.py:108
 msgctxt "palette editor dialog: palette name entry"
 msgid "Untitled Palette"
-msgstr ""
+msgstr "Paleta bez imena"
 
 #: ../gui/colors/paletteview.py:114
 msgctxt "palette editor dialog: title"
 msgid "Palette Editor"
-msgstr ""
+msgstr "Uređivač paleta"
 
 #: ../gui/colors/paletteview.py:160
 msgctxt "palette editor dialog: action buttons: tooltips"
 msgid "Load from a GIMP palette file"
-msgstr ""
+msgstr "Učitaj iz GIMP datoteka paleta"
 
 #: ../gui/colors/paletteview.py:164
 msgctxt "palette editor dialog: action buttons: tooltips"
 msgid "Save to a GIMP palette file"
-msgstr ""
+msgstr "Spremi u GIMP datoteku paleta"
 
 #: ../gui/colors/paletteview.py:168
 msgctxt "palette editor dialog: action buttons: tooltips"
 msgid "Add a new empty swatch"
-msgstr ""
+msgstr "Dodaj novu praznu boju"
 
 #: ../gui/colors/paletteview.py:172
 msgctxt "palette editor dialog: action buttons: tooltips"
 msgid "Remove the current swatch"
-msgstr ""
+msgstr "Ukloni trenutačnu boju"
 
 #: ../gui/colors/paletteview.py:176
 msgctxt "palette editor dialog: action buttons: tooltips"
 msgid "Remove all swatches"
-msgstr ""
+msgstr "Ukloni sve boje"
 
 #: ../gui/colors/paletteview.py:190
 msgctxt "palette editor dialog: palette name/title entry: label"
 msgid "Title:"
-msgstr ""
+msgstr "Naslov:"
 
 #: ../gui/colors/paletteview.py:194
 msgctxt "palette editor dialog: palette name/title entry: tooltip"
 msgid "Name or description for this palette"
-msgstr ""
+msgstr "Ime ili opis za ovu paletu"
 
 #: ../gui/colors/paletteview.py:206
 msgctxt "palette editor dialog: number-of-columns spinbutton: title"
 msgid "Columns:"
-msgstr ""
+msgstr "Broj stupaca:"
 
 #: ../gui/colors/paletteview.py:210
 msgctxt "palette editor dialog: number-of-columns spinbutton: tooltip"
 msgid "Number of columns"
-msgstr ""
+msgstr "Broj stupaca"
 
 #: ../gui/colors/paletteview.py:227
 msgctxt "palette editor dialog: color name entry: label"
 msgid "Color name:"
-msgstr ""
+msgstr "Ime boje:"
 
 #: ../gui/colors/paletteview.py:231
 msgctxt "palette editor dialog: color name entry: tooltip"
 msgid "Current color's name"
-msgstr ""
+msgstr "Trenutačno ime boje"
 
 #: ../gui/colors/paletteview.py:322
 msgctxt "palette editor dialog: color name entry"
 msgid "Empty palette slot"
-msgstr ""
+msgstr "Isprazni polje palete"
 
 #: ../gui/colors/paletteview.py:378
 msgctxt "palette load dialog: title"
 msgid "Load palette"
-msgstr ""
+msgstr "Učitaj paletu"
 
 #: ../gui/colors/paletteview.py:391
 msgctxt "palette save dialog: title"
 msgid "Save palette"
-msgstr ""
+msgstr "Spremi paletu"
 
 #: ../gui/colors/paletteview.py:543
 msgctxt "palette view"
@@ -975,200 +998,204 @@ msgid ""
 "Drop colors here,\n"
 "drag them to organize."
 msgstr ""
+"Paleta boja.\n"
+"Povuci boju ovamo,\n"
+"rasporedi ih povlačenjem."
 
 #: ../gui/colors/paletteview.py:698
 msgctxt "palette view"
 msgid "Empty palette slot (drag a color here)"
-msgstr ""
+msgstr "Prazno polje palete (povuci boju ovamo)"
 
 #. TRANSLATORS: inserting gaps (empty color swatches)
 #: ../gui/colors/paletteview.py:785
 msgctxt "palette view: context menu"
 msgid "Add Empty Slot"
-msgstr ""
+msgstr "Dodaj prazno polje"
 
 #. TRANSLATORS: inserting gaps (empty color swatches)
 #: ../gui/colors/paletteview.py:792
 msgctxt "palette view: context menu"
 msgid "Insert Row"
-msgstr ""
+msgstr "Umetni redak"
 
 #. TRANSLATORS: inserting gaps (empty color swatches)
 #: ../gui/colors/paletteview.py:799
 msgctxt "palette view: context menu"
 msgid "Insert Column"
-msgstr ""
+msgstr "Umetni stupac"
 
 #. TRANSLATORS: Color interpolations
 #: ../gui/colors/paletteview.py:807
 msgctxt "palette view: context menu"
 msgid "Fill Gap (RGB)"
-msgstr ""
+msgstr "Ispuni razmak (RGB)"
 
 #. TRANSLATORS: Color interpolations
 #: ../gui/colors/paletteview.py:814
 msgctxt "palette view: context menu"
 msgid "Fill Gap (HCY)"
-msgstr ""
+msgstr "Ispuni razmak (HCY)"
 
 #. TRANSLATORS: Color interpolations
 #: ../gui/colors/paletteview.py:821
 msgctxt "palette view: context menu"
 msgid "Fill Gap (HSV)"
-msgstr ""
+msgstr "Ispuni razmak (HSV)"
 
 #: ../gui/colors/paletteview.py:1279
 msgctxt "palette load dialog: filters"
 msgid "GIMP palette file (*.gpl)"
-msgstr ""
+msgstr "GIMP datoteka paleta (*.gpl)"
 
 #: ../gui/colors/paletteview.py:1286
 msgctxt "palette load dialog: filters"
 msgid "All files (*)"
-msgstr ""
+msgstr "Sve datoteke (*)"
 
 #: ../gui/colors/paletteview.py:1328
 msgctxt "palette save dialog: filters"
 msgid "GIMP palette file (*.gpl)"
-msgstr ""
+msgstr "GIMP datoteka paleta (*.gpl)"
 
 #: ../gui/colors/paletteview.py:1335
 msgctxt "palette save dialog: filters"
 msgid "All files (*)"
-msgstr ""
+msgstr "Sve datoteke (*)"
 
 #: ../gui/colors/sliders.py:45
 msgctxt "color sliders panel: red/green/blue: slider label"
 msgid "R"
-msgstr ""
+msgstr "R"
 
 #: ../gui/colors/sliders.py:49
 msgctxt "color sliders panel: red/green/blue: slider label"
 msgid "G"
-msgstr ""
+msgstr "G"
 
 #: ../gui/colors/sliders.py:53
 msgctxt "color sliders panel: red/green/blue: slider label"
 msgid "B"
-msgstr ""
+msgstr "B"
 
 #: ../gui/colors/sliders.py:57
 msgctxt "color sliders panel: hue/chroma/luma: slider label"
 msgid "H"
-msgstr ""
+msgstr "H"
 
 #: ../gui/colors/sliders.py:61
 msgctxt "color sliders panel: hue/chroma/luma: slider label"
 msgid "C"
-msgstr ""
+msgstr "C"
 
 #: ../gui/colors/sliders.py:65
 msgctxt "color sliders panel: hue/chroma/luma: slider label"
 msgid "Y"
-msgstr ""
+msgstr "Y"
 
 #: ../gui/colors/sliders.py:109
 msgctxt "color sliders panel: tab title (in tooltip)"
 msgid "Component Sliders"
-msgstr ""
+msgstr "Selektori za komponente"
 
 #: ../gui/colors/sliders.py:116
 msgctxt "color sliders panel: tab description (in tooltip)"
 msgid "Adjust individual components of the color."
-msgstr ""
+msgstr "Podesi pojedinačne komponente boje."
 
 #: ../gui/colors/sliders.py:161
 msgctxt "color component slider: tooltip"
 msgid "RGB Red"
-msgstr ""
+msgstr "RGB crvena"
 
 #: ../gui/colors/sliders.py:178
 msgctxt "color component slider: tooltip"
 msgid "RGB Green"
-msgstr ""
+msgstr "RGB zelena"
 
 #: ../gui/colors/sliders.py:195
 msgctxt "color component slider: tooltip"
 msgid "RGB Blue"
-msgstr ""
+msgstr "RGB plava"
 
 #: ../gui/colors/sliders.py:212
 msgctxt "color component slider: tooltip"
 msgid "HSV Hue"
-msgstr ""
+msgstr "HSV nijansa"
 
 #: ../gui/colors/sliders.py:227
 msgctxt "color component slider: tooltip"
 msgid "HSV Saturation"
-msgstr ""
+msgstr "HSV zasićenost"
 
 #: ../gui/colors/sliders.py:240
 msgctxt "color component slider: tooltip"
 msgid "HSV Value"
-msgstr ""
+msgstr "HSV vrijednost"
 
 #: ../gui/colors/sliders.py:252
 msgctxt "color component slider: tooltip"
 msgid "HCY Hue"
-msgstr ""
+msgstr "HCY nijansa"
 
 #: ../gui/colors/sliders.py:266
 msgctxt "color component slider: tooltip"
 msgid "HCY Chroma"
-msgstr ""
+msgstr "HCY kromatičnost"
 
 #: ../gui/colors/sliders.py:281
 msgctxt "color component slider: tooltip"
 msgid "HCY Luma (Y')"
-msgstr ""
+msgstr "HCY svjetljivost (Y')"
 
 #: ../gui/colortools.py:141
 msgctxt "color changer dock panels: tab tooltip title"
 msgid "Liquid Wash"
-msgstr ""
+msgstr "Tekući premaz"
 
 #: ../gui/colortools.py:145
 msgctxt "color changer dock panels: tab tooltip description"
 msgid "Change color using a liquid-like wash of nearby colors."
-msgstr ""
+msgstr "Promijeni boju koristeći tekući premaz obližnjih boja."
 
 #: ../gui/colortools.py:155
 msgctxt "color changer dock panels: tab tooltip title"
 msgid "Concentric Rings"
-msgstr ""
+msgstr "Koncentrični prstenovi"
 
 #: ../gui/colortools.py:159
 msgctxt "color changer dock panels: tab tooltip description"
 msgid "Change color using concentric HSV rings."
-msgstr ""
+msgstr "Promijeni boju koristeći koncentrične HSV prstenove."
 
 #: ../gui/colortools.py:169
 msgctxt "color changer dock panels: tab tooltip title"
 msgid "Crossed Bowl"
-msgstr ""
+msgstr "Prekrižena zdjela"
 
 #: ../gui/colortools.py:173
 msgctxt "color changer dock panels: tab tooltip description"
 msgid "Change color with HSV ramps crossing a radial bowl of color."
 msgstr ""
+"Promijeni boju koristeći HSV prijelaze koji prelaze radijalnu „zdjelu” boja."
 
 #: ../gui/compatibility.py:40
 msgctxt "File Load Compat Options"
 msgid "Based on file"
-msgstr ""
+msgstr "Na temelju datoteke"
 
 #. This refers to a version of MyPaint like 1.0, 1.1, 1.2 etc
 #: ../gui/compatibility.py:41 ../gui/drawwindow.py:276
 #: ../po/tmp/preferenceswindow.glade.h:113
 msgctxt "Prefs Dialog|Compatibility"
 msgid "1.x"
-msgstr ""
+msgstr "1.x"
 
 #. This refers to a version of MyPaint like 1.0, 1.1, 1.2 etc
 #: ../gui/compatibility.py:42 ../po/tmp/preferenceswindow.glade.h:117
 msgctxt "Prefs Dialog|Compatibility"
 msgid "2.x"
-msgstr ""
+msgstr "2.x"
 
 #. TRANSLATORS: This is probably a rare warning, and it will not
 #. TRANSLATORS: really be shown at all before the release of 3.0
@@ -1202,12 +1229,12 @@ msgstr ""
 #: ../gui/compatibility.py:71
 msgctxt "file compatibility question"
 msgid "Do you want to open this file anyway?"
-msgstr ""
+msgstr "Želite li je ipak otvoriti ovu datoteku?"
 
 #: ../gui/compatibility.py:135
 msgctxt "Version compat warning toggle"
 msgid "Don't show this warning again"
-msgstr ""
+msgstr "Nemoj više prikazivati ovo upozorenje"
 
 #. TRANSLATORS: One of the options for the
 #. TRANSLATORS: "When Not Specified in File"
@@ -1215,7 +1242,7 @@ msgstr ""
 #: ../gui/compatibility.py:211
 msgctxt "Prefs Dialog|Compatibility"
 msgid "Always open in 1.x mode"
-msgstr ""
+msgstr "Uvijek otvori u modusu 1.x"
 
 #. TRANSLATORS: One of the options for the
 #. TRANSLATORS: "When Not Specified in File"
@@ -1223,7 +1250,7 @@ msgstr ""
 #: ../gui/compatibility.py:220
 msgctxt "Prefs Dialog|Compatibility"
 msgid "Always open in 2.x mode"
-msgstr ""
+msgstr "Uvijek otvori u modusu 2.x"
 
 #. TRANSLATORS: One of the options for the
 #. TRANSLATORS: "When Not Specified in File"
@@ -1231,104 +1258,104 @@ msgstr ""
 #: ../gui/compatibility.py:229
 msgctxt "Prefs Dialog|Compatibility"
 msgid "Open in 1.x mode unless file contains pigment layers"
-msgstr ""
+msgstr "Otvori u modusu 1.x, ukoliko datoteka ne sadrži slojeve pigmenata"
 
 #. TRANSLATORS: This is a label for a dropdown menu in the
 #. TRANSLATORS: file chooser dialog when loading .ora files.
 #: ../gui/compatibility.py:532
 msgctxt "File Load Compat Options"
 msgid "Compatibility mode:"
-msgstr ""
+msgstr "Modus kompatibilnosti:"
 
 #: ../gui/device.py:48
 msgctxt "prefs: device's type label"
 msgid "Cursor/puck"
-msgstr ""
+msgstr "Kursor"
 
 #: ../gui/device.py:52
 msgctxt "prefs: device's type label"
 msgid "Eraser"
-msgstr ""
+msgstr "Gumica"
 
 #: ../gui/device.py:56
 msgctxt "prefs: device's type label"
 msgid "Keyboard"
-msgstr ""
+msgstr "Tipkovnica"
 
 #: ../gui/device.py:60
 msgctxt "prefs: device's type label"
 msgid "Mouse"
-msgstr ""
+msgstr "Miš"
 
 #: ../gui/device.py:64
 msgctxt "prefs: device's type label"
 msgid "Pen"
-msgstr ""
+msgstr "Pero"
 
 #: ../gui/device.py:68
 msgctxt "prefs: device's type label"
 msgid "Touchpad"
-msgstr ""
+msgstr "Dodirna ploča"
 
 #: ../gui/device.py:72
 msgctxt "prefs: device's type label"
 msgid "Touchscreen"
-msgstr ""
+msgstr "Dodirni ekran"
 
 #: ../gui/device.py:92
 msgctxt "device settings: allowed usage"
 msgid "Ignore"
-msgstr ""
+msgstr "Zanemari"
 
 #: ../gui/device.py:96
 msgctxt "device settings: allowed usage"
 msgid "Any Task"
-msgstr ""
+msgstr "Bilo koji zadatak"
 
 #: ../gui/device.py:100
 msgctxt "device settings: allowed usage"
 msgid "Non-painting tasks"
-msgstr ""
+msgstr "Neslikajuće zadatke"
 
 #: ../gui/device.py:104
 msgctxt "device settings: allowed usage"
 msgid "Navigation only"
-msgstr ""
+msgstr "Samo navigacija"
 
 #: ../gui/device.py:129
 msgctxt "device settings: unmodified scroll action"
 msgid "Zoom"
-msgstr ""
+msgstr "Uvećaj"
 
 #: ../gui/device.py:130
 msgctxt "device settings: unmodified scroll action"
 msgid "Pan"
-msgstr ""
+msgstr "Pomakni"
 
 #. TRANSLATORS: Column's data is the device's name
 #: ../gui/device.py:431
 msgctxt "prefs: devices table: column header"
 msgid "Device"
-msgstr ""
+msgstr "Uređaj"
 
 #. TRANSLATORS: Column's data is the number of axes (an integer)
 #: ../gui/device.py:445
 msgctxt "prefs: devices table: column header"
 msgid "Axes"
-msgstr ""
+msgstr "Osi"
 
 #. TRANSLATORS: Column shows type labels ("Touchscreen", "Pen" etc.)
 #: ../gui/device.py:459
 msgctxt "prefs: devices table: column header"
 msgid "Type"
-msgstr ""
+msgstr "Vrsta"
 
 #. TRANSLATORS: Column's data is a dropdown allowing the allowed
 #. TRANSLATORS: tasks for the row's device to be configured.
 #: ../gui/device.py:482
 msgctxt "prefs: devices table: column header"
 msgid "Use for…"
-msgstr ""
+msgstr "Koristi za …"
 
 #. TRANSLATORS: Column's data is a dropdown for how the device's
 #. TRANSLATORS: scroll wheel or scroll-gesture events are to be
@@ -1336,7 +1363,7 @@ msgstr ""
 #: ../gui/device.py:512
 msgctxt "prefs: devices table: column header"
 msgid "Scroll…"
-msgstr ""
+msgstr "Kliži …"
 
 #. Name and preview column: will be indented
 #: ../gui/dialogs.py:74 ../gui/externalapp.py:141 ../gui/layers.py:405
@@ -1345,31 +1372,31 @@ msgstr "Ime"
 
 #: ../gui/dialogs.py:126
 msgid "Overwrite brush?"
-msgstr ""
+msgstr "Prepisati kist?"
 
 #: ../gui/dialogs.py:134 ../gui/dialogs.py:204
 msgid "Replace"
-msgstr ""
+msgstr "Zamijeni"
 
 #: ../gui/dialogs.py:137 ../gui/dialogs.py:207 ../po/tmp/brusheditor.glade.h:11
 msgid "Rename"
-msgstr ""
+msgstr "Preimenuj"
 
 #: ../gui/dialogs.py:140
 msgid "Replace all"
-msgstr ""
+msgstr "Zamijeni sve"
 
 #: ../gui/dialogs.py:142
 msgid "Rename all"
-msgstr ""
+msgstr "Preimenuj sve"
 
 #: ../gui/dialogs.py:162
 msgid "Imported brush"
-msgstr ""
+msgstr "Uvezeni kist"
 
 #: ../gui/dialogs.py:163
 msgid "Existing brush"
-msgstr ""
+msgstr "Postojeći kist"
 
 #: ../gui/dialogs.py:166
 #, python-brace-format
@@ -1380,7 +1407,7 @@ msgstr ""
 
 #: ../gui/dialogs.py:196
 msgid "Overwrite brush group?"
-msgstr ""
+msgstr "Prepisati grupu kistova?"
 
 #: ../gui/dialogs.py:220
 #, python-brace-format
@@ -1393,12 +1420,12 @@ msgstr ""
 
 #: ../gui/dialogs.py:326
 msgid "Import brush package?"
-msgstr ""
+msgstr "Uvesti paket kistova?"
 
 #: ../gui/dialogs.py:357
 #, python-brace-format
 msgid "<b>Do you really want to import package “{brushpack_name}”?</b>"
-msgstr ""
+msgstr "<b>Zaista želiš uvesti paket „{brushpack_name}”?</b>"
 
 #: ../gui/document.py:453
 #, python-format
@@ -1413,17 +1440,17 @@ msgstr ""
 #: ../gui/document.py:455
 #, python-format
 msgid "Restore Brush %d"
-msgstr ""
+msgstr "Obnovi kist %d"
 
 #: ../gui/document.py:457
 #, python-format
 msgid "Save to Brush %d"
-msgstr ""
+msgstr "Spremi u kist %d"
 
 #: ../gui/document.py:555
 #, python-format
 msgid "Undo %s"
-msgstr ""
+msgstr "Poništi %s"
 
 #: ../gui/document.py:557
 msgid "Undo"
@@ -1432,7 +1459,7 @@ msgstr "Poništi"
 #: ../gui/document.py:567
 #, python-format
 msgid "Redo %s"
-msgstr ""
+msgstr "Ponovi %s"
 
 #: ../gui/document.py:569
 msgid "Redo"
@@ -1444,14 +1471,14 @@ msgstr "Ponovi"
 #: ../gui/document.py:862
 #, python-brace-format
 msgid "{button_combination} is {resultant_action}"
-msgstr ""
+msgstr "{button_combination} je {resultant_action}"
 
 #. TRANSLATORS: This is a separator for the list of button actions
 #. TRANSLATORS: that appears when a modifier key is held down.
 #. TRANSLATORS: search for " held down: " (incl spaces) for the context
 #: ../gui/document.py:872
 msgid ";  "
-msgstr ""
+msgstr ";  "
 
 #. TRANSLATORS: "With <current-modifiers> held down: <separated-list>"
 #. TRANSLATORS: Action names may contain coordinating conjunctions such
@@ -1461,39 +1488,39 @@ msgstr ""
 #: ../gui/document.py:878
 #, python-brace-format
 msgid "With {modifiers} held down:  {button_actions}."
-msgstr ""
+msgstr "Pomoću pritisnutih {modifiers}:  {button_actions}."
 
 #: ../gui/document.py:900
 msgctxt "Statusbar message: copy result"
 msgid "Empty document, nothing copied."
-msgstr ""
+msgstr "Prazan dokument, ništa nije kopirano."
 
 #: ../gui/document.py:912
 #, python-brace-format
 msgctxt "Statusbar message: copy result"
 msgid "Copied layer as {w}×{h} image."
-msgstr ""
+msgstr "Kopiran sloj kao slika {w}×{h}."
 
 #: ../gui/document.py:929
 msgctxt "Statusbar message: paste result"
 msgid "Nothing on clipboard."
-msgstr ""
+msgstr "Međuspremnik je prazan."
 
 #: ../gui/document.py:938
 msgctxt "Statusbar message: paste result"
 msgid "Clipboard does not contain an image."
-msgstr ""
+msgstr "Međuspremnik ne sadrži sliku."
 
 #: ../gui/document.py:949
 msgctxt "Statusbar message: paste result"
 msgid "Cannot paste into this type of layer."
-msgstr ""
+msgstr "Nije moguće zalijepiti u ovu vrstu sloja."
 
 #: ../gui/document.py:954
 #, python-brace-format
 msgctxt "Statusbar message: paste result"
 msgid "Pasted {w}×{h} image."
-msgstr ""
+msgstr "Zalijepljena slika {w}×{h}."
 
 #: ../gui/document.py:2040
 #, python-brace-format
@@ -1505,62 +1532,60 @@ msgstr ""
 #: ../gui/drawwindow.py:270
 #, python-format
 msgid "%s - MyPaint"
-msgstr ""
+msgstr "%s – MyPaint"
 
 #. TRANSLATORS: window title for use without a filename
 #: ../gui/drawwindow.py:273 ../po/tmp/mypaint.glade.h:1
 msgid "MyPaint"
-msgstr ""
+msgstr "MyPaint"
 
 #: ../gui/drawwindow.py:296
 msgctxt "Open dragged file confirm dialog: title"
 msgid "Open Dragged File?"
-msgstr ""
+msgstr "Otvoriti puvučene datoteke?"
 
 #: ../gui/drawwindow.py:300
-#, fuzzy
 msgctxt "Open dragged file confirm dialog: continue button"
 msgid "_Open"
-msgstr "Otvori…"
+msgstr "_Otvori"
 
 #: ../gui/drawwindow.py:493
 msgid "Set current color"
-msgstr ""
+msgstr "Postavi trenutačnu boju"
 
 #: ../gui/drawwindow.py:538
 msgid "Leave Fullscreen Mode"
-msgstr ""
+msgstr "Prekini modus cjeloekranskog prikaza"
 
 #: ../gui/drawwindow.py:539
 msgid "Leave Fullscreen"
-msgstr ""
+msgstr "Prekini cjeloekranski prikaz"
 
 #: ../gui/drawwindow.py:542
 msgid "Enter Fullscreen Mode"
-msgstr ""
+msgstr "Pokreni modus cjeloekranskog prikaza"
 
 #: ../gui/drawwindow.py:543
 msgid "Fullscreen"
-msgstr "Cijeli zaslon"
+msgstr "Cjeloekranski prikaz"
 
 #: ../gui/drawwindow.py:682
 msgctxt "Quit confirm dialog: title"
 msgid "Really Quit?"
-msgstr ""
+msgstr "Stvarno zatvoriti?"
 
 #: ../gui/drawwindow.py:686
-#, fuzzy
 msgctxt "Quit confirm dialog: continue button"
 msgid "_Quit"
-msgstr "Izlaz"
+msgstr "_Prekini"
 
 #: ../gui/drawwindow.py:704
 msgid "Import brush package…"
-msgstr ""
+msgstr "Uvezi paket kistova …"
 
 #: ../gui/drawwindow.py:705
 msgid "MyPaint brush package (*.zip)"
-msgstr ""
+msgstr "Paket MyPaint kistova (*.zip)"
 
 #. # UI string consts
 #. TRANSLATORS: Statusbar message when "Edit in External App"
@@ -1568,7 +1593,7 @@ msgstr ""
 #: ../gui/externalapp.py:37
 #, python-brace-format
 msgid "Launched {app_name} to edit layer “{layer_name}”"
-msgstr ""
+msgstr "Za uređivanje sloja „{layer_name}” pokrenut je program {app_name}"
 
 #. TRANSLATORS: Statusbar message shown when the app chosen for
 #. TRANSLATORS: "Edit in External App" (for a layer) failed to open.
@@ -1576,6 +1601,8 @@ msgstr ""
 #, python-brace-format
 msgid "Error: failed to launch {app_name} to edit layer “{layer_name}”"
 msgstr ""
+"Greška: neuspjelo pokretanje programa {app_name} za uređivanje sloja "
+"„{layer_name}”"
 
 #. TRANSLATORS: Statusbar message for when an "Edit in External App"
 #. TRANSLATORS: operation is cancelled by the user before it starts.
@@ -1584,19 +1611,22 @@ msgstr ""
 msgid ""
 "Editing cancelled. You can still edit “{layer_name}” from the Layers menu."
 msgstr ""
+"Urešivanje prekinuto. Sloj „{layer_name}” ipak možeš urediti u izborniku "
+"slojeva."
 
 #. TRANSLATORS: This is a statusbar message shown when
 #. TRANSLATORS:  a layer is updated from an external edit
 #: ../gui/externalapp.py:51
 #, python-brace-format
 msgid "Updated layer “{layer_name}” with external edits"
-msgstr ""
+msgstr "Sloj „{layer_name}” je aktualiziran s vanjskim uređivanjima"
 
 #: ../gui/externalapp.py:55
 #, python-brace-format
 msgctxt "Edit in External App (statusbar message)"
 msgid "Failed to update layer with external edits from “{file_basename}”."
 msgstr ""
+"Neuspjelo aktualiziranje sloja „{file_basename}” s vanjskim uređivanjima."
 
 #: ../gui/externalapp.py:66
 #, python-brace-format
@@ -1604,6 +1634,8 @@ msgid ""
 "MyPaint needs to edit a file of type “{type_name}” ({content_type}). What "
 "application should it use?"
 msgstr ""
+"MyPaint mora urediti datoteku vrste „{type_name}” ({content_type}). Koji "
+"program želiš za to koristiti?"
 
 #: ../gui/externalapp.py:70
 #, python-brace-format
@@ -1611,110 +1643,112 @@ msgid ""
 "What application should MyPaint use for editing files of type "
 "“{type_name}” ({content_type})?"
 msgstr ""
+"Koji program želiš da MyPaint koristi za uređivanje datoteka vrste "
+"„{type_name}” ({content_type})?"
 
 #: ../gui/externalapp.py:76
 msgid "Open With…"
-msgstr ""
+msgstr "Otvori pomoću …"
 
 #: ../gui/externalapp.py:128
 msgid "Icon"
-msgstr ""
+msgstr "Ikona"
 
 #: ../gui/externalapp.py:171
 msgid "no description"
-msgstr ""
+msgstr "nema opisa"
 
 #: ../gui/filehandling.py:127
 #, python-brace-format
 msgctxt "Document I/O: message shown while working"
 msgid "Loading {files_summary}…"
-msgstr ""
+msgstr "Učitavanje {files_summary} …"
 
 #: ../gui/filehandling.py:131
 #, python-brace-format
 msgctxt "Document I/O: message shown while working"
 msgid "Importing layers from {files_summary}…"
-msgstr ""
+msgstr "Učitavanje slojeva iz {files_summary} …"
 
 #: ../gui/filehandling.py:135
 #, python-brace-format
 msgctxt "Document I/O: message shown while working"
 msgid "Saving {files_summary}…"
-msgstr ""
+msgstr "Spremanje {files_summary} …"
 
 #: ../gui/filehandling.py:139
 #, python-brace-format
 msgctxt "Document I/O: message shown while working"
 msgid "Exporting to {files_summary}…"
-msgstr ""
+msgstr "Izvoz u {files_summary} …"
 
 #: ../gui/filehandling.py:146
 #, python-brace-format
 msgctxt "Document I/O: fail message"
 msgid "Failed to export to {files_summary}."
-msgstr ""
+msgstr "Neuspjeo izvoz u {files_summary}."
 
 #: ../gui/filehandling.py:150
 #, python-brace-format
 msgctxt "Document I/O: fail message"
 msgid "Failed to save {files_summary}."
-msgstr ""
+msgstr "Neuspjelo spremanje {files_summary}."
 
 #: ../gui/filehandling.py:154
 #, python-brace-format
 msgctxt "Document I/O: fail message"
 msgid "Could not import layers from {files_summary}."
-msgstr ""
+msgstr "Nije moguće uvesti slojeve iz {files_summary}."
 
 #: ../gui/filehandling.py:158
 #, python-brace-format
 msgctxt "Document I/O: fail message"
 msgid "Could not load {files_summary}."
-msgstr ""
+msgstr "Nije moguće učitati {files_summary}."
 
 #: ../gui/filehandling.py:165
 msgctxt "Document I/O: fail dialog title"
 msgid "Save failed"
-msgstr ""
+msgstr "Neuspjelo spremanje"
 
 #: ../gui/filehandling.py:169
 msgctxt "Document I/O: fail dialog title"
 msgid "Export failed"
-msgstr ""
+msgstr "Neuspjeli izvoz"
 
 #: ../gui/filehandling.py:173
 msgctxt "Document I/O: fail dialog title"
 msgid "Import Layers failed"
-msgstr ""
+msgstr "Neuspjeli uvoz slojeva"
 
 #: ../gui/filehandling.py:177
 msgctxt "Document I/O: fail dialog title"
 msgid "Open failed"
-msgstr ""
+msgstr "Neuspjelo otvaranje"
 
 #: ../gui/filehandling.py:184
 #, python-brace-format
 msgctxt "Document I/O: success"
 msgid "Exported to {files_summary} successfully."
-msgstr ""
+msgstr "Uspješno izvezeno u {files_summary}."
 
 #: ../gui/filehandling.py:188
 #, python-brace-format
 msgctxt "Document I/O: success"
 msgid "Saved {files_summary} successfully."
-msgstr ""
+msgstr "{files_summary} uspješno spremljeno."
 
 #: ../gui/filehandling.py:192
 #, python-brace-format
 msgctxt "Document I/O: success"
 msgid "Imported layers from {files_summary}."
-msgstr ""
+msgstr "Uvezeni slojevi iz {files_summary}."
 
 #: ../gui/filehandling.py:196
 #, python-brace-format
 msgctxt "Document I/O: success"
 msgid "Loaded {files_summary}."
-msgstr ""
+msgstr "Učitano {files_summary}."
 
 #. TRANSLATORS: formatting for {files_summary} for multiple files.
 #. TRANSLATORS: corresponding msgid for single files: "“{basename}”"
@@ -1722,234 +1756,228 @@ msgstr ""
 #, python-brace-format
 msgid "{n} file"
 msgid_plural "{n} files"
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
+msgstr[0] "{n} datoteka"
+msgstr[1] "{n} datoteke"
+msgstr[2] "{n} datoteka"
 
 #: ../gui/filehandling.py:223
 #, python-brace-format
 msgctxt "Document I/O: the {files_summary} for a single file"
 msgid "“{basename}”"
-msgstr ""
+msgstr "„{basename}”"
 
 #: ../gui/filehandling.py:432
 msgctxt "save/load dialogs: filter patterns"
 msgid "All Recognized Formats"
-msgstr ""
+msgstr "Svi prepoznati formati"
 
 #: ../gui/filehandling.py:437
 msgctxt "save/load dialogs: filter patterns"
 msgid "OpenRaster (*.ora)"
-msgstr ""
+msgstr "OpenRaster (*.ora)"
 
 #: ../gui/filehandling.py:442
 msgctxt "save/load dialogs: filter patterns"
 msgid "PNG (*.png)"
-msgstr ""
+msgstr "PNG (*.png)"
 
 #: ../gui/filehandling.py:447
 msgctxt "save/load dialogs: filter patterns"
 msgid "JPEG (*.jpg; *.jpeg)"
-msgstr ""
+msgstr "JPEG (*.jpg; *.jpeg)"
 
 #: ../gui/filehandling.py:495
 msgctxt "save dialogs: save formats and options"
 msgid "By extension (prefer default format)"
-msgstr ""
+msgstr "Po datotečnom nastavku (preferiraj standardni format)"
 
 #: ../gui/filehandling.py:499
 msgctxt "save dialogs: save formats and options"
 msgid "OpenRaster (*.ora)"
-msgstr ""
+msgstr "OpenRaster (*.ora)"
 
 #: ../gui/filehandling.py:503
 msgctxt "save dialogs: save formats and options"
 msgid "PNG, respecting “Show Background” (*.png)"
-msgstr ""
+msgstr "PNG, uz „Prikaži pozadinu” (*.png)"
 
 #: ../gui/filehandling.py:507
 msgctxt "save dialogs: save formats and options"
 msgid "PNG, solid RGB (*.png)"
-msgstr ""
+msgstr "PNG, puna RGB boja (*.png)"
 
 #: ../gui/filehandling.py:511
 msgctxt "save dialogs: save formats and options"
 msgid "PNG, transparent RGBA (*.png)"
-msgstr ""
+msgstr "PNG, prozirni RGBA (*.png)"
 
 #: ../gui/filehandling.py:515
 msgctxt "save dialogs: save formats and options"
 msgid "Multiple PNGs, by layer (*.NUM.png)"
-msgstr ""
+msgstr "Višestruki PNG-ovi, po sloju (*.NUM.png)"
 
 #: ../gui/filehandling.py:519
 msgctxt "save dialogs: save formats and options"
 msgid "Multiple PNGs, by view (*.NAME.png)"
-msgstr ""
+msgstr "Višestruki PNG-ovi, po prikazu (*.NAME.png)"
 
 #: ../gui/filehandling.py:523
 msgctxt "save dialogs: save formats and options"
 msgid "JPEG 90% quality (*.jpg; *.jpeg)"
-msgstr ""
+msgstr "JPEG 90% kvalitete (*.jpg; *.jpeg)"
 
 #: ../gui/filehandling.py:581
 msgctxt "Dialogs (window title): File→Export…"
 msgid "Export"
-msgstr ""
+msgstr "Izvezi"
 
 #: ../gui/filehandling.py:586
-#, fuzzy
 msgctxt "Dialogs (window title): File→Save As…"
 msgid "Save As"
-msgstr "Spremi"
+msgstr "Spremi kao"
 
 #: ../gui/filehandling.py:606
 msgctxt "save dialogs: formats and options: (label)"
 msgid "Format to save as:"
-msgstr ""
+msgstr "Format za Spremi kao:"
 
 #: ../gui/filehandling.py:673
 msgctxt ""
 "Destructive action confirm dialog: fallback title (normally overridden)"
 msgid "Really Continue?"
-msgstr ""
+msgstr "Stvarno nastaviti?"
 
 #: ../gui/filehandling.py:706
 msgctxt "Destructive action confirm dialog: cancel button"
 msgid "_Cancel"
-msgstr ""
+msgstr "_Odustani"
 
 #: ../gui/filehandling.py:710
 msgctxt "Destructive action confirm dialog: save checkbox"
 msgid "_Save to Scraps first"
-msgstr ""
+msgstr "Najprije _spremi u skice"
 
 #: ../gui/filehandling.py:716
 msgctxt ""
 "Destructive action confirm dialog: fallback continue button (normally "
 "overridden)"
 msgid "Co_ntinue"
-msgstr ""
+msgstr "_Nastavi"
 
 #: ../gui/filehandling.py:739
 #, python-brace-format
 msgctxt "Destructive action confirm dialog: warning message"
 msgid "You risk losing {abbreviated_time} of unsaved painting."
-msgstr ""
+msgstr "Riskiraš izgubiti {abbreviated_time} nespremljenog crteža."
 
 #: ../gui/filehandling.py:804
 msgctxt "File→New: confirm dialog: title question"
 msgid "New Canvas?"
-msgstr ""
+msgstr "Novo platno?"
 
 #: ../gui/filehandling.py:808
 msgctxt "File→New: confirm dialog: continue button"
 msgid "_New Canvas"
-msgstr ""
+msgstr "_Novo platno"
 
 #: ../gui/filehandling.py:1024
 msgctxt "File→Open: confirm dialog: title question"
 msgid "Open File?"
-msgstr ""
+msgstr "Otvoriti datoteku?"
 
 #: ../gui/filehandling.py:1028
 msgctxt "File→Open: confirm dialog: continue button"
 msgid "_Open…"
-msgstr ""
+msgstr "_Otvori …"
 
 #: ../gui/filehandling.py:1036
-#, fuzzy
 msgctxt "File→Open: file chooser dialog: title"
 msgid "Open File"
-msgstr "Datoteka"
+msgstr "Otvori datoteku"
 
 #: ../gui/filehandling.py:1084
 msgctxt "load dialogs: title"
 msgid "Open Scratchpad…"
-msgstr ""
+msgstr "Otvori područje za skiciranje …"
 
 #: ../gui/filehandling.py:1126
 msgctxt "Layers→Import Layers: files-chooser dialog: title"
 msgid "Import Layers"
-msgstr ""
+msgstr "Uvezi slojeve"
 
 #: ../gui/filehandling.py:1433
 msgctxt "File→Open Recent→* confirm dialog: title"
 msgid "Open File?"
-msgstr ""
+msgstr "Otvoriti datoteku?"
 
 #: ../gui/filehandling.py:1437
-#, fuzzy
 msgctxt "File→Open Recent→* confirm dialog: continue button"
 msgid "_Open"
-msgstr "Otvori…"
+msgstr "_Otvori"
 
 #: ../gui/filehandling.py:1452
-#, fuzzy
 msgctxt "File→Open Most Recent confirm dialog: title"
 msgid "Open Most Recent File?"
-msgstr "Otvori nedavno"
+msgstr "Otvoriti najnedavniju datoteku?"
 
 #: ../gui/filehandling.py:1457
-#, fuzzy
 msgctxt "File→Open Most Recent→* confirm dialog: continue button"
 msgid "_Open"
-msgstr "Otvori…"
+msgstr "_Otvori"
 
 #: ../gui/filehandling.py:1471
 msgctxt "File→Open Next/Prev Scrap: error message"
 msgid "There are no scrap files yet. Try saving one first."
-msgstr ""
+msgstr "Još nema datoteka skica. Pokušaj najprije spremiti jednu skicu."
 
 #: ../gui/filehandling.py:1480
 msgctxt "File→Open Next/Prev Scrap confirm dialog: title"
 msgid "Open Next Scrap?"
-msgstr ""
+msgstr "Otvoritu sljedeću skicu?"
 
 #: ../gui/filehandling.py:1488
 msgctxt "File→Open Next/Prev Scrap confirm dialog: title"
 msgid "Open Previous Scrap?"
-msgstr ""
+msgstr "Otvoriti prethodnu skicu?"
 
 #: ../gui/filehandling.py:1497
-#, fuzzy
 msgctxt "File→Open Next/Prev Scrap confirm dialog: continue button"
 msgid "_Open"
-msgstr "Otvori…"
+msgstr "_Otvori"
 
 #: ../gui/filehandling.py:1512
 msgctxt "File→Revert: status message: canvas has no filename yet"
 msgid "Cannot revert: canvas has not been saved to a file yet."
-msgstr ""
+msgstr "Nije moguće obnoviti: platno još nije spremljeno u datoteku."
 
 #: ../gui/filehandling.py:1519
 msgctxt "File→Revert confirm dialog: title"
 msgid "Revert Changes?"
-msgstr ""
+msgstr "Obnoviti promjene?"
 
 #: ../gui/filehandling.py:1524
 msgctxt "File→Revert confirm dialog: continue button"
 msgid "_Revert"
-msgstr ""
+msgstr "_Obnovi"
 
 #: ../gui/fill.py:122
 msgctxt ""
 "Name of the fill mode\n"
 "In other software, 'Flood Fill' is also known as 'Bucket Fill' or just 'Fill'"
 msgid "Flood Fill"
-msgstr ""
+msgstr "Ispuni"
 
 #: ../gui/fill.py:128
 msgctxt "Usage description of the Flood Fill mode"
 msgid "Fill areas with color"
-msgstr ""
+msgstr "Ispuni područja s bojom"
 
 #: ../gui/fill.py:507
 msgctxt ""
 "fill options: numeric value that determines whether tested pixels will be "
 "included in the fill, based on color difference"
 msgid "Tolerance:"
-msgstr ""
+msgstr "Tolerancija:"
 
 #: ../gui/fill.py:512
 msgctxt ""
@@ -1965,7 +1993,7 @@ msgctxt ""
 "fill options: option category (label) Options under this category relate to "
 "what the fill isbased on, not where the actual fill ends up."
 msgid "Source:"
-msgstr ""
+msgstr "Izvor:"
 
 #: ../gui/fill.py:539
 msgctxt "fill options: 'Source:' category (tooltip)"
@@ -1983,7 +2011,7 @@ msgctxt ""
 "When this option is enabled, the fill is based\n"
 "on the combination of all visible layers"
 msgid "Sample Merged"
-msgstr ""
+msgstr "Uzorkuj sjedinjeno"
 
 #: ../gui/fill.py:605
 msgctxt "fill options: Sample Merged (tooltip)"
@@ -1996,7 +2024,7 @@ msgstr ""
 #: ../gui/fill.py:621
 msgctxt "fill options: toggle whether the fill will be limited by the viewport"
 msgid "Limit to View"
-msgstr ""
+msgstr "Ograniči na prikaz"
 
 #: ../gui/fill.py:627
 msgctxt ""
@@ -2015,12 +2043,12 @@ msgctxt ""
 "Options under this category relate to where the fill will end up (default: "
 "the active layer) and how it will be combined with that layer."
 msgid "Target:"
-msgstr ""
+msgstr "Odredište:"
 
 #: ../gui/fill.py:647
 msgctxt "fill options: 'Target:' category (tooltip)"
 msgid "Where the output should go"
-msgstr ""
+msgstr "Kamo spremiti rezultat"
 
 #: ../gui/fill.py:656
 msgctxt ""
@@ -2028,7 +2056,7 @@ msgctxt ""
 "When this option is enabled, the fill will be placed on a new\n"
 "layer above the active layer. Option resets after each fill."
 msgid "New Layer (once)"
-msgstr ""
+msgstr "Novi sloj (jednom)"
 
 #: ../gui/fill.py:661
 msgctxt "fill options: Target | New Layer (tooltip)"
@@ -2045,7 +2073,7 @@ msgstr ""
 #: ../gui/fill.py:687
 msgctxt "fill options: Target | Blend Mode dropdown (tooltip)"
 msgid "Blend mode used when filling"
-msgstr ""
+msgstr "Metodus spajanja koji se koristi tijekom ispunjavanja"
 
 #: ../gui/fill.py:702
 msgid "Opacity:"
@@ -2054,12 +2082,12 @@ msgstr "Prozirnost:"
 #: ../gui/fill.py:705
 msgctxt "fill options: Opacity slider (tooltip)"
 msgid "Opacity of the fill"
-msgstr ""
+msgstr "Neprozirnost ispune"
 
 #: ../gui/fill.py:728
 msgctxt "fill options: numeric option - grow/shrink fill (label)"
 msgid "Offset:"
-msgstr ""
+msgstr "Odmak:"
 
 #: ../gui/fill.py:744
 msgctxt "fill options: Offset (tooltip)"
@@ -2069,7 +2097,7 @@ msgstr ""
 #: ../gui/fill.py:755
 msgctxt "fill options: numeric option for blurring fill (label)"
 msgid "Feather:"
-msgstr ""
+msgstr "Zamuti:"
 
 #: ../gui/fill.py:770
 msgctxt "fill options: Feather (tooltip)"
@@ -2079,7 +2107,7 @@ msgstr ""
 #: ../gui/fill.py:786
 msgctxt "fill options: gap detection toggle (label)"
 msgid "Use Gap Detection"
-msgstr ""
+msgstr "Koristi otkrivanje razmaka"
 
 #: ../gui/fill.py:791
 msgctxt "fill options: Use Gap Detection (tooltip)"
@@ -2092,7 +2120,7 @@ msgstr ""
 #: ../gui/fill.py:809
 msgctxt "fill options: gap-detection sub-option, numeric setting (label)"
 msgid "Max Gap Size:"
-msgstr ""
+msgstr "Maks. veličina razmaka:"
 
 #: ../gui/fill.py:824
 msgctxt "fill options: Max Gap Size (tooltip)"
@@ -2107,7 +2135,7 @@ msgctxt ""
 "When enabled, if the fill stops after going past a detected gap, it 'pulls' "
 "the fill back out of the gap to the other side of it."
 msgid "Prevent seeping"
-msgstr ""
+msgstr "Spriječi prodiranje"
 
 #: ../gui/fill.py:844
 msgctxt "fill options: Prevent seeping (tooltip)"
@@ -2118,23 +2146,23 @@ msgstr ""
 
 #: ../gui/fill.py:854 ../gui/mode.py:627
 msgid "Reset"
-msgstr ""
+msgstr "Vrati na izvorno"
 
 #: ../gui/fill.py:858
 msgctxt "fill options: Reset button (tooltip)"
 msgid "Reset options to their defaults"
-msgstr ""
+msgstr "Vrati opcije na njihove standardne vrijednosti"
 
 #: ../gui/fill.py:1036
 msgctxt "fill option: default option in the Source Layer dropdown"
 msgid "Selected Layer"
-msgstr ""
+msgstr "Odabrani sloj"
 
 #: ../gui/footer.py:191
 #, python-brace-format
 msgctxt "current brush indicator: tooltip (no-description case)"
 msgid "<b>{brush_name}</b>"
-msgstr ""
+msgstr "<b>{brush_name}</b>"
 
 #: ../gui/footer.py:196
 #, python-brace-format
@@ -2143,18 +2171,20 @@ msgid ""
 "<b>{brush_name}</b>\n"
 "{brush_desc}"
 msgstr ""
+"<b>{brush_name}</b>\n"
+"{brush_desc}"
 
 #: ../gui/framewindow.py:99
 msgid "Edit Frame"
-msgstr ""
+msgstr "Uredi okvir"
 
 #: ../gui/framewindow.py:102
 msgid "Adjust the document frame"
-msgstr ""
+msgstr "Podesi okvir dokumenta"
 
 #: ../gui/framewindow.py:466
 msgid "Frame Size"
-msgstr ""
+msgstr "Veličina okvira"
 
 #. {unit: (conv_factor, upper, lower, step_incr, page_incr, digits)}
 #: ../gui/framewindow.py:469 ../gui/framewindow.py:535
@@ -2162,47 +2192,47 @@ msgstr ""
 #: ../gui/framewindow.py:921 ../gui/framewindow.py:973
 #: ../gui/framewindow.py:978
 msgid "px"
-msgstr ""
+msgstr "px"
 
 #: ../gui/framewindow.py:471
 msgid "Height:"
-msgstr ""
+msgstr "Visina:"
 
 #: ../gui/framewindow.py:472
 msgid "Width:"
-msgstr ""
+msgstr "Širina:"
 
 #: ../gui/framewindow.py:473
 msgid "Resolution:"
-msgstr ""
+msgstr "Rezolucija:"
 
 #: ../gui/framewindow.py:475
 msgid "DPI"
-msgstr ""
+msgstr "DPI"
 
 #: ../gui/framewindow.py:480
 msgid "Dots Per Inch (really Pixels Per Inch)"
-msgstr ""
+msgstr "Broj točaka po inču (zapravo broj piksela po inču)"
 
 #: ../gui/framewindow.py:483
 msgid "Color:"
-msgstr ""
+msgstr "Boja:"
 
 #: ../gui/framewindow.py:520
 msgid "Frame Color"
-msgstr ""
+msgstr "Boja okvira"
 
 #: ../gui/framewindow.py:543
 msgid "<b>Frame dimensions</b>"
-msgstr ""
+msgstr "<b>Dimenzije okvira</b>"
 
 #: ../gui/framewindow.py:557
 msgid "<b>Pixel density</b>"
-msgstr ""
+msgstr "<b>Gustoća piksela</b>"
 
 #: ../gui/framewindow.py:585
 msgid "Set Frame to Layer"
-msgstr ""
+msgstr "Postavi okvir na sloj"
 
 #: ../gui/framewindow.py:586
 msgid "Set frame to the extents of the current layer"
@@ -2210,7 +2240,7 @@ msgstr ""
 
 #: ../gui/framewindow.py:588
 msgid "Set Frame to Document"
-msgstr ""
+msgstr "Postavi okvir na dokument"
 
 #: ../gui/framewindow.py:589
 msgid "Set frame to the combination of all layers"
@@ -2218,7 +2248,7 @@ msgstr ""
 
 #: ../gui/framewindow.py:599
 msgid "Trim Layer to Frame"
-msgstr ""
+msgstr "Odreži sloj na okvir"
 
 #: ../gui/framewindow.py:600
 msgid "Trim parts of the current layer which lie outside the frame"
@@ -2226,58 +2256,58 @@ msgstr ""
 
 #: ../gui/framewindow.py:606
 msgid "Enabled"
-msgstr ""
+msgstr "Aktivirano"
 
 #: ../gui/framewindow.py:718
 #, python-brace-format
 msgid "{width:g}×{height:g} {units}"
-msgstr ""
+msgstr "{width:g} × {height:g} {units}"
 
 #: ../gui/framewindow.py:909
 msgid "inch"
-msgstr ""
+msgstr "inč"
 
 #: ../gui/framewindow.py:910
 msgid "cm"
-msgstr ""
+msgstr "cm"
 
 #: ../gui/framewindow.py:911
 msgid "mm"
-msgstr ""
+msgstr "mm"
 
 #: ../gui/freehand.py:86
 msgid "Freehand Drawing"
-msgstr ""
+msgstr "Prostoručno crtanje"
 
 #: ../gui/freehand.py:89
 msgid "Paint free-form brush strokes"
-msgstr ""
+msgstr "Crtaj prostoručne poteze kistom"
 
 #. TRANSLATORS: Short alias for "Slow position tracking". This is
 #. TRANSLATORS: used on the options panel.
 #: ../gui/freehand.py:581
 msgid "Smooth:"
-msgstr ""
+msgstr "Zagladi:"
 
 #. TRANSLATORS: Short alias for "Fake Pressure (for mouse)". This is
 #. TRANSLATORS: used on the options panel.
 #: ../gui/freehand.py:596 ../gui/inputtestwindow.py:62
 msgid "Pressure:"
-msgstr ""
+msgstr "Pritisak:"
 
 #. TRANSLATORS: Short alias for "Fake Barrel Rotation (for mouse)".
 #. TRANSLATORS: This is used on the options panel.
 #: ../gui/freehand.py:614
 msgid "Twist:"
-msgstr ""
+msgstr "Zakreni:"
 
 #: ../gui/gtkexcepthook.py:163
 msgid "Bug Detected"
-msgstr ""
+msgstr "Otkrivena greška"
 
 #: ../gui/gtkexcepthook.py:166
 msgid "<big><b>A programming error has been detected.</b></big>"
-msgstr ""
+msgstr "<big><b>Otkrivena je programska greška.</b></big>"
 
 #: ../gui/gtkexcepthook.py:169
 msgid ""
@@ -2290,28 +2320,28 @@ msgstr ""
 
 #: ../gui/gtkexcepthook.py:177
 msgid "Search Tracker…"
-msgstr ""
+msgstr "Pretraži sustav za praćenje grešaka …"
 
 #. only development and prereleases
 #: ../gui/gtkexcepthook.py:179
 msgid "Report…"
-msgstr ""
+msgstr "Izvještaj …"
 
 #: ../gui/gtkexcepthook.py:181
 msgid "Ignore Error"
-msgstr ""
+msgstr "Zanemari grešku"
 
 #: ../gui/gtkexcepthook.py:182
 msgid "Quit MyPaint"
-msgstr ""
+msgstr "Zatvori MyPaint"
 
 #: ../gui/gtkexcepthook.py:192
 msgid "Details…"
-msgstr ""
+msgstr "Pojedinosti …"
 
 #: ../gui/gtkexcepthook.py:219 ../gui/gtkexcepthook.py:222
 msgid "Exception while analyzing the exception."
-msgstr ""
+msgstr "Iznimka tijekom analiziranja iznimke."
 
 #. TRANSLATORS: Crash report template for github, preceding a traceback.
 #. TRANSLATORS: Please ask users kindly to supply at least an English
@@ -2342,126 +2372,126 @@ msgstr ""
 
 #: ../gui/inktool.py:96 ../gui/inktool.py:473
 msgid "Inking"
-msgstr ""
+msgstr "Crtanje tintom"
 
 #: ../gui/inktool.py:99
 msgid "Draw, and then adjust smooth lines"
-msgstr ""
+msgstr "Crtaj, a zatim podesi izglađene linije"
 
 #: ../gui/inputtestwindow.py:32
 msgid "Input Device Test"
-msgstr ""
+msgstr "Testiraj ulazni uređaj"
 
 #: ../gui/inputtestwindow.py:61
 msgid "(no pressure)"
-msgstr ""
+msgstr "(bez pritiska)"
 
 #: ../gui/inputtestwindow.py:64
 msgid "(no tilt)"
-msgstr ""
+msgstr "(bez nagiba)"
 
 #: ../gui/inputtestwindow.py:65
 msgid "Tilt:"
-msgstr ""
+msgstr "Nagib:"
 
 #: ../gui/inputtestwindow.py:70
 msgid "(no device)"
-msgstr ""
+msgstr "(nema uređaja)"
 
 #: ../gui/inputtestwindow.py:71
 msgid "Device:"
-msgstr ""
+msgstr "Uređaj:"
 
 #: ../gui/inputtestwindow.py:73
 msgid "(No Barrel Rotation)"
-msgstr ""
+msgstr "(Bez okretanja oko vlastite osi)"
 
 #: ../gui/inputtestwindow.py:75
 msgid "Barrel Rotation:"
-msgstr ""
+msgstr "Okretanje oko vlastite osi:"
 
 #. TRANSLATORS: Command to move a layer in the horizontal plane,
 #. TRANSLATORS: preserving its position in the stack.
 #. TRANSLATORS: Note "in the horizontal plane" - not "horizontally".
 #: ../gui/layermanip.py:47 ../lib/command.py:1053
 msgid "Move Layer"
-msgstr ""
+msgstr "Premjesti sloj"
 
 #: ../gui/layermanip.py:50
 msgid "Move the current layer"
-msgstr ""
+msgstr "Premjesti trenutačni sloj"
 
 #: ../gui/layerprops.py:356
 msgctxt "layer properties dialog: name entry: icon tooltip"
 msgid "Layer names cannot be empty."
-msgstr ""
+msgstr "Ime sloja ne može biti prazno."
 
 #: ../gui/layerprops.py:361
 msgctxt "layer properties dialog: name entry: icon tooltip"
 msgid "Layer name is not unique."
-msgstr ""
+msgstr "Ime sloja nije jedinstveno."
 
 #: ../gui/layerprops.py:377
 msgctxt "layer properties dialog: title"
 msgid "Layer Properties"
-msgstr ""
+msgstr "Svojstva sloja"
 
 #: ../gui/layerprops.py:381
 msgctxt "layer properties dialog: done button"
 msgid "Done"
-msgstr ""
+msgstr "Gotovo"
 
 #. Visibility flag column
 #: ../gui/layers.py:394
 msgid "Visible"
-msgstr ""
+msgstr "Vidljivo"
 
 #. Other flags column
 #: ../gui/layers.py:426
 msgid "Flags"
-msgstr ""
+msgstr "Oznake"
 
 #: ../gui/layers.py:925
 msgctxt "Layers: description: no layer (\"never happens\" condition!)"
 msgid "?layer"
-msgstr ""
+msgstr "?sloj"
 
 #: ../gui/layers.py:945
 msgctxt "Layers: description parts: unknown mode (fallback str!)"
 msgid "?mode"
-msgstr ""
+msgstr "?modus"
 
 #: ../gui/layers.py:952
 msgctxt "Layers: description parts: layer hidden"
 msgid "Hidden"
-msgstr ""
+msgstr "Skriveno"
 
 #: ../gui/layers.py:957
 #, python-format
 msgctxt "Layers: description parts: opacity percentage"
 msgid "%d%% opaque"
-msgstr ""
+msgstr "%d%% neprozirno"
 
 #: ../gui/layers.py:964
 msgctxt "Layers dockable: description parts: layer locked flag"
 msgid "Locked"
-msgstr ""
+msgstr "Zaključano"
 
 #: ../gui/layers.py:975
 msgctxt "Layers: description parts: unknown type (fallback str!)"
 msgid "?type"
-msgstr ""
+msgstr "?vrsta"
 
 #: ../gui/layers.py:982
 msgctxt "Layers dockable: description parts joiner text"
 msgid ", "
-msgstr ""
+msgstr ", "
 
 #: ../gui/layers.py:990
 #, python-brace-format
 msgctxt "Layers dockable: markup for a layer with no description"
 msgid "{layer_name}"
-msgstr ""
+msgstr "{layer_name}"
 
 #: ../gui/layers.py:995
 #, python-brace-format
@@ -2470,21 +2500,23 @@ msgid ""
 "<span size=\"smaller\">{layer_name}\n"
 "<span size=\"smaller\">{layer_description}</span></span>"
 msgstr ""
+"<span size=\"smaller\">{layer_name}\n"
+"<span size=\"smaller\">{layer_description}</span></span>"
 
 #: ../gui/layerswindow.py:95
 msgid "Layers"
-msgstr ""
+msgstr "Slojevi"
 
 #: ../gui/layerswindow.py:96
 msgid "Arrange layers and assign effects"
-msgstr ""
+msgstr "Rasporedi slojeve i dodijeli efekte"
 
 #. TRANSLATORS: tooltip for the opacity slider (text)
 #. TRANSLATORS: note that "%%" turns into "%"
 #: ../gui/layerswindow.py:102
 #, python-format
 msgid "Layer opacity: %d%%"
-msgstr ""
+msgstr "Neprozirnost sloja: %d%%"
 
 #. TRANSLATORS: label for the opacity slider (text)
 #. TRANSLATORS: note that "%%" turns into "%"
@@ -2492,42 +2524,44 @@ msgstr ""
 #: ../gui/layerswindow.py:107
 #, python-format
 msgid "%d%%"
-msgstr ""
+msgstr "%d%%"
 
 #. TRANSLATORS: status bar messages for drag, without/with modifiers
 #: ../gui/layerswindow.py:114
 msgid "Move layer in stack…"
-msgstr ""
+msgstr "Premjesti sloj u popisu slojeva …"
 
 #: ../gui/layerswindow.py:115
 msgid ""
 "Move layer in stack (dropping into a regular layer will create a new group)"
 msgstr ""
+"Premjesti sloj u popisu slojeva (ako ga se ispusti u jedan regularni sloj, "
+"stvorit će se nova grupa)"
 
 #: ../gui/layerswindow.py:156
 msgid "Layer"
-msgstr ""
+msgstr "Sloj"
 
 #: ../gui/layervis.py:53
 #, python-brace-format
 msgctxt "view controls: dropdown: item markup"
 msgid "<i>{builtin_view_name}</i>"
-msgstr ""
+msgstr "<i>{builtin_view_name}</i>"
 
 #: ../gui/layervis.py:125
 #, python-brace-format
 msgctxt "view controls: dropdown: item markup"
 msgid "{user_chosen_view_name}"
-msgstr ""
+msgstr "{user_chosen_view_name}"
 
 #: ../gui/layervis.py:187
 msgctxt "view controls: rename view dialog"
 msgid "Rename View"
-msgstr ""
+msgstr "Preimenuj prikaz"
 
 #: ../gui/linemode.py:41
 msgid "Entrance Pressure"
-msgstr ""
+msgstr "Pritisak na početku"
 
 #: ../gui/linemode.py:42
 msgid "Stroke entrance pressure for line tools"
@@ -2535,7 +2569,7 @@ msgstr ""
 
 #: ../gui/linemode.py:43
 msgid "Midpoint Pressure"
-msgstr ""
+msgstr "Pritisak u sredini"
 
 #: ../gui/linemode.py:44
 msgid "Mid-Stroke pressure for line tools"
@@ -2543,7 +2577,7 @@ msgstr ""
 
 #: ../gui/linemode.py:45
 msgid "Exit Pressure"
-msgstr ""
+msgstr "Pritisak na kraju"
 
 #: ../gui/linemode.py:46
 msgid "Stroke exit pressure for line tools"
@@ -2551,7 +2585,7 @@ msgstr ""
 
 #: ../gui/linemode.py:47
 msgid "Head"
-msgstr ""
+msgstr "Početak"
 
 #: ../gui/linemode.py:48
 msgid "Stroke lead-in end"
@@ -2559,7 +2593,7 @@ msgstr ""
 
 #: ../gui/linemode.py:49
 msgid "Tail"
-msgstr ""
+msgstr "Kraj"
 
 #: ../gui/linemode.py:50
 msgid "Stroke trail-off beginning"
@@ -2567,16 +2601,16 @@ msgstr ""
 
 #: ../gui/linemode.py:174
 msgid "Pressure variation…"
-msgstr ""
+msgstr "Varijanta pritiska …"
 
 #: ../gui/linemode.py:220 ../gui/linemode.py:778
 msgid "Lines and Curves"
-msgstr ""
+msgstr "Linije i krivulje"
 
 #. TRANSLATORS: users should never see this message
 #: ../gui/linemode.py:224
 msgid "Generic line/curve mode"
-msgstr ""
+msgstr "Obični modus linija/krivulja"
 
 #: ../gui/linemode.py:781
 msgid "Draw straight lines; Shift adds curves, Ctrl constrains angle"
@@ -2584,7 +2618,7 @@ msgstr ""
 
 #: ../gui/linemode.py:791
 msgid "Connected Lines"
-msgstr ""
+msgstr "Povezane linije"
 
 #: ../gui/linemode.py:794
 msgid "Draw a sequence of lines; Shift adds curves, Ctrl constrains angle"
@@ -2592,7 +2626,7 @@ msgstr ""
 
 #: ../gui/linemode.py:804
 msgid "Ellipses and Circles"
-msgstr ""
+msgstr "Elipse i kružnice"
 
 #: ../gui/linemode.py:807
 msgid "Draw ellipses; Shift rotates, Ctrl constrains ratio/angle"
@@ -2604,6 +2638,8 @@ msgid ""
 "Copyright (C) 2005-2017\n"
 "Martin Renold and the MyPaint Development Team"
 msgstr ""
+"Autorsko pravo (C) 2005. – 2017.\n"
+"Martin Renold i tim MyPaint razvijatelja"
 
 #: ../gui/meta.py:45
 msgctxt "About dialog: license summary"
@@ -2616,56 +2652,63 @@ msgid ""
 "This program is distributed in the hope that it will be useful, but WITHOUT "
 "ANY WARRANTY. See the COPYING file for more details."
 msgstr ""
+"Ovaj program je slobodan softver; možeš ga distribuirati i/ili promijeniti "
+"pod uvjetima GNU opće javne licence, kako je objavljena od Free Software "
+"Foundation (zaklada slobodnog softvera); verzija 2 licence ili bilo koja "
+"kasnija verzija.\n"
+"\n"
+"Ovaj se program distribuira u nadi da će biti koristan, ali BEZ GARANCIJE. "
+"Pogledaj datoteku COPYING za daljnje pojedinosti."
 
 #: ../gui/meta.py:60
 msgctxt "About dialog: credits: tasks"
 msgid "programming"
-msgstr ""
+msgstr "programiranje"
 
 #: ../gui/meta.py:64
 msgctxt "About dialog: credits: tasks"
 msgid "portability"
-msgstr ""
+msgstr "prenosivost"
 
 #: ../gui/meta.py:68
 msgctxt "About dialog: credits: tasks"
 msgid "project management"
-msgstr ""
+msgstr "upravljanje projektima"
 
 #: ../gui/meta.py:72
 msgctxt "About dialog: credits: tasks: brush presets and icons"
 msgid "brushes"
-msgstr ""
+msgstr "kistovi"
 
 #: ../gui/meta.py:76
 msgctxt "About dialog: credits: tasks: background paper textures"
 msgid "patterns"
-msgstr ""
+msgstr "uzorci"
 
 #: ../gui/meta.py:80
 msgctxt "About dialog: credits: tasks: icons for internal tools"
 msgid "tool icons"
-msgstr ""
+msgstr "ikone alata"
 
 #: ../gui/meta.py:84
 msgctxt "About dialog: credits: tasks: the main application icon"
 msgid "desktop icon"
-msgstr ""
+msgstr "ikona na radnoj površini"
 
 #: ../gui/meta.py:88
 msgctxt "About dialog: credits: tasks: palettes"
 msgid "palettes"
-msgstr ""
+msgstr "palete"
 
 #: ../gui/meta.py:93
 msgctxt "About dialog: credits: tasks: docs, manuals and HOWTOs"
 msgid "documentation"
-msgstr ""
+msgstr "dokumentacija"
 
 #: ../gui/meta.py:97
 msgctxt "About dialog: credits: tasks: user support"
 msgid "support"
-msgstr ""
+msgstr "podrška"
 
 #: ../gui/meta.py:101
 msgctxt "About dialog: credits: tasks: outreach (social media, ads?)"
@@ -2675,82 +2718,82 @@ msgstr ""
 #: ../gui/meta.py:105
 msgctxt "About dialog: credits: tasks: running or building a community"
 msgid "community"
-msgstr ""
+msgstr "zajednica"
 
 #: ../gui/meta.py:110
 msgctxt "About dialog: credits: tasks: joiner punctuation"
 msgid ", "
-msgstr ""
+msgstr ", "
 
 #: ../gui/meta.py:208
 msgctxt "About dialog: credits: translator credits (your name(s) here!)"
 msgid "translator-credits"
-msgstr ""
+msgstr "Milo Ivir <mail@milotype.de>, 2019."
 
 #. TRANSLATORS:"Brush radius" for the options panel. Short.
 #: ../gui/mode.py:582
 msgid "Size:"
-msgstr ""
+msgstr "Veličina:"
 
 #. TRANSLATORS:"Brush opacity" for the options panel. Short.
 #: ../gui/mode.py:584
 msgid "Opaque:"
-msgstr ""
+msgstr "Neprozirnost:"
 
 #. TRANSLATORS:"Brush hardness/sharpness" for the options panel. Short.
 #: ../gui/mode.py:586
 msgid "Sharp:"
-msgstr ""
+msgstr "Oštrina:"
 
 #. TRANSLATORS:"Additional pressure gain" for the options panel. Short.
 #: ../gui/mode.py:588
 msgid "Gain:"
-msgstr ""
+msgstr "Prirast:"
 
 #. TRANSLATORS:"Paint Pigment Mode" for the options panel. Short.
 #: ../gui/mode.py:590
 msgid "Pigment:"
-msgstr ""
+msgstr "Pigment:"
 
 #: ../gui/optionspanel.py:47
 msgctxt "options panel: tab tooltip: title"
 msgid "Tool Options"
-msgstr ""
+msgstr "Opcije za alat"
 
 #: ../gui/optionspanel.py:51
 msgctxt "options panel: tab tooltip: description"
 msgid "Specialized settings for the current editing tool"
-msgstr ""
+msgstr "Posebne postavke trenutačnog alata za uređivanje"
 
 #: ../gui/optionspanel.py:58
 #, python-brace-format
 msgctxt "options panel: header"
 msgid "<b>{mode_name}</b>"
-msgstr ""
+msgstr "<b>{mode_name}</b>"
 
 #: ../gui/optionspanel.py:62
 msgctxt "options panel: body"
 msgid "<i>No options available</i>"
-msgstr ""
+msgstr "<i>Nema dostupnih opcija</i>"
 
 #: ../gui/overlays.py:161
 #, python-format
 msgid "Zoom: %.01f%%"
-msgstr ""
+msgstr "Zumiranje: %.01f%%"
 
 #: ../gui/picker.py:458
 msgctxt "context picker: statusbar text during grab"
 msgid "Pick brushstroke settings, stroke color, and layer…"
-msgstr ""
+msgstr "Odaberi postavke poteza kista, boju poteza i sloj …"
 
 #: ../gui/picker.py:496
 msgctxt "color picker: statusbar text during grab"
 msgid "Pick color…"
-msgstr ""
+msgstr "Odaberi boju …"
 
 #: ../gui/preferenceswindow.py:43
 msgid "Preferences"
-msgstr ""
+msgstr "Osobitosti"
 
 #. TRANSLATORS: This option means that MyPaint will try to use
 #. TRANSLATORS: the language the system tells it to use.
@@ -2767,204 +2810,204 @@ msgstr "Jezik sustava"
 #, python-brace-format
 msgctxt "Prefs Dialog|View|Interface - menu entries"
 msgid "{lang_en} - ({lang_nat})"
-msgstr ""
+msgstr "{lang_en} – ({lang_nat})"
 
 #. TRANSLATORS: title of panel showing an overview of the whole canvas
 #: ../gui/previewwindow.py:202
 msgid "Preview"
-msgstr ""
+msgstr "Pretprikaz"
 
 #: ../gui/previewwindow.py:204
 msgid "Show preview of the whole drawing area"
-msgstr ""
+msgstr "Prikaži pretprikaz cijelog područja za crtanje"
 
 #. TRANSLATORS: The preview panel shows where the "camera" of the
 #. TRANSLATORS: main view is pointing.
 #: ../gui/previewwindow.py:264
 msgid "Show Viewfinder"
-msgstr ""
+msgstr "Prikaži tražilicu prikaza"
 
 #: ../gui/scratchwindow.py:35
 msgid "Scratchpad"
-msgstr ""
+msgstr "Područje za skiciranje"
 
 #: ../gui/scratchwindow.py:37
 msgid "Mix colors and make sketches on separate scrap pages"
-msgstr ""
+msgstr "Miješaj boje i crtaj skice na zasebnoj stranici za skiciranje"
 
 #: ../gui/spinbox.py:35
 msgid "Previous item"
-msgstr ""
+msgstr "Prethodna stavka"
 
 #: ../gui/spinbox.py:39
 msgid "Next item"
-msgstr ""
+msgstr "Sljedeća stavka"
 
 #: ../gui/spinbox.py:102
 msgid "(Nothing to show)"
-msgstr ""
+msgstr "(Nema se što prikazati)"
 
 #: ../gui/symmetry.py:79
 msgctxt "symmetry axis edit mode: instructions shown in statusbar"
 msgid "Place axis"
-msgstr ""
+msgstr "Postavi os"
 
 #: ../gui/symmetry.py:83
 msgctxt "symmetry axis edit mode: instructions shown in statusbar"
 msgid "Move axis"
-msgstr ""
+msgstr "Pomakni os"
 
 #: ../gui/symmetry.py:87
 msgctxt "symmetry axis edit mode: instructions shown in statusbar"
 msgid "Remove axis"
-msgstr ""
+msgstr "Ukloni os"
 
 #: ../gui/symmetry.py:99
 msgctxt "symmetry axis edit mode: mode name (tooltips)"
 msgid "Edit Symmetry Axis"
-msgstr ""
+msgstr "Uredi os simetrije"
 
 #: ../gui/symmetry.py:105
 msgctxt "symmetry axis edit mode: mode description (tooltips)"
 msgid "Adjust the painting symmetry axis."
-msgstr ""
+msgstr "Podesi os simetrije slikanja."
 
 #: ../gui/symmetry.py:355
 msgctxt "symmetry axis options panel: labels"
 msgid "X Position:"
-msgstr ""
+msgstr "Pozicija x:"
 
 #: ../gui/symmetry.py:359
 msgctxt "symmetry axis options panel: labels"
 msgid "Y Position:"
-msgstr ""
+msgstr "Pozicija y:"
 
 #: ../gui/symmetry.py:363
 msgctxt "symmetry axis options panel: position button: no axis pos."
 msgid "None"
-msgstr ""
+msgstr "Bez"
 
 #: ../gui/symmetry.py:367
 #, python-format
 msgctxt "symmetry axis options panel: position button: axis pos. in pixels"
 msgid "%d px"
-msgstr ""
+msgstr "%d px"
 
 #: ../gui/symmetry.py:371
 msgctxt "symmetry axis options panel: labels"
 msgid "Alpha:"
-msgstr ""
+msgstr "Alfa:"
 
 #: ../gui/symmetry.py:375
 msgctxt "symmetry axis options panel: labels"
 msgid "Symmetry Type:"
-msgstr ""
+msgstr "Vrsta simetrije:"
 
 #: ../gui/symmetry.py:379
 msgctxt "symmetry axis options panel: labels"
 msgid "Rotational lines:"
-msgstr ""
+msgstr "Okretajuće linije:"
 
 #: ../gui/symmetry.py:446
 msgctxt "symmetry axis options panel: axis position dialog: window title"
 msgid "X axis Position"
-msgstr ""
+msgstr "Položaj x osi"
 
 #: ../gui/symmetry.py:478
 msgctxt "symmetry axis options panel: axis position dialog: window title"
 msgid "Y axis Position"
-msgstr ""
+msgstr "Položaj y osi"
 
 #: ../gui/symmetry.py:608
 msgctxt "symmetry axis options panel: axis active checkbox"
 msgid "Enabled"
-msgstr ""
+msgstr "Aktivirano"
 
 #: ../gui/toolbar.py:28
 msgid "File handling"
-msgstr ""
+msgstr "Rukovanje datotekama"
 
 #: ../gui/toolbar.py:29
 msgid "Scraps switcher"
-msgstr ""
+msgstr "Mijenjanje skica"
 
 #: ../gui/toolbar.py:30
 msgid "Undo and Redo"
-msgstr ""
+msgstr "Poništi i ponovi"
 
 #: ../gui/toolbar.py:31
 msgid "Blend Modes"
-msgstr ""
+msgstr "Modusi stapanja"
 
 #: ../gui/toolbar.py:32
 msgid "Line Modes"
-msgstr ""
+msgstr "Modusi linija"
 
 #: ../gui/toolbar.py:33
 msgid "View (Main)"
-msgstr ""
+msgstr "Prikaz (glavni)"
 
 #: ../gui/toolbar.py:35
 msgid "View (Alternative/Secondary)"
-msgstr ""
+msgstr "Prikaz (alternativni/sekundarni)"
 
 #: ../gui/toolbar.py:37
 msgid "View (Resetting)"
-msgstr ""
+msgstr "Prikaz (ponovno postavljanje)"
 
 #: ../gui/topbar.py:91
 msgid "<b>MyPaint</b>"
-msgstr ""
+msgstr "<b>MyPaint</b>"
 
 #: ../gui/viewmanip.py:40
 msgid "Scroll View"
-msgstr ""
+msgstr "Kliži po prikazu"
 
 #: ../gui/viewmanip.py:43
 msgid "Drag the canvas view"
-msgstr ""
+msgstr "Povuci prikaz platna"
 
 #: ../gui/viewmanip.py:78
 msgid "Zoom View"
-msgstr ""
+msgstr "Zumiraj prikaz"
 
 #: ../gui/viewmanip.py:81
 msgid "Zoom the canvas view"
-msgstr ""
+msgstr "Zumiraj prikaz platna"
 
 #: ../gui/viewmanip.py:120
 msgid "Rotate View"
-msgstr ""
+msgstr "Okreni prikaz"
 
 #: ../gui/viewmanip.py:123
 msgid "Rotate the canvas view"
-msgstr ""
+msgstr "Okreni prikaz platna"
 
 #: ../gui/workspace.py:1313
 #, python-brace-format
 msgctxt "workspace: sidebar tabs: button tooltips"
 msgid "{tab_title}: close tab"
-msgstr ""
+msgstr "{tab_title}: zatvori karticu"
 
 #: ../gui/workspace.py:1317
 #, python-brace-format
 msgctxt "workspace: sidebar tabs: button tooltips"
 msgid "{tab_title}: tab options and properties"
-msgstr ""
+msgstr "{tab_title}: opcije i svojstva kartice"
 
 #: ../gui/workspace.py:1321
 #, python-brace-format
 msgctxt "workspace: sidebar tabs: button tooltips"
 msgid "{tab_title}: move tab to other sidebar"
-msgstr ""
+msgstr "{tab_title}: premjesti karticu na drugu bočnu traku"
 
 #: ../lib/command.py:181
 msgid "Unknown Command"
-msgstr ""
+msgstr "Nepoznata naredba"
 
 #: ../lib/command.py:324
 msgid "Undefined (command not started yet)"
-msgstr ""
+msgstr "Nedefinirano (naredba još nije pokrenuta)"
 
 #. TRANSLATORS: A short time spent painting / making brushwork.
 #. TRANSLATORS: This can correspond to zero or more touches of
@@ -2972,139 +3015,139 @@ msgstr ""
 #: ../lib/command.py:331
 #, python-brace-format
 msgid "{seconds:.01f}s of painting with {brush_name}"
-msgstr ""
+msgstr "{seconds:.01f}s od bojanja pomoću {brush_name}"
 
 #: ../lib/command.py:529
 msgid "Flood Fill"
-msgstr ""
+msgstr "Ispuni"
 
 #: ../lib/command.py:616
 msgid "Trim Layer"
-msgstr ""
+msgstr "Odreži sloj"
 
 #: ../lib/command.py:636
 msgid "Uniquify Layer Pixels"
-msgstr ""
+msgstr "Izjednači piksele sloja"
 
 #: ../lib/command.py:659
 msgid "Refactor Group"
-msgstr ""
+msgstr "Restrukturiraj grupu"
 
 #: ../lib/command.py:682
 msgid "Clear Layer"
-msgstr ""
+msgstr "Izbriši sloj"
 
 #. This is used by Paste layer as well as when loading from a PNG
 #. file. However in the latter case, the undo stack is reset
 #. immediately afterward.
 #: ../lib/command.py:706
 msgid "Paste Layer"
-msgstr ""
+msgstr "Zalijepi sloj"
 
 #: ../lib/command.py:729
 msgid "New Layer from Visible"
-msgstr ""
+msgstr "Novi sloj iz vidljivog"
 
 #: ../lib/command.py:771
 msgid "Merge Visible Layers"
-msgstr ""
+msgstr "Sjedini vidljive slojeve"
 
 #: ../lib/command.py:845
 msgid "Merge Down"
-msgstr ""
+msgstr "Sjedini prema dolje"
 
 #: ../lib/command.py:894
 msgid "Normalize Layer Mode"
-msgstr ""
+msgstr "Modus normaliziranog sloja"
 
 #: ../lib/command.py:947
 msgid "Import Layers"
-msgstr ""
+msgstr "Uvezi slojeve"
 
 #: ../lib/command.py:949
 #, python-brace-format
 msgid "Add {layer_default_name}"
-msgstr ""
+msgstr "Dodaj {layer_default_name}"
 
 #: ../lib/command.py:973
 msgid "Remove Layer"
-msgstr ""
+msgstr "Ukloni sloj"
 
 #: ../lib/command.py:1020
 msgid "Select Layer"
-msgstr ""
+msgstr "Odaberi sloj"
 
 #: ../lib/command.py:1150
 msgid "Duplicate Layer"
-msgstr ""
+msgstr "Dupliciraj sloj"
 
 #: ../lib/command.py:1174
 msgid "Move Layer Up"
-msgstr ""
+msgstr "Premjesti sloj prema gore"
 
 #: ../lib/command.py:1188
 msgid "Move Layer Down"
-msgstr ""
+msgstr "Premjesti sloj prema dolje"
 
 #: ../lib/command.py:1215
 msgid "Move Layer in Stack"
-msgstr ""
+msgstr "Premjesti sloj"
 
 #: ../lib/command.py:1334
 msgid "Rename Layer"
-msgstr ""
+msgstr "Preimenuj sloj"
 
 #: ../lib/command.py:1392
 msgid "Make Layer Visible"
-msgstr ""
+msgstr "Postavi sloj kao vidljiv"
 
 #: ../lib/command.py:1394
 msgid "Make Layer Invisible"
-msgstr ""
+msgstr "Postavi sloj kao nevidljiv"
 
 #: ../lib/command.py:1432
 msgid "Lock Layer"
-msgstr ""
+msgstr "Zaključaj sloj"
 
 #: ../lib/command.py:1434
 msgid "Unlock Layer"
-msgstr ""
+msgstr "Otključaj sloj"
 
 #: ../lib/command.py:1452
 #, python-format
 msgid "Set Layer Opacity: %0.1f%%"
-msgstr ""
+msgstr "Postavi neprozirnost sloja: %0.1f%%"
 
 #: ../lib/command.py:1491
 msgid "Unknown Mode"
-msgstr ""
+msgstr "Nepoznat modus"
 
 #: ../lib/command.py:1492
 #, python-format
 msgid "Set Layer Mode: %s"
-msgstr ""
+msgstr "Postavi modus slojeva: %s"
 
 #: ../lib/command.py:1516
 msgid "Enable Frame"
-msgstr ""
+msgstr "Aktiviraj okvir"
 
 #: ../lib/command.py:1518
 msgid "Disable Frame"
-msgstr ""
+msgstr "Deaktiviraj okvir"
 
 #: ../lib/command.py:1536
 msgid "Update Frame"
-msgstr ""
+msgstr "Aktualiziraj okvir"
 
 #: ../lib/command.py:1565
 msgid "Edit Layer Externally"
-msgstr ""
+msgstr "Uredi sloj vani"
 
 #: ../lib/document.py:73
 #, python-brace-format
 msgctxt "Document IO: common error strings: {error_loading_common}"
 msgid "Error loading “{basename}”."
-msgstr ""
+msgstr "Greška prilikom učitavanja „{basename}”."
 
 #: ../lib/document.py:77
 msgctxt "Document IO: common error strings: {see_logs}"
@@ -3115,13 +3158,13 @@ msgstr ""
 #: ../lib/document.py:204
 msgctxt "Document autosave descriptions: the {ago} string: future"
 msgid "from now"
-msgstr ""
+msgstr "od sada"
 
 #. TRANSLATORS: string used in e.g. "8s ago"
 #: ../lib/document.py:210
 msgctxt "Document autosave descriptions: the {ago} string: past"
 msgid "ago"
-msgstr ""
+msgstr "prije"
 
 #. TRANSLATORS: String descriptions for an autosaved backup.
 #. TRANSLATORS: Time strings are localized: e.g. "3h42m" or "8s"
@@ -3166,7 +3209,7 @@ msgstr ""
 #, python-brace-format
 msgctxt "Document IO: hint templates for user-facing exceptions"
 msgid "Unable to write “{filename}”: {err}"
-msgstr ""
+msgstr "Namoguće zapisivanje datoteke „{filename}”: {err}"
 
 #: ../lib/document.py:1500
 #, python-brace-format
@@ -3175,6 +3218,8 @@ msgid ""
 "{error_loading_common}\n"
 "The file does not exist."
 msgstr ""
+"{error_loading_common}\n"
+"Datoteka ne postoji."
 
 #: ../lib/document.py:1507
 #, python-brace-format
@@ -3183,6 +3228,8 @@ msgid ""
 "{error_loading_common}\n"
 "You do not have the permissions needed to open this file."
 msgstr ""
+"{error_loading_common}\n"
+"Nemaš prava koja su potrebna za otvaranje ove datoteke."
 
 #: ../lib/document.py:1533
 #, python-brace-format
@@ -3194,6 +3241,11 @@ msgid ""
 "\n"
 "{see_logs}"
 msgstr ""
+"{error_loading_common}\n"
+"\n"
+"Razlog: {reason}\n"
+"\n"
+"{see_logs}"
 
 #: ../lib/document.py:1558
 #, python-brace-format
@@ -3202,11 +3254,13 @@ msgid ""
 "{error_loading_common}\n"
 "Unknown file format extension: “{ext}”"
 msgstr ""
+"{error_loading_common}\n"
+"Nepoznati nastavak datotečnog formata: „{ext}”"
 
 #: ../lib/document.py:1589
 msgctxt "Document IO: group name for Import Layers"
 msgid "Imported layers"
-msgstr ""
+msgstr "Uvezeni slojevi"
 
 #: ../lib/document.py:1756
 #, python-brace-format
@@ -3232,32 +3286,32 @@ msgstr ""
 #: ../lib/floodfill.py:131
 msgctxt "floodfill status message: use active tense"
 msgid "Filling"
-msgstr ""
+msgstr "Ispunjavanje"
 
 #: ../lib/floodfill.py:132
 msgctxt "floodfill status message: use active tense"
 msgid "Morphing"
-msgstr ""
+msgstr "Sjedinjavanje"
 
 #: ../lib/floodfill.py:133
 msgctxt "floodfill status message: use active tense"
 msgid "Blurring"
-msgstr ""
+msgstr "Zamućivanje"
 
 #: ../lib/floodfill.py:134
 msgctxt "floodfill status message: use active tense"
 msgid "Compositing"
-msgstr ""
+msgstr "Sastavljanje"
 
 #: ../lib/floodfill.py:135
 msgctxt "floodfill status message: use active tense"
 msgid "Finishing up"
-msgstr ""
+msgstr "Završavanje"
 
 #: ../lib/floodfill.py:137
 msgctxt "uniform square region of pixels, plural noun"
 msgid "tiles"
-msgstr ""
+msgstr "pločice"
 
 #. TRANSLATORS: Assumption for all "Time period abbreviations":
 #. TRANSLATORS: they don't need ngettext (to support plural/singular)
@@ -3265,142 +3319,142 @@ msgstr ""
 #, python-brace-format
 msgctxt "Time period abbreviations"
 msgid "{days}d{hours}h"
-msgstr ""
+msgstr "{days}d{hours}h"
 
 #: ../lib/helpers.py:572
 #, python-brace-format
 msgctxt "Time period abbreviations"
 msgid "{hours}h{minutes}m"
-msgstr ""
+msgstr "{hours}h{minutes}m"
 
 #: ../lib/helpers.py:574
 #, python-brace-format
 msgctxt "Time period abbreviation"
 msgid "{minutes}m{seconds}s"
-msgstr ""
+msgstr "{minutes}m{seconds}s"
 
 #: ../lib/helpers.py:576
 #, python-brace-format
 msgctxt "Time period abbreviation"
 msgid "{seconds}s"
-msgstr ""
+msgstr "{seconds}s"
 
 #. TRANSLATORS: Default name for new normal, paintable layers
 #: ../lib/layer/core.py:66 ../lib/layer/data.py:1301
 msgctxt "layer default names"
 msgid "Layer"
-msgstr ""
+msgstr "Sloj"
 
 #. TRANSLATORS: Short default name for vector (SVG/Inkscape) layers
 #: ../lib/layer/data.py:1159
 msgctxt "layer default names"
 msgid "Vectors"
-msgstr ""
+msgstr "Vektori"
 
 #: ../lib/layer/data.py:1164
 msgctxt "layer type descriptions"
 msgid "Vector Layer"
-msgstr ""
+msgstr "Sloj vektora"
 
 #. TRANSLATORS: Short default name for renderable fallback layers
 #: ../lib/layer/data.py:1229
 msgctxt "layer default names"
 msgid "Bitmap"
-msgstr ""
+msgstr "Bitmap"
 
 #: ../lib/layer/data.py:1234
 msgctxt "layer type descriptions"
 msgid "Bitmap Data"
-msgstr ""
+msgstr "Podaci bitmapa"
 
 #. TRANSLATORS: Short default name for non-renderable fallback layers
 #: ../lib/layer/data.py:1250
 msgctxt "layer default names"
 msgid "Data"
-msgstr ""
+msgstr "Podaci"
 
 #: ../lib/layer/data.py:1255
 msgctxt "layer type descriptions"
 msgid "Unknown Data"
-msgstr ""
+msgstr "Nepoznati podaci"
 
 #: ../lib/layer/data.py:1306
 msgctxt "layer type descriptions"
 msgid "Painting Layer"
-msgstr ""
+msgstr "Sloj slikanja"
 
 #. TRANSLATORS: Short default name for layer groups.
 #: ../lib/layer/group.py:67
 msgctxt "layer default names"
 msgid "Group"
-msgstr ""
+msgstr "Grupiraj"
 
 #: ../lib/layer/group.py:72
 msgctxt "layer type descriptions"
 msgid "Layer Group"
-msgstr ""
+msgstr "Grupa slojeva"
 
 #. TRANSLATORS: Short default name for temporary placeholder layers.
 #. TRANSLATORS: (The user should never see this except in error cases)
 #: ../lib/layer/tree.py:70
 msgctxt "layer default names"
 msgid "Placeholder"
-msgstr ""
+msgstr "Rezervirano mjesto"
 
 #: ../lib/layer/tree.py:109
 msgctxt "layer default names"
 msgid "Root"
-msgstr ""
+msgstr "Korijen"
 
 #: ../lib/layer/tree.py:2127 ../lib/layer/tree.py:2193
 msgctxt "layer default names: joiner punctuation for merged layers"
 msgid ", "
-msgstr ""
+msgstr ", "
 
 #: ../lib/layer/tree.py:2315
 msgctxt "layer default names: refactor: name of the common areas layer"
 msgid "Common"
-msgstr ""
+msgstr "Uobičajeno"
 
 #: ../lib/layervis.py:44
 msgctxt "layer visibility sets: default name for a user-managed view"
 msgid "View"
-msgstr ""
+msgstr "Pogled"
 
 #: ../lib/layervis.py:49
 msgctxt "layer visibility sets: text shown when no user-managed view is active"
 msgid "No active view"
-msgstr ""
+msgstr "Nema aktivnog prikaza"
 
 #: ../lib/layervis.py:579
 msgctxt "layer views: commands: add"
 msgid "Add Layer View"
-msgstr ""
+msgstr "Dodaj prikaz sloja"
 
 #: ../lib/layervis.py:604 ../lib/layervis.py:633
 msgctxt "layer views: commands: remove"
 msgid "Remove Layer View"
-msgstr ""
+msgstr "Ukloni prikaz sloja"
 
 #: ../lib/layervis.py:663
 #, python-brace-format
 msgctxt "layer views: commands: activate"
 msgid "Activate Layer View “{name}”"
-msgstr ""
+msgstr "Aktiviraj prikaz slojeva „{name}”"
 
 #: ../lib/layervis.py:692
 msgctxt "layer views: commands: set active view's lock flag"
 msgid "Lock Layer View"
-msgstr ""
+msgstr "Zaključaj prikaz sloja"
 
 #: ../lib/layervis.py:697
 msgctxt "layer views: commands: set active view's lock flag"
 msgid "Unlock Layer View"
-msgstr ""
+msgstr "Otključaj prikaz sloja"
 
 #: ../lib/modes.py:47
 msgid "Pass-through"
-msgstr ""
+msgstr "Proslijedi"
 
 #: ../lib/modes.py:48
 msgid "Group contents apply directly to the group's backdrop"
@@ -3408,7 +3462,7 @@ msgstr ""
 
 #: ../lib/modes.py:51
 msgid "Normal"
-msgstr ""
+msgstr "Normalno"
 
 #: ../lib/modes.py:52
 msgid "The top layer only, without blending colors."
@@ -3425,7 +3479,7 @@ msgstr ""
 
 #: ../lib/modes.py:58
 msgid "Multiply"
-msgstr ""
+msgstr "Pomnoži"
 
 #: ../lib/modes.py:59
 msgid ""
@@ -3435,7 +3489,7 @@ msgstr ""
 
 #: ../lib/modes.py:62
 msgid "Screen"
-msgstr ""
+msgstr "Ekran"
 
 #: ../lib/modes.py:63
 msgid ""
@@ -3445,7 +3499,7 @@ msgstr ""
 
 #: ../lib/modes.py:66
 msgid "Overlay"
-msgstr ""
+msgstr "Prekrij"
 
 #: ../lib/modes.py:67
 msgid ""
@@ -3455,7 +3509,7 @@ msgstr ""
 
 #: ../lib/modes.py:71
 msgid "Darken"
-msgstr ""
+msgstr "Zatamni"
 
 #: ../lib/modes.py:72
 msgid "The top layer is used where it is darker than the backdrop."
@@ -3463,7 +3517,7 @@ msgstr ""
 
 #: ../lib/modes.py:75
 msgid "Lighten"
-msgstr ""
+msgstr "Posvjetli"
 
 #: ../lib/modes.py:76
 msgid "The top layer is used where it is lighter than the backdrop."
@@ -3471,7 +3525,7 @@ msgstr ""
 
 #: ../lib/modes.py:79
 msgid "Dodge"
-msgstr ""
+msgstr "Posvijetli"
 
 #: ../lib/modes.py:80
 msgid ""
@@ -3482,7 +3536,7 @@ msgstr ""
 
 #: ../lib/modes.py:84
 msgid "Burn"
-msgstr ""
+msgstr "Užareno"
 
 #: ../lib/modes.py:85
 msgid ""
@@ -3493,7 +3547,7 @@ msgstr ""
 
 #: ../lib/modes.py:89
 msgid "Hard Light"
-msgstr ""
+msgstr "Jako svjetlo"
 
 #: ../lib/modes.py:90
 msgid "Similar to shining a harsh spotlight onto the backdrop."
@@ -3501,7 +3555,7 @@ msgstr ""
 
 #: ../lib/modes.py:92
 msgid "Soft Light"
-msgstr ""
+msgstr "Slabo svjetlo"
 
 #: ../lib/modes.py:93
 msgid "Like shining a diffuse spotlight onto the backdrop."
@@ -3509,7 +3563,7 @@ msgstr ""
 
 #: ../lib/modes.py:95
 msgid "Difference"
-msgstr ""
+msgstr "Razlika"
 
 #: ../lib/modes.py:96
 msgid "Subtracts the darker color from the lighter of the two."
@@ -3517,7 +3571,7 @@ msgstr ""
 
 #: ../lib/modes.py:98
 msgid "Exclusion"
-msgstr ""
+msgstr "Izuzimanje"
 
 #: ../lib/modes.py:99
 msgid "Similar to the 'Difference' mode, but lower in contrast."
@@ -3525,7 +3579,7 @@ msgstr ""
 
 #: ../lib/modes.py:102
 msgid "Hue"
-msgstr ""
+msgstr "Nijansa"
 
 #: ../lib/modes.py:103
 msgid ""
@@ -3535,7 +3589,7 @@ msgstr ""
 
 #: ../lib/modes.py:106
 msgid "Saturation"
-msgstr ""
+msgstr "Zasićenost"
 
 #: ../lib/modes.py:107
 msgid ""
@@ -3551,7 +3605,7 @@ msgstr ""
 
 #: ../lib/modes.py:114
 msgid "Luminosity"
-msgstr ""
+msgstr "Osvijetljenost"
 
 #: ../lib/modes.py:115
 msgid ""
@@ -3561,7 +3615,7 @@ msgstr ""
 
 #: ../lib/modes.py:119
 msgid "Plus"
-msgstr ""
+msgstr "Plus"
 
 #: ../lib/modes.py:120
 msgid "This layer and its backdrop are simply added together."
@@ -3569,7 +3623,7 @@ msgstr ""
 
 #: ../lib/modes.py:122
 msgid "Destination In"
-msgstr ""
+msgstr "U odredištu"
 
 #: ../lib/modes.py:123
 msgid ""
@@ -3579,7 +3633,7 @@ msgstr ""
 
 #: ../lib/modes.py:126
 msgid "Destination Out"
-msgstr ""
+msgstr "Izvan odredišta"
 
 #: ../lib/modes.py:127
 msgid ""
@@ -3589,7 +3643,7 @@ msgstr ""
 
 #: ../lib/modes.py:130
 msgid "Source Atop"
-msgstr ""
+msgstr "Izvor na vrh"
 
 #: ../lib/modes.py:131
 msgid ""
@@ -3599,7 +3653,7 @@ msgstr ""
 
 #: ../lib/modes.py:134
 msgid "Destination Atop"
-msgstr ""
+msgstr "Na odredištu"
 
 #: ../lib/modes.py:135
 msgid ""
@@ -3615,7 +3669,7 @@ msgstr ""
 #, python-brace-format
 msgctxt "unique names: serial number needed: template"
 msgid "{name} {number}"
-msgstr ""
+msgstr "{name} {number}"
 
 #. TRANSLATORS: UNIQUE_NAME_REGEX - regex for UNIQUE_NAME_TEMPLATE
 #. TRANSLATORS: Must match its template (msgid: '{name} {number}')
@@ -3623,7 +3677,7 @@ msgstr ""
 #: ../lib/naming.py:30
 msgctxt "unique names: regex matching a string with a serial number"
 msgid "^(?P<name>.*?)\\s+(?P<number>\\d+)$"
-msgstr ""
+msgstr "^(?P<name>.*?)\\s+(?P<number>\\d+)$"
 
 #: ../lib/pixbufsurface.py:39
 msgctxt "user-facing error texts"
@@ -3641,41 +3695,45 @@ msgid ""
 "Reason: {err}\n"
 "Target folder: “{dirname}”."
 msgstr ""
+"Neuspjelo zapisivanje „{basename}”.\n"
+"\n"
+"Razlog: {err}\n"
+"Odredišna mapa: „{dirname}”."
 
 #: ../lib/tiledsurface.py:48
 msgid "Vertical"
-msgstr ""
+msgstr "Okomito"
 
 #: ../lib/tiledsurface.py:49
 msgid "Horizontal"
-msgstr ""
+msgstr "Vodoravno"
 
 #: ../lib/tiledsurface.py:50
 msgid "Vertical and horizontal"
-msgstr ""
+msgstr "Vodoravno i okomito"
 
 #: ../lib/tiledsurface.py:51
 msgid "Rotational"
-msgstr ""
+msgstr "Okretanje"
 
 #: ../lib/tiledsurface.py:52
 msgid "Snowflake"
-msgstr ""
+msgstr "Snježna pahuljica"
 
 #: ../lib/tiledsurface.py:628
 #, python-format
 msgid "PNG reader failed: %s"
-msgstr ""
+msgstr "PNG čitač neuspio: %s"
 
 #: ../po/tmp/autorecover.glade.h:1
 msgid "Recover interrupted work?"
-msgstr ""
+msgstr "Obnoviti prekinuti rad?"
 
 #. Whether to show the dialog when MyPaint starts
 #: ../po/tmp/autorecover.glade.h:3
 msgctxt "Autosave Recovery dialog|"
 msgid "_Look for backups at startup"
-msgstr ""
+msgstr "_Potraži sigurnosne kopije tijekom pokretanja"
 
 #: ../po/tmp/autorecover.glade.h:4
 msgctxt "Autosave Recovery dialog|Show Dialog at Startup checkbutton|"
@@ -3691,18 +3749,18 @@ msgstr ""
 #: ../po/tmp/autorecover.glade.h:8
 msgctxt "Autosave Recovery dialog|"
 msgid "_Delete…"
-msgstr ""
+msgstr "_Izbriši …"
 
 #: ../po/tmp/autorecover.glade.h:9
 msgctxt "Autosave Recovery dialog|Delete button|"
 msgid "Delete this backup from the disk."
-msgstr ""
+msgstr "Izbriši ovu sigurnosnu kopiju s diska."
 
 #. Recover in the sense or retrieval or salvage from a backup file. The user is asked to save the retrieved file immediately afterwards, hence the ellipsis.
 #: ../po/tmp/autorecover.glade.h:11
 msgctxt "Autosave Recovery dialog|"
 msgid "_Recover & Save…"
-msgstr ""
+msgstr "_Obnovi i spremi …"
 
 #: ../po/tmp/autorecover.glade.h:12
 msgctxt "Autosave Recovery dialog|Recover button|"
@@ -3713,7 +3771,7 @@ msgstr ""
 #: ../po/tmp/autorecover.glade.h:14
 msgctxt "Autosave Recovery dialog|"
 msgid "Decide _Later"
-msgstr ""
+msgstr "Od_luči kasnije"
 
 #: ../po/tmp/autorecover.glade.h:15
 msgctxt "Autosave Recovery dialog|Cancel button|"
@@ -3730,15 +3788,15 @@ msgstr ""
 
 #: ../po/tmp/autorecover.glade.h:17
 msgid "Thumbnail"
-msgstr ""
+msgstr "Minijatura"
 
 #: ../po/tmp/autorecover.glade.h:18
 msgid "Description"
-msgstr ""
+msgstr "Opis"
 
 #: ../po/tmp/brusheditor.glade.h:1
 msgid "Live update"
-msgstr ""
+msgstr "Aktualiziraj uživo"
 
 #: ../po/tmp/brusheditor.glade.h:2
 msgid ""
@@ -3748,11 +3806,11 @@ msgstr ""
 
 #: ../po/tmp/brusheditor.glade.h:4
 msgid "Save these settings to the brush"
-msgstr ""
+msgstr "Spremi ove postavke kistu"
 
 #: ../po/tmp/brusheditor.glade.h:5
 msgid "Edit Icon"
-msgstr ""
+msgstr "Uredi ikonu"
 
 #: ../po/tmp/brusheditor.glade.h:6
 msgid ""
@@ -3762,15 +3820,15 @@ msgstr ""
 
 #: ../po/tmp/brusheditor.glade.h:7
 msgid "Delete"
-msgstr ""
+msgstr "Izbriši"
 
 #: ../po/tmp/brusheditor.glade.h:8
 msgid "Delete this brush from the disk"
-msgstr ""
+msgstr "Izbriši ovaj kist s diska"
 
 #: ../po/tmp/brusheditor.glade.h:9
 msgid "Copy to New"
-msgstr ""
+msgstr "Kopiraj u novu"
 
 #: ../po/tmp/brusheditor.glade.h:10
 msgid "Copy these settings and the current brush's icon to a new brush"
@@ -3778,33 +3836,33 @@ msgstr ""
 
 #: ../po/tmp/brusheditor.glade.h:12
 msgid "Rename this brush"
-msgstr ""
+msgstr "Preimenuj ovaj kist"
 
 #: ../po/tmp/brusheditor.glade.h:13
 msgid "Brush Setting"
-msgstr ""
+msgstr "Postavke kista"
 
 #: ../po/tmp/brusheditor.glade.h:14
 msgctxt "brush editor|metadata settings|labels for widgets|tooltips|"
 msgid "Short description for use in tooltips"
-msgstr ""
+msgstr "Kratki opis o upotrebi u savjetu za alat"
 
 #. Description for user tooltips
 #: ../po/tmp/brusheditor.glade.h:16
 msgctxt "brush editor|metadata settings|labels|"
 msgid "Description:"
-msgstr ""
+msgstr "Opis:"
 
 #: ../po/tmp/brusheditor.glade.h:17
 msgctxt "brush editor|metadata settings|labels for widgets|tooltips|"
 msgid "Brush developer's notes"
-msgstr ""
+msgstr "Opis razvijatelja kista"
 
 #. Notes for developers
 #: ../po/tmp/brusheditor.glade.h:19
 msgctxt "brush editor|metadata settings|labels|"
 msgid "Notes:"
-msgstr ""
+msgstr "Napomene:"
 
 #: ../po/tmp/brusheditor.glade.h:20
 msgid ""
@@ -3814,7 +3872,7 @@ msgstr ""
 #. field label
 #: ../po/tmp/brusheditor.glade.h:22
 msgid "Value:"
-msgstr ""
+msgstr "Vrijednost:"
 
 #: ../po/tmp/brusheditor.glade.h:23
 msgid "Reset this input to have no effect on the setting"
@@ -3834,19 +3892,19 @@ msgstr ""
 
 #: ../po/tmp/brusheditor.glade.h:28
 msgid "Output"
-msgstr ""
+msgstr "Rezultat"
 
 #: ../po/tmp/brusheditor.glade.h:29
 msgid "Input"
-msgstr ""
+msgstr "Unos"
 
 #: ../po/tmp/brusheditor.glade.h:30
 msgid "Adjusts the maximum value"
-msgstr ""
+msgstr "Podešava maksimalnu vrijednost"
 
 #: ../po/tmp/brusheditor.glade.h:31
 msgid "Adjusts the minimum value"
-msgstr ""
+msgstr "Podešava minimalnu vrijednost"
 
 #: ../po/tmp/brusheditor.glade.h:32
 msgid ""
@@ -3866,7 +3924,7 @@ msgstr ""
 
 #: ../po/tmp/brusheditor.glade.h:37
 msgid "Brush Dynamics"
-msgstr ""
+msgstr "Dinamike kistova"
 
 #: ../po/tmp/brusheditor.glade.h:38
 msgid "Adjust this input mapping in detail"
@@ -3874,30 +3932,30 @@ msgstr ""
 
 #: ../po/tmp/brusheditor.glade.h:39
 msgid "{tooltip}"
-msgstr ""
+msgstr "{tooltip}"
 
 #. field name (template)
 #: ../po/tmp/brusheditor.glade.h:41
 msgid "{dname}:"
-msgstr ""
+msgstr "{dname}:"
 
 #: ../po/tmp/brusheditor.glade.h:42
 msgid "Brush dynamics are not available for this setting."
-msgstr ""
+msgstr "Za ovu postavku nema dinamika kistova."
 
 #: ../po/tmp/brusheditor.glade.h:43
 msgid "<big><b>No Brush Dynamics</b></big>"
-msgstr ""
+msgstr "<big><b>Nema dinamika za kistove</b></big>"
 
 #: ../po/tmp/inktool.glade.h:1
 msgctxt "Inking tool options: point value sliders: labels: tooltips"
 msgid "Pressure value for the current point"
-msgstr ""
+msgstr "Vrijednost pritiska za trenutačnu točku"
 
 #: ../po/tmp/inktool.glade.h:2
 msgctxt "Inking tool options: point value sliders: labels"
 msgid "Press:"
-msgstr ""
+msgstr "Pritisni:"
 
 #. The meaning of negative values is *not* affected by text direction.&#10;The widget
 #: ../po/tmp/inktool.glade.h:4
@@ -3911,16 +3969,16 @@ msgstr ""
 #: ../po/tmp/inktool.glade.h:7
 msgctxt "Inking tool options: point value sliders: labels"
 msgid "X-tilt:"
-msgstr ""
+msgstr "X nagib:"
 
 #: ../po/tmp/inktool.glade.h:8
 msgctxt "Inking tool options: point value sliders: labels"
 msgid "Y-tilt:"
-msgstr ""
+msgstr "Y nagib:"
 
 #: ../po/tmp/inktool.glade.h:9
 msgid "Tilt in the canvas Y axis"
-msgstr ""
+msgstr "Nagib u y osi platna"
 
 #: ../po/tmp/inktool.glade.h:10
 msgctxt "Inking tool options: point value sliders: labels: tooltips"
@@ -3930,25 +3988,25 @@ msgstr ""
 #: ../po/tmp/inktool.glade.h:11
 msgctxt "Inking tool options: point value sliders: labels"
 msgid "Time:"
-msgstr ""
+msgstr "Vrijeme:"
 
 #: ../po/tmp/inktool.glade.h:12
 msgctxt "Inking tool options: node delete button: label"
 msgid "Delete Point"
-msgstr ""
+msgstr "Izbriši točku"
 
 #: ../po/tmp/inktool.glade.h:13
 msgctxt "Inking tool options: node delete button: tooltip"
 msgid "Delete the currently selected point"
-msgstr ""
+msgstr "Izbriši trenutačno odabranu točku"
 
 #: ../po/tmp/inktool.glade.h:14 ../po/tmp/resources.xml.h:184
 msgid "Insert Point"
-msgstr ""
+msgstr "Umetni točku"
 
 #: ../po/tmp/inktool.glade.h:15 ../po/tmp/resources.xml.h:188
 msgid "Simplify Points"
-msgstr ""
+msgstr "Pojednostavi točke"
 
 #: ../po/tmp/inktool.glade.h:16
 msgid "Simplify the curve using the Reumann-Witkam algorithm."
@@ -3956,19 +4014,18 @@ msgstr ""
 
 #: ../po/tmp/inktool.glade.h:17 ../po/tmp/resources.xml.h:190
 msgid "Cull Points"
-msgstr ""
+msgstr "Ukloni točke"
 
 #: ../po/tmp/inktool.glade.h:18
 msgid "Cull every other point from the curve."
-msgstr ""
+msgstr "Ukloni svaku drugu točku s krivulje."
 
 #: ../po/tmp/layerprops.glade.h:1
 msgctxt "Layer properties widget → Name → label tooltip"
 msgid "The layer’s unique name."
-msgstr ""
+msgstr "Jedinstveno ime sloja."
 
 #: ../po/tmp/layerprops.glade.h:2
-#, fuzzy
 msgctxt "Layer properties widget → <category labels>"
 msgid "Name"
 msgstr "Ime"
@@ -3986,7 +4043,7 @@ msgstr ""
 #: ../po/tmp/layerprops.glade.h:7
 msgctxt "Layer properties widget → <category labels>"
 msgid "Mode"
-msgstr ""
+msgstr "Modus"
 
 #: ../po/tmp/layerprops.glade.h:9
 #, no-c-format
@@ -3998,10 +4055,9 @@ msgid ""
 msgstr ""
 
 #: ../po/tmp/layerprops.glade.h:12
-#, fuzzy
 msgctxt "Layer properties widget → <category labels>"
 msgid "Opacity"
-msgstr "Prozirnost:"
+msgstr "Prozirnost"
 
 #: ../po/tmp/layerprops.glade.h:13
 msgctxt "Layer properties widget → Flags → label tooltip"
@@ -4014,7 +4070,7 @@ msgstr ""
 #: ../po/tmp/layerprops.glade.h:16
 msgctxt "Layer properties widget → <category labels>"
 msgid "Flags"
-msgstr ""
+msgstr "Oznake"
 
 #: ../po/tmp/layerprops.glade.h:17
 msgctxt "Layer properties widget → Flags → Eye togglebutton → tooltip"
@@ -4048,47 +4104,47 @@ msgstr ""
 #: ../po/tmp/layervis.glade.h:1
 msgctxt "Layers window: view list controls: tooltips"
 msgid "The currently active view."
-msgstr ""
+msgstr "Trenutačno aktivni prikaz."
 
 #: ../po/tmp/layervis.glade.h:2
 msgctxt "Layers window: view list controls: tooltips"
 msgid "Rename the active view."
-msgstr ""
+msgstr "Preimenuj aktivni prikaz."
 
 #: ../po/tmp/layervis.glade.h:3
 msgctxt "Layers window: view list controls: tooltips"
 msgid "Remove the active view."
-msgstr ""
+msgstr "Ukloni aktivni prikaz."
 
 #: ../po/tmp/layervis.glade.h:4
 msgctxt "Layers window: view list controls: tooltips"
 msgid "Snapshot visible layers as a new view."
-msgstr ""
+msgstr "Snimi vidljivi sloj kao novi prikaz."
 
 #: ../po/tmp/layervis.glade.h:5
 msgctxt "Layers window: view list controls: tooltips"
 msgid "Lock or unlock the active view."
-msgstr ""
+msgstr "Zaključaj ili otključaj aktivni prikaz."
 
 #: ../po/tmp/mypaint.glade.h:2
 msgctxt "footer: color picker button: tooltip"
 msgid "Pick color"
-msgstr ""
+msgstr "Odaberi boju"
 
 #: ../po/tmp/mypaint.glade.h:3
 msgctxt "Footerbar|"
 msgid "Edit the current color in detail"
-msgstr ""
+msgstr "Uredi trenutačnu boju detaljno"
 
 #: ../po/tmp/mypaint.glade.h:4
 msgctxt "Footerbar|"
 msgid "Add the current color to the palette"
-msgstr ""
+msgstr "Dodaj trenutačnu boju u paletu"
 
 #: ../po/tmp/mypaint.glade.h:5
 msgctxt "Footerbar|"
 msgid "Canvas scale and rotation"
-msgstr ""
+msgstr "Skaliranje i okretanje platna"
 
 #. str.format() template
 #: ../po/tmp/mypaint.glade.h:8
@@ -4098,106 +4154,108 @@ msgid ""
 "Z: {scale:.1f}%\n"
 "R: {rotation:+.1f}°"
 msgstr ""
+"Z: {scale:.1f}%\n"
+"O: {rotation:+.1f}°"
 
 #: ../po/tmp/mypaint.glade.h:10
 msgctxt "footer: context picker button: tooltip"
 msgid "Pick brushstroke settings, stroke color, and layer"
-msgstr ""
+msgstr "Odaberi postavke poteza kista, boju poteza i sloj"
 
 #: ../po/tmp/preferenceswindow.glade.h:1
 msgctxt "Prefs Dialog|Saving|Save Formats and Locations|Default|"
 msgid "OpenRaster (*.ora)"
-msgstr ""
+msgstr "OpenRaster (*.ora)"
 
 #: ../po/tmp/preferenceswindow.glade.h:2
 msgctxt "Prefs Dialog|Saving|Save Formats and Locations|Default|"
 msgid "PNG solid with background (*.png)"
-msgstr ""
+msgstr "PNG puna boja s pozadinom (*.png)"
 
 #: ../po/tmp/preferenceswindow.glade.h:4
 #, no-c-format
 msgctxt "Prefs Dialog|Saving|Save Formats and Locations|Default|"
 msgid "JPEG 90% quality (*.jpg; *.jpeg)"
-msgstr ""
+msgstr "JPEG kvaliteta od 90% (*.jpg; *.jpeg)"
 
 #: ../po/tmp/preferenceswindow.glade.h:6
 #, no-c-format
 msgctxt "Prefs Dialog|View|Zoom|Default|"
 msgid "25%"
-msgstr ""
+msgstr "25%"
 
 #: ../po/tmp/preferenceswindow.glade.h:8
 #, no-c-format
 msgctxt "Prefs Dialog|View|Zoom|Default|"
 msgid "50%"
-msgstr ""
+msgstr "50%"
 
 #: ../po/tmp/preferenceswindow.glade.h:10
 #, no-c-format
 msgctxt "Prefs Dialog|View|Zoom|Default|"
 msgid "100%"
-msgstr ""
+msgstr "100%"
 
 #: ../po/tmp/preferenceswindow.glade.h:12
 #, no-c-format
 msgctxt "Prefs Dialog|View|Zoom|Default|"
 msgid "200%"
-msgstr ""
+msgstr "200%"
 
 #: ../po/tmp/preferenceswindow.glade.h:13
 msgctxt "Prefs Dialog|View|Cursors|Freehand Cursor|Type|"
 msgid "Circle with light outline"
-msgstr ""
+msgstr "Krug s tankim obrisom"
 
 #: ../po/tmp/preferenceswindow.glade.h:14
 msgctxt "Prefs Dialog|View|Cursors|Freehand Cursor|Type|"
 msgid "Circle with medium outline"
-msgstr ""
+msgstr "Krug sa srednjim obrisom"
 
 #: ../po/tmp/preferenceswindow.glade.h:15
 msgctxt "Prefs Dialog|View|Cursors|Freehand Cursor|Type|"
 msgid "Circle with heavy outline"
-msgstr ""
+msgstr "Krug s debelim obrisom"
 
 #: ../po/tmp/preferenceswindow.glade.h:16
 msgctxt "Prefs Dialog|View|Cursors|Freehand Cursor|Type|"
 msgid "Crosshair"
-msgstr ""
+msgstr "Križić"
 
 #. Graph x-axis label
 #: ../po/tmp/preferenceswindow.glade.h:18
 msgctxt "Prefs Dialog|Pen Input|Input Device Settings|Pressure Mapping|"
 msgid "Input Pressure"
-msgstr ""
+msgstr "Pritisak ulaza"
 
 #. Graph y-axis label
 #: ../po/tmp/preferenceswindow.glade.h:20
 msgctxt "Prefs Dialog|Pen Input|Input Device Settings|Pressure Mapping|"
 msgid "Brush Pressure"
-msgstr ""
+msgstr "Pritisak kista"
 
 #. Graph label, range (0...1)
 #: ../po/tmp/preferenceswindow.glade.h:22
 msgctxt "Prefs Dialog|Pen Input|Input Device Settings|Pressure Mapping|"
 msgid "0.0"
-msgstr ""
+msgstr "0.0"
 
 #. Graph label, range (0...1)
 #: ../po/tmp/preferenceswindow.glade.h:24
 msgctxt "Prefs Dialog|Pen Input|Input Device Settings|Pressure Mapping|"
 msgid "1.0"
-msgstr ""
+msgstr "1.0"
 
 #: ../po/tmp/preferenceswindow.glade.h:25
 msgctxt "Prefs Dialog|Pen Input|"
 msgid "<b>Global Pressure Mapping</b>"
-msgstr ""
+msgstr "<b>Global mapiranje pritiska</b>"
 
 #. Tab label in preferences dialog
 #: ../po/tmp/preferenceswindow.glade.h:27
 msgctxt "Prefs Dialog|"
 msgid "Pressure"
-msgstr ""
+msgstr "Pritisak"
 
 #: ../po/tmp/preferenceswindow.glade.h:28
 msgctxt "Prefs Dialog|Devices|"
@@ -4209,11 +4267,11 @@ msgstr ""
 #: ../po/tmp/preferenceswindow.glade.h:29
 msgctxt "Prefs Dialog|Button|"
 msgid "<b>Device Usage</b>"
-msgstr ""
+msgstr "<b>Korištenje uređaja</b>"
 
 #: ../po/tmp/preferenceswindow.glade.h:30
 msgid "Devices"
-msgstr ""
+msgstr "Uređaji"
 
 #: ../po/tmp/preferenceswindow.glade.h:31
 msgctxt "Prefs Dialog|Button|Pointer Button Mappings|"
@@ -4231,46 +4289,46 @@ msgstr ""
 #: ../po/tmp/preferenceswindow.glade.h:35
 msgctxt "Prefs Dialog|"
 msgid "Buttons"
-msgstr ""
+msgstr "Gumbi"
 
 #: ../po/tmp/preferenceswindow.glade.h:36
 msgctxt "Prefs Dialog|Button|"
 msgid "<b>Keyboard Mappings</b>"
-msgstr ""
+msgstr "<b>Mapiranje tipkovnie</b>"
 
 #: ../po/tmp/preferenceswindow.glade.h:37
 msgid "Keys"
-msgstr ""
+msgstr "Ključevi"
 
 #: ../po/tmp/preferenceswindow.glade.h:38
 msgctxt "Prefs Dialog|Load & Save|Saving|"
 msgid "Default file format:"
-msgstr ""
+msgstr "Standardni format datoteka:"
 
 #: ../po/tmp/preferenceswindow.glade.h:39
 msgctxt "Prefs Dialog|Load & Save|Saving|"
 msgid "Prefix when saving scraps:"
-msgstr ""
+msgstr "Prefiks za spremanje skica:"
 
 #: ../po/tmp/preferenceswindow.glade.h:40
 msgctxt "Prefs Dialog|Load & Save|"
 msgid "<b>Saving</b>"
-msgstr ""
+msgstr "<b>Spremanje</b>"
 
 #: ../po/tmp/preferenceswindow.glade.h:41
 msgctxt "Prefs Dialog|Load & Save|"
 msgid "<b>Color Management</b>"
-msgstr ""
+msgstr "<b>Upravljanje bojama</b>"
 
 #: ../po/tmp/preferenceswindow.glade.h:42
 msgctxt "Prefs Dialog|Load & Save|Color Management|"
 msgid "Color space conversions:"
-msgstr ""
+msgstr "Pretvaranja prostora boja:"
 
 #: ../po/tmp/preferenceswindow.glade.h:43
 msgctxt "Prefs Dialog|Load & Save|Color Management|"
 msgid "Convert to sRGB when loading; mark as sRGB when saving"
-msgstr ""
+msgstr "Pretvori u sRGB tijekom učitavanja; označi kao sRGB tijekom spremanja"
 
 #: ../po/tmp/preferenceswindow.glade.h:44
 msgctxt "Prefs Dialog|Load & Save|Color Management|"
@@ -4288,7 +4346,7 @@ msgstr ""
 #: ../po/tmp/preferenceswindow.glade.h:47
 msgctxt "Prefs Dialog|Load & Save|Color Management|"
 msgid "No automatic conversions or tagging"
-msgstr ""
+msgstr "Bez automatskog pretvaranja ili označavanja"
 
 #: ../po/tmp/preferenceswindow.glade.h:48
 msgctxt "Prefs Dialog|Load & Save|Color Management|"
@@ -4303,19 +4361,19 @@ msgstr ""
 #: ../po/tmp/preferenceswindow.glade.h:51
 msgctxt "Prefs Dialog|Load & Save|"
 msgid "<b>Automated Backups</b>"
-msgstr ""
+msgstr "<b>Automatske sigurnosne podrške</b>"
 
 #: ../po/tmp/preferenceswindow.glade.h:52
 msgctxt "Prefs Dialog|Load & Save|Automated Backups|switch label"
 msgid "Back up unsaved work:"
-msgstr ""
+msgstr "Izradi sigurnosne kopije nespremljenih radova:"
 
 #. In seconds. Lowest value is 5, highest is 300 (5 minutes). Only matters when enabled.
 #: ../po/tmp/preferenceswindow.glade.h:54
 msgctxt ""
 "Prefs Dialog|Load & Save|Automated Backups|interval spinbox units suffix"
 msgid "seconds of inactivity"
-msgstr ""
+msgstr "sekundi neaktivnosti"
 
 #: ../po/tmp/preferenceswindow.glade.h:55
 msgctxt "Prefs Dialog|Load & Save|Automated Backups|switch tooltip"
@@ -4328,47 +4386,47 @@ msgstr ""
 #: ../po/tmp/preferenceswindow.glade.h:56
 msgctxt "Prefs Dialog|Load & Save|Automated Backups|interval label"
 msgid "Time between backups:"
-msgstr ""
+msgstr "Vrijeme između sigurnosnih kopija:"
 
 #. Tab label in preferences dialog
 #: ../po/tmp/preferenceswindow.glade.h:58
 msgctxt "Prefs Dialog|"
 msgid "Load & Save"
-msgstr ""
+msgstr "Učitaj i spremi"
 
 #: ../po/tmp/preferenceswindow.glade.h:59
 msgctxt "Prefs Dialog|View|"
 msgid "<b>Zoom and Rendering</b>"
-msgstr ""
+msgstr "<b>Zumiranje i iscrtavanje</b>"
 
 #: ../po/tmp/preferenceswindow.glade.h:60
 msgid "Default zoom level:"
-msgstr ""
+msgstr "Standardna razina zumiranja:"
 
 #: ../po/tmp/preferenceswindow.glade.h:61
 msgctxt "Prefs Dialog|View|"
 msgid "<b>Interface</b>"
-msgstr ""
+msgstr "<b>Sučelje</b>"
 
 #: ../po/tmp/preferenceswindow.glade.h:62
 msgctxt "Prefs Dialog|View|Interface|"
 msgid "Toolbar icon size:"
-msgstr ""
+msgstr "Veličina ikona u alatnoj traci:"
 
 #: ../po/tmp/preferenceswindow.glade.h:63
 msgctxt "Prefs Dialog|View|Interface|"
 msgid "Freehand cursor type:"
-msgstr ""
+msgstr "Vrsta kursora za prostoručno crtanje:"
 
 #: ../po/tmp/preferenceswindow.glade.h:64
 msgctxt "Prefs Dialog|View|Interface|"
 msgid "Dark theme variant:"
-msgstr ""
+msgstr "Varijanta tamnog motiva:"
 
 #: ../po/tmp/preferenceswindow.glade.h:65
 msgctxt "Prefs Dialog|View|Interface|Dark theme variant|"
 msgid "If available in GTK3 theme (needs restart)"
-msgstr ""
+msgstr "Ako je dostupno u GTK3 motivu (zahtijeva ponovno pokretanje)"
 
 #: ../po/tmp/preferenceswindow.glade.h:66
 msgctxt "Prefs Dialog|View|Interface|Dark theme variant|checkbox tooltip"
@@ -4384,17 +4442,17 @@ msgstr ""
 #: ../po/tmp/preferenceswindow.glade.h:68
 msgctxt "Prefs Dialog|View|Interface|Icon size|"
 msgid "Large (requires recent GTK3)"
-msgstr ""
+msgstr "Velika (zahtijeva najnoviji GTK3)"
 
 #: ../po/tmp/preferenceswindow.glade.h:69
 msgctxt "Prefs Dialog|View|Interface|Icon size|"
 msgid "Small"
-msgstr ""
+msgstr "Mala"
 
 #: ../po/tmp/preferenceswindow.glade.h:70
 msgctxt "Prefs Dialog|View|Zoom|"
 msgid "Use a real checkerboard pattern"
-msgstr ""
+msgstr "Koristi stvarnu mustru šahovske ploče"
 
 #: ../po/tmp/preferenceswindow.glade.h:71
 msgctxt "Prefs Dialog|View|Zoom|"
@@ -4405,12 +4463,12 @@ msgstr ""
 
 #: ../po/tmp/preferenceswindow.glade.h:73
 msgid "When showing transparency:"
-msgstr ""
+msgstr "Tijekom prikazivanja transparentnosti:"
 
 #: ../po/tmp/preferenceswindow.glade.h:74
 msgctxt "Prefs Dialog|View|Interface|"
 msgid "Handle smooth scrolling events:"
-msgstr ""
+msgstr "Način neisprekidanog pomicanja:"
 
 #: ../po/tmp/preferenceswindow.glade.h:75
 msgctxt ""
@@ -4435,13 +4493,13 @@ msgstr ""
 
 #: ../po/tmp/preferenceswindow.glade.h:81
 msgid "Hide cursor while painting"
-msgstr ""
+msgstr "Sakrij kursor tijekom bojanja"
 
 #: ../po/tmp/preferenceswindow.glade.h:82
 msgctxt ""
 "Prefs Dialog|View|Interface|Blink layers on creation/selection|checkbox label"
 msgid "Enabled"
-msgstr ""
+msgstr "Aktivirano"
 
 #: ../po/tmp/preferenceswindow.glade.h:83
 msgctxt ""
@@ -4451,27 +4509,29 @@ msgid ""
 "When a layer is created or selected, show only that layer for a short time "
 "period."
 msgstr ""
+"Kad se stvori ili odabere jedan sloj, na kratko vrijeme prikaži samo taj "
+"sloj."
 
 #: ../po/tmp/preferenceswindow.glade.h:84
 msgctxt "Prefs Dialog|View|Interface|"
 msgid "Blink layers on creation/selection:"
-msgstr ""
+msgstr "Prikaži slojeve pri stvaranju/odabiru:"
 
 #: ../po/tmp/preferenceswindow.glade.h:85
 msgctxt "Prefs Dialog|View|Interface|"
 msgid "Language:"
-msgstr ""
+msgstr "Jezik:"
 
 #: ../po/tmp/preferenceswindow.glade.h:86
 msgctxt "Prefs Dialog|View|Interface|"
 msgid "(needs restart)"
-msgstr ""
+msgstr "(zahtijeva ponovno pokretanje)"
 
 #. Tab label in preferences dialog&#10;
 #: ../po/tmp/preferenceswindow.glade.h:88
 msgctxt "Prefs Dialog|"
 msgid "View"
-msgstr ""
+msgstr "Prikaz"
 
 #: ../po/tmp/preferenceswindow.glade.h:89
 msgctxt "Prefs Dialog|Color|Color Wheel|Primaries|"
@@ -4484,12 +4544,12 @@ msgstr ""
 #: ../po/tmp/preferenceswindow.glade.h:92
 msgctxt "Prefs Dialog|Color|Color Wheel|"
 msgid "Primaries are:"
-msgstr ""
+msgstr "Primarne su:"
 
 #: ../po/tmp/preferenceswindow.glade.h:93
 msgctxt "Prefs Dialog|Color|Color Wheel|Primaries|"
 msgid "Standard digital Red/Green/Blue"
-msgstr ""
+msgstr "Standardna digitalna crvena/zelena/plava"
 
 #: ../po/tmp/preferenceswindow.glade.h:94
 msgid ""
@@ -4507,7 +4567,7 @@ msgstr ""
 #: ../po/tmp/preferenceswindow.glade.h:96
 msgctxt "Prefs Dialog|Color|Color Wheel|Primaries|"
 msgid "Traditional artist's Red/Yellow/Blue"
-msgstr ""
+msgstr "Tradicionalna umjetnička crvena/žuta/plava"
 
 #: ../po/tmp/preferenceswindow.glade.h:97
 msgid ""
@@ -4527,7 +4587,7 @@ msgstr ""
 #: ../po/tmp/preferenceswindow.glade.h:99
 msgctxt "Prefs Dialog|Color|Color Wheel|Primaries|"
 msgid "Red-Green and Blue-Yellow opponent pairs"
-msgstr ""
+msgstr "Crvena-zelena i plava-žuta komplementarni parovi"
 
 #: ../po/tmp/preferenceswindow.glade.h:100
 msgid ""
@@ -4552,39 +4612,39 @@ msgstr ""
 #: ../po/tmp/preferenceswindow.glade.h:103
 msgctxt "Prefs Dialog|Color|"
 msgid "<b>Color Wheel</b>"
-msgstr ""
+msgstr "<b>Kotač boja</b>"
 
 #. Tab label in preferences dialog
 #: ../po/tmp/preferenceswindow.glade.h:105
 msgctxt "Prefs Dialog|"
 msgid "Color"
-msgstr ""
+msgstr "Boja"
 
 #: ../po/tmp/preferenceswindow.glade.h:106
 msgctxt "Prefs Dialog|Compatibility"
 msgid "Default Compatibility Mode:"
-msgstr ""
+msgstr "Standardni modus kompatibilnosti:"
 
 #: ../po/tmp/preferenceswindow.glade.h:107
 msgctxt "Prefs Dialog|Compatibility"
 msgid "<b>1.x Settings</b>"
-msgstr ""
+msgstr "<b>Postavke za 1.x</b>"
 
 #. Make sure to be consistent w. other occurences of 2.x
 #: ../po/tmp/preferenceswindow.glade.h:109
 msgctxt "Prefs Dialog|Compatibility"
 msgid "<b>2.x Settings</b>"
-msgstr ""
+msgstr "<b>Postavke za 2.x</b>"
 
 #: ../po/tmp/preferenceswindow.glade.h:110
 msgctxt "Prefs Dialog|Compatibility"
 msgid "Default New Layer Type:"
-msgstr ""
+msgstr "Standardna vrsta novog sloja:"
 
 #: ../po/tmp/preferenceswindow.glade.h:111
 msgctxt "Prefs Dialog|Compatibility"
 msgid "Default Pigment Brush Setting:"
-msgstr ""
+msgstr "Standardne postavke pigmenata kista:"
 
 #. Label description for the 1.x compatibility-mode-by-default setting
 #: ../po/tmp/preferenceswindow.glade.h:115
@@ -4611,7 +4671,7 @@ msgstr ""
 #: ../po/tmp/preferenceswindow.glade.h:121
 msgctxt "Prefs Dialog|Compatibility"
 msgid "File compatibility warnings:"
-msgstr ""
+msgstr "Upozorenja o kompatibilnosti datoteke:"
 
 #: ../po/tmp/preferenceswindow.glade.h:122
 msgctxt "Prefs Dialog|Compatibility"
@@ -4631,73 +4691,73 @@ msgstr ""
 #: ../po/tmp/preferenceswindow.glade.h:126
 msgctxt "Prefs Dialog|Compatibility"
 msgid "When Mode is Unspecified:"
-msgstr ""
+msgstr "Kad je modus neodređen:"
 
 #. This label indicates a subsection of the compatibility settings related to loading files.
 #: ../po/tmp/preferenceswindow.glade.h:128
 msgctxt "Prefs|Compatibility"
 msgid "<b>File loading</b>"
-msgstr ""
+msgstr "<b>Učitavanje datoteka</b>"
 
 #: ../po/tmp/preferenceswindow.glade.h:129
 msgid "<b>Compatibility settings</b>"
-msgstr ""
+msgstr "<b>Postavke za kompatibilnost</b>"
 
 #. Tab label in preferences dialog
 #: ../po/tmp/preferenceswindow.glade.h:131
 msgctxt "Prefs Dialog|"
 msgid "Compatibility"
-msgstr ""
+msgstr "Kompatibilnost"
 
 #: ../po/tmp/preferenceswindow.glade.h:132
 msgctxt "Prefs Dialog|Pen Input|Mode|"
 msgid "Screen (normal)"
-msgstr ""
+msgstr "Ekran (normalno)"
 
 #: ../po/tmp/preferenceswindow.glade.h:133
 msgctxt "Prefs Dialog|Pen Input|Mode|"
 msgid "Disabled (no pressure sensitivity)"
-msgstr ""
+msgstr "Deaktivirano (nema osjetljivosti pritiska)"
 
 #: ../po/tmp/preferenceswindow.glade.h:134
 msgctxt "Prefs Dialog|Pen Input|Mode|"
 msgid "Window (not recommended)"
-msgstr ""
+msgstr "Prozor (ne preporučuje se)"
 
 #: ../po/tmp/resources.xml.h:1
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "New"
-msgstr ""
+msgstr "Novi"
 
 #: ../po/tmp/resources.xml.h:2
 msgctxt "Toolbar (short labels)"
 msgid "New"
-msgstr ""
+msgstr "Novi"
 
 #: ../po/tmp/resources.xml.h:3
 msgctxt "Toolbar (tooltips), Accel Editor (descriptions)"
 msgid "Start with a new blank canvas."
-msgstr ""
+msgstr "Započni s novim praznim platnom."
 
 #: ../po/tmp/resources.xml.h:4
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "Open…"
-msgstr ""
+msgstr "Otvori …"
 
 #: ../po/tmp/resources.xml.h:5
 msgctxt "Toolbar (short labels)"
 msgid "Open"
-msgstr ""
+msgstr "Otvoreno"
 
 #: ../po/tmp/resources.xml.h:6
 msgctxt "Toolbar (tooltips), Accel Editor (descriptions)"
 msgid "Load a file to work on."
-msgstr ""
+msgstr "Učitaj datoteku koju želiš obraditi."
 
 #: ../po/tmp/resources.xml.h:7
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "Open Most Recent"
-msgstr ""
+msgstr "Otvori najnedavniju"
 
 #: ../po/tmp/resources.xml.h:8
 msgctxt "Accel Editor (descriptions)"
@@ -4707,12 +4767,12 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:9
 msgctxt "Menu→File (labels)"
 msgid "Open Recent"
-msgstr "Otvori nedavno"
+msgstr "Otvori nedavne"
 
 #: ../po/tmp/resources.xml.h:10
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "Revert"
-msgstr ""
+msgstr "Obnovi"
 
 #: ../po/tmp/resources.xml.h:11
 msgctxt "Accel Editor (descriptions)"
@@ -4722,7 +4782,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:12
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "Import Layers…"
-msgstr ""
+msgstr "Uvezi slojeve …"
 
 #: ../po/tmp/resources.xml.h:13
 msgctxt "Accel Editor (descriptions)"
@@ -4732,17 +4792,17 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:14
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "Save"
-msgstr ""
+msgstr "Spremi"
 
 #: ../po/tmp/resources.xml.h:15
 msgctxt "Accel Editor (descriptions)"
 msgid "Save your work to a file."
-msgstr ""
+msgstr "Spremi rad u datoteku."
 
 #: ../po/tmp/resources.xml.h:16
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "Save As…"
-msgstr ""
+msgstr "Spremi kao …"
 
 #: ../po/tmp/resources.xml.h:17
 msgctxt "Accel Editor (descriptions)"
@@ -4752,7 +4812,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:18
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "Export…"
-msgstr ""
+msgstr "Izvezi …"
 
 #: ../po/tmp/resources.xml.h:19
 msgid "Export your work to a file, but keep working on the same file."
@@ -4761,7 +4821,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:20
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "Save As Scrap"
-msgstr ""
+msgstr "Spremi kao skicu"
 
 #: ../po/tmp/resources.xml.h:21
 msgctxt "Accel Editor (descriptions)"
@@ -4771,7 +4831,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:22
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "Open Previous Scrap"
-msgstr ""
+msgstr "Otvori prethodnu skicu"
 
 #: ../po/tmp/resources.xml.h:23
 msgctxt "Accel Editor (descriptions)"
@@ -4781,7 +4841,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:24
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "Open Next Scrap"
-msgstr ""
+msgstr "Otvori sljedeću skicu"
 
 #: ../po/tmp/resources.xml.h:25
 msgctxt "Accel Editor (descriptions)"
@@ -4791,7 +4851,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:26
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "Recover File from an Automated Backup…"
-msgstr ""
+msgstr "Obnovi datoteku pomoću jedne automatski izrađene sigurnosne kopije …"
 
 #: ../po/tmp/resources.xml.h:27
 msgctxt "Accel Editor (descriptions)"
@@ -4801,42 +4861,42 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:28
 msgctxt "Menu→Brush (label)"
 msgid "Brush Groups"
-msgstr ""
+msgstr "Grupe kistova"
 
 #: ../po/tmp/resources.xml.h:29
 msgctxt "Toolbar (short labels)"
 msgid "Brushes"
-msgstr ""
+msgstr "Kistovi"
 
 #: ../po/tmp/resources.xml.h:30
 msgctxt "Toolbar (tooltips)"
 msgid "List of brush groups."
-msgstr ""
+msgstr "Popis grupa kistova."
 
 #: ../po/tmp/resources.xml.h:31
 msgctxt "Toolbar (label)"
 msgid "Color Adjusters"
-msgstr ""
+msgstr "Podešavanja boje"
 
 #: ../po/tmp/resources.xml.h:32
 msgctxt "Toolbar (short labels)"
 msgid "Colors"
-msgstr ""
+msgstr "Boje"
 
 #: ../po/tmp/resources.xml.h:33
 msgctxt "Toolbar (tooltips)"
 msgid "Available color adjusters."
-msgstr ""
+msgstr "Dostupna podešavanja boje."
 
 #: ../po/tmp/resources.xml.h:34
 msgctxt "Menu→Layer→Properties (label)"
 msgid "Mode"
-msgstr ""
+msgstr "Modus"
 
 #: ../po/tmp/resources.xml.h:35
 msgctxt "Toolbar (short labels)"
 msgid "Mode"
-msgstr ""
+msgstr "Modus"
 
 #: ../po/tmp/resources.xml.h:36
 msgctxt "Toolbar (tooltips)"
@@ -4846,7 +4906,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:37
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
 msgid "Increase Fake Pressure"
-msgstr ""
+msgstr "Povećaj simulirani pritisak"
 
 #: ../po/tmp/resources.xml.h:38
 msgctxt "Accel Editor (descriptions)"
@@ -4856,7 +4916,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:39
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
 msgid "Decrease Fake Pressure"
-msgstr ""
+msgstr "Smanji simulirani pritisak"
 
 #: ../po/tmp/resources.xml.h:40
 msgctxt "Accel Editor (descriptions)"
@@ -4866,7 +4926,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:41
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
 msgid "Increase Fake Rotation"
-msgstr ""
+msgstr "Povećaj simulirano okretanje"
 
 #: ../po/tmp/resources.xml.h:42
 msgctxt "Accel Editor (descriptions)"
@@ -4876,7 +4936,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:43
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
 msgid "Decrease Fake Rotation"
-msgstr ""
+msgstr "Smanji simulirano okretanje"
 
 #: ../po/tmp/resources.xml.h:44
 msgctxt "Accel Editor (descriptions)"
@@ -4886,7 +4946,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:45
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
 msgid "Increase Brush Size"
-msgstr ""
+msgstr "Povećaj veličinu kista"
 
 #: ../po/tmp/resources.xml.h:46
 msgctxt "Accel Editor (descriptions)"
@@ -4896,7 +4956,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:47
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
 msgid "Decrease Brush Size"
-msgstr ""
+msgstr "Smanji veličinu kista"
 
 #: ../po/tmp/resources.xml.h:48
 msgctxt "Accel Editor (descriptions)"
@@ -4906,7 +4966,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:49
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
 msgid "Increase Brush Opacity"
-msgstr ""
+msgstr "Povećaj neprozirnost kista"
 
 #: ../po/tmp/resources.xml.h:50
 msgctxt "Accel Editor (descriptions)"
@@ -4916,7 +4976,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:51
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
 msgid "Decrease Brush Opacity"
-msgstr ""
+msgstr "Smanji neprozirnost kista"
 
 #: ../po/tmp/resources.xml.h:52
 msgctxt "Accel Editor (descriptions)"
@@ -4926,7 +4986,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:53
 msgctxt "Menu→Color→Adjust Color (labels), Accel Editor (labels)"
 msgid "Lighten Painting Color"
-msgstr ""
+msgstr "Osvijetli boju slikanja"
 
 #: ../po/tmp/resources.xml.h:54
 msgctxt "Accel Editor (descriptions)"
@@ -4936,7 +4996,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:55
 msgctxt "Menu→Color→Adjust Color (labels), Accel Editor (labels)"
 msgid "Darken Painting Color"
-msgstr ""
+msgstr "Zatamni boju slikanja"
 
 #: ../po/tmp/resources.xml.h:56
 msgctxt "Accel Editor (descriptions)"
@@ -4946,7 +5006,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:57
 msgctxt "Menu→Color→Adjust Color (labels), Accel Editor (labels)"
 msgid "Change Hue Clockwise"
-msgstr ""
+msgstr "Promijeni nijansu u smjeru kazaljke na satu"
 
 #: ../po/tmp/resources.xml.h:58
 msgctxt "Accel Editor (descriptions)"
@@ -4956,7 +5016,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:59
 msgctxt "Menu→Color→Adjust Color (labels), Accel Editor (labels)"
 msgid "Change Hue Anticlockwise"
-msgstr ""
+msgstr "Promijeni nijansu u obrnutom smjeru od kazaljke na satu"
 
 #: ../po/tmp/resources.xml.h:60
 msgctxt "Accel Editor (descriptions)"
@@ -4966,7 +5026,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:61
 msgctxt "Menu→Color→Adjust Color (labels), Accel Editor (labels)"
 msgid "Increase Saturation"
-msgstr ""
+msgstr "Povećaj zasićenost"
 
 #: ../po/tmp/resources.xml.h:62
 msgctxt "Accel Editor (descriptions)"
@@ -4976,7 +5036,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:63
 msgctxt "Menu→Color→Adjust Color (labels), Accel Editor (labels)"
 msgid "Decrease Saturation"
-msgstr ""
+msgstr "Smanji zasićenost"
 
 #: ../po/tmp/resources.xml.h:64
 msgctxt "Accel Editor (descriptions)"
@@ -4986,7 +5046,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:65
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
 msgid "Reload Brush Settings"
-msgstr ""
+msgstr "Ponovo učitaj postavke kistova"
 
 #: ../po/tmp/resources.xml.h:66
 msgctxt "Accel Editor (descriptions)"
@@ -4996,7 +5056,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:67
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
 msgid "Pick Stroke and Layer"
-msgstr ""
+msgstr "Odaberi potez i sloj"
 
 #: ../po/tmp/resources.xml.h:68
 msgctxt "Accel Editor (descriptions)"
@@ -5007,7 +5067,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:69
 msgctxt "Menu→Brush→Shortcut Keys (labels), Accel Editor (labels)"
 msgid "Brush Shortcut Keys Restore Color"
-msgstr ""
+msgstr "Prečaci kista vraćaju standardnu boju"
 
 #: ../po/tmp/resources.xml.h:70
 msgctxt "Accel Editor (descriptions)"
@@ -5019,7 +5079,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:71
 msgctxt "Menu→Brush→Shortcut Keys (labels), Accel Editor (labels)"
 msgid "Save Brush to Most Recent Shortcut Key"
-msgstr ""
+msgstr "Spremi kist na zadnje korišteni prečac"
 
 #: ../po/tmp/resources.xml.h:72
 msgctxt "Accel Editor (descriptions)"
@@ -5029,22 +5089,22 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:73
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Clear Layer"
-msgstr ""
+msgstr "Izbriši sloj"
 
 #: ../po/tmp/resources.xml.h:74
 msgctxt "Accel Editor (descriptions)"
 msgid "Clear the active layer’s content."
-msgstr ""
+msgstr "Izbriši sadržaj aktivnog sloja."
 
 #: ../po/tmp/resources.xml.h:75
 msgctxt "Menu→Layer (labels)"
 msgid "Slice Operations"
-msgstr ""
+msgstr "Operacije rezanja"
 
 #: ../po/tmp/resources.xml.h:76
 msgctxt "Menu→Layer→Slice (labels), Accel Editor (labels)"
 msgid "Trim Layer to Frame"
-msgstr ""
+msgstr "Odreži sloj na veličinu okvira"
 
 #: ../po/tmp/resources.xml.h:77
 msgctxt "Accel Editor (descriptions)"
@@ -5054,7 +5114,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:78
 msgctxt "Menu→Layer→Slice (labels), Accel Editor (labels)"
 msgid "Uniquify Layer Pixels"
-msgstr ""
+msgstr "Izjednači piksele sloja"
 
 #: ../po/tmp/resources.xml.h:79
 msgctxt "Accel Editor (descriptions)"
@@ -5064,7 +5124,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:80
 msgctxt "Menu→Layer→Slice (labels), Accel Editor (labels)"
 msgid "Uniquify Layer Tiles"
-msgstr ""
+msgstr "Izjednači pločice sloja"
 
 #: ../po/tmp/resources.xml.h:81
 msgctxt "Accel Editor (descriptions)"
@@ -5076,7 +5136,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:82
 msgctxt "Menu→Layer→Slice (labels), Accel Editor (labels)"
 msgid "Refactor Layer Group Pixels"
-msgstr ""
+msgstr "Restrukturiraj piksele grupe slojeva"
 
 #: ../po/tmp/resources.xml.h:83
 msgctxt "Accel Editor (descriptions)"
@@ -5087,12 +5147,12 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:84
 msgctxt "Menu→Layer→Slice (labels), Accel Editor (labels)"
 msgid "Refactor Layer Group Tiles"
-msgstr ""
+msgstr "Restrukturiraj pločice grupe slojeva"
 
 #: ../po/tmp/resources.xml.h:85
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Copy Layer to Clipboard"
-msgstr ""
+msgstr "Kopiraj sloj u međuspremnik"
 
 #: ../po/tmp/resources.xml.h:86
 msgctxt "Accel Editor (descriptions)"
@@ -5102,7 +5162,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:87
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Paste Layer from Clipboard"
-msgstr ""
+msgstr "Zalijepi sloj iz međuspremnika"
 
 #: ../po/tmp/resources.xml.h:88
 msgctxt "Accel Editor (descriptions)"
@@ -5112,7 +5172,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:89
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Edit Layer in External App…"
-msgstr ""
+msgstr "Uredi sloj u vanjskom programu …"
 
 #: ../po/tmp/resources.xml.h:90
 msgctxt "Accel Editor (descriptions)"
@@ -5122,7 +5182,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:91
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Update Layer with External Edits"
-msgstr ""
+msgstr "Aktualiziraj sloj s vanjskim uređivanjima"
 
 #: ../po/tmp/resources.xml.h:92
 msgctxt "Accel Editor (descriptions)"
@@ -5132,7 +5192,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:93
 msgctxt "Menu→Layer→Go to Layer (labels), Accel Editor (labels)"
 msgid "Go to Layer at Cursor"
-msgstr ""
+msgstr "Prijeđi na sloj gdje je kursor"
 
 #: ../po/tmp/resources.xml.h:94
 msgctxt "Accel Editor (descriptions)"
@@ -5142,97 +5202,99 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:95
 msgctxt "Menu→Layer→Go to Layer (labels), Accel Editor (labels)"
 msgid "Go to Layer Above"
-msgstr ""
+msgstr "Prijeđi na viši sloj"
 
 #: ../po/tmp/resources.xml.h:96
 msgctxt "Accel Editor (descriptions)"
 msgid "Go one layer up in the layer stack."
-msgstr ""
+msgstr "Prijeđi na jedan viši sloj u popisu slojeva."
 
 #: ../po/tmp/resources.xml.h:97
 msgctxt "Menu→Layer→Go to Layer (labels), Accel Editor (labels)"
 msgid "Go to Layer Below"
-msgstr ""
+msgstr "Prijeđi na niži sloj"
 
 #: ../po/tmp/resources.xml.h:98
 msgctxt "Accel Editor (descriptions)"
 msgid "Go one layer down in the layer stack."
-msgstr ""
+msgstr "Prijeđi na jedan niži sloj u popisu slojeva."
 
 #: ../po/tmp/resources.xml.h:99
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "New Painting Layer"
-msgstr ""
+msgstr "Novi sloj za bojanje"
 
 #: ../po/tmp/resources.xml.h:100
 msgctxt "Accel Editor (descriptions)"
 msgid "Add a new painting layer above the current layer."
-msgstr ""
+msgstr "Stvori novi sloj za bojanje iznad trenutačnog sloja."
 
 #: ../po/tmp/resources.xml.h:101
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "New Vector Layer…"
-msgstr ""
+msgstr "Novi sloj za vektore …"
 
 #: ../po/tmp/resources.xml.h:102
 msgctxt "Accel Editor (descriptions)"
 msgid "Add a new vector layer above the current layer, and begin editing it."
 msgstr ""
+"Stvori novi sloj za vektore iznad trenutačnog sloja i počni ga uređivati."
 
 #: ../po/tmp/resources.xml.h:103
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "New Layer Group"
-msgstr ""
+msgstr "Nova grupa slojeva"
 
 #: ../po/tmp/resources.xml.h:104
 msgctxt "Accel Editor (descriptions)"
 msgid "Add a new layer group above the current layer."
-msgstr ""
+msgstr "Stvori novu grupu slojeva iznad trenutačnog sloja."
 
 #: ../po/tmp/resources.xml.h:105
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "New Painting Layer Below"
-msgstr ""
+msgstr "Novi sloj za bojanje ispod"
 
 #: ../po/tmp/resources.xml.h:106
 msgctxt "Accel Editor (descriptions)"
 msgid "Add a new painting layer below the current layer."
-msgstr ""
+msgstr "Stvori novi sloj za bojanje ispod trenutačnog sloja."
 
 #: ../po/tmp/resources.xml.h:107
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "New Vector Layer Below…"
-msgstr ""
+msgstr "Novi sloj za vektore ispod …"
 
 #: ../po/tmp/resources.xml.h:108
 msgctxt "Accel Editor (descriptions)"
 msgid "Add a new vector layer below the current layer, and begin editing it."
 msgstr ""
+"Stvori novi sloj za vektore ispod trenutačnog sloja i počni ga uređivati."
 
 #: ../po/tmp/resources.xml.h:109
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "New Layer Group Below"
-msgstr ""
+msgstr "Nova grupa slojeva ispod"
 
 #: ../po/tmp/resources.xml.h:110
 msgctxt "Accel Editor (descriptions)"
 msgid "Add a new layer group below the current layer."
-msgstr ""
+msgstr "Stvori novu grupu slojeva ispod trenutačnog sloja."
 
 #: ../po/tmp/resources.xml.h:111
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Merge Layer Down"
-msgstr ""
+msgstr "Sjedini sloj dolje"
 
 #: ../po/tmp/resources.xml.h:112
 msgctxt "Accel Editor (descriptions)"
 msgid "Merge the current layer with the layer beneath it."
-msgstr ""
+msgstr "Sjedini sloj sa slojem koji se nalazi ispod njega."
 
 #: ../po/tmp/resources.xml.h:113
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Merge Visible Layers"
-msgstr ""
+msgstr "Sjedini vidljive slojeve"
 
 #: ../po/tmp/resources.xml.h:114
 msgctxt "Accel Editor (descriptions)"
@@ -5242,7 +5304,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:115
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "New Layer from Visible"
-msgstr ""
+msgstr "Novi sloj iz vidljivog"
 
 #: ../po/tmp/resources.xml.h:116
 msgctxt "Accel Editor (descriptions)"
@@ -5252,17 +5314,17 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:117
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Delete Layer"
-msgstr ""
+msgstr "Izbriši sloj"
 
 #: ../po/tmp/resources.xml.h:118
 msgctxt "Accel Editor (descriptions)"
 msgid "Remove the current layer from the layer stack."
-msgstr ""
+msgstr "Ukloni trenutačni sloj iz popisa slojeva."
 
 #: ../po/tmp/resources.xml.h:119
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Convert to Normal Painting Layer"
-msgstr ""
+msgstr "Pretvori u normalni sloj za bojanje"
 
 #: ../po/tmp/resources.xml.h:120
 msgctxt "Accel Editor (descriptions)"
@@ -5274,47 +5336,47 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:121
 msgctxt "Menu→Layer→Opacity (labels), Accel Editor (labels)"
 msgid "Increase Layer’s Opacity"
-msgstr ""
+msgstr "Povećaj neprozirnost sloja"
 
 #: ../po/tmp/resources.xml.h:122
 msgctxt "Accel Editor (descriptions)"
 msgid "Make the layer less transparent."
-msgstr ""
+msgstr "Smanji prozirnost sloja."
 
 #: ../po/tmp/resources.xml.h:123
 msgctxt "Menu→Layer→Opacity (labels), Accel Editor (labels)"
 msgid "Reduce Layer’s Opacity"
-msgstr ""
+msgstr "Smanji neprozirnost sloja"
 
 #: ../po/tmp/resources.xml.h:124
 msgctxt "Accel Editor (descriptions)"
 msgid "Make the layer more transparent."
-msgstr ""
+msgstr "Povećaj prozirnost sloja."
 
 #: ../po/tmp/resources.xml.h:125
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Raise Layer"
-msgstr ""
+msgstr "Digni sloj"
 
 #: ../po/tmp/resources.xml.h:126
 msgctxt "Accel Editor (descriptions)"
 msgid "Raise the current layer one step in the layer stack."
-msgstr ""
+msgstr "Digni ovaj sloj za jednu razinu."
 
 #: ../po/tmp/resources.xml.h:127
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Lower Layer"
-msgstr ""
+msgstr "Spusti sloj"
 
 #: ../po/tmp/resources.xml.h:128
 msgctxt "Accel Editor (descriptions)"
 msgid "Lower the current layer one step in the layer stack."
-msgstr ""
+msgstr "Spusti ovaj sloj za jednu razinu."
 
 #: ../po/tmp/resources.xml.h:129
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Duplicate Layer"
-msgstr ""
+msgstr "Dupliciraj sloj"
 
 #: ../po/tmp/resources.xml.h:130
 msgctxt "Accel Editor (descriptions)"
@@ -5324,7 +5386,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:131
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Layer Properties…"
-msgstr ""
+msgstr "Svojstva sloja …"
 
 #: ../po/tmp/resources.xml.h:132
 msgctxt "Accel Editor (descriptions)"
@@ -5335,7 +5397,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:133
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Layer Locked"
-msgstr ""
+msgstr "Sloj zaključan"
 
 #: ../po/tmp/resources.xml.h:134
 msgctxt "Accel Editor (descriptions)"
@@ -5346,7 +5408,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:135
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Layer Visible"
-msgstr ""
+msgstr "Sloj vidljiv"
 
 #: ../po/tmp/resources.xml.h:136
 msgctxt "Accel Editor (descriptions)"
@@ -5356,7 +5418,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:137
 msgctxt "Menu→View (labels), Accel Editor (labels)"
 msgid "Show Background"
-msgstr ""
+msgstr "Prikaži pozadinu"
 
 #: ../po/tmp/resources.xml.h:138
 msgctxt "Accel Editor (descriptions)"
@@ -5366,7 +5428,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:139
 msgctxt "Menu→Help→Debug (labels), Accel Editor (labels)"
 msgid "Vacuum Empty Tiles"
-msgstr ""
+msgstr "Izbriši prazne pločice"
 
 #: ../po/tmp/resources.xml.h:140
 msgctxt "Accel Editor (descriptions)"
@@ -5376,7 +5438,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:141
 msgctxt "Menu→View (labels), Accel Editor (labels)"
 msgid "Reset and Center View"
-msgstr ""
+msgstr "Vrati standardni prikaz i centriraj ga"
 
 #: ../po/tmp/resources.xml.h:142
 msgctxt "Accel Editor (descriptions)"
@@ -5386,7 +5448,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:143
 msgctxt "Menu→View (labels), Accel Editor (labels)"
 msgid "Fit to View"
-msgstr ""
+msgstr "Prilagodi prikazu"
 
 #: ../po/tmp/resources.xml.h:144
 msgctxt "Accel Editor (descriptions)"
@@ -5396,12 +5458,12 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:145
 msgctxt "Menu→View (labels)"
 msgid "Reset"
-msgstr ""
+msgstr "Vrati standardno stanje"
 
 #: ../po/tmp/resources.xml.h:146
 msgctxt "Menu→View→Reset (labels), Accel Editor (labels)"
 msgid "Reset Zoom"
-msgstr ""
+msgstr "Vrati standardno zumiranje"
 
 #: ../po/tmp/resources.xml.h:147
 msgctxt "Accel Editor (descriptions)"
@@ -5411,7 +5473,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:148
 msgctxt "Menu→View→Reset (labels), Accel Editor (labels)"
 msgid "Reset Rotation"
-msgstr ""
+msgstr "Vrati standardno okretanje"
 
 #: ../po/tmp/resources.xml.h:149
 msgctxt "Accel Editor (descriptions)"
@@ -5421,7 +5483,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:150
 msgctxt "Menu→View→Reset (labels), Accel Editor (labels)"
 msgid "Reset Mirroring"
-msgstr ""
+msgstr "Vrati standardno zrcaljenje"
 
 #: ../po/tmp/resources.xml.h:151
 msgctxt "Accel Editor (descriptions)"
@@ -5431,27 +5493,27 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:152
 msgctxt "Menu→View→Adjust View (labels), Accel Editor (labels)"
 msgid "Zoom In"
-msgstr ""
+msgstr "Uvećaj prikaz"
 
 #: ../po/tmp/resources.xml.h:153
 msgctxt "Accel Editor (descriptions)"
 msgid "Increase magnification."
-msgstr ""
+msgstr "Povećaj količinu uvećanja."
 
 #: ../po/tmp/resources.xml.h:154
 msgctxt "Menu→View→Adjust View (labels), Accel Editor (labels)"
 msgid "Zoom Out"
-msgstr "Umanji"
+msgstr "Umanji prikaz"
 
 #: ../po/tmp/resources.xml.h:155
 msgctxt "Accel Editor (descriptions)"
 msgid "Decrease magnification."
-msgstr ""
+msgstr "Smanji količinu uvećanja."
 
 #: ../po/tmp/resources.xml.h:156
 msgctxt "Menu→View→Adjust View (labels), Accel Editor (labels)"
 msgid "Pan Left"
-msgstr ""
+msgstr "Pomakni na lijevo"
 
 #: ../po/tmp/resources.xml.h:157
 msgctxt "Accel Editor (descriptions)"
@@ -5461,7 +5523,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:158
 msgctxt "Menu→View→Adjust View (labels), Accel Editor (labels)"
 msgid "Pan Right"
-msgstr ""
+msgstr "Pomakni na desno"
 
 #: ../po/tmp/resources.xml.h:159
 msgctxt "Accel Editor (descriptions)"
@@ -5471,7 +5533,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:160
 msgctxt "Menu→View→Adjust View (labels), Accel Editor (labels)"
 msgid "Pan Up"
-msgstr ""
+msgstr "Pomakni prema gore"
 
 #: ../po/tmp/resources.xml.h:161
 msgctxt "Accel Editor (descriptions)"
@@ -5481,7 +5543,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:162
 msgctxt "Menu→View→Adjust View (labels), Accel Editor (labels)"
 msgid "Pan Down"
-msgstr ""
+msgstr "Pomakni prema dolje"
 
 #: ../po/tmp/resources.xml.h:163
 msgctxt "Accel Editor (descriptions)"
@@ -5491,47 +5553,47 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:164
 msgctxt "Menu→View→Adjust View (labels), Accel Editor (labels)"
 msgid "Rotate Clockwise"
-msgstr ""
+msgstr "Okreni na desno"
 
 #: ../po/tmp/resources.xml.h:165
 msgctxt "Accel Editor (descriptions)"
 msgid "Rotate the canvas clockwise."
-msgstr ""
+msgstr "Okreni platno na desno."
 
 #: ../po/tmp/resources.xml.h:166
 msgctxt "Menu→View→Adjust View (labels), Accel Editor (labels)"
 msgid "Rotate Counterclockwise"
-msgstr ""
+msgstr "Okreni na lijevo"
 
 #: ../po/tmp/resources.xml.h:167
 msgctxt "Accel Editor (descriptions)"
 msgid "Rotate the canvas counter-clockwise."
-msgstr ""
+msgstr "Okreni platno na lijevo."
 
 #: ../po/tmp/resources.xml.h:168
 msgctxt "Menu→View→Adjust View (labels), Accel Editor (labels)"
 msgid "Mirror Horizontal"
-msgstr ""
+msgstr "Zrcali vodoravno"
 
 #: ../po/tmp/resources.xml.h:169
 msgctxt "Accel Editor (descriptions)"
 msgid "Flip the view left to right."
-msgstr ""
+msgstr "Preokreni prikaz vodoravno."
 
 #: ../po/tmp/resources.xml.h:170
 msgctxt "Menu→View→Adjust View (labels), Accel Editor (labels)"
 msgid "Mirror Vertical"
-msgstr ""
+msgstr "Zrcali okomito"
 
 #: ../po/tmp/resources.xml.h:171
 msgctxt "Accel Editor (descriptions)"
 msgid "Flip the view upside-down."
-msgstr ""
+msgstr "Preokreni prikaz okomito."
 
 #: ../po/tmp/resources.xml.h:172
 msgctxt "Menu→View (labels), Accel Editor (labels)"
 msgid "Layer Solo"
-msgstr ""
+msgstr "Solo sloj"
 
 #: ../po/tmp/resources.xml.h:173
 msgctxt "Accel Editor (descriptions)"
@@ -5541,7 +5603,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:174
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
 msgid "Symmetrical Painting Active"
-msgstr ""
+msgstr "Simetrično slikanje aktivno"
 
 #: ../po/tmp/resources.xml.h:175
 msgctxt "Accel Editor (descriptions)"
@@ -5551,12 +5613,12 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:176
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "Frame Enabled"
-msgstr ""
+msgstr "Okvir aktiviran"
 
 #: ../po/tmp/resources.xml.h:177
 msgctxt "Accel Editor (descriptions)"
 msgid "Toggle visibility of the document frame."
-msgstr ""
+msgstr "Promijeni vidljivost okvira dokumenta."
 
 #: ../po/tmp/resources.xml.h:178
 msgctxt "Menu→Help→Debug (labels), Accel Editor (labels)"
@@ -5571,7 +5633,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:180
 msgctxt "Menu→Help→Debug (labels), Accel Editor (labels)"
 msgid "Visualize Rendering"
-msgstr ""
+msgstr "Prikaži iscrtavanje"
 
 #: ../po/tmp/resources.xml.h:181
 msgctxt "Accel Editor (descriptions)"
@@ -5581,7 +5643,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:182
 msgctxt "Menu→Help→Debug (labels), Accel Editor (labels)"
 msgid "No Double Buffering"
-msgstr ""
+msgstr "Dvostruki buffering"
 
 #: ../po/tmp/resources.xml.h:183
 msgctxt "Accel Editor (descriptions)"
@@ -5597,7 +5659,7 @@ msgstr ""
 
 #: ../po/tmp/resources.xml.h:186
 msgid "Delete Point"
-msgstr ""
+msgstr "Izbriši točku"
 
 #: ../po/tmp/resources.xml.h:187
 msgctxt "Accel Editor (descriptions)"
@@ -5618,12 +5680,12 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:192
 msgctxt "Menu→Brush (labels)"
 msgid "Paint Mode"
-msgstr ""
+msgstr "Modus slikanja"
 
 #: ../po/tmp/resources.xml.h:193
 msgctxt "Menu→Brush→Blend Mode (labels), Accel Editor (labels)"
 msgid "Paint Mode: Normal"
-msgstr ""
+msgstr "Modus slikanja: Normalno"
 
 #: ../po/tmp/resources.xml.h:194
 msgctxt "Accel Editor (descriptions)"
@@ -5633,17 +5695,17 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:195
 msgctxt "Menu→Brush→Blend Mode (labels), Accel Editor (labels)"
 msgid "Paint Mode: Eraser"
-msgstr ""
+msgstr "Modus slikanja: Gumica"
 
 #: ../po/tmp/resources.xml.h:196
 msgctxt "Accel Editor (descriptions)"
 msgid "Erase using the current brush."
-msgstr ""
+msgstr "Briši pomoću trenutačnog kista."
 
 #: ../po/tmp/resources.xml.h:197
 msgctxt "Menu→Brush→Blend Mode (labels), Accel Editor (labels)"
 msgid "Paint Mode: Lock Alpha"
-msgstr ""
+msgstr "Modus slikanja: Zaključaj alfu"
 
 #: ../po/tmp/resources.xml.h:198
 msgctxt "Accel Editor (descriptions)"
@@ -5653,7 +5715,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:199
 msgctxt "Menu→Brush→Blend Mode (labels), Accel Editor (labels)"
 msgid "Paint Mode: Colorize"
-msgstr ""
+msgstr "Modus slikanja: Oboji"
 
 #: ../po/tmp/resources.xml.h:200
 msgctxt "Accel Editor (descriptions)"
@@ -5669,7 +5731,7 @@ msgstr "Datoteka"
 #: ../po/tmp/resources.xml.h:202
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "Quit"
-msgstr ""
+msgstr "Zatvori"
 
 #: ../po/tmp/resources.xml.h:203
 msgctxt "Accel Editor (descriptions)"
@@ -5679,22 +5741,22 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:204
 msgctxt "Menu (labels)"
 msgid "Edit"
-msgstr ""
+msgstr "Uredi"
 
 #: ../po/tmp/resources.xml.h:205
 msgctxt "Menu (labels)"
 msgid "Color"
-msgstr ""
+msgstr "Boja"
 
 #: ../po/tmp/resources.xml.h:206
 msgctxt "Menu→Color (labels)"
 msgid "Adjust Color"
-msgstr ""
+msgstr "Podesi boju"
 
 #: ../po/tmp/resources.xml.h:207
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "Color History Popup"
-msgstr ""
+msgstr "Skočni prozor kronologije boja"
 
 #: ../po/tmp/resources.xml.h:208
 msgctxt "Accel Editor (descriptions)"
@@ -5704,7 +5766,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:209
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "Color Details Dialog"
-msgstr ""
+msgstr "Dijalog za pojedinosti boje"
 
 #: ../po/tmp/resources.xml.h:210
 msgctxt "Accel Editor (descriptions)"
@@ -5714,27 +5776,27 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:211
 msgctxt "Menu→Color"
 msgid "Next Palette Color"
-msgstr ""
+msgstr "Sljedeća boja u paleti"
 
 #: ../po/tmp/resources.xml.h:212
 msgctxt "Accel Editor (descriptions)"
 msgid "Set painting color to the next color in the palette."
-msgstr ""
+msgstr "Postavi boju za bojanje na sljedeću boju u paleti."
 
 #: ../po/tmp/resources.xml.h:213
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "Previous Palette Color"
-msgstr ""
+msgstr "Prethodna boja u paleti"
 
 #: ../po/tmp/resources.xml.h:214
 msgctxt "Accel Editor (descriptions)"
 msgid "Set painting color to the previous color in the palette."
-msgstr ""
+msgstr "Postavi boju za bojanje na prethodnu boju u paleti."
 
 #: ../po/tmp/resources.xml.h:215
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "Add Color to Palette"
-msgstr ""
+msgstr "Dodaj boju u paletu"
 
 #: ../po/tmp/resources.xml.h:216
 msgctxt "Accel Editor (descriptions)"
@@ -5744,37 +5806,37 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:217
 msgctxt "Menu (labels)"
 msgid "Layer"
-msgstr ""
+msgstr "Sloj"
 
 #: ../po/tmp/resources.xml.h:218
 msgctxt "Menu→Layer→Properties (labels)"
 msgid "Opacity"
-msgstr ""
+msgstr "Prozirnost"
 
 #: ../po/tmp/resources.xml.h:219
 msgctxt "Menu→Layer (labels)"
 msgid "Go to Layer"
-msgstr ""
+msgstr "Prijeđi na sloj"
 
 #: ../po/tmp/resources.xml.h:220
 msgctxt "Menu→Layer (labels)"
 msgid "New Layer Below"
-msgstr ""
+msgstr "Novi sloj ispod"
 
 #: ../po/tmp/resources.xml.h:221
 msgctxt "Menu→Layer (labels)"
 msgid "Properties"
-msgstr ""
+msgstr "Svojstva"
 
 #: ../po/tmp/resources.xml.h:222
 msgctxt "Menu (labels)"
 msgid "Scratchpad"
-msgstr ""
+msgstr "Područje za skiciranje"
 
 #: ../po/tmp/resources.xml.h:223
 msgctxt "Menu→Scratchpad (labels), Accel Editor (labels)"
 msgid "New Scratchpad"
-msgstr ""
+msgstr "Novo područje za skiciranje"
 
 #: ../po/tmp/resources.xml.h:224
 msgctxt "Accel Editor (descriptions)"
@@ -5784,7 +5846,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:225
 msgctxt "Menu→Scratchpad (labels), Accel Editor (labels)"
 msgid "Open Scratchpad…"
-msgstr ""
+msgstr "Otvori područje za skiciranje …"
 
 #: ../po/tmp/resources.xml.h:226
 msgctxt "Accel Editor (descriptions)"
@@ -5794,7 +5856,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:227
 msgctxt "Menu→Scratchpad (labels), Accel Editor (labels)"
 msgid "Save Scratchpad"
-msgstr ""
+msgstr "Spremi područje za skiciranje"
 
 #: ../po/tmp/resources.xml.h:228
 msgctxt "Accel Editor (descriptions)"
@@ -5804,7 +5866,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:229
 msgctxt "Menu→Scratchpad (labels), Accel Editor (labels)"
 msgid "Export Scratchpad As…"
-msgstr ""
+msgstr "Izvezi područje za skiciranje kao …"
 
 #: ../po/tmp/resources.xml.h:230
 msgctxt "Accel Editor (descriptions)"
@@ -5814,7 +5876,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:231
 msgctxt "Menu→Scratchpad (labels), Accel Editor (labels)"
 msgid "Revert Scratchpad"
-msgstr ""
+msgstr "Obnovi područje za skiciranje"
 
 #: ../po/tmp/resources.xml.h:232
 msgctxt "Accel Editor (descriptions)"
@@ -5824,7 +5886,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:233
 msgctxt "Menu→Scratchpad (labels), Accel Editor (labels)"
 msgid "Save Scratchpad as Default"
-msgstr ""
+msgstr "Spremi područje za skiciranje kao standardno"
 
 #: ../po/tmp/resources.xml.h:234
 msgctxt "Accel Editor (descriptions)"
@@ -5834,7 +5896,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:235
 msgctxt "Menu→Scratchpad (labels), Accel Editor (labels)"
 msgid "Clear Default Scratchpad"
-msgstr ""
+msgstr "Izbriši područje za skiciranje"
 
 #: ../po/tmp/resources.xml.h:236
 msgctxt "Accel Editor (descriptions)"
@@ -5844,7 +5906,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:237
 msgctxt "Menu→Scratchpad (labels), Accel Editor (labels)"
 msgid "Copy Main Background to Scratchpad"
-msgstr ""
+msgstr "Kopiraj glavnu pozadinu u područje za skiciranje"
 
 #: ../po/tmp/resources.xml.h:238
 msgctxt "Accel Editor (descriptions)"
@@ -5855,22 +5917,22 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:239
 msgctxt "Menu (labels)"
 msgid "Window"
-msgstr ""
+msgstr "Prozor"
 
 #: ../po/tmp/resources.xml.h:240
 msgctxt "Menu→Brush (labels)"
 msgid "Brush"
-msgstr ""
+msgstr "Kist"
 
 #: ../po/tmp/resources.xml.h:241
 msgctxt "Menu→Brush (labels)"
 msgid "Shortcut Keys"
-msgstr ""
+msgstr "Tipkovni prečaci"
 
 #: ../po/tmp/resources.xml.h:242
 msgctxt "Menu→Brush→Shortcut Keys (labels), Accel Editor (labels)"
 msgid "Brush Shortcut Keys Help"
-msgstr ""
+msgstr "Pomoć za tipkovne prečace za kistove"
 
 #: ../po/tmp/resources.xml.h:243
 msgctxt "Accel Editor (descriptions)"
@@ -5880,7 +5942,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:244
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
 msgid "Change Brush…"
-msgstr ""
+msgstr "Promijeni kist …"
 
 #: ../po/tmp/resources.xml.h:245
 msgctxt "Accel Editor (descriptions)"
@@ -5890,7 +5952,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:246
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "Change Color…"
-msgstr ""
+msgstr "Promijeni boju …"
 
 #: ../po/tmp/resources.xml.h:247
 msgctxt "Accel Editor (descriptions)"
@@ -5901,7 +5963,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:248
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "Change Color (fast subset)…"
-msgstr ""
+msgstr "Promijeni boju (brzi podskup) …"
 
 #: ../po/tmp/resources.xml.h:249
 msgctxt "Accel Editor (descriptions)"
@@ -5913,7 +5975,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:250
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
 msgid "Get More Brushes…"
-msgstr ""
+msgstr "Preuzmi daljnje kistove …"
 
 #: ../po/tmp/resources.xml.h:251
 msgctxt "Accel Editor (descriptions)"
@@ -5923,12 +5985,12 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:252
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
 msgid "Import Brushes…"
-msgstr ""
+msgstr "Uvezi kistove …"
 
 #: ../po/tmp/resources.xml.h:253
 msgctxt "Accel Editor (descriptions)"
 msgid "Load a brushpack from disk."
-msgstr ""
+msgstr "Učitaj paket kistova s diska."
 
 #: ../po/tmp/resources.xml.h:254
 msgctxt "Menu (labels)"
@@ -5938,7 +6000,7 @@ msgstr "Pomoć"
 #: ../po/tmp/resources.xml.h:255
 msgctxt "Menu→Help (labels), Accel Editor (labels)"
 msgid "Online Help"
-msgstr ""
+msgstr "Pomoć na internetu"
 
 #: ../po/tmp/resources.xml.h:256
 msgctxt "Accel Editor (descriptions)"
@@ -5948,7 +6010,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:257
 msgctxt "Menu→Help (labels), Accel Editor (labels)"
 msgid "About MyPaint"
-msgstr ""
+msgstr "Informacije o MyPaint"
 
 #: ../po/tmp/resources.xml.h:258
 msgctxt "Accel Editor (descriptions)"
@@ -5958,7 +6020,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:259
 msgctxt "Menu→Help (labels)"
 msgid "Debug"
-msgstr ""
+msgstr "Otklanjanje grešaka"
 
 #: ../po/tmp/resources.xml.h:260
 msgctxt "Menu→Help→Debug (labels), Accel Editor (labels)"
@@ -5973,7 +6035,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:262
 msgctxt "Menu→Help→Debug (labels), Accel Editor (labels)"
 msgid "Run Garbage Collector Now"
-msgstr ""
+msgstr "Pokreni sakupljača smeća sada"
 
 #: ../po/tmp/resources.xml.h:263
 msgctxt "Accel Editor (descriptions)"
@@ -5983,7 +6045,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:264
 msgctxt "Menu→Help→Debug (labels), Accel Editor (labels)"
 msgid "Start/Stop Profiling…"
-msgstr ""
+msgstr "Pokreni/Zaustavi profiliranje …"
 
 #: ../po/tmp/resources.xml.h:265
 msgctxt "Accel Editor (descriptions)"
@@ -5993,7 +6055,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:266
 msgctxt "Menu→Help→Debug (labels), Accel Editor (labels)"
 msgid "Simulate a Crash…"
-msgstr ""
+msgstr "Simuliraj rušenje …"
 
 #: ../po/tmp/resources.xml.h:267
 msgctxt "Accel Editor (descriptions)"
@@ -6003,32 +6065,32 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:268
 msgctxt "Menu (labels)"
 msgid "View"
-msgstr ""
+msgstr "Pogled"
 
 #: ../po/tmp/resources.xml.h:269
 msgctxt "Menu→View (labels)"
 msgid "Feedback"
-msgstr ""
+msgstr "Povratne informacije"
 
 #: ../po/tmp/resources.xml.h:270
 msgctxt "Menu→View (labels)"
 msgid "Adjust View"
-msgstr ""
+msgstr "Prilagodi prikaz"
 
 #: ../po/tmp/resources.xml.h:271
 msgctxt "Menu→View (labels), Accel Editor (labels)"
 msgid "Popup Main Menu"
-msgstr ""
+msgstr "Skočni glavni izbornik"
 
 #: ../po/tmp/resources.xml.h:272
 msgctxt "Accel Editor (descriptions)"
 msgid "Show the main menu as a popup."
-msgstr ""
+msgstr "Prikaži glavni izbornik kao skočni."
 
 #: ../po/tmp/resources.xml.h:273
 msgctxt "Menu→View (labels), Accel Editor (labels)"
 msgid "Fullscreen"
-msgstr ""
+msgstr "Cjeloekranski prikaz"
 
 #: ../po/tmp/resources.xml.h:274
 msgctxt "Accel Editor (descriptions)"
@@ -6038,7 +6100,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:275
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
 msgid "Edit Preferences"
-msgstr ""
+msgstr "Uredi osobitosti"
 
 #: ../po/tmp/resources.xml.h:276
 msgctxt "Accel Editor (descriptions)"
@@ -6048,7 +6110,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:277
 msgctxt "Help→Debug (labels), Accel Editor (labels)"
 msgid "Test Input Devices"
-msgstr ""
+msgstr "Testiraj ulazne uređaje"
 
 #: ../po/tmp/resources.xml.h:278
 msgctxt "Accel Editor (descriptions)"
@@ -6058,49 +6120,49 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:279
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Background Chooser"
-msgstr ""
+msgstr "Biranje pozadine"
 
 #: ../po/tmp/resources.xml.h:280
 msgctxt "Accel Editor (descriptions)"
 msgid "Change the background paper texture."
-msgstr ""
+msgstr "Promijeni mustru pozadine papira."
 
 #: ../po/tmp/resources.xml.h:281
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
 msgid "Brush Settings Editor"
-msgstr ""
+msgstr "Uređivač postavki kistova"
 
 #: ../po/tmp/resources.xml.h:282
 msgctxt "Accel Editor (descriptions)"
 msgid "Edit the active brush’s settings."
-msgstr ""
+msgstr "Uredi postavke aktivnog kista."
 
 #: ../po/tmp/resources.xml.h:283
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
 msgid "Brush Icon Editor"
-msgstr ""
+msgstr "Uređivač ikona kistova"
 
 #: ../po/tmp/resources.xml.h:284
 msgctxt "Accel Editor (descriptions)"
 msgid "Edit brush icons."
-msgstr ""
+msgstr "Uredi ikone za kistove."
 
 #: ../po/tmp/resources.xml.h:285
 msgctxt ""
 "Menu→Layer (labels), Menu→Window (labels), Toolbar (labels), Accel Editor "
 "(labels)"
 msgid "Layers Panel"
-msgstr ""
+msgstr "Ploča slojeva"
 
 #: ../po/tmp/resources.xml.h:286
 msgctxt "Accel Editor (descriptions)"
 msgid "Dockable panel for managing layers."
-msgstr ""
+msgstr "Prikačiva ploča za upravljanje slojevima."
 
 #: ../po/tmp/resources.xml.h:287
 msgctxt "Menu→Layers (labels), Accel Editor (labels)"
 msgid "Show Layers Panel"
-msgstr ""
+msgstr "Prikaži ploču slojeva"
 
 #: ../po/tmp/resources.xml.h:288
 msgctxt "Accel Editor (descriptions)"
@@ -6110,7 +6172,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:289
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "HCY Wheel"
-msgstr ""
+msgstr "HCY kotač"
 
 #: ../po/tmp/resources.xml.h:290
 msgctxt "Accel Editor (descriptions)"
@@ -6122,17 +6184,17 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:291
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "Color Palette"
-msgstr ""
+msgstr "Paleta boja"
 
 #: ../po/tmp/resources.xml.h:292
 msgctxt "Accel Editor (descriptions)"
 msgid "Dockable palette color selector."
-msgstr ""
+msgstr "Prikačiv birač boja."
 
 #: ../po/tmp/resources.xml.h:293
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "HSV Wheel"
-msgstr ""
+msgstr "HSV kotač"
 
 #: ../po/tmp/resources.xml.h:294
 msgctxt "Accel Editor (descriptions)"
@@ -6142,7 +6204,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:295
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "HSV Cube"
-msgstr ""
+msgstr "HSV kocka"
 
 #: ../po/tmp/resources.xml.h:296
 msgctxt "Accel Editor (descriptions)"
@@ -6154,7 +6216,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:297
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "HSV Square"
-msgstr ""
+msgstr "HSV kvadrat"
 
 #: ../po/tmp/resources.xml.h:298
 msgctxt "Accel Editor (descriptions)"
@@ -6164,7 +6226,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:299
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "Component Sliders"
-msgstr ""
+msgstr "Selektori za komponente"
 
 #: ../po/tmp/resources.xml.h:300
 msgctxt "Accel Editor (descriptions)"
@@ -6174,17 +6236,17 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:301
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "Liquid Wash"
-msgstr ""
+msgstr "Tekući premaz"
 
 #: ../po/tmp/resources.xml.h:302
 msgctxt "Accel Editor (descriptions)"
 msgid "Dockable color selector showing a liquid-like wash of nearby colors."
-msgstr ""
+msgstr "Prikačiv birač boja s prikazom tekućeg premaza obližnjih boja."
 
 #: ../po/tmp/resources.xml.h:303
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "Concentric Rings"
-msgstr ""
+msgstr "Koncentrični prstenovi"
 
 #: ../po/tmp/resources.xml.h:304
 msgctxt "Accel Editor (descriptions)"
@@ -6194,17 +6256,19 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:305
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "Crossed Bowl"
-msgstr ""
+msgstr "Prekrižena zdjela"
 
 #: ../po/tmp/resources.xml.h:306
 msgctxt "Accel Editor (descriptions)"
 msgid "Dockable color selector with HSV ramps crossing a radial bowl of color."
 msgstr ""
+"Prikačiv izbornik boja s HSV prijelazima koji prelaze radijalnu „zdjelu” "
+"boja."
 
 #: ../po/tmp/resources.xml.h:307
 msgctxt "Menu→Window (labels), Accel Editor (labels)"
 msgid "Scratchpad Panel"
-msgstr ""
+msgstr "Ploča s područjem za skiciranje"
 
 #: ../po/tmp/resources.xml.h:308
 msgctxt "Accel Editor (descriptions)"
@@ -6214,7 +6278,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:309
 msgctxt "Menu→Scratchpad (labels), Accel Editor (labels)"
 msgid "Show Scratchpad Panel"
-msgstr ""
+msgstr "Prikaži ploču s područjem za skiciranje"
 
 #: ../po/tmp/resources.xml.h:310
 msgctxt "Accel Editor (descriptions)"
@@ -6224,7 +6288,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:311
 msgctxt "Menu→Window (labels), Toolbar (labels), Accel Editor (labels)"
 msgid "Preview Panel"
-msgstr ""
+msgstr "Ploča pretprikaza"
 
 #: ../po/tmp/resources.xml.h:312
 msgctxt "Accel Editor (descriptions)"
@@ -6234,7 +6298,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:313
 msgctxt "Menu→View (labels), Accel Editor (labels)"
 msgid "Preview"
-msgstr ""
+msgstr "Pretprikaz"
 
 #: ../po/tmp/resources.xml.h:314
 msgctxt "Accel Editor (descriptions)"
@@ -6244,7 +6308,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:315
 msgctxt "Menu→Window (labels), Toolbar (labels), Accel Editor (labels)"
 msgid "Tool Options Panel"
-msgstr ""
+msgstr "Ploča s opcijama alata"
 
 #: ../po/tmp/resources.xml.h:316
 msgctxt "Accel Editor (descriptions)"
@@ -6254,7 +6318,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:317
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
 msgid "Show Tool Options Panel"
-msgstr ""
+msgstr "Prikaži ploču s opcijama alata"
 
 #: ../po/tmp/resources.xml.h:318
 msgctxt "Accel Editor (descriptions)"
@@ -6264,7 +6328,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:319
 msgctxt "Menu→Window (labels), Toolbar (labels), Accel Editor (labels)"
 msgid "Brush & Color History Panel"
-msgstr ""
+msgstr "Ploča kronologije kistova i boja"
 
 #: ../po/tmp/resources.xml.h:320
 msgctxt "Accel Editor (descriptions)"
@@ -6274,7 +6338,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:321
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
 msgid "Recent Brushes & Colors"
-msgstr ""
+msgstr "Nedavni kitovi i boje"
 
 #: ../po/tmp/resources.xml.h:322
 msgctxt "Accel Editor (descriptions)"
@@ -6284,7 +6348,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:323
 msgctxt "Menu→View (labels), Accel Editor (labels)"
 msgid "Hide Controls in Fullscreen"
-msgstr ""
+msgstr "Sakrij kontrole u cjeloekranskom prikazu"
 
 #: ../po/tmp/resources.xml.h:324
 msgctxt "Accel Editor (descriptions)"
@@ -6294,445 +6358,455 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:325
 msgctxt "Menu→View→Feedback (labels), Accel Editor (labels)"
 msgid "Show Zoom Level"
-msgstr ""
+msgstr "Prikaži razinu zumiranja"
 
 #: ../po/tmp/resources.xml.h:326
 msgctxt "Accel Editor (descriptions)"
 msgid "Toggle zoom level feedback."
-msgstr ""
+msgstr "Ukljjuči ili isključi povratne informacije o razini zumiranja."
 
 #: ../po/tmp/resources.xml.h:327
 msgctxt "Menu→View→Feedback (labels), Accel Editor (labels)"
 msgid "Show Last Painting Position"
-msgstr ""
+msgstr "Prikaži zadnji položaj bojanja"
 
 #: ../po/tmp/resources.xml.h:328
 msgctxt "Accel Editor (descriptions)"
 msgid "Toggle feedback showing where the last stroke ended."
 msgstr ""
+"Ukljjuči ili isključi povratne informacije o mjestu, gdje je završio zadnji "
+"potez."
 
 #: ../po/tmp/resources.xml.h:329
 msgctxt "Menu→View (labels)"
 msgid "Display Filter"
-msgstr ""
+msgstr "Prikaži filtar"
 
 #: ../po/tmp/resources.xml.h:330
 msgctxt "Menu→View→Display Filter (labels), Accel Editor (labels)"
 msgid "Display Colors Normally"
-msgstr ""
+msgstr "Prikaži boje normalno"
 
 #: ../po/tmp/resources.xml.h:331
 msgctxt "Accel Editor (descriptions)"
 msgid "Filter colors: show colors unchanged."
-msgstr ""
+msgstr "Filtriraj boje: prikaži boje nepromijenjeno."
 
 #: ../po/tmp/resources.xml.h:332
 msgctxt "Menu→View→Display Filter (labels), Accel Editor (labels)"
 msgid "Display Colors as Greyscale"
-msgstr ""
+msgstr "Prikaži boje kao sive nijanse"
 
 #: ../po/tmp/resources.xml.h:333
 msgctxt "Accel Editor (descriptions)"
 msgid "Filter colors: show brightness only (HCY/YCbCr Luma)"
-msgstr ""
+msgstr "Filtriraj boje: prikaži samo svjetlost (HCY/YCbCr svjetljivost)"
 
 #: ../po/tmp/resources.xml.h:334
 msgctxt "Menu→View→Display Filter (labels), Accel Editor (labels)"
 msgid "Display Colors Inverted"
-msgstr ""
+msgstr "Prikaži boje invertirano"
 
 #: ../po/tmp/resources.xml.h:335
 msgctxt "Accel Editor (descriptions)"
 msgid "Filter colors: inverse video. Black is white and red is cyan."
-msgstr ""
+msgstr "Filtriraj boje: invertiraj prikaz. Crna je bijela i crvena je cijan."
 
 #: ../po/tmp/resources.xml.h:336
 msgctxt "Menu→View→Display Filter (labels), Accel Editor (labels)"
 msgid "Display Colors with Simulated Insensitivity to Red"
-msgstr ""
+msgstr "Prikaži boje sa simuliranim intenzitetom crvene"
 
 #: ../po/tmp/resources.xml.h:337
 msgctxt "Accel Editor (descriptions)"
 msgid ""
 "Filter colors to simulate deuteranopia, a common form of color blindness."
-msgstr ""
+msgstr "Filtriraj boje za simuliranje deuteranopije, čestog oblika daltonizma."
 
 #: ../po/tmp/resources.xml.h:338
 msgctxt "Menu→View→Display Filter (labels), Accel Editor (labels)"
 msgid "Display Colors with Simulated Insensitivity to Green"
-msgstr ""
+msgstr "Prikaži boje sa simuliranim intenzitetom zelene"
 
 #: ../po/tmp/resources.xml.h:339
 msgctxt "Accel Editor (descriptions)"
 msgid "Filter colors to simulate protanopia, a common form of color blindness."
-msgstr ""
+msgstr "Filtriraj boje za simuliranje protanopije, čestog oblika daltonizma."
 
 #: ../po/tmp/resources.xml.h:340
 msgctxt "Menu→View→Display Filter (labels), Accel Editor (labels)"
 msgid "Display Colors with Simulated Insensitivity to Blue"
-msgstr ""
+msgstr "Prikaži boje sa simuliranim intenzitetom plave"
 
 #: ../po/tmp/resources.xml.h:341
 msgctxt "Accel Editor (descriptions)"
 msgid "Filter colors to simulate tritanopia, a rare form of color blindness."
-msgstr ""
+msgstr "Filtriraj boje za simuliranje tritanopiije, čestog oblika daltonizma."
 
 #: ../po/tmp/resources.xml.h:342
 msgctxt "Menu→Edit→Current Mode (labels)"
 msgid "Freehand"
-msgstr ""
+msgstr "Prostoručno"
 
 #: ../po/tmp/resources.xml.h:343
 msgctxt "Toolbar (short labels)"
 msgid "Freehand"
-msgstr ""
+msgstr "Prostoručno"
 
 #: ../po/tmp/resources.xml.h:344
 msgctxt "Toolbar (tooltips)"
 msgid "Freehand: draw and paint freely, without geometric constraints."
-msgstr ""
+msgstr "Prostoručno: crtaj i slikaj prostoručno, bez geometrijskih ograničenja."
 
 #: ../po/tmp/resources.xml.h:345
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
 msgid "Freehand"
-msgstr ""
+msgstr "Prostoručno"
 
 #: ../po/tmp/resources.xml.h:346
 msgctxt "Accel Editor (descriptions)"
 msgid "Draw and paint freely, without geometric constraints."
-msgstr ""
+msgstr "Crtaj i slikaj prostoručno, bez geometrijskih ograničenja."
 
 #: ../po/tmp/resources.xml.h:347
 msgctxt "Menu→Edit→Current Mode (labels)"
 msgid "Pan View"
-msgstr ""
+msgstr "Pomakni prikaz"
 
 #: ../po/tmp/resources.xml.h:348
 msgctxt "Toolbar (short labels)"
 msgid "Pan"
-msgstr ""
+msgstr "Pomakni"
 
 #: ../po/tmp/resources.xml.h:349
 msgctxt "Toolbar (tooltips)"
 msgid "Pan View: move your view of the canvas horizontally or vertically."
-msgstr ""
+msgstr "Pomakni prikaz: pomakni prikaz platna vodoravno ili okomito."
 
 #: ../po/tmp/resources.xml.h:350
 msgctxt "Menu→View (labels), Accel Editor (labels)"
 msgid "Pan View"
-msgstr ""
+msgstr "Pomakni prikaz"
 
 #: ../po/tmp/resources.xml.h:351
 msgctxt "Accel Editor (descriptions)"
 msgid "Interactively move your view of the canvas horizontally or vertically."
-msgstr ""
+msgstr "Interaktivno pomakni prikaz platna vodoravno ili okomito."
 
 #: ../po/tmp/resources.xml.h:352
 msgctxt "Menu→Edit→Current Mode (labels)"
 msgid "Rotate View"
-msgstr ""
+msgstr "Okreni prikaz"
 
 #: ../po/tmp/resources.xml.h:353
 msgctxt "Toolbar (short labels)"
 msgid "Rotate"
-msgstr ""
+msgstr "Okreni"
 
 #: ../po/tmp/resources.xml.h:354
 msgctxt "Toolbar (tooltips)"
 msgid "Rotate View: tilt your view of the canvas."
-msgstr ""
+msgstr "Okreni prikaz: okreni prikaz platna."
 
 #: ../po/tmp/resources.xml.h:355
 msgctxt "Menu→View (labels), Accel Editor (labels)"
 msgid "Rotate View"
-msgstr ""
+msgstr "Okreni prikaz"
 
 #: ../po/tmp/resources.xml.h:356
 msgctxt "Accel Editor (descriptions)"
 msgid "Interactively rotate your view of the canvas."
-msgstr ""
+msgstr "Interaktivno okreni prikaz platna."
 
 #: ../po/tmp/resources.xml.h:357
 msgctxt "Menu→Edit→Current Mode (labels)"
 msgid "Zoom View"
-msgstr ""
+msgstr "Zumiraj prikaz"
 
 #: ../po/tmp/resources.xml.h:358
 msgctxt "Toolbar (short labels)"
 msgid "Zoom"
-msgstr ""
+msgstr "Zumiraj"
 
 #: ../po/tmp/resources.xml.h:359
 msgctxt "Toolbar (tooltips)"
 msgid "Zoom View: zoom into or out of the canvas."
-msgstr ""
+msgstr "Zumiraj prikaz: uvećaj ili umanji prikaz platna."
 
 #: ../po/tmp/resources.xml.h:360
 msgctxt "Menu→View (labels), Accel Editor (labels)"
 msgid "Zoom View"
-msgstr ""
+msgstr "Uvećaj prikaz"
 
 #: ../po/tmp/resources.xml.h:361
 msgctxt "Accel Editor (descriptions)"
 msgid "Interactively zoom into or out of the canvas."
-msgstr ""
+msgstr "Interaktivno uvećaj ili umanji prikaz platna."
 
 #: ../po/tmp/resources.xml.h:362
 msgctxt "Menu→Edit→Current Mode (labels)"
 msgid "Lines and Curves"
-msgstr ""
+msgstr "Linije i krivulje"
 
 #: ../po/tmp/resources.xml.h:363
 msgctxt "Toolbar (short labels)"
 msgid "Lines"
-msgstr ""
+msgstr "Linije"
 
 #: ../po/tmp/resources.xml.h:364
 msgctxt "Toolbar (tooltips)"
 msgid "Lines and Curves: draw straight or curved lines."
-msgstr ""
+msgstr "Linije i krivulje: crtaj ravne ili krivuljaste linije."
 
 #: ../po/tmp/resources.xml.h:365
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
 msgid "Lines and Curves"
-msgstr ""
+msgstr "Linije i krivulje"
 
 #: ../po/tmp/resources.xml.h:366
 msgctxt "Accel Editor (descriptions)"
 msgid "Draw straight or curved lines."
-msgstr ""
+msgstr "Crtaj ravne ili krivuljaste linije."
 
 #: ../po/tmp/resources.xml.h:367
 msgctxt "Menu→Edit→Current Mode (labels)"
 msgid "Connected Lines"
-msgstr ""
+msgstr "Povezane linije"
 
 #: ../po/tmp/resources.xml.h:368
 msgctxt "Toolbar (short labels)"
 msgid "Conn. Lines"
-msgstr ""
+msgstr "Povezane linije"
 
 #: ../po/tmp/resources.xml.h:369
 msgctxt "Toolbar (tooltips)"
 msgid "Connected Lines: draw sequences of straight or curved lines."
-msgstr ""
+msgstr "Povezane linije: crtaj nizove ravnih ili krivuljastih linija."
 
 #: ../po/tmp/resources.xml.h:370
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
 msgid "Connected Lines"
-msgstr ""
+msgstr "Povezane linije"
 
 #: ../po/tmp/resources.xml.h:371
 msgctxt "Accel Editor (descriptions)"
 msgid "Draw sequences of straight or curved lines."
-msgstr ""
+msgstr "Crtaj nizove ravnih ili krivuljastih linija."
 
 #: ../po/tmp/resources.xml.h:372
 msgctxt "Menu→Edit→Current Mode (labels)"
 msgid "Ellipses and Circles"
-msgstr ""
+msgstr "Elipse i kružnice"
 
 #: ../po/tmp/resources.xml.h:373
 msgctxt "Toolbar (short labels)"
 msgid "Ellipse"
-msgstr ""
+msgstr "Elipsa"
 
 #: ../po/tmp/resources.xml.h:374
 msgctxt "Toolbar (tooltips)"
 msgid "Ellipses and Circles: draw rounded shapes."
-msgstr ""
+msgstr "Elipse i kružnice: crtaj okrugle oblike."
 
 #: ../po/tmp/resources.xml.h:375
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
 msgid "Ellipses and Circles"
-msgstr ""
+msgstr "Elipse i kružnice"
 
 #: ../po/tmp/resources.xml.h:376
 msgctxt "Accel Editor (descriptions)"
 msgid "Draw circles and ellipses."
-msgstr ""
+msgstr "Crtaj elipse i kružnice."
 
 #: ../po/tmp/resources.xml.h:377
 msgctxt "Menu→Edit→Current Mode (labels)"
 msgid "Inking"
-msgstr ""
+msgstr "Crtanje tintom"
 
 #: ../po/tmp/resources.xml.h:378
 msgctxt "Toolbar (short labels)"
 msgid "Ink"
-msgstr ""
+msgstr "Tinta"
 
 #: ../po/tmp/resources.xml.h:379
 msgctxt "Toolbar (tooltips)"
 msgid "Inking: draw smooth controlled lines."
-msgstr ""
+msgstr "Crtanje tintom: crtaj kontrolirane oble linije."
 
 #: ../po/tmp/resources.xml.h:380
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
 msgid "Inking"
-msgstr ""
+msgstr "Crtanje tintom"
 
 #: ../po/tmp/resources.xml.h:381
 msgctxt "Accel Editor (descriptions)"
 msgid "Draw smooth controlled lines."
-msgstr ""
+msgstr "Crtaj oble kontrolirane linije."
 
 #: ../po/tmp/resources.xml.h:382
 msgctxt "Menu→Edit→Current Mode (labels)"
 msgid "Reposition Layer"
-msgstr ""
+msgstr "Premjesti sloj"
 
 #: ../po/tmp/resources.xml.h:383
 msgctxt "Toolbar (short labels)"
 msgid "Layer Pos."
-msgstr ""
+msgstr "Položaj sloja"
 
 #: ../po/tmp/resources.xml.h:384
 msgctxt "Toolbar (tooltips)"
 msgid "Reposition Layer: move the current layer on the canvas."
-msgstr ""
+msgstr "Premjesti sloj: premjesti trenutačni sloj na platno."
 
 #: ../po/tmp/resources.xml.h:385
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Reposition Layer"
-msgstr ""
+msgstr "Premjesti sloj"
 
 #: ../po/tmp/resources.xml.h:386
 msgctxt "Accel Editor (description)"
 msgid "Interactively move the current layer on the canvas."
-msgstr ""
+msgstr "Interaktivno premjesti trenutačni sloj na platno."
 
 #: ../po/tmp/resources.xml.h:387
 msgctxt "Menu→Edit→Current Mode (labels)"
 msgid "Edit Frame"
-msgstr ""
+msgstr "Uredi okvir"
 
 #: ../po/tmp/resources.xml.h:388
 msgctxt "Toolbar (short labels)"
 msgid "Frame"
-msgstr ""
+msgstr "Okvir"
 
 #: ../po/tmp/resources.xml.h:389
 msgctxt "Toolbar (tooltips)"
 msgid ""
 "Edit Frame: define a frame around the document to give it a finite size."
 msgstr ""
+"Uredi okvir: odredi okvir okolo dokumenta za postavljanje krajnje veličine."
 
 #: ../po/tmp/resources.xml.h:390
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "Edit Frame"
-msgstr ""
+msgstr "Uredi okvir"
 
 #: ../po/tmp/resources.xml.h:391
 msgctxt "Accel Editor (descriptions)"
 msgid ""
 "Interactively define a frame around the document to give it a finite size."
 msgstr ""
+"Interaktivno odredi okvir okolo dokumenta za postavljanje krajnje veličine."
 
 #: ../po/tmp/resources.xml.h:392
 msgctxt "Menu→Edit→Current Mode (labels)"
 msgid "Edit Painting Symmetry"
-msgstr ""
+msgstr "Uredi simetrično slikanje"
 
 #: ../po/tmp/resources.xml.h:393
 msgctxt "Toolbar (short labels)"
 msgid "Symmetry"
-msgstr ""
+msgstr "Simetrija"
 
 #: ../po/tmp/resources.xml.h:394
 msgctxt "Toolbar (tooltips)"
 msgid "Edit Painting Symmetry: adjust the axis used for symmetrical painting."
-msgstr ""
+msgstr "Uredi simetrično slikanje: podesi os za simetrično slikanje."
 
 #: ../po/tmp/resources.xml.h:395
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "Edit Painting Symmetry"
-msgstr ""
+msgstr "Uredi simetrično slikanje"
 
 #: ../po/tmp/resources.xml.h:396
 msgctxt "Accel Editor (description)"
 msgid "Interactively adjust the axis used for symmetrical painting."
-msgstr ""
+msgstr "Interaktivno podesi os za simetrično slikanje."
 
 #: ../po/tmp/resources.xml.h:397
 msgctxt "Menu→Edit→Current Mode (labels)"
 msgid "Pick Color"
-msgstr ""
+msgstr "Odaberi boju"
 
 #: ../po/tmp/resources.xml.h:398
 msgctxt "Toolbar (short labels)"
 msgid "Pick Col."
-msgstr ""
+msgstr "Odaberi boju"
 
 #: ../po/tmp/resources.xml.h:399
 msgctxt "Toolbar (tooltips)"
 msgid "Pick Color: set the painting color from screen pixels."
-msgstr ""
+msgstr "Odaberi boju: postavi boju za bojanje na osnovi piksela ekrana."
 
 #: ../po/tmp/resources.xml.h:400
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "Pick Color Hue"
-msgstr ""
+msgstr "Odaberi nijansu boje"
 
 #: ../po/tmp/resources.xml.h:401
 msgctxt "Accel Editor (descriptions)"
 msgid ""
 "Set the painting Hue from screen pixels while preserving the Chroma and Luma."
 msgstr ""
+"Postavi nijansu za bojanje na osnovi piksela ekrana, zadržavajući pri tome "
+"kromatičnost i svjetljivost."
 
 #: ../po/tmp/resources.xml.h:402
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "Pick Color Chroma"
-msgstr ""
+msgstr "Odaberi kromatičnost boje"
 
 #: ../po/tmp/resources.xml.h:403
 msgctxt "Accel Editor (descriptions)"
 msgid ""
 "Set the painting Chroma from screen pixels while preserving the Hue and Luma."
 msgstr ""
+"Postavi kromatičnost za bojanje na osnovi piksela ekrana, zadržavajući pri "
+"tome nijansu i svjetljivost."
 
 #: ../po/tmp/resources.xml.h:404
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "Pick Color Luma"
-msgstr ""
+msgstr "Odaberi svjetljivost boje"
 
 #: ../po/tmp/resources.xml.h:405
 msgctxt "Accel Editor (descriptions)"
 msgid ""
 "Set the painting Luma from screen pixels while preserving the Hue and Chroma."
 msgstr ""
+"Postavi svjetljivost za bojanje na osnovi piksela ekrana, zadržavajući pri "
+"tome nijansu i kromatičnost."
 
 #: ../po/tmp/resources.xml.h:406
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "Pick Color"
-msgstr ""
+msgstr "Odaberi boju"
 
 #: ../po/tmp/resources.xml.h:407
 msgctxt "Accel Editor (descriptions)"
 msgid "Set the painting color from screen pixels."
-msgstr ""
+msgstr "Postavi boju za bojanje na osnovi piksela ekrana."
 
 #: ../po/tmp/resources.xml.h:408
 msgctxt "Menu→Edit→Current Mode (labels)"
 msgid "Flood Fill"
-msgstr ""
+msgstr "Ispuni"
 
 #: ../po/tmp/resources.xml.h:409
 msgctxt "Toolbar (short labels)"
 msgid "Fill"
-msgstr ""
+msgstr "Ispuna"
 
 #: ../po/tmp/resources.xml.h:410
 msgctxt "Toolbar (tooltips)"
 msgid "Flood Fill: fill an area with color."
-msgstr ""
+msgstr "Ispuni: ispuni područje s bojom."
 
 #: ../po/tmp/resources.xml.h:411
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
 msgid "Flood Fill"
-msgstr ""
+msgstr "Ispuni"
 
 #: ../po/tmp/resources.xml.h:412
 msgctxt "Accel Editor (descriptions)"
 msgid "Fill an area with color."
-msgstr ""
+msgstr "Ispuni područje s bojom."
