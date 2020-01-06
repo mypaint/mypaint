@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: mypaint v1.2.0-636-g046ec8f\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2019-12-20 19:50+0100\n"
-"PO-Revision-Date: 2018-01-24 12:06+0000\n"
+"PO-Revision-Date: 2020-01-08 13:21+0000\n"
 "Last-Translator: Pavel Fric <pavelfric@yahoo.com>\n"
 "Language-Team: Czech <https://hosted.weblate.org/projects/mypaint/mypaint/cs/"
 ">\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
-"X-Generator: Weblate 2.19-dev\n"
+"X-Generator: Weblate 3.10.1-dev\n"
 "X-Poedit-Country: CZECH REPUBLIC\n"
 "X-Poedit-Language: Czech\n"
 
@@ -214,7 +214,7 @@ msgstr "Rychlost"
 #: ../gui/brusheditor.py:358
 msgctxt "brush settings list: setting group"
 msgid "Directional Offsets"
-msgstr ""
+msgstr "Směrové posuny"
 
 #: ../gui/brusheditor.py:376
 msgctxt "brush settings list: setting group"
@@ -234,7 +234,7 @@ msgstr "Barva"
 #: ../gui/brusheditor.py:416
 msgctxt "brush settings list: setting group"
 msgid "GridMap"
-msgstr ""
+msgstr "Mapa mřížky"
 
 #: ../gui/brusheditor.py:427
 msgctxt "brush settings list: setting group"
@@ -429,7 +429,7 @@ msgstr "Nový"
 #, python-brace-format
 msgctxt "brushpack import failure messages"
 msgid "No file named “{order_conf_file}”. This is not a brushpack."
-msgstr ""
+msgstr "Žádný soubor s názvem “{order_conf_file}”. Toto není balíček štětců."
 
 #: ../gui/brushmanager.py:689
 #, python-brace-format
@@ -438,6 +438,7 @@ msgid ""
 "Brush “{brush_name}” is listed in “{order_conf_file}”, but it does not exist "
 "in the zipfile."
 msgstr ""
+"Štětec “{brush_name}” je uveden v “{order_conf_file}”, ale nenív archivu ZIP."
 
 #: ../gui/brushmanager.py:702
 #, python-brace-format
@@ -446,58 +447,55 @@ msgid ""
 "Brush “{brush_name}” exists in the zipfile, but it is not listed in "
 "“{order_conf_file}”."
 msgstr ""
+"Štětec “{brush_name}” je v archivu ZIP, není ale uveden v "
+"“{order_conf_file}”."
 
 #: ../gui/brushmanager.py:1313 ../gui/footer.py:62
 msgid "Unknown Brush"
 msgstr "Neznámý štětec"
 
 #: ../gui/brushselectionwindow.py:220
-#, fuzzy
 msgctxt "brush group: context menu for a single brush"
 msgid "Add to Favorites"
 msgstr "Přidat do oblíbených"
 
 #: ../gui/brushselectionwindow.py:227
-#, fuzzy
 msgctxt "brush group: context menu for a single brush"
 msgid "Remove from Favorites"
 msgstr "Odstranit z oblíbených"
 
 #: ../gui/brushselectionwindow.py:235
-#, fuzzy
 msgctxt "brush group: context menu for a single brush"
 msgid "Clone"
 msgstr "Klonovat"
 
 #: ../gui/brushselectionwindow.py:242
-#, fuzzy
 msgctxt "brush group: context menu for a single brush"
 msgid "Edit Brush Settings"
-msgstr "Upravit přednastavení štětce"
+msgstr "Upravit nastavení štětce"
 
 #: ../gui/brushselectionwindow.py:250
-#, fuzzy
 msgctxt "brush group: context menu for a single brush"
 msgid "Remove from Group"
-msgstr "Přejmenovat skupinu"
+msgstr "Odstranit ze skupiny"
 
 #: ../gui/brushselectionwindow.py:290
 #, python-brace-format
 msgctxt "brush group: context menu: unique names for cloned brushes"
 msgid "{original_name} copy"
-msgstr ""
+msgstr "{original_name} kopírovat"
 
 #: ../gui/brushselectionwindow.py:299
 #, python-brace-format
 msgctxt "brush group: context menu: unique names for cloned brushes"
 msgid "{original_name} copy {n}"
-msgstr ""
+msgstr "{original_name} kopírovat {n}"
 
 #: ../gui/brushselectionwindow.py:325
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgctxt "brush group: context menu: remove from group"
 msgid "Really remove brush “{brush_name}” from group “{group_name}”?"
-msgstr "Opravdu smazat štětec “{brush_name}” z disku?"
+msgstr "Opravdu odstranit štětec “{brush_name}” ze skupiny “{group_name}”?"
 
 #. TRANSLATORS: number of brushes in a brush group, for tooltips
 #: ../gui/brushselectionwindow.py:381
@@ -658,31 +656,27 @@ msgstr "Nastavit barvu používanou pro malování"
 
 #: ../gui/colorpicker.py:270
 msgid "Pick Hue"
-msgstr ""
+msgstr "Zvolit odstín"
 
 #: ../gui/colorpicker.py:273
-#, fuzzy
 msgid "Set the color Hue used for painting"
-msgstr "Nastavit barvu používanou pro malování"
+msgstr "Nastavit barevný odstín používaný pro malování"
 
 #: ../gui/colorpicker.py:293
-#, fuzzy
 msgid "Pick Chroma"
-msgstr "Vybrat barvu"
+msgstr "Vybrat sytost barvy"
 
 #: ../gui/colorpicker.py:296
-#, fuzzy
 msgid "Set the color Chroma used for painting"
-msgstr "Nastavit barvu používanou pro malování"
+msgstr "Nastavit sytost barvy (chroma) používanou pro malování"
 
 #: ../gui/colorpicker.py:316
 msgid "Pick Luma"
-msgstr ""
+msgstr "Zvolit jasnost"
 
 #: ../gui/colorpicker.py:319
-#, fuzzy
 msgid "Set the color Luma used for painting"
-msgstr "Nastavit barvu používanou pro malování"
+msgstr "Nastavit jasnost barvy používanou pro malování"
 
 #: ../gui/colors/adjbases.py:699
 msgid "Color details"
@@ -1200,21 +1194,20 @@ msgstr "Změnit barvu pomocí ramp HSV křížících barevný talíř."
 #: ../gui/compatibility.py:40
 msgctxt "File Load Compat Options"
 msgid "Based on file"
-msgstr ""
+msgstr "Založeno na souboru"
 
 #. This refers to a version of MyPaint like 1.0, 1.1, 1.2 etc
 #: ../gui/compatibility.py:41 ../gui/drawwindow.py:276
 #: ../po/tmp/preferenceswindow.glade.h:113
-#, fuzzy
 msgctxt "Prefs Dialog|Compatibility"
 msgid "1.x"
-msgstr "1.0"
+msgstr "1.x"
 
 #. This refers to a version of MyPaint like 1.0, 1.1, 1.2 etc
 #: ../gui/compatibility.py:42 ../po/tmp/preferenceswindow.glade.h:117
 msgctxt "Prefs Dialog|Compatibility"
 msgid "2.x"
-msgstr ""
+msgstr "2.x"
 
 #. TRANSLATORS: This is probably a rare warning, and it will not
 #. TRANSLATORS: really be shown at all before the release of 3.0
@@ -1231,6 +1224,14 @@ msgid ""
 "It is <b>strongly recommended</b> to upgrade to <b>MyPaint {new_version}</b> "
 "or newer if you want to edit this file!"
 msgstr ""
+"“{filename}” byl uložen <b>MyPaint {new_version}</b>. Nemusí se <b>dát "
+"otevřít</b> v <b>MyPaint {current_version}</b>.\n"
+"\n"
+"Není zaručeno, že bude tento soubor upravitelný v MyPaint, a může dokonce "
+"dojít k pádům.\n"
+"\n"
+"Pokud chcete tento soubor upravit, <b>důrazně se doporučuje</b> aktualizovat "
+"na <b>MyPaint {new_version}</b> nebo novější!"
 
 #: ../gui/compatibility.py:60
 #, python-brace-format
@@ -1244,16 +1245,23 @@ msgid ""
 "\n"
 "To be safe you should upgrade to MyPaint {new_version} or newer."
 msgstr ""
+"“{filename}” byl uložen <b>MyPaint {new_version}</b>. Nemusí být plně "
+"slučitelný s <b>Mypaint {current_version}</b>.\n"
+"\n"
+"Jeho uložení v této verzi MyPaint povede k tomu, že data, která jsou "
+"podporována jen novější verzí, budou ztracena.\n"
+"\n"
+"Kvůli bezpečnosti byste měl povýšit na MyPaint {new_version} nebo novější."
 
 #: ../gui/compatibility.py:71
 msgctxt "file compatibility question"
 msgid "Do you want to open this file anyway?"
-msgstr ""
+msgstr "Přesto tento soubor chcete otevřít?"
 
 #: ../gui/compatibility.py:135
 msgctxt "Version compat warning toggle"
 msgid "Don't show this warning again"
-msgstr ""
+msgstr "Nezobrazovat toto upozornění znovu"
 
 #. TRANSLATORS: One of the options for the
 #. TRANSLATORS: "When Not Specified in File"
@@ -1261,7 +1269,7 @@ msgstr ""
 #: ../gui/compatibility.py:211
 msgctxt "Prefs Dialog|Compatibility"
 msgid "Always open in 1.x mode"
-msgstr ""
+msgstr "Vždy otevřít v režimu 1.x"
 
 #. TRANSLATORS: One of the options for the
 #. TRANSLATORS: "When Not Specified in File"
@@ -1269,7 +1277,7 @@ msgstr ""
 #: ../gui/compatibility.py:220
 msgctxt "Prefs Dialog|Compatibility"
 msgid "Always open in 2.x mode"
-msgstr ""
+msgstr "Vždy otevřít v režimu 2.x"
 
 #. TRANSLATORS: One of the options for the
 #. TRANSLATORS: "When Not Specified in File"
@@ -1277,19 +1285,19 @@ msgstr ""
 #: ../gui/compatibility.py:229
 msgctxt "Prefs Dialog|Compatibility"
 msgid "Open in 1.x mode unless file contains pigment layers"
-msgstr ""
+msgstr "Otevřít v režimu 1.x, dokud soubor neobsahuje obarvené vrstvy"
 
 #. TRANSLATORS: This is a label for a dropdown menu in the
 #. TRANSLATORS: file chooser dialog when loading .ora files.
 #: ../gui/compatibility.py:532
 msgctxt "File Load Compat Options"
 msgid "Compatibility mode:"
-msgstr ""
+msgstr "Režim slučitelnosti:"
 
 #: ../gui/device.py:48
 msgctxt "prefs: device's type label"
 msgid "Cursor/puck"
-msgstr "Ukazatel myši"
+msgstr "Ukazatel myši/puk"
 
 #: ../gui/device.py:52
 msgctxt "prefs: device's type label"
@@ -1418,12 +1426,12 @@ msgid "Existing brush"
 msgstr "Stávající štětec"
 
 #: ../gui/dialogs.py:166
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgid ""
 "<b>A brush named “{brush_name}” already exists.</b>\n"
 "Do you want to replace it, or should the new brush be renamed?"
 msgstr ""
-"<b>Štětec s názvem `%s' již existuje.</b>\n"
+"<b>Štětec s názvem “{brush_name}” již existuje.</b>\n"
 "Chcete jej nahradit, nebo se má nový štětec přejmenovat?"
 
 #: ../gui/dialogs.py:196
@@ -1431,26 +1439,26 @@ msgid "Overwrite brush group?"
 msgstr "Přepsat skupinu štětce?"
 
 #: ../gui/dialogs.py:220
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgid ""
 "<b>A group named “{groupname}” already exists.</b>\n"
 "Do you want to replace it, or should the new group be renamed?\n"
 "If you replace it, the brushes may be moved to a group called "
 "“{deleted_groupname}”."
 msgstr ""
-"<b>Skupina s názvem `{groupname}' již existuje.</b>\n"
+"<b>Skupina s názvem “{groupname}” již existuje.</b>\n"
 "Chcete ji nahradit, nebo se má nová skupina přejmenovat?\n"
 "Pokud ji nahradíte, štětce se mohou přesunout do skupiny nazvané "
-"`{deleted_groupname}'."
+"“{deleted_groupname}”."
 
 #: ../gui/dialogs.py:326
 msgid "Import brush package?"
 msgstr "Zavést sadu štětců?"
 
 #: ../gui/dialogs.py:357
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgid "<b>Do you really want to import package “{brushpack_name}”?</b>"
-msgstr "<b>Opravdu chcete zavést balíček `%s'?</b>"
+msgstr "<b>Opravdu chcete zavést balíček “{brushpack_name}”?</b>"
 
 #: ../gui/document.py:453
 #, python-format
@@ -1518,40 +1526,40 @@ msgstr "Podržením {modifiers}:  {button_actions}."
 #: ../gui/document.py:900
 msgctxt "Statusbar message: copy result"
 msgid "Empty document, nothing copied."
-msgstr ""
+msgstr "Prázdný dokument, nic není zkopírováno."
 
 #: ../gui/document.py:912
 #, python-brace-format
 msgctxt "Statusbar message: copy result"
 msgid "Copied layer as {w}×{h} image."
-msgstr ""
+msgstr "Zkopírována vrstva jako obrázek {w}×{h}."
 
 #: ../gui/document.py:929
 msgctxt "Statusbar message: paste result"
 msgid "Nothing on clipboard."
-msgstr ""
+msgstr "Nic ve schránce."
 
 #: ../gui/document.py:938
 msgctxt "Statusbar message: paste result"
 msgid "Clipboard does not contain an image."
-msgstr ""
+msgstr "Schránka neobsahuje žádný obrázek."
 
 #: ../gui/document.py:949
 msgctxt "Statusbar message: paste result"
 msgid "Cannot paste into this type of layer."
-msgstr ""
+msgstr "Nelze vložit do tohoto druhu vrstvy."
 
 #: ../gui/document.py:954
 #, python-brace-format
 msgctxt "Statusbar message: paste result"
 msgid "Pasted {w}×{h} image."
-msgstr ""
+msgstr "Vložen obrázek {w}×{h}."
 
 #: ../gui/document.py:2040
 #, python-brace-format
 msgctxt "Statusbar message: vacuum document"
 msgid "Vacuum: discarded {removed} of {total} tiles."
-msgstr ""
+msgstr "Prázdné místo: zahozeno {removed} z {total} dlaždic."
 
 #. TRANSLATORS: window title for use with a filename
 #: ../gui/drawwindow.py:270
@@ -1567,13 +1575,12 @@ msgstr "O programu MyPaint"
 #: ../gui/drawwindow.py:296
 msgctxt "Open dragged file confirm dialog: title"
 msgid "Open Dragged File?"
-msgstr ""
+msgstr "Otevřít přetažený soubor?"
 
 #: ../gui/drawwindow.py:300
-#, fuzzy
 msgctxt "Open dragged file confirm dialog: continue button"
 msgid "_Open"
-msgstr "Otevřít"
+msgstr "_Otevřít"
 
 #: ../gui/drawwindow.py:493
 msgid "Set current color"
@@ -1596,16 +1603,14 @@ msgid "Fullscreen"
 msgstr "Celá obrazovka"
 
 #: ../gui/drawwindow.py:682
-#, fuzzy
 msgctxt "Quit confirm dialog: title"
 msgid "Really Quit?"
 msgstr "Opravdu ukončit?"
 
 #: ../gui/drawwindow.py:686
-#, fuzzy
 msgctxt "Quit confirm dialog: continue button"
 msgid "_Quit"
-msgstr "Ukončit"
+msgstr "_Ukončit"
 
 #: ../gui/drawwindow.py:704
 msgid "Import brush package…"
@@ -1651,6 +1656,7 @@ msgstr "Pomocí vnějších úprav aktualizována vrstva “{layer_name}”"
 msgctxt "Edit in External App (statusbar message)"
 msgid "Failed to update layer with external edits from “{file_basename}”."
 msgstr ""
+"Nepodařilo se aktualizovat vrstvu vnějšími úpravami v “{file_basename}”."
 
 #: ../gui/externalapp.py:66
 #, python-brace-format
@@ -1683,100 +1689,96 @@ msgid "no description"
 msgstr "žádný popis"
 
 #: ../gui/filehandling.py:127
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgctxt "Document I/O: message shown while working"
 msgid "Loading {files_summary}…"
-msgstr "Nahrává se “{file_basename}”…"
+msgstr "Nahrává se {files_summary}…"
 
 #: ../gui/filehandling.py:131
 #, python-brace-format
 msgctxt "Document I/O: message shown while working"
 msgid "Importing layers from {files_summary}…"
-msgstr ""
+msgstr "Zavádí se vrstvy z {files_summary}…"
 
 #: ../gui/filehandling.py:135
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgctxt "Document I/O: message shown while working"
 msgid "Saving {files_summary}…"
-msgstr "Ukládá se “{file_basename}”…"
+msgstr "Ukládá se {files_summary}…"
 
 #: ../gui/filehandling.py:139
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgctxt "Document I/O: message shown while working"
 msgid "Exporting to {files_summary}…"
-msgstr "Vyvádí se do “{file_basename}”…"
+msgstr "Vyvádí se do {files_summary}…"
 
 #: ../gui/filehandling.py:146
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgctxt "Document I/O: fail message"
 msgid "Failed to export to {files_summary}."
-msgstr "Nepodařilo se vyvést do “{file_basename}”."
+msgstr "Nepodařilo se vyvést do “{files_summary}."
 
 #: ../gui/filehandling.py:150
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgctxt "Document I/O: fail message"
 msgid "Failed to save {files_summary}."
-msgstr "Nepodařilo se uložit “{file_basename}”."
+msgstr "Nepodařilo se uložit “{files_summary}."
 
 #: ../gui/filehandling.py:154
 #, python-brace-format
 msgctxt "Document I/O: fail message"
 msgid "Could not import layers from {files_summary}."
-msgstr ""
+msgstr "Nepodařilo se zavést vrstvy z {files_summary}."
 
 #: ../gui/filehandling.py:158
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgctxt "Document I/O: fail message"
 msgid "Could not load {files_summary}."
-msgstr "Nepodařilo se nahrát “{file_basename}”."
+msgstr "Nepodařilo se nahrát {files_summary}."
 
 #: ../gui/filehandling.py:165
-#, fuzzy
 msgctxt "Document I/O: fail dialog title"
 msgid "Save failed"
-msgstr "Uložit paletu"
+msgstr "Nepodařilo se uložit"
 
 #: ../gui/filehandling.py:169
-#, fuzzy
 msgctxt "Document I/O: fail dialog title"
 msgid "Export failed"
-msgstr "Exportovat paletu…"
+msgstr "Nepodařilo se vyvést"
 
 #: ../gui/filehandling.py:173
-#, fuzzy
 msgctxt "Document I/O: fail dialog title"
 msgid "Import Layers failed"
-msgstr "Exportovat paletu…"
+msgstr "Nepodařilo se zavést vrstvy"
 
 #: ../gui/filehandling.py:177
-#, fuzzy
 msgctxt "Document I/O: fail dialog title"
 msgid "Open failed"
-msgstr "Naposledy otevřené"
+msgstr "Nepodařilo se otevřít"
 
 #: ../gui/filehandling.py:184
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgctxt "Document I/O: success"
 msgid "Exported to {files_summary} successfully."
-msgstr "Úspěšně vyvedeno do “{file_basename}”."
+msgstr "Úspěšně vyvedeno do {files_summary}."
 
 #: ../gui/filehandling.py:188
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgctxt "Document I/O: success"
 msgid "Saved {files_summary} successfully."
-msgstr "“{file_basename}” uložen úspěšně."
+msgstr "{files_summary} uloženo úspěšně."
 
 #: ../gui/filehandling.py:192
 #, python-brace-format
 msgctxt "Document I/O: success"
 msgid "Imported layers from {files_summary}."
-msgstr ""
+msgstr "Zavedeny vrstvy z {files_summary}."
 
 #: ../gui/filehandling.py:196
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgctxt "Document I/O: success"
 msgid "Loaded {files_summary}."
-msgstr "Nahráno “{file_basename}”."
+msgstr "Nahráno {files_summary}."
 
 #. TRANSLATORS: formatting for {files_summary} for multiple files.
 #. TRANSLATORS: corresponding msgid for single files: "“{basename}”"
@@ -1784,108 +1786,92 @@ msgstr "Nahráno “{file_basename}”."
 #, python-brace-format
 msgid "{n} file"
 msgid_plural "{n} files"
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
+msgstr[0] "{n} soubor"
+msgstr[1] "{n} soubory"
+msgstr[2] "{n} souborů"
 
 #: ../gui/filehandling.py:223
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgctxt "Document I/O: the {files_summary} for a single file"
 msgid "“{basename}”"
-msgstr "Nahráno “{file_basename}”."
+msgstr "“{basename}”"
 
 #: ../gui/filehandling.py:432
-#, fuzzy
 msgctxt "save/load dialogs: filter patterns"
 msgid "All Recognized Formats"
-msgstr "Všechny známé formáty"
+msgstr "Všechny rozpoznané formáty"
 
 #: ../gui/filehandling.py:437
-#, fuzzy
 msgctxt "save/load dialogs: filter patterns"
 msgid "OpenRaster (*.ora)"
 msgstr "OpenRaster (*.ora)"
 
 #: ../gui/filehandling.py:442
-#, fuzzy
 msgctxt "save/load dialogs: filter patterns"
 msgid "PNG (*.png)"
 msgstr "PNG (*.png)"
 
 #: ../gui/filehandling.py:447
-#, fuzzy
 msgctxt "save/load dialogs: filter patterns"
 msgid "JPEG (*.jpg; *.jpeg)"
 msgstr "JPEG (*.jpg; *.jpeg)"
 
 #: ../gui/filehandling.py:495
-#, fuzzy
 msgctxt "save dialogs: save formats and options"
 msgid "By extension (prefer default format)"
 msgstr "Podle přípony (dávat přednost výchozímu formátu)"
 
 #: ../gui/filehandling.py:499
-#, fuzzy
 msgctxt "save dialogs: save formats and options"
 msgid "OpenRaster (*.ora)"
 msgstr "OpenRaster (*.ora)"
 
 #: ../gui/filehandling.py:503
-#, fuzzy
 msgctxt "save dialogs: save formats and options"
 msgid "PNG, respecting “Show Background” (*.png)"
-msgstr "PNG plný s pozadím (*.png)"
+msgstr "PNG, s ukázaným pozadím (*.png)"
 
 #: ../gui/filehandling.py:507
-#, fuzzy
 msgctxt "save dialogs: save formats and options"
 msgid "PNG, solid RGB (*.png)"
-msgstr "PNG (*.png)"
+msgstr "PNG, solid RGB (*.png)"
 
 #: ../gui/filehandling.py:511
-#, fuzzy
 msgctxt "save dialogs: save formats and options"
 msgid "PNG, transparent RGBA (*.png)"
-msgstr "PNG průhledný (*.png)"
+msgstr "PNG, průhledný RGBA (*.png)"
 
 #: ../gui/filehandling.py:515
-#, fuzzy
 msgctxt "save dialogs: save formats and options"
 msgid "Multiple PNGs, by layer (*.NUM.png)"
-msgstr "Složený PNG průhledný (*.XXX.png)"
+msgstr "Složený PNG, podle vrstvy (*.NUM.png)"
 
 #: ../gui/filehandling.py:519
-#, fuzzy
 msgctxt "save dialogs: save formats and options"
 msgid "Multiple PNGs, by view (*.NAME.png)"
-msgstr "Složený PNG průhledný (*.XXX.png)"
+msgstr "Složený PNG, podle zobrazení (*.NAME.png)"
 
 #: ../gui/filehandling.py:523
-#, fuzzy
 msgctxt "save dialogs: save formats and options"
 msgid "JPEG 90% quality (*.jpg; *.jpeg)"
-msgstr "JPEG 90% kvalita (*.jpg; *.jpeg)"
+msgstr "JPEG 90 % jakost (*.jpg; *.jpeg)"
 
 #: ../gui/filehandling.py:581
-#, fuzzy
 msgctxt "Dialogs (window title): File→Export…"
 msgid "Export"
-msgstr "Vyvést…"
+msgstr "Vyvést"
 
 #: ../gui/filehandling.py:586
-#, fuzzy
 msgctxt "Dialogs (window title): File→Save As…"
 msgid "Save As"
-msgstr "Uložit jako…"
+msgstr "Uložit jako"
 
 #: ../gui/filehandling.py:606
-#, fuzzy
 msgctxt "save dialogs: formats and options: (label)"
 msgid "Format to save as:"
 msgstr "Ukládací formát:"
 
 #: ../gui/filehandling.py:673
-#, fuzzy
 msgctxt ""
 "Destructive action confirm dialog: fallback title (normally overridden)"
 msgid "Really Continue?"
@@ -1894,131 +1880,117 @@ msgstr "Opravdu pokračovat?"
 #: ../gui/filehandling.py:706
 msgctxt "Destructive action confirm dialog: cancel button"
 msgid "_Cancel"
-msgstr ""
+msgstr "_Zrušit"
 
 #: ../gui/filehandling.py:710
-#, fuzzy
 msgctxt "Destructive action confirm dialog: save checkbox"
 msgid "_Save to Scraps first"
-msgstr "_Uložit jako náčrt"
+msgstr "_Uložit nejprve jako náčrty"
 
 #: ../gui/filehandling.py:716
 msgctxt ""
 "Destructive action confirm dialog: fallback continue button (normally "
 "overridden)"
 msgid "Co_ntinue"
-msgstr ""
+msgstr "_Pokračovat"
 
 #: ../gui/filehandling.py:739
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgctxt "Destructive action confirm dialog: warning message"
 msgid "You risk losing {abbreviated_time} of unsaved painting."
-msgstr "Toto zruší {abbreviated_time} neuložených kreseb"
+msgstr "Nebezpečí ztráty {abbreviated_time} neuložených kreseb."
 
 #: ../gui/filehandling.py:804
 msgctxt "File→New: confirm dialog: title question"
 msgid "New Canvas?"
-msgstr ""
+msgstr "Nové plátno?"
 
 #: ../gui/filehandling.py:808
 msgctxt "File→New: confirm dialog: continue button"
 msgid "_New Canvas"
-msgstr ""
+msgstr "_Nové plátno"
 
 #: ../gui/filehandling.py:1024
 msgctxt "File→Open: confirm dialog: title question"
 msgid "Open File?"
-msgstr ""
+msgstr "Otevřít soubor?"
 
 #: ../gui/filehandling.py:1028
-#, fuzzy
 msgctxt "File→Open: confirm dialog: continue button"
 msgid "_Open…"
-msgstr "Otevřít…"
+msgstr "_Otevřít…"
 
 #: ../gui/filehandling.py:1036
-#, fuzzy
 msgctxt "File→Open: file chooser dialog: title"
 msgid "Open File"
-msgstr "Naposledy otevřené"
+msgstr "Otevřít soubor"
 
 #: ../gui/filehandling.py:1084
-#, fuzzy
 msgctxt "load dialogs: title"
 msgid "Open Scratchpad…"
 msgstr "Otevřít náčrtník…"
 
 #: ../gui/filehandling.py:1126
-#, fuzzy
 msgctxt "Layers→Import Layers: files-chooser dialog: title"
 msgid "Import Layers"
-msgstr "Zavedený štětec"
+msgstr "Zavést vrstvy"
 
 #: ../gui/filehandling.py:1433
 msgctxt "File→Open Recent→* confirm dialog: title"
 msgid "Open File?"
-msgstr ""
+msgstr "Otevřít soubor?"
 
 #: ../gui/filehandling.py:1437
-#, fuzzy
 msgctxt "File→Open Recent→* confirm dialog: continue button"
 msgid "_Open"
-msgstr "Otevřít"
+msgstr "_Otevřít"
 
 #: ../gui/filehandling.py:1452
-#, fuzzy
 msgctxt "File→Open Most Recent confirm dialog: title"
 msgid "Open Most Recent File?"
-msgstr "Otevřít naposledy otevřený obraz"
+msgstr "Otevřít naposledy otevřený soubor?"
 
 #: ../gui/filehandling.py:1457
-#, fuzzy
 msgctxt "File→Open Most Recent→* confirm dialog: continue button"
 msgid "_Open"
-msgstr "Otevřít"
+msgstr "_Otevřít"
 
 #: ../gui/filehandling.py:1471
-#, fuzzy
 msgctxt "File→Open Next/Prev Scrap: error message"
 msgid "There are no scrap files yet. Try saving one first."
-msgstr "Nejsou ještě žádné náčrty nazvané \"%s\"."
+msgstr "Nejsou ještě žádné soubory s náčrty. Zkuste nejprve jeden uložit."
 
 #: ../gui/filehandling.py:1480
-#, fuzzy
 msgctxt "File→Open Next/Prev Scrap confirm dialog: title"
 msgid "Open Next Scrap?"
-msgstr "Otevřít další náčrt"
+msgstr "Otevřít další náčrt?"
 
 #: ../gui/filehandling.py:1488
-#, fuzzy
 msgctxt "File→Open Next/Prev Scrap confirm dialog: title"
 msgid "Open Previous Scrap?"
-msgstr "Otevřít předchozí náčrt"
+msgstr "Otevřít předchozí náčrt?"
 
 #: ../gui/filehandling.py:1497
-#, fuzzy
 msgctxt "File→Open Next/Prev Scrap confirm dialog: continue button"
 msgid "_Open"
-msgstr "Otevřít"
+msgstr "_Otevřít"
 
 #: ../gui/filehandling.py:1512
 msgctxt "File→Revert: status message: canvas has no filename yet"
 msgid "Cannot revert: canvas has not been saved to a file yet."
-msgstr ""
+msgstr "Nelze vrátit: Plátno ještě nebylo uloženo do souboru."
 
 #: ../gui/filehandling.py:1519
 msgctxt "File→Revert confirm dialog: title"
 msgid "Revert Changes?"
-msgstr ""
+msgstr "Vrátit změny?"
 
 #: ../gui/filehandling.py:1524
-#, fuzzy
 msgctxt "File→Revert confirm dialog: continue button"
 msgid "_Revert"
-msgstr "Vrátit"
+msgstr "_Vrátit"
 
 #: ../gui/fill.py:122
-#, fuzzy
 msgctxt ""
 "Name of the fill mode\n"
 "In other software, 'Flood Fill' is also known as 'Bucket Fill' or just 'Fill'"
@@ -2026,13 +1998,11 @@ msgid "Flood Fill"
 msgstr "Vyplnit"
 
 #: ../gui/fill.py:128
-#, fuzzy
 msgctxt "Usage description of the Flood Fill mode"
 msgid "Fill areas with color"
 msgstr "Vyplnit oblasti barvou"
 
 #: ../gui/fill.py:507
-#, fuzzy
 msgctxt ""
 "fill options: numeric value that determines whether tested pixels will be "
 "included in the fill, based on color difference"
@@ -2040,7 +2010,6 @@ msgid "Tolerance:"
 msgstr "Tolerance:"
 
 #: ../gui/fill.py:512
-#, fuzzy
 msgctxt ""
 "fill options: Tolerance (tooltip) Note: 'the start' refers to the color of "
 "the starting point (pixel) of the fill"
@@ -2052,7 +2021,6 @@ msgstr ""
 "předtím než je nástroj na vyplnění odmítne vyplnit"
 
 #: ../gui/fill.py:536
-#, fuzzy
 msgctxt ""
 "fill options: option category (label) Options under this category relate to "
 "what the fill isbased on, not where the actual fill ends up."
@@ -2062,24 +2030,22 @@ msgstr "Zdroj:"
 #: ../gui/fill.py:539
 msgctxt "fill options: 'Source:' category (tooltip)"
 msgid "The input that the fill will be based on"
-msgstr ""
+msgstr "Vstup, na němž bude založeno vyplnění"
 
 #: ../gui/fill.py:583
 msgctxt "fill options: 'Source' category: Layer dropdown (tooltip)"
 msgid "Select a specific layer you want the fill to be based on"
-msgstr ""
+msgstr "Vyberte určitou vrstvu, na níž má být založeno vyplnění"
 
 #: ../gui/fill.py:601
-#, fuzzy
 msgctxt ""
 "fill options: 'Source:' category: toggle (label)\n"
 "When this option is enabled, the fill is based\n"
 "on the combination of all visible layers"
 msgid "Sample Merged"
-msgstr "Vrstvy sloučeny"
+msgstr "Vzorek sloučen"
 
 #: ../gui/fill.py:605
-#, fuzzy
 msgctxt "fill options: Sample Merged (tooltip)"
 msgid ""
 "When considering which area to fill, use a\n"
@@ -2091,10 +2057,9 @@ msgstr ""
 "pod nynější vrstvou"
 
 #: ../gui/fill.py:621
-#, fuzzy
 msgctxt "fill options: toggle whether the fill will be limited by the viewport"
 msgid "Limit to View"
-msgstr "Přizpůsobit pohled"
+msgstr "Omezit na pohled"
 
 #: ../gui/fill.py:627
 msgctxt ""
@@ -2106,9 +2071,11 @@ msgid ""
 "If the view is rotated, the fill will be limited to the\n"
 "smallest canvas-aligned rectangle that can fit the view."
 msgstr ""
+"Ohraničit oblast, kterou lze vyplnit, založeno na pohledu.\n"
+"Pokud je se zobrazením otočeno, vyplnění bude omezeno na\n"
+"nejmenší na plátně zarovnaný obdélník, který se vejde do zobrazení."
 
 #: ../gui/fill.py:644
-#, fuzzy
 msgctxt ""
 "fill options: option category (label)\n"
 "Options under this category relate to where the fill will end up (default: "
@@ -2117,13 +2084,11 @@ msgid "Target:"
 msgstr "Cíl:"
 
 #: ../gui/fill.py:647
-#, fuzzy
 msgctxt "fill options: 'Target:' category (tooltip)"
 msgid "Where the output should go"
 msgstr "Kam má jít výstup"
 
 #: ../gui/fill.py:656
-#, fuzzy
 msgctxt ""
 "fill options: Target | toggle (label)\n"
 "When this option is enabled, the fill will be placed on a new\n"
@@ -2132,24 +2097,23 @@ msgid "New Layer (once)"
 msgstr "Nová vrstva (jednorázově)"
 
 #: ../gui/fill.py:661
-#, fuzzy
 msgctxt "fill options: Target | New Layer (tooltip)"
 msgid ""
 "Create a new layer with the results of the fill.\n"
 "This is turned off automatically after use."
 msgstr ""
-"Vytvořit novou vrstvu s výsledkem vyplnění.\n"
+"Vytvořit novou vrstvu s výsledky vyplnění.\n"
 "Toto je po použití automaticky vypnuto."
 
 #: ../gui/fill.py:673
 msgctxt "fill options: Target | Blend Mode dropdown - warning text"
 msgid "This mode does nothing when alpha locking is enabled!"
-msgstr ""
+msgstr "Tento režim nedělá nic, když je povolen zámek alfy!"
 
 #: ../gui/fill.py:687
 msgctxt "fill options: Target | Blend Mode dropdown (tooltip)"
 msgid "Blend mode used when filling"
-msgstr ""
+msgstr "Režim míchání použitý při vyplňování"
 
 #: ../gui/fill.py:702
 msgid "Opacity:"
@@ -2158,32 +2122,33 @@ msgstr "Neprůhlednost:"
 #: ../gui/fill.py:705
 msgctxt "fill options: Opacity slider (tooltip)"
 msgid "Opacity of the fill"
-msgstr ""
+msgstr "Neprůhlednost výplně"
 
 #: ../gui/fill.py:728
 msgctxt "fill options: numeric option - grow/shrink fill (label)"
 msgid "Offset:"
-msgstr ""
+msgstr "Posun:"
 
 #: ../gui/fill.py:744
 msgctxt "fill options: Offset (tooltip)"
 msgid "The distance in pixels to grow or shrink the fill"
 msgstr ""
+"Vzdálenost v obrazových bodech (pixelech) pro zvětšení nebo zmenšení vyplnění"
 
 #: ../gui/fill.py:755
 msgctxt "fill options: numeric option for blurring fill (label)"
 msgid "Feather:"
-msgstr ""
+msgstr "Péro:"
 
 #: ../gui/fill.py:770
 msgctxt "fill options: Feather (tooltip)"
 msgid "The amount of blur to apply to the fill"
-msgstr ""
+msgstr "Množství rozmazání, které se použije na vyplnění"
 
 #: ../gui/fill.py:786
 msgctxt "fill options: gap detection toggle (label)"
 msgid "Use Gap Detection"
-msgstr ""
+msgstr "Použít rozpoznávání mezery"
 
 #: ../gui/fill.py:791
 msgctxt "fill options: Use Gap Detection (tooltip)"
@@ -2192,11 +2157,14 @@ msgid ""
 "Note: This can be a lot slower than the regular fill, only enable when you "
 "need it."
 msgstr ""
+"Zkusit rozpoznat mezery a nevyplnit je.\n"
+"Poznámka: Toto může být o hodně pomalejší než obyčejné vyplnění. Povolte, "
+"jen když to potřebujete."
 
 #: ../gui/fill.py:809
 msgctxt "fill options: gap-detection sub-option, numeric setting (label)"
 msgid "Max Gap Size:"
-msgstr ""
+msgstr "Největší velikost mezery:"
 
 #: ../gui/fill.py:824
 msgctxt "fill options: Max Gap Size (tooltip)"
@@ -2204,6 +2172,8 @@ msgid ""
 "The size of the largest gaps that can be detected.\n"
 "Using large values can make the fill run a lot slower."
 msgstr ""
+"Velikost největších mezer, kterou lze rozpoznat.\n"
+"Použití velkých hodnot může vést ke značnému zpomalení vyplňování."
 
 #: ../gui/fill.py:837
 msgctxt ""
@@ -2211,7 +2181,7 @@ msgctxt ""
 "When enabled, if the fill stops after going past a detected gap, it 'pulls' "
 "the fill back out of the gap to the other side of it."
 msgid "Prevent seeping"
-msgstr ""
+msgstr "Bránit prosakování"
 
 #: ../gui/fill.py:844
 msgctxt "fill options: Prevent seeping (tooltip)"
@@ -2219,22 +2189,22 @@ msgid ""
 "Try to prevent the fill from seeping into the gaps.\n"
 "If a fill starts in a detected gap, this option will do nothing."
 msgstr ""
+"Zkusit zabránit vyplňování v prosakování do mezer.\n"
+"Pokud vyplňování začne v rozpoznané mezeře, tato volba neudělá nic."
 
 #: ../gui/fill.py:854 ../gui/mode.py:627
 msgid "Reset"
-msgstr "Nastavit znovu"
+msgstr "Obnovit výchozí"
 
 #: ../gui/fill.py:858
-#, fuzzy
 msgctxt "fill options: Reset button (tooltip)"
 msgid "Reset options to their defaults"
 msgstr "Nastavit volby znovu na výchozí hodnoty"
 
 #: ../gui/fill.py:1036
-#, fuzzy
 msgctxt "fill option: default option in the Source Layer dropdown"
 msgid "Selected Layer"
-msgstr "Vybrat vrstvu"
+msgstr "Vybraná vrstva"
 
 #: ../gui/footer.py:191
 #, python-brace-format
@@ -2365,7 +2335,7 @@ msgstr "Malovat nepravidelně tvořenými tahy štětce"
 #. TRANSLATORS: used on the options panel.
 #: ../gui/freehand.py:581
 msgid "Smooth:"
-msgstr "Plynulé:"
+msgstr "Plynule:"
 
 #. TRANSLATORS: Short alias for "Fake Pressure (for mouse)". This is
 #. TRANSLATORS: used on the options panel.
@@ -2377,7 +2347,7 @@ msgstr "Tlak:"
 #. TRANSLATORS: This is used on the options panel.
 #: ../gui/freehand.py:614
 msgid "Twist:"
-msgstr ""
+msgstr "Kroutit:"
 
 #: ../gui/gtkexcepthook.py:163
 msgid "Bug Detected"
@@ -2509,12 +2479,11 @@ msgstr "Zařízení:"
 
 #: ../gui/inputtestwindow.py:73
 msgid "(No Barrel Rotation)"
-msgstr ""
+msgstr "(bez válcového stočení)"
 
 #: ../gui/inputtestwindow.py:75
-#, fuzzy
 msgid "Barrel Rotation:"
-msgstr "Nastavit znovu otočení"
+msgstr "Válcové stočení:"
 
 #. TRANSLATORS: Command to move a layer in the horizontal plane,
 #. TRANSLATORS: preserving its position in the stack.
@@ -2530,23 +2499,22 @@ msgstr "Přesunout nynější vrstvu"
 #: ../gui/layerprops.py:356
 msgctxt "layer properties dialog: name entry: icon tooltip"
 msgid "Layer names cannot be empty."
-msgstr ""
+msgstr "Názvy vrstev nemohou být prázdné."
 
 #: ../gui/layerprops.py:361
 msgctxt "layer properties dialog: name entry: icon tooltip"
 msgid "Layer name is not unique."
-msgstr ""
+msgstr "Název vrstvy není jedinečný."
 
 #: ../gui/layerprops.py:377
-#, fuzzy
 msgctxt "layer properties dialog: title"
 msgid "Layer Properties"
-msgstr "Vlastnosti"
+msgstr "Vlastnosti vrstvy"
 
 #: ../gui/layerprops.py:381
 msgctxt "layer properties dialog: done button"
 msgid "Done"
-msgstr ""
+msgstr "Hotovo"
 
 #. Visibility flag column
 #: ../gui/layers.py:394
@@ -2556,52 +2524,49 @@ msgstr "Viditelná"
 #. Other flags column
 #: ../gui/layers.py:426
 msgid "Flags"
-msgstr ""
+msgstr "Příznaky"
 
 #: ../gui/layers.py:925
-#, fuzzy
 msgctxt "Layers: description: no layer (\"never happens\" condition!)"
 msgid "?layer"
-msgstr "Vrstva"
+msgstr "?vrstva"
 
 #: ../gui/layers.py:945
 msgctxt "Layers: description parts: unknown mode (fallback str!)"
 msgid "?mode"
-msgstr ""
+msgstr "?režim"
 
 #: ../gui/layers.py:952
 msgctxt "Layers: description parts: layer hidden"
 msgid "Hidden"
-msgstr ""
+msgstr "Skryto"
 
 #: ../gui/layers.py:957
 #, python-format
 msgctxt "Layers: description parts: opacity percentage"
 msgid "%d%% opaque"
-msgstr ""
+msgstr "%d%% neprůhledná"
 
 #: ../gui/layers.py:964
-#, fuzzy
 msgctxt "Layers dockable: description parts: layer locked flag"
 msgid "Locked"
-msgstr "Uzamčená"
+msgstr "Uzamknuta"
 
 #: ../gui/layers.py:975
 msgctxt "Layers: description parts: unknown type (fallback str!)"
 msgid "?type"
-msgstr ""
+msgstr "?typ"
 
 #: ../gui/layers.py:982
-#, fuzzy
 msgctxt "Layers dockable: description parts joiner text"
 msgid ", "
 msgstr ", "
 
 #: ../gui/layers.py:990
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgctxt "Layers dockable: markup for a layer with no description"
 msgid "{layer_name}"
-msgstr "Přidat {layer_default_name}"
+msgstr "{layer_name}"
 
 #: ../gui/layers.py:995
 #, python-brace-format
@@ -2610,6 +2575,8 @@ msgid ""
 "<span size=\"smaller\">{layer_name}\n"
 "<span size=\"smaller\">{layer_description}</span></span>"
 msgstr ""
+"<span size=\"smaller\">{layer_name}\n"
+"<span size=\"smaller\">{layer_description}</span></span>"
 
 #: ../gui/layerswindow.py:95
 msgid "Layers"
@@ -2632,7 +2599,7 @@ msgstr "Neprůhlednost vrstvy: %d%%"
 #: ../gui/layerswindow.py:107
 #, python-format
 msgid "%d%%"
-msgstr ""
+msgstr "%d%%"
 
 #. TRANSLATORS: status bar messages for drag, without/with modifiers
 #: ../gui/layerswindow.py:114
@@ -2650,22 +2617,21 @@ msgid "Layer"
 msgstr "Vrstva"
 
 #: ../gui/layervis.py:53
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgctxt "view controls: dropdown: item markup"
 msgid "<i>{builtin_view_name}</i>"
-msgstr "<b>{brush_name}</b>"
+msgstr "<i>{builtin_view_name}</i>"
 
 #: ../gui/layervis.py:125
 #, python-brace-format
 msgctxt "view controls: dropdown: item markup"
 msgid "{user_chosen_view_name}"
-msgstr ""
+msgstr "{user_chosen_view_name}"
 
 #: ../gui/layervis.py:187
-#, fuzzy
 msgctxt "view controls: rename view dialog"
 msgid "Rename View"
-msgstr "Otočit pohled"
+msgstr "Přejmenovat pohled"
 
 #: ../gui/linemode.py:41
 msgid "Entrance Pressure"
@@ -2741,13 +2707,12 @@ msgid "Draw ellipses; Shift rotates, Ctrl constrains ratio/angle"
 msgstr "Kreslete elipsy, klávesa Shift otočí, Ctrl omezí poměr/ úhel"
 
 #: ../gui/meta.py:39
-#, fuzzy
 msgctxt "About dialog: copyright statement"
 msgid ""
 "Copyright (C) 2005-2017\n"
 "Martin Renold and the MyPaint Development Team"
 msgstr ""
-"Copyright (C) 2005-2015\n"
+"Kopírovací právo (C) 2005-2017\n"
 "Martin Renold a vývojářský tým Mypaint"
 
 #: ../gui/meta.py:45
@@ -2862,7 +2827,7 @@ msgstr "Zesílení:"
 #. TRANSLATORS:"Paint Pigment Mode" for the options panel. Short.
 #: ../gui/mode.py:590
 msgid "Pigment:"
-msgstr ""
+msgstr "Barvivo:"
 
 #: ../gui/optionspanel.py:47
 msgctxt "options panel: tab tooltip: title"
@@ -2919,7 +2884,7 @@ msgstr "Jazyk systému"
 #, python-brace-format
 msgctxt "Prefs Dialog|View|Interface - menu entries"
 msgid "{lang_en} - ({lang_nat})"
-msgstr ""
+msgstr "{lang_en} - ({lang_nat})"
 
 #. TRANSLATORS: title of panel showing an overview of the whole canvas
 #: ../gui/previewwindow.py:202
@@ -2982,16 +2947,14 @@ msgid "Adjust the painting symmetry axis."
 msgstr "Upravit osu souměrnosti malby."
 
 #: ../gui/symmetry.py:355
-#, fuzzy
 msgctxt "symmetry axis options panel: labels"
 msgid "X Position:"
-msgstr "Poloha:"
+msgstr "Poloha X:"
 
 #: ../gui/symmetry.py:359
-#, fuzzy
 msgctxt "symmetry axis options panel: labels"
 msgid "Y Position:"
-msgstr "Poloha:"
+msgstr "Poloha Y:"
 
 #: ../gui/symmetry.py:363
 msgctxt "symmetry axis options panel: position button: no axis pos."
@@ -3010,27 +2973,24 @@ msgid "Alpha:"
 msgstr "Alfa:"
 
 #: ../gui/symmetry.py:375
-#, fuzzy
 msgctxt "symmetry axis options panel: labels"
 msgid "Symmetry Type:"
-msgstr "Souměrnost"
+msgstr "Druh souměrnosti:"
 
 #: ../gui/symmetry.py:379
 msgctxt "symmetry axis options panel: labels"
 msgid "Rotational lines:"
-msgstr ""
+msgstr "Točivé čáry:"
 
 #: ../gui/symmetry.py:446
-#, fuzzy
 msgctxt "symmetry axis options panel: axis position dialog: window title"
 msgid "X axis Position"
-msgstr "Poloha osy"
+msgstr "Poloha osy X"
 
 #: ../gui/symmetry.py:478
-#, fuzzy
 msgctxt "symmetry axis options panel: axis position dialog: window title"
 msgid "Y axis Position"
-msgstr "Poloha osy"
+msgstr "Poloha osy Y"
 
 #: ../gui/symmetry.py:608
 msgctxt "symmetry axis options panel: axis active checkbox"
@@ -3098,22 +3058,22 @@ msgid "Rotate the canvas view"
 msgstr "Otočit pohled na plátno"
 
 #: ../gui/workspace.py:1313
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgctxt "workspace: sidebar tabs: button tooltips"
 msgid "{tab_title}: close tab"
-msgstr "%s: Zavřít kartu"
+msgstr "{tab_title}: Zavřít kartu"
 
 #: ../gui/workspace.py:1317
 #, python-brace-format
 msgctxt "workspace: sidebar tabs: button tooltips"
 msgid "{tab_title}: tab options and properties"
-msgstr ""
+msgstr "{tab_title}: Volby a vlastnosti karty"
 
 #: ../gui/workspace.py:1321
 #, python-brace-format
 msgctxt "workspace: sidebar tabs: button tooltips"
 msgid "{tab_title}: move tab to other sidebar"
-msgstr ""
+msgstr "{tab_title}: Přesunout kartu na jiný posuvník"
 
 #: ../lib/command.py:181
 msgid "Unknown Command"
@@ -3141,12 +3101,11 @@ msgstr "Zastřihnout vrstvu"
 
 #: ../lib/command.py:636
 msgid "Uniquify Layer Pixels"
-msgstr ""
+msgstr "Zjedinečnit obrazové body vrstvy"
 
 #: ../lib/command.py:659
-#, fuzzy
 msgid "Refactor Group"
-msgstr "Přejmenovat skupinu"
+msgstr "Přestavět skupinu"
 
 #: ../lib/command.py:682
 msgid "Clear Layer"
@@ -3176,9 +3135,8 @@ msgid "Normalize Layer Mode"
 msgstr "Normalizovat režim vrstvy"
 
 #: ../lib/command.py:947
-#, fuzzy
 msgid "Import Layers"
-msgstr "Zavedený štětec"
+msgstr "Zavést vrstvy"
 
 #: ../lib/command.py:949
 #, python-brace-format
@@ -3383,10 +3341,9 @@ msgstr ""
 "Neznámá přípona souboru:  „{ext}“"
 
 #: ../lib/document.py:1589
-#, fuzzy
 msgctxt "Document IO: group name for Import Layers"
 msgid "Imported layers"
-msgstr "Zavedený štětec"
+msgstr "Zavedené vrstvy"
 
 #: ../lib/document.py:1756
 #, python-brace-format
@@ -3419,58 +3376,57 @@ msgstr ""
 "{see_logs}"
 
 #: ../lib/floodfill.py:131
-#, fuzzy
 msgctxt "floodfill status message: use active tense"
 msgid "Filling"
-msgstr "Vyplnit"
+msgstr "Vyplnění"
 
 #: ../lib/floodfill.py:132
 msgctxt "floodfill status message: use active tense"
 msgid "Morphing"
-msgstr ""
+msgstr "Změna tvaru"
 
 #: ../lib/floodfill.py:133
 msgctxt "floodfill status message: use active tense"
 msgid "Blurring"
-msgstr ""
+msgstr "Rozmazání"
 
 #: ../lib/floodfill.py:134
 msgctxt "floodfill status message: use active tense"
 msgid "Compositing"
-msgstr ""
+msgstr "Skládání"
 
 #: ../lib/floodfill.py:135
 msgctxt "floodfill status message: use active tense"
 msgid "Finishing up"
-msgstr ""
+msgstr "Dodělání"
 
 #: ../lib/floodfill.py:137
 msgctxt "uniform square region of pixels, plural noun"
 msgid "tiles"
-msgstr ""
+msgstr "dlaždic"
 
 #. TRANSLATORS: Assumption for all "Time period abbreviations":
 #. TRANSLATORS: they don't need ngettext (to support plural/singular)
 #: ../lib/helpers.py:570
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgctxt "Time period abbreviations"
 msgid "{days}d{hours}h"
 msgstr "{days}d{hours}h"
 
 #: ../lib/helpers.py:572
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgctxt "Time period abbreviations"
 msgid "{hours}h{minutes}m"
 msgstr "{hours}h{minutes}m"
 
 #: ../lib/helpers.py:574
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgctxt "Time period abbreviation"
 msgid "{minutes}m{seconds}s"
 msgstr "{minutes}m{seconds}s"
 
 #: ../lib/helpers.py:576
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgctxt "Time period abbreviation"
 msgid "{seconds}s"
 msgstr "{seconds}s"
@@ -3483,13 +3439,11 @@ msgstr "Vrstva"
 
 #. TRANSLATORS: Short default name for vector (SVG/Inkscape) layers
 #: ../lib/layer/data.py:1159
-#, fuzzy
 msgctxt "layer default names"
 msgid "Vectors"
-msgstr "Vektorová vrstva"
+msgstr "Vektory"
 
 #: ../lib/layer/data.py:1164
-#, fuzzy
 msgctxt "layer type descriptions"
 msgid "Vector Layer"
 msgstr "Vektorová vrstva"
@@ -3498,30 +3452,28 @@ msgstr "Vektorová vrstva"
 #: ../lib/layer/data.py:1229
 msgctxt "layer default names"
 msgid "Bitmap"
-msgstr ""
+msgstr "Bitová mapa"
 
 #: ../lib/layer/data.py:1234
 msgctxt "layer type descriptions"
 msgid "Bitmap Data"
-msgstr ""
+msgstr "Data bitové mapy"
 
 #. TRANSLATORS: Short default name for non-renderable fallback layers
 #: ../lib/layer/data.py:1250
 msgctxt "layer default names"
 msgid "Data"
-msgstr ""
+msgstr "Data"
 
 #: ../lib/layer/data.py:1255
-#, fuzzy
 msgctxt "layer type descriptions"
 msgid "Unknown Data"
-msgstr "Neznámá datová vrstva"
+msgstr "Neznámá data"
 
 #: ../lib/layer/data.py:1306
-#, fuzzy
 msgctxt "layer type descriptions"
 msgid "Painting Layer"
-msgstr "Nová kreslicí vrstva"
+msgstr "Kreslicí vrstva"
 
 #. TRANSLATORS: Short default name for layer groups.
 #: ../lib/layer/group.py:67
@@ -3530,10 +3482,9 @@ msgid "Group"
 msgstr "Skupina"
 
 #: ../lib/layer/group.py:72
-#, fuzzy
 msgctxt "layer type descriptions"
 msgid "Layer Group"
-msgstr "Nová skupina vrstev"
+msgstr "Skupina vrstev"
 
 #. TRANSLATORS: Short default name for temporary placeholder layers.
 #. TRANSLATORS: (The user should never see this except in error cases)
@@ -3555,10 +3506,9 @@ msgstr ", "
 #: ../lib/layer/tree.py:2315
 msgctxt "layer default names: refactor: name of the common areas layer"
 msgid "Common"
-msgstr ""
+msgstr "Obecný"
 
 #: ../lib/layervis.py:44
-#, fuzzy
 msgctxt "layer visibility sets: default name for a user-managed view"
 msgid "View"
 msgstr "Pohled"
@@ -3566,37 +3516,33 @@ msgstr "Pohled"
 #: ../lib/layervis.py:49
 msgctxt "layer visibility sets: text shown when no user-managed view is active"
 msgid "No active view"
-msgstr ""
+msgstr "Žádný činný pohled"
 
 #: ../lib/layervis.py:579
-#, fuzzy
 msgctxt "layer views: commands: add"
 msgid "Add Layer View"
-msgstr "Vrstvy"
+msgstr "Přidat zobrazení vrstvy"
 
 #: ../lib/layervis.py:604 ../lib/layervis.py:633
-#, fuzzy
 msgctxt "layer views: commands: remove"
 msgid "Remove Layer View"
-msgstr "Odstranit vrstvu"
+msgstr "Odstranit zobrazení vrstvy"
 
 #: ../lib/layervis.py:663
 #, python-brace-format
 msgctxt "layer views: commands: activate"
 msgid "Activate Layer View “{name}”"
-msgstr ""
+msgstr "Zapnout zobrazení vrstvy “{name}”"
 
 #: ../lib/layervis.py:692
-#, fuzzy
 msgctxt "layer views: commands: set active view's lock flag"
 msgid "Lock Layer View"
-msgstr "Uzamknout vrstvu"
+msgstr "Uzamknout zobrazení vrstvy"
 
 #: ../lib/layervis.py:697
-#, fuzzy
 msgctxt "layer views: commands: set active view's lock flag"
 msgid "Unlock Layer View"
-msgstr "Odemknout vrstvu"
+msgstr "Odemknout zobrazení vrstvy"
 
 #: ../lib/modes.py:47
 msgid "Pass-through"
@@ -3616,12 +3562,14 @@ msgstr "Jen nejvrchnější vrstva, bez míchání barev."
 
 #: ../lib/modes.py:54
 msgid "Pigment"
-msgstr ""
+msgstr "Barvivo"
 
 #: ../lib/modes.py:55
 msgid ""
 "Similar to mixing actual pigments by upsampling to 10 spectral channels."
 msgstr ""
+"Podobné s mícháním skutečných barviv pomocí navzorkování do 10 spektrálních "
+"kanálů."
 
 #: ../lib/modes.py:58
 msgid "Multiply"
@@ -3828,10 +3776,10 @@ msgstr "Cíl, který překryje zdroj, zdroj nahradí. Zdroj je umístěn jinde."
 #. TRANSLATORS: Change only if your lang *REQUIRES* a different order or
 #. TRANSLATORS: if raw digits and a space aren't enough.
 #: ../lib/naming.py:22
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgctxt "unique names: serial number needed: template"
 msgid "{name} {number}"
-msgstr "%(name)s %(number)d"
+msgstr "{name} {number}"
 
 #. TRANSLATORS: UNIQUE_NAME_REGEX - regex for UNIQUE_NAME_TEMPLATE
 #. TRANSLATORS: Must match its template (msgid: '{name} {number}')
@@ -3839,7 +3787,7 @@ msgstr "%(name)s %(number)d"
 #: ../lib/naming.py:30
 msgctxt "unique names: regex matching a string with a serial number"
 msgid "^(?P<name>.*?)\\s+(?P<number>\\d+)$"
-msgstr ""
+msgstr "^(?P<name>.*?)\\s+(?P<number>\\d+)$"
 
 #: ../lib/pixbufsurface.py:39
 msgctxt "user-facing error texts"
@@ -3865,27 +3813,24 @@ msgstr ""
 "Cílová složka: “{dirname}”."
 
 #: ../lib/tiledsurface.py:48
-#, fuzzy
 msgid "Vertical"
-msgstr "Zrcadlit svisle"
+msgstr "Svisle"
 
 #: ../lib/tiledsurface.py:49
-#, fuzzy
 msgid "Horizontal"
-msgstr "Zrcadlit vodorovně"
+msgstr "Vodorovně"
 
 #: ../lib/tiledsurface.py:50
 msgid "Vertical and horizontal"
-msgstr ""
+msgstr "Svisle a vodorovně"
 
 #: ../lib/tiledsurface.py:51
-#, fuzzy
 msgid "Rotational"
-msgstr "Nastavit znovu otočení"
+msgstr "Točivé"
 
 #: ../lib/tiledsurface.py:52
 msgid "Snowflake"
-msgstr ""
+msgstr "Sněhová vločka"
 
 #: ../lib/tiledsurface.py:628
 #, python-format
@@ -3900,7 +3845,7 @@ msgstr "Obnovit přerušenou práci?"
 #: ../po/tmp/autorecover.glade.h:3
 msgctxt "Autosave Recovery dialog|"
 msgid "_Look for backups at startup"
-msgstr ""
+msgstr "_Při spuštění hledat zálohy"
 
 #: ../po/tmp/autorecover.glade.h:4
 msgctxt "Autosave Recovery dialog|Show Dialog at Startup checkbutton|"
@@ -3911,29 +3856,29 @@ msgid ""
 "You can always launch this dialog from the ‘File’ menu when MyPaint is "
 "running."
 msgstr ""
+"Tento dialog pro automatické obnovení zálohy spustit při spuštění MyPaint, "
+"pokud jsou nějaké soubory, které by se daly obnovit.\n"
+"\n"
+"Tento dialog vždy, když MyPaint běží, můžete vyvolat přes nabídku Soubor."
 
 #. Deletes the selected autosave backup file.
 #: ../po/tmp/autorecover.glade.h:8
-#, fuzzy
 msgctxt "Autosave Recovery dialog|"
 msgid "_Delete…"
-msgstr "Smazat"
+msgstr "_Smazat…"
 
 #: ../po/tmp/autorecover.glade.h:9
-#, fuzzy
 msgctxt "Autosave Recovery dialog|Delete button|"
 msgid "Delete this backup from the disk."
-msgstr "Smazat tento štětec z disku"
+msgstr "Smazat tuto zálohu z disku."
 
 #. Recover in the sense or retrieval or salvage from a backup file. The user is asked to save the retrieved file immediately afterwards, hence the ellipsis.
 #: ../po/tmp/autorecover.glade.h:11
-#, fuzzy
 msgctxt "Autosave Recovery dialog|"
 msgid "_Recover & Save…"
 msgstr "_Obnovit a uložit…"
 
 #: ../po/tmp/autorecover.glade.h:12
-#, fuzzy
 msgctxt "Autosave Recovery dialog|Recover button|"
 msgid "Save this backup to disk, then continue working on it."
 msgstr "Uložit tuto zálohu na disk, potom pokračovat v práci na ní."
@@ -3942,7 +3887,7 @@ msgstr "Uložit tuto zálohu na disk, potom pokračovat v práci na ní."
 #: ../po/tmp/autorecover.glade.h:14
 msgctxt "Autosave Recovery dialog|"
 msgid "Decide _Later"
-msgstr ""
+msgstr "_Rozhodnout později"
 
 #: ../po/tmp/autorecover.glade.h:15
 msgctxt "Autosave Recovery dialog|Cancel button|"
@@ -3950,15 +3895,15 @@ msgid "Start work on a new canvas. These backups will be retained."
 msgstr "Začít pracovat na novém plátně. Tyto zálohy budou ponechány."
 
 #: ../po/tmp/autorecover.glade.h:16
-#, fuzzy
 msgctxt "Autosave Recovery dialog|"
 msgid ""
 "MyPaint crashed with unsaved work, but it makes rolling backups. You can "
 "recover a working file from one of these automated backups now. You’ll be "
 "asked where to save it before continuing."
 msgstr ""
-"MyPaint spadl s neuloženou prací. Byla však udělána záloha. Nyní soubor "
-"můžete obnovit, nebo je nechat tak, až dokud MyPaint nespustíte znovu."
+"MyPaint spadl s neuloženou prací. Byla však průběžně dělána záloha. Nyní "
+"soubor můžete obnovit z jedné z těchto automatizovaných záloh. Před "
+"pokračováním se vás program zeptá, kam se má uložit."
 
 #: ../po/tmp/autorecover.glade.h:17
 msgid "Thumbnail"
@@ -4050,9 +3995,8 @@ msgstr ""
 
 #. field label
 #: ../po/tmp/brusheditor.glade.h:22
-#, fuzzy
 msgid "Value:"
-msgstr "Hodnota HSV"
+msgstr "Hodnota:"
 
 #: ../po/tmp/brusheditor.glade.h:23
 msgid "Reset this input to have no effect on the setting"
@@ -4129,14 +4073,12 @@ msgid "{dname}:"
 msgstr "{název pole}:"
 
 #: ../po/tmp/brusheditor.glade.h:42
-#, fuzzy
 msgid "Brush dynamics are not available for this setting."
-msgstr "Zpět do nastavení"
+msgstr "Síla štětce není pro toto nastavení dostupná."
 
 #: ../po/tmp/brusheditor.glade.h:43
-#, fuzzy
 msgid "<big><b>No Brush Dynamics</b></big>"
-msgstr "<big><b>{accel_label}</b></big>"
+msgstr "<big><b>Žádná síla štětce</b></big>"
 
 #: ../po/tmp/inktool.glade.h:1
 msgctxt "Inking tool options: point value sliders: labels: tooltips"
@@ -4195,34 +4137,31 @@ msgid "Delete the currently selected point"
 msgstr "Smazat nyní vybraný bod"
 
 #: ../po/tmp/inktool.glade.h:14 ../po/tmp/resources.xml.h:184
-#, fuzzy
 msgid "Insert Point"
-msgstr "Vložit řádek"
+msgstr "Vložit bod"
 
 #: ../po/tmp/inktool.glade.h:15 ../po/tmp/resources.xml.h:188
 msgid "Simplify Points"
-msgstr ""
+msgstr "Zjednodušit body"
 
 #: ../po/tmp/inktool.glade.h:16
 msgid "Simplify the curve using the Reumann-Witkam algorithm."
-msgstr ""
+msgstr "Zjednodušit křivku pomocí Reumannova-Witkamova algoritmu."
 
 #: ../po/tmp/inktool.glade.h:17 ../po/tmp/resources.xml.h:190
-#, fuzzy
 msgid "Cull Points"
-msgstr "Smazat bod"
+msgstr "Vyřadit body"
 
 #: ../po/tmp/inktool.glade.h:18
 msgid "Cull every other point from the curve."
-msgstr ""
+msgstr "Vyřadit všechny ostatní body z křivky."
 
 #: ../po/tmp/layerprops.glade.h:1
 msgctxt "Layer properties widget → Name → label tooltip"
 msgid "The layer’s unique name."
-msgstr ""
+msgstr "Jedinečný název vrstvy."
 
 #: ../po/tmp/layerprops.glade.h:2
-#, fuzzy
 msgctxt "Layer properties widget → <category labels>"
 msgid "Name"
 msgstr "Název"
@@ -4236,9 +4175,12 @@ msgid ""
 "Each mode has a different visual effect. Refer to the dropdown’s tooltip for "
 "each one to discover what they all do."
 msgstr ""
+"Jak se vrstva snoubí s tím, co je za ní.\n"
+"\n"
+"Každý režim má jiný viditelný účinek. Seznamte se s dolů se spouštějící "
+"nástrojovou radou pro každý z nich a objevte, co všechno dělají."
 
 #: ../po/tmp/layerprops.glade.h:7
-#, fuzzy
 msgctxt "Layer properties widget → <category labels>"
 msgid "Mode"
 msgstr "Režim"
@@ -4251,9 +4193,11 @@ msgid ""
 "\n"
 "At 0%, the layer doesn’t contribute at all."
 msgstr ""
+"Jak se vrstva spojuje s tím, co je za ní\n"
+"\n"
+"Při 0 % se vrstva vůbec nepodílí."
 
 #: ../po/tmp/layerprops.glade.h:12
-#, fuzzy
 msgctxt "Layer properties widget → <category labels>"
 msgid "Opacity"
 msgstr "Neprůhlednost"
@@ -4265,11 +4209,15 @@ msgid ""
 "\n"
 "Refer to each button’s tooltip to find out what each flag does."
 msgstr ""
+"Zvláštní příznaky vrstvy.\n"
+"\n"
+"Seznamte se s nástrojovou radou pro každé tlačítko a přijděte na to, co "
+"všechno dělají."
 
 #: ../po/tmp/layerprops.glade.h:16
 msgctxt "Layer properties widget → <category labels>"
 msgid "Flags"
-msgstr ""
+msgstr "Příznaky"
 
 #: ../po/tmp/layerprops.glade.h:17
 msgctxt "Layer properties widget → Flags → Eye togglebutton → tooltip"
@@ -4285,6 +4233,16 @@ msgid ""
 "When a layer group is hidden, all of the layers inside it are made invisible "
 "too."
 msgstr ""
+"Viditelná nebo skrytá vrstva.\n"
+"\n"
+"Symbol otevřeného oka zde ukazuje, že vrstva je viditelná.\n"
+"\n"
+"Když je značka s okem zavřena, vrstva je skryta. Skryté vrstvy jsou naprosto "
+"neviditelné: nemají žádný účinek na to, co je zobrazeno. Kvůli bezpečnosti "
+"nemůžete malovat do skrytých vrstev.\n"
+"\n"
+"Když je skryta skupina vrstev, všechny vrstvy uvnitř ní jsou také "
+"zneviditelněny."
 
 #: ../po/tmp/layerprops.glade.h:24
 msgctxt "Layer properties widget → Flags → Padlock togglebutton → tooltip"
@@ -4299,35 +4257,39 @@ msgid ""
 "\n"
 "When a layer group is locked, none of the layers inside it can be edited."
 msgstr ""
+"Upravitelná nebo uzamknutá vrstva.\n"
+"\n"
+"Symbol otevřeného visacího zámku ukazuje, že vrstvu lze upravit.\n"
+"\n"
+"Když je vrstva zamčena, nemůžete do ní malovat nebo jinak měnit její obsah "
+"složený z obrazových bodů (pixelů). Také z ní nemůžete vybrat tahy, takže je "
+"užitečné malovat náčrty.\n"
+"Když je skupina vrstev uzamknuta, žádnou z vrstev uvnitř ní nelze upravit."
 
 #: ../po/tmp/layervis.glade.h:1
-#, fuzzy
 msgctxt "Layers window: view list controls: tooltips"
 msgid "The currently active view."
-msgstr "Režim skládání nynější vrstvy."
+msgstr "Nyní činný pohled."
 
 #: ../po/tmp/layervis.glade.h:2
-#, fuzzy
 msgctxt "Layers window: view list controls: tooltips"
 msgid "Rename the active view."
-msgstr "Otočit pohled na plátno"
+msgstr "Přejmenovat činný pohled."
 
 #: ../po/tmp/layervis.glade.h:3
-#, fuzzy
 msgctxt "Layers window: view list controls: tooltips"
 msgid "Remove the active view."
-msgstr "Otočit pohled na plátno"
+msgstr "Odstranit činný pohled."
 
 #: ../po/tmp/layervis.glade.h:4
-#, fuzzy
 msgctxt "Layers window: view list controls: tooltips"
 msgid "Snapshot visible layers as a new view."
-msgstr "Které viditelné vrstvy se mají vyplnit"
+msgstr "Udělat snímek viditelných vrstev jako nového pohledu."
 
 #: ../po/tmp/layervis.glade.h:5
 msgctxt "Layers window: view list controls: tooltips"
 msgid "Lock or unlock the active view."
-msgstr ""
+msgstr "Uzamknout nebo odemknout činný pohled."
 
 #: ../po/tmp/mypaint.glade.h:2
 msgctxt "footer: color picker button: tooltip"
@@ -4337,7 +4299,7 @@ msgstr "Vybrat barvu"
 #: ../po/tmp/mypaint.glade.h:3
 msgctxt "Footerbar|"
 msgid "Edit the current color in detail"
-msgstr "Upravit nynější barvu v detailu"
+msgstr "Upravit nynější barvu v jednotlivosti"
 
 #: ../po/tmp/mypaint.glade.h:4
 msgctxt "Footerbar|"
@@ -4737,7 +4699,6 @@ msgid "Hide cursor while painting"
 msgstr "Při malování skrýt ukazovátko"
 
 #: ../po/tmp/preferenceswindow.glade.h:82
-#, fuzzy
 msgctxt ""
 "Prefs Dialog|View|Interface|Blink layers on creation/selection|checkbox label"
 msgid "Enabled"
@@ -4751,21 +4712,23 @@ msgid ""
 "When a layer is created or selected, show only that layer for a short time "
 "period."
 msgstr ""
+"Když je vrstva vytvořena nebo vybrána, ukázat po krátké období času jen tuto "
+"vrstvu."
 
 #: ../po/tmp/preferenceswindow.glade.h:84
 msgctxt "Prefs Dialog|View|Interface|"
 msgid "Blink layers on creation/selection:"
-msgstr ""
+msgstr "Zablikat vrstvami při vytvoření/vybrání:"
 
 #: ../po/tmp/preferenceswindow.glade.h:85
 msgctxt "Prefs Dialog|View|Interface|"
 msgid "Language:"
-msgstr ""
+msgstr "Jazyk:"
 
 #: ../po/tmp/preferenceswindow.glade.h:86
 msgctxt "Prefs Dialog|View|Interface|"
 msgid "(needs restart)"
-msgstr ""
+msgstr "(potřebuje spustit znovu)"
 
 #. Tab label in preferences dialog&#10;
 #: ../po/tmp/preferenceswindow.glade.h:88
@@ -4887,32 +4850,28 @@ msgstr "Barva"
 #: ../po/tmp/preferenceswindow.glade.h:106
 msgctxt "Prefs Dialog|Compatibility"
 msgid "Default Compatibility Mode:"
-msgstr ""
+msgstr "Výchozí režim slučitelnosti:"
 
 #: ../po/tmp/preferenceswindow.glade.h:107
-#, fuzzy
 msgctxt "Prefs Dialog|Compatibility"
 msgid "<b>1.x Settings</b>"
-msgstr "<b>Ukládání</b>"
+msgstr "<b>1.x nastavení</b>"
 
 #. Make sure to be consistent w. other occurences of 2.x
 #: ../po/tmp/preferenceswindow.glade.h:109
-#, fuzzy
 msgctxt "Prefs Dialog|Compatibility"
 msgid "<b>2.x Settings</b>"
-msgstr "<b>Ukládání</b>"
+msgstr "<b>2.x nastavení</b>"
 
 #: ../po/tmp/preferenceswindow.glade.h:110
-#, fuzzy
 msgctxt "Prefs Dialog|Compatibility"
 msgid "Default New Layer Type:"
-msgstr "Vybrat vrstvu"
+msgstr "Výchozí typ nové vrstvy:"
 
 #: ../po/tmp/preferenceswindow.glade.h:111
-#, fuzzy
 msgctxt "Prefs Dialog|Compatibility"
 msgid "Default Pigment Brush Setting:"
-msgstr "Upravit přednastavení štětce"
+msgstr "Výchozí nastavení obarvení štětce:"
 
 #. Label description for the 1.x compatibility-mode-by-default setting
 #: ../po/tmp/preferenceswindow.glade.h:115
@@ -4922,6 +4881,9 @@ msgid ""
 "default. In this mode 1.x .ora files will look the same as they did in older "
 "versions, but pigment blending will not work well."
 msgstr ""
+"Při vytváření nových dokumentů použijte režim slučitelnost 1.x jako výchozí. "
+"V tomto režimu 1.x budou soubory .ora vypadat stejně, jako vypadaly ve "
+"starších verzích, ale míchání barviva nepracuje dobře."
 
 #: ../po/tmp/preferenceswindow.glade.h:118
 msgctxt "Prefs Dialog|Compatibility"
@@ -4929,22 +4891,24 @@ msgid ""
 "When creating new documents, use the regular 2.x compatibility mode by "
 "default. Old documents will often look different in this mode."
 msgstr ""
+"Při vytváření nových dokumentů použijte běžný režim 2.x jako výchozí. V "
+"tomto režimu budou staré dokumenty vypadat jinak."
 
 #: ../po/tmp/preferenceswindow.glade.h:119
 msgctxt "Prefs Dialog|Compatibility"
 msgid "Show warning for files that may be partially incompatible"
-msgstr ""
+msgstr "Ukázat varování pro soubory, které mohou být částečně neslučitelné"
 
 #. Label for a set of options
 #: ../po/tmp/preferenceswindow.glade.h:121
 msgctxt "Prefs Dialog|Compatibility"
 msgid "File compatibility warnings:"
-msgstr ""
+msgstr "Varování ohledně slučitelnosti souborů:"
 
 #: ../po/tmp/preferenceswindow.glade.h:122
 msgctxt "Prefs Dialog|Compatibility"
 msgid "Show warning for files that may be fully incompatible"
-msgstr ""
+msgstr "Ukázat varování pro soubory, které mohou být zcela neslučitelné"
 
 #. This is a tooltip for the file behavior options label.
 #: ../po/tmp/preferenceswindow.glade.h:124
@@ -4954,30 +4918,31 @@ msgid ""
 "When you save an OpenRaster file with MyPaint 2.0 or newer the active "
 "compatibility mode will be written to the file."
 msgstr ""
+"Toto se použije jen na soubory uložené verzemi MyPaint staršími než 2.0. "
+"Když uložíte soubor OpenRaster v MyPaint 2.0 nebo novějším, bude do souboru "
+"zapsán činný režim slučitelnosti."
 
 #. Label to the options for how to handle files which do not have a compatibility mode specified (whether they should be opened in 1.x compatibility mode, or 2.x mode)
 #: ../po/tmp/preferenceswindow.glade.h:126
 msgctxt "Prefs Dialog|Compatibility"
 msgid "When Mode is Unspecified:"
-msgstr ""
+msgstr "Když není určen režim:"
 
 #. This label indicates a subsection of the compatibility settings related to loading files.
 #: ../po/tmp/preferenceswindow.glade.h:128
-#, fuzzy
 msgctxt "Prefs|Compatibility"
 msgid "<b>File loading</b>"
-msgstr "<b>Ukládání</b>"
+msgstr "<b>Nahrávání souboru</b>"
 
 #: ../po/tmp/preferenceswindow.glade.h:129
 msgid "<b>Compatibility settings</b>"
-msgstr ""
+msgstr "<b>Nastavení slučitelnosti</b>"
 
 #. Tab label in preferences dialog
 #: ../po/tmp/preferenceswindow.glade.h:131
-#, fuzzy
 msgctxt "Prefs Dialog|"
 msgid "Compatibility"
-msgstr "Přenositelnost"
+msgstr "Slučitelnost"
 
 #: ../po/tmp/preferenceswindow.glade.h:132
 msgctxt "Prefs Dialog|Pen Input|Mode|"
@@ -5047,18 +5012,17 @@ msgstr "Vrátit"
 #: ../po/tmp/resources.xml.h:11
 msgctxt "Accel Editor (descriptions)"
 msgid "Reload the file your current work was loaded from."
-msgstr "Znovu načíst současnou práci z původního souboru."
+msgstr "Nahrát znovu soubor, z něhož byla nynější práce nahrána."
 
 #: ../po/tmp/resources.xml.h:12
-#, fuzzy
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "Import Layers…"
-msgstr "Zavést štětce…"
+msgstr "Zavést vrstvy…"
 
 #: ../po/tmp/resources.xml.h:13
 msgctxt "Accel Editor (descriptions)"
 msgid "Import layers from one or more files."
-msgstr ""
+msgstr "Zavést vrstvy z jednoho nebo více souborů."
 
 #: ../po/tmp/resources.xml.h:14
 msgctxt "Menu→File (labels), Accel Editor (labels)"
@@ -5176,48 +5140,44 @@ msgid "The current layer's compositing mode."
 msgstr "Režim skládání nynější vrstvy."
 
 #: ../po/tmp/resources.xml.h:37
-#, fuzzy
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
 msgid "Increase Fake Pressure"
-msgstr "Nástupní přítlak"
+msgstr "Zvětšit nepravý přítlak"
 
 #: ../po/tmp/resources.xml.h:38
 msgctxt "Accel Editor (descriptions)"
 msgid "Send harder pressure for devices that don't support pressure input."
-msgstr ""
+msgstr "Posílat tvrdší přítlak pro zařízení nepodporující tlakový vstup."
 
 #: ../po/tmp/resources.xml.h:39
-#, fuzzy
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
 msgid "Decrease Fake Pressure"
-msgstr "Nástupní přítlak"
+msgstr "Zmenšit nepravý přítlak"
 
 #: ../po/tmp/resources.xml.h:40
 msgctxt "Accel Editor (descriptions)"
 msgid "Send softer pressure for devices that don't support pressure input."
-msgstr ""
+msgstr "Posílat měkčí přítlak pro zařízení nepodporující tlakový vstup."
 
 #: ../po/tmp/resources.xml.h:41
-#, fuzzy
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
 msgid "Increase Fake Rotation"
-msgstr "Zvýšit sytost barvy"
+msgstr "Zvětšit nepravé točení"
 
 #: ../po/tmp/resources.xml.h:42
 msgctxt "Accel Editor (descriptions)"
 msgid "Increase barrel rotation for devices that don't support rotation input."
-msgstr ""
+msgstr "Zvětšit válcové točení pro zařízení nepodporující točivý vstup."
 
 #: ../po/tmp/resources.xml.h:43
-#, fuzzy
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
 msgid "Decrease Fake Rotation"
-msgstr "Snížit sytost barvy"
+msgstr "Zmenšit nepravé točení"
 
 #: ../po/tmp/resources.xml.h:44
 msgctxt "Accel Editor (descriptions)"
 msgid "Decrease barrel rotation for devices that don't support rotation input."
-msgstr ""
+msgstr "Zmenšit válcové točení pro zařízení nepodporující točivý vstup."
 
 #: ../po/tmp/resources.xml.h:45
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
@@ -5314,7 +5274,7 @@ msgstr "Udělat malovací barvu sytější (barevnější, čistější)."
 #: ../po/tmp/resources.xml.h:63
 msgctxt "Menu→Color→Adjust Color (labels), Accel Editor (labels)"
 msgid "Decrease Saturation"
-msgstr "Snížit sytost barvy"
+msgstr "Zmenšit sytost barvy"
 
 #: ../po/tmp/resources.xml.h:64
 msgctxt "Accel Editor (descriptions)"
@@ -5338,11 +5298,10 @@ msgid "Pick Stroke and Layer"
 msgstr "Vybrat štětec a vrstvu"
 
 #: ../po/tmp/resources.xml.h:68
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid ""
 "Pick a brushstroke from the canvas, which restores brush, color, and layer."
-msgstr "Sebrat tah štětcem z plátna: obnoví štětec, barvu a vrstvu."
+msgstr "Vybrat tah štětcem z plátna, čímž se obnoví štětec, barva a vrstva."
 
 #: ../po/tmp/resources.xml.h:69
 msgctxt "Menu→Brush→Shortcut Keys (labels), Accel Editor (labels)"
@@ -5374,22 +5333,19 @@ msgid "Clear Layer"
 msgstr "Vyprázdnit vrstvu"
 
 #: ../po/tmp/resources.xml.h:74
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Clear the active layer’s content."
-msgstr "Vyprázdnit obsah nynější vrstvy."
+msgstr "Vyprázdnit obsah činné vrstvy."
 
 #: ../po/tmp/resources.xml.h:75
-#, fuzzy
 msgctxt "Menu→Layer (labels)"
 msgid "Slice Operations"
-msgstr "Volby pro nástroje"
+msgstr "Krájecí činnosti"
 
 #: ../po/tmp/resources.xml.h:76
-#, fuzzy
 msgctxt "Menu→Layer→Slice (labels), Accel Editor (labels)"
 msgid "Trim Layer to Frame"
-msgstr "Zastřihnout vrstvy na rámeček"
+msgstr "Zastřihnout vrstvu do rámečku"
 
 #: ../po/tmp/resources.xml.h:77
 msgctxt "Accel Editor (descriptions)"
@@ -5399,43 +5355,42 @@ msgstr "Vymazat části nynější vrstvy ležící mimo rámeček."
 #: ../po/tmp/resources.xml.h:78
 msgctxt "Menu→Layer→Slice (labels), Accel Editor (labels)"
 msgid "Uniquify Layer Pixels"
-msgstr ""
+msgstr "Zjedinečnit obrazové body vrstvy"
 
 #: ../po/tmp/resources.xml.h:79
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Delete parts of the current layer which do not vary from the backdrop."
-msgstr "Vymazat části nynější vrstvy ležící mimo rámeček."
+msgstr "Vymazat části nynější vrstvy, které se neliší od pozadí."
 
 #: ../po/tmp/resources.xml.h:80
 msgctxt "Menu→Layer→Slice (labels), Accel Editor (labels)"
 msgid "Uniquify Layer Tiles"
-msgstr ""
+msgstr "Zjedinečnit dlaždice vrstvy"
 
 #: ../po/tmp/resources.xml.h:81
 msgctxt "Accel Editor (descriptions)"
 msgid ""
 "Delete whole tiles from the current layer which do not vary from the "
 "backdrop."
-msgstr ""
+msgstr "Vymazat celé dlaždice z nynější vrstvy, které se neliší od pozadí."
 
 #: ../po/tmp/resources.xml.h:82
-#, fuzzy
 msgctxt "Menu→Layer→Slice (labels), Accel Editor (labels)"
 msgid "Refactor Layer Group Pixels"
-msgstr "Nová skupina vrstev pod"
+msgstr "Přestavět obrazové body skupiny vrstev"
 
 #: ../po/tmp/resources.xml.h:83
 msgctxt "Accel Editor (descriptions)"
 msgid ""
 "Normalize child layers, then factor out common parts to a new child layer."
 msgstr ""
+"Normalizovat podřízené vrstvy, potom zjednat běžné části do nové podřízené "
+"vrstvy."
 
 #: ../po/tmp/resources.xml.h:84
-#, fuzzy
 msgctxt "Menu→Layer→Slice (labels), Accel Editor (labels)"
 msgid "Refactor Layer Group Tiles"
-msgstr "Nová skupina vrstev pod"
+msgstr "Přestavět dlaždice skupiny vrstev"
 
 #: ../po/tmp/resources.xml.h:85
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
@@ -5463,10 +5418,9 @@ msgid "Edit Layer in External App…"
 msgstr "Upravit vrstvu ve vnějším programu…"
 
 #: ../po/tmp/resources.xml.h:90
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Edit the active layer in an external application."
-msgstr "Začít upravování nynější vrstvy ve vnějším programu."
+msgstr "Upravit činnou vrstvu ve vnějším programu."
 
 #: ../po/tmp/resources.xml.h:91
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
@@ -5484,10 +5438,9 @@ msgid "Go to Layer at Cursor"
 msgstr "Vybrat vrstvu na ukazovátku myši"
 
 #: ../po/tmp/resources.xml.h:94
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Select a layer by picking something [drawn] on it."
-msgstr "Vybrat vrstvu zvolením prvku na ní."
+msgstr "Vybrat vrstvu zvolením něčeho [drawn] na ní."
 
 #: ../po/tmp/resources.xml.h:95
 msgctxt "Menu→Layer→Go to Layer (labels), Accel Editor (labels)"
@@ -5676,16 +5629,17 @@ msgid "Make an exact clone of the current layer."
 msgstr "Udělat přesnou kopii nynější vrstvy."
 
 #: ../po/tmp/resources.xml.h:131
-#, fuzzy
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Layer Properties…"
-msgstr "Vlastnosti"
+msgstr "Vlastnosti vrstvy…"
 
 #: ../po/tmp/resources.xml.h:132
 msgctxt "Accel Editor (descriptions)"
 msgid ""
 "Change the layer’s properties (name, mode, visibility, locked, opacity)."
 msgstr ""
+"Změnit vlastnosti vrstvy (název, režim, viditelnost, uzamknutí, "
+"neprůhlednost)."
 
 #: ../po/tmp/resources.xml.h:133
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
@@ -5722,13 +5676,12 @@ msgstr "Přepnout viditelnost vrstvy pozadí."
 #: ../po/tmp/resources.xml.h:139
 msgctxt "Menu→Help→Debug (labels), Accel Editor (labels)"
 msgid "Vacuum Empty Tiles"
-msgstr ""
+msgstr "Vysát prázdné dlaždice"
 
 #: ../po/tmp/resources.xml.h:140
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Remove empty tiles from the document."
-msgstr "Odstranit nynější vrstvu ze zásobníku vrstev."
+msgstr "Odstranit prázdné dlaždice z dokumentu."
 
 #: ../po/tmp/resources.xml.h:141
 msgctxt "Menu→View (labels), Accel Editor (labels)"
@@ -5754,18 +5707,17 @@ msgstr "Přepnout mezi přizpůsobeným pohledem a místem vaší práce a zvět
 #: ../po/tmp/resources.xml.h:145
 msgctxt "Menu→View (labels)"
 msgid "Reset"
-msgstr "Nastavit znovu"
+msgstr "Obnovit výchozí"
 
 #: ../po/tmp/resources.xml.h:146
 msgctxt "Menu→View→Reset (labels), Accel Editor (labels)"
 msgid "Reset Zoom"
-msgstr "Nastavit znovu přiblížení"
+msgstr "Obnovit výchozí zvětšení"
 
 #: ../po/tmp/resources.xml.h:147
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Reset view zoom level to default."
-msgstr "Nastavit zvětšení pohledu na výchozí hodnotu."
+msgstr "Obnovit výchozí úroveň zvětšení zobrazení."
 
 #: ../po/tmp/resources.xml.h:148
 msgctxt "Menu→View→Reset (labels), Accel Editor (labels)"
@@ -5773,7 +5725,6 @@ msgid "Reset Rotation"
 msgstr "Nastavit znovu otočení"
 
 #: ../po/tmp/resources.xml.h:149
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Reset the view’s rotation to 0°"
 msgstr "Nastavit otočení pohledu na 0°"
@@ -5784,10 +5735,9 @@ msgid "Reset Mirroring"
 msgstr "Nastavit znovu zrcadlení"
 
 #: ../po/tmp/resources.xml.h:151
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Reset the view's mirroring."
-msgstr "Nastavit znovu zrcadlení"
+msgstr "Obnovit výchozí zrcadlení zobrazení."
 
 #: ../po/tmp/resources.xml.h:152
 msgctxt "Menu→View→Adjust View (labels), Accel Editor (labels)"
@@ -5810,73 +5760,64 @@ msgid "Decrease magnification."
 msgstr "Snížit zvětšení."
 
 #: ../po/tmp/resources.xml.h:156
-#, fuzzy
 msgctxt "Menu→View→Adjust View (labels), Accel Editor (labels)"
 msgid "Pan Left"
-msgstr "Posunout pohled"
+msgstr "Posunout vlevo"
 
 #: ../po/tmp/resources.xml.h:157
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Move your view of the canvas to the left."
-msgstr "Otočit pohled: Naklonit váš pohled na plátno."
+msgstr "Posunout pohled na plátno doleva."
 
 #: ../po/tmp/resources.xml.h:158
-#, fuzzy
 msgctxt "Menu→View→Adjust View (labels), Accel Editor (labels)"
 msgid "Pan Right"
-msgstr "Tvrdé světlo"
+msgstr "Posunout vpravo"
 
 #: ../po/tmp/resources.xml.h:159
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Move your view of the canvas to the right."
-msgstr "Přejet v pohledu: Posunout váš pohled na plátno vodorovně nebo svisle."
+msgstr "Posunout pohled na plátno doprava."
 
 #: ../po/tmp/resources.xml.h:160
 msgctxt "Menu→View→Adjust View (labels), Accel Editor (labels)"
 msgid "Pan Up"
-msgstr ""
+msgstr "Posunout nahoru"
 
 #: ../po/tmp/resources.xml.h:161
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Move your view of the canvas upwards."
-msgstr "Otočit pohled: Naklonit váš pohled na plátno."
+msgstr "Posunout pohled na plátno nahoru."
 
 #: ../po/tmp/resources.xml.h:162
-#, fuzzy
 msgctxt "Menu→View→Adjust View (labels), Accel Editor (labels)"
 msgid "Pan Down"
-msgstr "Posunout pohled"
+msgstr "Posunout dolů"
 
 #: ../po/tmp/resources.xml.h:163
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Move your view of the canvas downwards."
-msgstr "Otočit pohled: Naklonit váš pohled na plátno."
+msgstr "Posunout pohled na plátno dolů."
 
 #: ../po/tmp/resources.xml.h:164
 msgctxt "Menu→View→Adjust View (labels), Accel Editor (labels)"
 msgid "Rotate Clockwise"
-msgstr "Otočit po směru hodinových ručiček"
+msgstr "Otočit vpravo"
 
 #: ../po/tmp/resources.xml.h:165
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Rotate the canvas clockwise."
-msgstr "Otočit pohled po směru hodinových ručiček."
+msgstr "Otočit plátno vpravo."
 
 #: ../po/tmp/resources.xml.h:166
 msgctxt "Menu→View→Adjust View (labels), Accel Editor (labels)"
 msgid "Rotate Counterclockwise"
-msgstr "Otočit proti směru hodinových ručiček"
+msgstr "Otočit vlevo"
 
 #: ../po/tmp/resources.xml.h:167
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Rotate the canvas counter-clockwise."
-msgstr "Otočit pohled proti směru hodinových ručiček."
+msgstr "Otočit plátno vlevo."
 
 #: ../po/tmp/resources.xml.h:168
 msgctxt "Menu→View→Adjust View (labels), Accel Editor (labels)"
@@ -5963,29 +5904,27 @@ msgctxt "Accel Editor (descriptions)"
 msgid ""
 "Insert a point next to the currently selected point in the direction of the "
 "stroke."
-msgstr ""
+msgstr "Vložit bod vedle nyní vybraného bodu ve směru tahu."
 
 #: ../po/tmp/resources.xml.h:186
-#, fuzzy
 msgid "Delete Point"
 msgstr "Smazat bod"
 
 #: ../po/tmp/resources.xml.h:187
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Delete currently selected point on the ink stroke."
-msgstr "Smazat nyní vybraný bod"
+msgstr "Smazat nyní vybraný bod na tahu inkoustu."
 
 #: ../po/tmp/resources.xml.h:189
 msgctxt "Accel Editor (descriptions)"
 msgid ""
 "Simplify and delete points according to angle and distance between nodes."
-msgstr ""
+msgstr "Zjednodušit a smazat body podle úhlu a vzdálenosti mezi uzly."
 
 #: ../po/tmp/resources.xml.h:191
 msgctxt "Accel Editor (descriptions)"
 msgid "Delete every other point on the ink stroke."
-msgstr ""
+msgstr "Smazat všechny ostatní body na tahu inkoustu."
 
 #: ../po/tmp/resources.xml.h:192
 msgctxt "Menu→Brush (labels)"
@@ -6391,10 +6330,9 @@ msgid "Adjust View"
 msgstr "Přizpůsobit pohled"
 
 #: ../po/tmp/resources.xml.h:271
-#, fuzzy
 msgctxt "Menu→View (labels), Accel Editor (labels)"
 msgid "Popup Main Menu"
-msgstr "Ukázat související nabídku"
+msgstr "Ukázat hlavní nabídku"
 
 #: ../po/tmp/resources.xml.h:272
 msgctxt "Accel Editor (descriptions)"
@@ -6464,17 +6402,16 @@ msgid "Edit brush icons."
 msgstr "Upravit symboly štětců."
 
 #: ../po/tmp/resources.xml.h:285
-#, fuzzy
 msgctxt ""
 "Menu→Layer (labels), Menu→Window (labels), Toolbar (labels), Accel Editor "
 "(labels)"
 msgid "Layers Panel"
-msgstr "Pruh vrstev"
+msgstr "Panel vrstev"
 
 #: ../po/tmp/resources.xml.h:286
 msgctxt "Accel Editor (descriptions)"
 msgid "Dockable panel for managing layers."
-msgstr ""
+msgstr "Ukotvitelný panel na správu vrstev."
 
 #: ../po/tmp/resources.xml.h:287
 msgctxt "Menu→Layers (labels), Accel Editor (labels)"
@@ -6540,10 +6477,9 @@ msgid "HSV Square"
 msgstr "Čtverec HSV"
 
 #: ../po/tmp/resources.xml.h:298
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Dockable color selector: HSV square with Hue ring."
-msgstr "Ukotvitelný volič barev se soustřednými kruhy HSV."
+msgstr "Ukotvitelný volič barev: Čtverec HSV s prstencem s odstíny."
 
 #: ../po/tmp/resources.xml.h:299
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
@@ -6595,7 +6531,7 @@ msgstr "Panel náčrtníku"
 #: ../po/tmp/resources.xml.h:308
 msgctxt "Accel Editor (descriptions)"
 msgid "Dockable Panel for mixing colors and testing brushes."
-msgstr ""
+msgstr "Ukotvitelný panel na míchání barev a zkoušení štětců."
 
 #: ../po/tmp/resources.xml.h:309
 msgctxt "Menu→Scratchpad (labels), Accel Editor (labels)"
@@ -6615,7 +6551,7 @@ msgstr "Panel s náhledy"
 #: ../po/tmp/resources.xml.h:312
 msgctxt "Accel Editor (descriptions)"
 msgid "Dockable panel for an overview and navigation of the whole canvas."
-msgstr ""
+msgstr "Ukotvitelný panel pro přehled a pohyb po celém plátně."
 
 #: ../po/tmp/resources.xml.h:313
 msgctxt "Menu→View (labels), Accel Editor (labels)"
@@ -6635,7 +6571,7 @@ msgstr "Panel s volbami pro nástroje"
 #: ../po/tmp/resources.xml.h:316
 msgctxt "Accel Editor (descriptions)"
 msgid "Dockable panel for adjusting the options with the activated tool."
-msgstr ""
+msgstr "Ukotvitelný panel na přizpůsobení voleb pro zapnutý nástroj."
 
 #: ../po/tmp/resources.xml.h:317
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
@@ -6655,7 +6591,7 @@ msgstr "Panel s historií štětců a barev"
 #: ../po/tmp/resources.xml.h:320
 msgctxt "Accel Editor (descriptions)"
 msgid "Dockable panel for viewing recently changed colors and brushes."
-msgstr ""
+msgstr "Ukotvitelný panel na podívání se na nedávno změněné barvy a štětce."
 
 #: ../po/tmp/resources.xml.h:321
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
@@ -7064,43 +7000,43 @@ msgid "Pick Color: set the painting color from screen pixels."
 msgstr "Vybrat barvu: Nastavit kreslicí barvu z pixelů obrazovky."
 
 #: ../po/tmp/resources.xml.h:400
-#, fuzzy
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "Pick Color Hue"
-msgstr "Vybrat barvu"
+msgstr "Vybrat odstín barvy"
 
 #: ../po/tmp/resources.xml.h:401
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid ""
 "Set the painting Hue from screen pixels while preserving the Chroma and Luma."
-msgstr "Nastavit kreslicí barvu z pixelů obrazovky."
+msgstr ""
+"Nastavit kreslicí barevný odstín z obrazových bodů (pixelů) obrazovky při "
+"zachování sytosti a jasnosti."
 
 #: ../po/tmp/resources.xml.h:402
-#, fuzzy
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "Pick Color Chroma"
-msgstr "Vybrat barvu"
+msgstr "Vybrat sytost barvy"
 
 #: ../po/tmp/resources.xml.h:403
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid ""
 "Set the painting Chroma from screen pixels while preserving the Hue and Luma."
-msgstr "Nastavit kreslicí barvu z pixelů obrazovky."
+msgstr ""
+"Nastavit kreslicí sytost barvy z obrazových bodů (pixelů) obrazovky při "
+"zachování sytosti a jasnosti."
 
 #: ../po/tmp/resources.xml.h:404
-#, fuzzy
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "Pick Color Luma"
-msgstr "Vybrat barvu"
+msgstr "Vybrat jasnost barvy"
 
 #: ../po/tmp/resources.xml.h:405
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid ""
 "Set the painting Luma from screen pixels while preserving the Hue and Chroma."
-msgstr "Nastavit kreslicí barvu z pixelů obrazovky."
+msgstr ""
+"Nastavit jasnost malování z obrazových bodů (pixelů) obrazovky při zachování "
+"odstínu a sytosti."
 
 #: ../po/tmp/resources.xml.h:406
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
