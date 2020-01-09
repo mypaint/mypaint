@@ -53,7 +53,7 @@ public:
         float center_x, float center_y,
         enum SymmetryType symmetry_type, int rot_symmetry_lines) {
     float symmetry_angle = 0.0;
-    mypaint_tiled_surface_set_symmetry_state((MyPaintTiledSurface *)c_surface, active,
+    mypaint_tiled_surface2_set_symmetry_state((MyPaintTiledSurface2 *)c_surface, active,
         center_x, center_y,
         symmetry_angle,
         (MyPaintSymmetryType)symmetry_type, rot_symmetry_lines);
@@ -66,7 +66,7 @@ public:
       MyPaintRectangle* rects = this->bbox_rectangles;
       MyPaintRectangles bboxes = {BBOXES, rects};
 
-      mypaint_surface_end_atomic((MyPaintSurface *)c_surface, &bboxes);
+      mypaint_surface2_end_atomic((MyPaintSurface2 *)c_surface, &bboxes);
 
       // The capacity of the bounding box array will most often exceed the number
       // of rectangles that are actually used. The call to mypaint_surface_end_atomic
@@ -94,7 +94,7 @@ public:
                  float paint = 1.0
                  ) {
 
-    return mypaint_surface_draw_dab((MyPaintSurface *)c_surface, x, y, radius, color_r, color_g, color_b,
+    return mypaint_surface2_draw_dab((MyPaintSurface2 *)c_surface, x, y, radius, color_r, color_g, color_b,
                              opaque, hardness, color_a, aspect_ratio, angle,
                              lock_alpha, colorize, posterize, posterize_num, paint);
   }
@@ -103,7 +103,7 @@ public:
     std::vector<double> rgba = std::vector<double>(4, 0.0);
     float r,g,b,a,paint;
     paint = 1.0;
-    mypaint_surface_get_color((MyPaintSurface *)c_surface, x, y, radius,
+    mypaint_surface2_get_color((MyPaintSurface2 *)c_surface, x, y, radius,
                               &r, &g, &b, &a, paint);
     rgba[0] = r; rgba[1] = g; rgba[2] = b; rgba[3] = a;
     return rgba;
@@ -115,6 +115,10 @@ public:
 
   MyPaintSurface *get_surface_interface() {
     return (MyPaintSurface*)c_surface;
+  }
+
+  MyPaintSurface2 *get_surface2_interface() {
+    return (MyPaintSurface2*)c_surface;
   }
 
 private:

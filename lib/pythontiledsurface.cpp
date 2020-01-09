@@ -19,7 +19,7 @@
 
 
 struct MyPaintPythonTiledSurface {
-    MyPaintTiledSurface parent;
+    MyPaintTiledSurface2 parent;
     PyObject * py_obj;
 };
 
@@ -27,7 +27,7 @@ struct MyPaintPythonTiledSurface {
 void free_tiledsurf(MyPaintSurface *surface);
 
 static void
-tile_request_start(MyPaintTiledSurface *tiled_surface, MyPaintTileRequest *request)
+tile_request_start(MyPaintTiledSurface2 *tiled_surface, MyPaintTileRequest *request)
 {
     MyPaintPythonTiledSurface *self = (MyPaintPythonTiledSurface *)tiled_surface;
 
@@ -65,7 +65,7 @@ tile_request_start(MyPaintTiledSurface *tiled_surface, MyPaintTileRequest *reque
 }
 
 static void
-tile_request_end(MyPaintTiledSurface *tiled_surface, MyPaintTileRequest *request)
+tile_request_end(MyPaintTiledSurface2 *tiled_surface, MyPaintTileRequest *request)
 {
     // We modify tiles directly, so don't need to do anything here
 }
@@ -75,12 +75,11 @@ mypaint_python_tiled_surface_new(PyObject *py_object)
 {
     MyPaintPythonTiledSurface *self = (MyPaintPythonTiledSurface *)malloc(sizeof(MyPaintPythonTiledSurface));
 
-    mypaint_tiled_surface_init(&self->parent, tile_request_start, tile_request_end);
+    mypaint_tiled_surface2_init(&self->parent, tile_request_start, tile_request_end);
     self->parent.threadsafe_tile_requests = TRUE;
 
     // MyPaintSurface vfuncs
-    self->parent.parent.destroy = free_tiledsurf;
-
+    self->parent.parent.parent.destroy = free_tiledsurf;
     self->py_obj = py_object; // no need to incref
 
     return self;
@@ -89,6 +88,6 @@ mypaint_python_tiled_surface_new(PyObject *py_object)
 void free_tiledsurf(MyPaintSurface *surface)
 {
     MyPaintPythonTiledSurface *self = (MyPaintPythonTiledSurface *)surface;
-    mypaint_tiled_surface_destroy(&self->parent);
+    mypaint_tiled_surface2_destroy(&self->parent);
     free(self);
 }

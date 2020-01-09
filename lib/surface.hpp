@@ -26,6 +26,7 @@ public:
 
   virtual ~Surface() {}
   virtual MyPaintSurface *get_surface_interface() = 0;
+  virtual MyPaintSurface2 *get_surface2_interface() = 0;
 };
 
 #endif //SURFACE_HPP

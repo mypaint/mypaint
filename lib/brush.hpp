@@ -65,9 +65,8 @@ public:
 
   bool stroke_to (Surface * surface, float x, float y, float pressure, float xtilt, float ytilt, double dtime, float viewzoom, float viewrotation, float barrel_rotation)
   {
-      MyPaintSurface *c_surface = surface->get_surface_interface();
-      bool retval = mypaint_brush_stroke_to(c_brush, c_surface, x, y, pressure, xtilt, ytilt, dtime, viewzoom, viewrotation, barrel_rotation);
-      return retval;
+      MyPaintSurface2 *c_surface = surface->get_surface2_interface();
+      return mypaint_brush_stroke_to_2(c_brush, c_surface, x, y, pressure, xtilt, ytilt, dtime, viewzoom, viewrotation, barrel_rotation);
   }
 
   double get_total_stroke_painting_time()
