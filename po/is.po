@@ -4,7 +4,7 @@ msgstr ""
 "Project-Id-Version: mypaint v2.0.0-alpha.8-1-g4490f06\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2019-12-20 19:50+0100\n"
-"PO-Revision-Date: 2020-01-12 22:21+0000\n"
+"PO-Revision-Date: 2020-01-16 22:21+0000\n"
 "Last-Translator: Sveinn í Felli <sv1@fellsnet.is>\n"
 "Language-Team: Icelandic <https://hosted.weblate.org/projects/mypaint/"
 "mypaint/is/>\n"
@@ -13,7 +13,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n % 10 != 1 || n % 100 == 11;\n"
-"X-Generator: Weblate 3.10.1\n"
+"X-Generator: Weblate 3.10.2-dev\n"
 
 #. TRANSLATORS: Name of first column in the button map preferences.
 #. TRANSLATORS: Refers to an action bound to a mod+button combination.
@@ -1194,7 +1194,7 @@ msgstr "1.x"
 #: ../gui/compatibility.py:42 ../po/tmp/preferenceswindow.glade.h:117
 msgctxt "Prefs Dialog|Compatibility"
 msgid "2.x"
-msgstr ""
+msgstr "2.x"
 
 #. TRANSLATORS: This is probably a rare warning, and it will not
 #. TRANSLATORS: really be shown at all before the release of 3.0
@@ -1233,7 +1233,7 @@ msgstr ""
 #: ../gui/compatibility.py:135
 msgctxt "Version compat warning toggle"
 msgid "Don't show this warning again"
-msgstr ""
+msgstr "Ekki birta þessa aðvörun aftur"
 
 #. TRANSLATORS: One of the options for the
 #. TRANSLATORS: "When Not Specified in File"
@@ -1264,7 +1264,7 @@ msgstr ""
 #: ../gui/compatibility.py:532
 msgctxt "File Load Compat Options"
 msgid "Compatibility mode:"
-msgstr ""
+msgstr "Samhæfnihamur:"
 
 #: ../gui/device.py:48
 msgctxt "prefs: device's type label"
@@ -1515,7 +1515,7 @@ msgstr ""
 #: ../gui/document.py:938
 msgctxt "Statusbar message: paste result"
 msgid "Clipboard does not contain an image."
-msgstr ""
+msgstr "Klippispjaldið inniheldur ekki neina mynd."
 
 #: ../gui/document.py:949
 msgctxt "Statusbar message: paste result"
@@ -1526,7 +1526,7 @@ msgstr ""
 #, python-brace-format
 msgctxt "Statusbar message: paste result"
 msgid "Pasted {w}×{h} image."
-msgstr ""
+msgstr "Límdi {w}×{h} mynd."
 
 #: ../gui/document.py:2040
 #, python-brace-format
@@ -1548,7 +1548,7 @@ msgstr "MyPaint"
 #: ../gui/drawwindow.py:296
 msgctxt "Open dragged file confirm dialog: title"
 msgid "Open Dragged File?"
-msgstr ""
+msgstr "Opna dregna skrá?"
 
 #: ../gui/drawwindow.py:300
 msgctxt "Open dragged file confirm dialog: continue button"
@@ -1701,7 +1701,7 @@ msgstr "Mistókst að vista {files_summary}."
 #, python-brace-format
 msgctxt "Document I/O: fail message"
 msgid "Could not import layers from {files_summary}."
-msgstr ""
+msgstr "Gat ekki hlaðið inn lögum úr {files_summary}."
 
 #: ../gui/filehandling.py:158
 #, python-brace-format
@@ -1717,7 +1717,7 @@ msgstr "Vistun mistókst"
 #: ../gui/filehandling.py:169
 msgctxt "Document I/O: fail dialog title"
 msgid "Export failed"
-msgstr ""
+msgstr "Útflutningur mistókst"
 
 #: ../gui/filehandling.py:173
 msgctxt "Document I/O: fail dialog title"
@@ -1727,7 +1727,7 @@ msgstr ""
 #: ../gui/filehandling.py:177
 msgctxt "Document I/O: fail dialog title"
 msgid "Open failed"
-msgstr ""
+msgstr "Ekki tókst að opna"
 
 #: ../gui/filehandling.py:184
 #, python-brace-format
@@ -1759,8 +1759,8 @@ msgstr "Hlóð inn {files_summary}."
 #, python-brace-format
 msgid "{n} file"
 msgid_plural "{n} files"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "{n} skrá"
+msgstr[1] "{n} skrár"
 
 #: ../gui/filehandling.py:223
 #, python-brace-format
@@ -1826,31 +1826,26 @@ msgid "Multiple PNGs, by view (*.NAME.png)"
 msgstr "PNG myndaröð með gegnsæi (*.XXX.png)"
 
 #: ../gui/filehandling.py:523
-#, fuzzy
 msgctxt "save dialogs: save formats and options"
 msgid "JPEG 90% quality (*.jpg; *.jpeg)"
 msgstr "JPEG 90% gæði (*.jpg; *.jpeg)"
 
 #: ../gui/filehandling.py:581
-#, fuzzy
 msgctxt "Dialogs (window title): File→Export…"
 msgid "Export"
-msgstr "Flytja út…"
+msgstr "Flytja út"
 
 #: ../gui/filehandling.py:586
-#, fuzzy
 msgctxt "Dialogs (window title): File→Save As…"
 msgid "Save As"
-msgstr "Vista sem…"
+msgstr "Vista sem"
 
 #: ../gui/filehandling.py:606
-#, fuzzy
 msgctxt "save dialogs: formats and options: (label)"
 msgid "Format to save as:"
 msgstr "Snið til að vista sem:"
 
 #: ../gui/filehandling.py:673
-#, fuzzy
 msgctxt ""
 "Destructive action confirm dialog: fallback title (normally overridden)"
 msgid "Really Continue?"
@@ -1859,112 +1854,100 @@ msgstr "Viltu halda áfram?"
 #: ../gui/filehandling.py:706
 msgctxt "Destructive action confirm dialog: cancel button"
 msgid "_Cancel"
-msgstr ""
+msgstr "_Hætta við"
 
 #: ../gui/filehandling.py:710
-#, fuzzy
 msgctxt "Destructive action confirm dialog: save checkbox"
 msgid "_Save to Scraps first"
-msgstr "Vista _sem úrklippu"
+msgstr "Vi_sta fyrst í úrklippur"
 
 #: ../gui/filehandling.py:716
 msgctxt ""
 "Destructive action confirm dialog: fallback continue button (normally "
 "overridden)"
 msgid "Co_ntinue"
-msgstr ""
+msgstr "_Halda áfram"
 
 #: ../gui/filehandling.py:739
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgctxt "Destructive action confirm dialog: warning message"
 msgid "You risk losing {abbreviated_time} of unsaved painting."
-msgstr "Þetta mun henda {abbreviated_time} af óvistuðum breytingum"
+msgstr "Þú gætir tapað {abbreviated_time} af óvistuðum breytingum."
 
 #: ../gui/filehandling.py:804
 msgctxt "File→New: confirm dialog: title question"
 msgid "New Canvas?"
-msgstr ""
+msgstr "Nýr myndflötur?"
 
 #: ../gui/filehandling.py:808
 msgctxt "File→New: confirm dialog: continue button"
 msgid "_New Canvas"
-msgstr ""
+msgstr "_Nýr myndflötur"
 
 #: ../gui/filehandling.py:1024
 msgctxt "File→Open: confirm dialog: title question"
 msgid "Open File?"
-msgstr ""
+msgstr "Opna skrá?"
 
 #: ../gui/filehandling.py:1028
-#, fuzzy
 msgctxt "File→Open: confirm dialog: continue button"
 msgid "_Open…"
-msgstr "Opna…"
+msgstr "_Opna…"
 
 #: ../gui/filehandling.py:1036
-#, fuzzy
 msgctxt "File→Open: file chooser dialog: title"
 msgid "Open File"
-msgstr "Opna"
+msgstr "Opna skrá"
 
 #: ../gui/filehandling.py:1084
-#, fuzzy
 msgctxt "load dialogs: title"
 msgid "Open Scratchpad…"
 msgstr "Opna krassblað…"
 
 #: ../gui/filehandling.py:1126
-#, fuzzy
 msgctxt "Layers→Import Layers: files-chooser dialog: title"
 msgid "Import Layers"
-msgstr "Innfluttur pensill"
+msgstr "Flytja inn lög"
 
 #: ../gui/filehandling.py:1433
 msgctxt "File→Open Recent→* confirm dialog: title"
 msgid "Open File?"
-msgstr ""
+msgstr "Opna skrá?"
 
 #: ../gui/filehandling.py:1437
-#, fuzzy
 msgctxt "File→Open Recent→* confirm dialog: continue button"
 msgid "_Open"
-msgstr "Opna"
+msgstr "_Opna"
 
 #: ../gui/filehandling.py:1452
-#, fuzzy
 msgctxt "File→Open Most Recent confirm dialog: title"
 msgid "Open Most Recent File?"
-msgstr "Opna nýjasta"
+msgstr "Opna nýjustu skrána?"
 
 #: ../gui/filehandling.py:1457
-#, fuzzy
 msgctxt "File→Open Most Recent→* confirm dialog: continue button"
 msgid "_Open"
-msgstr "Opna"
+msgstr "_Opna"
 
 #: ../gui/filehandling.py:1471
-#, fuzzy
 msgctxt "File→Open Next/Prev Scrap: error message"
 msgid "There are no scrap files yet. Try saving one first."
-msgstr "Það eru engar úrklippuskrár með heitinu \"%s\" ennþá."
+msgstr "Það eru engar úrklippuskrár ennþá. Prófaðu fyrst að vista eina slíka."
 
 #: ../gui/filehandling.py:1480
-#, fuzzy
 msgctxt "File→Open Next/Prev Scrap confirm dialog: title"
 msgid "Open Next Scrap?"
-msgstr "Opna næstu úrklippu"
+msgstr "Opna næstu úrklippu?"
 
 #: ../gui/filehandling.py:1488
-#, fuzzy
 msgctxt "File→Open Next/Prev Scrap confirm dialog: title"
 msgid "Open Previous Scrap?"
-msgstr "Opna fyrri úrklippu"
+msgstr "Opna fyrri úrklippu?"
 
 #: ../gui/filehandling.py:1497
-#, fuzzy
 msgctxt "File→Open Next/Prev Scrap confirm dialog: continue button"
 msgid "_Open"
-msgstr "Opna"
+msgstr "_Opna"
 
 #: ../gui/filehandling.py:1512
 msgctxt "File→Revert: status message: canvas has no filename yet"
@@ -1974,16 +1957,14 @@ msgstr ""
 #: ../gui/filehandling.py:1519
 msgctxt "File→Revert confirm dialog: title"
 msgid "Revert Changes?"
-msgstr ""
+msgstr "Afturkalla breytingar?"
 
 #: ../gui/filehandling.py:1524
-#, fuzzy
 msgctxt "File→Revert confirm dialog: continue button"
 msgid "_Revert"
-msgstr "Endurlesa"
+msgstr "Aftu_rkalla"
 
 #: ../gui/fill.py:122
-#, fuzzy
 msgctxt ""
 "Name of the fill mode\n"
 "In other software, 'Flood Fill' is also known as 'Bucket Fill' or just 'Fill'"
@@ -1991,13 +1972,11 @@ msgid "Flood Fill"
 msgstr "Flæðifylla"
 
 #: ../gui/fill.py:128
-#, fuzzy
 msgctxt "Usage description of the Flood Fill mode"
 msgid "Fill areas with color"
 msgstr "Fylla svæði með lit"
 
 #: ../gui/fill.py:507
-#, fuzzy
 msgctxt ""
 "fill options: numeric value that determines whether tested pixels will be "
 "included in the fill, based on color difference"
@@ -2005,7 +1984,6 @@ msgid "Tolerance:"
 msgstr "Þolmörk:"
 
 #: ../gui/fill.py:512
-#, fuzzy
 msgctxt ""
 "fill options: Tolerance (tooltip) Note: 'the start' refers to the color of "
 "the starting point (pixel) of the fill"
@@ -2017,7 +1995,6 @@ msgstr ""
 "áður en flæðifylling neitar að fylla þá"
 
 #: ../gui/fill.py:536
-#, fuzzy
 msgctxt ""
 "fill options: option category (label) Options under this category relate to "
 "what the fill isbased on, not where the actual fill ends up."
@@ -2035,7 +2012,6 @@ msgid "Select a specific layer you want the fill to be based on"
 msgstr ""
 
 #: ../gui/fill.py:601
-#, fuzzy
 msgctxt ""
 "fill options: 'Source:' category: toggle (label)\n"
 "When this option is enabled, the fill is based\n"
@@ -2044,7 +2020,6 @@ msgid "Sample Merged"
 msgstr "Sameinað sýni"
 
 #: ../gui/fill.py:605
-#, fuzzy
 msgctxt "fill options: Sample Merged (tooltip)"
 msgid ""
 "When considering which area to fill, use a\n"
@@ -2056,10 +2031,9 @@ msgstr ""
 "laga undir núverandi lagi"
 
 #: ../gui/fill.py:621
-#, fuzzy
 msgctxt "fill options: toggle whether the fill will be limited by the viewport"
 msgid "Limit to View"
-msgstr "Laga að sýn"
+msgstr "Takmarka við sýn"
 
 #: ../gui/fill.py:627
 msgctxt ""
@@ -2073,22 +2047,19 @@ msgid ""
 msgstr ""
 
 #: ../gui/fill.py:644
-#, fuzzy
 msgctxt ""
 "fill options: option category (label)\n"
 "Options under this category relate to where the fill will end up (default: "
 "the active layer) and how it will be combined with that layer."
 msgid "Target:"
-msgstr "Áfangastaður:"
+msgstr "Úttak:"
 
 #: ../gui/fill.py:647
-#, fuzzy
 msgctxt "fill options: 'Target:' category (tooltip)"
 msgid "Where the output should go"
 msgstr "Hvert frálagið ætti að fara"
 
 #: ../gui/fill.py:656
-#, fuzzy
 msgctxt ""
 "fill options: Target | toggle (label)\n"
 "When this option is enabled, the fill will be placed on a new\n"
@@ -2097,7 +2068,6 @@ msgid "New Layer (once)"
 msgstr "Nýtt lag (einu sinni)"
 
 #: ../gui/fill.py:661
-#, fuzzy
 msgctxt "fill options: Target | New Layer (tooltip)"
 msgid ""
 "Create a new layer with the results of the fill.\n"
@@ -2128,7 +2098,7 @@ msgstr ""
 #: ../gui/fill.py:728
 msgctxt "fill options: numeric option - grow/shrink fill (label)"
 msgid "Offset:"
-msgstr ""
+msgstr "Hliðrun:"
 
 #: ../gui/fill.py:744
 msgctxt "fill options: Offset (tooltip)"
@@ -2138,7 +2108,7 @@ msgstr ""
 #: ../gui/fill.py:755
 msgctxt "fill options: numeric option for blurring fill (label)"
 msgid "Feather:"
-msgstr ""
+msgstr "Dofnun jaðra (fjöðrun):"
 
 #: ../gui/fill.py:770
 msgctxt "fill options: Feather (tooltip)"
@@ -2176,7 +2146,7 @@ msgctxt ""
 "When enabled, if the fill stops after going past a detected gap, it 'pulls' "
 "the fill back out of the gap to the other side of it."
 msgid "Prevent seeping"
-msgstr ""
+msgstr "Koma í veg fyrir smit"
 
 #: ../gui/fill.py:844
 msgctxt "fill options: Prevent seeping (tooltip)"
@@ -2190,16 +2160,14 @@ msgid "Reset"
 msgstr "Núllstilla"
 
 #: ../gui/fill.py:858
-#, fuzzy
 msgctxt "fill options: Reset button (tooltip)"
 msgid "Reset options to their defaults"
 msgstr "Núllstilla valkosti á sjálfgefin gildi"
 
 #: ../gui/fill.py:1036
-#, fuzzy
 msgctxt "fill option: default option in the Source Layer dropdown"
 msgid "Selected Layer"
-msgstr "Velja lag"
+msgstr "Valið lag"
 
 #: ../gui/footer.py:191
 #, python-brace-format
@@ -2481,15 +2449,14 @@ msgid "Layer name is not unique."
 msgstr ""
 
 #: ../gui/layerprops.py:377
-#, fuzzy
 msgctxt "layer properties dialog: title"
 msgid "Layer Properties"
-msgstr "Eiginleikar"
+msgstr "Eiginleikar lags"
 
 #: ../gui/layerprops.py:381
 msgctxt "layer properties dialog: done button"
 msgid "Done"
-msgstr ""
+msgstr "Lokið"
 
 #. Visibility flag column
 #: ../gui/layers.py:394
@@ -2499,32 +2466,30 @@ msgstr "Sýnilegt"
 #. Other flags column
 #: ../gui/layers.py:426
 msgid "Flags"
-msgstr ""
+msgstr "Flögg"
 
 #: ../gui/layers.py:925
-#, fuzzy
 msgctxt "Layers: description: no layer (\"never happens\" condition!)"
 msgid "?layer"
-msgstr "Lag"
+msgstr "?lag"
 
 #: ../gui/layers.py:945
 msgctxt "Layers: description parts: unknown mode (fallback str!)"
 msgid "?mode"
-msgstr ""
+msgstr "?hamur"
 
 #: ../gui/layers.py:952
 msgctxt "Layers: description parts: layer hidden"
 msgid "Hidden"
-msgstr ""
+msgstr "Falið"
 
 #: ../gui/layers.py:957
 #, python-format
 msgctxt "Layers: description parts: opacity percentage"
 msgid "%d%% opaque"
-msgstr ""
+msgstr "%d%% ógegnsætt"
 
 #: ../gui/layers.py:964
-#, fuzzy
 msgctxt "Layers dockable: description parts: layer locked flag"
 msgid "Locked"
 msgstr "Læst"
@@ -2532,19 +2497,18 @@ msgstr "Læst"
 #: ../gui/layers.py:975
 msgctxt "Layers: description parts: unknown type (fallback str!)"
 msgid "?type"
-msgstr ""
+msgstr "?tegund"
 
 #: ../gui/layers.py:982
-#, fuzzy
 msgctxt "Layers dockable: description parts joiner text"
 msgid ", "
 msgstr ", "
 
 #: ../gui/layers.py:990
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgctxt "Layers dockable: markup for a layer with no description"
 msgid "{layer_name}"
-msgstr "Bæta við {layer_default_name}"
+msgstr "{layer_name}"
 
 #: ../gui/layers.py:995
 #, python-brace-format
@@ -2575,7 +2539,7 @@ msgstr "Ógegnsæi lags: %d%%"
 #: ../gui/layerswindow.py:107
 #, python-format
 msgid "%d%%"
-msgstr ""
+msgstr "%d%%"
 
 #. TRANSLATORS: status bar messages for drag, without/with modifiers
 #: ../gui/layerswindow.py:114
@@ -2592,22 +2556,21 @@ msgid "Layer"
 msgstr "Lag"
 
 #: ../gui/layervis.py:53
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgctxt "view controls: dropdown: item markup"
 msgid "<i>{builtin_view_name}</i>"
-msgstr "<b>{brush_name}</b>"
+msgstr "<i>{builtin_view_name}</i>"
 
 #: ../gui/layervis.py:125
 #, python-brace-format
 msgctxt "view controls: dropdown: item markup"
 msgid "{user_chosen_view_name}"
-msgstr ""
+msgstr "{user_chosen_view_name}"
 
 #: ../gui/layervis.py:187
-#, fuzzy
 msgctxt "view controls: rename view dialog"
 msgid "Rename View"
-msgstr "Snúa sýn"
+msgstr "Endurnefna sýn"
 
 #: ../gui/linemode.py:41
 msgid "Entrance Pressure"
@@ -2684,13 +2647,12 @@ msgid "Draw ellipses; Shift rotates, Ctrl constrains ratio/angle"
 msgstr "Teikna sporöskjur; Shift snýr, Ctrl skilyrðir hlutfall/horn"
 
 #: ../gui/meta.py:39
-#, fuzzy
 msgctxt "About dialog: copyright statement"
 msgid ""
 "Copyright (C) 2005-2017\n"
 "Martin Renold and the MyPaint Development Team"
 msgstr ""
-"Höfundarréttur (C) 2005-2015\n"
+"Höfundarréttur (C) 2005-2017\n"
 "Martin Renold og MyPaint þróunarteymið"
 
 #: ../gui/meta.py:45
@@ -2806,7 +2768,7 @@ msgstr "Styrkaukning:"
 #. TRANSLATORS:"Paint Pigment Mode" for the options panel. Short.
 #: ../gui/mode.py:590
 msgid "Pigment:"
-msgstr ""
+msgstr "Litarefni:"
 
 #: ../gui/optionspanel.py:47
 msgctxt "options panel: tab tooltip: title"
@@ -2926,16 +2888,14 @@ msgid "Adjust the painting symmetry axis."
 msgstr "Breyta samhverfuás myndar."
 
 #: ../gui/symmetry.py:355
-#, fuzzy
 msgctxt "symmetry axis options panel: labels"
 msgid "X Position:"
-msgstr "Staðsetning:"
+msgstr "X-staðsetning:"
 
 #: ../gui/symmetry.py:359
-#, fuzzy
 msgctxt "symmetry axis options panel: labels"
 msgid "Y Position:"
-msgstr "Staðsetning:"
+msgstr "Y-staðsetning:"
 
 #: ../gui/symmetry.py:363
 msgctxt "symmetry axis options panel: position button: no axis pos."
@@ -2954,10 +2914,9 @@ msgid "Alpha:"
 msgstr "Alfa gegnsæisrás:"
 
 #: ../gui/symmetry.py:375
-#, fuzzy
 msgctxt "symmetry axis options panel: labels"
 msgid "Symmetry Type:"
-msgstr "Samhverfa"
+msgstr "Gerð samhverfu:"
 
 #: ../gui/symmetry.py:379
 msgctxt "symmetry axis options panel: labels"
@@ -2965,16 +2924,14 @@ msgid "Rotational lines:"
 msgstr ""
 
 #: ../gui/symmetry.py:446
-#, fuzzy
 msgctxt "symmetry axis options panel: axis position dialog: window title"
 msgid "X axis Position"
-msgstr "Staðsetning áss"
+msgstr "Staðsetning X-áss"
 
 #: ../gui/symmetry.py:478
-#, fuzzy
 msgctxt "symmetry axis options panel: axis position dialog: window title"
 msgid "Y axis Position"
-msgstr "Staðsetning áss"
+msgstr "Staðsetning Y-áss"
 
 #: ../gui/symmetry.py:608
 msgctxt "symmetry axis options panel: axis active checkbox"
@@ -3042,10 +2999,10 @@ msgid "Rotate the canvas view"
 msgstr "Snúðu sýn á myndflöt"
 
 #: ../gui/workspace.py:1313
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgctxt "workspace: sidebar tabs: button tooltips"
 msgid "{tab_title}: close tab"
-msgstr "%s: loka flipa"
+msgstr "{tab_title}: loka flipa"
 
 #: ../gui/workspace.py:1317
 #, python-brace-format
@@ -3120,9 +3077,8 @@ msgid "Normalize Layer Mode"
 msgstr "Samræma lagaham"
 
 #: ../lib/command.py:947
-#, fuzzy
 msgid "Import Layers"
-msgstr "Innfluttur pensill"
+msgstr "Flytja inn lög"
 
 #: ../lib/command.py:949
 #, python-brace-format
@@ -3330,10 +3286,9 @@ msgstr ""
 "Óþekkt skráarending: “{ext}”"
 
 #: ../lib/document.py:1589
-#, fuzzy
 msgctxt "Document IO: group name for Import Layers"
 msgid "Imported layers"
-msgstr "Innfluttur pensill"
+msgstr "Innflutt lög"
 
 #: ../lib/document.py:1756
 #, python-brace-format
@@ -3366,7 +3321,6 @@ msgstr ""
 "{see_logs}"
 
 #: ../lib/floodfill.py:131
-#, fuzzy
 msgctxt "floodfill status message: use active tense"
 msgid "Filling"
 msgstr "Fylling"
@@ -3379,45 +3333,45 @@ msgstr ""
 #: ../lib/floodfill.py:133
 msgctxt "floodfill status message: use active tense"
 msgid "Blurring"
-msgstr ""
+msgstr "Afskerping"
 
 #: ../lib/floodfill.py:134
 msgctxt "floodfill status message: use active tense"
 msgid "Compositing"
-msgstr ""
+msgstr "Skjásamsetning"
 
 #: ../lib/floodfill.py:135
 msgctxt "floodfill status message: use active tense"
 msgid "Finishing up"
-msgstr ""
+msgstr "Er að klára"
 
 #: ../lib/floodfill.py:137
 msgctxt "uniform square region of pixels, plural noun"
 msgid "tiles"
-msgstr ""
+msgstr "flísar"
 
 #. TRANSLATORS: Assumption for all "Time period abbreviations":
 #. TRANSLATORS: they don't need ngettext (to support plural/singular)
 #: ../lib/helpers.py:570
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgctxt "Time period abbreviations"
 msgid "{days}d{hours}h"
 msgstr "{days}d{hours}klst"
 
 #: ../lib/helpers.py:572
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgctxt "Time period abbreviations"
 msgid "{hours}h{minutes}m"
 msgstr "{hours}klst{minutes}mín"
 
 #: ../lib/helpers.py:574
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgctxt "Time period abbreviation"
 msgid "{minutes}m{seconds}s"
 msgstr "{minutes}mín{seconds}sek"
 
 #: ../lib/helpers.py:576
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgctxt "Time period abbreviation"
 msgid "{seconds}s"
 msgstr "{seconds}sek"
@@ -3430,13 +3384,11 @@ msgstr "Lag"
 
 #. TRANSLATORS: Short default name for vector (SVG/Inkscape) layers
 #: ../lib/layer/data.py:1159
-#, fuzzy
 msgctxt "layer default names"
 msgid "Vectors"
-msgstr "Vigralag"
+msgstr "Vigrar"
 
 #: ../lib/layer/data.py:1164
-#, fuzzy
 msgctxt "layer type descriptions"
 msgid "Vector Layer"
 msgstr "Vigralag"
@@ -3445,24 +3397,23 @@ msgstr "Vigralag"
 #: ../lib/layer/data.py:1229
 msgctxt "layer default names"
 msgid "Bitmap"
-msgstr ""
+msgstr "Bitamynd"
 
 #: ../lib/layer/data.py:1234
 msgctxt "layer type descriptions"
 msgid "Bitmap Data"
-msgstr ""
+msgstr "Bitamyndagögn"
 
 #. TRANSLATORS: Short default name for non-renderable fallback layers
 #: ../lib/layer/data.py:1250
 msgctxt "layer default names"
 msgid "Data"
-msgstr ""
+msgstr "Gögn"
 
 #: ../lib/layer/data.py:1255
-#, fuzzy
 msgctxt "layer type descriptions"
 msgid "Unknown Data"
-msgstr "Óþekkt gagnalag"
+msgstr "Óþekkt gögn"
 
 #: ../lib/layer/data.py:1306
 #, fuzzy
@@ -3502,30 +3453,27 @@ msgstr ", "
 #: ../lib/layer/tree.py:2315
 msgctxt "layer default names: refactor: name of the common areas layer"
 msgid "Common"
-msgstr ""
+msgstr "Algengt"
 
 #: ../lib/layervis.py:44
-#, fuzzy
 msgctxt "layer visibility sets: default name for a user-managed view"
 msgid "View"
-msgstr "Skoðun"
+msgstr "Skoða"
 
 #: ../lib/layervis.py:49
 msgctxt "layer visibility sets: text shown when no user-managed view is active"
 msgid "No active view"
-msgstr ""
+msgstr "Engin virk sýn"
 
 #: ../lib/layervis.py:579
-#, fuzzy
 msgctxt "layer views: commands: add"
 msgid "Add Layer View"
-msgstr "Lagið er sýnilegt"
+msgstr "Bæta við sýn á lag"
 
 #: ../lib/layervis.py:604 ../lib/layervis.py:633
-#, fuzzy
 msgctxt "layer views: commands: remove"
 msgid "Remove Layer View"
-msgstr "Fjarlægja lag"
+msgstr "Fjarlægja sýn á lag"
 
 #: ../lib/layervis.py:663
 #, python-brace-format
@@ -3534,16 +3482,14 @@ msgid "Activate Layer View “{name}”"
 msgstr ""
 
 #: ../lib/layervis.py:692
-#, fuzzy
 msgctxt "layer views: commands: set active view's lock flag"
 msgid "Lock Layer View"
-msgstr "Læsa lagi"
+msgstr "Læsa sýn á lag"
 
 #: ../lib/layervis.py:697
-#, fuzzy
 msgctxt "layer views: commands: set active view's lock flag"
 msgid "Unlock Layer View"
-msgstr "Aflæsa lagi"
+msgstr "Aflæsa sýn á lag"
 
 #: ../lib/modes.py:47
 msgid "Pass-through"
@@ -3563,7 +3509,7 @@ msgstr "Einungis efsta lagið, án blöndunar lita."
 
 #: ../lib/modes.py:54
 msgid "Pigment"
-msgstr ""
+msgstr "Litarefni"
 
 #: ../lib/modes.py:55
 msgid ""
@@ -3767,10 +3713,10 @@ msgstr ""
 #. TRANSLATORS: Change only if your lang *REQUIRES* a different order or
 #. TRANSLATORS: if raw digits and a space aren't enough.
 #: ../lib/naming.py:22
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgctxt "unique names: serial number needed: template"
 msgid "{name} {number}"
-msgstr "%(name)s %(number)d"
+msgstr "{name} {number}"
 
 #. TRANSLATORS: UNIQUE_NAME_REGEX - regex for UNIQUE_NAME_TEMPLATE
 #. TRANSLATORS: Must match its template (msgid: '{name} {number}')
@@ -3778,7 +3724,7 @@ msgstr "%(name)s %(number)d"
 #: ../lib/naming.py:30
 msgctxt "unique names: regex matching a string with a serial number"
 msgid "^(?P<name>.*?)\\s+(?P<number>\\d+)$"
-msgstr ""
+msgstr "^(?P<name>.*?)\\s+(?P<number>\\d+)$"
 
 #: ../lib/pixbufsurface.py:39
 msgctxt "user-facing error texts"
@@ -3804,18 +3750,16 @@ msgstr ""
 "Úttaksmappa: “{dirname}”."
 
 #: ../lib/tiledsurface.py:48
-#, fuzzy
 msgid "Vertical"
-msgstr "Spegla lóðrétt"
+msgstr "Lóðrétt"
 
 #: ../lib/tiledsurface.py:49
-#, fuzzy
 msgid "Horizontal"
-msgstr "Spegla lárétt"
+msgstr "Lárétt"
 
 #: ../lib/tiledsurface.py:50
 msgid "Vertical and horizontal"
-msgstr ""
+msgstr "Lóðrétt og lárétt"
 
 #: ../lib/tiledsurface.py:51
 #, fuzzy
@@ -3853,10 +3797,9 @@ msgstr ""
 
 #. Deletes the selected autosave backup file.
 #: ../po/tmp/autorecover.glade.h:8
-#, fuzzy
 msgctxt "Autosave Recovery dialog|"
 msgid "_Delete…"
-msgstr "Eyða"
+msgstr "_Eyða…"
 
 #: ../po/tmp/autorecover.glade.h:9
 #, fuzzy
@@ -3866,13 +3809,11 @@ msgstr "Eyða þessum pensli af diski"
 
 #. Recover in the sense or retrieval or salvage from a backup file. The user is asked to save the retrieved file immediately afterwards, hence the ellipsis.
 #: ../po/tmp/autorecover.glade.h:11
-#, fuzzy
 msgctxt "Autosave Recovery dialog|"
 msgid "_Recover & Save…"
 msgstr "Endu_rheimta og vista…"
 
 #: ../po/tmp/autorecover.glade.h:12
-#, fuzzy
 msgctxt "Autosave Recovery dialog|Recover button|"
 msgid "Save this backup to disk, then continue working on it."
 msgstr "Vista þetta öryggisafrit á disk, halda síðan áfram að vinna með það."
@@ -3881,7 +3822,7 @@ msgstr "Vista þetta öryggisafrit á disk, halda síðan áfram að vinna með 
 #: ../po/tmp/autorecover.glade.h:14
 msgctxt "Autosave Recovery dialog|"
 msgid "Decide _Later"
-msgstr ""
+msgstr "Ákveða _seinna"
 
 #: ../po/tmp/autorecover.glade.h:15
 msgctxt "Autosave Recovery dialog|Cancel button|"
@@ -3991,9 +3932,8 @@ msgstr ""
 
 #. field label
 #: ../po/tmp/brusheditor.glade.h:22
-#, fuzzy
 msgid "Value:"
-msgstr "HSV gildi (V)"
+msgstr "Gildi:"
 
 #: ../po/tmp/brusheditor.glade.h:23
 msgid "Reset this input to have no effect on the setting"
@@ -4065,9 +4005,8 @@ msgid "Brush dynamics are not available for this setting."
 msgstr ""
 
 #: ../po/tmp/brusheditor.glade.h:43
-#, fuzzy
 msgid "<big><b>No Brush Dynamics</b></big>"
-msgstr "<big><b>{accel_label}</b></big>"
+msgstr "<big><b>Engar pensilhreyfingar</b></big>"
 
 #: ../po/tmp/inktool.glade.h:1
 msgctxt "Inking tool options: point value sliders: labels: tooltips"
@@ -4126,22 +4065,20 @@ msgid "Delete the currently selected point"
 msgstr "Eyða þeim punkti sem núna er valinn"
 
 #: ../po/tmp/inktool.glade.h:14 ../po/tmp/resources.xml.h:184
-#, fuzzy
 msgid "Insert Point"
-msgstr "Setja inn röð"
+msgstr "Setja inn punkt"
 
 #: ../po/tmp/inktool.glade.h:15 ../po/tmp/resources.xml.h:188
 msgid "Simplify Points"
-msgstr ""
+msgstr "Einfalda punkta"
 
 #: ../po/tmp/inktool.glade.h:16
 msgid "Simplify the curve using the Reumann-Witkam algorithm."
 msgstr ""
 
 #: ../po/tmp/inktool.glade.h:17 ../po/tmp/resources.xml.h:190
-#, fuzzy
 msgid "Cull Points"
-msgstr "Eyða punkti"
+msgstr "Eyða punktum"
 
 #: ../po/tmp/inktool.glade.h:18
 msgid "Cull every other point from the curve."
@@ -4153,7 +4090,6 @@ msgid "The layer’s unique name."
 msgstr ""
 
 #: ../po/tmp/layerprops.glade.h:2
-#, fuzzy
 msgctxt "Layer properties widget → <category labels>"
 msgid "Name"
 msgstr "Heiti"
@@ -4169,7 +4105,6 @@ msgid ""
 msgstr ""
 
 #: ../po/tmp/layerprops.glade.h:7
-#, fuzzy
 msgctxt "Layer properties widget → <category labels>"
 msgid "Mode"
 msgstr "Hamur"
@@ -4184,7 +4119,6 @@ msgid ""
 msgstr ""
 
 #: ../po/tmp/layerprops.glade.h:12
-#, fuzzy
 msgctxt "Layer properties widget → <category labels>"
 msgid "Opacity"
 msgstr "Ógegnsæi"
@@ -4200,7 +4134,7 @@ msgstr ""
 #: ../po/tmp/layerprops.glade.h:16
 msgctxt "Layer properties widget → <category labels>"
 msgid "Flags"
-msgstr ""
+msgstr "Flögg"
 
 #: ../po/tmp/layerprops.glade.h:17
 msgctxt "Layer properties widget → Flags → Eye togglebutton → tooltip"
@@ -4637,7 +4571,6 @@ msgid "Hide cursor while painting"
 msgstr "Fela bendil á meðan málað er"
 
 #: ../po/tmp/preferenceswindow.glade.h:82
-#, fuzzy
 msgctxt ""
 "Prefs Dialog|View|Interface|Blink layers on creation/selection|checkbox label"
 msgid "Enabled"
@@ -4660,12 +4593,12 @@ msgstr ""
 #: ../po/tmp/preferenceswindow.glade.h:85
 msgctxt "Prefs Dialog|View|Interface|"
 msgid "Language:"
-msgstr ""
+msgstr "Tungumál:"
 
 #: ../po/tmp/preferenceswindow.glade.h:86
 msgctxt "Prefs Dialog|View|Interface|"
 msgid "(needs restart)"
-msgstr ""
+msgstr "(krefst endurræsingar)"
 
 #. Tab label in preferences dialog&#10;
 #: ../po/tmp/preferenceswindow.glade.h:88
@@ -4787,23 +4720,20 @@ msgid "Default Compatibility Mode:"
 msgstr ""
 
 #: ../po/tmp/preferenceswindow.glade.h:107
-#, fuzzy
 msgctxt "Prefs Dialog|Compatibility"
 msgid "<b>1.x Settings</b>"
-msgstr "<b>Vistun</b>"
+msgstr "<b>1.x stilling</b>"
 
 #. Make sure to be consistent w. other occurences of 2.x
 #: ../po/tmp/preferenceswindow.glade.h:109
-#, fuzzy
 msgctxt "Prefs Dialog|Compatibility"
 msgid "<b>2.x Settings</b>"
-msgstr "<b>Vistun</b>"
+msgstr "<b>2.x stilling</b>"
 
 #: ../po/tmp/preferenceswindow.glade.h:110
-#, fuzzy
 msgctxt "Prefs Dialog|Compatibility"
 msgid "Default New Layer Type:"
-msgstr "Eyða lagi"
+msgstr "Sjálfgefin gerð nýs lags:"
 
 #: ../po/tmp/preferenceswindow.glade.h:111
 #, fuzzy
@@ -4860,10 +4790,9 @@ msgstr ""
 
 #. This label indicates a subsection of the compatibility settings related to loading files.
 #: ../po/tmp/preferenceswindow.glade.h:128
-#, fuzzy
 msgctxt "Prefs|Compatibility"
 msgid "<b>File loading</b>"
-msgstr "<b>Vistun</b>"
+msgstr "<b>Hleðsla skráa</b>"
 
 #: ../po/tmp/preferenceswindow.glade.h:129
 msgid "<b>Compatibility settings</b>"
@@ -4871,10 +4800,9 @@ msgstr ""
 
 #. Tab label in preferences dialog
 #: ../po/tmp/preferenceswindow.glade.h:131
-#, fuzzy
 msgctxt "Prefs Dialog|"
 msgid "Compatibility"
-msgstr "samhæfni milli kerfa"
+msgstr "Samhæfni"
 
 #: ../po/tmp/preferenceswindow.glade.h:132
 msgctxt "Prefs Dialog|Pen Input|Mode|"
@@ -4947,10 +4875,9 @@ msgid "Reload the file your current work was loaded from."
 msgstr "Endurhlaða skrána sem þú varst að vinna með af diski."
 
 #: ../po/tmp/resources.xml.h:12
-#, fuzzy
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "Import Layers…"
-msgstr "Flytja inn pensla…"
+msgstr "Flytja inn lög…"
 
 #: ../po/tmp/resources.xml.h:13
 msgctxt "Accel Editor (descriptions)"
@@ -5282,7 +5209,6 @@ msgid "Slice Operations"
 msgstr "Valkostir verkfæra"
 
 #: ../po/tmp/resources.xml.h:76
-#, fuzzy
 msgctxt "Menu→Layer→Slice (labels), Accel Editor (labels)"
 msgid "Trim Layer to Frame"
 msgstr "Utanskera lag að ramma"
@@ -5573,10 +5499,9 @@ msgid "Make an exact clone of the current layer."
 msgstr "Búa til nákvæmt klón af núverandi lag."
 
 #: ../po/tmp/resources.xml.h:131
-#, fuzzy
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Layer Properties…"
-msgstr "Eiginleikar"
+msgstr "Eiginleikar lags…"
 
 #: ../po/tmp/resources.xml.h:132
 msgctxt "Accel Editor (descriptions)"
@@ -5659,7 +5584,6 @@ msgid "Reset Zoom"
 msgstr "Núllstilla aðdrátt"
 
 #: ../po/tmp/resources.xml.h:147
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Reset view zoom level to default."
 msgstr "Endurstilla aðdrátt sýnar á sjálfgefið gildi."
@@ -5670,7 +5594,6 @@ msgid "Reset Rotation"
 msgstr "Núllstilla snúning"
 
 #: ../po/tmp/resources.xml.h:149
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Reset the view’s rotation to 0°"
 msgstr "Endurstilla snúning sýnar á 0°"
@@ -5707,10 +5630,9 @@ msgid "Decrease magnification."
 msgstr "Minnka aðdrátt að myndinni."
 
 #: ../po/tmp/resources.xml.h:156
-#, fuzzy
 msgctxt "Menu→View→Adjust View (labels), Accel Editor (labels)"
 msgid "Pan Left"
-msgstr "Hliðra sýn"
+msgstr "Hliðra til vinstri"
 
 #: ../po/tmp/resources.xml.h:157
 #, fuzzy
@@ -5719,10 +5641,9 @@ msgid "Move your view of the canvas to the left."
 msgstr "Snúa sýn: halla sýn þinni á myndflötinn."
 
 #: ../po/tmp/resources.xml.h:158
-#, fuzzy
 msgctxt "Menu→View→Adjust View (labels), Accel Editor (labels)"
 msgid "Pan Right"
-msgstr "Hart ljós"
+msgstr "Hliðra til hægri"
 
 #: ../po/tmp/resources.xml.h:159
 #, fuzzy
@@ -5733,7 +5654,7 @@ msgstr "Hliðra sýn: færa sýn þína á myndflötinn lárétt eða lóðrétt
 #: ../po/tmp/resources.xml.h:160
 msgctxt "Menu→View→Adjust View (labels), Accel Editor (labels)"
 msgid "Pan Up"
-msgstr ""
+msgstr "Hliðra upp"
 
 #: ../po/tmp/resources.xml.h:161
 #, fuzzy
@@ -5742,10 +5663,9 @@ msgid "Move your view of the canvas upwards."
 msgstr "Snúa sýn: halla sýn þinni á myndflötinn."
 
 #: ../po/tmp/resources.xml.h:162
-#, fuzzy
 msgctxt "Menu→View→Adjust View (labels), Accel Editor (labels)"
 msgid "Pan Down"
-msgstr "Hliðra sýn"
+msgstr "Hliðra niður"
 
 #: ../po/tmp/resources.xml.h:163
 #, fuzzy
@@ -5864,7 +5784,6 @@ msgid ""
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:186
-#, fuzzy
 msgid "Delete Point"
 msgstr "Eyða punkti"
 
@@ -6361,7 +6280,6 @@ msgid "Edit brush icons."
 msgstr "Breyta táknmyndum pensla."
 
 #: ../po/tmp/resources.xml.h:285
-#, fuzzy
 msgctxt ""
 "Menu→Layer (labels), Menu→Window (labels), Toolbar (labels), Accel Editor "
 "(labels)"
@@ -6968,10 +6886,9 @@ msgid ""
 msgstr "Stilltu málunarlit eftir mynddílum á skjánum."
 
 #: ../po/tmp/resources.xml.h:402
-#, fuzzy
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "Pick Color Chroma"
-msgstr "Veldu lit"
+msgstr "Veldu litgildi (chroma)"
 
 #: ../po/tmp/resources.xml.h:403
 #, fuzzy
