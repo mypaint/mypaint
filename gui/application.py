@@ -109,7 +109,7 @@ def get_app():
     return Application._INSTANCE
 
 
-def _init_icons(icon_path, default_icon='mypaint'):
+def _init_icons(icon_path, default_icon='org.mypaint.Mypaint'):
     """Set the icon theme search path, and GTK default window icon"""
     # Default location for our icons. The user's theme can override these.
     icon_theme = Gtk.IconTheme.get_default()
