@@ -2,7 +2,7 @@
 Title=MyPaint
 Comment=Painting program for digital artists
 Description= MyPaint is a fast, free, and easy graphics app for digital painters. It lets you focus on the art you make instead of the program you make it with. You can work on your canvas without clutter, and show the interface only when you need it. MyPaint works best with a graphics tablet.
-Icon=https://raw.githubusercontent.com/mypaint/mypaint/master/desktop/icons/hicolor/512x512/apps/mypaint.png
+Icon=https://raw.githubusercontent.com/mypaint/mypaint/master/desktop/icons/hicolor/scalable/apps/org.mypaint.Mypaint.svg
 Name=org.mypaint.MyPaint
 SuggestRemoteName=flathub
 Branch=stable

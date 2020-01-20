@@ -273,11 +273,11 @@ def freedesktop_thumbnail(filename, pixbuf=None, force=False):
     accessed to get its mtime, so this method must not be called if
     the file is still open.
 
-    >>> icon = "desktop/icons/hicolor/512x512/apps/mypaint.png"
-    >>> p1 = freedesktop_thumbnail(icon, force=True)
+    >>> image = "svg/thumbnail-test-input.svg"
+    >>> p1 = freedesktop_thumbnail(image, force=True)
     >>> isinstance(p1, GdkPixbuf.Pixbuf)
     True
-    >>> p2 = freedesktop_thumbnail(icon)
+    >>> p2 = freedesktop_thumbnail(image)
     >>> isinstance(p2, GdkPixbuf.Pixbuf)
     True
     >>> p2.to_string() == p1.to_string()
