@@ -12,17 +12,17 @@ msgstr ""
 "Project-Id-Version: mypaint v2.0.0-alpha.11-2-g0673fe8\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2019-12-20 19:50+0100\n"
-"PO-Revision-Date: 2019-12-04 20:05+0000\n"
-"Last-Translator: Nikolay Korotkiy <sikmir@gmail.com>\n"
+"PO-Revision-Date: 2020-01-20 23:08+0000\n"
+"Last-Translator: Oleg Dudka <playermet@gmail.com>\n"
 "Language-Team: Russian <https://hosted.weblate.org/projects/mypaint/mypaint/"
 "ru/>\n"
 "Language: ru\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
-"%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
-"X-Generator: Weblate 3.10-dev\n"
+"Plural-Forms: nplurals=3; plural=n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<="
+"4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
+"X-Generator: Weblate 3.11-dev\n"
 
 #. TRANSLATORS: Name of first column in the button map preferences.
 #. TRANSLATORS: Refers to an action bound to a mod+button combination.
@@ -1208,16 +1208,15 @@ msgstr ""
 #. This refers to a version of MyPaint like 1.0, 1.1, 1.2 etc
 #: ../gui/compatibility.py:41 ../gui/drawwindow.py:276
 #: ../po/tmp/preferenceswindow.glade.h:113
-#, fuzzy
 msgctxt "Prefs Dialog|Compatibility"
 msgid "1.x"
-msgstr "1.0"
+msgstr "1.x"
 
 #. This refers to a version of MyPaint like 1.0, 1.1, 1.2 etc
 #: ../gui/compatibility.py:42 ../po/tmp/preferenceswindow.glade.h:117
 msgctxt "Prefs Dialog|Compatibility"
 msgid "2.x"
-msgstr ""
+msgstr "2.x"
 
 #. TRANSLATORS: This is probably a rare warning, and it will not
 #. TRANSLATORS: really be shown at all before the release of 3.0
@@ -1234,6 +1233,14 @@ msgid ""
 "It is <b>strongly recommended</b> to upgrade to <b>MyPaint {new_version}</b> "
 "or newer if you want to edit this file!"
 msgstr ""
+"“{filename}” был сохранен в <b>MyPaint {new_version}</b>. Он может быть "
+"<b>несовместим</b> с <b>MyPaint {current_version}</b>.\n"
+"\n"
+"Редактирование этого файла в текущей версии MyPaint может работать "
+"некорректно или даже привести к падению приложения.\n"
+"\n"
+"<b>Настоятельно рекомендуется</b> обновиться до <b>MyPaint {new_version}</b> "
+"или новее перед редактирование этого файла."
 
 #: ../gui/compatibility.py:60
 #, python-brace-format
@@ -1251,12 +1258,12 @@ msgstr ""
 #: ../gui/compatibility.py:71
 msgctxt "file compatibility question"
 msgid "Do you want to open this file anyway?"
-msgstr ""
+msgstr "Вы всё равно хотите открыть этот файл?"
 
 #: ../gui/compatibility.py:135
 msgctxt "Version compat warning toggle"
 msgid "Don't show this warning again"
-msgstr ""
+msgstr "Не показывать это предупреждение снова."
 
 #. TRANSLATORS: One of the options for the
 #. TRANSLATORS: "When Not Specified in File"
@@ -1264,7 +1271,7 @@ msgstr ""
 #: ../gui/compatibility.py:211
 msgctxt "Prefs Dialog|Compatibility"
 msgid "Always open in 1.x mode"
-msgstr ""
+msgstr "Всегда открывать в режиме совместимости 1.x"
 
 #. TRANSLATORS: One of the options for the
 #. TRANSLATORS: "When Not Specified in File"
@@ -1272,7 +1279,7 @@ msgstr ""
 #: ../gui/compatibility.py:220
 msgctxt "Prefs Dialog|Compatibility"
 msgid "Always open in 2.x mode"
-msgstr ""
+msgstr "Всегда открывать в режиме совместимости 2.x"
 
 #. TRANSLATORS: One of the options for the
 #. TRANSLATORS: "When Not Specified in File"
@@ -1281,13 +1288,14 @@ msgstr ""
 msgctxt "Prefs Dialog|Compatibility"
 msgid "Open in 1.x mode unless file contains pigment layers"
 msgstr ""
+"Открыть в режиме совместимости 1.x если файл не содержит пигментных слоев"
 
 #. TRANSLATORS: This is a label for a dropdown menu in the
 #. TRANSLATORS: file chooser dialog when loading .ora files.
 #: ../gui/compatibility.py:532
 msgctxt "File Load Compat Options"
 msgid "Compatibility mode:"
-msgstr ""
+msgstr "Режим совместимости:"
 
 #: ../gui/device.py:48
 msgctxt "prefs: device's type label"
@@ -1652,7 +1660,7 @@ msgstr "Слой “{layer_name}” обновлен со внешними из�
 #, python-brace-format
 msgctxt "Edit in External App (statusbar message)"
 msgid "Failed to update layer with external edits from “{file_basename}”."
-msgstr ""
+msgstr "Не удалось обновить слой внешними изменениями из “{file_basename}”."
 
 #: ../gui/externalapp.py:66
 #, python-brace-format
@@ -2522,9 +2530,8 @@ msgstr "Видим"
 
 #. Other flags column
 #: ../gui/layers.py:426
-#, fuzzy
 msgid "Flags"
-msgstr "Пометка"
+msgstr "Флаги"
 
 #: ../gui/layers.py:925
 #, fuzzy
@@ -3402,10 +3409,9 @@ msgid "Blurring"
 msgstr "Размытие"
 
 #: ../lib/floodfill.py:134
-#, fuzzy
 msgctxt "floodfill status message: use active tense"
 msgid "Compositing"
-msgstr "Композициривание"
+msgstr "Композиция"
 
 #: ../lib/floodfill.py:135
 msgctxt "floodfill status message: use active tense"
@@ -3464,12 +3470,12 @@ msgstr "Векторный слой"
 #: ../lib/layer/data.py:1229
 msgctxt "layer default names"
 msgid "Bitmap"
-msgstr ""
+msgstr "Растр"
 
 #: ../lib/layer/data.py:1234
 msgctxt "layer type descriptions"
 msgid "Bitmap Data"
-msgstr ""
+msgstr "Данные растрового изображения"
 
 #. TRANSLATORS: Short default name for non-renderable fallback layers
 #: ../lib/layer/data.py:1250
@@ -4201,15 +4207,16 @@ msgid "Mode"
 msgstr "Режим"
 
 #: ../po/tmp/layerprops.glade.h:9
-#, fuzzy, no-c-format
+#, no-c-format
 msgctxt "Layer properties widget → Opacity → label tooltip"
 msgid ""
 "How much the layer combines with what’s behind it.\n"
 "\n"
 "At 0%, the layer doesn’t contribute at all."
 msgstr ""
-"Сколько слоёв скомбинировать по ними.\n"
-"При 0% слой вообще не помогает."
+"Как сильно слой комбинируется с тем что позади него.\n"
+"\n"
+"При 0% слой не оказывает никакого влияния."
 
 #: ../po/tmp/layerprops.glade.h:12
 msgctxt "Layer properties widget → <category labels>"
@@ -4227,7 +4234,7 @@ msgstr ""
 #: ../po/tmp/layerprops.glade.h:16
 msgctxt "Layer properties widget → <category labels>"
 msgid "Flags"
-msgstr ""
+msgstr "Флаги"
 
 #: ../po/tmp/layerprops.glade.h:17
 msgctxt "Layer properties widget → Flags → Eye togglebutton → tooltip"
@@ -4243,6 +4250,15 @@ msgid ""
 "When a layer group is hidden, all of the layers inside it are made invisible "
 "too."
 msgstr ""
+"Слой видим или скрыт.\n"
+"\n"
+"Иконка с открытым глазом означает что слой видим.\n"
+"\n"
+"Когда глаз на иконке закрыт, слой скрыт. Скрытые слои полностью невидимы: "
+"они не влияют на отображаемое. Для безопасности, на скрытых слоях нельзя "
+"рисовать.\n"
+"\n"
+"Когда группа слоёв скрыта, все слои входящие в неё также скрываются."
 
 #: ../po/tmp/layerprops.glade.h:24
 msgctxt "Layer properties widget → Flags → Padlock togglebutton → tooltip"
@@ -4838,26 +4854,23 @@ msgstr "Цвет"
 #: ../po/tmp/preferenceswindow.glade.h:106
 msgctxt "Prefs Dialog|Compatibility"
 msgid "Default Compatibility Mode:"
-msgstr ""
+msgstr "Режим Совместимости По Умолчанию:"
 
 #: ../po/tmp/preferenceswindow.glade.h:107
-#, fuzzy
 msgctxt "Prefs Dialog|Compatibility"
 msgid "<b>1.x Settings</b>"
-msgstr "<b>Сохранение</b>"
+msgstr "<b>Настройки 1.x</b>"
 
 #. Make sure to be consistent w. other occurences of 2.x
 #: ../po/tmp/preferenceswindow.glade.h:109
-#, fuzzy
 msgctxt "Prefs Dialog|Compatibility"
 msgid "<b>2.x Settings</b>"
-msgstr "<b>Сохранение</b>"
+msgstr "<b>Настройки 2.x</b>"
 
 #: ../po/tmp/preferenceswindow.glade.h:110
-#, fuzzy
 msgctxt "Prefs Dialog|Compatibility"
 msgid "Default New Layer Type:"
-msgstr "Удалить слой"
+msgstr "Тип Нового Слоя По Умолчанию:"
 
 #: ../po/tmp/preferenceswindow.glade.h:111
 #, fuzzy
@@ -4884,18 +4897,18 @@ msgstr ""
 #: ../po/tmp/preferenceswindow.glade.h:119
 msgctxt "Prefs Dialog|Compatibility"
 msgid "Show warning for files that may be partially incompatible"
-msgstr ""
+msgstr "Отображать предупреждение для частично несовместимых файлов"
 
 #. Label for a set of options
 #: ../po/tmp/preferenceswindow.glade.h:121
 msgctxt "Prefs Dialog|Compatibility"
 msgid "File compatibility warnings:"
-msgstr ""
+msgstr "Предупреждения о совместимости файла:"
 
 #: ../po/tmp/preferenceswindow.glade.h:122
 msgctxt "Prefs Dialog|Compatibility"
 msgid "Show warning for files that may be fully incompatible"
-msgstr ""
+msgstr "Отображать предупреждение для полностью несовместимых файлов"
 
 #. This is a tooltip for the file behavior options label.
 #: ../po/tmp/preferenceswindow.glade.h:124
@@ -4905,12 +4918,15 @@ msgid ""
 "When you save an OpenRaster file with MyPaint 2.0 or newer the active "
 "compatibility mode will be written to the file."
 msgstr ""
+"Это относится только к файлам сохраненным в версии MyPaint старше чем 2.0. "
+"При сохранении файла OpenRaster в MyPaint 2.0 или новее режим активной "
+"совместимости будет записан в файл."
 
 #. Label to the options for how to handle files which do not have a compatibility mode specified (whether they should be opened in 1.x compatibility mode, or 2.x mode)
 #: ../po/tmp/preferenceswindow.glade.h:126
 msgctxt "Prefs Dialog|Compatibility"
 msgid "When Mode is Unspecified:"
-msgstr ""
+msgstr "Когда Режим Совместимости Не Определен:"
 
 #. This label indicates a subsection of the compatibility settings related to loading files.
 #: ../po/tmp/preferenceswindow.glade.h:128
@@ -4921,14 +4937,13 @@ msgstr "<b>Сохранение</b>"
 
 #: ../po/tmp/preferenceswindow.glade.h:129
 msgid "<b>Compatibility settings</b>"
-msgstr ""
+msgstr "<b>Настройки совместимости</b>"
 
 #. Tab label in preferences dialog
 #: ../po/tmp/preferenceswindow.glade.h:131
-#, fuzzy
 msgctxt "Prefs Dialog|"
 msgid "Compatibility"
-msgstr "портируемость"
+msgstr "Совместимость"
 
 #: ../po/tmp/preferenceswindow.glade.h:132
 msgctxt "Prefs Dialog|Pen Input|Mode|"
@@ -5147,6 +5162,7 @@ msgstr "Уменьшить поддельное давление"
 msgctxt "Accel Editor (descriptions)"
 msgid "Send softer pressure for devices that don't support pressure input."
 msgstr ""
+"Использовать более мягкий нажим для устройств не различающих силу нажатия."
 
 #: ../po/tmp/resources.xml.h:41
 #, fuzzy
@@ -5921,7 +5937,7 @@ msgstr "Удалить выбранный узел"
 msgctxt "Accel Editor (descriptions)"
 msgid ""
 "Simplify and delete points according to angle and distance between nodes."
-msgstr ""
+msgstr "Упростить и удалить точки согласно углу и расстоянию между узлами."
 
 #: ../po/tmp/resources.xml.h:191
 msgctxt "Accel Editor (descriptions)"
@@ -6404,17 +6420,16 @@ msgid "Edit brush icons."
 msgstr "Редактировать значки кистей."
 
 #: ../po/tmp/resources.xml.h:285
-#, fuzzy
 msgctxt ""
 "Menu→Layer (labels), Menu→Window (labels), Toolbar (labels), Accel Editor "
 "(labels)"
 msgid "Layers Panel"
-msgstr "Слои"
+msgstr "Панель Слоев"
 
 #: ../po/tmp/resources.xml.h:286
 msgctxt "Accel Editor (descriptions)"
 msgid "Dockable panel for managing layers."
-msgstr ""
+msgstr "Прикрепляемая панель для управления слоями."
 
 #: ../po/tmp/resources.xml.h:287
 msgctxt "Menu→Layers (labels), Accel Editor (labels)"
@@ -6533,7 +6548,7 @@ msgstr "Блокнот"
 #: ../po/tmp/resources.xml.h:308
 msgctxt "Accel Editor (descriptions)"
 msgid "Dockable Panel for mixing colors and testing brushes."
-msgstr ""
+msgstr "Прикрепляемая панель для смешивания цветов и проверки кистей."
 
 #: ../po/tmp/resources.xml.h:309
 msgctxt "Menu→Scratchpad (labels), Accel Editor (labels)"
@@ -6553,7 +6568,7 @@ msgstr "Обзор"
 #: ../po/tmp/resources.xml.h:312
 msgctxt "Accel Editor (descriptions)"
 msgid "Dockable panel for an overview and navigation of the whole canvas."
-msgstr ""
+msgstr "Прикрепляемая панель для обзора и навигации всего холста."
 
 #: ../po/tmp/resources.xml.h:313
 msgctxt "Menu→View (labels), Accel Editor (labels)"
@@ -6573,7 +6588,7 @@ msgstr "Параметры инструментов"
 #: ../po/tmp/resources.xml.h:316
 msgctxt "Accel Editor (descriptions)"
 msgid "Dockable panel for adjusting the options with the activated tool."
-msgstr ""
+msgstr "Прикрепляемая панель для настройки текущего инструмента."
 
 #: ../po/tmp/resources.xml.h:317
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
@@ -6593,7 +6608,7 @@ msgstr "История кистей и цветов"
 #: ../po/tmp/resources.xml.h:320
 msgctxt "Accel Editor (descriptions)"
 msgid "Dockable panel for viewing recently changed colors and brushes."
-msgstr ""
+msgstr "Прикрепляемая панель для просмотра недавно измененных цветов и кистей."
 
 #: ../po/tmp/resources.xml.h:321
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"

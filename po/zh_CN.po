@@ -8,16 +8,16 @@ msgstr ""
 "Project-Id-Version: mypaint v1.2.0-beta.3-43-g9e683e2\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2019-12-20 19:50+0100\n"
-"PO-Revision-Date: 2015-11-26 20:38+0000\n"
-"Last-Translator: Andrew Chadwick <a.t.chadwick@gmail.com>\n"
-"Language-Team: Chinese (China) <https://hosted.weblate.org/projects/mypaint/"
-"mypaint/zh_CN/>\n"
+"PO-Revision-Date: 2020-01-18 06:21+0000\n"
+"Last-Translator: 玉堂白鹤 <yjwork@qq.com>\n"
+"Language-Team: Chinese (Simplified) <https://hosted.weblate.org/projects/"
+"mypaint/mypaint/zh_Hans/>\n"
 "Language: zh_CN\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 2.5-dev\n"
+"X-Generator: Weblate 3.10.2-dev\n"
 
 #. TRANSLATORS: Name of first column in the button map preferences.
 #. TRANSLATORS: Refers to an action bound to a mod+button combination.
@@ -208,7 +208,7 @@ msgstr "笔速"
 #: ../gui/brusheditor.py:358
 msgctxt "brush settings list: setting group"
 msgid "Directional Offsets"
-msgstr ""
+msgstr "方位偏移"
 
 #: ../gui/brusheditor.py:376
 msgctxt "brush settings list: setting group"
@@ -228,7 +228,7 @@ msgstr "颜色"
 #: ../gui/brusheditor.py:416
 msgctxt "brush settings list: setting group"
 msgid "GridMap"
-msgstr ""
+msgstr "网格图"
 
 #: ../gui/brusheditor.py:427
 msgctxt "brush settings list: setting group"
@@ -422,7 +422,7 @@ msgstr "新建"
 #, python-brace-format
 msgctxt "brushpack import failure messages"
 msgid "No file named “{order_conf_file}”. This is not a brushpack."
-msgstr ""
+msgstr "没有名为“{order_conf_file}” 的文件。这不是一个画笔包。"
 
 #: ../gui/brushmanager.py:689
 #, python-brace-format
