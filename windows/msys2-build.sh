@@ -179,7 +179,7 @@ seed_mingw_src_mypaint_repo() {
 
 
 build_pkg() {
-    # Build and optionally install a .pkg.tar.xz from the
+    # Build and optionally install a .pkg.tar.zst from the
     # managed tree of PKGBUILDs.
     #
     # Usage: build_pkg PKGNAMESTEM {true|false}
@@ -193,7 +193,7 @@ build_pkg() {
     install="$2"
     src="${SRC_DIR}/mingw-w64-$pkgstem"
     pushd "$src"
-    rm -vf *.pkg.tar.xz
+    rm -vf *.pkg.tar.zst
 
     # This only builds for the arch in MINGW_INSTALLS, i.e. the current
     # value of MSYSTEM.
@@ -203,22 +203,22 @@ build_pkg() {
 
     if $install; then
         loginfo "Installing built packages..."
-        pacman -U --noconfirm *.pkg.tar.xz
+        pacman -U --noconfirm *.pkg.tar.zst
         logok "Install finished."
     fi
     popd
 
     loginfo "Capturing build artifacts..."
     check_output_dir "pkgs"
-    mv -v "$src"/*.pkg.tar.xz "$OUTPUT_ROOT/pkgs"
+    mv -v "$src"/*.pkg.tar.zst "$OUTPUT_ROOT/pkgs"
     logok "Packages moved."
 }
 
 
 bundle_mypaint() {
-    # Convert local and repository *.pkg.tar.xz into nice bundles
+    # Convert local and repository *.pkg.tar.zst into nice bundles
     # for users to install.
-    # Needs the libmypaint-git and mypaint-git .pkg.tar.xz artifacts.
+    # Needs the libmypaint-git and mypaint-git .pkg.tar.zst artifacts.
     styrene_path=`which styrene||true`
     if [ "x$styrene_path" = "x" ]; then
         mkdir -vp "$SRC_ROOT"
