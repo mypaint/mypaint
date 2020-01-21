@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: mypaint v2.0.0-alpha.12-343-g82b4fc5\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2019-12-20 19:50+0100\n"
-"PO-Revision-Date: 2020-01-08 13:22+0000\n"
+"PO-Revision-Date: 2020-01-22 05:14+0000\n"
 "Last-Translator: Blake <adam.otruba@protonmail.com>\n"
 "Language-Team: Slovak <https://hosted.weblate.org/projects/mypaint/mypaint/"
 "sk/>\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
-"X-Generator: Weblate 3.10.1-dev\n"
+"X-Generator: Weblate 3.11-dev\n"
 
 #. TRANSLATORS: Name of first column in the button map preferences.
 #. TRANSLATORS: Refers to an action bound to a mod+button combination.
@@ -214,7 +214,7 @@ msgstr "Rýchlosť"
 #: ../gui/brusheditor.py:358
 msgctxt "brush settings list: setting group"
 msgid "Directional Offsets"
-msgstr ""
+msgstr "Smerové posuny"
 
 #: ../gui/brusheditor.py:376
 msgctxt "brush settings list: setting group"
@@ -234,7 +234,7 @@ msgstr "Farba"
 #: ../gui/brusheditor.py:416
 msgctxt "brush settings list: setting group"
 msgid "GridMap"
-msgstr ""
+msgstr "Mriežka"
 
 #: ../gui/brusheditor.py:427
 msgctxt "brush settings list: setting group"
@@ -1197,21 +1197,20 @@ msgstr "Mení farbu pomocou kruhovej misky farieb prekríženej HSV rampami."
 #: ../gui/compatibility.py:40
 msgctxt "File Load Compat Options"
 msgid "Based on file"
-msgstr ""
+msgstr "Podľa súboru"
 
 #. This refers to a version of MyPaint like 1.0, 1.1, 1.2 etc
 #: ../gui/compatibility.py:41 ../gui/drawwindow.py:276
 #: ../po/tmp/preferenceswindow.glade.h:113
-#, fuzzy
 msgctxt "Prefs Dialog|Compatibility"
 msgid "1.x"
-msgstr "1.0"
+msgstr "1.x"
 
 #. This refers to a version of MyPaint like 1.0, 1.1, 1.2 etc
 #: ../gui/compatibility.py:42 ../po/tmp/preferenceswindow.glade.h:117
 msgctxt "Prefs Dialog|Compatibility"
 msgid "2.x"
-msgstr ""
+msgstr "2.x"
 
 #. TRANSLATORS: This is probably a rare warning, and it will not
 #. TRANSLATORS: really be shown at all before the release of 3.0
@@ -1228,6 +1227,14 @@ msgid ""
 "It is <b>strongly recommended</b> to upgrade to <b>MyPaint {new_version}</b> "
 "or newer if you want to edit this file!"
 msgstr ""
+"Súbor „{filename}“ bol uložený v <b>MyPaint {new_version}</b>. Môže byť <b>"
+"nekompatibilný </b> s <b>MyPaint{current_version}</b>.\n"
+"\n"
+"Úprava tohto súboru v aktuálnej verzii MyPaint nie je zaručene bezchybná a "
+"môže dokonca spôsobiť pád programu.\n"
+"\n"
+"Ak chcete upravovať tento súbor, <b>dôrazne odporúčame</b> použiť verziu <b>"
+"MyPaint {new_version}</b>, alebo novšiu!"
 
 #: ../gui/compatibility.py:60
 #, python-brace-format
@@ -1241,11 +1248,18 @@ msgid ""
 "\n"
 "To be safe you should upgrade to MyPaint {new_version} or newer."
 msgstr ""
+"Súbor „{filename}“ bol uložený v <b>MyPaint {new_version}</b>. Nemusí byť "
+"plne kompatibilný s <b>MyPaint{current_version}</b>.\n"
+"\n"
+"Uloženie v tejto verzii môže spôsobiť stratu dát, ktoré sú podporované iba "
+"novšou verziou.\n"
+"\n"
+"Pre istotu by ste mali upgradeovať na Mypaint {new_version}, alebo novší."
 
 #: ../gui/compatibility.py:71
 msgctxt "file compatibility question"
 msgid "Do you want to open this file anyway?"
-msgstr ""
+msgstr "Chcete aj tak tento súbor otvoriť?"
 
 #: ../gui/compatibility.py:135
 msgctxt "Version compat warning toggle"
