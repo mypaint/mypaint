@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: mypaint v2.0.0-alpha.8-1-g4490f06\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2019-12-20 19:50+0100\n"
-"PO-Revision-Date: 2019-12-10 06:59+0000\n"
+"PO-Revision-Date: 2020-01-29 17:03+0000\n"
 "Last-Translator: Joan Montané <joan@montane.cat>\n"
 "Language-Team: Catalan <https://hosted.weblate.org/projects/mypaint/mypaint/"
 "ca/>\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 3.10-dev\n"
+"X-Generator: Weblate 3.11-dev\n"
 
 #. TRANSLATORS: Name of first column in the button map preferences.
 #. TRANSLATORS: Refers to an action bound to a mod+button combination.
@@ -1199,21 +1199,21 @@ msgstr "Canvieu el color amb rampes HSV creuant un bol radial de color."
 #: ../gui/compatibility.py:40
 msgctxt "File Load Compat Options"
 msgid "Based on file"
-msgstr ""
+msgstr "Basat en el fitxer"
 
 #. This refers to a version of MyPaint like 1.0, 1.1, 1.2 etc
 #: ../gui/compatibility.py:41 ../gui/drawwindow.py:276
 #: ../po/tmp/preferenceswindow.glade.h:113
-#, fuzzy
 msgctxt "Prefs Dialog|Compatibility"
 msgid "1.x"
-msgstr "1.0"
+msgstr "1.x"
 
 #. This refers to a version of MyPaint like 1.0, 1.1, 1.2 etc
 #: ../gui/compatibility.py:42 ../po/tmp/preferenceswindow.glade.h:117
 msgctxt "Prefs Dialog|Compatibility"
 msgid "2.x"
 msgstr ""
+"Això es refereix, per exemple, a la versió del MyPaint 1.0, 1.1, 1.2, etc."
 
 #. TRANSLATORS: This is probably a rare warning, and it will not
 #. TRANSLATORS: really be shown at all before the release of 3.0
@@ -1230,6 +1230,14 @@ msgid ""
 "It is <b>strongly recommended</b> to upgrade to <b>MyPaint {new_version}</b> "
 "or newer if you want to edit this file!"
 msgstr ""
+"El fitxer «{filename}» es va desar amb el <b>MyPaint {new_version}</b>. Pot "
+"ser <b>incompatible</b> amb el <b>MyPaint {current_version}</b>.\n"
+"\n"
+"No es garanteix que l'edició d'aquest fitxer amb aquesta versió del MyPaint "
+"funcioni, i fins i tot podria provocar pèrdues.\n"
+"\n"
+"És <b>molt recomanable</b> que actualitzeu al <b>MyPaint {new_version}</b> o "
+"posterior si voleu editar aquest fitxer!"
 
 #: ../gui/compatibility.py:60
 #, python-brace-format
@@ -1243,16 +1251,24 @@ msgid ""
 "\n"
 "To be safe you should upgrade to MyPaint {new_version} or newer."
 msgstr ""
+"El fitxer «{filename}» es va desar amb el <b>MyPaint {new_version}</b>. Pot "
+"ser completament incompatible amb el <b>MyPaint {current_version}</b>.\n"
+"\n"
+"Si el deseu amb aquesta versió de MyPaint, és possible que es perdin les "
+"dades que només admet la versió més nova.\n"
+"\n"
+"Per a estar segur, hauríeu d'actualitzar al MyPaint {new_version} o "
+"posterior."
 
 #: ../gui/compatibility.py:71
 msgctxt "file compatibility question"
 msgid "Do you want to open this file anyway?"
-msgstr ""
+msgstr "Voleu obrir aquest fitxer igualment?"
 
 #: ../gui/compatibility.py:135
 msgctxt "Version compat warning toggle"
 msgid "Don't show this warning again"
-msgstr ""
+msgstr "No mostris més aquest missatge"
 
 #. TRANSLATORS: One of the options for the
 #. TRANSLATORS: "When Not Specified in File"
@@ -1260,7 +1276,7 @@ msgstr ""
 #: ../gui/compatibility.py:211
 msgctxt "Prefs Dialog|Compatibility"
 msgid "Always open in 1.x mode"
-msgstr ""
+msgstr "Obre sempre en el mode 1.x"
 
 #. TRANSLATORS: One of the options for the
 #. TRANSLATORS: "When Not Specified in File"
@@ -1268,7 +1284,7 @@ msgstr ""
 #: ../gui/compatibility.py:220
 msgctxt "Prefs Dialog|Compatibility"
 msgid "Always open in 2.x mode"
-msgstr ""
+msgstr "Obre sempre en el mode 2.x"
 
 #. TRANSLATORS: One of the options for the
 #. TRANSLATORS: "When Not Specified in File"
@@ -1276,14 +1292,14 @@ msgstr ""
 #: ../gui/compatibility.py:229
 msgctxt "Prefs Dialog|Compatibility"
 msgid "Open in 1.x mode unless file contains pigment layers"
-msgstr ""
+msgstr "Obre en el mode 1.x, llevat que el fitxer contingui capes de pigments"
 
 #. TRANSLATORS: This is a label for a dropdown menu in the
 #. TRANSLATORS: file chooser dialog when loading .ora files.
 #: ../gui/compatibility.py:532
 msgctxt "File Load Compat Options"
 msgid "Compatibility mode:"
-msgstr ""
+msgstr "Mode comptabilitat:"
 
 #: ../gui/device.py:48
 msgctxt "prefs: device's type label"
@@ -4854,32 +4870,28 @@ msgstr "Color"
 #: ../po/tmp/preferenceswindow.glade.h:106
 msgctxt "Prefs Dialog|Compatibility"
 msgid "Default Compatibility Mode:"
-msgstr ""
+msgstr "Mode compatibilitat predeterminat:"
 
 #: ../po/tmp/preferenceswindow.glade.h:107
-#, fuzzy
 msgctxt "Prefs Dialog|Compatibility"
 msgid "<b>1.x Settings</b>"
-msgstr "<b>Desat</b>"
+msgstr "<b>Configuració 1.x</b>"
 
 #. Make sure to be consistent w. other occurences of 2.x
 #: ../po/tmp/preferenceswindow.glade.h:109
-#, fuzzy
 msgctxt "Prefs Dialog|Compatibility"
 msgid "<b>2.x Settings</b>"
-msgstr "<b>Desat</b>"
+msgstr "<b>Configuració 2.x</b>"
 
 #: ../po/tmp/preferenceswindow.glade.h:110
-#, fuzzy
 msgctxt "Prefs Dialog|Compatibility"
 msgid "Default New Layer Type:"
-msgstr "Suprimeix capa"
+msgstr "Tipus predeterminat de capa nova:"
 
 #: ../po/tmp/preferenceswindow.glade.h:111
-#, fuzzy
 msgctxt "Prefs Dialog|Compatibility"
 msgid "Default Pigment Brush Setting:"
-msgstr "Edita la configuració del pinzell"
+msgstr "Configuració predeterminada del pigment del pinzell:"
 
 #. Label description for the 1.x compatibility-mode-by-default setting
 #: ../po/tmp/preferenceswindow.glade.h:115
@@ -4889,6 +4901,9 @@ msgid ""
 "default. In this mode 1.x .ora files will look the same as they did in older "
 "versions, but pigment blending will not work well."
 msgstr ""
+"En crear documents nous, utilitza el mode de compatibilitat 1.x de manera "
+"predeterminada. En aquest mode, els fitxers .ora es mostraran igual que en "
+"versions anteriors, però la mescla de pigments no funcionarà bé."
 
 #: ../po/tmp/preferenceswindow.glade.h:118
 msgctxt "Prefs Dialog|Compatibility"
@@ -4896,22 +4911,26 @@ msgid ""
 "When creating new documents, use the regular 2.x compatibility mode by "
 "default. Old documents will often look different in this mode."
 msgstr ""
+"En crear documents nous, usa el mode de compatibilitat 2.x habitual de forma "
+"predeterminada. Sovint, els documents antics es mostraran diferent en aquest "
+"mode."
 
 #: ../po/tmp/preferenceswindow.glade.h:119
 msgctxt "Prefs Dialog|Compatibility"
 msgid "Show warning for files that may be partially incompatible"
-msgstr ""
+msgstr "Mostra un avís per als fitxers que potser són parcialment incompatibles"
 
 #. Label for a set of options
 #: ../po/tmp/preferenceswindow.glade.h:121
 msgctxt "Prefs Dialog|Compatibility"
 msgid "File compatibility warnings:"
-msgstr ""
+msgstr "Avisos de compatibilitat del fitxer:"
 
 #: ../po/tmp/preferenceswindow.glade.h:122
 msgctxt "Prefs Dialog|Compatibility"
 msgid "Show warning for files that may be fully incompatible"
 msgstr ""
+"Mostra els avisos per als fitxers que potser són completament incompatibles"
 
 #. This is a tooltip for the file behavior options label.
 #: ../po/tmp/preferenceswindow.glade.h:124
@@ -4921,30 +4940,31 @@ msgid ""
 "When you save an OpenRaster file with MyPaint 2.0 or newer the active "
 "compatibility mode will be written to the file."
 msgstr ""
+"Això només s'aplicarà als fitxers desats amb versions del MyPaint posteriors "
+"a la 2.0. En desar un fitxer OpenRaster amb el MyPaint 2.0 o posterior el "
+"mode de compatibilitat actiu s'escriurà en el fitxer."
 
 #. Label to the options for how to handle files which do not have a compatibility mode specified (whether they should be opened in 1.x compatibility mode, or 2.x mode)
 #: ../po/tmp/preferenceswindow.glade.h:126
 msgctxt "Prefs Dialog|Compatibility"
 msgid "When Mode is Unspecified:"
-msgstr ""
+msgstr "Si no s'especifica el mode:"
 
 #. This label indicates a subsection of the compatibility settings related to loading files.
 #: ../po/tmp/preferenceswindow.glade.h:128
-#, fuzzy
 msgctxt "Prefs|Compatibility"
 msgid "<b>File loading</b>"
-msgstr "<b>Desat</b>"
+msgstr "<b>Càrrega de fitxers</b>"
 
 #: ../po/tmp/preferenceswindow.glade.h:129
 msgid "<b>Compatibility settings</b>"
-msgstr ""
+msgstr "<b>Paràmetres de compatibilitat</b>"
 
 #. Tab label in preferences dialog
 #: ../po/tmp/preferenceswindow.glade.h:131
-#, fuzzy
 msgctxt "Prefs Dialog|"
 msgid "Compatibility"
-msgstr "Portabilitat"
+msgstr "Compatibilitat"
 
 #: ../po/tmp/preferenceswindow.glade.h:132
 msgctxt "Prefs Dialog|Pen Input|Mode|"
