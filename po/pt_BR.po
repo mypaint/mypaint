@@ -8,8 +8,8 @@ msgstr ""
 "Project-Id-Version: mypaint v2.0.0-alpha.12-33-gd8e7364\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2019-12-20 19:50+0100\n"
-"PO-Revision-Date: 2019-08-01 05:10+0000\n"
-"Last-Translator: Neymar Junior <wizureye@nextmail.in>\n"
+"PO-Revision-Date: 2020-01-28 21:50+0000\n"
+"Last-Translator: NyanNyan <tedarkbere@gmail.com>\n"
 "Language-Team: Portuguese (Brazil) <https://hosted.weblate.org/projects/"
 "mypaint/mypaint/pt_BR/>\n"
 "Language: pt_BR\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n > 1;\n"
-"X-Generator: Weblate 3.8-dev\n"
+"X-Generator: Weblate 3.11-dev\n"
 "X-Poedit-Country: BRAZIL\n"
 "X-Poedit-Language: Brazilian Portuguese\n"
 "X-Poedit-SourceCharset: utf-8\n"
@@ -216,7 +216,7 @@ msgstr "Velocidade"
 #: ../gui/brusheditor.py:358
 msgctxt "brush settings list: setting group"
 msgid "Directional Offsets"
-msgstr ""
+msgstr "Deslocamentos Direcionais"
 
 #: ../gui/brusheditor.py:376
 msgctxt "brush settings list: setting group"
@@ -430,7 +430,7 @@ msgstr "Novo"
 #, python-brace-format
 msgctxt "brushpack import failure messages"
 msgid "No file named “{order_conf_file}”. This is not a brushpack."
-msgstr ""
+msgstr "Nenhum arquivo chamado “{order_conf_file}”. Isso não é um brushpack."
 
 #: ../gui/brushmanager.py:689
 #, python-brace-format
@@ -439,6 +439,8 @@ msgid ""
 "Brush “{brush_name}” is listed in “{order_conf_file}”, but it does not exist "
 "in the zipfile."
 msgstr ""
+"O pincel “{brush_name}” está listado em “{order_conf_file}”, mas não existe "
+"no arquivo .zip."
 
 #: ../gui/brushmanager.py:702
 #, python-brace-format
@@ -447,6 +449,8 @@ msgid ""
 "Brush “{brush_name}” exists in the zipfile, but it is not listed in "
 "“{order_conf_file}”."
 msgstr ""
+"O pincel “{brush_name}” existe no aquivo .zip, mas não está listado em "
+"“{order_conf_file}”."
 
 #: ../gui/brushmanager.py:1313 ../gui/footer.py:62
 msgid "Unknown Brush"
@@ -477,10 +481,9 @@ msgid "Edit Brush Settings"
 msgstr "Editar as Configurações do Pincel"
 
 #: ../gui/brushselectionwindow.py:250
-#, fuzzy
 msgctxt "brush group: context menu for a single brush"
 msgid "Remove from Group"
-msgstr "Renomear Grupo"
+msgstr "Remover do Grupo"
 
 #: ../gui/brushselectionwindow.py:290
 #, python-brace-format
@@ -495,10 +498,10 @@ msgid "{original_name} copy {n}"
 msgstr ""
 
 #: ../gui/brushselectionwindow.py:325
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgctxt "brush group: context menu: remove from group"
 msgid "Really remove brush “{brush_name}” from group “{group_name}”?"
-msgstr "Realmente excluir o pincel “{brush_name}” do disco?"
+msgstr "Realmente excluir o pincel “{brush_name}” do grupo “{group_name}”?"
 
 #. TRANSLATORS: number of brushes in a brush group, for tooltips
 #: ../gui/brushselectionwindow.py:381
@@ -656,8 +659,9 @@ msgid "Set the color used for painting"
 msgstr "Selecionar a cor usada para pintura"
 
 #: ../gui/colorpicker.py:270
+#, fuzzy
 msgid "Pick Hue"
-msgstr ""
+msgstr "Selecionar Saturação"
 
 #: ../gui/colorpicker.py:273
 #, fuzzy
@@ -667,16 +671,16 @@ msgstr "Selecionar a cor usada para pintura"
 #: ../gui/colorpicker.py:293
 #, fuzzy
 msgid "Pick Chroma"
-msgstr "Pegar Cor"
+msgstr "Selecionar Cor"
 
 #: ../gui/colorpicker.py:296
-#, fuzzy
 msgid "Set the color Chroma used for painting"
 msgstr "Selecionar a cor usada para pintura"
 
 #: ../gui/colorpicker.py:316
+#, fuzzy
 msgid "Pick Luma"
-msgstr ""
+msgstr "Selecionar Brilho"
 
 #: ../gui/colorpicker.py:319
 #, fuzzy
@@ -1201,25 +1205,25 @@ msgstr "Mude a cor HSV usando uma paleta radial atravessada pela cor."
 #: ../gui/compatibility.py:40
 msgctxt "File Load Compat Options"
 msgid "Based on file"
-msgstr ""
+msgstr "Baseado no arquivo"
 
 #. This refers to a version of MyPaint like 1.0, 1.1, 1.2 etc
 #: ../gui/compatibility.py:41 ../gui/drawwindow.py:276
 #: ../po/tmp/preferenceswindow.glade.h:113
 msgctxt "Prefs Dialog|Compatibility"
 msgid "1.x"
-msgstr ""
+msgstr "Referente uma versão do MyPaint como 1.0, 1.1, 1.2 etc."
 
 #. This refers to a version of MyPaint like 1.0, 1.1, 1.2 etc
 #: ../gui/compatibility.py:42 ../po/tmp/preferenceswindow.glade.h:117
 msgctxt "Prefs Dialog|Compatibility"
 msgid "2.x"
-msgstr ""
+msgstr "Referente a uma versão do MyPaint como 1.0, 1.1, 1.2 etc."
 
 #. TRANSLATORS: This is probably a rare warning, and it will not
 #. TRANSLATORS: really be shown at all before the release of 3.0
 #: ../gui/compatibility.py:50
-#, python-brace-format
+#, fuzzy, python-brace-format
 msgctxt "file compatibility warning"
 msgid ""
 "“{filename}” was saved with <b>MyPaint {new_version}</b>. It may be "
@@ -1231,9 +1235,19 @@ msgid ""
 "It is <b>strongly recommended</b> to upgrade to <b>MyPaint {new_version}</b> "
 "or newer if you want to edit this file!"
 msgstr ""
+"“{filename}” foi salvo com a versão <b>{new_version}</b> do <b>MyPaint</b>. "
+"Pode ser <b>incompatível</b> com a versão <b>{current_version}</b> do <b>"
+"MyPaint </b>. \n"
+"\n"
+"\n"
+"Não há garantias de que esse arquivo funcionará nesta versão e ainda pode "
+"resultar em problemas. \n"
+"\n"
+"É <b>extremamente recomendado</b> atualizar o <b>MyPaint</b> para a versão "
+"<b>{new_version}</b> ou maior se quiser editar este arquivo."
 
 #: ../gui/compatibility.py:60
-#, python-brace-format
+#, fuzzy, python-brace-format
 msgctxt "file compatibility warning"
 msgid ""
 "“{filename}” was saved with <b>MyPaint {new_version}</b>. It may not be "
@@ -1244,16 +1258,24 @@ msgid ""
 "\n"
 "To be safe you should upgrade to MyPaint {new_version} or newer."
 msgstr ""
+"“{filename}” foi salvo com a versão <b>{new_version}</b> do <b>MyPaint</b>. "
+"E talvez não completamente compatível com a versão <b>{current_version}</b>."
+"\n"
+"\n"
+"Salvar com está versão pode fazer dados que só são suportados em novas "
+"versões serem perdidas.\n"
+"\n"
+"É mais seguro atualizar o  MyPaint para a versão {new_version} ou maior."
 
 #: ../gui/compatibility.py:71
 msgctxt "file compatibility question"
 msgid "Do you want to open this file anyway?"
-msgstr ""
+msgstr "Gostaria de abrir este arquivo assim mesmo?"
 
 #: ../gui/compatibility.py:135
 msgctxt "Version compat warning toggle"
 msgid "Don't show this warning again"
-msgstr ""
+msgstr "Não mostrar esse aviso de novo"
 
 #. TRANSLATORS: One of the options for the
 #. TRANSLATORS: "When Not Specified in File"
@@ -1261,7 +1283,7 @@ msgstr ""
 #: ../gui/compatibility.py:211
 msgctxt "Prefs Dialog|Compatibility"
 msgid "Always open in 1.x mode"
-msgstr ""
+msgstr "Sempre abrir no modo 1.x"
 
 #. TRANSLATORS: One of the options for the
 #. TRANSLATORS: "When Not Specified in File"
@@ -1269,7 +1291,7 @@ msgstr ""
 #: ../gui/compatibility.py:220
 msgctxt "Prefs Dialog|Compatibility"
 msgid "Always open in 2.x mode"
-msgstr ""
+msgstr "Sempre abrir no modo 2.x"
 
 #. TRANSLATORS: One of the options for the
 #. TRANSLATORS: "When Not Specified in File"
@@ -1277,14 +1299,14 @@ msgstr ""
 #: ../gui/compatibility.py:229
 msgctxt "Prefs Dialog|Compatibility"
 msgid "Open in 1.x mode unless file contains pigment layers"
-msgstr ""
+msgstr "Abrir no modo 1.x a menos que o arquivo contenha camadas de pigmento"
 
 #. TRANSLATORS: This is a label for a dropdown menu in the
 #. TRANSLATORS: file chooser dialog when loading .ora files.
 #: ../gui/compatibility.py:532
 msgctxt "File Load Compat Options"
 msgid "Compatibility mode:"
-msgstr ""
+msgstr "Modo de Compatibilidade:"
 
 #: ../gui/device.py:48
 msgctxt "prefs: device's type label"
@@ -1518,40 +1540,40 @@ msgstr "Com {modifiers} pressionados:  {button_actions}."
 #: ../gui/document.py:900
 msgctxt "Statusbar message: copy result"
 msgid "Empty document, nothing copied."
-msgstr ""
+msgstr "Documento vazio, nada copiado."
 
 #: ../gui/document.py:912
 #, python-brace-format
 msgctxt "Statusbar message: copy result"
 msgid "Copied layer as {w}×{h} image."
-msgstr ""
+msgstr "Camada copiada como imagem {w}x{h}."
 
 #: ../gui/document.py:929
 msgctxt "Statusbar message: paste result"
 msgid "Nothing on clipboard."
-msgstr ""
+msgstr "Nada na Área de Transferência."
 
 #: ../gui/document.py:938
 msgctxt "Statusbar message: paste result"
 msgid "Clipboard does not contain an image."
-msgstr ""
+msgstr "A Área de Transferência não possui uma imagem."
 
 #: ../gui/document.py:949
 msgctxt "Statusbar message: paste result"
 msgid "Cannot paste into this type of layer."
-msgstr ""
+msgstr "Não pode colar nesse tipo de camada."
 
 #: ../gui/document.py:954
 #, python-brace-format
 msgctxt "Statusbar message: paste result"
 msgid "Pasted {w}×{h} image."
-msgstr ""
+msgstr "Imagem {w}×{h} colada."
 
 #: ../gui/document.py:2040
 #, python-brace-format
 msgctxt "Statusbar message: vacuum document"
 msgid "Vacuum: discarded {removed} of {total} tiles."
-msgstr ""
+msgstr "Vacuum: Descartado(s) {removed} do total de {total} tile(s)."
 
 #. TRANSLATORS: window title for use with a filename
 #: ../gui/drawwindow.py:270
@@ -1567,10 +1589,9 @@ msgstr "MyPaint"
 #: ../gui/drawwindow.py:296
 msgctxt "Open dragged file confirm dialog: title"
 msgid "Open Dragged File?"
-msgstr ""
+msgstr "Abrir o arquivo arrastado?"
 
 #: ../gui/drawwindow.py:300
-#, fuzzy
 msgctxt "Open dragged file confirm dialog: continue button"
 msgid "_Open"
 msgstr "Abrir"
@@ -1650,7 +1671,7 @@ msgstr "Camada “{layer_name}” atualizada com edições externas"
 #, python-brace-format
 msgctxt "Edit in External App (statusbar message)"
 msgid "Failed to update layer with external edits from “{file_basename}”."
-msgstr ""
+msgstr "Erro ao atualizar camada com edições externas de \"{file_basename}\"."
 
 #: ../gui/externalapp.py:66
 #, python-brace-format
@@ -1692,7 +1713,7 @@ msgstr "Carregando “{file_basename}”…"
 #, python-brace-format
 msgctxt "Document I/O: message shown while working"
 msgid "Importing layers from {files_summary}…"
-msgstr ""
+msgstr "Importando camadas de {files_summary}…"
 
 #: ../gui/filehandling.py:135
 #, fuzzy, python-brace-format
@@ -1722,7 +1743,7 @@ msgstr "Falha ao salvar “{file_basename}”."
 #, python-brace-format
 msgctxt "Document I/O: fail message"
 msgid "Could not import layers from {files_summary}."
-msgstr ""
+msgstr "Não foi possível importar camadas de {files_summary}."
 
 #: ../gui/filehandling.py:158
 #, fuzzy, python-brace-format
@@ -1731,28 +1752,24 @@ msgid "Could not load {files_summary}."
 msgstr "Não foi possível carregar “{file_basename}”."
 
 #: ../gui/filehandling.py:165
-#, fuzzy
 msgctxt "Document I/O: fail dialog title"
 msgid "Save failed"
-msgstr "Salvar paleta"
+msgstr "Não foi possível salvar"
 
 #: ../gui/filehandling.py:169
-#, fuzzy
 msgctxt "Document I/O: fail dialog title"
 msgid "Export failed"
-msgstr "Exportar para um arquivo"
+msgstr "Não foi possível exportar"
 
 #: ../gui/filehandling.py:173
-#, fuzzy
 msgctxt "Document I/O: fail dialog title"
 msgid "Import Layers failed"
-msgstr "Exportar para um arquivo"
+msgstr "Não foi possível importar camadas"
 
 #: ../gui/filehandling.py:177
-#, fuzzy
 msgctxt "Document I/O: fail dialog title"
 msgid "Open failed"
-msgstr "Abrir Arquivos Recentes"
+msgstr "Não foi possível abrir"
 
 #: ../gui/filehandling.py:184
 #, fuzzy, python-brace-format
@@ -1770,7 +1787,7 @@ msgstr "“{file_basename}” salvo com sucesso."
 #, python-brace-format
 msgctxt "Document I/O: success"
 msgid "Imported layers from {files_summary}."
-msgstr ""
+msgstr "Camadas importadas de {files_summary}."
 
 #: ../gui/filehandling.py:196
 #, fuzzy, python-brace-format
@@ -1784,8 +1801,8 @@ msgstr "“{file_basename}” carregado."
 #, python-brace-format
 msgid "{n} file"
 msgid_plural "{n} files"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "{n} arquivo"
+msgstr[1] "{n} arquivos"
 
 #: ../gui/filehandling.py:223
 #, fuzzy, python-brace-format
@@ -1893,7 +1910,7 @@ msgstr "Realmente continuar?"
 #: ../gui/filehandling.py:706
 msgctxt "Destructive action confirm dialog: cancel button"
 msgid "_Cancel"
-msgstr ""
+msgstr "Cancelar"
 
 #: ../gui/filehandling.py:710
 #, fuzzy
@@ -1906,7 +1923,7 @@ msgctxt ""
 "Destructive action confirm dialog: fallback continue button (normally "
 "overridden)"
 msgid "Co_ntinue"
-msgstr ""
+msgstr "Co_tinuar"
 
 #: ../gui/filehandling.py:739
 #, fuzzy, python-brace-format
@@ -1917,7 +1934,7 @@ msgstr "Isto irá descartar {abbreviated_time} de pintura não salva"
 #: ../gui/filehandling.py:804
 msgctxt "File→New: confirm dialog: title question"
 msgid "New Canvas?"
-msgstr ""
+msgstr "Nova Tela?"
 
 #: ../gui/filehandling.py:808
 msgctxt "File→New: confirm dialog: continue button"
