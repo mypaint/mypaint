@@ -2655,14 +2655,13 @@ msgid "Draw ellipses; Shift rotates, Ctrl constrains ratio/angle"
 msgstr ""
 
 #: ../gui/meta.py:39
-#, fuzzy
 msgctxt "About dialog: copyright statement"
 msgid ""
-"Copyright (C) 2005-2017\n"
+"Copyright (C) 2005-2020\n"
 "Martin Renold and the MyPaint Development Team"
 msgstr ""
 "© Martin Renold і Команда розробників MyPaint,\n"
-"2005–2015"
+"2005–2020"
 
 #: ../gui/meta.py:45
 msgctxt "About dialog: license summary"

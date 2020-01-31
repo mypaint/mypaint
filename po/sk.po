@@ -2698,13 +2698,12 @@ msgstr ""
 "uhol"
 
 #: ../gui/meta.py:39
-#, fuzzy
 msgctxt "About dialog: copyright statement"
 msgid ""
-"Copyright (C) 2005-2017\n"
+"Copyright (C) 2005-2020\n"
 "Martin Renold and the MyPaint Development Team"
 msgstr ""
-"Autorské práva (C) 2005-2015\n"
+"Autorské práva (C) 2005-2020\n"
 "Martin Renold a tím vývojárov aplikácie MyPaint"
 
 #: ../gui/meta.py:45

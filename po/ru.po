@@ -2724,10 +2724,10 @@ msgstr ""
 #: ../gui/meta.py:39
 msgctxt "About dialog: copyright statement"
 msgid ""
-"Copyright (C) 2005-2017\n"
+"Copyright (C) 2005-2020\n"
 "Martin Renold and the MyPaint Development Team"
 msgstr ""
-"Авторские права © 2005-2017\n"
+"Авторские права © 2005-2020\n"
 "Мартин Ренольд и команда разработчиков MyPaint"
 
 #: ../gui/meta.py:45

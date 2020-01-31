@@ -36,7 +36,7 @@ from lib.xml import escape
 
 COPYRIGHT_STRING = C_(
     "About dialog: copyright statement",
-    u"Copyright (C) 2005-2017\n"
+    u"Copyright (C) 2005-2020\n"
     u"Martin Renold and the MyPaint Development Team"
 )
 WEBSITE_URI = "http://mypaint.org"

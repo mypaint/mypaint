@@ -2707,10 +2707,10 @@ msgstr "Elips çiz; Shift döndürür, Ctrl en boy oranı/açıyı kısıtlar"
 #: ../gui/meta.py:39
 msgctxt "About dialog: copyright statement"
 msgid ""
-"Copyright (C) 2005-2017\n"
+"Copyright (C) 2005-2020\n"
 "Martin Renold and the MyPaint Development Team"
 msgstr ""
-"Copyright (C) 2005-2019\n"
+"Copyright (C) 2005-2020\n"
 "Martin Renold ve MyPaint Geliştirme Ekibi"
 
 #: ../gui/meta.py:45

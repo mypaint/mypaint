@@ -2757,13 +2757,12 @@ msgstr ""
 "Disegna ellissi; il Tasto Shift ruota, il tasto Ctrl limita rapporto/angolo"
 
 #: ../gui/meta.py:39
-#, fuzzy
 msgctxt "About dialog: copyright statement"
 msgid ""
-"Copyright (C) 2005-2017\n"
+"Copyright (C) 2005-2020\n"
 "Martin Renold and the MyPaint Development Team"
 msgstr ""
-"Copyright (C) 2005-2015\n"
+"Copyright (C) 2005-2020\n"
 "Martin Renold e il Team di Sviluppo MyPaint"
 
 #: ../gui/meta.py:45

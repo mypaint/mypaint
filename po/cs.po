@@ -2709,10 +2709,10 @@ msgstr "Kreslete elipsy, klávesa Shift otočí, Ctrl omezí poměr/ úhel"
 #: ../gui/meta.py:39
 msgctxt "About dialog: copyright statement"
 msgid ""
-"Copyright (C) 2005-2017\n"
+"Copyright (C) 2005-2020\n"
 "Martin Renold and the MyPaint Development Team"
 msgstr ""
-"Kopírovací právo (C) 2005-2017\n"
+"Kopírovací právo (C) 2005-2020\n"
 "Martin Renold a vývojářský tým Mypaint"
 
 #: ../gui/meta.py:45

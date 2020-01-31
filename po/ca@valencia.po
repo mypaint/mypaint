@@ -2697,10 +2697,10 @@ msgstr "Dibuixa el·lipses; Maj gira, Ctrl disminueix la ràtio/l'angle"
 #: ../gui/meta.py:39
 msgctxt "About dialog: copyright statement"
 msgid ""
-"Copyright (C) 2005-2017\n"
+"Copyright (C) 2005-2020\n"
 "Martin Renold and the MyPaint Development Team"
 msgstr ""
-"Copyright (C) 2005-2017\n"
+"Copyright (C) 2005-2020\n"
 "Martin Renold i l'equip de desenvolupament del MyPaint"
 
 #: ../gui/meta.py:45

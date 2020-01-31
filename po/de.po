@@ -2756,13 +2756,12 @@ msgstr ""
 "Ellipsen zeichnen; Umschalttaste dreht, Strg bestimmt Verhältnis/Winkel"
 
 #: ../gui/meta.py:39
-#, fuzzy
 msgctxt "About dialog: copyright statement"
 msgid ""
-"Copyright (C) 2005-2017\n"
+"Copyright (C) 2005-2020\n"
 "Martin Renold and the MyPaint Development Team"
 msgstr ""
-"Copyright (C) 2005–2015\n"
+"Copyright (C) 2005–2020\n"
 "Martin Renold und das MyPaint-Entwicklungsteam"
 
 #: ../gui/meta.py:45
