@@ -171,6 +171,10 @@ _AUTHOR_CREDITS = [
     u"Elliott Sales de Andrade (%s)" % _TASK_PORTING,
     u"Alberto Leiva Popper (%s)" % _TASK_PROGRAMMING,
     u"Alinson Xavier (%s)" % _TASK_PROGRAMMING,
+    u"Jesper Lloyd (%s)" % _TASK_COMMA.join([
+        _TASK_PROGRAMMING,
+        _TASK_PROJECT_MANAGEMENT,
+    ]),
 ]
 _ARTIST_CREDITS = [
     u"Artis Rozentāls (%s)" % _TASK_BRUSHES,
@@ -202,6 +206,8 @@ _ARTIST_CREDITS = [
     ]),
     u"ShadowKyogre (%s)" % _TASK_TOOL_ICONS,
     u"Albert Westra (%s)" % _TASK_TOOL_ICONS,
+    u"Brien Dieterle (%s)" % _TASK_BRUSHES,
+    u"Jesper Lloyd (%s)" % _TASK_APP_ICON,
 ]
 _TRANSLATOR_CREDITS = C_(
     "About dialog: credits: translator credits (your name(s) here!)",
