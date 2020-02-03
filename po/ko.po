@@ -5,7 +5,7 @@ msgstr ""
 "Project-Id-Version: mypaint v2.0.0-alpha.12-327-ga332f03\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2019-12-20 19:50+0100\n"
-"PO-Revision-Date: 2019-12-31 09:48+0000\n"
+"PO-Revision-Date: 2020-02-06 19:50+0000\n"
 "Last-Translator: geun-tak Jeong <beroberos@gmail.com>\n"
 "Language-Team: Korean <https://hosted.weblate.org/projects/mypaint/mypaint/"
 "ko/>\n"
@@ -14,7 +14,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 3.10\n"
+"X-Generator: Weblate 3.11-dev\n"
 "X-Poedit-SourceCharset: utf-8\n"
 
 #. TRANSLATORS: Name of first column in the button map preferences.
@@ -4395,8 +4395,8 @@ msgid ""
 "• The space bar can be used like Button2.\n"
 "• Some tablet pads' buttons cannot be held down when pressed."
 msgstr ""
-"• 스페이스 바는 Button2처럼 사용할 수 있습니다.\n"
-"• 일부 태블릿 패드의 버튼을 누르면 누를 수 없습니다."
+"스페이바를 button2 처럼 사용할 수 있습니다.\n"
+"눌렀을경우 몇몇 종의 타블랫 패드의 버튼이 작동이 되지 않을 수 있습니다"
 
 #: ../po/tmp/preferenceswindow.glade.h:33
 msgctxt "Prefs Dialog|Button|"
@@ -4943,7 +4943,7 @@ msgstr "되돌리기"
 #: ../po/tmp/resources.xml.h:11
 msgctxt "Accel Editor (descriptions)"
 msgid "Reload the file your current work was loaded from."
-msgstr "현재 작업이 불러와진 파일을 다시 불러옵니다."
+msgstr "현재 작업으로 불러온 파일을 다시 불러옵니다."
 
 #: ../po/tmp/resources.xml.h:12
 msgctxt "Menu→File (labels), Accel Editor (labels)"
@@ -4982,8 +4982,7 @@ msgstr "내보내기…"
 
 #: ../po/tmp/resources.xml.h:19
 msgid "Export your work to a file, but keep working on the same file."
-msgstr ""
-"작업을 파일로 내보내지만 사용자는 동일한 파일에서 계속 작업을 진행합니다."
+msgstr "작업을 파일로 내보내고 사용자는 동일한 파일에서 계속 작업을 진행합니다."
 
 #: ../po/tmp/resources.xml.h:20
 msgctxt "Menu→File (labels), Accel Editor (labels)"
