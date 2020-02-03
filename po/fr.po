@@ -9,8 +9,8 @@ msgstr ""
 "Project-Id-Version: mypaint v2.0.0-alpha.8-1-g4490f06\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2019-12-20 19:50+0100\n"
-"PO-Revision-Date: 2019-11-12 16:04+0000\n"
-"Last-Translator: Alain <adoring@club.fr>\n"
+"PO-Revision-Date: 2020-02-06 19:50+0000\n"
+"Last-Translator: Isabelle Lepage <noisette@netc.eu>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/mypaint/mypaint/"
 "fr/>\n"
 "Language: fr\n"
@@ -18,7 +18,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n > 1;\n"
-"X-Generator: Weblate 3.10-dev\n"
+"X-Generator: Weblate 3.11-dev\n"
 
 #. TRANSLATORS: Name of first column in the button map preferences.
 #. TRANSLATORS: Refers to an action bound to a mod+button combination.
@@ -1256,12 +1256,12 @@ msgstr ""
 #: ../gui/compatibility.py:71
 msgctxt "file compatibility question"
 msgid "Do you want to open this file anyway?"
-msgstr ""
+msgstr "Voulez-vous quand même ouvrir ce fichier ?"
 
 #: ../gui/compatibility.py:135
 msgctxt "Version compat warning toggle"
 msgid "Don't show this warning again"
-msgstr ""
+msgstr "Ne plus afficher cet avertissement"
 
 #. TRANSLATORS: One of the options for the
 #. TRANSLATORS: "When Not Specified in File"
@@ -1292,7 +1292,7 @@ msgstr ""
 #: ../gui/compatibility.py:532
 msgctxt "File Load Compat Options"
 msgid "Compatibility mode:"
-msgstr ""
+msgstr "Mode de compatibilité :"
 
 #: ../gui/device.py:48
 msgctxt "prefs: device's type label"
@@ -1840,10 +1840,9 @@ msgid "PNG, respecting “Show Background” (*.png)"
 msgstr "PNG avec fond non transparent (*.png)"
 
 #: ../gui/filehandling.py:507
-#, fuzzy
 msgctxt "save dialogs: save formats and options"
 msgid "PNG, solid RGB (*.png)"
-msgstr "PNG (*.png)"
+msgstr "PNG non transparent (*.png)"
 
 #: ../gui/filehandling.py:511
 #, fuzzy
@@ -1926,7 +1925,7 @@ msgstr "Nouvelle toile"
 #: ../gui/filehandling.py:1024
 msgctxt "File→Open: confirm dialog: title question"
 msgid "Open File?"
-msgstr ""
+msgstr "Ouvrir le fichier ?"
 
 #: ../gui/filehandling.py:1028
 #, fuzzy
@@ -1947,15 +1946,14 @@ msgid "Open Scratchpad…"
 msgstr "Ouvrir un carnet de croquis…"
 
 #: ../gui/filehandling.py:1126
-#, fuzzy
 msgctxt "Layers→Import Layers: files-chooser dialog: title"
 msgid "Import Layers"
-msgstr "Brosse importée"
+msgstr "Importer des calques"
 
 #: ../gui/filehandling.py:1433
 msgctxt "File→Open Recent→* confirm dialog: title"
 msgid "Open File?"
-msgstr ""
+msgstr "Ouvrir le fichier ?"
 
 #: ../gui/filehandling.py:1437
 #, fuzzy
@@ -2007,7 +2005,7 @@ msgstr ""
 #: ../gui/filehandling.py:1519
 msgctxt "File→Revert confirm dialog: title"
 msgid "Revert Changes?"
-msgstr ""
+msgstr "Annuler les changements ?"
 
 #: ../gui/filehandling.py:1524
 #, fuzzy
@@ -2144,7 +2142,7 @@ msgstr "Opacité :"
 #: ../gui/fill.py:705
 msgctxt "fill options: Opacity slider (tooltip)"
 msgid "Opacity of the fill"
-msgstr ""
+msgstr "Opacité du remplissage"
 
 #: ../gui/fill.py:728
 msgctxt "fill options: numeric option - grow/shrink fill (label)"
@@ -2490,23 +2488,22 @@ msgstr "Déplacer le calque courant"
 #: ../gui/layerprops.py:356
 msgctxt "layer properties dialog: name entry: icon tooltip"
 msgid "Layer names cannot be empty."
-msgstr ""
+msgstr "Le nom des calques ne peut pas être vide."
 
 #: ../gui/layerprops.py:361
 msgctxt "layer properties dialog: name entry: icon tooltip"
 msgid "Layer name is not unique."
-msgstr ""
+msgstr "Le nom du calque n’est pas unique."
 
 #: ../gui/layerprops.py:377
-#, fuzzy
 msgctxt "layer properties dialog: title"
 msgid "Layer Properties"
-msgstr "Propriétés de la palette"
+msgstr "Propriétés du calque"
 
 #: ../gui/layerprops.py:381
 msgctxt "layer properties dialog: done button"
 msgid "Done"
-msgstr ""
+msgstr "Fait"
 
 #. Visibility flag column
 #: ../gui/layers.py:394
@@ -2892,7 +2889,7 @@ msgstr "Aperçu"
 
 #: ../gui/previewwindow.py:204
 msgid "Show preview of the whole drawing area"
-msgstr ""
+msgstr "Afficher l’aperçu de toute la zone de dessin"
 
 #. TRANSLATORS: The preview panel shows where the "camera" of the
 #. TRANSLATORS: main view is pointing.
@@ -3045,7 +3042,7 @@ msgstr "Défilement de la vue"
 
 #: ../gui/viewmanip.py:43
 msgid "Drag the canvas view"
-msgstr ""
+msgstr "Déplacer la vue"
 
 #: ../gui/viewmanip.py:78
 msgid "Zoom View"
@@ -3053,7 +3050,7 @@ msgstr "Agrandir la vue"
 
 #: ../gui/viewmanip.py:81
 msgid "Zoom the canvas view"
-msgstr ""
+msgstr "Agrandir la vue"
 
 #: ../gui/viewmanip.py:120
 msgid "Rotate View"
@@ -3243,7 +3240,7 @@ msgstr ""
 #: ../lib/document.py:204
 msgctxt "Document autosave descriptions: the {ago} string: future"
 msgid "from now"
-msgstr ""
+msgstr "à partir de maintenant"
 
 #. TRANSLATORS: string used in e.g. "8s ago"
 #: ../lib/document.py:210
@@ -3850,7 +3847,7 @@ msgstr "Rotation"
 
 #: ../lib/tiledsurface.py:52
 msgid "Snowflake"
-msgstr ""
+msgstr "Flocon de neige"
 
 #: ../lib/tiledsurface.py:628
 #, python-format
