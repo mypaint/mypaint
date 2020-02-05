@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: mypaint v2.0.0-alpha.8-1-g4490f06\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2019-12-20 19:50+0100\n"
-"PO-Revision-Date: 2020-01-02 20:21+0000\n"
+"PO-Revision-Date: 2020-02-06 19:50+0000\n"
 "Last-Translator: Prachi Joshi <josprachi@yahoo.com>\n"
 "Language-Team: Marathi <https://hosted.weblate.org/projects/mypaint/mypaint/"
 "mr/>\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n > 1;\n"
-"X-Generator: Weblate 3.10\n"
+"X-Generator: Weblate 3.11-dev\n"
 
 #. TRANSLATORS: Name of first column in the button map preferences.
 #. TRANSLATORS: Refers to an action bound to a mod+button combination.
@@ -1200,12 +1200,12 @@ msgstr ""
 #: ../gui/compatibility.py:71
 msgctxt "file compatibility question"
 msgid "Do you want to open this file anyway?"
-msgstr ""
+msgstr "आपण तरीही ही फाईल उघडू इच्छिता?"
 
 #: ../gui/compatibility.py:135
 msgctxt "Version compat warning toggle"
 msgid "Don't show this warning again"
-msgstr ""
+msgstr "पुन्हा ही चेतावणी दाखवू नका"
 
 #. TRANSLATORS: One of the options for the
 #. TRANSLATORS: "When Not Specified in File"
@@ -1213,7 +1213,7 @@ msgstr ""
 #: ../gui/compatibility.py:211
 msgctxt "Prefs Dialog|Compatibility"
 msgid "Always open in 1.x mode"
-msgstr ""
+msgstr "नेहमी 1.x मोडमध्ये उघडा"
 
 #. TRANSLATORS: One of the options for the
 #. TRANSLATORS: "When Not Specified in File"
@@ -1221,7 +1221,7 @@ msgstr ""
 #: ../gui/compatibility.py:220
 msgctxt "Prefs Dialog|Compatibility"
 msgid "Always open in 2.x mode"
-msgstr ""
+msgstr "नेहमी 2.x मोडमध्ये उघडा"
 
 #. TRANSLATORS: One of the options for the
 #. TRANSLATORS: "When Not Specified in File"
@@ -1229,104 +1229,104 @@ msgstr ""
 #: ../gui/compatibility.py:229
 msgctxt "Prefs Dialog|Compatibility"
 msgid "Open in 1.x mode unless file contains pigment layers"
-msgstr ""
+msgstr "फाइलमध्ये रंगद्रव्य स्तर नसल्यास 1.x मोडमध्ये उघडा"
 
 #. TRANSLATORS: This is a label for a dropdown menu in the
 #. TRANSLATORS: file chooser dialog when loading .ora files.
 #: ../gui/compatibility.py:532
 msgctxt "File Load Compat Options"
 msgid "Compatibility mode:"
-msgstr ""
+msgstr "अनुकूलता मोड:"
 
 #: ../gui/device.py:48
 msgctxt "prefs: device's type label"
 msgid "Cursor/puck"
-msgstr ""
+msgstr "कर्सर / पकडणे"
 
 #: ../gui/device.py:52
 msgctxt "prefs: device's type label"
 msgid "Eraser"
-msgstr ""
+msgstr "रबर"
 
 #: ../gui/device.py:56
 msgctxt "prefs: device's type label"
 msgid "Keyboard"
-msgstr ""
+msgstr "कीबोर्ड"
 
 #: ../gui/device.py:60
 msgctxt "prefs: device's type label"
 msgid "Mouse"
-msgstr ""
+msgstr "माउस"
 
 #: ../gui/device.py:64
 msgctxt "prefs: device's type label"
 msgid "Pen"
-msgstr ""
+msgstr "पेन"
 
 #: ../gui/device.py:68
 msgctxt "prefs: device's type label"
 msgid "Touchpad"
-msgstr ""
+msgstr "टचपॅड"
 
 #: ../gui/device.py:72
 msgctxt "prefs: device's type label"
 msgid "Touchscreen"
-msgstr ""
+msgstr "टचस्क्रीन"
 
 #: ../gui/device.py:92
 msgctxt "device settings: allowed usage"
 msgid "Ignore"
-msgstr ""
+msgstr "दुर्लक्ष"
 
 #: ../gui/device.py:96
 msgctxt "device settings: allowed usage"
 msgid "Any Task"
-msgstr ""
+msgstr "कोणतेही कार्य"
 
 #: ../gui/device.py:100
 msgctxt "device settings: allowed usage"
 msgid "Non-painting tasks"
-msgstr ""
+msgstr "चित्रकला नसलेली कामे"
 
 #: ../gui/device.py:104
 msgctxt "device settings: allowed usage"
 msgid "Navigation only"
-msgstr ""
+msgstr "केवळ नॅव्हिगेशन"
 
 #: ../gui/device.py:129
 msgctxt "device settings: unmodified scroll action"
 msgid "Zoom"
-msgstr ""
+msgstr "झूम"
 
 #: ../gui/device.py:130
 msgctxt "device settings: unmodified scroll action"
 msgid "Pan"
-msgstr ""
+msgstr "पॅन"
 
 #. TRANSLATORS: Column's data is the device's name
 #: ../gui/device.py:431
 msgctxt "prefs: devices table: column header"
 msgid "Device"
-msgstr ""
+msgstr "डिव्हाइस"
 
 #. TRANSLATORS: Column's data is the number of axes (an integer)
 #: ../gui/device.py:445
 msgctxt "prefs: devices table: column header"
 msgid "Axes"
-msgstr ""
+msgstr "अक्ष"
 
 #. TRANSLATORS: Column shows type labels ("Touchscreen", "Pen" etc.)
 #: ../gui/device.py:459
 msgctxt "prefs: devices table: column header"
 msgid "Type"
-msgstr ""
+msgstr "प्रकार"
 
 #. TRANSLATORS: Column's data is a dropdown allowing the allowed
 #. TRANSLATORS: tasks for the row's device to be configured.
 #: ../gui/device.py:482
 msgctxt "prefs: devices table: column header"
 msgid "Use for…"
-msgstr ""
+msgstr "यासाठी वापरा…"
 
 #. TRANSLATORS: Column's data is a dropdown for how the device's
 #. TRANSLATORS: scroll wheel or scroll-gesture events are to be
@@ -1334,7 +1334,7 @@ msgstr ""
 #: ../gui/device.py:512
 msgctxt "prefs: devices table: column header"
 msgid "Scroll…"
-msgstr ""
+msgstr "स्क्रोल करा…"
 
 #. Name and preview column: will be indented
 #: ../gui/dialogs.py:74 ../gui/externalapp.py:141 ../gui/layers.py:405
@@ -1343,31 +1343,31 @@ msgstr "नाव"
 
 #: ../gui/dialogs.py:126
 msgid "Overwrite brush?"
-msgstr ""
+msgstr "ब्रश अधिलिखित करायचा?"
 
 #: ../gui/dialogs.py:134 ../gui/dialogs.py:204
 msgid "Replace"
-msgstr ""
+msgstr "पुनर्स्थित करा"
 
 #: ../gui/dialogs.py:137 ../gui/dialogs.py:207 ../po/tmp/brusheditor.glade.h:11
 msgid "Rename"
-msgstr ""
+msgstr "नाव बदला"
 
 #: ../gui/dialogs.py:140
 msgid "Replace all"
-msgstr ""
+msgstr "सर्व पुनर्स्थित करा"
 
 #: ../gui/dialogs.py:142
 msgid "Rename all"
-msgstr ""
+msgstr "सर्वांचे नाव बदला"
 
 #: ../gui/dialogs.py:162
 msgid "Imported brush"
-msgstr ""
+msgstr "आयात केलेला ब्रश"
 
 #: ../gui/dialogs.py:163
 msgid "Existing brush"
-msgstr ""
+msgstr "विद्यमान ब्रश"
 
 #: ../gui/dialogs.py:166
 #, python-brace-format
@@ -1378,7 +1378,7 @@ msgstr ""
 
 #: ../gui/dialogs.py:196
 msgid "Overwrite brush group?"
-msgstr ""
+msgstr "ब्रश गट अधिलिखित करायचा ?"
 
 #: ../gui/dialogs.py:220
 #, python-brace-format
@@ -1391,7 +1391,7 @@ msgstr ""
 
 #: ../gui/dialogs.py:326
 msgid "Import brush package?"
-msgstr ""
+msgstr "ब्रश पॅकेज आयात करायचे?"
 
 #: ../gui/dialogs.py:357
 #, python-brace-format
@@ -1401,22 +1401,22 @@ msgstr ""
 #: ../gui/document.py:453
 #, python-format
 msgid "Load brush settings from shortcut slot %d"
-msgstr ""
+msgstr "शॉर्टकट स्लॉट %d वरून ब्रश सेटिंग्ज लोड करा"
 
 #: ../gui/document.py:454
 #, python-format
 msgid "Store brush settings in shortcut slot %d"
-msgstr ""
+msgstr "शॉर्टकट स्लॉट %d मध्ये ब्रश सेटिंग्ज संग्रहित करा"
 
 #: ../gui/document.py:455
 #, python-format
 msgid "Restore Brush %d"
-msgstr ""
+msgstr "%d ब्रश पुनर्संचयित करा"
 
 #: ../gui/document.py:457
 #, python-format
 msgid "Save to Brush %d"
-msgstr ""
+msgstr "%d ब्रश वर जतन करा"
 
 #: ../gui/document.py:555
 #, python-format
@@ -1430,7 +1430,7 @@ msgstr "निरस्त करा"
 #: ../gui/document.py:567
 #, python-format
 msgid "Redo %s"
-msgstr ""
+msgstr "पुन्हा करा %s"
 
 #: ../gui/document.py:569
 msgid "Redo"
@@ -1449,7 +1449,7 @@ msgstr ""
 #. TRANSLATORS: search for " held down: " (incl spaces) for the context
 #: ../gui/document.py:872
 msgid ";  "
-msgstr ""
+msgstr ";  "
 
 #. TRANSLATORS: "With <current-modifiers> held down: <separated-list>"
 #. TRANSLATORS: Action names may contain coordinating conjunctions such
@@ -1464,7 +1464,7 @@ msgstr ""
 #: ../gui/document.py:900
 msgctxt "Statusbar message: copy result"
 msgid "Empty document, nothing copied."
-msgstr ""
+msgstr "रिक्त दस्तऐवज, काहीही कॉपी केले नाही."
 
 #: ../gui/document.py:912
 #, python-brace-format
@@ -1475,17 +1475,17 @@ msgstr ""
 #: ../gui/document.py:929
 msgctxt "Statusbar message: paste result"
 msgid "Nothing on clipboard."
-msgstr ""
+msgstr "क्लिपबोर्डवर काहीही नाही."
 
 #: ../gui/document.py:938
 msgctxt "Statusbar message: paste result"
 msgid "Clipboard does not contain an image."
-msgstr ""
+msgstr "क्लिपबोर्डमध्ये एकही प्रतिमा नाही."
 
 #: ../gui/document.py:949
 msgctxt "Statusbar message: paste result"
 msgid "Cannot paste into this type of layer."
-msgstr ""
+msgstr "या प्रकारच्या थरात पेस्ट करणे शक्य नाही."
 
 #: ../gui/document.py:954
 #, python-brace-format
@@ -1503,12 +1503,12 @@ msgstr ""
 #: ../gui/drawwindow.py:270
 #, python-format
 msgid "%s - MyPaint"
-msgstr ""
+msgstr "%s - मायपेंट"
 
 #. TRANSLATORS: window title for use without a filename
 #: ../gui/drawwindow.py:273 ../po/tmp/mypaint.glade.h:1
 msgid "MyPaint"
-msgstr ""
+msgstr "मायपेंट"
 
 #: ../gui/drawwindow.py:296
 msgctxt "Open dragged file confirm dialog: title"
