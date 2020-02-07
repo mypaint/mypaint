@@ -23,7 +23,8 @@ class Brush {
 
 public:
   Brush() {
-      c_brush = mypaint_brush_new();
+      const int num_buckets = 256;
+      c_brush = mypaint_brush_new_with_buckets(num_buckets);
   }
 
   ~Brush() {
