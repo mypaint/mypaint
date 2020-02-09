@@ -372,7 +372,7 @@ class BuildExt (build_ext):
     user_options = [
         ("set-rpath", "f",
          "[MyPaint] Add dependency library paths from pkg-config "
-         "to the rpath of mypaintlib (linux only)"),
+         "to the rpath of mypaintlib (linux/bsd only)"),
         ("disable-openmp", None,
          "Don't use openmp, even if the platform supports it."),
     ] + build_ext.user_options
@@ -384,7 +384,8 @@ class BuildExt (build_ext):
 
     def finalize_options(self):
         build_ext.finalize_options(self)
-        if self.set_rpath and sys.platform.startswith("linux"):
+        if self.set_rpath and (sys.platform.startswith("linux")
+                or "bsd" in sys.platform):
             # The directories in runtime_library_dirs will be added
             # to the linker args as '-Wl,-R{dirs}' This _should_ be
             # compatible with the --rpath= build_ext option
@@ -804,7 +805,7 @@ def get_ext_modules():
         pass
     elif sys.platform == "msys":
         pass
-    elif sys.platform.startswith("linux"):
+    elif sys.platform.startswith("linux") or "bsd" in sys.platform:
         # Look up libraries dependencies relative to the library.
         extra_link_args.append('-Wl,-z,origin')
         extra_link_args.append('-Wl,-rpath,$ORIGIN')
