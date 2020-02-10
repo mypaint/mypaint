@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: mypaint v2.0.0-alpha.8-1-g4490f06\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2019-12-20 19:50+0100\n"
-"PO-Revision-Date: 2020-02-06 19:50+0000\n"
+"PO-Revision-Date: 2020-02-11 19:50+0000\n"
 "Last-Translator: Isabelle Lepage <noisette@netc.eu>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/mypaint/mypaint/"
 "fr/>\n"
@@ -1206,9 +1206,10 @@ msgstr ""
 "Changement de couleur avec les rampes HSV sur palette de couleur radial."
 
 #: ../gui/compatibility.py:40
+#, fuzzy
 msgctxt "File Load Compat Options"
 msgid "Based on file"
-msgstr ""
+msgstr "Basé sur le fichier"
 
 #. This refers to a version of MyPaint like 1.0, 1.1, 1.2 etc
 #: ../gui/compatibility.py:41 ../gui/drawwindow.py:276
@@ -1239,9 +1240,17 @@ msgid ""
 "It is <b>strongly recommended</b> to upgrade to <b>MyPaint {new_version}</b> "
 "or newer if you want to edit this file!"
 msgstr ""
+"“{filename}” a été enregistré avec <b>MyPaint {new_version}</b>. Cela "
+"pourrait être <b>incompatible</b> avec <b>MyPaint {current_version}</b>.\n"
+"\n"
+"En éditant ce fichier avec cette version de MyPaint le fonctionnement n’est "
+"pas garanti, et peut entraîner des erreurs.\n"
+"\n"
+"Il est <b>fortement recommendé</b> de mettre à jour vers <b>MyPaint "
+"{new_version}</b> ou plus récent si vous voulez éditer ce fichier !"
 
 #: ../gui/compatibility.py:60
-#, python-brace-format
+#, fuzzy, python-brace-format
 msgctxt "file compatibility warning"
 msgid ""
 "“{filename}” was saved with <b>MyPaint {new_version}</b>. It may not be "
@@ -1252,6 +1261,14 @@ msgid ""
 "\n"
 "To be safe you should upgrade to MyPaint {new_version} or newer."
 msgstr ""
+"“{filename}” a été enregistré avec <b>MyPaint {new_version}</b>. Il n’est "
+"peut-être pas entièrement compatible avec <b>Mypaint {current_version}</b>.\n"
+"\n"
+"L’enregistrement avec cette version de MyPaint peut entraîner une perte de "
+"données qui sont prises en charge seulement par la nouvelle version .\n"
+"\n"
+"Par sécurité vous devriez mettre à jour vers MyPaint {new_version} ou plus "
+"récent."
 
 #: ../gui/compatibility.py:71
 msgctxt "file compatibility question"
@@ -1659,10 +1676,12 @@ msgstr ""
 "Le calque “{layer_name}” a été mise à jour avec les modifications externes"
 
 #: ../gui/externalapp.py:55
-#, python-brace-format
+#, fuzzy, python-brace-format
 msgctxt "Edit in External App (statusbar message)"
 msgid "Failed to update layer with external edits from “{file_basename}”."
 msgstr ""
+"Échec de la mise à jour du calque avec les modifications externes de \""
+"{nom_de_fichier}\"."
 
 #: ../gui/externalapp.py:66
 #, python-brace-format
@@ -1907,10 +1926,10 @@ msgid "Co_ntinue"
 msgstr "Continuer"
 
 #: ../gui/filehandling.py:739
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgctxt "Destructive action confirm dialog: warning message"
 msgid "You risk losing {abbreviated_time} of unsaved painting."
-msgstr "Cela va détruire {abbreviated_time} d'actions non-enregistrée."
+msgstr "Cela va détruire {abbreviated_time} d'actions non-enregistrées."
 
 #: ../gui/filehandling.py:804
 msgctxt "File→New: confirm dialog: title question"
@@ -2129,6 +2148,7 @@ msgstr ""
 msgctxt "fill options: Target | Blend Mode dropdown - warning text"
 msgid "This mode does nothing when alpha locking is enabled!"
 msgstr ""
+"Ce mode ne fait rien lorsque le verrouillage du canal alpha est activé !"
 
 #: ../gui/fill.py:687
 msgctxt "fill options: Target | Blend Mode dropdown (tooltip)"
@@ -2145,9 +2165,10 @@ msgid "Opacity of the fill"
 msgstr "Opacité du remplissage"
 
 #: ../gui/fill.py:728
+#, fuzzy
 msgctxt "fill options: numeric option - grow/shrink fill (label)"
 msgid "Offset:"
-msgstr ""
+msgstr "Décalage :"
 
 #: ../gui/fill.py:744
 msgctxt "fill options: Offset (tooltip)"
@@ -2274,7 +2295,7 @@ msgstr "DPI"
 
 #: ../gui/framewindow.py:480
 msgid "Dots Per Inch (really Pixels Per Inch)"
-msgstr ""
+msgstr "Points par Pouce (en réalité pixel par Pouce)"
 
 #: ../gui/framewindow.py:483
 msgid "Color:"
@@ -2344,7 +2365,7 @@ msgstr "Dessin à main levée"
 
 #: ../gui/freehand.py:89
 msgid "Paint free-form brush strokes"
-msgstr ""
+msgstr "Peindre des coups de pinceau de forme libre"
 
 #. TRANSLATORS: Short alias for "Slow position tracking". This is
 #. TRANSLATORS: used on the options panel.
@@ -2438,8 +2459,9 @@ msgid "Inking"
 msgstr "Encrage"
 
 #: ../gui/inktool.py:99
+#, fuzzy
 msgid "Draw, and then adjust smooth lines"
-msgstr ""
+msgstr "Dessiner puis ajuster en lissant les lignes"
 
 #: ../gui/inputtestwindow.py:32
 msgid "Input Device Test"
@@ -2529,13 +2551,13 @@ msgstr ""
 #: ../gui/layers.py:952
 msgctxt "Layers: description parts: layer hidden"
 msgid "Hidden"
-msgstr ""
+msgstr "Caché"
 
 #: ../gui/layers.py:957
-#, python-format
+#, fuzzy, python-format
 msgctxt "Layers: description parts: opacity percentage"
 msgid "%d%% opaque"
-msgstr ""
+msgstr "%d%% opaque"
 
 #: ../gui/layers.py:964
 #, fuzzy
@@ -2544,9 +2566,10 @@ msgid "Locked"
 msgstr "Verrouillé"
 
 #: ../gui/layers.py:975
+#, fuzzy
 msgctxt "Layers: description parts: unknown type (fallback str!)"
 msgid "?type"
-msgstr ""
+msgstr "?type"
 
 #: ../gui/layers.py:982
 #, fuzzy
@@ -2794,10 +2817,9 @@ msgid ", "
 msgstr ""
 
 #: ../gui/meta.py:208
-#, fuzzy
 msgctxt "About dialog: credits: translator credits (your name(s) here!)"
 msgid "translator-credits"
-msgstr "Crédit de traduction"
+msgstr "Crédits de traduction"
 
 #. TRANSLATORS:"Brush radius" for the options panel. Short.
 #: ../gui/mode.py:582
