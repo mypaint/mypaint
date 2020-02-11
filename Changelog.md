@@ -1,3 +1,51 @@
+Version 2.0.0:
+* Full Python3 support
+* Tons of style consistency updates (flake8).
+* Switch to PyGI
+* New ability to simplify nodes in Inking tool.
+* New ability to delete autosaves from recovery dialog.
+* Improved user messages.
+* Scratchpad no longer scrolls on size changes
+* Integrated bug reporting w. issue template
+* Use external libmypaint (>= 1.5).
+* Most (possibly all) IO uses context managers.
+* Layer manipulability dependent on visibility.
+* Brush description shown in tooltip in quick choice dialog.
+* AppImage builds added.
+* Move build to setuptools/distutils.
+* New keyboard shortcuts/defaults.
+* New symmetry modes (vertical, vert+horz, rotational, snowflake).
+* Flatpak support added (currently not functional?).
+* Maximum input mapping curve points increased to 64.
+* Curve editor points snaps on 0.5 increments.
+* Input curve reset button clears the graph.
+* New Import Layers feature.
+* Zoom and view-rotation-dependent painting.
+* New debug command: Vacuum Empty Tiles.
+* Progress feedback for loading/saving.
+* New Layer Properties dialog.
+* New separate H/C/Y pickers.
+* Per-document settings.
+* New Layer Views.
+* Layer rendering code reworked.
+* New Remove Layer Backdrop command.
+* New Refactor Layer Group commands.
+* Linear compositing.
+* Spectral mixing (pigment mode).
+* Ability to emulate inputs with modifier keys.
+* Support for barrel rotation input.
+* Floodfill performance improved.
+* Offset, feathering and gap detection added to Floodfill.
+* Source, blend mode and opacity added to Floodfill.
+* Erase / Lock Alpha / Colorize modes respected by Floodfill.
+* Floodfill is now cancellable.
+* Configurable layer blinking on layer switching.
+* Fix crash when moving empty layer group.
+* Interface language configurable in user preferences.
+* Add version info to .ora files and compatibility checks.
+* Bundled backgrounds optimized for size.
+* Lots of bugs, crashers and other annoyances fixed.
+
 Version 1.2.1:
 * Fix failure to start under GLib 2.48.
 * Fix failure to start when config and user data dirs are missing.
