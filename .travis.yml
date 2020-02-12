@@ -36,6 +36,7 @@ addons:
 before_script:
     - git clone https://github.com/mypaint/libmypaint
     - cd libmypaint
+    - git checkout v1.5.0
     - ./autogen.sh
     - ./configure --prefix=/usr
     - make
@@ -72,4 +73,3 @@ script:
     - python3 setup.py clean --all
     - sudo python3 setup.py managed_install
     - sudo python3 setup.py managed_uninstall
-    - bash appimage/trigger_build.sh
