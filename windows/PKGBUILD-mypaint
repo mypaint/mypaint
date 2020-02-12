@@ -1,20 +1,20 @@
-# Maintainer: Andrew Chadwick <a.t.chadwick@gmail.com>
+# Maintainer: The MyPaint Team <mypaintopensource@gmail.com>
 
 _realname=mypaint
-pkgbase=mingw-w64-${_realname}-git
-pkgname="${MINGW_PACKAGE_PREFIX}-${_realname}-git"
-pkgver=2.0.0alpha
+pkgbase=mingw-w64-${_realname}
+pkgname="${MINGW_PACKAGE_PREFIX}-${_realname}"
+pkgver=2.0.0
 pkgrel=1
 provides=(
     "${MINGW_PACKAGE_PREFIX}-${_realname}"
 )
 conflicts=(
-    "${MINGW_PACKAGE_PREFIX}-${_realname}"
+    "${MINGW_PACKAGE_PREFIX}-${_realname}-git"
 )
 arch=('any')
-pkgdesc="Simple drawing & painting program that works well with Wacom-style graphics tablets (git)"
+pkgdesc="Simple drawing & painting program that works well with Wacom-style graphics tablets"
 depends=(
-    "${MINGW_PACKAGE_PREFIX}-libmypaint-git"
+    "${MINGW_PACKAGE_PREFIX}-libmypaint"
     "${MINGW_PACKAGE_PREFIX}-gtk3"
     "${MINGW_PACKAGE_PREFIX}-python3"
     "${MINGW_PACKAGE_PREFIX}-python3-numpy"
@@ -41,10 +41,11 @@ options=('!strip' 'debug' 'staticlibs')
 license=("GPL2")
 url="http://mypaint.org"
 install=mypaint-${CARCH}.install
-source=("${_realname}::git+https://github.com/mypaint/mypaint.git")
+source=("${_realname}::git+https://github.com/mypaint/mypaint.git#tag=v2.0.0")
 sha256sums=('SKIP')
-CFLAGS="-Ofast -ftree-vectorize -fopt-info-vec-optimized -funsafe-math-optimizations -funsafe-loop-optimizations"
-CXXFLAGS="-Ofast -ftree-vectorize -fopt-info-vec-optimized -funsafe-math-optimizations -funsafe-loop-optimizations"
+
+CFLAGS="-O3 -ftree-vectorize -funsafe-math-optimizations -funsafe-loop-optimizations"
+CXXFLAGS="-O3 -ftree-vectorize -funsafe-math-optimizations -funsafe-loop-optimizations"
 
 
 pkgver() {

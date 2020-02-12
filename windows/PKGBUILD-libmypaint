@@ -1,53 +1,45 @@
-# Maintainer: Andrew Chadwick <a.t.chadwick@gmail.com>
+# Maintainer: The MyPaint Team <mypaintopensource@gmail.com>
 
 _realname=libmypaint
-pkgbase=mingw-w64-${_realname}-git
-pkgname="${MINGW_PACKAGE_PREFIX}-${_realname}-git"
-provides=("${MINGW_PACKAGE_PREFIX}-${_realname}2")
-pkgver=2.0.0alpha
-conflicts=(
-    "${MINGW_PACKAGE_PREFIX}-${_realname}2"
-)
-pkgrel=2
-pkgdesc="Brush engine used by MyPaint (git) (mingw-w64)"
+_realver=1.5.0
+pkgbase=mingw-w64-${_realname}
+pkgname="${MINGW_PACKAGE_PREFIX}-${_realname}"
+conflicts=("${MINGW_PACKAGE_PREFIX}-mypaint<1.3.0alpha")
+pkgver=${_realver/-/}
+pkgrel=1
+pkgdesc="Brush engine used by MyPaint (mingw-w64)"
 arch=('any')
 url="http://mypaint.org"
 license=("ISC")
-makedepends=(
-    "${MINGW_PACKAGE_PREFIX}-gcc"
-    "${MINGW_PACKAGE_PREFIX}-pkg-config"
-    "${MINGW_PACKAGE_PREFIX}-json-c"
-    "${MINGW_PACKAGE_PREFIX}-glib2"
-    "${MINGW_PACKAGE_PREFIX}-gobject-introspection"
-)
-makedepends+=("autoconf" "automake" "libtool" "git")
+makedepends=("${MINGW_PACKAGE_PREFIX}-gcc"
+             "${MINGW_PACKAGE_PREFIX}-pkg-config"
+             "${MINGW_PACKAGE_PREFIX}-gobject-introspection"
+             "${MINGW_PACKAGE_PREFIX}-glib2"
+             "git")
 # autotools are required because several Makefile.am are modified
-depends=(
-    "${MINGW_PACKAGE_PREFIX}-gcc-libs"
-    "${MINGW_PACKAGE_PREFIX}-glib2"
-)
-options=('!strip' 'debug')
-source=("${_realname}::git+https://github.com/mypaint/libmypaint.git")
-sha256sums=('SKIP')
-CFLAGS="-Ofast -ftree-vectorize -fopt-info-vec-optimized -funsafe-math-optimizations -funsafe-loop-optimizations"
-CXXFLAGS="-Ofast -ftree-vectorize -fopt-info-vec-optimized -funsafe-math-optimizations -funsafe-loop-optimizations"
+depends=("${MINGW_PACKAGE_PREFIX}-gcc-libs"
+         "${MINGW_PACKAGE_PREFIX}-glib2"
+         "${MINGW_PACKAGE_PREFIX}-json-c")
+options=('strip' '!debug')
+source=("https://github.com/mypaint/${_realname}/releases/download/v${_realver}/${_realname}-${_realver}.tar.xz")
+sha256sums=('aba6e0526f9e4bead4a89c7c82084971b90c5128b50da77b0ac0f5ef27772b57')
 
-pkgver() {
-  # libmypaint release tags look like v1.3.0 or v1.3.0-beta.0
-  cd "${srcdir}"/${_realname}
-  git describe --tags | sed 's,-\(alpha\|beta\),\1,' | sed 's,-,.,g' | sed 's,^v,,'
-}
+CFLAGS="-O3 -ftree-vectorize -funsafe-math-optimizations -funsafe-loop-optimizations"
 
 prepare() {
-  cd "${srcdir}"/${_realname}
-  ./autogen.sh
+  cd ${_realname}-${_realver}
+  autoreconf -fiv
 }
 
 build() {
   #export GI_SCANNER_DEBUG="save-temps"
+  cd "${srcdir}"
   [[ -d build-${MINGW_CHOST} ]] && rm -rf build-${MINGW_CHOST}
-  cp -rf libmypaint build-${MINGW_CHOST}
+  cp -rf ${_realname}-${_realver} build-${MINGW_CHOST}
   cd build-${MINGW_CHOST}
+  #mkdir -p build-${MINGW_CHOST}
+  #cd build-${MINGW_CHOST}
+
 
   PKG_CONFIG_PATH="${PKG_CONFIG_PATH}:/usr/share/pkgconfig" \
   ./configure \
@@ -64,5 +56,5 @@ build() {
 package() {
   cd "${srcdir}"/build-${MINGW_CHOST}
   make -j1 DESTDIR="${pkgdir}" install
-  install -Dm644 "${srcdir}"/${_realname}/COPYING "${pkgdir}"${MINGW_PREFIX}/share/licenses/${_realname}2/COPYING
+  install -Dm644 ${srcdir}/${_realname}-${_realver}/COPYING "${pkgdir}"${MINGW_PREFIX}/share/licenses/${_realname}/COPYING
 }

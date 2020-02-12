@@ -68,9 +68,9 @@ OUTPUT_ROOT="${OUTPUT_ROOT:-$TOPDIR/out}"
 
 install_dependencies() {
     loginfo "Removing potential package conflicts..."
-    pacman --remove --noconfirm ${PKG_PREFIX}-mypaint-git || true
     pacman --remove --noconfirm ${PKG_PREFIX}-mypaint || true
-    pacman --remove --noconfirm ${PKG_PREFIX}-libmypaint-git || true
+    pacman --remove --noconfirm ${PKG_PREFIX}-mypaint || true
+    pacman --remove --noconfirm ${PKG_PREFIX}-libmypaint || true
     pacman --remove --noconfirm ${PKG_PREFIX}-mypaint-brushes2 || true
 
     loginfo "Upgrading MSYS2 environment"
@@ -164,7 +164,7 @@ seed_mingw_src_mypaint_repo() {
     # Seed the MyPaint source repository that makepkg-mingw wants
     # from this one if it doesn't yet exist.
     # The mypaint repo is quite big, so let's save some bandwidth!
-    repo="$SRC_DIR/mingw-w64-mypaint-git/mypaint"
+    repo="$SRC_DIR/mingw-w64-mypaint/mypaint"
     test -d "$TOPDIR/.git" || return
     test -d "$repo" && return
     loginfo "Seeding $repo..."
@@ -172,7 +172,7 @@ seed_mingw_src_mypaint_repo() {
     pushd "$repo"
     git remote remove origin
     git remote add origin https://github.com/mypaint/mypaint.git
-    git fetch origin
+    git fetch --tags origin
     popd
     logok "Seeded $repo"
 }
@@ -218,7 +218,7 @@ build_pkg() {
 bundle_mypaint() {
     # Convert local and repository *.pkg.tar.zst into nice bundles
     # for users to install.
-    # Needs the libmypaint-git and mypaint-git .pkg.tar.zst artifacts.
+    # Needs the libmypaint and mypaint .pkg.tar.zst artifacts.
     styrene_path=`which styrene||true`
     if [ "x$styrene_path" = "x" ]; then
         mkdir -vp "$SRC_ROOT"
@@ -245,18 +245,18 @@ bundle_mypaint() {
     tmpdir="/tmp/styrene.$$"
     mkdir -p "$tmpdir"
     styrene --colour=yes \
-	    --no-zip \
-	    --7z \
-	    --pkg-dir="$OUTPUT_ROOT/pkgs" \
-	    --output-dir="$tmpdir" \
+            --no-zip \
+            --7z \
+            --pkg-dir="$OUTPUT_ROOT/pkgs" \
+            --output-dir="$tmpdir" \
             "$TOPDIR/windows/styrene/mypaint.cfg"
 
     output_version=$(echo $BUNDLE_ARCH-$APPVEYOR_BUILD_VERSION | sed -e 's/[^a-zA-Z0-9._-]/-/g')
 
     mv -v "$tmpdir"/*-standalone.7z \
-        "$OUTPUT_ROOT/bundles/mypaint-git-$output_version-standalone.7z"
+        "$OUTPUT_ROOT/bundles/mypaint-$output_version-standalone.7z"
     mv -v "$tmpdir"/*-installer.exe  \
-        "$OUTPUT_ROOT/bundles/mypaint-git-$output_version-installer.exe"
+        "$OUTPUT_ROOT/bundles/mypaint-$output_version-installer.exe"
 
     ls -l "$OUTPUT_ROOT/bundles"/*.*
 
@@ -312,11 +312,11 @@ case "$1" in
     installdeps)
         install_dependencies
         update_mingw_src
-    	src="${SRC_DIR}/mingw-w64-libmypaint-git"
-    	cp ./windows/PKGBUILD-libmypaint $src/PKGBUILD
-        build_pkg "libmypaint-git" true
-    	src="${SRC_DIR}/mingw-w64-mypaint-brushes2"
-    	cp ./windows/PKGBUILD-mypaint-brushes2 $src/PKGBUILD
+        src="${SRC_DIR}/mingw-w64-libmypaint"
+        cp ./windows/PKGBUILD-libmypaint $src/PKGBUILD
+        build_pkg "libmypaint" true
+        src="${SRC_DIR}/mingw-w64-mypaint-brushes2"
+        cp ./windows/PKGBUILD-mypaint-brushes2 $src/PKGBUILD
         build_pkg "mypaint-brushes2" true
         ;;
     build)
@@ -335,9 +335,9 @@ case "$1" in
     bundle)
         update_mingw_src
         seed_mingw_src_mypaint_repo
-    	src="${SRC_DIR}/mingw-w64-mypaint-git"
-    	cp ./windows/PKGBUILD-mypaint $src/PKGBUILD
-        build_pkg "mypaint-git" false
+        src="${SRC_DIR}/mingw-w64-mypaint"
+        cp ./windows/PKGBUILD-mypaint $src/PKGBUILD
+        build_pkg "mypaint" false
         bundle_mypaint
         ;;
     *)

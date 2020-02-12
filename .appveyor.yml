@@ -10,7 +10,7 @@
 #---------------------------------#
 
 # version format
-version: 2.0.0-alpha+{branch}.{build}
+version: 2.0.0-{build}
 
 # Do not build on tags (GitHub and BitBucket)
 skip_tags: false
@@ -26,7 +26,7 @@ skip_branch_with_pr: true
 image: Visual Studio 2015
 
 # set clone depth
-clone_depth: 50
+clone_depth: 1
 
 environment:
   matrix:
