@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mypaint v2.0.0-alpha.12-327-ga332f03\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-12-20 19:50+0100\n"
+"POT-Creation-Date: 2020-02-12 21:56+0100\n"
 "PO-Revision-Date: 2020-02-06 19:50+0000\n"
 "Last-Translator: geun-tak Jeong <beroberos@gmail.com>\n"
 "Language-Team: Korean <https://hosted.weblate.org/projects/mypaint/mypaint/"
@@ -32,7 +32,7 @@ msgstr "키 조합"
 #. TRANSLATORS: Window title for the keybinding dialog. The %s is
 #. TRANSLATORS: replaced with the name of the action that the key
 #. TRANSLATORS: combination is being bound to, e.g. "Fit to View".
-#: ../gui/accelmap.py:299
+#: ../gui/accelmap.py:311
 #, python-format
 msgid "Edit Key for '%s'"
 msgstr "'%s'에 대한 키를 편집"
@@ -41,7 +41,7 @@ msgstr "'%s'에 대한 키를 편집"
 #. TRANSLATORS: It's a label for the action part of the combination.
 #. TRANSLATORS: Probably always the same as the column name
 #. TRANSLATORS: "Action" with a trailing ":" or lang-specific symbol
-#: ../gui/accelmap.py:330 ../gui/buttonmap.py:502
+#: ../gui/accelmap.py:342 ../gui/buttonmap.py:502
 msgid "Action:"
 msgstr "작업:"
 
@@ -50,13 +50,13 @@ msgstr "작업:"
 #. TRANSLATORS: adding new keybindings. This is a technical field
 #. TRANSLATORS: that probably shouldn't even be part of the gui,
 #. TRANSLATORS: so don't worry too much about the translation.
-#: ../gui/accelmap.py:348
+#: ../gui/accelmap.py:360
 msgid "Path:"
 msgstr "경로:"
 
 #. TRANSLATORS: Key refers to a key on the keyboard, this is a label
 #. TRANSLATORS: in the dialog for adding new keyboard bindings.
-#: ../gui/accelmap.py:361
+#: ../gui/accelmap.py:373
 msgid "Key:"
 msgstr "키:"
 
@@ -64,24 +64,26 @@ msgstr "키:"
 #. TRANSLATORS: to an assignment of a keyboard key combination to
 #. TRANSLATORS: an action. This is an instructive message in the
 #. TRANSLATORS: keybinding dialog (Preferences | Keys).
-#: ../gui/accelmap.py:403
+#: ../gui/accelmap.py:415
 msgid "Press keys to update this assignment"
 msgstr "자판을 눌러 키를 할당"
 
 #. TRANSLATORS: Part of the keybinding dialog, refers
 #. TRANSLATORS: to an action bound to a key combination.
-#: ../gui/accelmap.py:460
+#: ../gui/accelmap.py:472
 msgid "Unknown Action"
 msgstr "알 수 없는 작업"
 
 #. TRANSLATORS: Warning message when attempting to assign a
 #. TRANSLATORS: keyboard combination that is already used.
-#: ../gui/accelmap.py:471
+#: ../gui/accelmap.py:483
 #, python-brace-format
 msgid ""
 "<b>{accel} is already in use for '{action}'. The existing assignment will be "
 "replaced.</b>"
-msgstr "<b>{accel}은(는) 이미 '{action}'에 사용되고 있습니다. 기존 할당이 교체됩니다.</b>"
+msgstr ""
+"<b>{accel}은(는) 이미 '{action}'에 사용되고 있습니다. 기존 할당이 교체됩니다."
+"</b>"
 
 #: ../gui/application.py:615
 #, python-brace-format
@@ -164,113 +166,113 @@ msgstr ""
 msgid "{filename} has zero size (w={w}, h={h})"
 msgstr "{filename}이 빈 파일입니다. (w={w}, h={h})"
 
-#: ../gui/brusheditor.py:90
+#: ../gui/brusheditor.py:92
 msgctxt "brush settings editor: subwindow title"
 msgid "Brush Settings Editor"
 msgstr "브러시 설정 편집기"
 
-#: ../gui/brusheditor.py:270
+#: ../gui/brusheditor.py:272
 msgctxt "brush settings list: brush metadata texts group"
 msgid "About"
 msgstr "정보"
 
-#: ../gui/brusheditor.py:281
+#: ../gui/brusheditor.py:283
 msgctxt "brush settings list: setting group"
 msgid "Experimental"
 msgstr "실험적인"
 
-#: ../gui/brusheditor.py:288
+#: ../gui/brusheditor.py:290
 msgctxt "brush settings list: setting group"
 msgid "Basic"
 msgstr "기본"
 
-#: ../gui/brusheditor.py:307
+#: ../gui/brusheditor.py:309
 msgctxt "brush settings list: setting group"
 msgid "Opacity"
 msgstr "불투명도"
 
-#: ../gui/brusheditor.py:319
+#: ../gui/brusheditor.py:321
 msgctxt "brush settings list: setting group"
 msgid "Dabs"
 msgstr "뎁스"
 
-#: ../gui/brusheditor.py:330
+#: ../gui/brusheditor.py:332
 msgctxt "brush settings list: setting group"
 msgid "Smudge"
 msgstr "자국"
 
-#: ../gui/brusheditor.py:344
+#: ../gui/brusheditor.py:346
 msgctxt "brush settings list: setting group"
 msgid "Speed"
 msgstr "속도"
 
-#: ../gui/brusheditor.py:358
+#: ../gui/brusheditor.py:360
 msgctxt "brush settings list: setting group"
 msgid "Directional Offsets"
 msgstr "방향성 오프셋"
 
-#: ../gui/brusheditor.py:376
+#: ../gui/brusheditor.py:378
 msgctxt "brush settings list: setting group"
 msgid "Tracking"
 msgstr "트래킹"
 
-#: ../gui/brusheditor.py:387
+#: ../gui/brusheditor.py:389
 msgctxt "brush settings list: setting group"
 msgid "Stroke"
 msgstr "스트로크"
 
-#: ../gui/brusheditor.py:398
+#: ../gui/brusheditor.py:400
 msgctxt "brush settings list: setting group"
 msgid "Color"
 msgstr "색상"
 
-#: ../gui/brusheditor.py:416
+#: ../gui/brusheditor.py:418
 msgctxt "brush settings list: setting group"
 msgid "GridMap"
 msgstr "그리드맵"
 
-#: ../gui/brusheditor.py:427
+#: ../gui/brusheditor.py:429
 msgctxt "brush settings list: setting group"
 msgid "Custom"
 msgstr "사용자 정의"
 
-#: ../gui/brusheditor.py:493
+#: ../gui/brusheditor.py:495
 msgctxt "brush settings editor: save brush: error message"
 msgid "No brush selected, please use “Add As New” instead."
 msgstr "목록에 해당 브러시가 없습니다. \"브러시 추가\"를 먼저 하십시오."
 
-#: ../gui/brusheditor.py:518
+#: ../gui/brusheditor.py:520
 msgctxt "brush settings editor: rename brush: error message"
 msgid "No brush selected!"
 msgstr "선택한 브러시가 없음!"
 
-#: ../gui/brusheditor.py:527
+#: ../gui/brusheditor.py:529
 msgctxt "brush settings editor: rename brush: dialog title"
 msgid "Rename Brush"
 msgstr "브러시 이름 변경"
 
-#: ../gui/brusheditor.py:545
+#: ../gui/brusheditor.py:548
 msgctxt "brush settings editor: rename brush: error message"
 msgid "A brush with this name already exists!"
 msgstr "이 이름을 가진 브러시가 이미 존재합니다!"
 
-#: ../gui/brusheditor.py:579
+#: ../gui/brusheditor.py:582
 msgctxt "brush settings editor: delete brush: error message"
 msgid "No brush selected!"
 msgstr "브러시 선택이 없음!"
 
-#: ../gui/brusheditor.py:585
+#: ../gui/brusheditor.py:588
 #, python-brace-format
 msgctxt "brush settings editor: delete brush: confirm dialog question"
 msgid "Really delete brush “{brush_name}” from disk?"
 msgstr "정말 디스크에서 \"{brush_name}” 브러시를 삭제 하시겠습니까?"
 
-#: ../gui/brusheditor.py:704
+#: ../gui/brusheditor.py:707
 msgctxt "brush settings editor: header: fallback name"
 msgid "(Unnamed brush)"
 msgstr "(이름 없는 브러시)"
 
-#: ../gui/brusheditor.py:711
+#: ../gui/brusheditor.py:714
 #, python-brace-format
 msgctxt "brush settings editor: header: is-modified hint"
 msgid "{brush_name} [unsaved]"
@@ -421,7 +423,8 @@ msgstr "새로운"
 #, python-brace-format
 msgctxt "brushpack import failure messages"
 msgid "No file named “{order_conf_file}”. This is not a brushpack."
-msgstr "“{order_conf_file}”(이)라는 파일이 없습니다. 이것은 브러시 팩이 아닙니다."
+msgstr ""
+"“{order_conf_file}”(이)라는 파일이 없습니다. 이것은 브러시 팩이 아닙니다."
 
 #: ../gui/brushmanager.py:689
 #, python-brace-format
@@ -429,7 +432,9 @@ msgctxt "brushpack import failure messages"
 msgid ""
 "Brush “{brush_name}” is listed in “{order_conf_file}”, but it does not exist "
 "in the zipfile."
-msgstr "브러시“{brush_name}”은“{order_conf_file}”에 나열되어 있지만 zip 파일에는 없습니다."
+msgstr ""
+"브러시“{brush_name}”은“{order_conf_file}”에 나열되어 있지만 zip 파일에는 없습"
+"니다."
 
 #: ../gui/brushmanager.py:702
 #, python-brace-format
@@ -437,7 +442,9 @@ msgctxt "brushpack import failure messages"
 msgid ""
 "Brush “{brush_name}” exists in the zipfile, but it is not listed in "
 "“{order_conf_file}”."
-msgstr "브러시 \"{brush_name}\"이 zip 파일에 있지만 \"{order_conf_file}\"에 나열되지 않았습니다."
+msgstr ""
+"브러시 \"{brush_name}\"이 zip 파일에 있지만 \"{order_conf_file}\"에 나열되지 "
+"않았습니다."
 
 #: ../gui/brushmanager.py:1313 ../gui/footer.py:62
 msgid "Unknown Brush"
@@ -484,7 +491,8 @@ msgstr "{original_name} 사본 {n}"
 #, python-brace-format
 msgctxt "brush group: context menu: remove from group"
 msgid "Really remove brush “{brush_name}” from group “{group_name}”?"
-msgstr "브러시 \"{brush_name}\"을(를) 그룹 \"{group_name}\"에서 제거 하시겠습니까?"
+msgstr ""
+"브러시 \"{brush_name}\"을(를) 그룹 \"{group_name}\"에서 제거 하시겠습니까?"
 
 #. TRANSLATORS: number of brushes in a brush group, for tooltips
 #: ../gui/brushselectionwindow.py:381
@@ -836,7 +844,9 @@ msgctxt "HCY Wheel color adjuster page: description for tooltips etc."
 msgid ""
 "Set the color using cylindrical hue/chroma/luma space. The circular slices "
 "are equiluminant."
-msgstr "원통형 색조/채도/휘도 공간을 사용하여 색상을 설정하십시오. 원형 슬라이스는 동일합니다."
+msgstr ""
+"원통형 색조/채도/휘도 공간을 사용하여 색상을 설정하십시오. 원형 슬라이스는 동"
+"일합니다."
 
 #. Tooltip mappings, indexed by whatever the slider currently represents
 #: ../gui/colors/hsvcube.py:46 ../gui/colors/hsvsquare.py:133
@@ -1173,27 +1183,27 @@ msgctxt "color changer dock panels: tab tooltip description"
 msgid "Change color with HSV ramps crossing a radial bowl of color."
 msgstr "이 레이어 커버만 배경을 사용합니다. 다른 모든 것은 무시됩니다."
 
-#: ../gui/compatibility.py:40
+#: ../gui/compatibility.py:34
 msgctxt "File Load Compat Options"
 msgid "Based on file"
 msgstr "파일 기반"
 
 #. This refers to a version of MyPaint like 1.0, 1.1, 1.2 etc
-#: ../gui/compatibility.py:41 ../gui/drawwindow.py:276
+#: ../gui/compatibility.py:35 ../gui/drawwindow.py:276
 #: ../po/tmp/preferenceswindow.glade.h:113
 msgctxt "Prefs Dialog|Compatibility"
 msgid "1.x"
 msgstr "1.x"
 
 #. This refers to a version of MyPaint like 1.0, 1.1, 1.2 etc
-#: ../gui/compatibility.py:42 ../po/tmp/preferenceswindow.glade.h:117
+#: ../gui/compatibility.py:36 ../po/tmp/preferenceswindow.glade.h:117
 msgctxt "Prefs Dialog|Compatibility"
 msgid "2.x"
 msgstr "2.x"
 
 #. TRANSLATORS: This is probably a rare warning, and it will not
 #. TRANSLATORS: really be shown at all before the release of 3.0
-#: ../gui/compatibility.py:50
+#: ../gui/compatibility.py:44
 #, python-brace-format
 msgctxt "file compatibility warning"
 msgid ""
@@ -1206,14 +1216,16 @@ msgid ""
 "It is <b>strongly recommended</b> to upgrade to <b>MyPaint {new_version}</b> "
 "or newer if you want to edit this file!"
 msgstr ""
-"“{filename}”은 (는) <b>MyPaint {new_version}</b>으로 저장되었습니다. <b>MyPaint "
-"{current_version}</b>과 <b>호환되지 않을 수 있습니다</b>.\n"
+"“{filename}”은 (는) <b>MyPaint {new_version}</b>으로 저장되었습니다. "
+"<b>MyPaint {current_version}</b>과 <b>호환되지 않을 수 있습니다</b>.\n"
 "\n"
-"이 버전의 MyPaint로이 파일을 편집하면 작동하지 않을 수 있으며 충돌이 발생할 수도 있습니다.\n"
+"이 버전의 MyPaint로이 파일을 편집하면 작동하지 않을 수 있으며 충돌이 발생할 "
+"수도 있습니다.\n"
 "\n"
-"이 파일을 편집하려면 <b>MyPaint {new_version}</b> <b>이상으로 업그레이드하는 것이 좋습니다</b>!"
+"이 파일을 편집하려면 <b>MyPaint {new_version}</b> <b>이상으로 업그레이드하는 "
+"것이 좋습니다</b>!"
 
-#: ../gui/compatibility.py:60
+#: ../gui/compatibility.py:54
 #, python-brace-format
 msgctxt "file compatibility warning"
 msgid ""
@@ -1225,19 +1237,20 @@ msgid ""
 "\n"
 "To be safe you should upgrade to MyPaint {new_version} or newer."
 msgstr ""
-"“{filename}”은 (는) <b>MyPaint {new_version}</b>으로 저장되었습니다. <b>Mypaint "
-"{current_version}</b>과 완전히 호환되지 않을 수 있습니다.\n"
+"“{filename}”은 (는) <b>MyPaint {new_version}</b>으로 저장되었습니다. "
+"<b>Mypaint {current_version}</b>과 완전히 호환되지 않을 수 있습니다.\n"
 "\n"
-"이 버전의 MyPaint로 저장하면 최신 버전에서만 지원되는 데이터가 손실 될 수 있습니다.\n"
+"이 버전의 MyPaint로 저장하면 최신 버전에서만 지원되는 데이터가 손실 될 수 있"
+"습니다.\n"
 "\n"
 "안전을 위해 MyPaint {new_version} 이상으로 업그레이드해야합니다."
 
-#: ../gui/compatibility.py:71
+#: ../gui/compatibility.py:65
 msgctxt "file compatibility question"
 msgid "Do you want to open this file anyway?"
 msgstr "어쨌든이 파일을 여시겠습니까?"
 
-#: ../gui/compatibility.py:135
+#: ../gui/compatibility.py:129
 msgctxt "Version compat warning toggle"
 msgid "Don't show this warning again"
 msgstr "이 경고를 다시 표시하지 마십시오"
@@ -1245,7 +1258,7 @@ msgstr "이 경고를 다시 표시하지 마십시오"
 #. TRANSLATORS: One of the options for the
 #. TRANSLATORS: "When Not Specified in File"
 #. TRANSLATORS: compatibility setting.
-#: ../gui/compatibility.py:211
+#: ../gui/compatibility.py:197
 msgctxt "Prefs Dialog|Compatibility"
 msgid "Always open in 1.x mode"
 msgstr "항상 1.x 모드에서 열기"
@@ -1253,7 +1266,7 @@ msgstr "항상 1.x 모드에서 열기"
 #. TRANSLATORS: One of the options for the
 #. TRANSLATORS: "When Not Specified in File"
 #. TRANSLATORS: compatibility setting.
-#: ../gui/compatibility.py:220
+#: ../gui/compatibility.py:206
 msgctxt "Prefs Dialog|Compatibility"
 msgid "Always open in 2.x mode"
 msgstr "항상 2.x 모드에서 열기"
@@ -1261,14 +1274,14 @@ msgstr "항상 2.x 모드에서 열기"
 #. TRANSLATORS: One of the options for the
 #. TRANSLATORS: "When Not Specified in File"
 #. TRANSLATORS: compatibility setting.
-#: ../gui/compatibility.py:229
+#: ../gui/compatibility.py:215
 msgctxt "Prefs Dialog|Compatibility"
 msgid "Open in 1.x mode unless file contains pigment layers"
 msgstr "파일에 그림 물감 레이어가없는 경우 1.x 모드로 열기"
 
 #. TRANSLATORS: This is a label for a dropdown menu in the
 #. TRANSLATORS: file chooser dialog when loading .ora files.
-#: ../gui/compatibility.py:532
+#: ../gui/compatibility.py:501
 msgctxt "File Load Compat Options"
 msgid "Compatibility mode:"
 msgstr "호환 모드:"
@@ -1533,7 +1546,7 @@ msgctxt "Statusbar message: paste result"
 msgid "Pasted {w}×{h} image."
 msgstr "{w}×{h} 이미지를 붙여 넣었습니다."
 
-#: ../gui/document.py:2040
+#: ../gui/document.py:2054
 #, python-brace-format
 msgctxt "Statusbar message: vacuum document"
 msgid "Vacuum: discarded {removed} of {total} tiles."
@@ -1876,7 +1889,8 @@ msgstr "계속(_N)"
 #, python-brace-format
 msgctxt "Destructive action confirm dialog: warning message"
 msgid "You risk losing {abbreviated_time} of unsaved painting."
-msgstr "저장하지 않은 그림의 약 {abbreviated_time} 정도를 잃을 위험이 있습니다."
+msgstr ""
+"저장하지 않은 그림의 약 {abbreviated_time} 정도를 잃을 위험이 있습니다."
 
 #: ../gui/filehandling.py:804
 msgctxt "File→New: confirm dialog: title question"
@@ -2027,7 +2041,9 @@ msgid ""
 "When considering which area to fill, use a\n"
 "temporary merge of all the visible layers\n"
 "underneath the current layer"
-msgstr "채울 영역을 고려할 때 현재 레이어 아래에있는 모든 보이는 레이어의 임시 병합을 사용"
+msgstr ""
+"채울 영역을 고려할 때 현재 레이어 아래에있는 모든 보이는 레이어의 임시 병합"
+"을 사용"
 
 #: ../gui/fill.py:621
 msgctxt "fill options: toggle whether the fill will be limited by the viewport"
@@ -2045,7 +2061,8 @@ msgid ""
 "smallest canvas-aligned rectangle that can fit the view."
 msgstr ""
 "뷰포트를 기준으로 채울 수 있는 영역을 제한합니다.\n"
-"보기가 회전되면 채우기는 뷰에 맞출 수 있는 가장 작은 캔버스 정렬 사각형으로 제한됩니다."
+"보기가 회전되면 채우기는 뷰에 맞출 수 있는 가장 작은 캔버스 정렬 사각형으로 "
+"제한됩니다."
 
 #: ../gui/fill.py:644
 msgctxt ""
@@ -2129,7 +2146,8 @@ msgid ""
 "need it."
 msgstr ""
 "간격 을 감지하고 간격을 채우지 않도록하기.\n"
-"참고 : 일반 채우기보다 속도가 훨씬 느릴 수 있으므로 필요할 때만 활성화하십시오."
+"참고 : 일반 채우기보다 속도가 훨씬 느릴 수 있으므로 필요할 때만 활성화하십시"
+"오."
 
 #: ../gui/fill.py:809
 msgctxt "fill options: gap-detection sub-option, numeric setting (label)"
@@ -2200,96 +2218,96 @@ msgstr "프레임을 편집"
 msgid "Adjust the document frame"
 msgstr "문서 프레임을 조정"
 
-#: ../gui/framewindow.py:466
+#: ../gui/framewindow.py:467
 msgid "Frame Size"
 msgstr "프레임 크기"
 
 #. {unit: (conv_factor, upper, lower, step_incr, page_incr, digits)}
-#: ../gui/framewindow.py:469 ../gui/framewindow.py:535
-#: ../gui/framewindow.py:908 ../gui/framewindow.py:920
-#: ../gui/framewindow.py:921 ../gui/framewindow.py:973
-#: ../gui/framewindow.py:978
+#: ../gui/framewindow.py:470 ../gui/framewindow.py:536
+#: ../gui/framewindow.py:909 ../gui/framewindow.py:926
+#: ../gui/framewindow.py:927 ../gui/framewindow.py:979
+#: ../gui/framewindow.py:984
 msgid "px"
 msgstr "px"
 
-#: ../gui/framewindow.py:471
+#: ../gui/framewindow.py:472
 msgid "Height:"
 msgstr "높이:"
 
-#: ../gui/framewindow.py:472
+#: ../gui/framewindow.py:473
 msgid "Width:"
 msgstr "넓이:"
 
-#: ../gui/framewindow.py:473
+#: ../gui/framewindow.py:474
 msgid "Resolution:"
 msgstr "해상도:"
 
-#: ../gui/framewindow.py:475
+#: ../gui/framewindow.py:476
 msgid "DPI"
 msgstr "DPI"
 
-#: ../gui/framewindow.py:480
+#: ../gui/framewindow.py:481
 msgid "Dots Per Inch (really Pixels Per Inch)"
 msgstr "인치 당 도트 수 (실제 픽셀 당 인치)"
 
-#: ../gui/framewindow.py:483
+#: ../gui/framewindow.py:484
 msgid "Color:"
 msgstr "색상:"
 
-#: ../gui/framewindow.py:520
+#: ../gui/framewindow.py:521
 msgid "Frame Color"
 msgstr "프레임 색상"
 
-#: ../gui/framewindow.py:543
+#: ../gui/framewindow.py:544
 msgid "<b>Frame dimensions</b>"
 msgstr "<b>프레임 크기</b>"
 
-#: ../gui/framewindow.py:557
+#: ../gui/framewindow.py:558
 msgid "<b>Pixel density</b>"
 msgstr "<b>픽셀 밀도</b>"
 
-#: ../gui/framewindow.py:585
+#: ../gui/framewindow.py:586
 msgid "Set Frame to Layer"
 msgstr "프레임을 레이어로 설정"
 
-#: ../gui/framewindow.py:586
+#: ../gui/framewindow.py:587
 msgid "Set frame to the extents of the current layer"
 msgstr "프레임을 현재 레이어의 범위로 설정"
 
-#: ../gui/framewindow.py:588
+#: ../gui/framewindow.py:589
 msgid "Set Frame to Document"
 msgstr "프레임을 문서로 설정"
 
-#: ../gui/framewindow.py:589
+#: ../gui/framewindow.py:590
 msgid "Set frame to the combination of all layers"
 msgstr "프레임을 모든 레이어의 조합으로 설정"
 
-#: ../gui/framewindow.py:599
+#: ../gui/framewindow.py:600
 msgid "Trim Layer to Frame"
 msgstr "레이어를 프레임으로 다듬기"
 
-#: ../gui/framewindow.py:600
+#: ../gui/framewindow.py:601
 msgid "Trim parts of the current layer which lie outside the frame"
 msgstr "현재 레이어의 프레임 외의 부분 잘라내기"
 
-#: ../gui/framewindow.py:606
+#: ../gui/framewindow.py:607
 msgid "Enabled"
 msgstr "사용"
 
-#: ../gui/framewindow.py:718
+#: ../gui/framewindow.py:719
 #, python-brace-format
 msgid "{width:g}×{height:g} {units}"
 msgstr "{width:g}×{height:g} {units}"
 
-#: ../gui/framewindow.py:909
+#: ../gui/framewindow.py:910
 msgid "inch"
 msgstr "인치"
 
-#: ../gui/framewindow.py:910
+#: ../gui/framewindow.py:911
 msgid "cm"
 msgstr "cm"
 
-#: ../gui/framewindow.py:911
+#: ../gui/framewindow.py:912
 msgid "mm"
 msgstr "mm"
 
@@ -2767,7 +2785,14 @@ msgctxt "About dialog: credits: tasks: joiner punctuation"
 msgid ", "
 msgstr ", "
 
-#: ../gui/meta.py:208
+#. TRANSLATORS: THIS SHOULD NOT BE TRANSLATED LITERALLY
+#. TRANSLATORS: The "translation" of this string should be a list of names
+#. TRANSLATORS: of the people who have contributed to the translation to
+#. TRANSLATORS: this language. One name per line, optionally with an email
+#. TRANSLATORS: address within angle brackets "<email@somewhere.com>", and
+#. TRANSLATORS: optionally with a year or year range indicating when the
+#. TRANSLATORS: contributions were made, e.g: 2005 or 2010-2012 etc.
+#: ../gui/meta.py:221
 msgctxt "About dialog: credits: translator credits (your name(s) here!)"
 msgid "translator-credits"
 msgstr "번역가-크레딧"
@@ -2855,25 +2880,25 @@ msgid "{lang_en} - ({lang_nat})"
 msgstr "{lang_en} - ({lang_nat})"
 
 #. TRANSLATORS: title of panel showing an overview of the whole canvas
-#: ../gui/previewwindow.py:202
+#: ../gui/previewwindow.py:201
 msgid "Preview"
 msgstr "미리보기"
 
-#: ../gui/previewwindow.py:204
+#: ../gui/previewwindow.py:203
 msgid "Show preview of the whole drawing area"
 msgstr "전체 그리는 영역의 미리보기"
 
 #. TRANSLATORS: The preview panel shows where the "camera" of the
 #. TRANSLATORS: main view is pointing.
-#: ../gui/previewwindow.py:264
+#: ../gui/previewwindow.py:263
 msgid "Show Viewfinder"
 msgstr "뷰파인더를 표시"
 
-#: ../gui/scratchwindow.py:35
+#: ../gui/scratchwindow.py:34
 msgid "Scratchpad"
 msgstr "스크래치 패드"
 
-#: ../gui/scratchwindow.py:37
+#: ../gui/scratchwindow.py:36
 msgid "Mix colors and make sketches on separate scrap pages"
 msgstr "각각의 스크랩 페이지에 스케치를 하거나 색을 혼합할 수 있음"
 
@@ -2997,6 +3022,24 @@ msgstr "보기 (보조 / 대체)"
 msgid "View (Resetting)"
 msgstr "보기 (재설정)"
 
+#: ../gui/toolstack.py:351
+#, python-brace-format
+msgctxt "workspace: sidebar tabs: button tooltips"
+msgid "{tab_title}: close tab"
+msgstr "{tab_title}: 탭 닫기"
+
+#: ../gui/toolstack.py:355
+#, python-brace-format
+msgctxt "workspace: sidebar tabs: button tooltips"
+msgid "{tab_title}: tab options and properties"
+msgstr "{tab_title}: 탭 옵션 및 속성"
+
+#: ../gui/toolstack.py:359
+#, python-brace-format
+msgctxt "workspace: sidebar tabs: button tooltips"
+msgid "{tab_title}: move tab to other sidebar"
+msgstr "{tab_title}: 탭을 다른 사이드 바로 이동"
+
 #: ../gui/topbar.py:91
 msgid "<b>MyPaint</b>"
 msgstr "<b>MyPaint</b>"
@@ -3024,24 +3067,6 @@ msgstr "보기를 회전"
 #: ../gui/viewmanip.py:123
 msgid "Rotate the canvas view"
 msgstr "캔버스 보기를 회전"
-
-#: ../gui/workspace.py:1313
-#, python-brace-format
-msgctxt "workspace: sidebar tabs: button tooltips"
-msgid "{tab_title}: close tab"
-msgstr "{tab_title}: 탭 닫기"
-
-#: ../gui/workspace.py:1317
-#, python-brace-format
-msgctxt "workspace: sidebar tabs: button tooltips"
-msgid "{tab_title}: tab options and properties"
-msgstr "{tab_title}: 탭 옵션 및 속성"
-
-#: ../gui/workspace.py:1321
-#, python-brace-format
-msgctxt "workspace: sidebar tabs: button tooltips"
-msgid "{tab_title}: move tab to other sidebar"
-msgstr "{tab_title}: 탭을 다른 사이드 바로 이동"
 
 #: ../lib/command.py:181
 msgid "Unknown Command"
@@ -3534,7 +3559,9 @@ msgstr "그림 물감"
 #: ../lib/modes.py:55
 msgid ""
 "Similar to mixing actual pigments by upsampling to 10 spectral channels."
-msgstr "10 개의 스펙트럼 채널로 업샘플링하여 실제 그림 물감을 혼합하는 것과 유사합니다."
+msgstr ""
+"10 개의 스펙트럼 채널로 업샘플링하여 실제 그림 물감을 혼합하는 것과 유사합니"
+"다."
 
 #: ../lib/modes.py:58
 msgid "Multiply"
@@ -3792,7 +3819,7 @@ msgstr "회전"
 msgid "Snowflake"
 msgstr "스노우플릭"
 
-#: ../lib/tiledsurface.py:628
+#: ../lib/tiledsurface.py:624
 #, python-format
 msgid "PNG reader failed: %s"
 msgstr "PNG 읽기 실패함: %s"
@@ -3816,9 +3843,11 @@ msgid ""
 "You can always launch this dialog from the ‘File’ menu when MyPaint is "
 "running."
 msgstr ""
-"복구 할 파일이있는 경우 MyPaint가 시작될 때 이 자동 저장 복구 대화 상자를 실행합니다.\n"
+"복구 할 파일이있는 경우 MyPaint가 시작될 때 이 자동 저장 복구 대화 상자를 실"
+"행합니다.\n"
 "\n"
-"MyPaint가 실행 중일 때에는 항상 '파일' 메뉴에서 이 대화 상자를 시작할 수 있습니다."
+"MyPaint가 실행 중일 때에는 항상 '파일' 메뉴에서 이 대화 상자를 시작할 수 있습"
+"니다."
 
 #. Deletes the selected autosave backup file.
 #: ../po/tmp/autorecover.glade.h:8
@@ -3860,8 +3889,9 @@ msgid ""
 "recover a working file from one of these automated backups now. You’ll be "
 "asked where to save it before continuing."
 msgstr ""
-"MyPaint가 저장되지 않은 작업과 충돌했지만 롤백 백업을 수행합니다. 이제 이러한 자동 백업 중 하나에서 작업 파일을 복구 할 수 "
-"있습니다. 계속하기 전에 저장할 위치를 묻는 메시지가 나타납니다."
+"MyPaint가 저장되지 않은 작업과 충돌했지만 롤백 백업을 수행합니다. 이제 이러"
+"한 자동 백업 중 하나에서 작업 파일을 복구 할 수 있습니다. 계속하기 전에 저장"
+"할 위치를 묻는 메시지가 나타납니다."
 
 #: ../po/tmp/autorecover.glade.h:17
 msgid "Thumbnail"
@@ -4131,7 +4161,8 @@ msgid ""
 msgstr ""
 "레이어가 뒤에 있는 레이어와 결합하는 방법\n"
 "\n"
-"각 모드마다 다른 시각 효과가 있습니다. 각 기능에 대한 설명을 보려면 드롭 다운의 툴팁을 참조하십시오."
+"각 모드마다 다른 시각 효과가 있습니다. 각 기능에 대한 설명을 보려면 드롭 다운"
+"의 툴팁을 참조하십시오."
 
 #: ../po/tmp/layerprops.glade.h:7
 msgctxt "Layer properties widget → <category labels>"
@@ -4189,8 +4220,9 @@ msgstr ""
 "\n"
 "열린 눈 모양 아이콘은 레이어가 표시되어 있음을 나타냅니다. \n"
 "\n"
-"눈 아이콘이 닫히면 레이어가 숨겨집니다. 숨겨진 레이어는 완전히 보이지 않습니다. 표시되는 내용에는 영향을 미치지 않습니다. 안전을 위해 "
-"숨겨진 레이어에는 페인트를 칠할 수 없습니다.\n"
+"눈 아이콘이 닫히면 레이어가 숨겨집니다. 숨겨진 레이어는 완전히 보이지 않습니"
+"다. 표시되는 내용에는 영향을 미치지 않습니다. 안전을 위해 숨겨진 레이어에는 "
+"페인트를 칠할 수 없습니다.\n"
 "\n"
 "레이어 그룹이 숨겨지면 그 안의 모든 레이어도 보이지 않게됩니다."
 
@@ -4211,7 +4243,8 @@ msgstr ""
 "\n"
 "열린 자물쇠 아이콘은 도면층을 편집 할 수 있음을 나타냅니다.\n"
 "\n"
-"레이어가 잠겨 있으면 페인트하거나 픽셀 내용을 변경할 수 없습니다. 스트로크도 선택할 수 없으므로 스케치에서 페인팅 할 때 유용합니다.\n"
+"레이어가 잠겨 있으면 페인트하거나 픽셀 내용을 변경할 수 없습니다. 스트로크도 "
+"선택할 수 없으므로 스케치에서 페인팅 할 때 유용합니다.\n"
 "\n"
 "레이어 그룹이 잠겨 있으면 그 안에있는 레이어를 편집 할 수 없습니다."
 
@@ -4753,9 +4786,11 @@ msgid ""
 "and yellow is opposite blue. CIECAM02 and NCS present a similar model. Here "
 "we use pure display red, yellow etc. as the four primaries."
 msgstr ""
-"카디날 포인트에서 반대 쌍으로 배열 된 4개의 &apos;심리적 원색 &apos;또는&apos; 독특한 색조&apos;를 사용하는 색상 "
-"이론에 기반하는 휠의 빠르고 더러운 근사치. 레드는 그린의 반대, 예로우는 블루의 반대입니다. CIECAM02와 NCS는 유사한 모델을 "
-"제시합니다. 여기서는 순수한 디스플레이 레드, 예로우 등을 네 개의 기본으로 사용합니다."
+"카디날 포인트에서 반대 쌍으로 배열 된 4개의 &apos;심리적 원색 &apos;또는"
+"&apos; 독특한 색조&apos;를 사용하는 색상 이론에 기반하는 휠의 빠르고 더러운 "
+"근사치. 레드는 그린의 반대, 예로우는 블루의 반대입니다. CIECAM02와 NCS는 유사"
+"한 모델을 제시합니다. 여기서는 순수한 디스플레이 레드, 예로우 등을 네 개의 기"
+"본으로 사용합니다."
 
 #: ../po/tmp/preferenceswindow.glade.h:101
 msgctxt "Prefs Dialog|Color|Color Wheel|Primaries|RYGB|"
@@ -4766,9 +4801,11 @@ msgid ""
 "blue. CIECAM02 and NCS present a similar model. Here we use pure display "
 "red, yellow etc. as the four primaries."
 msgstr ""
-"카디날 포인트에서 반대 쌍으로 배열 된 4 개의 '심리적 기본 요소'또는 '고유 한 색조'를 사용하는 색상 이론에 의해 알려지는 휠의 "
-"빠르고 더러운 근사치. 빨간색은 녹색 반대, 노란색은 파란색 반대입니다. CIECAM02와 NCS는 유사한 모델을 제시합니다. 여기서는 "
-"순수한 디스플레이 빨강, 노랑 등을 네 개의 기본으로 사용합니다."
+"카디날 포인트에서 반대 쌍으로 배열 된 4 개의 '심리적 기본 요소'또는 '고유 한 "
+"색조'를 사용하는 색상 이론에 의해 알려지는 휠의 빠르고 더러운 근사치. 빨간색"
+"은 녹색 반대, 노란색은 파란색 반대입니다. CIECAM02와 NCS는 유사한 모델을 제시"
+"합니다. 여기서는 순수한 디스플레이 빨강, 노랑 등을 네 개의 기본으로 사용합니"
+"다."
 
 #. Options affecting color wheels
 #: ../po/tmp/preferenceswindow.glade.h:103
@@ -4816,15 +4853,18 @@ msgid ""
 "default. In this mode 1.x .ora files will look the same as they did in older "
 "versions, but pigment blending will not work well."
 msgstr ""
-"새 문서를 만들 때는 기본적으로 레거시 1.x 호환 모드를 사용. 이 모드에서 1.x .ora 파일은 이전 버전에서와 동일하게 보이지만 "
-"그림 물감 혼합은 제대로 작동하지 않습니다."
+"새 문서를 만들 때는 기본적으로 레거시 1.x 호환 모드를 사용. 이 모드에서 1.x ."
+"ora 파일은 이전 버전에서와 동일하게 보이지만 그림 물감 혼합은 제대로 작동하"
+"지 않습니다."
 
 #: ../po/tmp/preferenceswindow.glade.h:118
 msgctxt "Prefs Dialog|Compatibility"
 msgid ""
 "When creating new documents, use the regular 2.x compatibility mode by "
 "default. Old documents will often look different in this mode."
-msgstr "새 문서를 만들 때는 기본적으로 일반 2.x 호환 모드를 사용. 이 모드에서는 오래된 문서가 다르게 보일 수 있습니다."
+msgstr ""
+"새 문서를 만들 때는 기본적으로 일반 2.x 호환 모드를 사용. 이 모드에서는 오래"
+"된 문서가 다르게 보일 수 있습니다."
 
 #: ../po/tmp/preferenceswindow.glade.h:119
 msgctxt "Prefs Dialog|Compatibility"
@@ -4850,8 +4890,8 @@ msgid ""
 "When you save an OpenRaster file with MyPaint 2.0 or newer the active "
 "compatibility mode will be written to the file."
 msgstr ""
-"이것은 2.0 이전의 MyPaint 버전으로 저장된 파일에만 적용됩니다. MyPaint 2.0 이상으로 OpenRaster 파일을 "
-"저장하면 활성 호환성 모드가 파일에 기록됩니다."
+"이것은 2.0 이전의 MyPaint 버전으로 저장된 파일에만 적용됩니다. MyPaint 2.0 이"
+"상으로 OpenRaster 파일을 저장하면 활성 호환성 모드가 파일에 기록됩니다."
 
 #. Label to the options for how to handle files which do not have a compatibility mode specified (whether they should be opened in 1.x compatibility mode, or 2.x mode)
 #: ../po/tmp/preferenceswindow.glade.h:126
@@ -4982,7 +5022,8 @@ msgstr "내보내기…"
 
 #: ../po/tmp/resources.xml.h:19
 msgid "Export your work to a file, but keep working on the same file."
-msgstr "작업을 파일로 내보내고 사용자는 동일한 파일에서 계속 작업을 진행합니다."
+msgstr ""
+"작업을 파일로 내보내고 사용자는 동일한 파일에서 계속 작업을 진행합니다."
 
 #: ../po/tmp/resources.xml.h:20
 msgctxt "Menu→File (labels), Accel Editor (labels)"
@@ -5230,7 +5271,8 @@ msgstr "스트로크 및 레이어를 선택"
 msgctxt "Accel Editor (descriptions)"
 msgid ""
 "Pick a brushstroke from the canvas, which restores brush, color, and layer."
-msgstr "캔버스에서 브러시 스트로크를 선택하면 브러시, 색상 및 레이어가 복원됩니다."
+msgstr ""
+"캔버스에서 브러시 스트로크를 선택하면 브러시, 색상 및 레이어가 복원됩니다."
 
 #: ../po/tmp/resources.xml.h:69
 msgctxt "Menu→Brush→Shortcut Keys (labels), Accel Editor (labels)"
@@ -6351,7 +6393,8 @@ msgctxt "Accel Editor (descriptions)"
 msgid ""
 "Dockable cylindrical hue/chroma/luma color selector. The circular slices are "
 "equiluminant."
-msgstr "고정 가능한 원통형 색조/채도/휘도 색상 선택기. 원형 슬라이스는 동일합니다."
+msgstr ""
+"고정 가능한 원통형 색조/채도/휘도 색상 선택기. 원형 슬라이스는 동일합니다."
 
 #: ../po/tmp/resources.xml.h:291
 msgctxt "Menu→Color (labels), Accel Editor (labels)"

@@ -211,6 +211,13 @@ _ARTIST_CREDITS = [
 ]
 _TRANSLATOR_CREDITS = C_(
     "About dialog: credits: translator credits (your name(s) here!)",
+    # TRANSLATORS: THIS SHOULD NOT BE TRANSLATED LITERALLY
+    # TRANSLATORS: The "translation" of this string should be a list of names
+    # TRANSLATORS: of the people who have contributed to the translation to
+    # TRANSLATORS: this language. One name per line, optionally with an email
+    # TRANSLATORS: address within angle brackets "<email@somewhere.com>", and
+    # TRANSLATORS: optionally with a year or year range indicating when the
+    # TRANSLATORS: contributions were made, e.g: 2005 or 2010-2012 etc.
     u"translator-credits",
 )
 

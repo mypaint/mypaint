@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mypaint v2.0.0-alpha.8-1-g4490f06\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-12-20 19:50+0100\n"
+"POT-Creation-Date: 2020-02-12 21:56+0100\n"
 "PO-Revision-Date: 2019-02-27 14:19+0000\n"
 "Last-Translator: glixx <roman_romul@mail.ru>\n"
 "Language-Team: Irish <https://hosted.weblate.org/projects/mypaint/mypaint/ga/"
@@ -34,7 +34,7 @@ msgstr ""
 #. TRANSLATORS: Window title for the keybinding dialog. The %s is
 #. TRANSLATORS: replaced with the name of the action that the key
 #. TRANSLATORS: combination is being bound to, e.g. "Fit to View".
-#: ../gui/accelmap.py:299
+#: ../gui/accelmap.py:311
 #, python-format
 msgid "Edit Key for '%s'"
 msgstr ""
@@ -43,7 +43,7 @@ msgstr ""
 #. TRANSLATORS: It's a label for the action part of the combination.
 #. TRANSLATORS: Probably always the same as the column name
 #. TRANSLATORS: "Action" with a trailing ":" or lang-specific symbol
-#: ../gui/accelmap.py:330 ../gui/buttonmap.py:502
+#: ../gui/accelmap.py:342 ../gui/buttonmap.py:502
 msgid "Action:"
 msgstr ""
 
@@ -52,13 +52,13 @@ msgstr ""
 #. TRANSLATORS: adding new keybindings. This is a technical field
 #. TRANSLATORS: that probably shouldn't even be part of the gui,
 #. TRANSLATORS: so don't worry too much about the translation.
-#: ../gui/accelmap.py:348
+#: ../gui/accelmap.py:360
 msgid "Path:"
 msgstr ""
 
 #. TRANSLATORS: Key refers to a key on the keyboard, this is a label
 #. TRANSLATORS: in the dialog for adding new keyboard bindings.
-#: ../gui/accelmap.py:361
+#: ../gui/accelmap.py:373
 msgid "Key:"
 msgstr ""
 
@@ -66,19 +66,19 @@ msgstr ""
 #. TRANSLATORS: to an assignment of a keyboard key combination to
 #. TRANSLATORS: an action. This is an instructive message in the
 #. TRANSLATORS: keybinding dialog (Preferences | Keys).
-#: ../gui/accelmap.py:403
+#: ../gui/accelmap.py:415
 msgid "Press keys to update this assignment"
 msgstr ""
 
 #. TRANSLATORS: Part of the keybinding dialog, refers
 #. TRANSLATORS: to an action bound to a key combination.
-#: ../gui/accelmap.py:460
+#: ../gui/accelmap.py:472
 msgid "Unknown Action"
 msgstr ""
 
 #. TRANSLATORS: Warning message when attempting to assign a
 #. TRANSLATORS: keyboard combination that is already used.
-#: ../gui/accelmap.py:471
+#: ../gui/accelmap.py:483
 #, python-brace-format
 msgid ""
 "<b>{accel} is already in use for '{action}'. The existing assignment will be "
@@ -165,113 +165,113 @@ msgstr ""
 msgid "{filename} has zero size (w={w}, h={h})"
 msgstr ""
 
-#: ../gui/brusheditor.py:90
+#: ../gui/brusheditor.py:92
 msgctxt "brush settings editor: subwindow title"
 msgid "Brush Settings Editor"
 msgstr ""
 
-#: ../gui/brusheditor.py:270
+#: ../gui/brusheditor.py:272
 msgctxt "brush settings list: brush metadata texts group"
 msgid "About"
 msgstr ""
 
-#: ../gui/brusheditor.py:281
+#: ../gui/brusheditor.py:283
 msgctxt "brush settings list: setting group"
 msgid "Experimental"
 msgstr ""
 
-#: ../gui/brusheditor.py:288
+#: ../gui/brusheditor.py:290
 msgctxt "brush settings list: setting group"
 msgid "Basic"
 msgstr ""
 
-#: ../gui/brusheditor.py:307
+#: ../gui/brusheditor.py:309
 msgctxt "brush settings list: setting group"
 msgid "Opacity"
 msgstr ""
 
-#: ../gui/brusheditor.py:319
+#: ../gui/brusheditor.py:321
 msgctxt "brush settings list: setting group"
 msgid "Dabs"
 msgstr ""
 
-#: ../gui/brusheditor.py:330
+#: ../gui/brusheditor.py:332
 msgctxt "brush settings list: setting group"
 msgid "Smudge"
 msgstr ""
 
-#: ../gui/brusheditor.py:344
+#: ../gui/brusheditor.py:346
 msgctxt "brush settings list: setting group"
 msgid "Speed"
 msgstr ""
 
-#: ../gui/brusheditor.py:358
+#: ../gui/brusheditor.py:360
 msgctxt "brush settings list: setting group"
 msgid "Directional Offsets"
 msgstr ""
 
-#: ../gui/brusheditor.py:376
+#: ../gui/brusheditor.py:378
 msgctxt "brush settings list: setting group"
 msgid "Tracking"
 msgstr ""
 
-#: ../gui/brusheditor.py:387
+#: ../gui/brusheditor.py:389
 msgctxt "brush settings list: setting group"
 msgid "Stroke"
 msgstr ""
 
-#: ../gui/brusheditor.py:398
+#: ../gui/brusheditor.py:400
 msgctxt "brush settings list: setting group"
 msgid "Color"
 msgstr ""
 
-#: ../gui/brusheditor.py:416
+#: ../gui/brusheditor.py:418
 msgctxt "brush settings list: setting group"
 msgid "GridMap"
 msgstr ""
 
-#: ../gui/brusheditor.py:427
+#: ../gui/brusheditor.py:429
 msgctxt "brush settings list: setting group"
 msgid "Custom"
 msgstr "Saincheaptha"
 
-#: ../gui/brusheditor.py:493
+#: ../gui/brusheditor.py:495
 msgctxt "brush settings editor: save brush: error message"
 msgid "No brush selected, please use “Add As New” instead."
 msgstr ""
 
-#: ../gui/brusheditor.py:518
+#: ../gui/brusheditor.py:520
 msgctxt "brush settings editor: rename brush: error message"
 msgid "No brush selected!"
 msgstr ""
 
-#: ../gui/brusheditor.py:527
+#: ../gui/brusheditor.py:529
 msgctxt "brush settings editor: rename brush: dialog title"
 msgid "Rename Brush"
 msgstr ""
 
-#: ../gui/brusheditor.py:545
+#: ../gui/brusheditor.py:548
 msgctxt "brush settings editor: rename brush: error message"
 msgid "A brush with this name already exists!"
 msgstr ""
 
-#: ../gui/brusheditor.py:579
+#: ../gui/brusheditor.py:582
 msgctxt "brush settings editor: delete brush: error message"
 msgid "No brush selected!"
 msgstr ""
 
-#: ../gui/brusheditor.py:585
+#: ../gui/brusheditor.py:588
 #, python-brace-format
 msgctxt "brush settings editor: delete brush: confirm dialog question"
 msgid "Really delete brush “{brush_name}” from disk?"
 msgstr ""
 
-#: ../gui/brusheditor.py:704
+#: ../gui/brusheditor.py:707
 msgctxt "brush settings editor: header: fallback name"
 msgid "(Unnamed brush)"
 msgstr ""
 
-#: ../gui/brusheditor.py:711
+#: ../gui/brusheditor.py:714
 #, python-brace-format
 msgctxt "brush settings editor: header: is-modified hint"
 msgid "{brush_name} [unsaved]"
@@ -1154,27 +1154,27 @@ msgctxt "color changer dock panels: tab tooltip description"
 msgid "Change color with HSV ramps crossing a radial bowl of color."
 msgstr ""
 
-#: ../gui/compatibility.py:40
+#: ../gui/compatibility.py:34
 msgctxt "File Load Compat Options"
 msgid "Based on file"
 msgstr ""
 
 #. This refers to a version of MyPaint like 1.0, 1.1, 1.2 etc
-#: ../gui/compatibility.py:41 ../gui/drawwindow.py:276
+#: ../gui/compatibility.py:35 ../gui/drawwindow.py:276
 #: ../po/tmp/preferenceswindow.glade.h:113
 msgctxt "Prefs Dialog|Compatibility"
 msgid "1.x"
 msgstr ""
 
 #. This refers to a version of MyPaint like 1.0, 1.1, 1.2 etc
-#: ../gui/compatibility.py:42 ../po/tmp/preferenceswindow.glade.h:117
+#: ../gui/compatibility.py:36 ../po/tmp/preferenceswindow.glade.h:117
 msgctxt "Prefs Dialog|Compatibility"
 msgid "2.x"
 msgstr ""
 
 #. TRANSLATORS: This is probably a rare warning, and it will not
 #. TRANSLATORS: really be shown at all before the release of 3.0
-#: ../gui/compatibility.py:50
+#: ../gui/compatibility.py:44
 #, python-brace-format
 msgctxt "file compatibility warning"
 msgid ""
@@ -1188,7 +1188,7 @@ msgid ""
 "or newer if you want to edit this file!"
 msgstr ""
 
-#: ../gui/compatibility.py:60
+#: ../gui/compatibility.py:54
 #, python-brace-format
 msgctxt "file compatibility warning"
 msgid ""
@@ -1201,12 +1201,12 @@ msgid ""
 "To be safe you should upgrade to MyPaint {new_version} or newer."
 msgstr ""
 
-#: ../gui/compatibility.py:71
+#: ../gui/compatibility.py:65
 msgctxt "file compatibility question"
 msgid "Do you want to open this file anyway?"
 msgstr ""
 
-#: ../gui/compatibility.py:135
+#: ../gui/compatibility.py:129
 msgctxt "Version compat warning toggle"
 msgid "Don't show this warning again"
 msgstr ""
@@ -1214,7 +1214,7 @@ msgstr ""
 #. TRANSLATORS: One of the options for the
 #. TRANSLATORS: "When Not Specified in File"
 #. TRANSLATORS: compatibility setting.
-#: ../gui/compatibility.py:211
+#: ../gui/compatibility.py:197
 msgctxt "Prefs Dialog|Compatibility"
 msgid "Always open in 1.x mode"
 msgstr ""
@@ -1222,7 +1222,7 @@ msgstr ""
 #. TRANSLATORS: One of the options for the
 #. TRANSLATORS: "When Not Specified in File"
 #. TRANSLATORS: compatibility setting.
-#: ../gui/compatibility.py:220
+#: ../gui/compatibility.py:206
 msgctxt "Prefs Dialog|Compatibility"
 msgid "Always open in 2.x mode"
 msgstr ""
@@ -1230,14 +1230,14 @@ msgstr ""
 #. TRANSLATORS: One of the options for the
 #. TRANSLATORS: "When Not Specified in File"
 #. TRANSLATORS: compatibility setting.
-#: ../gui/compatibility.py:229
+#: ../gui/compatibility.py:215
 msgctxt "Prefs Dialog|Compatibility"
 msgid "Open in 1.x mode unless file contains pigment layers"
 msgstr ""
 
 #. TRANSLATORS: This is a label for a dropdown menu in the
 #. TRANSLATORS: file chooser dialog when loading .ora files.
-#: ../gui/compatibility.py:532
+#: ../gui/compatibility.py:501
 msgctxt "File Load Compat Options"
 msgid "Compatibility mode:"
 msgstr ""
@@ -1497,7 +1497,7 @@ msgctxt "Statusbar message: paste result"
 msgid "Pasted {w}×{h} image."
 msgstr ""
 
-#: ../gui/document.py:2040
+#: ../gui/document.py:2054
 #, python-brace-format
 msgctxt "Statusbar message: vacuum document"
 msgid "Vacuum: discarded {removed} of {total} tiles."
@@ -2157,96 +2157,96 @@ msgstr ""
 msgid "Adjust the document frame"
 msgstr ""
 
-#: ../gui/framewindow.py:466
+#: ../gui/framewindow.py:467
 msgid "Frame Size"
 msgstr ""
 
 #. {unit: (conv_factor, upper, lower, step_incr, page_incr, digits)}
-#: ../gui/framewindow.py:469 ../gui/framewindow.py:535
-#: ../gui/framewindow.py:908 ../gui/framewindow.py:920
-#: ../gui/framewindow.py:921 ../gui/framewindow.py:973
-#: ../gui/framewindow.py:978
+#: ../gui/framewindow.py:470 ../gui/framewindow.py:536
+#: ../gui/framewindow.py:909 ../gui/framewindow.py:926
+#: ../gui/framewindow.py:927 ../gui/framewindow.py:979
+#: ../gui/framewindow.py:984
 msgid "px"
 msgstr ""
 
-#: ../gui/framewindow.py:471
+#: ../gui/framewindow.py:472
 msgid "Height:"
 msgstr ""
 
-#: ../gui/framewindow.py:472
+#: ../gui/framewindow.py:473
 msgid "Width:"
 msgstr ""
 
-#: ../gui/framewindow.py:473
+#: ../gui/framewindow.py:474
 msgid "Resolution:"
 msgstr ""
 
-#: ../gui/framewindow.py:475
+#: ../gui/framewindow.py:476
 msgid "DPI"
 msgstr ""
 
-#: ../gui/framewindow.py:480
+#: ../gui/framewindow.py:481
 msgid "Dots Per Inch (really Pixels Per Inch)"
 msgstr ""
 
-#: ../gui/framewindow.py:483
+#: ../gui/framewindow.py:484
 msgid "Color:"
 msgstr ""
 
-#: ../gui/framewindow.py:520
+#: ../gui/framewindow.py:521
 msgid "Frame Color"
 msgstr ""
 
-#: ../gui/framewindow.py:543
+#: ../gui/framewindow.py:544
 msgid "<b>Frame dimensions</b>"
 msgstr ""
 
-#: ../gui/framewindow.py:557
+#: ../gui/framewindow.py:558
 msgid "<b>Pixel density</b>"
 msgstr ""
 
-#: ../gui/framewindow.py:585
+#: ../gui/framewindow.py:586
 msgid "Set Frame to Layer"
 msgstr ""
 
-#: ../gui/framewindow.py:586
+#: ../gui/framewindow.py:587
 msgid "Set frame to the extents of the current layer"
 msgstr ""
 
-#: ../gui/framewindow.py:588
+#: ../gui/framewindow.py:589
 msgid "Set Frame to Document"
 msgstr ""
 
-#: ../gui/framewindow.py:589
+#: ../gui/framewindow.py:590
 msgid "Set frame to the combination of all layers"
 msgstr ""
 
-#: ../gui/framewindow.py:599
+#: ../gui/framewindow.py:600
 msgid "Trim Layer to Frame"
 msgstr ""
 
-#: ../gui/framewindow.py:600
+#: ../gui/framewindow.py:601
 msgid "Trim parts of the current layer which lie outside the frame"
 msgstr ""
 
-#: ../gui/framewindow.py:606
+#: ../gui/framewindow.py:607
 msgid "Enabled"
 msgstr ""
 
-#: ../gui/framewindow.py:718
+#: ../gui/framewindow.py:719
 #, python-brace-format
 msgid "{width:g}×{height:g} {units}"
 msgstr ""
 
-#: ../gui/framewindow.py:909
+#: ../gui/framewindow.py:910
 msgid "inch"
 msgstr ""
 
-#: ../gui/framewindow.py:910
+#: ../gui/framewindow.py:911
 msgid "cm"
 msgstr ""
 
-#: ../gui/framewindow.py:911
+#: ../gui/framewindow.py:912
 msgid "mm"
 msgstr ""
 
@@ -2688,7 +2688,14 @@ msgctxt "About dialog: credits: tasks: joiner punctuation"
 msgid ", "
 msgstr ""
 
-#: ../gui/meta.py:208
+#. TRANSLATORS: THIS SHOULD NOT BE TRANSLATED LITERALLY
+#. TRANSLATORS: The "translation" of this string should be a list of names
+#. TRANSLATORS: of the people who have contributed to the translation to
+#. TRANSLATORS: this language. One name per line, optionally with an email
+#. TRANSLATORS: address within angle brackets "<email@somewhere.com>", and
+#. TRANSLATORS: optionally with a year or year range indicating when the
+#. TRANSLATORS: contributions were made, e.g: 2005 or 2010-2012 etc.
+#: ../gui/meta.py:221
 msgctxt "About dialog: credits: translator credits (your name(s) here!)"
 msgid "translator-credits"
 msgstr ""
@@ -2776,25 +2783,25 @@ msgid "{lang_en} - ({lang_nat})"
 msgstr ""
 
 #. TRANSLATORS: title of panel showing an overview of the whole canvas
-#: ../gui/previewwindow.py:202
+#: ../gui/previewwindow.py:201
 msgid "Preview"
 msgstr ""
 
-#: ../gui/previewwindow.py:204
+#: ../gui/previewwindow.py:203
 msgid "Show preview of the whole drawing area"
 msgstr ""
 
 #. TRANSLATORS: The preview panel shows where the "camera" of the
 #. TRANSLATORS: main view is pointing.
-#: ../gui/previewwindow.py:264
+#: ../gui/previewwindow.py:263
 msgid "Show Viewfinder"
 msgstr ""
 
-#: ../gui/scratchwindow.py:35
+#: ../gui/scratchwindow.py:34
 msgid "Scratchpad"
 msgstr ""
 
-#: ../gui/scratchwindow.py:37
+#: ../gui/scratchwindow.py:36
 msgid "Mix colors and make sketches on separate scrap pages"
 msgstr ""
 
@@ -2918,6 +2925,24 @@ msgstr ""
 msgid "View (Resetting)"
 msgstr ""
 
+#: ../gui/toolstack.py:351
+#, python-brace-format
+msgctxt "workspace: sidebar tabs: button tooltips"
+msgid "{tab_title}: close tab"
+msgstr ""
+
+#: ../gui/toolstack.py:355
+#, python-brace-format
+msgctxt "workspace: sidebar tabs: button tooltips"
+msgid "{tab_title}: tab options and properties"
+msgstr ""
+
+#: ../gui/toolstack.py:359
+#, python-brace-format
+msgctxt "workspace: sidebar tabs: button tooltips"
+msgid "{tab_title}: move tab to other sidebar"
+msgstr ""
+
 #: ../gui/topbar.py:91
 msgid "<b>MyPaint</b>"
 msgstr ""
@@ -2944,24 +2969,6 @@ msgstr ""
 
 #: ../gui/viewmanip.py:123
 msgid "Rotate the canvas view"
-msgstr ""
-
-#: ../gui/workspace.py:1313
-#, python-brace-format
-msgctxt "workspace: sidebar tabs: button tooltips"
-msgid "{tab_title}: close tab"
-msgstr ""
-
-#: ../gui/workspace.py:1317
-#, python-brace-format
-msgctxt "workspace: sidebar tabs: button tooltips"
-msgid "{tab_title}: tab options and properties"
-msgstr ""
-
-#: ../gui/workspace.py:1321
-#, python-brace-format
-msgctxt "workspace: sidebar tabs: button tooltips"
-msgid "{tab_title}: move tab to other sidebar"
 msgstr ""
 
 #: ../lib/command.py:181
@@ -3669,7 +3676,7 @@ msgstr ""
 msgid "Snowflake"
 msgstr ""
 
-#: ../lib/tiledsurface.py:628
+#: ../lib/tiledsurface.py:624
 #, python-format
 msgid "PNG reader failed: %s"
 msgstr ""
