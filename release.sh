@@ -192,9 +192,8 @@ else
     cd "$exportdir_path"
     python setup.py build
     echo "Running tests ..."
-    python tests/test_mypaintlib.py
-    python tests/test_compositeops.py
-    python tests/test_rendering.py
+    python setup.py test
+    python setup.py nosetests
     if ! $HEADLESS; then
         python tests/test_performance.py -a -c 1
         python tests/test_memory_leak.py -a -e
