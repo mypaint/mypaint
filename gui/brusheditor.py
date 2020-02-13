@@ -60,6 +60,26 @@ class BrushEditorWindow (SubWindow):
     _LISTVIEW_IS_SELECTABLE_COLUMN = 2
     _LISTVIEW_FONT_WEIGHT_COLUMN = 3
 
+    _INPUTS_ORDER = [
+        "pressure",
+        "random",
+        "stroke",
+        "speed1",
+        "speed2",
+        "direction",
+        "direction_angle",
+        "tilt_ascension",
+        "tilt_declination",
+        "tilt_declinationx",
+        "tilt_declinationy",
+        "attack_angle",
+        "barrel_rotation",
+        "gridmap_x",
+        "gridmap_y",
+        "viewzoom",
+        "brush_radius",
+        "custom",
+    ]
     # Construction:
 
     def __init__(self):
@@ -209,7 +229,8 @@ class BrushEditorWindow (SubWindow):
         for tmpl_obj in tmpl_objs:
             grid.remove(tmpl_obj)
         # Generate lots of clones, one group per brush input
-        for i in brushsettings.inputs:
+        for input_id in self._INPUTS_ORDER:
+            i = brushsettings.inputs_dict[input_id]
             params = dict(dname=i.dname, name=i.name, tooltip=i.tooltip)
             object_ids = [layout[-1] for layout in _TMPL_LAYOUTS]
             widgets = add_objects_from_template_string(self._builder, ui_xml,
