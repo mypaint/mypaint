@@ -52,9 +52,8 @@ class HSVCubePage (CombinedAdjusterPage):
 
     def __init__(self):
         self._faces = ['h', 's', 'v']
-
         button = borderless_button(
-            stock_id=Gtk.STOCK_REFRESH,
+            icon_name='mypaint-hsv-rotate-symbolic',
             size=Gtk.IconSize.MENU,
             tooltip=_("Rotate cube (show different axes)")
         )
