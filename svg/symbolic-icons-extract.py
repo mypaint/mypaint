@@ -16,10 +16,10 @@ import os
 import sys
 import xml.etree.ElementTree as ET
 import logging
-logger = logging.getLogger(__name__)
 import subprocess
 import gzip
 
+logger = logging.getLogger(__name__)
 
 ## Constants
 
@@ -55,7 +55,8 @@ def extract_icon(svg, group_id, output_dir):
            "--verb=EditInvertInAllLayers", "--verb=EditDelete",
            "--verb=EditSelectAll",
            "--verb=SelectionUnGroup", "--verb=StrokeToPath",
-           "--verb=FileVacuum", "--verb=FileSave", "--verb=FileClose", "--verb=FileQuit"]
+           "--verb=FileVacuum", "--verb=FileSave",
+           "--verb=FileClose", "--verb=FileQuit"]
     subprocess.check_call(cmd)
     svg = ET.parse(output_tmp)
     groups = svg.findall(".//svg:g", NAMESPACES)
