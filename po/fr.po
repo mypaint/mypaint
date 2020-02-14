@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: mypaint v2.0.0-alpha.8-1-g4490f06\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-02-12 21:56+0100\n"
-"PO-Revision-Date: 2020-02-11 19:50+0000\n"
+"PO-Revision-Date: 2020-02-17 20:58+0000\n"
 "Last-Translator: Isabelle Lepage <noisette@netc.eu>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/mypaint/mypaint/"
 "fr/>\n"
@@ -18,7 +18,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n > 1;\n"
-"X-Generator: Weblate 3.11-dev\n"
+"X-Generator: Weblate 3.11\n"
 
 #. TRANSLATORS: Name of first column in the button map preferences.
 #. TRANSLATORS: Refers to an action bound to a mod+button combination.
@@ -657,11 +657,11 @@ msgstr "Définir la couleur utiliser pour peindre"
 
 #: ../gui/colorpicker.py:270
 msgid "Pick Hue"
-msgstr "Choisir la Teinte"
+msgstr "Choisir la teinte"
 
 #: ../gui/colorpicker.py:273
 msgid "Set the color Hue used for painting"
-msgstr "Définir la couleur utiliser pour peindre"
+msgstr "Définir la couleur utilisée pour peindre"
 
 #: ../gui/colorpicker.py:293
 msgid "Pick Chroma"
@@ -688,7 +688,7 @@ msgstr "Détails de la couleur"
 #: ../gui/colors/adjbases.py:872
 msgid "Current brush color, and the color most recently used for painting"
 msgstr ""
-"Couleur nouvellement choisie, et couleur la plus récemment utilisée pour "
+"Couleur actuellement choisie, et couleur la plus récemment utilisée pour "
 "peindre"
 
 #: ../gui/colors/hcywheel.py:49
@@ -1214,16 +1214,15 @@ msgstr "Basé sur le fichier"
 #. This refers to a version of MyPaint like 1.0, 1.1, 1.2 etc
 #: ../gui/compatibility.py:35 ../gui/drawwindow.py:276
 #: ../po/tmp/preferenceswindow.glade.h:113
-#, fuzzy
 msgctxt "Prefs Dialog|Compatibility"
 msgid "1.x"
-msgstr "1.0"
+msgstr "1.x"
 
 #. This refers to a version of MyPaint like 1.0, 1.1, 1.2 etc
 #: ../gui/compatibility.py:36 ../po/tmp/preferenceswindow.glade.h:117
 msgctxt "Prefs Dialog|Compatibility"
 msgid "2.x"
-msgstr ""
+msgstr "2.x"
 
 #. TRANSLATORS: This is probably a rare warning, and it will not
 #. TRANSLATORS: really be shown at all before the release of 3.0
@@ -1250,7 +1249,7 @@ msgstr ""
 "{new_version}</b> ou plus récent si vous voulez éditer ce fichier !"
 
 #: ../gui/compatibility.py:54
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgctxt "file compatibility warning"
 msgid ""
 "“{filename}” was saved with <b>MyPaint {new_version}</b>. It may not be "
@@ -1286,7 +1285,7 @@ msgstr "Ne plus afficher cet avertissement"
 #: ../gui/compatibility.py:197
 msgctxt "Prefs Dialog|Compatibility"
 msgid "Always open in 1.x mode"
-msgstr ""
+msgstr "Toujours ouvrir en mode 1.x"
 
 #. TRANSLATORS: One of the options for the
 #. TRANSLATORS: "When Not Specified in File"
@@ -1294,7 +1293,7 @@ msgstr ""
 #: ../gui/compatibility.py:206
 msgctxt "Prefs Dialog|Compatibility"
 msgid "Always open in 2.x mode"
-msgstr ""
+msgstr "Toujours ouvrir en mode 2.x"
 
 #. TRANSLATORS: One of the options for the
 #. TRANSLATORS: "When Not Specified in File"
@@ -1302,7 +1301,7 @@ msgstr ""
 #: ../gui/compatibility.py:215
 msgctxt "Prefs Dialog|Compatibility"
 msgid "Open in 1.x mode unless file contains pigment layers"
-msgstr ""
+msgstr "Ouvrir en mode 1.x, sauf si le fichier contient des couches de pigments"
 
 #. TRANSLATORS: This is a label for a dropdown menu in the
 #. TRANSLATORS: file chooser dialog when loading .ora files.
@@ -1579,7 +1578,7 @@ msgstr "Image collée {w}×{h}."
 #, python-brace-format
 msgctxt "Statusbar message: vacuum document"
 msgid "Vacuum: discarded {removed} of {total} tiles."
-msgstr ""
+msgstr "Vide : {removed} des {total} tuiles ont été rejetées."
 
 #. TRANSLATORS: window title for use with a filename
 #: ../gui/drawwindow.py:270
@@ -1676,12 +1675,12 @@ msgstr ""
 "Le calque “{layer_name}” a été mise à jour avec les modifications externes"
 
 #: ../gui/externalapp.py:55
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgctxt "Edit in External App (statusbar message)"
 msgid "Failed to update layer with external edits from “{file_basename}”."
 msgstr ""
-"Échec de la mise à jour du calque avec les modifications externes de "
-"\"{nom_de_fichier}\"."
+"Échec de la mise à jour du calque avec les modifications externes de « "
+"{file_basename} »."
 
 #: ../gui/externalapp.py:66
 #, python-brace-format
@@ -1815,10 +1814,10 @@ msgstr[0] "{n} fichier"
 msgstr[1] "{n} fichiers"
 
 #: ../gui/filehandling.py:223
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgctxt "Document I/O: the {files_summary} for a single file"
 msgid "“{basename}”"
-msgstr "Erreur lors du chargement de “{basename}”."
+msgstr "« {basename} »"
 
 #: ../gui/filehandling.py:432
 msgctxt "save/load dialogs: filter patterns"
@@ -1826,7 +1825,6 @@ msgid "All Recognized Formats"
 msgstr "Tous les formats reconnus"
 
 #: ../gui/filehandling.py:437
-#, fuzzy
 msgctxt "save/load dialogs: filter patterns"
 msgid "OpenRaster (*.ora)"
 msgstr "OpenRaster (*.ora)"
@@ -2020,6 +2018,8 @@ msgstr "Ouvrir"
 msgctxt "File→Revert: status message: canvas has no filename yet"
 msgid "Cannot revert: canvas has not been saved to a file yet."
 msgstr ""
+"Annulation impossible : la toile n'a pas encore été enregistrée dans un "
+"fichier."
 
 #: ../gui/filehandling.py:1519
 msgctxt "File→Revert confirm dialog: title"
@@ -2074,12 +2074,14 @@ msgstr "Source :"
 #: ../gui/fill.py:539
 msgctxt "fill options: 'Source:' category (tooltip)"
 msgid "The input that the fill will be based on"
-msgstr ""
+msgstr "L’entrée sur laquelle le remplissage sera basé"
 
 #: ../gui/fill.py:583
 msgctxt "fill options: 'Source' category: Layer dropdown (tooltip)"
 msgid "Select a specific layer you want the fill to be based on"
 msgstr ""
+"Sélectionnez une couche spécifique sur laquelle vous souhaitez que le "
+"remplissage soit basé"
 
 #: ../gui/fill.py:601
 msgctxt ""
@@ -2087,7 +2089,7 @@ msgctxt ""
 "When this option is enabled, the fill is based\n"
 "on the combination of all visible layers"
 msgid "Sample Merged"
-msgstr ""
+msgstr "Échantillon fusionné"
 
 #: ../gui/fill.py:605
 msgctxt "fill options: Sample Merged (tooltip)"
@@ -2336,7 +2338,7 @@ msgstr "Rogner le calque en fonction du cadre"
 
 #: ../gui/framewindow.py:601
 msgid "Trim parts of the current layer which lie outside the frame"
-msgstr ""
+msgstr "Rogner les éléments du calque actuel qui se trouvent en dehors du cadre"
 
 #: ../gui/framewindow.py:607
 msgid "Enabled"
@@ -2371,7 +2373,7 @@ msgstr "Peindre des coups de pinceau de forme libre"
 #. TRANSLATORS: used on the options panel.
 #: ../gui/freehand.py:581
 msgid "Smooth:"
-msgstr ""
+msgstr "Lissage :"
 
 #. TRANSLATORS: Short alias for "Fake Pressure (for mouse)". This is
 #. TRANSLATORS: used on the options panel.
@@ -2394,6 +2396,7 @@ msgid "<big><b>A programming error has been detected.</b></big>"
 msgstr "<big><b>Une erreur de programmation à été détectée.</b></big>"
 
 #: ../gui/gtkexcepthook.py:169
+#, fuzzy
 msgid ""
 "You may be able to ignore this error and carry on working, but you should "
 "probably save your work soon.\n"
@@ -2401,6 +2404,11 @@ msgid ""
 "Please tell the developers about this using the issue tracker if no-one else "
 "has reported it yet."
 msgstr ""
+"Vous pouvez peut-être ignorer cette erreur et continuer à travailler mais "
+"vous devriez sauvegarder votre travail rapidement.\n"
+"\n"
+"Veuillez informer les développeurs de cette erreur à l’aide de l’outil de "
+"suivi des erreurs si personne d’autre ne l’a pas déjà signalé."
 
 #: ../gui/gtkexcepthook.py:177
 msgid "Search Tracker…"
@@ -2534,8 +2542,9 @@ msgstr "Visible"
 
 #. Other flags column
 #: ../gui/layers.py:426
+#, fuzzy
 msgid "Flags"
-msgstr ""
+msgstr "Drapeaux"
 
 #: ../gui/layers.py:925
 #, fuzzy
@@ -2544,9 +2553,10 @@ msgid "?layer"
 msgstr "Calque"
 
 #: ../gui/layers.py:945
+#, fuzzy
 msgctxt "Layers: description parts: unknown mode (fallback str!)"
 msgid "?mode"
-msgstr ""
+msgstr "?mode"
 
 #: ../gui/layers.py:952
 msgctxt "Layers: description parts: layer hidden"
@@ -2620,9 +2630,12 @@ msgid "Move layer in stack…"
 msgstr "Réordonner les calques en pile…"
 
 #: ../gui/layerswindow.py:115
+#, fuzzy
 msgid ""
 "Move layer in stack (dropping into a regular layer will create a new group)"
 msgstr ""
+"Déplacer le calque dans la pile (le déposer dans un calque normal créera un "
+"nouveau groupe)"
 
 #: ../gui/layerswindow.py:156
 msgid "Layer"
@@ -2841,7 +2854,7 @@ msgstr "Opaque :"
 #. TRANSLATORS:"Brush hardness/sharpness" for the options panel. Short.
 #: ../gui/mode.py:586
 msgid "Sharp:"
-msgstr ""
+msgstr "Dureté :"
 
 #. TRANSLATORS:"Additional pressure gain" for the options panel. Short.
 #: ../gui/mode.py:588
@@ -2850,8 +2863,9 @@ msgstr ""
 
 #. TRANSLATORS:"Paint Pigment Mode" for the options panel. Short.
 #: ../gui/mode.py:590
+#, fuzzy
 msgid "Pigment:"
-msgstr ""
+msgstr "Pigment :"
 
 #: ../gui/optionspanel.py:47
 msgctxt "options panel: tab tooltip: title"
@@ -2872,7 +2886,7 @@ msgstr ""
 #: ../gui/optionspanel.py:62
 msgctxt "options panel: body"
 msgid "<i>No options available</i>"
-msgstr ""
+msgstr "<i>Pas d’options disponibles</i>"
 
 #: ../gui/overlays.py:161
 #, python-format
@@ -3010,7 +3024,7 @@ msgstr "Axe de symétrie"
 #: ../gui/symmetry.py:379
 msgctxt "symmetry axis options panel: labels"
 msgid "Rotational lines:"
-msgstr ""
+msgstr "Lignes de rotation :"
 
 #: ../gui/symmetry.py:446
 #, fuzzy
@@ -3077,7 +3091,7 @@ msgstr ""
 #, python-brace-format
 msgctxt "workspace: sidebar tabs: button tooltips"
 msgid "{tab_title}: move tab to other sidebar"
-msgstr ""
+msgstr "{tab_title}: déplacer l'onglet vers l'autre barre latérale"
 
 #: ../gui/topbar.py:91
 msgid "<b>MyPaint</b>"
@@ -3112,20 +3126,22 @@ msgid "Unknown Command"
 msgstr "Action inconnue"
 
 #: ../lib/command.py:324
+#, fuzzy
 msgid "Undefined (command not started yet)"
-msgstr ""
+msgstr "Non défini (l’action n’a pas encore démarré)"
 
 #. TRANSLATORS: A short time spent painting / making brushwork.
 #. TRANSLATORS: This can correspond to zero or more touches of
 #. TRANSLATORS: the physical stylus to the tablet.
 #: ../lib/command.py:331
-#, python-brace-format
+#, fuzzy, python-brace-format
 msgid "{seconds:.01f}s of painting with {brush_name}"
-msgstr ""
+msgstr "{seconds:.01f}s de peinture avec {brush_name}"
 
 #: ../lib/command.py:529
+#, fuzzy
 msgid "Flood Fill"
-msgstr ""
+msgstr "Remplissage"
 
 #: ../lib/command.py:616
 msgid "Trim Layer"
@@ -4602,7 +4618,7 @@ msgstr "Charger le calque"
 #: ../po/tmp/preferenceswindow.glade.h:59
 msgctxt "Prefs Dialog|View|"
 msgid "<b>Zoom and Rendering</b>"
-msgstr "<b> Zoom et Rendu <b>"
+msgstr "<b>Zoom et rendu</b>"
 
 #: ../po/tmp/preferenceswindow.glade.h:60
 msgid "Default zoom level:"

@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: mypaint v2.0.0-alpha.8-1-g4490f06\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-02-12 21:56+0100\n"
-"PO-Revision-Date: 2020-02-06 19:50+0000\n"
+"PO-Revision-Date: 2020-02-17 20:58+0000\n"
 "Last-Translator: Prachi Joshi <josprachi@yahoo.com>\n"
 "Language-Team: Marathi <https://hosted.weblate.org/projects/mypaint/mypaint/"
 "mr/>\n"
@@ -15,8 +15,8 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=n > 1;\n"
-"X-Generator: Weblate 3.11-dev\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Weblate 3.11\n"
 
 #. TRANSLATORS: Name of first column in the button map preferences.
 #. TRANSLATORS: Refers to an action bound to a mod+button combination.
@@ -665,6 +665,7 @@ msgctxt "Online help pages"
 msgid ""
 "https://github.com/mypaint/mypaint/wiki/v1.2-HCY-Wheel-and-Gamut-Mask-Editor"
 msgstr ""
+"https://github.com/mypaint/mypaint/wiki/v1.2-HCY-Wheel-and-Gamut-Mask-Editor"
 
 #: ../gui/colors/hcywheel.py:87
 msgctxt "Color Wheels: activity toggle: action title"
@@ -2038,21 +2039,21 @@ msgstr ""
 #: ../gui/fill.py:687
 msgctxt "fill options: Target | Blend Mode dropdown (tooltip)"
 msgid "Blend mode used when filling"
-msgstr ""
+msgstr "भरताना ब्लेंड मोड वापरला जातो"
 
 #: ../gui/fill.py:702
 msgid "Opacity:"
-msgstr ""
+msgstr "अपारदर्शकता:"
 
 #: ../gui/fill.py:705
 msgctxt "fill options: Opacity slider (tooltip)"
 msgid "Opacity of the fill"
-msgstr ""
+msgstr "भरण्याचे अस्पष्टता"
 
 #: ../gui/fill.py:728
 msgctxt "fill options: numeric option - grow/shrink fill (label)"
 msgid "Offset:"
-msgstr ""
+msgstr "ऑफसेट:"
 
 #: ../gui/fill.py:744
 msgctxt "fill options: Offset (tooltip)"
@@ -2062,7 +2063,7 @@ msgstr ""
 #: ../gui/fill.py:755
 msgctxt "fill options: numeric option for blurring fill (label)"
 msgid "Feather:"
-msgstr ""
+msgstr "पंख:"
 
 #: ../gui/fill.py:770
 msgctxt "fill options: Feather (tooltip)"
@@ -2072,7 +2073,7 @@ msgstr ""
 #: ../gui/fill.py:786
 msgctxt "fill options: gap detection toggle (label)"
 msgid "Use Gap Detection"
-msgstr ""
+msgstr "गॅप डिटेक्शन वापरा"
 
 #: ../gui/fill.py:791
 msgctxt "fill options: Use Gap Detection (tooltip)"
@@ -2085,7 +2086,7 @@ msgstr ""
 #: ../gui/fill.py:809
 msgctxt "fill options: gap-detection sub-option, numeric setting (label)"
 msgid "Max Gap Size:"
-msgstr ""
+msgstr "कमाल गॅप आकार:"
 
 #: ../gui/fill.py:824
 msgctxt "fill options: Max Gap Size (tooltip)"
@@ -2111,17 +2112,17 @@ msgstr ""
 
 #: ../gui/fill.py:854 ../gui/mode.py:627
 msgid "Reset"
-msgstr ""
+msgstr "रीसेट करा"
 
 #: ../gui/fill.py:858
 msgctxt "fill options: Reset button (tooltip)"
 msgid "Reset options to their defaults"
-msgstr ""
+msgstr "पर्याय त्यांच्या डीफॉल्टवर रीसेट करा"
 
 #: ../gui/fill.py:1036
 msgctxt "fill option: default option in the Source Layer dropdown"
 msgid "Selected Layer"
-msgstr ""
+msgstr "निवडलेला स्तर"
 
 #: ../gui/footer.py:191
 #, python-brace-format

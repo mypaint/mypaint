@@ -8,8 +8,9 @@ msgstr ""
 "Project-Id-Version: mypaint v2.0.0-alpha.8-1-g4490f06\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-02-12 21:56+0100\n"
-"PO-Revision-Date: 2019-02-23 08:01+0000\n"
-"Last-Translator: glixx <roman_romul@mail.ru>\n"
+"PO-Revision-Date: 2020-02-20 08:46+0000\n"
+"Last-Translator: Overloaded @ Orama Interactive http://orama-interactive.com/"
+" <manoschool@yahoo.gr>\n"
 "Language-Team: Greek <https://hosted.weblate.org/projects/mypaint/mypaint/el/"
 ">\n"
 "Language: el\n"
@@ -17,7 +18,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 3.5-dev\n"
+"X-Generator: Weblate 3.11\n"
 
 #. TRANSLATORS: Name of first column in the button map preferences.
 #. TRANSLATORS: Refers to an action bound to a mod+button combination.
@@ -1438,7 +1439,7 @@ msgstr ""
 #: ../gui/document.py:555
 #, python-format
 msgid "Undo %s"
-msgstr ""
+msgstr "Αναίρεση %s"
 
 #: ../gui/document.py:557
 msgid "Undo"
@@ -4714,7 +4715,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:1
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "New"
-msgstr ""
+msgstr "Νέο"
 
 #: ../po/tmp/resources.xml.h:2
 msgctxt "Toolbar (short labels)"
@@ -4729,7 +4730,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:4
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "Open…"
-msgstr ""
+msgstr "Άνοιγμα…"
 
 #: ../po/tmp/resources.xml.h:5
 msgctxt "Toolbar (short labels)"
@@ -4779,7 +4780,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:14
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "Save"
-msgstr ""
+msgstr "Αποθήκευση"
 
 #: ../po/tmp/resources.xml.h:15
 msgctxt "Accel Editor (descriptions)"
@@ -4789,7 +4790,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:16
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "Save As…"
-msgstr ""
+msgstr "Αποθήκευση ως…"
 
 #: ../po/tmp/resources.xml.h:17
 msgctxt "Accel Editor (descriptions)"
@@ -5076,7 +5077,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:73
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Clear Layer"
-msgstr ""
+msgstr "Καθαρισμός Στρώσης"
 
 #: ../po/tmp/resources.xml.h:74
 msgctxt "Accel Editor (descriptions)"
@@ -5209,7 +5210,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:99
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "New Painting Layer"
-msgstr ""
+msgstr "Νέα Στρώση Ζωγραφικής"
 
 #: ../po/tmp/resources.xml.h:100
 msgctxt "Accel Editor (descriptions)"
@@ -5229,7 +5230,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:103
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "New Layer Group"
-msgstr ""
+msgstr "Νέα Ομάδα Στρώσεων"
 
 #: ../po/tmp/resources.xml.h:104
 msgctxt "Accel Editor (descriptions)"
@@ -5299,7 +5300,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:117
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Delete Layer"
-msgstr ""
+msgstr "Διαγραφή Στρώσης"
 
 #: ../po/tmp/resources.xml.h:118
 msgctxt "Accel Editor (descriptions)"
@@ -5718,7 +5719,7 @@ msgstr "Αρχείο"
 #: ../po/tmp/resources.xml.h:202
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "Quit"
-msgstr ""
+msgstr "Έξοδος"
 
 #: ../po/tmp/resources.xml.h:203
 msgctxt "Accel Editor (descriptions)"
@@ -5728,12 +5729,12 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:204
 msgctxt "Menu (labels)"
 msgid "Edit"
-msgstr ""
+msgstr "Επεξεργασία"
 
 #: ../po/tmp/resources.xml.h:205
 msgctxt "Menu (labels)"
 msgid "Color"
-msgstr ""
+msgstr "Χρώμα"
 
 #: ../po/tmp/resources.xml.h:206
 msgctxt "Menu→Color (labels)"
@@ -5793,7 +5794,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:217
 msgctxt "Menu (labels)"
 msgid "Layer"
-msgstr ""
+msgstr "Στρώση"
 
 #: ../po/tmp/resources.xml.h:218
 msgctxt "Menu→Layer→Properties (labels)"
@@ -5904,12 +5905,12 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:239
 msgctxt "Menu (labels)"
 msgid "Window"
-msgstr ""
+msgstr "Παράθυρο"
 
 #: ../po/tmp/resources.xml.h:240
 msgctxt "Menu→Brush (labels)"
 msgid "Brush"
-msgstr ""
+msgstr "Πινέλο"
 
 #: ../po/tmp/resources.xml.h:241
 msgctxt "Menu→Brush (labels)"
@@ -5929,7 +5930,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:244
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
 msgid "Change Brush…"
-msgstr ""
+msgstr "Αλλαγή Πινέλου…"
 
 #: ../po/tmp/resources.xml.h:245
 msgctxt "Accel Editor (descriptions)"
@@ -5939,7 +5940,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:246
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "Change Color…"
-msgstr ""
+msgstr "Αλλαγή Χρώματος…"
 
 #: ../po/tmp/resources.xml.h:247
 msgctxt "Accel Editor (descriptions)"
@@ -5962,7 +5963,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:250
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
 msgid "Get More Brushes…"
-msgstr ""
+msgstr "Πάρτε περισσότερα πινέλα…"
 
 #: ../po/tmp/resources.xml.h:251
 msgctxt "Accel Editor (descriptions)"
@@ -5987,7 +5988,7 @@ msgstr "Βοήθεια"
 #: ../po/tmp/resources.xml.h:255
 msgctxt "Menu→Help (labels), Accel Editor (labels)"
 msgid "Online Help"
-msgstr ""
+msgstr "Διαδικτυακή βοήθεια"
 
 #: ../po/tmp/resources.xml.h:256
 msgctxt "Accel Editor (descriptions)"
@@ -6052,7 +6053,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:268
 msgctxt "Menu (labels)"
 msgid "View"
-msgstr ""
+msgstr "Προβολή"
 
 #: ../po/tmp/resources.xml.h:269
 msgctxt "Menu→View (labels)"
@@ -6077,7 +6078,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:273
 msgctxt "Menu→View (labels), Accel Editor (labels)"
 msgid "Fullscreen"
-msgstr ""
+msgstr "Πλήρης οθόνη"
 
 #: ../po/tmp/resources.xml.h:274
 msgctxt "Accel Editor (descriptions)"
@@ -6087,7 +6088,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:275
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
 msgid "Edit Preferences"
-msgstr ""
+msgstr "Επεξεργασία προτιμήσεων"
 
 #: ../po/tmp/resources.xml.h:276
 msgctxt "Accel Editor (descriptions)"
@@ -6172,7 +6173,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:291
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "Color Palette"
-msgstr ""
+msgstr "Παλέτα χρωμάτων"
 
 #: ../po/tmp/resources.xml.h:292
 msgctxt "Accel Editor (descriptions)"
@@ -6284,7 +6285,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:313
 msgctxt "Menu→View (labels), Accel Editor (labels)"
 msgid "Preview"
-msgstr ""
+msgstr "Προεπισκόπηση"
 
 #: ../po/tmp/resources.xml.h:314
 msgctxt "Accel Editor (descriptions)"
@@ -6430,7 +6431,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:342
 msgctxt "Menu→Edit→Current Mode (labels)"
 msgid "Freehand"
-msgstr ""
+msgstr "Ελεύθερο χέρι"
 
 #: ../po/tmp/resources.xml.h:343
 msgctxt "Toolbar (short labels)"
@@ -6445,7 +6446,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:345
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
 msgid "Freehand"
-msgstr ""
+msgstr "Ελεύθερο χέρι"
 
 #: ../po/tmp/resources.xml.h:346
 msgctxt "Accel Editor (descriptions)"
@@ -6570,7 +6571,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:370
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
 msgid "Connected Lines"
-msgstr ""
+msgstr "Συνδεδεμένες γραμμές"
 
 #: ../po/tmp/resources.xml.h:371
 msgctxt "Accel Editor (descriptions)"
@@ -6595,7 +6596,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:375
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
 msgid "Ellipses and Circles"
-msgstr ""
+msgstr "Ελλείψεις και Κύκλοι"
 
 #: ../po/tmp/resources.xml.h:376
 msgctxt "Accel Editor (descriptions)"
@@ -6645,7 +6646,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:385
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Reposition Layer"
-msgstr ""
+msgstr "Επανατοποθέτηση Στρώσης"
 
 #: ../po/tmp/resources.xml.h:386
 msgctxt "Accel Editor (description)"
@@ -6697,7 +6698,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:395
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "Edit Painting Symmetry"
-msgstr ""
+msgstr "Επεξεργασία συμμετρίας ζωγραφικής"
 
 #: ../po/tmp/resources.xml.h:396
 msgctxt "Accel Editor (description)"
@@ -6783,7 +6784,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:411
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
 msgid "Flood Fill"
-msgstr ""
+msgstr "Γέμισμα"
 
 #: ../po/tmp/resources.xml.h:412
 msgctxt "Accel Editor (descriptions)"
