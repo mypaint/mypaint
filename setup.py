@@ -385,7 +385,7 @@ class BuildExt (build_ext):
     def finalize_options(self):
         build_ext.finalize_options(self)
         if self.set_rpath and (sys.platform.startswith("linux")
-                or "bsd" in sys.platform):
+                               or "bsd" in sys.platform):
             # The directories in runtime_library_dirs will be added
             # to the linker args as '-Wl,-R{dirs}' This _should_ be
             # compatible with the --rpath= build_ext option
