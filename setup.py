@@ -783,6 +783,18 @@ def pkgconfig(packages, **kwopts):
     return kwopts
 
 
+def check_dependencies(deps):
+    with open(os.devnull, 'w') as devnull:
+        # Check with a single invocation in case everything is available
+        if subprocess.call([pkgconf(), "--libs"] + deps, stdout=devnull):
+            # Already printed to stderr, but easier to see in a summary
+            print_err("\nThe following required dependencies were not found:")
+            for dep in deps:
+                if subprocess.call([pkgconf(), dep]):
+                    print_err(dep)
+            sys.exit(1)
+
+
 def get_ext_modules():
     """Return a list of binary Extensions for setup() to process."""
 
@@ -810,14 +822,23 @@ def get_ext_modules():
         extra_link_args.append('-Wl,-z,origin')
         extra_link_args.append('-Wl,-rpath,$ORIGIN')
 
+    initial_deps = ["libmypaint-2.0"]
+    remaining_deps = [
+        "pygobject-3.0",
+        "glib-2.0",
+        "libpng",
+        "lcms2",
+        "gtk+-3.0",
+        "mypaint-brushes-2.0",
+    ]
+    check_dependencies(initial_deps + remaining_deps)
+
     # Ensure that the lib path of libmypaint is added first
     # to the rpath when the --set-rpath option is used.
     # For most users this will be the case anyway, due to the
     # order of the pkg-config output, but this ensures it.
     mypaintlib_opts = pkgconfig(
-        packages=[
-            "libmypaint-2.0",
-        ],
+        packages=initial_deps,
         include_dirs=[
             numpy.get_include(),
         ],
@@ -826,14 +847,7 @@ def get_ext_modules():
     )
     # Append the info from the rest of the dependencies
     mypaintlib_opts = pkgconfig(
-        packages=[
-            "pygobject-3.0",
-            "glib-2.0",
-            "libpng",
-            "lcms2",
-            "gtk+-3.0",
-            "mypaint-brushes-2.0",
-        ],
+        packages=remaining_deps,
         **mypaintlib_opts
     )
 
