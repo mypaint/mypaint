@@ -5,7 +5,7 @@ msgstr ""
 "Project-Id-Version: mypaint v2.0.0-alpha.12-327-ga332f03\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-02-12 21:56+0100\n"
-"PO-Revision-Date: 2020-02-06 19:50+0000\n"
+"PO-Revision-Date: 2020-02-17 20:58+0000\n"
 "Last-Translator: geun-tak Jeong <beroberos@gmail.com>\n"
 "Language-Team: Korean <https://hosted.weblate.org/projects/mypaint/mypaint/"
 "ko/>\n"
@@ -14,7 +14,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 3.11-dev\n"
+"X-Generator: Weblate 3.11\n"
 "X-Poedit-SourceCharset: utf-8\n"
 
 #. TRANSLATORS: Name of first column in the button map preferences.
@@ -1277,7 +1277,7 @@ msgstr "항상 2.x 모드에서 열기"
 #: ../gui/compatibility.py:215
 msgctxt "Prefs Dialog|Compatibility"
 msgid "Open in 1.x mode unless file contains pigment layers"
-msgstr "파일에 그림 물감 레이어가없는 경우 1.x 모드로 열기"
+msgstr "파일에 안료 레이어가없는 경우 1.x 모드로 열기"
 
 #. TRANSLATORS: This is a label for a dropdown menu in the
 #. TRANSLATORS: file chooser dialog when loading .ora files.
@@ -1454,12 +1454,12 @@ msgstr "<b>“{brushpack_name}”패키지를 가져 오시겠습니까?</b>"
 #: ../gui/document.py:453
 #, python-format
 msgid "Load brush settings from shortcut slot %d"
-msgstr "바로 가기 슬롯 %d에서 브러시 설정을 불러오기"
+msgstr "브러시 설정을 숏컷 슬롯 %d에서 불러옵니다"
 
 #: ../gui/document.py:454
 #, python-format
 msgid "Store brush settings in shortcut slot %d"
-msgstr "%d 바로 가기 슬롯에 브러시 설정을 저장합니다"
+msgstr "브러시 설정을 숏컷 슬롯 %d에 저장합니다"
 
 #: ../gui/document.py:455
 #, python-format
@@ -2820,7 +2820,7 @@ msgstr "이득:"
 #. TRANSLATORS:"Paint Pigment Mode" for the options panel. Short.
 #: ../gui/mode.py:590
 msgid "Pigment:"
-msgstr "그림 물감:"
+msgstr "안료:"
 
 #: ../gui/optionspanel.py:47
 msgctxt "options panel: tab tooltip: title"
@@ -3554,14 +3554,12 @@ msgstr "색상을 혼합하지 않은 최상위 레이어 만."
 
 #: ../lib/modes.py:54
 msgid "Pigment"
-msgstr "그림 물감"
+msgstr "안료"
 
 #: ../lib/modes.py:55
 msgid ""
 "Similar to mixing actual pigments by upsampling to 10 spectral channels."
-msgstr ""
-"10 개의 스펙트럼 채널로 업샘플링하여 실제 그림 물감을 혼합하는 것과 유사합니"
-"다."
+msgstr "10 개의 스펙트럼 채널로 업샘플링하여 실제 안료를 혼합하는 것과 유사합니다."
 
 #: ../lib/modes.py:58
 msgid "Multiply"
@@ -4750,7 +4748,7 @@ msgstr ""
 #: ../po/tmp/preferenceswindow.glade.h:96
 msgctxt "Prefs Dialog|Color|Color Wheel|Primaries|"
 msgid "Traditional artist's Red/Yellow/Blue"
-msgstr "전통 예술가 레드/옐로우/블루"
+msgstr "전통 아티스트의 레드/옐로우/블루"
 
 #: ../po/tmp/preferenceswindow.glade.h:97
 msgid ""
@@ -4843,7 +4841,7 @@ msgstr "기본 새 레이어 유형:"
 #: ../po/tmp/preferenceswindow.glade.h:111
 msgctxt "Prefs Dialog|Compatibility"
 msgid "Default Pigment Brush Setting:"
-msgstr "기본 그림 물감 브러시 설정:"
+msgstr "기본 안료 브러시 설정:"
 
 #. Label description for the 1.x compatibility-mode-by-default setting
 #: ../po/tmp/preferenceswindow.glade.h:115
@@ -4853,9 +4851,8 @@ msgid ""
 "default. In this mode 1.x .ora files will look the same as they did in older "
 "versions, but pigment blending will not work well."
 msgstr ""
-"새 문서를 만들 때는 기본적으로 레거시 1.x 호환 모드를 사용. 이 모드에서 1.x ."
-"ora 파일은 이전 버전에서와 동일하게 보이지만 그림 물감 혼합은 제대로 작동하"
-"지 않습니다."
+"새 문서를 만들 때는 기본적으로 레거시 1.x 호환 모드를 사용. 이 모드에서 1.x .ora 파일은 이전 버전에서와 동일하게 보이지만 "
+"안료 혼합은 제대로 작동하지 않습니다."
 
 #: ../po/tmp/preferenceswindow.glade.h:118
 msgctxt "Prefs Dialog|Compatibility"
@@ -5277,16 +5274,14 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:69
 msgctxt "Menu→Brush→Shortcut Keys (labels), Accel Editor (labels)"
 msgid "Brush Shortcut Keys Restore Color"
-msgstr "브러시 바로 가기 키로 색상을 복원"
+msgstr "브러시 숏컷 키로 색상을 복원"
 
 #: ../po/tmp/resources.xml.h:70
 msgctxt "Accel Editor (descriptions)"
 msgid ""
 "Toggle whether restoring the brush from a shortcut key also restores the "
 "saved color."
-msgstr ""
-"바로 가기 키에서 브러시를 복원해도 저장된 색상이 복원되는지 여부를 토글합니"
-"다."
+msgstr "숏컷 키에서 브러시를 복원해도 저장된 색상이 복원되는지 여부를 토글합니다."
 
 #: ../po/tmp/resources.xml.h:71
 msgctxt "Menu→Brush→Shortcut Keys (labels), Accel Editor (labels)"
