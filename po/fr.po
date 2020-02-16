@@ -10,7 +10,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-02-12 21:56+0100\n"
 "PO-Revision-Date: 2020-02-17 20:58+0000\n"
-"Last-Translator: Pamputt <pamputt0@gmail.com>\n"
+"Last-Translator: Isabelle Lepage <noisette@netc.eu>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/mypaint/mypaint/"
 "fr/>\n"
 "Language: fr\n"
@@ -2338,7 +2338,7 @@ msgstr "Rogner le calque en fonction du cadre"
 
 #: ../gui/framewindow.py:601
 msgid "Trim parts of the current layer which lie outside the frame"
-msgstr ""
+msgstr "Rogner les éléments du calque actuel qui se trouvent en dehors du cadre"
 
 #: ../gui/framewindow.py:607
 msgid "Enabled"
@@ -2373,7 +2373,7 @@ msgstr "Peindre des coups de pinceau de forme libre"
 #. TRANSLATORS: used on the options panel.
 #: ../gui/freehand.py:581
 msgid "Smooth:"
-msgstr ""
+msgstr "Lissage :"
 
 #. TRANSLATORS: Short alias for "Fake Pressure (for mouse)". This is
 #. TRANSLATORS: used on the options panel.
@@ -2396,6 +2396,7 @@ msgid "<big><b>A programming error has been detected.</b></big>"
 msgstr "<big><b>Une erreur de programmation à été détectée.</b></big>"
 
 #: ../gui/gtkexcepthook.py:169
+#, fuzzy
 msgid ""
 "You may be able to ignore this error and carry on working, but you should "
 "probably save your work soon.\n"
@@ -2403,6 +2404,11 @@ msgid ""
 "Please tell the developers about this using the issue tracker if no-one else "
 "has reported it yet."
 msgstr ""
+"Vous pouvez peut-être ignorer cette erreur et continuer à travailler mais "
+"vous devriez sauvegarder votre travail rapidement.\n"
+"\n"
+"Veuillez informer les développeurs de cette erreur à l’aide de l’outil de "
+"suivi des erreurs si personne d’autre ne l’a pas déjà signalé."
 
 #: ../gui/gtkexcepthook.py:177
 msgid "Search Tracker…"
@@ -2536,8 +2542,9 @@ msgstr "Visible"
 
 #. Other flags column
 #: ../gui/layers.py:426
+#, fuzzy
 msgid "Flags"
-msgstr ""
+msgstr "Drapeaux"
 
 #: ../gui/layers.py:925
 #, fuzzy
@@ -2546,9 +2553,10 @@ msgid "?layer"
 msgstr "Calque"
 
 #: ../gui/layers.py:945
+#, fuzzy
 msgctxt "Layers: description parts: unknown mode (fallback str!)"
 msgid "?mode"
-msgstr ""
+msgstr "?mode"
 
 #: ../gui/layers.py:952
 msgctxt "Layers: description parts: layer hidden"
@@ -2622,9 +2630,12 @@ msgid "Move layer in stack…"
 msgstr "Réordonner les calques en pile…"
 
 #: ../gui/layerswindow.py:115
+#, fuzzy
 msgid ""
 "Move layer in stack (dropping into a regular layer will create a new group)"
 msgstr ""
+"Déplacer le calque dans la pile (le déposer dans un calque normal créera un "
+"nouveau groupe)"
 
 #: ../gui/layerswindow.py:156
 msgid "Layer"
@@ -2843,7 +2854,7 @@ msgstr "Opaque :"
 #. TRANSLATORS:"Brush hardness/sharpness" for the options panel. Short.
 #: ../gui/mode.py:586
 msgid "Sharp:"
-msgstr ""
+msgstr "Dureté :"
 
 #. TRANSLATORS:"Additional pressure gain" for the options panel. Short.
 #: ../gui/mode.py:588
@@ -2852,8 +2863,9 @@ msgstr ""
 
 #. TRANSLATORS:"Paint Pigment Mode" for the options panel. Short.
 #: ../gui/mode.py:590
+#, fuzzy
 msgid "Pigment:"
-msgstr ""
+msgstr "Pigment :"
 
 #: ../gui/optionspanel.py:47
 msgctxt "options panel: tab tooltip: title"
@@ -2874,7 +2886,7 @@ msgstr ""
 #: ../gui/optionspanel.py:62
 msgctxt "options panel: body"
 msgid "<i>No options available</i>"
-msgstr ""
+msgstr "<i>Pas d’options disponibles</i>"
 
 #: ../gui/overlays.py:161
 #, python-format
@@ -3012,7 +3024,7 @@ msgstr "Axe de symétrie"
 #: ../gui/symmetry.py:379
 msgctxt "symmetry axis options panel: labels"
 msgid "Rotational lines:"
-msgstr ""
+msgstr "Lignes de rotation :"
 
 #: ../gui/symmetry.py:446
 #, fuzzy
@@ -3079,7 +3091,7 @@ msgstr ""
 #, python-brace-format
 msgctxt "workspace: sidebar tabs: button tooltips"
 msgid "{tab_title}: move tab to other sidebar"
-msgstr ""
+msgstr "{tab_title}: déplacer l'onglet vers l'autre barre latérale"
 
 #: ../gui/topbar.py:91
 msgid "<b>MyPaint</b>"
@@ -3114,20 +3126,22 @@ msgid "Unknown Command"
 msgstr "Action inconnue"
 
 #: ../lib/command.py:324
+#, fuzzy
 msgid "Undefined (command not started yet)"
-msgstr ""
+msgstr "Non défini (l’action n’a pas encore démarré)"
 
 #. TRANSLATORS: A short time spent painting / making brushwork.
 #. TRANSLATORS: This can correspond to zero or more touches of
 #. TRANSLATORS: the physical stylus to the tablet.
 #: ../lib/command.py:331
-#, python-brace-format
+#, fuzzy, python-brace-format
 msgid "{seconds:.01f}s of painting with {brush_name}"
-msgstr ""
+msgstr "{seconds:.01f}s de peinture avec {brush_name}"
 
 #: ../lib/command.py:529
+#, fuzzy
 msgid "Flood Fill"
-msgstr ""
+msgstr "Remplissage"
 
 #: ../lib/command.py:616
 msgid "Trim Layer"
