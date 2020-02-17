@@ -65,16 +65,18 @@ SRC_CLONEURI="https://github.com/Alexpux/MINGW-packages.git"
 # Output location for build artifacts.
 OUTPUT_ROOT="${OUTPUT_ROOT:-$TOPDIR/out}"
 
+upgrade_msys_environment() {
+    loginfo "Upgrading MSYS2 environment"
+    pacman -Syu --noconfirm
+}
 
 install_dependencies() {
+
     loginfo "Removing potential package conflicts..."
     pacman --remove --noconfirm ${PKG_PREFIX}-mypaint-git || true
     pacman --remove --noconfirm ${PKG_PREFIX}-mypaint || true
     pacman --remove --noconfirm ${PKG_PREFIX}-libmypaint-git || true
     pacman --remove --noconfirm ${PKG_PREFIX}-mypaint-brushes2 || true
-
-    loginfo "Upgrading MSYS2 environment"
-    pacman -Syu --noconfirm
 
     loginfo "Installing pre-built dependencies for MyPaint"
     pacman -S --noconfirm --needed --noprogressbar \
@@ -309,6 +311,9 @@ run_tests() {
 # Command line processing
 
 case "$1" in
+    upgrade_env)
+        upgrade_msys_environment
+        ;;
     installdeps)
         install_dependencies
         update_mingw_src
