@@ -264,7 +264,7 @@ def _get_versions(gitprefix="gitexport"):
         # If release information from release.sh exists, use that
         relinfo = {}
         with open("release_info", "rb") as relinfo_fp:
-            exec(relinfo_fp, relinfo)
+            exec(relinfo_fp.read(), relinfo)
         base_version = relinfo.get(
             "MYPAINT_VERSION_BASE",
             base_version,
