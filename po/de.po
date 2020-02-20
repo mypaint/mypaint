@@ -4,8 +4,8 @@ msgstr ""
 "Project-Id-Version: mypaint v2.0.0-alpha.11-2-g0673fe8\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-02-12 21:56+0100\n"
-"PO-Revision-Date: 2020-01-12 22:21+0000\n"
-"Last-Translator: PAS <weblate.7.tuner@spamgourmet.com>\n"
+"PO-Revision-Date: 2020-02-21 20:35+0000\n"
+"Last-Translator: Ettore Atalan <atalanttore@googlemail.com>\n"
 "Language-Team: German <https://hosted.weblate.org/projects/mypaint/mypaint/"
 "de/>\n"
 "Language: de\n"
@@ -13,7 +13,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 3.10.1\n"
+"X-Generator: Weblate 3.11.1\n"
 "X-Poedit-Country: GERMANY\n"
 "X-Poedit-Language: German\n"
 "X-Poedit-SourceCharset: utf-8\n"
@@ -1612,16 +1612,14 @@ msgid "Fullscreen"
 msgstr "Vollbild"
 
 #: ../gui/drawwindow.py:682
-#, fuzzy
 msgctxt "Quit confirm dialog: title"
 msgid "Really Quit?"
 msgstr "Wirklich beenden?"
 
 #: ../gui/drawwindow.py:686
-#, fuzzy
 msgctxt "Quit confirm dialog: continue button"
 msgid "_Quit"
-msgstr "Beenden"
+msgstr "_Beenden"
 
 #: ../gui/drawwindow.py:704
 msgid "Import brush package…"
@@ -1841,10 +1839,9 @@ msgid "OpenRaster (*.ora)"
 msgstr "OpenRaster (*.ora)"
 
 #: ../gui/filehandling.py:503
-#, fuzzy
 msgctxt "save dialogs: save formats and options"
 msgid "PNG, respecting “Show Background” (*.png)"
-msgstr "PNG deckend mit Hintergrund (*.png)"
+msgstr "PNG, „Hintergrund anzeigen“ beachten (*.png)"
 
 #: ../gui/filehandling.py:507
 msgctxt "save dialogs: save formats and options"
@@ -1857,52 +1854,45 @@ msgid "PNG, transparent RGBA (*.png)"
 msgstr "PNG transparent RGBA (*.png)"
 
 #: ../gui/filehandling.py:515
-#, fuzzy
 msgctxt "save dialogs: save formats and options"
 msgid "Multiple PNGs, by layer (*.NUM.png)"
-msgstr "Mehrere PNG transparent (*.XXX.png)"
+msgstr "Mehrere PNGs, nach Ebene (*.NUM.png)"
 
 #: ../gui/filehandling.py:519
-#, fuzzy
 msgctxt "save dialogs: save formats and options"
 msgid "Multiple PNGs, by view (*.NAME.png)"
-msgstr "Mehrere PNG transparent (*.XXX.png)"
+msgstr "Mehrere PNGs, nach Ansicht (*.NAME.png)"
 
 #: ../gui/filehandling.py:523
-#, fuzzy
 msgctxt "save dialogs: save formats and options"
 msgid "JPEG 90% quality (*.jpg; *.jpeg)"
-msgstr "JPEG 90 % Qualität (*.jpg; *.jpeg)"
+msgstr "JPEG 90%ige Qualität (*.jpg; *.jpeg)"
 
 #: ../gui/filehandling.py:581
-#, fuzzy
 msgctxt "Dialogs (window title): File→Export…"
 msgid "Export"
-msgstr "Exportieren …"
+msgstr "Exportieren"
 
 #: ../gui/filehandling.py:586
-#, fuzzy
 msgctxt "Dialogs (window title): File→Save As…"
 msgid "Save As"
-msgstr "Speichern unter …"
+msgstr "Speichern unter"
 
 #: ../gui/filehandling.py:606
-#, fuzzy
 msgctxt "save dialogs: formats and options: (label)"
 msgid "Format to save as:"
-msgstr "Speicherformat:"
+msgstr "Format zum Speichern unter:"
 
 #: ../gui/filehandling.py:673
-#, fuzzy
 msgctxt ""
 "Destructive action confirm dialog: fallback title (normally overridden)"
 msgid "Really Continue?"
-msgstr "Wirklich fortfahren?"
+msgstr "Wirklich fortsetzen?"
 
 #: ../gui/filehandling.py:706
 msgctxt "Destructive action confirm dialog: cancel button"
 msgid "_Cancel"
-msgstr ""
+msgstr "_Abbrechen"
 
 #: ../gui/filehandling.py:710
 #, fuzzy
@@ -1915,7 +1905,7 @@ msgctxt ""
 "Destructive action confirm dialog: fallback continue button (normally "
 "overridden)"
 msgid "Co_ntinue"
-msgstr ""
+msgstr "_Fortsetzen"
 
 #: ../gui/filehandling.py:739
 #, fuzzy, python-brace-format
@@ -1926,64 +1916,57 @@ msgstr "Dies wird {abbreviated_time} nicht gespeicherter Arbeit verwerfen"
 #: ../gui/filehandling.py:804
 msgctxt "File→New: confirm dialog: title question"
 msgid "New Canvas?"
-msgstr ""
+msgstr "Neue Leinwand?"
 
 #: ../gui/filehandling.py:808
 msgctxt "File→New: confirm dialog: continue button"
 msgid "_New Canvas"
-msgstr ""
+msgstr "_Neue Leinwand"
 
 #: ../gui/filehandling.py:1024
 msgctxt "File→Open: confirm dialog: title question"
 msgid "Open File?"
-msgstr ""
+msgstr "Datei öffnen?"
 
 #: ../gui/filehandling.py:1028
-#, fuzzy
 msgctxt "File→Open: confirm dialog: continue button"
 msgid "_Open…"
-msgstr "Öffnen …"
+msgstr "_Öffnen …"
 
 #: ../gui/filehandling.py:1036
-#, fuzzy
 msgctxt "File→Open: file chooser dialog: title"
 msgid "Open File"
-msgstr "Zuletzt verwendete Dateien öffnen"
+msgstr "Datei öffnen"
 
 #: ../gui/filehandling.py:1084
-#, fuzzy
 msgctxt "load dialogs: title"
 msgid "Open Scratchpad…"
 msgstr "Notizblock öffnen …"
 
 #: ../gui/filehandling.py:1126
-#, fuzzy
 msgctxt "Layers→Import Layers: files-chooser dialog: title"
 msgid "Import Layers"
-msgstr "Importierter Pinsel"
+msgstr "Ebenen importieren"
 
 #: ../gui/filehandling.py:1433
 msgctxt "File→Open Recent→* confirm dialog: title"
 msgid "Open File?"
-msgstr ""
+msgstr "Datei öffnen?"
 
 #: ../gui/filehandling.py:1437
-#, fuzzy
 msgctxt "File→Open Recent→* confirm dialog: continue button"
 msgid "_Open"
-msgstr "Öffnen"
+msgstr "_Öffnen"
 
 #: ../gui/filehandling.py:1452
-#, fuzzy
 msgctxt "File→Open Most Recent confirm dialog: title"
 msgid "Open Most Recent File?"
-msgstr "Zuletzt gespeichertes Bild laden"
+msgstr "Letzte Datei öffnen?"
 
 #: ../gui/filehandling.py:1457
-#, fuzzy
 msgctxt "File→Open Most Recent→* confirm dialog: continue button"
 msgid "_Open"
-msgstr "Öffnen"
+msgstr "_Öffnen"
 
 #: ../gui/filehandling.py:1471
 #, fuzzy
@@ -1995,35 +1978,35 @@ msgstr "Es gibt noch keine Notizen mit dem Namem „%s“."
 #, fuzzy
 msgctxt "File→Open Next/Prev Scrap confirm dialog: title"
 msgid "Open Next Scrap?"
-msgstr "Nächsten Entwurf öffnen"
+msgstr "Nächsten Entwurf öffnen?"
 
 #: ../gui/filehandling.py:1488
 #, fuzzy
 msgctxt "File→Open Next/Prev Scrap confirm dialog: title"
 msgid "Open Previous Scrap?"
-msgstr "Letzten Entwurf öffnen"
+msgstr "Letzten Entwurf öffnen?"
 
 #: ../gui/filehandling.py:1497
-#, fuzzy
 msgctxt "File→Open Next/Prev Scrap confirm dialog: continue button"
 msgid "_Open"
-msgstr "Öffnen"
+msgstr "_Öffnen"
 
 #: ../gui/filehandling.py:1512
 msgctxt "File→Revert: status message: canvas has no filename yet"
 msgid "Cannot revert: canvas has not been saved to a file yet."
 msgstr ""
+"Kann nicht rückgängig gemacht werden: Die Leinwand wurde noch nicht in einer "
+"Datei gespeichert."
 
 #: ../gui/filehandling.py:1519
 msgctxt "File→Revert confirm dialog: title"
 msgid "Revert Changes?"
-msgstr ""
+msgstr "Änderungen rückgängig machen?"
 
 #: ../gui/filehandling.py:1524
-#, fuzzy
 msgctxt "File→Revert confirm dialog: continue button"
 msgid "_Revert"
-msgstr "Zurücksetzen"
+msgstr "_Rückgängig machen"
 
 #: ../gui/fill.py:122
 #, fuzzy
@@ -2034,13 +2017,11 @@ msgid "Flood Fill"
 msgstr "Füllen"
 
 #: ../gui/fill.py:128
-#, fuzzy
 msgctxt "Usage description of the Flood Fill mode"
 msgid "Fill areas with color"
 msgstr "Bereiche mit Farbe füllen"
 
 #: ../gui/fill.py:507
-#, fuzzy
 msgctxt ""
 "fill options: numeric value that determines whether tested pixels will be "
 "included in the fill, based on color difference"
@@ -2060,7 +2041,6 @@ msgstr ""
 "diese nicht mehr füllt"
 
 #: ../gui/fill.py:536
-#, fuzzy
 msgctxt ""
 "fill options: option category (label) Options under this category relate to "
 "what the fill isbased on, not where the actual fill ends up."
@@ -2116,7 +2096,6 @@ msgid ""
 msgstr ""
 
 #: ../gui/fill.py:644
-#, fuzzy
 msgctxt ""
 "fill options: option category (label)\n"
 "Options under this category relate to where the fill will end up (default: "
@@ -2125,13 +2104,11 @@ msgid "Target:"
 msgstr "Ziel:"
 
 #: ../gui/fill.py:647
-#, fuzzy
 msgctxt "fill options: 'Target:' category (tooltip)"
 msgid "Where the output should go"
 msgstr "Wohin die Ausgabe gehen soll"
 
 #: ../gui/fill.py:656
-#, fuzzy
 msgctxt ""
 "fill options: Target | toggle (label)\n"
 "When this option is enabled, the fill will be placed on a new\n"
@@ -2166,7 +2143,7 @@ msgstr "Deckkraft:"
 #: ../gui/fill.py:705
 msgctxt "fill options: Opacity slider (tooltip)"
 msgid "Opacity of the fill"
-msgstr ""
+msgstr "Deckkraft der Füllung"
 
 #: ../gui/fill.py:728
 msgctxt "fill options: numeric option - grow/shrink fill (label)"
@@ -2181,7 +2158,7 @@ msgstr ""
 #: ../gui/fill.py:755
 msgctxt "fill options: numeric option for blurring fill (label)"
 msgid "Feather:"
-msgstr ""
+msgstr "Feder:"
 
 #: ../gui/fill.py:770
 msgctxt "fill options: Feather (tooltip)"
@@ -2191,7 +2168,7 @@ msgstr ""
 #: ../gui/fill.py:786
 msgctxt "fill options: gap detection toggle (label)"
 msgid "Use Gap Detection"
-msgstr ""
+msgstr "Lückenerkennung verwenden"
 
 #: ../gui/fill.py:791
 msgctxt "fill options: Use Gap Detection (tooltip)"
@@ -2204,7 +2181,7 @@ msgstr ""
 #: ../gui/fill.py:809
 msgctxt "fill options: gap-detection sub-option, numeric setting (label)"
 msgid "Max Gap Size:"
-msgstr ""
+msgstr "Max. Lückengröße:"
 
 #: ../gui/fill.py:824
 msgctxt "fill options: Max Gap Size (tooltip)"
@@ -2233,16 +2210,14 @@ msgid "Reset"
 msgstr "Zurücksetzen"
 
 #: ../gui/fill.py:858
-#, fuzzy
 msgctxt "fill options: Reset button (tooltip)"
 msgid "Reset options to their defaults"
 msgstr "Optionen auf ihre Standardwerte zurücksetzen"
 
 #: ../gui/fill.py:1036
-#, fuzzy
 msgctxt "fill option: default option in the Source Layer dropdown"
 msgid "Selected Layer"
-msgstr "Ebene auswählen"
+msgstr "Ausgewählte Ebene"
 
 #: ../gui/footer.py:191
 #, python-brace-format
@@ -2538,23 +2513,22 @@ msgstr "Aktuelle Ebene bewegen"
 #: ../gui/layerprops.py:356
 msgctxt "layer properties dialog: name entry: icon tooltip"
 msgid "Layer names cannot be empty."
-msgstr ""
+msgstr "Ebenennamen dürfen nicht leer sein."
 
 #: ../gui/layerprops.py:361
 msgctxt "layer properties dialog: name entry: icon tooltip"
 msgid "Layer name is not unique."
-msgstr ""
+msgstr "Ebenenname ist nicht eindeutig."
 
 #: ../gui/layerprops.py:377
-#, fuzzy
 msgctxt "layer properties dialog: title"
 msgid "Layer Properties"
-msgstr "Eigenschaften"
+msgstr "Ebeneneigenschaften"
 
 #: ../gui/layerprops.py:381
 msgctxt "layer properties dialog: done button"
 msgid "Done"
-msgstr ""
+msgstr "Fertig"
 
 #. Visibility flag column
 #: ../gui/layers.py:394
@@ -2567,29 +2541,27 @@ msgid "Flags"
 msgstr ""
 
 #: ../gui/layers.py:925
-#, fuzzy
 msgctxt "Layers: description: no layer (\"never happens\" condition!)"
 msgid "?layer"
-msgstr "Ebene"
+msgstr "?Ebene"
 
 #: ../gui/layers.py:945
 msgctxt "Layers: description parts: unknown mode (fallback str!)"
 msgid "?mode"
-msgstr ""
+msgstr "?Modus"
 
 #: ../gui/layers.py:952
 msgctxt "Layers: description parts: layer hidden"
 msgid "Hidden"
-msgstr ""
+msgstr "Ausgeblendet"
 
 #: ../gui/layers.py:957
 #, python-format
 msgctxt "Layers: description parts: opacity percentage"
 msgid "%d%% opaque"
-msgstr ""
+msgstr "%d%% undurchsichtig"
 
 #: ../gui/layers.py:964
-#, fuzzy
 msgctxt "Layers dockable: description parts: layer locked flag"
 msgid "Locked"
 msgstr "Gesperrt"
@@ -2597,7 +2569,7 @@ msgstr "Gesperrt"
 #: ../gui/layers.py:975
 msgctxt "Layers: description parts: unknown type (fallback str!)"
 msgid "?type"
-msgstr ""
+msgstr "?Typ"
 
 #: ../gui/layers.py:982
 #, fuzzy
@@ -2606,10 +2578,10 @@ msgid ", "
 msgstr ", "
 
 #: ../gui/layers.py:990
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgctxt "Layers dockable: markup for a layer with no description"
 msgid "{layer_name}"
-msgstr "{layer_default_name} hinzufügen"
+msgstr "{layer_name}"
 
 #: ../gui/layers.py:995
 #, python-brace-format
@@ -2640,7 +2612,7 @@ msgstr "Ebenendeckkraft: %d %%"
 #: ../gui/layerswindow.py:107
 #, python-format
 msgid "%d%%"
-msgstr ""
+msgstr "%d%%"
 
 #. TRANSLATORS: status bar messages for drag, without/with modifiers
 #: ../gui/layerswindow.py:114
@@ -2659,22 +2631,21 @@ msgid "Layer"
 msgstr "Ebene"
 
 #: ../gui/layervis.py:53
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgctxt "view controls: dropdown: item markup"
 msgid "<i>{builtin_view_name}</i>"
-msgstr "<b>{brush_name}</b>"
+msgstr "<i>{builtin_view_name}</i>"
 
 #: ../gui/layervis.py:125
 #, python-brace-format
 msgctxt "view controls: dropdown: item markup"
 msgid "{user_chosen_view_name}"
-msgstr ""
+msgstr "{user_chosen_view_name}"
 
 #: ../gui/layervis.py:187
-#, fuzzy
 msgctxt "view controls: rename view dialog"
 msgid "Rename View"
-msgstr "Ansicht drehen"
+msgstr "Ansicht umbenennen"
 
 #: ../gui/linemode.py:41
 msgid "Entrance Pressure"
@@ -2895,7 +2866,7 @@ msgstr "Verstärkung:"
 #. TRANSLATORS:"Paint Pigment Mode" for the options panel. Short.
 #: ../gui/mode.py:590
 msgid "Pigment:"
-msgstr ""
+msgstr "Pigment:"
 
 #: ../gui/optionspanel.py:47
 msgctxt "options panel: tab tooltip: title"
@@ -2952,7 +2923,7 @@ msgstr "Systemsprache"
 #, python-brace-format
 msgctxt "Prefs Dialog|View|Interface - menu entries"
 msgid "{lang_en} - ({lang_nat})"
-msgstr ""
+msgstr "{lang_en} - ({lang_nat})"
 
 #. TRANSLATORS: title of panel showing an overview of the whole canvas
 #: ../gui/previewwindow.py:201
@@ -3015,16 +2986,14 @@ msgid "Adjust the painting symmetry axis."
 msgstr "Symmetrieachse der Zeichnung anpassen."
 
 #: ../gui/symmetry.py:355
-#, fuzzy
 msgctxt "symmetry axis options panel: labels"
 msgid "X Position:"
-msgstr "Position:"
+msgstr "X-Position:"
 
 #: ../gui/symmetry.py:359
-#, fuzzy
 msgctxt "symmetry axis options panel: labels"
 msgid "Y Position:"
-msgstr "Position:"
+msgstr "Y-Position:"
 
 #: ../gui/symmetry.py:363
 msgctxt "symmetry axis options panel: position button: no axis pos."
@@ -3043,27 +3012,24 @@ msgid "Alpha:"
 msgstr "Alpha:"
 
 #: ../gui/symmetry.py:375
-#, fuzzy
 msgctxt "symmetry axis options panel: labels"
 msgid "Symmetry Type:"
-msgstr "Symmetrie"
+msgstr "Symmetrieart:"
 
 #: ../gui/symmetry.py:379
 msgctxt "symmetry axis options panel: labels"
 msgid "Rotational lines:"
-msgstr ""
+msgstr "Rotationslinien:"
 
 #: ../gui/symmetry.py:446
-#, fuzzy
 msgctxt "symmetry axis options panel: axis position dialog: window title"
 msgid "X axis Position"
-msgstr "Achsenposition"
+msgstr "Position der X-Achse"
 
 #: ../gui/symmetry.py:478
-#, fuzzy
 msgctxt "symmetry axis options panel: axis position dialog: window title"
 msgid "Y axis Position"
-msgstr "Achsenposition"
+msgstr "Position der Y-Achse"
 
 #: ../gui/symmetry.py:608
 msgctxt "symmetry axis options panel: axis active checkbox"
@@ -3103,22 +3069,22 @@ msgid "View (Resetting)"
 msgstr "Ansicht (Zurücksetzen)"
 
 #: ../gui/toolstack.py:351
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgctxt "workspace: sidebar tabs: button tooltips"
 msgid "{tab_title}: close tab"
-msgstr "%s: Reiter schließen"
+msgstr "{tab_title}: Reiter schließen"
 
 #: ../gui/toolstack.py:355
 #, python-brace-format
 msgctxt "workspace: sidebar tabs: button tooltips"
 msgid "{tab_title}: tab options and properties"
-msgstr ""
+msgstr "{tab_title}: Reiteroptionen und -eigenschaften"
 
 #: ../gui/toolstack.py:359
 #, python-brace-format
 msgctxt "workspace: sidebar tabs: button tooltips"
 msgid "{tab_title}: move tab to other sidebar"
-msgstr ""
+msgstr "{tab_title}: Reiter in andere Seitenleiste verschieben"
 
 #: ../gui/topbar.py:91
 msgid "<b>MyPaint</b>"
@@ -3209,9 +3175,8 @@ msgid "Normalize Layer Mode"
 msgstr "Ebenenmodus normalisieren"
 
 #: ../lib/command.py:947
-#, fuzzy
 msgid "Import Layers"
-msgstr "Importierter Pinsel"
+msgstr "Ebenen importieren"
 
 #: ../lib/command.py:949
 #, python-brace-format
@@ -3418,10 +3383,9 @@ msgstr ""
 "Unbekannte Dateiendung: „{ext}“"
 
 #: ../lib/document.py:1589
-#, fuzzy
 msgctxt "Document IO: group name for Import Layers"
 msgid "Imported layers"
-msgstr "Importierter Pinsel"
+msgstr "Importierte Ebenen"
 
 #: ../lib/document.py:1756
 #, python-brace-format
@@ -3468,7 +3432,7 @@ msgstr ""
 #: ../lib/floodfill.py:133
 msgctxt "floodfill status message: use active tense"
 msgid "Blurring"
-msgstr ""
+msgstr "Weichzeichnen"
 
 #: ../lib/floodfill.py:134
 msgctxt "floodfill status message: use active tense"
@@ -3483,7 +3447,7 @@ msgstr ""
 #: ../lib/floodfill.py:137
 msgctxt "uniform square region of pixels, plural noun"
 msgid "tiles"
-msgstr ""
+msgstr "Kacheln"
 
 #. TRANSLATORS: Assumption for all "Time period abbreviations":
 #. TRANSLATORS: they don't need ngettext (to support plural/singular)
@@ -3525,7 +3489,6 @@ msgid "Vectors"
 msgstr "Vektorebene"
 
 #: ../lib/layer/data.py:1164
-#, fuzzy
 msgctxt "layer type descriptions"
 msgid "Vector Layer"
 msgstr "Vektorebene"
@@ -3545,19 +3508,17 @@ msgstr ""
 #: ../lib/layer/data.py:1250
 msgctxt "layer default names"
 msgid "Data"
-msgstr ""
+msgstr "Daten"
 
 #: ../lib/layer/data.py:1255
-#, fuzzy
 msgctxt "layer type descriptions"
 msgid "Unknown Data"
-msgstr "Unbekannte Datenebene"
+msgstr "Unbekannte Daten"
 
 #: ../lib/layer/data.py:1306
-#, fuzzy
 msgctxt "layer type descriptions"
 msgid "Painting Layer"
-msgstr "Neue Zeichenebene"
+msgstr "Zeichenebene"
 
 #. TRANSLATORS: Short default name for layer groups.
 #: ../lib/layer/group.py:67
@@ -3566,10 +3527,9 @@ msgid "Group"
 msgstr "Gruppe"
 
 #: ../lib/layer/group.py:72
-#, fuzzy
 msgctxt "layer type descriptions"
 msgid "Layer Group"
-msgstr "Neue Ebenengruppe"
+msgstr "Ebenengruppe"
 
 #. TRANSLATORS: Short default name for temporary placeholder layers.
 #. TRANSLATORS: (The user should never see this except in error cases)
@@ -3594,7 +3554,6 @@ msgid "Common"
 msgstr ""
 
 #: ../lib/layervis.py:44
-#, fuzzy
 msgctxt "layer visibility sets: default name for a user-managed view"
 msgid "View"
 msgstr "Ansicht"
@@ -3602,37 +3561,33 @@ msgstr "Ansicht"
 #: ../lib/layervis.py:49
 msgctxt "layer visibility sets: text shown when no user-managed view is active"
 msgid "No active view"
-msgstr ""
+msgstr "Keine aktive Ansicht"
 
 #: ../lib/layervis.py:579
-#, fuzzy
 msgctxt "layer views: commands: add"
 msgid "Add Layer View"
-msgstr "Ebene hinzufügen"
+msgstr "Ebenenansicht hinzufügen"
 
 #: ../lib/layervis.py:604 ../lib/layervis.py:633
-#, fuzzy
 msgctxt "layer views: commands: remove"
 msgid "Remove Layer View"
-msgstr "Ebene löschen"
+msgstr "Ebenenansicht entfernen"
 
 #: ../lib/layervis.py:663
 #, python-brace-format
 msgctxt "layer views: commands: activate"
 msgid "Activate Layer View “{name}”"
-msgstr ""
+msgstr "Ebenenansicht „{name}“ aktivieren"
 
 #: ../lib/layervis.py:692
-#, fuzzy
 msgctxt "layer views: commands: set active view's lock flag"
 msgid "Lock Layer View"
-msgstr "Ebene sperren"
+msgstr "Ebenenansicht sperren"
 
 #: ../lib/layervis.py:697
-#, fuzzy
 msgctxt "layer views: commands: set active view's lock flag"
 msgid "Unlock Layer View"
-msgstr "Ebene entsperren"
+msgstr "Ebenenansicht entsperren"
 
 #: ../lib/modes.py:47
 msgid "Pass-through"
@@ -3652,7 +3607,7 @@ msgstr "Nur die oberste Ebene, ohne Überblenden."
 
 #: ../lib/modes.py:54
 msgid "Pigment"
-msgstr ""
+msgstr "Pigment"
 
 #: ../lib/modes.py:55
 msgid ""
@@ -3917,27 +3872,24 @@ msgstr ""
 "Zielordner: „{dirname}“."
 
 #: ../lib/tiledsurface.py:48
-#, fuzzy
 msgid "Vertical"
-msgstr "Vertikal spiegeln"
+msgstr "Vertikal"
 
 #: ../lib/tiledsurface.py:49
-#, fuzzy
 msgid "Horizontal"
-msgstr "Horizontal spiegeln"
+msgstr "Horizontal"
 
 #: ../lib/tiledsurface.py:50
 msgid "Vertical and horizontal"
-msgstr ""
+msgstr "Vertikal und horizontal"
 
 #: ../lib/tiledsurface.py:51
-#, fuzzy
 msgid "Rotational"
-msgstr "Drehung zurücksetzen"
+msgstr "Rotierend"
 
 #: ../lib/tiledsurface.py:52
 msgid "Snowflake"
-msgstr ""
+msgstr "Schneeflocke"
 
 #: ../lib/tiledsurface.py:624
 #, python-format
@@ -3952,7 +3904,7 @@ msgstr "Unterbrochene Arbeit wiederherstellen?"
 #: ../po/tmp/autorecover.glade.h:3
 msgctxt "Autosave Recovery dialog|"
 msgid "_Look for backups at startup"
-msgstr ""
+msgstr "_Beim Start nach Sicherungen suchen"
 
 #: ../po/tmp/autorecover.glade.h:4
 msgctxt "Autosave Recovery dialog|Show Dialog at Startup checkbutton|"
@@ -3966,35 +3918,32 @@ msgstr ""
 
 #. Deletes the selected autosave backup file.
 #: ../po/tmp/autorecover.glade.h:8
-#, fuzzy
 msgctxt "Autosave Recovery dialog|"
 msgid "_Delete…"
-msgstr "Löschen"
+msgstr "_Löschen …"
 
 #: ../po/tmp/autorecover.glade.h:9
-#, fuzzy
 msgctxt "Autosave Recovery dialog|Delete button|"
 msgid "Delete this backup from the disk."
-msgstr "Diesen Pinsel von der Festplatte löschen"
+msgstr "Diese Sicherung von der Festplatte löschen."
 
 #. Recover in the sense or retrieval or salvage from a backup file. The user is asked to save the retrieved file immediately afterwards, hence the ellipsis.
 #: ../po/tmp/autorecover.glade.h:11
-#, fuzzy
 msgctxt "Autosave Recovery dialog|"
 msgid "_Recover & Save…"
-msgstr "_Wiederherstellen und Speichern …"
+msgstr "_Wiederherstellen & Speichern …"
 
 #: ../po/tmp/autorecover.glade.h:12
-#, fuzzy
 msgctxt "Autosave Recovery dialog|Recover button|"
 msgid "Save this backup to disk, then continue working on it."
-msgstr "Dieses Backup auf Festplatte speichern, dann daran weiterarbeiten."
+msgstr ""
+"Diese Sicherung auf die Festplatte speichern, dann daran weiterarbeiten."
 
 #. Do not recover any autosaves; take no action.
 #: ../po/tmp/autorecover.glade.h:14
 msgctxt "Autosave Recovery dialog|"
 msgid "Decide _Later"
-msgstr ""
+msgstr "_Später entscheiden"
 
 #: ../po/tmp/autorecover.glade.h:15
 msgctxt "Autosave Recovery dialog|Cancel button|"
@@ -4104,9 +4053,8 @@ msgstr ""
 
 #. field label
 #: ../po/tmp/brusheditor.glade.h:22
-#, fuzzy
 msgid "Value:"
-msgstr "Grundwert"
+msgstr "Wert:"
 
 #: ../po/tmp/brusheditor.glade.h:23
 msgid "Reset this input to have no effect on the setting"
@@ -4184,14 +4132,12 @@ msgid "{dname}:"
 msgstr "{dname}:"
 
 #: ../po/tmp/brusheditor.glade.h:42
-#, fuzzy
 msgid "Brush dynamics are not available for this setting."
-msgstr "Grundangaben für diese Einstellung"
+msgstr "Pinseldynamik ist für diese Einstellung nicht verfügbar."
 
 #: ../po/tmp/brusheditor.glade.h:43
-#, fuzzy
 msgid "<big><b>No Brush Dynamics</b></big>"
-msgstr "<big><b>{accel_label}</b></big>"
+msgstr "<big><b>Keine Pinseldynamik</b></big>"
 
 #: ../po/tmp/inktool.glade.h:1
 msgctxt "Inking tool options: point value sliders: labels: tooltips"
@@ -4250,9 +4196,8 @@ msgid "Delete the currently selected point"
 msgstr "Den aktuell gewählten Punkt löschen"
 
 #: ../po/tmp/inktool.glade.h:14 ../po/tmp/resources.xml.h:184
-#, fuzzy
 msgid "Insert Point"
-msgstr "Zeile einfügen"
+msgstr "Punkt einfügen"
 
 #: ../po/tmp/inktool.glade.h:15 ../po/tmp/resources.xml.h:188
 msgid "Simplify Points"
@@ -4277,7 +4222,6 @@ msgid "The layer’s unique name."
 msgstr ""
 
 #: ../po/tmp/layerprops.glade.h:2
-#, fuzzy
 msgctxt "Layer properties widget → <category labels>"
 msgid "Name"
 msgstr "Name"
@@ -4293,7 +4237,6 @@ msgid ""
 msgstr ""
 
 #: ../po/tmp/layerprops.glade.h:7
-#, fuzzy
 msgctxt "Layer properties widget → <category labels>"
 msgid "Mode"
 msgstr "Modus"
@@ -4308,7 +4251,6 @@ msgid ""
 msgstr ""
 
 #: ../po/tmp/layerprops.glade.h:12
-#, fuzzy
 msgctxt "Layer properties widget → <category labels>"
 msgid "Opacity"
 msgstr "Deckkraft"
@@ -4356,33 +4298,29 @@ msgid ""
 msgstr ""
 
 #: ../po/tmp/layervis.glade.h:1
-#, fuzzy
 msgctxt "Layers window: view list controls: tooltips"
 msgid "The currently active view."
-msgstr "Den Rahmen auf die aktive Ebene zuschneiden"
+msgstr "Die derzeit aktive Ansicht."
 
 #: ../po/tmp/layervis.glade.h:2
-#, fuzzy
 msgctxt "Layers window: view list controls: tooltips"
 msgid "Rename the active view."
-msgstr "Leinwandansicht drehen"
+msgstr "Die aktive Ansicht umbenennen."
 
 #: ../po/tmp/layervis.glade.h:3
-#, fuzzy
 msgctxt "Layers window: view list controls: tooltips"
 msgid "Remove the active view."
-msgstr "Leinwandansicht drehen"
+msgstr "Die aktive Ansicht entfernen."
 
 #: ../po/tmp/layervis.glade.h:4
-#, fuzzy
 msgctxt "Layers window: view list controls: tooltips"
 msgid "Snapshot visible layers as a new view."
-msgstr "Welche sichtbaren Ebenen sollen gefüllt werden"
+msgstr "Momentaufnahme der sichtbaren Ebenen als neue Ansicht."
 
 #: ../po/tmp/layervis.glade.h:5
 msgctxt "Layers window: view list controls: tooltips"
 msgid "Lock or unlock the active view."
-msgstr ""
+msgstr "Die aktive Ansicht sperren oder entsperren."
 
 #: ../po/tmp/mypaint.glade.h:2
 msgctxt "footer: color picker button: tooltip"
@@ -4791,7 +4729,6 @@ msgid "Hide cursor while painting"
 msgstr "Cursor beim Zeichnen verbergen"
 
 #: ../po/tmp/preferenceswindow.glade.h:82
-#, fuzzy
 msgctxt ""
 "Prefs Dialog|View|Interface|Blink layers on creation/selection|checkbox label"
 msgid "Enabled"
@@ -4805,21 +4742,23 @@ msgid ""
 "When a layer is created or selected, show only that layer for a short time "
 "period."
 msgstr ""
+"Beim Erstellen oder Auswählen einer Ebene nur diese Ebene für einen kurzen "
+"Zeitraum anzeigen."
 
 #: ../po/tmp/preferenceswindow.glade.h:84
 msgctxt "Prefs Dialog|View|Interface|"
 msgid "Blink layers on creation/selection:"
-msgstr ""
+msgstr "Blinkende Ebenen bei der Erstellung/Auswahl:"
 
 #: ../po/tmp/preferenceswindow.glade.h:85
 msgctxt "Prefs Dialog|View|Interface|"
 msgid "Language:"
-msgstr ""
+msgstr "Sprache:"
 
 #: ../po/tmp/preferenceswindow.glade.h:86
 msgctxt "Prefs Dialog|View|Interface|"
 msgid "(needs restart)"
-msgstr ""
+msgstr "(erfordert Neustart)"
 
 #. Tab label in preferences dialog&#10;
 #: ../po/tmp/preferenceswindow.glade.h:88
@@ -4945,32 +4884,28 @@ msgstr "Farbe"
 #: ../po/tmp/preferenceswindow.glade.h:106
 msgctxt "Prefs Dialog|Compatibility"
 msgid "Default Compatibility Mode:"
-msgstr ""
+msgstr "Standard-Kompatibilitätsmodus:"
 
 #: ../po/tmp/preferenceswindow.glade.h:107
-#, fuzzy
 msgctxt "Prefs Dialog|Compatibility"
 msgid "<b>1.x Settings</b>"
-msgstr "<b>Speichern</b>"
+msgstr "<b>1.x Einstellungen</b>"
 
 #. Make sure to be consistent w. other occurences of 2.x
 #: ../po/tmp/preferenceswindow.glade.h:109
-#, fuzzy
 msgctxt "Prefs Dialog|Compatibility"
 msgid "<b>2.x Settings</b>"
-msgstr "<b>Speichern</b>"
+msgstr "<b>2.x Einstellungen</b>"
 
 #: ../po/tmp/preferenceswindow.glade.h:110
-#, fuzzy
 msgctxt "Prefs Dialog|Compatibility"
 msgid "Default New Layer Type:"
-msgstr "Ebene löschen"
+msgstr "Standardmäßiger neuer Ebenentyp:"
 
 #: ../po/tmp/preferenceswindow.glade.h:111
-#, fuzzy
 msgctxt "Prefs Dialog|Compatibility"
 msgid "Default Pigment Brush Setting:"
-msgstr "Pinseleinstellungen bearbeiten"
+msgstr "Standard-Pigmentpinsel-Einstellung:"
 
 #. Label description for the 1.x compatibility-mode-by-default setting
 #: ../po/tmp/preferenceswindow.glade.h:115
@@ -4992,17 +4927,20 @@ msgstr ""
 msgctxt "Prefs Dialog|Compatibility"
 msgid "Show warning for files that may be partially incompatible"
 msgstr ""
+"Warnung für Dateien anzeigen, die möglicherweise teilweise inkompatibel sind"
 
 #. Label for a set of options
 #: ../po/tmp/preferenceswindow.glade.h:121
 msgctxt "Prefs Dialog|Compatibility"
 msgid "File compatibility warnings:"
-msgstr ""
+msgstr "Warnungen zur Dateikompatibilität:"
 
 #: ../po/tmp/preferenceswindow.glade.h:122
 msgctxt "Prefs Dialog|Compatibility"
 msgid "Show warning for files that may be fully incompatible"
 msgstr ""
+"Warnung für Dateien anzeigen, die möglicherweise vollständig inkompatibel "
+"sind"
 
 #. This is a tooltip for the file behavior options label.
 #: ../po/tmp/preferenceswindow.glade.h:124
@@ -5017,25 +4955,23 @@ msgstr ""
 #: ../po/tmp/preferenceswindow.glade.h:126
 msgctxt "Prefs Dialog|Compatibility"
 msgid "When Mode is Unspecified:"
-msgstr ""
+msgstr "Wenn kein Modus angegeben ist:"
 
 #. This label indicates a subsection of the compatibility settings related to loading files.
 #: ../po/tmp/preferenceswindow.glade.h:128
-#, fuzzy
 msgctxt "Prefs|Compatibility"
 msgid "<b>File loading</b>"
-msgstr "<b>Speichern</b>"
+msgstr "<b>Laden von Dateien</b>"
 
 #: ../po/tmp/preferenceswindow.glade.h:129
 msgid "<b>Compatibility settings</b>"
-msgstr ""
+msgstr "<b>Kompatibilitätseinstellungen</b>"
 
 #. Tab label in preferences dialog
 #: ../po/tmp/preferenceswindow.glade.h:131
-#, fuzzy
 msgctxt "Prefs Dialog|"
 msgid "Compatibility"
-msgstr "Portierbarkeit"
+msgstr "Kompatibilität"
 
 #: ../po/tmp/preferenceswindow.glade.h:132
 msgctxt "Prefs Dialog|Pen Input|Mode|"
@@ -5108,15 +5044,14 @@ msgid "Reload the file your current work was loaded from."
 msgstr "Die aktuelle Datei nochmals neu laden."
 
 #: ../po/tmp/resources.xml.h:12
-#, fuzzy
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "Import Layers…"
-msgstr "Pinsel importieren …"
+msgstr "Ebenen importieren …"
 
 #: ../po/tmp/resources.xml.h:13
 msgctxt "Accel Editor (descriptions)"
 msgid "Import layers from one or more files."
-msgstr ""
+msgstr "Ebenen aus einer oder mehreren Dateien importieren."
 
 #: ../po/tmp/resources.xml.h:14
 msgctxt "Menu→File (labels), Accel Editor (labels)"
@@ -5238,10 +5173,9 @@ msgid "The current layer's compositing mode."
 msgstr "Kompositionsmodus der aktuellen Ebene."
 
 #: ../po/tmp/resources.xml.h:37
-#, fuzzy
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
 msgid "Increase Fake Pressure"
-msgstr "Eingangsdruck"
+msgstr "Vorgetäuschten Druck erhöhen"
 
 #: ../po/tmp/resources.xml.h:38
 msgctxt "Accel Editor (descriptions)"
@@ -5249,10 +5183,9 @@ msgid "Send harder pressure for devices that don't support pressure input."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:39
-#, fuzzy
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
 msgid "Decrease Fake Pressure"
-msgstr "Eingangsdruck"
+msgstr "Vorgetäuschten Druck verringern"
 
 #: ../po/tmp/resources.xml.h:40
 msgctxt "Accel Editor (descriptions)"
@@ -5260,10 +5193,9 @@ msgid "Send softer pressure for devices that don't support pressure input."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:41
-#, fuzzy
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
 msgid "Increase Fake Rotation"
-msgstr "Farbsättigung erhöhen"
+msgstr "Vorgetäuschte Drehung erhöhen"
 
 #: ../po/tmp/resources.xml.h:42
 msgctxt "Accel Editor (descriptions)"
@@ -5271,10 +5203,9 @@ msgid "Increase barrel rotation for devices that don't support rotation input."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:43
-#, fuzzy
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
 msgid "Decrease Fake Rotation"
-msgstr "Farbsättigung verringern"
+msgstr "Vorgetäuschte Drehung verringern"
 
 #: ../po/tmp/resources.xml.h:44
 msgctxt "Accel Editor (descriptions)"
@@ -5443,10 +5374,9 @@ msgstr "Inhalt der aktuellen Ebene leeren."
 #, fuzzy
 msgctxt "Menu→Layer (labels)"
 msgid "Slice Operations"
-msgstr "Werkzeugoptionen"
+msgstr "Schnittoperationen"
 
 #: ../po/tmp/resources.xml.h:76
-#, fuzzy
 msgctxt "Menu→Layer→Slice (labels), Accel Editor (labels)"
 msgid "Trim Layer to Frame"
 msgstr "Ebene auf den Rahmen zuschneiden"
@@ -5525,10 +5455,9 @@ msgid "Edit Layer in External App…"
 msgstr "Ebene extern bearbeiten …"
 
 #: ../po/tmp/resources.xml.h:90
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Edit the active layer in an external application."
-msgstr "Die aktuelle Ebene in einer externen Anwendung bearbeiten."
+msgstr "Die aktive Ebene in einer externen Anwendung bearbeiten."
 
 #: ../po/tmp/resources.xml.h:91
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
@@ -5548,10 +5477,10 @@ msgid "Go to Layer at Cursor"
 msgstr "Ebene am Mauszeiger auswählen"
 
 #: ../po/tmp/resources.xml.h:94
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Select a layer by picking something [drawn] on it."
-msgstr "Ebene anwählen, wenn ein Element aus dieser gewählt wird."
+msgstr ""
+"Wählen Sie eine Ebene aus, indem Sie etwas auf ihr [gezeichnetes] auswählen."
 
 #: ../po/tmp/resources.xml.h:95
 msgctxt "Menu→Layer→Go to Layer (labels), Accel Editor (labels)"
@@ -5742,16 +5671,17 @@ msgid "Make an exact clone of the current layer."
 msgstr "Erzeugt ein exaktes Duplikat der aktuellen Ebene."
 
 #: ../po/tmp/resources.xml.h:131
-#, fuzzy
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Layer Properties…"
-msgstr "Eigenschaften"
+msgstr "Ebeneneigenschaften …"
 
 #: ../po/tmp/resources.xml.h:132
 msgctxt "Accel Editor (descriptions)"
 msgid ""
 "Change the layer’s properties (name, mode, visibility, locked, opacity)."
 msgstr ""
+"Die Eigenschaften der Ebene ändern (Name, Modus, Sichtbarkeit, gesperrt, "
+"Deckkraft)."
 
 #: ../po/tmp/resources.xml.h:133
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
@@ -5792,10 +5722,9 @@ msgid "Vacuum Empty Tiles"
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:140
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Remove empty tiles from the document."
-msgstr "Die aktuelle Ebene aus dem Ebenenstapel löschen."
+msgstr "Leere Kacheln aus dem Dokument entfernen."
 
 #: ../po/tmp/resources.xml.h:141
 msgctxt "Menu→View (labels), Accel Editor (labels)"
@@ -5829,10 +5758,9 @@ msgid "Reset Zoom"
 msgstr "Vergrößerung zurücksetzen"
 
 #: ../po/tmp/resources.xml.h:147
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Reset view zoom level to default."
-msgstr "Die Vergrößerung auf ihren Standardwert zurücksetzen."
+msgstr "Vergrößerungsstufe der Ansicht auf Standard zurücksetzen."
 
 #: ../po/tmp/resources.xml.h:148
 msgctxt "Menu→View→Reset (labels), Accel Editor (labels)"
@@ -5840,10 +5768,9 @@ msgid "Reset Rotation"
 msgstr "Drehung zurücksetzen"
 
 #: ../po/tmp/resources.xml.h:149
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Reset the view’s rotation to 0°"
-msgstr "Die Drehung der Ansicht auf 0° setzen"
+msgstr "Die Drehung der Ansicht auf 0° zurücksetzen"
 
 #: ../po/tmp/resources.xml.h:150
 msgctxt "Menu→View→Reset (labels), Accel Editor (labels)"
@@ -5851,10 +5778,9 @@ msgid "Reset Mirroring"
 msgstr "Spiegelung zurücksetzen"
 
 #: ../po/tmp/resources.xml.h:151
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Reset the view's mirroring."
-msgstr "Spiegelung zurücksetzen"
+msgstr "Die Spiegelung der Ansicht zurücksetzen."
 
 #: ../po/tmp/resources.xml.h:152
 msgctxt "Menu→View→Adjust View (labels), Accel Editor (labels)"
@@ -5883,10 +5809,9 @@ msgid "Pan Left"
 msgstr "Ansicht verschieben"
 
 #: ../po/tmp/resources.xml.h:157
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Move your view of the canvas to the left."
-msgstr "Ansicht drehen: die Ansicht der Leinwand drehen."
+msgstr "Verschieben Sie Ihre Ansicht der Leinwand nach links."
 
 #: ../po/tmp/resources.xml.h:158
 #, fuzzy
@@ -5895,12 +5820,9 @@ msgid "Pan Right"
 msgstr "Hartes Licht"
 
 #: ../po/tmp/resources.xml.h:159
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Move your view of the canvas to the right."
-msgstr ""
-"Ansicht verschieben: die Ansicht der Leinwand horizontal oder vertikal "
-"bewegen."
+msgstr "Verschieben Sie Ihre Ansicht der Leinwand nach rechts."
 
 #: ../po/tmp/resources.xml.h:160
 msgctxt "Menu→View→Adjust View (labels), Accel Editor (labels)"
@@ -5908,10 +5830,9 @@ msgid "Pan Up"
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:161
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Move your view of the canvas upwards."
-msgstr "Ansicht drehen: die Ansicht der Leinwand drehen."
+msgstr "Verschieben Sie Ihre Ansicht der Leinwand nach oben."
 
 #: ../po/tmp/resources.xml.h:162
 #, fuzzy
@@ -5920,10 +5841,9 @@ msgid "Pan Down"
 msgstr "Ansicht verschieben"
 
 #: ../po/tmp/resources.xml.h:163
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Move your view of the canvas downwards."
-msgstr "Ansicht drehen: die Ansicht der Leinwand drehen."
+msgstr "Verschieben Sie Ihre Ansicht der Leinwand nach unten."
 
 #: ../po/tmp/resources.xml.h:164
 msgctxt "Menu→View→Adjust View (labels), Accel Editor (labels)"
@@ -5931,10 +5851,9 @@ msgid "Rotate Clockwise"
 msgstr "Im Uhrzeigersinn drehen"
 
 #: ../po/tmp/resources.xml.h:165
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Rotate the canvas clockwise."
-msgstr "Die Ansicht im Uhrzeigersinn drehen."
+msgstr "Die Leinwand im Uhrzeigersinn drehen."
 
 #: ../po/tmp/resources.xml.h:166
 msgctxt "Menu→View→Adjust View (labels), Accel Editor (labels)"
@@ -5942,10 +5861,9 @@ msgid "Rotate Counterclockwise"
 msgstr "Gegen Uhrzeigersinn drehen"
 
 #: ../po/tmp/resources.xml.h:167
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Rotate the canvas counter-clockwise."
-msgstr "Die Ansicht gegen den Uhrzeigersinn drehen."
+msgstr "Die Leinwand gegen den Uhrzeigersinn drehen."
 
 #: ../po/tmp/resources.xml.h:168
 msgctxt "Menu→View→Adjust View (labels), Accel Editor (labels)"
@@ -6034,17 +5952,17 @@ msgid ""
 "Insert a point next to the currently selected point in the direction of the "
 "stroke."
 msgstr ""
+"Einen Punkt neben dem aktuell ausgewählten Punkt in Richtung des Striches "
+"einfügen."
 
 #: ../po/tmp/resources.xml.h:186
-#, fuzzy
 msgid "Delete Point"
 msgstr "Punkt löschen"
 
 #: ../po/tmp/resources.xml.h:187
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Delete currently selected point on the ink stroke."
-msgstr "Den aktuell gewählten Punkt löschen"
+msgstr "Aktuell ausgewählten Punkt auf dem Tintenstrich löschen."
 
 #: ../po/tmp/resources.xml.h:189
 msgctxt "Accel Editor (descriptions)"
@@ -6055,7 +5973,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:191
 msgctxt "Accel Editor (descriptions)"
 msgid "Delete every other point on the ink stroke."
-msgstr ""
+msgstr "Jeden zweiten Punkt auf dem Tintenstrich löschen."
 
 #: ../po/tmp/resources.xml.h:192
 msgctxt "Menu→Brush (labels)"
@@ -6537,7 +6455,6 @@ msgid "Edit brush icons."
 msgstr "Pinselsymbole bearbeiten."
 
 #: ../po/tmp/resources.xml.h:285
-#, fuzzy
 msgctxt ""
 "Menu→Layer (labels), Menu→Window (labels), Toolbar (labels), Accel Editor "
 "(labels)"
@@ -6547,7 +6464,7 @@ msgstr "Ebenenleiste"
 #: ../po/tmp/resources.xml.h:286
 msgctxt "Accel Editor (descriptions)"
 msgid "Dockable panel for managing layers."
-msgstr ""
+msgstr "Andockbare Leiste zur Verwaltung von Ebenen."
 
 #: ../po/tmp/resources.xml.h:287
 msgctxt "Menu→Layers (labels), Accel Editor (labels)"
