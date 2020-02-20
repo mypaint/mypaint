@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: mypaint v1.2.0-636-g046ec8f\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-02-12 21:56+0100\n"
-"PO-Revision-Date: 2020-01-08 13:21+0000\n"
+"PO-Revision-Date: 2020-02-21 20:35+0000\n"
 "Last-Translator: Pavel Fric <pavelfric@yahoo.com>\n"
 "Language-Team: Czech <https://hosted.weblate.org/projects/mypaint/mypaint/cs/"
 ">\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
-"X-Generator: Weblate 3.10.1-dev\n"
+"X-Generator: Weblate 3.11.1\n"
 "X-Poedit-Country: CZECH REPUBLIC\n"
 "X-Poedit-Language: Czech\n"
 
@@ -31,7 +31,7 @@ msgstr "Činnost"
 #. TRANSLATORS: Second column label in the keybinding preferences tab.
 #: ../gui/accelmap.py:115
 msgid "Key combination"
-msgstr "Kombinace kláves"
+msgstr "Spojení kláves"
 
 #. TRANSLATORS: Window title for the keybinding dialog. The %s is
 #. TRANSLATORS: replaced with the name of the action that the key
@@ -577,7 +577,7 @@ msgstr "Zavést štětce…"
 #: ../gui/brushselectionwindow.py:542
 msgctxt "brush groups menu"
 msgid "Get More Brushes…"
-msgstr "Dostat další štětce…"
+msgstr "Získat další štětce…"
 
 #: ../gui/brushselectionwindow.py:557
 msgctxt "new brush group dialog: title"
@@ -1995,7 +1995,7 @@ msgctxt ""
 "Name of the fill mode\n"
 "In other software, 'Flood Fill' is also known as 'Bucket Fill' or just 'Fill'"
 msgid "Flood Fill"
-msgstr "Vyplnit"
+msgstr "Vyplňování"
 
 #: ../gui/fill.py:128
 msgctxt "Usage description of the Flood Fill mode"
@@ -4586,7 +4586,7 @@ msgstr "Doba mezi zálohami:"
 #: ../po/tmp/preferenceswindow.glade.h:58
 msgctxt "Prefs Dialog|"
 msgid "Load & Save"
-msgstr "Nahrát a uložit"
+msgstr "Nahrání a uložení"
 
 #: ../po/tmp/preferenceswindow.glade.h:59
 msgctxt "Prefs Dialog|View|"
@@ -4639,12 +4639,12 @@ msgstr ""
 #: ../po/tmp/preferenceswindow.glade.h:68
 msgctxt "Prefs Dialog|View|Interface|Icon size|"
 msgid "Large (requires recent GTK3)"
-msgstr "Velký (vyžaduje nedávné GTK3)"
+msgstr "Velké (vyžaduje nedávné GTK3)"
 
 #: ../po/tmp/preferenceswindow.glade.h:69
 msgctxt "Prefs Dialog|View|Interface|Icon size|"
 msgid "Small"
-msgstr "Malý"
+msgstr "Malé"
 
 #: ../po/tmp/preferenceswindow.glade.h:70
 msgctxt "Prefs Dialog|View|Zoom|"
@@ -5129,7 +5129,7 @@ msgstr "Barvy"
 #: ../po/tmp/resources.xml.h:33
 msgctxt "Toolbar (tooltips)"
 msgid "Available color adjusters."
-msgstr "Dostupné seřizovač barev."
+msgstr "Seřizovače dostupných barev."
 
 #: ../po/tmp/resources.xml.h:34
 msgctxt "Menu→Layer→Properties (label)"
@@ -5869,7 +5869,7 @@ msgstr "Zrcadlit tahy štětcem podél osy souměrnosti"
 #: ../po/tmp/resources.xml.h:176
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "Frame Enabled"
-msgstr "Rámeček zapnut"
+msgstr "Rámeček povolen"
 
 #: ../po/tmp/resources.xml.h:177
 msgctxt "Accel Editor (descriptions)"
@@ -5997,7 +5997,7 @@ msgstr "Zavřít hlavní okno a ukončit program."
 #: ../po/tmp/resources.xml.h:204
 msgctxt "Menu (labels)"
 msgid "Edit"
-msgstr "Upravit"
+msgstr "Úpravy"
 
 #: ../po/tmp/resources.xml.h:205
 msgctxt "Menu (labels)"
@@ -6234,7 +6234,7 @@ msgstr ""
 #: ../po/tmp/resources.xml.h:250
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
 msgid "Get More Brushes…"
-msgstr "Dostat další štětce…"
+msgstr "Získat další štětce…"
 
 #: ../po/tmp/resources.xml.h:251
 msgctxt "Accel Editor (descriptions)"
@@ -6568,7 +6568,7 @@ msgstr "Náhled"
 #: ../po/tmp/resources.xml.h:314
 msgctxt "Accel Editor (descriptions)"
 msgid "Reveal the Preview dockpanel (overview of the whole drawing area)."
-msgstr "Odkrýt panel náhledu (přehled o celé oblasti kresby)."
+msgstr "Odkrýt náhledový panel (přehled o celé oblasti kresby)."
 
 #: ../po/tmp/resources.xml.h:315
 msgctxt "Menu→Window (labels), Toolbar (labels), Accel Editor (labels)"
@@ -6598,7 +6598,7 @@ msgstr "Panel s historií štětců a barev"
 #: ../po/tmp/resources.xml.h:320
 msgctxt "Accel Editor (descriptions)"
 msgid "Dockable panel for viewing recently changed colors and brushes."
-msgstr "Ukotvitelný panel na podívání se na nedávno změněné barvy a štětce."
+msgstr "Ukotvitelný panel pro podívání se na nedávno změněné barvy a štětce."
 
 #: ../po/tmp/resources.xml.h:321
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
@@ -6751,7 +6751,7 @@ msgstr "Posunout"
 #: ../po/tmp/resources.xml.h:349
 msgctxt "Toolbar (tooltips)"
 msgid "Pan View: move your view of the canvas horizontally or vertically."
-msgstr "Přejet v pohledu: Posunout váš pohled na plátno vodorovně nebo svisle."
+msgstr "Posunutí pohledu: Posunout pohled na plátno vodorovně nebo svisle."
 
 #: ../po/tmp/resources.xml.h:350
 msgctxt "Menu→View (labels), Accel Editor (labels)"
@@ -6791,7 +6791,7 @@ msgstr "Interaktivně otočit váš pohled na plátno."
 #: ../po/tmp/resources.xml.h:357
 msgctxt "Menu→Edit→Current Mode (labels)"
 msgid "Zoom View"
-msgstr "Zvětšení pohledu"
+msgstr "Zvětšit pohled"
 
 #: ../po/tmp/resources.xml.h:358
 msgctxt "Toolbar (short labels)"
@@ -6806,7 +6806,7 @@ msgstr "Zvětšení pohledu: Přibližovat a oddalovat plátno."
 #: ../po/tmp/resources.xml.h:360
 msgctxt "Menu→View (labels), Accel Editor (labels)"
 msgid "Zoom View"
-msgstr "Zvětšení pohledu"
+msgstr "Zvětšit pohled"
 
 #: ../po/tmp/resources.xml.h:361
 msgctxt "Accel Editor (descriptions)"
@@ -7073,7 +7073,7 @@ msgstr "Vyplnit: Vyplnit oblast barvou."
 #: ../po/tmp/resources.xml.h:411
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
 msgid "Flood Fill"
-msgstr "Vyplnit"
+msgstr "Vyplňování"
 
 #: ../po/tmp/resources.xml.h:412
 msgctxt "Accel Editor (descriptions)"
