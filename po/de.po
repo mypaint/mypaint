@@ -4,8 +4,8 @@ msgstr ""
 "Project-Id-Version: mypaint v2.0.0-alpha.11-2-g0673fe8\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-02-12 21:56+0100\n"
-"PO-Revision-Date: 2020-02-21 20:35+0000\n"
-"Last-Translator: Ettore Atalan <atalanttore@googlemail.com>\n"
+"PO-Revision-Date: 2020-02-23 09:36+0000\n"
+"Last-Translator: nautilusx <mail.ka@mailbox.org>\n"
 "Language-Team: German <https://hosted.weblate.org/projects/mypaint/mypaint/"
 "de/>\n"
 "Language: de\n"
@@ -13,7 +13,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 3.11.1\n"
+"X-Generator: Weblate 4.0-dev\n"
 "X-Poedit-Country: GERMANY\n"
 "X-Poedit-Language: German\n"
 "X-Poedit-SourceCharset: utf-8\n"
@@ -2079,10 +2079,9 @@ msgstr ""
 "Fläche zu bestimmen"
 
 #: ../gui/fill.py:621
-#, fuzzy
 msgctxt "fill options: toggle whether the fill will be limited by the viewport"
 msgid "Limit to View"
-msgstr "Zeichnung in Ansicht einpassen"
+msgstr "Auf Ansicht beschränken"
 
 #: ../gui/fill.py:627
 msgctxt ""
@@ -2129,12 +2128,12 @@ msgstr ""
 #: ../gui/fill.py:673
 msgctxt "fill options: Target | Blend Mode dropdown - warning text"
 msgid "This mode does nothing when alpha locking is enabled!"
-msgstr ""
+msgstr "Dieser Modus bewirkt nichts, wenn die Alpha-Sperre aktiviert ist!"
 
 #: ../gui/fill.py:687
 msgctxt "fill options: Target | Blend Mode dropdown (tooltip)"
 msgid "Blend mode used when filling"
-msgstr ""
+msgstr "Mischmodus beim Befüllen"
 
 #: ../gui/fill.py:702
 msgid "Opacity:"
@@ -2361,7 +2360,7 @@ msgstr "Druck:"
 #. TRANSLATORS: This is used on the options panel.
 #: ../gui/freehand.py:614
 msgid "Twist:"
-msgstr ""
+msgstr "Drehung:"
 
 #: ../gui/gtkexcepthook.py:163
 msgid "Bug Detected"
@@ -2572,7 +2571,6 @@ msgid "?type"
 msgstr "?Typ"
 
 #: ../gui/layers.py:982
-#, fuzzy
 msgctxt "Layers dockable: description parts joiner text"
 msgid ", "
 msgstr ", "
@@ -3419,15 +3417,14 @@ msgstr ""
 "{see_logs}"
 
 #: ../lib/floodfill.py:131
-#, fuzzy
 msgctxt "floodfill status message: use active tense"
 msgid "Filling"
-msgstr "Füllen"
+msgstr "Füllung"
 
 #: ../lib/floodfill.py:132
 msgctxt "floodfill status message: use active tense"
 msgid "Morphing"
-msgstr ""
+msgstr "Morphing"
 
 #: ../lib/floodfill.py:133
 msgctxt "floodfill status message: use active tense"
@@ -3437,12 +3434,12 @@ msgstr "Weichzeichnen"
 #: ../lib/floodfill.py:134
 msgctxt "floodfill status message: use active tense"
 msgid "Compositing"
-msgstr ""
+msgstr "Zusammenstellung"
 
 #: ../lib/floodfill.py:135
 msgctxt "floodfill status message: use active tense"
 msgid "Finishing up"
-msgstr ""
+msgstr "Fertigstellung"
 
 #: ../lib/floodfill.py:137
 msgctxt "uniform square region of pixels, plural noun"
