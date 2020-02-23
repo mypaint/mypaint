@@ -47,6 +47,8 @@ build() {
     --host=${MINGW_CHOST} \
     --target=${MINGW_CHOST} \
     --prefix=${MINGW_PREFIX} \
+    --enable-openmp \
+    --enable-introspection=no \
     --enable-shared \
     --enable-static
 
