@@ -85,6 +85,7 @@ public:
                  float radius, 
                  float color_r, float color_g, float color_b,
                  float opaque, float hardness = 0.5,
+                 float softness = 0.0,
                  float color_a = 1.0,
                  float aspect_ratio = 1.0, float angle = 0.0,
                  float lock_alpha = 0.0,
@@ -95,7 +96,7 @@ public:
                  ) {
 
     return mypaint_surface_draw_dab((MyPaintSurface *)c_surface, x, y, radius, color_r, color_g, color_b,
-                             opaque, hardness, color_a, aspect_ratio, angle,
+                             opaque, hardness, softness, color_a, aspect_ratio, angle,
                              lock_alpha, colorize, posterize, posterize_num, paint);
   }
 
