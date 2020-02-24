@@ -273,7 +273,7 @@ def _dialog_response_cb(dialog, resp, trace, exctyp, value):
 
             Give this report a short descriptive title.
             Use something like
-            "{feature-that-broke}: {what-went-wrong}"
+            "[feature-that-broke]: [what-went-wrong]"
             for the title, if you can.
             Then please replace this text
             with a longer description of the bug.
