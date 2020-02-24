@@ -4118,7 +4118,7 @@ msgstr "Szczegółowo dostosuj te ustawienie"
 
 #: ../po/tmp/brusheditor.glade.h:39
 msgid "{tooltip}"
-msgstr "{podpowiedź}"
+msgstr "{tooltip}"
 
 #. field name (template)
 #: ../po/tmp/brusheditor.glade.h:41
