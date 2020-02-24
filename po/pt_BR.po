@@ -4161,7 +4161,7 @@ msgstr "Ajustar este mapeamento de entrada em detalhes"
 
 #: ../po/tmp/brusheditor.glade.h:39
 msgid "{tooltip}"
-msgstr "{dica de ferramenta}"
+msgstr "{tooltip}"
 
 #. field name (template)
 #: ../po/tmp/brusheditor.glade.h:41

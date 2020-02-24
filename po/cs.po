@@ -4077,7 +4077,7 @@ msgstr "{tooltip}"
 #. field name (template)
 #: ../po/tmp/brusheditor.glade.h:41
 msgid "{dname}:"
-msgstr "{název pole}:"
+msgstr "{dname}:"
 
 #: ../po/tmp/brusheditor.glade.h:42
 msgid "Brush dynamics are not available for this setting."
