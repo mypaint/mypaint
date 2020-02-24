@@ -1,7 +1,7 @@
 # Maintainer: The MyPaint Team <mypaintopensource@gmail.com>
 
 _realname=libmypaint
-_realver=1.5.0
+_realver=1.5.1
 pkgbase=mingw-w64-${_realname}
 pkgname="${MINGW_PACKAGE_PREFIX}-${_realname}"
 conflicts=("${MINGW_PACKAGE_PREFIX}-mypaint<1.3.0alpha")
