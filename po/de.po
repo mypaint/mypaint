@@ -1705,7 +1705,7 @@ msgstr "keine Beschreibung"
 #, python-brace-format
 msgctxt "Document I/O: message shown while working"
 msgid "Loading {files_summary}…"
-msgstr "„{file_summary}“ wird geladen …"
+msgstr "„{files_summary}“ wird geladen …"
 
 #: ../gui/filehandling.py:131
 #, python-brace-format
