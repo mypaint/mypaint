@@ -8,8 +8,8 @@ msgstr ""
 "Project-Id-Version: mypaint v1.2.0-576-g1f679d0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-02-12 21:56+0100\n"
-"PO-Revision-Date: 2017-07-21 00:13+0000\n"
-"Last-Translator: Bo Anderson <bo@toxicflames.co.uk>\n"
+"PO-Revision-Date: 2020-02-27 11:32+0000\n"
+"Last-Translator: Andi Chandler <andi@gowling.com>\n"
 "Language-Team: English (United Kingdom) <https://hosted.weblate.org/projects/"
 "mypaint/mypaint/en_GB/>\n"
 "Language: en_GB\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 2.16-dev\n"
+"X-Generator: Weblate 4.0-dev\n"
 "X-Language: en_GB\n"
 "X-Source-Language: C\n"
 
@@ -211,9 +211,10 @@ msgid "Speed"
 msgstr "Speed"
 
 #: ../gui/brusheditor.py:360
+#, fuzzy
 msgctxt "brush settings list: setting group"
 msgid "Directional Offsets"
-msgstr ""
+msgstr "Directional Offsets"
 
 #: ../gui/brusheditor.py:378
 msgctxt "brush settings list: setting group"
@@ -231,9 +232,10 @@ msgid "Color"
 msgstr "Colour"
 
 #: ../gui/brusheditor.py:418
+#, fuzzy
 msgctxt "brush settings list: setting group"
 msgid "GridMap"
-msgstr ""
+msgstr "GridMap"
 
 #: ../gui/brusheditor.py:429
 msgctxt "brush settings list: setting group"
