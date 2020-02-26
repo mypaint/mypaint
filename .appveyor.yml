@@ -10,7 +10,7 @@
 #---------------------------------#
 
 # version format
-version: 2.0.1-alpha+{branch}.{build}
+version: 2.1.0-alpha+{branch}.{build}
 
 # Do not build on tags (GitHub and BitBucket)
 skip_tags: false
@@ -28,12 +28,39 @@ image: Visual Studio 2015
 # set clone depth
 clone_depth: 1
 
+matrix:
+  fast_finish: true
+
 environment:
   matrix:
     - MSYS2_ARCH: x86_64
       MSYSTEM: MINGW64
     - MSYS2_ARCH: i686
       MSYSTEM: MINGW32
+
+
+for:
+-
+  matrix:
+    except:
+      - MSYS2_ARCH: x86_64
+# Only build the 32bit if the extensions have been modified
+# TODO: Override so that tags are always built on both archs
+  only_commits:
+    files:
+      - lib/*.cpp
+      - lib/*.hpp
+      - lib/**/*.cpp
+      - lib/**/*.hpp
+      - lib/**/*.i
+-
+  skip_commits:
+    files:
+      - .travis.yml
+      - '**/*.md'
+      - '**/*.txt'
+      - flatpak/**
+      - doc/**
 
 #---------------------------------#
 #    Run Msys2-build commands     #
