@@ -26,7 +26,10 @@ skip_branch_with_pr: true
 image: Visual Studio 2015
 
 # set clone depth
-clone_depth: 50
+clone_depth: 1
+
+matrix:
+  fast_finish: true
 
 environment:
   matrix:
