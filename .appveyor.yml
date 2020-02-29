@@ -53,6 +53,14 @@ for:
       - lib/**/*.cpp
       - lib/**/*.hpp
       - lib/**/*.i
+-
+  skip_commits:
+    files:
+      - .travis.yml
+      - '**/*.md'
+      - '**/*.txt'
+      - flatpak/**
+      - doc/**
 
 #---------------------------------#
 #    Run Msys2-build commands     #
