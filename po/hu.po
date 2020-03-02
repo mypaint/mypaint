@@ -907,6 +907,7 @@ msgid "Set the color from a loadable, editable palette."
 msgstr "Szín beállítása egy betölthető, szerkeszthető palettából."
 
 #: ../gui/colors/paletteview.py:108
+#, fuzzy
 msgctxt "palette editor dialog: palette name entry"
 msgid "Untitled Palette"
 msgstr "Névtelen réteg #%d"
@@ -3887,6 +3888,7 @@ msgid "Delete this brush from the disk"
 msgstr ""
 
 #: ../po/tmp/brusheditor.glade.h:9
+#, fuzzy
 msgid "Copy to New"
 msgstr "%s másolata"
 

@@ -492,6 +492,7 @@ msgstr "למחוק את המכחול „{brush_name}” מהקבוצה „{group
 #. TRANSLATORS: number of brushes in a brush group, for tooltips
 #: ../gui/brushselectionwindow.py:381
 #, python-format
+#, fuzzy
 msgid "%d brush"
 msgid_plural "%d brushes"
 msgstr[0] "מכחול אחד"

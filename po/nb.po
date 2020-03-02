@@ -925,6 +925,7 @@ msgid "Set the color from a loadable, editable palette."
 msgstr "Sett fargen fra en lastbar, redigerbar fargepalett."
 
 #: ../gui/colors/paletteview.py:108
+#, fuzzy
 msgctxt "palette editor dialog: palette name entry"
 msgid "Untitled Palette"
 msgstr "Lag uten navn #%d"
@@ -3929,6 +3930,7 @@ msgid "Delete this brush from the disk"
 msgstr "Er du sikker på at du vil slette denne penselen"
 
 #: ../po/tmp/brusheditor.glade.h:9
+#, fuzzy
 msgid "Copy to New"
 msgstr "Kopi av %s"
 
@@ -6482,6 +6484,7 @@ msgid "Dockable panel for viewing recently changed colors and brushes."
 msgstr ""
 
 #: ../po/tmp/resources.xml.h:321
+#, fuzzy
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
 msgid "Recent Brushes & Colors"
 msgstr "Bruk pensel %d"
