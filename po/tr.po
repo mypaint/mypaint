@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mypaint v2.0.0-alpha.12-343-g82b4fc5\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-02-12 21:56+0100\n"
+"POT-Creation-Date: 2020-03-03 00:01+0100\n"
 "PO-Revision-Date: 2019-12-22 10:31+0000\n"
 "Last-Translator: Sabri Ünal <libreajans@gmail.com>\n"
 "Language-Team: Turkish <https://hosted.weblate.org/projects/mypaint/mypaint/"
@@ -171,114 +171,114 @@ msgstr ""
 msgid "{filename} has zero size (w={w}, h={h})"
 msgstr "{filename} dosyasının boyutu sıfır (g={w}, y={h})"
 
-#: ../gui/brusheditor.py:92
+#: ../gui/brusheditor.py:112
 msgctxt "brush settings editor: subwindow title"
 msgid "Brush Settings Editor"
 msgstr "Fırça Ayarları Düzenleyici"
 
-#: ../gui/brusheditor.py:272
+#: ../gui/brusheditor.py:293
 msgctxt "brush settings list: brush metadata texts group"
 msgid "About"
 msgstr "Hakkında"
 
-#: ../gui/brusheditor.py:283
+#: ../gui/brusheditor.py:304
 msgctxt "brush settings list: setting group"
 msgid "Experimental"
 msgstr "Deneysel"
 
-#: ../gui/brusheditor.py:290
+#: ../gui/brusheditor.py:311
 msgctxt "brush settings list: setting group"
 msgid "Basic"
 msgstr "Temel"
 
-#: ../gui/brusheditor.py:309
+#: ../gui/brusheditor.py:330
 msgctxt "brush settings list: setting group"
 msgid "Opacity"
 msgstr "Matlık"
 
-#: ../gui/brusheditor.py:321
+#: ../gui/brusheditor.py:342
 msgctxt "brush settings list: setting group"
 msgid "Dabs"
 msgstr "Damlalar"
 
-#: ../gui/brusheditor.py:332
+#: ../gui/brusheditor.py:353
 msgctxt "brush settings list: setting group"
 msgid "Smudge"
 msgstr "Lekeleme"
 
-#: ../gui/brusheditor.py:346
+#: ../gui/brusheditor.py:367
 msgctxt "brush settings list: setting group"
 msgid "Speed"
 msgstr "Hız"
 
-#: ../gui/brusheditor.py:360
+#: ../gui/brusheditor.py:381
 msgctxt "brush settings list: setting group"
 msgid "Directional Offsets"
 msgstr "Yön Konumları"
 
-#: ../gui/brusheditor.py:378
+#: ../gui/brusheditor.py:399
 msgctxt "brush settings list: setting group"
 msgid "Tracking"
 msgstr "İzleme"
 
-#: ../gui/brusheditor.py:389
+#: ../gui/brusheditor.py:410
 msgctxt "brush settings list: setting group"
 msgid "Stroke"
 msgstr "Darbe"
 
-#: ../gui/brusheditor.py:400
+#: ../gui/brusheditor.py:421
 msgctxt "brush settings list: setting group"
 msgid "Color"
 msgstr "Renk"
 
-#: ../gui/brusheditor.py:418
+#: ../gui/brusheditor.py:439
 msgctxt "brush settings list: setting group"
 msgid "GridMap"
 msgstr "Izgara Eşlemi"
 
-#: ../gui/brusheditor.py:429
+#: ../gui/brusheditor.py:450
 msgctxt "brush settings list: setting group"
 msgid "Custom"
 msgstr "Özel"
 
-#: ../gui/brusheditor.py:495
+#: ../gui/brusheditor.py:516
 msgctxt "brush settings editor: save brush: error message"
 msgid "No brush selected, please use “Add As New” instead."
 msgstr ""
 "Hiçbir fırça seçilmedi, lütfen onun yerine \"Yeni Olarak Ekle\"'yi kullan."
 
-#: ../gui/brusheditor.py:520
+#: ../gui/brusheditor.py:541
 msgctxt "brush settings editor: rename brush: error message"
 msgid "No brush selected!"
 msgstr "Hiçbir fırça seçilmedi!"
 
-#: ../gui/brusheditor.py:529
+#: ../gui/brusheditor.py:550
 msgctxt "brush settings editor: rename brush: dialog title"
 msgid "Rename Brush"
 msgstr "Fırçayı Yeniden Adlandır"
 
-#: ../gui/brusheditor.py:548
+#: ../gui/brusheditor.py:569
 msgctxt "brush settings editor: rename brush: error message"
 msgid "A brush with this name already exists!"
 msgstr "Bu adla bir fırça zaten var!"
 
-#: ../gui/brusheditor.py:582
+#: ../gui/brusheditor.py:603
 msgctxt "brush settings editor: delete brush: error message"
 msgid "No brush selected!"
 msgstr "Hiçbir fırça seçilmedi!"
 
-#: ../gui/brusheditor.py:588
+#: ../gui/brusheditor.py:609
 #, python-brace-format
 msgctxt "brush settings editor: delete brush: confirm dialog question"
 msgid "Really delete brush “{brush_name}” from disk?"
 msgstr "\"{brush_name}\" fırçası gerçekten silinsin mi?"
 
-#: ../gui/brusheditor.py:707
+#: ../gui/brusheditor.py:728
 msgctxt "brush settings editor: header: fallback name"
 msgid "(Unnamed brush)"
 msgstr "(Adsız fırça)"
 
-#: ../gui/brusheditor.py:714
+#: ../gui/brusheditor.py:735
 #, python-brace-format
 msgctxt "brush settings editor: header: is-modified hint"
 msgid "{brush_name} [unsaved]"
@@ -369,7 +369,7 @@ msgid "Use the default icon"
 msgstr "Varsayılan simgeyi kullan"
 
 #. TRANSLATORS: save edits to a brush icon
-#: ../gui/brushiconeditor.py:190 ../po/tmp/brusheditor.glade.h:3
+#: ../gui/brushiconeditor.py:190 ../gui/brusheditor.glade:111
 msgid "Save"
 msgstr "Kaydet"
 
@@ -880,15 +880,15 @@ msgstr "HSV Tonu ve Değeri"
 msgid "HSV Hue and Saturation"
 msgstr "HSV Tonu ve Doygunluğu"
 
-#: ../gui/colors/hsvcube.py:59
+#: ../gui/colors/hsvcube.py:58
 msgid "Rotate cube (show different axes)"
 msgstr "Küpü döndür (farklı ekseni göster)"
 
-#: ../gui/colors/hsvcube.py:86
+#: ../gui/colors/hsvcube.py:85
 msgid "HSV Cube"
 msgstr "HSV Küpü"
 
-#: ../gui/colors/hsvcube.py:90
+#: ../gui/colors/hsvcube.py:89
 msgid "An HSV cube which can be rotated to show different planar slices."
 msgstr "Farklı düzlemsel dilimleri göstermek için döndürülebilen bir HSV Küpü."
 
@@ -1197,13 +1197,13 @@ msgstr "Dosya temelli"
 
 #. This refers to a version of MyPaint like 1.0, 1.1, 1.2 etc
 #: ../gui/compatibility.py:35 ../gui/drawwindow.py:276
-#: ../po/tmp/preferenceswindow.glade.h:113
+#: ../gui/preferenceswindow.glade:1581
 msgctxt "Prefs Dialog|Compatibility"
 msgid "1.x"
 msgstr "1.x"
 
 #. This refers to a version of MyPaint like 1.0, 1.1, 1.2 etc
-#: ../gui/compatibility.py:36 ../po/tmp/preferenceswindow.glade.h:117
+#: ../gui/compatibility.py:36 ../gui/preferenceswindow.glade:1600
 msgctxt "Prefs Dialog|Compatibility"
 msgid "2.x"
 msgstr "2.x"
@@ -1405,7 +1405,7 @@ msgstr "Fırçanın üzerine yazılsın mı?"
 msgid "Replace"
 msgstr "Değiştir"
 
-#: ../gui/dialogs.py:137 ../gui/dialogs.py:207 ../po/tmp/brusheditor.glade.h:11
+#: ../gui/dialogs.py:137 ../gui/dialogs.py:207 ../gui/brusheditor.glade:189
 msgid "Rename"
 msgstr "Yeniden Adlandır"
 
@@ -1569,7 +1569,7 @@ msgid "%s - MyPaint"
 msgstr "%s - MyPaint"
 
 #. TRANSLATORS: window title for use without a filename
-#: ../gui/drawwindow.py:273 ../po/tmp/mypaint.glade.h:1
+#: ../gui/drawwindow.py:273 ../gui/mypaint.glade:8
 msgid "MyPaint"
 msgstr "MyPaint"
 
@@ -3864,17 +3864,17 @@ msgstr "Kar Tanesi"
 msgid "PNG reader failed: %s"
 msgstr "PNG okuyucu başarısız oldu: %s"
 
-#: ../po/tmp/autorecover.glade.h:1
+#: ../gui/autorecover.glade:18
 msgid "Recover interrupted work?"
 msgstr "Yarıda Kesilmiş Çalışma"
 
 #. Whether to show the dialog when MyPaint starts
-#: ../po/tmp/autorecover.glade.h:3
+#: ../gui/autorecover.glade:38
 msgctxt "Autosave Recovery dialog|"
 msgid "_Look for backups at startup"
 msgstr "_Başlangıçta yedekleri ara"
 
-#: ../po/tmp/autorecover.glade.h:4
+#: ../gui/autorecover.glade:42
 msgctxt "Autosave Recovery dialog|Show Dialog at Startup checkbutton|"
 msgid ""
 "Run this autosave recovery dialog when MyPaint starts, if there are files to "
@@ -3889,39 +3889,39 @@ msgstr ""
 "MyPaint çalışırken, bu iletişim kutusuna ‘Dosya’ menüsünden erişebilirsin."
 
 #. Deletes the selected autosave backup file.
-#: ../po/tmp/autorecover.glade.h:8
+#: ../gui/autorecover.glade:60
 msgctxt "Autosave Recovery dialog|"
 msgid "_Delete…"
 msgstr "_Sil"
 
-#: ../po/tmp/autorecover.glade.h:9
+#: ../gui/autorecover.glade:66
 msgctxt "Autosave Recovery dialog|Delete button|"
 msgid "Delete this backup from the disk."
 msgstr "Bu yedeği diskten sil."
 
 #. Recover in the sense or retrieval or salvage from a backup file. The user is asked to save the retrieved file immediately afterwards, hence the ellipsis.
-#: ../po/tmp/autorecover.glade.h:11
+#: ../gui/autorecover.glade:78
 msgctxt "Autosave Recovery dialog|"
 msgid "_Recover & Save…"
 msgstr "_Kurtar ve Kaydet"
 
-#: ../po/tmp/autorecover.glade.h:12
+#: ../gui/autorecover.glade:84
 msgctxt "Autosave Recovery dialog|Recover button|"
 msgid "Save this backup to disk, then continue working on it."
 msgstr "Bu yedeği diske kaydet ve üzerinde çalışmaya devam et."
 
 #. Do not recover any autosaves; take no action.
-#: ../po/tmp/autorecover.glade.h:14
+#: ../gui/autorecover.glade:95
 msgctxt "Autosave Recovery dialog|"
 msgid "Decide _Later"
 msgstr "_Sonra Karar Ver"
 
-#: ../po/tmp/autorecover.glade.h:15
+#: ../gui/autorecover.glade:101
 msgctxt "Autosave Recovery dialog|Cancel button|"
 msgid "Start work on a new canvas. These backups will be retained."
 msgstr "Yedekleri koru ve yeni tuval üstünde çalışmaya başla."
 
-#: ../po/tmp/autorecover.glade.h:16
+#: ../gui/autorecover.glade:122
 msgctxt "Autosave Recovery dialog|"
 msgid ""
 "MyPaint crashed with unsaved work, but it makes rolling backups. You can "
@@ -3932,19 +3932,19 @@ msgstr ""
 "çalışıyordu. Çalışma dosyasını aşağıdaki otomatik yedeklemelerden birinden "
 "kurtarabilirsin. Devam etmeden önce nereye kaydetmek istediğin sorulacak."
 
-#: ../po/tmp/autorecover.glade.h:17
+#: ../gui/autorecover.glade:157
 msgid "Thumbnail"
 msgstr "Küçük Resim"
 
-#: ../po/tmp/autorecover.glade.h:18
+#: ../gui/autorecover.glade:171
 msgid "Description"
 msgstr "Açıklama"
 
-#: ../po/tmp/brusheditor.glade.h:1
+#: ../gui/brusheditor.glade:88
 msgid "Live update"
 msgstr "Canlı güncelle"
 
-#: ../po/tmp/brusheditor.glade.h:2
+#: ../gui/brusheditor.glade:93
 msgid ""
 "Update the last stroke on the canvas with the settings in this window, in "
 "real time"
@@ -3952,15 +3952,15 @@ msgstr ""
 "Tuval üzerindeki son darbeyi, bu penceredeki ayarlarla, gerçek zamanlı "
 "olarak güncelle"
 
-#: ../po/tmp/brusheditor.glade.h:4
+#: ../gui/brusheditor.glade:116
 msgid "Save these settings to the brush"
 msgstr "Bu ayarları fırçaya kaydet"
 
-#: ../po/tmp/brusheditor.glade.h:5
+#: ../gui/brusheditor.glade:132
 msgid "Edit Icon"
 msgstr "Simgeyi Düzenle"
 
-#: ../po/tmp/brusheditor.glade.h:6
+#: ../gui/brusheditor.glade:137
 msgid ""
 "Edit this brush's icon in a separate window (you will be able to use any "
 "brush to draw it)"
@@ -3968,53 +3968,53 @@ msgstr ""
 "Bu fırçanın simgesini ayrı bir pencerede düzenle (herhangi bir fırçayı "
 "çizmek için kullanabileceksiniz)"
 
-#: ../po/tmp/brusheditor.glade.h:7
+#: ../gui/brusheditor.glade:151
 msgid "Delete"
 msgstr "Sil"
 
-#: ../po/tmp/brusheditor.glade.h:8
+#: ../gui/brusheditor.glade:156
 msgid "Delete this brush from the disk"
 msgstr "Bu fırçayı diskten sil"
 
-#: ../po/tmp/brusheditor.glade.h:9
+#: ../gui/brusheditor.glade:170
 msgid "Copy to New"
 msgstr "Yeniye Kopyala"
 
-#: ../po/tmp/brusheditor.glade.h:10
+#: ../gui/brusheditor.glade:175
 msgid "Copy these settings and the current brush's icon to a new brush"
 msgstr "Bu ayarları ve geçerli fırçanın simgesini yeni fırçaya kopyala"
 
-#: ../po/tmp/brusheditor.glade.h:12
+#: ../gui/brusheditor.glade:194
 msgid "Rename this brush"
 msgstr "Bu fırçayı yeniden adlandır"
 
-#: ../po/tmp/brusheditor.glade.h:13
+#: ../gui/brusheditor.glade:239
 msgid "Brush Setting"
 msgstr "Fırça Ayarları"
 
-#: ../po/tmp/brusheditor.glade.h:14
+#: ../gui/brusheditor.glade:340
 msgctxt "brush editor|metadata settings|labels for widgets|tooltips|"
 msgid "Short description for use in tooltips"
 msgstr "İpuçlarında kullanım için kısa açıklama"
 
 #. Description for user tooltips
-#: ../po/tmp/brusheditor.glade.h:16
+#: ../gui/brusheditor.glade:343
 msgctxt "brush editor|metadata settings|labels|"
 msgid "Description:"
 msgstr "Açıklama:"
 
-#: ../po/tmp/brusheditor.glade.h:17
+#: ../gui/brusheditor.glade:355
 msgctxt "brush editor|metadata settings|labels for widgets|tooltips|"
 msgid "Brush developer's notes"
 msgstr "Fırça geliştiricisinin notları"
 
 #. Notes for developers
-#: ../po/tmp/brusheditor.glade.h:19
+#: ../gui/brusheditor.glade:358
 msgctxt "brush editor|metadata settings|labels|"
 msgid "Notes:"
 msgstr "Notlar:"
 
-#: ../po/tmp/brusheditor.glade.h:20
+#: ../gui/brusheditor.glade:420
 msgid ""
 "Starting value for this brush setting. The brush dynamics below act on this."
 msgstr ""
@@ -4022,15 +4022,15 @@ msgstr ""
 "eder."
 
 #. field label
-#: ../po/tmp/brusheditor.glade.h:22
+#: ../gui/brusheditor.glade:426
 msgid "Value:"
 msgstr "Değer:"
 
-#: ../po/tmp/brusheditor.glade.h:23
+#: ../gui/brusheditor.glade:491
 msgid "Reset this input to have no effect on the setting"
 msgstr "Ayarı etkilemeyecek şekilde bu girdiyi sıfırla"
 
-#: ../po/tmp/brusheditor.glade.h:24
+#: ../gui/brusheditor.glade:521
 msgid ""
 "Minimum value for the output axis.\n"
 "This can be set using the main slider for {dname}."
@@ -4038,7 +4038,7 @@ msgstr ""
 "Çıktı ekseni için en düşük değer.\n"
 "Bu, {dname} için ana kaydırma çubuğu kullanılarak ayarlanabilir."
 
-#: ../po/tmp/brusheditor.glade.h:26
+#: ../gui/brusheditor.glade:540
 msgid ""
 "Maximum value for the output axis.\n"
 "This can be set using the main slider for {dname}."
@@ -4046,23 +4046,23 @@ msgstr ""
 "Çıktı ekseni için en yüksek değer.\n"
 "Bu, {dname} için ana kaydırma çubuğu kullanılarak ayarlanabilir."
 
-#: ../po/tmp/brusheditor.glade.h:28
+#: ../gui/brusheditor.glade:562
 msgid "Output"
 msgstr "Çıktı"
 
-#: ../po/tmp/brusheditor.glade.h:29
+#: ../gui/brusheditor.glade:583
 msgid "Input"
 msgstr "Girdi"
 
-#: ../po/tmp/brusheditor.glade.h:30
+#: ../gui/brusheditor.glade:601
 msgid "Adjusts the maximum value"
 msgstr "En yüksek değeri ayarla"
 
-#: ../po/tmp/brusheditor.glade.h:31
+#: ../gui/brusheditor.glade:634
 msgid "Adjusts the minimum value"
 msgstr "En düşük değeri ayarla"
 
-#: ../po/tmp/brusheditor.glade.h:32
+#: ../gui/brusheditor.glade:666
 msgid ""
 "Minimum value for the input axis.\n"
 "Use the popup scale to adjust this."
@@ -4070,7 +4070,7 @@ msgstr ""
 "Girdi ekseni için en düşük değer.\n"
 "Bunu ayarlamak için açılır pencere ölçeğini kullan."
 
-#: ../po/tmp/brusheditor.glade.h:34
+#: ../gui/brusheditor.glade:684
 msgid ""
 "Maximum value for the input axis.\n"
 "Use the popup scale to adjust this."
@@ -4078,47 +4078,49 @@ msgstr ""
 "Girdi ekseni için en yüksek değer.\n"
 "Bunu ayarlamak için açılır pencere ölçeğini kullan."
 
-#: ../po/tmp/brusheditor.glade.h:36
+#: ../gui/brusheditor.glade:739
 msgid "Variation of the base value by stylus input and other criteria"
 msgstr "Temel değerin prob ucu girdisi ve diğer kriterler ile değişimi"
 
-#: ../po/tmp/brusheditor.glade.h:37
+#: ../gui/brusheditor.glade:746
 msgid "Brush Dynamics"
 msgstr "Fırça Hareketleri"
 
-#: ../po/tmp/brusheditor.glade.h:38
+#: ../gui/brusheditor.glade:780
 msgid "Adjust this input mapping in detail"
 msgstr "Bu girdi eşlemini ayrıntılarıyla ayarla"
 
-#: ../po/tmp/brusheditor.glade.h:39
+#: ../gui/brusheditor.glade:802
 msgid "{tooltip}"
 msgstr "{tooltip}"
 
 #. field name (template)
-#: ../po/tmp/brusheditor.glade.h:41
+#: ../gui/brusheditor.glade:809
 msgid "{dname}:"
 msgstr "{dname}:"
 
-#: ../po/tmp/brusheditor.glade.h:42
+#: ../gui/brusheditor.glade:841
 msgid "Brush dynamics are not available for this setting."
 msgstr "Fırça hareketleri bu ayar için kullanılamaz."
 
-#: ../po/tmp/brusheditor.glade.h:43
+#: ../gui/brusheditor.glade:851
 msgid "<big><b>No Brush Dynamics</b></big>"
 msgstr "<big><b>Fırça Hareketi Yok</b></big>"
 
-#: ../po/tmp/inktool.glade.h:1
+#: ../gui/inktool.glade:43
 msgctxt "Inking tool options: point value sliders: labels: tooltips"
 msgid "Pressure value for the current point"
 msgstr "Geçerli nokta için basınç değeri"
 
-#: ../po/tmp/inktool.glade.h:2
+#: ../gui/inktool.glade:48
 msgctxt "Inking tool options: point value sliders: labels"
 msgid "Press:"
 msgstr "Baskı:"
 
-#. The meaning of negative values is *not* affected by text direction.&#10;The widget
-#: ../po/tmp/inktool.glade.h:4
+#. The meaning of negative values is *not* affected by text direction.
+#. The widget's RTL/LTR layout, however, *is* affected.
+#. The value (and signs) *is* shown.
+#: ../gui/inktool.glade:82 ../gui/inktool.glade:102
 msgctxt "Inking tool options: point value sliders: labels: tooltips"
 msgid ""
 "Tilt in the direction of the canvas’s X axis.\n"
@@ -4129,217 +4131,107 @@ msgstr ""
 "0 değeri, kalemin dikey olduğu anlamına gelir.\n"
 "Negatif değerler, sola yatık anlamındadır."
 
-#: ../po/tmp/inktool.glade.h:7
+#: ../gui/inktool.glade:89
 msgctxt "Inking tool options: point value sliders: labels"
 msgid "X-tilt:"
 msgstr "X eğimi:"
 
-#: ../po/tmp/inktool.glade.h:8
+#: ../gui/inktool.glade:109
 msgctxt "Inking tool options: point value sliders: labels"
 msgid "Y-tilt:"
 msgstr "Y eğimi:"
 
-#: ../po/tmp/inktool.glade.h:9
+#: ../gui/inktool.glade:144
 msgid "Tilt in the canvas Y axis"
 msgstr "Tuvali Y ekseninde eğ"
 
-#: ../po/tmp/inktool.glade.h:10
+#: ../gui/inktool.glade:166
 msgctxt "Inking tool options: point value sliders: labels: tooltips"
 msgid "Time since the previous point, in seconds"
 msgstr "Önceki noktadan bu yana geçen süre, saniye olarak"
 
-#: ../po/tmp/inktool.glade.h:11
+#: ../gui/inktool.glade:171
 msgctxt "Inking tool options: point value sliders: labels"
 msgid "Time:"
 msgstr "Süre:"
 
-#: ../po/tmp/inktool.glade.h:12
+#: ../gui/inktool.glade:204
 msgctxt "Inking tool options: node delete button: label"
 msgid "Delete Point"
 msgstr "Noktayı Sil"
 
-#: ../po/tmp/inktool.glade.h:13
+#: ../gui/inktool.glade:208
 msgctxt "Inking tool options: node delete button: tooltip"
 msgid "Delete the currently selected point"
 msgstr "Geçerli seçilmiş noktayı sil"
 
-#: ../po/tmp/inktool.glade.h:14 ../po/tmp/resources.xml.h:184
+#: ../gui/inktool.glade:220 ../gui/resources.xml:897
 msgid "Insert Point"
 msgstr "Nokta Ekle"
 
-#: ../po/tmp/inktool.glade.h:15 ../po/tmp/resources.xml.h:188
+#: ../gui/inktool.glade:252 ../gui/resources.xml:911
 msgid "Simplify Points"
 msgstr "Noktaları Basitleştir"
 
-#: ../po/tmp/inktool.glade.h:16
+#: ../gui/inktool.glade:256
 msgid "Simplify the curve using the Reumann-Witkam algorithm."
 msgstr "Eğrileri basitleştir, Reumann-Witkam algoritmasını kullanarak."
 
-#: ../po/tmp/inktool.glade.h:17 ../po/tmp/resources.xml.h:190
+#: ../gui/inktool.glade:268 ../gui/resources.xml:918
 msgid "Cull Points"
 msgstr "Noktaları Ayır"
 
-#: ../po/tmp/inktool.glade.h:18
+#: ../gui/inktool.glade:272
 msgid "Cull every other point from the curve."
 msgstr "Diğer tüm noktaları eğriden ayır."
 
-#: ../po/tmp/layerprops.glade.h:1
-msgctxt "Layer properties widget → Name → label tooltip"
-msgid "The layer’s unique name."
-msgstr "Katmanın eşsiz adı."
-
-#: ../po/tmp/layerprops.glade.h:2
-msgctxt "Layer properties widget → <category labels>"
-msgid "Name"
-msgstr "Ad"
-
-#. “Dropdown” = colloquial for a GtkComboBox control.
-#: ../po/tmp/layerprops.glade.h:4
-msgctxt "Layer properties widget → Mode → label tooltip"
-msgid ""
-"How the layer combines with what’s behind it.\n"
-"\n"
-"Each mode has a different visual effect. Refer to the dropdown’s tooltip for "
-"each one to discover what they all do."
-msgstr ""
-"Katman, arkasındaki katman ile nasıl birleştirilir.\n"
-"\n"
-"Her kipin farklı bir görsel etkisi vardır. Her birinin ne yaptığını "
-"keşfetmek için açılır listenin ipucuna bakın."
-
-#: ../po/tmp/layerprops.glade.h:7
-msgctxt "Layer properties widget → <category labels>"
-msgid "Mode"
-msgstr "Kip"
-
-#: ../po/tmp/layerprops.glade.h:9
-#, no-c-format
-msgctxt "Layer properties widget → Opacity → label tooltip"
-msgid ""
-"How much the layer combines with what’s behind it.\n"
-"\n"
-"At 0%, the layer doesn’t contribute at all."
-msgstr ""
-"Katman, arkasındaki katman ile ne kadar birleştirilir.\n"
-"\n"
-"%0 olarak ayarlanırsa katman hiçbir katkıda bulunmaz."
-
-#: ../po/tmp/layerprops.glade.h:12
-msgctxt "Layer properties widget → <category labels>"
-msgid "Opacity"
-msgstr "Matlık"
-
-#: ../po/tmp/layerprops.glade.h:13
-msgctxt "Layer properties widget → Flags → label tooltip"
-msgid ""
-"Special layer flags.\n"
-"\n"
-"Refer to each button’s tooltip to find out what each flag does."
-msgstr ""
-"Özel katman bayrakları.\n"
-"\n"
-"Her bayrağın ne anlama geldiğini öğrenmek için her düğmenin ipucuna bakın."
-
-#: ../po/tmp/layerprops.glade.h:16
-msgctxt "Layer properties widget → <category labels>"
-msgid "Flags"
-msgstr "Bayraklar"
-
-#: ../po/tmp/layerprops.glade.h:17
-msgctxt "Layer properties widget → Flags → Eye togglebutton → tooltip"
-msgid ""
-"Layer visible or hidden.\n"
-"\n"
-"An open eye icon here indicates that the layer is visible.\n"
-"\n"
-"When the eye icon is closed, the layer is hidden. Hidden layers are "
-"completely invisible: they have no effect on what's displayed. You cannot "
-"paint to hidden layers, for safety.\n"
-"\n"
-"When a layer group is hidden, all of the layers inside it are made invisible "
-"too."
-msgstr ""
-"Katman görünür veya gizli.\n"
-"\n"
-"Açık göz simgesi, katmanın görünür, kapalı göz simgesi gizli olduğu "
-"anlamındadır. \n"
-"\n"
-"Gizli katmanlar tamamen görünmez olur ve görüntülenmeyi etkilemez. Güvenlik "
-"için gizli katmanlar boyanamaz.\n"
-"\n"
-"Katman grubu gizlendiğinde, içindeki tüm katmanlar da görünmez olur."
-
-#: ../po/tmp/layerprops.glade.h:24
-msgctxt "Layer properties widget → Flags → Padlock togglebutton → tooltip"
-msgid ""
-"Layer editable or locked.\n"
-"\n"
-"An open padlock icon indicates that the layer can be edited.\n"
-"\n"
-"When a layer is locked, you cannot paint to it or otherwise change its pixel "
-"content. You cannot pick strokes from it either, so this is useful when "
-"painting under a sketch.\n"
-"\n"
-"When a layer group is locked, none of the layers inside it can be edited."
-msgstr ""
-"Katman düzenlenebilir veya kilitli.\n"
-"\n"
-"Açık asma kilit simgesi, katmanın düzenlenebilir olduğu anlamındadır.\n"
-"\n"
-"Katman kilitlendiğinde, katmanı boyayamaz veya bir başka şekilde piksel "
-"içeriğini değiştiremezsin. Ayrıca darbe de seçemezsin, bu nedenle çizim "
-"altında boyama yaparken kullanışlıdır.\n"
-"\n"
-"Katman grubu kilitlendiğinde, içindeki katmanların hiçbiri düzenlenemez."
-
-#: ../po/tmp/layervis.glade.h:1
+#: ../gui/layervis.glade:15
 msgctxt "Layers window: view list controls: tooltips"
 msgid "The currently active view."
 msgstr "Geçerli etkin görünüm."
 
-#: ../po/tmp/layervis.glade.h:2
+#: ../gui/layervis.glade:36
 msgctxt "Layers window: view list controls: tooltips"
 msgid "Rename the active view."
 msgstr "Etkin görünümü yeniden adlandır."
 
-#: ../po/tmp/layervis.glade.h:3
+#: ../gui/layervis.glade:57
 msgctxt "Layers window: view list controls: tooltips"
 msgid "Remove the active view."
 msgstr "Etkin görünümü kaldır."
 
-#: ../po/tmp/layervis.glade.h:4
+#: ../gui/layervis.glade:78
 msgctxt "Layers window: view list controls: tooltips"
 msgid "Snapshot visible layers as a new view."
 msgstr "Görünür katmanları yeni görünüm olarak anlık görüntüle."
 
-#: ../po/tmp/layervis.glade.h:5
+#: ../gui/layervis.glade:99
 msgctxt "Layers window: view list controls: tooltips"
 msgid "Lock or unlock the active view."
 msgstr "Etkin görünümü kilitle veya kilidini aç."
 
-#: ../po/tmp/mypaint.glade.h:2
+#: ../gui/mypaint.glade:65
 msgctxt "footer: color picker button: tooltip"
 msgid "Pick color"
 msgstr "Renk seç"
 
-#: ../po/tmp/mypaint.glade.h:3
+#: ../gui/mypaint.glade:102
 msgctxt "Footerbar|"
 msgid "Edit the current color in detail"
 msgstr "Geçerli rengi ayrıntılı düzenle"
 
-#: ../po/tmp/mypaint.glade.h:4
+#: ../gui/mypaint.glade:126
 msgctxt "Footerbar|"
 msgid "Add the current color to the palette"
 msgstr "Geçerli rengi palete ekle"
 
-#: ../po/tmp/mypaint.glade.h:5
+#: ../gui/mypaint.glade:161
 msgctxt "Footerbar|"
 msgid "Canvas scale and rotation"
 msgstr "Tuval ölçeği ve döndürmesi"
 
 #. str.format() template
-#: ../po/tmp/mypaint.glade.h:8
-#, no-c-format
+#: ../gui/mypaint.glade:163
 msgctxt "Footerbar|"
 msgid ""
 "Z: {scale:.1f}%\n"
@@ -4348,107 +4240,102 @@ msgstr ""
 "Y: %{scale:.1f}\n"
 "D: {rotation:+.1f}°"
 
-#: ../po/tmp/mypaint.glade.h:10
+#: ../gui/mypaint.glade:249
 msgctxt "footer: context picker button: tooltip"
 msgid "Pick brushstroke settings, stroke color, and layer"
 msgstr "Fırça darbesi ayarlarını, darbe rengini ve katmanı seç"
 
-#: ../po/tmp/preferenceswindow.glade.h:1
+#: ../gui/preferenceswindow.glade:24
 msgctxt "Prefs Dialog|Saving|Save Formats and Locations|Default|"
 msgid "OpenRaster (*.ora)"
 msgstr "OpenRaster (*.ora)"
 
-#: ../po/tmp/preferenceswindow.glade.h:2
+#: ../gui/preferenceswindow.glade:28
 msgctxt "Prefs Dialog|Saving|Save Formats and Locations|Default|"
 msgid "PNG solid with background (*.png)"
 msgstr "PNG arkaplanla birlikte görünür (* .png)"
 
-#: ../po/tmp/preferenceswindow.glade.h:4
-#, no-c-format
+#: ../gui/preferenceswindow.glade:32
 msgctxt "Prefs Dialog|Saving|Save Formats and Locations|Default|"
 msgid "JPEG 90% quality (*.jpg; *.jpeg)"
 msgstr "JPEG %90 kalite (*.jpg; *.jpeg)"
 
-#: ../po/tmp/preferenceswindow.glade.h:6
-#, no-c-format
+#: ../gui/preferenceswindow.glade:46
 msgctxt "Prefs Dialog|View|Zoom|Default|"
 msgid "25%"
 msgstr "%25"
 
-#: ../po/tmp/preferenceswindow.glade.h:8
-#, no-c-format
+#: ../gui/preferenceswindow.glade:50
 msgctxt "Prefs Dialog|View|Zoom|Default|"
 msgid "50%"
 msgstr "%50"
 
-#: ../po/tmp/preferenceswindow.glade.h:10
-#, no-c-format
+#: ../gui/preferenceswindow.glade:54
 msgctxt "Prefs Dialog|View|Zoom|Default|"
 msgid "100%"
 msgstr "%100"
 
-#: ../po/tmp/preferenceswindow.glade.h:12
-#, no-c-format
+#: ../gui/preferenceswindow.glade:58
 msgctxt "Prefs Dialog|View|Zoom|Default|"
 msgid "200%"
 msgstr "%200"
 
-#: ../po/tmp/preferenceswindow.glade.h:13
+#: ../gui/preferenceswindow.glade:72
 msgctxt "Prefs Dialog|View|Cursors|Freehand Cursor|Type|"
 msgid "Circle with light outline"
 msgstr "Hafif anahat ile daire"
 
-#: ../po/tmp/preferenceswindow.glade.h:14
+#: ../gui/preferenceswindow.glade:76
 msgctxt "Prefs Dialog|View|Cursors|Freehand Cursor|Type|"
 msgid "Circle with medium outline"
 msgstr "Orta anahat ile daire"
 
-#: ../po/tmp/preferenceswindow.glade.h:15
+#: ../gui/preferenceswindow.glade:80
 msgctxt "Prefs Dialog|View|Cursors|Freehand Cursor|Type|"
 msgid "Circle with heavy outline"
 msgstr "Kalın anahat ile daire"
 
-#: ../po/tmp/preferenceswindow.glade.h:16
+#: ../gui/preferenceswindow.glade:84
 msgctxt "Prefs Dialog|View|Cursors|Freehand Cursor|Type|"
 msgid "Crosshair"
 msgstr "Artı işareti"
 
 #. Graph x-axis label
-#: ../po/tmp/preferenceswindow.glade.h:18
+#: ../gui/preferenceswindow.glade:145
 msgctxt "Prefs Dialog|Pen Input|Input Device Settings|Pressure Mapping|"
 msgid "Input Pressure"
 msgstr "Girdi Basıncı"
 
 #. Graph y-axis label
-#: ../po/tmp/preferenceswindow.glade.h:20
+#: ../gui/preferenceswindow.glade:159
 msgctxt "Prefs Dialog|Pen Input|Input Device Settings|Pressure Mapping|"
 msgid "Brush Pressure"
 msgstr "Fırça Basıncı"
 
 #. Graph label, range (0...1)
-#: ../po/tmp/preferenceswindow.glade.h:22
+#: ../gui/preferenceswindow.glade:174 ../gui/preferenceswindow.glade:202
 msgctxt "Prefs Dialog|Pen Input|Input Device Settings|Pressure Mapping|"
 msgid "0.0"
 msgstr "0,0"
 
 #. Graph label, range (0...1)
-#: ../po/tmp/preferenceswindow.glade.h:24
+#: ../gui/preferenceswindow.glade:188 ../gui/preferenceswindow.glade:217
 msgctxt "Prefs Dialog|Pen Input|Input Device Settings|Pressure Mapping|"
 msgid "1.0"
 msgstr "1,0"
 
-#: ../po/tmp/preferenceswindow.glade.h:25
+#: ../gui/preferenceswindow.glade:251
 msgctxt "Prefs Dialog|Pen Input|"
 msgid "<b>Global Pressure Mapping</b>"
 msgstr "<b>Genel Basınç Eşlemi</b>"
 
 #. Tab label in preferences dialog
-#: ../po/tmp/preferenceswindow.glade.h:27
+#: ../gui/preferenceswindow.glade:261
 msgctxt "Prefs Dialog|"
 msgid "Pressure"
 msgstr "Basınç"
 
-#: ../po/tmp/preferenceswindow.glade.h:28
+#: ../gui/preferenceswindow.glade:302
 msgctxt "Prefs Dialog|Devices|"
 msgid ""
 "Here you can restrict pointing devices to specific tasks on the canvas, or "
@@ -4457,16 +4344,16 @@ msgstr ""
 "Burada, işaretleme aygıtlarını tuval üzerindeki belirli görevlerle "
 "sınırlayabilir veya çizimini aksatıyorlarsa tamamen yoksayabilirsin."
 
-#: ../po/tmp/preferenceswindow.glade.h:29
+#: ../gui/preferenceswindow.glade:324
 msgctxt "Prefs Dialog|Button|"
 msgid "<b>Device Usage</b>"
 msgstr "<b>Aygıt Kullanımı</b>"
 
-#: ../po/tmp/preferenceswindow.glade.h:30
+#: ../gui/preferenceswindow.glade:337
 msgid "Devices"
 msgstr "Aygıtlar"
 
-#: ../po/tmp/preferenceswindow.glade.h:31
+#: ../gui/preferenceswindow.glade:380
 msgctxt "Prefs Dialog|Button|Pointer Button Mappings|"
 msgid ""
 "• The space bar can be used like Button2.\n"
@@ -4475,57 +4362,57 @@ msgstr ""
 "• Boşluk çubuğu Button2 gibi kullanılabilir.\n"
 "• Kimi tabletlerin düğmeleri basılı tutulamaz."
 
-#: ../po/tmp/preferenceswindow.glade.h:33
+#: ../gui/preferenceswindow.glade:401
 msgctxt "Prefs Dialog|Button|"
 msgid "<b>Pointer Button Mappings</b>"
 msgstr "<b>İmleç Düğmesi Eşlemleri</b>"
 
 #. Tab label in preferences dialog
-#: ../po/tmp/preferenceswindow.glade.h:35
+#: ../gui/preferenceswindow.glade:414
 msgctxt "Prefs Dialog|"
 msgid "Buttons"
 msgstr "Düğmeler"
 
-#: ../po/tmp/preferenceswindow.glade.h:36
+#: ../gui/preferenceswindow.glade:447
 msgctxt "Prefs Dialog|Button|"
 msgid "<b>Keyboard Mappings</b>"
 msgstr "<b>Klavye Eşlemleri</b>"
 
-#: ../po/tmp/preferenceswindow.glade.h:37
+#: ../gui/preferenceswindow.glade:460
 msgid "Keys"
 msgstr "Tuşlar"
 
-#: ../po/tmp/preferenceswindow.glade.h:38
+#: ../gui/preferenceswindow.glade:480
 msgctxt "Prefs Dialog|Load & Save|Saving|"
 msgid "Default file format:"
 msgstr "Varsayılan dosya biçimi:"
 
-#: ../po/tmp/preferenceswindow.glade.h:39
+#: ../gui/preferenceswindow.glade:495
 msgctxt "Prefs Dialog|Load & Save|Saving|"
 msgid "Prefix when saving scraps:"
 msgstr "Karalama kaydetme öneki:"
 
-#: ../po/tmp/preferenceswindow.glade.h:40
+#: ../gui/preferenceswindow.glade:546
 msgctxt "Prefs Dialog|Load & Save|"
 msgid "<b>Saving</b>"
 msgstr "<b>Kaydetme</b>"
 
-#: ../po/tmp/preferenceswindow.glade.h:41
+#: ../gui/preferenceswindow.glade:563
 msgctxt "Prefs Dialog|Load & Save|"
 msgid "<b>Color Management</b>"
 msgstr "<b>Renk Yönetimi</b>"
 
-#: ../po/tmp/preferenceswindow.glade.h:42
+#: ../gui/preferenceswindow.glade:579
 msgctxt "Prefs Dialog|Load & Save|Color Management|"
 msgid "Color space conversions:"
 msgstr "Renk uzayı dönüşümleri:"
 
-#: ../po/tmp/preferenceswindow.glade.h:43
+#: ../gui/preferenceswindow.glade:597
 msgctxt "Prefs Dialog|Load & Save|Color Management|"
 msgid "Convert to sRGB when loading; mark as sRGB when saving"
 msgstr "Yüklerken sRGB'ye dönüştürken; kaydederken sRGB olarak işaretle"
 
-#: ../po/tmp/preferenceswindow.glade.h:44
+#: ../gui/preferenceswindow.glade:601
 msgctxt "Prefs Dialog|Load & Save|Color Management|"
 msgid ""
 "Images containing <i>full</i> colorspace information will be converted to "
@@ -4546,12 +4433,12 @@ msgstr ""
 "Ekranın bundan radikal şekilde farklı olduğunu biliyorsan, bunun yerine "
 "\"Otomatik dönüşüm ve etiketleme yok\" ayarını kullan."
 
-#: ../po/tmp/preferenceswindow.glade.h:47
+#: ../gui/preferenceswindow.glade:619
 msgctxt "Prefs Dialog|Load & Save|Color Management|"
 msgid "No automatic conversions or tagging"
 msgstr "Otomatik dönüşüm ve etiketleme yok"
 
-#: ../po/tmp/preferenceswindow.glade.h:48
+#: ../gui/preferenceswindow.glade:623
 msgctxt "Prefs Dialog|Load & Save|Color Management|"
 msgid ""
 "No color conversions are performed when loading, and files are saved without "
@@ -4566,24 +4453,24 @@ msgstr ""
 "Bu MyPaint'in eski davranışıdır ve sRGB dışı çalışma için geçici olarak "
 "kullanılabilir."
 
-#: ../po/tmp/preferenceswindow.glade.h:51
+#: ../gui/preferenceswindow.glade:651
 msgctxt "Prefs Dialog|Load & Save|"
 msgid "<b>Automated Backups</b>"
 msgstr "<b>Otomatikleştirilmiş Yedekler</b>"
 
-#: ../po/tmp/preferenceswindow.glade.h:52
+#: ../gui/preferenceswindow.glade:669
 msgctxt "Prefs Dialog|Load & Save|Automated Backups|switch label"
 msgid "Back up unsaved work:"
 msgstr "Kaydedilmemiş çalışmaları yedekle:"
 
 #. In seconds. Lowest value is 5, highest is 300 (5 minutes). Only matters when enabled.
-#: ../po/tmp/preferenceswindow.glade.h:54
+#: ../gui/preferenceswindow.glade:704
 msgctxt ""
 "Prefs Dialog|Load & Save|Automated Backups|interval spinbox units suffix"
 msgid "seconds of inactivity"
 msgstr "saniye hareketsiz kalınca"
 
-#: ../po/tmp/preferenceswindow.glade.h:55
+#: ../gui/preferenceswindow.glade:717
 msgctxt "Prefs Dialog|Load & Save|Automated Backups|switch tooltip"
 msgid ""
 "Backs up work incrementally in the background to MyPaint's disk cache. If "
@@ -4593,52 +4480,52 @@ msgstr ""
 "Çalışmayı arkaplanda artımsal olarak MyPaint disk önbelleğine yedekler. "
 "Program çökerse, çalışmayı geri yükleme şansın olur."
 
-#: ../po/tmp/preferenceswindow.glade.h:56
+#: ../gui/preferenceswindow.glade:739
 msgctxt "Prefs Dialog|Load & Save|Automated Backups|interval label"
 msgid "Time between backups:"
 msgstr "Yedekler arasındaki süre:"
 
 #. Tab label in preferences dialog
-#: ../po/tmp/preferenceswindow.glade.h:58
+#: ../gui/preferenceswindow.glade:757
 msgctxt "Prefs Dialog|"
 msgid "Load & Save"
 msgstr "Yükle ve Kaydet"
 
-#: ../po/tmp/preferenceswindow.glade.h:59
+#: ../gui/preferenceswindow.glade:778
 msgctxt "Prefs Dialog|View|"
 msgid "<b>Zoom and Rendering</b>"
 msgstr "<b>Yakınlaştırma ve İşleme</b>"
 
-#: ../po/tmp/preferenceswindow.glade.h:60
+#: ../gui/preferenceswindow.glade:795
 msgid "Default zoom level:"
 msgstr "Varsayılan yakınlaştırma düzeyi:"
 
-#: ../po/tmp/preferenceswindow.glade.h:61
+#: ../gui/preferenceswindow.glade:833
 msgctxt "Prefs Dialog|View|"
 msgid "<b>Interface</b>"
 msgstr "<b>Arayüz</b>"
 
-#: ../po/tmp/preferenceswindow.glade.h:62
+#: ../gui/preferenceswindow.glade:850
 msgctxt "Prefs Dialog|View|Interface|"
 msgid "Toolbar icon size:"
 msgstr "Araç çubuğu simge boyutu:"
 
-#: ../po/tmp/preferenceswindow.glade.h:63
+#: ../gui/preferenceswindow.glade:866
 msgctxt "Prefs Dialog|View|Interface|"
 msgid "Freehand cursor type:"
 msgstr "Serbest imleç türü:"
 
-#: ../po/tmp/preferenceswindow.glade.h:64
+#: ../gui/preferenceswindow.glade:881
 msgctxt "Prefs Dialog|View|Interface|"
 msgid "Dark theme variant:"
 msgstr "Koyu tema çeşidi:"
 
-#: ../po/tmp/preferenceswindow.glade.h:65
+#: ../gui/preferenceswindow.glade:891
 msgctxt "Prefs Dialog|View|Interface|Dark theme variant|"
 msgid "If available in GTK3 theme (needs restart)"
 msgstr "GTK3 temasında varsa (yeniden başlatma gerektirir)"
 
-#: ../po/tmp/preferenceswindow.glade.h:66
+#: ../gui/preferenceswindow.glade:895
 msgctxt "Prefs Dialog|View|Interface|Dark theme variant|checkbox tooltip"
 msgid ""
 "Use a light-on-dark theme variant, when it's supported by the GTK theme. "
@@ -4647,26 +4534,26 @@ msgstr ""
 "GTK teması tarafından desteklendiğinde açık-koyu tema çeşidi kullan. Bu "
 "genellikle görüntü düzenleyiciler ve medya izleyicileri için mantıklıdır."
 
-#: ../po/tmp/preferenceswindow.glade.h:67
+#: ../gui/preferenceswindow.glade:916
 msgid "Some of these settings require MyPaint to be restarted."
 msgstr "Bu ayarların kimileri MyPaint'in yeniden başlatılmasını gerektirir."
 
-#: ../po/tmp/preferenceswindow.glade.h:68
+#: ../gui/preferenceswindow.glade:939
 msgctxt "Prefs Dialog|View|Interface|Icon size|"
 msgid "Large (requires recent GTK3)"
 msgstr "Büyük (güncel GTK3 gerektirir)"
 
-#: ../po/tmp/preferenceswindow.glade.h:69
+#: ../gui/preferenceswindow.glade:956
 msgctxt "Prefs Dialog|View|Interface|Icon size|"
 msgid "Small"
 msgstr "Küçük"
 
-#: ../po/tmp/preferenceswindow.glade.h:70
+#: ../gui/preferenceswindow.glade:981
 msgctxt "Prefs Dialog|View|Zoom|"
 msgid "Use a real checkerboard pattern"
 msgstr "Gerçek dama tahtası deseni kullan"
 
-#: ../po/tmp/preferenceswindow.glade.h:71
+#: ../gui/preferenceswindow.glade:985
 msgctxt "Prefs Dialog|View|Zoom|"
 msgid ""
 "Draw a real checkerboard pattern to show transparency.\n"
@@ -4675,22 +4562,22 @@ msgstr ""
 "Şeffaflığı göstermek için gerçek bir dama tahtası deseni kullan.\n"
 "Bu, ekranı yavaşlatır, ancak daha az kafa karıştırıcı olabilir."
 
-#: ../po/tmp/preferenceswindow.glade.h:73
+#: ../gui/preferenceswindow.glade:1006
 msgid "When showing transparency:"
 msgstr "Şeffaflık gösterilirken:"
 
-#: ../po/tmp/preferenceswindow.glade.h:74
+#: ../gui/preferenceswindow.glade:1021
 msgctxt "Prefs Dialog|View|Interface|"
 msgid "Handle smooth scrolling events:"
 msgstr "Yumuşak kaydırma eylemlerini yönet:"
 
-#: ../po/tmp/preferenceswindow.glade.h:75
+#: ../gui/preferenceswindow.glade:1031
 msgctxt ""
 "Prefs Dialog|View|Interface|Handle smooth scrolling events|checkbox label"
 msgid "When devices send them (needs restart)"
 msgstr "Aygıt onları gönderdiğinde (yeniden başlatma gerektirir)"
 
-#: ../po/tmp/preferenceswindow.glade.h:76
+#: ../gui/preferenceswindow.glade:1035
 msgctxt ""
 "Prefs Dialog|View|Interface|Handle smooth scrolling events|checkbox tooltip"
 msgid ""
@@ -4716,17 +4603,17 @@ msgstr ""
 "Görünümü kaydırmak için kaydırma, bu ayarın açık olmasını ve aygıtın iki "
 "yönlü kaydırma eylemlerini gönderecek şekilde yapılandırılmasını gerektirir."
 
-#: ../po/tmp/preferenceswindow.glade.h:81
+#: ../gui/preferenceswindow.glade:1082
 msgid "Hide cursor while painting"
 msgstr "Boyarken imleci gizle"
 
-#: ../po/tmp/preferenceswindow.glade.h:82
+#: ../gui/preferenceswindow.glade:1105
 msgctxt ""
 "Prefs Dialog|View|Interface|Blink layers on creation/selection|checkbox label"
 msgid "Enabled"
 msgstr "Etkinleştirildi"
 
-#: ../po/tmp/preferenceswindow.glade.h:83
+#: ../gui/preferenceswindow.glade:1109
 msgctxt ""
 "Prefs Dialog|View|Interface|Blink layers on creation/selection|checkbox "
 "tooltip"
@@ -4737,28 +4624,28 @@ msgstr ""
 "Bir katman oluşturulduğunda veya seçildiğinde, yalnızca o katmanı kısa bir "
 "süreliğine göster."
 
-#: ../po/tmp/preferenceswindow.glade.h:84
+#: ../gui/preferenceswindow.glade:1129
 msgctxt "Prefs Dialog|View|Interface|"
 msgid "Blink layers on creation/selection:"
 msgstr "Katman gözkırpması (oluştururken/seçerken):"
 
-#: ../po/tmp/preferenceswindow.glade.h:85
+#: ../gui/preferenceswindow.glade:1164
 msgctxt "Prefs Dialog|View|Interface|"
 msgid "Language:"
 msgstr "Dil:"
 
-#: ../po/tmp/preferenceswindow.glade.h:86
+#: ../gui/preferenceswindow.glade:1179
 msgctxt "Prefs Dialog|View|Interface|"
 msgid "(needs restart)"
 msgstr "(yeniden başlatma gerekli)"
 
-#. Tab label in preferences dialog&#10;
-#: ../po/tmp/preferenceswindow.glade.h:88
+#. Tab label in preferences dialog
+#: ../gui/preferenceswindow.glade:1196
 msgctxt "Prefs Dialog|"
 msgid "View"
 msgstr "Görünüm"
 
-#: ../po/tmp/preferenceswindow.glade.h:89
+#: ../gui/preferenceswindow.glade:1228
 msgctxt "Prefs Dialog|Color|Color Wheel|Primaries|"
 msgid ""
 "The set of colors to show as primary on disk-style color wheels.\n"
@@ -4767,18 +4654,18 @@ msgstr ""
 "Disk benzeri renk tekerlerinde birincil olarak gösterilecek renk kümesi.\n"
 "Farklı geleneklerin farklı renk uyumları vardır."
 
-#. Arrangement of MyPaint
-#: ../po/tmp/preferenceswindow.glade.h:92
+#. Arrangement of MyPaint's custom colour wheels
+#: ../gui/preferenceswindow.glade:1230
 msgctxt "Prefs Dialog|Color|Color Wheel|"
 msgid "Primaries are:"
 msgstr "Ana renkler:"
 
-#: ../po/tmp/preferenceswindow.glade.h:93
+#: ../gui/preferenceswindow.glade:1247
 msgctxt "Prefs Dialog|Color|Color Wheel|Primaries|"
 msgid "Standard digital Red/Green/Blue"
 msgstr "Standart dijital Kırmızı/Yeşil/Mavi"
 
-#: ../po/tmp/preferenceswindow.glade.h:94
+#: ../gui/preferenceswindow.glade:1252
 msgid ""
 "The red, green, and blue &apos;computer monitor&apos; primaries, evenly "
 "arranged around the circle. Green is opposite magenta."
@@ -4786,7 +4673,7 @@ msgstr ""
 "Kırmızı, yeşil ve mavi 'bilgisayar monitörü' ana renkleri, dairenin etrafına "
 "eşit olarak yerleştirilir. Yeşil camgöbeğinin karşısındadır."
 
-#: ../po/tmp/preferenceswindow.glade.h:95
+#: ../gui/preferenceswindow.glade:1253
 msgctxt "Prefs Dialog|Color|Color Wheel|Primaries|RGB|"
 msgid ""
 "The red, green, and blue 'computer monitor' primaries, evenly arranged "
@@ -4795,12 +4682,12 @@ msgstr ""
 "Kırmızı, yeşil ve mavi 'bilgisayar monitörü' ana renkleri, dairenin etrafına "
 "eşit olarak yerleştirilir. Yeşil camgöbeğinin karşısındadır."
 
-#: ../po/tmp/preferenceswindow.glade.h:96
+#: ../gui/preferenceswindow.glade:1269
 msgctxt "Prefs Dialog|Color|Color Wheel|Primaries|"
 msgid "Traditional artist's Red/Yellow/Blue"
 msgstr "Geleneksel artistik Kırmızı/Sarı/Mavi"
 
-#: ../po/tmp/preferenceswindow.glade.h:97
+#: ../gui/preferenceswindow.glade:1274
 msgid ""
 "The traditionally arranged red/yellow/blue wheel as used by many artists "
 "since the 18th century, approximated with pure display colors evenly "
@@ -4811,7 +4698,7 @@ msgstr ""
 "etrafında eşit şekilde düzenlendiği bir yaklaşımdır. Yeşil kırmızının "
 "karşısındadır."
 
-#: ../po/tmp/preferenceswindow.glade.h:98
+#: ../gui/preferenceswindow.glade:1275
 msgctxt "Prefs Dialog|Color|Color Wheel|Primaries|RYB|"
 msgid ""
 "The traditionally arranged red/yellow/blue wheel as used by many artists "
@@ -4823,12 +4710,12 @@ msgstr ""
 "etrafında eşit şekilde düzenlendiği bir yaklaşımdır. Yeşil kırmızının "
 "karşısındadır."
 
-#: ../po/tmp/preferenceswindow.glade.h:99
+#: ../gui/preferenceswindow.glade:1291
 msgctxt "Prefs Dialog|Color|Color Wheel|Primaries|"
 msgid "Red-Green and Blue-Yellow opponent pairs"
 msgstr "Kırmızı-Yeşil ve Mavi-Sarı rakip çiftleri"
 
-#: ../po/tmp/preferenceswindow.glade.h:100
+#: ../gui/preferenceswindow.glade:1296
 msgid ""
 "Quick and dirty approximation of wheels informed by theories of  color which "
 "use four &apos;psychological primaries&apos; or &apos;unique hues&apos; "
@@ -4842,7 +4729,7 @@ msgstr ""
 "ise mavinin karşısındadır. CIECAM02 ve NCS benzer bir model sunar. Burada "
 "dört ana rengin gösterimi olarak saf kırmızı, sarı vb. kullanıyoruz."
 
-#: ../po/tmp/preferenceswindow.glade.h:101
+#: ../gui/preferenceswindow.glade:1297
 msgctxt "Prefs Dialog|Color|Color Wheel|Primaries|RYGB|"
 msgid ""
 "Quick and dirty approximation of wheels informed by theories of  color which "
@@ -4858,45 +4745,45 @@ msgstr ""
 "dört ana rengin gösterimi olarak saf kırmızı, sarı vb. kullanıyoruz."
 
 #. Options affecting color wheels
-#: ../po/tmp/preferenceswindow.glade.h:103
+#: ../gui/preferenceswindow.glade:1325
 msgctxt "Prefs Dialog|Color|"
 msgid "<b>Color Wheel</b>"
 msgstr "<b>Renk Tekerleği</b>"
 
 #. Tab label in preferences dialog
-#: ../po/tmp/preferenceswindow.glade.h:105
+#: ../gui/preferenceswindow.glade:1338
 msgctxt "Prefs Dialog|"
 msgid "Color"
 msgstr "Renk"
 
-#: ../po/tmp/preferenceswindow.glade.h:106
+#: ../gui/preferenceswindow.glade:1371
 msgctxt "Prefs Dialog|Compatibility"
 msgid "Default Compatibility Mode:"
 msgstr "Öntanımlı uyumluluk kipi:"
 
-#: ../po/tmp/preferenceswindow.glade.h:107
+#: ../gui/preferenceswindow.glade:1396
 msgctxt "Prefs Dialog|Compatibility"
 msgid "<b>1.x Settings</b>"
 msgstr "<b>1.x Ayarları</b>"
 
 #. Make sure to be consistent w. other occurences of 2.x
-#: ../po/tmp/preferenceswindow.glade.h:109
+#: ../gui/preferenceswindow.glade:1410
 msgctxt "Prefs Dialog|Compatibility"
 msgid "<b>2.x Settings</b>"
 msgstr "<b>2.x Ayarları</b>"
 
-#: ../po/tmp/preferenceswindow.glade.h:110
+#: ../gui/preferenceswindow.glade:1448 ../gui/preferenceswindow.glade:1522
 msgctxt "Prefs Dialog|Compatibility"
 msgid "Default New Layer Type:"
 msgstr "Öntanımlı yeni katman türü:"
 
-#: ../po/tmp/preferenceswindow.glade.h:111
+#: ../gui/preferenceswindow.glade:1494 ../gui/preferenceswindow.glade:1508
 msgctxt "Prefs Dialog|Compatibility"
 msgid "Default Pigment Brush Setting:"
 msgstr "Öntanımlı pigment fırça ayarları:"
 
 #. Label description for the 1.x compatibility-mode-by-default setting
-#: ../po/tmp/preferenceswindow.glade.h:115
+#: ../gui/preferenceswindow.glade:1585
 msgctxt "Prefs Dialog|Compatibility"
 msgid ""
 "When creating new documents, use the legacy 1.x compatibility mode by "
@@ -4907,7 +4794,7 @@ msgstr ""
 "Bu kipte 1.x .ora dosyaları eski sürümlerde oldukları gibi görünür, ancak "
 "pigment harmanlama iyi çalışmaz."
 
-#: ../po/tmp/preferenceswindow.glade.h:118
+#: ../gui/preferenceswindow.glade:1604
 msgctxt "Prefs Dialog|Compatibility"
 msgid ""
 "When creating new documents, use the regular 2.x compatibility mode by "
@@ -4916,24 +4803,24 @@ msgstr ""
 "Yeni belge oluştururken, öntanımlı olarak normal 2.x uyumluluk kipini "
 "kullan. Eski belgeler bu kipte genellikle farklı görünür."
 
-#: ../po/tmp/preferenceswindow.glade.h:119
+#: ../gui/preferenceswindow.glade:1636
 msgctxt "Prefs Dialog|Compatibility"
 msgid "Show warning for files that may be partially incompatible"
 msgstr "Kısmen uyumsuz olabilecek dosyalar için uyarı göster"
 
 #. Label for a set of options
-#: ../po/tmp/preferenceswindow.glade.h:121
+#: ../gui/preferenceswindow.glade:1653
 msgctxt "Prefs Dialog|Compatibility"
 msgid "File compatibility warnings:"
 msgstr "Dosya uyumluluk uyarıları:"
 
-#: ../po/tmp/preferenceswindow.glade.h:122
+#: ../gui/preferenceswindow.glade:1665
 msgctxt "Prefs Dialog|Compatibility"
 msgid "Show warning for files that may be fully incompatible"
 msgstr "Tamamen uyumsuz olabilecek dosyalar için uyarı göster"
 
 #. This is a tooltip for the file behavior options label.
-#: ../po/tmp/preferenceswindow.glade.h:124
+#: ../gui/preferenceswindow.glade:1681
 msgctxt "Prefs|Compatibility"
 msgid ""
 "This will only apply to files saved with versions of MyPaint older than 2.0. "
@@ -4945,393 +4832,393 @@ msgstr ""
 "kaydettiğinizde, etkin uyumluluk kipi dosyaya yazılır."
 
 #. Label to the options for how to handle files which do not have a compatibility mode specified (whether they should be opened in 1.x compatibility mode, or 2.x mode)
-#: ../po/tmp/preferenceswindow.glade.h:126
+#: ../gui/preferenceswindow.glade:1683
 msgctxt "Prefs Dialog|Compatibility"
 msgid "When Mode is Unspecified:"
 msgstr "Kip belirtilmediğinde:"
 
 #. This label indicates a subsection of the compatibility settings related to loading files.
-#: ../po/tmp/preferenceswindow.glade.h:128
+#: ../gui/preferenceswindow.glade:1710
 msgctxt "Prefs|Compatibility"
 msgid "<b>File loading</b>"
 msgstr "<b>Dosya Yükleme</b>"
 
-#: ../po/tmp/preferenceswindow.glade.h:129
+#: ../gui/preferenceswindow.glade:1730
 msgid "<b>Compatibility settings</b>"
 msgstr "<b>Uyumluluk ayarları</b>"
 
 #. Tab label in preferences dialog
-#: ../po/tmp/preferenceswindow.glade.h:131
+#: ../gui/preferenceswindow.glade:1746
 msgctxt "Prefs Dialog|"
 msgid "Compatibility"
 msgstr "Uyumluluk"
 
-#: ../po/tmp/preferenceswindow.glade.h:132
+#: ../gui/preferenceswindow.glade:1764
 msgctxt "Prefs Dialog|Pen Input|Mode|"
 msgid "Screen (normal)"
 msgstr "Ekran (normal)"
 
-#: ../po/tmp/preferenceswindow.glade.h:133
+#: ../gui/preferenceswindow.glade:1768
 msgctxt "Prefs Dialog|Pen Input|Mode|"
 msgid "Disabled (no pressure sensitivity)"
 msgstr "Pasifleştirildi (basınç hassasiyeti yok)"
 
-#: ../po/tmp/preferenceswindow.glade.h:134
+#: ../gui/preferenceswindow.glade:1772
 msgctxt "Prefs Dialog|Pen Input|Mode|"
 msgid "Window (not recommended)"
 msgstr "Pencere (tavsiye edilmez)"
 
-#: ../po/tmp/resources.xml.h:1
+#: ../gui/resources.xml:63
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "New"
 msgstr "Yeni"
 
-#: ../po/tmp/resources.xml.h:2
+#: ../gui/resources.xml:64
 msgctxt "Toolbar (short labels)"
 msgid "New"
 msgstr "Yeni"
 
-#: ../po/tmp/resources.xml.h:3
+#: ../gui/resources.xml:65
 msgctxt "Toolbar (tooltips), Accel Editor (descriptions)"
 msgid "Start with a new blank canvas."
 msgstr "Yeni boş bir tuvalle başlat."
 
-#: ../po/tmp/resources.xml.h:4
+#: ../gui/resources.xml:73
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "Open…"
 msgstr "Aç…"
 
-#: ../po/tmp/resources.xml.h:5
+#: ../gui/resources.xml:74
 msgctxt "Toolbar (short labels)"
 msgid "Open"
 msgstr "Aç"
 
-#: ../po/tmp/resources.xml.h:6
+#: ../gui/resources.xml:75
 msgctxt "Toolbar (tooltips), Accel Editor (descriptions)"
 msgid "Load a file to work on."
 msgstr "Üzerinde çalışmak için bir dosya yükle."
 
-#: ../po/tmp/resources.xml.h:7
+#: ../gui/resources.xml:82
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "Open Most Recent"
 msgstr "Son Kullanılan Dosyayı Aç"
 
-#: ../po/tmp/resources.xml.h:8
+#: ../gui/resources.xml:83
 msgctxt "Accel Editor (descriptions)"
 msgid "Load the file you saved most recently."
 msgstr "Son kaydedilen dosyayı yükle."
 
-#: ../po/tmp/resources.xml.h:9
+#: ../gui/resources.xml:90
 msgctxt "Menu→File (labels)"
 msgid "Open Recent"
 msgstr "Son Kullanılan Dosyalar"
 
-#: ../po/tmp/resources.xml.h:10
+#: ../gui/resources.xml:103
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "Revert"
 msgstr "Geri Döndür"
 
-#: ../po/tmp/resources.xml.h:11
+#: ../gui/resources.xml:104
 msgctxt "Accel Editor (descriptions)"
 msgid "Reload the file your current work was loaded from."
 msgstr "Geçerli çalışmanın yüklendiği dosyayı yeniden yükle."
 
-#: ../po/tmp/resources.xml.h:12
+#: ../gui/resources.xml:111
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "Import Layers…"
 msgstr "Katmanları İçe Aktar…"
 
-#: ../po/tmp/resources.xml.h:13
+#: ../gui/resources.xml:112
 msgctxt "Accel Editor (descriptions)"
 msgid "Import layers from one or more files."
 msgstr "Katmanları dosyadan içe aktar."
 
-#: ../po/tmp/resources.xml.h:14
+#: ../gui/resources.xml:120
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "Save"
 msgstr "Kaydet"
 
-#: ../po/tmp/resources.xml.h:15
+#: ../gui/resources.xml:121
 msgctxt "Accel Editor (descriptions)"
 msgid "Save your work to a file."
 msgstr "Çalışmayı dosyaya kaydet."
 
-#: ../po/tmp/resources.xml.h:16
+#: ../gui/resources.xml:129
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "Save As…"
 msgstr "Farklı Kaydet…"
 
-#: ../po/tmp/resources.xml.h:17
+#: ../gui/resources.xml:130
 msgctxt "Accel Editor (descriptions)"
 msgid "Save your work to a file, assigning it a new name."
 msgstr "Yeni ad belirleyerek çalışmayı dosyaya kaydet."
 
-#: ../po/tmp/resources.xml.h:18
+#: ../gui/resources.xml:138
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "Export…"
 msgstr "Dışa Aktar…"
 
-#: ../po/tmp/resources.xml.h:19
+#: ../gui/resources.xml:139
 msgid "Export your work to a file, but keep working on the same file."
 msgstr ""
 "Çalışmayı dosyaya dışa aktar, fakat aynı dosya üstünde çalışmaya devam et."
 
-#: ../po/tmp/resources.xml.h:20
+#: ../gui/resources.xml:147
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "Save As Scrap"
 msgstr "Karalama Olarak Kaydet"
 
-#: ../po/tmp/resources.xml.h:21
+#: ../gui/resources.xml:148
 msgctxt "Accel Editor (descriptions)"
 msgid "Save to a new scrap file, or save a new revision if already a scrap."
 msgstr ""
 "Yeni karalama dosyasına kaydet veya zaten bir karalama varsa yeni düzenleme "
 "kaydet."
 
-#: ../po/tmp/resources.xml.h:22
+#: ../gui/resources.xml:156
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "Open Previous Scrap"
 msgstr "Önceki Karalamayı Aç"
 
-#: ../po/tmp/resources.xml.h:23
+#: ../gui/resources.xml:157
 msgctxt "Accel Editor (descriptions)"
 msgid "Load the scrap file before the current one."
 msgstr "Karalamayı geçerli dosyadan önce yükle."
 
-#: ../po/tmp/resources.xml.h:24
+#: ../gui/resources.xml:165
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "Open Next Scrap"
 msgstr "Sonraki Karalamayı Aç"
 
-#: ../po/tmp/resources.xml.h:25
+#: ../gui/resources.xml:166
 msgctxt "Accel Editor (descriptions)"
 msgid "Load the scrap file after the current one."
 msgstr "Karalamayı geçerli dosyadan sonra yükle."
 
-#: ../po/tmp/resources.xml.h:26
+#: ../gui/resources.xml:174
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "Recover File from an Automated Backup…"
 msgstr "Dosyayı Otomatik Yedekten Kurtar…"
 
-#: ../po/tmp/resources.xml.h:27
+#: ../gui/resources.xml:175
 msgctxt "Accel Editor (descriptions)"
 msgid "Try to save and resume interrupted unsaved work."
 msgstr "Kaydetmeye ve yarıda kesilmiş çalışmayı devam ettirmeye çalış."
 
-#: ../po/tmp/resources.xml.h:28
+#: ../gui/resources.xml:190
 msgctxt "Menu→Brush (label)"
 msgid "Brush Groups"
 msgstr "Fırça Grupları"
 
-#: ../po/tmp/resources.xml.h:29
+#: ../gui/resources.xml:191
 msgctxt "Toolbar (short labels)"
 msgid "Brushes"
 msgstr "Fırçalar"
 
-#: ../po/tmp/resources.xml.h:30
+#: ../gui/resources.xml:192
 msgctxt "Toolbar (tooltips)"
 msgid "List of brush groups."
 msgstr "Fırça gruplarının listesi."
 
-#: ../po/tmp/resources.xml.h:31
+#: ../gui/resources.xml:199
 msgctxt "Toolbar (label)"
 msgid "Color Adjusters"
 msgstr "Renk Ayarlayıcılar"
 
-#: ../po/tmp/resources.xml.h:32
+#: ../gui/resources.xml:200
 msgctxt "Toolbar (short labels)"
 msgid "Colors"
 msgstr "Renkler"
 
-#: ../po/tmp/resources.xml.h:33
+#: ../gui/resources.xml:201
 msgctxt "Toolbar (tooltips)"
 msgid "Available color adjusters."
 msgstr "Kullanılabilir renk ayarlayıcılar."
 
-#: ../po/tmp/resources.xml.h:34
+#: ../gui/resources.xml:208
 msgctxt "Menu→Layer→Properties (label)"
 msgid "Mode"
 msgstr "Kip"
 
-#: ../po/tmp/resources.xml.h:35
+#: ../gui/resources.xml:209
 msgctxt "Toolbar (short labels)"
 msgid "Mode"
 msgstr "Kip"
 
-#: ../po/tmp/resources.xml.h:36
+#: ../gui/resources.xml:210
 msgctxt "Toolbar (tooltips)"
 msgid "The current layer's compositing mode."
 msgstr "Geçerli katmanın harmanlama kipi."
 
-#: ../po/tmp/resources.xml.h:37
+#: ../gui/resources.xml:237
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
 msgid "Increase Fake Pressure"
 msgstr "Sahte Basıncı Artır"
 
-#: ../po/tmp/resources.xml.h:38
+#: ../gui/resources.xml:238
 msgctxt "Accel Editor (descriptions)"
 msgid "Send harder pressure for devices that don't support pressure input."
 msgstr "Basınç girdisini desteklemeyen aygıtlara daha fazla basınç gönder."
 
-#: ../po/tmp/resources.xml.h:39
+#: ../gui/resources.xml:245
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
 msgid "Decrease Fake Pressure"
 msgstr "Sahte Basıncı Azalt"
 
-#: ../po/tmp/resources.xml.h:40
+#: ../gui/resources.xml:246
 msgctxt "Accel Editor (descriptions)"
 msgid "Send softer pressure for devices that don't support pressure input."
 msgstr "Basınç girdisini desteklemeyen aygıtlara daha az basınç gönder."
 
-#: ../po/tmp/resources.xml.h:41
+#: ../gui/resources.xml:254
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
 msgid "Increase Fake Rotation"
 msgstr "Sahte Döndürmeyi Artır"
 
-#: ../po/tmp/resources.xml.h:42
+#: ../gui/resources.xml:255
 msgctxt "Accel Editor (descriptions)"
 msgid "Increase barrel rotation for devices that don't support rotation input."
 msgstr ""
 "Döndürme girdisini desteklemeyen aygıtlar için barrel döndürmesini artır."
 
-#: ../po/tmp/resources.xml.h:43
+#: ../gui/resources.xml:262
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
 msgid "Decrease Fake Rotation"
 msgstr "Sahte Döndürmeyi Azalt"
 
-#: ../po/tmp/resources.xml.h:44
+#: ../gui/resources.xml:263
 msgctxt "Accel Editor (descriptions)"
 msgid "Decrease barrel rotation for devices that don't support rotation input."
 msgstr ""
 "Döndürme girdisini desteklemeyen aygıtlar için barrel döndürmesini azalt."
 
-#: ../po/tmp/resources.xml.h:45
+#: ../gui/resources.xml:271
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
 msgid "Increase Brush Size"
 msgstr "Fırça Boyutunu Artır"
 
-#: ../po/tmp/resources.xml.h:46
+#: ../gui/resources.xml:272
 msgctxt "Accel Editor (descriptions)"
 msgid "Make the working brush bigger."
 msgstr "Çalışma fırçasının boyutunu büyüt."
 
-#: ../po/tmp/resources.xml.h:47
+#: ../gui/resources.xml:279
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
 msgid "Decrease Brush Size"
 msgstr "Fırça Boyutunu Azalt"
 
-#: ../po/tmp/resources.xml.h:48
+#: ../gui/resources.xml:280
 msgctxt "Accel Editor (descriptions)"
 msgid "Make the working brush smaller."
 msgstr "Çalışma fırçasının boyutunu küçült."
 
-#: ../po/tmp/resources.xml.h:49
+#: ../gui/resources.xml:288
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
 msgid "Increase Brush Opacity"
 msgstr "Fırça Matlığını Artır"
 
-#: ../po/tmp/resources.xml.h:50
+#: ../gui/resources.xml:289
 msgctxt "Accel Editor (descriptions)"
 msgid "Make the working brush more opaque."
 msgstr "Çalışma fırçasınının matlığını artır."
 
-#: ../po/tmp/resources.xml.h:51
+#: ../gui/resources.xml:296
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
 msgid "Decrease Brush Opacity"
 msgstr "Fırça Matlığını Azalt"
 
-#: ../po/tmp/resources.xml.h:52
+#: ../gui/resources.xml:297
 msgctxt "Accel Editor (descriptions)"
 msgid "Make the working brush less opaque."
 msgstr "Çalışma fırçasınının matlığını azalt."
 
-#: ../po/tmp/resources.xml.h:53
+#: ../gui/resources.xml:305
 msgctxt "Menu→Color→Adjust Color (labels), Accel Editor (labels)"
 msgid "Lighten Painting Color"
 msgstr "Boyama Rengini Açıklaştır"
 
-#: ../po/tmp/resources.xml.h:54
+#: ../gui/resources.xml:306
 msgctxt "Accel Editor (descriptions)"
 msgid "Increase the lightness of the current painting color."
 msgstr "Geçerli boyama renginin açıklığını artır."
 
-#: ../po/tmp/resources.xml.h:55
+#: ../gui/resources.xml:313
 msgctxt "Menu→Color→Adjust Color (labels), Accel Editor (labels)"
 msgid "Darken Painting Color"
 msgstr "Boyama Rengini Koyulaştır"
 
-#: ../po/tmp/resources.xml.h:56
+#: ../gui/resources.xml:314
 msgctxt "Accel Editor (descriptions)"
 msgid "Decrease the lightness of the current painting color."
 msgstr "Geçerli boyama renginin açıklığını azalt."
 
-#: ../po/tmp/resources.xml.h:57
+#: ../gui/resources.xml:326
 msgctxt "Menu→Color→Adjust Color (labels), Accel Editor (labels)"
 msgid "Change Hue Clockwise"
 msgstr "Tonu Saat Yönünde Değiştir"
 
-#: ../po/tmp/resources.xml.h:58
+#: ../gui/resources.xml:327
 msgctxt "Accel Editor (descriptions)"
 msgid "Rotate the painting color’s hue clockwise on the color wheel."
 msgstr "Boya renginin tonunu renk tekerleğinde saat yönünde çevir."
 
-#: ../po/tmp/resources.xml.h:59
+#: ../gui/resources.xml:334
 msgctxt "Menu→Color→Adjust Color (labels), Accel Editor (labels)"
 msgid "Change Hue Anticlockwise"
 msgstr "Tonu Saat Yönünün Tersine Değiştir"
 
-#: ../po/tmp/resources.xml.h:60
+#: ../gui/resources.xml:335
 msgctxt "Accel Editor (descriptions)"
 msgid "Rotate the painting color’s hue anticlockwise on the color wheel."
 msgstr "Boya renginin tonunu renk tekerleğinde saat yönünün tersine çevir."
 
-#: ../po/tmp/resources.xml.h:61
+#: ../gui/resources.xml:342
 msgctxt "Menu→Color→Adjust Color (labels), Accel Editor (labels)"
 msgid "Increase Saturation"
 msgstr "Doygunluğu Artır"
 
-#: ../po/tmp/resources.xml.h:62
+#: ../gui/resources.xml:343
 msgctxt "Accel Editor (descriptions)"
 msgid "Make the painting color more saturated (more colorful, purer)."
 msgstr "Boyama renginin doygunluğunu artır (daha renkli, daha saf)"
 
-#: ../po/tmp/resources.xml.h:63
+#: ../gui/resources.xml:350
 msgctxt "Menu→Color→Adjust Color (labels), Accel Editor (labels)"
 msgid "Decrease Saturation"
 msgstr "Doygunluğu Azalt"
 
-#: ../po/tmp/resources.xml.h:64
+#: ../gui/resources.xml:351
 msgctxt "Accel Editor (descriptions)"
 msgid "Make the painting color less saturated (grayer)."
 msgstr "Boyama renginin doygunluğunu azalt (daha gri)"
 
-#: ../po/tmp/resources.xml.h:65
+#: ../gui/resources.xml:359
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
 msgid "Reload Brush Settings"
 msgstr "Fırça Ayarlarını Yeniden Yükle"
 
-#: ../po/tmp/resources.xml.h:66
+#: ../gui/resources.xml:360
 msgctxt "Accel Editor (descriptions)"
 msgid "Restore all brush settings to the current brush’s saved values."
 msgstr "Tüm fırça ayarlarını geçerli fırçanın kayıtlı değerlerine geri yükle."
 
-#: ../po/tmp/resources.xml.h:67
+#: ../gui/resources.xml:370
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
 msgid "Pick Stroke and Layer"
 msgstr "Darbe ve Katman Seç"
 
-#: ../po/tmp/resources.xml.h:68
+#: ../gui/resources.xml:371
 msgctxt "Accel Editor (descriptions)"
 msgid ""
 "Pick a brushstroke from the canvas, which restores brush, color, and layer."
 msgstr "Tuvalden fırça darbesi seç: fırça, renk ve katmanı geri yükler."
 
-#: ../po/tmp/resources.xml.h:69
+#: ../gui/resources.xml:382
 msgctxt "Menu→Brush→Shortcut Keys (labels), Accel Editor (labels)"
 msgid "Brush Shortcut Keys Restore Color"
 msgstr "Fırça Kısayol Tuşları Rengi Geri Yükler"
 
-#: ../po/tmp/resources.xml.h:70
+#: ../gui/resources.xml:383
 msgctxt "Accel Editor (descriptions)"
 msgid ""
 "Toggle whether restoring the brush from a shortcut key also restores the "
@@ -5340,258 +5227,258 @@ msgstr ""
 "Fırçayı kısayol tuşundan geri yüklemenin, kaydedilen rengi de geri yükleyip "
 "yüklemeyeceğini belirler."
 
-#: ../po/tmp/resources.xml.h:71
+#: ../gui/resources.xml:390
 msgctxt "Menu→Brush→Shortcut Keys (labels), Accel Editor (labels)"
 msgid "Save Brush to Most Recent Shortcut Key"
 msgstr "Fırçayı En Son Kısayola Kaydet"
 
-#: ../po/tmp/resources.xml.h:72
+#: ../gui/resources.xml:391
 msgctxt "Accel Editor (descriptions)"
 msgid "Save brush settings to the most recently used shortcut key."
 msgstr "Fırça ayarlarını en son kullanılan kısayol tuşuna kaydet."
 
-#: ../po/tmp/resources.xml.h:73
+#: ../gui/resources.xml:401
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Clear Layer"
 msgstr "Katmanı Temizle"
 
-#: ../po/tmp/resources.xml.h:74
+#: ../gui/resources.xml:402
 msgctxt "Accel Editor (descriptions)"
 msgid "Clear the active layer’s content."
 msgstr "Etkin katmanın içeriğini temizle."
 
-#: ../po/tmp/resources.xml.h:75
+#: ../gui/resources.xml:410
 msgctxt "Menu→Layer (labels)"
 msgid "Slice Operations"
 msgstr "Dilimlere İşlemleri"
 
-#: ../po/tmp/resources.xml.h:76
+#: ../gui/resources.xml:416
 msgctxt "Menu→Layer→Slice (labels), Accel Editor (labels)"
 msgid "Trim Layer to Frame"
 msgstr "Katmanı Çerçeveye Kırp"
 
-#: ../po/tmp/resources.xml.h:77
+#: ../gui/resources.xml:417
 msgctxt "Accel Editor (descriptions)"
 msgid "Erase parts of the current layer which lie outside the frame."
 msgstr "Geçerli katmanın çerçevesinin dışında kalan kısımlarını sil."
 
-#: ../po/tmp/resources.xml.h:78
+#: ../gui/resources.xml:423
 msgctxt "Menu→Layer→Slice (labels), Accel Editor (labels)"
 msgid "Uniquify Layer Pixels"
 msgstr "Katman Piksellerini Benzersizleştir"
 
-#: ../po/tmp/resources.xml.h:79
+#: ../gui/resources.xml:424
 msgctxt "Accel Editor (descriptions)"
 msgid "Delete parts of the current layer which do not vary from the backdrop."
 msgstr "Geçerli katmanın zeminden farklı olmayan kısımlarını sil."
 
-#: ../po/tmp/resources.xml.h:80
+#: ../gui/resources.xml:430
 msgctxt "Menu→Layer→Slice (labels), Accel Editor (labels)"
 msgid "Uniquify Layer Tiles"
 msgstr "Katman Döşemelerini Benzersizleştir"
 
-#: ../po/tmp/resources.xml.h:81
+#: ../gui/resources.xml:431
 msgctxt "Accel Editor (descriptions)"
 msgid ""
 "Delete whole tiles from the current layer which do not vary from the "
 "backdrop."
 msgstr "Zeminden farklı olmayan tüm döşemeleri geçerli katmandan sil."
 
-#: ../po/tmp/resources.xml.h:82
+#: ../gui/resources.xml:437
 msgctxt "Menu→Layer→Slice (labels), Accel Editor (labels)"
 msgid "Refactor Layer Group Pixels"
 msgstr "Katman Grubu Piksellerini Yeniden Düzenle"
 
-#: ../po/tmp/resources.xml.h:83
+#: ../gui/resources.xml:438 ../gui/resources.xml:445
 msgctxt "Accel Editor (descriptions)"
 msgid ""
 "Normalize child layers, then factor out common parts to a new child layer."
 msgstr ""
 "Alt katmanları normalleştir, ardından ortak parçaları yeni alt katmana ayır."
 
-#: ../po/tmp/resources.xml.h:84
+#: ../gui/resources.xml:444
 msgctxt "Menu→Layer→Slice (labels), Accel Editor (labels)"
 msgid "Refactor Layer Group Tiles"
 msgstr "Katman Grubu Döşemelerini Yeniden Düzenle"
 
-#: ../po/tmp/resources.xml.h:85
+#: ../gui/resources.xml:452
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Copy Layer to Clipboard"
 msgstr "Katmanı Panoya Kopyala"
 
-#: ../po/tmp/resources.xml.h:86
+#: ../gui/resources.xml:453
 msgctxt "Accel Editor (descriptions)"
 msgid "Copy the current layer’s contents to the clipboard."
 msgstr "Geçerli katmanın içeriğini panoya kopyala."
 
-#: ../po/tmp/resources.xml.h:87
+#: ../gui/resources.xml:461
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Paste Layer from Clipboard"
 msgstr "Katmanı Panodan Yapıştır"
 
-#: ../po/tmp/resources.xml.h:88
+#: ../gui/resources.xml:462
 msgctxt "Accel Editor (descriptions)"
 msgid "Replaces the current layer with the clipboard’s contents."
 msgstr "Geçerli katmanı pano içeriğiyle değiştir."
 
-#: ../po/tmp/resources.xml.h:89
+#: ../gui/resources.xml:469
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Edit Layer in External App…"
 msgstr "Katmanı Harici Uygulamayla Düzenle…"
 
-#: ../po/tmp/resources.xml.h:90
+#: ../gui/resources.xml:470
 msgctxt "Accel Editor (descriptions)"
 msgid "Edit the active layer in an external application."
 msgstr "Etkin katmanı harici uygulamayla düzenle."
 
-#: ../po/tmp/resources.xml.h:91
+#: ../gui/resources.xml:477
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Update Layer with External Edits"
 msgstr "Katmanı Harici Düzenlemelerle Güncelle"
 
-#: ../po/tmp/resources.xml.h:92
+#: ../gui/resources.xml:478
 msgctxt "Accel Editor (descriptions)"
 msgid "Commit changes saved from the external app (normally automatic)."
 msgstr ""
 "Harici uygulamadan kaydedilen değişiklikleri ekle (normalde otomatik olarak "
 "yapılır)."
 
-#: ../po/tmp/resources.xml.h:93
+#: ../gui/resources.xml:484
 msgctxt "Menu→Layer→Go to Layer (labels), Accel Editor (labels)"
 msgid "Go to Layer at Cursor"
 msgstr "İmleçteki Katmana Git"
 
-#: ../po/tmp/resources.xml.h:94
+#: ../gui/resources.xml:485
 msgctxt "Accel Editor (descriptions)"
 msgid "Select a layer by picking something [drawn] on it."
 msgstr "Bir şey seçerek [veya üzerine bir şey çizerek] bir katman seç."
 
-#: ../po/tmp/resources.xml.h:95
+#: ../gui/resources.xml:493
 msgctxt "Menu→Layer→Go to Layer (labels), Accel Editor (labels)"
 msgid "Go to Layer Above"
 msgstr "Üstteki Katmana Git"
 
-#: ../po/tmp/resources.xml.h:96
+#: ../gui/resources.xml:494
 msgctxt "Accel Editor (descriptions)"
 msgid "Go one layer up in the layer stack."
 msgstr "Katman yığınında bir üst katmana git."
 
-#: ../po/tmp/resources.xml.h:97
+#: ../gui/resources.xml:502
 msgctxt "Menu→Layer→Go to Layer (labels), Accel Editor (labels)"
 msgid "Go to Layer Below"
 msgstr "Alttaki Katmana Git"
 
-#: ../po/tmp/resources.xml.h:98
+#: ../gui/resources.xml:503
 msgctxt "Accel Editor (descriptions)"
 msgid "Go one layer down in the layer stack."
 msgstr "Katman yığınında bir katman aşağı git."
 
-#: ../po/tmp/resources.xml.h:99
+#: ../gui/resources.xml:511
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "New Painting Layer"
 msgstr "Yeni Boyama Katmanı"
 
-#: ../po/tmp/resources.xml.h:100
+#: ../gui/resources.xml:512
 msgctxt "Accel Editor (descriptions)"
 msgid "Add a new painting layer above the current layer."
 msgstr "Geçerli katmanın üzerine yeni boyama katmanı ekle."
 
-#: ../po/tmp/resources.xml.h:101
+#: ../gui/resources.xml:520
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "New Vector Layer…"
 msgstr "Yeni Vektör Katmanı…"
 
-#: ../po/tmp/resources.xml.h:102
+#: ../gui/resources.xml:521
 msgctxt "Accel Editor (descriptions)"
 msgid "Add a new vector layer above the current layer, and begin editing it."
 msgstr "Geçerli katmanın üzerine bir vektör katmanı ekle ve düzenlemeye başla."
 
-#: ../po/tmp/resources.xml.h:103
+#: ../gui/resources.xml:528
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "New Layer Group"
 msgstr "Yeni Katman Grubu"
 
-#: ../po/tmp/resources.xml.h:104
+#: ../gui/resources.xml:529
 msgctxt "Accel Editor (descriptions)"
 msgid "Add a new layer group above the current layer."
 msgstr "Geçerli katmanın üzerine yeni katman grubu ekle."
 
-#: ../po/tmp/resources.xml.h:105
+#: ../gui/resources.xml:536
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "New Painting Layer Below"
 msgstr "Altına Yeni Boyama Katmanı"
 
-#: ../po/tmp/resources.xml.h:106
+#: ../gui/resources.xml:537
 msgctxt "Accel Editor (descriptions)"
 msgid "Add a new painting layer below the current layer."
 msgstr "Geçerli katmanın altına yeni boyama katmanı ekle."
 
-#: ../po/tmp/resources.xml.h:107
+#: ../gui/resources.xml:544
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "New Vector Layer Below…"
 msgstr "Altına Yeni Vektör Katmanı…"
 
-#: ../po/tmp/resources.xml.h:108
+#: ../gui/resources.xml:545
 msgctxt "Accel Editor (descriptions)"
 msgid "Add a new vector layer below the current layer, and begin editing it."
 msgstr "Geçerli katmanın altına bir vektör katmanı ekle ve düzenlemeye başla."
 
-#: ../po/tmp/resources.xml.h:109
+#: ../gui/resources.xml:551
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "New Layer Group Below"
 msgstr "Altına Yeni Katman Grubu"
 
-#: ../po/tmp/resources.xml.h:110
+#: ../gui/resources.xml:552
 msgctxt "Accel Editor (descriptions)"
 msgid "Add a new layer group below the current layer."
 msgstr "Geçerli katmanın altına yeni katman grubu ekle."
 
-#: ../po/tmp/resources.xml.h:111
+#: ../gui/resources.xml:559
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Merge Layer Down"
 msgstr "Katmanı Aşağı Birleştir"
 
-#: ../po/tmp/resources.xml.h:112
+#: ../gui/resources.xml:560
 msgctxt "Accel Editor (descriptions)"
 msgid "Merge the current layer with the layer beneath it."
 msgstr "Geçerli katmanı altındaki katman ile birleştir."
 
-#: ../po/tmp/resources.xml.h:113
+#: ../gui/resources.xml:567
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Merge Visible Layers"
 msgstr "Görünür Katmanları Birleştir"
 
-#: ../po/tmp/resources.xml.h:114
+#: ../gui/resources.xml:568
 msgctxt "Accel Editor (descriptions)"
 msgid "Consolidate all visible layers, and delete the originals."
 msgstr "Tüm görünür katmanları birleştir ve özgün katmanları sil."
 
-#: ../po/tmp/resources.xml.h:115
+#: ../gui/resources.xml:575
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "New Layer from Visible"
 msgstr "Görünürden Yeni Katman"
 
-#: ../po/tmp/resources.xml.h:116
+#: ../gui/resources.xml:576
 msgctxt "Accel Editor (descriptions)"
 msgid "Like ‘Merge Visible Layers’, but doesn’t delete the originals."
 msgstr "‘Görünür Katmanları Birleştir’ gibidir, fakat özgün katmanları silmez."
 
-#: ../po/tmp/resources.xml.h:117
+#: ../gui/resources.xml:583
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Delete Layer"
 msgstr "Katmanı Sil"
 
-#: ../po/tmp/resources.xml.h:118
+#: ../gui/resources.xml:584
 msgctxt "Accel Editor (descriptions)"
 msgid "Remove the current layer from the layer stack."
 msgstr "Geçerli katmanı katman yığınından kaldır."
 
-#: ../po/tmp/resources.xml.h:119
+#: ../gui/resources.xml:591
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Convert to Normal Painting Layer"
 msgstr "Normal Boyama Katmanına Dönüştür"
 
-#: ../po/tmp/resources.xml.h:120
+#: ../gui/resources.xml:592
 msgctxt "Accel Editor (descriptions)"
 msgid ""
 "Convert the current layer or group to a painting layer in ‘Normal’ mode, "
@@ -5600,328 +5487,335 @@ msgstr ""
 "Görünümünü koruyarak, geçerli katmanı veya grubu ‘Normal’ kipte boyama "
 "katmanına dönüştür."
 
-#: ../po/tmp/resources.xml.h:121
+#: ../gui/resources.xml:598
 msgctxt "Menu→Layer→Opacity (labels), Accel Editor (labels)"
 msgid "Increase Layer’s Opacity"
 msgstr "Katman Matlığını Artır"
 
-#: ../po/tmp/resources.xml.h:122
+#: ../gui/resources.xml:599
 msgctxt "Accel Editor (descriptions)"
 msgid "Make the layer less transparent."
 msgstr "Katmanı daha az saydam yap."
 
-#: ../po/tmp/resources.xml.h:123
+#: ../gui/resources.xml:606
 msgctxt "Menu→Layer→Opacity (labels), Accel Editor (labels)"
 msgid "Reduce Layer’s Opacity"
 msgstr "Katman matlığını Azalt"
 
-#: ../po/tmp/resources.xml.h:124
+#: ../gui/resources.xml:607
 msgctxt "Accel Editor (descriptions)"
 msgid "Make the layer more transparent."
 msgstr "Katmanı daha fazla saydam yap."
 
-#: ../po/tmp/resources.xml.h:125
+#: ../gui/resources.xml:614
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Raise Layer"
 msgstr "Katmanı Yükselt"
 
-#: ../po/tmp/resources.xml.h:126
+#: ../gui/resources.xml:615
 msgctxt "Accel Editor (descriptions)"
 msgid "Raise the current layer one step in the layer stack."
 msgstr "Geçerli katmanı katman yığınında bir sıra yükselt."
 
-#: ../po/tmp/resources.xml.h:127
+#: ../gui/resources.xml:623
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Lower Layer"
 msgstr "Katmanı Alçalt"
 
-#: ../po/tmp/resources.xml.h:128
+#: ../gui/resources.xml:624
 msgctxt "Accel Editor (descriptions)"
 msgid "Lower the current layer one step in the layer stack."
 msgstr "Geçerli katmanı katman yığınında bir sıra alçalt."
 
-#: ../po/tmp/resources.xml.h:129
+#: ../gui/resources.xml:633
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Duplicate Layer"
 msgstr "Katmanı Çoğalt"
 
-#: ../po/tmp/resources.xml.h:130
+#: ../gui/resources.xml:634
 msgctxt "Accel Editor (descriptions)"
 msgid "Make an exact clone of the current layer."
 msgstr "Geçerli katmanın tam bir kopyasını oluştur."
 
-#: ../po/tmp/resources.xml.h:131
+#: ../gui/resources.xml:642
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Layer Properties…"
 msgstr "Katman Özellikleri"
 
-#: ../po/tmp/resources.xml.h:132
+#: ../gui/resources.xml:643
 msgctxt "Accel Editor (descriptions)"
 msgid ""
 "Change the layer’s properties (name, mode, visibility, locked, opacity)."
 msgstr "Katman özelliklerini değiştir (ad, kip, görünürlük, kilit, matlık)."
 
-#: ../po/tmp/resources.xml.h:133
+#: ../gui/resources.xml:650
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Layer Locked"
 msgstr "Katman Kilitli"
 
-#: ../po/tmp/resources.xml.h:134
+#: ../gui/resources.xml:651
 msgctxt "Accel Editor (descriptions)"
 msgid ""
 "Toggle the current layer’s locked state. Locked layers cannot be modified."
 msgstr ""
 "Geçerli katmanın kilit durumunu değiştir. Kilitli katmanlar değiştirilemez."
 
-#: ../po/tmp/resources.xml.h:135
+#: ../gui/resources.xml:658
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Layer Visible"
 msgstr "Katman Görünür"
 
-#: ../po/tmp/resources.xml.h:136
+#: ../gui/resources.xml:659
 msgctxt "Accel Editor (descriptions)"
 msgid "Toggle the current layer’s visibility state, making it hidden."
 msgstr "Geçerli katmanın görünürlük durumunu değiştir ve onu gizle."
 
-#: ../po/tmp/resources.xml.h:137
+#: ../gui/resources.xml:666
 msgctxt "Menu→View (labels), Accel Editor (labels)"
 msgid "Show Background"
 msgstr "Arkaplanı Göster"
 
-#: ../po/tmp/resources.xml.h:138
+#: ../gui/resources.xml:667
 msgctxt "Accel Editor (descriptions)"
 msgid "Toggle the background layer’s visibility."
 msgstr "Arkaplan katmanının görünürlüğünü değiştir."
 
-#: ../po/tmp/resources.xml.h:139
+#: ../gui/resources.xml:674
 msgctxt "Menu→Help→Debug (labels), Accel Editor (labels)"
 msgid "Vacuum Empty Tiles"
 msgstr "Boş Döşemeleri Temizle"
 
-#: ../po/tmp/resources.xml.h:140
+#: ../gui/resources.xml:675
 msgctxt "Accel Editor (descriptions)"
 msgid "Remove empty tiles from the document."
 msgstr "Boş döşemeleri belgeden kaldır."
 
-#: ../po/tmp/resources.xml.h:141
+#: ../gui/resources.xml:684
 msgctxt "Menu→View (labels), Accel Editor (labels)"
 msgid "Reset and Center View"
 msgstr "Görünümü Sıfırla ve Ortala"
 
-#: ../po/tmp/resources.xml.h:142
+#: ../gui/resources.xml:685
 msgctxt "Accel Editor (descriptions)"
 msgid "Reset Zoom, Rotation and Mirroring, and recenter the document."
 msgstr ""
 "Yakınlaştırmayı, Döndürmeyi ve Çevirmeyi sıfırla ve belgeyi yeniden ortala."
 
-#: ../po/tmp/resources.xml.h:143
+#: ../gui/resources.xml:693
 msgctxt "Menu→View (labels), Accel Editor (labels)"
 msgid "Fit to View"
 msgstr "Görünüme Sığdır"
 
-#: ../po/tmp/resources.xml.h:144
+#: ../gui/resources.xml:694
 msgctxt "Accel Editor (descriptions)"
 msgid "Switch between a fitted view and your working location and zoom."
 msgstr ""
 "Ekrana sığdırılmış görünüm, çalışma konumunuz ve yakınlaştırma arasında "
 "geçiş yap."
 
-#: ../po/tmp/resources.xml.h:145
+#: ../gui/resources.xml:701
 msgctxt "Menu→View (labels)"
 msgid "Reset"
 msgstr "Sıfırla"
 
-#: ../po/tmp/resources.xml.h:146
+#: ../gui/resources.xml:708
 msgctxt "Menu→View→Reset (labels), Accel Editor (labels)"
 msgid "Reset Zoom"
 msgstr "Yakınlaştırmayı Sıfırla"
 
-#: ../po/tmp/resources.xml.h:147
+#: ../gui/resources.xml:709
 msgctxt "Accel Editor (descriptions)"
 msgid "Reset view zoom level to default."
 msgstr "Görünüm yakınlaştırmasını varsayılan değerlere sıfırla."
 
-#: ../po/tmp/resources.xml.h:148
+#: ../gui/resources.xml:715
 msgctxt "Menu→View→Reset (labels), Accel Editor (labels)"
 msgid "Reset Rotation"
 msgstr "Döndürmeyi Sıfırla"
 
-#: ../po/tmp/resources.xml.h:149
+#: ../gui/resources.xml:716
 msgctxt "Accel Editor (descriptions)"
 msgid "Reset the view’s rotation to 0°"
 msgstr "Görünümün döndürmesini 0 dereceye sıfırla"
 
-#: ../po/tmp/resources.xml.h:150
+#: ../gui/resources.xml:722
 msgctxt "Menu→View→Reset (labels), Accel Editor (labels)"
 msgid "Reset Mirroring"
 msgstr "Çevirmeyi Sıfırla"
 
-#: ../po/tmp/resources.xml.h:151
+#: ../gui/resources.xml:723
 msgctxt "Accel Editor (descriptions)"
 msgid "Reset the view's mirroring."
 msgstr "Görünümün çevirmesini sıfırla."
 
-#: ../po/tmp/resources.xml.h:152
+#: ../gui/resources.xml:729
 msgctxt "Menu→View→Adjust View (labels), Accel Editor (labels)"
 msgid "Zoom In"
 msgstr "Yakınlaştır"
 
-#: ../po/tmp/resources.xml.h:153
+#: ../gui/resources.xml:730
 msgctxt "Accel Editor (descriptions)"
 msgid "Increase magnification."
 msgstr "Yaklaştırmayı artır."
 
-#: ../po/tmp/resources.xml.h:154
+#: ../gui/resources.xml:737
 msgctxt "Menu→View→Adjust View (labels), Accel Editor (labels)"
 msgid "Zoom Out"
 msgstr "Uzaklaştır"
 
-#: ../po/tmp/resources.xml.h:155
+#: ../gui/resources.xml:738
 msgctxt "Accel Editor (descriptions)"
 msgid "Decrease magnification."
 msgstr "Yakınlaştırmayı azalt."
 
-#: ../po/tmp/resources.xml.h:156
+#: ../gui/resources.xml:758
 msgctxt "Menu→View→Adjust View (labels), Accel Editor (labels)"
 msgid "Pan Left"
 msgstr "Sola Kaydır"
 
-#: ../po/tmp/resources.xml.h:157
+#: ../gui/resources.xml:759
 msgctxt "Accel Editor (descriptions)"
 msgid "Move your view of the canvas to the left."
 msgstr "Tuval görünümünü sola taşı."
 
-#: ../po/tmp/resources.xml.h:158
+#: ../gui/resources.xml:766
 msgctxt "Menu→View→Adjust View (labels), Accel Editor (labels)"
 msgid "Pan Right"
 msgstr "Sağa Kaydır"
 
-#: ../po/tmp/resources.xml.h:159
+#: ../gui/resources.xml:767
 msgctxt "Accel Editor (descriptions)"
 msgid "Move your view of the canvas to the right."
 msgstr "Tuval görünümünü sağa taşı."
 
-#: ../po/tmp/resources.xml.h:160
+#: ../gui/resources.xml:774
 msgctxt "Menu→View→Adjust View (labels), Accel Editor (labels)"
 msgid "Pan Up"
 msgstr "Yukarı Kaydır"
 
-#: ../po/tmp/resources.xml.h:161
+#: ../gui/resources.xml:775
 msgctxt "Accel Editor (descriptions)"
 msgid "Move your view of the canvas upwards."
 msgstr "Tuval görünümünü yukarı taşı."
 
-#: ../po/tmp/resources.xml.h:162
+#: ../gui/resources.xml:782
 msgctxt "Menu→View→Adjust View (labels), Accel Editor (labels)"
 msgid "Pan Down"
 msgstr "Aşağı Kaydır"
 
-#: ../po/tmp/resources.xml.h:163
+#: ../gui/resources.xml:783
 msgctxt "Accel Editor (descriptions)"
 msgid "Move your view of the canvas downwards."
 msgstr "Tuval görünümünü aşağı taşı."
 
-#: ../po/tmp/resources.xml.h:164
+#.
+#. Note: the object we've agreed to present as being rotated
+#. by "RotateLeft and "RotateRight" is the *canvas*,
+#. not the viewing rectangle.
+#.
+#. https://github.com/mypaint/mypaint/issues/553
+#.
+#: ../gui/resources.xml:798
 msgctxt "Menu→View→Adjust View (labels), Accel Editor (labels)"
 msgid "Rotate Clockwise"
 msgstr "Saat Yönünde Döndür"
 
-#: ../po/tmp/resources.xml.h:165
+#: ../gui/resources.xml:799
 msgctxt "Accel Editor (descriptions)"
 msgid "Rotate the canvas clockwise."
 msgstr "Görünümü saat yönünde döndür."
 
-#: ../po/tmp/resources.xml.h:166
+#: ../gui/resources.xml:819
 msgctxt "Menu→View→Adjust View (labels), Accel Editor (labels)"
 msgid "Rotate Counterclockwise"
 msgstr "Saat Yönünün Tersine Döndür"
 
-#: ../po/tmp/resources.xml.h:167
+#: ../gui/resources.xml:820
 msgctxt "Accel Editor (descriptions)"
 msgid "Rotate the canvas counter-clockwise."
 msgstr "Görünümü saat yönünün tersine döndür."
 
-#: ../po/tmp/resources.xml.h:168
+#: ../gui/resources.xml:828
 msgctxt "Menu→View→Adjust View (labels), Accel Editor (labels)"
 msgid "Mirror Horizontal"
 msgstr "Yatay Çevir"
 
-#: ../po/tmp/resources.xml.h:169
+#: ../gui/resources.xml:829
 msgctxt "Accel Editor (descriptions)"
 msgid "Flip the view left to right."
 msgstr "Görüntüyü soldan sağa çevir."
 
-#: ../po/tmp/resources.xml.h:170
+#: ../gui/resources.xml:837
 msgctxt "Menu→View→Adjust View (labels), Accel Editor (labels)"
 msgid "Mirror Vertical"
 msgstr "Dikey Çevir"
 
-#: ../po/tmp/resources.xml.h:171
+#: ../gui/resources.xml:838
 msgctxt "Accel Editor (descriptions)"
 msgid "Flip the view upside-down."
 msgstr "Görüntüyü baş aşağı çevir."
 
-#: ../po/tmp/resources.xml.h:172
+#: ../gui/resources.xml:845
 msgctxt "Menu→View (labels), Accel Editor (labels)"
 msgid "Layer Solo"
 msgstr "Tek Katman"
 
-#: ../po/tmp/resources.xml.h:173
+#: ../gui/resources.xml:846
 msgctxt "Accel Editor (descriptions)"
 msgid "Toggle whether only the current layer is shown."
 msgstr "Yalnızca geçerli katmanın gösterilip gösterilmeyeceğini değiştir."
 
-#: ../po/tmp/resources.xml.h:174
+#: ../gui/resources.xml:856
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
 msgid "Symmetrical Painting Active"
 msgstr "Simetrik Boyamayı Etkinleştir"
 
-#: ../po/tmp/resources.xml.h:175
+#: ../gui/resources.xml:857
 msgctxt "Accel Editor (descriptions)"
 msgid "Mirror brushstrokes along the axis of symmetry"
 msgstr "Simetri ekseni boyunca fırça darbelerini yansıt"
 
-#: ../po/tmp/resources.xml.h:176
+#: ../gui/resources.xml:864
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "Frame Enabled"
 msgstr "Çerçeveyi Etkinleştir"
 
-#: ../po/tmp/resources.xml.h:177
+#: ../gui/resources.xml:865
 msgctxt "Accel Editor (descriptions)"
 msgid "Toggle visibility of the document frame."
 msgstr "Belge çerçevesinin görünürlüğünü değiştir."
 
-#: ../po/tmp/resources.xml.h:178
+#: ../gui/resources.xml:874
 msgctxt "Menu→Help→Debug (labels), Accel Editor (labels)"
 msgid "Print Brush Input Values to Console"
 msgstr "Fırça Girdi Değerlerini Uçbirime Yazdır"
 
-#: ../po/tmp/resources.xml.h:179
+#: ../gui/resources.xml:875
 msgctxt "Accel Editor (descriptions)"
 msgid "Show the brush engine’s internally generated inputs on the console."
 msgstr "Fırça motorunun dahili olarak oluşturulan girdileri uçbirimde göster."
 
-#: ../po/tmp/resources.xml.h:180
+#: ../gui/resources.xml:881
 msgctxt "Menu→Help→Debug (labels), Accel Editor (labels)"
 msgid "Visualize Rendering"
 msgstr "İşlemeyi Görselleştir"
 
-#: ../po/tmp/resources.xml.h:181
+#: ../gui/resources.xml:882
 msgctxt "Accel Editor (descriptions)"
 msgid "Show rendering updates on-screen, for debugging."
 msgstr "Hata ayıklama için işleme güncellemelerini ekranda göster."
 
-#: ../po/tmp/resources.xml.h:182
+#: ../gui/resources.xml:888
 msgctxt "Menu→Help→Debug (labels), Accel Editor (labels)"
 msgid "No Double Buffering"
 msgstr "Çift Tamponlama Yok"
 
-#: ../po/tmp/resources.xml.h:183
+#: ../gui/resources.xml:889
 msgctxt "Accel Editor (descriptions)"
 msgid "Turn off GTK’s double buffering, normally enabled."
 msgstr "Normalde etkin olan GTK’nın çift tamponlamasını kapat."
 
-#: ../po/tmp/resources.xml.h:185
+#: ../gui/resources.xml:898
 msgctxt "Accel Editor (descriptions)"
 msgid ""
 "Insert a point next to the currently selected point in the direction of the "
@@ -5929,307 +5823,307 @@ msgid ""
 msgstr ""
 "Seçili noktaya, geçerli noktanın yanına ve darbe yönünde bir nokta ekle."
 
-#: ../po/tmp/resources.xml.h:186
+#: ../gui/resources.xml:904
 msgid "Delete Point"
 msgstr "Noktayı Sil"
 
-#: ../po/tmp/resources.xml.h:187
+#: ../gui/resources.xml:905
 msgctxt "Accel Editor (descriptions)"
 msgid "Delete currently selected point on the ink stroke."
 msgstr "Mürekkep darbesindeki geçerli seçili noktayı sil."
 
-#: ../po/tmp/resources.xml.h:189
+#: ../gui/resources.xml:912
 msgctxt "Accel Editor (descriptions)"
 msgid ""
 "Simplify and delete points according to angle and distance between nodes."
 msgstr ""
 "Düğümler arasındaki açıya ve mesafeye göre noktaları basitleştir ve sil."
 
-#: ../po/tmp/resources.xml.h:191
+#: ../gui/resources.xml:919
 msgctxt "Accel Editor (descriptions)"
 msgid "Delete every other point on the ink stroke."
 msgstr "Mürekkep darbesindeki diğer tüm noktaları sil."
 
-#: ../po/tmp/resources.xml.h:192
+#: ../gui/resources.xml:933
 msgctxt "Menu→Brush (labels)"
 msgid "Paint Mode"
 msgstr "Boyama Kipi"
 
-#: ../po/tmp/resources.xml.h:193
+#: ../gui/resources.xml:941
 msgctxt "Menu→Brush→Blend Mode (labels), Accel Editor (labels)"
 msgid "Paint Mode: Normal"
 msgstr "Boyama Kipi: Normal"
 
-#: ../po/tmp/resources.xml.h:194
+#: ../gui/resources.xml:942
 msgctxt "Accel Editor (descriptions)"
 msgid "Apply color normally when painting."
 msgstr "Boyama sırasında normal şekilde renk uygula."
 
-#: ../po/tmp/resources.xml.h:195
+#: ../gui/resources.xml:950
 msgctxt "Menu→Brush→Blend Mode (labels), Accel Editor (labels)"
 msgid "Paint Mode: Eraser"
 msgstr "Boyama Kipi: Silgi"
 
-#: ../po/tmp/resources.xml.h:196
+#: ../gui/resources.xml:951
 msgctxt "Accel Editor (descriptions)"
 msgid "Erase using the current brush."
 msgstr "Geçerli fırçayı kullanarak sil."
 
-#: ../po/tmp/resources.xml.h:197
+#: ../gui/resources.xml:959
 msgctxt "Menu→Brush→Blend Mode (labels), Accel Editor (labels)"
 msgid "Paint Mode: Lock Alpha"
 msgstr "Boyama Kipi: Alfayı Kilitle"
 
-#: ../po/tmp/resources.xml.h:198
+#: ../gui/resources.xml:960
 msgctxt "Accel Editor (descriptions)"
 msgid "Applying the brush doesn't change the layer’s opacity."
 msgstr "Fırçayı uygulamak, katmanın matlığını değiştirmez."
 
-#: ../po/tmp/resources.xml.h:199
+#: ../gui/resources.xml:968
 msgctxt "Menu→Brush→Blend Mode (labels), Accel Editor (labels)"
 msgid "Paint Mode: Colorize"
 msgstr "Boyama Kipi: Renklendir"
 
-#: ../po/tmp/resources.xml.h:200
+#: ../gui/resources.xml:969
 msgctxt "Accel Editor (descriptions)"
 msgid ""
 "Apply color to the current layer without affecting its brightness or opacity."
 msgstr "Parlaklığını veya matlığını etkilemeden geçerli katmana renk uygula."
 
-#: ../po/tmp/resources.xml.h:201
+#: ../gui/resources.xml:983
 msgctxt "Menu (labels)"
 msgid "File"
 msgstr "Dosya"
 
-#: ../po/tmp/resources.xml.h:202
+#: ../gui/resources.xml:989
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "Quit"
 msgstr "Çık"
 
-#: ../po/tmp/resources.xml.h:203
+#: ../gui/resources.xml:990
 msgctxt "Accel Editor (descriptions)"
 msgid "Close main window and exit the app."
 msgstr "Ana pencereyi kapat ve uygulamadan çık."
 
-#: ../po/tmp/resources.xml.h:204
+#: ../gui/resources.xml:1000
 msgctxt "Menu (labels)"
 msgid "Edit"
 msgstr "Düzenle"
 
-#: ../po/tmp/resources.xml.h:205
+#: ../gui/resources.xml:1008
 msgctxt "Menu (labels)"
 msgid "Color"
 msgstr "Renk"
 
-#: ../po/tmp/resources.xml.h:206
+#: ../gui/resources.xml:1014
 msgctxt "Menu→Color (labels)"
 msgid "Adjust Color"
 msgstr "Rengi Ayarla"
 
-#: ../po/tmp/resources.xml.h:207
+#: ../gui/resources.xml:1020
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "Color History Popup"
 msgstr "Renk Geçmişi Açılır Penceresi"
 
-#: ../po/tmp/resources.xml.h:208
+#: ../gui/resources.xml:1021
 msgctxt "Accel Editor (descriptions)"
 msgid "Pop up a timeline of recent colors under the cursor."
 msgstr "İmleç altında son renklerin zaman çizelgesini aç."
 
-#: ../po/tmp/resources.xml.h:209
+#: ../gui/resources.xml:1028
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "Color Details Dialog"
 msgstr "Renk Ayrıntıları Penceresi"
 
-#: ../po/tmp/resources.xml.h:210
+#: ../gui/resources.xml:1029
 msgctxt "Accel Editor (descriptions)"
 msgid "Show a color details dialog with text entry."
 msgstr "Renk ayrıntıları iletişim kutusunu metin girişiyle göster."
 
-#: ../po/tmp/resources.xml.h:211
+#: ../gui/resources.xml:1035
 msgctxt "Menu→Color"
 msgid "Next Palette Color"
 msgstr "Sonraki Palet Rengi"
 
-#: ../po/tmp/resources.xml.h:212
+#: ../gui/resources.xml:1036
 msgctxt "Accel Editor (descriptions)"
 msgid "Set painting color to the next color in the palette."
 msgstr "Boyama rengini paletteki sonraki renge ayarla."
 
-#: ../po/tmp/resources.xml.h:213
+#: ../gui/resources.xml:1042
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "Previous Palette Color"
 msgstr "Önceki Palet Rengi"
 
-#: ../po/tmp/resources.xml.h:214
+#: ../gui/resources.xml:1043
 msgctxt "Accel Editor (descriptions)"
 msgid "Set painting color to the previous color in the palette."
 msgstr "Boyama rengini paletteki önceki renge ayarla."
 
-#: ../po/tmp/resources.xml.h:215
+#: ../gui/resources.xml:1049
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "Add Color to Palette"
 msgstr "Rengi Palete Ekle"
 
-#: ../po/tmp/resources.xml.h:216
+#: ../gui/resources.xml:1050
 msgctxt "Accel Editor (descriptions)"
 msgid "Append the current painting color to the palette."
 msgstr "Geçerli boyama rengini palete ekle."
 
-#: ../po/tmp/resources.xml.h:217
+#: ../gui/resources.xml:1058
 msgctxt "Menu (labels)"
 msgid "Layer"
 msgstr "Katman"
 
-#: ../po/tmp/resources.xml.h:218
+#: ../gui/resources.xml:1064
 msgctxt "Menu→Layer→Properties (labels)"
 msgid "Opacity"
 msgstr "Matlık"
 
-#: ../po/tmp/resources.xml.h:219
+#: ../gui/resources.xml:1070
 msgctxt "Menu→Layer (labels)"
 msgid "Go to Layer"
 msgstr "Katmana Git"
 
-#: ../po/tmp/resources.xml.h:220
+#: ../gui/resources.xml:1076
 msgctxt "Menu→Layer (labels)"
 msgid "New Layer Below"
 msgstr "Altına Yeni Katman"
 
-#: ../po/tmp/resources.xml.h:221
+#: ../gui/resources.xml:1082
 msgctxt "Menu→Layer (labels)"
 msgid "Properties"
 msgstr "Özellikler"
 
-#: ../po/tmp/resources.xml.h:222
+#: ../gui/resources.xml:1090
 msgctxt "Menu (labels)"
 msgid "Scratchpad"
 msgstr "Karalama Defteri"
 
-#: ../po/tmp/resources.xml.h:223
+#: ../gui/resources.xml:1096
 msgctxt "Menu→Scratchpad (labels), Accel Editor (labels)"
 msgid "New Scratchpad"
 msgstr "Yeni Karalama Defteri"
 
-#: ../po/tmp/resources.xml.h:224
+#: ../gui/resources.xml:1097
 msgctxt "Accel Editor (descriptions)"
 msgid "Load the default scratchpad as a new scratchpad canvas."
 msgstr ""
 "Varsayılan karalama defterini yeni karalama defteri tuvali olarak yükle."
 
-#: ../po/tmp/resources.xml.h:225
+#: ../gui/resources.xml:1104
 msgctxt "Menu→Scratchpad (labels), Accel Editor (labels)"
 msgid "Open Scratchpad…"
 msgstr "Karalama Defteri Aç…"
 
-#: ../po/tmp/resources.xml.h:226
+#: ../gui/resources.xml:1105
 msgctxt "Accel Editor (descriptions)"
 msgid "Load an image file on disk into the scratchpad."
 msgstr "Diskteki bir görüntü dosyasını karalama defterine yükle."
 
-#: ../po/tmp/resources.xml.h:227
+#: ../gui/resources.xml:1112
 msgctxt "Menu→Scratchpad (labels), Accel Editor (labels)"
 msgid "Save Scratchpad"
 msgstr "Karalama Defterini Kaydet"
 
-#: ../po/tmp/resources.xml.h:228
+#: ../gui/resources.xml:1113
 msgctxt "Accel Editor (descriptions)"
 msgid "Save the scratchpad to its existing file on disk."
 msgstr "Karalama defterini diskteki varolan dosyasına kaydet."
 
-#: ../po/tmp/resources.xml.h:229
+#: ../gui/resources.xml:1120
 msgctxt "Menu→Scratchpad (labels), Accel Editor (labels)"
 msgid "Export Scratchpad As…"
 msgstr "Karalama Defterini Farklı Kaydet…"
 
-#: ../po/tmp/resources.xml.h:230
+#: ../gui/resources.xml:1121
 msgctxt "Accel Editor (descriptions)"
 msgid "Export the scratchpad to disk, under a file name of your choice."
 msgstr "Belirlediğin bir adla karalama defterini diske dışa aktar."
 
-#: ../po/tmp/resources.xml.h:231
+#: ../gui/resources.xml:1128
 msgctxt "Menu→Scratchpad (labels), Accel Editor (labels)"
 msgid "Revert Scratchpad"
 msgstr "Karalama Defterini Geri Döndür"
 
-#: ../po/tmp/resources.xml.h:232
+#: ../gui/resources.xml:1129
 msgctxt "Accel Editor (descriptions)"
 msgid "Revert the scratchpad to its last saved state."
 msgstr "Karalama defterini son kaydedildiği duruma geri döndür."
 
-#: ../po/tmp/resources.xml.h:233
+#: ../gui/resources.xml:1136
 msgctxt "Menu→Scratchpad (labels), Accel Editor (labels)"
 msgid "Save Scratchpad as Default"
 msgstr "Karalama Defterini Varsayılan Olarak Kaydet"
 
-#: ../po/tmp/resources.xml.h:234
+#: ../gui/resources.xml:1137
 msgctxt "Accel Editor (descriptions)"
 msgid "Save the scratchpad as the default for ‘New Scratchpad’."
 msgstr ""
 "Karalama defterini ‘Yeni Karalama Defteri’ için varsayılan olarak kaydet."
 
-#: ../po/tmp/resources.xml.h:235
+#: ../gui/resources.xml:1143
 msgctxt "Menu→Scratchpad (labels), Accel Editor (labels)"
 msgid "Clear Default Scratchpad"
 msgstr "Varsayılan Karalama Defterini Temizle"
 
-#: ../po/tmp/resources.xml.h:236
+#: ../gui/resources.xml:1144
 msgctxt "Accel Editor (descriptions)"
 msgid "Clear the default scratchpad to a blank canvas."
 msgstr "Varsayılan karalama defterini boş tuvale temizle."
 
-#: ../po/tmp/resources.xml.h:237
+#: ../gui/resources.xml:1150
 msgctxt "Menu→Scratchpad (labels), Accel Editor (labels)"
 msgid "Copy Main Background to Scratchpad"
 msgstr "Ana Arkaplanı Karalama Defterine Kopyala"
 
-#: ../po/tmp/resources.xml.h:238
+#: ../gui/resources.xml:1151
 msgctxt "Accel Editor (descriptions)"
 msgid ""
 "Copy the background image from the working document into the Scratchpad."
 msgstr "Arkaplan görüntüsünü çalışan belgeden Karalama Defteri'ne kopyala."
 
-#: ../po/tmp/resources.xml.h:239
+#: ../gui/resources.xml:1159
 msgctxt "Menu (labels)"
 msgid "Window"
 msgstr "Pencere"
 
-#: ../po/tmp/resources.xml.h:240
+#: ../gui/resources.xml:1167
 msgctxt "Menu→Brush (labels)"
 msgid "Brush"
 msgstr "Fırça"
 
-#: ../po/tmp/resources.xml.h:241
+#: ../gui/resources.xml:1173
 msgctxt "Menu→Brush (labels)"
 msgid "Shortcut Keys"
 msgstr "Kısayol Tuşları"
 
-#: ../po/tmp/resources.xml.h:242
+#: ../gui/resources.xml:1179
 msgctxt "Menu→Brush→Shortcut Keys (labels), Accel Editor (labels)"
 msgid "Brush Shortcut Keys Help"
 msgstr "Fırça Kısayol Tuşları Yardımı"
 
-#: ../po/tmp/resources.xml.h:243
+#: ../gui/resources.xml:1180
 msgctxt "Accel Editor (descriptions)"
 msgid "Show an explanation of how the shortcut keys work."
 msgstr "Kısayolların nasıl çalıştığını anlatan bir açıklama göster."
 
-#: ../po/tmp/resources.xml.h:244
+#: ../gui/resources.xml:1187
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
 msgid "Change Brush…"
 msgstr "Fırça Değiştir…"
 
-#: ../po/tmp/resources.xml.h:245
+#: ../gui/resources.xml:1188
 msgctxt "Accel Editor (descriptions)"
 msgid "Pop up a brush changer under the cursor."
 msgstr "İmlecin altında bir fırça değiştirici göster."
 
-#: ../po/tmp/resources.xml.h:246
+#: ../gui/resources.xml:1195
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "Change Color…"
 msgstr "Renk Değiştir…"
 
-#: ../po/tmp/resources.xml.h:247
+#: ../gui/resources.xml:1196
 msgctxt "Accel Editor (descriptions)"
 msgid ""
 "Pop up a color changer under the cursor, with all color selectors listed."
@@ -6237,12 +6131,12 @@ msgstr ""
 "İmlecin altında, tüm renk seçicilerin listelendiği bir renk değiştirici "
 "göster."
 
-#: ../po/tmp/resources.xml.h:248
+#: ../gui/resources.xml:1204
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "Change Color (fast subset)…"
 msgstr "Renk Değiştir (Hızlı Altküme)…"
 
-#: ../po/tmp/resources.xml.h:249
+#: ../gui/resources.xml:1205
 msgctxt "Accel Editor (descriptions)"
 msgid ""
 "Pop up a color changer under the cursor, with only single-click selectors "
@@ -6251,212 +6145,213 @@ msgstr ""
 "İmlecin altında, sadece tek-tıklama seçicilerinin listelendiği bir renk "
 "değiştirici göster."
 
-#: ../po/tmp/resources.xml.h:250
+#: ../gui/resources.xml:1213
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
 msgid "Get More Brushes…"
 msgstr "Daha Fazla Fırça…"
 
-#: ../po/tmp/resources.xml.h:251
+#: ../gui/resources.xml:1214
 msgctxt "Accel Editor (descriptions)"
 msgid "Download brushpacks from the MyPaint wiki."
 msgstr "Mypaint wikiden fırça paketleri indir."
 
-#: ../po/tmp/resources.xml.h:252
+#: ../gui/resources.xml:1221
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
 msgid "Import Brushes…"
 msgstr "Fırçaları İçe Aktar…"
 
-#: ../po/tmp/resources.xml.h:253
+#: ../gui/resources.xml:1222
 msgctxt "Accel Editor (descriptions)"
 msgid "Load a brushpack from disk."
 msgstr "Diskten fırça paketi yükle."
 
-#: ../po/tmp/resources.xml.h:254
+#: ../gui/resources.xml:1231
 msgctxt "Menu (labels)"
 msgid "Help"
 msgstr "Yardım"
 
-#: ../po/tmp/resources.xml.h:255
+#: ../gui/resources.xml:1237
 msgctxt "Menu→Help (labels), Accel Editor (labels)"
 msgid "Online Help"
 msgstr "Çevirimiçi Yardım"
 
-#: ../po/tmp/resources.xml.h:256
+#: ../gui/resources.xml:1238
 msgctxt "Accel Editor (descriptions)"
 msgid "Go to MyPaint’s documentation wiki."
 msgstr "Mypaint belgeleri wikisine git."
 
-#: ../po/tmp/resources.xml.h:257
+#: ../gui/resources.xml:1246
 msgctxt "Menu→Help (labels), Accel Editor (labels)"
 msgid "About MyPaint"
 msgstr "MyPaint Hakkında"
 
-#: ../po/tmp/resources.xml.h:258
+#: ../gui/resources.xml:1247
 msgctxt "Accel Editor (descriptions)"
 msgid "Show MyPaint’s license, version number, and credits."
 msgstr ""
 "Mypaint'in lisansını, sürüm numarasını ve emeği geçenler listesini göster."
 
-#: ../po/tmp/resources.xml.h:259
+#: ../gui/resources.xml:1256
 msgctxt "Menu→Help (labels)"
 msgid "Debug"
 msgstr "Hata Ayıkla"
 
-#: ../po/tmp/resources.xml.h:260
+#: ../gui/resources.xml:1262
 msgctxt "Menu→Help→Debug (labels), Accel Editor (labels)"
 msgid "Print Memory Leak Info to Console (Slow!)"
 msgstr "Bellek Taşması Verisini Uçbirime Yazdır (Yavaş!)"
 
-#: ../po/tmp/resources.xml.h:261
+#: ../gui/resources.xml:1263
 msgctxt "Accel Editor (descriptions)"
 msgid "Debug memory leaks."
 msgstr "Bellek taşmasını hata ayıkla."
 
-#: ../po/tmp/resources.xml.h:262
+#: ../gui/resources.xml:1269
 msgctxt "Menu→Help→Debug (labels), Accel Editor (labels)"
 msgid "Run Garbage Collector Now"
 msgstr "Çöp Toplayıcısını Şimdi Çalıştır"
 
-#: ../po/tmp/resources.xml.h:263
+#: ../gui/resources.xml:1270
 msgctxt "Accel Editor (descriptions)"
 msgid "Free memory used for Python objects which are no longer in use."
 msgstr "Artık kullanılmayan Python nesneleri için kullanılan boş bellek."
 
-#: ../po/tmp/resources.xml.h:264
+#. FIXME: convert to a ToggleAction
+#: ../gui/resources.xml:1277
 msgctxt "Menu→Help→Debug (labels), Accel Editor (labels)"
 msgid "Start/Stop Profiling…"
 msgstr "Profillemeyi Başlat/Durdur"
 
-#: ../po/tmp/resources.xml.h:265
+#: ../gui/resources.xml:1278
 msgctxt "Accel Editor (descriptions)"
 msgid "Start or Stop Python Profiling (cProfile)"
 msgstr "Python Profillemeyi Başlat veya Durdur (cProfile)"
 
-#: ../po/tmp/resources.xml.h:266
+#: ../gui/resources.xml:1285
 msgctxt "Menu→Help→Debug (labels), Accel Editor (labels)"
 msgid "Simulate a Crash…"
 msgstr "Çökmeyi Taklit Et"
 
-#: ../po/tmp/resources.xml.h:267
+#: ../gui/resources.xml:1286
 msgctxt "Accel Editor (descriptions)"
 msgid "Raise a Python exception, to test the crash dialog."
 msgstr ""
 "Çökme iletişim penceresini test etmek için bir Python istisnası oluştur."
 
-#: ../po/tmp/resources.xml.h:268
+#: ../gui/resources.xml:1294
 msgctxt "Menu (labels)"
 msgid "View"
 msgstr "Görünüm"
 
-#: ../po/tmp/resources.xml.h:269
+#: ../gui/resources.xml:1300
 msgctxt "Menu→View (labels)"
 msgid "Feedback"
 msgstr "Geri Bildirim"
 
-#: ../po/tmp/resources.xml.h:270
+#: ../gui/resources.xml:1306
 msgctxt "Menu→View (labels)"
 msgid "Adjust View"
 msgstr "Görünümü Ayarla"
 
-#: ../po/tmp/resources.xml.h:271
+#: ../gui/resources.xml:1312
 msgctxt "Menu→View (labels), Accel Editor (labels)"
 msgid "Popup Main Menu"
 msgstr "Açılır Pencere Ana Menüsü"
 
-#: ../po/tmp/resources.xml.h:272
+#: ../gui/resources.xml:1313
 msgctxt "Accel Editor (descriptions)"
 msgid "Show the main menu as a popup."
 msgstr "Ana menüyü açılır pencere olarak göster."
 
-#: ../po/tmp/resources.xml.h:273
+#: ../gui/resources.xml:1320
 msgctxt "Menu→View (labels), Accel Editor (labels)"
 msgid "Fullscreen"
 msgstr "Tam Ekran"
 
-#: ../po/tmp/resources.xml.h:274
+#: ../gui/resources.xml:1321
 msgctxt "Accel Editor (descriptions)"
 msgid "Toggle between full-screen and windowed mode."
 msgstr "Tam ekran ve pencere kipi arasında geçiş yap."
 
-#: ../po/tmp/resources.xml.h:275
+#: ../gui/resources.xml:1332
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
 msgid "Edit Preferences"
 msgstr "Tercihleri Düzenle"
 
-#: ../po/tmp/resources.xml.h:276
+#: ../gui/resources.xml:1333
 msgctxt "Accel Editor (descriptions)"
 msgid "Edit MyPaint’s global settings."
 msgstr "Mypaint'in genel ayarlarını değiştir."
 
-#: ../po/tmp/resources.xml.h:277
+#: ../gui/resources.xml:1339
 msgctxt "Help→Debug (labels), Accel Editor (labels)"
 msgid "Test Input Devices"
 msgstr "Girdi Aygıtını Test Et"
 
-#: ../po/tmp/resources.xml.h:278
+#: ../gui/resources.xml:1340
 msgctxt "Accel Editor (descriptions)"
 msgid "Show a dialog which captures all events your input devices send."
 msgstr ""
 "Girdi aygıtının gönderdiği tüm olayları yakalayan bir iletişim kutusu göster."
 
-#: ../po/tmp/resources.xml.h:279
+#: ../gui/resources.xml:1347
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Background Chooser"
 msgstr "Arkaplan Seçici"
 
-#: ../po/tmp/resources.xml.h:280
+#: ../gui/resources.xml:1348
 msgctxt "Accel Editor (descriptions)"
 msgid "Change the background paper texture."
 msgstr "Arkaplan kağıt dokusunu değiştir."
 
-#: ../po/tmp/resources.xml.h:281
+#: ../gui/resources.xml:1355
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
 msgid "Brush Settings Editor"
 msgstr "Fırça Ayarları Düzenleyici"
 
-#: ../po/tmp/resources.xml.h:282
+#: ../gui/resources.xml:1356
 msgctxt "Accel Editor (descriptions)"
 msgid "Edit the active brush’s settings."
 msgstr "Etkin fırçanın ayarlarını düzenle."
 
-#: ../po/tmp/resources.xml.h:283
+#: ../gui/resources.xml:1364
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
 msgid "Brush Icon Editor"
 msgstr "Fırça Simgesi Düzenleyici"
 
-#: ../po/tmp/resources.xml.h:284
+#: ../gui/resources.xml:1365
 msgctxt "Accel Editor (descriptions)"
 msgid "Edit brush icons."
 msgstr "Fırça simgelerini düzenle."
 
-#: ../po/tmp/resources.xml.h:285
+#: ../gui/resources.xml:1373
 msgctxt ""
 "Menu→Layer (labels), Menu→Window (labels), Toolbar (labels), Accel Editor "
 "(labels)"
 msgid "Layers Panel"
 msgstr "Katman Paneli"
 
-#: ../po/tmp/resources.xml.h:286
+#: ../gui/resources.xml:1374
 msgctxt "Accel Editor (descriptions)"
 msgid "Dockable panel for managing layers."
 msgstr "Katmanları yönetmek için sabitlenebilir panel."
 
-#: ../po/tmp/resources.xml.h:287
+#: ../gui/resources.xml:1382
 msgctxt "Menu→Layers (labels), Accel Editor (labels)"
 msgid "Show Layers Panel"
 msgstr "Katman Panelini Göster"
 
-#: ../po/tmp/resources.xml.h:288
+#: ../gui/resources.xml:1383
 msgctxt "Accel Editor (descriptions)"
 msgid "Reveal the Layers dockpanel (arrange layers, or assign modes)."
 msgstr "Katmanlar panelini göster (katmanları düzenle veya kip ata)."
 
-#: ../po/tmp/resources.xml.h:289
+#: ../gui/resources.xml:1394
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "HCY Wheel"
 msgstr "HCY Tekerleği"
 
-#: ../po/tmp/resources.xml.h:290
+#: ../gui/resources.xml:1395
 msgctxt "Accel Editor (descriptions)"
 msgid ""
 "Dockable cylindrical hue/chroma/luma color selector. The circular slices are "
@@ -6465,32 +6360,32 @@ msgstr ""
 "Sabitlenebilir silindir ton/renk saflığı/renk parlaklığı renk seçici. "
 "Dairesel dilimler eşittir."
 
-#: ../po/tmp/resources.xml.h:291
+#: ../gui/resources.xml:1402
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "Color Palette"
 msgstr "Renk Paleti"
 
-#: ../po/tmp/resources.xml.h:292
+#: ../gui/resources.xml:1403
 msgctxt "Accel Editor (descriptions)"
 msgid "Dockable palette color selector."
 msgstr "Sabitlenebilir palet renk seçici."
 
-#: ../po/tmp/resources.xml.h:293
+#: ../gui/resources.xml:1411
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "HSV Wheel"
 msgstr "HSV Tekerleği"
 
-#: ../po/tmp/resources.xml.h:294
+#: ../gui/resources.xml:1412
 msgctxt "Accel Editor (descriptions)"
 msgid "Dockable saturation and Value color changer."
 msgstr "Sabitlenebilir doygunluk ve Değer renk değiştirici."
 
-#: ../po/tmp/resources.xml.h:295
+#: ../gui/resources.xml:1419
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "HSV Cube"
 msgstr "HSV Küpü"
 
-#: ../po/tmp/resources.xml.h:296
+#: ../gui/resources.xml:1420
 msgctxt "Accel Editor (descriptions)"
 msgid ""
 "Dockable color selector: HSV cube which can be rotated to show different "
@@ -6499,217 +6394,217 @@ msgstr ""
 "Sabitlenebilir renk seçici: farklı düzlem dilimlerini göstermek için "
 "döndürülebilir HSV küpü."
 
-#: ../po/tmp/resources.xml.h:297
+#: ../gui/resources.xml:1427
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "HSV Square"
 msgstr "HSV Karesi"
 
-#: ../po/tmp/resources.xml.h:298
+#: ../gui/resources.xml:1428
 msgctxt "Accel Editor (descriptions)"
 msgid "Dockable color selector: HSV square with Hue ring."
 msgstr "Eşmerkezli HSV Ton halkalarından oluşan, sabitlenebilir renk seçici."
 
-#: ../po/tmp/resources.xml.h:299
+#: ../gui/resources.xml:1435
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "Component Sliders"
 msgstr "Bileşen Sürgüleri"
 
-#: ../po/tmp/resources.xml.h:300
+#: ../gui/resources.xml:1436
 msgctxt "Accel Editor (descriptions)"
 msgid "Dockable color selector showing individual components of the color."
 msgstr "Rengin bağımsız bileşenlerini gösteren sabitlenebilir renk seçici."
 
-#: ../po/tmp/resources.xml.h:301
+#: ../gui/resources.xml:1443
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "Liquid Wash"
 msgstr "Sıvı Boya Tabakası"
 
-#: ../po/tmp/resources.xml.h:302
+#: ../gui/resources.xml:1444
 msgctxt "Accel Editor (descriptions)"
 msgid "Dockable color selector showing a liquid-like wash of nearby colors."
 msgstr ""
 "Birbirine yakın renkleri sıvı boya tabakası gibi gösteren, sabitlenebilir "
 "renk seçici."
 
-#: ../po/tmp/resources.xml.h:303
+#: ../gui/resources.xml:1451
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "Concentric Rings"
 msgstr "Eşmerkezli Halkalar"
 
-#: ../po/tmp/resources.xml.h:304
+#: ../gui/resources.xml:1452
 msgctxt "Accel Editor (descriptions)"
 msgid "Dockable color selector with concentric HSV rings."
 msgstr "Eşmerkezli HSV halkalarından oluşan, sabitlenebilir renk seçici."
 
-#: ../po/tmp/resources.xml.h:305
+#: ../gui/resources.xml:1459
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "Crossed Bowl"
 msgstr "Çapraz Kase"
 
-#: ../po/tmp/resources.xml.h:306
+#: ../gui/resources.xml:1460
 msgctxt "Accel Editor (descriptions)"
 msgid "Dockable color selector with HSV ramps crossing a radial bowl of color."
 msgstr ""
 "Radyal bir kabın üstünden geçen HSV rampalarından renk seçimi için "
 "sabitlenebilir panel."
 
-#: ../po/tmp/resources.xml.h:307
+#: ../gui/resources.xml:1469
 msgctxt "Menu→Window (labels), Accel Editor (labels)"
 msgid "Scratchpad Panel"
 msgstr "Karalama Paneli"
 
-#: ../po/tmp/resources.xml.h:308
+#: ../gui/resources.xml:1470
 msgctxt "Accel Editor (descriptions)"
 msgid "Dockable Panel for mixing colors and testing brushes."
 msgstr ""
 "Renkleri karıştırmak ve fırçaları test etmek için sabitlenebilir panel."
 
-#: ../po/tmp/resources.xml.h:309
+#: ../gui/resources.xml:1478
 msgctxt "Menu→Scratchpad (labels), Accel Editor (labels)"
 msgid "Show Scratchpad Panel"
 msgstr "Karalama Defteri Panelini Göster"
 
-#: ../po/tmp/resources.xml.h:310
+#: ../gui/resources.xml:1479
 msgctxt "Accel Editor (descriptions)"
 msgid "Reveal the Scratchpad dockpanel (mix colors and make sketches)."
 msgstr "Karalama panelini göster (renkleri karıştır ve eskiz çiz)."
 
-#: ../po/tmp/resources.xml.h:311
+#: ../gui/resources.xml:1488
 msgctxt "Menu→Window (labels), Toolbar (labels), Accel Editor (labels)"
 msgid "Preview Panel"
 msgstr "Önizleme Paneli"
 
-#: ../po/tmp/resources.xml.h:312
+#: ../gui/resources.xml:1489
 msgctxt "Accel Editor (descriptions)"
 msgid "Dockable panel for an overview and navigation of the whole canvas."
 msgstr "Tuval genel görünümü ve gezinti için sabitlenebilir panel."
 
-#: ../po/tmp/resources.xml.h:313
+#: ../gui/resources.xml:1497
 msgctxt "Menu→View (labels), Accel Editor (labels)"
 msgid "Preview"
 msgstr "Önizle"
 
-#: ../po/tmp/resources.xml.h:314
+#: ../gui/resources.xml:1498
 msgctxt "Accel Editor (descriptions)"
 msgid "Reveal the Preview dockpanel (overview of the whole drawing area)."
 msgstr "Önizleme panelini göster (tüm çizim alanının genel görünümü)."
 
-#: ../po/tmp/resources.xml.h:315
+#: ../gui/resources.xml:1508
 msgctxt "Menu→Window (labels), Toolbar (labels), Accel Editor (labels)"
 msgid "Tool Options Panel"
 msgstr "Araç Seçenekleri Paneli"
 
-#: ../po/tmp/resources.xml.h:316
+#: ../gui/resources.xml:1509
 msgctxt "Accel Editor (descriptions)"
 msgid "Dockable panel for adjusting the options with the activated tool."
 msgstr "Geçerli araç seçeneklerini ayarlamak için sabitlenebilir panel."
 
-#: ../po/tmp/resources.xml.h:317
+#: ../gui/resources.xml:1517
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
 msgid "Show Tool Options Panel"
 msgstr "Araç Seçenekleri Panelini Göster"
 
-#: ../po/tmp/resources.xml.h:318
+#: ../gui/resources.xml:1518
 msgctxt "Accel Editor (descriptions)"
 msgid "Reveal the Tool Options dockpanel (options for the current tool)."
 msgstr "Araç Seçenekleri panelini göster (geçerli araç için seçenekler)."
 
-#: ../po/tmp/resources.xml.h:319
+#: ../gui/resources.xml:1528
 msgctxt "Menu→Window (labels), Toolbar (labels), Accel Editor (labels)"
 msgid "Brush & Color History Panel"
 msgstr "Fırça ve Renk Geçmişi Paneli"
 
-#: ../po/tmp/resources.xml.h:320
+#: ../gui/resources.xml:1529
 msgctxt "Accel Editor (descriptions)"
 msgid "Dockable panel for viewing recently changed colors and brushes."
 msgstr ""
 "Son değiştirilen renkleri ve fırçaları görüntülemek için sabitlenebilir "
 "panel."
 
-#: ../po/tmp/resources.xml.h:321
+#: ../gui/resources.xml:1537
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
 msgid "Recent Brushes & Colors"
 msgstr "Son Fırçalar ve Renkler"
 
-#: ../po/tmp/resources.xml.h:322
+#: ../gui/resources.xml:1538
 msgctxt "Accel Editor (descriptions)"
 msgid "Reveal the History panel (recently used brushes and colors)."
 msgstr "Geçmiş panelini göster(son kullanılan fırçalar ve renkler)."
 
-#: ../po/tmp/resources.xml.h:323
+#: ../gui/resources.xml:1548
 msgctxt "Menu→View (labels), Accel Editor (labels)"
 msgid "Hide Controls in Fullscreen"
 msgstr "Tam Ekranda Kontrolleri Gizle"
 
-#: ../po/tmp/resources.xml.h:324
+#: ../gui/resources.xml:1549
 msgctxt "Accel Editor (descriptions)"
 msgid "Toggle automatic hiding of the user interface in fullscreen."
 msgstr "Tam ekranda kullanıcı arayüzünün otomatik gizlenmesini aç/kapat."
 
-#: ../po/tmp/resources.xml.h:325
+#: ../gui/resources.xml:1556
 msgctxt "Menu→View→Feedback (labels), Accel Editor (labels)"
 msgid "Show Zoom Level"
 msgstr "Yaklaştırma Seviyesini Göster"
 
-#: ../po/tmp/resources.xml.h:326
+#: ../gui/resources.xml:1557
 msgctxt "Accel Editor (descriptions)"
 msgid "Toggle zoom level feedback."
 msgstr "Yakınlaştırma seviyesi bilgisini göster/gizle."
 
-#: ../po/tmp/resources.xml.h:327
+#: ../gui/resources.xml:1563
 msgctxt "Menu→View→Feedback (labels), Accel Editor (labels)"
 msgid "Show Last Painting Position"
 msgstr "Son Boyama Konumunu Göster"
 
-#: ../po/tmp/resources.xml.h:328
+#: ../gui/resources.xml:1564
 msgctxt "Accel Editor (descriptions)"
 msgid "Toggle feedback showing where the last stroke ended."
 msgstr "Son darbesinin bittiği yerin gösterimini değiştir."
 
-#: ../po/tmp/resources.xml.h:329
+#: ../gui/resources.xml:1572
 msgctxt "Menu→View (labels)"
 msgid "Display Filter"
 msgstr "Ekran Filtreleri"
 
-#: ../po/tmp/resources.xml.h:330
+#: ../gui/resources.xml:1578
 msgctxt "Menu→View→Display Filter (labels), Accel Editor (labels)"
 msgid "Display Colors Normally"
 msgstr "Renkleri Normal Göster"
 
-#: ../po/tmp/resources.xml.h:331
+#: ../gui/resources.xml:1579
 msgctxt "Accel Editor (descriptions)"
 msgid "Filter colors: show colors unchanged."
 msgstr "Renkleri filtrele: renkleri değiştirmeden göster."
 
-#: ../po/tmp/resources.xml.h:332
+#: ../gui/resources.xml:1587
 msgctxt "Menu→View→Display Filter (labels), Accel Editor (labels)"
 msgid "Display Colors as Greyscale"
 msgstr "Renkleri Gri Tonlamada Göster"
 
-#: ../po/tmp/resources.xml.h:333
+#: ../gui/resources.xml:1588
 msgctxt "Accel Editor (descriptions)"
 msgid "Filter colors: show brightness only (HCY/YCbCr Luma)"
 msgstr ""
 "Renkleri filtrele: sadece parlaklığı göster (HCY/YCbCr Renk Parlaklığı)"
 
-#: ../po/tmp/resources.xml.h:334
+#: ../gui/resources.xml:1595
 msgctxt "Menu→View→Display Filter (labels), Accel Editor (labels)"
 msgid "Display Colors Inverted"
 msgstr "Renkleri Ters Çevir"
 
-#: ../po/tmp/resources.xml.h:335
+#: ../gui/resources.xml:1596
 msgctxt "Accel Editor (descriptions)"
 msgid "Filter colors: inverse video. Black is white and red is cyan."
 msgstr ""
 "Renkleri filtrele: renkleri tersine çevir. Siyahı beyaz, kırmızıyı camgöbeği "
 "yapar."
 
-#: ../po/tmp/resources.xml.h:336
+#: ../gui/resources.xml:1603
 msgctxt "Menu→View→Display Filter (labels), Accel Editor (labels)"
 msgid "Display Colors with Simulated Insensitivity to Red"
 msgstr "Renkleri Kırmızı Duyarlılık Taklidiyle Göster"
 
-#: ../po/tmp/resources.xml.h:337
+#: ../gui/resources.xml:1604
 msgctxt "Accel Editor (descriptions)"
 msgid ""
 "Filter colors to simulate deuteranopia, a common form of color blindness."
@@ -6717,267 +6612,267 @@ msgstr ""
 "Renkleri döteranopiyi (yeşil körlüğü) taklit etmek için filtrele, renk "
 "körlüğünün yaygın bir şekli."
 
-#: ../po/tmp/resources.xml.h:338
+#: ../gui/resources.xml:1611
 msgctxt "Menu→View→Display Filter (labels), Accel Editor (labels)"
 msgid "Display Colors with Simulated Insensitivity to Green"
 msgstr "Renkleri Yeşil Duyarlılık Taklidiyle Göster"
 
-#: ../po/tmp/resources.xml.h:339
+#: ../gui/resources.xml:1612
 msgctxt "Accel Editor (descriptions)"
 msgid "Filter colors to simulate protanopia, a common form of color blindness."
 msgstr ""
 "Renkleri protanopiyi (kırmızı körlüğü) taklit etmek için filtrele, renk "
 "körlüğünün yaygın bir şekli."
 
-#: ../po/tmp/resources.xml.h:340
+#: ../gui/resources.xml:1619
 msgctxt "Menu→View→Display Filter (labels), Accel Editor (labels)"
 msgid "Display Colors with Simulated Insensitivity to Blue"
 msgstr "Renkleri Mavi Duyarlılık Taklidiyle Göster"
 
-#: ../po/tmp/resources.xml.h:341
+#: ../gui/resources.xml:1620
 msgctxt "Accel Editor (descriptions)"
 msgid "Filter colors to simulate tritanopia, a rare form of color blindness."
 msgstr ""
 "Renkleri tritanopiyi (sarı-mavi körlüğü) taklit etmek için filtrele, renk "
 "körlüğünün nadir bir şekli."
 
-#: ../po/tmp/resources.xml.h:342
+#: ../gui/resources.xml:1635
 msgctxt "Menu→Edit→Current Mode (labels)"
 msgid "Freehand"
 msgstr "Serbest"
 
-#: ../po/tmp/resources.xml.h:343
+#: ../gui/resources.xml:1636
 msgctxt "Toolbar (short labels)"
 msgid "Freehand"
 msgstr "Serbest"
 
-#: ../po/tmp/resources.xml.h:344
+#: ../gui/resources.xml:1637
 msgctxt "Toolbar (tooltips)"
 msgid "Freehand: draw and paint freely, without geometric constraints."
 msgstr "Serbestçe çiz ve boya, genel geometrik kısıtlar olmadan."
 
-#: ../po/tmp/resources.xml.h:345
+#: ../gui/resources.xml:1646
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
 msgid "Freehand"
 msgstr "Serbest"
 
-#: ../po/tmp/resources.xml.h:346
+#: ../gui/resources.xml:1647
 msgctxt "Accel Editor (descriptions)"
 msgid "Draw and paint freely, without geometric constraints."
 msgstr ""
 "Serbest çizim: serbestçe çiz ve boya, genel geometrik kısıtlar olmadan."
 
-#: ../po/tmp/resources.xml.h:347
+#: ../gui/resources.xml:1657
 msgctxt "Menu→Edit→Current Mode (labels)"
 msgid "Pan View"
 msgstr "Görünümü Kaydır"
 
-#: ../po/tmp/resources.xml.h:348
+#: ../gui/resources.xml:1658
 msgctxt "Toolbar (short labels)"
 msgid "Pan"
 msgstr "Kaydır"
 
-#: ../po/tmp/resources.xml.h:349
+#: ../gui/resources.xml:1659
 msgctxt "Toolbar (tooltips)"
 msgid "Pan View: move your view of the canvas horizontally or vertically."
 msgstr "Görünümü Kaydır: görünümü tuval üzerinde yatay ve dikey taşı."
 
-#: ../po/tmp/resources.xml.h:350
+#: ../gui/resources.xml:1667
 msgctxt "Menu→View (labels), Accel Editor (labels)"
 msgid "Pan View"
 msgstr "Görünümü Kaydır"
 
-#: ../po/tmp/resources.xml.h:351
+#: ../gui/resources.xml:1668
 msgctxt "Accel Editor (descriptions)"
 msgid "Interactively move your view of the canvas horizontally or vertically."
 msgstr "Tuval görünümünü etkileşimli olarak yatay veya dikey taşı."
 
-#: ../po/tmp/resources.xml.h:352
+#: ../gui/resources.xml:1677
 msgctxt "Menu→Edit→Current Mode (labels)"
 msgid "Rotate View"
 msgstr "Görünümü Döndür"
 
-#: ../po/tmp/resources.xml.h:353
+#: ../gui/resources.xml:1678
 msgctxt "Toolbar (short labels)"
 msgid "Rotate"
 msgstr "Döndür"
 
-#: ../po/tmp/resources.xml.h:354
+#: ../gui/resources.xml:1679
 msgctxt "Toolbar (tooltips)"
 msgid "Rotate View: tilt your view of the canvas."
 msgstr "Görünümü Döndür: tuval görünümünü eğ."
 
-#: ../po/tmp/resources.xml.h:355
+#: ../gui/resources.xml:1687
 msgctxt "Menu→View (labels), Accel Editor (labels)"
 msgid "Rotate View"
 msgstr "Görünümü Döndür"
 
-#: ../po/tmp/resources.xml.h:356
+#: ../gui/resources.xml:1688
 msgctxt "Accel Editor (descriptions)"
 msgid "Interactively rotate your view of the canvas."
 msgstr "Tuval görünümünü etkileşimli olarak döndür."
 
-#: ../po/tmp/resources.xml.h:357
+#: ../gui/resources.xml:1697
 msgctxt "Menu→Edit→Current Mode (labels)"
 msgid "Zoom View"
 msgstr "Görünümü Yakınlaştır"
 
-#: ../po/tmp/resources.xml.h:358
+#: ../gui/resources.xml:1698
 msgctxt "Toolbar (short labels)"
 msgid "Zoom"
 msgstr "Yakınlaştırma"
 
-#: ../po/tmp/resources.xml.h:359
+#: ../gui/resources.xml:1699
 msgctxt "Toolbar (tooltips)"
 msgid "Zoom View: zoom into or out of the canvas."
 msgstr "Görünümü Yakınlaştır: tuvale yakınlaştır veya uzaklaştır."
 
-#: ../po/tmp/resources.xml.h:360
+#: ../gui/resources.xml:1707
 msgctxt "Menu→View (labels), Accel Editor (labels)"
 msgid "Zoom View"
 msgstr "Görünümü Yakınlaştır"
 
-#: ../po/tmp/resources.xml.h:361
+#: ../gui/resources.xml:1708
 msgctxt "Accel Editor (descriptions)"
 msgid "Interactively zoom into or out of the canvas."
 msgstr "Tuvali etkileşimli olarak yakınlaştır veya uzaklaştır."
 
-#: ../po/tmp/resources.xml.h:362
+#: ../gui/resources.xml:1717
 msgctxt "Menu→Edit→Current Mode (labels)"
 msgid "Lines and Curves"
 msgstr "Çizgiler ve Eğriler"
 
-#: ../po/tmp/resources.xml.h:363
+#: ../gui/resources.xml:1718
 msgctxt "Toolbar (short labels)"
 msgid "Lines"
 msgstr "Çizgiler"
 
-#: ../po/tmp/resources.xml.h:364
+#: ../gui/resources.xml:1719
 msgctxt "Toolbar (tooltips)"
 msgid "Lines and Curves: draw straight or curved lines."
 msgstr "Çizgiler ve Eğriler: düzgün veya eğri çizgiler çiz."
 
-#: ../po/tmp/resources.xml.h:365
+#: ../gui/resources.xml:1727
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
 msgid "Lines and Curves"
 msgstr "Çizgiler ve Eğriler"
 
-#: ../po/tmp/resources.xml.h:366
+#: ../gui/resources.xml:1728
 msgctxt "Accel Editor (descriptions)"
 msgid "Draw straight or curved lines."
 msgstr "Düzgün veya eğri çizgiler çiz."
 
-#: ../po/tmp/resources.xml.h:367
+#: ../gui/resources.xml:1738
 msgctxt "Menu→Edit→Current Mode (labels)"
 msgid "Connected Lines"
 msgstr "Bağlı Çizgiler"
 
-#: ../po/tmp/resources.xml.h:368
+#: ../gui/resources.xml:1739
 msgctxt "Toolbar (short labels)"
 msgid "Conn. Lines"
 msgstr "Bağ. Çizgiler"
 
-#: ../po/tmp/resources.xml.h:369
+#: ../gui/resources.xml:1740
 msgctxt "Toolbar (tooltips)"
 msgid "Connected Lines: draw sequences of straight or curved lines."
 msgstr "Bağlı Çizgiler: düzgün veya eğri çizgi parçaları çiz."
 
-#: ../po/tmp/resources.xml.h:370
+#: ../gui/resources.xml:1748
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
 msgid "Connected Lines"
 msgstr "Bağlı Çizgiler"
 
-#: ../po/tmp/resources.xml.h:371
+#: ../gui/resources.xml:1749
 msgctxt "Accel Editor (descriptions)"
 msgid "Draw sequences of straight or curved lines."
 msgstr "Düzgün veya eğri çizgi parçaları çiz."
 
-#: ../po/tmp/resources.xml.h:372
+#: ../gui/resources.xml:1759
 msgctxt "Menu→Edit→Current Mode (labels)"
 msgid "Ellipses and Circles"
 msgstr "Elipsler ve Daireler"
 
-#: ../po/tmp/resources.xml.h:373
+#: ../gui/resources.xml:1760
 msgctxt "Toolbar (short labels)"
 msgid "Ellipse"
 msgstr "Elips"
 
-#: ../po/tmp/resources.xml.h:374
+#: ../gui/resources.xml:1761
 msgctxt "Toolbar (tooltips)"
 msgid "Ellipses and Circles: draw rounded shapes."
 msgstr "Elipsler ve Daireler: yuvarlak şekiller çiz."
 
-#: ../po/tmp/resources.xml.h:375
+#: ../gui/resources.xml:1769
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
 msgid "Ellipses and Circles"
 msgstr "Elipsler ve Daireler"
 
-#: ../po/tmp/resources.xml.h:376
+#: ../gui/resources.xml:1770
 msgctxt "Accel Editor (descriptions)"
 msgid "Draw circles and ellipses."
 msgstr "Elipsler ve daireler çiz."
 
-#: ../po/tmp/resources.xml.h:377
+#: ../gui/resources.xml:1780
 msgctxt "Menu→Edit→Current Mode (labels)"
 msgid "Inking"
 msgstr "Mürekkepleme"
 
-#: ../po/tmp/resources.xml.h:378
+#: ../gui/resources.xml:1781
 msgctxt "Toolbar (short labels)"
 msgid "Ink"
 msgstr "Mürekkep"
 
-#: ../po/tmp/resources.xml.h:379
+#: ../gui/resources.xml:1782
 msgctxt "Toolbar (tooltips)"
 msgid "Inking: draw smooth controlled lines."
 msgstr "Mürekkepleme: pürüzsüz denetimli çizgiler çiz."
 
-#: ../po/tmp/resources.xml.h:380
+#: ../gui/resources.xml:1790
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
 msgid "Inking"
 msgstr "Mürekkepleme"
 
-#: ../po/tmp/resources.xml.h:381
+#: ../gui/resources.xml:1791
 msgctxt "Accel Editor (descriptions)"
 msgid "Draw smooth controlled lines."
 msgstr "Pürüzsüz denetimli çizgiler çiz."
 
-#: ../po/tmp/resources.xml.h:382
+#: ../gui/resources.xml:1801
 msgctxt "Menu→Edit→Current Mode (labels)"
 msgid "Reposition Layer"
 msgstr "Katmanı Yeniden Konumlandır"
 
-#: ../po/tmp/resources.xml.h:383
+#: ../gui/resources.xml:1802
 msgctxt "Toolbar (short labels)"
 msgid "Layer Pos."
 msgstr "Katman Poz."
 
-#: ../po/tmp/resources.xml.h:384
+#: ../gui/resources.xml:1803
 msgctxt "Toolbar (tooltips)"
 msgid "Reposition Layer: move the current layer on the canvas."
 msgstr "Katmanı Yeniden Konumlandır: geçerli katmanı tuval üzerinde taşı."
 
-#: ../po/tmp/resources.xml.h:385
+#: ../gui/resources.xml:1811
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Reposition Layer"
 msgstr "Katmanı Yeniden Konumlandır"
 
-#: ../po/tmp/resources.xml.h:386
+#: ../gui/resources.xml:1812
 msgctxt "Accel Editor (description)"
 msgid "Interactively move the current layer on the canvas."
 msgstr "Geçerli katmanı tuval üzerinde etkileşimli olarak taşı."
 
-#: ../po/tmp/resources.xml.h:387
+#: ../gui/resources.xml:1822
 msgctxt "Menu→Edit→Current Mode (labels)"
 msgid "Edit Frame"
 msgstr "Çerçeveyi Düzenle"
 
-#: ../po/tmp/resources.xml.h:388
+#: ../gui/resources.xml:1823
 msgctxt "Toolbar (short labels)"
 msgid "Frame"
 msgstr "Çerçeve"
 
-#: ../po/tmp/resources.xml.h:389
+#: ../gui/resources.xml:1824
 msgctxt "Toolbar (tooltips)"
 msgid ""
 "Edit Frame: define a frame around the document to give it a finite size."
@@ -6985,12 +6880,12 @@ msgstr ""
 "Çerçeveyi Düzenle: Sonlu boyut vermek için belgenin etrafındaki kareyi "
 "etkileşimli olarak ayarla."
 
-#: ../po/tmp/resources.xml.h:390
+#: ../gui/resources.xml:1832
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "Edit Frame"
 msgstr "Çerçeveyi Düzenle"
 
-#: ../po/tmp/resources.xml.h:391
+#: ../gui/resources.xml:1833
 msgctxt "Accel Editor (descriptions)"
 msgid ""
 "Interactively define a frame around the document to give it a finite size."
@@ -6998,53 +6893,53 @@ msgstr ""
 "Sonlu boyut vermek için belgenin etrafındaki kareyi etkileşimli olarak "
 "ayarla."
 
-#: ../po/tmp/resources.xml.h:392
+#: ../gui/resources.xml:1842
 msgctxt "Menu→Edit→Current Mode (labels)"
 msgid "Edit Painting Symmetry"
 msgstr "Boyama Simetrisini Düzenle"
 
-#: ../po/tmp/resources.xml.h:393
+#: ../gui/resources.xml:1843
 msgctxt "Toolbar (short labels)"
 msgid "Symmetry"
 msgstr "Simetri"
 
-#: ../po/tmp/resources.xml.h:394
+#: ../gui/resources.xml:1844
 msgctxt "Toolbar (tooltips)"
 msgid "Edit Painting Symmetry: adjust the axis used for symmetrical painting."
 msgstr ""
 "Boyama simetrisini düzenle: simetrik boyama için kullanılan ekseni ayarla."
 
-#: ../po/tmp/resources.xml.h:395
+#: ../gui/resources.xml:1852
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "Edit Painting Symmetry"
 msgstr "Boyama Simetrisini Düzenle"
 
-#: ../po/tmp/resources.xml.h:396
+#: ../gui/resources.xml:1853
 msgctxt "Accel Editor (description)"
 msgid "Interactively adjust the axis used for symmetrical painting."
 msgstr "Simetrik boyama için kullanılan ekseni etkileşimli olarak ayarla."
 
-#: ../po/tmp/resources.xml.h:397
+#: ../gui/resources.xml:1863
 msgctxt "Menu→Edit→Current Mode (labels)"
 msgid "Pick Color"
 msgstr "Renk Seç"
 
-#: ../po/tmp/resources.xml.h:398
+#: ../gui/resources.xml:1864
 msgctxt "Toolbar (short labels)"
 msgid "Pick Col."
 msgstr "Renk Seç"
 
-#: ../po/tmp/resources.xml.h:399
+#: ../gui/resources.xml:1865
 msgctxt "Toolbar (tooltips)"
 msgid "Pick Color: set the painting color from screen pixels."
 msgstr "Renk Seç: ekran pikselinden boyama rengi seç."
 
-#: ../po/tmp/resources.xml.h:400
+#: ../gui/resources.xml:1897
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "Pick Color Hue"
 msgstr "Renk Tonu Seç"
 
-#: ../po/tmp/resources.xml.h:401
+#: ../gui/resources.xml:1898
 msgctxt "Accel Editor (descriptions)"
 msgid ""
 "Set the painting Hue from screen pixels while preserving the Chroma and Luma."
@@ -7052,12 +6947,12 @@ msgstr ""
 "Renk Saflığını ve Renk Parlaklığını korurken boyama Tonunu ekran "
 "piksellerinden seç."
 
-#: ../po/tmp/resources.xml.h:402
+#: ../gui/resources.xml:1906
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "Pick Color Chroma"
 msgstr "Renk Saflığı Seç"
 
-#: ../po/tmp/resources.xml.h:403
+#: ../gui/resources.xml:1907
 msgctxt "Accel Editor (descriptions)"
 msgid ""
 "Set the painting Chroma from screen pixels while preserving the Hue and Luma."
@@ -7065,12 +6960,12 @@ msgstr ""
 "Tonu ve Renk Parlaklığını korurken boyama Renk Saflığını ekran "
 "piksellerinden seç."
 
-#: ../po/tmp/resources.xml.h:404
+#: ../gui/resources.xml:1915
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "Pick Color Luma"
 msgstr "Renk Parlaklığını Seç"
 
-#: ../po/tmp/resources.xml.h:405
+#: ../gui/resources.xml:1916
 msgctxt "Accel Editor (descriptions)"
 msgid ""
 "Set the painting Luma from screen pixels while preserving the Hue and Chroma."
@@ -7078,40 +6973,137 @@ msgstr ""
 "Tonu ve Renk Saflığını korurken boyama Renk Parlaklığını ekran "
 "piksellerinden seç."
 
-#: ../po/tmp/resources.xml.h:406
+#: ../gui/resources.xml:1924
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "Pick Color"
 msgstr "Renk Seç"
 
-#: ../po/tmp/resources.xml.h:407
+#: ../gui/resources.xml:1925
 msgctxt "Accel Editor (descriptions)"
 msgid "Set the painting color from screen pixels."
 msgstr "Boyama rengini ekran piksellerinden seç."
 
-#: ../po/tmp/resources.xml.h:408
+#: ../gui/resources.xml:1935
 msgctxt "Menu→Edit→Current Mode (labels)"
 msgid "Flood Fill"
 msgstr "Akıcı Dolgu"
 
-#: ../po/tmp/resources.xml.h:409
+#: ../gui/resources.xml:1936
 msgctxt "Toolbar (short labels)"
 msgid "Fill"
 msgstr "Doldur"
 
-#: ../po/tmp/resources.xml.h:410
+#: ../gui/resources.xml:1937
 msgctxt "Toolbar (tooltips)"
 msgid "Flood Fill: fill an area with color."
 msgstr "Akıcı Dolgu: alanı renkle doldur."
 
-#: ../po/tmp/resources.xml.h:411
+#: ../gui/resources.xml:1945
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
 msgid "Flood Fill"
 msgstr "Akıcı Dolgu"
 
-#: ../po/tmp/resources.xml.h:412
+#: ../gui/resources.xml:1946
 msgctxt "Accel Editor (descriptions)"
 msgid "Fill an area with color."
 msgstr "Bir bölgeyi renk ile doldur."
+
+#~ msgctxt "Layer properties widget → Name → label tooltip"
+#~ msgid "The layer’s unique name."
+#~ msgstr "Katmanın eşsiz adı."
+
+#~ msgctxt "Layer properties widget → <category labels>"
+#~ msgid "Name"
+#~ msgstr "Ad"
+
+#~ msgctxt "Layer properties widget → Mode → label tooltip"
+#~ msgid ""
+#~ "How the layer combines with what’s behind it.\n"
+#~ "\n"
+#~ "Each mode has a different visual effect. Refer to the dropdown’s tooltip "
+#~ "for each one to discover what they all do."
+#~ msgstr ""
+#~ "Katman, arkasındaki katman ile nasıl birleştirilir.\n"
+#~ "\n"
+#~ "Her kipin farklı bir görsel etkisi vardır. Her birinin ne yaptığını "
+#~ "keşfetmek için açılır listenin ipucuna bakın."
+
+#~ msgctxt "Layer properties widget → <category labels>"
+#~ msgid "Mode"
+#~ msgstr "Kip"
+
+#~ msgctxt "Layer properties widget → Opacity → label tooltip"
+#~ msgid ""
+#~ "How much the layer combines with what’s behind it.\n"
+#~ "\n"
+#~ "At 0%, the layer doesn’t contribute at all."
+#~ msgstr ""
+#~ "Katman, arkasındaki katman ile ne kadar birleştirilir.\n"
+#~ "\n"
+#~ "%0 olarak ayarlanırsa katman hiçbir katkıda bulunmaz."
+
+#~ msgctxt "Layer properties widget → <category labels>"
+#~ msgid "Opacity"
+#~ msgstr "Matlık"
+
+#~ msgctxt "Layer properties widget → Flags → label tooltip"
+#~ msgid ""
+#~ "Special layer flags.\n"
+#~ "\n"
+#~ "Refer to each button’s tooltip to find out what each flag does."
+#~ msgstr ""
+#~ "Özel katman bayrakları.\n"
+#~ "\n"
+#~ "Her bayrağın ne anlama geldiğini öğrenmek için her düğmenin ipucuna bakın."
+
+#~ msgctxt "Layer properties widget → <category labels>"
+#~ msgid "Flags"
+#~ msgstr "Bayraklar"
+
+#~ msgctxt "Layer properties widget → Flags → Eye togglebutton → tooltip"
+#~ msgid ""
+#~ "Layer visible or hidden.\n"
+#~ "\n"
+#~ "An open eye icon here indicates that the layer is visible.\n"
+#~ "\n"
+#~ "When the eye icon is closed, the layer is hidden. Hidden layers are "
+#~ "completely invisible: they have no effect on what's displayed. You cannot "
+#~ "paint to hidden layers, for safety.\n"
+#~ "\n"
+#~ "When a layer group is hidden, all of the layers inside it are made "
+#~ "invisible too."
+#~ msgstr ""
+#~ "Katman görünür veya gizli.\n"
+#~ "\n"
+#~ "Açık göz simgesi, katmanın görünür, kapalı göz simgesi gizli olduğu "
+#~ "anlamındadır. \n"
+#~ "\n"
+#~ "Gizli katmanlar tamamen görünmez olur ve görüntülenmeyi etkilemez. "
+#~ "Güvenlik için gizli katmanlar boyanamaz.\n"
+#~ "\n"
+#~ "Katman grubu gizlendiğinde, içindeki tüm katmanlar da görünmez olur."
+
+#~ msgctxt "Layer properties widget → Flags → Padlock togglebutton → tooltip"
+#~ msgid ""
+#~ "Layer editable or locked.\n"
+#~ "\n"
+#~ "An open padlock icon indicates that the layer can be edited.\n"
+#~ "\n"
+#~ "When a layer is locked, you cannot paint to it or otherwise change its "
+#~ "pixel content. You cannot pick strokes from it either, so this is useful "
+#~ "when painting under a sketch.\n"
+#~ "\n"
+#~ "When a layer group is locked, none of the layers inside it can be edited."
+#~ msgstr ""
+#~ "Katman düzenlenebilir veya kilitli.\n"
+#~ "\n"
+#~ "Açık asma kilit simgesi, katmanın düzenlenebilir olduğu anlamındadır.\n"
+#~ "\n"
+#~ "Katman kilitlendiğinde, katmanı boyayamaz veya bir başka şekilde piksel "
+#~ "içeriğini değiştiremezsin. Ayrıca darbe de seçemezsin, bu nedenle çizim "
+#~ "altında boyama yaparken kullanışlıdır.\n"
+#~ "\n"
+#~ "Katman grubu kilitlendiğinde, içindeki katmanların hiçbiri düzenlenemez."
 
 #~ msgctxt "file handling: open failed (statusbar)"
 #~ msgid "Could not load “{file_basename}”."

@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mypaint v2.0.0-alpha.11-2-g0673fe8\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-02-12 21:56+0100\n"
+"POT-Creation-Date: 2020-03-03 00:01+0100\n"
 "PO-Revision-Date: 2020-02-23 09:36+0000\n"
 "Last-Translator: nautilusx <mail.ka@mailbox.org>\n"
 "Language-Team: German <https://hosted.weblate.org/projects/mypaint/mypaint/"
@@ -168,114 +168,114 @@ msgstr "Gdk-Pixbuf konnte „{filename}“ nicht laden und berichtet: „{error}
 msgid "{filename} has zero size (w={w}, h={h})"
 msgstr "{filename} hat die Größe Null (w={w}, h={h})"
 
-#: ../gui/brusheditor.py:92
+#: ../gui/brusheditor.py:112
 msgctxt "brush settings editor: subwindow title"
 msgid "Brush Settings Editor"
 msgstr "Editor für Pinseleinstellungen"
 
-#: ../gui/brusheditor.py:272
+#: ../gui/brusheditor.py:293
 msgctxt "brush settings list: brush metadata texts group"
 msgid "About"
 msgstr "Über"
 
-#: ../gui/brusheditor.py:283
+#: ../gui/brusheditor.py:304
 msgctxt "brush settings list: setting group"
 msgid "Experimental"
 msgstr "Experimentell"
 
-#: ../gui/brusheditor.py:290
+#: ../gui/brusheditor.py:311
 msgctxt "brush settings list: setting group"
 msgid "Basic"
 msgstr "Grundlegend"
 
-#: ../gui/brusheditor.py:309
+#: ../gui/brusheditor.py:330
 msgctxt "brush settings list: setting group"
 msgid "Opacity"
 msgstr "Deckkraft"
 
-#: ../gui/brusheditor.py:321
+#: ../gui/brusheditor.py:342
 msgctxt "brush settings list: setting group"
 msgid "Dabs"
 msgstr "Abdrücke"
 
-#: ../gui/brusheditor.py:332
+#: ../gui/brusheditor.py:353
 msgctxt "brush settings list: setting group"
 msgid "Smudge"
 msgstr "Schmieren"
 
-#: ../gui/brusheditor.py:346
+#: ../gui/brusheditor.py:367
 msgctxt "brush settings list: setting group"
 msgid "Speed"
 msgstr "Geschwindigkeit"
 
-#: ../gui/brusheditor.py:360
+#: ../gui/brusheditor.py:381
 msgctxt "brush settings list: setting group"
 msgid "Directional Offsets"
 msgstr "Richtungsversatz"
 
-#: ../gui/brusheditor.py:378
+#: ../gui/brusheditor.py:399
 msgctxt "brush settings list: setting group"
 msgid "Tracking"
 msgstr "Verfolgung"
 
-#: ../gui/brusheditor.py:389
+#: ../gui/brusheditor.py:410
 msgctxt "brush settings list: setting group"
 msgid "Stroke"
 msgstr "Strich"
 
-#: ../gui/brusheditor.py:400
+#: ../gui/brusheditor.py:421
 msgctxt "brush settings list: setting group"
 msgid "Color"
 msgstr "Farbe"
 
-#: ../gui/brusheditor.py:418
+#: ../gui/brusheditor.py:439
 msgctxt "brush settings list: setting group"
 msgid "GridMap"
 msgstr "GridMap"
 
-#: ../gui/brusheditor.py:429
+#: ../gui/brusheditor.py:450
 msgctxt "brush settings list: setting group"
 msgid "Custom"
 msgstr "Benutzerdefiniert"
 
-#: ../gui/brusheditor.py:495
+#: ../gui/brusheditor.py:516
 msgctxt "brush settings editor: save brush: error message"
 msgid "No brush selected, please use “Add As New” instead."
 msgstr ""
 "Kein Pinsel ausgewählt, bitte stattdessen „Als neu hinzufügen“ verwenden."
 
-#: ../gui/brusheditor.py:520
+#: ../gui/brusheditor.py:541
 msgctxt "brush settings editor: rename brush: error message"
 msgid "No brush selected!"
 msgstr "Kein Pinsel ausgewählt!"
 
-#: ../gui/brusheditor.py:529
+#: ../gui/brusheditor.py:550
 msgctxt "brush settings editor: rename brush: dialog title"
 msgid "Rename Brush"
 msgstr "Pinsel umbenennen"
 
-#: ../gui/brusheditor.py:548
+#: ../gui/brusheditor.py:569
 msgctxt "brush settings editor: rename brush: error message"
 msgid "A brush with this name already exists!"
 msgstr "Ein Pinsel mit diesem Namen existiert bereits!"
 
-#: ../gui/brusheditor.py:582
+#: ../gui/brusheditor.py:603
 msgctxt "brush settings editor: delete brush: error message"
 msgid "No brush selected!"
 msgstr "Kein Pinsel ausgewählt!"
 
-#: ../gui/brusheditor.py:588
+#: ../gui/brusheditor.py:609
 #, python-brace-format
 msgctxt "brush settings editor: delete brush: confirm dialog question"
 msgid "Really delete brush “{brush_name}” from disk?"
 msgstr "Pinsel mit dem Namen „{brush_name}“ wirklich löschen?"
 
-#: ../gui/brusheditor.py:707
+#: ../gui/brusheditor.py:728
 msgctxt "brush settings editor: header: fallback name"
 msgid "(Unnamed brush)"
 msgstr "(unbenannter Pinsel)"
 
-#: ../gui/brusheditor.py:714
+#: ../gui/brusheditor.py:735
 #, python-brace-format
 msgctxt "brush settings editor: header: is-modified hint"
 msgid "{brush_name} [unsaved]"
@@ -366,7 +366,7 @@ msgid "Use the default icon"
 msgstr "Standardsymbol verwenden"
 
 #. TRANSLATORS: save edits to a brush icon
-#: ../gui/brushiconeditor.py:190 ../po/tmp/brusheditor.glade.h:3
+#: ../gui/brushiconeditor.py:190 ../gui/brusheditor.glade:111
 msgid "Save"
 msgstr "Speichern"
 
@@ -887,15 +887,15 @@ msgstr "HSV-Farbton und -Wert"
 msgid "HSV Hue and Saturation"
 msgstr "HSV-Farbton und -Sättigung"
 
-#: ../gui/colors/hsvcube.py:59
+#: ../gui/colors/hsvcube.py:58
 msgid "Rotate cube (show different axes)"
 msgstr "Würfel drehen (andere Achsen anzeigen)"
 
-#: ../gui/colors/hsvcube.py:86
+#: ../gui/colors/hsvcube.py:85
 msgid "HSV Cube"
 msgstr "HSV-Würfel"
 
-#: ../gui/colors/hsvcube.py:90
+#: ../gui/colors/hsvcube.py:89
 msgid "An HSV cube which can be rotated to show different planar slices."
 msgstr ""
 "Ein HSV-Würfel, der gedreht werden kann, um verschiedene planare Schnitte "
@@ -1208,13 +1208,13 @@ msgstr "Basiert auf Datei"
 
 #. This refers to a version of MyPaint like 1.0, 1.1, 1.2 etc
 #: ../gui/compatibility.py:35 ../gui/drawwindow.py:276
-#: ../po/tmp/preferenceswindow.glade.h:113
+#: ../gui/preferenceswindow.glade:1581
 msgctxt "Prefs Dialog|Compatibility"
 msgid "1.x"
 msgstr "1.x"
 
 #. This refers to a version of MyPaint like 1.0, 1.1, 1.2 etc
-#: ../gui/compatibility.py:36 ../po/tmp/preferenceswindow.glade.h:117
+#: ../gui/compatibility.py:36 ../gui/preferenceswindow.glade:1600
 msgctxt "Prefs Dialog|Compatibility"
 msgid "2.x"
 msgstr "2.x"
@@ -1414,7 +1414,7 @@ msgstr "Pinsel überschreiben?"
 msgid "Replace"
 msgstr "Ersetzen"
 
-#: ../gui/dialogs.py:137 ../gui/dialogs.py:207 ../po/tmp/brusheditor.glade.h:11
+#: ../gui/dialogs.py:137 ../gui/dialogs.py:207 ../gui/brusheditor.glade:189
 msgid "Rename"
 msgstr "Umbenennen"
 
@@ -1577,7 +1577,7 @@ msgid "%s - MyPaint"
 msgstr "%s - MyPaint"
 
 #. TRANSLATORS: window title for use without a filename
-#: ../gui/drawwindow.py:273 ../po/tmp/mypaint.glade.h:1
+#: ../gui/drawwindow.py:273 ../gui/mypaint.glade:8
 msgid "MyPaint"
 msgstr "MyPaint"
 
@@ -3893,17 +3893,17 @@ msgstr "Schneeflocke"
 msgid "PNG reader failed: %s"
 msgstr "Laden von PNG fehlgeschlagen: %s"
 
-#: ../po/tmp/autorecover.glade.h:1
+#: ../gui/autorecover.glade:18
 msgid "Recover interrupted work?"
 msgstr "Unterbrochene Arbeit wiederherstellen?"
 
 #. Whether to show the dialog when MyPaint starts
-#: ../po/tmp/autorecover.glade.h:3
+#: ../gui/autorecover.glade:38
 msgctxt "Autosave Recovery dialog|"
 msgid "_Look for backups at startup"
 msgstr "_Beim Start nach Sicherungen suchen"
 
-#: ../po/tmp/autorecover.glade.h:4
+#: ../gui/autorecover.glade:42
 msgctxt "Autosave Recovery dialog|Show Dialog at Startup checkbutton|"
 msgid ""
 "Run this autosave recovery dialog when MyPaint starts, if there are files to "
@@ -3914,40 +3914,40 @@ msgid ""
 msgstr ""
 
 #. Deletes the selected autosave backup file.
-#: ../po/tmp/autorecover.glade.h:8
+#: ../gui/autorecover.glade:60
 msgctxt "Autosave Recovery dialog|"
 msgid "_Delete…"
 msgstr "_Löschen …"
 
-#: ../po/tmp/autorecover.glade.h:9
+#: ../gui/autorecover.glade:66
 msgctxt "Autosave Recovery dialog|Delete button|"
 msgid "Delete this backup from the disk."
 msgstr "Diese Sicherung von der Festplatte löschen."
 
 #. Recover in the sense or retrieval or salvage from a backup file. The user is asked to save the retrieved file immediately afterwards, hence the ellipsis.
-#: ../po/tmp/autorecover.glade.h:11
+#: ../gui/autorecover.glade:78
 msgctxt "Autosave Recovery dialog|"
 msgid "_Recover & Save…"
 msgstr "_Wiederherstellen & Speichern …"
 
-#: ../po/tmp/autorecover.glade.h:12
+#: ../gui/autorecover.glade:84
 msgctxt "Autosave Recovery dialog|Recover button|"
 msgid "Save this backup to disk, then continue working on it."
 msgstr ""
 "Diese Sicherung auf die Festplatte speichern, dann daran weiterarbeiten."
 
 #. Do not recover any autosaves; take no action.
-#: ../po/tmp/autorecover.glade.h:14
+#: ../gui/autorecover.glade:95
 msgctxt "Autosave Recovery dialog|"
 msgid "Decide _Later"
 msgstr "_Später entscheiden"
 
-#: ../po/tmp/autorecover.glade.h:15
+#: ../gui/autorecover.glade:101
 msgctxt "Autosave Recovery dialog|Cancel button|"
 msgid "Start work on a new canvas. These backups will be retained."
 msgstr "Auf einer neuen Leinwand beginnen. Diese Backups werden aufbewahrt."
 
-#: ../po/tmp/autorecover.glade.h:16
+#: ../gui/autorecover.glade:122
 #, fuzzy
 msgctxt "Autosave Recovery dialog|"
 msgid ""
@@ -3959,33 +3959,33 @@ msgstr ""
 "erzeugt. Sie können nun eine Datei wiederherstellen, oder damit warten, bis "
 "Sie MyPaint erneut starten."
 
-#: ../po/tmp/autorecover.glade.h:17
+#: ../gui/autorecover.glade:157
 msgid "Thumbnail"
 msgstr "Miniaturbild"
 
-#: ../po/tmp/autorecover.glade.h:18
+#: ../gui/autorecover.glade:171
 msgid "Description"
 msgstr "Beschreibung"
 
-#: ../po/tmp/brusheditor.glade.h:1
+#: ../gui/brusheditor.glade:88
 msgid "Live update"
 msgstr "Echtzeitvorschau"
 
-#: ../po/tmp/brusheditor.glade.h:2
+#: ../gui/brusheditor.glade:93
 msgid ""
 "Update the last stroke on the canvas with the settings in this window, in "
 "real time"
 msgstr "Letzten Pinselstrich in Echtzeit aktualisieren"
 
-#: ../po/tmp/brusheditor.glade.h:4
+#: ../gui/brusheditor.glade:116
 msgid "Save these settings to the brush"
 msgstr "Diese Einstellungen für den Pinsel speichern"
 
-#: ../po/tmp/brusheditor.glade.h:5
+#: ../gui/brusheditor.glade:132
 msgid "Edit Icon"
 msgstr "Symbol bearbeiten"
 
-#: ../po/tmp/brusheditor.glade.h:6
+#: ../gui/brusheditor.glade:137
 msgid ""
 "Edit this brush's icon in a separate window (you will be able to use any "
 "brush to draw it)"
@@ -3993,55 +3993,55 @@ msgstr ""
 "Dieses Pinselsymbol in einem separaten Fenster bearbeiten (Sie können jeden "
 "Pinsel verwenden, um es zu zeichnen)"
 
-#: ../po/tmp/brusheditor.glade.h:7
+#: ../gui/brusheditor.glade:151
 msgid "Delete"
 msgstr "Löschen"
 
-#: ../po/tmp/brusheditor.glade.h:8
+#: ../gui/brusheditor.glade:156
 msgid "Delete this brush from the disk"
 msgstr "Diesen Pinsel von der Festplatte löschen"
 
-#: ../po/tmp/brusheditor.glade.h:9
+#: ../gui/brusheditor.glade:170
 msgid "Copy to New"
 msgstr "Kopie als Neu"
 
-#: ../po/tmp/brusheditor.glade.h:10
+#: ../gui/brusheditor.glade:175
 msgid "Copy these settings and the current brush's icon to a new brush"
 msgstr ""
 "Diese Einstellungen und das aktuelle Pinselsymbol in einen neuen Pinsel "
 "kopieren"
 
-#: ../po/tmp/brusheditor.glade.h:12
+#: ../gui/brusheditor.glade:194
 msgid "Rename this brush"
 msgstr "Diesen Pinsel umbenennen"
 
-#: ../po/tmp/brusheditor.glade.h:13
+#: ../gui/brusheditor.glade:239
 msgid "Brush Setting"
 msgstr "Pinseleinstellungen"
 
-#: ../po/tmp/brusheditor.glade.h:14
+#: ../gui/brusheditor.glade:340
 msgctxt "brush editor|metadata settings|labels for widgets|tooltips|"
 msgid "Short description for use in tooltips"
 msgstr "Kurze Beschreibung zur Verwendung in Kurzinfos"
 
 #. Description for user tooltips
-#: ../po/tmp/brusheditor.glade.h:16
+#: ../gui/brusheditor.glade:343
 msgctxt "brush editor|metadata settings|labels|"
 msgid "Description:"
 msgstr "Beschreibung:"
 
-#: ../po/tmp/brusheditor.glade.h:17
+#: ../gui/brusheditor.glade:355
 msgctxt "brush editor|metadata settings|labels for widgets|tooltips|"
 msgid "Brush developer's notes"
 msgstr "Entwicklerhinweise für Pinsel"
 
 #. Notes for developers
-#: ../po/tmp/brusheditor.glade.h:19
+#: ../gui/brusheditor.glade:358
 msgctxt "brush editor|metadata settings|labels|"
 msgid "Notes:"
 msgstr "Notizen:"
 
-#: ../po/tmp/brusheditor.glade.h:20
+#: ../gui/brusheditor.glade:420
 msgid ""
 "Starting value for this brush setting. The brush dynamics below act on this."
 msgstr ""
@@ -4049,17 +4049,17 @@ msgstr ""
 "diesen."
 
 #. field label
-#: ../po/tmp/brusheditor.glade.h:22
+#: ../gui/brusheditor.glade:426
 msgid "Value:"
 msgstr "Wert:"
 
-#: ../po/tmp/brusheditor.glade.h:23
+#: ../gui/brusheditor.glade:491
 msgid "Reset this input to have no effect on the setting"
 msgstr ""
 "Diese Eingabe zurücksetzen, so dass sie keine Auswirkung auf die "
 "Einstellungen hat"
 
-#: ../po/tmp/brusheditor.glade.h:24
+#: ../gui/brusheditor.glade:521
 msgid ""
 "Minimum value for the output axis.\n"
 "This can be set using the main slider for {dname}."
@@ -4067,7 +4067,7 @@ msgstr ""
 "Kleinster Wert für die Ausgabeachse.\n"
 "Wird durch den Hauptschieberegler für {dname} kontrolliert."
 
-#: ../po/tmp/brusheditor.glade.h:26
+#: ../gui/brusheditor.glade:540
 msgid ""
 "Maximum value for the output axis.\n"
 "This can be set using the main slider for {dname}."
@@ -4075,23 +4075,23 @@ msgstr ""
 "Größter Wert für die Ausgabeachse.\n"
 "Wird durch den Hauptschieberegler für {dname} kontrolliert."
 
-#: ../po/tmp/brusheditor.glade.h:28
+#: ../gui/brusheditor.glade:562
 msgid "Output"
 msgstr "Ausgabe"
 
-#: ../po/tmp/brusheditor.glade.h:29
+#: ../gui/brusheditor.glade:583
 msgid "Input"
 msgstr "Eingabe"
 
-#: ../po/tmp/brusheditor.glade.h:30
+#: ../gui/brusheditor.glade:601
 msgid "Adjusts the maximum value"
 msgstr "Passt den Maximalwert an"
 
-#: ../po/tmp/brusheditor.glade.h:31
+#: ../gui/brusheditor.glade:634
 msgid "Adjusts the minimum value"
 msgstr "Passt den Minimalwert an"
 
-#: ../po/tmp/brusheditor.glade.h:32
+#: ../gui/brusheditor.glade:666
 msgid ""
 "Minimum value for the input axis.\n"
 "Use the popup scale to adjust this."
@@ -4099,7 +4099,7 @@ msgstr ""
 "Kleinster Wert für die Eingabeachse.\n"
 "Zum Anpassen die Popup-Skala verwenden."
 
-#: ../po/tmp/brusheditor.glade.h:34
+#: ../gui/brusheditor.glade:684
 msgid ""
 "Maximum value for the input axis.\n"
 "Use the popup scale to adjust this."
@@ -4107,47 +4107,49 @@ msgstr ""
 "Größter Wert für die Eingabeachse.\n"
 "Zum Anpassen die Popup-Skala verwenden."
 
-#: ../po/tmp/brusheditor.glade.h:36
+#: ../gui/brusheditor.glade:739
 msgid "Variation of the base value by stylus input and other criteria"
 msgstr "Veränderung des Ausgangswerts durch Stifteingabe und andere Kriterien"
 
-#: ../po/tmp/brusheditor.glade.h:37
+#: ../gui/brusheditor.glade:746
 msgid "Brush Dynamics"
 msgstr "Pinseldynamik"
 
-#: ../po/tmp/brusheditor.glade.h:38
+#: ../gui/brusheditor.glade:780
 msgid "Adjust this input mapping in detail"
 msgstr "Die Zuordnung dieses Eingabeparameters detailliert bearbeiten"
 
-#: ../po/tmp/brusheditor.glade.h:39
+#: ../gui/brusheditor.glade:802
 msgid "{tooltip}"
 msgstr "{tooltip}"
 
 #. field name (template)
-#: ../po/tmp/brusheditor.glade.h:41
+#: ../gui/brusheditor.glade:809
 msgid "{dname}:"
 msgstr "{dname}:"
 
-#: ../po/tmp/brusheditor.glade.h:42
+#: ../gui/brusheditor.glade:841
 msgid "Brush dynamics are not available for this setting."
 msgstr "Pinseldynamik ist für diese Einstellung nicht verfügbar."
 
-#: ../po/tmp/brusheditor.glade.h:43
+#: ../gui/brusheditor.glade:851
 msgid "<big><b>No Brush Dynamics</b></big>"
 msgstr "<big><b>Keine Pinseldynamik</b></big>"
 
-#: ../po/tmp/inktool.glade.h:1
+#: ../gui/inktool.glade:43
 msgctxt "Inking tool options: point value sliders: labels: tooltips"
 msgid "Pressure value for the current point"
 msgstr "Druckwert für den aktuellen Punkt"
 
-#: ../po/tmp/inktool.glade.h:2
+#: ../gui/inktool.glade:48
 msgctxt "Inking tool options: point value sliders: labels"
 msgid "Press:"
 msgstr "Druck:"
 
-#. The meaning of negative values is *not* affected by text direction.&#10;The widget
-#: ../po/tmp/inktool.glade.h:4
+#. The meaning of negative values is *not* affected by text direction.
+#. The widget's RTL/LTR layout, however, *is* affected.
+#. The value (and signs) *is* shown.
+#: ../gui/inktool.glade:82 ../gui/inktool.glade:102
 msgctxt "Inking tool options: point value sliders: labels: tooltips"
 msgid ""
 "Tilt in the direction of the canvas’s X axis.\n"
@@ -4158,190 +4160,108 @@ msgstr ""
 "Der Wert 0 bedeutet, dass der Stift senkrecht steht.\n"
 "Negative Werte repräsentieren Neigung nach links."
 
-#: ../po/tmp/inktool.glade.h:7
+#: ../gui/inktool.glade:89
 msgctxt "Inking tool options: point value sliders: labels"
 msgid "X-tilt:"
 msgstr "X-Neigung:"
 
-#: ../po/tmp/inktool.glade.h:8
+#: ../gui/inktool.glade:109
 msgctxt "Inking tool options: point value sliders: labels"
 msgid "Y-tilt:"
 msgstr "Y-Neigung:"
 
-#: ../po/tmp/inktool.glade.h:9
+#: ../gui/inktool.glade:144
 msgid "Tilt in the canvas Y axis"
 msgstr "Neigung in der Leinwands Y-Achse"
 
-#: ../po/tmp/inktool.glade.h:10
+#: ../gui/inktool.glade:166
 msgctxt "Inking tool options: point value sliders: labels: tooltips"
 msgid "Time since the previous point, in seconds"
 msgstr "Zeit seit dem vorhergehenden Punkt, in Sekunden"
 
-#: ../po/tmp/inktool.glade.h:11
+#: ../gui/inktool.glade:171
 msgctxt "Inking tool options: point value sliders: labels"
 msgid "Time:"
 msgstr "Zeit:"
 
-#: ../po/tmp/inktool.glade.h:12
+#: ../gui/inktool.glade:204
 msgctxt "Inking tool options: node delete button: label"
 msgid "Delete Point"
 msgstr "Punkt löschen"
 
-#: ../po/tmp/inktool.glade.h:13
+#: ../gui/inktool.glade:208
 msgctxt "Inking tool options: node delete button: tooltip"
 msgid "Delete the currently selected point"
 msgstr "Den aktuell gewählten Punkt löschen"
 
-#: ../po/tmp/inktool.glade.h:14 ../po/tmp/resources.xml.h:184
+#: ../gui/inktool.glade:220 ../gui/resources.xml:897
 msgid "Insert Point"
 msgstr "Punkt einfügen"
 
-#: ../po/tmp/inktool.glade.h:15 ../po/tmp/resources.xml.h:188
+#: ../gui/inktool.glade:252 ../gui/resources.xml:911
 msgid "Simplify Points"
 msgstr ""
 
-#: ../po/tmp/inktool.glade.h:16
+#: ../gui/inktool.glade:256
 msgid "Simplify the curve using the Reumann-Witkam algorithm."
 msgstr ""
 
-#: ../po/tmp/inktool.glade.h:17 ../po/tmp/resources.xml.h:190
+#: ../gui/inktool.glade:268 ../gui/resources.xml:918
 #, fuzzy
 msgid "Cull Points"
 msgstr "Punkt löschen"
 
-#: ../po/tmp/inktool.glade.h:18
+#: ../gui/inktool.glade:272
 msgid "Cull every other point from the curve."
 msgstr ""
 
-#: ../po/tmp/layerprops.glade.h:1
-msgctxt "Layer properties widget → Name → label tooltip"
-msgid "The layer’s unique name."
-msgstr ""
-
-#: ../po/tmp/layerprops.glade.h:2
-msgctxt "Layer properties widget → <category labels>"
-msgid "Name"
-msgstr "Name"
-
-#. “Dropdown” = colloquial for a GtkComboBox control.
-#: ../po/tmp/layerprops.glade.h:4
-msgctxt "Layer properties widget → Mode → label tooltip"
-msgid ""
-"How the layer combines with what’s behind it.\n"
-"\n"
-"Each mode has a different visual effect. Refer to the dropdown’s tooltip for "
-"each one to discover what they all do."
-msgstr ""
-
-#: ../po/tmp/layerprops.glade.h:7
-msgctxt "Layer properties widget → <category labels>"
-msgid "Mode"
-msgstr "Modus"
-
-#: ../po/tmp/layerprops.glade.h:9
-#, no-c-format
-msgctxt "Layer properties widget → Opacity → label tooltip"
-msgid ""
-"How much the layer combines with what’s behind it.\n"
-"\n"
-"At 0%, the layer doesn’t contribute at all."
-msgstr ""
-
-#: ../po/tmp/layerprops.glade.h:12
-msgctxt "Layer properties widget → <category labels>"
-msgid "Opacity"
-msgstr "Deckkraft"
-
-#: ../po/tmp/layerprops.glade.h:13
-msgctxt "Layer properties widget → Flags → label tooltip"
-msgid ""
-"Special layer flags.\n"
-"\n"
-"Refer to each button’s tooltip to find out what each flag does."
-msgstr ""
-
-#: ../po/tmp/layerprops.glade.h:16
-msgctxt "Layer properties widget → <category labels>"
-msgid "Flags"
-msgstr ""
-
-#: ../po/tmp/layerprops.glade.h:17
-msgctxt "Layer properties widget → Flags → Eye togglebutton → tooltip"
-msgid ""
-"Layer visible or hidden.\n"
-"\n"
-"An open eye icon here indicates that the layer is visible.\n"
-"\n"
-"When the eye icon is closed, the layer is hidden. Hidden layers are "
-"completely invisible: they have no effect on what's displayed. You cannot "
-"paint to hidden layers, for safety.\n"
-"\n"
-"When a layer group is hidden, all of the layers inside it are made invisible "
-"too."
-msgstr ""
-
-#: ../po/tmp/layerprops.glade.h:24
-msgctxt "Layer properties widget → Flags → Padlock togglebutton → tooltip"
-msgid ""
-"Layer editable or locked.\n"
-"\n"
-"An open padlock icon indicates that the layer can be edited.\n"
-"\n"
-"When a layer is locked, you cannot paint to it or otherwise change its pixel "
-"content. You cannot pick strokes from it either, so this is useful when "
-"painting under a sketch.\n"
-"\n"
-"When a layer group is locked, none of the layers inside it can be edited."
-msgstr ""
-
-#: ../po/tmp/layervis.glade.h:1
+#: ../gui/layervis.glade:15
 msgctxt "Layers window: view list controls: tooltips"
 msgid "The currently active view."
 msgstr "Die derzeit aktive Ansicht."
 
-#: ../po/tmp/layervis.glade.h:2
+#: ../gui/layervis.glade:36
 msgctxt "Layers window: view list controls: tooltips"
 msgid "Rename the active view."
 msgstr "Die aktive Ansicht umbenennen."
 
-#: ../po/tmp/layervis.glade.h:3
+#: ../gui/layervis.glade:57
 msgctxt "Layers window: view list controls: tooltips"
 msgid "Remove the active view."
 msgstr "Die aktive Ansicht entfernen."
 
-#: ../po/tmp/layervis.glade.h:4
+#: ../gui/layervis.glade:78
 msgctxt "Layers window: view list controls: tooltips"
 msgid "Snapshot visible layers as a new view."
 msgstr "Momentaufnahme der sichtbaren Ebenen als neue Ansicht."
 
-#: ../po/tmp/layervis.glade.h:5
+#: ../gui/layervis.glade:99
 msgctxt "Layers window: view list controls: tooltips"
 msgid "Lock or unlock the active view."
 msgstr "Die aktive Ansicht sperren oder entsperren."
 
-#: ../po/tmp/mypaint.glade.h:2
+#: ../gui/mypaint.glade:65
 msgctxt "footer: color picker button: tooltip"
 msgid "Pick color"
 msgstr "Farbpipette"
 
-#: ../po/tmp/mypaint.glade.h:3
+#: ../gui/mypaint.glade:102
 msgctxt "Footerbar|"
 msgid "Edit the current color in detail"
 msgstr "Aktuelle Farbe im Detail bearbeiten"
 
-#: ../po/tmp/mypaint.glade.h:4
+#: ../gui/mypaint.glade:126
 msgctxt "Footerbar|"
 msgid "Add the current color to the palette"
 msgstr "Die aktuelle Farbe zur Palette hinzufügen"
 
-#: ../po/tmp/mypaint.glade.h:5
+#: ../gui/mypaint.glade:161
 msgctxt "Footerbar|"
 msgid "Canvas scale and rotation"
 msgstr "Leinwandskalierung und -drehung"
 
 #. str.format() template
-#: ../po/tmp/mypaint.glade.h:8
-#, no-c-format
+#: ../gui/mypaint.glade:163
 msgctxt "Footerbar|"
 msgid ""
 "Z: {scale:.1f}%\n"
@@ -4350,107 +4270,102 @@ msgstr ""
 "Z: {scale:.1f} %\n"
 "R: {rotation:+.1f}°"
 
-#: ../po/tmp/mypaint.glade.h:10
+#: ../gui/mypaint.glade:249
 msgctxt "footer: context picker button: tooltip"
 msgid "Pick brushstroke settings, stroke color, and layer"
 msgstr "Pinselstrich-Einstellungen, Strichfarbe und Ebene wählen"
 
-#: ../po/tmp/preferenceswindow.glade.h:1
+#: ../gui/preferenceswindow.glade:24
 msgctxt "Prefs Dialog|Saving|Save Formats and Locations|Default|"
 msgid "OpenRaster (*.ora)"
 msgstr "OpenRaster (*.ora)"
 
-#: ../po/tmp/preferenceswindow.glade.h:2
+#: ../gui/preferenceswindow.glade:28
 msgctxt "Prefs Dialog|Saving|Save Formats and Locations|Default|"
 msgid "PNG solid with background (*.png)"
 msgstr "PNG deckend mit Hintergrund (*.png)"
 
-#: ../po/tmp/preferenceswindow.glade.h:4
-#, no-c-format
+#: ../gui/preferenceswindow.glade:32
 msgctxt "Prefs Dialog|Saving|Save Formats and Locations|Default|"
 msgid "JPEG 90% quality (*.jpg; *.jpeg)"
 msgstr "JPEG 90 % Qualität (*.jpg; *.jpeg)"
 
-#: ../po/tmp/preferenceswindow.glade.h:6
-#, no-c-format
+#: ../gui/preferenceswindow.glade:46
 msgctxt "Prefs Dialog|View|Zoom|Default|"
 msgid "25%"
 msgstr "25 %"
 
-#: ../po/tmp/preferenceswindow.glade.h:8
-#, no-c-format
+#: ../gui/preferenceswindow.glade:50
 msgctxt "Prefs Dialog|View|Zoom|Default|"
 msgid "50%"
 msgstr "50 %"
 
-#: ../po/tmp/preferenceswindow.glade.h:10
-#, no-c-format
+#: ../gui/preferenceswindow.glade:54
 msgctxt "Prefs Dialog|View|Zoom|Default|"
 msgid "100%"
 msgstr "100 %"
 
-#: ../po/tmp/preferenceswindow.glade.h:12
-#, no-c-format
+#: ../gui/preferenceswindow.glade:58
 msgctxt "Prefs Dialog|View|Zoom|Default|"
 msgid "200%"
 msgstr "200 %"
 
-#: ../po/tmp/preferenceswindow.glade.h:13
+#: ../gui/preferenceswindow.glade:72
 msgctxt "Prefs Dialog|View|Cursors|Freehand Cursor|Type|"
 msgid "Circle with light outline"
 msgstr "Kreis mit leichtem Umriss"
 
-#: ../po/tmp/preferenceswindow.glade.h:14
+#: ../gui/preferenceswindow.glade:76
 msgctxt "Prefs Dialog|View|Cursors|Freehand Cursor|Type|"
 msgid "Circle with medium outline"
 msgstr "Kreis mit mittelstarkem Umriss"
 
-#: ../po/tmp/preferenceswindow.glade.h:15
+#: ../gui/preferenceswindow.glade:80
 msgctxt "Prefs Dialog|View|Cursors|Freehand Cursor|Type|"
 msgid "Circle with heavy outline"
 msgstr "Kreis mit kräftigem Umriss"
 
-#: ../po/tmp/preferenceswindow.glade.h:16
+#: ../gui/preferenceswindow.glade:84
 msgctxt "Prefs Dialog|View|Cursors|Freehand Cursor|Type|"
 msgid "Crosshair"
 msgstr "Fadenkreuz"
 
 #. Graph x-axis label
-#: ../po/tmp/preferenceswindow.glade.h:18
+#: ../gui/preferenceswindow.glade:145
 msgctxt "Prefs Dialog|Pen Input|Input Device Settings|Pressure Mapping|"
 msgid "Input Pressure"
 msgstr "Eingabedruck"
 
 #. Graph y-axis label
-#: ../po/tmp/preferenceswindow.glade.h:20
+#: ../gui/preferenceswindow.glade:159
 msgctxt "Prefs Dialog|Pen Input|Input Device Settings|Pressure Mapping|"
 msgid "Brush Pressure"
 msgstr "Pinseldruck"
 
 #. Graph label, range (0...1)
-#: ../po/tmp/preferenceswindow.glade.h:22
+#: ../gui/preferenceswindow.glade:174 ../gui/preferenceswindow.glade:202
 msgctxt "Prefs Dialog|Pen Input|Input Device Settings|Pressure Mapping|"
 msgid "0.0"
 msgstr "0.0"
 
 #. Graph label, range (0...1)
-#: ../po/tmp/preferenceswindow.glade.h:24
+#: ../gui/preferenceswindow.glade:188 ../gui/preferenceswindow.glade:217
 msgctxt "Prefs Dialog|Pen Input|Input Device Settings|Pressure Mapping|"
 msgid "1.0"
 msgstr "1.0"
 
-#: ../po/tmp/preferenceswindow.glade.h:25
+#: ../gui/preferenceswindow.glade:251
 msgctxt "Prefs Dialog|Pen Input|"
 msgid "<b>Global Pressure Mapping</b>"
 msgstr "<b>Allgemeine Eingabedruckskalierung</b>"
 
 #. Tab label in preferences dialog
-#: ../po/tmp/preferenceswindow.glade.h:27
+#: ../gui/preferenceswindow.glade:261
 msgctxt "Prefs Dialog|"
 msgid "Pressure"
 msgstr "Druck"
 
-#: ../po/tmp/preferenceswindow.glade.h:28
+#: ../gui/preferenceswindow.glade:302
 msgctxt "Prefs Dialog|Devices|"
 msgid ""
 "Here you can restrict pointing devices to specific tasks on the canvas, or "
@@ -4459,16 +4374,16 @@ msgstr ""
 "Hier können Sie Ihren Eingabegeräte bestimmten Tätigkeiten auf der Leinwand "
 "zuweisen, oder komplett ignorieren falls diese Ihre Arbeit stören."
 
-#: ../po/tmp/preferenceswindow.glade.h:29
+#: ../gui/preferenceswindow.glade:324
 msgctxt "Prefs Dialog|Button|"
 msgid "<b>Device Usage</b>"
 msgstr "<b>Gerätenutzung</b>"
 
-#: ../po/tmp/preferenceswindow.glade.h:30
+#: ../gui/preferenceswindow.glade:337
 msgid "Devices"
 msgstr "Geräte"
 
-#: ../po/tmp/preferenceswindow.glade.h:31
+#: ../gui/preferenceswindow.glade:380
 msgctxt "Prefs Dialog|Button|Pointer Button Mappings|"
 msgid ""
 "• The space bar can be used like Button2.\n"
@@ -4477,57 +4392,57 @@ msgstr ""
 "• Die Leertaste kann wie Button2 verwendet werden. \n"
 "• Einige Tablets haben Buttons, die nicht gedrückt gehalten werden können."
 
-#: ../po/tmp/preferenceswindow.glade.h:33
+#: ../gui/preferenceswindow.glade:401
 msgctxt "Prefs Dialog|Button|"
 msgid "<b>Pointer Button Mappings</b>"
 msgstr "<b>Zuweisung der Maustaste</b>"
 
 #. Tab label in preferences dialog
-#: ../po/tmp/preferenceswindow.glade.h:35
+#: ../gui/preferenceswindow.glade:414
 msgctxt "Prefs Dialog|"
 msgid "Buttons"
 msgstr "Maustasten"
 
-#: ../po/tmp/preferenceswindow.glade.h:36
+#: ../gui/preferenceswindow.glade:447
 msgctxt "Prefs Dialog|Button|"
 msgid "<b>Keyboard Mappings</b>"
 msgstr "<b>Tastenzuweisungen</b>"
 
-#: ../po/tmp/preferenceswindow.glade.h:37
+#: ../gui/preferenceswindow.glade:460
 msgid "Keys"
 msgstr "Tasten"
 
-#: ../po/tmp/preferenceswindow.glade.h:38
+#: ../gui/preferenceswindow.glade:480
 msgctxt "Prefs Dialog|Load & Save|Saving|"
 msgid "Default file format:"
 msgstr "Standarddateiformat:"
 
-#: ../po/tmp/preferenceswindow.glade.h:39
+#: ../gui/preferenceswindow.glade:495
 msgctxt "Prefs Dialog|Load & Save|Saving|"
 msgid "Prefix when saving scraps:"
 msgstr "Prefix beim Speichern von Entwürfen:"
 
-#: ../po/tmp/preferenceswindow.glade.h:40
+#: ../gui/preferenceswindow.glade:546
 msgctxt "Prefs Dialog|Load & Save|"
 msgid "<b>Saving</b>"
 msgstr "<b>Speichern</b>"
 
-#: ../po/tmp/preferenceswindow.glade.h:41
+#: ../gui/preferenceswindow.glade:563
 msgctxt "Prefs Dialog|Load & Save|"
 msgid "<b>Color Management</b>"
 msgstr "<b>Farbmanagement</b>"
 
-#: ../po/tmp/preferenceswindow.glade.h:42
+#: ../gui/preferenceswindow.glade:579
 msgctxt "Prefs Dialog|Load & Save|Color Management|"
 msgid "Color space conversions:"
 msgstr "Farbraumkonvertierungen:"
 
-#: ../po/tmp/preferenceswindow.glade.h:43
+#: ../gui/preferenceswindow.glade:597
 msgctxt "Prefs Dialog|Load & Save|Color Management|"
 msgid "Convert to sRGB when loading; mark as sRGB when saving"
 msgstr "Beim Laden in sRGB umwandeln; beim Speichern als sRGB markieren"
 
-#: ../po/tmp/preferenceswindow.glade.h:44
+#: ../gui/preferenceswindow.glade:601
 msgctxt "Prefs Dialog|Load & Save|Color Management|"
 msgid ""
 "Images containing <i>full</i> colorspace information will be converted to "
@@ -4550,12 +4465,12 @@ msgstr ""
 "stark davon abweicht, stattdessen die Einstellung „Kein automatisches "
 "Konvertieren oder Tagging“ verwenden."
 
-#: ../po/tmp/preferenceswindow.glade.h:47
+#: ../gui/preferenceswindow.glade:619
 msgctxt "Prefs Dialog|Load & Save|Color Management|"
 msgid "No automatic conversions or tagging"
 msgstr "Kein automatisches Konvertieren oder Tagging"
 
-#: ../po/tmp/preferenceswindow.glade.h:48
+#: ../gui/preferenceswindow.glade:623
 msgctxt "Prefs Dialog|Load & Save|Color Management|"
 msgid ""
 "No color conversions are performed when loading, and files are saved without "
@@ -4570,24 +4485,24 @@ msgstr ""
 "Dies ist MyPaints altes Verhalten und kann als Notlösung für nicht-sRGB-"
 "Arbeiten verwendet werden."
 
-#: ../po/tmp/preferenceswindow.glade.h:51
+#: ../gui/preferenceswindow.glade:651
 msgctxt "Prefs Dialog|Load & Save|"
 msgid "<b>Automated Backups</b>"
 msgstr "<b>Automatisierte Backups</b>"
 
-#: ../po/tmp/preferenceswindow.glade.h:52
+#: ../gui/preferenceswindow.glade:669
 msgctxt "Prefs Dialog|Load & Save|Automated Backups|switch label"
 msgid "Back up unsaved work:"
 msgstr "Ungespeicherte Arbeit sichern:"
 
 #. In seconds. Lowest value is 5, highest is 300 (5 minutes). Only matters when enabled.
-#: ../po/tmp/preferenceswindow.glade.h:54
+#: ../gui/preferenceswindow.glade:704
 msgctxt ""
 "Prefs Dialog|Load & Save|Automated Backups|interval spinbox units suffix"
 msgid "seconds of inactivity"
 msgstr "Sekunden Inaktivität"
 
-#: ../po/tmp/preferenceswindow.glade.h:55
+#: ../gui/preferenceswindow.glade:717
 msgctxt "Prefs Dialog|Load & Save|Automated Backups|switch tooltip"
 msgid ""
 "Backs up work incrementally in the background to MyPaint's disk cache. If "
@@ -4598,52 +4513,52 @@ msgstr ""
 "Falls das Programm abstürzt, haben Sie die Möglichkeit Ihre Arbeit "
 "wiederherzustellen."
 
-#: ../po/tmp/preferenceswindow.glade.h:56
+#: ../gui/preferenceswindow.glade:739
 msgctxt "Prefs Dialog|Load & Save|Automated Backups|interval label"
 msgid "Time between backups:"
 msgstr "Zeit zwischen Backups:"
 
 #. Tab label in preferences dialog
-#: ../po/tmp/preferenceswindow.glade.h:58
+#: ../gui/preferenceswindow.glade:757
 msgctxt "Prefs Dialog|"
 msgid "Load & Save"
 msgstr "Laden und Speichern"
 
-#: ../po/tmp/preferenceswindow.glade.h:59
+#: ../gui/preferenceswindow.glade:778
 msgctxt "Prefs Dialog|View|"
 msgid "<b>Zoom and Rendering</b>"
 msgstr "<b>Zoom und Rendern</b>"
 
-#: ../po/tmp/preferenceswindow.glade.h:60
+#: ../gui/preferenceswindow.glade:795
 msgid "Default zoom level:"
 msgstr "Standardzoomstufe:"
 
-#: ../po/tmp/preferenceswindow.glade.h:61
+#: ../gui/preferenceswindow.glade:833
 msgctxt "Prefs Dialog|View|"
 msgid "<b>Interface</b>"
 msgstr "<b>Benutzeroberfläche</b>"
 
-#: ../po/tmp/preferenceswindow.glade.h:62
+#: ../gui/preferenceswindow.glade:850
 msgctxt "Prefs Dialog|View|Interface|"
 msgid "Toolbar icon size:"
 msgstr "Werkzeugleistensymbolgröße:"
 
-#: ../po/tmp/preferenceswindow.glade.h:63
+#: ../gui/preferenceswindow.glade:866
 msgctxt "Prefs Dialog|View|Interface|"
 msgid "Freehand cursor type:"
 msgstr "Freihandzeichnen Cursor Typ:"
 
-#: ../po/tmp/preferenceswindow.glade.h:64
+#: ../gui/preferenceswindow.glade:881
 msgctxt "Prefs Dialog|View|Interface|"
 msgid "Dark theme variant:"
 msgstr "Dunkle Themavariante:"
 
-#: ../po/tmp/preferenceswindow.glade.h:65
+#: ../gui/preferenceswindow.glade:891
 msgctxt "Prefs Dialog|View|Interface|Dark theme variant|"
 msgid "If available in GTK3 theme (needs restart)"
 msgstr "Falls verfügbar im GTK3-Thema (benötigt Neustart)"
 
-#: ../po/tmp/preferenceswindow.glade.h:66
+#: ../gui/preferenceswindow.glade:895
 msgctxt "Prefs Dialog|View|Interface|Dark theme variant|checkbox tooltip"
 msgid ""
 "Use a light-on-dark theme variant, when it's supported by the GTK theme. "
@@ -4653,26 +4568,26 @@ msgstr ""
 "unterstützt wird. Dies ist grundsätzlich vernünftig für Bildbearbeiter und "
 "Medienbetrachter."
 
-#: ../po/tmp/preferenceswindow.glade.h:67
+#: ../gui/preferenceswindow.glade:916
 msgid "Some of these settings require MyPaint to be restarted."
 msgstr "Einige dieser Einstellungen erfordern einen Neustart von MyPaint."
 
-#: ../po/tmp/preferenceswindow.glade.h:68
+#: ../gui/preferenceswindow.glade:939
 msgctxt "Prefs Dialog|View|Interface|Icon size|"
 msgid "Large (requires recent GTK3)"
 msgstr "Groß (benötigt aktuelles GTK3)"
 
-#: ../po/tmp/preferenceswindow.glade.h:69
+#: ../gui/preferenceswindow.glade:956
 msgctxt "Prefs Dialog|View|Interface|Icon size|"
 msgid "Small"
 msgstr "Klein"
 
-#: ../po/tmp/preferenceswindow.glade.h:70
+#: ../gui/preferenceswindow.glade:981
 msgctxt "Prefs Dialog|View|Zoom|"
 msgid "Use a real checkerboard pattern"
 msgstr "Echtes Schachbrettmuster verwenden"
 
-#: ../po/tmp/preferenceswindow.glade.h:71
+#: ../gui/preferenceswindow.glade:985
 msgctxt "Prefs Dialog|View|Zoom|"
 msgid ""
 "Draw a real checkerboard pattern to show transparency.\n"
@@ -4681,22 +4596,22 @@ msgstr ""
 "Ein echtes Schachbrettmuster zur Darstellung von Transparenz verwenden.\n"
 "Verlangsamt die Darstellung, kann aber übersichtlicher sein."
 
-#: ../po/tmp/preferenceswindow.glade.h:73
+#: ../gui/preferenceswindow.glade:1006
 msgid "When showing transparency:"
 msgstr "Darstellung von Transparenz:"
 
-#: ../po/tmp/preferenceswindow.glade.h:74
+#: ../gui/preferenceswindow.glade:1021
 msgctxt "Prefs Dialog|View|Interface|"
 msgid "Handle smooth scrolling events:"
 msgstr "Weichen Bildlauf verwenden:"
 
-#: ../po/tmp/preferenceswindow.glade.h:75
+#: ../gui/preferenceswindow.glade:1031
 msgctxt ""
 "Prefs Dialog|View|Interface|Handle smooth scrolling events|checkbox label"
 msgid "When devices send them (needs restart)"
 msgstr "Wenn Geräte dies so senden (benötigt Neustart)"
 
-#: ../po/tmp/preferenceswindow.glade.h:76
+#: ../gui/preferenceswindow.glade:1035
 msgctxt ""
 "Prefs Dialog|View|Interface|Handle smooth scrolling events|checkbox tooltip"
 msgid ""
@@ -4721,17 +4636,17 @@ msgstr ""
 "Um die Ansicht zu verschieben, muss diese Einstellung aktiviert sein, "
 "außerdem muss das Eingabegerät bidirektionale Scrollereignisse senden."
 
-#: ../po/tmp/preferenceswindow.glade.h:81
+#: ../gui/preferenceswindow.glade:1082
 msgid "Hide cursor while painting"
 msgstr "Cursor beim Zeichnen verbergen"
 
-#: ../po/tmp/preferenceswindow.glade.h:82
+#: ../gui/preferenceswindow.glade:1105
 msgctxt ""
 "Prefs Dialog|View|Interface|Blink layers on creation/selection|checkbox label"
 msgid "Enabled"
 msgstr "Aktiviert"
 
-#: ../po/tmp/preferenceswindow.glade.h:83
+#: ../gui/preferenceswindow.glade:1109
 msgctxt ""
 "Prefs Dialog|View|Interface|Blink layers on creation/selection|checkbox "
 "tooltip"
@@ -4742,28 +4657,28 @@ msgstr ""
 "Beim Erstellen oder Auswählen einer Ebene nur diese Ebene für einen kurzen "
 "Zeitraum anzeigen."
 
-#: ../po/tmp/preferenceswindow.glade.h:84
+#: ../gui/preferenceswindow.glade:1129
 msgctxt "Prefs Dialog|View|Interface|"
 msgid "Blink layers on creation/selection:"
 msgstr "Blinkende Ebenen bei der Erstellung/Auswahl:"
 
-#: ../po/tmp/preferenceswindow.glade.h:85
+#: ../gui/preferenceswindow.glade:1164
 msgctxt "Prefs Dialog|View|Interface|"
 msgid "Language:"
 msgstr "Sprache:"
 
-#: ../po/tmp/preferenceswindow.glade.h:86
+#: ../gui/preferenceswindow.glade:1179
 msgctxt "Prefs Dialog|View|Interface|"
 msgid "(needs restart)"
 msgstr "(erfordert Neustart)"
 
-#. Tab label in preferences dialog&#10;
-#: ../po/tmp/preferenceswindow.glade.h:88
+#. Tab label in preferences dialog
+#: ../gui/preferenceswindow.glade:1196
 msgctxt "Prefs Dialog|"
 msgid "View"
 msgstr "Ansicht"
 
-#: ../po/tmp/preferenceswindow.glade.h:89
+#: ../gui/preferenceswindow.glade:1228
 msgctxt "Prefs Dialog|Color|Color Wheel|Primaries|"
 msgid ""
 "The set of colors to show as primary on disk-style color wheels.\n"
@@ -4772,18 +4687,18 @@ msgstr ""
 "Der Satz Farben, der in Farbkreisen als Primärfarben angezeigt wird.\n"
 "Unterschiedliche Traditionen haben unterschiedliche Farbharmonien."
 
-#. Arrangement of MyPaint
-#: ../po/tmp/preferenceswindow.glade.h:92
+#. Arrangement of MyPaint's custom colour wheels
+#: ../gui/preferenceswindow.glade:1230
 msgctxt "Prefs Dialog|Color|Color Wheel|"
 msgid "Primaries are:"
 msgstr "Primäre Farben:"
 
-#: ../po/tmp/preferenceswindow.glade.h:93
+#: ../gui/preferenceswindow.glade:1247
 msgctxt "Prefs Dialog|Color|Color Wheel|Primaries|"
 msgid "Standard digital Red/Green/Blue"
 msgstr "Standard digitales Rot/Grün/Blau"
 
-#: ../po/tmp/preferenceswindow.glade.h:94
+#: ../gui/preferenceswindow.glade:1252
 msgid ""
 "The red, green, and blue &apos;computer monitor&apos; primaries, evenly "
 "arranged around the circle. Green is opposite magenta."
@@ -4791,7 +4706,7 @@ msgstr ""
 "Die rote, grüne und blaue „Computerbildschirm“-Primärfarben,\n"
 "gleichmäßig um einen Kreis angeordnet. Grün ist gegenüber von Magenta."
 
-#: ../po/tmp/preferenceswindow.glade.h:95
+#: ../gui/preferenceswindow.glade:1253
 msgctxt "Prefs Dialog|Color|Color Wheel|Primaries|RGB|"
 msgid ""
 "The red, green, and blue 'computer monitor' primaries, evenly arranged "
@@ -4800,12 +4715,12 @@ msgstr ""
 "Die rote, grüne und blaue „Computerbildschirm“-Primärfarben,\n"
 "gleichmäßig um einen Kreis angeordnet. Grün ist gegenüber von Magenta."
 
-#: ../po/tmp/preferenceswindow.glade.h:96
+#: ../gui/preferenceswindow.glade:1269
 msgctxt "Prefs Dialog|Color|Color Wheel|Primaries|"
 msgid "Traditional artist's Red/Yellow/Blue"
 msgstr "Traditionelles künstlerisches Rot/Gelb/Blau"
 
-#: ../po/tmp/preferenceswindow.glade.h:97
+#: ../gui/preferenceswindow.glade:1274
 msgid ""
 "The traditionally arranged red/yellow/blue wheel as used by many artists "
 "since the 18th century, approximated with pure display colors evenly "
@@ -4816,7 +4731,7 @@ msgstr ""
 "angenähert durch pure im Kreis angeordnete Display-Farben. Grün ist "
 "gegenüber von Rot."
 
-#: ../po/tmp/preferenceswindow.glade.h:98
+#: ../gui/preferenceswindow.glade:1275
 msgctxt "Prefs Dialog|Color|Color Wheel|Primaries|RYB|"
 msgid ""
 "The traditionally arranged red/yellow/blue wheel as used by many artists "
@@ -4828,12 +4743,12 @@ msgstr ""
 "angenähert durch pure im Kreis angeordnete Display-Farben. Grün ist "
 "gegenüber von Rot."
 
-#: ../po/tmp/preferenceswindow.glade.h:99
+#: ../gui/preferenceswindow.glade:1291
 msgctxt "Prefs Dialog|Color|Color Wheel|Primaries|"
 msgid "Red-Green and Blue-Yellow opponent pairs"
 msgstr "Gegenüberliegendes Rot-Grün und Blau-Gelb paaren"
 
-#: ../po/tmp/preferenceswindow.glade.h:100
+#: ../gui/preferenceswindow.glade:1296
 msgid ""
 "Quick and dirty approximation of wheels informed by theories of  color which "
 "use four &apos;psychological primaries&apos; or &apos;unique hues&apos; "
@@ -4849,7 +4764,7 @@ msgstr ""
 "repräsentieren ähnliche Modelle.\n"
 "Hier verwenden wir pures Rot, Gelb usw. als die vier Primärfarben."
 
-#: ../po/tmp/preferenceswindow.glade.h:101
+#: ../gui/preferenceswindow.glade:1297
 msgctxt "Prefs Dialog|Color|Color Wheel|Primaries|RYGB|"
 msgid ""
 "Quick and dirty approximation of wheels informed by theories of  color which "
@@ -4867,45 +4782,45 @@ msgstr ""
 "Hier verwenden wir pures Rot, Gelb usw. als die vier Primärfarben."
 
 #. Options affecting color wheels
-#: ../po/tmp/preferenceswindow.glade.h:103
+#: ../gui/preferenceswindow.glade:1325
 msgctxt "Prefs Dialog|Color|"
 msgid "<b>Color Wheel</b>"
 msgstr "<b>Farbkreis</b>"
 
 #. Tab label in preferences dialog
-#: ../po/tmp/preferenceswindow.glade.h:105
+#: ../gui/preferenceswindow.glade:1338
 msgctxt "Prefs Dialog|"
 msgid "Color"
 msgstr "Farbe"
 
-#: ../po/tmp/preferenceswindow.glade.h:106
+#: ../gui/preferenceswindow.glade:1371
 msgctxt "Prefs Dialog|Compatibility"
 msgid "Default Compatibility Mode:"
 msgstr "Standard-Kompatibilitätsmodus:"
 
-#: ../po/tmp/preferenceswindow.glade.h:107
+#: ../gui/preferenceswindow.glade:1396
 msgctxt "Prefs Dialog|Compatibility"
 msgid "<b>1.x Settings</b>"
 msgstr "<b>1.x Einstellungen</b>"
 
 #. Make sure to be consistent w. other occurences of 2.x
-#: ../po/tmp/preferenceswindow.glade.h:109
+#: ../gui/preferenceswindow.glade:1410
 msgctxt "Prefs Dialog|Compatibility"
 msgid "<b>2.x Settings</b>"
 msgstr "<b>2.x Einstellungen</b>"
 
-#: ../po/tmp/preferenceswindow.glade.h:110
+#: ../gui/preferenceswindow.glade:1448 ../gui/preferenceswindow.glade:1522
 msgctxt "Prefs Dialog|Compatibility"
 msgid "Default New Layer Type:"
 msgstr "Standardmäßiger neuer Ebenentyp:"
 
-#: ../po/tmp/preferenceswindow.glade.h:111
+#: ../gui/preferenceswindow.glade:1494 ../gui/preferenceswindow.glade:1508
 msgctxt "Prefs Dialog|Compatibility"
 msgid "Default Pigment Brush Setting:"
 msgstr "Standard-Pigmentpinsel-Einstellung:"
 
 #. Label description for the 1.x compatibility-mode-by-default setting
-#: ../po/tmp/preferenceswindow.glade.h:115
+#: ../gui/preferenceswindow.glade:1585
 msgctxt "Prefs Dialog|Compatibility"
 msgid ""
 "When creating new documents, use the legacy 1.x compatibility mode by "
@@ -4913,26 +4828,26 @@ msgid ""
 "versions, but pigment blending will not work well."
 msgstr ""
 
-#: ../po/tmp/preferenceswindow.glade.h:118
+#: ../gui/preferenceswindow.glade:1604
 msgctxt "Prefs Dialog|Compatibility"
 msgid ""
 "When creating new documents, use the regular 2.x compatibility mode by "
 "default. Old documents will often look different in this mode."
 msgstr ""
 
-#: ../po/tmp/preferenceswindow.glade.h:119
+#: ../gui/preferenceswindow.glade:1636
 msgctxt "Prefs Dialog|Compatibility"
 msgid "Show warning for files that may be partially incompatible"
 msgstr ""
 "Warnung für Dateien anzeigen, die möglicherweise teilweise inkompatibel sind"
 
 #. Label for a set of options
-#: ../po/tmp/preferenceswindow.glade.h:121
+#: ../gui/preferenceswindow.glade:1653
 msgctxt "Prefs Dialog|Compatibility"
 msgid "File compatibility warnings:"
 msgstr "Warnungen zur Dateikompatibilität:"
 
-#: ../po/tmp/preferenceswindow.glade.h:122
+#: ../gui/preferenceswindow.glade:1665
 msgctxt "Prefs Dialog|Compatibility"
 msgid "Show warning for files that may be fully incompatible"
 msgstr ""
@@ -4940,7 +4855,7 @@ msgstr ""
 "sind"
 
 #. This is a tooltip for the file behavior options label.
-#: ../po/tmp/preferenceswindow.glade.h:124
+#: ../gui/preferenceswindow.glade:1681
 msgctxt "Prefs|Compatibility"
 msgid ""
 "This will only apply to files saved with versions of MyPaint older than 2.0. "
@@ -4949,395 +4864,395 @@ msgid ""
 msgstr ""
 
 #. Label to the options for how to handle files which do not have a compatibility mode specified (whether they should be opened in 1.x compatibility mode, or 2.x mode)
-#: ../po/tmp/preferenceswindow.glade.h:126
+#: ../gui/preferenceswindow.glade:1683
 msgctxt "Prefs Dialog|Compatibility"
 msgid "When Mode is Unspecified:"
 msgstr "Wenn kein Modus angegeben ist:"
 
 #. This label indicates a subsection of the compatibility settings related to loading files.
-#: ../po/tmp/preferenceswindow.glade.h:128
+#: ../gui/preferenceswindow.glade:1710
 msgctxt "Prefs|Compatibility"
 msgid "<b>File loading</b>"
 msgstr "<b>Laden von Dateien</b>"
 
-#: ../po/tmp/preferenceswindow.glade.h:129
+#: ../gui/preferenceswindow.glade:1730
 msgid "<b>Compatibility settings</b>"
 msgstr "<b>Kompatibilitätseinstellungen</b>"
 
 #. Tab label in preferences dialog
-#: ../po/tmp/preferenceswindow.glade.h:131
+#: ../gui/preferenceswindow.glade:1746
 msgctxt "Prefs Dialog|"
 msgid "Compatibility"
 msgstr "Kompatibilität"
 
-#: ../po/tmp/preferenceswindow.glade.h:132
+#: ../gui/preferenceswindow.glade:1764
 msgctxt "Prefs Dialog|Pen Input|Mode|"
 msgid "Screen (normal)"
 msgstr "Bildschirm (normal)"
 
-#: ../po/tmp/preferenceswindow.glade.h:133
+#: ../gui/preferenceswindow.glade:1768
 msgctxt "Prefs Dialog|Pen Input|Mode|"
 msgid "Disabled (no pressure sensitivity)"
 msgstr "Deaktiviert (keine Drucksensitivität)"
 
-#: ../po/tmp/preferenceswindow.glade.h:134
+#: ../gui/preferenceswindow.glade:1772
 msgctxt "Prefs Dialog|Pen Input|Mode|"
 msgid "Window (not recommended)"
 msgstr "Fenster (nicht empfohlen)"
 
-#: ../po/tmp/resources.xml.h:1
+#: ../gui/resources.xml:63
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "New"
 msgstr "Neu"
 
-#: ../po/tmp/resources.xml.h:2
+#: ../gui/resources.xml:64
 msgctxt "Toolbar (short labels)"
 msgid "New"
 msgstr "Neu"
 
-#: ../po/tmp/resources.xml.h:3
+#: ../gui/resources.xml:65
 msgctxt "Toolbar (tooltips), Accel Editor (descriptions)"
 msgid "Start with a new blank canvas."
 msgstr "Mit einer neuen leeren Leinwand beginnen."
 
-#: ../po/tmp/resources.xml.h:4
+#: ../gui/resources.xml:73
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "Open…"
 msgstr "Öffnen …"
 
-#: ../po/tmp/resources.xml.h:5
+#: ../gui/resources.xml:74
 msgctxt "Toolbar (short labels)"
 msgid "Open"
 msgstr "Öffnen"
 
-#: ../po/tmp/resources.xml.h:6
+#: ../gui/resources.xml:75
 msgctxt "Toolbar (tooltips), Accel Editor (descriptions)"
 msgid "Load a file to work on."
 msgstr "Eine Datei zum Bearbeiten öffnen."
 
-#: ../po/tmp/resources.xml.h:7
+#: ../gui/resources.xml:82
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "Open Most Recent"
 msgstr "Zuletzt gespeichertes Bild laden"
 
-#: ../po/tmp/resources.xml.h:8
+#: ../gui/resources.xml:83
 msgctxt "Accel Editor (descriptions)"
 msgid "Load the file you saved most recently."
 msgstr "Die zuletzt gespeicherte Datei laden."
 
-#: ../po/tmp/resources.xml.h:9
+#: ../gui/resources.xml:90
 msgctxt "Menu→File (labels)"
 msgid "Open Recent"
 msgstr "Zuletzt geöffnet"
 
-#: ../po/tmp/resources.xml.h:10
+#: ../gui/resources.xml:103
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "Revert"
 msgstr "Erneut laden"
 
-#: ../po/tmp/resources.xml.h:11
+#: ../gui/resources.xml:104
 msgctxt "Accel Editor (descriptions)"
 msgid "Reload the file your current work was loaded from."
 msgstr "Die aktuelle Datei nochmals neu laden."
 
-#: ../po/tmp/resources.xml.h:12
+#: ../gui/resources.xml:111
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "Import Layers…"
 msgstr "Ebenen importieren …"
 
-#: ../po/tmp/resources.xml.h:13
+#: ../gui/resources.xml:112
 msgctxt "Accel Editor (descriptions)"
 msgid "Import layers from one or more files."
 msgstr "Ebenen aus einer oder mehreren Dateien importieren."
 
-#: ../po/tmp/resources.xml.h:14
+#: ../gui/resources.xml:120
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "Save"
 msgstr "Speichern"
 
-#: ../po/tmp/resources.xml.h:15
+#: ../gui/resources.xml:121
 msgctxt "Accel Editor (descriptions)"
 msgid "Save your work to a file."
 msgstr "Bild als Datei speichern."
 
-#: ../po/tmp/resources.xml.h:16
+#: ../gui/resources.xml:129
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "Save As…"
 msgstr "Speichern unter …"
 
-#: ../po/tmp/resources.xml.h:17
+#: ../gui/resources.xml:130
 msgctxt "Accel Editor (descriptions)"
 msgid "Save your work to a file, assigning it a new name."
 msgstr "Bild als neue Datei speichern."
 
-#: ../po/tmp/resources.xml.h:18
+#: ../gui/resources.xml:138
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "Export…"
 msgstr "Exportieren …"
 
-#: ../po/tmp/resources.xml.h:19
+#: ../gui/resources.xml:139
 msgid "Export your work to a file, but keep working on the same file."
 msgstr ""
 "Bild in eine Datei exportieren, aber mit bisheriger Datei weiterarbeiten."
 
-#: ../po/tmp/resources.xml.h:20
+#: ../gui/resources.xml:147
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "Save As Scrap"
 msgstr "Als Entwurf speichern"
 
-#: ../po/tmp/resources.xml.h:21
+#: ../gui/resources.xml:148
 msgctxt "Accel Editor (descriptions)"
 msgid "Save to a new scrap file, or save a new revision if already a scrap."
 msgstr ""
 "Als neuen Entwurf speichern, oder eine neue Revision speichern falls dieser "
 "bereits existiert."
 
-#: ../po/tmp/resources.xml.h:22
+#: ../gui/resources.xml:156
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "Open Previous Scrap"
 msgstr "Letzten Entwurf öffnen"
 
-#: ../po/tmp/resources.xml.h:23
+#: ../gui/resources.xml:157
 msgctxt "Accel Editor (descriptions)"
 msgid "Load the scrap file before the current one."
 msgstr "Den vorhergehenden Entwurf laden."
 
-#: ../po/tmp/resources.xml.h:24
+#: ../gui/resources.xml:165
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "Open Next Scrap"
 msgstr "Nächsten Entwurf öffnen"
 
-#: ../po/tmp/resources.xml.h:25
+#: ../gui/resources.xml:166
 msgctxt "Accel Editor (descriptions)"
 msgid "Load the scrap file after the current one."
 msgstr "Den nachfolgenden Entwurf laden."
 
-#: ../po/tmp/resources.xml.h:26
+#: ../gui/resources.xml:174
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "Recover File from an Automated Backup…"
 msgstr "Datei aus automatischem Backup wiederherstellen …"
 
-#: ../po/tmp/resources.xml.h:27
+#: ../gui/resources.xml:175
 msgctxt "Accel Editor (descriptions)"
 msgid "Try to save and resume interrupted unsaved work."
 msgstr ""
 "Versuchen, unterbrochene nicht gespeicherte Arbeit zu speichern und dann "
 "zurückzukehren."
 
-#: ../po/tmp/resources.xml.h:28
+#: ../gui/resources.xml:190
 msgctxt "Menu→Brush (label)"
 msgid "Brush Groups"
 msgstr "Pinselgruppen"
 
-#: ../po/tmp/resources.xml.h:29
+#: ../gui/resources.xml:191
 msgctxt "Toolbar (short labels)"
 msgid "Brushes"
 msgstr "Pinsel"
 
-#: ../po/tmp/resources.xml.h:30
+#: ../gui/resources.xml:192
 msgctxt "Toolbar (tooltips)"
 msgid "List of brush groups."
 msgstr "Liste mit Pinselgruppen."
 
-#: ../po/tmp/resources.xml.h:31
+#: ../gui/resources.xml:199
 msgctxt "Toolbar (label)"
 msgid "Color Adjusters"
 msgstr "Farbwähler"
 
-#: ../po/tmp/resources.xml.h:32
+#: ../gui/resources.xml:200
 msgctxt "Toolbar (short labels)"
 msgid "Colors"
 msgstr "Farben"
 
-#: ../po/tmp/resources.xml.h:33
+#: ../gui/resources.xml:201
 msgctxt "Toolbar (tooltips)"
 msgid "Available color adjusters."
 msgstr "Verfügbare Farbwähler."
 
-#: ../po/tmp/resources.xml.h:34
+#: ../gui/resources.xml:208
 msgctxt "Menu→Layer→Properties (label)"
 msgid "Mode"
 msgstr "Modus"
 
-#: ../po/tmp/resources.xml.h:35
+#: ../gui/resources.xml:209
 msgctxt "Toolbar (short labels)"
 msgid "Mode"
 msgstr "Modus"
 
-#: ../po/tmp/resources.xml.h:36
+#: ../gui/resources.xml:210
 msgctxt "Toolbar (tooltips)"
 msgid "The current layer's compositing mode."
 msgstr "Kompositionsmodus der aktuellen Ebene."
 
-#: ../po/tmp/resources.xml.h:37
+#: ../gui/resources.xml:237
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
 msgid "Increase Fake Pressure"
 msgstr "Vorgetäuschten Druck erhöhen"
 
-#: ../po/tmp/resources.xml.h:38
+#: ../gui/resources.xml:238
 msgctxt "Accel Editor (descriptions)"
 msgid "Send harder pressure for devices that don't support pressure input."
 msgstr ""
 
-#: ../po/tmp/resources.xml.h:39
+#: ../gui/resources.xml:245
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
 msgid "Decrease Fake Pressure"
 msgstr "Vorgetäuschten Druck verringern"
 
-#: ../po/tmp/resources.xml.h:40
+#: ../gui/resources.xml:246
 msgctxt "Accel Editor (descriptions)"
 msgid "Send softer pressure for devices that don't support pressure input."
 msgstr ""
 
-#: ../po/tmp/resources.xml.h:41
+#: ../gui/resources.xml:254
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
 msgid "Increase Fake Rotation"
 msgstr "Vorgetäuschte Drehung erhöhen"
 
-#: ../po/tmp/resources.xml.h:42
+#: ../gui/resources.xml:255
 msgctxt "Accel Editor (descriptions)"
 msgid "Increase barrel rotation for devices that don't support rotation input."
 msgstr ""
 
-#: ../po/tmp/resources.xml.h:43
+#: ../gui/resources.xml:262
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
 msgid "Decrease Fake Rotation"
 msgstr "Vorgetäuschte Drehung verringern"
 
-#: ../po/tmp/resources.xml.h:44
+#: ../gui/resources.xml:263
 msgctxt "Accel Editor (descriptions)"
 msgid "Decrease barrel rotation for devices that don't support rotation input."
 msgstr ""
 
-#: ../po/tmp/resources.xml.h:45
+#: ../gui/resources.xml:271
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
 msgid "Increase Brush Size"
 msgstr "Pinselradius erhöhen"
 
-#: ../po/tmp/resources.xml.h:46
+#: ../gui/resources.xml:272
 msgctxt "Accel Editor (descriptions)"
 msgid "Make the working brush bigger."
 msgstr "Den Pinselradius vergrößern."
 
-#: ../po/tmp/resources.xml.h:47
+#: ../gui/resources.xml:279
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
 msgid "Decrease Brush Size"
 msgstr "Pinselradius verringern"
 
-#: ../po/tmp/resources.xml.h:48
+#: ../gui/resources.xml:280
 msgctxt "Accel Editor (descriptions)"
 msgid "Make the working brush smaller."
 msgstr "Den Pinselradius verkleinern."
 
-#: ../po/tmp/resources.xml.h:49
+#: ../gui/resources.xml:288
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
 msgid "Increase Brush Opacity"
 msgstr "Pinseldeckkraft erhöhen"
 
-#: ../po/tmp/resources.xml.h:50
+#: ../gui/resources.xml:289
 msgctxt "Accel Editor (descriptions)"
 msgid "Make the working brush more opaque."
 msgstr "Den Arbeitspinsel deckender einstellen."
 
-#: ../po/tmp/resources.xml.h:51
+#: ../gui/resources.xml:296
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
 msgid "Decrease Brush Opacity"
 msgstr "Pinseldeckkraft verringern"
 
-#: ../po/tmp/resources.xml.h:52
+#: ../gui/resources.xml:297
 msgctxt "Accel Editor (descriptions)"
 msgid "Make the working brush less opaque."
 msgstr "Den Arbeitspinsel weniger deckend einstellen."
 
-#: ../po/tmp/resources.xml.h:53
+#: ../gui/resources.xml:305
 msgctxt "Menu→Color→Adjust Color (labels), Accel Editor (labels)"
 msgid "Lighten Painting Color"
 msgstr "Zeichenfarbe aufhellen"
 
-#: ../po/tmp/resources.xml.h:54
+#: ../gui/resources.xml:306
 msgctxt "Accel Editor (descriptions)"
 msgid "Increase the lightness of the current painting color."
 msgstr "Die Helligkeit der aktuellen Zeichenfarbe erhöhen."
 
-#: ../po/tmp/resources.xml.h:55
+#: ../gui/resources.xml:313
 msgctxt "Menu→Color→Adjust Color (labels), Accel Editor (labels)"
 msgid "Darken Painting Color"
 msgstr "Zeichenfarbe abdunkeln"
 
-#: ../po/tmp/resources.xml.h:56
+#: ../gui/resources.xml:314
 msgctxt "Accel Editor (descriptions)"
 msgid "Decrease the lightness of the current painting color."
 msgstr "Die Helligkeit der aktuellen Zeichenfarbe verringern."
 
-#: ../po/tmp/resources.xml.h:57
+#: ../gui/resources.xml:326
 msgctxt "Menu→Color→Adjust Color (labels), Accel Editor (labels)"
 msgid "Change Hue Clockwise"
 msgstr "Farbton im Uhrzeigersinn ändern"
 
-#: ../po/tmp/resources.xml.h:58
+#: ../gui/resources.xml:327
 msgctxt "Accel Editor (descriptions)"
 msgid "Rotate the painting color’s hue clockwise on the color wheel."
 msgstr "Farbton der Malfarbe im Uhrzeigersinn auf dem Farbkreis drehen."
 
-#: ../po/tmp/resources.xml.h:59
+#: ../gui/resources.xml:334
 msgctxt "Menu→Color→Adjust Color (labels), Accel Editor (labels)"
 msgid "Change Hue Anticlockwise"
 msgstr "Farbton gegen den Uhrzeigersinn ändern"
 
-#: ../po/tmp/resources.xml.h:60
+#: ../gui/resources.xml:335
 msgctxt "Accel Editor (descriptions)"
 msgid "Rotate the painting color’s hue anticlockwise on the color wheel."
 msgstr "Farbton der Malfarbe gegen Uhrzeigersinn auf dem Farbkreis drehen."
 
-#: ../po/tmp/resources.xml.h:61
+#: ../gui/resources.xml:342
 msgctxt "Menu→Color→Adjust Color (labels), Accel Editor (labels)"
 msgid "Increase Saturation"
 msgstr "Farbsättigung erhöhen"
 
-#: ../po/tmp/resources.xml.h:62
+#: ../gui/resources.xml:343
 msgctxt "Accel Editor (descriptions)"
 msgid "Make the painting color more saturated (more colorful, purer)."
 msgstr "Malfarbe mehr sättigen (farbiger, kräftiger)."
 
-#: ../po/tmp/resources.xml.h:63
+#: ../gui/resources.xml:350
 msgctxt "Menu→Color→Adjust Color (labels), Accel Editor (labels)"
 msgid "Decrease Saturation"
 msgstr "Farbsättigung verringern"
 
-#: ../po/tmp/resources.xml.h:64
+#: ../gui/resources.xml:351
 msgctxt "Accel Editor (descriptions)"
 msgid "Make the painting color less saturated (grayer)."
 msgstr "Malfarbe weniger sättigen (grauer)."
 
-#: ../po/tmp/resources.xml.h:65
+#: ../gui/resources.xml:359
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
 msgid "Reload Brush Settings"
 msgstr "Pinseleinstellungen neu laden"
 
-#: ../po/tmp/resources.xml.h:66
+#: ../gui/resources.xml:360
 msgctxt "Accel Editor (descriptions)"
 msgid "Restore all brush settings to the current brush’s saved values."
 msgstr ""
 "Alle Pinseleinstellungen auf die aktuell gespeicherten Werte zurücksetzen."
 
-#: ../po/tmp/resources.xml.h:67
+#: ../gui/resources.xml:370
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
 msgid "Pick Stroke and Layer"
 msgstr "Pinsel und Ebene wählen"
 
-#: ../po/tmp/resources.xml.h:68
+#: ../gui/resources.xml:371
 #, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid ""
 "Pick a brushstroke from the canvas, which restores brush, color, and layer."
 msgstr "Pinselstrich von der Leinwand wählen: setzt Pinsel, Farbe und Ebene."
 
-#: ../po/tmp/resources.xml.h:69
+#: ../gui/resources.xml:382
 msgctxt "Menu→Brush→Shortcut Keys (labels), Accel Editor (labels)"
 msgid "Brush Shortcut Keys Restore Color"
 msgstr "Pinsel-Tastenkürzel setzen Farbe zurück"
 
-#: ../po/tmp/resources.xml.h:70
+#: ../gui/resources.xml:383
 msgctxt "Accel Editor (descriptions)"
 msgid ""
 "Toggle whether restoring the brush from a shortcut key also restores the "
@@ -5346,269 +5261,269 @@ msgstr ""
 "Umschalten, ob das Laden eines Pinsels über Tastenkürzel auch die Farbe "
 "ändert oder nicht."
 
-#: ../po/tmp/resources.xml.h:71
+#: ../gui/resources.xml:390
 msgctxt "Menu→Brush→Shortcut Keys (labels), Accel Editor (labels)"
 msgid "Save Brush to Most Recent Shortcut Key"
 msgstr "Pinsel mit letztgenutztem Tastenkürzel speichern"
 
-#: ../po/tmp/resources.xml.h:72
+#: ../gui/resources.xml:391
 msgctxt "Accel Editor (descriptions)"
 msgid "Save brush settings to the most recently used shortcut key."
 msgstr "Pinseleinstellungen mit letztgenutztem Tastenkürzel speichern."
 
-#: ../po/tmp/resources.xml.h:73
+#: ../gui/resources.xml:401
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Clear Layer"
 msgstr "Ebene leeren"
 
-#: ../po/tmp/resources.xml.h:74
+#: ../gui/resources.xml:402
 #, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Clear the active layer’s content."
 msgstr "Inhalt der aktuellen Ebene leeren."
 
-#: ../po/tmp/resources.xml.h:75
+#: ../gui/resources.xml:410
 #, fuzzy
 msgctxt "Menu→Layer (labels)"
 msgid "Slice Operations"
 msgstr "Schnittoperationen"
 
-#: ../po/tmp/resources.xml.h:76
+#: ../gui/resources.xml:416
 msgctxt "Menu→Layer→Slice (labels), Accel Editor (labels)"
 msgid "Trim Layer to Frame"
 msgstr "Ebene auf den Rahmen zuschneiden"
 
-#: ../po/tmp/resources.xml.h:77
+#: ../gui/resources.xml:417
 msgctxt "Accel Editor (descriptions)"
 msgid "Erase parts of the current layer which lie outside the frame."
 msgstr ""
 "Bereiche der aktuellen Ebene löschen, die außerhalb des Rahmens liegen."
 
-#: ../po/tmp/resources.xml.h:78
+#: ../gui/resources.xml:423
 msgctxt "Menu→Layer→Slice (labels), Accel Editor (labels)"
 msgid "Uniquify Layer Pixels"
 msgstr ""
 
-#: ../po/tmp/resources.xml.h:79
+#: ../gui/resources.xml:424
 #, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Delete parts of the current layer which do not vary from the backdrop."
 msgstr ""
 "Bereiche der aktuellen Ebene löschen, die außerhalb des Rahmens liegen."
 
-#: ../po/tmp/resources.xml.h:80
+#: ../gui/resources.xml:430
 msgctxt "Menu→Layer→Slice (labels), Accel Editor (labels)"
 msgid "Uniquify Layer Tiles"
 msgstr ""
 
-#: ../po/tmp/resources.xml.h:81
+#: ../gui/resources.xml:431
 msgctxt "Accel Editor (descriptions)"
 msgid ""
 "Delete whole tiles from the current layer which do not vary from the "
 "backdrop."
 msgstr ""
 
-#: ../po/tmp/resources.xml.h:82
+#: ../gui/resources.xml:437
 #, fuzzy
 msgctxt "Menu→Layer→Slice (labels), Accel Editor (labels)"
 msgid "Refactor Layer Group Pixels"
 msgstr "Neue Ebenengruppe darunter"
 
-#: ../po/tmp/resources.xml.h:83
+#: ../gui/resources.xml:438 ../gui/resources.xml:445
 msgctxt "Accel Editor (descriptions)"
 msgid ""
 "Normalize child layers, then factor out common parts to a new child layer."
 msgstr ""
 
-#: ../po/tmp/resources.xml.h:84
+#: ../gui/resources.xml:444
 #, fuzzy
 msgctxt "Menu→Layer→Slice (labels), Accel Editor (labels)"
 msgid "Refactor Layer Group Tiles"
 msgstr "Neue Ebenengruppe darunter"
 
-#: ../po/tmp/resources.xml.h:85
+#: ../gui/resources.xml:452
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Copy Layer to Clipboard"
 msgstr "Ebene in Zwischenablage kopieren"
 
-#: ../po/tmp/resources.xml.h:86
+#: ../gui/resources.xml:453
 msgctxt "Accel Editor (descriptions)"
 msgid "Copy the current layer’s contents to the clipboard."
 msgstr "Den Inhalt der aktuellen Ebene in die Zwischenablage kopieren."
 
-#: ../po/tmp/resources.xml.h:87
+#: ../gui/resources.xml:461
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Paste Layer from Clipboard"
 msgstr "Ebene aus Zwischenablage einfügen"
 
-#: ../po/tmp/resources.xml.h:88
+#: ../gui/resources.xml:462
 msgctxt "Accel Editor (descriptions)"
 msgid "Replaces the current layer with the clipboard’s contents."
 msgstr "Ersetzt die aktuelle Ebene mit dem Inhalt der Zwischenablage."
 
-#: ../po/tmp/resources.xml.h:89
+#: ../gui/resources.xml:469
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Edit Layer in External App…"
 msgstr "Ebene extern bearbeiten …"
 
-#: ../po/tmp/resources.xml.h:90
+#: ../gui/resources.xml:470
 msgctxt "Accel Editor (descriptions)"
 msgid "Edit the active layer in an external application."
 msgstr "Die aktive Ebene in einer externen Anwendung bearbeiten."
 
-#: ../po/tmp/resources.xml.h:91
+#: ../gui/resources.xml:477
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Update Layer with External Edits"
 msgstr "Ebene mit externen Änderungen aktualisieren"
 
-#: ../po/tmp/resources.xml.h:92
+#: ../gui/resources.xml:478
 msgctxt "Accel Editor (descriptions)"
 msgid "Commit changes saved from the external app (normally automatic)."
 msgstr ""
 "Von externen Anwendungen gespeicherte Änderungen übertragen (normalerweise "
 "automatisch der Fall)."
 
-#: ../po/tmp/resources.xml.h:93
+#: ../gui/resources.xml:484
 msgctxt "Menu→Layer→Go to Layer (labels), Accel Editor (labels)"
 msgid "Go to Layer at Cursor"
 msgstr "Ebene am Mauszeiger auswählen"
 
-#: ../po/tmp/resources.xml.h:94
+#: ../gui/resources.xml:485
 msgctxt "Accel Editor (descriptions)"
 msgid "Select a layer by picking something [drawn] on it."
 msgstr ""
 "Wählen Sie eine Ebene aus, indem Sie etwas auf ihr [gezeichnetes] auswählen."
 
-#: ../po/tmp/resources.xml.h:95
+#: ../gui/resources.xml:493
 msgctxt "Menu→Layer→Go to Layer (labels), Accel Editor (labels)"
 msgid "Go to Layer Above"
 msgstr "Ebene höher gehen"
 
-#: ../po/tmp/resources.xml.h:96
+#: ../gui/resources.xml:494
 msgctxt "Accel Editor (descriptions)"
 msgid "Go one layer up in the layer stack."
 msgstr "Im Ebenenstapel eine Ebene höher gehen."
 
-#: ../po/tmp/resources.xml.h:97
+#: ../gui/resources.xml:502
 msgctxt "Menu→Layer→Go to Layer (labels), Accel Editor (labels)"
 msgid "Go to Layer Below"
 msgstr "Ebene tiefer gehen"
 
-#: ../po/tmp/resources.xml.h:98
+#: ../gui/resources.xml:503
 msgctxt "Accel Editor (descriptions)"
 msgid "Go one layer down in the layer stack."
 msgstr "Im Ebenenstapel eine Ebene tiefer gehen."
 
-#: ../po/tmp/resources.xml.h:99
+#: ../gui/resources.xml:511
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "New Painting Layer"
 msgstr "Neue Zeichenebene"
 
-#: ../po/tmp/resources.xml.h:100
+#: ../gui/resources.xml:512
 msgctxt "Accel Editor (descriptions)"
 msgid "Add a new painting layer above the current layer."
 msgstr "Eine neue Zeichenebene über der aktuellen Ebene hinzufügen."
 
-#: ../po/tmp/resources.xml.h:101
+#: ../gui/resources.xml:520
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "New Vector Layer…"
 msgstr "Neue Vektorebene …"
 
-#: ../po/tmp/resources.xml.h:102
+#: ../gui/resources.xml:521
 msgctxt "Accel Editor (descriptions)"
 msgid "Add a new vector layer above the current layer, and begin editing it."
 msgstr ""
 "Eine neue Vektorebene über der aktuellen Ebene hinzufügen und bearbeiten."
 
-#: ../po/tmp/resources.xml.h:103
+#: ../gui/resources.xml:528
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "New Layer Group"
 msgstr "Neue Ebenengruppe"
 
-#: ../po/tmp/resources.xml.h:104
+#: ../gui/resources.xml:529
 msgctxt "Accel Editor (descriptions)"
 msgid "Add a new layer group above the current layer."
 msgstr "Eine neue Ebenengruppe über der aktuellen Ebene hinzufügen."
 
-#: ../po/tmp/resources.xml.h:105
+#: ../gui/resources.xml:536
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "New Painting Layer Below"
 msgstr "Neue Zeichenebene darunter"
 
-#: ../po/tmp/resources.xml.h:106
+#: ../gui/resources.xml:537
 msgctxt "Accel Editor (descriptions)"
 msgid "Add a new painting layer below the current layer."
 msgstr "Eine neue Zeichenebene unter der aktuellen Ebene hinzufügen."
 
-#: ../po/tmp/resources.xml.h:107
+#: ../gui/resources.xml:544
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "New Vector Layer Below…"
 msgstr "Neue Vektorebene darunter …"
 
-#: ../po/tmp/resources.xml.h:108
+#: ../gui/resources.xml:545
 msgctxt "Accel Editor (descriptions)"
 msgid "Add a new vector layer below the current layer, and begin editing it."
 msgstr ""
 "Eine neue Vektorebene unter der aktuellen Ebene hinzufügen und bearbeiten."
 
-#: ../po/tmp/resources.xml.h:109
+#: ../gui/resources.xml:551
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "New Layer Group Below"
 msgstr "Neue Ebenengruppe darunter"
 
-#: ../po/tmp/resources.xml.h:110
+#: ../gui/resources.xml:552
 msgctxt "Accel Editor (descriptions)"
 msgid "Add a new layer group below the current layer."
 msgstr "Eine neue Ebenengruppe unter der aktuellen Ebene hinzufügen."
 
-#: ../po/tmp/resources.xml.h:111
+#: ../gui/resources.xml:559
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Merge Layer Down"
 msgstr "Ebene nach unten vereinen"
 
-#: ../po/tmp/resources.xml.h:112
+#: ../gui/resources.xml:560
 msgctxt "Accel Editor (descriptions)"
 msgid "Merge the current layer with the layer beneath it."
 msgstr "Ebene mit darunterliegender Ebene vereinen."
 
-#: ../po/tmp/resources.xml.h:113
+#: ../gui/resources.xml:567
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Merge Visible Layers"
 msgstr "Sichtbare Ebenen vereinen"
 
-#: ../po/tmp/resources.xml.h:114
+#: ../gui/resources.xml:568
 msgctxt "Accel Editor (descriptions)"
 msgid "Consolidate all visible layers, and delete the originals."
 msgstr "Alle sichtbaren Ebenen vereinen und ursprüngliche Ebenen löschen."
 
-#: ../po/tmp/resources.xml.h:115
+#: ../gui/resources.xml:575
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "New Layer from Visible"
 msgstr "Neue Ebene aus sichtbaren Ebenen"
 
-#: ../po/tmp/resources.xml.h:116
+#: ../gui/resources.xml:576
 msgctxt "Accel Editor (descriptions)"
 msgid "Like ‘Merge Visible Layers’, but doesn’t delete the originals."
 msgstr ""
 "Wie „Sichtbare Ebenen vereinen“, löscht jedoch die ursprünglichen Ebenen "
 "nicht."
 
-#: ../po/tmp/resources.xml.h:117
+#: ../gui/resources.xml:583
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Delete Layer"
 msgstr "Ebene löschen"
 
-#: ../po/tmp/resources.xml.h:118
+#: ../gui/resources.xml:584
 msgctxt "Accel Editor (descriptions)"
 msgid "Remove the current layer from the layer stack."
 msgstr "Die aktuelle Ebene aus dem Ebenenstapel löschen."
 
-#: ../po/tmp/resources.xml.h:119
+#: ../gui/resources.xml:591
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Convert to Normal Painting Layer"
 msgstr "In Zeichenebene umwandeln"
 
-#: ../po/tmp/resources.xml.h:120
+#: ../gui/resources.xml:592
 msgctxt "Accel Editor (descriptions)"
 msgid ""
 "Convert the current layer or group to a painting layer in ‘Normal’ mode, "
@@ -5617,62 +5532,62 @@ msgstr ""
 "Wandelt die aktuelle Ebene oder Gruppe in eine Zeichenebene im „Normal“-"
 "Modus um, Erscheinungsbild wird beibehalten."
 
-#: ../po/tmp/resources.xml.h:121
+#: ../gui/resources.xml:598
 msgctxt "Menu→Layer→Opacity (labels), Accel Editor (labels)"
 msgid "Increase Layer’s Opacity"
 msgstr "Deckkraft der Ebene erhöhen"
 
-#: ../po/tmp/resources.xml.h:122
+#: ../gui/resources.xml:599
 msgctxt "Accel Editor (descriptions)"
 msgid "Make the layer less transparent."
 msgstr "Die Transparenz der Ebene wird verringert."
 
-#: ../po/tmp/resources.xml.h:123
+#: ../gui/resources.xml:606
 msgctxt "Menu→Layer→Opacity (labels), Accel Editor (labels)"
 msgid "Reduce Layer’s Opacity"
 msgstr "Deckkraft der Ebene verringern"
 
-#: ../po/tmp/resources.xml.h:124
+#: ../gui/resources.xml:607
 msgctxt "Accel Editor (descriptions)"
 msgid "Make the layer more transparent."
 msgstr "Die Transparenz der Ebene wird erhöht."
 
-#: ../po/tmp/resources.xml.h:125
+#: ../gui/resources.xml:614
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Raise Layer"
 msgstr "Ebene anheben"
 
-#: ../po/tmp/resources.xml.h:126
+#: ../gui/resources.xml:615
 msgctxt "Accel Editor (descriptions)"
 msgid "Raise the current layer one step in the layer stack."
 msgstr "Die aktuelle Ebene im Ebenenstapel eine Stufe nach oben schieben."
 
-#: ../po/tmp/resources.xml.h:127
+#: ../gui/resources.xml:623
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Lower Layer"
 msgstr "Ebene absenken"
 
-#: ../po/tmp/resources.xml.h:128
+#: ../gui/resources.xml:624
 msgctxt "Accel Editor (descriptions)"
 msgid "Lower the current layer one step in the layer stack."
 msgstr "Die aktuelle Ebene im Ebenenstapel eine Stufe nach unten schieben."
 
-#: ../po/tmp/resources.xml.h:129
+#: ../gui/resources.xml:633
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Duplicate Layer"
 msgstr "Ebene duplizieren"
 
-#: ../po/tmp/resources.xml.h:130
+#: ../gui/resources.xml:634
 msgctxt "Accel Editor (descriptions)"
 msgid "Make an exact clone of the current layer."
 msgstr "Erzeugt ein exaktes Duplikat der aktuellen Ebene."
 
-#: ../po/tmp/resources.xml.h:131
+#: ../gui/resources.xml:642
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Layer Properties…"
 msgstr "Ebeneneigenschaften …"
 
-#: ../po/tmp/resources.xml.h:132
+#: ../gui/resources.xml:643
 msgctxt "Accel Editor (descriptions)"
 msgid ""
 "Change the layer’s properties (name, mode, visibility, locked, opacity)."
@@ -5680,12 +5595,12 @@ msgstr ""
 "Die Eigenschaften der Ebene ändern (Name, Modus, Sichtbarkeit, gesperrt, "
 "Deckkraft)."
 
-#: ../po/tmp/resources.xml.h:133
+#: ../gui/resources.xml:650
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Layer Locked"
 msgstr "Ebene gesperrt"
 
-#: ../po/tmp/resources.xml.h:134
+#: ../gui/resources.xml:651
 msgctxt "Accel Editor (descriptions)"
 msgid ""
 "Toggle the current layer’s locked state. Locked layers cannot be modified."
@@ -5693,257 +5608,264 @@ msgstr ""
 "Den Sperrstatus der aktuellen Ebene umschalten. Gesperrte Ebenen können "
 "nicht verändert werden."
 
-#: ../po/tmp/resources.xml.h:135
+#: ../gui/resources.xml:658
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Layer Visible"
 msgstr "Ebene sichtbar"
 
-#: ../po/tmp/resources.xml.h:136
+#: ../gui/resources.xml:659
 msgctxt "Accel Editor (descriptions)"
 msgid "Toggle the current layer’s visibility state, making it hidden."
 msgstr "Die Sichtbarkeit der aktuellen Ebene umschalten."
 
-#: ../po/tmp/resources.xml.h:137
+#: ../gui/resources.xml:666
 msgctxt "Menu→View (labels), Accel Editor (labels)"
 msgid "Show Background"
 msgstr "Hintergrund anzeigen"
 
-#: ../po/tmp/resources.xml.h:138
+#: ../gui/resources.xml:667
 msgctxt "Accel Editor (descriptions)"
 msgid "Toggle the background layer’s visibility."
 msgstr "Die Sichtbarkeit der aktuellen Ebene umschalten."
 
-#: ../po/tmp/resources.xml.h:139
+#: ../gui/resources.xml:674
 msgctxt "Menu→Help→Debug (labels), Accel Editor (labels)"
 msgid "Vacuum Empty Tiles"
 msgstr ""
 
-#: ../po/tmp/resources.xml.h:140
+#: ../gui/resources.xml:675
 msgctxt "Accel Editor (descriptions)"
 msgid "Remove empty tiles from the document."
 msgstr "Leere Kacheln aus dem Dokument entfernen."
 
-#: ../po/tmp/resources.xml.h:141
+#: ../gui/resources.xml:684
 msgctxt "Menu→View (labels), Accel Editor (labels)"
 msgid "Reset and Center View"
 msgstr "Zurücksetzen und zentrieren"
 
-#: ../po/tmp/resources.xml.h:142
+#: ../gui/resources.xml:685
 msgctxt "Accel Editor (descriptions)"
 msgid "Reset Zoom, Rotation and Mirroring, and recenter the document."
 msgstr ""
 "Vergrößerung, Drehung und Spiegelung zurücksetzen und Dokument zentrieren."
 
-#: ../po/tmp/resources.xml.h:143
+#: ../gui/resources.xml:693
 msgctxt "Menu→View (labels), Accel Editor (labels)"
 msgid "Fit to View"
 msgstr "Zeichnung in Ansicht einpassen"
 
-#: ../po/tmp/resources.xml.h:144
+#: ../gui/resources.xml:694
 msgctxt "Accel Editor (descriptions)"
 msgid "Switch between a fitted view and your working location and zoom."
 msgstr "Zwischen eingepasster Ansicht und der Arbeitsansicht wechseln."
 
-#: ../po/tmp/resources.xml.h:145
+#: ../gui/resources.xml:701
 msgctxt "Menu→View (labels)"
 msgid "Reset"
 msgstr "Zurücksetzen"
 
-#: ../po/tmp/resources.xml.h:146
+#: ../gui/resources.xml:708
 msgctxt "Menu→View→Reset (labels), Accel Editor (labels)"
 msgid "Reset Zoom"
 msgstr "Vergrößerung zurücksetzen"
 
-#: ../po/tmp/resources.xml.h:147
+#: ../gui/resources.xml:709
 msgctxt "Accel Editor (descriptions)"
 msgid "Reset view zoom level to default."
 msgstr "Vergrößerungsstufe der Ansicht auf Standard zurücksetzen."
 
-#: ../po/tmp/resources.xml.h:148
+#: ../gui/resources.xml:715
 msgctxt "Menu→View→Reset (labels), Accel Editor (labels)"
 msgid "Reset Rotation"
 msgstr "Drehung zurücksetzen"
 
-#: ../po/tmp/resources.xml.h:149
+#: ../gui/resources.xml:716
 msgctxt "Accel Editor (descriptions)"
 msgid "Reset the view’s rotation to 0°"
 msgstr "Die Drehung der Ansicht auf 0° zurücksetzen"
 
-#: ../po/tmp/resources.xml.h:150
+#: ../gui/resources.xml:722
 msgctxt "Menu→View→Reset (labels), Accel Editor (labels)"
 msgid "Reset Mirroring"
 msgstr "Spiegelung zurücksetzen"
 
-#: ../po/tmp/resources.xml.h:151
+#: ../gui/resources.xml:723
 msgctxt "Accel Editor (descriptions)"
 msgid "Reset the view's mirroring."
 msgstr "Die Spiegelung der Ansicht zurücksetzen."
 
-#: ../po/tmp/resources.xml.h:152
+#: ../gui/resources.xml:729
 msgctxt "Menu→View→Adjust View (labels), Accel Editor (labels)"
 msgid "Zoom In"
 msgstr "Vergrößern"
 
-#: ../po/tmp/resources.xml.h:153
+#: ../gui/resources.xml:730
 msgctxt "Accel Editor (descriptions)"
 msgid "Increase magnification."
 msgstr "Vergrößerung erhöhen."
 
-#: ../po/tmp/resources.xml.h:154
+#: ../gui/resources.xml:737
 msgctxt "Menu→View→Adjust View (labels), Accel Editor (labels)"
 msgid "Zoom Out"
 msgstr "Verkleinern"
 
-#: ../po/tmp/resources.xml.h:155
+#: ../gui/resources.xml:738
 msgctxt "Accel Editor (descriptions)"
 msgid "Decrease magnification."
 msgstr "Vergrößerung verringern."
 
-#: ../po/tmp/resources.xml.h:156
+#: ../gui/resources.xml:758
 #, fuzzy
 msgctxt "Menu→View→Adjust View (labels), Accel Editor (labels)"
 msgid "Pan Left"
 msgstr "Ansicht verschieben"
 
-#: ../po/tmp/resources.xml.h:157
+#: ../gui/resources.xml:759
 msgctxt "Accel Editor (descriptions)"
 msgid "Move your view of the canvas to the left."
 msgstr "Verschieben Sie Ihre Ansicht der Leinwand nach links."
 
-#: ../po/tmp/resources.xml.h:158
+#: ../gui/resources.xml:766
 #, fuzzy
 msgctxt "Menu→View→Adjust View (labels), Accel Editor (labels)"
 msgid "Pan Right"
 msgstr "Hartes Licht"
 
-#: ../po/tmp/resources.xml.h:159
+#: ../gui/resources.xml:767
 msgctxt "Accel Editor (descriptions)"
 msgid "Move your view of the canvas to the right."
 msgstr "Verschieben Sie Ihre Ansicht der Leinwand nach rechts."
 
-#: ../po/tmp/resources.xml.h:160
+#: ../gui/resources.xml:774
 msgctxt "Menu→View→Adjust View (labels), Accel Editor (labels)"
 msgid "Pan Up"
 msgstr ""
 
-#: ../po/tmp/resources.xml.h:161
+#: ../gui/resources.xml:775
 msgctxt "Accel Editor (descriptions)"
 msgid "Move your view of the canvas upwards."
 msgstr "Verschieben Sie Ihre Ansicht der Leinwand nach oben."
 
-#: ../po/tmp/resources.xml.h:162
+#: ../gui/resources.xml:782
 #, fuzzy
 msgctxt "Menu→View→Adjust View (labels), Accel Editor (labels)"
 msgid "Pan Down"
 msgstr "Ansicht verschieben"
 
-#: ../po/tmp/resources.xml.h:163
+#: ../gui/resources.xml:783
 msgctxt "Accel Editor (descriptions)"
 msgid "Move your view of the canvas downwards."
 msgstr "Verschieben Sie Ihre Ansicht der Leinwand nach unten."
 
-#: ../po/tmp/resources.xml.h:164
+#.
+#. Note: the object we've agreed to present as being rotated
+#. by "RotateLeft and "RotateRight" is the *canvas*,
+#. not the viewing rectangle.
+#.
+#. https://github.com/mypaint/mypaint/issues/553
+#.
+#: ../gui/resources.xml:798
 msgctxt "Menu→View→Adjust View (labels), Accel Editor (labels)"
 msgid "Rotate Clockwise"
 msgstr "Im Uhrzeigersinn drehen"
 
-#: ../po/tmp/resources.xml.h:165
+#: ../gui/resources.xml:799
 msgctxt "Accel Editor (descriptions)"
 msgid "Rotate the canvas clockwise."
 msgstr "Die Leinwand im Uhrzeigersinn drehen."
 
-#: ../po/tmp/resources.xml.h:166
+#: ../gui/resources.xml:819
 msgctxt "Menu→View→Adjust View (labels), Accel Editor (labels)"
 msgid "Rotate Counterclockwise"
 msgstr "Gegen Uhrzeigersinn drehen"
 
-#: ../po/tmp/resources.xml.h:167
+#: ../gui/resources.xml:820
 msgctxt "Accel Editor (descriptions)"
 msgid "Rotate the canvas counter-clockwise."
 msgstr "Die Leinwand gegen den Uhrzeigersinn drehen."
 
-#: ../po/tmp/resources.xml.h:168
+#: ../gui/resources.xml:828
 msgctxt "Menu→View→Adjust View (labels), Accel Editor (labels)"
 msgid "Mirror Horizontal"
 msgstr "Horizontal spiegeln"
 
-#: ../po/tmp/resources.xml.h:169
+#: ../gui/resources.xml:829
 msgctxt "Accel Editor (descriptions)"
 msgid "Flip the view left to right."
 msgstr "Ansicht von links nach rechts spiegeln."
 
-#: ../po/tmp/resources.xml.h:170
+#: ../gui/resources.xml:837
 msgctxt "Menu→View→Adjust View (labels), Accel Editor (labels)"
 msgid "Mirror Vertical"
 msgstr "Vertikal spiegeln"
 
-#: ../po/tmp/resources.xml.h:171
+#: ../gui/resources.xml:838
 msgctxt "Accel Editor (descriptions)"
 msgid "Flip the view upside-down."
 msgstr "Ansicht von oben nach unten spiegeln."
 
-#: ../po/tmp/resources.xml.h:172
+#: ../gui/resources.xml:845
 msgctxt "Menu→View (labels), Accel Editor (labels)"
 msgid "Layer Solo"
 msgstr "Einzelne Ebene"
 
-#: ../po/tmp/resources.xml.h:173
+#: ../gui/resources.xml:846
 msgctxt "Accel Editor (descriptions)"
 msgid "Toggle whether only the current layer is shown."
 msgstr "Festlegen, ob nur die aktuelle Ebene sichtbar ist."
 
-#: ../po/tmp/resources.xml.h:174
+#: ../gui/resources.xml:856
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
 msgid "Symmetrical Painting Active"
 msgstr "Symmetrisches Zeichnen aktiv"
 
-#: ../po/tmp/resources.xml.h:175
+#: ../gui/resources.xml:857
 msgctxt "Accel Editor (descriptions)"
 msgid "Mirror brushstrokes along the axis of symmetry"
 msgstr "Pinselstriche an der Symmetrieachse spiegeln"
 
-#: ../po/tmp/resources.xml.h:176
+#: ../gui/resources.xml:864
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "Frame Enabled"
 msgstr "Rahmen aktiv"
 
-#: ../po/tmp/resources.xml.h:177
+#: ../gui/resources.xml:865
 msgctxt "Accel Editor (descriptions)"
 msgid "Toggle visibility of the document frame."
 msgstr "Sichtbarkeit des Dokumentrahmens umschalten."
 
-#: ../po/tmp/resources.xml.h:178
+#: ../gui/resources.xml:874
 msgctxt "Menu→Help→Debug (labels), Accel Editor (labels)"
 msgid "Print Brush Input Values to Console"
 msgstr "Pinseleingabewerte in Konsole ausgeben"
 
-#: ../po/tmp/resources.xml.h:179
+#: ../gui/resources.xml:875
 msgctxt "Accel Editor (descriptions)"
 msgid "Show the brush engine’s internally generated inputs on the console."
 msgstr ""
 "Die intern generierten Eingaben der Brush-Engine in der Konsole anzeigen."
 
-#: ../po/tmp/resources.xml.h:180
+#: ../gui/resources.xml:881
 msgctxt "Menu→Help→Debug (labels), Accel Editor (labels)"
 msgid "Visualize Rendering"
 msgstr "Rendering visualisieren"
 
-#: ../po/tmp/resources.xml.h:181
+#: ../gui/resources.xml:882
 msgctxt "Accel Editor (descriptions)"
 msgid "Show rendering updates on-screen, for debugging."
 msgstr "Renderupdates zum Debuggen auf dem Bildschirm anzeigen."
 
-#: ../po/tmp/resources.xml.h:182
+#: ../gui/resources.xml:888
 msgctxt "Menu→Help→Debug (labels), Accel Editor (labels)"
 msgid "No Double Buffering"
 msgstr "GTK-Doppelpufferung abschalten"
 
-#: ../po/tmp/resources.xml.h:183
+#: ../gui/resources.xml:889
 msgctxt "Accel Editor (descriptions)"
 msgid "Turn off GTK’s double buffering, normally enabled."
 msgstr "Doppelpufferung von GTK abschalten (normalerweise eingeschaltet)."
 
-#: ../po/tmp/resources.xml.h:185
+#: ../gui/resources.xml:898
 msgctxt "Accel Editor (descriptions)"
 msgid ""
 "Insert a point next to the currently selected point in the direction of the "
@@ -5952,67 +5874,67 @@ msgstr ""
 "Einen Punkt neben dem aktuell ausgewählten Punkt in Richtung des Striches "
 "einfügen."
 
-#: ../po/tmp/resources.xml.h:186
+#: ../gui/resources.xml:904
 msgid "Delete Point"
 msgstr "Punkt löschen"
 
-#: ../po/tmp/resources.xml.h:187
+#: ../gui/resources.xml:905
 msgctxt "Accel Editor (descriptions)"
 msgid "Delete currently selected point on the ink stroke."
 msgstr "Aktuell ausgewählten Punkt auf dem Tintenstrich löschen."
 
-#: ../po/tmp/resources.xml.h:189
+#: ../gui/resources.xml:912
 msgctxt "Accel Editor (descriptions)"
 msgid ""
 "Simplify and delete points according to angle and distance between nodes."
 msgstr ""
 
-#: ../po/tmp/resources.xml.h:191
+#: ../gui/resources.xml:919
 msgctxt "Accel Editor (descriptions)"
 msgid "Delete every other point on the ink stroke."
 msgstr "Jeden zweiten Punkt auf dem Tintenstrich löschen."
 
-#: ../po/tmp/resources.xml.h:192
+#: ../gui/resources.xml:933
 msgctxt "Menu→Brush (labels)"
 msgid "Paint Mode"
 msgstr "Zeichenmodus"
 
-#: ../po/tmp/resources.xml.h:193
+#: ../gui/resources.xml:941
 msgctxt "Menu→Brush→Blend Mode (labels), Accel Editor (labels)"
 msgid "Paint Mode: Normal"
 msgstr "Zeichenmodus: Normal"
 
-#: ../po/tmp/resources.xml.h:194
+#: ../gui/resources.xml:942
 msgctxt "Accel Editor (descriptions)"
 msgid "Apply color normally when painting."
 msgstr "Beim Zeichnen Farbe normal auftragen."
 
-#: ../po/tmp/resources.xml.h:195
+#: ../gui/resources.xml:950
 msgctxt "Menu→Brush→Blend Mode (labels), Accel Editor (labels)"
 msgid "Paint Mode: Eraser"
 msgstr "Zeichenmodus: Radierer"
 
-#: ../po/tmp/resources.xml.h:196
+#: ../gui/resources.xml:951
 msgctxt "Accel Editor (descriptions)"
 msgid "Erase using the current brush."
 msgstr "Mit dem aktuellen Pinsel radieren."
 
-#: ../po/tmp/resources.xml.h:197
+#: ../gui/resources.xml:959
 msgctxt "Menu→Brush→Blend Mode (labels), Accel Editor (labels)"
 msgid "Paint Mode: Lock Alpha"
 msgstr "Zeichenmodus: Alphakanal sperren"
 
-#: ../po/tmp/resources.xml.h:198
+#: ../gui/resources.xml:960
 msgctxt "Accel Editor (descriptions)"
 msgid "Applying the brush doesn't change the layer’s opacity."
 msgstr "Verwenden des Pinsels ändert die Deckkraft der Ebene nicht."
 
-#: ../po/tmp/resources.xml.h:199
+#: ../gui/resources.xml:968
 msgctxt "Menu→Brush→Blend Mode (labels), Accel Editor (labels)"
 msgid "Paint Mode: Colorize"
 msgstr "Zeichenmodus: Einfärben"
 
-#: ../po/tmp/resources.xml.h:200
+#: ../gui/resources.xml:969
 msgctxt "Accel Editor (descriptions)"
 msgid ""
 "Apply color to the current layer without affecting its brightness or opacity."
@@ -6020,239 +5942,239 @@ msgstr ""
 "Farbe auf die aktuelle Ebene aufbringen ohne ihre Helligkeit oder Deckkraft "
 "zu beeinflussen."
 
-#: ../po/tmp/resources.xml.h:201
+#: ../gui/resources.xml:983
 msgctxt "Menu (labels)"
 msgid "File"
 msgstr "Datei"
 
-#: ../po/tmp/resources.xml.h:202
+#: ../gui/resources.xml:989
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "Quit"
 msgstr "Beenden"
 
-#: ../po/tmp/resources.xml.h:203
+#: ../gui/resources.xml:990
 msgctxt "Accel Editor (descriptions)"
 msgid "Close main window and exit the app."
 msgstr "Hauptfenster schließen und die Anwendung beenden."
 
-#: ../po/tmp/resources.xml.h:204
+#: ../gui/resources.xml:1000
 msgctxt "Menu (labels)"
 msgid "Edit"
 msgstr "Bearbeiten"
 
-#: ../po/tmp/resources.xml.h:205
+#: ../gui/resources.xml:1008
 msgctxt "Menu (labels)"
 msgid "Color"
 msgstr "Farbe"
 
-#: ../po/tmp/resources.xml.h:206
+#: ../gui/resources.xml:1014
 msgctxt "Menu→Color (labels)"
 msgid "Adjust Color"
 msgstr "Farbe anpassen"
 
-#: ../po/tmp/resources.xml.h:207
+#: ../gui/resources.xml:1020
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "Color History Popup"
 msgstr "Farbhistorie Popup"
 
-#: ../po/tmp/resources.xml.h:208
+#: ../gui/resources.xml:1021
 msgctxt "Accel Editor (descriptions)"
 msgid "Pop up a timeline of recent colors under the cursor."
 msgstr "Zeigt am Cursor einen Zeitstrahl zuletzt verwendeter Farben."
 
-#: ../po/tmp/resources.xml.h:209
+#: ../gui/resources.xml:1028
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "Color Details Dialog"
 msgstr "Farbdetails-Dialog"
 
-#: ../po/tmp/resources.xml.h:210
+#: ../gui/resources.xml:1029
 msgctxt "Accel Editor (descriptions)"
 msgid "Show a color details dialog with text entry."
 msgstr "Einen Farbdetails-Dialog mit Texteintrag anzeigen."
 
-#: ../po/tmp/resources.xml.h:211
+#: ../gui/resources.xml:1035
 msgctxt "Menu→Color"
 msgid "Next Palette Color"
 msgstr "Nächste Palettenfarbe"
 
-#: ../po/tmp/resources.xml.h:212
+#: ../gui/resources.xml:1036
 msgctxt "Accel Editor (descriptions)"
 msgid "Set painting color to the next color in the palette."
 msgstr "Nächste Farbe der Palette als Zeichenfarbe festlegen."
 
-#: ../po/tmp/resources.xml.h:213
+#: ../gui/resources.xml:1042
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "Previous Palette Color"
 msgstr "Vorherige Palettenfarbe"
 
-#: ../po/tmp/resources.xml.h:214
+#: ../gui/resources.xml:1043
 msgctxt "Accel Editor (descriptions)"
 msgid "Set painting color to the previous color in the palette."
 msgstr "Vorherige Farbe der Palette als Zeichenfarbe festlegen."
 
-#: ../po/tmp/resources.xml.h:215
+#: ../gui/resources.xml:1049
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "Add Color to Palette"
 msgstr "Farbe zur Palette hinzufügen"
 
-#: ../po/tmp/resources.xml.h:216
+#: ../gui/resources.xml:1050
 msgctxt "Accel Editor (descriptions)"
 msgid "Append the current painting color to the palette."
 msgstr "Die aktuelle Zeichenfarbe zur Palette hinzufügen."
 
-#: ../po/tmp/resources.xml.h:217
+#: ../gui/resources.xml:1058
 msgctxt "Menu (labels)"
 msgid "Layer"
 msgstr "Ebene"
 
-#: ../po/tmp/resources.xml.h:218
+#: ../gui/resources.xml:1064
 msgctxt "Menu→Layer→Properties (labels)"
 msgid "Opacity"
 msgstr "Deckkraft"
 
-#: ../po/tmp/resources.xml.h:219
+#: ../gui/resources.xml:1070
 msgctxt "Menu→Layer (labels)"
 msgid "Go to Layer"
 msgstr "Ebene wechseln"
 
-#: ../po/tmp/resources.xml.h:220
+#: ../gui/resources.xml:1076
 msgctxt "Menu→Layer (labels)"
 msgid "New Layer Below"
 msgstr "Neue Ebene darunter"
 
-#: ../po/tmp/resources.xml.h:221
+#: ../gui/resources.xml:1082
 msgctxt "Menu→Layer (labels)"
 msgid "Properties"
 msgstr "Eigenschaften"
 
-#: ../po/tmp/resources.xml.h:222
+#: ../gui/resources.xml:1090
 msgctxt "Menu (labels)"
 msgid "Scratchpad"
 msgstr "Notizblock"
 
-#: ../po/tmp/resources.xml.h:223
+#: ../gui/resources.xml:1096
 msgctxt "Menu→Scratchpad (labels), Accel Editor (labels)"
 msgid "New Scratchpad"
 msgstr "Neuer Notizblock"
 
-#: ../po/tmp/resources.xml.h:224
+#: ../gui/resources.xml:1097
 msgctxt "Accel Editor (descriptions)"
 msgid "Load the default scratchpad as a new scratchpad canvas."
 msgstr "Den Standardnotizblock als neuen Notizblockbereich laden."
 
-#: ../po/tmp/resources.xml.h:225
+#: ../gui/resources.xml:1104
 msgctxt "Menu→Scratchpad (labels), Accel Editor (labels)"
 msgid "Open Scratchpad…"
 msgstr "Notizblock öffnen …"
 
-#: ../po/tmp/resources.xml.h:226
+#: ../gui/resources.xml:1105
 msgctxt "Accel Editor (descriptions)"
 msgid "Load an image file on disk into the scratchpad."
 msgstr "Ein Bild von der Festplatte in den Notizblock laden."
 
-#: ../po/tmp/resources.xml.h:227
+#: ../gui/resources.xml:1112
 msgctxt "Menu→Scratchpad (labels), Accel Editor (labels)"
 msgid "Save Scratchpad"
 msgstr "Notizblock speichern"
 
-#: ../po/tmp/resources.xml.h:228
+#: ../gui/resources.xml:1113
 msgctxt "Accel Editor (descriptions)"
 msgid "Save the scratchpad to its existing file on disk."
 msgstr ""
 "Den Notizblock in seine vorhandenen Datei auf der Festplatte speichern."
 
-#: ../po/tmp/resources.xml.h:229
+#: ../gui/resources.xml:1120
 msgctxt "Menu→Scratchpad (labels), Accel Editor (labels)"
 msgid "Export Scratchpad As…"
 msgstr "Notizblock exportieren als …"
 
-#: ../po/tmp/resources.xml.h:230
+#: ../gui/resources.xml:1121
 msgctxt "Accel Editor (descriptions)"
 msgid "Export the scratchpad to disk, under a file name of your choice."
 msgstr "Den Notizblock in eine frei wählbare Datei exportieren."
 
-#: ../po/tmp/resources.xml.h:231
+#: ../gui/resources.xml:1128
 msgctxt "Menu→Scratchpad (labels), Accel Editor (labels)"
 msgid "Revert Scratchpad"
 msgstr "Notizblock zurücksetzen"
 
-#: ../po/tmp/resources.xml.h:232
+#: ../gui/resources.xml:1129
 msgctxt "Accel Editor (descriptions)"
 msgid "Revert the scratchpad to its last saved state."
 msgstr "Notizblock auf den zuletzt gespeicherten Status zurücksetzen."
 
-#: ../po/tmp/resources.xml.h:233
+#: ../gui/resources.xml:1136
 msgctxt "Menu→Scratchpad (labels), Accel Editor (labels)"
 msgid "Save Scratchpad as Default"
 msgstr "Notizblock als Standard speichern"
 
-#: ../po/tmp/resources.xml.h:234
+#: ../gui/resources.xml:1137
 msgctxt "Accel Editor (descriptions)"
 msgid "Save the scratchpad as the default for ‘New Scratchpad’."
 msgstr "Notizblock als Standard für „Neuer Notizblock“ speichern."
 
-#: ../po/tmp/resources.xml.h:235
+#: ../gui/resources.xml:1143
 msgctxt "Menu→Scratchpad (labels), Accel Editor (labels)"
 msgid "Clear Default Scratchpad"
 msgstr "Den Standardnotizblock leeren"
 
-#: ../po/tmp/resources.xml.h:236
+#: ../gui/resources.xml:1144
 msgctxt "Accel Editor (descriptions)"
 msgid "Clear the default scratchpad to a blank canvas."
 msgstr "Den Standardnotizblock für eine leere Arbeitsfläche leeren."
 
-#: ../po/tmp/resources.xml.h:237
+#: ../gui/resources.xml:1150
 msgctxt "Menu→Scratchpad (labels), Accel Editor (labels)"
 msgid "Copy Main Background to Scratchpad"
 msgstr "Hintergrund der Hauptzeichnung zum Notizblock kopieren"
 
-#: ../po/tmp/resources.xml.h:238
+#: ../gui/resources.xml:1151
 msgctxt "Accel Editor (descriptions)"
 msgid ""
 "Copy the background image from the working document into the Scratchpad."
 msgstr "Das Hintergrundbild vom Arbeitsdokument in den Notizblock kopieeren."
 
-#: ../po/tmp/resources.xml.h:239
+#: ../gui/resources.xml:1159
 msgctxt "Menu (labels)"
 msgid "Window"
 msgstr "Fenster"
 
-#: ../po/tmp/resources.xml.h:240
+#: ../gui/resources.xml:1167
 msgctxt "Menu→Brush (labels)"
 msgid "Brush"
 msgstr "Pinsel"
 
-#: ../po/tmp/resources.xml.h:241
+#: ../gui/resources.xml:1173
 msgctxt "Menu→Brush (labels)"
 msgid "Shortcut Keys"
 msgstr "Tastenkürzel"
 
-#: ../po/tmp/resources.xml.h:242
+#: ../gui/resources.xml:1179
 msgctxt "Menu→Brush→Shortcut Keys (labels), Accel Editor (labels)"
 msgid "Brush Shortcut Keys Help"
 msgstr "Hilfe für Pinsel-Tastenkürzel"
 
-#: ../po/tmp/resources.xml.h:243
+#: ../gui/resources.xml:1180
 msgctxt "Accel Editor (descriptions)"
 msgid "Show an explanation of how the shortcut keys work."
 msgstr "Eine Erklärung anzeigen wie die Tastenkürzel funktionieren."
 
-#: ../po/tmp/resources.xml.h:244
+#: ../gui/resources.xml:1187
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
 msgid "Change Brush…"
 msgstr "Pinsel wechseln …"
 
-#: ../po/tmp/resources.xml.h:245
+#: ../gui/resources.xml:1188
 msgctxt "Accel Editor (descriptions)"
 msgid "Pop up a brush changer under the cursor."
 msgstr "Einen Pinselwechsler am Cursor anzeigen."
 
-#: ../po/tmp/resources.xml.h:246
+#: ../gui/resources.xml:1195
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "Change Color…"
 msgstr "Farbe ändern …"
 
-#: ../po/tmp/resources.xml.h:247
+#: ../gui/resources.xml:1196
 msgctxt "Accel Editor (descriptions)"
 msgid ""
 "Pop up a color changer under the cursor, with all color selectors listed."
@@ -6260,12 +6182,12 @@ msgstr ""
 "Einen Farbwechsler mit Auflistung aller möglichen Farbwähler unter dem "
 "Zeiger anzeigen."
 
-#: ../po/tmp/resources.xml.h:248
+#: ../gui/resources.xml:1204
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "Change Color (fast subset)…"
 msgstr "Farbe ändern (Schnellauswahl) …"
 
-#: ../po/tmp/resources.xml.h:249
+#: ../gui/resources.xml:1205
 msgctxt "Accel Editor (descriptions)"
 msgid ""
 "Pop up a color changer under the cursor, with only single-click selectors "
@@ -6274,211 +6196,212 @@ msgstr ""
 "Einen Farbwechsler mit Auflistung aller Einfachklick-Farbwähler unter dem "
 "Zeiger anzeigen."
 
-#: ../po/tmp/resources.xml.h:250
+#: ../gui/resources.xml:1213
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
 msgid "Get More Brushes…"
 msgstr "Weitere Pinsel herunterladen …"
 
-#: ../po/tmp/resources.xml.h:251
+#: ../gui/resources.xml:1214
 msgctxt "Accel Editor (descriptions)"
 msgid "Download brushpacks from the MyPaint wiki."
 msgstr "Pinselpakete vom MyPaint-Wiki herunterladen."
 
-#: ../po/tmp/resources.xml.h:252
+#: ../gui/resources.xml:1221
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
 msgid "Import Brushes…"
 msgstr "Pinsel importieren …"
 
-#: ../po/tmp/resources.xml.h:253
+#: ../gui/resources.xml:1222
 msgctxt "Accel Editor (descriptions)"
 msgid "Load a brushpack from disk."
 msgstr "Einen Pinselsatz von der Festplatte laden."
 
-#: ../po/tmp/resources.xml.h:254
+#: ../gui/resources.xml:1231
 msgctxt "Menu (labels)"
 msgid "Help"
 msgstr "Hilfe"
 
-#: ../po/tmp/resources.xml.h:255
+#: ../gui/resources.xml:1237
 msgctxt "Menu→Help (labels), Accel Editor (labels)"
 msgid "Online Help"
 msgstr "Online-Hilfe"
 
-#: ../po/tmp/resources.xml.h:256
+#: ../gui/resources.xml:1238
 msgctxt "Accel Editor (descriptions)"
 msgid "Go to MyPaint’s documentation wiki."
 msgstr "Dokumentationswiki von MyPaint aufrufen."
 
-#: ../po/tmp/resources.xml.h:257
+#: ../gui/resources.xml:1246
 msgctxt "Menu→Help (labels), Accel Editor (labels)"
 msgid "About MyPaint"
 msgstr "Über MyPaint"
 
-#: ../po/tmp/resources.xml.h:258
+#: ../gui/resources.xml:1247
 msgctxt "Accel Editor (descriptions)"
 msgid "Show MyPaint’s license, version number, and credits."
 msgstr "Lizenz, Versionsnummer und Mitwirkende von MyPaint anzeigen."
 
-#: ../po/tmp/resources.xml.h:259
+#: ../gui/resources.xml:1256
 msgctxt "Menu→Help (labels)"
 msgid "Debug"
 msgstr "Fehlersuche"
 
-#: ../po/tmp/resources.xml.h:260
+#: ../gui/resources.xml:1262
 msgctxt "Menu→Help→Debug (labels), Accel Editor (labels)"
 msgid "Print Memory Leak Info to Console (Slow!)"
 msgstr "Speicherleck-Info auf der Konsole ausgeben (Langsam!)"
 
-#: ../po/tmp/resources.xml.h:261
+#: ../gui/resources.xml:1263
 msgctxt "Accel Editor (descriptions)"
 msgid "Debug memory leaks."
 msgstr "Speicherlecks debuggen."
 
-#: ../po/tmp/resources.xml.h:262
+#: ../gui/resources.xml:1269
 msgctxt "Menu→Help→Debug (labels), Accel Editor (labels)"
 msgid "Run Garbage Collector Now"
 msgstr "Speicherbereinigung jetzt ausführen"
 
-#: ../po/tmp/resources.xml.h:263
+#: ../gui/resources.xml:1270
 msgctxt "Accel Editor (descriptions)"
 msgid "Free memory used for Python objects which are no longer in use."
 msgstr "Speicher nicht mehr genutzter Python-Objekte freigeben."
 
-#: ../po/tmp/resources.xml.h:264
+#. FIXME: convert to a ToggleAction
+#: ../gui/resources.xml:1277
 msgctxt "Menu→Help→Debug (labels), Accel Editor (labels)"
 msgid "Start/Stop Profiling…"
 msgstr "„Python Profiling“ starten/stoppen …"
 
-#: ../po/tmp/resources.xml.h:265
+#: ../gui/resources.xml:1278
 msgctxt "Accel Editor (descriptions)"
 msgid "Start or Stop Python Profiling (cProfile)"
 msgstr "„Python Profiling“ starten/stoppen (cProfile)"
 
-#: ../po/tmp/resources.xml.h:266
+#: ../gui/resources.xml:1285
 msgctxt "Menu→Help→Debug (labels), Accel Editor (labels)"
 msgid "Simulate a Crash…"
 msgstr "Einen Absturz simulieren …"
 
-#: ../po/tmp/resources.xml.h:267
+#: ../gui/resources.xml:1286
 msgctxt "Accel Editor (descriptions)"
 msgid "Raise a Python exception, to test the crash dialog."
 msgstr ""
 "Einen Python-Ausnahmefehler verursachen, um den Absturzdialog zu testen."
 
-#: ../po/tmp/resources.xml.h:268
+#: ../gui/resources.xml:1294
 msgctxt "Menu (labels)"
 msgid "View"
 msgstr "Ansicht"
 
-#: ../po/tmp/resources.xml.h:269
+#: ../gui/resources.xml:1300
 msgctxt "Menu→View (labels)"
 msgid "Feedback"
 msgstr "Rückmeldung"
 
-#: ../po/tmp/resources.xml.h:270
+#: ../gui/resources.xml:1306
 msgctxt "Menu→View (labels)"
 msgid "Adjust View"
 msgstr "Ansicht anpassen"
 
-#: ../po/tmp/resources.xml.h:271
+#: ../gui/resources.xml:1312
 #, fuzzy
 msgctxt "Menu→View (labels), Accel Editor (labels)"
 msgid "Popup Main Menu"
 msgstr "Kontexmenü"
 
-#: ../po/tmp/resources.xml.h:272
+#: ../gui/resources.xml:1313
 msgctxt "Accel Editor (descriptions)"
 msgid "Show the main menu as a popup."
 msgstr "Das Hauptmenü als Popup zeigen."
 
-#: ../po/tmp/resources.xml.h:273
+#: ../gui/resources.xml:1320
 msgctxt "Menu→View (labels), Accel Editor (labels)"
 msgid "Fullscreen"
 msgstr "Vollbild"
 
-#: ../po/tmp/resources.xml.h:274
+#: ../gui/resources.xml:1321
 msgctxt "Accel Editor (descriptions)"
 msgid "Toggle between full-screen and windowed mode."
 msgstr "Zwischen Vollbild- und Fenstermodus umschalten."
 
-#: ../po/tmp/resources.xml.h:275
+#: ../gui/resources.xml:1332
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
 msgid "Edit Preferences"
 msgstr "Einstellungen"
 
-#: ../po/tmp/resources.xml.h:276
+#: ../gui/resources.xml:1333
 msgctxt "Accel Editor (descriptions)"
 msgid "Edit MyPaint’s global settings."
 msgstr "MyPaints globale Einstellungen bearbeiten."
 
-#: ../po/tmp/resources.xml.h:277
+#: ../gui/resources.xml:1339
 msgctxt "Help→Debug (labels), Accel Editor (labels)"
 msgid "Test Input Devices"
 msgstr "Eingabegeräte testen"
 
-#: ../po/tmp/resources.xml.h:278
+#: ../gui/resources.xml:1340
 msgctxt "Accel Editor (descriptions)"
 msgid "Show a dialog which captures all events your input devices send."
 msgstr "Einen Dialog anzeigen, der alle Ereignisse der Eingabegeräte erfasst."
 
-#: ../po/tmp/resources.xml.h:279
+#: ../gui/resources.xml:1347
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Background Chooser"
 msgstr "Hintergrundauswahl"
 
-#: ../po/tmp/resources.xml.h:280
+#: ../gui/resources.xml:1348
 msgctxt "Accel Editor (descriptions)"
 msgid "Change the background paper texture."
 msgstr "Die Hintergrund-Papiertextur ändern."
 
-#: ../po/tmp/resources.xml.h:281
+#: ../gui/resources.xml:1355
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
 msgid "Brush Settings Editor"
 msgstr "Pinseleinstellungen"
 
-#: ../po/tmp/resources.xml.h:282
+#: ../gui/resources.xml:1356
 msgctxt "Accel Editor (descriptions)"
 msgid "Edit the active brush’s settings."
 msgstr "Die Pinseleinstellungen des aktiven Pinsels bearbeiten."
 
-#: ../po/tmp/resources.xml.h:283
+#: ../gui/resources.xml:1364
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
 msgid "Brush Icon Editor"
 msgstr "Pinselsymboleditor"
 
-#: ../po/tmp/resources.xml.h:284
+#: ../gui/resources.xml:1365
 msgctxt "Accel Editor (descriptions)"
 msgid "Edit brush icons."
 msgstr "Pinselsymbole bearbeiten."
 
-#: ../po/tmp/resources.xml.h:285
+#: ../gui/resources.xml:1373
 msgctxt ""
 "Menu→Layer (labels), Menu→Window (labels), Toolbar (labels), Accel Editor "
 "(labels)"
 msgid "Layers Panel"
 msgstr "Ebenenleiste"
 
-#: ../po/tmp/resources.xml.h:286
+#: ../gui/resources.xml:1374
 msgctxt "Accel Editor (descriptions)"
 msgid "Dockable panel for managing layers."
 msgstr "Andockbare Leiste zur Verwaltung von Ebenen."
 
-#: ../po/tmp/resources.xml.h:287
+#: ../gui/resources.xml:1382
 msgctxt "Menu→Layers (labels), Accel Editor (labels)"
 msgid "Show Layers Panel"
 msgstr "Ebenenleiste anzeigen"
 
-#: ../po/tmp/resources.xml.h:288
+#: ../gui/resources.xml:1383
 msgctxt "Accel Editor (descriptions)"
 msgid "Reveal the Layers dockpanel (arrange layers, or assign modes)."
 msgstr "Das Ebenenpanel anzeigen (Ebenen anordnen oder Modi zuweisen)."
 
-#: ../po/tmp/resources.xml.h:289
+#: ../gui/resources.xml:1394
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "HCY Wheel"
 msgstr "HCY-Farbkreis"
 
-#: ../po/tmp/resources.xml.h:290
+#: ../gui/resources.xml:1395
 #, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid ""
@@ -6488,32 +6411,32 @@ msgstr ""
 "Andockbarer zylindrischer Farbton/Chrominanz/Luminanz-Farbwähler. Die "
 "kreisförmigen Scheiben sind equiluminant."
 
-#: ../po/tmp/resources.xml.h:291
+#: ../gui/resources.xml:1402
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "Color Palette"
 msgstr "Farbpalette"
 
-#: ../po/tmp/resources.xml.h:292
+#: ../gui/resources.xml:1403
 msgctxt "Accel Editor (descriptions)"
 msgid "Dockable palette color selector."
 msgstr "Andockbare Palette zur Farbauswahl."
 
-#: ../po/tmp/resources.xml.h:293
+#: ../gui/resources.xml:1411
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "HSV Wheel"
 msgstr "HSV-Farbkreis"
 
-#: ../po/tmp/resources.xml.h:294
+#: ../gui/resources.xml:1412
 msgctxt "Accel Editor (descriptions)"
 msgid "Dockable saturation and Value color changer."
 msgstr "Andockbares Menü für Sättigung und Farbwert."
 
-#: ../po/tmp/resources.xml.h:295
+#: ../gui/resources.xml:1419
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "HSV Cube"
 msgstr "HSV-Würfel"
 
-#: ../po/tmp/resources.xml.h:296
+#: ../gui/resources.xml:1420
 #, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid ""
@@ -6523,214 +6446,214 @@ msgstr ""
 "Andockbarer Farbwähler: HSV-Würfel, der rotiert werden kann, um verschiedene "
 "(planare) Scheiben anzuzeigen."
 
-#: ../po/tmp/resources.xml.h:297
+#: ../gui/resources.xml:1427
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "HSV Square"
 msgstr "HSV-Quadrat"
 
-#: ../po/tmp/resources.xml.h:298
+#: ../gui/resources.xml:1428
 #, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Dockable color selector: HSV square with Hue ring."
 msgstr "Andockbarer Farbwähler mit konzentrischen HSV-Ringen."
 
-#: ../po/tmp/resources.xml.h:299
+#: ../gui/resources.xml:1435
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "Component Sliders"
 msgstr "Farbkomponentenregler"
 
-#: ../po/tmp/resources.xml.h:300
+#: ../gui/resources.xml:1436
 msgctxt "Accel Editor (descriptions)"
 msgid "Dockable color selector showing individual components of the color."
 msgstr ""
 "Andockbarer Farbwähler, der die einzelnen Farbkomponenten der Farbe zeigt."
 
-#: ../po/tmp/resources.xml.h:301
+#: ../gui/resources.xml:1443
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "Liquid Wash"
 msgstr "Flüssige Tönung"
 
-#: ../po/tmp/resources.xml.h:302
+#: ../gui/resources.xml:1444
 msgctxt "Accel Editor (descriptions)"
 msgid "Dockable color selector showing a liquid-like wash of nearby colors."
 msgstr ""
 "Andockbarer Farbwähler, der eine flüssige Tönung benachbarter Farben zeigt."
 
-#: ../po/tmp/resources.xml.h:303
+#: ../gui/resources.xml:1451
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "Concentric Rings"
 msgstr "Konzentrische Ringe"
 
-#: ../po/tmp/resources.xml.h:304
+#: ../gui/resources.xml:1452
 msgctxt "Accel Editor (descriptions)"
 msgid "Dockable color selector with concentric HSV rings."
 msgstr "Andockbarer Farbwähler mit konzentrischen HSV-Ringen."
 
-#: ../po/tmp/resources.xml.h:305
+#: ../gui/resources.xml:1459
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "Crossed Bowl"
 msgstr "Farbschüssel"
 
-#: ../po/tmp/resources.xml.h:306
+#: ../gui/resources.xml:1460
 msgctxt "Accel Editor (descriptions)"
 msgid "Dockable color selector with HSV ramps crossing a radial bowl of color."
 msgstr ""
 "Andockbarer Farbwähler mit einer Farbschüssel und kreuzenden HSV-Rampen."
 
-#: ../po/tmp/resources.xml.h:307
+#: ../gui/resources.xml:1469
 msgctxt "Menu→Window (labels), Accel Editor (labels)"
 msgid "Scratchpad Panel"
 msgstr "Notizblockleiste"
 
-#: ../po/tmp/resources.xml.h:308
+#: ../gui/resources.xml:1470
 msgctxt "Accel Editor (descriptions)"
 msgid "Dockable Panel for mixing colors and testing brushes."
 msgstr ""
 
-#: ../po/tmp/resources.xml.h:309
+#: ../gui/resources.xml:1478
 msgctxt "Menu→Scratchpad (labels), Accel Editor (labels)"
 msgid "Show Scratchpad Panel"
 msgstr "Neue Notizblockleiste"
 
-#: ../po/tmp/resources.xml.h:310
+#: ../gui/resources.xml:1479
 msgctxt "Accel Editor (descriptions)"
 msgid "Reveal the Scratchpad dockpanel (mix colors and make sketches)."
 msgstr "Notizblockleiste anzeigen (Farben mischen und Skizzen zeichnen)."
 
-#: ../po/tmp/resources.xml.h:311
+#: ../gui/resources.xml:1488
 msgctxt "Menu→Window (labels), Toolbar (labels), Accel Editor (labels)"
 msgid "Preview Panel"
 msgstr "Vorschauleiste"
 
-#: ../po/tmp/resources.xml.h:312
+#: ../gui/resources.xml:1489
 msgctxt "Accel Editor (descriptions)"
 msgid "Dockable panel for an overview and navigation of the whole canvas."
 msgstr ""
 
-#: ../po/tmp/resources.xml.h:313
+#: ../gui/resources.xml:1497
 msgctxt "Menu→View (labels), Accel Editor (labels)"
 msgid "Preview"
 msgstr "Vorschau"
 
-#: ../po/tmp/resources.xml.h:314
+#: ../gui/resources.xml:1498
 msgctxt "Accel Editor (descriptions)"
 msgid "Reveal the Preview dockpanel (overview of the whole drawing area)."
 msgstr "Vorschaupanel zeigen (Übersicht des kompletten Zeichenbereichs)."
 
-#: ../po/tmp/resources.xml.h:315
+#: ../gui/resources.xml:1508
 msgctxt "Menu→Window (labels), Toolbar (labels), Accel Editor (labels)"
 msgid "Tool Options Panel"
 msgstr "Werkzeugeinstellungsleiste"
 
-#: ../po/tmp/resources.xml.h:316
+#: ../gui/resources.xml:1509
 msgctxt "Accel Editor (descriptions)"
 msgid "Dockable panel for adjusting the options with the activated tool."
 msgstr ""
 
-#: ../po/tmp/resources.xml.h:317
+#: ../gui/resources.xml:1517
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
 msgid "Show Tool Options Panel"
 msgstr "Werkzeugoptionen anzeigen"
 
-#: ../po/tmp/resources.xml.h:318
+#: ../gui/resources.xml:1518
 msgctxt "Accel Editor (descriptions)"
 msgid "Reveal the Tool Options dockpanel (options for the current tool)."
 msgstr ""
 "Werkzeugeinstellungspanel zeigen (Einstellungen des aktuellen Werkzeugs)."
 
-#: ../po/tmp/resources.xml.h:319
+#: ../gui/resources.xml:1528
 msgctxt "Menu→Window (labels), Toolbar (labels), Accel Editor (labels)"
 msgid "Brush & Color History Panel"
 msgstr "Pinsel- und Farbhistorienleiste"
 
-#: ../po/tmp/resources.xml.h:320
+#: ../gui/resources.xml:1529
 msgctxt "Accel Editor (descriptions)"
 msgid "Dockable panel for viewing recently changed colors and brushes."
 msgstr ""
 
-#: ../po/tmp/resources.xml.h:321
+#: ../gui/resources.xml:1537
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
 msgid "Recent Brushes & Colors"
 msgstr "Zuletzt verwendete Pinsel und Farben"
 
-#: ../po/tmp/resources.xml.h:322
+#: ../gui/resources.xml:1538
 msgctxt "Accel Editor (descriptions)"
 msgid "Reveal the History panel (recently used brushes and colors)."
 msgstr "Historienleiste zeigen (kürzlich verwendete Pinsel und Farben)."
 
-#: ../po/tmp/resources.xml.h:323
+#: ../gui/resources.xml:1548
 msgctxt "Menu→View (labels), Accel Editor (labels)"
 msgid "Hide Controls in Fullscreen"
 msgstr "Menüs im Vollbildmodus verbergen"
 
-#: ../po/tmp/resources.xml.h:324
+#: ../gui/resources.xml:1549
 msgctxt "Accel Editor (descriptions)"
 msgid "Toggle automatic hiding of the user interface in fullscreen."
 msgstr ""
 "Automatisches Verstecken der Benutzeroberfläche bei Vollbild umschalten."
 
-#: ../po/tmp/resources.xml.h:325
+#: ../gui/resources.xml:1556
 msgctxt "Menu→View→Feedback (labels), Accel Editor (labels)"
 msgid "Show Zoom Level"
 msgstr "Vergrößerung anzeigen"
 
-#: ../po/tmp/resources.xml.h:326
+#: ../gui/resources.xml:1557
 msgctxt "Accel Editor (descriptions)"
 msgid "Toggle zoom level feedback."
 msgstr "Vergrößerungsoverlay umschalten."
 
-#: ../po/tmp/resources.xml.h:327
+#: ../gui/resources.xml:1563
 msgctxt "Menu→View→Feedback (labels), Accel Editor (labels)"
 msgid "Show Last Painting Position"
 msgstr "Letzte Zeichenposition anzeigen"
 
-#: ../po/tmp/resources.xml.h:328
+#: ../gui/resources.xml:1564
 msgctxt "Accel Editor (descriptions)"
 msgid "Toggle feedback showing where the last stroke ended."
 msgstr ""
 "Letzte Zeichenposition zeigen (Ende des letzten Pinselstrichs) umschalten."
 
-#: ../po/tmp/resources.xml.h:329
+#: ../gui/resources.xml:1572
 msgctxt "Menu→View (labels)"
 msgid "Display Filter"
 msgstr "Ansicht filtern"
 
-#: ../po/tmp/resources.xml.h:330
+#: ../gui/resources.xml:1578
 msgctxt "Menu→View→Display Filter (labels), Accel Editor (labels)"
 msgid "Display Colors Normally"
 msgstr "Farben normal darstellen"
 
-#: ../po/tmp/resources.xml.h:331
+#: ../gui/resources.xml:1579
 msgctxt "Accel Editor (descriptions)"
 msgid "Filter colors: show colors unchanged."
 msgstr "Farben filtern: Farben unverändert darstellen."
 
-#: ../po/tmp/resources.xml.h:332
+#: ../gui/resources.xml:1587
 msgctxt "Menu→View→Display Filter (labels), Accel Editor (labels)"
 msgid "Display Colors as Greyscale"
 msgstr "Farben als Graustufen darstellen"
 
-#: ../po/tmp/resources.xml.h:333
+#: ../gui/resources.xml:1588
 msgctxt "Accel Editor (descriptions)"
 msgid "Filter colors: show brightness only (HCY/YCbCr Luma)"
 msgstr "Farben filtern: nur Leuchtdichte darstellen (HCY/YCbCr-Luminanz)"
 
-#: ../po/tmp/resources.xml.h:334
+#: ../gui/resources.xml:1595
 msgctxt "Menu→View→Display Filter (labels), Accel Editor (labels)"
 msgid "Display Colors Inverted"
 msgstr "Farben invertiert darstellen"
 
-#: ../po/tmp/resources.xml.h:335
+#: ../gui/resources.xml:1596
 msgctxt "Accel Editor (descriptions)"
 msgid "Filter colors: inverse video. Black is white and red is cyan."
 msgstr "Farben filtern: invertieren. Schwarz ist weiß und rot ist cyan."
 
-#: ../po/tmp/resources.xml.h:336
+#: ../gui/resources.xml:1603
 msgctxt "Menu→View→Display Filter (labels), Accel Editor (labels)"
 msgid "Display Colors with Simulated Insensitivity to Red"
 msgstr "Farben mit simulierter Insensitivität für Rot darstellen"
 
-#: ../po/tmp/resources.xml.h:337
+#: ../gui/resources.xml:1604
 msgctxt "Accel Editor (descriptions)"
 msgid ""
 "Filter colors to simulate deuteranopia, a common form of color blindness."
@@ -6738,269 +6661,269 @@ msgstr ""
 "Farben filtern, um Deuteranopie, eine gängige Form der Farbenblindheit, zu "
 "simulieren."
 
-#: ../po/tmp/resources.xml.h:338
+#: ../gui/resources.xml:1611
 msgctxt "Menu→View→Display Filter (labels), Accel Editor (labels)"
 msgid "Display Colors with Simulated Insensitivity to Green"
 msgstr "Farben mit simulierter Insensitivität für Grün darstellen"
 
-#: ../po/tmp/resources.xml.h:339
+#: ../gui/resources.xml:1612
 msgctxt "Accel Editor (descriptions)"
 msgid "Filter colors to simulate protanopia, a common form of color blindness."
 msgstr ""
 "Farben filtern, um Protanopie, eine gängige Form der Farbenblindheit, zu "
 "simulieren."
 
-#: ../po/tmp/resources.xml.h:340
+#: ../gui/resources.xml:1619
 msgctxt "Menu→View→Display Filter (labels), Accel Editor (labels)"
 msgid "Display Colors with Simulated Insensitivity to Blue"
 msgstr "Farben mit simulierter Insensitivität für Blau darstellen"
 
-#: ../po/tmp/resources.xml.h:341
+#: ../gui/resources.xml:1620
 msgctxt "Accel Editor (descriptions)"
 msgid "Filter colors to simulate tritanopia, a rare form of color blindness."
 msgstr ""
 "Farben filtern, um Tritanopie, eine gängige Form der Farbenblindheit, zu "
 "simulieren."
 
-#: ../po/tmp/resources.xml.h:342
+#: ../gui/resources.xml:1635
 msgctxt "Menu→Edit→Current Mode (labels)"
 msgid "Freehand"
 msgstr "Freihandzeichnen"
 
-#: ../po/tmp/resources.xml.h:343
+#: ../gui/resources.xml:1636
 msgctxt "Toolbar (short labels)"
 msgid "Freehand"
 msgstr "Freihandzeichnen"
 
-#: ../po/tmp/resources.xml.h:344
+#: ../gui/resources.xml:1637
 msgctxt "Toolbar (tooltips)"
 msgid "Freehand: draw and paint freely, without geometric constraints."
 msgstr "Freihandzeichnen: frei ohne geometrische Einschränkungen zeichnen."
 
-#: ../po/tmp/resources.xml.h:345
+#: ../gui/resources.xml:1646
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
 msgid "Freehand"
 msgstr "Freihandzeichnen"
 
-#: ../po/tmp/resources.xml.h:346
+#: ../gui/resources.xml:1647
 msgctxt "Accel Editor (descriptions)"
 msgid "Draw and paint freely, without geometric constraints."
 msgstr "Freihandzeichnen: frei ohne geometrische Einschränkungen zeichnen."
 
-#: ../po/tmp/resources.xml.h:347
+#: ../gui/resources.xml:1657
 msgctxt "Menu→Edit→Current Mode (labels)"
 msgid "Pan View"
 msgstr "Ansicht verschieben"
 
-#: ../po/tmp/resources.xml.h:348
+#: ../gui/resources.xml:1658
 msgctxt "Toolbar (short labels)"
 msgid "Pan"
 msgstr "Verschieben"
 
-#: ../po/tmp/resources.xml.h:349
+#: ../gui/resources.xml:1659
 msgctxt "Toolbar (tooltips)"
 msgid "Pan View: move your view of the canvas horizontally or vertically."
 msgstr ""
 "Ansicht verschieben: die Ansicht der Leinwand horizontal oder vertikal "
 "bewegen."
 
-#: ../po/tmp/resources.xml.h:350
+#: ../gui/resources.xml:1667
 msgctxt "Menu→View (labels), Accel Editor (labels)"
 msgid "Pan View"
 msgstr "Ansicht verschieben"
 
-#: ../po/tmp/resources.xml.h:351
+#: ../gui/resources.xml:1668
 msgctxt "Accel Editor (descriptions)"
 msgid "Interactively move your view of the canvas horizontally or vertically."
 msgstr "Die Ansicht der Leinwand interaktiv horizontal oder vertikal bewegen."
 
-#: ../po/tmp/resources.xml.h:352
+#: ../gui/resources.xml:1677
 msgctxt "Menu→Edit→Current Mode (labels)"
 msgid "Rotate View"
 msgstr "Ansicht drehen"
 
-#: ../po/tmp/resources.xml.h:353
+#: ../gui/resources.xml:1678
 msgctxt "Toolbar (short labels)"
 msgid "Rotate"
 msgstr "Drehen"
 
-#: ../po/tmp/resources.xml.h:354
+#: ../gui/resources.xml:1679
 msgctxt "Toolbar (tooltips)"
 msgid "Rotate View: tilt your view of the canvas."
 msgstr "Ansicht drehen: die Ansicht der Leinwand drehen."
 
-#: ../po/tmp/resources.xml.h:355
+#: ../gui/resources.xml:1687
 msgctxt "Menu→View (labels), Accel Editor (labels)"
 msgid "Rotate View"
 msgstr "Ansicht drehen"
 
-#: ../po/tmp/resources.xml.h:356
+#: ../gui/resources.xml:1688
 msgctxt "Accel Editor (descriptions)"
 msgid "Interactively rotate your view of the canvas."
 msgstr "Interaktiv die Ansicht der Leinwand drehen."
 
-#: ../po/tmp/resources.xml.h:357
+#: ../gui/resources.xml:1697
 msgctxt "Menu→Edit→Current Mode (labels)"
 msgid "Zoom View"
 msgstr "Ansicht zoomen"
 
-#: ../po/tmp/resources.xml.h:358
+#: ../gui/resources.xml:1698
 msgctxt "Toolbar (short labels)"
 msgid "Zoom"
 msgstr "Vergrößerung"
 
-#: ../po/tmp/resources.xml.h:359
+#: ../gui/resources.xml:1699
 msgctxt "Toolbar (tooltips)"
 msgid "Zoom View: zoom into or out of the canvas."
 msgstr "Ansicht vergrößern: in Leinwand hinein/heraus zoomen."
 
-#: ../po/tmp/resources.xml.h:360
+#: ../gui/resources.xml:1707
 msgctxt "Menu→View (labels), Accel Editor (labels)"
 msgid "Zoom View"
 msgstr "Ansicht zoomen"
 
-#: ../po/tmp/resources.xml.h:361
+#: ../gui/resources.xml:1708
 msgctxt "Accel Editor (descriptions)"
 msgid "Interactively zoom into or out of the canvas."
 msgstr "Interaktiv in die Leinwand hinein oder heraus zoomen."
 
-#: ../po/tmp/resources.xml.h:362
+#: ../gui/resources.xml:1717
 msgctxt "Menu→Edit→Current Mode (labels)"
 msgid "Lines and Curves"
 msgstr "Linien und Kurven"
 
-#: ../po/tmp/resources.xml.h:363
+#: ../gui/resources.xml:1718
 msgctxt "Toolbar (short labels)"
 msgid "Lines"
 msgstr "Linien"
 
-#: ../po/tmp/resources.xml.h:364
+#: ../gui/resources.xml:1719
 msgctxt "Toolbar (tooltips)"
 msgid "Lines and Curves: draw straight or curved lines."
 msgstr "Linien und Kurven: gerade oder gekrümmte Linien zeichnen."
 
-#: ../po/tmp/resources.xml.h:365
+#: ../gui/resources.xml:1727
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
 msgid "Lines and Curves"
 msgstr "Linien und Kurven"
 
-#: ../po/tmp/resources.xml.h:366
+#: ../gui/resources.xml:1728
 msgctxt "Accel Editor (descriptions)"
 msgid "Draw straight or curved lines."
 msgstr "Gerade oder gekrümmte Linien zeichnen."
 
-#: ../po/tmp/resources.xml.h:367
+#: ../gui/resources.xml:1738
 msgctxt "Menu→Edit→Current Mode (labels)"
 msgid "Connected Lines"
 msgstr "Verbundene Linien"
 
-#: ../po/tmp/resources.xml.h:368
+#: ../gui/resources.xml:1739
 msgctxt "Toolbar (short labels)"
 msgid "Conn. Lines"
 msgstr "Verb. Linien"
 
-#: ../po/tmp/resources.xml.h:369
+#: ../gui/resources.xml:1740
 msgctxt "Toolbar (tooltips)"
 msgid "Connected Lines: draw sequences of straight or curved lines."
 msgstr "Verbundene Linien: Abfolge gerader oder gekrümmter Linien zeichnen."
 
-#: ../po/tmp/resources.xml.h:370
+#: ../gui/resources.xml:1748
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
 msgid "Connected Lines"
 msgstr "Verbundene Linien"
 
-#: ../po/tmp/resources.xml.h:371
+#: ../gui/resources.xml:1749
 msgctxt "Accel Editor (descriptions)"
 msgid "Draw sequences of straight or curved lines."
 msgstr "Abfolgen von geraden oder gekrümmten Linien zeichnen."
 
-#: ../po/tmp/resources.xml.h:372
+#: ../gui/resources.xml:1759
 msgctxt "Menu→Edit→Current Mode (labels)"
 msgid "Ellipses and Circles"
 msgstr "Ellipsen und Kreise"
 
-#: ../po/tmp/resources.xml.h:373
+#: ../gui/resources.xml:1760
 msgctxt "Toolbar (short labels)"
 msgid "Ellipse"
 msgstr "Ellipse"
 
-#: ../po/tmp/resources.xml.h:374
+#: ../gui/resources.xml:1761
 msgctxt "Toolbar (tooltips)"
 msgid "Ellipses and Circles: draw rounded shapes."
 msgstr "Ellipsen und Kreise: abgerundete Formen zeichnen."
 
-#: ../po/tmp/resources.xml.h:375
+#: ../gui/resources.xml:1769
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
 msgid "Ellipses and Circles"
 msgstr "Ellipsen und Kreise"
 
-#: ../po/tmp/resources.xml.h:376
+#: ../gui/resources.xml:1770
 msgctxt "Accel Editor (descriptions)"
 msgid "Draw circles and ellipses."
 msgstr "Kreise und Ellipsen zeichnen."
 
-#: ../po/tmp/resources.xml.h:377
+#: ../gui/resources.xml:1780
 msgctxt "Menu→Edit→Current Mode (labels)"
 msgid "Inking"
 msgstr "Tusche"
 
-#: ../po/tmp/resources.xml.h:378
+#: ../gui/resources.xml:1781
 msgctxt "Toolbar (short labels)"
 msgid "Ink"
 msgstr "Tinte"
 
-#: ../po/tmp/resources.xml.h:379
+#: ../gui/resources.xml:1782
 msgctxt "Toolbar (tooltips)"
 msgid "Inking: draw smooth controlled lines."
 msgstr "Tusche: weiche kontrollierte Linien zeichnen."
 
-#: ../po/tmp/resources.xml.h:380
+#: ../gui/resources.xml:1790
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
 msgid "Inking"
 msgstr "Tusche"
 
-#: ../po/tmp/resources.xml.h:381
+#: ../gui/resources.xml:1791
 msgctxt "Accel Editor (descriptions)"
 msgid "Draw smooth controlled lines."
 msgstr "Weiche kontrollierte Linien zeichnen."
 
-#: ../po/tmp/resources.xml.h:382
+#: ../gui/resources.xml:1801
 msgctxt "Menu→Edit→Current Mode (labels)"
 msgid "Reposition Layer"
 msgstr "Ebene neu positionieren"
 
-#: ../po/tmp/resources.xml.h:383
+#: ../gui/resources.xml:1802
 msgctxt "Toolbar (short labels)"
 msgid "Layer Pos."
 msgstr "Ebenen Pos."
 
-#: ../po/tmp/resources.xml.h:384
+#: ../gui/resources.xml:1803
 msgctxt "Toolbar (tooltips)"
 msgid "Reposition Layer: move the current layer on the canvas."
 msgstr ""
 "Ebene neu positionieren: die aktuelle Ebene auf der Leinwand verschieben."
 
-#: ../po/tmp/resources.xml.h:385
+#: ../gui/resources.xml:1811
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Reposition Layer"
 msgstr "Ebene neu positionieren"
 
-#: ../po/tmp/resources.xml.h:386
+#: ../gui/resources.xml:1812
 msgctxt "Accel Editor (description)"
 msgid "Interactively move the current layer on the canvas."
 msgstr "Interaktiv die aktuelle Ebene auf der Zeichenfläche verschieben."
 
-#: ../po/tmp/resources.xml.h:387
+#: ../gui/resources.xml:1822
 msgctxt "Menu→Edit→Current Mode (labels)"
 msgid "Edit Frame"
 msgstr "Rahmen bearbeiten"
 
-#: ../po/tmp/resources.xml.h:388
+#: ../gui/resources.xml:1823
 msgctxt "Toolbar (short labels)"
 msgid "Frame"
 msgstr "Rahmen"
 
-#: ../po/tmp/resources.xml.h:389
+#: ../gui/resources.xml:1824
 msgctxt "Toolbar (tooltips)"
 msgid ""
 "Edit Frame: define a frame around the document to give it a finite size."
@@ -7008,12 +6931,12 @@ msgstr ""
 "Rahmen bearbeiten: dem Dokument durch einen Rahmen eine endliche Größe "
 "zuweisen."
 
-#: ../po/tmp/resources.xml.h:390
+#: ../gui/resources.xml:1832
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "Edit Frame"
 msgstr "Rahmen bearbeiten"
 
-#: ../po/tmp/resources.xml.h:391
+#: ../gui/resources.xml:1833
 msgctxt "Accel Editor (descriptions)"
 msgid ""
 "Interactively define a frame around the document to give it a finite size."
@@ -7021,120 +6944,132 @@ msgstr ""
 "Rahmen bearbeiten: dem Dokument durch einen Rahmen eine endliche Größe "
 "zuweisen. Der Rahmen wird nur beim Exportieren verwendet."
 
-#: ../po/tmp/resources.xml.h:392
+#: ../gui/resources.xml:1842
 msgctxt "Menu→Edit→Current Mode (labels)"
 msgid "Edit Painting Symmetry"
 msgstr "Symmetrieachse bearbeiten"
 
-#: ../po/tmp/resources.xml.h:393
+#: ../gui/resources.xml:1843
 msgctxt "Toolbar (short labels)"
 msgid "Symmetry"
 msgstr "Symmetrie"
 
-#: ../po/tmp/resources.xml.h:394
+#: ../gui/resources.xml:1844
 msgctxt "Toolbar (tooltips)"
 msgid "Edit Painting Symmetry: adjust the axis used for symmetrical painting."
 msgstr ""
 "Symmetrieachse bearbeiten: die Achse für symmetrisches Zeichnen anpassen."
 
-#: ../po/tmp/resources.xml.h:395
+#: ../gui/resources.xml:1852
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "Edit Painting Symmetry"
 msgstr "Symmetrieachse bearbeiten"
 
-#: ../po/tmp/resources.xml.h:396
+#: ../gui/resources.xml:1853
 msgctxt "Accel Editor (description)"
 msgid "Interactively adjust the axis used for symmetrical painting."
 msgstr "Interaktiv die Achse für symmetrisches Zeichnen anpassen."
 
-#: ../po/tmp/resources.xml.h:397
+#: ../gui/resources.xml:1863
 msgctxt "Menu→Edit→Current Mode (labels)"
 msgid "Pick Color"
 msgstr "Farbpipette"
 
-#: ../po/tmp/resources.xml.h:398
+#: ../gui/resources.xml:1864
 msgctxt "Toolbar (short labels)"
 msgid "Pick Col."
 msgstr "Farb. wählen"
 
-#: ../po/tmp/resources.xml.h:399
+#: ../gui/resources.xml:1865
 msgctxt "Toolbar (tooltips)"
 msgid "Pick Color: set the painting color from screen pixels."
 msgstr "Farbpipette: Zeichenfarbe eines Bildschirmpixels wählen."
 
-#: ../po/tmp/resources.xml.h:400
+#: ../gui/resources.xml:1897
 #, fuzzy
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "Pick Color Hue"
 msgstr "Farbpipette"
 
-#: ../po/tmp/resources.xml.h:401
+#: ../gui/resources.xml:1898
 #, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid ""
 "Set the painting Hue from screen pixels while preserving the Chroma and Luma."
 msgstr "Die Zeichenfarbe von Bildschirmpixeln festlegen."
 
-#: ../po/tmp/resources.xml.h:402
+#: ../gui/resources.xml:1906
 #, fuzzy
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "Pick Color Chroma"
 msgstr "Farbpipette"
 
-#: ../po/tmp/resources.xml.h:403
+#: ../gui/resources.xml:1907
 #, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid ""
 "Set the painting Chroma from screen pixels while preserving the Hue and Luma."
 msgstr "Die Zeichenfarbe von Bildschirmpixeln festlegen."
 
-#: ../po/tmp/resources.xml.h:404
+#: ../gui/resources.xml:1915
 #, fuzzy
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "Pick Color Luma"
 msgstr "Farbpipette"
 
-#: ../po/tmp/resources.xml.h:405
+#: ../gui/resources.xml:1916
 #, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid ""
 "Set the painting Luma from screen pixels while preserving the Hue and Chroma."
 msgstr "Die Zeichenfarbe von Bildschirmpixeln festlegen."
 
-#: ../po/tmp/resources.xml.h:406
+#: ../gui/resources.xml:1924
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "Pick Color"
 msgstr "Farbpipette"
 
-#: ../po/tmp/resources.xml.h:407
+#: ../gui/resources.xml:1925
 msgctxt "Accel Editor (descriptions)"
 msgid "Set the painting color from screen pixels."
 msgstr "Die Zeichenfarbe von Bildschirmpixeln festlegen."
 
-#: ../po/tmp/resources.xml.h:408
+#: ../gui/resources.xml:1935
 msgctxt "Menu→Edit→Current Mode (labels)"
 msgid "Flood Fill"
 msgstr "Füllen"
 
-#: ../po/tmp/resources.xml.h:409
+#: ../gui/resources.xml:1936
 msgctxt "Toolbar (short labels)"
 msgid "Fill"
 msgstr "Füllen"
 
-#: ../po/tmp/resources.xml.h:410
+#: ../gui/resources.xml:1937
 msgctxt "Toolbar (tooltips)"
 msgid "Flood Fill: fill an area with color."
 msgstr "Füllen: einen Bereich mit Farbe füllen."
 
-#: ../po/tmp/resources.xml.h:411
+#: ../gui/resources.xml:1945
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
 msgid "Flood Fill"
 msgstr "Füllen"
 
-#: ../po/tmp/resources.xml.h:412
+#: ../gui/resources.xml:1946
 msgctxt "Accel Editor (descriptions)"
 msgid "Fill an area with color."
 msgstr "Eine Fläche mit Farbe füllen."
+
+#~ msgctxt "Layer properties widget → <category labels>"
+#~ msgid "Name"
+#~ msgstr "Name"
+
+#~ msgctxt "Layer properties widget → <category labels>"
+#~ msgid "Mode"
+#~ msgstr "Modus"
+
+#~ msgctxt "Layer properties widget → <category labels>"
+#~ msgid "Opacity"
+#~ msgstr "Deckkraft"
 
 #~ msgctxt "file handling: open failed (statusbar)"
 #~ msgid "Could not load “{file_basename}”."

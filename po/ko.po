@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mypaint v2.0.0-alpha.12-327-ga332f03\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-02-12 21:56+0100\n"
+"POT-Creation-Date: 2020-03-03 00:01+0100\n"
 "PO-Revision-Date: 2020-02-17 20:58+0000\n"
 "Last-Translator: geun-tak Jeong <beroberos@gmail.com>\n"
 "Language-Team: Korean <https://hosted.weblate.org/projects/mypaint/mypaint/"
@@ -166,113 +166,113 @@ msgstr ""
 msgid "{filename} has zero size (w={w}, h={h})"
 msgstr "{filename}이 빈 파일입니다. (w={w}, h={h})"
 
-#: ../gui/brusheditor.py:92
+#: ../gui/brusheditor.py:112
 msgctxt "brush settings editor: subwindow title"
 msgid "Brush Settings Editor"
 msgstr "브러시 설정 편집기"
 
-#: ../gui/brusheditor.py:272
+#: ../gui/brusheditor.py:293
 msgctxt "brush settings list: brush metadata texts group"
 msgid "About"
 msgstr "정보"
 
-#: ../gui/brusheditor.py:283
+#: ../gui/brusheditor.py:304
 msgctxt "brush settings list: setting group"
 msgid "Experimental"
 msgstr "실험적인"
 
-#: ../gui/brusheditor.py:290
+#: ../gui/brusheditor.py:311
 msgctxt "brush settings list: setting group"
 msgid "Basic"
 msgstr "기본"
 
-#: ../gui/brusheditor.py:309
+#: ../gui/brusheditor.py:330
 msgctxt "brush settings list: setting group"
 msgid "Opacity"
 msgstr "불투명도"
 
-#: ../gui/brusheditor.py:321
+#: ../gui/brusheditor.py:342
 msgctxt "brush settings list: setting group"
 msgid "Dabs"
 msgstr "뎁스"
 
-#: ../gui/brusheditor.py:332
+#: ../gui/brusheditor.py:353
 msgctxt "brush settings list: setting group"
 msgid "Smudge"
 msgstr "자국"
 
-#: ../gui/brusheditor.py:346
+#: ../gui/brusheditor.py:367
 msgctxt "brush settings list: setting group"
 msgid "Speed"
 msgstr "속도"
 
-#: ../gui/brusheditor.py:360
+#: ../gui/brusheditor.py:381
 msgctxt "brush settings list: setting group"
 msgid "Directional Offsets"
 msgstr "방향성 오프셋"
 
-#: ../gui/brusheditor.py:378
+#: ../gui/brusheditor.py:399
 msgctxt "brush settings list: setting group"
 msgid "Tracking"
 msgstr "트래킹"
 
-#: ../gui/brusheditor.py:389
+#: ../gui/brusheditor.py:410
 msgctxt "brush settings list: setting group"
 msgid "Stroke"
 msgstr "스트로크"
 
-#: ../gui/brusheditor.py:400
+#: ../gui/brusheditor.py:421
 msgctxt "brush settings list: setting group"
 msgid "Color"
 msgstr "색상"
 
-#: ../gui/brusheditor.py:418
+#: ../gui/brusheditor.py:439
 msgctxt "brush settings list: setting group"
 msgid "GridMap"
 msgstr "그리드맵"
 
-#: ../gui/brusheditor.py:429
+#: ../gui/brusheditor.py:450
 msgctxt "brush settings list: setting group"
 msgid "Custom"
 msgstr "사용자 정의"
 
-#: ../gui/brusheditor.py:495
+#: ../gui/brusheditor.py:516
 msgctxt "brush settings editor: save brush: error message"
 msgid "No brush selected, please use “Add As New” instead."
 msgstr "목록에 해당 브러시가 없습니다. \"브러시 추가\"를 먼저 하십시오."
 
-#: ../gui/brusheditor.py:520
+#: ../gui/brusheditor.py:541
 msgctxt "brush settings editor: rename brush: error message"
 msgid "No brush selected!"
 msgstr "선택한 브러시가 없음!"
 
-#: ../gui/brusheditor.py:529
+#: ../gui/brusheditor.py:550
 msgctxt "brush settings editor: rename brush: dialog title"
 msgid "Rename Brush"
 msgstr "브러시 이름 변경"
 
-#: ../gui/brusheditor.py:548
+#: ../gui/brusheditor.py:569
 msgctxt "brush settings editor: rename brush: error message"
 msgid "A brush with this name already exists!"
 msgstr "이 이름을 가진 브러시가 이미 존재합니다!"
 
-#: ../gui/brusheditor.py:582
+#: ../gui/brusheditor.py:603
 msgctxt "brush settings editor: delete brush: error message"
 msgid "No brush selected!"
 msgstr "브러시 선택이 없음!"
 
-#: ../gui/brusheditor.py:588
+#: ../gui/brusheditor.py:609
 #, python-brace-format
 msgctxt "brush settings editor: delete brush: confirm dialog question"
 msgid "Really delete brush “{brush_name}” from disk?"
 msgstr "정말 디스크에서 \"{brush_name}” 브러시를 삭제 하시겠습니까?"
 
-#: ../gui/brusheditor.py:707
+#: ../gui/brusheditor.py:728
 msgctxt "brush settings editor: header: fallback name"
 msgid "(Unnamed brush)"
 msgstr "(이름 없는 브러시)"
 
-#: ../gui/brusheditor.py:714
+#: ../gui/brusheditor.py:735
 #, python-brace-format
 msgctxt "brush settings editor: header: is-modified hint"
 msgid "{brush_name} [unsaved]"
@@ -363,7 +363,7 @@ msgid "Use the default icon"
 msgstr "기본 아이콘을 사용"
 
 #. TRANSLATORS: save edits to a brush icon
-#: ../gui/brushiconeditor.py:190 ../po/tmp/brusheditor.glade.h:3
+#: ../gui/brushiconeditor.py:190 ../gui/brusheditor.glade:111
 msgid "Save"
 msgstr "저장"
 
@@ -873,15 +873,15 @@ msgstr "HSV 색조 및 값"
 msgid "HSV Hue and Saturation"
 msgstr "HSV 색조 및 채도"
 
-#: ../gui/colors/hsvcube.py:59
+#: ../gui/colors/hsvcube.py:58
 msgid "Rotate cube (show different axes)"
 msgstr "큐브를 회전 (다른 축 표시)"
 
-#: ../gui/colors/hsvcube.py:86
+#: ../gui/colors/hsvcube.py:85
 msgid "HSV Cube"
 msgstr "HSV 큐브"
 
-#: ../gui/colors/hsvcube.py:90
+#: ../gui/colors/hsvcube.py:89
 msgid "An HSV cube which can be rotated to show different planar slices."
 msgstr "다른 평면 조각을 표시하도록 회전 하는 HSV 큐브."
 
@@ -1190,13 +1190,13 @@ msgstr "파일 기반"
 
 #. This refers to a version of MyPaint like 1.0, 1.1, 1.2 etc
 #: ../gui/compatibility.py:35 ../gui/drawwindow.py:276
-#: ../po/tmp/preferenceswindow.glade.h:113
+#: ../gui/preferenceswindow.glade:1581
 msgctxt "Prefs Dialog|Compatibility"
 msgid "1.x"
 msgstr "1.x"
 
 #. This refers to a version of MyPaint like 1.0, 1.1, 1.2 etc
-#: ../gui/compatibility.py:36 ../po/tmp/preferenceswindow.glade.h:117
+#: ../gui/compatibility.py:36 ../gui/preferenceswindow.glade:1600
 msgctxt "Prefs Dialog|Compatibility"
 msgid "2.x"
 msgstr "2.x"
@@ -1397,7 +1397,7 @@ msgstr "브러시를 덮어쓸까요?"
 msgid "Replace"
 msgstr "교체"
 
-#: ../gui/dialogs.py:137 ../gui/dialogs.py:207 ../po/tmp/brusheditor.glade.h:11
+#: ../gui/dialogs.py:137 ../gui/dialogs.py:207 ../gui/brusheditor.glade:189
 msgid "Rename"
 msgstr "이름 바꾸기"
 
@@ -1559,7 +1559,7 @@ msgid "%s - MyPaint"
 msgstr "%s - MyPaint"
 
 #. TRANSLATORS: window title for use without a filename
-#: ../gui/drawwindow.py:273 ../po/tmp/mypaint.glade.h:1
+#: ../gui/drawwindow.py:273 ../gui/mypaint.glade:8
 msgid "MyPaint"
 msgstr "MyPaint"
 
@@ -3559,7 +3559,8 @@ msgstr "안료"
 #: ../lib/modes.py:55
 msgid ""
 "Similar to mixing actual pigments by upsampling to 10 spectral channels."
-msgstr "10 개의 스펙트럼 채널로 업샘플링하여 실제 안료를 혼합하는 것과 유사합니다."
+msgstr ""
+"10 개의 스펙트럼 채널로 업샘플링하여 실제 안료를 혼합하는 것과 유사합니다."
 
 #: ../lib/modes.py:58
 msgid "Multiply"
@@ -3822,17 +3823,17 @@ msgstr "스노우플릭"
 msgid "PNG reader failed: %s"
 msgstr "PNG 읽기 실패함: %s"
 
-#: ../po/tmp/autorecover.glade.h:1
+#: ../gui/autorecover.glade:18
 msgid "Recover interrupted work?"
 msgstr "중단된 작업을 복구합니까?"
 
 #. Whether to show the dialog when MyPaint starts
-#: ../po/tmp/autorecover.glade.h:3
+#: ../gui/autorecover.glade:38
 msgctxt "Autosave Recovery dialog|"
 msgid "_Look for backups at startup"
 msgstr "시작시 백업을 찾기(_L)"
 
-#: ../po/tmp/autorecover.glade.h:4
+#: ../gui/autorecover.glade:42
 msgctxt "Autosave Recovery dialog|Show Dialog at Startup checkbutton|"
 msgid ""
 "Run this autosave recovery dialog when MyPaint starts, if there are files to "
@@ -3848,39 +3849,39 @@ msgstr ""
 "니다."
 
 #. Deletes the selected autosave backup file.
-#: ../po/tmp/autorecover.glade.h:8
+#: ../gui/autorecover.glade:60
 msgctxt "Autosave Recovery dialog|"
 msgid "_Delete…"
 msgstr "삭제(_D)…"
 
-#: ../po/tmp/autorecover.glade.h:9
+#: ../gui/autorecover.glade:66
 msgctxt "Autosave Recovery dialog|Delete button|"
 msgid "Delete this backup from the disk."
 msgstr "디스크에서이 백업을 삭제."
 
 #. Recover in the sense or retrieval or salvage from a backup file. The user is asked to save the retrieved file immediately afterwards, hence the ellipsis.
-#: ../po/tmp/autorecover.glade.h:11
+#: ../gui/autorecover.glade:78
 msgctxt "Autosave Recovery dialog|"
 msgid "_Recover & Save…"
 msgstr "복구 및 저장(_R)…"
 
-#: ../po/tmp/autorecover.glade.h:12
+#: ../gui/autorecover.glade:84
 msgctxt "Autosave Recovery dialog|Recover button|"
 msgid "Save this backup to disk, then continue working on it."
 msgstr "이 백업을 디스크에 저장 한 다음 작업을 계속."
 
 #. Do not recover any autosaves; take no action.
-#: ../po/tmp/autorecover.glade.h:14
+#: ../gui/autorecover.glade:95
 msgctxt "Autosave Recovery dialog|"
 msgid "Decide _Later"
 msgstr "나중에 결정(_L)"
 
-#: ../po/tmp/autorecover.glade.h:15
+#: ../gui/autorecover.glade:101
 msgctxt "Autosave Recovery dialog|Cancel button|"
 msgid "Start work on a new canvas. These backups will be retained."
 msgstr "새로운 캔버스에서 작업을 시작합니다. 현재 백업은 유지됩니다."
 
-#: ../po/tmp/autorecover.glade.h:16
+#: ../gui/autorecover.glade:122
 msgctxt "Autosave Recovery dialog|"
 msgid ""
 "MyPaint crashed with unsaved work, but it makes rolling backups. You can "
@@ -3891,101 +3892,101 @@ msgstr ""
 "한 자동 백업 중 하나에서 작업 파일을 복구 할 수 있습니다. 계속하기 전에 저장"
 "할 위치를 묻는 메시지가 나타납니다."
 
-#: ../po/tmp/autorecover.glade.h:17
+#: ../gui/autorecover.glade:157
 msgid "Thumbnail"
 msgstr "썸네일"
 
-#: ../po/tmp/autorecover.glade.h:18
+#: ../gui/autorecover.glade:171
 msgid "Description"
 msgstr "설명"
 
-#: ../po/tmp/brusheditor.glade.h:1
+#: ../gui/brusheditor.glade:88
 msgid "Live update"
 msgstr "실시간 업데이트"
 
-#: ../po/tmp/brusheditor.glade.h:2
+#: ../gui/brusheditor.glade:93
 msgid ""
 "Update the last stroke on the canvas with the settings in this window, in "
 "real time"
 msgstr "실시간으로, 이 창의 설정으로 캔버스의 마지막 스트로크를 업데이트"
 
-#: ../po/tmp/brusheditor.glade.h:4
+#: ../gui/brusheditor.glade:116
 msgid "Save these settings to the brush"
 msgstr "브러시에 설정을 저장"
 
-#: ../po/tmp/brusheditor.glade.h:5
+#: ../gui/brusheditor.glade:132
 msgid "Edit Icon"
 msgstr "아이콘을 편집"
 
-#: ../po/tmp/brusheditor.glade.h:6
+#: ../gui/brusheditor.glade:137
 msgid ""
 "Edit this brush's icon in a separate window (you will be able to use any "
 "brush to draw it)"
 msgstr ""
 "별도의 창에서 이 브러시의 아이콘을 편집 (어떤 브러시라도 편집에 사용 가능)"
 
-#: ../po/tmp/brusheditor.glade.h:7
+#: ../gui/brusheditor.glade:151
 msgid "Delete"
 msgstr "삭제"
 
-#: ../po/tmp/brusheditor.glade.h:8
+#: ../gui/brusheditor.glade:156
 msgid "Delete this brush from the disk"
 msgstr "디스크에서 이 브러시를 삭제"
 
-#: ../po/tmp/brusheditor.glade.h:9
+#: ../gui/brusheditor.glade:170
 msgid "Copy to New"
 msgstr "새로 복사"
 
-#: ../po/tmp/brusheditor.glade.h:10
+#: ../gui/brusheditor.glade:175
 msgid "Copy these settings and the current brush's icon to a new brush"
 msgstr "새로운 브러시에 현재 설정과 현재의 브러시의 아이콘을 복사"
 
-#: ../po/tmp/brusheditor.glade.h:12
+#: ../gui/brusheditor.glade:194
 msgid "Rename this brush"
 msgstr "이 브러시의 이름을 바꿉니다"
 
-#: ../po/tmp/brusheditor.glade.h:13
+#: ../gui/brusheditor.glade:239
 msgid "Brush Setting"
 msgstr "브러시 설정"
 
-#: ../po/tmp/brusheditor.glade.h:14
+#: ../gui/brusheditor.glade:340
 msgctxt "brush editor|metadata settings|labels for widgets|tooltips|"
 msgid "Short description for use in tooltips"
 msgstr "툴팁에 사용되는 간단한 설명"
 
 #. Description for user tooltips
-#: ../po/tmp/brusheditor.glade.h:16
+#: ../gui/brusheditor.glade:343
 msgctxt "brush editor|metadata settings|labels|"
 msgid "Description:"
 msgstr "설명:"
 
-#: ../po/tmp/brusheditor.glade.h:17
+#: ../gui/brusheditor.glade:355
 msgctxt "brush editor|metadata settings|labels for widgets|tooltips|"
 msgid "Brush developer's notes"
 msgstr "브러시 개발자의 노트"
 
 #. Notes for developers
-#: ../po/tmp/brusheditor.glade.h:19
+#: ../gui/brusheditor.glade:358
 msgctxt "brush editor|metadata settings|labels|"
 msgid "Notes:"
 msgstr "참고:"
 
-#: ../po/tmp/brusheditor.glade.h:20
+#: ../gui/brusheditor.glade:420
 msgid ""
 "Starting value for this brush setting. The brush dynamics below act on this."
 msgstr ""
 "이 브러시 설정의 시작 값입니다. 아래의 브러시 역학이 이에 따라 행동합니다."
 
 #. field label
-#: ../po/tmp/brusheditor.glade.h:22
+#: ../gui/brusheditor.glade:426
 msgid "Value:"
 msgstr "값:"
 
-#: ../po/tmp/brusheditor.glade.h:23
+#: ../gui/brusheditor.glade:491
 msgid "Reset this input to have no effect on the setting"
 msgstr "설정에 영향을 미치지 않음 이 입력을 재설정"
 
-#: ../po/tmp/brusheditor.glade.h:24
+#: ../gui/brusheditor.glade:521
 msgid ""
 "Minimum value for the output axis.\n"
 "This can be set using the main slider for {dname}."
@@ -3993,7 +3994,7 @@ msgstr ""
 "출력 축의 최소값입니다.\n"
 "{dname}의 메인 슬라이더를 사용하여 설정할 수 있습니다."
 
-#: ../po/tmp/brusheditor.glade.h:26
+#: ../gui/brusheditor.glade:540
 msgid ""
 "Maximum value for the output axis.\n"
 "This can be set using the main slider for {dname}."
@@ -4001,23 +4002,23 @@ msgstr ""
 "출력 축의 최대값입니다.\n"
 "{dname}의 메인 슬라이더를 사용하여 설정할 수 있습니다."
 
-#: ../po/tmp/brusheditor.glade.h:28
+#: ../gui/brusheditor.glade:562
 msgid "Output"
 msgstr "출력"
 
-#: ../po/tmp/brusheditor.glade.h:29
+#: ../gui/brusheditor.glade:583
 msgid "Input"
 msgstr "입력"
 
-#: ../po/tmp/brusheditor.glade.h:30
+#: ../gui/brusheditor.glade:601
 msgid "Adjusts the maximum value"
 msgstr "최대 값을 조절합니다"
 
-#: ../po/tmp/brusheditor.glade.h:31
+#: ../gui/brusheditor.glade:634
 msgid "Adjusts the minimum value"
 msgstr "최소 값을 조절합니다"
 
-#: ../po/tmp/brusheditor.glade.h:32
+#: ../gui/brusheditor.glade:666
 msgid ""
 "Minimum value for the input axis.\n"
 "Use the popup scale to adjust this."
@@ -4025,7 +4026,7 @@ msgstr ""
 "입력 축의 최소값입니다.\n"
 "팝업 스케일을 사용하여 이를 조절합니다."
 
-#: ../po/tmp/brusheditor.glade.h:34
+#: ../gui/brusheditor.glade:684
 msgid ""
 "Maximum value for the input axis.\n"
 "Use the popup scale to adjust this."
@@ -4033,47 +4034,49 @@ msgstr ""
 "입력 축의 최대값입니다.\n"
 "팝업 스케일을 사용하여 이를 조절합니다."
 
-#: ../po/tmp/brusheditor.glade.h:36
+#: ../gui/brusheditor.glade:739
 msgid "Variation of the base value by stylus input and other criteria"
 msgstr "스타일러스 입력 및 기타 기준에 따른 베이스 값의 변화"
 
-#: ../po/tmp/brusheditor.glade.h:37
+#: ../gui/brusheditor.glade:746
 msgid "Brush Dynamics"
 msgstr "브러시 역학"
 
-#: ../po/tmp/brusheditor.glade.h:38
+#: ../gui/brusheditor.glade:780
 msgid "Adjust this input mapping in detail"
 msgstr "세부 사항에서 이 입력 매핑을 조절하기"
 
-#: ../po/tmp/brusheditor.glade.h:39
+#: ../gui/brusheditor.glade:802
 msgid "{tooltip}"
 msgstr "{tooltip}"
 
 #. field name (template)
-#: ../po/tmp/brusheditor.glade.h:41
+#: ../gui/brusheditor.glade:809
 msgid "{dname}:"
 msgstr "{dname}:"
 
-#: ../po/tmp/brusheditor.glade.h:42
+#: ../gui/brusheditor.glade:841
 msgid "Brush dynamics are not available for this setting."
 msgstr "이 설정에서는 브러시 역학을 사용할 수 없습니다."
 
-#: ../po/tmp/brusheditor.glade.h:43
+#: ../gui/brusheditor.glade:851
 msgid "<big><b>No Brush Dynamics</b></big>"
 msgstr "<big><b>브러시 역학 없음</b></big>"
 
-#: ../po/tmp/inktool.glade.h:1
+#: ../gui/inktool.glade:43
 msgctxt "Inking tool options: point value sliders: labels: tooltips"
 msgid "Pressure value for the current point"
 msgstr "현재 포인트에 대한 압력 값"
 
-#: ../po/tmp/inktool.glade.h:2
+#: ../gui/inktool.glade:48
 msgctxt "Inking tool options: point value sliders: labels"
 msgid "Press:"
 msgstr "누르기:"
 
-#. The meaning of negative values is *not* affected by text direction.&#10;The widget
-#: ../po/tmp/inktool.glade.h:4
+#. The meaning of negative values is *not* affected by text direction.
+#. The widget's RTL/LTR layout, however, *is* affected.
+#. The value (and signs) *is* shown.
+#: ../gui/inktool.glade:82 ../gui/inktool.glade:102
 msgctxt "Inking tool options: point value sliders: labels: tooltips"
 msgid ""
 "Tilt in the direction of the canvas’s X axis.\n"
@@ -4084,216 +4087,107 @@ msgstr ""
 "값이 0이면 펜이 수직임을 나타냅니다.\n"
 "음수 값은 왼쪽 기울기를 의미합니다."
 
-#: ../po/tmp/inktool.glade.h:7
+#: ../gui/inktool.glade:89
 msgctxt "Inking tool options: point value sliders: labels"
 msgid "X-tilt:"
 msgstr "X-기울기:"
 
-#: ../po/tmp/inktool.glade.h:8
+#: ../gui/inktool.glade:109
 msgctxt "Inking tool options: point value sliders: labels"
 msgid "Y-tilt:"
 msgstr "Y-기울기:"
 
-#: ../po/tmp/inktool.glade.h:9
+#: ../gui/inktool.glade:144
 msgid "Tilt in the canvas Y axis"
 msgstr "캔버스 Y 축에 기울기"
 
-#: ../po/tmp/inktool.glade.h:10
+#: ../gui/inktool.glade:166
 msgctxt "Inking tool options: point value sliders: labels: tooltips"
 msgid "Time since the previous point, in seconds"
 msgstr "이전 지점으로부터의 시간 (초)"
 
-#: ../po/tmp/inktool.glade.h:11
+#: ../gui/inktool.glade:171
 msgctxt "Inking tool options: point value sliders: labels"
 msgid "Time:"
 msgstr "시간:"
 
-#: ../po/tmp/inktool.glade.h:12
+#: ../gui/inktool.glade:204
 msgctxt "Inking tool options: node delete button: label"
 msgid "Delete Point"
 msgstr "포인트를 삭제"
 
-#: ../po/tmp/inktool.glade.h:13
+#: ../gui/inktool.glade:208
 msgctxt "Inking tool options: node delete button: tooltip"
 msgid "Delete the currently selected point"
 msgstr "현재 선택된 포인트을 삭제"
 
-#: ../po/tmp/inktool.glade.h:14 ../po/tmp/resources.xml.h:184
+#: ../gui/inktool.glade:220 ../gui/resources.xml:897
 msgid "Insert Point"
 msgstr "포인트를 삽입"
 
-#: ../po/tmp/inktool.glade.h:15 ../po/tmp/resources.xml.h:188
+#: ../gui/inktool.glade:252 ../gui/resources.xml:911
 msgid "Simplify Points"
 msgstr "포인트를 단순화"
 
-#: ../po/tmp/inktool.glade.h:16
+#: ../gui/inktool.glade:256
 msgid "Simplify the curve using the Reumann-Witkam algorithm."
 msgstr "Reumann-Witkam 알고리즘을 사용하여 곡선을 단순화합니다."
 
-#: ../po/tmp/inktool.glade.h:17 ../po/tmp/resources.xml.h:190
+#: ../gui/inktool.glade:268 ../gui/resources.xml:918
 msgid "Cull Points"
 msgstr "포인트를 도태"
 
-#: ../po/tmp/inktool.glade.h:18
+#: ../gui/inktool.glade:272
 msgid "Cull every other point from the curve."
 msgstr "커브에서 다른 모든 포인트를 도태시킵니다."
 
-#: ../po/tmp/layerprops.glade.h:1
-msgctxt "Layer properties widget → Name → label tooltip"
-msgid "The layer’s unique name."
-msgstr "레이어의 고유 이름입니다."
-
-#: ../po/tmp/layerprops.glade.h:2
-msgctxt "Layer properties widget → <category labels>"
-msgid "Name"
-msgstr "이름"
-
-#. “Dropdown” = colloquial for a GtkComboBox control.
-#: ../po/tmp/layerprops.glade.h:4
-msgctxt "Layer properties widget → Mode → label tooltip"
-msgid ""
-"How the layer combines with what’s behind it.\n"
-"\n"
-"Each mode has a different visual effect. Refer to the dropdown’s tooltip for "
-"each one to discover what they all do."
-msgstr ""
-"레이어가 뒤에 있는 레이어와 결합하는 방법\n"
-"\n"
-"각 모드마다 다른 시각 효과가 있습니다. 각 기능에 대한 설명을 보려면 드롭 다운"
-"의 툴팁을 참조하십시오."
-
-#: ../po/tmp/layerprops.glade.h:7
-msgctxt "Layer properties widget → <category labels>"
-msgid "Mode"
-msgstr "모드"
-
-#: ../po/tmp/layerprops.glade.h:9
-#, no-c-format
-msgctxt "Layer properties widget → Opacity → label tooltip"
-msgid ""
-"How much the layer combines with what’s behind it.\n"
-"\n"
-"At 0%, the layer doesn’t contribute at all."
-msgstr ""
-"뒤에 있는 레이어와 결합하는 방법\n"
-"\n"
-"0%에서는 레이어가 결합에 전혀 기여하지 않습니다."
-
-#: ../po/tmp/layerprops.glade.h:12
-msgctxt "Layer properties widget → <category labels>"
-msgid "Opacity"
-msgstr "불투명도"
-
-#: ../po/tmp/layerprops.glade.h:13
-msgctxt "Layer properties widget → Flags → label tooltip"
-msgid ""
-"Special layer flags.\n"
-"\n"
-"Refer to each button’s tooltip to find out what each flag does."
-msgstr ""
-"특수 레이어 플래그.\n"
-"\n"
-"각 플래그의 기능을 알아 보려면 각 버튼의 툴팁을 참조하십시오."
-
-#: ../po/tmp/layerprops.glade.h:16
-msgctxt "Layer properties widget → <category labels>"
-msgid "Flags"
-msgstr "플래그"
-
-#: ../po/tmp/layerprops.glade.h:17
-msgctxt "Layer properties widget → Flags → Eye togglebutton → tooltip"
-msgid ""
-"Layer visible or hidden.\n"
-"\n"
-"An open eye icon here indicates that the layer is visible.\n"
-"\n"
-"When the eye icon is closed, the layer is hidden. Hidden layers are "
-"completely invisible: they have no effect on what's displayed. You cannot "
-"paint to hidden layers, for safety.\n"
-"\n"
-"When a layer group is hidden, all of the layers inside it are made invisible "
-"too."
-msgstr ""
-"레이어가 보이거나 숨겨져 있습니다.\n"
-"\n"
-"열린 눈 모양 아이콘은 레이어가 표시되어 있음을 나타냅니다. \n"
-"\n"
-"눈 아이콘이 닫히면 레이어가 숨겨집니다. 숨겨진 레이어는 완전히 보이지 않습니"
-"다. 표시되는 내용에는 영향을 미치지 않습니다. 안전을 위해 숨겨진 레이어에는 "
-"페인트를 칠할 수 없습니다.\n"
-"\n"
-"레이어 그룹이 숨겨지면 그 안의 모든 레이어도 보이지 않게됩니다."
-
-#: ../po/tmp/layerprops.glade.h:24
-msgctxt "Layer properties widget → Flags → Padlock togglebutton → tooltip"
-msgid ""
-"Layer editable or locked.\n"
-"\n"
-"An open padlock icon indicates that the layer can be edited.\n"
-"\n"
-"When a layer is locked, you cannot paint to it or otherwise change its pixel "
-"content. You cannot pick strokes from it either, so this is useful when "
-"painting under a sketch.\n"
-"\n"
-"When a layer group is locked, none of the layers inside it can be edited."
-msgstr ""
-"레이어 편집 가능 또는 잠김\n"
-"\n"
-"열린 자물쇠 아이콘은 도면층을 편집 할 수 있음을 나타냅니다.\n"
-"\n"
-"레이어가 잠겨 있으면 페인트하거나 픽셀 내용을 변경할 수 없습니다. 스트로크도 "
-"선택할 수 없으므로 스케치에서 페인팅 할 때 유용합니다.\n"
-"\n"
-"레이어 그룹이 잠겨 있으면 그 안에있는 레이어를 편집 할 수 없습니다."
-
-#: ../po/tmp/layervis.glade.h:1
+#: ../gui/layervis.glade:15
 msgctxt "Layers window: view list controls: tooltips"
 msgid "The currently active view."
 msgstr "현재 활성화된 보기입니다."
 
-#: ../po/tmp/layervis.glade.h:2
+#: ../gui/layervis.glade:36
 msgctxt "Layers window: view list controls: tooltips"
 msgid "Rename the active view."
 msgstr "활성 보기의 이름을 바꿉니다."
 
-#: ../po/tmp/layervis.glade.h:3
+#: ../gui/layervis.glade:57
 msgctxt "Layers window: view list controls: tooltips"
 msgid "Remove the active view."
 msgstr "활성 보기를 제거합니다."
 
-#: ../po/tmp/layervis.glade.h:4
+#: ../gui/layervis.glade:78
 msgctxt "Layers window: view list controls: tooltips"
 msgid "Snapshot visible layers as a new view."
 msgstr "새로운 보기로 보이는 레이어를 스냅샷."
 
-#: ../po/tmp/layervis.glade.h:5
+#: ../gui/layervis.glade:99
 msgctxt "Layers window: view list controls: tooltips"
 msgid "Lock or unlock the active view."
 msgstr "활성 보기를 잠그거나 잠금 해제합니다."
 
-#: ../po/tmp/mypaint.glade.h:2
+#: ../gui/mypaint.glade:65
 msgctxt "footer: color picker button: tooltip"
 msgid "Pick color"
 msgstr "색상을 선택"
 
-#: ../po/tmp/mypaint.glade.h:3
+#: ../gui/mypaint.glade:102
 msgctxt "Footerbar|"
 msgid "Edit the current color in detail"
 msgstr "디테일에서 현재의 색상을 편집"
 
-#: ../po/tmp/mypaint.glade.h:4
+#: ../gui/mypaint.glade:126
 msgctxt "Footerbar|"
 msgid "Add the current color to the palette"
 msgstr "현재의 색상을 팔레트에 추가"
 
-#: ../po/tmp/mypaint.glade.h:5
+#: ../gui/mypaint.glade:161
 msgctxt "Footerbar|"
 msgid "Canvas scale and rotation"
 msgstr "캔버스 규모와 회전"
 
 #. str.format() template
-#: ../po/tmp/mypaint.glade.h:8
-#, no-c-format
+#: ../gui/mypaint.glade:163
 msgctxt "Footerbar|"
 msgid ""
 "Z: {scale:.1f}%\n"
@@ -4302,107 +4196,102 @@ msgstr ""
 "Z: {scale:.1f}%\n"
 "R: {rotation:+.1f}°"
 
-#: ../po/tmp/mypaint.glade.h:10
+#: ../gui/mypaint.glade:249
 msgctxt "footer: context picker button: tooltip"
 msgid "Pick brushstroke settings, stroke color, and layer"
 msgstr "브러시 스트로크 설정, 스트로크 색상 및 레이어를 선택"
 
-#: ../po/tmp/preferenceswindow.glade.h:1
+#: ../gui/preferenceswindow.glade:24
 msgctxt "Prefs Dialog|Saving|Save Formats and Locations|Default|"
 msgid "OpenRaster (*.ora)"
 msgstr "OpenRaster (*.ora)"
 
-#: ../po/tmp/preferenceswindow.glade.h:2
+#: ../gui/preferenceswindow.glade:28
 msgctxt "Prefs Dialog|Saving|Save Formats and Locations|Default|"
 msgid "PNG solid with background (*.png)"
 msgstr "배경과 그림이 하나인 이미지 (*.png)"
 
-#: ../po/tmp/preferenceswindow.glade.h:4
-#, no-c-format
+#: ../gui/preferenceswindow.glade:32
 msgctxt "Prefs Dialog|Saving|Save Formats and Locations|Default|"
 msgid "JPEG 90% quality (*.jpg; *.jpeg)"
 msgstr "90% 품질의 JPEG 이미지 (*.jpg; *.jpeg)"
 
-#: ../po/tmp/preferenceswindow.glade.h:6
-#, no-c-format
+#: ../gui/preferenceswindow.glade:46
 msgctxt "Prefs Dialog|View|Zoom|Default|"
 msgid "25%"
 msgstr "25%"
 
-#: ../po/tmp/preferenceswindow.glade.h:8
-#, no-c-format
+#: ../gui/preferenceswindow.glade:50
 msgctxt "Prefs Dialog|View|Zoom|Default|"
 msgid "50%"
 msgstr "50%"
 
-#: ../po/tmp/preferenceswindow.glade.h:10
-#, no-c-format
+#: ../gui/preferenceswindow.glade:54
 msgctxt "Prefs Dialog|View|Zoom|Default|"
 msgid "100%"
 msgstr "100%"
 
-#: ../po/tmp/preferenceswindow.glade.h:12
-#, no-c-format
+#: ../gui/preferenceswindow.glade:58
 msgctxt "Prefs Dialog|View|Zoom|Default|"
 msgid "200%"
 msgstr "200%"
 
-#: ../po/tmp/preferenceswindow.glade.h:13
+#: ../gui/preferenceswindow.glade:72
 msgctxt "Prefs Dialog|View|Cursors|Freehand Cursor|Type|"
 msgid "Circle with light outline"
 msgstr "얇은 아웃라인을 가진 원형"
 
-#: ../po/tmp/preferenceswindow.glade.h:14
+#: ../gui/preferenceswindow.glade:76
 msgctxt "Prefs Dialog|View|Cursors|Freehand Cursor|Type|"
 msgid "Circle with medium outline"
 msgstr "중간 아웃라인을 가진 원형"
 
-#: ../po/tmp/preferenceswindow.glade.h:15
+#: ../gui/preferenceswindow.glade:80
 msgctxt "Prefs Dialog|View|Cursors|Freehand Cursor|Type|"
 msgid "Circle with heavy outline"
 msgstr "굵은 아웃라인을 가진 원형"
 
-#: ../po/tmp/preferenceswindow.glade.h:16
+#: ../gui/preferenceswindow.glade:84
 msgctxt "Prefs Dialog|View|Cursors|Freehand Cursor|Type|"
 msgid "Crosshair"
 msgstr "십자선"
 
 #. Graph x-axis label
-#: ../po/tmp/preferenceswindow.glade.h:18
+#: ../gui/preferenceswindow.glade:145
 msgctxt "Prefs Dialog|Pen Input|Input Device Settings|Pressure Mapping|"
 msgid "Input Pressure"
 msgstr "입력 압력"
 
 #. Graph y-axis label
-#: ../po/tmp/preferenceswindow.glade.h:20
+#: ../gui/preferenceswindow.glade:159
 msgctxt "Prefs Dialog|Pen Input|Input Device Settings|Pressure Mapping|"
 msgid "Brush Pressure"
 msgstr "브러시 압력"
 
 #. Graph label, range (0...1)
-#: ../po/tmp/preferenceswindow.glade.h:22
+#: ../gui/preferenceswindow.glade:174 ../gui/preferenceswindow.glade:202
 msgctxt "Prefs Dialog|Pen Input|Input Device Settings|Pressure Mapping|"
 msgid "0.0"
 msgstr "0.0"
 
 #. Graph label, range (0...1)
-#: ../po/tmp/preferenceswindow.glade.h:24
+#: ../gui/preferenceswindow.glade:188 ../gui/preferenceswindow.glade:217
 msgctxt "Prefs Dialog|Pen Input|Input Device Settings|Pressure Mapping|"
 msgid "1.0"
 msgstr "1.0"
 
-#: ../po/tmp/preferenceswindow.glade.h:25
+#: ../gui/preferenceswindow.glade:251
 msgctxt "Prefs Dialog|Pen Input|"
 msgid "<b>Global Pressure Mapping</b>"
 msgstr "<b>글로벌 압력 매핑</b>"
 
 #. Tab label in preferences dialog
-#: ../po/tmp/preferenceswindow.glade.h:27
+#: ../gui/preferenceswindow.glade:261
 msgctxt "Prefs Dialog|"
 msgid "Pressure"
 msgstr "압력"
 
-#: ../po/tmp/preferenceswindow.glade.h:28
+#: ../gui/preferenceswindow.glade:302
 msgctxt "Prefs Dialog|Devices|"
 msgid ""
 "Here you can restrict pointing devices to specific tasks on the canvas, or "
@@ -4411,16 +4300,16 @@ msgstr ""
 "여기서 당신은 마우스 포인터를 캔버스의 특정 지역만 사용가능하게 제한하거나 포"
 "인터가 드로잉에 작은 문제가 된다면 무시하게 만들 수 있습니다."
 
-#: ../po/tmp/preferenceswindow.glade.h:29
+#: ../gui/preferenceswindow.glade:324
 msgctxt "Prefs Dialog|Button|"
 msgid "<b>Device Usage</b>"
 msgstr "<b>장치 사용</b>"
 
-#: ../po/tmp/preferenceswindow.glade.h:30
+#: ../gui/preferenceswindow.glade:337
 msgid "Devices"
 msgstr "장치"
 
-#: ../po/tmp/preferenceswindow.glade.h:31
+#: ../gui/preferenceswindow.glade:380
 msgctxt "Prefs Dialog|Button|Pointer Button Mappings|"
 msgid ""
 "• The space bar can be used like Button2.\n"
@@ -4429,57 +4318,57 @@ msgstr ""
 "스페이바를 button2 처럼 사용할 수 있습니다.\n"
 "눌렀을경우 몇몇 종의 타블랫 패드의 버튼이 작동이 되지 않을 수 있습니다"
 
-#: ../po/tmp/preferenceswindow.glade.h:33
+#: ../gui/preferenceswindow.glade:401
 msgctxt "Prefs Dialog|Button|"
 msgid "<b>Pointer Button Mappings</b>"
 msgstr "<b>포인터 버튼 매핑</b>"
 
 #. Tab label in preferences dialog
-#: ../po/tmp/preferenceswindow.glade.h:35
+#: ../gui/preferenceswindow.glade:414
 msgctxt "Prefs Dialog|"
 msgid "Buttons"
 msgstr "버튼"
 
-#: ../po/tmp/preferenceswindow.glade.h:36
+#: ../gui/preferenceswindow.glade:447
 msgctxt "Prefs Dialog|Button|"
 msgid "<b>Keyboard Mappings</b>"
 msgstr "<b>키보드 매핑</b>"
 
-#: ../po/tmp/preferenceswindow.glade.h:37
+#: ../gui/preferenceswindow.glade:460
 msgid "Keys"
 msgstr "키"
 
-#: ../po/tmp/preferenceswindow.glade.h:38
+#: ../gui/preferenceswindow.glade:480
 msgctxt "Prefs Dialog|Load & Save|Saving|"
 msgid "Default file format:"
 msgstr "기본 파일 형식:"
 
-#: ../po/tmp/preferenceswindow.glade.h:39
+#: ../gui/preferenceswindow.glade:495
 msgctxt "Prefs Dialog|Load & Save|Saving|"
 msgid "Prefix when saving scraps:"
 msgstr "저장하는 스크랩 접두사:"
 
-#: ../po/tmp/preferenceswindow.glade.h:40
+#: ../gui/preferenceswindow.glade:546
 msgctxt "Prefs Dialog|Load & Save|"
 msgid "<b>Saving</b>"
 msgstr "<b>저장하기</b>"
 
-#: ../po/tmp/preferenceswindow.glade.h:41
+#: ../gui/preferenceswindow.glade:563
 msgctxt "Prefs Dialog|Load & Save|"
 msgid "<b>Color Management</b>"
 msgstr "<b>색상 관리</b>"
 
-#: ../po/tmp/preferenceswindow.glade.h:42
+#: ../gui/preferenceswindow.glade:579
 msgctxt "Prefs Dialog|Load & Save|Color Management|"
 msgid "Color space conversions:"
 msgstr "색 공간 변환:"
 
-#: ../po/tmp/preferenceswindow.glade.h:43
+#: ../gui/preferenceswindow.glade:597
 msgctxt "Prefs Dialog|Load & Save|Color Management|"
 msgid "Convert to sRGB when loading; mark as sRGB when saving"
 msgstr "불러 올 때 sRGB로 변환; 저장할 때 sRGB로 마크"
 
-#: ../po/tmp/preferenceswindow.glade.h:44
+#: ../gui/preferenceswindow.glade:601
 msgctxt "Prefs Dialog|Load & Save|Color Management|"
 msgid ""
 "Images containing <i>full</i> colorspace information will be converted to "
@@ -4500,12 +4389,12 @@ msgstr ""
 "때문입니다. 사용하는 디스플레이가 이와 완전히 다른 경우 \"자동 전환 또는 태"
 "그 없음\" 설정을 대신 사용하십시오."
 
-#: ../po/tmp/preferenceswindow.glade.h:47
+#: ../gui/preferenceswindow.glade:619
 msgctxt "Prefs Dialog|Load & Save|Color Management|"
 msgid "No automatic conversions or tagging"
 msgstr "자동 변환하거나 태그하지 않음"
 
-#: ../po/tmp/preferenceswindow.glade.h:48
+#: ../gui/preferenceswindow.glade:623
 msgctxt "Prefs Dialog|Load & Save|Color Management|"
 msgid ""
 "No color conversions are performed when loading, and files are saved without "
@@ -4520,24 +4409,24 @@ msgstr ""
 "이것은 MyPaint의 오래된 방식이며, 비 sRGB 작업에 대한 임시방편으로 사용될 수 "
 "있습니다."
 
-#: ../po/tmp/preferenceswindow.glade.h:51
+#: ../gui/preferenceswindow.glade:651
 msgctxt "Prefs Dialog|Load & Save|"
 msgid "<b>Automated Backups</b>"
 msgstr "<b>자동 백업</b>"
 
-#: ../po/tmp/preferenceswindow.glade.h:52
+#: ../gui/preferenceswindow.glade:669
 msgctxt "Prefs Dialog|Load & Save|Automated Backups|switch label"
 msgid "Back up unsaved work:"
 msgstr "저장하지 않은 작업을 백업:"
 
 #. In seconds. Lowest value is 5, highest is 300 (5 minutes). Only matters when enabled.
-#: ../po/tmp/preferenceswindow.glade.h:54
+#: ../gui/preferenceswindow.glade:704
 msgctxt ""
 "Prefs Dialog|Load & Save|Automated Backups|interval spinbox units suffix"
 msgid "seconds of inactivity"
 msgstr "비활성 초"
 
-#: ../po/tmp/preferenceswindow.glade.h:55
+#: ../gui/preferenceswindow.glade:717
 msgctxt "Prefs Dialog|Load & Save|Automated Backups|switch tooltip"
 msgid ""
 "Backs up work incrementally in the background to MyPaint's disk cache. If "
@@ -4547,52 +4436,52 @@ msgstr ""
 "백그라운드에서 MyPaint의 디스크 캐시에 작업을 순차적으로 백업합니다. 만약 프"
 "로그램이 충돌할 경우, 현재 작업하고 있는 작업물을 재 저장할 수 있게 됩니다."
 
-#: ../po/tmp/preferenceswindow.glade.h:56
+#: ../gui/preferenceswindow.glade:739
 msgctxt "Prefs Dialog|Load & Save|Automated Backups|interval label"
 msgid "Time between backups:"
 msgstr "백업 간 시간:"
 
 #. Tab label in preferences dialog
-#: ../po/tmp/preferenceswindow.glade.h:58
+#: ../gui/preferenceswindow.glade:757
 msgctxt "Prefs Dialog|"
 msgid "Load & Save"
 msgstr "불러오기 & 저장하기"
 
-#: ../po/tmp/preferenceswindow.glade.h:59
+#: ../gui/preferenceswindow.glade:778
 msgctxt "Prefs Dialog|View|"
 msgid "<b>Zoom and Rendering</b>"
 msgstr "<b>줌 및 렌더링</b>"
 
-#: ../po/tmp/preferenceswindow.glade.h:60
+#: ../gui/preferenceswindow.glade:795
 msgid "Default zoom level:"
 msgstr "기본 줌 레벨:"
 
-#: ../po/tmp/preferenceswindow.glade.h:61
+#: ../gui/preferenceswindow.glade:833
 msgctxt "Prefs Dialog|View|"
 msgid "<b>Interface</b>"
 msgstr "<b>인터페이스</b>"
 
-#: ../po/tmp/preferenceswindow.glade.h:62
+#: ../gui/preferenceswindow.glade:850
 msgctxt "Prefs Dialog|View|Interface|"
 msgid "Toolbar icon size:"
 msgstr "툴바 아이콘의 크기:"
 
-#: ../po/tmp/preferenceswindow.glade.h:63
+#: ../gui/preferenceswindow.glade:866
 msgctxt "Prefs Dialog|View|Interface|"
 msgid "Freehand cursor type:"
 msgstr "자유형 커서 유형:"
 
-#: ../po/tmp/preferenceswindow.glade.h:64
+#: ../gui/preferenceswindow.glade:881
 msgctxt "Prefs Dialog|View|Interface|"
 msgid "Dark theme variant:"
 msgstr "어둠운 테마 변형:"
 
-#: ../po/tmp/preferenceswindow.glade.h:65
+#: ../gui/preferenceswindow.glade:891
 msgctxt "Prefs Dialog|View|Interface|Dark theme variant|"
 msgid "If available in GTK3 theme (needs restart)"
 msgstr "GTK3 테마에서 사용 가능한 경우 (다시 시작해야 함)"
 
-#: ../po/tmp/preferenceswindow.glade.h:66
+#: ../gui/preferenceswindow.glade:895
 msgctxt "Prefs Dialog|View|Interface|Dark theme variant|checkbox tooltip"
 msgid ""
 "Use a light-on-dark theme variant, when it's supported by the GTK theme. "
@@ -4601,26 +4490,26 @@ msgstr ""
 "GTK 테마가 지원할 때 light-on-dark 테마 변형을 사용하십시오. 이 작업은 일반적"
 "으로 이미지 편집자와 미디어 뷰어에게 추천합니다."
 
-#: ../po/tmp/preferenceswindow.glade.h:67
+#: ../gui/preferenceswindow.glade:916
 msgid "Some of these settings require MyPaint to be restarted."
 msgstr "현재 설정 중 일부는 MyPaint를 다시 시작해야 합니다."
 
-#: ../po/tmp/preferenceswindow.glade.h:68
+#: ../gui/preferenceswindow.glade:939
 msgctxt "Prefs Dialog|View|Interface|Icon size|"
 msgid "Large (requires recent GTK3)"
 msgstr "큰 (최신 GTK3 필요)"
 
-#: ../po/tmp/preferenceswindow.glade.h:69
+#: ../gui/preferenceswindow.glade:956
 msgctxt "Prefs Dialog|View|Interface|Icon size|"
 msgid "Small"
 msgstr "작은"
 
-#: ../po/tmp/preferenceswindow.glade.h:70
+#: ../gui/preferenceswindow.glade:981
 msgctxt "Prefs Dialog|View|Zoom|"
 msgid "Use a real checkerboard pattern"
 msgstr "실제 바둑판 패턴을 사용"
 
-#: ../po/tmp/preferenceswindow.glade.h:71
+#: ../gui/preferenceswindow.glade:985
 msgctxt "Prefs Dialog|View|Zoom|"
 msgid ""
 "Draw a real checkerboard pattern to show transparency.\n"
@@ -4629,22 +4518,22 @@ msgstr ""
 "실제 격자무늬를 그려 투명도를 표시합니다.\n"
 "이 작업으로 디스플래이의 속도 저하가 생기지만, 혼란이 줄어듭니다."
 
-#: ../po/tmp/preferenceswindow.glade.h:73
+#: ../gui/preferenceswindow.glade:1006
 msgid "When showing transparency:"
 msgstr "투명도을 표시 할 때:"
 
-#: ../po/tmp/preferenceswindow.glade.h:74
+#: ../gui/preferenceswindow.glade:1021
 msgctxt "Prefs Dialog|View|Interface|"
 msgid "Handle smooth scrolling events:"
 msgstr "부드러운 스크롤 이벤트 처리:"
 
-#: ../po/tmp/preferenceswindow.glade.h:75
+#: ../gui/preferenceswindow.glade:1031
 msgctxt ""
 "Prefs Dialog|View|Interface|Handle smooth scrolling events|checkbox label"
 msgid "When devices send them (needs restart)"
 msgstr "장치가 장치를 보낼 때 (다시 시작해야 함)"
 
-#: ../po/tmp/preferenceswindow.glade.h:76
+#: ../gui/preferenceswindow.glade:1035
 msgctxt ""
 "Prefs Dialog|View|Interface|Handle smooth scrolling events|checkbox tooltip"
 msgid ""
@@ -4668,17 +4557,17 @@ msgstr ""
 "화면 이동을 위해 스크롤하려면 이 설정이 켜져 있어야하고 장치가 양방향 스크롤 "
 "이벤트를 보내도록 구성되어 있어야합니다."
 
-#: ../po/tmp/preferenceswindow.glade.h:81
+#: ../gui/preferenceswindow.glade:1082
 msgid "Hide cursor while painting"
 msgstr "페인팅하는 동안 커서를 숨기기"
 
-#: ../po/tmp/preferenceswindow.glade.h:82
+#: ../gui/preferenceswindow.glade:1105
 msgctxt ""
 "Prefs Dialog|View|Interface|Blink layers on creation/selection|checkbox label"
 msgid "Enabled"
 msgstr "사용"
 
-#: ../po/tmp/preferenceswindow.glade.h:83
+#: ../gui/preferenceswindow.glade:1109
 msgctxt ""
 "Prefs Dialog|View|Interface|Blink layers on creation/selection|checkbox "
 "tooltip"
@@ -4687,28 +4576,28 @@ msgid ""
 "period."
 msgstr "레이어를 만들거나 선택하면 짧은 시간 동안 해당 레이어 만 표시합니다."
 
-#: ../po/tmp/preferenceswindow.glade.h:84
+#: ../gui/preferenceswindow.glade:1129
 msgctxt "Prefs Dialog|View|Interface|"
 msgid "Blink layers on creation/selection:"
 msgstr "작성/선택시 레이어 깜박임:"
 
-#: ../po/tmp/preferenceswindow.glade.h:85
+#: ../gui/preferenceswindow.glade:1164
 msgctxt "Prefs Dialog|View|Interface|"
 msgid "Language:"
 msgstr "언어:"
 
-#: ../po/tmp/preferenceswindow.glade.h:86
+#: ../gui/preferenceswindow.glade:1179
 msgctxt "Prefs Dialog|View|Interface|"
 msgid "(needs restart)"
 msgstr "(다시 시작해야 함)"
 
-#. Tab label in preferences dialog&#10;
-#: ../po/tmp/preferenceswindow.glade.h:88
+#. Tab label in preferences dialog
+#: ../gui/preferenceswindow.glade:1196
 msgctxt "Prefs Dialog|"
 msgid "View"
 msgstr "보기"
 
-#: ../po/tmp/preferenceswindow.glade.h:89
+#: ../gui/preferenceswindow.glade:1228
 msgctxt "Prefs Dialog|Color|Color Wheel|Primaries|"
 msgid ""
 "The set of colors to show as primary on disk-style color wheels.\n"
@@ -4717,18 +4606,18 @@ msgstr ""
 "디스크 스타일 색상환에 기본 색상으로 표시할 색상 설정입니다.\n"
 "다른 전통은 다른 색상 조화를 가지고 있습니다."
 
-#. Arrangement of MyPaint
-#: ../po/tmp/preferenceswindow.glade.h:92
+#. Arrangement of MyPaint's custom colour wheels
+#: ../gui/preferenceswindow.glade:1230
 msgctxt "Prefs Dialog|Color|Color Wheel|"
 msgid "Primaries are:"
 msgstr "원색:"
 
-#: ../po/tmp/preferenceswindow.glade.h:93
+#: ../gui/preferenceswindow.glade:1247
 msgctxt "Prefs Dialog|Color|Color Wheel|Primaries|"
 msgid "Standard digital Red/Green/Blue"
 msgstr "표준 디지털 레드/그린/ 블루"
 
-#: ../po/tmp/preferenceswindow.glade.h:94
+#: ../gui/preferenceswindow.glade:1252
 msgid ""
 "The red, green, and blue &apos;computer monitor&apos; primaries, evenly "
 "arranged around the circle. Green is opposite magenta."
@@ -4736,7 +4625,7 @@ msgstr ""
 "레드, 그린 및 블루 &apos;컴퓨터 모니터&apos;기본, 원 주위에 균일하게 배열되어"
 "있다. 그린은 마젠타 반대입니다."
 
-#: ../po/tmp/preferenceswindow.glade.h:95
+#: ../gui/preferenceswindow.glade:1253
 msgctxt "Prefs Dialog|Color|Color Wheel|Primaries|RGB|"
 msgid ""
 "The red, green, and blue 'computer monitor' primaries, evenly arranged "
@@ -4745,12 +4634,12 @@ msgstr ""
 "레드, 그린 및 블루 '컴퓨터 모니터' 원색이 원 주위에 고르게 배열되어 있습니"
 "다. 그린은 마젠타의 보색입니다."
 
-#: ../po/tmp/preferenceswindow.glade.h:96
+#: ../gui/preferenceswindow.glade:1269
 msgctxt "Prefs Dialog|Color|Color Wheel|Primaries|"
 msgid "Traditional artist's Red/Yellow/Blue"
 msgstr "전통 아티스트의 레드/옐로우/블루"
 
-#: ../po/tmp/preferenceswindow.glade.h:97
+#: ../gui/preferenceswindow.glade:1274
 msgid ""
 "The traditionally arranged red/yellow/blue wheel as used by many artists "
 "since the 18th century, approximated with pure display colors evenly "
@@ -4760,7 +4649,7 @@ msgstr ""
 "주위에 균등하게 배열된 순수한 표시 색상으로 근사됩니다. 그린은 레드의 보색입"
 "니다."
 
-#: ../po/tmp/preferenceswindow.glade.h:98
+#: ../gui/preferenceswindow.glade:1275
 msgctxt "Prefs Dialog|Color|Color Wheel|Primaries|RYB|"
 msgid ""
 "The traditionally arranged red/yellow/blue wheel as used by many artists "
@@ -4771,12 +4660,12 @@ msgstr ""
 "주위에 균등하게 배열된 순수한 표시 색상으로 근사됩니다. 그린은 레드의 보색입"
 "니다."
 
-#: ../po/tmp/preferenceswindow.glade.h:99
+#: ../gui/preferenceswindow.glade:1291
 msgctxt "Prefs Dialog|Color|Color Wheel|Primaries|"
 msgid "Red-Green and Blue-Yellow opponent pairs"
 msgstr "레드-그린 및 블루-엘로우 상대 쌍"
 
-#: ../po/tmp/preferenceswindow.glade.h:100
+#: ../gui/preferenceswindow.glade:1296
 msgid ""
 "Quick and dirty approximation of wheels informed by theories of  color which "
 "use four &apos;psychological primaries&apos; or &apos;unique hues&apos; "
@@ -4790,7 +4679,7 @@ msgstr ""
 "한 모델을 제시합니다. 여기서는 순수한 디스플레이 레드, 예로우 등을 네 개의 기"
 "본으로 사용합니다."
 
-#: ../po/tmp/preferenceswindow.glade.h:101
+#: ../gui/preferenceswindow.glade:1297
 msgctxt "Prefs Dialog|Color|Color Wheel|Primaries|RYGB|"
 msgid ""
 "Quick and dirty approximation of wheels informed by theories of  color which "
@@ -4806,55 +4695,56 @@ msgstr ""
 "다."
 
 #. Options affecting color wheels
-#: ../po/tmp/preferenceswindow.glade.h:103
+#: ../gui/preferenceswindow.glade:1325
 msgctxt "Prefs Dialog|Color|"
 msgid "<b>Color Wheel</b>"
 msgstr "<b>컬러 원형</b>"
 
 #. Tab label in preferences dialog
-#: ../po/tmp/preferenceswindow.glade.h:105
+#: ../gui/preferenceswindow.glade:1338
 msgctxt "Prefs Dialog|"
 msgid "Color"
 msgstr "색상"
 
-#: ../po/tmp/preferenceswindow.glade.h:106
+#: ../gui/preferenceswindow.glade:1371
 msgctxt "Prefs Dialog|Compatibility"
 msgid "Default Compatibility Mode:"
 msgstr "기본 호환성 모드:"
 
-#: ../po/tmp/preferenceswindow.glade.h:107
+#: ../gui/preferenceswindow.glade:1396
 msgctxt "Prefs Dialog|Compatibility"
 msgid "<b>1.x Settings</b>"
 msgstr "<b>1.x 설정</b>"
 
 #. Make sure to be consistent w. other occurences of 2.x
-#: ../po/tmp/preferenceswindow.glade.h:109
+#: ../gui/preferenceswindow.glade:1410
 msgctxt "Prefs Dialog|Compatibility"
 msgid "<b>2.x Settings</b>"
 msgstr "<b>2.x 설정</b>"
 
-#: ../po/tmp/preferenceswindow.glade.h:110
+#: ../gui/preferenceswindow.glade:1448 ../gui/preferenceswindow.glade:1522
 msgctxt "Prefs Dialog|Compatibility"
 msgid "Default New Layer Type:"
 msgstr "기본 새 레이어 유형:"
 
-#: ../po/tmp/preferenceswindow.glade.h:111
+#: ../gui/preferenceswindow.glade:1494 ../gui/preferenceswindow.glade:1508
 msgctxt "Prefs Dialog|Compatibility"
 msgid "Default Pigment Brush Setting:"
 msgstr "기본 안료 브러시 설정:"
 
 #. Label description for the 1.x compatibility-mode-by-default setting
-#: ../po/tmp/preferenceswindow.glade.h:115
+#: ../gui/preferenceswindow.glade:1585
 msgctxt "Prefs Dialog|Compatibility"
 msgid ""
 "When creating new documents, use the legacy 1.x compatibility mode by "
 "default. In this mode 1.x .ora files will look the same as they did in older "
 "versions, but pigment blending will not work well."
 msgstr ""
-"새 문서를 만들 때는 기본적으로 레거시 1.x 호환 모드를 사용. 이 모드에서 1.x .ora 파일은 이전 버전에서와 동일하게 보이지만 "
-"안료 혼합은 제대로 작동하지 않습니다."
+"새 문서를 만들 때는 기본적으로 레거시 1.x 호환 모드를 사용. 이 모드에서 1.x ."
+"ora 파일은 이전 버전에서와 동일하게 보이지만 안료 혼합은 제대로 작동하지 않습"
+"니다."
 
-#: ../po/tmp/preferenceswindow.glade.h:118
+#: ../gui/preferenceswindow.glade:1604
 msgctxt "Prefs Dialog|Compatibility"
 msgid ""
 "When creating new documents, use the regular 2.x compatibility mode by "
@@ -4863,24 +4753,24 @@ msgstr ""
 "새 문서를 만들 때는 기본적으로 일반 2.x 호환 모드를 사용. 이 모드에서는 오래"
 "된 문서가 다르게 보일 수 있습니다."
 
-#: ../po/tmp/preferenceswindow.glade.h:119
+#: ../gui/preferenceswindow.glade:1636
 msgctxt "Prefs Dialog|Compatibility"
 msgid "Show warning for files that may be partially incompatible"
 msgstr "부분적으로 호환되지 않는 파일에 대한 경고를 표시"
 
 #. Label for a set of options
-#: ../po/tmp/preferenceswindow.glade.h:121
+#: ../gui/preferenceswindow.glade:1653
 msgctxt "Prefs Dialog|Compatibility"
 msgid "File compatibility warnings:"
 msgstr "파일 호환성 경고:"
 
-#: ../po/tmp/preferenceswindow.glade.h:122
+#: ../gui/preferenceswindow.glade:1665
 msgctxt "Prefs Dialog|Compatibility"
 msgid "Show warning for files that may be fully incompatible"
 msgstr "완전히 호환되지 않는 파일에 대한 경고 표시"
 
 #. This is a tooltip for the file behavior options label.
-#: ../po/tmp/preferenceswindow.glade.h:124
+#: ../gui/preferenceswindow.glade:1681
 msgctxt "Prefs|Compatibility"
 msgid ""
 "This will only apply to files saved with versions of MyPaint older than 2.0. "
@@ -4891,648 +4781,649 @@ msgstr ""
 "상으로 OpenRaster 파일을 저장하면 활성 호환성 모드가 파일에 기록됩니다."
 
 #. Label to the options for how to handle files which do not have a compatibility mode specified (whether they should be opened in 1.x compatibility mode, or 2.x mode)
-#: ../po/tmp/preferenceswindow.glade.h:126
+#: ../gui/preferenceswindow.glade:1683
 msgctxt "Prefs Dialog|Compatibility"
 msgid "When Mode is Unspecified:"
 msgstr "모드가 지정되지 않은 경우:"
 
 #. This label indicates a subsection of the compatibility settings related to loading files.
-#: ../po/tmp/preferenceswindow.glade.h:128
+#: ../gui/preferenceswindow.glade:1710
 msgctxt "Prefs|Compatibility"
 msgid "<b>File loading</b>"
 msgstr "<b>파일 로딩</b>"
 
-#: ../po/tmp/preferenceswindow.glade.h:129
+#: ../gui/preferenceswindow.glade:1730
 msgid "<b>Compatibility settings</b>"
 msgstr "<b>호환성 설정</b>"
 
 #. Tab label in preferences dialog
-#: ../po/tmp/preferenceswindow.glade.h:131
+#: ../gui/preferenceswindow.glade:1746
 msgctxt "Prefs Dialog|"
 msgid "Compatibility"
 msgstr "호환성"
 
-#: ../po/tmp/preferenceswindow.glade.h:132
+#: ../gui/preferenceswindow.glade:1764
 msgctxt "Prefs Dialog|Pen Input|Mode|"
 msgid "Screen (normal)"
 msgstr "스크린 (노멀)"
 
-#: ../po/tmp/preferenceswindow.glade.h:133
+#: ../gui/preferenceswindow.glade:1768
 msgctxt "Prefs Dialog|Pen Input|Mode|"
 msgid "Disabled (no pressure sensitivity)"
 msgstr "비활성화 (압력 감도 없음)"
 
-#: ../po/tmp/preferenceswindow.glade.h:134
+#: ../gui/preferenceswindow.glade:1772
 msgctxt "Prefs Dialog|Pen Input|Mode|"
 msgid "Window (not recommended)"
 msgstr "창 (권장하지 않음)"
 
-#: ../po/tmp/resources.xml.h:1
+#: ../gui/resources.xml:63
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "New"
 msgstr "새로운"
 
-#: ../po/tmp/resources.xml.h:2
+#: ../gui/resources.xml:64
 msgctxt "Toolbar (short labels)"
 msgid "New"
 msgstr "새로운"
 
-#: ../po/tmp/resources.xml.h:3
+#: ../gui/resources.xml:65
 msgctxt "Toolbar (tooltips), Accel Editor (descriptions)"
 msgid "Start with a new blank canvas."
 msgstr "새로운 빈 캔버스와 함께 시작합니다."
 
-#: ../po/tmp/resources.xml.h:4
+#: ../gui/resources.xml:73
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "Open…"
 msgstr "열기…"
 
-#: ../po/tmp/resources.xml.h:5
+#: ../gui/resources.xml:74
 msgctxt "Toolbar (short labels)"
 msgid "Open"
 msgstr "열기"
 
-#: ../po/tmp/resources.xml.h:6
+#: ../gui/resources.xml:75
 msgctxt "Toolbar (tooltips), Accel Editor (descriptions)"
 msgid "Load a file to work on."
 msgstr "작업 할 파일을 불러옵니다."
 
-#: ../po/tmp/resources.xml.h:7
+#: ../gui/resources.xml:82
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "Open Most Recent"
 msgstr "가장 최근 작업을 열기"
 
-#: ../po/tmp/resources.xml.h:8
+#: ../gui/resources.xml:83
 msgctxt "Accel Editor (descriptions)"
 msgid "Load the file you saved most recently."
 msgstr "가장 최근에 저장 한 파일을로드합니다."
 
-#: ../po/tmp/resources.xml.h:9
+#: ../gui/resources.xml:90
 msgctxt "Menu→File (labels)"
 msgid "Open Recent"
 msgstr "최근 작업을 열기"
 
-#: ../po/tmp/resources.xml.h:10
+#: ../gui/resources.xml:103
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "Revert"
 msgstr "되돌리기"
 
-#: ../po/tmp/resources.xml.h:11
+#: ../gui/resources.xml:104
 msgctxt "Accel Editor (descriptions)"
 msgid "Reload the file your current work was loaded from."
 msgstr "현재 작업으로 불러온 파일을 다시 불러옵니다."
 
-#: ../po/tmp/resources.xml.h:12
+#: ../gui/resources.xml:111
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "Import Layers…"
 msgstr "레이어를 가져 오기…"
 
-#: ../po/tmp/resources.xml.h:13
+#: ../gui/resources.xml:112
 msgctxt "Accel Editor (descriptions)"
 msgid "Import layers from one or more files."
 msgstr "하나 이상의 파일에서 레이어를 가져옵니다."
 
-#: ../po/tmp/resources.xml.h:14
+#: ../gui/resources.xml:120
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "Save"
 msgstr "저장하기"
 
-#: ../po/tmp/resources.xml.h:15
+#: ../gui/resources.xml:121
 msgctxt "Accel Editor (descriptions)"
 msgid "Save your work to a file."
 msgstr "파일로 작업 내용을 저장합니다."
 
-#: ../po/tmp/resources.xml.h:16
+#: ../gui/resources.xml:129
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "Save As…"
 msgstr "다른 이름으로 저장…"
 
-#: ../po/tmp/resources.xml.h:17
+#: ../gui/resources.xml:130
 msgctxt "Accel Editor (descriptions)"
 msgid "Save your work to a file, assigning it a new name."
 msgstr "파일을 새 이름으로 저장합니다."
 
-#: ../po/tmp/resources.xml.h:18
+#: ../gui/resources.xml:138
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "Export…"
 msgstr "내보내기…"
 
-#: ../po/tmp/resources.xml.h:19
+#: ../gui/resources.xml:139
 msgid "Export your work to a file, but keep working on the same file."
 msgstr ""
 "작업을 파일로 내보내고 사용자는 동일한 파일에서 계속 작업을 진행합니다."
 
-#: ../po/tmp/resources.xml.h:20
+#: ../gui/resources.xml:147
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "Save As Scrap"
 msgstr "다른 스크랩으로 저장"
 
-#: ../po/tmp/resources.xml.h:21
+#: ../gui/resources.xml:148
 msgctxt "Accel Editor (descriptions)"
 msgid "Save to a new scrap file, or save a new revision if already a scrap."
 msgstr ""
 "새로운 스크랩 파일에 저장하거나 이미 스크랩이 존재하는 경우 변화된 새로운 파"
 "일을 저장합니다."
 
-#: ../po/tmp/resources.xml.h:22
+#: ../gui/resources.xml:156
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "Open Previous Scrap"
 msgstr "이전 스크랩을 열기"
 
-#: ../po/tmp/resources.xml.h:23
+#: ../gui/resources.xml:157
 msgctxt "Accel Editor (descriptions)"
 msgid "Load the scrap file before the current one."
 msgstr "현재 이전 스크랩 파일을 불러옵니다."
 
-#: ../po/tmp/resources.xml.h:24
+#: ../gui/resources.xml:165
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "Open Next Scrap"
 msgstr "다음 스크랩을 열기"
 
-#: ../po/tmp/resources.xml.h:25
+#: ../gui/resources.xml:166
 msgctxt "Accel Editor (descriptions)"
 msgid "Load the scrap file after the current one."
 msgstr "현재 이후 스크랩 파일을 불러옵니다."
 
-#: ../po/tmp/resources.xml.h:26
+#: ../gui/resources.xml:174
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "Recover File from an Automated Backup…"
 msgstr "자동 백업에서 파일 복구…"
 
-#: ../po/tmp/resources.xml.h:27
+#: ../gui/resources.xml:175
 msgctxt "Accel Editor (descriptions)"
 msgid "Try to save and resume interrupted unsaved work."
 msgstr "저장되지 않는 작업을 중단하고 다시 저장을 진행하세요."
 
-#: ../po/tmp/resources.xml.h:28
+#: ../gui/resources.xml:190
 msgctxt "Menu→Brush (label)"
 msgid "Brush Groups"
 msgstr "브러시 그룹"
 
-#: ../po/tmp/resources.xml.h:29
+#: ../gui/resources.xml:191
 msgctxt "Toolbar (short labels)"
 msgid "Brushes"
 msgstr "브러시"
 
-#: ../po/tmp/resources.xml.h:30
+#: ../gui/resources.xml:192
 msgctxt "Toolbar (tooltips)"
 msgid "List of brush groups."
 msgstr "브러시 그룹의 목록."
 
-#: ../po/tmp/resources.xml.h:31
+#: ../gui/resources.xml:199
 msgctxt "Toolbar (label)"
 msgid "Color Adjusters"
 msgstr "색상 조절기"
 
-#: ../po/tmp/resources.xml.h:32
+#: ../gui/resources.xml:200
 msgctxt "Toolbar (short labels)"
 msgid "Colors"
 msgstr "색상"
 
-#: ../po/tmp/resources.xml.h:33
+#: ../gui/resources.xml:201
 msgctxt "Toolbar (tooltips)"
 msgid "Available color adjusters."
 msgstr "사용 가능한 색상 조절기."
 
-#: ../po/tmp/resources.xml.h:34
+#: ../gui/resources.xml:208
 msgctxt "Menu→Layer→Properties (label)"
 msgid "Mode"
 msgstr "모드"
 
-#: ../po/tmp/resources.xml.h:35
+#: ../gui/resources.xml:209
 msgctxt "Toolbar (short labels)"
 msgid "Mode"
 msgstr "모드"
 
-#: ../po/tmp/resources.xml.h:36
+#: ../gui/resources.xml:210
 msgctxt "Toolbar (tooltips)"
 msgid "The current layer's compositing mode."
 msgstr "현재 레이어의 합성 모드."
 
-#: ../po/tmp/resources.xml.h:37
+#: ../gui/resources.xml:237
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
 msgid "Increase Fake Pressure"
 msgstr "허위 압력을 증가"
 
-#: ../po/tmp/resources.xml.h:38
+#: ../gui/resources.xml:238
 msgctxt "Accel Editor (descriptions)"
 msgid "Send harder pressure for devices that don't support pressure input."
 msgstr "압력 입력을 지원하지 않는 장치에 더 강한 압력을 보냅니다."
 
-#: ../po/tmp/resources.xml.h:39
+#: ../gui/resources.xml:245
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
 msgid "Decrease Fake Pressure"
 msgstr "허위 압력을 감소"
 
-#: ../po/tmp/resources.xml.h:40
+#: ../gui/resources.xml:246
 msgctxt "Accel Editor (descriptions)"
 msgid "Send softer pressure for devices that don't support pressure input."
 msgstr "압력 입력을 지원하지 않는 장치에 대해 더 부드러운 압력을 보냅니다."
 
-#: ../po/tmp/resources.xml.h:41
+#: ../gui/resources.xml:254
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
 msgid "Increase Fake Rotation"
 msgstr "허위 회전을 증가"
 
-#: ../po/tmp/resources.xml.h:42
+#: ../gui/resources.xml:255
 msgctxt "Accel Editor (descriptions)"
 msgid "Increase barrel rotation for devices that don't support rotation input."
 msgstr "회전 입력을 지원하지 않는 장치의 배럴 회전을 증가시킵니다."
 
-#: ../po/tmp/resources.xml.h:43
+#: ../gui/resources.xml:262
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
 msgid "Decrease Fake Rotation"
 msgstr "허위 회전을 감소"
 
-#: ../po/tmp/resources.xml.h:44
+#: ../gui/resources.xml:263
 msgctxt "Accel Editor (descriptions)"
 msgid "Decrease barrel rotation for devices that don't support rotation input."
 msgstr "회전 입력을 지원하지 않는 장치의 배럴 회전을 감소시킵니다."
 
-#: ../po/tmp/resources.xml.h:45
+#: ../gui/resources.xml:271
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
 msgid "Increase Brush Size"
 msgstr "브러시 크기를 증가"
 
-#: ../po/tmp/resources.xml.h:46
+#: ../gui/resources.xml:272
 msgctxt "Accel Editor (descriptions)"
 msgid "Make the working brush bigger."
 msgstr "작업 브러시가 더 커집니다."
 
-#: ../po/tmp/resources.xml.h:47
+#: ../gui/resources.xml:279
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
 msgid "Decrease Brush Size"
 msgstr "브러시 크기를 감소"
 
-#: ../po/tmp/resources.xml.h:48
+#: ../gui/resources.xml:280
 msgctxt "Accel Editor (descriptions)"
 msgid "Make the working brush smaller."
 msgstr "작업 브러시가 더 작아집니다."
 
-#: ../po/tmp/resources.xml.h:49
+#: ../gui/resources.xml:288
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
 msgid "Increase Brush Opacity"
 msgstr "브러시 불투명도를 증가"
 
-#: ../po/tmp/resources.xml.h:50
+#: ../gui/resources.xml:289
 msgctxt "Accel Editor (descriptions)"
 msgid "Make the working brush more opaque."
 msgstr "작업 브러시가 더 불투명해집니다."
 
-#: ../po/tmp/resources.xml.h:51
+#: ../gui/resources.xml:296
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
 msgid "Decrease Brush Opacity"
 msgstr "브러시 불투명도를 감소"
 
-#: ../po/tmp/resources.xml.h:52
+#: ../gui/resources.xml:297
 msgctxt "Accel Editor (descriptions)"
 msgid "Make the working brush less opaque."
 msgstr "작업 브러시가 더 투명해집니다."
 
-#: ../po/tmp/resources.xml.h:53
+#: ../gui/resources.xml:305
 msgctxt "Menu→Color→Adjust Color (labels), Accel Editor (labels)"
 msgid "Lighten Painting Color"
 msgstr "페인팅 색상을 밝게"
 
-#: ../po/tmp/resources.xml.h:54
+#: ../gui/resources.xml:306
 msgctxt "Accel Editor (descriptions)"
 msgid "Increase the lightness of the current painting color."
 msgstr "현재 페인팅 색상의 밝기를 증가 시킵니다."
 
-#: ../po/tmp/resources.xml.h:55
+#: ../gui/resources.xml:313
 msgctxt "Menu→Color→Adjust Color (labels), Accel Editor (labels)"
 msgid "Darken Painting Color"
 msgstr "페인팅 색상을 어둠게"
 
-#: ../po/tmp/resources.xml.h:56
+#: ../gui/resources.xml:314
 msgctxt "Accel Editor (descriptions)"
 msgid "Decrease the lightness of the current painting color."
 msgstr "현재 페인팅 색상의 밝기를 감소 시킵니다."
 
-#: ../po/tmp/resources.xml.h:57
+#: ../gui/resources.xml:326
 msgctxt "Menu→Color→Adjust Color (labels), Accel Editor (labels)"
 msgid "Change Hue Clockwise"
 msgstr "색조를 시계 방향으로 변경"
 
-#: ../po/tmp/resources.xml.h:58
+#: ../gui/resources.xml:327
 msgctxt "Accel Editor (descriptions)"
 msgid "Rotate the painting color’s hue clockwise on the color wheel."
 msgstr "페인팅 색상의 색조를 색상 원형의 시계 방향으로 돌립니다."
 
-#: ../po/tmp/resources.xml.h:59
+#: ../gui/resources.xml:334
 msgctxt "Menu→Color→Adjust Color (labels), Accel Editor (labels)"
 msgid "Change Hue Anticlockwise"
 msgstr "색조를 반 시계 방향으로 변경"
 
-#: ../po/tmp/resources.xml.h:60
+#: ../gui/resources.xml:335
 msgctxt "Accel Editor (descriptions)"
 msgid "Rotate the painting color’s hue anticlockwise on the color wheel."
 msgstr "페인팅 색상의 색조를 색상 원형의 시계 반대 방향으로 돌립니다."
 
-#: ../po/tmp/resources.xml.h:61
+#: ../gui/resources.xml:342
 msgctxt "Menu→Color→Adjust Color (labels), Accel Editor (labels)"
 msgid "Increase Saturation"
 msgstr "채도를 증가"
 
-#: ../po/tmp/resources.xml.h:62
+#: ../gui/resources.xml:343
 msgctxt "Accel Editor (descriptions)"
 msgid "Make the painting color more saturated (more colorful, purer)."
 msgstr "패인팅 색상 체도를 증가(더 화려한, 순수한) 시킵니다."
 
-#: ../po/tmp/resources.xml.h:63
+#: ../gui/resources.xml:350
 msgctxt "Menu→Color→Adjust Color (labels), Accel Editor (labels)"
 msgid "Decrease Saturation"
 msgstr "채도를 감소"
 
-#: ../po/tmp/resources.xml.h:64
+#: ../gui/resources.xml:351
 msgctxt "Accel Editor (descriptions)"
 msgid "Make the painting color less saturated (grayer)."
 msgstr "패인팅 색상 체도를 감소(회색) 시킵니다."
 
-#: ../po/tmp/resources.xml.h:65
+#: ../gui/resources.xml:359
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
 msgid "Reload Brush Settings"
 msgstr "브러시 설정을 다시 불러오기"
 
-#: ../po/tmp/resources.xml.h:66
+#: ../gui/resources.xml:360
 msgctxt "Accel Editor (descriptions)"
 msgid "Restore all brush settings to the current brush’s saved values."
 msgstr "현재 브러시의 저장 값으로 모든 브러시 설정을 복원합니다."
 
-#: ../po/tmp/resources.xml.h:67
+#: ../gui/resources.xml:370
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
 msgid "Pick Stroke and Layer"
 msgstr "스트로크 및 레이어를 선택"
 
-#: ../po/tmp/resources.xml.h:68
+#: ../gui/resources.xml:371
 msgctxt "Accel Editor (descriptions)"
 msgid ""
 "Pick a brushstroke from the canvas, which restores brush, color, and layer."
 msgstr ""
 "캔버스에서 브러시 스트로크를 선택하면 브러시, 색상 및 레이어가 복원됩니다."
 
-#: ../po/tmp/resources.xml.h:69
+#: ../gui/resources.xml:382
 msgctxt "Menu→Brush→Shortcut Keys (labels), Accel Editor (labels)"
 msgid "Brush Shortcut Keys Restore Color"
 msgstr "브러시 숏컷 키로 색상을 복원"
 
-#: ../po/tmp/resources.xml.h:70
+#: ../gui/resources.xml:383
 msgctxt "Accel Editor (descriptions)"
 msgid ""
 "Toggle whether restoring the brush from a shortcut key also restores the "
 "saved color."
-msgstr "숏컷 키에서 브러시를 복원해도 저장된 색상이 복원되는지 여부를 토글합니다."
+msgstr ""
+"숏컷 키에서 브러시를 복원해도 저장된 색상이 복원되는지 여부를 토글합니다."
 
-#: ../po/tmp/resources.xml.h:71
+#: ../gui/resources.xml:390
 msgctxt "Menu→Brush→Shortcut Keys (labels), Accel Editor (labels)"
 msgid "Save Brush to Most Recent Shortcut Key"
 msgstr "가장 최근 단축 키에 브러시를 저장"
 
-#: ../po/tmp/resources.xml.h:72
+#: ../gui/resources.xml:391
 msgctxt "Accel Editor (descriptions)"
 msgid "Save brush settings to the most recently used shortcut key."
 msgstr "가장 최근에 사용되는 단축 키에 브러시 설정을 저장합니다."
 
-#: ../po/tmp/resources.xml.h:73
+#: ../gui/resources.xml:401
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Clear Layer"
 msgstr "레이어를 지우기"
 
-#: ../po/tmp/resources.xml.h:74
+#: ../gui/resources.xml:402
 msgctxt "Accel Editor (descriptions)"
 msgid "Clear the active layer’s content."
 msgstr "활성 레이어의 내용을 지웁니다."
 
-#: ../po/tmp/resources.xml.h:75
+#: ../gui/resources.xml:410
 msgctxt "Menu→Layer (labels)"
 msgid "Slice Operations"
 msgstr "슬라이스 작업"
 
-#: ../po/tmp/resources.xml.h:76
+#: ../gui/resources.xml:416
 msgctxt "Menu→Layer→Slice (labels), Accel Editor (labels)"
 msgid "Trim Layer to Frame"
 msgstr "레이어를 프레임으로 손질"
 
-#: ../po/tmp/resources.xml.h:77
+#: ../gui/resources.xml:417
 msgctxt "Accel Editor (descriptions)"
 msgid "Erase parts of the current layer which lie outside the frame."
 msgstr "현재 레이어에서 프레임 외부의 일부 내용을 지웁니다."
 
-#: ../po/tmp/resources.xml.h:78
+#: ../gui/resources.xml:423
 msgctxt "Menu→Layer→Slice (labels), Accel Editor (labels)"
 msgid "Uniquify Layer Pixels"
 msgstr "균일화 레이어 픽셀"
 
-#: ../po/tmp/resources.xml.h:79
+#: ../gui/resources.xml:424
 msgctxt "Accel Editor (descriptions)"
 msgid "Delete parts of the current layer which do not vary from the backdrop."
 msgstr "현재 레이어에서 배경과 다르지 않은 부분을 삭제."
 
-#: ../po/tmp/resources.xml.h:80
+#: ../gui/resources.xml:430
 msgctxt "Menu→Layer→Slice (labels), Accel Editor (labels)"
 msgid "Uniquify Layer Tiles"
 msgstr "균일화 레이어 타일"
 
-#: ../po/tmp/resources.xml.h:81
+#: ../gui/resources.xml:431
 msgctxt "Accel Editor (descriptions)"
 msgid ""
 "Delete whole tiles from the current layer which do not vary from the "
 "backdrop."
 msgstr "현재 레이어에서 배경과 다르지 않은 전체 타일을 삭제합니다."
 
-#: ../po/tmp/resources.xml.h:82
+#: ../gui/resources.xml:437
 msgctxt "Menu→Layer→Slice (labels), Accel Editor (labels)"
 msgid "Refactor Layer Group Pixels"
 msgstr "리팩터 레이어 그룹 픽셀"
 
-#: ../po/tmp/resources.xml.h:83
+#: ../gui/resources.xml:438 ../gui/resources.xml:445
 msgctxt "Accel Editor (descriptions)"
 msgid ""
 "Normalize child layers, then factor out common parts to a new child layer."
 msgstr "자식 레이어를 정규화한 다음 공통 부품을 새 자식 레이어로 분리합니다."
 
-#: ../po/tmp/resources.xml.h:84
+#: ../gui/resources.xml:444
 msgctxt "Menu→Layer→Slice (labels), Accel Editor (labels)"
 msgid "Refactor Layer Group Tiles"
 msgstr "리 팩터 레이어 그룹 타일"
 
-#: ../po/tmp/resources.xml.h:85
+#: ../gui/resources.xml:452
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Copy Layer to Clipboard"
 msgstr "레이어를 클립보드에 복사"
 
-#: ../po/tmp/resources.xml.h:86
+#: ../gui/resources.xml:453
 msgctxt "Accel Editor (descriptions)"
 msgid "Copy the current layer’s contents to the clipboard."
 msgstr "현재 레이어의 내용을 클립보드에 복사합니다."
 
-#: ../po/tmp/resources.xml.h:87
+#: ../gui/resources.xml:461
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Paste Layer from Clipboard"
 msgstr "레이어를 클립보드에서 붙여넣기"
 
-#: ../po/tmp/resources.xml.h:88
+#: ../gui/resources.xml:462
 msgctxt "Accel Editor (descriptions)"
 msgid "Replaces the current layer with the clipboard’s contents."
 msgstr "현재 레이어를 클립 보드의 내용으로 대체합니다."
 
-#: ../po/tmp/resources.xml.h:89
+#: ../gui/resources.xml:469
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Edit Layer in External App…"
 msgstr "레이어를 외부 응용 프로그램에서 편집…"
 
-#: ../po/tmp/resources.xml.h:90
+#: ../gui/resources.xml:470
 msgctxt "Accel Editor (descriptions)"
 msgid "Edit the active layer in an external application."
 msgstr "외부 응용 프로그램에서 활성 레이어를 편집하합니다."
 
-#: ../po/tmp/resources.xml.h:91
+#: ../gui/resources.xml:477
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Update Layer with External Edits"
 msgstr "외부 편집한 레이어를 업데이트"
 
-#: ../po/tmp/resources.xml.h:92
+#: ../gui/resources.xml:478
 msgctxt "Accel Editor (descriptions)"
 msgid "Commit changes saved from the external app (normally automatic)."
 msgstr ""
 "외부 응용 프로그램(일반적으로 자동)에서 저장 한 변경 사항을 반영합니다."
 
-#: ../po/tmp/resources.xml.h:93
+#: ../gui/resources.xml:484
 msgctxt "Menu→Layer→Go to Layer (labels), Accel Editor (labels)"
 msgid "Go to Layer at Cursor"
 msgstr "커서에서 레이어로 이동"
 
-#: ../po/tmp/resources.xml.h:94
+#: ../gui/resources.xml:485
 msgctxt "Accel Editor (descriptions)"
 msgid "Select a layer by picking something [drawn] on it."
 msgstr "[그려진] 무언가를 선택하여 레이어를 선택합니다."
 
-#: ../po/tmp/resources.xml.h:95
+#: ../gui/resources.xml:493
 msgctxt "Menu→Layer→Go to Layer (labels), Accel Editor (labels)"
 msgid "Go to Layer Above"
 msgstr "레이어 위로 이동"
 
-#: ../po/tmp/resources.xml.h:96
+#: ../gui/resources.xml:494
 msgctxt "Accel Editor (descriptions)"
 msgid "Go one layer up in the layer stack."
 msgstr "레이어 스택에서 한 레이어 위로 이동합니다."
 
-#: ../po/tmp/resources.xml.h:97
+#: ../gui/resources.xml:502
 msgctxt "Menu→Layer→Go to Layer (labels), Accel Editor (labels)"
 msgid "Go to Layer Below"
 msgstr "레이어 아래로 이동"
 
-#: ../po/tmp/resources.xml.h:98
+#: ../gui/resources.xml:503
 msgctxt "Accel Editor (descriptions)"
 msgid "Go one layer down in the layer stack."
 msgstr "레이어 스택에서 한 레이어 아래로 이동합니다."
 
-#: ../po/tmp/resources.xml.h:99
+#: ../gui/resources.xml:511
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "New Painting Layer"
 msgstr "새로운 페인트 레이어"
 
-#: ../po/tmp/resources.xml.h:100
+#: ../gui/resources.xml:512
 msgctxt "Accel Editor (descriptions)"
 msgid "Add a new painting layer above the current layer."
 msgstr "현재 레이어 위에 새 페인팅 레이어를 추가합니다."
 
-#: ../po/tmp/resources.xml.h:101
+#: ../gui/resources.xml:520
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "New Vector Layer…"
 msgstr "새로운 벡터 레이어…"
 
-#: ../po/tmp/resources.xml.h:102
+#: ../gui/resources.xml:521
 msgctxt "Accel Editor (descriptions)"
 msgid "Add a new vector layer above the current layer, and begin editing it."
 msgstr "현재 레이어 위에 새로운 벡터 레이어를 추가하고 편집을 시작합니다."
 
-#: ../po/tmp/resources.xml.h:103
+#: ../gui/resources.xml:528
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "New Layer Group"
 msgstr "새로운 레이어 그룹"
 
-#: ../po/tmp/resources.xml.h:104
+#: ../gui/resources.xml:529
 msgctxt "Accel Editor (descriptions)"
 msgid "Add a new layer group above the current layer."
 msgstr "현재 레이어 위에 새로운 레이어 그룹을 추가합니다."
 
-#: ../po/tmp/resources.xml.h:105
+#: ../gui/resources.xml:536
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "New Painting Layer Below"
 msgstr "아래에 새로운 페인트 레이어"
 
-#: ../po/tmp/resources.xml.h:106
+#: ../gui/resources.xml:537
 msgctxt "Accel Editor (descriptions)"
 msgid "Add a new painting layer below the current layer."
 msgstr "현재 레이어 아래에 새로운 페인팅 레이어를 추가합니다."
 
-#: ../po/tmp/resources.xml.h:107
+#: ../gui/resources.xml:544
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "New Vector Layer Below…"
 msgstr "아래에 새로운 레이어 그룹…"
 
-#: ../po/tmp/resources.xml.h:108
+#: ../gui/resources.xml:545
 msgctxt "Accel Editor (descriptions)"
 msgid "Add a new vector layer below the current layer, and begin editing it."
 msgstr "현재 레이어 아래에 새 벡터 레이어를 추가하고 편집을 시작합니다."
 
-#: ../po/tmp/resources.xml.h:109
+#: ../gui/resources.xml:551
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "New Layer Group Below"
 msgstr "아래에 새 레이어 그룹"
 
-#: ../po/tmp/resources.xml.h:110
+#: ../gui/resources.xml:552
 msgctxt "Accel Editor (descriptions)"
 msgid "Add a new layer group below the current layer."
 msgstr "현재 레이어 아래에 새 레이어 그룹을 추가합니다."
 
-#: ../po/tmp/resources.xml.h:111
+#: ../gui/resources.xml:559
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Merge Layer Down"
 msgstr "아래에 레이어를 병합"
 
-#: ../po/tmp/resources.xml.h:112
+#: ../gui/resources.xml:560
 msgctxt "Accel Editor (descriptions)"
 msgid "Merge the current layer with the layer beneath it."
 msgstr "아래의 레이어와 현재 레이어를 병합합니다."
 
-#: ../po/tmp/resources.xml.h:113
+#: ../gui/resources.xml:567
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Merge Visible Layers"
 msgstr "보이는 레이어를 병합"
 
-#: ../po/tmp/resources.xml.h:114
+#: ../gui/resources.xml:568
 msgctxt "Accel Editor (descriptions)"
 msgid "Consolidate all visible layers, and delete the originals."
 msgstr "보이는 모든 레이어를 통합하고, 원본을 삭제합니다."
 
-#: ../po/tmp/resources.xml.h:115
+#: ../gui/resources.xml:575
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "New Layer from Visible"
 msgstr "표시 상태에서 새 레이어"
 
-#: ../po/tmp/resources.xml.h:116
+#: ../gui/resources.xml:576
 msgctxt "Accel Editor (descriptions)"
 msgid "Like ‘Merge Visible Layers’, but doesn’t delete the originals."
 msgstr "'보이는 레이어 병합'과 비슷하지만, 원본을 삭제하지 않습니다."
 
-#: ../po/tmp/resources.xml.h:117
+#: ../gui/resources.xml:583
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Delete Layer"
 msgstr "레이어를 삭제"
 
-#: ../po/tmp/resources.xml.h:118
+#: ../gui/resources.xml:584
 msgctxt "Accel Editor (descriptions)"
 msgid "Remove the current layer from the layer stack."
 msgstr "레이어 스택에서 현재 레이어를 제거합니다."
 
-#: ../po/tmp/resources.xml.h:119
+#: ../gui/resources.xml:591
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Convert to Normal Painting Layer"
 msgstr "일반 페인팅 레이어로 변환"
 
-#: ../po/tmp/resources.xml.h:120
+#: ../gui/resources.xml:592
 msgctxt "Accel Editor (descriptions)"
 msgid ""
 "Convert the current layer or group to a painting layer in ‘Normal’ mode, "
@@ -5541,849 +5432,857 @@ msgstr ""
 "현재의 모습은 유치하면서 현재의 레이어 또는 그룹을 '노멀'모드의 페인팅 레이어"
 "로 변환합니다."
 
-#: ../po/tmp/resources.xml.h:121
+#: ../gui/resources.xml:598
 msgctxt "Menu→Layer→Opacity (labels), Accel Editor (labels)"
 msgid "Increase Layer’s Opacity"
 msgstr "레이어의 불투명도를 증가"
 
-#: ../po/tmp/resources.xml.h:122
+#: ../gui/resources.xml:599
 msgctxt "Accel Editor (descriptions)"
 msgid "Make the layer less transparent."
 msgstr "레이어를 덜 투명하게 만듭니다."
 
-#: ../po/tmp/resources.xml.h:123
+#: ../gui/resources.xml:606
 msgctxt "Menu→Layer→Opacity (labels), Accel Editor (labels)"
 msgid "Reduce Layer’s Opacity"
 msgstr "레이어의 불투명도를 감소"
 
-#: ../po/tmp/resources.xml.h:124
+#: ../gui/resources.xml:607
 msgctxt "Accel Editor (descriptions)"
 msgid "Make the layer more transparent."
 msgstr "레이어를 투명하게 만듭니다."
 
-#: ../po/tmp/resources.xml.h:125
+#: ../gui/resources.xml:614
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Raise Layer"
 msgstr "레이어를 올리기"
 
-#: ../po/tmp/resources.xml.h:126
+#: ../gui/resources.xml:615
 msgctxt "Accel Editor (descriptions)"
 msgid "Raise the current layer one step in the layer stack."
 msgstr "레이어 스택의 현재 레이어 한 단계 올립니다."
 
-#: ../po/tmp/resources.xml.h:127
+#: ../gui/resources.xml:623
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Lower Layer"
 msgstr "레이어를 내리기"
 
-#: ../po/tmp/resources.xml.h:128
+#: ../gui/resources.xml:624
 msgctxt "Accel Editor (descriptions)"
 msgid "Lower the current layer one step in the layer stack."
 msgstr "레이어 스택의 현재 레이어 한 단계 내립니다."
 
-#: ../po/tmp/resources.xml.h:129
+#: ../gui/resources.xml:633
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Duplicate Layer"
 msgstr "레이어를 복제"
 
-#: ../po/tmp/resources.xml.h:130
+#: ../gui/resources.xml:634
 msgctxt "Accel Editor (descriptions)"
 msgid "Make an exact clone of the current layer."
 msgstr "현재 레이어의 정확한 복제를 만듭니다."
 
-#: ../po/tmp/resources.xml.h:131
+#: ../gui/resources.xml:642
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Layer Properties…"
 msgstr "레이어 속성…"
 
-#: ../po/tmp/resources.xml.h:132
+#: ../gui/resources.xml:643
 msgctxt "Accel Editor (descriptions)"
 msgid ""
 "Change the layer’s properties (name, mode, visibility, locked, opacity)."
 msgstr "레이어의 속성 (이름, 모드, 가시성, 잠김, 불투명도)을 변경하십시오."
 
-#: ../po/tmp/resources.xml.h:133
+#: ../gui/resources.xml:650
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Layer Locked"
 msgstr "잠긴 레이어"
 
-#: ../po/tmp/resources.xml.h:134
+#: ../gui/resources.xml:651
 msgctxt "Accel Editor (descriptions)"
 msgid ""
 "Toggle the current layer’s locked state. Locked layers cannot be modified."
 msgstr ""
 "현재 레이어의 잠금 상태를 토글합니다. 잠긴 레이어는 수정할 수 없습니다."
 
-#: ../po/tmp/resources.xml.h:135
+#: ../gui/resources.xml:658
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Layer Visible"
 msgstr "레이어 보이기"
 
-#: ../po/tmp/resources.xml.h:136
+#: ../gui/resources.xml:659
 msgctxt "Accel Editor (descriptions)"
 msgid "Toggle the current layer’s visibility state, making it hidden."
 msgstr "현재 레이어의 가시성 상태를 전환합니다."
 
-#: ../po/tmp/resources.xml.h:137
+#: ../gui/resources.xml:666
 msgctxt "Menu→View (labels), Accel Editor (labels)"
 msgid "Show Background"
 msgstr "배경을 표시"
 
-#: ../po/tmp/resources.xml.h:138
+#: ../gui/resources.xml:667
 msgctxt "Accel Editor (descriptions)"
 msgid "Toggle the background layer’s visibility."
 msgstr "배경 레이어의 가시성을 전환합니다."
 
-#: ../po/tmp/resources.xml.h:139
+#: ../gui/resources.xml:674
 msgctxt "Menu→Help→Debug (labels), Accel Editor (labels)"
 msgid "Vacuum Empty Tiles"
 msgstr "진공 빈 타일"
 
-#: ../po/tmp/resources.xml.h:140
+#: ../gui/resources.xml:675
 msgctxt "Accel Editor (descriptions)"
 msgid "Remove empty tiles from the document."
 msgstr "문서에서 빈 타일을 제거합니다."
 
-#: ../po/tmp/resources.xml.h:141
+#: ../gui/resources.xml:684
 msgctxt "Menu→View (labels), Accel Editor (labels)"
 msgid "Reset and Center View"
 msgstr "재설정 및 가운데 보기"
 
-#: ../po/tmp/resources.xml.h:142
+#: ../gui/resources.xml:685
 msgctxt "Accel Editor (descriptions)"
 msgid "Reset Zoom, Rotation and Mirroring, and recenter the document."
 msgstr "확대/축소, 회전 및 미러링을 재설정하고 문서를 가운데로 설정합니다."
 
-#: ../po/tmp/resources.xml.h:143
+#: ../gui/resources.xml:693
 msgctxt "Menu→View (labels), Accel Editor (labels)"
 msgid "Fit to View"
 msgstr "보기에 맞춤"
 
-#: ../po/tmp/resources.xml.h:144
+#: ../gui/resources.xml:694
 msgctxt "Accel Editor (descriptions)"
 msgid "Switch between a fitted view and your working location and zoom."
 msgstr "장착된 보기와 작업 위치 및 확대/축소 사이를 전환합니다."
 
-#: ../po/tmp/resources.xml.h:145
+#: ../gui/resources.xml:701
 msgctxt "Menu→View (labels)"
 msgid "Reset"
 msgstr "재설정"
 
-#: ../po/tmp/resources.xml.h:146
+#: ../gui/resources.xml:708
 msgctxt "Menu→View→Reset (labels), Accel Editor (labels)"
 msgid "Reset Zoom"
 msgstr "줌 재설정"
 
-#: ../po/tmp/resources.xml.h:147
+#: ../gui/resources.xml:709
 msgctxt "Accel Editor (descriptions)"
 msgid "Reset view zoom level to default."
 msgstr "보기 줌 레벨을 기본값으로 재설정합니다."
 
-#: ../po/tmp/resources.xml.h:148
+#: ../gui/resources.xml:715
 msgctxt "Menu→View→Reset (labels), Accel Editor (labels)"
 msgid "Reset Rotation"
 msgstr "회전을 재설정"
 
-#: ../po/tmp/resources.xml.h:149
+#: ../gui/resources.xml:716
 msgctxt "Accel Editor (descriptions)"
 msgid "Reset the view’s rotation to 0°"
 msgstr "보기의 회전을 0°로 재설정합니다"
 
-#: ../po/tmp/resources.xml.h:150
+#: ../gui/resources.xml:722
 msgctxt "Menu→View→Reset (labels), Accel Editor (labels)"
 msgid "Reset Mirroring"
 msgstr "미러링을 재설정"
 
-#: ../po/tmp/resources.xml.h:151
+#: ../gui/resources.xml:723
 msgctxt "Accel Editor (descriptions)"
 msgid "Reset the view's mirroring."
 msgstr "보기의 미러링을 재설정합니다."
 
-#: ../po/tmp/resources.xml.h:152
+#: ../gui/resources.xml:729
 msgctxt "Menu→View→Adjust View (labels), Accel Editor (labels)"
 msgid "Zoom In"
 msgstr "줌 확대"
 
-#: ../po/tmp/resources.xml.h:153
+#: ../gui/resources.xml:730
 msgctxt "Accel Editor (descriptions)"
 msgid "Increase magnification."
 msgstr "배율을 높입니다."
 
-#: ../po/tmp/resources.xml.h:154
+#: ../gui/resources.xml:737
 msgctxt "Menu→View→Adjust View (labels), Accel Editor (labels)"
 msgid "Zoom Out"
 msgstr "줌 축소"
 
-#: ../po/tmp/resources.xml.h:155
+#: ../gui/resources.xml:738
 msgctxt "Accel Editor (descriptions)"
 msgid "Decrease magnification."
 msgstr "배율을 줄입니다."
 
-#: ../po/tmp/resources.xml.h:156
+#: ../gui/resources.xml:758
 msgctxt "Menu→View→Adjust View (labels), Accel Editor (labels)"
 msgid "Pan Left"
 msgstr "왼쪽으로 이동"
 
-#: ../po/tmp/resources.xml.h:157
+#: ../gui/resources.xml:759
 msgctxt "Accel Editor (descriptions)"
 msgid "Move your view of the canvas to the left."
 msgstr "캔버스 보기를 왼쪽으로 이동합니다."
 
-#: ../po/tmp/resources.xml.h:158
+#: ../gui/resources.xml:766
 msgctxt "Menu→View→Adjust View (labels), Accel Editor (labels)"
 msgid "Pan Right"
 msgstr "오른쪽으로 이동"
 
-#: ../po/tmp/resources.xml.h:159
+#: ../gui/resources.xml:767
 msgctxt "Accel Editor (descriptions)"
 msgid "Move your view of the canvas to the right."
 msgstr "캔버스 보기를 오른쪽으로 이동합니다."
 
-#: ../po/tmp/resources.xml.h:160
+#: ../gui/resources.xml:774
 msgctxt "Menu→View→Adjust View (labels), Accel Editor (labels)"
 msgid "Pan Up"
 msgstr "위로 이동"
 
-#: ../po/tmp/resources.xml.h:161
+#: ../gui/resources.xml:775
 msgctxt "Accel Editor (descriptions)"
 msgid "Move your view of the canvas upwards."
 msgstr "캔버스 보기를 위로 이동합니다."
 
-#: ../po/tmp/resources.xml.h:162
+#: ../gui/resources.xml:782
 msgctxt "Menu→View→Adjust View (labels), Accel Editor (labels)"
 msgid "Pan Down"
 msgstr "아래로 이동"
 
-#: ../po/tmp/resources.xml.h:163
+#: ../gui/resources.xml:783
 msgctxt "Accel Editor (descriptions)"
 msgid "Move your view of the canvas downwards."
 msgstr "캔버스 보기를 아래로 내립니다."
 
-#: ../po/tmp/resources.xml.h:164
+#.
+#. Note: the object we've agreed to present as being rotated
+#. by "RotateLeft and "RotateRight" is the *canvas*,
+#. not the viewing rectangle.
+#.
+#. https://github.com/mypaint/mypaint/issues/553
+#.
+#: ../gui/resources.xml:798
 msgctxt "Menu→View→Adjust View (labels), Accel Editor (labels)"
 msgid "Rotate Clockwise"
 msgstr "시계 방향으로 회전"
 
-#: ../po/tmp/resources.xml.h:165
+#: ../gui/resources.xml:799
 msgctxt "Accel Editor (descriptions)"
 msgid "Rotate the canvas clockwise."
 msgstr "캔버스를 시계 방향으로 돌립니다."
 
-#: ../po/tmp/resources.xml.h:166
+#: ../gui/resources.xml:819
 msgctxt "Menu→View→Adjust View (labels), Accel Editor (labels)"
 msgid "Rotate Counterclockwise"
 msgstr "반 시계 방향으로 회전"
 
-#: ../po/tmp/resources.xml.h:167
+#: ../gui/resources.xml:820
 msgctxt "Accel Editor (descriptions)"
 msgid "Rotate the canvas counter-clockwise."
 msgstr "캔버스를 시계 반대 방향으로 돌립니다."
 
-#: ../po/tmp/resources.xml.h:168
+#: ../gui/resources.xml:828
 msgctxt "Menu→View→Adjust View (labels), Accel Editor (labels)"
 msgid "Mirror Horizontal"
 msgstr "수평으로 미러"
 
-#: ../po/tmp/resources.xml.h:169
+#: ../gui/resources.xml:829
 msgctxt "Accel Editor (descriptions)"
 msgid "Flip the view left to right."
 msgstr "보기를 좌우로 뒤집습니다."
 
-#: ../po/tmp/resources.xml.h:170
+#: ../gui/resources.xml:837
 msgctxt "Menu→View→Adjust View (labels), Accel Editor (labels)"
 msgid "Mirror Vertical"
 msgstr "수직으로 미러"
 
-#: ../po/tmp/resources.xml.h:171
+#: ../gui/resources.xml:838
 msgctxt "Accel Editor (descriptions)"
 msgid "Flip the view upside-down."
 msgstr "보기를 위아래로 뒤집습니다."
 
-#: ../po/tmp/resources.xml.h:172
+#: ../gui/resources.xml:845
 msgctxt "Menu→View (labels), Accel Editor (labels)"
 msgid "Layer Solo"
 msgstr "레이어 단독"
 
-#: ../po/tmp/resources.xml.h:173
+#: ../gui/resources.xml:846
 msgctxt "Accel Editor (descriptions)"
 msgid "Toggle whether only the current layer is shown."
 msgstr "표시된 현재 레이어만 전환합니다."
 
-#: ../po/tmp/resources.xml.h:174
+#: ../gui/resources.xml:856
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
 msgid "Symmetrical Painting Active"
 msgstr "대칭 페인팅 활성"
 
-#: ../po/tmp/resources.xml.h:175
+#: ../gui/resources.xml:857
 msgctxt "Accel Editor (descriptions)"
 msgid "Mirror brushstrokes along the axis of symmetry"
 msgstr "대칭 축을 따라 브러시 스트로크를 미러"
 
-#: ../po/tmp/resources.xml.h:176
+#: ../gui/resources.xml:864
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "Frame Enabled"
 msgstr "프레임 사용"
 
-#: ../po/tmp/resources.xml.h:177
+#: ../gui/resources.xml:865
 msgctxt "Accel Editor (descriptions)"
 msgid "Toggle visibility of the document frame."
 msgstr "문서 프레임의 가시성을 전환."
 
-#: ../po/tmp/resources.xml.h:178
+#: ../gui/resources.xml:874
 msgctxt "Menu→Help→Debug (labels), Accel Editor (labels)"
 msgid "Print Brush Input Values to Console"
 msgstr "콘솔에 브러시 입력 값을 출력"
 
-#: ../po/tmp/resources.xml.h:179
+#: ../gui/resources.xml:875
 msgctxt "Accel Editor (descriptions)"
 msgid "Show the brush engine’s internally generated inputs on the console."
 msgstr "콘솔에 브러시 엔진의 내부 생성 입력을 표시합니다."
 
-#: ../po/tmp/resources.xml.h:180
+#: ../gui/resources.xml:881
 msgctxt "Menu→Help→Debug (labels), Accel Editor (labels)"
 msgid "Visualize Rendering"
 msgstr "렌더링을 시각화"
 
-#: ../po/tmp/resources.xml.h:181
+#: ../gui/resources.xml:882
 msgctxt "Accel Editor (descriptions)"
 msgid "Show rendering updates on-screen, for debugging."
 msgstr "디버깅을 위해, 화면에 렌더링 업데이트를 표시합니다."
 
-#: ../po/tmp/resources.xml.h:182
+#: ../gui/resources.xml:888
 msgctxt "Menu→Help→Debug (labels), Accel Editor (labels)"
 msgid "No Double Buffering"
 msgstr "이중 버퍼링이 없음"
 
-#: ../po/tmp/resources.xml.h:183
+#: ../gui/resources.xml:889
 msgctxt "Accel Editor (descriptions)"
 msgid "Turn off GTK’s double buffering, normally enabled."
 msgstr "일반적으로 활성화된 GTK의 이중 버퍼링을 끕니다."
 
-#: ../po/tmp/resources.xml.h:185
+#: ../gui/resources.xml:898
 msgctxt "Accel Editor (descriptions)"
 msgid ""
 "Insert a point next to the currently selected point in the direction of the "
 "stroke."
 msgstr "스트로크 방향으로 현재 선택한 포인트 옆에 포인트를 삽입합니다."
 
-#: ../po/tmp/resources.xml.h:186
+#: ../gui/resources.xml:904
 msgid "Delete Point"
 msgstr "포인트를 삭제"
 
-#: ../po/tmp/resources.xml.h:187
+#: ../gui/resources.xml:905
 msgctxt "Accel Editor (descriptions)"
 msgid "Delete currently selected point on the ink stroke."
 msgstr "잉크 스트로크에서 현재 선택된 포인트를 삭제합니다."
 
-#: ../po/tmp/resources.xml.h:189
+#: ../gui/resources.xml:912
 msgctxt "Accel Editor (descriptions)"
 msgid ""
 "Simplify and delete points according to angle and distance between nodes."
 msgstr "노드 간 각도 및 거리에 따라 포인트를 단순화하고 삭제합니다."
 
-#: ../po/tmp/resources.xml.h:191
+#: ../gui/resources.xml:919
 msgctxt "Accel Editor (descriptions)"
 msgid "Delete every other point on the ink stroke."
 msgstr "잉크 스트로크에서 다른 모든 포인트를 삭제합니다."
 
-#: ../po/tmp/resources.xml.h:192
+#: ../gui/resources.xml:933
 msgctxt "Menu→Brush (labels)"
 msgid "Paint Mode"
 msgstr "페인트 모드"
 
-#: ../po/tmp/resources.xml.h:193
+#: ../gui/resources.xml:941
 msgctxt "Menu→Brush→Blend Mode (labels), Accel Editor (labels)"
 msgid "Paint Mode: Normal"
 msgstr "페인트 모드: 노멀"
 
-#: ../po/tmp/resources.xml.h:194
+#: ../gui/resources.xml:942
 msgctxt "Accel Editor (descriptions)"
 msgid "Apply color normally when painting."
 msgstr "페인팅 시 일반적인 색상을 적용합니다."
 
-#: ../po/tmp/resources.xml.h:195
+#: ../gui/resources.xml:950
 msgctxt "Menu→Brush→Blend Mode (labels), Accel Editor (labels)"
 msgid "Paint Mode: Eraser"
 msgstr "페인트 모드: 지우개"
 
-#: ../po/tmp/resources.xml.h:196
+#: ../gui/resources.xml:951
 msgctxt "Accel Editor (descriptions)"
 msgid "Erase using the current brush."
 msgstr "현재의 브러시를 지우개로 사용합니다."
 
-#: ../po/tmp/resources.xml.h:197
+#: ../gui/resources.xml:959
 msgctxt "Menu→Brush→Blend Mode (labels), Accel Editor (labels)"
 msgid "Paint Mode: Lock Alpha"
 msgstr "페인트 모드: 알파 잠금"
 
-#: ../po/tmp/resources.xml.h:198
+#: ../gui/resources.xml:960
 msgctxt "Accel Editor (descriptions)"
 msgid "Applying the brush doesn't change the layer’s opacity."
 msgstr "브러시를 적용하면 레이어의 불투명도가 변경되지 않습니다."
 
-#: ../po/tmp/resources.xml.h:199
+#: ../gui/resources.xml:968
 msgctxt "Menu→Brush→Blend Mode (labels), Accel Editor (labels)"
 msgid "Paint Mode: Colorize"
 msgstr "페인트 모드: 색상화"
 
-#: ../po/tmp/resources.xml.h:200
+#: ../gui/resources.xml:969
 msgctxt "Accel Editor (descriptions)"
 msgid ""
 "Apply color to the current layer without affecting its brightness or opacity."
 msgstr "밝기 또는 불투명도에 영향을 주지 않고 현재 레이어에 색상을 적용합니다."
 
-#: ../po/tmp/resources.xml.h:201
+#: ../gui/resources.xml:983
 msgctxt "Menu (labels)"
 msgid "File"
 msgstr "파일"
 
-#: ../po/tmp/resources.xml.h:202
+#: ../gui/resources.xml:989
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "Quit"
 msgstr "종료"
 
-#: ../po/tmp/resources.xml.h:203
+#: ../gui/resources.xml:990
 msgctxt "Accel Editor (descriptions)"
 msgid "Close main window and exit the app."
 msgstr "메인 창을 닫고 응용 프로그램을 종료합니다."
 
-#: ../po/tmp/resources.xml.h:204
+#: ../gui/resources.xml:1000
 msgctxt "Menu (labels)"
 msgid "Edit"
 msgstr "편집"
 
-#: ../po/tmp/resources.xml.h:205
+#: ../gui/resources.xml:1008
 msgctxt "Menu (labels)"
 msgid "Color"
 msgstr "색상"
 
-#: ../po/tmp/resources.xml.h:206
+#: ../gui/resources.xml:1014
 msgctxt "Menu→Color (labels)"
 msgid "Adjust Color"
 msgstr "색상 조절"
 
-#: ../po/tmp/resources.xml.h:207
+#: ../gui/resources.xml:1020
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "Color History Popup"
 msgstr "색상 기록 팝업"
 
-#: ../po/tmp/resources.xml.h:208
+#: ../gui/resources.xml:1021
 msgctxt "Accel Editor (descriptions)"
 msgid "Pop up a timeline of recent colors under the cursor."
 msgstr "커서 아래에 최근 색상의 타임라인을 팝업합니다."
 
-#: ../po/tmp/resources.xml.h:209
+#: ../gui/resources.xml:1028
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "Color Details Dialog"
 msgstr "색상 정보 대화 상자"
 
-#: ../po/tmp/resources.xml.h:210
+#: ../gui/resources.xml:1029
 msgctxt "Accel Editor (descriptions)"
 msgid "Show a color details dialog with text entry."
 msgstr "자세한 색상 정보 대화 상자를 표시합니다."
 
-#: ../po/tmp/resources.xml.h:211
+#: ../gui/resources.xml:1035
 msgctxt "Menu→Color"
 msgid "Next Palette Color"
 msgstr "다음 팔레트 색상"
 
-#: ../po/tmp/resources.xml.h:212
+#: ../gui/resources.xml:1036
 msgctxt "Accel Editor (descriptions)"
 msgid "Set painting color to the next color in the palette."
 msgstr "팔레트에서 다음 색상으로 페인팅 색상을 설정."
 
-#: ../po/tmp/resources.xml.h:213
+#: ../gui/resources.xml:1042
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "Previous Palette Color"
 msgstr "이전 팔레트 색상"
 
-#: ../po/tmp/resources.xml.h:214
+#: ../gui/resources.xml:1043
 msgctxt "Accel Editor (descriptions)"
 msgid "Set painting color to the previous color in the palette."
 msgstr "팔레트에서 이전 색상으로 페인팅 색상을 설정."
 
-#: ../po/tmp/resources.xml.h:215
+#: ../gui/resources.xml:1049
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "Add Color to Palette"
 msgstr "색상을 팔레트에 추가"
 
-#: ../po/tmp/resources.xml.h:216
+#: ../gui/resources.xml:1050
 msgctxt "Accel Editor (descriptions)"
 msgid "Append the current painting color to the palette."
 msgstr "팔레트에 현재의 페인팅 색상을 추가합니다."
 
-#: ../po/tmp/resources.xml.h:217
+#: ../gui/resources.xml:1058
 msgctxt "Menu (labels)"
 msgid "Layer"
 msgstr "레이어"
 
-#: ../po/tmp/resources.xml.h:218
+#: ../gui/resources.xml:1064
 msgctxt "Menu→Layer→Properties (labels)"
 msgid "Opacity"
 msgstr "불투명도"
 
-#: ../po/tmp/resources.xml.h:219
+#: ../gui/resources.xml:1070
 msgctxt "Menu→Layer (labels)"
 msgid "Go to Layer"
 msgstr "레이어로 이동"
 
-#: ../po/tmp/resources.xml.h:220
+#: ../gui/resources.xml:1076
 msgctxt "Menu→Layer (labels)"
 msgid "New Layer Below"
 msgstr "아래에 새로운 레이어"
 
-#: ../po/tmp/resources.xml.h:221
+#: ../gui/resources.xml:1082
 msgctxt "Menu→Layer (labels)"
 msgid "Properties"
 msgstr "속성"
 
-#: ../po/tmp/resources.xml.h:222
+#: ../gui/resources.xml:1090
 msgctxt "Menu (labels)"
 msgid "Scratchpad"
 msgstr "스크래치 패드"
 
-#: ../po/tmp/resources.xml.h:223
+#: ../gui/resources.xml:1096
 msgctxt "Menu→Scratchpad (labels), Accel Editor (labels)"
 msgid "New Scratchpad"
 msgstr "새로운 스크래치 패드"
 
-#: ../po/tmp/resources.xml.h:224
+#: ../gui/resources.xml:1097
 msgctxt "Accel Editor (descriptions)"
 msgid "Load the default scratchpad as a new scratchpad canvas."
 msgstr "새로운 스크래치 패드로 캔버스와 같은 기본 스크래치 패드를 불러옵니다."
 
-#: ../po/tmp/resources.xml.h:225
+#: ../gui/resources.xml:1104
 msgctxt "Menu→Scratchpad (labels), Accel Editor (labels)"
 msgid "Open Scratchpad…"
 msgstr "스크래치 패드 열기…"
 
-#: ../po/tmp/resources.xml.h:226
+#: ../gui/resources.xml:1105
 msgctxt "Accel Editor (descriptions)"
 msgid "Load an image file on disk into the scratchpad."
 msgstr "스크래치 패드로 디스크의 이미지 파일을 불러옵니다."
 
-#: ../po/tmp/resources.xml.h:227
+#: ../gui/resources.xml:1112
 msgctxt "Menu→Scratchpad (labels), Accel Editor (labels)"
 msgid "Save Scratchpad"
 msgstr "스크래치 패드를 저장"
 
-#: ../po/tmp/resources.xml.h:228
+#: ../gui/resources.xml:1113
 msgctxt "Accel Editor (descriptions)"
 msgid "Save the scratchpad to its existing file on disk."
 msgstr "디스크에 있는 기존 파일에 스크래치 패드를 저장합니다."
 
-#: ../po/tmp/resources.xml.h:229
+#: ../gui/resources.xml:1120
 msgctxt "Menu→Scratchpad (labels), Accel Editor (labels)"
 msgid "Export Scratchpad As…"
 msgstr "다른 스크래치 패드로 내보내기…"
 
-#: ../po/tmp/resources.xml.h:230
+#: ../gui/resources.xml:1121
 msgctxt "Accel Editor (descriptions)"
 msgid "Export the scratchpad to disk, under a file name of your choice."
 msgstr "원하는 파일 이름으로 디스크에 스크래치 패드를 내보냅니다."
 
-#: ../po/tmp/resources.xml.h:231
+#: ../gui/resources.xml:1128
 msgctxt "Menu→Scratchpad (labels), Accel Editor (labels)"
 msgid "Revert Scratchpad"
 msgstr "스크래치 패드를 되돌리기"
 
-#: ../po/tmp/resources.xml.h:232
+#: ../gui/resources.xml:1129
 msgctxt "Accel Editor (descriptions)"
 msgid "Revert the scratchpad to its last saved state."
 msgstr "스크래치 패드를 마지막 저장된 상태로 되돌립니다."
 
-#: ../po/tmp/resources.xml.h:233
+#: ../gui/resources.xml:1136
 msgctxt "Menu→Scratchpad (labels), Accel Editor (labels)"
 msgid "Save Scratchpad as Default"
 msgstr "스크래치 패드를 기본 값으로 저장"
 
-#: ../po/tmp/resources.xml.h:234
+#: ../gui/resources.xml:1137
 msgctxt "Accel Editor (descriptions)"
 msgid "Save the scratchpad as the default for ‘New Scratchpad’."
 msgstr "'새로운 스크래치 패드'에 대한 기본 값으로 스크래치 패드를 저장합니다."
 
-#: ../po/tmp/resources.xml.h:235
+#: ../gui/resources.xml:1143
 msgctxt "Menu→Scratchpad (labels), Accel Editor (labels)"
 msgid "Clear Default Scratchpad"
 msgstr "기본 스크래치 패드를 지우기"
 
-#: ../po/tmp/resources.xml.h:236
+#: ../gui/resources.xml:1144
 msgctxt "Accel Editor (descriptions)"
 msgid "Clear the default scratchpad to a blank canvas."
 msgstr "빈 캔버스를 기본 스크래치 패드로 만듭니다."
 
-#: ../po/tmp/resources.xml.h:237
+#: ../gui/resources.xml:1150
 msgctxt "Menu→Scratchpad (labels), Accel Editor (labels)"
 msgid "Copy Main Background to Scratchpad"
 msgstr "메인 배경을 스크래치 패드로 복사"
 
-#: ../po/tmp/resources.xml.h:238
+#: ../gui/resources.xml:1151
 msgctxt "Accel Editor (descriptions)"
 msgid ""
 "Copy the background image from the working document into the Scratchpad."
 msgstr "스크래치 패드로 작업 문서의 배경 이미지를 복사합니다."
 
-#: ../po/tmp/resources.xml.h:239
+#: ../gui/resources.xml:1159
 msgctxt "Menu (labels)"
 msgid "Window"
 msgstr "창"
 
-#: ../po/tmp/resources.xml.h:240
+#: ../gui/resources.xml:1167
 msgctxt "Menu→Brush (labels)"
 msgid "Brush"
 msgstr "브러시"
 
-#: ../po/tmp/resources.xml.h:241
+#: ../gui/resources.xml:1173
 msgctxt "Menu→Brush (labels)"
 msgid "Shortcut Keys"
 msgstr "단축 키"
 
-#: ../po/tmp/resources.xml.h:242
+#: ../gui/resources.xml:1179
 msgctxt "Menu→Brush→Shortcut Keys (labels), Accel Editor (labels)"
 msgid "Brush Shortcut Keys Help"
 msgstr "브러시 단축 키 도움말"
 
-#: ../po/tmp/resources.xml.h:243
+#: ../gui/resources.xml:1180
 msgctxt "Accel Editor (descriptions)"
 msgid "Show an explanation of how the shortcut keys work."
 msgstr "단축 키 작동 방법에 대한 설명을 표시합니다."
 
-#: ../po/tmp/resources.xml.h:244
+#: ../gui/resources.xml:1187
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
 msgid "Change Brush…"
 msgstr "브러시를 변경…"
 
-#: ../po/tmp/resources.xml.h:245
+#: ../gui/resources.xml:1188
 msgctxt "Accel Editor (descriptions)"
 msgid "Pop up a brush changer under the cursor."
 msgstr "커서 아래에 브러시 변경을 팝업합니다."
 
-#: ../po/tmp/resources.xml.h:246
+#: ../gui/resources.xml:1195
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "Change Color…"
 msgstr "색상을 변경…"
 
-#: ../po/tmp/resources.xml.h:247
+#: ../gui/resources.xml:1196
 msgctxt "Accel Editor (descriptions)"
 msgid ""
 "Pop up a color changer under the cursor, with all color selectors listed."
 msgstr "나열된 모든 색상 선택기로 커서 아래에 색상 변경기를 팝업합니다."
 
-#: ../po/tmp/resources.xml.h:248
+#: ../gui/resources.xml:1204
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "Change Color (fast subset)…"
 msgstr "색상을 변경 (빠른 하위설정)…"
 
-#: ../po/tmp/resources.xml.h:249
+#: ../gui/resources.xml:1205
 msgctxt "Accel Editor (descriptions)"
 msgid ""
 "Pop up a color changer under the cursor, with only single-click selectors "
 "listed."
 msgstr "나열된 단일 클릭 선택기로 커서 아래에 색상 변경기를 팝업합니다."
 
-#: ../po/tmp/resources.xml.h:250
+#: ../gui/resources.xml:1213
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
 msgid "Get More Brushes…"
 msgstr "더 많은 브러시를 가져오기…"
 
-#: ../po/tmp/resources.xml.h:251
+#: ../gui/resources.xml:1214
 msgctxt "Accel Editor (descriptions)"
 msgid "Download brushpacks from the MyPaint wiki."
 msgstr "MyPaint 위키에서 브러시 팩을 다운로드하십시오."
 
-#: ../po/tmp/resources.xml.h:252
+#: ../gui/resources.xml:1221
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
 msgid "Import Brushes…"
 msgstr "브러시 가져오기…"
 
-#: ../po/tmp/resources.xml.h:253
+#: ../gui/resources.xml:1222
 msgctxt "Accel Editor (descriptions)"
 msgid "Load a brushpack from disk."
 msgstr "디스크에서 브러시팩를 불러옵니다."
 
-#: ../po/tmp/resources.xml.h:254
+#: ../gui/resources.xml:1231
 msgctxt "Menu (labels)"
 msgid "Help"
 msgstr "도움말"
 
-#: ../po/tmp/resources.xml.h:255
+#: ../gui/resources.xml:1237
 msgctxt "Menu→Help (labels), Accel Editor (labels)"
 msgid "Online Help"
 msgstr "온라인 도움말"
 
-#: ../po/tmp/resources.xml.h:256
+#: ../gui/resources.xml:1238
 msgctxt "Accel Editor (descriptions)"
 msgid "Go to MyPaint’s documentation wiki."
 msgstr "MyPaint의 위키 문서로 이동합니다."
 
-#: ../po/tmp/resources.xml.h:257
+#: ../gui/resources.xml:1246
 msgctxt "Menu→Help (labels), Accel Editor (labels)"
 msgid "About MyPaint"
 msgstr "MyPaint 정보"
 
-#: ../po/tmp/resources.xml.h:258
+#: ../gui/resources.xml:1247
 msgctxt "Accel Editor (descriptions)"
 msgid "Show MyPaint’s license, version number, and credits."
 msgstr "MyPaint의 라이선스, 버전 번호 및 제작자를 표시합니다."
 
-#: ../po/tmp/resources.xml.h:259
+#: ../gui/resources.xml:1256
 msgctxt "Menu→Help (labels)"
 msgid "Debug"
 msgstr "디버그"
 
-#: ../po/tmp/resources.xml.h:260
+#: ../gui/resources.xml:1262
 msgctxt "Menu→Help→Debug (labels), Accel Editor (labels)"
 msgid "Print Memory Leak Info to Console (Slow!)"
 msgstr "콘솔에 메모리 누수 정보 출력 (느림!)"
 
-#: ../po/tmp/resources.xml.h:261
+#: ../gui/resources.xml:1263
 msgctxt "Accel Editor (descriptions)"
 msgid "Debug memory leaks."
 msgstr "디버그 메모리 누수."
 
-#: ../po/tmp/resources.xml.h:262
+#: ../gui/resources.xml:1269
 msgctxt "Menu→Help→Debug (labels), Accel Editor (labels)"
 msgid "Run Garbage Collector Now"
 msgstr "지금 가비지 수집기를 실행"
 
-#: ../po/tmp/resources.xml.h:263
+#: ../gui/resources.xml:1270
 msgctxt "Accel Editor (descriptions)"
 msgid "Free memory used for Python objects which are no longer in use."
 msgstr "더 이상 사용하지 않는 Python 객체에 사용되는 사용 가능한 메모리."
 
-#: ../po/tmp/resources.xml.h:264
+#. FIXME: convert to a ToggleAction
+#: ../gui/resources.xml:1277
 msgctxt "Menu→Help→Debug (labels), Accel Editor (labels)"
 msgid "Start/Stop Profiling…"
 msgstr "프로파일링을 시작/정지…"
 
-#: ../po/tmp/resources.xml.h:265
+#: ../gui/resources.xml:1278
 msgctxt "Accel Editor (descriptions)"
 msgid "Start or Stop Python Profiling (cProfile)"
 msgstr "파이썬 프로파일링을 시작 또는 중지 (cProfile)"
 
-#: ../po/tmp/resources.xml.h:266
+#: ../gui/resources.xml:1285
 msgctxt "Menu→Help→Debug (labels), Accel Editor (labels)"
 msgid "Simulate a Crash…"
 msgstr "충돌을 시뮬레이션…"
 
-#: ../po/tmp/resources.xml.h:267
+#: ../gui/resources.xml:1286
 msgctxt "Accel Editor (descriptions)"
 msgid "Raise a Python exception, to test the crash dialog."
 msgstr "크래시 대화 상자를 테스트하기 위해 Python 예외를 발생시킵니다."
 
-#: ../po/tmp/resources.xml.h:268
+#: ../gui/resources.xml:1294
 msgctxt "Menu (labels)"
 msgid "View"
 msgstr "보기"
 
-#: ../po/tmp/resources.xml.h:269
+#: ../gui/resources.xml:1300
 msgctxt "Menu→View (labels)"
 msgid "Feedback"
 msgstr "피드백"
 
-#: ../po/tmp/resources.xml.h:270
+#: ../gui/resources.xml:1306
 msgctxt "Menu→View (labels)"
 msgid "Adjust View"
 msgstr "보기를 조정"
 
-#: ../po/tmp/resources.xml.h:271
+#: ../gui/resources.xml:1312
 msgctxt "Menu→View (labels), Accel Editor (labels)"
 msgid "Popup Main Menu"
 msgstr "팝업 메인 메뉴"
 
-#: ../po/tmp/resources.xml.h:272
+#: ../gui/resources.xml:1313
 msgctxt "Accel Editor (descriptions)"
 msgid "Show the main menu as a popup."
 msgstr "메인 메뉴를 팝업으로 표시합니다."
 
-#: ../po/tmp/resources.xml.h:273
+#: ../gui/resources.xml:1320
 msgctxt "Menu→View (labels), Accel Editor (labels)"
 msgid "Fullscreen"
 msgstr "전체 화면"
 
-#: ../po/tmp/resources.xml.h:274
+#: ../gui/resources.xml:1321
 msgctxt "Accel Editor (descriptions)"
 msgid "Toggle between full-screen and windowed mode."
 msgstr "전체 화면과 창 모드 사이를 전환."
 
-#: ../po/tmp/resources.xml.h:275
+#: ../gui/resources.xml:1332
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
 msgid "Edit Preferences"
 msgstr "환경 설정을 편집"
 
-#: ../po/tmp/resources.xml.h:276
+#: ../gui/resources.xml:1333
 msgctxt "Accel Editor (descriptions)"
 msgid "Edit MyPaint’s global settings."
 msgstr "MyPaint의 전역 설정을 편집합니다."
 
-#: ../po/tmp/resources.xml.h:277
+#: ../gui/resources.xml:1339
 msgctxt "Help→Debug (labels), Accel Editor (labels)"
 msgid "Test Input Devices"
 msgstr "입력 장치를 테스트"
 
-#: ../po/tmp/resources.xml.h:278
+#: ../gui/resources.xml:1340
 msgctxt "Accel Editor (descriptions)"
 msgid "Show a dialog which captures all events your input devices send."
 msgstr "입력 장치가 전송하는 모든 이벤트를 캡처하는 대화 상자를 표시합니다."
 
-#: ../po/tmp/resources.xml.h:279
+#: ../gui/resources.xml:1347
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Background Chooser"
 msgstr "배경 선택기"
 
-#: ../po/tmp/resources.xml.h:280
+#: ../gui/resources.xml:1348
 msgctxt "Accel Editor (descriptions)"
 msgid "Change the background paper texture."
 msgstr "배경 종이 질감을 변경합니다."
 
-#: ../po/tmp/resources.xml.h:281
+#: ../gui/resources.xml:1355
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
 msgid "Brush Settings Editor"
 msgstr "브러시 설정 편집기"
 
-#: ../po/tmp/resources.xml.h:282
+#: ../gui/resources.xml:1356
 msgctxt "Accel Editor (descriptions)"
 msgid "Edit the active brush’s settings."
 msgstr "활성 브러시의 설정을 편집합니다."
 
-#: ../po/tmp/resources.xml.h:283
+#: ../gui/resources.xml:1364
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
 msgid "Brush Icon Editor"
 msgstr "브러시 아이콘 편집기"
 
-#: ../po/tmp/resources.xml.h:284
+#: ../gui/resources.xml:1365
 msgctxt "Accel Editor (descriptions)"
 msgid "Edit brush icons."
 msgstr "브러시 아이콘을 편집합니다."
 
-#: ../po/tmp/resources.xml.h:285
+#: ../gui/resources.xml:1373
 msgctxt ""
 "Menu→Layer (labels), Menu→Window (labels), Toolbar (labels), Accel Editor "
 "(labels)"
 msgid "Layers Panel"
 msgstr "레이어 패널"
 
-#: ../po/tmp/resources.xml.h:286
+#: ../gui/resources.xml:1374
 msgctxt "Accel Editor (descriptions)"
 msgid "Dockable panel for managing layers."
 msgstr "레이어 관리를 위한 도킹가능 패널."
 
-#: ../po/tmp/resources.xml.h:287
+#: ../gui/resources.xml:1382
 msgctxt "Menu→Layers (labels), Accel Editor (labels)"
 msgid "Show Layers Panel"
 msgstr "레이어 패널을 보기"
 
-#: ../po/tmp/resources.xml.h:288
+#: ../gui/resources.xml:1383
 msgctxt "Accel Editor (descriptions)"
 msgid "Reveal the Layers dockpanel (arrange layers, or assign modes)."
 msgstr "레이어 고정 표시기 보이기 (레이어 배치, 또는 모드 할당)."
 
-#: ../po/tmp/resources.xml.h:289
+#: ../gui/resources.xml:1394
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "HCY Wheel"
 msgstr "HCY 원형"
 
-#: ../po/tmp/resources.xml.h:290
+#: ../gui/resources.xml:1395
 msgctxt "Accel Editor (descriptions)"
 msgid ""
 "Dockable cylindrical hue/chroma/luma color selector. The circular slices are "
@@ -6391,32 +6290,32 @@ msgid ""
 msgstr ""
 "고정 가능한 원통형 색조/채도/휘도 색상 선택기. 원형 슬라이스는 동일합니다."
 
-#: ../po/tmp/resources.xml.h:291
+#: ../gui/resources.xml:1402
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "Color Palette"
 msgstr "색상 팔레트"
 
-#: ../po/tmp/resources.xml.h:292
+#: ../gui/resources.xml:1403
 msgctxt "Accel Editor (descriptions)"
 msgid "Dockable palette color selector."
 msgstr "고정 가능한 팔레트 색상 선택기."
 
-#: ../po/tmp/resources.xml.h:293
+#: ../gui/resources.xml:1411
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "HSV Wheel"
 msgstr "HSV 원형"
 
-#: ../po/tmp/resources.xml.h:294
+#: ../gui/resources.xml:1412
 msgctxt "Accel Editor (descriptions)"
 msgid "Dockable saturation and Value color changer."
 msgstr "고정 가능한 채도 및 값 컬러 체인저."
 
-#: ../po/tmp/resources.xml.h:295
+#: ../gui/resources.xml:1419
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "HSV Cube"
 msgstr "HSV 큐브"
 
-#: ../po/tmp/resources.xml.h:296
+#: ../gui/resources.xml:1420
 msgctxt "Accel Editor (descriptions)"
 msgid ""
 "Dockable color selector: HSV cube which can be rotated to show different "
@@ -6424,208 +6323,208 @@ msgid ""
 msgstr ""
 "고정 가능한 색상 선택기: 다른 평면 조각을 보여주기 위해 회전 하는 HSV 큐브."
 
-#: ../po/tmp/resources.xml.h:297
+#: ../gui/resources.xml:1427
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "HSV Square"
 msgstr "HSV 사각형"
 
-#: ../po/tmp/resources.xml.h:298
+#: ../gui/resources.xml:1428
 msgctxt "Accel Editor (descriptions)"
 msgid "Dockable color selector: HSV square with Hue ring."
 msgstr "도킹가능 색상 선택기: 색조 링이 있는 HSV 정사각형."
 
-#: ../po/tmp/resources.xml.h:299
+#: ../gui/resources.xml:1435
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "Component Sliders"
 msgstr "구성 요소 슬라이더"
 
-#: ../po/tmp/resources.xml.h:300
+#: ../gui/resources.xml:1436
 msgctxt "Accel Editor (descriptions)"
 msgid "Dockable color selector showing individual components of the color."
 msgstr "색상의 개별 구성 요소를 나타내는 고정 가능한 색상 선택기."
 
-#: ../po/tmp/resources.xml.h:301
+#: ../gui/resources.xml:1443
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "Liquid Wash"
 msgstr "리퀴드 워시"
 
-#: ../po/tmp/resources.xml.h:302
+#: ../gui/resources.xml:1444
 msgctxt "Accel Editor (descriptions)"
 msgid "Dockable color selector showing a liquid-like wash of nearby colors."
 msgstr "액체 처럼 씻은 인근 색상을 보여주는 고정가능 색상 선택기."
 
-#: ../po/tmp/resources.xml.h:303
+#: ../gui/resources.xml:1451
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "Concentric Rings"
 msgstr "동심 링"
 
-#: ../po/tmp/resources.xml.h:304
+#: ../gui/resources.xml:1452
 msgctxt "Accel Editor (descriptions)"
 msgid "Dockable color selector with concentric HSV rings."
 msgstr "동심 HSV 링이있는 고정 가능한 색상 선택기."
 
-#: ../po/tmp/resources.xml.h:305
+#: ../gui/resources.xml:1459
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "Crossed Bowl"
 msgstr "교차 그릇"
 
-#: ../po/tmp/resources.xml.h:306
+#: ../gui/resources.xml:1460
 msgctxt "Accel Editor (descriptions)"
 msgid "Dockable color selector with HSV ramps crossing a radial bowl of color."
 msgstr ""
 "방사형 색상 그릇을 가로 지르는 HSV 램프가 있는 고정 가능한 색상 선택기."
 
-#: ../po/tmp/resources.xml.h:307
+#: ../gui/resources.xml:1469
 msgctxt "Menu→Window (labels), Accel Editor (labels)"
 msgid "Scratchpad Panel"
 msgstr "스크래치 패드 패널"
 
-#: ../po/tmp/resources.xml.h:308
+#: ../gui/resources.xml:1470
 msgctxt "Accel Editor (descriptions)"
 msgid "Dockable Panel for mixing colors and testing brushes."
 msgstr "색상 혼합 및 브러시 테스트용 도킹가능 패널."
 
-#: ../po/tmp/resources.xml.h:309
+#: ../gui/resources.xml:1478
 msgctxt "Menu→Scratchpad (labels), Accel Editor (labels)"
 msgid "Show Scratchpad Panel"
 msgstr "스크래치 패드 패널을 보기"
 
-#: ../po/tmp/resources.xml.h:310
+#: ../gui/resources.xml:1479
 msgctxt "Accel Editor (descriptions)"
 msgid "Reveal the Scratchpad dockpanel (mix colors and make sketches)."
 msgstr "스크래치 패드 독패널을 보이기 (색상을 혼합하고 스케치를 만들기)."
 
-#: ../po/tmp/resources.xml.h:311
+#: ../gui/resources.xml:1488
 msgctxt "Menu→Window (labels), Toolbar (labels), Accel Editor (labels)"
 msgid "Preview Panel"
 msgstr "미리보기 패널"
 
-#: ../po/tmp/resources.xml.h:312
+#: ../gui/resources.xml:1489
 msgctxt "Accel Editor (descriptions)"
 msgid "Dockable panel for an overview and navigation of the whole canvas."
 msgstr "전체 캔버스의 개요 및 탐색을 위한 도킹가능 패널."
 
-#: ../po/tmp/resources.xml.h:313
+#: ../gui/resources.xml:1497
 msgctxt "Menu→View (labels), Accel Editor (labels)"
 msgid "Preview"
 msgstr "미리보기"
 
-#: ../po/tmp/resources.xml.h:314
+#: ../gui/resources.xml:1498
 msgctxt "Accel Editor (descriptions)"
 msgid "Reveal the Preview dockpanel (overview of the whole drawing area)."
 msgstr "미리보기 독패널을 보이기 (그리기 전체 캔퍼스 영역의 개요)."
 
-#: ../po/tmp/resources.xml.h:315
+#: ../gui/resources.xml:1508
 msgctxt "Menu→Window (labels), Toolbar (labels), Accel Editor (labels)"
 msgid "Tool Options Panel"
 msgstr "도구 옵션 패널"
 
-#: ../po/tmp/resources.xml.h:316
+#: ../gui/resources.xml:1509
 msgctxt "Accel Editor (descriptions)"
 msgid "Dockable panel for adjusting the options with the activated tool."
 msgstr "활성화된 도구로 옵션을 조정하기 위한 도킹가능 패널."
 
-#: ../po/tmp/resources.xml.h:317
+#: ../gui/resources.xml:1517
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
 msgid "Show Tool Options Panel"
 msgstr "도구 옵션 패널을 보기"
 
-#: ../po/tmp/resources.xml.h:318
+#: ../gui/resources.xml:1518
 msgctxt "Accel Editor (descriptions)"
 msgid "Reveal the Tool Options dockpanel (options for the current tool)."
 msgstr "도구 옵션 독패널을 보이기 (현재 도구에 대한 옵션)."
 
-#: ../po/tmp/resources.xml.h:319
+#: ../gui/resources.xml:1528
 msgctxt "Menu→Window (labels), Toolbar (labels), Accel Editor (labels)"
 msgid "Brush & Color History Panel"
 msgstr "브러시 & 색상 기록 패널"
 
-#: ../po/tmp/resources.xml.h:320
+#: ../gui/resources.xml:1529
 msgctxt "Accel Editor (descriptions)"
 msgid "Dockable panel for viewing recently changed colors and brushes."
 msgstr "최근 변경된 색상 및 브러시를 볼 수있는 도킹가능 패널."
 
-#: ../po/tmp/resources.xml.h:321
+#: ../gui/resources.xml:1537
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
 msgid "Recent Brushes & Colors"
 msgstr "최근 브러시 & 색상"
 
-#: ../po/tmp/resources.xml.h:322
+#: ../gui/resources.xml:1538
 msgctxt "Accel Editor (descriptions)"
 msgid "Reveal the History panel (recently used brushes and colors)."
 msgstr "작업 내역 패널(최근에 사용된 브러시 및 색상)을 표시합니다."
 
-#: ../po/tmp/resources.xml.h:323
+#: ../gui/resources.xml:1548
 msgctxt "Menu→View (labels), Accel Editor (labels)"
 msgid "Hide Controls in Fullscreen"
 msgstr "전체 화면에서 컨트롤을 숨기기"
 
-#: ../po/tmp/resources.xml.h:324
+#: ../gui/resources.xml:1549
 msgctxt "Accel Editor (descriptions)"
 msgid "Toggle automatic hiding of the user interface in fullscreen."
 msgstr "사용자 인터페이스 자동 숨기는 전체 화면으로 토글합니다."
 
-#: ../po/tmp/resources.xml.h:325
+#: ../gui/resources.xml:1556
 msgctxt "Menu→View→Feedback (labels), Accel Editor (labels)"
 msgid "Show Zoom Level"
 msgstr "줌 레벨을 표시"
 
-#: ../po/tmp/resources.xml.h:326
+#: ../gui/resources.xml:1557
 msgctxt "Accel Editor (descriptions)"
 msgid "Toggle zoom level feedback."
 msgstr "줌 레벨 피드백을 전환."
 
-#: ../po/tmp/resources.xml.h:327
+#: ../gui/resources.xml:1563
 msgctxt "Menu→View→Feedback (labels), Accel Editor (labels)"
 msgid "Show Last Painting Position"
 msgstr "마지막 패인팅 위치를 표시"
 
-#: ../po/tmp/resources.xml.h:328
+#: ../gui/resources.xml:1564
 msgctxt "Accel Editor (descriptions)"
 msgid "Toggle feedback showing where the last stroke ended."
 msgstr "마지막 스트로크가 끝난 위치를 보여주는 피드백을 토글합니다."
 
-#: ../po/tmp/resources.xml.h:329
+#: ../gui/resources.xml:1572
 msgctxt "Menu→View (labels)"
 msgid "Display Filter"
 msgstr "필터를 표시"
 
-#: ../po/tmp/resources.xml.h:330
+#: ../gui/resources.xml:1578
 msgctxt "Menu→View→Display Filter (labels), Accel Editor (labels)"
 msgid "Display Colors Normally"
 msgstr "색상 노멀라이즈를 표시"
 
-#: ../po/tmp/resources.xml.h:331
+#: ../gui/resources.xml:1579
 msgctxt "Accel Editor (descriptions)"
 msgid "Filter colors: show colors unchanged."
 msgstr "필터 색상: 색상 변경을 표시."
 
-#: ../po/tmp/resources.xml.h:332
+#: ../gui/resources.xml:1587
 msgctxt "Menu→View→Display Filter (labels), Accel Editor (labels)"
 msgid "Display Colors as Greyscale"
 msgstr "그레이 스케일로 색상을 표시"
 
-#: ../po/tmp/resources.xml.h:333
+#: ../gui/resources.xml:1588
 msgctxt "Accel Editor (descriptions)"
 msgid "Filter colors: show brightness only (HCY/YCbCr Luma)"
 msgstr "필터 색상: 밝기만 표시 (HCY/YCbCr 휘도)"
 
-#: ../po/tmp/resources.xml.h:334
+#: ../gui/resources.xml:1595
 msgctxt "Menu→View→Display Filter (labels), Accel Editor (labels)"
 msgid "Display Colors Inverted"
 msgstr "색상 반전을 표시"
 
-#: ../po/tmp/resources.xml.h:335
+#: ../gui/resources.xml:1596
 msgctxt "Accel Editor (descriptions)"
 msgid "Filter colors: inverse video. Black is white and red is cyan."
 msgstr "필터 색상 : 비디오를 반전. 검은 색은 흰색과 빨간색은 시안."
 
-#: ../po/tmp/resources.xml.h:336
+#: ../gui/resources.xml:1603
 msgctxt "Menu→View→Display Filter (labels), Accel Editor (labels)"
 msgid "Display Colors with Simulated Insensitivity to Red"
 msgstr "레드에 대한 모의 감도가 없는 디스플레이 색상"
 
-#: ../po/tmp/resources.xml.h:337
+#: ../gui/resources.xml:1604
 msgctxt "Accel Editor (descriptions)"
 msgid ""
 "Filter colors to simulate deuteranopia, a common form of color blindness."
@@ -6633,265 +6532,265 @@ msgstr ""
 "색맹의 일반적인 형태인 제2색약(녹색약)을 시뮬레이션하기 위해 색상을 필터링합"
 "니다."
 
-#: ../po/tmp/resources.xml.h:338
+#: ../gui/resources.xml:1611
 msgctxt "Menu→View→Display Filter (labels), Accel Editor (labels)"
 msgid "Display Colors with Simulated Insensitivity to Green"
 msgstr "그린에 대한 모의 감도가없는 디스플레이 색상"
 
-#: ../po/tmp/resources.xml.h:339
+#: ../gui/resources.xml:1612
 msgctxt "Accel Editor (descriptions)"
 msgid "Filter colors to simulate protanopia, a common form of color blindness."
 msgstr ""
 "색맹의 일반적인 형태인 제1색맹(적색맹)을 시뮬레이션하기 위해 색상을 필터링합"
 "니다."
 
-#: ../po/tmp/resources.xml.h:340
+#: ../gui/resources.xml:1619
 msgctxt "Menu→View→Display Filter (labels), Accel Editor (labels)"
 msgid "Display Colors with Simulated Insensitivity to Blue"
 msgstr "블루에 대한 모의 감도가없는 디스플레이 색상"
 
-#: ../po/tmp/resources.xml.h:341
+#: ../gui/resources.xml:1620
 msgctxt "Accel Editor (descriptions)"
 msgid "Filter colors to simulate tritanopia, a rare form of color blindness."
 msgstr ""
 "드문 형태의 색맹인 제3색맹(청색맹)를 시뮬레이션하기 위해 색상을 필터링합니다."
 
-#: ../po/tmp/resources.xml.h:342
+#: ../gui/resources.xml:1635
 msgctxt "Menu→Edit→Current Mode (labels)"
 msgid "Freehand"
 msgstr "자유형"
 
-#: ../po/tmp/resources.xml.h:343
+#: ../gui/resources.xml:1636
 msgctxt "Toolbar (short labels)"
 msgid "Freehand"
 msgstr "자유형"
 
-#: ../po/tmp/resources.xml.h:344
+#: ../gui/resources.xml:1637
 msgctxt "Toolbar (tooltips)"
 msgid "Freehand: draw and paint freely, without geometric constraints."
 msgstr "자유형 : 그리기 및 기하학적 제약 없이 자유롭게 페인트."
 
-#: ../po/tmp/resources.xml.h:345
+#: ../gui/resources.xml:1646
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
 msgid "Freehand"
 msgstr "자유형"
 
-#: ../po/tmp/resources.xml.h:346
+#: ../gui/resources.xml:1647
 msgctxt "Accel Editor (descriptions)"
 msgid "Draw and paint freely, without geometric constraints."
 msgstr "기하학적 제약없이 자유롭게 그리고 페인트 할 수 있습니다."
 
-#: ../po/tmp/resources.xml.h:347
+#: ../gui/resources.xml:1657
 msgctxt "Menu→Edit→Current Mode (labels)"
 msgid "Pan View"
 msgstr "보기를 이동"
 
-#: ../po/tmp/resources.xml.h:348
+#: ../gui/resources.xml:1658
 msgctxt "Toolbar (short labels)"
 msgid "Pan"
 msgstr "화면 이동"
 
-#: ../po/tmp/resources.xml.h:349
+#: ../gui/resources.xml:1659
 msgctxt "Toolbar (tooltips)"
 msgid "Pan View: move your view of the canvas horizontally or vertically."
 msgstr "화면 이동: 수평 또는 수직으로 캔버스의 보기를 이동합니다."
 
-#: ../po/tmp/resources.xml.h:350
+#: ../gui/resources.xml:1667
 msgctxt "Menu→View (labels), Accel Editor (labels)"
 msgid "Pan View"
 msgstr "보기를 화면 이동"
 
-#: ../po/tmp/resources.xml.h:351
+#: ../gui/resources.xml:1668
 msgctxt "Accel Editor (descriptions)"
 msgid "Interactively move your view of the canvas horizontally or vertically."
 msgstr "대화형으로 수평 또는 수직으로 캔버스의 보기를 이동합니다."
 
-#: ../po/tmp/resources.xml.h:352
+#: ../gui/resources.xml:1677
 msgctxt "Menu→Edit→Current Mode (labels)"
 msgid "Rotate View"
 msgstr "보기를 회전"
 
-#: ../po/tmp/resources.xml.h:353
+#: ../gui/resources.xml:1678
 msgctxt "Toolbar (short labels)"
 msgid "Rotate"
 msgstr "회전"
 
-#: ../po/tmp/resources.xml.h:354
+#: ../gui/resources.xml:1679
 msgctxt "Toolbar (tooltips)"
 msgid "Rotate View: tilt your view of the canvas."
 msgstr "보기를 회전 : 캔버스의 보기를 회전합니다."
 
-#: ../po/tmp/resources.xml.h:355
+#: ../gui/resources.xml:1687
 msgctxt "Menu→View (labels), Accel Editor (labels)"
 msgid "Rotate View"
 msgstr "보기를 회전"
 
-#: ../po/tmp/resources.xml.h:356
+#: ../gui/resources.xml:1688
 msgctxt "Accel Editor (descriptions)"
 msgid "Interactively rotate your view of the canvas."
 msgstr "대화형으로 캔버스의 보기를 회전 할 수 있습니다."
 
-#: ../po/tmp/resources.xml.h:357
+#: ../gui/resources.xml:1697
 msgctxt "Menu→Edit→Current Mode (labels)"
 msgid "Zoom View"
 msgstr "보기를 줌"
 
-#: ../po/tmp/resources.xml.h:358
+#: ../gui/resources.xml:1698
 msgctxt "Toolbar (short labels)"
 msgid "Zoom"
 msgstr "줌"
 
-#: ../po/tmp/resources.xml.h:359
+#: ../gui/resources.xml:1699
 msgctxt "Toolbar (tooltips)"
 msgid "Zoom View: zoom into or out of the canvas."
 msgstr "보기를 줌: 캔버스를 확대 또는 축소합니다."
 
-#: ../po/tmp/resources.xml.h:360
+#: ../gui/resources.xml:1707
 msgctxt "Menu→View (labels), Accel Editor (labels)"
 msgid "Zoom View"
 msgstr "보기를 줌"
 
-#: ../po/tmp/resources.xml.h:361
+#: ../gui/resources.xml:1708
 msgctxt "Accel Editor (descriptions)"
 msgid "Interactively zoom into or out of the canvas."
 msgstr "캔버스를 대화형으로 확대 또는 축소합니다."
 
-#: ../po/tmp/resources.xml.h:362
+#: ../gui/resources.xml:1717
 msgctxt "Menu→Edit→Current Mode (labels)"
 msgid "Lines and Curves"
 msgstr "직선과 곡선"
 
-#: ../po/tmp/resources.xml.h:363
+#: ../gui/resources.xml:1718
 msgctxt "Toolbar (short labels)"
 msgid "Lines"
 msgstr "직선"
 
-#: ../po/tmp/resources.xml.h:364
+#: ../gui/resources.xml:1719
 msgctxt "Toolbar (tooltips)"
 msgid "Lines and Curves: draw straight or curved lines."
 msgstr "직선과 곡선: 직선 또는 곡선을 그립니다."
 
-#: ../po/tmp/resources.xml.h:365
+#: ../gui/resources.xml:1727
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
 msgid "Lines and Curves"
 msgstr "직선과 곡선"
 
-#: ../po/tmp/resources.xml.h:366
+#: ../gui/resources.xml:1728
 msgctxt "Accel Editor (descriptions)"
 msgid "Draw straight or curved lines."
 msgstr "직선 또는 곡선을 그립니다."
 
-#: ../po/tmp/resources.xml.h:367
+#: ../gui/resources.xml:1738
 msgctxt "Menu→Edit→Current Mode (labels)"
 msgid "Connected Lines"
 msgstr "연결된 라인"
 
-#: ../po/tmp/resources.xml.h:368
+#: ../gui/resources.xml:1739
 msgctxt "Toolbar (short labels)"
 msgid "Conn. Lines"
 msgstr "연결된 라인"
 
-#: ../po/tmp/resources.xml.h:369
+#: ../gui/resources.xml:1740
 msgctxt "Toolbar (tooltips)"
 msgid "Connected Lines: draw sequences of straight or curved lines."
 msgstr "연결된 라인: 직선 또는 곡선의 시퀀스를 그립니다."
 
-#: ../po/tmp/resources.xml.h:370
+#: ../gui/resources.xml:1748
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
 msgid "Connected Lines"
 msgstr "연결된 라인"
 
-#: ../po/tmp/resources.xml.h:371
+#: ../gui/resources.xml:1749
 msgctxt "Accel Editor (descriptions)"
 msgid "Draw sequences of straight or curved lines."
 msgstr "직선 또는 곡선의 시퀀스를 그립니다."
 
-#: ../po/tmp/resources.xml.h:372
+#: ../gui/resources.xml:1759
 msgctxt "Menu→Edit→Current Mode (labels)"
 msgid "Ellipses and Circles"
 msgstr "타원과 원"
 
-#: ../po/tmp/resources.xml.h:373
+#: ../gui/resources.xml:1760
 msgctxt "Toolbar (short labels)"
 msgid "Ellipse"
 msgstr "타원"
 
-#: ../po/tmp/resources.xml.h:374
+#: ../gui/resources.xml:1761
 msgctxt "Toolbar (tooltips)"
 msgid "Ellipses and Circles: draw rounded shapes."
 msgstr "타원과 원 : 둥근 원모양을 그립니다."
 
-#: ../po/tmp/resources.xml.h:375
+#: ../gui/resources.xml:1769
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
 msgid "Ellipses and Circles"
 msgstr "타원과 원"
 
-#: ../po/tmp/resources.xml.h:376
+#: ../gui/resources.xml:1770
 msgctxt "Accel Editor (descriptions)"
 msgid "Draw circles and ellipses."
 msgstr "원과 타원을 그립니다."
 
-#: ../po/tmp/resources.xml.h:377
+#: ../gui/resources.xml:1780
 msgctxt "Menu→Edit→Current Mode (labels)"
 msgid "Inking"
 msgstr "잉크 제도"
 
-#: ../po/tmp/resources.xml.h:378
+#: ../gui/resources.xml:1781
 msgctxt "Toolbar (short labels)"
 msgid "Ink"
 msgstr "잉크"
 
-#: ../po/tmp/resources.xml.h:379
+#: ../gui/resources.xml:1782
 msgctxt "Toolbar (tooltips)"
 msgid "Inking: draw smooth controlled lines."
 msgstr "잉크 제도: 부드러운 제어선을 그립니다."
 
-#: ../po/tmp/resources.xml.h:380
+#: ../gui/resources.xml:1790
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
 msgid "Inking"
 msgstr "잉크 제도"
 
-#: ../po/tmp/resources.xml.h:381
+#: ../gui/resources.xml:1791
 msgctxt "Accel Editor (descriptions)"
 msgid "Draw smooth controlled lines."
 msgstr "부드러운 제어선을 그립니다."
 
-#: ../po/tmp/resources.xml.h:382
+#: ../gui/resources.xml:1801
 msgctxt "Menu→Edit→Current Mode (labels)"
 msgid "Reposition Layer"
 msgstr "레이어 위치를 조정"
 
-#: ../po/tmp/resources.xml.h:383
+#: ../gui/resources.xml:1802
 msgctxt "Toolbar (short labels)"
 msgid "Layer Pos."
 msgstr "레이어 순위."
 
-#: ../po/tmp/resources.xml.h:384
+#: ../gui/resources.xml:1803
 msgctxt "Toolbar (tooltips)"
 msgid "Reposition Layer: move the current layer on the canvas."
 msgstr "레이어 위치를 조정: 캔버스에 현재 레이어를 이동합니다."
 
-#: ../po/tmp/resources.xml.h:385
+#: ../gui/resources.xml:1811
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Reposition Layer"
 msgstr "레이어 위치 조정"
 
-#: ../po/tmp/resources.xml.h:386
+#: ../gui/resources.xml:1812
 msgctxt "Accel Editor (description)"
 msgid "Interactively move the current layer on the canvas."
 msgstr "캔버스에 현재 레이어를 대화형 이동합니다."
 
-#: ../po/tmp/resources.xml.h:387
+#: ../gui/resources.xml:1822
 msgctxt "Menu→Edit→Current Mode (labels)"
 msgid "Edit Frame"
 msgstr "프레임을 편집"
 
-#: ../po/tmp/resources.xml.h:388
+#: ../gui/resources.xml:1823
 msgctxt "Toolbar (short labels)"
 msgid "Frame"
 msgstr "프레임"
 
-#: ../po/tmp/resources.xml.h:389
+#: ../gui/resources.xml:1824
 msgctxt "Toolbar (tooltips)"
 msgid ""
 "Edit Frame: define a frame around the document to give it a finite size."
@@ -6899,125 +6798,221 @@ msgstr ""
 "프레임을 편집: 그것을 유한한 크기를 사용하기 위해 문서 주위에 프레임을 정의합"
 "니다."
 
-#: ../po/tmp/resources.xml.h:390
+#: ../gui/resources.xml:1832
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "Edit Frame"
 msgstr "프레임을 편집"
 
-#: ../po/tmp/resources.xml.h:391
+#: ../gui/resources.xml:1833
 msgctxt "Accel Editor (descriptions)"
 msgid ""
 "Interactively define a frame around the document to give it a finite size."
 msgstr ""
 "문서 주위에 프레임을 대화식으로 정의하여 유한한 캔퍼스 크기를 정의합니다."
 
-#: ../po/tmp/resources.xml.h:392
+#: ../gui/resources.xml:1842
 msgctxt "Menu→Edit→Current Mode (labels)"
 msgid "Edit Painting Symmetry"
 msgstr "페인팅 대칭을 편집"
 
-#: ../po/tmp/resources.xml.h:393
+#: ../gui/resources.xml:1843
 msgctxt "Toolbar (short labels)"
 msgid "Symmetry"
 msgstr "대칭"
 
-#: ../po/tmp/resources.xml.h:394
+#: ../gui/resources.xml:1844
 msgctxt "Toolbar (tooltips)"
 msgid "Edit Painting Symmetry: adjust the axis used for symmetrical painting."
 msgstr "패인티 대칭을 편집 : 대칭 페인팅에 사용 된 축을 조정합니다."
 
-#: ../po/tmp/resources.xml.h:395
+#: ../gui/resources.xml:1852
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "Edit Painting Symmetry"
 msgstr "페인팅 대칭을 편집"
 
-#: ../po/tmp/resources.xml.h:396
+#: ../gui/resources.xml:1853
 msgctxt "Accel Editor (description)"
 msgid "Interactively adjust the axis used for symmetrical painting."
 msgstr "대칭 페인팅에 사용되는 축을 대화식으로 조정합니다."
 
-#: ../po/tmp/resources.xml.h:397
+#: ../gui/resources.xml:1863
 msgctxt "Menu→Edit→Current Mode (labels)"
 msgid "Pick Color"
 msgstr "색상을 선택"
 
-#: ../po/tmp/resources.xml.h:398
+#: ../gui/resources.xml:1864
 msgctxt "Toolbar (short labels)"
 msgid "Pick Col."
 msgstr "색상을 선택."
 
-#: ../po/tmp/resources.xml.h:399
+#: ../gui/resources.xml:1865
 msgctxt "Toolbar (tooltips)"
 msgid "Pick Color: set the painting color from screen pixels."
 msgstr "색상을 선택 : 화면 픽셀에서 페인팅 색상을 설정합니다."
 
-#: ../po/tmp/resources.xml.h:400
+#: ../gui/resources.xml:1897
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "Pick Color Hue"
 msgstr "색상 색조를 선택"
 
-#: ../po/tmp/resources.xml.h:401
+#: ../gui/resources.xml:1898
 msgctxt "Accel Editor (descriptions)"
 msgid ""
 "Set the painting Hue from screen pixels while preserving the Chroma and Luma."
 msgstr "채도 및 휘도를 유지하면서 화면 픽셀에서 페인팅 색조를 설정합니다."
 
-#: ../po/tmp/resources.xml.h:402
+#: ../gui/resources.xml:1906
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "Pick Color Chroma"
 msgstr "색상 채도를 선택"
 
-#: ../po/tmp/resources.xml.h:403
+#: ../gui/resources.xml:1907
 msgctxt "Accel Editor (descriptions)"
 msgid ""
 "Set the painting Chroma from screen pixels while preserving the Hue and Luma."
 msgstr "색조와 휘도를 유지하면서 화면 픽셀에서 그림 채도를 설정합니다."
 
-#: ../po/tmp/resources.xml.h:404
+#: ../gui/resources.xml:1915
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "Pick Color Luma"
 msgstr "색상 휘도를 선택"
 
-#: ../po/tmp/resources.xml.h:405
+#: ../gui/resources.xml:1916
 msgctxt "Accel Editor (descriptions)"
 msgid ""
 "Set the painting Luma from screen pixels while preserving the Hue and Chroma."
 msgstr "색조와 채도를 유지하면서 화면 픽셀에서 휘도 페인팅을 설정합니다."
 
-#: ../po/tmp/resources.xml.h:406
+#: ../gui/resources.xml:1924
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "Pick Color"
 msgstr "색상을 선택"
 
-#: ../po/tmp/resources.xml.h:407
+#: ../gui/resources.xml:1925
 msgctxt "Accel Editor (descriptions)"
 msgid "Set the painting color from screen pixels."
 msgstr "화면 픽셀에서 페인팅 색상을 설정합니다."
 
-#: ../po/tmp/resources.xml.h:408
+#: ../gui/resources.xml:1935
 msgctxt "Menu→Edit→Current Mode (labels)"
 msgid "Flood Fill"
 msgstr "색상 영역 채우기"
 
-#: ../po/tmp/resources.xml.h:409
+#: ../gui/resources.xml:1936
 msgctxt "Toolbar (short labels)"
 msgid "Fill"
 msgstr "채우기"
 
-#: ../po/tmp/resources.xml.h:410
+#: ../gui/resources.xml:1937
 msgctxt "Toolbar (tooltips)"
 msgid "Flood Fill: fill an area with color."
 msgstr "색상 영역 채우기: 색상으로 영역을 채웁니다."
 
-#: ../po/tmp/resources.xml.h:411
+#: ../gui/resources.xml:1945
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
 msgid "Flood Fill"
 msgstr "색상 영역 채우기"
 
-#: ../po/tmp/resources.xml.h:412
+#: ../gui/resources.xml:1946
 msgctxt "Accel Editor (descriptions)"
 msgid "Fill an area with color."
 msgstr "색상으로 영역을 채웁니다."
+
+#~ msgctxt "Layer properties widget → Name → label tooltip"
+#~ msgid "The layer’s unique name."
+#~ msgstr "레이어의 고유 이름입니다."
+
+#~ msgctxt "Layer properties widget → <category labels>"
+#~ msgid "Name"
+#~ msgstr "이름"
+
+#~ msgctxt "Layer properties widget → Mode → label tooltip"
+#~ msgid ""
+#~ "How the layer combines with what’s behind it.\n"
+#~ "\n"
+#~ "Each mode has a different visual effect. Refer to the dropdown’s tooltip "
+#~ "for each one to discover what they all do."
+#~ msgstr ""
+#~ "레이어가 뒤에 있는 레이어와 결합하는 방법\n"
+#~ "\n"
+#~ "각 모드마다 다른 시각 효과가 있습니다. 각 기능에 대한 설명을 보려면 드롭 "
+#~ "다운의 툴팁을 참조하십시오."
+
+#~ msgctxt "Layer properties widget → <category labels>"
+#~ msgid "Mode"
+#~ msgstr "모드"
+
+#~ msgctxt "Layer properties widget → Opacity → label tooltip"
+#~ msgid ""
+#~ "How much the layer combines with what’s behind it.\n"
+#~ "\n"
+#~ "At 0%, the layer doesn’t contribute at all."
+#~ msgstr ""
+#~ "뒤에 있는 레이어와 결합하는 방법\n"
+#~ "\n"
+#~ "0%에서는 레이어가 결합에 전혀 기여하지 않습니다."
+
+#~ msgctxt "Layer properties widget → <category labels>"
+#~ msgid "Opacity"
+#~ msgstr "불투명도"
+
+#~ msgctxt "Layer properties widget → Flags → label tooltip"
+#~ msgid ""
+#~ "Special layer flags.\n"
+#~ "\n"
+#~ "Refer to each button’s tooltip to find out what each flag does."
+#~ msgstr ""
+#~ "특수 레이어 플래그.\n"
+#~ "\n"
+#~ "각 플래그의 기능을 알아 보려면 각 버튼의 툴팁을 참조하십시오."
+
+#~ msgctxt "Layer properties widget → <category labels>"
+#~ msgid "Flags"
+#~ msgstr "플래그"
+
+#~ msgctxt "Layer properties widget → Flags → Eye togglebutton → tooltip"
+#~ msgid ""
+#~ "Layer visible or hidden.\n"
+#~ "\n"
+#~ "An open eye icon here indicates that the layer is visible.\n"
+#~ "\n"
+#~ "When the eye icon is closed, the layer is hidden. Hidden layers are "
+#~ "completely invisible: they have no effect on what's displayed. You cannot "
+#~ "paint to hidden layers, for safety.\n"
+#~ "\n"
+#~ "When a layer group is hidden, all of the layers inside it are made "
+#~ "invisible too."
+#~ msgstr ""
+#~ "레이어가 보이거나 숨겨져 있습니다.\n"
+#~ "\n"
+#~ "열린 눈 모양 아이콘은 레이어가 표시되어 있음을 나타냅니다. \n"
+#~ "\n"
+#~ "눈 아이콘이 닫히면 레이어가 숨겨집니다. 숨겨진 레이어는 완전히 보이지 않습"
+#~ "니다. 표시되는 내용에는 영향을 미치지 않습니다. 안전을 위해 숨겨진 레이어"
+#~ "에는 페인트를 칠할 수 없습니다.\n"
+#~ "\n"
+#~ "레이어 그룹이 숨겨지면 그 안의 모든 레이어도 보이지 않게됩니다."
+
+#~ msgctxt "Layer properties widget → Flags → Padlock togglebutton → tooltip"
+#~ msgid ""
+#~ "Layer editable or locked.\n"
+#~ "\n"
+#~ "An open padlock icon indicates that the layer can be edited.\n"
+#~ "\n"
+#~ "When a layer is locked, you cannot paint to it or otherwise change its "
+#~ "pixel content. You cannot pick strokes from it either, so this is useful "
+#~ "when painting under a sketch.\n"
+#~ "\n"
+#~ "When a layer group is locked, none of the layers inside it can be edited."
+#~ msgstr ""
+#~ "레이어 편집 가능 또는 잠김\n"
+#~ "\n"
+#~ "열린 자물쇠 아이콘은 도면층을 편집 할 수 있음을 나타냅니다.\n"
+#~ "\n"
+#~ "레이어가 잠겨 있으면 페인트하거나 픽셀 내용을 변경할 수 없습니다. 스트로크"
+#~ "도 선택할 수 없으므로 스케치에서 페인팅 할 때 유용합니다.\n"
+#~ "\n"
+#~ "레이어 그룹이 잠겨 있으면 그 안에있는 레이어를 편집 할 수 없습니다."
 
 #~ msgctxt "file handling: open failed (statusbar)"
 #~ msgid "Could not load “{file_basename}”."

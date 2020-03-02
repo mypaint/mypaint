@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mypaint v1.2.0-102-g77b0656\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-02-12 21:56+0100\n"
+"POT-Creation-Date: 2020-03-03 00:01+0100\n"
 "PO-Revision-Date: 2016-03-06 14:24+0000\n"
 "Last-Translator: tou omiya <tokyogeometry@gmail.com>\n"
 "Language-Team: Japanese <https://hosted.weblate.org/projects/mypaint/mypaint/"
@@ -176,114 +176,114 @@ msgstr ""
 msgid "{filename} has zero size (w={w}, h={h})"
 msgstr "ファイル{filename}は面積がありません(幅：{w}, 高さ:{h})"
 
-#: ../gui/brusheditor.py:92
+#: ../gui/brusheditor.py:112
 msgctxt "brush settings editor: subwindow title"
 msgid "Brush Settings Editor"
 msgstr "ブラシ設定エディター"
 
-#: ../gui/brusheditor.py:272
+#: ../gui/brusheditor.py:293
 msgctxt "brush settings list: brush metadata texts group"
 msgid "About"
 msgstr "このブラシについて"
 
-#: ../gui/brusheditor.py:283
+#: ../gui/brusheditor.py:304
 msgctxt "brush settings list: setting group"
 msgid "Experimental"
 msgstr "実験的"
 
-#: ../gui/brusheditor.py:290
+#: ../gui/brusheditor.py:311
 msgctxt "brush settings list: setting group"
 msgid "Basic"
 msgstr "基本"
 
-#: ../gui/brusheditor.py:309
+#: ../gui/brusheditor.py:330
 msgctxt "brush settings list: setting group"
 msgid "Opacity"
 msgstr "不透明度"
 
-#: ../gui/brusheditor.py:321
+#: ../gui/brusheditor.py:342
 msgctxt "brush settings list: setting group"
 msgid "Dabs"
 msgstr "ブラシ描点"
 
-#: ../gui/brusheditor.py:332
+#: ../gui/brusheditor.py:353
 msgctxt "brush settings list: setting group"
 msgid "Smudge"
 msgstr "混色"
 
-#: ../gui/brusheditor.py:346
+#: ../gui/brusheditor.py:367
 msgctxt "brush settings list: setting group"
 msgid "Speed"
 msgstr "スピード"
 
-#: ../gui/brusheditor.py:360
+#: ../gui/brusheditor.py:381
 msgctxt "brush settings list: setting group"
 msgid "Directional Offsets"
 msgstr ""
 
-#: ../gui/brusheditor.py:378
+#: ../gui/brusheditor.py:399
 msgctxt "brush settings list: setting group"
 msgid "Tracking"
 msgstr "描線の修正"
 
-#: ../gui/brusheditor.py:389
+#: ../gui/brusheditor.py:410
 msgctxt "brush settings list: setting group"
 msgid "Stroke"
 msgstr "ストローク"
 
-#: ../gui/brusheditor.py:400
+#: ../gui/brusheditor.py:421
 msgctxt "brush settings list: setting group"
 msgid "Color"
 msgstr "色"
 
-#: ../gui/brusheditor.py:418
+#: ../gui/brusheditor.py:439
 msgctxt "brush settings list: setting group"
 msgid "GridMap"
 msgstr ""
 
-#: ../gui/brusheditor.py:429
+#: ../gui/brusheditor.py:450
 msgctxt "brush settings list: setting group"
 msgid "Custom"
 msgstr "カスタム"
 
-#: ../gui/brusheditor.py:495
+#: ../gui/brusheditor.py:516
 msgctxt "brush settings editor: save brush: error message"
 msgid "No brush selected, please use “Add As New” instead."
 msgstr ""
 "ブラシが選択されていません。「新規ブラシとして追加」を利用してください。"
 
-#: ../gui/brusheditor.py:520
+#: ../gui/brusheditor.py:541
 msgctxt "brush settings editor: rename brush: error message"
 msgid "No brush selected!"
 msgstr "ブラシが選択されていません！"
 
-#: ../gui/brusheditor.py:529
+#: ../gui/brusheditor.py:550
 msgctxt "brush settings editor: rename brush: dialog title"
 msgid "Rename Brush"
 msgstr "ブラシ名の変更"
 
-#: ../gui/brusheditor.py:548
+#: ../gui/brusheditor.py:569
 msgctxt "brush settings editor: rename brush: error message"
 msgid "A brush with this name already exists!"
 msgstr "既に同名のブラシが存在します！"
 
-#: ../gui/brusheditor.py:582
+#: ../gui/brusheditor.py:603
 msgctxt "brush settings editor: delete brush: error message"
 msgid "No brush selected!"
 msgstr "ブラシが選択されていません！"
 
-#: ../gui/brusheditor.py:588
+#: ../gui/brusheditor.py:609
 #, python-brace-format
 msgctxt "brush settings editor: delete brush: confirm dialog question"
 msgid "Really delete brush “{brush_name}” from disk?"
 msgstr "ブラシ「{brush_name}」を本当にディスクから削除しますか？"
 
-#: ../gui/brusheditor.py:707
+#: ../gui/brusheditor.py:728
 msgctxt "brush settings editor: header: fallback name"
 msgid "(Unnamed brush)"
 msgstr "(名称未設定ブラシ)"
 
-#: ../gui/brusheditor.py:714
+#: ../gui/brusheditor.py:735
 #, python-brace-format
 msgctxt "brush settings editor: header: is-modified hint"
 msgid "{brush_name} [unsaved]"
@@ -374,7 +374,7 @@ msgid "Use the default icon"
 msgstr "デフォルトのアイコンを使用"
 
 #. TRANSLATORS: save edits to a brush icon
-#: ../gui/brushiconeditor.py:190 ../po/tmp/brusheditor.glade.h:3
+#: ../gui/brushiconeditor.py:190 ../gui/brusheditor.glade:111
 msgid "Save"
 msgstr "保存"
 
@@ -892,15 +892,15 @@ msgstr "HSV 色相と明度"
 msgid "HSV Hue and Saturation"
 msgstr "HSV 色相と彩度"
 
-#: ../gui/colors/hsvcube.py:59
+#: ../gui/colors/hsvcube.py:58
 msgid "Rotate cube (show different axes)"
 msgstr "回転 (違う軸にする)"
 
-#: ../gui/colors/hsvcube.py:86
+#: ../gui/colors/hsvcube.py:85
 msgid "HSV Cube"
 msgstr "HSV 色立方体"
 
-#: ../gui/colors/hsvcube.py:90
+#: ../gui/colors/hsvcube.py:89
 msgid "An HSV cube which can be rotated to show different planar slices."
 msgstr "HSV色立方体を回転させて、それぞれの面の色空間を表示できます。"
 
@@ -1211,14 +1211,14 @@ msgstr ""
 
 #. This refers to a version of MyPaint like 1.0, 1.1, 1.2 etc
 #: ../gui/compatibility.py:35 ../gui/drawwindow.py:276
-#: ../po/tmp/preferenceswindow.glade.h:113
+#: ../gui/preferenceswindow.glade:1581
 #, fuzzy
 msgctxt "Prefs Dialog|Compatibility"
 msgid "1.x"
 msgstr "1.0"
 
 #. This refers to a version of MyPaint like 1.0, 1.1, 1.2 etc
-#: ../gui/compatibility.py:36 ../po/tmp/preferenceswindow.glade.h:117
+#: ../gui/compatibility.py:36 ../gui/preferenceswindow.glade:1600
 msgctxt "Prefs Dialog|Compatibility"
 msgid "2.x"
 msgstr ""
@@ -1404,7 +1404,7 @@ msgstr "ブラシを上書きしますか？"
 msgid "Replace"
 msgstr "置換"
 
-#: ../gui/dialogs.py:137 ../gui/dialogs.py:207 ../po/tmp/brusheditor.glade.h:11
+#: ../gui/dialogs.py:137 ../gui/dialogs.py:207 ../gui/brusheditor.glade:189
 msgid "Rename"
 msgstr "名前の変更"
 
@@ -1568,7 +1568,7 @@ msgid "%s - MyPaint"
 msgstr "%s - MyPaint"
 
 #. TRANSLATORS: window title for use without a filename
-#: ../gui/drawwindow.py:273 ../po/tmp/mypaint.glade.h:1
+#: ../gui/drawwindow.py:273 ../gui/mypaint.glade:8
 msgid "MyPaint"
 msgstr "MyPaint"
 
@@ -3916,17 +3916,17 @@ msgstr ""
 msgid "PNG reader failed: %s"
 msgstr "PNGファイルの読み込みに失敗: %s"
 
-#: ../po/tmp/autorecover.glade.h:1
+#: ../gui/autorecover.glade:18
 msgid "Recover interrupted work?"
 msgstr "中断した作業を再開しますか？"
 
 #. Whether to show the dialog when MyPaint starts
-#: ../po/tmp/autorecover.glade.h:3
+#: ../gui/autorecover.glade:38
 msgctxt "Autosave Recovery dialog|"
 msgid "_Look for backups at startup"
 msgstr ""
 
-#: ../po/tmp/autorecover.glade.h:4
+#: ../gui/autorecover.glade:42
 msgctxt "Autosave Recovery dialog|Show Dialog at Startup checkbutton|"
 msgid ""
 "Run this autosave recovery dialog when MyPaint starts, if there are files to "
@@ -3937,26 +3937,26 @@ msgid ""
 msgstr ""
 
 #. Deletes the selected autosave backup file.
-#: ../po/tmp/autorecover.glade.h:8
+#: ../gui/autorecover.glade:60
 #, fuzzy
 msgctxt "Autosave Recovery dialog|"
 msgid "_Delete…"
 msgstr "削除"
 
-#: ../po/tmp/autorecover.glade.h:9
+#: ../gui/autorecover.glade:66
 #, fuzzy
 msgctxt "Autosave Recovery dialog|Delete button|"
 msgid "Delete this backup from the disk."
 msgstr "このブラシをディスクから削除"
 
 #. Recover in the sense or retrieval or salvage from a backup file. The user is asked to save the retrieved file immediately afterwards, hence the ellipsis.
-#: ../po/tmp/autorecover.glade.h:11
+#: ../gui/autorecover.glade:78
 #, fuzzy
 msgctxt "Autosave Recovery dialog|"
 msgid "_Recover & Save…"
 msgstr "バックアップから保存(_R)…"
 
-#: ../po/tmp/autorecover.glade.h:12
+#: ../gui/autorecover.glade:84
 #, fuzzy
 msgctxt "Autosave Recovery dialog|Recover button|"
 msgid "Save this backup to disk, then continue working on it."
@@ -3964,19 +3964,19 @@ msgstr ""
 "バックアップされていたファイルを復活させてディスクに保存し、作業を続けます。"
 
 #. Do not recover any autosaves; take no action.
-#: ../po/tmp/autorecover.glade.h:14
+#: ../gui/autorecover.glade:95
 msgctxt "Autosave Recovery dialog|"
 msgid "Decide _Later"
 msgstr ""
 
-#: ../po/tmp/autorecover.glade.h:15
+#: ../gui/autorecover.glade:101
 msgctxt "Autosave Recovery dialog|Cancel button|"
 msgid "Start work on a new canvas. These backups will be retained."
 msgstr ""
 "新しいキャンバスで作業を始めます。これらのバックアップは別の場所で保持されま"
 "す。"
 
-#: ../po/tmp/autorecover.glade.h:16
+#: ../gui/autorecover.glade:122
 #, fuzzy
 msgctxt "Autosave Recovery dialog|"
 msgid ""
@@ -3988,103 +3988,103 @@ msgstr ""
 "プは存在します。バックアップからファイルを復活させるか、MyPaint を再起動する"
 "まで放置することができます。"
 
-#: ../po/tmp/autorecover.glade.h:17
+#: ../gui/autorecover.glade:157
 msgid "Thumbnail"
 msgstr "サムネイル"
 
-#: ../po/tmp/autorecover.glade.h:18
+#: ../gui/autorecover.glade:171
 msgid "Description"
 msgstr "説明"
 
-#: ../po/tmp/brusheditor.glade.h:1
+#: ../gui/brusheditor.glade:88
 msgid "Live update"
 msgstr "すぐに反映"
 
-#: ../po/tmp/brusheditor.glade.h:2
+#: ../gui/brusheditor.glade:93
 msgid ""
 "Update the last stroke on the canvas with the settings in this window, in "
 "real time"
 msgstr ""
 "直近のキャンバスへのストロークの描画を、新しい設定値でリアルタイムに更新する"
 
-#: ../po/tmp/brusheditor.glade.h:4
+#: ../gui/brusheditor.glade:116
 msgid "Save these settings to the brush"
 msgstr "これらの設定をブラシに保存"
 
-#: ../po/tmp/brusheditor.glade.h:5
+#: ../gui/brusheditor.glade:132
 msgid "Edit Icon"
 msgstr "アイコンを編集"
 
-#: ../po/tmp/brusheditor.glade.h:6
+#: ../gui/brusheditor.glade:137
 msgid ""
 "Edit this brush's icon in a separate window (you will be able to use any "
 "brush to draw it)"
 msgstr ""
 "別ウィンドウでこのブラシのアイコンを編集 (編集にはすべてのブラシが使えます)"
 
-#: ../po/tmp/brusheditor.glade.h:7
+#: ../gui/brusheditor.glade:151
 msgid "Delete"
 msgstr "削除"
 
-#: ../po/tmp/brusheditor.glade.h:8
+#: ../gui/brusheditor.glade:156
 msgid "Delete this brush from the disk"
 msgstr "このブラシをディスクから削除"
 
-#: ../po/tmp/brusheditor.glade.h:9
+#: ../gui/brusheditor.glade:170
 msgid "Copy to New"
 msgstr "コピーを新規作成"
 
-#: ../po/tmp/brusheditor.glade.h:10
+#: ../gui/brusheditor.glade:175
 msgid "Copy these settings and the current brush's icon to a new brush"
 msgstr "これらの設定値とブラシのアイコンを新規ブラシとして複製"
 
-#: ../po/tmp/brusheditor.glade.h:12
+#: ../gui/brusheditor.glade:194
 msgid "Rename this brush"
 msgstr "このブラシの名前を変更"
 
-#: ../po/tmp/brusheditor.glade.h:13
+#: ../gui/brusheditor.glade:239
 msgid "Brush Setting"
 msgstr "ブラシ設定"
 
-#: ../po/tmp/brusheditor.glade.h:14
+#: ../gui/brusheditor.glade:340
 msgctxt "brush editor|metadata settings|labels for widgets|tooltips|"
 msgid "Short description for use in tooltips"
 msgstr "ツールチップに表示するための簡単な説明"
 
 #. Description for user tooltips
-#: ../po/tmp/brusheditor.glade.h:16
+#: ../gui/brusheditor.glade:343
 msgctxt "brush editor|metadata settings|labels|"
 msgid "Description:"
 msgstr "説明:"
 
-#: ../po/tmp/brusheditor.glade.h:17
+#: ../gui/brusheditor.glade:355
 msgctxt "brush editor|metadata settings|labels for widgets|tooltips|"
 msgid "Brush developer's notes"
 msgstr "ブラシ作成者による説明"
 
 #. Notes for developers
-#: ../po/tmp/brusheditor.glade.h:19
+#: ../gui/brusheditor.glade:358
 msgctxt "brush editor|metadata settings|labels|"
 msgid "Notes:"
 msgstr "詳細:"
 
-#: ../po/tmp/brusheditor.glade.h:20
+#: ../gui/brusheditor.glade:420
 msgid ""
 "Starting value for this brush setting. The brush dynamics below act on this."
 msgstr ""
 "この設定における基本値です。以下のブラシダイナミクスはこの値に基づきます。"
 
 #. field label
-#: ../po/tmp/brusheditor.glade.h:22
+#: ../gui/brusheditor.glade:426
 #, fuzzy
 msgid "Value:"
 msgstr "HSV 明度"
 
-#: ../po/tmp/brusheditor.glade.h:23
+#: ../gui/brusheditor.glade:491
 msgid "Reset this input to have no effect on the setting"
 msgstr "この入力を、基本値に影響を与えない値に戻します"
 
-#: ../po/tmp/brusheditor.glade.h:24
+#: ../gui/brusheditor.glade:521
 msgid ""
 "Minimum value for the output axis.\n"
 "This can be set using the main slider for {dname}."
@@ -4092,7 +4092,7 @@ msgstr ""
 "この出力軸の最小値です.\n"
 "これはメインスライダー {dname} を使って設定できます。"
 
-#: ../po/tmp/brusheditor.glade.h:26
+#: ../gui/brusheditor.glade:540
 msgid ""
 "Maximum value for the output axis.\n"
 "This can be set using the main slider for {dname}."
@@ -4100,23 +4100,23 @@ msgstr ""
 "この出力軸の最大値です。\n"
 "これはメインスライダー {dname} を使って設定できます。"
 
-#: ../po/tmp/brusheditor.glade.h:28
+#: ../gui/brusheditor.glade:562
 msgid "Output"
 msgstr "出力"
 
-#: ../po/tmp/brusheditor.glade.h:29
+#: ../gui/brusheditor.glade:583
 msgid "Input"
 msgstr "入力"
 
-#: ../po/tmp/brusheditor.glade.h:30
+#: ../gui/brusheditor.glade:601
 msgid "Adjusts the maximum value"
 msgstr "最大値を変更"
 
-#: ../po/tmp/brusheditor.glade.h:31
+#: ../gui/brusheditor.glade:634
 msgid "Adjusts the minimum value"
 msgstr "最小値を変更"
 
-#: ../po/tmp/brusheditor.glade.h:32
+#: ../gui/brusheditor.glade:666
 msgid ""
 "Minimum value for the input axis.\n"
 "Use the popup scale to adjust this."
@@ -4124,7 +4124,7 @@ msgstr ""
 "この入力軸の最小値です。\n"
 "変更するには、横のアイコンをクリックして出るポップアップスケールを使います。"
 
-#: ../po/tmp/brusheditor.glade.h:34
+#: ../gui/brusheditor.glade:684
 msgid ""
 "Maximum value for the input axis.\n"
 "Use the popup scale to adjust this."
@@ -4132,49 +4132,51 @@ msgstr ""
 "この入力軸の最大値です。\n"
 "変更するには、横のアイコンをクリックして出るポップアップスケールを使います。"
 
-#: ../po/tmp/brusheditor.glade.h:36
+#: ../gui/brusheditor.glade:739
 msgid "Variation of the base value by stylus input and other criteria"
 msgstr "スタイラスの入力や動きなどによる基本値の変動"
 
-#: ../po/tmp/brusheditor.glade.h:37
+#: ../gui/brusheditor.glade:746
 msgid "Brush Dynamics"
 msgstr "ブラシダイナミクス"
 
-#: ../po/tmp/brusheditor.glade.h:38
+#: ../gui/brusheditor.glade:780
 msgid "Adjust this input mapping in detail"
 msgstr "この入力のマッピングを詳細に編集"
 
-#: ../po/tmp/brusheditor.glade.h:39
+#: ../gui/brusheditor.glade:802
 msgid "{tooltip}"
 msgstr "{tooltip}"
 
 #. field name (template)
-#: ../po/tmp/brusheditor.glade.h:41
+#: ../gui/brusheditor.glade:809
 msgid "{dname}:"
 msgstr "{dname}:"
 
-#: ../po/tmp/brusheditor.glade.h:42
+#: ../gui/brusheditor.glade:841
 #, fuzzy
 msgid "Brush dynamics are not available for this setting."
 msgstr "この設定の基本となる値の詳細です"
 
-#: ../po/tmp/brusheditor.glade.h:43
+#: ../gui/brusheditor.glade:851
 #, fuzzy
 msgid "<big><b>No Brush Dynamics</b></big>"
 msgstr "<big><b>{accel_label}</b></big>"
 
-#: ../po/tmp/inktool.glade.h:1
+#: ../gui/inktool.glade:43
 msgctxt "Inking tool options: point value sliders: labels: tooltips"
 msgid "Pressure value for the current point"
 msgstr "現在の制御点の筆圧"
 
-#: ../po/tmp/inktool.glade.h:2
+#: ../gui/inktool.glade:48
 msgctxt "Inking tool options: point value sliders: labels"
 msgid "Press:"
 msgstr "太さ:"
 
-#. The meaning of negative values is *not* affected by text direction.&#10;The widget
-#: ../po/tmp/inktool.glade.h:4
+#. The meaning of negative values is *not* affected by text direction.
+#. The widget's RTL/LTR layout, however, *is* affected.
+#. The value (and signs) *is* shown.
+#: ../gui/inktool.glade:82 ../gui/inktool.glade:102
 msgctxt "Inking tool options: point value sliders: labels: tooltips"
 msgid ""
 "Tilt in the direction of the canvas’s X axis.\n"
@@ -4185,198 +4187,113 @@ msgstr ""
 "ペンが垂直のとき、この値は 0 になります。\n"
 "ペンが左に傾いているとき、負の値になります。"
 
-#: ../po/tmp/inktool.glade.h:7
+#: ../gui/inktool.glade:89
 msgctxt "Inking tool options: point value sliders: labels"
 msgid "X-tilt:"
 msgstr "傾き (X 軸):"
 
-#: ../po/tmp/inktool.glade.h:8
+#: ../gui/inktool.glade:109
 msgctxt "Inking tool options: point value sliders: labels"
 msgid "Y-tilt:"
 msgstr "傾き (Y 軸):"
 
-#: ../po/tmp/inktool.glade.h:9
+#: ../gui/inktool.glade:144
 msgid "Tilt in the canvas Y axis"
 msgstr "キャンバスの Y 軸方向における傾き"
 
-#: ../po/tmp/inktool.glade.h:10
+#: ../gui/inktool.glade:166
 msgctxt "Inking tool options: point value sliders: labels: tooltips"
 msgid "Time since the previous point, in seconds"
 msgstr "前の制御点からの経過時間 (秒)"
 
-#: ../po/tmp/inktool.glade.h:11
+#: ../gui/inktool.glade:171
 msgctxt "Inking tool options: point value sliders: labels"
 msgid "Time:"
 msgstr "時間:"
 
-#: ../po/tmp/inktool.glade.h:12
+#: ../gui/inktool.glade:204
 msgctxt "Inking tool options: node delete button: label"
 msgid "Delete Point"
 msgstr "制御点を削除"
 
-#: ../po/tmp/inktool.glade.h:13
+#: ../gui/inktool.glade:208
 msgctxt "Inking tool options: node delete button: tooltip"
 msgid "Delete the currently selected point"
 msgstr "現在選択している制御点を削除します"
 
-#: ../po/tmp/inktool.glade.h:14 ../po/tmp/resources.xml.h:184
+#: ../gui/inktool.glade:220 ../gui/resources.xml:897
 #, fuzzy
 msgid "Insert Point"
 msgstr "行を挿入"
 
-#: ../po/tmp/inktool.glade.h:15 ../po/tmp/resources.xml.h:188
+#: ../gui/inktool.glade:252 ../gui/resources.xml:911
 msgid "Simplify Points"
 msgstr ""
 
-#: ../po/tmp/inktool.glade.h:16
+#: ../gui/inktool.glade:256
 msgid "Simplify the curve using the Reumann-Witkam algorithm."
 msgstr ""
 
-#: ../po/tmp/inktool.glade.h:17 ../po/tmp/resources.xml.h:190
+#: ../gui/inktool.glade:268 ../gui/resources.xml:918
 #, fuzzy
 msgid "Cull Points"
 msgstr "制御点を削除"
 
-#: ../po/tmp/inktool.glade.h:18
+#: ../gui/inktool.glade:272
 msgid "Cull every other point from the curve."
 msgstr ""
 
-#: ../po/tmp/layerprops.glade.h:1
-msgctxt "Layer properties widget → Name → label tooltip"
-msgid "The layer’s unique name."
-msgstr ""
-
-#: ../po/tmp/layerprops.glade.h:2
-#, fuzzy
-msgctxt "Layer properties widget → <category labels>"
-msgid "Name"
-msgstr "名前"
-
-#. “Dropdown” = colloquial for a GtkComboBox control.
-#: ../po/tmp/layerprops.glade.h:4
-msgctxt "Layer properties widget → Mode → label tooltip"
-msgid ""
-"How the layer combines with what’s behind it.\n"
-"\n"
-"Each mode has a different visual effect. Refer to the dropdown’s tooltip for "
-"each one to discover what they all do."
-msgstr ""
-
-#: ../po/tmp/layerprops.glade.h:7
-#, fuzzy
-msgctxt "Layer properties widget → <category labels>"
-msgid "Mode"
-msgstr "モード"
-
-#: ../po/tmp/layerprops.glade.h:9
-#, no-c-format
-msgctxt "Layer properties widget → Opacity → label tooltip"
-msgid ""
-"How much the layer combines with what’s behind it.\n"
-"\n"
-"At 0%, the layer doesn’t contribute at all."
-msgstr ""
-
-#: ../po/tmp/layerprops.glade.h:12
-#, fuzzy
-msgctxt "Layer properties widget → <category labels>"
-msgid "Opacity"
-msgstr "不透明度"
-
-#: ../po/tmp/layerprops.glade.h:13
-msgctxt "Layer properties widget → Flags → label tooltip"
-msgid ""
-"Special layer flags.\n"
-"\n"
-"Refer to each button’s tooltip to find out what each flag does."
-msgstr ""
-
-#: ../po/tmp/layerprops.glade.h:16
-msgctxt "Layer properties widget → <category labels>"
-msgid "Flags"
-msgstr ""
-
-#: ../po/tmp/layerprops.glade.h:17
-msgctxt "Layer properties widget → Flags → Eye togglebutton → tooltip"
-msgid ""
-"Layer visible or hidden.\n"
-"\n"
-"An open eye icon here indicates that the layer is visible.\n"
-"\n"
-"When the eye icon is closed, the layer is hidden. Hidden layers are "
-"completely invisible: they have no effect on what's displayed. You cannot "
-"paint to hidden layers, for safety.\n"
-"\n"
-"When a layer group is hidden, all of the layers inside it are made invisible "
-"too."
-msgstr ""
-
-#: ../po/tmp/layerprops.glade.h:24
-msgctxt "Layer properties widget → Flags → Padlock togglebutton → tooltip"
-msgid ""
-"Layer editable or locked.\n"
-"\n"
-"An open padlock icon indicates that the layer can be edited.\n"
-"\n"
-"When a layer is locked, you cannot paint to it or otherwise change its pixel "
-"content. You cannot pick strokes from it either, so this is useful when "
-"painting under a sketch.\n"
-"\n"
-"When a layer group is locked, none of the layers inside it can be edited."
-msgstr ""
-
-#: ../po/tmp/layervis.glade.h:1
+#: ../gui/layervis.glade:15
 #, fuzzy
 msgctxt "Layers window: view list controls: tooltips"
 msgid "The currently active view."
 msgstr "現在のレイヤーの合成モードです。"
 
-#: ../po/tmp/layervis.glade.h:2
+#: ../gui/layervis.glade:36
 #, fuzzy
 msgctxt "Layers window: view list controls: tooltips"
 msgid "Rename the active view."
 msgstr "キャンバスの表示領域を回転"
 
-#: ../po/tmp/layervis.glade.h:3
+#: ../gui/layervis.glade:57
 #, fuzzy
 msgctxt "Layers window: view list controls: tooltips"
 msgid "Remove the active view."
 msgstr "キャンバスの表示領域を回転"
 
-#: ../po/tmp/layervis.glade.h:4
+#: ../gui/layervis.glade:78
 #, fuzzy
 msgctxt "Layers window: view list controls: tooltips"
 msgid "Snapshot visible layers as a new view."
 msgstr "塗りつぶし範囲を決める参照元を指定します"
 
-#: ../po/tmp/layervis.glade.h:5
+#: ../gui/layervis.glade:99
 msgctxt "Layers window: view list controls: tooltips"
 msgid "Lock or unlock the active view."
 msgstr ""
 
-#: ../po/tmp/mypaint.glade.h:2
+#: ../gui/mypaint.glade:65
 msgctxt "footer: color picker button: tooltip"
 msgid "Pick color"
 msgstr "色を採取"
 
-#: ../po/tmp/mypaint.glade.h:3
+#: ../gui/mypaint.glade:102
 msgctxt "Footerbar|"
 msgid "Edit the current color in detail"
 msgstr "現在の色を編集"
 
-#: ../po/tmp/mypaint.glade.h:4
+#: ../gui/mypaint.glade:126
 msgctxt "Footerbar|"
 msgid "Add the current color to the palette"
 msgstr "現在の色をパレットに追加"
 
-#: ../po/tmp/mypaint.glade.h:5
+#: ../gui/mypaint.glade:161
 msgctxt "Footerbar|"
 msgid "Canvas scale and rotation"
 msgstr "キャンバスの拡大率と回転角度"
 
 #. str.format() template
-#: ../po/tmp/mypaint.glade.h:8
-#, no-c-format
+#: ../gui/mypaint.glade:163
 msgctxt "Footerbar|"
 msgid ""
 "Z: {scale:.1f}%\n"
@@ -4385,107 +4302,102 @@ msgstr ""
 "ズーム: {scale:.1f}%\n"
 "回転: {rotation:+.1f}°"
 
-#: ../po/tmp/mypaint.glade.h:10
+#: ../gui/mypaint.glade:249
 msgctxt "footer: context picker button: tooltip"
 msgid "Pick brushstroke settings, stroke color, and layer"
 msgstr "ストロークのブラシ設定や色、そして描かれているレイヤを採取します"
 
-#: ../po/tmp/preferenceswindow.glade.h:1
+#: ../gui/preferenceswindow.glade:24
 msgctxt "Prefs Dialog|Saving|Save Formats and Locations|Default|"
 msgid "OpenRaster (*.ora)"
 msgstr "OpenRaster (*.ora)"
 
-#: ../po/tmp/preferenceswindow.glade.h:2
+#: ../gui/preferenceswindow.glade:28
 msgctxt "Prefs Dialog|Saving|Save Formats and Locations|Default|"
 msgid "PNG solid with background (*.png)"
 msgstr "背景つき不透明 PNG (*.png)"
 
-#: ../po/tmp/preferenceswindow.glade.h:4
-#, no-c-format
+#: ../gui/preferenceswindow.glade:32
 msgctxt "Prefs Dialog|Saving|Save Formats and Locations|Default|"
 msgid "JPEG 90% quality (*.jpg; *.jpeg)"
 msgstr "JPEG (90%の品質) (*.jpg; *.jpeg)"
 
-#: ../po/tmp/preferenceswindow.glade.h:6
-#, no-c-format
+#: ../gui/preferenceswindow.glade:46
 msgctxt "Prefs Dialog|View|Zoom|Default|"
 msgid "25%"
 msgstr "25%"
 
-#: ../po/tmp/preferenceswindow.glade.h:8
-#, no-c-format
+#: ../gui/preferenceswindow.glade:50
 msgctxt "Prefs Dialog|View|Zoom|Default|"
 msgid "50%"
 msgstr "50%"
 
-#: ../po/tmp/preferenceswindow.glade.h:10
-#, no-c-format
+#: ../gui/preferenceswindow.glade:54
 msgctxt "Prefs Dialog|View|Zoom|Default|"
 msgid "100%"
 msgstr "100%"
 
-#: ../po/tmp/preferenceswindow.glade.h:12
-#, no-c-format
+#: ../gui/preferenceswindow.glade:58
 msgctxt "Prefs Dialog|View|Zoom|Default|"
 msgid "200%"
 msgstr "200%"
 
-#: ../po/tmp/preferenceswindow.glade.h:13
+#: ../gui/preferenceswindow.glade:72
 msgctxt "Prefs Dialog|View|Cursors|Freehand Cursor|Type|"
 msgid "Circle with light outline"
 msgstr "細い輪郭線の円"
 
-#: ../po/tmp/preferenceswindow.glade.h:14
+#: ../gui/preferenceswindow.glade:76
 msgctxt "Prefs Dialog|View|Cursors|Freehand Cursor|Type|"
 msgid "Circle with medium outline"
 msgstr "中間の太さの輪郭線の円"
 
-#: ../po/tmp/preferenceswindow.glade.h:15
+#: ../gui/preferenceswindow.glade:80
 msgctxt "Prefs Dialog|View|Cursors|Freehand Cursor|Type|"
 msgid "Circle with heavy outline"
 msgstr "太い輪郭線の円"
 
-#: ../po/tmp/preferenceswindow.glade.h:16
+#: ../gui/preferenceswindow.glade:84
 msgctxt "Prefs Dialog|View|Cursors|Freehand Cursor|Type|"
 msgid "Crosshair"
 msgstr "十字"
 
 #. Graph x-axis label
-#: ../po/tmp/preferenceswindow.glade.h:18
+#: ../gui/preferenceswindow.glade:145
 msgctxt "Prefs Dialog|Pen Input|Input Device Settings|Pressure Mapping|"
 msgid "Input Pressure"
 msgstr "入力デバイスの筆圧"
 
 #. Graph y-axis label
-#: ../po/tmp/preferenceswindow.glade.h:20
+#: ../gui/preferenceswindow.glade:159
 msgctxt "Prefs Dialog|Pen Input|Input Device Settings|Pressure Mapping|"
 msgid "Brush Pressure"
 msgstr "ブラシの筆圧"
 
 #. Graph label, range (0...1)
-#: ../po/tmp/preferenceswindow.glade.h:22
+#: ../gui/preferenceswindow.glade:174 ../gui/preferenceswindow.glade:202
 msgctxt "Prefs Dialog|Pen Input|Input Device Settings|Pressure Mapping|"
 msgid "0.0"
 msgstr "0.0"
 
 #. Graph label, range (0...1)
-#: ../po/tmp/preferenceswindow.glade.h:24
+#: ../gui/preferenceswindow.glade:188 ../gui/preferenceswindow.glade:217
 msgctxt "Prefs Dialog|Pen Input|Input Device Settings|Pressure Mapping|"
 msgid "1.0"
 msgstr "1.0"
 
-#: ../po/tmp/preferenceswindow.glade.h:25
+#: ../gui/preferenceswindow.glade:251
 msgctxt "Prefs Dialog|Pen Input|"
 msgid "<b>Global Pressure Mapping</b>"
 msgstr "<b>グローバル筆圧マッピング</b>"
 
 #. Tab label in preferences dialog
-#: ../po/tmp/preferenceswindow.glade.h:27
+#: ../gui/preferenceswindow.glade:261
 msgctxt "Prefs Dialog|"
 msgid "Pressure"
 msgstr "筆圧"
 
-#: ../po/tmp/preferenceswindow.glade.h:28
+#: ../gui/preferenceswindow.glade:302
 msgctxt "Prefs Dialog|Devices|"
 msgid ""
 "Here you can restrict pointing devices to specific tasks on the canvas, or "
@@ -4494,16 +4406,16 @@ msgstr ""
 "ここでは特定のデバイスに対してのキャンバス上の振る舞いを制限したり、あるいは"
 "使用において問題がある場合、完全に無視させることができます。"
 
-#: ../po/tmp/preferenceswindow.glade.h:29
+#: ../gui/preferenceswindow.glade:324
 msgctxt "Prefs Dialog|Button|"
 msgid "<b>Device Usage</b>"
 msgstr "<b>入力デバイスの使用方法</b>"
 
-#: ../po/tmp/preferenceswindow.glade.h:30
+#: ../gui/preferenceswindow.glade:337
 msgid "Devices"
 msgstr "デバイス"
 
-#: ../po/tmp/preferenceswindow.glade.h:31
+#: ../gui/preferenceswindow.glade:380
 msgctxt "Prefs Dialog|Button|Pointer Button Mappings|"
 msgid ""
 "• The space bar can be used like Button2.\n"
@@ -4512,57 +4424,57 @@ msgstr ""
 "• スペースキーは第２ボタンのように振る舞うことが出来ます。\n"
 "• パッドボタンを押し続けても押下状態を継続できないタブレットも存在します。."
 
-#: ../po/tmp/preferenceswindow.glade.h:33
+#: ../gui/preferenceswindow.glade:401
 msgctxt "Prefs Dialog|Button|"
 msgid "<b>Pointer Button Mappings</b>"
 msgstr "<b>ペンやマウスのボタン機能の設定</b>"
 
 #. Tab label in preferences dialog
-#: ../po/tmp/preferenceswindow.glade.h:35
+#: ../gui/preferenceswindow.glade:414
 msgctxt "Prefs Dialog|"
 msgid "Buttons"
 msgstr "ボタン"
 
-#: ../po/tmp/preferenceswindow.glade.h:36
+#: ../gui/preferenceswindow.glade:447
 msgctxt "Prefs Dialog|Button|"
 msgid "<b>Keyboard Mappings</b>"
 msgstr "<b>キーボードへの機能割り当て</b>"
 
-#: ../po/tmp/preferenceswindow.glade.h:37
+#: ../gui/preferenceswindow.glade:460
 msgid "Keys"
 msgstr "キー"
 
-#: ../po/tmp/preferenceswindow.glade.h:38
+#: ../gui/preferenceswindow.glade:480
 msgctxt "Prefs Dialog|Load & Save|Saving|"
 msgid "Default file format:"
 msgstr "デフォルトのファイル形式:"
 
-#: ../po/tmp/preferenceswindow.glade.h:39
+#: ../gui/preferenceswindow.glade:495
 msgctxt "Prefs Dialog|Load & Save|Saving|"
 msgid "Prefix when saving scraps:"
 msgstr "スクラップ保存時に付ける接頭辞:"
 
-#: ../po/tmp/preferenceswindow.glade.h:40
+#: ../gui/preferenceswindow.glade:546
 msgctxt "Prefs Dialog|Load & Save|"
 msgid "<b>Saving</b>"
 msgstr "<b>保存</b>"
 
-#: ../po/tmp/preferenceswindow.glade.h:41
+#: ../gui/preferenceswindow.glade:563
 msgctxt "Prefs Dialog|Load & Save|"
 msgid "<b>Color Management</b>"
 msgstr "<b>カラーマネージメント</b>"
 
-#: ../po/tmp/preferenceswindow.glade.h:42
+#: ../gui/preferenceswindow.glade:579
 msgctxt "Prefs Dialog|Load & Save|Color Management|"
 msgid "Color space conversions:"
 msgstr "カラースペース変換:"
 
-#: ../po/tmp/preferenceswindow.glade.h:43
+#: ../gui/preferenceswindow.glade:597
 msgctxt "Prefs Dialog|Load & Save|Color Management|"
 msgid "Convert to sRGB when loading; mark as sRGB when saving"
 msgstr "読み込み時に sRGB に変換し、保存時に sRGB を指定する"
 
-#: ../po/tmp/preferenceswindow.glade.h:44
+#: ../gui/preferenceswindow.glade:601
 msgctxt "Prefs Dialog|Load & Save|Color Management|"
 msgid ""
 "Images containing <i>full</i> colorspace information will be converted to "
@@ -4584,12 +4496,12 @@ msgstr ""
 "ディスプレイを使っている場合は、「自動変換やタグ付けをしない」 設定を使ってく"
 "ださい."
 
-#: ../po/tmp/preferenceswindow.glade.h:47
+#: ../gui/preferenceswindow.glade:619
 msgctxt "Prefs Dialog|Load & Save|Color Management|"
 msgid "No automatic conversions or tagging"
 msgstr "自動変換やタグ付けをしない"
 
-#: ../po/tmp/preferenceswindow.glade.h:48
+#: ../gui/preferenceswindow.glade:623
 msgctxt "Prefs Dialog|Load & Save|Color Management|"
 msgid ""
 "No color conversions are performed when loading, and files are saved without "
@@ -4603,24 +4515,24 @@ msgstr ""
 "これは MyPaint の古い挙動と同一で、非 sRGB 環境での作業に場当たり的に対応する"
 "のに使えます。"
 
-#: ../po/tmp/preferenceswindow.glade.h:51
+#: ../gui/preferenceswindow.glade:651
 msgctxt "Prefs Dialog|Load & Save|"
 msgid "<b>Automated Backups</b>"
 msgstr "<b>自動バックアップ</b>"
 
-#: ../po/tmp/preferenceswindow.glade.h:52
+#: ../gui/preferenceswindow.glade:669
 msgctxt "Prefs Dialog|Load & Save|Automated Backups|switch label"
 msgid "Back up unsaved work:"
 msgstr "未保存のドキュメントをバックアップ:"
 
 #. In seconds. Lowest value is 5, highest is 300 (5 minutes). Only matters when enabled.
-#: ../po/tmp/preferenceswindow.glade.h:54
+#: ../gui/preferenceswindow.glade:704
 msgctxt ""
 "Prefs Dialog|Load & Save|Automated Backups|interval spinbox units suffix"
 msgid "seconds of inactivity"
 msgstr "秒間、未操作状態が続いたとき"
 
-#: ../po/tmp/preferenceswindow.glade.h:55
+#: ../gui/preferenceswindow.glade:717
 msgctxt "Prefs Dialog|Load & Save|Automated Backups|switch tooltip"
 msgid ""
 "Backs up work incrementally in the background to MyPaint's disk cache. If "
@@ -4631,52 +4543,52 @@ msgstr ""
 "ます。もしプログラムが異常終了した場合、その時行っていた作業を復活させるチャ"
 "ンスがあります。"
 
-#: ../po/tmp/preferenceswindow.glade.h:56
+#: ../gui/preferenceswindow.glade:739
 msgctxt "Prefs Dialog|Load & Save|Automated Backups|interval label"
 msgid "Time between backups:"
 msgstr "自動バックアップの間隔:"
 
 #. Tab label in preferences dialog
-#: ../po/tmp/preferenceswindow.glade.h:58
+#: ../gui/preferenceswindow.glade:757
 msgctxt "Prefs Dialog|"
 msgid "Load & Save"
 msgstr "読み込みと保存"
 
-#: ../po/tmp/preferenceswindow.glade.h:59
+#: ../gui/preferenceswindow.glade:778
 msgctxt "Prefs Dialog|View|"
 msgid "<b>Zoom and Rendering</b>"
 msgstr "<b>拡大・縮小とレンダリング</b>"
 
-#: ../po/tmp/preferenceswindow.glade.h:60
+#: ../gui/preferenceswindow.glade:795
 msgid "Default zoom level:"
 msgstr "デフォルトの拡大率:"
 
-#: ../po/tmp/preferenceswindow.glade.h:61
+#: ../gui/preferenceswindow.glade:833
 msgctxt "Prefs Dialog|View|"
 msgid "<b>Interface</b>"
 msgstr "<b>インターフェイス</b>"
 
-#: ../po/tmp/preferenceswindow.glade.h:62
+#: ../gui/preferenceswindow.glade:850
 msgctxt "Prefs Dialog|View|Interface|"
 msgid "Toolbar icon size:"
 msgstr "ツールバーアイコンのサイズ:"
 
-#: ../po/tmp/preferenceswindow.glade.h:63
+#: ../gui/preferenceswindow.glade:866
 msgctxt "Prefs Dialog|View|Interface|"
 msgid "Freehand cursor type:"
 msgstr "フリーハンドツールのカーソル形状:"
 
-#: ../po/tmp/preferenceswindow.glade.h:64
+#: ../gui/preferenceswindow.glade:881
 msgctxt "Prefs Dialog|View|Interface|"
 msgid "Dark theme variant:"
 msgstr "暗い色のテーマを使用:"
 
-#: ../po/tmp/preferenceswindow.glade.h:65
+#: ../gui/preferenceswindow.glade:891
 msgctxt "Prefs Dialog|View|Interface|Dark theme variant|"
 msgid "If available in GTK3 theme (needs restart)"
 msgstr "GTK3 テーマで使用可能であれば使用する (要再起動)"
 
-#: ../po/tmp/preferenceswindow.glade.h:66
+#: ../gui/preferenceswindow.glade:895
 msgctxt "Prefs Dialog|View|Interface|Dark theme variant|checkbox tooltip"
 msgid ""
 "Use a light-on-dark theme variant, when it's supported by the GTK theme. "
@@ -4685,26 +4597,26 @@ msgstr ""
 "GTK テーマで使用可能な場合、暗い色が基調で明るい文字のテーマを使用します。こ"
 "れは画像を扱うプログラムやビュワーでは通常、賢明な対応です。"
 
-#: ../po/tmp/preferenceswindow.glade.h:67
+#: ../gui/preferenceswindow.glade:916
 msgid "Some of these settings require MyPaint to be restarted."
 msgstr "これらの設定の中には、MyPaint の再起動が必要なものがあります。"
 
-#: ../po/tmp/preferenceswindow.glade.h:68
+#: ../gui/preferenceswindow.glade:939
 msgctxt "Prefs Dialog|View|Interface|Icon size|"
 msgid "Large (requires recent GTK3)"
 msgstr "大 (最新の GTK3 が必要です)"
 
-#: ../po/tmp/preferenceswindow.glade.h:69
+#: ../gui/preferenceswindow.glade:956
 msgctxt "Prefs Dialog|View|Interface|Icon size|"
 msgid "Small"
 msgstr "小"
 
-#: ../po/tmp/preferenceswindow.glade.h:70
+#: ../gui/preferenceswindow.glade:981
 msgctxt "Prefs Dialog|View|Zoom|"
 msgid "Use a real checkerboard pattern"
 msgstr "常に同一サイズの市松模様を使用する"
 
-#: ../po/tmp/preferenceswindow.glade.h:71
+#: ../gui/preferenceswindow.glade:985
 msgctxt "Prefs Dialog|View|Zoom|"
 msgid ""
 "Draw a real checkerboard pattern to show transparency.\n"
@@ -4715,22 +4627,22 @@ msgstr ""
 "表示が若干遅くなるかもしれませんが、絵の模様と透明部分を混乱することは減るで"
 "しょう。"
 
-#: ../po/tmp/preferenceswindow.glade.h:73
+#: ../gui/preferenceswindow.glade:1006
 msgid "When showing transparency:"
 msgstr "透明部分の表示方法:"
 
-#: ../po/tmp/preferenceswindow.glade.h:74
+#: ../gui/preferenceswindow.glade:1021
 msgctxt "Prefs Dialog|View|Interface|"
 msgid "Handle smooth scrolling events:"
 msgstr "スムーズスクロールを使用する:"
 
-#: ../po/tmp/preferenceswindow.glade.h:75
+#: ../gui/preferenceswindow.glade:1031
 msgctxt ""
 "Prefs Dialog|View|Interface|Handle smooth scrolling events|checkbox label"
 msgid "When devices send them (needs restart)"
 msgstr "デバイスが送ってきた場合に使用 (再起動が必要)"
 
-#: ../po/tmp/preferenceswindow.glade.h:76
+#: ../gui/preferenceswindow.glade:1035
 msgctxt ""
 "Prefs Dialog|View|Interface|Handle smooth scrolling events|checkbox tooltip"
 msgid ""
@@ -4753,18 +4665,18 @@ msgstr ""
 "クする必要があり、またデバイス側も双方向スクロールが出来るよう設定しておく必"
 "要があります。"
 
-#: ../po/tmp/preferenceswindow.glade.h:81
+#: ../gui/preferenceswindow.glade:1082
 msgid "Hide cursor while painting"
 msgstr "描画中にカーソルを非表示にする"
 
-#: ../po/tmp/preferenceswindow.glade.h:82
+#: ../gui/preferenceswindow.glade:1105
 #, fuzzy
 msgctxt ""
 "Prefs Dialog|View|Interface|Blink layers on creation/selection|checkbox label"
 msgid "Enabled"
 msgstr "有効"
 
-#: ../po/tmp/preferenceswindow.glade.h:83
+#: ../gui/preferenceswindow.glade:1109
 msgctxt ""
 "Prefs Dialog|View|Interface|Blink layers on creation/selection|checkbox "
 "tooltip"
@@ -4773,28 +4685,28 @@ msgid ""
 "period."
 msgstr ""
 
-#: ../po/tmp/preferenceswindow.glade.h:84
+#: ../gui/preferenceswindow.glade:1129
 msgctxt "Prefs Dialog|View|Interface|"
 msgid "Blink layers on creation/selection:"
 msgstr ""
 
-#: ../po/tmp/preferenceswindow.glade.h:85
+#: ../gui/preferenceswindow.glade:1164
 msgctxt "Prefs Dialog|View|Interface|"
 msgid "Language:"
 msgstr ""
 
-#: ../po/tmp/preferenceswindow.glade.h:86
+#: ../gui/preferenceswindow.glade:1179
 msgctxt "Prefs Dialog|View|Interface|"
 msgid "(needs restart)"
 msgstr ""
 
-#. Tab label in preferences dialog&#10;
-#: ../po/tmp/preferenceswindow.glade.h:88
+#. Tab label in preferences dialog
+#: ../gui/preferenceswindow.glade:1196
 msgctxt "Prefs Dialog|"
 msgid "View"
 msgstr "表示"
 
-#: ../po/tmp/preferenceswindow.glade.h:89
+#: ../gui/preferenceswindow.glade:1228
 msgctxt "Prefs Dialog|Color|Color Wheel|Primaries|"
 msgid ""
 "The set of colors to show as primary on disk-style color wheels.\n"
@@ -4803,18 +4715,18 @@ msgstr ""
 "カラーホイール上で原色として使われる色の組み合わせです。\n"
 "それぞれの伝統ごとに異なる色彩調和を持ちます。"
 
-#. Arrangement of MyPaint
-#: ../po/tmp/preferenceswindow.glade.h:92
+#. Arrangement of MyPaint's custom colour wheels
+#: ../gui/preferenceswindow.glade:1230
 msgctxt "Prefs Dialog|Color|Color Wheel|"
 msgid "Primaries are:"
 msgstr "原色の組み合わせ:"
 
-#: ../po/tmp/preferenceswindow.glade.h:93
+#: ../gui/preferenceswindow.glade:1247
 msgctxt "Prefs Dialog|Color|Color Wheel|Primaries|"
 msgid "Standard digital Red/Green/Blue"
 msgstr "デジタルでは標準的な赤/緑/青"
 
-#: ../po/tmp/preferenceswindow.glade.h:94
+#: ../gui/preferenceswindow.glade:1252
 msgid ""
 "The red, green, and blue &apos;computer monitor&apos; primaries, evenly "
 "arranged around the circle. Green is opposite magenta."
@@ -4822,7 +4734,7 @@ msgstr ""
 "&apos;コンピュータのモニタ&apos;の信号に使われている赤、緑、青を、均等にホ"
 "イール上に並べたものです。緑の反対側がマゼンタになります。"
 
-#: ../po/tmp/preferenceswindow.glade.h:95
+#: ../gui/preferenceswindow.glade:1253
 msgctxt "Prefs Dialog|Color|Color Wheel|Primaries|RGB|"
 msgid ""
 "The red, green, and blue 'computer monitor' primaries, evenly arranged "
@@ -4831,12 +4743,12 @@ msgstr ""
 "'コンピュータのモニタ'の信号に使われている赤、緑、青を、均等にホイール上に並"
 "べたものです。緑の反対側がマゼンタになります。"
 
-#: ../po/tmp/preferenceswindow.glade.h:96
+#: ../gui/preferenceswindow.glade:1269
 msgctxt "Prefs Dialog|Color|Color Wheel|Primaries|"
 msgid "Traditional artist's Red/Yellow/Blue"
 msgstr "伝統的な芸術家の赤/黄/青"
 
-#: ../po/tmp/preferenceswindow.glade.h:97
+#: ../gui/preferenceswindow.glade:1274
 msgid ""
 "The traditionally arranged red/yellow/blue wheel as used by many artists "
 "since the 18th century, approximated with pure display colors evenly "
@@ -4846,7 +4758,7 @@ msgstr ""
 "粋な表示色に近似され、均等にホイール上に配置されています。緑の反対側は赤で"
 "す。"
 
-#: ../po/tmp/preferenceswindow.glade.h:98
+#: ../gui/preferenceswindow.glade:1275
 msgctxt "Prefs Dialog|Color|Color Wheel|Primaries|RYB|"
 msgid ""
 "The traditionally arranged red/yellow/blue wheel as used by many artists "
@@ -4857,12 +4769,12 @@ msgstr ""
 "粋な表示色に近似され、均等にホイール上に配置されています。緑の反対側は赤で"
 "す。"
 
-#: ../po/tmp/preferenceswindow.glade.h:99
+#: ../gui/preferenceswindow.glade:1291
 msgctxt "Prefs Dialog|Color|Color Wheel|Primaries|"
 msgid "Red-Green and Blue-Yellow opponent pairs"
 msgstr "赤-緑と青-黄の反対色のペア"
 
-#: ../po/tmp/preferenceswindow.glade.h:100
+#: ../gui/preferenceswindow.glade:1296
 msgid ""
 "Quick and dirty approximation of wheels informed by theories of  color which "
 "use four &apos;psychological primaries&apos; or &apos;unique hues&apos; "
@@ -4876,7 +4788,7 @@ msgstr ""
 "は、同様のモデルを提示します。ここでは、4 原色として純粋な赤、黄などを使用し"
 "ます。"
 
-#: ../po/tmp/preferenceswindow.glade.h:101
+#: ../gui/preferenceswindow.glade:1297
 msgctxt "Prefs Dialog|Color|Color Wheel|Primaries|RYGB|"
 msgid ""
 "Quick and dirty approximation of wheels informed by theories of  color which "
@@ -4891,49 +4803,49 @@ msgstr ""
 "示します。ここでは、4 原色として純粋な赤、黄などを使用します。"
 
 #. Options affecting color wheels
-#: ../po/tmp/preferenceswindow.glade.h:103
+#: ../gui/preferenceswindow.glade:1325
 msgctxt "Prefs Dialog|Color|"
 msgid "<b>Color Wheel</b>"
 msgstr "<b>カラーホイール</b>"
 
 #. Tab label in preferences dialog
-#: ../po/tmp/preferenceswindow.glade.h:105
+#: ../gui/preferenceswindow.glade:1338
 msgctxt "Prefs Dialog|"
 msgid "Color"
 msgstr "色"
 
-#: ../po/tmp/preferenceswindow.glade.h:106
+#: ../gui/preferenceswindow.glade:1371
 msgctxt "Prefs Dialog|Compatibility"
 msgid "Default Compatibility Mode:"
 msgstr ""
 
-#: ../po/tmp/preferenceswindow.glade.h:107
+#: ../gui/preferenceswindow.glade:1396
 #, fuzzy
 msgctxt "Prefs Dialog|Compatibility"
 msgid "<b>1.x Settings</b>"
 msgstr "<b>保存</b>"
 
 #. Make sure to be consistent w. other occurences of 2.x
-#: ../po/tmp/preferenceswindow.glade.h:109
+#: ../gui/preferenceswindow.glade:1410
 #, fuzzy
 msgctxt "Prefs Dialog|Compatibility"
 msgid "<b>2.x Settings</b>"
 msgstr "<b>保存</b>"
 
-#: ../po/tmp/preferenceswindow.glade.h:110
+#: ../gui/preferenceswindow.glade:1448 ../gui/preferenceswindow.glade:1522
 #, fuzzy
 msgctxt "Prefs Dialog|Compatibility"
 msgid "Default New Layer Type:"
 msgstr "レイヤーを削除"
 
-#: ../po/tmp/preferenceswindow.glade.h:111
+#: ../gui/preferenceswindow.glade:1494 ../gui/preferenceswindow.glade:1508
 #, fuzzy
 msgctxt "Prefs Dialog|Compatibility"
 msgid "Default Pigment Brush Setting:"
 msgstr "ブラシ設定を編集"
 
 #. Label description for the 1.x compatibility-mode-by-default setting
-#: ../po/tmp/preferenceswindow.glade.h:115
+#: ../gui/preferenceswindow.glade:1585
 msgctxt "Prefs Dialog|Compatibility"
 msgid ""
 "When creating new documents, use the legacy 1.x compatibility mode by "
@@ -4941,31 +4853,31 @@ msgid ""
 "versions, but pigment blending will not work well."
 msgstr ""
 
-#: ../po/tmp/preferenceswindow.glade.h:118
+#: ../gui/preferenceswindow.glade:1604
 msgctxt "Prefs Dialog|Compatibility"
 msgid ""
 "When creating new documents, use the regular 2.x compatibility mode by "
 "default. Old documents will often look different in this mode."
 msgstr ""
 
-#: ../po/tmp/preferenceswindow.glade.h:119
+#: ../gui/preferenceswindow.glade:1636
 msgctxt "Prefs Dialog|Compatibility"
 msgid "Show warning for files that may be partially incompatible"
 msgstr ""
 
 #. Label for a set of options
-#: ../po/tmp/preferenceswindow.glade.h:121
+#: ../gui/preferenceswindow.glade:1653
 msgctxt "Prefs Dialog|Compatibility"
 msgid "File compatibility warnings:"
 msgstr ""
 
-#: ../po/tmp/preferenceswindow.glade.h:122
+#: ../gui/preferenceswindow.glade:1665
 msgctxt "Prefs Dialog|Compatibility"
 msgid "Show warning for files that may be fully incompatible"
 msgstr ""
 
 #. This is a tooltip for the file behavior options label.
-#: ../po/tmp/preferenceswindow.glade.h:124
+#: ../gui/preferenceswindow.glade:1681
 msgctxt "Prefs|Compatibility"
 msgid ""
 "This will only apply to files saved with versions of MyPaint older than 2.0. "
@@ -4974,388 +4886,388 @@ msgid ""
 msgstr ""
 
 #. Label to the options for how to handle files which do not have a compatibility mode specified (whether they should be opened in 1.x compatibility mode, or 2.x mode)
-#: ../po/tmp/preferenceswindow.glade.h:126
+#: ../gui/preferenceswindow.glade:1683
 msgctxt "Prefs Dialog|Compatibility"
 msgid "When Mode is Unspecified:"
 msgstr ""
 
 #. This label indicates a subsection of the compatibility settings related to loading files.
-#: ../po/tmp/preferenceswindow.glade.h:128
+#: ../gui/preferenceswindow.glade:1710
 #, fuzzy
 msgctxt "Prefs|Compatibility"
 msgid "<b>File loading</b>"
 msgstr "<b>保存</b>"
 
-#: ../po/tmp/preferenceswindow.glade.h:129
+#: ../gui/preferenceswindow.glade:1730
 msgid "<b>Compatibility settings</b>"
 msgstr ""
 
 #. Tab label in preferences dialog
-#: ../po/tmp/preferenceswindow.glade.h:131
+#: ../gui/preferenceswindow.glade:1746
 #, fuzzy
 msgctxt "Prefs Dialog|"
 msgid "Compatibility"
 msgstr "移植性"
 
-#: ../po/tmp/preferenceswindow.glade.h:132
+#: ../gui/preferenceswindow.glade:1764
 msgctxt "Prefs Dialog|Pen Input|Mode|"
 msgid "Screen (normal)"
 msgstr "スクリーン (通常)"
 
-#: ../po/tmp/preferenceswindow.glade.h:133
+#: ../gui/preferenceswindow.glade:1768
 msgctxt "Prefs Dialog|Pen Input|Mode|"
 msgid "Disabled (no pressure sensitivity)"
 msgstr "無効 (筆圧感知なし)"
 
-#: ../po/tmp/preferenceswindow.glade.h:134
+#: ../gui/preferenceswindow.glade:1772
 msgctxt "Prefs Dialog|Pen Input|Mode|"
 msgid "Window (not recommended)"
 msgstr "ウィンドウ (非推奨)"
 
-#: ../po/tmp/resources.xml.h:1
+#: ../gui/resources.xml:63
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "New"
 msgstr "新規"
 
-#: ../po/tmp/resources.xml.h:2
+#: ../gui/resources.xml:64
 msgctxt "Toolbar (short labels)"
 msgid "New"
 msgstr "新規"
 
-#: ../po/tmp/resources.xml.h:3
+#: ../gui/resources.xml:65
 msgctxt "Toolbar (tooltips), Accel Editor (descriptions)"
 msgid "Start with a new blank canvas."
 msgstr "空白のキャンバスを作成します。"
 
-#: ../po/tmp/resources.xml.h:4
+#: ../gui/resources.xml:73
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "Open…"
 msgstr "開く…"
 
-#: ../po/tmp/resources.xml.h:5
+#: ../gui/resources.xml:74
 msgctxt "Toolbar (short labels)"
 msgid "Open"
 msgstr "開く"
 
-#: ../po/tmp/resources.xml.h:6
+#: ../gui/resources.xml:75
 msgctxt "Toolbar (tooltips), Accel Editor (descriptions)"
 msgid "Load a file to work on."
 msgstr "ファイルを開き、作業の続きを行います。"
 
-#: ../po/tmp/resources.xml.h:7
+#: ../gui/resources.xml:82
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "Open Most Recent"
 msgstr "最後に編集した画像を開く"
 
-#: ../po/tmp/resources.xml.h:8
+#: ../gui/resources.xml:83
 msgctxt "Accel Editor (descriptions)"
 msgid "Load the file you saved most recently."
 msgstr "最後に保存したファイルを開きます。"
 
-#: ../po/tmp/resources.xml.h:9
+#: ../gui/resources.xml:90
 msgctxt "Menu→File (labels)"
 msgid "Open Recent"
 msgstr "最近開いた画像"
 
-#: ../po/tmp/resources.xml.h:10
+#: ../gui/resources.xml:103
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "Revert"
 msgstr "復元"
 
-#: ../po/tmp/resources.xml.h:11
+#: ../gui/resources.xml:104
 msgctxt "Accel Editor (descriptions)"
 msgid "Reload the file your current work was loaded from."
 msgstr "現在のファイルを、開いた時の状態に戻します。"
 
-#: ../po/tmp/resources.xml.h:12
+#: ../gui/resources.xml:111
 #, fuzzy
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "Import Layers…"
 msgstr "ブラシをインポート…"
 
-#: ../po/tmp/resources.xml.h:13
+#: ../gui/resources.xml:112
 msgctxt "Accel Editor (descriptions)"
 msgid "Import layers from one or more files."
 msgstr ""
 
-#: ../po/tmp/resources.xml.h:14
+#: ../gui/resources.xml:120
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "Save"
 msgstr "保存"
 
-#: ../po/tmp/resources.xml.h:15
+#: ../gui/resources.xml:121
 msgctxt "Accel Editor (descriptions)"
 msgid "Save your work to a file."
 msgstr "現在のドキュメントをファイルとして保存します。"
 
-#: ../po/tmp/resources.xml.h:16
+#: ../gui/resources.xml:129
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "Save As…"
 msgstr "名前を付けて保存…"
 
-#: ../po/tmp/resources.xml.h:17
+#: ../gui/resources.xml:130
 msgctxt "Accel Editor (descriptions)"
 msgid "Save your work to a file, assigning it a new name."
 msgstr "現在のドキュメントを、新しいファイル名を指定して保存します。"
 
-#: ../po/tmp/resources.xml.h:18
+#: ../gui/resources.xml:138
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "Export…"
 msgstr "エクスポート…"
 
-#: ../po/tmp/resources.xml.h:19
+#: ../gui/resources.xml:139
 msgid "Export your work to a file, but keep working on the same file."
 msgstr ""
 "作品を別のファイルにエクスポートしますが、作業は今までと同じファイルで継続し"
 "ます。"
 
-#: ../po/tmp/resources.xml.h:20
+#: ../gui/resources.xml:147
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "Save As Scrap"
 msgstr "スクラップとして保存"
 
-#: ../po/tmp/resources.xml.h:21
+#: ../gui/resources.xml:148
 msgctxt "Accel Editor (descriptions)"
 msgid "Save to a new scrap file, or save a new revision if already a scrap."
 msgstr ""
 "新しいスクラップファイルとして保存するか、もし既にスクラップで保存されている"
 "ならば新しいリビジョンのスクラップにします。"
 
-#: ../po/tmp/resources.xml.h:22
+#: ../gui/resources.xml:156
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "Open Previous Scrap"
 msgstr "前のスクラップを開く"
 
-#: ../po/tmp/resources.xml.h:23
+#: ../gui/resources.xml:157
 msgctxt "Accel Editor (descriptions)"
 msgid "Load the scrap file before the current one."
 msgstr "前のスクラップファイルを読み込み、現在の画像と置き換えます。"
 
-#: ../po/tmp/resources.xml.h:24
+#: ../gui/resources.xml:165
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "Open Next Scrap"
 msgstr "次のスクラップを開く"
 
-#: ../po/tmp/resources.xml.h:25
+#: ../gui/resources.xml:166
 msgctxt "Accel Editor (descriptions)"
 msgid "Load the scrap file after the current one."
 msgstr "次のスクラップファイルを読み込み、現在の画像と置き換えます。"
 
-#: ../po/tmp/resources.xml.h:26
+#: ../gui/resources.xml:174
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "Recover File from an Automated Backup…"
 msgstr "自動バックアップからファイルを復帰…"
 
-#: ../po/tmp/resources.xml.h:27
+#: ../gui/resources.xml:175
 msgctxt "Accel Editor (descriptions)"
 msgid "Try to save and resume interrupted unsaved work."
 msgstr "中断され保存されていない作品に対し、再開もしくは保存を試みます。"
 
-#: ../po/tmp/resources.xml.h:28
+#: ../gui/resources.xml:190
 msgctxt "Menu→Brush (label)"
 msgid "Brush Groups"
 msgstr "ブラシグループ"
 
-#: ../po/tmp/resources.xml.h:29
+#: ../gui/resources.xml:191
 msgctxt "Toolbar (short labels)"
 msgid "Brushes"
 msgstr "ブラシ"
 
-#: ../po/tmp/resources.xml.h:30
+#: ../gui/resources.xml:192
 msgctxt "Toolbar (tooltips)"
 msgid "List of brush groups."
 msgstr "ブラシグループの一覧です。"
 
-#: ../po/tmp/resources.xml.h:31
+#: ../gui/resources.xml:199
 msgctxt "Toolbar (label)"
 msgid "Color Adjusters"
 msgstr "カラーセレクター"
 
-#: ../po/tmp/resources.xml.h:32
+#: ../gui/resources.xml:200
 msgctxt "Toolbar (short labels)"
 msgid "Colors"
 msgstr "色"
 
-#: ../po/tmp/resources.xml.h:33
+#: ../gui/resources.xml:201
 msgctxt "Toolbar (tooltips)"
 msgid "Available color adjusters."
 msgstr "使用可能なカラーセレクターの一覧です。"
 
-#: ../po/tmp/resources.xml.h:34
+#: ../gui/resources.xml:208
 msgctxt "Menu→Layer→Properties (label)"
 msgid "Mode"
 msgstr "モード"
 
-#: ../po/tmp/resources.xml.h:35
+#: ../gui/resources.xml:209
 msgctxt "Toolbar (short labels)"
 msgid "Mode"
 msgstr "モード"
 
-#: ../po/tmp/resources.xml.h:36
+#: ../gui/resources.xml:210
 msgctxt "Toolbar (tooltips)"
 msgid "The current layer's compositing mode."
 msgstr "現在のレイヤーの合成モードです。"
 
-#: ../po/tmp/resources.xml.h:37
+#: ../gui/resources.xml:237
 #, fuzzy
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
 msgid "Increase Fake Pressure"
 msgstr "始点の筆圧"
 
-#: ../po/tmp/resources.xml.h:38
+#: ../gui/resources.xml:238
 msgctxt "Accel Editor (descriptions)"
 msgid "Send harder pressure for devices that don't support pressure input."
 msgstr ""
 
-#: ../po/tmp/resources.xml.h:39
+#: ../gui/resources.xml:245
 #, fuzzy
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
 msgid "Decrease Fake Pressure"
 msgstr "始点の筆圧"
 
-#: ../po/tmp/resources.xml.h:40
+#: ../gui/resources.xml:246
 msgctxt "Accel Editor (descriptions)"
 msgid "Send softer pressure for devices that don't support pressure input."
 msgstr ""
 
-#: ../po/tmp/resources.xml.h:41
+#: ../gui/resources.xml:254
 #, fuzzy
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
 msgid "Increase Fake Rotation"
 msgstr "彩度を上げる"
 
-#: ../po/tmp/resources.xml.h:42
+#: ../gui/resources.xml:255
 msgctxt "Accel Editor (descriptions)"
 msgid "Increase barrel rotation for devices that don't support rotation input."
 msgstr ""
 
-#: ../po/tmp/resources.xml.h:43
+#: ../gui/resources.xml:262
 #, fuzzy
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
 msgid "Decrease Fake Rotation"
 msgstr "彩度を下げる"
 
-#: ../po/tmp/resources.xml.h:44
+#: ../gui/resources.xml:263
 msgctxt "Accel Editor (descriptions)"
 msgid "Decrease barrel rotation for devices that don't support rotation input."
 msgstr ""
 
-#: ../po/tmp/resources.xml.h:45
+#: ../gui/resources.xml:271
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
 msgid "Increase Brush Size"
 msgstr "ブラシを大きくする"
 
-#: ../po/tmp/resources.xml.h:46
+#: ../gui/resources.xml:272
 msgctxt "Accel Editor (descriptions)"
 msgid "Make the working brush bigger."
 msgstr "使用中のブラシを大きくします。"
 
-#: ../po/tmp/resources.xml.h:47
+#: ../gui/resources.xml:279
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
 msgid "Decrease Brush Size"
 msgstr "ブラシを小さくする"
 
-#: ../po/tmp/resources.xml.h:48
+#: ../gui/resources.xml:280
 msgctxt "Accel Editor (descriptions)"
 msgid "Make the working brush smaller."
 msgstr "使用中のブラシを小さくします。"
 
-#: ../po/tmp/resources.xml.h:49
+#: ../gui/resources.xml:288
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
 msgid "Increase Brush Opacity"
 msgstr "ブラシの不透明度を上げる"
 
-#: ../po/tmp/resources.xml.h:50
+#: ../gui/resources.xml:289
 msgctxt "Accel Editor (descriptions)"
 msgid "Make the working brush more opaque."
 msgstr "使用中のブラシをより不透明にします。"
 
-#: ../po/tmp/resources.xml.h:51
+#: ../gui/resources.xml:296
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
 msgid "Decrease Brush Opacity"
 msgstr "ブラシの不透明度を下げる"
 
-#: ../po/tmp/resources.xml.h:52
+#: ../gui/resources.xml:297
 msgctxt "Accel Editor (descriptions)"
 msgid "Make the working brush less opaque."
 msgstr "使用中のブラシをより透明にします。"
 
-#: ../po/tmp/resources.xml.h:53
+#: ../gui/resources.xml:305
 msgctxt "Menu→Color→Adjust Color (labels), Accel Editor (labels)"
 msgid "Lighten Painting Color"
 msgstr "描画色を明るく"
 
-#: ../po/tmp/resources.xml.h:54
+#: ../gui/resources.xml:306
 msgctxt "Accel Editor (descriptions)"
 msgid "Increase the lightness of the current painting color."
 msgstr "現在の描画色を明るくします。"
 
-#: ../po/tmp/resources.xml.h:55
+#: ../gui/resources.xml:313
 msgctxt "Menu→Color→Adjust Color (labels), Accel Editor (labels)"
 msgid "Darken Painting Color"
 msgstr "描画色を暗く"
 
-#: ../po/tmp/resources.xml.h:56
+#: ../gui/resources.xml:314
 msgctxt "Accel Editor (descriptions)"
 msgid "Decrease the lightness of the current painting color."
 msgstr "現在の描画色を暗くします。"
 
-#: ../po/tmp/resources.xml.h:57
+#: ../gui/resources.xml:326
 msgctxt "Menu→Color→Adjust Color (labels), Accel Editor (labels)"
 msgid "Change Hue Clockwise"
 msgstr "色相を時計回りに変更"
 
-#: ../po/tmp/resources.xml.h:58
+#: ../gui/resources.xml:327
 msgctxt "Accel Editor (descriptions)"
 msgid "Rotate the painting color’s hue clockwise on the color wheel."
 msgstr "描画色の色相をカラーホイール上で時計回りに回転させます。"
 
-#: ../po/tmp/resources.xml.h:59
+#: ../gui/resources.xml:334
 msgctxt "Menu→Color→Adjust Color (labels), Accel Editor (labels)"
 msgid "Change Hue Anticlockwise"
 msgstr "色相を反時計回りに変更"
 
-#: ../po/tmp/resources.xml.h:60
+#: ../gui/resources.xml:335
 msgctxt "Accel Editor (descriptions)"
 msgid "Rotate the painting color’s hue anticlockwise on the color wheel."
 msgstr "描画色をカラーホイール上で反時計回りに回転させて色相を変更します。"
 
-#: ../po/tmp/resources.xml.h:61
+#: ../gui/resources.xml:342
 msgctxt "Menu→Color→Adjust Color (labels), Accel Editor (labels)"
 msgid "Increase Saturation"
 msgstr "彩度を上げる"
 
-#: ../po/tmp/resources.xml.h:62
+#: ../gui/resources.xml:343
 msgctxt "Accel Editor (descriptions)"
 msgid "Make the painting color more saturated (more colorful, purer)."
 msgstr "描画色の彩度を高めます (よりカラフルに、原色に近づきます)。"
 
-#: ../po/tmp/resources.xml.h:63
+#: ../gui/resources.xml:350
 msgctxt "Menu→Color→Adjust Color (labels), Accel Editor (labels)"
 msgid "Decrease Saturation"
 msgstr "彩度を下げる"
 
-#: ../po/tmp/resources.xml.h:64
+#: ../gui/resources.xml:351
 msgctxt "Accel Editor (descriptions)"
 msgid "Make the painting color less saturated (grayer)."
 msgstr "描画色の彩度を落とします (灰色に近づきます)。"
 
-#: ../po/tmp/resources.xml.h:65
+#: ../gui/resources.xml:359
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
 msgid "Reload Brush Settings"
 msgstr "ブラシ設定を再読み込み"
 
-#: ../po/tmp/resources.xml.h:66
+#: ../gui/resources.xml:360
 msgctxt "Accel Editor (descriptions)"
 msgid "Restore all brush settings to the current brush’s saved values."
 msgstr "ブラシの設定を登録時の既定値に戻します。"
 
-#: ../po/tmp/resources.xml.h:67
+#: ../gui/resources.xml:370
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
 msgid "Pick Stroke and Layer"
 msgstr "ストロークとレイヤを採取"
 
-#: ../po/tmp/resources.xml.h:68
+#: ../gui/resources.xml:371
 #, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid ""
@@ -5364,12 +5276,12 @@ msgstr ""
 "キャンバスからブラシストロークを採取し、ブラシと色を戻し、描画されているレイ"
 "ヤへ移動します。"
 
-#: ../po/tmp/resources.xml.h:69
+#: ../gui/resources.xml:382
 msgctxt "Menu→Brush→Shortcut Keys (labels), Accel Editor (labels)"
 msgid "Brush Shortcut Keys Restore Color"
 msgstr "ブラシショートカットキーは色も復元する"
 
-#: ../po/tmp/resources.xml.h:70
+#: ../gui/resources.xml:383
 msgctxt "Accel Editor (descriptions)"
 msgid ""
 "Toggle whether restoring the brush from a shortcut key also restores the "
@@ -5378,268 +5290,268 @@ msgstr ""
 "ブラシショートカットキーでブラシを切り替えた際、色も登録時のものに戻すように"
 "振る舞うかどうかを切り替えます。"
 
-#: ../po/tmp/resources.xml.h:71
+#: ../gui/resources.xml:390
 msgctxt "Menu→Brush→Shortcut Keys (labels), Accel Editor (labels)"
 msgid "Save Brush to Most Recent Shortcut Key"
 msgstr "直前に使用されたブラシショートカットに保存"
 
-#: ../po/tmp/resources.xml.h:72
+#: ../gui/resources.xml:391
 msgctxt "Accel Editor (descriptions)"
 msgid "Save brush settings to the most recently used shortcut key."
 msgstr ""
 "直前に使用されたブラシショートカットキーに、現在のブラシと色を保存します。"
 
-#: ../po/tmp/resources.xml.h:73
+#: ../gui/resources.xml:401
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Clear Layer"
 msgstr "レイヤーをクリア"
 
-#: ../po/tmp/resources.xml.h:74
+#: ../gui/resources.xml:402
 #, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Clear the active layer’s content."
 msgstr "現在のレイヤーの内容を消去します。"
 
-#: ../po/tmp/resources.xml.h:75
+#: ../gui/resources.xml:410
 #, fuzzy
 msgctxt "Menu→Layer (labels)"
 msgid "Slice Operations"
 msgstr "ツールオプション"
 
-#: ../po/tmp/resources.xml.h:76
+#: ../gui/resources.xml:416
 #, fuzzy
 msgctxt "Menu→Layer→Slice (labels), Accel Editor (labels)"
 msgid "Trim Layer to Frame"
 msgstr "レイヤーをフレームサイズで切り抜く"
 
-#: ../po/tmp/resources.xml.h:77
+#: ../gui/resources.xml:417
 msgctxt "Accel Editor (descriptions)"
 msgid "Erase parts of the current layer which lie outside the frame."
 msgstr "現在のレイヤーの内容のうち、フレーム外にはみ出した部分を消去します。"
 
-#: ../po/tmp/resources.xml.h:78
+#: ../gui/resources.xml:423
 msgctxt "Menu→Layer→Slice (labels), Accel Editor (labels)"
 msgid "Uniquify Layer Pixels"
 msgstr ""
 
-#: ../po/tmp/resources.xml.h:79
+#: ../gui/resources.xml:424
 #, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Delete parts of the current layer which do not vary from the backdrop."
 msgstr "現在のレイヤーの内容のうち、フレーム外にはみ出した部分を消去します。"
 
-#: ../po/tmp/resources.xml.h:80
+#: ../gui/resources.xml:430
 msgctxt "Menu→Layer→Slice (labels), Accel Editor (labels)"
 msgid "Uniquify Layer Tiles"
 msgstr ""
 
-#: ../po/tmp/resources.xml.h:81
+#: ../gui/resources.xml:431
 msgctxt "Accel Editor (descriptions)"
 msgid ""
 "Delete whole tiles from the current layer which do not vary from the "
 "backdrop."
 msgstr ""
 
-#: ../po/tmp/resources.xml.h:82
+#: ../gui/resources.xml:437
 #, fuzzy
 msgctxt "Menu→Layer→Slice (labels), Accel Editor (labels)"
 msgid "Refactor Layer Group Pixels"
 msgstr "下に新しいレイヤーグループを作成"
 
-#: ../po/tmp/resources.xml.h:83
+#: ../gui/resources.xml:438 ../gui/resources.xml:445
 msgctxt "Accel Editor (descriptions)"
 msgid ""
 "Normalize child layers, then factor out common parts to a new child layer."
 msgstr ""
 
-#: ../po/tmp/resources.xml.h:84
+#: ../gui/resources.xml:444
 #, fuzzy
 msgctxt "Menu→Layer→Slice (labels), Accel Editor (labels)"
 msgid "Refactor Layer Group Tiles"
 msgstr "下に新しいレイヤーグループを作成"
 
-#: ../po/tmp/resources.xml.h:85
+#: ../gui/resources.xml:452
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Copy Layer to Clipboard"
 msgstr "レイヤーをクリップボードにコピー"
 
-#: ../po/tmp/resources.xml.h:86
+#: ../gui/resources.xml:453
 msgctxt "Accel Editor (descriptions)"
 msgid "Copy the current layer’s contents to the clipboard."
 msgstr "現在のレイヤーの内容をクリップボードにコピーします。"
 
-#: ../po/tmp/resources.xml.h:87
+#: ../gui/resources.xml:461
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Paste Layer from Clipboard"
 msgstr "クリップボードからレイヤーに貼り付け"
 
-#: ../po/tmp/resources.xml.h:88
+#: ../gui/resources.xml:462
 msgctxt "Accel Editor (descriptions)"
 msgid "Replaces the current layer with the clipboard’s contents."
 msgstr "現在のレイヤーを、クリップボードの内容と置き換えます。"
 
-#: ../po/tmp/resources.xml.h:89
+#: ../gui/resources.xml:469
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Edit Layer in External App…"
 msgstr "レイヤーを他のアプリケーションで編集…"
 
-#: ../po/tmp/resources.xml.h:90
+#: ../gui/resources.xml:470
 #, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Edit the active layer in an external application."
 msgstr "現在のレイヤーの、他のアプリケーションでの編集を開始します。"
 
-#: ../po/tmp/resources.xml.h:91
+#: ../gui/resources.xml:477
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Update Layer with External Edits"
 msgstr "他のアプリケーションで編集したレイヤーを更新"
 
-#: ../po/tmp/resources.xml.h:92
+#: ../gui/resources.xml:478
 msgctxt "Accel Editor (descriptions)"
 msgid "Commit changes saved from the external app (normally automatic)."
 msgstr "他のアプリケーションでの変更内容を取り込みます (通常は自動)。"
 
-#: ../po/tmp/resources.xml.h:93
+#: ../gui/resources.xml:484
 msgctxt "Menu→Layer→Go to Layer (labels), Accel Editor (labels)"
 msgid "Go to Layer at Cursor"
 msgstr "カーソル位置にあるレイヤーに移動"
 
-#: ../po/tmp/resources.xml.h:94
+#: ../gui/resources.xml:485
 #, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Select a layer by picking something [drawn] on it."
 msgstr "カーソル位置にあるピクセルが属しているレイヤーを選択します。"
 
-#: ../po/tmp/resources.xml.h:95
+#: ../gui/resources.xml:493
 msgctxt "Menu→Layer→Go to Layer (labels), Accel Editor (labels)"
 msgid "Go to Layer Above"
 msgstr "上のレイヤーに移動"
 
-#: ../po/tmp/resources.xml.h:96
+#: ../gui/resources.xml:494
 msgctxt "Accel Editor (descriptions)"
 msgid "Go one layer up in the layer stack."
 msgstr "レイヤースタックにおける一つ上のレイヤーに移動します。"
 
-#: ../po/tmp/resources.xml.h:97
+#: ../gui/resources.xml:502
 msgctxt "Menu→Layer→Go to Layer (labels), Accel Editor (labels)"
 msgid "Go to Layer Below"
 msgstr "下のレイヤーに移動"
 
-#: ../po/tmp/resources.xml.h:98
+#: ../gui/resources.xml:503
 msgctxt "Accel Editor (descriptions)"
 msgid "Go one layer down in the layer stack."
 msgstr "レイヤースタックにおける一つ下のレイヤーに移動します。"
 
-#: ../po/tmp/resources.xml.h:99
+#: ../gui/resources.xml:511
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "New Painting Layer"
 msgstr "新しい描画レイヤー"
 
-#: ../po/tmp/resources.xml.h:100
+#: ../gui/resources.xml:512
 msgctxt "Accel Editor (descriptions)"
 msgid "Add a new painting layer above the current layer."
 msgstr "現在のレイヤーの上に新しい描画レイヤーを作成します。"
 
-#: ../po/tmp/resources.xml.h:101
+#: ../gui/resources.xml:520
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "New Vector Layer…"
 msgstr "新しいベクターレイヤー…"
 
-#: ../po/tmp/resources.xml.h:102
+#: ../gui/resources.xml:521
 msgctxt "Accel Editor (descriptions)"
 msgid "Add a new vector layer above the current layer, and begin editing it."
 msgstr ""
 "現在のレイヤーの上に新しいベクターレイヤーを作成して、編集を開始します。"
 
-#: ../po/tmp/resources.xml.h:103
+#: ../gui/resources.xml:528
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "New Layer Group"
 msgstr "新しいレイヤーグループ"
 
-#: ../po/tmp/resources.xml.h:104
+#: ../gui/resources.xml:529
 msgctxt "Accel Editor (descriptions)"
 msgid "Add a new layer group above the current layer."
 msgstr "現在のレイヤーの上に新しいレイヤーグループを作成します。"
 
-#: ../po/tmp/resources.xml.h:105
+#: ../gui/resources.xml:536
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "New Painting Layer Below"
 msgstr "下に新しいレイヤーを作成"
 
-#: ../po/tmp/resources.xml.h:106
+#: ../gui/resources.xml:537
 msgctxt "Accel Editor (descriptions)"
 msgid "Add a new painting layer below the current layer."
 msgstr "現在のレイヤーの下に新しい描画レイヤーを作成します。"
 
-#: ../po/tmp/resources.xml.h:107
+#: ../gui/resources.xml:544
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "New Vector Layer Below…"
 msgstr "下に新しいレイヤーを作成…"
 
-#: ../po/tmp/resources.xml.h:108
+#: ../gui/resources.xml:545
 msgctxt "Accel Editor (descriptions)"
 msgid "Add a new vector layer below the current layer, and begin editing it."
 msgstr ""
 "現在のレイヤーの下に新しいベクターレイヤーを作成して、編集を開始します。"
 
-#: ../po/tmp/resources.xml.h:109
+#: ../gui/resources.xml:551
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "New Layer Group Below"
 msgstr "下に新しいレイヤーグループを作成"
 
-#: ../po/tmp/resources.xml.h:110
+#: ../gui/resources.xml:552
 msgctxt "Accel Editor (descriptions)"
 msgid "Add a new layer group below the current layer."
 msgstr "現在のレイヤーの下に新しいレイヤーグループを作成します。"
 
-#: ../po/tmp/resources.xml.h:111
+#: ../gui/resources.xml:559
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Merge Layer Down"
 msgstr "下のレイヤーと統合"
 
-#: ../po/tmp/resources.xml.h:112
+#: ../gui/resources.xml:560
 msgctxt "Accel Editor (descriptions)"
 msgid "Merge the current layer with the layer beneath it."
 msgstr "現在のレイヤーを下のレイヤーと統合します。"
 
-#: ../po/tmp/resources.xml.h:113
+#: ../gui/resources.xml:567
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Merge Visible Layers"
 msgstr "可視レイヤーを統合"
 
-#: ../po/tmp/resources.xml.h:114
+#: ../gui/resources.xml:568
 msgctxt "Accel Editor (descriptions)"
 msgid "Consolidate all visible layers, and delete the originals."
 msgstr "すべての可視レイヤーを統合し、元のレイヤーを全削除します。"
 
-#: ../po/tmp/resources.xml.h:115
+#: ../gui/resources.xml:575
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "New Layer from Visible"
 msgstr "可視部分から新規レイヤーを作成"
 
-#: ../po/tmp/resources.xml.h:116
+#: ../gui/resources.xml:576
 msgctxt "Accel Editor (descriptions)"
 msgid "Like ‘Merge Visible Layers’, but doesn’t delete the originals."
 msgstr ""
 "可視レイヤーを統合したレイヤーを作成しますが、元のレイヤーは削除せず残しま"
 "す。"
 
-#: ../po/tmp/resources.xml.h:117
+#: ../gui/resources.xml:583
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Delete Layer"
 msgstr "レイヤーを削除"
 
-#: ../po/tmp/resources.xml.h:118
+#: ../gui/resources.xml:584
 msgctxt "Accel Editor (descriptions)"
 msgid "Remove the current layer from the layer stack."
 msgstr "現在のレイヤーを削除します。"
 
-#: ../po/tmp/resources.xml.h:119
+#: ../gui/resources.xml:591
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Convert to Normal Painting Layer"
 msgstr "標準モードの描画レイヤーに変換"
 
-#: ../po/tmp/resources.xml.h:120
+#: ../gui/resources.xml:592
 msgctxt "Accel Editor (descriptions)"
 msgid ""
 "Convert the current layer or group to a painting layer in ‘Normal’ mode, "
@@ -5648,74 +5560,74 @@ msgstr ""
 "現在のレイヤーもしくはレイヤーグループを、見た目は保持したままで合成モード"
 "「標準」に変換します。"
 
-#: ../po/tmp/resources.xml.h:121
+#: ../gui/resources.xml:598
 msgctxt "Menu→Layer→Opacity (labels), Accel Editor (labels)"
 msgid "Increase Layer’s Opacity"
 msgstr "レイヤーの不透明度を上げる"
 
-#: ../po/tmp/resources.xml.h:122
+#: ../gui/resources.xml:599
 msgctxt "Accel Editor (descriptions)"
 msgid "Make the layer less transparent."
 msgstr "レイヤーをより不透明にします。"
 
-#: ../po/tmp/resources.xml.h:123
+#: ../gui/resources.xml:606
 msgctxt "Menu→Layer→Opacity (labels), Accel Editor (labels)"
 msgid "Reduce Layer’s Opacity"
 msgstr "レイヤーの不透明度を下げる"
 
-#: ../po/tmp/resources.xml.h:124
+#: ../gui/resources.xml:607
 msgctxt "Accel Editor (descriptions)"
 msgid "Make the layer more transparent."
 msgstr "レイヤーをより透明にします。"
 
-#: ../po/tmp/resources.xml.h:125
+#: ../gui/resources.xml:614
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Raise Layer"
 msgstr "レイヤーを前面へ"
 
-#: ../po/tmp/resources.xml.h:126
+#: ../gui/resources.xml:615
 msgctxt "Accel Editor (descriptions)"
 msgid "Raise the current layer one step in the layer stack."
 msgstr "現在のレイヤーを、前面に 1 つ移動します。"
 
-#: ../po/tmp/resources.xml.h:127
+#: ../gui/resources.xml:623
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Lower Layer"
 msgstr "レイヤーを背面へ"
 
-#: ../po/tmp/resources.xml.h:128
+#: ../gui/resources.xml:624
 msgctxt "Accel Editor (descriptions)"
 msgid "Lower the current layer one step in the layer stack."
 msgstr "現在のレイヤーを、背面に 1 つ移動します。"
 
-#: ../po/tmp/resources.xml.h:129
+#: ../gui/resources.xml:633
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Duplicate Layer"
 msgstr "レイヤーを複製"
 
-#: ../po/tmp/resources.xml.h:130
+#: ../gui/resources.xml:634
 msgctxt "Accel Editor (descriptions)"
 msgid "Make an exact clone of the current layer."
 msgstr "現在のレイヤーと同じ内容のレイヤーを作成します。"
 
-#: ../po/tmp/resources.xml.h:131
+#: ../gui/resources.xml:642
 #, fuzzy
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Layer Properties…"
 msgstr "プロパティ"
 
-#: ../po/tmp/resources.xml.h:132
+#: ../gui/resources.xml:643
 msgctxt "Accel Editor (descriptions)"
 msgid ""
 "Change the layer’s properties (name, mode, visibility, locked, opacity)."
 msgstr ""
 
-#: ../po/tmp/resources.xml.h:133
+#: ../gui/resources.xml:650
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Layer Locked"
 msgstr "レイヤーをロックする"
 
-#: ../po/tmp/resources.xml.h:134
+#: ../gui/resources.xml:651
 msgctxt "Accel Editor (descriptions)"
 msgid ""
 "Toggle the current layer’s locked state. Locked layers cannot be modified."
@@ -5723,772 +5635,780 @@ msgstr ""
 "現在のレイヤーのロック状態を切り替えます。ロックされたレイヤーは編集できませ"
 "ん。"
 
-#: ../po/tmp/resources.xml.h:135
+#: ../gui/resources.xml:658
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Layer Visible"
 msgstr "レイヤーを表示する"
 
-#: ../po/tmp/resources.xml.h:136
+#: ../gui/resources.xml:659
 msgctxt "Accel Editor (descriptions)"
 msgid "Toggle the current layer’s visibility state, making it hidden."
 msgstr "現在のレイヤの可視状態を切り替えます。"
 
-#: ../po/tmp/resources.xml.h:137
+#: ../gui/resources.xml:666
 msgctxt "Menu→View (labels), Accel Editor (labels)"
 msgid "Show Background"
 msgstr "背景を表示"
 
-#: ../po/tmp/resources.xml.h:138
+#: ../gui/resources.xml:667
 msgctxt "Accel Editor (descriptions)"
 msgid "Toggle the background layer’s visibility."
 msgstr "背景レイヤーの可視状態をトグルします。"
 
-#: ../po/tmp/resources.xml.h:139
+#: ../gui/resources.xml:674
 msgctxt "Menu→Help→Debug (labels), Accel Editor (labels)"
 msgid "Vacuum Empty Tiles"
 msgstr ""
 
-#: ../po/tmp/resources.xml.h:140
+#: ../gui/resources.xml:675
 #, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Remove empty tiles from the document."
 msgstr "現在のレイヤーを削除します。"
 
-#: ../po/tmp/resources.xml.h:141
+#: ../gui/resources.xml:684
 msgctxt "Menu→View (labels), Accel Editor (labels)"
 msgid "Reset and Center View"
 msgstr "表示をリセットして画像を中央に移動"
 
-#: ../po/tmp/resources.xml.h:142
+#: ../gui/resources.xml:685
 msgctxt "Accel Editor (descriptions)"
 msgid "Reset Zoom, Rotation and Mirroring, and recenter the document."
 msgstr ""
 "拡大率、回転、反転表示をリセットし、ドキュメントの表示位置を中央に戻します。"
 
-#: ../po/tmp/resources.xml.h:143
+#: ../gui/resources.xml:693
 msgctxt "Menu→View (labels), Accel Editor (labels)"
 msgid "Fit to View"
 msgstr "ビューに合わせる"
 
-#: ../po/tmp/resources.xml.h:144
+#: ../gui/resources.xml:694
 msgctxt "Accel Editor (descriptions)"
 msgid "Switch between a fitted view and your working location and zoom."
 msgstr "画像の表示範囲を、ウィンドウいっぱいに合わせるかどうかを切り替えます。"
 
-#: ../po/tmp/resources.xml.h:145
+#: ../gui/resources.xml:701
 msgctxt "Menu→View (labels)"
 msgid "Reset"
 msgstr "リセット"
 
-#: ../po/tmp/resources.xml.h:146
+#: ../gui/resources.xml:708
 msgctxt "Menu→View→Reset (labels), Accel Editor (labels)"
 msgid "Reset Zoom"
 msgstr "拡大・縮小をリセット"
 
-#: ../po/tmp/resources.xml.h:147
+#: ../gui/resources.xml:709
 #, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Reset view zoom level to default."
 msgstr "表示領域の拡大率をデフォルトに戻します。"
 
-#: ../po/tmp/resources.xml.h:148
+#: ../gui/resources.xml:715
 msgctxt "Menu→View→Reset (labels), Accel Editor (labels)"
 msgid "Reset Rotation"
 msgstr "回転をリセット"
 
-#: ../po/tmp/resources.xml.h:149
+#: ../gui/resources.xml:716
 #, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Reset the view’s rotation to 0°"
 msgstr "表示領域の回転の角度を 0 度に戻します"
 
-#: ../po/tmp/resources.xml.h:150
+#: ../gui/resources.xml:722
 msgctxt "Menu→View→Reset (labels), Accel Editor (labels)"
 msgid "Reset Mirroring"
 msgstr "反転表示を解除"
 
-#: ../po/tmp/resources.xml.h:151
+#: ../gui/resources.xml:723
 #, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Reset the view's mirroring."
 msgstr "反転表示を解除"
 
-#: ../po/tmp/resources.xml.h:152
+#: ../gui/resources.xml:729
 msgctxt "Menu→View→Adjust View (labels), Accel Editor (labels)"
 msgid "Zoom In"
 msgstr "拡大"
 
-#: ../po/tmp/resources.xml.h:153
+#: ../gui/resources.xml:730
 msgctxt "Accel Editor (descriptions)"
 msgid "Increase magnification."
 msgstr "拡大率を上げます。"
 
-#: ../po/tmp/resources.xml.h:154
+#: ../gui/resources.xml:737
 msgctxt "Menu→View→Adjust View (labels), Accel Editor (labels)"
 msgid "Zoom Out"
 msgstr "縮小"
 
-#: ../po/tmp/resources.xml.h:155
+#: ../gui/resources.xml:738
 msgctxt "Accel Editor (descriptions)"
 msgid "Decrease magnification."
 msgstr "拡大率を下げます。"
 
-#: ../po/tmp/resources.xml.h:156
+#: ../gui/resources.xml:758
 #, fuzzy
 msgctxt "Menu→View→Adjust View (labels), Accel Editor (labels)"
 msgid "Pan Left"
 msgstr "表示領域を移動"
 
-#: ../po/tmp/resources.xml.h:157
+#: ../gui/resources.xml:759
 #, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Move your view of the canvas to the left."
 msgstr "表示領域を回転: キャンバスを傾けて表示します。"
 
-#: ../po/tmp/resources.xml.h:158
+#: ../gui/resources.xml:766
 #, fuzzy
 msgctxt "Menu→View→Adjust View (labels), Accel Editor (labels)"
 msgid "Pan Right"
 msgstr "ハードライト"
 
-#: ../po/tmp/resources.xml.h:159
+#: ../gui/resources.xml:767
 #, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Move your view of the canvas to the right."
 msgstr ""
 "表示領域の移動: キャンバスの表示領域を、水平または垂直方向に移動します。"
 
-#: ../po/tmp/resources.xml.h:160
+#: ../gui/resources.xml:774
 msgctxt "Menu→View→Adjust View (labels), Accel Editor (labels)"
 msgid "Pan Up"
 msgstr ""
 
-#: ../po/tmp/resources.xml.h:161
+#: ../gui/resources.xml:775
 #, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Move your view of the canvas upwards."
 msgstr "表示領域を回転: キャンバスを傾けて表示します。"
 
-#: ../po/tmp/resources.xml.h:162
+#: ../gui/resources.xml:782
 #, fuzzy
 msgctxt "Menu→View→Adjust View (labels), Accel Editor (labels)"
 msgid "Pan Down"
 msgstr "表示領域を移動"
 
-#: ../po/tmp/resources.xml.h:163
+#: ../gui/resources.xml:783
 #, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Move your view of the canvas downwards."
 msgstr "表示領域を回転: キャンバスを傾けて表示します。"
 
-#: ../po/tmp/resources.xml.h:164
+#.
+#. Note: the object we've agreed to present as being rotated
+#. by "RotateLeft and "RotateRight" is the *canvas*,
+#. not the viewing rectangle.
+#.
+#. https://github.com/mypaint/mypaint/issues/553
+#.
+#: ../gui/resources.xml:798
 msgctxt "Menu→View→Adjust View (labels), Accel Editor (labels)"
 msgid "Rotate Clockwise"
 msgstr "時計回りに回転"
 
-#: ../po/tmp/resources.xml.h:165
+#: ../gui/resources.xml:799
 #, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Rotate the canvas clockwise."
 msgstr "表示領域を時計回りに回転します。"
 
-#: ../po/tmp/resources.xml.h:166
+#: ../gui/resources.xml:819
 msgctxt "Menu→View→Adjust View (labels), Accel Editor (labels)"
 msgid "Rotate Counterclockwise"
 msgstr "反時計回りに回転"
 
-#: ../po/tmp/resources.xml.h:167
+#: ../gui/resources.xml:820
 #, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Rotate the canvas counter-clockwise."
 msgstr "表示領域を反時計回りに回転します。"
 
-#: ../po/tmp/resources.xml.h:168
+#: ../gui/resources.xml:828
 msgctxt "Menu→View→Adjust View (labels), Accel Editor (labels)"
 msgid "Mirror Horizontal"
 msgstr "左右反転"
 
-#: ../po/tmp/resources.xml.h:169
+#: ../gui/resources.xml:829
 msgctxt "Accel Editor (descriptions)"
 msgid "Flip the view left to right."
 msgstr "表示領域を左右反転します。"
 
-#: ../po/tmp/resources.xml.h:170
+#: ../gui/resources.xml:837
 msgctxt "Menu→View→Adjust View (labels), Accel Editor (labels)"
 msgid "Mirror Vertical"
 msgstr "上下反転"
 
-#: ../po/tmp/resources.xml.h:171
+#: ../gui/resources.xml:838
 msgctxt "Accel Editor (descriptions)"
 msgid "Flip the view upside-down."
 msgstr "表示領域を上下反転します。"
 
-#: ../po/tmp/resources.xml.h:172
+#: ../gui/resources.xml:845
 msgctxt "Menu→View (labels), Accel Editor (labels)"
 msgid "Layer Solo"
 msgstr "現在のレイヤーのみ表示"
 
-#: ../po/tmp/resources.xml.h:173
+#: ../gui/resources.xml:846
 msgctxt "Accel Editor (descriptions)"
 msgid "Toggle whether only the current layer is shown."
 msgstr "現在のレイヤーのみ表示するかどうかを切り替えます。"
 
-#: ../po/tmp/resources.xml.h:174
+#: ../gui/resources.xml:856
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
 msgid "Symmetrical Painting Active"
 msgstr "対称描画を有効化"
 
-#: ../po/tmp/resources.xml.h:175
+#: ../gui/resources.xml:857
 msgctxt "Accel Editor (descriptions)"
 msgid "Mirror brushstrokes along the axis of symmetry"
 msgstr "ブラシストロークを、対称軸を中心に反転して複写"
 
-#: ../po/tmp/resources.xml.h:176
+#: ../gui/resources.xml:864
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "Frame Enabled"
 msgstr "フレームを使用"
 
-#: ../po/tmp/resources.xml.h:177
+#: ../gui/resources.xml:865
 msgctxt "Accel Editor (descriptions)"
 msgid "Toggle visibility of the document frame."
 msgstr "画像フレームの表示/非表示を切り替えます。"
 
-#: ../po/tmp/resources.xml.h:178
+#: ../gui/resources.xml:874
 msgctxt "Menu→Help→Debug (labels), Accel Editor (labels)"
 msgid "Print Brush Input Values to Console"
 msgstr "ブラシの入力値をコンソールに表示"
 
-#: ../po/tmp/resources.xml.h:179
+#: ../gui/resources.xml:875
 msgctxt "Accel Editor (descriptions)"
 msgid "Show the brush engine’s internally generated inputs on the console."
 msgstr "ブラシエンジンで内部生成された入力値をコンソールに出力します。"
 
-#: ../po/tmp/resources.xml.h:180
+#: ../gui/resources.xml:881
 msgctxt "Menu→Help→Debug (labels), Accel Editor (labels)"
 msgid "Visualize Rendering"
 msgstr "レンダリングを視覚的に表示"
 
-#: ../po/tmp/resources.xml.h:181
+#: ../gui/resources.xml:882
 msgctxt "Accel Editor (descriptions)"
 msgid "Show rendering updates on-screen, for debugging."
 msgstr "デバッグ用に、レンダリングで更新される部分をスクリーンに表示します。"
 
-#: ../po/tmp/resources.xml.h:182
+#: ../gui/resources.xml:888
 msgctxt "Menu→Help→Debug (labels), Accel Editor (labels)"
 msgid "No Double Buffering"
 msgstr "ダブルバッファリングを無効化"
 
-#: ../po/tmp/resources.xml.h:183
+#: ../gui/resources.xml:889
 msgctxt "Accel Editor (descriptions)"
 msgid "Turn off GTK’s double buffering, normally enabled."
 msgstr ""
 "GTK のダブルバッファリング機能を無効化します。通常は有効になっています。"
 
-#: ../po/tmp/resources.xml.h:185
+#: ../gui/resources.xml:898
 msgctxt "Accel Editor (descriptions)"
 msgid ""
 "Insert a point next to the currently selected point in the direction of the "
 "stroke."
 msgstr ""
 
-#: ../po/tmp/resources.xml.h:186
+#: ../gui/resources.xml:904
 #, fuzzy
 msgid "Delete Point"
 msgstr "制御点を削除"
 
-#: ../po/tmp/resources.xml.h:187
+#: ../gui/resources.xml:905
 #, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Delete currently selected point on the ink stroke."
 msgstr "現在選択している制御点を削除します"
 
-#: ../po/tmp/resources.xml.h:189
+#: ../gui/resources.xml:912
 msgctxt "Accel Editor (descriptions)"
 msgid ""
 "Simplify and delete points according to angle and distance between nodes."
 msgstr ""
 
-#: ../po/tmp/resources.xml.h:191
+#: ../gui/resources.xml:919
 msgctxt "Accel Editor (descriptions)"
 msgid "Delete every other point on the ink stroke."
 msgstr ""
 
-#: ../po/tmp/resources.xml.h:192
+#: ../gui/resources.xml:933
 msgctxt "Menu→Brush (labels)"
 msgid "Paint Mode"
 msgstr "描画モード"
 
-#: ../po/tmp/resources.xml.h:193
+#: ../gui/resources.xml:941
 msgctxt "Menu→Brush→Blend Mode (labels), Accel Editor (labels)"
 msgid "Paint Mode: Normal"
 msgstr "描画モード: 通常"
 
-#: ../po/tmp/resources.xml.h:194
+#: ../gui/resources.xml:942
 msgctxt "Accel Editor (descriptions)"
 msgid "Apply color normally when painting."
 msgstr "色を普通に描画します。"
 
-#: ../po/tmp/resources.xml.h:195
+#: ../gui/resources.xml:950
 msgctxt "Menu→Brush→Blend Mode (labels), Accel Editor (labels)"
 msgid "Paint Mode: Eraser"
 msgstr "描画モード: 消しゴム"
 
-#: ../po/tmp/resources.xml.h:196
+#: ../gui/resources.xml:951
 msgctxt "Accel Editor (descriptions)"
 msgid "Erase using the current brush."
 msgstr "現在のブラシを消しゴムとして使います。"
 
-#: ../po/tmp/resources.xml.h:197
+#: ../gui/resources.xml:959
 msgctxt "Menu→Brush→Blend Mode (labels), Accel Editor (labels)"
 msgid "Paint Mode: Lock Alpha"
 msgstr "描画モード: アルファロック"
 
-#: ../po/tmp/resources.xml.h:198
+#: ../gui/resources.xml:960
 msgctxt "Accel Editor (descriptions)"
 msgid "Applying the brush doesn't change the layer’s opacity."
 msgstr "レイヤの透明部分を保持したまま描画します。"
 
-#: ../po/tmp/resources.xml.h:199
+#: ../gui/resources.xml:968
 msgctxt "Menu→Brush→Blend Mode (labels), Accel Editor (labels)"
 msgid "Paint Mode: Colorize"
 msgstr "描画モード: 彩色"
 
-#: ../po/tmp/resources.xml.h:200
+#: ../gui/resources.xml:969
 msgctxt "Accel Editor (descriptions)"
 msgid ""
 "Apply color to the current layer without affecting its brightness or opacity."
 msgstr "現在のレイヤーに対し明るさと透明部分を保持したまま色を塗ります。"
 
-#: ../po/tmp/resources.xml.h:201
+#: ../gui/resources.xml:983
 msgctxt "Menu (labels)"
 msgid "File"
 msgstr "ファイル"
 
-#: ../po/tmp/resources.xml.h:202
+#: ../gui/resources.xml:989
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "Quit"
 msgstr "終了"
 
-#: ../po/tmp/resources.xml.h:203
+#: ../gui/resources.xml:990
 msgctxt "Accel Editor (descriptions)"
 msgid "Close main window and exit the app."
 msgstr "メインウィンドウを閉じて MyPaint を終了します。"
 
-#: ../po/tmp/resources.xml.h:204
+#: ../gui/resources.xml:1000
 msgctxt "Menu (labels)"
 msgid "Edit"
 msgstr "編集"
 
-#: ../po/tmp/resources.xml.h:205
+#: ../gui/resources.xml:1008
 msgctxt "Menu (labels)"
 msgid "Color"
 msgstr "色"
 
-#: ../po/tmp/resources.xml.h:206
+#: ../gui/resources.xml:1014
 msgctxt "Menu→Color (labels)"
 msgid "Adjust Color"
 msgstr "描画色の調整"
 
-#: ../po/tmp/resources.xml.h:207
+#: ../gui/resources.xml:1020
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "Color History Popup"
 msgstr "色の履歴"
 
-#: ../po/tmp/resources.xml.h:208
+#: ../gui/resources.xml:1021
 msgctxt "Accel Editor (descriptions)"
 msgid "Pop up a timeline of recent colors under the cursor."
 msgstr "カーソル直下に最近使った色の一覧をポップアップします。"
 
-#: ../po/tmp/resources.xml.h:209
+#: ../gui/resources.xml:1028
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "Color Details Dialog"
 msgstr "色の詳細"
 
-#: ../po/tmp/resources.xml.h:210
+#: ../gui/resources.xml:1029
 msgctxt "Accel Editor (descriptions)"
 msgid "Show a color details dialog with text entry."
 msgstr "Web カラーの表示欄付きで色の詳細を示すダイアログを表示します。"
 
-#: ../po/tmp/resources.xml.h:211
+#: ../gui/resources.xml:1035
 msgctxt "Menu→Color"
 msgid "Next Palette Color"
 msgstr "パレットの次の色"
 
-#: ../po/tmp/resources.xml.h:212
+#: ../gui/resources.xml:1036
 msgctxt "Accel Editor (descriptions)"
 msgid "Set painting color to the next color in the palette."
 msgstr "現在のパレットにおける次の色を描画色に設定します。"
 
-#: ../po/tmp/resources.xml.h:213
+#: ../gui/resources.xml:1042
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "Previous Palette Color"
 msgstr "パレットの前の色"
 
-#: ../po/tmp/resources.xml.h:214
+#: ../gui/resources.xml:1043
 msgctxt "Accel Editor (descriptions)"
 msgid "Set painting color to the previous color in the palette."
 msgstr "現在のパレットにおける前の色を描画色に設定します。"
 
-#: ../po/tmp/resources.xml.h:215
+#: ../gui/resources.xml:1049
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "Add Color to Palette"
 msgstr "色をパレットに追加"
 
-#: ../po/tmp/resources.xml.h:216
+#: ../gui/resources.xml:1050
 msgctxt "Accel Editor (descriptions)"
 msgid "Append the current painting color to the palette."
 msgstr "現在の描画色をパレットに追加します。"
 
-#: ../po/tmp/resources.xml.h:217
+#: ../gui/resources.xml:1058
 msgctxt "Menu (labels)"
 msgid "Layer"
 msgstr "レイヤー"
 
-#: ../po/tmp/resources.xml.h:218
+#: ../gui/resources.xml:1064
 msgctxt "Menu→Layer→Properties (labels)"
 msgid "Opacity"
 msgstr "不透明度"
 
-#: ../po/tmp/resources.xml.h:219
+#: ../gui/resources.xml:1070
 msgctxt "Menu→Layer (labels)"
 msgid "Go to Layer"
 msgstr "レイヤーに移動"
 
-#: ../po/tmp/resources.xml.h:220
+#: ../gui/resources.xml:1076
 msgctxt "Menu→Layer (labels)"
 msgid "New Layer Below"
 msgstr "新規レイヤーを背面側に作成"
 
-#: ../po/tmp/resources.xml.h:221
+#: ../gui/resources.xml:1082
 msgctxt "Menu→Layer (labels)"
 msgid "Properties"
 msgstr "プロパティ"
 
-#: ../po/tmp/resources.xml.h:222
+#: ../gui/resources.xml:1090
 msgctxt "Menu (labels)"
 msgid "Scratchpad"
 msgstr "作業パレット"
 
-#: ../po/tmp/resources.xml.h:223
+#: ../gui/resources.xml:1096
 msgctxt "Menu→Scratchpad (labels), Accel Editor (labels)"
 msgid "New Scratchpad"
 msgstr "新規の作業パレット"
 
-#: ../po/tmp/resources.xml.h:224
+#: ../gui/resources.xml:1097
 msgctxt "Accel Editor (descriptions)"
 msgid "Load the default scratchpad as a new scratchpad canvas."
 msgstr "新しい作業パレットとしてデフォルトの作業パレットを読み込みます。"
 
-#: ../po/tmp/resources.xml.h:225
+#: ../gui/resources.xml:1104
 msgctxt "Menu→Scratchpad (labels), Accel Editor (labels)"
 msgid "Open Scratchpad…"
 msgstr "作業パレットを開く…"
 
-#: ../po/tmp/resources.xml.h:226
+#: ../gui/resources.xml:1105
 msgctxt "Accel Editor (descriptions)"
 msgid "Load an image file on disk into the scratchpad."
 msgstr "作業パレットにディスク上のファイルを読み込みます。"
 
-#: ../po/tmp/resources.xml.h:227
+#: ../gui/resources.xml:1112
 msgctxt "Menu→Scratchpad (labels), Accel Editor (labels)"
 msgid "Save Scratchpad"
 msgstr "作業パレットを保存"
 
-#: ../po/tmp/resources.xml.h:228
+#: ../gui/resources.xml:1113
 msgctxt "Accel Editor (descriptions)"
 msgid "Save the scratchpad to its existing file on disk."
 msgstr "作業パレットをディスク上の元ファイルに書き込みます。"
 
-#: ../po/tmp/resources.xml.h:229
+#: ../gui/resources.xml:1120
 msgctxt "Menu→Scratchpad (labels), Accel Editor (labels)"
 msgid "Export Scratchpad As…"
 msgstr "作業パレットをエクスポート…"
 
-#: ../po/tmp/resources.xml.h:230
+#: ../gui/resources.xml:1121
 msgctxt "Accel Editor (descriptions)"
 msgid "Export the scratchpad to disk, under a file name of your choice."
 msgstr "ファイル名を選択して作業パレットをエクスポートします。"
 
-#: ../po/tmp/resources.xml.h:231
+#: ../gui/resources.xml:1128
 msgctxt "Menu→Scratchpad (labels), Accel Editor (labels)"
 msgid "Revert Scratchpad"
 msgstr "作業パレットを元に戻す"
 
-#: ../po/tmp/resources.xml.h:232
+#: ../gui/resources.xml:1129
 msgctxt "Accel Editor (descriptions)"
 msgid "Revert the scratchpad to its last saved state."
 msgstr "作業パレットを、最後に保存したときの状態に戻します。"
 
-#: ../po/tmp/resources.xml.h:233
+#: ../gui/resources.xml:1136
 msgctxt "Menu→Scratchpad (labels), Accel Editor (labels)"
 msgid "Save Scratchpad as Default"
 msgstr "デフォルトの作業パレットとして保存"
 
-#: ../po/tmp/resources.xml.h:234
+#: ../gui/resources.xml:1137
 msgctxt "Accel Editor (descriptions)"
 msgid "Save the scratchpad as the default for ‘New Scratchpad’."
 msgstr ""
 "新規の作業パレットの元絵となるデフォルトの作業パレットとして保存します。"
 
-#: ../po/tmp/resources.xml.h:235
+#: ../gui/resources.xml:1143
 msgctxt "Menu→Scratchpad (labels), Accel Editor (labels)"
 msgid "Clear Default Scratchpad"
 msgstr "デフォルトの作業パレットを消去"
 
-#: ../po/tmp/resources.xml.h:236
+#: ../gui/resources.xml:1144
 msgctxt "Accel Editor (descriptions)"
 msgid "Clear the default scratchpad to a blank canvas."
 msgstr "デフォルトの作業パレットを消去します。"
 
-#: ../po/tmp/resources.xml.h:237
+#: ../gui/resources.xml:1150
 msgctxt "Menu→Scratchpad (labels), Accel Editor (labels)"
 msgid "Copy Main Background to Scratchpad"
 msgstr "背景を作業パレットにコピー"
 
-#: ../po/tmp/resources.xml.h:238
+#: ../gui/resources.xml:1151
 msgctxt "Accel Editor (descriptions)"
 msgid ""
 "Copy the background image from the working document into the Scratchpad."
 msgstr "現在のキャンバスの作品の背景を作業パレットにコピーします。"
 
-#: ../po/tmp/resources.xml.h:239
+#: ../gui/resources.xml:1159
 msgctxt "Menu (labels)"
 msgid "Window"
 msgstr "ウィンドウ"
 
-#: ../po/tmp/resources.xml.h:240
+#: ../gui/resources.xml:1167
 msgctxt "Menu→Brush (labels)"
 msgid "Brush"
 msgstr "ブラシ"
 
-#: ../po/tmp/resources.xml.h:241
+#: ../gui/resources.xml:1173
 msgctxt "Menu→Brush (labels)"
 msgid "Shortcut Keys"
 msgstr "ショートカットキー"
 
-#: ../po/tmp/resources.xml.h:242
+#: ../gui/resources.xml:1179
 msgctxt "Menu→Brush→Shortcut Keys (labels), Accel Editor (labels)"
 msgid "Brush Shortcut Keys Help"
 msgstr "ブラシショートカットキーのヘルプ"
 
-#: ../po/tmp/resources.xml.h:243
+#: ../gui/resources.xml:1180
 msgctxt "Accel Editor (descriptions)"
 msgid "Show an explanation of how the shortcut keys work."
 msgstr "ショートカット・キーの機能の説明を表示します。"
 
-#: ../po/tmp/resources.xml.h:244
+#: ../gui/resources.xml:1187
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
 msgid "Change Brush…"
 msgstr "ブラシを変更…"
 
-#: ../po/tmp/resources.xml.h:245
+#: ../gui/resources.xml:1188
 msgctxt "Accel Editor (descriptions)"
 msgid "Pop up a brush changer under the cursor."
 msgstr "カーソル位置でブラシ変更ダイアログを呼び出します。"
 
-#: ../po/tmp/resources.xml.h:246
+#: ../gui/resources.xml:1195
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "Change Color…"
 msgstr "色を変更…"
 
-#: ../po/tmp/resources.xml.h:247
+#: ../gui/resources.xml:1196
 msgctxt "Accel Editor (descriptions)"
 msgid ""
 "Pop up a color changer under the cursor, with all color selectors listed."
 msgstr "カーソル位置にフル機能の色選択ダイアログを表示します。"
 
-#: ../po/tmp/resources.xml.h:248
+#: ../gui/resources.xml:1204
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "Change Color (fast subset)…"
 msgstr "色を変更 (簡略版)…"
 
-#: ../po/tmp/resources.xml.h:249
+#: ../gui/resources.xml:1205
 msgctxt "Accel Editor (descriptions)"
 msgid ""
 "Pop up a color changer under the cursor, with only single-click selectors "
 "listed."
 msgstr "カーソル位置にシングルクリック版の色選択ダイアログを表示します。"
 
-#: ../po/tmp/resources.xml.h:250
+#: ../gui/resources.xml:1213
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
 msgid "Get More Brushes…"
 msgstr "追加のブラシを入手…"
 
-#: ../po/tmp/resources.xml.h:251
+#: ../gui/resources.xml:1214
 msgctxt "Accel Editor (descriptions)"
 msgid "Download brushpacks from the MyPaint wiki."
 msgstr "MyPaint ウィキからブラシパックをダウンロードします。"
 
-#: ../po/tmp/resources.xml.h:252
+#: ../gui/resources.xml:1221
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
 msgid "Import Brushes…"
 msgstr "ブラシをインポート…"
 
-#: ../po/tmp/resources.xml.h:253
+#: ../gui/resources.xml:1222
 msgctxt "Accel Editor (descriptions)"
 msgid "Load a brushpack from disk."
 msgstr "ブラシパックをディスクから読み込みます。"
 
-#: ../po/tmp/resources.xml.h:254
+#: ../gui/resources.xml:1231
 msgctxt "Menu (labels)"
 msgid "Help"
 msgstr "ヘルプ"
 
-#: ../po/tmp/resources.xml.h:255
+#: ../gui/resources.xml:1237
 msgctxt "Menu→Help (labels), Accel Editor (labels)"
 msgid "Online Help"
 msgstr "オンラインヘルプ"
 
-#: ../po/tmp/resources.xml.h:256
+#: ../gui/resources.xml:1238
 msgctxt "Accel Editor (descriptions)"
 msgid "Go to MyPaint’s documentation wiki."
 msgstr "オンラインヘルプを開きます。"
 
-#: ../po/tmp/resources.xml.h:257
+#: ../gui/resources.xml:1246
 msgctxt "Menu→Help (labels), Accel Editor (labels)"
 msgid "About MyPaint"
 msgstr "MyPaint について"
 
-#: ../po/tmp/resources.xml.h:258
+#: ../gui/resources.xml:1247
 msgctxt "Accel Editor (descriptions)"
 msgid "Show MyPaint’s license, version number, and credits."
 msgstr "MyPaint のライセンス、バージョン番号、クレジットを表示します。"
 
-#: ../po/tmp/resources.xml.h:259
+#: ../gui/resources.xml:1256
 msgctxt "Menu→Help (labels)"
 msgid "Debug"
 msgstr "デバッグ"
 
-#: ../po/tmp/resources.xml.h:260
+#: ../gui/resources.xml:1262
 msgctxt "Menu→Help→Debug (labels), Accel Editor (labels)"
 msgid "Print Memory Leak Info to Console (Slow!)"
 msgstr "コンソールへメモリリーク情報を表示します (低速！)"
 
-#: ../po/tmp/resources.xml.h:261
+#: ../gui/resources.xml:1263
 msgctxt "Accel Editor (descriptions)"
 msgid "Debug memory leaks."
 msgstr "メモリリークについてデバッグします。"
 
-#: ../po/tmp/resources.xml.h:262
+#: ../gui/resources.xml:1269
 msgctxt "Menu→Help→Debug (labels), Accel Editor (labels)"
 msgid "Run Garbage Collector Now"
 msgstr "ガベージコレクタを今すぐ実行"
 
-#: ../po/tmp/resources.xml.h:263
+#: ../gui/resources.xml:1270
 msgctxt "Accel Editor (descriptions)"
 msgid "Free memory used for Python objects which are no longer in use."
 msgstr ""
 "Python オブジェクトが占有している、もう使用することのないメモリ領域を開放しま"
 "す。"
 
-#: ../po/tmp/resources.xml.h:264
+#. FIXME: convert to a ToggleAction
+#: ../gui/resources.xml:1277
 msgctxt "Menu→Help→Debug (labels), Accel Editor (labels)"
 msgid "Start/Stop Profiling…"
 msgstr "プロファイリングを開始/停止…"
 
-#: ../po/tmp/resources.xml.h:265
+#: ../gui/resources.xml:1278
 msgctxt "Accel Editor (descriptions)"
 msgid "Start or Stop Python Profiling (cProfile)"
 msgstr "Python プロファイル (cProfile) の取得を開始/停止"
 
-#: ../po/tmp/resources.xml.h:266
+#: ../gui/resources.xml:1285
 msgctxt "Menu→Help→Debug (labels), Accel Editor (labels)"
 msgid "Simulate a Crash…"
 msgstr "クラッシュ状態を再現…"
 
-#: ../po/tmp/resources.xml.h:267
+#: ../gui/resources.xml:1286
 msgctxt "Accel Editor (descriptions)"
 msgid "Raise a Python exception, to test the crash dialog."
 msgstr "クラッシュ報告ダイアログをテストするために例外を故意に発生します。"
 
-#: ../po/tmp/resources.xml.h:268
+#: ../gui/resources.xml:1294
 msgctxt "Menu (labels)"
 msgid "View"
 msgstr "表示"
 
-#: ../po/tmp/resources.xml.h:269
+#: ../gui/resources.xml:1300
 msgctxt "Menu→View (labels)"
 msgid "Feedback"
 msgstr "フィードバック"
 
-#: ../po/tmp/resources.xml.h:270
+#: ../gui/resources.xml:1306
 msgctxt "Menu→View (labels)"
 msgid "Adjust View"
 msgstr "画面表示の調整"
 
-#: ../po/tmp/resources.xml.h:271
+#: ../gui/resources.xml:1312
 #, fuzzy
 msgctxt "Menu→View (labels), Accel Editor (labels)"
 msgid "Popup Main Menu"
 msgstr "ポップアップメニュー"
 
-#: ../po/tmp/resources.xml.h:272
+#: ../gui/resources.xml:1313
 msgctxt "Accel Editor (descriptions)"
 msgid "Show the main menu as a popup."
 msgstr "メインメニューをポップアップとして表示します。"
 
-#: ../po/tmp/resources.xml.h:273
+#: ../gui/resources.xml:1320
 msgctxt "Menu→View (labels), Accel Editor (labels)"
 msgid "Fullscreen"
 msgstr "フルスクリーン"
 
-#: ../po/tmp/resources.xml.h:274
+#: ../gui/resources.xml:1321
 msgctxt "Accel Editor (descriptions)"
 msgid "Toggle between full-screen and windowed mode."
 msgstr "フルスクリーンとウィンドウ表示モードを切り替えます。"
 
-#: ../po/tmp/resources.xml.h:275
+#: ../gui/resources.xml:1332
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
 msgid "Edit Preferences"
 msgstr "設定を編集"
 
-#: ../po/tmp/resources.xml.h:276
+#: ../gui/resources.xml:1333
 msgctxt "Accel Editor (descriptions)"
 msgid "Edit MyPaint’s global settings."
 msgstr "MyPaint 全体の設定を行います。"
 
-#: ../po/tmp/resources.xml.h:277
+#: ../gui/resources.xml:1339
 msgctxt "Help→Debug (labels), Accel Editor (labels)"
 msgid "Test Input Devices"
 msgstr "入力デバイスをテスト"
 
-#: ../po/tmp/resources.xml.h:278
+#: ../gui/resources.xml:1340
 msgctxt "Accel Editor (descriptions)"
 msgid "Show a dialog which captures all events your input devices send."
 msgstr ""
 "入力デバイスが送信してくるすべてのイベントを捕捉するダイアログを表示します。"
 
-#: ../po/tmp/resources.xml.h:279
+#: ../gui/resources.xml:1347
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Background Chooser"
 msgstr "背景の選択"
 
-#: ../po/tmp/resources.xml.h:280
+#: ../gui/resources.xml:1348
 msgctxt "Accel Editor (descriptions)"
 msgid "Change the background paper texture."
 msgstr "背景のテクスチャを変更します。"
 
-#: ../po/tmp/resources.xml.h:281
+#: ../gui/resources.xml:1355
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
 msgid "Brush Settings Editor"
 msgstr "ブラシ設定エディター"
 
-#: ../po/tmp/resources.xml.h:282
+#: ../gui/resources.xml:1356
 msgctxt "Accel Editor (descriptions)"
 msgid "Edit the active brush’s settings."
 msgstr "アクティブなブラシの詳細な設定を行います。"
 
-#: ../po/tmp/resources.xml.h:283
+#: ../gui/resources.xml:1364
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
 msgid "Brush Icon Editor"
 msgstr "ブラシアイコンエディター"
 
-#: ../po/tmp/resources.xml.h:284
+#: ../gui/resources.xml:1365
 msgctxt "Accel Editor (descriptions)"
 msgid "Edit brush icons."
 msgstr "ブラシアイコンを編集します。"
 
-#: ../po/tmp/resources.xml.h:285
+#: ../gui/resources.xml:1373
 #, fuzzy
 msgctxt ""
 "Menu→Layer (labels), Menu→Window (labels), Toolbar (labels), Accel Editor "
@@ -6496,28 +6416,28 @@ msgctxt ""
 msgid "Layers Panel"
 msgstr "レイヤーパネル"
 
-#: ../po/tmp/resources.xml.h:286
+#: ../gui/resources.xml:1374
 msgctxt "Accel Editor (descriptions)"
 msgid "Dockable panel for managing layers."
 msgstr ""
 
-#: ../po/tmp/resources.xml.h:287
+#: ../gui/resources.xml:1382
 msgctxt "Menu→Layers (labels), Accel Editor (labels)"
 msgid "Show Layers Panel"
 msgstr "レイヤーパネルを表示"
 
-#: ../po/tmp/resources.xml.h:288
+#: ../gui/resources.xml:1383
 msgctxt "Accel Editor (descriptions)"
 msgid "Reveal the Layers dockpanel (arrange layers, or assign modes)."
 msgstr ""
 "レイヤーパネルを表示します (レイヤーを配列したり、モードを指定するものです)。"
 
-#: ../po/tmp/resources.xml.h:289
+#: ../gui/resources.xml:1394
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "HCY Wheel"
 msgstr "HCY ホイール"
 
-#: ../po/tmp/resources.xml.h:290
+#: ../gui/resources.xml:1395
 msgctxt "Accel Editor (descriptions)"
 msgid ""
 "Dockable cylindrical hue/chroma/luma color selector. The circular slices are "
@@ -6526,32 +6446,32 @@ msgstr ""
 "ドッキング可能な、色相/彩度/輝度の色空間を円筒で模したカラーセレクターです。"
 "円の内部 (円筒の断面) は同一の輝度となります。"
 
-#: ../po/tmp/resources.xml.h:291
+#: ../gui/resources.xml:1402
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "Color Palette"
 msgstr "カラーパレット"
 
-#: ../po/tmp/resources.xml.h:292
+#: ../gui/resources.xml:1403
 msgctxt "Accel Editor (descriptions)"
 msgid "Dockable palette color selector."
 msgstr "パレットから色を選択できる、ドッキング可能なカラーパレットです。"
 
-#: ../po/tmp/resources.xml.h:293
+#: ../gui/resources.xml:1411
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "HSV Wheel"
 msgstr "HSV ホイール"
 
-#: ../po/tmp/resources.xml.h:294
+#: ../gui/resources.xml:1412
 msgctxt "Accel Editor (descriptions)"
 msgid "Dockable saturation and Value color changer."
 msgstr "彩度と明度で色を指定する、ドッキング可能なカラーチェンジャーです。"
 
-#: ../po/tmp/resources.xml.h:295
+#: ../gui/resources.xml:1419
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "HSV Cube"
 msgstr "HSV キューブ"
 
-#: ../po/tmp/resources.xml.h:296
+#: ../gui/resources.xml:1420
 msgctxt "Accel Editor (descriptions)"
 msgid ""
 "Dockable color selector: HSV cube which can be rotated to show different "
@@ -6560,606 +6480,621 @@ msgstr ""
 "HSV を立方体で表現し、面ごとに回転させることのできる、ドッキング可能なカラー"
 "セレクターです。"
 
-#: ../po/tmp/resources.xml.h:297
+#: ../gui/resources.xml:1427
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "HSV Square"
 msgstr "HSV 正方形"
 
-#: ../po/tmp/resources.xml.h:298
+#: ../gui/resources.xml:1428
 #, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Dockable color selector: HSV square with Hue ring."
 msgstr "HSV の同心環で色を選択する、ドッキング可能なカラーセレクターです。"
 
-#: ../po/tmp/resources.xml.h:299
+#: ../gui/resources.xml:1435
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "Component Sliders"
 msgstr "色成分スライダー"
 
-#: ../po/tmp/resources.xml.h:300
+#: ../gui/resources.xml:1436
 msgctxt "Accel Editor (descriptions)"
 msgid "Dockable color selector showing individual components of the color."
 msgstr "色の詳細な成分を表示する、ドッキング可能なカラーセレクターです。"
 
-#: ../po/tmp/resources.xml.h:301
+#: ../gui/resources.xml:1443
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "Liquid Wash"
 msgstr "リキッドウォッシュ"
 
-#: ../po/tmp/resources.xml.h:302
+#: ../gui/resources.xml:1444
 msgctxt "Accel Editor (descriptions)"
 msgid "Dockable color selector showing a liquid-like wash of nearby colors."
 msgstr ""
 "近傍色と水彩のウォッシュ技法のように混ぜて表示する、ドッキング可能なカラーセ"
 "レクターです。"
 
-#: ../po/tmp/resources.xml.h:303
+#: ../gui/resources.xml:1451
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "Concentric Rings"
 msgstr "同心円"
 
-#: ../po/tmp/resources.xml.h:304
+#: ../gui/resources.xml:1452
 msgctxt "Accel Editor (descriptions)"
 msgid "Dockable color selector with concentric HSV rings."
 msgstr "HSV の同心環で色を選択する、ドッキング可能なカラーセレクターです。"
 
-#: ../po/tmp/resources.xml.h:305
+#: ../gui/resources.xml:1459
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "Crossed Bowl"
 msgstr "十字とボウル"
 
-#: ../po/tmp/resources.xml.h:306
+#: ../gui/resources.xml:1460
 msgctxt "Accel Editor (descriptions)"
 msgid "Dockable color selector with HSV ramps crossing a radial bowl of color."
 msgstr ""
 "放射状の色のボウルと、その上を横断する HSV ランプから色を選択する、ドッキング"
 "可能なカラーセレクターです。"
 
-#: ../po/tmp/resources.xml.h:307
+#: ../gui/resources.xml:1469
 msgctxt "Menu→Window (labels), Accel Editor (labels)"
 msgid "Scratchpad Panel"
 msgstr "作業パレットパネル"
 
-#: ../po/tmp/resources.xml.h:308
+#: ../gui/resources.xml:1470
 msgctxt "Accel Editor (descriptions)"
 msgid "Dockable Panel for mixing colors and testing brushes."
 msgstr ""
 
-#: ../po/tmp/resources.xml.h:309
+#: ../gui/resources.xml:1478
 msgctxt "Menu→Scratchpad (labels), Accel Editor (labels)"
 msgid "Show Scratchpad Panel"
 msgstr "作業パレットパネルを表示"
 
-#: ../po/tmp/resources.xml.h:310
+#: ../gui/resources.xml:1479
 msgctxt "Accel Editor (descriptions)"
 msgid "Reveal the Scratchpad dockpanel (mix colors and make sketches)."
 msgstr "作業パレットを表示します (色を混ぜたりスケッチできます)。"
 
-#: ../po/tmp/resources.xml.h:311
+#: ../gui/resources.xml:1488
 msgctxt "Menu→Window (labels), Toolbar (labels), Accel Editor (labels)"
 msgid "Preview Panel"
 msgstr "プレビューパネル"
 
-#: ../po/tmp/resources.xml.h:312
+#: ../gui/resources.xml:1489
 msgctxt "Accel Editor (descriptions)"
 msgid "Dockable panel for an overview and navigation of the whole canvas."
 msgstr ""
 
-#: ../po/tmp/resources.xml.h:313
+#: ../gui/resources.xml:1497
 msgctxt "Menu→View (labels), Accel Editor (labels)"
 msgid "Preview"
 msgstr "プレビュー"
 
-#: ../po/tmp/resources.xml.h:314
+#: ../gui/resources.xml:1498
 msgctxt "Accel Editor (descriptions)"
 msgid "Reveal the Preview dockpanel (overview of the whole drawing area)."
 msgstr "プレビューパネルを表示します (キャンバス全体を見渡すことができます)。"
 
-#: ../po/tmp/resources.xml.h:315
+#: ../gui/resources.xml:1508
 msgctxt "Menu→Window (labels), Toolbar (labels), Accel Editor (labels)"
 msgid "Tool Options Panel"
 msgstr "ツールオプションパネル"
 
-#: ../po/tmp/resources.xml.h:316
+#: ../gui/resources.xml:1509
 msgctxt "Accel Editor (descriptions)"
 msgid "Dockable panel for adjusting the options with the activated tool."
 msgstr ""
 
-#: ../po/tmp/resources.xml.h:317
+#: ../gui/resources.xml:1517
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
 msgid "Show Tool Options Panel"
 msgstr "ツールオプションパネルを表示"
 
-#: ../po/tmp/resources.xml.h:318
+#: ../gui/resources.xml:1518
 msgctxt "Accel Editor (descriptions)"
 msgid "Reveal the Tool Options dockpanel (options for the current tool)."
 msgstr ""
 "ツールオプションパネルを表示します (現在のツールのオプション設定です)。"
 
-#: ../po/tmp/resources.xml.h:319
+#: ../gui/resources.xml:1528
 msgctxt "Menu→Window (labels), Toolbar (labels), Accel Editor (labels)"
 msgid "Brush & Color History Panel"
 msgstr "ブラシと色の履歴パネル"
 
-#: ../po/tmp/resources.xml.h:320
+#: ../gui/resources.xml:1529
 msgctxt "Accel Editor (descriptions)"
 msgid "Dockable panel for viewing recently changed colors and brushes."
 msgstr ""
 
-#: ../po/tmp/resources.xml.h:321
+#: ../gui/resources.xml:1537
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
 msgid "Recent Brushes & Colors"
 msgstr "最近使用したブラシと色"
 
-#: ../po/tmp/resources.xml.h:322
+#: ../gui/resources.xml:1538
 msgctxt "Accel Editor (descriptions)"
 msgid "Reveal the History panel (recently used brushes and colors)."
 msgstr "履歴パネルを表示します (最近使ったブラシと色の履歴です)。"
 
-#: ../po/tmp/resources.xml.h:323
+#: ../gui/resources.xml:1548
 msgctxt "Menu→View (labels), Accel Editor (labels)"
 msgid "Hide Controls in Fullscreen"
 msgstr "全画面モードでインターフェイスを隠す"
 
-#: ../po/tmp/resources.xml.h:324
+#: ../gui/resources.xml:1549
 msgctxt "Accel Editor (descriptions)"
 msgid "Toggle automatic hiding of the user interface in fullscreen."
 msgstr ""
 "全画面モード時にユーザーインターフェースを自動で隠すかどうかをトグルします。"
 
-#: ../po/tmp/resources.xml.h:325
+#: ../gui/resources.xml:1556
 msgctxt "Menu→View→Feedback (labels), Accel Editor (labels)"
 msgid "Show Zoom Level"
 msgstr "拡大率を表示"
 
-#: ../po/tmp/resources.xml.h:326
+#: ../gui/resources.xml:1557
 msgctxt "Accel Editor (descriptions)"
 msgid "Toggle zoom level feedback."
 msgstr "拡大率の表示をトグルします。"
 
-#: ../po/tmp/resources.xml.h:327
+#: ../gui/resources.xml:1563
 msgctxt "Menu→View→Feedback (labels), Accel Editor (labels)"
 msgid "Show Last Painting Position"
 msgstr "最後の描画位置を表示"
 
-#: ../po/tmp/resources.xml.h:328
+#: ../gui/resources.xml:1564
 msgctxt "Accel Editor (descriptions)"
 msgid "Toggle feedback showing where the last stroke ended."
 msgstr "直近のストロークの終点の表示をトグルします。"
 
-#: ../po/tmp/resources.xml.h:329
+#: ../gui/resources.xml:1572
 msgctxt "Menu→View (labels)"
 msgid "Display Filter"
 msgstr "表示フィルター"
 
-#: ../po/tmp/resources.xml.h:330
+#: ../gui/resources.xml:1578
 msgctxt "Menu→View→Display Filter (labels), Accel Editor (labels)"
 msgid "Display Colors Normally"
 msgstr "色を通常通り表示"
 
-#: ../po/tmp/resources.xml.h:331
+#: ../gui/resources.xml:1579
 msgctxt "Accel Editor (descriptions)"
 msgid "Filter colors: show colors unchanged."
 msgstr "色を通常通りに表示します。"
 
-#: ../po/tmp/resources.xml.h:332
+#: ../gui/resources.xml:1587
 msgctxt "Menu→View→Display Filter (labels), Accel Editor (labels)"
 msgid "Display Colors as Greyscale"
 msgstr "色をグレースケールで表示"
 
-#: ../po/tmp/resources.xml.h:333
+#: ../gui/resources.xml:1588
 msgctxt "Accel Editor (descriptions)"
 msgid "Filter colors: show brightness only (HCY/YCbCr Luma)"
 msgstr "輝度だけを表示します。(HCY/YCbCr Luma)"
 
-#: ../po/tmp/resources.xml.h:334
+#: ../gui/resources.xml:1595
 msgctxt "Menu→View→Display Filter (labels), Accel Editor (labels)"
 msgid "Display Colors Inverted"
 msgstr "色を反転して表示"
 
-#: ../po/tmp/resources.xml.h:335
+#: ../gui/resources.xml:1596
 msgctxt "Accel Editor (descriptions)"
 msgid "Filter colors: inverse video. Black is white and red is cyan."
 msgstr "画像の色を反転させます。黒は白になり、赤はシアンになります。"
 
-#: ../po/tmp/resources.xml.h:336
+#: ../gui/resources.xml:1603
 msgctxt "Menu→View→Display Filter (labels), Accel Editor (labels)"
 msgid "Display Colors with Simulated Insensitivity to Red"
 msgstr "赤色に対する不感受性を再現した色を表示"
 
-#: ../po/tmp/resources.xml.h:337
+#: ../gui/resources.xml:1604
 msgctxt "Accel Editor (descriptions)"
 msgid ""
 "Filter colors to simulate deuteranopia, a common form of color blindness."
 msgstr "2 型色覚 (頻度の高い種類の色覚異常) における色の見え方を再現します。"
 
-#: ../po/tmp/resources.xml.h:338
+#: ../gui/resources.xml:1611
 msgctxt "Menu→View→Display Filter (labels), Accel Editor (labels)"
 msgid "Display Colors with Simulated Insensitivity to Green"
 msgstr "緑色に対する不感受性を再現した色を表示"
 
-#: ../po/tmp/resources.xml.h:339
+#: ../gui/resources.xml:1612
 msgctxt "Accel Editor (descriptions)"
 msgid "Filter colors to simulate protanopia, a common form of color blindness."
 msgstr "1 型色覚 (頻度の高い種類の色覚異常) における色の見え方を再現します。"
 
-#: ../po/tmp/resources.xml.h:340
+#: ../gui/resources.xml:1619
 msgctxt "Menu→View→Display Filter (labels), Accel Editor (labels)"
 msgid "Display Colors with Simulated Insensitivity to Blue"
 msgstr "青色に対する不感受性を再現した色を表示"
 
-#: ../po/tmp/resources.xml.h:341
+#: ../gui/resources.xml:1620
 msgctxt "Accel Editor (descriptions)"
 msgid "Filter colors to simulate tritanopia, a rare form of color blindness."
 msgstr "3 型色覚 (頻度の低い種類の色覚異常) における色の見え方を再現します。"
 
-#: ../po/tmp/resources.xml.h:342
+#: ../gui/resources.xml:1635
 msgctxt "Menu→Edit→Current Mode (labels)"
 msgid "Freehand"
 msgstr "フリーハンド"
 
-#: ../po/tmp/resources.xml.h:343
+#: ../gui/resources.xml:1636
 msgctxt "Toolbar (short labels)"
 msgid "Freehand"
 msgstr "フリーハンド"
 
-#: ../po/tmp/resources.xml.h:344
+#: ../gui/resources.xml:1637
 msgctxt "Toolbar (tooltips)"
 msgid "Freehand: draw and paint freely, without geometric constraints."
 msgstr "フリーハンド: 自由な形状の線を描画します。"
 
-#: ../po/tmp/resources.xml.h:345
+#: ../gui/resources.xml:1646
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
 msgid "Freehand"
 msgstr "フリーハンド"
 
-#: ../po/tmp/resources.xml.h:346
+#: ../gui/resources.xml:1647
 msgctxt "Accel Editor (descriptions)"
 msgid "Draw and paint freely, without geometric constraints."
 msgstr "自由な形状の線を描画します。"
 
-#: ../po/tmp/resources.xml.h:347
+#: ../gui/resources.xml:1657
 msgctxt "Menu→Edit→Current Mode (labels)"
 msgid "Pan View"
 msgstr "表示領域を移動"
 
-#: ../po/tmp/resources.xml.h:348
+#: ../gui/resources.xml:1658
 msgctxt "Toolbar (short labels)"
 msgid "Pan"
 msgstr "表示領域の移動"
 
-#: ../po/tmp/resources.xml.h:349
+#: ../gui/resources.xml:1659
 msgctxt "Toolbar (tooltips)"
 msgid "Pan View: move your view of the canvas horizontally or vertically."
 msgstr ""
 "表示領域の移動: キャンバスの表示領域を、水平または垂直方向に移動します。"
 
-#: ../po/tmp/resources.xml.h:350
+#: ../gui/resources.xml:1667
 msgctxt "Menu→View (labels), Accel Editor (labels)"
 msgid "Pan View"
 msgstr "表示領域を移動"
 
-#: ../po/tmp/resources.xml.h:351
+#: ../gui/resources.xml:1668
 msgctxt "Accel Editor (descriptions)"
 msgid "Interactively move your view of the canvas horizontally or vertically."
 msgstr "キャンバスの表示領域を水平・垂直に移動します。"
 
-#: ../po/tmp/resources.xml.h:352
+#: ../gui/resources.xml:1677
 msgctxt "Menu→Edit→Current Mode (labels)"
 msgid "Rotate View"
 msgstr "表示領域を回転"
 
-#: ../po/tmp/resources.xml.h:353
+#: ../gui/resources.xml:1678
 msgctxt "Toolbar (short labels)"
 msgid "Rotate"
 msgstr "表示領域の回転"
 
-#: ../po/tmp/resources.xml.h:354
+#: ../gui/resources.xml:1679
 msgctxt "Toolbar (tooltips)"
 msgid "Rotate View: tilt your view of the canvas."
 msgstr "表示領域を回転: キャンバスを傾けて表示します。"
 
-#: ../po/tmp/resources.xml.h:355
+#: ../gui/resources.xml:1687
 msgctxt "Menu→View (labels), Accel Editor (labels)"
 msgid "Rotate View"
 msgstr "表示領域を回転"
 
-#: ../po/tmp/resources.xml.h:356
+#: ../gui/resources.xml:1688
 msgctxt "Accel Editor (descriptions)"
 msgid "Interactively rotate your view of the canvas."
 msgstr "好みの角度にキャンバスを回転させます。"
 
-#: ../po/tmp/resources.xml.h:357
+#: ../gui/resources.xml:1697
 msgctxt "Menu→Edit→Current Mode (labels)"
 msgid "Zoom View"
 msgstr "表示領域を拡大・縮小"
 
-#: ../po/tmp/resources.xml.h:358
+#: ../gui/resources.xml:1698
 msgctxt "Toolbar (short labels)"
 msgid "Zoom"
 msgstr "表示領域の拡大・縮小"
 
-#: ../po/tmp/resources.xml.h:359
+#: ../gui/resources.xml:1699
 msgctxt "Toolbar (tooltips)"
 msgid "Zoom View: zoom into or out of the canvas."
 msgstr "表示領域を拡大・縮小: キャンバスを拡大・縮小して表示します。"
 
-#: ../po/tmp/resources.xml.h:360
+#: ../gui/resources.xml:1707
 msgctxt "Menu→View (labels), Accel Editor (labels)"
 msgid "Zoom View"
 msgstr "表示領域を拡大・縮小"
 
-#: ../po/tmp/resources.xml.h:361
+#: ../gui/resources.xml:1708
 msgctxt "Accel Editor (descriptions)"
 msgid "Interactively zoom into or out of the canvas."
 msgstr "キャンバスの表示領域を拡大・縮小します。"
 
-#: ../po/tmp/resources.xml.h:362
+#: ../gui/resources.xml:1717
 msgctxt "Menu→Edit→Current Mode (labels)"
 msgid "Lines and Curves"
 msgstr "直線と曲線"
 
-#: ../po/tmp/resources.xml.h:363
+#: ../gui/resources.xml:1718
 msgctxt "Toolbar (short labels)"
 msgid "Lines"
 msgstr "直線"
 
-#: ../po/tmp/resources.xml.h:364
+#: ../gui/resources.xml:1719
 msgctxt "Toolbar (tooltips)"
 msgid "Lines and Curves: draw straight or curved lines."
 msgstr "直線と曲線: 直線または曲線を描画します。"
 
-#: ../po/tmp/resources.xml.h:365
+#: ../gui/resources.xml:1727
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
 msgid "Lines and Curves"
 msgstr "直線と曲線"
 
-#: ../po/tmp/resources.xml.h:366
+#: ../gui/resources.xml:1728
 msgctxt "Accel Editor (descriptions)"
 msgid "Draw straight or curved lines."
 msgstr "直線または曲線を描画します。"
 
-#: ../po/tmp/resources.xml.h:367
+#: ../gui/resources.xml:1738
 msgctxt "Menu→Edit→Current Mode (labels)"
 msgid "Connected Lines"
 msgstr "連結線"
 
-#: ../po/tmp/resources.xml.h:368
+#: ../gui/resources.xml:1739
 msgctxt "Toolbar (short labels)"
 msgid "Conn. Lines"
 msgstr "連結線"
 
-#: ../po/tmp/resources.xml.h:369
+#: ../gui/resources.xml:1740
 msgctxt "Toolbar (tooltips)"
 msgid "Connected Lines: draw sequences of straight or curved lines."
 msgstr "連結線: 直線または曲線を連続で描画します。"
 
-#: ../po/tmp/resources.xml.h:370
+#: ../gui/resources.xml:1748
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
 msgid "Connected Lines"
 msgstr "連結線"
 
-#: ../po/tmp/resources.xml.h:371
+#: ../gui/resources.xml:1749
 msgctxt "Accel Editor (descriptions)"
 msgid "Draw sequences of straight or curved lines."
 msgstr "直線または曲線を連続で描画します。"
 
-#: ../po/tmp/resources.xml.h:372
+#: ../gui/resources.xml:1759
 msgctxt "Menu→Edit→Current Mode (labels)"
 msgid "Ellipses and Circles"
 msgstr "円"
 
-#: ../po/tmp/resources.xml.h:373
+#: ../gui/resources.xml:1760
 msgctxt "Toolbar (short labels)"
 msgid "Ellipse"
 msgstr "楕円"
 
-#: ../po/tmp/resources.xml.h:374
+#: ../gui/resources.xml:1761
 msgctxt "Toolbar (tooltips)"
 msgid "Ellipses and Circles: draw rounded shapes."
 msgstr "楕円や円のような円形の形状を描きます。"
 
-#: ../po/tmp/resources.xml.h:375
+#: ../gui/resources.xml:1769
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
 msgid "Ellipses and Circles"
 msgstr "円"
 
-#: ../po/tmp/resources.xml.h:376
+#: ../gui/resources.xml:1770
 msgctxt "Accel Editor (descriptions)"
 msgid "Draw circles and ellipses."
 msgstr "真円や楕円を描画します。"
 
-#: ../po/tmp/resources.xml.h:377
+#: ../gui/resources.xml:1780
 msgctxt "Menu→Edit→Current Mode (labels)"
 msgid "Inking"
 msgstr "ペン入れ"
 
-#: ../po/tmp/resources.xml.h:378
+#: ../gui/resources.xml:1781
 msgctxt "Toolbar (short labels)"
 msgid "Ink"
 msgstr "ペン入れ"
 
-#: ../po/tmp/resources.xml.h:379
+#: ../gui/resources.xml:1782
 msgctxt "Toolbar (tooltips)"
 msgid "Inking: draw smooth controlled lines."
 msgstr "ペン入れ: 制御点で編集できる、滑らかな線で描画します。"
 
-#: ../po/tmp/resources.xml.h:380
+#: ../gui/resources.xml:1790
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
 msgid "Inking"
 msgstr "ペン入れ"
 
-#: ../po/tmp/resources.xml.h:381
+#: ../gui/resources.xml:1791
 msgctxt "Accel Editor (descriptions)"
 msgid "Draw smooth controlled lines."
 msgstr "制御点で編集できる滑らかな線で描画します。"
 
-#: ../po/tmp/resources.xml.h:382
+#: ../gui/resources.xml:1801
 msgctxt "Menu→Edit→Current Mode (labels)"
 msgid "Reposition Layer"
 msgstr "レイヤーの位置を変更"
 
-#: ../po/tmp/resources.xml.h:383
+#: ../gui/resources.xml:1802
 msgctxt "Toolbar (short labels)"
 msgid "Layer Pos."
 msgstr "レイヤー位置"
 
-#: ../po/tmp/resources.xml.h:384
+#: ../gui/resources.xml:1803
 msgctxt "Toolbar (tooltips)"
 msgid "Reposition Layer: move the current layer on the canvas."
 msgstr ""
 "レイヤーの位置を変更: 現在のレイヤーの、キャンバス上での位置を変更します。"
 
-#: ../po/tmp/resources.xml.h:385
+#: ../gui/resources.xml:1811
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Reposition Layer"
 msgstr "レイヤーの位置を変更"
 
-#: ../po/tmp/resources.xml.h:386
+#: ../gui/resources.xml:1812
 msgctxt "Accel Editor (description)"
 msgid "Interactively move the current layer on the canvas."
 msgstr "ユーザー操作で現在のレイヤーをキャンバス上で動かします。"
 
-#: ../po/tmp/resources.xml.h:387
+#: ../gui/resources.xml:1822
 msgctxt "Menu→Edit→Current Mode (labels)"
 msgid "Edit Frame"
 msgstr "フレームを調整"
 
-#: ../po/tmp/resources.xml.h:388
+#: ../gui/resources.xml:1823
 msgctxt "Toolbar (short labels)"
 msgid "Frame"
 msgstr "フレーム"
 
-#: ../po/tmp/resources.xml.h:389
+#: ../gui/resources.xml:1824
 msgctxt "Toolbar (tooltips)"
 msgid ""
 "Edit Frame: define a frame around the document to give it a finite size."
 msgstr "フレームを調整: 画像の周囲にフレームを設定し、画像の範囲を限定します。"
 
-#: ../po/tmp/resources.xml.h:390
+#: ../gui/resources.xml:1832
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "Edit Frame"
 msgstr "フレームを調整"
 
-#: ../po/tmp/resources.xml.h:391
+#: ../gui/resources.xml:1833
 msgctxt "Accel Editor (descriptions)"
 msgid ""
 "Interactively define a frame around the document to give it a finite size."
 msgstr "画像の周囲にユーザー操作でフレームを設定し、画像の範囲を限定します。"
 
-#: ../po/tmp/resources.xml.h:392
+#: ../gui/resources.xml:1842
 msgctxt "Menu→Edit→Current Mode (labels)"
 msgid "Edit Painting Symmetry"
 msgstr "対称軸を編集"
 
-#: ../po/tmp/resources.xml.h:393
+#: ../gui/resources.xml:1843
 msgctxt "Toolbar (short labels)"
 msgid "Symmetry"
 msgstr "対称"
 
-#: ../po/tmp/resources.xml.h:394
+#: ../gui/resources.xml:1844
 msgctxt "Toolbar (tooltips)"
 msgid "Edit Painting Symmetry: adjust the axis used for symmetrical painting."
 msgstr "対称描画の中心軸の位置を調整します。"
 
-#: ../po/tmp/resources.xml.h:395
+#: ../gui/resources.xml:1852
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "Edit Painting Symmetry"
 msgstr "対称軸を編集"
 
-#: ../po/tmp/resources.xml.h:396
+#: ../gui/resources.xml:1853
 msgctxt "Accel Editor (description)"
 msgid "Interactively adjust the axis used for symmetrical painting."
 msgstr "対称描画の中心軸をユーザー操作で調整します。"
 
-#: ../po/tmp/resources.xml.h:397
+#: ../gui/resources.xml:1863
 msgctxt "Menu→Edit→Current Mode (labels)"
 msgid "Pick Color"
 msgstr "色を採取"
 
-#: ../po/tmp/resources.xml.h:398
+#: ../gui/resources.xml:1864
 msgctxt "Toolbar (short labels)"
 msgid "Pick Col."
 msgstr "色を採取"
 
-#: ../po/tmp/resources.xml.h:399
+#: ../gui/resources.xml:1865
 msgctxt "Toolbar (tooltips)"
 msgid "Pick Color: set the painting color from screen pixels."
 msgstr "色を採取: 画面上のピクセルから描画色を採取して設定します。"
 
-#: ../po/tmp/resources.xml.h:400
+#: ../gui/resources.xml:1897
 #, fuzzy
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "Pick Color Hue"
 msgstr "色を採取"
 
-#: ../po/tmp/resources.xml.h:401
+#: ../gui/resources.xml:1898
 #, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid ""
 "Set the painting Hue from screen pixels while preserving the Chroma and Luma."
 msgstr "画面上の色から描画色を設定します。"
 
-#: ../po/tmp/resources.xml.h:402
+#: ../gui/resources.xml:1906
 #, fuzzy
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "Pick Color Chroma"
 msgstr "色を採取"
 
-#: ../po/tmp/resources.xml.h:403
+#: ../gui/resources.xml:1907
 #, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid ""
 "Set the painting Chroma from screen pixels while preserving the Hue and Luma."
 msgstr "画面上の色から描画色を設定します。"
 
-#: ../po/tmp/resources.xml.h:404
+#: ../gui/resources.xml:1915
 #, fuzzy
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "Pick Color Luma"
 msgstr "色を採取"
 
-#: ../po/tmp/resources.xml.h:405
+#: ../gui/resources.xml:1916
 #, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid ""
 "Set the painting Luma from screen pixels while preserving the Hue and Chroma."
 msgstr "画面上の色から描画色を設定します。"
 
-#: ../po/tmp/resources.xml.h:406
+#: ../gui/resources.xml:1924
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "Pick Color"
 msgstr "色を採取"
 
-#: ../po/tmp/resources.xml.h:407
+#: ../gui/resources.xml:1925
 msgctxt "Accel Editor (descriptions)"
 msgid "Set the painting color from screen pixels."
 msgstr "画面上の色から描画色を設定します。"
 
-#: ../po/tmp/resources.xml.h:408
+#: ../gui/resources.xml:1935
 msgctxt "Menu→Edit→Current Mode (labels)"
 msgid "Flood Fill"
 msgstr "塗りつぶし"
 
-#: ../po/tmp/resources.xml.h:409
+#: ../gui/resources.xml:1936
 msgctxt "Toolbar (short labels)"
 msgid "Fill"
 msgstr "塗りつぶし"
 
-#: ../po/tmp/resources.xml.h:410
+#: ../gui/resources.xml:1937
 msgctxt "Toolbar (tooltips)"
 msgid "Flood Fill: fill an area with color."
 msgstr "塗りつぶし: 連続した領域を指定した色で塗りつぶします。"
 
-#: ../po/tmp/resources.xml.h:411
+#: ../gui/resources.xml:1945
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
 msgid "Flood Fill"
 msgstr "塗りつぶし"
 
-#: ../po/tmp/resources.xml.h:412
+#: ../gui/resources.xml:1946
 msgctxt "Accel Editor (descriptions)"
 msgid "Fill an area with color."
 msgstr "連続した領域を指定した色で塗りつぶします。"
+
+#, fuzzy
+#~ msgctxt "Layer properties widget → <category labels>"
+#~ msgid "Name"
+#~ msgstr "名前"
+
+#, fuzzy
+#~ msgctxt "Layer properties widget → <category labels>"
+#~ msgid "Mode"
+#~ msgstr "モード"
+
+#, fuzzy
+#~ msgctxt "Layer properties widget → <category labels>"
+#~ msgid "Opacity"
+#~ msgstr "不透明度"
 
 #~ msgctxt "file handling: open failed (statusbar)"
 #~ msgid "Could not load “{file_basename}”."
