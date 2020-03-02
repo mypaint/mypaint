@@ -100,8 +100,24 @@ class BuildTranslations (Command):
 
     def run(self):
         msg_paths = BuildTranslations.get_translation_paths(self)[0]
+        po_failures = []
         for po_path, mo_path in msg_paths:
-            self._compile_message_catalog(po_path, mo_path)
+            try:
+                self._compile_message_catalog(po_path, mo_path)
+            except subprocess.CalledProcessError as e:
+                # msgfmt creates the .mo file even if the checks fail.
+                # It is removed here so further tests aren't skipped
+                shutil.rmtree(os.path.dirname(mo_path))
+                if not isinstance(e.output, str):
+                    e.output = e.output.decode('utf-8')
+                po_failures.append((po_path, e.output))
+        if po_failures:
+            paths, errors = map(list, zip(*po_failures))
+            errmsg = "There are format errors in the following .po files:"
+            print_err("=" * 80 + "\n" + errmsg + "\n" + "=" * 80)
+            print_err("\n".join(paths) + "\n")
+            print_err("\n".join(errors))
+            sys.exit(1)
         tmp_dir = self.get_finalized_command("build").build_temp
 
         # Try to create a symlink to the locale directory to enable
@@ -129,13 +145,13 @@ class BuildTranslations (Command):
         )
 
         if needs_update:
-            cmd = (msgfmt(), po_file_path, "-o", mo_file_path)
+            cmd = (msgfmt(), "-c", po_file_path, "-o", mo_file_path)
             if self.dry_run:
                 self.announce("would run %s" % (" ".join(cmd),), level=2)
             else:
                 self.announce("running %s" % (" ".join(cmd),), level=2)
                 self.mkpath(os.path.dirname(mo_file_path))
-                subprocess.check_call(cmd)
+                subprocess.check_output(cmd, stderr=subprocess.STDOUT)
 
                 assert os.path.exists(mo_file_path)
 
@@ -207,7 +223,7 @@ class BuildConfig (Command):
         try:
             import polib
 
-            def py_completion(_, path, template=False):
+            def py_completion(path, template=False):
                 po = polib.pofile(path)
                 if template:
                     return len(po)
@@ -217,12 +233,16 @@ class BuildConfig (Command):
         except ImportError:
             print("polib not installed, falling back to shellscript!")
 
-            def sh_completion(loc, _, template=False):
-                cmd = [os.path.join("po", "num_strings_translated.sh")]
+            def msgattrib_completion(path, template=False):
+                cmd = ['msgattrib']
                 if not template:
-                    cmd.append(loc)
-                return int(subprocess.check_output(cmd))
-            return sh_completion
+                    cmd.extend(['--translated', '--no-fuzzy', '--no-obsolete'])
+                cmd.append(path)
+                result = subprocess.check_output(cmd)
+                if not isinstance(result, str):
+                    result = result.decode('utf-8')
+                return result.count('\nmsgstr')
+            return msgattrib_completion
 
     def _get_locales(self):
         """Return a list of locales to use/install
@@ -247,27 +267,25 @@ class BuildConfig (Command):
         ]
         completion = BuildConfig.translation_completion_func()
         template_path = os.path.join("po", "mypaint.pot")
-        total = float(completion(None, template_path, template=True))
+        total = float(completion(template_path, template=True))
         # Read/update cache
         with self._get_locale_data_cache() as cache:
             for loc in locales:
-                # For static always-include locales, set a faux percentage of
-                # 100, but set timestamp to 0 to force calculation if they are
-                # removed from the list.
+                # For static always-include locales, claim full translation,
+                # but set timestamp to 0 to force calculation if they are
+                # removed from the always-include list.
                 if loc in always_include:
-                    cache[loc] = (100, 0)
+                    cache[loc] = (total, 0)
                     continue
                 po_path = os.path.join("po", loc + ".po")
                 po_modified_time = os.stat(po_path).st_mtime
                 if loc not in cache or cache[loc][1] < po_modified_time:
                     print("Updating cache:", loc)
-                    num = completion(loc, po_path)
-                    percentage = 100 * num / total
-                    # Add some margin to avoid rounding problems
-                    cache[loc] = (percentage, po_modified_time + 0.1)
+                    # Add some margin to mtime avoid rounding problems
+                    cache[loc] = (completion(po_path), po_modified_time + 0.1)
 
-        thresh = self.translation_threshold
-        return [k for k, v in cache.items() if v[0] > thresh]
+        threshold = self.translation_threshold / 100.0
+        return [l for l, t in cache.items() if t[0] / total > threshold]
 
     @contextmanager
     def _get_locale_data_cache(self):
@@ -290,13 +308,13 @@ class BuildConfig (Command):
                 info_lines = f.read().strip().split("\n")
             # Turn list of lines into a dict of (completion, timestamp)
             # tuples, keyed by the locale code.
-            info_line_lists = [l.split(" ") for l in info_lines]
-            info_dict = {loc: (float(completion), float(timestamp))
+            info_line_lists = [l.split("\t") for l in info_lines]
+            info_dict = {loc: (int(completion), float(timestamp))
                          for loc, completion, timestamp in info_line_lists}
         yield info_dict
         # Turn the (modified) dict back into space-separated values
         # and overwrite the cache file (cache file timestamp is irrelevant)
-        out = [str(loc) + " " + str(v[0]) + " " + str(v[1])
+        out = ["%s\t%d\t%f" % (loc, v[0], v[1])
                for loc, v in info_dict.items()]
         self.mkpath(build_dir)
         with open(cache_file, "w") as f:

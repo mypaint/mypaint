@@ -1,48 +1,26 @@
-#!/bin/sh
-# Builds po/POTFILES.in and po/tmp/*.h for intltool-update to chew on.
+#!/usr/bin/env bash
 
-set -e
+# Generate the po template file from the sources
 
-TMPFILE=tmp/POTFILES.in.unsorted
-OUTFILE=POTFILES.in
+# Python files containing "from [lib.]gettext import ..."
+ggrep="git grep --full-name --files-with-matches"
+py_files=$($ggrep "^from .*gettext import" .. | grep "\.py$" | sed 's:^:../:')
 
-mkdir -p "tmp"
+# UI resource and layout files
+ui_files=$($ggrep "^<interface>" .. | grep -v "\.py$" | sed 's:^:../:')
 
-# List Python code that imports either the standard gettext module, or
-# our GLib-based compat modules that supports C_(). Intltool-update
-# knows about python code using syntax like the C macros.
+# Temp files
+py_messages=$(mktemp)
+ui_messages=$(mktemp)
+tmp_messages=$(mktemp)
 
-git grep --full-name --files-with-matches "^from gettext import" .. \
-    >"$TMPFILE"
-git grep --full-name --files-with-matches "^from lib.gettext import" .. \
-    >>"$TMPFILE"
+# Extract python strings, w. support for the pgettext alias we use: C_(ctxt, msg)
+xgettext -F -c -o $py_messages -kC_:1c,2 $py_files
+# Extract ui strings from the xml files
+xgettext -F -c -o $ui_messages -LGlade $ui_files
 
-# Builder XML and resource definitions are converted to a .h file in
-# po/tmp which intltool-update can then work on.
-
-command intltool-extract >/dev/null 2>&1 ||
-    (echo >&2 "Install intltool (>= 0.30) to run this script!" && exit 1)
-intltool-extract --help | grep "\--local" >/dev/null 2>&1 ||
-    (echo >&2 "Need a more recent version of intltool (>= 0.30)!" && exit 1)
-
-for ui_file in ../gui/resources.xml ../gui/*.glade; do
-    echo "Extracting strings from $ui_file..."
-    intltool-extract --local --type=gettext/glade "$ui_file"
-    tmp_h=$(basename "$ui_file").h
-    if ! test -f "tmp/$tmp_h"; then
-        echo >&2 "warning: intltool-extract did not create tmp/$tmp_h"
-        continue
-    fi
-    echo >>"$TMPFILE" "po/tmp/$tmp_h"
-done
-
-# Sort the output file for greater diffability.
-
-sort "$TMPFILE" > "$OUTFILE"
-
-
-# Update mypaint.pot too.
-# This is committed to allow users on WebLate to begin translations for
-# new languages.
-
-intltool-update --verbose --gettext-package mypaint --pot
+# Concatenate to a single template file, stripping out info
+# about the different origins and cleaning up the header string
+# (somewhat brittle due to static line numbers, should be improved).
+msgcat -t UTF-8 -o - $py_messages $ui_messages | sed -E '/#\..*#-#-#-#.*/ d' > $tmp_messages
+cat <(head -n 20 $py_messages) <(tail -n+33 $tmp_messages) > mypaint.pot
