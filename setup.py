@@ -255,23 +255,21 @@ class BuildConfig (Command):
         # Read/update cache
         with self._get_locale_data_cache() as cache:
             for loc in locales:
-                # For static always-include locales, set a faux percentage of
-                # 100, but set timestamp to 0 to force calculation if they are
-                # removed from the list.
+                # For static always-include locales, claim full translation,
+                # but set timestamp to 0 to force calculation if they are
+                # removed from the always-include list.
                 if loc in always_include:
-                    cache[loc] = (100, 0)
+                    cache[loc] = (total, 0)
                     continue
                 po_path = os.path.join("po", loc + ".po")
                 po_modified_time = os.stat(po_path).st_mtime
                 if loc not in cache or cache[loc][1] < po_modified_time:
                     print("Updating cache:", loc)
-                    num = completion(po_path)
-                    percentage = 100 * num / total
-                    # Add some margin to avoid rounding problems
-                    cache[loc] = (percentage, po_modified_time + 0.1)
+                    # Add some margin to mtime avoid rounding problems
+                    cache[loc] = (completion(po_path), po_modified_time + 0.1)
 
-        thresh = self.translation_threshold
-        return [k for k, v in cache.items() if v[0] > thresh]
+        threshold = self.translation_threshold / 100.0
+        return [l for l, t in cache.items() if t[0] / total > threshold]
 
     @contextmanager
     def _get_locale_data_cache(self):
@@ -294,13 +292,13 @@ class BuildConfig (Command):
                 info_lines = f.read().strip().split("\n")
             # Turn list of lines into a dict of (completion, timestamp)
             # tuples, keyed by the locale code.
-            info_line_lists = [l.split(" ") for l in info_lines]
-            info_dict = {loc: (float(completion), float(timestamp))
+            info_line_lists = [l.split("\t") for l in info_lines]
+            info_dict = {loc: (int(completion), float(timestamp))
                          for loc, completion, timestamp in info_line_lists}
         yield info_dict
         # Turn the (modified) dict back into space-separated values
         # and overwrite the cache file (cache file timestamp is irrelevant)
-        out = [str(loc) + " " + str(v[0]) + " " + str(v[1])
+        out = ["%s\t%d\t%f" % (loc, v[0], v[1])
                for loc, v in info_dict.items()]
         self.mkpath(build_dir)
         with open(cache_file, "w") as f:
