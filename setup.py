@@ -207,7 +207,7 @@ class BuildConfig (Command):
         try:
             import polib
 
-            def py_completion(_, path, template=False):
+            def py_completion(path, template=False):
                 po = polib.pofile(path)
                 if template:
                     return len(po)
@@ -217,12 +217,16 @@ class BuildConfig (Command):
         except ImportError:
             print("polib not installed, falling back to shellscript!")
 
-            def sh_completion(loc, _, template=False):
-                cmd = [os.path.join("po", "num_strings_translated.sh")]
+            def msgattrib_completion(path, template=False):
+                cmd = ['msgattrib']
                 if not template:
-                    cmd.append(loc)
-                return int(subprocess.check_output(cmd))
-            return sh_completion
+                    cmd.extend(['--translated', '--no-fuzzy', '--no-obsolete'])
+                cmd.append(path)
+                result = subprocess.check_output(cmd)
+                if not isinstance(result, str):
+                    result = result.decode('utf-8')
+                return result.count('\nmsgstr')
+            return msgattrib_completion
 
     def _get_locales(self):
         """Return a list of locales to use/install
@@ -247,7 +251,7 @@ class BuildConfig (Command):
         ]
         completion = BuildConfig.translation_completion_func()
         template_path = os.path.join("po", "mypaint.pot")
-        total = float(completion(None, template_path, template=True))
+        total = float(completion(template_path, template=True))
         # Read/update cache
         with self._get_locale_data_cache() as cache:
             for loc in locales:
@@ -261,7 +265,7 @@ class BuildConfig (Command):
                 po_modified_time = os.stat(po_path).st_mtime
                 if loc not in cache or cache[loc][1] < po_modified_time:
                     print("Updating cache:", loc)
-                    num = completion(loc, po_path)
+                    num = completion(po_path)
                     percentage = 100 * num / total
                     # Add some margin to avoid rounding problems
                     cache[loc] = (percentage, po_modified_time + 0.1)

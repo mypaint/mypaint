@@ -6,8 +6,7 @@ set -e
 
 update_pofiles () {
     for pofile in "$@"; do
-        lang=$(basename "$pofile" .po)
-        intltool-update -g mypaint --dist "$lang"
+        msgmerge -q -U "$(basename "$pofile")" mypaint.pot
     done
 }
 
