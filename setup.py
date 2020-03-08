@@ -100,8 +100,20 @@ class BuildTranslations (Command):
 
     def run(self):
         msg_paths = BuildTranslations.get_translation_paths(self)[0]
+        po_failures = []
         for po_path, mo_path in msg_paths:
-            self._compile_message_catalog(po_path, mo_path)
+            try:
+                self._compile_message_catalog(po_path, mo_path)
+            except subprocess.CalledProcessError:
+                # msgfmt creates the .mo file even if the checks fail.
+                # It is removed here so further tests aren't skipped
+                shutil.rmtree(os.path.dirname(mo_path))
+                po_failures.append(po_path)
+        if po_failures:
+            print_err("There are format errors in the following .po files:")
+            print_err("\n".join(po_failures))
+            print_err("See the log for details")
+            sys.exit(1)
         tmp_dir = self.get_finalized_command("build").build_temp
 
         # Try to create a symlink to the locale directory to enable
@@ -129,7 +141,7 @@ class BuildTranslations (Command):
         )
 
         if needs_update:
-            cmd = (msgfmt(), po_file_path, "-o", mo_file_path)
+            cmd = (msgfmt(), "-c", po_file_path, "-o", mo_file_path)
             if self.dry_run:
                 self.announce("would run %s" % (" ".join(cmd),), level=2)
             else:
