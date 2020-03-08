@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: mypaint v2.0.0-alpha.8-1-g4490f06\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-03-03 00:01+0100\n"
-"PO-Revision-Date: 2020-02-17 20:58+0000\n"
+"PO-Revision-Date: 2020-03-09 07:27+0000\n"
 "Last-Translator: Isabelle Lepage <noisette@netc.eu>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/mypaint/mypaint/"
 "fr/>\n"
@@ -18,7 +18,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n > 1;\n"
-"X-Generator: Weblate 3.11\n"
+"X-Generator: Weblate 4.0-dev\n"
 
 #. TRANSLATORS: Name of first column in the button map preferences.
 #. TRANSLATORS: Refers to an action bound to a mod+button combination.
@@ -213,7 +213,7 @@ msgstr "Vitesse"
 #: ../gui/brusheditor.py:381
 msgctxt "brush settings list: setting group"
 msgid "Directional Offsets"
-msgstr "Décalage Directionnel"
+msgstr "Décalages directionnels"
 
 #: ../gui/brusheditor.py:399
 msgctxt "brush settings list: setting group"
@@ -429,8 +429,7 @@ msgstr "Nouveau"
 msgctxt "brushpack import failure messages"
 msgid "No file named “{order_conf_file}”. This is not a brushpack."
 msgstr ""
-"Aucun fichier nommé “{order_conf_file}”. Ceci n'est pas un ensemble de "
-"pinceaux."
+"Aucun fichier nommé “{order_conf_file}”. Ceci n'est pas un pack de brosses."
 
 #: ../gui/brushmanager.py:689
 #, python-brace-format
@@ -1026,7 +1025,7 @@ msgid ""
 msgstr ""
 "Palette de couleur à godets.\n"
 "Déposez les couleurs ici,\n"
-"déplacez les pour les organiser."
+"déplacez-les pour les organiser."
 
 #: ../gui/colors/paletteview.py:698
 msgctxt "palette view"
@@ -1206,7 +1205,6 @@ msgstr ""
 "Changement de couleur avec les rampes HSV sur palette de couleur radial."
 
 #: ../gui/compatibility.py:34
-#, fuzzy
 msgctxt "File Load Compat Options"
 msgid "Based on file"
 msgstr "Basé sur le fichier"
@@ -1646,7 +1644,7 @@ msgstr "Paquet de brosses MyPaint (*.zip)"
 #: ../gui/externalapp.py:37
 #, python-brace-format
 msgid "Launched {app_name} to edit layer “{layer_name}”"
-msgstr "{app_name}  lancé pour éditer le calque “{layer_name}”"
+msgstr "{app_name} à été lancé pour éditer le calque “{layer_name}”"
 
 #. TRANSLATORS: Statusbar message shown when the app chosen for
 #. TRANSLATORS: "Edit in External App" (for a layer) failed to open.
@@ -2427,7 +2425,7 @@ msgstr "Ignorer l'erreur"
 
 #: ../gui/gtkexcepthook.py:182
 msgid "Quit MyPaint"
-msgstr "Quittez MyPaint"
+msgstr "Quitter MyPaint"
 
 #: ../gui/gtkexcepthook.py:192
 msgid "Details…"
@@ -2656,10 +2654,9 @@ msgid "{user_chosen_view_name}"
 msgstr ""
 
 #: ../gui/layervis.py:187
-#, fuzzy
 msgctxt "view controls: rename view dialog"
 msgid "Rename View"
-msgstr "Tourner la vue"
+msgstr "Renommer la vue"
 
 #: ../gui/linemode.py:41
 msgid "Entrance Pressure"
@@ -2717,8 +2714,8 @@ msgstr ""
 #: ../gui/linemode.py:781
 msgid "Draw straight lines; Shift adds curves, Ctrl constrains angle"
 msgstr ""
-"Dessine des lignes droites, Shift ajoute des courbes, Ctrl contraint sur les "
-"angles"
+"Dessiner des lignes droites ; Shift ajoute des courbes, Ctrl contraint sur "
+"les angles"
 
 #: ../gui/linemode.py:791
 msgid "Connected Lines"
@@ -2736,7 +2733,7 @@ msgstr "Ellipses et cercles"
 
 #: ../gui/linemode.py:807
 msgid "Draw ellipses; Shift rotates, Ctrl constrains ratio/angle"
-msgstr ""
+msgstr "Dessiner des ellipses ; Maj pivote, Ctrl contraint le ratio/angle"
 
 #: ../gui/meta.py:39
 msgctxt "About dialog: copyright statement"
@@ -2759,9 +2756,9 @@ msgid ""
 "ANY WARRANTY. See the COPYING file for more details."
 msgstr ""
 "Ce programme est un logiciel libre : Vous pouvez le redistribuer et/ou le "
-"modifier sous les termes de la Licence publique générale GNU comme publié "
-"par la Free Software Foundation ; soit en version 2 de la licence, ou (à "
-"votre convenance)  dans une version ultérieure.\n"
+"modifier selon les termes de la Licence publique générale GNU comme publié "
+"par la Free Software Foundation ; soit selon la version 2 de la licence, ou ("
+"à votre convenance) dans une version ultérieure.\n"
 "\n"
 "Ce programme est distribué dans l'espoir d'être utile, mais SANS AUCUNE "
 "GARANTIE. Voir le fichier COPYING pour plus de détails."
@@ -2827,9 +2824,10 @@ msgid "community"
 msgstr "communauté"
 
 #: ../gui/meta.py:110
+#, fuzzy
 msgctxt "About dialog: credits: tasks: joiner punctuation"
 msgid ", "
-msgstr ""
+msgstr ", "
 
 #. TRANSLATORS: THIS SHOULD NOT BE TRANSLATED LITERALLY
 #. TRANSLATORS: The "translation" of this string should be a list of names
@@ -2841,7 +2839,7 @@ msgstr ""
 #: ../gui/meta.py:221
 msgctxt "About dialog: credits: translator credits (your name(s) here!)"
 msgid "translator-credits"
-msgstr "Crédits de traduction"
+msgstr "Isabelle Lepage bluecat@netc.eu"
 
 #. TRANSLATORS:"Brush radius" for the options panel. Short.
 #: ../gui/mode.py:582
@@ -3087,13 +3085,13 @@ msgstr "%s: Fermer l'onglet"
 #, python-brace-format
 msgctxt "workspace: sidebar tabs: button tooltips"
 msgid "{tab_title}: tab options and properties"
-msgstr ""
+msgstr "{tab_title} : options et propriétés de l'onglet"
 
 #: ../gui/toolstack.py:359
 #, python-brace-format
 msgctxt "workspace: sidebar tabs: button tooltips"
 msgid "{tab_title}: move tab to other sidebar"
-msgstr "{tab_title}: déplacer l'onglet vers l'autre barre latérale"
+msgstr "{tab_title} : déplacer l'onglet vers l'autre barre latérale"
 
 #: ../gui/topbar.py:91
 msgid "<b>MyPaint</b>"
@@ -3796,7 +3794,7 @@ msgstr "Addition"
 
 #: ../lib/modes.py:120
 msgid "This layer and its backdrop are simply added together."
-msgstr ""
+msgstr "Ce calque et son arrière-plan sont simplement additionnés ensemble."
 
 #: ../lib/modes.py:122
 msgid "Destination In"
@@ -3862,6 +3860,8 @@ msgid ""
 "Unable to construct a vital internal object. Your system may not have enough "
 "memory to perform this operation."
 msgstr ""
+"Impossible de construire un élément interne vital. Votre système n'a peut-"
+"être pas assez de mémoire pour effectuer cette opération."
 
 #: ../lib/surface.py:313
 #, python-brace-format
@@ -3885,7 +3885,7 @@ msgstr "Miroir horizontal"
 
 #: ../lib/tiledsurface.py:50
 msgid "Vertical and horizontal"
-msgstr ""
+msgstr "Vertical et horizontal"
 
 #: ../lib/tiledsurface.py:51
 #, fuzzy
@@ -4018,9 +4018,8 @@ msgid "Delete this brush from the disk"
 msgstr "Supprimer cette brosse du disque"
 
 #: ../gui/brusheditor.glade:170
-#, fuzzy
 msgid "Copy to New"
-msgstr "Copie de %s"
+msgstr "Copier vers Nouveau"
 
 #: ../gui/brusheditor.glade:175
 msgid "Copy these settings and the current brush's icon to a new brush"
@@ -5932,16 +5931,14 @@ msgid "Delete every other point on the ink stroke."
 msgstr ""
 
 #: ../gui/resources.xml:933
-#, fuzzy
 msgctxt "Menu→Brush (labels)"
 msgid "Paint Mode"
-msgstr "Mode de la ligne"
+msgstr "Mode de peinture"
 
 #: ../gui/resources.xml:941
-#, fuzzy
 msgctxt "Menu→Brush→Blend Mode (labels), Accel Editor (labels)"
 msgid "Paint Mode: Normal"
-msgstr "Peindre normalement"
+msgstr "Mode de peinture : Normal"
 
 #: ../gui/resources.xml:942
 msgctxt "Accel Editor (descriptions)"
@@ -5956,7 +5953,7 @@ msgstr "Gomme"
 #: ../gui/resources.xml:951
 msgctxt "Accel Editor (descriptions)"
 msgid "Erase using the current brush."
-msgstr "Retire les tracés en utilisant la brosse actuelle."
+msgstr "Effacer en utilisant la brosse actuelle."
 
 #: ../gui/resources.xml:959
 msgctxt "Menu→Brush→Blend Mode (labels), Accel Editor (labels)"
@@ -5978,8 +5975,8 @@ msgctxt "Accel Editor (descriptions)"
 msgid ""
 "Apply color to the current layer without affecting its brightness or opacity."
 msgstr ""
-"Appliquez une couleur au calque actuel sans affecter sa luminosité ni son "
-"opacité."
+"Appliquer la couleur au calque courant sans affecter ni la luminosité ni "
+"l'opacité."
 
 #: ../gui/resources.xml:983
 msgctxt "Menu (labels)"
@@ -5994,7 +5991,7 @@ msgstr "Quitter"
 #: ../gui/resources.xml:990
 msgctxt "Accel Editor (descriptions)"
 msgid "Close main window and exit the app."
-msgstr "Fermez la fenêtre principale et quittez l'application."
+msgstr "Fermer la fenêtre principale et quitter l'application."
 
 #: ../gui/resources.xml:1000
 msgctxt "Menu (labels)"
@@ -6088,7 +6085,7 @@ msgstr "Aller au calque"
 #: ../gui/resources.xml:1076
 msgctxt "Menu→Layer (labels)"
 msgid "New Layer Below"
-msgstr "Nouvelle couche en dessous"
+msgstr "Nouveau calque en dessous"
 
 #: ../gui/resources.xml:1082
 #, fuzzy
@@ -6142,7 +6139,9 @@ msgstr "Exporter le carnet de croquis en tant que…"
 #: ../gui/resources.xml:1121
 msgctxt "Accel Editor (descriptions)"
 msgid "Export the scratchpad to disk, under a file name of your choice."
-msgstr "Exporter le carnet de croquis en choisissant un nom."
+msgstr ""
+"Exporter le carnet de croquis sur le disque, sous un nom de fichier de votre "
+"choix."
 
 #: ../gui/resources.xml:1128
 #, fuzzy
