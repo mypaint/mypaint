@@ -104,15 +104,19 @@ class BuildTranslations (Command):
         for po_path, mo_path in msg_paths:
             try:
                 self._compile_message_catalog(po_path, mo_path)
-            except subprocess.CalledProcessError:
+            except subprocess.CalledProcessError as e:
                 # msgfmt creates the .mo file even if the checks fail.
                 # It is removed here so further tests aren't skipped
                 shutil.rmtree(os.path.dirname(mo_path))
-                po_failures.append(po_path)
+                if not isinstance(e.output, str):
+                    e.output = e.output.decode('utf-8')
+                po_failures.append((po_path, e.output))
         if po_failures:
-            print_err("There are format errors in the following .po files:")
-            print_err("\n".join(po_failures))
-            print_err("See the log for details")
+            paths, errors = map(list, zip(*po_failures))
+            errmsg = "There are format errors in the following .po files:"
+            print_err("=" * 80 + "\n" + errmsg + "\n" + "=" * 80)
+            print_err("\n".join(paths) + "\n")
+            print_err("\n".join(errors))
             sys.exit(1)
         tmp_dir = self.get_finalized_command("build").build_temp
 
@@ -147,7 +151,7 @@ class BuildTranslations (Command):
             else:
                 self.announce("running %s" % (" ".join(cmd),), level=2)
                 self.mkpath(os.path.dirname(mo_file_path))
-                subprocess.check_call(cmd)
+                subprocess.check_output(cmd, stderr=subprocess.STDOUT)
 
                 assert os.path.exists(mo_file_path)
 
