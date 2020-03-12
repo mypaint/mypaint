@@ -22,8 +22,8 @@
   </rdf:RDF>
  </metadata>
  <g id="layer1" transform="translate(-16 -556.36)">
-  <path id="rect31375" style="color:#000000" d="m18 563.36v8h10v-8z" fill="#bebebe"/>
-  <path id="path11795" style="color:#000000" d="m25 561.36v2.9558h2v-2.9558c0-1.108 0.3295-2 1.4375-2s1.5625 0.892 1.5625 2v2h2v-2c0-2.3808-1.165-4-3.5625-4s-3.3678 1.6907-3.4375 4z" fill="#bebebe"/>
+  <path id="rect31375" style="color:#000000" d="m197 968.36v8h10v-8z" transform="translate(-179 -405)" fill="#bebebe"/>
+  <path id="path11795" style="color:#000000" d="m204 966.36v2.9558h2v-2.9558c0-1.108 0.3295-2 1.4375-2s1.5625 0.892 1.5625 2v2h2v-2c0-2.3808-1.165-4-3.5625-4s-3.3678 1.6907-3.4375 4z" transform="translate(-179 -405)" fill="#bebebe"/>
   <g id="layer2" opacity=".5" transform="translate(229.28 556.07)" display="none" fill="#859f46">
    <rect id="48x48" style="color:#000000" height="48" width="48" display="inline" y="4.25" x="-2.25"/>
    <rect id="32x32" style="color:#000000" height="32" width="32" display="inline" y="20.25" x="53.75"/>

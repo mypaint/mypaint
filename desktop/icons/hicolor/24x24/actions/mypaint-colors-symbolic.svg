@@ -1,25 +1,36 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<svg id="svg1" xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:dc="http://purl.org/dc/elements/1.1/" height="24" width="24" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:ns3="http://www.openswatchbook.org/uri/2009/osb" xmlns:ns5="http://creativecommons.org/ns#">
+<svg id="svg1" xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:dc="http://purl.org/dc/elements/1.1/" height="24" width="24" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:ns4="http://creativecommons.org/ns#">
+ <title id="title13694">MyPaint symbolic icons</title>
  <metadata id="metadata7">
   <rdf:RDF>
-   <ns5:Work rdf:about="">
+   <ns4:Work rdf:about="">
     <dc:format>image/svg+xml</dc:format>
     <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>
-    <dc:title/>
-   </ns5:Work>
+    <dc:title>MyPaint symbolic icons</dc:title>
+    <ns4:license rdf:resource=""/>
+    <dc:creator>
+     <ns4:Agent>
+      <dc:title>GNOME Project</dc:title>
+     </ns4:Agent>
+    </dc:creator>
+    <dc:contributor>
+     <ns4:Agent>
+      <dc:title>Andrew Chadwick</dc:title>
+     </ns4:Agent>
+    </dc:contributor>
+   </ns4:Work>
   </rdf:RDF>
  </metadata>
- <g id="layer1" transform="translate(-408 -524.36)">
+ <g id="layer1" transform="translate(-200 -548.36)">
   <g id="layer2" opacity=".5" transform="translate(229.28 556.07)" display="none" fill="#859f46">
    <rect id="48x48" style="color:#000000" height="48" width="48" display="inline" y="4.25" x="-2.25"/>
    <rect id="32x32" style="color:#000000" height="32" width="32" display="inline" y="20.25" x="53.75"/>
+   <rect id="24x24" style="color:#000000" height="24" width="24" display="inline" y="28.25" x="93.75"/>
    <rect id="22x22" style="color:#000000" height="22" width="22" display="inline" y="30.25" x="125.75"/>
    <rect id="16x16" style="color:#000000" height="16" width="16" display="inline" y="36.25" x="155.75"/>
   </g>
-  <path id="use24343-3" style="block-progression:tb;text-indent:0;color:#000000;text-transform:none" font-family="Sans" d="m413.5 536.37c-3.0316 0-5.4972 2.4655-5.4972 5.4972 0 3.0316 2.4655 5.4972 5.4972 5.4972 3.0316 0 5.4972-2.4655 5.4972-5.4972 0-3.0316-2.4655-5.4972-5.4972-5.4972zm0 0.98011c2.4912 0 4.517 2.0258 4.517 4.517s-2.0258 4.517-4.517 4.517-4.517-2.0258-4.517-4.517 2.0258-4.517 4.517-4.517z" line-height="normal" fill="#bebebe"/>
-  <path id="path24341-5" style="block-progression:tb;text-indent:0;color:#000000;text-transform:none" font-family="Sans" d="m419.5 526.37c-3.0316 0-5.4972 2.4655-5.4972 5.4972 0 3.0316 2.4655 5.4972 5.4972 5.4972 3.0316 0 5.4972-2.4655 5.4972-5.4972 0-3.0316-2.4655-5.4972-5.4972-5.4972zm0 0.98011c2.4912 0 4.517 2.0258 4.517 4.517s-2.0258 4.517-4.517 4.517-4.517-2.0258-4.517-4.517 2.0258-4.517 4.517-4.517z" line-height="normal" fill="#bebebe"/>
-  <path id="use24345-5" style="block-progression:tb;text-indent:0;color:#000000;text-transform:none" font-family="Sans" d="m425.5 536.37c-3.0316 0-5.4972 2.4655-5.4972 5.4972 0 3.0316 2.4655 5.4972 5.4972 5.4972 3.0316 0 5.4972-2.4655 5.4972-5.4972 0-3.0316-2.4655-5.4972-5.4972-5.4972zm0 0.98011c2.4912 0 4.517 2.0258 4.517 4.517s-2.0258 4.517-4.517 4.517-4.517-2.0258-4.517-4.517 2.0258-4.517 4.517-4.517z" line-height="normal" fill="#bebebe"/>
-  <path id="path24387" style="color:#000000" d="m365.09 153a3.0882 3.0882 0 1 1 -6.1764 0 3.0882 3.0882 0 1 1 6.1764 0z" transform="matrix(1.1333 0 0 1.1333 15.232 368.46)" fill="#bebebe"/>
-  <path id="use24397" opacity=".3" style="color:#000000" d="m365.09 153a3.0882 3.0882 0 1 1 -6.1764 0 3.0882 3.0882 0 1 1 6.1764 0z" transform="matrix(1.1333 0 0 1.1333 3.2315 368.46)" fill="#bebebe"/>
+  <path id="path24341-5" style="color-rendering:auto;text-decoration-color:#000000;color:#000000;font-variant-numeric:normal;text-orientation:mixed;shape-padding:0;shape-rendering:auto;solid-color:#000000;text-decoration-line:none;text-rendering:auto;font-variant-position:normal;mix-blend-mode:normal;font-feature-settings:normal;font-variant-alternates:normal;text-indent:0;font-variant-ligatures:normal;dominant-baseline:auto;font-variant-caps:normal;image-rendering:auto;white-space:normal;text-decoration-style:solid;isolation:auto;text-transform:none" font-family="sans-serif" d="m328 136.97c-2.2232 0-4.0332 1.81-4.0332 4.0332s1.81 4.0332 4.0332 4.0332 4.0332-1.81 4.0332-4.0332-1.81-4.0332-4.0332-4.0332zm0 0.73242c1.8269 0 3.3008 1.4739 3.3008 3.3008s-1.4739 3.3008-3.3008 3.3008-3.3008-1.4739-3.3008-3.3008 1.4739-3.3008 3.3008-3.3008z" transform="matrix(1.3636 0 0 1.3636 -235.77 363.59)" line-height="normal" fill="#bebebe"/>
+  <circle id="path24387" style="color:#000000" cx="362" transform="matrix(1.1333 0 0 1.1333 -192.77 392.46)" cy="153" r="3.0882" fill="#bebebe"/>
+  <circle id="use24397" opacity=".3" style="color:#000000" cx="362" transform="matrix(1.1333 0 0 1.1333 -204.77 392.46)" cy="153" r="3.0882" fill="#bebebe"/>
  </g>
 </svg>
