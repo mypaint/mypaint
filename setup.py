@@ -28,7 +28,7 @@ from setuptools.command.install_scripts import install_scripts
 
 
 # Some versions of clang requires different flag configurations than gcc
-# to link correctly, so we enable configuration via environemnt variables.
+# to link correctly, so we enable configuration via environment variables.
 OPENMP_CFLAG = os.getenv("OPENMP_CFLAG", "-fopenmp")
 OPENMP_LDFLAG = os.getenv("OPENMP_LDFLAG", "-fopenmp")
 
