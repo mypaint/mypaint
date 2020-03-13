@@ -209,7 +209,7 @@ class ButtonMapping (object):
             # Exclude possible bindings whose modifiers do not overlap
             if (modifiers & possible) != modifiers:
                 continue
-            # Include only exact matches, and those possibilies which can be
+            # Include only exact matches, and those possibilities which can be
             # reached by pressing more modifier keys.
             if modifiers == possible or ~modifiers & possible:
                 possibilities.append((possible, btn, action))

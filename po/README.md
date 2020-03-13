@@ -239,7 +239,7 @@ Weblate provides a browser-based interface for adding, editing
 and updating translations. It's a very good way to provide
 translations without having to worry about the technical details.
 
-If you are interested in keeping the transalations up to date,
+If you are interested in keeping the translations up to date,
 please subscribe to the MyPaint project on WebLate:
 <https://hosted.weblate.org/accounts/profile/#subscriptions>.
 

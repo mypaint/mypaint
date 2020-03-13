@@ -637,7 +637,7 @@ class YCbCrColor (UIColor):
     tilted regular hexagon.
 
     This color space is derived from the displayable RGB space. The luma or
-    chroma components may be manipluated, but because the envelope of the RGB
+    chroma components may be manipulated, but because the envelope of the RGB
     cube does not align with this space's axes it's quite easy to go out of
     the displayable gamut.
 

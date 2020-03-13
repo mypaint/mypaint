@@ -836,7 +836,7 @@ class CanvasRenderer (Gtk.DrawingArea, DrawCursorMixin):
     def _state_changed_cb(self, widget, oldstate):
         """Handle the sensitivity state changing
 
-        Saving and loading images toggles the sensitivty state on all
+        Saving and loading images toggles the sensitivity state on all
         toplevel windows. This causes a state shift on the TDW too.
         While the TDW is insensitive, its cursor is updated to respect
         the toplevel's cursor (typically a watch or an hourglass or
