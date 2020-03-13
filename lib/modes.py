@@ -26,7 +26,7 @@ STANDARD_MODES = tuple(range(lib.mypaintlib.NumCombineModes))
 STACK_MODES = (PASS_THROUGH_MODE,)
 
 
-#: The default layer combine mode - overrideable
+#: The default layer combine mode - overridable
 _DEFAULT_MODE = lib.mypaintlib.CombineSpectralWGM
 
 

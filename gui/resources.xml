@@ -23,7 +23,7 @@ General
 Labels
 
   * Typically <verb> [<target>]
-  * Title case, imperitive mood "Open Brush…", "New Curve", etc.
+  * Title case, imperative mood "Open Brush…", "New Curve", etc.
   - No trailing full stop.
   - Trailing ellipsis if immediate user input is needed to complete the action.
   - If the object of the action is the main canvas, omit the target
