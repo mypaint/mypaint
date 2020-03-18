@@ -312,9 +312,9 @@ tile_convert_rgba16_to_rgba8_c (const uint16_t* const src,
       assert(noise_idx <= dithering_noise_size);
 #endif
 
-      *dst_p++ = uint8_t(fastpow((float)r / (1<<15) + add_r, 1.0/EOTF) * 255);
-      *dst_p++ = uint8_t(fastpow((float)g / (1<<15) + add_r, 1.0/EOTF) * 255);
-      *dst_p++ = uint8_t(fastpow((float)b / (1<<15) + add_r, 1.0/EOTF) * 255);
+      *dst_p++ = uint8_t(fastpow((float)r / (1<<15) + add_r, 1.0/EOTF) * 255 + 0.5);
+      *dst_p++ = uint8_t(fastpow((float)g / (1<<15) + add_r, 1.0/EOTF) * 255 + 0.5);
+      *dst_p++ = uint8_t(fastpow((float)b / (1<<15) + add_r, 1.0/EOTF) * 255 + 0.5);
       *dst_p++ = ((a * 255 + add_a) / (1<<15));
     }
     src_p += src_strides;
