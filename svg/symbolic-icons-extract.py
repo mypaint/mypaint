@@ -1,72 +1,127 @@
-#!/usr/bin/python3
+#!/usr/bin/env python3
 # Extracts symbolic icons from a contact sheet using Inkscape.
 # Copyright (c) 2013 Andrew Chadwick <a.t.chadwick@gmail.com>
 # Copyright (c) 2020 The MyPaint Team
 #
-# Based on Jakub Steiner's r.rb, rewritten in Python for the MyPaint distrib.
+# Originally based on Jakub Steiner's r.rb,
+# rewritten in Python for the MyPaint distrib.
 # Jakub Steiner <jimmac@gmail.com>
 
-# Depends on inkscape and python-scour
-
-# usage: python symbolic-icons-extract.py [GROUP_ID(s)]
-
-# In order to run correctly, this script requires Inkscape 0.92
-# or earlier to be available in $PATH. The flags have changed
-# for Inkscape 1.0, and currently it does not provide the functionality
-# required (at least not correctly).
-#
-# To export all icons, the output from running this script without
-# arguments can be piped via xargs to the script itself, like this:
-#
-# ./symbolic-icons-extract.py | xargs ./symbolic-icons-extract.py
-#
-# This is generally not recommended, however (it takes a long time).
+# Depends on python-scour
 
 ## Imports
 from __future__ import division, print_function
 
+import argparse
+from copy import deepcopy
+import gzip
+import logging
 import os
-import re
 import sys
 import xml.etree.ElementTree as ET
-import logging
-import subprocess
-import gzip
 
-logger = logging.getLogger(__name__)
+from scour.scour import start as scour_optimize
 
-## Constants
+logger = logging.getLogger(__file__)
 
-CONTACT_SHEET = "symbolic-icons.svgz"
+# Constants
+
+ICON_SHEET = "symbolic-icons.svgz"
 OUTPUT_ICONS_ROOT = "../desktop/icons"
 OUTPUT_THEME = "hicolor"
-INKSCAPE = "inkscape"
-SCOUR = "scour"
-SCOUR_OPTIONS = [
-    "--remove-descriptive-elements",
-    "--enable-id-stripping",
-    "--shorten-ids",
-    "--no-line-breaks",
-]
+XLINK = "http://www.w3.org/1999/xlink"
+SVG = "http://www.w3.org/2000/svg"
 NAMESPACES = {
     "inkscape": "http://www.inkscape.org/namespaces/inkscape",
-    "svg": "http://www.w3.org/2000/svg",
-    "xlink": "http://www.w3.org/1999/xlink",
+    "svg": SVG,
+    "xlink": XLINK,
 }
 SUFFIX24 = ":24"
 
-# Regular expression to strip out 'color="#000000"'
-replace_color = re.compile('[a-z-]*color="#000000"')
-unnecessary_width_n_heights = re.compile('(width|height)="[^"]{3,}"')
-double_whitespace = re.compile('[ ]{2,}')
-REGEXP_SUBS = [
-    (replace_color, ''),
-    (double_whitespace, ' '),
-]
 
-def extract_icon(svg, group_id, output_dir):
+# Utilities
+
+class FakeFile:
+    """ String wrapper providing a subset of the file interface
+    Used for the call to scour's optimizer for both input and output.
+    """
+
+    def __init__(self, string):
+        self.string = string
+
+    def write(self, newstring):
+        self.string = newstring
+
+    def read(self, ):
+        return self.string
+
+    def close(self):
+        pass
+
+    def name(self):
+        return ""
+
+
+class FakeOptions:
+    """ Stand-in for values normally returned from an OptionParser
+    Used for the call to scour's optimizer
+    """
+
+    def __init__(self, **kwargs):
+        for k, v in kwargs.items():
+            setattr(self, k, v)
+
+
+def get_by_attrib(parent, pred):
+    """Utility function for retrieveing child elements by attribute predicates
+    """
+    return [c for c in parent.getchildren() if pred(c.attrib)]
+
+
+def by_attrib(parent, attr, attr_pred):
+    """Retrieves the elements matching an attribute predicate
+    The predicate is only evaluated if the attribute is present.
+    """
+    def pred(attribs):
+        if attr in attribs:
+            return attr_pred(attribs[attr])
+        else:
+            return False
+    return get_by_attrib(parent, pred)
+
+
+# This reference resolution only handles simple cases
+# and does not produce optimal (or even correct) results
+# in the general case, but is sufficient for the current icons.
+def resolve_references(refsvg, base):
+    """Resolve external references in ``base``
+    Any <use> tag in base will be replaced with the element it refers
+    to unless that element is already a part of base. Assumes valid svg.
+    """
+    def deref(parent, child, index):
+        if child.tag.endswith('use'):
+            refid = gethref(child)
+            el = base.find('.//*[@id="%s"]' % refid)
+            if el is None:  # Need to fetch the reference
+                ob = deepcopy(refsvg.find('.//*[@id="%s"]' % refid))
+                assert ob is not None
+                transform = child.get('transform')
+                if transform:
+                    ob.set('transform', transform)
+                parent.remove(child)
+                parent.insert(index, ob)
+                deref(parent, ob, index)  # Recurse in case of use -> use
+        else:
+            for i, c in enumerate(child.getchildren()):
+                deref(child, c, i)
+
+    for i, c in enumerate(base.getchildren()):
+        deref(base, c, i)
+
+
+def extract_icon(svg, icon_elem, output_dir, output_svg):
     """Extract one icon"""
-    assert group_id.startswith("mypaint-")
+    group_id = icon_elem.attrib['id']
     logger.info("Extracting %s", group_id)
     if not os.path.exists(output_dir):
         os.makedirs(output_dir)
@@ -76,54 +131,36 @@ def extract_icon(svg, group_id, output_dir):
     else:
         size = 16
         icon_name = group_id + "-symbolic"
-    output_tmp = os.path.join(output_dir, ".%s.TMP.svg" % (icon_name,))
-    svg.write(output_tmp)
-    cmd = [INKSCAPE, "-f", output_tmp,   # '--without-gui' doesn't work...
-           "--select", group_id,
-           "--verb=FitCanvasToSelection",
-           "--verb=EditInvertInAllLayers", "--verb=EditDelete",
-           "--verb=EditSelectAll",
-           "--verb=SelectionUnGroup", "--verb=StrokeToPath",
-           "--verb=FileVacuum", "--verb=FileSave",
-           "--verb=FileClose", "--verb=FileQuit"]
-    subprocess.check_call(cmd)
-    svg = ET.parse(output_tmp)
-    groups = svg.findall(".//svg:g", NAMESPACES)
-    assert groups is not None
-    for group in groups:
-        remove_rects_of_size(group, size)
-    clean_styles(svg.getroot())
-    svg.write(output_tmp)
+    # Remove the backdrop (should always be the
+    # first element, but we don't rely on it).
+    backdrop, = by_attrib(
+        icon_elem, '{%s}href' % XLINK,
+        lambda s: s.startswith('#icon-base'))
+    icon_elem.remove(backdrop)
+
+    # Resolve references to objects outside of the icon
+    resolve_references(svg, icon_elem)
+
+    # Remove the `transform` attribute
+    root = output_svg.getroot()
+    icon_elem.attrib.pop('transform')
+    for c in icon_elem.getchildren():
+        root.append(c)
+    root.set('width', str(size))
+    root.set('height', str(size))
+
+    # Remove unused style elements
+    clean_styles(root)
+    svgstr = FakeFile(ET.tostring(output_svg.getroot(), encoding="utf-8"))
+    options = FakeOptions(
+        newlines=False, shorten_ids=True, digits=5,
+        strip_ids=True, remove_descriptive_elements=True,
+        indent_depth=0, quiet=True
+    )
+    scour_optimize(options, svgstr, svgstr)
     output_file = os.path.join(output_dir, "%s.svg" % (icon_name,))
-    cmd = [SCOUR] + SCOUR_OPTIONS + [output_tmp]
-    # Scour fails to remove the metadata in a single pass, so we
-    # run it a second time (pass previous values to stdin).
-    optim = subprocess.check_output(cmd, universal_newlines=True)
-    optim = subprocess.check_output(
-        cmd[:-1], input=optim, universal_newlines=True)
-    for regexp, subst in REGEXP_SUBS:
-        logger.info("Applying %r" % regexp)
-        optim = regexp.sub(subst, optim)
-    with open(output_file, 'w') as f:
-        f.write(optim)
-    os.unlink(output_tmp)
-    logger.info("Wrote %s", output_file)
-
-
-def remove_rects_of_size(group, size):
-    """Removes the backdrop 16x16 or 24x24 rect from an icon's group"""
-    for rect in group.findall("./svg:rect", NAMESPACES):
-        rw = int(round(float(rect.get("width", 0))))
-        rh = int(round(float(rect.get("height", 0))))
-        if rw == size and rh == size:
-            logger.info("Removing Backdrop")
-            logger.debug("removing %r (is %dpx)", rect, size)
-            group.remove(rect)
-    for path in group.findall("./svg:path", NAMESPACES):
-        delete_id = path.get("id")
-        if delete_id.startswith("use"):
-            logger.info("Removing Backdrop")
-            group.remove(path)
+    with open(output_file, 'wb') as f:
+        f.write(svgstr.read())
 
 
 def parse_style(string):
@@ -138,11 +175,32 @@ def serialize_style(style_dict):
 
 
 def clean_styles(elem):
-    """Recursively remove useless style attributes"""
-    clean_style(elem)
-    for child in elem.iter():
-        if child is not elem:
-            clean_styles(child)
+    """Recursively remove useless style attributes
+    Also moves common fill declarations to the topmost element.
+    """
+    fill_cols = clean_style(elem)
+    for child in elem:
+        fill_cols = fill_cols.union(clean_styles(child))
+    # Consolidate fill color (move it to the least common denominator)
+    if len(fill_cols) == 1:  # Generally this should be the case
+        for c in elem:
+            # Exclude circles from the 'fill' attribute removal,
+            # since gtk does handle the rendering correctly without it.
+            if 'circle' not in c.tag and 'style' in c.attrib:
+                style = parse_style(c.attrib['style'])
+                style.pop('fill', None)
+                if not style:
+                    c.attrib.pop('style')
+                else:
+                    c.attrib['style'] = serialize_style(style)
+        style = parse_style(elem.attrib.get('style', ''))
+        style['fill'] = list(fill_cols)[0]
+        elem.attrib['style'] = serialize_style(style)
+    return fill_cols
+
+
+def gethref(icon):
+    return icon.attrib['{%s}href' % XLINK][1:]
 
 
 def clean_style(elem):
@@ -152,6 +210,12 @@ def clean_style(elem):
     2. it is in the list, but with a default value
     Expand the list as is necessary.
     """
+    # Remove unused stuff from <use> elements - split out
+    if elem.tag.endswith('use'):
+        keys = list(elem.attrib.keys())
+        for k in keys:
+            if k in {'width', 'height', 'x', 'y'}:
+                elem.attrib.pop(k)
     # At the point this is run, it is assumed that all strokes
     # have been converted to paths, hence the only values we
     # care about are opacity and fill. This may change in the
@@ -159,53 +223,71 @@ def clean_style(elem):
     key = 'style'
     useful = ["opacity", "fill"]
     defaults = {"opacity": (float, 1.0)}
+
     def is_default(k, v):
         if k in defaults:
             conv, default = defaults[k]
             return conv(v) == default
         return False
+    styles = None
     if key in elem.attrib:
         styles = parse_style(elem.attrib[key])
         cleaned = {k: v for k, v in styles.items()
                    if k in useful and not is_default(k, v)}
-        elem.attrib[key] = serialize_style(cleaned)
+        if cleaned:
+            elem.attrib[key] = serialize_style(cleaned)
+        else:
+            elem.attrib.pop(key)
+    # Return the fill color in a singleton (or empty) set
+    return {v for k, v in (styles or dict()).items() if k == 'fill'}
 
 
-def extract_icons(svg, basedir, group_ids):
+def is_icon(e):
+    valid_tag = e.tag in {s % SVG for s in ('{%s}g', '{%s}use')}
+    return valid_tag and e.get('id') and e.get('id').startswith('mypaint-')
+
+
+def get_icon_layer(svg):
+    return svg.find('svg:g[@id="icons"]', NAMESPACES)
+
+
+def extract_icons(svg, basedir, *ids):
     """Extract icon groups using Inkscape, both 16px scalable & 24x24"""
-    for group_id in group_ids:
-        group = svg.find(".//svg:g[@id='%s']" % (group_id,), NAMESPACES)
-        if group is None:
-            logger.error("No group named %r", group_id)
-        else:
-            outdir = os.path.join(basedir, "scalable", "actions")
-            extract_icon(svg, group_id, outdir)
-        group_id_24 = group_id + SUFFIX24
-        group = svg.find(".//svg:g[@id='%s']" % (group_id_24,), NAMESPACES)
-        if group is None:
-            logger.info("%r: no 24px variant (%r)", group_id, group_id_24)
-        else:
-            outdir = os.path.join(basedir, "24x24", "actions")
-            extract_icon(svg, group_id_24, outdir)
+
+    # Make a copy of the tree
+    base = deepcopy(svg)
+    baseroot = base.getroot()
+    # Empty the copy - it will act as the base for each extracted icon
+    for c in baseroot.getchildren():
+        baseroot.remove(c)
+
+    icon_layer = get_icon_layer(svg)
+    icons = (i for i in icon_layer if is_icon(i))
+    if ids:
+        icons = (i for i in icons if i.get('id') in ids)
+    num_extracted = 0
+    for icon in icons:
+        num_extracted += 1
+        iconid = icon.get('id')
+        if icon.tag.endswith('use'):
+            icon = deepcopy(icon_layer.find('*[@id="%s"]' % gethref(icon)))
+            icon.attrib['id'] = iconid
+        typedir = "24x24" if iconid.endswith(SUFFIX24) else "scalable"
+        outdir = os.path.join(basedir, typedir, "actions")
+        extract_icon(svg, deepcopy(icon), outdir, deepcopy(base))
+    logger.info("Finished extracting %d icons" % num_extracted)
 
 
-def show_icon_groups(svg):
-    """Print groups from the contact sheet which could be icons"""
-    layers = svg.findall("svg:g[@inkscape:groupmode='layer']", NAMESPACES)
-    for layer in layers:
-        groups = layer.findall(".//svg:g", NAMESPACES)
-        if groups is None:
-            continue
-        for group in layer.findall(".//svg:g", NAMESPACES):
-            group_id = group.get("id")
-            if group_id is None:
-                continue
-            if (group_id.startswith("mypaint-") and
-                    not group_id.endswith(SUFFIX24)):
-                print(group_id)
+def get_icon_ids(svg):
+    """Returns the ids of elements marked as being icons"""
+    return (e.get('id') for e in get_icon_layer(svg) if is_icon(e))
 
 
-def main():
+def invalid_ids(svg, ids):
+    return ids.difference(ids.intersection(set(get_icon_ids(svg))))
+
+
+def main(options):
     """Main function for the tool"""
     logging.basicConfig(level=logging.INFO)
     for prefix, uri in NAMESPACES.items():
@@ -214,19 +296,37 @@ def main():
     if not os.path.isdir(basedir):
         logger.error("No dir named %r", basedir)
         sys.exit(1)
-    logger.info("Reading %r", CONTACT_SHEET)
-    with gzip.open(CONTACT_SHEET, mode='rb') as svg_fp:
+    logger.info("Reading %r", ICON_SHEET)
+    with gzip.open(ICON_SHEET, mode='rb') as svg_fp:
         svg = ET.parse(svg_fp)
-    group_ids = sys.argv[1:]
-    if group_ids:
-        logger.info("Attempting to extract %d icon(s)", len(group_ids))
-        extract_icons(svg, basedir, group_ids)
+    # List all icon ids in sheet
+    if options.list_ids:
+        for icon_id in get_icon_ids(svg):
+            print(icon_id)
+    # Extract all icons
+    elif options.extract_all:
+        extract_icons(svg, basedir)
+    # Extract icons by ids
     else:
-        logger.info("Listing groups which (might) represent exportable icons "
-                    "in %r", CONTACT_SHEET)
-        show_icon_groups(svg)
-    logger.info("Done")
+        invalid = invalid_ids(svg, set(options.extract))
+        if invalid:
+            logger.error("Icon ids not found in icon sheet:\n{ids}".format(
+                ids="\n".join(sorted(invalid))
+            ))
+            logger.error("Extraction cancelled!")
+            sys.exit(1)
+        else:
+            extract_icons(svg, basedir, *options.extract)
 
 
 if __name__ == '__main__':
-    main()
+    argparser = argparse.ArgumentParser()
+    group = argparser.add_mutually_exclusive_group(required=True)
+    group.add_argument("--list", action="store_true", dest="list_ids",
+                       help="Print all icon ids to stdout and quit.")
+    group.add_argument("--extract-all", action="store_true",
+                       help="Extract all icons in the icon sheet.")
+    group.add_argument("--extract", type=str, nargs="+", metavar="ICON_ID",
+                       help="Extract the icons with the given ids.")
+    options = argparser.parse_args()
+    main(options)
