@@ -1,2 +1,2 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<svg width="24" height="24" version="1.1" xmlns="http://www.w3.org/2000/svg"><g transform="translate(-40 -932.36)"><g fill="#bebebe"><path d="m62 954.36h-19l19-19z" opacity=".3"/><path d="m43 935.36 19-3e-5v19z" opacity=".3"/><path d="m52.5 944.86 9.5-9.5v19z"/></g></g></svg>
+<svg width="24" height="24" fill="#bebebe" version="1.1" xmlns="http://www.w3.org/2000/svg"><path d="m3 3 9.5 9.5-9.5 9.5h19v-19z" opacity=".3"/><path d="m22 3-9.5 9.5 9.5 9.5z"/></svg>
