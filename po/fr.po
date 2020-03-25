@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: mypaint v2.0.0-alpha.8-1-g4490f06\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-03-03 00:01+0100\n"
-"PO-Revision-Date: 2020-03-09 07:27+0000\n"
+"PO-Revision-Date: 2020-03-26 18:46+0000\n"
 "Last-Translator: Isabelle Lepage <noisette@netc.eu>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/mypaint/mypaint/"
 "fr/>\n"
@@ -2824,7 +2824,6 @@ msgid "community"
 msgstr "communauté"
 
 #: ../gui/meta.py:110
-#, fuzzy
 msgctxt "About dialog: credits: tasks: joiner punctuation"
 msgid ", "
 msgstr ", "
@@ -4657,12 +4656,12 @@ msgstr ""
 #: ../gui/preferenceswindow.glade:1164
 msgctxt "Prefs Dialog|View|Interface|"
 msgid "Language:"
-msgstr ""
+msgstr "Langue :"
 
 #: ../gui/preferenceswindow.glade:1179
 msgctxt "Prefs Dialog|View|Interface|"
 msgid "(needs restart)"
-msgstr ""
+msgstr "Nécessite un redémarrage"
 
 #. Tab label in preferences dialog
 #: ../gui/preferenceswindow.glade:1196
@@ -4677,6 +4676,9 @@ msgid ""
 "The set of colors to show as primary on disk-style color wheels.\n"
 "Different traditions have different color harmonies."
 msgstr ""
+"L'ensemble des couleurs à afficher comme primaire sur le disque des roues "
+"chromatiques.\n"
+"Les différentes traditions ont des harmonies de couleurs différentes."
 
 #. Arrangement of MyPaint's custom colour wheels
 #: ../gui/preferenceswindow.glade:1230
@@ -4694,6 +4696,8 @@ msgid ""
 "The red, green, and blue &apos;computer monitor&apos; primaries, evenly "
 "arranged around the circle. Green is opposite magenta."
 msgstr ""
+"Le rouge, vert et bleu &apos;écran d'ordinateur&apos; primaire sont disposés "
+"uniformément autour du cercle. Le vert est l’opposé du magenta."
 
 #: ../gui/preferenceswindow.glade:1253
 msgctxt "Prefs Dialog|Color|Color Wheel|Primaries|RGB|"
@@ -4715,6 +4719,10 @@ msgid ""
 "since the 18th century, approximated with pure display colors evenly "
 "arranged around the circle. Green is opposite red."
 msgstr ""
+"La disposition traditionnelle du cercle chromatique rouge/jaune/bleu comme "
+"utilisé par de nombreux artistes depuis le 18ème siècle, se rapproche de "
+"l'affichage des couleurs pures disposées uniformément autour du cercle. Le "
+"vert est opposé au rouge."
 
 #: ../gui/preferenceswindow.glade:1275
 msgctxt "Prefs Dialog|Color|Color Wheel|Primaries|RYB|"
@@ -4742,6 +4750,12 @@ msgid ""
 "and yellow is opposite blue. CIECAM02 and NCS present a similar model. Here "
 "we use pure display red, yellow etc. as the four primaries."
 msgstr ""
+"Approximation rapide et sale des cercles chromatiques éclairée par les "
+"théories de couleur utilisant quatre &apos;primaires psychologiques&apos; ou "
+"des &apos;teintes uniques&apos; disposées par paires opposées aux points "
+"cardinaux. Le rouge est opposé au vert, et le jaune est opposé au bleu. Le "
+"CIECAM02 et le NCS présentent un modèle similaire. Ici nous utilisons un "
+"affichage du rouge, jaune, etc comme les quatre couleurs primaires."
 
 #: ../gui/preferenceswindow.glade:1297
 msgctxt "Prefs Dialog|Color|Color Wheel|Primaries|RYGB|"
