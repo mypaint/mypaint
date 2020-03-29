@@ -431,11 +431,40 @@
             <property name="can_focus">False</property>
             <property name="margin_top">12</property>
             <child>
-              <object class="AccelMapEditor" id="accel_map_editor">
-                <property name="width_request">350</property>
-                <property name="height_request">250</property>
+              <object class="GtkBox" id="box8">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
+                <property name="orientation">vertical</property>
+                <child>
+                  <object class="AccelMapEditor" id="accel_map_editor">
+                    <property name="width_request">350</property>
+                    <property name="height_request">250</property>
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                  </object>
+                  <packing>
+                    <property name="expand">True</property>
+                    <property name="fill">True</property>
+                    <property name="position">0</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkCheckButton" id="disable_fallback_bindings_checkbox">
+                    <property name="label" translatable="yes" comments="Label for a checkbox in the keyboard mappings preferences.&#10;A fallback binding is a static built-in key binding that is used&#10;unless its key is bound to something else.">Disable fallback key bindings</property>
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="receives_default">False</property>
+                    <property name="tooltip_text" translatable="yes" comments="Tooltip for checkbox in the keyboard mappings preferences.">The fallback key bindings are static built-in bindings that are only used if their key combinations are not bound to anything else.</property>
+                    <property name="xalign">0</property>
+                    <property name="draw_indicator">True</property>
+                    <signal name="toggled" handler="disable_fallback_checkbutton_toggled_cb" swapped="no"/>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">1</property>
+                  </packing>
+                </child>
               </object>
             </child>
           </object>

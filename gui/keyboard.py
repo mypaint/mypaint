@@ -131,7 +131,7 @@ class KeyboardManager:
         if keyval_lower != keyval:
             modifiers |= Gdk.ModifierType.SHIFT_MASK
         action = self.keymap.get((keyval_lower, modifiers))
-        if not action:
+        if not action and not self.fallbacks_disabled():
             # try hardcoded keys
             action = self.keymap2.get((keyval_lower, modifiers))
 
@@ -149,6 +149,9 @@ class KeyboardManager:
 
         # Otherwise, dispatch the event to the active doc.
         return self._dispatch_fallthru_key_press_event(widget, event)
+
+    def fallbacks_disabled(self):
+        return self.app.preferences.get('keyboard.disable_fallbacks', False)
 
     def activate_keydown_event(self, action, event):
         """Activate a looked-up action triggered by an event

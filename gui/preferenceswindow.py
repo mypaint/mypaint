@@ -120,6 +120,11 @@ class PreferencesWindow (windowing.Dialog):
         # Pen input curve
         self._pressure_curve.points = p['input.global_pressure_mapping']
 
+        # Disable fallback keybindings (all)
+        disable_fb_bindings = getobj("disable_fallback_bindings_checkbox")
+        disable_fb_bindings.set_active(
+            p.get('keyboard.disable_fallbacks', False))
+
         # prefix for saving scarps
         entry = getobj("scrap_prefix_entry")
         entry.set_text(p['saving.scrap_prefix'])
@@ -223,6 +228,11 @@ class PreferencesWindow (windowing.Dialog):
         self.in_update_ui = False
 
     ## Callbacks for widgets that manipulate settings
+
+    def disable_fallback_checkbutton_toggled_cb(self, checkbox):
+        self.app.preferences[
+            'keyboard.disable_fallbacks'] = checkbox.get_active()
+        self.app.apply_settings()
 
     def input_mode_combobox_changed_cb(self, combobox):
         mode = combobox.get_active_id()
