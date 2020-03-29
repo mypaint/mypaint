@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mypaint v2.0.0-alpha.8-1-g4490f06\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-03-03 00:01+0100\n"
+"POT-Creation-Date: 2020-03-29 16:08+0200\n"
 "PO-Revision-Date: 2019-02-27 14:19+0000\n"
 "Last-Translator: glixx <roman_romul@mail.ru>\n"
 "Language-Team: Mongolian <https://hosted.weblate.org/projects/mypaint/"
@@ -1157,13 +1157,13 @@ msgstr ""
 
 #. This refers to a version of MyPaint like 1.0, 1.1, 1.2 etc
 #: ../gui/compatibility.py:35 ../gui/drawwindow.py:276
-#: ../gui/preferenceswindow.glade:1581
+#: ../gui/preferenceswindow.glade:1610
 msgctxt "Prefs Dialog|Compatibility"
 msgid "1.x"
 msgstr ""
 
 #. This refers to a version of MyPaint like 1.0, 1.1, 1.2 etc
-#: ../gui/compatibility.py:36 ../gui/preferenceswindow.glade:1600
+#: ../gui/compatibility.py:36 ../gui/preferenceswindow.glade:1629
 msgctxt "Prefs Dialog|Compatibility"
 msgid "2.x"
 msgstr ""
@@ -2760,7 +2760,7 @@ msgstr ""
 
 #. TRANSLATORS: This option means that MyPaint will try to use
 #. TRANSLATORS: the language the system tells it to use.
-#: ../gui/preferenceswindow.py:369
+#: ../gui/preferenceswindow.py:379
 msgctxt "Language preferences menu - default option"
 msgid "System Language"
 msgstr ""
@@ -2769,7 +2769,7 @@ msgstr ""
 #. TRANSLATORS: lang_nat is the native name of the language
 #. TRANSLATORS: in that _same language_.
 #. TRANSLATORS: This can just be copied most of the time.
-#: ../gui/preferenceswindow.py:421
+#: ../gui/preferenceswindow.py:431
 #, python-brace-format
 msgctxt "Prefs Dialog|View|Interface - menu entries"
 msgid "{lang_en} - ({lang_nat})"
@@ -4153,46 +4153,60 @@ msgctxt "Prefs Dialog|"
 msgid "Buttons"
 msgstr ""
 
-#: ../gui/preferenceswindow.glade:447
+#. Label for a checkbox in the keyboard mappings preferences.
+#. A fallback binding is a static built-in key binding that is used
+#. unless its key is bound to something else.
+#: ../gui/preferenceswindow.glade:453
+msgid "Disable fallback key bindings"
+msgstr ""
+
+#. Tooltip for checkbox in the keyboard mappings preferences.
+#: ../gui/preferenceswindow.glade:457
+msgid ""
+"The fallback key bindings are static built-in bindings that are only used if "
+"their key combinations are not bound to anything else."
+msgstr ""
+
+#: ../gui/preferenceswindow.glade:476
 msgctxt "Prefs Dialog|Button|"
 msgid "<b>Keyboard Mappings</b>"
 msgstr ""
 
-#: ../gui/preferenceswindow.glade:460
+#: ../gui/preferenceswindow.glade:489
 msgid "Keys"
 msgstr ""
 
-#: ../gui/preferenceswindow.glade:480
+#: ../gui/preferenceswindow.glade:509
 msgctxt "Prefs Dialog|Load & Save|Saving|"
 msgid "Default file format:"
 msgstr ""
 
-#: ../gui/preferenceswindow.glade:495
+#: ../gui/preferenceswindow.glade:524
 msgctxt "Prefs Dialog|Load & Save|Saving|"
 msgid "Prefix when saving scraps:"
 msgstr ""
 
-#: ../gui/preferenceswindow.glade:546
+#: ../gui/preferenceswindow.glade:575
 msgctxt "Prefs Dialog|Load & Save|"
 msgid "<b>Saving</b>"
 msgstr ""
 
-#: ../gui/preferenceswindow.glade:563
+#: ../gui/preferenceswindow.glade:592
 msgctxt "Prefs Dialog|Load & Save|"
 msgid "<b>Color Management</b>"
 msgstr ""
 
-#: ../gui/preferenceswindow.glade:579
+#: ../gui/preferenceswindow.glade:608
 msgctxt "Prefs Dialog|Load & Save|Color Management|"
 msgid "Color space conversions:"
 msgstr ""
 
-#: ../gui/preferenceswindow.glade:597
+#: ../gui/preferenceswindow.glade:626
 msgctxt "Prefs Dialog|Load & Save|Color Management|"
 msgid "Convert to sRGB when loading; mark as sRGB when saving"
 msgstr ""
 
-#: ../gui/preferenceswindow.glade:601
+#: ../gui/preferenceswindow.glade:630
 msgctxt "Prefs Dialog|Load & Save|Color Management|"
 msgid ""
 "Images containing <i>full</i> colorspace information will be converted to "
@@ -4205,12 +4219,12 @@ msgid ""
 "\"no automatic conversions or tagging\" setting instead."
 msgstr ""
 
-#: ../gui/preferenceswindow.glade:619
+#: ../gui/preferenceswindow.glade:648
 msgctxt "Prefs Dialog|Load & Save|Color Management|"
 msgid "No automatic conversions or tagging"
 msgstr ""
 
-#: ../gui/preferenceswindow.glade:623
+#: ../gui/preferenceswindow.glade:652
 msgctxt "Prefs Dialog|Load & Save|Color Management|"
 msgid ""
 "No color conversions are performed when loading, and files are saved without "
@@ -4220,24 +4234,24 @@ msgid ""
 "working."
 msgstr ""
 
-#: ../gui/preferenceswindow.glade:651
+#: ../gui/preferenceswindow.glade:680
 msgctxt "Prefs Dialog|Load & Save|"
 msgid "<b>Automated Backups</b>"
 msgstr ""
 
-#: ../gui/preferenceswindow.glade:669
+#: ../gui/preferenceswindow.glade:698
 msgctxt "Prefs Dialog|Load & Save|Automated Backups|switch label"
 msgid "Back up unsaved work:"
 msgstr ""
 
 #. In seconds. Lowest value is 5, highest is 300 (5 minutes). Only matters when enabled.
-#: ../gui/preferenceswindow.glade:704
+#: ../gui/preferenceswindow.glade:733
 msgctxt ""
 "Prefs Dialog|Load & Save|Automated Backups|interval spinbox units suffix"
 msgid "seconds of inactivity"
 msgstr ""
 
-#: ../gui/preferenceswindow.glade:717
+#: ../gui/preferenceswindow.glade:746
 msgctxt "Prefs Dialog|Load & Save|Automated Backups|switch tooltip"
 msgid ""
 "Backs up work incrementally in the background to MyPaint's disk cache. If "
@@ -4245,100 +4259,100 @@ msgid ""
 "on."
 msgstr ""
 
-#: ../gui/preferenceswindow.glade:739
+#: ../gui/preferenceswindow.glade:768
 msgctxt "Prefs Dialog|Load & Save|Automated Backups|interval label"
 msgid "Time between backups:"
 msgstr ""
 
 #. Tab label in preferences dialog
-#: ../gui/preferenceswindow.glade:757
+#: ../gui/preferenceswindow.glade:786
 msgctxt "Prefs Dialog|"
 msgid "Load & Save"
 msgstr ""
 
-#: ../gui/preferenceswindow.glade:778
+#: ../gui/preferenceswindow.glade:807
 msgctxt "Prefs Dialog|View|"
 msgid "<b>Zoom and Rendering</b>"
 msgstr ""
 
-#: ../gui/preferenceswindow.glade:795
+#: ../gui/preferenceswindow.glade:824
 msgid "Default zoom level:"
 msgstr ""
 
-#: ../gui/preferenceswindow.glade:833
+#: ../gui/preferenceswindow.glade:862
 msgctxt "Prefs Dialog|View|"
 msgid "<b>Interface</b>"
 msgstr ""
 
-#: ../gui/preferenceswindow.glade:850
+#: ../gui/preferenceswindow.glade:879
 msgctxt "Prefs Dialog|View|Interface|"
 msgid "Toolbar icon size:"
 msgstr ""
 
-#: ../gui/preferenceswindow.glade:866
+#: ../gui/preferenceswindow.glade:895
 msgctxt "Prefs Dialog|View|Interface|"
 msgid "Freehand cursor type:"
 msgstr ""
 
-#: ../gui/preferenceswindow.glade:881
+#: ../gui/preferenceswindow.glade:910
 msgctxt "Prefs Dialog|View|Interface|"
 msgid "Dark theme variant:"
 msgstr ""
 
-#: ../gui/preferenceswindow.glade:891
+#: ../gui/preferenceswindow.glade:920
 msgctxt "Prefs Dialog|View|Interface|Dark theme variant|"
 msgid "If available in GTK3 theme (needs restart)"
 msgstr ""
 
-#: ../gui/preferenceswindow.glade:895
+#: ../gui/preferenceswindow.glade:924
 msgctxt "Prefs Dialog|View|Interface|Dark theme variant|checkbox tooltip"
 msgid ""
 "Use a light-on-dark theme variant, when it's supported by the GTK theme. "
 "This is generally sensible for image editors and media viewers."
 msgstr ""
 
-#: ../gui/preferenceswindow.glade:916
+#: ../gui/preferenceswindow.glade:945
 msgid "Some of these settings require MyPaint to be restarted."
 msgstr ""
 
-#: ../gui/preferenceswindow.glade:939
+#: ../gui/preferenceswindow.glade:968
 msgctxt "Prefs Dialog|View|Interface|Icon size|"
 msgid "Large (requires recent GTK3)"
 msgstr ""
 
-#: ../gui/preferenceswindow.glade:956
+#: ../gui/preferenceswindow.glade:985
 msgctxt "Prefs Dialog|View|Interface|Icon size|"
 msgid "Small"
 msgstr ""
 
-#: ../gui/preferenceswindow.glade:981
+#: ../gui/preferenceswindow.glade:1010
 msgctxt "Prefs Dialog|View|Zoom|"
 msgid "Use a real checkerboard pattern"
 msgstr ""
 
-#: ../gui/preferenceswindow.glade:985
+#: ../gui/preferenceswindow.glade:1014
 msgctxt "Prefs Dialog|View|Zoom|"
 msgid ""
 "Draw a real checkerboard pattern to show transparency.\n"
 "This slows down the display, but can be less confusing."
 msgstr ""
 
-#: ../gui/preferenceswindow.glade:1006
+#: ../gui/preferenceswindow.glade:1035
 msgid "When showing transparency:"
 msgstr ""
 
-#: ../gui/preferenceswindow.glade:1021
+#: ../gui/preferenceswindow.glade:1050
 msgctxt "Prefs Dialog|View|Interface|"
 msgid "Handle smooth scrolling events:"
 msgstr ""
 
-#: ../gui/preferenceswindow.glade:1031
+#: ../gui/preferenceswindow.glade:1060
 msgctxt ""
 "Prefs Dialog|View|Interface|Handle smooth scrolling events|checkbox label"
 msgid "When devices send them (needs restart)"
 msgstr ""
 
-#: ../gui/preferenceswindow.glade:1035
+#: ../gui/preferenceswindow.glade:1064
 msgctxt ""
 "Prefs Dialog|View|Interface|Handle smooth scrolling events|checkbox tooltip"
 msgid ""
@@ -4353,17 +4367,17 @@ msgid ""
 "device to be configured to send bidirectional scroll events."
 msgstr ""
 
-#: ../gui/preferenceswindow.glade:1082
+#: ../gui/preferenceswindow.glade:1111
 msgid "Hide cursor while painting"
 msgstr ""
 
-#: ../gui/preferenceswindow.glade:1105
+#: ../gui/preferenceswindow.glade:1134
 msgctxt ""
 "Prefs Dialog|View|Interface|Blink layers on creation/selection|checkbox label"
 msgid "Enabled"
 msgstr ""
 
-#: ../gui/preferenceswindow.glade:1109
+#: ../gui/preferenceswindow.glade:1138
 msgctxt ""
 "Prefs Dialog|View|Interface|Blink layers on creation/selection|checkbox "
 "tooltip"
@@ -4372,28 +4386,28 @@ msgid ""
 "period."
 msgstr ""
 
-#: ../gui/preferenceswindow.glade:1129
+#: ../gui/preferenceswindow.glade:1158
 msgctxt "Prefs Dialog|View|Interface|"
 msgid "Blink layers on creation/selection:"
 msgstr ""
 
-#: ../gui/preferenceswindow.glade:1164
+#: ../gui/preferenceswindow.glade:1193
 msgctxt "Prefs Dialog|View|Interface|"
 msgid "Language:"
 msgstr ""
 
-#: ../gui/preferenceswindow.glade:1179
+#: ../gui/preferenceswindow.glade:1208
 msgctxt "Prefs Dialog|View|Interface|"
 msgid "(needs restart)"
 msgstr ""
 
 #. Tab label in preferences dialog
-#: ../gui/preferenceswindow.glade:1196
+#: ../gui/preferenceswindow.glade:1225
 msgctxt "Prefs Dialog|"
 msgid "View"
 msgstr ""
 
-#: ../gui/preferenceswindow.glade:1228
+#: ../gui/preferenceswindow.glade:1257
 msgctxt "Prefs Dialog|Color|Color Wheel|Primaries|"
 msgid ""
 "The set of colors to show as primary on disk-style color wheels.\n"
@@ -4401,42 +4415,42 @@ msgid ""
 msgstr ""
 
 #. Arrangement of MyPaint's custom colour wheels
-#: ../gui/preferenceswindow.glade:1230
+#: ../gui/preferenceswindow.glade:1259
 msgctxt "Prefs Dialog|Color|Color Wheel|"
 msgid "Primaries are:"
 msgstr ""
 
-#: ../gui/preferenceswindow.glade:1247
+#: ../gui/preferenceswindow.glade:1276
 msgctxt "Prefs Dialog|Color|Color Wheel|Primaries|"
 msgid "Standard digital Red/Green/Blue"
 msgstr ""
 
-#: ../gui/preferenceswindow.glade:1252
+#: ../gui/preferenceswindow.glade:1281
 msgid ""
 "The red, green, and blue &apos;computer monitor&apos; primaries, evenly "
 "arranged around the circle. Green is opposite magenta."
 msgstr ""
 
-#: ../gui/preferenceswindow.glade:1253
+#: ../gui/preferenceswindow.glade:1282
 msgctxt "Prefs Dialog|Color|Color Wheel|Primaries|RGB|"
 msgid ""
 "The red, green, and blue 'computer monitor' primaries, evenly arranged "
 "around the circle. Green is opposite magenta."
 msgstr ""
 
-#: ../gui/preferenceswindow.glade:1269
+#: ../gui/preferenceswindow.glade:1298
 msgctxt "Prefs Dialog|Color|Color Wheel|Primaries|"
 msgid "Traditional artist's Red/Yellow/Blue"
 msgstr ""
 
-#: ../gui/preferenceswindow.glade:1274
+#: ../gui/preferenceswindow.glade:1303
 msgid ""
 "The traditionally arranged red/yellow/blue wheel as used by many artists "
 "since the 18th century, approximated with pure display colors evenly "
 "arranged around the circle. Green is opposite red."
 msgstr ""
 
-#: ../gui/preferenceswindow.glade:1275
+#: ../gui/preferenceswindow.glade:1304
 msgctxt "Prefs Dialog|Color|Color Wheel|Primaries|RYB|"
 msgid ""
 "The traditionally arranged red/yellow/blue wheel as used by many artists "
@@ -4444,12 +4458,12 @@ msgid ""
 "arranged around the circle. Green is opposite red."
 msgstr ""
 
-#: ../gui/preferenceswindow.glade:1291
+#: ../gui/preferenceswindow.glade:1320
 msgctxt "Prefs Dialog|Color|Color Wheel|Primaries|"
 msgid "Red-Green and Blue-Yellow opponent pairs"
 msgstr ""
 
-#: ../gui/preferenceswindow.glade:1296
+#: ../gui/preferenceswindow.glade:1325
 msgid ""
 "Quick and dirty approximation of wheels informed by theories of  color which "
 "use four &apos;psychological primaries&apos; or &apos;unique hues&apos; "
@@ -4458,7 +4472,7 @@ msgid ""
 "we use pure display red, yellow etc. as the four primaries."
 msgstr ""
 
-#: ../gui/preferenceswindow.glade:1297
+#: ../gui/preferenceswindow.glade:1326
 msgctxt "Prefs Dialog|Color|Color Wheel|Primaries|RYGB|"
 msgid ""
 "Quick and dirty approximation of wheels informed by theories of  color which "
@@ -4469,45 +4483,45 @@ msgid ""
 msgstr ""
 
 #. Options affecting color wheels
-#: ../gui/preferenceswindow.glade:1325
+#: ../gui/preferenceswindow.glade:1354
 msgctxt "Prefs Dialog|Color|"
 msgid "<b>Color Wheel</b>"
 msgstr ""
 
 #. Tab label in preferences dialog
-#: ../gui/preferenceswindow.glade:1338
+#: ../gui/preferenceswindow.glade:1367
 msgctxt "Prefs Dialog|"
 msgid "Color"
 msgstr ""
 
-#: ../gui/preferenceswindow.glade:1371
+#: ../gui/preferenceswindow.glade:1400
 msgctxt "Prefs Dialog|Compatibility"
 msgid "Default Compatibility Mode:"
 msgstr ""
 
-#: ../gui/preferenceswindow.glade:1396
+#: ../gui/preferenceswindow.glade:1425
 msgctxt "Prefs Dialog|Compatibility"
 msgid "<b>1.x Settings</b>"
 msgstr ""
 
 #. Make sure to be consistent w. other occurences of 2.x
-#: ../gui/preferenceswindow.glade:1410
+#: ../gui/preferenceswindow.glade:1439
 msgctxt "Prefs Dialog|Compatibility"
 msgid "<b>2.x Settings</b>"
 msgstr ""
 
-#: ../gui/preferenceswindow.glade:1448 ../gui/preferenceswindow.glade:1522
+#: ../gui/preferenceswindow.glade:1477 ../gui/preferenceswindow.glade:1551
 msgctxt "Prefs Dialog|Compatibility"
 msgid "Default New Layer Type:"
 msgstr ""
 
-#: ../gui/preferenceswindow.glade:1494 ../gui/preferenceswindow.glade:1508
+#: ../gui/preferenceswindow.glade:1523 ../gui/preferenceswindow.glade:1537
 msgctxt "Prefs Dialog|Compatibility"
 msgid "Default Pigment Brush Setting:"
 msgstr ""
 
 #. Label description for the 1.x compatibility-mode-by-default setting
-#: ../gui/preferenceswindow.glade:1585
+#: ../gui/preferenceswindow.glade:1614
 msgctxt "Prefs Dialog|Compatibility"
 msgid ""
 "When creating new documents, use the legacy 1.x compatibility mode by "
@@ -4515,31 +4529,31 @@ msgid ""
 "versions, but pigment blending will not work well."
 msgstr ""
 
-#: ../gui/preferenceswindow.glade:1604
+#: ../gui/preferenceswindow.glade:1633
 msgctxt "Prefs Dialog|Compatibility"
 msgid ""
 "When creating new documents, use the regular 2.x compatibility mode by "
 "default. Old documents will often look different in this mode."
 msgstr ""
 
-#: ../gui/preferenceswindow.glade:1636
+#: ../gui/preferenceswindow.glade:1665
 msgctxt "Prefs Dialog|Compatibility"
 msgid "Show warning for files that may be partially incompatible"
 msgstr ""
 
 #. Label for a set of options
-#: ../gui/preferenceswindow.glade:1653
+#: ../gui/preferenceswindow.glade:1682
 msgctxt "Prefs Dialog|Compatibility"
 msgid "File compatibility warnings:"
 msgstr ""
 
-#: ../gui/preferenceswindow.glade:1665
+#: ../gui/preferenceswindow.glade:1694
 msgctxt "Prefs Dialog|Compatibility"
 msgid "Show warning for files that may be fully incompatible"
 msgstr ""
 
 #. This is a tooltip for the file behavior options label.
-#: ../gui/preferenceswindow.glade:1681
+#: ../gui/preferenceswindow.glade:1710
 msgctxt "Prefs|Compatibility"
 msgid ""
 "This will only apply to files saved with versions of MyPaint older than 2.0. "
@@ -4548,38 +4562,38 @@ msgid ""
 msgstr ""
 
 #. Label to the options for how to handle files which do not have a compatibility mode specified (whether they should be opened in 1.x compatibility mode, or 2.x mode)
-#: ../gui/preferenceswindow.glade:1683
+#: ../gui/preferenceswindow.glade:1712
 msgctxt "Prefs Dialog|Compatibility"
 msgid "When Mode is Unspecified:"
 msgstr ""
 
 #. This label indicates a subsection of the compatibility settings related to loading files.
-#: ../gui/preferenceswindow.glade:1710
+#: ../gui/preferenceswindow.glade:1739
 msgctxt "Prefs|Compatibility"
 msgid "<b>File loading</b>"
 msgstr ""
 
-#: ../gui/preferenceswindow.glade:1730
+#: ../gui/preferenceswindow.glade:1759
 msgid "<b>Compatibility settings</b>"
 msgstr ""
 
 #. Tab label in preferences dialog
-#: ../gui/preferenceswindow.glade:1746
+#: ../gui/preferenceswindow.glade:1775
 msgctxt "Prefs Dialog|"
 msgid "Compatibility"
 msgstr ""
 
-#: ../gui/preferenceswindow.glade:1764
+#: ../gui/preferenceswindow.glade:1793
 msgctxt "Prefs Dialog|Pen Input|Mode|"
 msgid "Screen (normal)"
 msgstr ""
 
-#: ../gui/preferenceswindow.glade:1768
+#: ../gui/preferenceswindow.glade:1797
 msgctxt "Prefs Dialog|Pen Input|Mode|"
 msgid "Disabled (no pressure sensitivity)"
 msgstr ""
 
-#: ../gui/preferenceswindow.glade:1772
+#: ../gui/preferenceswindow.glade:1801
 msgctxt "Prefs Dialog|Pen Input|Mode|"
 msgid "Window (not recommended)"
 msgstr ""
