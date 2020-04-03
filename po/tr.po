@@ -7,9 +7,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mypaint v2.0.0-alpha.12-343-g82b4fc5\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-03-03 00:01+0100\n"
-"PO-Revision-Date: 2019-12-22 10:31+0000\n"
-"Last-Translator: Sabri Ünal <libreajans@gmail.com>\n"
+"POT-Creation-Date: 2020-03-29 16:08+0200\n"
+"PO-Revision-Date: 2020-04-04 05:49+0000\n"
+"Last-Translator: Oğuz Ersen <oguzersen@protonmail.com>\n"
 "Language-Team: Turkish <https://hosted.weblate.org/projects/mypaint/mypaint/"
 "tr/>\n"
 "Language: tr\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 3.10\n"
+"X-Generator: Weblate 4.0-dev\n"
 
 #. TRANSLATORS: Name of first column in the button map preferences.
 #. TRANSLATORS: Refers to an action bound to a mod+button combination.
@@ -4373,7 +4373,23 @@ msgctxt "Prefs Dialog|"
 msgid "Buttons"
 msgstr "Düğmeler"
 
-#: ../gui/preferenceswindow.glade:447
+#. Label for a checkbox in the keyboard mappings preferences.
+#. A fallback binding is a static built-in key binding that is used
+#. unless its key is bound to something else.
+#: ../gui/preferenceswindow.glade:453
+msgid "Disable fallback key bindings"
+msgstr "Yedek tuş atamalarını devre dışı bırak"
+
+#. Tooltip for checkbox in the keyboard mappings preferences.
+#: ../gui/preferenceswindow.glade:457
+msgid ""
+"The fallback key bindings are static built-in bindings that are only used if "
+"their key combinations are not bound to anything else."
+msgstr ""
+"Yedek tuş atamaları, sadece tuş kombinasyonları başka bir şeye atanmamışsa "
+"kullanılan statik yerleşik atamalardır."
+
+#: ../gui/preferenceswindow.glade:476
 msgctxt "Prefs Dialog|Button|"
 msgid "<b>Keyboard Mappings</b>"
 msgstr "<b>Klavye Eşlemleri</b>"
