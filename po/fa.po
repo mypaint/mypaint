@@ -8,8 +8,8 @@ msgstr ""
 "Project-Id-Version: mypaint v1.2.0-393-g1633fb2\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-03-29 16:08+0200\n"
-"PO-Revision-Date: 2020-04-03 19:43+0000\n"
-"Last-Translator: Allan Nordhøy <epost@anotheragency.no>\n"
+"PO-Revision-Date: 2020-04-04 18:19+0000\n"
+"Last-Translator: sayyed hamed nasib <cghamed752@chmail.ir>\n"
 "Language-Team: Persian <https://hosted.weblate.org/projects/mypaint/mypaint/"
 "fa/>\n"
 "Language: fa\n"
@@ -6160,10 +6160,9 @@ msgid "Change the background paper texture."
 msgstr "تغییر دادن تصویر پس زمینه روی پرده نقاشی."
 
 #: ../gui/resources.xml:1355
-#, fuzzy
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
 msgid "Brush Settings Editor"
-msgstr "ویرایشگر تنظیمات قلم"
+msgstr "ویرایشگر تنظیمات قلمو"
 
 #: ../gui/resources.xml:1356
 msgctxt "Accel Editor (descriptions)"
