@@ -3,19 +3,24 @@
 _realname=mypaint-brushes
 pkgbase=mingw-w64-${_realname}2
 pkgname="${MINGW_PACKAGE_PREFIX}-${_realname}2"
-pkgver=2.0.1
-pkgrel=2
+pkgver=2.0.2
+pkgrel=1
 pkgdesc="Brushes for MyPaint 2.0 (mingw-w64)"
 arch=('any')
 url="https://github.com/mypaint/mypaint-brushes"
 license=("ISC")
 makedepends=("${MINGW_PACKAGE_PREFIX}-gcc")
 options=('strip' '!debug')
-source=("${_realname}::git+https://github.com/mypaint/mypaint-brushes.git")
-sha256sums=('SKIP')
+source=(${_realname}-${pkgver}.tar.gz::https://github.com/mypaint/mypaint-brushes/archive/v${pkgver}.tar.gz)
+sha256sums=('01032550dd817bb0f8e85d83a632ed2e50bc16e0735630839e6c508f02f800ac')
+noextract=(${_realname}-${pkgver}.tar.gz)
 
 prepare() {
-  cd ${_realname}
+  [[ -d ${srcdir}/${_realname}-${pkgver} ]] && rm -rf ${srcdir}/${_realname}-${pkgver}
+
+  tar --exclude=README -xzf ${_realname}-${pkgver}.tar.gz
+
+  cd ${_realname}-${pkgver}
   ./autogen.sh
 }
 
@@ -23,7 +28,7 @@ build() {
   [[ -d build-${MINGW_CHOST} ]] && rm -rf build-${MINGW_CHOST}
   mkdir -p build-${MINGW_CHOST} && cd build-${MINGW_CHOST}
 
-  "${srcdir}/${_realname}"/configure \
+  "${srcdir}/${_realname}-${pkgver}"/configure \
     --build=${MINGW_CHOST} \
     --host=${MINGW_CHOST} \
     --target=${MINGW_CHOST} \
@@ -35,5 +40,5 @@ build() {
 package() {
   cd "${srcdir}"/build-${MINGW_CHOST}
   make -j1 DESTDIR="${pkgdir}" install
-  install -Dm644 ${srcdir}/${_realname}/Licenses.md "${pkgdir}"${MINGW_PREFIX}/share/licenses/${_realname}2/Licenses.md
+  install -Dm644 ${srcdir}/${_realname}-${pkgver}/Licenses.md "${pkgdir}"${MINGW_PREFIX}/share/licenses/${_realname}2/Licenses.md
 }

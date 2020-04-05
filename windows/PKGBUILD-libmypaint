@@ -22,7 +22,7 @@ depends=("${MINGW_PACKAGE_PREFIX}-gcc-libs"
          "${MINGW_PACKAGE_PREFIX}-json-c")
 options=('strip' '!debug')
 source=("https://github.com/mypaint/${_realname}/releases/download/v${_realver}/${_realname}-${_realver}.tar.xz")
-sha256sums=('aba6e0526f9e4bead4a89c7c82084971b90c5128b50da77b0ac0f5ef27772b57')
+sha256sums=('aef8150a0c84ce2ff6fb24de8d5ffc564845d006f8bad7ed84ee32ed1dd90c2b')
 
 CFLAGS="-O3 -ftree-vectorize -funsafe-math-optimizations -funsafe-loop-optimizations"
 
