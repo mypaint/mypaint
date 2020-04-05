@@ -96,7 +96,6 @@ artifacts.
 """
 from __future__ import division, print_function
 
-
 #: Program name, for display.
 #: Not marked for translation, but that can change if it enhances things.
 
@@ -288,7 +287,7 @@ def _get_versions(gitprefix="gitexport"):
             cmd = ["git", "rev-parse", "--short", "HEAD"]
             try:
                 objsha = subprocess.check_output(cmd, universal_newlines=True)
-            except:
+            except (OSError, subprocess.CalledProcessError):
                 print("ERROR: Failed to invoke %r. Build will be marked as "
                       "unsupported." % (" ".join(cmd), ),
                       file=sys.stderr)
@@ -304,7 +303,7 @@ def _get_versions(gitprefix="gitexport"):
         cmd = ["git", "describe", "--tags", "--long", "--dirty", "--always"]
         try:
             git_desc = subprocess.check_output(cmd, universal_newlines=True)
-        except:
+        except (OSError, subprocess.CalledProcessError):
             print("ERROR: Failed to invoke %r. Build will be marked as "
                   "unsupported." % (" ".join(cmd), ),
                   file=sys.stderr)
@@ -318,8 +317,8 @@ def _get_versions(gitprefix="gitexport"):
                 (?:-g([0-9a-f]+))?  #2 Abbr'd SHA of the git tree exported.
                 (?:-(dirty))?       #3 Highlight uncommitted changes.
                 $
-            '''.rstrip().format(base_version = re.escape(base_version))
-            parse_re = re.compile(parse_pattern, re.VERBOSE|re.IGNORECASE)
+            '''.rstrip().format(base_version=re.escape(base_version))
+            parse_re = re.compile(parse_pattern, re.VERBOSE | re.IGNORECASE)
             match = parse_re.match(git_desc)
             objsha = None
             nrevs = 0
@@ -343,9 +342,9 @@ def _get_versions(gitprefix="gitexport"):
                         cmd=" ".join(cmd)),
                     file=sys.stderr)
                 try:
-                    cmdout = subprocess.check_output(cmd,
-                                                     universal_newlines=True)
-                except:
+                    cmdout = subprocess.check_output(
+                        cmd, universal_newlines=True)
+                except (OSError, subprocess.CalledProcessError):
                     print("ERROR: Failed to invoke %r. Build will be marked "
                           "as unsupported." % (" ".join(cmd), ),
                           file=sys.stderr)
@@ -360,7 +359,7 @@ def _get_versions(gitprefix="gitexport"):
                           file=sys.stderr)
             # nrevs is None or zero if this commit is the matched tag.
             # If not, then incorporate the numbers somehow.
-            if nrevs and int(nrevs)>0:
+            if nrevs and int(nrevs) > 0:
                 if "-" not in base_version:
                     raise ValueError(
                         "The code's MYPAINT_VERSION ({ver}) "
@@ -370,8 +369,8 @@ def _get_versions(gitprefix="gitexport"):
                         "created for the next version now, "
                         "and lib.meta.MYPAINT_VERSION needs to be "
                         "updated to match it."
-                        .format (
-                            ver = base_version,
+                        .format(
+                            ver=base_version,
                         )
                     )
                     # Can't just fake it with a hyphen: that would
