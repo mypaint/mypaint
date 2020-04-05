@@ -26,6 +26,7 @@ import contextlib
 
 from lib.gettext import gettext as _
 from lib.gettext import C_
+from lib.helpers import utf8
 
 from gi.repository import Gtk
 from gi.repository import GdkPixbuf
@@ -89,7 +90,7 @@ def _device_name_uuid(device_name):
 
     """
     if not PY3:
-        device_name = unicode(device_name).encode('utf-8')
+        device_name = utf8(unicode(device_name))
     return unicode(uuid.uuid5(_DEVICE_NAME_NAMESPACE, device_name))
 
 
@@ -756,7 +757,7 @@ class BrushManager (object):
                     assert (brushname + '.myb') in zf.namelist()
                     # Support for utf-8 ZIP filenames that don't have
                     # the utf-8 bit set.
-                    brushname_utf8 = brushname.encode('utf-8')
+                    brushname_utf8 = utf8(brushname)
                     try:
                         myb_data = zf.read(brushname + u'.myb')
                     except KeyError:
@@ -840,13 +841,13 @@ class BrushManager (object):
 
         """
         brushes = self.get_group_brushes(group)
-        order_conf = b'Group: %s\n' % group.encode('utf-8')
+        order_conf = b'Group: %s\n' % utf8(group)
         with zipfile.ZipFile(filename, mode='w') as zf:
             for brush in brushes:
                 prefix = brush._get_fileprefix()
                 zf.write(prefix + u'.myb', brush.name + u'.myb')
                 zf.write(prefix + u'_prev.png', brush.name + u'_prev.png')
-                order_conf += brush.name.encode('utf-8') + b'\n'
+                order_conf += utf8(brush.name + "\n")
             zf.writestr(u'order.conf', order_conf)
 
     ## Brush lookup / access
@@ -906,12 +907,12 @@ class BrushManager (object):
         """
 
         path = os.path.join(self.user_brushpath, u'order.conf')
-        with open(path, 'w', encoding="utf-8") as f:
-            f.write(u'# this file saves brush groups and order\n')
+        with open(path, 'wb') as f:
+            f.write(utf8(u'# this file saves brush groups and order\n'))
             for group, brushes in self.groups.items():
-                f.write(u'Group: {}\n'.format(group))
+                f.write(utf8(u'Group: {}\n'.format(group)))
                 for b in brushes:
-                    f.write(b.name + u'\n')
+                    f.write(utf8(b.name + u'\n'))
 
     ## The selected brush
 

@@ -547,6 +547,11 @@ def record_memory_leak_status(print_diff=False):
     old_stats = new_stats
 
 
+def utf8(string):
+    """Return the input as bytes encoded by utf-8"""
+    return string.encode('utf-8')
+
+
 def fmt_time_period_abbr(t):
     """Get a localized abbreviated minutes+seconds string
 
