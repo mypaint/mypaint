@@ -153,7 +153,13 @@ def _parse_order_conf(file_content):
 
     """
     groups = {}
-    file_content = file_content.decode("utf-8")
+    try:
+        file_content = file_content.decode("utf-8")
+    except UnicodeDecodeError:
+        # This handles order.conf files saved with the wrong encoding
+        # on Windows (encoding was previously not explicitly specified).
+        logger.warning("order.conf file not encoded with utf-8")
+        file_content = file_content.decode('latin-1')
     curr_group = FOUND_BRUSHES_GROUP
     lines = file_content.replace(u'\r', u'\n').split(u'\n')
     for line in lines:
@@ -278,6 +284,13 @@ class BrushManager (object):
         return brush_cache[name]
 
     def _load_ordered_groups(self, brush_cache, filename):
+        try:
+            return self._load_ordered_groups_inner(brush_cache, filename)
+        except Exception:
+            logger.exception("Failed to load groups from %s" % filename)
+            return {}
+
+    def _load_ordered_groups_inner(self, brush_cache, filename):
         """Load a groups dict from an order.conf file."""
         groups = {}
         if os.path.exists(filename):
@@ -893,7 +906,7 @@ class BrushManager (object):
         """
 
         path = os.path.join(self.user_brushpath, u'order.conf')
-        with open(path, 'w') as f:
+        with open(path, 'w', encoding="utf-8") as f:
             f.write(u'# this file saves brush groups and order\n')
             for group, brushes in self.groups.items():
                 f.write(u'Group: {}\n'.format(group))
