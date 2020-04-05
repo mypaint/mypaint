@@ -3,7 +3,7 @@
 _realname=mypaint
 pkgbase=mingw-w64-${_realname}
 pkgname="${MINGW_PACKAGE_PREFIX}-${_realname}"
-pkgver=2.0.1-alpha
+pkgver=2.0.1alpha
 pkgrel=1
 provides=(
     "${MINGW_PACKAGE_PREFIX}-${_realname}"
