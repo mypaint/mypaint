@@ -113,6 +113,8 @@ PREREL_NUM = 0
 for part in (MAJOR, MINOR, PATCH, PREREL_NUM):
     assert isinstance(part, int) and part >= 0
 assert PREREL in {'', '-alpha', '-beta'}
+if PREREL == '-alpha':
+    assert PREREL_NUM == 0
 
 #: Base version string.
 #: This is required to match a tag in git for formal releases. However
@@ -120,7 +122,9 @@ assert PREREL in {'', '-alpha', '-beta'}
 #: be further decorated with the number of commits following the tag.
 MYPAINT_VERSION = '{major}.{minor}.{patch}{prerel}'.format(
     major=MAJOR, minor=MINOR, patch=PATCH,
-    prerel=PREREL and PREREL+'.'+str(PREREL_NUM)
+    prerel=PREREL and
+    # Prerelease numbers should only be used for beta releases
+    PREREL + ('.' + str(PREREL_NUM) if PREREL == '-beta' else '')
 )
 
 
