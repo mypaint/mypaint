@@ -6,9 +6,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mypaint v2.0.0-alpha.11-2-g0673fe8\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-03-03 00:01+0100\n"
-"PO-Revision-Date: 2019-05-03 16:49+0000\n"
-"Last-Translator: Rui Mendes <xz9@protonmail.com>\n"
+"POT-Creation-Date: 2020-03-29 16:08+0200\n"
+"PO-Revision-Date: 2020-04-08 02:47+0000\n"
+"Last-Translator: Manuela Silva <mmsrs@sky.com>\n"
 "Language-Team: Portuguese <https://hosted.weblate.org/projects/mypaint/"
 "mypaint/pt/>\n"
 "Language: pt\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n > 1;\n"
-"X-Generator: Weblate 3.7-dev\n"
+"X-Generator: Weblate 4.0-dev\n"
 
 #. TRANSLATORS: Name of first column in the button map preferences.
 #. TRANSLATORS: Refers to an action bound to a mod+button combination.
@@ -203,7 +203,7 @@ msgstr "Pincelada"
 #: ../gui/brusheditor.py:353
 msgctxt "brush settings list: setting group"
 msgid "Smudge"
-msgstr "Borrar"
+msgstr "Borratar"
 
 #: ../gui/brusheditor.py:367
 msgctxt "brush settings list: setting group"
@@ -233,7 +233,7 @@ msgstr "Cor"
 #: ../gui/brusheditor.py:439
 msgctxt "brush settings list: setting group"
 msgid "GridMap"
-msgstr ""
+msgstr "Mapa de Grelha"
 
 #: ../gui/brusheditor.py:450
 msgctxt "brush settings list: setting group"
@@ -243,7 +243,7 @@ msgstr "Personalizado"
 #: ../gui/brusheditor.py:516
 msgctxt "brush settings editor: save brush: error message"
 msgid "No brush selected, please use “Add As New” instead."
-msgstr "Nenhum pincel selecionado, favor usar \"Adicionar como novo\"."
+msgstr "Nenhum pincel selecionado, por favor, utilize \"Adicionar Como Novo\"."
 
 #: ../gui/brusheditor.py:541
 msgctxt "brush settings editor: rename brush: error message"
@@ -253,7 +253,7 @@ msgstr "Nenhum pincel selecionado!"
 #: ../gui/brusheditor.py:550
 msgctxt "brush settings editor: rename brush: dialog title"
 msgid "Rename Brush"
-msgstr "Alterar nome do pincel"
+msgstr "Renomear Pincel"
 
 #: ../gui/brusheditor.py:569
 msgctxt "brush settings editor: rename brush: error message"
@@ -269,7 +269,7 @@ msgstr "Nenhum pincel selecionado!"
 #, python-brace-format
 msgctxt "brush settings editor: delete brush: confirm dialog question"
 msgid "Really delete brush “{brush_name}” from disk?"
-msgstr "Quer mesmo eliminar o pincel “{brush_name}”?"
+msgstr "Deseja eliminar o pincel “{brush_name}” do disco?"
 
 #: ../gui/brusheditor.py:728
 msgctxt "brush settings editor: header: fallback name"
@@ -284,11 +284,11 @@ msgstr "{brush_name} [não guardado]"
 
 #: ../gui/brushiconeditor.py:36
 msgid "Brush Icon"
-msgstr "Ícone do pincel"
+msgstr "Ícone do Pincel"
 
 #: ../gui/brushiconeditor.py:37
 msgid "Brush Icon (editing)"
-msgstr "Ícone do pincel (a editar)"
+msgstr "Ícone do Pincel (edição)"
 
 #: ../gui/brushiconeditor.py:74
 msgid "No brush selected"
@@ -328,7 +328,7 @@ msgid ""
 "<small>Click ‘Edit’ to make changes to the icon</small>"
 msgstr ""
 "<b>%s</b>\n"
-"<small>Clique em ‘Editar’ para fazer alterações no ícone</small>"
+"<small>Clique em \"Editar\" para fazer alterações no ícone</small>"
 
 #. TRANSLATORS: begin editing a brush's preview icon
 #: ../gui/brushiconeditor.py:157
@@ -346,7 +346,7 @@ msgstr "Reverter"
 
 #: ../gui/brushiconeditor.py:167
 msgid "Discard changes, and cancel editing"
-msgstr "Descartar as alterações e cancelar a edição"
+msgstr "Descartar alterações, e cancelar a edição"
 
 #. TRANSLATORS: clear the brush preview icon being edited
 #: ../gui/brushiconeditor.py:174
@@ -364,7 +364,7 @@ msgstr "Automático"
 
 #: ../gui/brushiconeditor.py:184
 msgid "Use the default icon"
-msgstr "Utilizar o ícone padrão"
+msgstr "Utilizar o ícone predefinido"
 
 #. TRANSLATORS: save edits to a brush icon
 #: ../gui/brushiconeditor.py:190 ../gui/brusheditor.glade:111
@@ -377,7 +377,7 @@ msgstr "guardar este ícone de pré-visualização e terminar a edição"
 
 #: ../gui/brushmanager.py:129
 msgid "Lost & Found"
-msgstr "Perdidos e achados"
+msgstr "Perdidos e Achados"
 
 #: ../gui/brushmanager.py:130
 msgid "Deleted"
@@ -428,6 +428,7 @@ msgstr "Novo"
 msgctxt "brushpack import failure messages"
 msgid "No file named “{order_conf_file}”. This is not a brushpack."
 msgstr ""
+"Nenhum ficheiro chamado “{order_conf_file}”. Não é um pacote de pincéis."
 
 #: ../gui/brushmanager.py:689
 #, python-brace-format
