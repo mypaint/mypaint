@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mypaint v2.0.0-alpha.8-1-g4490f06\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-03-03 00:01+0100\n"
-"PO-Revision-Date: 2020-02-17 20:58+0000\n"
+"POT-Creation-Date: 2020-03-29 16:08+0200\n"
+"PO-Revision-Date: 2020-04-08 02:47+0000\n"
 "Last-Translator: Prachi Joshi <josprachi@yahoo.com>\n"
 "Language-Team: Marathi <https://hosted.weblate.org/projects/mypaint/mypaint/"
 "mr/>\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 3.11\n"
+"X-Generator: Weblate 4.0-dev\n"
 
 #. TRANSLATORS: Name of first column in the button map preferences.
 #. TRANSLATORS: Refers to an action bound to a mod+button combination.
@@ -2068,7 +2068,7 @@ msgstr "पंख:"
 #: ../gui/fill.py:770
 msgctxt "fill options: Feather (tooltip)"
 msgid "The amount of blur to apply to the fill"
-msgstr ""
+msgstr "भरण्यासाठी अस्पष्ट प्रमाणात"
 
 #: ../gui/fill.py:786
 msgctxt "fill options: gap detection toggle (label)"
