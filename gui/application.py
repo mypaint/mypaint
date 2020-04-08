@@ -51,6 +51,7 @@ from lib import brush
 from lib import helpers
 from lib import mypaintlib
 from lib import brushsettings
+from lib import validation
 import gui.compatibility as compat
 import gui.device
 from . import filehandling
@@ -331,9 +332,13 @@ class Application (object):
         cache_size = self.preferences.get(
             'ui.rendered_tile_cache_size', lib.cache.DEFAULT_CACHE_SIZE
         )
+        default_stack_size = lib.document.DEFAULT_UNDO_STACK_SIZE
         undo_stack_size = self.preferences.setdefault(
             'command.max_undo_stack_size',
-            lib.document.DEFAULT_UNDO_STACK_SIZE)
+            default_stack_size)
+        undo_stack_size = validation.validate(
+            undo_stack_size, default_stack_size, int, lambda a: a > 0,
+            "The undo stack size ({value}) must be a positive integer!")
         model = lib.document.Document(
             self.brush, cache_size=cache_size,
             max_undo_stack_size=undo_stack_size)
