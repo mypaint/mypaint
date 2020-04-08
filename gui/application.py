@@ -331,7 +331,12 @@ class Application (object):
         cache_size = self.preferences.get(
             'ui.rendered_tile_cache_size', lib.cache.DEFAULT_CACHE_SIZE
         )
-        model = lib.document.Document(self.brush, cache_size=cache_size)
+        undo_stack_size = self.preferences.setdefault(
+            'command.max_undo_stack_size',
+            lib.document.DEFAULT_UNDO_STACK_SIZE)
+        model = lib.document.Document(
+            self.brush, cache_size=cache_size,
+            max_undo_stack_size=undo_stack_size)
         self.doc = document.Document(self, app_canvas, model)
         app_canvas.set_model(model)
 
