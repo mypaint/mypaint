@@ -33,10 +33,10 @@ logger = getLogger(__name__)
 class CommandStack (object):
     """Undo/redo stack"""
 
-    MAXLEN = 30   # FIXME: dynamic size (psutil)?
-
-    def __init__(self, **kwargs):
+    def __init__(self, max_stack_size, **kwargs):
         super(CommandStack, self).__init__()
+        assert isinstance(max_stack_size, int) and max_stack_size > 0
+        self.max_stack_size = max_stack_size
         self.undo_stack = deque()
         self.redo_stack = deque()
         self.stack_updated()
@@ -121,7 +121,7 @@ class CommandStack (object):
 
     def reduce_undo_history(self):
         """Trims the undo stack"""
-        while len(self.undo_stack) > self.MAXLEN:
+        while len(self.undo_stack) > self.max_stack_size:
             self.undo_stack.popleft()
 
     def get_last_command(self):

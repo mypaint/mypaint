@@ -58,6 +58,7 @@ logger = logging.getLogger(__name__)
 ## Module constants
 
 DEFAULT_RESOLUTION = 72
+DEFAULT_UNDO_STACK_SIZE = 30
 
 N = tiledsurface.N
 
@@ -275,7 +276,8 @@ class Document (object):
     ## Initialization and cleanup
 
     def __init__(self, brushinfo=None, painting_only=False,
-                 cache_dir=None, cache_size=DEFAULT_CACHE_SIZE):
+                 cache_dir=None, cache_size=DEFAULT_CACHE_SIZE,
+                 max_undo_stack_size=DEFAULT_UNDO_STACK_SIZE):
         """Initialize
 
         :param brushinfo: the lib.brush.BrushInfo instance to use
@@ -301,7 +303,7 @@ class Document (object):
         self.brush = brush.Brush(brushinfo)
         self.brush.brushinfo.observers.append(self.brushsettings_changed_cb)
         self.stroke = None
-        self.command_stack = command.CommandStack()
+        self.command_stack = command.CommandStack(max_undo_stack_size)
 
         # Cache and auto-saving to the cache
         self._painting_only = painting_only
