@@ -4,8 +4,8 @@ msgstr ""
 "Project-Id-Version: mypaint v2.0.0-alpha.11-2-g0673fe8\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-03-29 16:08+0200\n"
-"PO-Revision-Date: 2020-02-23 09:36+0000\n"
-"Last-Translator: nautilusx <mail.ka@mailbox.org>\n"
+"PO-Revision-Date: 2020-04-09 09:50+0000\n"
+"Last-Translator: Jeannette L <j.lavoie@net-c.ca>\n"
 "Language-Team: German <https://hosted.weblate.org/projects/mypaint/mypaint/"
 "de/>\n"
 "Language: de\n"
@@ -427,8 +427,7 @@ msgstr "Neu"
 msgctxt "brushpack import failure messages"
 msgid "No file named “{order_conf_file}”. This is not a brushpack."
 msgstr ""
-"Die Datei \"{order_conf_file}\" existiert nicht. Sie ist keine "
-"Pinselsammlung."
+"Die Datei „{order_conf_file}“ existiert nicht. Sie ist keine Pinselsammlung."
 
 #: ../gui/brushmanager.py:689
 #, python-brace-format
@@ -437,8 +436,8 @@ msgid ""
 "Brush “{brush_name}” is listed in “{order_conf_file}”, but it does not exist "
 "in the zipfile."
 msgstr ""
-"Der Pinsel \"{brush_name}\" wird aufgeführt in \"{order_conf_file}\", "
-"existiert aber nicht in der Zip-Datei."
+"Der Pinsel „{brush_name}“ wird aufgeführt in „{order_conf_file}“, existiert "
+"aber nicht in der Zip-Datei."
 
 #: ../gui/brushmanager.py:702
 #, python-brace-format
@@ -447,8 +446,8 @@ msgid ""
 "Brush “{brush_name}” exists in the zipfile, but it is not listed in "
 "“{order_conf_file}”."
 msgstr ""
-"Der Pinsel \"{brush_name}\" existiert in der Zip-Datei, wird aber nicht "
-"aufgeführt in \"{order_conf_file}\"."
+"Der Pinsel „{brush_name}“ existiert in der Zip-Datei, wird aber nicht "
+"aufgeführt in „{order_conf_file}“."
 
 #: ../gui/brushmanager.py:1313 ../gui/footer.py:62
 msgid "Unknown Brush"
@@ -1791,7 +1790,7 @@ msgstr "Ebenen importiert aus {files_summary}."
 #, python-brace-format
 msgctxt "Document I/O: success"
 msgid "Loaded {files_summary}."
-msgstr "\"{files_summary}\" geladen."
+msgstr "„{files_summary}“ geladen."
 
 #. TRANSLATORS: formatting for {files_summary} for multiple files.
 #. TRANSLATORS: corresponding msgid for single files: "“{basename}”"
