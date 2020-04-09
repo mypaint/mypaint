@@ -58,7 +58,7 @@ logger = logging.getLogger(__name__)
 ## Module constants
 
 DEFAULT_RESOLUTION = 72
-DEFAULT_UNDO_STACK_SIZE = 30
+DEFAULT_UNDO_STACK_SIZE = 40
 
 N = tiledsurface.N
 
