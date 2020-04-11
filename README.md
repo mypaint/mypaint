@@ -7,7 +7,7 @@
   <br>
 </p>
 
-[![Translation status](https://hosted.weblate.org/widgets/mypaint/-/mypaint/svg-badge.svg)](https://hosted.weblate.org/engage/mypaint/?utm_source=widget) [![Build status on Travis](https://travis-ci.org/mypaint/mypaint.svg?branch=master)](https://travis-ci.org/mypaint/mypaint) [![AppVeyor](https://ci.appveyor.com/api/projects/status/3s54192cipo2d4js/branch/master?svg=true)](https://ci.appveyor.com/project/achadwick/mypaint/branch/master) [![Packaging status](https://repology.org/badge/tiny-repos/mypaint.svg)](https://repology.org/project/mypaint/versions)
+[![Financial Contributors on Open Collective](https://opencollective.com/mypaint/all/badge.svg?label=financial+contributors)](https://opencollective.com/mypaint) [![Translation status](https://hosted.weblate.org/widgets/mypaint/-/mypaint/svg-badge.svg)](https://hosted.weblate.org/engage/mypaint/?utm_source=widget) [![Build status on Travis](https://travis-ci.org/mypaint/mypaint.svg?branch=master)](https://travis-ci.org/mypaint/mypaint) [![AppVeyor](https://ci.appveyor.com/api/projects/status/3s54192cipo2d4js/branch/master?svg=true)](https://ci.appveyor.com/project/achadwick/mypaint/branch/master) [![Packaging status](https://repology.org/badge/tiny-repos/mypaint.svg)](https://repology.org/project/mypaint/versions)
 
 
 ## Features
@@ -107,3 +107,33 @@ Copyrights](Licenses.md) for a summary of its licensing.  A list of
 contributors can be found in the about dialog.
 
 [trackerlink]: https://github.com/mypaint/mypaint/issues
+
+## Contributors
+
+### Code Contributors
+
+This project exists thanks to all the people who contribute. [[Contribute](CONTRIBUTING.md)].
+<a href="https://github.com/mypaint/mypaint/graphs/contributors"><img src="https://opencollective.com/mypaint/contributors.svg?width=890&button=false" /></a>
+
+### Financial Contributors
+
+Become a financial contributor and help us sustain our community. [[Contribute](https://opencollective.com/mypaint/contribute)]
+
+#### Individuals
+
+<a href="https://opencollective.com/mypaint"><img src="https://opencollective.com/mypaint/individuals.svg?width=890"></a>
+
+#### Organizations
+
+Support this project with your organization. Your logo will show up here with a link to your website. [[Contribute](https://opencollective.com/mypaint/contribute)]
+
+<a href="https://opencollective.com/mypaint/organization/0/website"><img src="https://opencollective.com/mypaint/organization/0/avatar.svg"></a>
+<a href="https://opencollective.com/mypaint/organization/1/website"><img src="https://opencollective.com/mypaint/organization/1/avatar.svg"></a>
+<a href="https://opencollective.com/mypaint/organization/2/website"><img src="https://opencollective.com/mypaint/organization/2/avatar.svg"></a>
+<a href="https://opencollective.com/mypaint/organization/3/website"><img src="https://opencollective.com/mypaint/organization/3/avatar.svg"></a>
+<a href="https://opencollective.com/mypaint/organization/4/website"><img src="https://opencollective.com/mypaint/organization/4/avatar.svg"></a>
+<a href="https://opencollective.com/mypaint/organization/5/website"><img src="https://opencollective.com/mypaint/organization/5/avatar.svg"></a>
+<a href="https://opencollective.com/mypaint/organization/6/website"><img src="https://opencollective.com/mypaint/organization/6/avatar.svg"></a>
+<a href="https://opencollective.com/mypaint/organization/7/website"><img src="https://opencollective.com/mypaint/organization/7/avatar.svg"></a>
+<a href="https://opencollective.com/mypaint/organization/8/website"><img src="https://opencollective.com/mypaint/organization/8/avatar.svg"></a>
+<a href="https://opencollective.com/mypaint/organization/9/website"><img src="https://opencollective.com/mypaint/organization/9/avatar.svg"></a>
