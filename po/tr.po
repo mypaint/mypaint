@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: mypaint v2.0.0-alpha.12-343-g82b4fc5\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-03-29 16:08+0200\n"
-"PO-Revision-Date: 2020-04-04 05:49+0000\n"
+"PO-Revision-Date: 2020-04-13 07:44+0000\n"
 "Last-Translator: Oğuz Ersen <oguzersen@protonmail.com>\n"
 "Language-Team: Turkish <https://hosted.weblate.org/projects/mypaint/mypaint/"
 "tr/>\n"
@@ -130,7 +130,7 @@ msgstr "Arkaplan"
 
 #: ../gui/backgroundwindow.py:58
 msgid "Save as Default"
-msgstr "Varsayılan Olarak Kaydet"
+msgstr "Öntanımlı Olarak Kaydet"
 
 #: ../gui/backgroundwindow.py:75
 msgid "Pattern"
@@ -366,7 +366,7 @@ msgstr "Otomatik"
 
 #: ../gui/brushiconeditor.py:184
 msgid "Use the default icon"
-msgstr "Varsayılan simgeyi kullan"
+msgstr "Öntanımlı simgeyi kullan"
 
 #. TRANSLATORS: save edits to a brush icon
 #: ../gui/brushiconeditor.py:190 ../gui/brusheditor.glade:111
@@ -1824,7 +1824,7 @@ msgstr "JPEG (*.jpg; *.jpeg)"
 #: ../gui/filehandling.py:495
 msgctxt "save dialogs: save formats and options"
 msgid "By extension (prefer default format)"
-msgstr "Uzantıya göre (varsayılan biçimi tercih et)"
+msgstr "Uzantıya göre (öntanımlı biçimi tercih et)"
 
 #: ../gui/filehandling.py:499
 msgctxt "save dialogs: save formats and options"
@@ -2204,7 +2204,7 @@ msgstr "Sıfırla"
 #: ../gui/fill.py:858
 msgctxt "fill options: Reset button (tooltip)"
 msgid "Reset options to their defaults"
-msgstr "Seçenekleri varsayılanlarına sıfırla"
+msgstr "Seçenekleri öntanımlılarına sıfırla"
 
 #: ../gui/fill.py:1036
 msgctxt "fill option: default option in the Source Layer dropdown"
@@ -4401,7 +4401,7 @@ msgstr "Tuşlar"
 #: ../gui/preferenceswindow.glade:509
 msgctxt "Prefs Dialog|Load & Save|Saving|"
 msgid "Default file format:"
-msgstr "Varsayılan dosya biçimi:"
+msgstr "Öntanımlı dosya biçimi:"
 
 #: ../gui/preferenceswindow.glade:524
 msgctxt "Prefs Dialog|Load & Save|Saving|"
@@ -4514,7 +4514,7 @@ msgstr "<b>Yakınlaştırma ve İşleme</b>"
 
 #: ../gui/preferenceswindow.glade:824
 msgid "Default zoom level:"
-msgstr "Varsayılan yakınlaştırma düzeyi:"
+msgstr "Öntanımlı yakınlaştırma düzeyi:"
 
 #: ../gui/preferenceswindow.glade:862
 msgctxt "Prefs Dialog|View|"
@@ -5642,7 +5642,7 @@ msgstr "Yakınlaştırmayı Sıfırla"
 #: ../gui/resources.xml:709
 msgctxt "Accel Editor (descriptions)"
 msgid "Reset view zoom level to default."
-msgstr "Görünüm yakınlaştırmasını varsayılan değerlere sıfırla."
+msgstr "Görünüm yakınlaştırmasını öntanımlı değerlere sıfırla."
 
 #: ../gui/resources.xml:715
 msgctxt "Menu→View→Reset (labels), Accel Editor (labels)"
@@ -6024,8 +6024,7 @@ msgstr "Yeni Karalama Defteri"
 #: ../gui/resources.xml:1097
 msgctxt "Accel Editor (descriptions)"
 msgid "Load the default scratchpad as a new scratchpad canvas."
-msgstr ""
-"Varsayılan karalama defterini yeni karalama defteri tuvali olarak yükle."
+msgstr "Öntanımlı karalama defterini yeni karalama defteri tuvali olarak yükle."
 
 #: ../gui/resources.xml:1104
 msgctxt "Menu→Scratchpad (labels), Accel Editor (labels)"
@@ -6070,23 +6069,23 @@ msgstr "Karalama defterini son kaydedildiği duruma geri döndür."
 #: ../gui/resources.xml:1136
 msgctxt "Menu→Scratchpad (labels), Accel Editor (labels)"
 msgid "Save Scratchpad as Default"
-msgstr "Karalama Defterini Varsayılan Olarak Kaydet"
+msgstr "Karalama Defterini Öntanımlı Olarak Kaydet"
 
 #: ../gui/resources.xml:1137
 msgctxt "Accel Editor (descriptions)"
 msgid "Save the scratchpad as the default for ‘New Scratchpad’."
 msgstr ""
-"Karalama defterini ‘Yeni Karalama Defteri’ için varsayılan olarak kaydet."
+"Karalama defterini ‘Yeni Karalama Defteri’ için öntanımlı olarak kaydet."
 
 #: ../gui/resources.xml:1143
 msgctxt "Menu→Scratchpad (labels), Accel Editor (labels)"
 msgid "Clear Default Scratchpad"
-msgstr "Varsayılan Karalama Defterini Temizle"
+msgstr "Öntanımlı Karalama Defterini Temizle"
 
 #: ../gui/resources.xml:1144
 msgctxt "Accel Editor (descriptions)"
 msgid "Clear the default scratchpad to a blank canvas."
-msgstr "Varsayılan karalama defterini boş tuvale temizle."
+msgstr "Öntanımlı karalama defterini boş tuvale temizle."
 
 #: ../gui/resources.xml:1150
 msgctxt "Menu→Scratchpad (labels), Accel Editor (labels)"
