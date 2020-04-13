@@ -6,9 +6,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mypaint v2.0.0-alpha.8-1-g4490f06\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-03-03 00:01+0100\n"
-"PO-Revision-Date: 2019-02-27 14:19+0000\n"
-"Last-Translator: glixx <roman_romul@mail.ru>\n"
+"POT-Creation-Date: 2020-03-29 16:08+0200\n"
+"PO-Revision-Date: 2020-04-13 16:16+0000\n"
+"Last-Translator: Péter Varga <pcobbler9@gmail.com>\n"
 "Language-Team: Hungarian <https://hosted.weblate.org/projects/mypaint/"
 "mypaint/hu/>\n"
 "Language: hu\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 3.5-dev\n"
+"X-Generator: Weblate 4.0-dev\n"
 
 #. TRANSLATORS: Name of first column in the button map preferences.
 #. TRANSLATORS: Refers to an action bound to a mod+button combination.
@@ -83,6 +83,8 @@ msgid ""
 "<b>{accel} is already in use for '{action}'. The existing assignment will be "
 "replaced.</b>"
 msgstr ""
+"<b> A {accel} billentyűkombináció már ehhez van rendelve: '{action}'. Le "
+"lesz cserélve.</b>"
 
 #: ../gui/application.py:615
 #, python-brace-format
@@ -98,28 +100,28 @@ msgstr "Oké"
 
 #: ../gui/autorecover.py:138
 msgid "No backups were found in the cache."
-msgstr ""
+msgstr "Nem található biztonsági mentés a tárolóban."
 
 #: ../gui/autorecover.py:139
 msgid "No Available Backups"
-msgstr ""
+msgstr "Nincs elérhető biztonsági mentés"
 
 #: ../gui/autorecover.py:141
 msgid "Open the Cache Folder…"
-msgstr ""
+msgstr "Gyorsírótár mappa megnyitása…"
 
 #: ../gui/autorecover.py:171
 msgid "Backup Recovery Failed"
-msgstr ""
+msgstr "A biztonsági mentést nem sikerült helyreállítani"
 
 #: ../gui/autorecover.py:173
 msgid "Open the Backup’s Folder…"
-msgstr ""
+msgstr "\"Biztonsági mentés\" mappa megnyitása…"
 
 #: ../gui/autorecover.py:182
 #, python-brace-format
 msgid "Recovered file from {iso_datetime}.ora"
-msgstr ""
+msgstr "A fájl helyreállítva innen: {iso_datetime}.ora"
 
 #: ../gui/backgroundwindow.py:55
 msgid "Background"
@@ -164,7 +166,7 @@ msgstr "A Gdk-Pixbuf nem tudta betölteni a „{filename}” fájt, az ok „{er
 #: ../gui/backgroundwindow.py:382
 #, python-brace-format
 msgid "{filename} has zero size (w={w}, h={h})"
-msgstr ""
+msgstr "{filename} mérete nulla (sz={w}, m={h})"
 
 #: ../gui/brusheditor.py:112
 msgctxt "brush settings editor: subwindow title"
@@ -174,7 +176,7 @@ msgstr "Ecsetbeállítás szerkesztő"
 #: ../gui/brusheditor.py:293
 msgctxt "brush settings list: brush metadata texts group"
 msgid "About"
-msgstr ""
+msgstr "Súgó"
 
 #: ../gui/brusheditor.py:304
 msgctxt "brush settings list: setting group"
@@ -207,9 +209,10 @@ msgid "Speed"
 msgstr "Sebesség"
 
 #: ../gui/brusheditor.py:381
+#, fuzzy
 msgctxt "brush settings list: setting group"
 msgid "Directional Offsets"
-msgstr ""
+msgstr "Irányhatású peremek"
 
 #: ../gui/brusheditor.py:399
 msgctxt "brush settings list: setting group"
@@ -227,9 +230,10 @@ msgid "Color"
 msgstr "Szín"
 
 #: ../gui/brusheditor.py:439
+#, fuzzy
 msgctxt "brush settings list: setting group"
 msgid "GridMap"
-msgstr ""
+msgstr "Képrács"
 
 #: ../gui/brusheditor.py:450
 msgctxt "brush settings list: setting group"
@@ -266,7 +270,7 @@ msgstr "Nem választottál ecsetet!"
 #, python-brace-format
 msgctxt "brush settings editor: delete brush: confirm dialog question"
 msgid "Really delete brush “{brush_name}” from disk?"
-msgstr ""
+msgstr "Biztos törli a lemezről a(z) “{brush_name}” ecsetet?"
 
 #: ../gui/brusheditor.py:728
 msgctxt "brush settings editor: header: fallback name"
@@ -277,7 +281,7 @@ msgstr "(névtelen ecset)"
 #, python-brace-format
 msgctxt "brush settings editor: header: is-modified hint"
 msgid "{brush_name} [unsaved]"
-msgstr ""
+msgstr "{brush_name} [mentetlen]"
 
 #: ../gui/brushiconeditor.py:36
 msgid "Brush Icon"
@@ -297,6 +301,8 @@ msgid ""
 "<b>%s</b>\n"
 "<small>Select a valid brush first</small>"
 msgstr ""
+"<b>%s</b>\n"
+"<small>Válasszon előbb egy érvényes ecsetet</small>"
 
 #: ../gui/brushiconeditor.py:79
 #, python-format
@@ -304,6 +310,8 @@ msgid ""
 "<b>%s</b> <i>(modified)</i>\n"
 "<small>Changes are not yet saved</small>"
 msgstr ""
+"<b>%s</b> <i>(módosult)</i>\n"
+"<small>A módosítások még nincsenek mentve</small>"
 
 #: ../gui/brushiconeditor.py:82
 #, python-format
@@ -311,6 +319,8 @@ msgid ""
 "<b>%s</b> (editing)\n"
 "<small>Paint with any brush or color</small>"
 msgstr ""
+"<b>%s</b> (szerkesztés)\n"
+"<small>Festés bármilyen ecsettel és színnel</small>"
 
 #: ../gui/brushiconeditor.py:85
 #, python-format
@@ -318,6 +328,8 @@ msgid ""
 "<b>%s</b>\n"
 "<small>Click ‘Edit’ to make changes to the icon</small>"
 msgstr ""
+"<b>%s</b>\n"
+"<small>A \"Szerkesztés\"-re kattintva módosíthatja az ikont</small>"
 
 #. TRANSLATORS: begin editing a brush's preview icon
 #: ../gui/brushiconeditor.py:157
@@ -326,7 +338,7 @@ msgstr "Szerkesztés"
 
 #: ../gui/brushiconeditor.py:159
 msgid "Begin editing this preview icon"
-msgstr ""
+msgstr "Előnézeti ikon szerkesztése"
 
 #. TRANSLATORS: revert edits to a brush icon
 #: ../gui/brushiconeditor.py:165
@@ -335,7 +347,7 @@ msgstr "Visszaállítás"
 
 #: ../gui/brushiconeditor.py:167
 msgid "Discard changes, and cancel editing"
-msgstr ""
+msgstr "Módosítások eldobása és szerkesztés befejezése"
 
 #. TRANSLATORS: clear the brush preview icon being edited
 #: ../gui/brushiconeditor.py:174
@@ -344,12 +356,12 @@ msgstr "Előnézet törlése"
 
 #: ../gui/brushiconeditor.py:176
 msgid "Clear the preview icon"
-msgstr ""
+msgstr "Előnézeti ikon törlése"
 
 #. TRANSLATORS: set the brush icon to a built-in default
 #: ../gui/brushiconeditor.py:182
 msgid "Auto"
-msgstr ""
+msgstr "Alapértelmezés"
 
 #: ../gui/brushiconeditor.py:184
 msgid "Use the default icon"
@@ -362,7 +374,7 @@ msgstr "Mentés"
 
 #: ../gui/brushiconeditor.py:192
 msgid "Save this preview icon, and finish editing"
-msgstr ""
+msgstr "Előnézeti ikon mentése, szerkesztés befejezése"
 
 #: ../gui/brushmanager.py:129
 msgid "Lost & Found"
@@ -416,7 +428,7 @@ msgstr "Új"
 #, python-brace-format
 msgctxt "brushpack import failure messages"
 msgid "No file named “{order_conf_file}”. This is not a brushpack."
-msgstr ""
+msgstr "Nincs “{order_conf_file}” nevű fájl. Nincs ilyen ecsetkészlet."
 
 #: ../gui/brushmanager.py:689
 #, python-brace-format
@@ -425,6 +437,8 @@ msgid ""
 "Brush “{brush_name}” is listed in “{order_conf_file}”, but it does not exist "
 "in the zipfile."
 msgstr ""
+"A “{brush_name}” nevű ecset listázva itt: “{order_conf_file}”, de nincs a "
+"zip-fájlban."
 
 #: ../gui/brushmanager.py:702
 #, python-brace-format
@@ -433,30 +447,29 @@ msgid ""
 "Brush “{brush_name}” exists in the zipfile, but it is not listed in "
 "“{order_conf_file}”."
 msgstr ""
+"Van “{brush_name}” nevű ecset a zip-fájlban, de nincs listázva itt: "
+"“{order_conf_file}”."
 
 #: ../gui/brushmanager.py:1313 ../gui/footer.py:62
 msgid "Unknown Brush"
 msgstr "Ismeretlen ecset"
 
 #: ../gui/brushselectionwindow.py:220
-#, fuzzy
 msgctxt "brush group: context menu for a single brush"
 msgid "Add to Favorites"
-msgstr "Kedvencek"
+msgstr "Hozzáadás a kedvencekhez"
 
 #: ../gui/brushselectionwindow.py:227
-#, fuzzy
 msgctxt "brush group: context menu for a single brush"
 msgid "Remove from Favorites"
-msgstr "Minden szín eltávolítása"
+msgstr "Eltávolítás a Kedvencek közül"
 
 #: ../gui/brushselectionwindow.py:235
 msgctxt "brush group: context menu for a single brush"
 msgid "Clone"
-msgstr ""
+msgstr "Ecset másolása"
 
 #: ../gui/brushselectionwindow.py:242
-#, fuzzy
 msgctxt "brush group: context menu for a single brush"
 msgid "Edit Brush Settings"
 msgstr "Aktív ecset beállításainak szerkesztése"
@@ -471,34 +484,35 @@ msgstr "Csoport átnevezése"
 #, python-brace-format
 msgctxt "brush group: context menu: unique names for cloned brushes"
 msgid "{original_name} copy"
-msgstr ""
+msgstr "{original_name} másolata"
 
 #: ../gui/brushselectionwindow.py:299
 #, python-brace-format
 msgctxt "brush group: context menu: unique names for cloned brushes"
 msgid "{original_name} copy {n}"
-msgstr ""
+msgstr "{original_name} másolata {n}"
 
 #: ../gui/brushselectionwindow.py:325
 #, python-brace-format
 msgctxt "brush group: context menu: remove from group"
 msgid "Really remove brush “{brush_name}” from group “{group_name}”?"
 msgstr ""
+"Biztos, hogy eltávolítja a(z) “{brush_name}” ecsetet innen: “{group_name}”?"
 
 #. TRANSLATORS: number of brushes in a brush group, for tooltips
 #: ../gui/brushselectionwindow.py:381
 #, python-format
 msgid "%d brush"
 msgid_plural "%d brushes"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%d ecset"
+msgstr[1] "%d ecset"
 
 #. TRANSLATORS: properties dialog for the current brush group
 #: ../gui/brushselectionwindow.py:405
 #, python-brace-format
 msgctxt "brush group properties dialog: title"
 msgid "Group “{group_name}”"
-msgstr ""
+msgstr "“{group_name}” készlet"
 
 #: ../gui/brushselectionwindow.py:418
 msgctxt "brush group properties dialog: action buttons"
@@ -508,7 +522,7 @@ msgstr "Csoport átnevezése"
 #: ../gui/brushselectionwindow.py:424
 msgctxt "brush group properties dialog: action buttons"
 msgid "Export as Zipped Brushset"
-msgstr ""
+msgstr "Ecsetkészlet exportálása ZIP fájlként"
 
 #: ../gui/brushselectionwindow.py:430
 msgctxt "brush group properties dialog: action buttons"
@@ -529,7 +543,7 @@ msgstr "Már létezik ilyen nevű csoport!"
 #, python-brace-format
 msgctxt "brush group delete"
 msgid "Really delete group “{group_name}”?"
-msgstr ""
+msgstr "Biztosan törli ezt a csoportot: “{group_name}”?"
 
 #: ../gui/brushselectionwindow.py:495
 #, python-brace-format
@@ -538,6 +552,8 @@ msgid ""
 "Could not delete group “{group_name}”.\n"
 "Some special groups cannot be deleted."
 msgstr ""
+"A(z) “{group_name}” csoport nem törölhető.\n"
+"Bizonyos csoportokat nem lehet törölni."
 
 #: ../gui/brushselectionwindow.py:510
 msgctxt "brush group export dialog: title"
@@ -573,7 +589,7 @@ msgstr "Csoport létrehozása"
 #. TRANSLATORS: It is part of a button map label.
 #: ../gui/buttonmap.py:60
 msgid "Button"
-msgstr "Gombok"
+msgstr "Egérbillentyű"
 
 #. TRANSLATORS: abbreviated "Button <number>" for forms like "Alt+Btn1"
 #: ../gui/buttonmap.py:63
@@ -4733,7 +4749,7 @@ msgstr "Indítás új üres vászonnal."
 #: ../gui/resources.xml:73
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "Open…"
-msgstr ""
+msgstr "Megnyitás…"
 
 #: ../gui/resources.xml:74
 msgctxt "Toolbar (short labels)"
@@ -6026,7 +6042,7 @@ msgstr "Súgó"
 #: ../gui/resources.xml:1237
 msgctxt "Menu→Help (labels), Accel Editor (labels)"
 msgid "Online Help"
-msgstr ""
+msgstr "Online segítség"
 
 #: ../gui/resources.xml:1238
 msgctxt "Accel Editor (descriptions)"
@@ -6191,7 +6207,7 @@ msgstr ""
 #: ../gui/resources.xml:1382
 msgctxt "Menu→Layers (labels), Accel Editor (labels)"
 msgid "Show Layers Panel"
-msgstr ""
+msgstr "A \"Rétegek\" panel megjelenítése"
 
 #: ../gui/resources.xml:1383
 msgctxt "Accel Editor (descriptions)"
@@ -6316,7 +6332,7 @@ msgstr ""
 #: ../gui/resources.xml:1488
 msgctxt "Menu→Window (labels), Toolbar (labels), Accel Editor (labels)"
 msgid "Preview Panel"
-msgstr ""
+msgstr "Előnézet panel"
 
 #: ../gui/resources.xml:1489
 msgctxt "Accel Editor (descriptions)"
@@ -6336,7 +6352,7 @@ msgstr ""
 #: ../gui/resources.xml:1508
 msgctxt "Menu→Window (labels), Toolbar (labels), Accel Editor (labels)"
 msgid "Tool Options Panel"
-msgstr ""
+msgstr "Eszközbeállítások"
 
 #: ../gui/resources.xml:1509
 msgctxt "Accel Editor (descriptions)"
@@ -6346,7 +6362,7 @@ msgstr ""
 #: ../gui/resources.xml:1517
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
 msgid "Show Tool Options Panel"
-msgstr ""
+msgstr "\"Eszközbeállítások\" panel megjelenítése"
 
 #: ../gui/resources.xml:1518
 msgctxt "Accel Editor (descriptions)"
@@ -6670,7 +6686,7 @@ msgstr ""
 #: ../gui/resources.xml:1790
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
 msgid "Inking"
-msgstr ""
+msgstr "Festékezés"
 
 #: ../gui/resources.xml:1791
 msgctxt "Accel Editor (descriptions)"
@@ -6751,7 +6767,7 @@ msgstr ""
 #: ../gui/resources.xml:1852
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "Edit Painting Symmetry"
-msgstr ""
+msgstr "Festés szimmetriájának szerkesztése"
 
 #: ../gui/resources.xml:1853
 msgctxt "Accel Editor (description)"
@@ -6837,7 +6853,7 @@ msgstr ""
 #: ../gui/resources.xml:1945
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
 msgid "Flood Fill"
-msgstr ""
+msgstr "Festékvödör"
 
 #: ../gui/resources.xml:1946
 msgctxt "Accel Editor (descriptions)"
