@@ -17,6 +17,8 @@ import lib.layer
 from lib.xml import escape
 from lib.observable import event
 from lib import helpers
+
+from lib.document import Document
 from lib.gettext import gettext as _
 from lib.gettext import C_
 from gui.layerprops import make_preview
@@ -63,7 +65,7 @@ class RootStackTreeModelWrapper (GObject.GObject, Gtk.TreeModel):
     def __init__(self, docmodel):
         """Initialize, presenting the root stack of a document model
 
-        :param lib.document.Document docmodel: model to present
+        :param Document docmodel: model to present
         """
         super(RootStackTreeModelWrapper, self).__init__()
         self._docmodel = docmodel
@@ -1107,7 +1109,6 @@ def new_blend_mode_combo(modes, mode_strings):
 
 def _test():
     """Test the custom model in an ad-hoc GUI window"""
-    from lib.document import Document
     from lib.layer import PaintingLayer, LayerStack
     doc_model = Document()
     root = doc_model.layer_stack

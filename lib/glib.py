@@ -38,7 +38,7 @@ def filename_to_unicode(opsysstring):
 
     :param bytes opsysstring: a string in the (GLib) encoding for filenames
     :returns: the converted filename
-    :rtype: unicode/str
+    :rtype: unicode|str
 
     >>> filename_to_unicode(b'/ascii/only/path') == u'/ascii/only/path'
     True

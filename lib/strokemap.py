@@ -19,8 +19,9 @@ from warnings import warn
 import numpy as np
 
 from . import mypaintlib
-from . import tiledsurface
 from . import idletask
+import lib.tiledsurface as tiledsurface
+from lib.surface import TileAccessible  # noqa
 from lib.pycompat import PY3, iteritems
 
 logger = getLogger(__name__)
@@ -57,9 +58,9 @@ class StrokeShape (object):
         """Build a new StrokeShape from before+after pair of snapshots.
 
         :param before: snapshot of the layer before the stroke
-        :type before: lib.tiledsurface._TiledSurfaceSnapshot
+        :type before: tiledsurface._TiledSurfaceSnapshot
         :param after: snapshot of the layer after the stroke
-        :type after: lib.tiledsurface._TiledSurfaceSnapshot
+        :type after: tiledsurface._TiledSurfaceSnapshot
         :returns: A new StrokeShape, or None.
 
         If the snapshots haven't changed, None is returned. In this
@@ -182,7 +183,7 @@ class StrokeShape (object):
     def render_to_surface(self, surf, bbox=None, center=None):
         """Draw all or part of the shape to a tile-accessible surface.
 
-        :param lib.surface.TileAccessible surf: target surface
+        :param TileAccessible surf: target surface
         :param tuple bbox: pixel bounding box (x,y,w,h) to render
 
         If the bbox parameter is specified, only tiles within the

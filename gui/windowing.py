@@ -783,7 +783,7 @@ def _get_target_area_geometry(screen, mon_num):
     :param Gdk.Screen screen: Target screen.
     :param int mon_num: Monitor number, e.g. that of the pointer.
     :returns: A hopefully usable target area.
-    :rtype: lib.helpers.Rect
+    :rtype: Rect
 
     This function operates like gdk_screen_get_monitor_geometry(), but
     falls back to the screen geometry for cases when that returns NULL.

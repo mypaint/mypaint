@@ -160,7 +160,7 @@ def scanline_strips_iter(surface, rect, alpha=False,
                          single_tile_pattern=False, **kwargs):
     """Generate (render) scanline strips from a tile-blittable object
 
-    :param lib.surface.TileBlittable surface: Surface to iterate over
+    :param TileBlittable surface: Surface to iterate over
     :param bool alpha: If true, write a PNG with alpha
     :param bool single_tile_pattern: True if surface is a one tile only.
     :param tuple \*\*kwargs: Passed to blit_tile_into.

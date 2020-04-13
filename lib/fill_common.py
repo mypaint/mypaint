@@ -8,6 +8,7 @@
 
 """Functions and constants common to fill and morphological operations"""
 
+import lib.helpers
 import lib.mypaintlib
 import numpy
 

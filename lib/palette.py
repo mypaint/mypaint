@@ -24,6 +24,7 @@ from lib.helpers import clamp
 from lib.observable import event
 from lib.color import RGBColor
 from lib.color import YCbCrColor
+from lib.color import UIColor  # noqa
 from lib.pycompat import unicode
 from lib.pycompat import xrange
 from lib.pycompat import PY3
@@ -405,9 +406,9 @@ class Palette (object):
         :param direction: Direction for moving, positive or negative
         :type direction: int:, ``1`` or ``-1``
         :param refcol: Reference color, used for initial matching when needed.
-        :type refcol: lib.color.UIColor
+        :type refcol: UIColor
         :returns: the color newly matched, if the match position has changed
-        :rtype: lib.color.UIColor, or None
+        :rtype: UIColor|NoneType
 
         Invoking this method when there's no current match position will select
         the color that's closest to the reference color, just like

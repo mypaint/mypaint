@@ -20,6 +20,7 @@ from gettext import gettext as _
 import cairo
 
 from . import windowing
+from gui.tileddrawwidget import TiledDrawWidget  # noqa
 import gui.mode
 from lib.color import RGBColor
 from . import uicolor
@@ -146,7 +147,7 @@ class FrameEditMode (gui.mode.ScrollableModeMixin,
     def _place_new_frame(self, tdw, pos=None):
         """Place a new frame on the screen so that it's visible
 
-        :param gui.tileddrawwidget.TiledDrawWidget tdw: canvas widget
+        :param TiledDrawWidget tdw: canvas widget
         :param tuple pos: position of the frame centre, display (x, y)
 
         The existing frame position is discarded, and a new position is

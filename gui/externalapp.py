@@ -18,8 +18,11 @@ import weakref
 import os.path
 import os
 
+from gui.document import Document  # noqa
+
 from lib.gettext import gettext as _
 from lib.gettext import C_
+from lib.layer.core import LayerBase  # noqa
 
 from gi.repository import Gio
 from gi.repository import Pango
@@ -90,7 +93,7 @@ class OpenWithDialog (Gtk.Dialog):
         msg_text = msg_template.format(
             content_type=content_type,
             type_name=Gio.content_type_get_description(content_type),
-            )
+        )
         msg_label = Gtk.Label(label=msg_text)
         msg_label.set_single_line_mode(False)
         msg_label.set_line_wrap(True)
@@ -172,7 +175,7 @@ class OpenWithDialog (Gtk.Dialog):
         markup = markup_template.format(
             name=lib.xml.escape(name),
             description=lib.xml.escape(desc),
-            )
+        )
         cell.set_property("markup", markup)
 
     def _app_icon_datafunc(self, col, cell, model, it, data):
@@ -208,7 +211,7 @@ class LayerEditManager (object):
     def __init__(self, doc):
         """Initialize, attached to a document controller
 
-        :param gui.document.Document doc: Owning controller
+        :param Document doc: Owning controller
 
         """
         super(LayerEditManager, self).__init__()
@@ -218,7 +221,7 @@ class LayerEditManager (object):
     def begin(self, layer):
         """Begin editing a layer in an external application
 
-        :param lib.layer.LayerBase layer: Layer to start editing
+        :param LayerBase layer: Layer to start editing
 
         This starts the edit procedure by launching a chosen
         application for a tempfile requested from the layer. The file is
@@ -299,7 +302,7 @@ class LayerEditManager (object):
                 "Failed to launch %r with %r",
                 appinfo.get_name(),
                 file_path,
-                )
+            )
             return
         self._doc.app.show_transient_message(
             _LAUNCH_SUCCESS_MSG.format(
@@ -387,9 +390,9 @@ class LayerEditManager (object):
 if __name__ == '__main__':
     logging.basicConfig(level=logging.DEBUG)
     dialog = OpenWithDialog("image/svg+xml")
-    #dialog = OpenWithDialog("text/plain")
-    #dialog = OpenWithDialog("image/jpeg")
-    #dialog = OpenWithDialog("application/xml")
+    # dialog = OpenWithDialog("text/plain")
+    # dialog = OpenWithDialog("image/jpeg")
+    # dialog = OpenWithDialog("application/xml")
     response = dialog.run()
     if response == Gtk.ResponseType.OK:
         app_name = dialog.selected_appinfo.get_name()

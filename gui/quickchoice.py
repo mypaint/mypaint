@@ -21,6 +21,7 @@ from . import brushselectionwindow
 from . import widgets
 from . import spinbox
 from . import windowing
+from gui.application import Application  # noqa
 from lib.observable import event
 import gui.colortools
 from lib.pycompat import add_metaclass
@@ -166,7 +167,7 @@ class BrushChooserPopup (windowing.ChooserPopup):
     def __init__(self, app, prefs_id=_DEFAULT_PREFS_ID):
         """Initialize.
 
-        :param gui.application.Application app: main app instance
+        :param Application app: main app instance
         :param unicode prefs_id: prefs identifier for the chooser
 
         The prefs identifier forms part of preferences key which store
@@ -306,7 +307,7 @@ class ColorChooserPopup (windowing.ChooserPopup):
     def __init__(self, app, prefs_id=_DEFAULT_PREFS_ID, single_click=False):
         """Initialize.
 
-        :param gui.application.Application app: main app instance
+        :param Application app: main app instance
         :param unicode prefs_id: prefs identifier for the chooser
         :param bool single_click: limit to just the single-click adjusters
 

@@ -25,7 +25,7 @@ logger = logging.getLogger(__name__)
 def get_json_config(conf_path):
     """Return user settings read from the settings file
     :param conf_path: The path to the directory containing settings.json
-    :type conf_path: string
+    :type conf_path: str
     :returns: Dict with settings, or the empty dict if the settings file
     cannot be found/read or parsed.
     """

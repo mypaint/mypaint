@@ -19,6 +19,8 @@ from gettext import gettext as _
 from logging import getLogger
 
 import lib.layer
+import lib.layer.data
+import lib.document
 from . import helpers
 from lib.observable import event
 import lib.stroke
@@ -252,7 +254,7 @@ class Brushwork (Command):
         :param tuple layer_path: path of the layer to affect within doc
         :param unicode description: Descriptive name for this brushwork
         :param bool abrupt_start: Reset brush & dwell before starting
-        :param gui.layer.data.SimplePaintingLayer layer: explicit target layer
+        :param lib.layer.data.SimplePaintingLayer layer: explicit target layer
 
         The Brushwork command is created as an active command which can
         be used for capturing brushstrokes. Recording must be stopped

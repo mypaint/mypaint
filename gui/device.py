@@ -23,6 +23,7 @@ from gi.repository import Gdk
 from gi.repository import Pango
 
 from lib.observable import event
+import gui.application
 import gui.mode
 
 logger = logging.getLogger(__name__)
