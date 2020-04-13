@@ -418,8 +418,7 @@ class SettingsEditor (Gtk.Grid):
         """
         super(SettingsEditor, self).__init__()
         if monitor is None:
-            from gui.application import get_app
-            app = get_app()
+            app = gui.application.get_app()
             monitor = app.device_monitor
         self._monitor = monitor
 

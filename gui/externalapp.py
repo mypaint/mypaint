@@ -18,7 +18,7 @@ import weakref
 import os.path
 import os
 
-from gui.document import Document  # noqa
+import gui.document  # noqa
 
 from lib.gettext import gettext as _
 from lib.gettext import C_
@@ -211,7 +211,7 @@ class LayerEditManager (object):
     def __init__(self, doc):
         """Initialize, attached to a document controller
 
-        :param Document doc: Owning controller
+        :param gui.document.Document doc: Owning controller
 
         """
         super(LayerEditManager, self).__init__()

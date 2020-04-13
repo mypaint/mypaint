@@ -272,8 +272,7 @@ class Document (CanvasController):  # TODO: rename to "DocumentController"
     @classmethod
     def get_active_instance(cls):
         """Get the Document instance which has the active tdw."""
-        from gui.tileddrawwidget import TiledDrawWidget
-        active_tdw = TiledDrawWidget.get_active_tdw()
+        active_tdw = gui.tileddrawwidget.TiledDrawWidget.get_active_tdw()
         for instance in cls.get_instances():
             if instance.tdw is active_tdw:
                 return instance

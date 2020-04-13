@@ -20,14 +20,13 @@ from gi.repository import Gdk
 from gi.repository import GLib
 
 import lib.command
-from lib.document import Document  # noqa
-from lib.layer.data import SimplePaintingLayer  # noqa
+from lib.document import Document
+from lib.layer.data import SimplePaintingLayer
 from lib.observable import event
 from lib.pycompat import add_metaclass
 from lib.pycompat import unicode
 
 import gui.cursor
-from gui.document import CanvasController  # noqa
 
 logger = logging.getLogger(__name__)
 
