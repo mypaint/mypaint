@@ -36,6 +36,7 @@ from lib.brush import BrushInfo
 from lib.observable import event
 import lib.pixbuf
 from . import drawutils
+import gui.application
 import gui.mode
 from lib.pycompat import unicode
 from lib.pycompat import xrange
@@ -194,8 +195,8 @@ class BrushManager (object):
     def __init__(self, stock_brushpath, user_brushpath, app=None):
         """Initialize, with paths and a ref to the main app.
 
-        :param unicode/str stock_brushpath: MyPaint install's RO brushes.
-        :param unicode/str user_brushpath: User-writable brush library.
+        :param unicode|str stock_brushpath: MyPaint install's RO brushes.
+        :param unicode|str user_brushpath: User-writable brush library.
         :param gui.application.Application app: Main app (use None for test).
 
         The user_brushpath folder will be created if it does not yet exist.
@@ -828,8 +829,8 @@ class BrushManager (object):
     def export_group(self, group, filename):
         """Exports a group to a brushpack zipfile.
 
-        :param unicode/str group: Name of the group to save.
-        :param unicode/str filename: Path to a .zip file to create.
+        :param unicode|str group: Name of the group to save.
+        :param unicode|str filename: Path to a .zip file to create.
 
         >>> with BrushManager._mock() as (bm, tmpdir):
         ...     group = list(bm.groups)[0]
@@ -980,7 +981,7 @@ class BrushManager (object):
         :param device_name: name of an input device
         :type device_name: str
         :param managed_brush: the brush to associate
-        :type managed_brush: MnagedBrush
+        :type managed_brush: ManagedBrush
 
         Normally the brush will be cloned first, since it will be given a new
         name. However, if the brush has a 'name' attribute of None, it will
@@ -1456,7 +1457,7 @@ class ManagedBrush(object):
     def delete_from_disk(self):
         """Tries to delete the files for this brush from disk.
 
-        :rtype: boolean
+        :rtype: bool
 
         Returns True if the disk files can no longer be loaded. Stock brushes
         cannot be deleted, but if a user brush is hiding a stock brush with the

@@ -29,11 +29,13 @@ from gi.repository import Gtk
 from gi.repository import Gdk
 from gi.repository import GLib
 
+import lib.document
 import lib.layer
 import lib.helpers
 from lib.helpers import clamp
 import lib.observable
 from . import stategroup
+import gui.application
 import gui.mode
 import gui.colorpicker   # purely for registration
 import gui.symmetry   # registration only
@@ -44,6 +46,7 @@ import gui.buttonmap
 import gui.externalapp
 import gui.device
 import gui.backgroundwindow
+import gui.tileddrawwidget
 from gui.widgets import with_wait_cursor
 from lib.gettext import gettext as _
 from lib.gettext import C_

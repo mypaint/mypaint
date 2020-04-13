@@ -23,10 +23,10 @@ import lib.tiledsurface
 from lib.pixbufsurface import render_as_pixbuf
 from lib.helpers import clamp
 import gui.style
-from lib.color import HCYColor, RGBColor
+import lib.color
 from lib.pycompat import xrange
 
-import numpy as np
+import numpy
 import cairo
 from gi.repository import GdkPixbuf
 from gi.repository import Gdk
@@ -54,12 +54,12 @@ def spline_4p(t, p_1, p0, p1, p2):
     """Interpolated point using a Catmull-Rom spline
 
     :param float t: Time parameter, between 0.0 and 1.0
-    :param array p_1: Point p[-1]
-    :param array p0: Point p[0]
-    :param array p1: Point p[1]
-    :param array p2: Point p[2]
+    :param numpy.array p_1: Point p[-1]
+    :param numpy.array p0: Point p[0]
+    :param numpy.array p1: Point p[1]
+    :param numpy.array p2: Point p[2]
     :returns: Interpolated point, between p0 and p1
-    :rtype: array
+    :rtype: numpy.array
 
     Used for a succession of points, this function makes smooth curves
     passing through all specified points, other than the first and last.
@@ -80,7 +80,7 @@ def spline_4p(t, p_1, p0, p1, p2):
 
 
 def spline_iter(tuples, double_first=True, double_last=True):
-    """Converts an list of control point tuples to interpolatable arrays
+    """Converts an list of control point tuples to interpolatable numpy.arrays
 
     :param list tuples: Sequence of tuples of floats
     :param bool double_first: Repeat 1st point, putting it in the result
@@ -96,15 +96,15 @@ def spline_iter(tuples, double_first=True, double_last=True):
     cint = [None, None, None, None]
     if double_first:
         cint[0:3] = cint[1:4]
-        cint[3] = np.array(tuples[0])
+        cint[3] = numpy.array(tuples[0])
     for ctrlpt in tuples:
         cint[0:3] = cint[1:4]
-        cint[3] = np.array(ctrlpt)
+        cint[3] = numpy.array(ctrlpt)
         if not any((a is None) for a in cint):
             yield cint
     if double_last:
         cint[0:3] = cint[1:4]
-        cint[3] = np.array(tuples[-1])
+        cint[3] = numpy.array(tuples[-1])
         yield cint
 
 
@@ -128,7 +128,7 @@ def _variable_pressure_scribble(w, h, tmult):
 def render_brush_preview_pixbuf(brushinfo, max_edge_tiles=4):
     """Renders brush preview images
 
-    :param lib.brush.BrushInfo brushinfo: settings to render
+    :param BrushInfo brushinfo: settings to render
     :param int max_edge_tiles: Use at most this many tiles along an edge
     :returns: Preview image, at 128x128 pixels
     :rtype: GdkPixbuf
@@ -159,7 +159,8 @@ def render_brush_preview_pixbuf(brushinfo, max_edge_tiles=4):
         shape = _variable_pressure_scribble(width, height, size_in_tiles)
         surface.begin_atomic()
         for dt, x, y, p, xt, yt in shape:
-            brush.stroke_to(surface.backend, x, y, p, xt, yt, dt, 1.0, 0.0, 0.0)
+            brush.stroke_to(
+                surface.backend, x, y, p, xt, yt, dt, 1.0, 0.0, 0.0)
         surface.end_atomic()
         # Check rendered size
         tposs = surface.tiledict.keys()
@@ -378,7 +379,7 @@ def render_round_floating_button(cr, x, y, color, pixbuf, z=2,
 
 def _get_paint_chip_highlight(color):
     """Paint chip highlight edge color"""
-    highlight = HCYColor(color=color)
+    highlight = lib.color.HCYColor(color=color)
     ky = gui.style.PAINT_CHIP_HIGHLIGHT_HCY_Y_MULT
     kc = gui.style.PAINT_CHIP_HIGHLIGHT_HCY_C_MULT
     highlight.y = clamp(highlight.y * ky, 0, 1)
@@ -388,7 +389,7 @@ def _get_paint_chip_highlight(color):
 
 def _get_paint_chip_shadow(color):
     """Paint chip shadow edge color"""
-    shadow = HCYColor(color=color)
+    shadow = lib.color.HCYColor(color=color)
     ky = gui.style.PAINT_CHIP_SHADOW_HCY_Y_MULT
     kc = gui.style.PAINT_CHIP_SHADOW_HCY_C_MULT
     shadow.y = clamp(shadow.y * ky, 0, 1)
@@ -425,7 +426,7 @@ def render_round_floating_color_chip(cr, x, y, color, radius, z=2):
     cr.set_dash([], 0)
     cr.set_line_width(0)
 
-    base_col = RGBColor(color=color)
+    base_col = lib.color.RGBColor(color=color)
     hi_col = _get_paint_chip_highlight(base_col)
 
     cr.arc(x, y, radius+0, 0, 2*math.pi)

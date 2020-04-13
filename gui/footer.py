@@ -14,16 +14,20 @@ from __future__ import division, print_function
 
 import math
 import logging
-logger = logging.getLogger(__name__)
 
 import cairo
-from gi.repository import Gtk
+
 from gi.repository import Gdk
 from gi.repository import GdkPixbuf
+
+from gui.brushmanager import BrushManager  # noqa
+from gui.quickchoice import BrushChooserPopup  # noqa
 
 import lib.xml
 from lib.gettext import C_
 from gettext import gettext as _
+
+logger = logging.getLogger(__name__)
 
 
 ## Class definitions
@@ -60,8 +64,8 @@ class BrushIndicatorPresenter (object):
     _EDGE_HIGHLIGHT_RGBA = (1, 1, 1, 0.25)
     _OUTLINE_RGBA = (0, 0, 0, 0.4)
     _DEFAULT_BRUSH_DISPLAY_NAME = _("Unknown Brush")
-        # FIXME: Use brushmanager.py's source string while we are in string
-        # FIXME: freeze.
+    # FIXME: Use brushmanager.py's source string while we are in string
+    # FIXME: freeze.
 
     ## Initialization
 
@@ -99,7 +103,7 @@ class BrushIndicatorPresenter (object):
     def set_brush_manager(self, bm):
         """Set the model BrushManager.
 
-        :param gui.brushmanager.BrushManager bm: the model BrushManager
+        :param BrushManager bm: the model BrushManager
 
         """
         self._brush_manager = bm
@@ -108,7 +112,7 @@ class BrushIndicatorPresenter (object):
     def set_chooser(self, chooser):
         """Set an optional popup, to be shown when clicked.
 
-        :param gui.quickchoice.BrushChooserPopup chooser: popup to show
+        :param BrushChooserPopup chooser: popup to show
 
         """
         self._chooser = chooser

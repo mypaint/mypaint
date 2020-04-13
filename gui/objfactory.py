@@ -125,7 +125,7 @@ class ObjFactory (object):
         :param gtype_name: a registered name (cf. __gtype_name__)
         :type gtype_name: str
         :param params: parameters for the Python constructor
-        :type params: sequence
+        :type params: tuple
         :returns: the newly constructed object
         :rtype: GObject
         :raises ConstructError: when construction fails.

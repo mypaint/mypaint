@@ -18,6 +18,7 @@ from gi.repository import GLib
 import lib.helpers
 import lib.mypaintlib as myplib
 import lib.surface
+import lib.tiledsurface
 from lib.gettext import C_
 import lib.fill_common as fc
 from lib.fill_common import _OPAQUE, _FULL_TILE, _EMPTY_TILE
@@ -217,7 +218,7 @@ class FloodFillArguments(object):
         :param feather: the amount to blur the fill, after offset is applied
         :type feather: int [0, TILE_SIZE]
         :param gap_closing_options: parameters for gap closing fill, or None
-        :type gap_closing_options: lib.floodfill.GapClosingOptions
+        :type gap_closing_options: GapClosingOptions
         :param mode: Fill blend mode - normal, erasing or alpha locked
         :type mode: int (Any of the Combine* modes in mypaintlib)
         :param lock_alpha: Lock alpha of the destination layer
@@ -246,10 +247,10 @@ class FloodFillArguments(object):
         """If true, compositing to empty tiles does nothing"""
         return (
             self.lock_alpha or self.mode in [
-                lib.mypaintlib.CombineSourceAtop,
-                lib.mypaintlib.CombineDestinationOut,
-                lib.mypaintlib.CombineDestinationIn
-             ]
+                myplib.CombineSourceAtop,
+                myplib.CombineDestinationOut,
+                myplib.CombineDestinationIn,
+            ]
         )
 
     def no_op(self):
@@ -296,7 +297,7 @@ def _flood_fill(src, args, dst, handler):
     :param dst: target surface
     :type dst: lib.tiledsurface.MyPaintSurface
     :param handler: controller used to track state and cancel fill
-    :type handler: lib.floodfill.FillController
+    :type handler: FillHandler
     """
     _, _, width, height = args.bbox
     if width <= 0 or height <= 0 or args.no_op():
@@ -480,17 +481,16 @@ def scanline_fill(handler, src, seed_lists, tiles_bbox, filler):
     provided filler instance.
 
     :param handler: updates fill status and permits cancelling
-    :type handler: lib.floodfill.FillHandler
+    :type handler: FillHandler
     :param src: Source surface-like object
     :param seed_lists: dictionary, pairing tile coords with lists of seeds
     :type seed_lists: dict
     :param tiles_bbox: Bounding box for the fill
     :type tiles_bbox: lib.fill_common.TileBoundingBox
     :param filler: filler instance performing the per-tile fill operation
-    :type filler: mypaintlib.Filler
+    :type filler: myplib.Filler
     :returns: a dictionary of coord->tile mappings for the filled tiles
     """
-
     # Dict of coord->tile data populated during the fill
     filled = {}
 

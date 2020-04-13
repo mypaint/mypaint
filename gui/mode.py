@@ -20,11 +20,14 @@ from gi.repository import Gdk
 from gi.repository import GLib
 
 import lib.command
+from lib.document import Document  # noqa
+from lib.layer.data import SimplePaintingLayer  # noqa
 from lib.observable import event
 from lib.pycompat import add_metaclass
 from lib.pycompat import unicode
 
 import gui.cursor
+from gui.document import CanvasController  # noqa
 
 logger = logging.getLogger(__name__)
 
@@ -673,10 +676,10 @@ class BrushworkModeMixin (InteractionMode):
                         layer=None):
         """Begins a new segment of active brushwork for a model
 
-        :param lib.document.Document model: The model to begin work on
+        :param Document model: The model to begin work on
         :param unicode description: Optional description of the work
         :param bool abrupt: Tail out/in abruptly with faked zero pressure.
-        :param gui.layer.data.SimplePaintingLayer layer: explicit target layer.
+        :param SimplePaintingLayer layer: explicit target layer.
 
         Any current segment of brushwork is committed, and a new segment
         is begun.
@@ -720,7 +723,7 @@ class BrushworkModeMixin (InteractionMode):
     def brushwork_commit(self, model, abrupt=False):
         """Commits any active brushwork for a model to the command stack
 
-        :param lib.document.Document model: The model to commit work to
+        :param Document model: The model to commit work to
         :param bool abrupt: End with a faked zero pressure "stroke_to()"
 
         This only makes a new entry on the command stack if
@@ -748,7 +751,7 @@ class BrushworkModeMixin (InteractionMode):
     def brushwork_rollback(self, model):
         """Rolls back any active brushwork for a model
 
-        :param lib.document.Document model: The model to roll back
+        :param Document model: The model to roll back
 
         This restores the model's appearance and state to how it was
         when the current segment of brushwork started.
@@ -777,7 +780,7 @@ class BrushworkModeMixin (InteractionMode):
                   auto_split=True, layer=None):
         """Feeds an updated stroke position to the brush engine
 
-        :param lib.document.Document model: model on which to paint
+        :param Document model: model on which to paint
         :param float dtime: Seconds since the last call to this method
         :param float x: Document X position update
         :param float y: Document Y position update
@@ -786,9 +789,9 @@ class BrushworkModeMixin (InteractionMode):
         :param float ytilt: Y-axis tilt, ranging from -1.0 to 1.0
         :param viewzoom: The view's current zoom level, [0, 64]
         :param viewrotation: The view's current rotation, [-180.0, 180.0]
-        :param float barrel_rotation: Stylus barrel rotation ranging from 0.0 to 1.0
+        :param float barrel_rotation: Stylus barrel rotation, [0.0 to 1.0]
         :param bool auto_split: Split ongoing brushwork if due
-        :param gui.layer.data.SimplePaintingLayer layer: explicit target layer
+        :param SimplePaintingLayer layer: explicit target layer
 
         During normal operation, successive calls to `stroke_to()` record
         an ongoing sequence of `lib.command.Brushwork` commands on the
@@ -1284,7 +1287,7 @@ class ModeStack (object):
         """Initialize for a particular controller
 
         :param doc: Controller instance
-        :type doc: gui.document.CanvasController
+        :type doc: CanvasController
 
         The main MyPaint app uses an instance of `gui.document.Document`
         as `doc`. Simpler drawing canvases can use a basic
@@ -1302,7 +1305,7 @@ class ModeStack (object):
     def _sync_pending_changes_cb(self, model, **kwargs):
         """Syncs pending changes with the model
 
-        :param lib.document.Document model: the requesting model
+        :param Document model: the requesting model
         :param \*\*kwargs: passed through to checkpoint()
 
         This issues a `checkpoint()` on the current InteractionMode.

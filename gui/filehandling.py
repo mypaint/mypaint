@@ -30,6 +30,7 @@ from lib import helpers
 from lib import fileutils
 from lib.errors import FileHandlingError
 from lib.errors import AllocationError
+from gui.document import Document  # noqa
 import gui.compatibility as compat
 from gui.widgets import with_wait_cursor
 from lib import mypaintlib
@@ -205,7 +206,7 @@ class _IOProgressUI:
 
         :param f: A list of filenames, or a single filename.
         :returns: A files_summary value for the constructor.
-        :rtype: unicode/str
+        :rtype: unicode|str
 
         """
         if isinstance(f, tuple) or isinstance(f, list):
@@ -979,7 +980,7 @@ class FileHandler (object):
         """Saves a document to one or more files
 
         :param filename: The base filename to save
-        :param gui.document.Document doc: Controller for the document to save
+        :param Document doc: Controller for the document to save
         :param bool export: True if exporting
         :param **options: Pass-through options
 

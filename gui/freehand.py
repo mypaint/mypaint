@@ -21,6 +21,8 @@ from gi.repository import Gdk
 from gi.repository import GLib
 import numpy as np
 
+from gui.tileddrawwindow import TiledDrawWindow  # noqa
+
 from lib.helpers import clamp
 import gui.mode
 from .drawutils import spline_4p
@@ -241,7 +243,7 @@ class FreehandMode (gui.mode.BrushworkModeMixin,
         """Hide the cursor while painting, if configured to.
 
         :param tdw: Canvas widget to hide the cursor on.
-        :type tdw: gui.tileddrawwindow.TiledDrawWindow
+        :type tdw: TiledDrawWindow
 
         """
         if tdw in self._cursor_hidden_tdws:
@@ -264,7 +266,7 @@ class FreehandMode (gui.mode.BrushworkModeMixin,
         """Un-hide any hidden cursors.
 
         :param tdw: Canvas widget to reset. None means all affected.
-        :type tdw: gui.tileddrawwindow.TiledDrawWindow
+        :type tdw: TiledDrawWindow
 
         """
         if tdw is None:

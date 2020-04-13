@@ -720,7 +720,7 @@ class MyPaintSurface (TileAccessible, TileBlittable, TileCompositable):
         :param fill_args: fill arguments object
         :type fill_args: lib.floodfill.FloodFillArguments
         :param dst: Target surface
-        :type dst: lib.tiledsurface.MyPaintSurface
+        :type dst: MyPaintSurface
         """
 
         return flood_fill(self, fill_args, dst)
@@ -1229,7 +1229,7 @@ def flood_fill(src, fill_args, dst):
     :param fill_args: fill arguments object
     :type fill_args: lib.floodfill.FloodFillArguments
     :param dst: Target surface
-    :type dst: lib.tiledsurface.MyPaintSurface
+    :type dst: MyPaintSurface
 
     See also `lib.layer.Layer.flood_fill()`.
 

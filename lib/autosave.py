@@ -14,6 +14,8 @@ from __future__ import division, print_function
 import abc
 import uuid
 
+import lib.idletask  # noqa
+
 
 class Autosaveable:
     """Mixin and abstract base for auto-saveable structures"""

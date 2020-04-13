@@ -29,6 +29,7 @@ import lib.feedback
 
 import logging
 import os
+import zipfile  # noqa
 
 logger = logging.getLogger(__name__)
 

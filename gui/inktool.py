@@ -1113,7 +1113,7 @@ class _LayoutNode (object):
     def add_forces_inverse_square(self, others, k=20.0):
         """Adds inverse-square components to the effective force.
 
-        :param sequence others: _LayoutNodes affecting this one
+        :param [_LayoutNode] others: _LayoutNodes affecting this one
         :param float k: scaling factor
         :returns: self
 
@@ -1141,7 +1141,7 @@ class _LayoutNode (object):
     def add_forces_linear(self, others, k=0.05):
         """Adds linear components to the total effective force.
 
-        :param sequence others: _LayoutNodes affecting this one
+        :param [_LayoutNode] others: _LayoutNodes affecting this one
         :param float k: scaling factor
         :returns: self
 

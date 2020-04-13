@@ -47,6 +47,7 @@ from gettext import gettext as _
 import lib.observable
 import lib.cache
 import lib.document
+import lib.strokemap
 from lib import brush
 from lib import helpers
 from lib import mypaintlib
