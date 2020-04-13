@@ -20,7 +20,6 @@ from logging import getLogger
 
 import lib.layer
 import lib.layer.data
-import lib.document
 from . import helpers
 from lib.observable import event
 import lib.stroke

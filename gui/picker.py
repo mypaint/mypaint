@@ -21,7 +21,6 @@ from __future__ import division, print_function
 from gui.tileddrawwidget import TiledDrawWidget
 from gui.document import Document
 from lib.gettext import C_
-from lib.color import RGBColor
 import gui.cursor
 
 from gi.repository import Gtk
