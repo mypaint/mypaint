@@ -20,7 +20,7 @@ import cairo
 from gi.repository import Gdk
 from gi.repository import GdkPixbuf
 
-from gui.brushmanager import BrushManager  # noqa
+import gui.brushmanager
 from gui.quickchoice import BrushChooserPopup  # noqa
 
 import lib.xml
@@ -83,7 +83,7 @@ class BrushIndicatorPresenter (object):
     def set_drawing_area(self, da):
         """Set the view DrawingArea.
 
-        :param Gtk.DrawingArea da: the model BrushManager
+        :param Gtk.DrawingArea da: the drawing area
 
         The view should be set before or during its realization.
 
@@ -103,7 +103,7 @@ class BrushIndicatorPresenter (object):
     def set_brush_manager(self, bm):
         """Set the model BrushManager.
 
-        :param BrushManager bm: the model BrushManager
+        :param gui.brushmanager.BrushManager bm: the model BrushManager
 
         """
         self._brush_manager = bm

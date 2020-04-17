@@ -21,7 +21,6 @@ from . import brushselectionwindow
 from . import widgets
 from . import spinbox
 from . import windowing
-import gui.application
 from lib.observable import event
 import gui.colortools
 from lib.pycompat import add_metaclass

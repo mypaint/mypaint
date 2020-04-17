@@ -30,7 +30,6 @@ from lib import helpers
 from lib import fileutils
 from lib.errors import FileHandlingError
 from lib.errors import AllocationError
-from gui.document import Document  # noqa
 import gui.compatibility as compat
 from gui.widgets import with_wait_cursor
 from lib import mypaintlib

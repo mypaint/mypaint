@@ -36,8 +36,8 @@ from lib.brush import BrushInfo
 from lib.observable import event
 import lib.pixbuf
 from . import drawutils
-import gui.application
 import gui.mode
+import lib.config
 from lib.pycompat import unicode
 from lib.pycompat import xrange
 from lib.pycompat import PY3
