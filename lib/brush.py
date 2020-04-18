@@ -638,6 +638,16 @@ class Brush (mypaintlib.PythonBrush):
         brushinfo.observers.append(self._update_from_brushinfo)
         self._update_from_brushinfo(ALL_SETTINGS)
 
+    def stroke_to(self, *args):
+        """ Delegates to mypaintlib with information about color space
+
+        Checks whether color transforms should be done in linear sRGB
+        so that HSV/HSL adjustments can be handled correctly.
+        """
+        linear = eotf() != 1.0
+        args += (linear,)
+        return super(Brush, self).stroke_to(*args)
+
     def _update_from_brushinfo(self, settings):
         """Updates changed low-level settings from the BrushInfo"""
 
