@@ -9,8 +9,8 @@ msgstr ""
 "Project-Id-Version: mypaint v2.0.0-alpha.8-1-g4490f06\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-03-03 00:01+0100\n"
-"PO-Revision-Date: 2020-04-09 09:50+0000\n"
-"Last-Translator: Jeannette L <j.lavoie@net-c.ca>\n"
+"PO-Revision-Date: 2020-04-19 12:11+0000\n"
+"Last-Translator: Isabelle Lepage <noisette@netc.eu>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/mypaint/mypaint/"
 "fr/>\n"
 "Language: fr\n"
@@ -18,7 +18,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n > 1;\n"
-"X-Generator: Weblate 4.0-dev\n"
+"X-Generator: Weblate 4.0.2-dev\n"
 
 #. TRANSLATORS: Name of first column in the button map preferences.
 #. TRANSLATORS: Refers to an action bound to a mod+button combination.
@@ -3872,23 +3872,20 @@ msgid ""
 msgstr ""
 
 #: ../lib/tiledsurface.py:48
-#, fuzzy
 msgid "Vertical"
-msgstr "Miroir vertical"
+msgstr "Vertical"
 
 #: ../lib/tiledsurface.py:49
-#, fuzzy
 msgid "Horizontal"
-msgstr "Miroir horizontal"
+msgstr "Horizontal"
 
 #: ../lib/tiledsurface.py:50
 msgid "Vertical and horizontal"
 msgstr "Vertical et horizontal"
 
 #: ../lib/tiledsurface.py:51
-#, fuzzy
 msgid "Rotational"
-msgstr "Rotation"
+msgstr "Rotatif"
 
 #: ../lib/tiledsurface.py:52
 msgid "Snowflake"
@@ -3907,7 +3904,7 @@ msgstr "Récupérer le travail interrompu ?"
 #: ../gui/autorecover.glade:38
 msgctxt "Autosave Recovery dialog|"
 msgid "_Look for backups at startup"
-msgstr ""
+msgstr "Rechercher des sauvegardes au démarrage"
 
 #: ../gui/autorecover.glade:42
 msgctxt "Autosave Recovery dialog|Show Dialog at Startup checkbutton|"
@@ -3918,6 +3915,11 @@ msgid ""
 "You can always launch this dialog from the ‘File’ menu when MyPaint is "
 "running."
 msgstr ""
+"Exécutez cette boite de dialogue de récupération automatique au démarrage de "
+"MyPaint, si il y a des fichiers à récupérer.\n"
+"\n"
+"Vous pouvez toujours lancer cette boite de dialogue à partir du menu "
+"‘Fichier’ lorsque MyPaint est en cours d'exécution."
 
 #. Deletes the selected autosave backup file.
 #: ../gui/autorecover.glade:60
@@ -3927,10 +3929,9 @@ msgid "_Delete…"
 msgstr "Supprimer"
 
 #: ../gui/autorecover.glade:66
-#, fuzzy
 msgctxt "Autosave Recovery dialog|Delete button|"
 msgid "Delete this backup from the disk."
-msgstr "Supprimer cette brosse du disque"
+msgstr "Supprimer cette sauvegarde du disque."
 
 #. Recover in the sense or retrieval or salvage from a backup file. The user is asked to save the retrieved file immediately afterwards, hence the ellipsis.
 #: ../gui/autorecover.glade:78
@@ -3950,7 +3951,7 @@ msgstr ""
 #: ../gui/autorecover.glade:95
 msgctxt "Autosave Recovery dialog|"
 msgid "Decide _Later"
-msgstr ""
+msgstr "Décider plus tard"
 
 #: ../gui/autorecover.glade:101
 msgctxt "Autosave Recovery dialog|Cancel button|"
@@ -4137,7 +4138,7 @@ msgstr ""
 #: ../gui/brusheditor.glade:841
 #, fuzzy
 msgid "Brush dynamics are not available for this setting."
-msgstr "Détails de base pour ce paramètre"
+msgstr "Les dynamiques de brosses ne sont pas disponibles pour ce réglage."
 
 #: ../gui/brusheditor.glade:851
 #, fuzzy
@@ -4183,7 +4184,7 @@ msgstr ""
 #: ../gui/inktool.glade:166
 msgctxt "Inking tool options: point value sliders: labels: tooltips"
 msgid "Time since the previous point, in seconds"
-msgstr ""
+msgstr "Temps depuis le point précédent, en secondes"
 
 #: ../gui/inktool.glade:171
 msgctxt "Inking tool options: point value sliders: labels"
@@ -4191,38 +4192,34 @@ msgid "Time:"
 msgstr "Temps :"
 
 #: ../gui/inktool.glade:204
-#, fuzzy
 msgctxt "Inking tool options: node delete button: label"
 msgid "Delete Point"
-msgstr "Supprimer le groupe"
+msgstr "Supprimer le point"
 
 #: ../gui/inktool.glade:208
-#, fuzzy
 msgctxt "Inking tool options: node delete button: tooltip"
 msgid "Delete the currently selected point"
-msgstr "supprimer le calque actuel"
+msgstr "Supprimer le point sélectionné"
 
 #: ../gui/inktool.glade:220 ../gui/resources.xml:897
-#, fuzzy
 msgid "Insert Point"
-msgstr "Insérer une Rangée"
+msgstr "Insérer un point"
 
 #: ../gui/inktool.glade:252 ../gui/resources.xml:911
 msgid "Simplify Points"
-msgstr ""
+msgstr "Simplifier les points"
 
 #: ../gui/inktool.glade:256
 msgid "Simplify the curve using the Reumann-Witkam algorithm."
-msgstr ""
+msgstr "Simplifier la courbe en utilisant l'algorithme de Reumann-Witkam."
 
 #: ../gui/inktool.glade:268 ../gui/resources.xml:918
-#, fuzzy
 msgid "Cull Points"
-msgstr "Supprimer le groupe"
+msgstr "Retirer des points"
 
 #: ../gui/inktool.glade:272
 msgid "Cull every other point from the curve."
-msgstr ""
+msgstr "Retirer un point sur deux de la courbe."
 
 #: ../gui/layervis.glade:15
 #, fuzzy
@@ -4231,16 +4228,14 @@ msgid "The currently active view."
 msgstr "Rogner le cadre depuis le calque actif actuel"
 
 #: ../gui/layervis.glade:36
-#, fuzzy
 msgctxt "Layers window: view list controls: tooltips"
 msgid "Rename the active view."
-msgstr "Tourner la vue"
+msgstr "Renommer la vue active."
 
 #: ../gui/layervis.glade:57
-#, fuzzy
 msgctxt "Layers window: view list controls: tooltips"
 msgid "Remove the active view."
-msgstr "Tourner la vue"
+msgstr "Supprimer la vue active."
 
 #: ../gui/layervis.glade:78
 #, fuzzy
@@ -4251,7 +4246,7 @@ msgstr "Quel calque visible doit être rempli"
 #: ../gui/layervis.glade:99
 msgctxt "Layers window: view list controls: tooltips"
 msgid "Lock or unlock the active view."
-msgstr ""
+msgstr "Verrouiller ou déverrouiller la vue active."
 
 #: ../gui/mypaint.glade:65
 #, fuzzy
@@ -4389,6 +4384,9 @@ msgid ""
 "Here you can restrict pointing devices to specific tasks on the canvas, or "
 "have them ignored completely if they glitch your drawing."
 msgstr ""
+"Ici vous pouvez restreindre les dispositifs de pointage à des tâches "
+"spécifique sur la toile, ou faire en sorte qu'ils soient complètement "
+"ignorés si ils perturbent votre dessin."
 
 #: ../gui/preferenceswindow.glade:324
 #, fuzzy
