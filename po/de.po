@@ -4,7 +4,7 @@ msgstr ""
 "Project-Id-Version: mypaint v2.0.0-alpha.11-2-g0673fe8\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-03-29 16:08+0200\n"
-"PO-Revision-Date: 2020-04-09 09:50+0000\n"
+"PO-Revision-Date: 2020-04-21 05:11+0000\n"
 "Last-Translator: Jeannette L <j.lavoie@net-c.ca>\n"
 "Language-Team: German <https://hosted.weblate.org/projects/mypaint/mypaint/"
 "de/>\n"
@@ -13,7 +13,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 4.0-dev\n"
+"X-Generator: Weblate 4.0.2-dev\n"
 "X-Poedit-Country: GERMANY\n"
 "X-Poedit-Language: German\n"
 "X-Poedit-SourceCharset: utf-8\n"
@@ -396,23 +396,23 @@ msgstr "Klassisch"
 
 #: ../gui/brushmanager.py:134
 msgid "Set#1"
-msgstr "Satz#1"
+msgstr "Satz Nr 1"
 
 #: ../gui/brushmanager.py:135
 msgid "Set#2"
-msgstr "Satz#2"
+msgstr "Satz Nr 2"
 
 #: ../gui/brushmanager.py:136
 msgid "Set#3"
-msgstr "Satz#3"
+msgstr "Satz Nr 3"
 
 #: ../gui/brushmanager.py:137
 msgid "Set#4"
-msgstr "Satz#4"
+msgstr "Satz Nr 4"
 
 #: ../gui/brushmanager.py:138
 msgid "Set#5"
-msgstr "Satz#5"
+msgstr "Satz Nr 5"
 
 #: ../gui/brushmanager.py:139
 msgid "Experimental"
@@ -1805,7 +1805,7 @@ msgstr[1] "{n} Dokumente"
 #, python-brace-format
 msgctxt "Document I/O: the {files_summary} for a single file"
 msgid "“{basename}”"
-msgstr "„{basename}\""
+msgstr "„{basename}“"
 
 #: ../gui/filehandling.py:432
 msgctxt "save/load dialogs: filter patterns"
