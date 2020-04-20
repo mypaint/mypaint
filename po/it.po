@@ -7,9 +7,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mypaint v2.0.0-alpha.12-345-g9079adb\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-03-03 00:01+0100\n"
-"PO-Revision-Date: 2020-03-20 08:36+0000\n"
-"Last-Translator: Claudio Arseni <claudio.arseni@ubuntu.com>\n"
+"POT-Creation-Date: 2020-03-29 16:08+0200\n"
+"PO-Revision-Date: 2020-04-21 05:11+0000\n"
+"Last-Translator: Jeannette L <j.lavoie@net-c.ca>\n"
 "Language-Team: Italian <https://hosted.weblate.org/projects/mypaint/mypaint/"
 "it/>\n"
 "Language: it\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 4.0-dev\n"
+"X-Generator: Weblate 4.0.2-dev\n"
 "X-Poedit-Country: ITALY\n"
 "X-Poedit-Language: Italian\n"
 "X-Poedit-SourceCharset: utf-8\n"
@@ -400,23 +400,23 @@ msgstr "Classico"
 
 #: ../gui/brushmanager.py:134
 msgid "Set#1"
-msgstr "Gruppo#1"
+msgstr "Gruppo nº 1"
 
 #: ../gui/brushmanager.py:135
 msgid "Set#2"
-msgstr "Gruppo#2"
+msgstr "Gruppo nº 2"
 
 #: ../gui/brushmanager.py:136
 msgid "Set#3"
-msgstr "Gruppo#3"
+msgstr "Gruppo nº 3"
 
 #: ../gui/brushmanager.py:137
 msgid "Set#4"
-msgstr "Gruppo#4"
+msgstr "Gruppo nº 4"
 
 #: ../gui/brushmanager.py:138
 msgid "Set#5"
-msgstr "Gruppo#5"
+msgstr "Gruppo nº 5"
 
 #: ../gui/brushmanager.py:139
 msgid "Experimental"
