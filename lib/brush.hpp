@@ -69,6 +69,12 @@ public:
       return mypaint_brush_stroke_to_2(c_brush, c_surface, x, y, pressure, xtilt, ytilt, dtime, viewzoom, viewrotation, barrel_rotation);
   }
 
+  bool stroke_to_linear (Surface * surface, float x, float y, float pressure, float xtilt, float ytilt, double dtime, float viewzoom, float viewrotation, float barrel_rotation)
+  {
+      MyPaintSurface2 *c_surface = surface->get_surface2_interface();
+      return mypaint_brush_stroke_to_2_linearsRGB(c_brush, c_surface, x, y, pressure, xtilt, ytilt, dtime, viewzoom, viewrotation, barrel_rotation);
+  }
+
   double get_total_stroke_painting_time()
   {
       return mypaint_brush_get_total_stroke_painting_time(c_brush);

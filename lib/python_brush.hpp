@@ -56,4 +56,13 @@ public:
     return res;
   }
 
+  bool stroke_to_linear (Surface * surface, float x, float y, float pressure, float xtilt, float ytilt, double dtime, float viewzoom, float viewrotation, float barrel_rotation)
+  {
+    bool res = Brush::stroke_to_linear (surface, x, y, pressure, xtilt, ytilt, dtime, viewzoom, viewrotation, barrel_rotation);
+    if (PyErr_Occurred()) {
+      res = false;
+    }
+    return res;
+  }
+
 };
