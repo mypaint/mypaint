@@ -840,7 +840,7 @@ def get_ext_modules():
         extra_link_args.append('-Wl,-z,origin')
         extra_link_args.append('-Wl,-rpath,$ORIGIN')
 
-    initial_deps = ["libmypaint >= 1.5"]
+    initial_deps = ["libmypaint >= 1.6"]
     remaining_deps = [
         "pygobject-3.0",
         "glib-2.0",

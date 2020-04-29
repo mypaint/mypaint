@@ -1,7 +1,7 @@
 # Maintainer: The MyPaint Team <mypaintopensource@gmail.com>
 
 _realname=libmypaint
-_realver=1.5.1
+_realver=1.6.0
 pkgbase=mingw-w64-${_realname}
 pkgname="${MINGW_PACKAGE_PREFIX}-${_realname}"
 conflicts=("${MINGW_PACKAGE_PREFIX}-mypaint<1.3.0alpha")
@@ -22,7 +22,7 @@ depends=("${MINGW_PACKAGE_PREFIX}-gcc-libs"
          "${MINGW_PACKAGE_PREFIX}-json-c")
 options=('strip' '!debug')
 source=("https://github.com/mypaint/${_realname}/releases/download/v${_realver}/${_realname}-${_realver}.tar.xz")
-sha256sums=('aef8150a0c84ce2ff6fb24de8d5ffc564845d006f8bad7ed84ee32ed1dd90c2b')
+sha256sums=('a5ec3624ba469b7b35fd66b6fbee7f07285b7a7813d02291ac9b10e46618140e')
 
 CFLAGS="-O3 -ftree-vectorize -funsafe-math-optimizations -funsafe-loop-optimizations"
 
