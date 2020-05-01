@@ -11,6 +11,7 @@
 from __future__ import division, print_function
 
 import os
+import sys
 import time
 import tempfile
 import subprocess
@@ -19,12 +20,39 @@ import logging
 
 from gi.repository import GLib
 from gi.repository import Gtk
-from distutils.spawn import find_executable
 
 import lib.fileutils
 
 
 logger = logging.getLogger(__name__)
+
+
+# Copied from Python 3.5's distutils/spawn.py
+
+def find_executable(executable, path=None):
+    """Tries to find 'executable' in the directories listed in 'path'.
+
+    A string listing directories separated by 'os.pathsep'; defaults to
+    os.environ['PATH'].  Returns the complete filename or None if not found.
+    """
+    if path is None:
+        path = os.environ['PATH']
+
+    paths = path.split(os.pathsep)
+    base, ext = os.path.splitext(executable)
+
+    if (sys.platform == 'win32') and (ext != '.exe'):
+        executable = executable + '.exe'
+
+    if not os.path.isfile(executable):
+        for p in paths:
+            f = os.path.join(p, executable)
+            if os.path.isfile(f):
+                # the file exists, we have a shot at spawn working
+                return f
+        return None
+    else:
+        return executable
 
 
 class Profiler (object):
