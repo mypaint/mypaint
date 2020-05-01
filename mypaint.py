@@ -270,9 +270,8 @@ if __name__ == '__main__':
     else:
         console_formatter = logging.Formatter(log_format)
     console_handler.setFormatter(console_formatter)
-    logging_level = logging.INFO
-    if os.environ.get("MYPAINT_DEBUG", False):
-        logging_level = logging.DEBUG
+    debug = os.environ.get("MYPAINT_DEBUG", False)
+    logging_level = logging.DEBUG if debug else logging.INFO
     root_logger = logging.getLogger(None)
     root_logger.addHandler(console_handler)
     root_logger.setLevel(logging_level)
@@ -303,4 +302,5 @@ if __name__ == '__main__':
         localepath,
         old_confpath,
         version=version,
+        debug=debug,
     )
