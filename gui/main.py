@@ -91,6 +91,7 @@ def main(
         localepath,
         oldstyle_confpath=None,
         version=MYPAINT_VERSION,
+        debug=False
 ):
     """Run MyPaint with `sys.argv_unicode`, called from the "mypaint" script.
 
@@ -98,6 +99,7 @@ def main(
     :param unicode iconspath: Extra search root for finding icons.
     :param unicode oldstyle_confpath: Old-style merged config folder.
     :param unicode version: full version string for the about box.
+    :param bool debug: whether debug functionality and logging is enabled.
 
     The ``datapath`` parameter defines where MyPaint should find its
     static data, e.g. UI definition XML, backgrounds, and brush
@@ -131,7 +133,7 @@ def main(
     # with non-ASCII character in %USERPROFILE% will break.
     lib.glib.init_user_dir_caches()
 
-    options, args = parsed_cmdline_arguments(oldstyle_confpath)
+    options, args = parsed_cmdline_arguments(oldstyle_confpath, debug)
 
     # XDG support for new users on POSIX platforms
     if options.config is None:
@@ -161,7 +163,7 @@ def main(
         root_logger = logging.getLogger(None)
         root_logger.addHandler(logfile_handler)
 
-    if os.environ.get("MYPAINT_DEBUG", False):
+    if debug:
         logger.critical("Test critical message, please ignore")
         warnings.resetwarnings()
         logging.captureWarnings(True)
@@ -206,15 +208,18 @@ def main(
         dark = app.preferences.get("ui.dark_theme_variant", True)
         settings.set_property("gtk-application-prefer-dark-theme", dark)
 
-        from gui import gtkexcepthook
-        func = app.filehandler.confirm_destructive_action
-        gtkexcepthook.quit_confirmation_func = func
+        if debug and options.run_and_quit:
+            from gi.repository import GLib
+            GLib.timeout_add(1000, lambda *a: Gtk.main_quit())
+        else:
+            from gui import gtkexcepthook
+            func = app.filehandler.confirm_destructive_action
+            gtkexcepthook.quit_confirmation_func = func
 
         # temporary workaround for gtk3 Ctrl-C bug:
         # https://bugzilla.gnome.org/show_bug.cgi?id=622084
         import signal
         signal.signal(signal.SIGINT, signal.SIG_DFL)
-
         Gtk.main()
 
     if options.trace:
@@ -225,7 +230,7 @@ def main(
         run()
 
 
-def parsed_cmdline_arguments(default_confpath):
+def parsed_cmdline_arguments(default_confpath, debug=False):
     """Parse command line arguments and return result
 
     :return: (options, positional arguments)
@@ -263,5 +268,12 @@ def parsed_cmdline_arguments(default_confpath):
         action="store_true",
         help='print version information and exit'
     )
+    if debug:
+        parser.add_option(
+            "-R",
+            '--run-and-quit',
+            action="store_true",
+            help='start the program and shut it down after 1 second'
+        )
 
     return parser.parse_args(sys.argv_unicode[1:])
