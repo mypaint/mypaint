@@ -4,8 +4,8 @@ msgstr ""
 "Project-Id-Version: mypaint v2.0.0-alpha.11-2-g0673fe8\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-03-29 16:08+0200\n"
-"PO-Revision-Date: 2020-04-21 05:11+0000\n"
-"Last-Translator: Jeannette L <j.lavoie@net-c.ca>\n"
+"PO-Revision-Date: 2020-05-02 13:39+0000\n"
+"Last-Translator: Jeannette <j.lavoie@net-c.ca>\n"
 "Language-Team: German <https://hosted.weblate.org/projects/mypaint/mypaint/"
 "de/>\n"
 "Language: de\n"
@@ -13,7 +13,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 4.0.2-dev\n"
+"X-Generator: Weblate 4.1-dev\n"
 "X-Poedit-Country: GERMANY\n"
 "X-Poedit-Language: German\n"
 "X-Poedit-SourceCharset: utf-8\n"
@@ -2271,7 +2271,7 @@ msgstr "DPI"
 
 #: ../gui/framewindow.py:481
 msgid "Dots Per Inch (really Pixels Per Inch)"
-msgstr "Dots pro Inch (in Wirklichkeit Pixel pro Inch)"
+msgstr "Punkte pro Zoll (in Wirklichkeit Pixel pro Zoll)"
 
 #: ../gui/framewindow.py:484
 msgid "Color:"
@@ -2557,7 +2557,7 @@ msgstr "Ausgeblendet"
 #, python-format
 msgctxt "Layers: description parts: opacity percentage"
 msgid "%d%% opaque"
-msgstr "%d%% undurchsichtig"
+msgstr "%d %% undurchsichtig"
 
 #: ../gui/layers.py:964
 msgctxt "Layers dockable: description parts: layer locked flag"
@@ -2609,7 +2609,7 @@ msgstr "Ebenendeckkraft: %d %%"
 #: ../gui/layerswindow.py:107
 #, python-format
 msgid "%d%%"
-msgstr "%d%%"
+msgstr "%d %%"
 
 #. TRANSLATORS: status bar messages for drag, without/with modifiers
 #: ../gui/layerswindow.py:114
@@ -2729,7 +2729,7 @@ msgid ""
 "Copyright (C) 2005-2020\n"
 "Martin Renold and the MyPaint Development Team"
 msgstr ""
-"Copyright (C) 2005–2020\n"
+"Copyright © 2005–2020\n"
 "Martin Renold und das MyPaint-Entwicklungsteam"
 
 #: ../gui/meta.py:45
