@@ -6,7 +6,7 @@ msgstr ""
 "Project-Id-Version: mypaint v2.0.0-alpha.12-343-g82b4fc5\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-03-29 16:08+0200\n"
-"PO-Revision-Date: 2019-12-20 18:53+0000\n"
+"PO-Revision-Date: 2020-05-02 19:28+0000\n"
 "Last-Translator: Jesper Lloyd <jpl.lloyd@gmail.com>\n"
 "Language-Team: Swedish <https://hosted.weblate.org/projects/mypaint/mypaint/"
 "sv/>\n"
@@ -15,7 +15,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 3.10\n"
+"X-Generator: Weblate 4.1-dev\n"
 
 #. TRANSLATORS: Name of first column in the button map preferences.
 #. TRANSLATORS: Refers to an action bound to a mod+button combination.
@@ -4373,7 +4373,7 @@ msgstr "Knappar"
 #. unless its key is bound to something else.
 #: ../gui/preferenceswindow.glade:453
 msgid "Disable fallback key bindings"
-msgstr ""
+msgstr "Deaktivera hårdkodade tangentgenvägar"
 
 #. Tooltip for checkbox in the keyboard mappings preferences.
 #: ../gui/preferenceswindow.glade:457
@@ -4381,6 +4381,8 @@ msgid ""
 "The fallback key bindings are static built-in bindings that are only used if "
 "their key combinations are not bound to anything else."
 msgstr ""
+"De hårdkodade tangentgenvägarna är inbyggda genvägar som endast används om "
+"deras tangentkombinationer inte bundits till någon annan uppgift."
 
 #: ../gui/preferenceswindow.glade:476
 msgctxt "Prefs Dialog|Button|"
