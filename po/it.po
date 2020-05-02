@@ -8,8 +8,8 @@ msgstr ""
 "Project-Id-Version: mypaint v2.0.0-alpha.12-345-g9079adb\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-03-29 16:08+0200\n"
-"PO-Revision-Date: 2020-04-27 10:11+0000\n"
-"Last-Translator: Matteo Haenen <matteo.haenen@gmail.com>\n"
+"PO-Revision-Date: 2020-05-02 13:39+0000\n"
+"Last-Translator: Jeannette <j.lavoie@net-c.ca>\n"
 "Language-Team: Italian <https://hosted.weblate.org/projects/mypaint/mypaint/"
 "it/>\n"
 "Language: it\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 4.0.2-dev\n"
+"X-Generator: Weblate 4.1-dev\n"
 "X-Poedit-Country: ITALY\n"
 "X-Poedit-Language: Italian\n"
 "X-Poedit-SourceCharset: utf-8\n"
@@ -93,7 +93,7 @@ msgstr ""
 #: ../gui/application.py:615
 #, python-brace-format
 msgid "Open Folder “{folder_basename}”…"
-msgstr "Apri Cartella “{folder_basename}”…"
+msgstr "Apri la cartella «{folder_basename}»…"
 
 #. ... so that the main actions end up in the bottom-right of the
 #. dialog (reversed for rtl scripts), where the eye ends up
@@ -246,7 +246,7 @@ msgstr "Personalizzato"
 msgctxt "brush settings editor: save brush: error message"
 msgid "No brush selected, please use “Add As New” instead."
 msgstr ""
-"Non hai selezionato alcun pennello, per favore usa \"Aggiungi Come Nuovo\"."
+"Non hai selezionato alcun pennello, per favore usa «Aggiungi come nuovo»."
 
 #: ../gui/brusheditor.py:541
 msgctxt "brush settings editor: rename brush: error message"
@@ -272,7 +272,7 @@ msgstr "Nessun pennello selezionato!"
 #, python-brace-format
 msgctxt "brush settings editor: delete brush: confirm dialog question"
 msgid "Really delete brush “{brush_name}” from disk?"
-msgstr "Vuoi veramente eliminare “{brush_name}” dal disco?"
+msgstr "Vuoi veramente eliminare «{brush_name}» dal disco?"
 
 #: ../gui/brusheditor.py:728
 msgctxt "brush settings editor: header: fallback name"
@@ -430,8 +430,7 @@ msgstr "Nuovo"
 #, python-brace-format
 msgctxt "brushpack import failure messages"
 msgid "No file named “{order_conf_file}”. This is not a brushpack."
-msgstr ""
-"Nessun file denominato \"{order_conf_file}\". Questo non è un pennello."
+msgstr "Nessun file denominato «{order_conf_file}». Questo non è un pennello."
 
 #: ../gui/brushmanager.py:689
 #, python-brace-format
@@ -440,8 +439,8 @@ msgid ""
 "Brush “{brush_name}” is listed in “{order_conf_file}”, but it does not exist "
 "in the zipfile."
 msgstr ""
-"Il pennello \"{brush_name}\" è elencato in \"{order_conf_file}\", ma non "
-"esiste nel file zip."
+"Il pennello «{brush_name}» è elencato in «{order_conf_file}», ma non esiste "
+"nel file zip."
 
 #: ../gui/brushmanager.py:702
 #, python-brace-format
@@ -450,8 +449,8 @@ msgid ""
 "Brush “{brush_name}” exists in the zipfile, but it is not listed in "
 "“{order_conf_file}”."
 msgstr ""
-"Il pennello \"{brush_name}\" esiste nel file zip, ma non è elencato in "
-"\"{order_conf_file}\"."
+"Il pennello «{brush_name}» esiste nel file zip, ma non è elencato in "
+"«{order_conf_file}»."
 
 #: ../gui/brushmanager.py:1313 ../gui/footer.py:62
 msgid "Unknown Brush"
@@ -499,8 +498,8 @@ msgstr "{original_name} copia {n}"
 msgctxt "brush group: context menu: remove from group"
 msgid "Really remove brush “{brush_name}” from group “{group_name}”?"
 msgstr ""
-"Vuoi veramente eliminare il pennello “{brush_name}” dal gruppo "
-"“{group_name}”?"
+"Vuoi veramente eliminare il pennello «{brush_name}» dal gruppo "
+"«{group_name}»?"
 
 #. TRANSLATORS: number of brushes in a brush group, for tooltips
 #: ../gui/brushselectionwindow.py:381
@@ -515,7 +514,7 @@ msgstr[1] "%d pennelli"
 #, python-brace-format
 msgctxt "brush group properties dialog: title"
 msgid "Group “{group_name}”"
-msgstr "Gruppo “{group_name}”"
+msgstr "Gruppo «{group_name}»"
 
 #: ../gui/brushselectionwindow.py:418
 msgctxt "brush group properties dialog: action buttons"
@@ -546,7 +545,7 @@ msgstr "Un gruppo con questo nome esiste già!"
 #, python-brace-format
 msgctxt "brush group delete"
 msgid "Really delete group “{group_name}”?"
-msgstr "Vuoi veramente eliminare il gruppo “{group_name}”?"
+msgstr "Vuoi veramente eliminare il gruppo «{group_name}»?"
 
 #: ../gui/brushselectionwindow.py:495
 #, python-brace-format
@@ -555,7 +554,7 @@ msgid ""
 "Could not delete group “{group_name}”.\n"
 "Some special groups cannot be deleted."
 msgstr ""
-"Non riesco ad eliminare in gruppo “{group_name}”.\n"
+"Non riesco ad eliminare in gruppo «{group_name}».\n"
 "Alcuni gruppi speciali non possono essere eliminati."
 
 #: ../gui/brushselectionwindow.py:510
@@ -1423,12 +1422,12 @@ msgid "Existing brush"
 msgstr "Pennello Esistente"
 
 #: ../gui/dialogs.py:166
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgid ""
 "<b>A brush named “{brush_name}” already exists.</b>\n"
 "Do you want to replace it, or should the new brush be renamed?"
 msgstr ""
-"<b>Un pennello chiamato `%s' esiste già.</b>\n"
+"<b>Un pennello chiamato «{brush_name}» esiste già.</b>\n"
 "Vuoi sostituirlo, oppure il nuovo pennello deve essere rinominato?"
 
 #: ../gui/dialogs.py:196
@@ -1436,17 +1435,17 @@ msgid "Overwrite brush group?"
 msgstr "Sovrascrivere il gruppo pennelli?"
 
 #: ../gui/dialogs.py:220
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgid ""
 "<b>A group named “{groupname}” already exists.</b>\n"
 "Do you want to replace it, or should the new group be renamed?\n"
 "If you replace it, the brushes may be moved to a group called "
 "“{deleted_groupname}”."
 msgstr ""
-"<b>Un gruppo chiamato `{groupname}' esiste già.</b>\n"
+"<b>Un gruppo chiamato «{groupname}» esiste già.</b>\n"
 "Vuoi sostituire il gruppo vecchio o vuoi rinominare quello nuovo?\n"
 "Se lo sostituisci, i pennelli possono essere spostati nel gruppo chiamato "
-"`{deleted_groupname}''."
+"«{deleted_groupname}»."
 
 #: ../gui/dialogs.py:326
 msgid "Import brush package?"
@@ -1455,7 +1454,7 @@ msgstr "Importare pacchetto pennelli?"
 #: ../gui/dialogs.py:357
 #, python-brace-format
 msgid "<b>Do you really want to import package “{brushpack_name}”?</b>"
-msgstr "<b>Vuoi veramente importare il pacchetto “{brushpack_name}”?</b>"
+msgstr "<b>Vuoi veramente importare il pacchetto «{brushpack_name}»?</b>"
 
 #: ../gui/document.py:453
 #, python-format
@@ -1627,14 +1626,14 @@ msgstr "MyPaint pacchetto pennelli (*.zip)"
 #: ../gui/externalapp.py:37
 #, python-brace-format
 msgid "Launched {app_name} to edit layer “{layer_name}”"
-msgstr "Inviata {app_name} al livello modifica “{layer_name}”"
+msgstr "Inviata {app_name} al livello modifica «{layer_name}»"
 
 #. TRANSLATORS: Statusbar message shown when the app chosen for
 #. TRANSLATORS: "Edit in External App" (for a layer) failed to open.
 #: ../gui/externalapp.py:41
 #, python-brace-format
 msgid "Error: failed to launch {app_name} to edit layer “{layer_name}”"
-msgstr "Errore: fallito invio {app_name} al livello modifica “{layer_name}”"
+msgstr "Errore: fallito invio {app_name} al livello modifica «{layer_name}»"
 
 #. TRANSLATORS: Statusbar message for when an "Edit in External App"
 #. TRANSLATORS: operation is cancelled by the user before it starts.
@@ -1643,21 +1642,21 @@ msgstr "Errore: fallito invio {app_name} al livello modifica “{layer_name}”"
 msgid ""
 "Editing cancelled. You can still edit “{layer_name}” from the Layers menu."
 msgstr ""
-"Modifica annullata. Puoi ancora modificare “{layer_name}” dal menù Livelli."
+"Modifica annullata. Puoi ancora modificare «{layer_name}» dal menù Livelli."
 
 #. TRANSLATORS: This is a statusbar message shown when
 #. TRANSLATORS:  a layer is updated from an external edit
 #: ../gui/externalapp.py:51
 #, python-brace-format
 msgid "Updated layer “{layer_name}” with external edits"
-msgstr "Livello aggiornato “{layer_name}” con modifiche esterne"
+msgstr "Livello aggiornato «{layer_name}» con modifiche esterne"
 
 #: ../gui/externalapp.py:55
 #, python-brace-format
 msgctxt "Edit in External App (statusbar message)"
 msgid "Failed to update layer with external edits from “{file_basename}”."
 msgstr ""
-"Impossibile aggiornare il livello con modifiche esterne da “{file_basename}”."
+"Impossibile aggiornare il livello con modifiche esterne da «{file_basename}»."
 
 #: ../gui/externalapp.py:66
 #, python-brace-format
@@ -1665,8 +1664,8 @@ msgid ""
 "MyPaint needs to edit a file of type “{type_name}” ({content_type}). What "
 "application should it use?"
 msgstr ""
-"MyPaint necessita di modificare un file del tipo "
-"“{type_name}” ({content_type}). Quale applicazione deve usare?"
+"MyPaint necessita di modificare un file del tipo «{type_name}» "
+"({content_type}). Quale applicazione deve usare?"
 
 #: ../gui/externalapp.py:70
 #, python-brace-format
@@ -1675,7 +1674,7 @@ msgid ""
 "“{type_name}” ({content_type})?"
 msgstr ""
 "Quali applicazione deve usare MyPaint per modificare i file del tipo "
-"“{type_name}” ({content_type})?"
+"«{type_name}» ({content_type})?"
 
 #: ../gui/externalapp.py:76
 msgid "Open With…"
@@ -1690,10 +1689,10 @@ msgid "no description"
 msgstr "nessuna descrizione"
 
 #: ../gui/filehandling.py:127
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgctxt "Document I/O: message shown while working"
 msgid "Loading {files_summary}…"
-msgstr "Sto caricando “{file_basename}”…"
+msgstr "Sto caricando {files_summary}…"
 
 #: ../gui/filehandling.py:131
 #, python-brace-format
@@ -1702,28 +1701,28 @@ msgid "Importing layers from {files_summary}…"
 msgstr "Importazione di livelli da {files_summary}…"
 
 #: ../gui/filehandling.py:135
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgctxt "Document I/O: message shown while working"
 msgid "Saving {files_summary}…"
-msgstr "Sto salvando “{file_basename}”…"
+msgstr "Sto salvando {files_summary}…"
 
 #: ../gui/filehandling.py:139
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgctxt "Document I/O: message shown while working"
 msgid "Exporting to {files_summary}…"
-msgstr "Sto esportando su “{file_basename}”…"
+msgstr "Sto esportando su «{files_summary}»…"
 
 #: ../gui/filehandling.py:146
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgctxt "Document I/O: fail message"
 msgid "Failed to export to {files_summary}."
-msgstr "Fallito il salvataggio su “{file_basename}”."
+msgstr "Fallito il salvataggio su «{files_summary}»."
 
 #: ../gui/filehandling.py:150
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgctxt "Document I/O: fail message"
 msgid "Failed to save {files_summary}."
-msgstr "Fallito nel salvare “{file_basename}”."
+msgstr "Fallito nel salvare «{files_summary}»."
 
 #: ../gui/filehandling.py:154
 #, python-brace-format
@@ -1732,10 +1731,10 @@ msgid "Could not import layers from {files_summary}."
 msgstr "Impossibile importare layer da {files_summary}."
 
 #: ../gui/filehandling.py:158
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgctxt "Document I/O: fail message"
 msgid "Could not load {files_summary}."
-msgstr "Non riesco a caricare “{file_basename}”."
+msgstr "Non riesco a caricare «{files_summary}»."
 
 #: ../gui/filehandling.py:165
 #, fuzzy
@@ -1762,16 +1761,16 @@ msgid "Open failed"
 msgstr "Apri File Recenti"
 
 #: ../gui/filehandling.py:184
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgctxt "Document I/O: success"
 msgid "Exported to {files_summary} successfully."
-msgstr "Esportato “{file_basename}” con successo."
+msgstr "Esportato «{files_summary}» con successo."
 
 #: ../gui/filehandling.py:188
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgctxt "Document I/O: success"
 msgid "Saved {files_summary} successfully."
-msgstr "Salvato “{file_basename}” con successo."
+msgstr "Salvato «{files_summary}» con successo."
 
 #: ../gui/filehandling.py:192
 #, python-brace-format
@@ -1780,10 +1779,10 @@ msgid "Imported layers from {files_summary}."
 msgstr "Livelli importati da {files_summary}."
 
 #: ../gui/filehandling.py:196
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgctxt "Document I/O: success"
 msgid "Loaded {files_summary}."
-msgstr "Ho caricato “{file_basename}”."
+msgstr "Ho caricato «{files_summary}»."
 
 #. TRANSLATORS: formatting for {files_summary} for multiple files.
 #. TRANSLATORS: corresponding msgid for single files: "“{basename}”"
@@ -1795,10 +1794,10 @@ msgstr[0] "{n} file"
 msgstr[1] "{n} files"
 
 #: ../gui/filehandling.py:223
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgctxt "Document I/O: the {files_summary} for a single file"
 msgid "“{basename}”"
-msgstr "Ho caricato “{file_basename}”."
+msgstr "«{basename}»"
 
 #: ../gui/filehandling.py:432
 #, fuzzy
@@ -2234,10 +2233,9 @@ msgstr ""
 
 #: ../gui/fill.py:854 ../gui/mode.py:627
 msgid "Reset"
-msgstr "Reimpostare"
+msgstr "Reimposta"
 
 #: ../gui/fill.py:858
-#, fuzzy
 msgctxt "fill options: Reset button (tooltip)"
 msgid "Reset options to their defaults"
 msgstr "Reimposta le opzioni ai valori predefiniti"
@@ -2302,7 +2300,7 @@ msgstr "DPI"
 
 #: ../gui/framewindow.py:481
 msgid "Dots Per Inch (really Pixels Per Inch)"
-msgstr "Punti Per Pollice (in realtà Pixel Per Pollice)"
+msgstr "Punti per pollice (in realtà pixel per pollice)"
 
 #: ../gui/framewindow.py:484
 msgid "Color:"
@@ -2761,7 +2759,7 @@ msgid ""
 "Copyright (C) 2005-2020\n"
 "Martin Renold and the MyPaint Development Team"
 msgstr ""
-"Copyright (C) 2005-2020\n"
+"Copyright © 2005-2020\n"
 "Martin Renold e il Team di Sviluppo MyPaint"
 
 #: ../gui/meta.py:45
@@ -3286,7 +3284,7 @@ msgstr "Modifica Livello Esternamente"
 #, python-brace-format
 msgctxt "Document IO: common error strings: {error_loading_common}"
 msgid "Error loading “{basename}”."
-msgstr "Errore caricando “{basename}”."
+msgstr "Errore caricando «{basename}»."
 
 #: ../lib/document.py:77
 msgctxt "Document IO: common error strings: {see_logs}"
@@ -3350,14 +3348,14 @@ msgid ""
 "Unable to write “{filename}”: {err}\n"
 "Do you have enough space left on the device?"
 msgstr ""
-"Non riesco a salvare “{filename}”: {err}\n"
+"Non riesco a salvare «{filename}»: {err}\n"
 "Hai abbastanza spazio libero sul dispositivo?"
 
 #: ../lib/document.py:1453 ../lib/document.py:1463
 #, python-brace-format
 msgctxt "Document IO: hint templates for user-facing exceptions"
 msgid "Unable to write “{filename}”: {err}"
-msgstr "Non riesco a scrivere “{filename}”: {err}"
+msgstr "Non riesco a scrivere «{filename}»: {err}"
 
 #: ../lib/document.py:1500
 #, python-brace-format
@@ -3403,7 +3401,7 @@ msgid ""
 "Unknown file format extension: “{ext}”"
 msgstr ""
 "{error_loading_common}\n"
-"Estensione formato file sconosciuta: “{ext}”"
+"Estensione formato file sconosciuta: «{ext}»"
 
 #: ../lib/document.py:1589
 #, fuzzy
@@ -3893,10 +3891,10 @@ msgid ""
 "Reason: {err}\n"
 "Target folder: “{dirname}”."
 msgstr ""
-"Fallito nello scrivere “{basename}”.\n"
+"Fallito nello scrivere «{basename}».\n"
 "\n"
 "Motivo: {err}\n"
-"Cartella destinazione: “{dirname}”."
+"Cartella destinazione: «{dirname}»."
 
 #: ../lib/tiledsurface.py:48
 #, fuzzy
