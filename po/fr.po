@@ -9,8 +9,8 @@ msgstr ""
 "Project-Id-Version: mypaint v2.0.0-alpha.8-1-g4490f06\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-03-03 00:01+0100\n"
-"PO-Revision-Date: 2020-04-21 05:11+0000\n"
-"Last-Translator: Jeannette L <j.lavoie@net-c.ca>\n"
+"PO-Revision-Date: 2020-05-02 13:39+0000\n"
+"Last-Translator: Jeannette <j.lavoie@net-c.ca>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/mypaint/mypaint/"
 "fr/>\n"
 "Language: fr\n"
@@ -18,7 +18,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n > 1;\n"
-"X-Generator: Weblate 4.0.2-dev\n"
+"X-Generator: Weblate 4.1-dev\n"
 
 #. TRANSLATORS: Name of first column in the button map preferences.
 #. TRANSLATORS: Refers to an action bound to a mod+button combination.
@@ -2179,7 +2179,7 @@ msgstr ""
 #: ../gui/fill.py:755
 msgctxt "fill options: numeric option for blurring fill (label)"
 msgid "Feather:"
-msgstr ""
+msgstr "Plume :"
 
 #: ../gui/fill.py:770
 msgctxt "fill options: Feather (tooltip)"
@@ -2189,7 +2189,7 @@ msgstr ""
 #: ../gui/fill.py:786
 msgctxt "fill options: gap detection toggle (label)"
 msgid "Use Gap Detection"
-msgstr ""
+msgstr "Utiliser la détection de trous"
 
 #: ../gui/fill.py:791
 msgctxt "fill options: Use Gap Detection (tooltip)"
@@ -2296,7 +2296,7 @@ msgstr "DPI"
 
 #: ../gui/framewindow.py:481
 msgid "Dots Per Inch (really Pixels Per Inch)"
-msgstr "Points par Pouce (en réalité pixel par Pouce)"
+msgstr "Points par pouce (en réalité pixel par pouce)"
 
 #: ../gui/framewindow.py:484
 msgid "Color:"
@@ -2417,7 +2417,7 @@ msgstr ""
 #. only development and prereleases
 #: ../gui/gtkexcepthook.py:179
 msgid "Report…"
-msgstr "Reporter…"
+msgstr "Signaler…"
 
 #: ../gui/gtkexcepthook.py:181
 msgid "Ignore Error"
@@ -2533,7 +2533,7 @@ msgstr "Propriétés du calque"
 #: ../gui/layerprops.py:381
 msgctxt "layer properties dialog: done button"
 msgid "Done"
-msgstr "Fait"
+msgstr "Terminé"
 
 #. Visibility flag column
 #: ../gui/layers.py:394
@@ -2564,34 +2564,31 @@ msgid "Hidden"
 msgstr "Caché"
 
 #: ../gui/layers.py:957
-#, fuzzy, python-format
+#, python-format
 msgctxt "Layers: description parts: opacity percentage"
 msgid "%d%% opaque"
-msgstr "%d%% opaque"
+msgstr "%d %% opaque"
 
 #: ../gui/layers.py:964
-#, fuzzy
 msgctxt "Layers dockable: description parts: layer locked flag"
 msgid "Locked"
 msgstr "Verrouillé"
 
 #: ../gui/layers.py:975
-#, fuzzy
 msgctxt "Layers: description parts: unknown type (fallback str!)"
 msgid "?type"
 msgstr "?type"
 
 #: ../gui/layers.py:982
-#, fuzzy
 msgctxt "Layers dockable: description parts joiner text"
 msgid ", "
 msgstr ", "
 
 #: ../gui/layers.py:990
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgctxt "Layers dockable: markup for a layer with no description"
 msgid "{layer_name}"
-msgstr "Ajouter {layer_default_name}"
+msgstr "{layer_name}"
 
 #: ../gui/layers.py:995
 #, python-brace-format
@@ -2600,6 +2597,8 @@ msgid ""
 "<span size=\"smaller\">{layer_name}\n"
 "<span size=\"smaller\">{layer_description}</span></span>"
 msgstr ""
+"<span size=\"smaller\">{layer_name}\n"
+"<span size=\"smaller\">{layer_description}</span></span>"
 
 #: ../gui/layerswindow.py:95
 msgid "Layers"
@@ -2622,7 +2621,7 @@ msgstr "Opacité du calque : %d%%"
 #: ../gui/layerswindow.py:107
 #, python-format
 msgid "%d%%"
-msgstr ""
+msgstr "%d %%"
 
 #. TRANSLATORS: status bar messages for drag, without/with modifiers
 #: ../gui/layerswindow.py:114
@@ -2741,7 +2740,7 @@ msgid ""
 "Copyright (C) 2005-2020\n"
 "Martin Renold and the MyPaint Development Team"
 msgstr ""
-"Copyright (C) 2005-2020\n"
+"Copyright © 2005-2020\n"
 "Martin Renold et l'équipe de développement de MyPaint"
 
 #: ../gui/meta.py:45
@@ -2755,10 +2754,10 @@ msgid ""
 "This program is distributed in the hope that it will be useful, but WITHOUT "
 "ANY WARRANTY. See the COPYING file for more details."
 msgstr ""
-"Ce programme est un logiciel libre : Vous pouvez le redistribuer et/ou le "
+"Ce programme est un logiciel libre : vous pouvez le redistribuer et/ou le "
 "modifier selon les termes de la Licence publique générale GNU comme publié "
-"par la Free Software Foundation ; soit selon la version 2 de la licence, ou "
-"(à votre convenance) dans une version ultérieure.\n"
+"par la Free Software Foundation ; soit selon la version 2 de la licence, ou ("
+"à votre convenance) dans une version ultérieure.\n"
 "\n"
 "Ce programme est distribué dans l'espoir d'être utile, mais SANS AUCUNE "
 "GARANTIE. Voir le fichier COPYING pour plus de détails."
@@ -2781,12 +2780,12 @@ msgstr "management du projet"
 #: ../gui/meta.py:72
 msgctxt "About dialog: credits: tasks: brush presets and icons"
 msgid "brushes"
-msgstr "Brosses"
+msgstr "brosses"
 
 #: ../gui/meta.py:76
 msgctxt "About dialog: credits: tasks: background paper textures"
 msgid "patterns"
-msgstr "Motifs"
+msgstr "motifs"
 
 #: ../gui/meta.py:80
 msgctxt "About dialog: credits: tasks: icons for internal tools"
@@ -2801,7 +2800,7 @@ msgstr "icône de bureau"
 #: ../gui/meta.py:88
 msgctxt "About dialog: credits: tasks: palettes"
 msgid "palettes"
-msgstr "Palettes"
+msgstr "palettes"
 
 #: ../gui/meta.py:93
 msgctxt "About dialog: credits: tasks: docs, manuals and HOWTOs"
@@ -2880,7 +2879,7 @@ msgstr "Paramètres spécialisés pour l'outil d'édition courant"
 #, python-brace-format
 msgctxt "options panel: header"
 msgid "<b>{mode_name}</b>"
-msgstr ""
+msgstr "<b>{mode_name}</b>"
 
 #: ../gui/optionspanel.py:62
 msgctxt "options panel: body"
@@ -2922,7 +2921,7 @@ msgstr "Langue système"
 #, python-brace-format
 msgctxt "Prefs Dialog|View|Interface - menu entries"
 msgid "{lang_en} - ({lang_nat})"
-msgstr ""
+msgstr "{lang_en} – ({lang_nat})"
 
 #. TRANSLATORS: title of panel showing an overview of the whole canvas
 #: ../gui/previewwindow.py:201
@@ -2987,16 +2986,14 @@ msgid "Adjust the painting symmetry axis."
 msgstr "Ajuster l'axe de symétrie."
 
 #: ../gui/symmetry.py:355
-#, fuzzy
 msgctxt "symmetry axis options panel: labels"
 msgid "X Position:"
-msgstr "Position :"
+msgstr "Position X :"
 
 #: ../gui/symmetry.py:359
-#, fuzzy
 msgctxt "symmetry axis options panel: labels"
 msgid "Y Position:"
-msgstr "Position :"
+msgstr "Position Y :"
 
 #: ../gui/symmetry.py:363
 msgctxt "symmetry axis options panel: position button: no axis pos."
@@ -3052,7 +3049,7 @@ msgstr "de croquis"
 
 #: ../gui/toolbar.py:30
 msgid "Undo and Redo"
-msgstr "Défaire et Refaire"
+msgstr "Défaire et refaire"
 
 #: ../gui/toolbar.py:31
 msgid "Blend Modes"
@@ -3455,28 +3452,28 @@ msgstr ""
 #. TRANSLATORS: Assumption for all "Time period abbreviations":
 #. TRANSLATORS: they don't need ngettext (to support plural/singular)
 #: ../lib/helpers.py:570
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgctxt "Time period abbreviations"
 msgid "{days}d{hours}h"
-msgstr "{days}d{hours}h"
+msgstr "{days} j {hours} h"
 
 #: ../lib/helpers.py:572
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgctxt "Time period abbreviations"
 msgid "{hours}h{minutes}m"
-msgstr "{hours}h{minutes}m"
+msgstr "{hours} h {minutes} min"
 
 #: ../lib/helpers.py:574
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgctxt "Time period abbreviation"
 msgid "{minutes}m{seconds}s"
-msgstr "{minutes}m{seconds}s"
+msgstr "{minutes} min {seconds} s"
 
 #: ../lib/helpers.py:576
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgctxt "Time period abbreviation"
 msgid "{seconds}s"
-msgstr "{seconds}s"
+msgstr "{seconds} s"
 
 #. TRANSLATORS: Default name for new normal, paintable layers
 #: ../lib/layer/core.py:66 ../lib/layer/data.py:1301
@@ -3512,19 +3509,18 @@ msgstr ""
 #: ../lib/layer/data.py:1250
 msgctxt "layer default names"
 msgid "Data"
-msgstr ""
+msgstr "Données"
 
 #: ../lib/layer/data.py:1255
-#, fuzzy
 msgctxt "layer type descriptions"
 msgid "Unknown Data"
-msgstr "Information de calque inconnue"
+msgstr "Données inconnues"
 
 #: ../lib/layer/data.py:1306
 #, fuzzy
 msgctxt "layer type descriptions"
 msgid "Painting Layer"
-msgstr "Nouveau Calque pour Peinture"
+msgstr "Calque pour peinture"
 
 #. TRANSLATORS: Short default name for layer groups.
 #: ../lib/layer/group.py:67
@@ -3533,17 +3529,16 @@ msgid "Group"
 msgstr "Groupe"
 
 #: ../lib/layer/group.py:72
-#, fuzzy
 msgctxt "layer type descriptions"
 msgid "Layer Group"
-msgstr "Nouveau Groupe de Calques"
+msgstr "Nouveau groupe de calques"
 
 #. TRANSLATORS: Short default name for temporary placeholder layers.
 #. TRANSLATORS: (The user should never see this except in error cases)
 #: ../lib/layer/tree.py:70
 msgctxt "layer default names"
 msgid "Placeholder"
-msgstr ""
+msgstr "Espace réservé"
 
 #: ../lib/layer/tree.py:109
 msgctxt "layer default names"
