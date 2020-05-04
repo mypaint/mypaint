@@ -477,11 +477,13 @@ class Demo (Command):
 
     description = "[MyPaint] build, install, and run in a throwaway folder"
     user_options = [
+        ("args=", None, "flags and arguments to pass on, as a string"),
         ("temp-root=", None,
          "parent dir (retained) for the demo install (deleted)"),
     ]
 
     def initialize_options(self):
+        self.args = None
         self.temp_root = None
 
     def finalize_options(self):
@@ -530,7 +532,9 @@ class Demo (Command):
             config_dir = os.path.join(temp_dir, "_config")
 
             demo_cmd.extend([script_path, "-c", config_dir])
-
+            # Arguments to mypaint (e.g. a file path)
+            if self.args:
+                demo_cmd.extend(self.args.split(' '))
             self.announce("Demo: running %r..." % (demo_cmd,), level=2)
             subprocess.check_call(demo_cmd)
         except Exception:
