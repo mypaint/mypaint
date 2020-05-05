@@ -111,6 +111,9 @@ install_dependencies() {
         p7zip
 
     logok "Dependencies installed."
+
+    gdk-pixbuf-query-loaders --update-cache
+    logok "Pixbuf query loaders cache updated"
 }
 
 
@@ -302,6 +305,8 @@ run_doctest() {
 }
 
 run_tests() {
+    loginfo "Runnning startup/shutdown test"
+    MYPAINT_DEBUG=1 python setup.py demo --args='--run-and-quit'
     loginfo "Running conformance tests."
     python3 setup.py test
     logok "Tests done."
