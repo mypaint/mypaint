@@ -7,6 +7,9 @@ sudo: required
 
 dist: xenial
 
+services:
+  - xvfb
+
 addons:
   apt:
     packages:
@@ -60,6 +63,7 @@ script:
     - python setup.py build_config --translation-threshold=75
     - python setup.py nosetests --tests lib
     - python setup.py test
+    - MYPAINT_DEBUG=1 xvfb-run -a python setup.py demo --args='--run-and-quit'
     - sudo python setup.py managed_install
     - sudo python setup.py managed_uninstall
     - sudo python setup.py install --root=/app/ --prefix=.
