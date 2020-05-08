@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: mypaint v2.0.0-alpha.12-343-g82b4fc5\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-03-29 16:08+0200\n"
-"PO-Revision-Date: 2020-01-22 23:28+0000\n"
+"PO-Revision-Date: 2020-05-09 16:23+0000\n"
 "Last-Translator: Blake <adam.otruba@protonmail.com>\n"
 "Language-Team: Slovak <https://hosted.weblate.org/projects/mypaint/mypaint/"
 "sk/>\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
-"X-Generator: Weblate 3.11-dev\n"
+"X-Generator: Weblate 4.1-dev\n"
 
 #. TRANSLATORS: Name of first column in the button map preferences.
 #. TRANSLATORS: Refers to an action bound to a mod+button combination.
@@ -3872,19 +3872,21 @@ msgid ""
 "You can always launch this dialog from the ‘File’ menu when MyPaint is "
 "running."
 msgstr ""
+"Spustí tento dialóg automatickej obnovy pri spustení MyPaintu, ak existujú "
+"súbory na obnovu.\n"
+"\n"
+"Tento dialóg môžete kedykoľvek spustiť z menu „Súbor“."
 
 #. Deletes the selected autosave backup file.
 #: ../gui/autorecover.glade:60
-#, fuzzy
 msgctxt "Autosave Recovery dialog|"
 msgid "_Delete…"
-msgstr "Odstrániť"
+msgstr "O_dstrániť…"
 
 #: ../gui/autorecover.glade:66
-#, fuzzy
 msgctxt "Autosave Recovery dialog|Delete button|"
 msgid "Delete this backup from the disk."
-msgstr "Odstráni tento štetec z disku"
+msgstr "Odstráni túto zálohu z disku."
 
 #. Recover in the sense or retrieval or salvage from a backup file. The user is asked to save the retrieved file immediately afterwards, hence the ellipsis.
 #: ../gui/autorecover.glade:78
@@ -3894,7 +3896,6 @@ msgid "_Recover & Save…"
 msgstr "_Obnoviť a uložiť…"
 
 #: ../gui/autorecover.glade:84
-#, fuzzy
 msgctxt "Autosave Recovery dialog|Recover button|"
 msgid "Save this backup to disk, then continue working on it."
 msgstr "Uložiť túto zálohu na disk, potom pokračovať v práci na nej."
@@ -3903,7 +3904,7 @@ msgstr "Uložiť túto zálohu na disk, potom pokračovať v práci na nej."
 #: ../gui/autorecover.glade:95
 msgctxt "Autosave Recovery dialog|"
 msgid "Decide _Later"
-msgstr ""
+msgstr "Rozhodnúť _neskôr"
 
 #: ../gui/autorecover.glade:101
 msgctxt "Autosave Recovery dialog|Cancel button|"
@@ -3911,7 +3912,6 @@ msgid "Start work on a new canvas. These backups will be retained."
 msgstr "Začať prácu na novom plátne. Tieto zálohy budú uchované."
 
 #: ../gui/autorecover.glade:122
-#, fuzzy
 msgctxt "Autosave Recovery dialog|"
 msgid ""
 "MyPaint crashed with unsaved work, but it makes rolling backups. You can "
@@ -3920,7 +3920,7 @@ msgid ""
 msgstr ""
 "Program MyPaint bol predčasne ukončený s neuloženou prácou, ale vytvoril "
 "zálohy. Môžete obnoviť súbor teraz, alebo spustiť obnovu pri ďalšom spustení "
-"programu MyPaint."
+"programu MyPaint. Budete môcť zvoliť miesto uloženia."
 
 #: ../gui/autorecover.glade:157
 msgid "Thumbnail"
@@ -4008,28 +4008,33 @@ msgstr "Poznámky:"
 msgid ""
 "Starting value for this brush setting. The brush dynamics below act on this."
 msgstr ""
+"Počiatočná hodnota pre toto nastavenie štetca. Nastavenia dynamiky štetca "
+"nižšie pracujú s touto hodnotou."
 
 #. field label
 #: ../gui/brusheditor.glade:426
-#, fuzzy
 msgid "Value:"
-msgstr "Hodnota HSV"
+msgstr "Hodnota:"
 
 #: ../gui/brusheditor.glade:491
 msgid "Reset this input to have no effect on the setting"
-msgstr ""
+msgstr "Vynuluje tento vstup, aby nemal vplyv na nastavenie"
 
 #: ../gui/brusheditor.glade:521
 msgid ""
 "Minimum value for the output axis.\n"
 "This can be set using the main slider for {dname}."
 msgstr ""
+"Minimálna hodnota pre výstupnú os.\n"
+"Môže byť nastavená použitím hlavného posuvníka pre {dname}."
 
 #: ../gui/brusheditor.glade:540
 msgid ""
 "Maximum value for the output axis.\n"
 "This can be set using the main slider for {dname}."
 msgstr ""
+"Maximálna hodnota pre výstupnú os.\n"
+"Môže byť nastavená použitím hlavného posuvníka pre {dname}."
 
 #: ../gui/brusheditor.glade:562
 msgid "Output"
@@ -4052,12 +4057,16 @@ msgid ""
 "Minimum value for the input axis.\n"
 "Use the popup scale to adjust this."
 msgstr ""
+"Minimálna hodnota pre vstupnú os.\n"
+"Na nastavenie použite vyskakovacie okno."
 
 #: ../gui/brusheditor.glade:684
 msgid ""
 "Maximum value for the input axis.\n"
 "Use the popup scale to adjust this."
 msgstr ""
+"Maximálna hodnota pre vstupnú os.\n"
+"Na nastavenie použite vyskakovacie okno."
 
 #: ../gui/brusheditor.glade:739
 msgid "Variation of the base value by stylus input and other criteria"
