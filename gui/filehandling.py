@@ -22,7 +22,10 @@ import sys
 import logging
 from collections import OrderedDict
 import time
+import math
+import tempfile
 
+import cairo
 from gi.repository import Gtk
 from gi.repository import Pango
 
@@ -534,6 +537,7 @@ class FileHandler (object):
             'jpeg-90%': _SaveFormat.JPEG,
             'png-solid': _SaveFormat.PNG_SOLID,
         }
+        self.print_settings = None
 
     def _update_recent_items(self):
         """Updates self._recent_items from the GTK RecentManager.
@@ -814,6 +818,7 @@ class FileHandler (object):
         self.doc.reset_background()
         self.doc.model.clear()
         self.filename = None
+        self.print_settings = None
         self._update_recent_items()
         self.app.doc.reset_view(True, True, True)
 
@@ -836,6 +841,7 @@ class FileHandler (object):
             return
 
         self.filename = os.path.abspath(filename)
+        self.print_settings = None
         for func in self.file_opened_observers:
             func(self.filename)
         logger.info('Loaded from %r', self.filename)
@@ -1574,3 +1580,101 @@ class FileHandler (object):
         if not self._file_extension_regex.search(file_path):
             return False
         return True
+
+    def print_cb(self, action):
+        print_op = Gtk.PrintOperation()
+        print_op.set_embed_page_setup(True)
+
+        print_data = {}
+        print_op.connect("begin_print", self._print_begin_print, print_data)
+        print_op.connect("draw_page", self._print_draw_page, print_data)
+        print_op.connect("done", self._print_done, print_data)
+
+        if self.print_settings is None:
+            # calculate the initial print settings
+            ps = Gtk.PrintSettings()
+            page = Gtk.PageSetup()
+            x, y, w, h = self.doc.model.get_bbox()
+            # choose portrait/landscape based on document dimensions
+            if (w > h):
+                page.set_orientation(Gtk.PageOrientation.LANDSCAPE)
+            else:
+                page.set_orientation(Gtk.PageOrientation.PORTRAIT)
+            r = self.doc.model.get_resolution()
+            s = ps.get_scale() / 100
+            doc_width = s * w / r
+            doc_height = s * h / r
+            page_width = page.get_page_width(Gtk.Unit.INCH)
+            page_height = page.get_page_height(Gtk.Unit.INCH)
+            scale = max (doc_width / page_width, doc_height / page_height)
+            # if the document fits onto the page, use default 100%;
+            # otherwise, if it's too large, scale it onto a single page
+            if scale > 1:
+                ps.set_scale(100/scale)
+            # store the initial print settings for later use
+            self.print_settings = ps
+            self.print_page_setup = page
+
+        print_op.set_print_settings(self.print_settings)
+        print_op.set_default_page_setup(self.print_page_setup)
+        res = print_op.run(Gtk.PrintOperationAction.PRINT_DIALOG, self.app.drawWindow)
+
+        if res == Gtk.PrintOperationResult.APPLY:
+            # store print settings (possibly changed by user in print dialog)
+            self.print_settings = print_op.get_print_settings()
+            self.print_page_setup = print_op.get_default_page_setup();
+        elif res == Gtk.PrintOperationResult.ERROR:
+            d = Gtk.MessageDialog(
+                parent = self.app.drawWindow,
+                message_type = Gtk.MessageType.ERROR,
+                buttons = Gtk.ButtonsType.CLOSE,
+                text = print_op.get_error()
+            )
+            d.run()
+            d.destroy()
+
+    def _print_begin_print(self, operation, print_ctx, print_data):
+        # store a PNG version of the document as a temp file
+        print_data['tmp'] = tempfile.NamedTemporaryFile(
+            mode = "wb",
+            prefix = 'tmp-print',
+            suffix = '.png',
+            delete = False,
+        ).name
+        self._save_doc_to_file(
+            print_data['tmp'],
+            self.doc,
+            export=True,
+            use_statusbar=False,
+            options = {'alpha': None}
+        )
+        # what part of the image fits onto the page? We need to
+        # map the doc size onto the page dimensions and resolution,
+        # so that we can tile the doc on the print pages later
+        x, y, w, h = self.doc.model.get_bbox()
+        r = self.doc.model.get_resolution()
+        s = operation.get_print_settings().get_scale() / 100
+        doc_width = s * w / r
+        doc_height = s * h / r
+        page_width = print_ctx.get_width() / print_ctx.get_dpi_x()
+        page_height = print_ctx.get_height() / print_ctx.get_dpi_y()
+        # there may be smaller rounding errors, so use round(value ,12) here
+        print_data['nx'] = int(math.ceil(round(doc_width / page_width, 12)))
+        ny = int(math.ceil(round(doc_height / page_height, 12)))
+        operation.set_n_pages(print_data['nx'] * ny)
+
+    def _print_draw_page(self, operation, print_ctx, page_num, print_data):
+        cr = print_ctx.get_cairo_context()
+        img = cairo.ImageSurface.create_from_png(print_data['tmp'])
+        cr.scale(print_ctx.get_dpi_x() / self.doc.model.get_resolution(),
+            print_ctx.get_dpi_y() / self.doc.model.get_resolution())
+        s = operation.get_print_settings().get_scale() / 100
+        cr.set_source_surface(img,
+            - (page_num % print_data['nx']) * print_ctx.get_width() / s,
+            - (page_num // print_data['nx']) * print_ctx.get_height() / s
+        )
+        cr.paint()
+
+    def _print_done(self, operation, result, print_data):
+        if 'tmp' in print_data:
+            os.remove(print_data['tmp'])
