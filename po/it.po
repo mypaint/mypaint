@@ -8,8 +8,8 @@ msgstr ""
 "Project-Id-Version: mypaint v2.0.0-alpha.12-345-g9079adb\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-03-29 16:08+0200\n"
-"PO-Revision-Date: 2020-05-02 13:39+0000\n"
-"Last-Translator: Jeannette <j.lavoie@net-c.ca>\n"
+"PO-Revision-Date: 2020-05-10 12:35+0000\n"
+"Last-Translator: J. Lavoie <j.lavoie@net-c.ca>\n"
 "Language-Team: Italian <https://hosted.weblate.org/projects/mypaint/mypaint/"
 "it/>\n"
 "Language: it\n"
@@ -165,7 +165,7 @@ msgstr ""
 #: ../gui/backgroundwindow.py:372
 #, python-brace-format
 msgid "Gdk-Pixbuf couldn't load \"{filename}\", and reported \"{error}\""
-msgstr "Gdk-Pixbuf non riesce a caricare \"{filename}\", e riporta \"{error}\""
+msgstr "Gdk-Pixbuf non riesce a caricare «{filename}», e riporta «{error}»"
 
 #: ../gui/backgroundwindow.py:382
 #, python-brace-format
@@ -1323,7 +1323,7 @@ msgstr "Touchpad"
 #: ../gui/device.py:72
 msgctxt "prefs: device's type label"
 msgid "Touchscreen"
-msgstr "Touchscreen"
+msgstr "Schermo tattile"
 
 #: ../gui/device.py:92
 msgctxt "device settings: allowed usage"
@@ -1559,13 +1559,12 @@ msgstr "Vuoto: scartato {removed} di {total} tessere."
 
 #. TRANSLATORS: window title for use with a filename
 #: ../gui/drawwindow.py:270
-#, fuzzy, python-format
+#, python-format
 msgid "%s - MyPaint"
 msgstr "%s - MyPaint"
 
 #. TRANSLATORS: window title for use without a filename
 #: ../gui/drawwindow.py:273 ../gui/mypaint.glade:8
-#, fuzzy
 msgid "MyPaint"
 msgstr "MyPaint"
 
@@ -1930,7 +1929,7 @@ msgstr "Nuova Tela?"
 #: ../gui/filehandling.py:808
 msgctxt "File→New: confirm dialog: continue button"
 msgid "_New Canvas"
-msgstr "_Nuova tela?"
+msgstr "_Nuova tela"
 
 #: ../gui/filehandling.py:1024
 msgctxt "File→Open: confirm dialog: title question"
@@ -4605,9 +4604,8 @@ msgid ""
 "Use a light-on-dark theme variant, when it's supported by the GTK theme. "
 "This is generally sensible for image editors and media viewers."
 msgstr ""
-"Usa una variante \"chiaro su scuro\" quando è supportato dal tema GTK. "
-"Questo è generalmente sensato per i redattori delle immagine e per gli "
-"spettatori."
+"Usa una variante chiaro su scuro quando è supportato dal tema GTK. Questo è "
+"generalmente sensato per i redattori delle immagine e per gli spettatori."
 
 #: ../gui/preferenceswindow.glade:916
 msgid "Some of these settings require MyPaint to be restarted."
@@ -6176,7 +6174,7 @@ msgstr "Salva Blocco Schizzi come Predefinito"
 #: ../gui/resources.xml:1137
 msgctxt "Accel Editor (descriptions)"
 msgid "Save the scratchpad as the default for ‘New Scratchpad’."
-msgstr "Salva il blocco schizzi come predefinito per \"Nuovo Blocco Schizzi\"."
+msgstr "Salva il blocco schizzi come predefinito per «Nuovo blocco schizzi»."
 
 #: ../gui/resources.xml:1143
 msgctxt "Menu→Scratchpad (labels), Accel Editor (labels)"
