@@ -5,7 +5,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-03-29 16:08+0200\n"
 "PO-Revision-Date: 2020-05-10 12:35+0000\n"
-"Last-Translator: J. Lavoie <j.lavoie@net-c.ca>\n"
+"Last-Translator: Anonymous <noreply@weblate.org>\n"
 "Language-Team: German <https://hosted.weblate.org/projects/mypaint/mypaint/"
 "de/>\n"
 "Language: de\n"
@@ -1293,7 +1293,7 @@ msgstr "Immer öffnen im Modus 2.x"
 #: ../gui/compatibility.py:215
 msgctxt "Prefs Dialog|Compatibility"
 msgid "Open in 1.x mode unless file contains pigment layers"
-msgstr "Öffnen im Modus 1.x falls das Dokument keine \"pigment\" Layer enthält"
+msgstr "Öffnen im 1.x Modus außer die Datei enthält Pigment-Layer"
 
 #. TRANSLATORS: This is a label for a dropdown menu in the
 #. TRANSLATORS: file chooser dialog when loading .ora files.
