@@ -15,9 +15,9 @@ from __future__ import division, print_function
 from math import pi
 from gettext import gettext as _
 
-from gi.repository import Pango
-from gi.repository import PangoCairo
-from gi.repository import GLib
+from lib.gibindings import Pango
+from lib.gibindings import PangoCairo
+from lib.gibindings import GLib
 import cairo
 
 from lib.helpers import clamp

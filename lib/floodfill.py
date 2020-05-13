@@ -13,7 +13,7 @@ import logging
 import numpy as np
 import threading
 
-from gi.repository import GLib
+from lib.gibindings import GLib
 
 import lib.helpers
 import lib.mypaintlib as myplib

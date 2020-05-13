@@ -15,9 +15,9 @@ import logging
 import gui.drawutils
 from lib.pycompat import xrange
 
-from gi.repository import Gtk
-from gi.repository import Gdk
-from gi.repository import GdkPixbuf
+from lib.gibindings import Gtk
+from lib.gibindings import Gdk
+from lib.gibindings import GdkPixbuf
 
 logger = logging.getLogger(__name__)
 

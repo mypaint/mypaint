@@ -15,7 +15,7 @@ import os.path
 from logging import getLogger
 from gettext import gettext as _
 
-from gi.repository import Gtk
+from lib.gibindings import Gtk
 
 from gui.compatibility import CompatibilityPreferences
 import lib.config

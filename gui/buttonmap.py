@@ -12,10 +12,10 @@ from __future__ import division, print_function
 from gettext import gettext as _
 import logging
 
-from gi.repository import Gtk
-from gi.repository import Gdk
-from gi.repository import GObject
-from gi.repository import Pango
+from lib.gibindings import Gtk
+from lib.gibindings import Gdk
+from lib.gibindings import GObject
+from lib.gibindings import Pango
 
 import lib.xml
 from . import widgets

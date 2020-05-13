@@ -22,7 +22,7 @@ which are exposed on POSIX platforms.
 
 from __future__ import division, print_function
 
-from gi.repository import GdkPixbuf
+from lib.gibindings import GdkPixbuf
 
 import lib.fileutils
 import lib.feedback

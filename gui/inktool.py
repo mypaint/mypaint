@@ -17,8 +17,8 @@ import weakref
 from logging import getLogger
 
 from gettext import gettext as _
-from gi.repository import Gdk
-from gi.repository import GLib
+from lib.gibindings import Gdk
+from lib.gibindings import GLib
 import numpy as np
 
 import gui.mode

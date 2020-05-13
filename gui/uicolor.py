@@ -20,7 +20,7 @@ from __future__ import division, print_function
 
 import struct
 
-from gi.repository import Gdk
+from lib.gibindings import Gdk
 
 from lib.color import RGBColor
 from lib.helpers import clamp

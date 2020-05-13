@@ -18,7 +18,7 @@ from lib.gettext import gettext as _
 from .toolstack import SizedVBoxToolWidget, TOOL_WIDGET_NATURAL_HEIGHT_SHORT
 from .widgets import inline_toolbar
 
-from gi.repository import Gtk
+from lib.gibindings import Gtk
 
 logger = logging.getLogger(__name__)
 

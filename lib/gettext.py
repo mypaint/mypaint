@@ -27,7 +27,7 @@ still uses a relative import, however.
 from __future__ import absolute_import, division, print_function
 
 from warnings import warn
-from gi.repository import GLib
+from lib.gibindings import GLib
 
 # Set the default encoding like PyGTK
 from lib.pycompat import PY3

@@ -17,7 +17,7 @@ import abc
 import functools
 import logging
 
-from gi.repository import Gtk
+from lib.gibindings import Gtk
 
 
 logger = logging.getLogger(__name__)

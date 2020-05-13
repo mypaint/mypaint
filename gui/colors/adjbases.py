@@ -20,10 +20,10 @@ import os
 import logging
 from gettext import gettext as _
 
-from gi.repository import GObject
-from gi.repository import Gdk
-from gi.repository import Gtk
-from gi.repository import GdkPixbuf
+from lib.gibindings import GObject
+from lib.gibindings import Gdk
+from lib.gibindings import Gtk
+from lib.gibindings import GdkPixbuf
 import cairo
 
 from .util import clamp

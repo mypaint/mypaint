@@ -13,8 +13,8 @@
 ## Imports
 from __future__ import division, print_function
 
-from gi.repository import GdkPixbuf
-from gi.repository import Gdk
+from lib.gibindings import GdkPixbuf
+from lib.gibindings import Gdk
 
 import lib.color
 import gui.colors
@@ -123,7 +123,7 @@ class Rings (_CColorChanger):
 
 
 if __name__ == '__main__':
-    from gi.repository import Gtk
+    from lib.gibindings import Gtk
     import os
     import sys
     mgr = gui.colors.ColorManager(prefs={}, datapath='.')

@@ -15,7 +15,7 @@ from __future__ import division, print_function
 import os
 from gettext import gettext as _
 
-from gi.repository import Gtk
+from lib.gibindings import Gtk
 
 from . import widgets
 

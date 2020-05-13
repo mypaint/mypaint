@@ -19,8 +19,8 @@ from gettext import gettext as _
 import os.path
 from logging import getLogger
 
-from gi.repository import Gtk
-from gi.repository import GObject
+from lib.gibindings import Gtk
+from lib.gibindings import GObject
 
 import lib.layer
 import lib.xml

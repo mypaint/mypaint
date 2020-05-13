@@ -13,7 +13,7 @@ import sys
 import json
 import logging
 
-from gi.repository import GLib
+from lib.gibindings import GLib
 
 import lib.glib
 from lib.eotf import DEFAULT_EOTF

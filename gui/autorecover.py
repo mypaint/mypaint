@@ -16,7 +16,7 @@ from gettext import gettext as _
 import shutil
 import logging
 
-from gi.repository import Gtk
+from lib.gibindings import Gtk
 
 import lib.document
 import lib.helpers

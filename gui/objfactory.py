@@ -14,7 +14,7 @@ from __future__ import division, print_function
 import logging
 from warnings import warn
 
-from gi.repository import GObject
+from lib.gibindings import GObject
 
 from lib.observable import event
 
@@ -29,7 +29,7 @@ class ConstructError (Exception):
     Raised when an object cannot be looked up by GType name:
 
         >>> import gi
-        >>> from gi.repository import Gtk
+        >>> from lib.gibindings import Gtk
         >>> make_widget = ObjFactory(gtype=Gtk.Entry)
         >>> make_widget("NonExist12345")  # doctest: +IGNORE_EXCEPTION_DETAIL
         Traceback (most recent call last):
@@ -56,7 +56,7 @@ class ObjFactory (object):
     containing any construction parameters needed.
 
       >>> import gi
-      >>> from gi.repository import Gtk
+      >>> from lib.gibindings import Gtk
       >>> make_widget = ObjFactory(gtype=Gtk.Widget)
       >>> w1 = make_widget.get("GtkLabel", "Hello, World",)
       >>> w1 is not None

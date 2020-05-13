@@ -19,7 +19,7 @@ import gc
 import logging
 import sys
 
-from gi.repository import GdkPixbuf
+from lib.gibindings import GdkPixbuf
 from lib.gettext import C_
 
 from . import mypaintlib

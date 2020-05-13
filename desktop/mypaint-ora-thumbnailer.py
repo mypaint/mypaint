@@ -32,7 +32,7 @@ import gi
 
 gi.require_version("GdkPixbuf", "2.0")
 try:
-    from gi.repository import GdkPixbuf
+    from lib.gibindings import GdkPixbuf
 except:
     raise
 

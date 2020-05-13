@@ -291,7 +291,7 @@ class Scroll (unittest.TestCase):
         cls._tdw = None
         cls._model = None
 
-        from gi.repository import Gdk
+        from lib.gibindings import Gdk
         if Gdk.Display.get_default() is None:
             return
 

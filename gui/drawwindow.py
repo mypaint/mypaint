@@ -26,8 +26,8 @@ import logging
 import math
 import xml.etree.ElementTree as ET
 
-from gi.repository import Gtk
-from gi.repository import Gdk
+from lib.gibindings import Gtk
+from lib.gibindings import Gdk
 
 from . import compatibility
 from . import historypopup

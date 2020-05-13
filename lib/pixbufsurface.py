@@ -14,8 +14,8 @@ from __future__ import division, print_function
 import contextlib
 from logging import getLogger
 
-from gi.repository import GdkPixbuf
-from gi.repository import Gdk
+from lib.gibindings import GdkPixbuf
+from lib.gibindings import Gdk
 import cairo
 
 from . import mypaintlib
