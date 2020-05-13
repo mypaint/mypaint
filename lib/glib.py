@@ -26,7 +26,7 @@ import sys
 from lib.pycompat import PY3
 from lib.pycompat import unicode
 
-from gi.repository import GLib
+from lib.gibindings import GLib
 
 logger = logging.getLogger(__name__)
 

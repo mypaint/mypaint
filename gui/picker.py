@@ -23,9 +23,9 @@ from gui.document import Document
 from lib.gettext import C_
 import gui.cursor
 
-from gi.repository import Gtk
-from gi.repository import Gdk
-from gi.repository import GLib
+from lib.gibindings import Gtk
+from lib.gibindings import Gdk
+from lib.gibindings import GLib
 
 import abc
 import logging

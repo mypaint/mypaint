@@ -25,8 +25,8 @@ import unicodedata
 import lib.helpers
 from lib.pycompat import unicode
 
-from gi.repository import GLib
-from gi.repository import Gio
+from lib.gibindings import GLib
+from lib.gibindings import Gio
 
 logger = logging.getLogger(__name__)
 

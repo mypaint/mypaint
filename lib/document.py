@@ -28,8 +28,8 @@ import logging
 from lib.fileutils import safename
 from lib.naming import make_unique_name
 
-from gi.repository import GObject
-from gi.repository import GLib
+from lib.gibindings import GObject
+from lib.gibindings import GLib
 
 import lib.meta
 import lib.helpers as helpers
@@ -2030,7 +2030,7 @@ def _save_layers_to_new_orazip(root_stack, filename, bbox=None,
     :rtype: GdkPixbuf
     :returns: Thumbnail preview image (256x256 max) of what was saved
 
-    >>> from gi.repository import GdkPixbuf
+    >>> from lib.gibindings import GdkPixbuf
     >>> from lib.layer.test import make_test_stack
     >>> root, leaves = make_test_stack()
     >>> import tempfile

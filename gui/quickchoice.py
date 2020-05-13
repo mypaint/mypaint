@@ -13,7 +13,7 @@
 from __future__ import division, print_function
 import abc
 
-from gi.repository import Gtk
+from lib.gibindings import Gtk
 
 from .pixbuflist import PixbufList
 from . import brushmanager

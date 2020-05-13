@@ -26,9 +26,9 @@ from lib.gettext import C_
 import gui.mvp
 
 import cairo
-from gi.repository import Gtk
-from gi.repository import Gdk
-from gi.repository import GdkPixbuf
+from lib.gibindings import Gtk
+from lib.gibindings import Gdk
+from lib.gibindings import GdkPixbuf
 
 
 # Module constants:

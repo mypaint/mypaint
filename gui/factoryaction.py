@@ -14,8 +14,8 @@ from __future__ import division, print_function
 from warnings import warn
 
 import gi
-from gi.repository import Gtk
-from gi.repository import GObject
+from lib.gibindings import Gtk
+from lib.gibindings import GObject
 
 
 class FactoryAction (Gtk.Action):

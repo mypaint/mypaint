@@ -13,9 +13,9 @@
 from __future__ import division, print_function
 import logging
 
-from gi.repository import GObject
-from gi.repository import Gtk
-from gi.repository import Gdk
+from lib.gibindings import GObject
+from lib.gibindings import Gtk
+from lib.gibindings import Gdk
 from gettext import gettext as _
 
 logger = logging.getLogger(__name__)

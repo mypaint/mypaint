@@ -28,9 +28,9 @@ import traceback
 from gettext import gettext as _
 import textwrap
 
-from gi.repository import Gtk
-from gi.repository import Gdk
-from gi.repository import Pango
+from lib.gibindings import Gtk
+from lib.gibindings import Gdk
+from lib.gibindings import Pango
 
 import lib.meta
 

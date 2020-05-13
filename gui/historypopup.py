@@ -9,8 +9,8 @@
 
 from __future__ import division, print_function
 
-from gi.repository import Gtk
-from gi.repository import Gdk
+from lib.gibindings import Gtk
+from lib.gibindings import Gdk
 import cairo
 
 from . import windowing

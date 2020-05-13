@@ -27,8 +27,8 @@ import lib.tiledsurface
 import gui.drawutils
 from lib.gettext import C_
 
-from gi.repository import Gdk
-from gi.repository import Gtk
+from lib.gibindings import Gdk
+from lib.gibindings import Gtk
 
 
 ## Module settings

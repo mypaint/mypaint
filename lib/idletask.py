@@ -14,7 +14,7 @@ from __future__ import division, print_function
 
 import collections
 
-from gi.repository import GLib
+from lib.gibindings import GLib
 
 
 class Processor (object):

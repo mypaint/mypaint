@@ -28,8 +28,8 @@ from lib.gettext import gettext as _
 from lib.gettext import C_
 from lib.helpers import utf8
 
-from gi.repository import Gtk
-from gi.repository import GdkPixbuf
+from lib.gibindings import Gtk
+from lib.gibindings import GdkPixbuf
 
 from . import dialogs
 from lib.brush import BrushInfo

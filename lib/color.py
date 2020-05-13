@@ -25,7 +25,7 @@ from __future__ import division, print_function
 import re
 import colorsys
 
-from gi.repository import GdkPixbuf
+from lib.gibindings import GdkPixbuf
 
 from lib.pycompat import xrange
 from lib.pycompat import PY3

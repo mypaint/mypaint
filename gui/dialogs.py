@@ -13,9 +13,9 @@
 ## Imports
 from __future__ import division, print_function
 
-from gi.repository import Gtk
-from gi.repository import Gdk
-from gi.repository import GdkPixbuf
+from lib.gibindings import Gtk
+from lib.gibindings import Gdk
+from lib.gibindings import GdkPixbuf
 
 from gettext import gettext as _
 from fnmatch import fnmatch

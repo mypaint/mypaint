@@ -18,8 +18,8 @@ from copy import deepcopy
 import re
 import os.path
 
-from gi.repository import Gtk
-from gi.repository import Gdk
+from lib.gibindings import Gtk
+from lib.gibindings import Gdk
 import cairo
 
 from .adjbases import ColorManager

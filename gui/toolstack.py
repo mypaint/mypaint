@@ -13,10 +13,10 @@ from warnings import warn
 import logging
 import weakref
 
-from gi.repository import GObject
-from gi.repository import Gtk
-from gi.repository import Gdk
-from gi.repository import GLib
+from lib.gibindings import GObject
+from lib.gibindings import Gtk
+from lib.gibindings import Gdk
+from lib.gibindings import GLib
 
 from gui.windowing import set_initial_window_position
 

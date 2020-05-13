@@ -24,9 +24,9 @@ from lib.gettext import gettext as _
 from lib.gettext import C_
 from lib.layer.core import LayerBase  # noqa
 
-from gi.repository import Gio
-from gi.repository import Pango
-from gi.repository import Gtk
+from lib.gibindings import Gio
+from lib.gibindings import Pango
+from lib.gibindings import Gtk
 
 import lib.xml
 

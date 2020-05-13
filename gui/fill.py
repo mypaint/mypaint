@@ -13,9 +13,9 @@
 from __future__ import division, print_function
 
 import weakref
-from gi.repository import Gtk
-from gi.repository import Pango
-from gi.repository import GLib
+from lib.gibindings import Gtk
+from lib.gibindings import Pango
+from lib.gibindings import GLib
 from gettext import gettext as _
 from lib.gettext import C_
 

@@ -14,8 +14,8 @@ from __future__ import division, print_function
 
 from gettext import gettext as _
 
-from gi.repository import Gtk
-from gi.repository import Gdk
+from lib.gibindings import Gtk
+from lib.gibindings import Gdk
 
 from .adjbases import HueSaturationWheelAdjuster
 from .sliders import HSVValueSlider

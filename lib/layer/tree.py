@@ -23,8 +23,8 @@ import os.path
 from warnings import warn
 import contextlib
 
-from gi.repository import GdkPixbuf
-from gi.repository import GLib
+from lib.gibindings import GdkPixbuf
+from lib.gibindings import GLib
 import numpy as np
 
 from lib.eotf import eotf

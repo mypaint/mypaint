@@ -17,8 +17,8 @@ import sys
 import logging
 
 from gettext import gettext as _
-from gi.repository import Gtk
-from gi.repository import GdkPixbuf
+from lib.gibindings import Gtk
+from lib.gibindings import GdkPixbuf
 
 from . import pixbuflist
 from . import windowing

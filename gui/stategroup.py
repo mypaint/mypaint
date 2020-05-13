@@ -12,9 +12,9 @@ from __future__ import division, print_function
 import logging
 logger = logging.getLogger(__name__)
 
-from gi.repository import Gtk
-from gi.repository import Gdk
-from gi.repository import GLib
+from lib.gibindings import Gtk
+from lib.gibindings import Gdk
+from lib.gibindings import GLib
 
 
 class StateGroup (object):

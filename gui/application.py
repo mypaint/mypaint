@@ -37,11 +37,11 @@ from collections import namedtuple
 import logging
 import json
 
-from gi.repository import GObject
-from gi.repository import Gtk
-from gi.repository import Gdk
-from gi.repository import GdkPixbuf
-from gi.repository import GLib
+from lib.gibindings import GObject
+from lib.gibindings import Gtk
+from lib.gibindings import Gdk
+from lib.gibindings import GdkPixbuf
+from lib.gibindings import GLib
 from gettext import gettext as _
 
 import lib.observable

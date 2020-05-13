@@ -11,8 +11,8 @@
 from __future__ import division, print_function
 import functools
 
-from gi.repository import Gtk
-from gi.repository import Gdk
+from lib.gibindings import Gtk
+from lib.gibindings import Gdk
 
 
 # Exact icon sizes

@@ -17,8 +17,8 @@ import logging
 
 import cairo
 
-from gi.repository import Gdk
-from gi.repository import GdkPixbuf
+from lib.gibindings import Gdk
+from lib.gibindings import GdkPixbuf
 
 import gui.brushmanager
 from gui.quickchoice import BrushChooserPopup  # noqa

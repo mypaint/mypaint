@@ -10,8 +10,8 @@ import numpy as np
 import gi
 try:
     gi.require_version("Gtk", "3.0")
-    from gi.repository import Gtk
-    from gi.repository import GObject
+    from lib.gibindings import Gtk
+    from lib.gibindings import GObject
 except:
     raise
 
