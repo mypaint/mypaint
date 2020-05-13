@@ -12,7 +12,6 @@ from collections import namedtuple
 import unittest
 
 from . import paths
-import lib.gichecks
 from lib import mypaintlib
 from lib.document import Document
 from lib.pycompat import xrange, PY3
@@ -341,5 +340,4 @@ class Scroll (unittest.TestCase):
 
 
 if __name__ == '__main__':
-    assert(lib.gichecks)  # avoid a flake8 warning
     unittest.main()

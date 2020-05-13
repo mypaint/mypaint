@@ -13,7 +13,6 @@
 from __future__ import division, print_function
 import logging
 
-import lib.gichecks  # noqa: F401
 from gi.repository import GObject
 from gi.repository import Gtk
 from gi.repository import Gdk
