@@ -19,7 +19,6 @@ import gc
 import logging
 import sys
 
-import lib.gichecks
 from gi.repository import GdkPixbuf
 from lib.gettext import C_
 
