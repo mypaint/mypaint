@@ -18,7 +18,6 @@ import sys
 import logging
 import warnings
 
-import lib.gichecks
 from gi.repository import GdkPixbuf
 from optparse import OptionParser
 

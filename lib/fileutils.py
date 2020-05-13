@@ -22,7 +22,6 @@ import logging
 import shutil
 import unicodedata
 
-import lib.gichecks
 import lib.helpers
 from lib.pycompat import unicode
 
@@ -303,5 +302,4 @@ def safename(s, fragment=False):
 
 
 if __name__ == '__main__':
-    assert lib.gichecks  # suppress a flake8 warning re. unused vars :)
     _test()
