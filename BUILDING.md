@@ -83,6 +83,7 @@ installed before you can build it.
 - python (>= 2.7.4)
 - swig (>= 3)
 - numpy
+- librsvg2 (and its svg gdk-pixbuf loader)
 - pycairo (>= 1.4)
 
 Some dependencies have specific versions for Python 2 and Python 3.
@@ -97,7 +98,8 @@ external dependencies.
 
     sudo apt-get install -y \
     git swig gettext g++ gir1.2-gtk-3.0 libgtk-3-dev \
-    libpng-dev liblcms2-dev libjson-c-dev python-gi-dev
+    libpng-dev liblcms2-dev libjson-c-dev python-gi-dev \
+    librsvg2-common
 
     # For python 2
     sudo apt-get install -y \
@@ -116,7 +118,8 @@ For yum-enabled systems, the following should work. This has been tested
 on a minimal CentOS 7.3 install, and Fedora 30.
 
     sudo yum install -y git swig gettext gcc-c++ libpng-devel lcms2-devel \
-    json-c-devel gtk3 gtk3-devel gobject-introspection pygobject3-devel
+    json-c-devel gtk3 gtk3-devel gobject-introspection pygobject3-devel \
+    librsvg2
 
     # For python 2
     sudo yum install -y python-setuptools python-devel numpy
@@ -160,6 +163,7 @@ dependencies from Macports, use:
     sudo port install json-c
     sudo port install lcms2
     sudo port install hicolor-icon-theme
+    sudo port install librsvg
 
 These commands are poorly tested, and may be incomplete.
 Please send feedback if they're not working for you.
