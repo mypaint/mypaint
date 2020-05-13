@@ -9,7 +9,7 @@
 
 from logging import getLogger
 
-from gi.repository import Gtk
+from lib.gibindings import Gtk
 
 from . import compatconfig as config
 

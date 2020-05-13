@@ -12,10 +12,10 @@ from __future__ import division, print_function
 from math import ceil
 import logging
 
-from gi.repository import Gtk
-from gi.repository import Gdk
-from gi.repository import GdkPixbuf
-from gi.repository import GLib
+from lib.gibindings import Gtk
+from lib.gibindings import Gdk
+from lib.gibindings import GdkPixbuf
+from lib.gibindings import GLib
 
 from lib import helpers
 from lib.observable import event

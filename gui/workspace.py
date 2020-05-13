@@ -14,10 +14,10 @@ from __future__ import division, print_function
 from warnings import warn
 import logging
 
-from gi.repository import GObject
-from gi.repository import Gtk
-from gi.repository import Gdk
-from gi.repository import GLib
+from lib.gibindings import GObject
+from lib.gibindings import Gtk
+from lib.gibindings import Gdk
+from lib.gibindings import GLib
 
 from gui.toolstack import ToolStack, ToolStackWindow
 from gui.windowing import set_initial_window_position

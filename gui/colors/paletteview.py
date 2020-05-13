@@ -24,9 +24,9 @@ import re
 import logging
 from io import open
 
-from gi.repository import Gdk
-from gi.repository import Gtk
-from gi.repository import GLib
+from lib.gibindings import Gdk
+from lib.gibindings import Gtk
+from lib.gibindings import GLib
 import cairo
 from lib.gettext import C_
 

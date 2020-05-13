@@ -14,9 +14,9 @@
 from __future__ import division, print_function
 import logging
 
-from gi.repository import Gtk
-from gi.repository import Gdk
-from gi.repository import Pango
+from lib.gibindings import Gtk
+from lib.gibindings import Gdk
+from lib.gibindings import Pango
 from lib.gettext import gettext as _
 
 import lib.xml

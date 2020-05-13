@@ -15,9 +15,9 @@ import bisect
 
 from gettext import gettext as _
 
-from gi.repository import Gtk
-from gi.repository import Gdk
-from gi.repository import GLib
+from lib.gibindings import Gtk
+from lib.gibindings import Gdk
+from lib.gibindings import GLib
 import cairo
 
 import gui.mode

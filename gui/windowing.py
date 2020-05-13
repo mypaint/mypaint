@@ -14,9 +14,9 @@
 from __future__ import division, print_function
 import logging
 
-from gi.repository import Gtk
-from gi.repository import Gdk
-from gi.repository import GLib
+from lib.gibindings import Gtk
+from lib.gibindings import Gdk
+from lib.gibindings import GLib
 
 from lib.helpers import clamp, Rect
 from lib.pycompat import xrange

@@ -13,8 +13,8 @@ from __future__ import division, print_function
 
 from gettext import gettext as _
 
-from gi.repository import Gdk
-from gi.repository import GLib
+from lib.gibindings import Gdk
+from lib.gibindings import GLib
 
 import gui.mode
 import lib.command

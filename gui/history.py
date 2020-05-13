@@ -14,9 +14,9 @@
 
 from __future__ import division, print_function
 
-from gi.repository import Gtk
-from gi.repository import GLib
-from gi.repository import GdkPixbuf
+from lib.gibindings import Gtk
+from lib.gibindings import GLib
+from lib.gibindings import GdkPixbuf
 
 from lib.color import RGBColor
 from .colors import ColorAdjuster

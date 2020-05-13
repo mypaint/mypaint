@@ -13,7 +13,7 @@ from __future__ import division, print_function
 import logging
 from math import pi
 
-from gi.repository import Gtk, Gdk
+from lib.gibindings import Gtk, Gdk
 
 from lib.helpers import clamp
 

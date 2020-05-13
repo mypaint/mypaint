@@ -15,7 +15,7 @@ from __future__ import division, print_function
 import math
 from gettext import gettext as _
 
-from gi.repository import Gtk
+from lib.gibindings import Gtk
 import cairo
 
 from .util import clamp

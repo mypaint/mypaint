@@ -21,7 +21,7 @@ import lib.layervis
 from lib.gettext import C_
 from lib.xml import escape
 
-from gi.repository import Gtk
+from lib.gibindings import Gtk
 
 
 # Module vars:

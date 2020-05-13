@@ -10,7 +10,7 @@ from __future__ import division, print_function
 
 from gettext import gettext as _
 
-from gi.repository import Gtk
+from lib.gibindings import Gtk
 
 from .widgets import borderless_button
 

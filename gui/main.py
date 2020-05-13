@@ -18,7 +18,7 @@ import sys
 import logging
 import warnings
 
-from gi.repository import GdkPixbuf
+from lib.gibindings import GdkPixbuf
 from optparse import OptionParser
 
 import lib.config
@@ -202,13 +202,15 @@ def main(
         # Gtk must not be imported before init_gettext
         # has been run - else locales will not be set
         # up properly (e.g: left-to-right interfaces for right-to-left scripts)
-        from gi.repository import Gtk
+        # Note that this is not the first import of Gtk in the __program__;
+        # it is imported indirectly via the import of gui.application
+        from lib.gibindings import Gtk
         settings = Gtk.Settings.get_default()
         dark = app.preferences.get("ui.dark_theme_variant", True)
         settings.set_property("gtk-application-prefer-dark-theme", dark)
 
         if debug and options.run_and_quit:
-            from gi.repository import GLib
+            from lib.gibindings import GLib
             GLib.timeout_add(1000, lambda *a: Gtk.main_quit())
         else:
             from gui import gtkexcepthook

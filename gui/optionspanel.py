@@ -17,7 +17,7 @@ from .toolstack import SizedVBoxToolWidget, TOOL_WIDGET_NATURAL_HEIGHT_SHORT
 import lib.xml
 from lib.gettext import C_
 
-from gi.repository import Gtk
+from lib.gibindings import Gtk
 
 logger = logging.getLogger(__name__)
 

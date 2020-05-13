@@ -18,8 +18,8 @@ import subprocess
 import shutil
 import logging
 
-from gi.repository import GLib
-from gi.repository import Gtk
+from lib.gibindings import GLib
+from lib.gibindings import Gtk
 
 import lib.fileutils
 

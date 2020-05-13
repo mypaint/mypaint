@@ -23,8 +23,8 @@ import logging
 from collections import OrderedDict
 import time
 
-from gi.repository import Gtk
-from gi.repository import Pango
+from lib.gibindings import Gtk
+from lib.gibindings import Pango
 
 from lib import helpers
 from lib import fileutils

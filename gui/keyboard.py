@@ -18,8 +18,8 @@ for consistent keyboard handling.
 from __future__ import division, print_function
 import logging
 
-from gi.repository import Gtk
-from gi.repository import Gdk
+from lib.gibindings import Gtk
+from lib.gibindings import Gdk
 
 import gui.document
 import gui.tileddrawwidget

@@ -13,7 +13,7 @@
 
 from __future__ import division, print_function
 
-from gi.repository import Gtk
+from lib.gibindings import Gtk
 
 from lib.modes import STACK_MODES
 from lib.modes import STANDARD_MODES

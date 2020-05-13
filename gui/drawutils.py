@@ -28,9 +28,9 @@ from lib.pycompat import xrange
 
 import numpy
 import cairo
-from gi.repository import GdkPixbuf
-from gi.repository import Gdk
-from gi.repository import Gtk
+from lib.gibindings import GdkPixbuf
+from lib.gibindings import Gdk
+from lib.gibindings import Gtk
 
 logger = logging.getLogger(__name__)
 

@@ -16,7 +16,7 @@ from __future__ import division, print_function
 from gettext import gettext as _
 
 import cairo
-from gi.repository import Gtk
+from lib.gibindings import Gtk
 
 from .util import clamp
 from .util import draw_marker_circle

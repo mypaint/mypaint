@@ -25,12 +25,12 @@ from gui.layerprops import make_preview
 import gui.drawutils
 from lib.pycompat import unicode
 
-from gi.repository import Gtk
-from gi.repository import Gdk
-from gi.repository import GObject
-from gi.repository import GLib
-from gi.repository import Pango
-from gi.repository import GdkPixbuf
+from lib.gibindings import Gtk
+from lib.gibindings import Gdk
+from lib.gibindings import GObject
+from lib.gibindings import GLib
+from lib.gibindings import Pango
+from lib.gibindings import GdkPixbuf
 
 import sys
 import logging
