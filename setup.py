@@ -33,6 +33,10 @@ OPENMP_CFLAG = os.getenv("OPENMP_CFLAG", "-fopenmp")
 OPENMP_LDFLAG = os.getenv("OPENMP_LDFLAG", "-fopenmp")
 
 
+# Libmypaint dependency
+LIBMYPAINT = "libmypaint-2.0"
+
+
 # Helper classes and routines:
 
 def print_err(msg):
@@ -44,6 +48,16 @@ def pkgconf():
     Uses the value of the PKG_CONFIG environment variable if it is set.
     """
     return os.getenv("PKG_CONFIG", "pkg-config")
+
+
+def pkgconfig_variable(package, variable_name):
+    try:
+        cmd = [pkgconf(), '--variable=%s' % variable_name, package]
+        return subprocess.check_output(cmd).decode().strip()
+    except subprocess.CalledProcessError as e:
+        print_err(e)
+        print_err('pkg-config could not find package %s' % package)
+        sys.exit(1)
 
 
 def msgfmt():
@@ -164,12 +178,26 @@ class BuildConfig (Command):
 
     It also handles which translation files will be included
     (all of them, for non-release builds)
+
+    It can also be used to set the directory where message catalogs
+    for the libmypaint translations should be found, if they don't
+    share the same prefix as the mypaint installation.
     """
 
     description = "generate lib/config.py using fetched or provided values"
     user_options = [
         ("brushdir-path=", None,
          "use the provided argument as brush directory path"),
+        ("libmypaint-locale-path-from-pkgconf", None,
+         "set the location of libmypaint's message catalogs using pkg-config"
+         "\n The path is set to {prefix}/share/locale, where \"prefix\" is"
+         " fetched from libmypaint's pkg-config data."),
+        ("libmypaint-locale-path=", None,
+         "set the location of the libmypaint message catalogs\n"
+         " If ``--libmypaint-locale-path-from-pkgconf`` is set, using this"
+         " flag will raise an error. If neither flag is used, or the value"
+         " passed is the empty string, the directory used for mypaint's own"
+         " locale data is used for libmypaint's as well."),
         ("translation-threshold=", None,
          "Limit translations to those with a completion percentage"
          "at or above the given threshold. Argument range: [0..100]"),
@@ -187,6 +215,8 @@ class BuildConfig (Command):
 
     def initialize_options(self):
         self.brushdir_path = None
+        self.libmypaint_locale_path_from_pkgconf = False
+        self.libmypaint_locale_path = None
         self.translation_threshold = 0
 
     def finalize_options(self):
@@ -207,9 +237,27 @@ class BuildConfig (Command):
 
         conf_vars = {
             'mypaint_brushdir': brushdir,
+            'libmypaint_version': LIBMYPAINT,
+            'libmypaint_locale_dir': self.get_libmypaint_locale_dir(),
             'supported_locales': locstring,
         }
         self.instantiate_template('config.py.in', 'lib/config.py', conf_vars)
+
+    def get_libmypaint_locale_dir(self):
+        path = self.libmypaint_locale_path
+        use_pkgconf = self.libmypaint_locale_path_from_pkgconf
+        if path is not None and use_pkgconf:
+            print_err(
+                "At most one of the options for setting "
+                "libmypaint's locale path can be used!"
+            )
+            sys.exit(1)
+        if not use_pkgconf and not path:
+            return "None"
+        elif use_pkgconf:
+            path = pkgconfig_variable(LIBMYPAINT, "prefix")
+            path = os.path.join(path, 'share', 'locale')
+        return "'%s'" % path
 
     @staticmethod
     def translation_completion_func():
@@ -322,15 +370,7 @@ class BuildConfig (Command):
 
     @staticmethod
     def pkgconf_brushdir_path():
-        try:
-            cmd = [
-                pkgconf(), '--variable=brushesdir', 'mypaint-brushes-2.0'
-            ]
-            return subprocess.check_output(cmd).decode().strip()
-        except subprocess.CalledProcessError as e:
-            print_err(e)
-            print_err('pkg-config could not find package mypaint-brushes-2.0')
-            sys.exit(1)
+        return pkgconfig_variable('mypaint-brushes-2.0', 'brushesdir')
 
     def instantiate_template(self, template_path, output_path, substitutions):
         """Instantiate a template and write result to a file
@@ -844,7 +884,7 @@ def get_ext_modules():
         extra_link_args.append('-Wl,-z,origin')
         extra_link_args.append('-Wl,-rpath,$ORIGIN')
 
-    initial_deps = ["libmypaint-2.0"]
+    initial_deps = [LIBMYPAINT]
     remaining_deps = [
         "pygobject-3.0",
         "glib-2.0",

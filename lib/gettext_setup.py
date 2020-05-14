@@ -13,6 +13,7 @@ import sys
 import logging
 # This imports the global gettext package, not lib/gettext
 import gettext
+import lib.config as config
 
 logger = logging.getLogger(__file__)
 
@@ -136,15 +137,21 @@ def init_gettext(localepath):
                 "is known for %r",
                 sys.platform,
             )
+    # libmypaint's domain/path must be bound if its messages are not installed
+    # in a location gettext is configured to look in (system-dependent and
+    # set at compile time), which don't always include e.g:
+    # /usr/local/share/locale/ or $HOME/.local/share/locale
+    # It must also be set here for the appimage, where the path will always
+    # be the same for libmypaint's and mypaint's message catalogs.
+    localepath_libmypaint = config.libmypaint_locale_dir
+    if not localepath_libmypaint:
+        localepath_libmypaint = localepath
 
     # Bind text domains, i.e. tell libintl+GtkBuilder and Python's where
     # to find message catalogs containing translations.
     textdomains = [
         ("mypaint", localepath),
-        # Open question: do we need to bind libmypaint's stuff here too,
-        # now that we have gone sharedlib? It seems to work correctly
-        # under Linux from Python code without an explicit pile of binds.
-        # ("libmypaint", localepath_brushlib),
+        (config.libmypaint_version, localepath_libmypaint),
     ]
     defaultdom = "mypaint"
     codeset = "UTF-8"
