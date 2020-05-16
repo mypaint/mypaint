@@ -101,18 +101,22 @@ from __future__ import division, print_function
 
 MYPAINT_PROGRAM_NAME = "MyPaint"
 
+ALPHA = '-alpha'
+BETA = '-beta'
+RC = '-rc'
+VALID_PRERELEASE_VALUES = {'', ALPHA, BETA, RC}
 
 MAJOR = 2
 MINOR = 1
 PATCH = 0
-PREREL = '-alpha'
+PREREL = ALPHA
 PREREL_NUM = 0
 
 # Verify the version fields
 for part in (MAJOR, MINOR, PATCH, PREREL_NUM):
     assert isinstance(part, int) and part >= 0
-assert PREREL in {'', '-alpha', '-beta'}
-if PREREL == '-alpha':
+assert PREREL in VALID_PRERELEASE_VALUES
+if PREREL == ALPHA:
     assert PREREL_NUM == 0
 
 #: Base version string.
@@ -123,7 +127,7 @@ MYPAINT_VERSION = '{major}.{minor}.{patch}{prerel}'.format(
     major=MAJOR, minor=MINOR, patch=PATCH,
     prerel=PREREL and
     # Prerelease numbers should only be used for beta releases
-    PREREL + ('.' + str(PREREL_NUM) if PREREL == '-beta' else '')
+    PREREL + ('.' + str(PREREL_NUM) if PREREL in {BETA, RC} else '')
 )
 
 
@@ -148,6 +152,8 @@ def _parse_version_string(version_string):
     (3, 1, 5, '')
     >>> _parse_version_string('2.0.1-alpha')
     (2, 0, 1, '-alpha')
+    >>> _parse_version_string('2.2.1-rc')
+    (2, 2, 1, '-rc')
     """
     if '-' in version_string:
         i = version_string.index('-')
@@ -159,7 +165,7 @@ def _parse_version_string(version_string):
     else:
         prerel = ''
     try:
-        assert prerel in {'', '-alpha', '-beta'}
+        assert prerel in VALID_PRERELEASE_VALUES
         major, minor, patch = (int(f) for f in version_string.split('.'))
         return major, minor, patch, prerel
     except (ValueError, AssertionError):
@@ -280,7 +286,7 @@ def _get_versions(gitprefix="gitexport"):
             "MYPAINT_VERSION_CEREMONIAL",
             ceremonial_version,
         )
-    elif base_version.endswith("-alpha"):
+    elif base_version.endswith(ALPHA):
         # There will be no matching git tag for initial alpha (active
         # development) phases.
         if os.path.isdir(".git"):
