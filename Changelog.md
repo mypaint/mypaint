@@ -1,3 +1,21 @@
+Version 2.0.1:
+* libmypaint requirement bumped to >= 1.6.
+* HSV/HCY brush dynamics in 2.x mode fixed.
+* Undo/Redo stack size made configurable and more efficient.
+* Undo/Redo stack default size increased to 40.
+* Rounding error when saving files in 2.x mode fixed.
+* Invalid l11n strings fixed.
+* Translated strings added/updated for several languages.
+* Dependency on intltool removed (still required for libmypaint).
+* Variables in l11n strings validated on build (xml tags are not validated).
+* libmypaint translations are now bound, fixing them in the appimages.
+* OARS rating added to appdata (relevant for app-distribution software).
+* A number of Py3 compatibility issues were fixed.
+* Svg icons fixed - some were previously considered invalid by librsvg >= 2.48.
+* Svg icon sizes reduced across the board.
+* Size of Windows install bundle significantly reduced.
+* Typos in documentation fixed.
+
 Version 2.0.0:
 * Full Python3 support
 * Tons of style consistency updates (flake8).
