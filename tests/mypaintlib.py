@@ -405,7 +405,7 @@ class Frame (unittest.TestCase):
         n = 7 if "win" in sys.platform else 1
         p = positions
 
-        for x1, y1, x2, y2 in nth(filter(valid, product(p, repeat=4)), 7):
+        for x1, y1, x2, y2 in nth(filter(valid, product(p, repeat=4)), n):
             cnt += 1
             x, y, w, h = x1, y1, x2 - x1, y2 - y1
             s.save_as_png('test_saveFrame_s.png', x, y, w, h)
