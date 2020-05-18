@@ -69,7 +69,7 @@ upgrade_msys_environment() {
     # Sometimes msys2 upgrade paths cause breakages,
     # upgrading pacman can be a workaround
     loginfo "Upgrading pacman"
-    pacman -Sy pacman
+    pacman -Sy pacman --noconfirm
     loginfo "Upgrading MSYS2 environment"
     pacman -Syu --noconfirm
 }
