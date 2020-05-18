@@ -291,6 +291,10 @@
             "base_value": 0.0, 
             "inputs": {}
         }, 
+        "paint_mode": {
+            "base_value": 0.0,
+            "inputs": {}
+        },
         "smudge": {
             "base_value": 0.95, 
             "inputs": {
