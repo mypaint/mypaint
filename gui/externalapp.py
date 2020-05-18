@@ -59,6 +59,41 @@ _LAYER_UPDATE_FAILED_MSG = C_(
 )
 
 
+# Restoration of environment variables for launch context
+
+_MYP_ENV_NAME = 'MYPAINT_ENV_CLEAN'
+
+def restore_env(ctx):
+    """Clear existing envvars in context & use the given envvars instead
+
+    This is used to restore the original environment when starting
+    external editing with an environment that may lead to e.g.
+    incompatible or non-existing versions of libraries being linked
+    by the external application, instead of the correct ones.
+
+    Relies on the existence of an environment variable named
+    ``MYPAINT_ENV_CLEAN``; if it is undefined, this is a no-op.
+    If it is defined, it should contain a string of K=V statements
+    separated by newlines.
+
+    Currently this is only used by (and necessary for) appimages.
+
+    :param ctx: a launch context
+
+    """
+    clean = os.environ.get(_MYP_ENV_NAME, None)
+    if clean is None:
+        return
+    dirty = ctx.get_environment()
+    # Unfortunately there is no function for replacing the env in one go,
+    # so we loop through and unset/set each name/pair instead.
+    # If startup time needs to be reduced by (at most) a few ms:s,
+    # the dirty/clean list/dict should both be safe to cache.
+    for varname, __ in (s.split('=', 1) for s in dirty):
+        ctx.unsetenv(varname)
+    for varname, value in (s.split('=', 1) for s in clean.split('\n')):
+        ctx.setenv(varname, value)
+
 ## Class definitions
 
 class OpenWithDialog (Gtk.Dialog):
@@ -284,6 +319,7 @@ class LayerEditManager (object):
 
         disp = self._doc.tdw.get_display()
         launch_ctx = disp.get_app_launch_context()
+        restore_env(launch_ctx)
 
         logger.debug(
             "Launching %r with %r (user-chosen app for %r)",
