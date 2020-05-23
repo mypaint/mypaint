@@ -9,8 +9,8 @@ msgstr ""
 "Project-Id-Version: mypaint v2.0.0-alpha.8-1-g4490f06\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-03-03 00:01+0100\n"
-"PO-Revision-Date: 2020-05-10 12:35+0000\n"
-"Last-Translator: J. Lavoie <j.lavoie@net-c.ca>\n"
+"PO-Revision-Date: 2020-05-24 14:41+0000\n"
+"Last-Translator: Isabelle Lepage <noisette@netc.eu>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/mypaint/mypaint/"
 "fr/>\n"
 "Language: fr\n"
@@ -5039,10 +5039,9 @@ msgstr ""
 "Essaye de sauvegarder et de reprendre le travail interrompu non sauvegardé."
 
 #: ../gui/resources.xml:190
-#, fuzzy
 msgctxt "Menu→Brush (label)"
 msgid "Brush Groups"
-msgstr "Brosses"
+msgstr "Groupes de brosses"
 
 #: ../gui/resources.xml:191
 msgctxt "Toolbar (short labels)"
@@ -5050,10 +5049,9 @@ msgid "Brushes"
 msgstr "Brosses"
 
 #: ../gui/resources.xml:192
-#, fuzzy
 msgctxt "Toolbar (tooltips)"
 msgid "List of brush groups."
-msgstr "Écraser un groupe de brosse ?"
+msgstr "Liste des groupes de brosses."
 
 #: ../gui/resources.xml:199
 msgctxt "Toolbar (label)"
@@ -5066,9 +5064,10 @@ msgid "Colors"
 msgstr "Couleurs"
 
 #: ../gui/resources.xml:201
+#, fuzzy
 msgctxt "Toolbar (tooltips)"
 msgid "Available color adjusters."
-msgstr ""
+msgstr "Régleurs de couleur disponibles."
 
 #: ../gui/resources.xml:208
 msgctxt "Menu→Layer→Properties (label)"
@@ -5087,70 +5086,76 @@ msgid "The current layer's compositing mode."
 msgstr "État de visibilité du calque actuel"
 
 #: ../gui/resources.xml:237
-#, fuzzy
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
 msgid "Increase Fake Pressure"
-msgstr "Pression d'entrée"
+msgstr "Augmenter la simulation de pression"
 
 #: ../gui/resources.xml:238
 msgctxt "Accel Editor (descriptions)"
 msgid "Send harder pressure for devices that don't support pressure input."
 msgstr ""
+"Envoyer une pression plus forte pour les appareils ne supportant pas l’"
+"entrée de pression."
 
 #: ../gui/resources.xml:245
-#, fuzzy
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
 msgid "Decrease Fake Pressure"
-msgstr "Pression d'entrée"
+msgstr "Diminuer la simulation de pression"
 
 #: ../gui/resources.xml:246
 msgctxt "Accel Editor (descriptions)"
 msgid "Send softer pressure for devices that don't support pressure input."
 msgstr ""
+"Envoyer moins de pression pour les appareils ne supportant pas l’entrée de "
+"pression."
 
 #: ../gui/resources.xml:254
-#, fuzzy
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
 msgid "Increase Fake Rotation"
-msgstr "Augmenter la Saturation"
+msgstr "Augmenter la simulation de rotation"
 
 #: ../gui/resources.xml:255
+#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Increase barrel rotation for devices that don't support rotation input."
 msgstr ""
+"Augmenter la rotation pour les appareils ne supportant pas l’entrée de "
+"rotation."
 
 #: ../gui/resources.xml:262
-#, fuzzy
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
 msgid "Decrease Fake Rotation"
-msgstr "Diminuer la Saturation"
+msgstr "Diminuer la simulation de rotation"
 
 #: ../gui/resources.xml:263
+#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Decrease barrel rotation for devices that don't support rotation input."
 msgstr ""
+"Diminuer la rotation pour les appareils ne supportant pas l'entrée de "
+"rotation."
 
 #: ../gui/resources.xml:271
-#, fuzzy
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
 msgid "Increase Brush Size"
-msgstr "Augmenter le rayon de la brosse"
+msgstr "Augmenter la taille de la brosse"
 
 #: ../gui/resources.xml:272
+#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Make the working brush bigger."
-msgstr ""
+msgstr "Agrandir la brosse de travail."
 
 #: ../gui/resources.xml:279
-#, fuzzy
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
 msgid "Decrease Brush Size"
-msgstr "Réduire le rayon de la brosse"
+msgstr "Réduire la taille de la brosse"
 
 #: ../gui/resources.xml:280
+#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Make the working brush smaller."
-msgstr ""
+msgstr "Réduire la brosse de travail."
 
 #: ../gui/resources.xml:288
 #, fuzzy
@@ -5159,44 +5164,41 @@ msgid "Increase Brush Opacity"
 msgstr "Augmenter l'opacité de la brosse"
 
 #: ../gui/resources.xml:289
+#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Make the working brush more opaque."
-msgstr ""
+msgstr "Augmenter l’opacité de la brosse de travail."
 
 #: ../gui/resources.xml:296
-#, fuzzy
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
 msgid "Decrease Brush Opacity"
 msgstr "Réduire l'opacité de la brosse"
 
 #: ../gui/resources.xml:297
+#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Make the working brush less opaque."
-msgstr ""
+msgstr "Réduire l’opacité de la brosse de travail."
 
 #: ../gui/resources.xml:305
-#, fuzzy
 msgctxt "Menu→Color→Adjust Color (labels), Accel Editor (labels)"
 msgid "Lighten Painting Color"
-msgstr "Dernière position peinte"
+msgstr "Éclaircir la couleur de peinture"
 
 #: ../gui/resources.xml:306
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Increase the lightness of the current painting color."
-msgstr "Ouvrir un fichier, remplaçant ainsi la peinture actuelle"
+msgstr "Augmenter la luminosité de la couleur de la peinture actuelle."
 
 #: ../gui/resources.xml:313
-#, fuzzy
 msgctxt "Menu→Color→Adjust Color (labels), Accel Editor (labels)"
 msgid "Darken Painting Color"
-msgstr "Dernière position peinte"
+msgstr "Assombrir la couleur de la peinture"
 
 #: ../gui/resources.xml:314
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Decrease the lightness of the current painting color."
-msgstr "Ouvrir un fichier, remplaçant ainsi la peinture actuelle"
+msgstr "Diminuer la luminosité de la couleur de la peinture actuelle."
 
 #: ../gui/resources.xml:326
 #, fuzzy
@@ -5208,18 +5210,20 @@ msgstr "Changer la teinte de la couleur (sens des aiguilles d'une montre) "
 msgctxt "Accel Editor (descriptions)"
 msgid "Rotate the painting color’s hue clockwise on the color wheel."
 msgstr ""
+"Faire pivoter la teinte de la couleur dans le sens des aiguilles d’une "
+"montre sur la roue chromatique."
 
 #: ../gui/resources.xml:334
-#, fuzzy
 msgctxt "Menu→Color→Adjust Color (labels), Accel Editor (labels)"
 msgid "Change Hue Anticlockwise"
-msgstr "Teinte sens anti-horaire"
+msgstr "Changer de teinte dans le sens anti-horaire"
 
 #: ../gui/resources.xml:335
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Rotate the painting color’s hue anticlockwise on the color wheel."
-msgstr "Tourner la teinte de couleur dans le sens anti-horaire"
+msgstr ""
+"Tourner la teinte de couleur dans le sens anti-horaire sur la roue "
+"chromatique."
 
 #: ../gui/resources.xml:342
 msgctxt "Menu→Color→Adjust Color (labels), Accel Editor (labels)"
@@ -5230,6 +5234,7 @@ msgstr "Augmenter la Saturation"
 msgctxt "Accel Editor (descriptions)"
 msgid "Make the painting color more saturated (more colorful, purer)."
 msgstr ""
+"Augmenter la saturation de la couleur de peinture (plus colorée, plus pure)."
 
 #: ../gui/resources.xml:350
 msgctxt "Menu→Color→Adjust Color (labels), Accel Editor (labels)"
@@ -5240,6 +5245,7 @@ msgstr "Diminuer la Saturation"
 msgctxt "Accel Editor (descriptions)"
 msgid "Make the painting color less saturated (grayer)."
 msgstr ""
+"Diminuer la saturation de la couleur de peinture (la rendre plus grise)."
 
 #: ../gui/resources.xml:359
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
@@ -5247,12 +5253,11 @@ msgid "Reload Brush Settings"
 msgstr "Recharger les paramètres de la brosse"
 
 #: ../gui/resources.xml:360
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Restore all brush settings to the current brush’s saved values."
 msgstr ""
-"Réinitialisation de tous les réglages de la brosse aux valeurs sauvegardée "
-"pour la brosse actuelle"
+"Réinitialiser tous les réglages de la brosse aux valeurs sauvegardées pour "
+"la brosse actuelle."
 
 #: ../gui/resources.xml:370
 #, fuzzy
