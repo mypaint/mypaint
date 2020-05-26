@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: mypaint v1.2.0-636-g046ec8f\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-03-29 16:08+0200\n"
-"PO-Revision-Date: 2020-05-12 20:03+0000\n"
+"PO-Revision-Date: 2020-05-27 21:41+0000\n"
 "Last-Translator: Pavel Fric <pavelfric@yahoo.com>\n"
 "Language-Team: Czech <https://hosted.weblate.org/projects/mypaint/mypaint/cs/"
 ">\n"
@@ -6877,7 +6877,7 @@ msgstr "Určit konečnou velikost dokumentu pomocí rámečku okolo něj."
 #: ../gui/resources.xml:1842
 msgctxt "Menu→Edit→Current Mode (labels)"
 msgid "Edit Painting Symmetry"
-msgstr "Upravit osu souměrnosti"
+msgstr "Upravit souměrnost malování"
 
 #: ../gui/resources.xml:1843
 msgctxt "Toolbar (short labels)"
@@ -6887,12 +6887,13 @@ msgstr "Souměrnost"
 #: ../gui/resources.xml:1844
 msgctxt "Toolbar (tooltips)"
 msgid "Edit Painting Symmetry: adjust the axis used for symmetrical painting."
-msgstr "Upravit osu souměrnosti: Upravit osu používanou pro souměrné kreslení."
+msgstr ""
+"Upravit souměrnost malování: Upravit osu používanou pro souměrné kreslení."
 
 #: ../gui/resources.xml:1852
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "Edit Painting Symmetry"
-msgstr "Upravit osu souměrnosti"
+msgstr "Upravit osu souměrnosti malování"
 
 #: ../gui/resources.xml:1853
 msgctxt "Accel Editor (description)"
