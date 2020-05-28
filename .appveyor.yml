@@ -70,9 +70,9 @@ init:
   - PATH C:\msys64\%MSYSTEM%\bin;C:\msys64\usr\bin;C:\msys64\bin;%PATH%
 
 install:
-  - bash %APPVEYOR_BUILD_FOLDER%\windows\msys2-build.sh upgrade_env
-# Second run is intentional
-  - bash %APPVEYOR_BUILD_FOLDER%\windows\msys2-build.sh upgrade_env
+# Upgrade msys2 environment
+  - pacman --noconfirm -Syuu
+  - pacman --noconfirm -Suu
   - bash %APPVEYOR_BUILD_FOLDER%\windows\msys2-build.sh installdeps
 
 build_script:
