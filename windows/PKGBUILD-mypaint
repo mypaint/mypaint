@@ -3,7 +3,7 @@
 _realname=mypaint
 pkgbase=mingw-w64-${_realname}
 pkgname="${MINGW_PACKAGE_PREFIX}-${_realname}"
-pkgver=2.0.1
+pkgver=2.0.2alpha
 pkgrel=1
 provides=(
     "${MINGW_PACKAGE_PREFIX}-${_realname}"
@@ -41,7 +41,7 @@ options=('!strip' 'debug' 'staticlibs')
 license=("GPL2")
 url="http://mypaint.org"
 install=mypaint-${CARCH}.install
-source=("${_realname}::git+https://github.com/mypaint/mypaint.git#tag=v2.0.1")
+source=("${_realname}::git+https://github.com/mypaint/mypaint.git#branch=v2.0.x")
 sha256sums=('SKIP')
 
 CFLAGS="-O3 -ftree-vectorize -funsafe-math-optimizations -funsafe-loop-optimizations"

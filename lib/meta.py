@@ -108,8 +108,8 @@ VALID_PRERELEASE_VALUES = {'', ALPHA, BETA, RC}
 
 MAJOR = 2
 MINOR = 0
-PATCH = 1
-PREREL = ''
+PATCH = 2
+PREREL = ALPHA
 PREREL_NUM = 0
 
 # Verify the version fields
