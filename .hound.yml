@@ -5,6 +5,6 @@
 
 fail_on_violations: true
 
-flake8:
+python:
   enabled: true
   config_file: setup.cfg
