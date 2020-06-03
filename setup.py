@@ -874,7 +874,7 @@ def get_ext_modules():
     extra_link_args = []
 
     if sys.platform == "darwin":
-        pass
+        extra_compile_args.append('-D_DARWIN_C_SOURCE')
     elif sys.platform == "win32":
         pass
     elif sys.platform == "msys":
