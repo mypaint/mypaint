@@ -1169,6 +1169,12 @@ class VectorLayer (FileBackedLayer):
     def get_icon_name(self):
         return "mypaint-layer-vector-symbolic"
 
+    def load_surface_from_pixbuf_file(self, *args, **kwds):
+        """Overrides pixbuf loading to explicitly handle svg data"""
+        kwds.update({"image_type": "svg"})
+        return super(VectorLayer, self).load_surface_from_pixbuf_file(
+            *args, **kwds)
+
     def write_blank_backing_file(self, file, **kwargs):
         x = kwargs.get("x", 0)
         y = kwargs.get("y", 0)
