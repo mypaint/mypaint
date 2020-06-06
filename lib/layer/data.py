@@ -266,7 +266,7 @@ class SurfaceBackedLayer (core.LayerBase, lib.autosave.Autosaveable):
         )
 
     def load_surface_from_pixbuf_file(self, filename, x=0, y=0,
-                                      progress=None):
+                                      progress=None, image_type=None):
         """Loads the layer's surface from any file which GdkPixbuf can open"""
         if progress:
             if progress.items is not None:
@@ -278,7 +278,7 @@ class SurfaceBackedLayer (core.LayerBase, lib.autosave.Autosaveable):
             progress.items = int(s.st_size)
         try:
             with open(filename, 'rb') as fp:
-                pixbuf = lib.pixbuf.load_from_stream(fp, progress)
+                pixbuf = lib.pixbuf.load_from_stream(fp, progress, image_type)
         except Exception as err:
             if self.FALLBACK_CONTENT is None:
                 raise lib.layer.error.LoadingFailed(

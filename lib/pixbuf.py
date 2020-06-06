@@ -90,12 +90,14 @@ def save(pixbuf, filename, type='png', **kwargs):
         return result
 
 
-def load_from_file(filename, progress=None):
+def load_from_file(filename, progress=None, image_type=None):
     """Load a pixbuf from a named file
 
     :param unicode filename: name of the file to open and read
     :param progress: Provides UI feedback. Must be unsized or None.
     :type progress: lib.feedback.Progress or None
+    :param image_type: type of image expected from the file
+    :type image_type: str | None
     :rtype: GdkPixbuf.Pixbuf
     :returns: the loaded pixbuf
 
@@ -111,18 +113,20 @@ def load_from_file(filename, progress=None):
         st_buf = os.stat(filename)
         size = st_buf.st_size
         progress.items = size
-        pixbuf = load_from_stream(fp, progress=progress)
+        pixbuf = load_from_stream(fp, progress=progress, image_type=image_type)
 
     progress.close()
     return pixbuf
 
 
-def load_from_stream(fp, progress=None):
+def load_from_stream(fp, progress=None, image_type=None):
     """Load a pixbuf from an open file-like object
 
     :param fp: file-like object opened for reading
     :param progress: Provides UI feedback. Must be sized (expected bytes).
     :type progress: lib.feedback.Progress or None
+    :param image_type: type of image to be expected from the data stream
+    :type image_type: str | None
     :rtype: GdkPixbuf.Pixbuf
     :returns: the loaded pixbuf
 
@@ -139,7 +143,10 @@ def load_from_stream(fp, progress=None):
     if progress and (progress.items is None):
         raise ValueError("progress argument must be sized if specified")
 
-    loader = GdkPixbuf.PixbufLoader()
+    if image_type:
+        loader = GdkPixbuf.PixbufLoader.new_with_type(image_type)
+    else:
+        loader = GdkPixbuf.PixbufLoader()
     while True:
         buf = fp.read(LOAD_CHUNK_SIZE)
         if buf == b"":
@@ -151,13 +158,15 @@ def load_from_stream(fp, progress=None):
     return loader.get_pixbuf()
 
 
-def load_from_zipfile(datazip, filename, progress=None):
+def load_from_zipfile(datazip, filename, progress=None, image_type=None):
     """Extract and return a pixbuf from a zipfile entry
 
     :param zipfile.ZipFile datazip: ZipFile object opened for extracting
     :param unicode filename: pixbuf entry (file name) in the zipfile
     :param progress: Provides UI feedback. Must be unsized or None.
     :type progress: lib.feedback.Progress or None
+    :param image_type: type of image expected from the file
+    :type image_type: str | None
     :rtype: GdkPixbuf.Pixbuf
     :returns: the loaded pixbuf
 
@@ -187,7 +196,7 @@ def load_from_zipfile(datazip, filename, progress=None):
         info = datazip.getinfo(filename_enc)
 
     progress.items = info.file_size
-    pixbuf = load_from_stream(datafp, progress=progress)
+    pixbuf = load_from_stream(datafp, progress=progress, image_type=image_type)
     datafp.close()
     progress.close()
     return pixbuf
