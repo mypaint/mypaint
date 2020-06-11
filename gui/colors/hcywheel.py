@@ -1242,9 +1242,10 @@ class HCYMaskPropertiesDialog (Gtk.Dialog):
 
     def __response_cb(self, widget, response_id):
         if response_id == Gtk.ResponseType.ACCEPT:
-            self.target.set_mask(self.editor.get_mask())
-            mask_active = self.mask_toggle_ctrl.get_active()
-            self.target.mask_toggle.set_active(mask_active)
+            for target in HCYAdjusterPage.ADJUSTER_WHEELS:
+                target.set_mask(self.editor.get_mask())
+                mask_active = self.mask_toggle_ctrl.get_active()
+                target.mask_toggle.set_active(mask_active)
         self.hide()
 
 
@@ -1252,11 +1253,16 @@ class HCYAdjusterPage (CombinedAdjusterPage):
     """Combined HCY adjuster.
     """
 
+    # All created instances of the _wheels_ used by adjuster pages are
+    # registered here so that the mask can be easily updated for both
+    # the main selector and the quick selector.
+    ADJUSTER_WHEELS = []
+
     def __init__(self):
         y_adj = HCYLumaSlider()
         y_adj.vertical = True
         hc_adj = HCYHueChromaWheel()
-
+        HCYAdjusterPage.ADJUSTER_WHEELS.append(hc_adj)
         table = Gtk.Table(rows=2, columns=2)
         xopts = Gtk.AttachOptions.FILL | Gtk.AttachOptions.EXPAND
         yopts = Gtk.AttachOptions.FILL | Gtk.AttachOptions.EXPAND
