@@ -236,11 +236,13 @@ def get_paths():
         if not os.path.isdir(old_confpath):
             old_confpath = None
         else:
+            wiki_base = "https://github.com/mypaint/mypaint/wiki/"
+            wiki_page = wiki_base + "Migrating-settings-&-data-from-1.1"
             logger.info("There is an old-style configuration area in %r",
                         old_confpath)
             logger.info("Its contents can be migrated to $XDG_CONFIG_HOME "
                         "and $XDG_DATA_HOME if you wish.")
-            logger.info("See the XDG Base Directory Specification for info.")
+            logger.info("For further instructions, see: %s" % wiki_page)
 
     assert isinstance(old_confpath, unicode) or old_confpath is None
     assert isinstance(datapath, unicode)
