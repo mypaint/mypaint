@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: mypaint v2.0.0-alpha.8-1-g4490f06\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-03-03 00:01+0100\n"
-"PO-Revision-Date: 2020-05-24 14:41+0000\n"
+"PO-Revision-Date: 2020-06-16 12:41+0000\n"
 "Last-Translator: Isabelle Lepage <noisette@netc.eu>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/mypaint/mypaint/"
 "fr/>\n"
@@ -18,7 +18,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n > 1;\n"
-"X-Generator: Weblate 4.1-dev\n"
+"X-Generator: Weblate 4.1.1-dev\n"
 
 #. TRANSLATORS: Name of first column in the button map preferences.
 #. TRANSLATORS: Refers to an action bound to a mod+button combination.
@@ -293,7 +293,7 @@ msgstr "Icône pour Edition de la brosse"
 
 #: ../gui/brushiconeditor.py:74
 msgid "No brush selected"
-msgstr "Aucune brosse n'est sélectionnée !"
+msgstr "Pas de brosse sélectionnée"
 
 #: ../gui/brushiconeditor.py:76
 #, python-format
@@ -329,7 +329,7 @@ msgid ""
 "<small>Click ‘Edit’ to make changes to the icon</small>"
 msgstr ""
 "<b>%s</b>\n"
-"<small>Cliquer sur  ‘Editer’ pour valider les modifications à l'icône</small>"
+"<small>Cliquer sur ‘Éditer’ pour valider les modifications à l'icône</small>"
 
 #. TRANSLATORS: begin editing a brush's preview icon
 #: ../gui/brushiconeditor.py:157
@@ -666,18 +666,16 @@ msgid "Pick Chroma"
 msgstr "Pipette à couleur"
 
 #: ../gui/colorpicker.py:296
-#, fuzzy
 msgid "Set the color Chroma used for painting"
-msgstr "Définir la couleur utilisée pour peindre"
+msgstr "Définir la saturation de la couleur utilisée pour peindre"
 
 #: ../gui/colorpicker.py:316
 msgid "Pick Luma"
 msgstr "Choisir Luma"
 
 #: ../gui/colorpicker.py:319
-#, fuzzy
 msgid "Set the color Luma used for painting"
-msgstr "Définir la couleur utilisée pour peindre"
+msgstr "Définir la luminosité de la couleur utilisée pour peindre"
 
 #: ../gui/colors/adjbases.py:699
 msgid "Color details"
@@ -758,7 +756,7 @@ msgid ""
 "Contrasting opposites, balanced by having central neutrals between them on "
 "the color wheel."
 msgstr ""
-"Contraster les opposés, balancer en ayant des centrales neutres  entre elles "
+"Contraster les opposés, équilibrés en ayant des centraux neutres entre eux "
 "sur le cercle chromatique."
 
 #: ../gui/colors/hcywheel.py:957
@@ -1844,16 +1842,14 @@ msgid "By extension (prefer default format)"
 msgstr "Par extension (préfère le format par défaut)"
 
 #: ../gui/filehandling.py:499
-#, fuzzy
 msgctxt "save dialogs: save formats and options"
 msgid "OpenRaster (*.ora)"
 msgstr "OpenRaster (*.ora)"
 
 #: ../gui/filehandling.py:503
-#, fuzzy
 msgctxt "save dialogs: save formats and options"
 msgid "PNG, respecting “Show Background” (*.png)"
-msgstr "PNG avec fond non transparent (*.png)"
+msgstr "PNG, en respectant “Montrer l’arrière plan” (*.png)"
 
 #: ../gui/filehandling.py:507
 msgctxt "save dialogs: save formats and options"
@@ -1861,22 +1857,19 @@ msgid "PNG, solid RGB (*.png)"
 msgstr "PNG non transparent (*.png)"
 
 #: ../gui/filehandling.py:511
-#, fuzzy
 msgctxt "save dialogs: save formats and options"
 msgid "PNG, transparent RGBA (*.png)"
-msgstr "PNG transparent (*.png)"
+msgstr "PNG, RGBA transparent (*.png)"
 
 #: ../gui/filehandling.py:515
-#, fuzzy
 msgctxt "save dialogs: save formats and options"
 msgid "Multiple PNGs, by layer (*.NUM.png)"
-msgstr "Multiple PNG transparent (*.XXX.png)"
+msgstr "Plusieurs PNGs, par calque (*.NUM.png)"
 
 #: ../gui/filehandling.py:519
-#, fuzzy
 msgctxt "save dialogs: save formats and options"
 msgid "Multiple PNGs, by view (*.NAME.png)"
-msgstr "Multiple PNG transparent (*.XXX.png)"
+msgstr "Plusieurs PNGs, par vue (*.NAME.png)"
 
 #: ../gui/filehandling.py:523
 msgctxt "save dialogs: save formats and options"
@@ -1910,10 +1903,9 @@ msgid "_Cancel"
 msgstr "Annuler"
 
 #: ../gui/filehandling.py:710
-#, fuzzy
 msgctxt "Destructive action confirm dialog: save checkbox"
 msgid "_Save to Scraps first"
-msgstr "Enregistrer comme Croquis"
+msgstr "_Enregistrer d’abord aux rebuts"
 
 #: ../gui/filehandling.py:716
 msgctxt ""
@@ -1944,19 +1936,16 @@ msgid "Open File?"
 msgstr "Ouvrir le fichier ?"
 
 #: ../gui/filehandling.py:1028
-#, fuzzy
 msgctxt "File→Open: confirm dialog: continue button"
 msgid "_Open…"
-msgstr "Ouvrir…"
+msgstr "_Ouvrir…"
 
 #: ../gui/filehandling.py:1036
-#, fuzzy
 msgctxt "File→Open: file chooser dialog: title"
 msgid "Open File"
-msgstr "Ouvrir un fichier récent"
+msgstr "Ouvrir un fichier"
 
 #: ../gui/filehandling.py:1084
-#, fuzzy
 msgctxt "load dialogs: title"
 msgid "Open Scratchpad…"
 msgstr "Ouvrir un carnet de croquis…"
@@ -1972,46 +1961,41 @@ msgid "Open File?"
 msgstr "Ouvrir le fichier ?"
 
 #: ../gui/filehandling.py:1437
-#, fuzzy
 msgctxt "File→Open Recent→* confirm dialog: continue button"
 msgid "_Open"
-msgstr "Ouvrir"
+msgstr "_Ouvrir"
 
 #: ../gui/filehandling.py:1452
-#, fuzzy
 msgctxt "File→Open Most Recent confirm dialog: title"
 msgid "Open Most Recent File?"
-msgstr "Ouvrir le plus récent"
+msgstr "Ouvrir le fichier le plus récent ?"
 
 #: ../gui/filehandling.py:1457
-#, fuzzy
 msgctxt "File→Open Most Recent→* confirm dialog: continue button"
 msgid "_Open"
-msgstr "Ouvrir"
+msgstr "_Ouvrir"
 
 #: ../gui/filehandling.py:1471
-#, fuzzy
 msgctxt "File→Open Next/Prev Scrap: error message"
 msgid "There are no scrap files yet. Try saving one first."
-msgstr "Il n'y a pas encore de fichier de croquis nommé « %s »."
+msgstr ""
+"Il n'y a pas encore de fichiers de rebut. Essayez d’abord d’en enregistrer "
+"un."
 
 #: ../gui/filehandling.py:1480
-#, fuzzy
 msgctxt "File→Open Next/Prev Scrap confirm dialog: title"
 msgid "Open Next Scrap?"
-msgstr "Ouvrir le Croquis suivant"
+msgstr "Ouvrir le croquis suivant ?"
 
 #: ../gui/filehandling.py:1488
-#, fuzzy
 msgctxt "File→Open Next/Prev Scrap confirm dialog: title"
 msgid "Open Previous Scrap?"
-msgstr "Ouvrir le Croquis précédent"
+msgstr "Ouvrir le Croquis précédent ?"
 
 #: ../gui/filehandling.py:1497
-#, fuzzy
 msgctxt "File→Open Next/Prev Scrap confirm dialog: continue button"
 msgid "_Open"
-msgstr "Ouvrir"
+msgstr "_Ouvrir"
 
 #: ../gui/filehandling.py:1512
 msgctxt "File→Revert: status message: canvas has no filename yet"
@@ -2026,32 +2010,28 @@ msgid "Revert Changes?"
 msgstr "Annuler les changements ?"
 
 #: ../gui/filehandling.py:1524
-#, fuzzy
 msgctxt "File→Revert confirm dialog: continue button"
 msgid "_Revert"
-msgstr "Annuler"
+msgstr "_Retour"
 
 #: ../gui/fill.py:122
-#, fuzzy
 msgctxt ""
 "Name of the fill mode\n"
 "In other software, 'Flood Fill' is also known as 'Bucket Fill' or just 'Fill'"
 msgid "Flood Fill"
-msgstr "Pot de Peinture"
+msgstr "Outil de remplissage"
 
 #: ../gui/fill.py:128
-#, fuzzy
 msgctxt "Usage description of the Flood Fill mode"
 msgid "Fill areas with color"
-msgstr "Remplir la zone avec la couleur"
+msgstr "Remplir les zones avec la couleur"
 
 #: ../gui/fill.py:507
-#, fuzzy
 msgctxt ""
 "fill options: numeric value that determines whether tested pixels will be "
 "included in the fill, based on color difference"
 msgid "Tolerance:"
-msgstr "Tolérance :"
+msgstr "Tolérance :"
 
 #: ../gui/fill.py:512
 msgctxt ""
@@ -2061,14 +2041,15 @@ msgid ""
 "How much pixel colors are allowed to vary from the start\n"
 "before Flood Fill will refuse to fill them"
 msgstr ""
+"Combien de pixels de couleur sont autorisés à varier à partir du\n"
+"départ avant que l’outil de remplissage refuse de les remplir"
 
 #: ../gui/fill.py:536
-#, fuzzy
 msgctxt ""
 "fill options: option category (label) Options under this category relate to "
 "what the fill isbased on, not where the actual fill ends up."
 msgid "Source:"
-msgstr "Source :"
+msgstr "Source :"
 
 #: ../gui/fill.py:539
 msgctxt "fill options: 'Source:' category (tooltip)"
@@ -2097,12 +2078,14 @@ msgid ""
 "temporary merge of all the visible layers\n"
 "underneath the current layer"
 msgstr ""
+"Pour déterminer quelle zone remplir, utiliser\n"
+"une fusion temporaire de tous les calques\n"
+"visibles sous le calque courant"
 
 #: ../gui/fill.py:621
-#, fuzzy
 msgctxt "fill options: toggle whether the fill will be limited by the viewport"
 msgid "Limit to View"
-msgstr "Adapter la vue"
+msgstr "Limiter à la vue"
 
 #: ../gui/fill.py:627
 msgctxt ""
@@ -2114,29 +2097,30 @@ msgid ""
 "If the view is rotated, the fill will be limited to the\n"
 "smallest canvas-aligned rectangle that can fit the view."
 msgstr ""
+"Limiter la zone pouvant être remplie, basé sur la vue.\n"
+"Si la vue est tournée, le remplissage sera limité au plus\n"
+"petit rectangle aligné sur la toile pouvant s’adapter à la vue."
 
 #: ../gui/fill.py:644
-#, fuzzy
 msgctxt ""
 "fill options: option category (label)\n"
 "Options under this category relate to where the fill will end up (default: "
 "the active layer) and how it will be combined with that layer."
 msgid "Target:"
-msgstr "Cible :"
+msgstr "Cible :"
 
 #: ../gui/fill.py:647
 msgctxt "fill options: 'Target:' category (tooltip)"
 msgid "Where the output should go"
-msgstr ""
+msgstr "Où la sortie doit aller"
 
 #: ../gui/fill.py:656
-#, fuzzy
 msgctxt ""
 "fill options: Target | toggle (label)\n"
 "When this option is enabled, the fill will be placed on a new\n"
 "layer above the active layer. Option resets after each fill."
 msgid "New Layer (once)"
-msgstr "Nouveau Groupe de Calques"
+msgstr "Nouveau calque (une fois)"
 
 #: ../gui/fill.py:661
 msgctxt "fill options: Target | New Layer (tooltip)"
@@ -2144,6 +2128,8 @@ msgid ""
 "Create a new layer with the results of the fill.\n"
 "This is turned off automatically after use."
 msgstr ""
+"Créer un nouveau calque avec le résultat du remplissage.\n"
+"Cela est désactivé automatiquement après usage."
 
 #: ../gui/fill.py:673
 msgctxt "fill options: Target | Blend Mode dropdown - warning text"
@@ -2154,7 +2140,7 @@ msgstr ""
 #: ../gui/fill.py:687
 msgctxt "fill options: Target | Blend Mode dropdown (tooltip)"
 msgid "Blend mode used when filling"
-msgstr ""
+msgstr "Mode de mélange utilisé lors du remplissage"
 
 #: ../gui/fill.py:702
 msgid "Opacity:"
@@ -2166,25 +2152,24 @@ msgid "Opacity of the fill"
 msgstr "Opacité du remplissage"
 
 #: ../gui/fill.py:728
-#, fuzzy
 msgctxt "fill options: numeric option - grow/shrink fill (label)"
 msgid "Offset:"
-msgstr "Décalage :"
+msgstr "Décalage :"
 
 #: ../gui/fill.py:744
 msgctxt "fill options: Offset (tooltip)"
 msgid "The distance in pixels to grow or shrink the fill"
-msgstr ""
+msgstr "La distance en pixels pour élargir ou diminuer le remplissage"
 
 #: ../gui/fill.py:755
 msgctxt "fill options: numeric option for blurring fill (label)"
 msgid "Feather:"
-msgstr "Plume :"
+msgstr "Flou :"
 
 #: ../gui/fill.py:770
 msgctxt "fill options: Feather (tooltip)"
 msgid "The amount of blur to apply to the fill"
-msgstr ""
+msgstr "La quantité de flou à appliquer au remplissage"
 
 #: ../gui/fill.py:786
 msgctxt "fill options: gap detection toggle (label)"
@@ -2198,11 +2183,14 @@ msgid ""
 "Note: This can be a lot slower than the regular fill, only enable when you "
 "need it."
 msgstr ""
+"Essayer de détecter les manques et ne pas remplir au delà.\n"
+"Nota : ceci peut être beaucoup plus lent que le remplissage normal, activez-"
+"le seulement si vous en avez besoin."
 
 #: ../gui/fill.py:809
 msgctxt "fill options: gap-detection sub-option, numeric setting (label)"
 msgid "Max Gap Size:"
-msgstr ""
+msgstr "Taille maximale des trous :"
 
 #: ../gui/fill.py:824
 msgctxt "fill options: Max Gap Size (tooltip)"
@@ -2210,6 +2198,8 @@ msgid ""
 "The size of the largest gaps that can be detected.\n"
 "Using large values can make the fill run a lot slower."
 msgstr ""
+"La taille des plus grands manques pouvant être détectés.\n"
+"Utiliser des grandes valeurs peut ralentir fortement le remplissage."
 
 #: ../gui/fill.py:837
 msgctxt ""
@@ -2217,7 +2207,7 @@ msgctxt ""
 "When enabled, if the fill stops after going past a detected gap, it 'pulls' "
 "the fill back out of the gap to the other side of it."
 msgid "Prevent seeping"
-msgstr ""
+msgstr "Prévenir les fuites"
 
 #: ../gui/fill.py:844
 msgctxt "fill options: Prevent seeping (tooltip)"
@@ -2225,6 +2215,9 @@ msgid ""
 "Try to prevent the fill from seeping into the gaps.\n"
 "If a fill starts in a detected gap, this option will do nothing."
 msgstr ""
+"Essayer d’éviter que le remplissage déborde des manques.\n"
+"Si un remplissage démarre dans un manque détecté, cette option n’aura pas "
+"d’effet."
 
 #: ../gui/fill.py:854 ../gui/mode.py:627
 msgid "Reset"
@@ -2502,7 +2495,7 @@ msgstr ""
 #: ../gui/inputtestwindow.py:75
 #, fuzzy
 msgid "Barrel Rotation:"
-msgstr "Rotation"
+msgstr "Rotation :"
 
 #. TRANSLATORS: Command to move a layer in the horizontal plane,
 #. TRANSLATORS: preserving its position in the stack.
@@ -3012,10 +3005,9 @@ msgid "Alpha:"
 msgstr "Alpha :"
 
 #: ../gui/symmetry.py:375
-#, fuzzy
 msgctxt "symmetry axis options panel: labels"
 msgid "Symmetry Type:"
-msgstr "Axe de symétrie"
+msgstr "Type de symétrie :"
 
 #: ../gui/symmetry.py:379
 msgctxt "symmetry axis options panel: labels"
@@ -3397,10 +3389,10 @@ msgid ""
 "Try saving in PNG format instead, if your machine doesn’t have a lot of "
 "memory. MyPaint’s PNG save function is more efficient."
 msgstr ""
-"Impossible d'enregistrer en JPEG :  {original_msg}\n"
+"Impossible d'enregistrer en JPEG : {original_msg}\n"
 "\n"
-"Essayez d'enregistrer plutôt en PNG si votre ordinateur n'a pas beaucoup de "
-"mémoire. L'enregistrement des PNG dans MyPaint est plus efficace."
+"Essayez d'enregistrer plutôt en PNG si votre ordinateur n’a pas beaucoup de "
+"mémoire. L'enregistrement en PNG dans MyPaint est plus efficace."
 
 #: ../lib/document.py:1912
 #, python-brace-format
@@ -3923,10 +3915,9 @@ msgstr ""
 
 #. Deletes the selected autosave backup file.
 #: ../gui/autorecover.glade:60
-#, fuzzy
 msgctxt "Autosave Recovery dialog|"
 msgid "_Delete…"
-msgstr "Supprimer"
+msgstr "_Supprimer…"
 
 #: ../gui/autorecover.glade:66
 msgctxt "Autosave Recovery dialog|Delete button|"
@@ -4065,9 +4056,8 @@ msgstr ""
 
 #. field label
 #: ../gui/brusheditor.glade:426
-#, fuzzy
 msgid "Value:"
-msgstr "Valeur TSV"
+msgstr "Valeur :"
 
 #: ../gui/brusheditor.glade:491
 msgid "Reset this input to have no effect on the setting"
@@ -4222,10 +4212,9 @@ msgid "Cull every other point from the curve."
 msgstr "Retirer un point sur deux de la courbe."
 
 #: ../gui/layervis.glade:15
-#, fuzzy
 msgctxt "Layers window: view list controls: tooltips"
 msgid "The currently active view."
-msgstr "Rogner le cadre depuis le calque actif actuel"
+msgstr "La vue actuellement active."
 
 #: ../gui/layervis.glade:36
 msgctxt "Layers window: view list controls: tooltips"
@@ -4238,10 +4227,9 @@ msgid "Remove the active view."
 msgstr "Supprimer la vue active."
 
 #: ../gui/layervis.glade:78
-#, fuzzy
 msgctxt "Layers window: view list controls: tooltips"
 msgid "Snapshot visible layers as a new view."
-msgstr "Quel calque visible doit être rempli"
+msgstr "Prendre un instantané des calques visibles comme nouvelle vue."
 
 #: ../gui/layervis.glade:99
 msgctxt "Layers window: view list controls: tooltips"
@@ -4745,7 +4733,7 @@ msgstr ""
 "L'arrangement du cercle chromatique rouge/jaune/bleu traditionnel comme "
 "utilisé par de nombreux artistes depuis le 18ème siècle, approximation "
 "faites avec les couleurs d'affichage pure arrangées uniformément autour du "
-"cercle.  Le Vert est en opposition au Rouge."
+"cercle. Le Vert est en opposition au Rouge."
 
 #: ../gui/preferenceswindow.glade:1320
 #, fuzzy
@@ -4809,16 +4797,15 @@ msgid "<b>2.x Settings</b>"
 msgstr "<b>Enregistrer</b>"
 
 #: ../gui/preferenceswindow.glade:1477 ../gui/preferenceswindow.glade:1551
-#, fuzzy
 msgctxt "Prefs Dialog|Compatibility"
 msgid "Default New Layer Type:"
-msgstr "Supprimer le Calque"
+msgstr "Nouveau type de calque par défaut :"
 
 #: ../gui/preferenceswindow.glade:1523 ../gui/preferenceswindow.glade:1537
 #, fuzzy
 msgctxt "Prefs Dialog|Compatibility"
 msgid "Default Pigment Brush Setting:"
-msgstr "Éditer les Réglages de la Brosse"
+msgstr "Réglage Pigment par défaut de la Brosse :"
 
 #. Label description for the 1.x compatibility-mode-by-default setting
 #: ../gui/preferenceswindow.glade:1614
@@ -5083,7 +5070,7 @@ msgstr "Mode"
 #, fuzzy
 msgctxt "Toolbar (tooltips)"
 msgid "The current layer's compositing mode."
-msgstr "État de visibilité du calque actuel"
+msgstr "Mode de traitement du calque actuel."
 
 #: ../gui/resources.xml:237
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
@@ -5201,10 +5188,9 @@ msgid "Decrease the lightness of the current painting color."
 msgstr "Diminuer la luminosité de la couleur de la peinture actuelle."
 
 #: ../gui/resources.xml:326
-#, fuzzy
 msgctxt "Menu→Color→Adjust Color (labels), Accel Editor (labels)"
 msgid "Change Hue Clockwise"
-msgstr "Changer la teinte de la couleur (sens des aiguilles d'une montre) "
+msgstr "Changer la teinte dans le sens des aiguilles d'une montre"
 
 #: ../gui/resources.xml:327
 msgctxt "Accel Editor (descriptions)"
@@ -5295,7 +5281,9 @@ msgstr "Enregistrer la brosse dans le raccourci le plus récent"
 #, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Save brush settings to the most recently used shortcut key."
-msgstr "Enregistrer la brosse dans le raccourci le plus récent"
+msgstr ""
+"Enregistrer les réglages de la brosse dans le raccourci clavier le plus "
+"récent."
 
 #: ../gui/resources.xml:401
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
@@ -5394,10 +5382,9 @@ msgid "Edit Layer in External App…"
 msgstr "Éditer le calque dans une application externe…"
 
 #: ../gui/resources.xml:470
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Edit the active layer in an external application."
-msgstr "Déplacer le calque : Repositionner le calque actuel sur la toile"
+msgstr "Éditer le calque actif dans une application externe."
 
 #: ../gui/resources.xml:477
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
@@ -5416,10 +5403,9 @@ msgid "Go to Layer at Cursor"
 msgstr "Sélectionner le calque sous le curseur"
 
 #: ../gui/resources.xml:485
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Select a layer by picking something [drawn] on it."
-msgstr "Sélectionner un calque en attrapant un de ses tracés "
+msgstr "Sélectionnez un calque en cliquant sur quelque chose [dessiné] dessus."
 
 #: ../gui/resources.xml:493
 msgctxt "Menu→Layer→Go to Layer (labels), Accel Editor (labels)"
@@ -5427,10 +5413,9 @@ msgid "Go to Layer Above"
 msgstr "Aller au calque supérieure"
 
 #: ../gui/resources.xml:494
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Go one layer up in the layer stack."
-msgstr "Remonter d'un calque dans la pile de calques"
+msgstr "Remonter d’un calque dans la pile de calques."
 
 #: ../gui/resources.xml:502
 #, fuzzy
@@ -5439,10 +5424,9 @@ msgid "Go to Layer Below"
 msgstr "Aller au calque"
 
 #: ../gui/resources.xml:503
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Go one layer down in the layer stack."
-msgstr "Descendre d'un calque dans la pile de calques"
+msgstr "Descendre d’un calque dans la pile de calques."
 
 #: ../gui/resources.xml:511
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
@@ -5450,10 +5434,9 @@ msgid "New Painting Layer"
 msgstr "Nouveau Calque pour Peinture"
 
 #: ../gui/resources.xml:512
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Add a new painting layer above the current layer."
-msgstr "Ajouter un calque au dessus de l'actuel"
+msgstr "Ajouter un nouveau calque de peinture au dessus du calque actuel."
 
 #: ../gui/resources.xml:520
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
@@ -5461,10 +5444,11 @@ msgid "New Vector Layer…"
 msgstr "Nouveau calque vectoriel…"
 
 #: ../gui/resources.xml:521
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Add a new vector layer above the current layer, and begin editing it."
-msgstr "Ajouter un calque au dessus de l'actuel"
+msgstr ""
+"Ajouter un nouveau calque vectoriel au dessus du calque actuel, et commencer "
+"à l’éditer."
 
 #: ../gui/resources.xml:528
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
@@ -5482,10 +5466,9 @@ msgid "New Painting Layer Below"
 msgstr ""
 
 #: ../gui/resources.xml:537
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Add a new painting layer below the current layer."
-msgstr "Ajouter un calque sous l'actuel"
+msgstr "Ajouter un nouveau calque de peinture sous le calque actuel."
 
 #: ../gui/resources.xml:544
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
@@ -5493,10 +5476,11 @@ msgid "New Vector Layer Below…"
 msgstr ""
 
 #: ../gui/resources.xml:545
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Add a new vector layer below the current layer, and begin editing it."
-msgstr "Ajouter un calque sous l'actuel"
+msgstr ""
+"Ajouter un nouveau calque vectoriel sous le calque actuel, et commencer à "
+"l’éditer."
 
 #: ../gui/resources.xml:551
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
@@ -5504,10 +5488,9 @@ msgid "New Layer Group Below"
 msgstr ""
 
 #: ../gui/resources.xml:552
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Add a new layer group below the current layer."
-msgstr "Ajouter un calque sous l'actuel"
+msgstr "Ajouter un nouveau groupe de calques sous le calque actuel."
 
 #: ../gui/resources.xml:559
 #, fuzzy
@@ -5547,10 +5530,9 @@ msgid "Delete Layer"
 msgstr "Supprimer le Calque"
 
 #: ../gui/resources.xml:584
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Remove the current layer from the layer stack."
-msgstr "Monter le calque actuel d'un niveau dans la pile des calques"
+msgstr "Supprimer le calque actuel de la pile des calques."
 
 #: ../gui/resources.xml:591
 #, fuzzy
@@ -5592,10 +5574,9 @@ msgid "Raise Layer"
 msgstr "Renommer le calque"
 
 #: ../gui/resources.xml:615
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Raise the current layer one step in the layer stack."
-msgstr "Monter le calque actuel d'un niveau dans la pile des calques"
+msgstr "Monter le calque actuel d’un niveau dans la pile des calques."
 
 #: ../gui/resources.xml:623
 #, fuzzy
@@ -5604,10 +5585,9 @@ msgid "Lower Layer"
 msgstr "Charger le calque"
 
 #: ../gui/resources.xml:624
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Lower the current layer one step in the layer stack."
-msgstr "Descendre le calque actuel d'un niveau dans la pile des calques"
+msgstr "Descendre le calque actuel d’un niveau dans la pile des calques."
 
 #: ../gui/resources.xml:633
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
@@ -5615,16 +5595,14 @@ msgid "Duplicate Layer"
 msgstr "Dupliquer le calque"
 
 #: ../gui/resources.xml:634
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Make an exact clone of the current layer."
-msgstr "Créer une duplication exacte du calque actuel"
+msgstr "Créer un clone exact du calque actuel."
 
 #: ../gui/resources.xml:642
-#, fuzzy
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Layer Properties…"
-msgstr "Propriétés de la palette"
+msgstr "Propriétés du calque…"
 
 #: ../gui/resources.xml:643
 msgctxt "Accel Editor (descriptions)"
@@ -5638,13 +5616,12 @@ msgid "Layer Locked"
 msgstr "Calque verrouillé"
 
 #: ../gui/resources.xml:651
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid ""
 "Toggle the current layer’s locked state. Locked layers cannot be modified."
 msgstr ""
-"État verrouillé du calque actuel : Il n'est pas possible de dessiner sur les "
-"calques verrouillés"
+"Basculer l’état verrouillé du calque actuel. Les calques verrouillés ne "
+"peuvent pas êtres modifiés."
 
 #: ../gui/resources.xml:658
 #, fuzzy
@@ -5653,10 +5630,9 @@ msgid "Layer Visible"
 msgstr "Rendre le calque visible"
 
 #: ../gui/resources.xml:659
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Toggle the current layer’s visibility state, making it hidden."
-msgstr "État de visibilité du calque actuel"
+msgstr "Basculer l’état de visibilité du calque actuel, le rendant caché."
 
 #: ../gui/resources.xml:666
 msgctxt "Menu→View (labels), Accel Editor (labels)"
@@ -5664,10 +5640,9 @@ msgid "Show Background"
 msgstr "Voir l’arrière-plan"
 
 #: ../gui/resources.xml:667
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Toggle the background layer’s visibility."
-msgstr "État de visibilité du calque actuel"
+msgstr "Basculer la visibilité du calque d’arrière plan."
 
 #: ../gui/resources.xml:674
 msgctxt "Menu→Help→Debug (labels), Accel Editor (labels)"
@@ -5678,7 +5653,7 @@ msgstr ""
 #, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Remove empty tiles from the document."
-msgstr "Monter le calque actuel d'un niveau dans la pile des calques"
+msgstr "Retirer les tuiles vides du document."
 
 #: ../gui/resources.xml:684
 #, fuzzy
@@ -5687,10 +5662,10 @@ msgid "Reset and Center View"
 msgstr "Réinitialiser et centrer"
 
 #: ../gui/resources.xml:685
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Reset Zoom, Rotation and Mirroring, and recenter the document."
-msgstr "Réinitialise les Zoom, Rotation et Miroir, et recentre le document"
+msgstr ""
+"Réinitialiser le zoom, la rotation et le miroir, et recentrer le document."
 
 #: ../gui/resources.xml:693
 msgctxt "Menu→View (labels), Accel Editor (labels)"
@@ -5713,10 +5688,9 @@ msgid "Reset Zoom"
 msgstr "Réinitialiser le Zoom"
 
 #: ../gui/resources.xml:709
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Reset view zoom level to default."
-msgstr "Rétablir les paramètres par défaut"
+msgstr "Rétablir le niveau de zoom par défaut de la vue."
 
 #: ../gui/resources.xml:715
 #, fuzzy
@@ -5746,10 +5720,9 @@ msgid "Zoom In"
 msgstr "Agrandir"
 
 #: ../gui/resources.xml:730
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Increase magnification."
-msgstr "Augmenter l'agrandissement"
+msgstr "Augmenter l’agrandissement."
 
 #: ../gui/resources.xml:737
 msgctxt "Menu→View→Adjust View (labels), Accel Editor (labels)"
@@ -5757,10 +5730,9 @@ msgid "Zoom Out"
 msgstr "Zoom arrière"
 
 #: ../gui/resources.xml:738
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Decrease magnification."
-msgstr "Diminuer l'agrandissement"
+msgstr "Diminuer l’agrandissement."
 
 #: ../gui/resources.xml:758
 #, fuzzy
@@ -5824,10 +5796,9 @@ msgid "Rotate Clockwise"
 msgstr "Tourner sens horaire"
 
 #: ../gui/resources.xml:799
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Rotate the canvas clockwise."
-msgstr "Tourner la vue dans le sens horaire"
+msgstr "Tourner la toile dans le sens des aiguilles d’une montre."
 
 #: ../gui/resources.xml:819
 msgctxt "Menu→View→Adjust View (labels), Accel Editor (labels)"
@@ -5835,10 +5806,9 @@ msgid "Rotate Counterclockwise"
 msgstr "Tourner sens anti-horaire"
 
 #: ../gui/resources.xml:820
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Rotate the canvas counter-clockwise."
-msgstr "Tourner la vue dans le sens anti-horaire"
+msgstr "Tourner la vue dans le sens anti-horaire."
 
 #: ../gui/resources.xml:828
 #, fuzzy
@@ -5847,10 +5817,9 @@ msgid "Mirror Horizontal"
 msgstr "Miroir horizontal"
 
 #: ../gui/resources.xml:829
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Flip the view left to right."
-msgstr "Retourner la vue de gauche à droite"
+msgstr "Retourner la vue de gauche à droite."
 
 #: ../gui/resources.xml:837
 #, fuzzy
@@ -5859,10 +5828,9 @@ msgid "Mirror Vertical"
 msgstr "Miroir vertical"
 
 #: ../gui/resources.xml:838
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Flip the view upside-down."
-msgstr "Retourner la vue de haut en bas"
+msgstr "Retourner la vue de haut en bas."
 
 #: ../gui/resources.xml:845
 msgctxt "Menu→View (labels), Accel Editor (labels)"
@@ -5873,7 +5841,7 @@ msgstr "Calque seul"
 #, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Toggle whether only the current layer is shown."
-msgstr "supprimer le calque actuel"
+msgstr "Basculer si le calque actuel est visible."
 
 #: ../gui/resources.xml:856
 #, fuzzy
@@ -5893,10 +5861,9 @@ msgid "Frame Enabled"
 msgstr "Cadre activé"
 
 #: ../gui/resources.xml:865
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Toggle visibility of the document frame."
-msgstr "Commuter le cadre du document"
+msgstr "Basculer la visibilité du cadre du document."
 
 #: ../gui/resources.xml:874
 #, fuzzy
@@ -5915,10 +5882,9 @@ msgid "Visualize Rendering"
 msgstr "Visualiser le rendu"
 
 #: ../gui/resources.xml:882
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Show rendering updates on-screen, for debugging."
-msgstr "Afficher les mises à jour du rendu à l'écran, pour déboguer"
+msgstr "Afficher les mises à jour du rendu à l’écran, pour déboguer."
 
 #: ../gui/resources.xml:888
 #, fuzzy
@@ -5947,7 +5913,7 @@ msgstr "Supprimer le groupe"
 #, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Delete currently selected point on the ink stroke."
-msgstr "supprimer le calque actuel"
+msgstr "Supprimer le point sélectionné sur le trait d’encre."
 
 #: ../gui/resources.xml:912
 msgctxt "Accel Editor (descriptions)"
@@ -6063,10 +6029,9 @@ msgstr ""
 "Affiche une boîte de dialogue de détail de couleur avec saisie de texte."
 
 #: ../gui/resources.xml:1035
-#, fuzzy
 msgctxt "Menu→Color"
 msgid "Next Palette Color"
-msgstr "Couleur de la palette suivante "
+msgstr "Couleur suivante de la palette"
 
 #: ../gui/resources.xml:1036
 msgctxt "Accel Editor (descriptions)"
@@ -6202,10 +6167,9 @@ msgid "Clear Default Scratchpad"
 msgstr "Nettoyer le carnet de croquis par défaut"
 
 #: ../gui/resources.xml:1144
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Clear the default scratchpad to a blank canvas."
-msgstr "Nettoyer le carnet de croquis par défaut"
+msgstr "Effacer le carnet de croquis par défaut pour obtenir une toile vierge."
 
 #: ../gui/resources.xml:1150
 #, fuzzy
@@ -6357,10 +6321,9 @@ msgstr ""
 
 #. FIXME: convert to a ToggleAction
 #: ../gui/resources.xml:1277
-#, fuzzy
 msgctxt "Menu→Help→Debug (labels), Accel Editor (labels)"
 msgid "Start/Stop Profiling…"
-msgstr "Démarrer/Arrêter le profilage Python (cProfile)"
+msgstr "Démarrer/Arrêter le profilage…"
 
 #: ../gui/resources.xml:1278
 #, fuzzy
@@ -6463,10 +6426,9 @@ msgid "Brush Icon Editor"
 msgstr "Éditeur de liste de brosses"
 
 #: ../gui/resources.xml:1365
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Edit brush icons."
-msgstr "Éditer l'icône de la brosse"
+msgstr "Éditer l’icône de la brosse."
 
 #: ../gui/resources.xml:1373
 #, fuzzy
@@ -6527,7 +6489,7 @@ msgstr "Cercle chromatique TSV"
 #, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Dockable saturation and Value color changer."
-msgstr "Modificateur de couleur « Saturation et valeur »"
+msgstr "Modificateur ancrable de saturation et de valeur de couleur."
 
 #: ../gui/resources.xml:1419
 #, fuzzy
@@ -6552,8 +6514,7 @@ msgstr "HSV Carré"
 #, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Dockable color selector: HSV square with Hue ring."
-msgstr ""
-"Un cube TSV pouvant être tourné affin d'afficher différentes coupes planes"
+msgstr "Sélecteur  de couleur ancrable : carré HSV avec roue chromatique."
 
 #: ../gui/resources.xml:1435
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
@@ -6807,12 +6768,9 @@ msgid "Freehand"
 msgstr "Main levée"
 
 #: ../gui/resources.xml:1647
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Draw and paint freely, without geometric constraints."
-msgstr ""
-"Dessin à main levée : Dessiner et peindre librement, sans contraintes "
-"géométriques"
+msgstr "Dessiner et peindre librement, sans contraintes géométriques."
 
 #: ../gui/resources.xml:1657
 msgctxt "Menu→Edit→Current Mode (labels)"
@@ -7009,10 +6967,9 @@ msgid "Layer Pos."
 msgstr "Calques"
 
 #: ../gui/resources.xml:1803
-#, fuzzy
 msgctxt "Toolbar (tooltips)"
 msgid "Reposition Layer: move the current layer on the canvas."
-msgstr "Déplacer le calque : Repositionner le calque actuel sur la toile"
+msgstr "Repositionner le calque :  déplacer le calque actuel sur la toile."
 
 #: ../gui/resources.xml:1811
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
@@ -7020,10 +6977,9 @@ msgid "Reposition Layer"
 msgstr "Repositionner le calque"
 
 #: ../gui/resources.xml:1812
-#, fuzzy
 msgctxt "Accel Editor (description)"
 msgid "Interactively move the current layer on the canvas."
-msgstr "Déplacer le calque : Repositionner le calque actuel sur la toile"
+msgstr "Déplacer interactivement le calque actuel sur la toile."
 
 #: ../gui/resources.xml:1822
 #, fuzzy
