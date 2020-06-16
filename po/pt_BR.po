@@ -9,7 +9,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-03-29 16:08+0200\n"
 "PO-Revision-Date: 2020-06-16 18:29+0000\n"
-"Last-Translator: Jonathan Ferreira <j0n4tfds@gmail.com>\n"
+"Last-Translator: Frederyco Martins <fredy.martins@gmail.com>\n"
 "Language-Team: Portuguese (Brazil) <https://hosted.weblate.org/projects/"
 "mypaint/mypaint/pt_BR/>\n"
 "Language: pt_BR\n"
@@ -5554,10 +5554,9 @@ msgid "New Painting Layer Below"
 msgstr "Nova Camada de Pintura Abaixo"
 
 #: ../gui/resources.xml:537
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Add a new painting layer below the current layer."
-msgstr "Adicionar uma nova camada abaixo da camada atual"
+msgstr "Adicionar uma nova camada de pintura abaixo da camada atual."
 
 #: ../gui/resources.xml:544
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
@@ -5565,10 +5564,11 @@ msgid "New Vector Layer Below…"
 msgstr "Nova Camada de Vetor Abaixo…"
 
 #: ../gui/resources.xml:545
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Add a new vector layer below the current layer, and begin editing it."
-msgstr "Adicionar uma nova camada abaixo da camada atual"
+msgstr ""
+"Adicionar uma nova camada de vetor abaixo da camada atual e começar a "
+"editá-la."
 
 #: ../gui/resources.xml:551
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
