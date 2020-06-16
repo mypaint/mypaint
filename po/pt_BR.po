@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: mypaint v2.0.0-alpha.12-33-gd8e7364\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-03-29 16:08+0200\n"
-"PO-Revision-Date: 2020-06-16 12:41+0000\n"
+"PO-Revision-Date: 2020-06-16 18:27+0000\n"
 "Last-Translator: Jonathan Ferreira <j0n4tfds@gmail.com>\n"
 "Language-Team: Portuguese (Brazil) <https://hosted.weblate.org/projects/"
 "mypaint/mypaint/pt_BR/>\n"
@@ -236,7 +236,7 @@ msgstr "Cor"
 #: ../gui/brusheditor.py:439
 msgctxt "brush settings list: setting group"
 msgid "GridMap"
-msgstr ""
+msgstr "Mapa de Grelha"
 
 #: ../gui/brusheditor.py:450
 msgctxt "brush settings list: setting group"
@@ -1223,7 +1223,7 @@ msgstr "Referente a uma versão do MyPaint como 1.0, 1.1, 1.2 etc."
 #. TRANSLATORS: This is probably a rare warning, and it will not
 #. TRANSLATORS: really be shown at all before the release of 3.0
 #: ../gui/compatibility.py:44
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgctxt "file compatibility warning"
 msgid ""
 "“{filename}” was saved with <b>MyPaint {new_version}</b>. It may be "
@@ -1235,19 +1235,17 @@ msgid ""
 "It is <b>strongly recommended</b> to upgrade to <b>MyPaint {new_version}</b> "
 "or newer if you want to edit this file!"
 msgstr ""
-"“{filename}” foi salvo com a versão <b>{new_version}</b> do <b>MyPaint</b>. "
-"Pode ser <b>incompatível</b> com a versão <b>{current_version}</b> do "
-"<b>MyPaint </b>. \n"
-"\n"
+"“{filename}” foi salvo com <b>MyPaint {new_version}</b>. Pode ser "
+"<b>incompatível</b> com o <b>MyPaint {current_version}</b>. \n"
 "\n"
 "Não há garantias de que esse arquivo funcionará nesta versão e ainda pode "
 "resultar em problemas. \n"
 "\n"
-"É <b>extremamente recomendado</b> atualizar o <b>MyPaint</b> para a versão "
-"<b>{new_version}</b> ou maior se quiser editar este arquivo."
+"É <b>extremamente recomendado</b> atualizar para o <b>MyPaint {new_version}</"
+"b> ou superior se quiser editar este arquivo!"
 
 #: ../gui/compatibility.py:54
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgctxt "file compatibility warning"
 msgid ""
 "“{filename}” was saved with <b>MyPaint {new_version}</b>. It may not be "
@@ -1258,14 +1256,13 @@ msgid ""
 "\n"
 "To be safe you should upgrade to MyPaint {new_version} or newer."
 msgstr ""
-"“{filename}” foi salvo com a versão <b>{new_version}</b> do <b>MyPaint</b>. "
-"E talvez não completamente compatível com a versão <b>{current_version}</"
-"b>.\n"
+"“{filename}” foi salvo com o <b>MyPaint {new_version}</b>. Ele talvez não "
+"seja completamente compatível com o <b>MyPaint {current_version}</b>.\n"
 "\n"
-"Salvar com está versão pode fazer dados que só são suportados em novas "
-"versões serem perdidas.\n"
+"Salvar com esta versão de MyPaint pode fazer que informações que só são "
+"suportadas em novas versões sejam perdidas.\n"
 "\n"
-"É mais seguro atualizar o  MyPaint para a versão {new_version} ou maior."
+"É mais seguro atualizar o MyPaint para a versão {new_version} ou maior."
 
 #: ../gui/compatibility.py:65
 msgctxt "file compatibility question"
@@ -1805,10 +1802,10 @@ msgstr[0] "{n} arquivo"
 msgstr[1] "{n} arquivos"
 
 #: ../gui/filehandling.py:223
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgctxt "Document I/O: the {files_summary} for a single file"
 msgid "“{basename}”"
-msgstr "“{file_basename}” carregado."
+msgstr "“{basename}”"
 
 #: ../gui/filehandling.py:432
 #, fuzzy
@@ -1926,10 +1923,10 @@ msgid "Co_ntinue"
 msgstr "Co_tinuar"
 
 #: ../gui/filehandling.py:739
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgctxt "Destructive action confirm dialog: warning message"
 msgid "You risk losing {abbreviated_time} of unsaved painting."
-msgstr "Isto irá descartar {abbreviated_time} de pintura não salva"
+msgstr "Isto irá descartar {abbreviated_time} de pintura não salva."
 
 #: ../gui/filehandling.py:804
 msgctxt "File→New: confirm dialog: title question"
@@ -2405,7 +2402,7 @@ msgstr "Pressão:"
 #. TRANSLATORS: This is used on the options panel.
 #: ../gui/freehand.py:614
 msgid "Twist:"
-msgstr ""
+msgstr "Giro:"
 
 #: ../gui/gtkexcepthook.py:163
 msgid "Bug Detected"
@@ -2535,7 +2532,7 @@ msgstr "Dispositivo:"
 
 #: ../gui/inputtestwindow.py:73
 msgid "(No Barrel Rotation)"
-msgstr ""
+msgstr "(Sem Rotação)"
 
 #: ../gui/inputtestwindow.py:75
 #, fuzzy
@@ -2679,10 +2676,10 @@ msgid "Layer"
 msgstr "Camada"
 
 #: ../gui/layervis.py:53
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgctxt "view controls: dropdown: item markup"
 msgid "<i>{builtin_view_name}</i>"
-msgstr "<b>{brush_name}</b>"
+msgstr "<i>{builtin_view_name}</i>"
 
 #: ../gui/layervis.py:125
 #, python-brace-format
@@ -3178,7 +3175,7 @@ msgstr "Cortar Camada"
 
 #: ../lib/command.py:636
 msgid "Uniquify Layer Pixels"
-msgstr ""
+msgstr "Remover Pixels vazios da Camada"
 
 #: ../lib/command.py:659
 #, fuzzy
@@ -3659,6 +3656,8 @@ msgstr "Pigmento"
 msgid ""
 "Similar to mixing actual pigments by upsampling to 10 spectral channels."
 msgstr ""
+"Similar à mistura de pigmentos reais, por amostragem ampliada para 10 canais "
+"espectrais."
 
 #: ../lib/modes.py:58
 msgid "Multiply"
@@ -3934,7 +3933,7 @@ msgstr "Rotação"
 
 #: ../lib/tiledsurface.py:52
 msgid "Snowflake"
-msgstr ""
+msgstr "Floco de neve"
 
 #: ../lib/tiledsurface.py:624
 #, python-format
@@ -4185,9 +4184,8 @@ msgid "{dname}:"
 msgstr "{dname}:"
 
 #: ../gui/brusheditor.glade:841
-#, fuzzy
 msgid "Brush dynamics are not available for this setting."
-msgstr "Detalhes básicos para essa configuração"
+msgstr "Dinâmicas de pincel não estão disponíveis para esta configuração."
 
 #: ../gui/brusheditor.glade:851
 #, fuzzy
@@ -4275,28 +4273,24 @@ msgid "Cull every other point from the curve."
 msgstr "Retira pontos da curva de forma alternada."
 
 #: ../gui/layervis.glade:15
-#, fuzzy
 msgctxt "Layers window: view list controls: tooltips"
 msgid "The currently active view."
-msgstr "Moldura de corte para a camada atualmente ativa"
+msgstr "A visualização atualmente ativa."
 
 #: ../gui/layervis.glade:36
-#, fuzzy
 msgctxt "Layers window: view list controls: tooltips"
 msgid "Rename the active view."
-msgstr "Girar a visualização do canvas"
+msgstr "Renomeia a visualização ativa."
 
 #: ../gui/layervis.glade:57
-#, fuzzy
 msgctxt "Layers window: view list controls: tooltips"
 msgid "Remove the active view."
-msgstr "Girar a visualização do canvas"
+msgstr "Remove a visualização ativa."
 
 #: ../gui/layervis.glade:78
-#, fuzzy
 msgctxt "Layers window: view list controls: tooltips"
 msgid "Snapshot visible layers as a new view."
-msgstr "Quais camadas visíveis devem ser preenchidas"
+msgstr "Registra camadas visíveis como uma nova visualização."
 
 #: ../gui/layervis.glade:99
 msgctxt "Layers window: view list controls: tooltips"
@@ -4391,7 +4385,7 @@ msgstr "Círculo com contorno forte"
 #: ../gui/preferenceswindow.glade:84
 msgctxt "Prefs Dialog|View|Cursors|Freehand Cursor|Type|"
 msgid "Crosshair"
-msgstr ""
+msgstr "Mira"
 
 #. Graph x-axis label
 #: ../gui/preferenceswindow.glade:145
@@ -4809,6 +4803,9 @@ msgid ""
 "since the 18th century, approximated with pure display colors evenly "
 "arranged around the circle. Green is opposite red."
 msgstr ""
+"A roda vermelho/amarelo/azul tradicional como usada por muitos artistas "
+"desde o século XVIII, aproximada com cores puras de display de forma "
+"uniforme no círculo. O verde é oposto ao vermelho."
 
 #: ../gui/preferenceswindow.glade:1304
 msgctxt "Prefs Dialog|Color|Color Wheel|Primaries|RYB|"
@@ -4817,11 +4814,14 @@ msgid ""
 "since the 18th century, approximated with pure display colors evenly "
 "arranged around the circle. Green is opposite red."
 msgstr ""
+"A roda vermelho/amarelo/azul tradicional como usada por muitos artistas "
+"desde o século XVIII, aproximada com cores puras de display de forma "
+"uniforme no círculo. O verde é oposto ao vermelho."
 
 #: ../gui/preferenceswindow.glade:1320
 msgctxt "Prefs Dialog|Color|Color Wheel|Primaries|"
 msgid "Red-Green and Blue-Yellow opponent pairs"
-msgstr "Pares opositores Vermelho-Verde e Azul-Amarelo"
+msgstr "Pares opostos Vermelho-Verde e Azul-Amarelo"
 
 #: ../gui/preferenceswindow.glade:1325
 msgid ""
@@ -4831,6 +4831,12 @@ msgid ""
 "and yellow is opposite blue. CIECAM02 and NCS present a similar model. Here "
 "we use pure display red, yellow etc. as the four primaries."
 msgstr ""
+"Aproximação rápida e grosseira das rodas informadas pelas teorias da cor que "
+"usam quatro &apos;primárias psicológicas&apos; ou &apos;matizes únicas&apos; "
+"dispostas em pares opostos nos pontos cardinais. O vermelho é oposto ao "
+"verde, e o amarelo é oposto ao azul. O CIECAM02 e o NCS apresentam um modelo "
+"similar. Aqui usamos o vermelho de display puro, amarelo etc. como as quatro "
+"primárias."
 
 #: ../gui/preferenceswindow.glade:1326
 msgctxt "Prefs Dialog|Color|Color Wheel|Primaries|RYGB|"
@@ -4841,6 +4847,11 @@ msgid ""
 "blue. CIECAM02 and NCS present a similar model. Here we use pure display "
 "red, yellow etc. as the four primaries."
 msgstr ""
+"Aproximação rápida e grosseira das rodas informadas pelas teorias da cor que "
+"usam quatro 'primárias psicológicas' ou 'matizes únicas' dispostas em pares "
+"opostos nos pontos cardinais. O vermelho é oposto ao verde, e o amarelo é "
+"oposto ao azul. O CIECAM02 e o NCS apresentam um modelo similar. Aqui usamos "
+"o vermelho de display puro, amarelo etc. como as quatro primárias."
 
 #. Options affecting color wheels
 #: ../gui/preferenceswindow.glade:1354
@@ -4857,7 +4868,7 @@ msgstr "Cor"
 #: ../gui/preferenceswindow.glade:1400
 msgctxt "Prefs Dialog|Compatibility"
 msgid "Default Compatibility Mode:"
-msgstr ""
+msgstr "Modo de Compatibilidade Padrão:"
 
 #: ../gui/preferenceswindow.glade:1425
 #, fuzzy
@@ -4892,6 +4903,9 @@ msgid ""
 "default. In this mode 1.x .ora files will look the same as they did in older "
 "versions, but pigment blending will not work well."
 msgstr ""
+"Quando criar novos documentos, usar o antigo modo de compatibilidade 1.0 por "
+"padrão. Neste modo os arquivos .ora 1.0 terão a mesma aparência que tinham "
+"em versões mais antigas, mas a mistura de pigmentos não funcionará bem."
 
 #: ../gui/preferenceswindow.glade:1633
 msgctxt "Prefs Dialog|Compatibility"
@@ -4899,22 +4913,24 @@ msgid ""
 "When creating new documents, use the regular 2.x compatibility mode by "
 "default. Old documents will often look different in this mode."
 msgstr ""
+"Quando criar novos documentos, usar o modo de compatibilidade padrão 2.x por "
+"padrão. Documentos antigos geralmente terão a aparência diferente neste modo."
 
 #: ../gui/preferenceswindow.glade:1665
 msgctxt "Prefs Dialog|Compatibility"
 msgid "Show warning for files that may be partially incompatible"
-msgstr ""
+msgstr "Mostrar aviso para arquivos que podem ser parcialmente incompatíveis"
 
 #. Label for a set of options
 #: ../gui/preferenceswindow.glade:1682
 msgctxt "Prefs Dialog|Compatibility"
 msgid "File compatibility warnings:"
-msgstr ""
+msgstr "Avisos de compatibilidade de arquivo:"
 
 #: ../gui/preferenceswindow.glade:1694
 msgctxt "Prefs Dialog|Compatibility"
 msgid "Show warning for files that may be fully incompatible"
-msgstr ""
+msgstr "Mostrar aviso para arquivos que podem ser totalmente incompatíveis"
 
 #. This is a tooltip for the file behavior options label.
 #: ../gui/preferenceswindow.glade:1710
@@ -4924,12 +4940,15 @@ msgid ""
 "When you save an OpenRaster file with MyPaint 2.0 or newer the active "
 "compatibility mode will be written to the file."
 msgstr ""
+"Isto somente se aplica a arquivos salvos em versões do MyPaint mais antigas "
+"que 2.0. Quando você salvar um arquivo OpenRaster com MyPaint 2.0 ou "
+"superior o modo de compatibilidade ativo será gravado no arquivo."
 
 #. Label to the options for how to handle files which do not have a compatibility mode specified (whether they should be opened in 1.x compatibility mode, or 2.x mode)
 #: ../gui/preferenceswindow.glade:1712
 msgctxt "Prefs Dialog|Compatibility"
 msgid "When Mode is Unspecified:"
-msgstr ""
+msgstr "Quando não houver modo especificado:"
 
 #. This label indicates a subsection of the compatibility settings related to loading files.
 #: ../gui/preferenceswindow.glade:1739
@@ -4940,7 +4959,7 @@ msgstr "<b>Salvando</b>"
 
 #: ../gui/preferenceswindow.glade:1759
 msgid "<b>Compatibility settings</b>"
-msgstr ""
+msgstr "<b>Configurações de compatibilidade</b>"
 
 #. Tab label in preferences dialog
 #: ../gui/preferenceswindow.glade:1775
@@ -4992,7 +5011,7 @@ msgstr "Abrir"
 #: ../gui/resources.xml:75
 msgctxt "Toolbar (tooltips), Accel Editor (descriptions)"
 msgid "Load a file to work on."
-msgstr ""
+msgstr "Carregar um arquivo para trabalhar nele."
 
 #: ../gui/resources.xml:82
 msgctxt "Menu→File (labels), Accel Editor (labels)"
@@ -5002,7 +5021,7 @@ msgstr "Abrir o Mais Recente"
 #: ../gui/resources.xml:83
 msgctxt "Accel Editor (descriptions)"
 msgid "Load the file you saved most recently."
-msgstr ""
+msgstr "Carregar o arquivo salvo mais recente."
 
 #: ../gui/resources.xml:90
 msgctxt "Menu→File (labels)"
@@ -5017,7 +5036,7 @@ msgstr "Reverter"
 #: ../gui/resources.xml:104
 msgctxt "Accel Editor (descriptions)"
 msgid "Reload the file your current work was loaded from."
-msgstr ""
+msgstr "Recarregar o arquivo do seu trabalho atual."
 
 #: ../gui/resources.xml:111
 #, fuzzy
@@ -5028,7 +5047,7 @@ msgstr "Importar Pincéis…"
 #: ../gui/resources.xml:112
 msgctxt "Accel Editor (descriptions)"
 msgid "Import layers from one or more files."
-msgstr ""
+msgstr "Importar camadas de um ou mais arquivos."
 
 #: ../gui/resources.xml:120
 msgctxt "Menu→File (labels), Accel Editor (labels)"
@@ -5058,6 +5077,8 @@ msgstr "Exportar…"
 #: ../gui/resources.xml:139
 msgid "Export your work to a file, but keep working on the same file."
 msgstr ""
+"Exportar seu trabalho para um arquivo, mas continuar trabalhando no mesmo "
+"arquivo."
 
 #: ../gui/resources.xml:147
 msgctxt "Menu→File (labels), Accel Editor (labels)"
@@ -5068,6 +5089,8 @@ msgstr "Salvar Como Rascunho"
 msgctxt "Accel Editor (descriptions)"
 msgid "Save to a new scrap file, or save a new revision if already a scrap."
 msgstr ""
+"Salvar para um novo arquivo de rascunho, ou salvar uma nova revisão de um "
+"rascunho já existente."
 
 #: ../gui/resources.xml:156
 msgctxt "Menu→File (labels), Accel Editor (labels)"
@@ -5092,12 +5115,12 @@ msgstr "Carregar o arquivo de rascunho após o atual."
 #: ../gui/resources.xml:174
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "Recover File from an Automated Backup…"
-msgstr ""
+msgstr "Recuperar arquivo de uma cópia de segurança automática…"
 
 #: ../gui/resources.xml:175
 msgctxt "Accel Editor (descriptions)"
 msgid "Try to save and resume interrupted unsaved work."
-msgstr ""
+msgstr "Tentar salvar e continuar trabalho não salvo interrompido."
 
 #: ../gui/resources.xml:190
 msgctxt "Menu→Brush (label)"
@@ -5127,7 +5150,7 @@ msgstr "Cores"
 #: ../gui/resources.xml:201
 msgctxt "Toolbar (tooltips)"
 msgid "Available color adjusters."
-msgstr ""
+msgstr "Ajustes de cor disponíveis."
 
 #: ../gui/resources.xml:208
 msgctxt "Menu→Layer→Properties (label)"
@@ -5154,6 +5177,8 @@ msgstr "Pressão à Entrada"
 msgctxt "Accel Editor (descriptions)"
 msgid "Send harder pressure for devices that don't support pressure input."
 msgstr ""
+"Enviar pressão mais forte para dispositivos que não suportam entrada de "
+"pressão."
 
 #: ../gui/resources.xml:245
 #, fuzzy
@@ -5165,6 +5190,8 @@ msgstr "Pressão à Entrada"
 msgctxt "Accel Editor (descriptions)"
 msgid "Send softer pressure for devices that don't support pressure input."
 msgstr ""
+"Enviar pressão mais fraca para dispositivos que não suportam entrada de "
+"pressão."
 
 #: ../gui/resources.xml:254
 #, fuzzy
@@ -5176,6 +5203,8 @@ msgstr "Aumentar Saturação"
 msgctxt "Accel Editor (descriptions)"
 msgid "Increase barrel rotation for devices that don't support rotation input."
 msgstr ""
+"Enviar maior rotação de pincel para dispositivos que não suportam entrada de "
+"rotação."
 
 #: ../gui/resources.xml:262
 #, fuzzy
@@ -5187,6 +5216,8 @@ msgstr "Diminuir Saturação"
 msgctxt "Accel Editor (descriptions)"
 msgid "Decrease barrel rotation for devices that don't support rotation input."
 msgstr ""
+"Enviar menor rotação de pincel para dispositivos que não suportam entrada de "
+"rotação."
 
 #: ../gui/resources.xml:271
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
@@ -5265,10 +5296,9 @@ msgid "Change Hue Anticlockwise"
 msgstr "Mudar Matiz (sentido anti-horário)"
 
 #: ../gui/resources.xml:335
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Rotate the painting color’s hue anticlockwise on the color wheel."
-msgstr "Girar a matiz da cor no sentido anti-horário"
+msgstr "Girar a matiz da cor no sentido anti-horário na roda de cores."
 
 #: ../gui/resources.xml:342
 msgctxt "Menu→Color→Adjust Color (labels), Accel Editor (labels)"
@@ -5296,12 +5326,11 @@ msgid "Reload Brush Settings"
 msgstr "Recarregar Configurações de Pincel"
 
 #: ../gui/resources.xml:360
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Restore all brush settings to the current brush’s saved values."
 msgstr ""
 "Restaurar todos os parâmetros do pincel para os valores salvos do pincel "
-"atual"
+"atual."
 
 #: ../gui/resources.xml:370
 #, fuzzy
@@ -5372,18 +5401,17 @@ msgstr "Apaga partes da camada ativa que estejam externas à moldura."
 #: ../gui/resources.xml:423
 msgctxt "Menu→Layer→Slice (labels), Accel Editor (labels)"
 msgid "Uniquify Layer Pixels"
-msgstr ""
+msgstr "Remover Pixels Vazios da Camada"
 
 #: ../gui/resources.xml:424
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Delete parts of the current layer which do not vary from the backdrop."
-msgstr "Apaga partes da camada ativa que estejam externas à moldura."
+msgstr "Remove partes da camada ativa que não diferem do fundo."
 
 #: ../gui/resources.xml:430
 msgctxt "Menu→Layer→Slice (labels), Accel Editor (labels)"
 msgid "Uniquify Layer Tiles"
-msgstr ""
+msgstr "Remover Regiões de pixels vazios da Camada"
 
 #: ../gui/resources.xml:431
 msgctxt "Accel Editor (descriptions)"
@@ -5391,6 +5419,8 @@ msgid ""
 "Delete whole tiles from the current layer which do not vary from the "
 "backdrop."
 msgstr ""
+"Remove inteiras regiões de pixels vazias da camada ativa que não diferem do "
+"fundo."
 
 #: ../gui/resources.xml:437
 #, fuzzy
@@ -5444,12 +5474,13 @@ msgstr "Inicia a edição da camada ativa em uma aplicação externa."
 #: ../gui/resources.xml:477
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Update Layer with External Edits"
-msgstr ""
+msgstr "Atualizar camada com edições externas"
 
 #: ../gui/resources.xml:478
 msgctxt "Accel Editor (descriptions)"
 msgid "Commit changes saved from the external app (normally automatic)."
 msgstr ""
+"Aplicar alterações salvas num programa externo (normalmente automático)."
 
 #: ../gui/resources.xml:484
 #, fuzzy
@@ -5458,10 +5489,9 @@ msgid "Go to Layer at Cursor"
 msgstr "Seleciona a camada no cursor"
 
 #: ../gui/resources.xml:485
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Select a layer by picking something [drawn] on it."
-msgstr "Escolher uma camada clicando em uma pincelada nela"
+msgstr "Escolher uma camada clicando em algo [desenhado] nela."
 
 #: ../gui/resources.xml:493
 #, fuzzy
@@ -5470,10 +5500,9 @@ msgid "Go to Layer Above"
 msgstr "Ir para Camada"
 
 #: ../gui/resources.xml:494
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Go one layer up in the layer stack."
-msgstr "Subir uma camada na pilha de camadas"
+msgstr "Subir uma camada na pilha de camadas."
 
 #: ../gui/resources.xml:502
 #, fuzzy
@@ -5482,10 +5511,9 @@ msgid "Go to Layer Below"
 msgstr "Ir para Camada"
 
 #: ../gui/resources.xml:503
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Go one layer down in the layer stack."
-msgstr "Descer uma camada na pilha de camadas"
+msgstr "Descer uma camada na pilha de camadas."
 
 #: ../gui/resources.xml:511
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
@@ -5575,7 +5603,7 @@ msgstr "Mesclar Camadas"
 #: ../gui/resources.xml:568
 msgctxt "Accel Editor (descriptions)"
 msgid "Consolidate all visible layers, and delete the originals."
-msgstr ""
+msgstr "Juntar todas as camadas visíveis e apagar todas as originais."
 
 #: ../gui/resources.xml:575
 #, fuzzy
@@ -5681,6 +5709,8 @@ msgctxt "Accel Editor (descriptions)"
 msgid ""
 "Change the layer’s properties (name, mode, visibility, locked, opacity)."
 msgstr ""
+"Alterar as propriedades da camada (nome, modo, visibilidade, travada, "
+"opacidade)."
 
 #: ../gui/resources.xml:650
 #, fuzzy
@@ -5781,7 +5811,7 @@ msgstr "Rotação"
 #: ../gui/resources.xml:716
 msgctxt "Accel Editor (descriptions)"
 msgid "Reset the view’s rotation to 0°"
-msgstr ""
+msgstr "Restaura a rotação da visualização para 0°"
 
 #: ../gui/resources.xml:722
 msgctxt "Menu→View→Reset (labels), Accel Editor (labels)"
@@ -5791,7 +5821,7 @@ msgstr ""
 #: ../gui/resources.xml:723
 msgctxt "Accel Editor (descriptions)"
 msgid "Reset the view's mirroring."
-msgstr ""
+msgstr "Restaura o espelhamento da visualização."
 
 #: ../gui/resources.xml:729
 #, fuzzy
@@ -5825,7 +5855,7 @@ msgstr "Visualizar"
 #: ../gui/resources.xml:759
 msgctxt "Accel Editor (descriptions)"
 msgid "Move your view of the canvas to the left."
-msgstr ""
+msgstr "Move a sua visualização da tela para a esquerda."
 
 #: ../gui/resources.xml:766
 #, fuzzy
@@ -5836,17 +5866,17 @@ msgstr "Luz Forte"
 #: ../gui/resources.xml:767
 msgctxt "Accel Editor (descriptions)"
 msgid "Move your view of the canvas to the right."
-msgstr ""
+msgstr "Move a sua visualização da tela para a direita."
 
 #: ../gui/resources.xml:774
 msgctxt "Menu→View→Adjust View (labels), Accel Editor (labels)"
 msgid "Pan Up"
-msgstr ""
+msgstr "Deslocar para Cima"
 
 #: ../gui/resources.xml:775
 msgctxt "Accel Editor (descriptions)"
 msgid "Move your view of the canvas upwards."
-msgstr ""
+msgstr "Move a sua visualização da tela para cima."
 
 #: ../gui/resources.xml:782
 #, fuzzy
@@ -5857,7 +5887,7 @@ msgstr "Visualizar"
 #: ../gui/resources.xml:783
 msgctxt "Accel Editor (descriptions)"
 msgid "Move your view of the canvas downwards."
-msgstr ""
+msgstr "Move a sua visualização da tela para baixo."
 
 #.
 #. Note: the object we've agreed to present as being rotated
@@ -5959,6 +5989,7 @@ msgstr "Imprimir Valores de Entrada do Pincel para o Terminal"
 msgctxt "Accel Editor (descriptions)"
 msgid "Show the brush engine’s internally generated inputs on the console."
 msgstr ""
+"Mostrar as entradas internas geradas pelo mecanismo de pincéis no console."
 
 #: ../gui/resources.xml:881
 #, fuzzy
@@ -5988,6 +6019,7 @@ msgid ""
 "Insert a point next to the currently selected point in the direction of the "
 "stroke."
 msgstr ""
+"Insere um ponto próximo ao ponto atualmente selecionado na direção do traço."
 
 #: ../gui/resources.xml:904
 #, fuzzy
@@ -6005,11 +6037,12 @@ msgctxt "Accel Editor (descriptions)"
 msgid ""
 "Simplify and delete points according to angle and distance between nodes."
 msgstr ""
+"Simplifica e remove pontos de acordo com o ângulo e distância entre os nós."
 
 #: ../gui/resources.xml:919
 msgctxt "Accel Editor (descriptions)"
 msgid "Delete every other point on the ink stroke."
-msgstr ""
+msgstr "Remove pontos de forma intercalada do traço de tinta."
 
 #: ../gui/resources.xml:933
 #, fuzzy
@@ -6403,7 +6436,7 @@ msgstr "Executar Coletor de Lixo Agora"
 #: ../gui/resources.xml:1270
 msgctxt "Accel Editor (descriptions)"
 msgid "Free memory used for Python objects which are no longer in use."
-msgstr ""
+msgstr "Liberar memória usada por objetos Python que já não estão mais em uso."
 
 #. FIXME: convert to a ToggleAction
 #: ../gui/resources.xml:1277
@@ -6421,12 +6454,12 @@ msgstr "Iniciar/Parar o Profiler de Python (cProfile)"
 #: ../gui/resources.xml:1285
 msgctxt "Menu→Help→Debug (labels), Accel Editor (labels)"
 msgid "Simulate a Crash…"
-msgstr ""
+msgstr "Simular uma falha…"
 
 #: ../gui/resources.xml:1286
 msgctxt "Accel Editor (descriptions)"
 msgid "Raise a Python exception, to test the crash dialog."
-msgstr ""
+msgstr "Provocar uma exceção do Python, para testar a janela de falha."
 
 #: ../gui/resources.xml:1294
 msgctxt "Menu (labels)"
@@ -6464,7 +6497,7 @@ msgstr "Tela Cheia"
 #: ../gui/resources.xml:1321
 msgctxt "Accel Editor (descriptions)"
 msgid "Toggle between full-screen and windowed mode."
-msgstr ""
+msgstr "Alternar entre os modos de tela cheia e de janela."
 
 #: ../gui/resources.xml:1332
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
@@ -6532,7 +6565,7 @@ msgstr "Painel de Camadas"
 #: ../gui/resources.xml:1374
 msgctxt "Accel Editor (descriptions)"
 msgid "Dockable panel for managing layers."
-msgstr ""
+msgstr "Painel encaixável para gerenciamento de camadas."
 
 #: ../gui/resources.xml:1382
 msgctxt "Menu→Layers (labels), Accel Editor (labels)"
@@ -6568,7 +6601,7 @@ msgstr "Paleta de Cores"
 #: ../gui/resources.xml:1403
 msgctxt "Accel Editor (descriptions)"
 msgid "Dockable palette color selector."
-msgstr ""
+msgstr "Seletor de paleta de cores encaixável."
 
 #: ../gui/resources.xml:1411
 #, fuzzy
@@ -6631,6 +6664,7 @@ msgstr ""
 msgctxt "Accel Editor (descriptions)"
 msgid "Dockable color selector showing a liquid-like wash of nearby colors."
 msgstr ""
+"Seletor de cor encaixável mostrando uma paleta líquida de cores vizinhas."
 
 #: ../gui/resources.xml:1451
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
@@ -6640,7 +6674,7 @@ msgstr ""
 #: ../gui/resources.xml:1452
 msgctxt "Accel Editor (descriptions)"
 msgid "Dockable color selector with concentric HSV rings."
-msgstr ""
+msgstr "Seletor de cor encaixável com anéis HSV concêntricos."
 
 #: ../gui/resources.xml:1459
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
@@ -6651,6 +6685,7 @@ msgstr ""
 msgctxt "Accel Editor (descriptions)"
 msgid "Dockable color selector with HSV ramps crossing a radial bowl of color."
 msgstr ""
+"Seletor de cor encaixável com rampas HSV que cruzam uma taça de cores radial."
 
 #: ../gui/resources.xml:1469
 #, fuzzy
@@ -6661,7 +6696,7 @@ msgstr "Painel de Rascunho"
 #: ../gui/resources.xml:1470
 msgctxt "Accel Editor (descriptions)"
 msgid "Dockable Panel for mixing colors and testing brushes."
-msgstr ""
+msgstr "Painel encaixável para misturar cores e testar pincéis."
 
 #: ../gui/resources.xml:1478
 msgctxt "Menu→Scratchpad (labels), Accel Editor (labels)"
@@ -6681,7 +6716,7 @@ msgstr "Painel de pré-visualização"
 #: ../gui/resources.xml:1489
 msgctxt "Accel Editor (descriptions)"
 msgid "Dockable panel for an overview and navigation of the whole canvas."
-msgstr ""
+msgstr "Painel encaixável para uma visão geral e navegação de toda a tela."
 
 #: ../gui/resources.xml:1497
 msgctxt "Menu→View (labels), Accel Editor (labels)"
@@ -6692,6 +6727,7 @@ msgstr "Pré-visualizar"
 msgctxt "Accel Editor (descriptions)"
 msgid "Reveal the Preview dockpanel (overview of the whole drawing area)."
 msgstr ""
+"Revela o painel de pré-visualização (visão geral de toda a área de desenho)."
 
 #: ../gui/resources.xml:1508
 msgctxt "Menu→Window (labels), Toolbar (labels), Accel Editor (labels)"
@@ -6701,7 +6737,7 @@ msgstr "Painel de Opções de Ferramentas"
 #: ../gui/resources.xml:1509
 msgctxt "Accel Editor (descriptions)"
 msgid "Dockable panel for adjusting the options with the activated tool."
-msgstr ""
+msgstr "Painel encaixável para ajustar as opções da ferramenta ativa."
 
 #: ../gui/resources.xml:1517
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
@@ -6722,6 +6758,7 @@ msgstr "Painel de Histórico de Cores e Pincéis"
 msgctxt "Accel Editor (descriptions)"
 msgid "Dockable panel for viewing recently changed colors and brushes."
 msgstr ""
+"Painel encaixável para visualizar cores e pincéis recentemente ajustados."
 
 #: ../gui/resources.xml:1537
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
@@ -6736,12 +6773,12 @@ msgstr ""
 #: ../gui/resources.xml:1548
 msgctxt "Menu→View (labels), Accel Editor (labels)"
 msgid "Hide Controls in Fullscreen"
-msgstr ""
+msgstr "Ocultar controles na tela cheia"
 
 #: ../gui/resources.xml:1549
 msgctxt "Accel Editor (descriptions)"
 msgid "Toggle automatic hiding of the user interface in fullscreen."
-msgstr ""
+msgstr "Ativa/desativa a ocultação automática da interface em tela cheia."
 
 #: ../gui/resources.xml:1556
 #, fuzzy
@@ -6783,7 +6820,7 @@ msgstr ""
 #: ../gui/resources.xml:1587
 msgctxt "Menu→View→Display Filter (labels), Accel Editor (labels)"
 msgid "Display Colors as Greyscale"
-msgstr ""
+msgstr "Mostrar cores em escala de cinza"
 
 #: ../gui/resources.xml:1588
 msgctxt "Accel Editor (descriptions)"
@@ -6798,7 +6835,7 @@ msgstr ""
 #: ../gui/resources.xml:1596
 msgctxt "Accel Editor (descriptions)"
 msgid "Filter colors: inverse video. Black is white and red is cyan."
-msgstr ""
+msgstr "Filtrar cores: vídeo invertido. O preto é branco e o vermelho é ciano."
 
 #: ../gui/resources.xml:1603
 msgctxt "Menu→View→Display Filter (labels), Accel Editor (labels)"
@@ -7179,6 +7216,8 @@ msgctxt "Accel Editor (descriptions)"
 msgid ""
 "Set the painting Hue from screen pixels while preserving the Chroma and Luma."
 msgstr ""
+"Define a Matiz da pintura a partir dos pixels da tela, preservando a "
+"Saturação e Luminância."
 
 #: ../gui/resources.xml:1906
 #, fuzzy
@@ -7191,6 +7230,8 @@ msgctxt "Accel Editor (descriptions)"
 msgid ""
 "Set the painting Chroma from screen pixels while preserving the Hue and Luma."
 msgstr ""
+"Define a Saturação da pintura a partir dos pixels da tela, preservando a "
+"Matiz e Luminância."
 
 #: ../gui/resources.xml:1915
 #, fuzzy
@@ -7203,6 +7244,8 @@ msgctxt "Accel Editor (descriptions)"
 msgid ""
 "Set the painting Luma from screen pixels while preserving the Hue and Chroma."
 msgstr ""
+"Define a Luminância da pintura a partir dos pixels da tela, preservando a "
+"Matiz e Saturação."
 
 #: ../gui/resources.xml:1924
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
@@ -7212,7 +7255,7 @@ msgstr "Selecionar Cor"
 #: ../gui/resources.xml:1925
 msgctxt "Accel Editor (descriptions)"
 msgid "Set the painting color from screen pixels."
-msgstr ""
+msgstr "Define a cor de pintura a partir dos pixels na tela."
 
 #: ../gui/resources.xml:1935
 msgctxt "Menu→Edit→Current Mode (labels)"
