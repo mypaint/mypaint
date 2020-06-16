@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: mypaint v2.0.0-alpha.12-33-gd8e7364\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-03-29 16:08+0200\n"
-"PO-Revision-Date: 2020-06-16 18:29+0000\n"
+"PO-Revision-Date: 2020-06-17 01:39+0000\n"
 "Last-Translator: Frederyco Martins <fredy.martins@gmail.com>\n"
 "Language-Team: Portuguese (Brazil) <https://hosted.weblate.org/projects/"
 "mypaint/mypaint/pt_BR/>\n"
@@ -5576,10 +5576,9 @@ msgid "New Layer Group Below"
 msgstr "Novo Grupo de Camada Abaixo"
 
 #: ../gui/resources.xml:552
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Add a new layer group below the current layer."
-msgstr "Adicionar uma nova camada abaixo da camada atual"
+msgstr "Adicionar um novo grupo de camadas abaixo da camada atual."
 
 #: ../gui/resources.xml:559
 #, fuzzy
@@ -5588,10 +5587,9 @@ msgid "Merge Layer Down"
 msgstr "Mesclar Camadas"
 
 #: ../gui/resources.xml:560
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Merge the current layer with the layer beneath it."
-msgstr "Juntar camada com a camada abaixo dela"
+msgstr "Mesclar a camada atual com a camada abaixo dela."
 
 #: ../gui/resources.xml:567
 #, fuzzy
@@ -5613,7 +5611,7 @@ msgstr "Tornar Camada Visível"
 #: ../gui/resources.xml:576
 msgctxt "Accel Editor (descriptions)"
 msgid "Like ‘Merge Visible Layers’, but doesn’t delete the originals."
-msgstr ""
+msgstr "Como 'Mesclar as Camadas Visíveis', mas não deleta as originais."
 
 #: ../gui/resources.xml:583
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
@@ -5621,10 +5619,9 @@ msgid "Delete Layer"
 msgstr "Excluir Camada"
 
 #: ../gui/resources.xml:584
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Remove the current layer from the layer stack."
-msgstr "Subir a camada atual um passo na pilha de camadas"
+msgstr "Remover a camada atual da pilha de camadas."
 
 #: ../gui/resources.xml:591
 #, fuzzy
