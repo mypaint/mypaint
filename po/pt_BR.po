@@ -9,7 +9,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-03-29 16:08+0200\n"
 "PO-Revision-Date: 2020-06-17 01:52+0000\n"
-"Last-Translator: Jonathan Ferreira <j0n4tfds@gmail.com>\n"
+"Last-Translator: José Francisco Candido Filho <jfcandidofilho@gmail.com>\n"
 "Language-Team: Portuguese (Brazil) <https://hosted.weblate.org/projects/"
 "mypaint/mypaint/pt_BR/>\n"
 "Language: pt_BR\n"
@@ -3774,25 +3774,27 @@ msgstr ""
 
 #: ../lib/modes.py:130
 msgid "Source Atop"
-msgstr "Origem Sobre"
+msgstr "Origem no Topo"
 
 #: ../lib/modes.py:131
 msgid ""
 "Source which overlaps the destination, replaces the destination. Destination "
 "is placed elsewhere."
 msgstr ""
-"Origem sobre o destino, substituindo-o. O Destino é movido para outro local."
+"Origem que cobre o destino, substituindo o destino. O destino é colocado em "
+"outro local."
 
 #: ../lib/modes.py:134
 msgid "Destination Atop"
-msgstr "Destino Sobre"
+msgstr "Destino no Topo"
 
 #: ../lib/modes.py:135
 msgid ""
 "Destination which overlaps the source replaces the source. Source is placed "
 "elsewhere."
 msgstr ""
-"Destino sobre a origem, substituindo-a. A origem é movida para outro local."
+"Destino que cobre a origem, substituindo a origem. A origem é colocada em "
+"outro local."
 
 #. TRANSLATORS: UNIQUE_NAME_TEMPLATE. Must match its regex.
 #. TRANSLATORS: Leave this untranslated if you are unsure.
