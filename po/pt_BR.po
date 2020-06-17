@@ -8,8 +8,8 @@ msgstr ""
 "Project-Id-Version: mypaint v2.0.0-alpha.12-33-gd8e7364\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-03-29 16:08+0200\n"
-"PO-Revision-Date: 2020-06-17 01:55+0000\n"
-"Last-Translator: Frederyco Martins <fredy.martins@gmail.com>\n"
+"PO-Revision-Date: 2020-06-18 02:41+0000\n"
+"Last-Translator: Jonathan Ferreira <j0n4tfds@gmail.com>\n"
 "Language-Team: Portuguese (Brazil) <https://hosted.weblate.org/projects/"
 "mypaint/mypaint/pt_BR/>\n"
 "Language: pt_BR\n"
@@ -5167,12 +5167,12 @@ msgstr "Tornar o pincel atual menos opaco."
 #: ../gui/resources.xml:305
 msgctxt "Menu→Color→Adjust Color (labels), Accel Editor (labels)"
 msgid "Lighten Painting Color"
-msgstr "Clarear a Cor de Pintura"
+msgstr "Clarear Cor de Pintura"
 
 #: ../gui/resources.xml:306
 msgctxt "Accel Editor (descriptions)"
 msgid "Increase the lightness of the current painting color."
-msgstr "Aumentar a luminosidade da cor atual"
+msgstr "Aumentar a luminosidade da cor de pintura atual."
 
 #: ../gui/resources.xml:313
 msgctxt "Menu→Color→Adjust Color (labels), Accel Editor (labels)"
@@ -5182,12 +5182,12 @@ msgstr "Escurecer Cor de Pintura"
 #: ../gui/resources.xml:314
 msgctxt "Accel Editor (descriptions)"
 msgid "Decrease the lightness of the current painting color."
-msgstr "Diminui a luminosidade da cor de pintura selecionada."
+msgstr "Diminuir a luminosidade da cor de pintura selecionada."
 
 #: ../gui/resources.xml:326
 msgctxt "Menu→Color→Adjust Color (labels), Accel Editor (labels)"
 msgid "Change Hue Clockwise"
-msgstr "Mudar a Matiz da Cor no Sentido Horário"
+msgstr "Mudar Matiz no Sentido Horário"
 
 #: ../gui/resources.xml:327
 msgctxt "Accel Editor (descriptions)"
