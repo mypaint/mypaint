@@ -9,7 +9,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-03-29 16:08+0200\n"
 "PO-Revision-Date: 2020-06-18 02:41+0000\n"
-"Last-Translator: Jonathan Ferreira <j0n4tfds@gmail.com>\n"
+"Last-Translator: Frederyco Martins <fredy.martins@gmail.com>\n"
 "Language-Team: Portuguese (Brazil) <https://hosted.weblate.org/projects/"
 "mypaint/mypaint/pt_BR/>\n"
 "Language: pt_BR\n"
@@ -5197,7 +5197,7 @@ msgstr "Girar a matiz da cor no sentido horário."
 #: ../gui/resources.xml:334
 msgctxt "Menu→Color→Adjust Color (labels), Accel Editor (labels)"
 msgid "Change Hue Anticlockwise"
-msgstr "Mudar Matiz (sentido anti-horário)"
+msgstr "Mudar Matiz no Sentido Anti-horário"
 
 #: ../gui/resources.xml:335
 msgctxt "Accel Editor (descriptions)"
