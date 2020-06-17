@@ -8,8 +8,8 @@ msgstr ""
 "Project-Id-Version: mypaint v2.0.0-alpha.12-33-gd8e7364\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-03-29 16:08+0200\n"
-"PO-Revision-Date: 2020-06-17 01:39+0000\n"
-"Last-Translator: José Francisco Candido Filho <jfcandidofilho@gmail.com>\n"
+"PO-Revision-Date: 2020-06-17 01:52+0000\n"
+"Last-Translator: Jonathan Ferreira <j0n4tfds@gmail.com>\n"
 "Language-Team: Portuguese (Brazil) <https://hosted.weblate.org/projects/"
 "mypaint/mypaint/pt_BR/>\n"
 "Language: pt_BR\n"
@@ -3750,7 +3750,7 @@ msgstr "Essa camada e seu pano de fundo são simplesmente somados."
 
 #: ../lib/modes.py:122
 msgid "Destination In"
-msgstr "Destino em"
+msgstr "Destino Interno"
 
 #: ../lib/modes.py:123
 msgid ""
