@@ -9,7 +9,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-03-29 16:08+0200\n"
 "PO-Revision-Date: 2020-06-17 01:52+0000\n"
-"Last-Translator: José Francisco Candido Filho <jfcandidofilho@gmail.com>\n"
+"Last-Translator: Luiza Portinho <luizanunesportinho@gmail.com>\n"
 "Language-Team: Portuguese (Brazil) <https://hosted.weblate.org/projects/"
 "mypaint/mypaint/pt_BR/>\n"
 "Language: pt_BR\n"
@@ -4082,8 +4082,7 @@ msgstr ""
 
 #: ../gui/brusheditor.glade:739
 msgid "Variation of the base value by stylus input and other criteria"
-msgstr ""
-"Variação do valor de base pela entrada por caneta digital e outros critérios"
+msgstr "Variação do valor de base pela stylus e outros critérios"
 
 #: ../gui/brusheditor.glade:746
 msgid "Brush Dynamics"
