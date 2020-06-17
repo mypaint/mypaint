@@ -9,7 +9,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-03-29 16:08+0200\n"
 "PO-Revision-Date: 2020-06-17 01:39+0000\n"
-"Last-Translator: Jonathan Ferreira <j0n4tfds@gmail.com>\n"
+"Last-Translator: José Francisco Candido Filho <jfcandidofilho@gmail.com>\n"
 "Language-Team: Portuguese (Brazil) <https://hosted.weblate.org/projects/"
 "mypaint/mypaint/pt_BR/>\n"
 "Language: pt_BR\n"
@@ -3750,7 +3750,7 @@ msgstr "Essa camada e seu pano de fundo são simplesmente somados."
 
 #: ../lib/modes.py:122
 msgid "Destination In"
-msgstr "Destino Interno"
+msgstr "Destino em"
 
 #: ../lib/modes.py:123
 msgid ""
@@ -6915,7 +6915,7 @@ msgstr "Linhas Conectadas: desenhar sequências de linhas retas ou curvas."
 #: ../gui/resources.xml:1748
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
 msgid "Connected Lines"
-msgstr "Linhas Sequenciais"
+msgstr "Linhas Conectadas"
 
 #: ../gui/resources.xml:1749
 msgctxt "Accel Editor (descriptions)"
