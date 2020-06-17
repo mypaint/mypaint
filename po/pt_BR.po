@@ -9,7 +9,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-03-29 16:08+0200\n"
 "PO-Revision-Date: 2020-06-17 01:55+0000\n"
-"Last-Translator: Jonathan Ferreira <j0n4tfds@gmail.com>\n"
+"Last-Translator: Luiza Portinho <luizanunesportinho@gmail.com>\n"
 "Language-Team: Portuguese (Brazil) <https://hosted.weblate.org/projects/"
 "mypaint/mypaint/pt_BR/>\n"
 "Language: pt_BR\n"
@@ -4145,7 +4145,7 @@ msgstr "Inclinação-Y:"
 
 #: ../gui/inktool.glade:144
 msgid "Tilt in the canvas Y axis"
-msgstr "Inclinação na tela verticalmente"
+msgstr "Inclinar no eixo Y da tela"
 
 #: ../gui/inktool.glade:166
 msgctxt "Inking tool options: point value sliders: labels: tooltips"
