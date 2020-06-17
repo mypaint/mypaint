@@ -8,8 +8,8 @@ msgstr ""
 "Project-Id-Version: mypaint v2.0.0-alpha.12-33-gd8e7364\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-03-29 16:08+0200\n"
-"PO-Revision-Date: 2020-06-17 01:52+0000\n"
-"Last-Translator: Luiza Portinho <luizanunesportinho@gmail.com>\n"
+"PO-Revision-Date: 2020-06-17 01:55+0000\n"
+"Last-Translator: Jonathan Ferreira <j0n4tfds@gmail.com>\n"
 "Language-Team: Portuguese (Brazil) <https://hosted.weblate.org/projects/"
 "mypaint/mypaint/pt_BR/>\n"
 "Language: pt_BR\n"
@@ -4082,7 +4082,7 @@ msgstr ""
 
 #: ../gui/brusheditor.glade:739
 msgid "Variation of the base value by stylus input and other criteria"
-msgstr "Variação do valor de base pela stylus e outros critérios"
+msgstr "Variação do valor de base pela entrada da stylus e outros critérios"
 
 #: ../gui/brusheditor.glade:746
 msgid "Brush Dynamics"
@@ -4400,7 +4400,7 @@ msgstr "<b>Mapeamentos do Teclado</b>"
 
 #: ../gui/preferenceswindow.glade:489
 msgid "Keys"
-msgstr "Chaves"
+msgstr "Teclas"
 
 #: ../gui/preferenceswindow.glade:509
 msgctxt "Prefs Dialog|Load & Save|Saving|"
