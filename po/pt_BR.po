@@ -5222,7 +5222,7 @@ msgstr "Diminuir Saturação"
 #: ../gui/resources.xml:351
 msgctxt "Accel Editor (descriptions)"
 msgid "Make the painting color less saturated (grayer)."
-msgstr "Torna a cor de pintura menos saturada (cinzenta)."
+msgstr "Tornar a cor de pintura menos saturada (mais cinza)."
 
 #: ../gui/resources.xml:359
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
@@ -5261,18 +5261,18 @@ msgid ""
 "Toggle whether restoring the brush from a shortcut key also restores the "
 "saved color."
 msgstr ""
-"Chaveia se ao restaurar um pincel por meio de atalho também restaura a cor "
+"Alterna se restaurar o pincel por uma tecla de atalho também restaura a cor "
 "salva."
 
 #: ../gui/resources.xml:390
 msgctxt "Menu→Brush→Shortcut Keys (labels), Accel Editor (labels)"
 msgid "Save Brush to Most Recent Shortcut Key"
-msgstr "Salvar Pincel para o Atalho Mais Recente"
+msgstr "Salvar Pincel para a Tecla de Atalho Mais Recente"
 
 #: ../gui/resources.xml:391
 msgctxt "Accel Editor (descriptions)"
 msgid "Save brush settings to the most recently used shortcut key."
-msgstr "Salva as configurações de pincel para o atalho mais recente."
+msgstr "Salvar as configurações de pincel para a tecla de atalho mais recente."
 
 #: ../gui/resources.xml:401
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
@@ -5347,7 +5347,7 @@ msgstr "Refatorar Grupo de Pixels do Grupo de Camadas"
 #: ../gui/resources.xml:452
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Copy Layer to Clipboard"
-msgstr "Copiar Camada para a Área de Transferência"
+msgstr "Copiar Camada para Área de Transferência"
 
 #: ../gui/resources.xml:453
 msgctxt "Accel Editor (descriptions)"
@@ -5362,7 +5362,7 @@ msgstr "Colar Camada da Área de Transferência"
 #: ../gui/resources.xml:462
 msgctxt "Accel Editor (descriptions)"
 msgid "Replaces the current layer with the clipboard’s contents."
-msgstr "Substitui a camada ativa pelo conteúdo na área de transferência."
+msgstr "Substitui a camada atual pelo conteúdo da área de transferência."
 
 #: ../gui/resources.xml:469
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
@@ -5378,7 +5378,7 @@ msgstr "Inicia a edição da camada ativa em uma aplicação externa."
 #: ../gui/resources.xml:477
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Update Layer with External Edits"
-msgstr "Atualizar camada com edições externas"
+msgstr "Atualizar a Camada com as Edições Externas"
 
 #: ../gui/resources.xml:478
 msgctxt "Accel Editor (descriptions)"
@@ -5401,7 +5401,7 @@ msgstr "Escolher uma camada clicando em algo [desenhado] nela."
 #, fuzzy
 msgctxt "Menu→Layer→Go to Layer (labels), Accel Editor (labels)"
 msgid "Go to Layer Above"
-msgstr "Ir para Camada"
+msgstr "Ir para Camada Acima"
 
 #: ../gui/resources.xml:494
 msgctxt "Accel Editor (descriptions)"
@@ -5412,7 +5412,7 @@ msgstr "Subir uma camada na pilha de camadas."
 #, fuzzy
 msgctxt "Menu→Layer→Go to Layer (labels), Accel Editor (labels)"
 msgid "Go to Layer Below"
-msgstr "Ir para Camada"
+msgstr "Ir para Camada Abaixo"
 
 #: ../gui/resources.xml:503
 msgctxt "Accel Editor (descriptions)"
@@ -5487,7 +5487,7 @@ msgstr "Adicionar um novo grupo de camadas abaixo da camada atual."
 #, fuzzy
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Merge Layer Down"
-msgstr "Mesclar Camadas"
+msgstr "Mesclar Camada Abaixo"
 
 #: ../gui/resources.xml:560
 msgctxt "Accel Editor (descriptions)"
@@ -5509,7 +5509,7 @@ msgstr "Juntar todas as camadas visíveis e apagar todas as originais."
 #, fuzzy
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "New Layer from Visible"
-msgstr "Tornar Camada Visível"
+msgstr "Nova Camada à partir das Visíveis"
 
 #: ../gui/resources.xml:576
 msgctxt "Accel Editor (descriptions)"
@@ -5530,7 +5530,7 @@ msgstr "Remover a camada atual da pilha de camadas."
 #, fuzzy
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Convert to Normal Painting Layer"
-msgstr "Converter para modo Normal"
+msgstr "Converter para Camada de Pintura Normal"
 
 #: ../gui/resources.xml:592
 msgctxt "Accel Editor (descriptions)"
@@ -7154,7 +7154,7 @@ msgstr "Preenchimento"
 #: ../gui/resources.xml:1946
 msgctxt "Accel Editor (descriptions)"
 msgid "Fill an area with color."
-msgstr "Preencher uma área com uma cor."
+msgstr "Preencher uma área com cor."
 
 #, fuzzy
 #~ msgctxt "Layer properties widget → <category labels>"
