@@ -8,8 +8,8 @@ msgstr ""
 "Project-Id-Version: mypaint v2.0.0-alpha.12-33-gd8e7364\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-03-29 16:08+0200\n"
-"PO-Revision-Date: 2020-06-18 02:41+0000\n"
-"Last-Translator: Frederyco Martins <fredy.martins@gmail.com>\n"
+"PO-Revision-Date: 2020-06-20 00:41+0000\n"
+"Last-Translator: Jonathan Ferreira <j0n4tfds@gmail.com>\n"
 "Language-Team: Portuguese (Brazil) <https://hosted.weblate.org/projects/"
 "mypaint/mypaint/pt_BR/>\n"
 "Language: pt_BR\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n > 1;\n"
-"X-Generator: Weblate 4.1.1-dev\n"
+"X-Generator: Weblate 4.1.1\n"
 "X-Poedit-Country: BRAZIL\n"
 "X-Poedit-Language: Brazilian Portuguese\n"
 "X-Poedit-SourceCharset: utf-8\n"
@@ -1610,7 +1610,6 @@ msgid "Really Quit?"
 msgstr "Realmente Sair?"
 
 #: ../gui/drawwindow.py:686
-#, fuzzy
 msgctxt "Quit confirm dialog: continue button"
 msgid "_Quit"
 msgstr "Sair"
@@ -1798,7 +1797,6 @@ msgid "“{basename}”"
 msgstr "“{basename}”"
 
 #: ../gui/filehandling.py:432
-#, fuzzy
 msgctxt "save/load dialogs: filter patterns"
 msgid "All Recognized Formats"
 msgstr "Todos os Formatos Conhecidos"
@@ -3457,7 +3455,7 @@ msgstr "Vetores"
 #: ../lib/layer/data.py:1164
 msgctxt "layer type descriptions"
 msgid "Vector Layer"
-msgstr "Camada Vetorial"
+msgstr "Camada de Vetor"
 
 #. TRANSLATORS: Short default name for renderable fallback layers
 #: ../lib/layer/data.py:1229
@@ -3495,7 +3493,7 @@ msgstr "Grupo"
 #: ../lib/layer/group.py:72
 msgctxt "layer type descriptions"
 msgid "Layer Group"
-msgstr "Grupo de Camada"
+msgstr "Grupo de Camadas"
 
 #. TRANSLATORS: Short default name for temporary placeholder layers.
 #. TRANSLATORS: (The user should never see this except in error cases)
@@ -3896,7 +3894,7 @@ msgstr "Excluir…"
 #: ../gui/autorecover.glade:66
 msgctxt "Autosave Recovery dialog|Delete button|"
 msgid "Delete this backup from the disk."
-msgstr "Apagar este pincel do disco."
+msgstr "Excluir este pincel do disco."
 
 #. Recover in the sense or retrieval or salvage from a backup file. The user is asked to save the retrieved file immediately afterwards, hence the ellipsis.
 #: ../gui/autorecover.glade:78
@@ -3976,7 +3974,7 @@ msgstr "Excluir"
 
 #: ../gui/brusheditor.glade:156
 msgid "Delete this brush from the disk"
-msgstr "Apagar este pincel do disco"
+msgstr "Excluir este pincel do disco"
 
 #: ../gui/brusheditor.glade:170
 msgid "Copy to New"
@@ -4020,8 +4018,8 @@ msgstr "Notas:"
 msgid ""
 "Starting value for this brush setting. The brush dynamics below act on this."
 msgstr ""
-"Valor inicial para a configuração deste pincel. A dinâmica do pincel acima "
-"age neste aqui."
+"Valor inicial para a configuração deste pincel. As dinâmicas de pincel "
+"abaixo age neste aqui."
 
 #. field label
 #: ../gui/brusheditor.glade:426
@@ -5099,10 +5097,9 @@ msgstr ""
 "pressão."
 
 #: ../gui/resources.xml:254
-#, fuzzy
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
 msgid "Increase Fake Rotation"
-msgstr "Aumentar Saturação"
+msgstr "Aumentar Rotação Simulada"
 
 #: ../gui/resources.xml:255
 msgctxt "Accel Editor (descriptions)"
@@ -5112,10 +5109,9 @@ msgstr ""
 "rotação."
 
 #: ../gui/resources.xml:262
-#, fuzzy
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
 msgid "Decrease Fake Rotation"
-msgstr "Diminuir Saturação"
+msgstr "Diminuir Rotação Simulada"
 
 #: ../gui/resources.xml:263
 msgctxt "Accel Editor (descriptions)"
@@ -5237,23 +5233,20 @@ msgstr ""
 "atual."
 
 #: ../gui/resources.xml:370
-#, fuzzy
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
 msgid "Pick Stroke and Layer"
 msgstr "Pegar Traço e Camada"
 
 #: ../gui/resources.xml:371
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid ""
 "Pick a brushstroke from the canvas, which restores brush, color, and layer."
-msgstr ""
-"Selecione um traçado da tela de pintura: restaura pincel, cor e camada."
+msgstr "Selecione um traçado da tela de pintura: restaura pincel, cor e camada."
 
 #: ../gui/resources.xml:382
 msgctxt "Menu→Brush→Shortcut Keys (labels), Accel Editor (labels)"
 msgid "Brush Shortcut Keys Restore Color"
-msgstr "Atalho para Restauração de Cor do Pincel"
+msgstr "Teclas de Atalho do Pincel Restauram a Cor"
 
 #: ../gui/resources.xml:383
 msgctxt "Accel Editor (descriptions)"
@@ -5272,7 +5265,7 @@ msgstr "Salvar Pincel para a Tecla de Atalho Mais Recente"
 #: ../gui/resources.xml:391
 msgctxt "Accel Editor (descriptions)"
 msgid "Save brush settings to the most recently used shortcut key."
-msgstr "Salvar as configurações de pincel para a tecla de atalho mais recente."
+msgstr "Salva as configurações de pincel para a tecla de atalho mais recente."
 
 #: ../gui/resources.xml:401
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
@@ -5280,19 +5273,16 @@ msgid "Clear Layer"
 msgstr "Limpar Camada"
 
 #: ../gui/resources.xml:402
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Clear the active layer’s content."
 msgstr "Limpa o conteúdo da camada ativa."
 
 #: ../gui/resources.xml:410
-#, fuzzy
 msgctxt "Menu→Layer (labels)"
 msgid "Slice Operations"
-msgstr "Opções de Ferramentas"
+msgstr "Operações Seletivas"
 
 #: ../gui/resources.xml:416
-#, fuzzy
 msgctxt "Menu→Layer→Slice (labels), Accel Editor (labels)"
 msgid "Trim Layer to Frame"
 msgstr "Cortar Camada para Moldura"
@@ -5300,7 +5290,7 @@ msgstr "Cortar Camada para Moldura"
 #: ../gui/resources.xml:417
 msgctxt "Accel Editor (descriptions)"
 msgid "Erase parts of the current layer which lie outside the frame."
-msgstr "Apaga partes da camada ativa que estejam externas à moldura."
+msgstr "Apaga partes da camada atual que estejam fora da moldura."
 
 #: ../gui/resources.xml:423
 msgctxt "Menu→Layer→Slice (labels), Accel Editor (labels)"
@@ -5310,7 +5300,7 @@ msgstr "Remover Pixels Vazios da Camada"
 #: ../gui/resources.xml:424
 msgctxt "Accel Editor (descriptions)"
 msgid "Delete parts of the current layer which do not vary from the backdrop."
-msgstr "Remove partes da camada ativa que não diferem do fundo."
+msgstr "Exclui partes da camada atual que não diferem do fundo."
 
 #: ../gui/resources.xml:430
 msgctxt "Menu→Layer→Slice (labels), Accel Editor (labels)"
@@ -5323,7 +5313,7 @@ msgid ""
 "Delete whole tiles from the current layer which do not vary from the "
 "backdrop."
 msgstr ""
-"Remove inteiras regiões de pixels vazias da camada ativa que não diferem do "
+"Exclui inteiras regiões de pixels vazias da camada atual que não diferem do "
 "fundo."
 
 #: ../gui/resources.xml:437
@@ -5352,7 +5342,7 @@ msgstr "Copiar Camada para Área de Transferência"
 #: ../gui/resources.xml:453
 msgctxt "Accel Editor (descriptions)"
 msgid "Copy the current layer’s contents to the clipboard."
-msgstr "Copia o conteúdo da camada ativa para a área de transferência."
+msgstr "Copia o conteúdo da camada atual para a área de transferência."
 
 #: ../gui/resources.xml:461
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
@@ -5370,15 +5360,14 @@ msgid "Edit Layer in External App…"
 msgstr "Editar Camada em uma Aplicação Externa…"
 
 #: ../gui/resources.xml:470
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Edit the active layer in an external application."
-msgstr "Inicia a edição da camada ativa em uma aplicação externa."
+msgstr "Edita a camada ativa em uma programa externo."
 
 #: ../gui/resources.xml:477
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Update Layer with External Edits"
-msgstr "Atualizar a Camada com as Edições Externas"
+msgstr "Atualizar Camada com as Edições Externas"
 
 #: ../gui/resources.xml:478
 msgctxt "Accel Editor (descriptions)"
@@ -5387,10 +5376,9 @@ msgstr ""
 "Aplicar alterações salvas num programa externo (normalmente automático)."
 
 #: ../gui/resources.xml:484
-#, fuzzy
 msgctxt "Menu→Layer→Go to Layer (labels), Accel Editor (labels)"
 msgid "Go to Layer at Cursor"
-msgstr "Seleciona a camada no cursor"
+msgstr "Ir para a Camada no Cursor"
 
 #: ../gui/resources.xml:485
 msgctxt "Accel Editor (descriptions)"
@@ -5398,7 +5386,6 @@ msgid "Select a layer by picking something [drawn] on it."
 msgstr "Escolher uma camada clicando em algo [desenhado] nela."
 
 #: ../gui/resources.xml:493
-#, fuzzy
 msgctxt "Menu→Layer→Go to Layer (labels), Accel Editor (labels)"
 msgid "Go to Layer Above"
 msgstr "Ir para Camada Acima"
@@ -5409,7 +5396,6 @@ msgid "Go one layer up in the layer stack."
 msgstr "Subir uma camada na pilha de camadas."
 
 #: ../gui/resources.xml:502
-#, fuzzy
 msgctxt "Menu→Layer→Go to Layer (labels), Accel Editor (labels)"
 msgid "Go to Layer Below"
 msgstr "Ir para Camada Abaixo"
@@ -5432,7 +5418,7 @@ msgstr "Adicionar uma nova camada de pintura acima da camada atual."
 #: ../gui/resources.xml:520
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "New Vector Layer…"
-msgstr "Nova Camada Vetorial…"
+msgstr "Nova Camada de Vetor…"
 
 #: ../gui/resources.xml:521
 msgctxt "Accel Editor (descriptions)"
@@ -5444,7 +5430,7 @@ msgstr ""
 #: ../gui/resources.xml:528
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "New Layer Group"
-msgstr "Novo Grupo de Camada"
+msgstr "Novo Grupo de Camadas"
 
 #: ../gui/resources.xml:529
 msgctxt "Accel Editor (descriptions)"
@@ -5476,7 +5462,7 @@ msgstr ""
 #: ../gui/resources.xml:551
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "New Layer Group Below"
-msgstr "Novo Grupo de Camada Abaixo"
+msgstr "Novo Grupo de Camadas Abaixo"
 
 #: ../gui/resources.xml:552
 msgctxt "Accel Editor (descriptions)"
@@ -5484,7 +5470,6 @@ msgid "Add a new layer group below the current layer."
 msgstr "Adicionar um novo grupo de camadas abaixo da camada atual."
 
 #: ../gui/resources.xml:559
-#, fuzzy
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Merge Layer Down"
 msgstr "Mesclar Camada Abaixo"
@@ -5495,18 +5480,16 @@ msgid "Merge the current layer with the layer beneath it."
 msgstr "Mesclar a camada atual com a camada abaixo dela."
 
 #: ../gui/resources.xml:567
-#, fuzzy
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Merge Visible Layers"
-msgstr "Mesclar Camadas"
+msgstr "Mesclar Camadas Visíveis"
 
 #: ../gui/resources.xml:568
 msgctxt "Accel Editor (descriptions)"
 msgid "Consolidate all visible layers, and delete the originals."
-msgstr "Juntar todas as camadas visíveis e apagar todas as originais."
+msgstr "Juntar todas as camadas visíveis e exclui todas as originais."
 
 #: ../gui/resources.xml:575
-#, fuzzy
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "New Layer from Visible"
 msgstr "Nova Camada à partir das Visíveis"
@@ -5514,7 +5497,7 @@ msgstr "Nova Camada à partir das Visíveis"
 #: ../gui/resources.xml:576
 msgctxt "Accel Editor (descriptions)"
 msgid "Like ‘Merge Visible Layers’, but doesn’t delete the originals."
-msgstr "Como 'Mesclar as Camadas Visíveis', mas não deleta as originais."
+msgstr "Como 'Mesclar as Camadas Visíveis', mas não exclui as originais."
 
 #: ../gui/resources.xml:583
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
@@ -5527,7 +5510,6 @@ msgid "Remove the current layer from the layer stack."
 msgstr "Remover a camada atual da pilha de camadas."
 
 #: ../gui/resources.xml:591
-#, fuzzy
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Convert to Normal Painting Layer"
 msgstr "Converter para Camada de Pintura Normal"
@@ -5542,10 +5524,9 @@ msgstr ""
 "‘Normal’, preservando a sua aparência."
 
 #: ../gui/resources.xml:598
-#, fuzzy
 msgctxt "Menu→Layer→Opacity (labels), Accel Editor (labels)"
 msgid "Increase Layer’s Opacity"
-msgstr "Aumentar Opacidade"
+msgstr "Aumentar Opacidade da Camada"
 
 #: ../gui/resources.xml:599
 msgctxt "Accel Editor (descriptions)"
@@ -5553,10 +5534,9 @@ msgid "Make the layer less transparent."
 msgstr "Tornar a camada menos transparente."
 
 #: ../gui/resources.xml:606
-#, fuzzy
 msgctxt "Menu→Layer→Opacity (labels), Accel Editor (labels)"
 msgid "Reduce Layer’s Opacity"
-msgstr "Diminuir Opacidade"
+msgstr "Diminuir Opacidade da Camda"
 
 #: ../gui/resources.xml:607
 msgctxt "Accel Editor (descriptions)"
@@ -5564,10 +5544,9 @@ msgid "Make the layer more transparent."
 msgstr "Tornar a camada mais transparente."
 
 #: ../gui/resources.xml:614
-#, fuzzy
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Raise Layer"
-msgstr "Renomear Camada"
+msgstr "Subir Camada"
 
 #: ../gui/resources.xml:615
 msgctxt "Accel Editor (descriptions)"
@@ -5575,10 +5554,9 @@ msgid "Raise the current layer one step in the layer stack."
 msgstr "Subir a camada atual um passo na pilha de camadas."
 
 #: ../gui/resources.xml:623
-#, fuzzy
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Lower Layer"
-msgstr "Carregar Camada"
+msgstr "Descer Camada"
 
 #: ../gui/resources.xml:624
 msgctxt "Accel Editor (descriptions)"
@@ -5586,7 +5564,6 @@ msgid "Lower the current layer one step in the layer stack."
 msgstr "Descer a camada atual um passo na pilha de camadas."
 
 #: ../gui/resources.xml:633
-#, fuzzy
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Duplicate Layer"
 msgstr "Duplicar Camada"
@@ -5610,10 +5587,9 @@ msgstr ""
 "opacidade)."
 
 #: ../gui/resources.xml:650
-#, fuzzy
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Layer Locked"
-msgstr "Travada"
+msgstr "Camada Travada"
 
 #: ../gui/resources.xml:651
 msgctxt "Accel Editor (descriptions)"
@@ -5622,10 +5598,9 @@ msgid ""
 msgstr "Destrave a camada atual. Camadas travadas não podem ser alteradas."
 
 #: ../gui/resources.xml:658
-#, fuzzy
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Layer Visible"
-msgstr "Tornar Camada Visível"
+msgstr "Camada Visível"
 
 #: ../gui/resources.xml:659
 msgctxt "Accel Editor (descriptions)"
@@ -5633,10 +5608,9 @@ msgid "Toggle the current layer’s visibility state, making it hidden."
 msgstr "Alternar o estado de visibilidade da camada atual, tornando-a oculta."
 
 #: ../gui/resources.xml:666
-#, fuzzy
 msgctxt "Menu→View (labels), Accel Editor (labels)"
 msgid "Show Background"
-msgstr "Escolher Fundo"
+msgstr "Mostrar Fundo"
 
 #: ../gui/resources.xml:667
 msgctxt "Accel Editor (descriptions)"
@@ -5654,10 +5628,9 @@ msgid "Remove empty tiles from the document."
 msgstr "Apaga blocos de pixels vazios do documento."
 
 #: ../gui/resources.xml:684
-#, fuzzy
 msgctxt "Menu→View (labels), Accel Editor (labels)"
 msgid "Reset and Center View"
-msgstr "Restaurar e Centralizar"
+msgstr "Restaurar e Centralizar a Visualização"
 
 #: ../gui/resources.xml:685
 msgctxt "Accel Editor (descriptions)"
@@ -5677,16 +5650,14 @@ msgid "Switch between a fitted view and your working location and zoom."
 msgstr "Alternar entre uma visualização ajustada ou localização e zoom atuais."
 
 #: ../gui/resources.xml:701
-#, fuzzy
 msgctxt "Menu→View (labels)"
 msgid "Reset"
 msgstr "Restaurar"
 
 #: ../gui/resources.xml:708
-#, fuzzy
 msgctxt "Menu→View→Reset (labels), Accel Editor (labels)"
 msgid "Reset Zoom"
-msgstr "Restaurar"
+msgstr "Restaurar Zoom"
 
 #: ../gui/resources.xml:709
 msgctxt "Accel Editor (descriptions)"
@@ -5694,10 +5665,9 @@ msgid "Reset view zoom level to default."
 msgstr "Reconfigura o nível de zoom da visualização para o padrão."
 
 #: ../gui/resources.xml:715
-#, fuzzy
 msgctxt "Menu→View→Reset (labels), Accel Editor (labels)"
 msgid "Reset Rotation"
-msgstr "Rotação"
+msgstr "Restaurar Rotação"
 
 #: ../gui/resources.xml:716
 msgctxt "Accel Editor (descriptions)"
@@ -5715,7 +5685,6 @@ msgid "Reset the view's mirroring."
 msgstr "Restaura o espelhamento da visualização."
 
 #: ../gui/resources.xml:729
-#, fuzzy
 msgctxt "Menu→View→Adjust View (labels), Accel Editor (labels)"
 msgid "Zoom In"
 msgstr "Ampliar"
@@ -5736,10 +5705,9 @@ msgid "Decrease magnification."
 msgstr "Diminuir a ampliação."
 
 #: ../gui/resources.xml:758
-#, fuzzy
 msgctxt "Menu→View→Adjust View (labels), Accel Editor (labels)"
 msgid "Pan Left"
-msgstr "Visualizar"
+msgstr "Deslocar para a Esquerda"
 
 #: ../gui/resources.xml:759
 msgctxt "Accel Editor (descriptions)"
@@ -5747,10 +5715,9 @@ msgid "Move your view of the canvas to the left."
 msgstr "Move a sua visualização da tela para a esquerda."
 
 #: ../gui/resources.xml:766
-#, fuzzy
 msgctxt "Menu→View→Adjust View (labels), Accel Editor (labels)"
 msgid "Pan Right"
-msgstr "Luz Forte"
+msgstr "Deslocar para a Direita"
 
 #: ../gui/resources.xml:767
 msgctxt "Accel Editor (descriptions)"
@@ -5768,10 +5735,9 @@ msgid "Move your view of the canvas upwards."
 msgstr "Move a sua visualização da tela para cima."
 
 #: ../gui/resources.xml:782
-#, fuzzy
 msgctxt "Menu→View→Adjust View (labels), Accel Editor (labels)"
 msgid "Pan Down"
-msgstr "Visualizar"
+msgstr "Deslocar para Baixo"
 
 #: ../gui/resources.xml:783
 msgctxt "Accel Editor (descriptions)"
@@ -5786,10 +5752,9 @@ msgstr "Move a sua visualização da tela para baixo."
 #. https://github.com/mypaint/mypaint/issues/553
 #.
 #: ../gui/resources.xml:798
-#, fuzzy
 msgctxt "Menu→View→Adjust View (labels), Accel Editor (labels)"
 msgid "Rotate Clockwise"
-msgstr "Girar no sentido horário"
+msgstr "Girar no Sentido Horário"
 
 #: ../gui/resources.xml:799
 msgctxt "Accel Editor (descriptions)"
@@ -5797,7 +5762,6 @@ msgid "Rotate the canvas clockwise."
 msgstr "Girar a tela no sentido horário."
 
 #: ../gui/resources.xml:819
-#, fuzzy
 msgctxt "Menu→View→Adjust View (labels), Accel Editor (labels)"
 msgid "Rotate Counterclockwise"
 msgstr "Girar no Sentido Anti-horário"
@@ -5808,7 +5772,6 @@ msgid "Rotate the canvas counter-clockwise."
 msgstr "Girar a tela no sentido anti-horário."
 
 #: ../gui/resources.xml:828
-#, fuzzy
 msgctxt "Menu→View→Adjust View (labels), Accel Editor (labels)"
 msgid "Mirror Horizontal"
 msgstr "Espelhar Horizontalmente"
@@ -5819,7 +5782,6 @@ msgid "Flip the view left to right."
 msgstr "Espelhar a visualização do lado esquerdo para o lado direito."
 
 #: ../gui/resources.xml:837
-#, fuzzy
 msgctxt "Menu→View→Adjust View (labels), Accel Editor (labels)"
 msgid "Mirror Vertical"
 msgstr "Espelhar Verticalmente"
@@ -5830,7 +5792,6 @@ msgid "Flip the view upside-down."
 msgstr "Espelhar a visualização do lado de cima para o lado de baixo."
 
 #: ../gui/resources.xml:845
-#, fuzzy
 msgctxt "Menu→View (labels), Accel Editor (labels)"
 msgid "Layer Solo"
 msgstr "Camada Solo"
@@ -5838,13 +5799,12 @@ msgstr "Camada Solo"
 #: ../gui/resources.xml:846
 msgctxt "Accel Editor (descriptions)"
 msgid "Toggle whether only the current layer is shown."
-msgstr "Alterna a visualização de apenas a camada ativa."
+msgstr "Alterna a visualização de apenas a camada atual."
 
 #: ../gui/resources.xml:856
-#, fuzzy
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
 msgid "Symmetrical Painting Active"
-msgstr "Pintura Simétrica"
+msgstr "Pintura Simétrica Ativa"
 
 #: ../gui/resources.xml:857
 msgctxt "Accel Editor (descriptions)"
@@ -5852,7 +5812,6 @@ msgid "Mirror brushstrokes along the axis of symmetry"
 msgstr "Espelha as pinceladas ao longo do eixo de simetria"
 
 #: ../gui/resources.xml:864
-#, fuzzy
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "Frame Enabled"
 msgstr "Moldura Ativada"
@@ -5863,10 +5822,9 @@ msgid "Toggle visibility of the document frame."
 msgstr "Liga/desl. moldura do documento."
 
 #: ../gui/resources.xml:874
-#, fuzzy
 msgctxt "Menu→Help→Debug (labels), Accel Editor (labels)"
 msgid "Print Brush Input Values to Console"
-msgstr "Imprimir Valores de Entrada do Pincel para o Terminal"
+msgstr "Imprimir Valores de Entrada do Pincel para o Console"
 
 #: ../gui/resources.xml:875
 msgctxt "Accel Editor (descriptions)"
@@ -5875,7 +5833,6 @@ msgstr ""
 "Mostrar as entradas internas geradas pelo mecanismo de pincéis no console."
 
 #: ../gui/resources.xml:881
-#, fuzzy
 msgctxt "Menu→Help→Debug (labels), Accel Editor (labels)"
 msgid "Visualize Rendering"
 msgstr "Visualizar Renderização"
@@ -5904,32 +5861,30 @@ msgstr ""
 "Insere um ponto próximo ao ponto atualmente selecionado na direção do traço."
 
 #: ../gui/resources.xml:904
-#, fuzzy
 msgid "Delete Point"
 msgstr "Excluir Ponto"
 
 #: ../gui/resources.xml:905
 msgctxt "Accel Editor (descriptions)"
 msgid "Delete currently selected point on the ink stroke."
-msgstr "Excluir o ponto selecionado no traço."
+msgstr "Exclui o ponto selecionado no traço."
 
 #: ../gui/resources.xml:912
 msgctxt "Accel Editor (descriptions)"
 msgid ""
 "Simplify and delete points according to angle and distance between nodes."
 msgstr ""
-"Simplifica e remove pontos de acordo com o ângulo e distância entre os nós."
+"Simplifica e exclui pontos de acordo com o ângulo e distância entre os nós."
 
 #: ../gui/resources.xml:919
 msgctxt "Accel Editor (descriptions)"
 msgid "Delete every other point on the ink stroke."
-msgstr "Remove pontos de forma intercalada do traço de tinta."
+msgstr "Exclui pontos de forma intercalada do traço de tinta."
 
 #: ../gui/resources.xml:933
-#, fuzzy
 msgctxt "Menu→Brush (labels)"
 msgid "Paint Mode"
-msgstr "Modo de Linha"
+msgstr "Modo de Pintura"
 
 #: ../gui/resources.xml:941
 msgctxt "Menu→Brush→Blend Mode (labels), Accel Editor (labels)"
@@ -5998,16 +5953,14 @@ msgid "Color"
 msgstr "Cor"
 
 #: ../gui/resources.xml:1014
-#, fuzzy
 msgctxt "Menu→Color (labels)"
 msgid "Adjust Color"
 msgstr "Ajustar Cor"
 
 #: ../gui/resources.xml:1020
-#, fuzzy
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "Color History Popup"
-msgstr "Histórico de Cores"
+msgstr "Popup do Histórico de Cores"
 
 #: ../gui/resources.xml:1021
 msgctxt "Accel Editor (descriptions)"
@@ -6015,10 +5968,9 @@ msgid "Pop up a timeline of recent colors under the cursor."
 msgstr "Mostrar uma linha de tempo das cores recentes abaixo do cursor."
 
 #: ../gui/resources.xml:1028
-#, fuzzy
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "Color Details Dialog"
-msgstr "Detalhes da Cor"
+msgstr "Janela de Detalhes da Cor"
 
 #: ../gui/resources.xml:1029
 msgctxt "Accel Editor (descriptions)"
@@ -6026,7 +5978,6 @@ msgid "Show a color details dialog with text entry."
 msgstr "Mostra um diálogo com detalhes da cor com entrada de texto."
 
 #: ../gui/resources.xml:1035
-#, fuzzy
 msgctxt "Menu→Color"
 msgid "Next Palette Color"
 msgstr "Próxima Cor da Paleta"
@@ -6037,7 +5988,6 @@ msgid "Set painting color to the next color in the palette."
 msgstr "Define a cor como a próxima cor na paleta."
 
 #: ../gui/resources.xml:1042
-#, fuzzy
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "Previous Palette Color"
 msgstr "Cor Anterior da Paleta"
@@ -6048,10 +5998,9 @@ msgid "Set painting color to the previous color in the palette."
 msgstr "Define a cor como a cor anterior na paleta."
 
 #: ../gui/resources.xml:1049
-#, fuzzy
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "Add Color to Palette"
-msgstr "Adicionar cor à Paleta"
+msgstr "Adicionar Cor à Paleta"
 
 #: ../gui/resources.xml:1050
 msgctxt "Accel Editor (descriptions)"
@@ -6064,28 +6013,24 @@ msgid "Layer"
 msgstr "Camada"
 
 #: ../gui/resources.xml:1064
-#, fuzzy
 msgctxt "Menu→Layer→Properties (labels)"
 msgid "Opacity"
 msgstr "Opacidade"
 
 #: ../gui/resources.xml:1070
-#, fuzzy
 msgctxt "Menu→Layer (labels)"
 msgid "Go to Layer"
 msgstr "Ir para Camada"
 
 #: ../gui/resources.xml:1076
-#, fuzzy
 msgctxt "Menu→Layer (labels)"
 msgid "New Layer Below"
-msgstr "Camada Solo"
+msgstr "Nova Camada Abaixo"
 
 #: ../gui/resources.xml:1082
-#, fuzzy
 msgctxt "Menu→Layer (labels)"
 msgid "Properties"
-msgstr "Propriedades da paleta"
+msgstr "Propriedades"
 
 #: ../gui/resources.xml:1090
 msgctxt "Menu (labels)"
@@ -6093,7 +6038,6 @@ msgid "Scratchpad"
 msgstr "Painel de Rascunho"
 
 #: ../gui/resources.xml:1096
-#, fuzzy
 msgctxt "Menu→Scratchpad (labels), Accel Editor (labels)"
 msgid "New Scratchpad"
 msgstr "Novo Painel de Rascunho"
@@ -6106,7 +6050,6 @@ msgstr ""
 "rascunhos."
 
 #: ../gui/resources.xml:1104
-#, fuzzy
 msgctxt "Menu→Scratchpad (labels), Accel Editor (labels)"
 msgid "Open Scratchpad…"
 msgstr "Abrir Painel de Rascunho…"
@@ -6117,10 +6060,9 @@ msgid "Load an image file on disk into the scratchpad."
 msgstr "Carregar um arquivo de imagem do disco para o painel rascunho."
 
 #: ../gui/resources.xml:1112
-#, fuzzy
 msgctxt "Menu→Scratchpad (labels), Accel Editor (labels)"
 msgid "Save Scratchpad"
-msgstr "Salvar painel de rascunho agora"
+msgstr "Salvar Painel de Rascunho"
 
 #: ../gui/resources.xml:1113
 msgctxt "Accel Editor (descriptions)"
@@ -6138,7 +6080,6 @@ msgid "Export the scratchpad to disk, under a file name of your choice."
 msgstr "Exportar o painel de rascunhos para o disco, com um nome à sua escolha."
 
 #: ../gui/resources.xml:1128
-#, fuzzy
 msgctxt "Menu→Scratchpad (labels), Accel Editor (labels)"
 msgid "Revert Scratchpad"
 msgstr "Reverter Painel de Rascunho"
@@ -6149,10 +6090,9 @@ msgid "Revert the scratchpad to its last saved state."
 msgstr "Reverter o painel de rascunhos para o último estado salvo."
 
 #: ../gui/resources.xml:1136
-#, fuzzy
 msgctxt "Menu→Scratchpad (labels), Accel Editor (labels)"
 msgid "Save Scratchpad as Default"
-msgstr "Salvar painel de rascunho como padrão"
+msgstr "Salvar Painel de Rascunho como Padrão"
 
 #: ../gui/resources.xml:1137
 msgctxt "Accel Editor (descriptions)"
@@ -6162,10 +6102,9 @@ msgstr ""
 "rascunhos’."
 
 #: ../gui/resources.xml:1143
-#, fuzzy
 msgctxt "Menu→Scratchpad (labels), Accel Editor (labels)"
 msgid "Clear Default Scratchpad"
-msgstr "Limpar o painel de rascunho padrão"
+msgstr "Limpar o Painel de Rascunho Padrão"
 
 #: ../gui/resources.xml:1144
 msgctxt "Accel Editor (descriptions)"
@@ -6173,10 +6112,9 @@ msgid "Clear the default scratchpad to a blank canvas."
 msgstr "Limpa o painel de rascunhos padrão tornando-o vazio."
 
 #: ../gui/resources.xml:1150
-#, fuzzy
 msgctxt "Menu→Scratchpad (labels), Accel Editor (labels)"
 msgid "Copy Main Background to Scratchpad"
-msgstr "Copiar fundo para painel de rascunho"
+msgstr "Copiar Fundo para Painel de Rascunho"
 
 #: ../gui/resources.xml:1151
 msgctxt "Accel Editor (descriptions)"
@@ -6196,16 +6134,14 @@ msgid "Brush"
 msgstr "Pincel"
 
 #: ../gui/resources.xml:1173
-#, fuzzy
 msgctxt "Menu→Brush (labels)"
 msgid "Shortcut Keys"
 msgstr "Teclas de Atalho"
 
 #: ../gui/resources.xml:1179
-#, fuzzy
 msgctxt "Menu→Brush→Shortcut Keys (labels), Accel Editor (labels)"
 msgid "Brush Shortcut Keys Help"
-msgstr "Teclas de Atalho"
+msgstr "Ajuda das Teclas de Atalho dos Pincéis"
 
 #: ../gui/resources.xml:1180
 msgctxt "Accel Editor (descriptions)"
@@ -6260,7 +6196,6 @@ msgid "Download brushpacks from the MyPaint wiki."
 msgstr "Baixar pacotes de pincéis da wiki do MyPaint."
 
 #: ../gui/resources.xml:1221
-#, fuzzy
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
 msgid "Import Brushes…"
 msgstr "Importar Pincéis…"
@@ -6301,10 +6236,9 @@ msgid "Debug"
 msgstr "Depurar"
 
 #: ../gui/resources.xml:1262
-#, fuzzy
 msgctxt "Menu→Help→Debug (labels), Accel Editor (labels)"
 msgid "Print Memory Leak Info to Console (Slow!)"
-msgstr "Imprimir Informação de Vazamento de Memória para o Terminal (Lento!)"
+msgstr "Imprimir Informação de Vazamento de Memória para o Console (Lento!)"
 
 #: ../gui/resources.xml:1263
 msgctxt "Accel Editor (descriptions)"
@@ -6312,7 +6246,6 @@ msgid "Debug memory leaks."
 msgstr "Depurar vazamentos de memória."
 
 #: ../gui/resources.xml:1269
-#, fuzzy
 msgctxt "Menu→Help→Debug (labels), Accel Editor (labels)"
 msgid "Run Garbage Collector Now"
 msgstr "Executar Coletor de Lixo Agora"
@@ -6329,10 +6262,9 @@ msgid "Start/Stop Profiling…"
 msgstr "Iniciar/Parar Perfilador…"
 
 #: ../gui/resources.xml:1278
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Start or Stop Python Profiling (cProfile)"
-msgstr "Iniciar/Parar o Profiler de Python (cProfile)"
+msgstr "Iniciar ou Parar o Perfilador de Python (cProfile)"
 
 #: ../gui/resources.xml:1285
 msgctxt "Menu→Help→Debug (labels), Accel Editor (labels)"
@@ -6350,22 +6282,19 @@ msgid "View"
 msgstr "Visualizar"
 
 #: ../gui/resources.xml:1300
-#, fuzzy
 msgctxt "Menu→View (labels)"
 msgid "Feedback"
 msgstr "Contato"
 
 #: ../gui/resources.xml:1306
-#, fuzzy
 msgctxt "Menu→View (labels)"
 msgid "Adjust View"
 msgstr "Ajustar Visualização"
 
 #: ../gui/resources.xml:1312
-#, fuzzy
 msgctxt "Menu→View (labels), Accel Editor (labels)"
 msgid "Popup Main Menu"
-msgstr "Menu Destacável"
+msgstr "Popup do Menu Principal"
 
 #: ../gui/resources.xml:1313
 msgctxt "Accel Editor (descriptions)"
@@ -6393,7 +6322,6 @@ msgid "Edit MyPaint’s global settings."
 msgstr "Editar as configurações globais do MyPaint."
 
 #: ../gui/resources.xml:1339
-#, fuzzy
 msgctxt "Help→Debug (labels), Accel Editor (labels)"
 msgid "Test Input Devices"
 msgstr "Testar Dispositivos de Entrada"
@@ -6406,10 +6334,9 @@ msgstr ""
 "enviam."
 
 #: ../gui/resources.xml:1347
-#, fuzzy
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Background Chooser"
-msgstr "Fundo"
+msgstr "Seletor de Fundo"
 
 #: ../gui/resources.xml:1348
 msgctxt "Accel Editor (descriptions)"
@@ -6427,10 +6354,9 @@ msgid "Edit the active brush’s settings."
 msgstr "Editar as configurações do pincel ativo."
 
 #: ../gui/resources.xml:1364
-#, fuzzy
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
 msgid "Brush Icon Editor"
-msgstr "Editor de listas de pinceis"
+msgstr "Editor de Ícone dos Pincéis"
 
 #: ../gui/resources.xml:1365
 msgctxt "Accel Editor (descriptions)"
@@ -6438,7 +6364,6 @@ msgid "Edit brush icons."
 msgstr "Editar ícones de pincéis."
 
 #: ../gui/resources.xml:1373
-#, fuzzy
 msgctxt ""
 "Menu→Layer (labels), Menu→Window (labels), Toolbar (labels), Accel Editor "
 "(labels)"
@@ -6461,20 +6386,18 @@ msgid "Reveal the Layers dockpanel (arrange layers, or assign modes)."
 msgstr "Revela o painel das Camadas (organizar as camadas, ou atribuir modos)."
 
 #: ../gui/resources.xml:1394
-#, fuzzy
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "HCY Wheel"
 msgstr "Roda HCY"
 
 #: ../gui/resources.xml:1395
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid ""
 "Dockable cylindrical hue/chroma/luma color selector. The circular slices are "
 "equiluminant."
 msgstr ""
-"Selecionar a cor usando o espaço cilíndrico matiz/pureza/luminosidade. As "
-"fatias circulares são de mesma luminosidade."
+"Painel encaixável do seletor de cor cilíndrico de matiz/pureza/luminosidade. "
+"As fatias circulares são de mesma luminosidade."
 
 #: ../gui/resources.xml:1402
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
@@ -6487,56 +6410,50 @@ msgid "Dockable palette color selector."
 msgstr "Seletor de paleta de cores encaixável."
 
 #: ../gui/resources.xml:1411
-#, fuzzy
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "HSV Wheel"
 msgstr "Roda HSV"
 
 #: ../gui/resources.xml:1412
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Dockable saturation and Value color changer."
-msgstr "Seletor de cores por Saturação e Valor."
+msgstr "Painel Encaixável do Seletor de Cores por Saturação e Valor."
 
 #: ../gui/resources.xml:1419
-#, fuzzy
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "HSV Cube"
 msgstr "Cubo HSV"
 
 #: ../gui/resources.xml:1420
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid ""
 "Dockable color selector: HSV cube which can be rotated to show different "
 "planar slices."
 msgstr ""
-"Um cubo HSV que pode ser rodado para exibir diferentes fatias planares."
+"Painel Encaixável do Seletor de Cores: Cubo HSV que pode ser girado para "
+"exibir diferentes fatias planares."
 
 #: ../gui/resources.xml:1427
-#, fuzzy
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "HSV Square"
-msgstr "Quadrado"
+msgstr "Quadrado HSV"
 
 #: ../gui/resources.xml:1428
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Dockable color selector: HSV square with Hue ring."
-msgstr ""
-"Um cubo HSV que pode ser rodado para exibir diferentes fatias planares."
+msgstr "Painel Encaixável do Seletor de Cores: Quadrado HSV com anel de Matiz."
 
 #: ../gui/resources.xml:1435
-#, fuzzy
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "Component Sliders"
-msgstr "Controles deslizantes de componentes"
+msgstr "Controles Deslizantes de Componentes"
 
 #: ../gui/resources.xml:1436
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Dockable color selector showing individual components of the color."
-msgstr "Ajustar componentes individuais da cor."
+msgstr ""
+"Painel Encaixável do Seletor de Cores que mostra componentes individuais da "
+"cor."
 
 #: ../gui/resources.xml:1443
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
@@ -6571,7 +6488,6 @@ msgstr ""
 "Seletor de cor encaixável com rampas HSV que cruzam uma taça de cores radial."
 
 #: ../gui/resources.xml:1469
-#, fuzzy
 msgctxt "Menu→Window (labels), Accel Editor (labels)"
 msgid "Scratchpad Panel"
 msgstr "Painel de Rascunho"
@@ -6665,10 +6581,9 @@ msgid "Toggle automatic hiding of the user interface in fullscreen."
 msgstr "Ativa/desativa a ocultação automática da interface em tela cheia."
 
 #: ../gui/resources.xml:1556
-#, fuzzy
 msgctxt "Menu→View→Feedback (labels), Accel Editor (labels)"
 msgid "Show Zoom Level"
-msgstr "Nível de Ampliação"
+msgstr "Mostrar Nível de Ampliação"
 
 #: ../gui/resources.xml:1557
 msgctxt "Accel Editor (descriptions)"
@@ -6676,10 +6591,9 @@ msgid "Toggle zoom level feedback."
 msgstr "Ocultar/mostrar informação do nível de zoom."
 
 #: ../gui/resources.xml:1563
-#, fuzzy
 msgctxt "Menu→View→Feedback (labels), Accel Editor (labels)"
 msgid "Show Last Painting Position"
-msgstr "Última Posição de Pintura"
+msgstr "Mostrar Última Posição de Pintura"
 
 #: ../gui/resources.xml:1564
 msgctxt "Accel Editor (descriptions)"
@@ -6759,10 +6673,9 @@ msgid "Freehand"
 msgstr "Mão Livre"
 
 #: ../gui/resources.xml:1636
-#, fuzzy
 msgctxt "Toolbar (short labels)"
 msgid "Freehand"
-msgstr "Mão-livre"
+msgstr "Mão livre"
 
 #: ../gui/resources.xml:1637
 msgctxt "Toolbar (tooltips)"
@@ -6782,13 +6695,11 @@ msgid "Draw and paint freely, without geometric constraints."
 msgstr "Desenhar e pintar livremente, sem restrições de geometria."
 
 #: ../gui/resources.xml:1657
-#, fuzzy
 msgctxt "Menu→Edit→Current Mode (labels)"
 msgid "Pan View"
-msgstr "Visualizar"
+msgstr "Deslocar Visualização"
 
 #: ../gui/resources.xml:1658
-#, fuzzy
 msgctxt "Toolbar (short labels)"
 msgid "Pan"
 msgstr "Deslocar"
@@ -6801,10 +6712,9 @@ msgstr ""
 "verticalmente."
 
 #: ../gui/resources.xml:1667
-#, fuzzy
 msgctxt "Menu→View (labels), Accel Editor (labels)"
 msgid "Pan View"
-msgstr "Visualizar"
+msgstr "Deslocar Visualização"
 
 #: ../gui/resources.xml:1668
 msgctxt "Accel Editor (descriptions)"
@@ -6814,13 +6724,11 @@ msgstr ""
 "interativa."
 
 #: ../gui/resources.xml:1677
-#, fuzzy
 msgctxt "Menu→Edit→Current Mode (labels)"
 msgid "Rotate View"
 msgstr "Girar Visualização"
 
 #: ../gui/resources.xml:1678
-#, fuzzy
 msgctxt "Toolbar (short labels)"
 msgid "Rotate"
 msgstr "Girar"
@@ -6831,7 +6739,6 @@ msgid "Rotate View: tilt your view of the canvas."
 msgstr "Rodar Visualização: inclina a visualização da tela."
 
 #: ../gui/resources.xml:1687
-#, fuzzy
 msgctxt "Menu→View (labels), Accel Editor (labels)"
 msgid "Rotate View"
 msgstr "Girar Visualização"
@@ -6842,16 +6749,14 @@ msgid "Interactively rotate your view of the canvas."
 msgstr "Roda a visualização da tela de forma interativa."
 
 #: ../gui/resources.xml:1697
-#, fuzzy
 msgctxt "Menu→Edit→Current Mode (labels)"
 msgid "Zoom View"
 msgstr "Ampliar Visualização"
 
 #: ../gui/resources.xml:1698
-#, fuzzy
 msgctxt "Toolbar (short labels)"
 msgid "Zoom"
-msgstr "Ampliação"
+msgstr "Zoom"
 
 #: ../gui/resources.xml:1699
 msgctxt "Toolbar (tooltips)"
@@ -6859,7 +6764,6 @@ msgid "Zoom View: zoom into or out of the canvas."
 msgstr "Ampliação da Visualização: aproximar e afastar a visualização da tela."
 
 #: ../gui/resources.xml:1707
-#, fuzzy
 msgctxt "Menu→View (labels), Accel Editor (labels)"
 msgid "Zoom View"
 msgstr "Ampliar Visualização"
@@ -6870,13 +6774,11 @@ msgid "Interactively zoom into or out of the canvas."
 msgstr "Aproximar e afastar a visualização da tela de forma interativa."
 
 #: ../gui/resources.xml:1717
-#, fuzzy
 msgctxt "Menu→Edit→Current Mode (labels)"
 msgid "Lines and Curves"
 msgstr "Linhas e Curvas"
 
 #: ../gui/resources.xml:1718
-#, fuzzy
 msgctxt "Toolbar (short labels)"
 msgid "Lines"
 msgstr "Linhas"
@@ -6897,13 +6799,11 @@ msgid "Draw straight or curved lines."
 msgstr "Desenhar linhas retas ou curvas."
 
 #: ../gui/resources.xml:1738
-#, fuzzy
 msgctxt "Menu→Edit→Current Mode (labels)"
 msgid "Connected Lines"
 msgstr "Linhas Conectadas"
 
 #: ../gui/resources.xml:1739
-#, fuzzy
 msgctxt "Toolbar (short labels)"
 msgid "Conn. Lines"
 msgstr "Linhas Conectadas"
@@ -6924,7 +6824,6 @@ msgid "Draw sequences of straight or curved lines."
 msgstr "Desenhar sequências de linhas retas ou curvas."
 
 #: ../gui/resources.xml:1759
-#, fuzzy
 msgctxt "Menu→Edit→Current Mode (labels)"
 msgid "Ellipses and Circles"
 msgstr "Elipses e Círculos"
@@ -6955,7 +6854,6 @@ msgid "Inking"
 msgstr "Arte-finalizar"
 
 #: ../gui/resources.xml:1781
-#, fuzzy
 msgctxt "Toolbar (short labels)"
 msgid "Ink"
 msgstr "Tinta"
@@ -6981,10 +6879,9 @@ msgid "Reposition Layer"
 msgstr "Reposicionar Camada"
 
 #: ../gui/resources.xml:1802
-#, fuzzy
 msgctxt "Toolbar (short labels)"
 msgid "Layer Pos."
-msgstr "Camadas"
+msgstr "Pos. Camadas"
 
 #: ../gui/resources.xml:1803
 msgctxt "Toolbar (tooltips)"
@@ -7002,25 +6899,22 @@ msgid "Interactively move the current layer on the canvas."
 msgstr "Mover a camada atual na tela de forma interativa."
 
 #: ../gui/resources.xml:1822
-#, fuzzy
 msgctxt "Menu→Edit→Current Mode (labels)"
 msgid "Edit Frame"
 msgstr "Editar Moldura"
 
 #: ../gui/resources.xml:1823
-#, fuzzy
 msgctxt "Toolbar (short labels)"
 msgid "Frame"
 msgstr "Moldura"
 
 #: ../gui/resources.xml:1824
-#, fuzzy
 msgctxt "Toolbar (tooltips)"
 msgid ""
 "Edit Frame: define a frame around the document to give it a finite size."
 msgstr ""
 "Editar Moldura: definir uma moldura em volta do documento para lhe dar um "
-"tamanho finito. A moldura é usada ao exportar."
+"tamanho finito."
 
 #: ../gui/resources.xml:1832
 msgctxt "Menu→File (labels), Accel Editor (labels)"
@@ -7028,13 +6922,12 @@ msgid "Edit Frame"
 msgstr "Editar Moldura"
 
 #: ../gui/resources.xml:1833
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid ""
 "Interactively define a frame around the document to give it a finite size."
 msgstr ""
-"Editar Moldura: definir uma moldura em volta do documento para lhe dar um "
-"tamanho finito. A moldura é usada ao exportar."
+"Define de forma interativa uma moldura em volta do documento para lhe dar um "
+"tamanho finito."
 
 #: ../gui/resources.xml:1842
 msgctxt "Menu→Edit→Current Mode (labels)"
@@ -7042,10 +6935,9 @@ msgid "Edit Painting Symmetry"
 msgstr "Editar Simetria da Pintura"
 
 #: ../gui/resources.xml:1843
-#, fuzzy
 msgctxt "Toolbar (short labels)"
 msgid "Symmetry"
-msgstr "Eixo de Simetria"
+msgstr "Simetria"
 
 #: ../gui/resources.xml:1844
 msgctxt "Toolbar (tooltips)"
@@ -7065,13 +6957,11 @@ msgid "Interactively adjust the axis used for symmetrical painting."
 msgstr "Ajustar o eixo utilizado para a pintura simétrica de forma interativa."
 
 #: ../gui/resources.xml:1863
-#, fuzzy
 msgctxt "Menu→Edit→Current Mode (labels)"
 msgid "Pick Color"
-msgstr "Pegar Cor"
+msgstr "Selecionar Cor"
 
 #: ../gui/resources.xml:1864
-#, fuzzy
 msgctxt "Toolbar (short labels)"
 msgid "Pick Col."
 msgstr "Pegar Cor"
@@ -7082,10 +6972,9 @@ msgid "Pick Color: set the painting color from screen pixels."
 msgstr "Recolher Cor: definir a cor de pintura a partir dos pixels na tela."
 
 #: ../gui/resources.xml:1897
-#, fuzzy
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "Pick Color Hue"
-msgstr "Selecionar Cor"
+msgstr "Selecionar Matiz da Cor"
 
 #: ../gui/resources.xml:1898
 msgctxt "Accel Editor (descriptions)"
@@ -7154,7 +7043,7 @@ msgstr "Preenchimento"
 #: ../gui/resources.xml:1946
 msgctxt "Accel Editor (descriptions)"
 msgid "Fill an area with color."
-msgstr "Preencher uma área com cor."
+msgstr "Preenche uma área com cor."
 
 #, fuzzy
 #~ msgctxt "Layer properties widget → <category labels>"
