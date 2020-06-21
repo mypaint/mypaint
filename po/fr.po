@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: mypaint v2.0.0-alpha.8-1-g4490f06\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-03-03 00:01+0100\n"
-"PO-Revision-Date: 2020-06-16 12:41+0000\n"
+"PO-Revision-Date: 2020-06-21 13:31+0000\n"
 "Last-Translator: Isabelle Lepage <noisette@netc.eu>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/mypaint/mypaint/"
 "fr/>\n"
@@ -18,7 +18,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n > 1;\n"
-"X-Generator: Weblate 4.1.1-dev\n"
+"X-Generator: Weblate 4.2-dev\n"
 
 #. TRANSLATORS: Name of first column in the button map preferences.
 #. TRANSLATORS: Refers to an action bound to a mod+button combination.
@@ -1537,7 +1537,7 @@ msgstr ";  "
 #: ../gui/document.py:878
 #, python-brace-format
 msgid "With {modifiers} held down:  {button_actions}."
-msgstr "Avec {modifiers} enfoncé: {button_actions}."
+msgstr "Avec {modifiers} enfoncé : {button_actions}."
 
 #: ../gui/document.py:900
 msgctxt "Statusbar message: copy result"
@@ -2716,8 +2716,8 @@ msgstr "Lignes connectées"
 #: ../gui/linemode.py:794
 msgid "Draw a sequence of lines; Shift adds curves, Ctrl constrains angle"
 msgstr ""
-"Dessiner une séquence de lignes; Shift ajouter des courbes, Ctrl contraindre "
-"sur les angles"
+"Dessiner une séquence de lignes ; Maj ajoute des courbes, Ctrl contraint les "
+"angles"
 
 #: ../gui/linemode.py:804
 msgid "Ellipses and Circles"
@@ -3064,10 +3064,10 @@ msgid "View (Resetting)"
 msgstr "Vue (remise à zéro"
 
 #: ../gui/toolstack.py:351
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgctxt "workspace: sidebar tabs: button tooltips"
 msgid "{tab_title}: close tab"
-msgstr "%s: Fermer l'onglet"
+msgstr "%s : Fermer l’onglet"
 
 #: ../gui/toolstack.py:355
 #, python-brace-format
@@ -3509,10 +3509,9 @@ msgid "Unknown Data"
 msgstr "Données inconnues"
 
 #: ../lib/layer/data.py:1306
-#, fuzzy
 msgctxt "layer type descriptions"
 msgid "Painting Layer"
-msgstr "Calque pour peinture"
+msgstr "Calque de peinture"
 
 #. TRANSLATORS: Short default name for layer groups.
 #: ../lib/layer/group.py:67
@@ -3827,10 +3826,10 @@ msgstr ""
 #. TRANSLATORS: Change only if your lang *REQUIRES* a different order or
 #. TRANSLATORS: if raw digits and a space aren't enough.
 #: ../lib/naming.py:22
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgctxt "unique names: serial number needed: template"
 msgid "{name} {number}"
-msgstr "%(name)s %(number)d"
+msgstr "{name} {number}"
 
 #. TRANSLATORS: UNIQUE_NAME_REGEX - regex for UNIQUE_NAME_TEMPLATE
 #. TRANSLATORS: Must match its template (msgid: '{name} {number}')
@@ -3886,7 +3885,7 @@ msgstr "Flocon de neige"
 #: ../lib/tiledsurface.py:624
 #, python-format
 msgid "PNG reader failed: %s"
-msgstr "Le lecteur de PNG a échoué: %s"
+msgstr "Le lecteur de PNG a échoué : %s"
 
 #: ../gui/autorecover.glade:18
 msgid "Recover interrupted work?"
@@ -4126,7 +4125,6 @@ msgid "{dname}:"
 msgstr ""
 
 #: ../gui/brusheditor.glade:841
-#, fuzzy
 msgid "Brush dynamics are not available for this setting."
 msgstr "Les dynamiques de brosses ne sont pas disponibles pour ce réglage."
 
@@ -4599,7 +4597,7 @@ msgstr ""
 
 #: ../gui/preferenceswindow.glade:1035
 msgid "When showing transparency:"
-msgstr "Quand on voit la transparence:"
+msgstr "Quand on voit la transparence :"
 
 #: ../gui/preferenceswindow.glade:1050
 msgctxt "Prefs Dialog|View|Interface|"
@@ -4998,10 +4996,9 @@ msgid "Open Previous Scrap"
 msgstr "Ouvrir le Croquis précédent"
 
 #: ../gui/resources.xml:157
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Load the scrap file before the current one."
-msgstr "Charger le croquis suivant, remplace l'image actuelle"
+msgstr "Charger le croquis suivant, remplace l'image actuelle."
 
 #: ../gui/resources.xml:165
 msgctxt "Menu→File (labels), Accel Editor (labels)"
@@ -5012,7 +5009,7 @@ msgstr "Ouvrir le Croquis suivant"
 #, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Load the scrap file after the current one."
-msgstr "Charger le croquis suivant, remplace l'image actuelle"
+msgstr "Charger le croquis suivant, remplace l'image actuelle."
 
 #: ../gui/resources.xml:174
 msgctxt "Menu→File (labels), Accel Editor (labels)"
@@ -5257,7 +5254,7 @@ msgctxt "Accel Editor (descriptions)"
 msgid ""
 "Pick a brushstroke from the canvas, which restores brush, color, and layer."
 msgstr ""
-"Récupérer les paramètres du tracé de brosse, couleur du tracé et calque"
+"Récupérer les paramètres du tracé de brosse, couleur du tracé et calque."
 
 #: ../gui/resources.xml:382
 msgctxt "Menu→Brush→Shortcut Keys (labels), Accel Editor (labels)"
