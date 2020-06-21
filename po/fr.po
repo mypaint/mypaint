@@ -9,8 +9,8 @@ msgstr ""
 "Project-Id-Version: mypaint v2.0.0-alpha.8-1-g4490f06\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-03-03 00:01+0100\n"
-"PO-Revision-Date: 2020-06-21 13:31+0000\n"
-"Last-Translator: toure youssouf <tourenco@free.fr>\n"
+"PO-Revision-Date: 2020-06-22 15:41+0000\n"
+"Last-Translator: Isabelle Lepage <noisette@netc.eu>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/mypaint/mypaint/"
 "fr/>\n"
 "Language: fr\n"
@@ -2830,7 +2830,9 @@ msgstr ", "
 #: ../gui/meta.py:221
 msgctxt "About dialog: credits: translator credits (your name(s) here!)"
 msgid "translator-credits"
-msgstr "Isabelle Lepage bluecat@netc.eu"
+msgstr ""
+"Isabelle Lepage <bluecat@netc.eu> 2020\n"
+"Contributeurs-trices anonymes"
 
 #. TRANSLATORS:"Brush radius" for the options panel. Short.
 #: ../gui/mode.py:582
@@ -2850,7 +2852,7 @@ msgstr "Dureté :"
 #. TRANSLATORS:"Additional pressure gain" for the options panel. Short.
 #: ../gui/mode.py:588
 msgid "Gain:"
-msgstr ""
+msgstr "Gain :"
 
 #. TRANSLATORS:"Paint Pigment Mode" for the options panel. Short.
 #: ../gui/mode.py:590
@@ -3067,7 +3069,7 @@ msgstr "Vue (remise à zéro"
 #, python-brace-format
 msgctxt "workspace: sidebar tabs: button tooltips"
 msgid "{tab_title}: close tab"
-msgstr "%s : Fermer l’onglet"
+msgstr "{tab_title} : fermer l’onglet"
 
 #: ../gui/toolstack.py:355
 #, python-brace-format
@@ -3114,7 +3116,6 @@ msgid "Unknown Command"
 msgstr "Action inconnue"
 
 #: ../lib/command.py:324
-#, fuzzy
 msgid "Undefined (command not started yet)"
 msgstr "Non défini (l’action n’a pas encore démarré)"
 
@@ -3122,7 +3123,7 @@ msgstr "Non défini (l’action n’a pas encore démarré)"
 #. TRANSLATORS: This can correspond to zero or more touches of
 #. TRANSLATORS: the physical stylus to the tablet.
 #: ../lib/command.py:331
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgid "{seconds:.01f}s of painting with {brush_name}"
 msgstr "{seconds:.01f}s de peinture avec {brush_name}"
 
@@ -3279,7 +3280,7 @@ msgstr "à partir de maintenant"
 #: ../lib/document.py:210
 msgctxt "Document autosave descriptions: the {ago} string: past"
 msgid "ago"
-msgstr ""
+msgstr "il y a"
 
 #. TRANSLATORS: String descriptions for an autosaved backup.
 #. TRANSLATORS: Time strings are localized: e.g. "3h42m" or "8s"
@@ -3291,12 +3292,15 @@ msgid ""
 "Are you running more than once instance of MyPaint?\n"
 "Close app and wait {cache_update_interval}s to retry."
 msgstr ""
+"Le dossier de cache est peut-être encore utilisé.\n"
+"Avez-vous plusieurs instances de MyPaint ouvertes ?\n"
+"Fermez l’application et attendez {cache_update_interval} pour ré-essayer."
 
 #: ../lib/document.py:225
 #, python-brace-format
 msgctxt "Document autosave descriptions"
 msgid "Incomplete backup updated {last_modified_time} {ago}"
-msgstr ""
+msgstr "Mise à jour de la sauvegarde incomplète {ago} {last_modified_time}"
 
 #. TRANSLATORS: The {ago} variable is a translated string.
 #. TRANSLATORS: Look for the msgids "from now" and "ago"
@@ -3311,6 +3315,10 @@ msgid ""
 "num_layers}\n"
 "Contains {unsaved_time} of unsaved painting."
 msgstr ""
+"Sauvegarde mise à jour {ago} {last_modified_time}\n"
+"Taille : {autosave.width} x {autosave.height} pixels, Calques : {autosave."
+"num_layers}\n"
+"Contient {unsaved_time} de la peinture non enregistrée."
 
 #: ../lib/document.py:1447
 #, python-brace-format
@@ -3419,27 +3427,27 @@ msgstr "Remplir"
 #: ../lib/floodfill.py:132
 msgctxt "floodfill status message: use active tense"
 msgid "Morphing"
-msgstr ""
+msgstr "Morphing"
 
 #: ../lib/floodfill.py:133
 msgctxt "floodfill status message: use active tense"
 msgid "Blurring"
-msgstr ""
+msgstr "Floutage"
 
 #: ../lib/floodfill.py:134
 msgctxt "floodfill status message: use active tense"
 msgid "Compositing"
-msgstr ""
+msgstr "Composition"
 
 #: ../lib/floodfill.py:135
 msgctxt "floodfill status message: use active tense"
 msgid "Finishing up"
-msgstr ""
+msgstr "Finaliser"
 
 #: ../lib/floodfill.py:137
 msgctxt "uniform square region of pixels, plural noun"
 msgid "tiles"
-msgstr ""
+msgstr "tuiles"
 
 #. TRANSLATORS: Assumption for all "Time period abbreviations":
 #. TRANSLATORS: they don't need ngettext (to support plural/singular)
@@ -3490,12 +3498,12 @@ msgstr "Calque vectoriel"
 #: ../lib/layer/data.py:1229
 msgctxt "layer default names"
 msgid "Bitmap"
-msgstr ""
+msgstr "Bitmap"
 
 #: ../lib/layer/data.py:1234
 msgctxt "layer type descriptions"
 msgid "Bitmap Data"
-msgstr ""
+msgstr "Données Bitmap"
 
 #. TRANSLATORS: Short default name for non-renderable fallback layers
 #: ../lib/layer/data.py:1250
@@ -3555,7 +3563,7 @@ msgstr "Affichage"
 #: ../lib/layervis.py:49
 msgctxt "layer visibility sets: text shown when no user-managed view is active"
 msgid "No active view"
-msgstr ""
+msgstr "Pas de vue active"
 
 #: ../lib/layervis.py:579
 #, fuzzy
@@ -3604,13 +3612,16 @@ msgid "The top layer only, without blending colors."
 msgstr "Le calque du haut seul, sans couleurs mélangées."
 
 #: ../lib/modes.py:54
+#, fuzzy
 msgid "Pigment"
-msgstr ""
+msgstr "Pigment"
 
 #: ../lib/modes.py:55
 msgid ""
 "Similar to mixing actual pigments by upsampling to 10 spectral channels."
 msgstr ""
+"Semblable au mélange de pigments actuels par sur-échantillonnage à 10 canaux "
+"spectraux."
 
 #: ../lib/modes.py:58
 msgid "Multiply"
@@ -3670,7 +3681,7 @@ msgstr ""
 
 #: ../lib/modes.py:79
 msgid "Dodge"
-msgstr "Éclaircir"
+msgstr "Dodge"
 
 #: ../lib/modes.py:80
 msgid ""
@@ -3684,7 +3695,7 @@ msgstr ""
 
 #: ../lib/modes.py:84
 msgid "Burn"
-msgstr "Assombrir"
+msgstr "Burn"
 
 #: ../lib/modes.py:85
 msgid ""
@@ -4252,9 +4263,10 @@ msgid "Add the current color to the palette"
 msgstr "Ajoute la couleur actuelle à la palette"
 
 #: ../gui/mypaint.glade:161
+#, fuzzy
 msgctxt "Footerbar|"
 msgid "Canvas scale and rotation"
-msgstr ""
+msgstr "Échelle et rotation de la toile"
 
 #. str.format() template
 #: ../gui/mypaint.glade:163
@@ -4434,9 +4446,10 @@ msgid "Default file format:"
 msgstr "Format de fichier par défaut :"
 
 #: ../gui/preferenceswindow.glade:524
+#, fuzzy
 msgctxt "Prefs Dialog|Load & Save|Saving|"
 msgid "Prefix when saving scraps:"
-msgstr ""
+msgstr "Préfixe lors de la sauvegarde des rebuts :"
 
 #: ../gui/preferenceswindow.glade:575
 msgctxt "Prefs Dialog|Load & Save|"
@@ -4451,7 +4464,7 @@ msgstr "<b>Géstion des couleurs</b>"
 #: ../gui/preferenceswindow.glade:608
 msgctxt "Prefs Dialog|Load & Save|Color Management|"
 msgid "Color space conversions:"
-msgstr ""
+msgstr "Conversion des espaces de couleur :"
 
 #: ../gui/preferenceswindow.glade:626
 msgctxt "Prefs Dialog|Load & Save|Color Management|"
@@ -4472,11 +4485,22 @@ msgid ""
 "monitors. If you know your display is radically different from this, use the "
 "\"no automatic conversions or tagging\" setting instead."
 msgstr ""
+"Les images contenant des informations <i>complètes</i>sur l’espace "
+"colorimétrique seront converties en sRGB lorsqu’elles seront chargées dans "
+"MyPaint. Lorsque MyPaint enregistre une image, des indications y seront "
+"ajoutées pour que d'autres programmes puissent en assurer le rendu "
+"correctement.\n"
+"\n"
+"Cela suppose que l’affichage soit calibré à quelque chose de proche de sRGB, "
+"l’espace colorimétrique standard pour le web et une approximation pessimiste "
+"de la plupart des écrans de PC. Si vous savez que votre affichage est "
+"radicalement différent de cela, utilisez plutôt le paramètre \"pas de "
+"conversions ou de marquage automatique\"."
 
 #: ../gui/preferenceswindow.glade:648
 msgctxt "Prefs Dialog|Load & Save|Color Management|"
 msgid "No automatic conversions or tagging"
-msgstr ""
+msgstr "Pas de conversions automatiques ou de marquage"
 
 #: ../gui/preferenceswindow.glade:652
 msgctxt "Prefs Dialog|Load & Save|Color Management|"
@@ -6198,7 +6222,7 @@ msgstr "Raccourcis clavier"
 #: ../gui/resources.xml:1179
 msgctxt "Menu→Brush→Shortcut Keys (labels), Accel Editor (labels)"
 msgid "Brush Shortcut Keys Help"
-msgstr "Raccourcis claviers des brosses"
+msgstr "Raccourcis clavier des brosses"
 
 #: ../gui/resources.xml:1180
 msgctxt "Accel Editor (descriptions)"
@@ -6507,10 +6531,9 @@ msgid "HSV Square"
 msgstr "HSV Carré"
 
 #: ../gui/resources.xml:1428
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Dockable color selector: HSV square with Hue ring."
-msgstr "Sélecteur  de couleur ancrable : carré HSV avec roue chromatique."
+msgstr "Sélecteur de couleur ancrable : carré HSV avec roue chromatique."
 
 #: ../gui/resources.xml:1435
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
@@ -6938,7 +6961,7 @@ msgstr "Encre"
 #: ../gui/resources.xml:1782
 msgctxt "Toolbar (tooltips)"
 msgid "Inking: draw smooth controlled lines."
-msgstr "Encre: Trace des lignes douces et contrôlées."
+msgstr "Encrage : tracer des lignes douces et contrôlées."
 
 #: ../gui/resources.xml:1790
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
@@ -6965,7 +6988,7 @@ msgstr "Calques"
 #: ../gui/resources.xml:1803
 msgctxt "Toolbar (tooltips)"
 msgid "Reposition Layer: move the current layer on the canvas."
-msgstr "Repositionner le calque :  déplacer le calque actuel sur la toile."
+msgstr "Repositionner le calque : déplacer le calque actuel sur la toile."
 
 #: ../gui/resources.xml:1811
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
