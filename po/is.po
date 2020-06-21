@@ -4,7 +4,7 @@ msgstr ""
 "Project-Id-Version: mypaint v2.0.0-alpha.8-1-g4490f06\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-03-29 16:08+0200\n"
-"PO-Revision-Date: 2020-01-16 22:21+0000\n"
+"PO-Revision-Date: 2020-06-22 15:41+0000\n"
 "Last-Translator: Sveinn í Felli <sv1@fellsnet.is>\n"
 "Language-Team: Icelandic <https://hosted.weblate.org/projects/mypaint/"
 "mypaint/is/>\n"
@@ -13,7 +13,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n % 10 != 1 || n % 100 == 11;\n"
-"X-Generator: Weblate 3.10.2-dev\n"
+"X-Generator: Weblate 4.2-dev\n"
 
 #. TRANSLATORS: Name of first column in the button map preferences.
 #. TRANSLATORS: Refers to an action bound to a mod+button combination.
@@ -3809,10 +3809,9 @@ msgid "_Delete…"
 msgstr "_Eyða…"
 
 #: ../gui/autorecover.glade:66
-#, fuzzy
 msgctxt "Autosave Recovery dialog|Delete button|"
 msgid "Delete this backup from the disk."
-msgstr "Eyða þessum pensli af diski"
+msgstr "Eyða þessu öryggisafriti af diski."
 
 #. Recover in the sense or retrieval or salvage from a backup file. The user is asked to save the retrieved file immediately afterwards, hence the ellipsis.
 #: ../gui/autorecover.glade:78
@@ -4100,22 +4099,19 @@ msgid "The currently active view."
 msgstr "Samsetningarhamur núverandi lags."
 
 #: ../gui/layervis.glade:36
-#, fuzzy
 msgctxt "Layers window: view list controls: tooltips"
 msgid "Rename the active view."
-msgstr "Snúðu sýn á myndflöt"
+msgstr "Endurnefna virka sýn."
 
 #: ../gui/layervis.glade:57
-#, fuzzy
 msgctxt "Layers window: view list controls: tooltips"
 msgid "Remove the active view."
-msgstr "Snúðu sýn á myndflöt"
+msgstr "Fjarlægja virka sýn."
 
 #: ../gui/layervis.glade:78
-#, fuzzy
 msgctxt "Layers window: view list controls: tooltips"
 msgid "Snapshot visible layers as a new view."
-msgstr "Hvaða sýnilegu lög eigi að fylla"
+msgstr "Taka skyndiafrit af sýnilegum lögum sem nýja sýn."
 
 #: ../gui/layervis.glade:99
 msgctxt "Layers window: view list controls: tooltips"
@@ -5338,7 +5334,7 @@ msgstr "Sameina lag niður"
 #: ../gui/resources.xml:560
 msgctxt "Accel Editor (descriptions)"
 msgid "Merge the current layer with the layer beneath it."
-msgstr "Sameina þetta lag við  lagið fyrir neðan það."
+msgstr "Sameina þetta lag við lagið fyrir neðan það."
 
 #: ../gui/resources.xml:567
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
@@ -5540,10 +5536,9 @@ msgid "Reset Mirroring"
 msgstr "Núllstilla speglun"
 
 #: ../gui/resources.xml:723
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Reset the view's mirroring."
-msgstr "Núllstilla speglun"
+msgstr "Núllstilla speglun sýnar."
 
 #: ../gui/resources.xml:729
 msgctxt "Menu→View→Adjust View (labels), Accel Editor (labels)"
@@ -5731,10 +5726,9 @@ msgid "Delete Point"
 msgstr "Eyða punkti"
 
 #: ../gui/resources.xml:905
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Delete currently selected point on the ink stroke."
-msgstr "Eyða þeim punkti sem núna er valinn"
+msgstr "Eyða þeim punkti sem núna er valinn á bleklínu."
 
 #: ../gui/resources.xml:912
 msgctxt "Accel Editor (descriptions)"
@@ -6477,7 +6471,7 @@ msgstr "Birta liti sem grátóna"
 #: ../gui/resources.xml:1588
 msgctxt "Accel Editor (descriptions)"
 msgid "Filter colors: show brightness only (HCY/YCbCr Luma)"
-msgstr "Litasía:  einungis sýna birtustig (HCY/YCbCr ljómi)"
+msgstr "Litasía: einungis sýna birtustig (HCY/YCbCr ljómi)"
 
 #: ../gui/resources.xml:1595
 msgctxt "Menu→View→Display Filter (labels), Accel Editor (labels)"
