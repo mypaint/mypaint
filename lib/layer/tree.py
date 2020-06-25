@@ -135,6 +135,7 @@ class RootLayerStack (group.LayerStack):
         self._symmetry_x = None
         self._symmetry_y = None
         self._symmetry_type = None
+        self._symmetry_angle = 0
         self._rot_symmetry_lines = 2
         self._symmetry_active = False
         # Special rendering state
@@ -806,6 +807,7 @@ class RootLayerStack (group.LayerStack):
             active,
             self._symmetry_x, self._symmetry_y,
             self._symmetry_type, self.rot_symmetry_lines,
+            self.symmetry_angle
         )
 
     # should be combined into one prop for less event firing
@@ -846,27 +848,29 @@ class RootLayerStack (group.LayerStack):
     @symmetry_x.setter
     def symmetry_x(self, x):
         if x is None:
-            self.set_symmetry_state(False, None, None, None, None)
+            self.set_symmetry_state(False, None, None, None, None, 0)
         else:
             self.set_symmetry_state(
                 True,
                 x,
                 self._symmetry_y,
                 self._symmetry_type,
-                self._rot_symmetry_lines
+                self._rot_symmetry_lines,
+                self._symmetry_angle,
             )
 
     @symmetry_y.setter
     def symmetry_y(self, y):
         if y is None:
-            self.set_symmetry_state(False, None, None, None, None)
+            self.set_symmetry_state(False, None, None, None, None, 0)
         else:
             self.set_symmetry_state(
                 True,
                 self._symmetry_x,
                 y,
                 self._symmetry_type,
-                self._rot_symmetry_lines
+                self._rot_symmetry_lines,
+                self._symmetry_angle,
             )
 
     @property
@@ -876,14 +880,15 @@ class RootLayerStack (group.LayerStack):
     @symmetry_type.setter
     def symmetry_type(self, symmetry_type):
         if symmetry_type is None:
-            self.set_symmetry_state(False, None, None, None, None)
+            self.set_symmetry_state(False, None, None, None, None, 0)
         else:
             self.set_symmetry_state(
                 True,
                 self._symmetry_x,
                 self._symmetry_y,
                 symmetry_type,
-                self._rot_symmetry_lines
+                self._rot_symmetry_lines,
+                self._symmetry_angle,
             )
 
     @property
@@ -893,18 +898,37 @@ class RootLayerStack (group.LayerStack):
     @rot_symmetry_lines.setter
     def rot_symmetry_lines(self, rot_symmetry_lines):
         if rot_symmetry_lines is None:
-            self.set_symmetry_state(False, None, None, None, None)
+            self.set_symmetry_state(False, None, None, None, None, 0)
         else:
             self.set_symmetry_state(
                 True,
                 self._symmetry_x,
                 self._symmetry_y,
                 self._symmetry_type,
-                rot_symmetry_lines
+                rot_symmetry_lines,
+                self._symmetry_angle,
+            )
+
+    @property
+    def symmetry_angle(self):
+        return self._symmetry_angle
+
+    @symmetry_angle.setter
+    def symmetry_angle(self, symmetry_angle):
+        if symmetry_angle is None:
+            self.set_symmetry_state(False, None, None, None, None, 0)
+        else:
+            self.set_symmetry_state(
+                True,
+                self._symmetry_x,
+                self._symmetry_y,
+                self._symmetry_type,
+                self._rot_symmetry_lines,
+                symmetry_angle,
             )
 
     def set_symmetry_state(self, active, center_x, center_y,
-                           symmetry_type, rot_symmetry_lines):
+                           symmetry_type, rot_symmetry_lines, symmetry_angle):
         """Set the central, propagated, symmetry axis and active flag.
 
         The root layer stack specialization manages a central state,
@@ -931,6 +955,7 @@ class RootLayerStack (group.LayerStack):
             self._symmetry_y,
             self._symmetry_type,
             self._rot_symmetry_lines,
+            self._symmetry_angle,
         )
         newstate = (
             active,
@@ -938,6 +963,7 @@ class RootLayerStack (group.LayerStack):
             center_y,
             symmetry_type,
             rot_symmetry_lines,
+            symmetry_angle,
         )
         if oldstate == newstate:
             return
@@ -946,6 +972,7 @@ class RootLayerStack (group.LayerStack):
         self._symmetry_y = center_y
         self._symmetry_type = symmetry_type
         self._rot_symmetry_lines = rot_symmetry_lines
+        self._symmetry_angle = symmetry_angle
         current = self.get_current()
         if current is not self:
             self._propagate_symmetry_state(current)
@@ -954,7 +981,8 @@ class RootLayerStack (group.LayerStack):
             center_x,
             center_y,
             symmetry_type,
-            rot_symmetry_lines
+            rot_symmetry_lines,
+            symmetry_angle,
         )
 
     def _propagate_symmetry_state(self, layer):
@@ -967,12 +995,14 @@ class RootLayerStack (group.LayerStack):
             self._symmetry_x,
             self._symmetry_y,
             self._symmetry_type,
-            self._rot_symmetry_lines
+            self._rot_symmetry_lines,
+            self._symmetry_angle,
         )
 
     @event
     def symmetry_state_changed(self, active, x, y,
-                               symmetry_type, rot_symmetry_lines):
+                               symmetry_type, rot_symmetry_lines,
+                               symmetry_angle):
         """Event: symmetry axis was changed, or was toggled
 
         :param bool active: updated `symmetry_active` value
@@ -980,6 +1010,7 @@ class RootLayerStack (group.LayerStack):
         :param int y: new symmetry reference point Y
         :param int symmetry_type: symmetry type
         :param int rot_symmetry_lines: new number of lines
+        :param symmetry_angle: the angle of the symmetry line(s)
         """
 
     ## Current layer

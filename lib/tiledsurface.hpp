@@ -49,10 +49,13 @@ public:
       mypaint_surface_unref((MyPaintSurface *)c_surface);
   }
 
-  void set_symmetry_state(bool active,
-        float center_x, float center_y,
-        enum SymmetryType symmetry_type, int rot_symmetry_lines) {
-    float symmetry_angle = 0.0;
+  void set_symmetry_state(
+    bool active,
+    float center_x, float center_y,
+    enum SymmetryType symmetry_type,
+    int rot_symmetry_lines,
+    float symmetry_angle
+    ) {
     mypaint_tiled_surface_set_symmetry_state((MyPaintTiledSurface *)c_surface, active,
         center_x, center_y,
         symmetry_angle,
