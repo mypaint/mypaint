@@ -358,6 +358,10 @@ class SymmetryEditOptionsWidget (Gtk.Alignment):
         "symmetry axis options panel: labels",
         u"Y Position:",
     )
+    _ANGLE_LABEL_TEXT = C_(
+        "symmetry axis options panel: labels",
+        u"Angle: %.1f°",
+    )
     _POSITION_BUTTON_TEXT_INACTIVE = C_(
         "symmetry axis options panel: position button: no axis pos.",
         u"None",
@@ -417,6 +421,14 @@ class SymmetryEditOptionsWidget (Gtk.Alignment):
             'value-changed',
             self._axis_pos_adj_y_changed,
         )
+        self._axis_angle = Gtk.Adjustment(
+            value=rootstack.symmetry_angle,
+            upper=180,
+            lower=0,
+            step_increment=1,
+            page_increment=15,
+        )
+        self._axis_angle.connect("value-changed", self._angle_value_changed)
         self._axis_rot_symmetry_lines = Gtk.Adjustment(
             value=rootstack.rot_symmetry_lines,
             upper=50,
@@ -600,6 +612,22 @@ class SymmetryEditOptionsWidget (Gtk.Alignment):
         self._axis_pos_y_button = button
 
         row += 1
+        label = Gtk.Label(
+            label=self._ANGLE_LABEL_TEXT % self._axis_angle.get_value()
+        )
+        label.set_hexpand(False)
+        label.set_halign(Gtk.Align.START)
+        self._angle_label = label
+        grid.attach(label, 0, row, 1, 1)
+        scale = Gtk.Scale(
+            orientation=Gtk.Orientation.HORIZONTAL,
+            adjustment=self._axis_angle)
+        scale.set_draw_value(False)
+        scale.set_hexpand(True)
+        scale.set_vexpand(False)
+        grid.attach(scale, 1, row, 1, 1)
+
+        row += 1
         button = Gtk.CheckButton()
         toggle_action = self.app.find_action("SymmetryActive")
         button.set_related_action(toggle_action)
@@ -686,6 +714,11 @@ class SymmetryEditOptionsWidget (Gtk.Alignment):
         adj_pos = int(adj.get_value())
         if adj_pos != model_pos:
             rootstack.symmetry_y = adj_pos
+
+    def _angle_value_changed(self, adj):
+        angle = adj.get_value()
+        self._angle_label.set_text(self._ANGLE_LABEL_TEXT % angle)
+        self.app.doc.model.layer_stack.symmetry_angle = angle
 
     def _axis_pos_x_button_clicked_cb(self, button):
         self._axis_pos_x_dialog.show_all()
