@@ -613,7 +613,9 @@ class SymmetryEditOptionsWidget (Gtk.Alignment):
         self._axis_active_button = button
 
 
-    def _symmetry_state_changed_cb(self, rootstack, active, x, y, symmetry_type, rot_symmetry_lines):
+    def _symmetry_state_changed_cb(
+            self, rootstack, active, x, y,
+            symmetry_type, rot_symmetry_lines, symmetry_angle):
         self._update_axis_pos_x_button_label(x)
         self._update_axis_pos_y_button_label(y)
         dialog = self._axis_pos_x_dialog
@@ -734,7 +736,7 @@ class SymmetryOverlay (gui.overlays.Overlay):
         doc.modes.changed += self._active_mode_changed_cb
         self._trash_icon_pixbuf = None
 
-    def _symmetry_state_changed_cb(self, rootstack, active, x, y, symmetry_type, rot_symmetry_lines):
+    def _symmetry_state_changed_cb(self, *args, **kwargs):
         self.tdw.queue_draw()
 
     def _active_mode_changed_cb(self, mode_stack, old, new):

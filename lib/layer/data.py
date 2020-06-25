@@ -490,7 +490,7 @@ class SurfaceBackedLayer (core.LayerBase, lib.autosave.Autosaveable):
     ## Painting symmetry axis
 
     def set_symmetry_state(self, active, center_x, center_y,
-                           symmetry_type, rot_symmetry_lines):
+                           symmetry_type, rot_symmetry_lines, symmetry_angle):
         """Set the surface's painting symmetry axis and active flag.
 
         See `LayerBase.set_symmetry_state` for the params.
@@ -499,6 +499,7 @@ class SurfaceBackedLayer (core.LayerBase, lib.autosave.Autosaveable):
             bool(active),
             float(center_x), float(center_y),
             int(symmetry_type), int(rot_symmetry_lines),
+            float(symmetry_angle)
         )
 
     ## Snapshots

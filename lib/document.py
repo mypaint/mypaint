@@ -932,6 +932,7 @@ class Document (object):
         self._layers.set_symmetry_state(
             False, None, None,
             lib.mypaintlib.SymmetryVertical, 2,
+            0
         )
         prev_area = self.get_full_redraw_bbox()
         if self._owns_cache_dir:

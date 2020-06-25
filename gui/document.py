@@ -1863,7 +1863,7 @@ class Document (CanvasController):  # TODO: rename to "DocumentController"
             self.model.layer_stack.symmetry_active = want_active
 
     def _symmetry_state_changed_cb(self, layerstack, active, x, y,
-                                   sym_type, rot_sym_lines):
+                                   sym_type, rot_sym_lines, sym_angle):
         """Update the SymmetryActive toggle on model state changes"""
         symm_toggle = self.action_group.get_action("SymmetryActive")
         symm_toggle_active = bool(symm_toggle.get_active())
