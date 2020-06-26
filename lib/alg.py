@@ -195,6 +195,83 @@ class LineType:
     SEGMENT = 2  # Fixed segment
 
 
+def intersection_of_vector_and_poly(
+        poly, p1, p2, line_type=LineType.LINE):
+    """Intersection of a vector and a convex polygon
+
+    Returns two coordinate pairs indicating the section of the line that
+    lies within the polygon, or None if there either is no intersection,
+    or the line is only tangential to a single point.
+
+    :param poly: An ordered sequence of coordinates defining a convex polygon
+    :param p1: The first point of the vector/line
+    :param p2: The second point of the vector/line
+    :param line_type: The type of line/segment to intersect with the polygon.
+
+      >>> isect = intersection_of_vector_and_poly
+      >>> poly = [(-5, -5), (-7, 1), (-1, 3), (1, -2)]
+      >>> p1, p2 = (-4, -2), (-4, 1)
+      >>> isect(poly, p1, p2)
+      [(-4.0, 2.0), (-4.0, -4.5)]
+      >>> isect(poly, p1, p2, line_type=LineType.SEGMENT)
+      [(-4, -2), (-4, 1)]
+      >>> isect(poly, p1, p2, line_type=LineType.DIRECTIONAL)
+      [(-4, -2), (-4.0, 2.0)]
+      >>> isect(poly, p2, p1, line_type=LineType.DIRECTIONAL)
+      [(-4, 1), (-4.0, -4.5)]
+
+    Tangential to a single point
+      >>> q1, q2 = (-7, -2), (-3, -8)
+      >>> isect(poly, q1, q2)
+
+    Coinciding with edge, infinite
+      >>> w1, w2 = (), ()
+      >>> isect(poly, (-7, 1), (-4, 2))
+      [(-7.0, 1.0), (-1.0, 3.0)]
+
+    Coinciding with edge, directional
+      >>> isect(poly, (-7, 1), (-4, 2), LineType.DIRECTIONAL)
+      [(-7.0, 1.0), (-1.0, 3.0)]
+
+    Coinciding with edge, directional (reversed direction)
+      >>> isect(poly, (-4, 2), (-7, 1), LineType.DIRECTIONAL)
+      [(-4, 2), (-7.0, 1.0)]
+    """
+
+    result = []
+    prev = None
+    # Calculate all of the intersections, which should be at most 2
+    # Since a line can intersect with two segments in a corner, such instances
+    # are not added.
+    for q1, q2 in pairwise(poly):
+        inter = intersection_of_vectors(
+            p1, p2, q1, q2, a_type=line_type, b_type=LineType.SEGMENT)
+        if inter and inter != prev:
+            result.append(inter)
+            prev = inter
+    # No edge intersections does not imply that there is _no_ intersection,
+    # as it can be a case of a segment lying entirely within the polygon.
+    if not result and line_type == LineType.SEGMENT:
+        if point_in_convex_poly(p1, poly) and point_in_convex_poly(p2, poly):
+            result = [p1, p2]
+    # A single intersection either means that the line only intersects
+    # a single corner or that there is an endpoint that lies inside
+    # the polygon. If the latter is the case, that point is included.
+    elif len(result) == 1:
+        if line_type == LineType.DIRECTIONAL:
+            if point_in_convex_poly(p1, poly) and p1 != prev:
+                result.insert(0, p1)
+        elif line_type == LineType.SEGMENT:
+            if point_in_convex_poly(p1, poly) and p1 != prev:
+                result.insert(0, p1)
+            elif point_in_convex_poly(p2, poly) and p2 != prev:
+                result.append(p2)
+    if len(result) != 2:
+        return None
+    else:
+        return result
+
+
 def _intersects(line_type, k):
     """Helper function used to distinguish handling of segment/line types"""
     if line_type == LineType.LINE:
