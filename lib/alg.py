@@ -189,6 +189,107 @@ def nearest_point_in_segment(seg_start, seg_end, point):
     return x, y
 
 
+class LineType:
+    LINE = 0  # Infinite line
+    DIRECTIONAL = 1  # Infinite in one direction
+    SEGMENT = 2  # Fixed segment
+
+
+def _intersects(line_type, k):
+    """Helper function used to distinguish handling of segment/line types"""
+    if line_type == LineType.LINE:
+        return True  # Unless parallel/coinciding, lines always intersect
+    elif line_type == LineType.DIRECTIONAL:
+        return 0 <= k
+    else:
+        return 0 <= k <= 1
+
+
+def intersection_of_vectors(
+        a1, a2, b1, b2,
+        a_type=LineType.LINE,
+        b_type=LineType.LINE,
+):
+    """ Intersection of two vectors, interpreted as segments or lines
+
+    The two vectors are defined by four coordinate pairs, and each can be
+    either interpreted as a finite segment, or an infinite line which is either
+    unidirectional or bidirectional. By default, both vectors are interpreted
+    as defining bidirectional infinite lines.
+
+    If there is an intersection, its coordinate is returned, otherwise
+    (if the vectors coincide, are parallel, or never cross) None is returned.
+
+    :param a1: The first point of the first vector
+    :param a2: The second point of the first vector
+    :param b1: The first point of the second vector
+    :param b2: The second point of the second vector
+    :param a_type: The type of the first vector
+    :param b_type: The type of the second vector
+    :return: an (x, y) tuple or None
+
+      Two segments that do not intersect, but whose bidir infinite lines do,
+      and, where if unidirectional, the second line intersects the first
+      segment if the second stretches in one direction, but not the other.
+      >>> isect = intersection_of_vectors
+      >>> SEGMENT = LineType.SEGMENT
+      >>> DIR = LineType.DIRECTIONAL
+      >>> a1, a2 = (-1, 1), (-4, 4)
+      >>> b1, b2 = (0, 6), (-2, 4)
+      >>> intersection_of_vectors(a1, a2, b1, b2, SEGMENT, SEGMENT)
+      >>> isect(a1, a2, b1, b2)
+      (-3.0, 3.0)
+      >>> isect(a1, a2, b1, b2, a_type=DIR)
+      (-3.0, 3.0)
+      >>> isect(a2, a1, b1, b2, a_type=DIR)
+      (-3.0, 3.0)
+      >>> isect(a1, a2, b1, b2, b_type=DIR)
+      (-3.0, 3.0)
+      >>> isect(a1, a2, b2, b1, b_type=DIR)
+
+      Two segments that intersect - should always intersect regardless of type.
+      >>> c1, c2 = (0, -4), (6, 0)
+      >>> d1, d2 = (1, 0), (5, -4)
+      >>> i = (3.0, -2.0)
+      >>> r = isect(c1, c2, d1, d2); None if r == i else r
+      >>> r = isect(c1, c2, d1, d2, SEGMENT, SEGMENT); None if r == i else r
+      >>> r = isect(c1, c2, d1, d2, SEGMENT, DIR); None if r == i else r
+      >>> r = isect(c1, c2, d1, d2, DIR, SEGMENT); None if r == i else r
+      >>> r = isect(c1, c2, d1, d2, DIR, DIR); None if r == i else r
+
+      Two segments that do not intersect, whose infinite lines do, but where
+      the single-direction infinite lines/segments only intersect if both
+      segments have a specific direction.
+      >>> e1, e2 = (-6, 0), (-4, -2)
+      >>> f1, f2 = (0, 0), (-2, -2)
+      >>> i = (-3.0, -3.0)
+      >>> isect(e1, e2, f1, f2, a_type=SEGMENT)
+      >>> isect(e1, e2, f1, f2, b_type=SEGMENT)
+      >>> isect(e1, e2, f1, f2, SEGMENT, SEGMENT)
+      >>> r = isect(e1, e2, f1, f2); None if r == i else r
+      >>> r = isect(e1, e2, f1, f2, a_type=DIR); None if r == i else r
+      >>> r = isect(e1, e2, f1, f2, b_type=DIR); None if r == i else r
+      >>> r = isect(e1, e2, f1, f2, DIR, DIR); None if r == i else r
+      >>> isect(e2, e1, f1, f2, a_type=DIR)
+      >>> isect(e2, e1, f2, f1, a_type=DIR)
+      >>> isect(e1, e2, f2, f1, b_type=DIR)
+      >>> isect(e2, e1, f2, f1, b_type=DIR)
+
+    """
+    (x0, y0), (x1, y1) = a1, a2
+    (x2, y2), (x3, y3) = b1, b2
+    d = (y3 - y2) * (x1 - x0) - (x3 - x2) * (y1 - y0)
+    if d == 0:
+        return None
+    u1 = ((x3 - x2) * (y0 - y2) - (y3 - y2) * (x0 - x2)) / d
+    if not (
+            _intersects(a_type, u1) and
+            _intersects(b_type,
+                        ((x1 - x0) * (y0 - y2) - (y1 - y0) * (x0 - x2)) / d)):
+        return None
+    return u1 * (x1 - x0) + x0, u1 * (y1 - y0) + y0
+
+
 def intersection_of_segments(p1, p2, p3, p4):
     """Intersection of two segments
 
