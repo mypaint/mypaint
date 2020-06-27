@@ -893,7 +893,7 @@ class RootLayerStack (group.LayerStack):
 
     @property
     def rot_symmetry_lines(self):
-        return self._symmetry_type
+        return self._rot_symmetry_lines
 
     @rot_symmetry_lines.setter
     def rot_symmetry_lines(self, rot_symmetry_lines):
