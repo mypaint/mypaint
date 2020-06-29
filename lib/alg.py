@@ -15,6 +15,12 @@ from __future__ import division, print_function
 from math import sqrt
 
 
+class LineType:
+    LINE = 0  # Infinite line
+    DIRECTIONAL = 1  # Infinite in one direction
+    SEGMENT = 2  # Fixed segment
+
+
 ## Polygon and convex polygon computational geometry routines.
 
 def convex_hull(points):
@@ -204,7 +210,6 @@ def nearest_point_on_segment(seg_start, seg_end, point):
 def nearest_point_in_poly(poly, point):
     """Return the point in a given convex polygon closest to the given point.
 
-
     >>> poly = [(-3, 1), (2, 3), (4, 1), (2, -4)]
     >>> nearest_point_in_poly(poly, (-4, -2))
     (-2.0, 0.0)
@@ -235,8 +240,28 @@ def nearest_point_in_poly(poly, point):
     return closest
 
 
+def nearest_point_on_line(p1, p2, point, unidirectional=False):
+    """For a line l and a point p, return the point on l closest to p
+
+    The line is defined by two pairs of coordinates, and is either considered
+    infinite in both directions, or in one direction (starting at the first
+    coordinates) if `unidirectional` is set to True.
+
+    If `unidirectional` is False, and the line is valid, the closest point
+    will always be returned. If `unidirectional` is True and the closest point
+    on the line is not perpendicular to `point`, None is returned.
+
+    Line ends are inclusive (only relevant for directional lines), meaning that
+    for e.g. the line (0,0), (1, 1) and point (2, 0), the closest point will be
+    (1, 1) and not None.
+    """
+    return _nearest_point(
+        p1, p2, point, inclusive=True, line_type=int(unidirectional))
+
+
 def _nearest_point(
-        seg_start, seg_end, point, perpendicular=True, inclusive=False):
+        seg_start, seg_end, point,
+        perpendicular=True, inclusive=False, line_type=LineType.SEGMENT):
     """Generic impl, supporting non-perpendicular shortest distance
 
       >>> _nearest_point((0, 0), (3, 0), (0, 1), inclusive=True)
@@ -259,6 +284,16 @@ def _nearest_point(
       (-1.0, 1.0)
       >>> _nearest_point((1, -1), (-1, 1), (-1, 3), perpendicular=False)
       (-1.0, 1.0)
+      >>> _nearest_point((0, 0), (-2, 3), (-1, -5))
+      >>> _nearest_point((0, 0), (-2, 3), (-1, -5), perpendicular=False)
+      (0.0, 0.0)
+      >>> _nearest_point((0, 0), (-2, 3), (-1, -5), line_type=LineType.LINE)
+      (2.0, -3.0)
+      >>> _nearest_point((0, 0), (-2, 3), (-1, -5),
+      ...                line_type=LineType.DIRECTIONAL)
+      >>> _nearest_point((-2, 3), (0, 0), (-1, -5),
+      ...                line_type=LineType.DIRECTIONAL)
+      (2.0, -3.0)
     """
     x1, y1 = [float(n) for n in seg_start]
     x2, y2 = [float(n) for n in seg_end]
@@ -271,17 +306,14 @@ def _nearest_point(
     outside = outside or (inclusive and not (0 <= u <= 1))
 
     if outside and perpendicular:
-        return None
+        if (line_type == LineType.SEGMENT
+                or line_type == LineType.DIRECTIONAL and
+                (inclusive and u < 0 or not inclusive and u <= 0)):
+            return None
     elif outside:
         return (x1, y1) if u <= 0 else (x2, y2)
-    else:
-        return x1 + u * (x2 - x1), y1 + u * (y2 - y1)
 
-
-class LineType:
-    LINE = 0  # Infinite line
-    DIRECTIONAL = 1  # Infinite in one direction
-    SEGMENT = 2  # Fixed segment
+    return x1 + u * (x2 - x1), y1 + u * (y2 - y1)
 
 
 def intersection_of_vector_and_poly(
