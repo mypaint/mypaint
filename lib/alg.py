@@ -201,6 +201,40 @@ def nearest_point_on_segment(seg_start, seg_end, point):
     return _nearest_point(seg_start, seg_end, point, perpendicular=False)
 
 
+def nearest_point_in_poly(poly, point):
+    """Return the point in a given convex polygon closest to the given point.
+
+
+    >>> poly = [(-3, 1), (2, 3), (4, 1), (2, -4)]
+    >>> nearest_point_in_poly(poly, (-4, -2))
+    (-2.0, 0.0)
+    >>> nearest_point_in_poly(poly, (-5, 1))
+    (-3.0, 1.0)
+    >>> nearest_point_in_poly(poly, (0, 2))
+    (0, 2)
+    >>> nearest_point_in_poly(poly, (4, 3))
+    (3.0, 2.0)
+    >>> nearest_point_in_poly(poly, (6, 2))
+    (4.0, 1.0)
+    """
+
+    if point_in_convex_poly(point, poly):
+        return point
+
+    closest = None
+    smallest_dist_sqr = float("inf")
+    x0, y0 = point
+    for p0, p1 in pairwise(poly):
+        candidate = nearest_point_on_segment(p0, p1, point)
+        if candidate:
+            x1, y1 = candidate
+            dist_sqr = (x1 - x0) ** 2 + (y1 - y0) ** 2
+            if dist_sqr < smallest_dist_sqr:
+                smallest_dist_sqr = dist_sqr
+                closest = candidate
+    return closest
+
+
 def _nearest_point(
         seg_start, seg_end, point, perpendicular=True, inclusive=False):
     """Generic impl, supporting non-perpendicular shortest distance
