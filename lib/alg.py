@@ -163,6 +163,7 @@ def nearest_point_in_segment(seg_start, seg_end, point):
       (2.0, 0.0)
       >>> nearest_point_in_segment((1,1), (3,3), (2,1))
       (1.5, 1.5)
+      >>> nearest_point_in_segment((0,0), (3,0), (0,1))
 
     If the points `p1` and `p2` are coincident, or the intersection would lie
     outside the segment, `None` is returned.
@@ -175,18 +176,72 @@ def nearest_point_in_segment(seg_start, seg_end, point):
     Ref: http://paulbourke.net/geometry/pointline/
 
     """
+    return _nearest_point(seg_start, seg_end, point)
+
+
+def nearest_point_on_segment(seg_start, seg_end, point):
+    """Get the point on a segment closest to the given point
+
+    The points `seg_start` and `seg_end` bound the line segment. The return
+    value is either the point where the segment intersects the line
+    perpendicular to it passing through `point`, or whichever end
+    of the segment is closer to the point.
+
+      >>> nearest_point_on_segment((0, 0), (0, 4), (0, 2))
+      (0.0, 2.0)
+      >>> nearest_point_on_segment((0, 0), (0, 4), (2, 3))
+      (0.0, 3.0)
+      >>> nearest_point_on_segment((0, 0), (4, 0), (-2, 3))
+      (0.0, 0.0)
+      >>> nearest_point_on_segment((0, 0), (4, 0), (-2, -5))
+      (0.0, 0.0)
+      >>> nearest_point_on_segment((0, 0), (4, 0), (6, 5))
+      (4.0, 0.0)
+    """
+    return _nearest_point(seg_start, seg_end, point, perpendicular=False)
+
+
+def _nearest_point(
+        seg_start, seg_end, point, perpendicular=True, inclusive=False):
+    """Generic impl, supporting non-perpendicular shortest distance
+
+      >>> _nearest_point((0, 0), (3, 0), (0, 1), inclusive=True)
+      (0.0, 0.0)
+      >>> _nearest_point((0, 0), (3, 0), (0, 1), perpendicular=False)
+      (0.0, 0.0)
+      >>> _nearest_point((0, 0), (3, 0), (-1, 1), perpendicular=False)
+      (0.0, 0.0)
+      >>> _nearest_point((3, 0), (0, 0), (-1, 1), perpendicular=False)
+      (0.0, 0.0)
+      >>> _nearest_point((0, 0), (3, 0), (4, 1), perpendicular=False)
+      (3.0, 0.0)
+      >>> _nearest_point((3, 0), (0, 0), (4, 1), perpendicular=False)
+      (3.0, 0.0)
+      >>> _nearest_point((-1, 1), (1, -1), (-3, 1), perpendicular=False)
+      (-1.0, 1.0)
+      >>> _nearest_point((-1, 1), (1, -1), (-1, 3), perpendicular=False)
+      (-1.0, 1.0)
+      >>> _nearest_point((1, -1), (-1, 1), (-3, 1), perpendicular=False)
+      (-1.0, 1.0)
+      >>> _nearest_point((1, -1), (-1, 1), (-1, 3), perpendicular=False)
+      (-1.0, 1.0)
+    """
     x1, y1 = [float(n) for n in seg_start]
     x2, y2 = [float(n) for n in seg_end]
     x3, y3 = [float(n) for n in point]
-    denom = (x2-x1)**2 + (y2-y1)**2
-    if denom == 0:
+    denominator = (x2-x1)**2 + (y2-y1)**2
+    if denominator == 0:
         return None  # seg_start and seg_end are coincident
-    u = ((x3 - x1)*(x2 - x1) + (y3 - y1)*(y2 - y1)) / denom
-    if u <= 0 or u >= 1:
-        return None  # intersection is not within the line segment
-    x = x1 + u*(x2-x1)
-    y = y1 + u*(y2-y1)
-    return x, y
+    u = ((x3 - x1)*(x2 - x1) + (y3 - y1)*(y2 - y1)) / denominator
+    outside = not inclusive and not (0 < u < 1)
+    outside = outside or (inclusive and not (0 <= u <= 1))
+
+    if outside and perpendicular:
+        return None
+    elif outside:
+        return (x1, y1) if u <= 0 else (x2, y2)
+    else:
+        return x1 + u * (x2 - x1), y1 + u * (y2 - y1)
 
 
 class LineType:
