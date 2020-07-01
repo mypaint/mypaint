@@ -385,31 +385,34 @@ class CustomCursorMaker (object):
         return cursor
 
 
-def get_move_cursor_name_for_angle(theta):
-    """Cursor name to use for a motion in a given direction"""
-    while theta < 2*math.pi:
-        theta += 2*math.pi
-    theta %= 2*math.pi
-    assert theta >= 0
-    assert theta < 2*math.pi
-    cursor_strs = [
-        (1, Name.MOVE_WEST_OR_EAST),
-        (3, Name.MOVE_NORTHWEST_OR_SOUTHEAST),
-        (5, Name.MOVE_NORTH_OR_SOUTH),
-        (7, Name.MOVE_NORTHEAST_OR_SOUTHWEST),
-        (9, Name.MOVE_WEST_OR_EAST),
-        (11, Name.MOVE_NORTHWEST_OR_SOUTHEAST),
-        (13, Name.MOVE_NORTH_OR_SOUTH),
-        (15, Name.MOVE_NORTHEAST_OR_SOUTHWEST),
-        (17, Name.MOVE_WEST_OR_EAST),
-    ]
-    cursor_str = None
-    for i, s in cursor_strs:
-        if theta < i*(2.0/16)*math.pi:
-            cursor_str = s
-            break
-    assert cursor_str is not None
-    return cursor_str
+def get_move_cursor_name_for_angle(angle):
+    """Cursor name to use for a motion in a given direction
+
+    To get the cursor appropriate for edge adjustments, provide the angle
+    perpendicular to the angle of the edge.
+
+      >>> f = get_move_cursor_name_for_angle
+      >>> pi = math.pi
+      >>> offs = pi / 16 - 0.01
+      >>> (Name.MOVE_WEST_OR_EAST
+      ...  == f(0) == f(-offs) == f(offs))
+      True
+      >>> (Name.MOVE_NORTHEAST_OR_SOUTHWEST
+      ...  == f(pi/4) == f(pi/4 - offs) == f(pi/4 + offs))
+      True
+      >>> (Name.MOVE_NORTH_OR_SOUTH
+      ...  == f(pi/2) == f(pi/2 - offs) == f(pi/2 + offs))
+      True
+      >>> (Name.MOVE_NORTHWEST_OR_SOUTHEAST
+      ...  == f(3 * pi/4) == f(3 * pi/4 - offs) == f(3 * pi/4 + offs))
+      True
+    """
+    return [
+        Name.MOVE_WEST_OR_EAST,
+        Name.MOVE_NORTHEAST_OR_SOUTHWEST,
+        Name.MOVE_NORTH_OR_SOUTH,
+        Name.MOVE_NORTHWEST_OR_SOUTHEAST,
+    ][int(round((angle % math.pi) / (math.pi / 4))) % 4]
 
 
 ## Interactive testing
