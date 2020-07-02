@@ -929,11 +929,9 @@ class Document (object):
         """
         self.sync_pending_changes()
         self.layer_view_manager.clear()
+        self._layers.symmetry_unset = True
         self._layers.set_symmetry_state(
-            False, None, None,
-            lib.mypaintlib.SymmetryVertical, 2,
-            0
-        )
+            False, (0, 0), lib.mypaintlib.SymmetryVertical, 2, 0)
         prev_area = self.get_full_redraw_bbox()
         if self._owns_cache_dir:
             if self._cache_dir is not None:

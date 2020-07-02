@@ -31,6 +31,7 @@ from . import cursor
 from .drawutils import render_checks
 import gui.style
 import lib.color
+import lib.alg
 from lib.pycompat import xrange
 
 logger = logging.getLogger(__name__)
@@ -479,8 +480,8 @@ class TiledDrawWidget (Gtk.EventBox):
         :param tuple edge_p2: point on the edge, as model (x, y)
         :param int tolerance: slack for cursor pos., in display pixels
         :param bool finite: if false, the edge extends beyond p1, p2
-        :returns: move direction cursor & distance from line (cursor, d)
-        :rtype: tuple
+        :returns: move direction cursor string, or None
+        :rtype: str
 
         This can be used by special input modes when resizing objects on
         screen, for example frame edges and the symmetry axis.
@@ -494,37 +495,23 @@ class TiledDrawWidget (Gtk.EventBox):
         * gui.cursor.Name (naming consts for cursors)
 
         """
-        # Work in screen pixels only
-        x0, y0 = cursor_pos
-        x1, y1 = self.model_to_display(*edge_p1)
-        x2, y2 = self.model_to_display(*edge_p2)
-        dx = x2 - x1
-        dy = y2 - y1
-        edge_len = math.sqrt(dx**2 + dy**2)
-        if edge_len <= 0:
-            dist1 = math.hypot(x0 - x1, y0 - y1)
-            dist2 = math.hypot(x0 - x2, y0 - y2)
-            return (None, min(dist1, dist2))
-        # Perpendicular distance from a line.
-        two_triarea = abs((dy * x0) - (dx * y0) - (x1 * y2) + (x2 * y1))
-        perp_dist = two_triarea / edge_len
-        if perp_dist > tolerance:
-            return (None, perp_dist)
-        # Rough approximation here, but good enough for hit calculation.
-        # Omit points too far away from the edge's centre point.
         if finite:
-            xmid = (x1 + x2) / 2.0
-            ymid = (y1 + y2) / 2.0
-            dist_from_midpt = math.sqrt(((xmid - x0) ** 2) +
-                                        ((ymid - y0) ** 2))
-            if dist_from_midpt > ((edge_len / 2.0) + tolerance):
-                return (None, perp_dist)
-        # Cursor name by sector.
-        # Aiming for a cursor that looks perpendicular to the line.
-        # Ish.
-        theta = math.atan2(dy, dx)
-        c = cursor.get_move_cursor_name_for_angle(theta + (math.pi / 2))
-        return (c, perp_dist)
+            nearest_point = lib.alg.nearest_point_on_segment
+        else:
+            nearest_point = lib.alg.nearest_point_on_line
+        x0, y0 = cursor_pos
+        p1 = self.model_to_display(*edge_p1)
+        p2 = self.model_to_display(*edge_p2)
+        closest = nearest_point(p1, p2, cursor_pos)
+        if closest:
+            x1, y1 = closest
+            if (x0 - x1)**2 + (y0 - y1)**2 > tolerance**2:
+                return None
+            dx = p1[0] - p2[0]
+            dy = p1[1] - p2[1]
+            # Cursor name by angle - closest to being perpendicular to edge.
+            edge_angle_perp = math.atan2(-dy, dx) + math.pi / 2
+            return cursor.get_move_cursor_name_for_angle(edge_angle_perp)
 
 
 class CanvasTransformation (object):
