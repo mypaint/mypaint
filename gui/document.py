@@ -1846,30 +1846,31 @@ class Document (CanvasController):  # TODO: rename to "DocumentController"
 
     def symmetry_active_toggled_cb(self, action):
         """Handle changes to the SymmetryActive toggle"""
-        already_active = bool(self.model.layer_stack.symmetry_active)
+        stack = self.model.layer_stack
+        center = None
         want_active = bool(action.get_active())
-        if want_active and not already_active:
-            alloc = self.tdw.get_allocation()
-            axis_x_pos = self.model.layer_stack.symmetry_x
-            axis_y_pos = self.model.layer_stack.symmetry_y
-            if axis_x_pos is None or axis_y_pos is None:
-                center_disp = alloc.width / 2.0, alloc.height / 2.0
-                center_model = self.tdw.display_to_model(*center_disp)
-                axis_x_pos = center_model[0]
-                axis_y_pos = center_model[1]
-                self.model.layer_stack.symmetry_x = axis_x_pos
-                self.model.layer_stack.symmetry_y = axis_y_pos
-        if want_active != already_active:
-            self.model.layer_stack.symmetry_active = want_active
 
-    def _symmetry_state_changed_cb(self, layerstack, active, x, y,
-                                   sym_type, rot_sym_lines, sym_angle):
+        # When going from an unset state to an active state, the symmetry
+        # center (model coordinates) is set based on the center of the viewport
+        if stack.symmetry_unset and want_active:
+            stack.symmetry_unset = False
+            alloc = self.tdw.get_allocation()
+            dx, dy = alloc.width / 2.0, alloc.height / 2.0
+            center = self.tdw.display_to_model(dx, dy)
+
+        already_active = stack.symmetry_active
+        if want_active != already_active or center is not None:
+            stack.set_symmetry_state(want_active, center=center)
+
+    def _symmetry_state_changed_cb(
+            self, stack, active, center, sym_type, sym_lines, sym_angle):
         """Update the SymmetryActive toggle on model state changes"""
-        symm_toggle = self.action_group.get_action("SymmetryActive")
-        symm_toggle_active = bool(symm_toggle.get_active())
-        model_symm_active = bool(active)
-        if symm_toggle_active != model_symm_active:
-            symm_toggle.set_active(model_symm_active)
+        if active is not None:
+            symm_toggle = self.action_group.get_action("SymmetryActive")
+            symm_toggle_active = bool(symm_toggle.get_active())
+            model_symm_active = bool(active)
+            if symm_toggle_active != model_symm_active:
+                symm_toggle.set_active(model_symm_active)
 
     ## More viewport manipulation
 
