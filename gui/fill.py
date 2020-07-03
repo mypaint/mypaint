@@ -159,12 +159,12 @@ class FloodFillMode (
     def drag_start_cb(self, tdw, event):
         """Create overlay and set initial target pixel & seed"""
         self._seed_pixels = set()
-        x, y = tdw.display_to_model(event.x, event.y)
+        x, y = tdw.display_to_model(self.start_x, self.start_y)
         # Permit setting the target color (the one pixels are tested against)
         # from outside a frame, but no corresponding seed is added
         self._target_pos = (x, y)
         self._overlay = FloodFillOverlay(tdw)
-        self._overlay.add_point((event.x, event.y))
+        self._overlay.add_point((self.start_x, self.start_y))
         if self._fill_permitted:
             self._seed_pixels.add((int(x), int(y)))
 

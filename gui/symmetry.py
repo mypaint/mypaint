@@ -303,7 +303,7 @@ class SymmetryEditMode (gui.mode.ScrollableModeMixin, gui.mode.DragMode):
         if self.zone in {_EditZone.MOVE_AXIS, _EditZone.MOVE_CENTER}:
             self._drag_start_pos = tdw.doc.layer_stack.symmetry_center
         else:
-            self._update_zone_and_cursor(tdw, event.x, event.y)
+            self._update_zone_and_cursor(tdw, self.start_x, self.start_y)
         return super(SymmetryEditMode, self).drag_start_cb(tdw, event)
 
     def drag_update_cb(self, tdw, event, dx, dy):
