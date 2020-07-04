@@ -95,6 +95,10 @@ class KeyboardManager:
     def _key_press_cb(self, widget, event):
         """App-wide keypress handler for toplevel windows."""
 
+        # If an input widget has focus - their key handling is prioritized.
+        consumed = widget.propagate_key_event(event)
+        if consumed:
+            return True
         if not self.enabled:
             return
         # See gtk sourcecode in gtkmenu.c function gtk_menu_key_press,
@@ -190,6 +194,10 @@ class KeyboardManager:
 
     def _key_release_cb(self, widget, event):
         """Application-wide key release handler."""
+
+        consumed = widget.propagate_key_event(event)
+        if consumed:
+            return True
 
         if not self.enabled:
             return

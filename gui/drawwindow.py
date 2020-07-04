@@ -120,6 +120,7 @@ class DrawWindow (Gtk.Window):
         self.connect('delete-event', self.quit_cb)
         self.connect("drag-data-received", self._drag_data_received_cb)
         self.connect("window-state-event", self.window_state_event_cb)
+        self.connect("button-press-event", self._button_press_cb)
 
         # Deferred setup
         self._done_realize = False
@@ -136,6 +137,9 @@ class DrawWindow (Gtk.Window):
         #   self.main_widget.set_can_default(True)
         #   self.main_widget.set_can_focus(True)
         #   self.main_widget.grab_focus()
+
+    def _button_press_cb(self, window, event):
+        windowing.clear_focus(window)
 
     def _realize_cb(self, drawwindow):
         # Deferred setup: anything that needs to be done when self.app is fully

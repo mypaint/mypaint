@@ -29,6 +29,7 @@ from lib.observable import event
 import lib.layer
 from . import cursor
 from .drawutils import render_checks
+from .windowing import clear_focus
 import gui.style
 import lib.color
 import lib.alg
@@ -220,6 +221,7 @@ class TiledDrawWidget (Gtk.EventBox):
         self.renderer.queue_draw()
 
     def enter_notify_cb(self, widget, event):
+        clear_focus(widget.get_toplevel())
         # Track the active TDW
         self_ref = weakref.ref(self)
         self.__tdw_refs.remove(self_ref)

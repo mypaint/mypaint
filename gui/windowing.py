@@ -6,7 +6,7 @@
 # the Free Software Foundation; either version 2 of the License, or
 # (at your option) any later version.
 
-"""Base classes for window types"""
+"""Base classes for window types and window-related helper functions"""
 
 
 ## Imports
@@ -619,6 +619,25 @@ class ChooserPopup (Gtk.Window):
         if outside_tolerance:
             self.hide()
             return True
+
+
+# General window-related helper functions
+
+def clear_focus(window):
+    """Clear focus and any selection in widget with focus
+
+    Immediately after calling this, there should be no widget with focus in the
+    window, and if the previously focused widget had an active selection (such
+    as a selection in a textbox, or an editable spinbutton), the selection will
+    be cleared (the selection is removed, the content is not).
+    """
+    focus = window.get_focus()
+    # If the current focused widget is an Entry, deselect any active selection.
+    # This is mostly for aesthetics, but also to avoid widgets looking like
+    # they have focus when they don't, due to selections being marked.
+    if focus and isinstance(focus, Gtk.Entry):
+        focus.select_region(0, 0)
+    window.set_focus(None)
 
 
 # Window positioning helper functions
