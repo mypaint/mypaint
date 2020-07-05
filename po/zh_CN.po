@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mypaint v1.2.0-beta.3-43-g9e683e2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-03-29 16:08+0200\n"
+"POT-Creation-Date: 2020-07-05 09:12+0200\n"
 "PO-Revision-Date: 2020-02-21 20:35+0000\n"
 "Last-Translator: 玉堂白鹤 <yjwork@qq.com>\n"
 "Language-Team: Chinese (Simplified) <https://hosted.weblate.org/projects/"
@@ -85,7 +85,7 @@ msgid ""
 "replaced.</b>"
 msgstr "<b>{accel} 已被用于 '{action}'. 存在的绑定将被替换.</b>"
 
-#: ../gui/application.py:615
+#: ../gui/application.py:626
 #, python-brace-format
 msgid "Open Folder “{folder_basename}”…"
 msgstr "打开文件夹 “{folder_basename}”…"
@@ -93,7 +93,7 @@ msgstr "打开文件夹 “{folder_basename}”…"
 #. ... so that the main actions end up in the bottom-right of the
 #. dialog (reversed for rtl scripts), where the eye ends up
 #. naturally at the end of the flow.
-#: ../gui/application.py:623
+#: ../gui/application.py:634
 msgid "OK"
 msgstr "确定"
 
@@ -370,61 +370,61 @@ msgstr "保存"
 msgid "Save this preview icon, and finish editing"
 msgstr "保存该预览图标，并结束编辑"
 
-#: ../gui/brushmanager.py:129
+#: ../gui/brushmanager.py:131
 msgid "Lost & Found"
 msgstr "回收站"
 
-#: ../gui/brushmanager.py:130
+#: ../gui/brushmanager.py:132
 msgid "Deleted"
 msgstr "已删除"
 
-#: ../gui/brushmanager.py:131
+#: ../gui/brushmanager.py:133
 msgid "Favorites"
 msgstr "收藏"
 
-#: ../gui/brushmanager.py:132
+#: ../gui/brushmanager.py:134
 msgid "Ink"
 msgstr "墨水"
 
-#: ../gui/brushmanager.py:133
+#: ../gui/brushmanager.py:135
 msgid "Classic"
 msgstr "经典"
 
-#: ../gui/brushmanager.py:134
+#: ../gui/brushmanager.py:136
 msgid "Set#1"
 msgstr "笔刷集#1"
 
-#: ../gui/brushmanager.py:135
+#: ../gui/brushmanager.py:137
 msgid "Set#2"
 msgstr "笔刷集#2"
 
-#: ../gui/brushmanager.py:136
+#: ../gui/brushmanager.py:138
 msgid "Set#3"
 msgstr "笔刷集#3"
 
-#: ../gui/brushmanager.py:137
+#: ../gui/brushmanager.py:139
 msgid "Set#4"
 msgstr "笔刷集#4"
 
-#: ../gui/brushmanager.py:138
+#: ../gui/brushmanager.py:140
 msgid "Set#5"
 msgstr "笔刷集#5"
 
-#: ../gui/brushmanager.py:139
+#: ../gui/brushmanager.py:141
 msgid "Experimental"
 msgstr "实验阶段"
 
-#: ../gui/brushmanager.py:140
+#: ../gui/brushmanager.py:142
 msgid "New"
 msgstr "新建"
 
-#: ../gui/brushmanager.py:664
+#: ../gui/brushmanager.py:679
 #, python-brace-format
 msgctxt "brushpack import failure messages"
 msgid "No file named “{order_conf_file}”. This is not a brushpack."
 msgstr "没有名为“{order_conf_file}” 的文件。这不是一个画笔包。"
 
-#: ../gui/brushmanager.py:689
+#: ../gui/brushmanager.py:704
 #, python-brace-format
 msgctxt "brushpack import failure messages"
 msgid ""
@@ -432,7 +432,7 @@ msgid ""
 "in the zipfile."
 msgstr ""
 
-#: ../gui/brushmanager.py:702
+#: ../gui/brushmanager.py:717
 #, python-brace-format
 msgctxt "brushpack import failure messages"
 msgid ""
@@ -440,7 +440,7 @@ msgid ""
 "“{order_conf_file}”."
 msgstr ""
 
-#: ../gui/brushmanager.py:1313 ../gui/footer.py:62
+#: ../gui/brushmanager.py:1328 ../gui/footer.py:66
 msgid "Unknown Brush"
 msgstr "不明的笔刷"
 
@@ -813,17 +813,17 @@ msgctxt "HCY Gamut Mask load dialog: window title"
 msgid "Load Mask from a GIMP Palette"
 msgstr "从 GIMP 调色板加载遮罩"
 
-#: ../gui/colors/hcywheel.py:1275
+#: ../gui/colors/hcywheel.py:1281
 msgctxt "HCY Wheel color adjuster page: properties tooltip."
 msgid "Set gamut mask."
 msgstr "设置色域蒙版。"
 
-#: ../gui/colors/hcywheel.py:1293
+#: ../gui/colors/hcywheel.py:1299
 msgctxt "HCY Wheel color adjuster page: title for tooltips etc."
 msgid "HCY Wheel"
 msgstr "HCY 色轮"
 
-#: ../gui/colors/hcywheel.py:1300
+#: ../gui/colors/hcywheel.py:1306
 msgctxt "HCY Wheel color adjuster page: description for tooltips etc."
 msgid ""
 "Set the color using cylindrical hue/chroma/luma space. The circular slices "
@@ -1171,7 +1171,7 @@ msgid "Based on file"
 msgstr "基于文件"
 
 #. This refers to a version of MyPaint like 1.0, 1.1, 1.2 etc
-#: ../gui/compatibility.py:35 ../gui/drawwindow.py:276
+#: ../gui/compatibility.py:35 ../gui/drawwindow.py:280
 #: ../gui/preferenceswindow.glade:1610
 msgctxt "Prefs Dialog|Compatibility"
 msgid "1.x"
@@ -1253,67 +1253,67 @@ msgctxt "File Load Compat Options"
 msgid "Compatibility mode:"
 msgstr "兼容模式："
 
-#: ../gui/device.py:48
+#: ../gui/device.py:49
 msgctxt "prefs: device's type label"
 msgid "Cursor/puck"
 msgstr "光标/冰球"
 
-#: ../gui/device.py:52
+#: ../gui/device.py:53
 msgctxt "prefs: device's type label"
 msgid "Eraser"
 msgstr "橡皮擦"
 
-#: ../gui/device.py:56
+#: ../gui/device.py:57
 msgctxt "prefs: device's type label"
 msgid "Keyboard"
 msgstr "键盘"
 
-#: ../gui/device.py:60
+#: ../gui/device.py:61
 msgctxt "prefs: device's type label"
 msgid "Mouse"
 msgstr "鼠标"
 
-#: ../gui/device.py:64
+#: ../gui/device.py:65
 msgctxt "prefs: device's type label"
 msgid "Pen"
 msgstr "钢笔"
 
-#: ../gui/device.py:68
+#: ../gui/device.py:69
 msgctxt "prefs: device's type label"
 msgid "Touchpad"
 msgstr "触摸板"
 
-#: ../gui/device.py:72
+#: ../gui/device.py:73
 msgctxt "prefs: device's type label"
 msgid "Touchscreen"
 msgstr "触摸屏"
 
-#: ../gui/device.py:92
+#: ../gui/device.py:93
 msgctxt "device settings: allowed usage"
 msgid "Ignore"
 msgstr "忽略"
 
-#: ../gui/device.py:96
+#: ../gui/device.py:97
 msgctxt "device settings: allowed usage"
 msgid "Any Task"
 msgstr "任何任务"
 
-#: ../gui/device.py:100
+#: ../gui/device.py:101
 msgctxt "device settings: allowed usage"
 msgid "Non-painting tasks"
 msgstr "非绘画任务"
 
-#: ../gui/device.py:104
+#: ../gui/device.py:105
 msgctxt "device settings: allowed usage"
 msgid "Navigation only"
 msgstr "仅作导航"
 
-#: ../gui/device.py:129
+#: ../gui/device.py:130
 msgctxt "device settings: unmodified scroll action"
 msgid "Zoom"
 msgstr "缩放"
 
-#: ../gui/device.py:130
+#: ../gui/device.py:131
 msgctxt "device settings: unmodified scroll action"
 msgid "Pan"
 msgstr "平移工具"
@@ -1352,7 +1352,7 @@ msgid "Scroll…"
 msgstr "滚动…"
 
 #. Name and preview column: will be indented
-#: ../gui/dialogs.py:74 ../gui/externalapp.py:141 ../gui/layers.py:405
+#: ../gui/dialogs.py:74 ../gui/externalapp.py:179 ../gui/layers.py:417
 msgid "Name"
 msgstr "名称"
 
@@ -1419,48 +1419,48 @@ msgstr "要导入笔刷包吗？"
 msgid "<b>Do you really want to import package “{brushpack_name}”?</b>"
 msgstr "<b>你真的要导入包 “{brushpack_name}”？</b>"
 
-#: ../gui/document.py:453
+#: ../gui/document.py:455
 #, python-format
 msgid "Load brush settings from shortcut slot %d"
 msgstr "从快捷方式位置 %d 加载笔刷设置"
 
-#: ../gui/document.py:454
+#: ../gui/document.py:456
 #, python-format
 msgid "Store brush settings in shortcut slot %d"
 msgstr "保存笔刷设置到快捷方式位置 %d"
 
-#: ../gui/document.py:455
+#: ../gui/document.py:457
 #, python-format
 msgid "Restore Brush %d"
 msgstr "还原笔刷 %d"
 
-#: ../gui/document.py:457
+#: ../gui/document.py:459
 #, python-format
 msgid "Save to Brush %d"
 msgstr "储存到笔刷 %d"
 
-#: ../gui/document.py:555
+#: ../gui/document.py:557
 #, python-format
 msgid "Undo %s"
 msgstr "复原 %s"
 
-#: ../gui/document.py:557
+#: ../gui/document.py:559
 msgid "Undo"
 msgstr "复原"
 
-#: ../gui/document.py:567
+#: ../gui/document.py:569
 #, python-format
 msgid "Redo %s"
 msgstr "取消复原 %s"
 
-#: ../gui/document.py:569
+#: ../gui/document.py:571
 msgid "Redo"
 msgstr "取消复原"
 
 #. TRANSLATORS: Statusbar message explaining button and modifier
 #. TRANSLATORS: combinations used to access modes/tools/actions.
 #. TRANSLATORS: "With <current-modifiers> held down: <list>"
-#: ../gui/document.py:862
+#: ../gui/document.py:864
 #, python-brace-format
 msgid "{button_combination} is {resultant_action}"
 msgstr "{button_combination} is {resultant_action}"
@@ -1468,7 +1468,7 @@ msgstr "{button_combination} is {resultant_action}"
 #. TRANSLATORS: This is a separator for the list of button actions
 #. TRANSLATORS: that appears when a modifier key is held down.
 #. TRANSLATORS: search for " held down: " (incl spaces) for the context
-#: ../gui/document.py:872
+#: ../gui/document.py:874
 msgid ";  "
 msgstr "；  "
 
@@ -1477,126 +1477,126 @@ msgstr "；  "
 #. TRANSLATORS: as the English "and", so use appropriate punctuation or
 #. TRANSLATORS: wording for the separator. Also a little more spacing
 #. TRANSLATORS: than normal looks good here.
-#: ../gui/document.py:878
+#: ../gui/document.py:880
 #, python-brace-format
 msgid "With {modifiers} held down:  {button_actions}."
 msgstr "按住 {modifiers} :  {button_actions}。"
 
-#: ../gui/document.py:900
+#: ../gui/document.py:902
 msgctxt "Statusbar message: copy result"
 msgid "Empty document, nothing copied."
 msgstr "空文档，未复制任何内容。"
 
-#: ../gui/document.py:912
+#: ../gui/document.py:914
 #, python-brace-format
 msgctxt "Statusbar message: copy result"
 msgid "Copied layer as {w}×{h} image."
 msgstr "复制图层为 {w}×{h} 图片。"
 
-#: ../gui/document.py:929
+#: ../gui/document.py:931
 msgctxt "Statusbar message: paste result"
 msgid "Nothing on clipboard."
 msgstr "剪贴板上什么也没有。"
 
-#: ../gui/document.py:938
+#: ../gui/document.py:940
 msgctxt "Statusbar message: paste result"
 msgid "Clipboard does not contain an image."
 msgstr "剪贴板不包含图像。"
 
-#: ../gui/document.py:949
+#: ../gui/document.py:951
 msgctxt "Statusbar message: paste result"
 msgid "Cannot paste into this type of layer."
 msgstr "无法粘贴到这种类型的图层中。"
 
-#: ../gui/document.py:954
+#: ../gui/document.py:956
 #, python-brace-format
 msgctxt "Statusbar message: paste result"
 msgid "Pasted {w}×{h} image."
 msgstr "粘贴 {w}×{h} 图片。"
 
-#: ../gui/document.py:2054
+#: ../gui/document.py:2057
 #, python-brace-format
 msgctxt "Statusbar message: vacuum document"
 msgid "Vacuum: discarded {removed} of {total} tiles."
 msgstr ""
 
 #. TRANSLATORS: window title for use with a filename
-#: ../gui/drawwindow.py:270
+#: ../gui/drawwindow.py:274
 #, python-format
 msgid "%s - MyPaint"
 msgstr "%s - MyPaint"
 
 #. TRANSLATORS: window title for use without a filename
-#: ../gui/drawwindow.py:273 ../gui/mypaint.glade:8
+#: ../gui/drawwindow.py:277 ../gui/mypaint.glade:8
 msgid "MyPaint"
 msgstr "MyPaint"
 
-#: ../gui/drawwindow.py:296
+#: ../gui/drawwindow.py:300
 msgctxt "Open dragged file confirm dialog: title"
 msgid "Open Dragged File?"
 msgstr "打开拖曳的文件？"
 
-#: ../gui/drawwindow.py:300
+#: ../gui/drawwindow.py:304
 msgctxt "Open dragged file confirm dialog: continue button"
 msgid "_Open"
 msgstr "打开(_O)"
 
-#: ../gui/drawwindow.py:493
+#: ../gui/drawwindow.py:497
 msgid "Set current color"
 msgstr "设定目前颜色"
 
-#: ../gui/drawwindow.py:538
+#: ../gui/drawwindow.py:542
 msgid "Leave Fullscreen Mode"
 msgstr "退出全屏模式"
 
-#: ../gui/drawwindow.py:539
+#: ../gui/drawwindow.py:543
 msgid "Leave Fullscreen"
 msgstr "退出全屏模式"
 
-#: ../gui/drawwindow.py:542
+#: ../gui/drawwindow.py:546
 msgid "Enter Fullscreen Mode"
 msgstr "进入全屏模式"
 
-#: ../gui/drawwindow.py:543
+#: ../gui/drawwindow.py:547
 msgid "Fullscreen"
 msgstr "全屏"
 
-#: ../gui/drawwindow.py:682
+#: ../gui/drawwindow.py:686
 msgctxt "Quit confirm dialog: title"
 msgid "Really Quit?"
 msgstr "确定要离开？"
 
-#: ../gui/drawwindow.py:686
+#: ../gui/drawwindow.py:690
 msgctxt "Quit confirm dialog: continue button"
 msgid "_Quit"
 msgstr "退出(_Q)"
 
-#: ../gui/drawwindow.py:704
+#: ../gui/drawwindow.py:708
 msgid "Import brush package…"
 msgstr "导入笔刷包…"
 
-#: ../gui/drawwindow.py:705
+#: ../gui/drawwindow.py:709
 msgid "MyPaint brush package (*.zip)"
 msgstr "MyPaint 笔刷包 (*.zip)"
 
 #. # UI string consts
 #. TRANSLATORS: Statusbar message when "Edit in External App"
 #. TRANSLATORS: (for a layer) is successfully initiated.
-#: ../gui/externalapp.py:37
+#: ../gui/externalapp.py:40
 #, python-brace-format
 msgid "Launched {app_name} to edit layer “{layer_name}”"
 msgstr "为编辑层 “{layer_name}” 已启动 {app_name}"
 
 #. TRANSLATORS: Statusbar message shown when the app chosen for
 #. TRANSLATORS: "Edit in External App" (for a layer) failed to open.
-#: ../gui/externalapp.py:41
+#: ../gui/externalapp.py:44
 #, python-brace-format
 msgid "Error: failed to launch {app_name} to edit layer “{layer_name}”"
 msgstr "错误：无法为编辑层\"{layer_name}\"启动 {app_name}"
 
 #. TRANSLATORS: Statusbar message for when an "Edit in External App"
 #. TRANSLATORS: operation is cancelled by the user before it starts.
-#: ../gui/externalapp.py:46
+#: ../gui/externalapp.py:49
 #, python-brace-format
 msgid ""
 "Editing cancelled. You can still edit “{layer_name}” from the Layers menu."
@@ -1604,18 +1604,18 @@ msgstr "编辑取消。您仍可以通过“图层”菜单编辑\"{layer_name}\
 
 #. TRANSLATORS: This is a statusbar message shown when
 #. TRANSLATORS:  a layer is updated from an external edit
-#: ../gui/externalapp.py:51
+#: ../gui/externalapp.py:54
 #, python-brace-format
 msgid "Updated layer “{layer_name}” with external edits"
 msgstr "已使用外部编辑更新层 “{layer_name}”"
 
-#: ../gui/externalapp.py:55
+#: ../gui/externalapp.py:58
 #, python-brace-format
 msgctxt "Edit in External App (statusbar message)"
 msgid "Failed to update layer with external edits from “{file_basename}”."
 msgstr ""
 
-#: ../gui/externalapp.py:66
+#: ../gui/externalapp.py:104
 #, python-brace-format
 msgid ""
 "MyPaint needs to edit a file of type “{type_name}” ({content_type}). What "
@@ -1624,7 +1624,7 @@ msgstr ""
 "MyPaint 需要编辑类型为 \"{type_name}\"({content_type}) 的文件。应该使用什么应"
 "用程序？"
 
-#: ../gui/externalapp.py:70
+#: ../gui/externalapp.py:108
 #, python-brace-format
 msgid ""
 "What application should MyPaint use for editing files of type "
@@ -1632,15 +1632,15 @@ msgid ""
 msgstr ""
 "MyPaint 应该使用什么应用程序编辑类型为“{type_name}” ({content_type})的文件？"
 
-#: ../gui/externalapp.py:76
+#: ../gui/externalapp.py:114
 msgid "Open With…"
 msgstr "打开通过…"
 
-#: ../gui/externalapp.py:128
+#: ../gui/externalapp.py:166
 msgid "Icon"
 msgstr "图标"
 
-#: ../gui/externalapp.py:171
+#: ../gui/externalapp.py:209
 msgid "no description"
 msgstr "无描述"
 
@@ -2139,7 +2139,7 @@ msgid ""
 "If a fill starts in a detected gap, this option will do nothing."
 msgstr ""
 
-#: ../gui/fill.py:854 ../gui/mode.py:627
+#: ../gui/fill.py:854 ../gui/mode.py:629
 msgid "Reset"
 msgstr "重置"
 
@@ -2153,13 +2153,13 @@ msgctxt "fill option: default option in the Source Layer dropdown"
 msgid "Selected Layer"
 msgstr "选择图层"
 
-#: ../gui/footer.py:191
+#: ../gui/footer.py:195
 #, python-brace-format
 msgctxt "current brush indicator: tooltip (no-description case)"
 msgid "<b>{brush_name}</b>"
 msgstr "<b>{brush_name}</b>"
 
-#: ../gui/footer.py:196
+#: ../gui/footer.py:200
 #, python-brace-format
 msgctxt "current brush indicator: tooltip (description case)"
 msgid ""
@@ -2169,130 +2169,130 @@ msgstr ""
 "<b>{brush_name}</b>\n"
 "{brush_desc}"
 
-#: ../gui/framewindow.py:99
+#: ../gui/framewindow.py:100
 msgid "Edit Frame"
 msgstr "编辑边框"
 
-#: ../gui/framewindow.py:102
+#: ../gui/framewindow.py:103
 msgid "Adjust the document frame"
 msgstr "调整文档边框"
 
-#: ../gui/framewindow.py:467
+#: ../gui/framewindow.py:468
 msgid "Frame Size"
 msgstr "边框尺寸"
 
 #. {unit: (conv_factor, upper, lower, step_incr, page_incr, digits)}
-#: ../gui/framewindow.py:470 ../gui/framewindow.py:536
-#: ../gui/framewindow.py:909 ../gui/framewindow.py:926
-#: ../gui/framewindow.py:927 ../gui/framewindow.py:979
-#: ../gui/framewindow.py:984
+#: ../gui/framewindow.py:471 ../gui/framewindow.py:537
+#: ../gui/framewindow.py:910 ../gui/framewindow.py:927
+#: ../gui/framewindow.py:928 ../gui/framewindow.py:980
+#: ../gui/framewindow.py:985
 msgid "px"
 msgstr "像素"
 
-#: ../gui/framewindow.py:472
+#: ../gui/framewindow.py:473
 msgid "Height:"
 msgstr "高度："
 
-#: ../gui/framewindow.py:473
+#: ../gui/framewindow.py:474
 msgid "Width:"
 msgstr "宽度："
 
-#: ../gui/framewindow.py:474
+#: ../gui/framewindow.py:475
 msgid "Resolution:"
 msgstr "解析度："
 
-#: ../gui/framewindow.py:476
+#: ../gui/framewindow.py:477
 msgid "DPI"
 msgstr "DPI"
 
-#: ../gui/framewindow.py:481
+#: ../gui/framewindow.py:482
 msgid "Dots Per Inch (really Pixels Per Inch)"
 msgstr "点每英寸 (实际像素每英寸)"
 
-#: ../gui/framewindow.py:484
+#: ../gui/framewindow.py:485
 msgid "Color:"
 msgstr "颜色："
 
-#: ../gui/framewindow.py:521
+#: ../gui/framewindow.py:522
 msgid "Frame Color"
 msgstr "边框颜色"
 
-#: ../gui/framewindow.py:544
+#: ../gui/framewindow.py:545
 msgid "<b>Frame dimensions</b>"
 msgstr "<b>边框尺寸</b>"
 
-#: ../gui/framewindow.py:558
+#: ../gui/framewindow.py:559
 msgid "<b>Pixel density</b>"
 msgstr "<b>像素密度</b>"
 
-#: ../gui/framewindow.py:586
+#: ../gui/framewindow.py:587
 msgid "Set Frame to Layer"
 msgstr "根据图层设置边框"
 
-#: ../gui/framewindow.py:587
+#: ../gui/framewindow.py:588
 msgid "Set frame to the extents of the current layer"
 msgstr "将边框设置成根据当前图层的尺寸"
 
-#: ../gui/framewindow.py:589
+#: ../gui/framewindow.py:590
 msgid "Set Frame to Document"
 msgstr "根据文档设置边框"
 
-#: ../gui/framewindow.py:590
+#: ../gui/framewindow.py:591
 msgid "Set frame to the combination of all layers"
 msgstr "将边框设置为所有图层的合并的尺寸"
 
-#: ../gui/framewindow.py:600
+#: ../gui/framewindow.py:601
 msgid "Trim Layer to Frame"
 msgstr "根据边框修剪图层"
 
-#: ../gui/framewindow.py:601
+#: ../gui/framewindow.py:602
 msgid "Trim parts of the current layer which lie outside the frame"
 msgstr "修剪边框当前图层位于边框以外的部分"
 
-#: ../gui/framewindow.py:607
+#: ../gui/framewindow.py:608
 msgid "Enabled"
 msgstr "已启用"
 
-#: ../gui/framewindow.py:719
+#: ../gui/framewindow.py:720
 #, python-brace-format
 msgid "{width:g}×{height:g} {units}"
 msgstr "{width:g}×{height:g} {units}"
 
-#: ../gui/framewindow.py:910
+#: ../gui/framewindow.py:911
 msgid "inch"
 msgstr "英寸"
 
-#: ../gui/framewindow.py:911
+#: ../gui/framewindow.py:912
 msgid "cm"
 msgstr "厘米"
 
-#: ../gui/framewindow.py:912
+#: ../gui/framewindow.py:913
 msgid "mm"
 msgstr "毫米"
 
-#: ../gui/freehand.py:86
+#: ../gui/freehand.py:88
 msgid "Freehand Drawing"
 msgstr "徒手绘图"
 
-#: ../gui/freehand.py:89
+#: ../gui/freehand.py:91
 msgid "Paint free-form brush strokes"
 msgstr "绘画形式自由的画笔笔触"
 
 #. TRANSLATORS: Short alias for "Slow position tracking". This is
 #. TRANSLATORS: used on the options panel.
-#: ../gui/freehand.py:581
+#: ../gui/freehand.py:583
 msgid "Smooth:"
 msgstr "平滑度："
 
 #. TRANSLATORS: Short alias for "Fake Pressure (for mouse)". This is
 #. TRANSLATORS: used on the options panel.
-#: ../gui/freehand.py:596 ../gui/inputtestwindow.py:62
+#: ../gui/freehand.py:598 ../gui/inputtestwindow.py:62
 msgid "Pressure:"
 msgstr "压力："
 
 #. TRANSLATORS: Short alias for "Fake Barrel Rotation (for mouse)".
 #. TRANSLATORS: This is used on the options panel.
-#: ../gui/freehand.py:614
+#: ../gui/freehand.py:616
 msgid "Twist:"
 msgstr ""
 
@@ -2426,7 +2426,7 @@ msgstr "重置旋转"
 #. TRANSLATORS: Command to move a layer in the horizontal plane,
 #. TRANSLATORS: preserving its position in the stack.
 #. TRANSLATORS: Note "in the horizontal plane" - not "horizontally".
-#: ../gui/layermanip.py:47 ../lib/command.py:1053
+#: ../gui/layermanip.py:47 ../lib/command.py:1047
 msgid "Move Layer"
 msgstr "移动图层"
 
@@ -2455,58 +2455,58 @@ msgid "Done"
 msgstr "完成"
 
 #. Visibility flag column
-#: ../gui/layers.py:394
+#: ../gui/layers.py:406
 msgid "Visible"
 msgstr "可见性"
 
 #. Other flags column
-#: ../gui/layers.py:426
+#: ../gui/layers.py:438
 msgid "Flags"
 msgstr "标志"
 
-#: ../gui/layers.py:925
+#: ../gui/layers.py:939
 msgctxt "Layers: description: no layer (\"never happens\" condition!)"
 msgid "?layer"
 msgstr "?图层"
 
-#: ../gui/layers.py:945
+#: ../gui/layers.py:959
 msgctxt "Layers: description parts: unknown mode (fallback str!)"
 msgid "?mode"
 msgstr ""
 
-#: ../gui/layers.py:952
+#: ../gui/layers.py:966
 msgctxt "Layers: description parts: layer hidden"
 msgid "Hidden"
 msgstr "隐藏"
 
-#: ../gui/layers.py:957
+#: ../gui/layers.py:971
 #, python-format
 msgctxt "Layers: description parts: opacity percentage"
 msgid "%d%% opaque"
 msgstr "%d%% 不透明"
 
-#: ../gui/layers.py:964
+#: ../gui/layers.py:978
 msgctxt "Layers dockable: description parts: layer locked flag"
 msgid "Locked"
 msgstr "已锁定"
 
-#: ../gui/layers.py:975
+#: ../gui/layers.py:989
 msgctxt "Layers: description parts: unknown type (fallback str!)"
 msgid "?type"
 msgstr ""
 
-#: ../gui/layers.py:982
+#: ../gui/layers.py:996
 msgctxt "Layers dockable: description parts joiner text"
 msgid ", "
 msgstr ", "
 
-#: ../gui/layers.py:990
+#: ../gui/layers.py:1004
 #, python-brace-format
 msgctxt "Layers dockable: markup for a layer with no description"
 msgid "{layer_name}"
 msgstr "{layer_name}"
 
-#: ../gui/layers.py:995
+#: ../gui/layers.py:1009
 #, python-brace-format
 msgctxt "Layers dockable: markup for a layer with a description"
 msgid ""
@@ -2753,27 +2753,27 @@ msgstr ""
 "及 https://hosted.weblate.org/projects/mypaint/ 网站其他贡献者"
 
 #. TRANSLATORS:"Brush radius" for the options panel. Short.
-#: ../gui/mode.py:582
+#: ../gui/mode.py:584
 msgid "Size:"
 msgstr "大小："
 
 #. TRANSLATORS:"Brush opacity" for the options panel. Short.
-#: ../gui/mode.py:584
+#: ../gui/mode.py:586
 msgid "Opaque:"
 msgstr "不透明度："
 
 #. TRANSLATORS:"Brush hardness/sharpness" for the options panel. Short.
-#: ../gui/mode.py:586
+#: ../gui/mode.py:588
 msgid "Sharp:"
 msgstr "尖锐："
 
 #. TRANSLATORS:"Additional pressure gain" for the options panel. Short.
-#: ../gui/mode.py:588
+#: ../gui/mode.py:590
 msgid "Gain:"
 msgstr "增益："
 
 #. TRANSLATORS:"Paint Pigment Mode" for the options panel. Short.
-#: ../gui/mode.py:590
+#: ../gui/mode.py:592
 msgid "Pigment:"
 msgstr "颜料："
 
@@ -2804,12 +2804,12 @@ msgstr "<i>没有可用的选项</i>"
 msgid "Zoom: %.01f%%"
 msgstr "缩放：%.01f%%"
 
-#: ../gui/picker.py:458
+#: ../gui/picker.py:457
 msgctxt "context picker: statusbar text during grab"
 msgid "Pick brushstroke settings, stroke color, and layer…"
 msgstr "选取笔触设置，笔触颜色，以及图层…"
 
-#: ../gui/picker.py:496
+#: ../gui/picker.py:495
 msgctxt "color picker: statusbar text during grab"
 msgid "Pick color…"
 msgstr "选取颜色…"
@@ -2870,78 +2870,84 @@ msgstr "下一个项目"
 msgid "(Nothing to show)"
 msgstr "(没有东西可显示)"
 
-#: ../gui/symmetry.py:79
+#: ../gui/symmetry.py:84
 msgctxt "symmetry axis edit mode: instructions shown in statusbar"
 msgid "Place axis"
 msgstr "放置轴"
 
-#: ../gui/symmetry.py:83
+#: ../gui/symmetry.py:88
 msgctxt "symmetry axis edit mode: instructions shown in statusbar"
 msgid "Move axis"
 msgstr "移动轴"
 
-#: ../gui/symmetry.py:87
+#: ../gui/symmetry.py:92
 msgctxt "symmetry axis edit mode: instructions shown in statusbar"
 msgid "Remove axis"
 msgstr "移除轴"
 
-#: ../gui/symmetry.py:99
+#: ../gui/symmetry.py:104
 msgctxt "symmetry axis edit mode: mode name (tooltips)"
 msgid "Edit Symmetry Axis"
 msgstr "编辑对称轴"
 
-#: ../gui/symmetry.py:105
+#: ../gui/symmetry.py:110
 msgctxt "symmetry axis edit mode: mode description (tooltips)"
 msgid "Adjust the painting symmetry axis."
 msgstr "调整绘画对称轴。"
 
-#: ../gui/symmetry.py:355
+#: ../gui/symmetry.py:334
 msgctxt "symmetry axis options panel: labels"
 msgid "X Position:"
 msgstr "X 位置："
 
-#: ../gui/symmetry.py:359
+#: ../gui/symmetry.py:338
 msgctxt "symmetry axis options panel: labels"
 msgid "Y Position:"
 msgstr "Y 位置："
 
-#: ../gui/symmetry.py:363
+#: ../gui/symmetry.py:342
+#, python-format
+msgctxt "symmetry axis options panel: labels"
+msgid "Angle: %.2f°"
+msgstr ""
+
+#: ../gui/symmetry.py:346
 msgctxt "symmetry axis options panel: position button: no axis pos."
 msgid "None"
 msgstr "无"
 
-#: ../gui/symmetry.py:367
+#: ../gui/symmetry.py:350
 #, python-format
 msgctxt "symmetry axis options panel: position button: axis pos. in pixels"
 msgid "%d px"
 msgstr "%d px"
 
-#: ../gui/symmetry.py:371
+#: ../gui/symmetry.py:354
 msgctxt "symmetry axis options panel: labels"
 msgid "Alpha:"
 msgstr "Alpha："
 
-#: ../gui/symmetry.py:375
+#: ../gui/symmetry.py:358
 msgctxt "symmetry axis options panel: labels"
 msgid "Symmetry Type:"
 msgstr "对称类型："
 
-#: ../gui/symmetry.py:379
+#: ../gui/symmetry.py:362
 msgctxt "symmetry axis options panel: labels"
 msgid "Rotational lines:"
 msgstr ""
 
-#: ../gui/symmetry.py:446
+#: ../gui/symmetry.py:438
 msgctxt "symmetry axis options panel: axis position dialog: window title"
 msgid "X axis Position"
 msgstr "X 轴位置"
 
-#: ../gui/symmetry.py:478
+#: ../gui/symmetry.py:470
 msgctxt "symmetry axis options panel: axis position dialog: window title"
 msgid "Y axis Position"
 msgstr "Y 轴位置"
 
-#: ../gui/symmetry.py:608
+#: ../gui/symmetry.py:604
 msgctxt "symmetry axis options panel: axis active checkbox"
 msgid "Enabled"
 msgstr "已启用"
@@ -2996,7 +3002,7 @@ msgctxt "workspace: sidebar tabs: button tooltips"
 msgid "{tab_title}: move tab to other sidebar"
 msgstr "{tab_title}：将标签页移至其他侧边栏"
 
-#: ../gui/topbar.py:91
+#: ../gui/topbar.py:90
 msgid "<b>MyPaint</b>"
 msgstr "<b>MyPaint</b>"
 
@@ -3024,174 +3030,174 @@ msgstr "旋转视图"
 msgid "Rotate the canvas view"
 msgstr "旋转画布视图"
 
-#: ../lib/command.py:181
+#: ../lib/command.py:175
 msgid "Unknown Command"
 msgstr "未知的命令"
 
-#: ../lib/command.py:324
+#: ../lib/command.py:318
 msgid "Undefined (command not started yet)"
 msgstr "未定义的 (命令尚未启动)"
 
 #. TRANSLATORS: A short time spent painting / making brushwork.
 #. TRANSLATORS: This can correspond to zero or more touches of
 #. TRANSLATORS: the physical stylus to the tablet.
-#: ../lib/command.py:331
+#: ../lib/command.py:325
 #, python-brace-format
 msgid "{seconds:.01f}s of painting with {brush_name}"
 msgstr "用笔刷 {brush_name} 绘制了{seconds:.01f}秒"
 
-#: ../lib/command.py:529
+#: ../lib/command.py:523
 msgid "Flood Fill"
 msgstr "满水法填充"
 
-#: ../lib/command.py:616
+#: ../lib/command.py:610
 msgid "Trim Layer"
 msgstr "修剪图层"
 
-#: ../lib/command.py:636
+#: ../lib/command.py:630
 msgid "Uniquify Layer Pixels"
 msgstr "统一图层像素"
 
-#: ../lib/command.py:659
+#: ../lib/command.py:653
 msgid "Refactor Group"
 msgstr "重构组"
 
-#: ../lib/command.py:682
+#: ../lib/command.py:676
 msgid "Clear Layer"
 msgstr "清除图层"
 
 #. This is used by Paste layer as well as when loading from a PNG
 #. file. However in the latter case, the undo stack is reset
 #. immediately afterward.
-#: ../lib/command.py:706
+#: ../lib/command.py:700
 msgid "Paste Layer"
 msgstr "粘贴图层"
 
-#: ../lib/command.py:729
+#: ../lib/command.py:723
 msgid "New Layer from Visible"
 msgstr "新建可见图层"
 
-#: ../lib/command.py:771
+#: ../lib/command.py:765
 msgid "Merge Visible Layers"
 msgstr "合并可见图层"
 
-#: ../lib/command.py:845
+#: ../lib/command.py:839
 msgid "Merge Down"
 msgstr "向下合并"
 
-#: ../lib/command.py:894
+#: ../lib/command.py:888
 msgid "Normalize Layer Mode"
 msgstr "正常化图层模式"
 
-#: ../lib/command.py:947
+#: ../lib/command.py:941
 msgid "Import Layers"
 msgstr "导入图层"
 
-#: ../lib/command.py:949
+#: ../lib/command.py:943
 #, python-brace-format
 msgid "Add {layer_default_name}"
 msgstr "添加 {layer_default_name}"
 
-#: ../lib/command.py:973
+#: ../lib/command.py:967
 msgid "Remove Layer"
 msgstr "移除图层"
 
-#: ../lib/command.py:1020
+#: ../lib/command.py:1014
 msgid "Select Layer"
 msgstr "选择图层"
 
-#: ../lib/command.py:1150
+#: ../lib/command.py:1144
 msgid "Duplicate Layer"
 msgstr "复制图层"
 
-#: ../lib/command.py:1174
+#: ../lib/command.py:1168
 msgid "Move Layer Up"
 msgstr "向上移动图层"
 
-#: ../lib/command.py:1188
+#: ../lib/command.py:1182
 msgid "Move Layer Down"
 msgstr "向下移动图层"
 
-#: ../lib/command.py:1215
+#: ../lib/command.py:1209
 msgid "Move Layer in Stack"
 msgstr "在栈中移动图层"
 
-#: ../lib/command.py:1334
+#: ../lib/command.py:1328
 msgid "Rename Layer"
 msgstr "重新命名图层"
 
-#: ../lib/command.py:1392
+#: ../lib/command.py:1386
 msgid "Make Layer Visible"
 msgstr "将图层设为显现状态"
 
-#: ../lib/command.py:1394
+#: ../lib/command.py:1388
 msgid "Make Layer Invisible"
 msgstr "将图层设为隐形状态"
 
-#: ../lib/command.py:1432
+#: ../lib/command.py:1426
 msgid "Lock Layer"
 msgstr "锁定图层"
 
-#: ../lib/command.py:1434
+#: ../lib/command.py:1428
 msgid "Unlock Layer"
 msgstr "解除锁定图层"
 
-#: ../lib/command.py:1452
+#: ../lib/command.py:1446
 #, python-format
 msgid "Set Layer Opacity: %0.1f%%"
 msgstr "设置图层不透明度：%0.1f%%"
 
-#: ../lib/command.py:1491
+#: ../lib/command.py:1485
 msgid "Unknown Mode"
 msgstr "未知的模式"
 
-#: ../lib/command.py:1492
+#: ../lib/command.py:1486
 #, python-format
 msgid "Set Layer Mode: %s"
 msgstr "设置图层模式：%s"
 
-#: ../lib/command.py:1516
+#: ../lib/command.py:1510
 msgid "Enable Frame"
 msgstr "启用边框"
 
-#: ../lib/command.py:1518
+#: ../lib/command.py:1512
 msgid "Disable Frame"
 msgstr "禁用边框"
 
-#: ../lib/command.py:1536
+#: ../lib/command.py:1530
 msgid "Update Frame"
 msgstr "更新边框"
 
-#: ../lib/command.py:1565
+#: ../lib/command.py:1559
 msgid "Edit Layer Externally"
 msgstr "通过外部工具编辑图层"
 
-#: ../lib/document.py:73
+#: ../lib/document.py:74
 #, python-brace-format
 msgctxt "Document IO: common error strings: {error_loading_common}"
 msgid "Error loading “{basename}”."
 msgstr "加载\"{basename}\"时出错。"
 
-#: ../lib/document.py:77
+#: ../lib/document.py:78
 msgctxt "Document IO: common error strings: {see_logs}"
 msgid "The logs may have more detail about this error."
 msgstr "日志可能会有关于此错误的更多细节。"
 
 #. TRANSLATORS: string used in e.g. "3h42m from now"
-#: ../lib/document.py:204
+#: ../lib/document.py:205
 msgctxt "Document autosave descriptions: the {ago} string: future"
 msgid "from now"
 msgstr "从现在开始"
 
 #. TRANSLATORS: string used in e.g. "8s ago"
-#: ../lib/document.py:210
+#: ../lib/document.py:211
 msgctxt "Document autosave descriptions: the {ago} string: past"
 msgid "ago"
 msgstr "以前"
 
 #. TRANSLATORS: String descriptions for an autosaved backup.
 #. TRANSLATORS: Time strings are localized: e.g. "3h42m" or "8s"
-#: ../lib/document.py:218
+#: ../lib/document.py:219
 #, python-brace-format
 msgctxt "Document autosave descriptions"
 msgid ""
@@ -3203,7 +3209,7 @@ msgstr ""
 "你在运行超过一个MyPaint实例吗？\n"
 "关闭应用程序并等待{cache_update_interval}秒后重试。"
 
-#: ../lib/document.py:225
+#: ../lib/document.py:226
 #, python-brace-format
 msgctxt "Document autosave descriptions"
 msgid "Incomplete backup updated {last_modified_time} {ago}"
@@ -3213,7 +3219,7 @@ msgstr "不兼容的备份(更新自 {last_modified_time} {ago})"
 #. TRANSLATORS: Look for the msgids "from now" and "ago"
 #. TRANSLATORS: (with context starting w. "Document autosave")
 #. TRANSLATORS: to make sure their translations match this one.
-#: ../lib/document.py:234
+#: ../lib/document.py:235
 #, python-brace-format
 msgctxt "Document autosave descriptions"
 msgid ""
@@ -3226,7 +3232,7 @@ msgstr ""
 "大小: {autosave.width}×{autosave.height} 像素，图层: {autosave.num_layers} \n"
 "包含 {unsaved_time} 的未保存的绘画。"
 
-#: ../lib/document.py:1447
+#: ../lib/document.py:1448
 #, python-brace-format
 msgctxt "Document IO: hint templates for user-facing exceptions"
 msgid ""
@@ -3236,13 +3242,13 @@ msgstr ""
 "无法写入文件“{filename}”: {err}\n"
 "你的设备上有足够的剩余空间吗？"
 
-#: ../lib/document.py:1453 ../lib/document.py:1463
+#: ../lib/document.py:1454 ../lib/document.py:1464
 #, python-brace-format
 msgctxt "Document IO: hint templates for user-facing exceptions"
 msgid "Unable to write “{filename}”: {err}"
 msgstr "无法写入文件 “{filename}”: {err}"
 
-#: ../lib/document.py:1500
+#: ../lib/document.py:1501
 #, python-brace-format
 msgctxt "Document IO: loading errors"
 msgid ""
@@ -3252,7 +3258,7 @@ msgstr ""
 "{error_loading_common}\n"
 "文件不存在。"
 
-#: ../lib/document.py:1507
+#: ../lib/document.py:1508
 #, python-brace-format
 msgctxt "Document IO: loading errors"
 msgid ""
@@ -3262,7 +3268,7 @@ msgstr ""
 "{error_loading_common}\n"
 "你没有打开此文件所需的权限。"
 
-#: ../lib/document.py:1533
+#: ../lib/document.py:1534
 #, python-brace-format
 msgctxt "Document IO: loading errors"
 msgid ""
@@ -3278,7 +3284,7 @@ msgstr ""
 "\n"
 "{see_logs}"
 
-#: ../lib/document.py:1558
+#: ../lib/document.py:1559
 #, python-brace-format
 msgctxt "Document IO: loading errors"
 msgid ""
@@ -3288,12 +3294,12 @@ msgstr ""
 "{error_loading_common}\n"
 "未知的文件格式扩展名：“{ext}”"
 
-#: ../lib/document.py:1589
+#: ../lib/document.py:1590
 msgctxt "Document IO: group name for Import Layers"
 msgid "Imported layers"
 msgstr "导入图层"
 
-#: ../lib/document.py:1756
+#: ../lib/document.py:1757
 #, python-brace-format
 msgctxt "Document IO: hint templates for user-facing exceptions"
 msgid ""
@@ -3307,7 +3313,7 @@ msgstr ""
 "如果你的机器没有大量的内存，尝试保存成PNG 格式。MyPaint 的PNG保存功能更加高"
 "效。"
 
-#: ../lib/document.py:1912
+#: ../lib/document.py:1913
 #, python-brace-format
 msgctxt "Document autosave: restoring: errors"
 msgid ""
@@ -3323,102 +3329,102 @@ msgstr ""
 "\n"
 "{see_logs}"
 
-#: ../lib/floodfill.py:131
+#: ../lib/floodfill.py:132
 msgctxt "floodfill status message: use active tense"
 msgid "Filling"
 msgstr "填充"
 
-#: ../lib/floodfill.py:132
+#: ../lib/floodfill.py:133
 msgctxt "floodfill status message: use active tense"
 msgid "Morphing"
 msgstr "变形"
 
-#: ../lib/floodfill.py:133
+#: ../lib/floodfill.py:134
 msgctxt "floodfill status message: use active tense"
 msgid "Blurring"
 msgstr "模糊"
 
-#: ../lib/floodfill.py:134
+#: ../lib/floodfill.py:135
 msgctxt "floodfill status message: use active tense"
 msgid "Compositing"
 msgstr "合成"
 
-#: ../lib/floodfill.py:135
+#: ../lib/floodfill.py:136
 msgctxt "floodfill status message: use active tense"
 msgid "Finishing up"
 msgstr "完成"
 
-#: ../lib/floodfill.py:137
+#: ../lib/floodfill.py:138
 msgctxt "uniform square region of pixels, plural noun"
 msgid "tiles"
 msgstr ""
 
 #. TRANSLATORS: Assumption for all "Time period abbreviations":
 #. TRANSLATORS: they don't need ngettext (to support plural/singular)
-#: ../lib/helpers.py:570
+#: ../lib/helpers.py:574
 #, fuzzy, python-brace-format
 msgctxt "Time period abbreviations"
 msgid "{days}d{hours}h"
 msgstr "{days}天{hours}小时"
 
-#: ../lib/helpers.py:572
+#: ../lib/helpers.py:576
 #, python-brace-format
 msgctxt "Time period abbreviations"
 msgid "{hours}h{minutes}m"
 msgstr "{hours}小时{minutes}分钟"
 
-#: ../lib/helpers.py:574
+#: ../lib/helpers.py:578
 #, python-brace-format
 msgctxt "Time period abbreviation"
 msgid "{minutes}m{seconds}s"
 msgstr "{minutes}分{seconds}秒"
 
-#: ../lib/helpers.py:576
+#: ../lib/helpers.py:580
 #, python-brace-format
 msgctxt "Time period abbreviation"
 msgid "{seconds}s"
 msgstr "{seconds}秒"
 
 #. TRANSLATORS: Default name for new normal, paintable layers
-#: ../lib/layer/core.py:66 ../lib/layer/data.py:1301
+#: ../lib/layer/core.py:66 ../lib/layer/data.py:1309
 msgctxt "layer default names"
 msgid "Layer"
 msgstr "图层"
 
 #. TRANSLATORS: Short default name for vector (SVG/Inkscape) layers
-#: ../lib/layer/data.py:1159
+#: ../lib/layer/data.py:1161
 msgctxt "layer default names"
 msgid "Vectors"
 msgstr "矢量"
 
-#: ../lib/layer/data.py:1164
+#: ../lib/layer/data.py:1166
 msgctxt "layer type descriptions"
 msgid "Vector Layer"
 msgstr "矢量图层"
 
 #. TRANSLATORS: Short default name for renderable fallback layers
-#: ../lib/layer/data.py:1229
+#: ../lib/layer/data.py:1237
 msgctxt "layer default names"
 msgid "Bitmap"
 msgstr "位图"
 
-#: ../lib/layer/data.py:1234
+#: ../lib/layer/data.py:1242
 msgctxt "layer type descriptions"
 msgid "Bitmap Data"
 msgstr "位图数据"
 
 #. TRANSLATORS: Short default name for non-renderable fallback layers
-#: ../lib/layer/data.py:1250
+#: ../lib/layer/data.py:1258
 msgctxt "layer default names"
 msgid "Data"
 msgstr "数据"
 
-#: ../lib/layer/data.py:1255
+#: ../lib/layer/data.py:1263
 msgctxt "layer type descriptions"
 msgid "Unknown Data"
 msgstr "未知数据"
 
-#: ../lib/layer/data.py:1306
+#: ../lib/layer/data.py:1314
 msgctxt "layer type descriptions"
 msgid "Painting Layer"
 msgstr "绘画图层"
@@ -3446,12 +3452,12 @@ msgctxt "layer default names"
 msgid "Root"
 msgstr "根"
 
-#: ../lib/layer/tree.py:2127 ../lib/layer/tree.py:2193
+#: ../lib/layer/tree.py:2055 ../lib/layer/tree.py:2121
 msgctxt "layer default names: joiner punctuation for merged layers"
 msgid ", "
 msgstr ", "
 
-#: ../lib/layer/tree.py:2315
+#: ../lib/layer/tree.py:2243
 msgctxt "layer default names: refactor: name of the common areas layer"
 msgid "Common"
 msgstr ""

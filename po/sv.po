@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mypaint v2.0.0-alpha.12-343-g82b4fc5\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-03-29 16:08+0200\n"
+"POT-Creation-Date: 2020-07-05 09:12+0200\n"
 "PO-Revision-Date: 2020-05-02 19:28+0000\n"
 "Last-Translator: Jesper Lloyd <jpl.lloyd@gmail.com>\n"
 "Language-Team: Swedish <https://hosted.weblate.org/projects/mypaint/mypaint/"
@@ -85,7 +85,7 @@ msgstr ""
 "<b>{accel} används redan för '{action}'. Den nuvarande tilldelningen kommer "
 "ersättas.</b>"
 
-#: ../gui/application.py:615
+#: ../gui/application.py:626
 #, python-brace-format
 msgid "Open Folder “{folder_basename}”…"
 msgstr "Öppna mapp “{folder_basename}”…"
@@ -93,7 +93,7 @@ msgstr "Öppna mapp “{folder_basename}”…"
 #. ... so that the main actions end up in the bottom-right of the
 #. dialog (reversed for rtl scripts), where the eye ends up
 #. naturally at the end of the flow.
-#: ../gui/application.py:623
+#: ../gui/application.py:634
 msgid "OK"
 msgstr "OK"
 
@@ -373,61 +373,61 @@ msgstr "Spara"
 msgid "Save this preview icon, and finish editing"
 msgstr "Spara denna förhandsvisningsikon, och avsluta redigeringen"
 
-#: ../gui/brushmanager.py:129
+#: ../gui/brushmanager.py:131
 msgid "Lost & Found"
 msgstr "Upphittat"
 
-#: ../gui/brushmanager.py:130
+#: ../gui/brushmanager.py:132
 msgid "Deleted"
 msgstr "Raderat"
 
-#: ../gui/brushmanager.py:131
+#: ../gui/brushmanager.py:133
 msgid "Favorites"
 msgstr "Favoriter"
 
-#: ../gui/brushmanager.py:132
+#: ../gui/brushmanager.py:134
 msgid "Ink"
 msgstr "Bläck"
 
-#: ../gui/brushmanager.py:133
+#: ../gui/brushmanager.py:135
 msgid "Classic"
 msgstr "Klassiska"
 
-#: ../gui/brushmanager.py:134
+#: ../gui/brushmanager.py:136
 msgid "Set#1"
 msgstr "Uppsättning#1"
 
-#: ../gui/brushmanager.py:135
+#: ../gui/brushmanager.py:137
 msgid "Set#2"
 msgstr "Uppsättning#2"
 
-#: ../gui/brushmanager.py:136
+#: ../gui/brushmanager.py:138
 msgid "Set#3"
 msgstr "Uppsättning#3"
 
-#: ../gui/brushmanager.py:137
+#: ../gui/brushmanager.py:139
 msgid "Set#4"
 msgstr "Uppsättning#4"
 
-#: ../gui/brushmanager.py:138
+#: ../gui/brushmanager.py:140
 msgid "Set#5"
 msgstr "Uppsättning#5"
 
-#: ../gui/brushmanager.py:139
+#: ../gui/brushmanager.py:141
 msgid "Experimental"
 msgstr "Experimentella"
 
-#: ../gui/brushmanager.py:140
+#: ../gui/brushmanager.py:142
 msgid "New"
 msgstr "Ny"
 
-#: ../gui/brushmanager.py:664
+#: ../gui/brushmanager.py:679
 #, python-brace-format
 msgctxt "brushpack import failure messages"
 msgid "No file named “{order_conf_file}”. This is not a brushpack."
 msgstr "Ingen fil vid namn “{order_conf_file}”. Detta är inte ett penselpaket."
 
-#: ../gui/brushmanager.py:689
+#: ../gui/brushmanager.py:704
 #, python-brace-format
 msgctxt "brushpack import failure messages"
 msgid ""
@@ -437,7 +437,7 @@ msgstr ""
 "Penseln “{brush_name}” är listad i “{order_conf_file}”, men den finns inte i "
 "zip-filen."
 
-#: ../gui/brushmanager.py:702
+#: ../gui/brushmanager.py:717
 #, python-brace-format
 msgctxt "brushpack import failure messages"
 msgid ""
@@ -447,7 +447,7 @@ msgstr ""
 "Penseln “{brush_name}” finns i zip-filen, men den är inte listad i "
 "“{order_conf_file}”."
 
-#: ../gui/brushmanager.py:1313 ../gui/footer.py:62
+#: ../gui/brushmanager.py:1328 ../gui/footer.py:66
 msgid "Unknown Brush"
 msgstr "Okänd Pensel"
 
@@ -831,17 +831,17 @@ msgctxt "HCY Gamut Mask load dialog: window title"
 msgid "Load Mask from a GIMP Palette"
 msgstr "Ladda mask från palettfil (GIMP)"
 
-#: ../gui/colors/hcywheel.py:1275
+#: ../gui/colors/hcywheel.py:1281
 msgctxt "HCY Wheel color adjuster page: properties tooltip."
 msgid "Set gamut mask."
 msgstr "Definiera tonskalemask."
 
-#: ../gui/colors/hcywheel.py:1293
+#: ../gui/colors/hcywheel.py:1299
 msgctxt "HCY Wheel color adjuster page: title for tooltips etc."
 msgid "HCY Wheel"
 msgstr "HCY-hjul"
 
-#: ../gui/colors/hcywheel.py:1300
+#: ../gui/colors/hcywheel.py:1306
 msgctxt "HCY Wheel color adjuster page: description for tooltips etc."
 msgid ""
 "Set the color using cylindrical hue/chroma/luma space. The circular slices "
@@ -1192,7 +1192,7 @@ msgid "Based on file"
 msgstr "Baserat på filen"
 
 #. This refers to a version of MyPaint like 1.0, 1.1, 1.2 etc
-#: ../gui/compatibility.py:35 ../gui/drawwindow.py:276
+#: ../gui/compatibility.py:35 ../gui/drawwindow.py:280
 #: ../gui/preferenceswindow.glade:1610
 msgctxt "Prefs Dialog|Compatibility"
 msgid "1.x"
@@ -1289,67 +1289,67 @@ msgctxt "File Load Compat Options"
 msgid "Compatibility mode:"
 msgstr "Kompatibilitetsläge:"
 
-#: ../gui/device.py:48
+#: ../gui/device.py:49
 msgctxt "prefs: device's type label"
 msgid "Cursor/puck"
 msgstr "Pekare/puck"
 
-#: ../gui/device.py:52
+#: ../gui/device.py:53
 msgctxt "prefs: device's type label"
 msgid "Eraser"
 msgstr "Sudd"
 
-#: ../gui/device.py:56
+#: ../gui/device.py:57
 msgctxt "prefs: device's type label"
 msgid "Keyboard"
 msgstr "Tangentbord"
 
-#: ../gui/device.py:60
+#: ../gui/device.py:61
 msgctxt "prefs: device's type label"
 msgid "Mouse"
 msgstr "Mus"
 
-#: ../gui/device.py:64
+#: ../gui/device.py:65
 msgctxt "prefs: device's type label"
 msgid "Pen"
 msgstr "Penna"
 
-#: ../gui/device.py:68
+#: ../gui/device.py:69
 msgctxt "prefs: device's type label"
 msgid "Touchpad"
 msgstr "Pekplatta"
 
-#: ../gui/device.py:72
+#: ../gui/device.py:73
 msgctxt "prefs: device's type label"
 msgid "Touchscreen"
 msgstr "Pekskärm"
 
-#: ../gui/device.py:92
+#: ../gui/device.py:93
 msgctxt "device settings: allowed usage"
 msgid "Ignore"
 msgstr "Ignorera"
 
-#: ../gui/device.py:96
+#: ../gui/device.py:97
 msgctxt "device settings: allowed usage"
 msgid "Any Task"
 msgstr "Vilken uppgift som helst"
 
-#: ../gui/device.py:100
+#: ../gui/device.py:101
 msgctxt "device settings: allowed usage"
 msgid "Non-painting tasks"
 msgstr "Uppgifter vid Icke-målning"
 
-#: ../gui/device.py:104
+#: ../gui/device.py:105
 msgctxt "device settings: allowed usage"
 msgid "Navigation only"
 msgstr "Endast navigation"
 
-#: ../gui/device.py:129
+#: ../gui/device.py:130
 msgctxt "device settings: unmodified scroll action"
 msgid "Zoom"
 msgstr "Zoom"
 
-#: ../gui/device.py:130
+#: ../gui/device.py:131
 msgctxt "device settings: unmodified scroll action"
 msgid "Pan"
 msgstr "Panorera"
@@ -1388,7 +1388,7 @@ msgid "Scroll…"
 msgstr "Bläddra…"
 
 #. Name and preview column: will be indented
-#: ../gui/dialogs.py:74 ../gui/externalapp.py:141 ../gui/layers.py:405
+#: ../gui/dialogs.py:74 ../gui/externalapp.py:179 ../gui/layers.py:417
 msgid "Name"
 msgstr "Namn"
 
@@ -1455,48 +1455,48 @@ msgstr "Importera penselpaket?"
 msgid "<b>Do you really want to import package “{brushpack_name}”?</b>"
 msgstr "<b>Vill du verkligen importera paketet ”{brushpack_name}”?</b>"
 
-#: ../gui/document.py:453
+#: ../gui/document.py:455
 #, python-format
 msgid "Load brush settings from shortcut slot %d"
 msgstr "Ladda penselinställningar från genvägen plats %d"
 
-#: ../gui/document.py:454
+#: ../gui/document.py:456
 #, python-format
 msgid "Store brush settings in shortcut slot %d"
 msgstr "Spara penselinställningarna i genvägen plats %d"
 
-#: ../gui/document.py:455
+#: ../gui/document.py:457
 #, python-format
 msgid "Restore Brush %d"
 msgstr "Återställ pensel %d"
 
-#: ../gui/document.py:457
+#: ../gui/document.py:459
 #, python-format
 msgid "Save to Brush %d"
 msgstr "Spara till pensel %d"
 
-#: ../gui/document.py:555
+#: ../gui/document.py:557
 #, python-format
 msgid "Undo %s"
 msgstr "Ångra %s"
 
-#: ../gui/document.py:557
+#: ../gui/document.py:559
 msgid "Undo"
 msgstr "Ångra"
 
-#: ../gui/document.py:567
+#: ../gui/document.py:569
 #, python-format
 msgid "Redo %s"
 msgstr "Gör om %s"
 
-#: ../gui/document.py:569
+#: ../gui/document.py:571
 msgid "Redo"
 msgstr "Gör om"
 
 #. TRANSLATORS: Statusbar message explaining button and modifier
 #. TRANSLATORS: combinations used to access modes/tools/actions.
 #. TRANSLATORS: "With <current-modifiers> held down: <list>"
-#: ../gui/document.py:862
+#: ../gui/document.py:864
 #, python-brace-format
 msgid "{button_combination} is {resultant_action}"
 msgstr "{button_combination} = {resultant_action}"
@@ -1504,7 +1504,7 @@ msgstr "{button_combination} = {resultant_action}"
 #. TRANSLATORS: This is a separator for the list of button actions
 #. TRANSLATORS: that appears when a modifier key is held down.
 #. TRANSLATORS: search for " held down: " (incl spaces) for the context
-#: ../gui/document.py:872
+#: ../gui/document.py:874
 msgid ";  "
 msgstr ",  "
 
@@ -1513,119 +1513,119 @@ msgstr ",  "
 #. TRANSLATORS: as the English "and", so use appropriate punctuation or
 #. TRANSLATORS: wording for the separator. Also a little more spacing
 #. TRANSLATORS: than normal looks good here.
-#: ../gui/document.py:878
+#: ../gui/document.py:880
 #, python-brace-format
 msgid "With {modifiers} held down:  {button_actions}."
 msgstr "Knappkombinationer med {modifiers}:  {button_actions}."
 
-#: ../gui/document.py:900
+#: ../gui/document.py:902
 msgctxt "Statusbar message: copy result"
 msgid "Empty document, nothing copied."
 msgstr "Tomt dokument, ingenting kopierades."
 
-#: ../gui/document.py:912
+#: ../gui/document.py:914
 #, python-brace-format
 msgctxt "Statusbar message: copy result"
 msgid "Copied layer as {w}×{h} image."
 msgstr "Kopierade lager som en bild med storleken {w}×{h}."
 
-#: ../gui/document.py:929
+#: ../gui/document.py:931
 msgctxt "Statusbar message: paste result"
 msgid "Nothing on clipboard."
 msgstr "Det finns ingenting i urklipp."
 
-#: ../gui/document.py:938
+#: ../gui/document.py:940
 msgctxt "Statusbar message: paste result"
 msgid "Clipboard does not contain an image."
 msgstr "Innehållet i urklipp är inte en bild."
 
-#: ../gui/document.py:949
+#: ../gui/document.py:951
 msgctxt "Statusbar message: paste result"
 msgid "Cannot paste into this type of layer."
 msgstr "Kan inte klistra in i den här typen av lager."
 
-#: ../gui/document.py:954
+#: ../gui/document.py:956
 #, python-brace-format
 msgctxt "Statusbar message: paste result"
 msgid "Pasted {w}×{h} image."
 msgstr "Klistrade in en bild med storleken {w}×{h}."
 
-#: ../gui/document.py:2054
+#: ../gui/document.py:2057
 #, python-brace-format
 msgctxt "Statusbar message: vacuum document"
 msgid "Vacuum: discarded {removed} of {total} tiles."
 msgstr "Dammsugning: slängde bort {removed} av {total} rutor."
 
 #. TRANSLATORS: window title for use with a filename
-#: ../gui/drawwindow.py:270
+#: ../gui/drawwindow.py:274
 #, python-format
 msgid "%s - MyPaint"
 msgstr "%s - MyPaint"
 
 #. TRANSLATORS: window title for use without a filename
-#: ../gui/drawwindow.py:273 ../gui/mypaint.glade:8
+#: ../gui/drawwindow.py:277 ../gui/mypaint.glade:8
 msgid "MyPaint"
 msgstr "Om MyPaint"
 
-#: ../gui/drawwindow.py:296
+#: ../gui/drawwindow.py:300
 msgctxt "Open dragged file confirm dialog: title"
 msgid "Open Dragged File?"
 msgstr "Öppna den indragna filen?"
 
-#: ../gui/drawwindow.py:300
+#: ../gui/drawwindow.py:304
 msgctxt "Open dragged file confirm dialog: continue button"
 msgid "_Open"
 msgstr "_Öppna"
 
-#: ../gui/drawwindow.py:493
+#: ../gui/drawwindow.py:497
 msgid "Set current color"
 msgstr "Ange aktuell färg"
 
-#: ../gui/drawwindow.py:538
+#: ../gui/drawwindow.py:542
 msgid "Leave Fullscreen Mode"
 msgstr "Lämna helskärmsläge"
 
-#: ../gui/drawwindow.py:539
+#: ../gui/drawwindow.py:543
 msgid "Leave Fullscreen"
 msgstr "Lämna helskärmsläge"
 
-#: ../gui/drawwindow.py:542
+#: ../gui/drawwindow.py:546
 msgid "Enter Fullscreen Mode"
 msgstr "Starta helskärmsläge"
 
-#: ../gui/drawwindow.py:543
+#: ../gui/drawwindow.py:547
 msgid "Fullscreen"
 msgstr "Helskärm"
 
-#: ../gui/drawwindow.py:682
+#: ../gui/drawwindow.py:686
 msgctxt "Quit confirm dialog: title"
 msgid "Really Quit?"
 msgstr "Är du säker på att du vill avsluta?"
 
-#: ../gui/drawwindow.py:686
+#: ../gui/drawwindow.py:690
 msgctxt "Quit confirm dialog: continue button"
 msgid "_Quit"
 msgstr "_Avsluta"
 
-#: ../gui/drawwindow.py:704
+#: ../gui/drawwindow.py:708
 msgid "Import brush package…"
 msgstr "Importera penselpaket…"
 
-#: ../gui/drawwindow.py:705
+#: ../gui/drawwindow.py:709
 msgid "MyPaint brush package (*.zip)"
 msgstr "MyPaint penselpaket (*.zip)"
 
 #. # UI string consts
 #. TRANSLATORS: Statusbar message when "Edit in External App"
 #. TRANSLATORS: (for a layer) is successfully initiated.
-#: ../gui/externalapp.py:37
+#: ../gui/externalapp.py:40
 #, python-brace-format
 msgid "Launched {app_name} to edit layer “{layer_name}”"
 msgstr "Startade {app_name} för att redigera lager “{layer_name}”"
 
 #. TRANSLATORS: Statusbar message shown when the app chosen for
 #. TRANSLATORS: "Edit in External App" (for a layer) failed to open.
-#: ../gui/externalapp.py:41
+#: ../gui/externalapp.py:44
 #, python-brace-format
 msgid "Error: failed to launch {app_name} to edit layer “{layer_name}”"
 msgstr ""
@@ -1634,7 +1634,7 @@ msgstr ""
 
 #. TRANSLATORS: Statusbar message for when an "Edit in External App"
 #. TRANSLATORS: operation is cancelled by the user before it starts.
-#: ../gui/externalapp.py:46
+#: ../gui/externalapp.py:49
 #, python-brace-format
 msgid ""
 "Editing cancelled. You can still edit “{layer_name}” from the Layers menu."
@@ -1644,12 +1644,12 @@ msgstr ""
 
 #. TRANSLATORS: This is a statusbar message shown when
 #. TRANSLATORS:  a layer is updated from an external edit
-#: ../gui/externalapp.py:51
+#: ../gui/externalapp.py:54
 #, python-brace-format
 msgid "Updated layer “{layer_name}” with external edits"
 msgstr "Uppdaterade lager “{layer_name}” med extern redigering"
 
-#: ../gui/externalapp.py:55
+#: ../gui/externalapp.py:58
 #, python-brace-format
 msgctxt "Edit in External App (statusbar message)"
 msgid "Failed to update layer with external edits from “{file_basename}”."
@@ -1657,7 +1657,7 @@ msgstr ""
 "Kunde inte uppdatera lagret med externa förändringar från "
 "\"{file_basename}\"."
 
-#: ../gui/externalapp.py:66
+#: ../gui/externalapp.py:104
 #, python-brace-format
 msgid ""
 "MyPaint needs to edit a file of type “{type_name}” ({content_type}). What "
@@ -1666,7 +1666,7 @@ msgstr ""
 "MyPaint behöver redigera en fil av typen “{type_name}” ({content_type}). "
 "Vilket program ska det använda?"
 
-#: ../gui/externalapp.py:70
+#: ../gui/externalapp.py:108
 #, python-brace-format
 msgid ""
 "What application should MyPaint use for editing files of type "
@@ -1675,15 +1675,15 @@ msgstr ""
 "Vilket program ska MyPaint använda för att redigera filer av typen "
 "“{type_name}” ({content_type})?"
 
-#: ../gui/externalapp.py:76
+#: ../gui/externalapp.py:114
 msgid "Open With…"
 msgstr "Öppna med…"
 
-#: ../gui/externalapp.py:128
+#: ../gui/externalapp.py:166
 msgid "Icon"
 msgstr "Ikon"
 
-#: ../gui/externalapp.py:171
+#: ../gui/externalapp.py:209
 msgid "no description"
 msgstr "ingen beskrivning"
 
@@ -2194,7 +2194,7 @@ msgstr ""
 "Om en fyllning påbörjas i ett detekterat mellanrum har detta alternativ "
 "ingen verkan."
 
-#: ../gui/fill.py:854 ../gui/mode.py:627
+#: ../gui/fill.py:854 ../gui/mode.py:629
 msgid "Reset"
 msgstr "Återställ"
 
@@ -2208,13 +2208,13 @@ msgctxt "fill option: default option in the Source Layer dropdown"
 msgid "Selected Layer"
 msgstr "Det valda lagret"
 
-#: ../gui/footer.py:191
+#: ../gui/footer.py:195
 #, python-brace-format
 msgctxt "current brush indicator: tooltip (no-description case)"
 msgid "<b>{brush_name}</b>"
 msgstr "<b>{brush_name}</b>"
 
-#: ../gui/footer.py:196
+#: ../gui/footer.py:200
 #, python-brace-format
 msgctxt "current brush indicator: tooltip (description case)"
 msgid ""
@@ -2224,130 +2224,130 @@ msgstr ""
 "<b>{brush_name}</b>\n"
 "{brush_desc}"
 
-#: ../gui/framewindow.py:99
+#: ../gui/framewindow.py:100
 msgid "Edit Frame"
 msgstr "Redigera ram"
 
-#: ../gui/framewindow.py:102
+#: ../gui/framewindow.py:103
 msgid "Adjust the document frame"
 msgstr "Justera dokumentets ram"
 
-#: ../gui/framewindow.py:467
+#: ../gui/framewindow.py:468
 msgid "Frame Size"
 msgstr "Ramstorlek"
 
 #. {unit: (conv_factor, upper, lower, step_incr, page_incr, digits)}
-#: ../gui/framewindow.py:470 ../gui/framewindow.py:536
-#: ../gui/framewindow.py:909 ../gui/framewindow.py:926
-#: ../gui/framewindow.py:927 ../gui/framewindow.py:979
-#: ../gui/framewindow.py:984
+#: ../gui/framewindow.py:471 ../gui/framewindow.py:537
+#: ../gui/framewindow.py:910 ../gui/framewindow.py:927
+#: ../gui/framewindow.py:928 ../gui/framewindow.py:980
+#: ../gui/framewindow.py:985
 msgid "px"
 msgstr "px"
 
-#: ../gui/framewindow.py:472
+#: ../gui/framewindow.py:473
 msgid "Height:"
 msgstr "Höjd:"
 
-#: ../gui/framewindow.py:473
+#: ../gui/framewindow.py:474
 msgid "Width:"
 msgstr "Bredd:"
 
-#: ../gui/framewindow.py:474
+#: ../gui/framewindow.py:475
 msgid "Resolution:"
 msgstr "Upplösning:"
 
-#: ../gui/framewindow.py:476
+#: ../gui/framewindow.py:477
 msgid "DPI"
 msgstr "DPI"
 
-#: ../gui/framewindow.py:481
+#: ../gui/framewindow.py:482
 msgid "Dots Per Inch (really Pixels Per Inch)"
 msgstr "Punkter per tum (egentligen pixlar per tum)"
 
-#: ../gui/framewindow.py:484
+#: ../gui/framewindow.py:485
 msgid "Color:"
 msgstr "Färg:"
 
-#: ../gui/framewindow.py:521
+#: ../gui/framewindow.py:522
 msgid "Frame Color"
 msgstr "Ramens färg"
 
-#: ../gui/framewindow.py:544
+#: ../gui/framewindow.py:545
 msgid "<b>Frame dimensions</b>"
 msgstr "<b>Ramens mått</b>"
 
-#: ../gui/framewindow.py:558
+#: ../gui/framewindow.py:559
 msgid "<b>Pixel density</b>"
 msgstr "<b>Pixeltäthet</b>"
 
-#: ../gui/framewindow.py:586
+#: ../gui/framewindow.py:587
 msgid "Set Frame to Layer"
 msgstr "Ställ in ramen utifrån lager"
 
-#: ../gui/framewindow.py:587
+#: ../gui/framewindow.py:588
 msgid "Set frame to the extents of the current layer"
 msgstr "Ställ in ramen till det aktuella lagrets omfång"
 
-#: ../gui/framewindow.py:589
+#: ../gui/framewindow.py:590
 msgid "Set Frame to Document"
 msgstr "Ställ in ram utifrån dokument"
 
-#: ../gui/framewindow.py:590
+#: ../gui/framewindow.py:591
 msgid "Set frame to the combination of all layers"
 msgstr "Ställ in ramen på kombinationen av alla lager"
 
-#: ../gui/framewindow.py:600
+#: ../gui/framewindow.py:601
 msgid "Trim Layer to Frame"
 msgstr "Beskär lagret utifrån ramen"
 
-#: ../gui/framewindow.py:601
+#: ../gui/framewindow.py:602
 msgid "Trim parts of the current layer which lie outside the frame"
 msgstr "Beskär de delar av det aktuella lagret som ligger utanför ramen"
 
-#: ../gui/framewindow.py:607
+#: ../gui/framewindow.py:608
 msgid "Enabled"
 msgstr "Aktiverad"
 
-#: ../gui/framewindow.py:719
+#: ../gui/framewindow.py:720
 #, python-brace-format
 msgid "{width:g}×{height:g} {units}"
 msgstr "{width:g}×{height:g} {units}"
 
-#: ../gui/framewindow.py:910
+#: ../gui/framewindow.py:911
 msgid "inch"
 msgstr "tum"
 
-#: ../gui/framewindow.py:911
+#: ../gui/framewindow.py:912
 msgid "cm"
 msgstr "cm"
 
-#: ../gui/framewindow.py:912
+#: ../gui/framewindow.py:913
 msgid "mm"
 msgstr "mm"
 
-#: ../gui/freehand.py:86
+#: ../gui/freehand.py:88
 msgid "Freehand Drawing"
 msgstr "Frihandsteckning"
 
-#: ../gui/freehand.py:89
+#: ../gui/freehand.py:91
 msgid "Paint free-form brush strokes"
 msgstr "Måla på fri hand"
 
 #. TRANSLATORS: Short alias for "Slow position tracking". This is
 #. TRANSLATORS: used on the options panel.
-#: ../gui/freehand.py:581
+#: ../gui/freehand.py:583
 msgid "Smooth:"
 msgstr "Jämnhet:"
 
 #. TRANSLATORS: Short alias for "Fake Pressure (for mouse)". This is
 #. TRANSLATORS: used on the options panel.
-#: ../gui/freehand.py:596 ../gui/inputtestwindow.py:62
+#: ../gui/freehand.py:598 ../gui/inputtestwindow.py:62
 msgid "Pressure:"
 msgstr "Tryck:"
 
 #. TRANSLATORS: Short alias for "Fake Barrel Rotation (for mouse)".
 #. TRANSLATORS: This is used on the options panel.
-#: ../gui/freehand.py:614
+#: ../gui/freehand.py:616
 msgid "Twist:"
 msgstr "Vridning:"
 
@@ -2489,7 +2489,7 @@ msgstr "Pennaxelrotation:"
 #. TRANSLATORS: Command to move a layer in the horizontal plane,
 #. TRANSLATORS: preserving its position in the stack.
 #. TRANSLATORS: Note "in the horizontal plane" - not "horizontally".
-#: ../gui/layermanip.py:47 ../lib/command.py:1053
+#: ../gui/layermanip.py:47 ../lib/command.py:1047
 msgid "Move Layer"
 msgstr "Flytta lager"
 
@@ -2518,58 +2518,58 @@ msgid "Done"
 msgstr "Klar"
 
 #. Visibility flag column
-#: ../gui/layers.py:394
+#: ../gui/layers.py:406
 msgid "Visible"
 msgstr "Synlig"
 
 #. Other flags column
-#: ../gui/layers.py:426
+#: ../gui/layers.py:438
 msgid "Flags"
 msgstr "Status"
 
-#: ../gui/layers.py:925
+#: ../gui/layers.py:939
 msgctxt "Layers: description: no layer (\"never happens\" condition!)"
 msgid "?layer"
 msgstr "?lager"
 
-#: ../gui/layers.py:945
+#: ../gui/layers.py:959
 msgctxt "Layers: description parts: unknown mode (fallback str!)"
 msgid "?mode"
 msgstr "?läge"
 
-#: ../gui/layers.py:952
+#: ../gui/layers.py:966
 msgctxt "Layers: description parts: layer hidden"
 msgid "Hidden"
 msgstr "Dolt"
 
-#: ../gui/layers.py:957
+#: ../gui/layers.py:971
 #, python-format
 msgctxt "Layers: description parts: opacity percentage"
 msgid "%d%% opaque"
 msgstr "%d%% opakt"
 
-#: ../gui/layers.py:964
+#: ../gui/layers.py:978
 msgctxt "Layers dockable: description parts: layer locked flag"
 msgid "Locked"
 msgstr "Låst"
 
-#: ../gui/layers.py:975
+#: ../gui/layers.py:989
 msgctxt "Layers: description parts: unknown type (fallback str!)"
 msgid "?type"
 msgstr "?typ"
 
-#: ../gui/layers.py:982
+#: ../gui/layers.py:996
 msgctxt "Layers dockable: description parts joiner text"
 msgid ", "
 msgstr ", "
 
-#: ../gui/layers.py:990
+#: ../gui/layers.py:1004
 #, python-brace-format
 msgctxt "Layers dockable: markup for a layer with no description"
 msgid "{layer_name}"
 msgstr "{layer_name}"
 
-#: ../gui/layers.py:995
+#: ../gui/layers.py:1009
 #, python-brace-format
 msgctxt "Layers dockable: markup for a layer with a description"
 msgid ""
@@ -2823,29 +2823,29 @@ msgstr ""
 "Henrik Cederblad, 2019"
 
 #. TRANSLATORS:"Brush radius" for the options panel. Short.
-#: ../gui/mode.py:582
+#: ../gui/mode.py:584
 msgid "Size:"
 msgstr "Storlek:"
 
 # "opaque" -> ikke gjennomsiktig
 # er dette den beste oversettelsen?
 #. TRANSLATORS:"Brush opacity" for the options panel. Short.
-#: ../gui/mode.py:584
+#: ../gui/mode.py:586
 msgid "Opaque:"
 msgstr "Opacitet:"
 
 #. TRANSLATORS:"Brush hardness/sharpness" for the options panel. Short.
-#: ../gui/mode.py:586
+#: ../gui/mode.py:588
 msgid "Sharp:"
 msgstr "Skärpa:"
 
 #. TRANSLATORS:"Additional pressure gain" for the options panel. Short.
-#: ../gui/mode.py:588
+#: ../gui/mode.py:590
 msgid "Gain:"
 msgstr "Förstärkning:"
 
 #. TRANSLATORS:"Paint Pigment Mode" for the options panel. Short.
-#: ../gui/mode.py:590
+#: ../gui/mode.py:592
 msgid "Pigment:"
 msgstr "Pigment:"
 
@@ -2875,12 +2875,12 @@ msgstr "<i>Inga tillgängliga alternativ</i>"
 msgid "Zoom: %.01f%%"
 msgstr "Zoom: %.01f%%"
 
-#: ../gui/picker.py:458
+#: ../gui/picker.py:457
 msgctxt "context picker: statusbar text during grab"
 msgid "Pick brushstroke settings, stroke color, and layer…"
 msgstr "Välj inställningar för penseldrag, penselfärg och lager…"
 
-#: ../gui/picker.py:496
+#: ../gui/picker.py:495
 msgctxt "color picker: statusbar text during grab"
 msgid "Pick color…"
 msgstr "Välj färg…"
@@ -2941,78 +2941,84 @@ msgstr "Nästa objekt"
 msgid "(Nothing to show)"
 msgstr "(Inget att visa)"
 
-#: ../gui/symmetry.py:79
+#: ../gui/symmetry.py:84
 msgctxt "symmetry axis edit mode: instructions shown in statusbar"
 msgid "Place axis"
 msgstr "Placera axel"
 
-#: ../gui/symmetry.py:83
+#: ../gui/symmetry.py:88
 msgctxt "symmetry axis edit mode: instructions shown in statusbar"
 msgid "Move axis"
 msgstr "Flytta axel"
 
-#: ../gui/symmetry.py:87
+#: ../gui/symmetry.py:92
 msgctxt "symmetry axis edit mode: instructions shown in statusbar"
 msgid "Remove axis"
 msgstr "Ta bort axel"
 
-#: ../gui/symmetry.py:99
+#: ../gui/symmetry.py:104
 msgctxt "symmetry axis edit mode: mode name (tooltips)"
 msgid "Edit Symmetry Axis"
 msgstr "Visa symmetriaxel"
 
-#: ../gui/symmetry.py:105
+#: ../gui/symmetry.py:110
 msgctxt "symmetry axis edit mode: mode description (tooltips)"
 msgid "Adjust the painting symmetry axis."
 msgstr "Justera målningens symmetriaxel."
 
-#: ../gui/symmetry.py:355
+#: ../gui/symmetry.py:334
 msgctxt "symmetry axis options panel: labels"
 msgid "X Position:"
 msgstr "X-position:"
 
-#: ../gui/symmetry.py:359
+#: ../gui/symmetry.py:338
 msgctxt "symmetry axis options panel: labels"
 msgid "Y Position:"
 msgstr "Y-position:"
 
-#: ../gui/symmetry.py:363
+#: ../gui/symmetry.py:342
+#, python-format
+msgctxt "symmetry axis options panel: labels"
+msgid "Angle: %.2f°"
+msgstr ""
+
+#: ../gui/symmetry.py:346
 msgctxt "symmetry axis options panel: position button: no axis pos."
 msgid "None"
 msgstr "Ingen"
 
-#: ../gui/symmetry.py:367
+#: ../gui/symmetry.py:350
 #, python-format
 msgctxt "symmetry axis options panel: position button: axis pos. in pixels"
 msgid "%d px"
 msgstr "%d px"
 
-#: ../gui/symmetry.py:371
+#: ../gui/symmetry.py:354
 msgctxt "symmetry axis options panel: labels"
 msgid "Alpha:"
 msgstr "Alfa:"
 
-#: ../gui/symmetry.py:375
+#: ../gui/symmetry.py:358
 msgctxt "symmetry axis options panel: labels"
 msgid "Symmetry Type:"
 msgstr "Symmetrityp:"
 
-#: ../gui/symmetry.py:379
+#: ../gui/symmetry.py:362
 msgctxt "symmetry axis options panel: labels"
 msgid "Rotational lines:"
 msgstr "Rotationslinjer:"
 
-#: ../gui/symmetry.py:446
+#: ../gui/symmetry.py:438
 msgctxt "symmetry axis options panel: axis position dialog: window title"
 msgid "X axis Position"
 msgstr "X-axelposition"
 
-#: ../gui/symmetry.py:478
+#: ../gui/symmetry.py:470
 msgctxt "symmetry axis options panel: axis position dialog: window title"
 msgid "Y axis Position"
 msgstr "Y-axelposition"
 
-#: ../gui/symmetry.py:608
+#: ../gui/symmetry.py:604
 msgctxt "symmetry axis options panel: axis active checkbox"
 msgid "Enabled"
 msgstr "Aktiverad"
@@ -3067,7 +3073,7 @@ msgctxt "workspace: sidebar tabs: button tooltips"
 msgid "{tab_title}: move tab to other sidebar"
 msgstr "{tab_title}: flytta flik till motsatt sidopanel"
 
-#: ../gui/topbar.py:91
+#: ../gui/topbar.py:90
 msgid "<b>MyPaint</b>"
 msgstr "<b>MyPaint</b>"
 
@@ -3095,174 +3101,174 @@ msgstr "Roteravy"
 msgid "Rotate the canvas view"
 msgstr "Rotera arbetsytans vy"
 
-#: ../lib/command.py:181
+#: ../lib/command.py:175
 msgid "Unknown Command"
 msgstr "Okänt kommando"
 
-#: ../lib/command.py:324
+#: ../lib/command.py:318
 msgid "Undefined (command not started yet)"
 msgstr "Odefinierat (kommandot har inte börjat än)"
 
 #. TRANSLATORS: A short time spent painting / making brushwork.
 #. TRANSLATORS: This can correspond to zero or more touches of
 #. TRANSLATORS: the physical stylus to the tablet.
-#: ../lib/command.py:331
+#: ../lib/command.py:325
 #, python-brace-format
 msgid "{seconds:.01f}s of painting with {brush_name}"
 msgstr "{seconds:.01f}s av målande med {brush_name}"
 
-#: ../lib/command.py:529
+#: ../lib/command.py:523
 msgid "Flood Fill"
 msgstr "Flödningsfyllning"
 
-#: ../lib/command.py:616
+#: ../lib/command.py:610
 msgid "Trim Layer"
 msgstr "Beskär lager"
 
-#: ../lib/command.py:636
+#: ../lib/command.py:630
 msgid "Uniquify Layer Pixels"
 msgstr "Gör lagrets pixlar unika"
 
-#: ../lib/command.py:659
+#: ../lib/command.py:653
 msgid "Refactor Group"
 msgstr "Omstrukturera lagergrupp"
 
-#: ../lib/command.py:682
+#: ../lib/command.py:676
 msgid "Clear Layer"
 msgstr "Radera Lager"
 
 #. This is used by Paste layer as well as when loading from a PNG
 #. file. However in the latter case, the undo stack is reset
 #. immediately afterward.
-#: ../lib/command.py:706
+#: ../lib/command.py:700
 msgid "Paste Layer"
 msgstr "Klistra in lager"
 
-#: ../lib/command.py:729
+#: ../lib/command.py:723
 msgid "New Layer from Visible"
 msgstr "Nytt lager utifrån allt synligt"
 
-#: ../lib/command.py:771
+#: ../lib/command.py:765
 msgid "Merge Visible Layers"
 msgstr "Lägg samman synliga lager"
 
-#: ../lib/command.py:845
+#: ../lib/command.py:839
 msgid "Merge Down"
 msgstr "Lägg samman nedåt"
 
-#: ../lib/command.py:894
+#: ../lib/command.py:888
 msgid "Normalize Layer Mode"
 msgstr "Normalisera lagerläge"
 
-#: ../lib/command.py:947
+#: ../lib/command.py:941
 msgid "Import Layers"
 msgstr "Importera lager"
 
-#: ../lib/command.py:949
+#: ../lib/command.py:943
 #, python-brace-format
 msgid "Add {layer_default_name}"
 msgstr "Lägg till {layer_default_name}"
 
-#: ../lib/command.py:973
+#: ../lib/command.py:967
 msgid "Remove Layer"
 msgstr "Ta bort Lager"
 
-#: ../lib/command.py:1020
+#: ../lib/command.py:1014
 msgid "Select Layer"
 msgstr "Välj Lager"
 
-#: ../lib/command.py:1150
+#: ../lib/command.py:1144
 msgid "Duplicate Layer"
 msgstr "Kopiera Lager"
 
-#: ../lib/command.py:1174
+#: ../lib/command.py:1168
 msgid "Move Layer Up"
 msgstr "Flytta lager upp"
 
-#: ../lib/command.py:1188
+#: ../lib/command.py:1182
 msgid "Move Layer Down"
 msgstr "Flytta lager ner"
 
-#: ../lib/command.py:1215
+#: ../lib/command.py:1209
 msgid "Move Layer in Stack"
 msgstr "Flytta lager i grupp"
 
-#: ../lib/command.py:1334
+#: ../lib/command.py:1328
 msgid "Rename Layer"
 msgstr "Byt namn på lager"
 
-#: ../lib/command.py:1392
+#: ../lib/command.py:1386
 msgid "Make Layer Visible"
 msgstr "Gör lager synligt"
 
-#: ../lib/command.py:1394
+#: ../lib/command.py:1388
 msgid "Make Layer Invisible"
 msgstr "Gör lager osynligt"
 
-#: ../lib/command.py:1432
+#: ../lib/command.py:1426
 msgid "Lock Layer"
 msgstr "Lås lager"
 
-#: ../lib/command.py:1434
+#: ../lib/command.py:1428
 msgid "Unlock Layer"
 msgstr "Lås upp lager"
 
-#: ../lib/command.py:1452
+#: ../lib/command.py:1446
 #, python-format
 msgid "Set Layer Opacity: %0.1f%%"
 msgstr "Ange opacitet: %0.1f%%"
 
-#: ../lib/command.py:1491
+#: ../lib/command.py:1485
 msgid "Unknown Mode"
 msgstr "Okänt läge"
 
-#: ../lib/command.py:1492
+#: ../lib/command.py:1486
 #, python-format
 msgid "Set Layer Mode: %s"
 msgstr "Ange lagerläge: %s"
 
-#: ../lib/command.py:1516
+#: ../lib/command.py:1510
 msgid "Enable Frame"
 msgstr "Aktivera ram"
 
-#: ../lib/command.py:1518
+#: ../lib/command.py:1512
 msgid "Disable Frame"
 msgstr "Avaktivera ram"
 
-#: ../lib/command.py:1536
+#: ../lib/command.py:1530
 msgid "Update Frame"
 msgstr "Uppdatera ram"
 
-#: ../lib/command.py:1565
+#: ../lib/command.py:1559
 msgid "Edit Layer Externally"
 msgstr "Redigera lager externt"
 
-#: ../lib/document.py:73
+#: ../lib/document.py:74
 #, python-brace-format
 msgctxt "Document IO: common error strings: {error_loading_common}"
 msgid "Error loading “{basename}”."
 msgstr "Fel vid inläsning av “{basename}”."
 
-#: ../lib/document.py:77
+#: ../lib/document.py:78
 msgctxt "Document IO: common error strings: {see_logs}"
 msgid "The logs may have more detail about this error."
 msgstr "Loggarna kan innehålla mer om det här felet."
 
 #. TRANSLATORS: string used in e.g. "3h42m from now"
-#: ../lib/document.py:204
+#: ../lib/document.py:205
 msgctxt "Document autosave descriptions: the {ago} string: future"
 msgid "from now"
 msgstr "från och med nu"
 
 #. TRANSLATORS: string used in e.g. "8s ago"
-#: ../lib/document.py:210
+#: ../lib/document.py:211
 msgctxt "Document autosave descriptions: the {ago} string: past"
 msgid "ago"
 msgstr "sedan"
 
 #. TRANSLATORS: String descriptions for an autosaved backup.
 #. TRANSLATORS: Time strings are localized: e.g. "3h42m" or "8s"
-#: ../lib/document.py:218
+#: ../lib/document.py:219
 #, python-brace-format
 msgctxt "Document autosave descriptions"
 msgid ""
@@ -3274,7 +3280,7 @@ msgstr ""
 "Kör du mer än en instans av MyPaint?\n"
 "Stäng programmet och vänta {cache_update_interval}s innan du försöker igen."
 
-#: ../lib/document.py:225
+#: ../lib/document.py:226
 #, python-brace-format
 msgctxt "Document autosave descriptions"
 msgid "Incomplete backup updated {last_modified_time} {ago}"
@@ -3284,7 +3290,7 @@ msgstr "Ofullständig backup uppdaterad {last_modified_time} {ago}"
 #. TRANSLATORS: Look for the msgids "from now" and "ago"
 #. TRANSLATORS: (with context starting w. "Document autosave")
 #. TRANSLATORS: to make sure their translations match this one.
-#: ../lib/document.py:234
+#: ../lib/document.py:235
 #, python-brace-format
 msgctxt "Document autosave descriptions"
 msgid ""
@@ -3298,7 +3304,7 @@ msgstr ""
 "num_layers}\n"
 "Innehåller {unsaved_time} av osparad målning."
 
-#: ../lib/document.py:1447
+#: ../lib/document.py:1448
 #, python-brace-format
 msgctxt "Document IO: hint templates for user-facing exceptions"
 msgid ""
@@ -3308,13 +3314,13 @@ msgstr ""
 "Kunde inte spara “{filename}”: {err}\n"
 "Finns det ledigt utrymme kvar på enheten?"
 
-#: ../lib/document.py:1453 ../lib/document.py:1463
+#: ../lib/document.py:1454 ../lib/document.py:1464
 #, python-brace-format
 msgctxt "Document IO: hint templates for user-facing exceptions"
 msgid "Unable to write “{filename}”: {err}"
 msgstr "Kunde inte spara “{filename}”: {err}"
 
-#: ../lib/document.py:1500
+#: ../lib/document.py:1501
 #, python-brace-format
 msgctxt "Document IO: loading errors"
 msgid ""
@@ -3324,7 +3330,7 @@ msgstr ""
 "{error_loading_common}\n"
 "Filen finns inte."
 
-#: ../lib/document.py:1507
+#: ../lib/document.py:1508
 #, python-brace-format
 msgctxt "Document IO: loading errors"
 msgid ""
@@ -3334,7 +3340,7 @@ msgstr ""
 "{error_loading_common}\n"
 "Du har inte rättigheter att öppna filen."
 
-#: ../lib/document.py:1533
+#: ../lib/document.py:1534
 #, python-brace-format
 msgctxt "Document IO: loading errors"
 msgid ""
@@ -3350,7 +3356,7 @@ msgstr ""
 "\n"
 "{see_logs}"
 
-#: ../lib/document.py:1558
+#: ../lib/document.py:1559
 #, python-brace-format
 msgctxt "Document IO: loading errors"
 msgid ""
@@ -3360,12 +3366,12 @@ msgstr ""
 "{error_loading_common}\n"
 "Okänt filnamnstillägg: “{ext}”"
 
-#: ../lib/document.py:1589
+#: ../lib/document.py:1590
 msgctxt "Document IO: group name for Import Layers"
 msgid "Imported layers"
 msgstr "Importerade lager"
 
-#: ../lib/document.py:1756
+#: ../lib/document.py:1757
 #, python-brace-format
 msgctxt "Document IO: hint templates for user-facing exceptions"
 msgid ""
@@ -3379,7 +3385,7 @@ msgstr ""
 "Försök spara som PNG istället, om din maskin inte har mycket minne. MyPaint "
 "kan effektivare spara som PNG."
 
-#: ../lib/document.py:1912
+#: ../lib/document.py:1913
 #, python-brace-format
 msgctxt "Document autosave: restoring: errors"
 msgid ""
@@ -3395,102 +3401,102 @@ msgstr ""
 "\n"
 "{see_logs}"
 
-#: ../lib/floodfill.py:131
+#: ../lib/floodfill.py:132
 msgctxt "floodfill status message: use active tense"
 msgid "Filling"
 msgstr "Fyller"
 
-#: ../lib/floodfill.py:132
+#: ../lib/floodfill.py:133
 msgctxt "floodfill status message: use active tense"
 msgid "Morphing"
 msgstr "Förskjuter"
 
-#: ../lib/floodfill.py:133
+#: ../lib/floodfill.py:134
 msgctxt "floodfill status message: use active tense"
 msgid "Blurring"
 msgstr "Applicerar oskärpa"
 
-#: ../lib/floodfill.py:134
+#: ../lib/floodfill.py:135
 msgctxt "floodfill status message: use active tense"
 msgid "Compositing"
 msgstr "Sammansätter"
 
-#: ../lib/floodfill.py:135
+#: ../lib/floodfill.py:136
 msgctxt "floodfill status message: use active tense"
 msgid "Finishing up"
 msgstr "Färdigställer"
 
-#: ../lib/floodfill.py:137
+#: ../lib/floodfill.py:138
 msgctxt "uniform square region of pixels, plural noun"
 msgid "tiles"
 msgstr "rutor"
 
 #. TRANSLATORS: Assumption for all "Time period abbreviations":
 #. TRANSLATORS: they don't need ngettext (to support plural/singular)
-#: ../lib/helpers.py:570
+#: ../lib/helpers.py:574
 #, python-brace-format
 msgctxt "Time period abbreviations"
 msgid "{days}d{hours}h"
 msgstr "{days}d{hours}t"
 
-#: ../lib/helpers.py:572
+#: ../lib/helpers.py:576
 #, python-brace-format
 msgctxt "Time period abbreviations"
 msgid "{hours}h{minutes}m"
 msgstr "{hours}t{minutes}m"
 
-#: ../lib/helpers.py:574
+#: ../lib/helpers.py:578
 #, python-brace-format
 msgctxt "Time period abbreviation"
 msgid "{minutes}m{seconds}s"
 msgstr "{minutes}m{seconds}s"
 
-#: ../lib/helpers.py:576
+#: ../lib/helpers.py:580
 #, python-brace-format
 msgctxt "Time period abbreviation"
 msgid "{seconds}s"
 msgstr "{seconds}s"
 
 #. TRANSLATORS: Default name for new normal, paintable layers
-#: ../lib/layer/core.py:66 ../lib/layer/data.py:1301
+#: ../lib/layer/core.py:66 ../lib/layer/data.py:1309
 msgctxt "layer default names"
 msgid "Layer"
 msgstr "Lager"
 
 #. TRANSLATORS: Short default name for vector (SVG/Inkscape) layers
-#: ../lib/layer/data.py:1159
+#: ../lib/layer/data.py:1161
 msgctxt "layer default names"
 msgid "Vectors"
 msgstr "Vektorer"
 
-#: ../lib/layer/data.py:1164
+#: ../lib/layer/data.py:1166
 msgctxt "layer type descriptions"
 msgid "Vector Layer"
 msgstr "Vektorlager"
 
 #. TRANSLATORS: Short default name for renderable fallback layers
-#: ../lib/layer/data.py:1229
+#: ../lib/layer/data.py:1237
 msgctxt "layer default names"
 msgid "Bitmap"
 msgstr "Bitmapp"
 
-#: ../lib/layer/data.py:1234
+#: ../lib/layer/data.py:1242
 msgctxt "layer type descriptions"
 msgid "Bitmap Data"
 msgstr "Bitmappsdata"
 
 #. TRANSLATORS: Short default name for non-renderable fallback layers
-#: ../lib/layer/data.py:1250
+#: ../lib/layer/data.py:1258
 msgctxt "layer default names"
 msgid "Data"
 msgstr "Data"
 
-#: ../lib/layer/data.py:1255
+#: ../lib/layer/data.py:1263
 msgctxt "layer type descriptions"
 msgid "Unknown Data"
 msgstr "Okänd data"
 
-#: ../lib/layer/data.py:1306
+#: ../lib/layer/data.py:1314
 msgctxt "layer type descriptions"
 msgid "Painting Layer"
 msgstr "Målningslager"
@@ -3518,12 +3524,12 @@ msgctxt "layer default names"
 msgid "Root"
 msgstr "Rot"
 
-#: ../lib/layer/tree.py:2127 ../lib/layer/tree.py:2193
+#: ../lib/layer/tree.py:2055 ../lib/layer/tree.py:2121
 msgctxt "layer default names: joiner punctuation for merged layers"
 msgid ", "
 msgstr ", "
 
-#: ../lib/layer/tree.py:2315
+#: ../lib/layer/tree.py:2243
 msgctxt "layer default names: refactor: name of the common areas layer"
 msgid "Common"
 msgstr "Gemensamt"
