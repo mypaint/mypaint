@@ -370,6 +370,16 @@ class RootStackTreeView (Gtk.TreeView):
 
         self.connect("button-press-event", self._button_press_cb)
 
+        # Override the default key event handlers. Unless proper handling of
+        # these events (e.g. navigating the layers list w. the arrow keys) is
+        # implemented, the events should neither be acted upon, nor consumed.
+        GObject.signal_override_class_closure(
+            GObject.signal_lookup("key-press-event", Gtk.Widget),
+            RootStackTreeView, self._key_event_cb)
+        GObject.signal_override_class_closure(
+            GObject.signal_lookup("key-release-event", Gtk.Widget),
+            RootStackTreeView, self._key_event_cb)
+
         # Motion and modifier keys during drag
         self.connect("drag-begin", self._drag_begin_cb)
         self.connect("drag-motion", self._drag_motion_cb)
@@ -450,10 +460,12 @@ class RootStackTreeView (Gtk.TreeView):
         self.set_show_expanders(True)
         self.set_enable_tree_lines(True)
         self.set_expander_column(self._name_col)
-
         self.connect_after("show", self._post_show_cb)
 
     ## Low-level GDK event handlers
+
+    def _key_event_cb(self, *args):
+        return False
 
     def _button_press_cb(self, view, event):
         """Handle button presses (visibility, locked, naming)"""
