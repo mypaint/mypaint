@@ -8,8 +8,8 @@ msgstr ""
 "Project-Id-Version: mypaint v1.2.0-586-g70ce73d\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-07-05 09:12+0200\n"
-"PO-Revision-Date: 2019-09-28 04:54+0000\n"
-"Last-Translator: Walter Cheuk <wwycheuk@gmail.com>\n"
+"PO-Revision-Date: 2020-07-07 09:41+0000\n"
+"Last-Translator: jjyaung <jj_yaung@yahoo.com.tw>\n"
 "Language-Team: Chinese (Traditional) <https://hosted.weblate.org/projects/"
 "mypaint/mypaint/zh_Hant/>\n"
 "Language: zh_TW\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 3.9-dev\n"
+"X-Generator: Weblate 4.2-dev\n"
 
 #. TRANSLATORS: Name of first column in the button map preferences.
 #. TRANSLATORS: Refers to an action bound to a mod+button combination.
@@ -422,7 +422,7 @@ msgstr "新增"
 #, python-brace-format
 msgctxt "brushpack import failure messages"
 msgid "No file named “{order_conf_file}”. This is not a brushpack."
-msgstr ""
+msgstr "{order_conf_file}沒有這個檔案，這不是一個筆刷組。"
 
 #: ../gui/brushmanager.py:704
 #, python-brace-format
@@ -430,7 +430,7 @@ msgctxt "brushpack import failure messages"
 msgid ""
 "Brush “{brush_name}” is listed in “{order_conf_file}”, but it does not exist "
 "in the zipfile."
-msgstr ""
+msgstr "筆刷{brush_name}已列在{order_conf_file}裡，但不存在於壓縮檔案中。"
 
 #: ../gui/brushmanager.py:717
 #, python-brace-format
@@ -438,32 +438,28 @@ msgctxt "brushpack import failure messages"
 msgid ""
 "Brush “{brush_name}” exists in the zipfile, but it is not listed in "
 "“{order_conf_file}”."
-msgstr ""
+msgstr "筆刷{brush_name}已經列在壓縮檔案，但沒有列在{order_conf_file}中。"
 
 #: ../gui/brushmanager.py:1328 ../gui/footer.py:66
 msgid "Unknown Brush"
 msgstr "未知筆刷"
 
 #: ../gui/brushselectionwindow.py:220
-#, fuzzy
 msgctxt "brush group: context menu for a single brush"
 msgid "Add to Favorites"
 msgstr "加到我的最愛"
 
 #: ../gui/brushselectionwindow.py:227
-#, fuzzy
 msgctxt "brush group: context menu for a single brush"
 msgid "Remove from Favorites"
 msgstr "從我的最愛中移除"
 
 #: ../gui/brushselectionwindow.py:235
-#, fuzzy
 msgctxt "brush group: context menu for a single brush"
 msgid "Clone"
 msgstr "複製"
 
 #: ../gui/brushselectionwindow.py:242
-#, fuzzy
 msgctxt "brush group: context menu for a single brush"
 msgid "Edit Brush Settings"
 msgstr "編輯筆刷設定"
@@ -474,16 +470,16 @@ msgid "Remove from Group"
 msgstr "從群組移除"
 
 #: ../gui/brushselectionwindow.py:290
-#, python-brace-format
+#, fuzzy, python-brace-format
 msgctxt "brush group: context menu: unique names for cloned brushes"
 msgid "{original_name} copy"
-msgstr ""
+msgstr "複製{original_name}"
 
 #: ../gui/brushselectionwindow.py:299
-#, python-brace-format
+#, fuzzy, python-brace-format
 msgctxt "brush group: context menu: unique names for cloned brushes"
 msgid "{original_name} copy {n}"
-msgstr ""
+msgstr "{original_name} 複製 {n}"
 
 #: ../gui/brushselectionwindow.py:325
 #, python-brace-format
@@ -644,31 +640,28 @@ msgstr "設定用來繪畫的色彩"
 
 #: ../gui/colorpicker.py:270
 msgid "Pick Hue"
-msgstr ""
+msgstr "挑選顏色"
 
 #: ../gui/colorpicker.py:273
-#, fuzzy
 msgid "Set the color Hue used for painting"
 msgstr "設定用來繪畫的色彩"
 
 #: ../gui/colorpicker.py:293
-#, fuzzy
 msgid "Pick Chroma"
 msgstr "挑選顏色。"
 
 #: ../gui/colorpicker.py:296
-#, fuzzy
 msgid "Set the color Chroma used for painting"
 msgstr "設定用來繪畫的色彩"
 
 #: ../gui/colorpicker.py:316
 msgid "Pick Luma"
-msgstr ""
+msgstr "挑選 Luma 顏色"
 
 #: ../gui/colorpicker.py:319
 #, fuzzy
 msgid "Set the color Luma used for painting"
-msgstr "設定用來繪畫的色彩"
+msgstr "設定用來繪畫的 Luma 色彩"
 
 #: ../gui/colors/adjbases.py:699
 msgid "Color details"
@@ -1174,9 +1167,10 @@ msgid "Change color with HSV ramps crossing a radial bowl of color."
 msgstr "變更顏色，用 HSV 斜面跨越一徑向碗的顏色。"
 
 #: ../gui/compatibility.py:34
+#, fuzzy
 msgctxt "File Load Compat Options"
 msgid "Based on file"
-msgstr ""
+msgstr "根據檔案而來"
 
 #. This refers to a version of MyPaint like 1.0, 1.1, 1.2 etc
 #: ../gui/compatibility.py:35 ../gui/drawwindow.py:280
@@ -1184,13 +1178,13 @@ msgstr ""
 #, fuzzy
 msgctxt "Prefs Dialog|Compatibility"
 msgid "1.x"
-msgstr "1.0"
+msgstr "1.x"
 
 #. This refers to a version of MyPaint like 1.0, 1.1, 1.2 etc
 #: ../gui/compatibility.py:36 ../gui/preferenceswindow.glade:1629
 msgctxt "Prefs Dialog|Compatibility"
 msgid "2.x"
-msgstr ""
+msgstr "2.x"
 
 #. TRANSLATORS: This is probably a rare warning, and it will not
 #. TRANSLATORS: really be shown at all before the release of 3.0
@@ -1207,6 +1201,12 @@ msgid ""
 "It is <b>strongly recommended</b> to upgrade to <b>MyPaint {new_version}</b> "
 "or newer if you want to edit this file!"
 msgstr ""
+"“{filename}” 是使用新版的 <b>MyPaint {new_version}</b>儲存的，和現在使用的舊版<b>MyPaint "
+"{current_version}</b><b>不相容</b>.\n"
+"\n"
+"使用舊版的MyPaint不保證能編輯這個檔案，而且可能導致程式當掉。\n"
+"\n"
+"<b>強烈建議</b> 升級到<b>MyPaint {new_version}</b> 更新的版本來編輯這個檔案!"
 
 #: ../gui/compatibility.py:54
 #, python-brace-format
@@ -1220,16 +1220,22 @@ msgid ""
 "\n"
 "To be safe you should upgrade to MyPaint {new_version} or newer."
 msgstr ""
+"檔案 “{filename}”  是使用新版 <b>MyPaint {new_version}</b>儲存。這和您當前的舊版 <b>Mypaint "
+"{current_version}</b> 不相容。\n"
+"\n"
+"以舊版 MyPaint 格式儲存此檔案時，其中支援新版本的資料將會遺失。\n"
+"\n"
+"保險起見，您應該升級 MyPaint 到新版本 {new_version} 或以上。"
 
 #: ../gui/compatibility.py:65
 msgctxt "file compatibility question"
 msgid "Do you want to open this file anyway?"
-msgstr ""
+msgstr "您仍然確定要打開這個檔案嗎？"
 
 #: ../gui/compatibility.py:129
 msgctxt "Version compat warning toggle"
 msgid "Don't show this warning again"
-msgstr ""
+msgstr "不要再顯示此警告"
 
 #. TRANSLATORS: One of the options for the
 #. TRANSLATORS: "When Not Specified in File"
@@ -1237,7 +1243,7 @@ msgstr ""
 #: ../gui/compatibility.py:197
 msgctxt "Prefs Dialog|Compatibility"
 msgid "Always open in 1.x mode"
-msgstr ""
+msgstr "都是使用 1.x 格式版本開啟"
 
 #. TRANSLATORS: One of the options for the
 #. TRANSLATORS: "When Not Specified in File"
@@ -1245,7 +1251,7 @@ msgstr ""
 #: ../gui/compatibility.py:206
 msgctxt "Prefs Dialog|Compatibility"
 msgid "Always open in 2.x mode"
-msgstr ""
+msgstr "都是使用2.x格式版本開啟"
 
 #. TRANSLATORS: One of the options for the
 #. TRANSLATORS: "When Not Specified in File"
@@ -1253,14 +1259,14 @@ msgstr ""
 #: ../gui/compatibility.py:215
 msgctxt "Prefs Dialog|Compatibility"
 msgid "Open in 1.x mode unless file contains pigment layers"
-msgstr ""
+msgstr "除非有包含 pigment 圖層，否則就使用1.x的格式版本開啟"
 
 #. TRANSLATORS: This is a label for a dropdown menu in the
 #. TRANSLATORS: file chooser dialog when loading .ora files.
 #: ../gui/compatibility.py:501
 msgctxt "File Load Compat Options"
 msgid "Compatibility mode:"
-msgstr ""
+msgstr "相容格式版本："
 
 #: ../gui/device.py:49
 msgctxt "prefs: device's type label"
@@ -1394,38 +1400,38 @@ msgid "Existing brush"
 msgstr "現有的筆刷"
 
 #: ../gui/dialogs.py:166
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgid ""
 "<b>A brush named “{brush_name}” already exists.</b>\n"
 "Do you want to replace it, or should the new brush be renamed?"
 msgstr ""
 "<b>名為「%s」的筆刷已經存在。</b>\n"
-"您想要取代它，抑或是重新命名新筆刷呢？"
+"您想要取代它，或者重新命名新筆刷呢？"
 
 #: ../gui/dialogs.py:196
 msgid "Overwrite brush group?"
-msgstr "要覆寫筆刷類組嗎？"
+msgstr "要覆寫筆刷群組嗎？"
 
 #: ../gui/dialogs.py:220
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgid ""
 "<b>A group named “{groupname}” already exists.</b>\n"
 "Do you want to replace it, or should the new group be renamed?\n"
 "If you replace it, the brushes may be moved to a group called "
 "“{deleted_groupname}”."
 msgstr ""
-"<b>名為「{groupname}」的類組已經存在。</b>\n"
-"您想要取代它，或是重新命名新類組呢？\n"
-"若您取代它的話，這些筆刷會移動至名為「{deleted_groupname}」的類組。"
+"<b>名為「{groupname}」的群組已經存在。</b>\n"
+"您想要取代它，或是重新命名新群組呢？\n"
+"若您取代它的話，這些筆刷會移動至名為「{deleted_groupname}」的群組。"
 
 #: ../gui/dialogs.py:326
 msgid "Import brush package?"
-msgstr "要匯入筆刷包嗎？"
+msgstr "要匯入筆刷套件組嗎？"
 
 #: ../gui/dialogs.py:357
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgid "<b>Do you really want to import package “{brushpack_name}”?</b>"
-msgstr "<b>您真的想要匯入「%s」套件嗎？</b>"
+msgstr "<b>您真的想要匯入「%s」筆刷套件組嗎？</b>"
 
 #: ../gui/document.py:455
 #, python-format
@@ -1435,7 +1441,7 @@ msgstr "從%d快捷列中載入筆刷設定"
 #: ../gui/document.py:456
 #, python-format
 msgid "Store brush settings in shortcut slot %d"
-msgstr "儲存筆刷設定於%d快捷列"
+msgstr "將筆刷設定儲存在%d快捷列中"
 
 #: ../gui/document.py:457
 #, python-format
@@ -1493,34 +1499,34 @@ msgstr "長按 {modifiers} ： {button_actions}。"
 #: ../gui/document.py:902
 msgctxt "Statusbar message: copy result"
 msgid "Empty document, nothing copied."
-msgstr ""
+msgstr "文件是空的，沒有複製任何東西。"
 
 #: ../gui/document.py:914
 #, python-brace-format
 msgctxt "Statusbar message: copy result"
 msgid "Copied layer as {w}×{h} image."
-msgstr ""
+msgstr "將複製的圖層存成的 {w}×{h} 圖片。"
 
 #: ../gui/document.py:931
 msgctxt "Statusbar message: paste result"
 msgid "Nothing on clipboard."
-msgstr ""
+msgstr "剪貼簿沒有資料。"
 
 #: ../gui/document.py:940
 msgctxt "Statusbar message: paste result"
 msgid "Clipboard does not contain an image."
-msgstr ""
+msgstr "剪貼簿沒有包含圖片。"
 
 #: ../gui/document.py:951
 msgctxt "Statusbar message: paste result"
 msgid "Cannot paste into this type of layer."
-msgstr ""
+msgstr "無法貼上這種圖層。"
 
 #: ../gui/document.py:956
 #, python-brace-format
 msgctxt "Statusbar message: paste result"
 msgid "Pasted {w}×{h} image."
-msgstr ""
+msgstr "已貼上 {w}×{h} 的圖片。"
 
 #: ../gui/document.py:2057
 #, python-brace-format
@@ -1542,10 +1548,9 @@ msgstr "MyPaint"
 #: ../gui/drawwindow.py:300
 msgctxt "Open dragged file confirm dialog: title"
 msgid "Open Dragged File?"
-msgstr ""
+msgstr "開啟拖曳的檔案？"
 
 #: ../gui/drawwindow.py:304
-#, fuzzy
 msgctxt "Open dragged file confirm dialog: continue button"
 msgid "_Open"
 msgstr "開啟…"
@@ -1571,13 +1576,11 @@ msgid "Fullscreen"
 msgstr "全螢幕"
 
 #: ../gui/drawwindow.py:686
-#, fuzzy
 msgctxt "Quit confirm dialog: title"
 msgid "Really Quit?"
 msgstr "確定要退出？"
 
 #: ../gui/drawwindow.py:690
-#, fuzzy
 msgctxt "Quit confirm dialog: continue button"
 msgid "_Quit"
 msgstr "退出"
@@ -1656,7 +1659,7 @@ msgid "no description"
 msgstr "沒有描述"
 
 #: ../gui/filehandling.py:127
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgctxt "Document I/O: message shown while working"
 msgid "Loading {files_summary}…"
 msgstr "「{file_basename}」載入中…"
@@ -1665,91 +1668,87 @@ msgstr "「{file_basename}」載入中…"
 #, python-brace-format
 msgctxt "Document I/O: message shown while working"
 msgid "Importing layers from {files_summary}…"
-msgstr ""
+msgstr "從 {files_summary}匯入圖層資料…"
 
 #: ../gui/filehandling.py:135
 #, fuzzy, python-brace-format
 msgctxt "Document I/O: message shown while working"
 msgid "Saving {files_summary}…"
-msgstr "儲存「{file_basename}」…"
+msgstr "儲存 {files_summary}…"
 
 #: ../gui/filehandling.py:139
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgctxt "Document I/O: message shown while working"
 msgid "Exporting to {files_summary}…"
-msgstr "匯出至「{file_basename}」…"
+msgstr "匯出至 {files_summary}…"
 
 #: ../gui/filehandling.py:146
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgctxt "Document I/O: fail message"
 msgid "Failed to export to {files_summary}."
-msgstr "無法匯出至「{file_basename}」。"
+msgstr "無法匯出至「{files_summary}」。"
 
 #: ../gui/filehandling.py:150
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgctxt "Document I/O: fail message"
 msgid "Failed to save {files_summary}."
-msgstr "無法儲存至「{file_basename}」。"
+msgstr "無法儲存至{file_basename}。"
 
 #: ../gui/filehandling.py:154
 #, python-brace-format
 msgctxt "Document I/O: fail message"
 msgid "Could not import layers from {files_summary}."
-msgstr ""
+msgstr "無法從{files_summary}匯入圖層。"
 
 #: ../gui/filehandling.py:158
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgctxt "Document I/O: fail message"
 msgid "Could not load {files_summary}."
-msgstr "無法載入「{file_basename}」。"
+msgstr "無法載入{file_basename}。"
 
 #: ../gui/filehandling.py:165
-#, fuzzy
 msgctxt "Document I/O: fail dialog title"
 msgid "Save failed"
-msgstr "儲存調色盤"
+msgstr "儲存失敗"
 
 #: ../gui/filehandling.py:169
-#, fuzzy
 msgctxt "Document I/O: fail dialog title"
 msgid "Export failed"
-msgstr "匯出至檔案"
+msgstr "匯出至檔案失敗"
 
 #: ../gui/filehandling.py:173
-#, fuzzy
 msgctxt "Document I/O: fail dialog title"
 msgid "Import Layers failed"
-msgstr "匯出至檔案"
+msgstr "匯出圖層失敗"
 
 #: ../gui/filehandling.py:177
-#, fuzzy
 msgctxt "Document I/O: fail dialog title"
 msgid "Open failed"
-msgstr "開啟最近的檔案"
+msgstr "檔案開啟失敗"
 
 #: ../gui/filehandling.py:184
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgctxt "Document I/O: success"
 msgid "Exported to {files_summary} successfully."
-msgstr "成功匯出至「{file_basename}」。"
+msgstr "成功匯出至{files_summary}。"
 
 #: ../gui/filehandling.py:188
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgctxt "Document I/O: success"
 msgid "Saved {files_summary} successfully."
-msgstr "成功儲存「{file_basename}」。"
+msgstr "成功儲存{files_summary}。"
 
 #: ../gui/filehandling.py:192
 #, python-brace-format
 msgctxt "Document I/O: success"
 msgid "Imported layers from {files_summary}."
-msgstr ""
+msgstr "從{files_summary}匯入圖層。"
 
 #: ../gui/filehandling.py:196
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgctxt "Document I/O: success"
 msgid "Loaded {files_summary}."
-msgstr "「{file_basename}」已被載入。"
+msgstr "{files_summary}已被載入。"
 
 #. TRANSLATORS: formatting for {files_summary} for multiple files.
 #. TRANSLATORS: corresponding msgid for single files: "“{basename}”"
@@ -1757,106 +1756,90 @@ msgstr "「{file_basename}」已被載入。"
 #, python-brace-format
 msgid "{n} file"
 msgid_plural "{n} files"
-msgstr[0] ""
+msgstr[0] "{n}個檔案"
 
 #: ../gui/filehandling.py:223
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgctxt "Document I/O: the {files_summary} for a single file"
 msgid "“{basename}”"
-msgstr "「{file_basename}」已被載入。"
+msgstr "「{basename}」"
 
 #: ../gui/filehandling.py:432
-#, fuzzy
 msgctxt "save/load dialogs: filter patterns"
 msgid "All Recognized Formats"
 msgstr "所有可辨識的格式"
 
 #: ../gui/filehandling.py:437
-#, fuzzy
 msgctxt "save/load dialogs: filter patterns"
 msgid "OpenRaster (*.ora)"
 msgstr "OpenRaster (*.ora)"
 
 #: ../gui/filehandling.py:442
-#, fuzzy
 msgctxt "save/load dialogs: filter patterns"
 msgid "PNG (*.png)"
 msgstr "PNG (*.png)"
 
 #: ../gui/filehandling.py:447
-#, fuzzy
 msgctxt "save/load dialogs: filter patterns"
 msgid "JPEG (*.jpg; *.jpeg)"
 msgstr "JPEG (*.jpg; *.jpeg)"
 
 #: ../gui/filehandling.py:495
-#, fuzzy
 msgctxt "save dialogs: save formats and options"
 msgid "By extension (prefer default format)"
 msgstr "依副檔名 (偏好預設格式)"
 
 #: ../gui/filehandling.py:499
-#, fuzzy
 msgctxt "save dialogs: save formats and options"
 msgid "OpenRaster (*.ora)"
 msgstr "OpenRaster (*.ora)"
 
 #: ../gui/filehandling.py:503
-#, fuzzy
 msgctxt "save dialogs: save formats and options"
 msgid "PNG, respecting “Show Background” (*.png)"
 msgstr "PNG 不透明背景 (*.png)"
 
 #: ../gui/filehandling.py:507
-#, fuzzy
 msgctxt "save dialogs: save formats and options"
 msgid "PNG, solid RGB (*.png)"
 msgstr "PNG (*.png)"
 
 #: ../gui/filehandling.py:511
-#, fuzzy
 msgctxt "save dialogs: save formats and options"
 msgid "PNG, transparent RGBA (*.png)"
 msgstr "PNG 透明圖片 (*.png)"
 
 #: ../gui/filehandling.py:515
-#, fuzzy
 msgctxt "save dialogs: save formats and options"
 msgid "Multiple PNGs, by layer (*.NUM.png)"
-msgstr "多張 PNG 透明圖片 (*.XXX.png)"
+msgstr "多張 PNG 透明圖片 (*.NUM.png)"
 
 #: ../gui/filehandling.py:519
-#, fuzzy
 msgctxt "save dialogs: save formats and options"
 msgid "Multiple PNGs, by view (*.NAME.png)"
-msgstr "多張 PNG 透明圖片 (*.XXX.png)"
+msgstr "多張 PNG 透明圖片by view (*.NAME.png)"
 
 #: ../gui/filehandling.py:523
-#, fuzzy
 msgctxt "save dialogs: save formats and options"
 msgid "JPEG 90% quality (*.jpg; *.jpeg)"
-msgstr "JPEG 90% 品質 (*.jpg; *.jpeg)"
+msgstr "JPEG 90% 品質(*.jpg; *.jpeg)"
 
 #: ../gui/filehandling.py:581
-#, fuzzy
 msgctxt "Dialogs (window title): File→Export…"
 msgid "Export"
 msgstr "匯出…"
 
 #: ../gui/filehandling.py:586
-#, fuzzy
 msgctxt "Dialogs (window title): File→Save As…"
 msgid "Save As"
 msgstr "另存為…"
 
 #: ../gui/filehandling.py:606
-#, fuzzy
 msgctxt "save dialogs: formats and options: (label)"
 msgid "Format to save as:"
 msgstr "要另存的格式："
 
 #: ../gui/filehandling.py:673
-#, fuzzy
 msgctxt ""
 "Destructive action confirm dialog: fallback title (normally overridden)"
 msgid "Really Continue?"
@@ -1865,10 +1848,9 @@ msgstr "真的要繼續嗎？"
 #: ../gui/filehandling.py:706
 msgctxt "Destructive action confirm dialog: cancel button"
 msgid "_Cancel"
-msgstr ""
+msgstr "取消"
 
 #: ../gui/filehandling.py:710
-#, fuzzy
 msgctxt "Destructive action confirm dialog: save checkbox"
 msgid "_Save to Scraps first"
 msgstr "儲存為圖料(_S)"
@@ -1878,40 +1860,38 @@ msgctxt ""
 "Destructive action confirm dialog: fallback continue button (normally "
 "overridden)"
 msgid "Co_ntinue"
-msgstr ""
+msgstr "繼續"
 
 #: ../gui/filehandling.py:739
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgctxt "Destructive action confirm dialog: warning message"
 msgid "You risk losing {abbreviated_time} of unsaved painting."
-msgstr "這將會丟棄 {abbreviated_time} 分鐘內尚未儲存的作畫"
+msgstr "這將會遺失 {abbreviated_time} 分鐘內尚未儲存的作畫"
 
 #: ../gui/filehandling.py:804
 msgctxt "File→New: confirm dialog: title question"
 msgid "New Canvas?"
-msgstr ""
+msgstr "新畫布？"
 
 #: ../gui/filehandling.py:808
 msgctxt "File→New: confirm dialog: continue button"
 msgid "_New Canvas"
-msgstr ""
+msgstr "新畫布"
 
 #: ../gui/filehandling.py:1024
 msgctxt "File→Open: confirm dialog: title question"
 msgid "Open File?"
-msgstr ""
+msgstr "開啟檔案？"
 
 #: ../gui/filehandling.py:1028
-#, fuzzy
 msgctxt "File→Open: confirm dialog: continue button"
 msgid "_Open…"
 msgstr "開啟…"
 
 #: ../gui/filehandling.py:1036
-#, fuzzy
 msgctxt "File→Open: file chooser dialog: title"
 msgid "Open File"
-msgstr "開啟最近的檔案"
+msgstr "開啟檔案"
 
 #: ../gui/filehandling.py:1084
 #, fuzzy
@@ -1920,54 +1900,46 @@ msgid "Open Scratchpad…"
 msgstr "開啟便條紙…"
 
 #: ../gui/filehandling.py:1126
-#, fuzzy
 msgctxt "Layers→Import Layers: files-chooser dialog: title"
 msgid "Import Layers"
-msgstr "匯入的筆刷"
+msgstr "匯入筆刷"
 
 #: ../gui/filehandling.py:1433
 msgctxt "File→Open Recent→* confirm dialog: title"
 msgid "Open File?"
-msgstr ""
+msgstr "開啟最近的檔案？"
 
 #: ../gui/filehandling.py:1437
-#, fuzzy
 msgctxt "File→Open Recent→* confirm dialog: continue button"
 msgid "_Open"
 msgstr "開啟…"
 
 #: ../gui/filehandling.py:1452
-#, fuzzy
 msgctxt "File→Open Most Recent confirm dialog: title"
 msgid "Open Most Recent File?"
-msgstr "開啟最新近"
+msgstr "開啟最近的檔案？"
 
 #: ../gui/filehandling.py:1457
-#, fuzzy
 msgctxt "File→Open Most Recent→* confirm dialog: continue button"
 msgid "_Open"
 msgstr "開啟…"
 
 #: ../gui/filehandling.py:1471
-#, fuzzy
 msgctxt "File→Open Next/Prev Scrap: error message"
 msgid "There are no scrap files yet. Try saving one first."
-msgstr "還沒有圖料檔命名為「%s」。"
+msgstr "還沒有圖料檔命名為「%s」，先嘗試儲存檔案。"
 
 #: ../gui/filehandling.py:1480
-#, fuzzy
 msgctxt "File→Open Next/Prev Scrap confirm dialog: title"
 msgid "Open Next Scrap?"
-msgstr "開啟下一個圖料"
+msgstr "開啟下一個圖料？"
 
 #: ../gui/filehandling.py:1488
-#, fuzzy
 msgctxt "File→Open Next/Prev Scrap confirm dialog: title"
 msgid "Open Previous Scrap?"
 msgstr "開啟上一個圖料"
 
 #: ../gui/filehandling.py:1497
-#, fuzzy
 msgctxt "File→Open Next/Prev Scrap confirm dialog: continue button"
 msgid "_Open"
 msgstr "開啟…"
