@@ -24,6 +24,7 @@ import lib.xml
 import lib.helpers
 from . import objfactory
 from .widgets import borderless_button
+from .windowing import clear_focus
 from lib.gettext import C_
 from lib.pycompat import xrange
 from lib.pycompat import unicode
@@ -988,6 +989,7 @@ class ToolStackWindow (Gtk.Window):
         self.connect("realize", self._realize_cb)
         self.connect("destroy", self._destroy_cb)
         self.connect("delete-event", self._delete_cb)
+        self.connect("button-press-event", self._clear_focus)
         self.stack = ToolStack(workspace)  #: The ToolStack child of the window
         self.add(self.stack)
         self.update_title([])
@@ -1119,6 +1121,9 @@ class ToolStackWindow (Gtk.Window):
         if workspace is not None:
             if self in workspace._floating:
                 workspace._floating.remove(self)
+
+    def _clear_focus(self, *args):
+        clear_focus(self)
 
     ## Autohide in fullscreen
 

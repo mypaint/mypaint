@@ -116,12 +116,16 @@ class BrushEditorWindow (SubWindow):
         self._builder.set_translation_domain("mypaint")
         self._build_ui()
         self.connect_after("show", self._post_show_cb)
+        self.connect('button-press-event', self._clear_focus)
         editor = self._builder.get_object("brush_editor")
         self.add(editor)
         self._brush.observers.append(self.brush_modified_cb)
         self._live_update_idle_cb_id = None
         self._updating_metadata_ui = False
         self.set_default_size(1000, 800)
+
+    def _clear_focus(self, *args):
+        self.set_focus(None)
 
     def _init_adjustments(self):
         """Initializes adjustments for the scales used internally
