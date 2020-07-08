@@ -227,6 +227,24 @@
       </properties>
     </glade-widget-class>
 
+    <!-- gui/sliderwidget.py -->
+    <!-- The actual parent is GtkBin. GtkScale is used for the visual -->
+    <glade-widget-class name="InputSlider"
+        title="Scale Entry" parent="GtkScale"
+        generic-name="scaleentry">
+      <properties>
+        <!-- All fakery -->
+        <property id="active" visible="False" save="False" />
+        <!-- Representative size for preview -->
+        <property id="width-request" default="-1" optional="True"
+            optional-default="True"/>
+        <property id="height-request" default="28" optional="True"
+            optional-default="True"/>
+        <property id="round-digits" default="2" optional="True"
+            optional-default="True"/>
+      </properties>
+    </glade-widget-class>
+
     <!-- gui/dropdownpanel.py -->
     <glade-widget-class name="DropdownPanelButton"
         title="Dropdown Panel Button" parent="GtkToggleButton"
@@ -312,6 +330,7 @@
     <glade-widget-class-ref name="PixbufList"/>
     <glade-widget-class-ref name="CurveWidget"/>
     <glade-widget-class-ref name="ItemSpinBox"/>
+    <glade-widget-class-ref name="InputSlider"/>
     <glade-widget-class-ref name="DropdownPanelButton"/>
     <glade-widget-class-ref name="ButtonMappingEditor"/>
     <glade-widget-class-ref name="AccelMapEditor"/>
