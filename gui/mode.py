@@ -15,6 +15,8 @@ import logging
 import math
 from gettext import gettext as _
 
+from gui.sliderwidget import InputSlider
+
 from lib.gibindings import Gtk
 from lib.gibindings import Gdk
 from lib.gibindings import GLib
@@ -611,7 +613,7 @@ class PaintingModeOptionsWidgetBase (Gtk.Grid):
             label.set_hexpand(False)
             self.adjustable_settings.add(cname)
             adj = self.app.brush_adjustment[cname]
-            scale = Gtk.Scale.new(Gtk.Orientation.HORIZONTAL, adj)
+            scale = InputSlider(adj)
             scale.set_draw_value(False)
             scale.set_hexpand(True)
             self.attach(label, 0, row, 1, 1)

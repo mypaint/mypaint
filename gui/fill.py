@@ -26,6 +26,7 @@ import gui.cursor
 from gui.blendmodehandler import BlendModes
 import gui.layers
 import gui.overlays
+from gui.sliderwidget import InputSlider
 
 import lib.eotf
 import lib.floodfill
@@ -521,9 +522,8 @@ class FloodFillOptionsWidget (Gtk.Grid):
                              page_size=0)
         adj.connect("value-changed", self._tolerance_changed_cb)
         self._tolerance_adj = adj
-        scale = Gtk.Scale()
+        scale = InputSlider(adj)
         scale.set_hexpand(True)
-        scale.set_adjustment(adj)
         scale.set_draw_value(False)
         self.attach(scale, 1, row, 1, 1)
 
@@ -712,7 +712,7 @@ class FloodFillOptionsWidget (Gtk.Grid):
                              page_size=0)
         adj.connect("value-changed", self._opacity_changed_cb)
         self._opacity_adj = adj
-        scale = Gtk.Scale()
+        scale = InputSlider()
         scale.set_hexpand(True)
         scale.set_adjustment(adj)
         scale.set_draw_value(False)

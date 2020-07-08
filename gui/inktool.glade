@@ -2,6 +2,7 @@
 <!-- Generated with glade 3.16.1 -->
 <interface>
   <requires lib="gtk+" version="3.10"/>
+  <requires lib="mypaint_widgets" version="3.0"/>
   <object class="GtkAdjustment" id="dtime_adj">
     <property name="upper">2</property>
     <property name="step_increment">0.10000000000000001</property>
@@ -55,7 +56,7 @@
           </packing>
         </child>
         <child>
-          <object class="GtkScale" id="pressure_scale">
+          <object class="InputSlider" id="pressure_scale">
             <property name="width_request">150</property>
             <property name="visible">True</property>
             <property name="can_focus">True</property>
@@ -116,7 +117,7 @@ Negative values mean leftwards tilts.</property>
           </packing>
         </child>
         <child>
-          <object class="GtkScale" id="xtilt_scale">
+          <object class="InputSlider" id="xtilt_scale">
             <property name="width_request">150</property>
             <property name="visible">True</property>
             <property name="can_focus">True</property>
@@ -137,7 +138,7 @@ Negative values mean leftwards tilts.</property>
           </packing>
         </child>
         <child>
-          <object class="GtkScale" id="ytilt_scale">
+          <object class="InputSlider" id="ytilt_scale">
             <property name="width_request">150</property>
             <property name="visible">True</property>
             <property name="can_focus">True</property>
@@ -178,7 +179,7 @@ Negative values mean leftwards tilts.</property>
           </packing>
         </child>
         <child>
-          <object class="GtkScale" id="dtime_scale">
+          <object class="InputSlider" id="dtime_scale">
             <property name="width_request">150</property>
             <property name="visible">True</property>
             <property name="can_focus">True</property>

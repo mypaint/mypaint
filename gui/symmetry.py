@@ -22,6 +22,7 @@ import gui.widgets
 import gui.windowing
 import gui.tileddrawwidget
 import lib.alg
+from gui.sliderwidget import InputSlider
 from lib.helpers import clamp
 import lib.mypaintlib
 from lib.mypaintlib import (
@@ -506,18 +507,15 @@ class SymmetryEditOptionsWidget (Gtk.Alignment):
         label.set_hexpand(False)
         label.set_halign(Gtk.Align.START)
         grid.attach(label, 0, row, 1, 1)
-        scale = Gtk.Scale.new_with_range(
-            orientation = Gtk.Orientation.HORIZONTAL,
-            min = 0,
-            max = 1,
-            step = 0.1,
-        )
+        scale = InputSlider()
+        scale.set_range(0, 1)
+        scale.set_round_digits(1)
         scale.set_draw_value(False)
         line_alpha = self.app.preferences.get(_ALPHA_PREFS_KEY, _DEFAULT_ALPHA)
         scale.set_value(line_alpha)
         scale.set_hexpand(True)
         scale.set_vexpand(False)
-        scale.connect("value-changed", self._scale_value_changed_cb)
+        scale.scale.connect("value-changed", self._scale_value_changed_cb)
         grid.attach(scale, 1, row, 1, 1)
 
         row += 1
@@ -587,9 +585,7 @@ class SymmetryEditOptionsWidget (Gtk.Alignment):
         self._angle_label = label
         self._update_angle_label()
         grid.attach(label, 0, row, 1, 1)
-        scale = Gtk.Scale(
-            orientation=Gtk.Orientation.HORIZONTAL,
-            adjustment=self._axis_angle)
+        scale = InputSlider(self._axis_angle)
         scale.set_draw_value(False)
         scale.set_hexpand(True)
         scale.set_vexpand(False)

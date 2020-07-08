@@ -33,6 +33,10 @@ from . import brushmanager
 from .builderhacks import add_objects_from_template_string
 from .windowing import SubWindow
 
+# The widget class needs to be in scope before it is
+# instantiated via the loading of the glade file.
+from .sliderwidget import InputSlider  # noqa
+
 logger = logging.getLogger(__name__)
 
 

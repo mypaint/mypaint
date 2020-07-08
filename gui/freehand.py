@@ -26,6 +26,7 @@ from gui.tileddrawwidget import TiledDrawWidget
 from lib.helpers import clamp
 import gui.mode
 from .drawutils import spline_4p
+from .sliderwidget import InputSlider
 
 logger = logging.getLogger(__name__)
 
@@ -585,7 +586,7 @@ class FreehandOptionsWidget (gui.mode.PaintingModeOptionsWidgetBase):
         label.set_hexpand(False)
         self.adjustable_settings.add(cname)
         adj = self.app.brush_adjustment[cname]
-        scale = Gtk.Scale.new(Gtk.Orientation.HORIZONTAL, adj)
+        scale = InputSlider(adj)
         scale.set_draw_value(False)
         scale.set_hexpand(True)
         self.attach(label, 0, row, 1, 1)
@@ -603,7 +604,7 @@ class FreehandOptionsWidget (gui.mode.PaintingModeOptionsWidgetBase):
                              step_increment=0.01, page_increment=0.1)
         self.app.fake_adjustment['fakepressure'] = adj
         adj.connect("value-changed", changed_cb)
-        scale = Gtk.Scale.new(Gtk.Orientation.HORIZONTAL, adj)
+        scale = InputSlider(adj)
         scale.set_draw_value(False)
         scale.set_hexpand(True)
         self.attach(label, 0, row, 1, 1)
@@ -621,7 +622,7 @@ class FreehandOptionsWidget (gui.mode.PaintingModeOptionsWidgetBase):
                              step_increment=0.0625, page_increment=0.25)
         self.app.fake_adjustment['fakerotation'] = adj
         adj.connect("value-changed", changed_cb)
-        scale = Gtk.Scale.new(Gtk.Orientation.HORIZONTAL, adj)
+        scale = InputSlider(adj)
         scale.set_draw_value(False)
         scale.set_hexpand(True)
         self.attach(label, 0, row, 1, 1)

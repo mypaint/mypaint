@@ -432,7 +432,7 @@
                       </packing>
                     </child>
                     <child>
-                      <object class="GtkScale" id="base_value_scale">
+                      <object class="InputSlider" id="base_value_scale">
                         <property name="width_request">200</property>
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
@@ -755,7 +755,7 @@ Use the popup scale to adjust this.</property>
                       </packing>
                     </child>
                     <child>
-                      <object class="GtkScale" id="by{name}_scale">
+                      <object class="InputSlider" id="by{name}_scale">
                         <property name="width_request">200</property>
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
