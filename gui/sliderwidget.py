@@ -104,8 +104,34 @@ class InputSlider (with_metaclass(ScaleDelegator, Gtk.Bin)):
         self._scale = scale
         self._scale_mode = True
         self._old_value = None
+        self._tooltip_cb_id = None
         # Hook up property delegation
         self.connect("notify", self._notify)
+
+    @property
+    def dynamic_tooltip(self):
+        return self._tooltip_cb_id is not None
+
+    @dynamic_tooltip.setter
+    def dynamic_tooltip(self, enabled):
+        if enabled and self._tooltip_cb_id is None:
+            self._scale.set_has_tooltip(True)
+            self._tooltip_cb_id = self._scale.connect(
+                "query-tooltip", self._dynamic_tooltip
+            )
+        elif not enabled and self._tooltip_cb_id is not None:
+            self._scale.set_has_tooltip(False)
+            self._scale.disconnect(self._tooltip_cb_id)
+            self._tooltip_cb_id = None
+
+    def _dynamic_tooltip(self, scale, x, y, kb_mode, tooltip):
+        if kb_mode:
+            return False
+        else:
+            digits = self._scale_precision(scale)
+            scale_value = round(scale.get_value(), digits)
+            tooltip.set_text(str(scale_value))
+            return True
 
     @property
     def scale(self):
@@ -151,10 +177,7 @@ class InputSlider (with_metaclass(ScaleDelegator, Gtk.Bin)):
         scale = self._scale
         adj = scale.get_adjustment()
 
-        precision = scale.get_round_digits()
-        if precision == -1:
-            upper = min(self.MAX_SPIN_BUTTON_DIGITS, self._REAL_MAX_DIGITS)
-            precision = max(1, upper)
+        precision = self._scale_precision(scale)
 
         spin_button = Gtk.SpinButton(adjustment=adj, digits=precision)
 
@@ -170,6 +193,13 @@ class InputSlider (with_metaclass(ScaleDelegator, Gtk.Bin)):
             "focus-out-event", self._spin_button_focus_out)
         self.spin_button_created(scale, weakref.ref(spin_button))
         return spin_button
+
+    def _scale_precision(self, scale):
+        precision = scale.get_round_digits()
+        if precision == -1:
+            upper = min(self.MAX_SPIN_BUTTON_DIGITS, self._REAL_MAX_DIGITS)
+            precision = max(1, upper)
+        return precision
 
     def _spin_button_focus_out(self, *args):
         """Return to scale mode & treat changes to the value as intentional"""

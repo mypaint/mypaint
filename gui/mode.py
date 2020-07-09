@@ -616,6 +616,7 @@ class PaintingModeOptionsWidgetBase (Gtk.Grid):
             scale = InputSlider(adj)
             scale.set_draw_value(False)
             scale.set_hexpand(True)
+            scale.dynamic_tooltip = True
             self.attach(label, 0, row, 1, 1)
             self.attach(scale, 1, row, 1, 1)
             row += 1
