@@ -22,6 +22,7 @@ from lib.gibindings import Gdk
 from lib.gibindings import GLib
 
 import lib.command
+from lib.brushsettings import settings_dict
 from lib.document import Document
 from lib.layer.data import SimplePaintingLayer
 from lib.observable import event
@@ -611,6 +612,7 @@ class PaintingModeOptionsWidgetBase (Gtk.Grid):
             label.set_text(text)
             label.set_alignment(1.0, 0.5)
             label.set_hexpand(False)
+            label.set_tooltip_text(settings_dict[cname].tooltip)
             self.adjustable_settings.add(cname)
             adj = self.app.brush_adjustment[cname]
             scale = InputSlider(adj)
