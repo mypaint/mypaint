@@ -5,8 +5,8 @@ msgstr ""
 "Project-Id-Version: mypaint v2.0.0-alpha.8-1-g4490f06\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-07-05 09:12+0200\n"
-"PO-Revision-Date: 2019-02-27 14:19+0000\n"
-"Last-Translator: glixx <roman_romul@mail.ru>\n"
+"PO-Revision-Date: 2020-07-15 15:41+0000\n"
+"Last-Translator: TA <semifluid12@gmail.com>\n"
 "Language-Team: Indonesian <https://hosted.weblate.org/projects/mypaint/"
 "mypaint/id/>\n"
 "Language: id\n"
@@ -14,7 +14,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 3.5-dev\n"
+"X-Generator: Weblate 4.2-dev\n"
 
 #. TRANSLATORS: Name of first column in the button map preferences.
 #. TRANSLATORS: Refers to an action bound to a mod+button combination.
@@ -6003,7 +6003,7 @@ msgstr ""
 #: ../gui/resources.xml:1213
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
 msgid "Get More Brushes…"
-msgstr ""
+msgstr "Dapatkan lebih banyak kuas…"
 
 #: ../gui/resources.xml:1214
 msgctxt "Accel Editor (descriptions)"
@@ -6028,7 +6028,7 @@ msgstr "Bantuan"
 #: ../gui/resources.xml:1237
 msgctxt "Menu→Help (labels), Accel Editor (labels)"
 msgid "Online Help"
-msgstr ""
+msgstr "Bantuan Daring"
 
 #: ../gui/resources.xml:1238
 msgctxt "Accel Editor (descriptions)"
