@@ -1477,3 +1477,6 @@ class ModeStack (object):
     def __iter__(self):
         for mode in self._stack:
             yield mode
+
+    def __getitem__(self, index):
+        return self._stack[index]
