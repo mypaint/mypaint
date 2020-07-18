@@ -1123,7 +1123,7 @@ class DragMode (InteractionMode):
             if self.ignore_modifiers:
                 self.initial_modifiers = 0
                 return
-            old_modifiers = getattr(self, "initial_modifiers", None)
+            old_modifiers = self.initial_modifiers
             if old_modifiers is not None:
                 # Re-entering due to an overlying mode being popped
                 if old_modifiers != 0:
@@ -1134,9 +1134,7 @@ class DragMode (InteractionMode):
                         # so queue a further pop.
                         GLib.idle_add(self.__pop_modestack_idle_cb)
             else:
-                # This mode is being entered for the first time;
-                # record modifiers
-                modifiers = self.current_modifiers()
+                # Record modifiers when the mode is entered for the first time
                 self.initial_modifiers = self.current_modifiers()
 
     def __pop_modestack_idle_cb(self):
@@ -1254,21 +1252,20 @@ class OneshotDragMode (DragMode):
         return not isinstance(mode, OneshotDragMode)
 
     def drag_stop_cb(self, tdw):
-        if not hasattr(self, "initial_modifiers"):
-            # Always exit at the end of a drag if not spring-loaded.
-            if self is self.doc.modes.top:
-                self.doc.modes.pop()
-        elif self.initial_modifiers != 0:
-            # If started with modifiers, keeping the modifiers held keeps
-            # spring-loaded modes active. If not, exit the mode.
-            if (self.initial_modifiers & self.current_modifiers()) == 0:
-                if self is self.doc.modes.top:
-                    self.doc.modes.pop()
-        else:
-            # No modifiers were held when this mode was entered.
-            if self.temporary_activation or (not self.unmodified_persist):
-                if self is self.doc.modes.top:
-                    self.doc.modes.pop()
+        # Always exit at the end of a drag if not spring-loaded.
+        pop = True
+        if self.SPRING_LOADED:
+            init_mods = self.initial_modifiers
+            if init_mods:
+                # If started with modifiers, keeping the modifiers held keeps
+                # spring-loaded modes active. If not, exit the mode.
+                pop = not (init_mods & self.current_modifiers() == init_mods)
+            else:
+                # No modifiers were held when this mode was entered.
+                pop = self.temporary_activation or not self.unmodified_persist
+
+        if pop and self is self.doc.modes.top:
+            self.doc.modes.pop()
         return super(OneshotDragMode, self).drag_stop_cb(tdw)
 
 
