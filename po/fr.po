@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: mypaint v2.0.0-alpha.8-1-g4490f06\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-07-05 09:12+0200\n"
-"PO-Revision-Date: 2020-06-22 15:41+0000\n"
+"PO-Revision-Date: 2020-07-21 15:41+0000\n"
 "Last-Translator: Isabelle Lepage <noisette@netc.eu>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/mypaint/mypaint/"
 "fr/>\n"
@@ -2224,16 +2224,14 @@ msgid "Reset"
 msgstr "Réinitialiser"
 
 #: ../gui/fill.py:858
-#, fuzzy
 msgctxt "fill options: Reset button (tooltip)"
 msgid "Reset options to their defaults"
-msgstr "Remettre à la valeur par défaut"
+msgstr "Rétablir les options par défaut"
 
 #: ../gui/fill.py:1036
-#, fuzzy
 msgctxt "fill option: default option in the Source Layer dropdown"
 msgid "Selected Layer"
-msgstr "Sélectionner un calque"
+msgstr "Calque sélectionné"
 
 #: ../gui/footer.py:195
 #, python-brace-format
@@ -2489,8 +2487,9 @@ msgid "Device:"
 msgstr "Périphérique :"
 
 #: ../gui/inputtestwindow.py:73
+#, fuzzy
 msgid "(No Barrel Rotation)"
-msgstr ""
+msgstr "Pas de rotation"
 
 #: ../gui/inputtestwindow.py:75
 #, fuzzy
@@ -2599,7 +2598,7 @@ msgstr "Calques"
 
 #: ../gui/layerswindow.py:96
 msgid "Arrange layers and assign effects"
-msgstr ""
+msgstr "Arranger les calques et attribuer les effets"
 
 #. TRANSLATORS: tooltip for the opacity slider (text)
 #. TRANSLATORS: note that "%%" turns into "%"
@@ -2700,8 +2699,9 @@ msgstr "Lignes et courbes"
 
 #. TRANSLATORS: users should never see this message
 #: ../gui/linemode.py:224
+#, fuzzy
 msgid "Generic line/curve mode"
-msgstr ""
+msgstr "Mode ligne/courbe générique"
 
 #: ../gui/linemode.py:781
 msgid "Draw straight lines; Shift adds curves, Ctrl constrains angle"
@@ -3144,7 +3144,7 @@ msgstr "Rogner le calque"
 
 #: ../lib/command.py:630
 msgid "Uniquify Layer Pixels"
-msgstr ""
+msgstr "Unifier les pixels du calque"
 
 #: ../lib/command.py:653
 #, fuzzy
@@ -3556,9 +3556,10 @@ msgid ", "
 msgstr ", "
 
 #: ../lib/layer/tree.py:2243
+#, fuzzy
 msgctxt "layer default names: refactor: name of the common areas layer"
 msgid "Common"
-msgstr ""
+msgstr "Courant"
 
 #: ../lib/layervis.py:44
 #, fuzzy
@@ -4428,7 +4429,7 @@ msgstr "Boutons"
 #. unless its key is bound to something else.
 #: ../gui/preferenceswindow.glade:453
 msgid "Disable fallback key bindings"
-msgstr ""
+msgstr "Désactiver les raccourcis clavier de secours"
 
 #. Tooltip for checkbox in the keyboard mappings preferences.
 #: ../gui/preferenceswindow.glade:457
@@ -4436,6 +4437,9 @@ msgid ""
 "The fallback key bindings are static built-in bindings that are only used if "
 "their key combinations are not bound to anything else."
 msgstr ""
+"Les raccourcis clavier de secours sont des raccourcis intégrés statiques "
+"utilisés uniquement si leurs combinaisons de touches ne sont pas liées à "
+"autre chose."
 
 #: ../gui/preferenceswindow.glade:476
 msgctxt "Prefs Dialog|Button|"
@@ -4517,6 +4521,11 @@ msgid ""
 "This is MyPaint's old behaviour, and can be used as a stopgap for non-sRGB "
 "working."
 msgstr ""
+"Aucune conversion de couleur n’est effectuée lors du chargement, et les "
+"fichiers sont enregistrés sans informations de gestion des couleurs.\n"
+"\n"
+"C’est l’ancien comportement de MyPaint, et cela peut être utilisé comme un "
+"palliatif pour un travail non RVB."
 
 #: ../gui/preferenceswindow.glade:680
 msgctxt "Prefs Dialog|Load & Save|"
@@ -4542,6 +4551,9 @@ msgid ""
 "the program crashes, you'll have a chance to restore what you were working "
 "on."
 msgstr ""
+"Les sauvegardes se font progressivement en arrière-plan dans la mémoire "
+"cache de MyPaint. Si le programme plante, vous aurez une chance de restaurer "
+"ce sur quoi vous travailliez."
 
 #: ../gui/preferenceswindow.glade:768
 msgctxt "Prefs Dialog|Load & Save|Automated Backups|interval label"
@@ -4577,7 +4589,7 @@ msgstr "Taille des icône de la barre d'outils :"
 #: ../gui/preferenceswindow.glade:895
 msgctxt "Prefs Dialog|View|Interface|"
 msgid "Freehand cursor type:"
-msgstr ""
+msgstr "Type de curseur à main levée :"
 
 #: ../gui/preferenceswindow.glade:910
 msgctxt "Prefs Dialog|View|Interface|"
@@ -4587,7 +4599,7 @@ msgstr "Variantes de thèmes sombres :"
 #: ../gui/preferenceswindow.glade:920
 msgctxt "Prefs Dialog|View|Interface|Dark theme variant|"
 msgid "If available in GTK3 theme (needs restart)"
-msgstr ""
+msgstr "Si disponible dans le thème GTK3 (redémarrage nécessaire)"
 
 #: ../gui/preferenceswindow.glade:924
 msgctxt "Prefs Dialog|View|Interface|Dark theme variant|checkbox tooltip"
@@ -4606,7 +4618,7 @@ msgstr "Certains de ces paramètres exige un redémarrage de MyPaint."
 #: ../gui/preferenceswindow.glade:968
 msgctxt "Prefs Dialog|View|Interface|Icon size|"
 msgid "Large (requires recent GTK3)"
-msgstr ""
+msgstr "Grande (nécessite une version récente de GTK3)"
 
 #: ../gui/preferenceswindow.glade:985
 msgctxt "Prefs Dialog|View|Interface|Icon size|"
@@ -4616,7 +4628,7 @@ msgstr "Petit"
 #: ../gui/preferenceswindow.glade:1010
 msgctxt "Prefs Dialog|View|Zoom|"
 msgid "Use a real checkerboard pattern"
-msgstr ""
+msgstr "Utiliser un véritable motif de damier"
 
 #: ../gui/preferenceswindow.glade:1014
 msgctxt "Prefs Dialog|View|Zoom|"
@@ -4624,6 +4636,8 @@ msgid ""
 "Draw a real checkerboard pattern to show transparency.\n"
 "This slows down the display, but can be less confusing."
 msgstr ""
+"Dessine un véritable motif de damier pour afficher la transparence.\n"
+"Cela ralentit l’affichage, mais peut être moins déstabilisant."
 
 #: ../gui/preferenceswindow.glade:1035
 msgid "When showing transparency:"
@@ -4632,13 +4646,13 @@ msgstr "Quand on voit la transparence :"
 #: ../gui/preferenceswindow.glade:1050
 msgctxt "Prefs Dialog|View|Interface|"
 msgid "Handle smooth scrolling events:"
-msgstr ""
+msgstr "Gérer les événements de défilement fluide :"
 
 #: ../gui/preferenceswindow.glade:1060
 msgctxt ""
 "Prefs Dialog|View|Interface|Handle smooth scrolling events|checkbox label"
 msgid "When devices send them (needs restart)"
-msgstr ""
+msgstr "Quand les appareils les envoient (nécessite un redémarrage)"
 
 #: ../gui/preferenceswindow.glade:1064
 msgctxt ""
@@ -4654,6 +4668,18 @@ msgid ""
 "Scrolling to pan the view needs this setting to be turned on, and for your "
 "device to be configured to send bidirectional scroll events."
 msgstr ""
+"La prise en charge du défilement fluide rend la gestuelle et les évènements "
+"de la molette de défilement de certains appareils plus fluide que par "
+"étapes. C’est bien pour les pavés tactiles, mais peut être gênant si vous "
+"utilisez la souris pour faire défiler.\n"
+"\n"
+"Si le défilement fluide est supporté, le défilement par étapes peut être "
+"brièvement réactivé en maintenant la touche MAJ enfoncée pendant le "
+"défilement.\n"
+"\n"
+"Le défilement pour translater la vue nécessite que ce paramètre soit actif, "
+"et que votre appareil soit configuré pour envoyer des évènements de "
+"défilement bidirectionnel."
 
 #: ../gui/preferenceswindow.glade:1111
 msgid "Hide cursor while painting"
@@ -4674,11 +4700,13 @@ msgid ""
 "When a layer is created or selected, show only that layer for a short time "
 "period."
 msgstr ""
+"Lorsqu’un calque est créé ou sélectionné, montrer seulement ce calque durant "
+"un court moment."
 
 #: ../gui/preferenceswindow.glade:1158
 msgctxt "Prefs Dialog|View|Interface|"
 msgid "Blink layers on creation/selection:"
-msgstr ""
+msgstr "Faire clignoter les calques à la création/sélection :"
 
 #: ../gui/preferenceswindow.glade:1193
 msgctxt "Prefs Dialog|View|Interface|"
@@ -4793,6 +4821,12 @@ msgid ""
 "blue. CIECAM02 and NCS present a similar model. Here we use pure display "
 "red, yellow etc. as the four primaries."
 msgstr ""
+"Approximation rapide et sale des cercles chromatiques basée sur les théories "
+"de la couleur utilisant quatre « primaires psychologiques » ou « teintes "
+"uniques » disposées par paires opposées aux points cardinaux. Le rouge est "
+"opposé au vert, et le jaune est opposé au bleu. CIECAM02 et NCS sont des "
+"modèles similaires. Ici nous utilisons le rouge pur, le jaune, etc… comme "
+"les quatre primaires."
 
 #. Options affecting color wheels
 #: ../gui/preferenceswindow.glade:1354
@@ -4809,7 +4843,7 @@ msgstr "Couleur"
 #: ../gui/preferenceswindow.glade:1400
 msgctxt "Prefs Dialog|Compatibility"
 msgid "Default Compatibility Mode:"
-msgstr ""
+msgstr "Mode de compatibilité par défaut :"
 
 #: ../gui/preferenceswindow.glade:1425
 #, fuzzy
