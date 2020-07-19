@@ -7,8 +7,8 @@ msgstr ""
 "Project-Id-Version: mypaint v2.0.0-alpha.11-2-g0673fe8\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-07-05 09:12+0200\n"
-"PO-Revision-Date: 2020-04-08 02:47+0000\n"
-"Last-Translator: Manuela Silva <mmsrs@sky.com>\n"
+"PO-Revision-Date: 2020-07-21 15:41+0000\n"
+"Last-Translator: ssantos <ssantos@web.de>\n"
 "Language-Team: Portuguese <https://hosted.weblate.org/projects/mypaint/"
 "mypaint/pt/>\n"
 "Language: pt\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n > 1;\n"
-"X-Generator: Weblate 4.0-dev\n"
+"X-Generator: Weblate 4.2-dev\n"
 
 #. TRANSLATORS: Name of first column in the button map preferences.
 #. TRANSLATORS: Refers to an action bound to a mod+button combination.
@@ -1353,7 +1353,7 @@ msgstr "Deslocar"
 #: ../gui/device.py:431
 msgctxt "prefs: devices table: column header"
 msgid "Device"
-msgstr "Dispositivo"
+msgstr "Aparelho"
 
 #. TRANSLATORS: Column's data is the number of axes (an integer)
 #: ../gui/device.py:445
@@ -2475,7 +2475,7 @@ msgstr "Desenhe e depois suavize as linhas ajustando-as"
 
 #: ../gui/inputtestwindow.py:32
 msgid "Input Device Test"
-msgstr "Teste de dispositivo de entrada"
+msgstr "Teste de aparelho de entrada"
 
 #: ../gui/inputtestwindow.py:61
 msgid "(no pressure)"
@@ -2491,11 +2491,11 @@ msgstr "Inclinação:"
 
 #: ../gui/inputtestwindow.py:70
 msgid "(no device)"
-msgstr "(sem dispositivo)"
+msgstr "(nenhum aparelho)"
 
 #: ../gui/inputtestwindow.py:71
 msgid "Device:"
-msgstr "Dispositivo:"
+msgstr "Aparelho:"
 
 #: ../gui/inputtestwindow.py:73
 msgid "(No Barrel Rotation)"
@@ -3333,7 +3333,7 @@ msgid ""
 "Do you have enough space left on the device?"
 msgstr ""
 "Não foi possível guardar “{filename}”: {err}\n"
-"Tem espaço livre suficiente no dispositivo?"
+"Tem espaço livre suficiente no aparelho?"
 
 #: ../lib/document.py:1454 ../lib/document.py:1464
 #, python-brace-format
@@ -4403,11 +4403,11 @@ msgstr ""
 #: ../gui/preferenceswindow.glade:324
 msgctxt "Prefs Dialog|Button|"
 msgid "<b>Device Usage</b>"
-msgstr "<b>Utilização do dispositivo</b>"
+msgstr "<b>Utilização do aparelho</b>"
 
 #: ../gui/preferenceswindow.glade:337
 msgid "Devices"
-msgstr "Dispositivos"
+msgstr "Aparelhos"
 
 #: ../gui/preferenceswindow.glade:380
 msgctxt "Prefs Dialog|Button|Pointer Button Mappings|"
@@ -6400,7 +6400,7 @@ msgstr "Editar as configurações globais do MyPaint."
 #: ../gui/resources.xml:1339
 msgctxt "Help→Debug (labels), Accel Editor (labels)"
 msgid "Test Input Devices"
-msgstr "Testar dispositivos de entrada"
+msgstr "Testar Aparelhos de Entrada"
 
 #: ../gui/resources.xml:1340
 msgctxt "Accel Editor (descriptions)"
