@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: mypaint v2.0.0-alpha.8-1-g4490f06\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-07-05 09:12+0200\n"
-"PO-Revision-Date: 2020-04-07 09:08+0000\n"
+"PO-Revision-Date: 2020-07-21 15:41+0000\n"
 "Last-Translator: Milo Ivir <mail@milotype.de>\n"
 "Language-Team: Croatian <https://hosted.weblate.org/projects/mypaint/mypaint/"
 "hr/>\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
 "%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
-"X-Generator: Weblate 4.0-dev\n"
+"X-Generator: Weblate 4.2-dev\n"
 
 #. TRANSLATORS: Name of first column in the button map preferences.
 #. TRANSLATORS: Refers to an action bound to a mod+button combination.
@@ -670,11 +670,11 @@ msgstr "Postavi kromatičnost boje za slikanje"
 
 #: ../gui/colorpicker.py:316
 msgid "Pick Luma"
-msgstr "Odaberi svjetljivost"
+msgstr "Odaberi svjetlinu"
 
 #: ../gui/colorpicker.py:319
 msgid "Set the color Luma used for painting"
-msgstr "Postavi svjetljivost boje za slikanje"
+msgstr "Postavi svjetlinu boje za slikanje"
 
 #: ../gui/colors/adjbases.py:699
 msgid "Color details"
@@ -769,7 +769,7 @@ msgctxt "HCY Gamut Mask template description"
 msgid ""
 "Two analogous colors and a complement to them, with no secondary colors "
 "between them."
-msgstr ""
+msgstr "Dvije analogne boje i njima komplementarna, bez sekundarnih međuboja."
 
 #: ../gui/colors/hcywheel.py:985
 msgctxt "HCY Gamut Mask new-from-template dialog: window title"
@@ -842,6 +842,8 @@ msgid ""
 "Set the color using cylindrical hue/chroma/luma space. The circular slices "
 "are equiluminant."
 msgstr ""
+"Postavi boju koristeći valjkasto područje nijanse/boje/svjetline. Kružni "
+"isječci imaju jednaku svjetlinu."
 
 #. Tooltip mappings, indexed by whatever the slider currently represents
 #: ../gui/colors/hsvcube.py:46 ../gui/colors/hsvsquare.py:133
@@ -1146,7 +1148,7 @@ msgstr "HCY kromatičnost"
 #: ../gui/colors/sliders.py:281
 msgctxt "color component slider: tooltip"
 msgid "HCY Luma (Y')"
-msgstr "HCY svjetljivost (Y')"
+msgstr "HCY svjetlina (Y')"
 
 #: ../gui/colortools.py:141
 msgctxt "color changer dock panels: tab tooltip title"
@@ -1526,7 +1528,7 @@ msgstr "Zalijepljena slika {w}×{h}."
 #, python-brace-format
 msgctxt "Statusbar message: vacuum document"
 msgid "Vacuum: discarded {removed} of {total} tiles."
-msgstr ""
+msgstr "Vakuum: odbačeno {removed} od {total} pločica."
 
 #. TRANSLATORS: window title for use with a filename
 #: ../gui/drawwindow.py:274
@@ -1998,12 +2000,12 @@ msgstr "Izvor:"
 #: ../gui/fill.py:539
 msgctxt "fill options: 'Source:' category (tooltip)"
 msgid "The input that the fill will be based on"
-msgstr ""
+msgstr "Unos na kojem se temelji ispuna"
 
 #: ../gui/fill.py:583
 msgctxt "fill options: 'Source' category: Layer dropdown (tooltip)"
 msgid "Select a specific layer you want the fill to be based on"
-msgstr ""
+msgstr "Odaberi određeni sloj na kojem želiš temeljiti ispunu"
 
 #: ../gui/fill.py:601
 msgctxt ""
@@ -2068,7 +2070,7 @@ msgstr ""
 #: ../gui/fill.py:673
 msgctxt "fill options: Target | Blend Mode dropdown - warning text"
 msgid "This mode does nothing when alpha locking is enabled!"
-msgstr ""
+msgstr "Ovaj modus ne radi ništa, ako je zaključavanje alfe aktivirano!"
 
 #: ../gui/fill.py:687
 msgctxt "fill options: Target | Blend Mode dropdown (tooltip)"
@@ -2092,7 +2094,7 @@ msgstr "Odmak:"
 #: ../gui/fill.py:744
 msgctxt "fill options: Offset (tooltip)"
 msgid "The distance in pixels to grow or shrink the fill"
-msgstr ""
+msgstr "Udaljenost u pikselima za rast ili smanjivanje ispune"
 
 #: ../gui/fill.py:755
 msgctxt "fill options: numeric option for blurring fill (label)"
@@ -2102,7 +2104,7 @@ msgstr "Zamuti:"
 #: ../gui/fill.py:770
 msgctxt "fill options: Feather (tooltip)"
 msgid "The amount of blur to apply to the fill"
-msgstr ""
+msgstr "Količina zamućenja primijenjena na ispunu"
 
 #: ../gui/fill.py:786
 msgctxt "fill options: gap detection toggle (label)"
@@ -2252,7 +2254,7 @@ msgstr "Odreži sloj na okvir"
 
 #: ../gui/framewindow.py:602
 msgid "Trim parts of the current layer which lie outside the frame"
-msgstr ""
+msgstr "Odreži dijelove trenutačnog sloja koji se nalaze izvan okvira"
 
 #: ../gui/framewindow.py:608
 msgid "Enabled"
@@ -2614,7 +2616,7 @@ msgstr "Obični modus linija/krivulja"
 
 #: ../gui/linemode.py:781
 msgid "Draw straight lines; Shift adds curves, Ctrl constrains angle"
-msgstr ""
+msgstr "Crtaj ravne linije; Shift dodaje krivulje, Ctrl ograničava kut"
 
 #: ../gui/linemode.py:791
 msgid "Connected Lines"
@@ -2622,7 +2624,7 @@ msgstr "Povezane linije"
 
 #: ../gui/linemode.py:794
 msgid "Draw a sequence of lines; Shift adds curves, Ctrl constrains angle"
-msgstr ""
+msgstr "Crtaj niz ravnih linija; Shift dodaje krivulje, Ctrl ograničava kut"
 
 #: ../gui/linemode.py:804
 msgid "Ellipses and Circles"
@@ -2630,7 +2632,7 @@ msgstr "Elipse i kružnice"
 
 #: ../gui/linemode.py:807
 msgid "Draw ellipses; Shift rotates, Ctrl constrains ratio/angle"
-msgstr ""
+msgstr "Crtaj elipse; Shift okreće, Ctrl ograničava omjer/kut"
 
 #: ../gui/meta.py:39
 msgctxt "About dialog: copyright statement"
@@ -2735,7 +2737,7 @@ msgstr ", "
 #: ../gui/meta.py:221
 msgctxt "About dialog: credits: translator credits (your name(s) here!)"
 msgid "translator-credits"
-msgstr "Milo Ivir <mail@milotype.de>, 2019."
+msgstr "Milo Ivir <mail@milotype.de>, 2019., 2020."
 
 #. TRANSLATORS:"Brush radius" for the options panel. Short.
 #: ../gui/mode.py:584
@@ -2893,7 +2895,7 @@ msgstr "Pozicija y:"
 #, python-format
 msgctxt "symmetry axis options panel: labels"
 msgid "Angle: %.2f°"
-msgstr ""
+msgstr "Kut: %.2f °"
 
 #: ../gui/symmetry.py:346
 msgctxt "symmetry axis options panel: position button: no axis pos."
@@ -3165,7 +3167,7 @@ msgstr "Greška prilikom učitavanja „{basename}”."
 #: ../lib/document.py:78
 msgctxt "Document IO: common error strings: {see_logs}"
 msgid "The logs may have more detail about this error."
-msgstr ""
+msgstr "Log-zapisi vjerojatno sadrže više podataka o ovoj grešci."
 
 #. TRANSLATORS: string used in e.g. "3h42m from now"
 #: ../lib/document.py:205
@@ -3194,7 +3196,7 @@ msgstr ""
 #, python-brace-format
 msgctxt "Document autosave descriptions"
 msgid "Incomplete backup updated {last_modified_time} {ago}"
-msgstr ""
+msgstr "Nepotpuna sigurnosna kopija aktualizirana {last_modified_time} {ago}"
 
 #. TRANSLATORS: The {ago} variable is a translated string.
 #. TRANSLATORS: Look for the msgids "from now" and "ago"
@@ -3209,6 +3211,10 @@ msgid ""
 "num_layers}\n"
 "Contains {unsaved_time} of unsaved painting."
 msgstr ""
+"Sigurnosna kopija aktualizirana {last_modified_time} {ago}\n"
+"Veličina: {autosave.width} × {autosave.height} piksela, Slojevi {autosave."
+"num_layers}\n"
+"Sadržava {unsaved_time} nespremljenih crteža."
 
 #: ../lib/document.py:1448
 #, python-brace-format
@@ -3217,6 +3223,8 @@ msgid ""
 "Unable to write “{filename}”: {err}\n"
 "Do you have enough space left on the device?"
 msgstr ""
+"Nije moguže zapisati „{filename}”: {err}\n"
+"Imaš li dovoljno memorije na disku?"
 
 #: ../lib/document.py:1454 ../lib/document.py:1464
 #, python-brace-format
@@ -3295,6 +3303,11 @@ msgid ""
 "\n"
 "{see_logs}"
 msgstr ""
+"Neuspjelo obnavljanje rada iz automatizirane sigurnosne kopije.\n"
+"\n"
+"Razlog: {reason}\n"
+"\n"
+"{see_logs}"
 
 #: ../lib/floodfill.py:132
 msgctxt "floodfill status message: use active tense"
@@ -3526,7 +3539,7 @@ msgstr "Zatamni"
 
 #: ../lib/modes.py:72
 msgid "The top layer is used where it is darker than the backdrop."
-msgstr ""
+msgstr "Koristi se gornji sloj, tamo gdje je tamniji od pozadine."
 
 #: ../lib/modes.py:75
 msgid "Lighten"
@@ -3534,7 +3547,7 @@ msgstr "Posvjetli"
 
 #: ../lib/modes.py:76
 msgid "The top layer is used where it is lighter than the backdrop."
-msgstr ""
+msgstr "Koristi se gornji sloj, tamo gdje je svjetliji od pozadine."
 
 #: ../lib/modes.py:79
 msgid "Dodge"
@@ -3580,7 +3593,7 @@ msgstr "Razlika"
 
 #: ../lib/modes.py:96
 msgid "Subtracts the darker color from the lighter of the two."
-msgstr ""
+msgstr "Oduzima tamniju boju od svjetlije."
 
 #: ../lib/modes.py:98
 msgid "Exclusion"
@@ -3598,7 +3611,7 @@ msgstr "Nijansa"
 msgid ""
 "Combines the hue of the top layer with the saturation and luminosity of the "
 "backdrop."
-msgstr ""
+msgstr "Kombinira nijansu gornjeg sloja sa zasićenjem i svjetlinom pozadine."
 
 #: ../lib/modes.py:106
 msgid "Saturation"
@@ -3609,22 +3622,24 @@ msgid ""
 "Applies the saturation of the top layer's colors to the hue and luminosity "
 "of the backdrop."
 msgstr ""
+"Primjenjuje zasićenje boja gornjeg sloja na nijansu i svjetlinu pozadine."
 
 #: ../lib/modes.py:111
 msgid ""
 "Applies the hue and saturation of the top layer to the luminosity of the "
 "backdrop."
 msgstr ""
+"Primjenjuje nijansu i zasićenje boja gornjeg sloja na svjetlinu pozadine."
 
 #: ../lib/modes.py:114
 msgid "Luminosity"
-msgstr "Osvijetljenost"
+msgstr "Svjetlina"
 
 #: ../lib/modes.py:115
 msgid ""
 "Applies the luminosity of the top layer to the hue and saturation of the "
 "backdrop."
-msgstr ""
+msgstr "Primjenjuje svjetlinu gornjeg sloja na nijansu i zasićenost pozadine."
 
 #: ../lib/modes.py:119
 msgid "Plus"
@@ -3632,7 +3647,7 @@ msgstr "Plus"
 
 #: ../lib/modes.py:120
 msgid "This layer and its backdrop are simply added together."
-msgstr ""
+msgstr "Ovaj sloj i njegova pozadina jednostavno se zbrajaju."
 
 #: ../lib/modes.py:122
 msgid "Destination In"
@@ -4704,7 +4719,7 @@ msgstr "Otvori najnedavniju"
 #: ../gui/resources.xml:83
 msgctxt "Accel Editor (descriptions)"
 msgid "Load the file you saved most recently."
-msgstr ""
+msgstr "Učitaj zadnju spremljenu datoteku."
 
 #: ../gui/resources.xml:90
 msgctxt "Menu→File (labels)"
@@ -4719,7 +4734,7 @@ msgstr "Obnovi"
 #: ../gui/resources.xml:104
 msgctxt "Accel Editor (descriptions)"
 msgid "Reload the file your current work was loaded from."
-msgstr ""
+msgstr "Ponovo učitaj datoteku iz koje je tvoj rad učitan."
 
 #: ../gui/resources.xml:111
 msgctxt "Menu→File (labels), Accel Editor (labels)"
@@ -4729,7 +4744,7 @@ msgstr "Uvezi slojeve …"
 #: ../gui/resources.xml:112
 msgctxt "Accel Editor (descriptions)"
 msgid "Import layers from one or more files."
-msgstr ""
+msgstr "Uvezi slojeve iz jedne ili više datoteka."
 
 #: ../gui/resources.xml:120
 msgctxt "Menu→File (labels), Accel Editor (labels)"
@@ -4749,7 +4764,7 @@ msgstr "Spremi kao …"
 #: ../gui/resources.xml:130
 msgctxt "Accel Editor (descriptions)"
 msgid "Save your work to a file, assigning it a new name."
-msgstr ""
+msgstr "Spremi rad u datoteku, dodijeli joj novo ime."
 
 #: ../gui/resources.xml:138
 msgctxt "Menu→File (labels), Accel Editor (labels)"
@@ -4758,7 +4773,7 @@ msgstr "Izvezi …"
 
 #: ../gui/resources.xml:139
 msgid "Export your work to a file, but keep working on the same file."
-msgstr ""
+msgstr "Izvezi rad u datoteku, ali nastavi raditi s istom datotekom."
 
 #: ../gui/resources.xml:147
 msgctxt "Menu→File (labels), Accel Editor (labels)"
@@ -4798,7 +4813,7 @@ msgstr "Obnovi datoteku pomoću jedne automatski izrađene sigurnosne kopije …
 #: ../gui/resources.xml:175
 msgctxt "Accel Editor (descriptions)"
 msgid "Try to save and resume interrupted unsaved work."
-msgstr ""
+msgstr "Pokušaj spremiti i nastaviti s prekinutim ne spremljenim radom."
 
 #: ../gui/resources.xml:190
 msgctxt "Menu→Brush (label)"
@@ -5323,7 +5338,7 @@ msgstr "Dupliciraj sloj"
 #: ../gui/resources.xml:634
 msgctxt "Accel Editor (descriptions)"
 msgid "Make an exact clone of the current layer."
-msgstr ""
+msgstr "Izradi klon ovog sloja."
 
 #: ../gui/resources.xml:642
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
@@ -5346,6 +5361,8 @@ msgctxt "Accel Editor (descriptions)"
 msgid ""
 "Toggle the current layer’s locked state. Locked layers cannot be modified."
 msgstr ""
+"Promijeni stanje zaključanosti trenutačnog sloja. Zaključani slojevi se ne "
+"mogu mijenjati."
 
 #: ../gui/resources.xml:658
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
@@ -5355,7 +5372,7 @@ msgstr "Sloj vidljiv"
 #: ../gui/resources.xml:659
 msgctxt "Accel Editor (descriptions)"
 msgid "Toggle the current layer’s visibility state, making it hidden."
-msgstr ""
+msgstr "Promijeni stanje vidljivosti trenutačnog sloja u skriveno."
 
 #: ../gui/resources.xml:666
 msgctxt "Menu→View (labels), Accel Editor (labels)"
@@ -5365,7 +5382,7 @@ msgstr "Prikaži pozadinu"
 #: ../gui/resources.xml:667
 msgctxt "Accel Editor (descriptions)"
 msgid "Toggle the background layer’s visibility."
-msgstr ""
+msgstr "Promijeni vidljivost sloja pozadine."
 
 #: ../gui/resources.xml:674
 msgctxt "Menu→Help→Debug (labels), Accel Editor (labels)"
@@ -5375,7 +5392,7 @@ msgstr "Izbriši prazne pločice"
 #: ../gui/resources.xml:675
 msgctxt "Accel Editor (descriptions)"
 msgid "Remove empty tiles from the document."
-msgstr ""
+msgstr "Ukloni prazne pločice iz dokumenta."
 
 #: ../gui/resources.xml:684
 msgctxt "Menu→View (labels), Accel Editor (labels)"
@@ -5421,7 +5438,7 @@ msgstr "Vrati standardno okretanje"
 #: ../gui/resources.xml:716
 msgctxt "Accel Editor (descriptions)"
 msgid "Reset the view’s rotation to 0°"
-msgstr ""
+msgstr "Vrati okretanje prikaza na 0 °"
 
 #: ../gui/resources.xml:722
 msgctxt "Menu→View→Reset (labels), Accel Editor (labels)"
@@ -5431,7 +5448,7 @@ msgstr "Vrati standardno zrcaljenje"
 #: ../gui/resources.xml:723
 msgctxt "Accel Editor (descriptions)"
 msgid "Reset the view's mirroring."
-msgstr ""
+msgstr "Poništi zrcaljenje prikaza."
 
 #: ../gui/resources.xml:729
 msgctxt "Menu→View→Adjust View (labels), Accel Editor (labels)"
@@ -5640,7 +5657,7 @@ msgstr "Modus slikanja: Normalno"
 #: ../gui/resources.xml:942
 msgctxt "Accel Editor (descriptions)"
 msgid "Apply color normally when painting."
-msgstr ""
+msgstr "Primijeni boju normalno tijekom crtanja."
 
 #: ../gui/resources.xml:950
 msgctxt "Menu→Brush→Blend Mode (labels), Accel Editor (labels)"
@@ -5660,7 +5677,7 @@ msgstr "Modus slikanja: Zaključaj alfu"
 #: ../gui/resources.xml:960
 msgctxt "Accel Editor (descriptions)"
 msgid "Applying the brush doesn't change the layer’s opacity."
-msgstr ""
+msgstr "Primjena kista ne mijenja neprozirnost sloja."
 
 #: ../gui/resources.xml:968
 msgctxt "Menu→Brush→Blend Mode (labels), Accel Editor (labels)"
@@ -5672,6 +5689,8 @@ msgctxt "Accel Editor (descriptions)"
 msgid ""
 "Apply color to the current layer without affecting its brightness or opacity."
 msgstr ""
+"Primijeni boju na trenutačni sloj, bez da utječe na svjetlost ili "
+"neprozirnost."
 
 #: ../gui/resources.xml:983
 msgctxt "Menu (labels)"
@@ -5686,7 +5705,7 @@ msgstr "Zatvori"
 #: ../gui/resources.xml:990
 msgctxt "Accel Editor (descriptions)"
 msgid "Close main window and exit the app."
-msgstr ""
+msgstr "Zatvori glavni prozor i zatvori program."
 
 #: ../gui/resources.xml:1000
 msgctxt "Menu (labels)"
@@ -5721,7 +5740,7 @@ msgstr "Dijalog za pojedinosti boje"
 #: ../gui/resources.xml:1029
 msgctxt "Accel Editor (descriptions)"
 msgid "Show a color details dialog with text entry."
-msgstr ""
+msgstr "Pokaži dijaloški okvir detalja boje s unosom teksta."
 
 #: ../gui/resources.xml:1035
 msgctxt "Menu→Color"
@@ -5751,7 +5770,7 @@ msgstr "Dodaj boju u paletu"
 #: ../gui/resources.xml:1050
 msgctxt "Accel Editor (descriptions)"
 msgid "Append the current painting color to the palette."
-msgstr ""
+msgstr "Dodaj boju trenutačnog crteža u paletu."
 
 #: ../gui/resources.xml:1058
 msgctxt "Menu (labels)"
@@ -5887,7 +5906,7 @@ msgstr "Pomoć za tipkovne prečace za kistove"
 #: ../gui/resources.xml:1180
 msgctxt "Accel Editor (descriptions)"
 msgid "Show an explanation of how the shortcut keys work."
-msgstr ""
+msgstr "Pokaži objašnjenje za rad tipkovničkih prečaca."
 
 #: ../gui/resources.xml:1187
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
@@ -5930,7 +5949,7 @@ msgstr "Preuzmi daljnje kistove …"
 #: ../gui/resources.xml:1214
 msgctxt "Accel Editor (descriptions)"
 msgid "Download brushpacks from the MyPaint wiki."
-msgstr ""
+msgstr "Preuzmi pakete kistova s MyPaint wiki."
 
 #: ../gui/resources.xml:1221
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
@@ -5955,7 +5974,7 @@ msgstr "Pomoć na internetu"
 #: ../gui/resources.xml:1238
 msgctxt "Accel Editor (descriptions)"
 msgid "Go to MyPaint’s documentation wiki."
-msgstr ""
+msgstr "Idi na wiki dokumentaciju za MyPaint."
 
 #: ../gui/resources.xml:1246
 msgctxt "Menu→Help (labels), Accel Editor (labels)"
@@ -5965,7 +5984,7 @@ msgstr "Informacije o MyPaint"
 #: ../gui/resources.xml:1247
 msgctxt "Accel Editor (descriptions)"
 msgid "Show MyPaint’s license, version number, and credits."
-msgstr ""
+msgstr "Prikažu MyPaint licencu, verziju i zasluge."
 
 #: ../gui/resources.xml:1256
 msgctxt "Menu→Help (labels)"
@@ -5990,7 +6009,7 @@ msgstr "Pokreni sakupljača smeća sada"
 #: ../gui/resources.xml:1270
 msgctxt "Accel Editor (descriptions)"
 msgid "Free memory used for Python objects which are no longer in use."
-msgstr ""
+msgstr "Slobodna memorija korištena za Python objekte koji se više ne koriste."
 
 #. FIXME: convert to a ToggleAction
 #: ../gui/resources.xml:1277
@@ -6046,7 +6065,7 @@ msgstr "Cjeloekranski prikaz"
 #: ../gui/resources.xml:1321
 msgctxt "Accel Editor (descriptions)"
 msgid "Toggle between full-screen and windowed mode."
-msgstr ""
+msgstr "Prebaci između cjeloekranskog prikaza i modusa prozora."
 
 #: ../gui/resources.xml:1332
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
@@ -6056,7 +6075,7 @@ msgstr "Uredi osobitosti"
 #: ../gui/resources.xml:1333
 msgctxt "Accel Editor (descriptions)"
 msgid "Edit MyPaint’s global settings."
-msgstr ""
+msgstr "Uredi opće MyPaint postavke."
 
 #: ../gui/resources.xml:1339
 msgctxt "Help→Debug (labels), Accel Editor (labels)"
@@ -6119,6 +6138,7 @@ msgstr "Prikaži ploču slojeva"
 msgctxt "Accel Editor (descriptions)"
 msgid "Reveal the Layers dockpanel (arrange layers, or assign modes)."
 msgstr ""
+"Prikaži prikvačivu ploču slojeva (rasporedi slojeve ili dodijeli moduse)."
 
 #: ../gui/resources.xml:1394
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
@@ -6131,6 +6151,8 @@ msgid ""
 "Dockable cylindrical hue/chroma/luma color selector. The circular slices are "
 "equiluminant."
 msgstr ""
+"Prikavačiv valjkasti birač nijanse/boje/svjetline boje. Kružni isječci imaju "
+"jednaku svjetlinu."
 
 #: ../gui/resources.xml:1402
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
@@ -6150,7 +6172,7 @@ msgstr "HSV kotač"
 #: ../gui/resources.xml:1412
 msgctxt "Accel Editor (descriptions)"
 msgid "Dockable saturation and Value color changer."
-msgstr ""
+msgstr "Prikvačiv mjenjač zasićenosti i vrijednosti boja."
 
 #: ../gui/resources.xml:1419
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
@@ -6163,6 +6185,8 @@ msgid ""
 "Dockable color selector: HSV cube which can be rotated to show different "
 "planar slices."
 msgstr ""
+"Prikavačiv birač boja: HSV kocka se može okretati za prikaz raznih plošnih "
+"isječaka."
 
 #: ../gui/resources.xml:1427
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
@@ -6172,7 +6196,7 @@ msgstr "HSV kvadrat"
 #: ../gui/resources.xml:1428
 msgctxt "Accel Editor (descriptions)"
 msgid "Dockable color selector: HSV square with Hue ring."
-msgstr ""
+msgstr "Prikavačiv birač boja: HSV kocka s prstenom nijanse."
 
 #: ../gui/resources.xml:1435
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
@@ -6182,7 +6206,7 @@ msgstr "Selektori za komponente"
 #: ../gui/resources.xml:1436
 msgctxt "Accel Editor (descriptions)"
 msgid "Dockable color selector showing individual components of the color."
-msgstr ""
+msgstr "Prikavačiv birač boja, koji prikazuje pojedinačne komponente boje."
 
 #: ../gui/resources.xml:1443
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
@@ -6202,7 +6226,7 @@ msgstr "Koncentrični prstenovi"
 #: ../gui/resources.xml:1452
 msgctxt "Accel Editor (descriptions)"
 msgid "Dockable color selector with concentric HSV rings."
-msgstr ""
+msgstr "Prikavačiv birač boja s koncentričnim HSV prstenima."
 
 #: ../gui/resources.xml:1459
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
@@ -6224,7 +6248,7 @@ msgstr "Ploča s područjem za skiciranje"
 #: ../gui/resources.xml:1470
 msgctxt "Accel Editor (descriptions)"
 msgid "Dockable Panel for mixing colors and testing brushes."
-msgstr ""
+msgstr "Prikvačiva ploča za miješanje boja i testiranje kistova."
 
 #: ../gui/resources.xml:1478
 msgctxt "Menu→Scratchpad (labels), Accel Editor (labels)"
@@ -6234,7 +6258,7 @@ msgstr "Prikaži ploču s područjem za skiciranje"
 #: ../gui/resources.xml:1479
 msgctxt "Accel Editor (descriptions)"
 msgid "Reveal the Scratchpad dockpanel (mix colors and make sketches)."
-msgstr ""
+msgstr "Prikaži prikvačivu ploču za skiciranje (miješaj boje i crtaj skice)."
 
 #: ../gui/resources.xml:1488
 msgctxt "Menu→Window (labels), Toolbar (labels), Accel Editor (labels)"
@@ -6244,7 +6268,7 @@ msgstr "Ploča pretprikaza"
 #: ../gui/resources.xml:1489
 msgctxt "Accel Editor (descriptions)"
 msgid "Dockable panel for an overview and navigation of the whole canvas."
-msgstr ""
+msgstr "Prikvačiva ploča za pregled i navigaciju po cijelom platnu."
 
 #: ../gui/resources.xml:1497
 msgctxt "Menu→View (labels), Accel Editor (labels)"
@@ -6254,7 +6278,7 @@ msgstr "Pretprikaz"
 #: ../gui/resources.xml:1498
 msgctxt "Accel Editor (descriptions)"
 msgid "Reveal the Preview dockpanel (overview of the whole drawing area)."
-msgstr ""
+msgstr "Prikaži prikvačivu ploču pregleda (pregled cijelog područja crteža)."
 
 #: ../gui/resources.xml:1508
 msgctxt "Menu→Window (labels), Toolbar (labels), Accel Editor (labels)"
@@ -6264,7 +6288,7 @@ msgstr "Ploča s opcijama alata"
 #: ../gui/resources.xml:1509
 msgctxt "Accel Editor (descriptions)"
 msgid "Dockable panel for adjusting the options with the activated tool."
-msgstr ""
+msgstr "Prikvačiva ploča za podešavanje opcija s aktiviranim alatom."
 
 #: ../gui/resources.xml:1517
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
@@ -6274,7 +6298,7 @@ msgstr "Prikaži ploču s opcijama alata"
 #: ../gui/resources.xml:1518
 msgctxt "Accel Editor (descriptions)"
 msgid "Reveal the Tool Options dockpanel (options for the current tool)."
-msgstr ""
+msgstr "Prikaži prikvačivu ploču opcija (opcije za trenutačni alat)."
 
 #: ../gui/resources.xml:1528
 msgctxt "Menu→Window (labels), Toolbar (labels), Accel Editor (labels)"
@@ -6284,7 +6308,7 @@ msgstr "Ploča kronologije kistova i boja"
 #: ../gui/resources.xml:1529
 msgctxt "Accel Editor (descriptions)"
 msgid "Dockable panel for viewing recently changed colors and brushes."
-msgstr ""
+msgstr "Prikvačiva ploča za prikaz nedavno korištenih boja i kistova."
 
 #: ../gui/resources.xml:1537
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
@@ -6294,7 +6318,7 @@ msgstr "Nedavni kitovi i boje"
 #: ../gui/resources.xml:1538
 msgctxt "Accel Editor (descriptions)"
 msgid "Reveal the History panel (recently used brushes and colors)."
-msgstr ""
+msgstr "Prikaži ploču povijesti (nedavno korištene kistove i boje)."
 
 #: ../gui/resources.xml:1548
 msgctxt "Menu→View (labels), Accel Editor (labels)"
@@ -6305,6 +6329,8 @@ msgstr "Sakrij kontrole u cjeloekranskom prikazu"
 msgctxt "Accel Editor (descriptions)"
 msgid "Toggle automatic hiding of the user interface in fullscreen."
 msgstr ""
+"Uklj/isklj automatsko skrivanje s korisničkog sučelja u cjeloekranskom "
+"prikazu."
 
 #: ../gui/resources.xml:1556
 msgctxt "Menu→View→Feedback (labels), Accel Editor (labels)"
@@ -6351,7 +6377,7 @@ msgstr "Prikaži boje kao sive nijanse"
 #: ../gui/resources.xml:1588
 msgctxt "Accel Editor (descriptions)"
 msgid "Filter colors: show brightness only (HCY/YCbCr Luma)"
-msgstr "Filtriraj boje: prikaži samo svjetlost (HCY/YCbCr svjetljivost)"
+msgstr "Filtriraj boje: prikaži samo svjetlost (HCY/YCbCr svjetlina)"
 
 #: ../gui/resources.xml:1595
 msgctxt "Menu→View→Display Filter (labels), Accel Editor (labels)"
@@ -6700,7 +6726,7 @@ msgid ""
 "Set the painting Hue from screen pixels while preserving the Chroma and Luma."
 msgstr ""
 "Postavi nijansu za bojanje na osnovi piksela ekrana, zadržavajući pri tome "
-"kromatičnost i svjetljivost."
+"kromatičnost i svjetlinu."
 
 #: ../gui/resources.xml:1906
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
@@ -6713,20 +6739,20 @@ msgid ""
 "Set the painting Chroma from screen pixels while preserving the Hue and Luma."
 msgstr ""
 "Postavi kromatičnost za bojanje na osnovi piksela ekrana, zadržavajući pri "
-"tome nijansu i svjetljivost."
+"tome nijansu i svjetlinu."
 
 #: ../gui/resources.xml:1915
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "Pick Color Luma"
-msgstr "Odaberi svjetljivost boje"
+msgstr "Odaberi svjetlinu boje"
 
 #: ../gui/resources.xml:1916
 msgctxt "Accel Editor (descriptions)"
 msgid ""
 "Set the painting Luma from screen pixels while preserving the Hue and Chroma."
 msgstr ""
-"Postavi svjetljivost za bojanje na osnovi piksela ekrana, zadržavajući pri "
-"tome nijansu i kromatičnost."
+"Postavi svjetlinu za bojanje na osnovi piksela ekrana, zadržavajući pri tome "
+"nijansu i kromatičnost."
 
 #: ../gui/resources.xml:1924
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
