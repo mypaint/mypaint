@@ -465,6 +465,16 @@ class BrushInfo (object):
         self.cache_str = res
         return res
 
+    def get_visual_radius(self):
+        """Approximation of the brush radius, in model units
+
+        This is a static representation of the brush radius - taking a limited
+        number of settings into account, and no dynamics (input mappings).
+        """
+        return brush_visual_radius(
+            self.get_base_value('radius_logarithmic'),
+            self.get_base_value('offset_by_random'))
+
     def get_base_value(self, cname):
         return self.settings[cname][0]
 
@@ -601,6 +611,11 @@ class BrushInfo (object):
             s1.pop(k, None)
             s2.pop(k, None)
         return s1 == s2
+
+
+def brush_visual_radius(base_radius, base_random_offset):
+    base_r = math.exp(base_radius)
+    return base_r + 2 * base_r * base_random_offset
 
 
 class Brush (mypaintlib.PythonBrush):

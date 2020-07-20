@@ -605,11 +605,7 @@ class DrawCursorMixin(object):
         """Return factors determining the cursor size and shape.
         """
         b = self.doc.brush.brushinfo
-        base_radius = exp(b.get_base_value('radius_logarithmic'))
-        r = base_radius
-        r += 2 * base_radius * b.get_base_value('offset_by_random')
-        r *= self.scale
-        r += 0.5
+        r = b.get_visual_radius() * self.scale + 0.5
         if b.is_eraser():
             style = cursor.BRUSH_CURSOR_STYLE_ERASER
         elif b.is_alpha_locked():
@@ -618,7 +614,7 @@ class DrawCursorMixin(object):
             style = cursor.BRUSH_CURSOR_STYLE_COLORIZE
         else:
             style = cursor.BRUSH_CURSOR_STYLE_NORMAL
-        return (r, style)
+        return r, style
 
     def brush_modified_cb(self, settings):
         """Handles brush modifications: set up by the main TDW.
