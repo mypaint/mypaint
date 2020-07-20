@@ -136,6 +136,7 @@ class TiledDrawWidget (Gtk.EventBox):
             app = application.get_app()
         self.app = app
         self.doc = None
+        self.last_event = None
 
         self.add_events(
             Gdk.EventMask.BUTTON_PRESS_MASK |

@@ -143,9 +143,7 @@ class CanvasController (object):
 
     def _update_last_event_info(self, tdw, event):
         # Update the stored details of the last event delegated.
-        tdw.__last_event_x = event.x
-        tdw.__last_event_y = event.y
-        tdw.__last_event_time = event.time
+        tdw.last_event = event
 
     def get_last_event_info(self, tdw):
         """Get details of the last event delegated to a mode in the stack.
@@ -154,14 +152,11 @@ class CanvasController (object):
         :returns: event details: ``(time, x, y)``
 
         """
-        t, x, y = 0, None, None
-        try:
-            t = tdw.__last_event_time
-            x = tdw.__last_event_x
-            y = tdw.__last_event_y
-        except AttributeError:
-            pass
-        return (t, x, y)
+        ev = tdw.last_event
+        if not ev:
+            return 0, None, None
+        else:
+            return ev.time, ev.x, ev.y
 
     ## High-level event observing interface
 
