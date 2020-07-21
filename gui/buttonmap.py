@@ -363,7 +363,7 @@ class ButtonMappingEditor (Gtk.EventBox):
         elif handler_type == 'popup_state':
             action_label = handler.label
         elif handler_type == 'mode_class':
-            action_label = action_name
+            action_label = handler.get_name()
             if handler.ACTION_NAME is not None:
                 action = self.app.find_action(handler.ACTION_NAME)
                 if action is not None:
