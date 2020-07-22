@@ -21,11 +21,9 @@ from lib.pycompat import unicode
 from lib.pycompat import PY3
 
 if PY3:
-    from urllib.parse import quote_from_bytes as url_quote
-    from urllib.parse import unquote_to_bytes as url_unquote
+    from urllib.parse import unquote
 else:
-    from urllib import quote as url_quote
-    from urllib import unquote as url_unquote
+    from urllib import unquote
 
 logger = logging.getLogger(__name__)
 
@@ -50,41 +48,25 @@ _BRUSHINFO_MATCH_IGNORES = [
 ]
 
 
-# Helper funcs for quoting and unquoting:
-
-def brushinfo_quote(string):
-    """Quote a string for serialisation of brushes.
-
-    >>> brushinfo_quote(u'foo') == b'foo'
-    True
-    >>> brushinfo_quote(u'foo/bar blah') == b'foo%2Fbar%20blah'
-    True
-    >>> expected = b'Have%20a%20nice%20day%20%E2%98%BA'
-    >>> brushinfo_quote(u'Have a nice day \u263A') == expected
-    True
-
-    """
-    string = unicode(string)
-    u8bytes = string.encode("utf-8")
-    return url_quote(u8bytes, safe='').encode("ascii")
-
+# Helpers
 
 def brushinfo_unquote(quoted):
     """Unquote a serialised string value from a brush field.
 
-    >>> brushinfo_unquote(b"foo") == u'foo'
+    >>> f = str if PY3 else bytes
+    >>> brushinfo_unquote(f("foo")) == u'foo'
     True
-    >>> brushinfo_unquote(b"foo%2fbar%20blah") == u'foo/bar blah'
+    >>> brushinfo_unquote(f("foo%2fbar%20blah")) == u'foo/bar blah'
     True
     >>> expected = u'Have a nice day \u263A'
-    >>> brushinfo_unquote(b'Have%20a%20nice%20day%20%E2%98%BA') == expected
+    >>> brushinfo_unquote(f('Have%20a%20nice%20day%20%E2%98%BA')) == expected
     True
 
     """
-    if not isinstance(quoted, bytes):
-        raise ValueError("Cann")
-    u8bytes = url_unquote(quoted)
-    return unicode(u8bytes.decode("utf-8"))
+    if PY3:
+        return unquote(quoted)
+    else:
+        return unicode(unquote(quoted).decode("utf-8"))
 
 
 # Exceptions raised during brush parsing:
