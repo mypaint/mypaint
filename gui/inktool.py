@@ -86,6 +86,7 @@ class InkingMode (gui.mode.ScrollableModeMixin,
             'RotateViewMode',
             'ZoomViewMode',
             'PanViewMode',
+            'BrushResizeMode',
         ])
     )
 

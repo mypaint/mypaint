@@ -200,6 +200,7 @@ class LineModeBase (gui.mode.ScrollableModeMixin,
         "PanViewMode",
         "ZoomViewMode",
         "RotateViewMode",
+        'BrushResizeMode',
     ])
 
     pointer_behavior = gui.mode.Behavior.PAINT_CONSTRAINED
