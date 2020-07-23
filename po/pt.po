@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: mypaint v2.0.0-alpha.11-2-g0673fe8\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-07-05 09:12+0200\n"
-"PO-Revision-Date: 2020-07-21 15:41+0000\n"
+"PO-Revision-Date: 2020-07-24 07:24+0000\n"
 "Last-Translator: ssantos <ssantos@web.de>\n"
 "Language-Team: Portuguese <https://hosted.weblate.org/projects/mypaint/"
 "mypaint/pt/>\n"
@@ -213,7 +213,7 @@ msgstr "Velocidade"
 #: ../gui/brusheditor.py:381
 msgctxt "brush settings list: setting group"
 msgid "Directional Offsets"
-msgstr ""
+msgstr "Deslocamentos Direcionais"
 
 #: ../gui/brusheditor.py:399
 msgctxt "brush settings list: setting group"
@@ -437,6 +437,8 @@ msgid ""
 "Brush “{brush_name}” is listed in “{order_conf_file}”, but it does not exist "
 "in the zipfile."
 msgstr ""
+"O pincel “{brush_name}” está listado em “{order_conf_file}”, mas não existe "
+"no ficheiro .zip."
 
 #: ../gui/brushmanager.py:717
 #, python-brace-format
@@ -445,6 +447,8 @@ msgid ""
 "Brush “{brush_name}” exists in the zipfile, but it is not listed in "
 "“{order_conf_file}”."
 msgstr ""
+"O pincel “{brush_name}” existe no ficheiro .zip, mas não está listado em "
+"“{order_conf_file}”."
 
 #: ../gui/brushmanager.py:1328 ../gui/footer.py:66
 msgid "Unknown Brush"
@@ -484,13 +488,13 @@ msgstr "Alterar nome do grupo"
 #, python-brace-format
 msgctxt "brush group: context menu: unique names for cloned brushes"
 msgid "{original_name} copy"
-msgstr ""
+msgstr "cópia de {original_name}"
 
 #: ../gui/brushselectionwindow.py:299
 #, python-brace-format
 msgctxt "brush group: context menu: unique names for cloned brushes"
 msgid "{original_name} copy {n}"
-msgstr ""
+msgstr "cópia {n} de {original_name}"
 
 #: ../gui/brushselectionwindow.py:325
 #, fuzzy, python-brace-format
@@ -654,7 +658,7 @@ msgstr "Selecionar a cor usada para pintar"
 
 #: ../gui/colorpicker.py:270
 msgid "Pick Hue"
-msgstr ""
+msgstr "Selecionar Saturação"
 
 #: ../gui/colorpicker.py:273
 #, fuzzy
@@ -673,7 +677,7 @@ msgstr "Selecionar a cor usada para pintar"
 
 #: ../gui/colorpicker.py:316
 msgid "Pick Luma"
-msgstr ""
+msgstr "Selecionar Luminosidade"
 
 #: ../gui/colorpicker.py:319
 #, fuzzy
@@ -1198,21 +1202,20 @@ msgstr "Mude a cor HSV usando uma paleta radial atravessada pela cor."
 #: ../gui/compatibility.py:34
 msgctxt "File Load Compat Options"
 msgid "Based on file"
-msgstr ""
+msgstr "Baseado no ficheiro"
 
 #. This refers to a version of MyPaint like 1.0, 1.1, 1.2 etc
 #: ../gui/compatibility.py:35 ../gui/drawwindow.py:280
 #: ../gui/preferenceswindow.glade:1610
-#, fuzzy
 msgctxt "Prefs Dialog|Compatibility"
 msgid "1.x"
-msgstr "1.0"
+msgstr "1.x"
 
 #. This refers to a version of MyPaint like 1.0, 1.1, 1.2 etc
 #: ../gui/compatibility.py:36 ../gui/preferenceswindow.glade:1629
 msgctxt "Prefs Dialog|Compatibility"
 msgid "2.x"
-msgstr ""
+msgstr "2.x"
 
 #. TRANSLATORS: This is probably a rare warning, and it will not
 #. TRANSLATORS: really be shown at all before the release of 3.0
@@ -1229,6 +1232,14 @@ msgid ""
 "It is <b>strongly recommended</b> to upgrade to <b>MyPaint {new_version}</b> "
 "or newer if you want to edit this file!"
 msgstr ""
+"“{filename}” foi gravado com <b>MyPaint {new_version}</b>. Pode ser "
+"<b>incompatível</b> com o <b>MyPaint {current_version}</b>. \n"
+"\n"
+"Não há garantias de que esse ficheiro funcionará nesta versão e ainda pode "
+"resultar em problemas. \n"
+"\n"
+"É <b>extremamente recomendado</b> atualizar ao <b>MyPaint {new_version}</b> "
+"ou superior se quiser editar este ficheiro!"
 
 #: ../gui/compatibility.py:54
 #, python-brace-format
@@ -1242,16 +1253,23 @@ msgid ""
 "\n"
 "To be safe you should upgrade to MyPaint {new_version} or newer."
 msgstr ""
+"“{filename}” foi gravado com o <b>MyPaint {new_version}</b>. Ele talvez não "
+"seja completamente compatível com o <b>MyPaint {current_version}</b>.\n"
+"\n"
+"Gravar com esta versão de MyPaint pode fazer que informações que só são "
+"suportadas em novas versões sejam perdidas.\n"
+"\n"
+"É mais seguro atualizar o MyPaint para a versão {new_version} ou maior."
 
 #: ../gui/compatibility.py:65
 msgctxt "file compatibility question"
 msgid "Do you want to open this file anyway?"
-msgstr ""
+msgstr "Gostaria de abrir este ficheiro assim mesmo?"
 
 #: ../gui/compatibility.py:129
 msgctxt "Version compat warning toggle"
 msgid "Don't show this warning again"
-msgstr ""
+msgstr "Não mostrar este aviso de novo"
 
 #. TRANSLATORS: One of the options for the
 #. TRANSLATORS: "When Not Specified in File"
@@ -1259,7 +1277,7 @@ msgstr ""
 #: ../gui/compatibility.py:197
 msgctxt "Prefs Dialog|Compatibility"
 msgid "Always open in 1.x mode"
-msgstr ""
+msgstr "Sempre abrir no modo 1.x"
 
 #. TRANSLATORS: One of the options for the
 #. TRANSLATORS: "When Not Specified in File"
@@ -1267,7 +1285,7 @@ msgstr ""
 #: ../gui/compatibility.py:206
 msgctxt "Prefs Dialog|Compatibility"
 msgid "Always open in 2.x mode"
-msgstr ""
+msgstr "Sempre abrir no modo 2.x"
 
 #. TRANSLATORS: One of the options for the
 #. TRANSLATORS: "When Not Specified in File"
@@ -1275,14 +1293,14 @@ msgstr ""
 #: ../gui/compatibility.py:215
 msgctxt "Prefs Dialog|Compatibility"
 msgid "Open in 1.x mode unless file contains pigment layers"
-msgstr ""
+msgstr "Abrir no modo 1.x a menos que o ficheiro contenha camadas de pigmento"
 
 #. TRANSLATORS: This is a label for a dropdown menu in the
 #. TRANSLATORS: file chooser dialog when loading .ora files.
 #: ../gui/compatibility.py:501
 msgctxt "File Load Compat Options"
 msgid "Compatibility mode:"
-msgstr ""
+msgstr "Modo de Compatibilidade:"
 
 #: ../gui/device.py:49
 msgctxt "prefs: device's type label"
@@ -1516,40 +1534,40 @@ msgstr "Com {modifiers} pressionados:  {button_actions}."
 #: ../gui/document.py:902
 msgctxt "Statusbar message: copy result"
 msgid "Empty document, nothing copied."
-msgstr ""
+msgstr "Documento vazio, nada copiado."
 
 #: ../gui/document.py:914
 #, python-brace-format
 msgctxt "Statusbar message: copy result"
 msgid "Copied layer as {w}×{h} image."
-msgstr ""
+msgstr "Camada copiada como imagem {w}x{h}."
 
 #: ../gui/document.py:931
 msgctxt "Statusbar message: paste result"
 msgid "Nothing on clipboard."
-msgstr ""
+msgstr "Nada na área de transferência."
 
 #: ../gui/document.py:940
 msgctxt "Statusbar message: paste result"
 msgid "Clipboard does not contain an image."
-msgstr ""
+msgstr "A área de transferência não contém uma imagem."
 
 #: ../gui/document.py:951
 msgctxt "Statusbar message: paste result"
 msgid "Cannot paste into this type of layer."
-msgstr ""
+msgstr "Não pode colar nesse tipo de camada."
 
 #: ../gui/document.py:956
 #, python-brace-format
 msgctxt "Statusbar message: paste result"
 msgid "Pasted {w}×{h} image."
-msgstr ""
+msgstr "Imagem {w}×{h} colada."
 
 #: ../gui/document.py:2057
 #, python-brace-format
 msgctxt "Statusbar message: vacuum document"
 msgid "Vacuum: discarded {removed} of {total} tiles."
-msgstr ""
+msgstr "Descarte: {removed} descartado(s) do total de {total} tile(s)."
 
 #. TRANSLATORS: window title for use with a filename
 #: ../gui/drawwindow.py:274
@@ -1565,7 +1583,7 @@ msgstr "MyPaint"
 #: ../gui/drawwindow.py:300
 msgctxt "Open dragged file confirm dialog: title"
 msgid "Open Dragged File?"
-msgstr ""
+msgstr "Abrir o ficheiro arrastado?"
 
 #: ../gui/drawwindow.py:304
 #, fuzzy
@@ -1647,7 +1665,7 @@ msgstr "Camada “{layer_name}” atualizada com edições externas"
 #, python-brace-format
 msgctxt "Edit in External App (statusbar message)"
 msgid "Failed to update layer with external edits from “{file_basename}”."
-msgstr ""
+msgstr "Erro ao atualizar camada com edições externas de \"{file_basename}\"."
 
 #: ../gui/externalapp.py:104
 #, python-brace-format
@@ -1689,7 +1707,7 @@ msgstr "A carregar “{file_basename}”…"
 #, python-brace-format
 msgctxt "Document I/O: message shown while working"
 msgid "Importing layers from {files_summary}…"
-msgstr ""
+msgstr "Importando camadas de {files_summary}…"
 
 #: ../gui/filehandling.py:135
 #, fuzzy, python-brace-format
@@ -1719,7 +1737,7 @@ msgstr "Falha ao guardar “{file_basename}”."
 #, python-brace-format
 msgctxt "Document I/O: fail message"
 msgid "Could not import layers from {files_summary}."
-msgstr ""
+msgstr "Não foi possível importar camadas de {files_summary}."
 
 #: ../gui/filehandling.py:158
 #, fuzzy, python-brace-format
@@ -1736,17 +1754,17 @@ msgstr "Guardar paleta"
 #: ../gui/filehandling.py:169
 msgctxt "Document I/O: fail dialog title"
 msgid "Export failed"
-msgstr ""
+msgstr "Exportar falhou"
 
 #: ../gui/filehandling.py:173
 msgctxt "Document I/O: fail dialog title"
 msgid "Import Layers failed"
-msgstr ""
+msgstr "Importar falhou"
 
 #: ../gui/filehandling.py:177
 msgctxt "Document I/O: fail dialog title"
 msgid "Open failed"
-msgstr ""
+msgstr "Não foi possível abrir"
 
 #: ../gui/filehandling.py:184
 #, fuzzy, python-brace-format
@@ -1764,7 +1782,7 @@ msgstr "“{file_basename}” guardado com sucesso."
 #, python-brace-format
 msgctxt "Document I/O: success"
 msgid "Imported layers from {files_summary}."
-msgstr ""
+msgstr "Camadas importadas de {files_summary}."
 
 #: ../gui/filehandling.py:196
 #, fuzzy, python-brace-format
@@ -1778,7 +1796,7 @@ msgstr "“{file_basename}” carregado."
 #, python-brace-format
 msgid "{n} file"
 msgid_plural "{n} files"
-msgstr[0] ""
+msgstr[0] "{n} ficheiro"
 msgstr[1] ""
 
 #: ../gui/filehandling.py:223
@@ -1887,7 +1905,7 @@ msgstr "Quer mesmo continuar?"
 #: ../gui/filehandling.py:706
 msgctxt "Destructive action confirm dialog: cancel button"
 msgid "_Cancel"
-msgstr ""
+msgstr "_Cancelar"
 
 #: ../gui/filehandling.py:710
 #, fuzzy
@@ -1900,7 +1918,7 @@ msgctxt ""
 "Destructive action confirm dialog: fallback continue button (normally "
 "overridden)"
 msgid "Co_ntinue"
-msgstr ""
+msgstr "Co_ntinuar"
 
 #: ../gui/filehandling.py:739
 #, fuzzy, python-brace-format
@@ -1911,17 +1929,17 @@ msgstr "Isto irá descartar {abbreviated_time} de pintura não guardada"
 #: ../gui/filehandling.py:804
 msgctxt "File→New: confirm dialog: title question"
 msgid "New Canvas?"
-msgstr ""
+msgstr "Nova Tela?"
 
 #: ../gui/filehandling.py:808
 msgctxt "File→New: confirm dialog: continue button"
 msgid "_New Canvas"
-msgstr ""
+msgstr "_Nova Tela"
 
 #: ../gui/filehandling.py:1024
 msgctxt "File→Open: confirm dialog: title question"
 msgid "Open File?"
-msgstr ""
+msgstr "Abrir Ficheiro?"
 
 #: ../gui/filehandling.py:1028
 #, fuzzy
@@ -1950,7 +1968,7 @@ msgstr "Pincel importado"
 #: ../gui/filehandling.py:1433
 msgctxt "File→Open Recent→* confirm dialog: title"
 msgid "Open File?"
-msgstr ""
+msgstr "Abrir Ficheiro?"
 
 #: ../gui/filehandling.py:1437
 #, fuzzy
@@ -1997,12 +2015,12 @@ msgstr "Abrir"
 #: ../gui/filehandling.py:1512
 msgctxt "File→Revert: status message: canvas has no filename yet"
 msgid "Cannot revert: canvas has not been saved to a file yet."
-msgstr ""
+msgstr "Impossível reverter: a tela ainda não foi gravada para um ficheiro."
 
 #: ../gui/filehandling.py:1519
 msgctxt "File→Revert confirm dialog: title"
 msgid "Revert Changes?"
-msgstr ""
+msgstr "Reverter Alterações?"
 
 #: ../gui/filehandling.py:1524
 #, fuzzy
@@ -2055,12 +2073,13 @@ msgstr "Origem:"
 #: ../gui/fill.py:539
 msgctxt "fill options: 'Source:' category (tooltip)"
 msgid "The input that the fill will be based on"
-msgstr ""
+msgstr "A origem em que a área de preenchimento será baseada"
 
 #: ../gui/fill.py:583
 msgctxt "fill options: 'Source' category: Layer dropdown (tooltip)"
 msgid "Select a specific layer you want the fill to be based on"
 msgstr ""
+"Escolha uma camada específica que deseja usar como base para o preenchimento"
 
 #: ../gui/fill.py:601
 #, fuzzy
@@ -2099,6 +2118,9 @@ msgid ""
 "If the view is rotated, the fill will be limited to the\n"
 "smallest canvas-aligned rectangle that can fit the view."
 msgstr ""
+"Limitar a área que será preenchida, baseada no viewportl.\n"
+"Se a vista for girada, o preenchimento será limitado para\n"
+"a menor área retangular que cabe na vista."
 
 #: ../gui/fill.py:644
 #, fuzzy
@@ -2137,12 +2159,12 @@ msgstr ""
 #: ../gui/fill.py:673
 msgctxt "fill options: Target | Blend Mode dropdown - warning text"
 msgid "This mode does nothing when alpha locking is enabled!"
-msgstr ""
+msgstr "Este modo não faz nada quando o travamento de alfa está ligado!"
 
 #: ../gui/fill.py:687
 msgctxt "fill options: Target | Blend Mode dropdown (tooltip)"
 msgid "Blend mode used when filling"
-msgstr ""
+msgstr "Modo de mistura usado no preenchimento"
 
 #: ../gui/fill.py:702
 msgid "Opacity:"
@@ -2151,17 +2173,17 @@ msgstr "Opacidade:"
 #: ../gui/fill.py:705
 msgctxt "fill options: Opacity slider (tooltip)"
 msgid "Opacity of the fill"
-msgstr ""
+msgstr "Opacidade do preenchimento"
 
 #: ../gui/fill.py:728
 msgctxt "fill options: numeric option - grow/shrink fill (label)"
 msgid "Offset:"
-msgstr ""
+msgstr "Deslocamento:"
 
 #: ../gui/fill.py:744
 msgctxt "fill options: Offset (tooltip)"
 msgid "The distance in pixels to grow or shrink the fill"
-msgstr ""
+msgstr "A distância em pixels para aumentar ou diminuir o preenchimento"
 
 #: ../gui/fill.py:755
 msgctxt "fill options: numeric option for blurring fill (label)"
@@ -2176,7 +2198,7 @@ msgstr ""
 #: ../gui/fill.py:786
 msgctxt "fill options: gap detection toggle (label)"
 msgid "Use Gap Detection"
-msgstr ""
+msgstr "Usar Deteção de Lacunas"
 
 #: ../gui/fill.py:791
 msgctxt "fill options: Use Gap Detection (tooltip)"
@@ -2185,11 +2207,14 @@ msgid ""
 "Note: This can be a lot slower than the regular fill, only enable when you "
 "need it."
 msgstr ""
+"Tenta detetar lacunas e não preencher depois delas.\n"
+"Nota: Isto pode ser bem mais lento que o preenchimento normal, somente ative "
+"quando o precisar."
 
 #: ../gui/fill.py:809
 msgctxt "fill options: gap-detection sub-option, numeric setting (label)"
 msgid "Max Gap Size:"
-msgstr ""
+msgstr "Tamanho Máximo de Lacuna:"
 
 #: ../gui/fill.py:824
 msgctxt "fill options: Max Gap Size (tooltip)"
@@ -2197,6 +2222,8 @@ msgid ""
 "The size of the largest gaps that can be detected.\n"
 "Using large values can make the fill run a lot slower."
 msgstr ""
+"O tamanho das maiores lacunas que podem ser detetadas.\n"
+"Usar valores grandes pode tornar o preenchimento muito mais lento."
 
 #: ../gui/fill.py:837
 msgctxt ""
@@ -2204,7 +2231,7 @@ msgctxt ""
 "When enabled, if the fill stops after going past a detected gap, it 'pulls' "
 "the fill back out of the gap to the other side of it."
 msgid "Prevent seeping"
-msgstr ""
+msgstr "Impedir escoamento"
 
 #: ../gui/fill.py:844
 msgctxt "fill options: Prevent seeping (tooltip)"
@@ -2212,6 +2239,8 @@ msgid ""
 "Try to prevent the fill from seeping into the gaps.\n"
 "If a fill starts in a detected gap, this option will do nothing."
 msgstr ""
+"Tentar impedir que o preenchimento escorra para as lacunas.\n"
+"Se um preenchimento começa numa lacuna detetada, essa opção não fará nada."
 
 #: ../gui/fill.py:854 ../gui/mode.py:629
 msgid "Reset"
@@ -2370,7 +2399,7 @@ msgstr "Pressão:"
 #. TRANSLATORS: This is used on the options panel.
 #: ../gui/freehand.py:616
 msgid "Twist:"
-msgstr ""
+msgstr "Giro:"
 
 #: ../gui/gtkexcepthook.py:163
 msgid "Bug Detected"
@@ -2499,7 +2528,7 @@ msgstr "Aparelho:"
 
 #: ../gui/inputtestwindow.py:73
 msgid "(No Barrel Rotation)"
-msgstr ""
+msgstr "(Sem Rotação)"
 
 #: ../gui/inputtestwindow.py:75
 #, fuzzy
@@ -2520,23 +2549,22 @@ msgstr "Mover a camada atual"
 #: ../gui/layerprops.py:356
 msgctxt "layer properties dialog: name entry: icon tooltip"
 msgid "Layer names cannot be empty."
-msgstr ""
+msgstr "Os nomes das camadas não podem estar vazios."
 
 #: ../gui/layerprops.py:361
 msgctxt "layer properties dialog: name entry: icon tooltip"
 msgid "Layer name is not unique."
-msgstr ""
+msgstr "O nome da camada não é exclusivo."
 
 #: ../gui/layerprops.py:377
-#, fuzzy
 msgctxt "layer properties dialog: title"
 msgid "Layer Properties"
-msgstr "Propriedades"
+msgstr "Propriedades da Camda"
 
 #: ../gui/layerprops.py:381
 msgctxt "layer properties dialog: done button"
 msgid "Done"
-msgstr ""
+msgstr "Feito"
 
 #. Visibility flag column
 #: ../gui/layers.py:406
@@ -2546,7 +2574,7 @@ msgstr "Visível"
 #. Other flags column
 #: ../gui/layers.py:438
 msgid "Flags"
-msgstr ""
+msgstr "Marcaçãoes"
 
 #: ../gui/layers.py:939
 #, fuzzy
@@ -2557,18 +2585,18 @@ msgstr "Camada"
 #: ../gui/layers.py:959
 msgctxt "Layers: description parts: unknown mode (fallback str!)"
 msgid "?mode"
-msgstr ""
+msgstr "?modo"
 
 #: ../gui/layers.py:966
 msgctxt "Layers: description parts: layer hidden"
 msgid "Hidden"
-msgstr ""
+msgstr "Oculta"
 
 #: ../gui/layers.py:971
 #, python-format
 msgctxt "Layers: description parts: opacity percentage"
 msgid "%d%% opaque"
-msgstr ""
+msgstr "%d%% opaca"
 
 #: ../gui/layers.py:978
 #, fuzzy
@@ -2579,7 +2607,7 @@ msgstr "Bloqueado"
 #: ../gui/layers.py:989
 msgctxt "Layers: description parts: unknown type (fallback str!)"
 msgid "?type"
-msgstr ""
+msgstr "?tipo"
 
 #: ../gui/layers.py:996
 #, fuzzy
@@ -2600,6 +2628,8 @@ msgid ""
 "<span size=\"smaller\">{layer_name}\n"
 "<span size=\"smaller\">{layer_description}</span></span>"
 msgstr ""
+"<span size=\"smaller\">{layer_name}\n"
+"<span size=\"smaller\">{layer_description}</span></span>"
 
 #: ../gui/layerswindow.py:95
 msgid "Layers"
@@ -2622,7 +2652,7 @@ msgstr "Opacidade da camada: %d%%"
 #: ../gui/layerswindow.py:107
 #, python-format
 msgid "%d%%"
-msgstr ""
+msgstr "%d%%"
 
 #. TRANSLATORS: status bar messages for drag, without/with modifiers
 #: ../gui/layerswindow.py:114
@@ -2650,7 +2680,7 @@ msgstr "<b>{brush_name}</b>"
 #, python-brace-format
 msgctxt "view controls: dropdown: item markup"
 msgid "{user_chosen_view_name}"
-msgstr ""
+msgstr "{user_chosen_view_name}"
 
 #: ../gui/layervis.py:187
 #, fuzzy
@@ -2861,7 +2891,7 @@ msgstr "Ganho:"
 #. TRANSLATORS:"Paint Pigment Mode" for the options panel. Short.
 #: ../gui/mode.py:592
 msgid "Pigment:"
-msgstr ""
+msgstr "Pigmento:"
 
 #: ../gui/optionspanel.py:47
 msgctxt "options panel: tab tooltip: title"
@@ -2918,7 +2948,7 @@ msgstr "Idioma do sistema"
 #, python-brace-format
 msgctxt "Prefs Dialog|View|Interface - menu entries"
 msgid "{lang_en} - ({lang_nat})"
-msgstr ""
+msgstr "{lang_en} - ({lang_nat})"
 
 #. TRANSLATORS: title of panel showing an overview of the whole canvas
 #: ../gui/previewwindow.py:201
@@ -3023,7 +3053,7 @@ msgstr "Simetria"
 #: ../gui/symmetry.py:362
 msgctxt "symmetry axis options panel: labels"
 msgid "Rotational lines:"
-msgstr ""
+msgstr "Linhas rotacionais:"
 
 #: ../gui/symmetry.py:438
 #, fuzzy
@@ -3084,13 +3114,13 @@ msgstr "%s: fechar separador"
 #, python-brace-format
 msgctxt "workspace: sidebar tabs: button tooltips"
 msgid "{tab_title}: tab options and properties"
-msgstr ""
+msgstr "{tab_title}: opções e propriedades da guia"
 
 #: ../gui/toolstack.py:359
 #, python-brace-format
 msgctxt "workspace: sidebar tabs: button tooltips"
 msgid "{tab_title}: move tab to other sidebar"
-msgstr ""
+msgstr "{tab_title}: mover guia para a outra barra lateral"
 
 #: ../gui/topbar.py:90
 msgid "<b>MyPaint</b>"
@@ -3433,22 +3463,22 @@ msgstr "Preencher"
 #: ../lib/floodfill.py:133
 msgctxt "floodfill status message: use active tense"
 msgid "Morphing"
-msgstr ""
+msgstr "Transformando"
 
 #: ../lib/floodfill.py:134
 msgctxt "floodfill status message: use active tense"
 msgid "Blurring"
-msgstr ""
+msgstr "Desfocando"
 
 #: ../lib/floodfill.py:135
 msgctxt "floodfill status message: use active tense"
 msgid "Compositing"
-msgstr ""
+msgstr "Compondo"
 
 #: ../lib/floodfill.py:136
 msgctxt "floodfill status message: use active tense"
 msgid "Finishing up"
-msgstr ""
+msgstr "Finalizando"
 
 #: ../lib/floodfill.py:138
 msgctxt "uniform square region of pixels, plural noun"
@@ -3504,18 +3534,18 @@ msgstr "Camada vetorial"
 #: ../lib/layer/data.py:1237
 msgctxt "layer default names"
 msgid "Bitmap"
-msgstr ""
+msgstr "Bitmap"
 
 #: ../lib/layer/data.py:1242
 msgctxt "layer type descriptions"
 msgid "Bitmap Data"
-msgstr ""
+msgstr "Dados de Bitmap"
 
 #. TRANSLATORS: Short default name for non-renderable fallback layers
 #: ../lib/layer/data.py:1258
 msgctxt "layer default names"
 msgid "Data"
-msgstr ""
+msgstr "Dados"
 
 #: ../lib/layer/data.py:1263
 #, fuzzy
@@ -3561,7 +3591,7 @@ msgstr ", "
 #: ../lib/layer/tree.py:2243
 msgctxt "layer default names: refactor: name of the common areas layer"
 msgid "Common"
-msgstr ""
+msgstr "Comum"
 
 #: ../lib/layervis.py:44
 #, fuzzy
@@ -3572,7 +3602,7 @@ msgstr "Visualização"
 #: ../lib/layervis.py:49
 msgctxt "layer visibility sets: text shown when no user-managed view is active"
 msgid "No active view"
-msgstr ""
+msgstr "Nenhuma visualização ativa"
 
 #: ../lib/layervis.py:579
 #, fuzzy
@@ -3590,7 +3620,7 @@ msgstr "Remover camada"
 #, python-brace-format
 msgctxt "layer views: commands: activate"
 msgid "Activate Layer View “{name}”"
-msgstr ""
+msgstr "Ativar Visualização de Camada \"{name}\""
 
 #: ../lib/layervis.py:692
 #, fuzzy
@@ -3622,12 +3652,14 @@ msgstr "Apenas a camada de cima, sem misturar as cores."
 
 #: ../lib/modes.py:54
 msgid "Pigment"
-msgstr ""
+msgstr "Pigmento"
 
 #: ../lib/modes.py:55
 msgid ""
 "Similar to mixing actual pigments by upsampling to 10 spectral channels."
 msgstr ""
+"Similar à mistura de pigmentos reais, por amostragem ampliada para 10 canais "
+"espectrais."
 
 #: ../lib/modes.py:58
 msgid "Multiply"
@@ -3855,7 +3887,7 @@ msgstr "%(name)s %(number)d"
 #: ../lib/naming.py:30
 msgctxt "unique names: regex matching a string with a serial number"
 msgid "^(?P<name>.*?)\\s+(?P<number>\\d+)$"
-msgstr ""
+msgstr "^(?P<name>.*?)\\s+(?P<number>\\d+)$"
 
 #: ../lib/pixbufsurface.py:39
 msgctxt "user-facing error texts"
@@ -3892,7 +3924,7 @@ msgstr "Espelhar horizontalmente"
 
 #: ../lib/tiledsurface.py:50
 msgid "Vertical and horizontal"
-msgstr ""
+msgstr "Vertical e horizontal"
 
 #: ../lib/tiledsurface.py:51
 #, fuzzy
@@ -3901,7 +3933,7 @@ msgstr "Restaurar rotação"
 
 #: ../lib/tiledsurface.py:52
 msgid "Snowflake"
-msgstr ""
+msgstr "Floco de neve"
 
 #: ../lib/tiledsurface.py:624
 #, python-format
@@ -3916,7 +3948,7 @@ msgstr "Recuperar trabalho interrompido?"
 #: ../gui/autorecover.glade:38
 msgctxt "Autosave Recovery dialog|"
 msgid "_Look for backups at startup"
-msgstr ""
+msgstr "_Procurar por cópias de seguranças ao iniciar"
 
 #: ../gui/autorecover.glade:42
 msgctxt "Autosave Recovery dialog|Show Dialog at Startup checkbutton|"
@@ -3927,6 +3959,11 @@ msgid ""
 "You can always launch this dialog from the ‘File’ menu when MyPaint is "
 "running."
 msgstr ""
+"Abrir esta janela de diálogo de recuperação automática quando o MyPaint "
+"iniciar, se houver ficheiros para recuperar.\n"
+"\n"
+"Pode sempre abrir esta janela de diálogo do menu 'Ficheiro' quando o MyPaint "
+"estiver aberto."
 
 #. Deletes the selected autosave backup file.
 #: ../gui/autorecover.glade:60
@@ -3959,7 +3996,7 @@ msgstr ""
 #: ../gui/autorecover.glade:95
 msgctxt "Autosave Recovery dialog|"
 msgid "Decide _Later"
-msgstr ""
+msgstr "Decidir mais _Tarde"
 
 #: ../gui/autorecover.glade:101
 msgctxt "Autosave Recovery dialog|Cancel button|"
@@ -4222,11 +4259,11 @@ msgstr "Inserir linha"
 
 #: ../gui/inktool.glade:252 ../gui/resources.xml:911
 msgid "Simplify Points"
-msgstr ""
+msgstr "Simplificar Pontos"
 
 #: ../gui/inktool.glade:256
 msgid "Simplify the curve using the Reumann-Witkam algorithm."
-msgstr ""
+msgstr "Simplifica a curva usando o algoritmo de Reumann-Witkam."
 
 #: ../gui/inktool.glade:268 ../gui/resources.xml:918
 #, fuzzy
@@ -4235,7 +4272,7 @@ msgstr "Eliminar ponto"
 
 #: ../gui/inktool.glade:272
 msgid "Cull every other point from the curve."
-msgstr ""
+msgstr "Retira pontos da curva de forma alternada."
 
 #: ../gui/layervis.glade:15
 #, fuzzy
@@ -4264,7 +4301,7 @@ msgstr "Que camadas visíveis devem ser preenchidas"
 #: ../gui/layervis.glade:99
 msgctxt "Layers window: view list controls: tooltips"
 msgid "Lock or unlock the active view."
-msgstr ""
+msgstr "Trava ou destrava a vista ativa."
 
 #: ../gui/mypaint.glade:65
 msgctxt "footer: color picker button: tooltip"
@@ -4435,7 +4472,7 @@ msgstr "Botões"
 #. unless its key is bound to something else.
 #: ../gui/preferenceswindow.glade:453
 msgid "Disable fallback key bindings"
-msgstr ""
+msgstr "Desativar mapeamentos de teclado de fallback"
 
 #. Tooltip for checkbox in the keyboard mappings preferences.
 #: ../gui/preferenceswindow.glade:457
@@ -4443,6 +4480,9 @@ msgid ""
 "The fallback key bindings are static built-in bindings that are only used if "
 "their key combinations are not bound to anything else."
 msgstr ""
+"Os mapeamentos de teclado de fallback são mapeamentos estáticos integrados "
+"que são apenas usados se suas combinações de teclas não estiverem associadas "
+"a mais nada."
 
 #: ../gui/preferenceswindow.glade:476
 msgctxt "Prefs Dialog|Button|"
@@ -4697,21 +4737,23 @@ msgid ""
 "When a layer is created or selected, show only that layer for a short time "
 "period."
 msgstr ""
+"Quando uma camada é criada ou selecionada, mostra somente esta camada por um "
+"breve período de tempo."
 
 #: ../gui/preferenceswindow.glade:1158
 msgctxt "Prefs Dialog|View|Interface|"
 msgid "Blink layers on creation/selection:"
-msgstr ""
+msgstr "Piscar camadas ao criar/selecionar:"
 
 #: ../gui/preferenceswindow.glade:1193
 msgctxt "Prefs Dialog|View|Interface|"
 msgid "Language:"
-msgstr ""
+msgstr "Idioma:"
 
 #: ../gui/preferenceswindow.glade:1208
 msgctxt "Prefs Dialog|View|Interface|"
 msgid "(needs restart)"
-msgstr ""
+msgstr "(requer reinicialização)"
 
 #. Tab label in preferences dialog
 #: ../gui/preferenceswindow.glade:1225
@@ -4833,13 +4875,12 @@ msgstr "Cor"
 #: ../gui/preferenceswindow.glade:1400
 msgctxt "Prefs Dialog|Compatibility"
 msgid "Default Compatibility Mode:"
-msgstr ""
+msgstr "Modo de Compatibilidade Prefedinido:"
 
 #: ../gui/preferenceswindow.glade:1425
-#, fuzzy
 msgctxt "Prefs Dialog|Compatibility"
 msgid "<b>1.x Settings</b>"
-msgstr "<b>A guardar</b>"
+msgstr "<b>Configurações 1.x</b>"
 
 #. Make sure to be consistent w. other occurences of 2.x
 #: ../gui/preferenceswindow.glade:1439
@@ -4868,6 +4909,10 @@ msgid ""
 "default. In this mode 1.x .ora files will look the same as they did in older "
 "versions, but pigment blending will not work well."
 msgstr ""
+"Quando criar novos documentos, usar o modo de compatibilidade 1.0 antigo por "
+"predefinição. Neste modo os ficheiros .ora 1.0 terão a mesma aparência que "
+"tinham em versões mais antigas, mas a mistura de pigmentos não funcionará "
+"bem."
 
 #: ../gui/preferenceswindow.glade:1633
 msgctxt "Prefs Dialog|Compatibility"
@@ -4875,22 +4920,25 @@ msgid ""
 "When creating new documents, use the regular 2.x compatibility mode by "
 "default. Old documents will often look different in this mode."
 msgstr ""
+"Quando criar novos documentos, usar o modo de compatibilidade padrão 2.x por "
+"predefeinição. Documentos antigos geralmente terão a aparência diferente "
+"neste modo."
 
 #: ../gui/preferenceswindow.glade:1665
 msgctxt "Prefs Dialog|Compatibility"
 msgid "Show warning for files that may be partially incompatible"
-msgstr ""
+msgstr "Mostrar aviso para ficheiros que podem ser parcialmente incompatíveis"
 
 #. Label for a set of options
 #: ../gui/preferenceswindow.glade:1682
 msgctxt "Prefs Dialog|Compatibility"
 msgid "File compatibility warnings:"
-msgstr ""
+msgstr "Avisos de compatibilidade de ficheiro:"
 
 #: ../gui/preferenceswindow.glade:1694
 msgctxt "Prefs Dialog|Compatibility"
 msgid "Show warning for files that may be fully incompatible"
-msgstr ""
+msgstr "Mostrar aviso para ficheiros que podem ser totalmente incompatíveis"
 
 #. This is a tooltip for the file behavior options label.
 #: ../gui/preferenceswindow.glade:1710
@@ -4900,12 +4948,15 @@ msgid ""
 "When you save an OpenRaster file with MyPaint 2.0 or newer the active "
 "compatibility mode will be written to the file."
 msgstr ""
+"Isto somente aplica-se a ficheiros gravados em versões do MyPaint mais "
+"antigas que 2.0. Quando gravar um ficheiro OpenRaster com MyPaint 2.0 ou "
+"superior o modo de compatibilidade ativo será gravado no ficheiro."
 
 #. Label to the options for how to handle files which do not have a compatibility mode specified (whether they should be opened in 1.x compatibility mode, or 2.x mode)
 #: ../gui/preferenceswindow.glade:1712
 msgctxt "Prefs Dialog|Compatibility"
 msgid "When Mode is Unspecified:"
-msgstr ""
+msgstr "Quando não Houver Modo Especificado:"
 
 #. This label indicates a subsection of the compatibility settings related to loading files.
 #: ../gui/preferenceswindow.glade:1739
@@ -4916,7 +4967,7 @@ msgstr "<b>A guardar</b>"
 
 #: ../gui/preferenceswindow.glade:1759
 msgid "<b>Compatibility settings</b>"
-msgstr ""
+msgstr "<b>Configurações de compatibilidade</b>"
 
 #. Tab label in preferences dialog
 #: ../gui/preferenceswindow.glade:1775
@@ -5004,7 +5055,7 @@ msgstr "Importar pincéis…"
 #: ../gui/resources.xml:112
 msgctxt "Accel Editor (descriptions)"
 msgid "Import layers from one or more files."
-msgstr ""
+msgstr "Importar camadas de um ou mais ficheiros."
 
 #: ../gui/resources.xml:120
 msgctxt "Menu→File (labels), Accel Editor (labels)"
@@ -5134,6 +5185,7 @@ msgstr "Pressão no início"
 msgctxt "Accel Editor (descriptions)"
 msgid "Send harder pressure for devices that don't support pressure input."
 msgstr ""
+"Enviar pressão mais forte para aparelhos que não suportam entrada de pressão."
 
 #: ../gui/resources.xml:245
 #, fuzzy
@@ -5145,6 +5197,7 @@ msgstr "Pressão no início"
 msgctxt "Accel Editor (descriptions)"
 msgid "Send softer pressure for devices that don't support pressure input."
 msgstr ""
+"Enviar pressão mais fraca para aparelhos que não suportam entrada de pressão."
 
 #: ../gui/resources.xml:254
 #, fuzzy
@@ -5156,6 +5209,8 @@ msgstr "Aumentar saturação"
 msgctxt "Accel Editor (descriptions)"
 msgid "Increase barrel rotation for devices that don't support rotation input."
 msgstr ""
+"Enviar maior rotação de pincel para aparelhos que não suportam entrada de "
+"rotação."
 
 #: ../gui/resources.xml:262
 #, fuzzy
@@ -5167,6 +5222,8 @@ msgstr "Diminuir saturação"
 msgctxt "Accel Editor (descriptions)"
 msgid "Decrease barrel rotation for devices that don't support rotation input."
 msgstr ""
+"Enviar menor rotação de pincel para aparelhos que não suportam entrada de "
+"rotação."
 
 #: ../gui/resources.xml:271
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
@@ -5368,6 +5425,8 @@ msgid ""
 "Delete whole tiles from the current layer which do not vary from the "
 "backdrop."
 msgstr ""
+"Exclui regiões de pixels vazias inteiras da camada atual que não diferem do "
+"fundo."
 
 #: ../gui/resources.xml:437
 #, fuzzy
@@ -5380,6 +5439,8 @@ msgctxt "Accel Editor (descriptions)"
 msgid ""
 "Normalize child layers, then factor out common parts to a new child layer."
 msgstr ""
+"Normalizar sub-camadas e depois refatorar as partes em comum para uma nova "
+"sub-camada."
 
 #: ../gui/resources.xml:444
 #, fuzzy
@@ -5639,6 +5700,8 @@ msgctxt "Accel Editor (descriptions)"
 msgid ""
 "Change the layer’s properties (name, mode, visibility, locked, opacity)."
 msgstr ""
+"Alterar as propriedades da camada (nome, modo, visibilidade, travada, "
+"opacidade)."
 
 #: ../gui/resources.xml:650
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
@@ -5674,7 +5737,7 @@ msgstr "Ocultar ou mostrar o fundo da camada."
 #: ../gui/resources.xml:674
 msgctxt "Menu→Help→Debug (labels), Accel Editor (labels)"
 msgid "Vacuum Empty Tiles"
-msgstr ""
+msgstr "Descartar Grupos de Pixels Vazios"
 
 #: ../gui/resources.xml:675
 #, fuzzy
@@ -5792,7 +5855,7 @@ msgstr ""
 #: ../gui/resources.xml:774
 msgctxt "Menu→View→Adjust View (labels), Accel Editor (labels)"
 msgid "Pan Up"
-msgstr ""
+msgstr "Deslocar para Cima"
 
 #: ../gui/resources.xml:775
 #, fuzzy
@@ -5929,6 +5992,7 @@ msgid ""
 "Insert a point next to the currently selected point in the direction of the "
 "stroke."
 msgstr ""
+"Insere um ponto próximo ao ponto atualmente selecionado na direção do traço."
 
 #: ../gui/resources.xml:904
 #, fuzzy
@@ -5946,11 +6010,12 @@ msgctxt "Accel Editor (descriptions)"
 msgid ""
 "Simplify and delete points according to angle and distance between nodes."
 msgstr ""
+"Simplifica e apaga pontos de acordo com o ângulo e distância entre os nós."
 
 #: ../gui/resources.xml:919
 msgctxt "Accel Editor (descriptions)"
 msgid "Delete every other point on the ink stroke."
-msgstr ""
+msgstr "Apaga pontos de forma intercalada do traço de tinta."
 
 #: ../gui/resources.xml:933
 msgctxt "Menu→Brush (labels)"
@@ -6450,7 +6515,7 @@ msgstr "Painel de camadas"
 #: ../gui/resources.xml:1374
 msgctxt "Accel Editor (descriptions)"
 msgid "Dockable panel for managing layers."
-msgstr ""
+msgstr "Painel encaixável para gestão de camadas."
 
 #: ../gui/resources.xml:1382
 msgctxt "Menu→Layers (labels), Accel Editor (labels)"
@@ -6571,7 +6636,7 @@ msgstr "Painel de rascunhos"
 #: ../gui/resources.xml:1470
 msgctxt "Accel Editor (descriptions)"
 msgid "Dockable Panel for mixing colors and testing brushes."
-msgstr ""
+msgstr "Painel encaixável para misturar cores e testar pincéis."
 
 #: ../gui/resources.xml:1478
 msgctxt "Menu→Scratchpad (labels), Accel Editor (labels)"
@@ -6591,7 +6656,7 @@ msgstr "Painel de previsão"
 #: ../gui/resources.xml:1489
 msgctxt "Accel Editor (descriptions)"
 msgid "Dockable panel for an overview and navigation of the whole canvas."
-msgstr ""
+msgstr "Painel encaixável para uma visão geral e navegação de toda a tela."
 
 #: ../gui/resources.xml:1497
 msgctxt "Menu→View (labels), Accel Editor (labels)"
@@ -6612,7 +6677,7 @@ msgstr "Painel de opções da ferramenta"
 #: ../gui/resources.xml:1509
 msgctxt "Accel Editor (descriptions)"
 msgid "Dockable panel for adjusting the options with the activated tool."
-msgstr ""
+msgstr "Painel encaixável para ajustar as opções da ferramenta ativa."
 
 #: ../gui/resources.xml:1517
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
@@ -6634,6 +6699,7 @@ msgstr "Painel de histórico de cores e pincéis"
 msgctxt "Accel Editor (descriptions)"
 msgid "Dockable panel for viewing recently changed colors and brushes."
 msgstr ""
+"Painel encaixável para visualizar cores e pincéis recentemente ajustados."
 
 #: ../gui/resources.xml:1537
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
