@@ -1405,7 +1405,7 @@ msgid ""
 "<b>A brush named “{brush_name}” already exists.</b>\n"
 "Do you want to replace it, or should the new brush be renamed?"
 msgstr ""
-"<b>名為「%s」的筆刷已經存在。</b>\n"
+"<b>名為「{brush_name}」的筆刷已經存在。</b>\n"
 "您想要取代它，或者重新命名新筆刷呢？"
 
 #: ../gui/dialogs.py:196
@@ -1431,7 +1431,7 @@ msgstr "要匯入筆刷套件組嗎？"
 #: ../gui/dialogs.py:357
 #, python-brace-format
 msgid "<b>Do you really want to import package “{brushpack_name}”?</b>"
-msgstr "<b>您真的想要匯入「%s」筆刷套件組嗎？</b>"
+msgstr "<b>您真的想要匯入「{brushpack_name}」筆刷套件組嗎？</b>"
 
 #: ../gui/document.py:455
 #, python-format
@@ -1662,7 +1662,7 @@ msgstr "沒有描述"
 #, python-brace-format
 msgctxt "Document I/O: message shown while working"
 msgid "Loading {files_summary}…"
-msgstr "「{file_basename}」載入中…"
+msgstr "「{files_summary}」載入中…"
 
 #: ../gui/filehandling.py:131
 #, python-brace-format
@@ -1692,7 +1692,7 @@ msgstr "無法匯出至「{files_summary}」。"
 #, python-brace-format
 msgctxt "Document I/O: fail message"
 msgid "Failed to save {files_summary}."
-msgstr "無法儲存至{file_basename}。"
+msgstr "無法儲存至{files_summary}。"
 
 #: ../gui/filehandling.py:154
 #, python-brace-format
@@ -1704,7 +1704,7 @@ msgstr "無法從{files_summary}匯入圖層。"
 #, python-brace-format
 msgctxt "Document I/O: fail message"
 msgid "Could not load {files_summary}."
-msgstr "無法載入{file_basename}。"
+msgstr "無法載入{files_summary}。"
 
 #: ../gui/filehandling.py:165
 msgctxt "Document I/O: fail dialog title"
