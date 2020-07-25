@@ -30,28 +30,38 @@ class BrushSizeOverlay(gui.overlays.Overlay):
         super(BrushSizeOverlay, self).__init__()
         self._max_radius = max_radius
         self._tdw = tdw
-        self._x = int(x)
-        self._y = int(y)
-        self._hx = int(handle_x)
-        self._hy = int(handle_y)
+        self._x = int(round(x))
+        self._y = int(round(y))
+        self._hx = handle_x
+        self._hy = handle_y
         self._radius = int(radius)
-        self._old_radius = 0
+        self._old_radius = -1
+
+        # Get style values from preferences - used when drawing the outlines
         prefs = doc.app.preferences
-        lwi = float(prefs.get("cursor.freehand.inner_line_width", 1.25))
-        lwo = float(prefs.get("cursor.freehand.outer_line_width", 1.25))
-        self._line_width_inner = lwi
-        self._line_width_outer = lwo
-        self._inset = int(prefs.get("cursor.freehand.inner_line_inset", 2))
-        hr = self.HANDLE_RADIUS
-        self._lwi_offs = ceil(max(hr+lwi/2, self._inset + hypot(lwi/2, lwi/2)))
-        self._lwo_offs = ceil(max(hr+lwi/2, hypot(lwo/2, lwo/2)))
         self.col_fg = tuple(
             prefs.get("cursor.freehand.outer_line_color", (0, 0, 0, 1)))
         self.col_bg = tuple(
             prefs.get("cursor.freehand.inner_line_color", (1, 1, 1, 0.75)))
-        tdw.display_overlays.append(self)
+        lwi = float(prefs.get("cursor.freehand.inner_line_width", 1.25))
+        lwo = float(prefs.get("cursor.freehand.outer_line_width", 1.25))
+        self._line_width_inner = lwi
+        self._line_width_outer = lwo
+
+        # Calculate offsets - used when calculating invalidation rectangles
+        hr = self.HANDLE_RADIUS
+        self._handle_offs = hr + ceil(lwi / 2)
+        self._inset = int(prefs.get("cursor.freehand.inner_line_inset", 2))
+        self._lwi_offs = max(self._handle_offs,
+                             self._inset + ceil(hypot(lwi/2, lwi/2)))
+        self._lwo_offs = max(self._handle_offs, ceil(hypot(lwo/2, lwo/2)))
+
+        # Keeps track of areas that were painted in the previous redraw,
+        # and need to be invalidated for the next one (or when cleaning up).
         self._prev_areas = ()
         self._prev_handle_area = ()
+
+        tdw.display_overlays.append(self)
         self._queue_tdw_redraw()
 
     def cleanup(self):
@@ -74,8 +84,8 @@ class BrushSizeOverlay(gui.overlays.Overlay):
                 self._prev_areas = new_areas
         # Invalidate handle areas when they are/were outside the main circle,
         # or if the circle is at its maximum size (and won't be invalidated).
-        if self._radius >= self._max_radius:
-            m = self.HANDLE_RADIUS + ceil(self._line_width_inner / 2)
+        if self._radius >= self._max_radius or clear:
+            m = self._handle_offs
             handle = (self._hx - m, self._hy - m, 2 * m, 2 * m)
             regions.append(handle)
             self._prev_handle_area = handle
@@ -89,7 +99,7 @@ class BrushSizeOverlay(gui.overlays.Overlay):
         if big_r <= 32:
             # Small radius: return a rectangle covering the circle.
             self._prev_areas = ()  # Old area is always covered
-            offs = big_r + max(self.HANDLE_RADIUS, self._lwo_offs)
+            offs = big_r + self._lwo_offs
             return ((self._x - offs, self._y - offs, 2 * offs, 2 * offs),)
         else:
             # Large radius: return multiple rectangles covering
@@ -98,21 +108,21 @@ class BrushSizeOverlay(gui.overlays.Overlay):
             # 0.2928932188134524 = 1 - cos(pi /4)
             short = ceil(0.2928932188134524 * r)  # short side
             # full width + margins
-            offs_o = int(r + max(self.HANDLE_RADIUS, self._lwo_offs))
+            offs_o = int(r + self._lwo_offs)
             # inner width - margins
-            offs_i = int(r - short - max(self.HANDLE_RADIUS, self._lwi_offs))
+            offs_i = int(r - short - self._lwi_offs)
             x, y, = self._x, self._y
             top = (x - offs_o, y - offs_o, 2 * offs_o, offs_o - offs_i)
             bot = (x - offs_o, y + offs_i, 2 * offs_o, offs_o - offs_i)
             lft = (x - offs_o, y - offs_i, offs_o - offs_i, 2 * offs_i)
             rgt = (x + offs_i, y - offs_i, offs_o - offs_i, 2 * offs_i)
-            return (top, lft, rgt, bot)
+            return top, lft, rgt, bot
 
     def update(self, radius, handle_x, handle_y):
         self._old_radius = self._radius
         self._radius = int(round(radius))
-        self._hx = int(handle_x)
-        self._hy = int(handle_y)
+        self._hx = handle_x
+        self._hy = handle_y
         self._queue_tdw_redraw()
 
     def paint(self, cr):
@@ -166,7 +176,6 @@ class BrushResizeMode(gui.mode.OneshotDragMode):
         self._handle_y = None
         self._max_radius = None
         self._max_px_radius = None
-        self._random_offset = None
         self._base_radius_adj = None
         self._new_radius = None
         self._precision_mode = False
@@ -196,15 +205,24 @@ class BrushResizeMode(gui.mode.OneshotDragMode):
 
     def enter(self, doc, **kwds):
         super(BrushResizeMode, self).enter(doc, **kwds)
-        tdw = doc.tdw
-        x, y = self.current_position()
+        # Record the mode that was on the top of the stack before entering
+        # resize mode. It's used to retain the icon and options widget of
+        # the "parent" mode (whether freehand, line modes, inking etc.).
+        if not self._prev_mode:
+            self._prev_mode = doc.modes[-2]
+            self._prev_mode.doc = doc
+
+    def drag_start_cb(self, tdw, event):
+        super(BrushResizeMode, self).drag_start_cb(tdw, event)
+        x, y = self.start_x, self.start_y
         brush_info = tdw.doc.brush.brushinfo
         visual_radius = brush_info.get_visual_radius()
-        radius_px = visual_radius * tdw.scale + 0.5
+        radius_px = visual_radius * tdw.scale
         by_random = brush_info.get_base_value('offset_by_random')
         self._base_radius_adj = tdw.app.brush_adjustment['radius_logarithmic']
+        # This factor determines how to adjust the base radius value,
+        # based on the visual radius (based on the cursor size equation).
         self._radius_factor = 1 / (1 + by_random * 2)
-        self._random_offset = by_random
         self._handle_x = x + radius_px
         self._handle_y = y
         self._mod_pressed_initially = (
@@ -213,14 +231,8 @@ class BrushResizeMode(gui.mode.OneshotDragMode):
         self._max_px_radius = (
             brush_visual_radius(self._max_radius, by_random) * tdw.scale)
         self._overlay = BrushSizeOverlay(
-            doc, doc.tdw, x, y, self._max_px_radius,
+            self.doc, tdw, x, y, self._max_px_radius,
             radius_px, self._handle_x, self._handle_y)
-        # Record the mode that was on the top of the stack before entering
-        # resize mode. It's used to retain the icon and options widget of
-        # the "parent" mode (whether freehand, line modes, inking etc.).
-        if not self._prev_mode:
-            self._prev_mode = doc.modes[-2]
-            self._prev_mode.doc = doc
 
     def key_press_cb(self, win, tdw, event):
         self._update_precision_state()
@@ -258,7 +270,7 @@ class BrushResizeMode(gui.mode.OneshotDragMode):
             new_radius = self._max_radius
             radius_px = self._max_px_radius
         self._new_radius = new_radius
-        self._overlay.update(radius_px + 0.5, self._handle_x, self._handle_y)
+        self._overlay.update(radius_px, self._handle_x, self._handle_y)
 
         return super(BrushResizeMode, self).drag_update_cb(tdw, event, dx, dy)
 
