@@ -11,7 +11,7 @@
 
 from __future__ import print_function
 
-from math import ceil, hypot, log, pi, copysign
+from math import ceil, hypot, log, pi
 
 import gui.overlays
 import gui.mode
@@ -198,7 +198,6 @@ class BrushResizeMode(gui.mode.OneshotDragMode):
         super(BrushResizeMode, self).enter(doc, **kwds)
         tdw = doc.tdw
         x, y = self.current_position()
-        cx, cy = tdw.get_center()
         brush_info = tdw.doc.brush.brushinfo
         visual_radius = brush_info.get_visual_radius()
         radius_px = visual_radius * tdw.scale + 0.5
@@ -206,7 +205,7 @@ class BrushResizeMode(gui.mode.OneshotDragMode):
         self._base_radius_adj = tdw.app.brush_adjustment['radius_logarithmic']
         self._radius_factor = 1 / (1 + by_random * 2)
         self._random_offset = by_random
-        self._handle_x = x + copysign(radius_px, cx - x)
+        self._handle_x = x + radius_px
         self._handle_y = y
         self._mod_pressed_initially = (
             self.current_modifiers() & self.mod_key_mask)
