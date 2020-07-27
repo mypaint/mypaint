@@ -346,10 +346,6 @@ class SymmetryEditOptionsWidget (Gtk.Alignment):
         "symmetry axis options panel: position button: no axis pos.",
         u"None",
     )
-    _POSITION_BUTTON_TEXT_TEMPLATE = C_(
-        "symmetry axis options panel: position button: axis pos. in pixels",
-        u"%d px",
-    )
     _ALPHA_LABEL_TEXT = C_(
         "symmetry axis options panel: labels",
         u"Alpha:",
@@ -370,34 +366,28 @@ class SymmetryEditOptionsWidget (Gtk.Alignment):
             xscale=1.0,
             yscale=1.0,
         )
-        self._axis_pos_x_dialog = None
-        self._axis_pos_x_button = None
-        self._axis_pos_y_dialog = None
-        self._axis_pos_y_button = None
         self._symmetry_type_combo = None
         self._axis_sym_lines_entry = None
         from gui.application import get_app
         self.app = get_app()
         rootstack = self.app.doc.model.layer_stack
         x, y = rootstack.symmetry_center
-        self._axis_pos_adj_x = Gtk.Adjustment(
-            value=x,
-            upper=32000,
-            lower=-32000,
-            step_increment=1,
-            page_increment=100,
-        )
+
+        def pos_adj(start_val):
+            return Gtk.Adjustment(
+                value=start_val,
+                upper=32000,
+                lower=-32000,
+                step_increment=1,
+                page_increment=100,
+            )
+
+        self._axis_pos_adj_x = pos_adj(x)
         self._xpos_cb_id = self._axis_pos_adj_x.connect(
             'value-changed',
             self._axis_pos_adj_x_changed,
         )
-        self._axis_pos_adj_y = Gtk.Adjustment(
-            value=y,
-            upper=32000,
-            lower=-32000,
-            step_increment=1,
-            page_increment=100,
-        )
+        self._axis_pos_adj_y = pos_adj(y)
         self._ypos_cb_id = self._axis_pos_adj_y.connect(
             'value-changed',
             self._axis_pos_adj_y_changed,
@@ -425,74 +415,8 @@ class SymmetryEditOptionsWidget (Gtk.Alignment):
 
         self._init_ui()
         rootstack.symmetry_state_changed += self._symmetry_state_changed_cb
-        self._update_button_labels(rootstack)
 
     def _init_ui(self):
-        app = self.app
-
-        # Dialog for showing and editing the axis value directly
-        buttons = (Gtk.STOCK_OK, Gtk.ResponseType.ACCEPT)
-        dialog = gui.windowing.Dialog(
-            app, C_(
-                "symmetry axis options panel: "
-                "axis position dialog: window title",
-                u"X axis Position",
-            ),
-            app.drawWindow,
-            buttons=buttons,
-        )
-        dialog.connect('response', self._axis_pos_dialog_response_cb)
-        grid = Gtk.Grid()
-        grid.set_border_width(gui.widgets.SPACING_LOOSE)
-        grid.set_column_spacing(gui.widgets.SPACING)
-        grid.set_row_spacing(gui.widgets.SPACING)
-        label = Gtk.Label(label=self._POSITION_LABEL_X_TEXT)
-        label.set_hexpand(False)
-        label.set_vexpand(False)
-        grid.attach(label, 0, 0, 1, 1)
-        entry = Gtk.SpinButton(
-            adjustment=self._axis_pos_adj_x,
-            climb_rate=0.25,
-            digits=0
-        )
-        entry.set_hexpand(True)
-        entry.set_vexpand(False)
-        grid.attach(entry, 1, 0, 1, 1)
-        dialog_content_box = dialog.get_content_area()
-        dialog_content_box.pack_start(grid, True, True, 0)
-        self._axis_pos_x_dialog = dialog
-
-        # Dialog for showing and editing the axis value directly
-        buttons = (Gtk.STOCK_OK, Gtk.ResponseType.ACCEPT)
-        dialog = gui.windowing.Dialog(
-            app, C_(
-                "symmetry axis options panel: "
-                "axis position dialog: window title",
-                u"Y axis Position",
-            ),
-            app.drawWindow,
-            buttons=buttons,
-        )
-        dialog.connect('response', self._axis_pos_dialog_response_cb)
-        grid = Gtk.Grid()
-        grid.set_border_width(gui.widgets.SPACING_LOOSE)
-        grid.set_column_spacing(gui.widgets.SPACING)
-        grid.set_row_spacing(gui.widgets.SPACING)
-        label = Gtk.Label(label=self._POSITION_LABEL_Y_TEXT)
-        label.set_hexpand(False)
-        label.set_vexpand(False)
-        grid.attach(label, 0, 0, 1, 1)
-        entry = Gtk.SpinButton(
-            adjustment=self._axis_pos_adj_y,
-            climb_rate=0.25,
-            digits=0
-        )
-        entry.set_hexpand(True)
-        entry.set_vexpand(False)
-        grid.attach(entry, 1, 0, 1, 1)
-        dialog_content_box = dialog.get_content_area()
-        dialog_content_box.pack_start(grid, True, True, 0)
-        self._axis_pos_y_dialog = dialog
 
         # Layout grid
         row = 0
@@ -556,27 +480,29 @@ class SymmetryEditOptionsWidget (Gtk.Alignment):
         label = Gtk.Label(label=self._POSITION_LABEL_X_TEXT)
         label.set_hexpand(False)
         label.set_halign(Gtk.Align.START)
-        button = Gtk.Button(label=self._POSITION_BUTTON_TEXT_INACTIVE)
-        button.set_vexpand(False)
-        button.connect("clicked", self._axis_pos_x_button_clicked_cb)
-        button.set_hexpand(True)
-        button.set_vexpand(False)
+        entry = Gtk.SpinButton(
+            adjustment=self._axis_pos_adj_x,
+            climb_rate=0.25,
+            digits=0
+        )
+        entry.set_hexpand(True)
+        entry.set_vexpand(False)
         grid.attach(label, 0, row, 1, 1)
-        grid.attach(button, 1, row, 1, 1)
-        self._axis_pos_x_button = button
+        grid.attach(entry, 1, row, 1, 1)
 
         row += 1
         label = Gtk.Label(label=self._POSITION_LABEL_Y_TEXT)
         label.set_hexpand(False)
         label.set_halign(Gtk.Align.START)
-        button = Gtk.Button(label=self._POSITION_BUTTON_TEXT_INACTIVE)
-        button.set_vexpand(False)
-        button.connect("clicked", self._axis_pos_y_button_clicked_cb)
-        button.set_hexpand(True)
-        button.set_vexpand(False)
+        entry = Gtk.SpinButton(
+            adjustment=self._axis_pos_adj_y,
+            climb_rate=0.25,
+            digits=0
+        )
+        entry.set_hexpand(True)
+        entry.set_vexpand(False)
         grid.attach(label, 0, row, 1, 1)
-        grid.attach(button, 1, row, 1, 1)
-        self._axis_pos_y_button = button
+        grid.attach(entry, 1, row, 1, 1)
 
         row += 1
         label = Gtk.Label()
@@ -602,7 +528,6 @@ class SymmetryEditOptionsWidget (Gtk.Alignment):
         button.set_hexpand(True)
         button.set_vexpand(False)
         grid.attach(button, 1, row, 2, 1)
-        self._axis_active_button = button
 
     def _update_angle_label(self):
         self._angle_label.set_text(
@@ -629,27 +554,11 @@ class SymmetryEditOptionsWidget (Gtk.Alignment):
             with self._axis_angle.handler_block(self._angle_cb_id):
                 self._axis_angle.set_value(sym_angle)
             self._update_angle_label()
-        if center or stack.symmetry_unset:
-            self._update_button_labels(stack)
 
     def _update_num_lines_sensitivity(self, sym_type):
         self._axis_sym_lines_entry.set_sensitive(
             sym_type in {SymmetryRotational, SymmetrySnowflake}
         )
-
-    def _update_button_labels(self, stack):
-        if stack.symmetry_unset:
-            x, y = None, None
-        else:
-            x, y = stack.symmetry_center
-        self._update_axis_button_label(self._axis_pos_x_button, x)
-        self._update_axis_button_label(self._axis_pos_y_button, y)
-
-    def _update_axis_button_label(self, button, value):
-        if value is None:
-            button.set_label(self._POSITION_BUTTON_TEXT_INACTIVE)
-        else:
-            button.set_label(self._POSITION_BUTTON_TEXT_TEMPLATE % value)
 
     def _axis_pos_adj_x_changed(self, adj):
         self.app.doc.model.layer_stack.symmetry_x = int(adj.get_value())
@@ -664,19 +573,9 @@ class SymmetryEditOptionsWidget (Gtk.Alignment):
         self._update_angle_label()
         self.app.doc.model.layer_stack.symmetry_angle = adj.get_value()
 
-    def _axis_pos_x_button_clicked_cb(self, button):
-        self._axis_pos_x_dialog.show_all()
-
-    def _axis_pos_y_button_clicked_cb(self, button):
-        self._axis_pos_y_dialog.show_all()
-
     def _symmetry_type_combo_changed_cb(self, combo):
         sym_type = combo.get_model()[combo.get_active()][0]
         self.app.doc.model.layer_stack.symmetry_type = sym_type
-
-    def _axis_pos_dialog_response_cb(self, dialog, response_id):
-        if response_id == Gtk.ResponseType.ACCEPT:
-            dialog.hide()
 
     def _scale_value_changed_cb(self, alpha_scale):
         self.app.preferences[_ALPHA_PREFS_KEY] = alpha_scale.get_value()
