@@ -375,43 +375,40 @@ class FloodFillOverlay (gui.overlays.Overlay):
         self._tdw = tdw
         self._line_points = []
         self._skip_index = 0
-        self._full_bounds = None
         tdw.display_overlays.append(self)
 
     def cleanup(self):
         self._line_points = []
         self._tdw.display_overlays.remove(self)
         self._skip_index = 0
-        self._tdw.queue_draw_area(*self._full_bounds)
+        bounds = self._full_bounds()
+        if bounds:
+            self._tdw.queue_draw_area(*bounds)
 
     def add_point(self, point):
         x, y = point
-        self._full_bounds = self._update_bounds(self._full_bounds, x, y)
+        # self._full_bounds = self._update_bounds(self._full_bounds, x, y)
         # Clean up lines by only storing every nth point (n = SKIP)
         if len(self._line_points) > 1 and self._skip_index % self.SKIP != 0:
-            self._line_points[len(self._line_points) - 1] = point
+            self._line_points[-1] = point
         else:
             self._line_points.append(point)
+        if len(self._line_points) > 2:
+            x0, y0 = self._line_points[-2]
+            # margin
+            xmin, ymin = min(x0, x), min(y0, y)
+            w, h = abs(x0 - x), abs(y0 - y)
+            m = 2  # margin to account for line width
+            self._tdw.queue_draw_area(xmin - m, ymin - m, w + 2 * m, h + 2 * m)
         self._skip_index += 1
-        self._tdw.queue_draw_area(*self._full_bounds)
 
-    @staticmethod
-    def _update_bounds(bounds, x, y):
-        if bounds is None:
-            return x, y, 1, 1
-        else:
-            bx, by, w, h = bounds
-            if x < bx:
-                w += (bx - x)
-                bx = x
-            elif x > bx:
-                w += (x - bx)
-            if y < by:
-                h += (by - y)
-                by = y
-            elif y > by:
-                h += (y - by)
-            return bx, by, w, h
+    def _full_bounds(self):
+        bounds = lib.helpers.coordinate_bounds(self._line_points)
+        if bounds:
+            x0, y0, x1, y1 = bounds
+            w, h = x1 - x0, y1 - y0
+            m = 2
+            return x0 - m, y0 - m, w + 2*m, h + 2*m
 
     def paint(self, cr):
         """
