@@ -371,7 +371,7 @@ class LayerStack (core.LayerBase, lib.autosave.Autosaveable):
         """Returns the inherent (data) bounding box of the stack"""
         result = helpers.Rect()
         for layer in self._layers:
-            result.expandToIncludeRect(layer.get_bbox())
+            result.expand_to_include_rect(layer.get_bbox())
         return result
 
     def get_full_redraw_bbox(self):
@@ -383,7 +383,7 @@ class LayerStack (core.LayerBase, lib.autosave.Autosaveable):
             bbox = layer.get_full_redraw_bbox()
             if bbox.w == 0 or bbox.h == 0:
                 return bbox
-            result.expandToIncludeRect(bbox)
+            result.expand_to_include_rect(bbox)
         return result
 
     def is_empty(self):

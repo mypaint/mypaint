@@ -1062,7 +1062,7 @@ class Document (object):
             bbox.h = N*int(max_y//N) - bbox.y + N
         elif not self.frame_enabled:
             for (x, y) in fill_args.seeds:
-                bbox.expandToIncludePoint(x, y)
+                bbox.expand_to_include_point(x, y)
         if view_bbox:
             view_bbox = helpers.Rect(*view_bbox)
             if bbox.contains(view_bbox):
@@ -1182,7 +1182,7 @@ class Document (object):
         for l in self.layer_stack.deepiter():
             # OPTIMIZE: only visible layers?
             bbox = l.get_bbox()
-            res.expandToIncludeRect(bbox)
+            res.expand_to_include_rect(bbox)
         return res
 
     def get_full_redraw_bbox(self):
@@ -1197,7 +1197,7 @@ class Document (object):
             if bbox.w == 0 and bbox.h == 0:  # infinite
                 res = bbox
             else:
-                res.expandToIncludeRect(bbox)
+                res.expand_to_include_rect(bbox)
         return res
 
     def get_effective_bbox(self):
@@ -2069,7 +2069,7 @@ def _save_layers_to_new_orazip(root_stack, filename, bbox=None,
     for s_path, s_layer in root_stack.walk():
         selected = (s_path == root_stack.current_path)
         s_layer.initially_selected = selected
-        data_bbox.expandToIncludeRect(s_layer.get_bbox())
+        data_bbox.expand_to_include_rect(s_layer.get_bbox())
     data_bbox = tuple(data_bbox)
 
     # First 90%: save the layer stack

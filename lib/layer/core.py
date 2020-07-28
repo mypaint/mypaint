@@ -1046,7 +1046,7 @@ def combine_redraws(bboxes):
     for bbox in bboxes:
         if bbox.w == 0 and bbox.h == 0:
             return bbox
-        redraw_bbox.expandToIncludeRect(bbox)
+        redraw_bbox.expand_to_include_rect(bbox)
     return redraw_bbox
 
 

@@ -186,11 +186,6 @@ class Rect (object):
     def __repr__(self):
         return 'Rect(%d, %d, %d, %d)' % (self.x, self.y, self.w, self.h)
 
-    # Deprecated method names:
-
-    expandToIncludePoint = expand_to_include_point
-    expandToIncludeRect = expand_to_include_rect
-
 
 def coordinate_bounds(tile_coords):
     """Find min/max x, y bounds of (x, y) pairs

@@ -237,7 +237,7 @@ class Command (object):
                 redraw_bbox = layer_bbox
                 break
             else:
-                redraw_bbox.expandToIncludeRect(layer_bbox)
+                redraw_bbox.expand_to_include_rect(layer_bbox)
         self.doc.canvas_area_modified(*redraw_bbox)
 
 
