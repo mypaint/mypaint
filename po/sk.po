@@ -7,8 +7,8 @@ msgstr ""
 "Project-Id-Version: mypaint v2.0.0-alpha.12-343-g82b4fc5\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-07-05 09:12+0200\n"
-"PO-Revision-Date: 2020-05-09 16:23+0000\n"
-"Last-Translator: Blake <adam.otruba@protonmail.com>\n"
+"PO-Revision-Date: 2020-07-29 15:41+0000\n"
+"Last-Translator: Dušan Kazik <prescott66@gmail.com>\n"
 "Language-Team: Slovak <https://hosted.weblate.org/projects/mypaint/mypaint/"
 "sk/>\n"
 "Language: sk\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
-"X-Generator: Weblate 4.1-dev\n"
+"X-Generator: Weblate 4.2-dev\n"
 
 #. TRANSLATORS: Name of first column in the button map preferences.
 #. TRANSLATORS: Refers to an action bound to a mod+button combination.
@@ -2976,7 +2976,7 @@ msgstr "Pozícia Y:"
 #, python-format
 msgctxt "symmetry axis options panel: labels"
 msgid "Angle: %.2f°"
-msgstr ""
+msgstr "Uhol: %.2f°"
 
 #: ../gui/symmetry.py:346
 msgctxt "symmetry axis options panel: position button: no axis pos."
@@ -4096,9 +4096,8 @@ msgid "{dname}:"
 msgstr "{dname}:"
 
 #: ../gui/brusheditor.glade:841
-#, fuzzy
 msgid "Brush dynamics are not available for this setting."
-msgstr "Základné podrobnosti tohto nastavenia"
+msgstr "Pre toto nastavenie nie je dostupná dynamika štetca."
 
 #: ../gui/brusheditor.glade:851
 #, fuzzy
@@ -4146,7 +4145,7 @@ msgstr "Náklon v Y osi plátna"
 #: ../gui/inktool.glade:166
 msgctxt "Inking tool options: point value sliders: labels: tooltips"
 msgid "Time since the previous point, in seconds"
-msgstr ""
+msgstr "Čas od predošlého bodu, v sekundách"
 
 #: ../gui/inktool.glade:171
 msgctxt "Inking tool options: point value sliders: labels"
@@ -4170,7 +4169,7 @@ msgstr "Vložiť riadok"
 
 #: ../gui/inktool.glade:252 ../gui/resources.xml:911
 msgid "Simplify Points"
-msgstr ""
+msgstr "Zjednodušiť body"
 
 #: ../gui/inktool.glade:256
 msgid "Simplify the curve using the Reumann-Witkam algorithm."
@@ -4192,16 +4191,14 @@ msgid "The currently active view."
 msgstr "Režim kompozície aktuálnej vrstvy."
 
 #: ../gui/layervis.glade:36
-#, fuzzy
 msgctxt "Layers window: view list controls: tooltips"
 msgid "Rename the active view."
-msgstr "Otočí zobrazenie plátna"
+msgstr "Premenuje aktívne zobrazenie."
 
 #: ../gui/layervis.glade:57
-#, fuzzy
 msgctxt "Layers window: view list controls: tooltips"
 msgid "Remove the active view."
-msgstr "Otočí zobrazenie plátna"
+msgstr "Odstráni aktívne zobrazenie."
 
 #: ../gui/layervis.glade:78
 #, fuzzy
@@ -4631,12 +4628,12 @@ msgstr ""
 #: ../gui/preferenceswindow.glade:1193
 msgctxt "Prefs Dialog|View|Interface|"
 msgid "Language:"
-msgstr ""
+msgstr "Jazyk:"
 
 #: ../gui/preferenceswindow.glade:1208
 msgctxt "Prefs Dialog|View|Interface|"
 msgid "(needs restart)"
-msgstr ""
+msgstr "(vyžaduje reštart)"
 
 #. Tab label in preferences dialog
 #: ../gui/preferenceswindow.glade:1225
@@ -4750,10 +4747,9 @@ msgid "<b>2.x Settings</b>"
 msgstr "<b>Ukladanie</b>"
 
 #: ../gui/preferenceswindow.glade:1477 ../gui/preferenceswindow.glade:1551
-#, fuzzy
 msgctxt "Prefs Dialog|Compatibility"
 msgid "Default New Layer Type:"
-msgstr "Odstrániť vrstvu"
+msgstr "Predvolený typ novej vrstvy:"
 
 #: ../gui/preferenceswindow.glade:1523 ../gui/preferenceswindow.glade:1537
 #, fuzzy
@@ -5519,10 +5515,9 @@ msgid "Make an exact clone of the current layer."
 msgstr "Vytvorí presný duplikát aktuálnej vrstvy."
 
 #: ../gui/resources.xml:642
-#, fuzzy
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Layer Properties…"
-msgstr "Vlastnosti"
+msgstr "Vlastnosti vrstvy…"
 
 #: ../gui/resources.xml:643
 msgctxt "Accel Editor (descriptions)"
@@ -5627,10 +5622,9 @@ msgid "Reset Mirroring"
 msgstr "Vynulovať zrkadlenie"
 
 #: ../gui/resources.xml:723
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Reset the view's mirroring."
-msgstr "Vynulovať zrkadlenie"
+msgstr "Vynuluje zrkadlenie zobrazenia."
 
 #: ../gui/resources.xml:729
 msgctxt "Menu→View→Adjust View (labels), Accel Editor (labels)"
