@@ -293,6 +293,12 @@ class InteractionMode (object):
             return False
         return mode.pointer_behavior & Behavior.PAINT_BRUSH
 
+    def popped(self):
+        """Called when the mode is removed from the stack, after leave
+        """
+        assert self.doc is None
+        assert not hasattr(super(InteractionMode, self), "popped")
+
     def enter(self, doc, **kwds):
         """Enters the mode: called by `ModeStack.push()` etc.
 
@@ -1363,7 +1369,9 @@ class ModeStack (object):
         while len(self._stack) > 0:
             if mode.stackable_on(self._stack[-1]):
                 break
-            self._stack.pop(-1).leave()
+            incompat = self._stack.pop(-1)
+            incompat.leave()
+            incompat.popped()
             if len(self._stack) > 0:
                 self._stack[-1].enter(doc=self._doc)
         # Stack on top of any remaining compatible mode
@@ -1380,6 +1388,7 @@ class ModeStack (object):
         if len(self._stack) > 0:
             old_mode = self._stack.pop(-1)
             old_mode.leave()
+            old_mode.popped()
         top_mode = self._check()
         if top_mode is None:
             top_mode = self._stack[-1]
@@ -1415,6 +1424,7 @@ class ModeStack (object):
         while len(self._stack) > 0:
             old_mode = self._stack.pop(-1)
             old_mode.leave()
+            old_mode.popped()
             if len(self._stack) > 0:
                 self._stack[-1].enter(doc=self._doc)
         top_mode = self._check(replacement)
