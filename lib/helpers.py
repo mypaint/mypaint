@@ -118,6 +118,12 @@ class Rect (object):
         self.x -= border
         self.y -= border
 
+    def expanded(self, border):
+        """Return a copy of this rectangle, expanded by a fixed border size."""
+        copy = self.copy()
+        copy.expand(border)
+        return copy
+
     def contains(self, other):
         """Returns true if this rectangle entirely contains another."""
         return (
@@ -126,6 +132,17 @@ class Rect (object):
             other.x + other.w <= self.x + self.w and
             other.y + other.h <= self.y + self.h
         )
+
+    def contains_pixel(self, x, y):
+        """Checks if pixel coordinates lie inside this rectangle"""
+        return (self.x <= x <= self.x + self.w - 1 and
+                self.y <= y <= self.y + self.h - 1)
+
+    def clamped_point(self, x, y):
+        """Returns the given point, clamped to the area of this rectangle"""
+        cx = clamp(x, self.x, self.x + self.w)
+        cy = clamp(y, self.y, self.y + self.h)
+        return cx, cy
 
     def __eq__(self, other):
         """Returns true if this rectangle is identical to another."""
