@@ -108,10 +108,11 @@ class ColorPickMode (gui.mode.OneshotDragMode):
         self._remove_overlay()
         super(ColorPickMode, self).drag_stop_cb(tdw)
 
-    def drag_update_cb(self, tdw, event, dx, dy):
-        self._pick_color_mode(tdw, event.x, event.y, self._pickmode)
-        self._place_overlay(tdw, event.x, event.y)
-        return super(ColorPickMode, self).drag_update_cb(tdw, event, dx, dy)
+    def drag_update_cb(self, tdw, event, ev_x, ev_y, dx, dy):
+        self._pick_color_mode(tdw, ev_x, ev_y, self._pickmode)
+        self._place_overlay(tdw, ev_x, ev_y)
+        return super(ColorPickMode, self).drag_update_cb(
+            tdw, event, ev_x, ev_y, dx, dy)
 
     def _place_overlay(self, tdw, x, y):
         if self._overlay is None:

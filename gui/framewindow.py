@@ -372,11 +372,11 @@ class FrameEditMode (gui.mode.ScrollableModeMixin,
         self._start_model_pos = tdw.display_to_model(x0, y0)
         return super(FrameEditMode, self).drag_start_cb(tdw, event)
 
-    def drag_update_cb(self, tdw, event, dx, dy):
+    def drag_update_cb(self, tdw, event, ev_x, ev_y, dx, dy):
         model = self.doc.model
         if model.frame_enabled:
             mx0, my0 = self._start_model_pos
-            mx, my = tdw.display_to_model(event.x, event.y)
+            mx, my = tdw.display_to_model(ev_x, ev_y)
             fdx = int(round(mx - mx0))
             fdy = int(round(my - my0))
             drag_effect = self.DRAG_EFFECTS.get(self._zone)
@@ -401,7 +401,8 @@ class FrameEditMode (gui.mode.ScrollableModeMixin,
                 new_frame = (x, y, w, h)
                 if new_frame != model.get_frame():
                     model.set_frame(new_frame, user_initiated=True)
-        return super(FrameEditMode, self).drag_update_cb(tdw, event, dx, dy)
+        return super(FrameEditMode, self).drag_update_cb(
+            tdw, event, ev_x, ev_y, dx, dy)
 
     def get_options_widget(self):
         """Get the (class singleton) options widget"""

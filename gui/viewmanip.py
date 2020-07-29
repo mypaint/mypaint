@@ -52,11 +52,12 @@ class PanViewMode (gui.mode.ScrollableModeMixin, gui.mode.OneshotDragMode):
         return self.doc.app.cursors.get_action_cursor(
             self.ACTION_NAME)
 
-    def drag_update_cb(self, tdw, event, dx, dy):
+    def drag_update_cb(self, tdw, event, ev_x, ev_y, dx, dy):
         # NOTE: keep in line with gui.mode.ScrollableViewMixin
         tdw.scroll(-dx, -dy)
         self.doc.notify_view_changed()
-        super(PanViewMode, self).drag_update_cb(tdw, event, dx, dy)
+        super(PanViewMode, self).drag_update_cb(
+            tdw, event, ev_x, ev_y, dx, dy)
 
 
 class ZoomViewMode (gui.mode.ScrollableModeMixin, gui.mode.OneshotDragMode):
@@ -90,13 +91,14 @@ class ZoomViewMode (gui.mode.ScrollableModeMixin, gui.mode.OneshotDragMode):
         return self.doc.app.cursors.get_action_cursor(
             self.ACTION_NAME)
 
-    def drag_update_cb(self, tdw, event, dx, dy):
+    def drag_update_cb(self, tdw, event, ev_x, ev_y, dx, dy):
         tdw.scroll(-dx, -dy)
-        tdw.zoom(math.exp(dy/100.0), center=(event.x, event.y))
+        tdw.zoom(math.exp(dy/100.0), center=(ev_x, ev_y))
         # TODO: Let modifiers constrain the zoom amount to
         # TODO: the defined steps. Shift seems to be conventional now...
         self.doc.notify_view_changed()
-        super(ZoomViewMode, self).drag_update_cb(tdw, event, dx, dy)
+        super(ZoomViewMode, self).drag_update_cb(
+            tdw, event, ev_x, ev_y, dx, dy)
         # TODO: The constrain amount and threshold should be similar to
         # TODO: what gui.mode.ScrollableModeMixin now does.
 
@@ -132,16 +134,15 @@ class RotateViewMode (gui.mode.ScrollableModeMixin, gui.mode.OneshotDragMode):
         return self.doc.app.cursors.get_action_cursor(
             self.ACTION_NAME)
 
-    def drag_update_cb(self, tdw, event, dx, dy):
+    def drag_update_cb(self, tdw, event, ev_x, ev_y, dx, dy):
         # calculate angular velocity from the rotation center
-        x, y = event.x, event.y
         cx, cy = tdw.get_center()
-        x, y = x-cx, y-cy
+        x, y = ev_x - cx, ev_y - cy
         phi2 = math.atan2(y, x)
-        x, y = x-dx, y-dy
-        phi1 = math.atan2(y, x)
+        phi1 = math.atan2(y - dy, x - dx)
         tdw.rotate(phi2-phi1, center=(cx, cy))
         self.doc.notify_view_changed()
         # TODO: Allow modifiers to constrain the transformation angle
         #       to 22.5 degree steps.
-        super(RotateViewMode, self).drag_update_cb(tdw, event, dx, dy)
+        super(RotateViewMode, self).drag_update_cb(
+            tdw, event, ev_x, ev_y, dx, dy)

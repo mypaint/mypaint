@@ -553,7 +553,7 @@ class InkingMode (gui.mode.ScrollableModeMixin,
             self._reset_nodes()
             self._reset_capture_data()
             self._reset_adjust_data()
-            node = self._get_event_data(tdw, event)
+            node = self._get_event_data(tdw, event, event.x, event.y)
             self.nodes.append(node)
             self._queue_draw_node(0)
             self._last_node_evdata = (event.x, event.y, event.time)
@@ -565,11 +565,11 @@ class InkingMode (gui.mode.ScrollableModeMixin,
         else:
             raise NotImplementedError("Unknown phase %r" % self.phase)
 
-    def drag_update_cb(self, tdw, event, dx, dy):
+    def drag_update_cb(self, tdw, event, ev_x, ev_y, dx, dy):
         self._ensure_overlay_for_tdw(tdw)
         if self.phase == _Phase.CAPTURE:
-            node = self._get_event_data(tdw, event)
-            evdata = (event.x, event.y, event.time)
+            node = self._get_event_data(tdw, event, ev_x, ev_y)
+            evdata = (ev_x, ev_y, event.time)
             if not self._last_node_evdata:  # e.g. after an undo while dragging
                 append_node = True
             elif evdata == self._last_node_evdata:
@@ -580,8 +580,8 @@ class InkingMode (gui.mode.ScrollableModeMixin,
                 )
                 append_node = False
             else:
-                dx = event.x - self._last_node_evdata[0]
-                dy = event.y - self._last_node_evdata[1]
+                dx = ev_x - self._last_node_evdata[0]
+                dy = ev_y - self._last_node_evdata[1]
                 dist = math.hypot(dy, dx)
                 dt = event.time - self._last_node_evdata[2]
                 max_dist = self.MAX_INTERNODE_DISTANCE_MIDDLE
@@ -601,8 +601,8 @@ class InkingMode (gui.mode.ScrollableModeMixin,
             if self._dragged_node_start_pos:
                 x0, y0 = self._dragged_node_start_pos
                 disp_x, disp_y = tdw.model_to_display(x0, y0)
-                disp_x += event.x - self.start_x
-                disp_y += event.y - self.start_y
+                disp_x += ev_x - self.start_x
+                disp_y += ev_y - self.start_y
                 x, y = tdw.display_to_model(disp_x, disp_y)
                 self.update_node(self.target_node_index, x=x, y=y)
         else:
@@ -637,11 +637,11 @@ class InkingMode (gui.mode.ScrollableModeMixin,
 
     ## Interrogating events
 
-    def _get_event_data(self, tdw, event):
-        x, y = tdw.display_to_model(event.x, event.y)
+    def _get_event_data(self, tdw, event, x, y):
+        xm, ym = tdw.display_to_model(x, y)
         xtilt, ytilt = self._get_event_tilt(tdw, event)
         return _Node(
-            x=x, y=y,
+            x=xm, y=ym,
             pressure=self._get_event_pressure(event),
             xtilt=xtilt, ytilt=ytilt,
             time=(event.time / 1000.0),

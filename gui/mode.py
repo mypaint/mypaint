@@ -392,7 +392,7 @@ class InteractionMode (object):
     def drag_start_cb(self, tdw, event):
         assert not hasattr(super(InteractionMode, self), "drag_start_cb")
 
-    def drag_update_cb(self, tdw, event, dx, dy):
+    def drag_update_cb(self, tdw, event, ev_x, ev_y, dx, dy):
         assert not hasattr(super(InteractionMode, self), "drag_update_cb")
 
     def drag_stop_cb(self, tdw):
@@ -1187,12 +1187,13 @@ class DragMode (InteractionMode):
         # but if that's the case then we should wait for a button or
         # a keypress to initiate the drag.
         if self.in_drag:
+            x, y = event.x, event.y
             if self.last_x is not None:
-                dx = event.x - self.last_x
-                dy = event.y - self.last_y
-                self.drag_update_cb(tdw, event, dx, dy)
-            self.last_x = event.x
-            self.last_y = event.y
+                dx = x - self.last_x
+                dy = y - self.last_y
+                self.drag_update_cb(tdw, event, x, y, dx, dy)
+            self.last_x = x
+            self.last_y = y
             return True
         # Fall through to other behavioral mixins, just in case
         return super(DragMode, self).motion_notify_cb(tdw, event)

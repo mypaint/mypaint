@@ -126,16 +126,17 @@ class LayerMoveMode (gui.mode.ScrollableModeMixin,
             self._drag_active_model = model
         return super(LayerMoveMode, self).drag_start_cb(tdw, event)
 
-    def drag_update_cb(self, tdw, event, dx, dy):
+    def drag_update_cb(self, tdw, event, ev_x, ev_y, dx, dy):
         """UI and model updates during a drag"""
         if self._cmd:
             assert tdw is self._drag_active_tdw
-            x, y = tdw.display_to_model(event.x, event.y)
-            self._cmd.move_to(x, y)
+            xm, ym = tdw.display_to_model(ev_x, ev_y)
+            self._cmd.move_to(xm, ym)
             if self._drag_update_idler_srcid is None:
                 idler = self._drag_update_idler
                 self._drag_update_idler_srcid = GLib.idle_add(idler)
-        return super(LayerMoveMode, self).drag_update_cb(tdw, event, dx, dy)
+        return super(LayerMoveMode, self).drag_update_cb(
+            tdw, event, ev_x, ev_y, dx, dy)
 
     def _drag_update_idler(self):
         """Processes tile moves in chunks as a background idler"""

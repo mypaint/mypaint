@@ -290,12 +290,13 @@ class LineModeBase (gui.mode.ScrollableModeMixin,
         if self._line_possible:
             self.start_command(self.initial_modifiers)
 
-    def drag_update_cb(self, tdw, event, dx, dy):
+    def drag_update_cb(self, tdw, event, ev_x, ev_y, dx, dy):
         if self._line_possible:
-            self.update_position(event.x, event.y)
+            self.update_position(ev_x, ev_y)
             if self.idle_srcid is None:
                 self.idle_srcid = GLib.idle_add(self._drag_idle_cb)
-        return super(LineModeBase, self).drag_update_cb(tdw, event, dx, dy)
+        return super(LineModeBase, self).drag_update_cb(
+            tdw, event, ev_x, ev_y, dx, dy)
 
     def drag_stop_cb(self, tdw):
         if self._line_possible:

@@ -149,11 +149,11 @@ class FloodFillMode (
         if old_mode is not new_mode:
             self._update_cursor(self.get_options_widget())
 
-    def drag_update_cb(self, tdw, event, dx, dy):
+    def drag_update_cb(self, tdw, event, ev_x, ev_y, dx, dy):
         """Add pixel coordinate to seed set (if not there already)"""
-        x, y = tdw.display_to_model(event.x, event.y)
+        x, y = tdw.display_to_model(ev_x, ev_y)
         seed_candidate = (int(x), int(y))
-        self._overlay.add_point((event.x, event.y))
+        self._overlay.add_point((ev_x, ev_y))
         if self._fill_permitted and seed_candidate not in self._seed_pixels:
             self._seed_pixels.add(seed_candidate)
 

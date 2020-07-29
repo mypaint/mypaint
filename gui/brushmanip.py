@@ -253,7 +253,7 @@ class BrushResizeMode(gui.mode.OneshotDragMode):
         self._prev_mode = None
         return super(BrushResizeMode, self).leave(**kwds)
 
-    def drag_update_cb(self, tdw, event, dx, dy):
+    def drag_update_cb(self, tdw, event, ev_x, ev_y, dx, dy):
         # Change size at a quarter of the normal rate when
         # high-precision mode is enabled.
         move_factor = 0.125 if self._precision_mode else 0.5
@@ -271,8 +271,6 @@ class BrushResizeMode(gui.mode.OneshotDragMode):
             radius_px = self._max_px_radius
         self._new_radius = new_radius
         self._overlay.update(radius_px, self._handle_x, self._handle_y)
-
-        return super(BrushResizeMode, self).drag_update_cb(tdw, event, dx, dy)
 
     def drag_stop_cb(self, tdw):
         if self._base_radius_adj and self._new_radius is not None:

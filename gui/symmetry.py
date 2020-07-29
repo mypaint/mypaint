@@ -289,14 +289,13 @@ class SymmetryEditMode (gui.mode.ScrollableModeMixin, gui.mode.DragMode):
             self._update_zone_and_cursor(self.start_x, self.start_y)
         return super(SymmetryEditMode, self).drag_start_cb(tdw, event)
 
-    def drag_update_cb(self, tdw, event, dx, dy):
+    def drag_update_cb(self, tdw, event, ev_x, ev_y, dx, dy):
         zone = self._zone
-        x, y = event.x, event.y
         if zone == _EditZone.MOVE_CENTER:
-            self._queue_movement(zone, (x, y, tdw))
+            self._queue_movement(zone, (ev_x, ev_y, tdw))
         elif zone == _EditZone.MOVE_AXIS:
             self._queue_movement(
-                zone, (x - self.start_x, y - self.start_y, tdw))
+                zone, (ev_x - self.start_x, ev_y - self.start_y, tdw))
 
     def _queue_movement(self, zone, args):
         self._move_item = (zone, args)
