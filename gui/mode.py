@@ -349,7 +349,6 @@ class InteractionMode (object):
 
     def motion_notify_cb(self, tdw, event):
         """Handler for ``motion-notify-event``s."""
-        assert not hasattr(super(InteractionMode, self), "motion_notify_cb")
 
     def button_release_cb(self, tdw, event):
         """Handler for ``button-release-event``s."""
@@ -962,6 +961,7 @@ class DragMode (InteractionMode):
         """
         super(DragMode, self).__init__(**kwds)
         self._tdw_grab_broken_conninfo = None
+        self._in_drag = False
         self._reset_drag_state()
         self.initial_modifiers = None
         #: Ignore the initial modifiers (FIXME: bad name, maybe not public?)
@@ -975,6 +975,7 @@ class DragMode (InteractionMode):
         self._start_keyval = None
         self._start_button = None
         self._grab_widget = None
+        self._in_drag = False
         if self._tdw_grab_broken_conninfo is not None:
             tdw, connid = self._tdw_grab_broken_conninfo
             tdw.disconnect(connid)
@@ -989,6 +990,7 @@ class DragMode (InteractionMode):
         Gdk.keyboard_ungrab(t)
         Gdk.pointer_ungrab(t)
         self._grab_widget = None
+        self._in_drag = False
         self.drag_stop_cb(tdw)
         self._reset_drag_state()
 
@@ -1058,6 +1060,9 @@ class DragMode (InteractionMode):
         # GTK too...
         tdw.grab_add()
         self._grab_widget = tdw
+        self._in_drag = True
+        self.last_x = self.start_x
+        self.last_y = self.start_y
 
         # Drag has started, perform whatever action the mode needs.
         self.drag_start_cb(tdw, event)
@@ -1104,7 +1109,7 @@ class DragMode (InteractionMode):
 
     @property
     def in_drag(self):
-        return self._grab_widget is not None
+        return self._in_drag
 
     def enter(self, doc, **kwds):
         """Enter the mode, recording the held modifier keys the 1st time
@@ -1171,8 +1176,6 @@ class DragMode (InteractionMode):
                 self._start_drag(tdw, event)
                 if self.in_drag:
                     # Grab succeeded
-                    self.last_x = event.x
-                    self.last_y = event.y
                     self._start_button = event.button
         return super(DragMode, self).button_press_cb(tdw, event)
 
@@ -1186,12 +1189,10 @@ class DragMode (InteractionMode):
         # We might be here because an Action manipulated the modes stack
         # but if that's the case then we should wait for a button or
         # a keypress to initiate the drag.
-        if self.in_drag:
+        if self._in_drag:
             x, y = event.x, event.y
-            if self.last_x is not None:
-                dx = x - self.last_x
-                dy = y - self.last_y
-                self.drag_update_cb(tdw, event, x, y, dx, dy)
+            self.drag_update_cb(
+                tdw, event, x, y, x - self.last_x, y - self.last_y)
             self.last_x = x
             self.last_y = y
             return True
