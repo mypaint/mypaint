@@ -23,7 +23,7 @@ skip_branch_with_pr: true
 #---------------------------------#
 
 # Build worker image (VM template)
-image: Visual Studio 2015
+image: Visual Studio 2019
 
 # set clone depth
 clone_depth: 1
