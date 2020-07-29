@@ -573,7 +573,12 @@ class SymmetryEditOptionsWidget (Gtk.Alignment):
 class SymmetryOverlay (gui.overlays.Overlay):
     """Symmetry overlay, operating in display coordinates"""
 
-    _DASH_PATTERN = [10, 7]
+    _LINE_COL1 = gui.style.EDITABLE_ITEM_COLOR
+    _LINE_COL2 = _LINE_COL1.to_contrasting()
+    _LINE_COLS = [_LINE_COL1.get_rgb(), _LINE_COL2.get_rgb()]
+    _DASH_LENGTH = 10
+    _DASH_GAP = 7
+    _DASH_PATTERN = [_DASH_LENGTH, 2 * _DASH_GAP + _DASH_LENGTH]
     _DASH_OFFSET = 5
     _EDIT_MODE_MIN_ALPHA = 0.25
 
@@ -941,22 +946,30 @@ class SymmetryOverlay (gui.overlays.Overlay):
         cr.save()
         cr.push_group()
         cr.set_line_cap(cairo.LINE_CAP_SQUARE)
-        cr.set_dash(self._DASH_PATTERN, self._DASH_OFFSET)
         cr.set_line_width(gui.style.DRAGGABLE_EDGE_WIDTH)
         for i, (x0, y0), (x1, y1) in self._intersections_view:
             # Draw all axes as active if center is being moved, otherwise only
             # draw an axis as active if it is currently being moved.
+            zone = self._zone
             active = self._edit_mode and (
-                self._zone == _EditZone.MOVE_CENTER
-                or self._active_axis == i
-                and self._zone == _EditZone.MOVE_AXIS)
-            line_color = SymmetryOverlay._item_color(active)
-            cr.set_source_rgb(*line_color.get_rgb())
-
-            cr.move_to(x0, y0)
-            cr.line_to(x1, y1)
-            gui.drawutils.render_drop_shadow(cr, z=1)
-            cr.stroke()
+                zone == _EditZone.MOVE_CENTER or
+                self._active_axis == i and zone == _EditZone.MOVE_AXIS)
+            if not active:
+                for offs in (0, 1):
+                    dash_offset = self._DASH_OFFSET + (
+                        self._DASH_LENGTH + self._DASH_GAP) * offs
+                    cr.set_dash(self._DASH_PATTERN, dash_offset)
+                    cr.set_source_rgb(*self._LINE_COLS[offs])
+                    cr.move_to(x0, y0)
+                    cr.line_to(x1, y1)
+                    cr.stroke()
+            else:
+                cr.set_dash([])
+                cr.set_source_rgb(*gui.style.ACTIVE_ITEM_COLOR.get_rgb())
+                cr.move_to(x0, y0)
+                cr.line_to(x1, y1)
+                gui.drawutils.render_drop_shadow(cr, z=1)
+                cr.stroke()
         cr.pop_group_to_source()
         cr.paint_with_alpha(line_alpha)
         cr.restore()
