@@ -253,8 +253,8 @@ class Monitor (object):
         check this case.
 
         """
-        self._init_device_settings(device)
-        return self._device_settings.get(device)
+        return (self._device_settings.get(device)
+                or self._init_device_settings(device))
 
     def _init_device_settings(self, device):
         """Ensures that the device settings are loaded for a device"""
@@ -289,6 +289,7 @@ class Monitor (object):
             self._device_settings[device] = settings
             self.devices_updated()
         assert settings is not None
+        return settings
 
     def _device_added_cb(self, mgr, device):
         """Informs that a device has been plugged in"""
