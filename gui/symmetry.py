@@ -36,6 +36,7 @@ from lib.helpers import Rect
 from lib.gettext import C_
 
 from lib.gibindings import Gdk
+from lib.gibindings import GLib
 from lib.gibindings import Gtk
 
 
@@ -135,6 +136,9 @@ class SymmetryEditMode (gui.mode.ScrollableModeMixin, gui.mode.DragMode):
         self._drag_factors = None
         self._click_info = None
         self._entered_before = False
+
+        self._move_item = None
+        self._move_timeout_id = None
 
         # Initialize/fetch cursors
         self.cursor_remove = self._get_cursor(gui.cursor.Name.ARROW)
@@ -286,24 +290,51 @@ class SymmetryEditMode (gui.mode.ScrollableModeMixin, gui.mode.DragMode):
         return super(SymmetryEditMode, self).drag_start_cb(tdw, event)
 
     def drag_update_cb(self, tdw, event, dx, dy):
-        stack = tdw.doc.layer_stack
         zone = self._zone
+        x, y = event.x, event.y
         if zone == _EditZone.MOVE_CENTER:
-            xm, ym = tdw.display_to_model(event.x, event.y)
-            stack.symmetry_center = (xm, ym)
+            self._queue_movement(zone, (x, y, tdw))
         elif zone == _EditZone.MOVE_AXIS:
-            xs, ys = self._drag_start_pos
-            dx_full, dy_full = event.x - self.start_x, event.y - self.start_y
-            xx, xy, yx, yy = self._drag_factors
-            xm = round(xs + (dx_full * xx + dy_full * yx))
-            ym = round(ys + (dx_full * xy + dy_full * yy))
-            new_pos = xm, ym
-            if self._drag_prev_pos != new_pos:
-                self._drag_prev_pos = new_pos
-                stack.symmetry_center = new_pos
-        return super(SymmetryEditMode, self).drag_update_cb(tdw, event, dx, dy)
+            self._queue_movement(
+                zone, (x - self.start_x, y - self.start_y, tdw))
+
+    def _queue_movement(self, zone, args):
+        self._move_item = (zone, args)
+        if not self._move_timeout_id:
+            self._move_timeout_id = GLib.timeout_add(
+                interval=16.66,  # 60 fps cap
+                function=self._do_move,
+            )
+
+    def _do_move(self):
+        if self._move_item:
+            zone, args = self._move_item
+            self._move_item = None
+            if zone == _EditZone.MOVE_AXIS:
+                dx, dy, tdw = args
+                self._move_axis(dx, dy, tdw.doc.layer_stack)
+            elif zone == _EditZone.MOVE_CENTER:
+                x, y, tdw = args
+                self._move_center(x, y, tdw)
+        self._move_timeout_id = None
+
+    def _move_center(self, x, y, tdw):
+        xm, ym = tdw.display_to_model(x, y)
+        tdw.doc.layer_stack.symmetry_center = (xm, ym)
+
+    def _move_axis(self, dx_full, dy_full, stack):
+        xs, ys = self._drag_start_pos
+        xx, xy, yx, yy = self._drag_factors
+        xm = round(xs + (dx_full * xx + dy_full * yx))
+        ym = round(ys + (dx_full * xy + dy_full * yy))
+        new_pos = xm, ym
+        if self._drag_prev_pos != new_pos:
+            self._drag_prev_pos = new_pos
+            stack.symmetry_center = new_pos
 
     def drag_stop_cb(self, tdw):
+        if self._move_item and not self._move_timeout_id:
+            self._do_move()
         tdw.renderer.defer_hq_rendering(0)
         return super(SymmetryEditMode, self).drag_stop_cb(tdw)
 
