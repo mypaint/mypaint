@@ -117,9 +117,9 @@ class CanvasController (object):
         self._update_last_event_info(tdw, event)
         return result
 
-    def motion_notify_cb(self, tdw, event):
+    def motion_notify_cb(self, tdw, event, mode=None):
         """Delegate a motion-notify-event to the current mode"""
-        mode = self.modes.top
+        mode = mode or self.modes.top
         result = mode.motion_notify_cb(tdw, event)
         self._update_last_event_info(tdw, event)
         return result
@@ -294,6 +294,7 @@ class Document (CanvasController):  # TODO: rename to "DocumentController"
         CanvasController.__init__(self, tdw)
 
         # Current mode observation
+        self._top_mode = self.modes.top
         self.modes.changed += self._modestack_changed_cb
 
         self.model.frame_enabled_changed += self._frame_enabled_changed_cb
@@ -635,7 +636,7 @@ class Document (CanvasController):  # TODO: rename to "DocumentController"
 
     def motion_notify_cb(self, tdw, event):
         """Handles motion-notify events received on a canvas"""
-        mode = self.modes.top
+        mode = self._top_mode
         mon = self.app.device_monitor
         dev = event.get_source_device()
         dev_settings = mon.get_device_settings(dev)
@@ -643,7 +644,7 @@ class Document (CanvasController):  # TODO: rename to "DocumentController"
             if not (dev_settings.usage_mask & mode.pointer_behavior):
                 return True
         # Normal event dispatch
-        CanvasController.motion_notify_cb(self, tdw, event)
+        CanvasController.motion_notify_cb(self, tdw, event, mode)
         return False  # XXX don't consume motions to allow workspace autohide
 
     def scroll_cb(self, tdw, event):
@@ -2199,6 +2200,7 @@ class Document (CanvasController):  # TODO: rename to "DocumentController"
         """Callback: make actions follow changes to the mode stack"""
         # Activate the action corresponding to the current top mode.
         logger.debug("Mode changed: %r", self.modes)
+        self._top_mode = new
         action_name = new.ACTION_NAME
         if not action_name:
             return None
