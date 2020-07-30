@@ -196,12 +196,12 @@ class LineModeBase (gui.mode.ScrollableModeMixin,
 
     ## Class configuration.
 
-    permitted_switch_actions = set([
+    permitted_switch_actions = {
         "PanViewMode",
         "ZoomViewMode",
         "RotateViewMode",
         'BrushResizeMode',
-    ])
+    }.union(gui.mode.BUTTON_BINDING_ACTIONS)
 
     pointer_behavior = gui.mode.Behavior.PAINT_CONSTRAINED
     scroll_behavior = gui.mode.Behavior.CHANGE_VIEW
@@ -235,9 +235,6 @@ class LineModeBase (gui.mode.ScrollableModeMixin,
         )
 
     unmodified_persist = True
-    permitted_switch_actions = set(
-        ['RotateViewMode', 'ZoomViewMode', 'PanViewMode']
-        + gui.mode.BUTTON_BINDING_ACTIONS)
 
     # FIXME: all of the logic resides in the base class, for historical
     # reasons, and is decided by line_mode. The differences should be
