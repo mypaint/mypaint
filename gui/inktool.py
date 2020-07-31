@@ -267,19 +267,23 @@ class InkingMode (gui.mode.ScrollableModeMixin,
             return False
         self._update_zone_and_target(tdw, event.x, event.y)
         self._update_current_node_index()
+        button = event.button
         if self.phase == _Phase.ADJUST:
             if self.zone in (_EditZone.REJECT_BUTTON,
                              _EditZone.ACCEPT_BUTTON):
-                button = event.button
                 if button == 1 and event.type == Gdk.EventType.BUTTON_PRESS:
                     self._click_info = (button, self.zone)
                     return False
                 # FALLTHRU: *do* allow drags to start with other buttons
-            elif self.zone == _EditZone.EMPTY_CANVAS:
+            elif self.zone == _EditZone.EMPTY_CANVAS and button == 1:
                 self._start_new_capture_phase(rollback=False)
                 assert self.phase == _Phase.CAPTURE
                 # FALLTHRU: *do* start a drag
         elif self.phase == _Phase.CAPTURE:
+            # Only allow capturing with the primary mouse button
+            if not (button == 1 and event.type == Gdk.EventType.BUTTON_PRESS):
+                # Don't bubble up - no drag should be started
+                return False
             # XXX Not sure what to do here.
             # XXX Click to append nodes?
             # XXX  but how to stop that and enter the adjust phase?
@@ -289,7 +293,7 @@ class InkingMode (gui.mode.ScrollableModeMixin,
         else:
             raise NotImplementedError("Unrecognized zone %r", self.zone)
         # Update workaround state for evdev dropouts
-        self._button_down = event.button
+        self._button_down = button
         self._last_good_raw_pressure = 0.0
         self._last_good_raw_xtilt = 0.0
         self._last_good_raw_ytilt = 0.0
@@ -300,6 +304,8 @@ class InkingMode (gui.mode.ScrollableModeMixin,
         return super(InkingMode, self).button_press_cb(tdw, event)
 
     def button_release_cb(self, tdw, event):
+        if event.button == self._button_down:
+            self._button_down = None
         self._ensure_overlay_for_tdw(tdw)
         current_layer = tdw.doc._layers.current
         if not (tdw.is_sensitive and current_layer.get_paintable()):
@@ -327,7 +333,6 @@ class InkingMode (gui.mode.ScrollableModeMixin,
         else:
             raise NotImplementedError("Unrecognized zone %r", self.zone)
         # Update workaround state for evdev dropouts
-        self._button_down = None
         self._last_good_raw_pressure = 0.0
         self._last_good_raw_xtilt = 0.0
         self._last_good_raw_ytilt = 0.0
@@ -548,6 +553,12 @@ class InkingMode (gui.mode.ScrollableModeMixin,
     ## Drag handling (both capture and adjust phases)
 
     def drag_start_cb(self, tdw, event):
+        # A drag started with the space key will bypass the check in
+        # the button_press_cb, so we check for them here and cancel
+        # those drags for the capture phase.
+        if self.phase == _Phase.CAPTURE and not self._button_down:
+            self._stop_drag()
+            return
         self._ensure_overlay_for_tdw(tdw)
         if self.phase == _Phase.CAPTURE:
             self._reset_nodes()
