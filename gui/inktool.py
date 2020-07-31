@@ -553,10 +553,11 @@ class InkingMode (gui.mode.ScrollableModeMixin,
             self._reset_nodes()
             self._reset_capture_data()
             self._reset_adjust_data()
-            node = self._get_event_data(tdw, event, event.x, event.y)
+            x, y = self.start_x, self.start_y
+            node = self._get_event_data(tdw, event, x, y)
             self.nodes.append(node)
             self._queue_draw_node(0)
-            self._last_node_evdata = (event.x, event.y, event.time)
+            self._last_node_evdata = (x, y, event.time)
             self._last_event_node = node
         elif self.phase == _Phase.ADJUST:
             if self.target_node_index is not None:
