@@ -602,16 +602,11 @@ class Document (CanvasController):  # TODO: rename to "DocumentController"
                 if dev_settings.usage == gui.device.AllowedUsage.NAVONLY:
                     action_names.insert(0, buttonmap.lookup(modifiers, 2))
 
-            for action_name in action_names:
-                # Forbid actions not named in the whitelist, if it's defined
-                if action_name is not None:
-                    if len(mode.permitted_switch_actions) > 0:
-                        if action_name not in mode.permitted_switch_actions:
-                            action_name = None
-                # Perform allowed action if one was looked up
-                if action_name is not None:
-                    return self._dispatch_named_action(None, tdw, event,
-                                                       action_name)
+            # Limit to actions in the whitelist, unless it's empty
+            limited_to = mode.permitted_switch_actions
+            for name in action_names:
+                if name and (not limited_to or name in limited_to):
+                    return self._dispatch_named_action(None, tdw, event, name)
 
         # User-configurable forbidding of particular devices
         if dev_settings:
@@ -691,13 +686,10 @@ class Document (CanvasController):  # TODO: rename to "DocumentController"
                 if event.keyval == Gdk.KEY_space:
                     action_name = buttonmap.lookup(mods, 2)
 
-            # Forbid actions not named in the whitelist, if it's defined
-            if len(mode.permitted_switch_actions) > 0:
-                if action_name not in mode.permitted_switch_actions:
-                    action_name = None
-
-            # If we found something to do, dispatch;
-            if action_name is not None:
+            # Limit to actions in the whitelist, unless it's empty
+            limited_to = mode.permitted_switch_actions
+            if action_name and (not limited_to or action_name in limited_to):
+                # If we found something to do, dispatch;
                 return self._dispatch_named_action(
                     win,
                     tdw,
@@ -836,12 +828,11 @@ class Document (CanvasController):  # TODO: rename to "DocumentController"
         poss_list.sort()
         poss_msgs = []
         current_mode = self.modes.top
-        permitted_action_names = current_mode.permitted_switch_actions
+        limited_to = current_mode.permitted_switch_actions
         for pmods, button, action_name in poss_list:
-            # Filter by the class's whitelist, if it's set
-            if permitted_action_names:
-                if action_name not in permitted_action_names:
-                    continue
+            # Limit to actions in the white list, unless it's empty
+            if limited_to and action_name not in limited_to:
+                continue
             # Don't repeat what's currently held
             pmods = pmods & ~mods
             label = gui.buttonmap.button_press_displayname(button, pmods, True)
