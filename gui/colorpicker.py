@@ -45,7 +45,6 @@ class ColorPickMode (gui.mode.OneshotDragMode):
     """
     # Class configuration
     ACTION_NAME = 'ColorPickMode'
-    PICK_SIZE = 6
 
     # Keyboard activation behaviour (instance defaults)
     # See keyboard.py and doc.mode_flip_action_activated_cb()
@@ -86,7 +85,6 @@ class ColorPickMode (gui.mode.OneshotDragMode):
                 self._pick_color_mode(tdw, x, y, self._pickmode)
             # Start the drag when possible
             self._start_drag_on_next_motion_event = True
-            self._needs_drag_start = True
 
     def leave(self, **kwds):
         self._remove_overlay()
