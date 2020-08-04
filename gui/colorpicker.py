@@ -11,12 +11,11 @@
 
 from __future__ import division, print_function
 from gettext import gettext as _
-import colorsys
 
 import gui.mode
 from .overlays import Overlay
 from .overlays import rounded_box
-import lib.color
+from lib.color import HCYColor, HSVColor
 
 
 ## Color picking mode, with a preview rectangle overlay
@@ -66,12 +65,11 @@ class ColorPickMode (gui.mode.OneshotDragMode):
     def get_usage(self):
         return _(u"Set the color used for painting")
 
-    def __init__(self, ignore_modifiers=False, pickmode="PickAll", **kwds):
+    def __init__(self, ignore_modifiers=False, **kwds):
         super(ColorPickMode, self).__init__(**kwds)
         self._overlay = None
         self._started_from_key_press = ignore_modifiers
         self._start_drag_on_next_motion_event = False
-        self._pickmode = pickmode
 
     def enter(self, doc, **kwds):
         """Enters the mode, arranging for necessary grabs ASAP"""
@@ -82,7 +80,7 @@ class ColorPickMode (gui.mode.OneshotDragMode):
             tdw = self.doc.tdw
             t, x, y = doc.get_last_event_info(tdw)
             if None not in (x, y):
-                self._pick_color_mode(tdw, x, y, self._pickmode)
+                self._pick_color(tdw, x, y)
             # Start the drag when possible
             self._start_drag_on_next_motion_event = True
 
@@ -91,7 +89,7 @@ class ColorPickMode (gui.mode.OneshotDragMode):
         super(ColorPickMode, self).leave(**kwds)
 
     def button_press_cb(self, tdw, event):
-        self._pick_color_mode(tdw, event.x, event.y, self._pickmode)
+        self._pick_color(tdw, event.x, event.y)
         # Supercall will start the drag normally
         self._start_drag_on_next_motion_event = False
         return super(ColorPickMode, self).button_press_cb(tdw, event)
@@ -107,7 +105,7 @@ class ColorPickMode (gui.mode.OneshotDragMode):
         super(ColorPickMode, self).drag_stop_cb(tdw)
 
     def drag_update_cb(self, tdw, event, ev_x, ev_y, dx, dy):
-        self._pick_color_mode(tdw, ev_x, ev_y, self._pickmode)
+        self._pick_color(tdw, ev_x, ev_y)
         self._place_overlay(tdw, ev_x, ev_y)
         return super(ColorPickMode, self).drag_update_cb(
             tdw, event, ev_x, ev_y, dx, dy)
@@ -127,135 +125,43 @@ class ColorPickMode (gui.mode.OneshotDragMode):
     def get_options_widget(self):
         return None
 
-    def _pick_color_mode(self, tdw, x, y, mode):
-        # Init shared variables between normal and HCY modes.
-        pickcolor = tdw.pick_color(x, y)
-        brushcolor = self._get_app_brush_color()
-        brushcolor_rgb = brushcolor.get_rgb()
-        pickcolor_rgb = pickcolor.get_rgb()
+    def get_new_color(self, pick_color, brush_color):
+        # Normal pick mode, but preserve hue for achromatic colors.
+        pick_h, pick_s, pick_v = pick_color.get_hsv()
+        if pick_s == 0 or pick_v == 0:
+            return HSVColor(brush_color.h, pick_s, pick_v)
+        else:
+            return pick_color
 
-        # If brush and pick colors are the same, nothing to do.
-        if brushcolor_rgb != pickcolor_rgb:
-            pickcolor_hsv = pickcolor.get_hsv()
-            brushcolor_hsv = brushcolor.get_hsv()
-            cm = self.doc.app.brush_color_manager
-            c_min = 0.0001
-            y_min = 0.0001
-            y_max = 0.9999
-
-            # Normal pick mode, but preserve hue for achromatic colors.
-            # Easy because we are staying in HSV
-            # and not converting to another color space.
-
-            if mode == "PickAll":
-                if (pickcolor_hsv[1] == 0) or (pickcolor_hsv[2] == 0):
-                    brushcolornew_hsv = lib.color.HSVColor(
-                        brushcolor_hsv[0],
-                        pickcolor_hsv[1],
-                        pickcolor_hsv[2],
-                    )
-                    pickcolor = brushcolornew_hsv
-                cm.set_color(pickcolor)
-            else:
-                # Pick H, C, or Y independently.
-                # Deal with scenarios to avoid achromatic conversions
-                # from HCY to RGB to HSV losing hue information.
-                # Basically prevent C from reaching 0
-                # and Y from reaching 0.0 or 1.0.
-                brushcolor_hcy = lib.color.RGB_to_HCY(brushcolor_rgb)
-                pickcolor_hcy = lib.color.RGB_to_HCY(pickcolor_rgb)
-
-                if mode == "PickHue":
-                    brushcolornew_hcy = (
-                        pickcolor_hcy[0],
-                        brushcolor_hcy[1],
-                        brushcolor_hcy[2],
-                    )
-                    if brushcolor_hcy[1] < c_min:
-                        brushcolornew_hcy = (
-                            brushcolornew_hcy[0],
-                            c_min,
-                            brushcolornew_hcy[2],
-                        )
-                    if pickcolor_hcy[2] < y_min:
-                        brushcolornew_hcy = (
-                            brushcolornew_hcy[0],
-                            brushcolornew_hcy[1],
-                            y_min,
-                        )
-                    if pickcolor_hcy[2] > y_max:
-                        brushcolornew_hcy = (
-                            brushcolornew_hcy[0],
-                            brushcolornew_hcy[1],
-                            y_max,
-                        )
-                    if (pickcolor_hsv[1] == 0) or (pickcolor_hsv[2] == 0):
-                        brushcolornew_hcy = (
-                            brushcolor_hsv[0],
-                            brushcolor_hcy[1],
-                            brushcolor_hcy[2],
-                        )
-                elif mode == "PickLuma":
-                    brushcolornew_hcy = (
-                        brushcolor_hsv[0],
-                        brushcolor_hcy[1],
-                        pickcolor_hcy[2],
-                    )
-                    if brushcolor_hcy[1] < c_min:
-                        brushcolornew_hcy = (
-                            brushcolornew_hcy[0],
-                            c_min,
-                            pickcolor_hcy[2],
-                        )
-                    if pickcolor_hcy[2] < y_min:
-                        brushcolornew_hcy = (
-                            brushcolornew_hcy[0],
-                            brushcolornew_hcy[1],
-                            y_min,
-                        )
-                    if pickcolor_hcy[2] > y_max:
-                        brushcolornew_hcy = (
-                            brushcolornew_hcy[0],
-                            brushcolornew_hcy[1],
-                            y_max,
-                        )
-                elif mode == "PickChroma":
-                    brushcolornew_hcy = (
-                        brushcolor_hsv[0],
-                        pickcolor_hcy[1],
-                        brushcolor_hcy[2],
-                    )
-                    if pickcolor_hcy[1] < c_min:
-                        brushcolornew_hcy = (
-                            brushcolornew_hcy[0],
-                            c_min,
-                            brushcolornew_hcy[2],
-                        )
-                    if brushcolor_hcy[2] < y_min:
-                        brushcolornew_hcy = (
-                            brushcolornew_hcy[0],
-                            brushcolornew_hcy[1],
-                            y_min,
-                        )
-                    if brushcolor_hcy[2] > y_max:
-                        brushcolornew_hcy = (
-                            brushcolornew_hcy[0],
-                            brushcolornew_hcy[1],
-                            y_max,
-                        )
-
-                brushcolornew = lib.color.HCY_to_RGB(brushcolornew_hcy)
-                brushcolornew = colorsys.rgb_to_hsv(*brushcolornew)
-                brushcolornew = lib.color.HSVColor(*brushcolornew)
-                cm.set_color(brushcolornew)
-        return None
-
-    def _get_app_brush_color(self):
-        app = self.doc.app
-        return lib.color.HSVColor(*app.brush.get_color_hsv())
+    def _pick_color(self, tdw, x, y):
+        cm = self.doc.app.brush_color_manager
+        pick_color = tdw.pick_color(x, y)
+        brush_color = cm.get_color()
+        if pick_color != brush_color:
+            cm.set_color(self.get_new_color(pick_color, brush_color))
 
 
-class ColorPickModeH (ColorPickMode):
+# HCY chromaticity thresholds
+
+_C_MIN = 0.0001
+_Y_MIN = 0.0001
+_Y_MAX = 0.9999
+
+
+class ColorPickModeHCYBase (ColorPickMode):
+
+    def get_new_color(self, pick_color, brush_color):
+        new_col_hcy = self.get_new_hcy_color(
+            HCYColor(color=pick_color), HCYColor(color=brush_color))
+        new_col_hcy.c = max(_C_MIN, new_col_hcy.c)
+        new_col_hcy.y = min(_Y_MAX, max(_Y_MIN, new_col_hcy.y))
+        return new_col_hcy
+
+    def get_new_hcy_color(self, *args):
+        raise NotImplementedError
+
+
+class ColorPickModeH (ColorPickModeHCYBase):
 
     # Class configuration
     ACTION_NAME = 'ColorPickModeH'
@@ -271,15 +177,13 @@ class ColorPickModeH (ColorPickMode):
     def get_usage(self):
         return _(u"Set the color Hue used for painting")
 
-    def __init__(self, ignore_modifiers=False, pickmode="PickHue", **kwds):
-        super(ColorPickModeH, self).__init__(**kwds)
-        self._overlay = None
-        self._started_from_key_press = ignore_modifiers
-        self._start_drag_on_next_motion_event = False
-        self._pickmode = pickmode
+    def get_new_hcy_color(self, pick_hcy, brush_hcy):
+        if pick_hcy.c >= _C_MIN and pick_hcy.y >= _Y_MIN:
+            brush_hcy.h = pick_hcy.h
+        return brush_hcy
 
 
-class ColorPickModeC (ColorPickMode):
+class ColorPickModeC (ColorPickModeHCYBase):
     # Class configuration
     ACTION_NAME = 'ColorPickModeC'
 
@@ -294,15 +198,12 @@ class ColorPickModeC (ColorPickMode):
     def get_usage(self):
         return _(u"Set the color Chroma used for painting")
 
-    def __init__(self, ignore_modifiers=False, pickmode="PickChroma", **kwds):
-        super(ColorPickModeC, self).__init__(**kwds)
-        self._overlay = None
-        self._started_from_key_press = ignore_modifiers
-        self._start_drag_on_next_motion_event = False
-        self._pickmode = pickmode
+    def get_new_hcy_color(self, pick_hcy, brush_hcy):
+        brush_hcy.c = pick_hcy.c
+        return brush_hcy
 
 
-class ColorPickModeY (ColorPickMode):
+class ColorPickModeY (ColorPickModeHCYBase):
     # Class configuration
     ACTION_NAME = 'ColorPickModeY'
 
@@ -317,12 +218,9 @@ class ColorPickModeY (ColorPickMode):
     def get_usage(self):
         return _(u"Set the color Luma used for painting")
 
-    def __init__(self, ignore_modifiers=False, pickmode="PickLuma", **kwds):
-        super(ColorPickModeY, self).__init__(**kwds)
-        self._overlay = None
-        self._started_from_key_press = ignore_modifiers
-        self._start_drag_on_next_motion_event = False
-        self._pickmode = pickmode
+    def get_new_hcy_color(self, pick_hcy, brush_hcy):
+        brush_hcy.y = pick_hcy.y
+        return brush_hcy
 
 
 class ColorPickPreviewOverlay (Overlay):
@@ -378,7 +276,7 @@ class ColorPickPreviewOverlay (Overlay):
 
     def _get_app_brush_color(self):
         app = self._doc.app
-        return lib.color.HSVColor(*app.brush.get_color_hsv())
+        return HSVColor(*app.brush.get_color_hsv())
 
     def _brush_color_changed_cb(self, settings):
         if not settings.intersection(('color_h', 'color_s', 'color_v')):
