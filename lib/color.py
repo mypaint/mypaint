@@ -524,7 +524,10 @@ class HCYColor (UIColor):
                 y = color.y
             else:
                 h, s, v = color.get_hsv()
-                h_, c, y = RGB_to_HCY(colorsys.hsv_to_rgb(h, s, v))
+                _, c, y = RGB_to_HCY(colorsys.hsv_to_rgb(h, s, v))
+                # Special case to retain chroma/saturation when moving to black
+                if v == 0 and c == 0 and s != 0:
+                    _, c, _ = RGB_to_HCY(colorsys.hsv_to_rgb(h, s, 0.01))
         if hcy is not None:
             h, c, y = hcy
         self.h = h  #: Read/write hue angle, scaled to the range 0.0 to 1.0
@@ -537,6 +540,9 @@ class HCYColor (UIColor):
     def get_hsv(self):
         rgb = self.get_rgb()
         h, s, v = colorsys.rgb_to_hsv(*rgb)
+        # Special case to retain chroma/saturation when moving to black
+        if s == 0 and v == 0 and self.c != 0:
+            _, s, _ = colorsys.rgb_to_hsv(*HCY_to_RGB((self.h, self.c, 0.01)))
         return self.h, s, v
 
     def get_rgb(self):
