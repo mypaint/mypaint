@@ -1,5 +1,5 @@
 # This file is part of MyPaint.
-# Copyright (C) 2010-2018 by the MyPaint Development Team
+# Copyright (C) 2010-2020 by the MyPaint Development Team
 # Copyright (C) 2009-2013 by Martin Renold <martinxyz@gmx.ch>
 #
 # This program is free software; you can redistribute it and/or modify
@@ -16,6 +16,8 @@ import gui.mode
 from .overlays import Overlay
 from .overlays import rounded_box
 from lib.color import HCYColor, HSVColor
+
+from lib.gibindings import GLib
 
 
 ## Color picking mode, with a preview rectangle overlay
@@ -70,26 +72,32 @@ class ColorPickMode (gui.mode.OneshotDragMode):
         self._overlay = None
         self._started_from_key_press = ignore_modifiers
         self._start_drag_on_next_motion_event = False
+        self._color = None
+        self._queued_data = None
+        self._timeout_id = None
 
     def enter(self, doc, **kwds):
         """Enters the mode, arranging for necessary grabs ASAP"""
         super(ColorPickMode, self).enter(doc, **kwds)
+        self._color = doc.app.brush_color_manager.get_color()
         if self._started_from_key_press:
             # Pick now using the last recorded event position
             doc = self.doc
             tdw = self.doc.tdw
             t, x, y = doc.get_last_event_info(tdw)
             if None not in (x, y):
-                self._pick_color(tdw, x, y)
+                self._pick_color(tdw, x, y, direct=True)
             # Start the drag when possible
             self._start_drag_on_next_motion_event = True
 
     def leave(self, **kwds):
+        if self._queued_data and not self._timeout_id:
+            self._change_color()
         self._remove_overlay()
         super(ColorPickMode, self).leave(**kwds)
 
     def button_press_cb(self, tdw, event):
-        self._pick_color(tdw, event.x, event.y)
+        self._pick_color(tdw, event.x, event.y, direct=True)
         # Supercall will start the drag normally
         self._start_drag_on_next_motion_event = False
         return super(ColorPickMode, self).button_press_cb(tdw, event)
@@ -106,21 +114,20 @@ class ColorPickMode (gui.mode.OneshotDragMode):
 
     def drag_update_cb(self, tdw, event, ev_x, ev_y, dx, dy):
         self._pick_color(tdw, ev_x, ev_y)
-        self._place_overlay(tdw, ev_x, ev_y)
+        self._update_overlay(tdw, ev_x, ev_y, self._color)
         return super(ColorPickMode, self).drag_update_cb(
             tdw, event, ev_x, ev_y, dx, dy)
 
-    def _place_overlay(self, tdw, x, y):
+    def _update_overlay(self, tdw, x, y, col):
         if self._overlay is None:
-            self._overlay = ColorPickPreviewOverlay(self.doc, tdw, x, y)
+            self._overlay = ColorPickPreviewOverlay(self.doc, tdw, x, y, col)
         else:
-            self._overlay.move(x, y)
+            self._overlay.update(x, y, col)
 
     def _remove_overlay(self):
-        if self._overlay is None:
-            return
-        self._overlay.cleanup()
-        self._overlay = None
+        if self._overlay is not None:
+            self._overlay.cleanup()
+            self._overlay = None
 
     def get_options_widget(self):
         return None
@@ -133,12 +140,31 @@ class ColorPickMode (gui.mode.OneshotDragMode):
         else:
             return pick_color
 
-    def _pick_color(self, tdw, x, y):
+    def _pick_color(self, tdw, x, y, direct=False):
         cm = self.doc.app.brush_color_manager
         pick_color = tdw.pick_color(x, y)
-        brush_color = cm.get_color()
-        if pick_color != brush_color:
-            cm.set_color(self.get_new_color(pick_color, brush_color))
+        if pick_color != self._color:
+            new_color = self.get_new_color(pick_color, self._color)
+            self._color = new_color
+            if direct:
+                cm.set_color(new_color)
+            else:
+                self._queue_color_change(new_color, cm)
+
+    def _queue_color_change(self, new_col, cm):
+        self._queued_data = new_col, cm
+        if not self._timeout_id:
+            self._timeout_id = GLib.timeout_add(
+                interval=16.66,  # 60 fps cap
+                function=self._change_color,
+            )
+
+    def _change_color(self):
+        if self._queued_data:
+            col, cm = self._queued_data
+            self._queued_data = None
+            cm.set_color(col)
+        self._timeout_id = None
 
 
 # HCY chromaticity thresholds
@@ -235,7 +261,7 @@ class ColorPickPreviewOverlay (Overlay):
     OUTLINE_WIDTH = 3
     CORNER_RADIUS = 10
 
-    def __init__(self, doc, tdw, x, y):
+    def __init__(self, doc, tdw, x, y, color):
         """Initialize, attaching to the brush and to the tdw.
 
         Observer callbacks and canvas overlays are registered by this
@@ -247,12 +273,10 @@ class ColorPickPreviewOverlay (Overlay):
         self._tdw = tdw
         self._x = int(x)+0.5
         self._y = int(y)+0.5
+        self._color = color
         alloc = tdw.get_allocation()
         self._tdw_w = alloc.width
         self._tdw_h = alloc.height
-        self._color = self._get_app_brush_color()
-        app = doc.app
-        app.brush.observers.append(self._brush_color_changed_cb)
         tdw.display_overlays.append(self)
         self._previous_area = None
         self._queue_tdw_redraw()
@@ -260,28 +284,14 @@ class ColorPickPreviewOverlay (Overlay):
     def cleanup(self):
         """Cleans up temporary observer stuff, allowing garbage collection.
         """
-        app = self._doc.app
-        app.brush.observers.remove(self._brush_color_changed_cb)
         self._tdw.display_overlays.remove(self)
-        assert self._brush_color_changed_cb not in app.brush.observers
-        assert self not in self._tdw.display_overlays
         self._queue_tdw_redraw()
 
-    def move(self, x, y):
-        """Moves the preview square to a new location, in tdw pointer coords.
-        """
+    def update(self, x, y, color):
+        """Update the overlay's position and color"""
         self._x = int(x)+0.5
         self._y = int(y)+0.5
-        self._queue_tdw_redraw()
-
-    def _get_app_brush_color(self):
-        app = self._doc.app
-        return HSVColor(*app.brush.get_color_hsv())
-
-    def _brush_color_changed_cb(self, settings):
-        if not settings.intersection(('color_h', 'color_s', 'color_v')):
-            return
-        self._color = self._get_app_brush_color()
+        self._color = color
         self._queue_tdw_redraw()
 
     def _queue_tdw_redraw(self):
