@@ -9,8 +9,8 @@ msgstr ""
 "Project-Id-Version: mypaint v2.0.0-alpha.12-324-g153de92\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-07-05 09:12+0200\n"
-"PO-Revision-Date: 2020-07-27 00:41+0000\n"
-"Last-Translator: Rosemary Sumitani <sumitani.mitsue@gmail.com>\n"
+"PO-Revision-Date: 2020-08-07 09:32+0000\n"
+"Last-Translator: Drew T <horsenkat@gmail.com>\n"
 "Language-Team: Spanish <https://hosted.weblate.org/projects/mypaint/mypaint/"
 "es/>\n"
 "Language: es\n"
@@ -657,12 +657,11 @@ msgstr "Seleccionar el color usado para pintar"
 
 #: ../gui/colorpicker.py:270
 msgid "Pick Hue"
-msgstr ""
+msgstr "Elija el Tinte"
 
 #: ../gui/colorpicker.py:273
-#, fuzzy
 msgid "Set the color Hue used for painting"
-msgstr "Seleccionar el color usado para pintar"
+msgstr "Seleccionar el tinte de color usado para pintar"
 
 #: ../gui/colorpicker.py:293
 #, fuzzy
