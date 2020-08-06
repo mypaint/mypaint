@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: mypaint v2.0.0-alpha.12-327-ga332f03\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-07-05 09:12+0200\n"
-"PO-Revision-Date: 2020-08-04 07:05+0000\n"
+"PO-Revision-Date: 2020-08-07 09:32+0000\n"
 "Last-Translator: tamer dab <dabsantamer@yahoo.com>\n"
 "Language-Team: Arabic <https://hosted.weblate.org/projects/mypaint/mypaint/"
 "ar/>\n"
@@ -500,12 +500,12 @@ msgstr ""
 #, python-format
 msgid "%d brush"
 msgid_plural "%d brushes"
-msgstr[0] ""
+msgstr[0] "%d فرشاة"
 msgstr[1] "%d فرشاة"
-msgstr[2] ""
-msgstr[3] ""
+msgstr[2] "%d فرشتان"
+msgstr[3] "%d فرش"
 msgstr[4] "%d فرش"
-msgstr[5] ""
+msgstr[5] "%d فرش"
 
 #. TRANSLATORS: properties dialog for the current brush group
 #: ../gui/brushselectionwindow.py:405
@@ -594,7 +594,7 @@ msgstr "زر"
 #. TRANSLATORS: abbreviated "Button <number>" for forms like "Alt+Btn1"
 #: ../gui/buttonmap.py:63
 msgid "Btn"
-msgstr ""
+msgstr "Btn"
 
 #. TRANSLATORS: Name of second column in the button map preferences.
 #. TRANSLATORS: Column lists mod+button combinations (bound to actions)
@@ -679,11 +679,11 @@ msgstr ""
 
 #: ../gui/colors/adjbases.py:699
 msgid "Color details"
-msgstr ""
+msgstr "تفاصيل الألوان"
 
 #: ../gui/colors/adjbases.py:872
 msgid "Current brush color, and the color most recently used for painting"
-msgstr ""
+msgstr "لون الفرشاة الحالي ، واللون المستخدم مؤخرًا للرسم"
 
 #: ../gui/colors/hcywheel.py:49
 msgctxt "Online help pages"
@@ -751,14 +751,14 @@ msgstr ""
 #: ../gui/colors/hcywheel.py:957
 msgctxt "HCY Gamut Mask template name"
 msgid "Mood and Accent"
-msgstr ""
+msgstr "المزاج واللهجة"
 
 #: ../gui/colors/hcywheel.py:961
 msgctxt "HCY Gamut Mask template description"
 msgid ""
 "One main range of colors, with a complementary accent for variation and "
 "highlights."
-msgstr ""
+msgstr "مجموعة رئيسية واحدة من الألوان ، مع لمسة تكميلية للتنوع والإبرازات."
 
 #: ../gui/colors/hcywheel.py:970
 msgctxt "HCY Gamut Mask template name"
@@ -900,12 +900,12 @@ msgstr ""
 #: ../gui/colors/paletteview.py:67
 msgctxt "palette panel: properties button tooltip"
 msgid "Palette properties"
-msgstr ""
+msgstr "خصائص اللوحة"
 
 #: ../gui/colors/paletteview.py:76
 msgctxt "palette panel tab tooltip title"
 msgid "Palette"
-msgstr ""
+msgstr "لوحة"
 
 #: ../gui/colors/paletteview.py:82
 msgctxt "palette panel tab tooltip description"
@@ -1104,17 +1104,17 @@ msgstr ""
 #: ../gui/colors/sliders.py:161
 msgctxt "color component slider: tooltip"
 msgid "RGB Red"
-msgstr ""
+msgstr "RGB أحمر"
 
 #: ../gui/colors/sliders.py:178
 msgctxt "color component slider: tooltip"
 msgid "RGB Green"
-msgstr ""
+msgstr "RGB أخضر"
 
 #: ../gui/colors/sliders.py:195
 msgctxt "color component slider: tooltip"
 msgid "RGB Blue"
-msgstr ""
+msgstr "RGB أزرق"
 
 #: ../gui/colors/sliders.py:212
 msgctxt "color component slider: tooltip"
@@ -1149,7 +1149,7 @@ msgstr ""
 #: ../gui/colortools.py:141
 msgctxt "color changer dock panels: tab tooltip title"
 msgid "Liquid Wash"
-msgstr ""
+msgstr "غسيل سائل"
 
 #: ../gui/colortools.py:145
 msgctxt "color changer dock panels: tab tooltip description"
@@ -1169,7 +1169,7 @@ msgstr ""
 #: ../gui/colortools.py:169
 msgctxt "color changer dock panels: tab tooltip title"
 msgid "Crossed Bowl"
-msgstr ""
+msgstr "وعاء متقاطع"
 
 #: ../gui/colortools.py:173
 msgctxt "color changer dock panels: tab tooltip description"
@@ -1179,7 +1179,7 @@ msgstr ""
 #: ../gui/compatibility.py:34
 msgctxt "File Load Compat Options"
 msgid "Based on file"
-msgstr ""
+msgstr "بناءً على الملف"
 
 #. This refers to a version of MyPaint like 1.0, 1.1, 1.2 etc
 #: ../gui/compatibility.py:35 ../gui/drawwindow.py:280
@@ -1209,6 +1209,14 @@ msgid ""
 "It is <b>strongly recommended</b> to upgrade to <b>MyPaint {new_version}</b> "
 "or newer if you want to edit this file!"
 msgstr ""
+"تم حفظ \"{filename}\" باستخدام <b> MyPaint {new_version}</b>. قد يكون <b> "
+"غير متوافق </b> مع <b> MyPaint {current_version} </b>.\n"
+"\n"
+"تعديل هذا الملف باستخدام هذا الإصدار من MyPaint غير مضمون للعمل ، وقد يؤدي "
+"إلى أعطال.\n"
+"\n"
+"يُوصى <b> بالترقية </b> للترقية إلى <b> MyPaint {new_version} </b> أو أحدث "
+"إذا كنت تريد تعديل هذا الملف!"
 
 #: ../gui/compatibility.py:54
 #, python-brace-format
@@ -1222,16 +1230,23 @@ msgid ""
 "\n"
 "To be safe you should upgrade to MyPaint {new_version} or newer."
 msgstr ""
+"تم حفظ \"{filename}\" باستخدام <b> MyPaint {new_version}</b>. قد لا يكون "
+"متوافقًا تمامًا مع <b> Mypaint {current_version} </b>.\n"
+"\n"
+"قد يؤدي حفظه باستخدام هذا الإصدار من MyPaint إلى فقدان البيانات التي يدعمها "
+"الإصدار الأحدث فقط.\n"
+"\n"
+"لتكون آمنًا ، يجب الترقية إلى MyPaint {new_version} أو الأحدث."
 
 #: ../gui/compatibility.py:65
 msgctxt "file compatibility question"
 msgid "Do you want to open this file anyway?"
-msgstr ""
+msgstr "هل تريد فتح هذا الملف على أي حال؟"
 
 #: ../gui/compatibility.py:129
 msgctxt "Version compat warning toggle"
 msgid "Don't show this warning again"
-msgstr ""
+msgstr "لا تظهر هذا التحذير مرة أخرى"
 
 #. TRANSLATORS: One of the options for the
 #. TRANSLATORS: "When Not Specified in File"
@@ -1239,7 +1254,7 @@ msgstr ""
 #: ../gui/compatibility.py:197
 msgctxt "Prefs Dialog|Compatibility"
 msgid "Always open in 1.x mode"
-msgstr ""
+msgstr "افتح دائمًا في وضع 1.x"
 
 #. TRANSLATORS: One of the options for the
 #. TRANSLATORS: "When Not Specified in File"
@@ -1247,7 +1262,7 @@ msgstr ""
 #: ../gui/compatibility.py:206
 msgctxt "Prefs Dialog|Compatibility"
 msgid "Always open in 2.x mode"
-msgstr ""
+msgstr "افتح دائمًا في وضع 2.x"
 
 #. TRANSLATORS: One of the options for the
 #. TRANSLATORS: "When Not Specified in File"
@@ -1255,14 +1270,14 @@ msgstr ""
 #: ../gui/compatibility.py:215
 msgctxt "Prefs Dialog|Compatibility"
 msgid "Open in 1.x mode unless file contains pigment layers"
-msgstr ""
+msgstr "فتح في وضع 1.x ما لم يحتوي الملف على طبقات صبغية"
 
 #. TRANSLATORS: This is a label for a dropdown menu in the
 #. TRANSLATORS: file chooser dialog when loading .ora files.
 #: ../gui/compatibility.py:501
 msgctxt "File Load Compat Options"
 msgid "Compatibility mode:"
-msgstr ""
+msgstr "وضع التوافق:"
 
 #: ../gui/device.py:49
 msgctxt "prefs: device's type label"
@@ -1272,57 +1287,57 @@ msgstr ""
 #: ../gui/device.py:53
 msgctxt "prefs: device's type label"
 msgid "Eraser"
-msgstr ""
+msgstr "ممحاة"
 
 #: ../gui/device.py:57
 msgctxt "prefs: device's type label"
 msgid "Keyboard"
-msgstr ""
+msgstr "لوحة المفاتيح"
 
 #: ../gui/device.py:61
 msgctxt "prefs: device's type label"
 msgid "Mouse"
-msgstr ""
+msgstr "الفأرة"
 
 #: ../gui/device.py:65
 msgctxt "prefs: device's type label"
 msgid "Pen"
-msgstr ""
+msgstr "قلم"
 
 #: ../gui/device.py:69
 msgctxt "prefs: device's type label"
 msgid "Touchpad"
-msgstr ""
+msgstr "لوحة اللمس"
 
 #: ../gui/device.py:73
 msgctxt "prefs: device's type label"
 msgid "Touchscreen"
-msgstr ""
+msgstr "شاشة لمس"
 
 #: ../gui/device.py:93
 msgctxt "device settings: allowed usage"
 msgid "Ignore"
-msgstr ""
+msgstr "تجاهل"
 
 #: ../gui/device.py:97
 msgctxt "device settings: allowed usage"
 msgid "Any Task"
-msgstr ""
+msgstr "أي مهمة"
 
 #: ../gui/device.py:101
 msgctxt "device settings: allowed usage"
 msgid "Non-painting tasks"
-msgstr ""
+msgstr "المهام غير الرسم"
 
 #: ../gui/device.py:105
 msgctxt "device settings: allowed usage"
 msgid "Navigation only"
-msgstr ""
+msgstr "التنقل فقط"
 
 #: ../gui/device.py:130
 msgctxt "device settings: unmodified scroll action"
 msgid "Zoom"
-msgstr ""
+msgstr "تكبير"
 
 #: ../gui/device.py:131
 msgctxt "device settings: unmodified scroll action"
@@ -2910,7 +2925,7 @@ msgstr ""
 #: ../gui/symmetry.py:604
 msgctxt "symmetry axis options panel: axis active checkbox"
 msgid "Enabled"
-msgstr ""
+msgstr "ممكّن"
 
 #: ../gui/toolbar.py:28
 msgid "File handling"
@@ -2948,51 +2963,51 @@ msgstr "إظهار (إعادة تعيين)"
 #, python-brace-format
 msgctxt "workspace: sidebar tabs: button tooltips"
 msgid "{tab_title}: close tab"
-msgstr ""
+msgstr "{tab_title}: إغلاق علامة التبويب"
 
 #: ../gui/toolstack.py:355
 #, python-brace-format
 msgctxt "workspace: sidebar tabs: button tooltips"
 msgid "{tab_title}: tab options and properties"
-msgstr ""
+msgstr "{tab_title}: خيارات وخصائص علامة التبويب"
 
 #: ../gui/toolstack.py:359
 #, python-brace-format
 msgctxt "workspace: sidebar tabs: button tooltips"
 msgid "{tab_title}: move tab to other sidebar"
-msgstr ""
+msgstr "{tab_title}: نقل علامة التبويب إلى الشريط الجانبي الآخر"
 
 #: ../gui/topbar.py:90
 msgid "<b>MyPaint</b>"
-msgstr ""
+msgstr "<b>MyPaint</b>"
 
 #: ../gui/viewmanip.py:40
 msgid "Scroll View"
-msgstr ""
+msgstr "عرض التمرير"
 
 #: ../gui/viewmanip.py:43
 msgid "Drag the canvas view"
-msgstr ""
+msgstr "اسحب عرض لوحة الرسم"
 
 #: ../gui/viewmanip.py:78
 msgid "Zoom View"
-msgstr ""
+msgstr "تكبير العرض"
 
 #: ../gui/viewmanip.py:81
 msgid "Zoom the canvas view"
-msgstr ""
+msgstr "تكبير عرض اللوحة"
 
 #: ../gui/viewmanip.py:120
 msgid "Rotate View"
-msgstr ""
+msgstr "تدوير عرض"
 
 #: ../gui/viewmanip.py:123
 msgid "Rotate the canvas view"
-msgstr ""
+msgstr "قم بتدوير عرض لوحة الرسم"
 
 #: ../lib/command.py:175
 msgid "Unknown Command"
-msgstr ""
+msgstr "أمر مجهول"
 
 #: ../lib/command.py:318
 msgid "Undefined (command not started yet)"
@@ -3024,22 +3039,22 @@ msgstr ""
 
 #: ../lib/command.py:676
 msgid "Clear Layer"
-msgstr ""
+msgstr "مسح الطبقة"
 
 #. This is used by Paste layer as well as when loading from a PNG
 #. file. However in the latter case, the undo stack is reset
 #. immediately afterward.
 #: ../lib/command.py:700
 msgid "Paste Layer"
-msgstr ""
+msgstr "لصق طبقة"
 
 #: ../lib/command.py:723
 msgid "New Layer from Visible"
-msgstr ""
+msgstr "طبقة جديدة من مرئية"
 
 #: ../lib/command.py:765
 msgid "Merge Visible Layers"
-msgstr ""
+msgstr "دمج الطبقات المرئية"
 
 #: ../lib/command.py:839
 msgid "Merge Down"
@@ -3060,23 +3075,23 @@ msgstr ""
 
 #: ../lib/command.py:967
 msgid "Remove Layer"
-msgstr ""
+msgstr "إزالة الطبقة"
 
 #: ../lib/command.py:1014
 msgid "Select Layer"
-msgstr ""
+msgstr "اختيار الطبقة"
 
 #: ../lib/command.py:1144
 msgid "Duplicate Layer"
-msgstr ""
+msgstr "طبقة مكررة"
 
 #: ../lib/command.py:1168
 msgid "Move Layer Up"
-msgstr ""
+msgstr "تحريك الطبقة لأعلى"
 
 #: ../lib/command.py:1182
 msgid "Move Layer Down"
-msgstr ""
+msgstr "تحريك الطبقة لأسفل"
 
 #: ../lib/command.py:1209
 msgid "Move Layer in Stack"
@@ -3084,19 +3099,19 @@ msgstr ""
 
 #: ../lib/command.py:1328
 msgid "Rename Layer"
-msgstr ""
+msgstr "إعادة تسمية الطبقة"
 
 #: ../lib/command.py:1386
 msgid "Make Layer Visible"
-msgstr ""
+msgstr "جعل الطبقة مرئية"
 
 #: ../lib/command.py:1388
 msgid "Make Layer Invisible"
-msgstr ""
+msgstr "جعل الطبقة غير مرئية"
 
 #: ../lib/command.py:1426
 msgid "Lock Layer"
-msgstr ""
+msgstr "اقفل الطبقة"
 
 #: ../lib/command.py:1428
 msgid "Unlock Layer"
@@ -3147,13 +3162,13 @@ msgstr ""
 #: ../lib/document.py:205
 msgctxt "Document autosave descriptions: the {ago} string: future"
 msgid "from now"
-msgstr ""
+msgstr "من الان"
 
 #. TRANSLATORS: string used in e.g. "8s ago"
 #: ../lib/document.py:211
 msgctxt "Document autosave descriptions: the {ago} string: past"
 msgid "ago"
-msgstr ""
+msgstr "منذ"
 
 #. TRANSLATORS: String descriptions for an autosaved backup.
 #. TRANSLATORS: Time strings are localized: e.g. "3h42m" or "8s"
@@ -5051,42 +5066,42 @@ msgstr ""
 #: ../gui/resources.xml:452
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Copy Layer to Clipboard"
-msgstr ""
+msgstr "نسخ الطبقة إلى الحافظة"
 
 #: ../gui/resources.xml:453
 msgctxt "Accel Editor (descriptions)"
 msgid "Copy the current layer’s contents to the clipboard."
-msgstr ""
+msgstr "انسخ محتويات الطبقة الحالية إلى الحافظة."
 
 #: ../gui/resources.xml:461
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Paste Layer from Clipboard"
-msgstr ""
+msgstr "لصق طبقة من الحافظة"
 
 #: ../gui/resources.xml:462
 msgctxt "Accel Editor (descriptions)"
 msgid "Replaces the current layer with the clipboard’s contents."
-msgstr ""
+msgstr "يستبدل الطبقة الحالية بمحتويات الحافظة."
 
 #: ../gui/resources.xml:469
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Edit Layer in External App…"
-msgstr ""
+msgstr "تحرير الطبقة في تطبيق خارجي …"
 
 #: ../gui/resources.xml:470
 msgctxt "Accel Editor (descriptions)"
 msgid "Edit the active layer in an external application."
-msgstr ""
+msgstr "تحرير الطبقة النشطة في تطبيق خارجي."
 
 #: ../gui/resources.xml:477
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Update Layer with External Edits"
-msgstr ""
+msgstr "تحديث الطبقة بتحرير خارجي"
 
 #: ../gui/resources.xml:478
 msgctxt "Accel Editor (descriptions)"
 msgid "Commit changes saved from the external app (normally automatic)."
-msgstr ""
+msgstr "تنفيذ التغييرات المحفوظة من التطبيق الخارجي (تلقائيًا بالعادة)."
 
 #: ../gui/resources.xml:484
 msgctxt "Menu→Layer→Go to Layer (labels), Accel Editor (labels)"
@@ -5101,22 +5116,22 @@ msgstr ""
 #: ../gui/resources.xml:493
 msgctxt "Menu→Layer→Go to Layer (labels), Accel Editor (labels)"
 msgid "Go to Layer Above"
-msgstr ""
+msgstr "انتقل إلى طبقة أعلاه"
 
 #: ../gui/resources.xml:494
 msgctxt "Accel Editor (descriptions)"
 msgid "Go one layer up in the layer stack."
-msgstr ""
+msgstr "انتقل طبقة واحدة لأعلى في كومة الطبقة."
 
 #: ../gui/resources.xml:502
 msgctxt "Menu→Layer→Go to Layer (labels), Accel Editor (labels)"
 msgid "Go to Layer Below"
-msgstr ""
+msgstr "انتقل إلى الطبقة أدناه"
 
 #: ../gui/resources.xml:503
 msgctxt "Accel Editor (descriptions)"
 msgid "Go one layer down in the layer stack."
-msgstr ""
+msgstr "انتقل طبقة واحدة لأسفل في كومة الطبقة."
 
 #: ../gui/resources.xml:511
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
@@ -5126,7 +5141,7 @@ msgstr "طبقة رسم جديدة"
 #: ../gui/resources.xml:512
 msgctxt "Accel Editor (descriptions)"
 msgid "Add a new painting layer above the current layer."
-msgstr ""
+msgstr "أضف طبقة رسم جديدة فوق الطبقة الحالية."
 
 #: ../gui/resources.xml:520
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
@@ -5181,17 +5196,17 @@ msgstr ""
 #: ../gui/resources.xml:559
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Merge Layer Down"
-msgstr ""
+msgstr "دمج طبقة لأسفل"
 
 #: ../gui/resources.xml:560
 msgctxt "Accel Editor (descriptions)"
 msgid "Merge the current layer with the layer beneath it."
-msgstr ""
+msgstr "ادمج الطبقة الحالية مع الطبقة التي تحتها."
 
 #: ../gui/resources.xml:567
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Merge Visible Layers"
-msgstr ""
+msgstr "دمج الطبقات المرئية"
 
 #: ../gui/resources.xml:568
 msgctxt "Accel Editor (descriptions)"
@@ -5233,52 +5248,52 @@ msgstr ""
 #: ../gui/resources.xml:598
 msgctxt "Menu→Layer→Opacity (labels), Accel Editor (labels)"
 msgid "Increase Layer’s Opacity"
-msgstr ""
+msgstr "زيادة عتامة الطبقة"
 
 #: ../gui/resources.xml:599
 msgctxt "Accel Editor (descriptions)"
 msgid "Make the layer less transparent."
-msgstr ""
+msgstr "جعل الطبقة أقل شفافية."
 
 #: ../gui/resources.xml:606
 msgctxt "Menu→Layer→Opacity (labels), Accel Editor (labels)"
 msgid "Reduce Layer’s Opacity"
-msgstr ""
+msgstr "تقليل عتامة الطبقة"
 
 #: ../gui/resources.xml:607
 msgctxt "Accel Editor (descriptions)"
 msgid "Make the layer more transparent."
-msgstr ""
+msgstr "جعل الطبقة أكثر شفافية."
 
 #: ../gui/resources.xml:614
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Raise Layer"
-msgstr ""
+msgstr "رفع الطبقة"
 
 #: ../gui/resources.xml:615
 msgctxt "Accel Editor (descriptions)"
 msgid "Raise the current layer one step in the layer stack."
-msgstr ""
+msgstr "ارفع الطبقة الحالية خطوة واحدة في رصة الطبقة."
 
 #: ../gui/resources.xml:623
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Lower Layer"
-msgstr ""
+msgstr "الطبقة السفلى"
 
 #: ../gui/resources.xml:624
 msgctxt "Accel Editor (descriptions)"
 msgid "Lower the current layer one step in the layer stack."
-msgstr ""
+msgstr "اخفض الطبقة الحالية خطوة واحدة في رصة الطبقة."
 
 #: ../gui/resources.xml:633
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Duplicate Layer"
-msgstr ""
+msgstr "كرر الطبقة"
 
 #: ../gui/resources.xml:634
 msgctxt "Accel Editor (descriptions)"
 msgid "Make an exact clone of the current layer."
-msgstr ""
+msgstr "قم بعمل نسخة طبق الأصل من الطبقة الحالية."
 
 #: ../gui/resources.xml:642
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
@@ -5305,7 +5320,7 @@ msgstr ""
 #: ../gui/resources.xml:658
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Layer Visible"
-msgstr ""
+msgstr "طبقة مرئية"
 
 #: ../gui/resources.xml:659
 msgctxt "Accel Editor (descriptions)"
@@ -5467,32 +5482,32 @@ msgstr ""
 #: ../gui/resources.xml:819
 msgctxt "Menu→View→Adjust View (labels), Accel Editor (labels)"
 msgid "Rotate Counterclockwise"
-msgstr ""
+msgstr "تدوير عكس اتجاه عقارب الساعة"
 
 #: ../gui/resources.xml:820
 msgctxt "Accel Editor (descriptions)"
 msgid "Rotate the canvas counter-clockwise."
-msgstr ""
+msgstr "قم بتدوير اللوحة عكس اتجاه عقارب الساعة."
 
 #: ../gui/resources.xml:828
 msgctxt "Menu→View→Adjust View (labels), Accel Editor (labels)"
 msgid "Mirror Horizontal"
-msgstr ""
+msgstr "مرآة أفقية"
 
 #: ../gui/resources.xml:829
 msgctxt "Accel Editor (descriptions)"
 msgid "Flip the view left to right."
-msgstr ""
+msgstr "اقلب العرض من اليسار إلى اليمين."
 
 #: ../gui/resources.xml:837
 msgctxt "Menu→View→Adjust View (labels), Accel Editor (labels)"
 msgid "Mirror Vertical"
-msgstr ""
+msgstr "مرآة عمودي"
 
 #: ../gui/resources.xml:838
 msgctxt "Accel Editor (descriptions)"
 msgid "Flip the view upside-down."
-msgstr ""
+msgstr "اقلب العرض رأسًا على عقب."
 
 #: ../gui/resources.xml:845
 msgctxt "Menu→View (labels), Accel Editor (labels)"
@@ -5517,7 +5532,7 @@ msgstr ""
 #: ../gui/resources.xml:864
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "Frame Enabled"
-msgstr ""
+msgstr "تم تمكين الإطار"
 
 #: ../gui/resources.xml:865
 msgctxt "Accel Editor (descriptions)"
@@ -5584,32 +5599,32 @@ msgstr ""
 #: ../gui/resources.xml:933
 msgctxt "Menu→Brush (labels)"
 msgid "Paint Mode"
-msgstr ""
+msgstr "وضع الرسم"
 
 #: ../gui/resources.xml:941
 msgctxt "Menu→Brush→Blend Mode (labels), Accel Editor (labels)"
 msgid "Paint Mode: Normal"
-msgstr ""
+msgstr "وضع الرسم: عادي"
 
 #: ../gui/resources.xml:942
 msgctxt "Accel Editor (descriptions)"
 msgid "Apply color normally when painting."
-msgstr ""
+msgstr "تطبيق اللون بشكل طبيعي عند الرسم."
 
 #: ../gui/resources.xml:950
 msgctxt "Menu→Brush→Blend Mode (labels), Accel Editor (labels)"
 msgid "Paint Mode: Eraser"
-msgstr ""
+msgstr "وضع الرسم: ممحاة"
 
 #: ../gui/resources.xml:951
 msgctxt "Accel Editor (descriptions)"
 msgid "Erase using the current brush."
-msgstr ""
+msgstr "امسح باستخدام الفرشاة الحالية."
 
 #: ../gui/resources.xml:959
 msgctxt "Menu→Brush→Blend Mode (labels), Accel Editor (labels)"
 msgid "Paint Mode: Lock Alpha"
-msgstr ""
+msgstr "وضع الطلاء: قفل ألفا"
 
 #: ../gui/resources.xml:960
 msgctxt "Accel Editor (descriptions)"
@@ -5625,7 +5640,7 @@ msgstr ""
 msgctxt "Accel Editor (descriptions)"
 msgid ""
 "Apply color to the current layer without affecting its brightness or opacity."
-msgstr ""
+msgstr "قم بتطبيق اللون على الطبقة الحالية دون التأثير على سطوعها أو تعتيمها."
 
 #: ../gui/resources.xml:983
 msgctxt "Menu (labels)"
@@ -5640,7 +5655,7 @@ msgstr "اخرج"
 #: ../gui/resources.xml:990
 msgctxt "Accel Editor (descriptions)"
 msgid "Close main window and exit the app."
-msgstr ""
+msgstr "أغلق النافذة الرئيسية واخرج من التطبيق."
 
 #: ../gui/resources.xml:1000
 msgctxt "Menu (labels)"
@@ -5655,57 +5670,57 @@ msgstr "لون"
 #: ../gui/resources.xml:1014
 msgctxt "Menu→Color (labels)"
 msgid "Adjust Color"
-msgstr ""
+msgstr "اضبط اللون"
 
 #: ../gui/resources.xml:1020
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "Color History Popup"
-msgstr ""
+msgstr "تاريخ الألوان المنبثق"
 
 #: ../gui/resources.xml:1021
 msgctxt "Accel Editor (descriptions)"
 msgid "Pop up a timeline of recent colors under the cursor."
-msgstr ""
+msgstr "انبثاق مخطط زمني للألوان الحديثة تحت المؤشر."
 
 #: ../gui/resources.xml:1028
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "Color Details Dialog"
-msgstr ""
+msgstr "مربع حوار تفاصيل الألوان"
 
 #: ../gui/resources.xml:1029
 msgctxt "Accel Editor (descriptions)"
 msgid "Show a color details dialog with text entry."
-msgstr ""
+msgstr "إظهار مربع حوار تفاصيل الألوان مع إدخال النص."
 
 #: ../gui/resources.xml:1035
 msgctxt "Menu→Color"
 msgid "Next Palette Color"
-msgstr ""
+msgstr "لوحة الألوان التالية"
 
 #: ../gui/resources.xml:1036
 msgctxt "Accel Editor (descriptions)"
 msgid "Set painting color to the next color in the palette."
-msgstr ""
+msgstr "اضبط لون الطلاء على اللون التالي في اللوحة."
 
 #: ../gui/resources.xml:1042
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "Previous Palette Color"
-msgstr ""
+msgstr "لوحة الألوان السابقة"
 
 #: ../gui/resources.xml:1043
 msgctxt "Accel Editor (descriptions)"
 msgid "Set painting color to the previous color in the palette."
-msgstr ""
+msgstr "اضبط لون الطلاء على اللون السابق في اللوحة."
 
 #: ../gui/resources.xml:1049
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "Add Color to Palette"
-msgstr ""
+msgstr "إضافة لون إلى لوحة الألوان"
 
 #: ../gui/resources.xml:1050
 msgctxt "Accel Editor (descriptions)"
 msgid "Append the current painting color to the palette."
-msgstr ""
+msgstr "إلحاق لون اللوحة الحالي باللوحة."
 
 #: ../gui/resources.xml:1058
 msgctxt "Menu (labels)"
@@ -5715,7 +5730,7 @@ msgstr "طبقة"
 #: ../gui/resources.xml:1064
 msgctxt "Menu→Layer→Properties (labels)"
 msgid "Opacity"
-msgstr ""
+msgstr "التعتيم"
 
 #: ../gui/resources.xml:1070
 msgctxt "Menu→Layer (labels)"
@@ -6624,7 +6639,7 @@ msgstr ""
 #: ../gui/resources.xml:1863
 msgctxt "Menu→Edit→Current Mode (labels)"
 msgid "Pick Color"
-msgstr ""
+msgstr "اختر اللون"
 
 #: ../gui/resources.xml:1864
 msgctxt "Toolbar (short labels)"
@@ -6634,7 +6649,7 @@ msgstr "إختيار اللون"
 #: ../gui/resources.xml:1865
 msgctxt "Toolbar (tooltips)"
 msgid "Pick Color: set the painting color from screen pixels."
-msgstr ""
+msgstr "اختيار اللون: تعيين لون الطلاء من بكسل الشاشة."
 
 #: ../gui/resources.xml:1897
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
@@ -6682,7 +6697,7 @@ msgstr ""
 #: ../gui/resources.xml:1935
 msgctxt "Menu→Edit→Current Mode (labels)"
 msgid "Flood Fill"
-msgstr ""
+msgstr "ملء فيضاني"
 
 #: ../gui/resources.xml:1936
 msgctxt "Toolbar (short labels)"
@@ -6692,7 +6707,7 @@ msgstr "ملء"
 #: ../gui/resources.xml:1937
 msgctxt "Toolbar (tooltips)"
 msgid "Flood Fill: fill an area with color."
-msgstr ""
+msgstr "ملء فيضاني: املأ منطقة باللون."
 
 #: ../gui/resources.xml:1945
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
@@ -6702,7 +6717,7 @@ msgstr "تعبئة الألوان"
 #: ../gui/resources.xml:1946
 msgctxt "Accel Editor (descriptions)"
 msgid "Fill an area with color."
-msgstr ""
+msgstr "املأ منطقة باللون."
 
 #, fuzzy
 #~ msgctxt "Layer properties widget → <category labels>"
