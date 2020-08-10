@@ -5,7 +5,7 @@ msgstr ""
 "Project-Id-Version: mypaint v2.0.0-alpha.12-10-g9ab1487\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-07-05 09:12+0200\n"
-"PO-Revision-Date: 2020-01-21 17:37+0000\n"
+"PO-Revision-Date: 2020-08-11 20:32+0000\n"
 "Last-Translator: Allan Nordhøy <epost@anotheragency.no>\n"
 "Language-Team: Norwegian Bokmål <https://hosted.weblate.org/projects/mypaint/"
 "mypaint/nb_NO/>\n"
@@ -14,7 +14,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 3.11-dev\n"
+"X-Generator: Weblate 4.2-dev\n"
 
 #. TRANSLATORS: Name of first column in the button map preferences.
 #. TRANSLATORS: Refers to an action bound to a mod+button combination.
@@ -489,10 +489,12 @@ msgid "{original_name} copy {n}"
 msgstr ""
 
 #: ../gui/brushselectionwindow.py:325
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgctxt "brush group: context menu: remove from group"
 msgid "Really remove brush “{brush_name}” from group “{group_name}”?"
-msgstr "VIL du virkelig slette penselen \"{brush_name}\" fra disken?"
+msgstr ""
+"VIL du virkelig fjerne penselen \"{brush_name}\" fra gruppen \"{group_name}\""
+"?"
 
 #. TRANSLATORS: number of brushes in a brush group, for tooltips
 #: ../gui/brushselectionwindow.py:381
@@ -1413,13 +1415,13 @@ msgid "Existing brush"
 msgstr "Eksisterende pensel"
 
 #: ../gui/dialogs.py:166
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgid ""
 "<b>A brush named “{brush_name}” already exists.</b>\n"
 "Do you want to replace it, or should the new brush be renamed?"
 msgstr ""
-"<b>Penselenz `%s' eksisterer allerede.</b>\n"
-"Vil du erstatte den, eller skal den nye penselen bli omdøpt?"
+"<b>Penselen \"{brush_name}\" finnes allerede.</b>\n"
+"Vil du erstatte den, eller skal navnet på den nye endres?"
 
 #: ../gui/dialogs.py:196
 msgid "Overwrite brush group?"
@@ -1443,9 +1445,9 @@ msgid "Import brush package?"
 msgstr "Importer penselpakke?"
 
 #: ../gui/dialogs.py:357
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgid "<b>Do you really want to import package “{brushpack_name}”?</b>"
-msgstr "<b>Vil du virkelig importere pakken `%s'?</b>"
+msgstr "<b>Vil du virkelig importere pakken \"{brushpack_name}\"?</b>"
 
 #: ../gui/document.py:455
 #, python-format
@@ -1673,10 +1675,10 @@ msgid "no description"
 msgstr "ingen beskrivelse"
 
 #: ../gui/filehandling.py:127
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgctxt "Document I/O: message shown while working"
 msgid "Loading {files_summary}…"
-msgstr "Laster “{file_basename}”…"
+msgstr "Laster “{files_summary}”…"
 
 #: ../gui/filehandling.py:131
 #, python-brace-format
@@ -1685,28 +1687,28 @@ msgid "Importing layers from {files_summary}…"
 msgstr ""
 
 #: ../gui/filehandling.py:135
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgctxt "Document I/O: message shown while working"
 msgid "Saving {files_summary}…"
-msgstr "Lagrer “{file_basename}”…"
+msgstr "Lagrer “{files_summary}”…"
 
 #: ../gui/filehandling.py:139
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgctxt "Document I/O: message shown while working"
 msgid "Exporting to {files_summary}…"
-msgstr "Eksporterer til “{file_basename}”…"
+msgstr "Eksporterer til “{files_summary}”…"
 
 #: ../gui/filehandling.py:146
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgctxt "Document I/O: fail message"
 msgid "Failed to export to {files_summary}."
-msgstr "Klarte ikke å eksportere til “{file_basename}”."
+msgstr "Klarte ikke å eksportere til “{files_summary}”."
 
 #: ../gui/filehandling.py:150
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgctxt "Document I/O: fail message"
 msgid "Failed to save {files_summary}."
-msgstr "Klarte ikke å lagre “{file_basename}”."
+msgstr "Klarte ikke å lagre “{files_summary}”."
 
 #: ../gui/filehandling.py:154
 #, python-brace-format
@@ -1715,10 +1717,10 @@ msgid "Could not import layers from {files_summary}."
 msgstr ""
 
 #: ../gui/filehandling.py:158
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgctxt "Document I/O: fail message"
 msgid "Could not load {files_summary}."
-msgstr "Kunne ikke laste “{file_basename}”."
+msgstr "Kunne ikke laste “{files_summary}”."
 
 #: ../gui/filehandling.py:165
 #, fuzzy
@@ -1745,16 +1747,16 @@ msgid "Open failed"
 msgstr "Åpne nylige filer"
 
 #: ../gui/filehandling.py:184
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgctxt "Document I/O: success"
 msgid "Exported to {files_summary} successfully."
-msgstr "Eksporterte til “{file_basename}”."
+msgstr "Eksporterte til “{files_summary}”."
 
 #: ../gui/filehandling.py:188
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgctxt "Document I/O: success"
 msgid "Saved {files_summary} successfully."
-msgstr "“{file_basename}” lagret."
+msgstr "“{files_summary}” lagret."
 
 #: ../gui/filehandling.py:192
 #, python-brace-format
@@ -1763,10 +1765,10 @@ msgid "Imported layers from {files_summary}."
 msgstr ""
 
 #: ../gui/filehandling.py:196
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgctxt "Document I/O: success"
 msgid "Loaded {files_summary}."
-msgstr "Lastet inn “{file_basename}”."
+msgstr "Lastet inn “{files_summary}”."
 
 #. TRANSLATORS: formatting for {files_summary} for multiple files.
 #. TRANSLATORS: corresponding msgid for single files: "“{basename}”"
@@ -1778,10 +1780,10 @@ msgstr[0] ""
 msgstr[1] ""
 
 #: ../gui/filehandling.py:223
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgctxt "Document I/O: the {files_summary} for a single file"
 msgid "“{basename}”"
-msgstr "Lastet inn “{file_basename}”."
+msgstr "“{basename}”"
 
 #: ../gui/filehandling.py:432
 #, fuzzy
@@ -2556,10 +2558,10 @@ msgid ", "
 msgstr ", "
 
 #: ../gui/layers.py:1004
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgctxt "Layers dockable: markup for a layer with no description"
 msgid "{layer_name}"
-msgstr "Legg til {layer_default_name}"
+msgstr "{layer_name}"
 
 #: ../gui/layers.py:1009
 #, python-brace-format
@@ -2608,10 +2610,10 @@ msgid "Layer"
 msgstr "Lag"
 
 #: ../gui/layervis.py:53
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgctxt "view controls: dropdown: item markup"
 msgid "<i>{builtin_view_name}</i>"
-msgstr "<b>{brush_name}</b>"
+msgstr "<i>{builtin_view_name}</i>"
 
 #: ../gui/layervis.py:125
 #, python-brace-format
@@ -3036,10 +3038,10 @@ msgid "View (Resetting)"
 msgstr ""
 
 #: ../gui/toolstack.py:351
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgctxt "workspace: sidebar tabs: button tooltips"
 msgid "{tab_title}: close tab"
-msgstr "%s: lukk fane"
+msgstr "{tab_title}: Lukk fane"
 
 #: ../gui/toolstack.py:355
 #, python-brace-format
@@ -3774,10 +3776,10 @@ msgstr ""
 #. TRANSLATORS: Change only if your lang *REQUIRES* a different order or
 #. TRANSLATORS: if raw digits and a space aren't enough.
 #: ../lib/naming.py:22
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgctxt "unique names: serial number needed: template"
 msgid "{name} {number}"
-msgstr "%(name)s %(number)d"
+msgstr "{name} {number}"
 
 #. TRANSLATORS: UNIQUE_NAME_REGEX - regex for UNIQUE_NAME_TEMPLATE
 #. TRANSLATORS: Must match its template (msgid: '{name} {number}')
