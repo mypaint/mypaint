@@ -7,8 +7,8 @@ msgstr ""
 "Project-Id-Version: mypaint v2.0.0-alpha.8-1-g4490f06\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-07-05 09:12+0200\n"
-"PO-Revision-Date: 2020-01-12 22:21+0000\n"
-"Last-Translator: 4903000 <4903000@chiru.no>\n"
+"PO-Revision-Date: 2020-08-11 20:32+0000\n"
+"Last-Translator: Jiri Grönroos <jiri.gronroos@iki.fi>\n"
 "Language-Team: Finnish <https://hosted.weblate.org/projects/mypaint/mypaint/"
 "fi/>\n"
 "Language: fi\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 3.10.1\n"
+"X-Generator: Weblate 4.2-dev\n"
 
 #. TRANSLATORS: Name of first column in the button map preferences.
 #. TRANSLATORS: Refers to an action bound to a mod+button combination.
@@ -454,19 +454,16 @@ msgid "Unknown Brush"
 msgstr "Tuntematon sivellin"
 
 #: ../gui/brushselectionwindow.py:220
-#, fuzzy
 msgctxt "brush group: context menu for a single brush"
 msgid "Add to Favorites"
 msgstr "Lisää suosikkeihin"
 
 #: ../gui/brushselectionwindow.py:227
-#, fuzzy
 msgctxt "brush group: context menu for a single brush"
 msgid "Remove from Favorites"
 msgstr "Poista suosikeista"
 
 #: ../gui/brushselectionwindow.py:235
-#, fuzzy
 msgctxt "brush group: context menu for a single brush"
 msgid "Clone"
 msgstr "Kloonaa"
@@ -478,10 +475,9 @@ msgid "Edit Brush Settings"
 msgstr "Muokkaa siveltimien asetuksia"
 
 #: ../gui/brushselectionwindow.py:250
-#, fuzzy
 msgctxt "brush group: context menu for a single brush"
 msgid "Remove from Group"
-msgstr "Nimeä ryhmä uudelleen"
+msgstr "Poista ryhmästä"
 
 #: ../gui/brushselectionwindow.py:290
 #, python-brace-format
@@ -5039,7 +5035,7 @@ msgstr ""
 #: ../gui/resources.xml:401
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Clear Layer"
-msgstr "Tyhjennä Taso"
+msgstr "Tyhjennä taso"
 
 #: ../gui/resources.xml:402
 msgctxt "Accel Editor (descriptions)"
@@ -5194,7 +5190,7 @@ msgstr ""
 #: ../gui/resources.xml:528
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "New Layer Group"
-msgstr "Uusi Tasoryhmä"
+msgstr "Uusi tasoryhmä"
 
 #: ../gui/resources.xml:529
 msgctxt "Accel Editor (descriptions)"
@@ -5264,7 +5260,7 @@ msgstr ""
 #: ../gui/resources.xml:583
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Delete Layer"
-msgstr "Tyhjennä Taso"
+msgstr "Poista taso"
 
 #: ../gui/resources.xml:584
 msgctxt "Accel Editor (descriptions)"
