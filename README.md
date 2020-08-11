@@ -51,6 +51,20 @@ Click on the link matching your architecture (32 or 64), then the tab named "Art
 to get the file list. Only one of the files ending in `.exe` or `.7z` are needed.
 Using the standalone archive (7z) is recommended.
 
+### Windows Package Manager (winget)
+
+The latest stable release is available to install via winget, the Windows Package Manager. To search for the package, run:
+
+```
+winget search MyPaint
+```
+
+and to install, run:
+
+```
+winget install --id MyPaint.MyPaint
+```
+
 ### Chocolatey (windows)
 
 If you prefer to use the Chocolatey repository, both
