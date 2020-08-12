@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: mypaint v2.0.0-alpha.8-1-g4490f06\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-07-05 09:12+0200\n"
-"PO-Revision-Date: 2020-08-11 20:32+0000\n"
+"PO-Revision-Date: 2020-08-13 19:32+0000\n"
 "Last-Translator: Jiri Grönroos <jiri.gronroos@iki.fi>\n"
 "Language-Team: Finnish <https://hosted.weblate.org/projects/mypaint/mypaint/"
 "fi/>\n"
@@ -112,7 +112,7 @@ msgstr "Avaa Välimuistikansio…"
 
 #: ../gui/autorecover.py:171
 msgid "Backup Recovery Failed"
-msgstr "Varmuuskopion Palauttaminen Epäonnistui"
+msgstr "Varmuuskopion palauttaminen epäonnistui"
 
 #: ../gui/autorecover.py:173
 msgid "Open the Backup’s Folder…"
@@ -141,7 +141,7 @@ msgstr "Väri"
 
 #: ../gui/backgroundwindow.py:92
 msgid "Add color to Patterns"
-msgstr "Lisää väri Kuvioihin"
+msgstr "Lisää väri kuvioihin"
 
 #: ../gui/backgroundwindow.py:256
 msgid "One or more backgrounds could not be loaded"
@@ -172,7 +172,7 @@ msgstr "Tiedoston {filename} koko on nolla (l={w}, k={h})"
 #: ../gui/brusheditor.py:112
 msgctxt "brush settings editor: subwindow title"
 msgid "Brush Settings Editor"
-msgstr "Siveltimen Asetusmuokkain"
+msgstr "Siveltimen asetusmuokkain"
 
 #: ../gui/brusheditor.py:293
 msgctxt "brush settings list: brush metadata texts group"
@@ -252,7 +252,7 @@ msgstr "Ei valittua sivellintä!"
 #: ../gui/brusheditor.py:550
 msgctxt "brush settings editor: rename brush: dialog title"
 msgid "Rename Brush"
-msgstr "Tallenna Sivellin Nimellä"
+msgstr "Nimeä sivellin uudelleen"
 
 #: ../gui/brusheditor.py:569
 msgctxt "brush settings editor: rename brush: error message"
@@ -268,7 +268,7 @@ msgstr "Ei valittua sivellintä!"
 #, python-brace-format
 msgctxt "brush settings editor: delete brush: confirm dialog question"
 msgid "Really delete brush “{brush_name}” from disk?"
-msgstr "Haluatko todella poistaa siveltimen \"{brush_name}\" kovalevyltä?"
+msgstr "Haluatko todella poistaa siveltimen \"{brush_name}\" levyltä?"
 
 #: ../gui/brusheditor.py:728
 msgctxt "brush settings editor: header: fallback name"
@@ -283,11 +283,11 @@ msgstr "{brush_name} [ei tallennettu]"
 
 #: ../gui/brushiconeditor.py:36
 msgid "Brush Icon"
-msgstr "Sivellin Kuvake"
+msgstr "Sivellinkuvake"
 
 #: ../gui/brushiconeditor.py:37
 msgid "Brush Icon (editing)"
-msgstr "Sivellin Kuvake (muokkaus)"
+msgstr "Sivellinkuvake (muokkaus)"
 
 #: ../gui/brushiconeditor.py:74
 msgid "No brush selected"
@@ -317,7 +317,7 @@ msgid ""
 "<b>%s</b> (editing)\n"
 "<small>Paint with any brush or color</small>"
 msgstr ""
-"<b>%s</b> (editing)\n"
+"<b>%s</b> (muokkaus)\n"
 "<small>Maalaa millä tahansa siveltimellä tai värillä</small>"
 
 #: ../gui/brushiconeditor.py:85
@@ -354,7 +354,7 @@ msgstr "Tyhjennä"
 
 #: ../gui/brushiconeditor.py:176
 msgid "Clear the preview icon"
-msgstr "Tyhjennä esikatselu kuvake"
+msgstr "Tyhjennä esikatselukuvake"
 
 #. TRANSLATORS: set the brush icon to a built-in default
 #: ../gui/brushiconeditor.py:182
@@ -469,7 +469,6 @@ msgid "Clone"
 msgstr "Kloonaa"
 
 #: ../gui/brushselectionwindow.py:242
-#, fuzzy
 msgctxt "brush group: context menu for a single brush"
 msgid "Edit Brush Settings"
 msgstr "Muokkaa siveltimien asetuksia"
@@ -520,7 +519,7 @@ msgstr "Nimeä ryhmä uudelleen"
 #: ../gui/brushselectionwindow.py:424
 msgctxt "brush group properties dialog: action buttons"
 msgid "Export as Zipped Brushset"
-msgstr "Vie Zipattuna sivellinpakkana"
+msgstr "Vie zipattuna sivellinpakkana"
 
 #: ../gui/brushselectionwindow.py:430
 msgctxt "brush group properties dialog: action buttons"
@@ -561,7 +560,7 @@ msgstr "Vie siveltimet"
 #: ../gui/brushselectionwindow.py:515
 msgctxt "brush group export dialog"
 msgid "MyPaint brush package (*.zip)"
-msgstr "MyPaint sivellinpaketti (*.zip)"
+msgstr "MyPaint-sivellinpaketti (*.zip)"
 
 #: ../gui/brushselectionwindow.py:535
 msgctxt "brush groups menu"
@@ -832,7 +831,7 @@ msgstr ""
 #: ../gui/colors/hcywheel.py:1299
 msgctxt "HCY Wheel color adjuster page: title for tooltips etc."
 msgid "HCY Wheel"
-msgstr ""
+msgstr "HCY-väripyörä"
 
 #: ../gui/colors/hcywheel.py:1306
 msgctxt "HCY Wheel color adjuster page: description for tooltips etc."
@@ -888,7 +887,7 @@ msgstr ""
 
 #: ../gui/colors/hsvwheel.py:91
 msgid "HSV Wheel"
-msgstr ""
+msgstr "HSV-väripyörä"
 
 #: ../gui/colors/hsvwheel.py:95
 msgid "Saturation and Value color changer."
@@ -922,12 +921,12 @@ msgstr ""
 #: ../gui/colors/paletteview.py:160
 msgctxt "palette editor dialog: action buttons: tooltips"
 msgid "Load from a GIMP palette file"
-msgstr ""
+msgstr "Lataa GIMP-palettitiedostosta"
 
 #: ../gui/colors/paletteview.py:164
 msgctxt "palette editor dialog: action buttons: tooltips"
 msgid "Save to a GIMP palette file"
-msgstr ""
+msgstr "Tallenna GIMP-palettitiedostoon"
 
 #: ../gui/colors/paletteview.py:168
 msgctxt "palette editor dialog: action buttons: tooltips"
@@ -1041,7 +1040,7 @@ msgstr ""
 #: ../gui/colors/paletteview.py:1279
 msgctxt "palette load dialog: filters"
 msgid "GIMP palette file (*.gpl)"
-msgstr ""
+msgstr "GIMP-palettitiedosto (*.gpl)"
 
 #: ../gui/colors/paletteview.py:1286
 msgctxt "palette load dialog: filters"
@@ -1181,16 +1180,15 @@ msgstr ""
 #. This refers to a version of MyPaint like 1.0, 1.1, 1.2 etc
 #: ../gui/compatibility.py:35 ../gui/drawwindow.py:280
 #: ../gui/preferenceswindow.glade:1610
-#, fuzzy
 msgctxt "Prefs Dialog|Compatibility"
 msgid "1.x"
-msgstr "1.0"
+msgstr "1.x"
 
 #. This refers to a version of MyPaint like 1.0, 1.1, 1.2 etc
 #: ../gui/compatibility.py:36 ../gui/preferenceswindow.glade:1629
 msgctxt "Prefs Dialog|Compatibility"
 msgid "2.x"
-msgstr ""
+msgstr "2.x"
 
 #. TRANSLATORS: This is probably a rare warning, and it will not
 #. TRANSLATORS: really be shown at all before the release of 3.0
@@ -1224,12 +1222,12 @@ msgstr ""
 #: ../gui/compatibility.py:65
 msgctxt "file compatibility question"
 msgid "Do you want to open this file anyway?"
-msgstr ""
+msgstr "Haluatko avata tämän tiedoston silti?"
 
 #: ../gui/compatibility.py:129
 msgctxt "Version compat warning toggle"
 msgid "Don't show this warning again"
-msgstr ""
+msgstr "Älä näytä tätä varoitusta uudestaan"
 
 #. TRANSLATORS: One of the options for the
 #. TRANSLATORS: "When Not Specified in File"
@@ -1237,7 +1235,7 @@ msgstr ""
 #: ../gui/compatibility.py:197
 msgctxt "Prefs Dialog|Compatibility"
 msgid "Always open in 1.x mode"
-msgstr ""
+msgstr "Avaa aina 1.x-tilassa"
 
 #. TRANSLATORS: One of the options for the
 #. TRANSLATORS: "When Not Specified in File"
@@ -1245,7 +1243,7 @@ msgstr ""
 #: ../gui/compatibility.py:206
 msgctxt "Prefs Dialog|Compatibility"
 msgid "Always open in 2.x mode"
-msgstr ""
+msgstr "Avaa aina 2.x-tilassa"
 
 #. TRANSLATORS: One of the options for the
 #. TRANSLATORS: "When Not Specified in File"
@@ -1260,7 +1258,7 @@ msgstr ""
 #: ../gui/compatibility.py:501
 msgctxt "File Load Compat Options"
 msgid "Compatibility mode:"
-msgstr ""
+msgstr "Yhteensopivuustila:"
 
 #: ../gui/device.py:49
 msgctxt "prefs: device's type label"
@@ -1300,7 +1298,7 @@ msgstr "Kosketusnäyttö"
 #: ../gui/device.py:93
 msgctxt "device settings: allowed usage"
 msgid "Ignore"
-msgstr ""
+msgstr "Ohita"
 
 #: ../gui/device.py:97
 msgctxt "device settings: allowed usage"
@@ -1367,7 +1365,7 @@ msgstr "Nimi"
 
 #: ../gui/dialogs.py:126
 msgid "Overwrite brush?"
-msgstr ""
+msgstr "Korvataanko sivellin?"
 
 #: ../gui/dialogs.py:134 ../gui/dialogs.py:204
 msgid "Replace"
@@ -1402,7 +1400,7 @@ msgstr ""
 
 #: ../gui/dialogs.py:196
 msgid "Overwrite brush group?"
-msgstr ""
+msgstr "Korvataanko sivellinryhmä?"
 
 #: ../gui/dialogs.py:220
 #, python-brace-format
@@ -1415,12 +1413,12 @@ msgstr ""
 
 #: ../gui/dialogs.py:326
 msgid "Import brush package?"
-msgstr ""
+msgstr "Tuodaanko sivellinpaketti?"
 
 #: ../gui/dialogs.py:357
 #, python-brace-format
 msgid "<b>Do you really want to import package “{brushpack_name}”?</b>"
-msgstr ""
+msgstr "<b>Haluatko varmasti tuoda paketin “{brushpack_name}”?</b>"
 
 #: ../gui/document.py:455
 #, python-format
@@ -1435,12 +1433,12 @@ msgstr ""
 #: ../gui/document.py:457
 #, python-format
 msgid "Restore Brush %d"
-msgstr ""
+msgstr "Palauta sivellin %d"
 
 #: ../gui/document.py:459
 #, python-format
 msgid "Save to Brush %d"
-msgstr ""
+msgstr "Tallenna siveltimeen %d"
 
 #: ../gui/document.py:557
 #, python-format
@@ -1494,7 +1492,7 @@ msgstr ""
 #, python-brace-format
 msgctxt "Statusbar message: copy result"
 msgid "Copied layer as {w}×{h} image."
-msgstr ""
+msgstr "Kopioitiin taso kuvana, jonka koko on {w}×{h}."
 
 #: ../gui/document.py:931
 msgctxt "Statusbar message: paste result"
@@ -1509,7 +1507,7 @@ msgstr ""
 #: ../gui/document.py:951
 msgctxt "Statusbar message: paste result"
 msgid "Cannot paste into this type of layer."
-msgstr ""
+msgstr "Tällaiselle tasolle ei voi liittää."
 
 #: ../gui/document.py:956
 #, python-brace-format
@@ -1578,11 +1576,11 @@ msgstr "Lopeta"
 
 #: ../gui/drawwindow.py:708
 msgid "Import brush package…"
-msgstr ""
+msgstr "Tuo sivellinpaketti…"
 
 #: ../gui/drawwindow.py:709
 msgid "MyPaint brush package (*.zip)"
-msgstr ""
+msgstr "MyPaint-sivellinpaketti (*.zip)"
 
 #. # UI string consts
 #. TRANSLATORS: Statusbar message when "Edit in External App"
@@ -1590,7 +1588,7 @@ msgstr ""
 #: ../gui/externalapp.py:40
 #, python-brace-format
 msgid "Launched {app_name} to edit layer “{layer_name}”"
-msgstr ""
+msgstr "Käynnistettiin {app_name} tason “{layer_name}” muokkaamiseksi"
 
 #. TRANSLATORS: Statusbar message shown when the app chosen for
 #. TRANSLATORS: "Edit in External App" (for a layer) failed to open.
@@ -1612,7 +1610,7 @@ msgstr ""
 #: ../gui/externalapp.py:54
 #, python-brace-format
 msgid "Updated layer “{layer_name}” with external edits"
-msgstr ""
+msgstr "Päivitettiin taso “{layer_name}” ulkoisilla muokkauksilla"
 
 #: ../gui/externalapp.py:58
 #, python-brace-format
@@ -1650,19 +1648,19 @@ msgstr "ei kuvausta"
 #, python-brace-format
 msgctxt "Document I/O: message shown while working"
 msgid "Loading {files_summary}…"
-msgstr ""
+msgstr "Ladataan {files_summary}…"
 
 #: ../gui/filehandling.py:131
 #, python-brace-format
 msgctxt "Document I/O: message shown while working"
 msgid "Importing layers from {files_summary}…"
-msgstr ""
+msgstr "Tuodaan tasoja lähteestä {files_summary}…"
 
 #: ../gui/filehandling.py:135
 #, python-brace-format
 msgctxt "Document I/O: message shown while working"
 msgid "Saving {files_summary}…"
-msgstr ""
+msgstr "Tallennetaan {files_summary}…"
 
 #: ../gui/filehandling.py:139
 #, python-brace-format
@@ -1692,7 +1690,7 @@ msgstr ""
 #, python-brace-format
 msgctxt "Document I/O: fail message"
 msgid "Could not load {files_summary}."
-msgstr ""
+msgstr "Ei voitu ladata {files_summary}."
 
 #: ../gui/filehandling.py:165
 #, fuzzy
@@ -1708,7 +1706,7 @@ msgstr ""
 #: ../gui/filehandling.py:173
 msgctxt "Document I/O: fail dialog title"
 msgid "Import Layers failed"
-msgstr ""
+msgstr "Tasojen tuonti epäonnistui"
 
 #: ../gui/filehandling.py:177
 msgctxt "Document I/O: fail dialog title"
@@ -1737,7 +1735,7 @@ msgstr ""
 #, python-brace-format
 msgctxt "Document I/O: success"
 msgid "Loaded {files_summary}."
-msgstr ""
+msgstr "Ladattiin {files_summary}."
 
 #. TRANSLATORS: formatting for {files_summary} for multiple files.
 #. TRANSLATORS: corresponding msgid for single files: "“{basename}”"
@@ -1851,7 +1849,7 @@ msgstr ""
 #: ../gui/filehandling.py:710
 msgctxt "Destructive action confirm dialog: save checkbox"
 msgid "_Save to Scraps first"
-msgstr ""
+msgstr "_Tallenna luonnoksiin ensin"
 
 #: ../gui/filehandling.py:716
 msgctxt ""
@@ -1869,12 +1867,12 @@ msgstr ""
 #: ../gui/filehandling.py:804
 msgctxt "File→New: confirm dialog: title question"
 msgid "New Canvas?"
-msgstr ""
+msgstr "Uusi kangas?"
 
 #: ../gui/filehandling.py:808
 msgctxt "File→New: confirm dialog: continue button"
 msgid "_New Canvas"
-msgstr ""
+msgstr "_Uusi kangas"
 
 #: ../gui/filehandling.py:1024
 msgctxt "File→Open: confirm dialog: title question"
@@ -1900,10 +1898,9 @@ msgid "Open Scratchpad…"
 msgstr "Luonnoslehtiö"
 
 #: ../gui/filehandling.py:1126
-#, fuzzy
 msgctxt "Layers→Import Layers: files-chooser dialog: title"
 msgid "Import Layers"
-msgstr "Tasot"
+msgstr "Tuo tasot"
 
 #: ../gui/filehandling.py:1433
 msgctxt "File→Open Recent→* confirm dialog: title"
@@ -1936,18 +1933,17 @@ msgstr ""
 #: ../gui/filehandling.py:1480
 msgctxt "File→Open Next/Prev Scrap confirm dialog: title"
 msgid "Open Next Scrap?"
-msgstr ""
+msgstr "Avataanko seuraava luonnos?"
 
 #: ../gui/filehandling.py:1488
 msgctxt "File→Open Next/Prev Scrap confirm dialog: title"
 msgid "Open Previous Scrap?"
-msgstr ""
+msgstr "Avataanko edellinen luonnos?"
 
 #: ../gui/filehandling.py:1497
-#, fuzzy
 msgctxt "File→Open Next/Prev Scrap confirm dialog: continue button"
 msgid "_Open"
-msgstr "Avaa"
+msgstr "_Avaa"
 
 #: ../gui/filehandling.py:1512
 msgctxt "File→Revert: status message: canvas has no filename yet"
@@ -2058,13 +2054,12 @@ msgid "Where the output should go"
 msgstr ""
 
 #: ../gui/fill.py:656
-#, fuzzy
 msgctxt ""
 "fill options: Target | toggle (label)\n"
 "When this option is enabled, the fill will be placed on a new\n"
 "layer above the active layer. Option resets after each fill."
 msgid "New Layer (once)"
-msgstr "Uusi Tasoryhmä"
+msgstr "Uusi taso (kerran)"
 
 #: ../gui/fill.py:661
 msgctxt "fill options: Target | New Layer (tooltip)"
@@ -2162,10 +2157,9 @@ msgid "Reset options to their defaults"
 msgstr ""
 
 #: ../gui/fill.py:1036
-#, fuzzy
 msgctxt "fill option: default option in the Source Layer dropdown"
 msgid "Selected Layer"
-msgstr "Tyhjennä Taso"
+msgstr "Valittu taso"
 
 #: ../gui/footer.py:195
 #, python-brace-format
@@ -2302,7 +2296,7 @@ msgstr ""
 #. TRANSLATORS: used on the options panel.
 #: ../gui/freehand.py:598 ../gui/inputtestwindow.py:62
 msgid "Pressure:"
-msgstr ""
+msgstr "Paine:"
 
 #. TRANSLATORS: Short alias for "Fake Barrel Rotation (for mouse)".
 #. TRANSLATORS: This is used on the options panel.
@@ -2393,7 +2387,7 @@ msgstr ""
 
 #: ../gui/inputtestwindow.py:61
 msgid "(no pressure)"
-msgstr ""
+msgstr "(ei painetta)"
 
 #: ../gui/inputtestwindow.py:64
 msgid "(no tilt)"
@@ -2424,31 +2418,31 @@ msgstr ""
 #. TRANSLATORS: Note "in the horizontal plane" - not "horizontally".
 #: ../gui/layermanip.py:47 ../lib/command.py:1047
 msgid "Move Layer"
-msgstr ""
+msgstr "Siirrä tasoa"
 
 #: ../gui/layermanip.py:50
 msgid "Move the current layer"
-msgstr ""
+msgstr "Siirrä nykyistä tasoa"
 
 #: ../gui/layerprops.py:356
 msgctxt "layer properties dialog: name entry: icon tooltip"
 msgid "Layer names cannot be empty."
-msgstr ""
+msgstr "Tasojen nimet eivät voi olla tyhjiä."
 
 #: ../gui/layerprops.py:361
 msgctxt "layer properties dialog: name entry: icon tooltip"
 msgid "Layer name is not unique."
-msgstr ""
+msgstr "Tason nimi ei ole yksilöllinen."
 
 #: ../gui/layerprops.py:377
 msgctxt "layer properties dialog: title"
 msgid "Layer Properties"
-msgstr ""
+msgstr "Tason ominaisuudet"
 
 #: ../gui/layerprops.py:381
 msgctxt "layer properties dialog: done button"
 msgid "Done"
-msgstr ""
+msgstr "Valmis"
 
 #. Visibility flag column
 #: ../gui/layers.py:406
@@ -2474,7 +2468,7 @@ msgstr ""
 #: ../gui/layers.py:966
 msgctxt "Layers: description parts: layer hidden"
 msgid "Hidden"
-msgstr ""
+msgstr "Piilotettu"
 
 #: ../gui/layers.py:971
 #, python-format
@@ -2485,7 +2479,7 @@ msgstr ""
 #: ../gui/layers.py:978
 msgctxt "Layers dockable: description parts: layer locked flag"
 msgid "Locked"
-msgstr ""
+msgstr "Lukittu"
 
 #: ../gui/layers.py:989
 msgctxt "Layers: description parts: unknown type (fallback str!)"
@@ -2499,10 +2493,10 @@ msgid ", "
 msgstr ", "
 
 #: ../gui/layers.py:1004
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgctxt "Layers dockable: markup for a layer with no description"
 msgid "{layer_name}"
-msgstr "Lisää {layer_default_name}"
+msgstr "{layer_name}"
 
 #: ../gui/layers.py:1009
 #, python-brace-format
@@ -2511,6 +2505,8 @@ msgid ""
 "<span size=\"smaller\">{layer_name}\n"
 "<span size=\"smaller\">{layer_description}</span></span>"
 msgstr ""
+"<span size=\"smaller\">{layer_name}\n"
+"<span size=\"smaller\">{layer_description}</span></span>"
 
 #: ../gui/layerswindow.py:95
 msgid "Layers"
@@ -2525,7 +2521,7 @@ msgstr ""
 #: ../gui/layerswindow.py:102
 #, python-format
 msgid "Layer opacity: %d%%"
-msgstr ""
+msgstr "Tason peittokyky: %d%%"
 
 #. TRANSLATORS: label for the opacity slider (text)
 #. TRANSLATORS: note that "%%" turns into "%"
@@ -2547,25 +2543,24 @@ msgstr ""
 
 #: ../gui/layerswindow.py:156
 msgid "Layer"
-msgstr ""
+msgstr "Taso"
 
 #: ../gui/layervis.py:53
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgctxt "view controls: dropdown: item markup"
 msgid "<i>{builtin_view_name}</i>"
-msgstr "<b>{brush_name}</b>"
+msgstr "<i>{builtin_view_name}</i>"
 
 #: ../gui/layervis.py:125
 #, python-brace-format
 msgctxt "view controls: dropdown: item markup"
 msgid "{user_chosen_view_name}"
-msgstr ""
+msgstr "{user_chosen_view_name}"
 
 #: ../gui/layervis.py:187
-#, fuzzy
 msgctxt "view controls: rename view dialog"
 msgid "Rename View"
-msgstr "Nimeä uudelleen"
+msgstr "Nimeä näkymä uudelleen"
 
 #: ../gui/linemode.py:41
 msgid "Entrance Pressure"
@@ -2823,7 +2818,7 @@ msgstr ""
 #. TRANSLATORS: title of panel showing an overview of the whole canvas
 #: ../gui/previewwindow.py:201
 msgid "Preview"
-msgstr ""
+msgstr "Esikatselu"
 
 #: ../gui/previewwindow.py:203
 msgid "Show preview of the whole drawing area"
@@ -2853,7 +2848,7 @@ msgstr ""
 
 #: ../gui/spinbox.py:102
 msgid "(Nothing to show)"
-msgstr ""
+msgstr "(Ei mitään näytettävää)"
 
 #: ../gui/symmetry.py:84
 msgctxt "symmetry axis edit mode: instructions shown in statusbar"
@@ -2945,7 +2940,7 @@ msgstr ""
 
 #: ../gui/toolbar.py:29
 msgid "Scraps switcher"
-msgstr ""
+msgstr "Luonnosten vaihdin"
 
 #: ../gui/toolbar.py:30
 msgid "Undo and Redo"
@@ -3011,7 +3006,7 @@ msgstr ""
 
 #: ../gui/viewmanip.py:120
 msgid "Rotate View"
-msgstr ""
+msgstr "Käännä näkymää"
 
 #: ../gui/viewmanip.py:123
 msgid "Rotate the canvas view"
@@ -3052,14 +3047,14 @@ msgstr "Nimeä ryhmä uudelleen"
 
 #: ../lib/command.py:676
 msgid "Clear Layer"
-msgstr ""
+msgstr "Tyhjennä taso"
 
 #. This is used by Paste layer as well as when loading from a PNG
 #. file. However in the latter case, the undo stack is reset
 #. immediately afterward.
 #: ../lib/command.py:700
 msgid "Paste Layer"
-msgstr ""
+msgstr "Liitä taso"
 
 #: ../lib/command.py:723
 msgid "New Layer from Visible"
@@ -3078,9 +3073,8 @@ msgid "Normalize Layer Mode"
 msgstr ""
 
 #: ../lib/command.py:941
-#, fuzzy
 msgid "Import Layers"
-msgstr "Tasot"
+msgstr "Tuo tasot"
 
 #: ../lib/command.py:943
 #, python-brace-format
@@ -3089,23 +3083,23 @@ msgstr "Lisää {layer_default_name}"
 
 #: ../lib/command.py:967
 msgid "Remove Layer"
-msgstr ""
+msgstr "Poista taso"
 
 #: ../lib/command.py:1014
 msgid "Select Layer"
-msgstr ""
+msgstr "Valitse taso"
 
 #: ../lib/command.py:1144
 msgid "Duplicate Layer"
-msgstr ""
+msgstr "Kahdenna taso"
 
 #: ../lib/command.py:1168
 msgid "Move Layer Up"
-msgstr ""
+msgstr "Siirrä taso ylös"
 
 #: ../lib/command.py:1182
 msgid "Move Layer Down"
-msgstr ""
+msgstr "Siirrä taso alas"
 
 #: ../lib/command.py:1209
 msgid "Move Layer in Stack"
@@ -3113,28 +3107,28 @@ msgstr ""
 
 #: ../lib/command.py:1328
 msgid "Rename Layer"
-msgstr ""
+msgstr "Nimeä taso uudelleen"
 
 #: ../lib/command.py:1386
 msgid "Make Layer Visible"
-msgstr ""
+msgstr "Tee tasosta näkyvä"
 
 #: ../lib/command.py:1388
 msgid "Make Layer Invisible"
-msgstr ""
+msgstr "Tee tasosta näkymätön"
 
 #: ../lib/command.py:1426
 msgid "Lock Layer"
-msgstr ""
+msgstr "Lukitse taso"
 
 #: ../lib/command.py:1428
 msgid "Unlock Layer"
-msgstr ""
+msgstr "Poista tason lukitus"
 
 #: ../lib/command.py:1446
 #, python-format
 msgid "Set Layer Opacity: %0.1f%%"
-msgstr ""
+msgstr "Aseta tason peittokyky: %0.1f%%"
 
 #: ../lib/command.py:1485
 msgid "Unknown Mode"
@@ -3143,7 +3137,7 @@ msgstr ""
 #: ../lib/command.py:1486
 #, python-format
 msgid "Set Layer Mode: %s"
-msgstr ""
+msgstr "Aseta tason tila: %s"
 
 #: ../lib/command.py:1510
 msgid "Enable Frame"
@@ -3159,7 +3153,7 @@ msgstr ""
 
 #: ../lib/command.py:1559
 msgid "Edit Layer Externally"
-msgstr ""
+msgstr "Muokkaa tasoa ulkoisesti"
 
 #: ../lib/document.py:74
 #, python-brace-format
@@ -3269,7 +3263,7 @@ msgstr ""
 #: ../lib/document.py:1590
 msgctxt "Document IO: group name for Import Layers"
 msgid "Imported layers"
-msgstr ""
+msgstr "Tuodut tasot"
 
 #: ../lib/document.py:1757
 #, python-brace-format
@@ -3352,25 +3346,24 @@ msgstr ""
 #: ../lib/layer/core.py:66 ../lib/layer/data.py:1309
 msgctxt "layer default names"
 msgid "Layer"
-msgstr ""
+msgstr "Taso"
 
 #. TRANSLATORS: Short default name for vector (SVG/Inkscape) layers
 #: ../lib/layer/data.py:1161
 msgctxt "layer default names"
 msgid "Vectors"
-msgstr ""
+msgstr "Vektorit"
 
 #: ../lib/layer/data.py:1166
-#, fuzzy
 msgctxt "layer type descriptions"
 msgid "Vector Layer"
-msgstr "Tyhjennä Taso"
+msgstr "Vektoritaso"
 
 #. TRANSLATORS: Short default name for renderable fallback layers
 #: ../lib/layer/data.py:1237
 msgctxt "layer default names"
 msgid "Bitmap"
-msgstr ""
+msgstr "Bittikartta"
 
 #: ../lib/layer/data.py:1242
 msgctxt "layer type descriptions"
@@ -3390,34 +3383,32 @@ msgid "Unknown Data"
 msgstr "Tuntematon Toiminto"
 
 #: ../lib/layer/data.py:1314
-#, fuzzy
 msgctxt "layer type descriptions"
 msgid "Painting Layer"
-msgstr "Uusi maalaustaso"
+msgstr "Maalaustaso"
 
 #. TRANSLATORS: Short default name for layer groups.
 #: ../lib/layer/group.py:67
 msgctxt "layer default names"
 msgid "Group"
-msgstr ""
+msgstr "Ryhmä"
 
 #: ../lib/layer/group.py:72
-#, fuzzy
 msgctxt "layer type descriptions"
 msgid "Layer Group"
-msgstr "Uusi Tasoryhmä"
+msgstr "Tasoryhmä"
 
 #. TRANSLATORS: Short default name for temporary placeholder layers.
 #. TRANSLATORS: (The user should never see this except in error cases)
 #: ../lib/layer/tree.py:70
 msgctxt "layer default names"
 msgid "Placeholder"
-msgstr ""
+msgstr "Paikanpitäjä"
 
 #: ../lib/layer/tree.py:109
 msgctxt "layer default names"
 msgid "Root"
-msgstr ""
+msgstr "Juuri"
 
 #: ../lib/layer/tree.py:2055 ../lib/layer/tree.py:2121
 msgctxt "layer default names: joiner punctuation for merged layers"
@@ -3430,41 +3421,40 @@ msgid "Common"
 msgstr ""
 
 #: ../lib/layervis.py:44
-#, fuzzy
 msgctxt "layer visibility sets: default name for a user-managed view"
 msgid "View"
-msgstr "Näytä"
+msgstr "Näkymä"
 
 #: ../lib/layervis.py:49
 msgctxt "layer visibility sets: text shown when no user-managed view is active"
 msgid "No active view"
-msgstr ""
+msgstr "Ei aktiivista näkymää"
 
 #: ../lib/layervis.py:579
 msgctxt "layer views: commands: add"
 msgid "Add Layer View"
-msgstr ""
+msgstr "Lisää tasonäkymä"
 
 #: ../lib/layervis.py:604 ../lib/layervis.py:633
 msgctxt "layer views: commands: remove"
 msgid "Remove Layer View"
-msgstr ""
+msgstr "Poista tasonäkymä"
 
 #: ../lib/layervis.py:663
 #, python-brace-format
 msgctxt "layer views: commands: activate"
 msgid "Activate Layer View “{name}”"
-msgstr ""
+msgstr "Aktivoi tasonäkymä “{name}”"
 
 #: ../lib/layervis.py:692
 msgctxt "layer views: commands: set active view's lock flag"
 msgid "Lock Layer View"
-msgstr ""
+msgstr "Lukitse tasonäkymä"
 
 #: ../lib/layervis.py:697
 msgctxt "layer views: commands: set active view's lock flag"
 msgid "Unlock Layer View"
-msgstr ""
+msgstr "Avaa tasonäkymän lukitus"
 
 #: ../lib/modes.py:47
 msgid "Pass-through"
@@ -3743,7 +3733,7 @@ msgstr ""
 #: ../gui/autorecover.glade:38
 msgctxt "Autosave Recovery dialog|"
 msgid "_Look for backups at startup"
-msgstr ""
+msgstr "_Etsi varmuuskopioita käynnistyksen yhteydessä"
 
 #: ../gui/autorecover.glade:42
 msgctxt "Autosave Recovery dialog|Show Dialog at Startup checkbutton|"
@@ -3757,21 +3747,20 @@ msgstr ""
 
 #. Deletes the selected autosave backup file.
 #: ../gui/autorecover.glade:60
-#, fuzzy
 msgctxt "Autosave Recovery dialog|"
 msgid "_Delete…"
-msgstr "Poista"
+msgstr "_Poista…"
 
 #: ../gui/autorecover.glade:66
 msgctxt "Autosave Recovery dialog|Delete button|"
 msgid "Delete this backup from the disk."
-msgstr ""
+msgstr "Poista tämä varmuuskopio levyltä."
 
 #. Recover in the sense or retrieval or salvage from a backup file. The user is asked to save the retrieved file immediately afterwards, hence the ellipsis.
 #: ../gui/autorecover.glade:78
 msgctxt "Autosave Recovery dialog|"
 msgid "_Recover & Save…"
-msgstr ""
+msgstr "_Palauta & tallenna…"
 
 #: ../gui/autorecover.glade:84
 msgctxt "Autosave Recovery dialog|Recover button|"
@@ -3782,7 +3771,7 @@ msgstr ""
 #: ../gui/autorecover.glade:95
 msgctxt "Autosave Recovery dialog|"
 msgid "Decide _Later"
-msgstr ""
+msgstr "P_äätä myöhemmin"
 
 #: ../gui/autorecover.glade:101
 msgctxt "Autosave Recovery dialog|Cancel button|"
@@ -3817,7 +3806,7 @@ msgstr ""
 
 #: ../gui/brusheditor.glade:116
 msgid "Save these settings to the brush"
-msgstr ""
+msgstr "Tallenna nämä muutokset siveltimeen"
 
 #: ../gui/brusheditor.glade:132
 msgid "Edit Icon"
@@ -3835,7 +3824,7 @@ msgstr "Poista"
 
 #: ../gui/brusheditor.glade:156
 msgid "Delete this brush from the disk"
-msgstr ""
+msgstr "Poista tämä sivellin levyltä"
 
 #: ../gui/brusheditor.glade:170
 msgid "Copy to New"
@@ -3847,7 +3836,7 @@ msgstr ""
 
 #: ../gui/brusheditor.glade:194
 msgid "Rename this brush"
-msgstr ""
+msgstr "Nimeä tämä sivellin uudelleen"
 
 #: ../gui/brusheditor.glade:239
 msgid "Brush Setting"
@@ -3867,13 +3856,13 @@ msgstr "Kuvaus:"
 #: ../gui/brusheditor.glade:355
 msgctxt "brush editor|metadata settings|labels for widgets|tooltips|"
 msgid "Brush developer's notes"
-msgstr ""
+msgstr "Siveltimen kehittäjän huomautukset"
 
 #. Notes for developers
 #: ../gui/brusheditor.glade:358
 msgctxt "brush editor|metadata settings|labels|"
 msgid "Notes:"
-msgstr ""
+msgstr "Huomautukset:"
 
 #: ../gui/brusheditor.glade:420
 msgid ""
@@ -4039,18 +4028,17 @@ msgstr ""
 #: ../gui/layervis.glade:15
 msgctxt "Layers window: view list controls: tooltips"
 msgid "The currently active view."
-msgstr ""
+msgstr "Aktiivisena oleva näkymä."
 
 #: ../gui/layervis.glade:36
 msgctxt "Layers window: view list controls: tooltips"
 msgid "Rename the active view."
-msgstr ""
+msgstr "Nimeä uudelleen aktiivinen näkymä."
 
 #: ../gui/layervis.glade:57
-#, fuzzy
 msgctxt "Layers window: view list controls: tooltips"
 msgid "Remove the active view."
-msgstr "Poista tämänhetkinen näppäinkomento"
+msgstr "Poista aktiivinen näkymä."
 
 #: ../gui/layervis.glade:78
 msgctxt "Layers window: view list controls: tooltips"
@@ -4156,13 +4144,13 @@ msgstr ""
 #: ../gui/preferenceswindow.glade:145
 msgctxt "Prefs Dialog|Pen Input|Input Device Settings|Pressure Mapping|"
 msgid "Input Pressure"
-msgstr ""
+msgstr "Syötteen paine"
 
 #. Graph y-axis label
 #: ../gui/preferenceswindow.glade:159
 msgctxt "Prefs Dialog|Pen Input|Input Device Settings|Pressure Mapping|"
 msgid "Brush Pressure"
-msgstr ""
+msgstr "Siveltimen paine"
 
 #. Graph label, range (0...1)
 #: ../gui/preferenceswindow.glade:174 ../gui/preferenceswindow.glade:202
@@ -4179,13 +4167,13 @@ msgstr "1.0"
 #: ../gui/preferenceswindow.glade:251
 msgctxt "Prefs Dialog|Pen Input|"
 msgid "<b>Global Pressure Mapping</b>"
-msgstr ""
+msgstr "<b>Yleinen paineen määritys</b>"
 
 #. Tab label in preferences dialog
 #: ../gui/preferenceswindow.glade:261
 msgctxt "Prefs Dialog|"
 msgid "Pressure"
-msgstr ""
+msgstr "Paine"
 
 #: ../gui/preferenceswindow.glade:302
 msgctxt "Prefs Dialog|Devices|"
@@ -4197,7 +4185,7 @@ msgstr ""
 #: ../gui/preferenceswindow.glade:324
 msgctxt "Prefs Dialog|Button|"
 msgid "<b>Device Usage</b>"
-msgstr ""
+msgstr "<b>Laitteen käyttö</b>"
 
 #: ../gui/preferenceswindow.glade:337
 msgid "Devices"
@@ -4219,7 +4207,7 @@ msgstr ""
 #: ../gui/preferenceswindow.glade:414
 msgctxt "Prefs Dialog|"
 msgid "Buttons"
-msgstr ""
+msgstr "Painikkeet"
 
 #. Label for a checkbox in the keyboard mappings preferences.
 #. A fallback binding is a static built-in key binding that is used
@@ -4242,12 +4230,12 @@ msgstr ""
 
 #: ../gui/preferenceswindow.glade:489
 msgid "Keys"
-msgstr ""
+msgstr "Näppäimet"
 
 #: ../gui/preferenceswindow.glade:509
 msgctxt "Prefs Dialog|Load & Save|Saving|"
 msgid "Default file format:"
-msgstr ""
+msgstr "Tiedoston oletusmuoto:"
 
 #: ../gui/preferenceswindow.glade:524
 msgctxt "Prefs Dialog|Load & Save|Saving|"
@@ -4257,17 +4245,17 @@ msgstr ""
 #: ../gui/preferenceswindow.glade:575
 msgctxt "Prefs Dialog|Load & Save|"
 msgid "<b>Saving</b>"
-msgstr ""
+msgstr "<b>Tallentaminen</b>"
 
 #: ../gui/preferenceswindow.glade:592
 msgctxt "Prefs Dialog|Load & Save|"
 msgid "<b>Color Management</b>"
-msgstr ""
+msgstr "<b>Värihallinta</b>"
 
 #: ../gui/preferenceswindow.glade:608
 msgctxt "Prefs Dialog|Load & Save|Color Management|"
 msgid "Color space conversions:"
-msgstr ""
+msgstr "Väriavaruuden muunnokset:"
 
 #: ../gui/preferenceswindow.glade:626
 msgctxt "Prefs Dialog|Load & Save|Color Management|"
@@ -4305,19 +4293,19 @@ msgstr ""
 #: ../gui/preferenceswindow.glade:680
 msgctxt "Prefs Dialog|Load & Save|"
 msgid "<b>Automated Backups</b>"
-msgstr ""
+msgstr "<b>Automaattiset varmuuskopiot</b>"
 
 #: ../gui/preferenceswindow.glade:698
 msgctxt "Prefs Dialog|Load & Save|Automated Backups|switch label"
 msgid "Back up unsaved work:"
-msgstr ""
+msgstr "Varmuuskopioi tallentamaton työ:"
 
 #. In seconds. Lowest value is 5, highest is 300 (5 minutes). Only matters when enabled.
 #: ../gui/preferenceswindow.glade:733
 msgctxt ""
 "Prefs Dialog|Load & Save|Automated Backups|interval spinbox units suffix"
 msgid "seconds of inactivity"
-msgstr ""
+msgstr "sekuntia tekemättä mitään"
 
 #: ../gui/preferenceswindow.glade:746
 msgctxt "Prefs Dialog|Load & Save|Automated Backups|switch tooltip"
@@ -4330,13 +4318,13 @@ msgstr ""
 #: ../gui/preferenceswindow.glade:768
 msgctxt "Prefs Dialog|Load & Save|Automated Backups|interval label"
 msgid "Time between backups:"
-msgstr ""
+msgstr "Aikaa varmuuskopioiden välillä:"
 
 #. Tab label in preferences dialog
 #: ../gui/preferenceswindow.glade:786
 msgctxt "Prefs Dialog|"
 msgid "Load & Save"
-msgstr ""
+msgstr "Lataaminen ja tallentaminen"
 
 #: ../gui/preferenceswindow.glade:807
 msgctxt "Prefs Dialog|View|"
@@ -4350,12 +4338,12 @@ msgstr ""
 #: ../gui/preferenceswindow.glade:862
 msgctxt "Prefs Dialog|View|"
 msgid "<b>Interface</b>"
-msgstr ""
+msgstr "<b>Käyttöliittymä</b>"
 
 #: ../gui/preferenceswindow.glade:879
 msgctxt "Prefs Dialog|View|Interface|"
 msgid "Toolbar icon size:"
-msgstr ""
+msgstr "Työkalupalkin kuvakkeiden koko:"
 
 #: ../gui/preferenceswindow.glade:895
 msgctxt "Prefs Dialog|View|Interface|"
@@ -4386,7 +4374,7 @@ msgstr ""
 #: ../gui/preferenceswindow.glade:968
 msgctxt "Prefs Dialog|View|Interface|Icon size|"
 msgid "Large (requires recent GTK3)"
-msgstr ""
+msgstr "Suuri (vaatii uudehkon GTK3:n)"
 
 #: ../gui/preferenceswindow.glade:985
 msgctxt "Prefs Dialog|View|Interface|Icon size|"
@@ -4440,7 +4428,6 @@ msgid "Hide cursor while painting"
 msgstr ""
 
 #: ../gui/preferenceswindow.glade:1134
-#, fuzzy
 msgctxt ""
 "Prefs Dialog|View|Interface|Blink layers on creation/selection|checkbox label"
 msgid "Enabled"
@@ -4463,18 +4450,18 @@ msgstr ""
 #: ../gui/preferenceswindow.glade:1193
 msgctxt "Prefs Dialog|View|Interface|"
 msgid "Language:"
-msgstr ""
+msgstr "Kieli:"
 
 #: ../gui/preferenceswindow.glade:1208
 msgctxt "Prefs Dialog|View|Interface|"
 msgid "(needs restart)"
-msgstr ""
+msgstr "(vaatii uudelleenkäynnistyksen)"
 
 #. Tab label in preferences dialog
 #: ../gui/preferenceswindow.glade:1225
 msgctxt "Prefs Dialog|"
 msgid "View"
-msgstr ""
+msgstr "Näkymä"
 
 #: ../gui/preferenceswindow.glade:1257
 msgctxt "Prefs Dialog|Color|Color Wheel|Primaries|"
@@ -4487,7 +4474,7 @@ msgstr ""
 #: ../gui/preferenceswindow.glade:1259
 msgctxt "Prefs Dialog|Color|Color Wheel|"
 msgid "Primaries are:"
-msgstr ""
+msgstr "Päävärit ovat:"
 
 #: ../gui/preferenceswindow.glade:1276
 msgctxt "Prefs Dialog|Color|Color Wheel|Primaries|"
@@ -4555,7 +4542,7 @@ msgstr ""
 #: ../gui/preferenceswindow.glade:1354
 msgctxt "Prefs Dialog|Color|"
 msgid "<b>Color Wheel</b>"
-msgstr ""
+msgstr "<b>Väripyörä</b>"
 
 #. Tab label in preferences dialog
 #: ../gui/preferenceswindow.glade:1367
@@ -4566,24 +4553,23 @@ msgstr "Väri"
 #: ../gui/preferenceswindow.glade:1400
 msgctxt "Prefs Dialog|Compatibility"
 msgid "Default Compatibility Mode:"
-msgstr ""
+msgstr "Oletusarvoinen yhteensopivuustila:"
 
 #: ../gui/preferenceswindow.glade:1425
 msgctxt "Prefs Dialog|Compatibility"
 msgid "<b>1.x Settings</b>"
-msgstr ""
+msgstr "<b>1.x-asetukset</b>"
 
 #. Make sure to be consistent w. other occurences of 2.x
 #: ../gui/preferenceswindow.glade:1439
 msgctxt "Prefs Dialog|Compatibility"
 msgid "<b>2.x Settings</b>"
-msgstr ""
+msgstr "<b>2.x-asetukset</b>"
 
 #: ../gui/preferenceswindow.glade:1477 ../gui/preferenceswindow.glade:1551
-#, fuzzy
 msgctxt "Prefs Dialog|Compatibility"
 msgid "Default New Layer Type:"
-msgstr "Tyhjennä Taso"
+msgstr "Oletusarvoinen uusi tasotyyppi:"
 
 #: ../gui/preferenceswindow.glade:1523 ../gui/preferenceswindow.glade:1537
 #, fuzzy
@@ -4616,7 +4602,7 @@ msgstr ""
 #: ../gui/preferenceswindow.glade:1682
 msgctxt "Prefs Dialog|Compatibility"
 msgid "File compatibility warnings:"
-msgstr ""
+msgstr "Tiedostojen yhteensopivuusvaroitukset:"
 
 #: ../gui/preferenceswindow.glade:1694
 msgctxt "Prefs Dialog|Compatibility"
@@ -4640,20 +4626,19 @@ msgstr ""
 
 #. This label indicates a subsection of the compatibility settings related to loading files.
 #: ../gui/preferenceswindow.glade:1739
-#, fuzzy
 msgctxt "Prefs|Compatibility"
 msgid "<b>File loading</b>"
-msgstr "<b>MyPaint</b>"
+msgstr "<b>Tiedoston lataaminen</b>"
 
 #: ../gui/preferenceswindow.glade:1759
 msgid "<b>Compatibility settings</b>"
-msgstr ""
+msgstr "<b>Yhteensopivuuden asetukset</b>"
 
 #. Tab label in preferences dialog
 #: ../gui/preferenceswindow.glade:1775
 msgctxt "Prefs Dialog|"
 msgid "Compatibility"
-msgstr ""
+msgstr "Yhteensopivuus"
 
 #: ../gui/preferenceswindow.glade:1793
 msgctxt "Prefs Dialog|Pen Input|Mode|"
@@ -4683,7 +4668,7 @@ msgstr "Uusi"
 #: ../gui/resources.xml:65
 msgctxt "Toolbar (tooltips), Accel Editor (descriptions)"
 msgid "Start with a new blank canvas."
-msgstr ""
+msgstr "Aloita uudella tyhjällä kankaalla."
 
 #: ../gui/resources.xml:73
 msgctxt "Menu→File (labels), Accel Editor (labels)"
@@ -4698,7 +4683,7 @@ msgstr "Avaa"
 #: ../gui/resources.xml:75
 msgctxt "Toolbar (tooltips), Accel Editor (descriptions)"
 msgid "Load a file to work on."
-msgstr ""
+msgstr "Lataa tiedosto työstettäväksi."
 
 #: ../gui/resources.xml:82
 msgctxt "Menu→File (labels), Accel Editor (labels)"
@@ -4708,7 +4693,7 @@ msgstr ""
 #: ../gui/resources.xml:83
 msgctxt "Accel Editor (descriptions)"
 msgid "Load the file you saved most recently."
-msgstr ""
+msgstr "Lataa viimeksi tallentamasi tiedosto."
 
 #: ../gui/resources.xml:90
 msgctxt "Menu→File (labels)"
@@ -4728,12 +4713,12 @@ msgstr ""
 #: ../gui/resources.xml:111
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "Import Layers…"
-msgstr ""
+msgstr "Tuo tasoja…"
 
 #: ../gui/resources.xml:112
 msgctxt "Accel Editor (descriptions)"
 msgid "Import layers from one or more files."
-msgstr ""
+msgstr "Tuo tasoja yhdestä tai useammasta tiedostosta."
 
 #: ../gui/resources.xml:120
 msgctxt "Menu→File (labels), Accel Editor (labels)"
@@ -4743,7 +4728,7 @@ msgstr "Tallenna"
 #: ../gui/resources.xml:121
 msgctxt "Accel Editor (descriptions)"
 msgid "Save your work to a file."
-msgstr ""
+msgstr "Tallenna työsi tiedostoon."
 
 #: ../gui/resources.xml:129
 msgctxt "Menu→File (labels), Accel Editor (labels)"
@@ -4767,7 +4752,7 @@ msgstr ""
 #: ../gui/resources.xml:147
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "Save As Scrap"
-msgstr ""
+msgstr "Tallenna luonnoksena"
 
 #: ../gui/resources.xml:148
 msgctxt "Accel Editor (descriptions)"
@@ -4777,7 +4762,7 @@ msgstr ""
 #: ../gui/resources.xml:156
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "Open Previous Scrap"
-msgstr ""
+msgstr "Avaa edellinen luonnos"
 
 #: ../gui/resources.xml:157
 msgctxt "Accel Editor (descriptions)"
@@ -4787,7 +4772,7 @@ msgstr ""
 #: ../gui/resources.xml:165
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "Open Next Scrap"
-msgstr ""
+msgstr "Avaa seuraava luonnos"
 
 #: ../gui/resources.xml:166
 msgctxt "Accel Editor (descriptions)"
@@ -4797,7 +4782,7 @@ msgstr ""
 #: ../gui/resources.xml:174
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "Recover File from an Automated Backup…"
-msgstr ""
+msgstr "Palauta tiedosto automaattisesta varmuuskopiosta…"
 
 #: ../gui/resources.xml:175
 msgctxt "Accel Editor (descriptions)"
@@ -4807,22 +4792,22 @@ msgstr ""
 #: ../gui/resources.xml:190
 msgctxt "Menu→Brush (label)"
 msgid "Brush Groups"
-msgstr ""
+msgstr "Sivellinryhmät"
 
 #: ../gui/resources.xml:191
 msgctxt "Toolbar (short labels)"
 msgid "Brushes"
-msgstr ""
+msgstr "Siveltimet"
 
 #: ../gui/resources.xml:192
 msgctxt "Toolbar (tooltips)"
 msgid "List of brush groups."
-msgstr ""
+msgstr "Lista sivellinryhmistä."
 
 #: ../gui/resources.xml:199
 msgctxt "Toolbar (label)"
 msgid "Color Adjusters"
-msgstr ""
+msgstr "Värisäätimet"
 
 #: ../gui/resources.xml:200
 msgctxt "Toolbar (short labels)"
@@ -4837,7 +4822,7 @@ msgstr ""
 #: ../gui/resources.xml:208
 msgctxt "Menu→Layer→Properties (label)"
 msgid "Mode"
-msgstr ""
+msgstr "Tila"
 
 #: ../gui/resources.xml:209
 msgctxt "Toolbar (short labels)"
@@ -4892,7 +4877,7 @@ msgstr ""
 #: ../gui/resources.xml:271
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
 msgid "Increase Brush Size"
-msgstr ""
+msgstr "Suurenna siveltimen kokoa"
 
 #: ../gui/resources.xml:272
 msgctxt "Accel Editor (descriptions)"
@@ -4902,7 +4887,7 @@ msgstr ""
 #: ../gui/resources.xml:279
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
 msgid "Decrease Brush Size"
-msgstr ""
+msgstr "Pienennä siveltimen kokoa"
 
 #: ../gui/resources.xml:280
 msgctxt "Accel Editor (descriptions)"
@@ -4912,7 +4897,7 @@ msgstr ""
 #: ../gui/resources.xml:288
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
 msgid "Increase Brush Opacity"
-msgstr ""
+msgstr "Suurenna siveltimen peittokykyä"
 
 #: ../gui/resources.xml:289
 msgctxt "Accel Editor (descriptions)"
@@ -4922,7 +4907,7 @@ msgstr ""
 #: ../gui/resources.xml:296
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
 msgid "Decrease Brush Opacity"
-msgstr ""
+msgstr "Pienennä siveltimen peittokykyä"
 
 #: ../gui/resources.xml:297
 msgctxt "Accel Editor (descriptions)"
@@ -4992,7 +4977,7 @@ msgstr ""
 #: ../gui/resources.xml:359
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
 msgid "Reload Brush Settings"
-msgstr ""
+msgstr "Lataa uudelleen siveltimen asetukset"
 
 #: ../gui/resources.xml:360
 msgctxt "Accel Editor (descriptions)"
@@ -5040,7 +5025,7 @@ msgstr "Tyhjennä taso"
 #: ../gui/resources.xml:402
 msgctxt "Accel Editor (descriptions)"
 msgid "Clear the active layer’s content."
-msgstr ""
+msgstr "Tyhjennä aktiivisen tason sisältö."
 
 #: ../gui/resources.xml:410
 msgctxt "Menu→Layer (labels)"
@@ -5100,37 +5085,37 @@ msgstr "Uusi Tasoryhmä"
 #: ../gui/resources.xml:452
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Copy Layer to Clipboard"
-msgstr ""
+msgstr "Kopioi taso leikepöydälle"
 
 #: ../gui/resources.xml:453
 msgctxt "Accel Editor (descriptions)"
 msgid "Copy the current layer’s contents to the clipboard."
-msgstr ""
+msgstr "Kopioi nykyisen tason sisältö leikepöydälle."
 
 #: ../gui/resources.xml:461
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Paste Layer from Clipboard"
-msgstr ""
+msgstr "Liitä taso leikepöydältä"
 
 #: ../gui/resources.xml:462
 msgctxt "Accel Editor (descriptions)"
 msgid "Replaces the current layer with the clipboard’s contents."
-msgstr ""
+msgstr "Korvaa nykyinen taso leikepöydän sisällöllä."
 
 #: ../gui/resources.xml:469
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Edit Layer in External App…"
-msgstr ""
+msgstr "Muokkaa tasoa erillisessä sovelluksessa…"
 
 #: ../gui/resources.xml:470
 msgctxt "Accel Editor (descriptions)"
 msgid "Edit the active layer in an external application."
-msgstr ""
+msgstr "Muokkaa aktiivista tasoa erillisessä sovelluksessa."
 
 #: ../gui/resources.xml:477
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Update Layer with External Edits"
-msgstr ""
+msgstr "Päivitä taso ulkoisilla muokkauksilla"
 
 #: ../gui/resources.xml:478
 msgctxt "Accel Editor (descriptions)"
@@ -5150,7 +5135,7 @@ msgstr ""
 #: ../gui/resources.xml:493
 msgctxt "Menu→Layer→Go to Layer (labels), Accel Editor (labels)"
 msgid "Go to Layer Above"
-msgstr ""
+msgstr "Siirry yllä olevalle tasolle"
 
 #: ../gui/resources.xml:494
 msgctxt "Accel Editor (descriptions)"
@@ -5160,7 +5145,7 @@ msgstr ""
 #: ../gui/resources.xml:502
 msgctxt "Menu→Layer→Go to Layer (labels), Accel Editor (labels)"
 msgid "Go to Layer Below"
-msgstr ""
+msgstr "Siirry alla olevalle tasolle"
 
 #: ../gui/resources.xml:503
 msgctxt "Accel Editor (descriptions)"
@@ -5180,7 +5165,7 @@ msgstr ""
 #: ../gui/resources.xml:520
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "New Vector Layer…"
-msgstr ""
+msgstr "Uusi vektoritaso…"
 
 #: ../gui/resources.xml:521
 msgctxt "Accel Editor (descriptions)"
@@ -5200,7 +5185,7 @@ msgstr ""
 #: ../gui/resources.xml:536
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "New Painting Layer Below"
-msgstr ""
+msgstr "Uusi maalaustaso alle"
 
 #: ../gui/resources.xml:537
 msgctxt "Accel Editor (descriptions)"
@@ -5210,7 +5195,7 @@ msgstr ""
 #: ../gui/resources.xml:544
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "New Vector Layer Below…"
-msgstr ""
+msgstr "Uusi vektoritaso alle…"
 
 #: ../gui/resources.xml:545
 msgctxt "Accel Editor (descriptions)"
@@ -5220,7 +5205,7 @@ msgstr ""
 #: ../gui/resources.xml:551
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "New Layer Group Below"
-msgstr ""
+msgstr "Uusi tasoryhmä alle"
 
 #: ../gui/resources.xml:552
 msgctxt "Accel Editor (descriptions)"
@@ -5230,7 +5215,7 @@ msgstr ""
 #: ../gui/resources.xml:559
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Merge Layer Down"
-msgstr ""
+msgstr "Yhdistä taso alle"
 
 #: ../gui/resources.xml:560
 msgctxt "Accel Editor (descriptions)"
@@ -5240,7 +5225,7 @@ msgstr ""
 #: ../gui/resources.xml:567
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Merge Visible Layers"
-msgstr ""
+msgstr "Yhdistä näkyvissä olevat tasot"
 
 #: ../gui/resources.xml:568
 msgctxt "Accel Editor (descriptions)"
@@ -5250,7 +5235,7 @@ msgstr ""
 #: ../gui/resources.xml:575
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "New Layer from Visible"
-msgstr ""
+msgstr "Uusi taso näkyvästä"
 
 #: ../gui/resources.xml:576
 msgctxt "Accel Editor (descriptions)"
@@ -5270,7 +5255,7 @@ msgstr ""
 #: ../gui/resources.xml:591
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Convert to Normal Painting Layer"
-msgstr ""
+msgstr "Muunna normaaliksi maalaustasoksi"
 
 #: ../gui/resources.xml:592
 msgctxt "Accel Editor (descriptions)"
@@ -5302,7 +5287,7 @@ msgstr ""
 #: ../gui/resources.xml:614
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Raise Layer"
-msgstr ""
+msgstr "Korota tasoa"
 
 #: ../gui/resources.xml:615
 msgctxt "Accel Editor (descriptions)"
@@ -5312,7 +5297,7 @@ msgstr ""
 #: ../gui/resources.xml:623
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Lower Layer"
-msgstr ""
+msgstr "Madalla tasoa"
 
 #: ../gui/resources.xml:624
 msgctxt "Accel Editor (descriptions)"
@@ -5322,7 +5307,7 @@ msgstr ""
 #: ../gui/resources.xml:633
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Duplicate Layer"
-msgstr ""
+msgstr "Kahdenna taso"
 
 #: ../gui/resources.xml:634
 msgctxt "Accel Editor (descriptions)"
@@ -5332,7 +5317,7 @@ msgstr ""
 #: ../gui/resources.xml:642
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Layer Properties…"
-msgstr ""
+msgstr "Tason ominaisuudet…"
 
 #: ../gui/resources.xml:643
 msgctxt "Accel Editor (descriptions)"
@@ -5343,7 +5328,7 @@ msgstr ""
 #: ../gui/resources.xml:650
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Layer Locked"
-msgstr ""
+msgstr "Taso lukittu"
 
 #: ../gui/resources.xml:651
 msgctxt "Accel Editor (descriptions)"
@@ -5354,7 +5339,7 @@ msgstr ""
 #: ../gui/resources.xml:658
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Layer Visible"
-msgstr ""
+msgstr "Taso näkyvissä"
 
 #: ../gui/resources.xml:659
 msgctxt "Accel Editor (descriptions)"
@@ -5364,7 +5349,7 @@ msgstr ""
 #: ../gui/resources.xml:666
 msgctxt "Menu→View (labels), Accel Editor (labels)"
 msgid "Show Background"
-msgstr ""
+msgstr "Näytä tausta"
 
 #: ../gui/resources.xml:667
 msgctxt "Accel Editor (descriptions)"
@@ -5506,22 +5491,22 @@ msgstr ""
 #: ../gui/resources.xml:798
 msgctxt "Menu→View→Adjust View (labels), Accel Editor (labels)"
 msgid "Rotate Clockwise"
-msgstr ""
+msgstr "Käännä myötäpäivään"
 
 #: ../gui/resources.xml:799
 msgctxt "Accel Editor (descriptions)"
 msgid "Rotate the canvas clockwise."
-msgstr ""
+msgstr "Käännä kangasta myötäpäivään."
 
 #: ../gui/resources.xml:819
 msgctxt "Menu→View→Adjust View (labels), Accel Editor (labels)"
 msgid "Rotate Counterclockwise"
-msgstr ""
+msgstr "Käännä vastapäivään"
 
 #: ../gui/resources.xml:820
 msgctxt "Accel Editor (descriptions)"
 msgid "Rotate the canvas counter-clockwise."
-msgstr ""
+msgstr "Käännä kangasta vastapäivään."
 
 #: ../gui/resources.xml:828
 msgctxt "Menu→View→Adjust View (labels), Accel Editor (labels)"
@@ -5705,7 +5690,7 @@ msgstr "Väri"
 #: ../gui/resources.xml:1014
 msgctxt "Menu→Color (labels)"
 msgid "Adjust Color"
-msgstr "Mukauta Värejä"
+msgstr "Mukauta värejä"
 
 #: ../gui/resources.xml:1020
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
@@ -5750,7 +5735,7 @@ msgstr "Aseta paletin edellinen väri maalausväriksi."
 #: ../gui/resources.xml:1049
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "Add Color to Palette"
-msgstr "Lisää Väri Palettiin"
+msgstr "Lisää väri palettiin"
 
 #: ../gui/resources.xml:1050
 msgctxt "Accel Editor (descriptions)"
@@ -5765,17 +5750,17 @@ msgstr "Taso"
 #: ../gui/resources.xml:1064
 msgctxt "Menu→Layer→Properties (labels)"
 msgid "Opacity"
-msgstr "Läpinäkymättömyys"
+msgstr "Peittokyky"
 
 #: ../gui/resources.xml:1070
 msgctxt "Menu→Layer (labels)"
 msgid "Go to Layer"
-msgstr "Siirry Tasolle"
+msgstr "Siirry tasolle"
 
 #: ../gui/resources.xml:1076
 msgctxt "Menu→Layer (labels)"
 msgid "New Layer Below"
-msgstr "Uusi Taso Alle"
+msgstr "Uusi taso alle"
 
 #: ../gui/resources.xml:1082
 msgctxt "Menu→Layer (labels)"
@@ -5896,7 +5881,7 @@ msgstr ""
 #: ../gui/resources.xml:1187
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
 msgid "Change Brush…"
-msgstr "Vaihda Sivellin…"
+msgstr "Vaihda sivellin…"
 
 #: ../gui/resources.xml:1188
 msgctxt "Accel Editor (descriptions)"
@@ -5929,7 +5914,7 @@ msgstr ""
 #: ../gui/resources.xml:1213
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
 msgid "Get More Brushes…"
-msgstr "Hae Lisää Siveltimiä…"
+msgstr "Hae lisää siveltimiä…"
 
 #: ../gui/resources.xml:1214
 msgctxt "Accel Editor (descriptions)"
@@ -5939,12 +5924,12 @@ msgstr "Lataa sivellinpaketteja MyPaint:in wikistä."
 #: ../gui/resources.xml:1221
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
 msgid "Import Brushes…"
-msgstr "Tuo Siveltimiä…"
+msgstr "Tuo siveltimiä…"
 
 #: ../gui/resources.xml:1222
 msgctxt "Accel Editor (descriptions)"
 msgid "Load a brushpack from disk."
-msgstr "Lataa sivellinpaketti kovalevyltä."
+msgstr "Lataa sivellinpaketti levyltä."
 
 #: ../gui/resources.xml:1231
 msgctxt "Menu (labels)"
@@ -5964,7 +5949,7 @@ msgstr ""
 #: ../gui/resources.xml:1246
 msgctxt "Menu→Help (labels), Accel Editor (labels)"
 msgid "About MyPaint"
-msgstr "Tietoja MyPaint:istä"
+msgstr "Tietoja MyPaintistä"
 
 #: ../gui/resources.xml:1247
 msgctxt "Accel Editor (descriptions)"
@@ -6045,7 +6030,7 @@ msgstr ""
 #: ../gui/resources.xml:1320
 msgctxt "Menu→View (labels), Accel Editor (labels)"
 msgid "Fullscreen"
-msgstr "Kokoruutu"
+msgstr "Koko näyttö"
 
 #: ../gui/resources.xml:1321
 msgctxt "Accel Editor (descriptions)"
@@ -6055,7 +6040,7 @@ msgstr ""
 #: ../gui/resources.xml:1332
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
 msgid "Edit Preferences"
-msgstr "Muokkaa Asetuksia"
+msgstr "Muokkaa asetuksia"
 
 #: ../gui/resources.xml:1333
 msgctxt "Accel Editor (descriptions)"
@@ -6075,7 +6060,7 @@ msgstr ""
 #: ../gui/resources.xml:1347
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Background Chooser"
-msgstr ""
+msgstr "Taustavalitsin"
 
 #: ../gui/resources.xml:1348
 msgctxt "Accel Editor (descriptions)"
@@ -6103,12 +6088,11 @@ msgid "Edit brush icons."
 msgstr ""
 
 #: ../gui/resources.xml:1373
-#, fuzzy
 msgctxt ""
 "Menu→Layer (labels), Menu→Window (labels), Toolbar (labels), Accel Editor "
 "(labels)"
 msgid "Layers Panel"
-msgstr "Tasot-ikkuna"
+msgstr "Tasopaneeli"
 
 #: ../gui/resources.xml:1374
 msgctxt "Accel Editor (descriptions)"
@@ -6118,7 +6102,7 @@ msgstr ""
 #: ../gui/resources.xml:1382
 msgctxt "Menu→Layers (labels), Accel Editor (labels)"
 msgid "Show Layers Panel"
-msgstr "Näytä Tasoruutu"
+msgstr "Näytä tasopaneeli"
 
 #: ../gui/resources.xml:1383
 msgctxt "Accel Editor (descriptions)"
@@ -6128,7 +6112,7 @@ msgstr ""
 #: ../gui/resources.xml:1394
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "HCY Wheel"
-msgstr ""
+msgstr "HCY-väripyörä"
 
 #: ../gui/resources.xml:1395
 msgctxt "Accel Editor (descriptions)"
@@ -6150,7 +6134,7 @@ msgstr ""
 #: ../gui/resources.xml:1411
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "HSV Wheel"
-msgstr ""
+msgstr "HSV-väripyörä"
 
 #: ../gui/resources.xml:1412
 msgctxt "Accel Editor (descriptions)"
@@ -6232,7 +6216,7 @@ msgstr ""
 #: ../gui/resources.xml:1478
 msgctxt "Menu→Scratchpad (labels), Accel Editor (labels)"
 msgid "Show Scratchpad Panel"
-msgstr "Näytä luonnoslehtiöikkuna"
+msgstr "Näytä luonnoslehtiöpaneeli"
 
 #: ../gui/resources.xml:1479
 msgctxt "Accel Editor (descriptions)"
@@ -6242,7 +6226,7 @@ msgstr ""
 #: ../gui/resources.xml:1488
 msgctxt "Menu→Window (labels), Toolbar (labels), Accel Editor (labels)"
 msgid "Preview Panel"
-msgstr "Esikatseluruutu"
+msgstr "Esikatselupaneeli"
 
 #: ../gui/resources.xml:1489
 msgctxt "Accel Editor (descriptions)"
@@ -6272,7 +6256,7 @@ msgstr ""
 #: ../gui/resources.xml:1517
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
 msgid "Show Tool Options Panel"
-msgstr "Näytä työkaluasetusruutu"
+msgstr "Näytä työkalujen asetuspaneeli"
 
 #: ../gui/resources.xml:1518
 msgctxt "Accel Editor (descriptions)"
@@ -6282,7 +6266,7 @@ msgstr ""
 #: ../gui/resources.xml:1528
 msgctxt "Menu→Window (labels), Toolbar (labels), Accel Editor (labels)"
 msgid "Brush & Color History Panel"
-msgstr "Sivellin- & värihistoriaruutu"
+msgstr "Sivellin- & värihistoriapaneeli"
 
 #: ../gui/resources.xml:1529
 msgctxt "Accel Editor (descriptions)"
@@ -6312,7 +6296,7 @@ msgstr ""
 #: ../gui/resources.xml:1556
 msgctxt "Menu→View→Feedback (labels), Accel Editor (labels)"
 msgid "Show Zoom Level"
-msgstr ""
+msgstr "Näytä zoomaustaso"
 
 #: ../gui/resources.xml:1557
 msgctxt "Accel Editor (descriptions)"
@@ -6337,7 +6321,7 @@ msgstr ""
 #: ../gui/resources.xml:1578
 msgctxt "Menu→View→Display Filter (labels), Accel Editor (labels)"
 msgid "Display Colors Normally"
-msgstr ""
+msgstr "Näytä värit normaaleina"
 
 #: ../gui/resources.xml:1579
 msgctxt "Accel Editor (descriptions)"
@@ -6347,7 +6331,7 @@ msgstr ""
 #: ../gui/resources.xml:1587
 msgctxt "Menu→View→Display Filter (labels), Accel Editor (labels)"
 msgid "Display Colors as Greyscale"
-msgstr ""
+msgstr "Näytä värit harmaasävyisinä"
 
 #: ../gui/resources.xml:1588
 msgctxt "Accel Editor (descriptions)"
@@ -6357,7 +6341,7 @@ msgstr ""
 #: ../gui/resources.xml:1595
 msgctxt "Menu→View→Display Filter (labels), Accel Editor (labels)"
 msgid "Display Colors Inverted"
-msgstr ""
+msgstr "Näytä värit käänteisinä"
 
 #: ../gui/resources.xml:1596
 msgctxt "Accel Editor (descriptions)"
@@ -6398,7 +6382,7 @@ msgstr ""
 #: ../gui/resources.xml:1635
 msgctxt "Menu→Edit→Current Mode (labels)"
 msgid "Freehand"
-msgstr "Vapaa Piirto"
+msgstr "Vapaa piirto"
 
 #: ../gui/resources.xml:1636
 msgctxt "Toolbar (short labels)"
@@ -6413,7 +6397,7 @@ msgstr ""
 #: ../gui/resources.xml:1646
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
 msgid "Freehand"
-msgstr "Vapaa Piirto"
+msgstr "Vapaa piirto"
 
 #: ../gui/resources.xml:1647
 msgctxt "Accel Editor (descriptions)"
@@ -6513,7 +6497,7 @@ msgstr ""
 #: ../gui/resources.xml:1727
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
 msgid "Lines and Curves"
-msgstr "Viivat ja Käyrät"
+msgstr "Viivat ja käyrät"
 
 #: ../gui/resources.xml:1728
 msgctxt "Accel Editor (descriptions)"
@@ -6538,7 +6522,7 @@ msgstr ""
 #: ../gui/resources.xml:1748
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
 msgid "Connected Lines"
-msgstr "Yhdistetyt Viivat"
+msgstr "Yhdistetyt viivat"
 
 #: ../gui/resources.xml:1749
 msgctxt "Accel Editor (descriptions)"
@@ -6563,7 +6547,7 @@ msgstr ""
 #: ../gui/resources.xml:1769
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
 msgid "Ellipses and Circles"
-msgstr "Ellipsit ja Ympyrät"
+msgstr "Ellipsit ja ympyrät"
 
 #: ../gui/resources.xml:1770
 msgctxt "Accel Editor (descriptions)"
@@ -6613,7 +6597,7 @@ msgstr ""
 #: ../gui/resources.xml:1811
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Reposition Layer"
-msgstr "Siirrä Tasoa"
+msgstr "Siirrä tasoa"
 
 #: ../gui/resources.xml:1812
 msgctxt "Accel Editor (description)"
@@ -6665,7 +6649,7 @@ msgstr ""
 #: ../gui/resources.xml:1852
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "Edit Painting Symmetry"
-msgstr "Muokkaa Maalauksen Symmetriaa"
+msgstr "Muokkaa maalauksen symmetriaa"
 
 #: ../gui/resources.xml:1853
 msgctxt "Accel Editor (description)"
