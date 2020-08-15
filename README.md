@@ -65,6 +65,9 @@ and to install, run:
 winget install --id MyPaint.MyPaint
 ```
 
+_The winget package is not maintained by the dev team._
+
+
 ### Chocolatey (windows)
 
 If you prefer to use the Chocolatey repository, both
