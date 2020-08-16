@@ -257,7 +257,14 @@ class FakeMenuButton (Gtk.EventBox):
         if togglebutton.get_active():
             if not self.menu.get_property("visible"):
                 pos_func = self._get_popup_menu_position
-                self.menu.popup(None, None, pos_func, 1, 0)
+                self.menu.popup(
+                    parent_menu_shell=None,
+                    parent_menu_item=None,
+                    func=pos_func,
+                    data=None,
+                    button=1,
+                    activate_time=Gdk.CURRENT_TIME,
+                )
 
     def _menu_dismiss_cb(self, *a, **kw):
         """Reset the button state when the user's finished
