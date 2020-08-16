@@ -382,7 +382,7 @@ class LineModeBase (gui.mode.ScrollableModeMixin,
             self.ellipse_vec = None
             return
         # If not Ellipse, command must be Straight Line or Sequence
-        # First check if the user intends to Curve an existing Line
+        # First check if the user intends to Curve or move an existing Line
         if shift:
             last_line = self.last_line_data
             last_stroke = layer.get_last_stroke_info()
@@ -397,7 +397,9 @@ class LineModeBase (gui.mode.ScrollableModeMixin,
                         self.flip = length_a > length_b
                         if self.flip:
                             self.kx, self.ky = last_line[6], last_line[7]
+                            self.k2x, self.k2y = last_line[8], last_line[9]
                         else:
+                            self.k2x, self.k2y = last_line[6], last_line[7]
                             self.kx, self.ky = last_line[8], last_line[9]
                     self.model.undo()
                     self.process_line()
@@ -421,6 +423,14 @@ class LineModeBase (gui.mode.ScrollableModeMixin,
         self.record_last_stroke(cmd, x, y)
 
     def record_last_stroke(self, cmd, x, y):
+        """ Store last stroke data
+
+        Stroke data is used for redraws and modifications of the line.
+
+        :param str cmd: name of the last command
+        :param int x: last cursor x-coordinate
+        :param int y: last cursor y-coordinate
+        """
         last_line = None
         self.tdw.last_painting_pos = x, y
         # FIXME: should probably not set that from here
@@ -444,14 +454,14 @@ class LineModeBase (gui.mode.ScrollableModeMixin,
                     cmd, last_stroke,
                     sx, sy,
                     self.ex, self.ey,
-                    self.kx, self.ky, x, y,
+                    self.kx, self.ky, self.k2x, self.k2y,
                 ]
             else:
                 last_line = [
                     cmd, last_stroke,
                     sx, sy,
                     self.ex, self.ey,
-                    x, y, self.kx, self.ky,
+                    self.k2x, self.k2y, self.kx, self.ky,
                 ]
             self.tdw.last_painting_pos = self.ex, self.ey
 
@@ -493,10 +503,22 @@ class LineModeBase (gui.mode.ScrollableModeMixin,
         elif self.mode == "CurveLine2":
             ex, ey = self.ex, self.ey
             kx, ky = self.kx, self.ky
-            if not self.flip:
-                self.dynamic_curve_2(x, y, sx, sy, ex, ey, kx, ky)
+            k2x, k2y = self.k2x, self.k2y
+            if shift and ctrl:
+                # moved line end
+                if not self.flip:
+                    self.dynamic_curve_2(k2x, k2y, x, y, ex, ey, kx, ky)
+                    self.sx, self.sy = x, y
+                else:
+                    self.dynamic_curve_2(kx, ky, sx, sy, x, y, k2x, k2y)
+                    self.ex, self.ey = x, y
             else:
-                self.dynamic_curve_2(kx, ky, sx, sy, ex, ey, x, y)
+                # changed curve shape
+                self.k2x, self.k2y = x, y
+                if not self.flip:
+                    self.dynamic_curve_2(x, y, sx, sy, ex, ey, kx, ky)
+                else:
+                    self.dynamic_curve_2(kx, ky, sx, sy, ex, ey, x, y)
 
         elif self.mode == "EllipseMode":
             constrain = False
@@ -755,6 +777,7 @@ class LineModeBase (gui.mode.ScrollableModeMixin,
                 if command == "CurveLine2":
                     x, y = last_line[6], last_line[7]
                     self.kx, self.ky = last_line[8], last_line[9]
+                    self.k2x, self.k2y = x, y
                     if (x, y) == (self.kx, self.ky):
                         self.dynamic_curve_1(x, y, self.sx, self.sy,
                                              self.ex, self.ey)
@@ -778,6 +801,7 @@ class StraightMode (LineModeBase):
 
     def get_usage(self):
         return _(u"Draw straight lines; Shift adds curves, "
+                 "Shift + Ctrl moves line ends, "
                  "Ctrl constrains angle")
 
 
