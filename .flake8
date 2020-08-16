@@ -1,0 +1,21 @@
+[flake8]
+ignore = E266,W503,E251,E226,BLK100
+exclude =
+    .git,
+    __pycache__,
+    docs,
+    build,
+    dist,
+    out,
+    svg,
+    pixmaps,
+    backgrounds,
+    desktop,
+    tests,
+    glade,
+    flatpak,
+    appimage,
+    palettes,
+    lib/mypaintlib.py,
+    po
+max-complexity = 20

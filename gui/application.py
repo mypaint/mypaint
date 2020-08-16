@@ -202,7 +202,7 @@ class Application (object):
     """
 
     #: Singleton instance
-    _INSTANCE = None
+    _INSTANCE = None  # TMPTMPTMPTMP
 
     def __init__(self, filenames, state_dirs, version, fullscreen=False):
         """Construct, but do not run.
