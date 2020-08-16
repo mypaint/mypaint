@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mypaint v2.0.0-alpha.11-2-g0673fe8\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-07-05 09:12+0200\n"
+"POT-Creation-Date: 2020-08-16 11:30+0200\n"
 "PO-Revision-Date: 2020-08-11 20:32+0000\n"
 "Last-Translator: Alexey Napalkov <flynbit@gmail.com>\n"
 "Language-Team: Russian <https://hosted.weblate.org/projects/mypaint/mypaint/"
@@ -176,115 +176,115 @@ msgstr ""
 msgid "{filename} has zero size (w={w}, h={h})"
 msgstr "У {filename} нулевой размер (w={w}, h={h})"
 
-#: ../gui/brusheditor.py:112
+#: ../gui/brusheditor.py:116
 msgctxt "brush settings editor: subwindow title"
 msgid "Brush Settings Editor"
 msgstr "Редактор параметров кисти"
 
-#: ../gui/brusheditor.py:293
+#: ../gui/brusheditor.py:301
 msgctxt "brush settings list: brush metadata texts group"
 msgid "About"
 msgstr "О кисти"
 
-#: ../gui/brusheditor.py:304
+#: ../gui/brusheditor.py:312
 msgctxt "brush settings list: setting group"
 msgid "Experimental"
 msgstr "Экспериментальные"
 
-#: ../gui/brusheditor.py:311
+#: ../gui/brusheditor.py:319
 msgctxt "brush settings list: setting group"
 msgid "Basic"
 msgstr "Основные"
 
-#: ../gui/brusheditor.py:330
+#: ../gui/brusheditor.py:338
 msgctxt "brush settings list: setting group"
 msgid "Opacity"
 msgstr "Непрозрачность"
 
-#: ../gui/brusheditor.py:342
+#: ../gui/brusheditor.py:350
 msgctxt "brush settings list: setting group"
 msgid "Dabs"
 msgstr "Мазки"
 
-#: ../gui/brusheditor.py:353
+#: ../gui/brusheditor.py:361
 msgctxt "brush settings list: setting group"
 msgid "Smudge"
 msgstr "Размазывание"
 
-#: ../gui/brusheditor.py:367
+#: ../gui/brusheditor.py:375
 msgctxt "brush settings list: setting group"
 msgid "Speed"
 msgstr "Скорость"
 
-#: ../gui/brusheditor.py:381
+#: ../gui/brusheditor.py:389
 msgctxt "brush settings list: setting group"
 msgid "Directional Offsets"
 msgstr "Направленные смещения"
 
-#: ../gui/brusheditor.py:399
+#: ../gui/brusheditor.py:407
 msgctxt "brush settings list: setting group"
 msgid "Tracking"
 msgstr "Отслеживание указателя"
 
-#: ../gui/brusheditor.py:410
+#: ../gui/brusheditor.py:418
 msgctxt "brush settings list: setting group"
 msgid "Stroke"
 msgstr "Штрих"
 
-#: ../gui/brusheditor.py:421
+#: ../gui/brusheditor.py:429
 msgctxt "brush settings list: setting group"
 msgid "Color"
 msgstr "Цвет"
 
-#: ../gui/brusheditor.py:439
+#: ../gui/brusheditor.py:447
 msgctxt "brush settings list: setting group"
 msgid "GridMap"
 msgstr "Сетка"
 
-#: ../gui/brusheditor.py:450
+#: ../gui/brusheditor.py:458
 msgctxt "brush settings list: setting group"
 msgid "Custom"
 msgstr "Пользовательский"
 
-#: ../gui/brusheditor.py:516
+#: ../gui/brusheditor.py:524
 msgctxt "brush settings editor: save brush: error message"
 msgid "No brush selected, please use “Add As New” instead."
 msgstr ""
 "Кисть не выбрана. Пожалуйста, используйте вместо этого \"Добавить как новую"
 "\"."
 
-#: ../gui/brusheditor.py:541
+#: ../gui/brusheditor.py:549
 msgctxt "brush settings editor: rename brush: error message"
 msgid "No brush selected!"
 msgstr "Кисть не выбрана!"
 
-#: ../gui/brusheditor.py:550
+#: ../gui/brusheditor.py:558
 msgctxt "brush settings editor: rename brush: dialog title"
 msgid "Rename Brush"
 msgstr "Переименовать кисть"
 
-#: ../gui/brusheditor.py:569
+#: ../gui/brusheditor.py:577
 msgctxt "brush settings editor: rename brush: error message"
 msgid "A brush with this name already exists!"
 msgstr "Кисть с таким именем уже существует!"
 
-#: ../gui/brusheditor.py:603
+#: ../gui/brusheditor.py:611
 msgctxt "brush settings editor: delete brush: error message"
 msgid "No brush selected!"
 msgstr "Кисть не выбрана!"
 
-#: ../gui/brusheditor.py:609
+#: ../gui/brusheditor.py:617
 #, python-brace-format
 msgctxt "brush settings editor: delete brush: confirm dialog question"
 msgid "Really delete brush “{brush_name}” from disk?"
 msgstr "Действительно удалить кисть “{brush_name}”?"
 
-#: ../gui/brusheditor.py:728
+#: ../gui/brusheditor.py:736
 msgctxt "brush settings editor: header: fallback name"
 msgid "(Unnamed brush)"
 msgstr "(Безымянная кисть)"
 
-#: ../gui/brusheditor.py:735
+#: ../gui/brusheditor.py:743
 #, python-brace-format
 msgctxt "brush settings editor: header: is-modified hint"
 msgid "{brush_name} [unsaved]"
@@ -460,6 +460,17 @@ msgstr ""
 #: ../gui/brushmanager.py:1328 ../gui/footer.py:66
 msgid "Unknown Brush"
 msgstr "Неизвестная кисть"
+
+#: ../gui/brushmanip.py:191
+#, fuzzy
+msgctxt "brush resize mode - name"
+msgid "Resize Brush"
+msgstr "Переименовать кисть"
+
+#: ../gui/brushmanip.py:196
+msgctxt "brush resize mode - usage"
+msgid "Change brush size by dragging on the canvas"
+msgstr ""
 
 #: ../gui/brushselectionwindow.py:220
 msgctxt "brush group: context menu for a single brush"
@@ -659,27 +670,27 @@ msgstr "Выбрать цвет"
 msgid "Set the color used for painting"
 msgstr "Выбрать цвет, используемый для рисования"
 
-#: ../gui/colorpicker.py:270
+#: ../gui/colorpicker.py:201
 msgid "Pick Hue"
 msgstr "Выбрать тон"
 
-#: ../gui/colorpicker.py:273
+#: ../gui/colorpicker.py:204
 msgid "Set the color Hue used for painting"
 msgstr "Выбрать оттенок цвета, используемый для рисования"
 
-#: ../gui/colorpicker.py:293
+#: ../gui/colorpicker.py:222
 msgid "Pick Chroma"
 msgstr "Установить насыщенность"
 
-#: ../gui/colorpicker.py:296
+#: ../gui/colorpicker.py:225
 msgid "Set the color Chroma used for painting"
 msgstr "Выбрать насыщенность цвета, используемого для рисования"
 
-#: ../gui/colorpicker.py:316
+#: ../gui/colorpicker.py:242
 msgid "Pick Luma"
 msgstr "Установить яркость"
 
-#: ../gui/colorpicker.py:319
+#: ../gui/colorpicker.py:245
 msgid "Set the color Luma used for painting"
 msgstr "Выберите яркость цвета, используемого для рисования"
 
@@ -1206,7 +1217,7 @@ msgid "Based on file"
 msgstr ""
 
 #. This refers to a version of MyPaint like 1.0, 1.1, 1.2 etc
-#: ../gui/compatibility.py:35 ../gui/drawwindow.py:280
+#: ../gui/compatibility.py:35 ../gui/drawwindow.py:281
 #: ../gui/preferenceswindow.glade:1610
 msgctxt "Prefs Dialog|Compatibility"
 msgid "1.x"
@@ -1363,26 +1374,26 @@ msgid "Pan"
 msgstr "Перемещение"
 
 #. TRANSLATORS: Column's data is the device's name
-#: ../gui/device.py:431
+#: ../gui/device.py:432
 msgctxt "prefs: devices table: column header"
 msgid "Device"
 msgstr "Устройство"
 
 #. TRANSLATORS: Column's data is the number of axes (an integer)
-#: ../gui/device.py:445
+#: ../gui/device.py:446
 msgctxt "prefs: devices table: column header"
 msgid "Axes"
 msgstr "Оси"
 
 #. TRANSLATORS: Column shows type labels ("Touchscreen", "Pen" etc.)
-#: ../gui/device.py:459
+#: ../gui/device.py:460
 msgctxt "prefs: devices table: column header"
 msgid "Type"
 msgstr "Тип"
 
 #. TRANSLATORS: Column's data is a dropdown allowing the allowed
 #. TRANSLATORS: tasks for the row's device to be configured.
-#: ../gui/device.py:482
+#: ../gui/device.py:483
 msgctxt "prefs: devices table: column header"
 msgid "Use for…"
 msgstr "Использовать для…"
@@ -1390,7 +1401,7 @@ msgstr "Использовать для…"
 #. TRANSLATORS: Column's data is a dropdown for how the device's
 #. TRANSLATORS: scroll wheel or scroll-gesture events are to be
 #. TRANSLATORS: interpreted normally.
-#: ../gui/device.py:512
+#: ../gui/device.py:513
 msgctxt "prefs: devices table: column header"
 msgid "Scroll…"
 msgstr "Прокрутка…"
@@ -1463,48 +1474,48 @@ msgstr "Импортировать пакет с кистями?"
 msgid "<b>Do you really want to import package “{brushpack_name}”?</b>"
 msgstr "<b>Вы действительно хотите импортировать пакет “{brushpack_name}”?</b>"
 
-#: ../gui/document.py:455
+#: ../gui/document.py:451
 #, python-format
 msgid "Load brush settings from shortcut slot %d"
 msgstr "Загрузить настройки кисти из слота быстрого доступа %d"
 
-#: ../gui/document.py:456
+#: ../gui/document.py:452
 #, python-format
 msgid "Store brush settings in shortcut slot %d"
 msgstr "Сохранить настройки кисти в слот быстрого доступа %d"
 
-#: ../gui/document.py:457
+#: ../gui/document.py:453
 #, python-format
 msgid "Restore Brush %d"
 msgstr "Выбрать кисть %d"
 
-#: ../gui/document.py:459
+#: ../gui/document.py:455
 #, python-format
 msgid "Save to Brush %d"
 msgstr "Сохранить кисть %d"
 
-#: ../gui/document.py:557
+#: ../gui/document.py:553
 #, python-format
 msgid "Undo %s"
 msgstr "Отменить %s"
 
-#: ../gui/document.py:559
+#: ../gui/document.py:555
 msgid "Undo"
 msgstr "Отменить"
 
-#: ../gui/document.py:569
+#: ../gui/document.py:565
 #, python-format
 msgid "Redo %s"
 msgstr "Вернуть %s"
 
-#: ../gui/document.py:571
+#: ../gui/document.py:567
 msgid "Redo"
 msgstr "Вернуть"
 
 #. TRANSLATORS: Statusbar message explaining button and modifier
 #. TRANSLATORS: combinations used to access modes/tools/actions.
 #. TRANSLATORS: "With <current-modifiers> held down: <list>"
-#: ../gui/document.py:864
+#: ../gui/document.py:851
 #, python-brace-format
 msgid "{button_combination} is {resultant_action}"
 msgstr "{button_combination} - {resultant_action}"
@@ -1512,7 +1523,7 @@ msgstr "{button_combination} - {resultant_action}"
 #. TRANSLATORS: This is a separator for the list of button actions
 #. TRANSLATORS: that appears when a modifier key is held down.
 #. TRANSLATORS: search for " held down: " (incl spaces) for the context
-#: ../gui/document.py:874
+#: ../gui/document.py:861
 msgid ";  "
 msgstr ";  "
 
@@ -1521,105 +1532,105 @@ msgstr ";  "
 #. TRANSLATORS: as the English "and", so use appropriate punctuation or
 #. TRANSLATORS: wording for the separator. Also a little more spacing
 #. TRANSLATORS: than normal looks good here.
-#: ../gui/document.py:880
+#: ../gui/document.py:867
 #, python-brace-format
 msgid "With {modifiers} held down:  {button_actions}."
 msgstr "Зажать {modifiers} с:  {button_actions}."
 
-#: ../gui/document.py:902
+#: ../gui/document.py:889
 msgctxt "Statusbar message: copy result"
 msgid "Empty document, nothing copied."
 msgstr "Пустой документ, ничего не скопировано."
 
-#: ../gui/document.py:914
+#: ../gui/document.py:901
 #, python-brace-format
 msgctxt "Statusbar message: copy result"
 msgid "Copied layer as {w}×{h} image."
 msgstr "Копированный слой в виде {w}×{h} изображения."
 
-#: ../gui/document.py:931
+#: ../gui/document.py:918
 msgctxt "Statusbar message: paste result"
 msgid "Nothing on clipboard."
 msgstr "В буфере обмена ничего нет."
 
-#: ../gui/document.py:940
+#: ../gui/document.py:927
 msgctxt "Statusbar message: paste result"
 msgid "Clipboard does not contain an image."
 msgstr "Буфер обмена не содержит изображения."
 
-#: ../gui/document.py:951
+#: ../gui/document.py:938
 msgctxt "Statusbar message: paste result"
 msgid "Cannot paste into this type of layer."
 msgstr "Не удается вставить в этот тип слоя."
 
-#: ../gui/document.py:956
+#: ../gui/document.py:943
 #, python-brace-format
 msgctxt "Statusbar message: paste result"
 msgid "Pasted {w}×{h} image."
 msgstr "Вставленное {w}×{h} изображение."
 
-#: ../gui/document.py:2057
+#: ../gui/document.py:2044
 #, python-brace-format
 msgctxt "Statusbar message: vacuum document"
 msgid "Vacuum: discarded {removed} of {total} tiles."
 msgstr "Вакуум: удалено {removed} из {total} плиток."
 
 #. TRANSLATORS: window title for use with a filename
-#: ../gui/drawwindow.py:274
+#: ../gui/drawwindow.py:275
 #, python-format
 msgid "%s - MyPaint"
 msgstr "%s - MyPaint"
 
 #. TRANSLATORS: window title for use without a filename
-#: ../gui/drawwindow.py:277 ../gui/mypaint.glade:8
+#: ../gui/drawwindow.py:278 ../gui/mypaint.glade:8
 msgid "MyPaint"
 msgstr "MyPaint"
 
-#: ../gui/drawwindow.py:300
+#: ../gui/drawwindow.py:301
 msgctxt "Open dragged file confirm dialog: title"
 msgid "Open Dragged File?"
 msgstr "Открыть перетаскиваемый файл?"
 
-#: ../gui/drawwindow.py:304
+#: ../gui/drawwindow.py:305
 msgctxt "Open dragged file confirm dialog: continue button"
 msgid "_Open"
 msgstr "_Открыть"
 
-#: ../gui/drawwindow.py:497
+#: ../gui/drawwindow.py:498
 msgid "Set current color"
 msgstr "Выбрать текущий цвет"
 
-#: ../gui/drawwindow.py:542
+#: ../gui/drawwindow.py:543
 msgid "Leave Fullscreen Mode"
 msgstr "Покинуть полноэкранный режим"
 
-#: ../gui/drawwindow.py:543
+#: ../gui/drawwindow.py:544
 msgid "Leave Fullscreen"
 msgstr "Покинуть полноэкранный режим"
 
-#: ../gui/drawwindow.py:546
+#: ../gui/drawwindow.py:547
 msgid "Enter Fullscreen Mode"
 msgstr "Перейти в полноэкранный режим"
 
-#: ../gui/drawwindow.py:547
+#: ../gui/drawwindow.py:548
 msgid "Fullscreen"
 msgstr "Во весь экран"
 
-#: ../gui/drawwindow.py:686
+#: ../gui/drawwindow.py:687
 msgctxt "Quit confirm dialog: title"
 msgid "Really Quit?"
 msgstr "Действительно выйти?"
 
-#: ../gui/drawwindow.py:690
+#: ../gui/drawwindow.py:691
 msgctxt "Quit confirm dialog: continue button"
 msgid "_Quit"
 msgstr "_Выход"
 
-#: ../gui/drawwindow.py:708
+#: ../gui/drawwindow.py:709
 msgid "Import brush package…"
 msgstr "Импортировать пакет кистей…"
 
-#: ../gui/drawwindow.py:709
+#: ../gui/drawwindow.py:710
 msgid "MyPaint brush package (*.zip)"
 msgstr "Пакет кистей MyPaint (*.zip)"
 
@@ -1994,26 +2005,26 @@ msgctxt "File→Revert confirm dialog: continue button"
 msgid "_Revert"
 msgstr "_Вернуть"
 
-#: ../gui/fill.py:122
+#: ../gui/fill.py:123
 msgctxt ""
 "Name of the fill mode\n"
 "In other software, 'Flood Fill' is also known as 'Bucket Fill' or just 'Fill'"
 msgid "Flood Fill"
 msgstr "Заливка"
 
-#: ../gui/fill.py:128
+#: ../gui/fill.py:129
 msgctxt "Usage description of the Flood Fill mode"
 msgid "Fill areas with color"
 msgstr "Заливка областей цветом"
 
-#: ../gui/fill.py:507
+#: ../gui/fill.py:505
 msgctxt ""
 "fill options: numeric value that determines whether tested pixels will be "
 "included in the fill, based on color difference"
 msgid "Tolerance:"
 msgstr "Порог:"
 
-#: ../gui/fill.py:512
+#: ../gui/fill.py:510
 msgctxt ""
 "fill options: Tolerance (tooltip) Note: 'the start' refers to the color of "
 "the starting point (pixel) of the fill"
@@ -2024,24 +2035,24 @@ msgstr ""
 "Допустимое отклонение количества цветов пикселов, \n"
 "которое заливка откажется заливать"
 
-#: ../gui/fill.py:536
+#: ../gui/fill.py:533
 msgctxt ""
 "fill options: option category (label) Options under this category relate to "
 "what the fill isbased on, not where the actual fill ends up."
 msgid "Source:"
 msgstr "Источник:"
 
-#: ../gui/fill.py:539
+#: ../gui/fill.py:536
 msgctxt "fill options: 'Source:' category (tooltip)"
 msgid "The input that the fill will be based on"
 msgstr "Ввод, на котором будет основана заливка"
 
-#: ../gui/fill.py:583
+#: ../gui/fill.py:580
 msgctxt "fill options: 'Source' category: Layer dropdown (tooltip)"
 msgid "Select a specific layer you want the fill to be based on"
 msgstr "Выберите конкретный слой, на котором будет основана заливка"
 
-#: ../gui/fill.py:601
+#: ../gui/fill.py:598
 msgctxt ""
 "fill options: 'Source:' category: toggle (label)\n"
 "When this option is enabled, the fill is based\n"
@@ -2049,7 +2060,7 @@ msgctxt ""
 msgid "Sample Merged"
 msgstr "Выборочное объединение"
 
-#: ../gui/fill.py:605
+#: ../gui/fill.py:602
 msgctxt "fill options: Sample Merged (tooltip)"
 msgid ""
 "When considering which area to fill, use a\n"
@@ -2060,12 +2071,12 @@ msgstr ""
 "временное объединение всех видимых слоев \n"
 "под нынешним слоем"
 
-#: ../gui/fill.py:621
+#: ../gui/fill.py:618
 msgctxt "fill options: toggle whether the fill will be limited by the viewport"
 msgid "Limit to View"
 msgstr "Лимит Просмотра"
 
-#: ../gui/fill.py:627
+#: ../gui/fill.py:624
 msgctxt ""
 "fill options: Limit to View (tooltip)\n"
 "Note: 'that can fit the view' is equivalent to: 'in which the entire visible "
@@ -2080,7 +2091,7 @@ msgstr ""
 "наименьшим прямоугольником, выровненным по холсту, чтобы соответствовать "
 "виду."
 
-#: ../gui/fill.py:644
+#: ../gui/fill.py:641
 msgctxt ""
 "fill options: option category (label)\n"
 "Options under this category relate to where the fill will end up (default: "
@@ -2088,12 +2099,12 @@ msgctxt ""
 msgid "Target:"
 msgstr "Цель:"
 
-#: ../gui/fill.py:647
+#: ../gui/fill.py:644
 msgctxt "fill options: 'Target:' category (tooltip)"
 msgid "Where the output should go"
 msgstr "Где должен быть результат"
 
-#: ../gui/fill.py:656
+#: ../gui/fill.py:653
 msgctxt ""
 "fill options: Target | toggle (label)\n"
 "When this option is enabled, the fill will be placed on a new\n"
@@ -2101,7 +2112,7 @@ msgctxt ""
 msgid "New Layer (once)"
 msgstr "Новый слой (единожды)"
 
-#: ../gui/fill.py:661
+#: ../gui/fill.py:658
 msgctxt "fill options: Target | New Layer (tooltip)"
 msgid ""
 "Create a new layer with the results of the fill.\n"
@@ -2110,51 +2121,51 @@ msgstr ""
 "Создать новый слой с результатами заливки.\n"
 "Отключается автоматически после использования."
 
-#: ../gui/fill.py:673
+#: ../gui/fill.py:670
 msgctxt "fill options: Target | Blend Mode dropdown - warning text"
 msgid "This mode does nothing when alpha locking is enabled!"
 msgstr "Этот режим не работает со включённой альфа-блокировкой!"
 
-#: ../gui/fill.py:687
+#: ../gui/fill.py:684
 msgctxt "fill options: Target | Blend Mode dropdown (tooltip)"
 msgid "Blend mode used when filling"
 msgstr "Режим смешивания используется при заполнении"
 
-#: ../gui/fill.py:702
+#: ../gui/fill.py:699
 msgid "Opacity:"
 msgstr "Непрозрачность:"
 
-#: ../gui/fill.py:705
+#: ../gui/fill.py:702
 msgctxt "fill options: Opacity slider (tooltip)"
 msgid "Opacity of the fill"
 msgstr "Непрозрачность заливки"
 
-#: ../gui/fill.py:728
+#: ../gui/fill.py:725
 msgctxt "fill options: numeric option - grow/shrink fill (label)"
 msgid "Offset:"
 msgstr "Смещение:"
 
-#: ../gui/fill.py:744
+#: ../gui/fill.py:741
 msgctxt "fill options: Offset (tooltip)"
 msgid "The distance in pixels to grow or shrink the fill"
 msgstr "Расстояние в пикселях для увеличения или уменьшения заливки"
 
-#: ../gui/fill.py:755
+#: ../gui/fill.py:752
 msgctxt "fill options: numeric option for blurring fill (label)"
 msgid "Feather:"
 msgstr "Перо:"
 
-#: ../gui/fill.py:770
+#: ../gui/fill.py:767
 msgctxt "fill options: Feather (tooltip)"
 msgid "The amount of blur to apply to the fill"
 msgstr "Степень размытия для заливки"
 
-#: ../gui/fill.py:786
+#: ../gui/fill.py:783
 msgctxt "fill options: gap detection toggle (label)"
 msgid "Use Gap Detection"
 msgstr "Использовать обнаружение пробелов"
 
-#: ../gui/fill.py:791
+#: ../gui/fill.py:788
 msgctxt "fill options: Use Gap Detection (tooltip)"
 msgid ""
 "Try to detect gaps and not fill past them.\n"
@@ -2165,12 +2176,12 @@ msgstr ""
 "Примечание: Этот способ гораздо медленней обычной заливки, включайте его "
 "только тогда, когда нужно."
 
-#: ../gui/fill.py:809
+#: ../gui/fill.py:806
 msgctxt "fill options: gap-detection sub-option, numeric setting (label)"
 msgid "Max Gap Size:"
 msgstr "Максимальный Размер Пробела:"
 
-#: ../gui/fill.py:824
+#: ../gui/fill.py:821
 msgctxt "fill options: Max Gap Size (tooltip)"
 msgid ""
 "The size of the largest gaps that can be detected.\n"
@@ -2179,7 +2190,7 @@ msgstr ""
 "Наибольший размер пробела, , которое может быть обнаружено.\n"
 "При больших значениях заливка может идти медленнее."
 
-#: ../gui/fill.py:837
+#: ../gui/fill.py:834
 msgctxt ""
 "fill options: on/off sub-option, numeric (label)\n"
 "When enabled, if the fill stops after going past a detected gap, it 'pulls' "
@@ -2187,7 +2198,7 @@ msgctxt ""
 msgid "Prevent seeping"
 msgstr "Предотвратить просачивание"
 
-#: ../gui/fill.py:844
+#: ../gui/fill.py:841
 msgctxt "fill options: Prevent seeping (tooltip)"
 msgid ""
 "Try to prevent the fill from seeping into the gaps.\n"
@@ -2197,16 +2208,16 @@ msgstr ""
 "Если заливка начинается в обнаруженных пробелах, то эта опция ничего не "
 "сделает."
 
-#: ../gui/fill.py:854 ../gui/mode.py:629
+#: ../gui/fill.py:851 ../gui/mode.py:639
 msgid "Reset"
 msgstr "Сбросить"
 
-#: ../gui/fill.py:858
+#: ../gui/fill.py:855
 msgctxt "fill options: Reset button (tooltip)"
 msgid "Reset options to their defaults"
 msgstr "Сбросить к значениям по умолчанию"
 
-#: ../gui/fill.py:1036
+#: ../gui/fill.py:1033
 msgctxt "fill option: default option in the Source Layer dropdown"
 msgid "Selected Layer"
 msgstr "Выбранный слой"
@@ -2235,122 +2246,122 @@ msgstr "Изменить рамку"
 msgid "Adjust the document frame"
 msgstr "Переключить рамку документа"
 
-#: ../gui/framewindow.py:468
+#: ../gui/framewindow.py:469
 msgid "Frame Size"
 msgstr "Размер рамки"
 
 #. {unit: (conv_factor, upper, lower, step_incr, page_incr, digits)}
-#: ../gui/framewindow.py:471 ../gui/framewindow.py:537
-#: ../gui/framewindow.py:910 ../gui/framewindow.py:927
-#: ../gui/framewindow.py:928 ../gui/framewindow.py:980
-#: ../gui/framewindow.py:985
+#: ../gui/framewindow.py:472 ../gui/framewindow.py:538
+#: ../gui/framewindow.py:911 ../gui/framewindow.py:928
+#: ../gui/framewindow.py:929 ../gui/framewindow.py:981
+#: ../gui/framewindow.py:986
 msgid "px"
 msgstr "px"
 
-#: ../gui/framewindow.py:473
+#: ../gui/framewindow.py:474
 msgid "Height:"
 msgstr "Высота:"
 
-#: ../gui/framewindow.py:474
+#: ../gui/framewindow.py:475
 msgid "Width:"
 msgstr "Ширина:"
 
-#: ../gui/framewindow.py:475
+#: ../gui/framewindow.py:476
 msgid "Resolution:"
 msgstr "Разрешение:"
 
-#: ../gui/framewindow.py:477
+#: ../gui/framewindow.py:478
 msgid "DPI"
 msgstr "DPI"
 
-#: ../gui/framewindow.py:482
+#: ../gui/framewindow.py:483
 msgid "Dots Per Inch (really Pixels Per Inch)"
 msgstr "Количество точек на дюйм (в действительности пикселов на дюйм)"
 
-#: ../gui/framewindow.py:485
+#: ../gui/framewindow.py:486
 msgid "Color:"
 msgstr "Цвет:"
 
-#: ../gui/framewindow.py:522
+#: ../gui/framewindow.py:523
 msgid "Frame Color"
 msgstr "Цвет рамки"
 
-#: ../gui/framewindow.py:545
+#: ../gui/framewindow.py:546
 msgid "<b>Frame dimensions</b>"
 msgstr "<b>Размеры рамки</b>"
 
-#: ../gui/framewindow.py:559
+#: ../gui/framewindow.py:560
 msgid "<b>Pixel density</b>"
 msgstr "<b>Плотность пикселей</b>"
 
-#: ../gui/framewindow.py:587
+#: ../gui/framewindow.py:588
 msgid "Set Frame to Layer"
 msgstr "Рамка по размерам слоя"
 
-#: ../gui/framewindow.py:588
+#: ../gui/framewindow.py:589
 msgid "Set frame to the extents of the current layer"
 msgstr "Установить рамку по размерам текущего слоя"
 
-#: ../gui/framewindow.py:590
+#: ../gui/framewindow.py:591
 msgid "Set Frame to Document"
 msgstr "Рамка по размерам документа"
 
-#: ../gui/framewindow.py:591
+#: ../gui/framewindow.py:592
 msgid "Set frame to the combination of all layers"
 msgstr "Установить рамку по размерам объединения всех слоев"
 
-#: ../gui/framewindow.py:601
+#: ../gui/framewindow.py:602
 msgid "Trim Layer to Frame"
 msgstr "Обрезать слой по рамке"
 
-#: ../gui/framewindow.py:602
+#: ../gui/framewindow.py:603
 msgid "Trim parts of the current layer which lie outside the frame"
 msgstr "Обрезать части слоя, находящиеся вне установленной рамки"
 
-#: ../gui/framewindow.py:608
+#: ../gui/framewindow.py:609
 msgid "Enabled"
 msgstr "Включено"
 
-#: ../gui/framewindow.py:720
+#: ../gui/framewindow.py:721
 #, python-brace-format
 msgid "{width:g}×{height:g} {units}"
 msgstr "{width:g}×{height:g} {units}"
 
-#: ../gui/framewindow.py:911
+#: ../gui/framewindow.py:912
 msgid "inch"
 msgstr "дюймы"
 
-#: ../gui/framewindow.py:912
+#: ../gui/framewindow.py:913
 msgid "cm"
 msgstr "см"
 
-#: ../gui/framewindow.py:913
+#: ../gui/framewindow.py:914
 msgid "mm"
 msgstr "мм"
 
-#: ../gui/freehand.py:88
+#: ../gui/freehand.py:89
 msgid "Freehand Drawing"
 msgstr "Рисование от руки"
 
-#: ../gui/freehand.py:91
+#: ../gui/freehand.py:92
 msgid "Paint free-form brush strokes"
 msgstr "Свободное рисование"
 
 #. TRANSLATORS: Short alias for "Slow position tracking". This is
 #. TRANSLATORS: used on the options panel.
-#: ../gui/freehand.py:583
+#: ../gui/freehand.py:584
 msgid "Smooth:"
 msgstr "Стабилизация:"
 
 #. TRANSLATORS: Short alias for "Fake Pressure (for mouse)". This is
 #. TRANSLATORS: used on the options panel.
-#: ../gui/freehand.py:598 ../gui/inputtestwindow.py:62
+#: ../gui/freehand.py:599 ../gui/inputtestwindow.py:62
 msgid "Pressure:"
 msgstr "Сила нажатия:"
 
 #. TRANSLATORS: Short alias for "Fake Barrel Rotation (for mouse)".
 #. TRANSLATORS: This is used on the options panel.
-#: ../gui/freehand.py:616
+#: ../gui/freehand.py:617
 msgid "Twist:"
 msgstr "Кручение:"
 
@@ -2451,11 +2462,11 @@ msgstr ""
 "            #### Traceback\n"
 "        "
 
-#: ../gui/inktool.py:96 ../gui/inktool.py:473
+#: ../gui/inktool.py:97 ../gui/inktool.py:479
 msgid "Inking"
 msgstr "Контуры"
 
-#: ../gui/inktool.py:99
+#: ../gui/inktool.py:100
 msgid "Draw, and then adjust smooth lines"
 msgstr "Рисование сглаженных линий с возможностью дальнейшего редактирования"
 
@@ -2686,36 +2697,36 @@ msgstr "Конец штриха"
 msgid "Pressure variation…"
 msgstr "Вариация силы нажатия…"
 
-#: ../gui/linemode.py:220 ../gui/linemode.py:778
+#: ../gui/linemode.py:221 ../gui/linemode.py:777
 msgid "Lines and Curves"
 msgstr "Линии и кривые"
 
 #. TRANSLATORS: users should never see this message
-#: ../gui/linemode.py:224
+#: ../gui/linemode.py:225
 msgid "Generic line/curve mode"
 msgstr "Режим простых линий и кривых"
 
-#: ../gui/linemode.py:781
+#: ../gui/linemode.py:780
 msgid "Draw straight lines; Shift adds curves, Ctrl constrains angle"
 msgstr ""
 "Рисование прямых линий; Shift добавляет кривизну, Ctrl ограничивает угол "
 "наклона"
 
-#: ../gui/linemode.py:791
+#: ../gui/linemode.py:790
 msgid "Connected Lines"
 msgstr "Связанные линии"
 
-#: ../gui/linemode.py:794
+#: ../gui/linemode.py:793
 msgid "Draw a sequence of lines; Shift adds curves, Ctrl constrains angle"
 msgstr ""
 "Рисование связанных линий; Shift добавляет кривизну, Ctrl ограничивает угол "
 "наклона"
 
-#: ../gui/linemode.py:804
+#: ../gui/linemode.py:803
 msgid "Ellipses and Circles"
 msgstr "Эллипсы и круги"
 
-#: ../gui/linemode.py:807
+#: ../gui/linemode.py:806
 msgid "Draw ellipses; Shift rotates, Ctrl constrains ratio/angle"
 msgstr ""
 "Рисование эллипсов; Shift позволяет поворачивать эллипс, Ctrl ограничивает "
@@ -2830,27 +2841,27 @@ msgstr ""
 "zb13y"
 
 #. TRANSLATORS:"Brush radius" for the options panel. Short.
-#: ../gui/mode.py:584
+#: ../gui/mode.py:592
 msgid "Size:"
 msgstr "Размер:"
 
 #. TRANSLATORS:"Brush opacity" for the options panel. Short.
-#: ../gui/mode.py:586
+#: ../gui/mode.py:594
 msgid "Opaque:"
 msgstr "Непрозрачность:"
 
 #. TRANSLATORS:"Brush hardness/sharpness" for the options panel. Short.
-#: ../gui/mode.py:588
+#: ../gui/mode.py:596
 msgid "Sharp:"
 msgstr "Жесткость:"
 
 #. TRANSLATORS:"Additional pressure gain" for the options panel. Short.
-#: ../gui/mode.py:590
+#: ../gui/mode.py:598
 msgid "Gain:"
 msgstr "Нажим:"
 
 #. TRANSLATORS:"Paint Pigment Mode" for the options panel. Short.
-#: ../gui/mode.py:592
+#: ../gui/mode.py:600
 msgid "Pigment:"
 msgstr "Пигмент:"
 
@@ -2946,84 +2957,68 @@ msgstr "Следующий элемент"
 msgid "(Nothing to show)"
 msgstr "(нечего показывать)"
 
-#: ../gui/symmetry.py:84
+#: ../gui/symmetry.py:83
 msgctxt "symmetry axis edit mode: instructions shown in statusbar"
 msgid "Place axis"
 msgstr "Разместить ось"
 
-#: ../gui/symmetry.py:88
+#: ../gui/symmetry.py:87
 msgctxt "symmetry axis edit mode: instructions shown in statusbar"
 msgid "Move axis"
 msgstr "Переместить ось"
 
-#: ../gui/symmetry.py:92
+#: ../gui/symmetry.py:91
 msgctxt "symmetry axis edit mode: instructions shown in statusbar"
 msgid "Remove axis"
 msgstr "Удалить ось"
 
-#: ../gui/symmetry.py:104
+#: ../gui/symmetry.py:103
 msgctxt "symmetry axis edit mode: mode name (tooltips)"
 msgid "Edit Symmetry Axis"
 msgstr "Настроить ось симметрии"
 
-#: ../gui/symmetry.py:110
+#: ../gui/symmetry.py:109
 msgctxt "symmetry axis edit mode: mode description (tooltips)"
 msgid "Adjust the painting symmetry axis."
 msgstr "Регулировать ось симметрии для рисования."
 
-#: ../gui/symmetry.py:334
+#: ../gui/symmetry.py:345
 msgctxt "symmetry axis options panel: labels"
 msgid "X Position:"
 msgstr "Горизонтальная Позиция:"
 
-#: ../gui/symmetry.py:338
+#: ../gui/symmetry.py:349
 msgctxt "symmetry axis options panel: labels"
 msgid "Y Position:"
 msgstr "Вертикальная Позиция:"
 
-#: ../gui/symmetry.py:342
+#: ../gui/symmetry.py:353
 #, python-format
 msgctxt "symmetry axis options panel: labels"
 msgid "Angle: %.2f°"
 msgstr ""
 
-#: ../gui/symmetry.py:346
+#: ../gui/symmetry.py:357
 msgctxt "symmetry axis options panel: position button: no axis pos."
 msgid "None"
 msgstr "Нет"
 
-#: ../gui/symmetry.py:350
-#, python-format
-msgctxt "symmetry axis options panel: position button: axis pos. in pixels"
-msgid "%d px"
-msgstr "%d px"
-
-#: ../gui/symmetry.py:354
+#: ../gui/symmetry.py:361
 msgctxt "symmetry axis options panel: labels"
 msgid "Alpha:"
 msgstr "Альфа:"
 
-#: ../gui/symmetry.py:358
+#: ../gui/symmetry.py:365
 msgctxt "symmetry axis options panel: labels"
 msgid "Symmetry Type:"
 msgstr "Тип Симметрии:"
 
-#: ../gui/symmetry.py:362
+#: ../gui/symmetry.py:369
 msgctxt "symmetry axis options panel: labels"
 msgid "Rotational lines:"
 msgstr "Линии вращения:"
 
-#: ../gui/symmetry.py:438
-msgctxt "symmetry axis options panel: axis position dialog: window title"
-msgid "X axis Position"
-msgstr "Позиция оси X"
-
-#: ../gui/symmetry.py:470
-msgctxt "symmetry axis options panel: axis position dialog: window title"
-msgid "Y axis Position"
-msgstr "Позиция оси Y"
-
-#: ../gui/symmetry.py:604
+#: ../gui/symmetry.py:536
 msgctxt "symmetry axis options panel: axis active checkbox"
 msgid "Enabled"
 msgstr "Включено"
@@ -3060,19 +3055,19 @@ msgstr "Вид (вторичная)"
 msgid "View (Resetting)"
 msgstr "Вид (сброс)"
 
-#: ../gui/toolstack.py:351
+#: ../gui/toolstack.py:352
 #, python-brace-format
 msgctxt "workspace: sidebar tabs: button tooltips"
 msgid "{tab_title}: close tab"
 msgstr "{tab_title}: закрыть вкладку"
 
-#: ../gui/toolstack.py:355
+#: ../gui/toolstack.py:356
 #, python-brace-format
 msgctxt "workspace: sidebar tabs: button tooltips"
 msgid "{tab_title}: tab options and properties"
 msgstr "{tab_title}: параметры и свойства вкладок"
 
-#: ../gui/toolstack.py:359
+#: ../gui/toolstack.py:360
 #, python-brace-format
 msgctxt "workspace: sidebar tabs: button tooltips"
 msgid "{tab_title}: move tab to other sidebar"
@@ -3090,19 +3085,19 @@ msgstr "Переместить вид"
 msgid "Drag the canvas view"
 msgstr "Переместить отображение холста"
 
-#: ../gui/viewmanip.py:78
+#: ../gui/viewmanip.py:79
 msgid "Zoom View"
 msgstr "Масштаб"
 
-#: ../gui/viewmanip.py:81
+#: ../gui/viewmanip.py:82
 msgid "Zoom the canvas view"
 msgstr "Увеличить отображение холста"
 
-#: ../gui/viewmanip.py:120
+#: ../gui/viewmanip.py:122
 msgid "Rotate View"
 msgstr "Вращение"
 
-#: ../gui/viewmanip.py:123
+#: ../gui/viewmanip.py:125
 msgid "Rotate the canvas view"
 msgstr "Повернуть отображение холста"
 
@@ -3438,25 +3433,25 @@ msgstr "Плитки"
 
 #. TRANSLATORS: Assumption for all "Time period abbreviations":
 #. TRANSLATORS: they don't need ngettext (to support plural/singular)
-#: ../lib/helpers.py:574
+#: ../lib/helpers.py:586
 #, python-brace-format
 msgctxt "Time period abbreviations"
 msgid "{days}d{hours}h"
 msgstr "{days}д{hours}ч"
 
-#: ../lib/helpers.py:576
+#: ../lib/helpers.py:588
 #, python-brace-format
 msgctxt "Time period abbreviations"
 msgid "{hours}h{minutes}m"
 msgstr "{hours}ч{minutes}м"
 
-#: ../lib/helpers.py:578
+#: ../lib/helpers.py:590
 #, python-brace-format
 msgctxt "Time period abbreviation"
 msgid "{minutes}m{seconds}s"
 msgstr "{minutes}м{seconds}с"
 
-#: ../lib/helpers.py:580
+#: ../lib/helpers.py:592
 #, python-brace-format
 msgctxt "Time period abbreviation"
 msgid "{seconds}s"
@@ -4114,12 +4109,12 @@ msgstr "Динамика кисти недоступна для этого па�
 msgid "<big><b>No Brush Dynamics</b></big>"
 msgstr "<big><b>No Brush Dynamics</b></big>"
 
-#: ../gui/inktool.glade:43
+#: ../gui/inktool.glade:44
 msgctxt "Inking tool options: point value sliders: labels: tooltips"
 msgid "Pressure value for the current point"
 msgstr "Величина нажима для текущего узла"
 
-#: ../gui/inktool.glade:48
+#: ../gui/inktool.glade:49
 msgctxt "Inking tool options: point value sliders: labels"
 msgid "Press:"
 msgstr "Сила нажатия:"
@@ -4127,7 +4122,7 @@ msgstr "Сила нажатия:"
 #. The meaning of negative values is *not* affected by text direction.
 #. The widget's RTL/LTR layout, however, *is* affected.
 #. The value (and signs) *is* shown.
-#: ../gui/inktool.glade:82 ../gui/inktool.glade:102
+#: ../gui/inktool.glade:83 ../gui/inktool.glade:103
 msgctxt "Inking tool options: point value sliders: labels: tooltips"
 msgid ""
 "Tilt in the direction of the canvas’s X axis.\n"
@@ -4138,57 +4133,57 @@ msgstr ""
 "Значение 0 означает что перо расположено вертикально.\n"
 "Отрицательные значения подразумевают наклон влево."
 
-#: ../gui/inktool.glade:89
+#: ../gui/inktool.glade:90
 msgctxt "Inking tool options: point value sliders: labels"
 msgid "X-tilt:"
 msgstr "Наклон по X:"
 
-#: ../gui/inktool.glade:109
+#: ../gui/inktool.glade:110
 msgctxt "Inking tool options: point value sliders: labels"
 msgid "Y-tilt:"
 msgstr "Наклон по Y:"
 
-#: ../gui/inktool.glade:144
+#: ../gui/inktool.glade:145
 msgid "Tilt in the canvas Y axis"
 msgstr "Наклон на холсте по оси Y"
 
-#: ../gui/inktool.glade:166
+#: ../gui/inktool.glade:167
 msgctxt "Inking tool options: point value sliders: labels: tooltips"
 msgid "Time since the previous point, in seconds"
 msgstr "Время от последнего узла, в секундах"
 
-#: ../gui/inktool.glade:171
+#: ../gui/inktool.glade:172
 msgctxt "Inking tool options: point value sliders: labels"
 msgid "Time:"
 msgstr "Время:"
 
-#: ../gui/inktool.glade:204
+#: ../gui/inktool.glade:205
 msgctxt "Inking tool options: node delete button: label"
 msgid "Delete Point"
 msgstr "Удалить узел"
 
-#: ../gui/inktool.glade:208
+#: ../gui/inktool.glade:209
 msgctxt "Inking tool options: node delete button: tooltip"
 msgid "Delete the currently selected point"
 msgstr "Удалить выбранный узел"
 
-#: ../gui/inktool.glade:220 ../gui/resources.xml:897
+#: ../gui/inktool.glade:221 ../gui/resources.xml:897
 msgid "Insert Point"
 msgstr "Вставить точку"
 
-#: ../gui/inktool.glade:252 ../gui/resources.xml:911
+#: ../gui/inktool.glade:253 ../gui/resources.xml:911
 msgid "Simplify Points"
 msgstr "Упростить количество точек"
 
-#: ../gui/inktool.glade:256
+#: ../gui/inktool.glade:257
 msgid "Simplify the curve using the Reumann-Witkam algorithm."
 msgstr "Упростите кривую с помощью алгоритма Реуманна-Виткама."
 
-#: ../gui/inktool.glade:268 ../gui/resources.xml:918
+#: ../gui/inktool.glade:269 ../gui/resources.xml:918
 msgid "Cull Points"
 msgstr "Отбраковать точки"
 
-#: ../gui/inktool.glade:272
+#: ../gui/inktool.glade:273
 #, fuzzy
 msgid "Cull every other point from the curve."
 msgstr "Отбраковать все другие точки кривой."
@@ -7021,6 +7016,18 @@ msgstr "Заливка"
 msgctxt "Accel Editor (descriptions)"
 msgid "Fill an area with color."
 msgstr "Залить область цветом."
+
+#~ msgctxt "symmetry axis options panel: position button: axis pos. in pixels"
+#~ msgid "%d px"
+#~ msgstr "%d px"
+
+#~ msgctxt "symmetry axis options panel: axis position dialog: window title"
+#~ msgid "X axis Position"
+#~ msgstr "Позиция оси X"
+
+#~ msgctxt "symmetry axis options panel: axis position dialog: window title"
+#~ msgid "Y axis Position"
+#~ msgstr "Позиция оси Y"
 
 #~ msgctxt "Layer properties widget → Name → label tooltip"
 #~ msgid "The layer’s unique name."
