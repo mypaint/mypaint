@@ -12,8 +12,8 @@ msgstr ""
 "Project-Id-Version: mypaint v2.0.0-alpha.11-2-g0673fe8\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-08-16 11:30+0200\n"
-"PO-Revision-Date: 2020-08-11 20:32+0000\n"
-"Last-Translator: Alexey Napalkov <flynbit@gmail.com>\n"
+"PO-Revision-Date: 2020-08-19 12:32+0000\n"
+"Last-Translator: Дмитрий Ильченко <dmitriy.ilchenko2@gmail.com>\n"
 "Language-Team: Russian <https://hosted.weblate.org/projects/mypaint/mypaint/"
 "ru/>\n"
 "Language: ru\n"
@@ -462,15 +462,14 @@ msgid "Unknown Brush"
 msgstr "Неизвестная кисть"
 
 #: ../gui/brushmanip.py:191
-#, fuzzy
 msgctxt "brush resize mode - name"
 msgid "Resize Brush"
-msgstr "Переименовать кисть"
+msgstr "Изменить размер кисти"
 
 #: ../gui/brushmanip.py:196
 msgctxt "brush resize mode - usage"
 msgid "Change brush size by dragging on the canvas"
-msgstr ""
+msgstr "Изменяйте размер кисти при помощи перетаскивания по полотну"
 
 #: ../gui/brushselectionwindow.py:220
 msgctxt "brush group: context menu for a single brush"
