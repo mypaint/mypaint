@@ -28,18 +28,18 @@ class Progress (object):
 
     >>> prog0 = Progress()
     >>> feedback = []
-    >>> prog0.changed += lambda p: feedback.append(p.fraction)
+    >>> prog0.changed += lambda p: feedback.append(p.fraction())
 
     If the number of items is unset, the fraction is None.  Code that
     doesn't know how much work it has to do can call changed() to notify
     observers, however. This may cause a pulse in GUI progress bars, for
     example.
 
-    >>> prog0.fraction is None
+    >>> prog0.fraction() is None
     True
     >>> prog0.changed()
     >>> prog0.changed()
-    >>> prog0.fraction is None
+    >>> prog0.fraction() is None
     True
     >>> feedback
     [None, None]
@@ -50,7 +50,7 @@ class Progress (object):
     emits the changed() event.
 
     >>> prog0.items = 10
-    >>> prog0.fraction
+    >>> prog0.fraction()
     0.0
     >>> feedback
     [None, None, 0.0]
@@ -75,11 +75,11 @@ class Progress (object):
     >>> p2.items = 4
     >>> feedback
     [None, None, 0.0, 0.1, 0.3, 0.5, 0.5, 0.5]
-    >>> prog0.fraction
+    >>> prog0.fraction()
     0.5
     >>> p1 += 1
     >>> p2 += 1
-    >>> prog0.fraction
+    >>> prog0.fraction()
     0.575
     >>> feedback
     [None, None, 0.0, 0.1, 0.3, 0.5, 0.5, 0.5, 0.55, 0.575]
@@ -139,7 +139,7 @@ class Progress (object):
         if self._items is None:
             self.changed()
             return
-        if sprog.fraction >= 1:
+        if sprog.fraction() >= 1:
             sprog_weight = self._open.pop(sprog)
             self._completed += sprog_weight
             sprog.changed -= self._child_changed_cb
@@ -197,7 +197,7 @@ class Progress (object):
         if self._items is None:
             self.changed()
             return
-        c = lib.helpers.clamp(c, 0, (self._items - self._open_items_weight))
+        c = lib.helpers.clamp(c, 0, (self._items - self._open_items_weight()))
         if c > self._completed:
             self._completed = c
             self.changed()
@@ -236,12 +236,11 @@ class Progress (object):
 
         """
         repr_str = "<Progress %0.1f/%r>" % (
-            self._completed + self._open_items_completion,
+            self._completed + self._open_items_completion(),
             self._items,
         )
         return repr_str
 
-    @property
     def _open_items_weight(self):
         """Total weight of all open items (monitored child objs)."""
         total = 0
@@ -249,18 +248,16 @@ class Progress (object):
             total += w
         return total
 
-    @property
     def _open_items_completion(self):
         """Weighted completion sum over all open items."""
         total = 0.0
         for p, w in self._open.items():
-            f = p.fraction
+            f = p.fraction()
             if f is None:
                 f = 0.0
             total += f * float(w)
         return total
 
-    @property
     def fraction(self):
         """Read-only completeness fraction."""
         if self._items is None:
@@ -268,7 +265,7 @@ class Progress (object):
         if self._items <= 0:
             return 1.0
         f1 = float(self._completed)
-        f1 += self._open_items_completion
+        f1 += self._open_items_completion()
         f1 /= float(self._items)
         return lib.helpers.clamp(f1, 0.0, 1.0)
 
@@ -298,7 +295,7 @@ class Progress (object):
         sprog_weight = max(1, int(weight))
         sprog = Progress()
         if self._items is not None:
-            c = self._completed + self._open_items_weight + sprog_weight
+            c = self._completed + self._open_items_weight() + sprog_weight
             if c < self._items:
                 sprog.changed += self._child_changed_cb
                 self._open[sprog] = sprog_weight
