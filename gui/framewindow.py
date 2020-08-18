@@ -1,5 +1,5 @@
 # This file is part of MyPaint.
-# Copyright (C) 2010-2018 by the MyPaint Development Team
+# Copyright (C) 2010-2020 by the MyPaint Development Team
 # Copyright (C) 2012-2013 by Martin Renold <martinxyz@gmx.ch>
 #
 # This program is free software; you can redistribute it and/or modify
@@ -19,7 +19,6 @@ from lib.gibindings import Gdk
 from gettext import gettext as _
 import cairo
 
-from . import windowing
 from gui.tileddrawwidget import TiledDrawWidget  # noqa
 import gui.mode
 from lib.color import RGBColor
@@ -29,9 +28,6 @@ import lib.helpers
 from lib.document import DEFAULT_RESOLUTION
 import gui.cursor
 import gui.style
-
-
-## Class defs
 
 
 class _EditZone:
@@ -63,12 +59,12 @@ class FrameEditMode (gui.mode.ScrollableModeMixin,
     active_cursor = None
 
     unmodified_persist = True
-    permitted_switch_actions = set([
+    permitted_switch_actions = {
         'ShowPopupMenu',
         'RotateViewMode',
         'ZoomViewMode',
         'PanViewMode',
-    ])
+    }
 
     EDGE_SENSITIVITY = 10  # pixels
 
@@ -185,12 +181,8 @@ class FrameEditMode (gui.mode.ScrollableModeMixin,
         model.set_frame([x, y, w, h], user_initiated=True)
 
     def leave(self, **kwds):
-        """Exit the mode, hiding any dialogs"""
-        dialog = self.get_options_widget()._size_dialog
         if self.doc:
             self.doc.tdw.queue_draw()
-            if self not in self.doc.modes:
-                dialog.hide()
         super(FrameEditMode, self).leave(**kwds)
 
     def _get_zone(self, tdw, xd, yd):
@@ -413,16 +405,11 @@ class FrameEditMode (gui.mode.ScrollableModeMixin,
         return cls._OPTIONS_WIDGET
 
 
-class FrameEditOptionsWidget (Gtk.Alignment):
+class FrameEditOptionsWidget (Gtk.Grid):
     """An options widget for directly editing frame values"""
 
     def __init__(self):
-        super(FrameEditOptionsWidget, self).__init__(
-            xalign=0.5,
-            yalign=0.5,
-            xscale=1.0,
-            yscale=1.0,
-        )
+        super(FrameEditOptionsWidget, self).__init__()
 
         from gui.application import get_app
         self.app = get_app()
@@ -459,32 +446,20 @@ class FrameEditOptionsWidget (Gtk.Alignment):
         self.dpi_adj.connect('value-changed',
                              self.on_dpi_adjustment_changed)
 
-        self._update_size_button()
-
     def _init_ui(self):
         # Dialog for editing dimensions (width, height, DPI)
         app = self.app
-        buttons = (Gtk.STOCK_OK, Gtk.ResponseType.ACCEPT)
-        self._size_dialog = windowing.Dialog(
-            app, _("Frame Size"), app.drawWindow,
-            buttons=buttons
-        )
-        unit = _('px')
 
         height_label = self._new_key_label(_('Height:'))
         width_label = self._new_key_label(_('Width:'))
         dpi_label1 = self._new_key_label(_('Resolution:'))
 
-        dpi_label2 = Gtk.Label(label=_('DPI'))
-        dpi_label2.set_alignment(0.0, 0.5)
-        dpi_label2.set_hexpand(False)
-        dpi_label2.set_vexpand(False)
+        dpi_label2 = self._new_key_label(_('DPI'))
         dpi_label2.set_tooltip_text(
             _("Dots Per Inch (really Pixels Per Inch)")
         )
 
-        color_label = Gtk.Label(label=_('Color:'))
-        color_label.set_alignment(0.0, 0.5)
+        color_label = self._new_key_label(_('Color:'))
 
         height_entry = Gtk.SpinButton(
             adjustment=self.height_adj,
@@ -522,14 +497,6 @@ class FrameEditOptionsWidget (Gtk.Alignment):
         color_button.set_alpha(color_alpha)
         color_button.set_title(_("Frame Color"))
         color_button.connect("color-set", self._color_set_cb)
-        color_align = Gtk.Alignment.new(0, 0.5, 0, 0)
-        color_align.add(color_button)
-
-        size_grid = Gtk.Grid()
-        size_grid.set_border_width(12)
-
-        size_grid.set_row_spacing(6)
-        size_grid.set_column_spacing(6)
 
         unit_combobox = Gtk.ComboBoxText()
         for unit in UnitAdjustment.CONVERT_UNITS.keys():
@@ -542,48 +509,40 @@ class FrameEditOptionsWidget (Gtk.Alignment):
         unit_combobox.set_vexpand(False)
         self._unit_combobox = unit_combobox
 
-        row = 0
-        label = self._new_header_label(_("<b>Frame dimensions</b>"))
-        label.set_margin_top(0)
-        size_grid.attach(label, 0, row, 3, 1)
-
-        row += 1
-        size_grid.attach(width_label, 0, row, 1, 1)
-        size_grid.attach(width_entry, 1, row, 1, 1)
-        size_grid.attach(unit_combobox, 2, row, 1, 1)
-
-        row += 1
-        size_grid.attach(height_label, 0, row, 1, 1)
-        size_grid.attach(height_entry, 1, row, 1, 1)
-
-        row += 1
-        label = self._new_header_label(_("<b>Pixel density</b>"))
-        size_grid.attach(label, 0, row, 3, 1)
-
-        row += 1
-        size_grid.attach(dpi_label1, 0, row, 1, 1)
-        size_grid.attach(dpi_entry, 1, row, 1, 1)
-        size_grid.attach(dpi_label2, 2, row, 1, 1)
-
         # Options panel UI
-        opts_table = Gtk.Table(3, 3)
-        opts_table.set_border_width(3)
-        xopts = Gtk.AttachOptions.FILL | Gtk.AttachOptions.EXPAND
-        yopts = Gtk.AttachOptions.FILL
-        xpad = ypad = 3
+        self.set_border_width(3)
+        self.set_row_spacing(6)
+        self.set_column_spacing(6)
 
         row = 0
-        size_button = Gtk.Button(label="<size-summary>")
-        self._size_button = size_button
-        size_button.connect("clicked", self._size_button_clicked_cb)
-        opts_table.attach(size_button, 0, 2, row, row+1,
-                          xopts, yopts, xpad, ypad)
+
+        self.enable_button = Gtk.CheckButton()
+        frame_toggle_action = self.app.find_action("FrameToggle")
+        self.enable_button.set_related_action(frame_toggle_action)
+        self.enable_button.set_label(_('Enabled'))
+        self.attach(self.enable_button, 0, row, 3, 1)
 
         row += 1
-        opts_table.attach(color_label, 0, 1, row, row+1,
-                          xopts, yopts, xpad, ypad)
-        opts_table.attach(color_align, 1, 2, row, row+1,
-                          xopts, yopts, xpad, ypad)
+        label = self._new_header_label(_("<b>Frame dimensions</b>"))
+        self.attach(label, 0, row, 3, 1)
+
+        row += 1
+        self.attach(width_entry, 1, row, 1, 1)
+        self.attach(unit_combobox, 2, row, 1, 1)
+        self.attach(width_label, 0, row, 1, 1)
+
+        row += 1
+        self.attach(height_label, 0, row, 1, 1)
+        self.attach(height_entry, 1, row, 1, 1)
+
+        row += 1
+        self.attach(dpi_label1, 0, row, 1, 1)
+        self.attach(dpi_entry, 1, row, 1, 1)
+        self.attach(dpi_label2, 2, row, 1, 1)
+
+        row += 1
+        self.attach(color_label, 0, row, 1, 1)
+        self.attach(color_button, 1, row, 3, 1)
 
         crop_layer_button = Gtk.Button(label=_('Set Frame to Layer'))
         crop_layer_button.set_tooltip_text(_("Set frame to the extents of "
@@ -603,33 +562,14 @@ class FrameEditOptionsWidget (Gtk.Alignment):
         trim_button.set_tooltip_text(_("Trim parts of the current layer "
                                        "which lie outside the frame"))
 
-        self.enable_button = Gtk.CheckButton()
-        frame_toggle_action = self.app.find_action("FrameToggle")
-        self.enable_button.set_related_action(frame_toggle_action)
-        self.enable_button.set_label(_('Enabled'))
+        row += 1
+        self.attach(crop_layer_button, 0, row, 3, 1)
 
         row += 1
-        opts_table.attach(self.enable_button, 1, 2, row, row+1,
-                          xopts, yopts, xpad, ypad)
+        self.attach(crop_document_button, 0, row, 3, 1)
 
         row += 1
-        opts_table.attach(crop_layer_button, 0, 2, row, row+1,
-                          xopts, yopts, xpad, ypad)
-
-        row += 1
-        opts_table.attach(crop_document_button, 0, 2, row, row+1,
-                          xopts, yopts, xpad, ypad)
-
-        row += 1
-        opts_table.attach(trim_button, 0, 2, row, row+1,
-                          xopts, yopts, xpad, ypad)
-
-        content_area = self._size_dialog.get_content_area()
-        content_area.pack_start(size_grid, True, True, 0)
-
-        self._size_dialog.connect('response', self._size_dialog_response_cb)
-
-        self.add(opts_table)
+        self.attach(trim_button, 0, row, 3, 1)
 
     @classmethod
     def _new_header_label(cls, markup):
@@ -651,10 +591,6 @@ class FrameEditOptionsWidget (Gtk.Alignment):
         label.set_margin_start(6)
         label.set_margin_end(6)
         return label
-
-    def _size_dialog_response_cb(self, dialog, response_id):
-        if response_id == Gtk.ResponseType.ACCEPT:
-            dialog.hide()
 
     def get_unit_text(self):
         combobox = self._unit_combobox
@@ -682,7 +618,6 @@ class FrameEditOptionsWidget (Gtk.Alignment):
         active_unit = self.get_unit_text()
         self.width_adj.set_unit(active_unit)
         self.height_adj.set_unit(active_unit)
-        self._update_size_button()
 
     def on_size_adjustment_changed(self, adjustment):
         """Update the frame size in the model."""
@@ -709,25 +644,11 @@ class FrameEditOptionsWidget (Gtk.Alignment):
     def _frame_updated_cb(self, model, old_frame, new_frame):
         """Update the UI to reflect the model."""
         self.callbacks_active = True  # Prevent callback loops
-        dpi = model.get_resolution()
-        self.dpi_adj.set_value(dpi)
+        self.dpi_adj.set_value(model.get_resolution())
         x, y, w, h = new_frame
         self.width_adj.set_px_value(w)
         self.height_adj.set_px_value(h)
-        self._update_size_button()
         self.callbacks_active = False
-
-    def _update_size_button(self):
-        text = _(u"{width:g}\u00D7{height:g} {units}").format(
-            width=self.width_adj.get_unit_value_display(),
-            height=self.height_adj.get_unit_value_display(),
-            units=self.get_unit_text(),
-        )
-        self._size_button.set_label(text)
-
-    def _size_button_clicked_cb(self, button):
-        self._size_dialog.show_all()
-
 
 class FrameOverlay (Overlay):
     """Overlay showing the frame, and edit boxes if in FrameEditMode
@@ -944,6 +865,7 @@ class UnitAdjustment(Gtk.Adjustment):
         self.set_step_increment(UnitAdjustment.CONVERT_UNITS[unit][3])
         self.set_page_increment(UnitAdjustment.CONVERT_UNITS[unit][4])
         self.spin_button.set_digits(UnitAdjustment.CONVERT_UNITS[unit][5])
+
         self.px_value = self.convert_to_px(self.get_value(), self.old_unit)
         self.unit_value = self.convert_to_unit(self.px_value, self.active_unit)
         self.set_value(self.unit_value)
