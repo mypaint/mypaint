@@ -499,11 +499,9 @@ class FrameEditOptionsWidget (Gtk.Grid):
         color_button.connect("color-set", self._color_set_cb)
 
         unit_combobox = Gtk.ComboBoxText()
-        for unit in UnitAdjustment.CONVERT_UNITS.keys():
-            unit_combobox.append_text(unit)
-        for i, key in enumerate(UnitAdjustment.CONVERT_UNITS):
-            if key == _('px'):
-                unit_combobox.set_active(i)
+        for unit in sorted(UnitAdjustment.CONVERT_UNITS.keys()):
+            unit_combobox.append_text(_Unit.STRINGS[unit])
+        unit_combobox.set_active(_Unit.PX)
         unit_combobox.connect('changed', self.on_unit_changed)
         unit_combobox.set_hexpand(False)
         unit_combobox.set_vexpand(False)
@@ -592,14 +590,6 @@ class FrameEditOptionsWidget (Gtk.Grid):
         label.set_margin_end(6)
         return label
 
-    def get_unit_text(self):
-        combobox = self._unit_combobox
-        model = combobox.get_model()
-        active = combobox.get_active()
-        if active < 0:
-            return None
-        return model[active][0]
-
     def crop_frame_cb(self, button, command):
         model = self.app.doc.model
         if command == 'CropFrameToLayer':
@@ -615,7 +605,7 @@ class FrameEditOptionsWidget (Gtk.Grid):
         self.app.doc.tdw.queue_draw()
 
     def on_unit_changed(self, unit_combobox):
-        active_unit = self.get_unit_text()
+        active_unit = unit_combobox.get_active()
         self.width_adj.set_unit(active_unit)
         self.height_adj.set_unit(active_unit)
 
@@ -825,14 +815,28 @@ class FrameOverlay (Overlay):
         editmode.remove_button_pos = button_pos
 
 
+class _Unit:
+    PX = 0
+    IN = 1
+    CM = 2
+    MM = 3
+
+    STRINGS = {
+        PX: _('px'),
+        IN: _('in'),
+        CM: _('cm'),
+        MM: _('mm'),
+    }
+
+
 class UnitAdjustment(Gtk.Adjustment):
 
     CONVERT_UNITS = {
         # {unit: (conv_factor, upper, lower, step_incr, page_incr, digits)}
-        _('px'): (0.0, 32000, 1, 1, 128, 0),
-        _('inch'): (1.0, 200, 0.01, 0.01, 1, 2),
-        _('cm'): (2.54, 500, 0.1, 0.1, 1, 1),
-        _('mm'): (25.4, 5000, 1, 1, 10, 0),
+        _Unit.PX: (0.0, 32000, 1, 1, 128, 0),
+        _Unit.IN: (1.0, 200, 0.01, 0.01, 1, 2),
+        _Unit.CM: (2.54, 500, 0.1, 0.1, 1, 1),
+        _Unit.MM: (25.4, 5000, 1, 1, 10, 0),
     }
 
     def __init__(self, value=0, lower=0, upper=0, step_increment=0,
@@ -846,8 +850,8 @@ class UnitAdjustment(Gtk.Adjustment):
         )
         self.px_value = value
         self.unit_value = value
-        self.active_unit = _('px')
-        self.old_unit = _('px')
+        self.active_unit = _Unit.PX
+        self.old_unit = _Unit.PX
         self.dpi = dpi
 
     def set_spin_button(self, button):
@@ -900,11 +904,11 @@ class UnitAdjustment(Gtk.Adjustment):
         return uvalue
 
     def convert_to_px(self, value, unit):
-        if unit == _('px'):
+        if unit == _Unit.PX:
             return value
         return value / UnitAdjustment.CONVERT_UNITS[unit][0] * self.dpi
 
     def convert_to_unit(self, px, unit):
-        if unit == _('px'):
+        if unit == _Unit.PX:
             return px
         return px * UnitAdjustment.CONVERT_UNITS[unit][0] / self.dpi
