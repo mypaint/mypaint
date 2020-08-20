@@ -151,34 +151,18 @@ class FrameEditMode (gui.mode.ScrollableModeMixin,
         as possible.
 
         """
-        model = tdw.doc
-        alloc = tdw.get_allocation()
-        if not pos:
-            pos = (
-                alloc.width * 0.5 + alloc.x,
-                alloc.height * 0.5 + alloc.y,
-            )
-        frame_center = tdw.display_to_model(*pos)
-        frame_size = None
-        corners_disp = (
-            (alloc.x, alloc.y),
-            (alloc.x + alloc.width, alloc.y),
-            (alloc.x + alloc.width, alloc.y + alloc.height),
-            (alloc.x, alloc.y + alloc.height),
-        )
-        for corner_disp in corners_disp:
-            corner = tdw.display_to_model(*corner_disp)
-            dist = math.hypot(corner[0] - frame_center[0],
-                              corner[1] - frame_center[1])
-            if frame_size is None or dist < frame_size:
-                frame_size = dist
-        # frame_size /= 2.0
-        frame_size = int(round(max(frame_size, 100)))
-        w = frame_size
-        h = frame_size
-        x = int(round(frame_center[0] - frame_size/2.0))
-        y = int(round(frame_center[1] - frame_size/2.0))
-        model.set_frame([x, y, w, h], user_initiated=True)
+        corners = tdw.get_corners_model_coords()
+        if pos:
+            cx, cy = tdw.display_to_model(*pos)
+        else:
+            (_x1, _y1), (_x2, _y2) = corners[::2]
+            cx, cy = (_x2 + _x1) / 2.0, (_y1 + _y2) / 2.0
+        # Set the frame size to the smallest diagonal
+        shortest = min(math.hypot(_x - cx, _y - cy) for _x, _y in corners[:2])
+        frame_size = int(round(max(100, shortest)))
+        x = int(round(cx - frame_size/2.0))
+        y = int(round(cy - frame_size/2.0))
+        tdw.doc.set_frame([x, y, frame_size, frame_size], user_initiated=True)
 
     def leave(self, **kwds):
         if self.doc:
