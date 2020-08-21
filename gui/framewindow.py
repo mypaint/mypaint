@@ -16,6 +16,7 @@ import functools
 
 from lib.gibindings import Gtk
 from lib.gibindings import Gdk
+from lib.gibindings import GLib
 from gettext import gettext as _
 import cairo
 
@@ -107,6 +108,8 @@ class FrameEditMode (gui.mode.ScrollableModeMixin,
         self.remove_button_pos = None   # updated by overlay's paint()
         self._click_info = None
         self._entered_before = False
+        self._change_timeout_id = None
+        self._queued_frame = None
 
     def enter(self, doc, **kwds):
         """Enter the mode"""
@@ -165,6 +168,8 @@ class FrameEditMode (gui.mode.ScrollableModeMixin,
         tdw.doc.set_frame([x, y, frame_size, frame_size], user_initiated=True)
 
     def leave(self, **kwds):
+        if not self._change_timeout_id and self._queued_frame is not None:
+            self._set_frame()
         if self.doc:
             self.doc.tdw.queue_draw()
         super(FrameEditMode, self).leave(**kwds)
@@ -351,12 +356,12 @@ class FrameEditMode (gui.mode.ScrollableModeMixin,
     def drag_update_cb(self, tdw, event, ev_x, ev_y, dx, dy):
         model = self.doc.model
         if model.frame_enabled:
-            mx0, my0 = self._start_model_pos
-            mx, my = tdw.display_to_model(ev_x, ev_y)
-            fdx = int(round(mx - mx0))
-            fdy = int(round(my - my0))
             drag_effect = self.DRAG_EFFECTS.get(self._zone)
             if drag_effect:
+                mx0, my0 = self._start_model_pos
+                mx, my = tdw.display_to_model(ev_x, ev_y)
+                fdx = int(round(mx - mx0))
+                fdy = int(round(my - my0))
                 mdx, mdy, mdw, mdh = drag_effect
                 x, y, w, h = self._orig_frame
                 x0, y0 = x, y
@@ -374,11 +379,25 @@ class FrameEditMode (gui.mode.ScrollableModeMixin,
                 if mdh:
                     h += mdh * fdy
                     h = max(h, self._MIN_FRAME_SIZE)
-                new_frame = (x, y, w, h)
-                if new_frame != model.get_frame():
-                    model.set_frame(new_frame, user_initiated=True)
+                self._queue_frame_change(model, (x, y, w, h))
         return super(FrameEditMode, self).drag_update_cb(
             tdw, event, ev_x, ev_y, dx, dy)
+
+    def _queue_frame_change(self, model, new_frame):
+        """Queue a frame change (that may trigger a redraw)"""
+        self._queued_frame = (model, new_frame)
+        if not self._change_timeout_id:
+            self._change_timeout_id = GLib.timeout_add(
+                interval=33.33,  # 30 fps cap
+                function=self._set_queued_frame,
+            )
+
+    def _set_queued_frame(self):
+        model, new_frame = self._queued_frame
+        self._queued_frame = None
+        if new_frame != model.get_frame():
+            model.set_frame(new_frame, user_initiated=True)
+        self._change_timeout_id = None
 
     def get_options_widget(self):
         """Get the (class singleton) options widget"""
