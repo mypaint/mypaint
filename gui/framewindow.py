@@ -23,9 +23,11 @@ import cairo
 from gui.tileddrawwidget import TiledDrawWidget  # noqa
 import gui.mode
 from lib.color import RGBColor
+from lib.alg import pairwise, intersection_of_vector_and_poly, LineType
 from . import uicolor
 from .overlays import Overlay
 import lib.helpers
+from lib.helpers import Rect
 from lib.document import DEFAULT_RESOLUTION
 import gui.cursor
 import gui.style
@@ -40,6 +42,9 @@ class _EditZone:
     OUTSIDE = 0x10
     REMOVE_FRAME = 0x20
     CREATE_FRAME = 0x30
+
+
+_SIDES = (_EditZone.LEFT, _EditZone.TOP, _EditZone.RIGHT, _EditZone.BOTTOM)
 
 
 class FrameEditMode (gui.mode.ScrollableModeMixin,
@@ -439,6 +444,12 @@ class FrameEditOptionsWidget (Gtk.Grid):
             step_increment=76,  # hack: 3 clicks 72->300
             page_increment=dpi)
 
+        frame_overlays = list(filter(
+            lambda o: isinstance(o, FrameOverlay),
+            self.app.doc.tdw.display_overlays))
+        assert len(frame_overlays) == 1, "Should be exactly 1 frame overlay!"
+        self._overlay = frame_overlays[0]
+
         docmodel.frame_updated += self._frame_updated_cb
 
         self._init_ui()
@@ -450,8 +461,6 @@ class FrameEditOptionsWidget (Gtk.Grid):
                              self.on_dpi_adjustment_changed)
 
     def _init_ui(self):
-        # Dialog for editing dimensions (width, height, DPI)
-        app = self.app
 
         height_label = self._new_key_label(_('Height:'))
         width_label = self._new_key_label(_('Width:'))
@@ -605,7 +614,7 @@ class FrameEditOptionsWidget (Gtk.Grid):
         r, g, b = uicolor.from_gdk_color(color_gdk).get_rgb()
         a = colorbutton.get_alpha() / 65535
         self.app.preferences["frame.color_rgba"] = (r, g, b, a)
-        self.app.doc.tdw.queue_draw()
+        self._overlay.redraw(color_change=True)
 
     def on_unit_changed(self, unit_combobox):
         active_unit = unit_combobox.get_active()
@@ -653,20 +662,141 @@ class FrameOverlay (Overlay):
 
     OUTLINE_WIDTH = 1
 
+    # Which edges belong to which corner, CW from top left
+    _ZONE_EDGES = [sum(p) for p in pairwise(_SIDES)]
+
     def __init__(self, doc):
         """Initialize overlay"""
         Overlay.__init__(self)
         self.doc = doc
         self.app = doc.app
         self._trash_icon_pixbuf = None
+        # Cached data used for painting and to minimize redraw areas
+        self._canvas_rect = None
+        self._canvas_rect_offset = None
+        self._display_corners = []
+        self._prev_display_corners = []
+        self._trash_btn_pos = None
+        # Stores per-edge invalidation rectangles,
+        # indexed canonically: top, right, bottom, left
+        self._prev_rectangles = [(), (), (), ()]
+        self._new_rectangles = [(), (), (), ()]
+        self._prev_disable_button_rectangle = None
+        self._disable_button_rectangle = None
 
-    def _frame_corners(self):
-        """Calculates the frame's corners, in display space"""
+        # Calculate initial data - recalculate on frame changes
+        # and view changes.
+        self._recalculate_coordinates(True)
+        self.app.doc.model.frame_updated += self._frame_updated_cb
+        self.doc.tdw.transformation_updated += self._transformation_updated_cb
+
+    def _frame_updated_cb(self, *args):
+        self._recalculate_coordinates(True, *args)
+
+    def _transformation_updated_cb(self, *args):
+        # The redraw is already triggered at this point
+        self._recalculate_coordinates(False, *args)
+
+    def _recalculate_coordinates(self, redraw, *args):
+        """Calculates geometric data that does not need updating every time"""
+        # Skip calculations when the frame is not enabled (this is important
+        # because otherwise all of this would be recalculated on moving,
+        # scaling and rotating the canvas.
+        if not (self.doc.model.frame_enabled or redraw):
+            return
         tdw = self.doc.tdw
+        # Canvas rectangle - regular and offset
+        self._canvas_rect = Rect.new_from_gdk_rectangle(tdw.get_allocation())
+        self._canvas_rect_offset = self._canvas_rect.expanded(
+            self.OUTLINE_WIDTH * 4)
+        # Frame corners in model coordinates
         x, y, w, h = tuple(self.doc.model.get_frame())
-        points_model = [(x, y), (x+w, y), (x+w, y+h), (x, y+h)]
-        points_disp = [tdw.model_to_display(*p) for p in points_model]
-        return points_disp
+        corners = [(x, y), (x+w, y), (x+w, y+h), (x, y+h)]
+        # Pixel-aligned frame corners in display space
+        d_corners = [tdw.model_to_display(mx, my) for mx, my in corners]
+        pxoffs = 0.5 if (self.OUTLINE_WIDTH % 2) else 0.0
+        self._prev_display_corners = self._display_corners
+        self._display_corners = tuple(
+            (int(x) + pxoffs, int(y) + pxoffs)
+            for x, y in d_corners)
+        # Position of the button for disabling/deleting the frame
+        # Placed near the center of the frame, clamped to the viewport,
+        # with an offset so it does not cover visually small frames
+        # (when the frame _is_ small, or when zoomed out).
+        xs, ys = zip(*d_corners)
+        r = gui.style.FLOATING_BUTTON_RADIUS
+        tx, ty = self._canvas_rect.expanded(-2 * r).clamped_point(
+            sum(xs) / 4.0, sum(ys) / 4.0)
+        self._trash_btn_pos = tx, ty
+        r += 6  # margin for drop shadows
+        self._prev_disable_button_rectangle = self._disable_button_rectangle
+        self._disable_button_rectangle = (tx - r, ty - r, r * 2, r * 2)
+        # Corners
+        self._zone_corners = []
+        radius = gui.style.DRAGGABLE_POINT_HANDLE_SIZE
+        canvas_limit = self._canvas_rect.expanded(radius)
+        for i, (cx, cy) in enumerate(d_corners):
+            if canvas_limit.contains_pixel(cx, cy):
+                self._zone_corners.append((cx, cy, self._ZONE_EDGES[i]))
+        # Intersecting frame lines & calculation of rectangles
+        l_type = LineType.SEGMENT
+        cx, cy, cw, ch = self._canvas_rect
+        canvas_corners = (
+            (cx, cy), (cx + cw, cy), (cx + cw, cy + ch), (cx, cy + ch))
+        intersections = [
+            intersection_of_vector_and_poly(canvas_corners, p1, p2, l_type)
+            for p1, p2 in pairwise(d_corners)]
+
+        self._prev_rectangles = self._new_rectangles
+        self._new_rectangles = [(), (), (), ()]
+        if intersections != [None, None, None, None]:
+            self._new_rectangles = []
+            m = radius + 6  # margin for handle drop shadows
+            for intersection in intersections:
+                if not intersection:
+                    self._new_rectangles.append(())
+                    continue
+                (x0, y0), (x1, y1) = intersection
+                w = abs(x1 - x0) + 2 * m
+                h = abs(y1 - y0) + 2 * m
+                x = min(x0, x1) - m
+                y = min(y0, y1) - m
+                self._new_rectangles.append(Rect(x, y, w, h))
+        if redraw:
+            self.redraw()
+
+    def redraw(self, color_change=False):
+        tdw = self.doc.tdw
+        if color_change:
+            tdw.queue_draw()
+        else:
+            prev_trash = self._prev_disable_button_rectangle
+            new_trash = self._disable_button_rectangle
+            if prev_trash:
+                tdw.queue_draw_area(*prev_trash)
+            if new_trash:
+                tdw.queue_draw_area(*new_trash)
+            old_corners = tuple(pairwise(self._prev_display_corners))
+            new_corners = tuple(pairwise(self._display_corners))
+            prev = self._prev_rectangles
+            new = self._new_rectangles
+            for i, (r1, r2) in enumerate(zip(prev, new)):
+                if r1 == r2:
+                    continue  # Skip if unchanged
+                if r1 and r2:
+                    r1.expand_to_include_rect(r2)
+                    tdw.queue_draw_area(*r1)
+                elif r1 or r2:
+                    r = r1 or r2
+                    corners = new_corners if r == r1 else old_corners
+                    if corners:
+                        (cx0, cy0), (cx1, cy1) = corners[i]
+                        r.expand_to_include_point(cx0, cy0)
+                        r.expand_to_include_point(cx1, cy1)
+                        tdw.queue_draw_area(*r)
+                    else:
+                        tdw.queue_draw()
+                        return
 
     def paint(self, cr):
         """Paints the frame, and the edit boxes if appropriate"""
@@ -675,24 +805,10 @@ class FrameOverlay (Overlay):
             return
 
         # Frame mask: outer closed rectangle just outside the viewport
-        tdw = self.doc.tdw
-        alloc = tdw.get_allocation()
-        w, h = alloc.width, alloc.height
-        margin = 5 * self.OUTLINE_WIDTH
-        canvas_bbox = (
-            0 - margin,
-            0 - margin,
-            2 * margin + w,
-            2 * margin + h,
-        )
-        cr.rectangle(*canvas_bbox)
-        view_x0, view_y0 = alloc.x, alloc.y
-        view_x1, view_y1 = view_x0+alloc.width, view_y0+alloc.height
+        cr.rectangle(*self._canvas_rect_offset)
 
         # Frame mask: inner closed rectangle
-        corners = self._frame_corners()
-        pxoff = 0.5 if (self.OUTLINE_WIDTH % 2) else 0.0
-        p1, p2, p3, p4 = [(int(x)+pxoff, int(y)+pxoff) for x, y in corners]
+        p1, p2, p3, p4 = self._display_corners
         cr.move_to(*p1)
         cr.line_to(*p2)
         cr.line_to(*p3)
@@ -712,7 +828,7 @@ class FrameOverlay (Overlay):
         # clearer, double-strike the edges.
 
         editmode = None
-        for m in reversed(list(self.doc.modes)):
+        for m in self.doc.modes:
             if isinstance(m, FrameEditMode):
                 editmode = m
                 break
@@ -723,16 +839,13 @@ class FrameOverlay (Overlay):
 
         # Editable frame: shadows for the frame edge lines
         cr.set_line_cap(cairo.LINE_CAP_ROUND)
-        edge_width = gui.style.DRAGGABLE_EDGE_WIDTH
-        pxoff = 0.5 if (edge_width % 2) else 0.0
-        p1, p2, p3, p4 = [(int(x)+pxoff, int(y)+pxoff) for x, y in corners]
         zonelines = [
             (_EditZone.TOP, p1, p2),
             (_EditZone.RIGHT, p2, p3),
             (_EditZone.BOTTOM, p3, p4),
             (_EditZone.LEFT, p4, p1),
         ]
-        cr.set_line_width(edge_width)
+        cr.set_line_width(gui.style.DRAGGABLE_EDGE_WIDTH)
         for zone, p, q in zonelines:
             cr.move_to(*p)
             cr.line_to(*q)
@@ -749,15 +862,7 @@ class FrameOverlay (Overlay):
             cr.stroke()
 
         # Editable corners: drag handles (with hover)
-        zonecorners = [
-            (p1, _EditZone.TOP + _EditZone.LEFT),
-            (p2, _EditZone.TOP + _EditZone.RIGHT),
-            (p3, _EditZone.BOTTOM + _EditZone.RIGHT),
-            (p4, _EditZone.BOTTOM + _EditZone.LEFT)
-        ]
-        radius = gui.style.DRAGGABLE_POINT_HANDLE_SIZE
-        for p, zonemask in zonecorners:
-            x, y = p
+        for x, y, zonemask in self._zone_corners:
             if editmode._zone and (editmode._zone == zonemask):
                 col = gui.style.ACTIVE_ITEM_COLOR
             else:
@@ -766,56 +871,33 @@ class FrameOverlay (Overlay):
                 cr=cr,
                 x=x, y=y,
                 color=col,
-                radius=radius,
+                radius=gui.style.DRAGGABLE_POINT_HANDLE_SIZE,
             )
 
-        # Frame remove button
-        p_center = [(p1[i]+p2[i]+p3[i]+p4[i])/4.0 for i in (0, 1)]
-        y_lowest = p_center[1]
-        for p, zone in zonecorners:
-            y = p[1]
-            if y > y_lowest:
-                y_lowest = y
-        y_lowest += 2 * gui.style.FLOATING_BUTTON_RADIUS
-        button_pos = (p_center[0], y_lowest)
+        # Frame remove button position, frame center, constrained to viewport
+        if editmode._zone == _EditZone.REMOVE_FRAME:
+            button_color = gui.style.ACTIVE_ITEM_COLOR
+        else:
+            button_color = gui.style.EDITABLE_ITEM_COLOR
+        bx, by = self._trash_btn_pos
+        gui.drawutils.render_round_floating_button(
+            cr=cr,
+            x=bx, y=by,
+            color=button_color,
+            radius=gui.style.FLOATING_BUTTON_RADIUS,
+            pixbuf=self._trash_icon(),
+        )
+        editmode.remove_button_pos = (bx, by)
 
-        # Constrain the position so that it appears within the viewport
-        margin = 2 * gui.style.FLOATING_BUTTON_RADIUS
-        button_pos = [
-            lib.helpers.clamp(
-                button_pos[0],
-                view_x0 + margin,
-                view_x1 - margin,
-            ),
-            lib.helpers.clamp(
-                button_pos[1],
-                view_y0 + margin,
-                view_y1 - margin,
-            ),
-        ]
-
+    def _trash_icon(self):
+        """Return trash icon, using cached instance if it exists"""
         if not self._trash_icon_pixbuf:
             self._trash_icon_pixbuf = gui.drawutils.load_symbolic_icon(
                 icon_name="mypaint-trash-symbolic",
                 size=gui.style.FLOATING_BUTTON_ICON_SIZE,
                 fg=(0, 0, 0, 1),
             )
-        icon_pixbuf = self._trash_icon_pixbuf
-
-        if editmode._zone == _EditZone.REMOVE_FRAME:
-            button_color = gui.style.ACTIVE_ITEM_COLOR
-        else:
-            button_color = gui.style.EDITABLE_ITEM_COLOR
-
-        gui.drawutils.render_round_floating_button(
-            cr=cr,
-            x=button_pos[0],
-            y=button_pos[1],
-            color=button_color,
-            radius=gui.style.FLOATING_BUTTON_RADIUS,
-            pixbuf=icon_pixbuf,
-        )
-        editmode.remove_button_pos = button_pos
+        return self._trash_icon_pixbuf
 
 
 class _Unit:

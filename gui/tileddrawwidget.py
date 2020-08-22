@@ -922,7 +922,8 @@ class CanvasRenderer (Gtk.DrawingArea, DrawCursorMixin):
         self.queue_draw()
 
     def frame_updated_cb(self, model, old_frame, new_frame):
-        self.queue_draw()
+        pass
+        # self.queue_draw()
 
     ## Transformations and coords
 
