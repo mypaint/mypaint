@@ -763,14 +763,17 @@ class SymmetryOverlay (gui.overlays.Overlay):
         # One rectangle per view intersection - simple and mostly ok, in terms
         # of redraw performance. Should be split up further for long angled
         # lines when we bump requirements so that cairo Regions can be used.
+        margin = 2 * gui.style.DRAGGABLE_EDGE_WIDTH
         for i, (x0, y0), (x1, y1) in self._intersections_view:
-            w = abs(x1 - x0)
-            h = abs(y1 - y0)
-            margin = 2 * gui.style.DRAGGABLE_EDGE_WIDTH
-            x = min(x0, x1) - margin
-            y = min(y0, y1) - margin
-            self._axis_rectangles.append(
-                (x, y, w + 2 * margin, h + 2 * margin))
+            m = margin
+            if self._edit_mode and i == self._active_axis:
+                # compensate for drop shadow
+                m *= 2
+            w = abs(x1 - x0) + 2 * m
+            h = abs(y1 - y0) + 2 * m
+            x = min(x0, x1) - m
+            y = min(y0, y1) - m
+            self._axis_rectangles.append((x, y, w, h))
 
     def _axis_check(self, x, y):
 
