@@ -551,13 +551,13 @@ class Document (CanvasController):  # TODO: rename to "DocumentController"
         redo_action.set_icon_name(redo_icon_name)
         self._redo_action = redo_action
 
-    def _update_undo_redo(self, action, stack):
+    def _update_undo_redo(self, action, stack, cmd_str, plain_str):
         """Set label, tooltip and sensitivity"""
         if len(stack) > 0:
             cmd = stack[-1]
-            desc = UNDO_CMD % cmd.display_name
+            desc = cmd_str % cmd.display_name
         else:
-            desc = UNDO_PLAIN
+            desc = plain_str
         action.set_label(desc)
         action.set_tooltip(desc)
         action.set_sensitive(len(stack) > 0)
@@ -565,8 +565,10 @@ class Document (CanvasController):  # TODO: rename to "DocumentController"
     def _update_command_stack_actions(self, *_ignored):
         """Update the undo and redo actions"""
         stack = self.model.command_stack
-        self._update_undo_redo(self._undo_action, stack.undo_stack)
-        self._update_undo_redo(self._redo_action, stack.redo_stack)
+        self._update_undo_redo(
+            self._undo_action, stack.undo_stack, UNDO_CMD, UNDO_PLAIN)
+        self._update_undo_redo(
+            self._redo_action, stack.redo_stack, REDO_CMD, REDO_PLAIN)
 
     ## Event handling
 
