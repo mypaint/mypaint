@@ -7,8 +7,8 @@ msgstr ""
 "Project-Id-Version: mypaint v2.0.0-alpha.12-342-gc134f1a\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-08-16 11:30+0200\n"
-"PO-Revision-Date: 2020-08-08 15:18+0000\n"
-"Last-Translator: Selyan Sliman Amiri <selyan.kab@gmail.com>\n"
+"PO-Revision-Date: 2020-08-26 16:32+0000\n"
+"Last-Translator: Kahina Messaoudi <messaoudikahina02@gmail.com>\n"
 "Language-Team: Kabyle <https://hosted.weblate.org/projects/mypaint/mypaint/"
 "kab/>\n"
 "Language: kab\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n > 1;\n"
-"X-Generator: Weblate 4.2-dev\n"
+"X-Generator: Weblate 4.2.1-dev\n"
 
 #. TRANSLATORS: Name of first column in the button map preferences.
 #. TRANSLATORS: Refers to an action bound to a mod+button combination.
@@ -4679,7 +4679,6 @@ msgid "Import layers from one or more files."
 msgstr ""
 
 #: ../gui/resources.xml:120
-#, fuzzy
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "Save"
 msgstr "Sekles"
@@ -4690,7 +4689,6 @@ msgid "Save your work to a file."
 msgstr ""
 
 #: ../gui/resources.xml:129
-#, fuzzy
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "Save As…"
 msgstr "Sekles s yisem…"
@@ -4703,7 +4701,7 @@ msgstr ""
 #: ../gui/resources.xml:138
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "Export…"
-msgstr ""
+msgstr "Sifeḍ…"
 
 #: ../gui/resources.xml:139
 msgid "Export your work to a file, but keep working on the same file."
