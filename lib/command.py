@@ -136,8 +136,10 @@ class CommandStack (object):
         cmd = self.get_last_command()
         if cmd is None:
             return None
+        old_name = cmd.display_name
         cmd.update(**kwargs)
-        self.stack_updated()  # the display_name may have changed
+        if old_name != cmd.display_name:
+            self.stack_updated()
         return cmd
 
     @event
