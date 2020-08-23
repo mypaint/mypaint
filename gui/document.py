@@ -190,6 +190,12 @@ class CanvasController (object):
         pass
 
 
+REDO_CMD = _("Redo %s")
+REDO_PLAIN = _("Redo")
+UNDO_CMD = _("Undo %s")
+UNDO_PLAIN = _("Undo")
+
+
 class Document (CanvasController):  # TODO: rename to "DocumentController"
     """Manipulation of a loaded document via the the GUI.
 
@@ -382,6 +388,7 @@ class Document (CanvasController):  # TODO: rename to "DocumentController"
         # Fine-grained observation of various model objects
         cmdstack = self.model.command_stack
         layerstack = self.model.layer_stack
+        self._init_undo_redo_actions()
         observed_events = {
             self._update_command_stack_actions: [
                 cmdstack.stack_updated,
@@ -522,51 +529,44 @@ class Document (CanvasController):  # TODO: rename to "DocumentController"
         """Redo action callback"""
         self.model.redo()
 
-    def _update_command_stack_actions(self, *_ignored):
-        """Update the undo and redo actions"""
-        stack = self.model.command_stack
-        draw_window = self.app.drawWindow
+    def _init_undo_redo_actions(self):
         ag = self.action_group
 
         # Icon names
-        style_state = draw_window.get_style_context().get_state()
-        try:  # GTK 3.8+
-            if style_state & Gtk.StateFlags.DIR_LTR:
-                direction = 'ltr'
-            else:
-                direction = 'rtl'
-        except AttributeError:
-            # Deprecated in 3.8
-            if draw_window.get_direction() == Gtk.TextDirection.LTR:
-                direction = 'ltr'
-            else:
-                direction = 'rtl'
-        undo_icon_name = "mypaint-undo-%s-symbolic" % (direction,)
-        redo_icon_name = "mypaint-redo-%s-symbolic" % (direction,)
+        style_state = self.app.drawWindow.get_style_context().get_state()
+        if style_state & Gtk.StateFlags.DIR_LTR:
+            direction = 'ltr'
+        else:
+            direction = 'rtl'
+        undo_icon_name = "mypaint-undo-%s-symbolic" % direction
+        redo_icon_name = "mypaint-redo-%s-symbolic" % direction
 
         # Undo
         undo_action = ag.get_action("Undo")
-        undo_action.set_sensitive(len(stack.undo_stack) > 0)
         undo_action.set_icon_name(undo_icon_name)
-        if len(stack.undo_stack) > 0:
-            cmd = stack.undo_stack[-1]
-            desc = _("Undo %s") % cmd.display_name
-        else:
-            desc = _("Undo")  # Used when initializing the prefs dialog
-        undo_action.set_label(desc)
-        undo_action.set_tooltip(desc)
+        self._undo_action = undo_action
 
         # Redo
         redo_action = ag.get_action("Redo")
-        redo_action.set_sensitive(len(stack.redo_stack) > 0)
         redo_action.set_icon_name(redo_icon_name)
-        if len(stack.redo_stack) > 0:
-            cmd = stack.redo_stack[-1]
-            desc = _("Redo %s") % cmd.display_name
+        self._redo_action = redo_action
+
+    def _update_undo_redo(self, action, stack):
+        """Set label, tooltip and sensitivity"""
+        if len(stack) > 0:
+            cmd = stack[-1]
+            desc = UNDO_CMD % cmd.display_name
         else:
-            desc = _("Redo")  # Used when initializing the prefs dialog
-        redo_action.set_label(desc)
-        redo_action.set_tooltip(desc)
+            desc = UNDO_PLAIN
+        action.set_label(desc)
+        action.set_tooltip(desc)
+        action.set_sensitive(len(stack) > 0)
+
+    def _update_command_stack_actions(self, *_ignored):
+        """Update the undo and redo actions"""
+        stack = self.model.command_stack
+        self._update_undo_redo(self._undo_action, stack.undo_stack)
+        self._update_undo_redo(self._redo_action, stack.redo_stack)
 
     ## Event handling
 
