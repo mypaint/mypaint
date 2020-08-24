@@ -393,7 +393,7 @@ class _IOProgressUI:
     def _update_progress_bar(self, progress):
         if not self._progress_bar:
             return
-        fraction = progress.fraction
+        fraction = progress.fraction()
         if fraction is None:
             now = self.clock_func()
             if (now - self._last_pulse) > 0.1:
