@@ -348,6 +348,7 @@ class FrameEditMode (gui.mode.ScrollableModeMixin,
         return super(FrameEditMode, self).motion_notify_cb(tdw, event)
 
     def drag_start_cb(self, tdw, event):
+        tdw.renderer.defer_hq_rendering(20)
         model = self.doc.model
         self._orig_frame = tuple(model.get_frame())  # independent copy
         x0, y0 = self.start_x, self.start_y
@@ -357,6 +358,10 @@ class FrameEditMode (gui.mode.ScrollableModeMixin,
             self._update_cursors(tdw)
         self._start_model_pos = tdw.display_to_model(x0, y0)
         return super(FrameEditMode, self).drag_start_cb(tdw, event)
+
+    def drag_stop_cb(self, tdw):
+        tdw.renderer.defer_hq_rendering(0)
+        return super(FrameEditMode, self).drag_stop_cb(tdw)
 
     def drag_update_cb(self, tdw, event, ev_x, ev_y, dx, dy):
         model = self.doc.model
