@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: mypaint v2.0.0-alpha.11-2-g0673fe8\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-08-16 11:30+0200\n"
-"PO-Revision-Date: 2020-07-24 07:24+0000\n"
+"PO-Revision-Date: 2020-08-26 16:32+0000\n"
 "Last-Translator: ssantos <ssantos@web.de>\n"
 "Language-Team: Portuguese <https://hosted.weblate.org/projects/mypaint/"
 "mypaint/pt/>\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n > 1;\n"
-"X-Generator: Weblate 4.2-dev\n"
+"X-Generator: Weblate 4.2.1-dev\n"
 
 #. TRANSLATORS: Name of first column in the button map preferences.
 #. TRANSLATORS: Refers to an action bound to a mod+button combination.
@@ -463,7 +463,7 @@ msgstr "Renomear Pincel"
 #: ../gui/brushmanip.py:196
 msgctxt "brush resize mode - usage"
 msgid "Change brush size by dragging on the canvas"
-msgstr ""
+msgstr "Mudar o tamanho do pincel arrastando na tela"
 
 #: ../gui/brushselectionwindow.py:220
 #, fuzzy
@@ -2199,12 +2199,12 @@ msgstr "A distância em pixels para aumentar ou diminuir o preenchimento"
 #: ../gui/fill.py:752
 msgctxt "fill options: numeric option for blurring fill (label)"
 msgid "Feather:"
-msgstr ""
+msgstr "Desfoque:"
 
 #: ../gui/fill.py:767
 msgctxt "fill options: Feather (tooltip)"
 msgid "The amount of blur to apply to the fill"
-msgstr ""
+msgstr "A quantidade de desfoque a ser aplicada ao preenchimento"
 
 #: ../gui/fill.py:783
 msgctxt "fill options: gap detection toggle (label)"
@@ -3037,7 +3037,7 @@ msgstr "Posição:"
 #, python-format
 msgctxt "symmetry axis options panel: labels"
 msgid "Angle: %.2f°"
-msgstr ""
+msgstr "Ângulo: %.2f°"
 
 #: ../gui/symmetry.py:357
 msgctxt "symmetry axis options panel: position button: no axis pos."
@@ -3169,7 +3169,7 @@ msgstr "Cortar camada"
 
 #: ../lib/command.py:630
 msgid "Uniquify Layer Pixels"
-msgstr ""
+msgstr "Remover pixels vazios da camada"
 
 #: ../lib/command.py:653
 #, fuzzy
@@ -3476,7 +3476,7 @@ msgstr "Finalizando"
 #: ../lib/floodfill.py:138
 msgctxt "uniform square region of pixels, plural noun"
 msgid "tiles"
-msgstr ""
+msgstr "regiões"
 
 #. TRANSLATORS: Assumption for all "Time period abbreviations":
 #. TRANSLATORS: they don't need ngettext (to support plural/singular)
@@ -5399,7 +5399,7 @@ msgstr "Elimina partes da camada ativa que estejam fora da moldura."
 #: ../gui/resources.xml:423
 msgctxt "Menu→Layer→Slice (labels), Accel Editor (labels)"
 msgid "Uniquify Layer Pixels"
-msgstr ""
+msgstr "Remover pixels vazios da camada"
 
 #: ../gui/resources.xml:424
 #, fuzzy
@@ -5410,7 +5410,7 @@ msgstr "Elimina partes da camada ativa que estejam fora da moldura."
 #: ../gui/resources.xml:430
 msgctxt "Menu→Layer→Slice (labels), Accel Editor (labels)"
 msgid "Uniquify Layer Tiles"
-msgstr ""
+msgstr "Remover regiões de pixels vazios da camada"
 
 #: ../gui/resources.xml:431
 msgctxt "Accel Editor (descriptions)"
