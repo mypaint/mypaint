@@ -360,7 +360,7 @@ class PickingGrabPresenter (object):
 
     def _in_grab_grab_broken_cb(self, widget, event):
         logger.debug("Grab broken, cleaning up.")
-        self._ungrab_grabbed_devices(time=event.time)
+        self._ungrab_grabbed_devices()
         return False
 
     def _end_grab(self, event):
