@@ -7,8 +7,8 @@ msgstr ""
 "Project-Id-Version: mypaint v2.0.0-alpha.8-1-g4490f06\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-08-16 11:30+0200\n"
-"PO-Revision-Date: 2019-02-27 14:19+0000\n"
-"Last-Translator: glixx <roman_romul@mail.ru>\n"
+"PO-Revision-Date: 2020-09-06 11:36+0000\n"
+"Last-Translator: antuketot76 <antuketot76@protonmail.com>\n"
 "Language-Team: Malay <https://hosted.weblate.org/projects/mypaint/mypaint/ms/"
 ">\n"
 "Language: ms\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 3.5-dev\n"
+"X-Generator: Weblate 4.3-dev\n"
 
 #. TRANSLATORS: Name of first column in the button map preferences.
 #. TRANSLATORS: Refers to an action bound to a mod+button combination.
@@ -196,7 +196,7 @@ msgstr "Opasiti"
 #: ../gui/brusheditor.py:350
 msgctxt "brush settings list: setting group"
 msgid "Dabs"
-msgstr ""
+msgstr "Dabs"
 
 #: ../gui/brusheditor.py:361
 msgctxt "brush settings list: setting group"
@@ -206,17 +206,17 @@ msgstr "comotan"
 #: ../gui/brusheditor.py:375
 msgctxt "brush settings list: setting group"
 msgid "Speed"
-msgstr ""
+msgstr "Kelajuan"
 
 #: ../gui/brusheditor.py:389
 msgctxt "brush settings list: setting group"
 msgid "Directional Offsets"
-msgstr ""
+msgstr "Arahan Offset"
 
 #: ../gui/brusheditor.py:407
 msgctxt "brush settings list: setting group"
 msgid "Tracking"
-msgstr ""
+msgstr "Mengesan"
 
 #: ../gui/brusheditor.py:418
 msgctxt "brush settings list: setting group"
@@ -226,12 +226,12 @@ msgstr "Lejang"
 #: ../gui/brusheditor.py:429
 msgctxt "brush settings list: setting group"
 msgid "Color"
-msgstr ""
+msgstr "Warna"
 
 #: ../gui/brusheditor.py:447
 msgctxt "brush settings list: setting group"
 msgid "GridMap"
-msgstr ""
+msgstr "Peta Grid"
 
 #: ../gui/brusheditor.py:458
 msgctxt "brush settings list: setting group"
@@ -241,12 +241,12 @@ msgstr "Suai"
 #: ../gui/brusheditor.py:524
 msgctxt "brush settings editor: save brush: error message"
 msgid "No brush selected, please use “Add As New” instead."
-msgstr ""
+msgstr "Tiada berus dipilih, gunakan \"Tambah Baru Sebagai\" seperti."
 
 #: ../gui/brusheditor.py:549
 msgctxt "brush settings editor: rename brush: error message"
 msgid "No brush selected!"
-msgstr ""
+msgstr "Tiada berus dipilih!"
 
 #: ../gui/brusheditor.py:558
 msgctxt "brush settings editor: rename brush: dialog title"
@@ -261,36 +261,36 @@ msgstr "Satu berus dengan nama ini sudah wujud!"
 #: ../gui/brusheditor.py:611
 msgctxt "brush settings editor: delete brush: error message"
 msgid "No brush selected!"
-msgstr ""
+msgstr "Tiada berus dipilih!"
 
 #: ../gui/brusheditor.py:617
 #, python-brace-format
 msgctxt "brush settings editor: delete brush: confirm dialog question"
 msgid "Really delete brush “{brush_name}” from disk?"
-msgstr ""
+msgstr "Mahu buang berus \"{nama_berus}\" dari disk?"
 
 #: ../gui/brusheditor.py:736
 msgctxt "brush settings editor: header: fallback name"
 msgid "(Unnamed brush)"
-msgstr ""
+msgstr "(Berus tanpa nama)"
 
 #: ../gui/brusheditor.py:743
 #, python-brace-format
 msgctxt "brush settings editor: header: is-modified hint"
 msgid "{brush_name} [unsaved]"
-msgstr ""
+msgstr "{nama_berus} [tidak disimpan]"
 
 #: ../gui/brushiconeditor.py:36
 msgid "Brush Icon"
-msgstr ""
+msgstr "Ikon Berus"
 
 #: ../gui/brushiconeditor.py:37
 msgid "Brush Icon (editing)"
-msgstr ""
+msgstr "Ikon Berus"
 
 #: ../gui/brushiconeditor.py:74
 msgid "No brush selected"
-msgstr ""
+msgstr "Tiada berus dipilih"
 
 #: ../gui/brushiconeditor.py:76
 #, python-format
@@ -298,6 +298,8 @@ msgid ""
 "<b>%s</b>\n"
 "<small>Select a valid brush first</small>"
 msgstr ""
+"<b>%s</b>\n"
+"<small>Pilih berus dahulu</small>"
 
 #: ../gui/brushiconeditor.py:79
 #, python-format
@@ -305,6 +307,8 @@ msgid ""
 "<b>%s</b> <i>(modified)</i>\n"
 "<small>Changes are not yet saved</small>"
 msgstr ""
+"<b>%s</b> <i>(modifikasi)</i>\n"
+"<small>Modifikasi tidak disimpan</small>"
 
 #: ../gui/brushiconeditor.py:82
 #, python-format
@@ -312,6 +316,8 @@ msgid ""
 "<b>%s</b> (editing)\n"
 "<small>Paint with any brush or color</small>"
 msgstr ""
+"<b>%s</b> (edit)\n"
+"<small>Warnakan guna sebarang berus atau warna</small>"
 
 #: ../gui/brushiconeditor.py:85
 #, python-format
@@ -319,6 +325,8 @@ msgid ""
 "<b>%s</b>\n"
 "<small>Click ‘Edit’ to make changes to the icon</small>"
 msgstr ""
+"<b>%s</b>\n"
+"<small>Klik ‘Edit’ untuk ubah kepada ikon</small>"
 
 #. TRANSLATORS: begin editing a brush's preview icon
 #: ../gui/brushiconeditor.py:157
@@ -327,7 +335,7 @@ msgstr "Sunting"
 
 #: ../gui/brushiconeditor.py:159
 msgid "Begin editing this preview icon"
-msgstr ""
+msgstr "Mula mengubah ikon preview ini"
 
 #. TRANSLATORS: revert edits to a brush icon
 #: ../gui/brushiconeditor.py:165
