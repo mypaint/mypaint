@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: mypaint v2.0.0-alpha.11-2-g0673fe8\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-08-16 11:30+0200\n"
-"PO-Revision-Date: 2020-06-29 20:41+0000\n"
+"PO-Revision-Date: 2020-09-07 23:36+0000\n"
 "Last-Translator: ihor_ck <igor_ck@outlook.com>\n"
 "Language-Team: Ukrainian <https://hosted.weblate.org/projects/mypaint/"
 "mypaint/uk/>\n"
@@ -18,7 +18,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
 "%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
-"X-Generator: Weblate 4.2-dev\n"
+"X-Generator: Weblate 4.3-dev\n"
 
 #. TRANSLATORS: Name of first column in the button map preferences.
 #. TRANSLATORS: Refers to an action bound to a mod+button combination.
@@ -692,7 +692,7 @@ msgstr "Обрати колір для малювання"
 
 #: ../gui/colors/adjbases.py:699
 msgid "Color details"
-msgstr "Деталі  кольору"
+msgstr "Деталі кольору"
 
 #: ../gui/colors/adjbases.py:872
 msgid "Current brush color, and the color most recently used for painting"
@@ -1944,16 +1944,14 @@ msgid "There are no scrap files yet. Try saving one first."
 msgstr "Файлів чернеток з назвою «%s» ще не існує."
 
 #: ../gui/filehandling.py:1480
-#, fuzzy
 msgctxt "File→Open Next/Prev Scrap confirm dialog: title"
 msgid "Open Next Scrap?"
-msgstr "Відкрити наступну чернетку"
+msgstr "Відкрити наступну чернетку?"
 
 #: ../gui/filehandling.py:1488
-#, fuzzy
 msgctxt "File→Open Next/Prev Scrap confirm dialog: title"
 msgid "Open Previous Scrap?"
-msgstr "Відкрити попередню чернетку"
+msgstr "Відкрити попередню чернетку?"
 
 #: ../gui/filehandling.py:1497
 msgctxt "File→Open Next/Prev Scrap confirm dialog: continue button"
@@ -5329,10 +5327,9 @@ msgid "Make an exact clone of the current layer."
 msgstr ""
 
 #: ../gui/resources.xml:642
-#, fuzzy
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Layer Properties…"
-msgstr "Властивості"
+msgstr "Властивості шару…"
 
 #: ../gui/resources.xml:643
 msgctxt "Accel Editor (descriptions)"
