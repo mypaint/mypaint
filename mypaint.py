@@ -22,6 +22,7 @@ It then passes control to gui.main.main() for command line launching.
 
 import sys
 import os
+from os.path import join
 import re
 import logging
 
@@ -130,7 +131,6 @@ def win32_unicode_argv():
 
 
 def get_paths():
-    join = os.path.join
 
     # Convert sys.argv to a list of unicode objects
     # (actually converting sys.argv confuses gtk, thus we add a new variable)
@@ -223,6 +223,14 @@ def get_paths():
     # When using a prefix-relative path, replace it with the absolute path
     lib.config.mypaint_brushdir = brushdir_path
 
+    old_confpath = check_old_style_config()
+    assert isinstance(datapath, unicode)
+    assert isinstance(iconspath, unicode)
+
+    return datapath, iconspath, old_confpath, localepath
+
+
+def check_old_style_config():
     # Old style config file and user data locations.
     # Return None if using XDG will be correct.
     if sys.platform == 'win32':
@@ -243,12 +251,8 @@ def get_paths():
             logger.info("Its contents can be migrated to $XDG_CONFIG_HOME "
                         "and $XDG_DATA_HOME if you wish.")
             logger.info("For further instructions, see: %s" % wiki_page)
-
     assert isinstance(old_confpath, unicode) or old_confpath is None
-    assert isinstance(datapath, unicode)
-    assert isinstance(iconspath, unicode)
-
-    return datapath, iconspath, old_confpath, localepath
+    return old_confpath
 
 ## Program launch
 
