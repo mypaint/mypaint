@@ -161,7 +161,6 @@ class Presenter (object):
                     else:
                         doc.reset_view(True, True, True)
         finally:
-            self._dialog.set_transient_for(None)
             self._dialog.hide()
         # If an error was detected, tell the user about it.
         # They'll be given a new working doc & cache automatically.
