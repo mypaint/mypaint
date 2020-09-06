@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: mypaint v2.0.0-alpha.12-324-g153de92\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-08-16 11:30+0200\n"
-"PO-Revision-Date: 2020-09-06 11:36+0000\n"
+"PO-Revision-Date: 2020-09-06 12:15+0000\n"
 "Last-Translator: fede s <elfederium@yahoo.com.ar>\n"
 "Language-Team: Spanish <https://hosted.weblate.org/projects/mypaint/mypaint/"
 "es/>\n"
@@ -5422,7 +5422,7 @@ msgstr "Bajar una capa en la pila de capas."
 #: ../gui/resources.xml:511
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "New Painting Layer"
-msgstr "Nueva capa de pintura"
+msgstr "Nueva Capa de Pintura"
 
 #: ../gui/resources.xml:512
 msgctxt "Accel Editor (descriptions)"
@@ -5516,7 +5516,7 @@ msgstr "Como 'Combinar las capas visibles', pero no borras las originales."
 #: ../gui/resources.xml:583
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Delete Layer"
-msgstr "Eliminar capa"
+msgstr "Eliminar Capa"
 
 #: ../gui/resources.xml:584
 msgctxt "Accel Editor (descriptions)"
@@ -6186,7 +6186,7 @@ msgstr ""
 #: ../gui/resources.xml:1187
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
 msgid "Change Brush…"
-msgstr "Cambiar Pincel…"
+msgstr "Cambiar Brocha…"
 
 #: ../gui/resources.xml:1188
 msgctxt "Accel Editor (descriptions)"
@@ -6223,7 +6223,7 @@ msgstr ""
 #: ../gui/resources.xml:1213
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
 msgid "Get More Brushes…"
-msgstr "Obtener Más Pinceles…"
+msgstr "Obtener Más Brochas…"
 
 #: ../gui/resources.xml:1214
 msgctxt "Accel Editor (descriptions)"
@@ -6248,7 +6248,7 @@ msgstr "Ayuda"
 #: ../gui/resources.xml:1237
 msgctxt "Menu→Help (labels), Accel Editor (labels)"
 msgid "Online Help"
-msgstr "Ayuda en línea"
+msgstr "Ayuda en Línea"
 
 #: ../gui/resources.xml:1238
 msgctxt "Accel Editor (descriptions)"
@@ -6342,7 +6342,7 @@ msgstr "Mostrar el menú principal como una ventana emergente."
 #: ../gui/resources.xml:1320
 msgctxt "Menu→View (labels), Accel Editor (labels)"
 msgid "Fullscreen"
-msgstr "Pantalla completa"
+msgstr "Pantalla Completa"
 
 #: ../gui/resources.xml:1321
 msgctxt "Accel Editor (descriptions)"
@@ -6352,7 +6352,7 @@ msgstr "Alternar entre modo de pantalla completa y ventana."
 #: ../gui/resources.xml:1332
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
 msgid "Edit Preferences"
-msgstr "Editar preferencias"
+msgstr "Editar Preferencias"
 
 #: ../gui/resources.xml:1333
 msgctxt "Accel Editor (descriptions)"
@@ -6384,7 +6384,7 @@ msgstr "Cambia la textura de papel de fondo."
 #: ../gui/resources.xml:1355
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
 msgid "Brush Settings Editor"
-msgstr "Editor de ajustes de pincel"
+msgstr "Editor de Ajustes de Brocha"
 
 #: ../gui/resources.xml:1356
 msgctxt "Accel Editor (descriptions)"
@@ -6442,7 +6442,7 @@ msgstr ""
 #: ../gui/resources.xml:1402
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "Color Palette"
-msgstr "Paleta de colores"
+msgstr "Paleta de Colores"
 
 #: ../gui/resources.xml:1403
 msgctxt "Accel Editor (descriptions)"
@@ -6553,7 +6553,7 @@ msgstr ""
 #: ../gui/resources.xml:1488
 msgctxt "Menu→Window (labels), Toolbar (labels), Accel Editor (labels)"
 msgid "Preview Panel"
-msgstr "Panel de vista previa"
+msgstr "Panel de Vista Previa"
 
 #: ../gui/resources.xml:1489
 msgctxt "Accel Editor (descriptions)"
@@ -6563,7 +6563,7 @@ msgstr ""
 #: ../gui/resources.xml:1497
 msgctxt "Menu→View (labels), Accel Editor (labels)"
 msgid "Preview"
-msgstr "Vista previa"
+msgstr "Vista Previa"
 
 #: ../gui/resources.xml:1498
 msgctxt "Accel Editor (descriptions)"
@@ -6575,7 +6575,7 @@ msgstr ""
 #: ../gui/resources.xml:1508
 msgctxt "Menu→Window (labels), Toolbar (labels), Accel Editor (labels)"
 msgid "Tool Options Panel"
-msgstr "Panel Opciones de herramienta"
+msgstr "Panel Opciones de Herramienta"
 
 #: ../gui/resources.xml:1509
 msgctxt "Accel Editor (descriptions)"
@@ -6585,7 +6585,7 @@ msgstr ""
 #: ../gui/resources.xml:1517
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
 msgid "Show Tool Options Panel"
-msgstr "Mostrar el Panel Opciones de herramienta"
+msgstr "Mostrar el Panel Opciones de Herramienta"
 
 #: ../gui/resources.xml:1518
 msgctxt "Accel Editor (descriptions)"
