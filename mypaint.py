@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # This file is part of MyPaint.
 # Copyright (C) 2007-2013 by Martin Renold <martinxyz@gmx.ch>
-# Copyright (C) 2013-2018 by the MyPaint Development Team.
+# Copyright (C) 2013-2020 by the MyPaint Development Team.
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -254,8 +254,8 @@ def check_old_style_config():
     assert isinstance(old_confpath, unicode) or old_confpath is None
     return old_confpath
 
-## Program launch
 
+# Program launch
 
 if __name__ == '__main__':
     # Console logging
@@ -278,15 +278,14 @@ if __name__ == '__main__':
     console_handler.setFormatter(console_formatter)
     debug = os.environ.get("MYPAINT_DEBUG", False)
     logging_level = logging.DEBUG if debug else logging.INFO
-    root_logger = logging.getLogger(None)
+    root_logger = logging.getLogger()
     root_logger.addHandler(console_handler)
     root_logger.setLevel(logging_level)
     if logging_level == logging.DEBUG:
         logger.info("Debugging output enabled via MYPAINT_DEBUG")
 
     # Path determination
-    datapath, iconspath, old_confpath, localepath \
-        = get_paths()
+    datapath, iconspath, old_confpath, localepath = get_paths()
     logger.debug('datapath: %r', datapath)
     logger.debug('iconspath: %r', iconspath)
     logger.debug('old_confpath: %r', old_confpath)
@@ -295,9 +294,9 @@ if __name__ == '__main__':
     # Allow an override version string to be burned in during build.  Comes
     # from an active repository's git information and build timestamp, or
     # the release_info file from a tarball release.
-    try:
+    if 'MYPAINT_VERSION_CEREMONIAL' in globals():
         version = MYPAINT_VERSION_CEREMONIAL
-    except NameError:
+    else:
         version = None
 
     # Start the app.
