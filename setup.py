@@ -8,11 +8,13 @@ import subprocess
 import glob
 import os
 import os.path
+from os.path import join, abspath, normpath
 import pprint
 import sys
 import textwrap
 import tempfile
 import shutil
+import functools
 
 from distutils.command.build import build
 from distutils.command.clean import clean
@@ -483,7 +485,22 @@ class Install (install):
     Same options as the regular install command.
     """
 
+    # Holds installation directory paths
+    # Used by `install_scripts`, which does not have direct
+    # access to the information.
+    INSTALLATION_PATHS = {}
+
     def run(self):
+        # Store installation paths, to be used by `install_scripts`
+        rel_to = functools.partial(rel_to_path, self.install_scripts)
+        path_dict = {
+            'platlib': rel_to(self.install_platlib),
+            'purelib': rel_to(self.install_purelib),
+            'scripts': rel_to(self.install_scripts),
+            'headers': rel_to(self.install_headers),
+            'data': rel_to(self.install_data),
+        }
+        self.INSTALLATION_PATHS.update(path_dict)
         # lib.config is a module generated as part of the build process,
         # and may not exist when the setup script is run,
         # hence it should not (and often cannot) be a top-level import.
@@ -493,6 +510,24 @@ class Install (install):
         data_paths = BuildTranslations.get_translation_paths(self, locales)[1]
         self.distribution.data_files.extend(data_paths)
         install.run(self)
+
+
+def rel_to_path(src_path, dst_path):
+    """Return the relative path to dst_path from src_path
+
+    Example:
+    src_path = /a/b/c/d/
+    dst_path = /a/b/f/g/
+    result = ../../f/g
+    """
+    abs_src = abspath(normpath(src_path))
+    abs_dst = abspath(normpath(dst_path))
+    common_pref = os.path.commonprefix((abs_src, abs_dst))
+    unique_src = abs_src[len(common_pref):]
+    unique_dst = abs_dst[len(common_pref):]
+    steps_back = (1 + unique_src.count(os.sep)) if unique_src else 0
+    steps = ('..',) * steps_back + (unique_dst,)
+    return join(*steps)
 
 
 class Clean (clean):
@@ -593,6 +628,12 @@ class InstallScripts (install_scripts):
     """
 
     def run(self):
+        paths = Install.INSTALLATION_PATHS
+        if not paths:
+            raise RuntimeError(
+                "Installation paths have not been set - `install_scripts`"
+                "must be run as part of `install`, and not independently!"
+            )
         if not self.skip_build:
             self.run_command('build_scripts')
 
@@ -606,15 +647,19 @@ class InstallScripts (install_scripts):
             #
             # Auto-generated version info follows.
             {relinfo_script}
+            {dir_paths}
         """)
         self.mkpath(self.install_dir)
         self.outfiles = []
 
         src_patt = os.path.join(self.build_dir, "*")
         for src in glob.glob(src_patt):
+            paths_str = "{\n %s\n}" % pprint.pformat(paths, indent=4)[1:-1]
+            dir_paths = "MYPAINT_DIR_PATHS = %s" % paths_str
             header = header_tmpl.format(
                 relinfo_script=relinfo_script,
                 source=os.path.basename(src),
+                dir_paths=dir_paths,
             )
             outfiles = self._install_script(src, header)
             self.outfiles.extend(outfiles)
