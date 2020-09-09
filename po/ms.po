@@ -267,7 +267,7 @@ msgstr "Tiada berus dipilih!"
 #, python-brace-format
 msgctxt "brush settings editor: delete brush: confirm dialog question"
 msgid "Really delete brush “{brush_name}” from disk?"
-msgstr "Mahu buang berus \"{nama_berus}\" dari disk?"
+msgstr "Mahu buang berus \"{brush_name}\" dari disk?"
 
 #: ../gui/brusheditor.py:736
 msgctxt "brush settings editor: header: fallback name"
@@ -278,7 +278,7 @@ msgstr "(Berus tanpa nama)"
 #, python-brace-format
 msgctxt "brush settings editor: header: is-modified hint"
 msgid "{brush_name} [unsaved]"
-msgstr "{nama_berus} [tidak disimpan]"
+msgstr "{brush_name} [tidak disimpan]"
 
 #: ../gui/brushiconeditor.py:36
 msgid "Brush Icon"
