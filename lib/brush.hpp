@@ -66,8 +66,12 @@ public:
   bool stroke_to (Surface * surface, float x, float y, float pressure, float xtilt, float ytilt, double dtime, float viewzoom, float viewrotation, float barrel_rotation, bool linear)
   {
       MyPaintSurface *c_surface = surface->get_surface_interface();
-      bool retval = mypaint_brush_stroke_to(c_brush, c_surface, x, y, pressure, xtilt, ytilt, dtime, viewzoom, viewrotation, barrel_rotation, linear);
-      return retval;
+      bool stroke_finished_or_empty;
+
+      Py_BEGIN_ALLOW_THREADS
+          stroke_finished_or_empty = mypaint_brush_stroke_to(c_brush, c_surface, x, y, pressure, xtilt, ytilt, dtime, viewzoom, viewrotation, barrel_rotation, linear);
+      Py_END_ALLOW_THREADS
+      return stroke_finished_or_empty;
   }
 
   double get_total_stroke_painting_time()
