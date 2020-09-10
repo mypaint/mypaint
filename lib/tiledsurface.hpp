@@ -66,7 +66,9 @@ public:
       MyPaintRectangle* rects = this->bbox_rectangles;
       MyPaintRectangles bboxes = {BBOXES, rects};
 
-      mypaint_surface2_end_atomic((MyPaintSurface2 *)c_surface, &bboxes);
+      Py_BEGIN_ALLOW_THREADS
+          mypaint_surface2_end_atomic((MyPaintSurface2 *)c_surface, &bboxes);
+      Py_END_ALLOW_THREADS
 
       // The capacity of the bounding box array will most often exceed the number
       // of rectangles that are actually used. The call to mypaint_surface_end_atomic

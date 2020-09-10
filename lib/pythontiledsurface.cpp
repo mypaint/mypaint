@@ -36,8 +36,9 @@ tile_request_start(MyPaintTiledSurface2 *tiled_surface, MyPaintTileRequest *requ
     const int ty = request->ty;
     PyArrayObject* rgba = NULL;
 
-#pragma omp critical
 {
+    PyGILState_STATE gstate = PyGILState_Ensure();
+
     rgba = (PyArrayObject*)PyObject_CallMethod(self->py_obj, "_get_tile_numpy", "(iii)", tx, ty, readonly);
     if (rgba == NULL) {
         request->buffer = NULL;
@@ -59,7 +60,9 @@ tile_request_start(MyPaintTiledSurface2 *tiled_surface, MyPaintTileRequest *requ
         Py_DECREF((PyObject *)rgba);
         request->buffer = (uint16_t*)PyArray_DATA(rgba);
     }
-} // #end pragma opt critical
+
+    PyGILState_Release(gstate);
+}
 
 
 }
