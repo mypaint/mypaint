@@ -70,12 +70,6 @@ class SubWindow (Gtk.Window):
         # Only hide when the close button is pressed if running as a subwindow
         if app:
             self.connect('delete-event', lambda w, e: self.hide_on_delete())
-        # Mark subwindows as utility windows: many X11 WMs handle this sanely
-        # This has caused issues with OSX and X11.app under GTK2/PyGTK in the
-        # past. OSX builds no longer use X11.app, so this should no longer
-        # need special-casing. Testers: use if not sys.platform == 'darwin':
-        # if needed, and please submit a patch. https://gna.org/bugs/?15838
-        self.set_type_hint(Gdk.WindowTypeHint.UTILITY)
         # Win32 and some Linux DEs are responsive to the following: keeps the
         # window above the main window in fullscreen.
         if app:
