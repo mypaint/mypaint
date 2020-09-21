@@ -7,18 +7,17 @@ msgstr ""
 "Project-Id-Version: mypaint v2.0.0-alpha.8-1-g4490f06\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-08-16 11:30+0200\n"
-"PO-Revision-Date: 2019-02-23 08:18+0000\n"
-"Last-Translator: glixx <roman_romul@mail.ru>\n"
+"PO-Revision-Date: 2020-09-22 02:39+0000\n"
+"Last-Translator: Kornelijus Tvarijanavičius <kornelitvari@protonmail.com>\n"
 "Language-Team: Lithuanian <https://hosted.weblate.org/projects/mypaint/"
 "mypaint/lt/>\n"
 "Language: lt\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=(n % 10 == 1 && (n % 100 < 11 || n % 100 > "
-"19)) ? 0 : ((n % 10 >= 2 && n % 10 <= 9 && (n % 100 < 11 || n % 100 > 19)) ? "
-"1 : 2);\n"
-"X-Generator: Weblate 3.5-dev\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && (n"
+"%100<10 || n%100>=20) ? 1 : 2);\n"
+"X-Generator: Weblate 4.3-dev\n"
 
 #. TRANSLATORS: Name of first column in the button map preferences.
 #. TRANSLATORS: Refers to an action bound to a mod+button combination.
@@ -1529,10 +1528,9 @@ msgid "Open Dragged File?"
 msgstr ""
 
 #: ../gui/drawwindow.py:305
-#, fuzzy
 msgctxt "Open dragged file confirm dialog: continue button"
 msgid "_Open"
-msgstr "Atverti…"
+msgstr "_Atverti"
 
 #: ../gui/drawwindow.py:498
 msgid "Set current color"
@@ -1560,10 +1558,9 @@ msgid "Really Quit?"
 msgstr ""
 
 #: ../gui/drawwindow.py:691
-#, fuzzy
 msgctxt "Quit confirm dialog: continue button"
 msgid "_Quit"
-msgstr "Išeiti"
+msgstr "_Išeiti"
 
 #: ../gui/drawwindow.py:709
 msgid "Import brush package…"
@@ -1809,10 +1806,9 @@ msgid "Export"
 msgstr ""
 
 #: ../gui/filehandling.py:586
-#, fuzzy
 msgctxt "Dialogs (window title): File→Save As…"
 msgid "Save As"
-msgstr "Įrašyti"
+msgstr "Įrašyti kaip"
 
 #: ../gui/filehandling.py:606
 msgctxt "save dialogs: formats and options: (label)"
@@ -1869,10 +1865,9 @@ msgid "_Open…"
 msgstr ""
 
 #: ../gui/filehandling.py:1036
-#, fuzzy
 msgctxt "File→Open: file chooser dialog: title"
 msgid "Open File"
-msgstr "Failas"
+msgstr "Atverti failą"
 
 #: ../gui/filehandling.py:1084
 msgctxt "load dialogs: title"
@@ -1880,10 +1875,9 @@ msgid "Open Scratchpad…"
 msgstr ""
 
 #: ../gui/filehandling.py:1126
-#, fuzzy
 msgctxt "Layers→Import Layers: files-chooser dialog: title"
 msgid "Import Layers"
-msgstr "Sluoksniai"
+msgstr "Importuoti sluoksnius"
 
 #: ../gui/filehandling.py:1433
 msgctxt "File→Open Recent→* confirm dialog: title"
@@ -1891,22 +1885,19 @@ msgid "Open File?"
 msgstr ""
 
 #: ../gui/filehandling.py:1437
-#, fuzzy
 msgctxt "File→Open Recent→* confirm dialog: continue button"
 msgid "_Open"
-msgstr "Atverti…"
+msgstr "_Atverti"
 
 #: ../gui/filehandling.py:1452
-#, fuzzy
 msgctxt "File→Open Most Recent confirm dialog: title"
 msgid "Open Most Recent File?"
-msgstr "Atverti paskutinį naudotą"
+msgstr "Atverti paskiausiai naudotą failą?"
 
 #: ../gui/filehandling.py:1457
-#, fuzzy
 msgctxt "File→Open Most Recent→* confirm dialog: continue button"
 msgid "_Open"
-msgstr "Atverti…"
+msgstr "_Atverti"
 
 #: ../gui/filehandling.py:1471
 msgctxt "File→Open Next/Prev Scrap: error message"
@@ -1924,10 +1915,9 @@ msgid "Open Previous Scrap?"
 msgstr ""
 
 #: ../gui/filehandling.py:1497
-#, fuzzy
 msgctxt "File→Open Next/Prev Scrap confirm dialog: continue button"
 msgid "_Open"
-msgstr "Atverti…"
+msgstr "_Atverti"
 
 #: ../gui/filehandling.py:1512
 msgctxt "File→Revert: status message: canvas has no filename yet"
@@ -2434,10 +2424,9 @@ msgid "Flags"
 msgstr ""
 
 #: ../gui/layers.py:939
-#, fuzzy
 msgctxt "Layers: description: no layer (\"never happens\" condition!)"
 msgid "?layer"
-msgstr "Sluoksniai"
+msgstr "?sluoksnis"
 
 #: ../gui/layers.py:959
 msgctxt "Layers: description parts: unknown mode (fallback str!)"
@@ -3028,9 +3017,8 @@ msgid "Normalize Layer Mode"
 msgstr ""
 
 #: ../lib/command.py:941
-#, fuzzy
 msgid "Import Layers"
-msgstr "Sluoksniai"
+msgstr "Importuoti sluoksnius"
 
 #: ../lib/command.py:943
 #, python-brace-format
@@ -6032,12 +6020,11 @@ msgid "Edit brush icons."
 msgstr ""
 
 #: ../gui/resources.xml:1373
-#, fuzzy
 msgctxt ""
 "Menu→Layer (labels), Menu→Window (labels), Toolbar (labels), Accel Editor "
 "(labels)"
 msgid "Layers Panel"
-msgstr "Sluoksniai"
+msgstr "Sluoksnių skydelis"
 
 #: ../gui/resources.xml:1374
 msgctxt "Accel Editor (descriptions)"
