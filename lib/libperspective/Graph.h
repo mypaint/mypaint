@@ -18,7 +18,6 @@
 #pragma once
 
 #include <string>
-#include <variant>
 #include <map>
 #include <memory>
 #include "Space.h"
