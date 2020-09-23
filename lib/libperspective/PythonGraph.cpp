@@ -21,10 +21,18 @@
 // FIXME python reference leak
 
 namespace {
+    std::string python_to_string(PyObject * obj) {
+        PyObject * objStr = PyObject_Str(obj);
+#if PYTHON_ABI_VERSION == 3
+        return std::string(PyUnicode_AsUTF8(objStr));
+#else
+        return std::string(PyString_AsString(objStr));
+#endif
+    }
+    
     std::string python_type_string(PyObject * obj) {
         PyObject * type = PyObject_Type(obj);
-        PyObject * typeStr = PyObject_Str(type);
-        return std::string(PyUnicode_AsUTF8(typeStr));
+        return python_to_string(type);
     }
     
     struct pyDictReader;
@@ -50,8 +58,7 @@ namespace {
         template<class T> T get (int id);
         std::string get_as_string(int id) {
             PyObject * item = getItem(id);
-            PyObject * str = PyObject_Str(item);
-            return std::string(PyUnicode_AsUTF8(str));
+            return python_to_string(item);
         }
         pyDictReader getDict(int id);
         int getSize() {
@@ -75,7 +82,7 @@ namespace {
             std::cout << "bad type: expected string for list item " << id << "\n";
             std::cout << " \tget type: " << python_type_string(item) << "\n";
         }
-        return std::string(PyUnicode_AsUTF8(item));
+        return python_to_string(item);
     }
     
     struct pyDictReader {
@@ -105,9 +112,7 @@ namespace {
         }
         std::string as_string (const std::string & key) {
             PyObject * item = getItem(key);
-            PyObject * str = PyObject_Str(item);
-            auto todo_test_tmp = PyUnicode_AsUTF8(str);
-            return std::string(todo_test_tmp);
+            return python_to_string(item);
         }
         PyObject * get_object() const {
             return dict;
@@ -124,7 +129,13 @@ namespace {
     };
     template<> int pyDictReader::get(const std::string& key){
         PyObject * item = getItem(key);
-        if (!PyLong_Check(item)) {
+        bool isOk;
+#if PYTHON_ABI_VERSION == 3
+        isOk = PyLong_Check(item);
+#else
+        isOk = PyInt_Check(item) || PyLong_Check(item);
+#endif
+        if (!isOk) {
             std::cout << "bad type: expected Int for dict key " << key << "\n";
             std::cout << " \tget type: " << python_type_string(item) << "\n";
         }
@@ -142,7 +153,7 @@ namespace {
             std::cout << "bad type: expected string for dicte key " << key << "\n";
             std::cout << " \tget type: " << python_type_string(item) << "\n";
         }
-        return std::string(PyUnicode_AsUTF8(item));
+        return python_to_string(item);
     }
     template<> Complex pyDictReader::get(const std::string& key){
         PyObject * item = getItem(key);
