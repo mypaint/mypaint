@@ -758,7 +758,6 @@ class PerspectiveMode(gui.mode.ScrollableModeMixin,
             self._queue_draw_node(point_pos)
 
     def get_overlay_widgets(self):
-        default_color = gui.style.EDITABLE_ITEM_COLOR
         for vis in self._overlay_widgets.getAll():
             yield vis
         if self._state.is_draw():
@@ -951,7 +950,9 @@ class OverlaySpace(OverlayBase):
         view = self._space.get_view().as_projection()
         center = view.get_center_complex()
 
-        corner = center + self._cube_corner * view.get_rotation() * view.get_size()
+        corner = (
+            center + self._cube_corner * view.get_rotation() * view.get_size()
+        )
 
         corner_ray = view.calc_direction(corner)
         corner_3d = view.intersect_view_ray_canvas(corner_ray)
@@ -965,8 +966,8 @@ class OverlaySpace(OverlayBase):
         drag = ("corner", "forward", "up", "side")
 
         for index, point in enumerate(points_cube):
-            point_3d = corner_3d + p.rotate(space.get_rotation(),
-                point.scalar_mul(self._cube_size)
+            point_3d = corner_3d + p.rotate(
+                space.get_rotation(), point.scalar_mul(self._cube_size)
             )
             position = view.calc_pos_from_dir(point_3d)
             diff = (position.real - model_pos[0], position.imag - model_pos[1])
@@ -989,7 +990,10 @@ class OverlaySpace(OverlayBase):
             center = view.get_center_complex()
             up = p.rotate(space.get_rotation(), Quaternion(0, 1, 0, 0))
 
-            corner = center + self._cube_corner * view.get_rotation() * view.get_size()
+            corner = (
+                center
+                + self._cube_corner * view.get_rotation() * view.get_size()
+            )
             corner_ray = view.calc_direction(corner)
             corner_3d = view.intersect_view_ray_canvas(corner_ray)
 
@@ -1036,7 +1040,9 @@ class OverlaySpace(OverlayBase):
         view = self._space.get_view().as_projection()
         center = view.get_center_complex()
 
-        corner = center + self._cube_corner * view.get_rotation() * view.get_size()
+        corner = (
+            center + self._cube_corner * view.get_rotation() * view.get_size()
+        )
 
         corner_ray = view.calc_direction(corner)
         corner_3d = view.intersect_view_ray_canvas(corner_ray)
@@ -1054,8 +1060,8 @@ class OverlaySpace(OverlayBase):
         positions_2d = []
         points_3d = []
         for point in points_cube:
-            point_3d = corner_3d + p.rotate(space.get_rotation(),
-                point.scalar_mul(self._cube_size)
+            point_3d = corner_3d + p.rotate(
+                space.get_rotation(), point.scalar_mul(self._cube_size)
             )
             points_3d.append(point_3d)
             position = view.calc_pos_from_dir(point_3d)
