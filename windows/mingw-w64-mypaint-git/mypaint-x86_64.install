@@ -1,0 +1,23 @@
+post_install() {
+  # gedit's does it, so I guess we must too
+  mingw64/bin/glib-compile-schemas mingw64/share/glib-2.0/schemas
+  # From hicolor-icon-theme:
+  [[ -f mingw64/bin/gtk-update-icon-cache.exe ]] && {
+    mingw64/bin/gtk-update-icon-cache -q -t -f mingw64/share/icons/hicolor
+  }
+  [[ -f mingw64/bin/gtk-update-icon-cache-3.0.exe ]] && {
+    mingw64/bin/gtk-update-icon-cache-3.0 -q -t -f mingw64/share/icons/hicolor
+  }
+  [[ -f mingw64/bin/gdk-pixbuf-query-loaders.exe ]] && {
+    mingw64/bin/gdk-pixbuf-query-loaders.exe --update-cache
+  }
+  return 0
+}
+
+post_upgrade() {
+  post_install
+}
+
+post_remove() {
+  post_install
+}
