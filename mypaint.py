@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # This file is part of MyPaint.
 # Copyright (C) 2007-2013 by Martin Renold <martinxyz@gmx.ch>
-# Copyright (C) 2013-2018 by the MyPaint Development Team.
+# Copyright (C) 2013-2020 by the MyPaint Development Team.
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -11,8 +11,8 @@
 """Platform-dependent setup, and program launch.
 
 This script does all the platform dependent stuff.
-Its main task is to figure out where MyPaint's python modules are,
-and set up paths for i18n message catalogs.
+Its main task is to configure paths to access MyPaint's modules and
+other resources, and set up paths for i18n message catalogs.
 
 It then passes control to gui.main.main() for command line launching.
 
@@ -22,6 +22,8 @@ It then passes control to gui.main.main() for command line launching.
 
 import sys
 import os
+import os.path
+from os.path import join, isdir, dirname, abspath
 import re
 import logging
 
@@ -130,7 +132,6 @@ def win32_unicode_argv():
 
 
 def get_paths():
-    join = os.path.join
 
     # Convert sys.argv to a list of unicode objects
     # (actually converting sys.argv confuses gtk, thus we add a new variable)
@@ -150,58 +151,37 @@ def get_paths():
         sys.argv_unicode = argv_unicode
 
     # Script and its location, in canonical absolute form
-    scriptfile = os.path.realpath(sys.argv_unicode[0])
-    scriptfile = os.path.abspath(os.path.normpath(scriptfile))
-    scriptdir = os.path.dirname(scriptfile)
-    assert isinstance(scriptfile, unicode)
-    assert isinstance(scriptdir, unicode)
-
-    # Determine the installation's directory layout.
-    # Assume a conventional POSIX-style directory structure first,
-    # where the launch script resides in $prefix/bin/.
-    dir_install = scriptdir
-    prefix = os.path.dirname(dir_install)
+    prefix = dirname(abspath(sys.argv_unicode[0]))
     assert isinstance(prefix, unicode)
-    libpath = join(prefix, 'share', 'mypaint')
-    localepath = join(prefix, 'share', 'locale')
-    iconspath = join(prefix, 'share', 'icons')
-    if os.path.exists(libpath) and os.path.exists(iconspath):
-        # This is a normal POSIX-like installation.
-        # The Windows standalone distribution works like this too.
-        libpath_compiled = join(prefix, 'lib', 'mypaint')  # or lib64?
-        sys.path.insert(0, libpath)
-        sys.path.insert(0, libpath_compiled)
-        sys.path.insert(0, join(prefix, 'share'))  # for libmypaint
-        logger.info("Installation layout: conventional POSIX-like structure "
-                    "with prefix %r",
-                    prefix)
-    elif all(map(os.path.exists, ['desktop', 'gui', 'lib'])):
-        # Testing from within the source tree.
-        prefix = None
-        libpath = u'.'
-        iconspath = u'desktop/icons'
-        localepath = os.path.join('build', 'locale')
-        logger.info("Installation layout: not installed, "
-                    "testing from within the source tree")
-    elif sys.platform == 'win32':
-        prefix = None
-        # This is py2exe point of view, all executables in root of
-        # installdir.
-        # XXX: are py2exe builds still relevant? The 1.2.0-beta Windows
-        # installers are kitchen sink affairs.
-        libpath = os.path.realpath(scriptdir)
-        sys.path.insert(0, libpath)
-        sys.path.insert(0, join(prefix, 'share'))  # for libmypaint
-        localepath = join(libpath, 'share', 'locale')
-        iconspath = join(libpath, 'share', 'icons')
-        logger.info("Installation layout: Windows fallback, assuming py2exe")
+
+    # Usually, when installed with setup.py, MYPAINT_DIR_PATHS
+    # is defined in the module, containing all paths we need to set up.
+    if 'MYPAINT_DIR_PATHS' in globals():
+        logger.info("Running from installed script...")
+        global MYPAINT_DIR_PATHS
+        paths = MYPAINT_DIR_PATHS
+        for k, v in paths.items():
+            paths[k] = abspath(join(prefix, v))
+        logger.info("...using static relative paths")
+        purelib_path = paths['purelib']
+        platlib_path = paths['platlib']
+        base_data_path = paths['data']
+        locale_path = join(base_data_path, 'locale')
+        icons_path = join(base_data_path, 'icons')
+        data_path = join(base_data_path, 'mypaint')
+    elif all(map(isdir, ['gui', 'lib', 'desktop'])):
+        purelib_path = platlib_path = data_path = u'.'
+        locale_path = join('build', 'locale')
+        if not isdir(locale_path):
+            logger.warning(
+                'Locale files not found - translations will not work!')
+        icons_path = u'desktop/icons'
     else:
         logger.critical("Installation layout: unknown!")
         raise RuntimeError("Unknown install type; could not determine paths")
 
-    assert isinstance(libpath, unicode)
-
-    datapath = libpath
+    sys.path.insert(0, purelib_path)
+    sys.path.insert(0, platlib_path)
 
     # There is no need to return the datadir of mypaint-data.
     # It will be set at build time. I still check brushes presence.
@@ -214,7 +194,10 @@ def get_paths():
     pref_key = "{installation-prefix}/"
     if brushdir_path.startswith(pref_key):
         logger.info("Using brushdir path relative to installation-prefix")
-        brushdir_path = join(prefix, brushdir_path[len(pref_key):])
+        brushdir_rel = brushdir_path[len(pref_key):]
+        brushdir_path = abspath(join(prefix, "..", brushdir_rel))
+        # When using a prefix-relative path, replace it with the absolute path
+        lib.config.mypaint_brushdir = brushdir_path
     if not os.path.isdir(brushdir_path):
         logger.critical('Default brush collection not found!')
         logger.critical('It should have been here: %r', brushdir_path)
@@ -223,6 +206,14 @@ def get_paths():
     # When using a prefix-relative path, replace it with the absolute path
     lib.config.mypaint_brushdir = brushdir_path
 
+    old_confpath = check_old_style_config()
+    assert isinstance(data_path, unicode)
+    assert isinstance(icons_path, unicode)
+
+    return data_path, icons_path, old_confpath, locale_path
+
+
+def check_old_style_config():
     # Old style config file and user data locations.
     # Return None if using XDG will be correct.
     if sys.platform == 'win32':
@@ -243,15 +234,11 @@ def get_paths():
             logger.info("Its contents can be migrated to $XDG_CONFIG_HOME "
                         "and $XDG_DATA_HOME if you wish.")
             logger.info("For further instructions, see: %s" % wiki_page)
-
     assert isinstance(old_confpath, unicode) or old_confpath is None
-    assert isinstance(datapath, unicode)
-    assert isinstance(iconspath, unicode)
+    return old_confpath
 
-    return datapath, iconspath, old_confpath, localepath
 
-## Program launch
-
+# Program launch
 
 if __name__ == '__main__':
     # Console logging
@@ -274,15 +261,14 @@ if __name__ == '__main__':
     console_handler.setFormatter(console_formatter)
     debug = os.environ.get("MYPAINT_DEBUG", False)
     logging_level = logging.DEBUG if debug else logging.INFO
-    root_logger = logging.getLogger(None)
+    root_logger = logging.getLogger()
     root_logger.addHandler(console_handler)
     root_logger.setLevel(logging_level)
     if logging_level == logging.DEBUG:
         logger.info("Debugging output enabled via MYPAINT_DEBUG")
 
     # Path determination
-    datapath, iconspath, old_confpath, localepath \
-        = get_paths()
+    datapath, iconspath, old_confpath, localepath = get_paths()
     logger.debug('datapath: %r', datapath)
     logger.debug('iconspath: %r', iconspath)
     logger.debug('old_confpath: %r', old_confpath)
@@ -291,9 +277,9 @@ if __name__ == '__main__':
     # Allow an override version string to be burned in during build.  Comes
     # from an active repository's git information and build timestamp, or
     # the release_info file from a tarball release.
-    try:
+    if 'MYPAINT_VERSION_CEREMONIAL' in globals():
         version = MYPAINT_VERSION_CEREMONIAL
-    except NameError:
+    else:
         version = None
 
     # Start the app.
