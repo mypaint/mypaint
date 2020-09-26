@@ -379,8 +379,24 @@ ln -s $BASE_DIR/bin/mypaint my-local-mypaint
 ## Updating to the latest source
 
 Updating to the latest source at a later date is trivial, but doing this
-often means that you have to rebuild the compiled parts of the app:
+can mean that you have to rebuild the compiled parts of the app:
 
     cd path/to/mypaint
     python setup.py clean --all
     git pull
+
+## Custom installation directory layout
+
+When running **`python setup.py install`** files will be installed in certain
+directories on your system. By default, these directories are set in the
+file **`setup.cfg`** in the **`[install]`** section. In those paths, **`$base`**
+is a placeholder that is replaced by the value set with **`--prefix`** in the
+install command (**`/usr`** by default).
+
+The installation directories can be overriden for each type by providing a flag
+to the **`install`** command equivalent to the name of one of the `install-xyz`
+variables in **`setup.cfg`**. For example:
+
+```
+python setup.py install --prefix=/usr/local --install-purelib='$base/lib64/mypaint'
+```
