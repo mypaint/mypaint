@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: mypaint v2.0.0-alpha.11-2-g0673fe8\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-08-16 11:30+0200\n"
-"PO-Revision-Date: 2020-08-26 16:32+0000\n"
+"PO-Revision-Date: 2020-10-05 12:12+0000\n"
 "Last-Translator: ssantos <ssantos@web.de>\n"
 "Language-Team: Portuguese <https://hosted.weblate.org/projects/mypaint/"
 "mypaint/pt/>\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n > 1;\n"
-"X-Generator: Weblate 4.2.1-dev\n"
+"X-Generator: Weblate 4.3-dev\n"
 
 #. TRANSLATORS: Name of first column in the button map preferences.
 #. TRANSLATORS: Refers to an action bound to a mod+button combination.
@@ -3321,8 +3321,8 @@ msgid ""
 "Close app and wait {cache_update_interval}s to retry."
 msgstr ""
 "A pasta da cache ainda pode estar a ser utilizada.\n"
-"Está a executar mais do uma instância do MyPaint?\n"
-"Feche a aplicação e aguarde {cache_update_interval}s para tentar novamente."
+"Está a executar mais do que uma instância do MyPaint?\n"
+"Feche a app e aguarde {cache_update_interval}s para tentar novamente."
 
 #: ../lib/document.py:226
 #, python-brace-format
@@ -3675,7 +3675,7 @@ msgid ""
 "Like shining two separate slide projectors onto a screen simultaneously. "
 "This is the inverse of 'Multiply'."
 msgstr ""
-"É como projetar dois projetores de slides diferentes numa tela "
+"É como projetar dois projetores de slides diferentes num ecrã "
 "simultaneamente. Isto é o inverso de 'Multiplicar'."
 
 #: ../lib/modes.py:66
@@ -5418,7 +5418,7 @@ msgid ""
 "Delete whole tiles from the current layer which do not vary from the "
 "backdrop."
 msgstr ""
-"Exclui regiões de pixels vazias inteiras da camada atual que não diferem do "
+"Apaga regiões de pixels vazias inteiras da camada atual que não diferem do "
 "fundo."
 
 #: ../gui/resources.xml:437
@@ -5480,8 +5480,7 @@ msgstr "Atualizar camada com edições externas"
 #: ../gui/resources.xml:478
 msgctxt "Accel Editor (descriptions)"
 msgid "Commit changes saved from the external app (normally automatic)."
-msgstr ""
-"Aplicar alterações guardadas numa aplicação externa (normalmente automático)."
+msgstr "Aplicar alterações guardadas numa app externa (normalmente automático)."
 
 #: ../gui/resources.xml:484
 msgctxt "Menu→Layer→Go to Layer (labels), Accel Editor (labels)"
@@ -5967,7 +5966,7 @@ msgstr "Visualizar renderização"
 #: ../gui/resources.xml:882
 msgctxt "Accel Editor (descriptions)"
 msgid "Show rendering updates on-screen, for debugging."
-msgstr "Mostrar atualizações de renderização na tela, para depuração de erros."
+msgstr "Mostrar atualizações de renderização no ecrã, para depuração de erros."
 
 #: ../gui/resources.xml:888
 msgctxt "Menu→Help→Debug (labels), Accel Editor (labels)"
