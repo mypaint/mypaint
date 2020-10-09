@@ -12,8 +12,8 @@ msgstr ""
 "Project-Id-Version: mypaint v2.0.0-alpha.11-2-g0673fe8\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-08-16 11:30+0200\n"
-"PO-Revision-Date: 2020-08-19 12:32+0000\n"
-"Last-Translator: Дмитрий Ильченко <dmitriy.ilchenko2@gmail.com>\n"
+"PO-Revision-Date: 2020-10-09 15:14+0000\n"
+"Last-Translator: Olesya_Gerasimenko <gammaray@basealt.ru>\n"
 "Language-Team: Russian <https://hosted.weblate.org/projects/mypaint/mypaint/"
 "ru/>\n"
 "Language: ru\n"
@@ -22,7 +22,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
 "%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
-"X-Generator: Weblate 4.2-dev\n"
+"X-Generator: Weblate 4.3-dev\n"
 
 #. TRANSLATORS: Name of first column in the button map preferences.
 #. TRANSLATORS: Refers to an action bound to a mod+button combination.
@@ -73,7 +73,7 @@ msgstr "Клавиша:"
 #. TRANSLATORS: keybinding dialog (Preferences | Keys).
 #: ../gui/accelmap.py:415
 msgid "Press keys to update this assignment"
-msgstr "Нажмите на кнопки, чтобы обновить задание"
+msgstr "Нажмите клавиши, чтобы обновить привязку"
 
 #. TRANSLATORS: Part of the keybinding dialog, refers
 #. TRANSLATORS: to an action bound to a key combination.
@@ -110,7 +110,7 @@ msgstr "Резервные копии в кэше не обнаружены."
 
 #: ../gui/autorecover.py:139
 msgid "No Available Backups"
-msgstr "Нет доступных резервных файлов"
+msgstr "Нет доступных резервных копий"
 
 #: ../gui/autorecover.py:141
 msgid "Open the Cache Folder…"
@@ -127,7 +127,7 @@ msgstr "Открыть папку с резервными копиями…"
 #: ../gui/autorecover.py:182
 #, python-brace-format
 msgid "Recovered file from {iso_datetime}.ora"
-msgstr "Recovered file from {iso_datetime}.ora"
+msgstr "Файл, полученный из {iso_datetime}.ora"
 
 #: ../gui/backgroundwindow.py:55
 msgid "Background"
@@ -161,15 +161,15 @@ msgstr "Ошибка при загрузке фоновых изображени
 msgid ""
 "Please remove the unloadable files, or check your libgdkpixbuf installation."
 msgstr ""
-"Пожалуйста, удалите файлы, которые не удалось загрузить, или проверьте вашу "
+"Пожалуйста, удалите файлы, которые не удалось загрузить, или проверьте "
 "установку libgdkpixbuf."
 
 #: ../gui/backgroundwindow.py:372
 #, python-brace-format
 msgid "Gdk-Pixbuf couldn't load \"{filename}\", and reported \"{error}\""
 msgstr ""
-"Gdk-pixbuf не может загрузить \"{filename}\", сообщение об ошибке: "
-"\"{error}\""
+"Gdk-pixbuf не удалось загрузить \"{filename}\", сообщение об ошибке: \""
+"{error}\""
 
 #: ../gui/backgroundwindow.py:382
 #, python-brace-format
@@ -309,7 +309,7 @@ msgid ""
 "<small>Select a valid brush first</small>"
 msgstr ""
 "<b>%s</b>\n"
-"<small>Для начала выберите корректную кисть</small>"
+"<small>Сначала выберите корректную кисть</small>"
 
 #: ../gui/brushiconeditor.py:79
 #, python-format
@@ -381,7 +381,7 @@ msgstr "Сохранить"
 
 #: ../gui/brushiconeditor.py:192
 msgid "Save this preview icon, and finish editing"
-msgstr "Сохранить и закончить редактирование"
+msgstr "Сохранить значок и закончить редактирование"
 
 #: ../gui/brushmanager.py:131
 msgid "Lost & Found"
@@ -435,7 +435,7 @@ msgstr "Создать"
 #, python-brace-format
 msgctxt "brushpack import failure messages"
 msgid "No file named “{order_conf_file}”. This is not a brushpack."
-msgstr "Нет файла под названием “{order_conf_file}„. Это не кисти."
+msgstr "Нет файла с названием “{order_conf_file}”. Это не пакет кистей."
 
 #: ../gui/brushmanager.py:704
 #, python-brace-format
@@ -444,7 +444,7 @@ msgid ""
 "Brush “{brush_name}” is listed in “{order_conf_file}”, but it does not exist "
 "in the zipfile."
 msgstr ""
-"Кисть “{brush_name}„ отображается в списке “{order_conf_file}», но не в "
+"Кисть “{brush_name}” отображается в списке “{order_conf_file}”, но не в "
 "архиве."
 
 #: ../gui/brushmanager.py:717
@@ -454,8 +454,8 @@ msgid ""
 "Brush “{brush_name}” exists in the zipfile, but it is not listed in "
 "“{order_conf_file}”."
 msgstr ""
-"Кисть “{brush_name}„ отображается в архиве, но не указана в "
-"“{order_conf_file}„."
+"Кисть “{brush_name}” отображается в архиве, но не указана в "
+"“{order_conf_file}”."
 
 #: ../gui/brushmanager.py:1328 ../gui/footer.py:66
 msgid "Unknown Brush"
@@ -469,7 +469,7 @@ msgstr "Изменить размер кисти"
 #: ../gui/brushmanip.py:196
 msgctxt "brush resize mode - usage"
 msgid "Change brush size by dragging on the canvas"
-msgstr "Изменяйте размер кисти при помощи перетаскивания по полотну"
+msgstr "Изменяйте размер кисти с помощью перетаскивания по холсту"
 
 #: ../gui/brushselectionwindow.py:220
 msgctxt "brush group: context menu for a single brush"
@@ -494,19 +494,19 @@ msgstr "Редактировать параметры кисти"
 #: ../gui/brushselectionwindow.py:250
 msgctxt "brush group: context menu for a single brush"
 msgid "Remove from Group"
-msgstr "Убрать из Группы"
+msgstr "Убрать из группы"
 
 #: ../gui/brushselectionwindow.py:290
 #, python-brace-format
 msgctxt "brush group: context menu: unique names for cloned brushes"
 msgid "{original_name} copy"
-msgstr "{original_name} копировать"
+msgstr "{original_name} копия"
 
 #: ../gui/brushselectionwindow.py:299
 #, python-brace-format
 msgctxt "brush group: context menu: unique names for cloned brushes"
 msgid "{original_name} copy {n}"
-msgstr "{original_name} копировать {n}"
+msgstr "{original_name} копия {n}"
 
 #: ../gui/brushselectionwindow.py:325
 #, python-brace-format
@@ -568,7 +568,7 @@ msgid ""
 "Could not delete group “{group_name}”.\n"
 "Some special groups cannot be deleted."
 msgstr ""
-"Удаление группы “{group_name}” не удалось.\n"
+"Невозможно удалить группу “{group_name}”.\n"
 "Особые группы не могут быть удалены."
 
 #: ../gui/brushselectionwindow.py:510
@@ -691,7 +691,7 @@ msgstr "Установить яркость"
 
 #: ../gui/colorpicker.py:245
 msgid "Set the color Luma used for painting"
-msgstr "Выберите яркость цвета, используемого для рисования"
+msgstr "Выбрать яркость цвета, используемого для рисования"
 
 #: ../gui/colors/adjbases.py:699
 msgid "Color details"
@@ -717,7 +717,7 @@ msgstr "Маска цветового охвата включена"
 msgctxt "Color Wheels: activity toggle: action tooltip"
 msgid "Limit your palette for specific moods using a gamut mask."
 msgstr ""
-"Ограничить палитру определенным колоритом при помощи маски цветового охвата."
+"Ограничить палитру определённым колоритом с помощью маски цветового охвата."
 
 #: ../gui/colors/hcywheel.py:355
 msgctxt "HCY Color Wheel: tooltip"
@@ -730,8 +730,8 @@ msgid ""
 "Gamut mask editor. Click in the middle to create or manipulate shapes, or "
 "rotate the mask using the edges of the disc."
 msgstr ""
-"Редактор маски цветового охвата. Щелкните в середине, чтобы создать или "
-"изменить фигуры, или поворачивайте маску с использованием краев диска."
+"Редактор маски цветового охвата. Щёлкните в середине, чтобы создать или "
+"изменить фигуры, или поворачивайте маску с помощью краёв диска."
 
 #: ../gui/colors/hcywheel.py:910
 msgctxt "HCY Gamut Mask template name"
@@ -744,8 +744,8 @@ msgid ""
 "Moody and subjective, defined by one dominant primary and two primaries "
 "which are less intense."
 msgstr ""
-"Мрачная и субъективная, ограниченная одним доминирующим первичным цветом и "
-"ещё двумя менее интенсивными первичными цветами."
+"Мрачная и субъективная, ограниченная одним доминирующим основным цветом и "
+"ещё двумя менее интенсивными основными цветами."
 
 #: ../gui/colors/hcywheel.py:922
 msgctxt "HCY Gamut Mask template name"
@@ -868,7 +868,7 @@ msgid ""
 "Set the color using cylindrical hue/chroma/luma space. The circular slices "
 "are equiluminant."
 msgstr ""
-"Выберите цвет с использованием цилиндрических координат тон/насыщенность/"
+"Выбрать цвет с использованием цилиндрических координат тон/насыщенность/"
 "яркость. Круговые срезы имеют одинаковую яркость."
 
 #. Tooltip mappings, indexed by whatever the slider currently represents
@@ -916,7 +916,7 @@ msgstr "Квадрат HSV"
 #: ../gui/colors/hsvsquare.py:60
 msgid "An HSV Square which can be rotated to show different hues."
 msgstr ""
-"Куб HSV, который можно поворачивать, чтобы использовать разные плоские срезы."
+"Квадрат HSV, который можно поворачивать, чтобы использовать разные оттенки."
 
 #: ../gui/colors/hsvwheel.py:91
 msgid "HSV Wheel"
@@ -924,7 +924,7 @@ msgstr "Круг HSV"
 
 #: ../gui/colors/hsvwheel.py:95
 msgid "Saturation and Value color changer."
-msgstr "Изменяет насыщенность и оттенок."
+msgstr "Изменяет насыщенность и значение."
 
 #: ../gui/colors/paletteview.py:67
 msgctxt "palette panel: properties button tooltip"
@@ -1047,7 +1047,7 @@ msgstr "Добавить пустую ячейку"
 #: ../gui/colors/paletteview.py:792
 msgctxt "palette view: context menu"
 msgid "Insert Row"
-msgstr "Вставить ряд"
+msgstr "Вставить строку"
 
 #. TRANSLATORS: inserting gaps (empty color swatches)
 #: ../gui/colors/paletteview.py:799
@@ -1141,7 +1141,7 @@ msgstr "Красный RGB"
 #: ../gui/colors/sliders.py:178
 msgctxt "color component slider: tooltip"
 msgid "RGB Green"
-msgstr "Зеленый RGB"
+msgstr "Зелёный RGB"
 
 #: ../gui/colors/sliders.py:195
 msgctxt "color component slider: tooltip"
@@ -1186,34 +1186,34 @@ msgstr "Плавная волна"
 #: ../gui/colortools.py:145
 msgctxt "color changer dock panels: tab tooltip description"
 msgid "Change color using a liquid-like wash of nearby colors."
-msgstr "Выбрать цвет используя размытые близлежащие цвета."
+msgstr "Выбрать цвет, используя размытые близлежащие цвета."
 
 #: ../gui/colortools.py:155
 msgctxt "color changer dock panels: tab tooltip title"
 msgid "Concentric Rings"
-msgstr "Концентрические круги"
+msgstr "Концентрические кольца"
 
 #: ../gui/colortools.py:159
 msgctxt "color changer dock panels: tab tooltip description"
 msgid "Change color using concentric HSV rings."
-msgstr "Выбрать цвет используя концентрические HSV круги."
+msgstr "Выбрать цвет с помощью концентрических колец HSV."
 
 #: ../gui/colortools.py:169
 msgctxt "color changer dock panels: tab tooltip title"
 msgid "Crossed Bowl"
-msgstr "Скрещенная чаша"
+msgstr "Перекрещенная чаша"
 
 #: ../gui/colortools.py:173
 msgctxt "color changer dock panels: tab tooltip description"
 msgid "Change color with HSV ramps crossing a radial bowl of color."
 msgstr ""
-"Выбрать цвет с помощью HSV наклонных перекрещивающих лучеобразную чашу с "
+"Выбрать цвет с помощью переходов HSV, перекрещивающих полукруглую чашу с "
 "цветом."
 
 #: ../gui/compatibility.py:34
 msgctxt "File Load Compat Options"
 msgid "Based on file"
-msgstr ""
+msgstr "На основе файла"
 
 #. This refers to a version of MyPaint like 1.0, 1.1, 1.2 etc
 #: ../gui/compatibility.py:35 ../gui/drawwindow.py:281
@@ -1243,7 +1243,7 @@ msgid ""
 "It is <b>strongly recommended</b> to upgrade to <b>MyPaint {new_version}</b> "
 "or newer if you want to edit this file!"
 msgstr ""
-"“{filename}” был сохранен в <b>MyPaint {new_version}</b>. Он может быть "
+"“{filename}” был сохранён в <b>MyPaint {new_version}</b>. Он может быть "
 "<b>несовместим</b> с <b>MyPaint {current_version}</b>.\n"
 "\n"
 "Редактирование этого файла в текущей версии MyPaint может работать "
@@ -1264,16 +1264,24 @@ msgid ""
 "\n"
 "To be safe you should upgrade to MyPaint {new_version} or newer."
 msgstr ""
+"“{filename}” был сохранён в <b>MyPaint {new_version}</b>. Он может быть не "
+"полностью совместим с <b>MyPaint {current_version}</b>.\n"
+"\n"
+"Сохранение этого файла в текущей версии MyPaint может привести к потере тех "
+"данных, которые поддерживаются только более новой версией приложения.\n"
+"\n"
+"Чтобы этого не произошло, рекомендуется обновиться до MyPaint {new_version} "
+"или новее."
 
 #: ../gui/compatibility.py:65
 msgctxt "file compatibility question"
 msgid "Do you want to open this file anyway?"
-msgstr "Вы всё равно хотите открыть этот файл?"
+msgstr "Всё равно открыть этот файл?"
 
 #: ../gui/compatibility.py:129
 msgctxt "Version compat warning toggle"
 msgid "Don't show this warning again"
-msgstr "Не показывать это предупреждение снова."
+msgstr "Не показывать это предупреждение снова"
 
 #. TRANSLATORS: One of the options for the
 #. TRANSLATORS: "When Not Specified in File"
@@ -1298,7 +1306,7 @@ msgstr "Всегда открывать в режиме совместимост
 msgctxt "Prefs Dialog|Compatibility"
 msgid "Open in 1.x mode unless file contains pigment layers"
 msgstr ""
-"Открыть в режиме совместимости 1.x если файл не содержит пигментных слоев"
+"Открывать в режиме совместимости 1.x, если файл не содержит пигментных слоёв"
 
 #. TRANSLATORS: This is a label for a dropdown menu in the
 #. TRANSLATORS: file chooser dialog when loading .ora files.
@@ -1424,7 +1432,7 @@ msgstr "Переименовать"
 
 #: ../gui/dialogs.py:140
 msgid "Replace all"
-msgstr "Заменить всё"
+msgstr "Заменить все"
 
 #: ../gui/dialogs.py:142
 msgid "Rename all"
@@ -1444,8 +1452,8 @@ msgid ""
 "<b>A brush named “{brush_name}” already exists.</b>\n"
 "Do you want to replace it, or should the new brush be renamed?"
 msgstr ""
-"<b>Кисть под именем “{brush_name}” уже существует.</b>\n"
-"Хотите ли вы заменить её, или переименовать новую кисть?"
+"<b>Кисть с именем “{brush_name}” уже существует.</b>\n"
+"Следует ли заменить её или переименовать новую кисть?"
 
 #: ../gui/dialogs.py:196
 msgid "Overwrite brush group?"
@@ -1459,9 +1467,9 @@ msgid ""
 "If you replace it, the brushes may be moved to a group called "
 "“{deleted_groupname}”."
 msgstr ""
-"<b>Группа под именем “{groupname}” уже существует.</b>\n"
-"Хотите ли вы заменить её, или переименовать новую группу?\n"
-"Если вы замените группу, кисти из неё будут перемещены в группу "
+"<b>Группа с именем “{groupname}” уже существует.</b>\n"
+"Следует ли заменить её или переименовать новую группу?\n"
+"Если группа будет заменена, кисти из неё будут перемещены в группу "
 "“{deleted_groupname}”."
 
 #: ../gui/dialogs.py:326
@@ -1471,7 +1479,7 @@ msgstr "Импортировать пакет с кистями?"
 #: ../gui/dialogs.py:357
 #, python-brace-format
 msgid "<b>Do you really want to import package “{brushpack_name}”?</b>"
-msgstr "<b>Вы действительно хотите импортировать пакет “{brushpack_name}”?</b>"
+msgstr "<b>Действительно импортировать пакет “{brushpack_name}”?</b>"
 
 #: ../gui/document.py:451
 #, python-format
@@ -1517,7 +1525,7 @@ msgstr "Вернуть"
 #: ../gui/document.py:851
 #, python-brace-format
 msgid "{button_combination} is {resultant_action}"
-msgstr "{button_combination} - {resultant_action}"
+msgstr "{button_combination} — {resultant_action}"
 
 #. TRANSLATORS: This is a separator for the list of button actions
 #. TRANSLATORS: that appears when a modifier key is held down.
@@ -1534,7 +1542,7 @@ msgstr ";  "
 #: ../gui/document.py:867
 #, python-brace-format
 msgid "With {modifiers} held down:  {button_actions}."
-msgstr "Зажать {modifiers} с:  {button_actions}."
+msgstr "При нажатии {modifiers}:  {button_actions}."
 
 #: ../gui/document.py:889
 msgctxt "Statusbar message: copy result"
@@ -1545,7 +1553,7 @@ msgstr "Пустой документ, ничего не скопировано.
 #, python-brace-format
 msgctxt "Statusbar message: copy result"
 msgid "Copied layer as {w}×{h} image."
-msgstr "Копированный слой в виде {w}×{h} изображения."
+msgstr "Копированный слой в виде изображения {w}×{h}."
 
 #: ../gui/document.py:918
 msgctxt "Statusbar message: paste result"
@@ -1560,25 +1568,25 @@ msgstr "Буфер обмена не содержит изображения."
 #: ../gui/document.py:938
 msgctxt "Statusbar message: paste result"
 msgid "Cannot paste into this type of layer."
-msgstr "Не удается вставить в этот тип слоя."
+msgstr "Не удалось вставить в этот тип слоя."
 
 #: ../gui/document.py:943
 #, python-brace-format
 msgctxt "Statusbar message: paste result"
 msgid "Pasted {w}×{h} image."
-msgstr "Вставленное {w}×{h} изображение."
+msgstr "Вставленное изображение {w}×{h}."
 
 #: ../gui/document.py:2044
 #, python-brace-format
 msgctxt "Statusbar message: vacuum document"
 msgid "Vacuum: discarded {removed} of {total} tiles."
-msgstr "Вакуум: удалено {removed} из {total} плиток."
+msgstr "Очистка: удалено {removed} из {total} плиток."
 
 #. TRANSLATORS: window title for use with a filename
 #: ../gui/drawwindow.py:275
 #, python-format
 msgid "%s - MyPaint"
-msgstr "%s - MyPaint"
+msgstr "%s — MyPaint"
 
 #. TRANSLATORS: window title for use without a filename
 #: ../gui/drawwindow.py:278 ../gui/mypaint.glade:8
@@ -1601,11 +1609,11 @@ msgstr "Выбрать текущий цвет"
 
 #: ../gui/drawwindow.py:543
 msgid "Leave Fullscreen Mode"
-msgstr "Покинуть полноэкранный режим"
+msgstr "Выйти из полноэкранного режима"
 
 #: ../gui/drawwindow.py:544
 msgid "Leave Fullscreen"
-msgstr "Покинуть полноэкранный режим"
+msgstr "Выйти из полноэкранного режима"
 
 #: ../gui/drawwindow.py:547
 msgid "Enter Fullscreen Mode"
@@ -1657,14 +1665,15 @@ msgstr ""
 msgid ""
 "Editing cancelled. You can still edit “{layer_name}” from the Layers menu."
 msgstr ""
-"Редактирование отменено. Вы можете редактировать “{layer_name}” из меню Слои."
+"Редактирование отменено. Можно отредактировать “{layer_name}” с помощью меню "
+"\"Слои\"."
 
 #. TRANSLATORS: This is a statusbar message shown when
 #. TRANSLATORS:  a layer is updated from an external edit
 #: ../gui/externalapp.py:54
 #, python-brace-format
 msgid "Updated layer “{layer_name}” with external edits"
-msgstr "Слой “{layer_name}” обновлен со внешними изменениями"
+msgstr "Слой “{layer_name}” обновлён внешними изменениями"
 
 #: ../gui/externalapp.py:58
 #, python-brace-format
@@ -1678,8 +1687,8 @@ msgid ""
 "MyPaint needs to edit a file of type “{type_name}” ({content_type}). What "
 "application should it use?"
 msgstr ""
-"MyPaint нужно редактировать файл типа “{type_name}” ({content_type}). Какое "
-"приложение нужно использовать?"
+"MyPaint требуется редактировать файл типа “{type_name}” ({content_type}). "
+"Какое приложение следует использовать?"
 
 #: ../gui/externalapp.py:108
 #, python-brace-format
@@ -1687,8 +1696,8 @@ msgid ""
 "What application should MyPaint use for editing files of type "
 "“{type_name}” ({content_type})?"
 msgstr ""
-"Какое приложение должна использовать MyPaint для редактирования файлов типа "
-"“{type_name}” ({content_type})?"
+"Какое приложение должна использовать программа MyPaint для редактирования "
+"файлов типа “{type_name}” ({content_type})?"
 
 #: ../gui/externalapp.py:114
 msgid "Open With…"
@@ -1712,7 +1721,7 @@ msgstr "Загрузка {files_summary}…"
 #, python-brace-format
 msgctxt "Document I/O: message shown while working"
 msgid "Importing layers from {files_summary}…"
-msgstr "Импорт слоев из {files_summary}.…"
+msgstr "Импорт слоёв из {files_summary}…"
 
 #: ../gui/filehandling.py:135
 #, python-brace-format
@@ -1730,13 +1739,13 @@ msgstr "Экспорт в {files_summary}…"
 #, python-brace-format
 msgctxt "Document I/O: fail message"
 msgid "Failed to export to {files_summary}."
-msgstr "Экспорт в {files_summary} не удался."
+msgstr "Не удалось выполнить экспорт в {files_summary}."
 
 #: ../gui/filehandling.py:150
 #, python-brace-format
 msgctxt "Document I/O: fail message"
 msgid "Failed to save {files_summary}."
-msgstr "Сохранение {files_summary} не удалось."
+msgstr "Не удалось выполнить сохранение {files_summary}."
 
 #: ../gui/filehandling.py:154
 #, python-brace-format
@@ -1774,25 +1783,25 @@ msgstr "Открыть не удалось"
 #, python-brace-format
 msgctxt "Document I/O: success"
 msgid "Exported to {files_summary} successfully."
-msgstr "Экспорт в {files_summary} успешно завершен."
+msgstr "Экспорт в {files_summary} успешно завершён."
 
 #: ../gui/filehandling.py:188
 #, python-brace-format
 msgctxt "Document I/O: success"
 msgid "Saved {files_summary} successfully."
-msgstr "{files_summary} успешно сохранен."
+msgstr "Сохранение {files_summary} успешно завершено."
 
 #: ../gui/filehandling.py:192
 #, python-brace-format
 msgctxt "Document I/O: success"
 msgid "Imported layers from {files_summary}."
-msgstr "Импортированные слои из {files_summary}."
+msgstr "Импорт слоёв из {files_summary} успешно завершён."
 
 #: ../gui/filehandling.py:196
 #, python-brace-format
 msgctxt "Document I/O: success"
 msgid "Loaded {files_summary}."
-msgstr "{files_summary} успешно загружен."
+msgstr "Загрузка {files_summary} успешно завершена."
 
 #. TRANSLATORS: formatting for {files_summary} for multiple files.
 #. TRANSLATORS: corresponding msgid for single files: "“{basename}”"
@@ -1813,7 +1822,7 @@ msgstr "“{basename}”"
 #: ../gui/filehandling.py:432
 msgctxt "save/load dialogs: filter patterns"
 msgid "All Recognized Formats"
-msgstr "Все Распознанные форматы"
+msgstr "Все поддерживаемые форматы"
 
 #: ../gui/filehandling.py:437
 msgctxt "save/load dialogs: filter patterns"
@@ -1843,7 +1852,7 @@ msgstr "OpenRaster (*.ora)"
 #: ../gui/filehandling.py:503
 msgctxt "save dialogs: save formats and options"
 msgid "PNG, respecting “Show Background” (*.png)"
-msgstr "PNG с непрозрачным фоном (*.png)"
+msgstr "PNG, с учётом параметра “Показать фон” (*.png)"
 
 #: ../gui/filehandling.py:507
 msgctxt "save dialogs: save formats and options"
@@ -1853,12 +1862,12 @@ msgstr "PNG, сплошной RGB (*.png)"
 #: ../gui/filehandling.py:511
 msgctxt "save dialogs: save formats and options"
 msgid "PNG, transparent RGBA (*.png)"
-msgstr "Прозрачный PNG (*.png)"
+msgstr "PNG, прозрачный RGBA (*.png)"
 
 #: ../gui/filehandling.py:515
 msgctxt "save dialogs: save formats and options"
 msgid "Multiple PNGs, by layer (*.NUM.png)"
-msgstr "Серия PNG, по слою(*.NUM.png)"
+msgstr "Серия PNG, по слою (*.NUM.png)"
 
 #: ../gui/filehandling.py:519
 msgctxt "save dialogs: save formats and options"
@@ -1868,7 +1877,7 @@ msgstr "Серия PNG, по просмотру (*.XXX.png)"
 #: ../gui/filehandling.py:523
 msgctxt "save dialogs: save formats and options"
 msgid "JPEG 90% quality (*.jpg; *.jpeg)"
-msgstr "JPEG с качеством 90% (*.jpg; *.jpeg)"
+msgstr "JPEG, с качеством 90% (*.jpg; *.jpeg)"
 
 #: ../gui/filehandling.py:581
 msgctxt "Dialogs (window title): File→Export…"
@@ -1889,7 +1898,7 @@ msgstr "Формат для сохранения:"
 msgctxt ""
 "Destructive action confirm dialog: fallback title (normally overridden)"
 msgid "Really Continue?"
-msgstr "Вы действительно хотите продолжить?"
+msgstr "Действительно продолжить?"
 
 #: ../gui/filehandling.py:706
 msgctxt "Destructive action confirm dialog: cancel button"
@@ -1912,7 +1921,7 @@ msgstr "Про_должить"
 #, python-brace-format
 msgctxt "Destructive action confirm dialog: warning message"
 msgid "You risk losing {abbreviated_time} of unsaved painting."
-msgstr "Вы потеряете {abbreviated_time} несохранённой картины."
+msgstr "Будет потеряно {abbreviated_time} несохранённого рисования."
 
 #: ../gui/filehandling.py:804
 msgctxt "File→New: confirm dialog: title question"
@@ -1922,12 +1931,12 @@ msgstr "Новый холст?"
 #: ../gui/filehandling.py:808
 msgctxt "File→New: confirm dialog: continue button"
 msgid "_New Canvas"
-msgstr "_Новый Холст"
+msgstr "_Новый холст"
 
 #: ../gui/filehandling.py:1024
 msgctxt "File→Open: confirm dialog: title question"
 msgid "Open File?"
-msgstr "Открыть Файл?"
+msgstr "Открыть файл?"
 
 #: ../gui/filehandling.py:1028
 msgctxt "File→Open: confirm dialog: continue button"
@@ -1937,7 +1946,7 @@ msgstr "_Открыть…"
 #: ../gui/filehandling.py:1036
 msgctxt "File→Open: file chooser dialog: title"
 msgid "Open File"
-msgstr "Открыть Файл"
+msgstr "Открыть файл"
 
 #: ../gui/filehandling.py:1084
 msgctxt "load dialogs: title"
@@ -1947,12 +1956,12 @@ msgstr "Открыть блокнот…"
 #: ../gui/filehandling.py:1126
 msgctxt "Layers→Import Layers: files-chooser dialog: title"
 msgid "Import Layers"
-msgstr "Импортированный Слой"
+msgstr "Импортировать слои"
 
 #: ../gui/filehandling.py:1433
 msgctxt "File→Open Recent→* confirm dialog: title"
 msgid "Open File?"
-msgstr "Открыть Файл?"
+msgstr "Открыть файл?"
 
 #: ../gui/filehandling.py:1437
 msgctxt "File→Open Recent→* confirm dialog: continue button"
@@ -1972,7 +1981,7 @@ msgstr "_Открыть"
 #: ../gui/filehandling.py:1471
 msgctxt "File→Open Next/Prev Scrap: error message"
 msgid "There are no scrap files yet. Try saving one first."
-msgstr "У вас ещё нет файлов черновиков. Сохраните один для начала."
+msgstr "Ещё нет файлов черновиков. Следует сохранить хотя бы один черновик."
 
 #: ../gui/filehandling.py:1480
 msgctxt "File→Open Next/Prev Scrap confirm dialog: title"
@@ -1992,7 +2001,7 @@ msgstr "_Открыть"
 #: ../gui/filehandling.py:1512
 msgctxt "File→Revert: status message: canvas has no filename yet"
 msgid "Cannot revert: canvas has not been saved to a file yet."
-msgstr "Невозможно обратить: холст не сохранён в файл."
+msgstr "Невозможно отменить: холст не сохранён в файл."
 
 #: ../gui/filehandling.py:1519
 msgctxt "File→Revert confirm dialog: title"
@@ -2002,7 +2011,7 @@ msgstr "Отменить изменения?"
 #: ../gui/filehandling.py:1524
 msgctxt "File→Revert confirm dialog: continue button"
 msgid "_Revert"
-msgstr "_Вернуть"
+msgstr "_Отменить"
 
 #: ../gui/fill.py:123
 msgctxt ""
@@ -2031,8 +2040,8 @@ msgid ""
 "How much pixel colors are allowed to vary from the start\n"
 "before Flood Fill will refuse to fill them"
 msgstr ""
-"Допустимое отклонение количества цветов пикселов, \n"
-"которое заливка откажется заливать"
+"Допустимое отклонение количества цветов пикселов,\n"
+"после превышения которого функция заливки не будет работать"
 
 #: ../gui/fill.py:533
 msgctxt ""
@@ -2044,12 +2053,12 @@ msgstr "Источник:"
 #: ../gui/fill.py:536
 msgctxt "fill options: 'Source:' category (tooltip)"
 msgid "The input that the fill will be based on"
-msgstr "Ввод, на котором будет основана заливка"
+msgstr "Входные данные, на которых будет основана заливка"
 
 #: ../gui/fill.py:580
 msgctxt "fill options: 'Source' category: Layer dropdown (tooltip)"
 msgid "Select a specific layer you want the fill to be based on"
-msgstr "Выберите конкретный слой, на котором будет основана заливка"
+msgstr "Выбрать конкретный слой, на котором будет основана заливка"
 
 #: ../gui/fill.py:598
 msgctxt ""
@@ -2057,7 +2066,7 @@ msgctxt ""
 "When this option is enabled, the fill is based\n"
 "on the combination of all visible layers"
 msgid "Sample Merged"
-msgstr "Выборочное объединение"
+msgstr "На основе всех видимых слоёв"
 
 #: ../gui/fill.py:602
 msgctxt "fill options: Sample Merged (tooltip)"
@@ -2066,14 +2075,14 @@ msgid ""
 "temporary merge of all the visible layers\n"
 "underneath the current layer"
 msgstr ""
-"Во время выбора места заливки, используйте\n"
-"временное объединение всех видимых слоев \n"
-"под нынешним слоем"
+"При выборе места заливки используется\n"
+"временное объединение всех видимых слоёв\n"
+"под текущим слоем"
 
 #: ../gui/fill.py:618
 msgctxt "fill options: toggle whether the fill will be limited by the viewport"
 msgid "Limit to View"
-msgstr "Лимит Просмотра"
+msgstr "Ограничить областью просмотра"
 
 #: ../gui/fill.py:624
 msgctxt ""
@@ -2085,10 +2094,10 @@ msgid ""
 "If the view is rotated, the fill will be limited to the\n"
 "smallest canvas-aligned rectangle that can fit the view."
 msgstr ""
-"Ограничьте место заливки основываясь на области просмотра.\n"
+"Ограничить область заливки областью просмотра.\n"
 "Если обзор повёрнут, заливка будет ограничена\n"
-"наименьшим прямоугольником, выровненным по холсту, чтобы соответствовать "
-"виду."
+"наименьшим выровненным по холсту прямоугольником,\n"
+"который помещается в области просмотра."
 
 #: ../gui/fill.py:641
 msgctxt ""
@@ -2109,7 +2118,7 @@ msgctxt ""
 "When this option is enabled, the fill will be placed on a new\n"
 "layer above the active layer. Option resets after each fill."
 msgid "New Layer (once)"
-msgstr "Новый слой (единожды)"
+msgstr "Новый слой (однократно)"
 
 #: ../gui/fill.py:658
 msgctxt "fill options: Target | New Layer (tooltip)"
@@ -2123,12 +2132,12 @@ msgstr ""
 #: ../gui/fill.py:670
 msgctxt "fill options: Target | Blend Mode dropdown - warning text"
 msgid "This mode does nothing when alpha locking is enabled!"
-msgstr "Этот режим не работает со включённой альфа-блокировкой!"
+msgstr "Этот режим не работает с включённой альфа-блокировкой!"
 
 #: ../gui/fill.py:684
 msgctxt "fill options: Target | Blend Mode dropdown (tooltip)"
 msgid "Blend mode used when filling"
-msgstr "Режим смешивания используется при заполнении"
+msgstr "Режим смешивания, который используется при заливке"
 
 #: ../gui/fill.py:699
 msgid "Opacity:"
@@ -2147,7 +2156,7 @@ msgstr "Смещение:"
 #: ../gui/fill.py:741
 msgctxt "fill options: Offset (tooltip)"
 msgid "The distance in pixels to grow or shrink the fill"
-msgstr "Расстояние в пикселях для увеличения или уменьшения заливки"
+msgstr "Расстояние в пикселах для увеличения или уменьшения заливки"
 
 #: ../gui/fill.py:752
 msgctxt "fill options: numeric option for blurring fill (label)"
@@ -2171,14 +2180,14 @@ msgid ""
 "Note: This can be a lot slower than the regular fill, only enable when you "
 "need it."
 msgstr ""
-"Попытайтесь определить пробелы и не заливать за них.\n"
-"Примечание: Этот способ гораздо медленней обычной заливки, включайте его "
-"только тогда, когда нужно."
+"Попытаться определить пробелы и не заливать за них.\n"
+"Примечание: этот способ гораздо медленней обычной заливки, включайте его "
+"только при необходимости."
 
 #: ../gui/fill.py:806
 msgctxt "fill options: gap-detection sub-option, numeric setting (label)"
 msgid "Max Gap Size:"
-msgstr "Максимальный Размер Пробела:"
+msgstr "Максимальный размер пробела:"
 
 #: ../gui/fill.py:821
 msgctxt "fill options: Max Gap Size (tooltip)"
@@ -2186,8 +2195,8 @@ msgid ""
 "The size of the largest gaps that can be detected.\n"
 "Using large values can make the fill run a lot slower."
 msgstr ""
-"Наибольший размер пробела, , которое может быть обнаружено.\n"
-"При больших значениях заливка может идти медленнее."
+"Наибольший размер пробела, который может быть обнаружен.\n"
+"Чем больше значение, тем медленнее будет выполняться заливка."
 
 #: ../gui/fill.py:834
 msgctxt ""
@@ -2203,9 +2212,9 @@ msgid ""
 "Try to prevent the fill from seeping into the gaps.\n"
 "If a fill starts in a detected gap, this option will do nothing."
 msgstr ""
-"Постаратейсь предотвратить просачивание заливки в пробелы.\n"
-"Если заливка начинается в обнаруженных пробелах, то эта опция ничего не "
-"сделает."
+"Попытаться предотвратить просачивание заливки в пробелы.\n"
+"Если заливка начинается в обнаруженном пробеле, этот параметр не будет "
+"работать."
 
 #: ../gui/fill.py:851 ../gui/mode.py:639
 msgid "Reset"
@@ -2243,7 +2252,7 @@ msgstr "Изменить рамку"
 
 #: ../gui/framewindow.py:103
 msgid "Adjust the document frame"
-msgstr "Переключить рамку документа"
+msgstr "Настроить рамку документа"
 
 #: ../gui/framewindow.py:469
 msgid "Frame Size"
@@ -2255,7 +2264,7 @@ msgstr "Размер рамки"
 #: ../gui/framewindow.py:929 ../gui/framewindow.py:981
 #: ../gui/framewindow.py:986
 msgid "px"
-msgstr "px"
+msgstr "пикс."
 
 #: ../gui/framewindow.py:474
 msgid "Height:"
@@ -2275,7 +2284,7 @@ msgstr "DPI"
 
 #: ../gui/framewindow.py:483
 msgid "Dots Per Inch (really Pixels Per Inch)"
-msgstr "Количество точек на дюйм (в действительности пикселов на дюйм)"
+msgstr "Количество точек на дюйм (в действительности — пикселов на дюйм)"
 
 #: ../gui/framewindow.py:486
 msgid "Color:"
@@ -2291,7 +2300,7 @@ msgstr "<b>Размеры рамки</b>"
 
 #: ../gui/framewindow.py:560
 msgid "<b>Pixel density</b>"
-msgstr "<b>Плотность пикселей</b>"
+msgstr "<b>Плотность пикселов</b>"
 
 #: ../gui/framewindow.py:588
 msgid "Set Frame to Layer"
@@ -2307,7 +2316,7 @@ msgstr "Рамка по размерам документа"
 
 #: ../gui/framewindow.py:592
 msgid "Set frame to the combination of all layers"
-msgstr "Установить рамку по размерам объединения всех слоев"
+msgstr "Установить рамку по размерам объединения всех слоёв"
 
 #: ../gui/framewindow.py:602
 msgid "Trim Layer to Frame"
@@ -2370,8 +2379,7 @@ msgstr "Обнаружена ошибка"
 
 #: ../gui/gtkexcepthook.py:166
 msgid "<big><b>A programming error has been detected.</b></big>"
-msgstr ""
-"<big><b>Во время выполнения этой программы обнаружена ошибка.</b></big>"
+msgstr "<big><b>Обнаружена ошибка программирования.</b></big>"
 
 #: ../gui/gtkexcepthook.py:169
 msgid ""
@@ -2381,10 +2389,10 @@ msgid ""
 "Please tell the developers about this using the issue tracker if no-one else "
 "has reported it yet."
 msgstr ""
-"Эту ошибку можно проигнорировать и продолжить работу, но стоит сохранить "
-"результат в ближайшее время.\n"
+"Эту ошибку можно проигнорировать и продолжить работу, но рекомендуется "
+"сохранить результат в ближайшее время.\n"
 "\n"
-"Пожалуйста, сообщите разработчикам о проблеме в трекере, если никто еще "
+"Пожалуйста, сообщите разработчикам о проблеме в трекере, если ещё никто "
 "этого не сделал."
 
 #: ../gui/gtkexcepthook.py:177
@@ -2394,7 +2402,7 @@ msgstr "Искать по трекеру…"
 #. only development and prereleases
 #: ../gui/gtkexcepthook.py:179
 msgid "Report…"
-msgstr "Сообщить о баге…"
+msgstr "Сообщить об ошибке…"
 
 #: ../gui/gtkexcepthook.py:181
 msgid "Ignore Error"
@@ -2442,17 +2450,17 @@ msgstr ""
 "\n"
 "            По возможности опишите проблему на английском языке.\n"
 "            В заголовке используйте информативное название.\n"
-"            Что-то наподобие этого\n"
+"            Что-то наподобие этого:\n"
 "            \"[что сломалось]: [что пошло не так]\".\n"
 "            Затем замените этот текст\n"
 "            подробным описанием ошибки.\n"
-"            Скриншоты и видео приветствуются!\n"
+"            Снимки экрана и видео приветствуются!\n"
 "            Если вы не знаете английского,\n"
-"            опишите проблему на языке которым владеете.\n"
+"            опишите проблему на языке, которым владеете.\n"
 "\n"
 "            #### Steps to reproduce\n"
 "\n"
-"           Пожалуйста, опишите здесь ваши действия перед тем\n"
+"            Пожалуйста, опишите здесь ваши действия перед тем,\n"
 "            как всплыло сообщение об ошибке.\n"
 "            Будет замечательно, если вы сможете\n"
 "            описать последовательность шагов\n"
@@ -2495,10 +2503,9 @@ msgstr "Устройство:"
 
 #: ../gui/inputtestwindow.py:73
 msgid "(No Barrel Rotation)"
-msgstr "(Нет кручения)"
+msgstr "(нет кручения)"
 
 #: ../gui/inputtestwindow.py:75
-#, fuzzy
 msgid "Barrel Rotation:"
 msgstr "Кручение:"
 
@@ -2544,16 +2551,14 @@ msgid "Flags"
 msgstr "Флаги"
 
 #: ../gui/layers.py:939
-#, fuzzy
 msgctxt "Layers: description: no layer (\"never happens\" condition!)"
 msgid "?layer"
-msgstr "?layer"
+msgstr "?слой"
 
 #: ../gui/layers.py:959
-#, fuzzy
 msgctxt "Layers: description parts: unknown mode (fallback str!)"
 msgid "?mode"
-msgstr "?mode"
+msgstr "?режим"
 
 #: ../gui/layers.py:966
 msgctxt "Layers: description parts: layer hidden"
@@ -2572,10 +2577,9 @@ msgid "Locked"
 msgstr "Заблокирован"
 
 #: ../gui/layers.py:989
-#, fuzzy
 msgctxt "Layers: description parts: unknown type (fallback str!)"
 msgid "?type"
-msgstr "?type"
+msgstr "?тип"
 
 #: ../gui/layers.py:996
 msgctxt "Layers dockable: description parts joiner text"
@@ -2604,7 +2608,7 @@ msgstr "Слои"
 
 #: ../gui/layerswindow.py:96
 msgid "Arrange layers and assign effects"
-msgstr "Расположить слои и назначенить эффекты"
+msgstr "Расположить слои и назначить эффекты"
 
 #. TRANSLATORS: tooltip for the opacity slider (text)
 #. TRANSLATORS: note that "%%" turns into "%"
@@ -2629,7 +2633,9 @@ msgstr "Переместить слой в стопке…"
 #: ../gui/layerswindow.py:115
 msgid ""
 "Move layer in stack (dropping into a regular layer will create a new group)"
-msgstr "Переместить слой в стопке"
+msgstr ""
+"Переместить слой в стопке (при помещении на обычный слой будет создана новая "
+"группа)"
 
 #: ../gui/layerswindow.py:156
 msgid "Layer"
@@ -2682,7 +2688,7 @@ msgstr "Начало штриха"
 
 #: ../gui/linemode.py:48
 msgid "Stroke lead-in end"
-msgstr "Время удержания штриха"
+msgstr "Конец начала штриха"
 
 #: ../gui/linemode.py:49
 msgid "Tail"
@@ -2690,7 +2696,7 @@ msgstr "Конец штриха"
 
 #: ../gui/linemode.py:50
 msgid "Stroke trail-off beginning"
-msgstr "Конец штриха"
+msgstr "Начало конца штриха"
 
 #: ../gui/linemode.py:174
 msgid "Pressure variation…"
@@ -2738,7 +2744,7 @@ msgid ""
 "Martin Renold and the MyPaint Development Team"
 msgstr ""
 "Авторские права © 2005-2020\n"
-"Мартин Ренольд и команда разработчиков MyPaint"
+"Martin Renold и команда разработчиков MyPaint"
 
 #: ../gui/meta.py:45
 msgctxt "About dialog: license summary"
@@ -2757,7 +2763,7 @@ msgstr ""
 "любую более позднюю версию.\n"
 "\n"
 "Эта программа распространяется в надежде, что она будет полезной, но БЕЗО "
-"ВСЯКИХ ГАРАНТИЙ. См. файл COPYING за подробностями."
+"ВСЯКИХ ГАРАНТИЙ. Более подробные сведения доступны в файле COPYING."
 
 #: ../gui/meta.py:60
 msgctxt "About dialog: credits: tasks"
@@ -2837,7 +2843,8 @@ msgid "translator-credits"
 msgstr ""
 "Илья Портнов <ilya.portnov@gmail.com>\n"
 "Александр Прокудин <alexandre.prokoudine@gmail.com>\n"
-"zb13y"
+"zb13y\n"
+"Олеся Герасименко <translation-team@basealt.ru>"
 
 #. TRANSLATORS:"Brush radius" for the options panel. Short.
 #: ../gui/mode.py:592
@@ -2852,7 +2859,7 @@ msgstr "Непрозрачность:"
 #. TRANSLATORS:"Brush hardness/sharpness" for the options panel. Short.
 #: ../gui/mode.py:596
 msgid "Sharp:"
-msgstr "Жесткость:"
+msgstr "Жёсткость:"
 
 #. TRANSLATORS:"Additional pressure gain" for the options panel. Short.
 #: ../gui/mode.py:598
@@ -2872,7 +2879,7 @@ msgstr "Параметры инструментов"
 #: ../gui/optionspanel.py:51
 msgctxt "options panel: tab tooltip: description"
 msgid "Specialized settings for the current editing tool"
-msgstr "Параметры предназначенные для текущего инструмента"
+msgstr "Параметры, предназначенные для текущего инструмента"
 
 #: ../gui/optionspanel.py:58
 #, python-brace-format
@@ -2919,7 +2926,7 @@ msgstr "Как в системе"
 #, python-brace-format
 msgctxt "Prefs Dialog|View|Interface - menu entries"
 msgid "{lang_en} - ({lang_nat})"
-msgstr "{lang_en} - ({lang_nat})"
+msgstr "{lang_en} — ({lang_nat})"
 
 #. TRANSLATORS: title of panel showing an overview of the whole canvas
 #: ../gui/previewwindow.py:201
@@ -2928,7 +2935,7 @@ msgstr "Обзор"
 
 #: ../gui/previewwindow.py:203
 msgid "Show preview of the whole drawing area"
-msgstr "Показать миниатюру всей поверхности рисования"
+msgstr "Показать миниатюру всей области рисования"
 
 #. TRANSLATORS: The preview panel shows where the "camera" of the
 #. TRANSLATORS: main view is pointing.
@@ -2984,18 +2991,18 @@ msgstr "Регулировать ось симметрии для рисован
 #: ../gui/symmetry.py:345
 msgctxt "symmetry axis options panel: labels"
 msgid "X Position:"
-msgstr "Горизонтальная Позиция:"
+msgstr "Положение по оси X:"
 
 #: ../gui/symmetry.py:349
 msgctxt "symmetry axis options panel: labels"
 msgid "Y Position:"
-msgstr "Вертикальная Позиция:"
+msgstr "Положение по оси Y:"
 
 #: ../gui/symmetry.py:353
 #, python-format
 msgctxt "symmetry axis options panel: labels"
 msgid "Angle: %.2f°"
-msgstr ""
+msgstr "Угол: %.2f°"
 
 #: ../gui/symmetry.py:357
 msgctxt "symmetry axis options panel: position button: no axis pos."
@@ -3010,7 +3017,7 @@ msgstr "Альфа:"
 #: ../gui/symmetry.py:365
 msgctxt "symmetry axis options panel: labels"
 msgid "Symmetry Type:"
-msgstr "Тип Симметрии:"
+msgstr "Тип симметрии:"
 
 #: ../gui/symmetry.py:369
 msgctxt "symmetry axis options panel: labels"
@@ -3106,7 +3113,7 @@ msgstr "Неизвестное действие"
 
 #: ../lib/command.py:318
 msgid "Undefined (command not started yet)"
-msgstr "Неопределенное значение (команда еще не началась)"
+msgstr "Неопределённое значение (команда ещё не запущена)"
 
 #. TRANSLATORS: A short time spent painting / making brushwork.
 #. TRANSLATORS: This can correspond to zero or more touches of
@@ -3126,11 +3133,11 @@ msgstr "Обрезать слой"
 
 #: ../lib/command.py:630
 msgid "Uniquify Layer Pixels"
-msgstr "Унифицировать пиксели слоя"
+msgstr "Унифицировать пикселы слоя"
 
 #: ../lib/command.py:653
 msgid "Refactor Group"
-msgstr "Группа рефакторов"
+msgstr "Перестроить группу"
 
 #: ../lib/command.py:676
 msgid "Clear Layer"
@@ -3161,7 +3168,7 @@ msgstr "Обычный слой"
 
 #: ../lib/command.py:941
 msgid "Import Layers"
-msgstr "Импортированный Слой"
+msgstr "Импортировать слои"
 
 #: ../lib/command.py:943
 #, python-brace-format
@@ -3190,7 +3197,7 @@ msgstr "Переместить слой вниз"
 
 #: ../lib/command.py:1209
 msgid "Move Layer in Stack"
-msgstr "Переместить слой в стеке"
+msgstr "Переместить слой в стопке"
 
 #: ../lib/command.py:1328
 msgid "Rename Layer"
@@ -3224,7 +3231,7 @@ msgstr "Неизвестный режим"
 #: ../lib/command.py:1486
 #, python-format
 msgid "Set Layer Mode: %s"
-msgstr "Изменить режим смешивания слоя: %s"
+msgstr "Выбрать режим смешивания слоя: %s"
 
 #: ../lib/command.py:1510
 msgid "Enable Frame"
@@ -3240,7 +3247,7 @@ msgstr "Обновить рамку"
 
 #: ../lib/command.py:1559
 msgid "Edit Layer Externally"
-msgstr "Редактировать слой извне"
+msgstr "Редактировать слой в другой программе"
 
 #: ../lib/document.py:74
 #, python-brace-format
@@ -3251,7 +3258,7 @@ msgstr "Не удалось загрузить “{basename}”."
 #: ../lib/document.py:78
 msgctxt "Document IO: common error strings: {see_logs}"
 msgid "The logs may have more detail about this error."
-msgstr "Логи могут содержать больше информации о данной ошибке."
+msgstr "Журналы могут содержать больше информации о данной ошибке."
 
 #. TRANSLATORS: string used in e.g. "3h42m from now"
 #: ../lib/document.py:205
@@ -3275,15 +3282,16 @@ msgid ""
 "Are you running more than once instance of MyPaint?\n"
 "Close app and wait {cache_update_interval}s to retry."
 msgstr ""
-"Папка с кэшем все еще может использоваться.\n"
-"Возможно запущено несколько экземпляров MyPaint?\n"
-"Закройте программу и ждите {cache_update_interval}с перед повторной попыткой."
+"Возможно, папка с кэшем всё ещё используется.\n"
+"Запущено несколько экземпляров MyPaint?\n"
+"Закройте программу и подождите {cache_update_interval}с перед повторной "
+"попыткой."
 
 #: ../lib/document.py:226
 #, python-brace-format
 msgctxt "Document autosave descriptions"
 msgid "Incomplete backup updated {last_modified_time} {ago}"
-msgstr "Незавершенная резервная копия обновлена {last_modified_time} {ago}"
+msgstr "Незавершённая резервная копия обновлена {last_modified_time} {ago}"
 
 #. TRANSLATORS: The {ago} variable is a translated string.
 #. TRANSLATORS: Look for the msgids "from now" and "ago"
@@ -3301,7 +3309,7 @@ msgstr ""
 "Резервная копия обновлена {last_modified_time} {ago}\n"
 "Размер: {autosave.width}×{autosave.height} пикселов, Слои: {autosave."
 "num_layers}\n"
-"Содержит {unsaved_time} несохраненного рисования."
+"Содержит {unsaved_time} несохранённого рисования."
 
 #: ../lib/document.py:1448
 #, python-brace-format
@@ -3310,14 +3318,14 @@ msgid ""
 "Unable to write “{filename}”: {err}\n"
 "Do you have enough space left on the device?"
 msgstr ""
-"Не удается сохранить “{filename}”: {err}\n"
+"Не удалось сохранить “{filename}”: {err}\n"
 "Достаточно ли места на диске?"
 
 #: ../lib/document.py:1454 ../lib/document.py:1464
 #, python-brace-format
 msgctxt "Document IO: hint templates for user-facing exceptions"
 msgid "Unable to write “{filename}”: {err}"
-msgstr "Не удается сохранить “{filename}”: {err}"
+msgstr "Не удалось сохранить “{filename}”: {err}"
 
 #: ../lib/document.py:1501
 #, python-brace-format
@@ -3337,7 +3345,7 @@ msgid ""
 "You do not have the permissions needed to open this file."
 msgstr ""
 "{error_loading_common}\n"
-"У вас недостаточно прав для открытия файла."
+"Недостаточно прав для открытия файла."
 
 #: ../lib/document.py:1534
 #, python-brace-format
@@ -3368,7 +3376,7 @@ msgstr ""
 #: ../lib/document.py:1590
 msgctxt "Document IO: group name for Import Layers"
 msgid "Imported layers"
-msgstr "Импортированный слой"
+msgstr "Импортированные слои"
 
 #: ../lib/document.py:1757
 #, python-brace-format
@@ -3379,10 +3387,10 @@ msgid ""
 "Try saving in PNG format instead, if your machine doesn’t have a lot of "
 "memory. MyPaint’s PNG save function is more efficient."
 msgstr ""
-"Не удается сохранить как JPEG: {original_msg}\n"
+"Не удалось сохранить как JPEG: {original_msg}\n"
 "\n"
-"Вместо этого попробуйте сохранить в PNG, если у вашего устройства немного "
-"памяти. Функция сохранения в PNG у MyPaint более эффективная."
+"Попробуйте сохранить в формате PNG, если у устройства немного памяти. "
+"Функция сохранения в PNG у MyPaint более эффективна."
 
 #: ../lib/document.py:1913
 #, python-brace-format
@@ -3403,7 +3411,7 @@ msgstr ""
 #: ../lib/floodfill.py:132
 msgctxt "floodfill status message: use active tense"
 msgid "Filling"
-msgstr "Залить"
+msgstr "Заливка"
 
 #: ../lib/floodfill.py:133
 msgctxt "floodfill status message: use active tense"
@@ -3418,7 +3426,7 @@ msgstr "Размытие"
 #: ../lib/floodfill.py:135
 msgctxt "floodfill status message: use active tense"
 msgid "Compositing"
-msgstr "Композиция"
+msgstr "Смешивание"
 
 #: ../lib/floodfill.py:136
 msgctxt "floodfill status message: use active tense"
@@ -3488,7 +3496,7 @@ msgstr "Данные растрового изображения"
 #: ../lib/layer/data.py:1258
 msgctxt "layer default names"
 msgid "Data"
-msgstr ""
+msgstr "Данные"
 
 #: ../lib/layer/data.py:1263
 msgctxt "layer type descriptions"
@@ -3593,6 +3601,8 @@ msgstr "Пигмент"
 msgid ""
 "Similar to mixing actual pigments by upsampling to 10 spectral channels."
 msgstr ""
+"Похоже на смешивание реальных пигментов с помощью передискретизации до 10 "
+"спектральных каналов."
 
 #: ../lib/modes.py:58
 msgid "Multiply"
@@ -3627,7 +3637,7 @@ msgid ""
 "highlights and shadows. This is the inverse of 'Hard Light'."
 msgstr ""
 "Перекрывает нижний слой верхним, сохраняя яркие участки и тени нижнего слоя. "
-"Противоположность 'Жесткому свету'."
+"Противоположность 'Жёсткому свету'."
 
 #: ../lib/modes.py:71
 msgid "Darken"
@@ -3655,9 +3665,9 @@ msgid ""
 "photographic darkroom technique of the same name which is used for improving "
 "contrast in shadows."
 msgstr ""
-"Делает нижний слой ярче используя верхний. Эффект похож на технику в темной "
-"комнате для фотографий с тем же названием, которая используется для "
-"исправления контраста в тенях."
+"Осветляет нижний слой, используя верхний. Эффект похож на технику тёмной "
+"комнаты для фотографий, которая используется для исправления контраста в "
+"тенях."
 
 #: ../lib/modes.py:84
 msgid "Burn"
@@ -3669,9 +3679,9 @@ msgid ""
 "photographic darkroom technique of the same name which is used for reducing "
 "over-bright highlights."
 msgstr ""
-"Затемняет нижний слой используя верхний. Эффект похож на технику в темной "
-"комнате для фотографий с тем же названием, которая используется для "
-"ослабления засвеченных участков."
+"Затемняет нижний слой, используя верхний. Эффект похож на технику тёмной "
+"комнаты для фотографий, которая используется для исправления засвеченных "
+"участков."
 
 #: ../lib/modes.py:89
 msgid "Hard Light"
@@ -3695,7 +3705,7 @@ msgstr "Разница"
 
 #: ../lib/modes.py:96
 msgid "Subtracts the darker color from the lighter of the two."
-msgstr "Вычитает более темный цвет из более светлого."
+msgstr "Вычитает более тёмный цвет из более светлого."
 
 #: ../lib/modes.py:98
 msgid "Exclusion"
@@ -3737,13 +3747,13 @@ msgstr ""
 
 #: ../lib/modes.py:114
 msgid "Luminosity"
-msgstr "Яркость"
+msgstr "Светлота"
 
 #: ../lib/modes.py:115
 msgid ""
 "Applies the luminosity of the top layer to the hue and saturation of the "
 "backdrop."
-msgstr "Применяет яркость верхнего слоя к оттенку и насыщенности нижнего слоя."
+msgstr "Применяет светлоту верхнего слоя к оттенку и насыщенности нижнего слоя."
 
 #: ../lib/modes.py:119
 msgid "Plus"
@@ -3762,7 +3772,7 @@ msgid ""
 "Uses the backdrop only where this layer covers it. Everything else is "
 "ignored."
 msgstr ""
-"Использует нижний слой только там где этот слой его перекрывает. Все "
+"Использует нижний слой только там, где этот слой его перекрывает. Всё "
 "остальное игнорируется."
 
 #: ../lib/modes.py:126
@@ -3774,7 +3784,7 @@ msgid ""
 "Uses the backdrop only where this layer doesn't cover it. Everything else is "
 "ignored."
 msgstr ""
-"Использует нижний слой только там где этот слой его не перекрывает. Все "
+"Использует нижний слой только там, где этот слой его не перекрывает. Всё "
 "остальное игнорируется."
 
 #: ../lib/modes.py:130
@@ -3786,7 +3796,7 @@ msgid ""
 "Source which overlaps the destination, replaces the destination. Destination "
 "is placed elsewhere."
 msgstr ""
-"Основа перекрывающая цель, заменяет цель. Цель размещается в другом месте."
+"Основа, перекрывающая цель, заменяет цель. Цель размещается в другом месте."
 
 #: ../lib/modes.py:134
 msgid "Destination Atop"
@@ -3797,7 +3807,7 @@ msgid ""
 "Destination which overlaps the source replaces the source. Source is placed "
 "elsewhere."
 msgstr ""
-"Цель перекрывающая основу, заменяет основу. Основа размещается в другом "
+"Цель, перекрывающая основу, заменяет основу. Основа размещается в другом "
 "месте."
 
 #. TRANSLATORS: UNIQUE_NAME_TEMPLATE. Must match its regex.
@@ -3824,7 +3834,7 @@ msgid ""
 "Unable to construct a vital internal object. Your system may not have enough "
 "memory to perform this operation."
 msgstr ""
-"Не удается создать важный внутренний объект. Возможно в вашей системе "
+"Не удалось создать важный внутренний объект. Возможно, в системе "
 "недостаточно памяти для выполнения данной операции."
 
 #: ../lib/surface.py:313
@@ -3887,8 +3897,8 @@ msgid ""
 msgstr ""
 "Запускать диалог восстановления автосохранения при запуске MyPaint, если "
 "есть файлы для восстановления.\n"
-"Вы всегда можете запустить этот диалог из меню \"Файл\", когда MyPaint "
-"запущен."
+"Когда программа MyPaint работает, этот диалог всегда можно запустить с "
+"помощью меню \"Файл\"."
 
 #. Deletes the selected autosave backup file.
 #: ../gui/autorecover.glade:60
@@ -3899,7 +3909,7 @@ msgstr "_Удалить…"
 #: ../gui/autorecover.glade:66
 msgctxt "Autosave Recovery dialog|Delete button|"
 msgid "Delete this backup from the disk."
-msgstr "Удалить эту копию с диска."
+msgstr "Удалить эту резервную копию с диска."
 
 #. Recover in the sense or retrieval or salvage from a backup file. The user is asked to save the retrieved file immediately afterwards, hence the ellipsis.
 #: ../gui/autorecover.glade:78
@@ -3916,7 +3926,7 @@ msgstr "Сохранить эту резервную копию на диск и
 #: ../gui/autorecover.glade:95
 msgctxt "Autosave Recovery dialog|"
 msgid "Decide _Later"
-msgstr "Выбрать_Позже"
+msgstr "Выбрать _позже"
 
 #: ../gui/autorecover.glade:101
 msgctxt "Autosave Recovery dialog|Cancel button|"
@@ -3930,8 +3940,10 @@ msgid ""
 "recover a working file from one of these automated backups now. You’ll be "
 "asked where to save it before continuing."
 msgstr ""
-"MyPaint закрылась с несохраненной работой, но сделала резервные копии. Вы "
-"можете восстановить файл сейчас, или отложить все до нового запуска MyPaint."
+"Программа MyPaint закрылась с несохранённой работой, но периодически "
+"создаются резервные копии. Сейчас можно восстановить файл из одной из них. "
+"Перед продолжением будет предложено выбрать расположение, в котором следует "
+"сохранить файл."
 
 #: ../gui/autorecover.glade:157
 msgid "Thumbnail"
@@ -3943,14 +3955,14 @@ msgstr "Описание"
 
 #: ../gui/brusheditor.glade:88
 msgid "Live update"
-msgstr "Обновлять"
+msgstr "Обновление в реальном времени"
 
 #: ../gui/brusheditor.glade:93
 msgid ""
 "Update the last stroke on the canvas with the settings in this window, in "
 "real time"
 msgstr ""
-"Обновлять последний штрих на холсте с параметрами в этом окне, в реальном "
+"Обновлять последний штрих на холсте параметрами в этом окне в реальном "
 "времени"
 
 #: ../gui/brusheditor.glade:116
@@ -3959,15 +3971,15 @@ msgstr "Сохранить эти параметры в кисть"
 
 #: ../gui/brusheditor.glade:132
 msgid "Edit Icon"
-msgstr "Значок кисти"
+msgstr "Изменить значок"
 
 #: ../gui/brusheditor.glade:137
 msgid ""
 "Edit this brush's icon in a separate window (you will be able to use any "
 "brush to draw it)"
 msgstr ""
-"Редактировать значок кисти в отдельном окне (у вас будет возможность "
-"использовать любую кисть для его рисования)"
+"Редактировать значок кисти в отдельном окне (будет возможность использовать "
+"любую кисть для его рисования)"
 
 #: ../gui/brusheditor.glade:151
 msgid "Delete"
@@ -4019,8 +4031,7 @@ msgstr "Заметки:"
 msgid ""
 "Starting value for this brush setting. The brush dynamics below act on this."
 msgstr ""
-"Начальное значение для этого параметра кисти. Динамика кисти влияет на этот "
-"параметр."
+"Начальное значение для этого параметра кисти. От него зависит динамика кисти."
 
 #. field label
 #: ../gui/brusheditor.glade:426
@@ -4029,7 +4040,7 @@ msgstr "Значение:"
 
 #: ../gui/brusheditor.glade:491
 msgid "Reset this input to have no effect on the setting"
-msgstr "Сбросить это значение, чтобы не влияло на параметр"
+msgstr "Сбросить это значение, чтобы оно не влияло на параметр"
 
 #: ../gui/brusheditor.glade:521
 msgid ""
@@ -4037,7 +4048,7 @@ msgid ""
 "This can be set using the main slider for {dname}."
 msgstr ""
 "Минимальное значение для выходной оси.\n"
-"Можно установить используя главный ползунок настройки {dname}."
+"Можно установить с помощью главного ползунка настройки {dname}."
 
 #: ../gui/brusheditor.glade:540
 msgid ""
@@ -4045,7 +4056,7 @@ msgid ""
 "This can be set using the main slider for {dname}."
 msgstr ""
 "Максимальное значение для выходной оси.\n"
-"Можно установить используя главный ползунок настройки {dname}."
+"Можно установить с помощью главного ползунка настройки {dname}."
 
 #: ../gui/brusheditor.glade:562
 msgid "Output"
@@ -4081,7 +4092,8 @@ msgstr ""
 
 #: ../gui/brusheditor.glade:739
 msgid "Variation of the base value by stylus input and other criteria"
-msgstr "Вариация основного значения вводом пера и другими показателями"
+msgstr ""
+"Вариация основного значения при вводе с помощью пера и по другим критериям"
 
 #: ../gui/brusheditor.glade:746
 msgid "Brush Dynamics"
@@ -4106,7 +4118,7 @@ msgstr "Динамика кисти недоступна для этого па�
 
 #: ../gui/brusheditor.glade:851
 msgid "<big><b>No Brush Dynamics</b></big>"
-msgstr "<big><b>No Brush Dynamics</b></big>"
+msgstr "<big><b>Нет динамики кисти</b></big>"
 
 #: ../gui/inktool.glade:44
 msgctxt "Inking tool options: point value sliders: labels: tooltips"
@@ -4176,16 +4188,15 @@ msgstr "Упростить количество точек"
 
 #: ../gui/inktool.glade:257
 msgid "Simplify the curve using the Reumann-Witkam algorithm."
-msgstr "Упростите кривую с помощью алгоритма Реуманна-Виткама."
+msgstr "Упростить кривую с помощью алгоритма Реуманна — Виткама."
 
 #: ../gui/inktool.glade:269 ../gui/resources.xml:918
 msgid "Cull Points"
 msgstr "Отбраковать точки"
 
 #: ../gui/inktool.glade:273
-#, fuzzy
 msgid "Cull every other point from the curve."
-msgstr "Отбраковать все другие точки кривой."
+msgstr "Отбраковать каждую вторую точку кривой."
 
 #: ../gui/layervis.glade:15
 msgctxt "Layers window: view list controls: tooltips"
@@ -4200,12 +4211,12 @@ msgstr "Переименовать текущий вид."
 #: ../gui/layervis.glade:57
 msgctxt "Layers window: view list controls: tooltips"
 msgid "Remove the active view."
-msgstr "Убрать текущий вид."
+msgstr "Удалить текущий вид."
 
 #: ../gui/layervis.glade:78
 msgctxt "Layers window: view list controls: tooltips"
 msgid "Snapshot visible layers as a new view."
-msgstr "Снимок видимых слоев как новый вид."
+msgstr "Снимок видимых слоёв как новый вид."
 
 #: ../gui/layervis.glade:99
 msgctxt "Layers window: view list controls: tooltips"
@@ -4290,7 +4301,7 @@ msgstr "Кружок с тонким контуром"
 #: ../gui/preferenceswindow.glade:76
 msgctxt "Prefs Dialog|View|Cursors|Freehand Cursor|Type|"
 msgid "Circle with medium outline"
-msgstr "Кружок с средним контуром"
+msgstr "Кружок со средним контуром"
 
 #: ../gui/preferenceswindow.glade:80
 msgctxt "Prefs Dialog|View|Cursors|Freehand Cursor|Type|"
@@ -4343,8 +4354,8 @@ msgid ""
 "Here you can restrict pointing devices to specific tasks on the canvas, or "
 "have them ignored completely if they glitch your drawing."
 msgstr ""
-"Здесь вы можете настроить устройства ввода под специфические задачи на "
-"холсте, или отключить их если они мешают рисованию."
+"Здесь можно настроить устройства ввода под специфические задачи на холсте "
+"или отключить их, если они мешают рисованию."
 
 #: ../gui/preferenceswindow.glade:324
 msgctxt "Prefs Dialog|Button|"
@@ -4361,7 +4372,7 @@ msgid ""
 "• The space bar can be used like Button2.\n"
 "• Some tablet pads' buttons cannot be held down when pressed."
 msgstr ""
-"• Пробел можно использовать как Кнопка2.\n"
+"• Пробел можно использовать как Кнопку2.\n"
 "• Кнопки некоторых планшетов невозможно зажать."
 
 #: ../gui/preferenceswindow.glade:401
@@ -4380,7 +4391,7 @@ msgstr "Кнопки"
 #. unless its key is bound to something else.
 #: ../gui/preferenceswindow.glade:453
 msgid "Disable fallback key bindings"
-msgstr ""
+msgstr "Отключить резервные привязки клавиш"
 
 #. Tooltip for checkbox in the keyboard mappings preferences.
 #: ../gui/preferenceswindow.glade:457
@@ -4388,11 +4399,14 @@ msgid ""
 "The fallback key bindings are static built-in bindings that are only used if "
 "their key combinations are not bound to anything else."
 msgstr ""
+"Резервные привязки клавиш — это постоянные встроенные привязки, которые "
+"используются только в том случае, если соответствующие им комбинации клавиш "
+"не привязаны к другим действиям."
 
 #: ../gui/preferenceswindow.glade:476
 msgctxt "Prefs Dialog|Button|"
 msgid "<b>Keyboard Mappings</b>"
-msgstr "<b>Комбинации клавиш</b>"
+msgstr "<b>Назначения клавиш</b>"
 
 #: ../gui/preferenceswindow.glade:489
 msgid "Keys"
@@ -4406,7 +4420,7 @@ msgstr "Формат по умолчанию:"
 #: ../gui/preferenceswindow.glade:524
 msgctxt "Prefs Dialog|Load & Save|Saving|"
 msgid "Prefix when saving scraps:"
-msgstr "Путь и приставка к названию блокнота:"
+msgstr "Путь и приставка к названию черновика:"
 
 #: ../gui/preferenceswindow.glade:575
 msgctxt "Prefs Dialog|Load & Save|"
@@ -4421,12 +4435,12 @@ msgstr "<b>Управление цветом</b>"
 #: ../gui/preferenceswindow.glade:608
 msgctxt "Prefs Dialog|Load & Save|Color Management|"
 msgid "Color space conversions:"
-msgstr "Конвертация цветового пространства:"
+msgstr "Преобразование цветового пространства:"
 
 #: ../gui/preferenceswindow.glade:626
 msgctxt "Prefs Dialog|Load & Save|Color Management|"
 msgid "Convert to sRGB when loading; mark as sRGB when saving"
-msgstr "Конвертировать в sRGB при загрузке; отметить как sRGB при сохранении"
+msgstr "Преобразовывать в sRGB при загрузке; отметить как sRGB при сохранении"
 
 #: ../gui/preferenceswindow.glade:630
 msgctxt "Prefs Dialog|Load & Save|Color Management|"
@@ -4440,21 +4454,21 @@ msgid ""
 "monitors. If you know your display is radically different from this, use the "
 "\"no automatic conversions or tagging\" setting instead."
 msgstr ""
-"Изображения содержащие <i>полную</i> информацию о цветовом пространстве "
-"будут конвертированы в sRGB при загрузке в MyPaint. При сохранении "
-"изображения MyPaint добавит подсказки к нему, чтобы другие программы могли "
+"Изображения, содержащие <i>полную</i> информацию о цветовом пространстве, "
+"будут преобразованы в sRGB при загрузке в MyPaint. При сохранении "
+"изображения MyPaint добавит к нему подсказки, чтобы другие программы могли "
 "правильно его визуализировать.\n"
 "\n"
-"Подразумевается что экран откалиброван близко к sRGB, стандартному цветовому "
-"пространству для сети и приблизительно для большинства мониторов. Если вы "
-"знаете что ваш экран радикально отличается от этих настроек, используйте "
-"вместо этого настройку \"Без автоматического конвертирования или маркирования"
-"\"."
+"Подразумевается, что экран откалиброван близко к sRGB, стандартному "
+"цветовому пространству для сети и приблизительному для большинства "
+"мониторов. Если известно, что экран радикально отличается от этих настроек, "
+"используйте вместо этого настройку \"Без автоматического преобразования или "
+"маркирования\"."
 
 #: ../gui/preferenceswindow.glade:648
 msgctxt "Prefs Dialog|Load & Save|Color Management|"
 msgid "No automatic conversions or tagging"
-msgstr "Без автоматического конвертирования или маркирования"
+msgstr "Без автоматического преобразования или маркирования"
 
 #: ../gui/preferenceswindow.glade:652
 msgctxt "Prefs Dialog|Load & Save|Color Management|"
@@ -4465,11 +4479,11 @@ msgid ""
 "This is MyPaint's old behaviour, and can be used as a stopgap for non-sRGB "
 "working."
 msgstr ""
-"При загрузке цвета не конвертируются, и файлы сохраняются без информации о "
-"регулировании цвета.\n"
+"При загрузке цвета не преобразуются, и файлы сохраняются без информации об "
+"управлении цветом.\n"
 "\n"
-"Это старый режим работы MyPaint, и может использоваться как полумера для "
-"работы без sRGB."
+"Это старый режим работы MyPaint, его можно использовать в случае "
+"необходимости работы без sRGB."
 
 #: ../gui/preferenceswindow.glade:680
 msgctxt "Prefs Dialog|Load & Save|"
@@ -4495,9 +4509,9 @@ msgid ""
 "the program crashes, you'll have a chance to restore what you were working "
 "on."
 msgstr ""
-"Резервное копирование работает пошагово в фоновом режиме используя кэш "
-"программы. Если программа аварийно закроется, у вас будет шанс восстановить "
-"вашу работу."
+"Резервное копирование в кэш MyPaint на диске регулярно выполняется в фоновом "
+"режиме. Это позволяет восстановить работу в случае аварийного завершения "
+"программы."
 
 #: ../gui/preferenceswindow.glade:768
 msgctxt "Prefs Dialog|Load & Save|Automated Backups|interval label"
@@ -4537,12 +4551,12 @@ msgstr "Вид курсора:"
 #: ../gui/preferenceswindow.glade:910
 msgctxt "Prefs Dialog|View|Interface|"
 msgid "Dark theme variant:"
-msgstr "Темная тема:"
+msgstr "Тёмная тема:"
 
 #: ../gui/preferenceswindow.glade:920
 msgctxt "Prefs Dialog|View|Interface|Dark theme variant|"
 msgid "If available in GTK3 theme (needs restart)"
-msgstr "Если доступна в теме GTK3 (требуется перезагрузка)"
+msgstr "Если доступна в теме GTK3 (требуется перезапуск)"
 
 #: ../gui/preferenceswindow.glade:924
 msgctxt "Prefs Dialog|View|Interface|Dark theme variant|checkbox tooltip"
@@ -4550,9 +4564,9 @@ msgid ""
 "Use a light-on-dark theme variant, when it's supported by the GTK theme. "
 "This is generally sensible for image editors and media viewers."
 msgstr ""
-"Использовать вариант темы \"светлое на темном\", когда она поддерживается в "
-"теме GTK. В большинстве случаев целесообразно для графических редакторов и "
-"программ для просмотра изображений."
+"Использовать вариант темы \"светлое на тёмном\", когда она поддерживается в "
+"теме GTK. Обычно подходит для графических редакторов и программ для "
+"просмотра изображений."
 
 #: ../gui/preferenceswindow.glade:945
 msgid "Some of these settings require MyPaint to be restarted."
@@ -4595,7 +4609,7 @@ msgstr "Обрабатывать события плавной прокрутк�
 msgctxt ""
 "Prefs Dialog|View|Interface|Handle smooth scrolling events|checkbox label"
 msgid "When devices send them (needs restart)"
-msgstr "Когда устройства отправляют их (требуется перезагрузка)"
+msgstr "Когда устройства отправляют их (требуется перезапуск)"
 
 #: ../gui/preferenceswindow.glade:1064
 msgctxt ""
@@ -4613,13 +4627,13 @@ msgid ""
 msgstr ""
 "Поддержка плавной прокрутки делает прокручивающие жесты и прокрутку с "
 "помощью колеса плавной для некоторых устройств. Подходит для сенсорных "
-"панелей, но может раздражать при прокрутке с помощью мыши.\n"
+"панелей, но может мешать при прокрутке с помощью мыши.\n"
 "\n"
-"Если плавная прокрутка поддерживается, на время пошаговое прокручивание "
-"можно включить зажав клавишу Shift во время прокрутки.\n"
+"Если плавная прокрутка поддерживается, пошаговое прокручивание на время "
+"можно включить обратно, зажав клавишу Shift во время прокрутки.\n"
 "\n"
-"Перемещение по холсту требует включения данной настройки, и настройки вашего "
-"устройства для отправки двунаправленных событий перемещения."
+"Для перемещения по холсту с помощью прокрутки необходимо включить эту опцию, "
+"а также настроить устройство для отправки двунаправленных событий прокрутки."
 
 #: ../gui/preferenceswindow.glade:1111
 msgid "Hide cursor while painting"
@@ -4643,7 +4657,7 @@ msgstr "Временно показывать только созданный и
 #: ../gui/preferenceswindow.glade:1158
 msgctxt "Prefs Dialog|View|Interface|"
 msgid "Blink layers on creation/selection:"
-msgstr "Мигающие слои на создании/выборе:"
+msgstr "Мигающие слои при создании/выборе:"
 
 #: ../gui/preferenceswindow.glade:1193
 msgctxt "Prefs Dialog|View|Interface|"
@@ -4653,7 +4667,7 @@ msgstr "Язык:"
 #: ../gui/preferenceswindow.glade:1208
 msgctxt "Prefs Dialog|View|Interface|"
 msgid "(needs restart)"
-msgstr "(нуждается в перезапуске)"
+msgstr "(требуется перезапуск)"
 
 #. Tab label in preferences dialog
 #: ../gui/preferenceswindow.glade:1225
@@ -4679,15 +4693,15 @@ msgstr "Основные цвета:"
 #: ../gui/preferenceswindow.glade:1276
 msgctxt "Prefs Dialog|Color|Color Wheel|Primaries|"
 msgid "Standard digital Red/Green/Blue"
-msgstr "Стандартный цифровой Красный/Зеленый/Синий"
+msgstr "Стандартный цифровой Красный/Зелёный/Синий"
 
 #: ../gui/preferenceswindow.glade:1281
 msgid ""
 "The red, green, and blue &apos;computer monitor&apos; primaries, evenly "
 "arranged around the circle. Green is opposite magenta."
 msgstr ""
-"Основные цвета &apos;компьютерного монитора&apos; - красный, зеленый и "
-"синий, равномерно расположенные по кругу. Зеленый противоположен пурпурному."
+"Основные цвета &apos;компьютерного монитора&apos; — красный, зелёный и "
+"синий, равномерно расположенные по кругу. Зелёный противоположен пурпурному."
 
 #: ../gui/preferenceswindow.glade:1282
 msgctxt "Prefs Dialog|Color|Color Wheel|Primaries|RGB|"
@@ -4695,13 +4709,13 @@ msgid ""
 "The red, green, and blue 'computer monitor' primaries, evenly arranged "
 "around the circle. Green is opposite magenta."
 msgstr ""
-"Основные цвета 'компьютерного монитора' - красный, зеленый и синий, "
-"равномерно расположенные по кругу. Зеленый противоположен пурпурному."
+"Основные цвета 'компьютерного монитора' — красный, зелёный и синий, "
+"равномерно расположенные по кругу. Зелёный противоположен пурпурному."
 
 #: ../gui/preferenceswindow.glade:1298
 msgctxt "Prefs Dialog|Color|Color Wheel|Primaries|"
 msgid "Traditional artist's Red/Yellow/Blue"
-msgstr "Традиционный Красный/Желтый/Синий"
+msgstr "Традиционный Красный/Жёлтый/Синий"
 
 #: ../gui/preferenceswindow.glade:1303
 msgid ""
@@ -4709,9 +4723,9 @@ msgid ""
 "since the 18th century, approximated with pure display colors evenly "
 "arranged around the circle. Green is opposite red."
 msgstr ""
-"Традиционный красный/желтый/синий круг использовавшийся многими художниками "
-"с 18 века, близкий к чистому отображению цветов равномерно расположенных по "
-"кругу. Зеленый противоположен красному."
+"Традиционный красный/жёлтый/синий круг, использовавшийся многими художниками "
+"с 18 века, близкий к чистому отображению цветов, равномерно расположенных по "
+"кругу. Зелёный противоположен красному."
 
 #: ../gui/preferenceswindow.glade:1304
 msgctxt "Prefs Dialog|Color|Color Wheel|Primaries|RYB|"
@@ -4720,14 +4734,14 @@ msgid ""
 "since the 18th century, approximated with pure display colors evenly "
 "arranged around the circle. Green is opposite red."
 msgstr ""
-"Традиционный красный/желтый/синий круг использовавшийся многими художниками "
-"с 18 века, близкий к чистому отображению цветов равномерно расположенных по "
-"кругу. Зеленый противоположен красному."
+"Традиционный красный/жёлтый/синий круг, использовавшийся многими художниками "
+"с 18 века, близкий к чистому отображению цветов, равномерно расположенных по "
+"кругу. Зелёный противоположен красному."
 
 #: ../gui/preferenceswindow.glade:1320
 msgctxt "Prefs Dialog|Color|Color Wheel|Primaries|"
 msgid "Red-Green and Blue-Yellow opponent pairs"
-msgstr "Противоположные пары Красный-Зеленый и Синий-Желтый"
+msgstr "Противоположные пары Красный — Зелёный и Синий — Жёлтый"
 
 #: ../gui/preferenceswindow.glade:1325
 msgid ""
@@ -4737,12 +4751,12 @@ msgid ""
 "and yellow is opposite blue. CIECAM02 and NCS present a similar model. Here "
 "we use pure display red, yellow etc. as the four primaries."
 msgstr ""
-"Яркая и нечистая модель кругов основанная на теориях о цвете которые "
+"Поверхностная модель кругов, основанная на теориях о цвете, которые "
 "использовали четыре &apos;психологических основных цвета&apos; или &apos;"
-"уникальных тона&apos; расположенных на противоположных парах сторон света. "
-"Красный противоположен зеленому, и желтый противоположен синему. CIECAM02 и "
-"NCS представляют схожие модели. Здесь мы используем чистое отображение "
-"красного, желтого и т.д. как четыре основных цвета."
+"уникальных тона&apos;, расположенных как противоположные пары сторон света. "
+"Красный противоположен зелёному, а жёлтый противоположен синему. CIECAM02 и "
+"NCS представляют схожие модели. Здесь используется чистое отображение "
+"красного, жёлтого и т.д. как четырёх основных цветов."
 
 #: ../gui/preferenceswindow.glade:1326
 msgctxt "Prefs Dialog|Color|Color Wheel|Primaries|RYGB|"
@@ -4753,12 +4767,12 @@ msgid ""
 "blue. CIECAM02 and NCS present a similar model. Here we use pure display "
 "red, yellow etc. as the four primaries."
 msgstr ""
-"Яркая и нечистая модель кругов основанная на теориях о цвете которые "
-"использовали четыре 'психологических основных цвета' или 'уникальных тона' "
-"расположенных на противоположных парах сторон света. Красный противоположен "
-"зеленому, и желтый противоположен синему. CIECAM02 и NCS представляют схожие "
-"модели. Здесь мы используем чистое отображение красного, желтого и т.д. как "
-"четыре основных цвета."
+"Поверхностная модель кругов, основанная на теориях о цвете, которые "
+"использовали четыре 'психологических основных цвета' или 'уникальных тона', "
+"расположенных как противоположные пары сторон света. Красный противоположен "
+"зелёному, а жёлтый противоположен синему. CIECAM02 и NCS представляют схожие "
+"модели. Здесь используется чистое отображение красного, жёлтого и т.д. как "
+"четырёх основных цветов."
 
 #. Options affecting color wheels
 #: ../gui/preferenceswindow.glade:1354
@@ -4775,7 +4789,7 @@ msgstr "Цвет"
 #: ../gui/preferenceswindow.glade:1400
 msgctxt "Prefs Dialog|Compatibility"
 msgid "Default Compatibility Mode:"
-msgstr "Режим Совместимости По Умолчанию:"
+msgstr "Режим совместимости по умолчанию:"
 
 #: ../gui/preferenceswindow.glade:1425
 msgctxt "Prefs Dialog|Compatibility"
@@ -4791,13 +4805,12 @@ msgstr "<b>Настройки 2.x</b>"
 #: ../gui/preferenceswindow.glade:1477 ../gui/preferenceswindow.glade:1551
 msgctxt "Prefs Dialog|Compatibility"
 msgid "Default New Layer Type:"
-msgstr "Тип Нового Слоя По Умолчанию:"
+msgstr "Тип нового слоя по умолчанию:"
 
 #: ../gui/preferenceswindow.glade:1523 ../gui/preferenceswindow.glade:1537
-#, fuzzy
 msgctxt "Prefs Dialog|Compatibility"
 msgid "Default Pigment Brush Setting:"
-msgstr "Редактировать параметры кисти"
+msgstr "Параметры кисти пигмента по умолчанию:"
 
 #. Label description for the 1.x compatibility-mode-by-default setting
 #: ../gui/preferenceswindow.glade:1614
@@ -4807,6 +4820,10 @@ msgid ""
 "default. In this mode 1.x .ora files will look the same as they did in older "
 "versions, but pigment blending will not work well."
 msgstr ""
+"При создании новых документов по умолчанию использовать режим совместимости "
+"с устаревшей версией 1.x. В этом режиме файлы .ora 1.x будут выглядеть так "
+"же, как в более ранних версиях, но режим смешивания пигментов не будет "
+"работать корректно."
 
 #: ../gui/preferenceswindow.glade:1633
 msgctxt "Prefs Dialog|Compatibility"
@@ -4814,6 +4831,9 @@ msgid ""
 "When creating new documents, use the regular 2.x compatibility mode by "
 "default. Old documents will often look different in this mode."
 msgstr ""
+"При создании новых документов по умолчанию использовать режим совместимости "
+"со стандартной версией 2.x. В этом режиме документы, созданные с помощью "
+"более ранних версий, будут выглядеть по-другому."
 
 #: ../gui/preferenceswindow.glade:1665
 msgctxt "Prefs Dialog|Compatibility"
@@ -4824,7 +4844,7 @@ msgstr "Отображать предупреждение для частичн�
 #: ../gui/preferenceswindow.glade:1682
 msgctxt "Prefs Dialog|Compatibility"
 msgid "File compatibility warnings:"
-msgstr "Предупреждения о совместимости файла:"
+msgstr "Предупреждения о совместимости файлов:"
 
 #: ../gui/preferenceswindow.glade:1694
 msgctxt "Prefs Dialog|Compatibility"
@@ -4839,22 +4859,21 @@ msgid ""
 "When you save an OpenRaster file with MyPaint 2.0 or newer the active "
 "compatibility mode will be written to the file."
 msgstr ""
-"Это относится только к файлам сохраненным в версии MyPaint старше чем 2.0. "
-"При сохранении файла OpenRaster в MyPaint 2.0 или новее режим активной "
-"совместимости будет записан в файл."
+"Это относится только к файлам, сохранённым в более ранних версиях MyPaint, "
+"чем 2.0. При сохранении файла OpenRaster в MyPaint 2.0 или новее режим "
+"активной совместимости будет записан в файл."
 
 #. Label to the options for how to handle files which do not have a compatibility mode specified (whether they should be opened in 1.x compatibility mode, or 2.x mode)
 #: ../gui/preferenceswindow.glade:1712
 msgctxt "Prefs Dialog|Compatibility"
 msgid "When Mode is Unspecified:"
-msgstr "Когда Режим Совместимости Не Определен:"
+msgstr "Когда режим совместимости не определён:"
 
 #. This label indicates a subsection of the compatibility settings related to loading files.
 #: ../gui/preferenceswindow.glade:1739
-#, fuzzy
 msgctxt "Prefs|Compatibility"
 msgid "<b>File loading</b>"
-msgstr "<b>Сохранение</b>"
+msgstr "<b>Загрузка файлов</b>"
 
 #: ../gui/preferenceswindow.glade:1759
 msgid "<b>Compatibility settings</b>"
@@ -4919,7 +4938,7 @@ msgstr "Открыть последний"
 #: ../gui/resources.xml:83
 msgctxt "Accel Editor (descriptions)"
 msgid "Load the file you saved most recently."
-msgstr "Загрузить последний сохраненный файл."
+msgstr "Загрузить последний сохранённый файл."
 
 #: ../gui/resources.xml:90
 msgctxt "Menu→File (labels)"
@@ -4944,7 +4963,7 @@ msgstr "Импортировать слои…"
 #: ../gui/resources.xml:112
 msgctxt "Accel Editor (descriptions)"
 msgid "Import layers from one or more files."
-msgstr "Импортировать слои из одного или более файлов."
+msgstr "Импортировать слои из одного или нескольких файлов."
 
 #: ../gui/resources.xml:120
 msgctxt "Menu→File (labels), Accel Editor (labels)"
@@ -4984,7 +5003,7 @@ msgstr "Сохранить как черновик"
 #: ../gui/resources.xml:148
 msgctxt "Accel Editor (descriptions)"
 msgid "Save to a new scrap file, or save a new revision if already a scrap."
-msgstr "Сохранить в новый файл черновика, или перезаписать если это черновик."
+msgstr "Сохранить в новый файл черновика (или перезаписать, если это черновик)."
 
 #: ../gui/resources.xml:156
 msgctxt "Menu→File (labels), Accel Editor (labels)"
@@ -5063,49 +5082,50 @@ msgid "The current layer's compositing mode."
 msgstr "Режим смешивания текущего слоя."
 
 #: ../gui/resources.xml:237
-#, fuzzy
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
 msgid "Increase Fake Pressure"
-msgstr "Увеличить силу нажатия"
+msgstr "Увеличить эмулируемое давление"
 
 #: ../gui/resources.xml:238
 msgctxt "Accel Editor (descriptions)"
 msgid "Send harder pressure for devices that don't support pressure input."
-msgstr "Усилить давление для устройств, не поддерживающих ввод давления."
+msgstr ""
+"Использовать более сильный нажим для устройств, которые не поддерживают ввод "
+"давления."
 
 #: ../gui/resources.xml:245
-#, fuzzy
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
 msgid "Decrease Fake Pressure"
-msgstr "Уменьшить поддельное давление"
+msgstr "Уменьшить эмулируемое давление"
 
 #: ../gui/resources.xml:246
 msgctxt "Accel Editor (descriptions)"
 msgid "Send softer pressure for devices that don't support pressure input."
 msgstr ""
-"Использовать более мягкий нажим для устройств не различающих силу нажатия."
+"Использовать более мягкий нажим для устройств, которые не поддерживают ввод "
+"давления."
 
 #: ../gui/resources.xml:254
-#, fuzzy
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
 msgid "Increase Fake Rotation"
-msgstr "Увеличить насыщенность"
+msgstr "Увеличить эмулируемое вращение"
 
 #: ../gui/resources.xml:255
 msgctxt "Accel Editor (descriptions)"
 msgid "Increase barrel rotation for devices that don't support rotation input."
 msgstr ""
+"Увеличить кручение для устройств, которые не поддерживают ввод кручения."
 
 #: ../gui/resources.xml:262
-#, fuzzy
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
 msgid "Decrease Fake Rotation"
-msgstr "Уменьшить насыщенность"
+msgstr "Уменьшить эмулируемое вращение"
 
 #: ../gui/resources.xml:263
 msgctxt "Accel Editor (descriptions)"
 msgid "Decrease barrel rotation for devices that don't support rotation input."
 msgstr ""
+"Уменьшить кручение для устройств, которые не поддерживают ввод кручения."
 
 #: ../gui/resources.xml:271
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
@@ -5170,7 +5190,7 @@ msgstr "Уменьшить светлоту текущего цвета."
 #: ../gui/resources.xml:326
 msgctxt "Menu→Color→Adjust Color (labels), Accel Editor (labels)"
 msgid "Change Hue Clockwise"
-msgstr "Повернуть тон по часовой стрелке"
+msgstr "Повернуть оттенок по часовой стрелке"
 
 #: ../gui/resources.xml:327
 msgctxt "Accel Editor (descriptions)"
@@ -5215,7 +5235,7 @@ msgstr "Перезагрузить параметры кисти"
 #: ../gui/resources.xml:360
 msgctxt "Accel Editor (descriptions)"
 msgid "Restore all brush settings to the current brush’s saved values."
-msgstr "Вернуть все настройки кисти к значениям, сохраненным в текущей кисти."
+msgstr "Вернуть все настройки кисти к значениям, сохранённым в текущей кисти."
 
 #: ../gui/resources.xml:370
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
@@ -5226,7 +5246,7 @@ msgstr "Выбрать мазок и слой"
 msgctxt "Accel Editor (descriptions)"
 msgid ""
 "Pick a brushstroke from the canvas, which restores brush, color, and layer."
-msgstr "Снять мазок кистью с холста: восстановить выбор кисти, цвета и слоя."
+msgstr "Выбрать мазок на холсте: восстановить выбор кисти, цвета и слоя."
 
 #: ../gui/resources.xml:382
 msgctxt "Menu→Brush→Shortcut Keys (labels), Accel Editor (labels)"
@@ -5239,7 +5259,8 @@ msgid ""
 "Toggle whether restoring the brush from a shortcut key also restores the "
 "saved color."
 msgstr ""
-"Кисть вызванная из горячей клавиши также восстанавливает сохраненный цвет."
+"При вызове кисти с помощью горячей клавиши также будет восстановлен "
+"сохранённый цвет."
 
 #: ../gui/resources.xml:390
 msgctxt "Menu→Brush→Shortcut Keys (labels), Accel Editor (labels)"
@@ -5262,10 +5283,9 @@ msgid "Clear the active layer’s content."
 msgstr "Очистить текущий слой."
 
 #: ../gui/resources.xml:410
-#, fuzzy
 msgctxt "Menu→Layer (labels)"
 msgid "Slice Operations"
-msgstr "Параметры инструментов"
+msgstr "Операции со срезами"
 
 #: ../gui/resources.xml:416
 msgctxt "Menu→Layer→Slice (labels), Accel Editor (labels)"
@@ -5275,49 +5295,47 @@ msgstr "Обрезать слой по рамке"
 #: ../gui/resources.xml:417
 msgctxt "Accel Editor (descriptions)"
 msgid "Erase parts of the current layer which lie outside the frame."
-msgstr "Очистить части текущего слоя лежащие за рамкой."
+msgstr "Очистить части текущего слоя, находящиеся вне установленной рамки."
 
 #: ../gui/resources.xml:423
 msgctxt "Menu→Layer→Slice (labels), Accel Editor (labels)"
 msgid "Uniquify Layer Pixels"
-msgstr "Унифицировать пиксели слоя"
+msgstr "Уникализировать пикселы слоя"
 
 #: ../gui/resources.xml:424
 msgctxt "Accel Editor (descriptions)"
 msgid "Delete parts of the current layer which do not vary from the backdrop."
-msgstr "Очистить части текущего слоя лежащие за рамкой."
+msgstr "Удалить части текущего слоя, которые не отличаются от нижнего слоя."
 
 #: ../gui/resources.xml:430
 msgctxt "Menu→Layer→Slice (labels), Accel Editor (labels)"
 msgid "Uniquify Layer Tiles"
-msgstr "Объединить плитки слоя"
+msgstr "Уникализировать плитки слоя"
 
 #: ../gui/resources.xml:431
 msgctxt "Accel Editor (descriptions)"
 msgid ""
 "Delete whole tiles from the current layer which do not vary from the "
 "backdrop."
-msgstr "Удалить все плитки, не отличающиеся от фона, из данного слоя."
+msgstr "Удалить все плитки, не отличающиеся от нижнего слоя, из данного слоя."
 
 #: ../gui/resources.xml:437
-#, fuzzy
 msgctxt "Menu→Layer→Slice (labels), Accel Editor (labels)"
 msgid "Refactor Layer Group Pixels"
-msgstr "Пиксели в группах рефлекторного слоя"
+msgstr "Перестроить пикселы в группе слоёв"
 
 #: ../gui/resources.xml:438 ../gui/resources.xml:445
 msgctxt "Accel Editor (descriptions)"
 msgid ""
 "Normalize child layers, then factor out common parts to a new child layer."
 msgstr ""
-"Нормализовать дочерние слои, затем разложить нормальные детали на новый "
-"дочерний слой."
+"Нормализовать дочерние слои, затем разложить общие части на новый дочерний "
+"слой."
 
 #: ../gui/resources.xml:444
-#, fuzzy
 msgctxt "Menu→Layer→Slice (labels), Accel Editor (labels)"
 msgid "Refactor Layer Group Tiles"
-msgstr "Групповые плитки рефлекторного слоя"
+msgstr "Перестроить плитки в группе слоёв"
 
 #: ../gui/resources.xml:452
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
@@ -5358,7 +5376,7 @@ msgstr "Обновить слой внешними изменениями"
 msgctxt "Accel Editor (descriptions)"
 msgid "Commit changes saved from the external app (normally automatic)."
 msgstr ""
-"Ввести изменения сохраненные из другой программы (обычно автоматически)."
+"Внести изменения, сохранённые в другой программе (обычно автоматически)."
 
 #: ../gui/resources.xml:484
 msgctxt "Menu→Layer→Go to Layer (labels), Accel Editor (labels)"
@@ -5368,7 +5386,7 @@ msgstr "Выбрать слой под курсором"
 #: ../gui/resources.xml:485
 msgctxt "Accel Editor (descriptions)"
 msgid "Select a layer by picking something [drawn] on it."
-msgstr "Выбрать слой, указав на объект на нем."
+msgstr "Выбрать слой, указав на объект на нём."
 
 #: ../gui/resources.xml:493
 msgctxt "Menu→Layer→Go to Layer (labels), Accel Editor (labels)"
@@ -5378,7 +5396,7 @@ msgstr "Перейти на слой выше"
 #: ../gui/resources.xml:494
 msgctxt "Accel Editor (descriptions)"
 msgid "Go one layer up in the layer stack."
-msgstr "Перейти на один уровень выше в стеке слоёв."
+msgstr "Перейти на один уровень выше в стопке слоёв."
 
 #: ../gui/resources.xml:502
 msgctxt "Menu→Layer→Go to Layer (labels), Accel Editor (labels)"
@@ -5388,7 +5406,7 @@ msgstr "Перейти на слой ниже"
 #: ../gui/resources.xml:503
 msgctxt "Accel Editor (descriptions)"
 msgid "Go one layer down in the layer stack."
-msgstr "Перейти на один уровень ниже в стеке слоёв."
+msgstr "Перейти на один уровень ниже в стопке слоёв."
 
 #: ../gui/resources.xml:511
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
@@ -5409,7 +5427,7 @@ msgstr "Создать векторный слой…"
 msgctxt "Accel Editor (descriptions)"
 msgid "Add a new vector layer above the current layer, and begin editing it."
 msgstr ""
-"Добавить новый векторный слой над текущим слоем, и начать его редактирование."
+"Добавить новый векторный слой над текущим слоем и начать его редактирование."
 
 #: ../gui/resources.xml:528
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
@@ -5440,7 +5458,7 @@ msgstr "Создать векторный слой ниже…"
 msgctxt "Accel Editor (descriptions)"
 msgid "Add a new vector layer below the current layer, and begin editing it."
 msgstr ""
-"Добавить новый векторный слой под текущим слоем, и начать его редактирование."
+"Добавить новый векторный слой под текущим слоем и начать его редактирование."
 
 #: ../gui/resources.xml:551
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
@@ -5460,7 +5478,7 @@ msgstr "Объединить со слоем ниже"
 #: ../gui/resources.xml:560
 msgctxt "Accel Editor (descriptions)"
 msgid "Merge the current layer with the layer beneath it."
-msgstr "Объединить слой с тем, который находится ниже его."
+msgstr "Объединить слой с тем, который находится ниже него."
 
 #: ../gui/resources.xml:567
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
@@ -5470,7 +5488,7 @@ msgstr "Объединить видимые слои"
 #: ../gui/resources.xml:568
 msgctxt "Accel Editor (descriptions)"
 msgid "Consolidate all visible layers, and delete the originals."
-msgstr "Объединить все видимые слои, и удалить оригиналы."
+msgstr "Объединить все видимые слои и удалить оригиналы."
 
 #: ../gui/resources.xml:575
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
@@ -5480,7 +5498,7 @@ msgstr "Создать слой из видимого"
 #: ../gui/resources.xml:576
 msgctxt "Accel Editor (descriptions)"
 msgid "Like ‘Merge Visible Layers’, but doesn’t delete the originals."
-msgstr "Схоже с  'Объединить видимые слои' , но не удаляет оригиналы."
+msgstr "Схоже с 'Объединить видимые слои', но не удаляет оригиналы."
 
 #: ../gui/resources.xml:583
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
@@ -5490,7 +5508,7 @@ msgstr "Удалить слой"
 #: ../gui/resources.xml:584
 msgctxt "Accel Editor (descriptions)"
 msgid "Remove the current layer from the layer stack."
-msgstr "Удалить текущий слой из стопки слоев."
+msgstr "Удалить текущий слой из стопки слоёв."
 
 #: ../gui/resources.xml:591
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
@@ -5534,7 +5552,7 @@ msgstr "Поднять слой"
 #: ../gui/resources.xml:615
 msgctxt "Accel Editor (descriptions)"
 msgid "Raise the current layer one step in the layer stack."
-msgstr "Поднять текущий слой на один шаг вверх в стопке слоев."
+msgstr "Поднять текущий слой на одну позицию вверх в стопке слоёв."
 
 #: ../gui/resources.xml:623
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
@@ -5544,7 +5562,7 @@ msgstr "Опустить слой"
 #: ../gui/resources.xml:624
 msgctxt "Accel Editor (descriptions)"
 msgid "Lower the current layer one step in the layer stack."
-msgstr "Опустить текущий слой на один шаг вниз в стопке слоев."
+msgstr "Опустить текущий слой на одну позицию вниз в стопке слоёв."
 
 #: ../gui/resources.xml:633
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
@@ -5565,7 +5583,8 @@ msgstr "Свойства слоя…"
 msgctxt "Accel Editor (descriptions)"
 msgid ""
 "Change the layer’s properties (name, mode, visibility, locked, opacity)."
-msgstr "Изменить свойства слоя (иия, режим, прозрачность, блокировка)."
+msgstr ""
+"Изменить свойства слоя (имя, режим, видимость, блокировка, непрозрачность)."
 
 #: ../gui/resources.xml:650
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
@@ -5598,19 +5617,17 @@ msgstr "Показать фон"
 #: ../gui/resources.xml:667
 msgctxt "Accel Editor (descriptions)"
 msgid "Toggle the background layer’s visibility."
-msgstr "Переключить видимость фона."
+msgstr "Видимость фона."
 
 #: ../gui/resources.xml:674
-#, fuzzy
 msgctxt "Menu→Help→Debug (labels), Accel Editor (labels)"
 msgid "Vacuum Empty Tiles"
 msgstr "Убрать пустые плитки"
 
 #: ../gui/resources.xml:675
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Remove empty tiles from the document."
-msgstr "Удалить текущий слой из стопки слоев."
+msgstr "Удалить пустые плитки из документа."
 
 #: ../gui/resources.xml:684
 msgctxt "Menu→View (labels), Accel Editor (labels)"
@@ -5620,7 +5637,7 @@ msgstr "Сбросить и отцентрировать"
 #: ../gui/resources.xml:685
 msgctxt "Accel Editor (descriptions)"
 msgid "Reset Zoom, Rotation and Mirroring, and recenter the document."
-msgstr "Сбросить масштаб, вращение и отражение, и отцентрировать документ."
+msgstr "Сбросить масштаб, вращение и отражение и отцентрировать документ."
 
 #: ../gui/resources.xml:693
 msgctxt "Menu→View (labels), Accel Editor (labels)"
@@ -5631,8 +5648,7 @@ msgstr "По размеру рисунка"
 msgctxt "Accel Editor (descriptions)"
 msgid "Switch between a fitted view and your working location and zoom."
 msgstr ""
-"Переключаться между видом всего рисунка и вашим рабочим положением и "
-"масштабом."
+"Переключаться между видом всего рисунка и рабочим положением и масштабом."
 
 #: ../gui/resources.xml:701
 msgctxt "Menu→View (labels)"
@@ -5647,7 +5663,7 @@ msgstr "Сбросить масштаб"
 #: ../gui/resources.xml:709
 msgctxt "Accel Editor (descriptions)"
 msgid "Reset view zoom level to default."
-msgstr "Восстановить масштаб к значениям по умолчанию."
+msgstr "Вернуть масштаб к значению по умолчанию."
 
 #: ../gui/resources.xml:715
 msgctxt "Menu→View→Reset (labels), Accel Editor (labels)"
@@ -5657,7 +5673,7 @@ msgstr "Сбросить вращение"
 #: ../gui/resources.xml:716
 msgctxt "Accel Editor (descriptions)"
 msgid "Reset the view’s rotation to 0°"
-msgstr "Восстановить вращение до 0°"
+msgstr "Сбросить вращение на 0°"
 
 #: ../gui/resources.xml:722
 msgctxt "Menu→View→Reset (labels), Accel Editor (labels)"
@@ -5690,51 +5706,44 @@ msgid "Decrease magnification."
 msgstr "Уменьшить масштаб."
 
 #: ../gui/resources.xml:758
-#, fuzzy
 msgctxt "Menu→View→Adjust View (labels), Accel Editor (labels)"
 msgid "Pan Left"
-msgstr "Вид"
+msgstr "Сдвинуть влево"
 
 #: ../gui/resources.xml:759
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Move your view of the canvas to the left."
-msgstr "Вращение: вращать отображение холста."
+msgstr "Переместить отображаемую часть холста влево."
 
 #: ../gui/resources.xml:766
-#, fuzzy
 msgctxt "Menu→View→Adjust View (labels), Accel Editor (labels)"
 msgid "Pan Right"
-msgstr "Жёсткий свет"
+msgstr "Сдвинуть вправо"
 
 #: ../gui/resources.xml:767
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Move your view of the canvas to the right."
-msgstr "Вид: перемещать отображение холста горизонтально или вертикально."
+msgstr "Переместить отображаемую часть холста вправо."
 
 #: ../gui/resources.xml:774
 msgctxt "Menu→View→Adjust View (labels), Accel Editor (labels)"
 msgid "Pan Up"
-msgstr ""
+msgstr "Сдвинуть вверх"
 
 #: ../gui/resources.xml:775
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Move your view of the canvas upwards."
-msgstr "Вращение: вращать отображение холста."
+msgstr "Переместить отображаемую часть холста вверх."
 
 #: ../gui/resources.xml:782
-#, fuzzy
 msgctxt "Menu→View→Adjust View (labels), Accel Editor (labels)"
 msgid "Pan Down"
-msgstr "Вид"
+msgstr "Сдвинуть вниз"
 
 #: ../gui/resources.xml:783
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Move your view of the canvas downwards."
-msgstr "Вращение: вращать отображение холста."
+msgstr "Переместить отображаемую часть холста вниз."
 
 #.
 #. Note: the object we've agreed to present as being rotated
@@ -5811,7 +5820,7 @@ msgstr "Рамка включена"
 #: ../gui/resources.xml:865
 msgctxt "Accel Editor (descriptions)"
 msgid "Toggle visibility of the document frame."
-msgstr "Переключить видимость рамки документа."
+msgstr "Видимость рамки документа."
 
 #: ../gui/resources.xml:874
 msgctxt "Menu→Help→Debug (labels), Accel Editor (labels)"
@@ -5842,24 +5851,23 @@ msgstr "Двойная буферизация отключена"
 #: ../gui/resources.xml:889
 msgctxt "Accel Editor (descriptions)"
 msgid "Turn off GTK’s double buffering, normally enabled."
-msgstr "Отключить двойную буфферизацию GTK, обычно включен."
+msgstr "Отключить двойную буферизацию GTK, которая обычно включена."
 
 #: ../gui/resources.xml:898
 msgctxt "Accel Editor (descriptions)"
 msgid ""
 "Insert a point next to the currently selected point in the direction of the "
 "stroke."
-msgstr ""
+msgstr "Вставить точку рядом с текущей выбранной точкой в направлении штриха."
 
 #: ../gui/resources.xml:904
 msgid "Delete Point"
-msgstr "Удалить узел"
+msgstr "Удалить точку"
 
 #: ../gui/resources.xml:905
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Delete currently selected point on the ink stroke."
-msgstr "Удалить выбранный узел"
+msgstr "Удалить текущую выбранную точку штриха контура."
 
 #: ../gui/resources.xml:912
 msgctxt "Accel Editor (descriptions)"
@@ -5870,7 +5878,7 @@ msgstr "Упростить и удалить точки согласно угл�
 #: ../gui/resources.xml:919
 msgctxt "Accel Editor (descriptions)"
 msgid "Delete every other point on the ink stroke."
-msgstr ""
+msgstr "Удалить каждую вторую точку штриха контура."
 
 #: ../gui/resources.xml:933
 msgctxt "Menu→Brush (labels)"
@@ -5900,7 +5908,7 @@ msgstr "Использовать текущую кисть как ластик."
 #: ../gui/resources.xml:959
 msgctxt "Menu→Brush→Blend Mode (labels), Accel Editor (labels)"
 msgid "Paint Mode: Lock Alpha"
-msgstr "Заблокировать альфа-канал"
+msgstr "Блокировка альфа-канала"
 
 #: ../gui/resources.xml:960
 msgctxt "Accel Editor (descriptions)"
@@ -5917,7 +5925,7 @@ msgctxt "Accel Editor (descriptions)"
 msgid ""
 "Apply color to the current layer without affecting its brightness or opacity."
 msgstr ""
-"Наносить цвет на текущем слое не затрагивая его яркость или непрозрачность."
+"Наносить цвет на текущем слое, не затрагивая его яркость или непрозрачность."
 
 #: ../gui/resources.xml:983
 msgctxt "Menu (labels)"
@@ -6077,7 +6085,7 @@ msgstr "Восстановить блокнот"
 #: ../gui/resources.xml:1129
 msgctxt "Accel Editor (descriptions)"
 msgid "Revert the scratchpad to its last saved state."
-msgstr "Вернуть блокнот к предыдущему состоянию сохранения."
+msgstr "Вернуть блокнот к предыдущему сохранённому состоянию."
 
 #: ../gui/resources.xml:1136
 msgctxt "Menu→Scratchpad (labels), Accel Editor (labels)"
@@ -6166,7 +6174,7 @@ msgctxt "Accel Editor (descriptions)"
 msgid ""
 "Pop up a color changer under the cursor, with only single-click selectors "
 "listed."
-msgstr "Вывести под курсором меню выбора цветов, с выбором в один клик."
+msgstr "Вывести под курсором меню выбора цветов, с выбором в один щелчок."
 
 #: ../gui/resources.xml:1213
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
@@ -6176,7 +6184,7 @@ msgstr "Найти больше кистей…"
 #: ../gui/resources.xml:1214
 msgctxt "Accel Editor (descriptions)"
 msgid "Download brushpacks from the MyPaint wiki."
-msgstr "Скачать пакеты кистей из вики MyPaint."
+msgstr "Загрузить пакеты кистей из вики MyPaint."
 
 #: ../gui/resources.xml:1221
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
@@ -6196,7 +6204,7 @@ msgstr "Справка"
 #: ../gui/resources.xml:1237
 msgctxt "Menu→Help (labels), Accel Editor (labels)"
 msgid "Online Help"
-msgstr "Справка"
+msgstr "Справка в Интернете"
 
 #: ../gui/resources.xml:1238
 msgctxt "Accel Editor (descriptions)"
@@ -6237,8 +6245,8 @@ msgstr "Запустить сборщик мусора"
 msgctxt "Accel Editor (descriptions)"
 msgid "Free memory used for Python objects which are no longer in use."
 msgstr ""
-"Освободить память использованную для объектов Python которая уже не "
-"используется."
+"Освободить память, задействованную для объектов Python, которые уже не "
+"используются."
 
 #. FIXME: convert to a ToggleAction
 #: ../gui/resources.xml:1277
@@ -6259,7 +6267,7 @@ msgstr "Имитировать ошибку…"
 #: ../gui/resources.xml:1286
 msgctxt "Accel Editor (descriptions)"
 msgid "Raise a Python exception, to test the crash dialog."
-msgstr "Вызвать ошибку Python, для испытания диалога ошибки."
+msgstr "Вызвать ошибку Python для проверки диалога ошибки."
 
 #: ../gui/resources.xml:1294
 msgctxt "Menu (labels)"
@@ -6315,8 +6323,8 @@ msgstr "Проверка устройств ввода"
 msgctxt "Accel Editor (descriptions)"
 msgid "Show a dialog which captures all events your input devices send."
 msgstr ""
-"Показать диалог который записывает все события отправляемые вашим "
-"устройством."
+"Показать диалог, который записывает все события, отправляемые устройствами "
+"ввода."
 
 #: ../gui/resources.xml:1347
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
@@ -6353,22 +6361,22 @@ msgctxt ""
 "Menu→Layer (labels), Menu→Window (labels), Toolbar (labels), Accel Editor "
 "(labels)"
 msgid "Layers Panel"
-msgstr "Панель Слоев"
+msgstr "Панель слоёв"
 
 #: ../gui/resources.xml:1374
 msgctxt "Accel Editor (descriptions)"
 msgid "Dockable panel for managing layers."
-msgstr "Прикрепляемая панель для управления слоями."
+msgstr "Закрепляемая панель для управления слоями."
 
 #: ../gui/resources.xml:1382
 msgctxt "Menu→Layers (labels), Accel Editor (labels)"
 msgid "Show Layers Panel"
-msgstr "Показать панель слоев"
+msgstr "Показать панель слоёв"
 
 #: ../gui/resources.xml:1383
 msgctxt "Accel Editor (descriptions)"
 msgid "Reveal the Layers dockpanel (arrange layers, or assign modes)."
-msgstr "Показать панель слоев (располагать слои или задавать режимы)."
+msgstr "Показать панель слоёв (располагать слои или задавать режимы)."
 
 #: ../gui/resources.xml:1394
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
@@ -6381,8 +6389,8 @@ msgid ""
 "Dockable cylindrical hue/chroma/luma color selector. The circular slices are "
 "equiluminant."
 msgstr ""
-"Панель с цилиндрическим выбором цветов тон/насыщенность/яркость. Круговые "
-"срезы имеют одинаковую яркость."
+"Закрепляемая панель для выбора цветов по цилиндрическим координатам "
+"тон/насыщенность/яркость. Круговые срезы имеют одинаковую яркость."
 
 #: ../gui/resources.xml:1402
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
@@ -6392,7 +6400,7 @@ msgstr "Палитра"
 #: ../gui/resources.xml:1403
 msgctxt "Accel Editor (descriptions)"
 msgid "Dockable palette color selector."
-msgstr "Панель палитры."
+msgstr "Закрепляемая панель для выбора цветов из палитры."
 
 #: ../gui/resources.xml:1411
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
@@ -6402,7 +6410,7 @@ msgstr "Круг HSV"
 #: ../gui/resources.xml:1412
 msgctxt "Accel Editor (descriptions)"
 msgid "Dockable saturation and Value color changer."
-msgstr "Панель для смены насыщенности и значения."
+msgstr "Закрепляемая панель для смены насыщенности и значения."
 
 #: ../gui/resources.xml:1419
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
@@ -6415,7 +6423,8 @@ msgid ""
 "Dockable color selector: HSV cube which can be rotated to show different "
 "planar slices."
 msgstr ""
-"Куб HSV, который можно поворачивать, чтобы использовать разные плоские срезы."
+"Закрепляемая панель для выбора цветов: куб HSV, который можно поворачивать, "
+"чтобы использовать разные плоские срезы."
 
 #: ../gui/resources.xml:1427
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
@@ -6425,7 +6434,7 @@ msgstr "Квадрат HSV"
 #: ../gui/resources.xml:1428
 msgctxt "Accel Editor (descriptions)"
 msgid "Dockable color selector: HSV square with Hue ring."
-msgstr "Панель выбора цветов с концентрическими HSV кругами."
+msgstr "Закрепляемая панель для выбора цветов: квадрат HSV c кольцом тона."
 
 #: ../gui/resources.xml:1435
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
@@ -6435,7 +6444,7 @@ msgstr "Ползунки компонентов"
 #: ../gui/resources.xml:1436
 msgctxt "Accel Editor (descriptions)"
 msgid "Dockable color selector showing individual components of the color."
-msgstr "Панель выбора цветов с отдельными компонентами цветов."
+msgstr "Закрепляемая панель для выбора цветов с отдельными компонентами цветов."
 
 #: ../gui/resources.xml:1443
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
@@ -6445,17 +6454,17 @@ msgstr "Плавная волна"
 #: ../gui/resources.xml:1444
 msgctxt "Accel Editor (descriptions)"
 msgid "Dockable color selector showing a liquid-like wash of nearby colors."
-msgstr "Панель выбора цветов с размытыми близлежащими цветами."
+msgstr "Закрепляемая панель для выбора цветов с размытыми близлежащими цветами."
 
 #: ../gui/resources.xml:1451
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "Concentric Rings"
-msgstr "Концентрические круги"
+msgstr "Концентрические кольца"
 
 #: ../gui/resources.xml:1452
 msgctxt "Accel Editor (descriptions)"
 msgid "Dockable color selector with concentric HSV rings."
-msgstr "Панель выбора цветов с концентрическими HSV кругами."
+msgstr "Закрепляемая панель выбора цветов с концентрическими кольцами HSV."
 
 #: ../gui/resources.xml:1459
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
@@ -6466,8 +6475,8 @@ msgstr "Скрещенная чаша"
 msgctxt "Accel Editor (descriptions)"
 msgid "Dockable color selector with HSV ramps crossing a radial bowl of color."
 msgstr ""
-"Панель выбора цветов с HSV наклонными перекрещивающими лучеобразную чашу с "
-"цветом."
+"Закрепляемая панель для выбора цветов с переходами HSV, перекрещивающими "
+"полукруглую чашу с цветом."
 
 #: ../gui/resources.xml:1469
 msgctxt "Menu→Window (labels), Accel Editor (labels)"
@@ -6477,7 +6486,7 @@ msgstr "Блокнот"
 #: ../gui/resources.xml:1470
 msgctxt "Accel Editor (descriptions)"
 msgid "Dockable Panel for mixing colors and testing brushes."
-msgstr "Прикрепляемая панель для смешивания цветов и проверки кистей."
+msgstr "Закрепляемая панель для смешивания цветов и проверки кистей."
 
 #: ../gui/resources.xml:1478
 msgctxt "Menu→Scratchpad (labels), Accel Editor (labels)"
@@ -6497,7 +6506,7 @@ msgstr "Обзор"
 #: ../gui/resources.xml:1489
 msgctxt "Accel Editor (descriptions)"
 msgid "Dockable panel for an overview and navigation of the whole canvas."
-msgstr "Прикрепляемая панель для обзора и навигации всего холста."
+msgstr "Закрепляемая панель для обзора и навигации по всему холсту."
 
 #: ../gui/resources.xml:1497
 msgctxt "Menu→View (labels), Accel Editor (labels)"
@@ -6517,7 +6526,7 @@ msgstr "Параметры инструментов"
 #: ../gui/resources.xml:1509
 msgctxt "Accel Editor (descriptions)"
 msgid "Dockable panel for adjusting the options with the activated tool."
-msgstr "Прикрепляемая панель для настройки текущего инструмента."
+msgstr "Закрепляемая панель для настройки текущего инструмента."
 
 #: ../gui/resources.xml:1517
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
@@ -6537,7 +6546,7 @@ msgstr "История кистей и цветов"
 #: ../gui/resources.xml:1529
 msgctxt "Accel Editor (descriptions)"
 msgid "Dockable panel for viewing recently changed colors and brushes."
-msgstr "Прикрепляемая панель для просмотра недавно измененных цветов и кистей."
+msgstr "Закрепляемая панель для просмотра недавно изменённых цветов и кистей."
 
 #: ../gui/resources.xml:1537
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
@@ -6558,8 +6567,7 @@ msgstr "Скрыть интерфейс в полноэкранном режим
 msgctxt "Accel Editor (descriptions)"
 msgid "Toggle automatic hiding of the user interface in fullscreen."
 msgstr ""
-"Переключить автоматическое скрытие пользовательского интерфейса в "
-"полноэкранном режиме."
+"Автоматическое скрытие пользовательского интерфейса в полноэкранном режиме."
 
 #: ../gui/resources.xml:1556
 msgctxt "Menu→View→Feedback (labels), Accel Editor (labels)"
@@ -6569,7 +6577,7 @@ msgstr "Масштаб просмотра"
 #: ../gui/resources.xml:1557
 msgctxt "Accel Editor (descriptions)"
 msgid "Toggle zoom level feedback."
-msgstr "Масштаб просмотра."
+msgstr "Показать масштаб просмотра."
 
 #: ../gui/resources.xml:1563
 msgctxt "Menu→View→Feedback (labels), Accel Editor (labels)"
@@ -6579,7 +6587,7 @@ msgstr "Последняя точка рисования"
 #: ../gui/resources.xml:1564
 msgctxt "Accel Editor (descriptions)"
 msgid "Toggle feedback showing where the last stroke ended."
-msgstr "Показать где завершился последний мазок."
+msgstr "Показать, где завершился последний мазок."
 
 #: ../gui/resources.xml:1572
 msgctxt "Menu→View (labels)"
@@ -6615,7 +6623,7 @@ msgstr "Инвертированные цвета"
 msgctxt "Accel Editor (descriptions)"
 msgid "Filter colors: inverse video. Black is white and red is cyan."
 msgstr ""
-"Фильтр цветов: негативное изображение. Черный - белый, красный - голубой."
+"Фильтр цветов: негативное изображение. Чёрный — белый, красный — голубой."
 
 #: ../gui/resources.xml:1603
 msgctxt "Menu→View→Display Filter (labels), Accel Editor (labels)"
@@ -6627,19 +6635,19 @@ msgctxt "Accel Editor (descriptions)"
 msgid ""
 "Filter colors to simulate deuteranopia, a common form of color blindness."
 msgstr ""
-"Фильтровать цвета для имитации дейтеранопии, распространенной формы "
+"Фильтровать цвета для имитации дейтеранопии, распространённой формы "
 "дальтонизма."
 
 #: ../gui/resources.xml:1611
 msgctxt "Menu→View→Display Filter (labels), Accel Editor (labels)"
 msgid "Display Colors with Simulated Insensitivity to Green"
-msgstr "Имитация нечувствительности к зеленому"
+msgstr "Имитация нечувствительности к зелёному"
 
 #: ../gui/resources.xml:1612
 msgctxt "Accel Editor (descriptions)"
 msgid "Filter colors to simulate protanopia, a common form of color blindness."
 msgstr ""
-"Фильтровать цвета для имитации протанопии, распространенной формы "
+"Фильтровать цвета для имитации протанопии, распространённой формы "
 "дальтонизма."
 
 #: ../gui/resources.xml:1619
@@ -6892,7 +6900,7 @@ msgstr "Рамка"
 msgctxt "Toolbar (tooltips)"
 msgid ""
 "Edit Frame: define a frame around the document to give it a finite size."
-msgstr "Рамка: установить рамку на холсте ограничив его размер."
+msgstr "Рамка: установить рамку на холсте, ограничив его размер."
 
 #: ../gui/resources.xml:1832
 msgctxt "Menu→File (labels), Accel Editor (labels)"
@@ -6903,7 +6911,7 @@ msgstr "Изменить рамку"
 msgctxt "Accel Editor (descriptions)"
 msgid ""
 "Interactively define a frame around the document to give it a finite size."
-msgstr "Установить рамку на холсте ограничив его размер."
+msgstr "Установить рамку на холсте, ограничив его размер."
 
 #: ../gui/resources.xml:1842
 msgctxt "Menu→Edit→Current Mode (labels)"
@@ -6948,26 +6956,24 @@ msgstr "Пипетка: выбрать цвет на холсте."
 #: ../gui/resources.xml:1897
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "Pick Color Hue"
-msgstr "Выберите оттенок цвета"
+msgstr "Выбрать оттенок цвета"
 
 #: ../gui/resources.xml:1898
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid ""
 "Set the painting Hue from screen pixels while preserving the Chroma and Luma."
-msgstr "Выбрать цвет для рисования с холста."
+msgstr "Выбрать тон для рисования с холста, не изменяя насыщенность и яркость."
 
 #: ../gui/resources.xml:1906
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "Pick Color Chroma"
-msgstr "Выбрать Цветовую Насыщенность"
+msgstr "Выбрать насыщенность цвета"
 
 #: ../gui/resources.xml:1907
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid ""
 "Set the painting Chroma from screen pixels while preserving the Hue and Luma."
-msgstr "Выбрать цвет для рисования с холста."
+msgstr "Выбрать насыщенность для рисования с холста, не изменяя тон и яркость."
 
 #: ../gui/resources.xml:1915
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
@@ -6975,11 +6981,10 @@ msgid "Pick Color Luma"
 msgstr "Выбрать яркость цвета"
 
 #: ../gui/resources.xml:1916
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid ""
 "Set the painting Luma from screen pixels while preserving the Hue and Chroma."
-msgstr "Выбрать цвет для рисования с холста."
+msgstr "Выбрать яркость для рисования с холста, не изменяя тон и насыщенность."
 
 #: ../gui/resources.xml:1924
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
