@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: mypaint v2.0.0-alpha.12-342-gc134f1a\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-08-16 11:30+0200\n"
-"PO-Revision-Date: 2020-10-10 22:26+0000\n"
+"PO-Revision-Date: 2020-10-13 15:27+0000\n"
 "Last-Translator: Yacine Bouklif <yacinebouklif@gmail.com>\n"
 "Language-Team: Kabyle <https://hosted.weblate.org/projects/mypaint/mypaint/"
 "kab/>\n"
@@ -153,11 +153,13 @@ msgstr "Tuccḍa deg usali n yigilalen"
 msgid ""
 "Please remove the unloadable files, or check your libgdkpixbuf installation."
 msgstr ""
+"Ttxl-k m kkes ifuyla ur d-nettali ara, neɣ senqed asbeddi n libgdkpixbuf "
+"inek m."
 
 #: ../gui/backgroundwindow.py:372
 #, python-brace-format
 msgid "Gdk-Pixbuf couldn't load \"{filename}\", and reported \"{error}\""
-msgstr ""
+msgstr "Gdk-Pixbuf igumma ad yeldi \"{filename}\", yerra-d \"{error}\""
 
 #: ../gui/backgroundwindow.py:382
 #, python-brace-format
@@ -331,7 +333,7 @@ msgstr "Édition"
 
 #: ../gui/brushiconeditor.py:159
 msgid "Begin editing this preview icon"
-msgstr ""
+msgstr "Bdu asiẓreg n tmuɣli-agi n tignit"
 
 #. TRANSLATORS: revert edits to a brush icon
 #: ../gui/brushiconeditor.py:165
@@ -340,7 +342,7 @@ msgstr "Tti"
 
 #: ../gui/brushiconeditor.py:167
 msgid "Discard changes, and cancel editing"
-msgstr ""
+msgstr "Ḍeqqer ibeddilen, u sefsex asiẓreg"
 
 #. TRANSLATORS: clear the brush preview icon being edited
 #: ../gui/brushiconeditor.py:174
@@ -349,7 +351,7 @@ msgstr "Sfeḍ"
 
 #: ../gui/brushiconeditor.py:176
 msgid "Clear the preview icon"
-msgstr ""
+msgstr "Sfeḍ tamuɣli n tignit"
 
 #. TRANSLATORS: set the brush icon to a built-in default
 #: ../gui/brushiconeditor.py:182
@@ -391,23 +393,23 @@ msgstr "Aklasiki"
 
 #: ../gui/brushmanager.py:136
 msgid "Set#1"
-msgstr ""
+msgstr "Tagerumma#1"
 
 #: ../gui/brushmanager.py:137
 msgid "Set#2"
-msgstr ""
+msgstr "Tagerumma#2"
 
 #: ../gui/brushmanager.py:138
 msgid "Set#3"
-msgstr ""
+msgstr "Tagerumma#3"
 
 #: ../gui/brushmanager.py:139
 msgid "Set#4"
-msgstr ""
+msgstr "Tagerumma#4"
 
 #: ../gui/brushmanager.py:140
 msgid "Set#5"
-msgstr ""
+msgstr "Tagerumma#5"
 
 #: ../gui/brushmanager.py:141
 msgid "Experimental"
@@ -421,7 +423,7 @@ msgstr "Amynut"
 #, python-brace-format
 msgctxt "brushpack import failure messages"
 msgid "No file named “{order_conf_file}”. This is not a brushpack."
-msgstr ""
+msgstr "Ulac isem afaylu s yisem “{order_conf_file}”. Wagi mačči d amfezzu."
 
 #: ../gui/brushmanager.py:704
 #, python-brace-format
@@ -523,7 +525,7 @@ msgstr "Beddel isem n ugraw"
 #: ../gui/brushselectionwindow.py:424
 msgctxt "brush group properties dialog: action buttons"
 msgid "Export as Zipped Brushset"
-msgstr ""
+msgstr "Sifeḍ am tegrumma n yimfezza s talɣan zip"
 
 #: ../gui/brushselectionwindow.py:430
 msgctxt "brush group properties dialog: action buttons"
@@ -602,7 +604,7 @@ msgstr ""
 #. TRANSLATORS: E.g. Button1 or Ctrl+Button2 or Alt+Button3
 #: ../gui/buttonmap.py:302
 msgid "Button press"
-msgstr ""
+msgstr "Adad n tqeffalt"
 
 #: ../gui/buttonmap.py:320
 msgid "Add a new binding"
@@ -623,7 +625,7 @@ msgstr ""
 #. TRANSLATORS: but with a trailing ":" or other lang-specific symbol.
 #: ../gui/buttonmap.py:519
 msgid "Button press:"
-msgstr ""
+msgstr "Adad n tqeffalt:"
 
 #: ../gui/buttonmap.py:556
 msgid ""
@@ -662,11 +664,11 @@ msgstr "Sbadu tiɣmi n yini yettwasqedecn i teklut"
 
 #: ../gui/colorpicker.py:222
 msgid "Pick Chroma"
-msgstr ""
+msgstr "Amelqaḍ n yini"
 
 #: ../gui/colorpicker.py:225
 msgid "Set the color Chroma used for painting"
-msgstr ""
+msgstr "Sbadu kṛuma n yini yettwasqedcen i wesuneɣ"
 
 #: ../gui/colorpicker.py:242
 msgid "Pick Luma"
@@ -674,7 +676,7 @@ msgstr ""
 
 #: ../gui/colorpicker.py:245
 msgid "Set the color Luma used for painting"
-msgstr ""
+msgstr "Sbadu 'Luma' n yini yettwasqedcen i teklut"
 
 #: ../gui/colors/adjbases.py:699
 msgid "Color details"
@@ -706,7 +708,7 @@ msgstr ""
 #: ../gui/colors/hcywheel.py:355
 msgctxt "HCY Color Wheel: tooltip"
 msgid "HCY hue and chroma."
-msgstr ""
+msgstr "Tiɣmi akked kṛuma HCY."
 
 #: ../gui/colors/hcywheel.py:412
 msgctxt "HCY Mask Editor Wheel: tooltip"
@@ -714,6 +716,8 @@ msgid ""
 "Gamut mask editor. Click in the middle to create or manipulate shapes, or "
 "rotate the mask using the edges of the disc."
 msgstr ""
+"Amaẓrag n tgelmust 'gramut'. Ssit di tlemmast iwakken ad d-tesnulfuḍ neɣ ad "
+"tesqerdceḍ talɣiwin, neɣ zzi tagelmust s yimedran n uḍebsi."
 
 #: ../gui/colors/hcywheel.py:910
 msgctxt "HCY Gamut Mask template name"
@@ -735,7 +739,7 @@ msgstr ""
 #: ../gui/colors/hcywheel.py:926
 msgctxt "HCY Gamut Mask template description"
 msgid "Weighted more strongly towards the dominant color."
-msgstr ""
+msgstr "Semnekni ugar ɣer yini yufraren."
 
 #: ../gui/colors/hcywheel.py:937
 msgctxt "HCY Gamut Mask template name"
@@ -776,12 +780,12 @@ msgstr ""
 #: ../gui/colors/hcywheel.py:985
 msgctxt "HCY Gamut Mask new-from-template dialog: window title"
 msgid "New Gamut Mask from Template"
-msgstr ""
+msgstr "Tagelmust 'gramut' tamaynutt si tneɣruft"
 
 #: ../gui/colors/hcywheel.py:1054
 msgctxt "HCY Gamut Mask Editor dialog: window title"
 msgid "Gamut Mask Editor"
-msgstr ""
+msgstr "Amaẓrag n tgelmust 'gramut'"
 
 #: ../gui/colors/hcywheel.py:1078
 msgctxt "HCY Gamut Mask Editor dialog: mask-is-active checkbox"
@@ -791,7 +795,7 @@ msgstr "Urmid"
 #: ../gui/colors/hcywheel.py:1102
 msgctxt "HCY Mask Editor: action button labels"
 msgid "Help…"
-msgstr ""
+msgstr "Tallelt…"
 
 #: ../gui/colors/hcywheel.py:1108
 msgctxt "HCY Mask Editor: action button tooltips"
@@ -1100,7 +1104,7 @@ msgstr "Iɣewwaren n yisegran"
 #: ../gui/colors/sliders.py:116
 msgctxt "color sliders panel: tab description (in tooltip)"
 msgid "Adjust individual components of the color."
-msgstr ""
+msgstr "Sgaddi isgar n yini yiwen yiwen."
 
 #: ../gui/colors/sliders.py:161
 msgctxt "color component slider: tooltip"
@@ -1256,7 +1260,7 @@ msgstr "Yalas ttelday s uskar 2.x"
 #: ../gui/compatibility.py:215
 msgctxt "Prefs Dialog|Compatibility"
 msgid "Open in 1.x mode unless file contains pigment layers"
-msgstr ""
+msgstr "Ldi s uskar 1.x slid ma yella afaylu yegber tissiyin n tiɣmi"
 
 #. TRANSLATORS: This is a label for a dropdown menu in the
 #. TRANSLATORS: file chooser dialog when loading .ora files.
@@ -1308,12 +1312,12 @@ msgstr "Ignorer"
 #: ../gui/device.py:97
 msgctxt "device settings: allowed usage"
 msgid "Any Task"
-msgstr ""
+msgstr "Tawuri menwala"
 
 #: ../gui/device.py:101
 msgctxt "device settings: allowed usage"
 msgid "Non-painting tasks"
-msgstr ""
+msgstr "Yal tawuri ur nelli ara d taklut"
 
 #: ../gui/device.py:105
 msgctxt "device settings: allowed usage"
@@ -1402,6 +1406,8 @@ msgid ""
 "<b>A brush named “{brush_name}” already exists.</b>\n"
 "Do you want to replace it, or should the new brush be renamed?"
 msgstr ""
+"<b>Yella yakan umfezzu s yisem“{brush_name}”.</b>\n"
+"Tebɣiḍ ad t-tesemselsiḍ, neɣ ad tbeddeleḍ isem i umfezzu amaynut ?"
 
 #: ../gui/dialogs.py:196
 msgid "Overwrite brush group?"
@@ -1415,6 +1421,10 @@ msgid ""
 "If you replace it, the brushes may be moved to a group called "
 "“{deleted_groupname}”."
 msgstr ""
+"<b>Yella yakan umfezzu s yisem“{groupname}”.</b>\n"
+"Tebɣiḍ ad t-tesemselsiḍ, neɣ ad tbeddeleḍ isem i ugraw amaynut ?\n"
+"Ma tsemselsiḍ-t, imfezza zemren ad muttin s agraw yettusemman "
+"“{deleted_groupname}”."
 
 #: ../gui/dialogs.py:326
 msgid "Import brush package?"
@@ -1616,7 +1626,7 @@ msgstr ""
 #: ../gui/externalapp.py:54
 #, python-brace-format
 msgid "Updated layer “{layer_name}” with external edits"
-msgstr ""
+msgstr "Tissi yettwaleqqemen “{layer_name}” s yibeddilen uffiɣen"
 
 #: ../gui/externalapp.py:58
 #, python-brace-format
@@ -2371,7 +2381,7 @@ msgstr ""
 
 #: ../gui/inktool.py:97 ../gui/inktool.py:479
 msgid "Inking"
-msgstr ""
+msgstr "Ssmex"
 
 #: ../gui/inktool.py:100
 msgid "Draw, and then adjust smooth lines"
@@ -2873,18 +2883,18 @@ msgstr ""
 #: ../gui/symmetry.py:345
 msgctxt "symmetry axis options panel: labels"
 msgid "X Position:"
-msgstr ""
+msgstr "Ideg X:"
 
 #: ../gui/symmetry.py:349
 msgctxt "symmetry axis options panel: labels"
 msgid "Y Position:"
-msgstr ""
+msgstr "Ideg Y:"
 
 #: ../gui/symmetry.py:353
 #, python-format
 msgctxt "symmetry axis options panel: labels"
 msgid "Angle: %.2f°"
-msgstr ""
+msgstr "Tiɣmert: %.2f°"
 
 #: ../gui/symmetry.py:357
 msgctxt "symmetry axis options panel: position button: no axis pos."
@@ -2899,7 +2909,7 @@ msgstr "Alpha:"
 #: ../gui/symmetry.py:365
 msgctxt "symmetry axis options panel: labels"
 msgid "Symmetry Type:"
-msgstr ""
+msgstr "Anaw n ujjuṛ:"
 
 #: ../gui/symmetry.py:369
 msgctxt "symmetry axis options panel: labels"
@@ -2913,7 +2923,7 @@ msgstr "Yermed"
 
 #: ../gui/toolbar.py:28
 msgid "File handling"
-msgstr ""
+msgstr "Asefrek n ufaylu"
 
 #: ../gui/toolbar.py:29
 msgid "Scraps switcher"
@@ -2925,15 +2935,15 @@ msgstr "Asefsex akked tririt"
 
 #: ../gui/toolbar.py:31
 msgid "Blend Modes"
-msgstr ""
+msgstr "Iskaren n usexleḍ"
 
 #: ../gui/toolbar.py:32
 msgid "Line Modes"
-msgstr ""
+msgstr "Iskaren n yizirig"
 
 #: ../gui/toolbar.py:33
 msgid "View (Main)"
-msgstr ""
+msgstr "Tamuɣli (tagejdant)"
 
 #: ../gui/toolbar.py:35
 msgid "View (Alternative/Secondary)"
@@ -2941,45 +2951,45 @@ msgstr ""
 
 #: ../gui/toolbar.py:37
 msgid "View (Resetting)"
-msgstr ""
+msgstr "Tamuɣli (tulsa n uwennez)"
 
 #: ../gui/toolstack.py:352
 #, python-brace-format
 msgctxt "workspace: sidebar tabs: button tooltips"
 msgid "{tab_title}: close tab"
-msgstr ""
+msgstr "{tab_title}: mdel iccer"
 
 #: ../gui/toolstack.py:356
 #, python-brace-format
 msgctxt "workspace: sidebar tabs: button tooltips"
 msgid "{tab_title}: tab options and properties"
-msgstr ""
+msgstr "{tab_title}: tinefrunin akked yiraten n yiccer"
 
 #: ../gui/toolstack.py:360
 #, python-brace-format
 msgctxt "workspace: sidebar tabs: button tooltips"
 msgid "{tab_title}: move tab to other sidebar"
-msgstr ""
+msgstr "{tab_title}: smutti iccer ɣer tfeggagt n yidis nniḍen"
 
 #: ../gui/topbar.py:90
 msgid "<b>MyPaint</b>"
-msgstr ""
+msgstr "<b>MyPaint</b>"
 
 #: ../gui/viewmanip.py:40
 msgid "Scroll View"
-msgstr ""
+msgstr "Drurem tamuɣli"
 
 #: ../gui/viewmanip.py:43
 msgid "Drag the canvas view"
-msgstr ""
+msgstr "Zuɣer tamuɣli n teɣzut n usuneɣ"
 
 #: ../gui/viewmanip.py:79
 msgid "Zoom View"
-msgstr ""
+msgstr "Simɣur tamuɣli"
 
 #: ../gui/viewmanip.py:82
 msgid "Zoom the canvas view"
-msgstr ""
+msgstr "Simɣur tamuɣli n teɣzut n usuneɣ"
 
 #: ../gui/viewmanip.py:122
 msgid "Rotate View"
@@ -2987,15 +2997,15 @@ msgstr "Zzi tamuɣli"
 
 #: ../gui/viewmanip.py:125
 msgid "Rotate the canvas view"
-msgstr ""
+msgstr "Zzi tamuɣli n teɣzut n usuneɣ"
 
 #: ../lib/command.py:175
 msgid "Unknown Command"
-msgstr ""
+msgstr "Anezḍay arussin"
 
 #: ../lib/command.py:318
 msgid "Undefined (command not started yet)"
-msgstr ""
+msgstr "D arbadu (anezḍay ur yekkir ara yakan)"
 
 #. TRANSLATORS: A short time spent painting / making brushwork.
 #. TRANSLATORS: This can correspond to zero or more touches of
@@ -3011,7 +3021,7 @@ msgstr ""
 
 #: ../lib/command.py:610
 msgid "Trim Layer"
-msgstr ""
+msgstr "Ɣeẓ tissi"
 
 #: ../lib/command.py:630
 msgid "Uniquify Layer Pixels"
@@ -3031,11 +3041,11 @@ msgstr "Sfeḍ tissi"
 #. immediately afterward.
 #: ../lib/command.py:700
 msgid "Paste Layer"
-msgstr ""
+msgstr "Senṭeḍ tissi"
 
 #: ../lib/command.py:723
 msgid "New Layer from Visible"
-msgstr ""
+msgstr "Tissi tamaynutt seg wayen yettbanen"
 
 #: ../lib/command.py:765
 msgid "Merge Visible Layers"
@@ -3047,7 +3057,7 @@ msgstr "Smezdi d akessar"
 
 #: ../lib/command.py:888
 msgid "Normalize Layer Mode"
-msgstr ""
+msgstr "Slugen askar n tissi"
 
 #: ../lib/command.py:941
 msgid "Import Layers"
@@ -3056,7 +3066,7 @@ msgstr "Kter tissiyin"
 #: ../lib/command.py:943
 #, python-brace-format
 msgid "Add {layer_default_name}"
-msgstr ""
+msgstr "Rnu {layer_default_name}"
 
 #: ../lib/command.py:967
 msgid "Remove Layer"
@@ -3064,7 +3074,7 @@ msgstr "Kkes tissi"
 
 #: ../lib/command.py:1014
 msgid "Select Layer"
-msgstr ""
+msgstr "Fren tissi"
 
 #: ../lib/command.py:1144
 msgid "Duplicate Layer"
@@ -3080,7 +3090,7 @@ msgstr "Smutti tissi d akessar"
 
 #: ../lib/command.py:1209
 msgid "Move Layer in Stack"
-msgstr ""
+msgstr "Smutti tissi deg usettef"
 
 #: ../lib/command.py:1328
 msgid "Rename Layer"
@@ -3088,66 +3098,66 @@ msgstr "Beddel isem n tissi"
 
 #: ../lib/command.py:1386
 msgid "Make Layer Visible"
-msgstr ""
+msgstr "Err tissi tettban"
 
 #: ../lib/command.py:1388
 msgid "Make Layer Invisible"
-msgstr ""
+msgstr "Err tissi d tuffirt"
 
 #: ../lib/command.py:1426
 msgid "Lock Layer"
-msgstr ""
+msgstr "Sekkeṛ tissi"
 
 #: ../lib/command.py:1428
 msgid "Unlock Layer"
-msgstr ""
+msgstr "Kkes asekkeṛ i tissi"
 
 #: ../lib/command.py:1446
 #, python-format
 msgid "Set Layer Opacity: %0.1f%%"
-msgstr ""
+msgstr "Sbadu tiḍullest n tissi: %0.1f%%"
 
 #: ../lib/command.py:1485
 msgid "Unknown Mode"
-msgstr ""
+msgstr "Askar arussin"
 
 #: ../lib/command.py:1486
 #, python-format
 msgid "Set Layer Mode: %s"
-msgstr ""
+msgstr "Sbadu askar n tissi:%s"
 
 #: ../lib/command.py:1510
 msgid "Enable Frame"
-msgstr ""
+msgstr "Sermed akatar"
 
 #: ../lib/command.py:1512
 msgid "Disable Frame"
-msgstr ""
+msgstr "Sens akatar"
 
 #: ../lib/command.py:1530
 msgid "Update Frame"
-msgstr ""
+msgstr "Leqqem akatar"
 
 #: ../lib/command.py:1559
 msgid "Edit Layer Externally"
-msgstr ""
+msgstr "Ẓreg tissi di beṛṛa"
 
 #: ../lib/document.py:74
 #, python-brace-format
 msgctxt "Document IO: common error strings: {error_loading_common}"
 msgid "Error loading “{basename}”."
-msgstr ""
+msgstr "Tuccḍa deg usali n “{basename}”."
 
 #: ../lib/document.py:78
 msgctxt "Document IO: common error strings: {see_logs}"
 msgid "The logs may have more detail about this error."
-msgstr ""
+msgstr "Iɣmisen zemren ad sɛun ugar n telqayt ɣer tccḍa-agi."
 
 #. TRANSLATORS: string used in e.g. "3h42m from now"
 #: ../lib/document.py:205
 msgctxt "Document autosave descriptions: the {ago} string: future"
 msgid "from now"
-msgstr ""
+msgstr "si tura"
 
 #. TRANSLATORS: string used in e.g. "8s ago"
 #: ../lib/document.py:211
@@ -3170,7 +3180,7 @@ msgstr ""
 #, python-brace-format
 msgctxt "Document autosave descriptions"
 msgid "Incomplete backup updated {last_modified_time} {ago}"
-msgstr ""
+msgstr "Aḥraz ur nemmid ara yettwaleqqem {last_modified_time} {ago}"
 
 #. TRANSLATORS: The {ago} variable is a translated string.
 #. TRANSLATORS: Look for the msgids "from now" and "ago"
@@ -3193,12 +3203,14 @@ msgid ""
 "Unable to write “{filename}”: {err}\n"
 "Do you have enough space left on the device?"
 msgstr ""
+"D awezɣi tira n “{filename}”: {err}\n"
+"Tesɛiḍ ddeqs n tallunt deg yibenk ?"
 
 #: ../lib/document.py:1454 ../lib/document.py:1464
 #, python-brace-format
 msgctxt "Document IO: hint templates for user-facing exceptions"
 msgid "Unable to write “{filename}”: {err}"
-msgstr ""
+msgstr "D awezɣi tira n “{filename}”: {err}"
 
 #: ../lib/document.py:1501
 #, python-brace-format
@@ -3217,6 +3229,8 @@ msgid ""
 "{error_loading_common}\n"
 "You do not have the permissions needed to open this file."
 msgstr ""
+"{error_loading_common}\n"
+"Ur tesɛiḍ ara tisirag akken ad teldiḍ afaylu-agi."
 
 #: ../lib/document.py:1534
 #, python-brace-format
@@ -3228,6 +3242,11 @@ msgid ""
 "\n"
 "{see_logs}"
 msgstr ""
+"{error_loading_common}\n"
+"\n"
+"Sebba: {reason}\n"
+"\n"
+"{see_logs}"
 
 #: ../lib/document.py:1559
 #, python-brace-format
@@ -3236,11 +3255,13 @@ msgid ""
 "{error_loading_common}\n"
 "Unknown file format extension: “{ext}”"
 msgstr ""
+"{error_loading_common}\n"
+"Aseɣzef n ufaylu d arussin: “{ext}”"
 
 #: ../lib/document.py:1590
 msgctxt "Document IO: group name for Import Layers"
 msgid "Imported layers"
-msgstr ""
+msgstr "Tissiyin yettwaketren"
 
 #: ../lib/document.py:1757
 #, python-brace-format
@@ -3262,11 +3283,16 @@ msgid ""
 "\n"
 "{see_logs}"
 msgstr ""
+"D awezɣi tiririt n umahil seg weḥraz awurman.\n"
+"\n"
+"Sebba: {reason}\n"
+"\n"
+"{see_logs}"
 
 #: ../lib/floodfill.py:132
 msgctxt "floodfill status message: use active tense"
 msgid "Filling"
-msgstr ""
+msgstr "Taččart"
 
 #: ../lib/floodfill.py:133
 msgctxt "floodfill status message: use active tense"
@@ -3276,17 +3302,17 @@ msgstr ""
 #: ../lib/floodfill.py:134
 msgctxt "floodfill status message: use active tense"
 msgid "Blurring"
-msgstr ""
+msgstr "Asluɣu"
 
 #: ../lib/floodfill.py:135
 msgctxt "floodfill status message: use active tense"
 msgid "Compositing"
-msgstr ""
+msgstr "Tasuddest"
 
 #: ../lib/floodfill.py:136
 msgctxt "floodfill status message: use active tense"
 msgid "Finishing up"
-msgstr ""
+msgstr "Fak"
 
 #: ../lib/floodfill.py:138
 msgctxt "uniform square region of pixels, plural noun"
@@ -3329,7 +3355,7 @@ msgstr "Tissi"
 #: ../lib/layer/data.py:1161
 msgctxt "layer default names"
 msgid "Vectors"
-msgstr ""
+msgstr "Imawayen"
 
 #: ../lib/layer/data.py:1166
 msgctxt "layer type descriptions"
@@ -3345,7 +3371,7 @@ msgstr "Bitmap"
 #: ../lib/layer/data.py:1242
 msgctxt "layer type descriptions"
 msgid "Bitmap Data"
-msgstr ""
+msgstr "Isefka n Bitmat"
 
 #. TRANSLATORS: Short default name for non-renderable fallback layers
 #: ../lib/layer/data.py:1258
@@ -3379,7 +3405,7 @@ msgstr "Agraw n tissiyin"
 #: ../lib/layer/tree.py:70
 msgctxt "layer default names"
 msgid "Placeholder"
-msgstr ""
+msgstr "Tallunt yetwaḥerran"
 
 #: ../lib/layer/tree.py:109
 msgctxt "layer default names"
@@ -3389,7 +3415,7 @@ msgstr "Aẓar"
 #: ../lib/layer/tree.py:2055 ../lib/layer/tree.py:2121
 msgctxt "layer default names: joiner punctuation for merged layers"
 msgid ", "
-msgstr ""
+msgstr ", "
 
 #: ../lib/layer/tree.py:2243
 msgctxt "layer default names: refactor: name of the common areas layer"
@@ -3404,33 +3430,33 @@ msgstr "Askan"
 #: ../lib/layervis.py:49
 msgctxt "layer visibility sets: text shown when no user-managed view is active"
 msgid "No active view"
-msgstr ""
+msgstr "Ulac tamuɣli turmidt"
 
 #: ../lib/layervis.py:579
 msgctxt "layer views: commands: add"
 msgid "Add Layer View"
-msgstr ""
+msgstr "Rnu tamuɣli n tissi"
 
 #: ../lib/layervis.py:604 ../lib/layervis.py:633
 msgctxt "layer views: commands: remove"
 msgid "Remove Layer View"
-msgstr ""
+msgstr "Kkes tamuɣli n tissi"
 
 #: ../lib/layervis.py:663
 #, python-brace-format
 msgctxt "layer views: commands: activate"
 msgid "Activate Layer View “{name}”"
-msgstr ""
+msgstr "Sermed tamuɣli n tissi “{name}”"
 
 #: ../lib/layervis.py:692
 msgctxt "layer views: commands: set active view's lock flag"
 msgid "Lock Layer View"
-msgstr ""
+msgstr "Sekkeṛ tamuɣli n tissi"
 
 #: ../lib/layervis.py:697
 msgctxt "layer views: commands: set active view's lock flag"
 msgid "Unlock Layer View"
-msgstr ""
+msgstr "Kkes asekkeṛ i tmuɣli n tissi"
 
 #: ../lib/modes.py:47
 msgid "Pass-through"
@@ -3446,7 +3472,7 @@ msgstr "Normal"
 
 #: ../lib/modes.py:52
 msgid "The top layer only, without blending colors."
-msgstr ""
+msgstr "Tissi n ufella kan, war asexleḍ n yiniten."
 
 #: ../lib/modes.py:54
 msgid "Pigment"
@@ -3675,6 +3701,10 @@ msgid ""
 "Reason: {err}\n"
 "Target folder: “{dirname}”."
 msgstr ""
+"Ulamek tira n “{basename}”.\n"
+"\n"
+"Sebba: {err}\n"
+"Akaram annican: “{dirname}”."
 
 #: ../lib/tiledsurface.py:48
 msgid "Vertical"
@@ -3686,7 +3716,7 @@ msgstr "Aglawan"
 
 #: ../lib/tiledsurface.py:50
 msgid "Vertical and horizontal"
-msgstr ""
+msgstr "Ubdid akked uglawan"
 
 #: ../lib/tiledsurface.py:51
 msgid "Rotational"
@@ -3699,17 +3729,17 @@ msgstr ""
 #: ../lib/tiledsurface.py:624
 #, python-format
 msgid "PNG reader failed: %s"
-msgstr ""
+msgstr "Imeɣri n PNG ur yeddi ara: %s"
 
 #: ../gui/autorecover.glade:18
 msgid "Recover interrupted work?"
-msgstr ""
+msgstr "Err-d amahil yettwasḥebsen ?"
 
 #. Whether to show the dialog when MyPaint starts
 #: ../gui/autorecover.glade:38
 msgctxt "Autosave Recovery dialog|"
 msgid "_Look for backups at startup"
-msgstr ""
+msgstr "Nadi iḥrazen di tnekra"
 
 #: ../gui/autorecover.glade:42
 msgctxt "Autosave Recovery dialog|Show Dialog at Startup checkbutton|"
@@ -3725,34 +3755,34 @@ msgstr ""
 #: ../gui/autorecover.glade:60
 msgctxt "Autosave Recovery dialog|"
 msgid "_Delete…"
-msgstr ""
+msgstr "Kkes…"
 
 #: ../gui/autorecover.glade:66
 msgctxt "Autosave Recovery dialog|Delete button|"
 msgid "Delete this backup from the disk."
-msgstr ""
+msgstr "Kkes aḥraz-agi seg uḍebsi."
 
 #. Recover in the sense or retrieval or salvage from a backup file. The user is asked to save the retrieved file immediately afterwards, hence the ellipsis.
 #: ../gui/autorecover.glade:78
 msgctxt "Autosave Recovery dialog|"
 msgid "_Recover & Save…"
-msgstr ""
+msgstr "Err-d & Sekles…"
 
 #: ../gui/autorecover.glade:84
 msgctxt "Autosave Recovery dialog|Recover button|"
 msgid "Save this backup to disk, then continue working on it."
-msgstr ""
+msgstr "Sekles aḥraz-agi deg uḍebsi sakin kemmel amahil fell-as."
 
 #. Do not recover any autosaves; take no action.
 #: ../gui/autorecover.glade:95
 msgctxt "Autosave Recovery dialog|"
 msgid "Decide _Later"
-msgstr ""
+msgstr "Ɣtes ar ḍeqal"
 
 #: ../gui/autorecover.glade:101
 msgctxt "Autosave Recovery dialog|Cancel button|"
 msgid "Start work on a new canvas. These backups will be retained."
-msgstr ""
+msgstr "Bdu amahil di teɣzut n usuneɣ tamaynutt. Iḥrazen-agi ad ttwaṭṭfen."
 
 #: ../gui/autorecover.glade:122
 msgctxt "Autosave Recovery dialog|"
@@ -3782,17 +3812,19 @@ msgstr ""
 
 #: ../gui/brusheditor.glade:116
 msgid "Save these settings to the brush"
-msgstr ""
+msgstr "Sekles iɣewwaren-agi deg umfezzu"
 
 #: ../gui/brusheditor.glade:132
 msgid "Edit Icon"
-msgstr ""
+msgstr "Ẓreg tignit"
 
 #: ../gui/brusheditor.glade:137
 msgid ""
 "Edit this brush's icon in a separate window (you will be able to use any "
 "brush to draw it)"
 msgstr ""
+"Ẓreg tignit n umfezzu-agi deg usfaylu ubris (tzemreḍ ad tferneḍ amfezzu "
+"menwal akken ad t-tsunɣeḍ)"
 
 #: ../gui/brusheditor.glade:151
 msgid "Delete"
@@ -3800,28 +3832,28 @@ msgstr "Kkes"
 
 #: ../gui/brusheditor.glade:156
 msgid "Delete this brush from the disk"
-msgstr ""
+msgstr "Kkes amfezzu-agi seg uḍebsi"
 
 #: ../gui/brusheditor.glade:170
 msgid "Copy to New"
-msgstr ""
+msgstr "Nɣel s amaynut"
 
 #: ../gui/brusheditor.glade:175
 msgid "Copy these settings and the current brush's icon to a new brush"
-msgstr ""
+msgstr "Nɣel iɣewwaren-agi akked tignit n umfezzu ɣer umfezzu amaynut"
 
 #: ../gui/brusheditor.glade:194
 msgid "Rename this brush"
-msgstr ""
+msgstr "Beddel isem n umfezzu-agi"
 
 #: ../gui/brusheditor.glade:239
 msgid "Brush Setting"
-msgstr ""
+msgstr "Iɣewwaren n umfezzu"
 
 #: ../gui/brusheditor.glade:340
 msgctxt "brush editor|metadata settings|labels for widgets|tooltips|"
 msgid "Short description for use in tooltips"
-msgstr ""
+msgstr "Aglam awezlan ara yettwasqedcen di tlilect n telɣut"
 
 #. Description for user tooltips
 #: ../gui/brusheditor.glade:343
@@ -3832,13 +3864,13 @@ msgstr "Aglam:"
 #: ../gui/brusheditor.glade:355
 msgctxt "brush editor|metadata settings|labels for widgets|tooltips|"
 msgid "Brush developer's notes"
-msgstr ""
+msgstr "Tilɣa n yisneflayen n umfezzu"
 
 #. Notes for developers
 #: ../gui/brusheditor.glade:358
 msgctxt "brush editor|metadata settings|labels|"
 msgid "Notes:"
-msgstr ""
+msgstr "Tilɣa:"
 
 #: ../gui/brusheditor.glade:420
 msgid ""
@@ -3876,11 +3908,11 @@ msgstr "Entrée"
 
 #: ../gui/brusheditor.glade:601
 msgid "Adjusts the maximum value"
-msgstr ""
+msgstr "Sgaddi azal afellay"
 
 #: ../gui/brusheditor.glade:634
 msgid "Adjusts the minimum value"
-msgstr ""
+msgstr "Sgaddi azal adday"
 
 #: ../gui/brusheditor.glade:666
 msgid ""
@@ -3908,12 +3940,12 @@ msgstr ""
 
 #: ../gui/brusheditor.glade:802
 msgid "{tooltip}"
-msgstr ""
+msgstr "{tooltip}"
 
 #. field name (template)
 #: ../gui/brusheditor.glade:809
 msgid "{dname}:"
-msgstr ""
+msgstr "{dname}:"
 
 #: ../gui/brusheditor.glade:841
 msgid "Brush dynamics are not available for this setting."
@@ -3956,12 +3988,12 @@ msgstr ""
 
 #: ../gui/inktool.glade:145
 msgid "Tilt in the canvas Y axis"
-msgstr ""
+msgstr "Seknu agellus Y n teɣzut n usuneɣ"
 
 #: ../gui/inktool.glade:167
 msgctxt "Inking tool options: point value sliders: labels: tooltips"
 msgid "Time since the previous point, in seconds"
-msgstr ""
+msgstr "Akud si tenqiḍt taneggarut, s tasinin"
 
 #: ../gui/inktool.glade:172
 msgctxt "Inking tool options: point value sliders: labels"
@@ -3971,16 +4003,16 @@ msgstr "Temps :"
 #: ../gui/inktool.glade:205
 msgctxt "Inking tool options: node delete button: label"
 msgid "Delete Point"
-msgstr ""
+msgstr "Kkes tanqiḍt"
 
 #: ../gui/inktool.glade:209
 msgctxt "Inking tool options: node delete button: tooltip"
 msgid "Delete the currently selected point"
-msgstr ""
+msgstr "Kkes tanqiḍt yettwafernen akka tura"
 
 #: ../gui/inktool.glade:221 ../gui/resources.xml:897
 msgid "Insert Point"
-msgstr ""
+msgstr "Ger tanqiḍt"
 
 #: ../gui/inktool.glade:253 ../gui/resources.xml:911
 msgid "Simplify Points"
@@ -3992,26 +4024,26 @@ msgstr ""
 
 #: ../gui/inktool.glade:269 ../gui/resources.xml:918
 msgid "Cull Points"
-msgstr ""
+msgstr "Kkes tinqiḍin"
 
 #: ../gui/inktool.glade:273
 msgid "Cull every other point from the curve."
-msgstr ""
+msgstr "Kkes tanqiḍ ɣef snat seg uzlig."
 
 #: ../gui/layervis.glade:15
 msgctxt "Layers window: view list controls: tooltips"
 msgid "The currently active view."
-msgstr ""
+msgstr "Tamuɣli turmidt akka tura."
 
 #: ../gui/layervis.glade:36
 msgctxt "Layers window: view list controls: tooltips"
 msgid "Rename the active view."
-msgstr ""
+msgstr "Beddel isem n tmuɣli turmidt."
 
 #: ../gui/layervis.glade:57
 msgctxt "Layers window: view list controls: tooltips"
 msgid "Remove the active view."
-msgstr ""
+msgstr "Kkes tamuɣli turmidt."
 
 #: ../gui/layervis.glade:78
 msgctxt "Layers window: view list controls: tooltips"
@@ -4021,27 +4053,27 @@ msgstr ""
 #: ../gui/layervis.glade:99
 msgctxt "Layers window: view list controls: tooltips"
 msgid "Lock or unlock the active view."
-msgstr ""
+msgstr "Sekkeṛ neɣ kkes asekkeṛ i tmuɣli turmidt."
 
 #: ../gui/mypaint.glade:65
 msgctxt "footer: color picker button: tooltip"
 msgid "Pick color"
-msgstr ""
+msgstr "Fren ini"
 
 #: ../gui/mypaint.glade:102
 msgctxt "Footerbar|"
 msgid "Edit the current color in detail"
-msgstr ""
+msgstr "Ẓreg ini amiran s telqayt"
 
 #: ../gui/mypaint.glade:126
 msgctxt "Footerbar|"
 msgid "Add the current color to the palette"
-msgstr ""
+msgstr "Rnu ini amiran ɣer tpaliḍt"
 
 #: ../gui/mypaint.glade:161
 msgctxt "Footerbar|"
 msgid "Canvas scale and rotation"
-msgstr ""
+msgstr "Taskala aklked tuzzya n teɣzut n usuneɣ"
 
 #. str.format() template
 #: ../gui/mypaint.glade:163
@@ -4054,7 +4086,7 @@ msgstr ""
 #: ../gui/mypaint.glade:249
 msgctxt "footer: context picker button: tooltip"
 msgid "Pick brushstroke settings, stroke color, and layer"
-msgstr ""
+msgstr "Awi-d iɣewwaren n usuneɣ n umfezzu, ini n usuneɣ, akked tissi"
 
 #: ../gui/preferenceswindow.glade:24
 msgctxt "Prefs Dialog|Saving|Save Formats and Locations|Default|"
@@ -4064,7 +4096,7 @@ msgstr "OpenRaster (*.ora)"
 #: ../gui/preferenceswindow.glade:28
 msgctxt "Prefs Dialog|Saving|Save Formats and Locations|Default|"
 msgid "PNG solid with background (*.png)"
-msgstr ""
+msgstr "PNG mačči d afrawan s ugilal (*.png)"
 
 #: ../gui/preferenceswindow.glade:32
 msgctxt "Prefs Dialog|Saving|Save Formats and Locations|Default|"
@@ -4074,7 +4106,7 @@ msgstr "JPEG 90% taɣara (*.jpg; *.jpeg)"
 #: ../gui/preferenceswindow.glade:46
 msgctxt "Prefs Dialog|View|Zoom|Default|"
 msgid "25%"
-msgstr ""
+msgstr "25%"
 
 #: ../gui/preferenceswindow.glade:50
 msgctxt "Prefs Dialog|View|Zoom|Default|"
@@ -4094,17 +4126,17 @@ msgstr "200%"
 #: ../gui/preferenceswindow.glade:72
 msgctxt "Prefs Dialog|View|Cursors|Freehand Cursor|Type|"
 msgid "Circle with light outline"
-msgstr ""
+msgstr "Tawinest s uzizdew afessas"
 
 #: ../gui/preferenceswindow.glade:76
 msgctxt "Prefs Dialog|View|Cursors|Freehand Cursor|Type|"
 msgid "Circle with medium outline"
-msgstr ""
+msgstr "Tawinest s uzizdw alemmas"
 
 #: ../gui/preferenceswindow.glade:80
 msgctxt "Prefs Dialog|View|Cursors|Freehand Cursor|Type|"
 msgid "Circle with heavy outline"
-msgstr ""
+msgstr "Tawinest s uzizdew azuran"
 
 #: ../gui/preferenceswindow.glade:84
 msgctxt "Prefs Dialog|View|Cursors|Freehand Cursor|Type|"
@@ -4127,13 +4159,13 @@ msgstr ""
 #: ../gui/preferenceswindow.glade:174 ../gui/preferenceswindow.glade:202
 msgctxt "Prefs Dialog|Pen Input|Input Device Settings|Pressure Mapping|"
 msgid "0.0"
-msgstr ""
+msgstr "0.0"
 
 #. Graph label, range (0...1)
 #: ../gui/preferenceswindow.glade:188 ../gui/preferenceswindow.glade:217
 msgctxt "Prefs Dialog|Pen Input|Input Device Settings|Pressure Mapping|"
 msgid "1.0"
-msgstr ""
+msgstr "1.0"
 
 #: ../gui/preferenceswindow.glade:251
 msgctxt "Prefs Dialog|Pen Input|"
@@ -4197,7 +4229,7 @@ msgstr ""
 #: ../gui/preferenceswindow.glade:476
 msgctxt "Prefs Dialog|Button|"
 msgid "<b>Keyboard Mappings</b>"
-msgstr ""
+msgstr "<b>Tarusi n unasiw</b>"
 
 #: ../gui/preferenceswindow.glade:489
 msgid "Keys"
@@ -4206,7 +4238,7 @@ msgstr "Tisura"
 #: ../gui/preferenceswindow.glade:509
 msgctxt "Prefs Dialog|Load & Save|Saving|"
 msgid "Default file format:"
-msgstr ""
+msgstr "Amasal n lexṣas n ufaylu:"
 
 #: ../gui/preferenceswindow.glade:524
 msgctxt "Prefs Dialog|Load & Save|Saving|"
@@ -4216,22 +4248,22 @@ msgstr ""
 #: ../gui/preferenceswindow.glade:575
 msgctxt "Prefs Dialog|Load & Save|"
 msgid "<b>Saving</b>"
-msgstr ""
+msgstr "<b>Asekles</b>"
 
 #: ../gui/preferenceswindow.glade:592
 msgctxt "Prefs Dialog|Load & Save|"
 msgid "<b>Color Management</b>"
-msgstr ""
+msgstr "<b>Asefrek n yini</b>"
 
 #: ../gui/preferenceswindow.glade:608
 msgctxt "Prefs Dialog|Load & Save|Color Management|"
 msgid "Color space conversions:"
-msgstr ""
+msgstr "Aselket n tallunt n yini:"
 
 #: ../gui/preferenceswindow.glade:626
 msgctxt "Prefs Dialog|Load & Save|Color Management|"
 msgid "Convert to sRGB when loading; mark as sRGB when saving"
-msgstr ""
+msgstr "Selket ɣer sRGB deg usali; cerḍ-it d sRGB deg usekles"
 
 #: ../gui/preferenceswindow.glade:630
 msgctxt "Prefs Dialog|Load & Save|Color Management|"
@@ -4249,7 +4281,7 @@ msgstr ""
 #: ../gui/preferenceswindow.glade:648
 msgctxt "Prefs Dialog|Load & Save|Color Management|"
 msgid "No automatic conversions or tagging"
-msgstr ""
+msgstr "Ulac aselket neɣ acraḍ awurman"
 
 #: ../gui/preferenceswindow.glade:652
 msgctxt "Prefs Dialog|Load & Save|Color Management|"
@@ -4264,19 +4296,19 @@ msgstr ""
 #: ../gui/preferenceswindow.glade:680
 msgctxt "Prefs Dialog|Load & Save|"
 msgid "<b>Automated Backups</b>"
-msgstr ""
+msgstr "<b>Iḥrazen iwurmanen</b>"
 
 #: ../gui/preferenceswindow.glade:698
 msgctxt "Prefs Dialog|Load & Save|Automated Backups|switch label"
 msgid "Back up unsaved work:"
-msgstr ""
+msgstr "Ḥrez imahilen ur nettwasekles ara:"
 
 #. In seconds. Lowest value is 5, highest is 300 (5 minutes). Only matters when enabled.
 #: ../gui/preferenceswindow.glade:733
 msgctxt ""
 "Prefs Dialog|Load & Save|Automated Backups|interval spinbox units suffix"
 msgid "seconds of inactivity"
-msgstr ""
+msgstr "tasinin n war armud"
 
 #: ../gui/preferenceswindow.glade:746
 msgctxt "Prefs Dialog|Load & Save|Automated Backups|switch tooltip"
@@ -4289,47 +4321,47 @@ msgstr ""
 #: ../gui/preferenceswindow.glade:768
 msgctxt "Prefs Dialog|Load & Save|Automated Backups|interval label"
 msgid "Time between backups:"
-msgstr ""
+msgstr "Akud gar yiḥrazen:"
 
 #. Tab label in preferences dialog
 #: ../gui/preferenceswindow.glade:786
 msgctxt "Prefs Dialog|"
 msgid "Load & Save"
-msgstr ""
+msgstr "Sali & sekles"
 
 #: ../gui/preferenceswindow.glade:807
 msgctxt "Prefs Dialog|View|"
 msgid "<b>Zoom and Rendering</b>"
-msgstr ""
+msgstr "<b>Asemɣer akked tririt</b>"
 
 #: ../gui/preferenceswindow.glade:824
 msgid "Default zoom level:"
-msgstr ""
+msgstr "Aswir n usemɣer n lexṣas:"
 
 #: ../gui/preferenceswindow.glade:862
 msgctxt "Prefs Dialog|View|"
 msgid "<b>Interface</b>"
-msgstr ""
+msgstr "<b>Agrudem</b>"
 
 #: ../gui/preferenceswindow.glade:879
 msgctxt "Prefs Dialog|View|Interface|"
 msgid "Toolbar icon size:"
-msgstr ""
+msgstr "Tiddi n tignitin n ufeggag n yifecka:"
 
 #: ../gui/preferenceswindow.glade:895
 msgctxt "Prefs Dialog|View|Interface|"
 msgid "Freehand cursor type:"
-msgstr ""
+msgstr "Anaw n teḥnaccaḍt n ufus ilelli:"
 
 #: ../gui/preferenceswindow.glade:910
 msgctxt "Prefs Dialog|View|Interface|"
 msgid "Dark theme variant:"
-msgstr ""
+msgstr "Tasenfalt n usentel amsulles:"
 
 #: ../gui/preferenceswindow.glade:920
 msgctxt "Prefs Dialog|View|Interface|Dark theme variant|"
 msgid "If available in GTK3 theme (needs restart)"
-msgstr ""
+msgstr "Ma yewjed deg usentel n GTK3 (yesra tulsa n usekker)"
 
 #: ../gui/preferenceswindow.glade:924
 msgctxt "Prefs Dialog|View|Interface|Dark theme variant|checkbox tooltip"
@@ -4340,12 +4372,12 @@ msgstr ""
 
 #: ../gui/preferenceswindow.glade:945
 msgid "Some of these settings require MyPaint to be restarted."
-msgstr ""
+msgstr "Kra seg yiɣewwaren-agi sran tulsa n usekker n MyPaint."
 
 #: ../gui/preferenceswindow.glade:968
 msgctxt "Prefs Dialog|View|Interface|Icon size|"
 msgid "Large (requires recent GTK3)"
-msgstr ""
+msgstr "Hraw (yesra GTK3 amaynut)"
 
 #: ../gui/preferenceswindow.glade:985
 msgctxt "Prefs Dialog|View|Interface|Icon size|"
@@ -4366,7 +4398,7 @@ msgstr ""
 
 #: ../gui/preferenceswindow.glade:1035
 msgid "When showing transparency:"
-msgstr ""
+msgstr "Mi ara tettwasken tefrawant:"
 
 #: ../gui/preferenceswindow.glade:1050
 msgctxt "Prefs Dialog|View|Interface|"
@@ -4396,7 +4428,7 @@ msgstr ""
 
 #: ../gui/preferenceswindow.glade:1111
 msgid "Hide cursor while painting"
-msgstr ""
+msgstr "Ffer taḥnaccaḍt mi ara ssunuɣeɣ"
 
 #: ../gui/preferenceswindow.glade:1134
 msgctxt ""
@@ -4411,7 +4443,7 @@ msgctxt ""
 msgid ""
 "When a layer is created or selected, show only that layer for a short time "
 "period."
-msgstr ""
+msgstr "Mi d-tnulfa tissi neɣ mi tettwafren, sken-itt kan i kra n wakud."
 
 #: ../gui/preferenceswindow.glade:1158
 msgctxt "Prefs Dialog|View|Interface|"
@@ -4426,7 +4458,7 @@ msgstr "Tutlayt:"
 #: ../gui/preferenceswindow.glade:1208
 msgctxt "Prefs Dialog|View|Interface|"
 msgid "(needs restart)"
-msgstr ""
+msgstr "(yesra tulsa n usekker)"
 
 #. Tab label in preferences dialog
 #: ../gui/preferenceswindow.glade:1225
@@ -4513,7 +4545,7 @@ msgstr ""
 #: ../gui/preferenceswindow.glade:1354
 msgctxt "Prefs Dialog|Color|"
 msgid "<b>Color Wheel</b>"
-msgstr ""
+msgstr "<b>Ṛruda n yiniten</b>"
 
 #. Tab label in preferences dialog
 #: ../gui/preferenceswindow.glade:1367
@@ -4524,7 +4556,7 @@ msgstr "Ini"
 #: ../gui/preferenceswindow.glade:1400
 msgctxt "Prefs Dialog|Compatibility"
 msgid "Default Compatibility Mode:"
-msgstr ""
+msgstr "Askar n umṣada n lexṣas:"
 
 #: ../gui/preferenceswindow.glade:1425
 msgctxt "Prefs Dialog|Compatibility"
@@ -5006,7 +5038,7 @@ msgstr ""
 #: ../gui/resources.xml:416
 msgctxt "Menu→Layer→Slice (labels), Accel Editor (labels)"
 msgid "Trim Layer to Frame"
-msgstr ""
+msgstr "Ɣeẓ tissi arma d akatar"
 
 #: ../gui/resources.xml:417
 msgctxt "Accel Editor (descriptions)"
@@ -6529,7 +6561,7 @@ msgstr ""
 #: ../gui/resources.xml:1780
 msgctxt "Menu→Edit→Current Mode (labels)"
 msgid "Inking"
-msgstr ""
+msgstr "Ssmex"
 
 #: ../gui/resources.xml:1781
 msgctxt "Toolbar (short labels)"
@@ -6595,7 +6627,7 @@ msgstr ""
 #: ../gui/resources.xml:1832
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "Edit Frame"
-msgstr ""
+msgstr "Ẓreg akatar"
 
 #: ../gui/resources.xml:1833
 msgctxt "Accel Editor (descriptions)"
