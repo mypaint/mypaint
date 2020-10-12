@@ -12,7 +12,7 @@ msgstr ""
 "Project-Id-Version: mypaint v2.0.0-alpha.11-2-g0673fe8\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-08-16 11:30+0200\n"
-"PO-Revision-Date: 2020-10-09 15:14+0000\n"
+"PO-Revision-Date: 2020-10-13 15:27+0000\n"
 "Last-Translator: Olesya_Gerasimenko <gammaray@basealt.ru>\n"
 "Language-Team: Russian <https://hosted.weblate.org/projects/mypaint/mypaint/"
 "ru/>\n"
@@ -42,7 +42,7 @@ msgstr "Сочетание клавиш"
 #: ../gui/accelmap.py:311
 #, python-format
 msgid "Edit Key for '%s'"
-msgstr "Изменить привязку для '%s'"
+msgstr "Изменить привязку для \"%s\""
 
 #. TRANSLATORS: Part of interface when adding a new button map binding.
 #. TRANSLATORS: It's a label for the action part of the combination.
@@ -89,7 +89,7 @@ msgid ""
 "<b>{accel} is already in use for '{action}'. The existing assignment will be "
 "replaced.</b>"
 msgstr ""
-"<b>{accel} уже используется для '{action}'. Существующая привязка будет "
+"<b>{accel} уже используется для \"{action}\". Существующая привязка будет "
 "замещена.</b>"
 
 #: ../gui/application.py:626
@@ -630,7 +630,7 @@ msgstr "Удалить текущую привязку"
 #: ../gui/buttonmap.py:475
 #, python-format
 msgid "Edit binding for '%s'"
-msgstr "Изменить привязку для '%s'"
+msgstr "Изменить привязку для \"%s\""
 
 #. TRANSLATORS: Part of interface when adding a new button map binding.
 #. TRANSLATORS: It's a label for the mod+button part of the combination.
@@ -659,7 +659,7 @@ msgstr "{button} не может быть привязана без модифи
 #: ../gui/buttonmap.py:601
 #, python-brace-format
 msgid "{button_combination} is already bound to the action '{action_name}'"
-msgstr "{button_combination} уже привязано к действию '{action_name}'"
+msgstr "{button_combination} уже привязано к действию \"{action_name}\""
 
 #: ../gui/colorpicker.py:65
 msgid "Pick Color"
@@ -1306,7 +1306,7 @@ msgstr "Всегда открывать в режиме совместимост
 msgctxt "Prefs Dialog|Compatibility"
 msgid "Open in 1.x mode unless file contains pigment layers"
 msgstr ""
-"Открывать в режиме совместимости 1.x, если файл не содержит пигментных слоёв"
+"Открывать в режиме совместимости 1.x, если файл не содержит слоёв красителей"
 
 #. TRANSLATORS: This is a label for a dropdown menu in the
 #. TRANSLATORS: file chooser dialog when loading .ora files.
@@ -2869,7 +2869,7 @@ msgstr "Нажим:"
 #. TRANSLATORS:"Paint Pigment Mode" for the options panel. Short.
 #: ../gui/mode.py:600
 msgid "Pigment:"
-msgstr "Пигмент:"
+msgstr "Краситель:"
 
 #: ../gui/optionspanel.py:47
 msgctxt "options panel: tab tooltip: title"
@@ -3595,14 +3595,14 @@ msgstr "Только верхний слой, без смешивания цве
 
 #: ../lib/modes.py:54
 msgid "Pigment"
-msgstr "Пигмент"
+msgstr "Краситель"
 
 #: ../lib/modes.py:55
 msgid ""
 "Similar to mixing actual pigments by upsampling to 10 spectral channels."
 msgstr ""
-"Похоже на смешивание реальных пигментов с помощью передискретизации до 10 "
-"спектральных каналов."
+"Аналогично смешиванию красителей в реальном мире с помощью передискретизации "
+"до 10 спектральных каналов."
 
 #: ../lib/modes.py:58
 msgid "Multiply"
@@ -3625,7 +3625,7 @@ msgid ""
 "This is the inverse of 'Multiply'."
 msgstr ""
 "Аналогично направлению двух различных проекторов на один экран одновременно. "
-"Противоположность 'Умножению'."
+"Противоположность \"Умножению\"."
 
 #: ../lib/modes.py:66
 msgid "Overlay"
@@ -3637,7 +3637,7 @@ msgid ""
 "highlights and shadows. This is the inverse of 'Hard Light'."
 msgstr ""
 "Перекрывает нижний слой верхним, сохраняя яркие участки и тени нижнего слоя. "
-"Противоположность 'Жёсткому свету'."
+"Противоположность \"Жёсткому свету\"."
 
 #: ../lib/modes.py:71
 msgid "Darken"
@@ -3713,7 +3713,7 @@ msgstr "Исключение"
 
 #: ../lib/modes.py:99
 msgid "Similar to the 'Difference' mode, but lower in contrast."
-msgstr "Похоже на режим 'Разница', но результат менее контрастный."
+msgstr "Похоже на режим \"Разница\", но результат менее контрастный."
 
 #: ../lib/modes.py:102
 msgid "Hue"
@@ -4141,7 +4141,7 @@ msgid ""
 "Negative values mean leftwards tilts."
 msgstr ""
 "Наклон в направлении оси X холста.\n"
-"Значение 0 означает что перо расположено вертикально.\n"
+"Значение 0 означает, что перо расположено вертикально.\n"
 "Отрицательные значения подразумевают наклон влево."
 
 #: ../gui/inktool.glade:90
@@ -4709,7 +4709,7 @@ msgid ""
 "The red, green, and blue 'computer monitor' primaries, evenly arranged "
 "around the circle. Green is opposite magenta."
 msgstr ""
-"Основные цвета 'компьютерного монитора' — красный, зелёный и синий, "
+"Основные цвета \"компьютерного монитора\" — красный, зелёный и синий, "
 "равномерно расположенные по кругу. Зелёный противоположен пурпурному."
 
 #: ../gui/preferenceswindow.glade:1298
@@ -4768,11 +4768,11 @@ msgid ""
 "red, yellow etc. as the four primaries."
 msgstr ""
 "Поверхностная модель кругов, основанная на теориях о цвете, которые "
-"использовали четыре 'психологических основных цвета' или 'уникальных тона', "
-"расположенных как противоположные пары сторон света. Красный противоположен "
-"зелёному, а жёлтый противоположен синему. CIECAM02 и NCS представляют схожие "
-"модели. Здесь используется чистое отображение красного, жёлтого и т.д. как "
-"четырёх основных цветов."
+"использовали четыре \"психологических основных цвета\" или \"уникальных "
+"тона\", расположенных как противоположные пары сторон света. Красный "
+"противоположен зелёному, а жёлтый противоположен синему. CIECAM02 и NCS "
+"представляют схожие модели. Здесь используется чистое отображение красного, "
+"жёлтого и т.д. как четырёх основных цветов."
 
 #. Options affecting color wheels
 #: ../gui/preferenceswindow.glade:1354
@@ -4810,7 +4810,7 @@ msgstr "Тип нового слоя по умолчанию:"
 #: ../gui/preferenceswindow.glade:1523 ../gui/preferenceswindow.glade:1537
 msgctxt "Prefs Dialog|Compatibility"
 msgid "Default Pigment Brush Setting:"
-msgstr "Параметры кисти пигмента по умолчанию:"
+msgstr "Параметры кисти \"Краситель\" по умолчанию:"
 
 #. Label description for the 1.x compatibility-mode-by-default setting
 #: ../gui/preferenceswindow.glade:1614
@@ -4822,7 +4822,7 @@ msgid ""
 msgstr ""
 "При создании новых документов по умолчанию использовать режим совместимости "
 "с устаревшей версией 1.x. В этом режиме файлы .ora 1.x будут выглядеть так "
-"же, как в более ранних версиях, но режим смешивания пигментов не будет "
+"же, как в более ранних версиях, но режим смешивания красителей не будет "
 "работать корректно."
 
 #: ../gui/preferenceswindow.glade:1633
@@ -5498,7 +5498,7 @@ msgstr "Создать слой из видимого"
 #: ../gui/resources.xml:576
 msgctxt "Accel Editor (descriptions)"
 msgid "Like ‘Merge Visible Layers’, but doesn’t delete the originals."
-msgstr "Схоже с 'Объединить видимые слои', но не удаляет оригиналы."
+msgstr "Схоже с \"Объединить видимые слои\", но не удаляет оригиналы."
 
 #: ../gui/resources.xml:583
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
@@ -5521,7 +5521,7 @@ msgid ""
 "Convert the current layer or group to a painting layer in ‘Normal’ mode, "
 "preserving its appearance."
 msgstr ""
-"Преобразовать текущий слой или группу в слой с режимом 'Нормальный', "
+"Преобразовать текущий слой или группу в слой с режимом \"Нормальный\", "
 "сохраняя его изменения."
 
 #: ../gui/resources.xml:598
@@ -6095,7 +6095,7 @@ msgstr "Сохранить как блокнот по умолчанию"
 #: ../gui/resources.xml:1137
 msgctxt "Accel Editor (descriptions)"
 msgid "Save the scratchpad as the default for ‘New Scratchpad’."
-msgstr "Сохранить как блокнот по умолчанию для 'Создать блокнот'."
+msgstr "Сохранить как блокнот по умолчанию для \"Создать блокнот\"."
 
 #: ../gui/resources.xml:1143
 msgctxt "Menu→Scratchpad (labels), Accel Editor (labels)"
