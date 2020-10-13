@@ -18,6 +18,19 @@ import lib.config as config
 logger = logging.getLogger(__file__)
 
 
+def debug_locale_data(locale, locale_categories):
+    for category in sorted(locale_categories):
+        try:
+            logger.debug(
+                "getlocale(%s): %r",
+                category,
+                locale.getlocale(getattr(locale, category)),
+            )
+        except Exception:
+            # TODO: Remove this when Py2 support is dropped
+            logger.exception("Problem when getting locale (upstream)")
+
+
 def init_gettext(localepath):
     """Initialize locales and gettext.
 
@@ -55,16 +68,13 @@ def init_gettext(localepath):
         "getpreferredencoding(): %r",
         locale.getpreferredencoding(do_setlocale=False),
     )
-    locale_categories = [
-        s for s in dir(locale)
-        if s.startswith("LC_") and s != "LC_ALL"
-    ]
-    for category in sorted(locale_categories):
-        logger.debug(
-            "getlocale(%s): %r",
-            category,
-            locale.getlocale(getattr(locale, category)),
-        )
+
+    if logger.isEnabledFor(logging.DEBUG):
+        locale_categories = [
+            s for s in dir(locale)
+            if s.startswith("LC_") and s != "LC_ALL"
+        ]
+        debug_locale_data(locale, locale_categories)
 
     # Low-level bindtextdomain with paths.
     # This is still required to hook GtkBuilder up with translated
