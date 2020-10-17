@@ -8,14 +8,16 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-08-16 11:30+0200\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: Automatically generated\n"
-"Language-Team: none\n"
+"PO-Revision-Date: 2020-10-18 08:26+0000\n"
+"Last-Translator: Hakim Oubouali <hakim.oubouali.skr@gmail.com>\n"
+"Language-Team: Central Atlas Tamazight <https://hosted.weblate.org/projects/"
+"mypaint/mypaint/tzm/>\n"
 "Language: tzm\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n >= 2 && (n < 11 || n > 99);\n"
+"X-Generator: Weblate 4.3.1-dev\n"
 
 #. TRANSLATORS: Name of first column in the button map preferences.
 #. TRANSLATORS: Refers to an action bound to a mod+button combination.
@@ -93,7 +95,7 @@ msgstr ""
 #. naturally at the end of the flow.
 #: ../gui/application.py:634
 msgid "OK"
-msgstr ""
+msgstr "WAXXA"
 
 #: ../gui/autorecover.py:138
 msgid "No backups were found in the cache."
@@ -134,7 +136,7 @@ msgstr ""
 
 #: ../gui/backgroundwindow.py:86 ../lib/modes.py:110
 msgid "Color"
-msgstr ""
+msgstr "Aklu"
 
 #: ../gui/backgroundwindow.py:92
 msgid "Add color to Patterns"
@@ -171,7 +173,7 @@ msgstr ""
 #: ../gui/brusheditor.py:301
 msgctxt "brush settings list: brush metadata texts group"
 msgid "About"
-msgstr ""
+msgstr "Γef"
 
 #: ../gui/brusheditor.py:312
 msgctxt "brush settings list: setting group"
@@ -221,7 +223,7 @@ msgstr ""
 #: ../gui/brusheditor.py:429
 msgctxt "brush settings list: setting group"
 msgid "Color"
-msgstr ""
+msgstr "Aklu"
 
 #: ../gui/brusheditor.py:447
 msgctxt "brush settings list: setting group"
@@ -336,7 +338,7 @@ msgstr ""
 #. TRANSLATORS: clear the brush preview icon being edited
 #: ../gui/brushiconeditor.py:174
 msgid "Clear"
-msgstr ""
+msgstr "Sfeḍ"
 
 #: ../gui/brushiconeditor.py:176
 msgid "Clear the preview icon"
@@ -354,7 +356,7 @@ msgstr ""
 #. TRANSLATORS: save edits to a brush icon
 #: ../gui/brushiconeditor.py:190 ../gui/brusheditor.glade:111
 msgid "Save"
-msgstr ""
+msgstr "Ḥḍu"
 
 #: ../gui/brushiconeditor.py:192
 msgid "Save this preview icon, and finish editing"
@@ -378,7 +380,7 @@ msgstr ""
 
 #: ../gui/brushmanager.py:135
 msgid "Classic"
-msgstr ""
+msgstr "Azayku"
 
 #: ../gui/brushmanager.py:136
 msgid "Set#1"
@@ -406,7 +408,7 @@ msgstr ""
 
 #: ../gui/brushmanager.py:142
 msgid "New"
-msgstr ""
+msgstr "Amayni"
 
 #: ../gui/brushmanager.py:679
 #, python-brace-format
@@ -515,7 +517,7 @@ msgstr ""
 #: ../gui/brushselectionwindow.py:430
 msgctxt "brush group properties dialog: action buttons"
 msgid "Delete Group"
-msgstr ""
+msgstr "Kkes Tarabbut"
 
 #: ../gui/brushselectionwindow.py:450
 msgctxt "brush group rename dialog: title"
@@ -554,7 +556,7 @@ msgstr ""
 #: ../gui/brushselectionwindow.py:535
 msgctxt "brush groups menu"
 msgid "New Group…"
-msgstr ""
+msgstr "Tarabbut Tamaynut…"
 
 #: ../gui/brushselectionwindow.py:538
 msgctxt "brush groups menu"
@@ -674,6 +676,7 @@ msgctxt "Online help pages"
 msgid ""
 "https://github.com/mypaint/mypaint/wiki/v1.2-HCY-Wheel-and-Gamut-Mask-Editor"
 msgstr ""
+"https://github.com/mypaint/mypaint/wiki/v1.2-HCY-Wheel-and-Gamut-Mask-Editor"
 
 #: ../gui/colors/hcywheel.py:87
 msgctxt "Color Wheels: activity toggle: action title"
@@ -4589,7 +4592,7 @@ msgstr ""
 #: ../gui/resources.xml:63
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "New"
-msgstr ""
+msgstr "Amaynu"
 
 #: ../gui/resources.xml:64
 msgctxt "Toolbar (short labels)"
@@ -4604,7 +4607,7 @@ msgstr ""
 #: ../gui/resources.xml:73
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "Open…"
-msgstr ""
+msgstr "Ṛẓem…"
 
 #: ../gui/resources.xml:74
 msgctxt "Toolbar (short labels)"
@@ -4654,7 +4657,7 @@ msgstr ""
 #: ../gui/resources.xml:120
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "Save"
-msgstr ""
+msgstr "Ḥḍu"
 
 #: ../gui/resources.xml:121
 msgctxt "Accel Editor (descriptions)"
@@ -4664,7 +4667,7 @@ msgstr ""
 #: ../gui/resources.xml:129
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "Save As…"
-msgstr ""
+msgstr "Ḥḍu Am…"
 
 #: ../gui/resources.xml:130
 msgctxt "Accel Editor (descriptions)"
@@ -5593,12 +5596,12 @@ msgstr ""
 #: ../gui/resources.xml:983
 msgctxt "Menu (labels)"
 msgid "File"
-msgstr ""
+msgstr "Afaylu"
 
 #: ../gui/resources.xml:989
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "Quit"
-msgstr ""
+msgstr "Ffeɣ"
 
 #: ../gui/resources.xml:990
 msgctxt "Accel Editor (descriptions)"
@@ -5608,12 +5611,12 @@ msgstr ""
 #: ../gui/resources.xml:1000
 msgctxt "Menu (labels)"
 msgid "Edit"
-msgstr ""
+msgstr "Taẓrigt"
 
 #: ../gui/resources.xml:1008
 msgctxt "Menu (labels)"
 msgid "Color"
-msgstr ""
+msgstr "Aklu"
 
 #: ../gui/resources.xml:1014
 msgctxt "Menu→Color (labels)"
@@ -5819,7 +5822,7 @@ msgstr ""
 #: ../gui/resources.xml:1195
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "Change Color…"
-msgstr ""
+msgstr "Senfel Aklu…"
 
 #: ../gui/resources.xml:1196
 msgctxt "Accel Editor (descriptions)"
@@ -5862,7 +5865,7 @@ msgstr ""
 #: ../gui/resources.xml:1231
 msgctxt "Menu (labels)"
 msgid "Help"
-msgstr ""
+msgstr "Tiwisi"
 
 #: ../gui/resources.xml:1237
 msgctxt "Menu→Help (labels), Accel Editor (labels)"
@@ -5877,7 +5880,7 @@ msgstr ""
 #: ../gui/resources.xml:1246
 msgctxt "Menu→Help (labels), Accel Editor (labels)"
 msgid "About MyPaint"
-msgstr ""
+msgstr "Γef MyPaint"
 
 #: ../gui/resources.xml:1247
 msgctxt "Accel Editor (descriptions)"
@@ -5933,7 +5936,7 @@ msgstr ""
 #: ../gui/resources.xml:1294
 msgctxt "Menu (labels)"
 msgid "View"
-msgstr ""
+msgstr "Iẓṛi"
 
 #: ../gui/resources.xml:1300
 msgctxt "Menu→View (labels)"
