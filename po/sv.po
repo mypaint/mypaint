@@ -6,8 +6,8 @@ msgstr ""
 "Project-Id-Version: mypaint v2.0.0-alpha.12-343-g82b4fc5\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-08-16 11:30+0200\n"
-"PO-Revision-Date: 2020-09-17 19:36+0000\n"
-"Last-Translator: Jesper Lloyd <jpl.lloyd@gmail.com>\n"
+"PO-Revision-Date: 2020-10-23 23:26+0000\n"
+"Last-Translator: Luna Jernberg <droidbittin@gmail.com>\n"
 "Language-Team: Swedish <https://hosted.weblate.org/projects/mypaint/mypaint/"
 "sv/>\n"
 "Language: sv\n"
@@ -15,7 +15,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 4.3-dev\n"
+"X-Generator: Weblate 4.3.1\n"
 
 #. TRANSLATORS: Name of first column in the button map preferences.
 #. TRANSLATORS: Refers to an action bound to a mod+button combination.
@@ -1436,7 +1436,7 @@ msgid ""
 "<b>A brush named “{brush_name}” already exists.</b>\n"
 "Do you want to replace it, or should the new brush be renamed?"
 msgstr ""
-"<b>En pensel vid namn  ”{brush_name}” finns redan.</b>\n"
+"<b>En pensel vid namn ”{brush_name}” finns redan.</b>\n"
 "Vill du ersätta den gamla, eller ska den nya penseln döpas om?"
 
 #: ../gui/dialogs.py:196
@@ -1857,7 +1857,7 @@ msgstr "Flera PNG-filer, en per lager (*.NUM.png)"
 #: ../gui/filehandling.py:519
 msgctxt "save dialogs: save formats and options"
 msgid "Multiple PNGs, by view (*.NAME.png)"
-msgstr "Flera PNG-filer, en per vy  (*.NAMN.png)"
+msgstr "Flera PNG-filer, per vy  (*.NAMN.png)"
 
 #: ../gui/filehandling.py:523
 msgctxt "save dialogs: save formats and options"
