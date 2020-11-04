@@ -112,6 +112,7 @@ LOCALE_DICT = {
     "tg": ("Tajik", "забо́ни тоҷикӣ́"),
     "th": ("Thai", "ไทย"),
     "tr": ("Turkish", "Türkçe"),
+    "tzm": ("Central Atlas Tamazight", "Central Atlas Tamazight"),
     "uk": ("Ukrainian", "Українська"),
     "uz": ("Uzbek", "Oʻzbek tili"),
     "vi": ("Vietnamese", "Tiếng Việt"),
