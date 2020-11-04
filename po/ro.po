@@ -8,8 +8,8 @@ msgstr ""
 "Project-Id-Version: mypaint v2.0.0-alpha.8-1-g4490f06\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-08-16 11:30+0200\n"
-"PO-Revision-Date: 2020-02-28 09:14+0000\n"
-"Last-Translator: Allan Nordhøy <epost@anotheragency.no>\n"
+"PO-Revision-Date: 2020-11-05 13:26+0000\n"
+"Last-Translator: cystastic8008 <talkingsara24@gmail.com>\n"
 "Language-Team: Romanian <https://hosted.weblate.org/projects/mypaint/mypaint/"
 "ro/>\n"
 "Language: ro\n"
@@ -18,7 +18,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=n==1 ? 0 : (n==0 || (n%100 > 0 && n%100 < "
 "20)) ? 1 : 2;\n"
-"X-Generator: Weblate 4.0-dev\n"
+"X-Generator: Weblate 4.3.2-dev\n"
 "X-Language: ro\n"
 "X-Source-Language: C\n"
 
@@ -71,7 +71,7 @@ msgstr "Tastă:"
 #. TRANSLATORS: keybinding dialog (Preferences | Keys).
 #: ../gui/accelmap.py:415
 msgid "Press keys to update this assignment"
-msgstr ""
+msgstr "Apăsați tastele pentru a actualiza această sarcină"
 
 #. TRANSLATORS: Part of the keybinding dialog, refers
 #. TRANSLATORS: to an action bound to a key combination.
@@ -87,11 +87,13 @@ msgid ""
 "<b>{accel} is already in use for '{action}'. The existing assignment will be "
 "replaced.</b>"
 msgstr ""
+"<b>{accel} este deja în folosire pentru {action}. Sarcina existentă va fi "
+"înlocuită.</b>"
 
 #: ../gui/application.py:626
 #, python-brace-format
 msgid "Open Folder “{folder_basename}”…"
-msgstr ""
+msgstr "Deschide Folderul {folder_basename}…"
 
 #. ... so that the main actions end up in the bottom-right of the
 #. dialog (reversed for rtl scripts), where the eye ends up
@@ -126,7 +128,7 @@ msgstr "Deschide dosarul Copii de rezervă…"
 #: ../gui/autorecover.py:182
 #, python-brace-format
 msgid "Recovered file from {iso_datetime}.ora"
-msgstr ""
+msgstr "Fișier recuperat din {iso_datetime}.ora"
 
 #: ../gui/backgroundwindow.py:55
 msgid "Background"
@@ -172,7 +174,7 @@ msgstr ""
 #: ../gui/backgroundwindow.py:382
 #, python-brace-format
 msgid "{filename} has zero size (w={w}, h={h})"
-msgstr ""
+msgstr "{filename} are mărimea zero (w={w}, h={h})"
 
 #: ../gui/brusheditor.py:116
 #, fuzzy
@@ -225,7 +227,7 @@ msgstr "Viteză"
 #: ../gui/brusheditor.py:389
 msgctxt "brush settings list: setting group"
 msgid "Directional Offsets"
-msgstr ""
+msgstr "Decalaj Direcțional"
 
 #: ../gui/brusheditor.py:407
 #, fuzzy
@@ -248,7 +250,7 @@ msgstr "Culoare"
 #: ../gui/brusheditor.py:447
 msgctxt "brush settings list: setting group"
 msgid "GridMap"
-msgstr ""
+msgstr "MapăGrilă"
 
 #: ../gui/brusheditor.py:458
 msgctxt "brush settings list: setting group"
@@ -301,7 +303,7 @@ msgstr "(pensulă nedenumită)"
 #, python-brace-format
 msgctxt "brush settings editor: header: is-modified hint"
 msgid "{brush_name} [unsaved]"
-msgstr ""
+msgstr "{brush_name} [nesalvat]"
 
 #: ../gui/brushiconeditor.py:36
 #, fuzzy
@@ -324,6 +326,8 @@ msgid ""
 "<b>%s</b>\n"
 "<small>Select a valid brush first</small>"
 msgstr ""
+"<b>%s</b>\n"
+"<small> Selectați mai întâi o pensulă validă </small>"
 
 #: ../gui/brushiconeditor.py:79
 #, python-format
@@ -331,6 +335,8 @@ msgid ""
 "<b>%s</b> <i>(modified)</i>\n"
 "<small>Changes are not yet saved</small>"
 msgstr ""
+"<b>%s</b><i> (modificat)</i>\n"
+"<small>Modificările nu au fost încă salvate</small>"
 
 #: ../gui/brushiconeditor.py:82
 #, python-format
@@ -338,6 +344,8 @@ msgid ""
 "<b>%s</b> (editing)\n"
 "<small>Paint with any brush or color</small>"
 msgstr ""
+"<b>%s</b> (editare)\n"
+"<small>Pictează cu orice pensulă sau culoare</small>"
 
 #: ../gui/brushiconeditor.py:85
 #, python-format
@@ -345,6 +353,8 @@ msgid ""
 "<b>%s</b>\n"
 "<small>Click ‘Edit’ to make changes to the icon</small>"
 msgstr ""
+"<b>%s</b>\n"
+"<small>Apasă pe ‘Editare’ pentru a efectua schimbări la iconiță</small>"
 
 #. TRANSLATORS: begin editing a brush's preview icon
 #: ../gui/brushiconeditor.py:157
@@ -353,7 +363,7 @@ msgstr "Editează"
 
 #: ../gui/brushiconeditor.py:159
 msgid "Begin editing this preview icon"
-msgstr ""
+msgstr "Începe editarea acestei iconițe de previzualizare"
 
 #. TRANSLATORS: revert edits to a brush icon
 #: ../gui/brushiconeditor.py:165
@@ -363,7 +373,7 @@ msgstr "Revino"
 
 #: ../gui/brushiconeditor.py:167
 msgid "Discard changes, and cancel editing"
-msgstr ""
+msgstr "Renunță la modificări și anulează editarea"
 
 #. TRANSLATORS: clear the brush preview icon being edited
 #: ../gui/brushiconeditor.py:174
@@ -372,12 +382,12 @@ msgstr "Curăță"
 
 #: ../gui/brushiconeditor.py:176
 msgid "Clear the preview icon"
-msgstr ""
+msgstr "Golește iconița de previzualizare"
 
 #. TRANSLATORS: set the brush icon to a built-in default
 #: ../gui/brushiconeditor.py:182
 msgid "Auto"
-msgstr ""
+msgstr "Automat"
 
 #: ../gui/brushiconeditor.py:184
 #, fuzzy
@@ -391,7 +401,7 @@ msgstr "Salvează"
 
 #: ../gui/brushiconeditor.py:192
 msgid "Save this preview icon, and finish editing"
-msgstr ""
+msgstr "Salvează iconița precedentă și încheiază editarea"
 
 #: ../gui/brushmanager.py:131
 msgid "Lost & Found"
