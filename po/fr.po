@@ -10,7 +10,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-08-16 11:30+0200\n"
 "PO-Revision-Date: 2020-11-16 03:28+0000\n"
-"Last-Translator: maels <maelstro@wanadoo.fr>\n"
+"Last-Translator: J. Lavoie <j.lavoie@net-c.ca>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/mypaint/mypaint/"
 "fr/>\n"
 "Language: fr\n"
@@ -7048,7 +7048,7 @@ msgctxt "Toolbar (tooltips)"
 msgid ""
 "Edit Frame: define a frame around the document to give it a finite size."
 msgstr ""
-"Éditer le cadre : Définit un cadre autour du document pour lui donner une "
+"Modifier le cadre : définir un cadre autour du document pour lui donner une "
 "taille déterminée."
 
 #: ../gui/resources.xml:1832
@@ -7108,10 +7108,9 @@ msgid "Pick Color: set the painting color from screen pixels."
 msgstr "Pipette à couleur : prends la couleur du pixel de l'écran."
 
 #: ../gui/resources.xml:1897
-#, fuzzy
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "Pick Color Hue"
-msgstr "Pipette à couleurs"
+msgstr "Prendre la teinte"
 
 #: ../gui/resources.xml:1898
 #, fuzzy
