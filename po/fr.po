@@ -10,7 +10,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-08-16 11:30+0200\n"
 "PO-Revision-Date: 2020-11-14 15:35+0000\n"
-"Last-Translator: toure youssouf <tourenco@free.fr>\n"
+"Last-Translator: J. Lavoie <j.lavoie@net-c.ca>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/mypaint/mypaint/"
 "fr/>\n"
 "Language: fr\n"
@@ -6078,7 +6078,7 @@ msgstr "Détails de la couleur"
 #: ../gui/resources.xml:1029
 msgctxt "Accel Editor (descriptions)"
 msgid "Show a color details dialog with text entry."
-msgstr "Dialogue des détails de couleur avec champs de saisie"
+msgstr "Afficher un dialogue des détails de couleur avec champs de saisie."
 
 #: ../gui/resources.xml:1035
 msgctxt "Menu→Color"
