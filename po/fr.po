@@ -10,7 +10,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-08-16 11:30+0200\n"
 "PO-Revision-Date: 2020-11-14 15:34+0000\n"
-"Last-Translator: toure youssouf <tourenco@free.fr>\n"
+"Last-Translator: J. Lavoie <j.lavoie@net-c.ca>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/mypaint/mypaint/"
 "fr/>\n"
 "Language: fr\n"
@@ -1422,7 +1422,7 @@ msgstr "Nom"
 
 #: ../gui/dialogs.py:126
 msgid "Overwrite brush?"
-msgstr "Remplacer la Brosse ?"
+msgstr "Remplacer la brosse ?"
 
 #: ../gui/dialogs.py:134 ../gui/dialogs.py:204
 msgid "Replace"
@@ -1601,7 +1601,7 @@ msgstr "MyPaint"
 #: ../gui/drawwindow.py:301
 msgctxt "Open dragged file confirm dialog: title"
 msgid "Open Dragged File?"
-msgstr "Ouvrir le fichier déposé ?"
+msgstr "Ouvrir le fichier déposé ?"
 
 #: ../gui/drawwindow.py:305
 msgctxt "Open dragged file confirm dialog: continue button"
@@ -1695,8 +1695,8 @@ msgid ""
 "MyPaint needs to edit a file of type “{type_name}” ({content_type}). What "
 "application should it use?"
 msgstr ""
-"MyPaint a besoin d'éditer un fichier de type "
-"« {type_name} » ({content_type}). Quelle application doit-il utiliser ?"
+"MyPaint a besoin de modifier un fichier de type « {type_name} » "
+"({content_type}). Quelle application doit-il utiliser ?"
 
 #: ../gui/externalapp.py:108
 #, python-brace-format
@@ -4586,7 +4586,7 @@ msgstr "Type de curseur à main levée :"
 #: ../gui/preferenceswindow.glade:910
 msgctxt "Prefs Dialog|View|Interface|"
 msgid "Dark theme variant:"
-msgstr "Variantes de thèmes sombres :"
+msgstr "Variante de thème sombre :"
 
 #: ../gui/preferenceswindow.glade:920
 msgctxt "Prefs Dialog|View|Interface|Dark theme variant|"
@@ -6385,7 +6385,7 @@ msgstr "Démarrer/Arrêter le profilage Python (cProfile)"
 #: ../gui/resources.xml:1285
 msgctxt "Menu→Help→Debug (labels), Accel Editor (labels)"
 msgid "Simulate a Crash…"
-msgstr "Simule un accident…"
+msgstr "Simuler un plantage…"
 
 #: ../gui/resources.xml:1286
 msgctxt "Accel Editor (descriptions)"
@@ -7071,10 +7071,9 @@ msgid "Edit Painting Symmetry"
 msgstr ""
 
 #: ../gui/resources.xml:1843
-#, fuzzy
 msgctxt "Toolbar (short labels)"
 msgid "Symmetry"
-msgstr "Axe de symétrie"
+msgstr "Symétrie"
 
 #: ../gui/resources.xml:1844
 msgctxt "Toolbar (tooltips)"
@@ -7170,7 +7169,7 @@ msgstr "Remplir"
 #: ../gui/resources.xml:1937
 msgctxt "Toolbar (tooltips)"
 msgid "Flood Fill: fill an area with color."
-msgstr "Remplissage : remplit une zone de couleur."
+msgstr "Remplissage : remplir une zone avec de la couleur."
 
 #: ../gui/resources.xml:1945
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
