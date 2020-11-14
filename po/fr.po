@@ -10,7 +10,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-08-16 11:30+0200\n"
 "PO-Revision-Date: 2020-11-14 15:34+0000\n"
-"Last-Translator: J. Lavoie <j.lavoie@net-c.ca>\n"
+"Last-Translator: Robert <chouvalbwa@free.fr>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/mypaint/mypaint/"
 "fr/>\n"
 "Language: fr\n"
@@ -6368,7 +6368,7 @@ msgstr "Lancer le ramasse-miette maintenant"
 msgctxt "Accel Editor (descriptions)"
 msgid "Free memory used for Python objects which are no longer in use."
 msgstr ""
-"Mémoire libre utilisée pour les objets Python qui ne sont plus utilisés."
+"Libérer la mémoire occupée par les objets Python qui ne son plus utilisés."
 
 #. FIXME: convert to a ToggleAction
 #: ../gui/resources.xml:1277
