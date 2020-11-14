@@ -10,7 +10,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-08-16 11:30+0200\n"
 "PO-Revision-Date: 2020-11-14 15:36+0000\n"
-"Last-Translator: Robert <chouvalbwa@free.fr>\n"
+"Last-Translator: toure youssouf <tourenco@free.fr>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/mypaint/mypaint/"
 "fr/>\n"
 "Language: fr\n"
@@ -6099,7 +6099,7 @@ msgstr "Couleur de la palette précédente"
 #: ../gui/resources.xml:1043
 msgctxt "Accel Editor (descriptions)"
 msgid "Set painting color to the previous color in the palette."
-msgstr "Choisi la couleur précédente de la palette."
+msgstr "Ajuster la couleur à la couleur précédente dans la palette"
 
 #: ../gui/resources.xml:1049
 #, fuzzy
@@ -6110,7 +6110,7 @@ msgstr "Ajouter une couleur à la palette"
 #: ../gui/resources.xml:1050
 msgctxt "Accel Editor (descriptions)"
 msgid "Append the current painting color to the palette."
-msgstr "Ajouter la couleur actuelle à la palette."
+msgstr "Ajouter la couleur actuelle à la palette"
 
 #: ../gui/resources.xml:1058
 msgctxt "Menu (labels)"
