@@ -10,7 +10,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-08-16 11:30+0200\n"
 "PO-Revision-Date: 2020-11-14 15:37+0000\n"
-"Last-Translator: Robert <chouvalbwa@free.fr>\n"
+"Last-Translator: toure youssouf <tourenco@free.fr>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/mypaint/mypaint/"
 "fr/>\n"
 "Language: fr\n"
@@ -6559,7 +6559,7 @@ msgstr ""
 #: ../gui/resources.xml:1427
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "HSV Square"
-msgstr "HSV Carré"
+msgstr "Carré TSV"
 
 #: ../gui/resources.xml:1428
 msgctxt "Accel Editor (descriptions)"
@@ -6580,12 +6580,12 @@ msgstr "Ajuster les composantes individuelles de la couleur."
 #: ../gui/resources.xml:1443
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "Liquid Wash"
-msgstr ""
+msgstr "Délavé"
 
 #: ../gui/resources.xml:1444
 msgctxt "Accel Editor (descriptions)"
 msgid "Dockable color selector showing a liquid-like wash of nearby colors."
-msgstr ""
+msgstr "Palette de délavés avoisinants"
 
 #: ../gui/resources.xml:1451
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
@@ -6600,7 +6600,7 @@ msgstr "sélecteur de couleur ancrable avec des anneaux concentriques HSV ."
 #: ../gui/resources.xml:1459
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "Crossed Bowl"
-msgstr ""
+msgstr "Mélangeur orthonormé"
 
 #: ../gui/resources.xml:1460
 msgctxt "Accel Editor (descriptions)"
