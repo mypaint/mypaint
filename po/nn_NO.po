@@ -7,8 +7,8 @@ msgstr ""
 "Project-Id-Version: mypaint v2.0.0-alpha.8-1-g4490f06\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-08-16 11:30+0200\n"
-"PO-Revision-Date: 2019-02-27 14:19+0000\n"
-"Last-Translator: glixx <roman_romul@mail.ru>\n"
+"PO-Revision-Date: 2020-11-16 03:28+0000\n"
+"Last-Translator: Allan Nordhøy <epost@anotheragency.no>\n"
 "Language-Team: Norwegian Nynorsk <https://hosted.weblate.org/projects/"
 "mypaint/mypaint/nn/>\n"
 "Language: nn_NO\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bits\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 3.5-dev\n"
+"X-Generator: Weblate 4.4-dev\n"
 
 #. TRANSLATORS: Name of first column in the button map preferences.
 #. TRANSLATORS: Refers to an action bound to a mod+button combination.
@@ -4453,7 +4453,7 @@ msgid ""
 "on."
 msgstr ""
 "Sikkerheitskopierer arbeid inkrementelt i bakgrunnen til MyPaint sitt "
-"diskmellomlager. Dersom programmet kræsjer vil du ha ein sjanse til å "
+"diskmellomlager. Dersom programmet krasjer vil du ha ein sjanse til å "
 "gjenopprette det du arbeidde med."
 
 #: ../gui/preferenceswindow.glade:768
@@ -6180,7 +6180,7 @@ msgstr "Start eller stopp pythonprofilering (cProfile)"
 #: ../gui/resources.xml:1285
 msgctxt "Menu→Help→Debug (labels), Accel Editor (labels)"
 msgid "Simulate a Crash…"
-msgstr "Simuler eit kræsj …"
+msgstr "Simuler eit krasj …"
 
 #: ../gui/resources.xml:1286
 msgctxt "Accel Editor (descriptions)"
