@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: mypaint v2.0.0-alpha.8-1-g4490f06\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-08-16 11:30+0200\n"
-"PO-Revision-Date: 2020-11-03 23:54+0000\n"
+"PO-Revision-Date: 2020-11-21 15:29+0000\n"
 "Last-Translator: Tuomas Hietala <tuomas.hietala@iki.fi>\n"
 "Language-Team: Finnish <https://hosted.weblate.org/projects/mypaint/mypaint/"
 "fi/>\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 4.3.2-dev\n"
+"X-Generator: Weblate 4.4-dev\n"
 
 #. TRANSLATORS: Name of first column in the button map preferences.
 #. TRANSLATORS: Refers to an action bound to a mod+button combination.
@@ -36,7 +36,7 @@ msgstr "Näppäinyhdistelmä"
 #: ../gui/accelmap.py:311
 #, python-format
 msgid "Edit Key for '%s'"
-msgstr "Valitse Näppäin Toiminnolle '%s'"
+msgstr "Muokkaa näppäintä toiminnolle '%s'"
 
 #. TRANSLATORS: Part of interface when adding a new button map binding.
 #. TRANSLATORS: It's a label for the action part of the combination.
@@ -73,7 +73,7 @@ msgstr "Paina näppäimiä päivittääksesi tämän asetuksen"
 #. TRANSLATORS: to an action bound to a key combination.
 #: ../gui/accelmap.py:472
 msgid "Unknown Action"
-msgstr "Tuntematon Toiminto"
+msgstr "Tuntematon toiminto"
 
 #. TRANSLATORS: Warning message when attempting to assign a
 #. TRANSLATORS: keyboard combination that is already used.
@@ -89,7 +89,7 @@ msgstr ""
 #: ../gui/application.py:626
 #, python-brace-format
 msgid "Open Folder “{folder_basename}”…"
-msgstr "Avaa Kansio \"{folder_basename}\"…"
+msgstr "Avaa kansio \"{folder_basename}\"…"
 
 #. ... so that the main actions end up in the bottom-right of the
 #. dialog (reversed for rtl scripts), where the eye ends up
@@ -108,7 +108,7 @@ msgstr "Varmuuskopioita ei löytynyt"
 
 #: ../gui/autorecover.py:141
 msgid "Open the Cache Folder…"
-msgstr "Avaa Välimuistikansio…"
+msgstr "Avaa välimuistikansio…"
 
 #: ../gui/autorecover.py:171
 msgid "Backup Recovery Failed"
@@ -116,7 +116,7 @@ msgstr "Varmuuskopion palauttaminen epäonnistui"
 
 #: ../gui/autorecover.py:173
 msgid "Open the Backup’s Folder…"
-msgstr "Avaa Varmuuskopion Kansio…"
+msgstr "Avaa varmuuskopion kansio…"
 
 #: ../gui/autorecover.py:182
 #, python-brace-format
@@ -192,7 +192,7 @@ msgstr "Yleinen"
 #: ../gui/brusheditor.py:338
 msgctxt "brush settings list: setting group"
 msgid "Opacity"
-msgstr "Peittokyky"
+msgstr "Peittävyys"
 
 #: ../gui/brusheditor.py:350
 msgctxt "brush settings list: setting group"
@@ -907,7 +907,7 @@ msgstr ""
 #: ../gui/colors/paletteview.py:67
 msgctxt "palette panel: properties button tooltip"
 msgid "Palette properties"
-msgstr ""
+msgstr "Paletin ominaisuudet"
 
 #: ../gui/colors/paletteview.py:76
 msgctxt "palette panel tab tooltip title"
@@ -962,7 +962,7 @@ msgstr ""
 #: ../gui/colors/paletteview.py:194
 msgctxt "palette editor dialog: palette name/title entry: tooltip"
 msgid "Name or description for this palette"
-msgstr ""
+msgstr "Paletin nimi tai kuvaus"
 
 #: ../gui/colors/paletteview.py:206
 msgctxt "palette editor dialog: number-of-columns spinbutton: title"
@@ -1524,7 +1524,7 @@ msgstr "Tällaiselle tasolle ei voi liittää."
 #, python-brace-format
 msgctxt "Statusbar message: paste result"
 msgid "Pasted {w}×{h} image."
-msgstr ""
+msgstr "{w}×{h}-kokoinen kuva liitetty."
 
 #: ../gui/document.py:2044
 #, python-brace-format
@@ -1560,7 +1560,7 @@ msgstr ""
 
 #: ../gui/drawwindow.py:543
 msgid "Leave Fullscreen Mode"
-msgstr ""
+msgstr "Poistu koko näytön tilasta"
 
 #: ../gui/drawwindow.py:544
 msgid "Leave Fullscreen"
@@ -1568,16 +1568,16 @@ msgstr ""
 
 #: ../gui/drawwindow.py:547
 msgid "Enter Fullscreen Mode"
-msgstr ""
+msgstr "Siirry koko näytön tilaan"
 
 #: ../gui/drawwindow.py:548
 msgid "Fullscreen"
-msgstr "Kokoruutu"
+msgstr "Koko näyttö"
 
 #: ../gui/drawwindow.py:687
 msgctxt "Quit confirm dialog: title"
 msgid "Really Quit?"
-msgstr ""
+msgstr "Haluatko varmasti lopettaa?"
 
 #: ../gui/drawwindow.py:691
 #, fuzzy
@@ -1766,7 +1766,7 @@ msgstr ""
 #: ../gui/filehandling.py:432
 msgctxt "save/load dialogs: filter patterns"
 msgid "All Recognized Formats"
-msgstr ""
+msgstr "Kaikki tunnistetut muodot"
 
 #: ../gui/filehandling.py:437
 msgctxt "save/load dialogs: filter patterns"
@@ -1821,10 +1821,9 @@ msgid "Multiple PNGs, by view (*.NAME.png)"
 msgstr ""
 
 #: ../gui/filehandling.py:523
-#, fuzzy
 msgctxt "save dialogs: save formats and options"
 msgid "JPEG 90% quality (*.jpg; *.jpeg)"
-msgstr "JPEG (*.jpg; *.jpeg)"
+msgstr "JPEG 90 % laadulla (*.jpg; *.jpeg)"
 
 #: ../gui/filehandling.py:581
 #, fuzzy
@@ -1847,7 +1846,7 @@ msgstr ""
 msgctxt ""
 "Destructive action confirm dialog: fallback title (normally overridden)"
 msgid "Really Continue?"
-msgstr ""
+msgstr "Haluatko varmasti jatkaa?"
 
 #: ../gui/filehandling.py:706
 msgctxt "Destructive action confirm dialog: cancel button"
@@ -1885,7 +1884,7 @@ msgstr "_Uusi kangas"
 #: ../gui/filehandling.py:1024
 msgctxt "File→Open: confirm dialog: title question"
 msgid "Open File?"
-msgstr ""
+msgstr "Avaa tiedosto?"
 
 #: ../gui/filehandling.py:1028
 #, fuzzy
@@ -1913,7 +1912,7 @@ msgstr "Tuo tasot"
 #: ../gui/filehandling.py:1433
 msgctxt "File→Open Recent→* confirm dialog: title"
 msgid "Open File?"
-msgstr ""
+msgstr "Avaa tiedosto?"
 
 #: ../gui/filehandling.py:1437
 #, fuzzy
@@ -2156,12 +2155,12 @@ msgstr ""
 
 #: ../gui/fill.py:851 ../gui/mode.py:639
 msgid "Reset"
-msgstr ""
+msgstr "Palauta"
 
 #: ../gui/fill.py:855
 msgctxt "fill options: Reset button (tooltip)"
 msgid "Reset options to their defaults"
-msgstr ""
+msgstr "Palauta asetukset oletusarvoihinsa"
 
 #: ../gui/fill.py:1033
 msgctxt "fill option: default option in the Source Layer dropdown"
@@ -2339,7 +2338,7 @@ msgstr ""
 
 #: ../gui/gtkexcepthook.py:181
 msgid "Ignore Error"
-msgstr ""
+msgstr "Sivuuta virhe"
 
 #: ../gui/gtkexcepthook.py:182
 msgid "Quit MyPaint"
@@ -2351,7 +2350,7 @@ msgstr ""
 
 #: ../gui/gtkexcepthook.py:219 ../gui/gtkexcepthook.py:222
 msgid "Exception while analyzing the exception."
-msgstr ""
+msgstr "Poikkeus poikkeusta analysoitaessa."
 
 #. TRANSLATORS: Crash report template for github, preceding a traceback.
 #. TRANSLATORS: Please ask users kindly to supply at least an English
@@ -2820,7 +2819,7 @@ msgstr "Järjestelmän kieli"
 #, python-brace-format
 msgctxt "Prefs Dialog|View|Interface - menu entries"
 msgid "{lang_en} - ({lang_nat})"
-msgstr ""
+msgstr "{lang_en} - ({lang_nat})"
 
 #. TRANSLATORS: title of panel showing an overview of the whole canvas
 #: ../gui/previewwindow.py:201
@@ -2860,7 +2859,7 @@ msgstr "(Ei mitään näytettävää)"
 #: ../gui/symmetry.py:83
 msgctxt "symmetry axis edit mode: instructions shown in statusbar"
 msgid "Place axis"
-msgstr ""
+msgstr "Aseta akseli"
 
 #: ../gui/symmetry.py:87
 msgctxt "symmetry axis edit mode: instructions shown in statusbar"
@@ -2880,25 +2879,23 @@ msgstr "Muokkaa symmetria-akselia"
 #: ../gui/symmetry.py:109
 msgctxt "symmetry axis edit mode: mode description (tooltips)"
 msgid "Adjust the painting symmetry axis."
-msgstr ""
+msgstr "Säädä maalauksen symmetria-akselia."
 
 #: ../gui/symmetry.py:345
-#, fuzzy
 msgctxt "symmetry axis options panel: labels"
 msgid "X Position:"
-msgstr "Kuvaus:"
+msgstr "X-sijainti:"
 
 #: ../gui/symmetry.py:349
-#, fuzzy
 msgctxt "symmetry axis options panel: labels"
 msgid "Y Position:"
-msgstr "Kuvaus:"
+msgstr "Y-sijainti:"
 
 #: ../gui/symmetry.py:353
 #, python-format
 msgctxt "symmetry axis options panel: labels"
 msgid "Angle: %.2f°"
-msgstr ""
+msgstr "Kulma: %.2f°"
 
 #: ../gui/symmetry.py:357
 msgctxt "symmetry axis options panel: position button: no axis pos."
@@ -3005,7 +3002,7 @@ msgstr ""
 
 #: ../lib/command.py:175
 msgid "Unknown Command"
-msgstr ""
+msgstr "Tuntematon komento"
 
 #: ../lib/command.py:318
 msgid "Undefined (command not started yet)"
@@ -5706,7 +5703,7 @@ msgstr ""
 #: ../gui/resources.xml:1035
 msgctxt "Menu→Color"
 msgid "Next Palette Color"
-msgstr "Seuraava Väri Paletissa"
+msgstr "Seuraava väri paletissa"
 
 #: ../gui/resources.xml:1036
 msgctxt "Accel Editor (descriptions)"
@@ -5716,7 +5713,7 @@ msgstr "Aseta paletin seuraava väri maalausväriksi."
 #: ../gui/resources.xml:1042
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "Previous Palette Color"
-msgstr "Edellinen Väri Paletissa"
+msgstr "Edellinen väri paletissa"
 
 #: ../gui/resources.xml:1043
 msgctxt "Accel Editor (descriptions)"
@@ -5741,7 +5738,7 @@ msgstr "Taso"
 #: ../gui/resources.xml:1064
 msgctxt "Menu→Layer→Properties (labels)"
 msgid "Opacity"
-msgstr "Peittokyky"
+msgstr "Peittävyys"
 
 #: ../gui/resources.xml:1070
 msgctxt "Menu→Layer (labels)"
@@ -5766,7 +5763,7 @@ msgstr "Luonnoslehtiö"
 #: ../gui/resources.xml:1096
 msgctxt "Menu→Scratchpad (labels), Accel Editor (labels)"
 msgid "New Scratchpad"
-msgstr "Uusi Luonnoslehtiö"
+msgstr "Uusi luonnoslehtiö"
 
 #: ../gui/resources.xml:1097
 msgctxt "Accel Editor (descriptions)"
@@ -5776,7 +5773,7 @@ msgstr ""
 #: ../gui/resources.xml:1104
 msgctxt "Menu→Scratchpad (labels), Accel Editor (labels)"
 msgid "Open Scratchpad…"
-msgstr "Avaa Luonnoslehtiö…"
+msgstr "Avaa luonnoslehtiö…"
 
 #: ../gui/resources.xml:1105
 msgctxt "Accel Editor (descriptions)"
@@ -5786,7 +5783,7 @@ msgstr ""
 #: ../gui/resources.xml:1112
 msgctxt "Menu→Scratchpad (labels), Accel Editor (labels)"
 msgid "Save Scratchpad"
-msgstr "Tallenna Luonnoslehtiö"
+msgstr "Tallenna luonnoslehtiö"
 
 #: ../gui/resources.xml:1113
 msgctxt "Accel Editor (descriptions)"
@@ -5796,7 +5793,7 @@ msgstr "Tallenna luonnoslehiö sille kuuluvaan tiedostoon kovalevyllä."
 #: ../gui/resources.xml:1120
 msgctxt "Menu→Scratchpad (labels), Accel Editor (labels)"
 msgid "Export Scratchpad As…"
-msgstr "Vie Luonnoslehtiö…"
+msgstr "Vie luonnoslehtiö…"
 
 #: ../gui/resources.xml:1121
 msgctxt "Accel Editor (descriptions)"
@@ -5816,7 +5813,7 @@ msgstr "Palauta luonnoslehtiö viimeiseen tallennettuun tilaan."
 #: ../gui/resources.xml:1136
 msgctxt "Menu→Scratchpad (labels), Accel Editor (labels)"
 msgid "Save Scratchpad as Default"
-msgstr "Aseta Luonnoslehtiö Oletusluonnoslehtiöksi"
+msgstr "Aseta luonnoslehtiö oletusluonnoslehtiöksi"
 
 #: ../gui/resources.xml:1137
 msgctxt "Accel Editor (descriptions)"
@@ -5826,7 +5823,7 @@ msgstr ""
 #: ../gui/resources.xml:1143
 msgctxt "Menu→Scratchpad (labels), Accel Editor (labels)"
 msgid "Clear Default Scratchpad"
-msgstr "Tyhjennä Oletusluonnoslehtiö"
+msgstr "Tyhjennä oletusluonnoslehtiö"
 
 #: ../gui/resources.xml:1144
 msgctxt "Accel Editor (descriptions)"
@@ -5910,7 +5907,7 @@ msgstr "Hae lisää siveltimiä…"
 #: ../gui/resources.xml:1214
 msgctxt "Accel Editor (descriptions)"
 msgid "Download brushpacks from the MyPaint wiki."
-msgstr "Lataa sivellinpaketteja MyPaint:in wikistä."
+msgstr "Lataa sivellinpaketteja MyPaintin wikistä."
 
 #: ../gui/resources.xml:1221
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
@@ -5930,12 +5927,12 @@ msgstr "Ohje"
 #: ../gui/resources.xml:1237
 msgctxt "Menu→Help (labels), Accel Editor (labels)"
 msgid "Online Help"
-msgstr "Online-tuki"
+msgstr "Ohje verkossa"
 
 #: ../gui/resources.xml:1238
 msgctxt "Accel Editor (descriptions)"
 msgid "Go to MyPaint’s documentation wiki."
-msgstr ""
+msgstr "Siirry MyPaintin dokumentaatiowikiin."
 
 #: ../gui/resources.xml:1246
 msgctxt "Menu→Help (labels), Accel Editor (labels)"
@@ -6026,7 +6023,7 @@ msgstr "Koko näyttö"
 #: ../gui/resources.xml:1321
 msgctxt "Accel Editor (descriptions)"
 msgid "Toggle between full-screen and windowed mode."
-msgstr ""
+msgstr "Vaihda koko näytön ja ikkunatilan välillä."
 
 #: ../gui/resources.xml:1332
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
@@ -6051,7 +6048,7 @@ msgstr ""
 #: ../gui/resources.xml:1347
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Background Chooser"
-msgstr "Taustavalitsin"
+msgstr "Taustan valinta"
 
 #: ../gui/resources.xml:1348
 msgctxt "Accel Editor (descriptions)"
@@ -6655,7 +6652,7 @@ msgstr "Valitse väri"
 #: ../gui/resources.xml:1864
 msgctxt "Toolbar (short labels)"
 msgid "Pick Col."
-msgstr ""
+msgstr "Valitse väri"
 
 #: ../gui/resources.xml:1865
 msgctxt "Toolbar (tooltips)"
