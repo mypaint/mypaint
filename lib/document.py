@@ -1332,11 +1332,11 @@ class Document (object):
 
     ## Layer import/export
 
-    def load_layer_from_pixbuf(self, pixbuf, x=0, y=0):
+    def load_layer_from_pixbuf(self, pixbuf, x=0, y=0, to_new_layer=False):
         arr = helpers.gdkpixbuf2numpy(pixbuf)
         s = tiledsurface.Surface()
         bbox = s.load_from_numpy(arr, x, y)
-        self.do(command.LoadLayer(self, s))
+        self.do(command.LoadLayer(self, s, to_new_layer=to_new_layer))
         return bbox
 
     def load_layer_from_png(self, filename, x, y, progress=None,
@@ -1412,10 +1412,10 @@ class Document (object):
 
     ## Saving and loading
 
-    def load_from_pixbuf(self, pixbuf):
+    def load_from_pixbuf(self, pixbuf, to_new_layer=False):
         """Load a document from a pixbuf."""
         self.clear()
-        bbox = self.load_layer_from_pixbuf(pixbuf)
+        bbox = self.load_layer_from_pixbuf(pixbuf, to_new_layer=to_new_layer)
         self.set_frame(bbox, user_initiated=False)
 
     def save(self, filename, **kwargs):

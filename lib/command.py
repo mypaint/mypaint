@@ -701,18 +701,30 @@ class LoadLayer (Command):
 
     display_name = _("Paste Layer")
 
-    def __init__(self, doc, surface, **kwds):
+    def __init__(self, doc, surface, to_new_layer=False, **kwds):
         super(LoadLayer, self).__init__(doc, **kwds)
+        self.doc = doc
         self.surface = surface
+        self.add_layer_cmd = None
+        self.before = None
+        if to_new_layer:
+            insert_path = self.doc.layer_stack.current_path
+            self.add_layer_cmd = AddLayer(doc, insert_path)
 
     def redo(self):
+        if self.add_layer_cmd:
+            self.add_layer_cmd.redo()
         layer = self.doc.layer_stack.current
-        self.before = layer.save_snapshot()
+        if not self.add_layer_cmd:
+            self.before = layer.save_snapshot()
         layer.load_from_surface(self.surface)
 
     def undo(self):
-        self.doc.layer_stack.current.load_snapshot(self.before)
-        del self.before
+        if self.add_layer_cmd:
+            self.add_layer_cmd.undo()
+        else:
+            self.doc.layer_stack.current.load_snapshot(self.before)
+            del self.before
 
 
 class NewLayerMergedFromVisible (Command):

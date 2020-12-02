@@ -932,7 +932,7 @@ class Document (CanvasController):  # TODO: rename to "DocumentController"
         # Paste to the upper left of the doc bbox (see above)
         x, y, w, h = self.model.get_bbox()
         try:
-            self.model.load_layer_from_pixbuf(pixbuf, x, y)
+            self.model.load_layer_from_pixbuf(pixbuf, x, y, to_new_layer=True)
         except Exception:
             logger.exception("Paste failed")
             self.app.show_transient_message(C_(
