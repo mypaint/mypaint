@@ -929,10 +929,18 @@ class Document (CanvasController):  # TODO: rename to "DocumentController"
                 u"Clipboard does not contain an image.",
             ))
             return
-        # Paste to the upper left of the doc bbox (see above)
-        x, y, w, h = self.model.get_bbox()
+        # If pasting with a shortcut, the upper left corner of the content
+        # is aligned with the cursor location, otherwise it is centered.
+        if action.keydown:
+            x, y = self.tdw.display_to_model(
+                *self.get_last_event_info(self.tdw)[1:])
+        else:
+            x, y = self.tdw.get_center_model_coords()
+            x -= pixbuf.get_width()/2.0
+            y -= pixbuf.get_height()/2.0
         try:
-            self.model.load_layer_from_pixbuf(pixbuf, x, y, to_new_layer=True)
+            self.model.load_layer_from_pixbuf(
+                pixbuf, int(x), int(y), to_new_layer=True)
         except Exception:
             logger.exception("Paste failed")
             self.app.show_transient_message(C_(
