@@ -4,8 +4,8 @@ msgstr ""
 "Project-Id-Version: mypaint v2.0.0-alpha.11-2-g0673fe8\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-08-16 11:30+0200\n"
-"PO-Revision-Date: 2020-10-09 13:21+0000\n"
-"Last-Translator: Lena Brüder <oss@lena-brueder.de>\n"
+"PO-Revision-Date: 2020-12-11 17:29+0000\n"
+"Last-Translator: Masowick <d651483@nwytg.com>\n"
 "Language-Team: German <https://hosted.weblate.org/projects/mypaint/mypaint/"
 "de/>\n"
 "Language: de\n"
@@ -13,7 +13,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 4.3-dev\n"
+"X-Generator: Weblate 4.4-dev\n"
 "X-Poedit-Country: GERMANY\n"
 "X-Poedit-Language: German\n"
 "X-Poedit-SourceCharset: utf-8\n"
@@ -436,8 +436,8 @@ msgid ""
 "Brush “{brush_name}” is listed in “{order_conf_file}”, but it does not exist "
 "in the zipfile."
 msgstr ""
-"Der Pinsel „{brush_name}“ wird aufgeführt in „{order_conf_file}“, existiert "
-"aber nicht in der Zip-Datei."
+"Der Pinsel „{brush_name}“ wird in „{order_conf_file}“ aufgeführt, ist aber "
+"nicht in der Zipdatei vorhanden."
 
 #: ../gui/brushmanager.py:717
 #, python-brace-format
@@ -461,7 +461,7 @@ msgstr "Pinselgröße ändern"
 #: ../gui/brushmanip.py:196
 msgctxt "brush resize mode - usage"
 msgid "Change brush size by dragging on the canvas"
-msgstr ""
+msgstr "Pinselgröße durch Ziehen auf der Zeichenfläche ändern"
 
 #: ../gui/brushselectionwindow.py:220
 msgctxt "brush group: context menu for a single brush"
@@ -505,8 +505,8 @@ msgstr "{original_name}-Kopie {n}"
 msgctxt "brush group: context menu: remove from group"
 msgid "Really remove brush “{brush_name}” from group “{group_name}”?"
 msgstr ""
-"Pinsel mit dem Namen „{brush_name}“ wirklich löschen aus der Gruppe "
-"\"{group_name}\"?"
+"Pinsel mit dem Namen „{brush_name}“ aus der Gruppe „{group_name}“ wirklich "
+"löschen?"
 
 #. TRANSLATORS: number of brushes in a brush group, for tooltips
 #: ../gui/brushselectionwindow.py:381
@@ -1243,12 +1243,12 @@ msgid ""
 "It is <b>strongly recommended</b> to upgrade to <b>MyPaint {new_version}</b> "
 "or newer if you want to edit this file!"
 msgstr ""
-"“{filename}” wurde gespeichert mit <b>MyPaint {new_version}</b>. Es könnte "
-"<b>inkompatibel</b> sein mit <b>MyPaint {current_version}</b>.\n"
-"Bearbeiten dieses Dokuments mit dieser Version von MyPaint könnte nicht "
-"funktionieren und sogar in Programmabstürzen enden.\n"
-"Es wird <b>sehr empfohlen</b> auf <b>MyPaint {new_version}</b> oder neuer zu "
-"aktualisieren um dieses Dokument zu bearbeiten!"
+"„{filename}“ wurde mit <b>MyPaint {new_version}</b> gespeichert. Diese "
+"könnte mit <b>MyPaint {current_version}</b> <b>inkompatibel</b> sein.\n"
+"Es ist nicht gesagt, dass das Bearbeiten dieser Datei mit dieser Version von "
+"MyPaint funktioniert und kann sogar zu Programmabstürzen führen.\n"
+"Es wird <b>dringend empfohlen</b> auf <b>MyPaint {new_version}</b> oder "
+"neuer zu aktualisieren, um dieses Dokument zu bearbeiten!"
 
 #: ../gui/compatibility.py:54
 #, python-brace-format
@@ -1274,7 +1274,7 @@ msgstr ""
 #: ../gui/compatibility.py:65
 msgctxt "file compatibility question"
 msgid "Do you want to open this file anyway?"
-msgstr "Wollen Sie diese Datei trotzdem öffnen?"
+msgstr "Soll diese Datei trotzdem geöffnet werden?"
 
 #: ../gui/compatibility.py:129
 msgctxt "Version compat warning toggle"
@@ -1287,7 +1287,7 @@ msgstr "Diese Warnung nicht mehr anzeigen"
 #: ../gui/compatibility.py:197
 msgctxt "Prefs Dialog|Compatibility"
 msgid "Always open in 1.x mode"
-msgstr "Immer öffnen im Modus 1.x"
+msgstr "Immer im 1.x-Modus öffnen"
 
 #. TRANSLATORS: One of the options for the
 #. TRANSLATORS: "When Not Specified in File"
@@ -1295,7 +1295,7 @@ msgstr "Immer öffnen im Modus 1.x"
 #: ../gui/compatibility.py:206
 msgctxt "Prefs Dialog|Compatibility"
 msgid "Always open in 2.x mode"
-msgstr "Immer öffnen im Modus 2.x"
+msgstr "Immer im 2.x-Modus öffnen"
 
 #. TRANSLATORS: One of the options for the
 #. TRANSLATORS: "When Not Specified in File"
@@ -1449,8 +1449,8 @@ msgid ""
 "<b>A brush named “{brush_name}” already exists.</b>\n"
 "Do you want to replace it, or should the new brush be renamed?"
 msgstr ""
-"<b>Ein Pinsel mit dem Namen „{brush_name}“ existiert bereits.</b>\n"
-"Soll er ersetzt werden oder soll der neue Pinsel umbenannt werden?"
+"<b>Ein Pinsel mit dem Namen „{brush_name}“ ist bereits vorhanden.</b>\n"
+"Soll er ersetzt oder der neue Pinsel umbenannt werden?"
 
 #: ../gui/dialogs.py:196
 msgid "Overwrite brush group?"
@@ -1544,7 +1544,7 @@ msgstr "Mit {modifiers} gedrückt:  {button_actions}."
 #: ../gui/document.py:889
 msgctxt "Statusbar message: copy result"
 msgid "Empty document, nothing copied."
-msgstr "Leeres Dokument - es wurde nichts kopiert."
+msgstr "Leeres Dokument, es wurde nichts kopiert."
 
 #: ../gui/document.py:901
 #, python-brace-format
@@ -1555,17 +1555,17 @@ msgstr "Layer kopiert als {w}x{h} Bild."
 #: ../gui/document.py:918
 msgctxt "Statusbar message: paste result"
 msgid "Nothing on clipboard."
-msgstr "Nichts im Zwischenspeicher."
+msgstr "Die Zwischenablage ist leer."
 
 #: ../gui/document.py:927
 msgctxt "Statusbar message: paste result"
 msgid "Clipboard does not contain an image."
-msgstr "Zwischenspeicher enthält kein Bild."
+msgstr "Die Zwischenablage enthält kein Bild."
 
 #: ../gui/document.py:938
 msgctxt "Statusbar message: paste result"
 msgid "Cannot paste into this type of layer."
-msgstr "In diese Ebene kann nichts eingefügt werden."
+msgstr "In diese Ebenentyp kann nichts eingefügt werden."
 
 #: ../gui/document.py:943
 #, python-brace-format
@@ -1904,10 +1904,9 @@ msgid "_Cancel"
 msgstr "_Abbrechen"
 
 #: ../gui/filehandling.py:710
-#, fuzzy
 msgctxt "Destructive action confirm dialog: save checkbox"
 msgid "_Save to Scraps first"
-msgstr "Als Entwurf speichern"
+msgstr "Zuerst als Entwurf _speichern"
 
 #: ../gui/filehandling.py:716
 msgctxt ""
@@ -1917,10 +1916,10 @@ msgid "Co_ntinue"
 msgstr "_Fortsetzen"
 
 #: ../gui/filehandling.py:739
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgctxt "Destructive action confirm dialog: warning message"
 msgid "You risk losing {abbreviated_time} of unsaved painting."
-msgstr "Dies wird {abbreviated_time} nicht gespeicherter Arbeit verwerfen"
+msgstr "Dies wird {abbreviated_time} nicht gespeicherter Arbeit verwerfen."
 
 #: ../gui/filehandling.py:804
 msgctxt "File→New: confirm dialog: title question"
@@ -2059,12 +2058,12 @@ msgstr "Quelle:"
 #: ../gui/fill.py:536
 msgctxt "fill options: 'Source:' category (tooltip)"
 msgid "The input that the fill will be based on"
-msgstr ""
+msgstr "Die Eingabe auf der die Füllung basiert"
 
 #: ../gui/fill.py:580
 msgctxt "fill options: 'Source' category: Layer dropdown (tooltip)"
 msgid "Select a specific layer you want the fill to be based on"
-msgstr ""
+msgstr "Eine bestimmte Ebene wählen, auf der die Füllung basiert"
 
 #: ../gui/fill.py:598
 #, fuzzy
@@ -2125,14 +2124,13 @@ msgid "New Layer (once)"
 msgstr "Neue Ebene (einmalig)"
 
 #: ../gui/fill.py:658
-#, fuzzy
 msgctxt "fill options: Target | New Layer (tooltip)"
 msgid ""
 "Create a new layer with the results of the fill.\n"
 "This is turned off automatically after use."
 msgstr ""
 "Eine neue Ebene mit dem Füllergebnis erzeugen.\n"
-"Wird nach Benutzung wieder automatisch deaktiviert."
+"Diese wird nach der Nutzung automatisch wieder deaktiviert."
 
 #: ../gui/fill.py:670
 msgctxt "fill options: Target | Blend Mode dropdown - warning text"
@@ -2156,12 +2154,12 @@ msgstr "Deckkraft der Füllung"
 #: ../gui/fill.py:725
 msgctxt "fill options: numeric option - grow/shrink fill (label)"
 msgid "Offset:"
-msgstr ""
+msgstr "Abstand:"
 
 #: ../gui/fill.py:741
 msgctxt "fill options: Offset (tooltip)"
 msgid "The distance in pixels to grow or shrink the fill"
-msgstr ""
+msgstr "Die Entfernung in Pixel zum Vergrößern oder Verkleinern der Füllung"
 
 #: ../gui/fill.py:752
 msgctxt "fill options: numeric option for blurring fill (label)"
@@ -2171,7 +2169,7 @@ msgstr "Feder:"
 #: ../gui/fill.py:767
 msgctxt "fill options: Feather (tooltip)"
 msgid "The amount of blur to apply to the fill"
-msgstr ""
+msgstr "Die Stärke der Unschärfe, die auf die Füllung angewendet wird"
 
 #: ../gui/fill.py:783
 msgctxt "fill options: gap detection toggle (label)"
@@ -2185,6 +2183,9 @@ msgid ""
 "Note: This can be a lot slower than the regular fill, only enable when you "
 "need it."
 msgstr ""
+"Versuchen, Lücken zu erkennen und nicht an ihnen vorbei zu füllen.\n"
+"Hinweis: Dies kann viel langsamer als die normale Füllung sein; nur "
+"aktivieren, wenn es nötig ist."
 
 #: ../gui/fill.py:806
 msgctxt "fill options: gap-detection sub-option, numeric setting (label)"
@@ -2197,6 +2198,8 @@ msgid ""
 "The size of the largest gaps that can be detected.\n"
 "Using large values can make the fill run a lot slower."
 msgstr ""
+"Die Größe der größten Lücken, die erkannt werden können. \n"
+"Die Verwendung großer Werte kann den Fülllauf erheblich verlangsamen."
 
 #: ../gui/fill.py:834
 msgctxt ""
@@ -2204,7 +2207,7 @@ msgctxt ""
 "When enabled, if the fill stops after going past a detected gap, it 'pulls' "
 "the fill back out of the gap to the other side of it."
 msgid "Prevent seeping"
-msgstr ""
+msgstr "Eindringen verhindern"
 
 #: ../gui/fill.py:841
 msgctxt "fill options: Prevent seeping (tooltip)"
@@ -2212,6 +2215,9 @@ msgid ""
 "Try to prevent the fill from seeping into the gaps.\n"
 "If a fill starts in a detected gap, this option will do nothing."
 msgstr ""
+"Versuchen zu verhindern, dass die Füllung in die Lücken eindringt.\n"
+"Wenn eine Füllung in einer erkannten Lücke beginnt, bewirkt diese Option "
+"nichts."
 
 #: ../gui/fill.py:851 ../gui/mode.py:639
 msgid "Reset"
@@ -3006,7 +3012,7 @@ msgstr "Y-Position:"
 #, python-format
 msgctxt "symmetry axis options panel: labels"
 msgid "Angle: %.2f°"
-msgstr ""
+msgstr "Winkel: %.2f°"
 
 #: ../gui/symmetry.py:357
 msgctxt "symmetry axis options panel: position button: no axis pos."
@@ -3493,12 +3499,12 @@ msgstr "Vektorebene"
 #: ../lib/layer/data.py:1237
 msgctxt "layer default names"
 msgid "Bitmap"
-msgstr ""
+msgstr "Bitmap"
 
 #: ../lib/layer/data.py:1242
 msgctxt "layer type descriptions"
 msgid "Bitmap Data"
-msgstr ""
+msgstr "Bitmapdaten"
 
 #. TRANSLATORS: Short default name for non-renderable fallback layers
 #: ../lib/layer/data.py:1258
@@ -3830,10 +3836,10 @@ msgstr ""
 #. TRANSLATORS: Change only if your lang *REQUIRES* a different order or
 #. TRANSLATORS: if raw digits and a space aren't enough.
 #: ../lib/naming.py:22
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgctxt "unique names: serial number needed: template"
 msgid "{name} {number}"
-msgstr "%(name)s %(number)d"
+msgstr "{name} {number}"
 
 #. TRANSLATORS: UNIQUE_NAME_REGEX - regex for UNIQUE_NAME_TEMPLATE
 #. TRANSLATORS: Must match its template (msgid: '{name} {number}')
@@ -3841,7 +3847,7 @@ msgstr "%(name)s %(number)d"
 #: ../lib/naming.py:30
 msgctxt "unique names: regex matching a string with a serial number"
 msgid "^(?P<name>.*?)\\s+(?P<number>\\d+)$"
-msgstr ""
+msgstr "^(?P<name>.*?)\\s+(?P<number>\\d+)$"
 
 #: ../lib/pixbufsurface.py:39
 msgctxt "user-facing error texts"
@@ -3947,16 +3953,16 @@ msgid "Start work on a new canvas. These backups will be retained."
 msgstr "Auf einer neuen Leinwand beginnen. Diese Backups werden aufbewahrt."
 
 #: ../gui/autorecover.glade:122
-#, fuzzy
 msgctxt "Autosave Recovery dialog|"
 msgid ""
 "MyPaint crashed with unsaved work, but it makes rolling backups. You can "
 "recover a working file from one of these automated backups now. You’ll be "
 "asked where to save it before continuing."
 msgstr ""
-"MyPaint ist mit nicht gespeicherter Arbeit abgestürzt, aber es hat Backups "
-"erzeugt. Sie können nun eine Datei wiederherstellen, oder damit warten, bis "
-"Sie MyPaint erneut starten."
+"MyPaint ist mit nicht gespeicherter Arbeit abgestürzt, hat aber fortlaufende "
+"Sicherungen erzeugt. Eine Arbeitsdatei lässt sich nun aus einer der "
+"automatisch gesicherten Dateien wiederhergestellen. Vor dem Fortsetzen wird "
+"gefragt, wohin sie gespeichert werden soll."
 
 #: ../gui/autorecover.glade:157
 msgid "Thumbnail"
@@ -4199,20 +4205,19 @@ msgstr "Punkt einfügen"
 
 #: ../gui/inktool.glade:253 ../gui/resources.xml:911
 msgid "Simplify Points"
-msgstr ""
+msgstr "Punkte vereinfachen"
 
 #: ../gui/inktool.glade:257
 msgid "Simplify the curve using the Reumann-Witkam algorithm."
-msgstr ""
+msgstr "Die Kurve mithilfe des Reumann-Witkam-Algorithmus vereinfachen."
 
 #: ../gui/inktool.glade:269 ../gui/resources.xml:918
-#, fuzzy
 msgid "Cull Points"
-msgstr "Punkt löschen"
+msgstr "Punkte entnehmen"
 
 #: ../gui/inktool.glade:273
 msgid "Cull every other point from the curve."
-msgstr ""
+msgstr "Alle anderen Punkte aus der Kurve entnehmen."
 
 #: ../gui/layervis.glade:15
 msgctxt "Layers window: view list controls: tooltips"
@@ -5105,7 +5110,7 @@ msgstr "Vorgetäuschten Druck erhöhen"
 #: ../gui/resources.xml:238
 msgctxt "Accel Editor (descriptions)"
 msgid "Send harder pressure for devices that don't support pressure input."
-msgstr ""
+msgstr "Härteren Druck für Geräte ausüben, die keine Druckeingabe unterstützen."
 
 #: ../gui/resources.xml:245
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
@@ -5116,6 +5121,7 @@ msgstr "Vorgetäuschten Druck verringern"
 msgctxt "Accel Editor (descriptions)"
 msgid "Send softer pressure for devices that don't support pressure input."
 msgstr ""
+"Weicheren Druck für Geräte ausüben, die keine Druckeingabe unterstützen."
 
 #: ../gui/resources.xml:254
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
@@ -5290,10 +5296,9 @@ msgid "Clear Layer"
 msgstr "Ebene leeren"
 
 #: ../gui/resources.xml:402
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Clear the active layer’s content."
-msgstr "Inhalt der aktuellen Ebene leeren."
+msgstr "Inhalt der aktiven Ebene leeren."
 
 #: ../gui/resources.xml:410
 #, fuzzy
@@ -5728,10 +5733,9 @@ msgid "Decrease magnification."
 msgstr "Vergrößerung verringern."
 
 #: ../gui/resources.xml:758
-#, fuzzy
 msgctxt "Menu→View→Adjust View (labels), Accel Editor (labels)"
 msgid "Pan Left"
-msgstr "Ansicht verschieben"
+msgstr "Nach links schwenken"
 
 #: ../gui/resources.xml:759
 msgctxt "Accel Editor (descriptions)"
@@ -5739,10 +5743,9 @@ msgid "Move your view of the canvas to the left."
 msgstr "Verschieben Sie Ihre Ansicht der Leinwand nach links."
 
 #: ../gui/resources.xml:766
-#, fuzzy
 msgctxt "Menu→View→Adjust View (labels), Accel Editor (labels)"
 msgid "Pan Right"
-msgstr "Hartes Licht"
+msgstr "Nach rechts schwenken"
 
 #: ../gui/resources.xml:767
 msgctxt "Accel Editor (descriptions)"
@@ -5752,7 +5755,7 @@ msgstr "Verschieben Sie Ihre Ansicht der Leinwand nach rechts."
 #: ../gui/resources.xml:774
 msgctxt "Menu→View→Adjust View (labels), Accel Editor (labels)"
 msgid "Pan Up"
-msgstr ""
+msgstr "Nach oben schwenken"
 
 #: ../gui/resources.xml:775
 msgctxt "Accel Editor (descriptions)"
@@ -5760,10 +5763,9 @@ msgid "Move your view of the canvas upwards."
 msgstr "Verschieben Sie Ihre Ansicht der Leinwand nach oben."
 
 #: ../gui/resources.xml:782
-#, fuzzy
 msgctxt "Menu→View→Adjust View (labels), Accel Editor (labels)"
 msgid "Pan Down"
-msgstr "Ansicht verschieben"
+msgstr "Nach unten schwenken"
 
 #: ../gui/resources.xml:783
 msgctxt "Accel Editor (descriptions)"
@@ -6521,7 +6523,7 @@ msgstr "Notizblockleiste"
 #: ../gui/resources.xml:1470
 msgctxt "Accel Editor (descriptions)"
 msgid "Dockable Panel for mixing colors and testing brushes."
-msgstr ""
+msgstr "Andockbarer Bereich zum Mischen von Farben und Testen von Pinseln."
 
 #: ../gui/resources.xml:1478
 msgctxt "Menu→Scratchpad (labels), Accel Editor (labels)"
