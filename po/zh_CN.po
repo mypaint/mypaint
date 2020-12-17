@@ -8,8 +8,8 @@ msgstr ""
 "Project-Id-Version: mypaint v1.2.0-beta.3-43-g9e683e2\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-08-16 11:30+0200\n"
-"PO-Revision-Date: 2020-02-21 20:35+0000\n"
-"Last-Translator: 玉堂白鹤 <yjwork@qq.com>\n"
+"PO-Revision-Date: 2020-12-18 12:29+0000\n"
+"Last-Translator: Gary Wang <wzc782970009@gmail.com>\n"
 "Language-Team: Chinese (Simplified) <https://hosted.weblate.org/projects/"
 "mypaint/mypaint/zh_Hans/>\n"
 "Language: zh_CN\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 3.11.1\n"
+"X-Generator: Weblate 4.4-dev\n"
 
 #. TRANSLATORS: Name of first column in the button map preferences.
 #. TRANSLATORS: Refers to an action bound to a mod+button combination.
@@ -430,7 +430,7 @@ msgctxt "brushpack import failure messages"
 msgid ""
 "Brush “{brush_name}” is listed in “{order_conf_file}”, but it does not exist "
 "in the zipfile."
-msgstr ""
+msgstr "笔刷“{brush_name}”在“{order_conf_file}”文件中有被列出，但压缩档中不存在此笔刷。"
 
 #: ../gui/brushmanager.py:717
 #, python-brace-format
@@ -438,7 +438,7 @@ msgctxt "brushpack import failure messages"
 msgid ""
 "Brush “{brush_name}” exists in the zipfile, but it is not listed in "
 "“{order_conf_file}”."
-msgstr ""
+msgstr "压缩档中存在笔刷“{brush_name}”，但在“{order_conf_file}”文件中未找到此笔刷。"
 
 #: ../gui/brushmanager.py:1328 ../gui/footer.py:66
 msgid "Unknown Brush"
@@ -453,7 +453,7 @@ msgstr "重命名笔刷"
 #: ../gui/brushmanip.py:196
 msgctxt "brush resize mode - usage"
 msgid "Change brush size by dragging on the canvas"
-msgstr ""
+msgstr "在画布上拖拽以调整笔刷大小"
 
 #: ../gui/brushselectionwindow.py:220
 msgctxt "brush group: context menu for a single brush"
@@ -484,13 +484,13 @@ msgstr "从组中删除"
 #, python-brace-format
 msgctxt "brush group: context menu: unique names for cloned brushes"
 msgid "{original_name} copy"
-msgstr ""
+msgstr "{original_name} 副本"
 
 #: ../gui/brushselectionwindow.py:299
 #, python-brace-format
 msgctxt "brush group: context menu: unique names for cloned brushes"
 msgid "{original_name} copy {n}"
-msgstr ""
+msgstr "{original_name} 副本 {n}"
 
 #: ../gui/brushselectionwindow.py:325
 #, python-brace-format
@@ -1209,6 +1209,12 @@ msgid ""
 "It is <b>strongly recommended</b> to upgrade to <b>MyPaint {new_version}</b> "
 "or newer if you want to edit this file!"
 msgstr ""
+"“{filename}”曾使用<b>MyPaint {new_version}</b>进行保存。可能和<b>MyPaint "
+"{current_version}</b><b>不兼容</b>。\n"
+"\n"
+"使用当前版本的 MyPaint 编辑此文件不保证可以正常工作，甚至可能导致崩溃。\n"
+"\n"
+"若您希望编辑此文件，<b>强烈建议</b>您升级到<b>MyPaint {new_version}</b>或更高版本！"
 
 #: ../gui/compatibility.py:54
 #, python-brace-format
@@ -1809,10 +1815,9 @@ msgid "PNG, transparent RGBA (*.png)"
 msgstr "PNG 透明 RGBA (*.png)"
 
 #: ../gui/filehandling.py:515
-#, fuzzy
 msgctxt "save dialogs: save formats and options"
 msgid "Multiple PNGs, by layer (*.NUM.png)"
-msgstr "多个 PNG 透明图片"
+msgstr "多个 PNG 图片，分图层导出 (*.NUM.png)"
 
 #: ../gui/filehandling.py:519
 #, fuzzy
@@ -1861,7 +1866,7 @@ msgctxt ""
 "Destructive action confirm dialog: fallback continue button (normally "
 "overridden)"
 msgid "Co_ntinue"
-msgstr ""
+msgstr "继续(_N)"
 
 #: ../gui/filehandling.py:739
 #, python-brace-format
