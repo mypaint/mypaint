@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: mypaint v2.0.0-alpha.8-1-g4490f06\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-08-16 11:30+0200\n"
-"PO-Revision-Date: 2020-07-10 16:35+0000\n"
+"PO-Revision-Date: 2020-12-22 09:29+0000\n"
 "Last-Translator: Joan Montané <joan@montane.cat>\n"
 "Language-Team: Catalan <https://hosted.weblate.org/projects/mypaint/mypaint/"
 "ca/>\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 4.2-dev\n"
+"X-Generator: Weblate 4.4-dev\n"
 
 #. TRANSLATORS: Name of first column in the button map preferences.
 #. TRANSLATORS: Refers to an action bound to a mod+button combination.
@@ -319,7 +319,7 @@ msgid ""
 "<small>Paint with any brush or color</small>"
 msgstr ""
 "<b>%s</b> (editing)\n"
-"<small>Pinta amb qualsevol pinzell  o color</small>"
+"<small>Pinta amb qualsevol pinzell o color</small>"
 
 #: ../gui/brushiconeditor.py:85
 #, python-format
@@ -328,7 +328,7 @@ msgid ""
 "<small>Click ‘Edit’ to make changes to the icon</small>"
 msgstr ""
 "<b>%s</b>\n"
-"<small>Prem  ‘Editar’ per aplicar els canvis a la Icona</small>"
+"<small>Prem «Edita» per a aplicar els canvis a la icona</small>"
 
 #. TRANSLATORS: begin editing a brush's preview icon
 #: ../gui/brushiconeditor.py:157
@@ -456,15 +456,14 @@ msgid "Unknown Brush"
 msgstr "Pinzell desconegut"
 
 #: ../gui/brushmanip.py:191
-#, fuzzy
 msgctxt "brush resize mode - name"
 msgid "Resize Brush"
-msgstr "Canvi de nom del pinzell"
+msgstr "Canvia la mida del pinzell"
 
 #: ../gui/brushmanip.py:196
 msgctxt "brush resize mode - usage"
 msgid "Change brush size by dragging on the canvas"
-msgstr ""
+msgstr "Canvia la mida del pinzell arrossegant sobre el llenç"
 
 #: ../gui/brushselectionwindow.py:220
 msgctxt "brush group: context menu for a single brush"
@@ -1660,8 +1659,7 @@ msgstr "Error: fallada en llançar {app_name} per editar la capa “{layer_name}
 msgid ""
 "Editing cancelled. You can still edit “{layer_name}” from the Layers menu."
 msgstr ""
-"Edició cancel·lada. Podeu encara editar  “{layer_name}” des del menú de "
-"capes."
+"Edició cancel·lada. Encara podeu editar «{layer_name}» des del menú de capes."
 
 #. TRANSLATORS: This is a statusbar message shown when
 #. TRANSLATORS:  a layer is updated from an external edit
@@ -1684,8 +1682,8 @@ msgid ""
 "MyPaint needs to edit a file of type “{type_name}” ({content_type}). What "
 "application should it use?"
 msgstr ""
-"MyPaint necessita editar un fitxer del tipus  "
-"“{type_name}” ({content_type}). Quina aplicació hauria d'emprar?"
+"MyPaint necessita editar un fitxer del tipus «{type_name}» ({content_type}). "
+"Quina aplicació hauria d'emprar?"
 
 #: ../gui/externalapp.py:108
 #, python-brace-format
@@ -1693,8 +1691,8 @@ msgid ""
 "What application should MyPaint use for editing files of type "
 "“{type_name}” ({content_type})?"
 msgstr ""
-"Quina aplicació hauria d'emprar per editar fitxers del tipus  "
-"“{type_name}” ({content_type})?"
+"Quina aplicació hauria d'emprar per editar fitxers del tipus «{type_name}» "
+"({content_type})?"
 
 #: ../gui/externalapp.py:114
 msgid "Open With…"
@@ -3370,9 +3368,9 @@ msgid ""
 "Try saving in PNG format instead, if your machine doesn’t have a lot of "
 "memory. MyPaint’s PNG save function is more efficient."
 msgstr ""
-"No es pot desar com JPEG:  {original_msg}\n"
+"No es pot desar com a JPEG: {original_msg}\n"
 "\n"
-"Si la vostra màquina no té massa memòria, intenteu desar-ho en format PNG, "
+"Si la vostra màquina no té gaire memòria, intenteu desar-ho en format PNG, "
 "La funció de desat PNG de MyPaint és més eficient."
 
 #: ../lib/document.py:1913
@@ -4442,7 +4440,7 @@ msgid ""
 "monitors. If you know your display is radically different from this, use the "
 "\"no automatic conversions or tagging\" setting instead."
 msgstr ""
-"Les imatges que contenen informació <i> completa </i> de l'espai de colors  "
+"Les imatges que contenen informació <i> completa </i> de l'espai de colors "
 "es convertiran a RGB quan es carreguin a MyPaint. Quan MyPaint desi una "
 "imatge, s'afegeixen suggeriments perquè altres programes la puguin "
 "renderitzar correctament.\n"
@@ -4552,7 +4550,7 @@ msgid ""
 "Use a light-on-dark theme variant, when it's supported by the GTK theme. "
 "This is generally sensible for image editors and media viewers."
 msgstr ""
-"Quan sigui compatible amb el tema GTK useu una variant de tema clar i fosc.  "
+"Quan sigui compatible amb el tema GTK, useu una variant de tema clar i fosc. "
 "Això és sensible per als editors d'imatges i els visualitzadors multimèdia."
 
 #: ../gui/preferenceswindow.glade:945
@@ -4693,7 +4691,7 @@ msgid ""
 "The red, green, and blue &apos;computer monitor&apos; primaries, evenly "
 "arranged around the circle. Green is opposite magenta."
 msgstr ""
-"El  &apos;monitor d'ordinador&apos; roig, verd i blau primàries, disposats "
+"El &apos;monitor d'ordinador&apos; roig, verd i blau primàries, disposats "
 "equitativament al voltant del cercle. El verd és oposat a la magenta."
 
 #: ../gui/preferenceswindow.glade:1282
@@ -4702,7 +4700,7 @@ msgid ""
 "The red, green, and blue 'computer monitor' primaries, evenly arranged "
 "around the circle. Green is opposite magenta."
 msgstr ""
-"El  &apos;monitor d'ordinador&apos; roig, verd i blau primàries, disposats "
+"El &apos;monitor d'ordinador&apos; roig, verd i blau primàries, disposats "
 "equitativament al voltant del cercle. El verd és oposat a la magenta."
 
 #: ../gui/preferenceswindow.glade:1298
