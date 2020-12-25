@@ -228,7 +228,7 @@ class AccelMapEditor (Gtk.Grid):
         accel_markup, accel_sort = \
             self._fmt_accel_label(accel_label)
         search_text = self._SEARCH_TEXT_COLUMN_TEMPLATE \
-            .format(**nonmarkup_substs)
+            .format(**nonmarkup_substs).lower()
         row[self._PATH_COLUMN] = path
         row[self._ACTION_LABEL_COLUMN] = action_markup
         row[self._ACTION_LABEL_SORT_COLUMN] = action_sort
@@ -279,15 +279,9 @@ class AccelMapEditor (Gtk.Grid):
     ## Search
 
     def _view_search_equal_cb(self, model, col, key, it):
-        store = self._store
-        key = _udecode("utf-8")
-        search_text = _udecode(store.get_value(it, col))
-        matches = (
-            key in search_text
-            or key.lower() in search_text.lower()
-        )
-        result = not matches   # yeah, inverted sense
-        return result
+        # case-insensitive check if the key is a substring of the search col
+        is_sub = _udecode(key).lower() in _udecode(model.get_value(it, col))
+        return not is_sub  # inverted sense (as in equality w. strcmp)
 
     ## Editing
 
