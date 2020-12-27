@@ -1,3 +1,37 @@
+Unreleased (2.1.0):
+### Fixed
+* Fixed drag-n-drop file opening (Python 3)
+* Fixed loading svg data where the opening tag is not placed at the start of the data
+* Fixed HCY adjusters gamut mask not updating for the quick-adjusters (without restarting)
+* Fixed performance issues for symmetry overlays/editing
+* Fixed performance issues with frame overlays/editing
+* Input widgets prioritized for keyboard input (allowing e.g. numeric input in spinners)
+* Widget focus is now cleared by clicking on empty areas
+* Fixed inktool "crash" when dragging using space
+* Fixed performance problems with color picker
+* Fixed losing color info when switching between HCY and HSV adjusters (at min/max-points)
+* Fixed dimming of main window after dismissing recover backup window
+* Acquire/release GIL while processing tile requests - for details,
+  see commit message for 4429d7859767441d
+* Fix icon editor spawning beneath other windows, in GNOME >= 3.30
+* Handle exceptions caused by using invalid/unrecognized locales
+* Fixed searching for keyboard shortcuts ('Keys' tab in preferences window)
+
+### Added
+* Symmetry angle is now adjustable
+* Accurate symmetry overlays implemented for all symmetry modes
+* Added new sliders that support numeric input
+* Added tooltips to the sliders in the brush tool options panel
+* Brush-resizing by click-dragging on the canvas
+* Ability to move line-ends after drawing a line, by pressing ctrl+shift
+
+### Changed
+* Changed line styles for symmetry lines (to improve visibility and performance)
+* Changed button-dialogs to direct input widgets in frame tool options
+* Paste now pastes to a new layer instead of replacing the content in the active layer
+* Pasted content is now placed relative to the mouse cursor, or centered in the viewport
+
+
 Version 2.0.1:
 * libmypaint requirement bumped to >= 1.6.
 * HSV/HCY brush dynamics in 2.x mode fixed.
@@ -15,6 +49,7 @@ Version 2.0.1:
 * Svg icon sizes reduced across the board.
 * Size of Windows install bundle significantly reduced.
 * Typos in documentation fixed.
+
 
 Version 2.0.0:
 * Full Python3 support
@@ -64,6 +99,7 @@ Version 2.0.0:
 * Bundled backgrounds optimized for size.
 * Lots of bugs, crashers and other annoyances fixed.
 
+
 Version 1.2.1:
 * Fix failure to start under GLib 2.48.
 * Fix failure to start when config and user data dirs are missing.
@@ -92,6 +128,7 @@ Version 1.2.1:
 * Windows: drop support for floating windows till upstream support's OK.
 * Wayland: remove references to cursors that don't exist.
 
+
 Version 1.2.0:
 * New intuitive Inking tool for smooth strokes.
 * New Flood Fill tool.
@@ -118,6 +155,7 @@ Version 1.2.0:
 * Accelerator map editor has moved to preferences.
 * Many other bugfixes, translations, and code quality improvements.
 
+
 Version 1.1.0:
 * geometry tools: sequence of lines, curved lines, ellipses
 * new brush and layer blending modes; different layer merging
@@ -130,6 +168,7 @@ Version 1.1.0:
 * better separation of mypaint's brush library; json brush file format
 * translations, performance improvements, bugfixes, and more
 
+
 Version 1.0.0:
 * toolbar with color, brush selector and brush settings dropdown
 * tool windows can be docked instead of floating
@@ -137,6 +176,7 @@ Version 1.0.0:
 * basic layer compositing modes
 * new scratchpad area
 * lots of other improvements (about 500 commits)
+
 
 Version 0.9.1:
 * several fixes for non-ascii file names, directories, layer names
@@ -149,6 +189,7 @@ Version 0.9.1:
 * osx: fix compile error
 * windows: use AppData folder for settings
 * some other minor fixes
+
 
 Version 0.9.0:
 * brush collection: updated better and smaller collection
@@ -169,9 +210,11 @@ Version 0.9.0:
 * usability improvements for brush selector and brush settings dialog
 * added file->export action
 
+
 Version 0.8.2:
 * fix regression in 0.8.1 causing temporary layers to stick
 * complain about unsupported pygtk version
+
 
 Version 0.8.1:
 * fixed memory leak: layer data was never freed, eg. when opening a new image
@@ -181,6 +224,7 @@ Version 0.8.1:
 * added empty "favorites" brushgroup
 * Korean translation
 * some minor gui fixes
+
 
 Version 0.8.0:
 * many new brushes contributed by various artists
@@ -197,7 +241,8 @@ Version 0.8.0:
 * can save all layers as numbered PNGs
 * some drag&drop support
 * many other minor enhancements and bugfixes
-	
+
+
 Version 0.7.1:
 * bugfixes for win32 build
 * limit the cursor size (problem on Windows, and X11 with Compiz)
@@ -206,6 +251,7 @@ Version 0.7.1:
 * zoom on scrollwheel
 * new brushes: splatter and marker
 * other minor fixes
+
 
 Version 0.7.0:
 * color history popup
@@ -225,6 +271,7 @@ Version 0.7.0:
 * fixed build problem with some distributions
 * many other GUI tweaks and bugfixes
 
+
 Version 0.6.0:
 * Layers, transparency and eraser mode
 * Background color and pattterns
@@ -232,6 +279,7 @@ Version 0.6.0:
 * Very fast undo, limited number of steps
 * Canvas rotation (via keyboard shortcuts) and mirroring
 * A few great new brushes
+
 
 Version 0.5.1:
 * Fullscreen mode was implemented.
@@ -246,6 +294,6 @@ Version 0.5.1:
 * Fixed compilation for some systems.
 * New brushes were added (and some removed).
 
+
 Before 0.5.0:
 * no changelog available
-
