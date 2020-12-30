@@ -32,6 +32,10 @@ import logging
 logger = logging.getLogger(__name__)
 
 
+_RELEASE_EVENTS = {Gdk.EventType.BUTTON_RELEASE, Gdk.EventType.TOUCH_END}
+_PRESS_EVENTS = {Gdk.EventType.BUTTON_PRESS, Gdk.EventType.TOUCH_BEGIN}
+
+
 ## Class definitions
 
 class PickingGrabPresenter (object):
@@ -125,13 +129,13 @@ class PickingGrabPresenter (object):
         signal handlers
 
         """
-        if event.type == Gdk.EventType.BUTTON_PRESS:
+        if event.type in _PRESS_EVENTS:
             logger.debug("Starting picking grab")
             has_button_info, button_num = event.get_button()
             if not has_button_info:
                 return
             self._start_grab(event.device, event.time, button_num)
-        elif event.type == Gdk.EventType.BUTTON_RELEASE:
+        elif event.type in _RELEASE_EVENTS:
             logger.debug("Queueing picking grab")
             GLib.idle_add(
                 self._start_grab,
@@ -309,7 +313,7 @@ class PickingGrabPresenter (object):
 
     def _in_grab_button_press_cb(self, widget, event):
         assert self._grab_button_num is None
-        if event.type != Gdk.EventType.BUTTON_PRESS:
+        if event.type not in _PRESS_EVENTS:
             return False
         if not self._check_event_devices_still_grabbed(event):
             return
@@ -323,7 +327,7 @@ class PickingGrabPresenter (object):
 
     def _in_grab_button_release_cb(self, widget, event):
         assert self._grab_button_num is not None
-        if event.type != Gdk.EventType.BUTTON_RELEASE:
+        if event.type not in _RELEASE_EVENTS:
             return False
         if not self._check_event_devices_still_grabbed(event):
             return
@@ -438,6 +442,7 @@ class PickingGrabPresenter (object):
             self._delayed_picking_update_id = None
             return False
 
+
 class ContextPickingGrabPresenter (PickingGrabPresenter):
     """Context picking behaviour (concrete MVP presenter)"""
 
@@ -475,6 +480,7 @@ class ContextPickingGrabPresenter (PickingGrabPresenter):
         # Arguably this should be direct to the model.
         x, y = tdw.display_to_model(x, y)
         doc.pick_context(x, y)
+
 
 class ColorPickingGrabPresenter (PickingGrabPresenter):
     """Color picking behaviour (concrete MVP presenter)"""
@@ -541,7 +547,7 @@ class ButtonPresenter (object):
         """Handle click events on the initiator button."""
         event = Gtk.get_current_event()
         assert event is not None
-        assert event.type == Gdk.EventType.BUTTON_RELEASE, (
+        assert event.type in _RELEASE_EVENTS, (
             "The docs lie! Current event's type is %r." % (event.type,),
         )
         self._grab.activate_from_button_event(event)
