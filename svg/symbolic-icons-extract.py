@@ -73,7 +73,7 @@ class FakeOptions:
 
 
 def get_by_attrib(parent, pred):
-    """Utility function for retrieveing child elements by attribute predicates
+    """Utility function for retrieving child elements by attribute predicates
     """
     return [c for c in parent.getchildren() if pred(c.attrib)]
 
