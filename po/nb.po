@@ -5,7 +5,7 @@ msgstr ""
 "Project-Id-Version: mypaint v2.0.0-alpha.12-10-g9ab1487\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-08-16 11:30+0200\n"
-"PO-Revision-Date: 2020-11-16 03:28+0000\n"
+"PO-Revision-Date: 2021-01-10 01:32+0000\n"
 "Last-Translator: Allan Nordhøy <epost@anotheragency.no>\n"
 "Language-Team: Norwegian Bokmål <https://hosted.weblate.org/projects/mypaint/"
 "mypaint/nb_NO/>\n"
@@ -14,7 +14,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 4.4-dev\n"
+"X-Generator: Weblate 4.4.1-dev\n"
 
 #. TRANSLATORS: Name of first column in the button map preferences.
 #. TRANSLATORS: Refers to an action bound to a mod+button combination.
@@ -285,7 +285,7 @@ msgstr "Rediger Penselikon"
 
 #: ../gui/brushiconeditor.py:37
 msgid "Brush Icon (editing)"
-msgstr "Penselinstillinger"
+msgstr "Penselsikon (redigering)"
 
 #: ../gui/brushiconeditor.py:74
 msgid "No brush selected"
@@ -3936,8 +3936,9 @@ msgid "Copy to New"
 msgstr "Kopi av %s"
 
 #: ../gui/brusheditor.glade:175
+#, fuzzy
 msgid "Copy these settings and the current brush's icon to a new brush"
-msgstr "Nullstill alle penselinstillinger til tidligere lagrede verdier"
+msgstr "Nullstill alle penselinnstillinger til tidligere lagrede verdier"
 
 #: ../gui/brusheditor.glade:194
 msgid "Rename this brush"
