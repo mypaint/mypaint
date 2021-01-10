@@ -415,53 +415,52 @@ def get_move_cursor_name_for_angle(angle):
     ][int(round((angle % math.pi) / (math.pi / 4))) % 4]
 
 
-## Interactive testing
+# Interactive testing
 
 if __name__ == '__main__':
     from random import randint
     win = Gtk.Window()
     win.set_title("cursor test")
 
-    min_size = 5
-    max_size = 64
+    _min_size = 2
+    _max_size = 64
     nsteps = 8
-    w = nsteps * max_size
-    h = 4 * max_size
-    surf = cairo.ImageSurface(cairo.FORMAT_ARGB32, w, h)
-    cr = cairo.Context(surf)
-    cr.set_source_rgb(.7, .7, .7)
-    cr.paint()
+    w = nsteps * _max_size
+    h = 4 * _max_size
+    _surf = cairo.ImageSurface(cairo.FORMAT_ARGB32, w, h)
+    _cr = cairo.Context(_surf)
+    _cr.set_source_rgb(.7, .7, .7)
+    _cr.paint()
 
-    for style in xrange(4):
+    for _style in xrange(4):
         col = 0
-        for size in xrange(min_size, max_size + 1,
-                           (max_size - min_size) // nsteps):
-            cr.save()
-            y = (style * max_size) + ((max_size - size)/2)
-            x = (col * max_size) + ((max_size - size)/2)
-            cr.translate(x, y)
-            draw_brush_cursor(cr, size, style)
-            cr.restore()
+        for size in xrange(_min_size, _max_size + 1,
+                           (_max_size - _min_size) // nsteps):
+            _cr.save()
+            y = (_style * _max_size) + ((_max_size - size) / 2)
+            x = (col * _max_size) + ((_max_size - size) / 2)
+            _cr.translate(x, y)
+            draw_brush_cursor(_cr, size, _style)
+            _cr.restore()
             col += 1
-    pixbuf = _image_surface_to_pixbuf(surf)
+    pixbuf = _image_surface_to_pixbuf(_surf)
     image = Gtk.Image()
     image.set_from_pixbuf(pixbuf)
     image.set_size_request(w, h)
 
-    display = Gdk.Display.get_default()
-    max_size = max(display.get_maximal_cursor_size())
+    _max_size = max(Gdk.Display.get_default().get_maximal_cursor_size())
     num_styles = 4
-    style = 0
+    _style = 0
 
     def _enter_cb(widget, event):
-        global style, max_size
-        r = randint(3, max_size // 2)
-        print("DEBUG: radius=%s, style=%s" % (r, style))
-        cursor = get_brush_cursor(r, style)
+        global _style, _max_size
+        r = randint(3, _max_size // 2)
+        print("DEBUG: radius=%s, style=%s" % (r, _style))
+        cursor = get_brush_cursor(r, _style)
         widget.get_window().set_cursor(cursor)
-        style += 1
-        if style >= num_styles:
-            style = 0
+        _style += 1
+        if _style >= num_styles:
+            _style = 0
     win.connect("enter-notify-event", _enter_cb)
     win.add(image)
     win.connect("destroy", lambda *a: Gtk.main_quit())
