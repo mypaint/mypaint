@@ -67,7 +67,7 @@ class Name:
     COLORIZE = "cursor_colorize"
 
 
-def get_brush_cursor(radius, style, prefs={}):
+def get_brush_cursor(radius, style, prefs=None):
     """Get a cursor for use with a brush of a particular size and type
 
     :param float radius: Radius of the ring
@@ -75,26 +75,38 @@ def get_brush_cursor(radius, style, prefs={}):
     :param dict prefs: User preferences dict
 
     """
+    prefs = prefs or {}
+
     global last_cursor, last_cursor_info, max_cursor_size
 
     display = Gdk.Display.get_default()
     if not max_cursor_size:
+        # get_maximal_cursor_size returns a 2-tuple with max width/height
         max_cursor_size = max(display.get_maximal_cursor_size())
-    d = int(radius*2)
-    min_size = max(prefs.get("cursor.freehand.min_size", 4),
-                   BRUSH_CURSOR_MIN_SIZE)
-    if d < min_size:
-        d = min_size
-    if d+1 > max_cursor_size:
-        d = max_cursor_size-1
-    cursor_info = (d, style, min_size)
+    min_size_prefs = prefs.get("cursor.freehand.min_size", 4)
+    min_size = max(min_size_prefs, BRUSH_CURSOR_MIN_SIZE)
+    # Adjust cursor size for dynamic crosshair, if enabled
+    threshold = None
+    if prefs.get("cursor.dynamic_crosshair", False):
+        threshold = int(prefs.get("cursor.dynamic_crosshair_threshold", 8))
+    # calculate initial cursor dimensions
+    d = max(int(radius * 2), min_size)
+    # and visual radius based on the initial dimensions
+    r = min(max_cursor_size - 1, d) // 2
+    # if the circle radius is smaller than the crosshair threshold,
+    # the size is set so the cursor can contains the crosshair
+    if threshold and threshold > r:
+        d = threshold * 2
+    d = min(d, max_cursor_size - 1)
+    cursor_info = (r, style, min_size, threshold)
     if cursor_info != last_cursor_info:
         last_cursor_info = cursor_info
-        surf = cairo.ImageSurface(cairo.FORMAT_ARGB32, d+1, d+1)
+        dim = d + 1
+        surf = cairo.ImageSurface(cairo.FORMAT_ARGB32, dim, dim)
         cr = cairo.Context(surf)
         cr.set_source_rgba(1, 1, 1, 0)
         cr.paint()
-        draw_brush_cursor(cr, d, style, prefs)
+        draw_brush_cursor(cr, r, dim/2, style, prefs, threshold)
         surf.flush()
 
         # Calculate hotspot. Zero means topmost or leftmost. Cursors with an
@@ -104,7 +116,7 @@ def get_brush_cursor(radius, style, prefs={}):
         #
         # NOTE: is it worth adjusting the freehand drawing code to add half a
         # pixel to the position passed on to brushlib for the even case?
-        hot_x = hot_y = int(d // 2)
+        hot_x = hot_y = int(dim // 2)
 
         pixbuf = _image_surface_to_pixbuf(surf)
         last_cursor = Gdk.Cursor.new_from_pixbuf(display, pixbuf,
@@ -119,18 +131,24 @@ def _image_surface_to_pixbuf(surf):
     return Gdk.pixbuf_get_from_surface(surf, 0, 0, w, h)
 
 
-def draw_brush_cursor(cr, d, style=BRUSH_CURSOR_STYLE_NORMAL, prefs={}):
+def draw_brush_cursor(
+        cr, radius, cc,
+        style=BRUSH_CURSOR_STYLE_NORMAL, prefs=None, threshold=None):
     """Draw a brush cursor into a Cairo context
 
     :param cr: A Cairo context
-    :param d: The diameter of the resultant brush cursor
+    :param radius: The radius of the brush cursor circle
+    :param cc: The center of the cursor (single value)
     :param int style: A cursor style constant (for now, see the source)
     :param dict prefs: User preferences dict
+    :param threshold: if set, draw crosshair lines if the brush circle radius
+           is smaller than the threshold value.
 
     The Cairo context is assumed to have width and height `d`+1, at
     least.
 
     """
+    prefs = prefs or {}
 
     # The cursor consists of an inner circle drawn over an outer one. The
     # inmost edge of the inner ring, and the outmode edge of the outer ring are
@@ -161,58 +179,103 @@ def draw_brush_cursor(cr, d, style=BRUSH_CURSOR_STYLE_NORMAL, prefs={}):
     ))
 
     # Cursor style
-    arcs = []
-    if style == BRUSH_CURSOR_STYLE_ERASER:
-        # divide into eighths, alternating on and off
-        k = math.pi / 4
-        k2 = k/2
-        arcs.append((k2, k2+k))
-        arcs.append((k2+2*k, k2+3*k))
-        arcs.append((k2+4*k, k2+5*k))
-        arcs.append((k2+6*k, k2+7*k))
-    elif style == BRUSH_CURSOR_STYLE_LOCK_ALPHA:
-        # same thing, but the two side voids are filled
-        k = math.pi/4
-        k2 = k/2
-        arcs.append((k2+6*k, k2+k))
-        arcs.append((k2+2*k, k2+5*k))
-    elif style == BRUSH_CURSOR_STYLE_COLORIZE:
-        # same as lock-alpha, but with the voids turned through 90 degrees
-        k = math.pi/4
-        k2 = k/2
-        arcs.append((k2, k2+3*k))
-        arcs.append((k2+4*k, k2+7*k))
-    else:
-        # Regular drawing mode
-        arcs.append((0, 2*math.pi))
+    arcs = cursor_arc_segments(style)
 
-    # Pick centre to ensure pixel alignedness for the outer edge of the
-    # black outline.
-    if d % 2 == 0:
-        r0 = int(d // 2)
+    cx = cy = cc
+    if threshold:
+        lines = cursor_line_segments(style, radius, threshold)
     else:
-        r0 = int(d // 2) + 0.5
-    cx = cy = r0
+        lines = []
 
     # Outer "bg" line.
     cr.set_line_cap(cairo.LINE_CAP_BUTT)
     cr.set_source_rgba(*col_bg)
     cr.set_line_width(width1)
-    r = r0 - (width1 / 2.0)
+    r_outer = radius - (width1 / 2.0)
     for a1, a2 in arcs:
         cr.new_sub_path()
-        cr.arc(cx, cy, r, a1, a2)
+        cr.arc(cx, cy, r_outer, a1, a2)
     cr.stroke()
 
     # Inner line: also pixel aligned, but to its inner edge.
     cr.set_line_cap(cairo.LINE_CAP_ROUND)
     cr.set_source_rgba(*col_fg)
     cr.set_line_width(width2)
-    r = r0 - inset + (width2 / 2.0)
+    r_inner = radius - inset + (width2 / 2.0)
     for a1, a2 in arcs:
         cr.new_sub_path()
-        cr.arc(cx, cy, r, a1, a2)
+        cr.arc(cx, cy, r_inner, a1, a2)
     cr.stroke()
+
+    # Crosshair lines, if enabled and radius is below threshold
+    if lines:
+        def stroke_lines():
+            for (x_offs_0, y_offs_0), (x_offs_1, y_offs_1) in lines:
+                cr.new_sub_path()
+                cr.move_to(cx + x_offs_0, cy + y_offs_0)
+                cr.line_to(cx + x_offs_1, cy + y_offs_1)
+            cr.stroke()
+
+        cr.set_line_cap(cairo.LINE_CAP_BUTT)
+        cr.set_source_rgba(*col_bg)
+        cr.set_line_width(3)
+        stroke_lines()
+
+        cr.set_line_cap(cairo.LINE_CAP_SQUARE)
+        cr.set_source_rgba(*col_fg)
+        cr.set_line_width(1)
+        stroke_lines()
+
+
+def cursor_line_segments(style, r, threshold):
+    """Returns tuples of crosshair line coordinates for the given style"""
+    if r >= threshold:
+        return []
+
+    offs = math.ceil(threshold - r)
+
+    if style == BRUSH_CURSOR_STYLE_ERASER:
+        k = math.cos(math.pi / 4)
+        offs1 = r * k
+        offs2 = (r + offs) * k
+        return [
+            ((-offs1, -offs1), (-offs2, -offs2)),
+            ((offs1, -offs1), (offs2, -offs2)),
+            ((offs1, offs1), (offs2, offs2)),
+            ((-offs1, offs1), (-offs2, offs2)),
+        ]
+    elif style == BRUSH_CURSOR_STYLE_LOCK_ALPHA:
+        return [((-r - offs, 0), (-r, 0)), ((r, 0), (r + offs, 0))]
+    elif style == BRUSH_CURSOR_STYLE_COLORIZE:
+        return [((0, -r - offs), (0, -r)), ((0, r), (0, r + offs))]
+    else:
+        return [
+            ((-r - offs, 0), (-r, 0)), ((r, 0), (r + offs, 0)),
+            ((0, -r - offs), (0, -r)), ((0, r), (0, r + offs)),
+        ]
+
+
+def cursor_arc_segments(style):
+    """Returns a list of arc segments based on style - pairs of radians"""
+    k = math.pi / 4
+    k2 = k / 2
+    if style == BRUSH_CURSOR_STYLE_ERASER:
+        # divide into eighths, alternating on and off
+        return [
+            (k2, k2 + k),
+            (k2 + 2 * k, k2 + 3 * k),
+            (k2 + 4 * k, k2 + 5 * k),
+            (k2 + 6 * k, k2 + 7 * k)
+        ]
+    elif style == BRUSH_CURSOR_STYLE_LOCK_ALPHA:
+        # same thing, but the two side voids are filled
+        return [(k2 + 6 * k, k2 + k), (k2 + 2 * k, k2 + 5 * k)]
+    elif style == BRUSH_CURSOR_STYLE_COLORIZE:
+        # same as lock-alpha, but with the voids turned through 90 degrees
+        return [(k2, k2 + 3 * k), (k2 + 4 * k, k2 + 7 * k)]
+    else:
+        # Regular drawing mode
+        return [(0, 2 * math.pi)]
 
 
 class CustomCursorMaker (object):
@@ -440,7 +503,7 @@ if __name__ == '__main__':
             y = (_style * _max_size) + ((_max_size - size) / 2)
             x = (col * _max_size) + ((_max_size - size) / 2)
             _cr.translate(x, y)
-            draw_brush_cursor(_cr, size, _style)
+            draw_brush_cursor(_cr, size//2, size//2, _style)
             _cr.restore()
             col += 1
     pixbuf = _image_surface_to_pixbuf(_surf)
