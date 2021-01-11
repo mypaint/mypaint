@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mypaint v2.0.0-alpha.11-2-g0673fe8\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-08-16 11:30+0200\n"
+"POT-Creation-Date: 2021-01-11 18:52+0100\n"
 "PO-Revision-Date: 2020-10-13 15:27+0000\n"
 "Last-Translator: Olesya_Gerasimenko <gammaray@basealt.ru>\n"
 "Language-Team: Russian <https://hosted.weblate.org/projects/mypaint/mypaint/"
@@ -39,7 +39,7 @@ msgstr "Сочетание клавиш"
 #. TRANSLATORS: Window title for the keybinding dialog. The %s is
 #. TRANSLATORS: replaced with the name of the action that the key
 #. TRANSLATORS: combination is being bound to, e.g. "Fit to View".
-#: ../gui/accelmap.py:311
+#: ../gui/accelmap.py:305
 #, python-format
 msgid "Edit Key for '%s'"
 msgstr "Изменить привязку для \"%s\""
@@ -48,7 +48,7 @@ msgstr "Изменить привязку для \"%s\""
 #. TRANSLATORS: It's a label for the action part of the combination.
 #. TRANSLATORS: Probably always the same as the column name
 #. TRANSLATORS: "Action" with a trailing ":" or lang-specific symbol
-#: ../gui/accelmap.py:342 ../gui/buttonmap.py:502
+#: ../gui/accelmap.py:336 ../gui/buttonmap.py:502
 msgid "Action:"
 msgstr "Действие:"
 
@@ -57,13 +57,13 @@ msgstr "Действие:"
 #. TRANSLATORS: adding new keybindings. This is a technical field
 #. TRANSLATORS: that probably shouldn't even be part of the gui,
 #. TRANSLATORS: so don't worry too much about the translation.
-#: ../gui/accelmap.py:360
+#: ../gui/accelmap.py:354
 msgid "Path:"
 msgstr "Путь:"
 
 #. TRANSLATORS: Key refers to a key on the keyboard, this is a label
 #. TRANSLATORS: in the dialog for adding new keyboard bindings.
-#: ../gui/accelmap.py:373
+#: ../gui/accelmap.py:367
 msgid "Key:"
 msgstr "Клавиша:"
 
@@ -71,19 +71,19 @@ msgstr "Клавиша:"
 #. TRANSLATORS: to an assignment of a keyboard key combination to
 #. TRANSLATORS: an action. This is an instructive message in the
 #. TRANSLATORS: keybinding dialog (Preferences | Keys).
-#: ../gui/accelmap.py:415
+#: ../gui/accelmap.py:409
 msgid "Press keys to update this assignment"
 msgstr "Нажмите клавиши, чтобы обновить привязку"
 
 #. TRANSLATORS: Part of the keybinding dialog, refers
 #. TRANSLATORS: to an action bound to a key combination.
-#: ../gui/accelmap.py:472
+#: ../gui/accelmap.py:466
 msgid "Unknown Action"
 msgstr "Неизвестное действие"
 
 #. TRANSLATORS: Warning message when attempting to assign a
 #. TRANSLATORS: keyboard combination that is already used.
-#: ../gui/accelmap.py:483
+#: ../gui/accelmap.py:477
 #, python-brace-format
 msgid ""
 "<b>{accel} is already in use for '{action}'. The existing assignment will be "
@@ -116,15 +116,15 @@ msgstr "Нет доступных резервных копий"
 msgid "Open the Cache Folder…"
 msgstr "Открыть папку с кэшем…"
 
-#: ../gui/autorecover.py:171
+#: ../gui/autorecover.py:170
 msgid "Backup Recovery Failed"
 msgstr "Восстановление из резервной копии не удалось"
 
-#: ../gui/autorecover.py:173
+#: ../gui/autorecover.py:172
 msgid "Open the Backup’s Folder…"
 msgstr "Открыть папку с резервными копиями…"
 
-#: ../gui/autorecover.py:182
+#: ../gui/autorecover.py:181
 #, python-brace-format
 msgid "Recovered file from {iso_datetime}.ora"
 msgstr "Файл, полученный из {iso_datetime}.ora"
@@ -168,8 +168,8 @@ msgstr ""
 #, python-brace-format
 msgid "Gdk-Pixbuf couldn't load \"{filename}\", and reported \"{error}\""
 msgstr ""
-"Gdk-pixbuf не удалось загрузить \"{filename}\", сообщение об ошибке: \""
-"{error}\""
+"Gdk-pixbuf не удалось загрузить \"{filename}\", сообщение об ошибке: "
+"\"{error}\""
 
 #: ../gui/backgroundwindow.py:382
 #, python-brace-format
@@ -1481,48 +1481,48 @@ msgstr "Импортировать пакет с кистями?"
 msgid "<b>Do you really want to import package “{brushpack_name}”?</b>"
 msgstr "<b>Действительно импортировать пакет “{brushpack_name}”?</b>"
 
-#: ../gui/document.py:451
-#, python-format
-msgid "Load brush settings from shortcut slot %d"
-msgstr "Загрузить настройки кисти из слота быстрого доступа %d"
-
-#: ../gui/document.py:452
-#, python-format
-msgid "Store brush settings in shortcut slot %d"
-msgstr "Сохранить настройки кисти в слот быстрого доступа %d"
-
-#: ../gui/document.py:453
-#, python-format
-msgid "Restore Brush %d"
-msgstr "Выбрать кисть %d"
-
-#: ../gui/document.py:455
-#, python-format
-msgid "Save to Brush %d"
-msgstr "Сохранить кисть %d"
-
-#: ../gui/document.py:553
-#, python-format
-msgid "Undo %s"
-msgstr "Отменить %s"
-
-#: ../gui/document.py:555
-msgid "Undo"
-msgstr "Отменить"
-
-#: ../gui/document.py:565
+#: ../gui/document.py:193
 #, python-format
 msgid "Redo %s"
 msgstr "Вернуть %s"
 
-#: ../gui/document.py:567
+#: ../gui/document.py:194
 msgid "Redo"
 msgstr "Вернуть"
+
+#: ../gui/document.py:195
+#, python-format
+msgid "Undo %s"
+msgstr "Отменить %s"
+
+#: ../gui/document.py:196
+msgid "Undo"
+msgstr "Отменить"
+
+#: ../gui/document.py:458
+#, python-format
+msgid "Load brush settings from shortcut slot %d"
+msgstr "Загрузить настройки кисти из слота быстрого доступа %d"
+
+#: ../gui/document.py:459
+#, python-format
+msgid "Store brush settings in shortcut slot %d"
+msgstr "Сохранить настройки кисти в слот быстрого доступа %d"
+
+#: ../gui/document.py:460
+#, python-format
+msgid "Restore Brush %d"
+msgstr "Выбрать кисть %d"
+
+#: ../gui/document.py:462
+#, python-format
+msgid "Save to Brush %d"
+msgstr "Сохранить кисть %d"
 
 #. TRANSLATORS: Statusbar message explaining button and modifier
 #. TRANSLATORS: combinations used to access modes/tools/actions.
 #. TRANSLATORS: "With <current-modifiers> held down: <list>"
-#: ../gui/document.py:851
+#: ../gui/document.py:853
 #, python-brace-format
 msgid "{button_combination} is {resultant_action}"
 msgstr "{button_combination} — {resultant_action}"
@@ -1530,7 +1530,7 @@ msgstr "{button_combination} — {resultant_action}"
 #. TRANSLATORS: This is a separator for the list of button actions
 #. TRANSLATORS: that appears when a modifier key is held down.
 #. TRANSLATORS: search for " held down: " (incl spaces) for the context
-#: ../gui/document.py:861
+#: ../gui/document.py:863
 msgid ";  "
 msgstr ";  "
 
@@ -1539,44 +1539,44 @@ msgstr ";  "
 #. TRANSLATORS: as the English "and", so use appropriate punctuation or
 #. TRANSLATORS: wording for the separator. Also a little more spacing
 #. TRANSLATORS: than normal looks good here.
-#: ../gui/document.py:867
+#: ../gui/document.py:869
 #, python-brace-format
 msgid "With {modifiers} held down:  {button_actions}."
 msgstr "При нажатии {modifiers}:  {button_actions}."
 
-#: ../gui/document.py:889
+#: ../gui/document.py:895
 msgctxt "Statusbar message: copy result"
 msgid "Empty document, nothing copied."
 msgstr "Пустой документ, ничего не скопировано."
 
-#: ../gui/document.py:901
+#: ../gui/document.py:906
 #, python-brace-format
 msgctxt "Statusbar message: copy result"
 msgid "Copied layer as {w}×{h} image."
 msgstr "Копированный слой в виде изображения {w}×{h}."
 
-#: ../gui/document.py:918
+#: ../gui/document.py:923
 msgctxt "Statusbar message: paste result"
 msgid "Nothing on clipboard."
 msgstr "В буфере обмена ничего нет."
 
-#: ../gui/document.py:927
+#: ../gui/document.py:932
 msgctxt "Statusbar message: paste result"
 msgid "Clipboard does not contain an image."
 msgstr "Буфер обмена не содержит изображения."
 
-#: ../gui/document.py:938
+#: ../gui/document.py:956
 msgctxt "Statusbar message: paste result"
 msgid "Cannot paste into this type of layer."
 msgstr "Не удалось вставить в этот тип слоя."
 
-#: ../gui/document.py:943
+#: ../gui/document.py:961
 #, python-brace-format
 msgctxt "Statusbar message: paste result"
 msgid "Pasted {w}×{h} image."
 msgstr "Вставленное изображение {w}×{h}."
 
-#: ../gui/document.py:2044
+#: ../gui/document.py:2062
 #, python-brace-format
 msgctxt "Statusbar message: vacuum document"
 msgid "Vacuum: discarded {removed} of {total} tiles."
@@ -2246,104 +2246,88 @@ msgstr ""
 "<b>{brush_name}</b>\n"
 "{brush_desc}"
 
-#: ../gui/framewindow.py:100
+#: ../gui/framewindow.py:102
 msgid "Edit Frame"
 msgstr "Изменить рамку"
 
-#: ../gui/framewindow.py:103
+#: ../gui/framewindow.py:105
 msgid "Adjust the document frame"
 msgstr "Настроить рамку документа"
 
-#: ../gui/framewindow.py:469
-msgid "Frame Size"
-msgstr "Размер рамки"
-
-#. {unit: (conv_factor, upper, lower, step_incr, page_incr, digits)}
-#: ../gui/framewindow.py:472 ../gui/framewindow.py:538
-#: ../gui/framewindow.py:911 ../gui/framewindow.py:928
-#: ../gui/framewindow.py:929 ../gui/framewindow.py:981
-#: ../gui/framewindow.py:986
-msgid "px"
-msgstr "пикс."
-
-#: ../gui/framewindow.py:474
+#: ../gui/framewindow.py:470
 msgid "Height:"
 msgstr "Высота:"
 
-#: ../gui/framewindow.py:475
+#: ../gui/framewindow.py:471
 msgid "Width:"
 msgstr "Ширина:"
 
-#: ../gui/framewindow.py:476
+#: ../gui/framewindow.py:472
 msgid "Resolution:"
 msgstr "Разрешение:"
 
-#: ../gui/framewindow.py:478
+#: ../gui/framewindow.py:474
 msgid "DPI"
 msgstr "DPI"
 
-#: ../gui/framewindow.py:483
+#: ../gui/framewindow.py:476
 msgid "Dots Per Inch (really Pixels Per Inch)"
 msgstr "Количество точек на дюйм (в действительности — пикселов на дюйм)"
 
-#: ../gui/framewindow.py:486
+#: ../gui/framewindow.py:479
 msgid "Color:"
 msgstr "Цвет:"
 
-#: ../gui/framewindow.py:523
+#: ../gui/framewindow.py:515
 msgid "Frame Color"
 msgstr "Цвет рамки"
 
-#: ../gui/framewindow.py:546
-msgid "<b>Frame dimensions</b>"
-msgstr "<b>Размеры рамки</b>"
-
-#: ../gui/framewindow.py:560
-msgid "<b>Pixel density</b>"
-msgstr "<b>Плотность пикселов</b>"
-
-#: ../gui/framewindow.py:588
-msgid "Set Frame to Layer"
-msgstr "Рамка по размерам слоя"
-
-#: ../gui/framewindow.py:589
-msgid "Set frame to the extents of the current layer"
-msgstr "Установить рамку по размерам текущего слоя"
-
-#: ../gui/framewindow.py:591
-msgid "Set Frame to Document"
-msgstr "Рамка по размерам документа"
-
-#: ../gui/framewindow.py:592
-msgid "Set frame to the combination of all layers"
-msgstr "Установить рамку по размерам объединения всех слоёв"
-
-#: ../gui/framewindow.py:602
-msgid "Trim Layer to Frame"
-msgstr "Обрезать слой по рамке"
-
-#: ../gui/framewindow.py:603
-msgid "Trim parts of the current layer which lie outside the frame"
-msgstr "Обрезать части слоя, находящиеся вне установленной рамки"
-
-#: ../gui/framewindow.py:609
+#: ../gui/framewindow.py:537
 msgid "Enabled"
 msgstr "Включено"
 
-#: ../gui/framewindow.py:721
-#, python-brace-format
-msgid "{width:g}×{height:g} {units}"
-msgstr "{width:g}×{height:g} {units}"
+#: ../gui/framewindow.py:541
+msgid "<b>Frame dimensions</b>"
+msgstr "<b>Размеры рамки</b>"
 
-#: ../gui/framewindow.py:912
-msgid "inch"
+#: ../gui/framewindow.py:562
+msgid "Set Frame to Layer"
+msgstr "Рамка по размерам слоя"
+
+#: ../gui/framewindow.py:563
+msgid "Set frame to the extents of the current layer"
+msgstr "Установить рамку по размерам текущего слоя"
+
+#: ../gui/framewindow.py:565
+msgid "Set Frame to Document"
+msgstr "Рамка по размерам документа"
+
+#: ../gui/framewindow.py:566
+msgid "Set frame to the combination of all layers"
+msgstr "Установить рамку по размерам объединения всех слоёв"
+
+#: ../gui/framewindow.py:576
+msgid "Trim Layer to Frame"
+msgstr "Обрезать слой по рамке"
+
+#: ../gui/framewindow.py:577
+msgid "Trim parts of the current layer which lie outside the frame"
+msgstr "Обрезать части слоя, находящиеся вне установленной рамки"
+
+#: ../gui/framewindow.py:915
+msgid "px"
+msgstr "пикс."
+
+#: ../gui/framewindow.py:916
+#, fuzzy
+msgid "in"
 msgstr "дюймы"
 
-#: ../gui/framewindow.py:913
+#: ../gui/framewindow.py:917
 msgid "cm"
 msgstr "см"
 
-#: ../gui/framewindow.py:914
+#: ../gui/framewindow.py:918
 msgid "mm"
 msgstr "мм"
 
@@ -2512,7 +2496,7 @@ msgstr "Кручение:"
 #. TRANSLATORS: Command to move a layer in the horizontal plane,
 #. TRANSLATORS: preserving its position in the stack.
 #. TRANSLATORS: Note "in the horizontal plane" - not "horizontally".
-#: ../gui/layermanip.py:47 ../lib/command.py:1047
+#: ../gui/layermanip.py:47 ../lib/command.py:1061
 msgid "Move Layer"
 msgstr "Переместить слой"
 
@@ -2702,7 +2686,7 @@ msgstr "Начало конца штриха"
 msgid "Pressure variation…"
 msgstr "Вариация силы нажатия…"
 
-#: ../gui/linemode.py:221 ../gui/linemode.py:777
+#: ../gui/linemode.py:221 ../gui/linemode.py:800
 msgid "Lines and Curves"
 msgstr "Линии и кривые"
 
@@ -2711,27 +2695,30 @@ msgstr "Линии и кривые"
 msgid "Generic line/curve mode"
 msgstr "Режим простых линий и кривых"
 
-#: ../gui/linemode.py:780
-msgid "Draw straight lines; Shift adds curves, Ctrl constrains angle"
+#: ../gui/linemode.py:803
+#, fuzzy
+msgid ""
+"Draw straight lines; Shift adds curves, Shift + Ctrl moves line ends, Ctrl "
+"constrains angle"
 msgstr ""
 "Рисование прямых линий; Shift добавляет кривизну, Ctrl ограничивает угол "
 "наклона"
 
-#: ../gui/linemode.py:790
+#: ../gui/linemode.py:814
 msgid "Connected Lines"
 msgstr "Связанные линии"
 
-#: ../gui/linemode.py:793
+#: ../gui/linemode.py:817
 msgid "Draw a sequence of lines; Shift adds curves, Ctrl constrains angle"
 msgstr ""
 "Рисование связанных линий; Shift добавляет кривизну, Ctrl ограничивает угол "
 "наклона"
 
-#: ../gui/linemode.py:803
+#: ../gui/linemode.py:827
 msgid "Ellipses and Circles"
 msgstr "Эллипсы и круги"
 
-#: ../gui/linemode.py:806
+#: ../gui/linemode.py:830
 msgid "Draw ellipses; Shift rotates, Ctrl constrains ratio/angle"
 msgstr ""
 "Рисование эллипсов; Shift позволяет поворачивать эллипс, Ctrl ограничивает "
@@ -2897,12 +2884,12 @@ msgstr "<i>Параметры отсутствуют</i>"
 msgid "Zoom: %.01f%%"
 msgstr "Масштаб: %.01f%%"
 
-#: ../gui/picker.py:457
+#: ../gui/picker.py:462
 msgctxt "context picker: statusbar text during grab"
 msgid "Pick brushstroke settings, stroke color, and layer…"
 msgstr "Выбрать настройки и цвет мазка, слой…"
 
-#: ../gui/picker.py:495
+#: ../gui/picker.py:501
 msgctxt "color picker: statusbar text during grab"
 msgid "Pick color…"
 msgstr "Выбрать цвет…"
@@ -3107,145 +3094,145 @@ msgstr "Вращение"
 msgid "Rotate the canvas view"
 msgstr "Повернуть отображение холста"
 
-#: ../lib/command.py:175
+#: ../lib/command.py:177
 msgid "Unknown Command"
 msgstr "Неизвестное действие"
 
-#: ../lib/command.py:318
+#: ../lib/command.py:320
 msgid "Undefined (command not started yet)"
 msgstr "Неопределённое значение (команда ещё не запущена)"
 
 #. TRANSLATORS: A short time spent painting / making brushwork.
 #. TRANSLATORS: This can correspond to zero or more touches of
 #. TRANSLATORS: the physical stylus to the tablet.
-#: ../lib/command.py:325
+#: ../lib/command.py:327
 #, python-brace-format
 msgid "{seconds:.01f}s of painting with {brush_name}"
 msgstr "{seconds:.01f}с рисования с {brush_name}"
 
-#: ../lib/command.py:523
+#: ../lib/command.py:525
 msgid "Flood Fill"
 msgstr "Заливка"
 
-#: ../lib/command.py:610
+#: ../lib/command.py:612
 msgid "Trim Layer"
 msgstr "Обрезать слой"
 
-#: ../lib/command.py:630
+#: ../lib/command.py:632
 msgid "Uniquify Layer Pixels"
 msgstr "Унифицировать пикселы слоя"
 
-#: ../lib/command.py:653
+#: ../lib/command.py:655
 msgid "Refactor Group"
 msgstr "Перестроить группу"
 
-#: ../lib/command.py:676
+#: ../lib/command.py:678
 msgid "Clear Layer"
 msgstr "Очистить слой"
 
 #. This is used by Paste layer as well as when loading from a PNG
 #. file. However in the latter case, the undo stack is reset
 #. immediately afterward.
-#: ../lib/command.py:700
+#: ../lib/command.py:702
 msgid "Paste Layer"
 msgstr "Вставить слой"
 
-#: ../lib/command.py:723
+#: ../lib/command.py:737
 msgid "New Layer from Visible"
 msgstr "Сделать слой видимым"
 
-#: ../lib/command.py:765
+#: ../lib/command.py:779
 msgid "Merge Visible Layers"
 msgstr "Объединить видимые слои"
 
-#: ../lib/command.py:839
+#: ../lib/command.py:853
 msgid "Merge Down"
 msgstr "Объединить с нижним"
 
-#: ../lib/command.py:888
+#: ../lib/command.py:902
 msgid "Normalize Layer Mode"
 msgstr "Обычный слой"
 
-#: ../lib/command.py:941
+#: ../lib/command.py:955
 msgid "Import Layers"
 msgstr "Импортировать слои"
 
-#: ../lib/command.py:943
+#: ../lib/command.py:957
 #, python-brace-format
 msgid "Add {layer_default_name}"
 msgstr "Добавить {layer_default_name}"
 
-#: ../lib/command.py:967
+#: ../lib/command.py:981
 msgid "Remove Layer"
 msgstr "Удалить слой"
 
-#: ../lib/command.py:1014
+#: ../lib/command.py:1028
 msgid "Select Layer"
 msgstr "Выбрать слой"
 
-#: ../lib/command.py:1144
+#: ../lib/command.py:1158
 msgid "Duplicate Layer"
 msgstr "Создать копию слоя"
 
-#: ../lib/command.py:1168
+#: ../lib/command.py:1182
 msgid "Move Layer Up"
 msgstr "Переместить слой вверх"
 
-#: ../lib/command.py:1182
+#: ../lib/command.py:1196
 msgid "Move Layer Down"
 msgstr "Переместить слой вниз"
 
-#: ../lib/command.py:1209
+#: ../lib/command.py:1223
 msgid "Move Layer in Stack"
 msgstr "Переместить слой в стопке"
 
-#: ../lib/command.py:1328
+#: ../lib/command.py:1342
 msgid "Rename Layer"
 msgstr "Переименовать слой"
 
-#: ../lib/command.py:1386
+#: ../lib/command.py:1400
 msgid "Make Layer Visible"
 msgstr "Сделать слой видимым"
 
-#: ../lib/command.py:1388
+#: ../lib/command.py:1402
 msgid "Make Layer Invisible"
 msgstr "Сделать слой невидимым"
 
-#: ../lib/command.py:1426
+#: ../lib/command.py:1440
 msgid "Lock Layer"
 msgstr "Заблокировать слой"
 
-#: ../lib/command.py:1428
+#: ../lib/command.py:1442
 msgid "Unlock Layer"
 msgstr "Разблокировать слой"
 
-#: ../lib/command.py:1446
+#: ../lib/command.py:1460
 #, python-format
 msgid "Set Layer Opacity: %0.1f%%"
 msgstr "Непрозрачность слоя: %0.1f%%"
 
-#: ../lib/command.py:1485
+#: ../lib/command.py:1499
 msgid "Unknown Mode"
 msgstr "Неизвестный режим"
 
-#: ../lib/command.py:1486
+#: ../lib/command.py:1500
 #, python-format
 msgid "Set Layer Mode: %s"
 msgstr "Выбрать режим смешивания слоя: %s"
 
-#: ../lib/command.py:1510
+#: ../lib/command.py:1524
 msgid "Enable Frame"
 msgstr "Включить рамку"
 
-#: ../lib/command.py:1512
+#: ../lib/command.py:1526
 msgid "Disable Frame"
 msgstr "Отключить рамку"
 
-#: ../lib/command.py:1530
+#: ../lib/command.py:1544
 msgid "Update Frame"
 msgstr "Обновить рамку"
 
-#: ../lib/command.py:1559
+#: ../lib/command.py:1573
 msgid "Edit Layer Externally"
 msgstr "Редактировать слой в другой программе"
 
@@ -3753,7 +3740,8 @@ msgstr "Светлота"
 msgid ""
 "Applies the luminosity of the top layer to the hue and saturation of the "
 "backdrop."
-msgstr "Применяет светлоту верхнего слоя к оттенку и насыщенности нижнего слоя."
+msgstr ""
+"Применяет светлоту верхнего слоя к оттенку и насыщенности нижнего слоя."
 
 #: ../lib/modes.py:119
 msgid "Plus"
@@ -4768,8 +4756,8 @@ msgid ""
 "red, yellow etc. as the four primaries."
 msgstr ""
 "Поверхностная модель кругов, основанная на теориях о цвете, которые "
-"использовали четыре \"психологических основных цвета\" или \"уникальных "
-"тона\", расположенных как противоположные пары сторон света. Красный "
+"использовали четыре \"психологических основных цвета\" или \"уникальных тона"
+"\", расположенных как противоположные пары сторон света. Красный "
 "противоположен зелёному, а жёлтый противоположен синему. CIECAM02 и NCS "
 "представляют схожие модели. Здесь используется чистое отображение красного, "
 "жёлтого и т.д. как четырёх основных цветов."
@@ -5003,7 +4991,8 @@ msgstr "Сохранить как черновик"
 #: ../gui/resources.xml:148
 msgctxt "Accel Editor (descriptions)"
 msgid "Save to a new scrap file, or save a new revision if already a scrap."
-msgstr "Сохранить в новый файл черновика (или перезаписать, если это черновик)."
+msgstr ""
+"Сохранить в новый файл черновика (или перезаписать, если это черновик)."
 
 #: ../gui/resources.xml:156
 msgctxt "Menu→File (labels), Accel Editor (labels)"
@@ -6389,8 +6378,8 @@ msgid ""
 "Dockable cylindrical hue/chroma/luma color selector. The circular slices are "
 "equiluminant."
 msgstr ""
-"Закрепляемая панель для выбора цветов по цилиндрическим координатам "
-"тон/насыщенность/яркость. Круговые срезы имеют одинаковую яркость."
+"Закрепляемая панель для выбора цветов по цилиндрическим координатам тон/"
+"насыщенность/яркость. Круговые срезы имеют одинаковую яркость."
 
 #: ../gui/resources.xml:1402
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
@@ -6444,7 +6433,8 @@ msgstr "Ползунки компонентов"
 #: ../gui/resources.xml:1436
 msgctxt "Accel Editor (descriptions)"
 msgid "Dockable color selector showing individual components of the color."
-msgstr "Закрепляемая панель для выбора цветов с отдельными компонентами цветов."
+msgstr ""
+"Закрепляемая панель для выбора цветов с отдельными компонентами цветов."
 
 #: ../gui/resources.xml:1443
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
@@ -6454,7 +6444,8 @@ msgstr "Плавная волна"
 #: ../gui/resources.xml:1444
 msgctxt "Accel Editor (descriptions)"
 msgid "Dockable color selector showing a liquid-like wash of nearby colors."
-msgstr "Закрепляемая панель для выбора цветов с размытыми близлежащими цветами."
+msgstr ""
+"Закрепляемая панель для выбора цветов с размытыми близлежащими цветами."
 
 #: ../gui/resources.xml:1451
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
@@ -7020,6 +7011,15 @@ msgstr "Заливка"
 msgctxt "Accel Editor (descriptions)"
 msgid "Fill an area with color."
 msgstr "Залить область цветом."
+
+#~ msgid "Frame Size"
+#~ msgstr "Размер рамки"
+
+#~ msgid "<b>Pixel density</b>"
+#~ msgstr "<b>Плотность пикселов</b>"
+
+#~ msgid "{width:g}×{height:g} {units}"
+#~ msgstr "{width:g}×{height:g} {units}"
 
 #~ msgctxt "symmetry axis options panel: position button: axis pos. in pixels"
 #~ msgid "%d px"

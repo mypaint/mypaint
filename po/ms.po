@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mypaint v2.0.0-alpha.8-1-g4490f06\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-08-16 11:30+0200\n"
+"POT-Creation-Date: 2021-01-11 18:52+0100\n"
 "PO-Revision-Date: 2020-09-06 11:36+0000\n"
 "Last-Translator: antuketot76 <antuketot76@protonmail.com>\n"
 "Language-Team: Malay <https://hosted.weblate.org/projects/mypaint/mypaint/ms/"
@@ -33,7 +33,7 @@ msgstr "Kombinasi Kekunci"
 #. TRANSLATORS: Window title for the keybinding dialog. The %s is
 #. TRANSLATORS: replaced with the name of the action that the key
 #. TRANSLATORS: combination is being bound to, e.g. "Fit to View".
-#: ../gui/accelmap.py:311
+#: ../gui/accelmap.py:305
 #, python-format
 msgid "Edit Key for '%s'"
 msgstr "Sunting Kekunci '%s'"
@@ -42,7 +42,7 @@ msgstr "Sunting Kekunci '%s'"
 #. TRANSLATORS: It's a label for the action part of the combination.
 #. TRANSLATORS: Probably always the same as the column name
 #. TRANSLATORS: "Action" with a trailing ":" or lang-specific symbol
-#: ../gui/accelmap.py:342 ../gui/buttonmap.py:502
+#: ../gui/accelmap.py:336 ../gui/buttonmap.py:502
 msgid "Action:"
 msgstr "Aksi:"
 
@@ -51,13 +51,13 @@ msgstr "Aksi:"
 #. TRANSLATORS: adding new keybindings. This is a technical field
 #. TRANSLATORS: that probably shouldn't even be part of the gui,
 #. TRANSLATORS: so don't worry too much about the translation.
-#: ../gui/accelmap.py:360
+#: ../gui/accelmap.py:354
 msgid "Path:"
 msgstr "Laluan:"
 
 #. TRANSLATORS: Key refers to a key on the keyboard, this is a label
 #. TRANSLATORS: in the dialog for adding new keyboard bindings.
-#: ../gui/accelmap.py:373
+#: ../gui/accelmap.py:367
 msgid "Key:"
 msgstr "Kekunci:"
 
@@ -65,19 +65,19 @@ msgstr "Kekunci:"
 #. TRANSLATORS: to an assignment of a keyboard key combination to
 #. TRANSLATORS: an action. This is an instructive message in the
 #. TRANSLATORS: keybinding dialog (Preferences | Keys).
-#: ../gui/accelmap.py:415
+#: ../gui/accelmap.py:409
 msgid "Press keys to update this assignment"
 msgstr "Tekan kekunci untuk kemaskini tugasan ini"
 
 #. TRANSLATORS: Part of the keybinding dialog, refers
 #. TRANSLATORS: to an action bound to a key combination.
-#: ../gui/accelmap.py:472
+#: ../gui/accelmap.py:466
 msgid "Unknown Action"
 msgstr "Aksi Tak Diketahui"
 
 #. TRANSLATORS: Warning message when attempting to assign a
 #. TRANSLATORS: keyboard combination that is already used.
-#: ../gui/accelmap.py:483
+#: ../gui/accelmap.py:477
 #, python-brace-format
 msgid ""
 "<b>{accel} is already in use for '{action}'. The existing assignment will be "
@@ -110,15 +110,15 @@ msgstr "Sandaran Tidak Wujud"
 msgid "Open the Cache Folder…"
 msgstr "Buka Folder Cache…"
 
-#: ../gui/autorecover.py:171
+#: ../gui/autorecover.py:170
 msgid "Backup Recovery Failed"
 msgstr "Gagal Memulih Sandaran"
 
-#: ../gui/autorecover.py:173
+#: ../gui/autorecover.py:172
 msgid "Open the Backup’s Folder…"
 msgstr "Buka Folder Sandaran…"
 
-#: ../gui/autorecover.py:182
+#: ../gui/autorecover.py:181
 #, python-brace-format
 msgid "Recovered file from {iso_datetime}.ora"
 msgstr "Fail Pemulihan bertarikh {iso_datetime}.ora"
@@ -1422,48 +1422,48 @@ msgstr ""
 msgid "<b>Do you really want to import package “{brushpack_name}”?</b>"
 msgstr ""
 
-#: ../gui/document.py:451
-#, python-format
-msgid "Load brush settings from shortcut slot %d"
-msgstr ""
-
-#: ../gui/document.py:452
-#, python-format
-msgid "Store brush settings in shortcut slot %d"
-msgstr ""
-
-#: ../gui/document.py:453
-#, python-format
-msgid "Restore Brush %d"
-msgstr "Pulihkan Berus %d"
-
-#: ../gui/document.py:455
-#, python-format
-msgid "Save to Brush %d"
-msgstr "Simpan ke Berus %d"
-
-#: ../gui/document.py:553
-#, python-format
-msgid "Undo %s"
-msgstr "Undur %s"
-
-#: ../gui/document.py:555
-msgid "Undo"
-msgstr "Undur"
-
-#: ../gui/document.py:565
+#: ../gui/document.py:193
 #, python-format
 msgid "Redo %s"
 msgstr ""
 
-#: ../gui/document.py:567
+#: ../gui/document.py:194
 msgid "Redo"
 msgstr "Buat Semula"
+
+#: ../gui/document.py:195
+#, python-format
+msgid "Undo %s"
+msgstr "Undur %s"
+
+#: ../gui/document.py:196
+msgid "Undo"
+msgstr "Undur"
+
+#: ../gui/document.py:458
+#, python-format
+msgid "Load brush settings from shortcut slot %d"
+msgstr ""
+
+#: ../gui/document.py:459
+#, python-format
+msgid "Store brush settings in shortcut slot %d"
+msgstr ""
+
+#: ../gui/document.py:460
+#, python-format
+msgid "Restore Brush %d"
+msgstr "Pulihkan Berus %d"
+
+#: ../gui/document.py:462
+#, python-format
+msgid "Save to Brush %d"
+msgstr "Simpan ke Berus %d"
 
 #. TRANSLATORS: Statusbar message explaining button and modifier
 #. TRANSLATORS: combinations used to access modes/tools/actions.
 #. TRANSLATORS: "With <current-modifiers> held down: <list>"
-#: ../gui/document.py:851
+#: ../gui/document.py:853
 #, python-brace-format
 msgid "{button_combination} is {resultant_action}"
 msgstr ""
@@ -1471,7 +1471,7 @@ msgstr ""
 #. TRANSLATORS: This is a separator for the list of button actions
 #. TRANSLATORS: that appears when a modifier key is held down.
 #. TRANSLATORS: search for " held down: " (incl spaces) for the context
-#: ../gui/document.py:861
+#: ../gui/document.py:863
 msgid ";  "
 msgstr ""
 
@@ -1480,44 +1480,44 @@ msgstr ""
 #. TRANSLATORS: as the English "and", so use appropriate punctuation or
 #. TRANSLATORS: wording for the separator. Also a little more spacing
 #. TRANSLATORS: than normal looks good here.
-#: ../gui/document.py:867
+#: ../gui/document.py:869
 #, python-brace-format
 msgid "With {modifiers} held down:  {button_actions}."
 msgstr ""
 
-#: ../gui/document.py:889
+#: ../gui/document.py:895
 msgctxt "Statusbar message: copy result"
 msgid "Empty document, nothing copied."
 msgstr ""
 
-#: ../gui/document.py:901
+#: ../gui/document.py:906
 #, python-brace-format
 msgctxt "Statusbar message: copy result"
 msgid "Copied layer as {w}×{h} image."
 msgstr ""
 
-#: ../gui/document.py:918
+#: ../gui/document.py:923
 msgctxt "Statusbar message: paste result"
 msgid "Nothing on clipboard."
 msgstr ""
 
-#: ../gui/document.py:927
+#: ../gui/document.py:932
 msgctxt "Statusbar message: paste result"
 msgid "Clipboard does not contain an image."
 msgstr ""
 
-#: ../gui/document.py:938
+#: ../gui/document.py:956
 msgctxt "Statusbar message: paste result"
 msgid "Cannot paste into this type of layer."
 msgstr ""
 
-#: ../gui/document.py:943
+#: ../gui/document.py:961
 #, python-brace-format
 msgctxt "Statusbar message: paste result"
 msgid "Pasted {w}×{h} image."
 msgstr ""
 
-#: ../gui/document.py:2044
+#: ../gui/document.py:2062
 #, python-brace-format
 msgctxt "Statusbar message: vacuum document"
 msgid "Vacuum: discarded {removed} of {total} tiles."
@@ -2188,104 +2188,87 @@ msgid ""
 "{brush_desc}"
 msgstr ""
 
-#: ../gui/framewindow.py:100
+#: ../gui/framewindow.py:102
 msgid "Edit Frame"
 msgstr ""
 
-#: ../gui/framewindow.py:103
+#: ../gui/framewindow.py:105
 msgid "Adjust the document frame"
 msgstr ""
 
-#: ../gui/framewindow.py:469
-msgid "Frame Size"
-msgstr ""
-
-#. {unit: (conv_factor, upper, lower, step_incr, page_incr, digits)}
-#: ../gui/framewindow.py:472 ../gui/framewindow.py:538
-#: ../gui/framewindow.py:911 ../gui/framewindow.py:928
-#: ../gui/framewindow.py:929 ../gui/framewindow.py:981
-#: ../gui/framewindow.py:986
-msgid "px"
-msgstr ""
-
-#: ../gui/framewindow.py:474
+#: ../gui/framewindow.py:470
 msgid "Height:"
 msgstr ""
 
-#: ../gui/framewindow.py:475
+#: ../gui/framewindow.py:471
 msgid "Width:"
 msgstr ""
 
-#: ../gui/framewindow.py:476
+#: ../gui/framewindow.py:472
 msgid "Resolution:"
 msgstr ""
 
-#: ../gui/framewindow.py:478
+#: ../gui/framewindow.py:474
 msgid "DPI"
 msgstr ""
 
-#: ../gui/framewindow.py:483
+#: ../gui/framewindow.py:476
 msgid "Dots Per Inch (really Pixels Per Inch)"
 msgstr ""
 
-#: ../gui/framewindow.py:486
+#: ../gui/framewindow.py:479
 msgid "Color:"
 msgstr ""
 
-#: ../gui/framewindow.py:523
+#: ../gui/framewindow.py:515
 msgid "Frame Color"
 msgstr ""
 
-#: ../gui/framewindow.py:546
-msgid "<b>Frame dimensions</b>"
-msgstr ""
-
-#: ../gui/framewindow.py:560
-msgid "<b>Pixel density</b>"
-msgstr ""
-
-#: ../gui/framewindow.py:588
-msgid "Set Frame to Layer"
-msgstr ""
-
-#: ../gui/framewindow.py:589
-msgid "Set frame to the extents of the current layer"
-msgstr ""
-
-#: ../gui/framewindow.py:591
-msgid "Set Frame to Document"
-msgstr ""
-
-#: ../gui/framewindow.py:592
-msgid "Set frame to the combination of all layers"
-msgstr ""
-
-#: ../gui/framewindow.py:602
-msgid "Trim Layer to Frame"
-msgstr ""
-
-#: ../gui/framewindow.py:603
-msgid "Trim parts of the current layer which lie outside the frame"
-msgstr ""
-
-#: ../gui/framewindow.py:609
+#: ../gui/framewindow.py:537
 msgid "Enabled"
 msgstr ""
 
-#: ../gui/framewindow.py:721
-#, python-brace-format
-msgid "{width:g}×{height:g} {units}"
+#: ../gui/framewindow.py:541
+msgid "<b>Frame dimensions</b>"
 msgstr ""
 
-#: ../gui/framewindow.py:912
-msgid "inch"
+#: ../gui/framewindow.py:562
+msgid "Set Frame to Layer"
 msgstr ""
 
-#: ../gui/framewindow.py:913
+#: ../gui/framewindow.py:563
+msgid "Set frame to the extents of the current layer"
+msgstr ""
+
+#: ../gui/framewindow.py:565
+msgid "Set Frame to Document"
+msgstr ""
+
+#: ../gui/framewindow.py:566
+msgid "Set frame to the combination of all layers"
+msgstr ""
+
+#: ../gui/framewindow.py:576
+msgid "Trim Layer to Frame"
+msgstr ""
+
+#: ../gui/framewindow.py:577
+msgid "Trim parts of the current layer which lie outside the frame"
+msgstr ""
+
+#: ../gui/framewindow.py:915
+msgid "px"
+msgstr ""
+
+#: ../gui/framewindow.py:916
+msgid "in"
+msgstr ""
+
+#: ../gui/framewindow.py:917
 msgid "cm"
 msgstr ""
 
-#: ../gui/framewindow.py:914
+#: ../gui/framewindow.py:918
 msgid "mm"
 msgstr ""
 
@@ -2427,7 +2410,7 @@ msgstr ""
 #. TRANSLATORS: Command to move a layer in the horizontal plane,
 #. TRANSLATORS: preserving its position in the stack.
 #. TRANSLATORS: Note "in the horizontal plane" - not "horizontally".
-#: ../gui/layermanip.py:47 ../lib/command.py:1047
+#: ../gui/layermanip.py:47 ../lib/command.py:1061
 msgid "Move Layer"
 msgstr ""
 
@@ -2615,7 +2598,7 @@ msgstr ""
 msgid "Pressure variation…"
 msgstr ""
 
-#: ../gui/linemode.py:221 ../gui/linemode.py:777
+#: ../gui/linemode.py:221 ../gui/linemode.py:800
 msgid "Lines and Curves"
 msgstr ""
 
@@ -2624,23 +2607,25 @@ msgstr ""
 msgid "Generic line/curve mode"
 msgstr ""
 
-#: ../gui/linemode.py:780
-msgid "Draw straight lines; Shift adds curves, Ctrl constrains angle"
+#: ../gui/linemode.py:803
+msgid ""
+"Draw straight lines; Shift adds curves, Shift + Ctrl moves line ends, Ctrl "
+"constrains angle"
 msgstr ""
 
-#: ../gui/linemode.py:790
+#: ../gui/linemode.py:814
 msgid "Connected Lines"
 msgstr ""
 
-#: ../gui/linemode.py:793
+#: ../gui/linemode.py:817
 msgid "Draw a sequence of lines; Shift adds curves, Ctrl constrains angle"
 msgstr ""
 
-#: ../gui/linemode.py:803
+#: ../gui/linemode.py:827
 msgid "Ellipses and Circles"
 msgstr ""
 
-#: ../gui/linemode.py:806
+#: ../gui/linemode.py:830
 msgid "Draw ellipses; Shift rotates, Ctrl constrains ratio/angle"
 msgstr ""
 
@@ -2798,12 +2783,12 @@ msgstr ""
 msgid "Zoom: %.01f%%"
 msgstr ""
 
-#: ../gui/picker.py:457
+#: ../gui/picker.py:462
 msgctxt "context picker: statusbar text during grab"
 msgid "Pick brushstroke settings, stroke color, and layer…"
 msgstr ""
 
-#: ../gui/picker.py:495
+#: ../gui/picker.py:501
 msgctxt "color picker: statusbar text during grab"
 msgid "Pick color…"
 msgstr ""
@@ -3008,147 +2993,147 @@ msgstr ""
 msgid "Rotate the canvas view"
 msgstr ""
 
-#: ../lib/command.py:175
+#: ../lib/command.py:177
 msgid "Unknown Command"
 msgstr ""
 
-#: ../lib/command.py:318
+#: ../lib/command.py:320
 msgid "Undefined (command not started yet)"
 msgstr ""
 
 #. TRANSLATORS: A short time spent painting / making brushwork.
 #. TRANSLATORS: This can correspond to zero or more touches of
 #. TRANSLATORS: the physical stylus to the tablet.
-#: ../lib/command.py:325
+#: ../lib/command.py:327
 #, python-brace-format
 msgid "{seconds:.01f}s of painting with {brush_name}"
 msgstr ""
 
-#: ../lib/command.py:523
+#: ../lib/command.py:525
 msgid "Flood Fill"
 msgstr ""
 
-#: ../lib/command.py:610
+#: ../lib/command.py:612
 msgid "Trim Layer"
 msgstr ""
 
-#: ../lib/command.py:630
+#: ../lib/command.py:632
 msgid "Uniquify Layer Pixels"
 msgstr ""
 
-#: ../lib/command.py:653
+#: ../lib/command.py:655
 #, fuzzy
 msgid "Refactor Group"
 msgstr "Cipta kumpulan"
 
-#: ../lib/command.py:676
+#: ../lib/command.py:678
 msgid "Clear Layer"
 msgstr ""
 
 #. This is used by Paste layer as well as when loading from a PNG
 #. file. However in the latter case, the undo stack is reset
 #. immediately afterward.
-#: ../lib/command.py:700
+#: ../lib/command.py:702
 msgid "Paste Layer"
 msgstr ""
 
-#: ../lib/command.py:723
+#: ../lib/command.py:737
 msgid "New Layer from Visible"
 msgstr ""
 
-#: ../lib/command.py:765
+#: ../lib/command.py:779
 msgid "Merge Visible Layers"
 msgstr ""
 
-#: ../lib/command.py:839
+#: ../lib/command.py:853
 msgid "Merge Down"
 msgstr "Gabungkan"
 
-#: ../lib/command.py:888
+#: ../lib/command.py:902
 msgid "Normalize Layer Mode"
 msgstr ""
 
-#: ../lib/command.py:941
+#: ../lib/command.py:955
 #, fuzzy
 msgid "Import Layers"
 msgstr "Lapisan"
 
-#: ../lib/command.py:943
+#: ../lib/command.py:957
 #, python-brace-format
 msgid "Add {layer_default_name}"
 msgstr ""
 
-#: ../lib/command.py:967
+#: ../lib/command.py:981
 msgid "Remove Layer"
 msgstr ""
 
-#: ../lib/command.py:1014
+#: ../lib/command.py:1028
 msgid "Select Layer"
 msgstr ""
 
-#: ../lib/command.py:1144
+#: ../lib/command.py:1158
 msgid "Duplicate Layer"
 msgstr ""
 
-#: ../lib/command.py:1168
+#: ../lib/command.py:1182
 msgid "Move Layer Up"
 msgstr ""
 
-#: ../lib/command.py:1182
+#: ../lib/command.py:1196
 msgid "Move Layer Down"
 msgstr ""
 
-#: ../lib/command.py:1209
+#: ../lib/command.py:1223
 msgid "Move Layer in Stack"
 msgstr ""
 
-#: ../lib/command.py:1328
+#: ../lib/command.py:1342
 msgid "Rename Layer"
 msgstr ""
 
-#: ../lib/command.py:1386
+#: ../lib/command.py:1400
 msgid "Make Layer Visible"
 msgstr ""
 
-#: ../lib/command.py:1388
+#: ../lib/command.py:1402
 msgid "Make Layer Invisible"
 msgstr ""
 
-#: ../lib/command.py:1426
+#: ../lib/command.py:1440
 msgid "Lock Layer"
 msgstr ""
 
-#: ../lib/command.py:1428
+#: ../lib/command.py:1442
 msgid "Unlock Layer"
 msgstr ""
 
-#: ../lib/command.py:1446
+#: ../lib/command.py:1460
 #, python-format
 msgid "Set Layer Opacity: %0.1f%%"
 msgstr ""
 
-#: ../lib/command.py:1485
+#: ../lib/command.py:1499
 msgid "Unknown Mode"
 msgstr ""
 
-#: ../lib/command.py:1486
+#: ../lib/command.py:1500
 #, python-format
 msgid "Set Layer Mode: %s"
 msgstr ""
 
-#: ../lib/command.py:1510
+#: ../lib/command.py:1524
 msgid "Enable Frame"
 msgstr ""
 
-#: ../lib/command.py:1512
+#: ../lib/command.py:1526
 msgid "Disable Frame"
 msgstr ""
 
-#: ../lib/command.py:1530
+#: ../lib/command.py:1544
 msgid "Update Frame"
 msgstr ""
 
-#: ../lib/command.py:1559
+#: ../lib/command.py:1573
 msgid "Edit Layer Externally"
 msgstr ""
 
