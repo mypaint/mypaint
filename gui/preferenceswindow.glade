@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Generated with glade 3.18.3 -->
+<!-- Generated with glade 3.22.2 -->
 <interface>
   <requires lib="gtk+" version="3.10"/>
   <requires lib="mypaint_widgets" version="3.0"/>
@@ -894,6 +894,7 @@ This is MyPaint's old behaviour, and can be used as a stopgap for non-sRGB worki
             <property name="vexpand">False</property>
             <property name="label" translatable="yes" context="Prefs Dialog|View|Interface|">Freehand cursor type:</property>
             <property name="xalign">0</property>
+            <property name="yalign">0</property>
           </object>
           <packing>
             <property name="left_attach">0</property>
@@ -1120,6 +1121,63 @@ Scrolling to pan the view needs this setting to be turned on, and for your devic
                 <property name="expand">False</property>
                 <property name="fill">True</property>
                 <property name="position">1</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkBox">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <child>
+                  <object class="GtkCheckButton" id="show_crosshair_checkbutton">
+                    <property name="label" translatable="yes" context="Prefs Dialog|View|Interface" comments="Label for a toggle that is part of the &quot;Freehand cursor type&quot; settings. Crosshair refers to lines which are either horizontal, vertical, both (cross) or crossed in an x, depending on the brush cursor type.">Show crosshair for small brush cursors</property>
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="receives_default">False</property>
+                    <property name="draw_indicator">True</property>
+                    <signal name="toggled" handler="_enable_dynamic_crosshair_toggled_cb" swapped="no"/>
+                  </object>
+                  <packing>
+                    <property name="expand">True</property>
+                    <property name="fill">True</property>
+                    <property name="position">0</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkLabel" id="dynamic_crosshair_threshold_label">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="label" translatable="yes" context="Prefs Dialog|View|Interface" comments="Label for a spinbutton that is part of the &quot;crosshair for small brush cursors&quot; setting. Radius refers to the visual brush cursor radius.">Radius threshold:</property>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="padding">12</property>
+                    <property name="position">1</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkSpinButton" id="dynamic_crosshair_threshold_spinbutton">
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="tooltip_text" translatable="yes" context="Prefs Dialog|View|Interface" comments="Description of the &quot;Radius threshold&quot; spinbox/spinner - the referenced &quot;lines&quot; are part of the brush cursor.">Lines will be shown when the brush circle radius is smaller than this value.</property>
+                    <property name="progress_pulse_step">1</property>
+                    <property name="input_purpose">digits</property>
+                    <property name="snap_to_ticks">True</property>
+                    <property name="numeric">True</property>
+                    <property name="update_policy">if-valid</property>
+                    <signal name="value-changed" handler="_dynamic_crosshair_threshold_changed_cb" swapped="no"/>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">2</property>
+                  </packing>
+                </child>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">2</property>
               </packing>
             </child>
           </object>
@@ -1594,7 +1652,6 @@ Different traditions have different color harmonies.</property>
                     <property name="can_focus">True</property>
                     <property name="halign">start</property>
                     <property name="active">True</property>
-                    <property name="state">True</property>
                   </object>
                   <packing>
                     <property name="left_attach">1</property>
