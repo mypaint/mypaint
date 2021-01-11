@@ -109,7 +109,7 @@ class PreferencesWindow (windowing.Dialog):
         max_cursor = max(Gdk.Display.get_default().get_maximal_cursor_size())
         adj = Gtk.Adjustment(
             value=dyn_ch_threshold,
-            lower=p.get("cursor.freehand.min_size", 4) // 2,
+            lower=(1 + p.get("cursor.freehand.min_size", 4) // 2),
             upper=max_cursor,
             step_increment=1, page_increment=2)
         dyn_ch_spinner.set_adjustment(adj)
