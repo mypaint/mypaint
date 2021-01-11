@@ -16,6 +16,7 @@ from logging import getLogger
 from gettext import gettext as _
 
 from lib.gibindings import Gtk
+from lib.gibindings import Gdk
 
 from gui.compatibility import CompatibilityPreferences
 import lib.config
@@ -94,6 +95,28 @@ class PreferencesWindow (windowing.Dialog):
         # Autosave controls
         autosave_interval_spinbut = getobj("autosave_interval_spinbutton")
         self._autosave_interval_spinbutton = autosave_interval_spinbut
+
+        # Dynamic brush cursor crosshair settings
+        p = app.preferences
+        dyn_ch_checkbut = getobj("show_crosshair_checkbutton")
+        dyn_ch_enabled = p.get("cursor.dynamic_crosshair", False)
+        dyn_ch_checkbut.set_active(dyn_ch_enabled)
+        self._dynamic_crosshair_checkbut = dyn_ch_checkbut
+
+        dyn_ch_spinner = getobj("dynamic_crosshair_threshold_spinbutton")
+        dyn_ch_threshold = p.get("cursor.dynamic_crosshair_threshold", 8)
+
+        max_cursor = max(Gdk.Display.get_default().get_maximal_cursor_size())
+        adj = Gtk.Adjustment(
+            value=dyn_ch_threshold,
+            lower=p.get("cursor.freehand.min_size", 4) // 2,
+            upper=max_cursor,
+            step_increment=1, page_increment=2)
+        dyn_ch_spinner.set_adjustment(adj)
+
+        dyn_ch_spinner.set_sensitive(dyn_ch_enabled)
+        self._dyn_crosshair_threshold = dyn_ch_spinner
+        self._dyn_crosshair_label = getobj("dynamic_crosshair_threshold_label")
 
         # Signal hookup now everything is in the right initial state
         self._builder.connect_signals(self)
@@ -204,6 +227,14 @@ class PreferencesWindow (windowing.Dialog):
         cursor_config = p.get("cursor.freehand.style", "thin")
         cursor_combo = getobj("freehand_cursor_combobox")
         cursor_combo.set_active_id(cursor_config)
+
+        circle_cursor = cursor_config != 'crosshair'
+        threshold_enabled = (
+            circle_cursor and self._dynamic_crosshair_checkbut.get_active()
+        )
+        self._dyn_crosshair_label.set_sensitive(threshold_enabled)
+        self._dyn_crosshair_threshold.set_sensitive(threshold_enabled)
+        self._dynamic_crosshair_checkbut.set_sensitive(circle_cursor)
 
         # Color wheel type
         cm = self.app.brush_color_manager
@@ -316,6 +347,15 @@ class PreferencesWindow (windowing.Dialog):
             return
         p = self.app.preferences
         p["cursor.freehand.style"] = cname
+
+        circle_cursor = cname != 'crosshair'
+        threshold_enabled = (
+            circle_cursor and self._dynamic_crosshair_checkbut.get_active()
+        )
+        self._dyn_crosshair_label.set_sensitive(threshold_enabled)
+        self._dyn_crosshair_threshold.set_sensitive(threshold_enabled)
+        self._dynamic_crosshair_checkbut.set_sensitive(circle_cursor)
+
         if cname == 'thin':
             # The default.
             p.pop("cursor.freehand.min_size", None)
@@ -338,6 +378,17 @@ class PreferencesWindow (windowing.Dialog):
             p["cursor.freehand.inner_line_inset"] = 3
             p["cursor.freehand.outer_line_color"] = (0, 0, 0, 1)
             p["cursor.freehand.inner_line_color"] = (1, 1, 1, 1)
+
+    def _dynamic_crosshair_threshold_changed_cb(self, adj):
+        self.app.preferences["cursor.dynamic_crosshair_threshold"] = (
+            adj.get_value()
+        )
+
+    def _enable_dynamic_crosshair_toggled_cb(self, checkbutton):
+        active = checkbutton.get_active()
+        self.app.preferences["cursor.dynamic_crosshair"] = active
+        self._dyn_crosshair_threshold.set_sensitive(active)
+        self._dyn_crosshair_label.set_sensitive(active)
 
     def autosave_backups_switch_active_notify_cb(self, switch, param):
         active = bool(switch.props.active)
