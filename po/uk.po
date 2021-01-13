@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: mypaint v2.0.0-alpha.11-2-g0673fe8\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-01-11 18:52+0100\n"
-"PO-Revision-Date: 2020-11-09 03:26+0000\n"
+"PO-Revision-Date: 2021-01-16 22:32+0000\n"
 "Last-Translator: Ihor Hordiichuk <igor_ck@outlook.com>\n"
 "Language-Team: Ukrainian <https://hosted.weblate.org/projects/mypaint/"
 "mypaint/uk/>\n"
@@ -18,7 +18,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
 "%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
-"X-Generator: Weblate 4.3.2\n"
+"X-Generator: Weblate 4.5-dev\n"
 
 #. TRANSLATORS: Name of first column in the button map preferences.
 #. TRANSLATORS: Refers to an action bound to a mod+button combination.
@@ -469,22 +469,19 @@ msgid "Remove from Favorites"
 msgstr "Вилучити з улюблених"
 
 #: ../gui/brushselectionwindow.py:235
-#, fuzzy
 msgctxt "brush group: context menu for a single brush"
 msgid "Clone"
 msgstr "Клонувати"
 
 #: ../gui/brushselectionwindow.py:242
-#, fuzzy
 msgctxt "brush group: context menu for a single brush"
 msgid "Edit Brush Settings"
-msgstr "Редагувати параметри пензля"
+msgstr "Змінити параметри пензля"
 
 #: ../gui/brushselectionwindow.py:250
-#, fuzzy
 msgctxt "brush group: context menu for a single brush"
 msgid "Remove from Group"
-msgstr "Перейменувати групу"
+msgstr "Вилучити з групи"
 
 #: ../gui/brushselectionwindow.py:290
 #, python-brace-format
@@ -664,9 +661,8 @@ msgid "Pick Hue"
 msgstr ""
 
 #: ../gui/colorpicker.py:204
-#, fuzzy
 msgid "Set the color Hue used for painting"
-msgstr "Обрати колір для малювання"
+msgstr "Вибрати відтінок кольору для малювання"
 
 #: ../gui/colorpicker.py:222
 #, fuzzy
@@ -1765,10 +1761,9 @@ msgid "“{basename}”"
 msgstr "“{basename}”"
 
 #: ../gui/filehandling.py:432
-#, fuzzy
 msgctxt "save/load dialogs: filter patterns"
 msgid "All Recognized Formats"
-msgstr "Всі формати, які можна розпізнати"
+msgstr "Усі розпізнані формати"
 
 #: ../gui/filehandling.py:437
 msgctxt "save/load dialogs: filter patterns"
@@ -1840,17 +1835,15 @@ msgid "Save As"
 msgstr "Зберегти як"
 
 #: ../gui/filehandling.py:606
-#, fuzzy
 msgctxt "save dialogs: formats and options: (label)"
 msgid "Format to save as:"
-msgstr "Не вдалося зберегти: %s"
+msgstr "Формат збереження:"
 
 #: ../gui/filehandling.py:673
-#, fuzzy
 msgctxt ""
 "Destructive action confirm dialog: fallback title (normally overridden)"
 msgid "Really Continue?"
-msgstr "Справді вийти?"
+msgstr "Справді продовжити?"
 
 #: ../gui/filehandling.py:706
 msgctxt "Destructive action confirm dialog: cancel button"
@@ -1908,10 +1901,9 @@ msgid "Open Scratchpad…"
 msgstr "Відкрити чернетку…"
 
 #: ../gui/filehandling.py:1126
-#, fuzzy
 msgctxt "Layers→Import Layers: files-chooser dialog: title"
 msgid "Import Layers"
-msgstr "Шари"
+msgstr "Імпортувати шари"
 
 #: ../gui/filehandling.py:1433
 msgctxt "File→Open Recent→* confirm dialog: title"
@@ -1924,10 +1916,9 @@ msgid "_Open"
 msgstr "_Відкрити"
 
 #: ../gui/filehandling.py:1452
-#, fuzzy
 msgctxt "File→Open Most Recent confirm dialog: title"
 msgid "Open Most Recent File?"
-msgstr "Відкрити недавні"
+msgstr "Відкрити недавній файл?"
 
 #: ../gui/filehandling.py:1457
 msgctxt "File→Open Most Recent→* confirm dialog: continue button"
@@ -1966,10 +1957,9 @@ msgid "Revert Changes?"
 msgstr ""
 
 #: ../gui/filehandling.py:1524
-#, fuzzy
 msgctxt "File→Revert confirm dialog: continue button"
 msgid "_Revert"
-msgstr "Повернути"
+msgstr "_Повернути"
 
 #: ../gui/fill.py:123
 #, fuzzy
@@ -2064,13 +2054,12 @@ msgid "Where the output should go"
 msgstr ""
 
 #: ../gui/fill.py:653
-#, fuzzy
 msgctxt ""
 "fill options: Target | toggle (label)\n"
 "When this option is enabled, the fill will be placed on a new\n"
 "layer above the active layer. Option resets after each fill."
 msgid "New Layer (once)"
-msgstr "Створити групу"
+msgstr "Новий шар (один раз)"
 
 #: ../gui/fill.py:658
 msgctxt "fill options: Target | New Layer (tooltip)"
@@ -2168,10 +2157,9 @@ msgid "Reset options to their defaults"
 msgstr ""
 
 #: ../gui/fill.py:1033
-#, fuzzy
 msgctxt "fill option: default option in the Source Layer dropdown"
 msgid "Selected Layer"
-msgstr "Видалити шар"
+msgstr "Вибраний шар"
 
 #: ../gui/footer.py:195
 #, python-brace-format
@@ -2428,10 +2416,9 @@ msgid "Layer name is not unique."
 msgstr ""
 
 #: ../gui/layerprops.py:377
-#, fuzzy
 msgctxt "layer properties dialog: title"
 msgid "Layer Properties"
-msgstr "Властивості"
+msgstr "Властивості шару"
 
 #: ../gui/layerprops.py:381
 msgctxt "layer properties dialog: done button"
@@ -2903,10 +2890,9 @@ msgid "Alpha:"
 msgstr ""
 
 #: ../gui/symmetry.py:365
-#, fuzzy
 msgctxt "symmetry axis options panel: labels"
 msgid "Symmetry Type:"
-msgstr "Симетрія"
+msgstr "Тип симетрії:"
 
 #: ../gui/symmetry.py:369
 msgctxt "symmetry axis options panel: labels"
@@ -3057,9 +3043,8 @@ msgid "Normalize Layer Mode"
 msgstr ""
 
 #: ../lib/command.py:955
-#, fuzzy
 msgid "Import Layers"
-msgstr "Шари"
+msgstr "Імпортувати шари"
 
 #: ../lib/command.py:957
 #, python-brace-format
@@ -3344,10 +3329,9 @@ msgid "Vectors"
 msgstr ""
 
 #: ../lib/layer/data.py:1166
-#, fuzzy
 msgctxt "layer type descriptions"
 msgid "Vector Layer"
-msgstr "Очистити шар"
+msgstr "Векторний шар"
 
 #. TRANSLATORS: Short default name for renderable fallback layers
 #: ../lib/layer/data.py:1237
@@ -3367,10 +3351,9 @@ msgid "Data"
 msgstr ""
 
 #: ../lib/layer/data.py:1263
-#, fuzzy
 msgctxt "layer type descriptions"
 msgid "Unknown Data"
-msgstr "Невідома дія"
+msgstr "Невідомі дані"
 
 #: ../lib/layer/data.py:1314
 #, fuzzy
@@ -3385,10 +3368,9 @@ msgid "Group"
 msgstr ""
 
 #: ../lib/layer/group.py:72
-#, fuzzy
 msgctxt "layer type descriptions"
 msgid "Layer Group"
-msgstr "Створити групу"
+msgstr "Група шарів"
 
 #. TRANSLATORS: Short default name for temporary placeholder layers.
 #. TRANSLATORS: (The user should never see this except in error cases)
@@ -4030,10 +4012,9 @@ msgid "Rename the active view."
 msgstr ""
 
 #: ../gui/layervis.glade:57
-#, fuzzy
 msgctxt "Layers window: view list controls: tooltips"
 msgid "Remove the active view."
-msgstr "Вилучити поточну зв'язку"
+msgstr "Вилучити поточне подання."
 
 #: ../gui/layervis.glade:78
 msgctxt "Layers window: view list controls: tooltips"
@@ -4560,10 +4541,9 @@ msgid "<b>2.x Settings</b>"
 msgstr ""
 
 #: ../gui/preferenceswindow.glade:1477 ../gui/preferenceswindow.glade:1551
-#, fuzzy
 msgctxt "Prefs Dialog|Compatibility"
 msgid "Default New Layer Type:"
-msgstr "Видалити шар"
+msgstr "Типовий новий тип шару:"
 
 #: ../gui/preferenceswindow.glade:1523 ../gui/preferenceswindow.glade:1537
 #, fuzzy
@@ -5488,10 +5468,9 @@ msgid "Rotate Clockwise"
 msgstr "Обернути за годинниковою стрілкою"
 
 #: ../gui/resources.xml:799
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Rotate the canvas clockwise."
-msgstr "Обернути проти годинникової стрілки"
+msgstr "Обернути полотно за годинниковою стрілкою."
 
 #: ../gui/resources.xml:819
 msgctxt "Menu→View→Adjust View (labels), Accel Editor (labels)"
@@ -5499,10 +5478,9 @@ msgid "Rotate Counterclockwise"
 msgstr "Обернути проти годинникової стрілки"
 
 #: ../gui/resources.xml:820
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Rotate the canvas counter-clockwise."
-msgstr "Обернути проти годинникової стрілки"
+msgstr "Обернути полотно проти годинникової стрілки."
 
 #: ../gui/resources.xml:828
 msgctxt "Menu→View→Adjust View (labels), Accel Editor (labels)"
@@ -5592,9 +5570,8 @@ msgid ""
 msgstr ""
 
 #: ../gui/resources.xml:904
-#, fuzzy
 msgid "Delete Point"
-msgstr "Вилучити групу"
+msgstr "Видалити точку"
 
 #: ../gui/resources.xml:905
 msgctxt "Accel Editor (descriptions)"
@@ -6086,12 +6063,11 @@ msgid "Edit brush icons."
 msgstr ""
 
 #: ../gui/resources.xml:1373
-#, fuzzy
 msgctxt ""
 "Menu→Layer (labels), Menu→Window (labels), Toolbar (labels), Accel Editor "
 "(labels)"
 msgid "Layers Panel"
-msgstr "Шари"
+msgstr "Панель шарів"
 
 #: ../gui/resources.xml:1374
 msgctxt "Accel Editor (descriptions)"
