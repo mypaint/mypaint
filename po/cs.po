@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: mypaint v1.2.0-636-g046ec8f\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-01-11 18:52+0100\n"
-"PO-Revision-Date: 2020-11-05 13:26+0000\n"
+"PO-Revision-Date: 2021-01-16 22:32+0000\n"
 "Last-Translator: Pavel Fric <pavelfric@yahoo.com>\n"
 "Language-Team: Czech <https://hosted.weblate.org/projects/mypaint/mypaint/cs/"
 ">\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
-"X-Generator: Weblate 4.3.2-dev\n"
+"X-Generator: Weblate 4.5-dev\n"
 "X-Poedit-Country: CZECH REPUBLIC\n"
 "X-Poedit-Language: Czech\n"
 
@@ -963,12 +963,12 @@ msgstr "Přidat nový prázdný vzorek"
 #: ../gui/colors/paletteview.py:172
 msgctxt "palette editor dialog: action buttons: tooltips"
 msgid "Remove the current swatch"
-msgstr "Odstranit nynější  vzorek"
+msgstr "Odstranit nynější vzorek"
 
 #: ../gui/colors/paletteview.py:176
 msgctxt "palette editor dialog: action buttons: tooltips"
 msgid "Remove all swatches"
-msgstr "Odstranit všechny  vzorky"
+msgstr "Odstranit všechny vzorky"
 
 #: ../gui/colors/paletteview.py:190
 msgctxt "palette editor dialog: palette name/title entry: label"
@@ -2682,7 +2682,6 @@ msgid "Generic line/curve mode"
 msgstr "Režim standardní čáry/křivky"
 
 #: ../gui/linemode.py:803
-#, fuzzy
 msgid ""
 "Draw straight lines; Shift adds curves, Shift + Ctrl moves line ends, Ctrl "
 "constrains angle"
@@ -3333,7 +3332,7 @@ msgid ""
 "Unknown file format extension: “{ext}”"
 msgstr ""
 "{error_loading_common}\n"
-"Neznámá přípona souboru:  „{ext}“"
+"Neznámá přípona souboru: „{ext}“"
 
 #: ../lib/document.py:1590
 msgctxt "Document IO: group name for Import Layers"
