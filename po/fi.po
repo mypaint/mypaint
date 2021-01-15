@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: mypaint v2.0.0-alpha.8-1-g4490f06\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-01-11 18:52+0100\n"
-"PO-Revision-Date: 2020-11-21 15:29+0000\n"
+"PO-Revision-Date: 2021-01-16 22:32+0000\n"
 "Last-Translator: Tuomas Hietala <tuomas.hietala@iki.fi>\n"
 "Language-Team: Finnish <https://hosted.weblate.org/projects/mypaint/mypaint/"
 "fi/>\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 4.4-dev\n"
+"X-Generator: Weblate 4.5-dev\n"
 
 #. TRANSLATORS: Name of first column in the button map preferences.
 #. TRANSLATORS: Refers to an action bound to a mod+button combination.
@@ -104,7 +104,7 @@ msgstr "Välimuistista ei löytynyt varmuuskopioita."
 
 #: ../gui/autorecover.py:139
 msgid "No Available Backups"
-msgstr "Varmuuskopioita ei löytynyt"
+msgstr "Ei varmuuskopioita saatavilla"
 
 #: ../gui/autorecover.py:141
 msgid "Open the Cache Folder…"
@@ -283,15 +283,15 @@ msgstr "{brush_name} [ei tallennettu]"
 
 #: ../gui/brushiconeditor.py:36
 msgid "Brush Icon"
-msgstr "Sivellinkuvake"
+msgstr "Siveltimen kuvake"
 
 #: ../gui/brushiconeditor.py:37
 msgid "Brush Icon (editing)"
-msgstr "Sivellinkuvake (muokkaus)"
+msgstr "Siveltimen kuvake (muokataan)"
 
 #: ../gui/brushiconeditor.py:74
 msgid "No brush selected"
-msgstr "Sivellintä ei valittu"
+msgstr "Sivellintä ei ole valittu"
 
 #: ../gui/brushiconeditor.py:76
 #, python-format
@@ -300,7 +300,7 @@ msgid ""
 "<small>Select a valid brush first</small>"
 msgstr ""
 "<b>%s</b>\n"
-"<small>Valitse sopiva sivellin ensin</small>"
+"<small>Valitse ensin kelvollinen sivellin</small>"
 
 #: ../gui/brushiconeditor.py:79
 #, python-format
@@ -395,22 +395,27 @@ msgid "Classic"
 msgstr "Klassinen"
 
 #: ../gui/brushmanager.py:136
+#, fuzzy
 msgid "Set#1"
 msgstr "Aseta#1"
 
 #: ../gui/brushmanager.py:137
+#, fuzzy
 msgid "Set#2"
 msgstr "Aseta#2"
 
 #: ../gui/brushmanager.py:138
+#, fuzzy
 msgid "Set#3"
 msgstr "Aseta#3"
 
 #: ../gui/brushmanager.py:139
+#, fuzzy
 msgid "Set#4"
 msgstr "Aseta#4"
 
 #: ../gui/brushmanager.py:140
+#, fuzzy
 msgid "Set#5"
 msgstr "Aseta#5"
 
@@ -807,12 +812,12 @@ msgstr "Luo maski mallineesta."
 #: ../gui/colors/hcywheel.py:1112
 msgctxt "HCY Mask Editor: action button tooltips"
 msgid "Load mask from a GIMP palette file."
-msgstr ""
+msgstr "Lataa maski GIMP-palettitiedostosta."
 
 #: ../gui/colors/hcywheel.py:1116
 msgctxt "HCY Mask Editor: action button tooltips"
 msgid "Save mask to a GIMP palette file."
-msgstr ""
+msgstr "Tallenna maski GIMP-palettitiedostoon."
 
 #: ../gui/colors/hcywheel.py:1120
 msgctxt "HCY Mask Editor: action button tooltips"
@@ -827,12 +832,12 @@ msgstr ""
 #: ../gui/colors/hcywheel.py:1191
 msgctxt "HCY Gamut Mask load dialog: window title"
 msgid "Save Mask as a GIMP Palette"
-msgstr ""
+msgstr "Tallenna maski GIMP-palettina"
 
 #: ../gui/colors/hcywheel.py:1208
 msgctxt "HCY Gamut Mask load dialog: window title"
 msgid "Load Mask from a GIMP Palette"
-msgstr ""
+msgstr "Lataa maski GIMP-palettina"
 
 #: ../gui/colors/hcywheel.py:1281
 msgctxt "HCY Wheel color adjuster page: properties tooltip."
@@ -882,7 +887,7 @@ msgstr ""
 
 #: ../gui/colors/hsvcube.py:85
 msgid "HSV Cube"
-msgstr ""
+msgstr "HSV-kuutio"
 
 #: ../gui/colors/hsvcube.py:89
 msgid "An HSV cube which can be rotated to show different planar slices."
@@ -890,7 +895,7 @@ msgstr ""
 
 #: ../gui/colors/hsvsquare.py:56
 msgid "HSV Square"
-msgstr ""
+msgstr "HSV-neliö"
 
 #: ../gui/colors/hsvsquare.py:60
 msgid "An HSV Square which can be rotated to show different hues."
@@ -917,7 +922,7 @@ msgstr "Paletti"
 #: ../gui/colors/paletteview.py:82
 msgctxt "palette panel tab tooltip description"
 msgid "Set the color from a loadable, editable palette."
-msgstr ""
+msgstr "Aseta väri ladattavasta, muokattavasta paletista."
 
 #: ../gui/colors/paletteview.py:108
 msgctxt "palette editor dialog: palette name entry"
@@ -967,12 +972,12 @@ msgstr "Paletin nimi tai kuvaus"
 #: ../gui/colors/paletteview.py:206
 msgctxt "palette editor dialog: number-of-columns spinbutton: title"
 msgid "Columns:"
-msgstr ""
+msgstr "Sarakkeita:"
 
 #: ../gui/colors/paletteview.py:210
 msgctxt "palette editor dialog: number-of-columns spinbutton: tooltip"
 msgid "Number of columns"
-msgstr ""
+msgstr "Sarakkeiden määrä"
 
 #: ../gui/colors/paletteview.py:227
 msgctxt "palette editor dialog: color name entry: label"
@@ -1016,37 +1021,37 @@ msgstr ""
 #: ../gui/colors/paletteview.py:785
 msgctxt "palette view: context menu"
 msgid "Add Empty Slot"
-msgstr ""
+msgstr "Lisää tyhjä kohta"
 
 #. TRANSLATORS: inserting gaps (empty color swatches)
 #: ../gui/colors/paletteview.py:792
 msgctxt "palette view: context menu"
 msgid "Insert Row"
-msgstr ""
+msgstr "Lisää rivi"
 
 #. TRANSLATORS: inserting gaps (empty color swatches)
 #: ../gui/colors/paletteview.py:799
 msgctxt "palette view: context menu"
 msgid "Insert Column"
-msgstr ""
+msgstr "Lisää sarake"
 
 #. TRANSLATORS: Color interpolations
 #: ../gui/colors/paletteview.py:807
 msgctxt "palette view: context menu"
 msgid "Fill Gap (RGB)"
-msgstr ""
+msgstr "Täytä aukko (RGB)"
 
 #. TRANSLATORS: Color interpolations
 #: ../gui/colors/paletteview.py:814
 msgctxt "palette view: context menu"
 msgid "Fill Gap (HCY)"
-msgstr ""
+msgstr "Täytä aukko (HCY)"
 
 #. TRANSLATORS: Color interpolations
 #: ../gui/colors/paletteview.py:821
 msgctxt "palette view: context menu"
 msgid "Fill Gap (HSV)"
-msgstr ""
+msgstr "Täytä aukko (HSV)"
 
 #: ../gui/colors/paletteview.py:1279
 msgctxt "palette load dialog: filters"
@@ -1061,7 +1066,7 @@ msgstr "Kaikki tiedostot (*)"
 #: ../gui/colors/paletteview.py:1328
 msgctxt "palette save dialog: filters"
 msgid "GIMP palette file (*.gpl)"
-msgstr ""
+msgstr "GIMP-palettitiedosto (*.gpl)"
 
 #: ../gui/colors/paletteview.py:1335
 msgctxt "palette save dialog: filters"
@@ -1101,7 +1106,7 @@ msgstr ""
 #: ../gui/colors/sliders.py:109
 msgctxt "color sliders panel: tab title (in tooltip)"
 msgid "Component Sliders"
-msgstr ""
+msgstr "Komponenttien liukusäätimet"
 
 #: ../gui/colors/sliders.py:116
 msgctxt "color sliders panel: tab description (in tooltip)"
@@ -1166,7 +1171,7 @@ msgstr ""
 #: ../gui/colortools.py:155
 msgctxt "color changer dock panels: tab tooltip title"
 msgid "Concentric Rings"
-msgstr ""
+msgstr "Sisäkkäiset renkaat"
 
 #: ../gui/colortools.py:159
 msgctxt "color changer dock panels: tab tooltip description"
@@ -1176,7 +1181,7 @@ msgstr ""
 #: ../gui/colortools.py:169
 msgctxt "color changer dock panels: tab tooltip title"
 msgid "Crossed Bowl"
-msgstr ""
+msgstr "Kulho ja ristikko"
 
 #: ../gui/colortools.py:173
 msgctxt "color changer dock panels: tab tooltip description"
@@ -1334,7 +1339,7 @@ msgstr ""
 #: ../gui/device.py:131
 msgctxt "device settings: unmodified scroll action"
 msgid "Pan"
-msgstr ""
+msgstr "Panorointi"
 
 #. TRANSLATORS: Column's data is the device's name
 #: ../gui/device.py:432
@@ -1346,7 +1351,7 @@ msgstr "Laite"
 #: ../gui/device.py:446
 msgctxt "prefs: devices table: column header"
 msgid "Axes"
-msgstr "Akselit"
+msgstr "Akseleita"
 
 #. TRANSLATORS: Column shows type labels ("Touchscreen", "Pen" etc.)
 #: ../gui/device.py:460
@@ -1392,7 +1397,7 @@ msgstr "Korvaa kaikki"
 
 #: ../gui/dialogs.py:142
 msgid "Rename all"
-msgstr "Nimeä kaikki uudeleen"
+msgstr "Nimeä kaikki uudelleen"
 
 #: ../gui/dialogs.py:162
 msgid "Imported brush"
@@ -1564,7 +1569,7 @@ msgstr "Poistu koko näytön tilasta"
 
 #: ../gui/drawwindow.py:544
 msgid "Leave Fullscreen"
-msgstr ""
+msgstr "Poistu koko näytöstä"
 
 #: ../gui/drawwindow.py:547
 msgid "Enter Fullscreen Mode"
@@ -1840,7 +1845,7 @@ msgstr "Tallenna nimellä…"
 #: ../gui/filehandling.py:606
 msgctxt "save dialogs: formats and options: (label)"
 msgid "Format to save as:"
-msgstr ""
+msgstr "Tallennettavan tiedoston muoto:"
 
 #: ../gui/filehandling.py:673
 msgctxt ""
@@ -1986,7 +1991,7 @@ msgctxt ""
 "fill options: numeric value that determines whether tested pixels will be "
 "included in the fill, based on color difference"
 msgid "Tolerance:"
-msgstr ""
+msgstr "Toleranssi:"
 
 #: ../gui/fill.py:510
 msgctxt ""
@@ -2052,7 +2057,7 @@ msgctxt ""
 "Options under this category relate to where the fill will end up (default: "
 "the active layer) and how it will be combined with that layer."
 msgid "Target:"
-msgstr ""
+msgstr "Kohde:"
 
 #: ../gui/fill.py:644
 msgctxt "fill options: 'Target:' category (tooltip)"
@@ -2209,7 +2214,7 @@ msgstr "DPI"
 
 #: ../gui/framewindow.py:476
 msgid "Dots Per Inch (really Pixels Per Inch)"
-msgstr ""
+msgstr "Pistettä tuumalle (oikeasti pikseliä tuumalle)"
 
 #: ../gui/framewindow.py:479
 msgid "Color:"
@@ -2372,7 +2377,7 @@ msgstr ""
 
 #: ../gui/inputtestwindow.py:32
 msgid "Input Device Test"
-msgstr ""
+msgstr "Syöttölaitteen testaus"
 
 #: ../gui/inputtestwindow.py:61
 msgid "(no pressure)"
@@ -2593,7 +2598,7 @@ msgstr ""
 
 #: ../gui/linemode.py:174
 msgid "Pressure variation…"
-msgstr ""
+msgstr "Paineen vaihtelu…"
 
 #: ../gui/linemode.py:221 ../gui/linemode.py:800
 msgid "Lines and Curves"
@@ -2722,7 +2727,9 @@ msgstr ", "
 #: ../gui/meta.py:221
 msgctxt "About dialog: credits: translator credits (your name(s) here!)"
 msgid "translator-credits"
-msgstr "Nikolay Korotkiy <sikmir@gmail.com>"
+msgstr ""
+"Nikolay Korotkiy <sikmir@gmail.com>\n"
+"Tuomas Hietala 2020-2021"
 
 #. TRANSLATORS:"Brush radius" for the options panel. Short.
 #: ../gui/mode.py:592
@@ -2813,7 +2820,7 @@ msgstr "Esikatselu"
 
 #: ../gui/previewwindow.py:203
 msgid "Show preview of the whole drawing area"
-msgstr ""
+msgstr "Näytä koko piirtoalueen esikatselu"
 
 #. TRANSLATORS: The preview panel shows where the "camera" of the
 #. TRANSLATORS: main view is pointing.
@@ -3845,7 +3852,7 @@ msgstr ""
 #. field label
 #: ../gui/brusheditor.glade:426
 msgid "Value:"
-msgstr ""
+msgstr "Arvo:"
 
 #: ../gui/brusheditor.glade:491
 msgid "Reset this input to have no effect on the setting"
@@ -3897,7 +3904,7 @@ msgstr ""
 
 #: ../gui/brusheditor.glade:746
 msgid "Brush Dynamics"
-msgstr ""
+msgstr "Siveltimen dynamiikka"
 
 #: ../gui/brusheditor.glade:780
 msgid "Adjust this input mapping in detail"
@@ -3914,12 +3921,11 @@ msgstr "{dname}:"
 
 #: ../gui/brusheditor.glade:841
 msgid "Brush dynamics are not available for this setting."
-msgstr ""
+msgstr "Siveltimen dynamiikka ei ole käytettävissä tälle asetukselle."
 
 #: ../gui/brusheditor.glade:851
-#, fuzzy
 msgid "<big><b>No Brush Dynamics</b></big>"
-msgstr "<big><b>{accel_label}</b></big>"
+msgstr "<big><b>Ei siveltimen dynamiikkaa</b></big>"
 
 #: ../gui/inktool.glade:44
 msgctxt "Inking tool options: point value sliders: labels: tooltips"
@@ -4115,6 +4121,7 @@ msgstr ""
 
 #. Graph x-axis label
 #: ../gui/preferenceswindow.glade:145
+#, fuzzy
 msgctxt "Prefs Dialog|Pen Input|Input Device Settings|Pressure Mapping|"
 msgid "Input Pressure"
 msgstr "Syötteen paine"
@@ -4129,13 +4136,13 @@ msgstr "Siveltimen paine"
 #: ../gui/preferenceswindow.glade:174 ../gui/preferenceswindow.glade:202
 msgctxt "Prefs Dialog|Pen Input|Input Device Settings|Pressure Mapping|"
 msgid "0.0"
-msgstr "0.0"
+msgstr "0,0"
 
 #. Graph label, range (0...1)
 #: ../gui/preferenceswindow.glade:188 ../gui/preferenceswindow.glade:217
 msgctxt "Prefs Dialog|Pen Input|Input Device Settings|Pressure Mapping|"
 msgid "1.0"
-msgstr "1.0"
+msgstr "1,0"
 
 #: ../gui/preferenceswindow.glade:251
 msgctxt "Prefs Dialog|Pen Input|"
@@ -4223,7 +4230,7 @@ msgstr "<b>Tallentaminen</b>"
 #: ../gui/preferenceswindow.glade:592
 msgctxt "Prefs Dialog|Load & Save|"
 msgid "<b>Color Management</b>"
-msgstr "<b>Värihallinta</b>"
+msgstr "<b>Värienhallinta</b>"
 
 #: ../gui/preferenceswindow.glade:608
 msgctxt "Prefs Dialog|Load & Save|Color Management|"
@@ -4287,6 +4294,8 @@ msgid ""
 "the program crashes, you'll have a chance to restore what you were working "
 "on."
 msgstr ""
+"Varmuuskopioi työn vähitellen taustalla MyPaintin levyvälimuistiin. Jos "
+"ohjelma kaatuu, sinulla on mahdollisuus palauttaa keskeneräinen työ."
 
 #: ../gui/preferenceswindow.glade:768
 msgctxt "Prefs Dialog|Load & Save|Automated Backups|interval label"
@@ -4331,7 +4340,7 @@ msgstr ""
 #: ../gui/preferenceswindow.glade:920
 msgctxt "Prefs Dialog|View|Interface|Dark theme variant|"
 msgid "If available in GTK3 theme (needs restart)"
-msgstr ""
+msgstr "Mikäli käytettävissä GTK3-teemassa (vaatii uudelleenkäynnistyksen)"
 
 #: ../gui/preferenceswindow.glade:924
 msgctxt "Prefs Dialog|View|Interface|Dark theme variant|checkbox tooltip"
@@ -4342,7 +4351,7 @@ msgstr ""
 
 #: ../gui/preferenceswindow.glade:945
 msgid "Some of these settings require MyPaint to be restarted."
-msgstr ""
+msgstr "Osa näistä asetuksista vaatii MyPaintin uudelleenkäynnistämisen."
 
 #: ../gui/preferenceswindow.glade:968
 msgctxt "Prefs Dialog|View|Interface|Icon size|"
@@ -4357,7 +4366,7 @@ msgstr "Pieni"
 #: ../gui/preferenceswindow.glade:1010
 msgctxt "Prefs Dialog|View|Zoom|"
 msgid "Use a real checkerboard pattern"
-msgstr ""
+msgstr "Käytä oikeaa shakkilautakuviota"
 
 #: ../gui/preferenceswindow.glade:1014
 msgctxt "Prefs Dialog|View|Zoom|"
@@ -4365,10 +4374,12 @@ msgid ""
 "Draw a real checkerboard pattern to show transparency.\n"
 "This slows down the display, but can be less confusing."
 msgstr ""
+"Piirrä oikea shakkilautakuvio läpinäkyvyyden näyttämiseksi.\n"
+"Hidastaa näyttöä, mutta voi olla selkeämpi."
 
 #: ../gui/preferenceswindow.glade:1035
 msgid "When showing transparency:"
-msgstr ""
+msgstr "Läpinäkyvyyttä näytettäessä:"
 
 #: ../gui/preferenceswindow.glade:1050
 msgctxt "Prefs Dialog|View|Interface|"
@@ -4570,6 +4581,7 @@ msgstr ""
 msgctxt "Prefs Dialog|Compatibility"
 msgid "Show warning for files that may be partially incompatible"
 msgstr ""
+"Näytä varoitus tiedostoista, jotka saattavat olla osittain yhteensopimattomia"
 
 #. Label for a set of options
 #: ../gui/preferenceswindow.glade:1682
@@ -4581,6 +4593,7 @@ msgstr "Tiedostojen yhteensopivuusvaroitukset:"
 msgctxt "Prefs Dialog|Compatibility"
 msgid "Show warning for files that may be fully incompatible"
 msgstr ""
+"Näytä varoitus tiedostoista, jotka saattavat olla täysin yhteensopimattomia"
 
 #. This is a tooltip for the file behavior options label.
 #: ../gui/preferenceswindow.glade:1710
@@ -4661,7 +4674,7 @@ msgstr "Lataa tiedosto työstettäväksi."
 #: ../gui/resources.xml:82
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "Open Most Recent"
-msgstr ""
+msgstr "Avaa viimeisin"
 
 #: ../gui/resources.xml:83
 msgctxt "Accel Editor (descriptions)"
@@ -4910,7 +4923,7 @@ msgstr ""
 #: ../gui/resources.xml:326
 msgctxt "Menu→Color→Adjust Color (labels), Accel Editor (labels)"
 msgid "Change Hue Clockwise"
-msgstr ""
+msgstr "Muuta sävyä myötäpäivään"
 
 #: ../gui/resources.xml:327
 msgctxt "Accel Editor (descriptions)"
@@ -4920,7 +4933,7 @@ msgstr ""
 #: ../gui/resources.xml:334
 msgctxt "Menu→Color→Adjust Color (labels), Accel Editor (labels)"
 msgid "Change Hue Anticlockwise"
-msgstr ""
+msgstr "Muuta sävyä vastapäivään"
 
 #: ../gui/resources.xml:335
 msgctxt "Accel Editor (descriptions)"
@@ -4930,7 +4943,7 @@ msgstr ""
 #: ../gui/resources.xml:342
 msgctxt "Menu→Color→Adjust Color (labels), Accel Editor (labels)"
 msgid "Increase Saturation"
-msgstr ""
+msgstr "Lisää kylläisyyttä"
 
 #: ../gui/resources.xml:343
 msgctxt "Accel Editor (descriptions)"
@@ -4940,7 +4953,7 @@ msgstr ""
 #: ../gui/resources.xml:350
 msgctxt "Menu→Color→Adjust Color (labels), Accel Editor (labels)"
 msgid "Decrease Saturation"
-msgstr ""
+msgstr "Vähennä kylläisyyttä"
 
 #: ../gui/resources.xml:351
 msgctxt "Accel Editor (descriptions)"
@@ -4950,7 +4963,7 @@ msgstr ""
 #: ../gui/resources.xml:359
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
 msgid "Reload Brush Settings"
-msgstr "Lataa uudelleen siveltimen asetukset"
+msgstr "Lataa siveltimen asetukset uudelleen"
 
 #: ../gui/resources.xml:360
 msgctxt "Accel Editor (descriptions)"
@@ -5352,7 +5365,7 @@ msgstr ""
 #: ../gui/resources.xml:693
 msgctxt "Menu→View (labels), Accel Editor (labels)"
 msgid "Fit to View"
-msgstr "Sovita Kuva Ikkunaan"
+msgstr "Sovita näkymään"
 
 #: ../gui/resources.xml:694
 msgctxt "Accel Editor (descriptions)"
@@ -5617,7 +5630,7 @@ msgstr "Pyyhi käyttäen nykyistä sivellintä."
 #: ../gui/resources.xml:959
 msgctxt "Menu→Brush→Blend Mode (labels), Accel Editor (labels)"
 msgid "Paint Mode: Lock Alpha"
-msgstr "Maalaustoimintatila: Lukitse Alfa"
+msgstr "Maalaustoimintatila: Lukitse alfa"
 
 #: ../gui/resources.xml:960
 msgctxt "Accel Editor (descriptions)"
@@ -5854,7 +5867,7 @@ msgstr ""
 #: ../gui/resources.xml:1187
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
 msgid "Change Brush…"
-msgstr "Vaihda sivellin…"
+msgstr "Vaihda sivellintä…"
 
 #: ../gui/resources.xml:1188
 msgctxt "Accel Editor (descriptions)"
@@ -5864,7 +5877,7 @@ msgstr ""
 #: ../gui/resources.xml:1195
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "Change Color…"
-msgstr "Vaihda väri…"
+msgstr "Vaihda väriä…"
 
 #: ../gui/resources.xml:1196
 msgctxt "Accel Editor (descriptions)"
@@ -5875,7 +5888,7 @@ msgstr ""
 #: ../gui/resources.xml:1204
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "Change Color (fast subset)…"
-msgstr "Vaihda väri (pikapaletti)…"
+msgstr "Vaihda väriä (pikapaletti)…"
 
 #: ../gui/resources.xml:1205
 msgctxt "Accel Editor (descriptions)"
@@ -5887,7 +5900,7 @@ msgstr ""
 #: ../gui/resources.xml:1213
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
 msgid "Get More Brushes…"
-msgstr "Hae lisää siveltimiä…"
+msgstr "Hanki lisää siveltimiä…"
 
 #: ../gui/resources.xml:1214
 msgctxt "Accel Editor (descriptions)"
@@ -6023,7 +6036,7 @@ msgstr ""
 #: ../gui/resources.xml:1339
 msgctxt "Help→Debug (labels), Accel Editor (labels)"
 msgid "Test Input Devices"
-msgstr ""
+msgstr "Testaa syöttölaitteita"
 
 #: ../gui/resources.xml:1340
 msgctxt "Accel Editor (descriptions)"
@@ -6117,7 +6130,7 @@ msgstr ""
 #: ../gui/resources.xml:1419
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "HSV Cube"
-msgstr ""
+msgstr "HSV-kuutio"
 
 #: ../gui/resources.xml:1420
 msgctxt "Accel Editor (descriptions)"
@@ -6129,7 +6142,7 @@ msgstr ""
 #: ../gui/resources.xml:1427
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "HSV Square"
-msgstr ""
+msgstr "HSV-neliö"
 
 #: ../gui/resources.xml:1428
 msgctxt "Accel Editor (descriptions)"
@@ -6139,7 +6152,7 @@ msgstr ""
 #: ../gui/resources.xml:1435
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "Component Sliders"
-msgstr ""
+msgstr "Komponenttien liukusäätimet"
 
 #: ../gui/resources.xml:1436
 msgctxt "Accel Editor (descriptions)"
@@ -6159,7 +6172,7 @@ msgstr ""
 #: ../gui/resources.xml:1451
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "Concentric Rings"
-msgstr ""
+msgstr "Sisäkkäiset renkaat"
 
 #: ../gui/resources.xml:1452
 msgctxt "Accel Editor (descriptions)"
@@ -6169,7 +6182,7 @@ msgstr ""
 #: ../gui/resources.xml:1459
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "Crossed Bowl"
-msgstr ""
+msgstr "Kulho ja ristikko"
 
 #: ../gui/resources.xml:1460
 msgctxt "Accel Editor (descriptions)"
@@ -6304,7 +6317,7 @@ msgstr ""
 #: ../gui/resources.xml:1587
 msgctxt "Menu→View→Display Filter (labels), Accel Editor (labels)"
 msgid "Display Colors as Greyscale"
-msgstr "Näytä värit harmaasävyisinä"
+msgstr "Näytä värit harmaasävyinä"
 
 #: ../gui/resources.xml:1588
 msgctxt "Accel Editor (descriptions)"
@@ -6455,7 +6468,7 @@ msgstr ""
 #: ../gui/resources.xml:1717
 msgctxt "Menu→Edit→Current Mode (labels)"
 msgid "Lines and Curves"
-msgstr ""
+msgstr "Viivat ja käyrät"
 
 #: ../gui/resources.xml:1718
 msgctxt "Toolbar (short labels)"
