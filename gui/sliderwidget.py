@@ -229,3 +229,12 @@ class InputSlider (with_metaclass(ScaleDelegator, Gtk.Bin)):
         if reset_value:
             self._scale.set_value(self._old_value)
         self._scale_mode = True
+
+    def trigger_box_resize(self):
+        """Remove & add back scale to trigger resizing of the value box
+
+        Only needed for the sliders with the value box enabled (brush editor)
+        There is probably a better way of doing this.
+        """
+        self.remove(self._scale)
+        self.add(self._scale)

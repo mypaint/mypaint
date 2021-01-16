@@ -32,6 +32,7 @@ from . import dialogs
 from . import brushmanager
 from .builderhacks import add_objects_from_template_string
 from .windowing import SubWindow
+from . import curve as notuseddirectly # noqa - needed for interactive testing
 
 # The widget class needs to be in scope before it is
 # instantiated via the loading of the glade file.
@@ -115,6 +116,7 @@ class BrushEditorWindow (SubWindow):
             "brush settings editor: subwindow title",
             "Brush Settings Editor",
         ))
+        self._scales = []
         self._setting = None
         self._builder = Gtk.Builder()
         self._builder.set_translation_domain("mypaint")
@@ -267,6 +269,7 @@ class BrushEditorWindow (SubWindow):
             scale_adj.connect("value-changed", cb, scale_lbl, fmt, True)
             cb(scale_adj, scale_lbl, fmt, True)
             scale.set_adjustment(scale_adj)
+            self._scales.append(scale)
             # X axis: min
             sbut = self._builder.get_object("by%s_xmin_scalebutton" % i.name)
             sbut_lbl = self._builder.get_object("by%s_xmin_label" % i.name)
@@ -821,6 +824,7 @@ class BrushEditorWindow (SubWindow):
             scale.set_adjustment(base_adj)
         # Redraw the scale widget for the sake of the label (issue #524)
         scale.queue_draw()
+        self._base_value_scale = scale
         # Update brush dynamics curves and sliders
         for inp in brushsettings.inputs:
             self._update_input_curve(inp, expander=expanders)
@@ -986,6 +990,8 @@ class BrushEditorWindow (SubWindow):
         else:
             dynamics_editor_grid.show()
             no_dynamics_grid.hide()
+            for scale in self._scales:
+                scale.trigger_box_resize()  # see mypaint issue 1129
         # Update setting name label
         label = getobj("setting_name_label")
         label.set_label(self._setting.name)
