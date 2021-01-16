@@ -121,6 +121,7 @@ class BrushEditorWindow (SubWindow):
         self._builder = Gtk.Builder()
         self._builder.set_translation_domain("mypaint")
         self._build_ui()
+        self._base_value_scale = self._builder.get_object("base_value_scale")
         self.connect_after("show", self._post_show_cb)
         self.connect('button-press-event', self._clear_focus)
         editor = self._builder.get_object("brush_editor")
@@ -819,12 +820,11 @@ class BrushEditorWindow (SubWindow):
             newvalue = self._brush.get_base_value(self._setting.cname)
             base_adj.set_value(newvalue)
         # Associate the base value scale with the right adjustment
-        scale = self._builder.get_object("base_value_scale")
+        scale = self._base_value_scale
         if scale.get_adjustment() is not base_adj:
             scale.set_adjustment(base_adj)
         # Redraw the scale widget for the sake of the label (issue #524)
         scale.queue_draw()
-        self._base_value_scale = scale
         # Update brush dynamics curves and sliders
         for inp in brushsettings.inputs:
             self._update_input_curve(inp, expander=expanders)
@@ -992,6 +992,7 @@ class BrushEditorWindow (SubWindow):
             no_dynamics_grid.hide()
             for scale in self._scales:
                 scale.trigger_box_resize()  # see mypaint issue 1129
+            self._base_value_scale.trigger_box_resize()
         # Update setting name label
         label = getobj("setting_name_label")
         label.set_label(self._setting.name)
