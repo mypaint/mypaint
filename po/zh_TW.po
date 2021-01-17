@@ -8,8 +8,8 @@ msgstr ""
 "Project-Id-Version: mypaint v1.2.0-586-g70ce73d\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-01-11 18:52+0100\n"
-"PO-Revision-Date: 2020-07-07 09:41+0000\n"
-"Last-Translator: jjyaung <jj_yaung@yahoo.com.tw>\n"
+"PO-Revision-Date: 2021-01-18 09:32+0000\n"
+"Last-Translator: WCK <wck317-wck317@yahoo.com>\n"
 "Language-Team: Chinese (Traditional) <https://hosted.weblate.org/projects/"
 "mypaint/mypaint/zh_Hant/>\n"
 "Language: zh_TW\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 4.2-dev\n"
+"X-Generator: Weblate 4.5-dev\n"
 
 #. TRANSLATORS: Name of first column in the button map preferences.
 #. TRANSLATORS: Refers to an action bound to a mod+button combination.
@@ -445,15 +445,14 @@ msgid "Unknown Brush"
 msgstr "未知筆刷"
 
 #: ../gui/brushmanip.py:191
-#, fuzzy
 msgctxt "brush resize mode - name"
 msgid "Resize Brush"
-msgstr "重新命名筆刷"
+msgstr "調整筆刷大小"
 
 #: ../gui/brushmanip.py:196
 msgctxt "brush resize mode - usage"
 msgid "Change brush size by dragging on the canvas"
-msgstr ""
+msgstr "在畫布上拖曳以調整筆刷大小"
 
 #: ../gui/brushselectionwindow.py:220
 msgctxt "brush group: context menu for a single brush"
@@ -484,7 +483,7 @@ msgstr "從群組移除"
 #, fuzzy, python-brace-format
 msgctxt "brush group: context menu: unique names for cloned brushes"
 msgid "{original_name} copy"
-msgstr "複製{original_name}"
+msgstr "{original_name} 複製"
 
 #: ../gui/brushselectionwindow.py:299
 #, fuzzy, python-brace-format
