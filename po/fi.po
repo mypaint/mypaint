@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: mypaint v2.0.0-alpha.8-1-g4490f06\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-01-11 18:52+0100\n"
-"PO-Revision-Date: 2021-01-16 22:32+0000\n"
+"PO-Revision-Date: 2021-01-22 22:32+0000\n"
 "Last-Translator: Tuomas Hietala <tuomas.hietala@iki.fi>\n"
 "Language-Team: Finnish <https://hosted.weblate.org/projects/mypaint/mypaint/"
 "fi/>\n"
@@ -666,20 +666,19 @@ msgstr "Aseta maalaamiseen käytetty väri"
 
 #: ../gui/colorpicker.py:201
 msgid "Pick Hue"
-msgstr ""
+msgstr "Valitse sävy"
 
 #: ../gui/colorpicker.py:204
 msgid "Set the color Hue used for painting"
-msgstr ""
+msgstr "Aseta maalaamiseen käytettävän värin sävy"
 
 #: ../gui/colorpicker.py:222
-#, fuzzy
 msgid "Pick Chroma"
-msgstr "Poimi väri"
+msgstr "Valitse kromaattisuus"
 
 #: ../gui/colorpicker.py:225
 msgid "Set the color Chroma used for painting"
-msgstr ""
+msgstr "Aseta maalaamiseen käytettävän värin kromaattisuus"
 
 #: ../gui/colorpicker.py:242
 msgid "Pick Luma"
@@ -695,7 +694,7 @@ msgstr "Värin yksityiskohdat"
 
 #: ../gui/colors/adjbases.py:872
 msgid "Current brush color, and the color most recently used for painting"
-msgstr ""
+msgstr "Nykyinen siveltimen väri ja viimeisin maalaamiseen käytetty väri"
 
 #: ../gui/colors/hcywheel.py:49
 msgctxt "Online help pages"
@@ -717,7 +716,7 @@ msgstr ""
 #: ../gui/colors/hcywheel.py:355
 msgctxt "HCY Color Wheel: tooltip"
 msgid "HCY hue and chroma."
-msgstr ""
+msgstr "HCY-sävy (H) ja -kromaattisuus (C)."
 
 #: ../gui/colors/hcywheel.py:412
 msgctxt "HCY Mask Editor Wheel: tooltip"
@@ -987,12 +986,12 @@ msgstr "Värin nimi:"
 #: ../gui/colors/paletteview.py:231
 msgctxt "palette editor dialog: color name entry: tooltip"
 msgid "Current color's name"
-msgstr ""
+msgstr "Nykyisen värin nimi"
 
 #: ../gui/colors/paletteview.py:322
 msgctxt "palette editor dialog: color name entry"
 msgid "Empty palette slot"
-msgstr ""
+msgstr "Tyhjä paletin kohta"
 
 #: ../gui/colors/paletteview.py:378
 msgctxt "palette load dialog: title"
@@ -1015,7 +1014,7 @@ msgstr ""
 #: ../gui/colors/paletteview.py:698
 msgctxt "palette view"
 msgid "Empty palette slot (drag a color here)"
-msgstr ""
+msgstr "Tyhjä paletin kohta (vedä väri tähän)"
 
 #. TRANSLATORS: inserting gaps (empty color swatches)
 #: ../gui/colors/paletteview.py:785
@@ -1111,7 +1110,7 @@ msgstr "Komponenttien liukusäätimet"
 #: ../gui/colors/sliders.py:116
 msgctxt "color sliders panel: tab description (in tooltip)"
 msgid "Adjust individual components of the color."
-msgstr ""
+msgstr "Säädä värin yksittäisiä komponentteja."
 
 #: ../gui/colors/sliders.py:161
 msgctxt "color component slider: tooltip"
@@ -1131,27 +1130,27 @@ msgstr "RGB-sininen"
 #: ../gui/colors/sliders.py:212
 msgctxt "color component slider: tooltip"
 msgid "HSV Hue"
-msgstr ""
+msgstr "HSV-sävy (H)"
 
 #: ../gui/colors/sliders.py:227
 msgctxt "color component slider: tooltip"
 msgid "HSV Saturation"
-msgstr ""
+msgstr "HSV-kylläisyys (S)"
 
 #: ../gui/colors/sliders.py:240
 msgctxt "color component slider: tooltip"
 msgid "HSV Value"
-msgstr ""
+msgstr "HSV-valööri (V)"
 
 #: ../gui/colors/sliders.py:252
 msgctxt "color component slider: tooltip"
 msgid "HCY Hue"
-msgstr ""
+msgstr "HCY-sävy (H)"
 
 #: ../gui/colors/sliders.py:266
 msgctxt "color component slider: tooltip"
 msgid "HCY Chroma"
-msgstr ""
+msgstr "HCY-kromaattisuus"
 
 #: ../gui/colors/sliders.py:281
 msgctxt "color component slider: tooltip"
@@ -1405,7 +1404,7 @@ msgstr "Tuotu sivellin"
 
 #: ../gui/dialogs.py:163
 msgid "Existing brush"
-msgstr ""
+msgstr "Olemassa oleva sivellin"
 
 #: ../gui/dialogs.py:166
 #, python-brace-format
@@ -1413,6 +1412,8 @@ msgid ""
 "<b>A brush named “{brush_name}” already exists.</b>\n"
 "Do you want to replace it, or should the new brush be renamed?"
 msgstr ""
+"<b>Sivellin nimeltä ”{brush_name}” on jo olemassa.</b>\n"
+"Haluatko korvata sen vai muutetaanko uuden siveltimen nimeä?"
 
 #: ../gui/dialogs.py:196
 msgid "Overwrite brush group?"
@@ -1561,7 +1562,7 @@ msgstr "Avaa"
 
 #: ../gui/drawwindow.py:498
 msgid "Set current color"
-msgstr ""
+msgstr "Aseta nykyinen väri"
 
 #: ../gui/drawwindow.py:543
 msgid "Leave Fullscreen Mode"
@@ -1759,8 +1760,8 @@ msgstr "Ladattiin {files_summary}."
 #, python-brace-format
 msgid "{n} file"
 msgid_plural "{n} files"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "{n} tiedosto"
+msgstr[1] "{n} tiedostoa"
 
 #: ../gui/filehandling.py:223
 #, python-brace-format
@@ -1861,7 +1862,7 @@ msgstr "Peruuta"
 #: ../gui/filehandling.py:710
 msgctxt "Destructive action confirm dialog: save checkbox"
 msgid "_Save to Scraps first"
-msgstr "_Tallenna luonnoksiin ensin"
+msgstr "_Tallenna ensin luonnoksiin"
 
 #: ../gui/filehandling.py:716
 msgctxt ""
@@ -1926,10 +1927,9 @@ msgid "_Open"
 msgstr "Avaa"
 
 #: ../gui/filehandling.py:1452
-#, fuzzy
 msgctxt "File→Open Most Recent confirm dialog: title"
 msgid "Open Most Recent File?"
-msgstr "Avaa vanha"
+msgstr "Avaa viimeisin tiedosto?"
 
 #: ../gui/filehandling.py:1457
 #, fuzzy
@@ -2007,7 +2007,7 @@ msgctxt ""
 "fill options: option category (label) Options under this category relate to "
 "what the fill isbased on, not where the actual fill ends up."
 msgid "Source:"
-msgstr ""
+msgstr "Lähde:"
 
 #: ../gui/fill.py:536
 msgctxt "fill options: 'Source:' category (tooltip)"
@@ -2998,7 +2998,7 @@ msgstr "Tuntematon komento"
 
 #: ../lib/command.py:320
 msgid "Undefined (command not started yet)"
-msgstr ""
+msgstr "Ei määritelty (komentoa ei ole vielä aloitettu)"
 
 #. TRANSLATORS: A short time spent painting / making brushwork.
 #. TRANSLATORS: This can correspond to zero or more touches of
@@ -6670,10 +6670,9 @@ msgid ""
 msgstr ""
 
 #: ../gui/resources.xml:1906
-#, fuzzy
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "Pick Color Chroma"
-msgstr "Poimi väri"
+msgstr "Valitse värin kromaattisuus"
 
 #: ../gui/resources.xml:1907
 msgctxt "Accel Editor (descriptions)"
