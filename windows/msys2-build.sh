@@ -100,8 +100,8 @@ install_dependencies() {
         ${PKG_PREFIX}-nsis \
         ${PKG_PREFIX}-gcc \
         ${PKG_PREFIX}-binutils \
-        ${PKG_PREFIX}-python3 \
-        ${PKG_PREFIX}-python3-pip \
+        ${PKG_PREFIX}-python \
+        ${PKG_PREFIX}-python-pip \
         zip \
         p7zip
 
