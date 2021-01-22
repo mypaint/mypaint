@@ -315,7 +315,7 @@ class BrushPopupMenu (Gtk.Menu):
         brush = self._brush
         bl.bm.select_brush(brush)
         brush_editor = self._app.brush_settings_window
-        brush_editor.show()
+        brush_editor.show_all()
 
     def _remove_cb(self, menuitem):
         bl = self._brushlist
