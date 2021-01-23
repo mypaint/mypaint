@@ -17,6 +17,7 @@ from __future__ import division, print_function
 import weakref
 import os.path
 import os
+import subprocess
 
 import gui.document  # noqa
 
@@ -59,9 +60,49 @@ _LAYER_UPDATE_FAILED_MSG = C_(
 )
 
 
-# Restoration of environment variables for launch context
+# Restoration of environment variables for launch context.
+# Required (in some cases) for launching programs for external
+# editing, and for opening web browsers, from appimages.
 
 _MYP_ENV_NAME = 'MYPAINT_ENV_CLEAN'
+
+_ORIGINAL_ENV = None
+
+
+# Required for opening web browsers from the appimages,
+# relevant for bug reports, brush packs, and online help.
+if _MYP_ENV_NAME in os.environ:
+
+    _Popen = subprocess.Popen
+
+    class AppImagePopen(_Popen):
+        def __init__(self, cmd, *args, **kwargs):
+            kwargs["env"] = original_environ()
+            super(AppImagePopen, self).__init__(cmd, *args, **kwargs)
+
+    subprocess.Popen = AppImagePopen
+
+
+def original_environ():
+    """Reads the outer environment and returns it as a dict
+
+    This is only used by the appimage builds, where the outer
+    environment is stored with null separators in a temp file.
+    """
+    global _ORIGINAL_ENV
+
+    if _MYP_ENV_NAME not in os.environ:
+        return os.environ
+    elif _ORIGINAL_ENV is None:
+        with open(os.environ[_MYP_ENV_NAME]) as f:
+            orig = f.read()
+            _ORIGINAL_ENV = {
+                varname: value for
+                varname, value in
+                (s.split('=', 1)for s in orig.split('\0') if '=' in s)
+            } if orig else {}
+    return _ORIGINAL_ENV
+
 
 def restore_env(ctx):
     """Clear existing envvars in context & use the given envvars instead
@@ -91,10 +132,11 @@ def restore_env(ctx):
     # the dirty/clean list/dict should both be safe to cache.
     for varname, __ in (s.split('=', 1) for s in dirty):
         ctx.unsetenv(varname)
-    for varname, value in (s.split('=', 1) for s in clean.split('\n')):
+    for varname, value in original_environ().items():
         ctx.setenv(varname, value)
 
-## Class definitions
+
+# Class definitions
 
 class OpenWithDialog (Gtk.Dialog):
     """Choose an app from those recommended for a type"""

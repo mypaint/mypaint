@@ -16,6 +16,7 @@ Unreleased (2.1.0):
 * Fix icon editor spawning beneath other windows, in GNOME >= 3.30
 * Handle exceptions caused by using invalid/unrecognized locales
 * Fixed searching for keyboard shortcuts ('Keys' tab in preferences window)
+* Fixed web browsers not opening with external environment in appimages
 
 ### Added
 * Symmetry angle is now adjustable
