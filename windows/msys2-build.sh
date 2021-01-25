@@ -303,7 +303,7 @@ run_doctest() {
 }
 
 run_tests() {
-    loginfo "Runnning startup/shutdown test"
+    loginfo "Running startup/shutdown test"
     MYPAINT_DEBUG=1 python setup.py demo --args='--run-and-quit'
     loginfo "Running conformance tests."
     python3 setup.py test

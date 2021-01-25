@@ -1052,7 +1052,7 @@ Vocabulary
         </object>
       </child>
       <!-- }}} -->
-      <!-- {{{ Layer menu strucure -->
+      <!-- {{{ Layer menu structure -->
       <child>
         <object class="GtkAction" id="LayerMenu">
           <property name="label" translatable="yes" context="Menu (labels)">Layer</property>

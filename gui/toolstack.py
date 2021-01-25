@@ -1168,7 +1168,7 @@ class SizedVBoxToolWidget (Gtk.VBox):
 
     This mixin can be used for tool widgets implemented as `GtkVBox`es to give
     them a default natural height which might be greater than the sum of their
-    consituent widgets' minimum heights.
+    constituent widgets' minimum heights.
 
     """
 

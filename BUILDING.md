@@ -36,7 +36,7 @@ compatible stable releases of libmypaint.
 If you need to build a commit from the commit history, use `git log`
 after having checked out the commit, and search for libmypaint to infer
 which commit of libmypaint you should build against.
-This is not always specified explicitly, but should always be inferrable by
+This is not always specified explicitly, but should always be inferable by
 cross-referencing the commit log of libmypaint (by date or keyword search).
 </details>
 
@@ -393,7 +393,7 @@ file **`setup.cfg`** in the **`[install]`** section. In those paths, **`$base`**
 is a placeholder that is replaced by the value set with **`--prefix`** in the
 install command (**`/usr`** by default).
 
-The installation directories can be overriden for each type by providing a flag
+The installation directories can be overridden for each type by providing a flag
 to the **`install`** command equivalent to the name of one of the `install-xyz`
 variables in **`setup.cfg`**. For example:
 
