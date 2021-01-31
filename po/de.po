@@ -4,8 +4,8 @@ msgstr ""
 "Project-Id-Version: mypaint v2.0.0-alpha.11-2-g0673fe8\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-01-11 18:52+0100\n"
-"PO-Revision-Date: 2020-12-11 17:29+0000\n"
-"Last-Translator: Masowick <d651483@nwytg.com>\n"
+"PO-Revision-Date: 2021-02-01 18:42+0000\n"
+"Last-Translator: Christian <christian@blaeul.de>\n"
 "Language-Team: German <https://hosted.weblate.org/projects/mypaint/mypaint/"
 "de/>\n"
 "Language: de\n"
@@ -13,7 +13,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 4.4-dev\n"
+"X-Generator: Weblate 4.5-dev\n"
 "X-Poedit-Country: GERMANY\n"
 "X-Poedit-Language: German\n"
 "X-Poedit-SourceCharset: utf-8\n"
@@ -678,9 +678,8 @@ msgid "Pick Chroma"
 msgstr "Farbe wählen"
 
 #: ../gui/colorpicker.py:225
-#, fuzzy
 msgid "Set the color Chroma used for painting"
-msgstr "Zum Malen verwendete Farbe einstellen"
+msgstr "Zum Malen verwendete Farb-Chrominanz einstellen"
 
 #: ../gui/colorpicker.py:242
 msgid "Pick Luma"
@@ -1490,7 +1489,7 @@ msgstr "Wiederherstellen"
 #: ../gui/document.py:195
 #, python-format
 msgid "Undo %s"
-msgstr "Rückgängig  %s"
+msgstr "%s rückgängig machen"
 
 #: ../gui/document.py:196
 msgid "Undo"
@@ -1977,22 +1976,20 @@ msgid "_Open"
 msgstr "_Öffnen"
 
 #: ../gui/filehandling.py:1471
-#, fuzzy
 msgctxt "File→Open Next/Prev Scrap: error message"
 msgid "There are no scrap files yet. Try saving one first."
-msgstr "Es gibt noch keine Notizen mit dem Namem „%s“."
+msgstr ""
+"Es gibt noch keine Entwurfsdateien. Sie müssen erst einmal eine speichern."
 
 #: ../gui/filehandling.py:1480
-#, fuzzy
 msgctxt "File→Open Next/Prev Scrap confirm dialog: title"
 msgid "Open Next Scrap?"
 msgstr "Nächsten Entwurf öffnen?"
 
 #: ../gui/filehandling.py:1488
-#, fuzzy
 msgctxt "File→Open Next/Prev Scrap confirm dialog: title"
 msgid "Open Previous Scrap?"
-msgstr "Letzten Entwurf öffnen?"
+msgstr "Vorherigen Entwurf öffnen?"
 
 #: ../gui/filehandling.py:1497
 msgctxt "File→Open Next/Prev Scrap confirm dialog: continue button"
@@ -2037,7 +2034,6 @@ msgid "Tolerance:"
 msgstr "Toleranz:"
 
 #: ../gui/fill.py:510
-#, fuzzy
 msgctxt ""
 "fill options: Tolerance (tooltip) Note: 'the start' refers to the color of "
 "the starting point (pixel) of the fill"
@@ -2045,8 +2041,8 @@ msgid ""
 "How much pixel colors are allowed to vary from the start\n"
 "before Flood Fill will refuse to fill them"
 msgstr ""
-"Erlaubte Farbabweichung bevor Füllen\n"
-"diese nicht mehr füllt"
+"Um wie viel die Pixelfarben vom Startpixel abweichen dürfen,\n"
+"bevor das Füllwerkzeug sie nicht mehr füllt"
 
 #: ../gui/fill.py:533
 msgctxt ""
@@ -2066,24 +2062,22 @@ msgid "Select a specific layer you want the fill to be based on"
 msgstr "Eine bestimmte Ebene wählen, auf der die Füllung basiert"
 
 #: ../gui/fill.py:598
-#, fuzzy
 msgctxt ""
 "fill options: 'Source:' category: toggle (label)\n"
 "When this option is enabled, the fill is based\n"
 "on the combination of all visible layers"
 msgid "Sample Merged"
-msgstr "Ebenen vereinen"
+msgstr "Vereinte Ebenen"
 
 #: ../gui/fill.py:602
-#, fuzzy
 msgctxt "fill options: Sample Merged (tooltip)"
 msgid ""
 "When considering which area to fill, use a\n"
 "temporary merge of all the visible layers\n"
 "underneath the current layer"
 msgstr ""
-"Einen Mix aller sichtbaren Ebenen unter der \n"
-"aktiven Ebene verwenden, um die zu füllende\n"
+"Einen Mix aller sichtbaren Ebenen\n"
+"verwenden, um die zu füllende\n"
 "Fläche zu bestimmen"
 
 #: ../gui/fill.py:618
@@ -2323,7 +2317,6 @@ msgid "px"
 msgstr "px"
 
 #: ../gui/framewindow.py:916
-#, fuzzy
 msgid "in"
 msgstr "Zoll"
 
@@ -2587,6 +2580,8 @@ msgid ""
 "<span size=\"smaller\">{layer_name}\n"
 "<span size=\"smaller\">{layer_description}</span></span>"
 msgstr ""
+"<span size=\"smaller\">{layer_name}\n"
+"<span size=\"smaller\">{layer_description}</span></span>"
 
 #: ../gui/layerswindow.py:95
 msgid "Layers"
@@ -2700,12 +2695,12 @@ msgid "Generic line/curve mode"
 msgstr "Generischer Linien-/Kurvenmodus"
 
 #: ../gui/linemode.py:803
-#, fuzzy
 msgid ""
 "Draw straight lines; Shift adds curves, Shift + Ctrl moves line ends, Ctrl "
 "constrains angle"
 msgstr ""
-"Gerade Linien zeichnen; Umschalttaste fügt Kurven hinzu, Strg erzwingt Winkel"
+"Gerade Linien zeichnen; Umschalttaste fügt Kurven hinzu, Umschalt+Strg "
+"verschiebt Linienenden, Strg beschränkt Winkel"
 
 #: ../gui/linemode.py:814
 msgid "Connected Lines"
@@ -3475,7 +3470,7 @@ msgstr "Ebene"
 #, fuzzy
 msgctxt "layer default names"
 msgid "Vectors"
-msgstr "Vektorebene"
+msgstr "Vektoren"
 
 #: ../lib/layer/data.py:1166
 msgctxt "layer type descriptions"
@@ -3904,6 +3899,11 @@ msgid ""
 "You can always launch this dialog from the ‘File’ menu when MyPaint is "
 "running."
 msgstr ""
+"Diesen Dialog zum Wiederherstellen der automatischen Speicherungen zeigen, "
+"wenn MyPaint gestartet wird und Dateien wiederhergestellt werden können.\n"
+"\n"
+"Sie können diesen Dialog jederzeit über das Datei-Menü öffnen, während "
+"MyPaint ausgeführt wird."
 
 #. Deletes the selected autosave backup file.
 #: ../gui/autorecover.glade:60
@@ -4399,7 +4399,7 @@ msgstr "Maustasten"
 #. unless its key is bound to something else.
 #: ../gui/preferenceswindow.glade:453
 msgid "Disable fallback key bindings"
-msgstr ""
+msgstr "Ausweich-Tastaturbelegung deaktivieren"
 
 #. Tooltip for checkbox in the keyboard mappings preferences.
 #: ../gui/preferenceswindow.glade:457
@@ -4407,6 +4407,8 @@ msgid ""
 "The fallback key bindings are static built-in bindings that are only used if "
 "their key combinations are not bound to anything else."
 msgstr ""
+"Die Ausweich-Tastaturbelegung besteht aus eingebauten Tastenkürzeln, die nur "
+"verwendet werden, wenn ihnen nichts anderes zugewiesen ist."
 
 #: ../gui/preferenceswindow.glade:476
 msgctxt "Prefs Dialog|Button|"
@@ -4832,6 +4834,10 @@ msgid ""
 "default. In this mode 1.x .ora files will look the same as they did in older "
 "versions, but pigment blending will not work well."
 msgstr ""
+"Beim Erstellen neuer Dokumente standardmäßig den älteren 1.x-"
+"Kompatibilitätsmodus nutzen. In diesem Modus sehen 1.x .ora-Dateien genauso "
+"aus wie in älteren Versionen, aber die Pigmentmischung funktioniert nicht "
+"gut."
 
 #: ../gui/preferenceswindow.glade:1633
 msgctxt "Prefs Dialog|Compatibility"
@@ -4839,6 +4845,9 @@ msgid ""
 "When creating new documents, use the regular 2.x compatibility mode by "
 "default. Old documents will often look different in this mode."
 msgstr ""
+"Beim Erstellen neuer Dokumente standardmäßig den regulären 2.x-"
+"Kompatibilitätsmodus nutzen. Alte Dokumente sehen in diesem Modus oft anders "
+"aus."
 
 #: ../gui/preferenceswindow.glade:1665
 msgctxt "Prefs Dialog|Compatibility"
@@ -7015,17 +7024,17 @@ msgid ""
 msgstr "Die Zeichenfarbe von Bildschirmpixeln festlegen."
 
 #: ../gui/resources.xml:1915
-#, fuzzy
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "Pick Color Luma"
-msgstr "Farbpipette"
+msgstr "Farbluminanz auswählen"
 
 #: ../gui/resources.xml:1916
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid ""
 "Set the painting Luma from screen pixels while preserving the Hue and Chroma."
-msgstr "Die Zeichenfarbe von Bildschirmpixeln festlegen."
+msgstr ""
+"Zeichenluminanz anhand von Bildschirmpixeln einstellen, aber Farbton und "
+"Farbintensität (Chroma) beibehalten."
 
 #: ../gui/resources.xml:1924
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
