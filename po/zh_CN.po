@@ -2745,7 +2745,12 @@ msgstr ", "
 #: ../gui/meta.py:221
 msgctxt "About dialog: credits: translator credits (your name(s) here!)"
 msgid "translator-credits"
-msgstr "译员致谢"
+msgstr ""
+"Dongjun Wu <ziyawu@gmail.com>, 2010, 2012.\n"
+"Ruei-Yuan Lu <RueiYuan.Lu@gmail.com>, 2012.\n"
+"Andrew Chadwick <a.t.chadwick@gmail.com>,2015.\n"
+"玉堂白鹤 <yjwork@qq.com>, 2019, 2020.\n"
+"及 https://hosted.weblate.org/projects/mypaint/ 网站其他贡献者"
 
 #. TRANSLATORS:"Brush radius" for the options panel. Short.
 #: ../gui/mode.py:592
