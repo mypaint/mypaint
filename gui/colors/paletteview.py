@@ -552,6 +552,10 @@ class _PaletteGridLayout (ColorAdjusterWidget):
 
     def __init__(self):
         ColorAdjusterWidget.__init__(self)
+
+        evbox = Gtk.EventBox()
+        self.add(evbox)
+
         # Sizing
         s = self._SWATCH_SIZE_NOMINAL
         self.set_size_request(s, s)
@@ -561,11 +565,11 @@ class _PaletteGridLayout (ColorAdjusterWidget):
         #: User can click on empty slots
         self.can_select_empty = False
         # Current index
-        self.connect("button-press-event", self._button_press_cb)
-        self.connect_after("button-release-event", self._button_release_cb)
+        evbox.connect("button-press-event", self._button_press_cb)
+        evbox.connect_after("button-release-event", self._button_release_cb)
         # Dragging
-        self.connect("motion-notify-event", self._motion_notify_cb)
-        self.add_events(Gdk.EventMask.POINTER_MOTION_MASK)
+        evbox.connect("motion-notify-event", self._motion_notify_cb)
+        evbox.add_events(Gdk.EventMask.POINTER_MOTION_MASK)
         # Tooltips
         self._tooltip_index = None
         self.set_has_tooltip(True)
