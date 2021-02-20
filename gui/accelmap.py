@@ -13,11 +13,13 @@
 
 from __future__ import division, print_function
 import logging
+import re
 
 from lib.gibindings import Gtk
 from lib.gibindings import Gdk
 from lib.gibindings import Pango
 from lib.gettext import gettext as _
+from lib.gettext import C_
 
 import lib.xml
 from lib.pycompat import unicode
@@ -43,13 +45,14 @@ class AccelMapEditor (Gtk.Grid):
 
     __gtype_name__ = 'AccelMapEditor'
 
-    _COLUMN_TYPES = (str, str, str, str, str, str)
+    _COLUMN_TYPES = (str, str, str, str, str, str, str)
     _PATH_COLUMN = 0
     _ACCEL_LABEL_COLUMN = 1
     _ACTION_LABEL_COLUMN = 2
     _SEARCH_TEXT_COLUMN = 3
-    _ACCEL_LABEL_SORT_COLUMN = 4
-    _ACTION_LABEL_SORT_COLUMN = 5
+    _FILTER_TEXT_COLUMN = 4
+    _ACCEL_LABEL_SORT_COLUMN = 5
+    _ACTION_LABEL_SORT_COLUMN = 6
 
     _USE_NORMAL_DIALOG_KEYS = True
     _SHOW_ACCEL_PATH = True
@@ -60,7 +63,7 @@ class AccelMapEditor (Gtk.Grid):
     _ACTION_LABEL_SORT_COLUMN_TEMPLATE = u"{action_label}\n{action_desc}"
     _ACCEL_LABEL_COLUMN_TEMPLATE = u"<big><b>{accel_label}</b></big>"
     _ACCEL_LABEL_SORT_COLUMN_TEMPLATE = u"{accel_label}"
-    _SEARCH_TEXT_COLUMN_TEMPLATE = \
+    _FILTER_TEXT_COLUMN_TEMPLATE = \
         u"{action_label} {action_desc} {accel_label}"
 
     ## Setup
@@ -70,20 +73,34 @@ class AccelMapEditor (Gtk.Grid):
         self.ui_manager = None
         self.connect("show", self._show_cb)
 
+        self.set_row_spacing(5)
+
         store = Gtk.ListStore(*self._COLUMN_TYPES)
         self._store = store
         self._action_labels = {}
         self._accel_labels = {}
 
+        self._filter_entry = Gtk.Entry()
+        self._filter_entry.set_placeholder_text(C_(
+            'placeholder for keymap filtering',
+            'Filter'))
+        self._filter_entry.connect('changed', self._entry_changed)
+        self.attach(self._filter_entry, 0, 0, 1, 1)
+        self._filter_txt = None
+
+        # Filter
+        self._filter = store.filter_new()
+        self._filter.set_visible_func(self._filter_check)
+
         scrolls = Gtk.ScrolledWindow()
         scrolls.set_shadow_type(Gtk.ShadowType.IN)
         view = Gtk.TreeView()
-        view.set_model(store)
+        view.set_model(self._filter)
         view.set_size_request(480, 320)
         view.set_hexpand(True)
         view.set_vexpand(True)
         scrolls.add(view)
-        self.attach(scrolls, 0, 0, 1, 1)
+        self.attach(scrolls, 0, 1, 1, 1)
         view.set_headers_clickable(True)
         view.set_enable_search(True)
         view.set_search_column(self._SEARCH_TEXT_COLUMN)
@@ -124,6 +141,10 @@ class AccelMapEditor (Gtk.Grid):
             self._ACTION_LABEL_SORT_COLUMN,
             Gtk.SortType.ASCENDING,
         )
+
+    def _entry_changed(self, widget):
+        self._filter_txt = self._filter_entry.get_text()
+        self._filter.refilter()
 
     def _show_cb(self, widget):
         self._init_from_accel_map()
@@ -227,14 +248,15 @@ class AccelMapEditor (Gtk.Grid):
             .format(**nonmarkup_substs)
         accel_markup, accel_sort = \
             self._fmt_accel_label(accel_label)
-        search_text = self._SEARCH_TEXT_COLUMN_TEMPLATE \
+        filter_text = self._FILTER_TEXT_COLUMN_TEMPLATE \
             .format(**nonmarkup_substs).lower()
         row[self._PATH_COLUMN] = path
         row[self._ACTION_LABEL_COLUMN] = action_markup
         row[self._ACTION_LABEL_SORT_COLUMN] = action_sort
         row[self._ACCEL_LABEL_COLUMN] = accel_markup
         row[self._ACCEL_LABEL_SORT_COLUMN] = accel_sort
-        row[self._SEARCH_TEXT_COLUMN] = search_text
+        row[self._FILTER_TEXT_COLUMN] = filter_text
+        row[self._SEARCH_TEXT_COLUMN] = accel_label
 
     def _fmt_accel_label(self, label):
         if label:
@@ -279,9 +301,51 @@ class AccelMapEditor (Gtk.Grid):
     ## Search
 
     def _view_search_equal_cb(self, model, col, key, it):
-        # case-insensitive check if the key is a substring of the search col
-        is_sub = _udecode(key).lower() in _udecode(model.get_value(it, col))
+        is_sub = self._filter_check(model, it, key)
         return not is_sub  # inverted sense (as in equality w. strcmp)
+
+    # Filter
+
+    def _filter_check(self, model, iter, search_key):
+        if search_key:
+            # Gtk.TreeView Search
+            # Search only for key bindings
+            txt = search_key
+            search_text = model[iter][self._SEARCH_TEXT_COLUMN]
+        else:
+            txt = self._filter_txt
+            search_text = model[iter][self._FILTER_TEXT_COLUMN]
+
+        if not txt:
+            return True
+
+        # I want to split 'Crtl+Shift+F' into ['Ctrl', 'Shift', '+F']
+        reg_sep = r'(?:(\+\w$)|(\+\w)\s|\+|\s)'
+        filter_words = re.split(reg_sep, str(txt).lower())
+
+        if search_text:
+            search_eles = re.split(reg_sep, search_text.lower())
+        else:
+            search_eles = []
+
+        for filter_word in filter_words:
+            if not filter_word:
+                continue
+
+            match = False
+
+            for ele in search_eles:
+                if not ele:
+                    continue
+
+                if filter_word in ele:
+                    match = True
+                    break
+
+            if not match:
+                return False
+
+        return True
 
     ## Editing
 
@@ -291,14 +355,14 @@ class AccelMapEditor (Gtk.Grid):
 
     def _accel_editing_started_cb(self, cell, editable, treepath):
         """Begin editing by showing a key capture dialog"""
-        store = self._store
-        it = store.get_iter(treepath)
-        accel_path = store.get_value(it, self._PATH_COLUMN)
+        it = self._filter.get_iter(treepath)
+        accel_path = self._filter.get_value(it, self._PATH_COLUMN)
         accel_label = self._accel_labels[accel_path]
         action_label = self._action_labels[accel_path]
 
         editable.set_sensitive(False)
         dialog = Gtk.Dialog()
+        dialog.set_modal(True)
         # TRANSLATORS: Window title for the keybinding dialog. The %s is
         # TRANSLATORS: replaced with the name of the action that the key
         # TRANSLATORS: combination is being bound to, e.g. "Fit to View".
