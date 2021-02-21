@@ -496,7 +496,9 @@ class AccelMapEditor (Gtk.Grid):
             keymap.translate_keyboard_state(
                 event.hardware_keycode,
                 event.state,
-                event.group,
+                # https://github.com/mypaint/mypaint/issues/974
+                # event.group
+                1
             ))
         keyval = Gdk.keyval_to_lower(keyval)
         mods = Gdk.ModifierType(
