@@ -5,7 +5,7 @@ msgstr ""
 "Project-Id-Version: mypaint v2.0.0-alpha.8-1-g4490f06\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-01-11 18:52+0100\n"
-"PO-Revision-Date: 2021-02-22 01:50+0000\n"
+"PO-Revision-Date: 2021-02-23 09:50+0000\n"
 "Last-Translator: Reza Almanda <rezaalmanda27@gmail.com>\n"
 "Language-Team: Indonesian <https://hosted.weblate.org/projects/mypaint/"
 "mypaint/id/>\n"
@@ -209,7 +209,7 @@ msgstr "Kecepatan"
 #: ../gui/brusheditor.py:389
 msgctxt "brush settings list: setting group"
 msgid "Directional Offsets"
-msgstr ""
+msgstr "Offset Terarah"
 
 #: ../gui/brusheditor.py:407
 msgctxt "brush settings list: setting group"
@@ -234,7 +234,7 @@ msgstr ""
 #: ../gui/brusheditor.py:458
 msgctxt "brush settings list: setting group"
 msgid "Custom"
-msgstr ""
+msgstr "Kustom"
 
 #: ../gui/brusheditor.py:524
 msgctxt "brush settings editor: save brush: error message"
@@ -276,7 +276,7 @@ msgstr "(Kuas tak bernama)"
 #, python-brace-format
 msgctxt "brush settings editor: header: is-modified hint"
 msgid "{brush_name} [unsaved]"
-msgstr ""
+msgstr "{brush_name} [belum disimpan]"
 
 #: ../gui/brushiconeditor.py:36
 msgid "Brush Icon"
@@ -423,7 +423,7 @@ msgstr "Baru"
 #, python-brace-format
 msgctxt "brushpack import failure messages"
 msgid "No file named “{order_conf_file}”. This is not a brushpack."
-msgstr ""
+msgstr "Tidak ada berkas bernama \"{order_conf_file}\". Ini bukan brushpack."
 
 #: ../gui/brushmanager.py:704
 #, python-brace-format
@@ -432,6 +432,8 @@ msgid ""
 "Brush “{brush_name}” is listed in “{order_conf_file}”, but it does not exist "
 "in the zipfile."
 msgstr ""
+"Brush \"{brush_name}\" terdaftar di \"{order_conf_file}\", tetapi tidak ada "
+"di zipfile."
 
 #: ../gui/brushmanager.py:717
 #, python-brace-format
@@ -6295,7 +6297,7 @@ msgstr ""
 #: ../gui/resources.xml:1488
 msgctxt "Menu→Window (labels), Toolbar (labels), Accel Editor (labels)"
 msgid "Preview Panel"
-msgstr ""
+msgstr "Panel Pratinjau"
 
 #: ../gui/resources.xml:1489
 msgctxt "Accel Editor (descriptions)"
@@ -6315,7 +6317,7 @@ msgstr ""
 #: ../gui/resources.xml:1508
 msgctxt "Menu→Window (labels), Toolbar (labels), Accel Editor (labels)"
 msgid "Tool Options Panel"
-msgstr ""
+msgstr "Panel Opsi Alat"
 
 #: ../gui/resources.xml:1509
 msgctxt "Accel Editor (descriptions)"
@@ -6325,7 +6327,7 @@ msgstr ""
 #: ../gui/resources.xml:1517
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
 msgid "Show Tool Options Panel"
-msgstr ""
+msgstr "Tampilkan Panel Opsi Alat"
 
 #: ../gui/resources.xml:1518
 msgctxt "Accel Editor (descriptions)"
@@ -6451,7 +6453,7 @@ msgstr ""
 #: ../gui/resources.xml:1635
 msgctxt "Menu→Edit→Current Mode (labels)"
 msgid "Freehand"
-msgstr ""
+msgstr "Tangan bebas"
 
 #: ../gui/resources.xml:1636
 msgctxt "Toolbar (short labels)"
@@ -6466,7 +6468,7 @@ msgstr ""
 #: ../gui/resources.xml:1646
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
 msgid "Freehand"
-msgstr ""
+msgstr "Tangan bebas"
 
 #: ../gui/resources.xml:1647
 msgctxt "Accel Editor (descriptions)"
@@ -6566,7 +6568,7 @@ msgstr ""
 #: ../gui/resources.xml:1727
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
 msgid "Lines and Curves"
-msgstr ""
+msgstr "Garis dan Kurva"
 
 #: ../gui/resources.xml:1728
 msgctxt "Accel Editor (descriptions)"
@@ -6591,7 +6593,7 @@ msgstr ""
 #: ../gui/resources.xml:1748
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
 msgid "Connected Lines"
-msgstr ""
+msgstr "Garis Terhubung"
 
 #: ../gui/resources.xml:1749
 msgctxt "Accel Editor (descriptions)"
@@ -6616,7 +6618,7 @@ msgstr ""
 #: ../gui/resources.xml:1769
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
 msgid "Ellipses and Circles"
-msgstr ""
+msgstr "Elips dan Lingkaran"
 
 #: ../gui/resources.xml:1770
 msgctxt "Accel Editor (descriptions)"
@@ -6641,7 +6643,7 @@ msgstr ""
 #: ../gui/resources.xml:1790
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
 msgid "Inking"
-msgstr ""
+msgstr "Tinta"
 
 #: ../gui/resources.xml:1791
 msgctxt "Accel Editor (descriptions)"
@@ -6692,7 +6694,7 @@ msgstr ""
 #: ../gui/resources.xml:1832
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "Edit Frame"
-msgstr ""
+msgstr "Edit Bingkai"
 
 #: ../gui/resources.xml:1833
 msgctxt "Accel Editor (descriptions)"
@@ -6718,7 +6720,7 @@ msgstr ""
 #: ../gui/resources.xml:1852
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "Edit Painting Symmetry"
-msgstr ""
+msgstr "Edit Simetri Lukisan"
 
 #: ../gui/resources.xml:1853
 msgctxt "Accel Editor (description)"
