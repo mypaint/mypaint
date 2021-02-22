@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: mypaint v1.2.0-beta.3-43-g9e683e2\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-01-11 18:52+0100\n"
-"PO-Revision-Date: 2021-02-13 04:50+0000\n"
+"PO-Revision-Date: 2021-02-23 09:50+0000\n"
 "Last-Translator: Eric <spice2wolf@gmail.com>\n"
 "Language-Team: Chinese (Simplified) <https://hosted.weblate.org/projects/"
 "mypaint/mypaint/zh_Hans/>\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 4.5-dev\n"
+"X-Generator: Weblate 4.5\n"
 
 #. TRANSLATORS: Name of first column in the button map preferences.
 #. TRANSLATORS: Refers to an action bound to a mod+button combination.
@@ -2745,12 +2745,7 @@ msgstr ", "
 #: ../gui/meta.py:221
 msgctxt "About dialog: credits: translator credits (your name(s) here!)"
 msgid "translator-credits"
-msgstr ""
-"Dongjun Wu <ziyawu@gmail.com>, 2010, 2012.\n"
-"Ruei-Yuan Lu <RueiYuan.Lu@gmail.com>, 2012.\n"
-"Andrew Chadwick <a.t.chadwick@gmail.com>,2015.\n"
-"玉堂白鹤 <yjwork@qq.com>, 2019, 2020.\n"
-"及 https://hosted.weblate.org/projects/mypaint/ 网站其他贡献者"
+msgstr "译员致谢"
 
 #. TRANSLATORS:"Brush radius" for the options panel. Short.
 #: ../gui/mode.py:592
