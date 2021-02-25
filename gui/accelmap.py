@@ -17,6 +17,7 @@ import re
 
 from lib.gibindings import Gtk
 from lib.gibindings import Gdk
+import lib.keyboard_util as kb
 from lib.gibindings import Pango
 from lib.gettext import gettext as _
 from lib.gettext import C_
@@ -491,29 +492,15 @@ class AccelMapEditor (Gtk.Grid):
 
         # Stolen from GTK 2.24's gtk/gtkmenu.c (gtk_menu_key_press())
         # Figure out what modifiers went into determining the key symbol
-        keymap = Gdk.Keymap.get_default()
-        bound, keyval, effective_group, level, consumed_modifiers = (
-            keymap.translate_keyboard_state(
-                event.hardware_keycode,
-                event.state,
-                # https://github.com/mypaint/mypaint/issues/974
-                # event.group
-                1
-            ))
-        keyval = Gdk.keyval_to_lower(keyval)
-        mods = Gdk.ModifierType(
-            event.state
-            & Gtk.accelerator_get_default_mod_mask()
-            & ~consumed_modifiers)
 
-        # If lowercasing affects the keysym, then we need to include
-        # SHIFT in the modifiers. We re-upper case when we match against
-        # the keyval, but display and save in caseless form.
-        if keyval != event.keyval:
-            mods |= Gdk.ModifierType.SHIFT_MASK
-        accel_label = Gtk.accelerator_get_label(keyval, mods)
-        # So we get (<Shift>j, Shift+J) but just (plus, +). As I
-        # understand it.
+        keyval, keyval_lower, accel_label, mods = kb.translate(
+            event.hardware_keycode,
+            event.state,
+            event.group
+        )
+
+        if not keyval:
+            return False
 
         # This is rejecting some legit key combinations such as the
         # arrowkeys, so I had to remove it...
