@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: mypaint v2.0.0-alpha.8-1-g4490f06\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-01-11 18:52+0100\n"
-"PO-Revision-Date: 2020-07-21 15:41+0000\n"
+"PO-Revision-Date: 2021-03-03 09:26+0000\n"
 "Last-Translator: Milo Ivir <mail@milotype.de>\n"
 "Language-Team: Croatian <https://hosted.weblate.org/projects/mypaint/mypaint/"
 "hr/>\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
 "%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
-"X-Generator: Weblate 4.2-dev\n"
+"X-Generator: Weblate 4.5.1-dev\n"
 
 #. TRANSLATORS: Name of first column in the button map preferences.
 #. TRANSLATORS: Refers to an action bound to a mod+button combination.
@@ -453,15 +453,14 @@ msgid "Unknown Brush"
 msgstr "Nepoznati kist"
 
 #: ../gui/brushmanip.py:191
-#, fuzzy
 msgctxt "brush resize mode - name"
 msgid "Resize Brush"
-msgstr "Preimenuj kist"
+msgstr "Promijeni veličinu kista"
 
 #: ../gui/brushmanip.py:196
 msgctxt "brush resize mode - usage"
 msgid "Change brush size by dragging on the canvas"
-msgstr ""
+msgstr "Promijeni veličinu kista povlačenjem kista na platno"
 
 #: ../gui/brushselectionwindow.py:220
 msgctxt "brush group: context menu for a single brush"
@@ -1417,6 +1416,8 @@ msgid ""
 "<b>A brush named “{brush_name}” already exists.</b>\n"
 "Do you want to replace it, or should the new brush be renamed?"
 msgstr ""
+"<b>Kist „{brush_name}” već postoji.</b>\n"
+"Želiš li zamijeniti postojeći kist ili preimenovati novi kist?"
 
 #: ../gui/dialogs.py:196
 msgid "Overwrite brush group?"
@@ -1430,6 +1431,10 @@ msgid ""
 "If you replace it, the brushes may be moved to a group called "
 "“{deleted_groupname}”."
 msgstr ""
+"<b>Grupa „{groupname}” već postoji.</b>\n"
+"Želiš li zamijeniti postojeću grupu ili preimenovati novu grupu?\n"
+"Ako je zamijeniš, kistovi će se možda premjestiti u grupu "
+"„{deleted_groupname}”."
 
 #: ../gui/dialogs.py:326
 msgid "Import brush package?"
@@ -1461,12 +1466,12 @@ msgstr "Poništi"
 #: ../gui/document.py:458
 #, python-format
 msgid "Load brush settings from shortcut slot %d"
-msgstr ""
+msgstr "Učitaj postavke kista iz prečaca %d"
 
 #: ../gui/document.py:459
 #, python-format
 msgid "Store brush settings in shortcut slot %d"
-msgstr ""
+msgstr "Spremi postavke kista u prečac %d"
 
 #: ../gui/document.py:460
 #, python-format
@@ -2260,9 +2265,8 @@ msgid "px"
 msgstr "px"
 
 #: ../gui/framewindow.py:916
-#, fuzzy
 msgid "in"
-msgstr "inč"
+msgstr "in"
 
 #: ../gui/framewindow.py:917
 msgid "cm"
@@ -2610,11 +2614,12 @@ msgid "Generic line/curve mode"
 msgstr "Obični modus linija/krivulja"
 
 #: ../gui/linemode.py:803
-#, fuzzy
 msgid ""
 "Draw straight lines; Shift adds curves, Shift + Ctrl moves line ends, Ctrl "
 "constrains angle"
-msgstr "Crtaj ravne linije; Shift dodaje krivulje, Ctrl ograničava kut"
+msgstr ""
+"Crtaj ravne linije; Shift dodaje krivulje, Shift + Ctrl pomiče krajeve "
+"linije, Ctrl ograničava kut"
 
 #: ../gui/linemode.py:814
 msgid "Connected Lines"
@@ -2713,7 +2718,7 @@ msgstr "podrška"
 #: ../gui/meta.py:101
 msgctxt "About dialog: credits: tasks: outreach (social media, ads?)"
 msgid "outreach"
-msgstr ""
+msgstr "marketing"
 
 #: ../gui/meta.py:105
 msgctxt "About dialog: credits: tasks: running or building a community"
@@ -3274,6 +3279,10 @@ msgid ""
 "Try saving in PNG format instead, if your machine doesn’t have a lot of "
 "memory. MyPaint’s PNG save function is more efficient."
 msgstr ""
+"Nije moguće spremiti kao JPEG: {original_msg}\n"
+"\n"
+"Pokušaj spremiti u PNG format, ako tvoj uređaj nema puno memorije. MyPaint "
+"funkcija za spremanje PNG formata je učinkovitija."
 
 #: ../lib/document.py:1913
 #, python-brace-format
@@ -4208,7 +4217,7 @@ msgstr ""
 #: ../gui/preferenceswindow.glade:401
 msgctxt "Prefs Dialog|Button|"
 msgid "<b>Pointer Button Mappings</b>"
-msgstr ""
+msgstr "<b>Mapiranje gumbova miša</b>"
 
 #. Tab label in preferences dialog
 #: ../gui/preferenceswindow.glade:414
@@ -4221,7 +4230,7 @@ msgstr "Gumbi"
 #. unless its key is bound to something else.
 #: ../gui/preferenceswindow.glade:453
 msgid "Disable fallback key bindings"
-msgstr ""
+msgstr "Deaktiviraj rezervna mapiranja tipki"
 
 #. Tooltip for checkbox in the keyboard mappings preferences.
 #: ../gui/preferenceswindow.glade:457
@@ -4233,11 +4242,11 @@ msgstr ""
 #: ../gui/preferenceswindow.glade:476
 msgctxt "Prefs Dialog|Button|"
 msgid "<b>Keyboard Mappings</b>"
-msgstr "<b>Mapiranje tipkovnie</b>"
+msgstr "<b>Mapiranje tipkovnice</b>"
 
 #: ../gui/preferenceswindow.glade:489
 msgid "Keys"
-msgstr "Ključevi"
+msgstr "Tipke"
 
 #: ../gui/preferenceswindow.glade:509
 msgctxt "Prefs Dialog|Load & Save|Saving|"
@@ -5976,7 +5985,7 @@ msgstr "Otklanjanje grešaka"
 #: ../gui/resources.xml:1262
 msgctxt "Menu→Help→Debug (labels), Accel Editor (labels)"
 msgid "Print Memory Leak Info to Console (Slow!)"
-msgstr ""
+msgstr "Ispis informacija o gubljenju memorije u konzolu (sporo!)"
 
 #: ../gui/resources.xml:1263
 msgctxt "Accel Editor (descriptions)"
