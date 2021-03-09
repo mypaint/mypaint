@@ -5,7 +5,7 @@ msgstr ""
 "Project-Id-Version: mypaint v2.0.0-alpha.8-1-g4490f06\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-01-11 18:52+0100\n"
-"PO-Revision-Date: 2021-02-23 09:50+0000\n"
+"PO-Revision-Date: 2021-03-10 04:02+0000\n"
 "Last-Translator: Reza Almanda <rezaalmanda27@gmail.com>\n"
 "Language-Team: Indonesian <https://hosted.weblate.org/projects/mypaint/"
 "mypaint/id/>\n"
@@ -14,7 +14,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 4.5\n"
+"X-Generator: Weblate 4.5.2-dev\n"
 
 #. TRANSLATORS: Name of first column in the button map preferences.
 #. TRANSLATORS: Refers to an action bound to a mod+button combination.
@@ -1525,23 +1525,23 @@ msgstr ""
 #: ../gui/document.py:923
 msgctxt "Statusbar message: paste result"
 msgid "Nothing on clipboard."
-msgstr ""
+msgstr "Tidak ada sesuatu pada papan klip."
 
 #: ../gui/document.py:932
 msgctxt "Statusbar message: paste result"
 msgid "Clipboard does not contain an image."
-msgstr ""
+msgstr "Papan klip tidak mengandung sebuah gambar."
 
 #: ../gui/document.py:956
 msgctxt "Statusbar message: paste result"
 msgid "Cannot paste into this type of layer."
-msgstr ""
+msgstr "Tidak dapat menempelkan pada jenis layer ini."
 
 #: ../gui/document.py:961
 #, python-brace-format
 msgctxt "Statusbar message: paste result"
 msgid "Pasted {w}×{h} image."
-msgstr ""
+msgstr "Menempelkan {w}x{h} gambar."
 
 #: ../gui/document.py:2062
 #, python-brace-format
@@ -1553,23 +1553,22 @@ msgstr ""
 #: ../gui/drawwindow.py:275
 #, python-format
 msgid "%s - MyPaint"
-msgstr ""
+msgstr "%s - MyPaint"
 
 #. TRANSLATORS: window title for use without a filename
 #: ../gui/drawwindow.py:278 ../gui/mypaint.glade:8
 msgid "MyPaint"
-msgstr "Tentang MyPaint"
+msgstr "MyPaint"
 
 #: ../gui/drawwindow.py:301
 msgctxt "Open dragged file confirm dialog: title"
 msgid "Open Dragged File?"
-msgstr ""
+msgstr "Buka Berkas Diseret?"
 
 #: ../gui/drawwindow.py:305
-#, fuzzy
 msgctxt "Open dragged file confirm dialog: continue button"
 msgid "_Open"
-msgstr "Buka…"
+msgstr "_Buka"
 
 #: ../gui/drawwindow.py:498
 msgid "Set current color"
@@ -1577,15 +1576,15 @@ msgstr "Pilihan warna sekarang"
 
 #: ../gui/drawwindow.py:543
 msgid "Leave Fullscreen Mode"
-msgstr "Penuhi Layar"
+msgstr "Tinggalkan mode layar penuh"
 
 #: ../gui/drawwindow.py:544
 msgid "Leave Fullscreen"
-msgstr "Penuhi Layar"
+msgstr "Tinggalkan Layar Penuh"
 
 #: ../gui/drawwindow.py:547
 msgid "Enter Fullscreen Mode"
-msgstr "Penuhi Layar"
+msgstr "Masuk ke Mode Layar Penuh"
 
 #: ../gui/drawwindow.py:548
 msgid "Fullscreen"
@@ -1598,10 +1597,9 @@ msgid "Really Quit?"
 msgstr "Benar mau keluar?"
 
 #: ../gui/drawwindow.py:691
-#, fuzzy
 msgctxt "Quit confirm dialog: continue button"
 msgid "_Quit"
-msgstr "Keluar"
+msgstr "_Keluar"
 
 #: ../gui/drawwindow.py:709
 msgid "Import brush package…"
@@ -1617,14 +1615,14 @@ msgstr "paket kuas MyPaint (*.zip)"
 #: ../gui/externalapp.py:40
 #, python-brace-format
 msgid "Launched {app_name} to edit layer “{layer_name}”"
-msgstr ""
+msgstr "Meluncurkan {app_name} untuk mengedit layer \"{layer_name}\""
 
 #. TRANSLATORS: Statusbar message shown when the app chosen for
 #. TRANSLATORS: "Edit in External App" (for a layer) failed to open.
 #: ../gui/externalapp.py:44
 #, python-brace-format
 msgid "Error: failed to launch {app_name} to edit layer “{layer_name}”"
-msgstr ""
+msgstr "Galat: gagal meluncurkan {app_name} untuk mengedit \"{layer_name}\""
 
 #. TRANSLATORS: Statusbar message for when an "Edit in External App"
 #. TRANSLATORS: operation is cancelled by the user before it starts.
@@ -1633,19 +1631,22 @@ msgstr ""
 msgid ""
 "Editing cancelled. You can still edit “{layer_name}” from the Layers menu."
 msgstr ""
+"Pengeditan dibatalkan. Anda masih bisa mengedit \"{layer_name}\" dari menu "
+"Layers."
 
 #. TRANSLATORS: This is a statusbar message shown when
 #. TRANSLATORS:  a layer is updated from an external edit
 #: ../gui/externalapp.py:54
 #, python-brace-format
 msgid "Updated layer “{layer_name}” with external edits"
-msgstr ""
+msgstr "Layer yang diperbarui \"{layer_name}\" dengan pengeditan eksternal"
 
 #: ../gui/externalapp.py:58
 #, python-brace-format
 msgctxt "Edit in External App (statusbar message)"
 msgid "Failed to update layer with external edits from “{file_basename}”."
 msgstr ""
+"Gagal memperbarui layer dengan pengeditan eksternal dari \"{file_basename}\"."
 
 #: ../gui/externalapp.py:104
 #, python-brace-format
@@ -1653,6 +1654,8 @@ msgid ""
 "MyPaint needs to edit a file of type “{type_name}” ({content_type}). What "
 "application should it use?"
 msgstr ""
+"MyPaint perlu mengedit file berjudul \"{type_name}\" ({content_type}). "
+"Aplikasi apa yang hendak digunakan?"
 
 #: ../gui/externalapp.py:108
 #, python-brace-format
@@ -1660,114 +1663,112 @@ msgid ""
 "What application should MyPaint use for editing files of type "
 "“{type_name}” ({content_type})?"
 msgstr ""
+"Aplikasi apa yang harus digunakan MyPaint untuk mengedit file tipe \""
+"{type_name}\" ({content_type})?"
 
 #: ../gui/externalapp.py:114
 msgid "Open With…"
-msgstr "Buka…"
+msgstr "Buka Dengan…"
 
 #: ../gui/externalapp.py:166
 msgid "Icon"
-msgstr ""
+msgstr "Ikon"
 
 #: ../gui/externalapp.py:209
 msgid "no description"
-msgstr ""
+msgstr "tidak ada deskripsi"
 
 #: ../gui/filehandling.py:127
 #, python-brace-format
 msgctxt "Document I/O: message shown while working"
 msgid "Loading {files_summary}…"
-msgstr ""
+msgstr "Memuat {files_summary}…"
 
 #: ../gui/filehandling.py:131
 #, python-brace-format
 msgctxt "Document I/O: message shown while working"
 msgid "Importing layers from {files_summary}…"
-msgstr ""
+msgstr "Mengimpor layer dari {files_summary}…"
 
 #: ../gui/filehandling.py:135
 #, python-brace-format
 msgctxt "Document I/O: message shown while working"
 msgid "Saving {files_summary}…"
-msgstr ""
+msgstr "Menyimpan {files_summary}…"
 
 #: ../gui/filehandling.py:139
 #, python-brace-format
 msgctxt "Document I/O: message shown while working"
 msgid "Exporting to {files_summary}…"
-msgstr ""
+msgstr "Mengekspor ke {files_summary}…"
 
 #: ../gui/filehandling.py:146
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgctxt "Document I/O: fail message"
 msgid "Failed to export to {files_summary}."
-msgstr "Gagal menyimpan “{file_basename}”."
+msgstr "Gagal mengekspor ke {files_summary}."
 
 #: ../gui/filehandling.py:150
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgctxt "Document I/O: fail message"
 msgid "Failed to save {files_summary}."
-msgstr "Gagal menyimpan “{file_basename}”."
+msgstr "Gagal menyimpan {files_summary}."
 
 #: ../gui/filehandling.py:154
 #, python-brace-format
 msgctxt "Document I/O: fail message"
 msgid "Could not import layers from {files_summary}."
-msgstr ""
+msgstr "Tidak dapat mengimpor layer dari {files_summary}."
 
 #: ../gui/filehandling.py:158
 #, python-brace-format
 msgctxt "Document I/O: fail message"
 msgid "Could not load {files_summary}."
-msgstr ""
+msgstr "Tidak dapat memuat {files_summary}."
 
 #: ../gui/filehandling.py:165
-#, fuzzy
 msgctxt "Document I/O: fail dialog title"
 msgid "Save failed"
-msgstr "Simpan Pengaturan"
+msgstr "Gagal menyimpan"
 
 #: ../gui/filehandling.py:169
-#, fuzzy
 msgctxt "Document I/O: fail dialog title"
 msgid "Export failed"
-msgstr "Ekspor palet…"
+msgstr "Ekspor gagal"
 
 #: ../gui/filehandling.py:173
-#, fuzzy
 msgctxt "Document I/O: fail dialog title"
 msgid "Import Layers failed"
-msgstr "Ekspor palet…"
+msgstr "Impor layer gagal"
 
 #: ../gui/filehandling.py:177
-#, fuzzy
 msgctxt "Document I/O: fail dialog title"
 msgid "Open failed"
-msgstr "Buka Berkas Terdahulu"
+msgstr "Gagal membuka"
 
 #: ../gui/filehandling.py:184
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgctxt "Document I/O: success"
 msgid "Exported to {files_summary} successfully."
-msgstr "Ekspor ke “{file_basename}” berhasil."
+msgstr "Ekspor ke {files_summary} berhasil."
 
 #: ../gui/filehandling.py:188
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgctxt "Document I/O: success"
 msgid "Saved {files_summary} successfully."
-msgstr "Simpan “{file_basename}” berhasil."
+msgstr "Simpan {files_summary} berhasil."
 
 #: ../gui/filehandling.py:192
 #, python-brace-format
 msgctxt "Document I/O: success"
 msgid "Imported layers from {files_summary}."
-msgstr ""
+msgstr "Layer yang dimpor dari {files_summary}."
 
 #: ../gui/filehandling.py:196
 #, python-brace-format
 msgctxt "Document I/O: success"
 msgid "Loaded {files_summary}."
-msgstr ""
+msgstr "Dimuat {files_summary}."
 
 #. TRANSLATORS: formatting for {files_summary} for multiple files.
 #. TRANSLATORS: corresponding msgid for single files: "“{basename}”"
@@ -1775,106 +1776,90 @@ msgstr ""
 #, python-brace-format
 msgid "{n} file"
 msgid_plural "{n} files"
-msgstr[0] ""
+msgstr[0] "{n} berkas"
 
 #: ../gui/filehandling.py:223
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgctxt "Document I/O: the {files_summary} for a single file"
 msgid "“{basename}”"
-msgstr "Gagal menyimpan “{file_basename}”."
+msgstr "“{basename}”"
 
 #: ../gui/filehandling.py:432
-#, fuzzy
 msgctxt "save/load dialogs: filter patterns"
 msgid "All Recognized Formats"
 msgstr "Semua Format yg dikenal"
 
 #: ../gui/filehandling.py:437
-#, fuzzy
 msgctxt "save/load dialogs: filter patterns"
 msgid "OpenRaster (*.ora)"
-msgstr "Openraster (*.ora)"
+msgstr "OpenRaster (*.ora)"
 
 #: ../gui/filehandling.py:442
-#, fuzzy
 msgctxt "save/load dialogs: filter patterns"
 msgid "PNG (*.png)"
 msgstr "PNG (*.png)"
 
 #: ../gui/filehandling.py:447
-#, fuzzy
 msgctxt "save/load dialogs: filter patterns"
 msgid "JPEG (*.jpg; *.jpeg)"
 msgstr "JPEG (*.jpg; *.jpeg)"
 
 #: ../gui/filehandling.py:495
-#, fuzzy
 msgctxt "save dialogs: save formats and options"
 msgid "By extension (prefer default format)"
 msgstr "Ekstensi (pilih format standar)"
 
 #: ../gui/filehandling.py:499
-#, fuzzy
 msgctxt "save dialogs: save formats and options"
 msgid "OpenRaster (*.ora)"
-msgstr "Openraster (*.ora)"
+msgstr "OpenRaster (*.ora)"
 
 #: ../gui/filehandling.py:503
-#, fuzzy
 msgctxt "save dialogs: save formats and options"
 msgid "PNG, respecting “Show Background” (*.png)"
 msgstr "PNG dengan latar solid (*.png)"
 
 #: ../gui/filehandling.py:507
-#, fuzzy
 msgctxt "save dialogs: save formats and options"
 msgid "PNG, solid RGB (*.png)"
-msgstr "PNG (*.png)"
+msgstr "PNG, solid RGB (*.png)"
 
 #: ../gui/filehandling.py:511
-#, fuzzy
 msgctxt "save dialogs: save formats and options"
 msgid "PNG, transparent RGBA (*.png)"
-msgstr "PNG transparan (*.png)"
+msgstr "PNG transparan RGBA (*.png)"
 
 #: ../gui/filehandling.py:515
-#, fuzzy
 msgctxt "save dialogs: save formats and options"
 msgid "Multiple PNGs, by layer (*.NUM.png)"
-msgstr "Beberapa PNG transparen (*.xxx.png)"
+msgstr "Beberapa PNG, per layer (*.NUM.png)"
 
 #: ../gui/filehandling.py:519
-#, fuzzy
 msgctxt "save dialogs: save formats and options"
 msgid "Multiple PNGs, by view (*.NAME.png)"
-msgstr "Beberapa PNG transparen (*.xxx.png)"
+msgstr "Beberapa PNG. per tampilan (*.NAME.png)"
 
 #: ../gui/filehandling.py:523
-#, fuzzy
 msgctxt "save dialogs: save formats and options"
 msgid "JPEG 90% quality (*.jpg; *.jpeg)"
 msgstr "JPEG kualitas 90% (*.jpg; *.jpeg)"
 
 #: ../gui/filehandling.py:581
-#, fuzzy
 msgctxt "Dialogs (window title): File→Export…"
 msgid "Export"
-msgstr "Ekspor…"
+msgstr "Ekspor"
 
 #: ../gui/filehandling.py:586
-#, fuzzy
 msgctxt "Dialogs (window title): File→Save As…"
 msgid "Save As"
-msgstr "Simpan Sebagai…"
+msgstr "Simpan Sebagai"
 
 #: ../gui/filehandling.py:606
-#, fuzzy
 msgctxt "save dialogs: formats and options: (label)"
 msgid "Format to save as:"
-msgstr "Format untuk menyimpan:"
+msgstr "Format untuk simpan sebagai:"
 
 #: ../gui/filehandling.py:673
-#, fuzzy
 msgctxt ""
 "Destructive action confirm dialog: fallback title (normally overridden)"
 msgid "Really Continue?"
@@ -1883,10 +1868,9 @@ msgstr "Lanjutkan?"
 #: ../gui/filehandling.py:706
 msgctxt "Destructive action confirm dialog: cancel button"
 msgid "_Cancel"
-msgstr ""
+msgstr "_Batal"
 
 #: ../gui/filehandling.py:710
-#, fuzzy
 msgctxt "Destructive action confirm dialog: save checkbox"
 msgid "_Save to Scraps first"
 msgstr "_Simpan sebagai Scrap"
@@ -1896,10 +1880,10 @@ msgctxt ""
 "Destructive action confirm dialog: fallback continue button (normally "
 "overridden)"
 msgid "Co_ntinue"
-msgstr ""
+msgstr "La_njutkan"
 
 #: ../gui/filehandling.py:739
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgctxt "Destructive action confirm dialog: warning message"
 msgid "You risk losing {abbreviated_time} of unsaved painting."
 msgstr "Akan mengabaikan {abbreviated_time} menit lukisan yang tak tersimpan"
@@ -1907,76 +1891,67 @@ msgstr "Akan mengabaikan {abbreviated_time} menit lukisan yang tak tersimpan"
 #: ../gui/filehandling.py:804
 msgctxt "File→New: confirm dialog: title question"
 msgid "New Canvas?"
-msgstr ""
+msgstr "Kanvas baru?"
 
 #: ../gui/filehandling.py:808
 msgctxt "File→New: confirm dialog: continue button"
 msgid "_New Canvas"
-msgstr ""
+msgstr "_Kanvas Baru"
 
 #: ../gui/filehandling.py:1024
 msgctxt "File→Open: confirm dialog: title question"
 msgid "Open File?"
-msgstr ""
+msgstr "Buka Berkas?"
 
 #: ../gui/filehandling.py:1028
-#, fuzzy
 msgctxt "File→Open: confirm dialog: continue button"
 msgid "_Open…"
-msgstr "Buka…"
+msgstr "_Buka…"
 
 #: ../gui/filehandling.py:1036
-#, fuzzy
 msgctxt "File→Open: file chooser dialog: title"
 msgid "Open File"
-msgstr "Buka Berkas Terdahulu"
+msgstr "Buka Berkas"
 
 #: ../gui/filehandling.py:1084
-#, fuzzy
 msgctxt "load dialogs: title"
 msgid "Open Scratchpad…"
 msgstr "Buka Scratchpad…"
 
 #: ../gui/filehandling.py:1126
-#, fuzzy
 msgctxt "Layers→Import Layers: files-chooser dialog: title"
 msgid "Import Layers"
-msgstr "Kuas hasil impor"
+msgstr "Impor Layer"
 
 #: ../gui/filehandling.py:1433
 msgctxt "File→Open Recent→* confirm dialog: title"
 msgid "Open File?"
-msgstr ""
+msgstr "Buka Berkas?"
 
 #: ../gui/filehandling.py:1437
-#, fuzzy
 msgctxt "File→Open Recent→* confirm dialog: continue button"
 msgid "_Open"
-msgstr "Buka…"
+msgstr "_Buka"
 
 #: ../gui/filehandling.py:1452
-#, fuzzy
 msgctxt "File→Open Most Recent confirm dialog: title"
 msgid "Open Most Recent File?"
-msgstr "Buka yg Terdahulu"
+msgstr "Buka berkas yang paling baru?"
 
 #: ../gui/filehandling.py:1457
-#, fuzzy
 msgctxt "File→Open Most Recent→* confirm dialog: continue button"
 msgid "_Open"
-msgstr "Buka…"
+msgstr "_Buka"
 
 #: ../gui/filehandling.py:1471
-#, fuzzy
 msgctxt "File→Open Next/Prev Scrap: error message"
 msgid "There are no scrap files yet. Try saving one first."
-msgstr "Tiada berkas scrap dengan nama \"%s\" saat ini."
+msgstr "Belum ada berkas scrap. Coba simpan dulu."
 
 #: ../gui/filehandling.py:1480
-#, fuzzy
 msgctxt "File→Open Next/Prev Scrap confirm dialog: title"
 msgid "Open Next Scrap?"
-msgstr "Simpan Scrap Selanjutnya"
+msgstr "Buka Scrap Selanjutnya?"
 
 #: ../gui/filehandling.py:1488
 #, fuzzy
