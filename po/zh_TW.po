@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mypaint v1.2.0-586-g70ce73d\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-01-11 18:52+0100\n"
+"POT-Creation-Date: 2021-03-23 21:20+0100\n"
 "PO-Revision-Date: 2021-01-18 09:32+0000\n"
 "Last-Translator: WCK <wck317-wck317@yahoo.com>\n"
 "Language-Team: Chinese (Traditional) <https://hosted.weblate.org/projects/"
@@ -19,22 +19,27 @@ msgstr ""
 "Plural-Forms: nplurals=1; plural=0;\n"
 "X-Generator: Weblate 4.5-dev\n"
 
+#: ../gui/accelmap.py:86
+msgctxt "placeholder for keymap filtering"
+msgid "Filter"
+msgstr ""
+
 #. TRANSLATORS: Name of first column in the button map preferences.
 #. TRANSLATORS: Refers to an action bound to a mod+button combination.
-#: ../gui/accelmap.py:98 ../gui/buttonmap.py:284
+#: ../gui/accelmap.py:115 ../gui/buttonmap.py:284
 msgid "Action"
 msgstr "動作"
 
 #. TRANSLATORS: Refers to a keyboard key combination, such as "Ctrl+G".
 #. TRANSLATORS: Second column label in the keybinding preferences tab.
-#: ../gui/accelmap.py:115
+#: ../gui/accelmap.py:132
 msgid "Key combination"
 msgstr "按鍵組合"
 
 #. TRANSLATORS: Window title for the keybinding dialog. The %s is
 #. TRANSLATORS: replaced with the name of the action that the key
 #. TRANSLATORS: combination is being bound to, e.g. "Fit to View".
-#: ../gui/accelmap.py:305
+#: ../gui/accelmap.py:369
 #, python-format
 msgid "Edit Key for '%s'"
 msgstr "編輯「%s」的按鍵綁定"
@@ -43,7 +48,7 @@ msgstr "編輯「%s」的按鍵綁定"
 #. TRANSLATORS: It's a label for the action part of the combination.
 #. TRANSLATORS: Probably always the same as the column name
 #. TRANSLATORS: "Action" with a trailing ":" or lang-specific symbol
-#: ../gui/accelmap.py:336 ../gui/buttonmap.py:502
+#: ../gui/accelmap.py:400 ../gui/buttonmap.py:502
 msgid "Action:"
 msgstr "動作："
 
@@ -52,13 +57,13 @@ msgstr "動作："
 #. TRANSLATORS: adding new keybindings. This is a technical field
 #. TRANSLATORS: that probably shouldn't even be part of the gui,
 #. TRANSLATORS: so don't worry too much about the translation.
-#: ../gui/accelmap.py:354
+#: ../gui/accelmap.py:418
 msgid "Path:"
 msgstr "路徑："
 
 #. TRANSLATORS: Key refers to a key on the keyboard, this is a label
 #. TRANSLATORS: in the dialog for adding new keyboard bindings.
-#: ../gui/accelmap.py:367
+#: ../gui/accelmap.py:431
 msgid "Key:"
 msgstr "按鍵："
 
@@ -66,19 +71,19 @@ msgstr "按鍵："
 #. TRANSLATORS: to an assignment of a keyboard key combination to
 #. TRANSLATORS: an action. This is an instructive message in the
 #. TRANSLATORS: keybinding dialog (Preferences | Keys).
-#: ../gui/accelmap.py:409
+#: ../gui/accelmap.py:473
 msgid "Press keys to update this assignment"
 msgstr "按任何鍵更新此設置"
 
 #. TRANSLATORS: Part of the keybinding dialog, refers
 #. TRANSLATORS: to an action bound to a key combination.
-#: ../gui/accelmap.py:466
+#: ../gui/accelmap.py:532
 msgid "Unknown Action"
 msgstr "未知動作"
 
 #. TRANSLATORS: Warning message when attempting to assign a
 #. TRANSLATORS: keyboard combination that is already used.
-#: ../gui/accelmap.py:477
+#: ../gui/accelmap.py:543
 #, python-brace-format
 msgid ""
 "<b>{accel} is already in use for '{action}'. The existing assignment will be "
@@ -165,113 +170,113 @@ msgstr "Gdk-Pixbuf 無法載入「{filename}」，並回報「{error}」"
 msgid "{filename} has zero size (w={w}, h={h})"
 msgstr "{filename} 的大小為零 (w={w}, h={h})"
 
-#: ../gui/brusheditor.py:116
+#: ../gui/brusheditor.py:117
 msgctxt "brush settings editor: subwindow title"
 msgid "Brush Settings Editor"
 msgstr "筆刷設定編輯器"
 
-#: ../gui/brusheditor.py:301
+#: ../gui/brusheditor.py:305
 msgctxt "brush settings list: brush metadata texts group"
 msgid "About"
 msgstr "關於"
 
-#: ../gui/brusheditor.py:312
+#: ../gui/brusheditor.py:316
 msgctxt "brush settings list: setting group"
 msgid "Experimental"
 msgstr "實驗性"
 
-#: ../gui/brusheditor.py:319
+#: ../gui/brusheditor.py:323
 msgctxt "brush settings list: setting group"
 msgid "Basic"
 msgstr "基本"
 
-#: ../gui/brusheditor.py:338
+#: ../gui/brusheditor.py:342
 msgctxt "brush settings list: setting group"
 msgid "Opacity"
 msgstr "不透明度"
 
-#: ../gui/brusheditor.py:350
+#: ../gui/brusheditor.py:354
 msgctxt "brush settings list: setting group"
 msgid "Dabs"
 msgstr "筆觸"
 
-#: ../gui/brusheditor.py:361
+#: ../gui/brusheditor.py:365
 msgctxt "brush settings list: setting group"
 msgid "Smudge"
 msgstr "塗抹"
 
-#: ../gui/brusheditor.py:375
+#: ../gui/brusheditor.py:379
 msgctxt "brush settings list: setting group"
 msgid "Speed"
 msgstr "速度"
 
-#: ../gui/brusheditor.py:389
+#: ../gui/brusheditor.py:393
 msgctxt "brush settings list: setting group"
 msgid "Directional Offsets"
 msgstr "方向偏移"
 
-#: ../gui/brusheditor.py:407
+#: ../gui/brusheditor.py:411
 msgctxt "brush settings list: setting group"
 msgid "Tracking"
 msgstr "追跡"
 
-#: ../gui/brusheditor.py:418
+#: ../gui/brusheditor.py:422
 msgctxt "brush settings list: setting group"
 msgid "Stroke"
 msgstr "筆劃"
 
-#: ../gui/brusheditor.py:429
+#: ../gui/brusheditor.py:433
 msgctxt "brush settings list: setting group"
 msgid "Color"
 msgstr "色彩"
 
-#: ../gui/brusheditor.py:447
+#: ../gui/brusheditor.py:451
 msgctxt "brush settings list: setting group"
 msgid "GridMap"
 msgstr ""
 
-#: ../gui/brusheditor.py:458
+#: ../gui/brusheditor.py:462
 msgctxt "brush settings list: setting group"
 msgid "Custom"
 msgstr "自訂"
 
-#: ../gui/brusheditor.py:524
+#: ../gui/brusheditor.py:528
 msgctxt "brush settings editor: save brush: error message"
 msgid "No brush selected, please use “Add As New” instead."
 msgstr "尚未選取筆刷，請改用「加入為新筆刷」。"
 
-#: ../gui/brusheditor.py:549
+#: ../gui/brusheditor.py:553
 msgctxt "brush settings editor: rename brush: error message"
 msgid "No brush selected!"
 msgstr "沒有選擇筆刷！"
 
-#: ../gui/brusheditor.py:558
+#: ../gui/brusheditor.py:562
 msgctxt "brush settings editor: rename brush: dialog title"
 msgid "Rename Brush"
 msgstr "重新命名筆刷"
 
-#: ../gui/brusheditor.py:577
+#: ../gui/brusheditor.py:581
 msgctxt "brush settings editor: rename brush: error message"
 msgid "A brush with this name already exists!"
 msgstr "已經存在相同名稱的筆刷！"
 
-#: ../gui/brusheditor.py:611
+#: ../gui/brusheditor.py:615
 msgctxt "brush settings editor: delete brush: error message"
 msgid "No brush selected!"
 msgstr "沒有選擇筆刷！"
 
-#: ../gui/brusheditor.py:617
+#: ../gui/brusheditor.py:621
 #, python-brace-format
 msgctxt "brush settings editor: delete brush: confirm dialog question"
 msgid "Really delete brush “{brush_name}” from disk?"
 msgstr "確定要從磁碟中刪除「{brush_name}」筆刷？"
 
-#: ../gui/brusheditor.py:736
+#: ../gui/brusheditor.py:740
 msgctxt "brush settings editor: header: fallback name"
 msgid "(Unnamed brush)"
 msgstr "(未命名的筆刷)"
 
-#: ../gui/brusheditor.py:743
+#: ../gui/brusheditor.py:747
 #, python-brace-format
 msgctxt "brush settings editor: header: is-modified hint"
 msgid "{brush_name} [unsaved]"
@@ -1000,63 +1005,63 @@ msgstr ""
 "將色彩拖放至此處，\n"
 "可四處拖曳進行整理。"
 
-#: ../gui/colors/paletteview.py:698
+#: ../gui/colors/paletteview.py:702
 msgctxt "palette view"
 msgid "Empty palette slot (drag a color here)"
 msgstr "淨空調色盤內的槽 (請將色彩拖曳至此)"
 
 #. TRANSLATORS: inserting gaps (empty color swatches)
-#: ../gui/colors/paletteview.py:785
+#: ../gui/colors/paletteview.py:789
 msgctxt "palette view: context menu"
 msgid "Add Empty Slot"
 msgstr "加入空槽"
 
 #. TRANSLATORS: inserting gaps (empty color swatches)
-#: ../gui/colors/paletteview.py:792
+#: ../gui/colors/paletteview.py:796
 msgctxt "palette view: context menu"
 msgid "Insert Row"
 msgstr "插入橫列"
 
 #. TRANSLATORS: inserting gaps (empty color swatches)
-#: ../gui/colors/paletteview.py:799
+#: ../gui/colors/paletteview.py:803
 msgctxt "palette view: context menu"
 msgid "Insert Column"
 msgstr "插入直欄"
 
 #. TRANSLATORS: Color interpolations
-#: ../gui/colors/paletteview.py:807
+#: ../gui/colors/paletteview.py:811
 msgctxt "palette view: context menu"
 msgid "Fill Gap (RGB)"
 msgstr "填充空隙 (RGB)"
 
 #. TRANSLATORS: Color interpolations
-#: ../gui/colors/paletteview.py:814
+#: ../gui/colors/paletteview.py:818
 msgctxt "palette view: context menu"
 msgid "Fill Gap (HCY)"
 msgstr "填充空隙 (HCY)"
 
 #. TRANSLATORS: Color interpolations
-#: ../gui/colors/paletteview.py:821
+#: ../gui/colors/paletteview.py:825
 msgctxt "palette view: context menu"
 msgid "Fill Gap (HSV)"
 msgstr "填充空隙 (HSV)"
 
-#: ../gui/colors/paletteview.py:1279
+#: ../gui/colors/paletteview.py:1283
 msgctxt "palette load dialog: filters"
 msgid "GIMP palette file (*.gpl)"
 msgstr "GIMP 調色盤檔 (*.gpl)"
 
-#: ../gui/colors/paletteview.py:1286
+#: ../gui/colors/paletteview.py:1290
 msgctxt "palette load dialog: filters"
 msgid "All files (*)"
 msgstr "所有檔案 (*)"
 
-#: ../gui/colors/paletteview.py:1328
+#: ../gui/colors/paletteview.py:1332
 msgctxt "palette save dialog: filters"
 msgid "GIMP palette file (*.gpl)"
 msgstr "GIMP 調色盤檔 (*.gpl)"
 
-#: ../gui/colors/paletteview.py:1335
+#: ../gui/colors/paletteview.py:1339
 msgctxt "palette save dialog: filters"
 msgid "All files (*)"
 msgstr "所有檔案 (*)"
@@ -1184,14 +1189,14 @@ msgstr "根據檔案而來"
 
 #. This refers to a version of MyPaint like 1.0, 1.1, 1.2 etc
 #: ../gui/compatibility.py:35 ../gui/drawwindow.py:281
-#: ../gui/preferenceswindow.glade:1610
+#: ../gui/preferenceswindow.glade:1667
 #, fuzzy
 msgctxt "Prefs Dialog|Compatibility"
 msgid "1.x"
 msgstr "1.x"
 
 #. This refers to a version of MyPaint like 1.0, 1.1, 1.2 etc
-#: ../gui/compatibility.py:36 ../gui/preferenceswindow.glade:1629
+#: ../gui/compatibility.py:36 ../gui/preferenceswindow.glade:1686
 msgctxt "Prefs Dialog|Compatibility"
 msgid "2.x"
 msgstr "2.x"
@@ -1377,7 +1382,7 @@ msgid "Scroll…"
 msgstr "捲動…"
 
 #. Name and preview column: will be indented
-#: ../gui/dialogs.py:74 ../gui/externalapp.py:179 ../gui/layers.py:417
+#: ../gui/dialogs.py:74 ../gui/externalapp.py:221 ../gui/layers.py:417
 msgid "Name"
 msgstr "名稱"
 
@@ -1606,21 +1611,21 @@ msgstr "MyPaint 筆刷包 (*.zip)"
 #. # UI string consts
 #. TRANSLATORS: Statusbar message when "Edit in External App"
 #. TRANSLATORS: (for a layer) is successfully initiated.
-#: ../gui/externalapp.py:40
+#: ../gui/externalapp.py:41
 #, python-brace-format
 msgid "Launched {app_name} to edit layer “{layer_name}”"
 msgstr "啟動 {app_name} 編輯圖層 「{layer_name}」"
 
 #. TRANSLATORS: Statusbar message shown when the app chosen for
 #. TRANSLATORS: "Edit in External App" (for a layer) failed to open.
-#: ../gui/externalapp.py:44
+#: ../gui/externalapp.py:45
 #, python-brace-format
 msgid "Error: failed to launch {app_name} to edit layer “{layer_name}”"
 msgstr "錯誤：無法起動 {app_name} 去編輯「{layer_name}」圖層"
 
 #. TRANSLATORS: Statusbar message for when an "Edit in External App"
 #. TRANSLATORS: operation is cancelled by the user before it starts.
-#: ../gui/externalapp.py:49
+#: ../gui/externalapp.py:50
 #, python-brace-format
 msgid ""
 "Editing cancelled. You can still edit “{layer_name}” from the Layers menu."
@@ -1628,18 +1633,18 @@ msgstr "編輯已被取消。您仍然可以在圖層選單中編輯「{layer_na
 
 #. TRANSLATORS: This is a statusbar message shown when
 #. TRANSLATORS:  a layer is updated from an external edit
-#: ../gui/externalapp.py:54
+#: ../gui/externalapp.py:55
 #, python-brace-format
 msgid "Updated layer “{layer_name}” with external edits"
 msgstr "「{layer_name}」圖層已被外部編輯更新"
 
-#: ../gui/externalapp.py:58
+#: ../gui/externalapp.py:59
 #, python-brace-format
 msgctxt "Edit in External App (statusbar message)"
 msgid "Failed to update layer with external edits from “{file_basename}”."
 msgstr ""
 
-#: ../gui/externalapp.py:104
+#: ../gui/externalapp.py:146
 #, python-brace-format
 msgid ""
 "MyPaint needs to edit a file of type “{type_name}” ({content_type}). What "
@@ -1648,7 +1653,7 @@ msgstr ""
 "MyPaint 需要編輯 “{type_name}” ({content_type}) 種類的檔案，應該要使用哪個應"
 "用程式？"
 
-#: ../gui/externalapp.py:108
+#: ../gui/externalapp.py:150
 #, python-brace-format
 msgid ""
 "What application should MyPaint use for editing files of type "
@@ -1656,15 +1661,15 @@ msgid ""
 msgstr ""
 "MyPaint 應該用哪個應用程式來編輯 “{type_name}” ({content_type}) 種類的檔案？"
 
-#: ../gui/externalapp.py:114
+#: ../gui/externalapp.py:156
 msgid "Open With…"
 msgstr "開啟…"
 
-#: ../gui/externalapp.py:166
+#: ../gui/externalapp.py:208
 msgid "Icon"
 msgstr "圖示"
 
-#: ../gui/externalapp.py:209
+#: ../gui/externalapp.py:251
 msgid "no description"
 msgstr "沒有描述"
 
@@ -2836,13 +2841,13 @@ msgctxt "color picker: statusbar text during grab"
 msgid "Pick color…"
 msgstr "挑選顏色…"
 
-#: ../gui/preferenceswindow.py:43
+#: ../gui/preferenceswindow.py:44
 msgid "Preferences"
 msgstr "偏好設定"
 
 #. TRANSLATORS: This option means that MyPaint will try to use
 #. TRANSLATORS: the language the system tells it to use.
-#: ../gui/preferenceswindow.py:379
+#: ../gui/preferenceswindow.py:430
 msgctxt "Language preferences menu - default option"
 msgid "System Language"
 msgstr "系統語言"
@@ -2851,7 +2856,7 @@ msgstr "系統語言"
 #. TRANSLATORS: lang_nat is the native name of the language
 #. TRANSLATORS: in that _same language_.
 #. TRANSLATORS: This can just be copied most of the time.
-#: ../gui/preferenceswindow.py:431
+#: ../gui/preferenceswindow.py:482
 #, python-brace-format
 msgctxt "Prefs Dialog|View|Interface - menu entries"
 msgid "{lang_en} - ({lang_nat})"
@@ -4465,17 +4470,17 @@ msgctxt "Prefs Dialog|View|Interface|"
 msgid "Freehand cursor type:"
 msgstr "手繪游標類型："
 
-#: ../gui/preferenceswindow.glade:910
+#: ../gui/preferenceswindow.glade:911
 msgctxt "Prefs Dialog|View|Interface|"
 msgid "Dark theme variant:"
 msgstr "深色主題版本："
 
-#: ../gui/preferenceswindow.glade:920
+#: ../gui/preferenceswindow.glade:921
 msgctxt "Prefs Dialog|View|Interface|Dark theme variant|"
 msgid "If available in GTK3 theme (needs restart)"
 msgstr "如在GTK3 主題中可用 (需要重新啟動)"
 
-#: ../gui/preferenceswindow.glade:924
+#: ../gui/preferenceswindow.glade:925
 msgctxt "Prefs Dialog|View|Interface|Dark theme variant|checkbox tooltip"
 msgid ""
 "Use a light-on-dark theme variant, when it's supported by the GTK theme. "
@@ -4484,26 +4489,26 @@ msgstr ""
 "如 GTK3 主題支援就使用「深中帶淺」的主題版本。一般來說這樣比較適合圖像編輯器"
 "及媒體播放器。"
 
-#: ../gui/preferenceswindow.glade:945
+#: ../gui/preferenceswindow.glade:946
 msgid "Some of these settings require MyPaint to be restarted."
 msgstr "部分設定需要重啟 MyPaint 。"
 
-#: ../gui/preferenceswindow.glade:968
+#: ../gui/preferenceswindow.glade:969
 msgctxt "Prefs Dialog|View|Interface|Icon size|"
 msgid "Large (requires recent GTK3)"
 msgstr "大 (需要新近的 GTK3 )"
 
-#: ../gui/preferenceswindow.glade:985
+#: ../gui/preferenceswindow.glade:986
 msgctxt "Prefs Dialog|View|Interface|Icon size|"
 msgid "Small"
 msgstr "小"
 
-#: ../gui/preferenceswindow.glade:1010
+#: ../gui/preferenceswindow.glade:1011
 msgctxt "Prefs Dialog|View|Zoom|"
 msgid "Use a real checkerboard pattern"
 msgstr "使用一個真實的棋盤圖案"
 
-#: ../gui/preferenceswindow.glade:1014
+#: ../gui/preferenceswindow.glade:1015
 msgctxt "Prefs Dialog|View|Zoom|"
 msgid ""
 "Draw a real checkerboard pattern to show transparency.\n"
@@ -4512,22 +4517,22 @@ msgstr ""
 "繪製一個真實的棋盤圖案來表示透明。\n"
 "這樣減慢了顯示速度，但比較不容易混淆。"
 
-#: ../gui/preferenceswindow.glade:1035
+#: ../gui/preferenceswindow.glade:1036
 msgid "When showing transparency:"
 msgstr "當表示透明時："
 
-#: ../gui/preferenceswindow.glade:1050
+#: ../gui/preferenceswindow.glade:1051
 msgctxt "Prefs Dialog|View|Interface|"
 msgid "Handle smooth scrolling events:"
 msgstr "處理順滑捲動事件："
 
-#: ../gui/preferenceswindow.glade:1060
+#: ../gui/preferenceswindow.glade:1061
 msgctxt ""
 "Prefs Dialog|View|Interface|Handle smooth scrolling events|checkbox label"
 msgid "When devices send them (needs restart)"
 msgstr "當裝置傳送時 (需要重啟)"
 
-#: ../gui/preferenceswindow.glade:1064
+#: ../gui/preferenceswindow.glade:1065
 msgctxt ""
 "Prefs Dialog|View|Interface|Handle smooth scrolling events|checkbox tooltip"
 msgid ""
@@ -4548,18 +4553,38 @@ msgstr ""
 "\n"
 "以捲動方式去移動視圖時需要開啟此設定，並為您的裝置設定「傳送雙向事件」。"
 
-#: ../gui/preferenceswindow.glade:1111
+#: ../gui/preferenceswindow.glade:1112
 msgid "Hide cursor while painting"
 msgstr "在繪畫時隱藏游標"
 
-#: ../gui/preferenceswindow.glade:1134
+#. Label for a toggle that is part of the "Freehand cursor type" settings. Crosshair refers to lines which are either horizontal, vertical, both (cross) or crossed in an x, depending on the brush cursor type.
+#: ../gui/preferenceswindow.glade:1132
+msgctxt "Prefs Dialog|View|Interface"
+msgid "Show crosshair for small brush cursors"
+msgstr ""
+
+#. Label for a spinbutton that is part of the "crosshair for small brush cursors" setting. Radius refers to the visual brush cursor radius.
+#: ../gui/preferenceswindow.glade:1149
+#, fuzzy
+msgctxt "Prefs Dialog|View|Interface"
+msgid "Radius threshold:"
+msgstr "筆劃閾值"
+
+#. Description of the "Radius threshold" spinbox/spinner - the referenced "lines" are part of the brush cursor.
+#: ../gui/preferenceswindow.glade:1162
+msgctxt "Prefs Dialog|View|Interface"
+msgid ""
+"Lines will be shown when the brush circle radius is smaller than this value."
+msgstr ""
+
+#: ../gui/preferenceswindow.glade:1192
 #, fuzzy
 msgctxt ""
 "Prefs Dialog|View|Interface|Blink layers on creation/selection|checkbox label"
 msgid "Enabled"
 msgstr "已啟用"
 
-#: ../gui/preferenceswindow.glade:1138
+#: ../gui/preferenceswindow.glade:1196
 msgctxt ""
 "Prefs Dialog|View|Interface|Blink layers on creation/selection|checkbox "
 "tooltip"
@@ -4568,28 +4593,28 @@ msgid ""
 "period."
 msgstr ""
 
-#: ../gui/preferenceswindow.glade:1158
+#: ../gui/preferenceswindow.glade:1216
 msgctxt "Prefs Dialog|View|Interface|"
 msgid "Blink layers on creation/selection:"
 msgstr ""
 
-#: ../gui/preferenceswindow.glade:1193
+#: ../gui/preferenceswindow.glade:1251
 msgctxt "Prefs Dialog|View|Interface|"
 msgid "Language:"
 msgstr ""
 
-#: ../gui/preferenceswindow.glade:1208
+#: ../gui/preferenceswindow.glade:1266
 msgctxt "Prefs Dialog|View|Interface|"
 msgid "(needs restart)"
 msgstr ""
 
 #. Tab label in preferences dialog
-#: ../gui/preferenceswindow.glade:1225
+#: ../gui/preferenceswindow.glade:1283
 msgctxt "Prefs Dialog|"
 msgid "View"
 msgstr "檢視"
 
-#: ../gui/preferenceswindow.glade:1257
+#: ../gui/preferenceswindow.glade:1315
 msgctxt "Prefs Dialog|Color|Color Wheel|Primaries|"
 msgid ""
 "The set of colors to show as primary on disk-style color wheels.\n"
@@ -4599,24 +4624,24 @@ msgstr ""
 "不同的慣例採不同的色彩調和體系。"
 
 #. Arrangement of MyPaint's custom colour wheels
-#: ../gui/preferenceswindow.glade:1259
+#: ../gui/preferenceswindow.glade:1317
 msgctxt "Prefs Dialog|Color|Color Wheel|"
 msgid "Primaries are:"
 msgstr "原色是："
 
-#: ../gui/preferenceswindow.glade:1276
+#: ../gui/preferenceswindow.glade:1334
 msgctxt "Prefs Dialog|Color|Color Wheel|Primaries|"
 msgid "Standard digital Red/Green/Blue"
 msgstr "標準數位紅/綠/藍"
 
-#: ../gui/preferenceswindow.glade:1281
+#: ../gui/preferenceswindow.glade:1339
 msgid ""
 "The red, green, and blue &apos;computer monitor&apos; primaries, evenly "
 "arranged around the circle. Green is opposite magenta."
 msgstr ""
 "紅、綠、與藍 &apos;電腦螢幕&apos; 主要的，平均分布。綠色是洋紅色的補色。"
 
-#: ../gui/preferenceswindow.glade:1282
+#: ../gui/preferenceswindow.glade:1340
 msgctxt "Prefs Dialog|Color|Color Wheel|Primaries|RGB|"
 msgid ""
 "The red, green, and blue 'computer monitor' primaries, evenly arranged "
@@ -4625,12 +4650,12 @@ msgstr ""
 "紅、綠、藍是「電腦螢幕」的三原色，平均地散佈在這個圓裡面。綠色是洋紅色的補"
 "色。"
 
-#: ../gui/preferenceswindow.glade:1298
+#: ../gui/preferenceswindow.glade:1356
 msgctxt "Prefs Dialog|Color|Color Wheel|Primaries|"
 msgid "Traditional artist's Red/Yellow/Blue"
 msgstr "傳統藝術家的紅/黃/藍"
 
-#: ../gui/preferenceswindow.glade:1303
+#: ../gui/preferenceswindow.glade:1361
 msgid ""
 "The traditionally arranged red/yellow/blue wheel as used by many artists "
 "since the 18th century, approximated with pure display colors evenly "
@@ -4639,7 +4664,7 @@ msgstr ""
 "18世紀以來，許多藝術家使用近似於紅／黃／藍輪子的傳統排列方式，近乎純粹的顏色"
 "排列於圓的四周。綠色在紅色對面。"
 
-#: ../gui/preferenceswindow.glade:1304
+#: ../gui/preferenceswindow.glade:1362
 msgctxt "Prefs Dialog|Color|Color Wheel|Primaries|RYB|"
 msgid ""
 "The traditionally arranged red/yellow/blue wheel as used by many artists "
@@ -4649,12 +4674,12 @@ msgstr ""
 "18世紀以來，許多藝術家使用近似於紅／黃／藍輪子的傳統排列方式，近乎純粹的顏色"
 "排列於圓的四周。綠色在紅色對面。"
 
-#: ../gui/preferenceswindow.glade:1320
+#: ../gui/preferenceswindow.glade:1378
 msgctxt "Prefs Dialog|Color|Color Wheel|Primaries|"
 msgid "Red-Green and Blue-Yellow opponent pairs"
 msgstr "紅-綠及藍-黃心理互補色"
 
-#: ../gui/preferenceswindow.glade:1325
+#: ../gui/preferenceswindow.glade:1383
 msgid ""
 "Quick and dirty approximation of wheels informed by theories of  color which "
 "use four &apos;psychological primaries&apos; or &apos;unique hues&apos; "
@@ -4666,7 +4691,7 @@ msgstr ""
 "色彩理論，就可以快速近似原本的色彩輪。紅色在綠色對面，而黃色在藍色對面。"
 "CIECAM02 與 NCS 提供了類似的模型。這裡我們使用純粹顯示紅、黃等做為四個原色。"
 
-#: ../gui/preferenceswindow.glade:1326
+#: ../gui/preferenceswindow.glade:1384
 msgctxt "Prefs Dialog|Color|Color Wheel|Primaries|RYGB|"
 msgid ""
 "Quick and dirty approximation of wheels informed by theories of  color which "
@@ -4680,49 +4705,49 @@ msgstr ""
 "模型。這裡我們使用純粹顯示紅、黃等做為四個原色。"
 
 #. Options affecting color wheels
-#: ../gui/preferenceswindow.glade:1354
+#: ../gui/preferenceswindow.glade:1412
 msgctxt "Prefs Dialog|Color|"
 msgid "<b>Color Wheel</b>"
 msgstr "<b>色輪</b>"
 
 #. Tab label in preferences dialog
-#: ../gui/preferenceswindow.glade:1367
+#: ../gui/preferenceswindow.glade:1425
 msgctxt "Prefs Dialog|"
 msgid "Color"
 msgstr "色彩"
 
-#: ../gui/preferenceswindow.glade:1400
+#: ../gui/preferenceswindow.glade:1458
 msgctxt "Prefs Dialog|Compatibility"
 msgid "Default Compatibility Mode:"
 msgstr ""
 
-#: ../gui/preferenceswindow.glade:1425
+#: ../gui/preferenceswindow.glade:1483
 #, fuzzy
 msgctxt "Prefs Dialog|Compatibility"
 msgid "<b>1.x Settings</b>"
 msgstr "<b>儲存</b>"
 
 #. Make sure to be consistent w. other occurences of 2.x
-#: ../gui/preferenceswindow.glade:1439
+#: ../gui/preferenceswindow.glade:1497
 #, fuzzy
 msgctxt "Prefs Dialog|Compatibility"
 msgid "<b>2.x Settings</b>"
 msgstr "<b>儲存</b>"
 
-#: ../gui/preferenceswindow.glade:1477 ../gui/preferenceswindow.glade:1551
+#: ../gui/preferenceswindow.glade:1535 ../gui/preferenceswindow.glade:1609
 #, fuzzy
 msgctxt "Prefs Dialog|Compatibility"
 msgid "Default New Layer Type:"
 msgstr "刪除圖層"
 
-#: ../gui/preferenceswindow.glade:1523 ../gui/preferenceswindow.glade:1537
+#: ../gui/preferenceswindow.glade:1581 ../gui/preferenceswindow.glade:1595
 #, fuzzy
 msgctxt "Prefs Dialog|Compatibility"
 msgid "Default Pigment Brush Setting:"
 msgstr "編輯筆刷設定"
 
 #. Label description for the 1.x compatibility-mode-by-default setting
-#: ../gui/preferenceswindow.glade:1614
+#: ../gui/preferenceswindow.glade:1671
 msgctxt "Prefs Dialog|Compatibility"
 msgid ""
 "When creating new documents, use the legacy 1.x compatibility mode by "
@@ -4730,31 +4755,31 @@ msgid ""
 "versions, but pigment blending will not work well."
 msgstr ""
 
-#: ../gui/preferenceswindow.glade:1633
+#: ../gui/preferenceswindow.glade:1690
 msgctxt "Prefs Dialog|Compatibility"
 msgid ""
 "When creating new documents, use the regular 2.x compatibility mode by "
 "default. Old documents will often look different in this mode."
 msgstr ""
 
-#: ../gui/preferenceswindow.glade:1665
+#: ../gui/preferenceswindow.glade:1722
 msgctxt "Prefs Dialog|Compatibility"
 msgid "Show warning for files that may be partially incompatible"
 msgstr ""
 
 #. Label for a set of options
-#: ../gui/preferenceswindow.glade:1682
+#: ../gui/preferenceswindow.glade:1739
 msgctxt "Prefs Dialog|Compatibility"
 msgid "File compatibility warnings:"
 msgstr ""
 
-#: ../gui/preferenceswindow.glade:1694
+#: ../gui/preferenceswindow.glade:1751
 msgctxt "Prefs Dialog|Compatibility"
 msgid "Show warning for files that may be fully incompatible"
 msgstr ""
 
 #. This is a tooltip for the file behavior options label.
-#: ../gui/preferenceswindow.glade:1710
+#: ../gui/preferenceswindow.glade:1767
 msgctxt "Prefs|Compatibility"
 msgid ""
 "This will only apply to files saved with versions of MyPaint older than 2.0. "
@@ -4763,40 +4788,40 @@ msgid ""
 msgstr ""
 
 #. Label to the options for how to handle files which do not have a compatibility mode specified (whether they should be opened in 1.x compatibility mode, or 2.x mode)
-#: ../gui/preferenceswindow.glade:1712
+#: ../gui/preferenceswindow.glade:1769
 msgctxt "Prefs Dialog|Compatibility"
 msgid "When Mode is Unspecified:"
 msgstr ""
 
 #. This label indicates a subsection of the compatibility settings related to loading files.
-#: ../gui/preferenceswindow.glade:1739
+#: ../gui/preferenceswindow.glade:1796
 #, fuzzy
 msgctxt "Prefs|Compatibility"
 msgid "<b>File loading</b>"
 msgstr "<b>儲存</b>"
 
-#: ../gui/preferenceswindow.glade:1759
+#: ../gui/preferenceswindow.glade:1816
 msgid "<b>Compatibility settings</b>"
 msgstr ""
 
 #. Tab label in preferences dialog
-#: ../gui/preferenceswindow.glade:1775
+#: ../gui/preferenceswindow.glade:1832
 #, fuzzy
 msgctxt "Prefs Dialog|"
 msgid "Compatibility"
 msgstr "可移植性"
 
-#: ../gui/preferenceswindow.glade:1793
+#: ../gui/preferenceswindow.glade:1850
 msgctxt "Prefs Dialog|Pen Input|Mode|"
 msgid "Screen (normal)"
 msgstr "螢幕 (一般)"
 
-#: ../gui/preferenceswindow.glade:1797
+#: ../gui/preferenceswindow.glade:1854
 msgctxt "Prefs Dialog|Pen Input|Mode|"
 msgid "Disabled (no pressure sensitivity)"
 msgstr "停用 (無壓力感應)"
 
-#: ../gui/preferenceswindow.glade:1801
+#: ../gui/preferenceswindow.glade:1858
 msgctxt "Prefs Dialog|Pen Input|Mode|"
 msgid "Window (not recommended)"
 msgstr "視窗 (不建議使用)"
@@ -8257,9 +8282,6 @@ msgstr "用顏色填充一區域。"
 #~ "0.0 一般塗繪\n"
 #~ "1.0 標準橡皮擦\n"
 #~ "0.5 像素會趨向 50 % 透明"
-
-#~ msgid "Stroke threshold"
-#~ msgstr "筆劃閾值"
 
 #~ msgid ""
 #~ "How much pressure is needed to start a stroke. This affects the stroke "
