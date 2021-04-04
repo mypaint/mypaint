@@ -7,8 +7,8 @@ msgstr ""
 "Project-Id-Version: mypaint v2.0.0-alpha.8-1-g4490f06\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-03-23 21:20+0100\n"
-"PO-Revision-Date: 2019-02-27 14:18+0000\n"
-"Last-Translator: glixx <roman_romul@mail.ru>\n"
+"PO-Revision-Date: 2021-04-05 21:27+0000\n"
+"Last-Translator: Avag Sayan <avag.sayan@uite.org>\n"
 "Language-Team: Armenian <https://hosted.weblate.org/projects/mypaint/mypaint/"
 "hy/>\n"
 "Language: hy\n"
@@ -16,24 +16,24 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n > 1;\n"
-"X-Generator: Weblate 3.5-dev\n"
+"X-Generator: Weblate 4.6-dev\n"
 
 #: ../gui/accelmap.py:86
 msgctxt "placeholder for keymap filtering"
 msgid "Filter"
-msgstr ""
+msgstr "Զտիչ"
 
 #. TRANSLATORS: Name of first column in the button map preferences.
 #. TRANSLATORS: Refers to an action bound to a mod+button combination.
 #: ../gui/accelmap.py:115 ../gui/buttonmap.py:284
 msgid "Action"
-msgstr ""
+msgstr "Գործողություն"
 
 #. TRANSLATORS: Refers to a keyboard key combination, such as "Ctrl+G".
 #. TRANSLATORS: Second column label in the keybinding preferences tab.
 #: ../gui/accelmap.py:132
 msgid "Key combination"
-msgstr ""
+msgstr "ստեղնի համադրություն"
 
 #. TRANSLATORS: Window title for the keybinding dialog. The %s is
 #. TRANSLATORS: replaced with the name of the action that the key
@@ -1425,7 +1425,7 @@ msgstr "Կրկնել"
 #: ../gui/document.py:195
 #, python-format
 msgid "Undo %s"
-msgstr ""
+msgstr "Հետ գնալ %s"
 
 #: ../gui/document.py:196
 msgid "Undo"
@@ -4602,7 +4602,7 @@ msgstr ""
 #: ../gui/resources.xml:63
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "New"
-msgstr ""
+msgstr "Նոր"
 
 #: ../gui/resources.xml:64
 msgctxt "Toolbar (short labels)"
@@ -4617,7 +4617,7 @@ msgstr ""
 #: ../gui/resources.xml:73
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "Open…"
-msgstr ""
+msgstr "Բացել…"
 
 #: ../gui/resources.xml:74
 msgctxt "Toolbar (short labels)"
@@ -4667,7 +4667,7 @@ msgstr ""
 #: ../gui/resources.xml:120
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "Save"
-msgstr ""
+msgstr "Պահել"
 
 #: ../gui/resources.xml:121
 msgctxt "Accel Editor (descriptions)"
@@ -4677,7 +4677,7 @@ msgstr ""
 #: ../gui/resources.xml:129
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "Save As…"
-msgstr ""
+msgstr "Պահել որպես…"
 
 #: ../gui/resources.xml:130
 msgctxt "Accel Editor (descriptions)"
@@ -4964,7 +4964,7 @@ msgstr ""
 #: ../gui/resources.xml:401
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Clear Layer"
-msgstr ""
+msgstr "Մաքրել շերտը"
 
 #: ../gui/resources.xml:402
 msgctxt "Accel Editor (descriptions)"
@@ -5097,7 +5097,7 @@ msgstr ""
 #: ../gui/resources.xml:511
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "New Painting Layer"
-msgstr ""
+msgstr "Նոր նկարչական շերտ"
 
 #: ../gui/resources.xml:512
 msgctxt "Accel Editor (descriptions)"
@@ -5117,7 +5117,7 @@ msgstr ""
 #: ../gui/resources.xml:528
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "New Layer Group"
-msgstr ""
+msgstr "Նոր շերտի խումբ"
 
 #: ../gui/resources.xml:529
 msgctxt "Accel Editor (descriptions)"
@@ -5187,7 +5187,7 @@ msgstr ""
 #: ../gui/resources.xml:583
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Delete Layer"
-msgstr ""
+msgstr "Ջնջել շերտը"
 
 #: ../gui/resources.xml:584
 msgctxt "Accel Editor (descriptions)"
@@ -5321,7 +5321,7 @@ msgstr ""
 #: ../gui/resources.xml:693
 msgctxt "Menu→View (labels), Accel Editor (labels)"
 msgid "Fit to View"
-msgstr ""
+msgstr "Տեսքը հարմարեցնել"
 
 #: ../gui/resources.xml:694
 msgctxt "Accel Editor (descriptions)"
@@ -5611,7 +5611,7 @@ msgstr "Ֆայլ"
 #: ../gui/resources.xml:989
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "Quit"
-msgstr ""
+msgstr "Փակել"
 
 #: ../gui/resources.xml:990
 msgctxt "Accel Editor (descriptions)"
@@ -5621,12 +5621,12 @@ msgstr ""
 #: ../gui/resources.xml:1000
 msgctxt "Menu (labels)"
 msgid "Edit"
-msgstr ""
+msgstr "Խմբագրել"
 
 #: ../gui/resources.xml:1008
 msgctxt "Menu (labels)"
 msgid "Color"
-msgstr ""
+msgstr "Գույն"
 
 #: ../gui/resources.xml:1014
 msgctxt "Menu→Color (labels)"
@@ -5686,7 +5686,7 @@ msgstr ""
 #: ../gui/resources.xml:1058
 msgctxt "Menu (labels)"
 msgid "Layer"
-msgstr ""
+msgstr "Շերտ"
 
 #: ../gui/resources.xml:1064
 msgctxt "Menu→Layer→Properties (labels)"
@@ -5711,7 +5711,7 @@ msgstr ""
 #: ../gui/resources.xml:1090
 msgctxt "Menu (labels)"
 msgid "Scratchpad"
-msgstr ""
+msgstr "Սևագիր"
 
 #: ../gui/resources.xml:1096
 msgctxt "Menu→Scratchpad (labels), Accel Editor (labels)"
@@ -5797,12 +5797,12 @@ msgstr ""
 #: ../gui/resources.xml:1159
 msgctxt "Menu (labels)"
 msgid "Window"
-msgstr ""
+msgstr "Պատուհան"
 
 #: ../gui/resources.xml:1167
 msgctxt "Menu→Brush (labels)"
 msgid "Brush"
-msgstr ""
+msgstr "Վրձին"
 
 #: ../gui/resources.xml:1173
 msgctxt "Menu→Brush (labels)"
@@ -5822,7 +5822,7 @@ msgstr ""
 #: ../gui/resources.xml:1187
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
 msgid "Change Brush…"
-msgstr ""
+msgstr "Փոխել վրձինը…"
 
 #: ../gui/resources.xml:1188
 msgctxt "Accel Editor (descriptions)"
@@ -5832,7 +5832,7 @@ msgstr ""
 #: ../gui/resources.xml:1195
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "Change Color…"
-msgstr ""
+msgstr "Փոխել գույնը…"
 
 #: ../gui/resources.xml:1196
 msgctxt "Accel Editor (descriptions)"
@@ -5843,7 +5843,7 @@ msgstr ""
 #: ../gui/resources.xml:1204
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "Change Color (fast subset)…"
-msgstr ""
+msgstr "Փոխել գույնը (արագ ենթաբազմություն)…"
 
 #: ../gui/resources.xml:1205
 msgctxt "Accel Editor (descriptions)"
@@ -5855,7 +5855,7 @@ msgstr ""
 #: ../gui/resources.xml:1213
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
 msgid "Get More Brushes…"
-msgstr ""
+msgstr "Ստանալ շատ վրձիներ…"
 
 #: ../gui/resources.xml:1214
 msgctxt "Accel Editor (descriptions)"
@@ -5875,12 +5875,12 @@ msgstr ""
 #: ../gui/resources.xml:1231
 msgctxt "Menu (labels)"
 msgid "Help"
-msgstr ""
+msgstr "Օգնություն"
 
 #: ../gui/resources.xml:1237
 msgctxt "Menu→Help (labels), Accel Editor (labels)"
 msgid "Online Help"
-msgstr ""
+msgstr "Առցանց օգնություն"
 
 #: ../gui/resources.xml:1238
 msgctxt "Accel Editor (descriptions)"
@@ -5890,7 +5890,7 @@ msgstr ""
 #: ../gui/resources.xml:1246
 msgctxt "Menu→Help (labels), Accel Editor (labels)"
 msgid "About MyPaint"
-msgstr ""
+msgstr "MyPaint-ի մասին"
 
 #: ../gui/resources.xml:1247
 msgctxt "Accel Editor (descriptions)"
@@ -5946,7 +5946,7 @@ msgstr ""
 #: ../gui/resources.xml:1294
 msgctxt "Menu (labels)"
 msgid "View"
-msgstr ""
+msgstr "Տեսք"
 
 #: ../gui/resources.xml:1300
 msgctxt "Menu→View (labels)"
@@ -5971,7 +5971,7 @@ msgstr ""
 #: ../gui/resources.xml:1320
 msgctxt "Menu→View (labels), Accel Editor (labels)"
 msgid "Fullscreen"
-msgstr ""
+msgstr "Լիաէկրան"
 
 #: ../gui/resources.xml:1321
 msgctxt "Accel Editor (descriptions)"
@@ -5981,7 +5981,7 @@ msgstr ""
 #: ../gui/resources.xml:1332
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
 msgid "Edit Preferences"
-msgstr ""
+msgstr "Խմբագրել նախընտրանքները"
 
 #: ../gui/resources.xml:1333
 msgctxt "Accel Editor (descriptions)"
@@ -6011,7 +6011,7 @@ msgstr ""
 #: ../gui/resources.xml:1355
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
 msgid "Brush Settings Editor"
-msgstr ""
+msgstr "Վրձնի կարգավորումների խմբագրիչ"
 
 #: ../gui/resources.xml:1356
 msgctxt "Accel Editor (descriptions)"
@@ -6043,7 +6043,7 @@ msgstr ""
 #: ../gui/resources.xml:1382
 msgctxt "Menu→Layers (labels), Accel Editor (labels)"
 msgid "Show Layers Panel"
-msgstr ""
+msgstr "Ցույց տալ շերտերի վահանակը"
 
 #: ../gui/resources.xml:1383
 msgctxt "Accel Editor (descriptions)"
@@ -6065,7 +6065,7 @@ msgstr ""
 #: ../gui/resources.xml:1402
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "Color Palette"
-msgstr ""
+msgstr "Գունապնակ"
 
 #: ../gui/resources.xml:1403
 msgctxt "Accel Editor (descriptions)"
@@ -6157,7 +6157,7 @@ msgstr ""
 #: ../gui/resources.xml:1478
 msgctxt "Menu→Scratchpad (labels), Accel Editor (labels)"
 msgid "Show Scratchpad Panel"
-msgstr ""
+msgstr "Ցույց տալ սևագրի վահանակը"
 
 #: ../gui/resources.xml:1479
 msgctxt "Accel Editor (descriptions)"
@@ -6167,7 +6167,7 @@ msgstr ""
 #: ../gui/resources.xml:1488
 msgctxt "Menu→Window (labels), Toolbar (labels), Accel Editor (labels)"
 msgid "Preview Panel"
-msgstr ""
+msgstr "Վահանի նախատեսք"
 
 #: ../gui/resources.xml:1489
 msgctxt "Accel Editor (descriptions)"
@@ -6177,7 +6177,7 @@ msgstr ""
 #: ../gui/resources.xml:1497
 msgctxt "Menu→View (labels), Accel Editor (labels)"
 msgid "Preview"
-msgstr ""
+msgstr "Նախատեսք"
 
 #: ../gui/resources.xml:1498
 msgctxt "Accel Editor (descriptions)"
@@ -6187,7 +6187,7 @@ msgstr ""
 #: ../gui/resources.xml:1508
 msgctxt "Menu→Window (labels), Toolbar (labels), Accel Editor (labels)"
 msgid "Tool Options Panel"
-msgstr ""
+msgstr "Գործիքի ընտրանքների վահանակ"
 
 #: ../gui/resources.xml:1509
 msgctxt "Accel Editor (descriptions)"
@@ -6197,7 +6197,7 @@ msgstr ""
 #: ../gui/resources.xml:1517
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
 msgid "Show Tool Options Panel"
-msgstr ""
+msgstr "Ցույց տալ գործիքի ընտրանքների վահանակը"
 
 #: ../gui/resources.xml:1518
 msgctxt "Accel Editor (descriptions)"
@@ -6207,7 +6207,7 @@ msgstr ""
 #: ../gui/resources.xml:1528
 msgctxt "Menu→Window (labels), Toolbar (labels), Accel Editor (labels)"
 msgid "Brush & Color History Panel"
-msgstr ""
+msgstr "Վրձնի և գույնի պատմության վահանակ"
 
 #: ../gui/resources.xml:1529
 msgctxt "Accel Editor (descriptions)"
@@ -6217,7 +6217,7 @@ msgstr ""
 #: ../gui/resources.xml:1537
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
 msgid "Recent Brushes & Colors"
-msgstr ""
+msgstr "Վերջին վրձիններն ու գույները"
 
 #: ../gui/resources.xml:1538
 msgctxt "Accel Editor (descriptions)"
@@ -6323,7 +6323,7 @@ msgstr ""
 #: ../gui/resources.xml:1635
 msgctxt "Menu→Edit→Current Mode (labels)"
 msgid "Freehand"
-msgstr ""
+msgstr "Ձեռքով նկարած"
 
 #: ../gui/resources.xml:1636
 msgctxt "Toolbar (short labels)"
@@ -6338,7 +6338,7 @@ msgstr ""
 #: ../gui/resources.xml:1646
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
 msgid "Freehand"
-msgstr ""
+msgstr "Ձեռքով"
 
 #: ../gui/resources.xml:1647
 msgctxt "Accel Editor (descriptions)"
@@ -6438,7 +6438,7 @@ msgstr ""
 #: ../gui/resources.xml:1727
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
 msgid "Lines and Curves"
-msgstr ""
+msgstr "Գծեր և կորեր"
 
 #: ../gui/resources.xml:1728
 msgctxt "Accel Editor (descriptions)"
@@ -6463,7 +6463,7 @@ msgstr ""
 #: ../gui/resources.xml:1748
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
 msgid "Connected Lines"
-msgstr ""
+msgstr "Միացված գծեր"
 
 #: ../gui/resources.xml:1749
 msgctxt "Accel Editor (descriptions)"
@@ -6488,7 +6488,7 @@ msgstr ""
 #: ../gui/resources.xml:1769
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
 msgid "Ellipses and Circles"
-msgstr ""
+msgstr "Էլիփսներ և շրջաններ"
 
 #: ../gui/resources.xml:1770
 msgctxt "Accel Editor (descriptions)"
@@ -6513,7 +6513,7 @@ msgstr ""
 #: ../gui/resources.xml:1790
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
 msgid "Inking"
-msgstr ""
+msgstr "Թանաքոտում"
 
 #: ../gui/resources.xml:1791
 msgctxt "Accel Editor (descriptions)"
@@ -6538,7 +6538,7 @@ msgstr ""
 #: ../gui/resources.xml:1811
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Reposition Layer"
-msgstr ""
+msgstr "Շերտի վերադասավորում"
 
 #: ../gui/resources.xml:1812
 msgctxt "Accel Editor (description)"
@@ -6564,7 +6564,7 @@ msgstr ""
 #: ../gui/resources.xml:1832
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "Edit Frame"
-msgstr ""
+msgstr "Խմբագրել շրջանակը"
 
 #: ../gui/resources.xml:1833
 msgctxt "Accel Editor (descriptions)"
@@ -6590,7 +6590,7 @@ msgstr ""
 #: ../gui/resources.xml:1852
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "Edit Painting Symmetry"
-msgstr ""
+msgstr "Խմբագրել նկարչական սիմետրիկությունը"
 
 #: ../gui/resources.xml:1853
 msgctxt "Accel Editor (description)"
@@ -6648,7 +6648,7 @@ msgstr ""
 #: ../gui/resources.xml:1924
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "Pick Color"
-msgstr ""
+msgstr "Ընտրել գույն"
 
 #: ../gui/resources.xml:1925
 msgctxt "Accel Editor (descriptions)"
@@ -6673,7 +6673,7 @@ msgstr ""
 #: ../gui/resources.xml:1945
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
 msgid "Flood Fill"
-msgstr ""
+msgstr "Լցնել գույնով"
 
 #: ../gui/resources.xml:1946
 msgctxt "Accel Editor (descriptions)"
