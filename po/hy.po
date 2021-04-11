@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: mypaint v2.0.0-alpha.8-1-g4490f06\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-03-23 21:20+0100\n"
-"PO-Revision-Date: 2021-04-05 21:27+0000\n"
+"PO-Revision-Date: 2021-04-12 10:27+0000\n"
 "Last-Translator: Avag Sayan <avag.sayan@uite.org>\n"
 "Language-Team: Armenian <https://hosted.weblate.org/projects/mypaint/mypaint/"
 "hy/>\n"
@@ -41,7 +41,7 @@ msgstr "ստեղնի համադրություն"
 #: ../gui/accelmap.py:369
 #, python-format
 msgid "Edit Key for '%s'"
-msgstr ""
+msgstr "Խմբագրել ստեղնը '%s' -ի համար"
 
 #. TRANSLATORS: Part of interface when adding a new button map binding.
 #. TRANSLATORS: It's a label for the action part of the combination.
@@ -49,7 +49,7 @@ msgstr ""
 #. TRANSLATORS: "Action" with a trailing ":" or lang-specific symbol
 #: ../gui/accelmap.py:400 ../gui/buttonmap.py:502
 msgid "Action:"
-msgstr ""
+msgstr "Գործողություն՝"
 
 #. TRANSLATORS: Path refers to an "action path" that is part of an
 #. TRANSLATORS: accelerator (keybinding). Found in the dialog for
@@ -58,13 +58,13 @@ msgstr ""
 #. TRANSLATORS: so don't worry too much about the translation.
 #: ../gui/accelmap.py:418
 msgid "Path:"
-msgstr ""
+msgstr "Վայր՝"
 
 #. TRANSLATORS: Key refers to a key on the keyboard, this is a label
 #. TRANSLATORS: in the dialog for adding new keyboard bindings.
 #: ../gui/accelmap.py:431
 msgid "Key:"
-msgstr ""
+msgstr "Ստեղն՝"
 
 #. TRANSLATORS: "keys" refers to keyboard keys, assignment refers
 #. TRANSLATORS: to an assignment of a keyboard key combination to
@@ -72,13 +72,13 @@ msgstr ""
 #. TRANSLATORS: keybinding dialog (Preferences | Keys).
 #: ../gui/accelmap.py:473
 msgid "Press keys to update this assignment"
-msgstr ""
+msgstr "Սեղմել ստղենը հանձնարարությունը թարմացնելու հարմար"
 
 #. TRANSLATORS: Part of the keybinding dialog, refers
 #. TRANSLATORS: to an action bound to a key combination.
 #: ../gui/accelmap.py:532
 msgid "Unknown Action"
-msgstr ""
+msgstr "Անհայտ գործողություն"
 
 #. TRANSLATORS: Warning message when attempting to assign a
 #. TRANSLATORS: keyboard combination that is already used.
@@ -88,111 +88,115 @@ msgid ""
 "<b>{accel} is already in use for '{action}'. The existing assignment will be "
 "replaced.</b>"
 msgstr ""
+"<b>{accel} -ն արդեն օգտագործվում է {action} -ի համար։ Գոյություն ունեցող "
+"հանձնարարությունը կփոխարինվի։</b>"
 
 #: ../gui/application.py:626
 #, python-brace-format
 msgid "Open Folder “{folder_basename}”…"
-msgstr ""
+msgstr "Բացել Պանակ “{folder_basename}”…"
 
 #. ... so that the main actions end up in the bottom-right of the
 #. dialog (reversed for rtl scripts), where the eye ends up
 #. naturally at the end of the flow.
 #: ../gui/application.py:634
 msgid "OK"
-msgstr ""
+msgstr "Լավ"
 
 #: ../gui/autorecover.py:138
 msgid "No backups were found in the cache."
-msgstr ""
+msgstr "Քեշում ոչ մի պահոց չի հայտնաբերվել:"
 
 #: ../gui/autorecover.py:139
 msgid "No Available Backups"
-msgstr ""
+msgstr "Առկա չէ հասանելի պահոց"
 
 #: ../gui/autorecover.py:141
 msgid "Open the Cache Folder…"
-msgstr ""
+msgstr "Բացել քեշի պանակը…"
 
 #: ../gui/autorecover.py:170
 msgid "Backup Recovery Failed"
-msgstr ""
+msgstr "Պահոցի վերականգնումը ձախողվեց"
 
 #: ../gui/autorecover.py:172
 msgid "Open the Backup’s Folder…"
-msgstr ""
+msgstr "Բացել պահոցի պանակը…"
 
 #: ../gui/autorecover.py:181
 #, python-brace-format
 msgid "Recovered file from {iso_datetime}.ora"
-msgstr ""
+msgstr "Վերականգնված նիշքը {iso_datetime}.ora -ից"
 
 #: ../gui/backgroundwindow.py:55
 msgid "Background"
-msgstr ""
+msgstr "Ֆոն"
 
 #: ../gui/backgroundwindow.py:58
 msgid "Save as Default"
-msgstr ""
+msgstr "Պահել որպես հիմնական"
 
 #: ../gui/backgroundwindow.py:75
 msgid "Pattern"
-msgstr ""
+msgstr "Օրինաչափություն"
 
 #: ../gui/backgroundwindow.py:86 ../lib/modes.py:110
 msgid "Color"
-msgstr ""
+msgstr "Գույն"
 
 #: ../gui/backgroundwindow.py:92
 msgid "Add color to Patterns"
-msgstr ""
+msgstr "Ավելացնել գույնը նմուշին"
 
 #: ../gui/backgroundwindow.py:256
 msgid "One or more backgrounds could not be loaded"
-msgstr ""
+msgstr "Մեկ կամ ավել ետնապատկերներ չեն կարող բեռնվել"
 
 #: ../gui/backgroundwindow.py:257
 msgid "Error loading backgrounds"
-msgstr ""
+msgstr "Ֆոնի բեռնումը ձախողվեց"
 
 #: ../gui/backgroundwindow.py:258
 msgid ""
 "Please remove the unloadable files, or check your libgdkpixbuf installation."
 msgstr ""
+"Խնդրում ենք հեռացնել չբեռնվող նիշքերը կամ ստուգել ձեր libgdkpixbuf գրադարանի "
+"տեղադրումը:"
 
 #: ../gui/backgroundwindow.py:372
 #, python-brace-format
 msgid "Gdk-Pixbuf couldn't load \"{filename}\", and reported \"{error}\""
-msgstr ""
+msgstr "Gdk-Pixbu չի կարող բեռնվել \"{filename}\" և \"{error}\"-ը զեկուցվել է"
 
 #: ../gui/backgroundwindow.py:382
 #, python-brace-format
 msgid "{filename} has zero size (w={w}, h={h})"
-msgstr ""
+msgstr "{filename} -ն ունի զրո չափս (w={w}, h={h})"
 
 #: ../gui/brusheditor.py:117
 msgctxt "brush settings editor: subwindow title"
 msgid "Brush Settings Editor"
-msgstr ""
+msgstr "Վրձնի կարգավորման խմբագիր"
 
 #: ../gui/brusheditor.py:305
 msgctxt "brush settings list: brush metadata texts group"
 msgid "About"
-msgstr ""
+msgstr "Մեր մասին"
 
 #: ../gui/brusheditor.py:316
 msgctxt "brush settings list: setting group"
 msgid "Experimental"
-msgstr ""
+msgstr "Փորձնական"
 
 #: ../gui/brusheditor.py:323
 msgctxt "brush settings list: setting group"
 msgid "Basic"
-msgstr ""
+msgstr "Հիմնական"
 
 #: ../gui/brusheditor.py:342
 msgctxt "brush settings list: setting group"
 msgid "Opacity"
-msgstr ""
+msgstr "Անթափանցիկություն"
 
 #: ../gui/brusheditor.py:354
 msgctxt "brush settings list: setting group"
@@ -202,42 +206,42 @@ msgstr ""
 #: ../gui/brusheditor.py:365
 msgctxt "brush settings list: setting group"
 msgid "Smudge"
-msgstr ""
+msgstr "Քսուկ"
 
 #: ../gui/brusheditor.py:379
 msgctxt "brush settings list: setting group"
 msgid "Speed"
-msgstr ""
+msgstr "Արագություն"
 
 #: ../gui/brusheditor.py:393
 msgctxt "brush settings list: setting group"
 msgid "Directional Offsets"
-msgstr ""
+msgstr "Ուղությունների հատումներ"
 
 #: ../gui/brusheditor.py:411
 msgctxt "brush settings list: setting group"
 msgid "Tracking"
-msgstr ""
+msgstr "Հետևել"
 
 #: ../gui/brusheditor.py:422
 msgctxt "brush settings list: setting group"
 msgid "Stroke"
-msgstr ""
+msgstr "Գծված"
 
 #: ../gui/brusheditor.py:433
 msgctxt "brush settings list: setting group"
 msgid "Color"
-msgstr ""
+msgstr "Գույն"
 
 #: ../gui/brusheditor.py:451
 msgctxt "brush settings list: setting group"
 msgid "GridMap"
-msgstr ""
+msgstr "Ցանց-քարտեզ"
 
 #: ../gui/brusheditor.py:462
 msgctxt "brush settings list: setting group"
 msgid "Custom"
-msgstr ""
+msgstr "Հատուկ"
 
 #: ../gui/brusheditor.py:528
 msgctxt "brush settings editor: save brush: error message"
