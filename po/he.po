@@ -9,7 +9,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-03-23 21:20+0100\n"
 "PO-Revision-Date: 2021-04-16 07:00+0000\n"
-"Last-Translator: Luz Paz <david.yoga@gmail.com>\n"
+"Last-Translator: Omer I.S. <omeritzicschwartz@gmail.com>\n"
 "Language-Team: Hebrew <https://hosted.weblate.org/projects/mypaint/mypaint/"
 "he/>\n"
 "Language: he\n"
@@ -491,13 +491,13 @@ msgstr "הסרה מקבוצה"
 #, python-brace-format
 msgctxt "brush group: context menu: unique names for cloned brushes"
 msgid "{original_name} copy"
-msgstr ""
+msgstr "עותק של {original_name}"
 
 #: ../gui/brushselectionwindow.py:299
 #, python-brace-format
 msgctxt "brush group: context menu: unique names for cloned brushes"
 msgid "{original_name} copy {n}"
-msgstr ""
+msgstr "עותק מס׳ {n} של {original_name}"
 
 #: ../gui/brushselectionwindow.py:325
 #, python-brace-format
@@ -3067,27 +3067,27 @@ msgstr "שכבות"
 #: ../lib/command.py:957
 #, python-brace-format
 msgid "Add {layer_default_name}"
-msgstr ""
+msgstr "הוספת {layer_default_name}"
 
 #: ../lib/command.py:981
 msgid "Remove Layer"
-msgstr "להסיר את השכבה"
+msgstr "הסרת השכבה"
 
 #: ../lib/command.py:1028
 msgid "Select Layer"
-msgstr ""
+msgstr "בחירת שכבה"
 
 #: ../lib/command.py:1158
 msgid "Duplicate Layer"
-msgstr ""
+msgstr "שכפול השכבה"
 
 #: ../lib/command.py:1182
 msgid "Move Layer Up"
-msgstr ""
+msgstr "העברת השכבה למעלה"
 
 #: ../lib/command.py:1196
 msgid "Move Layer Down"
-msgstr ""
+msgstr "העברת השכבה למטה"
 
 #: ../lib/command.py:1223
 msgid "Move Layer in Stack"
@@ -3095,7 +3095,7 @@ msgstr ""
 
 #: ../lib/command.py:1342
 msgid "Rename Layer"
-msgstr ""
+msgstr "שינוי שם השכבה"
 
 #: ../lib/command.py:1400
 msgid "Make Layer Visible"
