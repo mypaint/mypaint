@@ -8,8 +8,8 @@ msgstr ""
 "Project-Id-Version: mypaint v2.0.0-alpha.8-1-g4490f06\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-03-23 21:20+0100\n"
-"PO-Revision-Date: 2021-04-16 06:57+0000\n"
-"Last-Translator: Omer I.S. <omeritzicschwartz@gmail.com>\n"
+"PO-Revision-Date: 2021-04-16 07:00+0000\n"
+"Last-Translator: Luz Paz <david.yoga@gmail.com>\n"
 "Language-Team: Hebrew <https://hosted.weblate.org/projects/mypaint/mypaint/"
 "he/>\n"
 "Language: he\n"
@@ -3107,7 +3107,7 @@ msgstr ""
 
 #: ../lib/command.py:1440
 msgid "Lock Layer"
-msgstr ""
+msgstr "נעילת שכבה"
 
 #: ../lib/command.py:1442
 msgid "Unlock Layer"
