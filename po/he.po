@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: mypaint v2.0.0-alpha.8-1-g4490f06\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-03-23 21:20+0100\n"
-"PO-Revision-Date: 2021-04-16 07:00+0000\n"
+"PO-Revision-Date: 2021-04-17 15:27+0000\n"
 "Last-Translator: Omer I.S. <omeritzicschwartz@gmail.com>\n"
 "Language-Team: Hebrew <https://hosted.weblate.org/projects/mypaint/mypaint/"
 "he/>\n"
@@ -3147,7 +3147,7 @@ msgstr ""
 #, python-brace-format
 msgctxt "Document IO: common error strings: {error_loading_common}"
 msgid "Error loading “{basename}”."
-msgstr "שגיאה בטעינת \"{basename}\"."
+msgstr "שגיאה בטעינת „{basename}”."
 
 #: ../lib/document.py:78
 msgctxt "Document IO: common error strings: {see_logs}"
@@ -3164,7 +3164,7 @@ msgstr ""
 #: ../lib/document.py:211
 msgctxt "Document autosave descriptions: the {ago} string: past"
 msgid "ago"
-msgstr ""
+msgstr "לפני כן"
 
 #. TRANSLATORS: String descriptions for an autosaved backup.
 #. TRANSLATORS: Time strings are localized: e.g. "3h42m" or "8s"
@@ -6675,7 +6675,7 @@ msgstr ""
 #: ../gui/resources.xml:1863
 msgctxt "Menu→Edit→Current Mode (labels)"
 msgid "Pick Color"
-msgstr ""
+msgstr "בחירת צבע"
 
 #: ../gui/resources.xml:1864
 msgctxt "Toolbar (short labels)"
