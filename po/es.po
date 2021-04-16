@@ -9,8 +9,8 @@ msgstr ""
 "Project-Id-Version: mypaint v2.0.0-alpha.12-324-g153de92\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-03-23 21:20+0100\n"
-"PO-Revision-Date: 2020-09-07 23:36+0000\n"
-"Last-Translator: fede s <elfederium@yahoo.com.ar>\n"
+"PO-Revision-Date: 2021-04-17 15:27+0000\n"
+"Last-Translator: Adolfo Jayme Barrientos <fitojb@ubuntu.com>\n"
 "Language-Team: Spanish <https://hosted.weblate.org/projects/mypaint/mypaint/"
 "es/>\n"
 "Language: es\n"
@@ -18,12 +18,12 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bits\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 4.3-dev\n"
+"X-Generator: Weblate 4.6-dev\n"
 
 #: ../gui/accelmap.py:86
 msgctxt "placeholder for keymap filtering"
 msgid "Filter"
-msgstr ""
+msgstr "Filtro"
 
 #. TRANSLATORS: Name of first column in the button map preferences.
 #. TRANSLATORS: Refers to an action bound to a mod+button combination.
@@ -43,7 +43,7 @@ msgstr "Combinación de teclas"
 #: ../gui/accelmap.py:369
 #, python-format
 msgid "Edit Key for '%s'"
-msgstr "Editar Tecla para '%s'"
+msgstr "Editar tecla para «%s»"
 
 #. TRANSLATORS: Part of interface when adding a new button map binding.
 #. TRANSLATORS: It's a label for the action part of the combination.
@@ -74,7 +74,7 @@ msgstr "Tecla:"
 #. TRANSLATORS: keybinding dialog (Preferences | Keys).
 #: ../gui/accelmap.py:473
 msgid "Press keys to update this assignment"
-msgstr "Pulse las teclas para actualizar esta asignación"
+msgstr "Presione las teclas para actualizar esta asignación"
 
 #. TRANSLATORS: Part of the keybinding dialog, refers
 #. TRANSLATORS: to an action bound to a key combination.
@@ -90,40 +90,40 @@ msgid ""
 "<b>{accel} is already in use for '{action}'. The existing assignment will be "
 "replaced.</b>"
 msgstr ""
-"<b>{accel} ya esta en uso por '{action}'. La asignación actual sera "
-"reemplazada.</b>"
+"<b>{accel} ya lo utiliza «{action}». La asignación existente se "
+"reemplazará.</b>"
 
 #: ../gui/application.py:626
 #, python-brace-format
 msgid "Open Folder “{folder_basename}”…"
-msgstr "Abrir Carpeta “{folder_basename}”…"
+msgstr "Abrir carpeta «{folder_basename}»…"
 
 #. ... so that the main actions end up in the bottom-right of the
 #. dialog (reversed for rtl scripts), where the eye ends up
 #. naturally at the end of the flow.
 #: ../gui/application.py:634
 msgid "OK"
-msgstr "ACEPTAR"
+msgstr "Aceptar"
 
 #: ../gui/autorecover.py:138
 msgid "No backups were found in the cache."
-msgstr "No se encuentran copias de seguridad en la memoria cache."
+msgstr "No se encontró ninguna copia de respaldo en la antememoria."
 
 #: ../gui/autorecover.py:139
 msgid "No Available Backups"
-msgstr "No hay disponibles Copias de Seguridad"
+msgstr "No hay copias de respaldo disponibles"
 
 #: ../gui/autorecover.py:141
 msgid "Open the Cache Folder…"
-msgstr "Abrir la Carpeta de la Memoria Cache…"
+msgstr "Abrir carpeta de antememoria…"
 
 #: ../gui/autorecover.py:170
 msgid "Backup Recovery Failed"
-msgstr "La recuperación de la Copia de Seguridad Fallo"
+msgstr "Falló la recuperación de la copia de respaldo"
 
 #: ../gui/autorecover.py:172
 msgid "Open the Backup’s Folder…"
-msgstr "Abrir la Carpeta de Copias de Seguridad…"
+msgstr "Abrir carpeta de copias de respaldo…"
 
 #: ../gui/autorecover.py:181
 #, python-brace-format
@@ -136,11 +136,11 @@ msgstr "Fondo"
 
 #: ../gui/backgroundwindow.py:58
 msgid "Save as Default"
-msgstr "Guardar por defecto"
+msgstr "Guardar como predeterminado"
 
 #: ../gui/backgroundwindow.py:75
 msgid "Pattern"
-msgstr "Patrón"
+msgstr "Motivo"
 
 #: ../gui/backgroundwindow.py:86 ../lib/modes.py:110
 msgid "Color"
@@ -148,11 +148,11 @@ msgstr "Color"
 
 #: ../gui/backgroundwindow.py:92
 msgid "Add color to Patterns"
-msgstr "Añadir color a los patrones"
+msgstr "Añadir color a motivos"
 
 #: ../gui/backgroundwindow.py:256
 msgid "One or more backgrounds could not be loaded"
-msgstr "No se han podido cargar uno o más fondos"
+msgstr "No se pudieron cargar uno o más fondos"
 
 #: ../gui/backgroundwindow.py:257
 msgid "Error loading backgrounds"
@@ -162,13 +162,13 @@ msgstr "Error al cargar fondos"
 msgid ""
 "Please remove the unloadable files, or check your libgdkpixbuf installation."
 msgstr ""
-"Por favor quite los archivos que no se han podido cargar, o chequee su "
+"Elimine los archivos que no se pueden cargar, o bien compruebe la "
 "instalación de libgdkpixbuf."
 
 #: ../gui/backgroundwindow.py:372
 #, python-brace-format
 msgid "Gdk-Pixbuf couldn't load \"{filename}\", and reported \"{error}\""
-msgstr "Gdk-Pixbuf no pudo cargar \"{filename}\", y ha reportado \"{error}\""
+msgstr "Gdk-Pixbuf no pudo cargar «{filename}» y devolvió el error «{error}»"
 
 #: ../gui/backgroundwindow.py:382
 #, python-brace-format
@@ -208,7 +208,7 @@ msgstr "Pinceladas"
 #: ../gui/brusheditor.py:365
 msgctxt "brush settings list: setting group"
 msgid "Smudge"
-msgstr "Difuminar"
+msgstr "Borronear"
 
 #: ../gui/brusheditor.py:379
 msgctxt "brush settings list: setting group"
@@ -238,7 +238,7 @@ msgstr "Color"
 #: ../gui/brusheditor.py:451
 msgctxt "brush settings list: setting group"
 msgid "GridMap"
-msgstr "Cuadrícula"
+msgstr "Mapa cuadriculado"
 
 #: ../gui/brusheditor.py:462
 msgctxt "brush settings list: setting group"
@@ -254,51 +254,51 @@ msgstr ""
 #: ../gui/brusheditor.py:553
 msgctxt "brush settings editor: rename brush: error message"
 msgid "No brush selected!"
-msgstr "¡No hay una brocha seleccionada!"
+msgstr "No se seleccionó ninguna brocha."
 
 #: ../gui/brusheditor.py:562
 msgctxt "brush settings editor: rename brush: dialog title"
 msgid "Rename Brush"
-msgstr "Renombrar Brocha"
+msgstr "Cambiar nombre de brocha"
 
 #: ../gui/brusheditor.py:581
 msgctxt "brush settings editor: rename brush: error message"
 msgid "A brush with this name already exists!"
-msgstr "¡Ya existe una brocha con este nombre!"
+msgstr "Ya existe una brocha con este nombre."
 
 #: ../gui/brusheditor.py:615
 msgctxt "brush settings editor: delete brush: error message"
 msgid "No brush selected!"
-msgstr "¡No hay una brocha seleccionada!"
+msgstr "No se seleccionó ninguna brocha."
 
 #: ../gui/brusheditor.py:621
 #, python-brace-format
 msgctxt "brush settings editor: delete brush: confirm dialog question"
 msgid "Really delete brush “{brush_name}” from disk?"
-msgstr "¿Desea borrar la brocha“{brush_name}” del disco?"
+msgstr "¿Realmente quiere eliminar la brocha «{brush_name}» del disco?"
 
 #: ../gui/brusheditor.py:740
 msgctxt "brush settings editor: header: fallback name"
 msgid "(Unnamed brush)"
-msgstr "(Brocha Sin Nombre)"
+msgstr "(Brocha sin nombre)"
 
 #: ../gui/brusheditor.py:747
 #, python-brace-format
 msgctxt "brush settings editor: header: is-modified hint"
 msgid "{brush_name} [unsaved]"
-msgstr "{brush_name} [unsaved]"
+msgstr "{brush_name} [sin guardar]"
 
 #: ../gui/brushiconeditor.py:36
 msgid "Brush Icon"
-msgstr "Icono de Brocha"
+msgstr "Icono de brocha"
 
 #: ../gui/brushiconeditor.py:37
 msgid "Brush Icon (editing)"
-msgstr "Icono de Brocha (editado)"
+msgstr "Icono de brocha (en edición)"
 
 #: ../gui/brushiconeditor.py:74
 msgid "No brush selected"
-msgstr "No hay brocha seleccionada"
+msgstr "No se seleccionó ninguna brocha"
 
 #: ../gui/brushiconeditor.py:76
 #, python-format
@@ -307,7 +307,7 @@ msgid ""
 "<small>Select a valid brush first</small>"
 msgstr ""
 "<b>%s</b>\n"
-"<small>Selecciona una brocha valida primero</small>"
+"<small>Seleccione una brocha válida primero</small>"
 
 #: ../gui/brushiconeditor.py:79
 #, python-format
@@ -315,8 +315,8 @@ msgid ""
 "<b>%s</b> <i>(modified)</i>\n"
 "<small>Changes are not yet saved</small>"
 msgstr ""
-"<b>%s</b> <i>(modified)</i>\n"
-"<small>Los cambios no serán salvados</small>"
+"<b>%s</b> <i>(modificado)</i>\n"
+"<small>No se han guardado los cambios</small>"
 
 #: ../gui/brushiconeditor.py:82
 #, python-format
@@ -334,7 +334,7 @@ msgid ""
 "<small>Click ‘Edit’ to make changes to the icon</small>"
 msgstr ""
 "<b>%s</b>\n"
-"<small>Pulsa en ‘Editar’ para aplicar cambios en el icono</small>"
+"<small>Pulse en «Editar» para efectuar cambios en el icono</small>"
 
 #. TRANSLATORS: begin editing a brush's preview icon
 #: ../gui/brushiconeditor.py:157
@@ -366,11 +366,11 @@ msgstr "Limpiar icono de vista previa"
 #. TRANSLATORS: set the brush icon to a built-in default
 #: ../gui/brushiconeditor.py:182
 msgid "Auto"
-msgstr "Auto"
+msgstr "Automático"
 
 #: ../gui/brushiconeditor.py:184
 msgid "Use the default icon"
-msgstr "Usar icono por defecto"
+msgstr "Utilizar icono predeterminado"
 
 #. TRANSLATORS: save edits to a brush icon
 #: ../gui/brushiconeditor.py:190 ../gui/brusheditor.glade:111
@@ -383,15 +383,15 @@ msgstr "Guardar icono de vista previa y finalizar edición"
 
 #: ../gui/brushmanager.py:131
 msgid "Lost & Found"
-msgstr "Perdidos y encontrados"
+msgstr "Perdidas y encontradas"
 
 #: ../gui/brushmanager.py:132
 msgid "Deleted"
-msgstr "Eliminado"
+msgstr "Eliminadas"
 
 #: ../gui/brushmanager.py:133
 msgid "Favorites"
-msgstr "Favoritos"
+msgstr "Favoritas"
 
 #: ../gui/brushmanager.py:134
 msgid "Ink"
@@ -403,23 +403,23 @@ msgstr "Clásico"
 
 #: ../gui/brushmanager.py:136
 msgid "Set#1"
-msgstr "Conjunto#1"
+msgstr "Conjunto n.º 1"
 
 #: ../gui/brushmanager.py:137
 msgid "Set#2"
-msgstr "Conjunto#2"
+msgstr "Conjunto n.º 2"
 
 #: ../gui/brushmanager.py:138
 msgid "Set#3"
-msgstr "Conjunto#3"
+msgstr "Conjunto n.º 3"
 
 #: ../gui/brushmanager.py:139
 msgid "Set#4"
-msgstr "Conjunto#4"
+msgstr "Conjunto n.º 4"
 
 #: ../gui/brushmanager.py:140
 msgid "Set#5"
-msgstr "Conjunto#5"
+msgstr "Conjunto n.º 5"
 
 #: ../gui/brushmanager.py:141
 msgid "Experimental"
@@ -434,7 +434,8 @@ msgstr "Nuevo"
 msgctxt "brushpack import failure messages"
 msgid "No file named “{order_conf_file}”. This is not a brushpack."
 msgstr ""
-"Archivo “{order_conf_file}” no encontrado. No es un paquete de pinceles."
+"No hay ningún archivo denominado «{order_conf_file}». Este no es un paquete "
+"de pinceles."
 
 #: ../gui/brushmanager.py:704
 #, python-brace-format
@@ -443,8 +444,8 @@ msgid ""
 "Brush “{brush_name}” is listed in “{order_conf_file}”, but it does not exist "
 "in the zipfile."
 msgstr ""
-"La brocha \"{brush_name}\" está listada en \"{order_conf_file}\", pero no "
-"existe en el archivo zip."
+"La brocha «{brush_name}» figura en «{order_conf_file}», pero no existe en el "
+"archivo ZIP."
 
 #: ../gui/brushmanager.py:717
 #, python-brace-format
@@ -453,8 +454,8 @@ msgid ""
 "Brush “{brush_name}” exists in the zipfile, but it is not listed in "
 "“{order_conf_file}”."
 msgstr ""
-"La brocha \"{brush_name}\" existe en el archivo zip, pero no está listada en "
-"\"{order_conf_file}\"."
+"La brocha «{brush_name}» existe en el archivo ZIP, pero no figura en "
+"«{order_conf_file}»."
 
 #: ../gui/brushmanager.py:1328 ../gui/footer.py:66
 msgid "Unknown Brush"
@@ -463,7 +464,7 @@ msgstr "Brocha desconocida"
 #: ../gui/brushmanip.py:191
 msgctxt "brush resize mode - name"
 msgid "Resize Brush"
-msgstr "Redimensionar Brocha"
+msgstr "Redimensionar brocha"
 
 #: ../gui/brushmanip.py:196
 msgctxt "brush resize mode - usage"
@@ -473,12 +474,12 @@ msgstr "Cambiar tamaño arrastrando sobre la imagen"
 #: ../gui/brushselectionwindow.py:220
 msgctxt "brush group: context menu for a single brush"
 msgid "Add to Favorites"
-msgstr "Añadir a Favoritos"
+msgstr "Añadir a Favoritas"
 
 #: ../gui/brushselectionwindow.py:227
 msgctxt "brush group: context menu for a single brush"
 msgid "Remove from Favorites"
-msgstr "Quitar de favoritos"
+msgstr "Quitar de Favoritas"
 
 #: ../gui/brushselectionwindow.py:235
 msgctxt "brush group: context menu for a single brush"
@@ -493,7 +494,7 @@ msgstr "Editar configuración de brocha"
 #: ../gui/brushselectionwindow.py:250
 msgctxt "brush group: context menu for a single brush"
 msgid "Remove from Group"
-msgstr "Eliminar del Grupo"
+msgstr "Quitar del grupo"
 
 #: ../gui/brushselectionwindow.py:290
 #, python-brace-format
@@ -505,13 +506,14 @@ msgstr "Copia de {original_name}"
 #, python-brace-format
 msgctxt "brush group: context menu: unique names for cloned brushes"
 msgid "{original_name} copy {n}"
-msgstr "{original_name} copia {n}"
+msgstr "{n}.ª copia de {original_name}"
 
 #: ../gui/brushselectionwindow.py:325
 #, python-brace-format
 msgctxt "brush group: context menu: remove from group"
 msgid "Really remove brush “{brush_name}” from group “{group_name}”?"
-msgstr "¿Desea borrar la brocha “{brush_name}” del grupo “{group_name}”?"
+msgstr ""
+"¿Realmente quiere quitar la brocha «{brush_name}» del grupo «{group_name}»?"
 
 #. TRANSLATORS: number of brushes in a brush group, for tooltips
 #: ../gui/brushselectionwindow.py:381
@@ -526,17 +528,17 @@ msgstr[1] "%d brochas"
 #, python-brace-format
 msgctxt "brush group properties dialog: title"
 msgid "Group “{group_name}”"
-msgstr "Grupo “{group_name}”"
+msgstr "Grupo «{group_name}»"
 
 #: ../gui/brushselectionwindow.py:418
 msgctxt "brush group properties dialog: action buttons"
 msgid "Rename Group"
-msgstr "Renombrar grupo"
+msgstr "Cambiar nombre de grupo"
 
 #: ../gui/brushselectionwindow.py:424
 msgctxt "brush group properties dialog: action buttons"
 msgid "Export as Zipped Brushset"
-msgstr "Exportar como Brochas Zipeadas"
+msgstr "Exportar como conj. brochas en ZIP"
 
 #: ../gui/brushselectionwindow.py:430
 msgctxt "brush group properties dialog: action buttons"
@@ -546,18 +548,18 @@ msgstr "Eliminar grupo"
 #: ../gui/brushselectionwindow.py:450
 msgctxt "brush group rename dialog: title"
 msgid "Rename Group"
-msgstr "Renombrar grupo"
+msgstr "Cambiar nombre de grupo"
 
 #: ../gui/brushselectionwindow.py:468
 msgctxt "brush group rename"
 msgid "A group with this name already exists!"
-msgstr "¡Ya existe un grupo con este nombre!"
+msgstr "Ya existe un grupo con este nombre."
 
 #: ../gui/brushselectionwindow.py:477
 #, python-brace-format
 msgctxt "brush group delete"
 msgid "Really delete group “{group_name}”?"
-msgstr "¿Desea realmente eliminar el grupo “{group_name}”?"
+msgstr "¿Realmente quiere eliminar el grupo «{group_name}»?"
 
 #: ../gui/brushselectionwindow.py:495
 #, python-brace-format
@@ -566,7 +568,7 @@ msgid ""
 "Could not delete group “{group_name}”.\n"
 "Some special groups cannot be deleted."
 msgstr ""
-"No se puede eliminar el grupo “{group_name}”.\n"
+"No se puede eliminar el grupo «{group_name}».\n"
 "Algunos grupos especiales no se pueden eliminar."
 
 #: ../gui/brushselectionwindow.py:510
@@ -619,16 +621,16 @@ msgstr "Botón a presionar"
 
 #: ../gui/buttonmap.py:320
 msgid "Add a new binding"
-msgstr "Añadir un atajo nuevo"
+msgstr "Añadir atajo nuevo"
 
 #: ../gui/buttonmap.py:328
 msgid "Remove the current binding"
-msgstr "Eliminar el atajo actual"
+msgstr "Quitar atajo actual"
 
 #: ../gui/buttonmap.py:475
 #, python-format
 msgid "Edit binding for '%s'"
-msgstr "Editar atajo para '%s'"
+msgstr "Editar atajo para «%s»"
 
 #. TRANSLATORS: Part of interface when adding a new button map binding.
 #. TRANSLATORS: It's a label for the mod+button part of the combination.
@@ -659,7 +661,7 @@ msgstr ""
 #: ../gui/buttonmap.py:601
 #, python-brace-format
 msgid "{button_combination} is already bound to the action '{action_name}'"
-msgstr "{button_combination} ya está vinculado a la acción '{action_name}'"
+msgstr "{button_combination} ya se vinculó a la acción «{action_name}»"
 
 #: ../gui/colorpicker.py:65
 msgid "Pick Color"
@@ -1243,14 +1245,14 @@ msgid ""
 "It is <b>strongly recommended</b> to upgrade to <b>MyPaint {new_version}</b> "
 "or newer if you want to edit this file!"
 msgstr ""
-"El archivo “{filename}” fué guardado con <b>MyPaint {new_version}</b>. Puede "
-"ser <b>incompatible</b> con <b>MyPaint {current_version}</b>.\n"
+"El archivo «{filename}» se ha guardado con <b>MyPaint {new_version}</b>. "
+"Puede ser <b>incompatible</b> con <b>MyPaint {current_version}</b>.\n"
 "\n"
 "Editar este archivo con esta versión de MyPaint puede no funcionar, y puede "
-"provocar errores en el programa.\n"
+"provocar cierres inesperados en el programa.\n"
 "\n"
-"¡Es <b>altamente recomendado</b> actualizar a la versión <b>MyPaint "
-"{new_version}</b> o posterior si quieres editar este archivo!"
+"Es <b>altamente recomendable</b> actualizar a <b>MyPaint {new_version} </b> "
+"o posterior si quiere editar este archivo."
 
 #: ../gui/compatibility.py:54
 #, python-brace-format
@@ -1276,12 +1278,12 @@ msgstr ""
 #: ../gui/compatibility.py:65
 msgctxt "file compatibility question"
 msgid "Do you want to open this file anyway?"
-msgstr "¿Quieres cargar este archivo de todas formas?"
+msgstr "¿Quiere abrir este archivo de todas formas?"
 
 #: ../gui/compatibility.py:129
 msgctxt "Version compat warning toggle"
 msgid "Don't show this warning again"
-msgstr "No mostrar más esta advertencia"
+msgstr "No mostrar más este aviso"
 
 #. TRANSLATORS: One of the options for the
 #. TRANSLATORS: "When Not Specified in File"
@@ -1289,7 +1291,7 @@ msgstr "No mostrar más esta advertencia"
 #: ../gui/compatibility.py:197
 msgctxt "Prefs Dialog|Compatibility"
 msgid "Always open in 1.x mode"
-msgstr "Siempre abrir en modo 1.x"
+msgstr "Abrir siempre en modo 1.x"
 
 #. TRANSLATORS: One of the options for the
 #. TRANSLATORS: "When Not Specified in File"
@@ -1297,7 +1299,7 @@ msgstr "Siempre abrir en modo 1.x"
 #: ../gui/compatibility.py:206
 msgctxt "Prefs Dialog|Compatibility"
 msgid "Always open in 2.x mode"
-msgstr "Siempre abrir en modo 2.x"
+msgstr "Abrir siempre en modo 2.x"
 
 #. TRANSLATORS: One of the options for the
 #. TRANSLATORS: "When Not Specified in File"
@@ -1322,7 +1324,7 @@ msgstr "Cursor/disco"
 #: ../gui/device.py:53
 msgctxt "prefs: device's type label"
 msgid "Eraser"
-msgstr "Goma de borrar"
+msgstr "Borrador"
 
 #: ../gui/device.py:57
 msgctxt "prefs: device's type label"
@@ -1342,7 +1344,7 @@ msgstr "Pluma"
 #: ../gui/device.py:69
 msgctxt "prefs: device's type label"
 msgid "Touchpad"
-msgstr "Pantalla Táctil"
+msgstr "Panel táctil"
 
 #: ../gui/device.py:73
 msgctxt "prefs: device's type label"
@@ -1357,7 +1359,7 @@ msgstr "Ignorar"
 #: ../gui/device.py:97
 msgctxt "device settings: allowed usage"
 msgid "Any Task"
-msgstr "Cualquier Tarea"
+msgstr "Cualquier tarea"
 
 #: ../gui/device.py:101
 msgctxt "device settings: allowed usage"
@@ -1372,7 +1374,7 @@ msgstr "Navegación sólo"
 #: ../gui/device.py:130
 msgctxt "device settings: unmodified scroll action"
 msgid "Zoom"
-msgstr "Ampliación"
+msgstr "Escala"
 
 #: ../gui/device.py:131
 msgctxt "device settings: unmodified scroll action"
@@ -1427,7 +1429,7 @@ msgstr "Reemplazar"
 
 #: ../gui/dialogs.py:137 ../gui/dialogs.py:207 ../gui/brusheditor.glade:189
 msgid "Rename"
-msgstr "Renombrar"
+msgstr "Cambiar nombre"
 
 #: ../gui/dialogs.py:140
 msgid "Replace all"
@@ -1435,7 +1437,7 @@ msgstr "Reemplazar todo"
 
 #: ../gui/dialogs.py:142
 msgid "Rename all"
-msgstr "Renombrar todo"
+msgstr "Cambiar nombre de todo"
 
 #: ../gui/dialogs.py:162
 msgid "Imported brush"
@@ -1451,8 +1453,8 @@ msgid ""
 "<b>A brush named “{brush_name}” already exists.</b>\n"
 "Do you want to replace it, or should the new brush be renamed?"
 msgstr ""
-"<b>Ya existe una brocha de nombre {brush_name} .</b>\n"
-"¿Desea reemplazarla, o renombrar la brocha nueva?"
+"<b>Ya existe una brocha denominada «{brush_name}».</b>\n"
+"¿Quiere reemplazarla o cambiar el nombre de la brocha nueva?"
 
 #: ../gui/dialogs.py:196
 msgid "Overwrite brush group?"
@@ -1466,10 +1468,10 @@ msgid ""
 "If you replace it, the brushes may be moved to a group called "
 "“{deleted_groupname}”."
 msgstr ""
-"<b>Ya existe un grupo llamado `{groupname}'.</b>\n"
-"¿Desea reemplazarlo, o renombrar el grupo nuevo?\n"
-"Si lo reemplaza, las brochas pueden ser movidas a un grupo llamado "
-"`{deleted_groupname}'."
+"<b>Ya existe un grupo denominado «{groupname}».</b>\n"
+"¿Quiere reemplazarlo o cambiar el nombre del grupo nuevo?\n"
+"Si lo reemplaza, las brochas pueden moverse a un grupo llamado "
+"«{deleted_groupname}»."
 
 #: ../gui/dialogs.py:326
 msgid "Import brush package?"
@@ -1478,7 +1480,7 @@ msgstr "¿Importar paquete de brochas?"
 #: ../gui/dialogs.py:357
 #, python-brace-format
 msgid "<b>Do you really want to import package “{brushpack_name}”?</b>"
-msgstr "<b>Realmente desea importar el paquete \"{brushpack_name}\"?</b>"
+msgstr "<b>¿Realmente quiere importar el paquete «{brushpack_name}»?</b>"
 
 #: ../gui/document.py:193
 #, python-format
@@ -1585,7 +1587,7 @@ msgstr "Limpieza: se descartaron {removed} de {total} segmentos."
 #: ../gui/drawwindow.py:275
 #, python-format
 msgid "%s - MyPaint"
-msgstr "%s - MyPaint"
+msgstr "%s • MyPaint"
 
 #. TRANSLATORS: window title for use without a filename
 #: ../gui/drawwindow.py:278 ../gui/mypaint.glade:8
@@ -1595,7 +1597,7 @@ msgstr "MyPaint"
 #: ../gui/drawwindow.py:301
 msgctxt "Open dragged file confirm dialog: title"
 msgid "Open Dragged File?"
-msgstr "¿Abrir Documento?"
+msgstr "¿Quiere abrir el archivo arrastrado?"
 
 #: ../gui/drawwindow.py:305
 msgctxt "Open dragged file confirm dialog: continue button"
@@ -1604,19 +1606,19 @@ msgstr "_Abrir"
 
 #: ../gui/drawwindow.py:498
 msgid "Set current color"
-msgstr "Escoger el color actual"
+msgstr "Establecer color actual"
 
 #: ../gui/drawwindow.py:543
 msgid "Leave Fullscreen Mode"
-msgstr "Dejar modo a pantalla completa"
+msgstr "Abandonar modo a pantalla completa"
 
 #: ../gui/drawwindow.py:544
 msgid "Leave Fullscreen"
-msgstr "Dejar modo a pantalla completa"
+msgstr "Abandonar pantalla completa"
 
 #: ../gui/drawwindow.py:547
 msgid "Enter Fullscreen Mode"
-msgstr "Entrar al modo pantalla completa"
+msgstr "Entrar en modo a pantalla completa"
 
 #: ../gui/drawwindow.py:548
 msgid "Fullscreen"
@@ -1625,7 +1627,7 @@ msgstr "Pantalla completa"
 #: ../gui/drawwindow.py:687
 msgctxt "Quit confirm dialog: title"
 msgid "Really Quit?"
-msgstr "¿Desea salir?"
+msgstr "¿Confirma la salida?"
 
 #: ../gui/drawwindow.py:691
 msgctxt "Quit confirm dialog: continue button"
@@ -1646,14 +1648,14 @@ msgstr "Paquete de brochas de MyPaint (*.zip)"
 #: ../gui/externalapp.py:41
 #, python-brace-format
 msgid "Launched {app_name} to edit layer “{layer_name}”"
-msgstr "Lanzó {app_name} para editar capa\"{layer_name}\""
+msgstr "Se inició {app_name} para editar la capa «{layer_name}»"
 
 #. TRANSLATORS: Statusbar message shown when the app chosen for
 #. TRANSLATORS: "Edit in External App" (for a layer) failed to open.
 #: ../gui/externalapp.py:45
 #, python-brace-format
 msgid "Error: failed to launch {app_name} to edit layer “{layer_name}”"
-msgstr "Error: error al iniciar {app_name} para editar capa \"{layer_name}\""
+msgstr "Error: no se pudo iniciar {app_name} para editar la capa «{layer_name}»"
 
 #. TRANSLATORS: Statusbar message for when an "Edit in External App"
 #. TRANSLATORS: operation is cancelled by the user before it starts.
@@ -1686,8 +1688,8 @@ msgid ""
 "MyPaint needs to edit a file of type “{type_name}” ({content_type}). What "
 "application should it use?"
 msgstr ""
-"MyPaint necesita editar un archivo de tipo “{type_name}” ({content_type}). "
-"¿Qué aplicación debería utilizar?"
+"MyPaint necesita editar un archivo de tipo «{type_name}» ({content_type}). ¿"
+"Qué aplicación debería utilizar?"
 
 #: ../gui/externalapp.py:150
 #, python-brace-format
@@ -1695,8 +1697,8 @@ msgid ""
 "What application should MyPaint use for editing files of type "
 "“{type_name}” ({content_type})?"
 msgstr ""
-"¿Qué aplicación debe usar MyPaint para editar archivos de tipo "
-"“{type_name}” ({content_type})?"
+"¿Qué aplicación debe utilizar MyPaint para editar archivos de tipo "
+"«{type_name}» ({content_type})?"
 
 #: ../gui/externalapp.py:156
 msgid "Open With…"
@@ -1708,7 +1710,7 @@ msgstr "Icono"
 
 #: ../gui/externalapp.py:251
 msgid "no description"
-msgstr "Sin descripción"
+msgstr "sin descripción"
 
 #: ../gui/filehandling.py:127
 #, python-brace-format
@@ -1726,13 +1728,13 @@ msgstr "Importando capas desde {files_summary}…"
 #, python-brace-format
 msgctxt "Document I/O: message shown while working"
 msgid "Saving {files_summary}…"
-msgstr "Salvando \"{files_summary}\"…"
+msgstr "Guardando {files_summary}…"
 
 #: ../gui/filehandling.py:139
 #, python-brace-format
 msgctxt "Document I/O: message shown while working"
 msgid "Exporting to {files_summary}…"
-msgstr "Exportando a \"{files_summary}\"…"
+msgstr "Exportando a {files_summary}…"
 
 #: ../gui/filehandling.py:146
 #, python-brace-format
@@ -1761,40 +1763,40 @@ msgstr "No se pudo cargar {files_summary}."
 #: ../gui/filehandling.py:165
 msgctxt "Document I/O: fail dialog title"
 msgid "Save failed"
-msgstr "No pudo guardar"
+msgstr "Falló el guardado"
 
 #: ../gui/filehandling.py:169
 msgctxt "Document I/O: fail dialog title"
 msgid "Export failed"
-msgstr "No se pudo exportar"
+msgstr "Falló la exportación"
 
 #: ../gui/filehandling.py:173
 msgctxt "Document I/O: fail dialog title"
 msgid "Import Layers failed"
-msgstr "No se pudo importar capas"
+msgstr "Falló la importación de capas"
 
 #: ../gui/filehandling.py:177
 msgctxt "Document I/O: fail dialog title"
 msgid "Open failed"
-msgstr "No se pudo abrir"
+msgstr "Falló la apertura"
 
 #: ../gui/filehandling.py:184
 #, python-brace-format
 msgctxt "Document I/O: success"
 msgid "Exported to {files_summary} successfully."
-msgstr "Exportado a {files_summary} con éxito."
+msgstr "Exportación correcta de {files_summary}."
 
 #: ../gui/filehandling.py:188
 #, python-brace-format
 msgctxt "Document I/O: success"
 msgid "Saved {files_summary} successfully."
-msgstr "{files_summary} guardado(s) correctamente."
+msgstr "Guardado correcto de {files_summary}."
 
 #: ../gui/filehandling.py:192
 #, python-brace-format
 msgctxt "Document I/O: success"
 msgid "Imported layers from {files_summary}."
-msgstr "Importando capas desde {files_summary}."
+msgstr "Capas importadas desde {files_summary}."
 
 #: ../gui/filehandling.py:196
 #, python-brace-format
@@ -1815,12 +1817,12 @@ msgstr[1] "{n} archivos"
 #, python-brace-format
 msgctxt "Document I/O: the {files_summary} for a single file"
 msgid "“{basename}”"
-msgstr "\"{basename}\""
+msgstr "«{basename}»"
 
 #: ../gui/filehandling.py:432
 msgctxt "save/load dialogs: filter patterns"
 msgid "All Recognized Formats"
-msgstr "Todos los Formatos Reconocidos"
+msgstr "Todos los formatos reconocidos"
 
 #: ../gui/filehandling.py:437
 msgctxt "save/load dialogs: filter patterns"
@@ -1840,7 +1842,7 @@ msgstr "JPEG (*.jpg; *.jpeg)"
 #: ../gui/filehandling.py:495
 msgctxt "save dialogs: save formats and options"
 msgid "By extension (prefer default format)"
-msgstr "Según extensión (preferir formato por defecto)"
+msgstr "Según extensión (preferir formato predeterminado)"
 
 #: ../gui/filehandling.py:499
 msgctxt "save dialogs: save formats and options"
@@ -1850,7 +1852,7 @@ msgstr "OpenRaster (*.ora)"
 #: ../gui/filehandling.py:503
 msgctxt "save dialogs: save formats and options"
 msgid "PNG, respecting “Show Background” (*.png)"
-msgstr "PNG, respetar opción \"Mostar Fondo\" (*.png)"
+msgstr "PNG, respetando «Mostrar fondo» (*.png)"
 
 #: ../gui/filehandling.py:507
 msgctxt "save dialogs: save formats and options"
@@ -1875,7 +1877,7 @@ msgstr "Múltiples PNG por vista (*.NOMBRE.png)"
 #: ../gui/filehandling.py:523
 msgctxt "save dialogs: save formats and options"
 msgid "JPEG 90% quality (*.jpg; *.jpeg)"
-msgstr "JPEG calidad 90% (*.jpg; *.jpeg)"
+msgstr "JPEG al 90 % de calidad (*.jpg; *.jpeg)"
 
 #: ../gui/filehandling.py:581
 msgctxt "Dialogs (window title): File→Export…"
@@ -1919,7 +1921,8 @@ msgstr "Co_ntinuar"
 #, python-brace-format
 msgctxt "Destructive action confirm dialog: warning message"
 msgid "You risk losing {abbreviated_time} of unsaved painting."
-msgstr "Esto descartará {abbreviated_time} lo pintado sin guardar."
+msgstr ""
+"Se arriesga a perder {abbreviated_time} de trabajo de pintura sin guardar."
 
 #: ../gui/filehandling.py:804
 msgctxt "File→New: confirm dialog: title question"
@@ -1929,7 +1932,7 @@ msgstr "¿Nueva imagen?"
 #: ../gui/filehandling.py:808
 msgctxt "File→New: confirm dialog: continue button"
 msgid "_New Canvas"
-msgstr "_Nueva Imagen"
+msgstr "Lienzo _nuevo"
 
 #: ../gui/filehandling.py:1024
 msgctxt "File→Open: confirm dialog: title question"
@@ -1999,7 +2002,7 @@ msgstr "_Abrir"
 #: ../gui/filehandling.py:1512
 msgctxt "File→Revert: status message: canvas has no filename yet"
 msgid "Cannot revert: canvas has not been saved to a file yet."
-msgstr "No se puede revertir: la imagen todavía no fue salvada a un archivo."
+msgstr "No se puede revertir: el lienzo aún no se ha guardado en un archivo."
 
 #: ../gui/filehandling.py:1519
 msgctxt "File→Revert confirm dialog: title"
@@ -2220,7 +2223,7 @@ msgstr "Reiniciar"
 #: ../gui/fill.py:855
 msgctxt "fill options: Reset button (tooltip)"
 msgid "Reset options to their defaults"
-msgstr "Reiniciar opciones a los valores por defecto"
+msgstr "Restablecer opciones a sus valores predeterminados"
 
 #: ../gui/fill.py:1033
 msgctxt "fill option: default option in the Source Layer dropdown"
@@ -2316,9 +2319,8 @@ msgid "px"
 msgstr "px"
 
 #: ../gui/framewindow.py:916
-#, fuzzy
 msgid "in"
-msgstr "pulgadas"
+msgstr "in"
 
 #: ../gui/framewindow.py:917
 msgid "cm"
@@ -2352,11 +2354,11 @@ msgstr "Presión:"
 #. TRANSLATORS: This is used on the options panel.
 #: ../gui/freehand.py:617
 msgid "Twist:"
-msgstr "Rotación:"
+msgstr "Torsión:"
 
 #: ../gui/gtkexcepthook.py:163
 msgid "Bug Detected"
-msgstr "Error detectado"
+msgstr "Defecto detectado"
 
 #: ../gui/gtkexcepthook.py:166
 msgid "<big><b>A programming error has been detected.</b></big>"
@@ -2383,11 +2385,11 @@ msgstr "Buscar Rastreador…"
 #. only development and prereleases
 #: ../gui/gtkexcepthook.py:179
 msgid "Report…"
-msgstr "Reportar…"
+msgstr "Informar…"
 
 #: ../gui/gtkexcepthook.py:181
 msgid "Ignore Error"
-msgstr "Ignorar Error"
+msgstr "Ignorar error"
 
 #: ../gui/gtkexcepthook.py:182
 msgid "Quit MyPaint"
@@ -2678,11 +2680,11 @@ msgstr "Desde dónde viene la pincelada al inicio"
 
 #: ../gui/linemode.py:174
 msgid "Pressure variation…"
-msgstr "Variación de la presión…"
+msgstr "Variación de presión…"
 
 #: ../gui/linemode.py:221 ../gui/linemode.py:800
 msgid "Lines and Curves"
-msgstr "Líneas y Curvas"
+msgstr "Líneas y curvas"
 
 #. TRANSLATORS: users should never see this message
 #: ../gui/linemode.py:225
@@ -2707,7 +2709,7 @@ msgstr ""
 
 #: ../gui/linemode.py:827
 msgid "Ellipses and Circles"
-msgstr "Elipses y Círculos"
+msgstr "Elipses y círculos"
 
 #: ../gui/linemode.py:830
 msgid "Draw ellipses; Shift rotates, Ctrl constrains ratio/angle"
@@ -2719,7 +2721,7 @@ msgid ""
 "Copyright (C) 2005-2020\n"
 "Martin Renold and the MyPaint Development Team"
 msgstr ""
-"Copyright (C) 2005-2020\n"
+"Derechos de autor © 2005-2020\n"
 "Martin Renold y el equipo de desarrollo de MyPaint"
 
 #: ../gui/meta.py:45
@@ -2766,17 +2768,17 @@ msgstr "brochas"
 #: ../gui/meta.py:76
 msgctxt "About dialog: credits: tasks: background paper textures"
 msgid "patterns"
-msgstr "patrones"
+msgstr "motivos"
 
 #: ../gui/meta.py:80
 msgctxt "About dialog: credits: tasks: icons for internal tools"
 msgid "tool icons"
-msgstr "Iconos de herramientas"
+msgstr "iconos de herramientas"
 
 #: ../gui/meta.py:84
 msgctxt "About dialog: credits: tasks: the main application icon"
 msgid "desktop icon"
-msgstr "Icono de escritorio"
+msgstr "icono de escritorio"
 
 #: ../gui/meta.py:88
 msgctxt "About dialog: credits: tasks: palettes"
@@ -2791,7 +2793,7 @@ msgstr "documentación"
 #: ../gui/meta.py:97
 msgctxt "About dialog: credits: tasks: user support"
 msgid "support"
-msgstr "soporte"
+msgstr "asistencia"
 
 #: ../gui/meta.py:101
 msgctxt "About dialog: credits: tasks: outreach (social media, ads?)"
@@ -2818,7 +2820,9 @@ msgstr ", "
 #: ../gui/meta.py:221
 msgctxt "About dialog: credits: translator credits (your name(s) here!)"
 msgid "translator-credits"
-msgstr "Créditos de traductores"
+msgstr ""
+"Adolfo Jayme Barrientos <fitojb@ubuntu.com>, 2021\n"
+"David Gámiz Jiménez, 2015"
 
 #. TRANSLATORS:"Brush radius" for the options panel. Short.
 #: ../gui/mode.py:592
@@ -2833,7 +2837,7 @@ msgstr "Opaco:"
 #. TRANSLATORS:"Brush hardness/sharpness" for the options panel. Short.
 #: ../gui/mode.py:596
 msgid "Sharp:"
-msgstr "Afilado:"
+msgstr "Nítido:"
 
 #. TRANSLATORS:"Additional pressure gain" for the options panel. Short.
 #: ../gui/mode.py:598
@@ -2848,7 +2852,7 @@ msgstr "Pigmento:"
 #: ../gui/optionspanel.py:47
 msgctxt "options panel: tab tooltip: title"
 msgid "Tool Options"
-msgstr "iconos de herramientas"
+msgstr "Opciones de herramienta"
 
 #: ../gui/optionspanel.py:51
 msgctxt "options panel: tab tooltip: description"
@@ -2869,7 +2873,7 @@ msgstr "<i>No hay opciones disponibles</i>"
 #: ../gui/overlays.py:161
 #, python-format
 msgid "Zoom: %.01f%%"
-msgstr "Ampliación: %.01f%%"
+msgstr "Escala: %.01f %%"
 
 #: ../gui/picker.py:462
 msgctxt "context picker: statusbar text during grab"
@@ -2879,7 +2883,7 @@ msgstr "Elija Configuración de trazo, color de trazo y capa…"
 #: ../gui/picker.py:501
 msgctxt "color picker: statusbar text during grab"
 msgid "Pick color…"
-msgstr "Elegir el color…"
+msgstr "Elija un color…"
 
 #: ../gui/preferenceswindow.py:44
 msgid "Preferences"
@@ -2905,11 +2909,11 @@ msgstr "{lang_en} - ({lang_nat})"
 #. TRANSLATORS: title of panel showing an overview of the whole canvas
 #: ../gui/previewwindow.py:201
 msgid "Preview"
-msgstr "Vista previa"
+msgstr "Previsualización"
 
 #: ../gui/previewwindow.py:203
 msgid "Show preview of the whole drawing area"
-msgstr "Mostrar vista previa de todo el área de dibujo"
+msgstr "Mostrar previsualización de toda el área de dibujo"
 
 #. TRANSLATORS: The preview panel shows where the "camera" of the
 #. TRANSLATORS: main view is pointing.
@@ -2955,7 +2959,7 @@ msgstr "Quitar eje"
 #: ../gui/symmetry.py:103
 msgctxt "symmetry axis edit mode: mode name (tooltips)"
 msgid "Edit Symmetry Axis"
-msgstr "Editar el eje de la simetría"
+msgstr "Editar eje de simetría"
 
 #: ../gui/symmetry.py:109
 msgctxt "symmetry axis edit mode: mode description (tooltips)"
@@ -2991,12 +2995,12 @@ msgstr "Alfa:"
 #: ../gui/symmetry.py:365
 msgctxt "symmetry axis options panel: labels"
 msgid "Symmetry Type:"
-msgstr "Tipo de Simetría:"
+msgstr "Tipo de simetría:"
 
 #: ../gui/symmetry.py:369
 msgctxt "symmetry axis options panel: labels"
 msgid "Rotational lines:"
-msgstr "Ejes de simetría:"
+msgstr "Líneas de giro:"
 
 #: ../gui/symmetry.py:536
 msgctxt "symmetry axis options panel: axis active checkbox"
@@ -3005,7 +3009,7 @@ msgstr "Activado"
 
 #: ../gui/toolbar.py:28
 msgid "File handling"
-msgstr "Manejo de archivos"
+msgstr "Tratamiento de archivos"
 
 #: ../gui/toolbar.py:29
 msgid "Scraps switcher"
@@ -3083,11 +3087,11 @@ msgstr "Girar la vista del lienzo"
 
 #: ../lib/command.py:177
 msgid "Unknown Command"
-msgstr "Acción desconocida"
+msgstr "Orden desconocida"
 
 #: ../lib/command.py:320
 msgid "Undefined (command not started yet)"
-msgstr "Sin definir (comando aun no empezado)"
+msgstr "Sin definir (aún no inicia la orden)"
 
 #. TRANSLATORS: A short time spent painting / making brushwork.
 #. TRANSLATORS: This can correspond to zero or more touches of
@@ -3115,22 +3119,22 @@ msgstr "Refactorizar Grupo"
 
 #: ../lib/command.py:678
 msgid "Clear Layer"
-msgstr "Limpiar capa"
+msgstr "Vaciar capa"
 
 #. This is used by Paste layer as well as when loading from a PNG
 #. file. However in the latter case, the undo stack is reset
 #. immediately afterward.
 #: ../lib/command.py:702
 msgid "Paste Layer"
-msgstr "Pegar Capa"
+msgstr "Pegar capa"
 
 #: ../lib/command.py:737
 msgid "New Layer from Visible"
-msgstr "Nueva Capa desde Visible"
+msgstr "Capa nueva desde lo visible"
 
 #: ../lib/command.py:779
 msgid "Merge Visible Layers"
-msgstr "Combinar las Capas Visibles"
+msgstr "Combinar capas visibles"
 
 #: ../lib/command.py:853
 msgid "Merge Down"
@@ -3138,16 +3142,16 @@ msgstr "Combinar hacia abajo"
 
 #: ../lib/command.py:902
 msgid "Normalize Layer Mode"
-msgstr "Normalizar el modo de capa"
+msgstr "Normalizar modo de capa"
 
 #: ../lib/command.py:955
 msgid "Import Layers"
-msgstr "Importar Capas"
+msgstr "Importar capas"
 
 #: ../lib/command.py:957
 #, python-brace-format
 msgid "Add {layer_default_name}"
-msgstr "Agregar {layer_default_name}"
+msgstr "Añadir {layer_default_name}"
 
 #: ../lib/command.py:981
 msgid "Remove Layer"
@@ -3163,11 +3167,11 @@ msgstr "Duplicar capa"
 
 #: ../lib/command.py:1182
 msgid "Move Layer Up"
-msgstr "Mover capa hacia arriba"
+msgstr "Subir capa"
 
 #: ../lib/command.py:1196
 msgid "Move Layer Down"
-msgstr "Mover capa hacia abajo"
+msgstr "Bajar capa"
 
 #: ../lib/command.py:1223
 msgid "Move Layer in Stack"
@@ -3175,7 +3179,7 @@ msgstr "Mover la capa en la pila"
 
 #: ../lib/command.py:1342
 msgid "Rename Layer"
-msgstr "Renombrar capa"
+msgstr "Cambiar nombre de capa"
 
 #: ../lib/command.py:1400
 msgid "Make Layer Visible"
@@ -3196,7 +3200,7 @@ msgstr "Desbloquear capa"
 #: ../lib/command.py:1460
 #, python-format
 msgid "Set Layer Opacity: %0.1f%%"
-msgstr "Ajustar la opacidad de capa: %0.1f%%"
+msgstr "Establecer opacidad de capa: %0.1f %%"
 
 #: ../lib/command.py:1499
 msgid "Unknown Mode"
@@ -3205,29 +3209,29 @@ msgstr "Modo desconocido"
 #: ../lib/command.py:1500
 #, python-format
 msgid "Set Layer Mode: %s"
-msgstr "Ajustar Modo de capa: %s"
+msgstr "Establecer modo de capa: %s"
 
 #: ../lib/command.py:1524
 msgid "Enable Frame"
-msgstr "Habilitar el Marco"
+msgstr "Activar marco"
 
 #: ../lib/command.py:1526
 msgid "Disable Frame"
-msgstr "Desactivar Marco"
+msgstr "Desactivar marco"
 
 #: ../lib/command.py:1544
 msgid "Update Frame"
-msgstr "Actualizar Marco"
+msgstr "Actualizar marco"
 
 #: ../lib/command.py:1573
 msgid "Edit Layer Externally"
-msgstr "Editar Capa Externa"
+msgstr "Editar capa externamente"
 
 #: ../lib/document.py:74
 #, python-brace-format
 msgctxt "Document IO: common error strings: {error_loading_common}"
 msgid "Error loading “{basename}”."
-msgstr "Error al cargar “{basename}”."
+msgstr "Error al cargar «{basename}»."
 
 #: ../lib/document.py:78
 msgctxt "Document IO: common error strings: {see_logs}"
@@ -3264,7 +3268,7 @@ msgstr ""
 #, python-brace-format
 msgctxt "Document autosave descriptions"
 msgid "Incomplete backup updated {last_modified_time} {ago}"
-msgstr "Copia de seguridad incompleta actualizado {last_modified_time} {ago}"
+msgstr "Copia de respaldo incompleta actualizada {ago} {last_modified_time}"
 
 #. TRANSLATORS: The {ago} variable is a translated string.
 #. TRANSLATORS: Look for the msgids "from now" and "ago"
@@ -3291,14 +3295,14 @@ msgid ""
 "Unable to write “{filename}”: {err}\n"
 "Do you have enough space left on the device?"
 msgstr ""
-"No se puede escribir “{filename}”: {err}\n"
-"¿Usted tiene suficiente espacio en el dispositivo?"
+"No se puede escribir «{filename}»: {err}\n"
+"Quizá no haya suficiente espacio en el dispositivo."
 
 #: ../lib/document.py:1454 ../lib/document.py:1464
 #, python-brace-format
 msgctxt "Document IO: hint templates for user-facing exceptions"
 msgid "Unable to write “{filename}”: {err}"
-msgstr "No se puede escribir “{filename}”: {err}"
+msgstr "No se puede escribir «{filename}»: {err}"
 
 #: ../lib/document.py:1501
 #, python-brace-format
@@ -3318,7 +3322,7 @@ msgid ""
 "You do not have the permissions needed to open this file."
 msgstr ""
 "{error_loading_common}\n"
-"No tienes los permisos necesarios para abrir este archivo."
+"No tiene los permisos necesarios para abrir este archivo."
 
 #: ../lib/document.py:1534
 #, python-brace-format
@@ -3344,7 +3348,7 @@ msgid ""
 "Unknown file format extension: “{ext}”"
 msgstr ""
 "{error_loading_common}\n"
-"Extensión de formato de archivo desconocida: \"{ext}\""
+"Se desconoce la extensión de formato de archivo: «{ext}»"
 
 #: ../lib/document.py:1590
 msgctxt "Document IO: group name for Import Layers"
@@ -3690,7 +3694,7 @@ msgstr "Exclusión"
 
 #: ../lib/modes.py:99
 msgid "Similar to the 'Difference' mode, but lower in contrast."
-msgstr "Similar al modo 'Diferencia', pero con menos contraste."
+msgstr "Similar al modo «Diferencia», pero con menos contraste."
 
 #: ../lib/modes.py:102
 msgid "Hue"
@@ -3827,10 +3831,10 @@ msgid ""
 "Reason: {err}\n"
 "Target folder: “{dirname}”."
 msgstr ""
-"Error al escribir “{basename}”.\n"
+"No se pudo escribir «{basename}».\n"
 "\n"
 "Razón: {err}\n"
-"Carpeta de Destino: “{dirname}”."
+"Carpeta de destino: «{dirname}»."
 
 #: ../lib/tiledsurface.py:48
 msgid "Vertical"
@@ -3850,7 +3854,7 @@ msgstr "Radial rotacional"
 
 #: ../lib/tiledsurface.py:52
 msgid "Snowflake"
-msgstr "Radial reflectiva"
+msgstr "Copo de nieve"
 
 #: ../lib/tiledsurface.py:624
 #, python-format
@@ -3897,7 +3901,7 @@ msgstr "Borrar esta copia de respaldo del disco."
 #: ../gui/autorecover.glade:78
 msgctxt "Autosave Recovery dialog|"
 msgid "_Recover & Save…"
-msgstr "_Recuperar y Guardar…"
+msgstr "_Recuperar y guardar…"
 
 #: ../gui/autorecover.glade:84
 msgctxt "Autosave Recovery dialog|Recover button|"
@@ -3909,14 +3913,13 @@ msgstr ""
 #: ../gui/autorecover.glade:95
 msgctxt "Autosave Recovery dialog|"
 msgid "Decide _Later"
-msgstr "Decidir _Después"
+msgstr "Decidir _luego"
 
 #: ../gui/autorecover.glade:101
 msgctxt "Autosave Recovery dialog|Cancel button|"
 msgid "Start work on a new canvas. These backups will be retained."
 msgstr ""
-"Empezar a trabajar en un nuevo lienzo. Se conservarán las copias de "
-"seguridad."
+"Empezar a trabajar en un nuevo lienzo. Se conservarán las copias de respaldo."
 
 #: ../gui/autorecover.glade:122
 msgctxt "Autosave Recovery dialog|"
@@ -3971,7 +3974,7 @@ msgstr "Eliminar"
 
 #: ../gui/brusheditor.glade:156
 msgid "Delete this brush from the disk"
-msgstr "Borrar este pincel del disco"
+msgstr "Eliminar esta brocha del disco"
 
 #: ../gui/brusheditor.glade:170
 msgid "Copy to New"
@@ -3983,7 +3986,7 @@ msgstr "Copia estas opciones y el icono del pincel actual a un nuevo pincel"
 
 #: ../gui/brusheditor.glade:194
 msgid "Rename this brush"
-msgstr "Renombrar este pincel"
+msgstr "Cambiar nombre de esta brocha"
 
 #: ../gui/brusheditor.glade:239
 msgid "Brush Setting"
@@ -4003,7 +4006,7 @@ msgstr "Descripción:"
 #: ../gui/brusheditor.glade:355
 msgctxt "brush editor|metadata settings|labels for widgets|tooltips|"
 msgid "Brush developer's notes"
-msgstr "Notas del desarrollador del pincel"
+msgstr "Notas del desarrollador de la brocha"
 
 #. Notes for developers
 #: ../gui/brusheditor.glade:358
@@ -4155,20 +4158,20 @@ msgstr "Tiempo:"
 #: ../gui/inktool.glade:205
 msgctxt "Inking tool options: node delete button: label"
 msgid "Delete Point"
-msgstr "Borrar punto"
+msgstr "Eliminar punto"
 
 #: ../gui/inktool.glade:209
 msgctxt "Inking tool options: node delete button: tooltip"
 msgid "Delete the currently selected point"
-msgstr "Eliminar el actual punto seleccionado"
+msgstr "Eliminar el punto actualmente seleccionado"
 
 #: ../gui/inktool.glade:221 ../gui/resources.xml:897
 msgid "Insert Point"
-msgstr "Insertar Punto"
+msgstr "Insertar punto"
 
 #: ../gui/inktool.glade:253 ../gui/resources.xml:911
 msgid "Simplify Points"
-msgstr "Simplificar Puntos"
+msgstr "Simplificar puntos"
 
 #: ../gui/inktool.glade:257
 msgid "Simplify the curve using the Reumann-Witkam algorithm."
@@ -4176,7 +4179,7 @@ msgstr "Simplificar la curva usando el algoritmo Reumann-Witkam."
 
 #: ../gui/inktool.glade:269 ../gui/resources.xml:918
 msgid "Cull Points"
-msgstr "Diezmar Puntos"
+msgstr "Entresacar puntos"
 
 #: ../gui/inktool.glade:273
 msgid "Cull every other point from the curve."
@@ -4190,7 +4193,7 @@ msgstr "La vista activa en este momento."
 #: ../gui/layervis.glade:36
 msgctxt "Layers window: view list controls: tooltips"
 msgid "Rename the active view."
-msgstr "Renombrar la vista activa."
+msgstr "Cambiar el nombre de la vista activa."
 
 #: ../gui/layervis.glade:57
 msgctxt "Layers window: view list controls: tooltips"
@@ -4255,32 +4258,32 @@ msgstr "PNG sólido con fondo (*.png)"
 #: ../gui/preferenceswindow.glade:32
 msgctxt "Prefs Dialog|Saving|Save Formats and Locations|Default|"
 msgid "JPEG 90% quality (*.jpg; *.jpeg)"
-msgstr "Calidad de 90% JPEG (*.jpg; *.jpeg)"
+msgstr "JPEG al 90 % de calidad (*.jpg; *.jpeg)"
 
 #: ../gui/preferenceswindow.glade:46
 msgctxt "Prefs Dialog|View|Zoom|Default|"
 msgid "25%"
-msgstr "25%"
+msgstr "25 %"
 
 #: ../gui/preferenceswindow.glade:50
 msgctxt "Prefs Dialog|View|Zoom|Default|"
 msgid "50%"
-msgstr "50%"
+msgstr "50 %"
 
 #: ../gui/preferenceswindow.glade:54
 msgctxt "Prefs Dialog|View|Zoom|Default|"
 msgid "100%"
-msgstr "100%"
+msgstr "100 %"
 
 #: ../gui/preferenceswindow.glade:58
 msgctxt "Prefs Dialog|View|Zoom|Default|"
 msgid "200%"
-msgstr "200%"
+msgstr "200 %"
 
 #: ../gui/preferenceswindow.glade:72
 msgctxt "Prefs Dialog|View|Cursors|Freehand Cursor|Type|"
 msgid "Circle with light outline"
-msgstr "Círculo con contorno de luz"
+msgstr "Círculo con contorno ligero"
 
 #: ../gui/preferenceswindow.glade:76
 msgctxt "Prefs Dialog|View|Cursors|Freehand Cursor|Type|"
@@ -4313,18 +4316,18 @@ msgstr "Presión de brocha"
 #: ../gui/preferenceswindow.glade:174 ../gui/preferenceswindow.glade:202
 msgctxt "Prefs Dialog|Pen Input|Input Device Settings|Pressure Mapping|"
 msgid "0.0"
-msgstr "0.0"
+msgstr "0,0"
 
 #. Graph label, range (0...1)
 #: ../gui/preferenceswindow.glade:188 ../gui/preferenceswindow.glade:217
 msgctxt "Prefs Dialog|Pen Input|Input Device Settings|Pressure Mapping|"
 msgid "1.0"
-msgstr "1.0"
+msgstr "1,0"
 
 #: ../gui/preferenceswindow.glade:251
 msgctxt "Prefs Dialog|Pen Input|"
 msgid "<b>Global Pressure Mapping</b>"
-msgstr "<b>Mapeado de Presión Global</b>"
+msgstr "<b>Asignación de presión global</b>"
 
 #. Tab label in preferences dialog
 #: ../gui/preferenceswindow.glade:261
@@ -4344,7 +4347,7 @@ msgstr ""
 #: ../gui/preferenceswindow.glade:324
 msgctxt "Prefs Dialog|Button|"
 msgid "<b>Device Usage</b>"
-msgstr "<b>Dispositivo de entrada</b>"
+msgstr "<b>Utilización de dispositivos</b>"
 
 #: ../gui/preferenceswindow.glade:337
 msgid "Devices"
@@ -4356,8 +4359,8 @@ msgid ""
 "• The space bar can be used like Button2.\n"
 "• Some tablet pads' buttons cannot be held down when pressed."
 msgstr ""
-"• La Barra Espaciadora puede usarse como el Botón2.\n"
-"• Algunas tabletas tienen botones que no se pueden mantener apretados."
+"• La barra espaciadora puede utilizarse como el botón 2.\n"
+"• Algunas tabletas tienen botones que no se pueden mantener presionados."
 
 #: ../gui/preferenceswindow.glade:401
 msgctxt "Prefs Dialog|Button|"
@@ -4398,7 +4401,7 @@ msgstr "Teclas"
 #: ../gui/preferenceswindow.glade:509
 msgctxt "Prefs Dialog|Load & Save|Saving|"
 msgid "Default file format:"
-msgstr "Formato de archivo por defecto:"
+msgstr "Formato de archivo predeterminado:"
 
 #: ../gui/preferenceswindow.glade:524
 msgctxt "Prefs Dialog|Load & Save|Saving|"
@@ -4499,47 +4502,47 @@ msgstr ""
 #: ../gui/preferenceswindow.glade:768
 msgctxt "Prefs Dialog|Load & Save|Automated Backups|interval label"
 msgid "Time between backups:"
-msgstr "Tiempo entre Copias de seguridad:"
+msgstr "Tiempo entre copias de respaldo:"
 
 #. Tab label in preferences dialog
 #: ../gui/preferenceswindow.glade:786
 msgctxt "Prefs Dialog|"
 msgid "Load & Save"
-msgstr "Cargar y Guardar"
+msgstr "Cargar y guardar"
 
 #: ../gui/preferenceswindow.glade:807
 msgctxt "Prefs Dialog|View|"
 msgid "<b>Zoom and Rendering</b>"
-msgstr "<b>Ampliación y Renderizado</b>"
+msgstr "<b>Escala y representación</b>"
 
 #: ../gui/preferenceswindow.glade:824
 msgid "Default zoom level:"
-msgstr "Nivel de zoom predeterminado:"
+msgstr "Nivel de escala predeterminado:"
 
 #: ../gui/preferenceswindow.glade:862
 msgctxt "Prefs Dialog|View|"
 msgid "<b>Interface</b>"
-msgstr "<b>Dispositivo de entrada</b>"
+msgstr "<b>Interfaz</b>"
 
 #: ../gui/preferenceswindow.glade:879
 msgctxt "Prefs Dialog|View|Interface|"
 msgid "Toolbar icon size:"
-msgstr "Tamaño de icono de barra de herramientas:"
+msgstr "Tamaño de iconos de barra de htas.:"
 
 #: ../gui/preferenceswindow.glade:895
 msgctxt "Prefs Dialog|View|Interface|"
 msgid "Freehand cursor type:"
-msgstr "Tipo de cursor modo dibujo a mano alzada:"
+msgstr "Tipo de cursor de modo a mano alzada:"
 
 #: ../gui/preferenceswindow.glade:911
 msgctxt "Prefs Dialog|View|Interface|"
 msgid "Dark theme variant:"
-msgstr "Variante de tema oscuro:"
+msgstr "Variante de tema oscura:"
 
 #: ../gui/preferenceswindow.glade:921
 msgctxt "Prefs Dialog|View|Interface|Dark theme variant|"
 msgid "If available in GTK3 theme (needs restart)"
-msgstr "Si esta disponible los temas GTK3 (necesita reiniciar)"
+msgstr "Si está disponible en el tema GTK3 (necesita reiniciar)"
 
 #: ../gui/preferenceswindow.glade:925
 msgctxt "Prefs Dialog|View|Interface|Dark theme variant|checkbox tooltip"
@@ -4568,7 +4571,7 @@ msgstr "Pequeño"
 #: ../gui/preferenceswindow.glade:1011
 msgctxt "Prefs Dialog|View|Zoom|"
 msgid "Use a real checkerboard pattern"
-msgstr "Utilizar un patrón de tablero de ajedrez real"
+msgstr "Utilizar un motivo de tablero de ajedrez real"
 
 #: ../gui/preferenceswindow.glade:1015
 msgctxt "Prefs Dialog|View|Zoom|"
@@ -4587,13 +4590,13 @@ msgstr "Cuando se muestra transparencia:"
 #: ../gui/preferenceswindow.glade:1051
 msgctxt "Prefs Dialog|View|Interface|"
 msgid "Handle smooth scrolling events:"
-msgstr "Suavidad de los manejadores en los gestos de desplazamiento:"
+msgstr "Tratar sucesos de desplazamiento suave:"
 
 #: ../gui/preferenceswindow.glade:1061
 msgctxt ""
 "Prefs Dialog|View|Interface|Handle smooth scrolling events|checkbox label"
 msgid "When devices send them (needs restart)"
-msgstr "Cuando se envían los dispositivos (necesita reiniciar)"
+msgstr "Cuando los envían los dispositivos (necesita reiniciar)"
 
 #: ../gui/preferenceswindow.glade:1065
 msgctxt ""
@@ -4624,19 +4627,19 @@ msgstr ""
 
 #: ../gui/preferenceswindow.glade:1112
 msgid "Hide cursor while painting"
-msgstr "Ocultar el cursor mientras se pinta"
+msgstr "Ocultar cursor mientras se pinta"
 
 #. Label for a toggle that is part of the "Freehand cursor type" settings. Crosshair refers to lines which are either horizontal, vertical, both (cross) or crossed in an x, depending on the brush cursor type.
 #: ../gui/preferenceswindow.glade:1132
 msgctxt "Prefs Dialog|View|Interface"
 msgid "Show crosshair for small brush cursors"
-msgstr ""
+msgstr "Mostrar cruz para cursores de brocha pequeños"
 
 #. Label for a spinbutton that is part of the "crosshair for small brush cursors" setting. Radius refers to the visual brush cursor radius.
 #: ../gui/preferenceswindow.glade:1149
 msgctxt "Prefs Dialog|View|Interface"
 msgid "Radius threshold:"
-msgstr ""
+msgstr "Umbral de alcance:"
 
 #. Description of the "Radius threshold" spinbox/spinner - the referenced "lines" are part of the brush cursor.
 #: ../gui/preferenceswindow.glade:1162
@@ -4644,6 +4647,8 @@ msgctxt "Prefs Dialog|View|Interface"
 msgid ""
 "Lines will be shown when the brush circle radius is smaller than this value."
 msgstr ""
+"Se mostrarán líneas si el radio de la brocha circular es menor que este "
+"valor."
 
 #: ../gui/preferenceswindow.glade:1192
 msgctxt ""
@@ -4797,7 +4802,7 @@ msgstr "Color"
 #: ../gui/preferenceswindow.glade:1458
 msgctxt "Prefs Dialog|Compatibility"
 msgid "Default Compatibility Mode:"
-msgstr "Modo de Compatibilidad por Defecto:"
+msgstr "Modo de compatibilidad predeterminado:"
 
 #: ../gui/preferenceswindow.glade:1483
 msgctxt "Prefs Dialog|Compatibility"
@@ -4813,7 +4818,7 @@ msgstr "<b>Opciones 2.x</b>"
 #: ../gui/preferenceswindow.glade:1535 ../gui/preferenceswindow.glade:1609
 msgctxt "Prefs Dialog|Compatibility"
 msgid "Default New Layer Type:"
-msgstr "Tipo de Capa Nueva por Defecto:"
+msgstr "Tipo de capa nueva predeterminado:"
 
 #: ../gui/preferenceswindow.glade:1581 ../gui/preferenceswindow.glade:1595
 msgctxt "Prefs Dialog|Compatibility"
@@ -4851,13 +4856,12 @@ msgstr ""
 #: ../gui/preferenceswindow.glade:1739
 msgctxt "Prefs Dialog|Compatibility"
 msgid "File compatibility warnings:"
-msgstr "Advertencia de compatibilidad del archivo:"
+msgstr "Alertas de compatibilidad de archivo:"
 
 #: ../gui/preferenceswindow.glade:1751
 msgctxt "Prefs Dialog|Compatibility"
 msgid "Show warning for files that may be fully incompatible"
-msgstr ""
-"Mostrar advertencias para archivos que pueden ser completamente incompatibles"
+msgstr "Mostrar alertas ante archivos que puedan ser totalmente incompatibles"
 
 #. This is a tooltip for the file behavior options label.
 #: ../gui/preferenceswindow.glade:1767
@@ -4875,13 +4879,13 @@ msgstr ""
 #: ../gui/preferenceswindow.glade:1769
 msgctxt "Prefs Dialog|Compatibility"
 msgid "When Mode is Unspecified:"
-msgstr "Si el Modo no está Especificado:"
+msgstr "Si no se especifica el modo:"
 
 #. This label indicates a subsection of the compatibility settings related to loading files.
 #: ../gui/preferenceswindow.glade:1796
 msgctxt "Prefs|Compatibility"
 msgid "<b>File loading</b>"
-msgstr "<b>Cargando</b>"
+msgstr "<b>Carga de archivos</b>"
 
 #: ../gui/preferenceswindow.glade:1816
 msgid "<b>Compatibility settings</b>"
@@ -4921,7 +4925,7 @@ msgstr "Nuevo"
 #: ../gui/resources.xml:65
 msgctxt "Toolbar (tooltips), Accel Editor (descriptions)"
 msgid "Start with a new blank canvas."
-msgstr "Comienza con un nuevo lienzo en blanco."
+msgstr "Comience con un lienzo en blanco nuevo."
 
 #: ../gui/resources.xml:73
 msgctxt "Menu→File (labels), Accel Editor (labels)"
@@ -4982,7 +4986,7 @@ msgstr "Guardar"
 #: ../gui/resources.xml:121
 msgctxt "Accel Editor (descriptions)"
 msgid "Save your work to a file."
-msgstr "Guardar tu trabajo en un archivo."
+msgstr "Guardar el trabajo en un archivo."
 
 #: ../gui/resources.xml:129
 msgctxt "Menu→File (labels), Accel Editor (labels)"
@@ -5039,7 +5043,7 @@ msgstr "Cargue el archivo de Esbozo después del actual."
 #: ../gui/resources.xml:174
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "Recover File from an Automated Backup…"
-msgstr "Recuperar archivos desde una copia de seguridad automatizada…"
+msgstr "Recuperar archivos desde copia de respaldo automatizada…"
 
 #: ../gui/resources.xml:175
 msgctxt "Accel Editor (descriptions)"
@@ -5049,17 +5053,17 @@ msgstr "Intentar guardar y reanudar el trabajo interrumpido no guardado."
 #: ../gui/resources.xml:190
 msgctxt "Menu→Brush (label)"
 msgid "Brush Groups"
-msgstr "Grupos de Pinceles"
+msgstr "Grupos de brochas"
 
 #: ../gui/resources.xml:191
 msgctxt "Toolbar (short labels)"
 msgid "Brushes"
-msgstr "Pinceles"
+msgstr "Brochas"
 
 #: ../gui/resources.xml:192
 msgctxt "Toolbar (tooltips)"
 msgid "List of brush groups."
-msgstr "Lista de grupos de pinceles."
+msgstr "Lista de grupos de brochas."
 
 #: ../gui/resources.xml:199
 msgctxt "Toolbar (label)"
@@ -5089,12 +5093,12 @@ msgstr "Modo"
 #: ../gui/resources.xml:210
 msgctxt "Toolbar (tooltips)"
 msgid "The current layer's compositing mode."
-msgstr "Modo de composición de la capa actual."
+msgstr "El modo de composición de la capa actual."
 
 #: ../gui/resources.xml:237
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
 msgid "Increase Fake Pressure"
-msgstr "Aumentar Presión Simulada"
+msgstr "Aumentar presión simulada"
 
 #: ../gui/resources.xml:238
 msgctxt "Accel Editor (descriptions)"
@@ -5104,7 +5108,7 @@ msgstr "Aumentar presión en dispositivos que no soportan entrada de rotación."
 #: ../gui/resources.xml:245
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
 msgid "Decrease Fake Pressure"
-msgstr "Disminuir Presión Simulada"
+msgstr "Disminuir presión simulada"
 
 #: ../gui/resources.xml:246
 msgctxt "Accel Editor (descriptions)"
@@ -5114,7 +5118,7 @@ msgstr "Disminuir presión en dispositivos que no soportan entrada de presión."
 #: ../gui/resources.xml:254
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
 msgid "Increase Fake Rotation"
-msgstr "Aumentar Rotación Simulada"
+msgstr "Aumentar giro simulado"
 
 #: ../gui/resources.xml:255
 msgctxt "Accel Editor (descriptions)"
@@ -5124,7 +5128,7 @@ msgstr "Aumentar rotación en dispositivos que no soportan entrada de rotación.
 #: ../gui/resources.xml:262
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
 msgid "Decrease Fake Rotation"
-msgstr "Reducir Rotación Simulada"
+msgstr "Disminuir giro simulado"
 
 #: ../gui/resources.xml:263
 msgctxt "Accel Editor (descriptions)"
@@ -5135,7 +5139,7 @@ msgstr ""
 #: ../gui/resources.xml:271
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
 msgid "Increase Brush Size"
-msgstr "Aumentar Tamaño de la Brocha"
+msgstr "Aumentar tamaño de brocha"
 
 #: ../gui/resources.xml:272
 msgctxt "Accel Editor (descriptions)"
@@ -5145,7 +5149,7 @@ msgstr "Aumentar el tamaño de la brocha en uso."
 #: ../gui/resources.xml:279
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
 msgid "Decrease Brush Size"
-msgstr "Disminuir el Tamaño de la Brocha"
+msgstr "Disminuir tamaño de brocha"
 
 #: ../gui/resources.xml:280
 msgctxt "Accel Editor (descriptions)"
@@ -5425,7 +5429,7 @@ msgstr "Bajar una capa en la pila de capas."
 #: ../gui/resources.xml:511
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "New Painting Layer"
-msgstr "Nueva Capa de Pintura"
+msgstr "Capa de pintura nueva"
 
 #: ../gui/resources.xml:512
 msgctxt "Accel Editor (descriptions)"
@@ -5447,7 +5451,7 @@ msgstr ""
 #: ../gui/resources.xml:528
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "New Layer Group"
-msgstr "Nueva Capa de Grupo"
+msgstr "Grupo de capas nuevo"
 
 #: ../gui/resources.xml:529
 msgctxt "Accel Editor (descriptions)"
@@ -5499,7 +5503,7 @@ msgstr "Combinar la capa actual con la capa debajo de ella."
 #: ../gui/resources.xml:567
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Merge Visible Layers"
-msgstr "Combinar las Capas Visibles"
+msgstr "Combinar capas visibles"
 
 #: ../gui/resources.xml:568
 msgctxt "Accel Editor (descriptions)"
@@ -5509,17 +5513,17 @@ msgstr "Consolidar todas las capas visibles y eliminar las originales."
 #: ../gui/resources.xml:575
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "New Layer from Visible"
-msgstr "Nueva Capa desde Visible"
+msgstr "Capa nueva desde lo visible"
 
 #: ../gui/resources.xml:576
 msgctxt "Accel Editor (descriptions)"
 msgid "Like ‘Merge Visible Layers’, but doesn’t delete the originals."
-msgstr "Como 'Combinar las capas visibles', pero no borras las originales."
+msgstr "Como «Combinar capas visibles», pero no elimina las originales."
 
 #: ../gui/resources.xml:583
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Delete Layer"
-msgstr "Eliminar Capa"
+msgstr "Eliminar capa"
 
 #: ../gui/resources.xml:584
 msgctxt "Accel Editor (descriptions)"
@@ -5776,7 +5780,7 @@ msgstr "Rotar en sentido horario"
 #: ../gui/resources.xml:799
 msgctxt "Accel Editor (descriptions)"
 msgid "Rotate the canvas clockwise."
-msgstr "Rotar la imagen en sentido horario."
+msgstr "Girar el lienzo en sentido horario."
 
 #: ../gui/resources.xml:819
 msgctxt "Menu→View→Adjust View (labels), Accel Editor (labels)"
@@ -5786,7 +5790,7 @@ msgstr "Rotar en sentido antihorario"
 #: ../gui/resources.xml:820
 msgctxt "Accel Editor (descriptions)"
 msgid "Rotate the canvas counter-clockwise."
-msgstr "Rotar la imagen en sentido antihorario."
+msgstr "Girar el lienzo en sentido antihorario."
 
 #: ../gui/resources.xml:828
 msgctxt "Menu→View→Adjust View (labels), Accel Editor (labels)"
@@ -5882,7 +5886,7 @@ msgstr ""
 
 #: ../gui/resources.xml:904
 msgid "Delete Point"
-msgstr "Eliminar Punto"
+msgstr "Eliminar punto"
 
 #: ../gui/resources.xml:905
 msgctxt "Accel Editor (descriptions)"
@@ -5905,12 +5909,12 @@ msgstr "Eliminar uno de cada dos puntos en el trazo de tinta."
 #: ../gui/resources.xml:933
 msgctxt "Menu→Brush (labels)"
 msgid "Paint Mode"
-msgstr "Modo de Pintura"
+msgstr "Modo de pintura"
 
 #: ../gui/resources.xml:941
 msgctxt "Menu→Brush→Blend Mode (labels), Accel Editor (labels)"
 msgid "Paint Mode: Normal"
-msgstr "Modo de Pintura: Normal"
+msgstr "Modo de pintura: normal"
 
 #: ../gui/resources.xml:942
 msgctxt "Accel Editor (descriptions)"
@@ -5920,17 +5924,17 @@ msgstr "Aplicar color normalmente al pintar."
 #: ../gui/resources.xml:950
 msgctxt "Menu→Brush→Blend Mode (labels), Accel Editor (labels)"
 msgid "Paint Mode: Eraser"
-msgstr "Modo Pintar: Goma de borrar"
+msgstr "Modo de pintura: borrador"
 
 #: ../gui/resources.xml:951
 msgctxt "Accel Editor (descriptions)"
 msgid "Erase using the current brush."
-msgstr "Borrar con el pincel actual."
+msgstr "Borrar con la brocha actual."
 
 #: ../gui/resources.xml:959
 msgctxt "Menu→Brush→Blend Mode (labels), Accel Editor (labels)"
 msgid "Paint Mode: Lock Alpha"
-msgstr "Modo Pintar: Bloqueo de Alfa"
+msgstr "Modo de pintura: alfa bloqueado"
 
 #: ../gui/resources.xml:960
 msgctxt "Accel Editor (descriptions)"
@@ -6177,7 +6181,7 @@ msgstr ""
 #: ../gui/resources.xml:1187
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
 msgid "Change Brush…"
-msgstr "Cambiar Brocha…"
+msgstr "Cambiar brocha…"
 
 #: ../gui/resources.xml:1188
 msgctxt "Accel Editor (descriptions)"
@@ -6187,7 +6191,7 @@ msgstr "Diálogo emergente con un cambiador de pincel bajo el cursor."
 #: ../gui/resources.xml:1195
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "Change Color…"
-msgstr "Cambiar Color…"
+msgstr "Cambiar color…"
 
 #: ../gui/resources.xml:1196
 msgctxt "Accel Editor (descriptions)"
@@ -6200,7 +6204,7 @@ msgstr ""
 #: ../gui/resources.xml:1204
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "Change Color (fast subset)…"
-msgstr "Cambiar Color (subconjunto rápido)…"
+msgstr "Cambiar color (subconjunto rápido)…"
 
 #: ../gui/resources.xml:1205
 msgctxt "Accel Editor (descriptions)"
@@ -6214,17 +6218,17 @@ msgstr ""
 #: ../gui/resources.xml:1213
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
 msgid "Get More Brushes…"
-msgstr "Obtener Más Brochas…"
+msgstr "Obtener más brochas…"
 
 #: ../gui/resources.xml:1214
 msgctxt "Accel Editor (descriptions)"
 msgid "Download brushpacks from the MyPaint wiki."
-msgstr "Descargar paquetes de pinceles desde la wiki de MyPaint."
+msgstr "Descargue paquetes de brochas desde el wiki de MyPaint."
 
 #: ../gui/resources.xml:1221
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
 msgid "Import Brushes…"
-msgstr "Importar Pinceles…"
+msgstr "Importar brochas…"
 
 #: ../gui/resources.xml:1222
 msgctxt "Accel Editor (descriptions)"
@@ -6239,7 +6243,7 @@ msgstr "Ayuda"
 #: ../gui/resources.xml:1237
 msgctxt "Menu→Help (labels), Accel Editor (labels)"
 msgid "Online Help"
-msgstr "Ayuda en Línea"
+msgstr "Ayuda en línea"
 
 #: ../gui/resources.xml:1238
 msgctxt "Accel Editor (descriptions)"
@@ -6332,7 +6336,7 @@ msgstr "Mostrar el menú principal como una ventana emergente."
 #: ../gui/resources.xml:1320
 msgctxt "Menu→View (labels), Accel Editor (labels)"
 msgid "Fullscreen"
-msgstr "Pantalla Completa"
+msgstr "Pantalla completa"
 
 #: ../gui/resources.xml:1321
 msgctxt "Accel Editor (descriptions)"
@@ -6396,7 +6400,7 @@ msgctxt ""
 "Menu→Layer (labels), Menu→Window (labels), Toolbar (labels), Accel Editor "
 "(labels)"
 msgid "Layers Panel"
-msgstr "Panel de Capas"
+msgstr "Panel Capas"
 
 #: ../gui/resources.xml:1374
 msgctxt "Accel Editor (descriptions)"
@@ -6406,7 +6410,7 @@ msgstr "Panel empotrable para manejar capas."
 #: ../gui/resources.xml:1382
 msgctxt "Menu→Layers (labels), Accel Editor (labels)"
 msgid "Show Layers Panel"
-msgstr "Mostrar Panel Capas"
+msgstr "Mostrar panel Capas"
 
 #: ../gui/resources.xml:1383
 msgctxt "Accel Editor (descriptions)"
@@ -6431,7 +6435,7 @@ msgstr ""
 #: ../gui/resources.xml:1402
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "Color Palette"
-msgstr "Paleta de Colores"
+msgstr "Paleta de colores"
 
 #: ../gui/resources.xml:1403
 msgctxt "Accel Editor (descriptions)"
@@ -6541,7 +6545,7 @@ msgstr ""
 #: ../gui/resources.xml:1488
 msgctxt "Menu→Window (labels), Toolbar (labels), Accel Editor (labels)"
 msgid "Preview Panel"
-msgstr "Panel de Vista Previa"
+msgstr "Panel Previsualización"
 
 #: ../gui/resources.xml:1489
 msgctxt "Accel Editor (descriptions)"
@@ -6552,7 +6556,7 @@ msgstr ""
 #: ../gui/resources.xml:1497
 msgctxt "Menu→View (labels), Accel Editor (labels)"
 msgid "Preview"
-msgstr "Vista Previa"
+msgstr "Previsualización"
 
 #: ../gui/resources.xml:1498
 msgctxt "Accel Editor (descriptions)"
@@ -6866,7 +6870,7 @@ msgstr "Dibujar secuencias de líneas rectas o curvas."
 #: ../gui/resources.xml:1759
 msgctxt "Menu→Edit→Current Mode (labels)"
 msgid "Ellipses and Circles"
-msgstr "Elipses y Círculos"
+msgstr "Elipses y círculos"
 
 #: ../gui/resources.xml:1760
 msgctxt "Toolbar (short labels)"
@@ -6881,7 +6885,7 @@ msgstr "Elipses y Círculos: dibujar formas redondeadas."
 #: ../gui/resources.xml:1769
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
 msgid "Ellipses and Circles"
-msgstr "Elipses y Círculos"
+msgstr "Elipses y círculos"
 
 #: ../gui/resources.xml:1770
 msgctxt "Accel Editor (descriptions)"
