@@ -9,7 +9,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-03-23 21:20+0100\n"
 "PO-Revision-Date: 2021-04-16 06:57+0000\n"
-"Last-Translator: Luz Paz <david.yoga@gmail.com>\n"
+"Last-Translator: Omer I.S. <omeritzicschwartz@gmail.com>\n"
 "Language-Team: Hebrew <https://hosted.weblate.org/projects/mypaint/mypaint/"
 "he/>\n"
 "Language: he\n"
@@ -23,7 +23,7 @@ msgstr ""
 #: ../gui/accelmap.py:86
 msgctxt "placeholder for keymap filtering"
 msgid "Filter"
-msgstr ""
+msgstr "מסנן"
 
 #. TRANSLATORS: Name of first column in the button map preferences.
 #. TRANSLATORS: Refers to an action bound to a mod+button combination.
@@ -159,8 +159,7 @@ msgstr "שגיאה בטעינת רקעים"
 #: ../gui/backgroundwindow.py:258
 msgid ""
 "Please remove the unloadable files, or check your libgdkpixbuf installation."
-msgstr ""
-"הסר בבקשה את הקבצים שאינם ניתנים להעברה, או בדוק את התקנת libgdkpixbuf."
+msgstr "נא להסיר את הקבצים שלא ניתן להעבירם, או לבדוק את התקנת libgdkpixbuf."
 
 #: ../gui/backgroundwindow.py:372
 #, python-brace-format
@@ -175,12 +174,12 @@ msgstr "{filename}יש גודל אפסי (w={w}, h={h})"
 #: ../gui/brusheditor.py:117
 msgctxt "brush settings editor: subwindow title"
 msgid "Brush Settings Editor"
-msgstr "עורך הגדרות מכחול"
+msgstr "עורך הגדרות המברשת"
 
 #: ../gui/brusheditor.py:305
 msgctxt "brush settings list: brush metadata texts group"
 msgid "About"
-msgstr "אודות"
+msgstr "על אודות"
 
 #: ../gui/brusheditor.py:316
 msgctxt "brush settings list: setting group"
@@ -240,61 +239,61 @@ msgstr ""
 #: ../gui/brusheditor.py:462
 msgctxt "brush settings list: setting group"
 msgid "Custom"
-msgstr "הגדרות אישיות"
+msgstr "התאמה אישית"
 
 #: ../gui/brusheditor.py:528
 msgctxt "brush settings editor: save brush: error message"
 msgid "No brush selected, please use “Add As New” instead."
-msgstr "לא נבחר מכחול, נא להשתמש ב„הוספה כחדש” במקום."
+msgstr "לא נבחרה מברשת, נא להשתמש ב„הוספה כחדש” במקום."
 
 #: ../gui/brusheditor.py:553
 msgctxt "brush settings editor: rename brush: error message"
 msgid "No brush selected!"
-msgstr "לא נבחר מכחול!"
+msgstr "לא נבחרה מברשת!"
 
 #: ../gui/brusheditor.py:562
 msgctxt "brush settings editor: rename brush: dialog title"
 msgid "Rename Brush"
-msgstr "שינוי שם המכחול"
+msgstr "שינוי שם המברשת"
 
 #: ../gui/brusheditor.py:581
 msgctxt "brush settings editor: rename brush: error message"
 msgid "A brush with this name already exists!"
-msgstr "כבר קיים מכחול בשם הזה!"
+msgstr "כבר קיימת מברשת בשם הזה!"
 
 #: ../gui/brusheditor.py:615
 msgctxt "brush settings editor: delete brush: error message"
 msgid "No brush selected!"
-msgstr "לא נבחר מכחול!"
+msgstr "לא נבחרה מברשת!"
 
 #: ../gui/brusheditor.py:621
 #, python-brace-format
 msgctxt "brush settings editor: delete brush: confirm dialog question"
 msgid "Really delete brush “{brush_name}” from disk?"
-msgstr "למחוק את המכחול „{brush_name}” מהכונן?"
+msgstr "למחוק את המברשת „{brush_name}” מהכונן?"
 
 #: ../gui/brusheditor.py:740
 msgctxt "brush settings editor: header: fallback name"
 msgid "(Unnamed brush)"
-msgstr "(מכחול ללא שם)"
+msgstr "(מברשת ללא שם)"
 
 #: ../gui/brusheditor.py:747
 #, python-brace-format
 msgctxt "brush settings editor: header: is-modified hint"
 msgid "{brush_name} [unsaved]"
-msgstr "{brush_name} [שלא נשמר]"
+msgstr "{brush_name} [לא נשמרה]"
 
 #: ../gui/brushiconeditor.py:36
 msgid "Brush Icon"
-msgstr "סמל מכחול"
+msgstr "סמל המברשת"
 
 #: ../gui/brushiconeditor.py:37
 msgid "Brush Icon (editing)"
-msgstr "סמל מכחול (עריכה)"
+msgstr "סמל המברשת (עריכה)"
 
 #: ../gui/brushiconeditor.py:74
 msgid "No brush selected"
-msgstr "לא נבחר מכחול"
+msgstr "לא נבחרה מברשת"
 
 #: ../gui/brushiconeditor.py:76
 #, python-format
@@ -303,14 +302,16 @@ msgid ""
 "<small>Select a valid brush first</small>"
 msgstr ""
 "<b>%s</b>\n"
-"<small>תחילה יש לבחור במכחול תקף</small>"
+"<small>תחילה יש לבחור במברשת תקינה</small>"
 
 #: ../gui/brushiconeditor.py:79
 #, python-format
 msgid ""
 "<b>%s</b> <i>(modified)</i>\n"
 "<small>Changes are not yet saved</small>"
-msgstr "<b>%s</b><i>(הותאם)</i><small>השינויים עדיין לא נשמרו</small>"
+msgstr ""
+"<b>%s</b> <i>(עבר שינוי)</i>\n"
+"<small>השינויים לא נשמרו עדיין</small>"
 
 #: ../gui/brushiconeditor.py:82
 #, python-format
@@ -319,7 +320,7 @@ msgid ""
 "<small>Paint with any brush or color</small>"
 msgstr ""
 "<b>%s</b>(עריכה)\n"
-"<small>צביעה עם מכחול או צבע</small>"
+"<small>צביעה עם מברשת או צבע</small>"
 
 #: ../gui/brushiconeditor.py:85
 #, python-format
@@ -425,7 +426,7 @@ msgstr "חדש"
 #, python-brace-format
 msgctxt "brushpack import failure messages"
 msgid "No file named “{order_conf_file}”. This is not a brushpack."
-msgstr "אין קובץ בשם „{order_conf_file}”. זאת אינה ערכת מכחולים."
+msgstr "אין קובץ בשם „{order_conf_file}”. זאת אינה ערכת מברשות."
 
 #: ../gui/brushmanager.py:704
 #, python-brace-format
@@ -434,8 +435,8 @@ msgid ""
 "Brush “{brush_name}” is listed in “{order_conf_file}”, but it does not exist "
 "in the zipfile."
 msgstr ""
-"המכחול „{brush_name}” מופיע תחת „{order_conf_file}” אך הוא לא קיים בקובץ ה־"
-"zip."
+"המברשת „{brush_name}” מופיעה תחת „{order_conf_file}” אך אינה קיימת בקובץ "
+"ה־zip."
 
 #: ../gui/brushmanager.py:717
 #, python-brace-format
@@ -444,18 +445,17 @@ msgid ""
 "Brush “{brush_name}” exists in the zipfile, but it is not listed in "
 "“{order_conf_file}”."
 msgstr ""
-"המכחול „{brush_name}” קיים בקובץ ה־zip, אך אינו מופיע תחת "
+"המברשת „{brush_name}” קיימת בקובץ ה־zip, אך אינה מופיעה תחת "
 "„{order_conf_file}”."
 
 #: ../gui/brushmanager.py:1328 ../gui/footer.py:66
 msgid "Unknown Brush"
-msgstr "מכחול לא ידוע"
+msgstr "מברשת לא ידועה"
 
 #: ../gui/brushmanip.py:191
-#, fuzzy
 msgctxt "brush resize mode - name"
 msgid "Resize Brush"
-msgstr "שינוי שם המכחול"
+msgstr "שינוי גודל המברשת"
 
 #: ../gui/brushmanip.py:196
 msgctxt "brush resize mode - usage"
@@ -480,7 +480,7 @@ msgstr "שכפול"
 #: ../gui/brushselectionwindow.py:242
 msgctxt "brush group: context menu for a single brush"
 msgid "Edit Brush Settings"
-msgstr "עריכת הגדרות מכחול"
+msgstr "עריכת הגדרות מברשת"
 
 #: ../gui/brushselectionwindow.py:250
 msgctxt "brush group: context menu for a single brush"
@@ -503,17 +503,17 @@ msgstr ""
 #, python-brace-format
 msgctxt "brush group: context menu: remove from group"
 msgid "Really remove brush “{brush_name}” from group “{group_name}”?"
-msgstr "למחוק את המכחול „{brush_name}” מהקבוצה „{group_name}”?"
+msgstr "האם להסיר את המברשת „{brush_name}” מהקבוצה „{group_name}”?"
 
 #. TRANSLATORS: number of brushes in a brush group, for tooltips
 #: ../gui/brushselectionwindow.py:381
-#, fuzzy, python-format
+#, python-format
 msgid "%d brush"
 msgid_plural "%d brushes"
-msgstr[0] "מכחול אחד"
-msgstr[1] "%d מכחולים"
-msgstr[2] "%d מכחולים"
-msgstr[3] "%d מכחולים"
+msgstr[0] "מברשת אחת"
+msgstr[1] "%d מברשות"
+msgstr[2] "%d מברשות"
+msgstr[3] "%d מברשות"
 
 #. TRANSLATORS: properties dialog for the current brush group
 #: ../gui/brushselectionwindow.py:405
@@ -566,12 +566,12 @@ msgstr ""
 #: ../gui/brushselectionwindow.py:510
 msgctxt "brush group export dialog: title"
 msgid "Export Brushes"
-msgstr "ייצוא מכחולים"
+msgstr "ייצוא מברשות"
 
 #: ../gui/brushselectionwindow.py:515
 msgctxt "brush group export dialog"
 msgid "MyPaint brush package (*.zip)"
-msgstr "חבילת מכחולי MyPaint‏ (‎*.zip)"
+msgstr "חבילת מברשות MyPaint‏ (‎*.zip)"
 
 #: ../gui/brushselectionwindow.py:535
 msgctxt "brush groups menu"
@@ -581,12 +581,12 @@ msgstr "קבוצה חדשה…"
 #: ../gui/brushselectionwindow.py:538
 msgctxt "brush groups menu"
 msgid "Import Brushes…"
-msgstr "ייבוא מכחולים…"
+msgstr "ייבוא מברשות…"
 
 #: ../gui/brushselectionwindow.py:542
 msgctxt "brush groups menu"
 msgid "Get More Brushes…"
-msgstr "הורדת מכחולים נוספים…"
+msgstr "השגת מברשות נוספות…"
 
 #: ../gui/brushselectionwindow.py:557
 msgctxt "new brush group dialog: title"
@@ -1445,11 +1445,11 @@ msgstr "בצע שוב"
 #: ../gui/document.py:195
 #, python-format
 msgid "Undo %s"
-msgstr "בטל את %s"
+msgstr "ביטול %s"
 
 #: ../gui/document.py:196
 msgid "Undo"
-msgstr "בטל"
+msgstr "ביטול"
 
 #: ../gui/document.py:458
 #, python-format
@@ -2677,7 +2677,7 @@ msgstr "ניהול פרויקט"
 #: ../gui/meta.py:72
 msgctxt "About dialog: credits: tasks: brush presets and icons"
 msgid "brushes"
-msgstr "מכחולים"
+msgstr "מברשות"
 
 #: ../gui/meta.py:76
 msgctxt "About dialog: credits: tasks: background paper textures"
@@ -2866,7 +2866,7 @@ msgstr ""
 #: ../gui/symmetry.py:91
 msgctxt "symmetry axis edit mode: instructions shown in statusbar"
 msgid "Remove axis"
-msgstr ""
+msgstr "הסרת ציר"
 
 #: ../gui/symmetry.py:103
 msgctxt "symmetry axis edit mode: mode name (tooltips)"
@@ -4686,7 +4686,7 @@ msgstr ""
 #: ../gui/resources.xml:73
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "Open…"
-msgstr "פתח…"
+msgstr "פתיחה…"
 
 #: ../gui/resources.xml:74
 msgctxt "Toolbar (short labels)"
@@ -5033,7 +5033,7 @@ msgstr ""
 #: ../gui/resources.xml:401
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Clear Layer"
-msgstr "מחיקת תוכן השכבה"
+msgstr "ניקוי השכבה"
 
 #: ../gui/resources.xml:402
 msgctxt "Accel Editor (descriptions)"
@@ -5170,7 +5170,7 @@ msgstr ""
 #: ../gui/resources.xml:511
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "New Painting Layer"
-msgstr "שכבת צביעה חדשה"
+msgstr "שכבת ציור חדשה"
 
 #: ../gui/resources.xml:512
 msgctxt "Accel Editor (descriptions)"
@@ -5260,7 +5260,7 @@ msgstr ""
 #: ../gui/resources.xml:583
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Delete Layer"
-msgstr "מחק שכבה"
+msgstr "מחיקת השכבה"
 
 #: ../gui/resources.xml:584
 msgctxt "Accel Editor (descriptions)"
@@ -5394,7 +5394,7 @@ msgstr ""
 #: ../gui/resources.xml:693
 msgctxt "Menu→View (labels), Accel Editor (labels)"
 msgid "Fit to View"
-msgstr "התאם לתצוגה"
+msgstr "התאמה לתצוגה"
 
 #: ../gui/resources.xml:694
 msgctxt "Accel Editor (descriptions)"
@@ -5760,7 +5760,7 @@ msgstr ""
 #: ../gui/resources.xml:1058
 msgctxt "Menu (labels)"
 msgid "Layer"
-msgstr "שכבה"
+msgstr "שכבות"
 
 #: ../gui/resources.xml:1064
 msgctxt "Menu→Layer→Properties (labels)"
@@ -5785,7 +5785,7 @@ msgstr ""
 #: ../gui/resources.xml:1090
 msgctxt "Menu (labels)"
 msgid "Scratchpad"
-msgstr "לוח סרטוט"
+msgstr "לוח שרטוט"
 
 #: ../gui/resources.xml:1096
 msgctxt "Menu→Scratchpad (labels), Accel Editor (labels)"
@@ -5876,7 +5876,7 @@ msgstr "חלון"
 #: ../gui/resources.xml:1167
 msgctxt "Menu→Brush (labels)"
 msgid "Brush"
-msgstr "מכחול"
+msgstr "מברשות"
 
 #: ../gui/resources.xml:1173
 msgctxt "Menu→Brush (labels)"
@@ -5896,7 +5896,7 @@ msgstr ""
 #: ../gui/resources.xml:1187
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
 msgid "Change Brush…"
-msgstr "החלפת מכחול…"
+msgstr "החלפת מברשת…"
 
 #: ../gui/resources.xml:1188
 msgctxt "Accel Editor (descriptions)"
@@ -5906,7 +5906,7 @@ msgstr ""
 #: ../gui/resources.xml:1195
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "Change Color…"
-msgstr "שנה צבע…"
+msgstr "שינוי צבע…"
 
 #: ../gui/resources.xml:1196
 msgctxt "Accel Editor (descriptions)"
@@ -5917,7 +5917,7 @@ msgstr ""
 #: ../gui/resources.xml:1204
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "Change Color (fast subset)…"
-msgstr "שנה צבע (תת קבוצה)…"
+msgstr "שינוי צבע (תת קבוצה)…"
 
 #: ../gui/resources.xml:1205
 msgctxt "Accel Editor (descriptions)"
@@ -5929,7 +5929,7 @@ msgstr ""
 #: ../gui/resources.xml:1213
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
 msgid "Get More Brushes…"
-msgstr "הורדת מכחולים נוספים…"
+msgstr "הורדת מברשות נוספות…"
 
 #: ../gui/resources.xml:1214
 msgctxt "Accel Editor (descriptions)"
@@ -5954,7 +5954,7 @@ msgstr "עזרה"
 #: ../gui/resources.xml:1237
 msgctxt "Menu→Help (labels), Accel Editor (labels)"
 msgid "Online Help"
-msgstr "עזרה אונליין"
+msgstr "עזרה מקוונת"
 
 #: ../gui/resources.xml:1238
 msgctxt "Accel Editor (descriptions)"
@@ -5964,7 +5964,7 @@ msgstr ""
 #: ../gui/resources.xml:1246
 msgctxt "Menu→Help (labels), Accel Editor (labels)"
 msgid "About MyPaint"
-msgstr "אודות MyPaint"
+msgstr "על אודות MyPaint"
 
 #: ../gui/resources.xml:1247
 msgctxt "Accel Editor (descriptions)"
@@ -6055,7 +6055,7 @@ msgstr ""
 #: ../gui/resources.xml:1332
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
 msgid "Edit Preferences"
-msgstr "ערוך העדפות"
+msgstr "עריכת ההעדפות"
 
 #: ../gui/resources.xml:1333
 msgctxt "Accel Editor (descriptions)"
@@ -6085,7 +6085,7 @@ msgstr ""
 #: ../gui/resources.xml:1355
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
 msgid "Brush Settings Editor"
-msgstr "עורך הגדרות מכחול"
+msgstr "עורך הגדרות המברשת"
 
 #: ../gui/resources.xml:1356
 msgctxt "Accel Editor (descriptions)"
@@ -6118,7 +6118,7 @@ msgstr ""
 #: ../gui/resources.xml:1382
 msgctxt "Menu→Layers (labels), Accel Editor (labels)"
 msgid "Show Layers Panel"
-msgstr "הצג מסך שכבות"
+msgstr "הצגת לוח השכבות"
 
 #: ../gui/resources.xml:1383
 msgctxt "Accel Editor (descriptions)"
@@ -6232,7 +6232,7 @@ msgstr ""
 #: ../gui/resources.xml:1478
 msgctxt "Menu→Scratchpad (labels), Accel Editor (labels)"
 msgid "Show Scratchpad Panel"
-msgstr "הצג פנקס רשימות"
+msgstr "הצגת פנקס רשימות"
 
 #: ../gui/resources.xml:1479
 msgctxt "Accel Editor (descriptions)"
@@ -6242,7 +6242,7 @@ msgstr ""
 #: ../gui/resources.xml:1488
 msgctxt "Menu→Window (labels), Toolbar (labels), Accel Editor (labels)"
 msgid "Preview Panel"
-msgstr "תצוגת מסך מקדימה"
+msgstr "תצוגת לוח מקדימה"
 
 #: ../gui/resources.xml:1489
 msgctxt "Accel Editor (descriptions)"
@@ -6282,7 +6282,7 @@ msgstr ""
 #: ../gui/resources.xml:1528
 msgctxt "Menu→Window (labels), Toolbar (labels), Accel Editor (labels)"
 msgid "Brush & Color History Panel"
-msgstr "לוח היסטוריית מכחול וצבע"
+msgstr "לוח היסטוריית מברשות וצבעים"
 
 #: ../gui/resources.xml:1529
 msgctxt "Accel Editor (descriptions)"
@@ -6292,7 +6292,7 @@ msgstr ""
 #: ../gui/resources.xml:1537
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
 msgid "Recent Brushes & Colors"
-msgstr "מכחולים וצבעים ששימשו אותך לאחרונה"
+msgstr "מברשות וצבעים בהם נעשה שימוש לאחרונה"
 
 #: ../gui/resources.xml:1538
 msgctxt "Accel Editor (descriptions)"
@@ -6613,7 +6613,7 @@ msgstr ""
 #: ../gui/resources.xml:1811
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Reposition Layer"
-msgstr "מיקום מחדש של השכבה"
+msgstr "מיקום השכבה מחדש"
 
 #: ../gui/resources.xml:1812
 msgctxt "Accel Editor (description)"
@@ -6726,7 +6726,7 @@ msgstr ""
 #: ../gui/resources.xml:1924
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "Pick Color"
-msgstr "בחר צבע"
+msgstr "נא לבחור צבע"
 
 #: ../gui/resources.xml:1925
 msgctxt "Accel Editor (descriptions)"
