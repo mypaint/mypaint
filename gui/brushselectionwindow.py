@@ -378,7 +378,8 @@ class BrushGroupTool (SizedVBoxToolWidget):
             return None
         nbrushes = len(self._app.brushmanager.groups[self._group])
         # TRANSLATORS: number of brushes in a brush group, for tooltips
-        return ngettext("%d brush", "%d brushes", nbrushes) % (nbrushes,)
+        return ngettext("{count} brush", "{count} brushes", nbrushes).format(
+            count=nbrushes)
 
     @property
     def tool_widget_icon_name(self):

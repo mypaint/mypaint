@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mypaint v2.0.0-alpha.8-1-g4490f06\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-03-23 21:20+0100\n"
+"POT-Creation-Date: 2021-04-17 23:27+0200\n"
 "PO-Revision-Date: 2021-04-17 15:27+0000\n"
 "Last-Translator: Omer I.S. <omeritzicschwartz@gmail.com>\n"
 "Language-Team: Hebrew <https://hosted.weblate.org/projects/mypaint/mypaint/"
@@ -435,8 +435,8 @@ msgid ""
 "Brush “{brush_name}” is listed in “{order_conf_file}”, but it does not exist "
 "in the zipfile."
 msgstr ""
-"המברשת „{brush_name}” מופיעה תחת „{order_conf_file}” אך אינה קיימת בקובץ "
-"ה־zip."
+"המברשת „{brush_name}” מופיעה תחת „{order_conf_file}” אך אינה קיימת בקובץ ה־"
+"zip."
 
 #: ../gui/brushmanager.py:717
 #, python-brace-format
@@ -507,53 +507,53 @@ msgstr "האם להסיר את המברשת „{brush_name}” מהקבוצה �
 
 #. TRANSLATORS: number of brushes in a brush group, for tooltips
 #: ../gui/brushselectionwindow.py:381
-#, python-format
-msgid "%d brush"
-msgid_plural "%d brushes"
+#, python-brace-format
+msgid "{count} brush"
+msgid_plural "{count} brushes"
 msgstr[0] "מברשת אחת"
-msgstr[1] "%d מברשות"
-msgstr[2] "%d מברשות"
-msgstr[3] "%d מברשות"
+msgstr[1] "{count} מברשות"
+msgstr[2] "{count} מברשות"
+msgstr[3] "{count} מברשות"
 
 #. TRANSLATORS: properties dialog for the current brush group
-#: ../gui/brushselectionwindow.py:405
+#: ../gui/brushselectionwindow.py:406
 #, python-brace-format
 msgctxt "brush group properties dialog: title"
 msgid "Group “{group_name}”"
 msgstr "קבוצת \"{group_name}\""
 
-#: ../gui/brushselectionwindow.py:418
+#: ../gui/brushselectionwindow.py:419
 msgctxt "brush group properties dialog: action buttons"
 msgid "Rename Group"
 msgstr "שינוי שם קבוצה"
 
-#: ../gui/brushselectionwindow.py:424
+#: ../gui/brushselectionwindow.py:425
 msgctxt "brush group properties dialog: action buttons"
 msgid "Export as Zipped Brushset"
 msgstr "לייצא Brushset מכווצות"
 
-#: ../gui/brushselectionwindow.py:430
+#: ../gui/brushselectionwindow.py:431
 msgctxt "brush group properties dialog: action buttons"
 msgid "Delete Group"
 msgstr "מחק קבוצה"
 
-#: ../gui/brushselectionwindow.py:450
+#: ../gui/brushselectionwindow.py:451
 msgctxt "brush group rename dialog: title"
 msgid "Rename Group"
 msgstr "שינוי שם קבוצה"
 
-#: ../gui/brushselectionwindow.py:468
+#: ../gui/brushselectionwindow.py:469
 msgctxt "brush group rename"
 msgid "A group with this name already exists!"
 msgstr "קבוצה בשם זה כבר קיים!"
 
-#: ../gui/brushselectionwindow.py:477
+#: ../gui/brushselectionwindow.py:478
 #, python-brace-format
 msgctxt "brush group delete"
 msgid "Really delete group “{group_name}”?"
 msgstr "באמת למחוק קבוצת \"{group_name}\"?"
 
-#: ../gui/brushselectionwindow.py:495
+#: ../gui/brushselectionwindow.py:496
 #, python-brace-format
 msgctxt "brush group delete"
 msgid ""
@@ -563,32 +563,32 @@ msgstr ""
 "לא היתה אפשרות למחוק את קבוצת \"{group_name}\".\n"
 "אין אפשרות למחוק כמה קבוצות מיוחדות."
 
-#: ../gui/brushselectionwindow.py:510
+#: ../gui/brushselectionwindow.py:511
 msgctxt "brush group export dialog: title"
 msgid "Export Brushes"
 msgstr "ייצוא מברשות"
 
-#: ../gui/brushselectionwindow.py:515
+#: ../gui/brushselectionwindow.py:516
 msgctxt "brush group export dialog"
 msgid "MyPaint brush package (*.zip)"
 msgstr "חבילת מברשות MyPaint‏ (‎*.zip)"
 
-#: ../gui/brushselectionwindow.py:535
+#: ../gui/brushselectionwindow.py:536
 msgctxt "brush groups menu"
 msgid "New Group…"
 msgstr "קבוצה חדשה…"
 
-#: ../gui/brushselectionwindow.py:538
+#: ../gui/brushselectionwindow.py:539
 msgctxt "brush groups menu"
 msgid "Import Brushes…"
 msgstr "ייבוא מברשות…"
 
-#: ../gui/brushselectionwindow.py:542
+#: ../gui/brushselectionwindow.py:543
 msgctxt "brush groups menu"
 msgid "Get More Brushes…"
 msgstr "השגת מברשות נוספות…"
 
-#: ../gui/brushselectionwindow.py:557
+#: ../gui/brushselectionwindow.py:558
 msgctxt "new brush group dialog: title"
 msgid "Create Group"
 msgstr "ליצור קבוצה"

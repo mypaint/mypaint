@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mypaint v2.0.0-alpha.8-1-g4490f06\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-03-23 21:20+0100\n"
+"POT-Creation-Date: 2021-04-17 23:27+0200\n"
 "PO-Revision-Date: 2020-02-28 09:14+0000\n"
 "Last-Translator: Allan Nordhøy <epost@anotheragency.no>\n"
 "Language-Team: Slovenian <https://hosted.weblate.org/projects/mypaint/"
@@ -526,57 +526,57 @@ msgstr "Želite res izbrisati ta čopič?"
 
 #. TRANSLATORS: number of brushes in a brush group, for tooltips
 #: ../gui/brushselectionwindow.py:381
-#, fuzzy, python-format
-msgid "%d brush"
-msgid_plural "%d brushes"
-msgstr[0] "%d čopiči"
-msgstr[1] "%d čopiči"
-msgstr[2] "%d čopiči"
+#, fuzzy, python-brace-format
+msgid "{count} brush"
+msgid_plural "{count} brushes"
+msgstr[0] "{count} čopiči"
+msgstr[1] "{count} čopiči"
+msgstr[2] "{count} čopiči"
 msgstr[3] ""
 
 #. TRANSLATORS: properties dialog for the current brush group
-#: ../gui/brushselectionwindow.py:405
+#: ../gui/brushselectionwindow.py:406
 #, python-brace-format
 msgctxt "brush group properties dialog: title"
 msgid "Group “{group_name}”"
 msgstr ""
 
-#: ../gui/brushselectionwindow.py:418
+#: ../gui/brushselectionwindow.py:419
 #, fuzzy
 msgctxt "brush group properties dialog: action buttons"
 msgid "Rename Group"
 msgstr "Preimenuj skupino"
 
-#: ../gui/brushselectionwindow.py:424
+#: ../gui/brushselectionwindow.py:425
 #, fuzzy
 msgctxt "brush group properties dialog: action buttons"
 msgid "Export as Zipped Brushset"
 msgstr "Izvozi kot paket s čopičem ..."
 
-#: ../gui/brushselectionwindow.py:430
+#: ../gui/brushselectionwindow.py:431
 #, fuzzy
 msgctxt "brush group properties dialog: action buttons"
 msgid "Delete Group"
 msgstr "Odstrani skupino ..."
 
-#: ../gui/brushselectionwindow.py:450
+#: ../gui/brushselectionwindow.py:451
 #, fuzzy
 msgctxt "brush group rename dialog: title"
 msgid "Rename Group"
 msgstr "Preimenuj skupino"
 
-#: ../gui/brushselectionwindow.py:468
+#: ../gui/brushselectionwindow.py:469
 msgctxt "brush group rename"
 msgid "A group with this name already exists!"
 msgstr "Skupina s tem imenom že obstaja!"
 
-#: ../gui/brushselectionwindow.py:477
+#: ../gui/brushselectionwindow.py:478
 #, fuzzy, python-brace-format
 msgctxt "brush group delete"
 msgid "Really delete group “{group_name}”?"
 msgstr "Želite res zbrisati skupino %s?"
 
-#: ../gui/brushselectionwindow.py:495
+#: ../gui/brushselectionwindow.py:496
 #, python-brace-format
 msgctxt "brush group delete"
 msgid ""
@@ -584,36 +584,36 @@ msgid ""
 "Some special groups cannot be deleted."
 msgstr ""
 
-#: ../gui/brushselectionwindow.py:510
+#: ../gui/brushselectionwindow.py:511
 #, fuzzy
 msgctxt "brush group export dialog: title"
 msgid "Export Brushes"
 msgstr "Izvozi kot paket s čopičem ..."
 
-#: ../gui/brushselectionwindow.py:515
+#: ../gui/brushselectionwindow.py:516
 #, fuzzy
 msgctxt "brush group export dialog"
 msgid "MyPaint brush package (*.zip)"
 msgstr "MyPaint čopič paket (*.zip)"
 
-#: ../gui/brushselectionwindow.py:535
+#: ../gui/brushselectionwindow.py:536
 msgctxt "brush groups menu"
 msgid "New Group…"
 msgstr "Nova skupina ..."
 
-#: ../gui/brushselectionwindow.py:538
+#: ../gui/brushselectionwindow.py:539
 #, fuzzy
 msgctxt "brush groups menu"
 msgid "Import Brushes…"
 msgstr "Uvozi paket s čopičem..."
 
-#: ../gui/brushselectionwindow.py:542
+#: ../gui/brushselectionwindow.py:543
 #, fuzzy
 msgctxt "brush groups menu"
 msgid "Get More Brushes…"
 msgstr "Obnovi čopič %d"
 
-#: ../gui/brushselectionwindow.py:557
+#: ../gui/brushselectionwindow.py:558
 msgctxt "new brush group dialog: title"
 msgid "Create Group"
 msgstr "Ustvari skupino"

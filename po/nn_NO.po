@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mypaint v2.0.0-alpha.8-1-g4490f06\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-03-23 21:20+0100\n"
+"POT-Creation-Date: 2021-04-17 23:27+0200\n"
 "PO-Revision-Date: 2020-11-16 03:28+0000\n"
 "Last-Translator: Allan Nordhøy <epost@anotheragency.no>\n"
 "Language-Team: Norwegian Nynorsk <https://hosted.weblate.org/projects/"
@@ -513,51 +513,51 @@ msgstr "Er du sikker på at du vil slette penselen «{brush_name}» frå disken?
 
 #. TRANSLATORS: number of brushes in a brush group, for tooltips
 #: ../gui/brushselectionwindow.py:381
-#, python-format
-msgid "%d brush"
-msgid_plural "%d brushes"
-msgstr[0] "%d pensel"
-msgstr[1] "%d penslar"
+#, python-brace-format
+msgid "{count} brush"
+msgid_plural "{count} brushes"
+msgstr[0] "{count} pensel"
+msgstr[1] "{count} penslar"
 
 #. TRANSLATORS: properties dialog for the current brush group
-#: ../gui/brushselectionwindow.py:405
+#: ../gui/brushselectionwindow.py:406
 #, python-brace-format
 msgctxt "brush group properties dialog: title"
 msgid "Group “{group_name}”"
 msgstr "Gruppe «{group_name}»"
 
-#: ../gui/brushselectionwindow.py:418
+#: ../gui/brushselectionwindow.py:419
 msgctxt "brush group properties dialog: action buttons"
 msgid "Rename Group"
 msgstr "Endre gruppenamn"
 
-#: ../gui/brushselectionwindow.py:424
+#: ../gui/brushselectionwindow.py:425
 msgctxt "brush group properties dialog: action buttons"
 msgid "Export as Zipped Brushset"
 msgstr "Eksporter som zippa penselsett"
 
-#: ../gui/brushselectionwindow.py:430
+#: ../gui/brushselectionwindow.py:431
 msgctxt "brush group properties dialog: action buttons"
 msgid "Delete Group"
 msgstr "Slett gruppe"
 
-#: ../gui/brushselectionwindow.py:450
+#: ../gui/brushselectionwindow.py:451
 msgctxt "brush group rename dialog: title"
 msgid "Rename Group"
 msgstr "Endre gruppenamn"
 
-#: ../gui/brushselectionwindow.py:468
+#: ../gui/brushselectionwindow.py:469
 msgctxt "brush group rename"
 msgid "A group with this name already exists!"
 msgstr "Ei gruppe med dette namnet eksisterer allereie!"
 
-#: ../gui/brushselectionwindow.py:477
+#: ../gui/brushselectionwindow.py:478
 #, python-brace-format
 msgctxt "brush group delete"
 msgid "Really delete group “{group_name}”?"
 msgstr "Er du sikker på at du vil slette gruppa «{group_name}»?"
 
-#: ../gui/brushselectionwindow.py:495
+#: ../gui/brushselectionwindow.py:496
 #, python-brace-format
 msgctxt "brush group delete"
 msgid ""
@@ -567,32 +567,32 @@ msgstr ""
 "Kunne ikkje slette gruppa «{group_name}».\n"
 "Nokre spesialgrupper kan ikkje slettast."
 
-#: ../gui/brushselectionwindow.py:510
+#: ../gui/brushselectionwindow.py:511
 msgctxt "brush group export dialog: title"
 msgid "Export Brushes"
 msgstr "Eksporter penslar"
 
-#: ../gui/brushselectionwindow.py:515
+#: ../gui/brushselectionwindow.py:516
 msgctxt "brush group export dialog"
 msgid "MyPaint brush package (*.zip)"
 msgstr "MyPaint penselpakke (*.zip)"
 
-#: ../gui/brushselectionwindow.py:535
+#: ../gui/brushselectionwindow.py:536
 msgctxt "brush groups menu"
 msgid "New Group…"
 msgstr "Ny gruppe …"
 
-#: ../gui/brushselectionwindow.py:538
+#: ../gui/brushselectionwindow.py:539
 msgctxt "brush groups menu"
 msgid "Import Brushes…"
 msgstr "Importer penslar …"
 
-#: ../gui/brushselectionwindow.py:542
+#: ../gui/brushselectionwindow.py:543
 msgctxt "brush groups menu"
 msgid "Get More Brushes…"
 msgstr "Få fleire penslar …"
 
-#: ../gui/brushselectionwindow.py:557
+#: ../gui/brushselectionwindow.py:558
 msgctxt "new brush group dialog: title"
 msgid "Create Group"
 msgstr "Opprett gruppe"

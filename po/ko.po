@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mypaint v2.0.0-alpha.12-327-ga332f03\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-03-23 21:20+0100\n"
+"POT-Creation-Date: 2021-04-17 23:27+0200\n"
 "PO-Revision-Date: 2020-02-17 20:58+0000\n"
 "Last-Translator: geun-tak Jeong <beroberos@gmail.com>\n"
 "Language-Team: Korean <https://hosted.weblate.org/projects/mypaint/mypaint/"
@@ -512,50 +512,50 @@ msgstr ""
 
 #. TRANSLATORS: number of brushes in a brush group, for tooltips
 #: ../gui/brushselectionwindow.py:381
-#, python-format
-msgid "%d brush"
-msgid_plural "%d brushes"
-msgstr[0] "%d 브러시"
+#, python-brace-format
+msgid "{count} brush"
+msgid_plural "{count} brushes"
+msgstr[0] "{count} 브러시"
 
 #. TRANSLATORS: properties dialog for the current brush group
-#: ../gui/brushselectionwindow.py:405
+#: ../gui/brushselectionwindow.py:406
 #, python-brace-format
 msgctxt "brush group properties dialog: title"
 msgid "Group “{group_name}”"
 msgstr "그룹 “{group_name}”"
 
-#: ../gui/brushselectionwindow.py:418
+#: ../gui/brushselectionwindow.py:419
 msgctxt "brush group properties dialog: action buttons"
 msgid "Rename Group"
 msgstr "그룹 이름을 변경"
 
-#: ../gui/brushselectionwindow.py:424
+#: ../gui/brushselectionwindow.py:425
 msgctxt "brush group properties dialog: action buttons"
 msgid "Export as Zipped Brushset"
 msgstr "압축 브러시 셋으로 내보내기"
 
-#: ../gui/brushselectionwindow.py:430
+#: ../gui/brushselectionwindow.py:431
 msgctxt "brush group properties dialog: action buttons"
 msgid "Delete Group"
 msgstr "그룹을 삭제"
 
-#: ../gui/brushselectionwindow.py:450
+#: ../gui/brushselectionwindow.py:451
 msgctxt "brush group rename dialog: title"
 msgid "Rename Group"
 msgstr "그룹 이름을 변경"
 
-#: ../gui/brushselectionwindow.py:468
+#: ../gui/brushselectionwindow.py:469
 msgctxt "brush group rename"
 msgid "A group with this name already exists!"
 msgstr "이 이름의 그룹이 이미 존재합니다!"
 
-#: ../gui/brushselectionwindow.py:477
+#: ../gui/brushselectionwindow.py:478
 #, python-brace-format
 msgctxt "brush group delete"
 msgid "Really delete group “{group_name}”?"
 msgstr "\"{group_name}\" 그룹을 정말로 삭제 하시겠습니까?"
 
-#: ../gui/brushselectionwindow.py:495
+#: ../gui/brushselectionwindow.py:496
 #, python-brace-format
 msgctxt "brush group delete"
 msgid ""
@@ -565,32 +565,32 @@ msgstr ""
 "그룹 “{group_name}” 을 삭제할 수 없습니다.\n"
 "일부 특수 그룹은 삭제할 수 없습니다."
 
-#: ../gui/brushselectionwindow.py:510
+#: ../gui/brushselectionwindow.py:511
 msgctxt "brush group export dialog: title"
 msgid "Export Brushes"
 msgstr "브러시를 내보내기"
 
-#: ../gui/brushselectionwindow.py:515
+#: ../gui/brushselectionwindow.py:516
 msgctxt "brush group export dialog"
 msgid "MyPaint brush package (*.zip)"
 msgstr "MyPaint 브러시 패키지 (*.zip)"
 
-#: ../gui/brushselectionwindow.py:535
+#: ../gui/brushselectionwindow.py:536
 msgctxt "brush groups menu"
 msgid "New Group…"
 msgstr "새로운 그룹…"
 
-#: ../gui/brushselectionwindow.py:538
+#: ../gui/brushselectionwindow.py:539
 msgctxt "brush groups menu"
 msgid "Import Brushes…"
 msgstr "브러시를 가져오기…"
 
-#: ../gui/brushselectionwindow.py:542
+#: ../gui/brushselectionwindow.py:543
 msgctxt "brush groups menu"
 msgid "Get More Brushes…"
 msgstr "더 많은 브러시를 얻기…"
 
-#: ../gui/brushselectionwindow.py:557
+#: ../gui/brushselectionwindow.py:558
 msgctxt "new brush group dialog: title"
 msgid "Create Group"
 msgstr "그룹을 만들기"

@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mypaint v2.0.0-alpha.8-1-g4490f06\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-03-23 21:20+0100\n"
+"POT-Creation-Date: 2021-04-17 23:27+0200\n"
 "PO-Revision-Date: 2019-02-27 14:19+0000\n"
 "Last-Translator: glixx <roman_romul@mail.ru>\n"
 "Language-Team: Tajik <https://hosted.weblate.org/projects/mypaint/mypaint/tg/"
@@ -495,50 +495,50 @@ msgstr ""
 
 #. TRANSLATORS: number of brushes in a brush group, for tooltips
 #: ../gui/brushselectionwindow.py:381
-#, python-format
-msgid "%d brush"
-msgid_plural "%d brushes"
+#, python-brace-format
+msgid "{count} brush"
+msgid_plural "{count} brushes"
 msgstr[0] ""
 
 #. TRANSLATORS: properties dialog for the current brush group
-#: ../gui/brushselectionwindow.py:405
+#: ../gui/brushselectionwindow.py:406
 #, python-brace-format
 msgctxt "brush group properties dialog: title"
 msgid "Group “{group_name}”"
 msgstr ""
 
-#: ../gui/brushselectionwindow.py:418
+#: ../gui/brushselectionwindow.py:419
 msgctxt "brush group properties dialog: action buttons"
 msgid "Rename Group"
 msgstr ""
 
-#: ../gui/brushselectionwindow.py:424
+#: ../gui/brushselectionwindow.py:425
 msgctxt "brush group properties dialog: action buttons"
 msgid "Export as Zipped Brushset"
 msgstr ""
 
-#: ../gui/brushselectionwindow.py:430
+#: ../gui/brushselectionwindow.py:431
 msgctxt "brush group properties dialog: action buttons"
 msgid "Delete Group"
 msgstr ""
 
-#: ../gui/brushselectionwindow.py:450
+#: ../gui/brushselectionwindow.py:451
 msgctxt "brush group rename dialog: title"
 msgid "Rename Group"
 msgstr ""
 
-#: ../gui/brushselectionwindow.py:468
+#: ../gui/brushselectionwindow.py:469
 msgctxt "brush group rename"
 msgid "A group with this name already exists!"
 msgstr ""
 
-#: ../gui/brushselectionwindow.py:477
+#: ../gui/brushselectionwindow.py:478
 #, python-brace-format
 msgctxt "brush group delete"
 msgid "Really delete group “{group_name}”?"
 msgstr ""
 
-#: ../gui/brushselectionwindow.py:495
+#: ../gui/brushselectionwindow.py:496
 #, python-brace-format
 msgctxt "brush group delete"
 msgid ""
@@ -546,32 +546,32 @@ msgid ""
 "Some special groups cannot be deleted."
 msgstr ""
 
-#: ../gui/brushselectionwindow.py:510
+#: ../gui/brushselectionwindow.py:511
 msgctxt "brush group export dialog: title"
 msgid "Export Brushes"
 msgstr ""
 
-#: ../gui/brushselectionwindow.py:515
+#: ../gui/brushselectionwindow.py:516
 msgctxt "brush group export dialog"
 msgid "MyPaint brush package (*.zip)"
 msgstr ""
 
-#: ../gui/brushselectionwindow.py:535
+#: ../gui/brushselectionwindow.py:536
 msgctxt "brush groups menu"
 msgid "New Group…"
 msgstr ""
 
-#: ../gui/brushselectionwindow.py:538
+#: ../gui/brushselectionwindow.py:539
 msgctxt "brush groups menu"
 msgid "Import Brushes…"
 msgstr ""
 
-#: ../gui/brushselectionwindow.py:542
+#: ../gui/brushselectionwindow.py:543
 msgctxt "brush groups menu"
 msgid "Get More Brushes…"
 msgstr ""
 
-#: ../gui/brushselectionwindow.py:557
+#: ../gui/brushselectionwindow.py:558
 msgctxt "new brush group dialog: title"
 msgid "Create Group"
 msgstr ""

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mypaint v1.2.0-393-g1633fb2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-03-23 21:20+0100\n"
+"POT-Creation-Date: 2021-04-17 23:27+0200\n"
 "PO-Revision-Date: 2020-04-04 18:19+0000\n"
 "Last-Translator: sayyed hamed nasib <cghamed752@chmail.ir>\n"
 "Language-Team: Persian <https://hosted.weblate.org/projects/mypaint/mypaint/"
@@ -516,51 +516,51 @@ msgstr "میخواهید قلم “{brush_name}”حذف کنید از رایا�
 
 #. TRANSLATORS: number of brushes in a brush group, for tooltips
 #: ../gui/brushselectionwindow.py:381
-#, python-format
-msgid "%d brush"
-msgid_plural "%d brushes"
-msgstr[0] "%d قلم"
-msgstr[1] "%d قلم ها"
+#, python-brace-format
+msgid "{count} brush"
+msgid_plural "{count} brushes"
+msgstr[0] "{count} قلم"
+msgstr[1] "{count} قلم ها"
 
 #. TRANSLATORS: properties dialog for the current brush group
-#: ../gui/brushselectionwindow.py:405
+#: ../gui/brushselectionwindow.py:406
 #, python-brace-format
 msgctxt "brush group properties dialog: title"
 msgid "Group “{group_name}”"
 msgstr "گروه“{group_name}”"
 
-#: ../gui/brushselectionwindow.py:418
+#: ../gui/brushselectionwindow.py:419
 msgctxt "brush group properties dialog: action buttons"
 msgid "Rename Group"
 msgstr "تغییر نام گروه"
 
-#: ../gui/brushselectionwindow.py:424
+#: ../gui/brushselectionwindow.py:425
 msgctxt "brush group properties dialog: action buttons"
 msgid "Export as Zipped Brushset"
 msgstr "صدور فایل فشرده مجموعه قلم ها"
 
-#: ../gui/brushselectionwindow.py:430
+#: ../gui/brushselectionwindow.py:431
 msgctxt "brush group properties dialog: action buttons"
 msgid "Delete Group"
 msgstr "حذف گروه"
 
-#: ../gui/brushselectionwindow.py:450
+#: ../gui/brushselectionwindow.py:451
 msgctxt "brush group rename dialog: title"
 msgid "Rename Group"
 msgstr "تغییر نام گروه"
 
-#: ../gui/brushselectionwindow.py:468
+#: ../gui/brushselectionwindow.py:469
 msgctxt "brush group rename"
 msgid "A group with this name already exists!"
 msgstr "یک گروه با این نام از قبل وجود دارد!"
 
-#: ../gui/brushselectionwindow.py:477
+#: ../gui/brushselectionwindow.py:478
 #, python-brace-format
 msgctxt "brush group delete"
 msgid "Really delete group “{group_name}”?"
 msgstr "واقعا می خواهید “{group_name}”را حذف کنید؟"
 
-#: ../gui/brushselectionwindow.py:495
+#: ../gui/brushselectionwindow.py:496
 #, python-brace-format
 msgctxt "brush group delete"
 msgid ""
@@ -570,32 +570,32 @@ msgstr ""
 "نمی تواند گروه“{group_name}” را حذف کند.\n"
 "بعضی از گروه های خاص نمی توانند حذف شوند."
 
-#: ../gui/brushselectionwindow.py:510
+#: ../gui/brushselectionwindow.py:511
 msgctxt "brush group export dialog: title"
 msgid "Export Brushes"
 msgstr "خروجی دادن قلم ها"
 
-#: ../gui/brushselectionwindow.py:515
+#: ../gui/brushselectionwindow.py:516
 msgctxt "brush group export dialog"
 msgid "MyPaint brush package (*.zip)"
 msgstr "مجموعه قلم مای پینت"
 
-#: ../gui/brushselectionwindow.py:535
+#: ../gui/brushselectionwindow.py:536
 msgctxt "brush groups menu"
 msgid "New Group…"
 msgstr "ایجاد گروه جدید…"
 
-#: ../gui/brushselectionwindow.py:538
+#: ../gui/brushselectionwindow.py:539
 msgctxt "brush groups menu"
 msgid "Import Brushes…"
 msgstr "وارد کردن قلم های خارجی…"
 
-#: ../gui/brushselectionwindow.py:542
+#: ../gui/brushselectionwindow.py:543
 msgctxt "brush groups menu"
 msgid "Get More Brushes…"
 msgstr "دریافت قلم های بیشتر…"
 
-#: ../gui/brushselectionwindow.py:557
+#: ../gui/brushselectionwindow.py:558
 msgctxt "new brush group dialog: title"
 msgid "Create Group"
 msgstr "ایجاد گروه"
