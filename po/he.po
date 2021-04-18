@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: mypaint v2.0.0-alpha.8-1-g4490f06\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-04-17 23:27+0200\n"
-"PO-Revision-Date: 2021-04-17 15:27+0000\n"
+"PO-Revision-Date: 2021-04-19 20:29+0000\n"
 "Last-Translator: Omer I.S. <omeritzicschwartz@gmail.com>\n"
 "Language-Team: Hebrew <https://hosted.weblate.org/projects/mypaint/mypaint/"
 "he/>\n"
@@ -18,7 +18,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=4; plural=(n == 1) ? 0 : ((n == 2) ? 1 : ((n > 10 && "
 "n % 10 == 0) ? 2 : 3));\n"
-"X-Generator: Weblate 4.6-dev\n"
+"X-Generator: Weblate 4.7-dev\n"
 
 #: ../gui/accelmap.py:86
 msgctxt "placeholder for keymap filtering"
@@ -327,7 +327,9 @@ msgstr ""
 msgid ""
 "<b>%s</b>\n"
 "<small>Click ‘Edit’ to make changes to the icon</small>"
-msgstr "<b>%s</b><small>לחץ על 'ערוך' כדי לערוך שינויים בסמל</small>‮"
+msgstr ""
+"<b>%s</b>\n"
+"<small>יש ללחוץ על „עריכה” כדי לשנות את הסמל</small>"
 
 #. TRANSLATORS: begin editing a brush's preview icon
 #: ../gui/brushiconeditor.py:157
@@ -692,7 +694,7 @@ msgstr "פרטי צבע"
 
 #: ../gui/colors/adjbases.py:872
 msgid "Current brush color, and the color most recently used for painting"
-msgstr "צבע המכחול הנוכחי ואת הצבע שהיה בשימוש לאחרונה לצביעה"
+msgstr "צבע המברשת הנוכחי והצבע שהיה בשימוש לאחרונה לצביעה"
 
 #: ../gui/colors/hcywheel.py:49
 msgctxt "Online help pages"
@@ -1402,7 +1404,7 @@ msgstr ""
 
 #: ../gui/dialogs.py:163
 msgid "Existing brush"
-msgstr "מכחול קיים"
+msgstr "מברשת קיימת"
 
 #: ../gui/dialogs.py:166
 #, python-brace-format
@@ -1426,7 +1428,7 @@ msgstr ""
 
 #: ../gui/dialogs.py:326
 msgid "Import brush package?"
-msgstr "לייבא חבילת מכחולים?"
+msgstr "לייבא את חבילת המברשות?"
 
 #: ../gui/dialogs.py:357
 #, python-brace-format
@@ -1464,7 +1466,7 @@ msgstr ""
 #: ../gui/document.py:460
 #, python-format
 msgid "Restore Brush %d"
-msgstr "לשחזר מכחול %d"
+msgstr "שחזור המברשת %d"
 
 #: ../gui/document.py:462
 #, python-format
@@ -2476,7 +2478,7 @@ msgstr ""
 #, python-format
 msgctxt "Layers: description parts: opacity percentage"
 msgid "%d%% opaque"
-msgstr ""
+msgstr "אטימות %d%%"
 
 #: ../gui/layers.py:978
 #, fuzzy
@@ -2521,7 +2523,7 @@ msgstr "סדר שכבות ולהקצות אפקטים"
 #: ../gui/layerswindow.py:102
 #, python-format
 msgid "Layer opacity: %d%%"
-msgstr ""
+msgstr "אטימות השכבה: %d%%"
 
 #. TRANSLATORS: label for the opacity slider (text)
 #. TRANSLATORS: note that "%%" turns into "%"
@@ -2529,7 +2531,7 @@ msgstr ""
 #: ../gui/layerswindow.py:107
 #, python-format
 msgid "%d%%"
-msgstr ""
+msgstr "%d%%"
 
 #. TRANSLATORS: status bar messages for drag, without/with modifiers
 #: ../gui/layerswindow.py:114
@@ -4587,7 +4589,7 @@ msgstr "מחק שכבה"
 #, fuzzy
 msgctxt "Prefs Dialog|Compatibility"
 msgid "Default Pigment Brush Setting:"
-msgstr "עריכת הגדרות מכחול"
+msgstr "הגדרת מברשת פיגמנט המוגדרת כברירת מחדל:"
 
 #. Label description for the 1.x compatibility-mode-by-default setting
 #: ../gui/preferenceswindow.glade:1671
