@@ -8,8 +8,8 @@ msgstr ""
 "Project-Id-Version: mypaint v1.2.0-beta.3-43-g9e683e2\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-04-17 23:27+0200\n"
-"PO-Revision-Date: 2021-02-23 09:50+0000\n"
-"Last-Translator: Eric <spice2wolf@gmail.com>\n"
+"PO-Revision-Date: 2021-04-27 07:37+0000\n"
+"Last-Translator: liu lizhi <kz-xy@163.com>\n"
 "Language-Team: Chinese (Simplified) <https://hosted.weblate.org/projects/"
 "mypaint/mypaint/zh_Hans/>\n"
 "Language: zh_CN\n"
@@ -17,12 +17,12 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 4.5\n"
+"X-Generator: Weblate 4.7-dev\n"
 
 #: ../gui/accelmap.py:86
 msgctxt "placeholder for keymap filtering"
 msgid "Filter"
-msgstr ""
+msgstr "筛选"
 
 #. TRANSLATORS: Name of first column in the button map preferences.
 #. TRANSLATORS: Refers to an action bound to a mod+button combination.
@@ -6368,7 +6368,7 @@ msgstr "笔刷和颜色历史记录面板"
 #: ../gui/resources.xml:1529
 msgctxt "Accel Editor (descriptions)"
 msgid "Dockable panel for viewing recently changed colors and brushes."
-msgstr ""
+msgstr "可停靠的面板，便于查看最近更改的颜色和笔刷。"
 
 #: ../gui/resources.xml:1537
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
