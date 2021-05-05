@@ -7,8 +7,8 @@ msgstr ""
 "Project-Id-Version: mypaint v2.0.0-alpha.8-1-g4490f06\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-04-17 23:27+0200\n"
-"PO-Revision-Date: 2019-02-27 14:18+0000\n"
-"Last-Translator: glixx <roman_romul@mail.ru>\n"
+"PO-Revision-Date: 2021-05-06 20:33+0000\n"
+"Last-Translator: phlostically <phlostically@mailinator.com>\n"
 "Language-Team: Esperanto <https://hosted.weblate.org/projects/mypaint/"
 "mypaint/eo/>\n"
 "Language: eo\n"
@@ -16,12 +16,12 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 3.5-dev\n"
+"X-Generator: Weblate 4.7-dev\n"
 
 #: ../gui/accelmap.py:86
 msgctxt "placeholder for keymap filtering"
 msgid "Filter"
-msgstr ""
+msgstr "Filtri"
 
 #. TRANSLATORS: Name of first column in the button map preferences.
 #. TRANSLATORS: Refers to an action bound to a mod+button combination.
@@ -41,7 +41,7 @@ msgstr "Klava kombino"
 #: ../gui/accelmap.py:369
 #, python-format
 msgid "Edit Key for '%s'"
-msgstr ""
+msgstr "Ŝanĝi klavon por '%s'"
 
 #. TRANSLATORS: Part of interface when adding a new button map binding.
 #. TRANSLATORS: It's a label for the action part of the combination.
@@ -72,13 +72,13 @@ msgstr "Klavo:"
 #. TRANSLATORS: keybinding dialog (Preferences | Keys).
 #: ../gui/accelmap.py:473
 msgid "Press keys to update this assignment"
-msgstr ""
+msgstr "Premu klavojn por ŝanĝi ĉi tiun asignon"
 
 #. TRANSLATORS: Part of the keybinding dialog, refers
 #. TRANSLATORS: to an action bound to a key combination.
 #: ../gui/accelmap.py:532
 msgid "Unknown Action"
-msgstr "Nekonata Ago"
+msgstr "Nekonata ago"
 
 #. TRANSLATORS: Warning message when attempting to assign a
 #. TRANSLATORS: keyboard combination that is already used.
@@ -88,11 +88,13 @@ msgid ""
 "<b>{accel} is already in use for '{action}'. The existing assignment will be "
 "replaced.</b>"
 msgstr ""
+"<b>{accel} jam estas uzata por «{action}». La ekzistanta asigno estas "
+"anstataŭigota.</b>"
 
 #: ../gui/application.py:626
 #, python-brace-format
 msgid "Open Folder “{folder_basename}”…"
-msgstr "Malfermi dosierujon “{folder_basename}”…"
+msgstr "Malfermi dosierujon «{folder_basename}»…"
 
 #. ... so that the main actions end up in the bottom-right of the
 #. dialog (reversed for rtl scripts), where the eye ends up
@@ -103,28 +105,28 @@ msgstr "Bone"
 
 #: ../gui/autorecover.py:138
 msgid "No backups were found in the cache."
-msgstr ""
+msgstr "Neniu savkopio troviĝis en la staplo."
 
 #: ../gui/autorecover.py:139
 msgid "No Available Backups"
-msgstr ""
+msgstr "Neniu havebla savkopio"
 
 #: ../gui/autorecover.py:141
 msgid "Open the Cache Folder…"
-msgstr ""
+msgstr "Malfermi la staplan dosierujon…"
 
 #: ../gui/autorecover.py:170
 msgid "Backup Recovery Failed"
-msgstr ""
+msgstr "Malsukcesis restaŭri dokumenton per savkopio"
 
 #: ../gui/autorecover.py:172
 msgid "Open the Backup’s Folder…"
-msgstr ""
+msgstr "Malfermi la dosierujon de la savkopio…"
 
 #: ../gui/autorecover.py:181
 #, python-brace-format
 msgid "Recovered file from {iso_datetime}.ora"
-msgstr ""
+msgstr "Rekuperis dosieron el {iso_datetime}.ora"
 
 #: ../gui/backgroundwindow.py:55
 msgid "Background"
@@ -136,7 +138,7 @@ msgstr "Konservi kiel defaŭlto"
 
 #: ../gui/backgroundwindow.py:75
 msgid "Pattern"
-msgstr ""
+msgstr "Fono"
 
 #: ../gui/backgroundwindow.py:86 ../lib/modes.py:110
 msgid "Color"
@@ -144,35 +146,37 @@ msgstr "Koloro"
 
 #: ../gui/backgroundwindow.py:92
 msgid "Add color to Patterns"
-msgstr ""
+msgstr "Kolorigi fonojn"
 
 #: ../gui/backgroundwindow.py:256
 msgid "One or more backgrounds could not be loaded"
-msgstr ""
+msgstr "Unu aŭ pluraj fonoj ne estis ŝargeblaj"
 
 #: ../gui/backgroundwindow.py:257
 msgid "Error loading backgrounds"
-msgstr ""
+msgstr "Eraro pri ŝargado de fonoj"
 
 #: ../gui/backgroundwindow.py:258
 msgid ""
 "Please remove the unloadable files, or check your libgdkpixbuf installation."
 msgstr ""
+"Bonvolu forigi la neŝargeblajn dosierojn aŭ kontroli vian instalon de "
+"libgdkpixbuf."
 
 #: ../gui/backgroundwindow.py:372
 #, python-brace-format
 msgid "Gdk-Pixbuf couldn't load \"{filename}\", and reported \"{error}\""
-msgstr ""
+msgstr "Gdk-Pixbuf ne povis ŝargi «{filename}», kaj raportis «{error}»"
 
 #: ../gui/backgroundwindow.py:382
 #, python-brace-format
 msgid "{filename} has zero size (w={w}, h={h})"
-msgstr ""
+msgstr "La grando de {filename} estas nul (larĝo={w}, alto={h})"
 
 #: ../gui/brusheditor.py:117
 msgctxt "brush settings editor: subwindow title"
 msgid "Brush Settings Editor"
-msgstr ""
+msgstr "Agordilo de penikoj"
 
 #: ../gui/brusheditor.py:305
 msgctxt "brush settings list: brush metadata texts group"
@@ -207,7 +211,7 @@ msgstr "Stompilo"
 #: ../gui/brusheditor.py:379
 msgctxt "brush settings list: setting group"
 msgid "Speed"
-msgstr ""
+msgstr "Rapido"
 
 #: ../gui/brusheditor.py:393
 msgctxt "brush settings list: setting group"
@@ -232,7 +236,7 @@ msgstr "Koloro"
 #: ../gui/brusheditor.py:451
 msgctxt "brush settings list: setting group"
 msgid "GridMap"
-msgstr ""
+msgstr "Kradmapo"
 
 #: ../gui/brusheditor.py:462
 msgctxt "brush settings list: setting group"
@@ -242,33 +246,33 @@ msgstr "Propra"
 #: ../gui/brusheditor.py:528
 msgctxt "brush settings editor: save brush: error message"
 msgid "No brush selected, please use “Add As New” instead."
-msgstr ""
+msgstr "Neniu peniko elektiĝis; bonvolu uzi «Aldoni kiel novan» anstataŭe."
 
 #: ../gui/brusheditor.py:553
 msgctxt "brush settings editor: rename brush: error message"
 msgid "No brush selected!"
-msgstr ""
+msgstr "Neniu peniko elektiĝis!"
 
 #: ../gui/brusheditor.py:562
 msgctxt "brush settings editor: rename brush: dialog title"
 msgid "Rename Brush"
-msgstr "Renomi penikon"
+msgstr "Ŝanĝi nomon de peniko"
 
 #: ../gui/brusheditor.py:581
 msgctxt "brush settings editor: rename brush: error message"
 msgid "A brush with this name already exists!"
-msgstr ""
+msgstr "Peniko de tiu nomo jam ekzistas!"
 
 #: ../gui/brusheditor.py:615
 msgctxt "brush settings editor: delete brush: error message"
 msgid "No brush selected!"
-msgstr ""
+msgstr "Neniu peniko elektiĝis!"
 
 #: ../gui/brusheditor.py:621
 #, python-brace-format
 msgctxt "brush settings editor: delete brush: confirm dialog question"
 msgid "Really delete brush “{brush_name}” from disk?"
-msgstr ""
+msgstr "Ĉu vere forviŝi penikon «{brush_name}» for de la disko?"
 
 #: ../gui/brusheditor.py:740
 msgctxt "brush settings editor: header: fallback name"
@@ -283,15 +287,15 @@ msgstr "{brush_name} [nekonservita]"
 
 #: ../gui/brushiconeditor.py:36
 msgid "Brush Icon"
-msgstr ""
+msgstr "Piktogramo de Peniko"
 
 #: ../gui/brushiconeditor.py:37
 msgid "Brush Icon (editing)"
-msgstr ""
+msgstr "Piktogramo de Peniko (redaktata)"
 
 #: ../gui/brushiconeditor.py:74
 msgid "No brush selected"
-msgstr ""
+msgstr "Neniu peniko elektiĝis"
 
 #: ../gui/brushiconeditor.py:76
 #, python-format
@@ -299,6 +303,8 @@ msgid ""
 "<b>%s</b>\n"
 "<small>Select a valid brush first</small>"
 msgstr ""
+"<b>%s</b>\n"
+"<small>Unue elektu validan penikon</small>"
 
 #: ../gui/brushiconeditor.py:79
 #, python-format
@@ -306,6 +312,8 @@ msgid ""
 "<b>%s</b> <i>(modified)</i>\n"
 "<small>Changes are not yet saved</small>"
 msgstr ""
+"<b>%s</b> <i>(modifita)</i>\n"
+"<small>Ŝanĝoj ankoraŭ ne konserviĝis</small>"
 
 #: ../gui/brushiconeditor.py:82
 #, python-format
@@ -313,6 +321,8 @@ msgid ""
 "<b>%s</b> (editing)\n"
 "<small>Paint with any brush or color</small>"
 msgstr ""
+"<b>%s</b> (modifata)\n"
+"<small>Pentri per ajna peniko aŭ koloro</small>"
 
 #: ../gui/brushiconeditor.py:85
 #, python-format
@@ -320,6 +330,8 @@ msgid ""
 "<b>%s</b>\n"
 "<small>Click ‘Edit’ to make changes to the icon</small>"
 msgstr ""
+"<b>%s</b>\n"
+"<small>Alklaku «Redakti» por ŝanĝi la piktogramon</small>"
 
 #. TRANSLATORS: begin editing a brush's preview icon
 #: ../gui/brushiconeditor.py:157
@@ -328,7 +340,7 @@ msgstr "Redakti"
 
 #: ../gui/brushiconeditor.py:159
 msgid "Begin editing this preview icon"
-msgstr ""
+msgstr "Ekredakti ĉi tiun antaŭrigardan piktogramon"
 
 #. TRANSLATORS: revert edits to a brush icon
 #: ../gui/brushiconeditor.py:165
@@ -337,7 +349,7 @@ msgstr "Malfari"
 
 #: ../gui/brushiconeditor.py:167
 msgid "Discard changes, and cancel editing"
-msgstr ""
+msgstr "Forĵeti ŝanĝojn kaj ĉesigi redaktadon"
 
 #. TRANSLATORS: clear the brush preview icon being edited
 #: ../gui/brushiconeditor.py:174
@@ -346,16 +358,16 @@ msgstr "Forviŝi"
 
 #: ../gui/brushiconeditor.py:176
 msgid "Clear the preview icon"
-msgstr ""
+msgstr "Forviŝi la antaŭrigardan piktogramon"
 
 #. TRANSLATORS: set the brush icon to a built-in default
 #: ../gui/brushiconeditor.py:182
 msgid "Auto"
-msgstr ""
+msgstr "Aŭtomata"
 
 #: ../gui/brushiconeditor.py:184
 msgid "Use the default icon"
-msgstr ""
+msgstr "Uzi la implicitan piktogramon"
 
 #. TRANSLATORS: save edits to a brush icon
 #: ../gui/brushiconeditor.py:190 ../gui/brusheditor.glade:111
@@ -364,11 +376,11 @@ msgstr "Konservi"
 
 #: ../gui/brushiconeditor.py:192
 msgid "Save this preview icon, and finish editing"
-msgstr ""
+msgstr "Konservi ĉi tiun antaŭrigardan piktogramon kaj fini redaktadon"
 
 #: ../gui/brushmanager.py:131
 msgid "Lost & Found"
-msgstr ""
+msgstr "Perditaĵoj kaj trovitaĵoj"
 
 #: ../gui/brushmanager.py:132
 msgid "Deleted"
@@ -376,7 +388,7 @@ msgstr "Forigita"
 
 #: ../gui/brushmanager.py:133
 msgid "Favorites"
-msgstr ""
+msgstr "Ŝatataj"
 
 #: ../gui/brushmanager.py:134
 msgid "Ink"
@@ -388,23 +400,23 @@ msgstr "Klasika"
 
 #: ../gui/brushmanager.py:136
 msgid "Set#1"
-msgstr "Aro#1"
+msgstr "Aro n-ro 1"
 
 #: ../gui/brushmanager.py:137
 msgid "Set#2"
-msgstr "Aro#2"
+msgstr "Aro n-ro 2"
 
 #: ../gui/brushmanager.py:138
 msgid "Set#3"
-msgstr "Aro#3"
+msgstr "Aro n-ro 3"
 
 #: ../gui/brushmanager.py:139
 msgid "Set#4"
-msgstr "Aro#4"
+msgstr "Aro n-ro 4"
 
 #: ../gui/brushmanager.py:140
 msgid "Set#5"
-msgstr "Aro#5"
+msgstr "Aro n-ro 5"
 
 #: ../gui/brushmanager.py:141
 msgid "Experimental"
@@ -418,7 +430,7 @@ msgstr "Nova"
 #, python-brace-format
 msgctxt "brushpack import failure messages"
 msgid "No file named “{order_conf_file}”. This is not a brushpack."
-msgstr ""
+msgstr "Neniu dosiero de nomo «{order_conf_file}». Ĉi tiu ne estas penikaro."
 
 #: ../gui/brushmanager.py:704
 #, python-brace-format
@@ -427,6 +439,8 @@ msgid ""
 "Brush “{brush_name}” is listed in “{order_conf_file}”, but it does not exist "
 "in the zipfile."
 msgstr ""
+"La peniko «{brush_name}» menciiĝas en «{order_conf_file}», sed ĝi ne estas "
+"en la densigita dosiero."
 
 #: ../gui/brushmanager.py:717
 #, python-brace-format
@@ -435,16 +449,17 @@ msgid ""
 "Brush “{brush_name}” exists in the zipfile, but it is not listed in "
 "“{order_conf_file}”."
 msgstr ""
+"La peniko «{brush_name}» estas en la densigita dosiero, sed ne menciiĝas en "
+"«{order_conf_file}»."
 
 #: ../gui/brushmanager.py:1328 ../gui/footer.py:66
 msgid "Unknown Brush"
 msgstr "Nekonata peniko"
 
 #: ../gui/brushmanip.py:191
-#, fuzzy
 msgctxt "brush resize mode - name"
 msgid "Resize Brush"
-msgstr "Renomi penikon"
+msgstr "Ŝanĝi grandon de peniko"
 
 #: ../gui/brushmanip.py:196
 msgctxt "brush resize mode - usage"
@@ -454,49 +469,45 @@ msgstr ""
 #: ../gui/brushselectionwindow.py:220
 msgctxt "brush group: context menu for a single brush"
 msgid "Add to Favorites"
-msgstr ""
+msgstr "Ŝati"
 
 #: ../gui/brushselectionwindow.py:227
-#, fuzzy
 msgctxt "brush group: context menu for a single brush"
 msgid "Remove from Favorites"
-msgstr "Forigi akson"
+msgstr "Malŝati"
 
 #: ../gui/brushselectionwindow.py:235
-#, fuzzy
 msgctxt "brush group: context menu for a single brush"
 msgid "Clone"
 msgstr "Kloni"
 
 #: ../gui/brushselectionwindow.py:242
-#, fuzzy
 msgctxt "brush group: context menu for a single brush"
 msgid "Edit Brush Settings"
-msgstr "Eksporti penikojn"
+msgstr "Agordi penikojn"
 
 #: ../gui/brushselectionwindow.py:250
-#, fuzzy
 msgctxt "brush group: context menu for a single brush"
 msgid "Remove from Group"
-msgstr "Renomi grupon"
+msgstr "Forigi el grupo"
 
 #: ../gui/brushselectionwindow.py:290
 #, python-brace-format
 msgctxt "brush group: context menu: unique names for cloned brushes"
 msgid "{original_name} copy"
-msgstr ""
+msgstr "kopio de {original_name}"
 
 #: ../gui/brushselectionwindow.py:299
 #, python-brace-format
 msgctxt "brush group: context menu: unique names for cloned brushes"
 msgid "{original_name} copy {n}"
-msgstr ""
+msgstr "{n}a kopio de {original_name}"
 
 #: ../gui/brushselectionwindow.py:325
 #, python-brace-format
 msgctxt "brush group: context menu: remove from group"
 msgid "Really remove brush “{brush_name}” from group “{group_name}”?"
-msgstr ""
+msgstr "Ĉu vere forigi penikon «{brush_name}» for de penikaro «{group_name}»?"
 
 #. TRANSLATORS: number of brushes in a brush group, for tooltips
 #: ../gui/brushselectionwindow.py:381
@@ -511,38 +522,38 @@ msgstr[1] "{count} penikoj"
 #, python-brace-format
 msgctxt "brush group properties dialog: title"
 msgid "Group “{group_name}”"
-msgstr "Grupo “{group_name}”"
+msgstr "Penikaro «{group_name}»"
 
 #: ../gui/brushselectionwindow.py:419
 msgctxt "brush group properties dialog: action buttons"
 msgid "Rename Group"
-msgstr "Renomi grupon"
+msgstr "Ŝanĝi nomon de penikaro"
 
 #: ../gui/brushselectionwindow.py:425
 msgctxt "brush group properties dialog: action buttons"
 msgid "Export as Zipped Brushset"
-msgstr ""
+msgstr "Elporti kiel densigitan penikaron"
 
 #: ../gui/brushselectionwindow.py:431
 msgctxt "brush group properties dialog: action buttons"
 msgid "Delete Group"
-msgstr "Forigi grupon"
+msgstr "Forigi penikaron"
 
 #: ../gui/brushselectionwindow.py:451
 msgctxt "brush group rename dialog: title"
 msgid "Rename Group"
-msgstr "Renomi grupon"
+msgstr "Ŝanĝi nomon de penikaro"
 
 #: ../gui/brushselectionwindow.py:469
 msgctxt "brush group rename"
 msgid "A group with this name already exists!"
-msgstr ""
+msgstr "Penikaro de tiu nomo jam ekzistas!"
 
 #: ../gui/brushselectionwindow.py:478
 #, python-brace-format
 msgctxt "brush group delete"
 msgid "Really delete group “{group_name}”?"
-msgstr ""
+msgstr "Ĉu vere forigi penikaron «{group_name}»?"
 
 #: ../gui/brushselectionwindow.py:496
 #, python-brace-format
@@ -551,21 +562,23 @@ msgid ""
 "Could not delete group “{group_name}”.\n"
 "Some special groups cannot be deleted."
 msgstr ""
+"Ne eblis forigi penikaron «{group_name}».\n"
+"Kelkaj specialaj penikaroj ne estas forigeblaj."
 
 #: ../gui/brushselectionwindow.py:511
 msgctxt "brush group export dialog: title"
 msgid "Export Brushes"
-msgstr "Eksporti penikojn"
+msgstr "Elporti penikojn"
 
 #: ../gui/brushselectionwindow.py:516
 msgctxt "brush group export dialog"
 msgid "MyPaint brush package (*.zip)"
-msgstr ""
+msgstr "Penikaro de MyPaint (*.zip)"
 
 #: ../gui/brushselectionwindow.py:536
 msgctxt "brush groups menu"
 msgid "New Group…"
-msgstr "Nova grupo…"
+msgstr "Nova penikaro…"
 
 #: ../gui/brushselectionwindow.py:539
 msgctxt "brush groups menu"
@@ -575,12 +588,12 @@ msgstr "Importi penikojn…"
 #: ../gui/brushselectionwindow.py:543
 msgctxt "brush groups menu"
 msgid "Get More Brushes…"
-msgstr ""
+msgstr "Elŝuti penikarojn…"
 
 #: ../gui/brushselectionwindow.py:558
 msgctxt "new brush group dialog: title"
 msgid "Create Group"
-msgstr "Krei grupon"
+msgstr "Krei penikaron"
 
 #. TRANSLATORS: "Button" refers to a mouse button
 #. TRANSLATORS: It is part of a button map label.
@@ -598,20 +611,20 @@ msgstr "Btn"
 #. TRANSLATORS: E.g. Button1 or Ctrl+Button2 or Alt+Button3
 #: ../gui/buttonmap.py:302
 msgid "Button press"
-msgstr ""
+msgstr "Butonpremo"
 
 #: ../gui/buttonmap.py:320
 msgid "Add a new binding"
-msgstr ""
+msgstr "Aldoni novan asignon"
 
 #: ../gui/buttonmap.py:328
 msgid "Remove the current binding"
-msgstr ""
+msgstr "Forigi la aktualan asignon"
 
 #: ../gui/buttonmap.py:475
 #, python-format
 msgid "Edit binding for '%s'"
-msgstr ""
+msgstr "Ŝanĝi asignon por «%s»"
 
 #. TRANSLATORS: Part of interface when adding a new button map binding.
 #. TRANSLATORS: It's a label for the mod+button part of the combination.
@@ -619,7 +632,7 @@ msgstr ""
 #. TRANSLATORS: but with a trailing ":" or other lang-specific symbol.
 #: ../gui/buttonmap.py:519
 msgid "Button press:"
-msgstr ""
+msgstr "Butonpremo:"
 
 #: ../gui/buttonmap.py:556
 msgid ""
@@ -638,47 +651,47 @@ msgstr ""
 #: ../gui/buttonmap.py:601
 #, python-brace-format
 msgid "{button_combination} is already bound to the action '{action_name}'"
-msgstr ""
+msgstr "{button_combination} estas jam asignita al la ago «{action_name}»"
 
 #: ../gui/colorpicker.py:65
 msgid "Pick Color"
-msgstr ""
+msgstr "Elekti koloron"
 
 #: ../gui/colorpicker.py:68
 msgid "Set the color used for painting"
-msgstr ""
+msgstr "Agordi la koloron uzotan por pentri"
 
 #: ../gui/colorpicker.py:201
 msgid "Pick Hue"
-msgstr ""
+msgstr "Elekti kolortonon"
 
 #: ../gui/colorpicker.py:204
 msgid "Set the color Hue used for painting"
-msgstr ""
+msgstr "Agordi la kolortonon uzotan por pentri"
 
 #: ../gui/colorpicker.py:222
 msgid "Pick Chroma"
-msgstr ""
+msgstr "Elekti kromaton"
 
 #: ../gui/colorpicker.py:225
 msgid "Set the color Chroma used for painting"
-msgstr ""
+msgstr "Agordi la kolorkromaton uzotan por pentri"
 
 #: ../gui/colorpicker.py:242
 msgid "Pick Luma"
-msgstr ""
+msgstr "Elekti lumecon"
 
 #: ../gui/colorpicker.py:245
 msgid "Set the color Luma used for painting"
-msgstr ""
+msgstr "Agordi la kolorlumecon uzotan por pentri"
 
 #: ../gui/colors/adjbases.py:699
 msgid "Color details"
-msgstr ""
+msgstr "Detaloj pri koloro"
 
 #: ../gui/colors/adjbases.py:872
 msgid "Current brush color, and the color most recently used for painting"
-msgstr ""
+msgstr "Aktuala koloro de peniko kaj la koloro laste uzata por pentrado"
 
 #: ../gui/colors/hcywheel.py:49
 msgctxt "Online help pages"
@@ -690,17 +703,17 @@ msgstr ""
 #: ../gui/colors/hcywheel.py:87
 msgctxt "Color Wheels: activity toggle: action title"
 msgid "Gamut Mask Active"
-msgstr ""
+msgstr "Gama masko aktiva"
 
 #: ../gui/colors/hcywheel.py:91
 msgctxt "Color Wheels: activity toggle: action tooltip"
 msgid "Limit your palette for specific moods using a gamut mask."
-msgstr ""
+msgstr "Limigi vian paletron al specifaj etosoj per gama masko."
 
 #: ../gui/colors/hcywheel.py:355
 msgctxt "HCY Color Wheel: tooltip"
 msgid "HCY hue and chroma."
-msgstr ""
+msgstr "Tono kaj kromato (HCY)."
 
 #: ../gui/colors/hcywheel.py:412
 msgctxt "HCY Mask Editor Wheel: tooltip"
@@ -712,7 +725,7 @@ msgstr ""
 #: ../gui/colors/hcywheel.py:910
 msgctxt "HCY Gamut Mask template name"
 msgid "Atmospheric Triad"
-msgstr ""
+msgstr "Etosa triopo"
 
 #: ../gui/colors/hcywheel.py:914
 msgctxt "HCY Gamut Mask template description"
@@ -720,21 +733,23 @@ msgid ""
 "Moody and subjective, defined by one dominant primary and two primaries "
 "which are less intense."
 msgstr ""
+"Etosa kaj subjektiva, difinita de unu ĉefkoloro kaj du malpli intensaj "
+"helpkoloroj."
 
 #: ../gui/colors/hcywheel.py:922
 msgctxt "HCY Gamut Mask template name"
 msgid "Shifted Triad"
-msgstr ""
+msgstr "Pondita triopo"
 
 #: ../gui/colors/hcywheel.py:926
 msgctxt "HCY Gamut Mask template description"
 msgid "Weighted more strongly towards the dominant color."
-msgstr ""
+msgstr "Pondita pli proksime al la ĉefkoloro."
 
 #: ../gui/colors/hcywheel.py:937
 msgctxt "HCY Gamut Mask template name"
 msgid "Complementary"
-msgstr ""
+msgstr "Komplementa"
 
 #: ../gui/colors/hcywheel.py:941
 msgctxt "HCY Gamut Mask template description"
@@ -746,7 +761,7 @@ msgstr ""
 #: ../gui/colors/hcywheel.py:957
 msgctxt "HCY Gamut Mask template name"
 msgid "Mood and Accent"
-msgstr ""
+msgstr "Etoso kaj akcento"
 
 #: ../gui/colors/hcywheel.py:961
 msgctxt "HCY Gamut Mask template description"
@@ -754,6 +769,7 @@ msgid ""
 "One main range of colors, with a complementary accent for variation and "
 "highlights."
 msgstr ""
+"Unu ĉefgamo da koloroj, kun komplementa akcento por variado kaj elstarigo."
 
 #: ../gui/colors/hcywheel.py:970
 msgctxt "HCY Gamut Mask template name"
@@ -770,67 +786,67 @@ msgstr ""
 #: ../gui/colors/hcywheel.py:985
 msgctxt "HCY Gamut Mask new-from-template dialog: window title"
 msgid "New Gamut Mask from Template"
-msgstr ""
+msgstr "Nova gama masko per ŝablono"
 
 #: ../gui/colors/hcywheel.py:1054
 msgctxt "HCY Gamut Mask Editor dialog: window title"
 msgid "Gamut Mask Editor"
-msgstr ""
+msgstr "Redaktilo de gama masko"
 
 #: ../gui/colors/hcywheel.py:1078
 msgctxt "HCY Gamut Mask Editor dialog: mask-is-active checkbox"
 msgid "Active"
-msgstr ""
+msgstr "Aktiva"
 
 #: ../gui/colors/hcywheel.py:1102
 msgctxt "HCY Mask Editor: action button labels"
 msgid "Help…"
-msgstr "Helpilo…"
+msgstr "Helpo…"
 
 #: ../gui/colors/hcywheel.py:1108
 msgctxt "HCY Mask Editor: action button tooltips"
 msgid "Create mask from template."
-msgstr ""
+msgstr "Krei maskon per ŝablono."
 
 #: ../gui/colors/hcywheel.py:1112
 msgctxt "HCY Mask Editor: action button tooltips"
 msgid "Load mask from a GIMP palette file."
-msgstr ""
+msgstr "Ŝargi maskon el paletro-dosiero de GIMP."
 
 #: ../gui/colors/hcywheel.py:1116
 msgctxt "HCY Mask Editor: action button tooltips"
 msgid "Save mask to a GIMP palette file."
-msgstr ""
+msgstr "Konservi maskon en paletro-dosieron de GIMP."
 
 #: ../gui/colors/hcywheel.py:1120
 msgctxt "HCY Mask Editor: action button tooltips"
 msgid "Erase the mask."
-msgstr ""
+msgstr "Forviŝi la maskon."
 
 #: ../gui/colors/hcywheel.py:1124
 msgctxt "HCY Mask Editor: action button tooltips"
 msgid "Open the online help for this dialog in a web browser."
-msgstr ""
+msgstr "Malfermi la Interretan helpon por ĉi tiu dialogo per TTT-legilo."
 
 #: ../gui/colors/hcywheel.py:1191
 msgctxt "HCY Gamut Mask load dialog: window title"
 msgid "Save Mask as a GIMP Palette"
-msgstr ""
+msgstr "Konservi maskon kiel GIMP-paletron"
 
 #: ../gui/colors/hcywheel.py:1208
 msgctxt "HCY Gamut Mask load dialog: window title"
 msgid "Load Mask from a GIMP Palette"
-msgstr ""
+msgstr "Ŝargi maskon el paletro-dosiero de GIMP"
 
 #: ../gui/colors/hcywheel.py:1281
 msgctxt "HCY Wheel color adjuster page: properties tooltip."
 msgid "Set gamut mask."
-msgstr ""
+msgstr "Agordi gaman maskon."
 
 #: ../gui/colors/hcywheel.py:1299
 msgctxt "HCY Wheel color adjuster page: title for tooltips etc."
 msgid "HCY Wheel"
-msgstr ""
+msgstr "Rado de tono-kromato-lumeco (HCY)"
 
 #: ../gui/colors/hcywheel.py:1306
 msgctxt "HCY Wheel color adjuster page: description for tooltips etc."
@@ -838,64 +854,68 @@ msgid ""
 "Set the color using cylindrical hue/chroma/luma space. The circular slices "
 "are equiluminant."
 msgstr ""
+"Agordi la koloron per la cilindra kolorspaco de tono-kromato-lumeco. La "
+"cirklaj sekcoj estas samlumaj."
 
 #. Tooltip mappings, indexed by whatever the slider currently represents
 #: ../gui/colors/hsvcube.py:46 ../gui/colors/hsvsquare.py:133
 msgid "HSV Hue"
-msgstr "HSV tono"
+msgstr "Tono (HSV)"
 
 #: ../gui/colors/hsvcube.py:47
 msgid "HSV Saturation"
-msgstr "HSV satureco"
+msgstr "Saturo (HSV)"
 
 #: ../gui/colors/hsvcube.py:48
 msgid "HSV Value"
-msgstr "HSV valoro"
+msgstr "Valoro (HSV)"
 
 #: ../gui/colors/hsvcube.py:49 ../gui/colors/hsvsquare.py:134
 msgid "HSV Saturation and Value"
-msgstr ""
+msgstr "Saturo kaj valoro (HSV)"
 
 #: ../gui/colors/hsvcube.py:50
 msgid "HSV Hue and Value"
-msgstr ""
+msgstr "Tono kaj valoro (HSV)"
 
 #: ../gui/colors/hsvcube.py:51 ../gui/colors/hsvwheel.py:31
 msgid "HSV Hue and Saturation"
-msgstr ""
+msgstr "Tono kaj saturo (HSV)"
 
 #: ../gui/colors/hsvcube.py:58
 msgid "Rotate cube (show different axes)"
-msgstr ""
+msgstr "Turni kubon (montri aliajn aksojn)"
 
 #: ../gui/colors/hsvcube.py:85
 msgid "HSV Cube"
-msgstr ""
+msgstr "Kubo de tono-saturo-valoro (HSV)"
 
 #: ../gui/colors/hsvcube.py:89
 msgid "An HSV cube which can be rotated to show different planar slices."
-msgstr ""
+msgstr "Kolorkubo de tono-saturo-valoro turnebla por montri diversajn sekcojn."
 
 #: ../gui/colors/hsvsquare.py:56
 msgid "HSV Square"
-msgstr ""
+msgstr "Kvadrato de tono-saturo-valoro (HSV)"
 
 #: ../gui/colors/hsvsquare.py:60
 msgid "An HSV Square which can be rotated to show different hues."
 msgstr ""
+"Kvadrato de tono-saturo-valoro (HSV), turnebla por montri diversajn "
+"kolortonojn."
 
 #: ../gui/colors/hsvwheel.py:91
 msgid "HSV Wheel"
-msgstr ""
+msgstr "Rado de tono-saturo-valoro (HSV)"
 
 #: ../gui/colors/hsvwheel.py:95
 msgid "Saturation and Value color changer."
-msgstr ""
+msgstr "Ŝanĝilo de koloraj saturo kaj valoro."
 
 #: ../gui/colors/paletteview.py:67
 msgctxt "palette panel: properties button tooltip"
 msgid "Palette properties"
-msgstr ""
+msgstr "Atributoj de paletro"
 
 #: ../gui/colors/paletteview.py:76
 msgctxt "palette panel tab tooltip title"
@@ -905,42 +925,42 @@ msgstr "Paletro"
 #: ../gui/colors/paletteview.py:82
 msgctxt "palette panel tab tooltip description"
 msgid "Set the color from a loadable, editable palette."
-msgstr ""
+msgstr "Elekti la koloron el ŝargebla, redaktebla paletro."
 
 #: ../gui/colors/paletteview.py:108
 msgctxt "palette editor dialog: palette name entry"
 msgid "Untitled Palette"
-msgstr ""
+msgstr "Sennoma paletro"
 
 #: ../gui/colors/paletteview.py:114
 msgctxt "palette editor dialog: title"
 msgid "Palette Editor"
-msgstr ""
+msgstr "Redaktilo de paletro"
 
 #: ../gui/colors/paletteview.py:160
 msgctxt "palette editor dialog: action buttons: tooltips"
 msgid "Load from a GIMP palette file"
-msgstr ""
+msgstr "Ŝargi el paletro-dosiero de GIMP"
 
 #: ../gui/colors/paletteview.py:164
 msgctxt "palette editor dialog: action buttons: tooltips"
 msgid "Save to a GIMP palette file"
-msgstr ""
+msgstr "Konservi en paletro-dosieron de GIMP"
 
 #: ../gui/colors/paletteview.py:168
 msgctxt "palette editor dialog: action buttons: tooltips"
 msgid "Add a new empty swatch"
-msgstr ""
+msgstr "Aldoni novan malplenan kolorspecimenon"
 
 #: ../gui/colors/paletteview.py:172
 msgctxt "palette editor dialog: action buttons: tooltips"
 msgid "Remove the current swatch"
-msgstr ""
+msgstr "Forigi la aktualan kolorspecimenon"
 
 #: ../gui/colors/paletteview.py:176
 msgctxt "palette editor dialog: action buttons: tooltips"
 msgid "Remove all swatches"
-msgstr ""
+msgstr "Forigi ĉiujn kolorspecimenojn"
 
 #: ../gui/colors/paletteview.py:190
 msgctxt "palette editor dialog: palette name/title entry: label"
@@ -950,17 +970,17 @@ msgstr "Titolo:"
 #: ../gui/colors/paletteview.py:194
 msgctxt "palette editor dialog: palette name/title entry: tooltip"
 msgid "Name or description for this palette"
-msgstr ""
+msgstr "Nomo aŭ priskribo de ĉi tiu paletro"
 
 #: ../gui/colors/paletteview.py:206
 msgctxt "palette editor dialog: number-of-columns spinbutton: title"
 msgid "Columns:"
-msgstr "Kolumnoj:"
+msgstr "Vertikaloj:"
 
 #: ../gui/colors/paletteview.py:210
 msgctxt "palette editor dialog: number-of-columns spinbutton: tooltip"
 msgid "Number of columns"
-msgstr ""
+msgstr "Nombro de vertikaloj"
 
 #: ../gui/colors/paletteview.py:227
 msgctxt "palette editor dialog: color name entry: label"
@@ -970,17 +990,17 @@ msgstr "Kolornomo:"
 #: ../gui/colors/paletteview.py:231
 msgctxt "palette editor dialog: color name entry: tooltip"
 msgid "Current color's name"
-msgstr ""
+msgstr "Nomo de aktuala koloro"
 
 #: ../gui/colors/paletteview.py:322
 msgctxt "palette editor dialog: color name entry"
 msgid "Empty palette slot"
-msgstr ""
+msgstr "Vaka loko en paletro"
 
 #: ../gui/colors/paletteview.py:378
 msgctxt "palette load dialog: title"
 msgid "Load palette"
-msgstr ""
+msgstr "Ŝargi paletron"
 
 #: ../gui/colors/paletteview.py:391
 msgctxt "palette save dialog: title"
@@ -994,52 +1014,55 @@ msgid ""
 "Drop colors here,\n"
 "drag them to organize."
 msgstr ""
+"Paletro de kolorspecimenoj.\n"
+"Ŝovu kaj metu kolorojn ĉi tie\n"
+"por organizi ilin."
 
 #: ../gui/colors/paletteview.py:702
 msgctxt "palette view"
 msgid "Empty palette slot (drag a color here)"
-msgstr ""
+msgstr "Vaka loko en paletro (ŝovmetu koloron ĉi tien)"
 
 #. TRANSLATORS: inserting gaps (empty color swatches)
 #: ../gui/colors/paletteview.py:789
 msgctxt "palette view: context menu"
 msgid "Add Empty Slot"
-msgstr ""
+msgstr "Krei vakan lokon"
 
 #. TRANSLATORS: inserting gaps (empty color swatches)
 #: ../gui/colors/paletteview.py:796
 msgctxt "palette view: context menu"
 msgid "Insert Row"
-msgstr ""
+msgstr "Enmeti horizontalon"
 
 #. TRANSLATORS: inserting gaps (empty color swatches)
 #: ../gui/colors/paletteview.py:803
 msgctxt "palette view: context menu"
 msgid "Insert Column"
-msgstr ""
+msgstr "Enmeti vertikalon"
 
 #. TRANSLATORS: Color interpolations
 #: ../gui/colors/paletteview.py:811
 msgctxt "palette view: context menu"
 msgid "Fill Gap (RGB)"
-msgstr ""
+msgstr "Interpoli (ruĝo-verdo-bluo)"
 
 #. TRANSLATORS: Color interpolations
 #: ../gui/colors/paletteview.py:818
 msgctxt "palette view: context menu"
 msgid "Fill Gap (HCY)"
-msgstr ""
+msgstr "Interpoli (tono-kromato-lumeco)"
 
 #. TRANSLATORS: Color interpolations
 #: ../gui/colors/paletteview.py:825
 msgctxt "palette view: context menu"
 msgid "Fill Gap (HSV)"
-msgstr ""
+msgstr "Interpoli (tono-saturo-valoro)"
 
 #: ../gui/colors/paletteview.py:1283
 msgctxt "palette load dialog: filters"
 msgid "GIMP palette file (*.gpl)"
-msgstr ""
+msgstr "Paletro-dosiero de GIMP (*.gpl)"
 
 #: ../gui/colors/paletteview.py:1290
 msgctxt "palette load dialog: filters"
@@ -1049,7 +1072,7 @@ msgstr "Ĉiuj dosieroj (*)"
 #: ../gui/colors/paletteview.py:1332
 msgctxt "palette save dialog: filters"
 msgid "GIMP palette file (*.gpl)"
-msgstr ""
+msgstr "Paletro-dosiero de GIMP (*.gpl)"
 
 #: ../gui/colors/paletteview.py:1339
 msgctxt "palette save dialog: filters"
@@ -1074,120 +1097,122 @@ msgstr "B"
 #: ../gui/colors/sliders.py:57
 msgctxt "color sliders panel: hue/chroma/luma: slider label"
 msgid "H"
-msgstr ""
+msgstr "Ton"
 
 #: ../gui/colors/sliders.py:61
 msgctxt "color sliders panel: hue/chroma/luma: slider label"
 msgid "C"
-msgstr ""
+msgstr "Krom"
 
 #: ../gui/colors/sliders.py:65
 msgctxt "color sliders panel: hue/chroma/luma: slider label"
 msgid "Y"
-msgstr ""
+msgstr "Lum"
 
 #: ../gui/colors/sliders.py:109
 msgctxt "color sliders panel: tab title (in tooltip)"
 msgid "Component Sliders"
-msgstr ""
+msgstr "Ŝovilo de kolorkomponantoj"
 
 #: ../gui/colors/sliders.py:116
 msgctxt "color sliders panel: tab description (in tooltip)"
 msgid "Adjust individual components of the color."
-msgstr ""
+msgstr "Alĝustigi unuope komponantojn de la koloro."
 
 #: ../gui/colors/sliders.py:161
 msgctxt "color component slider: tooltip"
 msgid "RGB Red"
-msgstr "RVB ruĝa"
+msgstr "Ruĝo (RVB)"
 
 #: ../gui/colors/sliders.py:178
 msgctxt "color component slider: tooltip"
 msgid "RGB Green"
-msgstr "RVB verda"
+msgstr "Verdo (RVB)"
 
 #: ../gui/colors/sliders.py:195
 msgctxt "color component slider: tooltip"
 msgid "RGB Blue"
-msgstr "RVB blua"
+msgstr "Bluo (RVB)"
 
 #: ../gui/colors/sliders.py:212
 msgctxt "color component slider: tooltip"
 msgid "HSV Hue"
-msgstr "HSV tono"
+msgstr "Tono (HSV)"
 
 #: ../gui/colors/sliders.py:227
 msgctxt "color component slider: tooltip"
 msgid "HSV Saturation"
-msgstr "HSV satureco"
+msgstr "Saturo (HSV)"
 
 #: ../gui/colors/sliders.py:240
 msgctxt "color component slider: tooltip"
 msgid "HSV Value"
-msgstr "HSV valoro"
+msgstr "Valoro (HSV)"
 
 #: ../gui/colors/sliders.py:252
 msgctxt "color component slider: tooltip"
 msgid "HCY Hue"
-msgstr "HCY tono"
+msgstr "Tono (HCY)"
 
 #: ../gui/colors/sliders.py:266
 msgctxt "color component slider: tooltip"
 msgid "HCY Chroma"
-msgstr ""
+msgstr "Kromato (HCY)"
 
 #: ../gui/colors/sliders.py:281
 msgctxt "color component slider: tooltip"
 msgid "HCY Luma (Y')"
-msgstr ""
+msgstr "Lumeco (HCY)"
 
 #: ../gui/colortools.py:141
 msgctxt "color changer dock panels: tab tooltip title"
 msgid "Liquid Wash"
-msgstr ""
+msgstr "Akvarela kolorelektilo"
 
 #: ../gui/colortools.py:145
 msgctxt "color changer dock panels: tab tooltip description"
 msgid "Change color using a liquid-like wash of nearby colors."
-msgstr ""
+msgstr "Ŝanĝi koloron per akvareleca gamo de apudaj koloroj."
 
 #: ../gui/colortools.py:155
 msgctxt "color changer dock panels: tab tooltip title"
 msgid "Concentric Rings"
-msgstr ""
+msgstr "Samcentraj ringoj"
 
 #: ../gui/colortools.py:159
 msgctxt "color changer dock panels: tab tooltip description"
 msgid "Change color using concentric HSV rings."
-msgstr ""
+msgstr "Ŝanĝi koloron per samcentraj ringoj de tono-saturo-valoro."
 
 #: ../gui/colortools.py:169
 msgctxt "color changer dock panels: tab tooltip title"
 msgid "Crossed Bowl"
-msgstr ""
+msgstr "Kruca bovlo"
 
 #: ../gui/colortools.py:173
 msgctxt "color changer dock panels: tab tooltip description"
 msgid "Change color with HSV ramps crossing a radial bowl of color."
 msgstr ""
+"Ŝanĝi koloron per deklivoj de tono-saturo-valoro krucantaj radiusan bovlon "
+"da koloroj."
 
 #: ../gui/compatibility.py:34
 msgctxt "File Load Compat Options"
 msgid "Based on file"
-msgstr ""
+msgstr "Laŭ dosiero"
 
 #. This refers to a version of MyPaint like 1.0, 1.1, 1.2 etc
 #: ../gui/compatibility.py:35 ../gui/drawwindow.py:281
 #: ../gui/preferenceswindow.glade:1667
 msgctxt "Prefs Dialog|Compatibility"
 msgid "1.x"
-msgstr ""
+msgstr "1.x"
 
 #. This refers to a version of MyPaint like 1.0, 1.1, 1.2 etc
 #: ../gui/compatibility.py:36 ../gui/preferenceswindow.glade:1686
 msgctxt "Prefs Dialog|Compatibility"
 msgid "2.x"
-msgstr ""
+msgstr "2.x"
 
 #. TRANSLATORS: This is probably a rare warning, and it will not
 #. TRANSLATORS: really be shown at all before the release of 3.0
@@ -1204,6 +1229,14 @@ msgid ""
 "It is <b>strongly recommended</b> to upgrade to <b>MyPaint {new_version}</b> "
 "or newer if you want to edit this file!"
 msgstr ""
+"«{filename}» estis konservita per <b>MyPaint {new_version}</b>. Ĝi eble "
+"<b>ne kongruas</b> kun <b>MyPaint {current_version}</b>.\n"
+"\n"
+"La eblo redakti ĉi tiun dosieron per ĉi tiu versio de MyPaint ne estas "
+"garantiata, kaj provi tion povas eĉ kaŭzi kolapsojn.\n"
+"\n"
+"<b>Estas forte rekomendite</b> ĝisdatigi al <b>MyPaint {new_version}</b> aŭ "
+"pli nova se vi volas redakti ĉi tiun dosieron!"
 
 #: ../gui/compatibility.py:54
 #, python-brace-format
@@ -1217,16 +1250,23 @@ msgid ""
 "\n"
 "To be safe you should upgrade to MyPaint {new_version} or newer."
 msgstr ""
+"«{filename}» estis konservita per <b>MyPaint {new_version}</b>. Ĝi eble ne "
+"plene kongruas kun <b>MyPaint {current_version}</b>.\n"
+"\n"
+"Redakti ĉi tiun dosieron per ĉi tiu versio de MyPaint eble kaŭzos perdon de "
+"la datenoj nur subtenataj de la pli nova versio.\n"
+"\n"
+"Pro tio, vi ĝisdatigu al MyPaint {new_version} aŭ pli nova."
 
 #: ../gui/compatibility.py:65
 msgctxt "file compatibility question"
 msgid "Do you want to open this file anyway?"
-msgstr ""
+msgstr "Ĉu malfermi la dosieron malgraŭ tio?"
 
 #: ../gui/compatibility.py:129
 msgctxt "Version compat warning toggle"
 msgid "Don't show this warning again"
-msgstr ""
+msgstr "Ne montri ĉi tiun averton denove"
 
 #. TRANSLATORS: One of the options for the
 #. TRANSLATORS: "When Not Specified in File"
@@ -1234,7 +1274,7 @@ msgstr ""
 #: ../gui/compatibility.py:197
 msgctxt "Prefs Dialog|Compatibility"
 msgid "Always open in 1.x mode"
-msgstr ""
+msgstr "Ĉiam malfermi en la reĝimo de versioj 1.x"
 
 #. TRANSLATORS: One of the options for the
 #. TRANSLATORS: "When Not Specified in File"
@@ -1242,7 +1282,7 @@ msgstr ""
 #: ../gui/compatibility.py:206
 msgctxt "Prefs Dialog|Compatibility"
 msgid "Always open in 2.x mode"
-msgstr ""
+msgstr "Ĉiam malfermi en la reĝimo de versioj 2.x"
 
 #. TRANSLATORS: One of the options for the
 #. TRANSLATORS: "When Not Specified in File"
@@ -1251,13 +1291,15 @@ msgstr ""
 msgctxt "Prefs Dialog|Compatibility"
 msgid "Open in 1.x mode unless file contains pigment layers"
 msgstr ""
+"Malfermi en reĝimo de versioj 1.x krom se la dosiero enhavas pigmentajn "
+"tavolojn"
 
 #. TRANSLATORS: This is a label for a dropdown menu in the
 #. TRANSLATORS: file chooser dialog when loading .ora files.
 #: ../gui/compatibility.py:501
 msgctxt "File Load Compat Options"
 msgid "Compatibility mode:"
-msgstr ""
+msgstr "Kongruiga reĝimo:"
 
 #: ../gui/device.py:49
 msgctxt "prefs: device's type label"
@@ -1282,7 +1324,7 @@ msgstr "Muso"
 #: ../gui/device.py:65
 msgctxt "prefs: device's type label"
 msgid "Pen"
-msgstr ""
+msgstr "Plumo"
 
 #: ../gui/device.py:69
 msgctxt "prefs: device's type label"
@@ -1302,27 +1344,27 @@ msgstr "Malatenti"
 #: ../gui/device.py:97
 msgctxt "device settings: allowed usage"
 msgid "Any Task"
-msgstr ""
+msgstr "Ĉiuj taskoj"
 
 #: ../gui/device.py:101
 msgctxt "device settings: allowed usage"
 msgid "Non-painting tasks"
-msgstr ""
+msgstr "Nepentraj taskoj"
 
 #: ../gui/device.py:105
 msgctxt "device settings: allowed usage"
 msgid "Navigation only"
-msgstr ""
+msgstr "Nur navigado"
 
 #: ../gui/device.py:130
 msgctxt "device settings: unmodified scroll action"
 msgid "Zoom"
-msgstr ""
+msgstr "Zomigi"
 
 #: ../gui/device.py:131
 msgctxt "device settings: unmodified scroll action"
 msgid "Pan"
-msgstr ""
+msgstr "Movi"
 
 #. TRANSLATORS: Column's data is the device's name
 #: ../gui/device.py:432
@@ -1347,7 +1389,7 @@ msgstr "Tipo"
 #: ../gui/device.py:483
 msgctxt "prefs: devices table: column header"
 msgid "Use for…"
-msgstr ""
+msgstr "Uzi por…"
 
 #. TRANSLATORS: Column's data is a dropdown for how the device's
 #. TRANSLATORS: scroll wheel or scroll-gesture events are to be
@@ -1364,7 +1406,7 @@ msgstr "Nomo"
 
 #: ../gui/dialogs.py:126
 msgid "Overwrite brush?"
-msgstr ""
+msgstr "Ĉu superskribi penikon?"
 
 #: ../gui/dialogs.py:134 ../gui/dialogs.py:204
 msgid "Replace"
@@ -1372,7 +1414,7 @@ msgstr "Anstataŭigi"
 
 #: ../gui/dialogs.py:137 ../gui/dialogs.py:207 ../gui/brusheditor.glade:189
 msgid "Rename"
-msgstr "Renomi"
+msgstr "Ŝanĝi nomon"
 
 #: ../gui/dialogs.py:140
 msgid "Replace all"
@@ -1380,15 +1422,15 @@ msgstr "Anstataŭigi ĉiujn"
 
 #: ../gui/dialogs.py:142
 msgid "Rename all"
-msgstr "Renomi ĉiujn"
+msgstr "Ŝanĝi ĉiujn nomojn"
 
 #: ../gui/dialogs.py:162
 msgid "Imported brush"
-msgstr ""
+msgstr "Enportita peniko"
 
 #: ../gui/dialogs.py:163
 msgid "Existing brush"
-msgstr ""
+msgstr "Ekzistanta peniko"
 
 #: ../gui/dialogs.py:166
 #, python-brace-format
@@ -1396,10 +1438,12 @@ msgid ""
 "<b>A brush named “{brush_name}” already exists.</b>\n"
 "Do you want to replace it, or should the new brush be renamed?"
 msgstr ""
+"<b>Peniko nomita «{brush_name}» jam ekzistas. </b>\n"
+"Ĉu anstataŭigi ĝin, aŭ ĉu ŝanĝi la nomon de la nova peniko?"
 
 #: ../gui/dialogs.py:196
 msgid "Overwrite brush group?"
-msgstr ""
+msgstr "Ĉu superskribi penikaron?"
 
 #: ../gui/dialogs.py:220
 #, python-brace-format
@@ -1409,20 +1453,24 @@ msgid ""
 "If you replace it, the brushes may be moved to a group called "
 "“{deleted_groupname}”."
 msgstr ""
+"<b>Penikaro nomita «{groupname}» jam ekzistas. </b>\n"
+"Ĉu anstataŭigi ĝin, aŭ ĉu ŝanĝi la nomon de la nova penikaro?\n"
+"Se vi anstataŭigas ĝin, ĝiaj penikoj eble moviĝos en penikaron nomitan "
+"«{deleted_groupname}»."
 
 #: ../gui/dialogs.py:326
 msgid "Import brush package?"
-msgstr ""
+msgstr "Ĉu enporti penikaron?"
 
 #: ../gui/dialogs.py:357
 #, python-brace-format
 msgid "<b>Do you really want to import package “{brushpack_name}”?</b>"
-msgstr ""
+msgstr "<b>Ĉu vi certe volas enporti penikaron «{brushpack_name}»?</b>"
 
 #: ../gui/document.py:193
 #, python-format
 msgid "Redo %s"
-msgstr "Refari %s"
+msgstr "Refari «%s»"
 
 #: ../gui/document.py:194
 msgid "Redo"
@@ -1431,7 +1479,7 @@ msgstr "Refari"
 #: ../gui/document.py:195
 #, python-format
 msgid "Undo %s"
-msgstr "Malfari %s"
+msgstr "Malfari «%s»"
 
 #: ../gui/document.py:196
 msgid "Undo"
@@ -1450,12 +1498,12 @@ msgstr ""
 #: ../gui/document.py:460
 #, python-format
 msgid "Restore Brush %d"
-msgstr ""
+msgstr "Rekuperi penikon %d"
 
 #: ../gui/document.py:462
 #, python-format
 msgid "Save to Brush %d"
-msgstr ""
+msgstr "Konservi al peniko %d"
 
 #. TRANSLATORS: Statusbar message explaining button and modifier
 #. TRANSLATORS: combinations used to access modes/tools/actions.
@@ -1480,39 +1528,39 @@ msgstr ";  "
 #: ../gui/document.py:869
 #, python-brace-format
 msgid "With {modifiers} held down:  {button_actions}."
-msgstr ""
+msgstr "Kun klavo(j) {modifiers}:  {button_actions}."
 
 #: ../gui/document.py:895
 msgctxt "Statusbar message: copy result"
 msgid "Empty document, nothing copied."
-msgstr ""
+msgstr "Malplena dokumento; nenio kopiiĝis."
 
 #: ../gui/document.py:906
 #, python-brace-format
 msgctxt "Statusbar message: copy result"
 msgid "Copied layer as {w}×{h} image."
-msgstr ""
+msgstr "Kopiiĝis tavolo kiel bildo de dimensioj {w}×{h}."
 
 #: ../gui/document.py:923
 msgctxt "Statusbar message: paste result"
 msgid "Nothing on clipboard."
-msgstr ""
+msgstr "Nenio en tondujo."
 
 #: ../gui/document.py:932
 msgctxt "Statusbar message: paste result"
 msgid "Clipboard does not contain an image."
-msgstr ""
+msgstr "Tondujo ne enhavas bildon."
 
 #: ../gui/document.py:956
 msgctxt "Statusbar message: paste result"
 msgid "Cannot paste into this type of layer."
-msgstr ""
+msgstr "Ne povas alglui sur tian tavolon."
 
 #: ../gui/document.py:961
 #, python-brace-format
 msgctxt "Statusbar message: paste result"
 msgid "Pasted {w}×{h} image."
-msgstr ""
+msgstr "Algluiĝis bildo de dimensioj {w}×{h}."
 
 #: ../gui/document.py:2062
 #, python-brace-format
@@ -1534,52 +1582,50 @@ msgstr "MyPaint"
 #: ../gui/drawwindow.py:301
 msgctxt "Open dragged file confirm dialog: title"
 msgid "Open Dragged File?"
-msgstr ""
+msgstr "Ĉu malfermi ŝovmetitan dosieron?"
 
 #: ../gui/drawwindow.py:305
-#, fuzzy
 msgctxt "Open dragged file confirm dialog: continue button"
 msgid "_Open"
-msgstr "Malfermi"
+msgstr "_Malfermi"
 
 #: ../gui/drawwindow.py:498
 msgid "Set current color"
-msgstr ""
+msgstr "Agordi aktualan koloron"
 
 #: ../gui/drawwindow.py:543
 msgid "Leave Fullscreen Mode"
-msgstr ""
+msgstr "Eliri plenekranan reĝimon"
 
 #: ../gui/drawwindow.py:544
 msgid "Leave Fullscreen"
-msgstr ""
+msgstr "Neplenekrane"
 
 #: ../gui/drawwindow.py:547
 msgid "Enter Fullscreen Mode"
-msgstr ""
+msgstr "Eniri plenekranan reĝimon"
 
 #: ../gui/drawwindow.py:548
 msgid "Fullscreen"
-msgstr "Tutekranumo"
+msgstr "Plenekrane"
 
 #: ../gui/drawwindow.py:687
 msgctxt "Quit confirm dialog: title"
 msgid "Really Quit?"
-msgstr ""
+msgstr "Ĉu vere ĉesi?"
 
 #: ../gui/drawwindow.py:691
-#, fuzzy
 msgctxt "Quit confirm dialog: continue button"
 msgid "_Quit"
-msgstr "Ĉesi"
+msgstr "Ĉ_esi"
 
 #: ../gui/drawwindow.py:709
 msgid "Import brush package…"
-msgstr ""
+msgstr "Enporti penikaron…"
 
 #: ../gui/drawwindow.py:710
 msgid "MyPaint brush package (*.zip)"
-msgstr ""
+msgstr "Penikaro de MyPaint (*.zip)"
 
 #. # UI string consts
 #. TRANSLATORS: Statusbar message when "Edit in External App"
@@ -1587,7 +1633,7 @@ msgstr ""
 #: ../gui/externalapp.py:41
 #, python-brace-format
 msgid "Launched {app_name} to edit layer “{layer_name}”"
-msgstr ""
+msgstr "Lanĉiĝis programo {app_name} por redakti tavolon «{layer_name}»"
 
 #. TRANSLATORS: Statusbar message shown when the app chosen for
 #. TRANSLATORS: "Edit in External App" (for a layer) failed to open.
@@ -1595,6 +1641,8 @@ msgstr ""
 #, python-brace-format
 msgid "Error: failed to launch {app_name} to edit layer “{layer_name}”"
 msgstr ""
+"Eraro: malsukcesis lanĉo de programo {app_name} por redakti tavolon "
+"«{layer_name}»"
 
 #. TRANSLATORS: Statusbar message for when an "Edit in External App"
 #. TRANSLATORS: operation is cancelled by the user before it starts.
@@ -1603,19 +1651,21 @@ msgstr ""
 msgid ""
 "Editing cancelled. You can still edit “{layer_name}” from the Layers menu."
 msgstr ""
+"Redaktado estis nuligita. Vi ankoraŭ povas redakti la tavolon «{layer_name}» "
+"per la menuo «Tavoloj»."
 
 #. TRANSLATORS: This is a statusbar message shown when
 #. TRANSLATORS:  a layer is updated from an external edit
 #: ../gui/externalapp.py:55
 #, python-brace-format
 msgid "Updated layer “{layer_name}” with external edits"
-msgstr ""
+msgstr "Modifis tavolon «{layer_name}» laŭ eksteraj redaktoj"
 
 #: ../gui/externalapp.py:59
 #, python-brace-format
 msgctxt "Edit in External App (statusbar message)"
 msgid "Failed to update layer with external edits from “{file_basename}”."
-msgstr ""
+msgstr "Malsukcesis modifi tavolon laŭ eksteraj redaktoj el «{file_basename}»."
 
 #: ../gui/externalapp.py:146
 #, python-brace-format
@@ -1623,6 +1673,8 @@ msgid ""
 "MyPaint needs to edit a file of type “{type_name}” ({content_type}). What "
 "application should it use?"
 msgstr ""
+"MyPaint bezonas redakti dosieron de formo «{type_name}» ({content_type}). "
+"Kiun programon ĝi uzu?"
 
 #: ../gui/externalapp.py:150
 #, python-brace-format
@@ -1630,111 +1682,112 @@ msgid ""
 "What application should MyPaint use for editing files of type "
 "“{type_name}” ({content_type})?"
 msgstr ""
+"Kiun programon MyPaint uzu por redakti dosierojn de formo «{type_name}» "
+"({content_type})?"
 
 #: ../gui/externalapp.py:156
 msgid "Open With…"
-msgstr ""
+msgstr "Malfermi per…"
 
 #: ../gui/externalapp.py:208
 msgid "Icon"
-msgstr "Bildsimbolo"
+msgstr "Piktogramo"
 
 #: ../gui/externalapp.py:251
 msgid "no description"
-msgstr ""
+msgstr "sen priskribo"
 
 #: ../gui/filehandling.py:127
 #, python-brace-format
 msgctxt "Document I/O: message shown while working"
 msgid "Loading {files_summary}…"
-msgstr ""
+msgstr "Ŝargante {files_summary}…"
 
 #: ../gui/filehandling.py:131
 #, python-brace-format
 msgctxt "Document I/O: message shown while working"
 msgid "Importing layers from {files_summary}…"
-msgstr ""
+msgstr "Enportante tavolojn el {files_summary}…"
 
 #: ../gui/filehandling.py:135
 #, python-brace-format
 msgctxt "Document I/O: message shown while working"
 msgid "Saving {files_summary}…"
-msgstr ""
+msgstr "Konservante {files_summary}…"
 
 #: ../gui/filehandling.py:139
 #, python-brace-format
 msgctxt "Document I/O: message shown while working"
 msgid "Exporting to {files_summary}…"
-msgstr ""
+msgstr "Elportante al {files_summary}…"
 
 #: ../gui/filehandling.py:146
 #, python-brace-format
 msgctxt "Document I/O: fail message"
 msgid "Failed to export to {files_summary}."
-msgstr ""
+msgstr "Malsukcesis elportado al {files_summary}."
 
 #: ../gui/filehandling.py:150
 #, python-brace-format
 msgctxt "Document I/O: fail message"
 msgid "Failed to save {files_summary}."
-msgstr ""
+msgstr "Malsukcesis konservado al {files_summary}."
 
 #: ../gui/filehandling.py:154
 #, python-brace-format
 msgctxt "Document I/O: fail message"
 msgid "Could not import layers from {files_summary}."
-msgstr ""
+msgstr "Ne eblis enporti tavolojn el {files_summary}."
 
 #: ../gui/filehandling.py:158
 #, python-brace-format
 msgctxt "Document I/O: fail message"
 msgid "Could not load {files_summary}."
-msgstr ""
+msgstr "Malsukcesis ŝargado de {files_summary}."
 
 #: ../gui/filehandling.py:165
-#, fuzzy
 msgctxt "Document I/O: fail dialog title"
 msgid "Save failed"
-msgstr "Konservi paletron"
+msgstr "Malsukcesis konservado"
 
 #: ../gui/filehandling.py:169
 msgctxt "Document I/O: fail dialog title"
 msgid "Export failed"
-msgstr ""
+msgstr "Malsukcesis elportado"
 
 #: ../gui/filehandling.py:173
 msgctxt "Document I/O: fail dialog title"
 msgid "Import Layers failed"
-msgstr ""
+msgstr "Malsukcesis enportado de tavoloj"
 
 #: ../gui/filehandling.py:177
 msgctxt "Document I/O: fail dialog title"
 msgid "Open failed"
-msgstr ""
+msgstr "Malsukcesis malfermado"
 
 #: ../gui/filehandling.py:184
 #, python-brace-format
 msgctxt "Document I/O: success"
 msgid "Exported to {files_summary} successfully."
-msgstr ""
+msgstr "Sukcesis elporto al {files_summary}."
 
 #: ../gui/filehandling.py:188
 #, python-brace-format
 msgctxt "Document I/O: success"
 msgid "Saved {files_summary} successfully."
-msgstr ""
+msgstr "Sukcese konserviĝis {files_summary}."
 
 #: ../gui/filehandling.py:192
 #, python-brace-format
 msgctxt "Document I/O: success"
 msgid "Imported layers from {files_summary}."
-msgstr ""
+msgstr "Enportiĝis tavoloj el {files_summary}."
 
 #: ../gui/filehandling.py:196
 #, python-brace-format
 msgctxt "Document I/O: success"
 msgid "Loaded {files_summary}."
-msgstr ""
+msgstr "Ŝargiĝis {files_summary}."
 
 #. TRANSLATORS: formatting for {files_summary} for multiple files.
 #. TRANSLATORS: corresponding msgid for single files: "“{basename}”"
@@ -1742,34 +1795,31 @@ msgstr ""
 #, python-brace-format
 msgid "{n} file"
 msgid_plural "{n} files"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "{n} dosiero"
+msgstr[1] "{n} dosieroj"
 
 #: ../gui/filehandling.py:223
 #, python-brace-format
 msgctxt "Document I/O: the {files_summary} for a single file"
 msgid "“{basename}”"
-msgstr ""
+msgstr "«{basename}»"
 
 #: ../gui/filehandling.py:432
 msgctxt "save/load dialogs: filter patterns"
 msgid "All Recognized Formats"
-msgstr ""
+msgstr "Ĉiuj konataj formoj"
 
 #: ../gui/filehandling.py:437
-#, fuzzy
 msgctxt "save/load dialogs: filter patterns"
 msgid "OpenRaster (*.ora)"
 msgstr "OpenRaster (*.ora)"
 
 #: ../gui/filehandling.py:442
-#, fuzzy
 msgctxt "save/load dialogs: filter patterns"
 msgid "PNG (*.png)"
 msgstr "PNG (*.png)"
 
 #: ../gui/filehandling.py:447
-#, fuzzy
 msgctxt "save/load dialogs: filter patterns"
 msgid "JPEG (*.jpg; *.jpeg)"
 msgstr "JPEG (*.jpg; *.jpeg)"
@@ -1777,10 +1827,9 @@ msgstr "JPEG (*.jpg; *.jpeg)"
 #: ../gui/filehandling.py:495
 msgctxt "save dialogs: save formats and options"
 msgid "By extension (prefer default format)"
-msgstr ""
+msgstr "Laŭ dosiersufikso (preferi implicitan formon)"
 
 #: ../gui/filehandling.py:499
-#, fuzzy
 msgctxt "save dialogs: save formats and options"
 msgid "OpenRaster (*.ora)"
 msgstr "OpenRaster (*.ora)"
@@ -1788,195 +1837,182 @@ msgstr "OpenRaster (*.ora)"
 #: ../gui/filehandling.py:503
 msgctxt "save dialogs: save formats and options"
 msgid "PNG, respecting “Show Background” (*.png)"
-msgstr ""
+msgstr "PNG, respektante «Montri fonon» (* .png)"
 
 #: ../gui/filehandling.py:507
-#, fuzzy
 msgctxt "save dialogs: save formats and options"
 msgid "PNG, solid RGB (*.png)"
-msgstr "PNG (*.png)"
+msgstr "PNG, solida RVB (*.png)"
 
 #: ../gui/filehandling.py:511
-#, fuzzy
 msgctxt "save dialogs: save formats and options"
 msgid "PNG, transparent RGBA (*.png)"
-msgstr "Travidebla PNG (*.png)"
+msgstr "PNG, travidebla RVBA (*.png)"
 
 #: ../gui/filehandling.py:515
 msgctxt "save dialogs: save formats and options"
 msgid "Multiple PNGs, by layer (*.NUM.png)"
-msgstr ""
+msgstr "Pluraj PNG-dosieroj laŭ tavolo (*.NUM.png)"
 
 #: ../gui/filehandling.py:519
 msgctxt "save dialogs: save formats and options"
 msgid "Multiple PNGs, by view (*.NAME.png)"
-msgstr ""
+msgstr "Pluraj PNG-dosieroj, laŭ vido (*.NOMO.png)"
 
 #: ../gui/filehandling.py:523
-#, fuzzy
 msgctxt "save dialogs: save formats and options"
 msgid "JPEG 90% quality (*.jpg; *.jpeg)"
-msgstr "JPEG (*.jpg; *.jpeg)"
+msgstr "JPEG de kvalito 90% (*.jpg; *.jpeg)"
 
 #: ../gui/filehandling.py:581
-#, fuzzy
 msgctxt "Dialogs (window title): File→Export…"
 msgid "Export"
-msgstr "subteno"
+msgstr "Elporti"
 
 #: ../gui/filehandling.py:586
-#, fuzzy
 msgctxt "Dialogs (window title): File→Save As…"
 msgid "Save As"
-msgstr "Konservi kiel…"
+msgstr "Konservi kiel"
 
 #: ../gui/filehandling.py:606
 msgctxt "save dialogs: formats and options: (label)"
 msgid "Format to save as:"
-msgstr ""
+msgstr "Formo por konservado:"
 
 #: ../gui/filehandling.py:673
 msgctxt ""
 "Destructive action confirm dialog: fallback title (normally overridden)"
 msgid "Really Continue?"
-msgstr ""
+msgstr "Ĉu vere daŭrigi?"
 
 #: ../gui/filehandling.py:706
 msgctxt "Destructive action confirm dialog: cancel button"
 msgid "_Cancel"
-msgstr ""
+msgstr "_Nuligi"
 
 #: ../gui/filehandling.py:710
 msgctxt "Destructive action confirm dialog: save checkbox"
 msgid "_Save to Scraps first"
-msgstr ""
+msgstr "_Konservi kiel provaĵon unue"
 
 #: ../gui/filehandling.py:716
 msgctxt ""
 "Destructive action confirm dialog: fallback continue button (normally "
 "overridden)"
 msgid "Co_ntinue"
-msgstr ""
+msgstr "_Daŭrigi"
 
 #: ../gui/filehandling.py:739
 #, python-brace-format
 msgctxt "Destructive action confirm dialog: warning message"
 msgid "You risk losing {abbreviated_time} of unsaved painting."
-msgstr ""
+msgstr "Vi riskas perdi {abbreviated_time} da nekonservita pentrado."
 
 #: ../gui/filehandling.py:804
 msgctxt "File→New: confirm dialog: title question"
 msgid "New Canvas?"
-msgstr ""
+msgstr "Ĉu nova dokumento?"
 
 #: ../gui/filehandling.py:808
 msgctxt "File→New: confirm dialog: continue button"
 msgid "_New Canvas"
-msgstr ""
+msgstr "_Nova dokumento"
 
 #: ../gui/filehandling.py:1024
 msgctxt "File→Open: confirm dialog: title question"
 msgid "Open File?"
-msgstr ""
+msgstr "Ĉu malfermi dosieron?"
 
 #: ../gui/filehandling.py:1028
-#, fuzzy
 msgctxt "File→Open: confirm dialog: continue button"
 msgid "_Open…"
-msgstr "Malfermi…"
+msgstr "_Malfermi…"
 
 #: ../gui/filehandling.py:1036
-#, fuzzy
 msgctxt "File→Open: file chooser dialog: title"
 msgid "Open File"
-msgstr "Malfermi"
+msgstr "Malfermi dosieron"
 
 #: ../gui/filehandling.py:1084
-#, fuzzy
 msgctxt "load dialogs: title"
 msgid "Open Scratchpad…"
-msgstr "Notlibro"
+msgstr "Malfermi provejon…"
 
 #: ../gui/filehandling.py:1126
-#, fuzzy
 msgctxt "Layers→Import Layers: files-chooser dialog: title"
 msgid "Import Layers"
-msgstr "Forigi tavolon"
+msgstr "Enporti tavolojn"
 
 #: ../gui/filehandling.py:1433
 msgctxt "File→Open Recent→* confirm dialog: title"
 msgid "Open File?"
-msgstr ""
+msgstr "Ĉu malfermi dosieron?"
 
 #: ../gui/filehandling.py:1437
-#, fuzzy
 msgctxt "File→Open Recent→* confirm dialog: continue button"
 msgid "_Open"
-msgstr "Malfermi"
+msgstr "_Malfermi"
 
 #: ../gui/filehandling.py:1452
-#, fuzzy
 msgctxt "File→Open Most Recent confirm dialog: title"
 msgid "Open Most Recent File?"
-msgstr "Malfermi lastajn"
+msgstr "Ĉu malfermi la lastan dosieron?"
 
 #: ../gui/filehandling.py:1457
-#, fuzzy
 msgctxt "File→Open Most Recent→* confirm dialog: continue button"
 msgid "_Open"
-msgstr "Malfermi"
+msgstr "_Malfermi"
 
 #: ../gui/filehandling.py:1471
 msgctxt "File→Open Next/Prev Scrap: error message"
 msgid "There are no scrap files yet. Try saving one first."
-msgstr ""
+msgstr "Ankoraŭ ne ekzistas provaĵoj. Konservu provaĵon unue."
 
 #: ../gui/filehandling.py:1480
 msgctxt "File→Open Next/Prev Scrap confirm dialog: title"
 msgid "Open Next Scrap?"
-msgstr ""
+msgstr "Ĉu malfermi sekva provaĵo?"
 
 #: ../gui/filehandling.py:1488
 msgctxt "File→Open Next/Prev Scrap confirm dialog: title"
 msgid "Open Previous Scrap?"
-msgstr ""
+msgstr "Ĉu malfermi antaŭa provaĵo?"
 
 #: ../gui/filehandling.py:1497
-#, fuzzy
 msgctxt "File→Open Next/Prev Scrap confirm dialog: continue button"
 msgid "_Open"
-msgstr "Malfermi"
+msgstr "_Malfermi"
 
 #: ../gui/filehandling.py:1512
 msgctxt "File→Revert: status message: canvas has no filename yet"
 msgid "Cannot revert: canvas has not been saved to a file yet."
 msgstr ""
+"Ne eblas malfari ŝanĝojn: la dokumento ankoraŭ ne estas konservita sur "
+"dosiero."
 
 #: ../gui/filehandling.py:1519
 msgctxt "File→Revert confirm dialog: title"
 msgid "Revert Changes?"
-msgstr ""
+msgstr "Ĉu malfari ŝanĝojn?"
 
 #: ../gui/filehandling.py:1524
-#, fuzzy
 msgctxt "File→Revert confirm dialog: continue button"
 msgid "_Revert"
-msgstr "Malfari"
+msgstr "_Malfari"
 
 #: ../gui/fill.py:123
 msgctxt ""
 "Name of the fill mode\n"
 "In other software, 'Flood Fill' is also known as 'Bucket Fill' or just 'Fill'"
 msgid "Flood Fill"
-msgstr ""
+msgstr "Farbi"
 
 #: ../gui/fill.py:129
 msgctxt "Usage description of the Flood Fill mode"
 msgid "Fill areas with color"
-msgstr ""
+msgstr "Plenigi areon per koloro"
 
 #: ../gui/fill.py:505
-#, fuzzy
 msgctxt ""
 "fill options: numeric value that determines whether tested pixels will be "
 "included in the fill, based on color difference"
@@ -1993,7 +2029,6 @@ msgid ""
 msgstr ""
 
 #: ../gui/fill.py:533
-#, fuzzy
 msgctxt ""
 "fill options: option category (label) Options under this category relate to "
 "what the fill isbased on, not where the actual fill ends up."
@@ -2027,10 +2062,9 @@ msgid ""
 msgstr ""
 
 #: ../gui/fill.py:618
-#, fuzzy
 msgctxt "fill options: toggle whether the fill will be limited by the viewport"
 msgid "Limit to View"
-msgstr "Kapabla al Vido"
+msgstr "Limigi al vido"
 
 #: ../gui/fill.py:624
 msgctxt ""
@@ -2044,7 +2078,6 @@ msgid ""
 msgstr ""
 
 #: ../gui/fill.py:641
-#, fuzzy
 msgctxt ""
 "fill options: option category (label)\n"
 "Options under this category relate to where the fill will end up (default: "
@@ -2055,16 +2088,15 @@ msgstr "Celo:"
 #: ../gui/fill.py:644
 msgctxt "fill options: 'Target:' category (tooltip)"
 msgid "Where the output should go"
-msgstr ""
+msgstr "Kien iros la eligaĵo"
 
 #: ../gui/fill.py:653
-#, fuzzy
 msgctxt ""
 "fill options: Target | toggle (label)\n"
 "When this option is enabled, the fill will be placed on a new\n"
 "layer above the active layer. Option resets after each fill."
 msgid "New Layer (once)"
-msgstr "Nova Tavolo grupon"
+msgstr "Nova tavolo (unufoje)"
 
 #: ../gui/fill.py:658
 msgctxt "fill options: Target | New Layer (tooltip)"
@@ -2076,21 +2108,21 @@ msgstr ""
 #: ../gui/fill.py:670
 msgctxt "fill options: Target | Blend Mode dropdown - warning text"
 msgid "This mode does nothing when alpha locking is enabled!"
-msgstr ""
+msgstr "Ĉi tiu reĝimo faras nenion, kiam alfa-ŝlosado estas ŝaltita!"
 
 #: ../gui/fill.py:684
 msgctxt "fill options: Target | Blend Mode dropdown (tooltip)"
 msgid "Blend mode used when filling"
-msgstr ""
+msgstr "Reĝimo de miksado uzata dum farbado"
 
 #: ../gui/fill.py:699
 msgid "Opacity:"
-msgstr "Travideblo:"
+msgstr "Opakeco:"
 
 #: ../gui/fill.py:702
 msgctxt "fill options: Opacity slider (tooltip)"
 msgid "Opacity of the fill"
-msgstr ""
+msgstr "Opakeco de la farbado"
 
 #: ../gui/fill.py:725
 msgctxt "fill options: numeric option - grow/shrink fill (label)"
@@ -2154,18 +2186,17 @@ msgstr ""
 
 #: ../gui/fill.py:851 ../gui/mode.py:639
 msgid "Reset"
-msgstr "Reŝargi"
+msgstr "Uzi implicitojn"
 
 #: ../gui/fill.py:855
 msgctxt "fill options: Reset button (tooltip)"
 msgid "Reset options to their defaults"
-msgstr ""
+msgstr "Uzi implicitajn valorojn por opcioj"
 
 #: ../gui/fill.py:1033
-#, fuzzy
 msgctxt "fill option: default option in the Source Layer dropdown"
 msgid "Selected Layer"
-msgstr "Elekti tavolon"
+msgstr "Elektita tavolo"
 
 #: ../gui/footer.py:195
 #, python-brace-format
@@ -2185,11 +2216,11 @@ msgstr ""
 
 #: ../gui/framewindow.py:102
 msgid "Edit Frame"
-msgstr ""
+msgstr "Redakti kadron"
 
 #: ../gui/framewindow.py:105
 msgid "Adjust the document frame"
-msgstr ""
+msgstr "Alĝustigi la dokumentan kadron"
 
 #: ../gui/framewindow.py:470
 msgid "Height:"
@@ -2217,7 +2248,7 @@ msgstr "Koloro:"
 
 #: ../gui/framewindow.py:515
 msgid "Frame Color"
-msgstr ""
+msgstr "Koloro de kadro"
 
 #: ../gui/framewindow.py:537
 msgid "Enabled"
@@ -2225,40 +2256,39 @@ msgstr "Ŝaltita"
 
 #: ../gui/framewindow.py:541
 msgid "<b>Frame dimensions</b>"
-msgstr ""
+msgstr "<b>Dimensioj de kadro</b>"
 
 #: ../gui/framewindow.py:562
 msgid "Set Frame to Layer"
-msgstr ""
+msgstr "Adapti kadron al la tavolo"
 
 #: ../gui/framewindow.py:563
 msgid "Set frame to the extents of the current layer"
-msgstr ""
+msgstr "Adapti la kadron al la dimensioj de la aktuala tavolo"
 
 #: ../gui/framewindow.py:565
 msgid "Set Frame to Document"
-msgstr ""
+msgstr "Adapti kadron al la dokumento"
 
 #: ../gui/framewindow.py:566
 msgid "Set frame to the combination of all layers"
-msgstr ""
+msgstr "Adapti la kadron al la dimensioj de la kunigaĵo de ĉiuj tavoloj"
 
 #: ../gui/framewindow.py:576
 msgid "Trim Layer to Frame"
-msgstr ""
+msgstr "Stuci tavolon laŭ kadro"
 
 #: ../gui/framewindow.py:577
 msgid "Trim parts of the current layer which lie outside the frame"
-msgstr ""
+msgstr "Stuci partojn de la aktuala tavolo ekster la kadro"
 
 #: ../gui/framewindow.py:915
 msgid "px"
-msgstr ""
+msgstr "bildero(j)"
 
 #: ../gui/framewindow.py:916
-#, fuzzy
 msgid "in"
-msgstr "colo"
+msgstr "colo(j)"
 
 #: ../gui/framewindow.py:917
 msgid "cm"
@@ -2270,37 +2300,37 @@ msgstr "mm"
 
 #: ../gui/freehand.py:89
 msgid "Freehand Drawing"
-msgstr ""
+msgstr "Libermana desegnado"
 
 #: ../gui/freehand.py:92
 msgid "Paint free-form brush strokes"
-msgstr ""
+msgstr "Pentri liberformajn penikostrekojn"
 
 #. TRANSLATORS: Short alias for "Slow position tracking". This is
 #. TRANSLATORS: used on the options panel.
 #: ../gui/freehand.py:584
 msgid "Smooth:"
-msgstr ""
+msgstr "Glatigo:"
 
 #. TRANSLATORS: Short alias for "Fake Pressure (for mouse)". This is
 #. TRANSLATORS: used on the options panel.
 #: ../gui/freehand.py:599 ../gui/inputtestwindow.py:62
 msgid "Pressure:"
-msgstr ""
+msgstr "Premo:"
 
 #. TRANSLATORS: Short alias for "Fake Barrel Rotation (for mouse)".
 #. TRANSLATORS: This is used on the options panel.
 #: ../gui/freehand.py:617
 msgid "Twist:"
-msgstr ""
+msgstr "Tordo:"
 
 #: ../gui/gtkexcepthook.py:163
 msgid "Bug Detected"
-msgstr ""
+msgstr "Cimo troviĝis"
 
 #: ../gui/gtkexcepthook.py:166
 msgid "<big><b>A programming error has been detected.</b></big>"
-msgstr ""
+msgstr "<big><b>Troviĝis eraro de la programo.</b></big>"
 
 #: ../gui/gtkexcepthook.py:169
 msgid ""
@@ -2313,12 +2343,12 @@ msgstr ""
 
 #: ../gui/gtkexcepthook.py:177
 msgid "Search Tracker…"
-msgstr ""
+msgstr "Serĉi datenbankon de cimoj…"
 
 #. only development and prereleases
 #: ../gui/gtkexcepthook.py:179
 msgid "Report…"
-msgstr ""
+msgstr "Raporti…"
 
 #: ../gui/gtkexcepthook.py:181
 msgid "Ignore Error"
@@ -2326,15 +2356,15 @@ msgstr "Malatenti eraron"
 
 #: ../gui/gtkexcepthook.py:182
 msgid "Quit MyPaint"
-msgstr ""
+msgstr "Ĉesigi MyPaint"
 
 #: ../gui/gtkexcepthook.py:192
 msgid "Details…"
-msgstr ""
+msgstr "Detaloj…"
 
 #: ../gui/gtkexcepthook.py:219 ../gui/gtkexcepthook.py:222
 msgid "Exception while analyzing the exception."
-msgstr ""
+msgstr "Escepto dum analizado de la escepto."
 
 #. TRANSLATORS: Crash report template for github, preceding a traceback.
 #. TRANSLATORS: Please ask users kindly to supply at least an English
@@ -2362,34 +2392,54 @@ msgid ""
 "            #### Traceback\n"
 "        "
 msgstr ""
+"            #### Priskribo (Description)\n"
+"\n"
+"            Donu al ĉi tiu raporto mallongan priskriban titolon.\n"
+"            (Bonvolu uzi la anglan, almenaŭ por la titolo, se vi povas.)\n"
+"            La titolo estu en la formo\n"
+"            «[misfunkcianta-trajto]: [kio-fuŝiĝis]», se tio eblas.\n"
+"            Ankaŭ, bonvolu anstataŭigi ĉi tiun tekston\n"
+"            per pli longa priskribo de la cimo.\n"
+"            Ekrankopioj aŭ filmetoj ankaŭ bonegas!\n"
+"\n"
+"            #### Metodo por reprodukti (Steps to reproduce)\n"
+"\n"
+"            Bonvolu diri al ni tion, kion vi estis faranta\n"
+"            kiam la erarmesaĝo aperis.\n"
+"            Eĉ pli bone estos instrukcio\n"
+"            por kiel reprodukti la cimon,\n"
+"            se tio eblas.\n"
+"\n"
+"            #### Retrospuro (Traceback)\n"
+"        "
 
 #: ../gui/inktool.py:97 ../gui/inktool.py:479
 msgid "Inking"
-msgstr ""
+msgstr "Inkado"
 
 #: ../gui/inktool.py:100
 msgid "Draw, and then adjust smooth lines"
-msgstr ""
+msgstr "Desegni kaj glatigi liniojn"
 
 #: ../gui/inputtestwindow.py:32
 msgid "Input Device Test"
-msgstr ""
+msgstr "Elprovo de eniga aparato"
 
 #: ../gui/inputtestwindow.py:61
 msgid "(no pressure)"
-msgstr ""
+msgstr "(sen premo)"
 
 #: ../gui/inputtestwindow.py:64
 msgid "(no tilt)"
-msgstr ""
+msgstr "(sen klino)"
 
 #: ../gui/inputtestwindow.py:65
 msgid "Tilt:"
-msgstr ""
+msgstr "Klino:"
 
 #: ../gui/inputtestwindow.py:70
 msgid "(no device)"
-msgstr ""
+msgstr "(neniu aparato)"
 
 #: ../gui/inputtestwindow.py:71
 msgid "Device:"
@@ -2412,28 +2462,27 @@ msgstr "Movi tavolon"
 
 #: ../gui/layermanip.py:50
 msgid "Move the current layer"
-msgstr ""
+msgstr "Movi la aktualan tavolon"
 
 #: ../gui/layerprops.py:356
 msgctxt "layer properties dialog: name entry: icon tooltip"
 msgid "Layer names cannot be empty."
-msgstr ""
+msgstr "Nomo de tavolo ne povas esti malplena."
 
 #: ../gui/layerprops.py:361
 msgctxt "layer properties dialog: name entry: icon tooltip"
 msgid "Layer name is not unique."
-msgstr ""
+msgstr "Nomo de tavolo ne estas unika."
 
 #: ../gui/layerprops.py:377
-#, fuzzy
 msgctxt "layer properties dialog: title"
 msgid "Layer Properties"
-msgstr "%s: redakti agordojn"
+msgstr "Atributoj de tavolo"
 
 #: ../gui/layerprops.py:381
 msgctxt "layer properties dialog: done button"
 msgid "Done"
-msgstr ""
+msgstr "Farita"
 
 #. Visibility flag column
 #: ../gui/layers.py:406
@@ -2443,32 +2492,30 @@ msgstr "Videbla"
 #. Other flags column
 #: ../gui/layers.py:438
 msgid "Flags"
-msgstr ""
+msgstr "Flagoj"
 
 #: ../gui/layers.py:939
-#, fuzzy
 msgctxt "Layers: description: no layer (\"never happens\" condition!)"
 msgid "?layer"
-msgstr "Tavolo"
+msgstr "?tavolo"
 
 #: ../gui/layers.py:959
 msgctxt "Layers: description parts: unknown mode (fallback str!)"
 msgid "?mode"
-msgstr ""
+msgstr "?reĝimo"
 
 #: ../gui/layers.py:966
 msgctxt "Layers: description parts: layer hidden"
 msgid "Hidden"
-msgstr ""
+msgstr "Kaŝita"
 
 #: ../gui/layers.py:971
 #, python-format
 msgctxt "Layers: description parts: opacity percentage"
 msgid "%d%% opaque"
-msgstr ""
+msgstr "%d%% opaka"
 
 #: ../gui/layers.py:978
-#, fuzzy
 msgctxt "Layers dockable: description parts: layer locked flag"
 msgid "Locked"
 msgstr "Ŝlosita"
@@ -2476,19 +2523,18 @@ msgstr "Ŝlosita"
 #: ../gui/layers.py:989
 msgctxt "Layers: description parts: unknown type (fallback str!)"
 msgid "?type"
-msgstr ""
+msgstr "?tipo"
 
 #: ../gui/layers.py:996
-#, fuzzy
 msgctxt "Layers dockable: description parts joiner text"
 msgid ", "
 msgstr ", "
 
 #: ../gui/layers.py:1004
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgctxt "Layers dockable: markup for a layer with no description"
 msgid "{layer_name}"
-msgstr "Aldoni {layer_default_name}"
+msgstr "{layer_name}"
 
 #: ../gui/layers.py:1009
 #, python-brace-format
@@ -2497,6 +2543,8 @@ msgid ""
 "<span size=\"smaller\">{layer_name}\n"
 "<span size=\"smaller\">{layer_description}</span></span>"
 msgstr ""
+"<span size=\"smaller\">{layer_name}\n"
+"<span size=\"smaller\">{layer_description}</span></span>"
 
 #: ../gui/layerswindow.py:95
 msgid "Layers"
@@ -2504,7 +2552,7 @@ msgstr "Tavoloj"
 
 #: ../gui/layerswindow.py:96
 msgid "Arrange layers and assign effects"
-msgstr ""
+msgstr "Aranĝi tavolojn kaj asigni efektojn"
 
 #. TRANSLATORS: tooltip for the opacity slider (text)
 #. TRANSLATORS: note that "%%" turns into "%"
@@ -2519,67 +2567,68 @@ msgstr "Tavola opakeco: %d%%"
 #: ../gui/layerswindow.py:107
 #, python-format
 msgid "%d%%"
-msgstr ""
+msgstr "%d%%"
 
 #. TRANSLATORS: status bar messages for drag, without/with modifiers
 #: ../gui/layerswindow.py:114
 msgid "Move layer in stack…"
-msgstr ""
+msgstr "Movi tavolon en stako…"
 
 #: ../gui/layerswindow.py:115
 msgid ""
 "Move layer in stack (dropping into a regular layer will create a new group)"
 msgstr ""
+"Movi tavolon en stako (krei novan tavolaron per ŝovmeto de tavolo super "
+"alian)"
 
 #: ../gui/layerswindow.py:156
 msgid "Layer"
 msgstr "Tavolo"
 
 #: ../gui/layervis.py:53
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgctxt "view controls: dropdown: item markup"
 msgid "<i>{builtin_view_name}</i>"
-msgstr "<b>{brush_name}</b>"
+msgstr "<i>{builtin_view_name}</i>"
 
 #: ../gui/layervis.py:125
 #, python-brace-format
 msgctxt "view controls: dropdown: item markup"
 msgid "{user_chosen_view_name}"
-msgstr ""
+msgstr "{user_chosen_view_name}"
 
 #: ../gui/layervis.py:187
-#, fuzzy
 msgctxt "view controls: rename view dialog"
 msgid "Rename View"
-msgstr "Renomi"
+msgstr "Ŝanĝi nomon de vido"
 
 #: ../gui/linemode.py:41
 msgid "Entrance Pressure"
-msgstr ""
+msgstr "Premo ĉe komenco"
 
 #: ../gui/linemode.py:42
 msgid "Stroke entrance pressure for line tools"
-msgstr ""
+msgstr "Premo ĉe komenco por iloj pri linioj"
 
 #: ../gui/linemode.py:43
 msgid "Midpoint Pressure"
-msgstr ""
+msgstr "Premo ĉe mezo"
 
 #: ../gui/linemode.py:44
 msgid "Mid-Stroke pressure for line tools"
-msgstr ""
+msgstr "Premo ĉe mezo por iloj pri linioj"
 
 #: ../gui/linemode.py:45
 msgid "Exit Pressure"
-msgstr ""
+msgstr "Premo ĉe fino"
 
 #: ../gui/linemode.py:46
 msgid "Stroke exit pressure for line tools"
-msgstr ""
+msgstr "Premo ĉe fino por iloj pri linioj"
 
 #: ../gui/linemode.py:47
 msgid "Head"
-msgstr ""
+msgstr "Kapo"
 
 #: ../gui/linemode.py:48
 msgid "Stroke lead-in end"
@@ -2587,7 +2636,7 @@ msgstr ""
 
 #: ../gui/linemode.py:49
 msgid "Tail"
-msgstr ""
+msgstr "Vosto"
 
 #: ../gui/linemode.py:50
 msgid "Stroke trail-off beginning"
@@ -2595,30 +2644,34 @@ msgstr ""
 
 #: ../gui/linemode.py:174
 msgid "Pressure variation…"
-msgstr ""
+msgstr "Variado de premo…"
 
 #: ../gui/linemode.py:221 ../gui/linemode.py:800
 msgid "Lines and Curves"
-msgstr ""
+msgstr "Linioj kaj kurboj"
 
 #. TRANSLATORS: users should never see this message
 #: ../gui/linemode.py:225
 msgid "Generic line/curve mode"
-msgstr ""
+msgstr "Reĝimo de ĝeneralaj linioj/kurboj"
 
 #: ../gui/linemode.py:803
 msgid ""
 "Draw straight lines; Shift adds curves, Shift + Ctrl moves line ends, Ctrl "
 "constrains angle"
 msgstr ""
+"Desegni rektojn; kun majuskliga klavo, desegni kurbon; kun majuskliga kaj "
+"stira klavoj, movi finojn; kun stirklavo, limigi angulon"
 
 #: ../gui/linemode.py:814
 msgid "Connected Lines"
-msgstr ""
+msgstr "Konektitaj linioj"
 
 #: ../gui/linemode.py:817
 msgid "Draw a sequence of lines; Shift adds curves, Ctrl constrains angle"
 msgstr ""
+"Desegni sinsekvon de linioj; kun majuskliga klavo, desegni kurbon; kun "
+"stirklavo, limigi angulon"
 
 #: ../gui/linemode.py:827
 msgid "Ellipses and Circles"
@@ -2627,6 +2680,8 @@ msgstr "Elipsoj kaj cirkloj"
 #: ../gui/linemode.py:830
 msgid "Draw ellipses; Shift rotates, Ctrl constrains ratio/angle"
 msgstr ""
+"Desegni elipsojn; kun majuskliga klavo, turni; kun stirklavo, limigi "
+"proporcion/angulon"
 
 #: ../gui/meta.py:39
 msgctxt "About dialog: copyright statement"
@@ -2648,6 +2703,13 @@ msgid ""
 "This program is distributed in the hope that it will be useful, but WITHOUT "
 "ANY WARRANTY. See the COPYING file for more details."
 msgstr ""
+"Ĉi tiu programo estas libera programo; vi rajtas disdoni ĝin kaj/aŭ modifi "
+"ĝin laŭ la kondiĉoj de la Ĝenerala Publika Permesilo GNU eldonita de Free "
+"Software Foundation; aŭ versio 2 de la Permesilo, aŭ (laŭ via elekto) ajna "
+"posta versio.\n"
+"\n"
+"Ĉi tiu programo estas distribuita kun la espero, ke ĝi estos utila, sed SEN "
+"IU AJN GARANTIO. Vidu la dosieron COPYING por pliaj detaloj."
 
 #: ../gui/meta.py:60
 msgctxt "About dialog: credits: tasks"
@@ -2662,7 +2724,7 @@ msgstr "porteblo"
 #: ../gui/meta.py:68
 msgctxt "About dialog: credits: tasks"
 msgid "project management"
-msgstr ""
+msgstr "administrado de projekto"
 
 #: ../gui/meta.py:72
 msgctxt "About dialog: credits: tasks: brush presets and icons"
@@ -2672,17 +2734,17 @@ msgstr "penikoj"
 #: ../gui/meta.py:76
 msgctxt "About dialog: credits: tasks: background paper textures"
 msgid "patterns"
-msgstr ""
+msgstr "fonoj"
 
 #: ../gui/meta.py:80
 msgctxt "About dialog: credits: tasks: icons for internal tools"
 msgid "tool icons"
-msgstr ""
+msgstr "piktogramoj de iloj"
 
 #: ../gui/meta.py:84
 msgctxt "About dialog: credits: tasks: the main application icon"
 msgid "desktop icon"
-msgstr ""
+msgstr "labortabla piktogramo"
 
 #: ../gui/meta.py:88
 msgctxt "About dialog: credits: tasks: palettes"
@@ -2702,7 +2764,7 @@ msgstr "subteno"
 #: ../gui/meta.py:101
 msgctxt "About dialog: credits: tasks: outreach (social media, ads?)"
 msgid "outreach"
-msgstr ""
+msgstr "varbado"
 
 #: ../gui/meta.py:105
 msgctxt "About dialog: credits: tasks: running or building a community"
@@ -2734,7 +2796,7 @@ msgstr "Grando:"
 #. TRANSLATORS:"Brush opacity" for the options panel. Short.
 #: ../gui/mode.py:594
 msgid "Opaque:"
-msgstr ""
+msgstr "Opakeco:"
 
 #. TRANSLATORS:"Brush hardness/sharpness" for the options panel. Short.
 #: ../gui/mode.py:596
@@ -2749,17 +2811,17 @@ msgstr ""
 #. TRANSLATORS:"Paint Pigment Mode" for the options panel. Short.
 #: ../gui/mode.py:600
 msgid "Pigment:"
-msgstr ""
+msgstr "Pigmento:"
 
 #: ../gui/optionspanel.py:47
 msgctxt "options panel: tab tooltip: title"
 msgid "Tool Options"
-msgstr ""
+msgstr "Opcioj pri ilo"
 
 #: ../gui/optionspanel.py:51
 msgctxt "options panel: tab tooltip: description"
 msgid "Specialized settings for the current editing tool"
-msgstr ""
+msgstr "Specialaj agordoj pri la aktuala redakta ilo"
 
 #: ../gui/optionspanel.py:58
 #, python-brace-format
@@ -2770,12 +2832,12 @@ msgstr "<b>{mode_name}</b>"
 #: ../gui/optionspanel.py:62
 msgctxt "options panel: body"
 msgid "<i>No options available</i>"
-msgstr ""
+msgstr "<i>Neniu opcio disponeblas</i>"
 
 #: ../gui/overlays.py:161
 #, python-format
 msgid "Zoom: %.01f%%"
-msgstr ""
+msgstr "Zomo: %.01f%%"
 
 #: ../gui/picker.py:462
 msgctxt "context picker: statusbar text during grab"
@@ -2785,7 +2847,7 @@ msgstr ""
 #: ../gui/picker.py:501
 msgctxt "color picker: statusbar text during grab"
 msgid "Pick color…"
-msgstr ""
+msgstr "Elekti koloron…"
 
 #: ../gui/preferenceswindow.py:44
 msgid "Preferences"
@@ -2806,12 +2868,12 @@ msgstr "Sistemlingvo"
 #, python-brace-format
 msgctxt "Prefs Dialog|View|Interface - menu entries"
 msgid "{lang_en} - ({lang_nat})"
-msgstr ""
+msgstr "{lang_en} - ({lang_nat})"
 
 #. TRANSLATORS: title of panel showing an overview of the whole canvas
 #: ../gui/previewwindow.py:201
 msgid "Preview"
-msgstr ""
+msgstr "Antaŭrigardo"
 
 #: ../gui/previewwindow.py:203
 msgid "Show preview of the whole drawing area"
@@ -2821,32 +2883,32 @@ msgstr ""
 #. TRANSLATORS: main view is pointing.
 #: ../gui/previewwindow.py:263
 msgid "Show Viewfinder"
-msgstr ""
+msgstr "Montri vidotrovilon"
 
 #: ../gui/scratchwindow.py:34
 msgid "Scratchpad"
-msgstr "Notlibro"
+msgstr "Provejo"
 
 #: ../gui/scratchwindow.py:36
 msgid "Mix colors and make sketches on separate scrap pages"
-msgstr ""
+msgstr "Miksi kolorojn kaj skizi sur apartaj provaĵo-paĝoj"
 
 #: ../gui/spinbox.py:35
 msgid "Previous item"
-msgstr ""
+msgstr "Antaŭa ero"
 
 #: ../gui/spinbox.py:39
 msgid "Next item"
-msgstr ""
+msgstr "Posta ero"
 
 #: ../gui/spinbox.py:102
 msgid "(Nothing to show)"
-msgstr ""
+msgstr "(Nenio por montri)"
 
 #: ../gui/symmetry.py:83
 msgctxt "symmetry axis edit mode: instructions shown in statusbar"
 msgid "Place axis"
-msgstr ""
+msgstr "Meti akson"
 
 #: ../gui/symmetry.py:87
 msgctxt "symmetry axis edit mode: instructions shown in statusbar"
@@ -2861,30 +2923,28 @@ msgstr "Forigi akson"
 #: ../gui/symmetry.py:103
 msgctxt "symmetry axis edit mode: mode name (tooltips)"
 msgid "Edit Symmetry Axis"
-msgstr ""
+msgstr "Redakti akson de simetrio"
 
 #: ../gui/symmetry.py:109
 msgctxt "symmetry axis edit mode: mode description (tooltips)"
 msgid "Adjust the painting symmetry axis."
-msgstr ""
+msgstr "Alĝustigi la pentran simetrian akson."
 
 #: ../gui/symmetry.py:345
-#, fuzzy
 msgctxt "symmetry axis options panel: labels"
 msgid "X Position:"
-msgstr "Pozicio:"
+msgstr "X-pozicio:"
 
 #: ../gui/symmetry.py:349
-#, fuzzy
 msgctxt "symmetry axis options panel: labels"
 msgid "Y Position:"
-msgstr "Pozicio:"
+msgstr "Y-pozicio:"
 
 #: ../gui/symmetry.py:353
 #, python-format
 msgctxt "symmetry axis options panel: labels"
 msgid "Angle: %.2f°"
-msgstr ""
+msgstr "Angulo: %.2f°"
 
 #: ../gui/symmetry.py:357
 msgctxt "symmetry axis options panel: position button: no axis pos."
@@ -2894,18 +2954,17 @@ msgstr "Nenio"
 #: ../gui/symmetry.py:361
 msgctxt "symmetry axis options panel: labels"
 msgid "Alpha:"
-msgstr ""
+msgstr "Alfa:"
 
 #: ../gui/symmetry.py:365
-#, fuzzy
 msgctxt "symmetry axis options panel: labels"
 msgid "Symmetry Type:"
-msgstr "Simetrio"
+msgstr "Tipo de Simetrio:"
 
 #: ../gui/symmetry.py:369
 msgctxt "symmetry axis options panel: labels"
 msgid "Rotational lines:"
-msgstr ""
+msgstr "Rotaciaj linioj:"
 
 #: ../gui/symmetry.py:536
 msgctxt "symmetry axis options panel: axis active checkbox"
@@ -2914,11 +2973,11 @@ msgstr "Ŝaltita"
 
 #: ../gui/toolbar.py:28
 msgid "File handling"
-msgstr ""
+msgstr "Traktado de dosiero"
 
 #: ../gui/toolbar.py:29
 msgid "Scraps switcher"
-msgstr ""
+msgstr "Ŝanĝilo de provaĵoj"
 
 #: ../gui/toolbar.py:30
 msgid "Undo and Redo"
@@ -2926,41 +2985,41 @@ msgstr "Malfari kaj refari"
 
 #: ../gui/toolbar.py:31
 msgid "Blend Modes"
-msgstr ""
+msgstr "Reĝimoj de miksado"
 
 #: ../gui/toolbar.py:32
 msgid "Line Modes"
-msgstr ""
+msgstr "Reĝimoj pri linio"
 
 #: ../gui/toolbar.py:33
 msgid "View (Main)"
-msgstr ""
+msgstr "Vido (ĉefa)"
 
 #: ../gui/toolbar.py:35
 msgid "View (Alternative/Secondary)"
-msgstr ""
+msgstr "Vido (alternativa/neĉefa)"
 
 #: ../gui/toolbar.py:37
 msgid "View (Resetting)"
 msgstr ""
 
 #: ../gui/toolstack.py:352
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgctxt "workspace: sidebar tabs: button tooltips"
 msgid "{tab_title}: close tab"
-msgstr "%s: fermi langeton"
+msgstr "{tab_title}: fermi langeton"
 
 #: ../gui/toolstack.py:356
 #, python-brace-format
 msgctxt "workspace: sidebar tabs: button tooltips"
 msgid "{tab_title}: tab options and properties"
-msgstr ""
+msgstr "{tab_title}: opcioj kaj atributoj de langeto"
 
 #: ../gui/toolstack.py:360
 #, python-brace-format
 msgctxt "workspace: sidebar tabs: button tooltips"
 msgid "{tab_title}: move tab to other sidebar"
-msgstr ""
+msgstr "{tab_title}: movi langeton al alia flankpanelo"
 
 #: ../gui/topbar.py:90
 msgid "<b>MyPaint</b>"
@@ -2968,7 +3027,7 @@ msgstr "<b>MyPaint</b>"
 
 #: ../gui/viewmanip.py:40
 msgid "Scroll View"
-msgstr ""
+msgstr "Rulumi vidon"
 
 #: ../gui/viewmanip.py:43
 msgid "Drag the canvas view"
@@ -2976,7 +3035,7 @@ msgstr ""
 
 #: ../gui/viewmanip.py:79
 msgid "Zoom View"
-msgstr ""
+msgstr "Zomigi vidon"
 
 #: ../gui/viewmanip.py:82
 msgid "Zoom the canvas view"
@@ -2984,7 +3043,7 @@ msgstr ""
 
 #: ../gui/viewmanip.py:122
 msgid "Rotate View"
-msgstr ""
+msgstr "Turni vidon"
 
 #: ../gui/viewmanip.py:125
 msgid "Rotate the canvas view"
@@ -2992,11 +3051,11 @@ msgstr ""
 
 #: ../lib/command.py:177
 msgid "Unknown Command"
-msgstr ""
+msgstr "Nekonata komando"
 
 #: ../lib/command.py:320
 msgid "Undefined (command not started yet)"
-msgstr ""
+msgstr "Nekonata (komando ankoraŭ ne ekruliĝis)"
 
 #. TRANSLATORS: A short time spent painting / making brushwork.
 #. TRANSLATORS: This can correspond to zero or more touches of
@@ -3004,24 +3063,23 @@ msgstr ""
 #: ../lib/command.py:327
 #, python-brace-format
 msgid "{seconds:.01f}s of painting with {brush_name}"
-msgstr ""
+msgstr "{seconds:.01f} s da pentrado per {brush_name}"
 
 #: ../lib/command.py:525
 msgid "Flood Fill"
-msgstr ""
+msgstr "Farbi"
 
 #: ../lib/command.py:612
 msgid "Trim Layer"
-msgstr ""
+msgstr "Stuci tavolon"
 
 #: ../lib/command.py:632
 msgid "Uniquify Layer Pixels"
-msgstr ""
+msgstr "Unikigi bilderojn de tavolo"
 
 #: ../lib/command.py:655
-#, fuzzy
 msgid "Refactor Group"
-msgstr "Renomi grupon"
+msgstr "Refaktori tavolaron"
 
 #: ../lib/command.py:678
 msgid "Clear Layer"
@@ -3036,24 +3094,23 @@ msgstr "Alglui tavolon"
 
 #: ../lib/command.py:737
 msgid "New Layer from Visible"
-msgstr ""
+msgstr "Nova tavolo el videblaĵoj"
 
 #: ../lib/command.py:779
 msgid "Merge Visible Layers"
-msgstr ""
+msgstr "Kunigi videblajn tavolojn"
 
 #: ../lib/command.py:853
 msgid "Merge Down"
-msgstr ""
+msgstr "Kunigi suben"
 
 #: ../lib/command.py:902
 msgid "Normalize Layer Mode"
-msgstr ""
+msgstr "Uzi normalan reĝimon por tavolo"
 
 #: ../lib/command.py:955
-#, fuzzy
 msgid "Import Layers"
-msgstr "Forigi tavolon"
+msgstr "Enporti tavolojn"
 
 #: ../lib/command.py:957
 #, python-brace-format
@@ -3070,31 +3127,31 @@ msgstr "Elekti tavolon"
 
 #: ../lib/command.py:1158
 msgid "Duplicate Layer"
-msgstr ""
+msgstr "Kloni tavolon"
 
 #: ../lib/command.py:1182
 msgid "Move Layer Up"
-msgstr ""
+msgstr "Movi tavolon supren"
 
 #: ../lib/command.py:1196
 msgid "Move Layer Down"
-msgstr ""
+msgstr "Movi tavolon malsupren"
 
 #: ../lib/command.py:1223
 msgid "Move Layer in Stack"
-msgstr ""
+msgstr "Movi tavolon en stako"
 
 #: ../lib/command.py:1342
 msgid "Rename Layer"
-msgstr "Renomi tavolon"
+msgstr "Ŝanĝi nomon de tavolo"
 
 #: ../lib/command.py:1400
 msgid "Make Layer Visible"
-msgstr ""
+msgstr "Videbligi tavolon"
 
 #: ../lib/command.py:1402
 msgid "Make Layer Invisible"
-msgstr ""
+msgstr "Nevidebligi tavolon"
 
 #: ../lib/command.py:1440
 msgid "Lock Layer"
@@ -3107,7 +3164,7 @@ msgstr "Malŝlosi tavolon"
 #: ../lib/command.py:1460
 #, python-format
 msgid "Set Layer Opacity: %0.1f%%"
-msgstr ""
+msgstr "Agordi opakecon de tavolo: %0.1f%%"
 
 #: ../lib/command.py:1499
 msgid "Unknown Mode"
@@ -3116,46 +3173,46 @@ msgstr "Nekonata reĝimo"
 #: ../lib/command.py:1500
 #, python-format
 msgid "Set Layer Mode: %s"
-msgstr ""
+msgstr "Agordi reĝimon de tavolo: %s"
 
 #: ../lib/command.py:1524
 msgid "Enable Frame"
-msgstr ""
+msgstr "Ŝalti kadron"
 
 #: ../lib/command.py:1526
 msgid "Disable Frame"
-msgstr ""
+msgstr "Malŝalti kadron"
 
 #: ../lib/command.py:1544
 msgid "Update Frame"
-msgstr ""
+msgstr "Ĝisdatigi kadron"
 
 #: ../lib/command.py:1573
 msgid "Edit Layer Externally"
-msgstr ""
+msgstr "Redakti tavolon per ekstera programo"
 
 #: ../lib/document.py:74
 #, python-brace-format
 msgctxt "Document IO: common error strings: {error_loading_common}"
 msgid "Error loading “{basename}”."
-msgstr ""
+msgstr "Eraro pri ŝargado de «{basename}»."
 
 #: ../lib/document.py:78
 msgctxt "Document IO: common error strings: {see_logs}"
 msgid "The logs may have more detail about this error."
-msgstr ""
+msgstr "La protokoloj eble havas pli da detaloj pri ĉi tiu eraro."
 
 #. TRANSLATORS: string used in e.g. "3h42m from now"
 #: ../lib/document.py:205
 msgctxt "Document autosave descriptions: the {ago} string: future"
 msgid "from now"
-msgstr ""
+msgstr "post nun"
 
 #. TRANSLATORS: string used in e.g. "8s ago"
 #: ../lib/document.py:211
 msgctxt "Document autosave descriptions: the {ago} string: past"
 msgid "ago"
-msgstr ""
+msgstr "antaŭ nun"
 
 #. TRANSLATORS: String descriptions for an autosaved backup.
 #. TRANSLATORS: Time strings are localized: e.g. "3h42m" or "8s"
@@ -3167,12 +3224,15 @@ msgid ""
 "Are you running more than once instance of MyPaint?\n"
 "Close app and wait {cache_update_interval}s to retry."
 msgstr ""
+"La stapla dosierujo ankoraŭ eble estas uzata.\n"
+"Ĉu vi rulas MyPaint plurfoje samtempe?\n"
+"Fermu la programon kaj atendu {cache_update_interval} sekundojn por reprovi."
 
 #: ../lib/document.py:226
 #, python-brace-format
 msgctxt "Document autosave descriptions"
 msgid "Incomplete backup updated {last_modified_time} {ago}"
-msgstr ""
+msgstr "Nekompleta savkopio ĝisdatigita {last_modified_time} {ago}"
 
 #. TRANSLATORS: The {ago} variable is a translated string.
 #. TRANSLATORS: Look for the msgids "from now" and "ago"
@@ -3195,12 +3255,14 @@ msgid ""
 "Unable to write “{filename}”: {err}\n"
 "Do you have enough space left on the device?"
 msgstr ""
+"Ne eblas skribi sur «{filename}»: {err}\n"
+"Ĉu vi havas sufiĉe da spaco en la aparato?"
 
 #: ../lib/document.py:1454 ../lib/document.py:1464
 #, python-brace-format
 msgctxt "Document IO: hint templates for user-facing exceptions"
 msgid "Unable to write “{filename}”: {err}"
-msgstr ""
+msgstr "Ne eblas skribi sur «{filename}»: {err}"
 
 #: ../lib/document.py:1501
 #, python-brace-format
@@ -3209,6 +3271,8 @@ msgid ""
 "{error_loading_common}\n"
 "The file does not exist."
 msgstr ""
+"{error_loading_common}\n"
+"La dosiero ne ekzistas."
 
 #: ../lib/document.py:1508
 #, python-brace-format
@@ -3217,6 +3281,8 @@ msgid ""
 "{error_loading_common}\n"
 "You do not have the permissions needed to open this file."
 msgstr ""
+"{error_loading_common}\n"
+"Vi ne havas la permesojn necesajn por malfermi ĉi tiun dosieron."
 
 #: ../lib/document.py:1534
 #, python-brace-format
@@ -3241,11 +3307,13 @@ msgid ""
 "{error_loading_common}\n"
 "Unknown file format extension: “{ext}”"
 msgstr ""
+"{error_loading_common}\n"
+"Nekonata dosierforma sufikso: «{ext}»"
 
 #: ../lib/document.py:1590
 msgctxt "Document IO: group name for Import Layers"
 msgid "Imported layers"
-msgstr ""
+msgstr "Enportitaj tavoloj"
 
 #: ../lib/document.py:1757
 #, python-brace-format
@@ -3256,6 +3324,10 @@ msgid ""
 "Try saving in PNG format instead, if your machine doesn’t have a lot of "
 "memory. MyPaint’s PNG save function is more efficient."
 msgstr ""
+"Ne eblas konservi kiel JPEG-dosieron: {original_msg}\n"
+"\n"
+"Provu konservi kiel PNG-dosieron anstataŭe, se via maŝino ne havas multe da "
+"memoro. Konservado kiel PNG postulas malpli da memoro por MyPaint."
 
 #: ../lib/document.py:1913
 #, python-brace-format
@@ -3267,63 +3339,67 @@ msgid ""
 "\n"
 "{see_logs}"
 msgstr ""
+"Malsukcesis restaŭri dokumenton per aŭtomata savkopio.\n"
+"\n"
+"Kialo: {reason}\n"
+"\n"
+"{see_logs}"
 
 #: ../lib/floodfill.py:132
-#, fuzzy
 msgctxt "floodfill status message: use active tense"
 msgid "Filling"
-msgstr "Plenigi"
+msgstr "Plenigante"
 
 #: ../lib/floodfill.py:133
 msgctxt "floodfill status message: use active tense"
 msgid "Morphing"
-msgstr ""
+msgstr "Deformante"
 
 #: ../lib/floodfill.py:134
 msgctxt "floodfill status message: use active tense"
 msgid "Blurring"
-msgstr ""
+msgstr "Svagigante"
 
 #: ../lib/floodfill.py:135
 msgctxt "floodfill status message: use active tense"
 msgid "Compositing"
-msgstr ""
+msgstr "Kunmetante"
 
 #: ../lib/floodfill.py:136
 msgctxt "floodfill status message: use active tense"
 msgid "Finishing up"
-msgstr ""
+msgstr "Finante"
 
 #: ../lib/floodfill.py:138
 msgctxt "uniform square region of pixels, plural noun"
 msgid "tiles"
-msgstr ""
+msgstr "kaheloj"
 
 #. TRANSLATORS: Assumption for all "Time period abbreviations":
 #. TRANSLATORS: they don't need ngettext (to support plural/singular)
 #: ../lib/helpers.py:586
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgctxt "Time period abbreviations"
 msgid "{days}d{hours}h"
-msgstr "{days}t{hours}h"
+msgstr "{days} t {hours} h"
 
 #: ../lib/helpers.py:588
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgctxt "Time period abbreviations"
 msgid "{hours}h{minutes}m"
-msgstr "{hours}h{minutes}m"
+msgstr "{hours} h {minutes} min"
 
 #: ../lib/helpers.py:590
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgctxt "Time period abbreviation"
 msgid "{minutes}m{seconds}s"
-msgstr "{minutes}m{seconds}s"
+msgstr "{minutes} min {seconds} s"
 
 #: ../lib/helpers.py:592
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgctxt "Time period abbreviation"
 msgid "{seconds}s"
-msgstr "{seconds}s"
+msgstr "{seconds} s"
 
 #. TRANSLATORS: Default name for new normal, paintable layers
 #: ../lib/layer/core.py:66 ../lib/layer/data.py:1309
@@ -3333,13 +3409,11 @@ msgstr "Tavolo"
 
 #. TRANSLATORS: Short default name for vector (SVG/Inkscape) layers
 #: ../lib/layer/data.py:1161
-#, fuzzy
 msgctxt "layer default names"
 msgid "Vectors"
-msgstr "Vektora tavolo"
+msgstr "Vektoroj"
 
 #: ../lib/layer/data.py:1166
-#, fuzzy
 msgctxt "layer type descriptions"
 msgid "Vector Layer"
 msgstr "Vektora tavolo"
@@ -3348,42 +3422,39 @@ msgstr "Vektora tavolo"
 #: ../lib/layer/data.py:1237
 msgctxt "layer default names"
 msgid "Bitmap"
-msgstr ""
+msgstr "Bitbildo"
 
 #: ../lib/layer/data.py:1242
 msgctxt "layer type descriptions"
 msgid "Bitmap Data"
-msgstr ""
+msgstr "Bitbildaj datenoj"
 
 #. TRANSLATORS: Short default name for non-renderable fallback layers
 #: ../lib/layer/data.py:1258
 msgctxt "layer default names"
 msgid "Data"
-msgstr ""
+msgstr "Datenoj"
 
 #: ../lib/layer/data.py:1263
-#, fuzzy
 msgctxt "layer type descriptions"
 msgid "Unknown Data"
-msgstr "Nekonata Ago"
+msgstr "Nekonataj datenoj"
 
 #: ../lib/layer/data.py:1314
-#, fuzzy
 msgctxt "layer type descriptions"
 msgid "Painting Layer"
-msgstr "Nova Pentraĵo Tavolo"
+msgstr "Nova pentra tavolo"
 
 #. TRANSLATORS: Short default name for layer groups.
 #: ../lib/layer/group.py:67
 msgctxt "layer default names"
 msgid "Group"
-msgstr "Grupo"
+msgstr "Tavolaro"
 
 #: ../lib/layer/group.py:72
-#, fuzzy
 msgctxt "layer type descriptions"
 msgid "Layer Group"
-msgstr "Nova Tavolo grupon"
+msgstr "Tavolaro"
 
 #. TRANSLATORS: Short default name for temporary placeholder layers.
 #. TRANSLATORS: (The user should never see this except in error cases)
@@ -3405,10 +3476,9 @@ msgstr ", "
 #: ../lib/layer/tree.py:2243
 msgctxt "layer default names: refactor: name of the common areas layer"
 msgid "Common"
-msgstr ""
+msgstr "Komuna"
 
 #: ../lib/layervis.py:44
-#, fuzzy
 msgctxt "layer visibility sets: default name for a user-managed view"
 msgid "View"
 msgstr "Vido"
@@ -3416,36 +3486,33 @@ msgstr "Vido"
 #: ../lib/layervis.py:49
 msgctxt "layer visibility sets: text shown when no user-managed view is active"
 msgid "No active view"
-msgstr ""
+msgstr "Neniu aktiva vido"
 
 #: ../lib/layervis.py:579
 msgctxt "layer views: commands: add"
 msgid "Add Layer View"
-msgstr ""
+msgstr "Aldoni tavolan vidon"
 
 #: ../lib/layervis.py:604 ../lib/layervis.py:633
-#, fuzzy
 msgctxt "layer views: commands: remove"
 msgid "Remove Layer View"
-msgstr "Forigi tavolon"
+msgstr "Forigi tavolan vidon"
 
 #: ../lib/layervis.py:663
 #, python-brace-format
 msgctxt "layer views: commands: activate"
 msgid "Activate Layer View “{name}”"
-msgstr ""
+msgstr "Aktivigi tavolan vidon «{name}»"
 
 #: ../lib/layervis.py:692
-#, fuzzy
 msgctxt "layer views: commands: set active view's lock flag"
 msgid "Lock Layer View"
-msgstr "Ŝlosi tavolon"
+msgstr "Ŝlosi tavolan vidon"
 
 #: ../lib/layervis.py:697
-#, fuzzy
 msgctxt "layer views: commands: set active view's lock flag"
 msgid "Unlock Layer View"
-msgstr "Malŝlosi tavolon"
+msgstr "Malŝlosi tavolan vidon"
 
 #: ../lib/modes.py:47
 msgid "Pass-through"
@@ -3461,11 +3528,11 @@ msgstr "Normala"
 
 #: ../lib/modes.py:52
 msgid "The top layer only, without blending colors."
-msgstr ""
+msgstr "Nur la supra tavolo, sen miksado de koloroj."
 
 #: ../lib/modes.py:54
 msgid "Pigment"
-msgstr ""
+msgstr "Pigmento"
 
 #: ../lib/modes.py:55
 msgid ""
@@ -3474,7 +3541,7 @@ msgstr ""
 
 #: ../lib/modes.py:58
 msgid "Multiply"
-msgstr ""
+msgstr "Multipliki"
 
 #: ../lib/modes.py:59
 msgid ""
@@ -3484,7 +3551,7 @@ msgstr ""
 
 #: ../lib/modes.py:62
 msgid "Screen"
-msgstr "Ekrano"
+msgstr "Ekranumi"
 
 #: ../lib/modes.py:63
 msgid ""
@@ -3504,7 +3571,7 @@ msgstr ""
 
 #: ../lib/modes.py:71
 msgid "Darken"
-msgstr ""
+msgstr "Malheligi"
 
 #: ../lib/modes.py:72
 msgid "The top layer is used where it is darker than the backdrop."
@@ -3512,7 +3579,7 @@ msgstr ""
 
 #: ../lib/modes.py:75
 msgid "Lighten"
-msgstr ""
+msgstr "Heligi"
 
 #: ../lib/modes.py:76
 msgid "The top layer is used where it is lighter than the backdrop."
@@ -3542,7 +3609,7 @@ msgstr ""
 
 #: ../lib/modes.py:89
 msgid "Hard Light"
-msgstr ""
+msgstr "Malmola lumo"
 
 #: ../lib/modes.py:90
 msgid "Similar to shining a harsh spotlight onto the backdrop."
@@ -3550,7 +3617,7 @@ msgstr ""
 
 #: ../lib/modes.py:92
 msgid "Soft Light"
-msgstr ""
+msgstr "Mola lumo"
 
 #: ../lib/modes.py:93
 msgid "Like shining a diffuse spotlight onto the backdrop."
@@ -3558,7 +3625,7 @@ msgstr ""
 
 #: ../lib/modes.py:95
 msgid "Difference"
-msgstr ""
+msgstr "Diferenco"
 
 #: ../lib/modes.py:96
 msgid "Subtracts the darker color from the lighter of the two."
@@ -3566,7 +3633,7 @@ msgstr ""
 
 #: ../lib/modes.py:98
 msgid "Exclusion"
-msgstr ""
+msgstr "Ekskluzivado"
 
 #: ../lib/modes.py:99
 msgid "Similar to the 'Difference' mode, but lower in contrast."
@@ -3574,7 +3641,7 @@ msgstr ""
 
 #: ../lib/modes.py:102
 msgid "Hue"
-msgstr ""
+msgstr "Kolortono"
 
 #: ../lib/modes.py:103
 msgid ""
@@ -3610,7 +3677,7 @@ msgstr ""
 
 #: ../lib/modes.py:119
 msgid "Plus"
-msgstr ""
+msgstr "Plus"
 
 #: ../lib/modes.py:120
 msgid "This layer and its backdrop are simply added together."
@@ -3661,10 +3728,10 @@ msgstr ""
 #. TRANSLATORS: Change only if your lang *REQUIRES* a different order or
 #. TRANSLATORS: if raw digits and a space aren't enough.
 #: ../lib/naming.py:22
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgctxt "unique names: serial number needed: template"
 msgid "{name} {number}"
-msgstr "%(name)s %(number)d"
+msgstr "{name} {number}"
 
 #. TRANSLATORS: UNIQUE_NAME_REGEX - regex for UNIQUE_NAME_TEMPLATE
 #. TRANSLATORS: Must match its template (msgid: '{name} {number}')
@@ -3672,7 +3739,7 @@ msgstr "%(name)s %(number)d"
 #: ../lib/naming.py:30
 msgctxt "unique names: regex matching a string with a serial number"
 msgid "^(?P<name>.*?)\\s+(?P<number>\\d+)$"
-msgstr ""
+msgstr "^(?P<name>.*?)\\s+(?P<number>\\d+)$"
 
 #: ../lib/pixbufsurface.py:39
 msgctxt "user-facing error texts"
@@ -3690,42 +3757,45 @@ msgid ""
 "Reason: {err}\n"
 "Target folder: “{dirname}”."
 msgstr ""
+"Malsukcesis skribi sur «{basename}».\n"
+"\n"
+"Kialo: {err}\n"
+"Cela dosierujo: «{dirname}»."
 
 #: ../lib/tiledsurface.py:48
 msgid "Vertical"
-msgstr ""
+msgstr "Vertikala"
 
 #: ../lib/tiledsurface.py:49
 msgid "Horizontal"
-msgstr ""
+msgstr "Horizontala"
 
 #: ../lib/tiledsurface.py:50
 msgid "Vertical and horizontal"
-msgstr ""
+msgstr "Vertikala kaj horizontala"
 
 #: ../lib/tiledsurface.py:51
-#, fuzzy
 msgid "Rotational"
-msgstr "Rotacio"
+msgstr "Rotacia"
 
 #: ../lib/tiledsurface.py:52
 msgid "Snowflake"
-msgstr ""
+msgstr "Neĝero"
 
 #: ../lib/tiledsurface.py:624
 #, python-format
 msgid "PNG reader failed: %s"
-msgstr ""
+msgstr "Malsukcesis legilo de PNG: %s"
 
 #: ../gui/autorecover.glade:18
 msgid "Recover interrupted work?"
-msgstr ""
+msgstr "Ĉu restaŭri perditaĵon?"
 
 #. Whether to show the dialog when MyPaint starts
 #: ../gui/autorecover.glade:38
 msgctxt "Autosave Recovery dialog|"
 msgid "_Look for backups at startup"
-msgstr ""
+msgstr "_Serĉi savkopiojn dum lanĉo"
 
 #: ../gui/autorecover.glade:42
 msgctxt "Autosave Recovery dialog|Show Dialog at Startup checkbutton|"
@@ -3739,21 +3809,20 @@ msgstr ""
 
 #. Deletes the selected autosave backup file.
 #: ../gui/autorecover.glade:60
-#, fuzzy
 msgctxt "Autosave Recovery dialog|"
 msgid "_Delete…"
-msgstr "Forigi"
+msgstr "_Forigi…"
 
 #: ../gui/autorecover.glade:66
 msgctxt "Autosave Recovery dialog|Delete button|"
 msgid "Delete this backup from the disk."
-msgstr ""
+msgstr "Forigi ĉi tiun savkopion for de la disko."
 
 #. Recover in the sense or retrieval or salvage from a backup file. The user is asked to save the retrieved file immediately afterwards, hence the ellipsis.
 #: ../gui/autorecover.glade:78
 msgctxt "Autosave Recovery dialog|"
 msgid "_Recover & Save…"
-msgstr ""
+msgstr "_Restaŭri kaj konservi…"
 
 #: ../gui/autorecover.glade:84
 msgctxt "Autosave Recovery dialog|Recover button|"
@@ -3764,7 +3833,7 @@ msgstr ""
 #: ../gui/autorecover.glade:95
 msgctxt "Autosave Recovery dialog|"
 msgid "Decide _Later"
-msgstr ""
+msgstr "_Prokrasti decidon"
 
 #: ../gui/autorecover.glade:101
 msgctxt "Autosave Recovery dialog|Cancel button|"
@@ -3781,15 +3850,15 @@ msgstr ""
 
 #: ../gui/autorecover.glade:157
 msgid "Thumbnail"
-msgstr ""
+msgstr "Miniaturo"
 
 #: ../gui/autorecover.glade:171
 msgid "Description"
-msgstr ""
+msgstr "Priskribo"
 
 #: ../gui/brusheditor.glade:88
 msgid "Live update"
-msgstr ""
+msgstr "Tuja ĝisdatigo"
 
 #: ../gui/brusheditor.glade:93
 msgid ""
@@ -3799,11 +3868,11 @@ msgstr ""
 
 #: ../gui/brusheditor.glade:116
 msgid "Save these settings to the brush"
-msgstr ""
+msgstr "Konservi la agordojn en la penikon"
 
 #: ../gui/brusheditor.glade:132
 msgid "Edit Icon"
-msgstr ""
+msgstr "Redakti piktogramon"
 
 #: ../gui/brusheditor.glade:137
 msgid ""
@@ -3813,15 +3882,15 @@ msgstr ""
 
 #: ../gui/brusheditor.glade:151
 msgid "Delete"
-msgstr ""
+msgstr "Forigi"
 
 #: ../gui/brusheditor.glade:156
 msgid "Delete this brush from the disk"
-msgstr ""
+msgstr "Forigi ĉi tiun penikon for de la disko"
 
 #: ../gui/brusheditor.glade:170
 msgid "Copy to New"
-msgstr ""
+msgstr "Kopii al nova"
 
 #: ../gui/brusheditor.glade:175
 msgid "Copy these settings and the current brush's icon to a new brush"
@@ -3829,44 +3898,45 @@ msgstr ""
 
 #: ../gui/brusheditor.glade:194
 msgid "Rename this brush"
-msgstr ""
+msgstr "Ŝanĝi nomon de ĉi tiu peniko"
 
 #: ../gui/brusheditor.glade:239
 msgid "Brush Setting"
-msgstr ""
+msgstr "Agordoj pri peniko"
 
 #: ../gui/brusheditor.glade:340
 msgctxt "brush editor|metadata settings|labels for widgets|tooltips|"
 msgid "Short description for use in tooltips"
-msgstr ""
+msgstr "Mallonga priskribo montrota sur ŝpruĉhelpilo"
 
 #. Description for user tooltips
 #: ../gui/brusheditor.glade:343
 msgctxt "brush editor|metadata settings|labels|"
 msgid "Description:"
-msgstr ""
+msgstr "Priskribo:"
 
 #: ../gui/brusheditor.glade:355
 msgctxt "brush editor|metadata settings|labels for widgets|tooltips|"
 msgid "Brush developer's notes"
-msgstr ""
+msgstr "Notoj de la programisto de la peniko"
 
 #. Notes for developers
 #: ../gui/brusheditor.glade:358
 msgctxt "brush editor|metadata settings|labels|"
 msgid "Notes:"
-msgstr ""
+msgstr "Notoj:"
 
 #: ../gui/brusheditor.glade:420
 msgid ""
 "Starting value for this brush setting. The brush dynamics below act on this."
 msgstr ""
+"Komenca valoro de ĉi tiu agordo de la peniko. La ĉi-subaj penikaj dinamikoj "
+"ŝanĝos ĝin."
 
 #. field label
 #: ../gui/brusheditor.glade:426
-#, fuzzy
 msgid "Value:"
-msgstr "HSV valoro"
+msgstr "Valoro:"
 
 #: ../gui/brusheditor.glade:491
 msgid "Reset this input to have no effect on the setting"
@@ -3886,19 +3956,19 @@ msgstr ""
 
 #: ../gui/brusheditor.glade:562
 msgid "Output"
-msgstr ""
+msgstr "Eligo"
 
 #: ../gui/brusheditor.glade:583
 msgid "Input"
-msgstr ""
+msgstr "Enigo"
 
 #: ../gui/brusheditor.glade:601
 msgid "Adjusts the maximum value"
-msgstr ""
+msgstr "Alĝustigi la maksimuman valoron"
 
 #: ../gui/brusheditor.glade:634
 msgid "Adjusts the minimum value"
-msgstr ""
+msgstr "Alĝustigi la minimuman valoron"
 
 #: ../gui/brusheditor.glade:666
 msgid ""
@@ -3918,7 +3988,7 @@ msgstr ""
 
 #: ../gui/brusheditor.glade:746
 msgid "Brush Dynamics"
-msgstr ""
+msgstr "Dinamiko de peniko"
 
 #: ../gui/brusheditor.glade:780
 msgid "Adjust this input mapping in detail"
@@ -3926,31 +3996,30 @@ msgstr ""
 
 #: ../gui/brusheditor.glade:802
 msgid "{tooltip}"
-msgstr ""
+msgstr "{tooltip}"
 
 #. field name (template)
 #: ../gui/brusheditor.glade:809
 msgid "{dname}:"
-msgstr ""
+msgstr "{dname}:"
 
 #: ../gui/brusheditor.glade:841
 msgid "Brush dynamics are not available for this setting."
-msgstr ""
+msgstr "Penikaj dinamikoj ne estas disponeblaj por ĉi tiu agordo."
 
 #: ../gui/brusheditor.glade:851
-#, fuzzy
 msgid "<big><b>No Brush Dynamics</b></big>"
-msgstr "<big><b>{accel_label}</b></big>"
+msgstr "<big><b>Neniu penika dinamiko</b></big>"
 
 #: ../gui/inktool.glade:44
 msgctxt "Inking tool options: point value sliders: labels: tooltips"
 msgid "Pressure value for the current point"
-msgstr ""
+msgstr "Valoro de premo ĉe la aktuala punkto"
 
 #: ../gui/inktool.glade:49
 msgctxt "Inking tool options: point value sliders: labels"
 msgid "Press:"
-msgstr ""
+msgstr "Premo:"
 
 #. The meaning of negative values is *not* affected by text direction.
 #. The widget's RTL/LTR layout, however, *is* affected.
@@ -3966,12 +4035,12 @@ msgstr ""
 #: ../gui/inktool.glade:90
 msgctxt "Inking tool options: point value sliders: labels"
 msgid "X-tilt:"
-msgstr ""
+msgstr "X-klino:"
 
 #: ../gui/inktool.glade:110
 msgctxt "Inking tool options: point value sliders: labels"
 msgid "Y-tilt:"
-msgstr ""
+msgstr "Y-klino:"
 
 #: ../gui/inktool.glade:145
 msgid "Tilt in the canvas Y axis"
@@ -3985,29 +4054,29 @@ msgstr ""
 #: ../gui/inktool.glade:172
 msgctxt "Inking tool options: point value sliders: labels"
 msgid "Time:"
-msgstr ""
+msgstr "Tempo:"
 
 #: ../gui/inktool.glade:205
 msgctxt "Inking tool options: node delete button: label"
 msgid "Delete Point"
-msgstr ""
+msgstr "Forigi punkton"
 
 #: ../gui/inktool.glade:209
 msgctxt "Inking tool options: node delete button: tooltip"
 msgid "Delete the currently selected point"
-msgstr ""
+msgstr "Forigi la aktuale elektitan punkton"
 
 #: ../gui/inktool.glade:221 ../gui/resources.xml:897
 msgid "Insert Point"
-msgstr ""
+msgstr "Enmeti punkton"
 
 #: ../gui/inktool.glade:253 ../gui/resources.xml:911
 msgid "Simplify Points"
-msgstr ""
+msgstr "Simpligi punktojn"
 
 #: ../gui/inktool.glade:257
 msgid "Simplify the curve using the Reumann-Witkam algorithm."
-msgstr ""
+msgstr "Simpligi la kurbon per la algoritmo de Reumann-Witkam."
 
 #: ../gui/inktool.glade:269 ../gui/resources.xml:918
 msgid "Cull Points"
@@ -4020,17 +4089,17 @@ msgstr ""
 #: ../gui/layervis.glade:15
 msgctxt "Layers window: view list controls: tooltips"
 msgid "The currently active view."
-msgstr ""
+msgstr "La aktuale aktiva vido."
 
 #: ../gui/layervis.glade:36
 msgctxt "Layers window: view list controls: tooltips"
 msgid "Rename the active view."
-msgstr ""
+msgstr "Ŝanĝi nomon de la aktiva vido."
 
 #: ../gui/layervis.glade:57
 msgctxt "Layers window: view list controls: tooltips"
 msgid "Remove the active view."
-msgstr ""
+msgstr "Forigi la aktivan vidon."
 
 #: ../gui/layervis.glade:78
 msgctxt "Layers window: view list controls: tooltips"
@@ -4040,22 +4109,22 @@ msgstr ""
 #: ../gui/layervis.glade:99
 msgctxt "Layers window: view list controls: tooltips"
 msgid "Lock or unlock the active view."
-msgstr ""
+msgstr "Ŝlosi aŭ malŝlosi la aktivan vidon."
 
 #: ../gui/mypaint.glade:65
 msgctxt "footer: color picker button: tooltip"
 msgid "Pick color"
-msgstr ""
+msgstr "Elekti koloron"
 
 #: ../gui/mypaint.glade:102
 msgctxt "Footerbar|"
 msgid "Edit the current color in detail"
-msgstr ""
+msgstr "Ŝanĝi la aktualan koloron detale"
 
 #: ../gui/mypaint.glade:126
 msgctxt "Footerbar|"
 msgid "Add the current color to the palette"
-msgstr ""
+msgstr "Enmeti la aktualan koloron en la paletron"
 
 #: ../gui/mypaint.glade:161
 msgctxt "Footerbar|"
@@ -4069,95 +4138,97 @@ msgid ""
 "Z: {scale:.1f}%\n"
 "R: {rotation:+.1f}°"
 msgstr ""
+"Zomo: {scale:.1f}%\n"
+"Turno: {rotation:+.1f}°"
 
 #: ../gui/mypaint.glade:249
 msgctxt "footer: context picker button: tooltip"
 msgid "Pick brushstroke settings, stroke color, and layer"
-msgstr ""
+msgstr "Elekti strekajn agordojn, koloron, kaj tavolon"
 
 #: ../gui/preferenceswindow.glade:24
 msgctxt "Prefs Dialog|Saving|Save Formats and Locations|Default|"
 msgid "OpenRaster (*.ora)"
-msgstr ""
+msgstr "OpenRaster (*.ora)"
 
 #: ../gui/preferenceswindow.glade:28
 msgctxt "Prefs Dialog|Saving|Save Formats and Locations|Default|"
 msgid "PNG solid with background (*.png)"
-msgstr ""
+msgstr "PNG solida kun fono (*.png)"
 
 #: ../gui/preferenceswindow.glade:32
 msgctxt "Prefs Dialog|Saving|Save Formats and Locations|Default|"
 msgid "JPEG 90% quality (*.jpg; *.jpeg)"
-msgstr ""
+msgstr "JPEG de kvalito 90% (*.jpg; *.jpeg)"
 
 #: ../gui/preferenceswindow.glade:46
 msgctxt "Prefs Dialog|View|Zoom|Default|"
 msgid "25%"
-msgstr ""
+msgstr "25%"
 
 #: ../gui/preferenceswindow.glade:50
 msgctxt "Prefs Dialog|View|Zoom|Default|"
 msgid "50%"
-msgstr ""
+msgstr "50%"
 
 #: ../gui/preferenceswindow.glade:54
 msgctxt "Prefs Dialog|View|Zoom|Default|"
 msgid "100%"
-msgstr ""
+msgstr "100%"
 
 #: ../gui/preferenceswindow.glade:58
 msgctxt "Prefs Dialog|View|Zoom|Default|"
 msgid "200%"
-msgstr ""
+msgstr "200%"
 
 #: ../gui/preferenceswindow.glade:72
 msgctxt "Prefs Dialog|View|Cursors|Freehand Cursor|Type|"
 msgid "Circle with light outline"
-msgstr ""
+msgstr "Cirklo kun maldika konturo"
 
 #: ../gui/preferenceswindow.glade:76
 msgctxt "Prefs Dialog|View|Cursors|Freehand Cursor|Type|"
 msgid "Circle with medium outline"
-msgstr ""
+msgstr "Cirklo kun mezdika konturo"
 
 #: ../gui/preferenceswindow.glade:80
 msgctxt "Prefs Dialog|View|Cursors|Freehand Cursor|Type|"
 msgid "Circle with heavy outline"
-msgstr ""
+msgstr "Cirklo kun dika konturo"
 
 #: ../gui/preferenceswindow.glade:84
 msgctxt "Prefs Dialog|View|Cursors|Freehand Cursor|Type|"
 msgid "Crosshair"
-msgstr ""
+msgstr "Reteto"
 
 #. Graph x-axis label
 #: ../gui/preferenceswindow.glade:145
 msgctxt "Prefs Dialog|Pen Input|Input Device Settings|Pressure Mapping|"
 msgid "Input Pressure"
-msgstr ""
+msgstr "Eniga premo"
 
 #. Graph y-axis label
 #: ../gui/preferenceswindow.glade:159
 msgctxt "Prefs Dialog|Pen Input|Input Device Settings|Pressure Mapping|"
 msgid "Brush Pressure"
-msgstr ""
+msgstr "Premo de peniko"
 
 #. Graph label, range (0...1)
 #: ../gui/preferenceswindow.glade:174 ../gui/preferenceswindow.glade:202
 msgctxt "Prefs Dialog|Pen Input|Input Device Settings|Pressure Mapping|"
 msgid "0.0"
-msgstr ""
+msgstr "0,0"
 
 #. Graph label, range (0...1)
 #: ../gui/preferenceswindow.glade:188 ../gui/preferenceswindow.glade:217
 msgctxt "Prefs Dialog|Pen Input|Input Device Settings|Pressure Mapping|"
 msgid "1.0"
-msgstr ""
+msgstr "1,0"
 
 #: ../gui/preferenceswindow.glade:251
 msgctxt "Prefs Dialog|Pen Input|"
 msgid "<b>Global Pressure Mapping</b>"
-msgstr ""
+msgstr "<b>Tutprograma premo-alĝustigo</b>"
 
 #. Tab label in preferences dialog
 #: ../gui/preferenceswindow.glade:261
@@ -4175,11 +4246,11 @@ msgstr ""
 #: ../gui/preferenceswindow.glade:324
 msgctxt "Prefs Dialog|Button|"
 msgid "<b>Device Usage</b>"
-msgstr ""
+msgstr "<b>Uzado de aparatoj</b>"
 
 #: ../gui/preferenceswindow.glade:337
 msgid "Devices"
-msgstr ""
+msgstr "Aparatoj"
 
 #: ../gui/preferenceswindow.glade:380
 msgctxt "Prefs Dialog|Button|Pointer Button Mappings|"
@@ -4187,17 +4258,19 @@ msgid ""
 "• The space bar can be used like Button2.\n"
 "• Some tablet pads' buttons cannot be held down when pressed."
 msgstr ""
+"• La spacostango povas esti uzata kiel Butono2.\n"
+"• Butonon de iuj tabuletoj oni ne povas teni premataj, kiam oni ekpremas ĝin."
 
 #: ../gui/preferenceswindow.glade:401
 msgctxt "Prefs Dialog|Button|"
 msgid "<b>Pointer Button Mappings</b>"
-msgstr ""
+msgstr "<b>Asignado de butonoj de enigiloj</b>"
 
 #. Tab label in preferences dialog
 #: ../gui/preferenceswindow.glade:414
 msgctxt "Prefs Dialog|"
 msgid "Buttons"
-msgstr ""
+msgstr "Butonoj"
 
 #. Label for a checkbox in the keyboard mappings preferences.
 #. A fallback binding is a static built-in key binding that is used
@@ -4216,41 +4289,41 @@ msgstr ""
 #: ../gui/preferenceswindow.glade:476
 msgctxt "Prefs Dialog|Button|"
 msgid "<b>Keyboard Mappings</b>"
-msgstr ""
+msgstr "<b>Asignado de klavoj</b>"
 
 #: ../gui/preferenceswindow.glade:489
 msgid "Keys"
-msgstr ""
+msgstr "Klavoj"
 
 #: ../gui/preferenceswindow.glade:509
 msgctxt "Prefs Dialog|Load & Save|Saving|"
 msgid "Default file format:"
-msgstr ""
+msgstr "Implicita dosierformo:"
 
 #: ../gui/preferenceswindow.glade:524
 msgctxt "Prefs Dialog|Load & Save|Saving|"
 msgid "Prefix when saving scraps:"
-msgstr ""
+msgstr "Prefikso por konservi provaĵojn:"
 
 #: ../gui/preferenceswindow.glade:575
 msgctxt "Prefs Dialog|Load & Save|"
 msgid "<b>Saving</b>"
-msgstr ""
+msgstr "<b>Konservado</b>"
 
 #: ../gui/preferenceswindow.glade:592
 msgctxt "Prefs Dialog|Load & Save|"
 msgid "<b>Color Management</b>"
-msgstr ""
+msgstr "<b>Administrado de koloroj</b>"
 
 #: ../gui/preferenceswindow.glade:608
 msgctxt "Prefs Dialog|Load & Save|Color Management|"
 msgid "Color space conversions:"
-msgstr ""
+msgstr "Konverto inter kolorspacoj:"
 
 #: ../gui/preferenceswindow.glade:626
 msgctxt "Prefs Dialog|Load & Save|Color Management|"
 msgid "Convert to sRGB when loading; mark as sRGB when saving"
-msgstr ""
+msgstr "Konverti al sRGB dum ŝargado; marki kiel sRGB dum konservado"
 
 #: ../gui/preferenceswindow.glade:630
 msgctxt "Prefs Dialog|Load & Save|Color Management|"
@@ -4264,11 +4337,19 @@ msgid ""
 "monitors. If you know your display is radically different from this, use the "
 "\"no automatic conversions or tagging\" setting instead."
 msgstr ""
+"Bildoj enhavantaj <i>plenajn</i> informojn pri la kolorspaco konvertiĝos al "
+"sRGB dum ŝargado en MyPaint. Kiam MyPaint konservos bildon, ĝi estos markita "
+"tiel, ke aliaj programoj montros ĝin ĝuste.\n"
+"\n"
+"Tio supozas, ke la ekrano sekvas ion similan al sRGB, la norma kolorspaco de "
+"Interreto kaj pesimisma proksimumaĵo de la plejmulto de komputilaj ekranoj. "
+"Se vi scias, ke via ekrano ege diferencas de sRGB, uzu anstataŭe la agordon «"
+"Neniu aŭtomata konvertado aŭ markado»."
 
 #: ../gui/preferenceswindow.glade:648
 msgctxt "Prefs Dialog|Load & Save|Color Management|"
 msgid "No automatic conversions or tagging"
-msgstr ""
+msgstr "Neniu aŭtomata konvertado aŭ markado"
 
 #: ../gui/preferenceswindow.glade:652
 msgctxt "Prefs Dialog|Load & Save|Color Management|"
@@ -4283,19 +4364,19 @@ msgstr ""
 #: ../gui/preferenceswindow.glade:680
 msgctxt "Prefs Dialog|Load & Save|"
 msgid "<b>Automated Backups</b>"
-msgstr ""
+msgstr "<b>Aŭtomataj savkopioj</b>"
 
 #: ../gui/preferenceswindow.glade:698
 msgctxt "Prefs Dialog|Load & Save|Automated Backups|switch label"
 msgid "Back up unsaved work:"
-msgstr ""
+msgstr "Ĉu savkopii nekonservitaĵon:"
 
 #. In seconds. Lowest value is 5, highest is 300 (5 minutes). Only matters when enabled.
 #: ../gui/preferenceswindow.glade:733
 msgctxt ""
 "Prefs Dialog|Load & Save|Automated Backups|interval spinbox units suffix"
 msgid "seconds of inactivity"
-msgstr ""
+msgstr "sekundoj da neaktiveco"
 
 #: ../gui/preferenceswindow.glade:746
 msgctxt "Prefs Dialog|Load & Save|Automated Backups|switch tooltip"
@@ -4308,47 +4389,47 @@ msgstr ""
 #: ../gui/preferenceswindow.glade:768
 msgctxt "Prefs Dialog|Load & Save|Automated Backups|interval label"
 msgid "Time between backups:"
-msgstr ""
+msgstr "Daŭro inter savkopioj:"
 
 #. Tab label in preferences dialog
 #: ../gui/preferenceswindow.glade:786
 msgctxt "Prefs Dialog|"
 msgid "Load & Save"
-msgstr ""
+msgstr "Ŝargado kaj konservado"
 
 #: ../gui/preferenceswindow.glade:807
 msgctxt "Prefs Dialog|View|"
 msgid "<b>Zoom and Rendering</b>"
-msgstr ""
+msgstr "<b>Zomo kaj montrado</b>"
 
 #: ../gui/preferenceswindow.glade:824
 msgid "Default zoom level:"
-msgstr ""
+msgstr "Implicita zomo:"
 
 #: ../gui/preferenceswindow.glade:862
 msgctxt "Prefs Dialog|View|"
 msgid "<b>Interface</b>"
-msgstr ""
+msgstr "<b>Fasado</b>"
 
 #: ../gui/preferenceswindow.glade:879
 msgctxt "Prefs Dialog|View|Interface|"
 msgid "Toolbar icon size:"
-msgstr ""
+msgstr "Grando de piktogramoj en ilobreto:"
 
 #: ../gui/preferenceswindow.glade:895
 msgctxt "Prefs Dialog|View|Interface|"
 msgid "Freehand cursor type:"
-msgstr ""
+msgstr "Libermana kursoro:"
 
 #: ../gui/preferenceswindow.glade:911
 msgctxt "Prefs Dialog|View|Interface|"
 msgid "Dark theme variant:"
-msgstr ""
+msgstr "Malhela etoso:"
 
 #: ../gui/preferenceswindow.glade:921
 msgctxt "Prefs Dialog|View|Interface|Dark theme variant|"
 msgid "If available in GTK3 theme (needs restart)"
-msgstr ""
+msgstr "Se havebla en GTK3-etoso (postulas relanĉon)"
 
 #: ../gui/preferenceswindow.glade:925
 msgctxt "Prefs Dialog|View|Interface|Dark theme variant|checkbox tooltip"
@@ -4356,25 +4437,27 @@ msgid ""
 "Use a light-on-dark theme variant, when it's supported by the GTK theme. "
 "This is generally sensible for image editors and media viewers."
 msgstr ""
+"Uzi etosvarianton de helaĵoj sur malhela fono, se tio estas subtenata de la "
+"GTK-etoso. Tio ĝenerale estas prudenta por bildredaktiloj kaj bildmontriloj."
 
 #: ../gui/preferenceswindow.glade:946
 msgid "Some of these settings require MyPaint to be restarted."
-msgstr ""
+msgstr "Kelke el tiuj agordoj postulas relanĉon de MyPaint."
 
 #: ../gui/preferenceswindow.glade:969
 msgctxt "Prefs Dialog|View|Interface|Icon size|"
 msgid "Large (requires recent GTK3)"
-msgstr ""
+msgstr "Granda (postulas lastatempan GTK3)"
 
 #: ../gui/preferenceswindow.glade:986
 msgctxt "Prefs Dialog|View|Interface|Icon size|"
 msgid "Small"
-msgstr ""
+msgstr "Malgranda"
 
 #: ../gui/preferenceswindow.glade:1011
 msgctxt "Prefs Dialog|View|Zoom|"
 msgid "Use a real checkerboard pattern"
-msgstr ""
+msgstr "Montri veran ŝaktabulan fonon"
 
 #: ../gui/preferenceswindow.glade:1015
 msgctxt "Prefs Dialog|View|Zoom|"
@@ -4382,10 +4465,12 @@ msgid ""
 "Draw a real checkerboard pattern to show transparency.\n"
 "This slows down the display, but can be less confusing."
 msgstr ""
+"Montri veran ŝaktabulan fonon por travidebleco.\n"
+"Tio malrapidigas la montradon, sed estas eble pli klara."
 
 #: ../gui/preferenceswindow.glade:1036
 msgid "When showing transparency:"
-msgstr ""
+msgstr "Montrante travideblecon:"
 
 #: ../gui/preferenceswindow.glade:1051
 msgctxt "Prefs Dialog|View|Interface|"
@@ -4396,7 +4481,7 @@ msgstr ""
 msgctxt ""
 "Prefs Dialog|View|Interface|Handle smooth scrolling events|checkbox label"
 msgid "When devices send them (needs restart)"
-msgstr ""
+msgstr "Kiam aparatoj sendas ilin (tio postulas relanĉon)"
 
 #: ../gui/preferenceswindow.glade:1065
 msgctxt ""
@@ -4415,19 +4500,19 @@ msgstr ""
 
 #: ../gui/preferenceswindow.glade:1112
 msgid "Hide cursor while painting"
-msgstr ""
+msgstr "Kaŝi kursoron dum pentrado"
 
 #. Label for a toggle that is part of the "Freehand cursor type" settings. Crosshair refers to lines which are either horizontal, vertical, both (cross) or crossed in an x, depending on the brush cursor type.
 #: ../gui/preferenceswindow.glade:1132
 msgctxt "Prefs Dialog|View|Interface"
 msgid "Show crosshair for small brush cursors"
-msgstr ""
+msgstr "Montri reteton por malgrandaj penikaj kursoroj"
 
 #. Label for a spinbutton that is part of the "crosshair for small brush cursors" setting. Radius refers to the visual brush cursor radius.
 #: ../gui/preferenceswindow.glade:1149
 msgctxt "Prefs Dialog|View|Interface"
 msgid "Radius threshold:"
-msgstr ""
+msgstr "Radiusa sojlo:"
 
 #. Description of the "Radius threshold" spinbox/spinner - the referenced "lines" are part of the brush cursor.
 #: ../gui/preferenceswindow.glade:1162
@@ -4435,9 +4520,10 @@ msgctxt "Prefs Dialog|View|Interface"
 msgid ""
 "Lines will be shown when the brush circle radius is smaller than this value."
 msgstr ""
+"Linioj montriĝos, se la cirkla radiuso de la peniko estas pli malgranda ol "
+"ĉi tiu valoro."
 
 #: ../gui/preferenceswindow.glade:1192
-#, fuzzy
 msgctxt ""
 "Prefs Dialog|View|Interface|Blink layers on creation/selection|checkbox label"
 msgid "Enabled"
@@ -4451,27 +4537,29 @@ msgid ""
 "When a layer is created or selected, show only that layer for a short time "
 "period."
 msgstr ""
+"Kiam tavolo estas kreita aŭ elektita, montri nur tiun tavolon dum iometo da "
+"tempo."
 
 #: ../gui/preferenceswindow.glade:1216
 msgctxt "Prefs Dialog|View|Interface|"
 msgid "Blink layers on creation/selection:"
-msgstr ""
+msgstr "Ĉu blinkigi tavolojn dum kreado/elektado:"
 
 #: ../gui/preferenceswindow.glade:1251
 msgctxt "Prefs Dialog|View|Interface|"
 msgid "Language:"
-msgstr ""
+msgstr "Lingvo:"
 
 #: ../gui/preferenceswindow.glade:1266
 msgctxt "Prefs Dialog|View|Interface|"
 msgid "(needs restart)"
-msgstr ""
+msgstr "(postulas relanĉon)"
 
 #. Tab label in preferences dialog
 #: ../gui/preferenceswindow.glade:1283
 msgctxt "Prefs Dialog|"
 msgid "View"
-msgstr ""
+msgstr "Vido"
 
 #: ../gui/preferenceswindow.glade:1315
 msgctxt "Prefs Dialog|Color|Color Wheel|Primaries|"
@@ -4479,23 +4567,27 @@ msgid ""
 "The set of colors to show as primary on disk-style color wheels.\n"
 "Different traditions have different color harmonies."
 msgstr ""
+"La koloroj montrotaj kiel ĉefkoloroj sur diskoformaj kolorradoj.\n"
+"Diversaj tradicioj havas diversajn kolorharmoniojn."
 
 #. Arrangement of MyPaint's custom colour wheels
 #: ../gui/preferenceswindow.glade:1317
 msgctxt "Prefs Dialog|Color|Color Wheel|"
 msgid "Primaries are:"
-msgstr ""
+msgstr "La ĉefkoloroj estas:"
 
 #: ../gui/preferenceswindow.glade:1334
 msgctxt "Prefs Dialog|Color|Color Wheel|Primaries|"
 msgid "Standard digital Red/Green/Blue"
-msgstr ""
+msgstr "Normaj bitaj ruĝo, verdo, bluo"
 
 #: ../gui/preferenceswindow.glade:1339
 msgid ""
 "The red, green, and blue &apos;computer monitor&apos; primaries, evenly "
 "arranged around the circle. Green is opposite magenta."
 msgstr ""
+"La ruĝa, verda kaj blua «komputil-ekranaj» ĉefkoloroj, egale aranĝitaj "
+"ĉirkaŭ la cirklo. Verdo estas aranĝita kontraŭ purpuro."
 
 #: ../gui/preferenceswindow.glade:1340
 msgctxt "Prefs Dialog|Color|Color Wheel|Primaries|RGB|"
@@ -4503,11 +4595,13 @@ msgid ""
 "The red, green, and blue 'computer monitor' primaries, evenly arranged "
 "around the circle. Green is opposite magenta."
 msgstr ""
+"La ruĝa, verda kaj blua «komputil-ekranaj» ĉefkoloroj, egale aranĝitaj "
+"ĉirkaŭ la cirklo. Verdo estas aranĝita kontraŭ purpuro."
 
 #: ../gui/preferenceswindow.glade:1356
 msgctxt "Prefs Dialog|Color|Color Wheel|Primaries|"
 msgid "Traditional artist's Red/Yellow/Blue"
-msgstr ""
+msgstr "Tradiciaj ruĝo, flavo, bluo de artisto"
 
 #: ../gui/preferenceswindow.glade:1361
 msgid ""
@@ -4515,6 +4609,9 @@ msgid ""
 "since the 18th century, approximated with pure display colors evenly "
 "arranged around the circle. Green is opposite red."
 msgstr ""
+"La tradicie aranĝita kolorrado de ruĝo, flavo kaj bluo, uzata de multaj "
+"artistoj ekde la 18a jarcento, montrata per puraj ekranaj koloroj egale "
+"aranĝitaj ĉirkaŭ la cirklo. Verdo estas aranĝita kontraŭ ruĝo."
 
 #: ../gui/preferenceswindow.glade:1362
 msgctxt "Prefs Dialog|Color|Color Wheel|Primaries|RYB|"
@@ -4523,11 +4620,14 @@ msgid ""
 "since the 18th century, approximated with pure display colors evenly "
 "arranged around the circle. Green is opposite red."
 msgstr ""
+"La tradicie aranĝita kolorrado de ruĝo, flavo kaj bluo, uzata de multaj "
+"artistoj ekde la 18a jarcento, montrata per puraj ekranaj koloroj egale "
+"aranĝitaj ĉirkaŭ la cirklo. Verdo estas aranĝita kontraŭ ruĝo."
 
 #: ../gui/preferenceswindow.glade:1378
 msgctxt "Prefs Dialog|Color|Color Wheel|Primaries|"
 msgid "Red-Green and Blue-Yellow opponent pairs"
-msgstr ""
+msgstr "Ruĝa-verda kaj blua-flava malaj paroj"
 
 #: ../gui/preferenceswindow.glade:1383
 msgid ""
@@ -4552,41 +4652,39 @@ msgstr ""
 #: ../gui/preferenceswindow.glade:1412
 msgctxt "Prefs Dialog|Color|"
 msgid "<b>Color Wheel</b>"
-msgstr ""
+msgstr "<b>Kolorrado</b>"
 
 #. Tab label in preferences dialog
 #: ../gui/preferenceswindow.glade:1425
 msgctxt "Prefs Dialog|"
 msgid "Color"
-msgstr ""
+msgstr "Koloro"
 
 #: ../gui/preferenceswindow.glade:1458
 msgctxt "Prefs Dialog|Compatibility"
 msgid "Default Compatibility Mode:"
-msgstr ""
+msgstr "Implicita kongruiga reĝimo:"
 
 #: ../gui/preferenceswindow.glade:1483
 msgctxt "Prefs Dialog|Compatibility"
 msgid "<b>1.x Settings</b>"
-msgstr ""
+msgstr "<b>Agordoj de 1.x</b>"
 
 #. Make sure to be consistent w. other occurences of 2.x
 #: ../gui/preferenceswindow.glade:1497
 msgctxt "Prefs Dialog|Compatibility"
 msgid "<b>2.x Settings</b>"
-msgstr ""
+msgstr "<b>Agordoj de 2.x</b>"
 
 #: ../gui/preferenceswindow.glade:1535 ../gui/preferenceswindow.glade:1609
-#, fuzzy
 msgctxt "Prefs Dialog|Compatibility"
 msgid "Default New Layer Type:"
-msgstr "Forigi tavolon"
+msgstr "Implicita tipo de nova tavolo:"
 
 #: ../gui/preferenceswindow.glade:1581 ../gui/preferenceswindow.glade:1595
-#, fuzzy
 msgctxt "Prefs Dialog|Compatibility"
 msgid "Default Pigment Brush Setting:"
-msgstr "Eksporti penikojn"
+msgstr "Implicitaj agordoj de nova pigmenta peniko:"
 
 #. Label description for the 1.x compatibility-mode-by-default setting
 #: ../gui/preferenceswindow.glade:1671
@@ -4607,18 +4705,18 @@ msgstr ""
 #: ../gui/preferenceswindow.glade:1722
 msgctxt "Prefs Dialog|Compatibility"
 msgid "Show warning for files that may be partially incompatible"
-msgstr ""
+msgstr "Averti pri eble parte nekongruaj dosieroj"
 
 #. Label for a set of options
 #: ../gui/preferenceswindow.glade:1739
 msgctxt "Prefs Dialog|Compatibility"
 msgid "File compatibility warnings:"
-msgstr ""
+msgstr "Avertoj pri kongrueco de dosiero:"
 
 #: ../gui/preferenceswindow.glade:1751
 msgctxt "Prefs Dialog|Compatibility"
 msgid "Show warning for files that may be fully incompatible"
-msgstr ""
+msgstr "Averti pri eble plene nekongruaj dosieroj"
 
 #. This is a tooltip for the file behavior options label.
 #: ../gui/preferenceswindow.glade:1767
@@ -4633,40 +4731,38 @@ msgstr ""
 #: ../gui/preferenceswindow.glade:1769
 msgctxt "Prefs Dialog|Compatibility"
 msgid "When Mode is Unspecified:"
-msgstr ""
+msgstr "Se la kongruiga reĝimo ne estas specifita:"
 
 #. This label indicates a subsection of the compatibility settings related to loading files.
 #: ../gui/preferenceswindow.glade:1796
-#, fuzzy
 msgctxt "Prefs|Compatibility"
 msgid "<b>File loading</b>"
-msgstr "<b>MyPaint</b>"
+msgstr "<b>Ŝargado de dosiero</b>"
 
 #: ../gui/preferenceswindow.glade:1816
 msgid "<b>Compatibility settings</b>"
-msgstr ""
+msgstr "<b>Agordoj pri kongrueco</b>"
 
 #. Tab label in preferences dialog
 #: ../gui/preferenceswindow.glade:1832
-#, fuzzy
 msgctxt "Prefs Dialog|"
 msgid "Compatibility"
-msgstr "porteblo"
+msgstr "Kongrueco"
 
 #: ../gui/preferenceswindow.glade:1850
 msgctxt "Prefs Dialog|Pen Input|Mode|"
 msgid "Screen (normal)"
-msgstr ""
+msgstr "Ekrano (normala)"
 
 #: ../gui/preferenceswindow.glade:1854
 msgctxt "Prefs Dialog|Pen Input|Mode|"
 msgid "Disabled (no pressure sensitivity)"
-msgstr ""
+msgstr "Malŝaltita (sen sentiveco al premo)"
 
 #: ../gui/preferenceswindow.glade:1858
 msgctxt "Prefs Dialog|Pen Input|Mode|"
 msgid "Window (not recommended)"
-msgstr ""
+msgstr "Fenestra (ne rekomendata)"
 
 #: ../gui/resources.xml:63
 msgctxt "Menu→File (labels), Accel Editor (labels)"
@@ -4679,9 +4775,10 @@ msgid "New"
 msgstr "Nova"
 
 #: ../gui/resources.xml:65
+#, fuzzy
 msgctxt "Toolbar (tooltips), Accel Editor (descriptions)"
 msgid "Start with a new blank canvas."
-msgstr ""
+msgstr "Komenci per nova malplena pentraĵo."
 
 #: ../gui/resources.xml:73
 msgctxt "Menu→File (labels), Accel Editor (labels)"
@@ -4696,17 +4793,17 @@ msgstr "Malfermi"
 #: ../gui/resources.xml:75
 msgctxt "Toolbar (tooltips), Accel Editor (descriptions)"
 msgid "Load a file to work on."
-msgstr ""
+msgstr "Ŝargi prilaborotan dosieron."
 
 #: ../gui/resources.xml:82
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "Open Most Recent"
-msgstr ""
+msgstr "Malfermi plej lastan"
 
 #: ../gui/resources.xml:83
 msgctxt "Accel Editor (descriptions)"
 msgid "Load the file you saved most recently."
-msgstr ""
+msgstr "Ŝargi la laste konservitan dosieron."
 
 #: ../gui/resources.xml:90
 msgctxt "Menu→File (labels)"
@@ -4726,12 +4823,12 @@ msgstr ""
 #: ../gui/resources.xml:111
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "Import Layers…"
-msgstr ""
+msgstr "Enporti tavolojn…"
 
 #: ../gui/resources.xml:112
 msgctxt "Accel Editor (descriptions)"
 msgid "Import layers from one or more files."
-msgstr ""
+msgstr "Enporti tavolojn el unu aŭ pluraj dosieroj."
 
 #: ../gui/resources.xml:120
 msgctxt "Menu→File (labels), Accel Editor (labels)"
@@ -4741,7 +4838,7 @@ msgstr "Konservi"
 #: ../gui/resources.xml:121
 msgctxt "Accel Editor (descriptions)"
 msgid "Save your work to a file."
-msgstr ""
+msgstr "Konservi vian laboron sur dosieron."
 
 #: ../gui/resources.xml:129
 msgctxt "Menu→File (labels), Accel Editor (labels)"
@@ -4751,12 +4848,12 @@ msgstr "Konservi kiel…"
 #: ../gui/resources.xml:130
 msgctxt "Accel Editor (descriptions)"
 msgid "Save your work to a file, assigning it a new name."
-msgstr ""
+msgstr "Konservi vian laboron en dosieron de nova nomo."
 
 #: ../gui/resources.xml:138
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "Export…"
-msgstr ""
+msgstr "Elporti…"
 
 #: ../gui/resources.xml:139
 msgid "Export your work to a file, but keep working on the same file."
@@ -4765,37 +4862,39 @@ msgstr ""
 #: ../gui/resources.xml:147
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "Save As Scrap"
-msgstr ""
+msgstr "Konservi kiel provaĵon"
 
 #: ../gui/resources.xml:148
 msgctxt "Accel Editor (descriptions)"
 msgid "Save to a new scrap file, or save a new revision if already a scrap."
 msgstr ""
+"Konservi en novan provaĵo-dosieron, aŭ konservi novan version se ĝi jam "
+"konserviĝis kiel provaĵo."
 
 #: ../gui/resources.xml:156
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "Open Previous Scrap"
-msgstr ""
+msgstr "Malfermi antaŭan provaĵon"
 
 #: ../gui/resources.xml:157
 msgctxt "Accel Editor (descriptions)"
 msgid "Load the scrap file before the current one."
-msgstr ""
+msgstr "Ŝargi la provaĵo-dosieron antaŭ la aktuala."
 
 #: ../gui/resources.xml:165
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "Open Next Scrap"
-msgstr ""
+msgstr "Malfermi sekvan provaĵon"
 
 #: ../gui/resources.xml:166
 msgctxt "Accel Editor (descriptions)"
 msgid "Load the scrap file after the current one."
-msgstr ""
+msgstr "Ŝargi la provaĵo-dosieron post la aktuala."
 
 #: ../gui/resources.xml:174
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "Recover File from an Automated Backup…"
-msgstr ""
+msgstr "Restaŭri dosieron el aŭtomata savkopio…"
 
 #: ../gui/resources.xml:175
 msgctxt "Accel Editor (descriptions)"
@@ -4805,7 +4904,7 @@ msgstr ""
 #: ../gui/resources.xml:190
 msgctxt "Menu→Brush (label)"
 msgid "Brush Groups"
-msgstr ""
+msgstr "Penikaroj"
 
 #: ../gui/resources.xml:191
 msgctxt "Toolbar (short labels)"
@@ -4815,12 +4914,12 @@ msgstr "Penikoj"
 #: ../gui/resources.xml:192
 msgctxt "Toolbar (tooltips)"
 msgid "List of brush groups."
-msgstr ""
+msgstr "Listo de penikaroj."
 
 #: ../gui/resources.xml:199
 msgctxt "Toolbar (label)"
 msgid "Color Adjusters"
-msgstr ""
+msgstr "Koloralĝustigiloj"
 
 #: ../gui/resources.xml:200
 msgctxt "Toolbar (short labels)"
@@ -4830,12 +4929,12 @@ msgstr "Koloroj"
 #: ../gui/resources.xml:201
 msgctxt "Toolbar (tooltips)"
 msgid "Available color adjusters."
-msgstr ""
+msgstr "Disponeblaj koloralĝustigiloj."
 
 #: ../gui/resources.xml:208
 msgctxt "Menu→Layer→Properties (label)"
 msgid "Mode"
-msgstr ""
+msgstr "Reĝimo"
 
 #: ../gui/resources.xml:209
 msgctxt "Toolbar (short labels)"
@@ -4850,27 +4949,28 @@ msgstr ""
 #: ../gui/resources.xml:237
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
 msgid "Increase Fake Pressure"
-msgstr ""
+msgstr "Pliigi falsan premon"
 
 #: ../gui/resources.xml:238
 msgctxt "Accel Editor (descriptions)"
 msgid "Send harder pressure for devices that don't support pressure input."
-msgstr ""
+msgstr "Sendi pli da premo por tiuj aparatoj, kiuj ne subtenas enigon de premo."
 
 #: ../gui/resources.xml:245
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
 msgid "Decrease Fake Pressure"
-msgstr ""
+msgstr "Malpliigi falsan premon"
 
 #: ../gui/resources.xml:246
 msgctxt "Accel Editor (descriptions)"
 msgid "Send softer pressure for devices that don't support pressure input."
 msgstr ""
+"Sendi malpli da premo por tiuj aparatoj, kiuj ne subtenas enigon de premo."
 
 #: ../gui/resources.xml:254
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
 msgid "Increase Fake Rotation"
-msgstr ""
+msgstr "Pliigi falsan turnon"
 
 #: ../gui/resources.xml:255
 msgctxt "Accel Editor (descriptions)"
@@ -4880,7 +4980,7 @@ msgstr ""
 #: ../gui/resources.xml:262
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
 msgid "Decrease Fake Rotation"
-msgstr ""
+msgstr "Malpliigi falsan turnon"
 
 #: ../gui/resources.xml:263
 msgctxt "Accel Editor (descriptions)"
@@ -4890,107 +4990,108 @@ msgstr ""
 #: ../gui/resources.xml:271
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
 msgid "Increase Brush Size"
-msgstr ""
+msgstr "Pligrandigi penikon"
 
 #: ../gui/resources.xml:272
 msgctxt "Accel Editor (descriptions)"
 msgid "Make the working brush bigger."
-msgstr ""
+msgstr "Pliigi la grandon de la aktuala peniko."
 
 #: ../gui/resources.xml:279
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
 msgid "Decrease Brush Size"
-msgstr ""
+msgstr "Malpligrandigi penikon"
 
 #: ../gui/resources.xml:280
 msgctxt "Accel Editor (descriptions)"
 msgid "Make the working brush smaller."
-msgstr ""
+msgstr "Malpliigi la grandon de la aktuala peniko."
 
 #: ../gui/resources.xml:288
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
 msgid "Increase Brush Opacity"
-msgstr ""
+msgstr "Pliopakigi penikon"
 
 #: ../gui/resources.xml:289
 msgctxt "Accel Editor (descriptions)"
 msgid "Make the working brush more opaque."
-msgstr ""
+msgstr "Pliigi la opakecon de la aktuala peniko."
 
 #: ../gui/resources.xml:296
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
 msgid "Decrease Brush Opacity"
-msgstr ""
+msgstr "Malpliopakigi penikon"
 
 #: ../gui/resources.xml:297
 msgctxt "Accel Editor (descriptions)"
 msgid "Make the working brush less opaque."
-msgstr ""
+msgstr "Malpliigi la opakecon de la aktuala peniko."
 
 #: ../gui/resources.xml:305
 msgctxt "Menu→Color→Adjust Color (labels), Accel Editor (labels)"
 msgid "Lighten Painting Color"
-msgstr ""
+msgstr "Heligi pentran koloron"
 
 #: ../gui/resources.xml:306
 msgctxt "Accel Editor (descriptions)"
 msgid "Increase the lightness of the current painting color."
-msgstr ""
+msgstr "Pliigi la helon de la aktuala pentra koloro."
 
 #: ../gui/resources.xml:313
 msgctxt "Menu→Color→Adjust Color (labels), Accel Editor (labels)"
 msgid "Darken Painting Color"
-msgstr ""
+msgstr "Malheligi pentran koloron"
 
 #: ../gui/resources.xml:314
 msgctxt "Accel Editor (descriptions)"
 msgid "Decrease the lightness of the current painting color."
-msgstr ""
+msgstr "Malpliigi la helon de la aktuala pentra koloro."
 
 #: ../gui/resources.xml:326
 msgctxt "Menu→Color→Adjust Color (labels), Accel Editor (labels)"
 msgid "Change Hue Clockwise"
-msgstr ""
+msgstr "Ŝanĝi kolortonon horloĝdirekte"
 
 #: ../gui/resources.xml:327
 msgctxt "Accel Editor (descriptions)"
 msgid "Rotate the painting color’s hue clockwise on the color wheel."
-msgstr ""
+msgstr "Ŝanĝi la tonon de la pentra koloro horloĝdirekte en la kolorrado."
 
 #: ../gui/resources.xml:334
 msgctxt "Menu→Color→Adjust Color (labels), Accel Editor (labels)"
 msgid "Change Hue Anticlockwise"
-msgstr ""
+msgstr "Ŝanĝi kolortonon kontraŭhorloĝdirekte"
 
 #: ../gui/resources.xml:335
 msgctxt "Accel Editor (descriptions)"
 msgid "Rotate the painting color’s hue anticlockwise on the color wheel."
 msgstr ""
+"Ŝanĝi la tonon de la pentra koloro kontraŭhorloĝdirekte en la kolorrado."
 
 #: ../gui/resources.xml:342
 msgctxt "Menu→Color→Adjust Color (labels), Accel Editor (labels)"
 msgid "Increase Saturation"
-msgstr ""
+msgstr "Saturi pli"
 
 #: ../gui/resources.xml:343
 msgctxt "Accel Editor (descriptions)"
 msgid "Make the painting color more saturated (more colorful, purer)."
-msgstr ""
+msgstr "Pliigi la saturon de la pentra koloro (malpligrizigi)."
 
 #: ../gui/resources.xml:350
 msgctxt "Menu→Color→Adjust Color (labels), Accel Editor (labels)"
 msgid "Decrease Saturation"
-msgstr ""
+msgstr "Malsaturi pli"
 
 #: ../gui/resources.xml:351
 msgctxt "Accel Editor (descriptions)"
 msgid "Make the painting color less saturated (grayer)."
-msgstr ""
+msgstr "Malpliigi la saturon de la pentra koloro (pligrizigi)."
 
 #: ../gui/resources.xml:359
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
 msgid "Reload Brush Settings"
-msgstr ""
+msgstr "Reŝargi agordojn pri peniko"
 
 #: ../gui/resources.xml:360
 msgctxt "Accel Editor (descriptions)"
@@ -5000,7 +5101,7 @@ msgstr ""
 #: ../gui/resources.xml:370
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
 msgid "Pick Stroke and Layer"
-msgstr ""
+msgstr "Elekti strekon kaj tavolon"
 
 #: ../gui/resources.xml:371
 msgctxt "Accel Editor (descriptions)"
@@ -5038,7 +5139,7 @@ msgstr "Vakigi tavolon"
 #: ../gui/resources.xml:402
 msgctxt "Accel Editor (descriptions)"
 msgid "Clear the active layer’s content."
-msgstr ""
+msgstr "Forviŝi la enhavon de la aktiva tavolo."
 
 #: ../gui/resources.xml:410
 msgctxt "Menu→Layer (labels)"
@@ -5046,10 +5147,9 @@ msgid "Slice Operations"
 msgstr ""
 
 #: ../gui/resources.xml:416
-#, fuzzy
 msgctxt "Menu→Layer→Slice (labels), Accel Editor (labels)"
 msgid "Trim Layer to Frame"
-msgstr "Tavola nomo"
+msgstr "Stuci tavolon laŭ kadro"
 
 #: ../gui/resources.xml:417
 msgctxt "Accel Editor (descriptions)"
@@ -5059,7 +5159,7 @@ msgstr ""
 #: ../gui/resources.xml:423
 msgctxt "Menu→Layer→Slice (labels), Accel Editor (labels)"
 msgid "Uniquify Layer Pixels"
-msgstr ""
+msgstr "Unikigi bilderojn de tavolo"
 
 #: ../gui/resources.xml:424
 msgctxt "Accel Editor (descriptions)"
@@ -5069,7 +5169,7 @@ msgstr ""
 #: ../gui/resources.xml:430
 msgctxt "Menu→Layer→Slice (labels), Accel Editor (labels)"
 msgid "Uniquify Layer Tiles"
-msgstr ""
+msgstr "Unikigi kahelojn de tavolo"
 
 #: ../gui/resources.xml:431
 msgctxt "Accel Editor (descriptions)"
@@ -5079,10 +5179,9 @@ msgid ""
 msgstr ""
 
 #: ../gui/resources.xml:437
-#, fuzzy
 msgctxt "Menu→Layer→Slice (labels), Accel Editor (labels)"
 msgid "Refactor Layer Group Pixels"
-msgstr "Nova Tavolo grupon"
+msgstr "Refaktori bilderojn de tavolaro"
 
 #: ../gui/resources.xml:438 ../gui/resources.xml:445
 msgctxt "Accel Editor (descriptions)"
@@ -5091,55 +5190,54 @@ msgid ""
 msgstr ""
 
 #: ../gui/resources.xml:444
-#, fuzzy
 msgctxt "Menu→Layer→Slice (labels), Accel Editor (labels)"
 msgid "Refactor Layer Group Tiles"
-msgstr "Nova Tavolo grupon"
+msgstr "Refaktori kahelojn de tavolaro"
 
 #: ../gui/resources.xml:452
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Copy Layer to Clipboard"
-msgstr ""
+msgstr "Kopii tavolon en tondujon"
 
 #: ../gui/resources.xml:453
 msgctxt "Accel Editor (descriptions)"
 msgid "Copy the current layer’s contents to the clipboard."
-msgstr ""
+msgstr "Kopii la enhavon de la aktuala tavolo en la tondujon."
 
 #: ../gui/resources.xml:461
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Paste Layer from Clipboard"
-msgstr ""
+msgstr "Alglui tavolon el la tondujo"
 
 #: ../gui/resources.xml:462
 msgctxt "Accel Editor (descriptions)"
 msgid "Replaces the current layer with the clipboard’s contents."
-msgstr ""
+msgstr "Anstataŭigi la aktualan tavolon per la enhavo de la tondujo."
 
 #: ../gui/resources.xml:469
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Edit Layer in External App…"
-msgstr ""
+msgstr "Redakti tavolon per ekstera programo…"
 
 #: ../gui/resources.xml:470
 msgctxt "Accel Editor (descriptions)"
 msgid "Edit the active layer in an external application."
-msgstr ""
+msgstr "Redakti la aktivan tavolon per ekstera programo."
 
 #: ../gui/resources.xml:477
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Update Layer with External Edits"
-msgstr ""
+msgstr "Modifi tavolon laŭ eksteraj redaktoj"
 
 #: ../gui/resources.xml:478
 msgctxt "Accel Editor (descriptions)"
 msgid "Commit changes saved from the external app (normally automatic)."
-msgstr ""
+msgstr "Ŝargi ŝanĝojn konservitajn per ekstera programo (ordinare aŭtomate)."
 
 #: ../gui/resources.xml:484
 msgctxt "Menu→Layer→Go to Layer (labels), Accel Editor (labels)"
 msgid "Go to Layer at Cursor"
-msgstr ""
+msgstr "Iri al tavolo ĉe kursoro"
 
 #: ../gui/resources.xml:485
 msgctxt "Accel Editor (descriptions)"
@@ -5149,82 +5247,83 @@ msgstr ""
 #: ../gui/resources.xml:493
 msgctxt "Menu→Layer→Go to Layer (labels), Accel Editor (labels)"
 msgid "Go to Layer Above"
-msgstr ""
+msgstr "Iri al supera tavolo"
 
 #: ../gui/resources.xml:494
 msgctxt "Accel Editor (descriptions)"
 msgid "Go one layer up in the layer stack."
-msgstr ""
+msgstr "Iri unu tavolon supren en la stako de tavoloj."
 
 #: ../gui/resources.xml:502
 msgctxt "Menu→Layer→Go to Layer (labels), Accel Editor (labels)"
 msgid "Go to Layer Below"
-msgstr ""
+msgstr "Iri al suba tavolo"
 
 #: ../gui/resources.xml:503
 msgctxt "Accel Editor (descriptions)"
 msgid "Go one layer down in the layer stack."
-msgstr ""
+msgstr "Iri unu tavolon suben en la stako de tavoloj."
 
 #: ../gui/resources.xml:511
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "New Painting Layer"
-msgstr "Nova Pentraĵo Tavolo"
+msgstr "Nova pentra tavolo"
 
 #: ../gui/resources.xml:512
 msgctxt "Accel Editor (descriptions)"
 msgid "Add a new painting layer above the current layer."
-msgstr ""
+msgstr "Enmeti novan pentran tavolon super la aktuala tavolo."
 
 #: ../gui/resources.xml:520
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "New Vector Layer…"
-msgstr ""
+msgstr "Nova vektora tavolo…"
 
 #: ../gui/resources.xml:521
 msgctxt "Accel Editor (descriptions)"
 msgid "Add a new vector layer above the current layer, and begin editing it."
 msgstr ""
+"Enmeti novan pentran tavolon super la aktuala tavolo, kaj ekredakti ĝin."
 
 #: ../gui/resources.xml:528
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "New Layer Group"
-msgstr "Nova Tavolo grupon"
+msgstr "Nova tavolaro"
 
 #: ../gui/resources.xml:529
 msgctxt "Accel Editor (descriptions)"
 msgid "Add a new layer group above the current layer."
-msgstr ""
+msgstr "Enmeti novan tavolaron super la aktuala tavolo."
 
 #: ../gui/resources.xml:536
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "New Painting Layer Below"
-msgstr ""
+msgstr "Nova pentra tavolo sube"
 
 #: ../gui/resources.xml:537
 msgctxt "Accel Editor (descriptions)"
 msgid "Add a new painting layer below the current layer."
-msgstr ""
+msgstr "Enmeti novan pentran tavolon sub la aktuala tavolo."
 
 #: ../gui/resources.xml:544
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "New Vector Layer Below…"
-msgstr ""
+msgstr "Nova vektora tavolo sube…"
 
 #: ../gui/resources.xml:545
 msgctxt "Accel Editor (descriptions)"
 msgid "Add a new vector layer below the current layer, and begin editing it."
-msgstr ""
+msgstr "Enmeti novan pentran tavolon sub la aktuala tavolo, kaj ekredakti ĝin."
 
 #: ../gui/resources.xml:551
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "New Layer Group Below"
-msgstr ""
+msgstr "Nova tavolaro sube"
 
 #: ../gui/resources.xml:552
 msgctxt "Accel Editor (descriptions)"
 msgid "Add a new layer group below the current layer."
-msgstr ""
+msgstr "Enmeti novan tavolaron sub la aktuala tavolo."
 
 #: ../gui/resources.xml:559
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
@@ -5239,7 +5338,7 @@ msgstr ""
 #: ../gui/resources.xml:567
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Merge Visible Layers"
-msgstr ""
+msgstr "Kunigi videblajn tavolojn"
 
 #: ../gui/resources.xml:568
 msgctxt "Accel Editor (descriptions)"
@@ -5264,12 +5363,12 @@ msgstr "Forigi tavolon"
 #: ../gui/resources.xml:584
 msgctxt "Accel Editor (descriptions)"
 msgid "Remove the current layer from the layer stack."
-msgstr ""
+msgstr "Forigi la aktualan tavolon for de la stako de tavoloj."
 
 #: ../gui/resources.xml:591
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Convert to Normal Painting Layer"
-msgstr ""
+msgstr "Konverti en normalan pentran tavolon"
 
 #: ../gui/resources.xml:592
 msgctxt "Accel Editor (descriptions)"
@@ -5281,104 +5380,108 @@ msgstr ""
 #: ../gui/resources.xml:598
 msgctxt "Menu→Layer→Opacity (labels), Accel Editor (labels)"
 msgid "Increase Layer’s Opacity"
-msgstr ""
+msgstr "Pliopakigi tavolon"
 
 #: ../gui/resources.xml:599
 msgctxt "Accel Editor (descriptions)"
 msgid "Make the layer less transparent."
-msgstr ""
+msgstr "Igi la tavolon pli opaka, malpli travidebla."
 
 #: ../gui/resources.xml:606
 msgctxt "Menu→Layer→Opacity (labels), Accel Editor (labels)"
 msgid "Reduce Layer’s Opacity"
-msgstr ""
+msgstr "Malpliopakigi tavolon"
 
 #: ../gui/resources.xml:607
 msgctxt "Accel Editor (descriptions)"
 msgid "Make the layer more transparent."
-msgstr ""
+msgstr "Igi la tavolon malpli opaka, pli travidebla."
 
 #: ../gui/resources.xml:614
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Raise Layer"
-msgstr ""
+msgstr "Movi tavolon supren"
 
 #: ../gui/resources.xml:615
 msgctxt "Accel Editor (descriptions)"
 msgid "Raise the current layer one step in the layer stack."
-msgstr ""
+msgstr "Movi la aktualan tavolon super la apuda en la stako de tavoloj."
 
 #: ../gui/resources.xml:623
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Lower Layer"
-msgstr ""
+msgstr "Movi tavolon malsupren"
 
 #: ../gui/resources.xml:624
 msgctxt "Accel Editor (descriptions)"
 msgid "Lower the current layer one step in the layer stack."
-msgstr ""
+msgstr "Movi la aktualan tavolon sub la apuda en la stako de tavoloj."
 
 #: ../gui/resources.xml:633
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Duplicate Layer"
-msgstr ""
+msgstr "Kloni tavolon"
 
 #: ../gui/resources.xml:634
 msgctxt "Accel Editor (descriptions)"
 msgid "Make an exact clone of the current layer."
-msgstr ""
+msgstr "Fari klonon de la aktuala tavolo."
 
 #: ../gui/resources.xml:642
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Layer Properties…"
-msgstr ""
+msgstr "Atributoj de tavolo…"
 
 #: ../gui/resources.xml:643
 msgctxt "Accel Editor (descriptions)"
 msgid ""
 "Change the layer’s properties (name, mode, visibility, locked, opacity)."
 msgstr ""
+"Ŝanĝi la atributojn de la tavolo (nomon, reĝimon, videblecon, ŝlositecon, "
+"opakecon)."
 
 #: ../gui/resources.xml:650
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Layer Locked"
-msgstr ""
+msgstr "Tavolo ŝlosita"
 
 #: ../gui/resources.xml:651
 msgctxt "Accel Editor (descriptions)"
 msgid ""
 "Toggle the current layer’s locked state. Locked layers cannot be modified."
 msgstr ""
+"Baskuligi la ŝlositecon de la aktuala tavolo. Ŝlosita tavolo ne estas "
+"modifebla."
 
 #: ../gui/resources.xml:658
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Layer Visible"
-msgstr ""
+msgstr "Tavolo videbla"
 
 #: ../gui/resources.xml:659
 msgctxt "Accel Editor (descriptions)"
 msgid "Toggle the current layer’s visibility state, making it hidden."
-msgstr ""
+msgstr "Baskuligi la videblecon de la aktuala tavolo."
 
 #: ../gui/resources.xml:666
 msgctxt "Menu→View (labels), Accel Editor (labels)"
 msgid "Show Background"
-msgstr ""
+msgstr "Montri fonon"
 
 #: ../gui/resources.xml:667
 msgctxt "Accel Editor (descriptions)"
 msgid "Toggle the background layer’s visibility."
-msgstr ""
+msgstr "Baskuligi la videblecon de la fona tavolo."
 
 #: ../gui/resources.xml:674
 msgctxt "Menu→Help→Debug (labels), Accel Editor (labels)"
 msgid "Vacuum Empty Tiles"
-msgstr ""
+msgstr "Forigi malplenajn kahelojn"
 
 #: ../gui/resources.xml:675
 msgctxt "Accel Editor (descriptions)"
 msgid "Remove empty tiles from the document."
-msgstr ""
+msgstr "Forigi malplenajn kahelojn for de la dokumento."
 
 #: ../gui/resources.xml:684
 msgctxt "Menu→View (labels), Accel Editor (labels)"
@@ -5393,7 +5496,7 @@ msgstr ""
 #: ../gui/resources.xml:693
 msgctxt "Menu→View (labels), Accel Editor (labels)"
 msgid "Fit to View"
-msgstr "Kapabla al Vido"
+msgstr "Adapti al vido"
 
 #: ../gui/resources.xml:694
 msgctxt "Accel Editor (descriptions)"
@@ -5408,12 +5511,12 @@ msgstr ""
 #: ../gui/resources.xml:708
 msgctxt "Menu→View→Reset (labels), Accel Editor (labels)"
 msgid "Reset Zoom"
-msgstr ""
+msgstr "Uzi implicitan zomon"
 
 #: ../gui/resources.xml:709
 msgctxt "Accel Editor (descriptions)"
 msgid "Reset view zoom level to default."
-msgstr ""
+msgstr "Uzi implicitan zomnivelon."
 
 #: ../gui/resources.xml:715
 msgctxt "Menu→View→Reset (labels), Accel Editor (labels)"
@@ -5423,7 +5526,7 @@ msgstr ""
 #: ../gui/resources.xml:716
 msgctxt "Accel Editor (descriptions)"
 msgid "Reset the view’s rotation to 0°"
-msgstr ""
+msgstr "Turni la vidon al la origina angulo 0°"
 
 #: ../gui/resources.xml:722
 msgctxt "Menu→View→Reset (labels), Accel Editor (labels)"
@@ -5438,12 +5541,12 @@ msgstr ""
 #: ../gui/resources.xml:729
 msgctxt "Menu→View→Adjust View (labels), Accel Editor (labels)"
 msgid "Zoom In"
-msgstr ""
+msgstr "Enzomi"
 
 #: ../gui/resources.xml:730
 msgctxt "Accel Editor (descriptions)"
 msgid "Increase magnification."
-msgstr ""
+msgstr "Aspektigi pli grande."
 
 #: ../gui/resources.xml:737
 msgctxt "Menu→View→Adjust View (labels), Accel Editor (labels)"
@@ -5453,12 +5556,12 @@ msgstr "Elzomi"
 #: ../gui/resources.xml:738
 msgctxt "Accel Editor (descriptions)"
 msgid "Decrease magnification."
-msgstr ""
+msgstr "Aspektigi malpli grande."
 
 #: ../gui/resources.xml:758
 msgctxt "Menu→View→Adjust View (labels), Accel Editor (labels)"
 msgid "Pan Left"
-msgstr ""
+msgstr "Movi maldekstren"
 
 #: ../gui/resources.xml:759
 msgctxt "Accel Editor (descriptions)"
@@ -5468,7 +5571,7 @@ msgstr ""
 #: ../gui/resources.xml:766
 msgctxt "Menu→View→Adjust View (labels), Accel Editor (labels)"
 msgid "Pan Right"
-msgstr ""
+msgstr "Movi dekstren"
 
 #: ../gui/resources.xml:767
 msgctxt "Accel Editor (descriptions)"
@@ -5478,7 +5581,7 @@ msgstr ""
 #: ../gui/resources.xml:774
 msgctxt "Menu→View→Adjust View (labels), Accel Editor (labels)"
 msgid "Pan Up"
-msgstr ""
+msgstr "Movi supren"
 
 #: ../gui/resources.xml:775
 msgctxt "Accel Editor (descriptions)"
@@ -5488,7 +5591,7 @@ msgstr ""
 #: ../gui/resources.xml:782
 msgctxt "Menu→View→Adjust View (labels), Accel Editor (labels)"
 msgid "Pan Down"
-msgstr ""
+msgstr "Movi malsupren"
 
 #: ../gui/resources.xml:783
 msgctxt "Accel Editor (descriptions)"
@@ -5505,7 +5608,7 @@ msgstr ""
 #: ../gui/resources.xml:798
 msgctxt "Menu→View→Adjust View (labels), Accel Editor (labels)"
 msgid "Rotate Clockwise"
-msgstr ""
+msgstr "Turni horloĝdirekte"
 
 #: ../gui/resources.xml:799
 msgctxt "Accel Editor (descriptions)"
@@ -5515,7 +5618,7 @@ msgstr ""
 #: ../gui/resources.xml:819
 msgctxt "Menu→View→Adjust View (labels), Accel Editor (labels)"
 msgid "Rotate Counterclockwise"
-msgstr ""
+msgstr "Turni kontraŭhorloĝdirekte"
 
 #: ../gui/resources.xml:820
 msgctxt "Accel Editor (descriptions)"
@@ -5525,7 +5628,7 @@ msgstr ""
 #: ../gui/resources.xml:828
 msgctxt "Menu→View→Adjust View (labels), Accel Editor (labels)"
 msgid "Mirror Horizontal"
-msgstr ""
+msgstr "Speguli horizontale"
 
 #: ../gui/resources.xml:829
 msgctxt "Accel Editor (descriptions)"
@@ -5535,7 +5638,7 @@ msgstr ""
 #: ../gui/resources.xml:837
 msgctxt "Menu→View→Adjust View (labels), Accel Editor (labels)"
 msgid "Mirror Vertical"
-msgstr ""
+msgstr "Speguli vertikale"
 
 #: ../gui/resources.xml:838
 msgctxt "Accel Editor (descriptions)"
@@ -5545,62 +5648,62 @@ msgstr ""
 #: ../gui/resources.xml:845
 msgctxt "Menu→View (labels), Accel Editor (labels)"
 msgid "Layer Solo"
-msgstr ""
+msgstr "Nur aktuala tavolo"
 
 #: ../gui/resources.xml:846
 msgctxt "Accel Editor (descriptions)"
 msgid "Toggle whether only the current layer is shown."
-msgstr ""
+msgstr "Baskuligi ĉu nur la aktuala tavolo estas videbla."
 
 #: ../gui/resources.xml:856
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
 msgid "Symmetrical Painting Active"
-msgstr ""
+msgstr "Simetria pentrado aktiva"
 
 #: ../gui/resources.xml:857
 msgctxt "Accel Editor (descriptions)"
 msgid "Mirror brushstrokes along the axis of symmetry"
-msgstr ""
+msgstr "Speguli strekojn laŭ la akso de simetrio"
 
 #: ../gui/resources.xml:864
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "Frame Enabled"
-msgstr ""
+msgstr "Kadro ŝaltita"
 
 #: ../gui/resources.xml:865
 msgctxt "Accel Editor (descriptions)"
 msgid "Toggle visibility of the document frame."
-msgstr ""
+msgstr "Baskuligi la videblecon de la dokumenta kadro."
 
 #: ../gui/resources.xml:874
 msgctxt "Menu→Help→Debug (labels), Accel Editor (labels)"
 msgid "Print Brush Input Values to Console"
-msgstr ""
+msgstr "Terminale montri enigajn valorojn de peniko"
 
 #: ../gui/resources.xml:875
 msgctxt "Accel Editor (descriptions)"
 msgid "Show the brush engine’s internally generated inputs on the console."
-msgstr ""
+msgstr "Montri la interne generitajn enigojn de la peniko sur la terminalo."
 
 #: ../gui/resources.xml:881
 msgctxt "Menu→Help→Debug (labels), Accel Editor (labels)"
 msgid "Visualize Rendering"
-msgstr ""
+msgstr "Videbligi la bildigadon"
 
 #: ../gui/resources.xml:882
 msgctxt "Accel Editor (descriptions)"
 msgid "Show rendering updates on-screen, for debugging."
-msgstr ""
+msgstr "Montri ĝisdatigojn pri la bildigado sur la ekrano, por serĉi erarojn."
 
 #: ../gui/resources.xml:888
 msgctxt "Menu→Help→Debug (labels), Accel Editor (labels)"
 msgid "No Double Buffering"
-msgstr ""
+msgstr "Sen duobla bufrado"
 
 #: ../gui/resources.xml:889
 msgctxt "Accel Editor (descriptions)"
 msgid "Turn off GTK’s double buffering, normally enabled."
-msgstr ""
+msgstr "Malŝalti la implicitan duoblan bufradon de GTK."
 
 #: ../gui/resources.xml:898
 msgctxt "Accel Editor (descriptions)"
@@ -5608,73 +5711,73 @@ msgid ""
 "Insert a point next to the currently selected point in the direction of the "
 "stroke."
 msgstr ""
+"Enmeti punkton apud la aktuale elektita punkto en la direkto de la streko."
 
 #: ../gui/resources.xml:904
-#, fuzzy
 msgid "Delete Point"
-msgstr "Forigi grupon"
+msgstr "Forigi punkton"
 
 #: ../gui/resources.xml:905
 msgctxt "Accel Editor (descriptions)"
 msgid "Delete currently selected point on the ink stroke."
-msgstr ""
+msgstr "Forigi la aktuale elektitan punkton en la inkstreko."
 
 #: ../gui/resources.xml:912
 msgctxt "Accel Editor (descriptions)"
 msgid ""
 "Simplify and delete points according to angle and distance between nodes."
-msgstr ""
+msgstr "Simpligi kaj forigi punktojn laŭ anguloj kaj distancoj inter punktoj."
 
 #: ../gui/resources.xml:919
 msgctxt "Accel Editor (descriptions)"
 msgid "Delete every other point on the ink stroke."
-msgstr ""
+msgstr "Forigi ĉiujn aliajn punktojn en la inkstreko."
 
 #: ../gui/resources.xml:933
 msgctxt "Menu→Brush (labels)"
 msgid "Paint Mode"
-msgstr ""
+msgstr "Pentra reĝimo"
 
 #: ../gui/resources.xml:941
 msgctxt "Menu→Brush→Blend Mode (labels), Accel Editor (labels)"
 msgid "Paint Mode: Normal"
-msgstr ""
+msgstr "Pentra reĝimo: normala"
 
 #: ../gui/resources.xml:942
 msgctxt "Accel Editor (descriptions)"
 msgid "Apply color normally when painting."
-msgstr ""
+msgstr "Uzi normalajn kolorojn dum pentrado."
 
 #: ../gui/resources.xml:950
 msgctxt "Menu→Brush→Blend Mode (labels), Accel Editor (labels)"
 msgid "Paint Mode: Eraser"
-msgstr ""
+msgstr "Pentra reĝimo: skrapgumo"
 
 #: ../gui/resources.xml:951
 msgctxt "Accel Editor (descriptions)"
 msgid "Erase using the current brush."
-msgstr ""
+msgstr "Forviŝi per la aktuala peniko."
 
 #: ../gui/resources.xml:959
 msgctxt "Menu→Brush→Blend Mode (labels), Accel Editor (labels)"
 msgid "Paint Mode: Lock Alpha"
-msgstr ""
+msgstr "Pentra reĝimo: ŝlosi opakecon"
 
 #: ../gui/resources.xml:960
 msgctxt "Accel Editor (descriptions)"
 msgid "Applying the brush doesn't change the layer’s opacity."
-msgstr ""
+msgstr "Uzo de la peniko ne ŝanĝas la opakecon de la tavolo."
 
 #: ../gui/resources.xml:968
 msgctxt "Menu→Brush→Blend Mode (labels), Accel Editor (labels)"
 msgid "Paint Mode: Colorize"
-msgstr ""
+msgstr "Pentra reĝimo: kolorigi"
 
 #: ../gui/resources.xml:969
 msgctxt "Accel Editor (descriptions)"
 msgid ""
 "Apply color to the current layer without affecting its brightness or opacity."
-msgstr ""
+msgstr "Kolorigi la aktualan tavolon sen ŝanĝado de la heleco aŭ la opakeco."
 
 #: ../gui/resources.xml:983
 msgctxt "Menu (labels)"
@@ -5684,12 +5787,12 @@ msgstr "Dosiero"
 #: ../gui/resources.xml:989
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "Quit"
-msgstr "Eliri"
+msgstr "Ĉesi"
 
 #: ../gui/resources.xml:990
 msgctxt "Accel Editor (descriptions)"
 msgid "Close main window and exit the app."
-msgstr ""
+msgstr "Fermi la ĉeffenestron kaj eliri la aplikan programon."
 
 #: ../gui/resources.xml:1000
 msgctxt "Menu (labels)"
@@ -5704,12 +5807,12 @@ msgstr "Koloro"
 #: ../gui/resources.xml:1014
 msgctxt "Menu→Color (labels)"
 msgid "Adjust Color"
-msgstr ""
+msgstr "Alĝustigi koloron"
 
 #: ../gui/resources.xml:1020
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "Color History Popup"
-msgstr ""
+msgstr "Ŝprucaĵo pri uzitaj koloroj"
 
 #: ../gui/resources.xml:1021
 msgctxt "Accel Editor (descriptions)"
@@ -5719,42 +5822,42 @@ msgstr ""
 #: ../gui/resources.xml:1028
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "Color Details Dialog"
-msgstr ""
+msgstr "Dialogo de detaloj pri koloro"
 
 #: ../gui/resources.xml:1029
 msgctxt "Accel Editor (descriptions)"
 msgid "Show a color details dialog with text entry."
-msgstr ""
+msgstr "Montri dialogon pri detaloj de koloraj kun tekstenigujo."
 
 #: ../gui/resources.xml:1035
 msgctxt "Menu→Color"
 msgid "Next Palette Color"
-msgstr ""
+msgstr "Sekva koloro el paletro"
 
 #: ../gui/resources.xml:1036
 msgctxt "Accel Editor (descriptions)"
 msgid "Set painting color to the next color in the palette."
-msgstr ""
+msgstr "Uzi la sekvan koloron el la paletro kiel la pentran koloron."
 
 #: ../gui/resources.xml:1042
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "Previous Palette Color"
-msgstr ""
+msgstr "Antaŭa koloro el paletro"
 
 #: ../gui/resources.xml:1043
 msgctxt "Accel Editor (descriptions)"
 msgid "Set painting color to the previous color in the palette."
-msgstr ""
+msgstr "Uzi la antaŭan koloron el la paletro kiel la pentran koloron."
 
 #: ../gui/resources.xml:1049
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "Add Color to Palette"
-msgstr ""
+msgstr "Aldoni koloron en paletron"
 
 #: ../gui/resources.xml:1050
 msgctxt "Accel Editor (descriptions)"
 msgid "Append the current painting color to the palette."
-msgstr ""
+msgstr "Aldoni la aktualan pentran koloron en la paletron."
 
 #: ../gui/resources.xml:1058
 msgctxt "Menu (labels)"
@@ -5764,62 +5867,62 @@ msgstr "Tavolo"
 #: ../gui/resources.xml:1064
 msgctxt "Menu→Layer→Properties (labels)"
 msgid "Opacity"
-msgstr ""
+msgstr "Opakeco"
 
 #: ../gui/resources.xml:1070
 msgctxt "Menu→Layer (labels)"
 msgid "Go to Layer"
-msgstr ""
+msgstr "Iri al tavolo"
 
 #: ../gui/resources.xml:1076
 msgctxt "Menu→Layer (labels)"
 msgid "New Layer Below"
-msgstr ""
+msgstr "Nova tavolo suben"
 
 #: ../gui/resources.xml:1082
 msgctxt "Menu→Layer (labels)"
 msgid "Properties"
-msgstr ""
+msgstr "Atributoj"
 
 #: ../gui/resources.xml:1090
 msgctxt "Menu (labels)"
 msgid "Scratchpad"
-msgstr "Skizlibro"
+msgstr "Provejo"
 
 #: ../gui/resources.xml:1096
 msgctxt "Menu→Scratchpad (labels), Accel Editor (labels)"
 msgid "New Scratchpad"
-msgstr ""
+msgstr "Nova provejo"
 
 #: ../gui/resources.xml:1097
 msgctxt "Accel Editor (descriptions)"
 msgid "Load the default scratchpad as a new scratchpad canvas."
-msgstr ""
+msgstr "Ŝargi la implicitan provejon kiel novan."
 
 #: ../gui/resources.xml:1104
 msgctxt "Menu→Scratchpad (labels), Accel Editor (labels)"
 msgid "Open Scratchpad…"
-msgstr ""
+msgstr "Malfermi provejon…"
 
 #: ../gui/resources.xml:1105
 msgctxt "Accel Editor (descriptions)"
 msgid "Load an image file on disk into the scratchpad."
-msgstr ""
+msgstr "Ŝargi bildan dosieron el disko en la provejon."
 
 #: ../gui/resources.xml:1112
 msgctxt "Menu→Scratchpad (labels), Accel Editor (labels)"
 msgid "Save Scratchpad"
-msgstr ""
+msgstr "Konservi provejon"
 
 #: ../gui/resources.xml:1113
 msgctxt "Accel Editor (descriptions)"
 msgid "Save the scratchpad to its existing file on disk."
-msgstr ""
+msgstr "Konservi la provejon sur ĝian ekzistantan dosieron en disko."
 
 #: ../gui/resources.xml:1120
 msgctxt "Menu→Scratchpad (labels), Accel Editor (labels)"
 msgid "Export Scratchpad As…"
-msgstr ""
+msgstr "Elporti provejon kiel…"
 
 #: ../gui/resources.xml:1121
 msgctxt "Accel Editor (descriptions)"
@@ -5839,33 +5942,33 @@ msgstr ""
 #: ../gui/resources.xml:1136
 msgctxt "Menu→Scratchpad (labels), Accel Editor (labels)"
 msgid "Save Scratchpad as Default"
-msgstr ""
+msgstr "Konservi provejon kiel implicitan"
 
 #: ../gui/resources.xml:1137
 msgctxt "Accel Editor (descriptions)"
 msgid "Save the scratchpad as the default for ‘New Scratchpad’."
-msgstr ""
+msgstr "Konservi la provejon kiel la implicitan por «Nova provejo»."
 
 #: ../gui/resources.xml:1143
 msgctxt "Menu→Scratchpad (labels), Accel Editor (labels)"
 msgid "Clear Default Scratchpad"
-msgstr ""
+msgstr "Viŝi implicitan provejon"
 
 #: ../gui/resources.xml:1144
 msgctxt "Accel Editor (descriptions)"
 msgid "Clear the default scratchpad to a blank canvas."
-msgstr ""
+msgstr "Estigi la implican provejon malplena dokumento."
 
 #: ../gui/resources.xml:1150
 msgctxt "Menu→Scratchpad (labels), Accel Editor (labels)"
 msgid "Copy Main Background to Scratchpad"
-msgstr ""
+msgstr "Kopii ĉeffonon sur provejon"
 
 #: ../gui/resources.xml:1151
 msgctxt "Accel Editor (descriptions)"
 msgid ""
 "Copy the background image from the working document into the Scratchpad."
-msgstr ""
+msgstr "Kopii la fonan bildon el la prilaborata dokumento en la provejon."
 
 #: ../gui/resources.xml:1159
 msgctxt "Menu (labels)"
@@ -5880,32 +5983,32 @@ msgstr "Peniko"
 #: ../gui/resources.xml:1173
 msgctxt "Menu→Brush (labels)"
 msgid "Shortcut Keys"
-msgstr ""
+msgstr "Fulmoklavoj"
 
 #: ../gui/resources.xml:1179
 msgctxt "Menu→Brush→Shortcut Keys (labels), Accel Editor (labels)"
 msgid "Brush Shortcut Keys Help"
-msgstr ""
+msgstr "Helpo pri fulmoklavoj pri penikoj"
 
 #: ../gui/resources.xml:1180
 msgctxt "Accel Editor (descriptions)"
 msgid "Show an explanation of how the shortcut keys work."
-msgstr ""
+msgstr "Montri klarigon pri la funkciado de fulmoklavoj."
 
 #: ../gui/resources.xml:1187
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
 msgid "Change Brush…"
-msgstr "Ŝanĝi Peniko…"
+msgstr "Ŝanĝi penikon…"
 
 #: ../gui/resources.xml:1188
 msgctxt "Accel Editor (descriptions)"
 msgid "Pop up a brush changer under the cursor."
-msgstr ""
+msgstr "Ŝprucigi penikoŝanĝilon sub la kursoro."
 
 #: ../gui/resources.xml:1195
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "Change Color…"
-msgstr "Ŝanĝi Koloro…"
+msgstr "Ŝanĝi koloron…"
 
 #: ../gui/resources.xml:1196
 msgctxt "Accel Editor (descriptions)"
@@ -5916,7 +6019,7 @@ msgstr ""
 #: ../gui/resources.xml:1204
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "Change Color (fast subset)…"
-msgstr "Ŝanĝi Koloro (rapide)…"
+msgstr "Ŝanĝi koloron (el rapida subaro)…"
 
 #: ../gui/resources.xml:1205
 msgctxt "Accel Editor (descriptions)"
@@ -5928,22 +6031,22 @@ msgstr ""
 #: ../gui/resources.xml:1213
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
 msgid "Get More Brushes…"
-msgstr "Aldoni pli Penikojn…"
+msgstr "Elŝuti penikarojn…"
 
 #: ../gui/resources.xml:1214
 msgctxt "Accel Editor (descriptions)"
 msgid "Download brushpacks from the MyPaint wiki."
-msgstr ""
+msgstr "Elŝuti penikarojn el la retejo de MyPaint."
 
 #: ../gui/resources.xml:1221
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
 msgid "Import Brushes…"
-msgstr ""
+msgstr "Enporti penikojn…"
 
 #: ../gui/resources.xml:1222
 msgctxt "Accel Editor (descriptions)"
 msgid "Load a brushpack from disk."
-msgstr ""
+msgstr "Ŝargi penikaron el disko."
 
 #: ../gui/resources.xml:1231
 msgctxt "Menu (labels)"
@@ -5953,12 +6056,12 @@ msgstr "Helpo"
 #: ../gui/resources.xml:1237
 msgctxt "Menu→Help (labels), Accel Editor (labels)"
 msgid "Online Help"
-msgstr "Rete Helpo"
+msgstr "Reta helpo"
 
 #: ../gui/resources.xml:1238
 msgctxt "Accel Editor (descriptions)"
 msgid "Go to MyPaint’s documentation wiki."
-msgstr ""
+msgstr "Iri al dokumentaro de MyPaint."
 
 #: ../gui/resources.xml:1246
 msgctxt "Menu→Help (labels), Accel Editor (labels)"
@@ -5968,53 +6071,54 @@ msgstr "Pri MyPaint"
 #: ../gui/resources.xml:1247
 msgctxt "Accel Editor (descriptions)"
 msgid "Show MyPaint’s license, version number, and credits."
-msgstr ""
+msgstr "Montri la permesilon kaj la versinumeron de MyPaint kaj dankojn."
 
 #: ../gui/resources.xml:1256
 msgctxt "Menu→Help (labels)"
 msgid "Debug"
-msgstr "Senerarigo"
+msgstr "Serĉi erarojn"
 
 #: ../gui/resources.xml:1262
 msgctxt "Menu→Help→Debug (labels), Accel Editor (labels)"
 msgid "Print Memory Leak Info to Console (Slow!)"
-msgstr ""
+msgstr "Montri informojn pri memorliko en terminalo (malrapide!)"
 
 #: ../gui/resources.xml:1263
 msgctxt "Accel Editor (descriptions)"
 msgid "Debug memory leaks."
-msgstr ""
+msgstr "Trovi memorlikojn."
 
 #: ../gui/resources.xml:1269
 msgctxt "Menu→Help→Debug (labels), Accel Editor (labels)"
 msgid "Run Garbage Collector Now"
-msgstr ""
+msgstr "Senrubigi nun"
 
 #: ../gui/resources.xml:1270
 msgctxt "Accel Editor (descriptions)"
 msgid "Free memory used for Python objects which are no longer in use."
-msgstr ""
+msgstr "Liberigi memoron okupatan de Python-objektoj ne plu uzataj."
 
 #. FIXME: convert to a ToggleAction
 #: ../gui/resources.xml:1277
 msgctxt "Menu→Help→Debug (labels), Accel Editor (labels)"
 msgid "Start/Stop Profiling…"
-msgstr ""
+msgstr "Komenci/fini mezuri profilon…"
 
 #: ../gui/resources.xml:1278
 msgctxt "Accel Editor (descriptions)"
 msgid "Start or Stop Python Profiling (cProfile)"
 msgstr ""
+"Komenci aŭ fini mezuradon de rendimento-profilo por Python (per cProfile)"
 
 #: ../gui/resources.xml:1285
 msgctxt "Menu→Help→Debug (labels), Accel Editor (labels)"
 msgid "Simulate a Crash…"
-msgstr ""
+msgstr "Simuli kolapson…"
 
 #: ../gui/resources.xml:1286
 msgctxt "Accel Editor (descriptions)"
 msgid "Raise a Python exception, to test the crash dialog."
-msgstr ""
+msgstr "Kaŭzi escepton de Python, por elprovi la dialogon pri kolapso."
 
 #: ../gui/resources.xml:1294
 msgctxt "Menu (labels)"
@@ -6029,105 +6133,105 @@ msgstr "Prijuĝaj rimarkoj"
 #: ../gui/resources.xml:1306
 msgctxt "Menu→View (labels)"
 msgid "Adjust View"
-msgstr ""
+msgstr "Alĝustigi vidon"
 
 #: ../gui/resources.xml:1312
 msgctxt "Menu→View (labels), Accel Editor (labels)"
 msgid "Popup Main Menu"
-msgstr ""
+msgstr "Ŝprucigi ĉefmenuon"
 
 #: ../gui/resources.xml:1313
 msgctxt "Accel Editor (descriptions)"
 msgid "Show the main menu as a popup."
-msgstr ""
+msgstr "Montri la ĉefmenuon kiel ŝprucmenuon."
 
 #: ../gui/resources.xml:1320
 msgctxt "Menu→View (labels), Accel Editor (labels)"
 msgid "Fullscreen"
-msgstr "Tutekrana reĝimo"
+msgstr "Plenekrana reĝimo"
 
 #: ../gui/resources.xml:1321
 msgctxt "Accel Editor (descriptions)"
 msgid "Toggle between full-screen and windowed mode."
-msgstr ""
+msgstr "Baskuligi inter plenekrana kaj fenestra reĝimoj."
 
 #: ../gui/resources.xml:1332
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
 msgid "Edit Preferences"
-msgstr "Redakti agordojn"
+msgstr "Agordi"
 
 #: ../gui/resources.xml:1333
 msgctxt "Accel Editor (descriptions)"
 msgid "Edit MyPaint’s global settings."
-msgstr ""
+msgstr "Ŝanĝi tutprogramajn agordojn de MyPaint."
 
 #: ../gui/resources.xml:1339
 msgctxt "Help→Debug (labels), Accel Editor (labels)"
 msgid "Test Input Devices"
-msgstr ""
+msgstr "Elprovi enigajn aparatojn"
 
 #: ../gui/resources.xml:1340
 msgctxt "Accel Editor (descriptions)"
 msgid "Show a dialog which captures all events your input devices send."
 msgstr ""
+"Montri dialogon, kiu kaptos ĉiujn eventojn sendatajn de viaj enigaj aparatoj."
 
 #: ../gui/resources.xml:1347
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Background Chooser"
-msgstr ""
+msgstr "Elektilo de fono"
 
 #: ../gui/resources.xml:1348
 msgctxt "Accel Editor (descriptions)"
 msgid "Change the background paper texture."
-msgstr ""
+msgstr "Elekti la teksturon de la fona papero."
 
 #: ../gui/resources.xml:1355
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
 msgid "Brush Settings Editor"
-msgstr ""
+msgstr "Agordilo de penikoj"
 
 #: ../gui/resources.xml:1356
 msgctxt "Accel Editor (descriptions)"
 msgid "Edit the active brush’s settings."
-msgstr ""
+msgstr "Agordi la aktivan penikon."
 
 #: ../gui/resources.xml:1364
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
 msgid "Brush Icon Editor"
-msgstr ""
+msgstr "Redaktilo de Piktogramo de Peniko"
 
 #: ../gui/resources.xml:1365
 msgctxt "Accel Editor (descriptions)"
 msgid "Edit brush icons."
-msgstr ""
+msgstr "Redakti piktogramojn de penikoj."
 
 #: ../gui/resources.xml:1373
-#, fuzzy
 msgctxt ""
 "Menu→Layer (labels), Menu→Window (labels), Toolbar (labels), Accel Editor "
 "(labels)"
 msgid "Layers Panel"
-msgstr "Tavola nomo"
+msgstr "Panelo de tavoloj"
 
 #: ../gui/resources.xml:1374
 msgctxt "Accel Editor (descriptions)"
 msgid "Dockable panel for managing layers."
-msgstr ""
+msgstr "Endokigebla panelo por administri tavolojn."
 
 #: ../gui/resources.xml:1382
 msgctxt "Menu→Layers (labels), Accel Editor (labels)"
 msgid "Show Layers Panel"
-msgstr ""
+msgstr "Montri panelon de tavoloj"
 
 #: ../gui/resources.xml:1383
 msgctxt "Accel Editor (descriptions)"
 msgid "Reveal the Layers dockpanel (arrange layers, or assign modes)."
-msgstr ""
+msgstr "Montri la panelon de tavoloj (por aranĝi tavolojn aŭ ŝanĝi reĝimojn)."
 
 #: ../gui/resources.xml:1394
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "HCY Wheel"
-msgstr ""
+msgstr "Rado de tono-kromato-lumeco (HCY)"
 
 #: ../gui/resources.xml:1395
 msgctxt "Accel Editor (descriptions)"
@@ -6135,6 +6239,8 @@ msgid ""
 "Dockable cylindrical hue/chroma/luma color selector. The circular slices are "
 "equiluminant."
 msgstr ""
+"Endokigebla kolorelektilo per la cilindra kolorspaco de tono-kromato-lumeco. "
+"La cirklaj sekcoj estas samlumaj."
 
 #: ../gui/resources.xml:1402
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
@@ -6144,22 +6250,22 @@ msgstr "Kolorpaletro"
 #: ../gui/resources.xml:1403
 msgctxt "Accel Editor (descriptions)"
 msgid "Dockable palette color selector."
-msgstr ""
+msgstr "Endokigebla kolorelektilo per paletro."
 
 #: ../gui/resources.xml:1411
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "HSV Wheel"
-msgstr ""
+msgstr "Rado de tono-saturo-valoro (HSV)"
 
 #: ../gui/resources.xml:1412
 msgctxt "Accel Editor (descriptions)"
 msgid "Dockable saturation and Value color changer."
-msgstr ""
+msgstr "Endokigebla ŝanĝilo de koloraj saturo kaj valoro."
 
 #: ../gui/resources.xml:1419
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "HSV Cube"
-msgstr ""
+msgstr "Kubo de tono-saturo-valoro (HSV)"
 
 #: ../gui/resources.xml:1420
 msgctxt "Accel Editor (descriptions)"
@@ -6167,81 +6273,88 @@ msgid ""
 "Dockable color selector: HSV cube which can be rotated to show different "
 "planar slices."
 msgstr ""
+"Endokigebla kolorelektilo: kolorkubo de tono-saturo-valoro turnebla por "
+"montri diversajn sekcojn."
 
 #: ../gui/resources.xml:1427
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "HSV Square"
-msgstr ""
+msgstr "Kvadrato de tono-saturo-valoro (HSV)"
 
 #: ../gui/resources.xml:1428
 msgctxt "Accel Editor (descriptions)"
 msgid "Dockable color selector: HSV square with Hue ring."
 msgstr ""
+"Endokigebla kolorelektilo de la kvadrato de koloraj saturoj kaj valoroj kun "
+"ringo de kolortonoj."
 
 #: ../gui/resources.xml:1435
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "Component Sliders"
-msgstr ""
+msgstr "Ŝovilo de kolorkomponantoj"
 
 #: ../gui/resources.xml:1436
 msgctxt "Accel Editor (descriptions)"
 msgid "Dockable color selector showing individual components of the color."
-msgstr ""
+msgstr "Endokigebla kolorelektilo unuope montranta komponantojn de la koloro."
 
 #: ../gui/resources.xml:1443
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "Liquid Wash"
-msgstr ""
+msgstr "Akvarela kolorelektilo"
 
 #: ../gui/resources.xml:1444
 msgctxt "Accel Editor (descriptions)"
 msgid "Dockable color selector showing a liquid-like wash of nearby colors."
 msgstr ""
+"Endokigebla kolorelektilo montranta akvarelecan gamon de apudaj koloroj."
 
 #: ../gui/resources.xml:1451
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "Concentric Rings"
-msgstr ""
+msgstr "Samcentraj ringoj"
 
 #: ../gui/resources.xml:1452
 msgctxt "Accel Editor (descriptions)"
 msgid "Dockable color selector with concentric HSV rings."
-msgstr ""
+msgstr "Endokigebla kolorelektilo de samcentraj ringoj de tono-saturo-valoro."
 
 #: ../gui/resources.xml:1459
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "Crossed Bowl"
-msgstr ""
+msgstr "Kruca bovlo"
 
 #: ../gui/resources.xml:1460
 msgctxt "Accel Editor (descriptions)"
 msgid "Dockable color selector with HSV ramps crossing a radial bowl of color."
 msgstr ""
+"Endokigebla kolorelektilo kun deklivoj de tono-saturo-valoro krucantaj "
+"radiusan bovlon da koloroj."
 
 #: ../gui/resources.xml:1469
 msgctxt "Menu→Window (labels), Accel Editor (labels)"
 msgid "Scratchpad Panel"
-msgstr ""
+msgstr "Panelo de provejo"
 
 #: ../gui/resources.xml:1470
 msgctxt "Accel Editor (descriptions)"
 msgid "Dockable Panel for mixing colors and testing brushes."
-msgstr ""
+msgstr "Endokigebla panelo por miksi kolorojn kaj elprovi penikojn."
 
 #: ../gui/resources.xml:1478
 msgctxt "Menu→Scratchpad (labels), Accel Editor (labels)"
 msgid "Show Scratchpad Panel"
-msgstr ""
+msgstr "Montri panelon de provejo"
 
 #: ../gui/resources.xml:1479
 msgctxt "Accel Editor (descriptions)"
 msgid "Reveal the Scratchpad dockpanel (mix colors and make sketches)."
-msgstr ""
+msgstr "Montri la panelon de provejo (por miksi kolorojn kaj skizi)."
 
 #: ../gui/resources.xml:1488
 msgctxt "Menu→Window (labels), Toolbar (labels), Accel Editor (labels)"
 msgid "Preview Panel"
-msgstr ""
+msgstr "Antaŭrigarda Panelo"
 
 #: ../gui/resources.xml:1489
 msgctxt "Accel Editor (descriptions)"
@@ -6261,67 +6374,68 @@ msgstr ""
 #: ../gui/resources.xml:1508
 msgctxt "Menu→Window (labels), Toolbar (labels), Accel Editor (labels)"
 msgid "Tool Options Panel"
-msgstr ""
+msgstr "Panelo pri opcioj de iloj"
 
 #: ../gui/resources.xml:1509
 msgctxt "Accel Editor (descriptions)"
 msgid "Dockable panel for adjusting the options with the activated tool."
-msgstr ""
+msgstr "Endokigebla panelo por agordi opciojn de la aktiva ilo."
 
 #: ../gui/resources.xml:1517
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
 msgid "Show Tool Options Panel"
-msgstr ""
+msgstr "Montri panelon pri opcioj de iloj"
 
 #: ../gui/resources.xml:1518
 msgctxt "Accel Editor (descriptions)"
 msgid "Reveal the Tool Options dockpanel (options for the current tool)."
 msgstr ""
+"Montri la panelon pri opcioj de iloj (agordoj pri la aktuala redakta ilo)."
 
 #: ../gui/resources.xml:1528
 msgctxt "Menu→Window (labels), Toolbar (labels), Accel Editor (labels)"
 msgid "Brush & Color History Panel"
-msgstr ""
+msgstr "Panelo de lastaj penikoj kaj koloroj"
 
 #: ../gui/resources.xml:1529
 msgctxt "Accel Editor (descriptions)"
 msgid "Dockable panel for viewing recently changed colors and brushes."
-msgstr ""
+msgstr "Endokigebla panelo por vidi laste ŝanĝitajn kolorojn kaj penikojn."
 
 #: ../gui/resources.xml:1537
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
 msgid "Recent Brushes & Colors"
-msgstr ""
+msgstr "Lastaj penikoj kaj koloroj"
 
 #: ../gui/resources.xml:1538
 msgctxt "Accel Editor (descriptions)"
 msgid "Reveal the History panel (recently used brushes and colors)."
-msgstr ""
+msgstr "Montri la panelon de lastaj penikoj kaj koloroj."
 
 #: ../gui/resources.xml:1548
 msgctxt "Menu→View (labels), Accel Editor (labels)"
 msgid "Hide Controls in Fullscreen"
-msgstr ""
+msgstr "Kaŝi fasadon en plenekrana reĝimo"
 
 #: ../gui/resources.xml:1549
 msgctxt "Accel Editor (descriptions)"
 msgid "Toggle automatic hiding of the user interface in fullscreen."
-msgstr ""
+msgstr "Baskuligi aŭtomatan kaŝadon de la fasado en plenekrana reĝimo."
 
 #: ../gui/resources.xml:1556
 msgctxt "Menu→View→Feedback (labels), Accel Editor (labels)"
 msgid "Show Zoom Level"
-msgstr ""
+msgstr "Montri zomnivelon"
 
 #: ../gui/resources.xml:1557
 msgctxt "Accel Editor (descriptions)"
 msgid "Toggle zoom level feedback."
-msgstr ""
+msgstr "Baskuligi montron de zomnivelo."
 
 #: ../gui/resources.xml:1563
 msgctxt "Menu→View→Feedback (labels), Accel Editor (labels)"
 msgid "Show Last Painting Position"
-msgstr ""
+msgstr "Montri lastan pentran pozicion"
 
 #: ../gui/resources.xml:1564
 msgctxt "Accel Editor (descriptions)"
@@ -6331,103 +6445,111 @@ msgstr ""
 #: ../gui/resources.xml:1572
 msgctxt "Menu→View (labels)"
 msgid "Display Filter"
-msgstr ""
+msgstr "Filtrilo de montro"
 
 #: ../gui/resources.xml:1578
 msgctxt "Menu→View→Display Filter (labels), Accel Editor (labels)"
 msgid "Display Colors Normally"
-msgstr ""
+msgstr "Montri kolorojn normale"
 
 #: ../gui/resources.xml:1579
 msgctxt "Accel Editor (descriptions)"
 msgid "Filter colors: show colors unchanged."
-msgstr ""
+msgstr "Kolorfiltrilo: montri kolorojn senŝanĝe."
 
 #: ../gui/resources.xml:1587
 msgctxt "Menu→View→Display Filter (labels), Accel Editor (labels)"
 msgid "Display Colors as Greyscale"
-msgstr ""
+msgstr "Montri kolorojn grize"
 
 #: ../gui/resources.xml:1588
 msgctxt "Accel Editor (descriptions)"
 msgid "Filter colors: show brightness only (HCY/YCbCr Luma)"
-msgstr ""
+msgstr "Kolorfiltrilo: montri nur helon (lumecon de HCY/YCbCr)"
 
 #: ../gui/resources.xml:1595
 msgctxt "Menu→View→Display Filter (labels), Accel Editor (labels)"
 msgid "Display Colors Inverted"
-msgstr ""
+msgstr "Montri kolorojn inverse"
 
 #: ../gui/resources.xml:1596
 msgctxt "Accel Editor (descriptions)"
 msgid "Filter colors: inverse video. Black is white and red is cyan."
 msgstr ""
+"Filtri kolorojn: inversigitaj koloroj; nigro montriĝas blanke, kaj ruĝo "
+"cejanblue."
 
 #: ../gui/resources.xml:1603
 msgctxt "Menu→View→Display Filter (labels), Accel Editor (labels)"
 msgid "Display Colors with Simulated Insensitivity to Red"
-msgstr ""
+msgstr "Montri kolorojn simulante malkapablon percepti ruĝon"
 
 #: ../gui/resources.xml:1604
 msgctxt "Accel Editor (descriptions)"
 msgid ""
 "Filter colors to simulate deuteranopia, a common form of color blindness."
 msgstr ""
+"Filtri kolorojn por simuli nepercepton de ruĝo, kiu estas ofta formo de "
+"kolorblindeco."
 
 #: ../gui/resources.xml:1611
 msgctxt "Menu→View→Display Filter (labels), Accel Editor (labels)"
 msgid "Display Colors with Simulated Insensitivity to Green"
-msgstr ""
+msgstr "Montri kolorojn simulante malkapablon percepti verdon"
 
 #: ../gui/resources.xml:1612
 msgctxt "Accel Editor (descriptions)"
 msgid "Filter colors to simulate protanopia, a common form of color blindness."
 msgstr ""
+"Filtri kolorojn por simuli nepercepton de verdo, kiu estas ofta formo de "
+"kolorblindeco."
 
 #: ../gui/resources.xml:1619
 msgctxt "Menu→View→Display Filter (labels), Accel Editor (labels)"
 msgid "Display Colors with Simulated Insensitivity to Blue"
-msgstr ""
+msgstr "Montri kolorojn simulante malkapablon percepti bluon"
 
 #: ../gui/resources.xml:1620
 msgctxt "Accel Editor (descriptions)"
 msgid "Filter colors to simulate tritanopia, a rare form of color blindness."
 msgstr ""
+"Filtri kolorojn por simuli nepercepton de bluo, kiu estas malofta formo de "
+"kolorblindeco."
 
 #: ../gui/resources.xml:1635
 msgctxt "Menu→Edit→Current Mode (labels)"
 msgid "Freehand"
-msgstr ""
+msgstr "Libermana"
 
 #: ../gui/resources.xml:1636
 msgctxt "Toolbar (short labels)"
 msgid "Freehand"
-msgstr ""
+msgstr "Libermana"
 
 #: ../gui/resources.xml:1637
 msgctxt "Toolbar (tooltips)"
 msgid "Freehand: draw and paint freely, without geometric constraints."
-msgstr ""
+msgstr "Libermana: desegni kaj pentri libere, sen geometriaj limoj."
 
 #: ../gui/resources.xml:1646
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
 msgid "Freehand"
-msgstr ""
+msgstr "Libermana"
 
 #: ../gui/resources.xml:1647
 msgctxt "Accel Editor (descriptions)"
 msgid "Draw and paint freely, without geometric constraints."
-msgstr ""
+msgstr "Desegni kaj pentri libere, sen geometriaj limoj."
 
 #: ../gui/resources.xml:1657
 msgctxt "Menu→Edit→Current Mode (labels)"
 msgid "Pan View"
-msgstr ""
+msgstr "Movi vidon"
 
 #: ../gui/resources.xml:1658
 msgctxt "Toolbar (short labels)"
 msgid "Pan"
-msgstr ""
+msgstr "Movi"
 
 #: ../gui/resources.xml:1659
 msgctxt "Toolbar (tooltips)"
@@ -6437,7 +6559,7 @@ msgstr ""
 #: ../gui/resources.xml:1667
 msgctxt "Menu→View (labels), Accel Editor (labels)"
 msgid "Pan View"
-msgstr ""
+msgstr "Movi vidon"
 
 #: ../gui/resources.xml:1668
 msgctxt "Accel Editor (descriptions)"
@@ -6447,12 +6569,12 @@ msgstr ""
 #: ../gui/resources.xml:1677
 msgctxt "Menu→Edit→Current Mode (labels)"
 msgid "Rotate View"
-msgstr ""
+msgstr "Turni vidon"
 
 #: ../gui/resources.xml:1678
 msgctxt "Toolbar (short labels)"
 msgid "Rotate"
-msgstr "Rotacio"
+msgstr "Turni"
 
 #: ../gui/resources.xml:1679
 msgctxt "Toolbar (tooltips)"
@@ -6462,7 +6584,7 @@ msgstr ""
 #: ../gui/resources.xml:1687
 msgctxt "Menu→View (labels), Accel Editor (labels)"
 msgid "Rotate View"
-msgstr ""
+msgstr "Turni vidon"
 
 #: ../gui/resources.xml:1688
 msgctxt "Accel Editor (descriptions)"
@@ -6472,12 +6594,12 @@ msgstr ""
 #: ../gui/resources.xml:1697
 msgctxt "Menu→Edit→Current Mode (labels)"
 msgid "Zoom View"
-msgstr ""
+msgstr "Zomigi vidon"
 
 #: ../gui/resources.xml:1698
 msgctxt "Toolbar (short labels)"
 msgid "Zoom"
-msgstr ""
+msgstr "Zomigi"
 
 #: ../gui/resources.xml:1699
 msgctxt "Toolbar (tooltips)"
@@ -6487,7 +6609,7 @@ msgstr ""
 #: ../gui/resources.xml:1707
 msgctxt "Menu→View (labels), Accel Editor (labels)"
 msgid "Zoom View"
-msgstr ""
+msgstr "Zomigi vidon"
 
 #: ../gui/resources.xml:1708
 msgctxt "Accel Editor (descriptions)"
@@ -6507,7 +6629,7 @@ msgstr "Linioj"
 #: ../gui/resources.xml:1719
 msgctxt "Toolbar (tooltips)"
 msgid "Lines and Curves: draw straight or curved lines."
-msgstr ""
+msgstr "Linioj kaj kurboj: desegni rektojn aŭ kurbojn."
 
 #: ../gui/resources.xml:1727
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
@@ -6517,32 +6639,32 @@ msgstr "Linioj kaj kurboj"
 #: ../gui/resources.xml:1728
 msgctxt "Accel Editor (descriptions)"
 msgid "Draw straight or curved lines."
-msgstr ""
+msgstr "Desegni rektojn aŭ kurbojn."
 
 #: ../gui/resources.xml:1738
 msgctxt "Menu→Edit→Current Mode (labels)"
 msgid "Connected Lines"
-msgstr ""
+msgstr "Konektitaj linioj"
 
 #: ../gui/resources.xml:1739
 msgctxt "Toolbar (short labels)"
 msgid "Conn. Lines"
-msgstr ""
+msgstr "Kon. linioj"
 
 #: ../gui/resources.xml:1740
 msgctxt "Toolbar (tooltips)"
 msgid "Connected Lines: draw sequences of straight or curved lines."
-msgstr ""
+msgstr "Konektitaj linioj: desegni sinsekvojn de rektoj aŭ kurboj."
 
 #: ../gui/resources.xml:1748
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
 msgid "Connected Lines"
-msgstr ""
+msgstr "Konektitaj linioj"
 
 #: ../gui/resources.xml:1749
 msgctxt "Accel Editor (descriptions)"
 msgid "Draw sequences of straight or curved lines."
-msgstr ""
+msgstr "Desegni sinsekvojn de rektoj aŭ kurboj."
 
 #: ../gui/resources.xml:1759
 msgctxt "Menu→Edit→Current Mode (labels)"
@@ -6557,7 +6679,7 @@ msgstr "Elipso"
 #: ../gui/resources.xml:1761
 msgctxt "Toolbar (tooltips)"
 msgid "Ellipses and Circles: draw rounded shapes."
-msgstr ""
+msgstr "Elipsoj kaj cirkloj: desegni rondojn."
 
 #: ../gui/resources.xml:1769
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
@@ -6572,37 +6694,37 @@ msgstr "Desegni cirklojn kaj elipsojn."
 #: ../gui/resources.xml:1780
 msgctxt "Menu→Edit→Current Mode (labels)"
 msgid "Inking"
-msgstr ""
+msgstr "Inkado"
 
 #: ../gui/resources.xml:1781
 msgctxt "Toolbar (short labels)"
 msgid "Ink"
-msgstr ""
+msgstr "Inko"
 
 #: ../gui/resources.xml:1782
 msgctxt "Toolbar (tooltips)"
 msgid "Inking: draw smooth controlled lines."
-msgstr ""
+msgstr "Inkado: desegni glatajn liniojn."
 
 #: ../gui/resources.xml:1790
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
 msgid "Inking"
-msgstr ""
+msgstr "Inkado"
 
 #: ../gui/resources.xml:1791
 msgctxt "Accel Editor (descriptions)"
 msgid "Draw smooth controlled lines."
-msgstr ""
+msgstr "Desegni glatajn liniojn."
 
 #: ../gui/resources.xml:1801
 msgctxt "Menu→Edit→Current Mode (labels)"
 msgid "Reposition Layer"
-msgstr ""
+msgstr "Movi tavolon"
 
 #: ../gui/resources.xml:1802
 msgctxt "Toolbar (short labels)"
 msgid "Layer Pos."
-msgstr ""
+msgstr "Poz. de tavolo"
 
 #: ../gui/resources.xml:1803
 msgctxt "Toolbar (tooltips)"
@@ -6612,7 +6734,7 @@ msgstr ""
 #: ../gui/resources.xml:1811
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Reposition Layer"
-msgstr ""
+msgstr "Movi tavolon"
 
 #: ../gui/resources.xml:1812
 msgctxt "Accel Editor (description)"
@@ -6622,7 +6744,7 @@ msgstr ""
 #: ../gui/resources.xml:1822
 msgctxt "Menu→Edit→Current Mode (labels)"
 msgid "Edit Frame"
-msgstr ""
+msgstr "Redakti kadron"
 
 #: ../gui/resources.xml:1823
 msgctxt "Toolbar (short labels)"
@@ -6634,22 +6756,25 @@ msgctxt "Toolbar (tooltips)"
 msgid ""
 "Edit Frame: define a frame around the document to give it a finite size."
 msgstr ""
+"Redakti kadron: difini kadron ĉirkaŭ la dokumento por doni al ĝi finiajn "
+"dimensiojn."
 
 #: ../gui/resources.xml:1832
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "Edit Frame"
-msgstr ""
+msgstr "Redakti kadron"
 
 #: ../gui/resources.xml:1833
 msgctxt "Accel Editor (descriptions)"
 msgid ""
 "Interactively define a frame around the document to give it a finite size."
 msgstr ""
+"Interage difini kadron ĉirkaŭ la dokumento por doni al ĝi finiajn dimensiojn."
 
 #: ../gui/resources.xml:1842
 msgctxt "Menu→Edit→Current Mode (labels)"
 msgid "Edit Painting Symmetry"
-msgstr ""
+msgstr "Redakti pentran simetrion"
 
 #: ../gui/resources.xml:1843
 msgctxt "Toolbar (short labels)"
@@ -6660,79 +6785,86 @@ msgstr "Simetrio"
 msgctxt "Toolbar (tooltips)"
 msgid "Edit Painting Symmetry: adjust the axis used for symmetrical painting."
 msgstr ""
+"Redakti pentran simetrion: alĝustigi la akson uzatan por simetria pentrado."
 
 #: ../gui/resources.xml:1852
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "Edit Painting Symmetry"
-msgstr ""
+msgstr "Redakti pentran simetrion"
 
 #: ../gui/resources.xml:1853
 msgctxt "Accel Editor (description)"
 msgid "Interactively adjust the axis used for symmetrical painting."
-msgstr ""
+msgstr "Interage alĝustigi la akson por simetria pentrado."
 
 #: ../gui/resources.xml:1863
 msgctxt "Menu→Edit→Current Mode (labels)"
 msgid "Pick Color"
-msgstr ""
+msgstr "Elekti koloron"
 
 #: ../gui/resources.xml:1864
 msgctxt "Toolbar (short labels)"
 msgid "Pick Col."
-msgstr ""
+msgstr "Elekti kol."
 
 #: ../gui/resources.xml:1865
 msgctxt "Toolbar (tooltips)"
 msgid "Pick Color: set the painting color from screen pixels."
-msgstr ""
+msgstr "Elekti koloron: elekti pentran koloron el bildero sur la ekrano."
 
 #: ../gui/resources.xml:1897
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "Pick Color Hue"
-msgstr ""
+msgstr "Elekti kolortonon"
 
 #: ../gui/resources.xml:1898
 msgctxt "Accel Editor (descriptions)"
 msgid ""
 "Set the painting Hue from screen pixels while preserving the Chroma and Luma."
 msgstr ""
+"Agordi la pentran kolortonon per bilderoj sur la ekrano, sen ŝanĝoj de la "
+"koloraj kromato kaj lumeco."
 
 #: ../gui/resources.xml:1906
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "Pick Color Chroma"
-msgstr ""
+msgstr "Elekti kolorkromaton"
 
 #: ../gui/resources.xml:1907
 msgctxt "Accel Editor (descriptions)"
 msgid ""
 "Set the painting Chroma from screen pixels while preserving the Hue and Luma."
 msgstr ""
+"Agordi la pentran kolorkromaton per bilderoj sur la ekrano, sen ŝanĝoj de la "
+"koloraj tono kaj lumeco."
 
 #: ../gui/resources.xml:1915
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "Pick Color Luma"
-msgstr ""
+msgstr "Elekti kolorlumecon"
 
 #: ../gui/resources.xml:1916
 msgctxt "Accel Editor (descriptions)"
 msgid ""
 "Set the painting Luma from screen pixels while preserving the Hue and Chroma."
 msgstr ""
+"Agordi la pentran kolorlumecon per bilderoj sur la ekrano, sen ŝanĝoj de la "
+"koloraj tono kaj kromato."
 
 #: ../gui/resources.xml:1924
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "Pick Color"
-msgstr ""
+msgstr "Elekti koloron"
 
 #: ../gui/resources.xml:1925
 msgctxt "Accel Editor (descriptions)"
 msgid "Set the painting color from screen pixels."
-msgstr ""
+msgstr "Elekti pentran koloron el bildero sur la ekrano."
 
 #: ../gui/resources.xml:1935
 msgctxt "Menu→Edit→Current Mode (labels)"
 msgid "Flood Fill"
-msgstr ""
+msgstr "Farbi"
 
 #: ../gui/resources.xml:1936
 msgctxt "Toolbar (short labels)"
@@ -6742,17 +6874,17 @@ msgstr "Plenigi"
 #: ../gui/resources.xml:1937
 msgctxt "Toolbar (tooltips)"
 msgid "Flood Fill: fill an area with color."
-msgstr ""
+msgstr "Farbi: plenigi areon per koloro."
 
 #: ../gui/resources.xml:1945
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
 msgid "Flood Fill"
-msgstr ""
+msgstr "Farbi"
 
 #: ../gui/resources.xml:1946
 msgctxt "Accel Editor (descriptions)"
 msgid "Fill an area with color."
-msgstr ""
+msgstr "Plenigi areon per koloro."
 
 #~ msgid "{width:g}×{height:g} {units}"
 #~ msgstr "{width:g}×{height:g} {units}"
