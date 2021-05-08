@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: mypaint v2.0.0-alpha.11-2-g0673fe8\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-04-17 23:27+0200\n"
-"PO-Revision-Date: 2021-05-06 20:33+0000\n"
+"PO-Revision-Date: 2021-05-15 17:32+0000\n"
 "Last-Translator: ssantos <ssantos@web.de>\n"
 "Language-Team: Portuguese <https://hosted.weblate.org/projects/mypaint/"
 "mypaint/pt/>\n"
@@ -3873,12 +3873,12 @@ msgstr ""
 #: ../gui/autorecover.glade:60
 msgctxt "Autosave Recovery dialog|"
 msgid "_Delete…"
-msgstr "Excluir…"
+msgstr "Apagar…"
 
 #: ../gui/autorecover.glade:66
 msgctxt "Autosave Recovery dialog|Delete button|"
 msgid "Delete this backup from the disk."
-msgstr "Excluir este pincel do disco."
+msgstr "Apagar este pincel do disco."
 
 #. Recover in the sense or retrieval or salvage from a backup file. The user is asked to save the retrieved file immediately afterwards, hence the ellipsis.
 #: ../gui/autorecover.glade:78
@@ -5307,7 +5307,7 @@ msgstr "Remover pixels vazios da camada"
 #: ../gui/resources.xml:424
 msgctxt "Accel Editor (descriptions)"
 msgid "Delete parts of the current layer which do not vary from the backdrop."
-msgstr "Exclui partes da camada atual que não diferem do fundo."
+msgstr "Apaga partes da camada atual que não diferem do fundo."
 
 #: ../gui/resources.xml:430
 msgctxt "Menu→Layer→Slice (labels), Accel Editor (labels)"
@@ -5871,12 +5871,12 @@ msgstr ""
 
 #: ../gui/resources.xml:904
 msgid "Delete Point"
-msgstr "Excluir Ponto"
+msgstr "Apagar Ponto"
 
 #: ../gui/resources.xml:905
 msgctxt "Accel Editor (descriptions)"
 msgid "Delete currently selected point on the ink stroke."
-msgstr "Exclui o ponto selecionado no traço."
+msgstr "Apagar o ponto selecionado no traço."
 
 #: ../gui/resources.xml:912
 msgctxt "Accel Editor (descriptions)"
