@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: mypaint v2.0.0-alpha.8-1-g4490f06\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-04-17 23:27+0200\n"
-"PO-Revision-Date: 2021-05-06 20:33+0000\n"
+"PO-Revision-Date: 2021-05-15 17:32+0000\n"
 "Last-Translator: phlostically <phlostically@mailinator.com>\n"
 "Language-Team: Esperanto <https://hosted.weblate.org/projects/mypaint/"
 "mypaint/eo/>\n"
@@ -41,7 +41,7 @@ msgstr "Klava kombino"
 #: ../gui/accelmap.py:369
 #, python-format
 msgid "Edit Key for '%s'"
-msgstr "Ŝanĝi klavon por '%s'"
+msgstr "Ŝanĝi klavon por «%s»"
 
 #. TRANSLATORS: Part of interface when adding a new button map binding.
 #. TRANSLATORS: It's a label for the action part of the combination.
@@ -201,7 +201,7 @@ msgstr "Opakeco"
 #: ../gui/brusheditor.py:354
 msgctxt "brush settings list: setting group"
 msgid "Dabs"
-msgstr ""
+msgstr "Ŝmiroj"
 
 #: ../gui/brusheditor.py:365
 msgctxt "brush settings list: setting group"
@@ -216,12 +216,12 @@ msgstr "Rapido"
 #: ../gui/brusheditor.py:393
 msgctxt "brush settings list: setting group"
 msgid "Directional Offsets"
-msgstr ""
+msgstr "Direktaj deŝovoj"
 
 #: ../gui/brusheditor.py:411
 msgctxt "brush settings list: setting group"
 msgid "Tracking"
-msgstr ""
+msgstr "Spurado"
 
 #: ../gui/brusheditor.py:422
 msgctxt "brush settings list: setting group"
@@ -464,7 +464,7 @@ msgstr "Ŝanĝi grandon de peniko"
 #: ../gui/brushmanip.py:196
 msgctxt "brush resize mode - usage"
 msgid "Change brush size by dragging on the canvas"
-msgstr ""
+msgstr "Ŝanĝi la grandon de la peniko per trenado sur la dokumento"
 
 #: ../gui/brushselectionwindow.py:220
 msgctxt "brush group: context menu for a single brush"
@@ -638,7 +638,7 @@ msgstr "Butonpremo:"
 msgid ""
 "Hold down modifier keys, and press a button over this text to set a new "
 "binding."
-msgstr ""
+msgstr "Premante modifklavo(j)n, premu butonon super ĉi tiu teksto por asigni."
 
 #. TRANSLATORS: "fixed" in the sense of "static" -
 #. TRANSLATORS: something which cannot be changed
@@ -647,6 +647,8 @@ msgstr ""
 msgid ""
 "{button} cannot be bound without modifier keys (its meaning is fixed, sorry)"
 msgstr ""
+"{button} ne estas reasignebla sen modifklavoj (ĝia asigno estas neŝanĝebla, "
+"bedaŭrinde)"
 
 #: ../gui/buttonmap.py:601
 #, python-brace-format
@@ -721,6 +723,8 @@ msgid ""
 "Gamut mask editor. Click in the middle to create or manipulate shapes, or "
 "rotate the mask using the edges of the disc."
 msgstr ""
+"Redaktilo de gama masko. Alklaki la mezan por krei aŭ manipuli formojn, aŭ "
+"turni la maskon per la randoj de la disko."
 
 #: ../gui/colors/hcywheel.py:910
 msgctxt "HCY Gamut Mask template name"
@@ -757,6 +761,8 @@ msgid ""
 "Contrasting opposites, balanced by having central neutrals between them on "
 "the color wheel."
 msgstr ""
+"Kontrastaj malaj koloroj, ekvilibrigitaj per centraj neŭtraj koroj inter ili "
+"sur la kolorrado."
 
 #: ../gui/colors/hcywheel.py:957
 msgctxt "HCY Gamut Mask template name"
@@ -774,7 +780,7 @@ msgstr ""
 #: ../gui/colors/hcywheel.py:970
 msgctxt "HCY Gamut Mask template name"
 msgid "Split Complementary"
-msgstr ""
+msgstr "Fendita komplementa"
 
 #: ../gui/colors/hcywheel.py:974
 msgctxt "HCY Gamut Mask template description"
@@ -782,6 +788,7 @@ msgid ""
 "Two analogous colors and a complement to them, with no secondary colors "
 "between them."
 msgstr ""
+"Du analogaj koloroj kaj ilia komplemento, sen sekundaraj koloroj inter ili."
 
 #: ../gui/colors/hcywheel.py:985
 msgctxt "HCY Gamut Mask new-from-template dialog: window title"
@@ -1304,7 +1311,7 @@ msgstr "Kongruiga reĝimo:"
 #: ../gui/device.py:49
 msgctxt "prefs: device's type label"
 msgid "Cursor/puck"
-msgstr ""
+msgstr "Kursoro/hokedisko"
 
 #: ../gui/device.py:53
 msgctxt "prefs: device's type label"
@@ -1488,12 +1495,12 @@ msgstr "Malfari"
 #: ../gui/document.py:458
 #, python-format
 msgid "Load brush settings from shortcut slot %d"
-msgstr ""
+msgstr "Ŝargi penikajn agordojn el fulmoklavo numero %d"
 
 #: ../gui/document.py:459
 #, python-format
 msgid "Store brush settings in shortcut slot %d"
-msgstr ""
+msgstr "Konservi penikajn agordojn en fulmoklavon numero %d"
 
 #: ../gui/document.py:460
 #, python-format
@@ -1567,6 +1574,7 @@ msgstr "Algluiĝis bildo de dimensioj {w}×{h}."
 msgctxt "Statusbar message: vacuum document"
 msgid "Vacuum: discarded {removed} of {total} tiles."
 msgstr ""
+"Forigi malplenajn kahelojn: {removed} el {total} kaheloj estis forigita(j)."
 
 #. TRANSLATORS: window title for use with a filename
 #: ../gui/drawwindow.py:275
@@ -2027,6 +2035,8 @@ msgid ""
 "How much pixel colors are allowed to vary from the start\n"
 "before Flood Fill will refuse to fill them"
 msgstr ""
+"La maksimuma vario, kiom bilderaj koloroj povas varii de la komenco,\n"
+"preter kiu la ilo «Farbi» rifuzos farbi"
 
 #: ../gui/fill.py:533
 msgctxt ""
@@ -2038,12 +2048,12 @@ msgstr "Fonto:"
 #: ../gui/fill.py:536
 msgctxt "fill options: 'Source:' category (tooltip)"
 msgid "The input that the fill will be based on"
-msgstr ""
+msgstr "La enigo, sur kiu la farbado baziĝos"
 
 #: ../gui/fill.py:580
 msgctxt "fill options: 'Source' category: Layer dropdown (tooltip)"
 msgid "Select a specific layer you want the fill to be based on"
-msgstr ""
+msgstr "Elektu la specifan tavolon, sur kiu la farbado baziĝos"
 
 #: ../gui/fill.py:598
 msgctxt ""
@@ -2051,7 +2061,7 @@ msgctxt ""
 "When this option is enabled, the fill is based\n"
 "on the combination of all visible layers"
 msgid "Sample Merged"
-msgstr ""
+msgstr "Sampli kunigaĵon"
 
 #: ../gui/fill.py:602
 msgctxt "fill options: Sample Merged (tooltip)"
@@ -2060,6 +2070,9 @@ msgid ""
 "temporary merge of all the visible layers\n"
 "underneath the current layer"
 msgstr ""
+"Dum komputado de la plenigota areo, uzi\n"
+"portempan kunigon de ĉiuj videblaj tavoloj\n"
+"sub la aktuala tavolo"
 
 #: ../gui/fill.py:618
 msgctxt "fill options: toggle whether the fill will be limited by the viewport"
@@ -2076,6 +2089,9 @@ msgid ""
 "If the view is rotated, the fill will be limited to the\n"
 "smallest canvas-aligned rectangle that can fit the view."
 msgstr ""
+"Limigi la farbotan areon laŭ la vido. Se la vido estas turnita,\n"
+"la farbado estos limigita al la plej malgranda ortangulo\n"
+"paralela al la aksoj de la dokumento, kiu enhavas la vidon."
 
 #: ../gui/fill.py:641
 msgctxt ""
@@ -2104,6 +2120,8 @@ msgid ""
 "Create a new layer with the results of the fill.\n"
 "This is turned off automatically after use."
 msgstr ""
+"Krei novan tavolon el la rezultoj de la farbado.\n"
+"Ĉi tio aŭtomate malŝaltiĝas post ĉiu fojo de uzo."
 
 #: ../gui/fill.py:670
 msgctxt "fill options: Target | Blend Mode dropdown - warning text"
@@ -2127,27 +2145,27 @@ msgstr "Opakeco de la farbado"
 #: ../gui/fill.py:725
 msgctxt "fill options: numeric option - grow/shrink fill (label)"
 msgid "Offset:"
-msgstr ""
+msgstr "Deŝovo:"
 
 #: ../gui/fill.py:741
 msgctxt "fill options: Offset (tooltip)"
 msgid "The distance in pixels to grow or shrink the fill"
-msgstr ""
+msgstr "La distanco (nombro de bilderoj) por etendi aŭ maletendi la farbadon"
 
 #: ../gui/fill.py:752
 msgctxt "fill options: numeric option for blurring fill (label)"
 msgid "Feather:"
-msgstr ""
+msgstr "Svagigo:"
 
 #: ../gui/fill.py:767
 msgctxt "fill options: Feather (tooltip)"
 msgid "The amount of blur to apply to the fill"
-msgstr ""
+msgstr "La kvanto de svagigo por farbado"
 
 #: ../gui/fill.py:783
 msgctxt "fill options: gap detection toggle (label)"
 msgid "Use Gap Detection"
-msgstr ""
+msgstr "Trovi fendojn"
 
 #: ../gui/fill.py:788
 msgctxt "fill options: Use Gap Detection (tooltip)"
@@ -2156,11 +2174,14 @@ msgid ""
 "Note: This can be a lot slower than the regular fill, only enable when you "
 "need it."
 msgstr ""
+"Provi trovi fendojn kaj ne farbi preter ilin.\n"
+"Noto: tio estas eble multe pli malrapida ol la ordinara farbado; tial, nur "
+"ŝaltu ĝin se vi bezonas ĝin."
 
 #: ../gui/fill.py:806
 msgctxt "fill options: gap-detection sub-option, numeric setting (label)"
 msgid "Max Gap Size:"
-msgstr ""
+msgstr "Maksimuma grando de fendo:"
 
 #: ../gui/fill.py:821
 msgctxt "fill options: Max Gap Size (tooltip)"
@@ -2168,6 +2189,8 @@ msgid ""
 "The size of the largest gaps that can be detected.\n"
 "Using large values can make the fill run a lot slower."
 msgstr ""
+"La grando de la plej granda trovebla fendo.\n"
+"Uzo de grandaj valoroj eble malrapidegigos la farbadon."
 
 #: ../gui/fill.py:834
 msgctxt ""
@@ -2175,7 +2198,7 @@ msgctxt ""
 "When enabled, if the fill stops after going past a detected gap, it 'pulls' "
 "the fill back out of the gap to the other side of it."
 msgid "Prevent seeping"
-msgstr ""
+msgstr "Malhelpi likadon"
 
 #: ../gui/fill.py:841
 msgctxt "fill options: Prevent seeping (tooltip)"
@@ -2183,6 +2206,8 @@ msgid ""
 "Try to prevent the fill from seeping into the gaps.\n"
 "If a fill starts in a detected gap, this option will do nothing."
 msgstr ""
+"Provi malhelpi likadon de la farbo en la fendojn.\n"
+"Se farbado komenciĝos en trovita fendo, ĉi tiu opcio ne efikos."
 
 #: ../gui/fill.py:851 ../gui/mode.py:639
 msgid "Reset"
@@ -2340,6 +2365,11 @@ msgid ""
 "Please tell the developers about this using the issue tracker if no-one else "
 "has reported it yet."
 msgstr ""
+"Eble vi povos ignori ĉi tiun eraron kaj labori plu, sed vi probable konservu "
+"vian laboron baldaŭ.\n"
+"\n"
+"Bonvolu informi la programistojn pri ĉi tio per la datenbanko de cimoj, se "
+"ankoraŭ neniu raportis ĝin."
 
 #: ../gui/gtkexcepthook.py:177
 msgid "Search Tracker…"
@@ -2447,11 +2477,11 @@ msgstr "Aparato:"
 
 #: ../gui/inputtestwindow.py:73
 msgid "(No Barrel Rotation)"
-msgstr ""
+msgstr "(Sen turno de grifelo)"
 
 #: ../gui/inputtestwindow.py:75
 msgid "Barrel Rotation:"
-msgstr ""
+msgstr "Turno de grifelo:"
 
 #. TRANSLATORS: Command to move a layer in the horizontal plane,
 #. TRANSLATORS: preserving its position in the stack.
@@ -2632,7 +2662,7 @@ msgstr "Kapo"
 
 #: ../gui/linemode.py:48
 msgid "Stroke lead-in end"
-msgstr ""
+msgstr "Fino de la streka komenciĝo"
 
 #: ../gui/linemode.py:49
 msgid "Tail"
@@ -2640,7 +2670,7 @@ msgstr "Vosto"
 
 #: ../gui/linemode.py:50
 msgid "Stroke trail-off beginning"
-msgstr ""
+msgstr "Komenco de la streka finiĝo"
 
 #: ../gui/linemode.py:174
 msgid "Pressure variation…"
@@ -2801,12 +2831,12 @@ msgstr "Opakeco:"
 #. TRANSLATORS:"Brush hardness/sharpness" for the options panel. Short.
 #: ../gui/mode.py:596
 msgid "Sharp:"
-msgstr ""
+msgstr "Pinteco:"
 
 #. TRANSLATORS:"Additional pressure gain" for the options panel. Short.
 #: ../gui/mode.py:598
 msgid "Gain:"
-msgstr ""
+msgstr "Multiplikanto:"
 
 #. TRANSLATORS:"Paint Pigment Mode" for the options panel. Short.
 #: ../gui/mode.py:600
@@ -2842,7 +2872,7 @@ msgstr "Zomo: %.01f%%"
 #: ../gui/picker.py:462
 msgctxt "context picker: statusbar text during grab"
 msgid "Pick brushstroke settings, stroke color, and layer…"
-msgstr ""
+msgstr "Elekti penikajn agordojn, strekan koloron kaj tavolon…"
 
 #: ../gui/picker.py:501
 msgctxt "color picker: statusbar text during grab"
@@ -2877,7 +2907,7 @@ msgstr "Antaŭrigardo"
 
 #: ../gui/previewwindow.py:203
 msgid "Show preview of the whole drawing area"
-msgstr ""
+msgstr "Montri antaŭrigardon de la tuta dokumento"
 
 #. TRANSLATORS: The preview panel shows where the "camera" of the
 #. TRANSLATORS: main view is pointing.
@@ -3001,7 +3031,7 @@ msgstr "Vido (alternativa/neĉefa)"
 
 #: ../gui/toolbar.py:37
 msgid "View (Resetting)"
-msgstr ""
+msgstr "Vido (uzi impliciton)"
 
 #: ../gui/toolstack.py:352
 #, python-brace-format
@@ -3031,7 +3061,7 @@ msgstr "Rulumi vidon"
 
 #: ../gui/viewmanip.py:43
 msgid "Drag the canvas view"
-msgstr ""
+msgstr "Ŝovi la vidon de la dokumento"
 
 #: ../gui/viewmanip.py:79
 msgid "Zoom View"
@@ -3039,7 +3069,7 @@ msgstr "Zomigi vidon"
 
 #: ../gui/viewmanip.py:82
 msgid "Zoom the canvas view"
-msgstr ""
+msgstr "Zomigi la vion de la dokumento"
 
 #: ../gui/viewmanip.py:122
 msgid "Rotate View"
@@ -3047,7 +3077,7 @@ msgstr "Turni vidon"
 
 #: ../gui/viewmanip.py:125
 msgid "Rotate the canvas view"
-msgstr ""
+msgstr "Turni la vidon de la dokumento"
 
 #: ../lib/command.py:177
 msgid "Unknown Command"
@@ -3247,6 +3277,10 @@ msgid ""
 "num_layers}\n"
 "Contains {unsaved_time} of unsaved painting."
 msgstr ""
+"Savkopio gisdatigita {last_modified_time} {ago}\n"
+"Dimensioj: {autosave.width}×{autosave.height} bilderoj, tavoloj: {autosave."
+"num_layers}\n"
+"Ekzistas {unsaved_time} da nekonservita pentrado."
 
 #: ../lib/document.py:1448
 #, python-brace-format
@@ -3516,11 +3550,11 @@ msgstr "Malŝlosi tavolan vidon"
 
 #: ../lib/modes.py:47
 msgid "Pass-through"
-msgstr ""
+msgstr "Trapasigi"
 
 #: ../lib/modes.py:48
 msgid "Group contents apply directly to the group's backdrop"
-msgstr ""
+msgstr "Enhavoj de la tavolaro metiĝas rekte sur la fonon de la tavolo"
 
 #: ../lib/modes.py:51
 msgid "Normal"
@@ -3538,6 +3572,7 @@ msgstr "Pigmento"
 msgid ""
 "Similar to mixing actual pigments by upsampling to 10 spectral channels."
 msgstr ""
+"Simuli miksadon de realaj pigmentoj per samplado al 10 spektraj kanaloj."
 
 #: ../lib/modes.py:58
 msgid "Multiply"
@@ -3547,7 +3582,7 @@ msgstr "Multipliki"
 msgid ""
 "Similar to loading two slides into a projector and projecting the combined "
 "result."
-msgstr ""
+msgstr "Simila al samtempa projekciado de du lumbildoj per unu projekciilo."
 
 #: ../lib/modes.py:62
 msgid "Screen"
@@ -3558,16 +3593,20 @@ msgid ""
 "Like shining two separate slide projectors onto a screen simultaneously. "
 "This is the inverse of 'Multiply'."
 msgstr ""
+"Simila al samtempa projekciado per du projekciiloj sur unu ekranon. Jen la "
+"inverso de «Multipliki»."
 
 #: ../lib/modes.py:66
 msgid "Overlay"
-msgstr ""
+msgstr "Surmeti"
 
 #: ../lib/modes.py:67
 msgid ""
 "Overlays the backdrop with the top layer, preserving the backdrop's "
 "highlights and shadows. This is the inverse of 'Hard Light'."
 msgstr ""
+"Surmeti la fonon sur la supran tavolon, konservante la prilumitaĵojn kaj la "
+"ombrojn de la fono. Jen la inverso de «Malmola lumo»."
 
 #: ../lib/modes.py:71
 msgid "Darken"
@@ -3576,6 +3615,7 @@ msgstr "Malheligi"
 #: ../lib/modes.py:72
 msgid "The top layer is used where it is darker than the backdrop."
 msgstr ""
+"La supra tavolo estas tie uzata, kie ĝi estas pli malhela ol la malsupra."
 
 #: ../lib/modes.py:75
 msgid "Lighten"
@@ -3583,11 +3623,11 @@ msgstr "Heligi"
 
 #: ../lib/modes.py:76
 msgid "The top layer is used where it is lighter than the backdrop."
-msgstr ""
+msgstr "La supra tavolo estas tie uzata, kie ĝi estas pli hela ol la malsupra."
 
 #: ../lib/modes.py:79
 msgid "Dodge"
-msgstr ""
+msgstr "Elmeti malpli"
 
 #: ../lib/modes.py:80
 msgid ""
@@ -3595,10 +3635,13 @@ msgid ""
 "photographic darkroom technique of the same name which is used for improving "
 "contrast in shadows."
 msgstr ""
+"Heligi la fonon per la supra tavolo. La efiko similas al la fotografia "
+"tekniko en malluma ĉambro, dum kiu oni elmetas kelkajn partojn de la "
+"fotografaĵo al malpli da lumo, por plikontrastigi ombrojn."
 
 #: ../lib/modes.py:84
 msgid "Burn"
-msgstr ""
+msgstr "Elmeti pli"
 
 #: ../lib/modes.py:85
 msgid ""
@@ -3606,6 +3649,9 @@ msgid ""
 "photographic darkroom technique of the same name which is used for reducing "
 "over-bright highlights."
 msgstr ""
+"Malheligi la fonon per la supra tavolo. La efiko similas al la fotografia "
+"tekniko en malluma ĉambro, dum kiu oni elmetas kelkajn partojn de la "
+"fotografaĵo al pli da lumo, por malheligi trohelaĵojn."
 
 #: ../lib/modes.py:89
 msgid "Hard Light"
@@ -3613,7 +3659,7 @@ msgstr "Malmola lumo"
 
 #: ../lib/modes.py:90
 msgid "Similar to shining a harsh spotlight onto the backdrop."
-msgstr ""
+msgstr "Simile al prilumado de la fono per forta lumo."
 
 #: ../lib/modes.py:92
 msgid "Soft Light"
@@ -3621,7 +3667,7 @@ msgstr "Mola lumo"
 
 #: ../lib/modes.py:93
 msgid "Like shining a diffuse spotlight onto the backdrop."
-msgstr ""
+msgstr "Simile al prilumado de la fono per difuza lumo."
 
 #: ../lib/modes.py:95
 msgid "Difference"
@@ -3629,7 +3675,7 @@ msgstr "Diferenco"
 
 #: ../lib/modes.py:96
 msgid "Subtracts the darker color from the lighter of the two."
-msgstr ""
+msgstr "Subtrahi de la pli hela koloro la pli malhelan."
 
 #: ../lib/modes.py:98
 msgid "Exclusion"
@@ -3637,7 +3683,7 @@ msgstr "Ekskluzivado"
 
 #: ../lib/modes.py:99
 msgid "Similar to the 'Difference' mode, but lower in contrast."
-msgstr ""
+msgstr "Simila al la reĝimo «Diferenco», sed kun malpli da kontrasto."
 
 #: ../lib/modes.py:102
 msgid "Hue"
@@ -3648,32 +3694,40 @@ msgid ""
 "Combines the hue of the top layer with the saturation and luminosity of the "
 "backdrop."
 msgstr ""
+"Kombini la kolortonon de la supra tavolo kun la saturo kaj la lumeco de la "
+"fono."
 
 #: ../lib/modes.py:106
 msgid "Saturation"
-msgstr "Satureco"
+msgstr "Kolorsaturo"
 
 #: ../lib/modes.py:107
 msgid ""
 "Applies the saturation of the top layer's colors to the hue and luminosity "
 "of the backdrop."
 msgstr ""
+"Kombini la saturon de la supra tavolo kun la kolortono kaj la lumeco de la "
+"fono."
 
 #: ../lib/modes.py:111
 msgid ""
 "Applies the hue and saturation of the top layer to the luminosity of the "
 "backdrop."
 msgstr ""
+"Kombini la kolortonon kaj la saturon de la supra tavolo kun la lumeco de la "
+"fono."
 
 #: ../lib/modes.py:114
 msgid "Luminosity"
-msgstr ""
+msgstr "Lumeco"
 
 #: ../lib/modes.py:115
 msgid ""
 "Applies the luminosity of the top layer to the hue and saturation of the "
 "backdrop."
 msgstr ""
+"Kombini la lumecon de la supra tavolo kun la kolortono kaj la saturo de la "
+"fono."
 
 #: ../lib/modes.py:119
 msgid "Plus"
@@ -3681,47 +3735,53 @@ msgstr "Plus"
 
 #: ../lib/modes.py:120
 msgid "This layer and its backdrop are simply added together."
-msgstr ""
+msgstr "La aktuala tavolo kaj ĝia fono estas simple sumigitaj kune."
 
 #: ../lib/modes.py:122
 msgid "Destination In"
-msgstr ""
+msgstr "Interno de celo"
 
 #: ../lib/modes.py:123
 msgid ""
 "Uses the backdrop only where this layer covers it. Everything else is "
 "ignored."
 msgstr ""
+"Uzi la fonon nur tie, kie ĉi tiu tavolo kovras ĝin, ignorante ĉion alian."
 
 #: ../lib/modes.py:126
 msgid "Destination Out"
-msgstr ""
+msgstr "Ekstero de celo"
 
 #: ../lib/modes.py:127
 msgid ""
 "Uses the backdrop only where this layer doesn't cover it. Everything else is "
 "ignored."
 msgstr ""
+"Uzi la fonon nur tie, kie ĉi tiu tavolo ne kovras ĝin, ignorante ĉion alian."
 
 #: ../lib/modes.py:130
 msgid "Source Atop"
-msgstr ""
+msgstr "Surmeti fonton"
 
 #: ../lib/modes.py:131
 msgid ""
 "Source which overlaps the destination, replaces the destination. Destination "
 "is placed elsewhere."
 msgstr ""
+"Tiu parto de la fonto, kiu kovras la celon, anstataŭas la celon, aliloke "
+"metante la celon."
 
 #: ../lib/modes.py:134
 msgid "Destination Atop"
-msgstr ""
+msgstr "Surmeti celon"
 
 #: ../lib/modes.py:135
 msgid ""
 "Destination which overlaps the source replaces the source. Source is placed "
 "elsewhere."
 msgstr ""
+"Tiu parto de la celo, kiu kovras la fonton, anstataŭas la fonton, aliloke "
+"metante la fonton."
 
 #. TRANSLATORS: UNIQUE_NAME_TEMPLATE. Must match its regex.
 #. TRANSLATORS: Leave this untranslated if you are unsure.
@@ -3747,6 +3807,8 @@ msgid ""
 "Unable to construct a vital internal object. Your system may not have enough "
 "memory to perform this operation."
 msgstr ""
+"Ne povas konstrui nepran internan objekton. Via sistemo eble ne havas sufiĉe "
+"da memoro por plenumi ĉi tiun operacion."
 
 #: ../lib/surface.py:313
 #, python-brace-format
@@ -3806,6 +3868,11 @@ msgid ""
 "You can always launch this dialog from the ‘File’ menu when MyPaint is "
 "running."
 msgstr ""
+"Montri ĉi tiun dialogon pri restaŭro de aŭtomataj savkopioj dum lanĉo de "
+"MyPaint, se ekzistas restaŭrindaj dosieroj.\n"
+"\n"
+"Vi ĉiam povas malfermi ĉi tiun dialogon per la menuo «Dosiero» dum la "
+"funkciado de MyPaint."
 
 #. Deletes the selected autosave backup file.
 #: ../gui/autorecover.glade:60
@@ -3827,7 +3894,7 @@ msgstr "_Restaŭri kaj konservi…"
 #: ../gui/autorecover.glade:84
 msgctxt "Autosave Recovery dialog|Recover button|"
 msgid "Save this backup to disk, then continue working on it."
-msgstr ""
+msgstr "Konservi ĉi tiun savkopion sur diskon, kaj daŭre prilabori ĝin."
 
 #. Do not recover any autosaves; take no action.
 #: ../gui/autorecover.glade:95
@@ -3838,7 +3905,7 @@ msgstr "_Prokrasti decidon"
 #: ../gui/autorecover.glade:101
 msgctxt "Autosave Recovery dialog|Cancel button|"
 msgid "Start work on a new canvas. These backups will be retained."
-msgstr ""
+msgstr "Eklabori sur nova dokumento. Ĉi tiuj savkopioj restos konservitaj."
 
 #: ../gui/autorecover.glade:122
 msgctxt "Autosave Recovery dialog|"
@@ -3847,6 +3914,9 @@ msgid ""
 "recover a working file from one of these automated backups now. You’ll be "
 "asked where to save it before continuing."
 msgstr ""
+"MyPaint kolapsis traktante nekonservitan laboron, sed ĝi periode faradas "
+"savkopiojn. Vi nun povas rekuperi la dosieron per unu el ĉi tiuj aŭtomataj "
+"savkopioj. Ĝi demandos vin, kie konservi la rekuperitaĵon, antaŭ ol daŭrigi."
 
 #: ../gui/autorecover.glade:157
 msgid "Thumbnail"
@@ -3865,6 +3935,8 @@ msgid ""
 "Update the last stroke on the canvas with the settings in this window, in "
 "real time"
 msgstr ""
+"Realtempe ĝisdatigi la lastan strekon en la dokumento laŭ la agordoj en ĉi "
+"tiu fenestro"
 
 #: ../gui/brusheditor.glade:116
 msgid "Save these settings to the brush"
@@ -3879,6 +3951,8 @@ msgid ""
 "Edit this brush's icon in a separate window (you will be able to use any "
 "brush to draw it)"
 msgstr ""
+"Redakti la piktogramon de ĉi tiu peniko per nova fenestro (vi povos uzi "
+"ajnan penikon por desegni ĝin)"
 
 #: ../gui/brusheditor.glade:151
 msgid "Delete"
@@ -3895,6 +3969,8 @@ msgstr "Kopii al nova"
 #: ../gui/brusheditor.glade:175
 msgid "Copy these settings and the current brush's icon to a new brush"
 msgstr ""
+"Kopii al nova peniko ĉi tiujn agordojn kaj la piktogramon de la aktuala "
+"peniko"
 
 #: ../gui/brusheditor.glade:194
 msgid "Rename this brush"
@@ -3940,19 +4016,23 @@ msgstr "Valoro:"
 
 #: ../gui/brusheditor.glade:491
 msgid "Reset this input to have no effect on the setting"
-msgstr ""
+msgstr "Uzi la implicitan valoron, tiel ke la agordo neniel efikas"
 
 #: ../gui/brusheditor.glade:521
 msgid ""
 "Minimum value for the output axis.\n"
 "This can be set using the main slider for {dname}."
 msgstr ""
+"La minimuma valoro de la eliga akso.\n"
+"Tiu estas ŝanĝebla per la ĉefŝovbutono por {dname}."
 
 #: ../gui/brusheditor.glade:540
 msgid ""
 "Maximum value for the output axis.\n"
 "This can be set using the main slider for {dname}."
 msgstr ""
+"La maksimuma valoro de la eliga akso.\n"
+"Tiu estas ŝanĝebla per la ĉefŝovbutono por {dname}."
 
 #: ../gui/brusheditor.glade:562
 msgid "Output"
@@ -3975,16 +4055,20 @@ msgid ""
 "Minimum value for the input axis.\n"
 "Use the popup scale to adjust this."
 msgstr ""
+"La minimuma valoro de la eniga akso.\n"
+"Tiu estas ŝanĝebla per la ŝprucaĵo."
 
 #: ../gui/brusheditor.glade:684
 msgid ""
 "Maximum value for the input axis.\n"
 "Use the popup scale to adjust this."
 msgstr ""
+"La maksimuma valoro de la eniga akso.\n"
+"Tiu estas ŝanĝebla per la ŝprucaĵo."
 
 #: ../gui/brusheditor.glade:739
 msgid "Variation of the base value by stylus input and other criteria"
-msgstr ""
+msgstr "Variado de la baza valoro laŭ enigo per grifelo kaj aliaj kriterioj"
 
 #: ../gui/brusheditor.glade:746
 msgid "Brush Dynamics"
@@ -3992,7 +4076,7 @@ msgstr "Dinamiko de peniko"
 
 #: ../gui/brusheditor.glade:780
 msgid "Adjust this input mapping in detail"
-msgstr ""
+msgstr "Detale alĝustigi ĉi tiun asignon de enigo"
 
 #: ../gui/brusheditor.glade:802
 msgid "{tooltip}"
@@ -4031,6 +4115,9 @@ msgid ""
 "A value of 0 means that the pen is vertical.\n"
 "Negative values mean leftwards tilts."
 msgstr ""
+"Klini laŭ la X-akso de la dokumento.\n"
+"Valoro de 0 signifas, ke la plumo estas vertikala.\n"
+"Negativaj valoroj signifas maldekstran klinon."
 
 #: ../gui/inktool.glade:90
 msgctxt "Inking tool options: point value sliders: labels"
@@ -4044,12 +4131,12 @@ msgstr "Y-klino:"
 
 #: ../gui/inktool.glade:145
 msgid "Tilt in the canvas Y axis"
-msgstr ""
+msgstr "Klini laŭ la Y-akso de la dokumento"
 
 #: ../gui/inktool.glade:167
 msgctxt "Inking tool options: point value sliders: labels: tooltips"
 msgid "Time since the previous point, in seconds"
-msgstr ""
+msgstr "Tempo post la antaŭa punkto, en sekundoj"
 
 #: ../gui/inktool.glade:172
 msgctxt "Inking tool options: point value sliders: labels"
@@ -4080,11 +4167,11 @@ msgstr "Simpligi la kurbon per la algoritmo de Reumann-Witkam."
 
 #: ../gui/inktool.glade:269 ../gui/resources.xml:918
 msgid "Cull Points"
-msgstr ""
+msgstr "Forigi aliajn punktojn"
 
 #: ../gui/inktool.glade:273
 msgid "Cull every other point from the curve."
-msgstr ""
+msgstr "Forigi ĉiujn aliajn punktojn el la kurbo."
 
 #: ../gui/layervis.glade:15
 msgctxt "Layers window: view list controls: tooltips"
@@ -4104,7 +4191,7 @@ msgstr "Forigi la aktivan vidon."
 #: ../gui/layervis.glade:78
 msgctxt "Layers window: view list controls: tooltips"
 msgid "Snapshot visible layers as a new view."
-msgstr ""
+msgstr "Fari novan vidon el la aktuale videbaj tavoloj."
 
 #: ../gui/layervis.glade:99
 msgctxt "Layers window: view list controls: tooltips"
@@ -4129,7 +4216,7 @@ msgstr "Enmeti la aktualan koloron en la paletron"
 #: ../gui/mypaint.glade:161
 msgctxt "Footerbar|"
 msgid "Canvas scale and rotation"
-msgstr ""
+msgstr "Skalo kaj turno de la dokumento"
 
 #. str.format() template
 #: ../gui/mypaint.glade:163
@@ -4242,6 +4329,8 @@ msgid ""
 "Here you can restrict pointing devices to specific tasks on the canvas, or "
 "have them ignored completely if they glitch your drawing."
 msgstr ""
+"Ĉi tie vi povas limigi montrajn aparatojn al specifaj taskoj sur la "
+"dokumento, aŭ igi ilin plene ignorataj, se ili ĝenas vin desegni."
 
 #: ../gui/preferenceswindow.glade:324
 msgctxt "Prefs Dialog|Button|"
@@ -4277,7 +4366,7 @@ msgstr "Butonoj"
 #. unless its key is bound to something else.
 #: ../gui/preferenceswindow.glade:453
 msgid "Disable fallback key bindings"
-msgstr ""
+msgstr "Malŝalti apriorajn klavasignojn"
 
 #. Tooltip for checkbox in the keyboard mappings preferences.
 #: ../gui/preferenceswindow.glade:457
@@ -4285,6 +4374,8 @@ msgid ""
 "The fallback key bindings are static built-in bindings that are only used if "
 "their key combinations are not bound to anything else."
 msgstr ""
+"La aprioraj klavasignoj estas neŝanĝeblaj, antaŭagorditaj klavasignoj, kiuj "
+"uziĝas nur se iliaj klavkombinoj ne estas reasignitaj al alio."
 
 #: ../gui/preferenceswindow.glade:476
 msgctxt "Prefs Dialog|Button|"
@@ -4360,6 +4451,11 @@ msgid ""
 "This is MyPaint's old behaviour, and can be used as a stopgap for non-sRGB "
 "working."
 msgstr ""
+"Ne konverti kolorojn dum ŝargado, kaj konservi dosierojn sen informoj pri "
+"administrado de koloroj.\n"
+"\n"
+"Jen la maniero de malnovaj versioj de MyPaint, uzebla kiel riparaĉo de "
+"misfunkciado pri sRGB."
 
 #: ../gui/preferenceswindow.glade:680
 msgctxt "Prefs Dialog|Load & Save|"
@@ -4385,6 +4481,8 @@ msgid ""
 "the program crashes, you'll have a chance to restore what you were working "
 "on."
 msgstr ""
+"Fone fari savkopiojn iom post iom en la diska kaŝmemoro de MyPaint. Se la "
+"programo kolapsos, vi havos ŝancon restaŭri vian prilaborataĵon."
 
 #: ../gui/preferenceswindow.glade:768
 msgctxt "Prefs Dialog|Load & Save|Automated Backups|interval label"
@@ -4475,7 +4573,7 @@ msgstr "Montrante travideblecon:"
 #: ../gui/preferenceswindow.glade:1051
 msgctxt "Prefs Dialog|View|Interface|"
 msgid "Handle smooth scrolling events:"
-msgstr ""
+msgstr "Trakti eventojn pri glata rulumado:"
 
 #: ../gui/preferenceswindow.glade:1061
 msgctxt ""
@@ -4497,6 +4595,15 @@ msgid ""
 "Scrolling to pan the view needs this setting to be turned on, and for your "
 "device to be configured to send bidirectional scroll events."
 msgstr ""
+"Glata rulumado kontinuigas rulumajn gestojn kaj musradajn eventojn el iuj "
+"aparatoj, senigante paŝojn. Ĝi taŭgas por tuŝplatoj, sed povas agaci se vi "
+"kutimas musradojn.\n"
+"\n"
+"Se glata rulumado estas subtenata, vi povas portempe aktivigi laŭpaŝan "
+"rulumadon premante la majuskligan klavon dum rulumado.\n"
+"\n"
+"Por movi la vidon per rulumado, ĉi tiu opcio devas esti ŝaltita, kaj via "
+"aparato devas esti agordita por sendi dudirektajn rulumajn eventojn."
 
 #: ../gui/preferenceswindow.glade:1112
 msgid "Hide cursor while painting"
@@ -4637,6 +4744,11 @@ msgid ""
 "and yellow is opposite blue. CIECAM02 and NCS present a similar model. Here "
 "we use pure display red, yellow etc. as the four primaries."
 msgstr ""
+"Kruda proksimumaĵo de kolorradoj bazitaj sur teorioj de la koloro, kiuj uzas "
+"kvar «psikologiajn ĉefkolorojn» aŭ «unikajn kolortonojn» aranĝitajn en "
+"kontraŭaj paroj ĉe la kardinalaj punktoj. Ruĝo troviĝas kontraŭ verdo, kaj "
+"flavo kontraŭ bluo. CIECAM02 kaj NCS prezentas similajn modelojn. Ĉi tiu "
+"programo uzas purajn ekranajn ruĝon, flavon ktp kiel la kvar ĉefkolorojn."
 
 #: ../gui/preferenceswindow.glade:1384
 msgctxt "Prefs Dialog|Color|Color Wheel|Primaries|RYGB|"
@@ -4647,6 +4759,11 @@ msgid ""
 "blue. CIECAM02 and NCS present a similar model. Here we use pure display "
 "red, yellow etc. as the four primaries."
 msgstr ""
+"Kruda proksimumaĵo de kolorradoj bazitaj sur teorioj de la koloro, kiuj uzas "
+"kvar «psikologiajn ĉefkolorojn» aŭ «unikajn kolortonojn» aranĝitajn en "
+"kontraŭaj paroj ĉe la kardinalaj punktoj. Ruĝo troviĝas kontraŭ verdo, kaj "
+"flavo kontraŭ bluo. CIECAM02 kaj NCS prezentas similajn modelojn. Ĉi tiu "
+"programo uzas purajn ekranajn ruĝon, flavon ktp kiel la kvar ĉefkolorojn."
 
 #. Options affecting color wheels
 #: ../gui/preferenceswindow.glade:1412
@@ -4694,6 +4811,9 @@ msgid ""
 "default. In this mode 1.x .ora files will look the same as they did in older "
 "versions, but pigment blending will not work well."
 msgstr ""
+"Dum kreado de novaj dokumentoj, implicite uzi la reĝimon por kongrueco kun "
+"versioj 1.x. La .ora-dosieroj kreitaj en ĉi tiu reĝimo aspektos same en "
+"malnovaj versioj de la programo, sed miksado de pigmentoj misfunkcios."
 
 #: ../gui/preferenceswindow.glade:1690
 msgctxt "Prefs Dialog|Compatibility"
@@ -4701,6 +4821,9 @@ msgid ""
 "When creating new documents, use the regular 2.x compatibility mode by "
 "default. Old documents will often look different in this mode."
 msgstr ""
+"Dum kreado de novaj dokumentoj, implicite uzi la ordinaran reĝimon por "
+"kongrueco kun versioj 2.x. Malnovaj dokumentoj ofte aspektos malsimile en "
+"tiu reĝimo."
 
 #: ../gui/preferenceswindow.glade:1722
 msgctxt "Prefs Dialog|Compatibility"
@@ -4726,6 +4849,10 @@ msgid ""
 "When you save an OpenRaster file with MyPaint 2.0 or newer the active "
 "compatibility mode will be written to the file."
 msgstr ""
+"Ĉi tio validas nur pri dosieroj konservitaj de versioj de MyPaint malpli "
+"novaj ol 2.0. Se vi konservos OpenRaster-dosieron per versio de MyPaint ne "
+"malpli nova ol 2.0, la aktiva kongruiga reĝimo estos enskribita en la "
+"dosieron."
 
 #. Label to the options for how to handle files which do not have a compatibility mode specified (whether they should be opened in 1.x compatibility mode, or 2.x mode)
 #: ../gui/preferenceswindow.glade:1769
@@ -4775,10 +4902,9 @@ msgid "New"
 msgstr "Nova"
 
 #: ../gui/resources.xml:65
-#, fuzzy
 msgctxt "Toolbar (tooltips), Accel Editor (descriptions)"
 msgid "Start with a new blank canvas."
-msgstr "Komenci per nova malplena pentraĵo."
+msgstr "Komenci per nova malplena dokumento."
 
 #: ../gui/resources.xml:73
 msgctxt "Menu→File (labels), Accel Editor (labels)"
@@ -4813,12 +4939,12 @@ msgstr "Malfermi lastajn"
 #: ../gui/resources.xml:103
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "Revert"
-msgstr ""
+msgstr "Reŝargi konservitan version"
 
 #: ../gui/resources.xml:104
 msgctxt "Accel Editor (descriptions)"
 msgid "Reload the file your current work was loaded from."
-msgstr ""
+msgstr "Reŝargi la dosieron, el kiu via aktuala dokumento estis ŝargita."
 
 #: ../gui/resources.xml:111
 msgctxt "Menu→File (labels), Accel Editor (labels)"
@@ -4858,6 +4984,7 @@ msgstr "Elporti…"
 #: ../gui/resources.xml:139
 msgid "Export your work to a file, but keep working on the same file."
 msgstr ""
+"Elporti vian laboron en dosieron, sed daŭre prilabori la saman dosieron."
 
 #: ../gui/resources.xml:147
 msgctxt "Menu→File (labels), Accel Editor (labels)"
@@ -4900,6 +5027,8 @@ msgstr "Restaŭri dosieron el aŭtomata savkopio…"
 msgctxt "Accel Editor (descriptions)"
 msgid "Try to save and resume interrupted unsaved work."
 msgstr ""
+"Provi konservi interrompitan nekonservitan dokumenton kaj daŭre prilabori "
+"ĝin."
 
 #: ../gui/resources.xml:190
 msgctxt "Menu→Brush (label)"
@@ -4944,7 +5073,7 @@ msgstr "Reĝimo"
 #: ../gui/resources.xml:210
 msgctxt "Toolbar (tooltips)"
 msgid "The current layer's compositing mode."
-msgstr ""
+msgstr "La kunmeta reĝimo de la aktuala tavolo."
 
 #: ../gui/resources.xml:237
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
@@ -4976,6 +5105,7 @@ msgstr "Pliigi falsan turnon"
 msgctxt "Accel Editor (descriptions)"
 msgid "Increase barrel rotation for devices that don't support rotation input."
 msgstr ""
+"Pliigi turnon de grifelo por tiuj aparatoj, kiuj ne subtenas rotacian enigon."
 
 #: ../gui/resources.xml:262
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
@@ -4986,6 +5116,8 @@ msgstr "Malpliigi falsan turnon"
 msgctxt "Accel Editor (descriptions)"
 msgid "Decrease barrel rotation for devices that don't support rotation input."
 msgstr ""
+"Malpliigi turnon de grifelo por tiuj aparatoj, kiuj ne subtenas rotacian "
+"enigon."
 
 #: ../gui/resources.xml:271
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
@@ -5097,6 +5229,7 @@ msgstr "Reŝargi agordojn pri peniko"
 msgctxt "Accel Editor (descriptions)"
 msgid "Restore all brush settings to the current brush’s saved values."
 msgstr ""
+"Ŝanĝi ĉiujn penikajn agordojn al la konservitaj valoroj de la aktuala peniko."
 
 #: ../gui/resources.xml:370
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
@@ -5108,11 +5241,12 @@ msgctxt "Accel Editor (descriptions)"
 msgid ""
 "Pick a brushstroke from the canvas, which restores brush, color, and layer."
 msgstr ""
+"Elekti strekon el la dokumento kaj ekuzi ĝiajn penikon, koloron kaj tavolon."
 
 #: ../gui/resources.xml:382
 msgctxt "Menu→Brush→Shortcut Keys (labels), Accel Editor (labels)"
 msgid "Brush Shortcut Keys Restore Color"
-msgstr ""
+msgstr "Penikaj fulmoklavoj ŝanĝas aktualan koloron"
 
 #: ../gui/resources.xml:383
 msgctxt "Accel Editor (descriptions)"
@@ -5120,16 +5254,18 @@ msgid ""
 "Toggle whether restoring the brush from a shortcut key also restores the "
 "saved color."
 msgstr ""
+"Baskuligi, ĉu ekuzo de peniko el fulmoklavo ankaŭ ekigas uzon de ĝia "
+"konservita koloro."
 
 #: ../gui/resources.xml:390
 msgctxt "Menu→Brush→Shortcut Keys (labels), Accel Editor (labels)"
 msgid "Save Brush to Most Recent Shortcut Key"
-msgstr ""
+msgstr "Konservi penikon en laste uzitan fulmoklavon"
 
 #: ../gui/resources.xml:391
 msgctxt "Accel Editor (descriptions)"
 msgid "Save brush settings to the most recently used shortcut key."
-msgstr ""
+msgstr "Konservi la aktualajn penikajn agordojn en la fulmoklavon laste uzitan."
 
 #: ../gui/resources.xml:401
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
@@ -5144,7 +5280,7 @@ msgstr "Forviŝi la enhavon de la aktiva tavolo."
 #: ../gui/resources.xml:410
 msgctxt "Menu→Layer (labels)"
 msgid "Slice Operations"
-msgstr ""
+msgstr "Tranĉaj operacioj"
 
 #: ../gui/resources.xml:416
 msgctxt "Menu→Layer→Slice (labels), Accel Editor (labels)"
@@ -5154,7 +5290,7 @@ msgstr "Stuci tavolon laŭ kadro"
 #: ../gui/resources.xml:417
 msgctxt "Accel Editor (descriptions)"
 msgid "Erase parts of the current layer which lie outside the frame."
-msgstr ""
+msgstr "Forviŝi tiujn partojn de la aktuala tavolo, kiuj estas ekster la kadro."
 
 #: ../gui/resources.xml:423
 msgctxt "Menu→Layer→Slice (labels), Accel Editor (labels)"
@@ -5164,7 +5300,7 @@ msgstr "Unikigi bilderojn de tavolo"
 #: ../gui/resources.xml:424
 msgctxt "Accel Editor (descriptions)"
 msgid "Delete parts of the current layer which do not vary from the backdrop."
-msgstr ""
+msgstr "Forviŝi tiujn partojn de la aktuala tavolo, kiuj ne varias de la fono."
 
 #: ../gui/resources.xml:430
 msgctxt "Menu→Layer→Slice (labels), Accel Editor (labels)"
@@ -5176,7 +5312,7 @@ msgctxt "Accel Editor (descriptions)"
 msgid ""
 "Delete whole tiles from the current layer which do not vary from the "
 "backdrop."
-msgstr ""
+msgstr "Forviŝi tiujn kahelojn de la aktuala tavolo, kiuj ne varias de la fono."
 
 #: ../gui/resources.xml:437
 msgctxt "Menu→Layer→Slice (labels), Accel Editor (labels)"
@@ -5188,6 +5324,7 @@ msgctxt "Accel Editor (descriptions)"
 msgid ""
 "Normalize child layers, then factor out common parts to a new child layer."
 msgstr ""
+"Normaligi idajn tavolojn kaj disigi komunajn partojn en novan idan tavolon."
 
 #: ../gui/resources.xml:444
 msgctxt "Menu→Layer→Slice (labels), Accel Editor (labels)"
@@ -5242,7 +5379,7 @@ msgstr "Iri al tavolo ĉe kursoro"
 #: ../gui/resources.xml:485
 msgctxt "Accel Editor (descriptions)"
 msgid "Select a layer by picking something [drawn] on it."
-msgstr ""
+msgstr "Elekti tavolon per io desegnita sur ĝi."
 
 #: ../gui/resources.xml:493
 msgctxt "Menu→Layer→Go to Layer (labels), Accel Editor (labels)"
@@ -5328,12 +5465,12 @@ msgstr "Enmeti novan tavolaron sub la aktuala tavolo."
 #: ../gui/resources.xml:559
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Merge Layer Down"
-msgstr ""
+msgstr "Kunigi tavolon kun suba"
 
 #: ../gui/resources.xml:560
 msgctxt "Accel Editor (descriptions)"
 msgid "Merge the current layer with the layer beneath it."
-msgstr ""
+msgstr "Kunigi la aktualan tavolon kun la tavolo sub ĝi."
 
 #: ../gui/resources.xml:567
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
@@ -5343,17 +5480,17 @@ msgstr "Kunigi videblajn tavolojn"
 #: ../gui/resources.xml:568
 msgctxt "Accel Editor (descriptions)"
 msgid "Consolidate all visible layers, and delete the originals."
-msgstr ""
+msgstr "Kunigi ĉiujn videblajn tavolojn kaj forigi la originalojn."
 
 #: ../gui/resources.xml:575
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "New Layer from Visible"
-msgstr ""
+msgstr "Nova tavolo el videblaĵoj"
 
 #: ../gui/resources.xml:576
 msgctxt "Accel Editor (descriptions)"
 msgid "Like ‘Merge Visible Layers’, but doesn’t delete the originals."
-msgstr ""
+msgstr "Simila al «Kunigi videblajn tavolojn», sed sen forigo de la originaloj."
 
 #: ../gui/resources.xml:583
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
@@ -5376,6 +5513,8 @@ msgid ""
 "Convert the current layer or group to a painting layer in ‘Normal’ mode, "
 "preserving its appearance."
 msgstr ""
+"Konverti la aktualan tavolon aŭ tavolarorn en pentran tavolon de reĝimo "
+"«Normala», konservante ĝian aspekton."
 
 #: ../gui/resources.xml:598
 msgctxt "Menu→Layer→Opacity (labels), Accel Editor (labels)"
@@ -5486,12 +5625,14 @@ msgstr "Forigi malplenajn kahelojn for de la dokumento."
 #: ../gui/resources.xml:684
 msgctxt "Menu→View (labels), Accel Editor (labels)"
 msgid "Reset and Center View"
-msgstr ""
+msgstr "Centrigi kaj uzi implicitan vidon"
 
 #: ../gui/resources.xml:685
 msgctxt "Accel Editor (descriptions)"
 msgid "Reset Zoom, Rotation and Mirroring, and recenter the document."
 msgstr ""
+"Uzi la implicitajn agordojn pri zomo, turno kaj inversigo, kaj centrigi la "
+"dokumenton."
 
 #: ../gui/resources.xml:693
 msgctxt "Menu→View (labels), Accel Editor (labels)"
@@ -5501,12 +5642,12 @@ msgstr "Adapti al vido"
 #: ../gui/resources.xml:694
 msgctxt "Accel Editor (descriptions)"
 msgid "Switch between a fitted view and your working location and zoom."
-msgstr ""
+msgstr "Baskuligi inter adaptita vido kaj viaj laborloko kaj zomo."
 
 #: ../gui/resources.xml:701
 msgctxt "Menu→View (labels)"
 msgid "Reset"
-msgstr ""
+msgstr "Uzi implicitojn"
 
 #: ../gui/resources.xml:708
 msgctxt "Menu→View→Reset (labels), Accel Editor (labels)"
@@ -5521,7 +5662,7 @@ msgstr "Uzi implicitan zomnivelon."
 #: ../gui/resources.xml:715
 msgctxt "Menu→View→Reset (labels), Accel Editor (labels)"
 msgid "Reset Rotation"
-msgstr ""
+msgstr "Uzi implicitan turnon"
 
 #: ../gui/resources.xml:716
 msgctxt "Accel Editor (descriptions)"
@@ -5531,12 +5672,12 @@ msgstr "Turni la vidon al la origina angulo 0°"
 #: ../gui/resources.xml:722
 msgctxt "Menu→View→Reset (labels), Accel Editor (labels)"
 msgid "Reset Mirroring"
-msgstr ""
+msgstr "Uzi implicitan inversigon"
 
 #: ../gui/resources.xml:723
 msgctxt "Accel Editor (descriptions)"
 msgid "Reset the view's mirroring."
-msgstr ""
+msgstr "Malfari ajnajn inversigojn de la vido."
 
 #: ../gui/resources.xml:729
 msgctxt "Menu→View→Adjust View (labels), Accel Editor (labels)"
@@ -5566,7 +5707,7 @@ msgstr "Movi maldekstren"
 #: ../gui/resources.xml:759
 msgctxt "Accel Editor (descriptions)"
 msgid "Move your view of the canvas to the left."
-msgstr ""
+msgstr "Movi maldekstren vian vidon de la dokumento."
 
 #: ../gui/resources.xml:766
 msgctxt "Menu→View→Adjust View (labels), Accel Editor (labels)"
@@ -5576,7 +5717,7 @@ msgstr "Movi dekstren"
 #: ../gui/resources.xml:767
 msgctxt "Accel Editor (descriptions)"
 msgid "Move your view of the canvas to the right."
-msgstr ""
+msgstr "Movi dekstren vian vidon de la dokumento."
 
 #: ../gui/resources.xml:774
 msgctxt "Menu→View→Adjust View (labels), Accel Editor (labels)"
@@ -5586,7 +5727,7 @@ msgstr "Movi supren"
 #: ../gui/resources.xml:775
 msgctxt "Accel Editor (descriptions)"
 msgid "Move your view of the canvas upwards."
-msgstr ""
+msgstr "Movi supren vian vidon de la dokumento."
 
 #: ../gui/resources.xml:782
 msgctxt "Menu→View→Adjust View (labels), Accel Editor (labels)"
@@ -5596,7 +5737,7 @@ msgstr "Movi malsupren"
 #: ../gui/resources.xml:783
 msgctxt "Accel Editor (descriptions)"
 msgid "Move your view of the canvas downwards."
-msgstr ""
+msgstr "Movi malsupren vian vidon de la dokumento."
 
 #.
 #. Note: the object we've agreed to present as being rotated
@@ -5613,7 +5754,7 @@ msgstr "Turni horloĝdirekte"
 #: ../gui/resources.xml:799
 msgctxt "Accel Editor (descriptions)"
 msgid "Rotate the canvas clockwise."
-msgstr ""
+msgstr "Turni horloĝdirekte la dokumenton."
 
 #: ../gui/resources.xml:819
 msgctxt "Menu→View→Adjust View (labels), Accel Editor (labels)"
@@ -5623,27 +5764,27 @@ msgstr "Turni kontraŭhorloĝdirekte"
 #: ../gui/resources.xml:820
 msgctxt "Accel Editor (descriptions)"
 msgid "Rotate the canvas counter-clockwise."
-msgstr ""
+msgstr "Turni kontraŭhorloĝdirekte la dokumenton."
 
 #: ../gui/resources.xml:828
 msgctxt "Menu→View→Adjust View (labels), Accel Editor (labels)"
 msgid "Mirror Horizontal"
-msgstr "Speguli horizontale"
+msgstr "Inversigi horizontale"
 
 #: ../gui/resources.xml:829
 msgctxt "Accel Editor (descriptions)"
 msgid "Flip the view left to right."
-msgstr ""
+msgstr "Inversigi la vidon dekstre-maldekstre."
 
 #: ../gui/resources.xml:837
 msgctxt "Menu→View→Adjust View (labels), Accel Editor (labels)"
 msgid "Mirror Vertical"
-msgstr "Speguli vertikale"
+msgstr "Inversigi vertikale"
 
 #: ../gui/resources.xml:838
 msgctxt "Accel Editor (descriptions)"
 msgid "Flip the view upside-down."
-msgstr ""
+msgstr "Renversi la vidon."
 
 #: ../gui/resources.xml:845
 msgctxt "Menu→View (labels), Accel Editor (labels)"
@@ -5663,7 +5804,7 @@ msgstr "Simetria pentrado aktiva"
 #: ../gui/resources.xml:857
 msgctxt "Accel Editor (descriptions)"
 msgid "Mirror brushstrokes along the axis of symmetry"
-msgstr "Speguli strekojn laŭ la akso de simetrio"
+msgstr "Inversigi strekojn laŭ la akso de simetrio"
 
 #: ../gui/resources.xml:864
 msgctxt "Menu→File (labels), Accel Editor (labels)"
@@ -5817,7 +5958,7 @@ msgstr "Ŝprucaĵo pri uzitaj koloroj"
 #: ../gui/resources.xml:1021
 msgctxt "Accel Editor (descriptions)"
 msgid "Pop up a timeline of recent colors under the cursor."
-msgstr ""
+msgstr "Montri liston de laste uzitaj koloroj sub la kursoro."
 
 #: ../gui/resources.xml:1028
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
@@ -5927,17 +6068,17 @@ msgstr "Elporti provejon kiel…"
 #: ../gui/resources.xml:1121
 msgctxt "Accel Editor (descriptions)"
 msgid "Export the scratchpad to disk, under a file name of your choice."
-msgstr ""
+msgstr "Elporti la provejon en dosieron elektitan de vi en la disko."
 
 #: ../gui/resources.xml:1128
 msgctxt "Menu→Scratchpad (labels), Accel Editor (labels)"
 msgid "Revert Scratchpad"
-msgstr ""
+msgstr "Reŝargi provejon"
 
 #: ../gui/resources.xml:1129
 msgctxt "Accel Editor (descriptions)"
 msgid "Revert the scratchpad to its last saved state."
-msgstr ""
+msgstr "Restaŭri laste konservitan version de la provejo."
 
 #: ../gui/resources.xml:1136
 msgctxt "Menu→Scratchpad (labels), Accel Editor (labels)"
@@ -6014,12 +6155,12 @@ msgstr "Ŝanĝi koloron…"
 msgctxt "Accel Editor (descriptions)"
 msgid ""
 "Pop up a color changer under the cursor, with all color selectors listed."
-msgstr ""
+msgstr "Ŝprucigi sub la kursoro kolorŝanĝilon enhavantan ĉiujn kolorelektilojn."
 
 #: ../gui/resources.xml:1204
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "Change Color (fast subset)…"
-msgstr "Ŝanĝi koloron (el rapida subaro)…"
+msgstr "Ŝanĝi koloron (per rapida kolorelektilo)…"
 
 #: ../gui/resources.xml:1205
 msgctxt "Accel Editor (descriptions)"
@@ -6027,6 +6168,8 @@ msgid ""
 "Pop up a color changer under the cursor, with only single-click selectors "
 "listed."
 msgstr ""
+"Ŝprucigi sub la kursoro kolorŝanĝilon enhavantan nur unu-alklakajn "
+"kolorelektilojn."
 
 #: ../gui/resources.xml:1213
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
@@ -6354,12 +6497,12 @@ msgstr "Montri la panelon de provejo (por miksi kolorojn kaj skizi)."
 #: ../gui/resources.xml:1488
 msgctxt "Menu→Window (labels), Toolbar (labels), Accel Editor (labels)"
 msgid "Preview Panel"
-msgstr "Antaŭrigarda Panelo"
+msgstr "Antaŭrigarda panelo"
 
 #: ../gui/resources.xml:1489
 msgctxt "Accel Editor (descriptions)"
 msgid "Dockable panel for an overview and navigation of the whole canvas."
-msgstr ""
+msgstr "Endokigebla panelo por superrigardo kaj navigado de la tuta dokumento."
 
 #: ../gui/resources.xml:1497
 msgctxt "Menu→View (labels), Accel Editor (labels)"
@@ -6369,7 +6512,7 @@ msgstr "Antaŭrigardo"
 #: ../gui/resources.xml:1498
 msgctxt "Accel Editor (descriptions)"
 msgid "Reveal the Preview dockpanel (overview of the whole drawing area)."
-msgstr ""
+msgstr "Montri la panelon de antaŭrigardo (superrigardo de la tuta dokumento)."
 
 #: ../gui/resources.xml:1508
 msgctxt "Menu→Window (labels), Toolbar (labels), Accel Editor (labels)"
@@ -6440,7 +6583,7 @@ msgstr "Montri lastan pentran pozicion"
 #: ../gui/resources.xml:1564
 msgctxt "Accel Editor (descriptions)"
 msgid "Toggle feedback showing where the last stroke ended."
-msgstr ""
+msgstr "Baskuligi montron de la fino de la lasta streko."
 
 #: ../gui/resources.xml:1572
 msgctxt "Menu→View (labels)"
@@ -6554,7 +6697,7 @@ msgstr "Movi"
 #: ../gui/resources.xml:1659
 msgctxt "Toolbar (tooltips)"
 msgid "Pan View: move your view of the canvas horizontally or vertically."
-msgstr ""
+msgstr "Movi vidon: movi vian vidon de la dokumento horizontale aŭ vertikale."
 
 #: ../gui/resources.xml:1667
 msgctxt "Menu→View (labels), Accel Editor (labels)"
@@ -6564,7 +6707,7 @@ msgstr "Movi vidon"
 #: ../gui/resources.xml:1668
 msgctxt "Accel Editor (descriptions)"
 msgid "Interactively move your view of the canvas horizontally or vertically."
-msgstr ""
+msgstr "Interage movi vian vidon de la dokumento horizontale aŭ vertikale."
 
 #: ../gui/resources.xml:1677
 msgctxt "Menu→Edit→Current Mode (labels)"
@@ -6579,7 +6722,7 @@ msgstr "Turni"
 #: ../gui/resources.xml:1679
 msgctxt "Toolbar (tooltips)"
 msgid "Rotate View: tilt your view of the canvas."
-msgstr ""
+msgstr "Turni vidon: turni vian vidon de la dokumento."
 
 #: ../gui/resources.xml:1687
 msgctxt "Menu→View (labels), Accel Editor (labels)"
@@ -6589,7 +6732,7 @@ msgstr "Turni vidon"
 #: ../gui/resources.xml:1688
 msgctxt "Accel Editor (descriptions)"
 msgid "Interactively rotate your view of the canvas."
-msgstr ""
+msgstr "Interage turni vian vidon de la dokumento."
 
 #: ../gui/resources.xml:1697
 msgctxt "Menu→Edit→Current Mode (labels)"
@@ -6604,7 +6747,7 @@ msgstr "Zomigi"
 #: ../gui/resources.xml:1699
 msgctxt "Toolbar (tooltips)"
 msgid "Zoom View: zoom into or out of the canvas."
-msgstr ""
+msgstr "Zomigi vidon: enzomi aŭ elzomi la vidon de la dokumento."
 
 #: ../gui/resources.xml:1707
 msgctxt "Menu→View (labels), Accel Editor (labels)"
@@ -6614,7 +6757,7 @@ msgstr "Zomigi vidon"
 #: ../gui/resources.xml:1708
 msgctxt "Accel Editor (descriptions)"
 msgid "Interactively zoom into or out of the canvas."
-msgstr ""
+msgstr "Interage enzomi aŭ elzomi la vidon de la dokumento."
 
 #: ../gui/resources.xml:1717
 msgctxt "Menu→Edit→Current Mode (labels)"
@@ -6729,7 +6872,7 @@ msgstr "Poz. de tavolo"
 #: ../gui/resources.xml:1803
 msgctxt "Toolbar (tooltips)"
 msgid "Reposition Layer: move the current layer on the canvas."
-msgstr ""
+msgstr "Movi tavolon: movi la aktualan tavolon sur la dokumento."
 
 #: ../gui/resources.xml:1811
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
@@ -6739,7 +6882,7 @@ msgstr "Movi tavolon"
 #: ../gui/resources.xml:1812
 msgctxt "Accel Editor (description)"
 msgid "Interactively move the current layer on the canvas."
-msgstr ""
+msgstr "Interage movi la aktualan tavolon sur la dokumento."
 
 #: ../gui/resources.xml:1822
 msgctxt "Menu→Edit→Current Mode (labels)"
