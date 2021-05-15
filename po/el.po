@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: mypaint v2.0.0-alpha.8-1-g4490f06\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-04-17 23:27+0200\n"
-"PO-Revision-Date: 2021-05-15 17:32+0000\n"
+"PO-Revision-Date: 2021-05-16 22:33+0000\n"
 "Last-Translator: Eugenia Russell <eugenia.russell2019@gmail.com>\n"
 "Language-Team: Greek <https://hosted.weblate.org/projects/mypaint/mypaint/el/"
 ">\n"
@@ -22,13 +22,13 @@ msgstr ""
 #: ../gui/accelmap.py:86
 msgctxt "placeholder for keymap filtering"
 msgid "Filter"
-msgstr ""
+msgstr "Φίλτρο"
 
 #. TRANSLATORS: Name of first column in the button map preferences.
 #. TRANSLATORS: Refers to an action bound to a mod+button combination.
 #: ../gui/accelmap.py:115 ../gui/buttonmap.py:284
 msgid "Action"
-msgstr ""
+msgstr "Δράση"
 
 #. TRANSLATORS: Refers to a keyboard key combination, such as "Ctrl+G".
 #. TRANSLATORS: Second column label in the keybinding preferences tab.
@@ -6259,7 +6259,7 @@ msgstr ""
 #: ../gui/resources.xml:1528
 msgctxt "Menu→Window (labels), Toolbar (labels), Accel Editor (labels)"
 msgid "Brush & Color History Panel"
-msgstr ""
+msgstr "Πίνακας ιστορικού πινέλου και χρώματος"
 
 #: ../gui/resources.xml:1529
 msgctxt "Accel Editor (descriptions)"
@@ -6565,7 +6565,7 @@ msgstr ""
 #: ../gui/resources.xml:1790
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
 msgid "Inking"
-msgstr ""
+msgstr "Μελάνιασμα"
 
 #: ../gui/resources.xml:1791
 msgctxt "Accel Editor (descriptions)"
