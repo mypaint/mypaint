@@ -5,8 +5,8 @@ msgstr ""
 "Project-Id-Version: mypaint v2.0.0-alpha.8-1-g4490f06\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-04-17 23:27+0200\n"
-"PO-Revision-Date: 2021-03-10 04:02+0000\n"
-"Last-Translator: Reza Almanda <rezaalmanda27@gmail.com>\n"
+"PO-Revision-Date: 2021-05-18 13:33+0000\n"
+"Last-Translator: Jacque Fresco <aidter@use.startmail.com>\n"
 "Language-Team: Indonesian <https://hosted.weblate.org/projects/mypaint/"
 "mypaint/id/>\n"
 "Language: id\n"
@@ -14,7 +14,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 4.5.2-dev\n"
+"X-Generator: Weblate 4.7-dev\n"
 
 #: ../gui/accelmap.py:86
 msgctxt "placeholder for keymap filtering"
@@ -1211,13 +1211,13 @@ msgstr ""
 #: ../gui/preferenceswindow.glade:1667
 msgctxt "Prefs Dialog|Compatibility"
 msgid "1.x"
-msgstr ""
+msgstr "1.x"
 
 #. This refers to a version of MyPaint like 1.0, 1.1, 1.2 etc
 #: ../gui/compatibility.py:36 ../gui/preferenceswindow.glade:1686
 msgctxt "Prefs Dialog|Compatibility"
 msgid "2.x"
-msgstr ""
+msgstr "2.x"
 
 #. TRANSLATORS: This is probably a rare warning, and it will not
 #. TRANSLATORS: really be shown at all before the release of 3.0
@@ -2807,7 +2807,7 @@ msgstr ""
 #: ../gui/overlays.py:161
 #, python-format
 msgid "Zoom: %.01f%%"
-msgstr ""
+msgstr "Zoom: %.01f%%"
 
 #: ../gui/picker.py:462
 msgctxt "context picker: statusbar text during grab"
@@ -4106,6 +4106,8 @@ msgid ""
 "Z: {scale:.1f}%\n"
 "R: {rotation:+.1f}°"
 msgstr ""
+"Z: {scale:.1f}%\n"
+"R: {rotation:+.1f}°"
 
 #: ../gui/mypaint.glade:249
 msgctxt "footer: context picker button: tooltip"
@@ -4130,22 +4132,22 @@ msgstr "JPEG kualitas 90% (*.jpg; *.jpeg)"
 #: ../gui/preferenceswindow.glade:46
 msgctxt "Prefs Dialog|View|Zoom|Default|"
 msgid "25%"
-msgstr ""
+msgstr "25%"
 
 #: ../gui/preferenceswindow.glade:50
 msgctxt "Prefs Dialog|View|Zoom|Default|"
 msgid "50%"
-msgstr ""
+msgstr "50%"
 
 #: ../gui/preferenceswindow.glade:54
 msgctxt "Prefs Dialog|View|Zoom|Default|"
 msgid "100%"
-msgstr ""
+msgstr "100%"
 
 #: ../gui/preferenceswindow.glade:58
 msgctxt "Prefs Dialog|View|Zoom|Default|"
 msgid "200%"
-msgstr ""
+msgstr "200%"
 
 #: ../gui/preferenceswindow.glade:72
 msgctxt "Prefs Dialog|View|Cursors|Freehand Cursor|Type|"
@@ -4183,13 +4185,13 @@ msgstr "Tekanan Kuas"
 #: ../gui/preferenceswindow.glade:174 ../gui/preferenceswindow.glade:202
 msgctxt "Prefs Dialog|Pen Input|Input Device Settings|Pressure Mapping|"
 msgid "0.0"
-msgstr ""
+msgstr "0.0"
 
 #. Graph label, range (0...1)
 #: ../gui/preferenceswindow.glade:188 ../gui/preferenceswindow.glade:217
 msgctxt "Prefs Dialog|Pen Input|Input Device Settings|Pressure Mapping|"
 msgid "1.0"
-msgstr ""
+msgstr "1.0"
 
 #: ../gui/preferenceswindow.glade:251
 msgctxt "Prefs Dialog|Pen Input|"
