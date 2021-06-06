@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: mypaint v2.0.0-alpha.12-324-g153de92\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-04-17 23:27+0200\n"
-"PO-Revision-Date: 2021-06-05 21:33+0000\n"
+"PO-Revision-Date: 2021-06-07 12:34+0000\n"
 "Last-Translator: Adolfo Jayme Barrientos <fitojb@ubuntu.com>\n"
 "Language-Team: Spanish <https://hosted.weblate.org/projects/mypaint/mypaint/"
 "es/>\n"
@@ -1367,7 +1367,7 @@ msgstr "Tareas no-pintura"
 #: ../gui/device.py:105
 msgctxt "device settings: allowed usage"
 msgid "Navigation only"
-msgstr "Navegación sólo"
+msgstr "Navegación solo"
 
 #: ../gui/device.py:130
 msgctxt "device settings: unmodified scroll action"
@@ -3567,7 +3567,7 @@ msgstr "Normal"
 
 #: ../lib/modes.py:52
 msgid "The top layer only, without blending colors."
-msgstr "Sólo la capa de arriba, sin mezcla de colores."
+msgstr "Solo la capa de arriba, sin mezcla de colores."
 
 #: ../lib/modes.py:54
 msgid "Pigment"
@@ -3879,11 +3879,11 @@ msgid ""
 "You can always launch this dialog from the ‘File’ menu when MyPaint is "
 "running."
 msgstr ""
-"Abrir este diálogo de recuperación de copias de seguridad cuando MyPaint "
-"inicia,\n"
-"si hay archivos para recuperar.\n"
-"Siempre se puede abrir este diálogo desde el menú \"Archivo\", después que "
-"MyPaint ya inició."
+"Se ejecutará este diálogo de recuperación de copias guardadas "
+"automáticamente al iniciar MyPaint, si hubiere archivos que recuperar.\n"
+"\n"
+"Puede abrir este cuadro de diálogo en cualquier momento, mediante el menú "
+"Archivo, cuando MyPaint esté en ejecución."
 
 #. Deletes the selected autosave backup file.
 #: ../gui/autorecover.glade:60
@@ -4410,7 +4410,7 @@ msgstr "El prefijo al guardar esbozos:"
 #: ../gui/preferenceswindow.glade:575
 msgctxt "Prefs Dialog|Load & Save|"
 msgid "<b>Saving</b>"
-msgstr "<b>Guardando</b>"
+msgstr "<b>Guardado</b>"
 
 #: ../gui/preferenceswindow.glade:592
 msgctxt "Prefs Dialog|Load & Save|"
@@ -5784,7 +5784,7 @@ msgstr "Girar el lienzo en sentido horario."
 #: ../gui/resources.xml:819
 msgctxt "Menu→View→Adjust View (labels), Accel Editor (labels)"
 msgid "Rotate Counterclockwise"
-msgstr "Rotar en sentido antihorario"
+msgstr "Girar en sentido antihorario"
 
 #: ../gui/resources.xml:820
 msgctxt "Accel Editor (descriptions)"
@@ -5794,22 +5794,22 @@ msgstr "Girar el lienzo en sentido antihorario."
 #: ../gui/resources.xml:828
 msgctxt "Menu→View→Adjust View (labels), Accel Editor (labels)"
 msgid "Mirror Horizontal"
-msgstr "Espejado Horizontal"
+msgstr "Reflejar horizontalmente"
 
 #: ../gui/resources.xml:829
 msgctxt "Accel Editor (descriptions)"
 msgid "Flip the view left to right."
-msgstr "Espejar la vista de izquierda a derecha."
+msgstr "Voltea la vista de izquierda a derecha."
 
 #: ../gui/resources.xml:837
 msgctxt "Menu→View→Adjust View (labels), Accel Editor (labels)"
 msgid "Mirror Vertical"
-msgstr "Espejado Vertical"
+msgstr "Reflejar verticalmente"
 
 #: ../gui/resources.xml:838
 msgctxt "Accel Editor (descriptions)"
 msgid "Flip the view upside-down."
-msgstr "Invierte la vista de arriba a abajo."
+msgstr "Voltea la vista de arriba abajo."
 
 #: ../gui/resources.xml:845
 msgctxt "Menu→View (labels), Accel Editor (labels)"
@@ -6262,22 +6262,22 @@ msgstr "Mostrar la licencia de MyPaint, el número de versión y los créditos."
 #: ../gui/resources.xml:1256
 msgctxt "Menu→Help (labels)"
 msgid "Debug"
-msgstr "Depurar"
+msgstr "Depuración"
 
 #: ../gui/resources.xml:1262
 msgctxt "Menu→Help→Debug (labels), Accel Editor (labels)"
 msgid "Print Memory Leak Info to Console (Slow!)"
-msgstr "Imprimir información de Fugas de Memoria en la consola (¡lento!)"
+msgstr "Mostrar información de fugas de memoria en consola (¡lento!)"
 
 #: ../gui/resources.xml:1263
 msgctxt "Accel Editor (descriptions)"
 msgid "Debug memory leaks."
-msgstr "Depuración de pérdidas de memoria."
+msgstr "Depure pérdidas de memoria."
 
 #: ../gui/resources.xml:1269
 msgctxt "Menu→Help→Debug (labels), Accel Editor (labels)"
 msgid "Run Garbage Collector Now"
-msgstr "Ejecutar el recolector de basura ahora"
+msgstr "Ejecutar recolector de elementos no utilizados ahora"
 
 #: ../gui/resources.xml:1270
 msgctxt "Accel Editor (descriptions)"
@@ -6288,7 +6288,7 @@ msgstr "Memoria libre utilizada para objetos de Python que ya no están en uso."
 #: ../gui/resources.xml:1277
 msgctxt "Menu→Help→Debug (labels), Accel Editor (labels)"
 msgid "Start/Stop Profiling…"
-msgstr "Iniciar/Detener el perfilado…"
+msgstr "Iniciar/detener creación de perfil…"
 
 #: ../gui/resources.xml:1278
 msgctxt "Accel Editor (descriptions)"
@@ -6298,7 +6298,7 @@ msgstr "Iniciar o Detener el perfilado de Python (cProfile)"
 #: ../gui/resources.xml:1285
 msgctxt "Menu→Help→Debug (labels), Accel Editor (labels)"
 msgid "Simulate a Crash…"
-msgstr "Simular un error…"
+msgstr "Simular bloqueo…"
 
 #: ../gui/resources.xml:1286
 msgctxt "Accel Editor (descriptions)"
@@ -6320,12 +6320,12 @@ msgstr "Comentarios"
 #: ../gui/resources.xml:1306
 msgctxt "Menu→View (labels)"
 msgid "Adjust View"
-msgstr "Ajustar Vista"
+msgstr "Ajustar vista"
 
 #: ../gui/resources.xml:1312
 msgctxt "Menu→View (labels), Accel Editor (labels)"
 msgid "Popup Main Menu"
-msgstr "Desplegar Menú Principal"
+msgstr "Menú principal emergente"
 
 #: ../gui/resources.xml:1313
 msgctxt "Accel Editor (descriptions)"
@@ -6345,7 +6345,7 @@ msgstr "Alternar entre modo de pantalla completa y ventana."
 #: ../gui/resources.xml:1332
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
 msgid "Edit Preferences"
-msgstr "Editar Preferencias"
+msgstr "Editar preferencias"
 
 #: ../gui/resources.xml:1333
 msgctxt "Accel Editor (descriptions)"
