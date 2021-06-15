@@ -5,8 +5,8 @@ msgstr ""
 "Project-Id-Version: mypaint v2.0.0-alpha.8-1-g4490f06\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-04-17 23:27+0200\n"
-"PO-Revision-Date: 2021-05-29 09:34+0000\n"
-"Last-Translator: Jacque Fresco <aidter@use.startmail.com>\n"
+"PO-Revision-Date: 2021-06-16 07:34+0000\n"
+"Last-Translator: Reza Almanda <rezaalmanda27@gmail.com>\n"
 "Language-Team: Indonesian <https://hosted.weblate.org/projects/mypaint/"
 "mypaint/id/>\n"
 "Language: id\n"
@@ -1519,7 +1519,7 @@ msgstr ""
 #: ../gui/document.py:895
 msgctxt "Statusbar message: copy result"
 msgid "Empty document, nothing copied."
-msgstr ""
+msgstr "Dokumen kosong, tidak ada yang tersalin."
 
 #: ../gui/document.py:906
 #, python-brace-format
@@ -1596,7 +1596,6 @@ msgid "Fullscreen"
 msgstr "Penuhi Layar"
 
 #: ../gui/drawwindow.py:687
-#, fuzzy
 msgctxt "Quit confirm dialog: title"
 msgid "Really Quit?"
 msgstr "Benar mau keluar?"
@@ -2427,9 +2426,8 @@ msgid "(No Barrel Rotation)"
 msgstr ""
 
 #: ../gui/inputtestwindow.py:75
-#, fuzzy
 msgid "Barrel Rotation:"
-msgstr "Putaran"
+msgstr "Rotasi barel:"
 
 #. TRANSLATORS: Command to move a layer in the horizontal plane,
 #. TRANSLATORS: preserving its position in the stack.
@@ -3900,9 +3898,8 @@ msgstr ""
 
 #. field label
 #: ../gui/brusheditor.glade:426
-#, fuzzy
 msgid "Value:"
-msgstr "Nilai HSV"
+msgstr "Nilai:"
 
 #: ../gui/brusheditor.glade:491
 msgid "Reset this input to have no effect on the setting"
@@ -4623,16 +4620,14 @@ msgid "<b>2.x Settings</b>"
 msgstr "<b>Menyimpan</b>"
 
 #: ../gui/preferenceswindow.glade:1535 ../gui/preferenceswindow.glade:1609
-#, fuzzy
 msgctxt "Prefs Dialog|Compatibility"
 msgid "Default New Layer Type:"
-msgstr "Hapus Lapisan"
+msgstr "Jenis Layer Baru Default:"
 
 #: ../gui/preferenceswindow.glade:1581 ../gui/preferenceswindow.glade:1595
-#, fuzzy
 msgctxt "Prefs Dialog|Compatibility"
 msgid "Default Pigment Brush Setting:"
-msgstr "Pengaturan kuas"
+msgstr "Pengaturan Pigmen Kuas Default:"
 
 #. Label description for the 1.x compatibility-mode-by-default setting
 #: ../gui/preferenceswindow.glade:1671
@@ -6802,7 +6797,7 @@ msgstr ""
 #: ../gui/resources.xml:1936
 msgctxt "Toolbar (short labels)"
 msgid "Fill"
-msgstr ""
+msgstr "Isi"
 
 #: ../gui/resources.xml:1937
 msgctxt "Toolbar (tooltips)"
