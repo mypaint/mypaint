@@ -8,8 +8,8 @@ msgstr ""
 "Project-Id-Version: mypaint v2.0.0-alpha.11-2-g0673fe8\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-04-17 23:27+0200\n"
-"PO-Revision-Date: 2021-04-19 20:29+0000\n"
-"Last-Translator: Ihor Hordiichuk <igor_ck@outlook.com>\n"
+"PO-Revision-Date: 2021-07-02 22:36+0000\n"
+"Last-Translator: Tymofii Lytvynenko <till.svit@gmail.com>\n"
 "Language-Team: Ukrainian <https://hosted.weblate.org/projects/mypaint/"
 "mypaint/uk/>\n"
 "Language: uk\n"
@@ -18,12 +18,12 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
 "%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
-"X-Generator: Weblate 4.7-dev\n"
+"X-Generator: Weblate 4.8-dev\n"
 
 #: ../gui/accelmap.py:86
 msgctxt "placeholder for keymap filtering"
 msgid "Filter"
-msgstr ""
+msgstr "Фільтр"
 
 #. TRANSLATORS: Name of first column in the button map preferences.
 #. TRANSLATORS: Refers to an action bound to a mod+button combination.
@@ -217,7 +217,7 @@ msgstr "Швидкість"
 #: ../gui/brusheditor.py:393
 msgctxt "brush settings list: setting group"
 msgid "Directional Offsets"
-msgstr ""
+msgstr "Спрямовані зміщення"
 
 #: ../gui/brusheditor.py:411
 msgctxt "brush settings list: setting group"
@@ -237,7 +237,7 @@ msgstr "Колір"
 #: ../gui/brusheditor.py:451
 msgctxt "brush settings list: setting group"
 msgid "GridMap"
-msgstr ""
+msgstr "Сітка"
 
 #: ../gui/brusheditor.py:462
 msgctxt "brush settings list: setting group"
@@ -431,7 +431,7 @@ msgstr "Створити"
 #, python-brace-format
 msgctxt "brushpack import failure messages"
 msgid "No file named “{order_conf_file}”. This is not a brushpack."
-msgstr ""
+msgstr "Немає файлу з назвою “{order_conf_file}”. Це не пакунок пензлів."
 
 #: ../gui/brushmanager.py:704
 #, python-brace-format
@@ -440,6 +440,8 @@ msgid ""
 "Brush “{brush_name}” is listed in “{order_conf_file}”, but it does not exist "
 "in the zipfile."
 msgstr ""
+"Пензлик “{brush_name}” показано в списку “{order_conf_file}”, але не в "
+"архіві."
 
 #: ../gui/brushmanager.py:717
 #, python-brace-format
@@ -448,6 +450,8 @@ msgid ""
 "Brush “{brush_name}” exists in the zipfile, but it is not listed in "
 "“{order_conf_file}”."
 msgstr ""
+"Пензлик “{brush_name}” показано в архіві, але не вказано в "
+"“{order_conf_file}”."
 
 #: ../gui/brushmanager.py:1328 ../gui/footer.py:66
 msgid "Unknown Brush"
@@ -461,7 +465,7 @@ msgstr "Змінити розмір пензля"
 #: ../gui/brushmanip.py:196
 msgctxt "brush resize mode - usage"
 msgid "Change brush size by dragging on the canvas"
-msgstr ""
+msgstr "Змінюйте розмір пензлика за допомогою перетягування по полотну"
 
 #: ../gui/brushselectionwindow.py:220
 msgctxt "brush group: context menu for a single brush"
@@ -663,30 +667,27 @@ msgstr "Обрати колір для малювання"
 
 #: ../gui/colorpicker.py:201
 msgid "Pick Hue"
-msgstr ""
+msgstr "Вибір відтінку"
 
 #: ../gui/colorpicker.py:204
 msgid "Set the color Hue used for painting"
 msgstr "Вибрати відтінок кольору для малювання"
 
 #: ../gui/colorpicker.py:222
-#, fuzzy
 msgid "Pick Chroma"
-msgstr "Взяти колір."
+msgstr "Обрати насиченість"
 
 #: ../gui/colorpicker.py:225
-#, fuzzy
 msgid "Set the color Chroma used for painting"
-msgstr "Обрати колір для малювання"
+msgstr "Обрати насиченість кольору для малювання"
 
 #: ../gui/colorpicker.py:242
 msgid "Pick Luma"
-msgstr ""
+msgstr "Обрати яскравість"
 
 #: ../gui/colorpicker.py:245
-#, fuzzy
 msgid "Set the color Luma used for painting"
-msgstr "Обрати колір для малювання"
+msgstr "Обрати яскравість кольору для малювання"
 
 #: ../gui/colors/adjbases.py:699
 msgid "Color details"
@@ -711,7 +712,7 @@ msgstr "Маска Gamut активна"
 #: ../gui/colors/hcywheel.py:91
 msgctxt "Color Wheels: activity toggle: action tooltip"
 msgid "Limit your palette for specific moods using a gamut mask."
-msgstr ""
+msgstr "Обмежити палітру для певного настрою, використовуючи маску гами."
 
 #: ../gui/colors/hcywheel.py:355
 msgctxt "HCY Color Wheel: tooltip"
@@ -724,6 +725,8 @@ msgid ""
 "Gamut mask editor. Click in the middle to create or manipulate shapes, or "
 "rotate the mask using the edges of the disc."
 msgstr ""
+"Редактор маски гами. Клацніть в середині, щоб створити або змінити фігури, "
+"або повертайте маску за допомогою країв диска."
 
 #: ../gui/colors/hcywheel.py:910
 msgctxt "HCY Gamut Mask template name"
@@ -736,6 +739,8 @@ msgid ""
 "Moody and subjective, defined by one dominant primary and two primaries "
 "which are less intense."
 msgstr ""
+"Похмура і суб'єктивна, обмежена одним панівним основним кольором і ще двома "
+"менш інтенсивними основними кольорами."
 
 #: ../gui/colors/hcywheel.py:922
 msgctxt "HCY Gamut Mask template name"
@@ -758,11 +763,13 @@ msgid ""
 "Contrasting opposites, balanced by having central neutrals between them on "
 "the color wheel."
 msgstr ""
+"Контрастні протилежності, врівноважені нейтральними кольорами в середині "
+"колірного кола."
 
 #: ../gui/colors/hcywheel.py:957
 msgctxt "HCY Gamut Mask template name"
 msgid "Mood and Accent"
-msgstr ""
+msgstr "Настрій і акцент"
 
 #: ../gui/colors/hcywheel.py:961
 msgctxt "HCY Gamut Mask template description"
@@ -770,11 +777,12 @@ msgid ""
 "One main range of colors, with a complementary accent for variation and "
 "highlights."
 msgstr ""
+"Один головний діапазон кольорів, і додатковий колір для варіацій і акцентів."
 
 #: ../gui/colors/hcywheel.py:970
 msgctxt "HCY Gamut Mask template name"
 msgid "Split Complementary"
-msgstr ""
+msgstr "Розділені протилежні"
 
 #: ../gui/colors/hcywheel.py:974
 msgctxt "HCY Gamut Mask template description"
@@ -782,11 +790,12 @@ msgid ""
 "Two analogous colors and a complement to them, with no secondary colors "
 "between them."
 msgstr ""
+"Два схожих кольори та додатковий колір, без вторинних кольорів між ними."
 
 #: ../gui/colors/hcywheel.py:985
 msgctxt "HCY Gamut Mask new-from-template dialog: window title"
 msgid "New Gamut Mask from Template"
-msgstr ""
+msgstr "Створити маску гами з шаблону"
 
 #: ../gui/colors/hcywheel.py:1054
 msgctxt "HCY Gamut Mask Editor dialog: window title"
