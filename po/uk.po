@@ -9,7 +9,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-04-17 23:27+0200\n"
 "PO-Revision-Date: 2021-07-04 14:34+0000\n"
-"Last-Translator: Tymofii Lytvynenko <till.svit@gmail.com>\n"
+"Last-Translator: Ihor Hordiichuk <igor_ck@outlook.com>\n"
 "Language-Team: Ukrainian <https://hosted.weblate.org/projects/mypaint/"
 "mypaint/uk/>\n"
 "Language: uk\n"
@@ -440,8 +440,8 @@ msgid ""
 "Brush “{brush_name}” is listed in “{order_conf_file}”, but it does not exist "
 "in the zipfile."
 msgstr ""
-"Пензлик “{brush_name}” показано в списку “{order_conf_file}”, але не в "
-"архіві."
+"Пензель «{brush_name}» показано в списку «{order_conf_file}», але він "
+"відсутній в архіві."
 
 #: ../gui/brushmanager.py:717
 #, python-brace-format
@@ -450,8 +450,7 @@ msgid ""
 "Brush “{brush_name}” exists in the zipfile, but it is not listed in "
 "“{order_conf_file}”."
 msgstr ""
-"Пензлик “{brush_name}” показано в архіві, але не вказано в "
-"“{order_conf_file}”."
+"Пензель «{brush_name}» існує в архіві, але не вказано в «{order_conf_file}»."
 
 #: ../gui/brushmanager.py:1328 ../gui/footer.py:66
 msgid "Unknown Brush"
@@ -465,7 +464,7 @@ msgstr "Змінити розмір пензля"
 #: ../gui/brushmanip.py:196
 msgctxt "brush resize mode - usage"
 msgid "Change brush size by dragging on the canvas"
-msgstr "Змінюйте розмір пензлика за допомогою перетягування по полотну"
+msgstr "Змінюйте розмір пензля перетягуванням по полотну"
 
 #: ../gui/brushselectionwindow.py:220
 msgctxt "brush group: context menu for a single brush"
@@ -726,7 +725,7 @@ msgid ""
 "rotate the mask using the edges of the disc."
 msgstr ""
 "Редактор маски гами. Клацніть в середині, щоб створити або змінити фігури, "
-"або повертайте маску за допомогою країв диска."
+"або обертайте маску за допомогою країв диска."
 
 #: ../gui/colors/hcywheel.py:910
 msgctxt "HCY Gamut Mask template name"
@@ -1810,28 +1809,24 @@ msgid "PNG, respecting “Show Background” (*.png)"
 msgstr ""
 
 #: ../gui/filehandling.py:507
-#, fuzzy
 msgctxt "save dialogs: save formats and options"
 msgid "PNG, solid RGB (*.png)"
-msgstr "PNG (*.png)"
+msgstr "PNG, суцільний RGB (*.png)"
 
 #: ../gui/filehandling.py:511
-#, fuzzy
 msgctxt "save dialogs: save formats and options"
 msgid "PNG, transparent RGBA (*.png)"
-msgstr "PNG з прозорістю (*.png)"
+msgstr "PNG з прозорістю RGBA (*.png)"
 
 #: ../gui/filehandling.py:515
-#, fuzzy
 msgctxt "save dialogs: save formats and options"
 msgid "Multiple PNGs, by layer (*.NUM.png)"
-msgstr "Серія прозорих PNG (*.XXX.png)"
+msgstr "Кілька PNG, за шаром (*.NUM.png)"
 
 #: ../gui/filehandling.py:519
-#, fuzzy
 msgctxt "save dialogs: save formats and options"
 msgid "Multiple PNGs, by view (*.NAME.png)"
-msgstr "Серія прозорих PNG (*.XXX.png)"
+msgstr "Кілька PNG, за поданням (*.NAME.png)"
 
 #: ../gui/filehandling.py:523
 msgctxt "save dialogs: save formats and options"
@@ -1865,10 +1860,9 @@ msgid "_Cancel"
 msgstr ""
 
 #: ../gui/filehandling.py:710
-#, fuzzy
 msgctxt "Destructive action confirm dialog: save checkbox"
 msgid "_Save to Scraps first"
-msgstr "_Зберегти як чернетку"
+msgstr "Спочатку _зберегти до чернеток"
 
 #: ../gui/filehandling.py:716
 msgctxt ""
@@ -6420,7 +6414,7 @@ msgstr ""
 #: ../gui/resources.xml:1658
 msgctxt "Toolbar (short labels)"
 msgid "Pan"
-msgstr ""
+msgstr "Пересовування"
 
 #: ../gui/resources.xml:1659
 msgctxt "Toolbar (tooltips)"
