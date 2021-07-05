@@ -8,8 +8,8 @@ msgstr ""
 "Project-Id-Version: mypaint v2.0.0-alpha.11-2-g0673fe8\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-04-17 23:27+0200\n"
-"PO-Revision-Date: 2021-07-05 06:44+0000\n"
-"Last-Translator: prolinux ukraine <prolinux@ukr.net>\n"
+"PO-Revision-Date: 2021-07-06 07:33+0000\n"
+"Last-Translator: Ihor Hordiichuk <igor_ck@outlook.com>\n"
 "Language-Team: Ukrainian <https://hosted.weblate.org/projects/mypaint/"
 "mypaint/uk/>\n"
 "Language: uk\n"
@@ -2822,7 +2822,7 @@ msgstr ""
 
 #: ../gui/scratchwindow.py:34
 msgid "Scratchpad"
-msgstr ""
+msgstr "Чернетка"
 
 #: ../gui/scratchwindow.py:36
 msgid "Mix colors and make sketches on separate scrap pages"
@@ -2830,66 +2830,66 @@ msgstr ""
 
 #: ../gui/spinbox.py:35
 msgid "Previous item"
-msgstr ""
+msgstr "Попередній елемент"
 
 #: ../gui/spinbox.py:39
 msgid "Next item"
-msgstr ""
+msgstr "Наступний елемент"
 
 #: ../gui/spinbox.py:102
 msgid "(Nothing to show)"
-msgstr ""
+msgstr "(Нічого показувати)"
 
 #: ../gui/symmetry.py:83
 msgctxt "symmetry axis edit mode: instructions shown in statusbar"
 msgid "Place axis"
-msgstr ""
+msgstr "Розмістити вісь"
 
 #: ../gui/symmetry.py:87
 msgctxt "symmetry axis edit mode: instructions shown in statusbar"
 msgid "Move axis"
-msgstr ""
+msgstr "Перемістити вісь"
 
 #: ../gui/symmetry.py:91
 msgctxt "symmetry axis edit mode: instructions shown in statusbar"
 msgid "Remove axis"
-msgstr ""
+msgstr "Вилучити вісь"
 
 #: ../gui/symmetry.py:103
 msgctxt "symmetry axis edit mode: mode name (tooltips)"
 msgid "Edit Symmetry Axis"
-msgstr ""
+msgstr "Змінити вісь симетрії"
 
 #: ../gui/symmetry.py:109
 msgctxt "symmetry axis edit mode: mode description (tooltips)"
 msgid "Adjust the painting symmetry axis."
-msgstr ""
+msgstr "Налаштувати вісь симетрії малювання."
 
 #: ../gui/symmetry.py:345
 msgctxt "symmetry axis options panel: labels"
 msgid "X Position:"
-msgstr ""
+msgstr "Розташування по осі X:"
 
 #: ../gui/symmetry.py:349
 msgctxt "symmetry axis options panel: labels"
 msgid "Y Position:"
-msgstr ""
+msgstr "Розташування по осі Y:"
 
 #: ../gui/symmetry.py:353
 #, python-format
 msgctxt "symmetry axis options panel: labels"
 msgid "Angle: %.2f°"
-msgstr ""
+msgstr "Кут: %.2f°"
 
 #: ../gui/symmetry.py:357
 msgctxt "symmetry axis options panel: position button: no axis pos."
 msgid "None"
-msgstr ""
+msgstr "Немає"
 
 #: ../gui/symmetry.py:361
 msgctxt "symmetry axis options panel: labels"
 msgid "Alpha:"
-msgstr ""
+msgstr "Альфа:"
 
 #: ../gui/symmetry.py:365
 msgctxt "symmetry axis options panel: labels"
@@ -2899,12 +2899,12 @@ msgstr "Тип симетрії:"
 #: ../gui/symmetry.py:369
 msgctxt "symmetry axis options panel: labels"
 msgid "Rotational lines:"
-msgstr ""
+msgstr "Лінії обертання:"
 
 #: ../gui/symmetry.py:536
 msgctxt "symmetry axis options panel: axis active checkbox"
 msgid "Enabled"
-msgstr ""
+msgstr "Увімкнено"
 
 #: ../gui/toolbar.py:28
 msgid "File handling"
@@ -2942,19 +2942,19 @@ msgstr ""
 #, python-brace-format
 msgctxt "workspace: sidebar tabs: button tooltips"
 msgid "{tab_title}: close tab"
-msgstr ""
+msgstr "{tab_title}: закрити вкладку"
 
 #: ../gui/toolstack.py:356
 #, python-brace-format
 msgctxt "workspace: sidebar tabs: button tooltips"
 msgid "{tab_title}: tab options and properties"
-msgstr ""
+msgstr "{tab_title}: параметри та властивості вкладки"
 
 #: ../gui/toolstack.py:360
 #, python-brace-format
 msgctxt "workspace: sidebar tabs: button tooltips"
 msgid "{tab_title}: move tab to other sidebar"
-msgstr ""
+msgstr "{tab_title}: перемістити вкладку на іншу бічну панель"
 
 #: ../gui/topbar.py:90
 msgid "<b>MyPaint</b>"
@@ -3018,14 +3018,14 @@ msgstr "Рефакторинг групи"
 
 #: ../lib/command.py:678
 msgid "Clear Layer"
-msgstr ""
+msgstr "Очистити шар"
 
 #. This is used by Paste layer as well as when loading from a PNG
 #. file. However in the latter case, the undo stack is reset
 #. immediately afterward.
 #: ../lib/command.py:702
 msgid "Paste Layer"
-msgstr ""
+msgstr "Вставити шар"
 
 #: ../lib/command.py:737
 msgid "New Layer from Visible"
@@ -3050,81 +3050,81 @@ msgstr "Імпортувати шари"
 #: ../lib/command.py:957
 #, python-brace-format
 msgid "Add {layer_default_name}"
-msgstr ""
+msgstr "Додати {layer_default_name}"
 
 #: ../lib/command.py:981
 msgid "Remove Layer"
-msgstr ""
+msgstr "Вилучити шар"
 
 #: ../lib/command.py:1028
 msgid "Select Layer"
-msgstr ""
+msgstr "Вибрати шар"
 
 #: ../lib/command.py:1158
 msgid "Duplicate Layer"
-msgstr ""
+msgstr "Дублювати шар"
 
 #: ../lib/command.py:1182
 msgid "Move Layer Up"
-msgstr ""
+msgstr "Перемістити шар вгору"
 
 #: ../lib/command.py:1196
 msgid "Move Layer Down"
-msgstr ""
+msgstr "Перемістити шар вниз"
 
 #: ../lib/command.py:1223
 msgid "Move Layer in Stack"
-msgstr ""
+msgstr "Перемістити шар у стосі"
 
 #: ../lib/command.py:1342
 msgid "Rename Layer"
-msgstr ""
+msgstr "Перейменувати шар"
 
 #: ../lib/command.py:1400
 msgid "Make Layer Visible"
-msgstr ""
+msgstr "Зробити шар видимим"
 
 #: ../lib/command.py:1402
 msgid "Make Layer Invisible"
-msgstr ""
+msgstr "Зробити шар невидимим"
 
 #: ../lib/command.py:1440
 msgid "Lock Layer"
-msgstr ""
+msgstr "Заблокувати шар"
 
 #: ../lib/command.py:1442
 msgid "Unlock Layer"
-msgstr ""
+msgstr "Розблокувати шар"
 
 #: ../lib/command.py:1460
 #, python-format
 msgid "Set Layer Opacity: %0.1f%%"
-msgstr ""
+msgstr "Встановити непрозорість шару: %0.1f%%"
 
 #: ../lib/command.py:1499
 msgid "Unknown Mode"
-msgstr ""
+msgstr "Невідомий режим"
 
 #: ../lib/command.py:1500
 #, python-format
 msgid "Set Layer Mode: %s"
-msgstr ""
+msgstr "Вибрати режим шару: %s"
 
 #: ../lib/command.py:1524
 msgid "Enable Frame"
-msgstr ""
+msgstr "Увімкнути рамку"
 
 #: ../lib/command.py:1526
 msgid "Disable Frame"
-msgstr ""
+msgstr "Вимкнути рамку"
 
 #: ../lib/command.py:1544
 msgid "Update Frame"
-msgstr ""
+msgstr "Оновити рамку"
 
 #: ../lib/command.py:1573
 msgid "Edit Layer Externally"
-msgstr ""
+msgstr "Редагувати шар в іншій програмі"
 
 #: ../lib/document.py:74
 #, python-brace-format
@@ -3135,7 +3135,7 @@ msgstr "Помилка під час завантаження: “{basename}”.
 #: ../lib/document.py:78
 msgctxt "Document IO: common error strings: {see_logs}"
 msgid "The logs may have more detail about this error."
-msgstr ""
+msgstr "Журнали можуть містити докладніші відомості про цю помилку."
 
 #. TRANSLATORS: string used in e.g. "3h42m from now"
 #: ../lib/document.py:205
@@ -5760,7 +5760,7 @@ msgstr "Властивості"
 #: ../gui/resources.xml:1090
 msgctxt "Menu (labels)"
 msgid "Scratchpad"
-msgstr "Скретч-панель"
+msgstr "Чернетка"
 
 #: ../gui/resources.xml:1096
 msgctxt "Menu→Scratchpad (labels), Accel Editor (labels)"
