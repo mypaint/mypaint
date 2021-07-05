@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: mypaint v2.0.0-alpha.11-2-g0673fe8\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-04-17 23:27+0200\n"
-"PO-Revision-Date: 2021-07-04 14:34+0000\n"
+"PO-Revision-Date: 2021-07-05 06:44+0000\n"
 "Last-Translator: Ihor Hordiichuk <igor_ck@outlook.com>\n"
 "Language-Team: Ukrainian <https://hosted.weblate.org/projects/mypaint/"
 "mypaint/uk/>\n"
@@ -799,7 +799,7 @@ msgstr "Створити маску гами з шаблону"
 #: ../gui/colors/hcywheel.py:1054
 msgctxt "HCY Gamut Mask Editor dialog: window title"
 msgid "Gamut Mask Editor"
-msgstr ""
+msgstr "Редактор масок гами"
 
 #: ../gui/colors/hcywheel.py:1078
 msgctxt "HCY Gamut Mask Editor dialog: mask-is-active checkbox"
@@ -814,22 +814,22 @@ msgstr "Довідка…"
 #: ../gui/colors/hcywheel.py:1108
 msgctxt "HCY Mask Editor: action button tooltips"
 msgid "Create mask from template."
-msgstr ""
+msgstr "Створити маску з шаблону."
 
 #: ../gui/colors/hcywheel.py:1112
 msgctxt "HCY Mask Editor: action button tooltips"
 msgid "Load mask from a GIMP palette file."
-msgstr ""
+msgstr "Завантажити маску з файлу палітри GIMP."
 
 #: ../gui/colors/hcywheel.py:1116
 msgctxt "HCY Mask Editor: action button tooltips"
 msgid "Save mask to a GIMP palette file."
-msgstr ""
+msgstr "Зберегти маску до файлу палітри GIMP."
 
 #: ../gui/colors/hcywheel.py:1120
 msgctxt "HCY Mask Editor: action button tooltips"
 msgid "Erase the mask."
-msgstr ""
+msgstr "Стерти маску."
 
 #: ../gui/colors/hcywheel.py:1124
 msgctxt "HCY Mask Editor: action button tooltips"
@@ -1455,7 +1455,7 @@ msgstr "Повторити"
 #: ../gui/document.py:195
 #, python-format
 msgid "Undo %s"
-msgstr "Відмінити %s"
+msgstr "Вернути %s"
 
 #: ../gui/document.py:196
 msgid "Undo"
@@ -1903,7 +1903,6 @@ msgid "Open File"
 msgstr "Відкрити файл"
 
 #: ../gui/filehandling.py:1084
-#, fuzzy
 msgctxt "load dialogs: title"
 msgid "Open Scratchpad…"
 msgstr "Відкрити чернетку…"
@@ -1934,10 +1933,9 @@ msgid "_Open"
 msgstr "_Відкрити"
 
 #: ../gui/filehandling.py:1471
-#, fuzzy
 msgctxt "File→Open Next/Prev Scrap: error message"
 msgid "There are no scrap files yet. Try saving one first."
-msgstr "Файлів чернеток з назвою «%s» ще не існує."
+msgstr "Ще немає файлів чернеток. Спробуйте спочатку якусь зберегти."
 
 #: ../gui/filehandling.py:1480
 msgctxt "File→Open Next/Prev Scrap confirm dialog: title"
@@ -1970,7 +1968,6 @@ msgid "_Revert"
 msgstr "_Повернути"
 
 #: ../gui/fill.py:123
-#, fuzzy
 msgctxt ""
 "Name of the fill mode\n"
 "In other software, 'Flood Fill' is also known as 'Bucket Fill' or just 'Fill'"
@@ -2032,10 +2029,9 @@ msgid ""
 msgstr ""
 
 #: ../gui/fill.py:618
-#, fuzzy
 msgctxt "fill options: toggle whether the fill will be limited by the viewport"
 msgid "Limit to View"
-msgstr "За розміром зображення"
+msgstr "Обмежити видимою частиною"
 
 #: ../gui/fill.py:624
 msgctxt ""
@@ -2444,10 +2440,9 @@ msgid "Flags"
 msgstr ""
 
 #: ../gui/layers.py:939
-#, fuzzy
 msgctxt "Layers: description: no layer (\"never happens\" condition!)"
 msgid "?layer"
-msgstr "Шари"
+msgstr "?шар"
 
 #: ../gui/layers.py:959
 msgctxt "Layers: description parts: unknown mode (fallback str!)"
@@ -2544,10 +2539,9 @@ msgid "{user_chosen_view_name}"
 msgstr ""
 
 #: ../gui/layervis.py:187
-#, fuzzy
 msgctxt "view controls: rename view dialog"
 msgid "Rename View"
-msgstr "Перейменувати"
+msgstr "Перейменувати подання"
 
 #: ../gui/linemode.py:41
 msgid "Entrance Pressure"
@@ -3019,9 +3013,8 @@ msgid "Uniquify Layer Pixels"
 msgstr ""
 
 #: ../lib/command.py:655
-#, fuzzy
 msgid "Refactor Group"
-msgstr "Перейменувати групу"
+msgstr "Рефакторинг групи"
 
 #: ../lib/command.py:678
 msgid "Clear Layer"
@@ -3364,10 +3357,9 @@ msgid "Unknown Data"
 msgstr "Невідомі дані"
 
 #: ../lib/layer/data.py:1314
-#, fuzzy
 msgctxt "layer type descriptions"
 msgid "Painting Layer"
-msgstr "Новий шар"
+msgstr "Шар малювання"
 
 #. TRANSLATORS: Short default name for layer groups.
 #: ../lib/layer/group.py:67
@@ -3403,10 +3395,9 @@ msgid "Common"
 msgstr ""
 
 #: ../lib/layervis.py:44
-#, fuzzy
 msgctxt "layer visibility sets: default name for a user-managed view"
 msgid "View"
-msgstr "Перегляд"
+msgstr "Вигляд"
 
 #: ../lib/layervis.py:49
 msgctxt "layer visibility sets: text shown when no user-managed view is active"
@@ -3414,10 +3405,9 @@ msgid "No active view"
 msgstr ""
 
 #: ../lib/layervis.py:579
-#, fuzzy
 msgctxt "layer views: commands: add"
 msgid "Add Layer View"
-msgstr "Шари"
+msgstr "Додати вигляд шару"
 
 #: ../lib/layervis.py:604 ../lib/layervis.py:633
 msgctxt "layer views: commands: remove"
@@ -3431,10 +3421,9 @@ msgid "Activate Layer View “{name}”"
 msgstr ""
 
 #: ../lib/layervis.py:692
-#, fuzzy
 msgctxt "layer views: commands: set active view's lock flag"
 msgid "Lock Layer View"
-msgstr "Видимість шару"
+msgstr "Заблокувати вигляд шару"
 
 #: ../lib/layervis.py:697
 msgctxt "layer views: commands: set active view's lock flag"
@@ -3658,7 +3647,7 @@ msgstr ""
 #, python-brace-format
 msgctxt "unique names: serial number needed: template"
 msgid "{name} {number}"
-msgstr ""
+msgstr "{name} {number}"
 
 #. TRANSLATORS: UNIQUE_NAME_REGEX - regex for UNIQUE_NAME_TEMPLATE
 #. TRANSLATORS: Must match its template (msgid: '{name} {number}')
@@ -3666,7 +3655,7 @@ msgstr ""
 #: ../lib/naming.py:30
 msgctxt "unique names: regex matching a string with a serial number"
 msgid "^(?P<name>.*?)\\s+(?P<number>\\d+)$"
-msgstr ""
+msgstr "^(?P<name>.*?)\\s+(?P<number>\\d+)$"
 
 #: ../lib/pixbufsurface.py:39
 msgctxt "user-facing error texts"
@@ -3684,36 +3673,39 @@ msgid ""
 "Reason: {err}\n"
 "Target folder: “{dirname}”."
 msgstr ""
+"Не вдалося записати «{basename}».\n"
+"\n"
+"Причина: {err}\n"
+"Цільова тека: «{dirname}»."
 
 #: ../lib/tiledsurface.py:48
 msgid "Vertical"
-msgstr ""
+msgstr "Вертикально"
 
 #: ../lib/tiledsurface.py:49
 msgid "Horizontal"
-msgstr ""
+msgstr "Горизонтально"
 
 #: ../lib/tiledsurface.py:50
 msgid "Vertical and horizontal"
-msgstr ""
+msgstr "Вертикально та горизонтально"
 
 #: ../lib/tiledsurface.py:51
-#, fuzzy
 msgid "Rotational"
-msgstr "Обернути"
+msgstr "Обертальне"
 
 #: ../lib/tiledsurface.py:52
 msgid "Snowflake"
-msgstr ""
+msgstr "Сніжинка"
 
 #: ../lib/tiledsurface.py:624
 #, python-format
 msgid "PNG reader failed: %s"
-msgstr ""
+msgstr "Помилка читання PNG: %s"
 
 #: ../gui/autorecover.glade:18
 msgid "Recover interrupted work?"
-msgstr ""
+msgstr "Відновити перервану роботу?"
 
 #. Whether to show the dialog when MyPaint starts
 #: ../gui/autorecover.glade:38
@@ -3930,9 +3922,8 @@ msgid "Brush dynamics are not available for this setting."
 msgstr ""
 
 #: ../gui/brusheditor.glade:851
-#, fuzzy
 msgid "<big><b>No Brush Dynamics</b></big>"
-msgstr "<big><b>{accel_label}</b></big>"
+msgstr "<big><b>Немає динаміки пензля</b></big>"
 
 #: ../gui/inktool.glade:44
 msgctxt "Inking tool options: point value sliders: labels: tooltips"
@@ -4462,7 +4453,7 @@ msgstr ""
 #: ../gui/preferenceswindow.glade:1283
 msgctxt "Prefs Dialog|"
 msgid "View"
-msgstr "Перегляд"
+msgstr "Вигляд"
 
 #: ../gui/preferenceswindow.glade:1315
 msgctxt "Prefs Dialog|Color|Color Wheel|Primaries|"
@@ -4573,10 +4564,9 @@ msgid "Default New Layer Type:"
 msgstr "Типовий новий тип шару:"
 
 #: ../gui/preferenceswindow.glade:1581 ../gui/preferenceswindow.glade:1595
-#, fuzzy
 msgctxt "Prefs Dialog|Compatibility"
 msgid "Default Pigment Brush Setting:"
-msgstr "Редагувати параметри пензля"
+msgstr "Налаштування типового кольору пензля:"
 
 #. Label description for the 1.x compatibility-mode-by-default setting
 #: ../gui/preferenceswindow.glade:1671
@@ -5066,10 +5056,9 @@ msgid ""
 msgstr ""
 
 #: ../gui/resources.xml:437
-#, fuzzy
 msgctxt "Menu→Layer→Slice (labels), Accel Editor (labels)"
 msgid "Refactor Layer Group Pixels"
-msgstr "Створити групу"
+msgstr "Перебудувати пікселі групи шарів"
 
 #: ../gui/resources.xml:438 ../gui/resources.xml:445
 msgctxt "Accel Editor (descriptions)"
@@ -5078,10 +5067,9 @@ msgid ""
 msgstr ""
 
 #: ../gui/resources.xml:444
-#, fuzzy
 msgctxt "Menu→Layer→Slice (labels), Accel Editor (labels)"
 msgid "Refactor Layer Group Tiles"
-msgstr "Створити групу"
+msgstr "Перебудувати плитки групи шарів"
 
 #: ../gui/resources.xml:452
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
@@ -6007,7 +5995,7 @@ msgstr ""
 #: ../gui/resources.xml:1294
 msgctxt "Menu (labels)"
 msgid "View"
-msgstr "Перегляд"
+msgstr "Вигляд"
 
 #: ../gui/resources.xml:1300
 msgctxt "Menu→View (labels)"
@@ -6674,10 +6662,9 @@ msgid "Pick Color: set the painting color from screen pixels."
 msgstr ""
 
 #: ../gui/resources.xml:1897
-#, fuzzy
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "Pick Color Hue"
-msgstr "Обрати колір"
+msgstr "Вибрати відтінок кольору"
 
 #: ../gui/resources.xml:1898
 msgctxt "Accel Editor (descriptions)"
@@ -6686,10 +6673,9 @@ msgid ""
 msgstr ""
 
 #: ../gui/resources.xml:1906
-#, fuzzy
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "Pick Color Chroma"
-msgstr "Обрати колір"
+msgstr "Вибрати насиченість кольору"
 
 #: ../gui/resources.xml:1907
 msgctxt "Accel Editor (descriptions)"
@@ -6698,10 +6684,9 @@ msgid ""
 msgstr ""
 
 #: ../gui/resources.xml:1915
-#, fuzzy
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "Pick Color Luma"
-msgstr "Обрати колір"
+msgstr "Вибрати яскравість кольору"
 
 #: ../gui/resources.xml:1916
 msgctxt "Accel Editor (descriptions)"
