@@ -9,7 +9,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-04-17 23:27+0200\n"
 "PO-Revision-Date: 2021-07-12 11:28+0000\n"
-"Last-Translator: Eranthis_stellata_Maxim <1012468643@qq.com>\n"
+"Last-Translator: Eric <spice2wolf@gmail.com>\n"
 "Language-Team: Chinese (Simplified) <https://hosted.weblate.org/projects/"
 "mypaint/mypaint/zh_Hans/>\n"
 "Language: zh_CN\n"
@@ -2759,7 +2759,7 @@ msgstr ", "
 #: ../gui/meta.py:221
 msgctxt "About dialog: credits: translator credits (your name(s) here!)"
 msgid "translator-credits"
-msgstr "翻译者信誉"
+msgstr "译员致谢"
 
 #. TRANSLATORS:"Brush radius" for the options panel. Short.
 #: ../gui/mode.py:592
