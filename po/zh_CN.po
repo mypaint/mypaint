@@ -8,8 +8,8 @@ msgstr ""
 "Project-Id-Version: mypaint v1.2.0-beta.3-43-g9e683e2\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-04-17 23:27+0200\n"
-"PO-Revision-Date: 2021-07-12 11:28+0000\n"
-"Last-Translator: Eric <spice2wolf@gmail.com>\n"
+"PO-Revision-Date: 2021-07-12 16:15+0000\n"
+"Last-Translator: Eranthis_stellata_Maxim <1012468643@qq.com>\n"
 "Language-Team: Chinese (Simplified) <https://hosted.weblate.org/projects/"
 "mypaint/mypaint/zh_Hans/>\n"
 "Language: zh_CN\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 4.8-dev\n"
+"X-Generator: Weblate 4.7.2-dev\n"
 
 #: ../gui/accelmap.py:86
 msgctxt "placeholder for keymap filtering"
@@ -1643,7 +1643,7 @@ msgstr "已使用外部编辑更新层 “{layer_name}”"
 #, python-brace-format
 msgctxt "Edit in External App (statusbar message)"
 msgid "Failed to update layer with external edits from “{file_basename}”."
-msgstr ""
+msgstr "无法使用来自 “{file_basename}” 的外部编辑器更新图层。"
 
 #: ../gui/externalapp.py:146
 #, python-brace-format
@@ -1772,7 +1772,7 @@ msgstr "已加载 {files_summary}。"
 #, python-brace-format
 msgid "{n} file"
 msgid_plural "{n} files"
-msgstr[0] ""
+msgstr[0] "{n} 文件"
 
 #: ../gui/filehandling.py:223
 #, python-brace-format
@@ -1828,12 +1828,12 @@ msgstr "PNG 透明 RGBA (*.png)"
 #: ../gui/filehandling.py:515
 msgctxt "save dialogs: save formats and options"
 msgid "Multiple PNGs, by layer (*.NUM.png)"
-msgstr "多个 PNG 图片，分图层导出 (*.NUM.png)"
+msgstr "多张 PNG 图片，分图层导出 (*.NUM.png)"
 
 #: ../gui/filehandling.py:519
 msgctxt "save dialogs: save formats and options"
 msgid "Multiple PNGs, by view (*.NAME.png)"
-msgstr "多个 PNG 图片，按视图导出 (*.NAME.png)"
+msgstr "多张 PNG 图片，按视图导出 (*.NAME.png)"
 
 #: ../gui/filehandling.py:523
 msgctxt "save dialogs: save formats and options"
@@ -1962,7 +1962,7 @@ msgstr "打开(_O)"
 #: ../gui/filehandling.py:1512
 msgctxt "File→Revert: status message: canvas has no filename yet"
 msgid "Cannot revert: canvas has not been saved to a file yet."
-msgstr ""
+msgstr "无法还原：画布尚未保存到文件中。"
 
 #: ../gui/filehandling.py:1519
 msgctxt "File→Revert confirm dialog: title"
@@ -1979,7 +1979,7 @@ msgctxt ""
 "Name of the fill mode\n"
 "In other software, 'Flood Fill' is also known as 'Bucket Fill' or just 'Fill'"
 msgid "Flood Fill"
-msgstr "满水法填充"
+msgstr "油漆桶"
 
 #: ../gui/fill.py:129
 msgctxt "Usage description of the Flood Fill mode"
@@ -2168,6 +2168,8 @@ msgid ""
 "Try to prevent the fill from seeping into the gaps.\n"
 "If a fill starts in a detected gap, this option will do nothing."
 msgstr ""
+"尽可能防止填充渗漏出间隙。\n"
+"如果在检测到的间隙处开始填充，则此选项无作用。"
 
 #: ../gui/fill.py:851 ../gui/mode.py:639
 msgid "Reset"
@@ -2382,17 +2384,23 @@ msgid ""
 msgstr ""
 "            #### 描述\n"
 "\n"
-"            为该报告提供一个简短的描述性的标题。\n"
-"            如果可以，请提供形如\"[feature-that-broke]: [what-went-wrong]\"的标题。\n"
-"            接着请把这个文本替换为一段长一些的缺陷描述。\n"
-"            有屏幕截图或者录屏也非常好！            \n"
+"            给这份报告起一个简短的描述性标题。\n"
+"            使用类似\n"
+"            \"[feature-that-broke]: [what-went-wrong]\"\n"
+"            这样的东西作为标题, 如果你可以的话。\n"
+"            接着请用这个 bug 的较长描述\n"
+"            替换这段文本。\n"
+"            截图或视频也很棒！\n"
 "\n"
 "            #### 重现步骤\n"
 "\n"
-"            请告诉我们在错误信息出现之前，你做了什么。\n"
-"            如果你能够提供重现缺陷的步骤，那最好。\n"
-"            \n"
-"            #### 追踪\n"
+"            请告诉我们弹出错误信息时\n"
+"            你在做什么？\n"
+"            如果你能一步一步地告知 \n"
+"            如何重现这个 bug，\n"
+"            那就更好了。\n"
+"\n"
+"            #### 回溯\n"
 "        "
 
 #: ../gui/inktool.py:97 ../gui/inktool.py:479
@@ -2918,7 +2926,7 @@ msgstr "Y 位置："
 #, python-format
 msgctxt "symmetry axis options panel: labels"
 msgid "Angle: %.2f°"
-msgstr ""
+msgstr "角度： %.2f°"
 
 #: ../gui/symmetry.py:357
 msgctxt "symmetry axis options panel: position button: no axis pos."
@@ -3041,7 +3049,7 @@ msgstr "用笔刷 {brush_name} 绘制了{seconds:.01f}秒"
 
 #: ../lib/command.py:525
 msgid "Flood Fill"
-msgstr "满水法填充"
+msgstr "油漆桶"
 
 #: ../lib/command.py:612
 msgid "Trim Layer"
@@ -4692,14 +4700,14 @@ msgid ""
 "When creating new documents, use the legacy 1.x compatibility mode by "
 "default. In this mode 1.x .ora files will look the same as they did in older "
 "versions, but pigment blending will not work well."
-msgstr ""
+msgstr "创建新文档时，默认使用旧版 1.x 兼容模式。 在此模式下，1.x .ora 文件看起来与旧版本相同，但颜料混合效果不佳。"
 
 #: ../gui/preferenceswindow.glade:1690
 msgctxt "Prefs Dialog|Compatibility"
 msgid ""
 "When creating new documents, use the regular 2.x compatibility mode by "
 "default. Old documents will often look different in this mode."
-msgstr ""
+msgstr "创建新文档时，默认使用常规 2.x 兼容模式。 在这种模式下，旧文档通常看起来不同。"
 
 #: ../gui/preferenceswindow.glade:1722
 msgctxt "Prefs Dialog|Compatibility"
@@ -5715,7 +5723,7 @@ msgstr "删除墨水笔划上的当前选定点。"
 msgctxt "Accel Editor (descriptions)"
 msgid ""
 "Simplify and delete points according to angle and distance between nodes."
-msgstr ""
+msgstr "根据节点之间的角度和距离简化和删除点。"
 
 #: ../gui/resources.xml:919
 msgctxt "Accel Editor (descriptions)"
@@ -6823,7 +6831,7 @@ msgstr "用来自屏幕像素的颜色设置绘画色彩。"
 #: ../gui/resources.xml:1935
 msgctxt "Menu→Edit→Current Mode (labels)"
 msgid "Flood Fill"
-msgstr "满水法填充"
+msgstr "油漆桶"
 
 #: ../gui/resources.xml:1936
 msgctxt "Toolbar (short labels)"
@@ -6833,12 +6841,12 @@ msgstr "填充"
 #: ../gui/resources.xml:1937
 msgctxt "Toolbar (tooltips)"
 msgid "Flood Fill: fill an area with color."
-msgstr "满水法填充：用颜色填充一块区域。"
+msgstr "油漆桶：用颜色填充一块区域。"
 
 #: ../gui/resources.xml:1945
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
 msgid "Flood Fill"
-msgstr "满水法填充"
+msgstr "油漆桶"
 
 #: ../gui/resources.xml:1946
 msgctxt "Accel Editor (descriptions)"
