@@ -8,8 +8,8 @@ msgstr ""
 "Project-Id-Version: mypaint v1.2.0-beta.3-43-g9e683e2\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-04-17 23:27+0200\n"
-"PO-Revision-Date: 2021-05-21 11:33+0000\n"
-"Last-Translator: Eric <spice2wolf@gmail.com>\n"
+"PO-Revision-Date: 2021-07-12 10:58+0000\n"
+"Last-Translator: Eranthis_stellata_Maxim <1012468643@qq.com>\n"
 "Language-Team: Chinese (Simplified) <https://hosted.weblate.org/projects/"
 "mypaint/mypaint/zh_Hans/>\n"
 "Language: zh_CN\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 4.7-dev\n"
+"X-Generator: Weblate 4.8-dev\n"
 
 #: ../gui/accelmap.py:86
 msgctxt "placeholder for keymap filtering"
@@ -1235,6 +1235,12 @@ msgid ""
 "\n"
 "To be safe you should upgrade to MyPaint {new_version} or newer."
 msgstr ""
+"“{filename}” 是用 <b>MyPaint {new_version}</b>保存的。 它和 <b>Mypaint "
+"{current_version}</b> 不完全兼容。\n"
+"\n"
+"使用这版本 MyPaint 保存后会丢失只有新版才支持的内容。\n"
+"\n"
+"为了文件着想，您应该升级到 MyPaint {new_version} 或更新版本。"
 
 #: ../gui/compatibility.py:65
 msgctxt "file compatibility question"
@@ -1807,12 +1813,12 @@ msgstr "OpenRaster (*.ora)"
 #: ../gui/filehandling.py:503
 msgctxt "save dialogs: save formats and options"
 msgid "PNG, respecting “Show Background” (*.png)"
-msgstr ""
+msgstr "PNG, 当前视图显示背景 (*.png)"
 
 #: ../gui/filehandling.py:507
 msgctxt "save dialogs: save formats and options"
 msgid "PNG, solid RGB (*.png)"
-msgstr ""
+msgstr "PNG, 只含有RGB通道 (*.png)"
 
 #: ../gui/filehandling.py:511
 msgctxt "save dialogs: save formats and options"
@@ -2107,7 +2113,7 @@ msgstr "偏移："
 #: ../gui/fill.py:741
 msgctxt "fill options: Offset (tooltip)"
 msgid "The distance in pixels to grow or shrink the fill"
-msgstr ""
+msgstr "以像素为单位扩大或缩小填充区域"
 
 #: ../gui/fill.py:752
 msgctxt "fill options: numeric option for blurring fill (label)"
@@ -2117,12 +2123,12 @@ msgstr "羽化："
 #: ../gui/fill.py:767
 msgctxt "fill options: Feather (tooltip)"
 msgid "The amount of blur to apply to the fill"
-msgstr ""
+msgstr "应用于填充区域边缘的模糊量"
 
 #: ../gui/fill.py:783
 msgctxt "fill options: gap detection toggle (label)"
 msgid "Use Gap Detection"
-msgstr ""
+msgstr "使用间隙检测"
 
 #: ../gui/fill.py:788
 msgctxt "fill options: Use Gap Detection (tooltip)"
@@ -2131,11 +2137,13 @@ msgid ""
 "Note: This can be a lot slower than the regular fill, only enable when you "
 "need it."
 msgstr ""
+"尝试发现间隙而不是通过它们填充出去。\n"
+"注意：这可能会比常规填充慢很多，仅在您需要时启用。"
 
 #: ../gui/fill.py:806
 msgctxt "fill options: gap-detection sub-option, numeric setting (label)"
 msgid "Max Gap Size:"
-msgstr ""
+msgstr "最大间隙大小:"
 
 #: ../gui/fill.py:821
 msgctxt "fill options: Max Gap Size (tooltip)"
@@ -2143,6 +2151,8 @@ msgid ""
 "The size of the largest gaps that can be detected.\n"
 "Using large values can make the fill run a lot slower."
 msgstr ""
+"可以检测到的最大间隙的大小。\n"
+"使用较大的数值会让填充变慢。"
 
 #: ../gui/fill.py:834
 msgctxt ""
@@ -2372,23 +2382,17 @@ msgid ""
 msgstr ""
 "            #### 描述\n"
 "\n"
-"            给这份报告起一个简短的描述性标题。\n"
-"            使用类似\n"
-"            \"[feature-that-broke]: [what-went-wrong]\"\n"
-"            这样的东西作为标题, 如果你可以的话。\n"
-"            接着请用这个 bug 的较长描述\n"
-"            替换这段文本。\n"
-"            截图或视频也很棒！\n"
+"            为该报告提供一个简短的描述性的标题。\n"
+"            如果可以，请提供形如\"[feature-that-broke]: [what-went-wrong]\"的标题。\n"
+"            接着请把这个文本替换为一段长一些的缺陷描述。\n"
+"            有屏幕截图或者录屏也非常好！            \n"
 "\n"
 "            #### 重现步骤\n"
 "\n"
-"            请告诉我们弹出错误信息时\n"
-"            你在做什么？\n"
-"            如果你能一步一步地告知 \n"
-"            如何重现这个 bug，\n"
-"            那就更好了。\n"
-"\n"
-"            #### 回溯\n"
+"            请告诉我们在错误信息出现之前，你做了什么。\n"
+"            如果你能够提供重现缺陷的步骤，那最好。\n"
+"            \n"
+"            #### 追踪\n"
 "        "
 
 #: ../gui/inktool.py:97 ../gui/inktool.py:479
@@ -2755,7 +2759,7 @@ msgstr ", "
 #: ../gui/meta.py:221
 msgctxt "About dialog: credits: translator credits (your name(s) here!)"
 msgid "translator-credits"
-msgstr "译员致谢"
+msgstr "翻译者信誉"
 
 #. TRANSLATORS:"Brush radius" for the options panel. Short.
 #: ../gui/mode.py:592
@@ -6313,7 +6317,7 @@ msgstr "暂存区面板"
 #: ../gui/resources.xml:1470
 msgctxt "Accel Editor (descriptions)"
 msgid "Dockable Panel for mixing colors and testing brushes."
-msgstr ""
+msgstr "用于混合颜色和测试笔刷的可停靠面板。"
 
 #: ../gui/resources.xml:1478
 msgctxt "Menu→Scratchpad (labels), Accel Editor (labels)"
@@ -6333,7 +6337,7 @@ msgstr "预览面板"
 #: ../gui/resources.xml:1489
 msgctxt "Accel Editor (descriptions)"
 msgid "Dockable panel for an overview and navigation of the whole canvas."
-msgstr ""
+msgstr "用于整个画布的概览和导航的可停靠面板。"
 
 #: ../gui/resources.xml:1497
 msgctxt "Menu→View (labels), Accel Editor (labels)"
@@ -6353,7 +6357,7 @@ msgstr "工具选项面板"
 #: ../gui/resources.xml:1509
 msgctxt "Accel Editor (descriptions)"
 msgid "Dockable panel for adjusting the options with the activated tool."
-msgstr ""
+msgstr "用于调整当前工具选项的可停靠面板。"
 
 #: ../gui/resources.xml:1517
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
