@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: mypaint v1.2.0-beta.3-43-g9e683e2\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-04-17 23:27+0200\n"
-"PO-Revision-Date: 2021-07-12 16:15+0000\n"
+"PO-Revision-Date: 2021-07-14 06:35+0000\n"
 "Last-Translator: Eranthis_stellata_Maxim <1012468643@qq.com>\n"
 "Language-Team: Chinese (Simplified) <https://hosted.weblate.org/projects/"
 "mypaint/mypaint/zh_Hans/>\n"
@@ -698,12 +698,12 @@ msgstr ""
 #: ../gui/colors/hcywheel.py:87
 msgctxt "Color Wheels: activity toggle: action title"
 msgid "Gamut Mask Active"
-msgstr "色域遮罩生效"
+msgstr "色域蒙版生效"
 
 #: ../gui/colors/hcywheel.py:91
 msgctxt "Color Wheels: activity toggle: action tooltip"
 msgid "Limit your palette for specific moods using a gamut mask."
-msgstr "为特定的气氛使用色域遮罩限制你的调色板。"
+msgstr "为特定的气氛使用色域蒙版限制你的色板。"
 
 #: ../gui/colors/hcywheel.py:355
 msgctxt "HCY Color Wheel: tooltip"
@@ -715,7 +715,7 @@ msgctxt "HCY Mask Editor Wheel: tooltip"
 msgid ""
 "Gamut mask editor. Click in the middle to create or manipulate shapes, or "
 "rotate the mask using the edges of the disc."
-msgstr "色域遮罩编辑器。点击中间创建、调整形状，或者使用圆盘的边缘旋转遮罩。"
+msgstr "色域蒙版编辑器。点击中间创建、调整形状，或者使用圆盘的边缘旋转蒙版。"
 
 #: ../gui/colors/hcywheel.py:910
 msgctxt "HCY Gamut Mask template name"
@@ -778,12 +778,12 @@ msgstr "两种类似的颜色以及它们的补色，它们当中没有间色。
 #: ../gui/colors/hcywheel.py:985
 msgctxt "HCY Gamut Mask new-from-template dialog: window title"
 msgid "New Gamut Mask from Template"
-msgstr "从模板创建新色域遮罩"
+msgstr "从模板创建新色域蒙版"
 
 #: ../gui/colors/hcywheel.py:1054
 msgctxt "HCY Gamut Mask Editor dialog: window title"
 msgid "Gamut Mask Editor"
-msgstr "色域遮罩编辑器"
+msgstr "色域蒙版编辑器"
 
 #: ../gui/colors/hcywheel.py:1078
 msgctxt "HCY Gamut Mask Editor dialog: mask-is-active checkbox"
@@ -803,12 +803,12 @@ msgstr "从模板创建蒙版。"
 #: ../gui/colors/hcywheel.py:1112
 msgctxt "HCY Mask Editor: action button tooltips"
 msgid "Load mask from a GIMP palette file."
-msgstr "从 GIMP 调色板文件加载遮罩。"
+msgstr "从 GIMP 色板文件加载蒙版。"
 
 #: ../gui/colors/hcywheel.py:1116
 msgctxt "HCY Mask Editor: action button tooltips"
 msgid "Save mask to a GIMP palette file."
-msgstr "保存遮罩到GIMP调色板文件。"
+msgstr "保存蒙版到 GIMP 色板文件。"
 
 #: ../gui/colors/hcywheel.py:1120
 msgctxt "HCY Mask Editor: action button tooltips"
@@ -823,12 +823,12 @@ msgstr "在 web 浏览器中打开该对话框的在线帮助。"
 #: ../gui/colors/hcywheel.py:1191
 msgctxt "HCY Gamut Mask load dialog: window title"
 msgid "Save Mask as a GIMP Palette"
-msgstr "保存遮罩为 GIMP 调色板"
+msgstr "保存蒙版为 GIMP 色板"
 
 #: ../gui/colors/hcywheel.py:1208
 msgctxt "HCY Gamut Mask load dialog: window title"
 msgid "Load Mask from a GIMP Palette"
-msgstr "从 GIMP 调色板加载遮罩"
+msgstr "从 GIMP 色板加载蒙版"
 
 #: ../gui/colors/hcywheel.py:1281
 msgctxt "HCY Wheel color adjuster page: properties tooltip."
@@ -903,42 +903,42 @@ msgstr "饱和度和明度颜色修改器。"
 #: ../gui/colors/paletteview.py:67
 msgctxt "palette panel: properties button tooltip"
 msgid "Palette properties"
-msgstr "调色板属性"
+msgstr "色板属性"
 
 #: ../gui/colors/paletteview.py:76
 msgctxt "palette panel tab tooltip title"
 msgid "Palette"
-msgstr "调色板"
+msgstr "色板"
 
 #: ../gui/colors/paletteview.py:82
 msgctxt "palette panel tab tooltip description"
 msgid "Set the color from a loadable, editable palette."
-msgstr "通过一个可加载的、 可编辑的调色板设置颜色。"
+msgstr "通过一个可加载的、 可编辑的色板设置颜色。"
 
 #: ../gui/colors/paletteview.py:108
 msgctxt "palette editor dialog: palette name entry"
 msgid "Untitled Palette"
-msgstr "无标题调色板"
+msgstr "无标题色板"
 
 #: ../gui/colors/paletteview.py:114
 msgctxt "palette editor dialog: title"
 msgid "Palette Editor"
-msgstr "调色板编辑器"
+msgstr "色板编辑器"
 
 #: ../gui/colors/paletteview.py:160
 msgctxt "palette editor dialog: action buttons: tooltips"
 msgid "Load from a GIMP palette file"
-msgstr "从 GIMP 调色板加载"
+msgstr "从 GIMP 色板加载"
 
 #: ../gui/colors/paletteview.py:164
 msgctxt "palette editor dialog: action buttons: tooltips"
 msgid "Save to a GIMP palette file"
-msgstr "保存至 GIMP 调色板文件"
+msgstr "保存至 GIMP 色板文件"
 
 #: ../gui/colors/paletteview.py:168
 msgctxt "palette editor dialog: action buttons: tooltips"
 msgid "Add a new empty swatch"
-msgstr "添加一个新的空色板"
+msgstr "添加一个新的空样本"
 
 #: ../gui/colors/paletteview.py:172
 msgctxt "palette editor dialog: action buttons: tooltips"
@@ -958,7 +958,7 @@ msgstr "标题："
 #: ../gui/colors/paletteview.py:194
 msgctxt "palette editor dialog: palette name/title entry: tooltip"
 msgid "Name or description for this palette"
-msgstr "调色板名称及描述"
+msgstr "色板名称及描述"
 
 #: ../gui/colors/paletteview.py:206
 msgctxt "palette editor dialog: number-of-columns spinbutton: title"
@@ -983,17 +983,17 @@ msgstr "当前颜色名称"
 #: ../gui/colors/paletteview.py:322
 msgctxt "palette editor dialog: color name entry"
 msgid "Empty palette slot"
-msgstr "空调色板位置"
+msgstr "空色板位置"
 
 #: ../gui/colors/paletteview.py:378
 msgctxt "palette load dialog: title"
 msgid "Load palette"
-msgstr "加载调色板"
+msgstr "加载色板"
 
 #: ../gui/colors/paletteview.py:391
 msgctxt "palette save dialog: title"
 msgid "Save palette"
-msgstr "保存调色板"
+msgstr "保存色板"
 
 #: ../gui/colors/paletteview.py:543
 msgctxt "palette view"
@@ -1002,14 +1002,14 @@ msgid ""
 "Drop colors here,\n"
 "drag them to organize."
 msgstr ""
-"调色板。\n"
+"色板。\n"
 "放置颜色到这里，\n"
 "拖动以重新组织颜色。"
 
 #: ../gui/colors/paletteview.py:702
 msgctxt "palette view"
 msgid "Empty palette slot (drag a color here)"
-msgstr "空调色板位置(拖放颜色至此)"
+msgstr "空色板位置(拖放颜色至此)"
 
 #. TRANSLATORS: inserting gaps (empty color swatches)
 #: ../gui/colors/paletteview.py:789
@@ -1050,7 +1050,7 @@ msgstr "填补空白 (HSV)"
 #: ../gui/colors/paletteview.py:1283
 msgctxt "palette load dialog: filters"
 msgid "GIMP palette file (*.gpl)"
-msgstr "GIMP 调色板(*.gpl)"
+msgstr "GIMP 色板(*.gpl)"
 
 #: ../gui/colors/paletteview.py:1290
 msgctxt "palette load dialog: filters"
@@ -1060,7 +1060,7 @@ msgstr "全部文件(*)"
 #: ../gui/colors/paletteview.py:1332
 msgctxt "palette save dialog: filters"
 msgid "GIMP palette file (*.gpl)"
-msgstr "GIMP 调色板文件(*.gpl)"
+msgstr "GIMP 色板文件(*.gpl)"
 
 #: ../gui/colors/paletteview.py:1339
 msgctxt "palette save dialog: filters"
@@ -1306,7 +1306,7 @@ msgstr "鼠标"
 #: ../gui/device.py:65
 msgctxt "prefs: device's type label"
 msgid "Pen"
-msgstr "钢笔"
+msgstr "笔"
 
 #: ../gui/device.py:69
 msgctxt "prefs: device's type label"
@@ -1912,7 +1912,7 @@ msgstr "打开文件"
 #: ../gui/filehandling.py:1084
 msgctxt "load dialogs: title"
 msgid "Open Scratchpad…"
-msgstr "打开暂存区…"
+msgstr "打开调色板…"
 
 #: ../gui/filehandling.py:1126
 msgctxt "Layers→Import Layers: files-chooser dialog: title"
@@ -2055,6 +2055,9 @@ msgid ""
 "If the view is rotated, the fill will be limited to the\n"
 "smallest canvas-aligned rectangle that can fit the view."
 msgstr ""
+"基于视区限制可以填充的区域。\n"
+"如果视图是旋转的，填充将被限制在\n"
+"画布对齐视图的最小矩形。"
 
 #: ../gui/fill.py:641
 msgctxt ""
@@ -2089,7 +2092,7 @@ msgstr ""
 #: ../gui/fill.py:670
 msgctxt "fill options: Target | Blend Mode dropdown - warning text"
 msgid "This mode does nothing when alpha locking is enabled!"
-msgstr ""
+msgstr "启用 alpha 锁定时该模式没有任何作用！"
 
 #: ../gui/fill.py:684
 msgctxt "fill options: Target | Blend Mode dropdown (tooltip)"
@@ -2413,7 +2416,7 @@ msgstr "先画，然后调整成流程的线条"
 
 #: ../gui/inputtestwindow.py:32
 msgid "Input Device Test"
-msgstr "输入装置测试"
+msgstr "输入设备测试"
 
 #: ../gui/inputtestwindow.py:61
 msgid "(no pressure)"
@@ -2429,19 +2432,19 @@ msgstr "倾斜："
 
 #: ../gui/inputtestwindow.py:70
 msgid "(no device)"
-msgstr "(无装置)"
+msgstr "(无设备)"
 
 #: ../gui/inputtestwindow.py:71
 msgid "Device:"
-msgstr "装置："
+msgstr "设备："
 
 #: ../gui/inputtestwindow.py:73
 msgid "(No Barrel Rotation)"
-msgstr ""
+msgstr "（无笔杆旋转）"
 
 #: ../gui/inputtestwindow.py:75
 msgid "Barrel Rotation:"
-msgstr "画桶旋转："
+msgstr "笔杆旋转："
 
 #. TRANSLATORS: Command to move a layer in the horizontal plane,
 #. TRANSLATORS: preserving its position in the stack.
@@ -2492,7 +2495,7 @@ msgstr "?图层"
 #: ../gui/layers.py:959
 msgctxt "Layers: description parts: unknown mode (fallback str!)"
 msgid "?mode"
-msgstr ""
+msgstr "?模式"
 
 #: ../gui/layers.py:966
 msgctxt "Layers: description parts: layer hidden"
@@ -2513,7 +2516,7 @@ msgstr "已锁定"
 #: ../gui/layers.py:989
 msgctxt "Layers: description parts: unknown type (fallback str!)"
 msgid "?type"
-msgstr ""
+msgstr "?类型"
 
 #: ../gui/layers.py:996
 msgctxt "Layers dockable: description parts joiner text"
@@ -2730,7 +2733,7 @@ msgstr "桌面图标"
 #: ../gui/meta.py:88
 msgctxt "About dialog: credits: tasks: palettes"
 msgid "palettes"
-msgstr "调色板"
+msgstr "色板"
 
 #: ../gui/meta.py:93
 msgctxt "About dialog: credits: tasks: docs, manuals and HOWTOs"
@@ -2869,7 +2872,7 @@ msgstr "显示取景器"
 
 #: ../gui/scratchwindow.py:34
 msgid "Scratchpad"
-msgstr "暂存区"
+msgstr "调色板"
 
 #: ../gui/scratchwindow.py:36
 msgid "Mix colors and make sketches on separate scrap pages"
@@ -2946,7 +2949,7 @@ msgstr "对称类型："
 #: ../gui/symmetry.py:369
 msgctxt "symmetry axis options panel: labels"
 msgid "Rotational lines:"
-msgstr ""
+msgstr "旋转线条："
 
 #: ../gui/symmetry.py:536
 msgctxt "symmetry axis options panel: axis active checkbox"
@@ -3509,7 +3512,7 @@ msgstr "组内容直接应用于组的背景"
 
 #: ../lib/modes.py:51
 msgid "Normal"
-msgstr "标准"
+msgstr "正常"
 
 #: ../lib/modes.py:52
 msgid "The top layer only, without blending colors."
@@ -3526,7 +3529,7 @@ msgstr ""
 
 #: ../lib/modes.py:58
 msgid "Multiply"
-msgstr "色彩增值"
+msgstr "正片叠底"
 
 #: ../lib/modes.py:59
 msgid ""
@@ -3573,7 +3576,7 @@ msgstr "顶部图层被使用在比背景亮的地方。"
 
 #: ../lib/modes.py:79
 msgid "Dodge"
-msgstr "加亮颜色"
+msgstr "减淡"
 
 #: ../lib/modes.py:80
 msgid ""
@@ -3585,7 +3588,7 @@ msgstr ""
 
 #: ../lib/modes.py:84
 msgid "Burn"
-msgstr "加深颜色"
+msgstr "加深"
 
 #: ../lib/modes.py:85
 msgid ""
@@ -3613,7 +3616,7 @@ msgstr "就像用漫射聚光灯照射到背景上。"
 
 #: ../lib/modes.py:95
 msgid "Difference"
-msgstr "差异"
+msgstr "差值"
 
 #: ../lib/modes.py:96
 msgid "Subtracts the darker color from the lighter of the two."
@@ -3625,7 +3628,7 @@ msgstr "排除"
 
 #: ../lib/modes.py:99
 msgid "Similar to the 'Difference' mode, but lower in contrast."
-msgstr "类似于 '差异' 模式，但对比度较低。"
+msgstr "类似于 '差值' 模式，但对比度较低。"
 
 #: ../lib/modes.py:102
 msgid "Hue"
@@ -3635,7 +3638,7 @@ msgstr "色相"
 msgid ""
 "Combines the hue of the top layer with the saturation and luminosity of the "
 "backdrop."
-msgstr "结合顶部图层的色相和背景的饱和度与亮度。"
+msgstr "结合顶部图层的色相和背景的饱和度与明度。"
 
 #: ../lib/modes.py:106
 msgid "Saturation"
@@ -3645,27 +3648,27 @@ msgstr "饱和度"
 msgid ""
 "Applies the saturation of the top layer's colors to the hue and luminosity "
 "of the backdrop."
-msgstr "将顶部图层颜色的饱和度应用到背景的色相和亮度上。"
+msgstr "将顶部图层颜色的饱和度应用到背景的色相和明度上。"
 
 #: ../lib/modes.py:111
 msgid ""
 "Applies the hue and saturation of the top layer to the luminosity of the "
 "backdrop."
-msgstr "将顶部图层的色相和饱和度应用到背景的亮度上。"
+msgstr "将顶部图层的色相和饱和度应用到背景的明度上。"
 
 #: ../lib/modes.py:114
 msgid "Luminosity"
-msgstr "光亮度"
+msgstr "明度"
 
 #: ../lib/modes.py:115
 msgid ""
 "Applies the luminosity of the top layer to the hue and saturation of the "
 "backdrop."
-msgstr "将顶部图层的亮度应用到背景的色相和饱和度上。"
+msgstr "将顶部图层的明度应用到背景的色相和饱和度上。"
 
 #: ../lib/modes.py:119
 msgid "Plus"
-msgstr "加号"
+msgstr "相加"
 
 #: ../lib/modes.py:120
 msgid "This layer and its backdrop are simply added together."
@@ -3794,6 +3797,9 @@ msgid ""
 "You can always launch this dialog from the ‘File’ menu when MyPaint is "
 "running."
 msgstr ""
+"如果有文件需要恢复，在MyPaint启动时运行这个自动保存恢复对话框。\n"
+"\n"
+" 你可以在MyPaint运行时从 \"文件 \"菜单中随时启动这个对话框。"
 
 #. Deletes the selected autosave backup file.
 #: ../gui/autorecover.glade:60
@@ -4123,7 +4129,7 @@ msgstr "详细编辑当前颜色"
 #: ../gui/mypaint.glade:126
 msgctxt "Footerbar|"
 msgid "Add the current color to the palette"
-msgstr "将当前颜色添加到调色板"
+msgstr "将当前颜色添加到色板"
 
 #: ../gui/mypaint.glade:161
 msgctxt "Footerbar|"
@@ -4517,20 +4523,20 @@ msgstr "绘画时隐藏光标"
 #: ../gui/preferenceswindow.glade:1132
 msgctxt "Prefs Dialog|View|Interface"
 msgid "Show crosshair for small brush cursors"
-msgstr ""
+msgstr "显示小笔刷光标的十字准星"
 
 #. Label for a spinbutton that is part of the "crosshair for small brush cursors" setting. Radius refers to the visual brush cursor radius.
 #: ../gui/preferenceswindow.glade:1149
 msgctxt "Prefs Dialog|View|Interface"
 msgid "Radius threshold:"
-msgstr ""
+msgstr "半径阈值："
 
 #. Description of the "Radius threshold" spinbox/spinner - the referenced "lines" are part of the brush cursor.
 #: ../gui/preferenceswindow.glade:1162
 msgctxt "Prefs Dialog|View|Interface"
 msgid ""
 "Lines will be shown when the brush circle radius is smaller than this value."
-msgstr ""
+msgstr "当笔刷轮廓半径小于此值时会显示线条。"
 
 #: ../gui/preferenceswindow.glade:1192
 msgctxt ""
@@ -4545,7 +4551,7 @@ msgctxt ""
 msgid ""
 "When a layer is created or selected, show only that layer for a short time "
 "period."
-msgstr ""
+msgstr "创建或选择图层后，仅在短时间内显示该图层。"
 
 #: ../gui/preferenceswindow.glade:1216
 msgctxt "Prefs Dialog|View|Interface|"
@@ -4978,7 +4984,7 @@ msgstr "增大 Fake Rotation"
 #: ../gui/resources.xml:255
 msgctxt "Accel Editor (descriptions)"
 msgid "Increase barrel rotation for devices that don't support rotation input."
-msgstr ""
+msgstr "增加不支持旋转输入设备的笔杆旋转。"
 
 #: ../gui/resources.xml:262
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
@@ -4988,7 +4994,7 @@ msgstr "降低 Fake Rotation"
 #: ../gui/resources.xml:263
 msgctxt "Accel Editor (descriptions)"
 msgid "Decrease barrel rotation for devices that don't support rotation input."
-msgstr ""
+msgstr "减少不支持旋转输入设备的笔杆旋转。"
 
 #: ../gui/resources.xml:271
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
@@ -5763,7 +5769,7 @@ msgstr "绘画模式：锁定alpha"
 #: ../gui/resources.xml:960
 msgctxt "Accel Editor (descriptions)"
 msgid "Applying the brush doesn't change the layer’s opacity."
-msgstr "应用笔刷时不改变图层的不透明度。"
+msgstr "应用笔刷时限制在不透明区域。"
 
 #: ../gui/resources.xml:968
 msgctxt "Menu→Brush→Blend Mode (labels), Accel Editor (labels)"
@@ -5829,32 +5835,32 @@ msgstr "显示带有文字描述的颜色详细信息对话框。"
 #: ../gui/resources.xml:1035
 msgctxt "Menu→Color"
 msgid "Next Palette Color"
-msgstr "下一个调色板颜色"
+msgstr "下一个色板颜色"
 
 #: ../gui/resources.xml:1036
 msgctxt "Accel Editor (descriptions)"
 msgid "Set painting color to the next color in the palette."
-msgstr "把绘画颜色设置为调色板上的下一个颜色。"
+msgstr "把绘画颜色设置为色板上的下一个颜色。"
 
 #: ../gui/resources.xml:1042
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "Previous Palette Color"
-msgstr "上一个调色板颜色"
+msgstr "上一个色板颜色"
 
 #: ../gui/resources.xml:1043
 msgctxt "Accel Editor (descriptions)"
 msgid "Set painting color to the previous color in the palette."
-msgstr "把绘画颜色设置为调色板上的上一个颜色。"
+msgstr "把绘画颜色设置为色板上的上一个颜色。"
 
 #: ../gui/resources.xml:1049
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "Add Color to Palette"
-msgstr "添加颜色到调色板"
+msgstr "添加颜色到色板"
 
 #: ../gui/resources.xml:1050
 msgctxt "Accel Editor (descriptions)"
 msgid "Append the current painting color to the palette."
-msgstr "追加当前绘画颜色到调色板。"
+msgstr "追加当前绘画颜色到色板。"
 
 #: ../gui/resources.xml:1058
 msgctxt "Menu (labels)"
@@ -5884,88 +5890,88 @@ msgstr "属性"
 #: ../gui/resources.xml:1090
 msgctxt "Menu (labels)"
 msgid "Scratchpad"
-msgstr "暂存区"
+msgstr "调色板"
 
 #: ../gui/resources.xml:1096
 msgctxt "Menu→Scratchpad (labels), Accel Editor (labels)"
 msgid "New Scratchpad"
-msgstr "新建暂存区"
+msgstr "新建调色板"
 
 #: ../gui/resources.xml:1097
 msgctxt "Accel Editor (descriptions)"
 msgid "Load the default scratchpad as a new scratchpad canvas."
-msgstr "加载默认暂存区作为新的暂存区画布。"
+msgstr "加载默认调色板作为新的调色板画布。"
 
 #: ../gui/resources.xml:1104
 msgctxt "Menu→Scratchpad (labels), Accel Editor (labels)"
 msgid "Open Scratchpad…"
-msgstr "打开暂存区…"
+msgstr "打开调色板…"
 
 #: ../gui/resources.xml:1105
 msgctxt "Accel Editor (descriptions)"
 msgid "Load an image file on disk into the scratchpad."
-msgstr "加载磁盘上图片文件到暂存区。"
+msgstr "加载磁盘上图片文件到调色板。"
 
 #: ../gui/resources.xml:1112
 msgctxt "Menu→Scratchpad (labels), Accel Editor (labels)"
 msgid "Save Scratchpad"
-msgstr "保存暂存区"
+msgstr "保存调色板"
 
 #: ../gui/resources.xml:1113
 msgctxt "Accel Editor (descriptions)"
 msgid "Save the scratchpad to its existing file on disk."
-msgstr "保存暂存区到磁盘上已存在的文件中。"
+msgstr "保存调色板到磁盘上已存在的文件中。"
 
 #: ../gui/resources.xml:1120
 msgctxt "Menu→Scratchpad (labels), Accel Editor (labels)"
 msgid "Export Scratchpad As…"
-msgstr "导出暂存区为…"
+msgstr "导出调色板为…"
 
 #: ../gui/resources.xml:1121
 msgctxt "Accel Editor (descriptions)"
 msgid "Export the scratchpad to disk, under a file name of your choice."
-msgstr "用你指定的文件名导出暂存区到磁盘。"
+msgstr "用你指定的文件名导出调色板到磁盘。"
 
 #: ../gui/resources.xml:1128
 msgctxt "Menu→Scratchpad (labels), Accel Editor (labels)"
 msgid "Revert Scratchpad"
-msgstr "恢复暂存区"
+msgstr "恢复调色板"
 
 #: ../gui/resources.xml:1129
 msgctxt "Accel Editor (descriptions)"
 msgid "Revert the scratchpad to its last saved state."
-msgstr "恢复暂存区到最后一次保存的状态。"
+msgstr "恢复调色板到最后一次保存的状态。"
 
 #: ../gui/resources.xml:1136
 msgctxt "Menu→Scratchpad (labels), Accel Editor (labels)"
 msgid "Save Scratchpad as Default"
-msgstr "将暂存区作为默认值保存"
+msgstr "将调色板作为默认值保存"
 
 #: ../gui/resources.xml:1137
 msgctxt "Accel Editor (descriptions)"
 msgid "Save the scratchpad as the default for ‘New Scratchpad’."
-msgstr "将暂存区作为“新建暂存区”的默认值保存。"
+msgstr "将调色板作为“新建调色板”的默认值保存。"
 
 #: ../gui/resources.xml:1143
 msgctxt "Menu→Scratchpad (labels), Accel Editor (labels)"
 msgid "Clear Default Scratchpad"
-msgstr "清除默认暂存区"
+msgstr "清除默认调色板"
 
 #: ../gui/resources.xml:1144
 msgctxt "Accel Editor (descriptions)"
 msgid "Clear the default scratchpad to a blank canvas."
-msgstr "清除默认暂存区为空白画布。"
+msgstr "清除默认调色板为空白画布。"
 
 #: ../gui/resources.xml:1150
 msgctxt "Menu→Scratchpad (labels), Accel Editor (labels)"
 msgid "Copy Main Background to Scratchpad"
-msgstr "复制主背景到暂存区"
+msgstr "复制主背景到调色板"
 
 #: ../gui/resources.xml:1151
 msgctxt "Accel Editor (descriptions)"
 msgid ""
 "Copy the background image from the working document into the Scratchpad."
-msgstr "复制工作文档的背景图片到暂存区内。"
+msgstr "复制工作文档的背景图片到调色板内。"
 
 #: ../gui/resources.xml:1159
 msgctxt "Menu (labels)"
@@ -6238,12 +6244,12 @@ msgstr "可停靠的柱状色相/色度/亮度颜色选择器。圆形片是亮�
 #: ../gui/resources.xml:1402
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "Color Palette"
-msgstr "颜色调色板"
+msgstr "色板"
 
 #: ../gui/resources.xml:1403
 msgctxt "Accel Editor (descriptions)"
 msgid "Dockable palette color selector."
-msgstr "可停靠的调色板颜色选择器。"
+msgstr "可停靠的色板颜色选择器。"
 
 #: ../gui/resources.xml:1411
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
@@ -6320,7 +6326,7 @@ msgstr "可停靠的颜色选择器，带有穿过辐射状的碗形颜色的HSV
 #: ../gui/resources.xml:1469
 msgctxt "Menu→Window (labels), Accel Editor (labels)"
 msgid "Scratchpad Panel"
-msgstr "暂存区面板"
+msgstr "调色板面板"
 
 #: ../gui/resources.xml:1470
 msgctxt "Accel Editor (descriptions)"
@@ -6330,12 +6336,12 @@ msgstr "用于混合颜色和测试笔刷的可停靠面板。"
 #: ../gui/resources.xml:1478
 msgctxt "Menu→Scratchpad (labels), Accel Editor (labels)"
 msgid "Show Scratchpad Panel"
-msgstr "显示暂存区面板"
+msgstr "显示调色板面板"
 
 #: ../gui/resources.xml:1479
 msgctxt "Accel Editor (descriptions)"
 msgid "Reveal the Scratchpad dockpanel (mix colors and make sketches)."
-msgstr "显示暂存区可停靠面板 (混合颜色以及绘制草图)。"
+msgstr "显示调色板可停靠面板 (混合颜色以及绘制草图)。"
 
 #: ../gui/resources.xml:1488
 msgctxt "Menu→Window (labels), Toolbar (labels), Accel Editor (labels)"
