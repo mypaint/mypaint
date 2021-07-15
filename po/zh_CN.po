@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: mypaint v1.2.0-beta.3-43-g9e683e2\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-04-17 23:27+0200\n"
-"PO-Revision-Date: 2021-07-14 06:35+0000\n"
+"PO-Revision-Date: 2021-07-16 18:34+0000\n"
 "Last-Translator: Eranthis_stellata_Maxim <1012468643@qq.com>\n"
 "Language-Team: Chinese (Simplified) <https://hosted.weblate.org/projects/"
 "mypaint/mypaint/zh_Hans/>\n"
@@ -198,7 +198,7 @@ msgstr "不透明度"
 #: ../gui/brusheditor.py:354
 msgctxt "brush settings list: setting group"
 msgid "Dabs"
-msgstr "笔触点"
+msgstr "笔尖印迹"
 
 #: ../gui/brusheditor.py:365
 msgctxt "brush settings list: setting group"
@@ -223,7 +223,7 @@ msgstr "跟踪"
 #: ../gui/brusheditor.py:422
 msgctxt "brush settings list: setting group"
 msgid "Stroke"
-msgstr "笔触"
+msgstr "笔画"
 
 #: ../gui/brusheditor.py:433
 msgctxt "brush settings list: setting group"
@@ -2294,7 +2294,7 @@ msgstr "徒手绘图"
 
 #: ../gui/freehand.py:92
 msgid "Paint free-form brush strokes"
-msgstr "绘画形式自由的画笔笔触"
+msgstr "绘制自由形式的笔刷笔画"
 
 #. TRANSLATORS: Short alias for "Slow position tracking". This is
 #. TRANSLATORS: used on the options panel.
@@ -2599,7 +2599,7 @@ msgstr "起始压力"
 
 #: ../gui/linemode.py:42
 msgid "Stroke entrance pressure for line tools"
-msgstr "线条工具笔划起始压力"
+msgstr "线条工具笔画起始压力"
 
 #: ../gui/linemode.py:43
 msgid "Midpoint Pressure"
@@ -2607,7 +2607,7 @@ msgstr "中点压力"
 
 #: ../gui/linemode.py:44
 msgid "Mid-Stroke pressure for line tools"
-msgstr "线条工具笔划中间压力"
+msgstr "线条工具笔画中间压力"
 
 #: ../gui/linemode.py:45
 msgid "Exit Pressure"
@@ -2615,7 +2615,7 @@ msgstr "结束压力"
 
 #: ../gui/linemode.py:46
 msgid "Stroke exit pressure for line tools"
-msgstr "线条工具笔划结束压力"
+msgstr "线条工具笔画结束压力"
 
 #: ../gui/linemode.py:47
 msgid "Head"
@@ -2623,7 +2623,7 @@ msgstr "头"
 
 #: ../gui/linemode.py:48
 msgid "Stroke lead-in end"
-msgstr "笔划引入末端"
+msgstr "笔画起头末端"
 
 #: ../gui/linemode.py:49
 msgid "Tail"
@@ -2631,7 +2631,7 @@ msgstr "尾"
 
 #: ../gui/linemode.py:50
 msgid "Stroke trail-off beginning"
-msgstr "笔划开始逐渐消失"
+msgstr "笔画结尾开端"
 
 #: ../gui/linemode.py:174
 msgid "Pressure variation…"
@@ -2827,7 +2827,7 @@ msgstr "缩放：%.01f%%"
 #: ../gui/picker.py:462
 msgctxt "context picker: statusbar text during grab"
 msgid "Pick brushstroke settings, stroke color, and layer…"
-msgstr "选取笔触设置，笔触颜色，以及图层…"
+msgstr "选取笔画设置，笔画颜色，以及图层…"
 
 #: ../gui/picker.py:501
 msgctxt "color picker: statusbar text during grab"
@@ -3860,7 +3860,7 @@ msgstr "实时更新"
 msgid ""
 "Update the last stroke on the canvas with the settings in this window, in "
 "real time"
-msgstr "实时地用此窗口中的设置更新画布上的最后一个笔触"
+msgstr "实时地用此窗口中的设置更新画布上的最后一个笔画"
 
 #: ../gui/brusheditor.glade:116
 msgid "Save these settings to the brush"
@@ -4149,7 +4149,7 @@ msgstr ""
 #: ../gui/mypaint.glade:249
 msgctxt "footer: context picker button: tooltip"
 msgid "Pick brushstroke settings, stroke color, and layer"
-msgstr "选取笔触设置，笔触颜色以及图层"
+msgstr "选取笔画设置，笔画颜色以及图层"
 
 #: ../gui/preferenceswindow.glade:24
 msgctxt "Prefs Dialog|Saving|Save Formats and Locations|Default|"
@@ -5109,13 +5109,13 @@ msgstr "将画笔的所有设置都恢复到当前画笔保存的值。"
 #: ../gui/resources.xml:370
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
 msgid "Pick Stroke and Layer"
-msgstr "选取笔触和图层"
+msgstr "选取笔画和图层"
 
 #: ../gui/resources.xml:371
 msgctxt "Accel Editor (descriptions)"
 msgid ""
 "Pick a brushstroke from the canvas, which restores brush, color, and layer."
-msgstr "从画布上选取笔触：恢复笔刷，颜色和图层。"
+msgstr "从画布中选取一个笔画，它会恢复画笔、颜色和图层。"
 
 #: ../gui/resources.xml:382
 msgctxt "Menu→Brush→Shortcut Keys (labels), Accel Editor (labels)"
@@ -5667,7 +5667,7 @@ msgstr "对称绘画激活"
 #: ../gui/resources.xml:857
 msgctxt "Accel Editor (descriptions)"
 msgid "Mirror brushstrokes along the axis of symmetry"
-msgstr "沿对称轴镜像笔触"
+msgstr "沿对称轴镜像笔画"
 
 #: ../gui/resources.xml:864
 msgctxt "Menu→File (labels), Accel Editor (labels)"
@@ -5714,7 +5714,7 @@ msgctxt "Accel Editor (descriptions)"
 msgid ""
 "Insert a point next to the currently selected point in the direction of the "
 "stroke."
-msgstr "在笔划方向上将一个点插入到当前选定点的旁边。"
+msgstr "在笔画方向上将一个点插入到当前选定点的旁边。"
 
 #: ../gui/resources.xml:904
 msgid "Delete Point"
@@ -5723,7 +5723,7 @@ msgstr "删除点"
 #: ../gui/resources.xml:905
 msgctxt "Accel Editor (descriptions)"
 msgid "Delete currently selected point on the ink stroke."
-msgstr "删除墨水笔划上的当前选定点。"
+msgstr "删除墨水笔画上的当前选定点。"
 
 #: ../gui/resources.xml:912
 msgctxt "Accel Editor (descriptions)"
@@ -5734,7 +5734,7 @@ msgstr "根据节点之间的角度和距离简化和删除点。"
 #: ../gui/resources.xml:919
 msgctxt "Accel Editor (descriptions)"
 msgid "Delete every other point on the ink stroke."
-msgstr "删除墨水笔划上的所有其他点。"
+msgstr "删除墨水笔画上的所有其他点。"
 
 #: ../gui/resources.xml:933
 msgctxt "Menu→Brush (labels)"
@@ -6431,12 +6431,12 @@ msgstr "显示最后一个绘画位置"
 #: ../gui/resources.xml:1564
 msgctxt "Accel Editor (descriptions)"
 msgid "Toggle feedback showing where the last stroke ended."
-msgstr "切换用来显示最后一个笔触结束位置的反馈。"
+msgstr "切换用来显示最后一个笔画结束位置的反馈。"
 
 #: ../gui/resources.xml:1572
 msgctxt "Menu→View (labels)"
 msgid "Display Filter"
-msgstr "显示过滤"
+msgstr "显示滤镜"
 
 #: ../gui/resources.xml:1578
 msgctxt "Menu→View→Display Filter (labels), Accel Editor (labels)"
