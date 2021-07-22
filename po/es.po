@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: mypaint v2.0.0-alpha.12-324-g153de92\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-04-17 23:27+0200\n"
-"PO-Revision-Date: 2021-06-07 12:34+0000\n"
+"PO-Revision-Date: 2021-07-23 07:34+0000\n"
 "Last-Translator: Adolfo Jayme Barrientos <fitojb@ubuntu.com>\n"
 "Language-Team: Spanish <https://hosted.weblate.org/projects/mypaint/mypaint/"
 "es/>\n"
@@ -18,7 +18,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bits\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 4.7-dev\n"
+"X-Generator: Weblate 4.7.2-dev\n"
 
 #: ../gui/accelmap.py:86
 msgctxt "placeholder for keymap filtering"
@@ -2691,11 +2691,12 @@ msgid "Generic line/curve mode"
 msgstr "Modo genérico línea/curva"
 
 #: ../gui/linemode.py:803
-#, fuzzy
 msgid ""
 "Draw straight lines; Shift adds curves, Shift + Ctrl moves line ends, Ctrl "
 "constrains angle"
-msgstr "Dibujar líneas rectas; Mayús añade curvas, Ctrl restringe el ángulo"
+msgstr ""
+"Dibujar líneas rectas; Mayús añade curvas, Mayús + Ctrl mueve los extremos "
+"de la línea, Ctrl restringe el ángulo"
 
 #: ../gui/linemode.py:814
 msgid "Connected Lines"
@@ -3240,7 +3241,7 @@ msgstr "Los registros pueden tener más detalles sobre este error."
 #: ../lib/document.py:205
 msgctxt "Document autosave descriptions: the {ago} string: future"
 msgid "from now"
-msgstr "desde ahora"
+msgstr "de aquí a"
 
 #. TRANSLATORS: string used in e.g. "8s ago"
 #: ../lib/document.py:211
@@ -3282,8 +3283,8 @@ msgid ""
 "num_layers}\n"
 "Contains {unsaved_time} of unsaved painting."
 msgstr ""
-"Copia de seguridad actualizada {last_modified_time} {ago}\n"
-"Tamaño: {autosave.width}×{autosave.height} píxeles, Capas: {autosave."
+"Copia de respaldo actualizada {ago} {last_modified_time}\n"
+"Tamaño: {autosave.width} × {autosave.height} píxeles, capas: {autosave."
 "num_layers}\n"
 "Contiene {unsaved_time} de pintura sin guardar."
 
@@ -3500,7 +3501,7 @@ msgstr "Grupo de capas"
 #: ../lib/layer/tree.py:70
 msgctxt "layer default names"
 msgid "Placeholder"
-msgstr "Marcador de posición"
+msgstr "Sustitutorio"
 
 #: ../lib/layer/tree.py:109
 msgctxt "layer default names"
@@ -3601,8 +3602,8 @@ msgid ""
 "Like shining two separate slide projectors onto a screen simultaneously. "
 "This is the inverse of 'Multiply'."
 msgstr ""
-"Como usar dos proyectores distintos simultáneamente en una misma pantalla. "
-"Es el inverso de 'Multiplicar'."
+"Como usar dos proyectores distintos simultáneamente en una sola pantalla. Es "
+"lo opuesto de «Multiplicar»."
 
 #: ../lib/modes.py:66
 msgid "Overlay"
@@ -4364,7 +4365,7 @@ msgstr ""
 #: ../gui/preferenceswindow.glade:401
 msgctxt "Prefs Dialog|Button|"
 msgid "<b>Pointer Button Mappings</b>"
-msgstr "<b>Asignación de botones del Dispositivo</b>"
+msgstr "<b>Asignación de botones del dispositivo</b>"
 
 #. Tab label in preferences dialog
 #: ../gui/preferenceswindow.glade:414
@@ -4377,7 +4378,7 @@ msgstr "Botones"
 #. unless its key is bound to something else.
 #: ../gui/preferenceswindow.glade:453
 msgid "Disable fallback key bindings"
-msgstr "Deshabilitar atajos de teclado predefinidos"
+msgstr "Desactivar atajos de teclado de reserva"
 
 #. Tooltip for checkbox in the keyboard mappings preferences.
 #: ../gui/preferenceswindow.glade:457
@@ -4473,12 +4474,12 @@ msgstr ""
 #: ../gui/preferenceswindow.glade:680
 msgctxt "Prefs Dialog|Load & Save|"
 msgid "<b>Automated Backups</b>"
-msgstr "<b>Copias de seguridad automatizadas</b>"
+msgstr "<b>Copias de respaldo automatizadas</b>"
 
 #: ../gui/preferenceswindow.glade:698
 msgctxt "Prefs Dialog|Load & Save|Automated Backups|switch label"
 msgid "Back up unsaved work:"
-msgstr "Copia de seguridad de trabajo sin guardar:"
+msgstr "Respaldar trabajo sin guardar:"
 
 #. In seconds. Lowest value is 5, highest is 300 (5 minutes). Only matters when enabled.
 #: ../gui/preferenceswindow.glade:733
@@ -4494,9 +4495,9 @@ msgid ""
 "the program crashes, you'll have a chance to restore what you were working "
 "on."
 msgstr ""
-"Las Copias de seguridad trabajaran incremental de fondo en el caché de disco "
-"de MyPaint. Si el programa se bloquea, tendrás una oportunidad para "
-"restaurar en lo que estabas trabajando."
+"Respalda el trabajo de forma incremental y en segundo plano en la "
+"antememoria en disco de MyPaint. Si el programa se cierra inesperadamente, "
+"tendrá una oportunidad de restaurar lo que estaba haciendo."
 
 #: ../gui/preferenceswindow.glade:768
 msgctxt "Prefs Dialog|Load & Save|Automated Backups|interval label"
@@ -5540,13 +5541,13 @@ msgid ""
 "Convert the current layer or group to a painting layer in ‘Normal’ mode, "
 "preserving its appearance."
 msgstr ""
-"Convertir la capa actual o el grupo a una capa de pintura en el modo "
-"'Normal', conservando su aspecto."
+"Convertir la capa o grupo actual en una capa de pintura en el modo «Normal», "
+"conservando su aspecto."
 
 #: ../gui/resources.xml:598
 msgctxt "Menu→Layer→Opacity (labels), Accel Editor (labels)"
 msgid "Increase Layer’s Opacity"
-msgstr "Aumentar la Opacidad de la Capa"
+msgstr "Aumentar opacidad de capa"
 
 #: ../gui/resources.xml:599
 msgctxt "Accel Editor (descriptions)"
@@ -5556,7 +5557,7 @@ msgstr "Hacer la capa menos transparente."
 #: ../gui/resources.xml:606
 msgctxt "Menu→Layer→Opacity (labels), Accel Editor (labels)"
 msgid "Reduce Layer’s Opacity"
-msgstr "Reducir la Opacidad de la Capa"
+msgstr "Reducir opacidad de capa"
 
 #: ../gui/resources.xml:607
 msgctxt "Accel Editor (descriptions)"
@@ -5586,7 +5587,7 @@ msgstr "Bajar la capa actual un nivel en la pila de capas."
 #: ../gui/resources.xml:633
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Duplicate Layer"
-msgstr "Duplicar Capa"
+msgstr "Duplicar capa"
 
 #: ../gui/resources.xml:634
 msgctxt "Accel Editor (descriptions)"
@@ -5814,7 +5815,7 @@ msgstr "Voltea la vista de arriba abajo."
 #: ../gui/resources.xml:845
 msgctxt "Menu→View (labels), Accel Editor (labels)"
 msgid "Layer Solo"
-msgstr "Sólo la capa actual"
+msgstr "Capa sola"
 
 #: ../gui/resources.xml:846
 msgctxt "Accel Editor (descriptions)"
@@ -5856,13 +5857,13 @@ msgstr ""
 #: ../gui/resources.xml:881
 msgctxt "Menu→Help→Debug (labels), Accel Editor (labels)"
 msgid "Visualize Rendering"
-msgstr "Visualizar el Renderizado"
+msgstr "Visualizar representación"
 
 #: ../gui/resources.xml:882
 msgctxt "Accel Editor (descriptions)"
 msgid "Show rendering updates on-screen, for debugging."
 msgstr ""
-"Mostrar las actualizaciones del renderizado, para corrección de errores."
+"Mostrar actualizaciones de la representación en pantalla, para la depuración."
 
 #: ../gui/resources.xml:888
 msgctxt "Menu→Help→Debug (labels), Accel Editor (labels)"
@@ -6159,7 +6160,7 @@ msgstr "Ventana"
 #: ../gui/resources.xml:1167
 msgctxt "Menu→Brush (labels)"
 msgid "Brush"
-msgstr "Pincel"
+msgstr "Brocha"
 
 #: ../gui/resources.xml:1173
 msgctxt "Menu→Brush (labels)"
