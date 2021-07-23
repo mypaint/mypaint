@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: mypaint v2.0.0-alpha.12-324-g153de92\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-04-17 23:27+0200\n"
-"PO-Revision-Date: 2021-07-23 07:34+0000\n"
+"PO-Revision-Date: 2021-07-24 13:35+0000\n"
 "Last-Translator: Adolfo Jayme Barrientos <fitojb@ubuntu.com>\n"
 "Language-Team: Spanish <https://hosted.weblate.org/projects/mypaint/mypaint/"
 "es/>\n"
@@ -3379,7 +3379,7 @@ msgid ""
 "\n"
 "{see_logs}"
 msgstr ""
-"Error al recuperar el trabajo de una copia de seguridad automatizada.\n"
+"No se pudo recuperar el trabajo de una copia de respaldo automatizada.\n"
 "\n"
 "Razón: {reason}\n"
 "\n"
@@ -3556,7 +3556,7 @@ msgstr "Desbloquear vista de capas"
 
 #: ../lib/modes.py:47
 msgid "Pass-through"
-msgstr "Paso a través"
+msgstr "Atravesar"
 
 #: ../lib/modes.py:48
 msgid "Group contents apply directly to the group's backdrop"
@@ -3850,7 +3850,7 @@ msgstr "Vertical y horizontal"
 
 #: ../lib/tiledsurface.py:51
 msgid "Rotational"
-msgstr "Radial rotacional"
+msgstr "Rotativo"
 
 #: ../lib/tiledsurface.py:52
 msgid "Snowflake"
