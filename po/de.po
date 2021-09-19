@@ -4,8 +4,8 @@ msgstr ""
 "Project-Id-Version: mypaint v2.0.0-alpha.11-2-g0673fe8\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-04-17 23:27+0200\n"
-"PO-Revision-Date: 2021-08-20 01:11+0000\n"
-"Last-Translator: cortexer <manuelstumpf@web.de>\n"
+"PO-Revision-Date: 2021-09-20 18:39+0000\n"
+"Last-Translator: Ettore Atalan <atalanttore@googlemail.com>\n"
 "Language-Team: German <https://hosted.weblate.org/projects/mypaint/mypaint/"
 "de/>\n"
 "Language: de\n"
@@ -13,7 +13,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 4.8-dev\n"
+"X-Generator: Weblate 4.9-dev\n"
 "X-Poedit-Country: GERMANY\n"
 "X-Poedit-Language: German\n"
 "X-Poedit-SourceCharset: utf-8\n"
@@ -664,7 +664,7 @@ msgstr ""
 
 #: ../gui/colorpicker.py:65
 msgid "Pick Color"
-msgstr "Farbpipette"
+msgstr "Farbe aufnehmen"
 
 #: ../gui/colorpicker.py:68
 msgid "Set the color used for painting"
@@ -3439,28 +3439,28 @@ msgstr "Kacheln"
 #. TRANSLATORS: Assumption for all "Time period abbreviations":
 #. TRANSLATORS: they don't need ngettext (to support plural/singular)
 #: ../lib/helpers.py:586
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgctxt "Time period abbreviations"
 msgid "{days}d{hours}h"
-msgstr "{days}d{hours}h"
+msgstr "{days} T {hours} h"
 
 #: ../lib/helpers.py:588
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgctxt "Time period abbreviations"
 msgid "{hours}h{minutes}m"
-msgstr "{hours}h{minutes}m"
+msgstr "{hours} h {minutes} m"
 
 #: ../lib/helpers.py:590
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgctxt "Time period abbreviation"
 msgid "{minutes}m{seconds}s"
-msgstr "{minutes}m{seconds}s"
+msgstr "{minutes} m {seconds} s"
 
 #: ../lib/helpers.py:592
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgctxt "Time period abbreviation"
 msgid "{seconds}s"
-msgstr "{seconds}s"
+msgstr "{seconds} s"
 
 #. TRANSLATORS: Default name for new normal, paintable layers
 #: ../lib/layer/core.py:66 ../lib/layer/data.py:1309
@@ -3470,7 +3470,6 @@ msgstr "Ebene"
 
 #. TRANSLATORS: Short default name for vector (SVG/Inkscape) layers
 #: ../lib/layer/data.py:1161
-#, fuzzy
 msgctxt "layer default names"
 msgid "Vectors"
 msgstr "Vektoren"
@@ -7015,12 +7014,12 @@ msgstr "Interaktiv die Achse für symmetrisches Zeichnen anpassen."
 #: ../gui/resources.xml:1863
 msgctxt "Menu→Edit→Current Mode (labels)"
 msgid "Pick Color"
-msgstr "Farbpipette"
+msgstr "Farbe aufnehmen"
 
 #: ../gui/resources.xml:1864
 msgctxt "Toolbar (short labels)"
 msgid "Pick Col."
-msgstr "Farb. wählen"
+msgstr "Farb. aufnehmen"
 
 #: ../gui/resources.xml:1865
 msgctxt "Toolbar (tooltips)"
@@ -7028,10 +7027,9 @@ msgid "Pick Color: set the painting color from screen pixels."
 msgstr "Farbpipette: Zeichenfarbe eines Bildschirmpixels wählen."
 
 #: ../gui/resources.xml:1897
-#, fuzzy
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "Pick Color Hue"
-msgstr "Farbpipette"
+msgstr "Farbton aufnehmen"
 
 #: ../gui/resources.xml:1898
 #, fuzzy
@@ -7041,10 +7039,9 @@ msgid ""
 msgstr "Die Zeichenfarbe von Bildschirmpixeln festlegen."
 
 #: ../gui/resources.xml:1906
-#, fuzzy
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "Pick Color Chroma"
-msgstr "Farbpipette"
+msgstr "Farbsättigung aufnehmen"
 
 #: ../gui/resources.xml:1907
 #, fuzzy
@@ -7056,7 +7053,7 @@ msgstr "Die Zeichenfarbe von Bildschirmpixeln festlegen."
 #: ../gui/resources.xml:1915
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "Pick Color Luma"
-msgstr "Farbluminanz auswählen"
+msgstr "Farbluminanz aufnehmen"
 
 #: ../gui/resources.xml:1916
 msgctxt "Accel Editor (descriptions)"
@@ -7069,7 +7066,7 @@ msgstr ""
 #: ../gui/resources.xml:1924
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "Pick Color"
-msgstr "Farbpipette"
+msgstr "Farbe aufnehmen"
 
 #: ../gui/resources.xml:1925
 msgctxt "Accel Editor (descriptions)"
