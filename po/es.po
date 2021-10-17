@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: mypaint v2.0.0-alpha.12-324-g153de92\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-04-17 23:27+0200\n"
-"PO-Revision-Date: 2021-07-24 13:35+0000\n"
+"PO-Revision-Date: 2021-10-18 04:37+0000\n"
 "Last-Translator: Adolfo Jayme Barrientos <fitojb@ubuntu.com>\n"
 "Language-Team: Spanish <https://hosted.weblate.org/projects/mypaint/mypaint/"
 "es/>\n"
@@ -18,7 +18,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bits\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 4.7.2-dev\n"
+"X-Generator: Weblate 4.9-dev\n"
 
 #: ../gui/accelmap.py:86
 msgctxt "placeholder for keymap filtering"
@@ -3478,7 +3478,7 @@ msgstr "Datos"
 #: ../lib/layer/data.py:1263
 msgctxt "layer type descriptions"
 msgid "Unknown Data"
-msgstr "De datos desconocida"
+msgstr "Datos desconocidos"
 
 #: ../lib/layer/data.py:1314
 msgctxt "layer type descriptions"
@@ -3615,7 +3615,7 @@ msgid ""
 "highlights and shadows. This is the inverse of 'Hard Light'."
 msgstr ""
 "Superpone el fondo con la capa de arriba, preservando las luces y las "
-"sombras del fondo. Es el inverso de 'Claridad fuerte'."
+"sombras del fondo. Es lo opuesto de «Claridad fuerte»."
 
 #: ../lib/modes.py:71
 msgid "Darken"
@@ -3670,7 +3670,7 @@ msgstr "Claridad fuerte"
 
 #: ../lib/modes.py:90
 msgid "Similar to shining a harsh spotlight onto the backdrop."
-msgstr "Similar a iluminar con una luz spot dura lo que hay debajo."
+msgstr "Similar a iluminar con un reflector fuerte lo que hay debajo."
 
 #: ../lib/modes.py:92
 msgid "Soft Light"
@@ -3678,7 +3678,7 @@ msgstr "Claridad suave"
 
 #: ../lib/modes.py:93
 msgid "Like shining a diffuse spotlight onto the backdrop."
-msgstr "Como iluminar con una luz spot difusa lo que hay debajo."
+msgstr "Como iluminar con un reflector difuso lo que hay debajo."
 
 #: ../lib/modes.py:95
 msgid "Difference"
@@ -3895,7 +3895,7 @@ msgstr "_Eliminar…"
 #: ../gui/autorecover.glade:66
 msgctxt "Autosave Recovery dialog|Delete button|"
 msgid "Delete this backup from the disk."
-msgstr "Borrar esta copia de respaldo del disco."
+msgstr "Elimina esta copia de respaldo del disco."
 
 #. Recover in the sense or retrieval or salvage from a backup file. The user is asked to save the retrieved file immediately afterwards, hence the ellipsis.
 #: ../gui/autorecover.glade:78
@@ -3990,7 +3990,7 @@ msgstr "Cambiar nombre de esta brocha"
 
 #: ../gui/brusheditor.glade:239
 msgid "Brush Setting"
-msgstr "Ajustes de Pincel"
+msgstr "Configuración de brocha"
 
 #: ../gui/brusheditor.glade:340
 msgctxt "brush editor|metadata settings|labels for widgets|tooltips|"
@@ -5985,18 +5985,17 @@ msgstr "Ajustar color"
 #: ../gui/resources.xml:1020
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "Color History Popup"
-msgstr "Historial de color Desplegable"
+msgstr "Ventana emergente Historial de colores"
 
 #: ../gui/resources.xml:1021
 msgctxt "Accel Editor (descriptions)"
 msgid "Pop up a timeline of recent colors under the cursor."
-msgstr ""
-"Dialogo emergente de línea de tiempo de los colores recientes bajo el cursor."
+msgstr "Muestra bajo el cursor una cronología de colores recientes."
 
 #: ../gui/resources.xml:1028
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "Color Details Dialog"
-msgstr "Diálogo de Detalles de Color"
+msgstr "Cuadro de diálogo Detalles de color"
 
 #: ../gui/resources.xml:1029
 msgctxt "Accel Editor (descriptions)"
