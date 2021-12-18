@@ -6,7 +6,7 @@ msgstr ""
 "Project-Id-Version: mypaint v2.0.0-alpha.12-343-g82b4fc5\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-04-17 23:27+0200\n"
-"PO-Revision-Date: 2021-09-22 21:39+0000\n"
+"PO-Revision-Date: 2021-12-20 17:51+0000\n"
 "Last-Translator: Kristoffer Grundström <swedishsailfishosuser@tutanota.com>\n"
 "Language-Team: Swedish <https://hosted.weblate.org/projects/mypaint/mypaint/"
 "sv/>\n"
@@ -15,7 +15,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 4.9-dev\n"
+"X-Generator: Weblate 4.10\n"
 
 #: ../gui/accelmap.py:86
 msgctxt "placeholder for keymap filtering"
@@ -1862,7 +1862,7 @@ msgstr "Flera PNG-filer, en per lager (*.NUM.png)"
 #: ../gui/filehandling.py:519
 msgctxt "save dialogs: save formats and options"
 msgid "Multiple PNGs, by view (*.NAME.png)"
-msgstr "Flera PNG-filer, per vy  (*.NAMN.png)"
+msgstr "Flera PNG:er, per vy (*.NAMN.png)"
 
 #: ../gui/filehandling.py:523
 msgctxt "save dialogs: save formats and options"
@@ -2068,8 +2068,9 @@ msgid ""
 "temporary merge of all the visible layers\n"
 "underneath the current layer"
 msgstr ""
-"Använd en tillfällig sammanslagning av alla synliga\n"
-"lager vid fastställningen av området som ska fyllas"
+"Vid övervägandet om vilket område som ska fyllas, använd en\n"
+"temporär sammansmältning av alla synliga lager\n"
+"under det nuvarande lagret"
 
 #: ../gui/fill.py:618
 msgctxt "fill options: toggle whether the fill will be limited by the viewport"
@@ -2312,7 +2313,6 @@ msgid "px"
 msgstr "px"
 
 #: ../gui/framewindow.py:916
-#, fuzzy
 msgid "in"
 msgstr "tum"
 
@@ -2688,11 +2688,12 @@ msgid "Generic line/curve mode"
 msgstr "Allmänt läge för linje/kurva"
 
 #: ../gui/linemode.py:803
-#, fuzzy
 msgid ""
 "Draw straight lines; Shift adds curves, Shift + Ctrl moves line ends, Ctrl "
 "constrains angle"
-msgstr "Rita raka linjer; Shift lägger till kurvor, Ctrl begränsar vinkeln"
+msgstr ""
+"Rita raka linjer; Shift lägger till kurvor, Shift + Ctrl flyttar radslut, "
+"Ctrl begränsar vinkeln"
 
 #: ../gui/linemode.py:814
 msgid "Connected Lines"
@@ -4616,13 +4617,13 @@ msgstr "Göm pekaren när du målar"
 #: ../gui/preferenceswindow.glade:1132
 msgctxt "Prefs Dialog|View|Interface"
 msgid "Show crosshair for small brush cursors"
-msgstr ""
+msgstr "Visa kryss för små penselmarkörer"
 
 #. Label for a spinbutton that is part of the "crosshair for small brush cursors" setting. Radius refers to the visual brush cursor radius.
 #: ../gui/preferenceswindow.glade:1149
 msgctxt "Prefs Dialog|View|Interface"
 msgid "Radius threshold:"
-msgstr ""
+msgstr "Radietröskel:"
 
 #. Description of the "Radius threshold" spinbox/spinner - the referenced "lines" are part of the brush cursor.
 #: ../gui/preferenceswindow.glade:1162
@@ -4630,6 +4631,7 @@ msgctxt "Prefs Dialog|View|Interface"
 msgid ""
 "Lines will be shown when the brush circle radius is smaller than this value."
 msgstr ""
+"Rader kommer att visas när penselcirkelns radie är mindre än det här värdet."
 
 #: ../gui/preferenceswindow.glade:1192
 msgctxt ""
