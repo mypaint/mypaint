@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: mypaint v2.0.0-alpha.11-2-g0673fe8\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-04-17 23:27+0200\n"
-"PO-Revision-Date: 2022-01-26 08:53+0000\n"
+"PO-Revision-Date: 2022-02-03 15:56+0000\n"
 "Last-Translator: Ihor Hordiichuk <igor_ck@outlook.com>\n"
 "Language-Team: Ukrainian <https://hosted.weblate.org/projects/mypaint/"
 "mypaint/uk/>\n"
@@ -936,7 +936,7 @@ msgstr ""
 #: ../gui/colors/paletteview.py:108
 msgctxt "palette editor dialog: palette name entry"
 msgid "Untitled Palette"
-msgstr ""
+msgstr "Палітра без назви"
 
 #: ../gui/colors/paletteview.py:114
 msgctxt "palette editor dialog: title"
@@ -1048,19 +1048,19 @@ msgstr "Вставити стовпець"
 #: ../gui/colors/paletteview.py:811
 msgctxt "palette view: context menu"
 msgid "Fill Gap (RGB)"
-msgstr ""
+msgstr "Заповнити проміжок (RGB)"
 
 #. TRANSLATORS: Color interpolations
 #: ../gui/colors/paletteview.py:818
 msgctxt "palette view: context menu"
 msgid "Fill Gap (HCY)"
-msgstr ""
+msgstr "Заповнити проміжок (HCY)"
 
 #. TRANSLATORS: Color interpolations
 #: ../gui/colors/paletteview.py:825
 msgctxt "palette view: context menu"
 msgid "Fill Gap (HSV)"
-msgstr ""
+msgstr "Заповнити проміжок (HSV)"
 
 #: ../gui/colors/paletteview.py:1283
 msgctxt "palette load dialog: filters"
@@ -1120,7 +1120,7 @@ msgstr "Повзунки компонентів"
 #: ../gui/colors/sliders.py:116
 msgctxt "color sliders panel: tab description (in tooltip)"
 msgid "Adjust individual components of the color."
-msgstr ""
+msgstr "Налаштувати окремі компоненти кольору."
 
 #: ../gui/colors/sliders.py:161
 msgctxt "color component slider: tooltip"
@@ -1160,12 +1160,12 @@ msgstr "Тон HCY"
 #: ../gui/colors/sliders.py:266
 msgctxt "color component slider: tooltip"
 msgid "HCY Chroma"
-msgstr ""
+msgstr "Насиченість HCY"
 
 #: ../gui/colors/sliders.py:281
 msgctxt "color component slider: tooltip"
 msgid "HCY Luma (Y')"
-msgstr ""
+msgstr "Яскравість HCY (Y')"
 
 #: ../gui/colortools.py:141
 msgctxt "color changer dock panels: tab tooltip title"
@@ -1185,7 +1185,7 @@ msgstr "Концентричні кільця"
 #: ../gui/colortools.py:159
 msgctxt "color changer dock panels: tab tooltip description"
 msgid "Change color using concentric HSV rings."
-msgstr ""
+msgstr "Змінити колір за допомогою концентричних кілець HSV."
 
 #: ../gui/colortools.py:169
 msgctxt "color changer dock panels: tab tooltip title"
@@ -1200,7 +1200,7 @@ msgstr ""
 #: ../gui/compatibility.py:34
 msgctxt "File Load Compat Options"
 msgid "Based on file"
-msgstr ""
+msgstr "На основі файлу"
 
 #. This refers to a version of MyPaint like 1.0, 1.1, 1.2 etc
 #: ../gui/compatibility.py:35 ../gui/drawwindow.py:281
@@ -1247,12 +1247,12 @@ msgstr ""
 #: ../gui/compatibility.py:65
 msgctxt "file compatibility question"
 msgid "Do you want to open this file anyway?"
-msgstr ""
+msgstr "Все одно відкрити цей файл?"
 
 #: ../gui/compatibility.py:129
 msgctxt "Version compat warning toggle"
 msgid "Don't show this warning again"
-msgstr ""
+msgstr "Не показувати це попередження знову"
 
 #. TRANSLATORS: One of the options for the
 #. TRANSLATORS: "When Not Specified in File"
@@ -1323,7 +1323,7 @@ msgstr "Сенсорний екран"
 #: ../gui/device.py:93
 msgctxt "device settings: allowed usage"
 msgid "Ignore"
-msgstr ""
+msgstr "Ігнорувати"
 
 #: ../gui/device.py:97
 msgctxt "device settings: allowed usage"
@@ -2219,7 +2219,7 @@ msgstr ""
 
 #: ../gui/framewindow.py:537
 msgid "Enabled"
-msgstr ""
+msgstr "Увімкнено"
 
 #: ../gui/framewindow.py:541
 msgid "<b>Frame dimensions</b>"
@@ -2370,7 +2370,7 @@ msgstr ""
 
 #: ../gui/inputtestwindow.py:32
 msgid "Input Device Test"
-msgstr ""
+msgstr "Перевірка пристрою введення"
 
 #: ../gui/inputtestwindow.py:61
 msgid "(no pressure)"
@@ -2390,7 +2390,7 @@ msgstr ""
 
 #: ../gui/inputtestwindow.py:71
 msgid "Device:"
-msgstr ""
+msgstr "Пристрій:"
 
 #: ../gui/inputtestwindow.py:73
 msgid "(No Barrel Rotation)"
@@ -2429,7 +2429,7 @@ msgstr "Властивості шару"
 #: ../gui/layerprops.py:381
 msgctxt "layer properties dialog: done button"
 msgid "Done"
-msgstr ""
+msgstr "Готово"
 
 #. Visibility flag column
 #: ../gui/layers.py:406
@@ -2449,7 +2449,7 @@ msgstr "?шар"
 #: ../gui/layers.py:959
 msgctxt "Layers: description parts: unknown mode (fallback str!)"
 msgid "?mode"
-msgstr ""
+msgstr "?режим"
 
 #: ../gui/layers.py:966
 msgctxt "Layers: description parts: layer hidden"
@@ -2470,18 +2470,18 @@ msgstr ""
 #: ../gui/layers.py:989
 msgctxt "Layers: description parts: unknown type (fallback str!)"
 msgid "?type"
-msgstr ""
+msgstr "?тип"
 
 #: ../gui/layers.py:996
 msgctxt "Layers dockable: description parts joiner text"
 msgid ", "
-msgstr ""
+msgstr ", "
 
 #: ../gui/layers.py:1004
 #, python-brace-format
 msgctxt "Layers dockable: markup for a layer with no description"
 msgid "{layer_name}"
-msgstr ""
+msgstr "{layer_name}"
 
 #: ../gui/layers.py:1009
 #, python-brace-format
@@ -2490,6 +2490,8 @@ msgid ""
 "<span size=\"smaller\">{layer_name}\n"
 "<span size=\"smaller\">{layer_description}</span></span>"
 msgstr ""
+"<span size=\"smaller\">{layer_name}\n"
+"<span size=\"smaller\">{layer_description}</span></span>"
 
 #: ../gui/layerswindow.py:95
 msgid "Layers"
@@ -2512,7 +2514,7 @@ msgstr ""
 #: ../gui/layerswindow.py:107
 #, python-format
 msgid "%d%%"
-msgstr ""
+msgstr "%d%%"
 
 #. TRANSLATORS: status bar messages for drag, without/with modifiers
 #: ../gui/layerswindow.py:114
@@ -2526,19 +2528,19 @@ msgstr ""
 
 #: ../gui/layerswindow.py:156
 msgid "Layer"
-msgstr ""
+msgstr "Шар"
 
 #: ../gui/layervis.py:53
 #, python-brace-format
 msgctxt "view controls: dropdown: item markup"
 msgid "<i>{builtin_view_name}</i>"
-msgstr ""
+msgstr "<i>{builtin_view_name}</i>"
 
 #: ../gui/layervis.py:125
 #, python-brace-format
 msgctxt "view controls: dropdown: item markup"
 msgid "{user_chosen_view_name}"
-msgstr ""
+msgstr "{user_chosen_view_name}"
 
 #: ../gui/layervis.py:187
 msgctxt "view controls: rename view dialog"
@@ -2614,7 +2616,7 @@ msgstr ""
 
 #: ../gui/linemode.py:827
 msgid "Ellipses and Circles"
-msgstr ""
+msgstr "Еліпси та кола"
 
 #: ../gui/linemode.py:830
 msgid "Draw ellipses; Shift rotates, Ctrl constrains ratio/angle"
@@ -2691,12 +2693,12 @@ msgstr "палітри"
 #: ../gui/meta.py:93
 msgctxt "About dialog: credits: tasks: docs, manuals and HOWTOs"
 msgid "documentation"
-msgstr ""
+msgstr "документація"
 
 #: ../gui/meta.py:97
 msgctxt "About dialog: credits: tasks: user support"
 msgid "support"
-msgstr ""
+msgstr "підтримка"
 
 #: ../gui/meta.py:101
 msgctxt "About dialog: credits: tasks: outreach (social media, ads?)"
@@ -2706,12 +2708,12 @@ msgstr ""
 #: ../gui/meta.py:105
 msgctxt "About dialog: credits: tasks: running or building a community"
 msgid "community"
-msgstr ""
+msgstr "спільнота"
 
 #: ../gui/meta.py:110
 msgctxt "About dialog: credits: tasks: joiner punctuation"
 msgid ", "
-msgstr ""
+msgstr ", "
 
 #. TRANSLATORS: THIS SHOULD NOT BE TRANSLATED LITERALLY
 #. TRANSLATORS: The "translation" of this string should be a list of names
@@ -2723,17 +2725,17 @@ msgstr ""
 #: ../gui/meta.py:221
 msgctxt "About dialog: credits: translator credits (your name(s) here!)"
 msgid "translator-credits"
-msgstr ""
+msgstr "Ihor Hordiichuk <igor_ck@outlook.com>"
 
 #. TRANSLATORS:"Brush radius" for the options panel. Short.
 #: ../gui/mode.py:592
 msgid "Size:"
-msgstr ""
+msgstr "Розмір:"
 
 #. TRANSLATORS:"Brush opacity" for the options panel. Short.
 #: ../gui/mode.py:594
 msgid "Opaque:"
-msgstr ""
+msgstr "Непрозорість:"
 
 #. TRANSLATORS:"Brush hardness/sharpness" for the options panel. Short.
 #: ../gui/mode.py:596
@@ -2764,7 +2766,7 @@ msgstr ""
 #, python-brace-format
 msgctxt "options panel: header"
 msgid "<b>{mode_name}</b>"
-msgstr ""
+msgstr "<b>{mode_name}</b>"
 
 #: ../gui/optionspanel.py:62
 msgctxt "options panel: body"
@@ -2805,7 +2807,7 @@ msgstr "Як у системі"
 #, python-brace-format
 msgctxt "Prefs Dialog|View|Interface - menu entries"
 msgid "{lang_en} - ({lang_nat})"
-msgstr ""
+msgstr "{lang_en} - ({lang_nat})"
 
 #. TRANSLATORS: title of panel showing an overview of the whole canvas
 #: ../gui/previewwindow.py:201
@@ -2988,7 +2990,7 @@ msgstr ""
 
 #: ../lib/command.py:177
 msgid "Unknown Command"
-msgstr ""
+msgstr "Невідома команда"
 
 #: ../lib/command.py:320
 msgid "Undefined (command not started yet)"
@@ -3035,7 +3037,7 @@ msgstr ""
 
 #: ../lib/command.py:779
 msgid "Merge Visible Layers"
-msgstr ""
+msgstr "Об’єднати видимі шари"
 
 #: ../lib/command.py:853
 msgid "Merge Down"
@@ -3299,37 +3301,37 @@ msgstr ""
 #, python-brace-format
 msgctxt "Time period abbreviations"
 msgid "{days}d{hours}h"
-msgstr ""
+msgstr "{days}дн{hours}год"
 
 #: ../lib/helpers.py:588
 #, python-brace-format
 msgctxt "Time period abbreviations"
 msgid "{hours}h{minutes}m"
-msgstr ""
+msgstr "{hours}год{minutes}хв"
 
 #: ../lib/helpers.py:590
 #, python-brace-format
 msgctxt "Time period abbreviation"
 msgid "{minutes}m{seconds}s"
-msgstr ""
+msgstr "{minutes}хв{seconds}с"
 
 #: ../lib/helpers.py:592
 #, python-brace-format
 msgctxt "Time period abbreviation"
 msgid "{seconds}s"
-msgstr ""
+msgstr "{seconds}с"
 
 #. TRANSLATORS: Default name for new normal, paintable layers
 #: ../lib/layer/core.py:66 ../lib/layer/data.py:1309
 msgctxt "layer default names"
 msgid "Layer"
-msgstr ""
+msgstr "Шар"
 
 #. TRANSLATORS: Short default name for vector (SVG/Inkscape) layers
 #: ../lib/layer/data.py:1161
 msgctxt "layer default names"
 msgid "Vectors"
-msgstr ""
+msgstr "Вектори"
 
 #: ../lib/layer/data.py:1166
 msgctxt "layer type descriptions"
@@ -3351,7 +3353,7 @@ msgstr ""
 #: ../lib/layer/data.py:1258
 msgctxt "layer default names"
 msgid "Data"
-msgstr ""
+msgstr "Дані"
 
 #: ../lib/layer/data.py:1263
 msgctxt "layer type descriptions"
@@ -3367,7 +3369,7 @@ msgstr "Шар малювання"
 #: ../lib/layer/group.py:67
 msgctxt "layer default names"
 msgid "Group"
-msgstr ""
+msgstr "Група"
 
 #: ../lib/layer/group.py:72
 msgctxt "layer type descriptions"
@@ -3389,7 +3391,7 @@ msgstr ""
 #: ../lib/layer/tree.py:2055 ../lib/layer/tree.py:2121
 msgctxt "layer default names: joiner punctuation for merged layers"
 msgid ", "
-msgstr ""
+msgstr ", "
 
 #: ../lib/layer/tree.py:2243
 msgctxt "layer default names: refactor: name of the common areas layer"
@@ -3543,7 +3545,7 @@ msgstr ""
 
 #: ../lib/modes.py:95
 msgid "Difference"
-msgstr ""
+msgstr "Різниця"
 
 #: ../lib/modes.py:96
 msgid "Subtracts the darker color from the lighter of the two."
@@ -3559,7 +3561,7 @@ msgstr ""
 
 #: ../lib/modes.py:102
 msgid "Hue"
-msgstr ""
+msgstr "Відтінок"
 
 #: ../lib/modes.py:103
 msgid ""
@@ -3569,7 +3571,7 @@ msgstr ""
 
 #: ../lib/modes.py:106
 msgid "Saturation"
-msgstr ""
+msgstr "Насиченість"
 
 #: ../lib/modes.py:107
 msgid ""
@@ -3768,11 +3770,11 @@ msgstr ""
 
 #: ../gui/autorecover.glade:157
 msgid "Thumbnail"
-msgstr ""
+msgstr "Мініатюра"
 
 #: ../gui/autorecover.glade:171
 msgid "Description"
-msgstr ""
+msgstr "Опис"
 
 #: ../gui/brusheditor.glade:88
 msgid "Live update"
@@ -3831,18 +3833,18 @@ msgstr ""
 #: ../gui/brusheditor.glade:343
 msgctxt "brush editor|metadata settings|labels|"
 msgid "Description:"
-msgstr ""
+msgstr "Опис:"
 
 #: ../gui/brusheditor.glade:355
 msgctxt "brush editor|metadata settings|labels for widgets|tooltips|"
 msgid "Brush developer's notes"
-msgstr ""
+msgstr "Примітки розробника пензля"
 
 #. Notes for developers
 #: ../gui/brusheditor.glade:358
 msgctxt "brush editor|metadata settings|labels|"
 msgid "Notes:"
-msgstr ""
+msgstr "Примітки:"
 
 #: ../gui/brusheditor.glade:420
 msgid ""
@@ -3852,7 +3854,7 @@ msgstr ""
 #. field label
 #: ../gui/brusheditor.glade:426
 msgid "Value:"
-msgstr ""
+msgstr "Значення:"
 
 #: ../gui/brusheditor.glade:491
 msgid "Reset this input to have no effect on the setting"
@@ -3872,11 +3874,11 @@ msgstr ""
 
 #: ../gui/brusheditor.glade:562
 msgid "Output"
-msgstr ""
+msgstr "Вивід"
 
 #: ../gui/brusheditor.glade:583
 msgid "Input"
-msgstr ""
+msgstr "Ввід"
 
 #: ../gui/brusheditor.glade:601
 msgid "Adjusts the maximum value"
@@ -3912,12 +3914,12 @@ msgstr ""
 
 #: ../gui/brusheditor.glade:802
 msgid "{tooltip}"
-msgstr ""
+msgstr "{tooltip}"
 
 #. field name (template)
 #: ../gui/brusheditor.glade:809
 msgid "{dname}:"
-msgstr ""
+msgstr "{dname}:"
 
 #: ../gui/brusheditor.glade:841
 msgid "Brush dynamics are not available for this setting."
@@ -3970,12 +3972,12 @@ msgstr ""
 #: ../gui/inktool.glade:172
 msgctxt "Inking tool options: point value sliders: labels"
 msgid "Time:"
-msgstr ""
+msgstr "Час:"
 
 #: ../gui/inktool.glade:205
 msgctxt "Inking tool options: node delete button: label"
 msgid "Delete Point"
-msgstr ""
+msgstr "Видалити точку"
 
 #: ../gui/inktool.glade:209
 msgctxt "Inking tool options: node delete button: tooltip"
@@ -4054,6 +4056,8 @@ msgid ""
 "Z: {scale:.1f}%\n"
 "R: {rotation:+.1f}°"
 msgstr ""
+"Z: {scale:.1f}%\n"
+"R: {rotation:+.1f}°"
 
 #: ../gui/mypaint.glade:249
 msgctxt "footer: context picker button: tooltip"
@@ -4078,22 +4082,22 @@ msgstr "JPEG 90% якості (*.jpg; *.jpeg)"
 #: ../gui/preferenceswindow.glade:46
 msgctxt "Prefs Dialog|View|Zoom|Default|"
 msgid "25%"
-msgstr ""
+msgstr "25%"
 
 #: ../gui/preferenceswindow.glade:50
 msgctxt "Prefs Dialog|View|Zoom|Default|"
 msgid "50%"
-msgstr ""
+msgstr "50%"
 
 #: ../gui/preferenceswindow.glade:54
 msgctxt "Prefs Dialog|View|Zoom|Default|"
 msgid "100%"
-msgstr ""
+msgstr "100%"
 
 #: ../gui/preferenceswindow.glade:58
 msgctxt "Prefs Dialog|View|Zoom|Default|"
 msgid "200%"
-msgstr ""
+msgstr "200%"
 
 #: ../gui/preferenceswindow.glade:72
 msgctxt "Prefs Dialog|View|Cursors|Freehand Cursor|Type|"
@@ -4131,13 +4135,13 @@ msgstr ""
 #: ../gui/preferenceswindow.glade:174 ../gui/preferenceswindow.glade:202
 msgctxt "Prefs Dialog|Pen Input|Input Device Settings|Pressure Mapping|"
 msgid "0.0"
-msgstr ""
+msgstr "0.0"
 
 #. Graph label, range (0...1)
 #: ../gui/preferenceswindow.glade:188 ../gui/preferenceswindow.glade:217
 msgctxt "Prefs Dialog|Pen Input|Input Device Settings|Pressure Mapping|"
 msgid "1.0"
-msgstr ""
+msgstr "1.0"
 
 #: ../gui/preferenceswindow.glade:251
 msgctxt "Prefs Dialog|Pen Input|"
@@ -4164,7 +4168,7 @@ msgstr ""
 
 #: ../gui/preferenceswindow.glade:337
 msgid "Devices"
-msgstr ""
+msgstr "Пристрої"
 
 #: ../gui/preferenceswindow.glade:380
 msgctxt "Prefs Dialog|Button|Pointer Button Mappings|"
@@ -4182,7 +4186,7 @@ msgstr ""
 #: ../gui/preferenceswindow.glade:414
 msgctxt "Prefs Dialog|"
 msgid "Buttons"
-msgstr ""
+msgstr "Кнопки"
 
 #. Label for a checkbox in the keyboard mappings preferences.
 #. A fallback binding is a static built-in key binding that is used
@@ -4205,7 +4209,7 @@ msgstr ""
 
 #: ../gui/preferenceswindow.glade:489
 msgid "Keys"
-msgstr ""
+msgstr "Клавіші"
 
 #: ../gui/preferenceswindow.glade:509
 msgctxt "Prefs Dialog|Load & Save|Saving|"
@@ -4313,7 +4317,7 @@ msgstr "Типовий масштаб:"
 #: ../gui/preferenceswindow.glade:862
 msgctxt "Prefs Dialog|View|"
 msgid "<b>Interface</b>"
-msgstr ""
+msgstr "<b>Інтерфейс</b>"
 
 #: ../gui/preferenceswindow.glade:879
 msgctxt "Prefs Dialog|View|Interface|"
@@ -4425,7 +4429,7 @@ msgstr ""
 msgctxt ""
 "Prefs Dialog|View|Interface|Blink layers on creation/selection|checkbox label"
 msgid "Enabled"
-msgstr ""
+msgstr "Увімкнено"
 
 #: ../gui/preferenceswindow.glade:1196
 msgctxt ""
@@ -4444,12 +4448,12 @@ msgstr ""
 #: ../gui/preferenceswindow.glade:1251
 msgctxt "Prefs Dialog|View|Interface|"
 msgid "Language:"
-msgstr ""
+msgstr "Мова:"
 
 #: ../gui/preferenceswindow.glade:1266
 msgctxt "Prefs Dialog|View|Interface|"
 msgid "(needs restart)"
-msgstr ""
+msgstr "(потрібно перезапустити)"
 
 #. Tab label in preferences dialog
 #: ../gui/preferenceswindow.glade:1283
@@ -4815,12 +4819,12 @@ msgstr ""
 #: ../gui/resources.xml:208
 msgctxt "Menu→Layer→Properties (label)"
 msgid "Mode"
-msgstr ""
+msgstr "Режим"
 
 #: ../gui/resources.xml:209
 msgctxt "Toolbar (short labels)"
 msgid "Mode"
-msgstr ""
+msgstr "Режим"
 
 #: ../gui/resources.xml:210
 msgctxt "Toolbar (tooltips)"
@@ -5217,7 +5221,7 @@ msgstr ""
 #: ../gui/resources.xml:567
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Merge Visible Layers"
-msgstr ""
+msgstr "Об’єднати видимі шари"
 
 #: ../gui/resources.xml:568
 msgctxt "Accel Editor (descriptions)"
@@ -5738,7 +5742,7 @@ msgstr ""
 #: ../gui/resources.xml:1058
 msgctxt "Menu (labels)"
 msgid "Layer"
-msgstr "Шари"
+msgstr "Шар"
 
 #: ../gui/resources.xml:1064
 msgctxt "Menu→Layer→Properties (labels)"
@@ -6105,7 +6109,7 @@ msgstr ""
 #: ../gui/resources.xml:1394
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "HCY Wheel"
-msgstr ""
+msgstr "Коло HCY"
 
 #: ../gui/resources.xml:1395
 msgctxt "Accel Editor (descriptions)"
@@ -6137,7 +6141,7 @@ msgstr ""
 #: ../gui/resources.xml:1419
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "HSV Cube"
-msgstr ""
+msgstr "Куб HSV"
 
 #: ../gui/resources.xml:1420
 msgctxt "Accel Editor (descriptions)"
@@ -6525,7 +6529,7 @@ msgstr ""
 #: ../gui/resources.xml:1759
 msgctxt "Menu→Edit→Current Mode (labels)"
 msgid "Ellipses and Circles"
-msgstr ""
+msgstr "Еліпси та кола"
 
 #: ../gui/resources.xml:1760
 msgctxt "Toolbar (short labels)"
