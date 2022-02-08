@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: mypaint v2.0.0-alpha.11-2-g0673fe8\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-04-17 23:27+0200\n"
-"PO-Revision-Date: 2022-02-03 15:56+0000\n"
+"PO-Revision-Date: 2022-02-10 01:55+0000\n"
 "Last-Translator: Ihor Hordiichuk <igor_ck@outlook.com>\n"
 "Language-Team: Ukrainian <https://hosted.weblate.org/projects/mypaint/"
 "mypaint/uk/>\n"
@@ -2002,7 +2002,7 @@ msgctxt ""
 "fill options: option category (label) Options under this category relate to "
 "what the fill isbased on, not where the actual fill ends up."
 msgid "Source:"
-msgstr ""
+msgstr "Джерело:"
 
 #: ../gui/fill.py:536
 msgctxt "fill options: 'Source:' category (tooltip)"
@@ -2096,7 +2096,7 @@ msgstr ""
 #: ../gui/fill.py:725
 msgctxt "fill options: numeric option - grow/shrink fill (label)"
 msgid "Offset:"
-msgstr ""
+msgstr "Зміщення:"
 
 #: ../gui/fill.py:741
 msgctxt "fill options: Offset (tooltip)"
@@ -2319,7 +2319,7 @@ msgstr "Звіт…"
 
 #: ../gui/gtkexcepthook.py:181
 msgid "Ignore Error"
-msgstr ""
+msgstr "Знехтувати помилку"
 
 #: ../gui/gtkexcepthook.py:182
 msgid "Quit MyPaint"
@@ -2374,19 +2374,19 @@ msgstr "Перевірка пристрою введення"
 
 #: ../gui/inputtestwindow.py:61
 msgid "(no pressure)"
-msgstr ""
+msgstr "(немає натиску)"
 
 #: ../gui/inputtestwindow.py:64
 msgid "(no tilt)"
-msgstr ""
+msgstr "(немає нахилу)"
 
 #: ../gui/inputtestwindow.py:65
 msgid "Tilt:"
-msgstr ""
+msgstr "Нахил:"
 
 #: ../gui/inputtestwindow.py:70
 msgid "(no device)"
-msgstr ""
+msgstr "(немає пристрою)"
 
 #: ../gui/inputtestwindow.py:71
 msgid "Device:"
@@ -3553,7 +3553,7 @@ msgstr ""
 
 #: ../lib/modes.py:98
 msgid "Exclusion"
-msgstr ""
+msgstr "Виключення"
 
 #: ../lib/modes.py:99
 msgid "Similar to the 'Difference' mode, but lower in contrast."
@@ -4224,12 +4224,12 @@ msgstr ""
 #: ../gui/preferenceswindow.glade:575
 msgctxt "Prefs Dialog|Load & Save|"
 msgid "<b>Saving</b>"
-msgstr ""
+msgstr "<b>Збереження</b>"
 
 #: ../gui/preferenceswindow.glade:592
 msgctxt "Prefs Dialog|Load & Save|"
 msgid "<b>Color Management</b>"
-msgstr ""
+msgstr "<b>Керування кольорами</b>"
 
 #: ../gui/preferenceswindow.glade:608
 msgctxt "Prefs Dialog|Load & Save|Color Management|"
@@ -4272,19 +4272,19 @@ msgstr ""
 #: ../gui/preferenceswindow.glade:680
 msgctxt "Prefs Dialog|Load & Save|"
 msgid "<b>Automated Backups</b>"
-msgstr ""
+msgstr "<b>Автоматичне резервне копіювання</b>"
 
 #: ../gui/preferenceswindow.glade:698
 msgctxt "Prefs Dialog|Load & Save|Automated Backups|switch label"
 msgid "Back up unsaved work:"
-msgstr ""
+msgstr "Резервне копіювання незбережених робіт:"
 
 #. In seconds. Lowest value is 5, highest is 300 (5 minutes). Only matters when enabled.
 #: ../gui/preferenceswindow.glade:733
 msgctxt ""
 "Prefs Dialog|Load & Save|Automated Backups|interval spinbox units suffix"
 msgid "seconds of inactivity"
-msgstr ""
+msgstr "секунд бездіяльності"
 
 #: ../gui/preferenceswindow.glade:746
 msgctxt "Prefs Dialog|Load & Save|Automated Backups|switch tooltip"
@@ -4297,7 +4297,7 @@ msgstr ""
 #: ../gui/preferenceswindow.glade:768
 msgctxt "Prefs Dialog|Load & Save|Automated Backups|interval label"
 msgid "Time between backups:"
-msgstr ""
+msgstr "Час між резервним копіюванням:"
 
 #. Tab label in preferences dialog
 #: ../gui/preferenceswindow.glade:786
@@ -4332,12 +4332,12 @@ msgstr ""
 #: ../gui/preferenceswindow.glade:911
 msgctxt "Prefs Dialog|View|Interface|"
 msgid "Dark theme variant:"
-msgstr ""
+msgstr "Варіант темної теми:"
 
 #: ../gui/preferenceswindow.glade:921
 msgctxt "Prefs Dialog|View|Interface|Dark theme variant|"
 msgid "If available in GTK3 theme (needs restart)"
-msgstr ""
+msgstr "Якщо доступно в темі GTK3 (потрібен перезапуск)"
 
 #: ../gui/preferenceswindow.glade:925
 msgctxt "Prefs Dialog|View|Interface|Dark theme variant|checkbox tooltip"
@@ -4964,22 +4964,23 @@ msgstr ""
 #: ../gui/resources.xml:350
 msgctxt "Menu→Color→Adjust Color (labels), Accel Editor (labels)"
 msgid "Decrease Saturation"
-msgstr ""
+msgstr "Зменшити насиченість"
 
 #: ../gui/resources.xml:351
 msgctxt "Accel Editor (descriptions)"
 msgid "Make the painting color less saturated (grayer)."
-msgstr ""
+msgstr "Зробити колір малювання менш насиченим (сірішим)."
 
 #: ../gui/resources.xml:359
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
 msgid "Reload Brush Settings"
-msgstr ""
+msgstr "Перезавантажити налаштування пензля"
 
 #: ../gui/resources.xml:360
 msgctxt "Accel Editor (descriptions)"
 msgid "Restore all brush settings to the current brush’s saved values."
 msgstr ""
+"Відновити всі налаштування пензля до збережених значень поточного пензля."
 
 #: ../gui/resources.xml:370
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
