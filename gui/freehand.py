@@ -35,6 +35,7 @@ logger = logging.getLogger(__name__)
 
 class FreehandMode (gui.mode.BrushworkModeMixin,
                     gui.mode.ScrollableModeMixin,
+                    gui.mode.GestureModeMixin,
                     gui.mode.InteractionMode):
     """Freehand drawing mode
 
