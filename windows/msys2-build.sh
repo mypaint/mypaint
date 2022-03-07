@@ -40,12 +40,12 @@ cd "$TOPDIR"
 case "$MSYSTEM" in
     "MINGW64")
         PKG_PREFIX="mingw-w64-x86_64"
-        MINGW_INSTALLS="mingw64"
+        MINGW_ARCH="mingw64"
         BUNDLE_ARCH="w64"
         ;;
     "MINGW32")
         PKG_PREFIX="mingw-w64-i686"
-        MINGW_INSTALLS="mingw32"
+        MINGW_ARCH="mingw32"
         BUNDLE_ARCH="w32"
         ;;
     *)
@@ -53,7 +53,7 @@ case "$MSYSTEM" in
         exit 1
         ;;
 esac
-export MINGW_INSTALLS
+export MINGW_ARCH
 
 # This script pulls down and maintains a clone of the pkgbuild tree for
 # MSYS2's MINGW32 and MINGW64 software.
@@ -198,9 +198,9 @@ build_pkg() {
     pushd "$src"
     rm -vf *.pkg.tar.zst
 
-    # This only builds for the arch in MINGW_INSTALLS, i.e. the current
+    # This only builds for the arch in MINGW_ARCH, i.e. the current
     # value of MSYSTEM.
-    loginfo "Building in $src for $MINGW_INSTALLS ..."
+    loginfo "Building in $src for $MINGW_ARCH ..."
     MSYSTEM=MSYS2 bash --login -c 'cd "$1" && makepkg-mingw -f' - "$src"
     logok "Build finished."
 
