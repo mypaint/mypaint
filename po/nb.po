@@ -5,7 +5,7 @@ msgstr ""
 "Project-Id-Version: mypaint v2.0.0-alpha.12-10-g9ab1487\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-04-17 23:27+0200\n"
-"PO-Revision-Date: 2021-01-10 01:32+0000\n"
+"PO-Revision-Date: 2021-05-15 17:32+0000\n"
 "Last-Translator: Allan Nordhøy <epost@anotheragency.no>\n"
 "Language-Team: Norwegian Bokmål <https://hosted.weblate.org/projects/mypaint/"
 "mypaint/nb_NO/>\n"
@@ -14,7 +14,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 4.4.1-dev\n"
+"X-Generator: Weblate 4.7-dev\n"
 
 #: ../gui/accelmap.py:86
 msgctxt "placeholder for keymap filtering"
@@ -215,7 +215,7 @@ msgstr "Fart"
 #: ../gui/brusheditor.py:393
 msgctxt "brush settings list: setting group"
 msgid "Directional Offsets"
-msgstr ""
+msgstr "Retningsbestemte forskyvninger"
 
 #: ../gui/brusheditor.py:411
 msgctxt "brush settings list: setting group"
@@ -452,10 +452,9 @@ msgid "Unknown Brush"
 msgstr "Ukjent pensel"
 
 #: ../gui/brushmanip.py:191
-#, fuzzy
 msgctxt "brush resize mode - name"
 msgid "Resize Brush"
-msgstr "Gi pensel nytt navn"
+msgstr "Endre penselstørrelse"
 
 #: ../gui/brushmanip.py:196
 msgctxt "brush resize mode - usage"
@@ -481,16 +480,14 @@ msgid "Clone"
 msgstr "Klon"
 
 #: ../gui/brushselectionwindow.py:242
-#, fuzzy
 msgctxt "brush group: context menu for a single brush"
 msgid "Edit Brush Settings"
-msgstr "Detaljerte penselinnstillinger"
+msgstr "Rediger penselinnstillinger"
 
 #: ../gui/brushselectionwindow.py:250
-#, fuzzy
 msgctxt "brush group: context menu for a single brush"
 msgid "Remove from Group"
-msgstr "Endre gruppenavn"
+msgstr "Fjern fra gruppe"
 
 #: ../gui/brushselectionwindow.py:290
 #, python-brace-format
@@ -1261,12 +1258,12 @@ msgstr ""
 #: ../gui/compatibility.py:65
 msgctxt "file compatibility question"
 msgid "Do you want to open this file anyway?"
-msgstr ""
+msgstr "Ønsker du å åpne denne filen likevel?"
 
 #: ../gui/compatibility.py:129
 msgctxt "Version compat warning toggle"
 msgid "Don't show this warning again"
-msgstr ""
+msgstr "Ikke vis denne advarselen igjen"
 
 #. TRANSLATORS: One of the options for the
 #. TRANSLATORS: "When Not Specified in File"
@@ -6430,10 +6427,9 @@ msgid "Dockable panel for viewing recently changed colors and brushes."
 msgstr ""
 
 #: ../gui/resources.xml:1537
-#, fuzzy
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
 msgid "Recent Brushes & Colors"
-msgstr "Bruk pensel %d"
+msgstr "Nylige pensler og farger"
 
 #: ../gui/resources.xml:1538
 msgctxt "Accel Editor (descriptions)"
