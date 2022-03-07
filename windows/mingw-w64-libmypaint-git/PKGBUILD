@@ -19,6 +19,7 @@ makedepends=(
     "${MINGW_PACKAGE_PREFIX}-json-c"
     "${MINGW_PACKAGE_PREFIX}-glib2"
     "${MINGW_PACKAGE_PREFIX}-gobject-introspection"
+    "${MINGW_PACKAGE_PREFIX}-intltool"
 )
 makedepends+=("autoconf" "automake" "libtool" "git")
 # autotools are required because several Makefile.am are modified
