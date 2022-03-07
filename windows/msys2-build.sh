@@ -201,7 +201,7 @@ build_pkg() {
     # This only builds for the arch in MINGW_ARCH, i.e. the current
     # value of MSYSTEM.
     loginfo "Building in $src for $MINGW_ARCH ..."
-    MSYSTEM=MSYS2 bash --login -c 'cd "$1" && makepkg-mingw -f' - "$src"
+    MSYSTEM=MSYS2 bash --login -c 'cd "$1" && makepkg-mingw -s -f' - "$src"
     logok "Build finished."
 
     if $install; then
