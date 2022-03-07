@@ -8,8 +8,8 @@ msgstr ""
 "Project-Id-Version: mypaint v2.0.0-alpha.8-1-g4490f06\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-04-17 23:27+0200\n"
-"PO-Revision-Date: 2020-12-22 09:29+0000\n"
-"Last-Translator: Joan Montané <joan@montane.cat>\n"
+"PO-Revision-Date: 2021-07-23 07:34+0000\n"
+"Last-Translator: Adolfo Jayme Barrientos <fitojb@ubuntu.com>\n"
 "Language-Team: Catalan <https://hosted.weblate.org/projects/mypaint/mypaint/"
 "ca/>\n"
 "Language: ca\n"
@@ -17,12 +17,12 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 4.4-dev\n"
+"X-Generator: Weblate 4.7.2-dev\n"
 
 #: ../gui/accelmap.py:86
 msgctxt "placeholder for keymap filtering"
 msgid "Filter"
-msgstr ""
+msgstr "Filtre"
 
 #. TRANSLATORS: Name of first column in the button map preferences.
 #. TRANSLATORS: Refers to an action bound to a mod+button combination.
@@ -95,7 +95,7 @@ msgstr ""
 #: ../gui/application.py:626
 #, python-brace-format
 msgid "Open Folder “{folder_basename}”…"
-msgstr "Obre la carpeta “{folder_basename}”…"
+msgstr "Obre la carpeta «{folder_basename}»…"
 
 #. ... so that the main actions end up in the bottom-right of the
 #. dialog (reversed for rtl scripts), where the eye ends up
@@ -106,7 +106,7 @@ msgstr "D'acord"
 
 #: ../gui/autorecover.py:138
 msgid "No backups were found in the cache."
-msgstr "No s'han trobat còpies de seguretat a la memòria cau."
+msgstr "No s’ha trobat cap còpia de seguretat a la memòria cau."
 
 #: ../gui/autorecover.py:139
 msgid "No Available Backups"
@@ -168,7 +168,7 @@ msgstr ""
 #, python-brace-format
 msgid "Gdk-Pixbuf couldn't load \"{filename}\", and reported \"{error}\""
 msgstr ""
-"Gdk-Pixbuf no ha pogut carregar \"{filename}\", i ha informat: \"{error}\""
+"El Gdk-Pixbuf no ha pogut carregar «{filename}» i ha informat: «{error}»"
 
 #: ../gui/backgroundwindow.py:382
 #, python-brace-format
@@ -248,7 +248,7 @@ msgstr "Personalitzat"
 #: ../gui/brusheditor.py:528
 msgctxt "brush settings editor: save brush: error message"
 msgid "No brush selected, please use “Add As New” instead."
-msgstr "Cap pinzell seleccionat, feu servir en el seu lloc \"Agrega com nou\"."
+msgstr "Cap pinzell seleccionat; feu servir en el seu lloc «Afegeix com a nou»."
 
 #: ../gui/brusheditor.py:553
 msgctxt "brush settings editor: rename brush: error message"
@@ -274,18 +274,18 @@ msgstr "No hi ha cap pinzell seleccionat!"
 #, python-brace-format
 msgctxt "brush settings editor: delete brush: confirm dialog question"
 msgid "Really delete brush “{brush_name}” from disk?"
-msgstr "Segur que voleu suprimir el pinzell “{brush_name}”del disc?"
+msgstr "Segur que voleu suprimir el pinzell «{brush_name}» del disc?"
 
 #: ../gui/brusheditor.py:740
 msgctxt "brush settings editor: header: fallback name"
 msgid "(Unnamed brush)"
-msgstr "(Pinzell Sense Nom)"
+msgstr "(Pinzell sense nom)"
 
 #: ../gui/brusheditor.py:747
 #, python-brace-format
 msgctxt "brush settings editor: header: is-modified hint"
 msgid "{brush_name} [unsaved]"
-msgstr "{brush_name}1 [unsaved]"
+msgstr "{brush_name}1 [no desat]"
 
 #: ../gui/brushiconeditor.py:36
 msgid "Brush Icon"
@@ -333,7 +333,7 @@ msgid ""
 "<small>Click ‘Edit’ to make changes to the icon</small>"
 msgstr ""
 "<b>%s</b>\n"
-"<small>Prem «Edita» per a aplicar els canvis a la icona</small>"
+"<small>Feu clic a «Edita» per a aplicar els canvis a la icona</small>"
 
 #. TRANSLATORS: begin editing a brush's preview icon
 #: ../gui/brushiconeditor.py:157
@@ -351,7 +351,7 @@ msgstr "Reverteix"
 
 #: ../gui/brushiconeditor.py:167
 msgid "Discard changes, and cancel editing"
-msgstr "Descarta els canvis i cancel.la l'edició"
+msgstr "Descarta els canvis i cancel·la l’edició"
 
 #. TRANSLATORS: clear the brush preview icon being edited
 #: ../gui/brushiconeditor.py:174
@@ -360,7 +360,7 @@ msgstr "Neteja"
 
 #: ../gui/brushiconeditor.py:176
 msgid "Clear the preview icon"
-msgstr "Neteja la icona de vista prèvia"
+msgstr "Neteja la icona de previsualització"
 
 #. TRANSLATORS: set the brush icon to a built-in default
 #: ../gui/brushiconeditor.py:182
@@ -512,7 +512,7 @@ msgstr "{original_name} - còpia {n}"
 msgctxt "brush group: context menu: remove from group"
 msgid "Really remove brush “{brush_name}” from group “{group_name}”?"
 msgstr ""
-"Segur que voleu suprimir el pinzell “{brush_name}” del grup \"{group_name}\"?"
+"Segur que voleu suprimir el pinzell «{brush_name}» del grup «{group_name}»?"
 
 #. TRANSLATORS: number of brushes in a brush group, for tooltips
 #: ../gui/brushselectionwindow.py:381
@@ -527,7 +527,7 @@ msgstr[1] "{count} pinzells"
 #, python-brace-format
 msgctxt "brush group properties dialog: title"
 msgid "Group “{group_name}”"
-msgstr "Grup “{group_name}”"
+msgstr "Grup «{group_name}»"
 
 #: ../gui/brushselectionwindow.py:419
 msgctxt "brush group properties dialog: action buttons"
@@ -558,7 +558,7 @@ msgstr "Ja existeix un grup amb aquest nom!"
 #, python-brace-format
 msgctxt "brush group delete"
 msgid "Really delete group “{group_name}”?"
-msgstr "Segur que voleu eliminar el grup “{group_name}”?"
+msgstr "Segur que voleu suprimir el grup «{group_name}»?"
 
 #: ../gui/brushselectionwindow.py:496
 #, python-brace-format
@@ -567,8 +567,8 @@ msgid ""
 "Could not delete group “{group_name}”.\n"
 "Some special groups cannot be deleted."
 msgstr ""
-"No es pot eliminar el grup “{group_name}”.\n"
-"Alguns grups especials no poden ser eliminats."
+"No s’ha pogut suprimir el grup «{group_name}».\n"
+"Alguns grups especials no es poden suprimir."
 
 #: ../gui/brushselectionwindow.py:511
 msgctxt "brush group export dialog: title"
@@ -1648,14 +1648,16 @@ msgstr "Paquet de pinzell de MyPaint (*.zip)"
 #: ../gui/externalapp.py:41
 #, python-brace-format
 msgid "Launched {app_name} to edit layer “{layer_name}”"
-msgstr "S'ha llançat {app_name} per editar la capa “{layer_name}”"
+msgstr "S’ha iniciat el programa {app_name} per a editar la capa «{layer_name}»"
 
 #. TRANSLATORS: Statusbar message shown when the app chosen for
 #. TRANSLATORS: "Edit in External App" (for a layer) failed to open.
 #: ../gui/externalapp.py:45
 #, python-brace-format
 msgid "Error: failed to launch {app_name} to edit layer “{layer_name}”"
-msgstr "Error: fallada en llançar {app_name} per editar la capa “{layer_name}”"
+msgstr ""
+"Error: no s’ha pogut iniciar el programa {app_name} per a editar la capa "
+"«{layer_name}»"
 
 #. TRANSLATORS: Statusbar message for when an "Edit in External App"
 #. TRANSLATORS: operation is cancelled by the user before it starts.
@@ -1671,7 +1673,7 @@ msgstr ""
 #: ../gui/externalapp.py:55
 #, python-brace-format
 msgid "Updated layer “{layer_name}” with external edits"
-msgstr "S'ha actualitzat la capa “{layer_name}” amb editors externs"
+msgstr "S’ha actualitzat la capa «{layer_name}» amb editors externs"
 
 #: ../gui/externalapp.py:59
 #, python-brace-format
@@ -2939,27 +2941,27 @@ msgstr "(Res a mostrar)"
 #: ../gui/symmetry.py:83
 msgctxt "symmetry axis edit mode: instructions shown in statusbar"
 msgid "Place axis"
-msgstr "Posa l'eix"
+msgstr "Posa l’eix"
 
 #: ../gui/symmetry.py:87
 msgctxt "symmetry axis edit mode: instructions shown in statusbar"
 msgid "Move axis"
-msgstr "Mou l'eix"
+msgstr "Mou l’eix"
 
 #: ../gui/symmetry.py:91
 msgctxt "symmetry axis edit mode: instructions shown in statusbar"
 msgid "Remove axis"
-msgstr "Suprimeix l'eix"
+msgstr "Suprimeix l’eix"
 
 #: ../gui/symmetry.py:103
 msgctxt "symmetry axis edit mode: mode name (tooltips)"
 msgid "Edit Symmetry Axis"
-msgstr "Edita la simetria de l'eix"
+msgstr "Edita la simetria de l’eix"
 
 #: ../gui/symmetry.py:109
 msgctxt "symmetry axis edit mode: mode description (tooltips)"
 msgid "Adjust the painting symmetry axis."
-msgstr "Ajusta l'eix de simetria del dibuix."
+msgstr "Ajusta l’eix de simetria del dibuix."
 
 #: ../gui/symmetry.py:345
 msgctxt "symmetry axis options panel: labels"
@@ -3226,7 +3228,7 @@ msgstr "Edita la capa externament"
 #, python-brace-format
 msgctxt "Document IO: common error strings: {error_loading_common}"
 msgid "Error loading “{basename}”."
-msgstr "Error en carregar “{basename}”."
+msgstr "S’ha produït un error en carregar «{basename}»."
 
 #: ../lib/document.py:78
 msgctxt "Document IO: common error strings: {see_logs}"
@@ -3237,13 +3239,13 @@ msgstr "Els registres poden tenir més detalls sobre aquest error."
 #: ../lib/document.py:205
 msgctxt "Document autosave descriptions: the {ago} string: future"
 msgid "from now"
-msgstr "Des d'ara"
+msgstr "d’aquí a"
 
 #. TRANSLATORS: string used in e.g. "8s ago"
 #: ../lib/document.py:211
 msgctxt "Document autosave descriptions: the {ago} string: past"
 msgid "ago"
-msgstr "abans"
+msgstr "fa"
 
 #. TRANSLATORS: String descriptions for an autosaved backup.
 #. TRANSLATORS: Time strings are localized: e.g. "3h42m" or "8s"
@@ -3256,15 +3258,15 @@ msgid ""
 "Close app and wait {cache_update_interval}s to retry."
 msgstr ""
 "La carpeta de la memòria cau encara està en ús.\n"
-"Esteu executant més d'una instància de MyPaint?\n"
-"Tanca l'aplicació i espera {cache_update_interval}s per intentar-ho de nou."
+"Esteu executant més d’una instància del MyPaint?\n"
+"Tanqueu l’aplicació i espereu {cache_update_interval}s per a intentar-ho de "
+"nou."
 
 #: ../lib/document.py:226
 #, python-brace-format
 msgctxt "Document autosave descriptions"
 msgid "Incomplete backup updated {last_modified_time} {ago}"
-msgstr ""
-"Copia de seguretat incompleta actualitzada fa{last_modified_time} {ago}"
+msgstr "Còpia de seguretat incompleta actualitzada {ago} {last_modified_time}"
 
 #. TRANSLATORS: The {ago} variable is a translated string.
 #. TRANSLATORS: Look for the msgids "from now" and "ago"
@@ -3279,8 +3281,8 @@ msgid ""
 "num_layers}\n"
 "Contains {unsaved_time} of unsaved painting."
 msgstr ""
-"Copia de seguretat actualitzada fa {last_modified_time} {ago}\n"
-"Mida: {autosave.width}×{autosave.height} píxels, Capes: {autosave."
+"Còpia de seguretat actualitzada {ago} {last_modified_time}\n"
+"Mida: {autosave.width} × {autosave.height} píxels, capes: {autosave."
 "num_layers}\n"
 "Conté {unsaved_time} de dibuixos no desats."
 
@@ -3291,14 +3293,14 @@ msgid ""
 "Unable to write “{filename}”: {err}\n"
 "Do you have enough space left on the device?"
 msgstr ""
-"No es pot escriure “{filename}”: {err}\n"
-"Teniu prou espai al dispositiu ?"
+"No s’ha pogut escriure «{filename}»: {err}\n"
+"Comproveu que hi ha prou espai al dispositiu."
 
 #: ../lib/document.py:1454 ../lib/document.py:1464
 #, python-brace-format
 msgctxt "Document IO: hint templates for user-facing exceptions"
 msgid "Unable to write “{filename}”: {err}"
-msgstr "No es pot escriure “{filename}”: {err}"
+msgstr "No s’ha pogut escriure «{filename}»: {err}"
 
 #: ../lib/document.py:1501
 #, python-brace-format
@@ -3344,7 +3346,7 @@ msgid ""
 "Unknown file format extension: “{ext}”"
 msgstr ""
 "{error_loading_common}\n"
-"Extensió de format de fitxer desconegut: “{ext}”"
+"Es desconeix l’extensió del format de fitxer «{ext}»"
 
 #: ../lib/document.py:1590
 msgctxt "Document IO: group name for Import Layers"
@@ -3821,10 +3823,10 @@ msgid ""
 "Reason: {err}\n"
 "Target folder: “{dirname}”."
 msgstr ""
-"Error en escriure “{basename}”.\n"
+"S’ha produït un error en escriure «{basename}».\n"
 "\n"
 "Motiu: {err}\n"
-"Carpeta objectiu: “{dirname}”."
+"Carpeta de destinació: «{dirname}»."
 
 #: ../lib/tiledsurface.py:48
 msgid "Vertical"
@@ -5528,8 +5530,8 @@ msgid ""
 "Convert the current layer or group to a painting layer in ‘Normal’ mode, "
 "preserving its appearance."
 msgstr ""
-"Convertiu la capa o el grup actual en una capa de pintura en mode \"Normal"
-"\", conservant la seva aparença."
+"Convertiu la capa o el grup actual en una capa de pintura en mode «Normal», "
+"conservant-ne l’aparença."
 
 #: ../gui/resources.xml:598
 msgctxt "Menu→Layer→Opacity (labels), Accel Editor (labels)"
@@ -6299,7 +6301,7 @@ msgstr "Visualització"
 #: ../gui/resources.xml:1300
 msgctxt "Menu→View (labels)"
 msgid "Feedback"
-msgstr "Retroacció"
+msgstr "Comentaris"
 
 #: ../gui/resources.xml:1306
 msgctxt "Menu→View (labels)"
