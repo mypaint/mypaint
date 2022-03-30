@@ -7,8 +7,8 @@ msgstr ""
 "Project-Id-Version: mypaint v2.0.0-alpha.12-343-g82b4fc5\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-04-17 23:27+0200\n"
-"PO-Revision-Date: 2020-07-29 15:41+0000\n"
-"Last-Translator: Dušan Kazik <prescott66@gmail.com>\n"
+"PO-Revision-Date: 2022-03-31 21:10+0000\n"
+"Last-Translator: Pexauteau Santander <pexauteau@gmail.com>\n"
 "Language-Team: Slovak <https://hosted.weblate.org/projects/mypaint/mypaint/"
 "sk/>\n"
 "Language: sk\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
-"X-Generator: Weblate 4.2-dev\n"
+"X-Generator: Weblate 4.12-dev\n"
 
 #: ../gui/accelmap.py:86
 msgctxt "placeholder for keymap filtering"
@@ -462,15 +462,14 @@ msgid "Unknown Brush"
 msgstr "Neznámy štetec"
 
 #: ../gui/brushmanip.py:191
-#, fuzzy
 msgctxt "brush resize mode - name"
 msgid "Resize Brush"
-msgstr "Premenovanie štetca"
+msgstr "Zmeniť veľkosť štetca"
 
 #: ../gui/brushmanip.py:196
 msgctxt "brush resize mode - usage"
 msgid "Change brush size by dragging on the canvas"
-msgstr ""
+msgstr "Zmeniť veľkosť štetca ťahom na plátne"
 
 #: ../gui/brushselectionwindow.py:220
 msgctxt "brush group: context menu for a single brush"
@@ -2313,9 +2312,8 @@ msgid "px"
 msgstr "px"
 
 #: ../gui/framewindow.py:916
-#, fuzzy
 msgid "in"
-msgstr "palce"
+msgstr "palec"
 
 #: ../gui/framewindow.py:917
 msgid "cm"
@@ -2687,13 +2685,12 @@ msgid "Generic line/curve mode"
 msgstr "Všeobecný režim čiary/krivky"
 
 #: ../gui/linemode.py:803
-#, fuzzy
 msgid ""
 "Draw straight lines; Shift adds curves, Shift + Ctrl moves line ends, Ctrl "
 "constrains angle"
 msgstr ""
-"Nakreslí rovné čiary; Klávesou Shift sa pridajú krivky, klávesou Ctrl sa "
-"upravuje uhol"
+"Nakreslí rovné čiary; Klávesou Shift sa pridajú krivky, klávesami Shift + "
+"Ctrl sa posúvajú konce liniek, klávesou Ctrl sa upravuje uhol"
 
 #: ../gui/linemode.py:814
 msgid "Connected Lines"
