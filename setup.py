@@ -14,15 +14,17 @@ import textwrap
 import tempfile
 import shutil
 
-from distutils.command.build import build
-from distutils.command.clean import clean
-
 from setuptools import setup
 from setuptools import Extension
 from setuptools import Command
 from setuptools.command.build_ext import build_ext
 from setuptools.command.install import install
 from setuptools.command.install_scripts import install_scripts
+
+# setuptools must be imported first since they ensure
+# their distutils implementation will be used.
+from distutils.command.build import build
+from distutils.command.clean import clean
 
 # Constants
 
