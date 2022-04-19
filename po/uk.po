@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: mypaint v2.0.0-alpha.11-2-g0673fe8\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-04-17 23:27+0200\n"
-"PO-Revision-Date: 2022-02-10 01:55+0000\n"
+"PO-Revision-Date: 2022-04-20 10:11+0000\n"
 "Last-Translator: Ihor Hordiichuk <igor_ck@outlook.com>\n"
 "Language-Team: Ukrainian <https://hosted.weblate.org/projects/mypaint/"
 "mypaint/uk/>\n"
@@ -18,7 +18,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
 "%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
-"X-Generator: Weblate 4.11-dev\n"
+"X-Generator: Weblate 4.12-dev\n"
 
 #: ../gui/accelmap.py:86
 msgctxt "placeholder for keymap filtering"
@@ -931,7 +931,7 @@ msgstr "Палітра"
 #: ../gui/colors/paletteview.py:82
 msgctxt "palette panel tab tooltip description"
 msgid "Set the color from a loadable, editable palette."
-msgstr ""
+msgstr "Вибрати колір із завантажуваної, редагованої палітри."
 
 #: ../gui/colors/paletteview.py:108
 msgctxt "palette editor dialog: palette name entry"
@@ -956,7 +956,7 @@ msgstr "Зберегти до файлу палітри GIMP"
 #: ../gui/colors/paletteview.py:168
 msgctxt "palette editor dialog: action buttons: tooltips"
 msgid "Add a new empty swatch"
-msgstr ""
+msgstr "Додайте новий порожній зразок"
 
 #: ../gui/colors/paletteview.py:172
 msgctxt "palette editor dialog: action buttons: tooltips"
@@ -1001,7 +1001,7 @@ msgstr "Назва поточного кольору"
 #: ../gui/colors/paletteview.py:322
 msgctxt "palette editor dialog: color name entry"
 msgid "Empty palette slot"
-msgstr ""
+msgstr "Порожня комірка палітри"
 
 #: ../gui/colors/paletteview.py:378
 msgctxt "palette load dialog: title"
@@ -1020,17 +1020,20 @@ msgid ""
 "Drop colors here,\n"
 "drag them to organize."
 msgstr ""
+"Палітра зразків кольорів.\n"
+"Додавайте сюди кольори та\n"
+"перетягуйте їх, щоб упорядкувати."
 
 #: ../gui/colors/paletteview.py:702
 msgctxt "palette view"
 msgid "Empty palette slot (drag a color here)"
-msgstr ""
+msgstr "Порожня комірка палітри (перетягніть сюди колір)"
 
 #. TRANSLATORS: inserting gaps (empty color swatches)
 #: ../gui/colors/paletteview.py:789
 msgctxt "palette view: context menu"
 msgid "Add Empty Slot"
-msgstr ""
+msgstr "Додати порожню комірку"
 
 #. TRANSLATORS: inserting gaps (empty color swatches)
 #: ../gui/colors/paletteview.py:796
@@ -1260,7 +1263,7 @@ msgstr "Не показувати це попередження знову"
 #: ../gui/compatibility.py:197
 msgctxt "Prefs Dialog|Compatibility"
 msgid "Always open in 1.x mode"
-msgstr ""
+msgstr "Завжди відкривати в режимі 1.x"
 
 #. TRANSLATORS: One of the options for the
 #. TRANSLATORS: "When Not Specified in File"
@@ -1268,7 +1271,7 @@ msgstr ""
 #: ../gui/compatibility.py:206
 msgctxt "Prefs Dialog|Compatibility"
 msgid "Always open in 2.x mode"
-msgstr ""
+msgstr "Завжди відкривати в режимі 2.x"
 
 #. TRANSLATORS: One of the options for the
 #. TRANSLATORS: "When Not Specified in File"
@@ -1328,22 +1331,22 @@ msgstr "Ігнорувати"
 #: ../gui/device.py:97
 msgctxt "device settings: allowed usage"
 msgid "Any Task"
-msgstr ""
+msgstr "Будь-яке завдання"
 
 #: ../gui/device.py:101
 msgctxt "device settings: allowed usage"
 msgid "Non-painting tasks"
-msgstr ""
+msgstr "Завдання не для малювання"
 
 #: ../gui/device.py:105
 msgctxt "device settings: allowed usage"
 msgid "Navigation only"
-msgstr ""
+msgstr "Лише для навігації"
 
 #: ../gui/device.py:130
 msgctxt "device settings: unmodified scroll action"
 msgid "Zoom"
-msgstr ""
+msgstr "Масштабування"
 
 #: ../gui/device.py:131
 msgctxt "device settings: unmodified scroll action"
@@ -1354,13 +1357,13 @@ msgstr ""
 #: ../gui/device.py:432
 msgctxt "prefs: devices table: column header"
 msgid "Device"
-msgstr ""
+msgstr "Пристрій"
 
 #. TRANSLATORS: Column's data is the number of axes (an integer)
 #: ../gui/device.py:446
 msgctxt "prefs: devices table: column header"
 msgid "Axes"
-msgstr ""
+msgstr "Осі"
 
 #. TRANSLATORS: Column shows type labels ("Touchscreen", "Pen" etc.)
 #: ../gui/device.py:460
@@ -1373,7 +1376,7 @@ msgstr "Тип"
 #: ../gui/device.py:483
 msgctxt "prefs: devices table: column header"
 msgid "Use for…"
-msgstr ""
+msgstr "Використовувати для…"
 
 #. TRANSLATORS: Column's data is a dropdown for how the device's
 #. TRANSLATORS: scroll wheel or scroll-gesture events are to be
@@ -1381,7 +1384,7 @@ msgstr ""
 #: ../gui/device.py:513
 msgctxt "prefs: devices table: column header"
 msgid "Scroll…"
-msgstr ""
+msgstr "Прокручування…"
 
 #. Name and preview column: will be indented
 #: ../gui/dialogs.py:74 ../gui/externalapp.py:221 ../gui/layers.py:417
@@ -1425,7 +1428,7 @@ msgstr ""
 
 #: ../gui/dialogs.py:196
 msgid "Overwrite brush group?"
-msgstr ""
+msgstr "Перезаписати групу пензлів?"
 
 #: ../gui/dialogs.py:220
 #, python-brace-format
@@ -1438,12 +1441,12 @@ msgstr ""
 
 #: ../gui/dialogs.py:326
 msgid "Import brush package?"
-msgstr ""
+msgstr "Імпортувати пакунок пензлів?"
 
 #: ../gui/dialogs.py:357
 #, python-brace-format
 msgid "<b>Do you really want to import package “{brushpack_name}”?</b>"
-msgstr ""
+msgstr "<b>Ви справді хочете імпортувати пакунок «{brushpack_name}»?</b>"
 
 #: ../gui/document.py:193
 #, python-format
@@ -1560,7 +1563,7 @@ msgstr "MyPaint"
 #: ../gui/drawwindow.py:301
 msgctxt "Open dragged file confirm dialog: title"
 msgid "Open Dragged File?"
-msgstr ""
+msgstr "Відкрити перетягнутий файл?"
 
 #: ../gui/drawwindow.py:305
 msgctxt "Open dragged file confirm dialog: continue button"
@@ -1569,7 +1572,7 @@ msgstr "_Відкрити"
 
 #: ../gui/drawwindow.py:498
 msgid "Set current color"
-msgstr ""
+msgstr "Вибрати поточний колір"
 
 #: ../gui/drawwindow.py:543
 msgid "Leave Fullscreen Mode"
@@ -1577,7 +1580,7 @@ msgstr "Залишити повноекранний режим"
 
 #: ../gui/drawwindow.py:544
 msgid "Leave Fullscreen"
-msgstr ""
+msgstr "Вийти з повноекранного режиму"
 
 #: ../gui/drawwindow.py:547
 msgid "Enter Fullscreen Mode"
@@ -1611,7 +1614,7 @@ msgstr "Пакунок пензлів MyPaint (*.zip)"
 #: ../gui/externalapp.py:41
 #, python-brace-format
 msgid "Launched {app_name} to edit layer “{layer_name}”"
-msgstr ""
+msgstr "Для редагування шару «{layer_name}» запущено {app_name}"
 
 #. TRANSLATORS: Statusbar message shown when the app chosen for
 #. TRANSLATORS: "Edit in External App" (for a layer) failed to open.
@@ -1619,6 +1622,7 @@ msgstr ""
 #, python-brace-format
 msgid "Error: failed to launch {app_name} to edit layer “{layer_name}”"
 msgstr ""
+"Помилка: не вдалося запустити {app_name} для редагування шару «{layer_name}»"
 
 #. TRANSLATORS: Statusbar message for when an "Edit in External App"
 #. TRANSLATORS: operation is cancelled by the user before it starts.
@@ -6460,7 +6464,7 @@ msgstr ""
 #: ../gui/resources.xml:1698
 msgctxt "Toolbar (short labels)"
 msgid "Zoom"
-msgstr ""
+msgstr "Масштабування"
 
 #: ../gui/resources.xml:1699
 msgctxt "Toolbar (tooltips)"
@@ -6485,7 +6489,7 @@ msgstr ""
 #: ../gui/resources.xml:1718
 msgctxt "Toolbar (short labels)"
 msgid "Lines"
-msgstr ""
+msgstr "Лінії"
 
 #: ../gui/resources.xml:1719
 msgctxt "Toolbar (tooltips)"
@@ -6535,7 +6539,7 @@ msgstr "Еліпси та кола"
 #: ../gui/resources.xml:1760
 msgctxt "Toolbar (short labels)"
 msgid "Ellipse"
-msgstr ""
+msgstr "Еліпс"
 
 #: ../gui/resources.xml:1761
 msgctxt "Toolbar (tooltips)"
