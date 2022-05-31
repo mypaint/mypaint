@@ -10,7 +10,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-04-17 23:27+0200\n"
 "PO-Revision-Date: 2022-05-31 21:42+0000\n"
-"Last-Translator: Kaerhon <kaerhon@gmail.com>\n"
+"Last-Translator: Anacoluthe <mypaint.traduction@tantugu.eu>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/mypaint/mypaint/"
 "fr/>\n"
 "Language: fr\n"
@@ -1066,7 +1066,7 @@ msgstr "Insérer une colonne"
 #: ../gui/colors/paletteview.py:811
 msgctxt "palette view: context menu"
 msgid "Fill Gap (RGB)"
-msgstr "Remplir l'espace (RGB)"
+msgstr "Combler les lacunes (RGB)"
 
 #. TRANSLATORS: Color interpolations
 #: ../gui/colors/paletteview.py:818
@@ -1078,7 +1078,7 @@ msgstr "Remplir l'espace (HCY)"
 #: ../gui/colors/paletteview.py:825
 msgctxt "palette view: context menu"
 msgid "Fill Gap (HSV)"
-msgstr "Remplir l'espace (HSV)"
+msgstr "Combler les lacunes (HSV)"
 
 #: ../gui/colors/paletteview.py:1283
 msgctxt "palette load dialog: filters"
