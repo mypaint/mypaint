@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: mypaint v2.0.0-alpha.8-1-g4490f06\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-04-17 23:27+0200\n"
-"PO-Revision-Date: 2022-05-31 21:42+0000\n"
+"PO-Revision-Date: 2022-06-01 22:18+0000\n"
 "Last-Translator: Maxime Leroy <lisacintosh@gmail.com>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/mypaint/mypaint/"
 "fr/>\n"
@@ -1188,7 +1188,7 @@ msgstr "Luminance HCY (Y')"
 #: ../gui/colortools.py:141
 msgctxt "color changer dock panels: tab tooltip title"
 msgid "Liquid Wash"
-msgstr "Lavis Liquide"
+msgstr "Lavage Liquide"
 
 #: ../gui/colortools.py:145
 msgctxt "color changer dock panels: tab tooltip description"
