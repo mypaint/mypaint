@@ -10,7 +10,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-04-17 23:27+0200\n"
 "PO-Revision-Date: 2022-06-01 22:18+0000\n"
-"Last-Translator: Maxime Leroy <lisacintosh@gmail.com>\n"
+"Last-Translator: Kaerhon <kaerhon@gmail.com>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/mypaint/mypaint/"
 "fr/>\n"
 "Language: fr\n"
@@ -1374,7 +1374,7 @@ msgstr "Toute tâche (non dessin)"
 #: ../gui/device.py:105
 msgctxt "device settings: allowed usage"
 msgid "Navigation only"
-msgstr "Navigation uniquement"
+msgstr "Navigation seule"
 
 #: ../gui/device.py:130
 msgctxt "device settings: unmodified scroll action"
