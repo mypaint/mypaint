@@ -152,6 +152,10 @@ class PreferencesWindow (windowing.Dialog):
         entry = getobj("scrap_prefix_entry")
         entry.set_text(p['saving.scrap_prefix'])
 
+        # timestamp option for scraps
+        scrap_timestamp = getobj("scrap_name_timestamp_radiobutton")
+        scrap_timestamp.set_active(p['saving.scrap_prefix_timestamp'])
+
         # Locale/language
         locale_combo = getobj("locale_combobox")
         active_locale = p.get(USER_LOCALE_PREF, None)
@@ -283,6 +287,12 @@ class PreferencesWindow (windowing.Dialog):
         if isinstance(scrap_prefix, bytes):
             scrap_prefix = scrap_prefix.decode("utf-8")
         self.app.preferences['saving.scrap_prefix'] = scrap_prefix
+
+    def scrap_prefix_timestamp_changed_cb(self, widget):
+        # scrap_prefix = widget.get_text()
+        # if isinstance(scrap_prefix, bytes):
+        #     scrap_prefix = scrap_prefix.decode("utf-8")
+        # self.app.preferences['saving.scrap_prefix'] = scrap_prefix
 
     def default_zoom_combobox_changed_cb(self, combobox):
         zoom_idcolstr = combobox.get_active_id()

@@ -60,6 +60,7 @@ def default_configuration():
         scrappre = u'~/MyPaint/scrap'
     default_config = {
         'saving.scrap_prefix': scrappre,
+        'saving.scrap_prefix_timestamp': False,
         'input.device_mode': 'screen',
         'input.global_pressure_mapping': [(0.0, 1.0), (1.0, 0.0)],
         'input.use_barrel_rotation': True,
