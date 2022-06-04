@@ -1350,6 +1350,7 @@ class FileHandler (object):
 
     def get_scrap_prefix(self):
         prefix = self.app.preferences['saving.scrap_prefix']
+        prefix = time.strftime(prefix)
         # This should really use two separate settings, not one.
         # https://github.com/mypaint/mypaint/issues/375
         prefix = fileutils.expanduser_unicode(prefix)
