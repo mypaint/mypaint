@@ -152,9 +152,14 @@ class PreferencesWindow (windowing.Dialog):
         entry = getobj("scrap_prefix_entry")
         entry.set_text(p['saving.scrap_prefix'])
 
-        # timestamp option for scraps
-        scrap_timestamp = getobj("scrap_name_timestamp_radiobutton")
-        scrap_timestamp.set_active(p['saving.scrap_prefix_timestamp'])
+        # timestamp option for scrap prefix
+        scrap_timestamp_setting = p['saving.scrap_prefix_timestamp']
+        scrap_timestamp_false_radiobtn = getobj('scrap_prefix_manual_radiobutton')
+        scrap_timestamp_true_radiobtn = getobj('scrap_prefix_automatic_radiobutton')
+        if scrap_timestamp_setting is True:
+            scrap_timestamp_true_radiobtn.set_active(True)
+        else:
+            scrap_timestamp_false_radiobtn.set_active(True)
 
         # Locale/language
         locale_combo = getobj("locale_combobox")
@@ -288,11 +293,15 @@ class PreferencesWindow (windowing.Dialog):
             scrap_prefix = scrap_prefix.decode("utf-8")
         self.app.preferences['saving.scrap_prefix'] = scrap_prefix
 
-    def scrap_prefix_timestamp_changed_cb(self, widget):
-        # scrap_prefix = widget.get_text()
-        # if isinstance(scrap_prefix, bytes):
-        #     scrap_prefix = scrap_prefix.decode("utf-8")
-        # self.app.preferences['saving.scrap_prefix'] = scrap_prefix
+    def scrap_prefix_manual_radiobutton_toggled_cb(self, radio):
+        if not radio.get_active():
+            return
+        self.app.preferences['saving.scrap_prefix_timestamp'] = False
+
+    def scrap_prefix_automatic_radiobutton_toggled_cb(self, radio):
+        if not radio.get_active():
+            return
+        self.app.preferences['saving.scrap_prefix_timestamp'] = True
 
     def default_zoom_combobox_changed_cb(self, combobox):
         zoom_idcolstr = combobox.get_active_id()

@@ -805,7 +805,9 @@ This is MyPaint's old behaviour, and can be used as a stopgap for non-sRGB worki
           <object class="GtkLabel">
             <property name="visible">True</property>
             <property name="can-focus">False</property>
-            <property name="margin-right">198</property>
+            <property name="margin-left">12</property>
+            <property name="margin-right">12</property>
+            <property name="hexpand">False</property>
             <property name="label" translatable="yes">Scrap timestamp behaviour:</property>
             <property name="use-markup">True</property>
             <property name="xalign">0</property>
@@ -824,7 +826,7 @@ This is MyPaint's old behaviour, and can be used as a stopgap for non-sRGB worki
             <property name="spacing">6</property>
             <property name="homogeneous">True</property>
             <child>
-              <object class="GtkRadioButton" id="scrap_name_manual_radiobutton">
+              <object class="GtkRadioButton" id="scrap_prefix_manual_radiobutton">
                 <property name="label" translatable="yes">Just scrap prefix (supports strftime)</property>
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
@@ -837,7 +839,7 @@ You can also add custom timestamp information to your scrap prefix using the dir
                 <property name="yalign">0.49000000953674316</property>
                 <property name="active">True</property>
                 <property name="draw-indicator">True</property>
-                <signal name="toggled" handler="scrap_name_manual_radiobutton_toggled_cb" swapped="no"/>
+                <signal name="toggled" handler="scrap_prefix_manual_radiobutton_toggled_cb" swapped="no"/>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -846,7 +848,7 @@ You can also add custom timestamp information to your scrap prefix using the dir
               </packing>
             </child>
             <child>
-              <object class="GtkRadioButton" id="scrap_name_automatic_radiobutton">
+              <object class="GtkRadioButton" id="scrap_prefix_automatic_radiobutton">
                 <property name="label" translatable="yes">Automatically add a date to the scrap name</property>
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
@@ -856,8 +858,8 @@ You can also add custom timestamp information to your scrap prefix using the dir
 For example a filename could look like "scrap-01-12-22_001_a.ora".</property>
                 <property name="xalign">0</property>
                 <property name="draw-indicator">True</property>
-                <property name="group">scrap_name_manual_radiobutton</property>
-                <signal name="toggled" handler="scrap_name_automatic_radiobutton_toggled_cb" swapped="no"/>
+                <property name="group">scrap_prefix_manual_radiobutton</property>
+                <signal name="toggled" handler="scrap_prefix_automatic_radiobutton_toggled_cb" swapped="no"/>
               </object>
               <packing>
                 <property name="expand">False</property>
