@@ -282,6 +282,21 @@ class PreferencesWindow (windowing.Dialog):
         self.app.preferences['input.global_pressure_mapping'] = points
         self.app.apply_settings()
 
+    def scrap_folder_button_pressed_cb(self, widget):
+        dialog = Gtk.FileChooserDialog(
+        title="Choose a folder...",
+        transient_for=self.app.drawWindow,
+        action=Gtk.FileChooserAction.SELECT_FOLDER,
+        )
+        dialog.add_button(Gtk.STOCK_CANCEL, Gtk.ResponseType.CANCEL)
+        dialog.add_button(Gtk.STOCK_OPEN, Gtk.ResponseType.OK)
+        response = dialog.run()
+        if response == Gtk.ResponseType.OK:
+            folder = dialog.get_filename()
+            self.app.preferences['saving.scrap_folder'] = folder
+        dialog.destroy()
+        self.app.apply_settings()
+
     def scrap_folder_entry_changed_cb(self, widget):
         scrap_folder = widget.get_text()
         if isinstance(scrap_folder, bytes):
