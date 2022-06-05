@@ -148,9 +148,13 @@ class PreferencesWindow (windowing.Dialog):
         disable_fb_bindings.set_active(
             p.get('keyboard.disable_fallbacks', False))
 
+        # folder for saving scraps
+        folder_entry = getobj("scrap_folder_entry")
+        folder_entry.set_text(p['saving.scrap_folder'])
+
         # prefix for saving scarps
-        entry = getobj("scrap_prefix_entry")
-        entry.set_text(p['saving.scrap_prefix'])
+        prefix_entry = getobj("scrap_prefix_entry")
+        prefix_entry.set_text(p['saving.scrap_prefix'])
 
         # Locale/language
         locale_combo = getobj("locale_combobox")
@@ -277,6 +281,12 @@ class PreferencesWindow (windowing.Dialog):
         points = self._pressure_curve.points[:]
         self.app.preferences['input.global_pressure_mapping'] = points
         self.app.apply_settings()
+
+    def scrap_folder_entry_changed_cb(self, widget):
+        scrap_folder = widget.get_text()
+        if isinstance(scrap_folder, bytes):
+            scrap_folder = scrap_folder.decode("utf-8")
+        self.app.preferences['saving.scrap_folder'] = scrap_folder
 
     def scrap_prefix_entry_changed_cb(self, widget):
         scrap_prefix = widget.get_text()

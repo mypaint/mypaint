@@ -806,12 +806,13 @@ This is MyPaint's old behaviour, and can be used as a stopgap for non-sRGB worki
             <property name="visible">True</property>
             <property name="can-focus">False</property>
             <child>
-              <object class="GtkEntry" id="scrap_directory_entry">
+              <object class="GtkEntry" id="scrap_folder_entry">
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
                 <property name="tooltip-markup" translatable="yes">Accepts &lt;i&gt;directives&lt;/i&gt; from Python's &lt;i&gt;time.strftime&lt;/i&gt;.</property>
                 <property name="hexpand">True</property>
                 <property name="invisible-char">•</property>
+                <signal name="changed" handler="scrap_folder_entry_changed_cb" swapped="no"/>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -820,7 +821,7 @@ This is MyPaint's old behaviour, and can be used as a stopgap for non-sRGB worki
               </packing>
             </child>
             <child>
-              <object class="GtkButton" id="scrap_directory_button">
+              <object class="GtkButton" id="scrap_folder_button">
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
                 <property name="receives-default">True</property>
