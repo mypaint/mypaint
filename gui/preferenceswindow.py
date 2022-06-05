@@ -154,8 +154,10 @@ class PreferencesWindow (windowing.Dialog):
 
         # timestamp option for scrap prefix
         scrap_timestamp_setting = p['saving.scrap_prefix_timestamp']
-        scrap_timestamp_false_radiobtn = getobj('scrap_prefix_manual_radiobutton')
-        scrap_timestamp_true_radiobtn = getobj('scrap_prefix_automatic_radiobutton')
+        scrap_timestamp_false_radiobtn = getobj(
+            'scrap_prefix_manual_radiobutton')
+        scrap_timestamp_true_radiobtn = getobj(
+            'scrap_prefix_automatic_radiobutton')
         if scrap_timestamp_setting is True:
             scrap_timestamp_true_radiobtn.set_active(True)
         else:
