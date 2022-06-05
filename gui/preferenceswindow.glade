@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Generated with glade 3.22.2 -->
+<!-- Generated with glade 3.38.2 -->
 <interface>
   <requires lib="gtk+" version="3.10"/>
   <requires lib="mypaint_widgets" version="3.0"/>
@@ -7,8 +7,8 @@
     <property name="lower">5</property>
     <property name="upper">300</property>
     <property name="value">10</property>
-    <property name="step_increment">1</property>
-    <property name="page_increment">10</property>
+    <property name="step-increment">1</property>
+    <property name="page-increment">10</property>
     <signal name="value-changed" handler="autosave_interval_adjustment_value_changed_cb" swapped="no"/>
   </object>
   <object class="GtkListStore" id="default_save_format_liststore">
@@ -87,38 +87,40 @@
   </object>
   <object class="GtkNotebook" id="prefs_notebook">
     <property name="visible">True</property>
-    <property name="can_focus">True</property>
-    <property name="border_width">12</property>
+    <property name="can-focus">True</property>
+    <property name="border-width">12</property>
     <property name="scrollable">True</property>
-    <property name="enable_popup">True</property>
+    <property name="enable-popup">True</property>
     <child>
       <object class="GtkFrame" id="frame7">
         <property name="visible">True</property>
-        <property name="can_focus">False</property>
-        <property name="border_width">12</property>
-        <property name="label_xalign">0</property>
-        <property name="shadow_type">none</property>
+        <property name="can-focus">False</property>
+        <property name="border-width">12</property>
+        <property name="label-xalign">0</property>
+        <property name="shadow-type">none</property>
         <child>
           <object class="GtkAlignment" id="alignment1">
             <property name="visible">True</property>
-            <property name="can_focus">False</property>
-            <property name="left_padding">12</property>
+            <property name="can-focus">False</property>
+            <property name="left-padding">12</property>
             <child>
+              <!-- n-columns=3 n-rows=3 -->
               <object class="GtkGrid" id="grid1">
                 <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="margin_top">12</property>
+                <property name="can-focus">False</property>
+                <property name="margin-top">12</property>
                 <property name="hexpand">False</property>
                 <property name="vexpand">False</property>
-                <property name="row_spacing">12</property>
-                <property name="column_spacing">12</property>
+                <property name="row-spacing">12</property>
+                <property name="column-spacing">12</property>
                 <child>
+                  <!-- n-columns=4 n-rows=4 -->
                   <object class="GtkGrid" id="grid6">
                     <property name="visible">True</property>
-                    <property name="can_focus">False</property>
+                    <property name="can-focus">False</property>
                     <property name="hexpand">True</property>
                     <property name="vexpand">True</property>
-                    <property name="row_spacing">6</property>
+                    <property name="row-spacing">6</property>
                     <child>
                       <object class="CurveWidget" id="mapping_curve">
                         <property name="width_request">300</property>
@@ -129,8 +131,8 @@
                         <property name="vexpand">True</property>
                       </object>
                       <packing>
-                        <property name="left_attach">0</property>
-                        <property name="top_attach">0</property>
+                        <property name="left-attach">0</property>
+                        <property name="top-attach">0</property>
                         <property name="width">3</property>
                         <property name="height">3</property>
                       </packing>
@@ -138,21 +140,21 @@
                     <child>
                       <object class="GtkLabel" id="label20">
                         <property name="visible">True</property>
-                        <property name="can_focus">False</property>
+                        <property name="can-focus">False</property>
                         <property name="valign">baseline</property>
                         <property name="hexpand">True</property>
                         <property name="vexpand">False</property>
                         <property name="label" translatable="yes" context="Prefs Dialog|Pen Input|Input Device Settings|Pressure Mapping|" comments="Graph x-axis label">Input Pressure</property>
                       </object>
                       <packing>
-                        <property name="left_attach">1</property>
-                        <property name="top_attach">3</property>
+                        <property name="left-attach">1</property>
+                        <property name="top-attach">3</property>
                       </packing>
                     </child>
                     <child>
                       <object class="GtkLabel" id="label21">
                         <property name="visible">True</property>
-                        <property name="can_focus">False</property>
+                        <property name="can-focus">False</property>
                         <property name="halign">baseline</property>
                         <property name="hexpand">False</property>
                         <property name="vexpand">True</property>
@@ -160,42 +162,42 @@
                         <property name="angle">90</property>
                       </object>
                       <packing>
-                        <property name="left_attach">3</property>
-                        <property name="top_attach">1</property>
+                        <property name="left-attach">3</property>
+                        <property name="top-attach">1</property>
                       </packing>
                     </child>
                     <child>
                       <object class="GtkLabel" id="label22">
                         <property name="visible">True</property>
-                        <property name="can_focus">False</property>
+                        <property name="can-focus">False</property>
                         <property name="valign">baseline</property>
                         <property name="hexpand">False</property>
                         <property name="vexpand">False</property>
                         <property name="label" translatable="yes" context="Prefs Dialog|Pen Input|Input Device Settings|Pressure Mapping|" comments="Graph label, range (0...1)">0.0</property>
                       </object>
                       <packing>
-                        <property name="left_attach">0</property>
-                        <property name="top_attach">3</property>
+                        <property name="left-attach">0</property>
+                        <property name="top-attach">3</property>
                       </packing>
                     </child>
                     <child>
                       <object class="GtkLabel" id="label23">
                         <property name="visible">True</property>
-                        <property name="can_focus">False</property>
+                        <property name="can-focus">False</property>
                         <property name="valign">baseline</property>
                         <property name="hexpand">False</property>
                         <property name="vexpand">False</property>
                         <property name="label" translatable="yes" context="Prefs Dialog|Pen Input|Input Device Settings|Pressure Mapping|" comments="Graph label, range (0...1)">1.0</property>
                       </object>
                       <packing>
-                        <property name="left_attach">2</property>
-                        <property name="top_attach">3</property>
+                        <property name="left-attach">2</property>
+                        <property name="top-attach">3</property>
                       </packing>
                     </child>
                     <child>
                       <object class="GtkLabel" id="label24">
                         <property name="visible">True</property>
-                        <property name="can_focus">False</property>
+                        <property name="can-focus">False</property>
                         <property name="halign">baseline</property>
                         <property name="hexpand">False</property>
                         <property name="vexpand">False</property>
@@ -203,14 +205,14 @@
                         <property name="angle">90</property>
                       </object>
                       <packing>
-                        <property name="left_attach">3</property>
-                        <property name="top_attach">2</property>
+                        <property name="left-attach">3</property>
+                        <property name="top-attach">2</property>
                       </packing>
                     </child>
                     <child>
                       <object class="GtkLabel" id="label25">
                         <property name="visible">True</property>
-                        <property name="can_focus">False</property>
+                        <property name="can-focus">False</property>
                         <property name="halign">baseline</property>
                         <property name="hexpand">False</property>
                         <property name="vexpand">False</property>
@@ -218,27 +220,51 @@
                         <property name="angle">90</property>
                       </object>
                       <packing>
-                        <property name="left_attach">3</property>
-                        <property name="top_attach">0</property>
+                        <property name="left-attach">3</property>
+                        <property name="top-attach">0</property>
                       </packing>
                     </child>
                     <child>
                       <object class="GtkArrow" id="placeholder_arrow1">
                         <property name="visible">True</property>
-                        <property name="can_focus">False</property>
-                        <property name="arrow_type">none</property>
-                        <property name="shadow_type">none</property>
+                        <property name="can-focus">False</property>
+                        <property name="arrow-type">none</property>
+                        <property name="shadow-type">none</property>
                       </object>
                       <packing>
-                        <property name="left_attach">3</property>
-                        <property name="top_attach">3</property>
+                        <property name="left-attach">3</property>
+                        <property name="top-attach">3</property>
                       </packing>
                     </child>
                   </object>
                   <packing>
-                    <property name="left_attach">0</property>
-                    <property name="top_attach">0</property>
+                    <property name="left-attach">0</property>
+                    <property name="top-attach">0</property>
                   </packing>
+                </child>
+                <child>
+                  <placeholder/>
+                </child>
+                <child>
+                  <placeholder/>
+                </child>
+                <child>
+                  <placeholder/>
+                </child>
+                <child>
+                  <placeholder/>
+                </child>
+                <child>
+                  <placeholder/>
+                </child>
+                <child>
+                  <placeholder/>
+                </child>
+                <child>
+                  <placeholder/>
+                </child>
+                <child>
+                  <placeholder/>
                 </child>
               </object>
             </child>
@@ -247,9 +273,9 @@
         <child type="label">
           <object class="GtkLabel" id="label19">
             <property name="visible">True</property>
-            <property name="can_focus">False</property>
+            <property name="can-focus">False</property>
             <property name="label" translatable="yes" context="Prefs Dialog|Pen Input|">&lt;b&gt;Global Pressure Mapping&lt;/b&gt;</property>
-            <property name="use_markup">True</property>
+            <property name="use-markup">True</property>
           </object>
         </child>
       </object>
@@ -257,29 +283,29 @@
     <child type="tab">
       <object class="GtkLabel" id="label15">
         <property name="visible">True</property>
-        <property name="can_focus">False</property>
+        <property name="can-focus">False</property>
         <property name="label" translatable="yes" context="Prefs Dialog|" comments="Tab label in preferences dialog">Pressure</property>
       </object>
       <packing>
-        <property name="tab_fill">False</property>
+        <property name="tab-fill">False</property>
       </packing>
     </child>
     <child>
       <object class="GtkFrame" id="frame3">
         <property name="visible">True</property>
-        <property name="can_focus">False</property>
-        <property name="border_width">12</property>
-        <property name="label_xalign">0</property>
-        <property name="shadow_type">none</property>
+        <property name="can-focus">False</property>
+        <property name="border-width">12</property>
+        <property name="label-xalign">0</property>
+        <property name="shadow-type">none</property>
         <child>
           <object class="GtkAlignment" id="alignment4">
             <property name="visible">True</property>
-            <property name="can_focus">False</property>
-            <property name="margin_top">12</property>
+            <property name="can-focus">False</property>
+            <property name="margin-top">12</property>
             <child>
               <object class="GtkBox" id="box4">
                 <property name="visible">True</property>
-                <property name="can_focus">False</property>
+                <property name="can-focus">False</property>
                 <property name="orientation">vertical</property>
                 <property name="spacing">12</property>
                 <child>
@@ -298,12 +324,12 @@
                 <child>
                   <object class="GtkLabel" id="label33">
                     <property name="visible">True</property>
-                    <property name="can_focus">False</property>
+                    <property name="can-focus">False</property>
                     <property name="label" translatable="yes" context="Prefs Dialog|Devices|">Here you can restrict pointing devices to specific tasks on the canvas, or have them ignored completely if they glitch your drawing.</property>
                     <property name="wrap">True</property>
-                    <property name="wrap_mode">word-char</property>
-                    <property name="width_chars">40</property>
-                    <property name="max_width_chars">60</property>
+                    <property name="wrap-mode">word-char</property>
+                    <property name="width-chars">40</property>
+                    <property name="max-width-chars">60</property>
                     <property name="xalign">0</property>
                     <property name="yalign">0</property>
                   </object>
@@ -320,9 +346,9 @@
         <child type="label">
           <object class="GtkLabel" id="label34">
             <property name="visible">True</property>
-            <property name="can_focus">False</property>
+            <property name="can-focus">False</property>
             <property name="label" translatable="yes" context="Prefs Dialog|Button|">&lt;b&gt;Device Usage&lt;/b&gt;</property>
-            <property name="use_markup">True</property>
+            <property name="use-markup">True</property>
           </object>
         </child>
       </object>
@@ -333,31 +359,31 @@
     <child type="tab">
       <object class="GtkLabel" id="label32">
         <property name="visible">True</property>
-        <property name="can_focus">False</property>
+        <property name="can-focus">False</property>
         <property name="label" translatable="yes">Devices</property>
       </object>
       <packing>
         <property name="position">1</property>
-        <property name="tab_fill">False</property>
+        <property name="tab-fill">False</property>
       </packing>
     </child>
     <child>
       <object class="GtkFrame" id="frame6">
         <property name="visible">True</property>
-        <property name="can_focus">False</property>
-        <property name="border_width">12</property>
-        <property name="label_xalign">0</property>
-        <property name="shadow_type">none</property>
+        <property name="can-focus">False</property>
+        <property name="border-width">12</property>
+        <property name="label-xalign">0</property>
+        <property name="shadow-type">none</property>
         <child>
           <object class="GtkAlignment" id="alignment6">
             <property name="visible">True</property>
-            <property name="can_focus">False</property>
-            <property name="margin_left">12</property>
-            <property name="margin_top">12</property>
+            <property name="can-focus">False</property>
+            <property name="margin-left">12</property>
+            <property name="margin-top">12</property>
             <child>
               <object class="GtkBox" id="box1">
                 <property name="visible">True</property>
-                <property name="can_focus">False</property>
+                <property name="can-focus">False</property>
                 <property name="orientation">vertical</property>
                 <property name="spacing">12</property>
                 <child>
@@ -376,11 +402,11 @@
                 <child>
                   <object class="GtkLabel" id="label1">
                     <property name="visible">True</property>
-                    <property name="can_focus">False</property>
+                    <property name="can-focus">False</property>
                     <property name="label" translatable="yes" context="Prefs Dialog|Button|Pointer Button Mappings|">• The space bar can be used like Button2.
 • Some tablet pads' buttons cannot be held down when pressed.</property>
                     <property name="wrap">True</property>
-                    <property name="wrap_mode">word-char</property>
+                    <property name="wrap-mode">word-char</property>
                     <property name="xalign">0</property>
                     <property name="yalign">0</property>
                   </object>
@@ -397,9 +423,9 @@
         <child type="label">
           <object class="GtkLabel" id="label4">
             <property name="visible">True</property>
-            <property name="can_focus">False</property>
+            <property name="can-focus">False</property>
             <property name="label" translatable="yes" context="Prefs Dialog|Button|">&lt;b&gt;Pointer Button Mappings&lt;/b&gt;</property>
-            <property name="use_markup">True</property>
+            <property name="use-markup">True</property>
           </object>
         </child>
       </object>
@@ -410,30 +436,30 @@
     <child type="tab">
       <object class="GtkLabel" id="label16">
         <property name="visible">True</property>
-        <property name="can_focus">False</property>
+        <property name="can-focus">False</property>
         <property name="label" translatable="yes" context="Prefs Dialog|" comments="Tab label in preferences dialog">Buttons</property>
       </object>
       <packing>
         <property name="position">2</property>
-        <property name="tab_fill">False</property>
+        <property name="tab-fill">False</property>
       </packing>
     </child>
     <child>
       <object class="GtkFrame" id="frame2">
         <property name="visible">True</property>
-        <property name="can_focus">False</property>
-        <property name="border_width">12</property>
-        <property name="label_xalign">0</property>
-        <property name="shadow_type">none</property>
+        <property name="can-focus">False</property>
+        <property name="border-width">12</property>
+        <property name="label-xalign">0</property>
+        <property name="shadow-type">none</property>
         <child>
           <object class="GtkAlignment" id="alignment3">
             <property name="visible">True</property>
-            <property name="can_focus">False</property>
-            <property name="margin_top">12</property>
+            <property name="can-focus">False</property>
+            <property name="margin-top">12</property>
             <child>
               <object class="GtkBox" id="box8">
                 <property name="visible">True</property>
-                <property name="can_focus">False</property>
+                <property name="can-focus">False</property>
                 <property name="orientation">vertical</property>
                 <child>
                   <object class="AccelMapEditor" id="accel_map_editor">
@@ -452,11 +478,11 @@
                   <object class="GtkCheckButton" id="disable_fallback_bindings_checkbox">
                     <property name="label" translatable="yes" comments="Label for a checkbox in the keyboard mappings preferences.&#10;A fallback binding is a static built-in key binding that is used&#10;unless its key is bound to something else.">Disable fallback key bindings</property>
                     <property name="visible">True</property>
-                    <property name="can_focus">True</property>
-                    <property name="receives_default">False</property>
-                    <property name="tooltip_text" translatable="yes" comments="Tooltip for checkbox in the keyboard mappings preferences.">The fallback key bindings are static built-in bindings that are only used if their key combinations are not bound to anything else.</property>
+                    <property name="can-focus">True</property>
+                    <property name="receives-default">False</property>
+                    <property name="tooltip-text" translatable="yes" comments="Tooltip for checkbox in the keyboard mappings preferences.">The fallback key bindings are static built-in bindings that are only used if their key combinations are not bound to anything else.</property>
                     <property name="xalign">0</property>
-                    <property name="draw_indicator">True</property>
+                    <property name="draw-indicator">True</property>
                     <signal name="toggled" handler="disable_fallback_checkbutton_toggled_cb" swapped="no"/>
                   </object>
                   <packing>
@@ -472,9 +498,9 @@
         <child type="label">
           <object class="GtkLabel" id="label31">
             <property name="visible">True</property>
-            <property name="can_focus">False</property>
+            <property name="can-focus">False</property>
             <property name="label" translatable="yes" context="Prefs Dialog|Button|">&lt;b&gt;Keyboard Mappings&lt;/b&gt;</property>
-            <property name="use_markup">True</property>
+            <property name="use-markup">True</property>
           </object>
         </child>
       </object>
@@ -485,73 +511,74 @@
     <child type="tab">
       <object class="GtkLabel" id="label29">
         <property name="visible">True</property>
-        <property name="can_focus">False</property>
+        <property name="can-focus">False</property>
         <property name="label" translatable="yes">Keys</property>
       </object>
       <packing>
         <property name="position">3</property>
-        <property name="tab_fill">False</property>
+        <property name="tab-fill">False</property>
       </packing>
     </child>
     <child>
+      <!-- n-columns=3 n-rows=9 -->
       <object class="GtkGrid" id="grid4">
         <property name="visible">True</property>
-        <property name="can_focus">False</property>
-        <property name="border_width">12</property>
-        <property name="row_spacing">12</property>
+        <property name="can-focus">False</property>
+        <property name="border-width">12</property>
+        <property name="row-spacing">12</property>
         <child>
           <object class="GtkLabel" id="label5">
             <property name="visible">True</property>
-            <property name="can_focus">False</property>
-            <property name="margin_left">12</property>
-            <property name="margin_right">12</property>
+            <property name="can-focus">False</property>
+            <property name="margin-left">12</property>
+            <property name="margin-right">12</property>
             <property name="hexpand">False</property>
             <property name="label" translatable="yes" context="Prefs Dialog|Load &amp; Save|Saving|">Default file format:</property>
             <property name="xalign">0</property>
           </object>
           <packing>
-            <property name="left_attach">0</property>
-            <property name="top_attach">1</property>
+            <property name="left-attach">0</property>
+            <property name="top-attach">1</property>
           </packing>
         </child>
         <child>
           <object class="GtkLabel" id="label6">
             <property name="visible">True</property>
-            <property name="can_focus">False</property>
-            <property name="margin_left">12</property>
-            <property name="margin_right">12</property>
+            <property name="can-focus">False</property>
+            <property name="margin-left">12</property>
+            <property name="margin-right">12</property>
             <property name="hexpand">False</property>
             <property name="label" translatable="yes" context="Prefs Dialog|Load &amp; Save|Saving|">Prefix when saving scraps:</property>
             <property name="xalign">0</property>
           </object>
           <packing>
-            <property name="left_attach">0</property>
-            <property name="top_attach">2</property>
+            <property name="left-attach">0</property>
+            <property name="top-attach">3</property>
           </packing>
         </child>
         <child>
           <object class="GtkEntry" id="scrap_prefix_entry">
             <property name="visible">True</property>
-            <property name="can_focus">True</property>
+            <property name="can-focus">True</property>
             <property name="hexpand">True</property>
-            <property name="invisible_char">•</property>
+            <property name="invisible-char">•</property>
             <signal name="changed" handler="scrap_prefix_entry_changed_cb" swapped="no"/>
           </object>
           <packing>
-            <property name="left_attach">1</property>
-            <property name="top_attach">2</property>
+            <property name="left-attach">1</property>
+            <property name="top-attach">3</property>
             <property name="width">2</property>
           </packing>
         </child>
         <child>
           <object class="GtkComboBox" id="default_save_format_combobox">
             <property name="visible">True</property>
-            <property name="can_focus">False</property>
+            <property name="can-focus">False</property>
             <property name="halign">start</property>
             <property name="hexpand">False</property>
             <property name="model">default_save_format_liststore</property>
             <property name="active">0</property>
-            <property name="id_column">0</property>
+            <property name="id-column">0</property>
             <signal name="changed" handler="default_save_format_combobox_changed_cb" swapped="no"/>
             <child>
               <object class="GtkCellRendererText" id="cellrenderertext2"/>
@@ -561,63 +588,63 @@
             </child>
           </object>
           <packing>
-            <property name="left_attach">1</property>
-            <property name="top_attach">1</property>
+            <property name="left-attach">1</property>
+            <property name="top-attach">1</property>
             <property name="width">2</property>
           </packing>
         </child>
         <child>
           <object class="GtkLabel" id="label7">
             <property name="visible">True</property>
-            <property name="can_focus">False</property>
+            <property name="can-focus">False</property>
             <property name="hexpand">True</property>
             <property name="vexpand">False</property>
             <property name="label" translatable="yes" context="Prefs Dialog|Load &amp; Save|">&lt;b&gt;Saving&lt;/b&gt;</property>
-            <property name="use_markup">True</property>
+            <property name="use-markup">True</property>
             <property name="xalign">0</property>
           </object>
           <packing>
-            <property name="left_attach">0</property>
-            <property name="top_attach">0</property>
+            <property name="left-attach">0</property>
+            <property name="top-attach">0</property>
             <property name="width">3</property>
           </packing>
         </child>
         <child>
           <object class="GtkLabel" id="label2">
             <property name="visible">True</property>
-            <property name="can_focus">False</property>
-            <property name="margin_top">18</property>
+            <property name="can-focus">False</property>
+            <property name="margin-top">18</property>
             <property name="hexpand">True</property>
             <property name="vexpand">False</property>
             <property name="label" translatable="yes" context="Prefs Dialog|Load &amp; Save|">&lt;b&gt;Color Management&lt;/b&gt;</property>
-            <property name="use_markup">True</property>
+            <property name="use-markup">True</property>
             <property name="xalign">0</property>
           </object>
           <packing>
-            <property name="left_attach">0</property>
-            <property name="top_attach">6</property>
+            <property name="left-attach">0</property>
+            <property name="top-attach">7</property>
             <property name="width">3</property>
           </packing>
         </child>
         <child>
           <object class="GtkLabel" id="label3">
             <property name="visible">True</property>
-            <property name="can_focus">False</property>
-            <property name="margin_left">12</property>
+            <property name="can-focus">False</property>
+            <property name="margin-left">12</property>
             <property name="hexpand">False</property>
             <property name="label" translatable="yes" context="Prefs Dialog|Load &amp; Save|Color Management|">Color space conversions:</property>
             <property name="xalign">0</property>
             <property name="yalign">0</property>
           </object>
           <packing>
-            <property name="left_attach">0</property>
-            <property name="top_attach">7</property>
+            <property name="left-attach">0</property>
+            <property name="top-attach">8</property>
           </packing>
         </child>
         <child>
           <object class="GtkBox" id="box5">
             <property name="visible">True</property>
-            <property name="can_focus">False</property>
+            <property name="can-focus">False</property>
             <property name="orientation">vertical</property>
             <property name="spacing">6</property>
             <property name="homogeneous">True</property>
@@ -625,16 +652,16 @@
               <object class="GtkRadioButton" id="display_colorspace_srgb_radiobutton">
                 <property name="label" translatable="yes" context="Prefs Dialog|Load &amp; Save|Color Management|">Convert to sRGB when loading; mark as sRGB when saving</property>
                 <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <property name="receives_default">False</property>
-                <property name="tooltip_markup" translatable="yes" context="Prefs Dialog|Load &amp; Save|Color Management|">Images containing &lt;i&gt;full&lt;/i&gt; colorspace information will be converted to sRGB when they are loaded into MyPaint. When MyPaint saves an image, hints will be added to it so that other programs can render it properly.
+                <property name="can-focus">True</property>
+                <property name="receives-default">False</property>
+                <property name="tooltip-markup" translatable="yes" context="Prefs Dialog|Load &amp; Save|Color Management|">Images containing &lt;i&gt;full&lt;/i&gt; colorspace information will be converted to sRGB when they are loaded into MyPaint. When MyPaint saves an image, hints will be added to it so that other programs can render it properly.
 
 This assumes that the display is calibrated to something close to sRGB, the standard colour space for the web and a pessimistic approximation of most PC monitors. If you know your display is radically different from this, use the "no automatic conversions or tagging" setting instead.</property>
                 <property name="valign">start</property>
                 <property name="xalign">0</property>
                 <property name="yalign">0.49000000953674316</property>
                 <property name="active">True</property>
-                <property name="draw_indicator">True</property>
+                <property name="draw-indicator">True</property>
                 <signal name="toggled" handler="display_colorspace_srgb_radiobutton_toggled_cb" swapped="no"/>
               </object>
               <packing>
@@ -647,13 +674,13 @@ This assumes that the display is calibrated to something close to sRGB, the stan
               <object class="GtkRadioButton" id="display_colorspace_unknown_radiobutton">
                 <property name="label" translatable="yes" context="Prefs Dialog|Load &amp; Save|Color Management|">No automatic conversions or tagging</property>
                 <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <property name="receives_default">False</property>
-                <property name="tooltip_markup" translatable="yes" context="Prefs Dialog|Load &amp; Save|Color Management|">No color conversions are performed when loading, and files are saved without color management information.
+                <property name="can-focus">True</property>
+                <property name="receives-default">False</property>
+                <property name="tooltip-markup" translatable="yes" context="Prefs Dialog|Load &amp; Save|Color Management|">No color conversions are performed when loading, and files are saved without color management information.
 
 This is MyPaint's old behaviour, and can be used as a stopgap for non-sRGB working.</property>
                 <property name="xalign">0</property>
-                <property name="draw_indicator">True</property>
+                <property name="draw-indicator">True</property>
                 <property name="group">display_colorspace_srgb_radiobutton</property>
                 <signal name="toggled" handler="display_colorspace_unknown_radiobutton_toggled_cb" swapped="no"/>
               </object>
@@ -665,85 +692,85 @@ This is MyPaint's old behaviour, and can be used as a stopgap for non-sRGB worki
             </child>
           </object>
           <packing>
-            <property name="left_attach">1</property>
-            <property name="top_attach">7</property>
+            <property name="left-attach">1</property>
+            <property name="top-attach">8</property>
             <property name="width">2</property>
           </packing>
         </child>
         <child>
           <object class="GtkLabel" id="label35">
             <property name="visible">True</property>
-            <property name="can_focus">False</property>
-            <property name="margin_top">18</property>
+            <property name="can-focus">False</property>
+            <property name="margin-top">18</property>
             <property name="hexpand">True</property>
             <property name="vexpand">False</property>
             <property name="label" translatable="yes" context="Prefs Dialog|Load &amp; Save|">&lt;b&gt;Automated Backups&lt;/b&gt;</property>
-            <property name="use_markup">True</property>
+            <property name="use-markup">True</property>
             <property name="xalign">0</property>
           </object>
           <packing>
-            <property name="left_attach">0</property>
-            <property name="top_attach">3</property>
+            <property name="left-attach">0</property>
+            <property name="top-attach">4</property>
             <property name="width">3</property>
           </packing>
         </child>
         <child>
           <object class="GtkLabel" id="label36">
             <property name="visible">True</property>
-            <property name="can_focus">False</property>
+            <property name="can-focus">False</property>
             <property name="valign">baseline</property>
-            <property name="margin_left">12</property>
-            <property name="margin_right">12</property>
+            <property name="margin-left">12</property>
+            <property name="margin-right">12</property>
             <property name="hexpand">False</property>
             <property name="label" translatable="yes" context="Prefs Dialog|Load &amp; Save|Automated Backups|switch label">Back up unsaved work:</property>
             <property name="xalign">0</property>
             <property name="yalign">0</property>
           </object>
           <packing>
-            <property name="left_attach">0</property>
-            <property name="top_attach">4</property>
+            <property name="left-attach">0</property>
+            <property name="top-attach">5</property>
           </packing>
         </child>
         <child>
           <object class="GtkSpinButton" id="autosave_interval_spinbutton">
             <property name="visible">True</property>
-            <property name="can_focus">True</property>
+            <property name="can-focus">True</property>
             <property name="valign">baseline</property>
             <property name="hexpand">False</property>
             <property name="vexpand">False</property>
-            <property name="max_length">4</property>
-            <property name="width_chars">4</property>
-            <property name="input_purpose">number</property>
+            <property name="max-length">4</property>
+            <property name="width-chars">4</property>
+            <property name="input-purpose">number</property>
             <property name="adjustment">autosave_interval_adjustment</property>
             <property name="numeric">True</property>
           </object>
           <packing>
-            <property name="left_attach">1</property>
-            <property name="top_attach">5</property>
+            <property name="left-attach">1</property>
+            <property name="top-attach">6</property>
           </packing>
         </child>
         <child>
           <object class="GtkLabel" id="label37">
             <property name="visible">True</property>
-            <property name="can_focus">False</property>
+            <property name="can-focus">False</property>
             <property name="valign">baseline</property>
-            <property name="margin_left">6</property>
-            <property name="margin_right">6</property>
+            <property name="margin-left">6</property>
+            <property name="margin-right">6</property>
             <property name="hexpand">True</property>
             <property name="label" translatable="yes" context="Prefs Dialog|Load &amp; Save|Automated Backups|interval spinbox units suffix" comments="In seconds. Lowest value is 5, highest is 300 (5 minutes). Only matters when enabled.">seconds of inactivity</property>
             <property name="xalign">0</property>
             <property name="yalign">0</property>
           </object>
           <packing>
-            <property name="left_attach">2</property>
-            <property name="top_attach">5</property>
+            <property name="left-attach">2</property>
+            <property name="top-attach">6</property>
           </packing>
         </child>
         <child>
           <object class="GtkSwitch" id="autosave_backups_switch">
             <property name="visible">True</property>
-            <property name="can_focus">True</property>
-            <property name="tooltip_text" translatable="yes" context="Prefs Dialog|Load &amp; Save|Automated Backups|switch tooltip">Backs up work incrementally in the background to MyPaint's disk cache. If the program crashes, you'll have a chance to restore what you were working on.</property>
+            <property name="can-focus">True</property>
+            <property name="tooltip-text" translatable="yes" context="Prefs Dialog|Load &amp; Save|Automated Backups|switch tooltip">Backs up work incrementally in the background to MyPaint's disk cache. If the program crashes, you'll have a chance to restore what you were working on.</property>
             <property name="halign">start</property>
             <property name="valign">baseline</property>
             <property name="hexpand">False</property>
@@ -752,26 +779,86 @@ This is MyPaint's old behaviour, and can be used as a stopgap for non-sRGB worki
             <signal name="notify::active" handler="autosave_backups_switch_active_notify_cb" swapped="no"/>
           </object>
           <packing>
-            <property name="left_attach">1</property>
-            <property name="top_attach">4</property>
+            <property name="left-attach">1</property>
+            <property name="top-attach">5</property>
             <property name="width">2</property>
           </packing>
         </child>
         <child>
           <object class="GtkLabel" id="label38">
             <property name="visible">True</property>
-            <property name="can_focus">False</property>
+            <property name="can-focus">False</property>
             <property name="valign">baseline</property>
-            <property name="margin_left">12</property>
-            <property name="margin_right">12</property>
+            <property name="margin-left">12</property>
+            <property name="margin-right">12</property>
             <property name="hexpand">False</property>
             <property name="label" translatable="yes" context="Prefs Dialog|Load &amp; Save|Automated Backups|interval label">Time between backups:</property>
             <property name="xalign">0</property>
             <property name="yalign">0</property>
           </object>
           <packing>
-            <property name="left_attach">0</property>
-            <property name="top_attach">5</property>
+            <property name="left-attach">0</property>
+            <property name="top-attach">6</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkBox">
+            <property name="visible">True</property>
+            <property name="can-focus">False</property>
+            <child>
+              <object class="GtkEntry" id="scrap_directory_entry">
+                <property name="visible">True</property>
+                <property name="can-focus">True</property>
+                <property name="tooltip-markup" translatable="yes">Accepts &lt;i&gt;directives&lt;/i&gt; from Python's &lt;i&gt;time.strftime&lt;/i&gt;.</property>
+                <property name="hexpand">True</property>
+                <property name="invisible-char">•</property>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">0</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkButton" id="scrap_directory_button">
+                <property name="visible">True</property>
+                <property name="can-focus">True</property>
+                <property name="receives-default">True</property>
+                <property name="margin-left">12</property>
+                <child>
+                  <object class="GtkImage">
+                    <property name="visible">True</property>
+                    <property name="can-focus">False</property>
+                    <property name="stock">gtk-open</property>
+                  </object>
+                </child>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">1</property>
+              </packing>
+            </child>
+          </object>
+          <packing>
+            <property name="left-attach">1</property>
+            <property name="top-attach">2</property>
+            <property name="width">2</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkLabel">
+            <property name="visible">True</property>
+            <property name="can-focus">False</property>
+            <property name="margin-left">12</property>
+            <property name="margin-right">12</property>
+            <property name="hexpand">False</property>
+            <property name="label" translatable="yes">Scrap directory:</property>
+            <property name="xalign">0</property>
+          </object>
+          <packing>
+            <property name="left-attach">0</property>
+            <property name="top-attach">2</property>
           </packing>
         </child>
       </object>
@@ -782,62 +869,63 @@ This is MyPaint's old behaviour, and can be used as a stopgap for non-sRGB worki
     <child type="tab">
       <object class="GtkLabel" id="label17">
         <property name="visible">True</property>
-        <property name="can_focus">False</property>
+        <property name="can-focus">False</property>
         <property name="label" translatable="yes" context="Prefs Dialog|" comments="Tab label in preferences dialog">Load &amp; Save</property>
-        <property name="max_width_chars">60</property>
+        <property name="max-width-chars">60</property>
       </object>
       <packing>
         <property name="position">4</property>
-        <property name="tab_fill">False</property>
+        <property name="tab-fill">False</property>
       </packing>
     </child>
     <child>
+      <!-- n-columns=3 n-rows=11 -->
       <object class="GtkGrid" id="grid3">
         <property name="visible">True</property>
-        <property name="can_focus">False</property>
-        <property name="border_width">12</property>
-        <property name="row_spacing">12</property>
-        <property name="column_spacing">12</property>
+        <property name="can-focus">False</property>
+        <property name="border-width">12</property>
+        <property name="row-spacing">12</property>
+        <property name="column-spacing">12</property>
         <child>
           <object class="GtkLabel" id="label8">
             <property name="visible">True</property>
-            <property name="can_focus">False</property>
+            <property name="can-focus">False</property>
             <property name="hexpand">True</property>
             <property name="vexpand">False</property>
             <property name="label" translatable="yes" context="Prefs Dialog|View|">&lt;b&gt;Zoom and Rendering&lt;/b&gt;</property>
-            <property name="use_markup">True</property>
+            <property name="use-markup">True</property>
             <property name="xalign">0</property>
           </object>
           <packing>
-            <property name="left_attach">0</property>
-            <property name="top_attach">0</property>
+            <property name="left-attach">0</property>
+            <property name="top-attach">0</property>
             <property name="width">3</property>
           </packing>
         </child>
         <child>
           <object class="GtkLabel" id="label10">
             <property name="visible">True</property>
-            <property name="can_focus">False</property>
-            <property name="margin_left">12</property>
+            <property name="can-focus">False</property>
+            <property name="margin-left">12</property>
             <property name="hexpand">False</property>
             <property name="vexpand">False</property>
             <property name="label" translatable="yes">Default zoom level:</property>
             <property name="xalign">0</property>
           </object>
           <packing>
-            <property name="left_attach">0</property>
-            <property name="top_attach">1</property>
+            <property name="left-attach">0</property>
+            <property name="top-attach">1</property>
           </packing>
         </child>
         <child>
           <object class="GtkComboBox" id="default_zoom_combobox">
             <property name="visible">True</property>
-            <property name="can_focus">False</property>
+            <property name="can-focus">False</property>
             <property name="hexpand">True</property>
             <property name="vexpand">False</property>
             <property name="model">default_zoom_level_liststore</property>
             <property name="active">2</property>
-            <property name="id_column">0</property>
+            <property name="id-column">0</property>
             <signal name="changed" handler="default_zoom_combobox_changed_cb" swapped="no"/>
             <child>
               <object class="GtkCellRendererText" id="cellrenderertext3"/>
@@ -847,33 +935,33 @@ This is MyPaint's old behaviour, and can be used as a stopgap for non-sRGB worki
             </child>
           </object>
           <packing>
-            <property name="left_attach">1</property>
-            <property name="top_attach">1</property>
+            <property name="left-attach">1</property>
+            <property name="top-attach">1</property>
             <property name="width">2</property>
           </packing>
         </child>
         <child>
           <object class="GtkLabel" id="label26">
             <property name="visible">True</property>
-            <property name="can_focus">False</property>
-            <property name="margin_top">18</property>
+            <property name="can-focus">False</property>
+            <property name="margin-top">18</property>
             <property name="hexpand">True</property>
             <property name="vexpand">False</property>
             <property name="label" translatable="yes" context="Prefs Dialog|View|">&lt;b&gt;Interface&lt;/b&gt;</property>
-            <property name="use_markup">True</property>
+            <property name="use-markup">True</property>
             <property name="xalign">0</property>
           </object>
           <packing>
-            <property name="left_attach">0</property>
-            <property name="top_attach">3</property>
+            <property name="left-attach">0</property>
+            <property name="top-attach">3</property>
             <property name="width">3</property>
           </packing>
         </child>
         <child>
           <object class="GtkLabel" id="label9">
             <property name="visible">True</property>
-            <property name="can_focus">False</property>
-            <property name="margin_left">12</property>
+            <property name="can-focus">False</property>
+            <property name="margin-left">12</property>
             <property name="hexpand">False</property>
             <property name="vexpand">False</property>
             <property name="label" translatable="yes" context="Prefs Dialog|View|Interface|">Toolbar icon size:</property>
@@ -881,15 +969,15 @@ This is MyPaint's old behaviour, and can be used as a stopgap for non-sRGB worki
             <property name="yalign">0</property>
           </object>
           <packing>
-            <property name="left_attach">0</property>
-            <property name="top_attach">5</property>
+            <property name="left-attach">0</property>
+            <property name="top-attach">5</property>
           </packing>
         </child>
         <child>
           <object class="GtkLabel" id="label27">
             <property name="visible">True</property>
-            <property name="can_focus">False</property>
-            <property name="margin_left">12</property>
+            <property name="can-focus">False</property>
+            <property name="margin-left">12</property>
             <property name="hexpand">False</property>
             <property name="vexpand">False</property>
             <property name="label" translatable="yes" context="Prefs Dialog|View|Interface|">Freehand cursor type:</property>
@@ -897,47 +985,47 @@ This is MyPaint's old behaviour, and can be used as a stopgap for non-sRGB worki
             <property name="yalign">0</property>
           </object>
           <packing>
-            <property name="left_attach">0</property>
-            <property name="top_attach">6</property>
+            <property name="left-attach">0</property>
+            <property name="top-attach">6</property>
           </packing>
         </child>
         <child>
           <object class="GtkLabel" id="label11">
             <property name="visible">True</property>
-            <property name="can_focus">False</property>
-            <property name="margin_left">12</property>
+            <property name="can-focus">False</property>
+            <property name="margin-left">12</property>
             <property name="hexpand">False</property>
             <property name="vexpand">False</property>
             <property name="label" translatable="yes" context="Prefs Dialog|View|Interface|">Dark theme variant:</property>
             <property name="xalign">0</property>
           </object>
           <packing>
-            <property name="left_attach">0</property>
-            <property name="top_attach">7</property>
+            <property name="left-attach">0</property>
+            <property name="top-attach">7</property>
           </packing>
         </child>
         <child>
           <object class="GtkCheckButton" id="dark_theme_checkbutton">
             <property name="label" translatable="yes" context="Prefs Dialog|View|Interface|Dark theme variant|">If available in GTK3 theme (needs restart)</property>
             <property name="visible">True</property>
-            <property name="can_focus">True</property>
-            <property name="receives_default">False</property>
-            <property name="tooltip_text" translatable="yes" context="Prefs Dialog|View|Interface|Dark theme variant|checkbox tooltip">Use a light-on-dark theme variant, when it's supported by the GTK theme. This is generally sensible for image editors and media viewers.</property>
+            <property name="can-focus">True</property>
+            <property name="receives-default">False</property>
+            <property name="tooltip-text" translatable="yes" context="Prefs Dialog|View|Interface|Dark theme variant|checkbox tooltip">Use a light-on-dark theme variant, when it's supported by the GTK theme. This is generally sensible for image editors and media viewers.</property>
             <property name="hexpand">True</property>
             <property name="xalign">0</property>
-            <property name="draw_indicator">True</property>
+            <property name="draw-indicator">True</property>
             <signal name="toggled" handler="dark_theme_toggled_cb" swapped="no"/>
           </object>
           <packing>
-            <property name="left_attach">1</property>
-            <property name="top_attach">7</property>
+            <property name="left-attach">1</property>
+            <property name="top-attach">7</property>
             <property name="width">2</property>
           </packing>
         </child>
         <child>
           <object class="GtkLabel" id="label28">
             <property name="visible">True</property>
-            <property name="can_focus">False</property>
+            <property name="can-focus">False</property>
             <property name="valign">end</property>
             <property name="hexpand">True</property>
             <property name="vexpand">True</property>
@@ -951,15 +1039,15 @@ This is MyPaint's old behaviour, and can be used as a stopgap for non-sRGB worki
             </attributes>
           </object>
           <packing>
-            <property name="left_attach">0</property>
-            <property name="top_attach">10</property>
+            <property name="left-attach">0</property>
+            <property name="top-attach">10</property>
             <property name="width">3</property>
           </packing>
         </child>
         <child>
           <object class="GtkBox" id="box3">
             <property name="visible">True</property>
-            <property name="can_focus">False</property>
+            <property name="can-focus">False</property>
             <property name="hexpand">True</property>
             <property name="vexpand">False</property>
             <property name="orientation">vertical</property>
@@ -968,11 +1056,11 @@ This is MyPaint's old behaviour, and can be used as a stopgap for non-sRGB worki
               <object class="GtkRadioButton" id="toolbar_icon_size_large_radio">
                 <property name="label" translatable="yes" context="Prefs Dialog|View|Interface|Icon size|">Large (requires recent GTK3)</property>
                 <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <property name="receives_default">False</property>
+                <property name="can-focus">True</property>
+                <property name="receives-default">False</property>
                 <property name="xalign">0</property>
                 <property name="active">True</property>
-                <property name="draw_indicator">True</property>
+                <property name="draw-indicator">True</property>
                 <signal name="toggled" handler="toolbar_icon_size_large_toggled_cb" swapped="no"/>
               </object>
               <packing>
@@ -985,11 +1073,11 @@ This is MyPaint's old behaviour, and can be used as a stopgap for non-sRGB worki
               <object class="GtkRadioButton" id="toolbar_icon_size_small_radio">
                 <property name="label" translatable="yes" context="Prefs Dialog|View|Interface|Icon size|">Small</property>
                 <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <property name="receives_default">False</property>
+                <property name="can-focus">True</property>
+                <property name="receives-default">False</property>
                 <property name="xalign">0</property>
                 <property name="active">True</property>
-                <property name="draw_indicator">True</property>
+                <property name="draw-indicator">True</property>
                 <property name="group">toolbar_icon_size_large_radio</property>
                 <signal name="toggled" handler="toolbar_icon_size_small_toggled_cb" swapped="no"/>
               </object>
@@ -1001,8 +1089,8 @@ This is MyPaint's old behaviour, and can be used as a stopgap for non-sRGB worki
             </child>
           </object>
           <packing>
-            <property name="left_attach">1</property>
-            <property name="top_attach">5</property>
+            <property name="left-attach">1</property>
+            <property name="top-attach">5</property>
             <property name="width">2</property>
           </packing>
         </child>
@@ -1010,59 +1098,59 @@ This is MyPaint's old behaviour, and can be used as a stopgap for non-sRGB worki
           <object class="GtkCheckButton" id="real_alpha_checks_checkbutton">
             <property name="label" translatable="yes" context="Prefs Dialog|View|Zoom|">Use a real checkerboard pattern</property>
             <property name="visible">True</property>
-            <property name="can_focus">True</property>
-            <property name="receives_default">False</property>
-            <property name="tooltip_markup" translatable="yes" context="Prefs Dialog|View|Zoom|">Draw a real checkerboard pattern to show transparency.
+            <property name="can-focus">True</property>
+            <property name="receives-default">False</property>
+            <property name="tooltip-markup" translatable="yes" context="Prefs Dialog|View|Zoom|">Draw a real checkerboard pattern to show transparency.
 This slows down the display, but can be less confusing.</property>
             <property name="hexpand">True</property>
             <property name="vexpand">False</property>
             <property name="xalign">0</property>
-            <property name="draw_indicator">True</property>
+            <property name="draw-indicator">True</property>
             <signal name="toggled" handler="real_alpha_checks_checkbutton_toggled_cb" swapped="no"/>
           </object>
           <packing>
-            <property name="left_attach">1</property>
-            <property name="top_attach">2</property>
+            <property name="left-attach">1</property>
+            <property name="top-attach">2</property>
             <property name="width">2</property>
           </packing>
         </child>
         <child>
           <object class="GtkLabel" id="label30">
             <property name="visible">True</property>
-            <property name="can_focus">False</property>
-            <property name="margin_left">12</property>
+            <property name="can-focus">False</property>
+            <property name="margin-left">12</property>
             <property name="hexpand">False</property>
             <property name="vexpand">False</property>
             <property name="label" translatable="yes">When showing transparency:</property>
             <property name="xalign">0</property>
           </object>
           <packing>
-            <property name="left_attach">0</property>
-            <property name="top_attach">2</property>
+            <property name="left-attach">0</property>
+            <property name="top-attach">2</property>
           </packing>
         </child>
         <child>
           <object class="GtkLabel" id="label39">
             <property name="visible">True</property>
-            <property name="can_focus">False</property>
-            <property name="margin_left">12</property>
+            <property name="can-focus">False</property>
+            <property name="margin-left">12</property>
             <property name="hexpand">False</property>
             <property name="vexpand">False</property>
             <property name="label" translatable="yes" context="Prefs Dialog|View|Interface|">Handle smooth scrolling events:</property>
             <property name="xalign">0</property>
           </object>
           <packing>
-            <property name="left_attach">0</property>
-            <property name="top_attach">8</property>
+            <property name="left-attach">0</property>
+            <property name="top-attach">8</property>
           </packing>
         </child>
         <child>
           <object class="GtkCheckButton" id="smooth_scrolling_checkbutton">
             <property name="label" translatable="yes" context="Prefs Dialog|View|Interface|Handle smooth scrolling events|checkbox label">When devices send them (needs restart)</property>
             <property name="visible">True</property>
-            <property name="can_focus">True</property>
-            <property name="receives_default">False</property>
-            <property name="tooltip_text" translatable="yes" context="Prefs Dialog|View|Interface|Handle smooth scrolling events|checkbox tooltip">Smooth scrolling support makes scroll gestures and scrollwheel events from some devices smooth rather than in steps. It's good for touchpads, but can be irritating if you're used to mouse scrolling.
+            <property name="can-focus">True</property>
+            <property name="receives-default">False</property>
+            <property name="tooltip-text" translatable="yes" context="Prefs Dialog|View|Interface|Handle smooth scrolling events|checkbox tooltip">Smooth scrolling support makes scroll gestures and scrollwheel events from some devices smooth rather than in steps. It's good for touchpads, but can be irritating if you're used to mouse scrolling.
 
 If smooth scrolling is supported, stepwise scrolling can be turned back on briefly by holding the shift key down while scrolling.
 
@@ -1070,29 +1158,29 @@ Scrolling to pan the view needs this setting to be turned on, and for your devic
             <property name="hexpand">True</property>
             <property name="vexpand">False</property>
             <property name="xalign">0</property>
-            <property name="draw_indicator">True</property>
+            <property name="draw-indicator">True</property>
             <signal name="toggled" handler="smooth_scrolling_toggled_cb" swapped="no"/>
           </object>
           <packing>
-            <property name="left_attach">1</property>
-            <property name="top_attach">8</property>
+            <property name="left-attach">1</property>
+            <property name="top-attach">8</property>
             <property name="width">2</property>
           </packing>
         </child>
         <child>
           <object class="GtkBox" id="box6">
             <property name="visible">True</property>
-            <property name="can_focus">False</property>
+            <property name="can-focus">False</property>
             <property name="orientation">vertical</property>
             <property name="spacing">6</property>
             <child>
               <object class="GtkComboBox" id="freehand_cursor_combobox">
                 <property name="visible">True</property>
-                <property name="can_focus">False</property>
+                <property name="can-focus">False</property>
                 <property name="hexpand">True</property>
                 <property name="model">freehand_cursor_liststore</property>
                 <property name="active">0</property>
-                <property name="id_column">0</property>
+                <property name="id-column">0</property>
                 <signal name="changed" handler="freehand_cursor_combobox_changed_cb" swapped="no"/>
                 <child>
                   <object class="GtkCellRendererText" id="cellrenderertext4"/>
@@ -1111,10 +1199,10 @@ Scrolling to pan the view needs this setting to be turned on, and for your devic
               <object class="GtkCheckButton" id="hide_cursor_while_painting_checkbutton">
                 <property name="label" translatable="yes">Hide cursor while painting</property>
                 <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <property name="receives_default">False</property>
+                <property name="can-focus">True</property>
+                <property name="receives-default">False</property>
                 <property name="xalign">0</property>
-                <property name="draw_indicator">True</property>
+                <property name="draw-indicator">True</property>
                 <signal name="toggled" handler="_hide_cursor_while_painting_toggled_cb" swapped="no"/>
               </object>
               <packing>
@@ -1126,14 +1214,14 @@ Scrolling to pan the view needs this setting to be turned on, and for your devic
             <child>
               <object class="GtkBox">
                 <property name="visible">True</property>
-                <property name="can_focus">False</property>
+                <property name="can-focus">False</property>
                 <child>
                   <object class="GtkCheckButton" id="show_crosshair_checkbutton">
                     <property name="label" translatable="yes" context="Prefs Dialog|View|Interface" comments="Label for a toggle that is part of the &quot;Freehand cursor type&quot; settings. Crosshair refers to lines which are either horizontal, vertical, both (cross) or crossed in an x, depending on the brush cursor type.">Show crosshair for small brush cursors</property>
                     <property name="visible">True</property>
-                    <property name="can_focus">True</property>
-                    <property name="receives_default">False</property>
-                    <property name="draw_indicator">True</property>
+                    <property name="can-focus">True</property>
+                    <property name="receives-default">False</property>
+                    <property name="draw-indicator">True</property>
                     <signal name="toggled" handler="_enable_dynamic_crosshair_toggled_cb" swapped="no"/>
                   </object>
                   <packing>
@@ -1145,7 +1233,7 @@ Scrolling to pan the view needs this setting to be turned on, and for your devic
                 <child>
                   <object class="GtkLabel" id="dynamic_crosshair_threshold_label">
                     <property name="visible">True</property>
-                    <property name="can_focus">False</property>
+                    <property name="can-focus">False</property>
                     <property name="label" translatable="yes" context="Prefs Dialog|View|Interface" comments="Label for a spinbutton that is part of the &quot;crosshair for small brush cursors&quot; setting. Radius refers to the visual brush cursor radius.">Radius threshold:</property>
                   </object>
                   <packing>
@@ -1158,13 +1246,13 @@ Scrolling to pan the view needs this setting to be turned on, and for your devic
                 <child>
                   <object class="GtkSpinButton" id="dynamic_crosshair_threshold_spinbutton">
                     <property name="visible">True</property>
-                    <property name="can_focus">True</property>
-                    <property name="tooltip_text" translatable="yes" context="Prefs Dialog|View|Interface" comments="Description of the &quot;Radius threshold&quot; spinbox/spinner - the referenced &quot;lines&quot; are part of the brush cursor.">Lines will be shown when the brush circle radius is smaller than this value.</property>
-                    <property name="progress_pulse_step">1</property>
-                    <property name="input_purpose">digits</property>
-                    <property name="snap_to_ticks">True</property>
+                    <property name="can-focus">True</property>
+                    <property name="tooltip-text" translatable="yes" context="Prefs Dialog|View|Interface" comments="Description of the &quot;Radius threshold&quot; spinbox/spinner - the referenced &quot;lines&quot; are part of the brush cursor.">Lines will be shown when the brush circle radius is smaller than this value.</property>
+                    <property name="progress-pulse-step">1</property>
+                    <property name="input-purpose">digits</property>
+                    <property name="snap-to-ticks">True</property>
                     <property name="numeric">True</property>
-                    <property name="update_policy">if-valid</property>
+                    <property name="update-policy">if-valid</property>
                     <signal name="value-changed" handler="_dynamic_crosshair_threshold_changed_cb" swapped="no"/>
                   </object>
                   <packing>
@@ -1182,8 +1270,8 @@ Scrolling to pan the view needs this setting to be turned on, and for your devic
             </child>
           </object>
           <packing>
-            <property name="left_attach">1</property>
-            <property name="top_attach">6</property>
+            <property name="left-attach">1</property>
+            <property name="top-attach">6</property>
             <property name="width">2</property>
           </packing>
         </child>
@@ -1191,43 +1279,43 @@ Scrolling to pan the view needs this setting to be turned on, and for your devic
           <object class="GtkCheckButton" id="blink_layers_checkbutton">
             <property name="label" translatable="yes" context="Prefs Dialog|View|Interface|Blink layers on creation/selection|checkbox label">Enabled</property>
             <property name="visible">True</property>
-            <property name="can_focus">True</property>
-            <property name="receives_default">False</property>
-            <property name="tooltip_text" translatable="yes" context="Prefs Dialog|View|Interface|Blink layers on creation/selection|checkbox tooltip">When a layer is created or selected, show only that layer for a short time period.</property>
+            <property name="can-focus">True</property>
+            <property name="receives-default">False</property>
+            <property name="tooltip-text" translatable="yes" context="Prefs Dialog|View|Interface|Blink layers on creation/selection|checkbox tooltip">When a layer is created or selected, show only that layer for a short time period.</property>
             <property name="hexpand">True</property>
             <property name="vexpand">False</property>
             <property name="xalign">0</property>
-            <property name="draw_indicator">True</property>
+            <property name="draw-indicator">True</property>
             <signal name="toggled" handler="blink_layers_toggled_cb" swapped="no"/>
           </object>
           <packing>
-            <property name="left_attach">1</property>
-            <property name="top_attach">9</property>
+            <property name="left-attach">1</property>
+            <property name="top-attach">9</property>
             <property name="width">2</property>
           </packing>
         </child>
         <child>
           <object class="GtkLabel" id="label40">
             <property name="visible">True</property>
-            <property name="can_focus">False</property>
-            <property name="margin_left">12</property>
+            <property name="can-focus">False</property>
+            <property name="margin-left">12</property>
             <property name="hexpand">False</property>
             <property name="vexpand">False</property>
             <property name="label" translatable="yes" context="Prefs Dialog|View|Interface|">Blink layers on creation/selection:</property>
             <property name="xalign">0</property>
           </object>
           <packing>
-            <property name="left_attach">0</property>
-            <property name="top_attach">9</property>
+            <property name="left-attach">0</property>
+            <property name="top-attach">9</property>
           </packing>
         </child>
         <child>
           <object class="GtkComboBox" id="locale_combobox">
             <property name="visible">True</property>
-            <property name="can_focus">False</property>
+            <property name="can-focus">False</property>
             <property name="hexpand">True</property>
             <property name="active">0</property>
-            <property name="id_column">0</property>
+            <property name="id-column">0</property>
             <signal name="changed" handler="locale_changed_cb" swapped="no"/>
             <child>
               <object class="GtkCellRendererText" id="cellrenderertext1"/>
@@ -1237,29 +1325,29 @@ Scrolling to pan the view needs this setting to be turned on, and for your devic
             </child>
           </object>
           <packing>
-            <property name="left_attach">1</property>
-            <property name="top_attach">4</property>
+            <property name="left-attach">1</property>
+            <property name="top-attach">4</property>
           </packing>
         </child>
         <child>
           <object class="GtkLabel" id="label41">
             <property name="visible">True</property>
-            <property name="can_focus">False</property>
-            <property name="margin_left">12</property>
+            <property name="can-focus">False</property>
+            <property name="margin-left">12</property>
             <property name="hexpand">False</property>
             <property name="vexpand">False</property>
             <property name="label" translatable="yes" context="Prefs Dialog|View|Interface|">Language:</property>
             <property name="xalign">0</property>
           </object>
           <packing>
-            <property name="left_attach">0</property>
-            <property name="top_attach">4</property>
+            <property name="left-attach">0</property>
+            <property name="top-attach">4</property>
           </packing>
         </child>
         <child>
           <object class="GtkLabel" id="label42">
             <property name="visible">True</property>
-            <property name="can_focus">False</property>
+            <property name="can-focus">False</property>
             <property name="halign">start</property>
             <property name="hexpand">False</property>
             <property name="vexpand">False</property>
@@ -1267,8 +1355,8 @@ Scrolling to pan the view needs this setting to be turned on, and for your devic
             <property name="xalign">0</property>
           </object>
           <packing>
-            <property name="left_attach">2</property>
-            <property name="top_attach">4</property>
+            <property name="left-attach">2</property>
+            <property name="top-attach">4</property>
           </packing>
         </child>
       </object>
@@ -1279,70 +1367,71 @@ Scrolling to pan the view needs this setting to be turned on, and for your devic
     <child type="tab">
       <object class="GtkLabel" id="label18">
         <property name="visible">True</property>
-        <property name="can_focus">False</property>
+        <property name="can-focus">False</property>
         <property name="label" translatable="yes" context="Prefs Dialog|" comments="Tab label in preferences dialog&#10;">View</property>
       </object>
       <packing>
         <property name="position">5</property>
-        <property name="tab_fill">False</property>
+        <property name="tab-fill">False</property>
       </packing>
     </child>
     <child>
       <object class="GtkFrame" id="frame5">
         <property name="visible">True</property>
-        <property name="can_focus">False</property>
+        <property name="can-focus">False</property>
         <property name="valign">start</property>
-        <property name="border_width">12</property>
-        <property name="label_xalign">0</property>
-        <property name="shadow_type">none</property>
+        <property name="border-width">12</property>
+        <property name="label-xalign">0</property>
+        <property name="shadow-type">none</property>
         <child>
           <object class="GtkAlignment" id="alignment7">
             <property name="visible">True</property>
-            <property name="can_focus">False</property>
-            <property name="top_padding">12</property>
-            <property name="left_padding">12</property>
+            <property name="can-focus">False</property>
+            <property name="top-padding">12</property>
+            <property name="left-padding">12</property>
             <child>
+              <!-- n-columns=3 n-rows=3 -->
               <object class="GtkGrid" id="grid5">
                 <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="row_spacing">6</property>
-                <property name="column_spacing">12</property>
-                <property name="row_homogeneous">True</property>
+                <property name="can-focus">False</property>
+                <property name="row-spacing">6</property>
+                <property name="column-spacing">12</property>
+                <property name="row-homogeneous">True</property>
                 <child>
                   <object class="GtkLabel" id="label12">
                     <property name="visible">True</property>
-                    <property name="can_focus">False</property>
-                    <property name="tooltip_text" translatable="yes" context="Prefs Dialog|Color|Color Wheel|Primaries|">The set of colors to show as primary on disk-style color wheels.
+                    <property name="can-focus">False</property>
+                    <property name="tooltip-text" translatable="yes" context="Prefs Dialog|Color|Color Wheel|Primaries|">The set of colors to show as primary on disk-style color wheels.
 Different traditions have different color harmonies.</property>
                     <property name="label" translatable="yes" context="Prefs Dialog|Color|Color Wheel|" comments="Arrangement of MyPaint's custom colour wheels">Primaries are:</property>
                     <property name="xalign">0</property>
                     <property name="yalign">0</property>
                   </object>
                   <packing>
-                    <property name="left_attach">0</property>
-                    <property name="top_attach">0</property>
+                    <property name="left-attach">0</property>
+                    <property name="top-attach">0</property>
                   </packing>
                 </child>
                 <child>
                   <object class="GtkBox" id="box2">
                     <property name="visible">True</property>
-                    <property name="can_focus">False</property>
+                    <property name="can-focus">False</property>
                     <property name="orientation">vertical</property>
                     <property name="spacing">6</property>
                     <child>
                       <object class="GtkRadioButton" id="color_wheel_rgb_radiobutton">
                         <property name="label" translatable="yes" context="Prefs Dialog|Color|Color Wheel|Primaries|">Standard digital Red/Green/Blue</property>
                         <property name="visible">True</property>
-                        <property name="can_focus">True</property>
-                        <property name="receives_default">False</property>
-                        <property name="has_tooltip">True</property>
-                        <property name="tooltip_markup" translatable="yes">The red, green, and blue &amp;apos;computer monitor&amp;apos; primaries, evenly arranged around the circle. Green is opposite magenta.</property>
-                        <property name="tooltip_text" translatable="yes" context="Prefs Dialog|Color|Color Wheel|Primaries|RGB|">The red, green, and blue 'computer monitor' primaries, evenly arranged around the circle. Green is opposite magenta.</property>
+                        <property name="can-focus">True</property>
+                        <property name="receives-default">False</property>
+                        <property name="has-tooltip">True</property>
+                        <property name="tooltip-markup" translatable="yes">The red, green, and blue &amp;apos;computer monitor&amp;apos; primaries, evenly arranged around the circle. Green is opposite magenta.</property>
+                        <property name="tooltip-text" translatable="yes" context="Prefs Dialog|Color|Color Wheel|Primaries|RGB|">The red, green, and blue 'computer monitor' primaries, evenly arranged around the circle. Green is opposite magenta.</property>
                         <property name="hexpand">True</property>
                         <property name="xalign">0</property>
                         <property name="yalign">0.51999998092651367</property>
                         <property name="active">True</property>
-                        <property name="draw_indicator">True</property>
+                        <property name="draw-indicator">True</property>
                         <signal name="toggled" handler="color_wheel_rgb_radiobutton_toggled_cb" swapped="no"/>
                       </object>
                       <packing>
@@ -1355,15 +1444,15 @@ Different traditions have different color harmonies.</property>
                       <object class="GtkRadioButton" id="color_wheel_ryb_radiobutton">
                         <property name="label" translatable="yes" context="Prefs Dialog|Color|Color Wheel|Primaries|">Traditional artist's Red/Yellow/Blue</property>
                         <property name="visible">True</property>
-                        <property name="can_focus">True</property>
-                        <property name="receives_default">False</property>
-                        <property name="has_tooltip">True</property>
-                        <property name="tooltip_markup" translatable="yes">The traditionally arranged red/yellow/blue wheel as used by many artists since the 18th century, approximated with pure display colors evenly arranged around the circle. Green is opposite red.</property>
-                        <property name="tooltip_text" translatable="yes" context="Prefs Dialog|Color|Color Wheel|Primaries|RYB|">The traditionally arranged red/yellow/blue wheel as used by many artists since the 18th century, approximated with pure display colors evenly arranged around the circle. Green is opposite red.</property>
+                        <property name="can-focus">True</property>
+                        <property name="receives-default">False</property>
+                        <property name="has-tooltip">True</property>
+                        <property name="tooltip-markup" translatable="yes">The traditionally arranged red/yellow/blue wheel as used by many artists since the 18th century, approximated with pure display colors evenly arranged around the circle. Green is opposite red.</property>
+                        <property name="tooltip-text" translatable="yes" context="Prefs Dialog|Color|Color Wheel|Primaries|RYB|">The traditionally arranged red/yellow/blue wheel as used by many artists since the 18th century, approximated with pure display colors evenly arranged around the circle. Green is opposite red.</property>
                         <property name="hexpand">True</property>
                         <property name="xalign">0</property>
                         <property name="active">True</property>
-                        <property name="draw_indicator">True</property>
+                        <property name="draw-indicator">True</property>
                         <property name="group">color_wheel_rgb_radiobutton</property>
                         <signal name="toggled" handler="color_wheel_ryb_radiobutton_toggled_cb" swapped="no"/>
                       </object>
@@ -1377,15 +1466,15 @@ Different traditions have different color harmonies.</property>
                       <object class="GtkRadioButton" id="color_wheel_rygb_radiobutton">
                         <property name="label" translatable="yes" context="Prefs Dialog|Color|Color Wheel|Primaries|">Red-Green and Blue-Yellow opponent pairs</property>
                         <property name="visible">True</property>
-                        <property name="can_focus">True</property>
-                        <property name="receives_default">False</property>
-                        <property name="has_tooltip">True</property>
-                        <property name="tooltip_markup" translatable="yes">Quick and dirty approximation of wheels informed by theories of  color which use four &amp;apos;psychological primaries&amp;apos; or &amp;apos;unique hues&amp;apos; arranged in opposing pairs at the cardinal points. Red is opposite green, and yellow is opposite blue. CIECAM02 and NCS present a similar model. Here we use pure display red, yellow etc. as the four primaries.</property>
-                        <property name="tooltip_text" translatable="yes" context="Prefs Dialog|Color|Color Wheel|Primaries|RYGB|">Quick and dirty approximation of wheels informed by theories of  color which use four 'psychological primaries' or 'unique hues' arranged in opposing pairs at the cardinal points. Red is opposite green, and yellow is opposite blue. CIECAM02 and NCS present a similar model. Here we use pure display red, yellow etc. as the four primaries.</property>
+                        <property name="can-focus">True</property>
+                        <property name="receives-default">False</property>
+                        <property name="has-tooltip">True</property>
+                        <property name="tooltip-markup" translatable="yes">Quick and dirty approximation of wheels informed by theories of  color which use four &amp;apos;psychological primaries&amp;apos; or &amp;apos;unique hues&amp;apos; arranged in opposing pairs at the cardinal points. Red is opposite green, and yellow is opposite blue. CIECAM02 and NCS present a similar model. Here we use pure display red, yellow etc. as the four primaries.</property>
+                        <property name="tooltip-text" translatable="yes" context="Prefs Dialog|Color|Color Wheel|Primaries|RYGB|">Quick and dirty approximation of wheels informed by theories of  color which use four 'psychological primaries' or 'unique hues' arranged in opposing pairs at the cardinal points. Red is opposite green, and yellow is opposite blue. CIECAM02 and NCS present a similar model. Here we use pure display red, yellow etc. as the four primaries.</property>
                         <property name="hexpand">True</property>
                         <property name="xalign">0</property>
                         <property name="active">True</property>
-                        <property name="draw_indicator">True</property>
+                        <property name="draw-indicator">True</property>
                         <property name="group">color_wheel_ryb_radiobutton</property>
                         <signal name="toggled" handler="color_wheel_rygb_radiobutton_toggled_cb" swapped="no"/>
                       </object>
@@ -1397,9 +1486,30 @@ Different traditions have different color harmonies.</property>
                     </child>
                   </object>
                   <packing>
-                    <property name="left_attach">1</property>
-                    <property name="top_attach">0</property>
+                    <property name="left-attach">1</property>
+                    <property name="top-attach">0</property>
                   </packing>
+                </child>
+                <child>
+                  <placeholder/>
+                </child>
+                <child>
+                  <placeholder/>
+                </child>
+                <child>
+                  <placeholder/>
+                </child>
+                <child>
+                  <placeholder/>
+                </child>
+                <child>
+                  <placeholder/>
+                </child>
+                <child>
+                  <placeholder/>
+                </child>
+                <child>
+                  <placeholder/>
                 </child>
               </object>
             </child>
@@ -1408,9 +1518,9 @@ Different traditions have different color harmonies.</property>
         <child type="label">
           <object class="GtkLabel" id="label13">
             <property name="visible">True</property>
-            <property name="can_focus">False</property>
+            <property name="can-focus">False</property>
             <property name="label" translatable="yes" context="Prefs Dialog|Color|" comments="Options affecting color wheels">&lt;b&gt;Color Wheel&lt;/b&gt;</property>
-            <property name="use_markup">True</property>
+            <property name="use-markup">True</property>
           </object>
         </child>
       </object>
@@ -1421,124 +1531,125 @@ Different traditions have different color harmonies.</property>
     <child type="tab">
       <object class="GtkLabel" id="label14">
         <property name="visible">True</property>
-        <property name="can_focus">False</property>
+        <property name="can-focus">False</property>
         <property name="label" translatable="yes" context="Prefs Dialog|" comments="Tab label in preferences dialog">Color</property>
       </object>
       <packing>
         <property name="position">6</property>
-        <property name="tab_fill">False</property>
+        <property name="tab-fill">False</property>
       </packing>
     </child>
     <child>
       <object class="GtkFrame" id="compat_frame">
         <property name="visible">True</property>
-        <property name="can_focus">False</property>
+        <property name="can-focus">False</property>
         <property name="valign">start</property>
-        <property name="border_width">12</property>
-        <property name="label_xalign">0</property>
-        <property name="shadow_type">none</property>
+        <property name="border-width">12</property>
+        <property name="label-xalign">0</property>
+        <property name="shadow-type">none</property>
         <child>
           <object class="GtkAlignment" id="alignment2">
             <property name="visible">True</property>
-            <property name="can_focus">False</property>
+            <property name="can-focus">False</property>
             <property name="xalign">1</property>
-            <property name="top_padding">12</property>
-            <property name="left_padding">12</property>
+            <property name="top-padding">12</property>
+            <property name="left-padding">12</property>
             <child>
+              <!-- n-columns=3 n-rows=16 -->
               <object class="GtkGrid" id="grid2">
                 <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="row_spacing">12</property>
-                <property name="column_spacing">12</property>
+                <property name="can-focus">False</property>
+                <property name="row-spacing">12</property>
+                <property name="column-spacing">12</property>
                 <child>
                   <object class="GtkLabel" id="def_compat_label">
                     <property name="visible">True</property>
-                    <property name="can_focus">False</property>
-                    <property name="margin_left">12</property>
+                    <property name="can-focus">False</property>
+                    <property name="margin-left">12</property>
                     <property name="label" translatable="yes" context="Prefs Dialog|Compatibility">Default Compatibility Mode:</property>
                     <property name="justify">right</property>
                     <property name="ellipsize">end</property>
                     <property name="xalign">0</property>
                   </object>
                   <packing>
-                    <property name="left_attach">0</property>
-                    <property name="top_attach">0</property>
+                    <property name="left-attach">0</property>
+                    <property name="top-attach">0</property>
                   </packing>
                 </child>
                 <child>
                   <object class="GtkSeparator" id="separator1">
                     <property name="visible">True</property>
-                    <property name="can_focus">False</property>
+                    <property name="can-focus">False</property>
                   </object>
                   <packing>
-                    <property name="left_attach">0</property>
-                    <property name="top_attach">1</property>
+                    <property name="left-attach">0</property>
+                    <property name="top-attach">1</property>
                     <property name="width">2</property>
                   </packing>
                 </child>
                 <child>
                   <object class="GtkLabel" id="label_1_x_settings">
                     <property name="visible">True</property>
-                    <property name="can_focus">False</property>
+                    <property name="can-focus">False</property>
                     <property name="label" translatable="yes" context="Prefs Dialog|Compatibility">&lt;b&gt;1.x Settings&lt;/b&gt;</property>
-                    <property name="use_markup">True</property>
+                    <property name="use-markup">True</property>
                     <property name="xalign">0</property>
                   </object>
                   <packing>
-                    <property name="left_attach">0</property>
-                    <property name="top_attach">2</property>
+                    <property name="left-attach">0</property>
+                    <property name="top-attach">2</property>
                     <property name="width">2</property>
                   </packing>
                 </child>
                 <child>
                   <object class="GtkLabel" id="label_2_x_settings">
                     <property name="visible">True</property>
-                    <property name="can_focus">False</property>
+                    <property name="can-focus">False</property>
                     <property name="label" translatable="yes" context="Prefs Dialog|Compatibility" comments="Make sure to be consistent w. other occurences of 2.x">&lt;b&gt;2.x Settings&lt;/b&gt;</property>
-                    <property name="use_markup">True</property>
+                    <property name="use-markup">True</property>
                     <property name="xalign">0</property>
                   </object>
                   <packing>
-                    <property name="left_attach">0</property>
-                    <property name="top_attach">7</property>
+                    <property name="left-attach">0</property>
+                    <property name="top-attach">7</property>
                     <property name="width">2</property>
                   </packing>
                 </child>
                 <child>
                   <object class="GtkSeparator" id="separator3">
                     <property name="visible">True</property>
-                    <property name="can_focus">False</property>
+                    <property name="can-focus">False</property>
                     <property name="valign">start</property>
                   </object>
                   <packing>
-                    <property name="left_attach">0</property>
-                    <property name="top_attach">6</property>
+                    <property name="left-attach">0</property>
+                    <property name="top-attach">6</property>
                     <property name="width">2</property>
                   </packing>
                 </child>
                 <child>
                   <object class="GtkSwitch" id="pigment_setting_switch_1_x">
                     <property name="visible">True</property>
-                    <property name="can_focus">True</property>
+                    <property name="can-focus">True</property>
                     <property name="halign">start</property>
                   </object>
                   <packing>
-                    <property name="left_attach">1</property>
-                    <property name="top_attach">3</property>
+                    <property name="left-attach">1</property>
+                    <property name="top-attach">3</property>
                   </packing>
                 </child>
                 <child>
                   <object class="GtkLabel" id="pigm_brsh_label1">
                     <property name="visible">True</property>
-                    <property name="can_focus">False</property>
-                    <property name="margin_left">12</property>
+                    <property name="can-focus">False</property>
+                    <property name="margin-left">12</property>
                     <property name="label" translatable="yes" context="Prefs Dialog|Compatibility">Default New Layer Type:</property>
                     <property name="ellipsize">middle</property>
                     <property name="xalign">0</property>
                   </object>
                   <packing>
-                    <property name="left_attach">0</property>
-                    <property name="top_attach">4</property>
+                    <property name="left-attach">0</property>
+                    <property name="top-attach">4</property>
                     <property name="height">2</property>
                   </packing>
                 </child>
@@ -1546,73 +1657,73 @@ Different traditions have different color harmonies.</property>
                   <object class="GtkRadioButton" id="def_new_layer_normal_1_x">
                     <property name="label">&lt;placeholder - normal&gt;</property>
                     <property name="visible">True</property>
-                    <property name="can_focus">True</property>
-                    <property name="receives_default">False</property>
+                    <property name="can-focus">True</property>
+                    <property name="receives-default">False</property>
                     <property name="xalign">0.019999999552965164</property>
                     <property name="active">True</property>
-                    <property name="draw_indicator">True</property>
+                    <property name="draw-indicator">True</property>
                   </object>
                   <packing>
-                    <property name="left_attach">1</property>
-                    <property name="top_attach">4</property>
+                    <property name="left-attach">1</property>
+                    <property name="top-attach">4</property>
                   </packing>
                 </child>
                 <child>
                   <object class="GtkRadioButton" id="def_new_layer_pigment_1_x">
                     <property name="label">&lt;placeholder - pigment&gt;</property>
                     <property name="visible">True</property>
-                    <property name="can_focus">True</property>
-                    <property name="receives_default">False</property>
+                    <property name="can-focus">True</property>
+                    <property name="receives-default">False</property>
                     <property name="xalign">0</property>
                     <property name="active">True</property>
-                    <property name="draw_indicator">True</property>
+                    <property name="draw-indicator">True</property>
                     <property name="group">def_new_layer_normal_1_x</property>
                   </object>
                   <packing>
-                    <property name="left_attach">1</property>
-                    <property name="top_attach">5</property>
+                    <property name="left-attach">1</property>
+                    <property name="top-attach">5</property>
                   </packing>
                 </child>
                 <child>
                   <object class="GtkLabel" id="pigm_brsh_label">
                     <property name="visible">True</property>
-                    <property name="can_focus">False</property>
-                    <property name="margin_left">12</property>
+                    <property name="can-focus">False</property>
+                    <property name="margin-left">12</property>
                     <property name="label" translatable="yes" context="Prefs Dialog|Compatibility">Default Pigment Brush Setting:</property>
                     <property name="ellipsize">middle</property>
                     <property name="xalign">0</property>
                   </object>
                   <packing>
-                    <property name="left_attach">0</property>
-                    <property name="top_attach">3</property>
+                    <property name="left-attach">0</property>
+                    <property name="top-attach">3</property>
                   </packing>
                 </child>
                 <child>
                   <object class="GtkLabel" id="pigm_brsh_label2">
                     <property name="visible">True</property>
-                    <property name="can_focus">False</property>
-                    <property name="margin_left">12</property>
+                    <property name="can-focus">False</property>
+                    <property name="margin-left">12</property>
                     <property name="label" translatable="yes" context="Prefs Dialog|Compatibility">Default Pigment Brush Setting:</property>
                     <property name="ellipsize">end</property>
                     <property name="xalign">0</property>
                   </object>
                   <packing>
-                    <property name="left_attach">0</property>
-                    <property name="top_attach">8</property>
+                    <property name="left-attach">0</property>
+                    <property name="top-attach">8</property>
                   </packing>
                 </child>
                 <child>
                   <object class="GtkLabel" id="pigm_brsh_label3">
                     <property name="visible">True</property>
-                    <property name="can_focus">False</property>
-                    <property name="margin_left">12</property>
+                    <property name="can-focus">False</property>
+                    <property name="margin-left">12</property>
                     <property name="label" translatable="yes" context="Prefs Dialog|Compatibility">Default New Layer Type:</property>
                     <property name="ellipsize">middle</property>
                     <property name="xalign">0</property>
                   </object>
                   <packing>
-                    <property name="left_attach">0</property>
-                    <property name="top_attach">9</property>
+                    <property name="left-attach">0</property>
+                    <property name="top-attach">9</property>
                     <property name="height">2</property>
                   </packing>
                 </child>
@@ -1620,60 +1731,60 @@ Different traditions have different color harmonies.</property>
                   <object class="GtkRadioButton" id="def_new_layer_normal_2_x">
                     <property name="label">&lt;placeholder - normal&gt;</property>
                     <property name="visible">True</property>
-                    <property name="can_focus">True</property>
-                    <property name="receives_default">False</property>
+                    <property name="can-focus">True</property>
+                    <property name="receives-default">False</property>
                     <property name="xalign">0</property>
                     <property name="active">True</property>
-                    <property name="draw_indicator">True</property>
+                    <property name="draw-indicator">True</property>
                   </object>
                   <packing>
-                    <property name="left_attach">1</property>
-                    <property name="top_attach">9</property>
+                    <property name="left-attach">1</property>
+                    <property name="top-attach">9</property>
                   </packing>
                 </child>
                 <child>
                   <object class="GtkRadioButton" id="def_new_layer_pigment_2_x">
                     <property name="label">&lt;placeholder - pigment&gt;</property>
                     <property name="visible">True</property>
-                    <property name="can_focus">True</property>
-                    <property name="receives_default">False</property>
+                    <property name="can-focus">True</property>
+                    <property name="receives-default">False</property>
                     <property name="xalign">0</property>
-                    <property name="draw_indicator">True</property>
+                    <property name="draw-indicator">True</property>
                     <property name="group">def_new_layer_normal_2_x</property>
                   </object>
                   <packing>
-                    <property name="left_attach">1</property>
-                    <property name="top_attach">10</property>
+                    <property name="left-attach">1</property>
+                    <property name="top-attach">10</property>
                   </packing>
                 </child>
                 <child>
                   <object class="GtkSwitch" id="pigment_setting_switch_2_x">
                     <property name="visible">True</property>
-                    <property name="can_focus">True</property>
+                    <property name="can-focus">True</property>
                     <property name="halign">start</property>
                     <property name="active">True</property>
                   </object>
                   <packing>
-                    <property name="left_attach">1</property>
-                    <property name="top_attach">8</property>
+                    <property name="left-attach">1</property>
+                    <property name="top-attach">8</property>
                   </packing>
                 </child>
                 <child>
                   <object class="GtkBox" id="box7">
                     <property name="visible">True</property>
-                    <property name="can_focus">False</property>
+                    <property name="can-focus">False</property>
                     <child>
                       <object class="GtkRadioButton" id="compat_1_x_radiobutton">
                         <property name="label" translatable="yes" context="Prefs Dialog|Compatibility" comments="This refers to a version of MyPaint like 1.0, 1.1, 1.2 etc">1.x</property>
                         <property name="visible">True</property>
-                        <property name="can_focus">True</property>
-                        <property name="receives_default">False</property>
-                        <property name="tooltip_text" translatable="yes" context="Prefs Dialog|Compatibility" comments="Label description for the 1.x compatibility-mode-by-default setting">When creating new documents, use the legacy 1.x compatibility mode by default. In this mode 1.x .ora files will look the same as they did in older versions, but pigment blending will not work well.</property>
+                        <property name="can-focus">True</property>
+                        <property name="receives-default">False</property>
+                        <property name="tooltip-text" translatable="yes" context="Prefs Dialog|Compatibility" comments="Label description for the 1.x compatibility-mode-by-default setting">When creating new documents, use the legacy 1.x compatibility mode by default. In this mode 1.x .ora files will look the same as they did in older versions, but pigment blending will not work well.</property>
                         <property name="halign">start</property>
-                        <property name="margin_right">24</property>
+                        <property name="margin-right">24</property>
                         <property name="xalign">0</property>
                         <property name="active">True</property>
-                        <property name="draw_indicator">True</property>
+                        <property name="draw-indicator">True</property>
                       </object>
                       <packing>
                         <property name="expand">False</property>
@@ -1685,11 +1796,11 @@ Different traditions have different color harmonies.</property>
                       <object class="GtkRadioButton" id="compat_2_x_radiobutton">
                         <property name="label" translatable="yes" context="Prefs Dialog|Compatibility" comments="This refers to a version of MyPaint like 1.0, 1.1, 1.2 etc">2.x</property>
                         <property name="visible">True</property>
-                        <property name="can_focus">True</property>
-                        <property name="receives_default">False</property>
-                        <property name="tooltip_text" translatable="yes" context="Prefs Dialog|Compatibility">When creating new documents, use the regular 2.x compatibility mode by default. Old documents will often look different in this mode.</property>
+                        <property name="can-focus">True</property>
+                        <property name="receives-default">False</property>
+                        <property name="tooltip-text" translatable="yes" context="Prefs Dialog|Compatibility">When creating new documents, use the regular 2.x compatibility mode by default. Old documents will often look different in this mode.</property>
                         <property name="xalign">0</property>
-                        <property name="draw_indicator">True</property>
+                        <property name="draw-indicator">True</property>
                         <property name="group">compat_1_x_radiobutton</property>
                       </object>
                       <packing>
@@ -1700,20 +1811,20 @@ Different traditions have different color harmonies.</property>
                     </child>
                   </object>
                   <packing>
-                    <property name="left_attach">1</property>
-                    <property name="top_attach">0</property>
+                    <property name="left-attach">1</property>
+                    <property name="top-attach">0</property>
                   </packing>
                 </child>
                 <child>
                   <object class="GtkSeparator" id="separator2">
                     <property name="visible">True</property>
-                    <property name="can_focus">False</property>
+                    <property name="can-focus">False</property>
                     <property name="valign">start</property>
-                    <property name="margin_top">1</property>
+                    <property name="margin-top">1</property>
                   </object>
                   <packing>
-                    <property name="left_attach">0</property>
-                    <property name="top_attach">11</property>
+                    <property name="left-attach">0</property>
+                    <property name="top-attach">11</property>
                     <property name="width">2</property>
                   </packing>
                 </child>
@@ -1721,28 +1832,28 @@ Different traditions have different color harmonies.</property>
                   <object class="GtkCheckButton" id="file_compat_warning_mild">
                     <property name="label" translatable="yes" context="Prefs Dialog|Compatibility">Show warning for files that may be partially incompatible</property>
                     <property name="visible">True</property>
-                    <property name="can_focus">True</property>
-                    <property name="receives_default">False</property>
+                    <property name="can-focus">True</property>
+                    <property name="receives-default">False</property>
                     <property name="xalign">0</property>
-                    <property name="draw_indicator">True</property>
+                    <property name="draw-indicator">True</property>
                   </object>
                   <packing>
-                    <property name="left_attach">1</property>
-                    <property name="top_attach">14</property>
+                    <property name="left-attach">1</property>
+                    <property name="top-attach">14</property>
                   </packing>
                 </child>
                 <child>
                   <object class="GtkLabel" id="file_warnings">
                     <property name="visible">True</property>
-                    <property name="can_focus">False</property>
-                    <property name="margin_left">12</property>
+                    <property name="can-focus">False</property>
+                    <property name="margin-left">12</property>
                     <property name="label" translatable="yes" context="Prefs Dialog|Compatibility" comments="Label for a set of options">File compatibility warnings:</property>
                     <property name="ellipsize">middle</property>
                     <property name="xalign">0</property>
                   </object>
                   <packing>
-                    <property name="left_attach">0</property>
-                    <property name="top_attach">14</property>
+                    <property name="left-attach">0</property>
+                    <property name="top-attach">14</property>
                     <property name="height">2</property>
                   </packing>
                 </child>
@@ -1750,60 +1861,108 @@ Different traditions have different color harmonies.</property>
                   <object class="GtkCheckButton" id="file_compat_warning_severe">
                     <property name="label" translatable="yes" context="Prefs Dialog|Compatibility">Show warning for files that may be fully incompatible</property>
                     <property name="visible">True</property>
-                    <property name="can_focus">True</property>
-                    <property name="receives_default">False</property>
+                    <property name="can-focus">True</property>
+                    <property name="receives-default">False</property>
                     <property name="xalign">0</property>
-                    <property name="draw_indicator">True</property>
+                    <property name="draw-indicator">True</property>
                   </object>
                   <packing>
-                    <property name="left_attach">1</property>
-                    <property name="top_attach">15</property>
+                    <property name="left-attach">1</property>
+                    <property name="top-attach">15</property>
                   </packing>
                 </child>
                 <child>
                   <object class="GtkLabel" id="compat_file_behavior_label">
                     <property name="visible">True</property>
-                    <property name="can_focus">False</property>
-                    <property name="tooltip_text" translatable="yes" context="Prefs|Compatibility" comments="This is a tooltip for the file behavior options label.">This will only apply to files saved with versions of MyPaint older than 2.0. When you save an OpenRaster file with MyPaint 2.0 or newer the active compatibility mode will be written to the file.</property>
-                    <property name="margin_left">12</property>
+                    <property name="can-focus">False</property>
+                    <property name="tooltip-text" translatable="yes" context="Prefs|Compatibility" comments="This is a tooltip for the file behavior options label.">This will only apply to files saved with versions of MyPaint older than 2.0. When you save an OpenRaster file with MyPaint 2.0 or newer the active compatibility mode will be written to the file.</property>
+                    <property name="margin-left">12</property>
                     <property name="label" translatable="yes" context="Prefs Dialog|Compatibility" comments="Label to the options for how to handle files which do not have a compatibility mode specified (whether they should be opened in 1.x compatibility mode, or 2.x mode)">When Mode is Unspecified:</property>
                     <property name="ellipsize">end</property>
                     <property name="xalign">0</property>
                   </object>
                   <packing>
-                    <property name="left_attach">0</property>
-                    <property name="top_attach">13</property>
+                    <property name="left-attach">0</property>
+                    <property name="top-attach">13</property>
                   </packing>
                 </child>
                 <child>
                   <object class="GtkComboBox" id="compat_file_behavior_combobox">
                     <property name="visible">True</property>
-                    <property name="can_focus">False</property>
+                    <property name="can-focus">False</property>
                     <property name="halign">start</property>
                     <property name="active">0</property>
-                    <property name="popup_fixed_width">False</property>
-                    <property name="id_column">0</property>
+                    <property name="popup-fixed-width">False</property>
+                    <property name="id-column">0</property>
                   </object>
                   <packing>
-                    <property name="left_attach">1</property>
-                    <property name="top_attach">13</property>
+                    <property name="left-attach">1</property>
+                    <property name="top-attach">13</property>
                   </packing>
                 </child>
                 <child>
                   <object class="GtkLabel" id="compat_frame_label1">
                     <property name="visible">True</property>
-                    <property name="can_focus">False</property>
+                    <property name="can-focus">False</property>
                     <property name="label" translatable="yes" context="Prefs|Compatibility" comments="This label indicates a subsection of the compatibility settings related to loading files.">&lt;b&gt;File loading&lt;/b&gt;</property>
-                    <property name="use_markup">True</property>
+                    <property name="use-markup">True</property>
                     <property name="ellipsize">middle</property>
                     <property name="xalign">0</property>
                     <property name="yalign">0</property>
                   </object>
                   <packing>
-                    <property name="left_attach">0</property>
-                    <property name="top_attach">12</property>
+                    <property name="left-attach">0</property>
+                    <property name="top-attach">12</property>
                     <property name="width">2</property>
                   </packing>
+                </child>
+                <child>
+                  <placeholder/>
+                </child>
+                <child>
+                  <placeholder/>
+                </child>
+                <child>
+                  <placeholder/>
+                </child>
+                <child>
+                  <placeholder/>
+                </child>
+                <child>
+                  <placeholder/>
+                </child>
+                <child>
+                  <placeholder/>
+                </child>
+                <child>
+                  <placeholder/>
+                </child>
+                <child>
+                  <placeholder/>
+                </child>
+                <child>
+                  <placeholder/>
+                </child>
+                <child>
+                  <placeholder/>
+                </child>
+                <child>
+                  <placeholder/>
+                </child>
+                <child>
+                  <placeholder/>
+                </child>
+                <child>
+                  <placeholder/>
+                </child>
+                <child>
+                  <placeholder/>
+                </child>
+                <child>
+                  <placeholder/>
+                </child>
+                <child>
+                  <placeholder/>
                 </child>
               </object>
             </child>
@@ -1812,9 +1971,9 @@ Different traditions have different color harmonies.</property>
         <child type="label">
           <object class="GtkLabel" id="compat_frame_label">
             <property name="visible">True</property>
-            <property name="can_focus">False</property>
+            <property name="can-focus">False</property>
             <property name="label" translatable="yes">&lt;b&gt;Compatibility settings&lt;/b&gt;</property>
-            <property name="use_markup">True</property>
+            <property name="use-markup">True</property>
             <property name="ellipsize">middle</property>
             <property name="xalign">0</property>
             <property name="yalign">0</property>
@@ -1828,12 +1987,12 @@ Different traditions have different color harmonies.</property>
     <child type="tab">
       <object class="GtkLabel" id="compat_label">
         <property name="visible">True</property>
-        <property name="can_focus">False</property>
+        <property name="can-focus">False</property>
         <property name="label" translatable="yes" context="Prefs Dialog|" comments="Tab label in preferences dialog">Compatibility</property>
       </object>
       <packing>
         <property name="position">7</property>
-        <property name="tab_fill">False</property>
+        <property name="tab-fill">False</property>
       </packing>
     </child>
   </object>
