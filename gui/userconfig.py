@@ -55,7 +55,7 @@ def default_configuration():
         ud_docs = lib.glib.get_user_special_dir(
             GLib.UserDirectory.DIRECTORY_DOCUMENTS,
         )
-        scrapfldr = os.path.join(ud_docs, u'MyPaint', u'scrap')
+        scrapfldr = os.path.join(ud_docs, u'MyPaint')
     else:
         scrapfldr = u'~/MyPaint/'
     default_config = {
