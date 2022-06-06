@@ -569,7 +569,8 @@ class FileHandler (object):
             f(self.filename)
 
         if self.filename:
-            if self.filename.startswith(self.get_scrap_prefix()):
+            if self.filename.startswith(
+                self.get_scrap_folder() + self.get_scrap_prefix()):
                 self.active_scrap_filename = self.filename
 
     filename = property(get_filename, set_filename)
@@ -1274,10 +1275,10 @@ class FileHandler (object):
 
     def save_scrap_cb(self, action):
         filename = self.filename
-        prefix = self.get_scrap_prefix()
+        scrap = self.get_scrap_folder() + self.get_scrap_prefix()
         self.app.filename = self.save_autoincrement_file(
             filename,
-            prefix,
+            scrap,
             main_doc=True,
         )
 
@@ -1348,15 +1349,16 @@ class FileHandler (object):
             self.save_scratchpad(filename)
         return filename
 
+    def get_scrap_folder(self):
+        folder = self.app.preferences['saving.scrap_folder']
+        folder = fileutils.expanduser_unicode(folder)
+        folder = os.path.abspath(folder)
+        if not folder.endswith(os.path.sep):
+            folder += os.path.sep
+        return folder
+
     def get_scrap_prefix(self):
         prefix = self.app.preferences['saving.scrap_prefix']
-        # This should really use two separate settings, not one.
-        # https://github.com/mypaint/mypaint/issues/375
-        prefix = fileutils.expanduser_unicode(prefix)
-        prefix = os.path.abspath(prefix)
-        if os.path.isdir(prefix):
-            if not prefix.endswith(os.path.sep):
-                prefix += os.path.sep
         return prefix
 
     def get_scratchpad_prefix(self):

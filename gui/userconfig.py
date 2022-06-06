@@ -57,7 +57,7 @@ def default_configuration():
         )
         scrapfldr = os.path.join(ud_docs, u'MyPaint')
     else:
-        scrapfldr = u'~/MyPaint/'
+        scrapfldr = u'~/MyPaint'
     default_config = {
         'saving.scrap_folder': scrapfldr,
         'saving.scrap_prefix': 'scrap',

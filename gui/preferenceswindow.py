@@ -12,6 +12,7 @@
 from __future__ import division, print_function
 
 import os.path
+import sys
 from logging import getLogger
 from gettext import gettext as _
 
@@ -291,11 +292,21 @@ class PreferencesWindow (windowing.Dialog):
         dialog.add_button(Gtk.STOCK_CANCEL, Gtk.ResponseType.CANCEL)
         dialog.add_button(Gtk.STOCK_OPEN, Gtk.ResponseType.OK)
         response = dialog.run()
+        # for formating the output nicely when in a home folder
+        if sys.platform == 'win32':
+            ud_docs = lib.glib.get_user_special_dir(
+                GLib.UserDirectory.DIRECTORY_DOCUMENTS,
+            )
+            folderprefix = os.path.join(ud_docs, u)
+        else:
+            folderprefix = u'~/'
         if response == Gtk.ResponseType.OK:
             folder = dialog.get_filename()
+            folder = folder.replace(
+                os.path.expanduser('~') + os.sep, folderprefix)
             self.app.preferences['saving.scrap_folder'] = folder
+            self.app.apply_settings()
         dialog.destroy()
-        self.app.apply_settings()
 
     def scrap_folder_entry_changed_cb(self, widget):
         scrap_folder = widget.get_text()
