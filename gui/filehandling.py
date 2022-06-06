@@ -567,11 +567,12 @@ class FileHandler (object):
         self._filename = value
         for f in self.current_file_observers:
             f(self.filename)
-
+            
         if self.filename:
             if self.filename.startswith(
-                self.get_scrap_folder() + self.get_scrap_prefix()):
-            self.active_scrap_filename = self.filename
+                self.get_scrap_folder() + self.get_scrap_prefix()
+                ):
+                self.active_scrap_filename = self.filename
 
     filename = property(get_filename, set_filename)
 
