@@ -18,6 +18,7 @@ from gettext import gettext as _
 
 from lib.gibindings import Gtk
 from lib.gibindings import Gdk
+from lib.gibindings import GLib
 
 from gui.compatibility import CompatibilityPreferences
 import lib.config
@@ -285,9 +286,9 @@ class PreferencesWindow (windowing.Dialog):
 
     def scrap_folder_button_pressed_cb(self, widget):
         dialog = Gtk.FileChooserDialog(
-        title="Choose a folder...",
-        transient_for=self.app.drawWindow,
-        action=Gtk.FileChooserAction.SELECT_FOLDER,
+            title="Choose a folder...",
+            transient_for=self.app.drawWindow,
+            action=Gtk.FileChooserAction.SELECT_FOLDER,
         )
         dialog.add_button(Gtk.STOCK_CANCEL, Gtk.ResponseType.CANCEL)
         dialog.add_button(Gtk.STOCK_OPEN, Gtk.ResponseType.OK)
