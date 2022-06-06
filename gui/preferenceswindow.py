@@ -298,7 +298,7 @@ class PreferencesWindow (windowing.Dialog):
             ud_docs = lib.glib.get_user_special_dir(
                 GLib.UserDirectory.DIRECTORY_DOCUMENTS,
             )
-            folderprefix = os.path.join(ud_docs, u)
+            folderprefix = ud_docs
         else:
             folderprefix = u'~/'
         if response == Gtk.ResponseType.OK:
