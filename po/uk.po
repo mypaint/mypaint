@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: mypaint v2.0.0-alpha.11-2-g0673fe8\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-04-17 23:27+0200\n"
-"PO-Revision-Date: 2022-06-06 16:16+0000\n"
+"PO-Revision-Date: 2022-06-20 00:19+0000\n"
 "Last-Translator: Ihor Hordiichuk <igor_ck@outlook.com>\n"
 "Language-Team: Ukrainian <https://hosted.weblate.org/projects/mypaint/"
 "mypaint/uk/>\n"
@@ -18,7 +18,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
 "%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
-"X-Generator: Weblate 4.13-dev\n"
+"X-Generator: Weblate 4.13.1-dev\n"
 
 #: ../gui/accelmap.py:86
 msgctxt "placeholder for keymap filtering"
@@ -1233,6 +1233,14 @@ msgid ""
 "It is <b>strongly recommended</b> to upgrade to <b>MyPaint {new_version}</b> "
 "or newer if you want to edit this file!"
 msgstr ""
+"«{filename}» було збережено за допомогою <b>MyPaint {new_version}</b>. Він "
+"може бути <b>несумісним</b> з <b>MyPaint {current_version}</b>.\n"
+"\n"
+"Редагування цього файлу за допомогою цієї версії MyPaint може бути не "
+"коректним, і навіть може призвести до збоїв.\n"
+"\n"
+"<b>Радимо</b> оновитися до <b>MyPaint {new_version}</b> або новішої версії, "
+"якщо ви хочете редагувати цей файл!"
 
 #: ../gui/compatibility.py:54
 #, python-brace-format
@@ -1246,6 +1254,14 @@ msgid ""
 "\n"
 "To be safe you should upgrade to MyPaint {new_version} or newer."
 msgstr ""
+"«{filename}» було збережено за допомогою <b>MyPaint {new_version}</b>. Він "
+"може бути не повністю сумісним з <b>MyPaint {current_version}</b>.\n"
+"\n"
+"Збереження його в цій версії MyPaint може призвести до втрати даних, які "
+"підтримуються лише новішою версією.\n"
+"\n"
+"Щоб зробити це безпечно, вам слід оновитися до MyPaint {new_version} або "
+"новішої версії."
 
 #: ../gui/compatibility.py:65
 msgctxt "file compatibility question"
@@ -1279,7 +1295,7 @@ msgstr "Завжди відкривати в режимі 2.x"
 #: ../gui/compatibility.py:215
 msgctxt "Prefs Dialog|Compatibility"
 msgid "Open in 1.x mode unless file contains pigment layers"
-msgstr ""
+msgstr "Відкрити в режимі сумісності 1.x, якщо файл не містить шарів барвників"
 
 #. TRANSLATORS: This is a label for a dropdown menu in the
 #. TRANSLATORS: file chooser dialog when loading .ora files.
@@ -1351,7 +1367,7 @@ msgstr "Масштабування"
 #: ../gui/device.py:131
 msgctxt "device settings: unmodified scroll action"
 msgid "Pan"
-msgstr ""
+msgstr "Пересовування"
 
 #. TRANSLATORS: Column's data is the device's name
 #: ../gui/device.py:432
@@ -1425,6 +1441,8 @@ msgid ""
 "<b>A brush named “{brush_name}” already exists.</b>\n"
 "Do you want to replace it, or should the new brush be renamed?"
 msgstr ""
+"<b>Пензель з назвою «{brush_name}» вже існує.</b>\n"
+"Замінити його, чи перейменувати новий пензель?"
 
 #: ../gui/dialogs.py:196
 msgid "Overwrite brush group?"
@@ -1438,6 +1456,10 @@ msgid ""
 "If you replace it, the brushes may be moved to a group called "
 "“{deleted_groupname}”."
 msgstr ""
+"<b>Група під назвою «{groupname}» вже існує.</b>\n"
+"Замінити її, чи перейменувати нову групу?\n"
+"Якщо ви заміните її, пензлі можуть бути переміщені в групу під назвою "
+"«{deleted_groupname}»."
 
 #: ../gui/dialogs.py:326
 msgid "Import brush package?"
@@ -1469,12 +1491,12 @@ msgstr "Вернути"
 #: ../gui/document.py:458
 #, python-format
 msgid "Load brush settings from shortcut slot %d"
-msgstr ""
+msgstr "Завантажити налаштування пензля з панелі швидкого доступу %d"
 
 #: ../gui/document.py:459
 #, python-format
 msgid "Store brush settings in shortcut slot %d"
-msgstr ""
+msgstr "Зберегти налаштування пензля до панелі швидкого доступу %d"
 
 #: ../gui/document.py:460
 #, python-format
@@ -1651,6 +1673,8 @@ msgid ""
 "MyPaint needs to edit a file of type “{type_name}” ({content_type}). What "
 "application should it use?"
 msgstr ""
+"MyPaint потрібно відредагувати файл типу «{type_name}» ({content_type}). "
+"Який застосунок він повинен використати?"
 
 #: ../gui/externalapp.py:150
 #, python-brace-format
@@ -1658,6 +1682,8 @@ msgid ""
 "What application should MyPaint use for editing files of type "
 "“{type_name}” ({content_type})?"
 msgstr ""
+"Який застосунок повинен використовувати MyPaint для редагування файлів типу "
+"«{type_name}» ({content_type})?"
 
 #: ../gui/externalapp.py:156
 msgid "Open With…"
@@ -1802,7 +1828,7 @@ msgstr "JPEG (*.jpg; *.jpeg)"
 #: ../gui/filehandling.py:495
 msgctxt "save dialogs: save formats and options"
 msgid "By extension (prefer default format)"
-msgstr ""
+msgstr "За розширенням (надавати перевагу типовому формату)"
 
 #: ../gui/filehandling.py:499
 msgctxt "save dialogs: save formats and options"
@@ -1886,12 +1912,12 @@ msgstr ""
 #: ../gui/filehandling.py:804
 msgctxt "File→New: confirm dialog: title question"
 msgid "New Canvas?"
-msgstr ""
+msgstr "Нове полотно?"
 
 #: ../gui/filehandling.py:808
 msgctxt "File→New: confirm dialog: continue button"
 msgid "_New Canvas"
-msgstr ""
+msgstr "_Нове полотно"
 
 #: ../gui/filehandling.py:1024
 msgctxt "File→Open: confirm dialog: title question"
@@ -1983,7 +2009,7 @@ msgstr "Заливка"
 #: ../gui/fill.py:129
 msgctxt "Usage description of the Flood Fill mode"
 msgid "Fill areas with color"
-msgstr ""
+msgstr "Заливка ділянок кольором"
 
 #: ../gui/fill.py:505
 msgctxt ""
@@ -2056,7 +2082,7 @@ msgctxt ""
 "Options under this category relate to where the fill will end up (default: "
 "the active layer) and how it will be combined with that layer."
 msgid "Target:"
-msgstr ""
+msgstr "Ціль:"
 
 #: ../gui/fill.py:644
 msgctxt "fill options: 'Target:' category (tooltip)"
@@ -2081,12 +2107,12 @@ msgstr ""
 #: ../gui/fill.py:670
 msgctxt "fill options: Target | Blend Mode dropdown - warning text"
 msgid "This mode does nothing when alpha locking is enabled!"
-msgstr ""
+msgstr "Цей режим не працює, коли увімкнено альфа-блокування!"
 
 #: ../gui/fill.py:684
 msgctxt "fill options: Target | Blend Mode dropdown (tooltip)"
 msgid "Blend mode used when filling"
-msgstr ""
+msgstr "Режим змішування використовується під час заливки"
 
 #: ../gui/fill.py:699
 msgid "Opacity:"
@@ -2095,7 +2121,7 @@ msgstr "Непрозорість:"
 #: ../gui/fill.py:702
 msgctxt "fill options: Opacity slider (tooltip)"
 msgid "Opacity of the fill"
-msgstr ""
+msgstr "Непрозорість заливки"
 
 #: ../gui/fill.py:725
 msgctxt "fill options: numeric option - grow/shrink fill (label)"
@@ -2105,12 +2131,12 @@ msgstr "Зміщення:"
 #: ../gui/fill.py:741
 msgctxt "fill options: Offset (tooltip)"
 msgid "The distance in pixels to grow or shrink the fill"
-msgstr ""
+msgstr "Відстань у пікселях для збільшення або зменшення заливки"
 
 #: ../gui/fill.py:752
 msgctxt "fill options: numeric option for blurring fill (label)"
 msgid "Feather:"
-msgstr ""
+msgstr "Перо:"
 
 #: ../gui/fill.py:767
 msgctxt "fill options: Feather (tooltip)"
@@ -2164,7 +2190,7 @@ msgstr "Скинути"
 #: ../gui/fill.py:855
 msgctxt "fill options: Reset button (tooltip)"
 msgid "Reset options to their defaults"
-msgstr ""
+msgstr "Скинути опції до типових значень"
 
 #: ../gui/fill.py:1033
 msgctxt "fill option: default option in the Source Layer dropdown"
@@ -2175,7 +2201,7 @@ msgstr "Вибраний шар"
 #, python-brace-format
 msgctxt "current brush indicator: tooltip (no-description case)"
 msgid "<b>{brush_name}</b>"
-msgstr ""
+msgstr "<b>{brush_name}</b>"
 
 #: ../gui/footer.py:200
 #, python-brace-format
@@ -2184,34 +2210,36 @@ msgid ""
 "<b>{brush_name}</b>\n"
 "{brush_desc}"
 msgstr ""
+"<b>{brush_name}</b>\n"
+"{brush_desc}"
 
 #: ../gui/framewindow.py:102
 msgid "Edit Frame"
-msgstr ""
+msgstr "Змінити рамку"
 
 #: ../gui/framewindow.py:105
 msgid "Adjust the document frame"
-msgstr ""
+msgstr "Налаштування рамку документа"
 
 #: ../gui/framewindow.py:470
 msgid "Height:"
-msgstr ""
+msgstr "Висота:"
 
 #: ../gui/framewindow.py:471
 msgid "Width:"
-msgstr ""
+msgstr "Ширина:"
 
 #: ../gui/framewindow.py:472
 msgid "Resolution:"
-msgstr ""
+msgstr "Роздільність:"
 
 #: ../gui/framewindow.py:474
 msgid "DPI"
-msgstr ""
+msgstr "DPI"
 
 #: ../gui/framewindow.py:476
 msgid "Dots Per Inch (really Pixels Per Inch)"
-msgstr ""
+msgstr "Точок на дюйм (насправді пікселів на дюйм)"
 
 #: ../gui/framewindow.py:479
 msgid "Color:"
@@ -2219,7 +2247,7 @@ msgstr "Колір:"
 
 #: ../gui/framewindow.py:515
 msgid "Frame Color"
-msgstr ""
+msgstr "Колір рамки"
 
 #: ../gui/framewindow.py:537
 msgid "Enabled"
@@ -2227,19 +2255,19 @@ msgstr "Увімкнено"
 
 #: ../gui/framewindow.py:541
 msgid "<b>Frame dimensions</b>"
-msgstr ""
+msgstr "<b>Розміри рамки</b>"
 
 #: ../gui/framewindow.py:562
 msgid "Set Frame to Layer"
-msgstr ""
+msgstr "Допасувати рамку до шару"
 
 #: ../gui/framewindow.py:563
 msgid "Set frame to the extents of the current layer"
-msgstr ""
+msgstr "Установити рамку за розмірами поточного шару"
 
 #: ../gui/framewindow.py:565
 msgid "Set Frame to Document"
-msgstr ""
+msgstr "Установити рамку за розмірами документа"
 
 #: ../gui/framewindow.py:566
 msgid "Set frame to the combination of all layers"
@@ -2247,35 +2275,35 @@ msgstr ""
 
 #: ../gui/framewindow.py:576
 msgid "Trim Layer to Frame"
-msgstr ""
+msgstr "Обрізати шар до розміру рамки"
 
 #: ../gui/framewindow.py:577
 msgid "Trim parts of the current layer which lie outside the frame"
-msgstr ""
+msgstr "Обрізати частини поточного шару, які виступають за межі рамки"
 
 #: ../gui/framewindow.py:915
 msgid "px"
-msgstr ""
+msgstr "px"
 
 #: ../gui/framewindow.py:916
 msgid "in"
-msgstr ""
+msgstr "дюйми"
 
 #: ../gui/framewindow.py:917
 msgid "cm"
-msgstr ""
+msgstr "см"
 
 #: ../gui/framewindow.py:918
 msgid "mm"
-msgstr ""
+msgstr "мм"
 
 #: ../gui/freehand.py:89
 msgid "Freehand Drawing"
-msgstr ""
+msgstr "Малювання від руки"
 
 #: ../gui/freehand.py:92
 msgid "Paint free-form brush strokes"
-msgstr ""
+msgstr "Малювання мазків пензля довільної форми"
 
 #. TRANSLATORS: Short alias for "Slow position tracking". This is
 #. TRANSLATORS: used on the options panel.
@@ -2409,21 +2437,21 @@ msgstr ""
 #. TRANSLATORS: Note "in the horizontal plane" - not "horizontally".
 #: ../gui/layermanip.py:47 ../lib/command.py:1061
 msgid "Move Layer"
-msgstr ""
+msgstr "Перемістити шар"
 
 #: ../gui/layermanip.py:50
 msgid "Move the current layer"
-msgstr ""
+msgstr "Перемістити поточний шар"
 
 #: ../gui/layerprops.py:356
 msgctxt "layer properties dialog: name entry: icon tooltip"
 msgid "Layer names cannot be empty."
-msgstr ""
+msgstr "Назви шарів не можуть бути порожніми."
 
 #: ../gui/layerprops.py:361
 msgctxt "layer properties dialog: name entry: icon tooltip"
 msgid "Layer name is not unique."
-msgstr ""
+msgstr "Назва шару не унікальна."
 
 #: ../gui/layerprops.py:377
 msgctxt "layer properties dialog: title"
@@ -2438,12 +2466,12 @@ msgstr "Готово"
 #. Visibility flag column
 #: ../gui/layers.py:406
 msgid "Visible"
-msgstr ""
+msgstr "Видимий"
 
 #. Other flags column
 #: ../gui/layers.py:438
 msgid "Flags"
-msgstr ""
+msgstr "Прапори"
 
 #: ../gui/layers.py:939
 msgctxt "Layers: description: no layer (\"never happens\" condition!)"
@@ -2458,18 +2486,18 @@ msgstr "?режим"
 #: ../gui/layers.py:966
 msgctxt "Layers: description parts: layer hidden"
 msgid "Hidden"
-msgstr ""
+msgstr "Прихований"
 
 #: ../gui/layers.py:971
 #, python-format
 msgctxt "Layers: description parts: opacity percentage"
 msgid "%d%% opaque"
-msgstr ""
+msgstr "%d%% непрозорості"
 
 #: ../gui/layers.py:978
 msgctxt "Layers dockable: description parts: layer locked flag"
 msgid "Locked"
-msgstr ""
+msgstr "Заблокований"
 
 #: ../gui/layers.py:989
 msgctxt "Layers: description parts: unknown type (fallback str!)"
@@ -2510,7 +2538,7 @@ msgstr ""
 #: ../gui/layerswindow.py:102
 #, python-format
 msgid "Layer opacity: %d%%"
-msgstr ""
+msgstr "Непрозорість шару: %d%%"
 
 #. TRANSLATORS: label for the opacity slider (text)
 #. TRANSLATORS: note that "%%" turns into "%"
@@ -2597,7 +2625,7 @@ msgstr ""
 
 #: ../gui/linemode.py:221 ../gui/linemode.py:800
 msgid "Lines and Curves"
-msgstr ""
+msgstr "Лінії та криві"
 
 #. TRANSLATORS: users should never see this message
 #: ../gui/linemode.py:225
@@ -2612,7 +2640,7 @@ msgstr ""
 
 #: ../gui/linemode.py:814
 msgid "Connected Lines"
-msgstr ""
+msgstr "З'єднані лінії"
 
 #: ../gui/linemode.py:817
 msgid "Draw a sequence of lines; Shift adds curves, Ctrl constrains angle"
@@ -2667,7 +2695,7 @@ msgstr "придатність до портування"
 #: ../gui/meta.py:68
 msgctxt "About dialog: credits: tasks"
 msgid "project management"
-msgstr ""
+msgstr "керування проєктом"
 
 #: ../gui/meta.py:72
 msgctxt "About dialog: credits: tasks: brush presets and icons"
@@ -2682,7 +2710,7 @@ msgstr ""
 #: ../gui/meta.py:80
 msgctxt "About dialog: credits: tasks: icons for internal tools"
 msgid "tool icons"
-msgstr ""
+msgstr "піктограми інструментів"
 
 #: ../gui/meta.py:84
 msgctxt "About dialog: credits: tasks: the main application icon"
@@ -2754,17 +2782,17 @@ msgstr ""
 #. TRANSLATORS:"Paint Pigment Mode" for the options panel. Short.
 #: ../gui/mode.py:600
 msgid "Pigment:"
-msgstr ""
+msgstr "Барвник:"
 
 #: ../gui/optionspanel.py:47
 msgctxt "options panel: tab tooltip: title"
 msgid "Tool Options"
-msgstr ""
+msgstr "Параметри інструментів"
 
 #: ../gui/optionspanel.py:51
 msgctxt "options panel: tab tooltip: description"
 msgid "Specialized settings for the current editing tool"
-msgstr ""
+msgstr "Спеціальні налаштування для поточного інструменту редагування"
 
 #: ../gui/optionspanel.py:58
 #, python-brace-format
@@ -2775,12 +2803,12 @@ msgstr "<b>{mode_name}</b>"
 #: ../gui/optionspanel.py:62
 msgctxt "options panel: body"
 msgid "<i>No options available</i>"
-msgstr ""
+msgstr "<i>Немає доступних параметрів</i>"
 
 #: ../gui/overlays.py:161
 #, python-format
 msgid "Zoom: %.01f%%"
-msgstr ""
+msgstr "Масштаб: %.01f%%"
 
 #: ../gui/picker.py:462
 msgctxt "context picker: statusbar text during grab"
@@ -2978,15 +3006,15 @@ msgstr ""
 
 #: ../gui/viewmanip.py:79
 msgid "Zoom View"
-msgstr ""
+msgstr "Масштаб"
 
 #: ../gui/viewmanip.py:82
 msgid "Zoom the canvas view"
-msgstr ""
+msgstr "Збільшити зображення полотна"
 
 #: ../gui/viewmanip.py:122
 msgid "Rotate View"
-msgstr ""
+msgstr "Обертання"
 
 #: ../gui/viewmanip.py:125
 msgid "Rotate the canvas view"
@@ -3014,11 +3042,11 @@ msgstr ""
 
 #: ../lib/command.py:612
 msgid "Trim Layer"
-msgstr ""
+msgstr "Обрізати шар"
 
 #: ../lib/command.py:632
 msgid "Uniquify Layer Pixels"
-msgstr ""
+msgstr "Уніфікувати пікселі шару"
 
 #: ../lib/command.py:655
 msgid "Refactor Group"
@@ -3202,7 +3230,7 @@ msgstr ""
 #, python-brace-format
 msgctxt "Document IO: hint templates for user-facing exceptions"
 msgid "Unable to write “{filename}”: {err}"
-msgstr ""
+msgstr "Не вдалося зберегти «{filename}»: {err}"
 
 #: ../lib/document.py:1501
 #, python-brace-format
@@ -3211,6 +3239,8 @@ msgid ""
 "{error_loading_common}\n"
 "The file does not exist."
 msgstr ""
+"{error_loading_common}\n"
+"Файл не існує."
 
 #: ../lib/document.py:1508
 #, python-brace-format
@@ -3232,6 +3262,11 @@ msgid ""
 "\n"
 "{see_logs}"
 msgstr ""
+"{error_loading_common}\n"
+"\n"
+"Причина: {reason}\n"
+"\n"
+"{see_logs}"
 
 #: ../lib/document.py:1559
 #, python-brace-format
@@ -3246,7 +3281,7 @@ msgstr ""
 #: ../lib/document.py:1590
 msgctxt "Document IO: group name for Import Layers"
 msgid "Imported layers"
-msgstr ""
+msgstr "Імпортовані шари"
 
 #: ../lib/document.py:1757
 #, python-brace-format
@@ -3268,11 +3303,16 @@ msgid ""
 "\n"
 "{see_logs}"
 msgstr ""
+"Не вдалося відновити роботу з автоматичної резервної копії.\n"
+"\n"
+"Причина: {reason}\n"
+"\n"
+"{see_logs}"
 
 #: ../lib/floodfill.py:132
 msgctxt "floodfill status message: use active tense"
 msgid "Filling"
-msgstr ""
+msgstr "Заливка"
 
 #: ../lib/floodfill.py:133
 msgctxt "floodfill status message: use active tense"
@@ -3282,7 +3322,7 @@ msgstr ""
 #: ../lib/floodfill.py:134
 msgctxt "floodfill status message: use active tense"
 msgid "Blurring"
-msgstr ""
+msgstr "Розмиття"
 
 #: ../lib/floodfill.py:135
 msgctxt "floodfill status message: use active tense"
@@ -3292,12 +3332,12 @@ msgstr ""
 #: ../lib/floodfill.py:136
 msgctxt "floodfill status message: use active tense"
 msgid "Finishing up"
-msgstr ""
+msgstr "Завершення"
 
 #: ../lib/floodfill.py:138
 msgctxt "uniform square region of pixels, plural noun"
 msgid "tiles"
-msgstr ""
+msgstr "плитки"
 
 #. TRANSLATORS: Assumption for all "Time period abbreviations":
 #. TRANSLATORS: they don't need ngettext (to support plural/singular)
@@ -3385,12 +3425,12 @@ msgstr "Група шарів"
 #: ../lib/layer/tree.py:70
 msgctxt "layer default names"
 msgid "Placeholder"
-msgstr ""
+msgstr "Заповнювач"
 
 #: ../lib/layer/tree.py:109
 msgctxt "layer default names"
 msgid "Root"
-msgstr ""
+msgstr "Корінь"
 
 #: ../lib/layer/tree.py:2055 ../lib/layer/tree.py:2121
 msgctxt "layer default names: joiner punctuation for merged layers"
@@ -3462,6 +3502,8 @@ msgstr "Барвник"
 msgid ""
 "Similar to mixing actual pigments by upsampling to 10 spectral channels."
 msgstr ""
+"Подібно до змішування справжніх барвників шляхом передискретизації до 10 "
+"спектральних каналів."
 
 #: ../lib/modes.py:58
 msgid "Multiply"
@@ -4576,7 +4618,7 @@ msgstr "Типовий новий тип шару:"
 #: ../gui/preferenceswindow.glade:1581 ../gui/preferenceswindow.glade:1595
 msgctxt "Prefs Dialog|Compatibility"
 msgid "Default Pigment Brush Setting:"
-msgstr "Налаштування типового кольору пензля:"
+msgstr "Типові налаштування пензля «Барвник»:"
 
 #. Label description for the 1.x compatibility-mode-by-default setting
 #: ../gui/preferenceswindow.glade:1671
@@ -4588,7 +4630,7 @@ msgid ""
 msgstr ""
 "Під час створення нових документів типово використовувати застарілий режим "
 "сумісності 1.x. У цьому режимі файли 1.x будуть мати такий же, як і в старих "
-"версіях, але змішування пігментів не працюватиме правильно."
+"версіях, але змішування барвників не працюватиме правильно."
 
 #: ../gui/preferenceswindow.glade:1690
 msgctxt "Prefs Dialog|Compatibility"
@@ -5044,7 +5086,7 @@ msgstr ""
 #: ../gui/resources.xml:416
 msgctxt "Menu→Layer→Slice (labels), Accel Editor (labels)"
 msgid "Trim Layer to Frame"
-msgstr ""
+msgstr "Обрізати шар до розміру рамки"
 
 #: ../gui/resources.xml:417
 msgctxt "Accel Editor (descriptions)"
@@ -5054,7 +5096,7 @@ msgstr ""
 #: ../gui/resources.xml:423
 msgctxt "Menu→Layer→Slice (labels), Accel Editor (labels)"
 msgid "Uniquify Layer Pixels"
-msgstr ""
+msgstr "Уніфікувати пікселі шару"
 
 #: ../gui/resources.xml:424
 msgctxt "Accel Editor (descriptions)"
@@ -6441,7 +6483,7 @@ msgstr ""
 #: ../gui/resources.xml:1677
 msgctxt "Menu→Edit→Current Mode (labels)"
 msgid "Rotate View"
-msgstr ""
+msgstr "Обертання"
 
 #: ../gui/resources.xml:1678
 msgctxt "Toolbar (short labels)"
@@ -6456,17 +6498,17 @@ msgstr ""
 #: ../gui/resources.xml:1687
 msgctxt "Menu→View (labels), Accel Editor (labels)"
 msgid "Rotate View"
-msgstr ""
+msgstr "Обертання"
 
 #: ../gui/resources.xml:1688
 msgctxt "Accel Editor (descriptions)"
 msgid "Interactively rotate your view of the canvas."
-msgstr ""
+msgstr "Інтерактивно обертати зображення полотна."
 
 #: ../gui/resources.xml:1697
 msgctxt "Menu→Edit→Current Mode (labels)"
 msgid "Zoom View"
-msgstr ""
+msgstr "Масштаб"
 
 #: ../gui/resources.xml:1698
 msgctxt "Toolbar (short labels)"
@@ -6481,7 +6523,7 @@ msgstr ""
 #: ../gui/resources.xml:1707
 msgctxt "Menu→View (labels), Accel Editor (labels)"
 msgid "Zoom View"
-msgstr ""
+msgstr "Масштаб"
 
 #: ../gui/resources.xml:1708
 msgctxt "Accel Editor (descriptions)"
@@ -6516,7 +6558,7 @@ msgstr ""
 #: ../gui/resources.xml:1738
 msgctxt "Menu→Edit→Current Mode (labels)"
 msgid "Connected Lines"
-msgstr ""
+msgstr "З'єднані лінії"
 
 #: ../gui/resources.xml:1739
 msgctxt "Toolbar (short labels)"
@@ -6616,7 +6658,7 @@ msgstr ""
 #: ../gui/resources.xml:1822
 msgctxt "Menu→Edit→Current Mode (labels)"
 msgid "Edit Frame"
-msgstr ""
+msgstr "Змінити рамку"
 
 #: ../gui/resources.xml:1823
 msgctxt "Toolbar (short labels)"
