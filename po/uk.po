@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: mypaint v2.0.0-alpha.11-2-g0673fe8\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-04-17 23:27+0200\n"
-"PO-Revision-Date: 2022-06-20 00:19+0000\n"
+"PO-Revision-Date: 2022-07-07 20:16+0000\n"
 "Last-Translator: Ihor Hordiichuk <igor_ck@outlook.com>\n"
 "Language-Team: Ukrainian <https://hosted.weblate.org/projects/mypaint/"
 "mypaint/uk/>\n"
@@ -1653,19 +1653,20 @@ msgstr ""
 msgid ""
 "Editing cancelled. You can still edit “{layer_name}” from the Layers menu."
 msgstr ""
+"Редагування скасовано. Ви можете редагувати «{layer_name}» у меню «Шари»."
 
 #. TRANSLATORS: This is a statusbar message shown when
 #. TRANSLATORS:  a layer is updated from an external edit
 #: ../gui/externalapp.py:55
 #, python-brace-format
 msgid "Updated layer “{layer_name}” with external edits"
-msgstr ""
+msgstr "Шар «{layer_name}» оновлений зовнішніми змінами"
 
 #: ../gui/externalapp.py:59
 #, python-brace-format
 msgctxt "Edit in External App (statusbar message)"
 msgid "Failed to update layer with external edits from “{file_basename}”."
-msgstr ""
+msgstr "Не вдалося оновити шар зовнішніми змінами з «{file_basename}»."
 
 #: ../gui/externalapp.py:146
 #, python-brace-format
@@ -1907,7 +1908,7 @@ msgstr "Пр_одовжити"
 #, python-brace-format
 msgctxt "Destructive action confirm dialog: warning message"
 msgid "You risk losing {abbreviated_time} of unsaved painting."
-msgstr ""
+msgstr "Ви ризикуєте втратити {abbreviated_time} незбереженого малювання."
 
 #: ../gui/filehandling.py:804
 msgctxt "File→New: confirm dialog: title question"
