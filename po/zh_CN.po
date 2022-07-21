@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: mypaint v1.2.0-beta.3-43-g9e683e2\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-04-17 23:27+0200\n"
-"PO-Revision-Date: 2022-07-21 08:17+0000\n"
+"PO-Revision-Date: 2022-07-22 16:17+0000\n"
 "Last-Translator: poi <erbaotao@outlook.com>\n"
 "Language-Team: Chinese (Simplified) <https://hosted.weblate.org/projects/"
 "mypaint/mypaint/zh_Hans/>\n"
@@ -749,7 +749,7 @@ msgctxt "HCY Gamut Mask template description"
 msgid ""
 "Contrasting opposites, balanced by having central neutrals between them on "
 "the color wheel."
-msgstr "对比对立，并通过色轮上的中央中性色在它们进行平衡。"
+msgstr "对立色显示在相对的位置，通过色轮中央的中性色在它们之间进行平衡。"
 
 #: ../gui/colors/hcywheel.py:957
 msgctxt "HCY Gamut Mask template name"
@@ -845,7 +845,7 @@ msgctxt "HCY Wheel color adjuster page: description for tooltips etc."
 msgid ""
 "Set the color using cylindrical hue/chroma/luma space. The circular slices "
 "are equiluminant."
-msgstr "使用色相/色度/亮度空间圆柱设置颜色。圆片亮度是同等的。"
+msgstr "使用色相/色度/亮度空间圆柱调整颜色。圆柱的每个圆截面上色彩的亮度相同。"
 
 #. Tooltip mappings, indexed by whatever the slider currently represents
 #: ../gui/colors/hsvcube.py:46 ../gui/colors/hsvsquare.py:133
@@ -882,15 +882,16 @@ msgstr "HSV 立方体"
 
 #: ../gui/colors/hsvcube.py:89
 msgid "An HSV cube which can be rotated to show different planar slices."
-msgstr "HSV 立方体(旋转可显示不同的平面切片)。"
+msgstr "显示 HSV 立方体的某切面（切面位置可调）。旋转立方体相当于切换色相、饱和度与明"
+"度的调整位置。"
 
 #: ../gui/colors/hsvsquare.py:56
 msgid "HSV Square"
-msgstr "HSV 方格"
+msgstr "HSV 正方形"
 
 #: ../gui/colors/hsvsquare.py:60
 msgid "An HSV Square which can be rotated to show different hues."
-msgstr "一个 HSV 正方形(旋转可显示不同的色相)。"
+msgstr "调整饱和度与明度的正方形，加上调整色相的色相环。"
 
 #: ../gui/colors/hsvwheel.py:91
 msgid "HSV Wheel"
@@ -1043,9 +1044,10 @@ msgstr "填补空白 (HCY)"
 
 #. TRANSLATORS: Color interpolations
 #: ../gui/colors/paletteview.py:825
+#, fuzzy
 msgctxt "palette view: context menu"
 msgid "Fill Gap (HSV)"
-msgstr "填补空白 (HSV)"
+msgstr "过渡色差 (HSV)"
 
 #: ../gui/colors/paletteview.py:1283
 msgctxt "palette load dialog: filters"
@@ -1100,7 +1102,7 @@ msgstr "Y"
 #: ../gui/colors/sliders.py:109
 msgctxt "color sliders panel: tab title (in tooltip)"
 msgid "Component Sliders"
-msgstr "构成要素滚动条"
+msgstr "坐标滑动条"
 
 #: ../gui/colors/sliders.py:116
 msgctxt "color sliders panel: tab description (in tooltip)"
@@ -1170,7 +1172,7 @@ msgstr "同心环"
 #: ../gui/colortools.py:159
 msgctxt "color changer dock panels: tab tooltip description"
 msgid "Change color using concentric HSV rings."
-msgstr "通过HSV同心环改变颜色。"
+msgstr "用表示 HSV 的 3 个同心环调整颜色。"
 
 #: ../gui/colortools.py:169
 msgctxt "color changer dock panels: tab tooltip title"
@@ -1180,7 +1182,7 @@ msgstr "交叉碗"
 #: ../gui/colortools.py:173
 msgctxt "color changer dock panels: tab tooltip description"
 msgid "Change color with HSV ramps crossing a radial bowl of color."
-msgstr "通过穿过辐射状的碗形颜色的HSV坡道改变颜色。"
+msgstr "使用色碗以及其上辐射状的 HSV 色条调整颜色。"
 
 #: ../gui/compatibility.py:34
 msgctxt "File Load Compat Options"
@@ -2408,7 +2410,7 @@ msgstr ""
 
 #: ../gui/inktool.py:97 ../gui/inktool.py:479
 msgid "Inking"
-msgstr "墨迹作图"
+msgstr "描点作图"
 
 #: ../gui/inktool.py:100
 msgid "Draw, and then adjust smooth lines"
@@ -2662,7 +2664,7 @@ msgstr "绘制一系列直线;Shift键添加曲线， Ctrl 键限制角度"
 
 #: ../gui/linemode.py:827
 msgid "Ellipses and Circles"
-msgstr "椭圆形和圆形"
+msgstr "圆与椭圆"
 
 #: ../gui/linemode.py:830
 msgid "Draw ellipses; Shift rotates, Ctrl constrains ratio/angle"
@@ -4187,17 +4189,17 @@ msgstr "200%"
 #: ../gui/preferenceswindow.glade:72
 msgctxt "Prefs Dialog|View|Cursors|Freehand Cursor|Type|"
 msgid "Circle with light outline"
-msgstr "带有轻微轮廓的圆"
+msgstr "带细微轮廓的圆圈"
 
 #: ../gui/preferenceswindow.glade:76
 msgctxt "Prefs Dialog|View|Cursors|Freehand Cursor|Type|"
 msgid "Circle with medium outline"
-msgstr "带有中等轮廓的圆"
+msgstr "带中等轮廓的圆圈"
 
 #: ../gui/preferenceswindow.glade:80
 msgctxt "Prefs Dialog|View|Cursors|Freehand Cursor|Type|"
 msgid "Circle with heavy outline"
-msgstr "带有重量级轮廓的圆"
+msgstr "带加粗轮廓的圆圈"
 
 #: ../gui/preferenceswindow.glade:84
 msgctxt "Prefs Dialog|View|Cursors|Freehand Cursor|Type|"
@@ -4451,7 +4453,7 @@ msgstr ""
 
 #: ../gui/preferenceswindow.glade:946
 msgid "Some of these settings require MyPaint to be restarted."
-msgstr "这些设置当中的一些需要MyPaint重启。"
+msgstr "调整部分设置需要重启 MyPaint。"
 
 #: ../gui/preferenceswindow.glade:969
 msgctxt "Prefs Dialog|View|Interface|Icon size|"
@@ -4509,7 +4511,7 @@ msgstr ""
 "平滑滚动支持使得来自一些设备的滚动手势以及滚轮事件平滑而不是分步的。该设置适"
 "应于触摸板，但使用鼠标滚动时会感到不适。\n"
 "\n"
-"如果支持平滑滚动，可用通过在滚动时按住Shift键简单地调回到逐步滚动。\n"
+"如果支持平滑滚动，可用通过在滚动时按住 Shift 键简单地调回到逐步滚动。\n"
 "\n"
 "通过滚动实现平移视图需要打开该设置，并且你的设备需要配置成发送双向滚动事件。"
 
@@ -4615,9 +4617,8 @@ msgid ""
 "The traditionally arranged red/yellow/blue wheel as used by many artists "
 "since the 18th century, approximated with pure display colors evenly "
 "arranged around the circle. Green is opposite red."
-msgstr ""
-"按传统排列的红/黄/蓝色色轮从18世纪就被众多艺术家所使用。纯显示颜色以接近均匀"
-"地方式围绕圆圈排列。绿色对着红色。"
+msgstr "按传统排列的红/黄/蓝色色轮从 18 世纪就被众多艺术家所使用。纯显示颜色以接近均"
+"匀地方式围绕圆圈排列。绿色对着红色。"
 
 #: ../gui/preferenceswindow.glade:1362
 msgctxt "Prefs Dialog|Color|Color Wheel|Primaries|RYB|"
@@ -4625,9 +4626,8 @@ msgid ""
 "The traditionally arranged red/yellow/blue wheel as used by many artists "
 "since the 18th century, approximated with pure display colors evenly "
 "arranged around the circle. Green is opposite red."
-msgstr ""
-"按传统排列的红/黄/蓝色色轮从18世纪就被众多艺术家所使用。纯显示颜色以接近均匀"
-"地方式围绕圆圈排列。绿色对着红色。"
+msgstr "按传统排列的红/黄/蓝色色轮从 18 世纪就被众多艺术家所使用。纯显示颜色以接近均"
+"匀地方式围绕圆圈排列。绿色对着红色。"
 
 #: ../gui/preferenceswindow.glade:1378
 msgctxt "Prefs Dialog|Color|Color Wheel|Primaries|"
@@ -4808,7 +4808,7 @@ msgstr "加载文件，继续之前的工作。"
 #: ../gui/resources.xml:82
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "Open Most Recent"
-msgstr "最近打开"
+msgstr "上次打开的文件"
 
 #: ../gui/resources.xml:83
 msgctxt "Accel Editor (descriptions)"
@@ -5493,7 +5493,7 @@ msgstr "重置和中心视图"
 #: ../gui/resources.xml:685
 msgctxt "Accel Editor (descriptions)"
 msgid "Reset Zoom, Rotation and Mirroring, and recenter the document."
-msgstr "重置缩放，旋转和镜像并将文档居中。"
+msgstr "重置缩放、旋转和镜像，将画布居中。"
 
 #: ../gui/resources.xml:693
 msgctxt "Menu→View (labels), Accel Editor (labels)"
@@ -5503,7 +5503,7 @@ msgstr "适合视图"
 #: ../gui/resources.xml:694
 msgctxt "Accel Editor (descriptions)"
 msgid "Switch between a fitted view and your working location and zoom."
-msgstr "在合适的视图，工作位置以及缩放间切换。"
+msgstr "在总览视图和工作位置的局部视图间缩放切换。"
 
 #: ../gui/resources.xml:701
 msgctxt "Menu→View (labels)"
@@ -5630,27 +5630,27 @@ msgstr "逆时针旋转画布。"
 #: ../gui/resources.xml:828
 msgctxt "Menu→View→Adjust View (labels), Accel Editor (labels)"
 msgid "Mirror Horizontal"
-msgstr "水平镜像"
+msgstr "上下镜像"
 
 #: ../gui/resources.xml:829
 msgctxt "Accel Editor (descriptions)"
 msgid "Flip the view left to right."
-msgstr "左右翻转视图。"
+msgstr "左右镜像视图。"
 
 #: ../gui/resources.xml:837
 msgctxt "Menu→View→Adjust View (labels), Accel Editor (labels)"
 msgid "Mirror Vertical"
-msgstr "垂直镜像"
+msgstr "上下镜像"
 
 #: ../gui/resources.xml:838
 msgctxt "Accel Editor (descriptions)"
 msgid "Flip the view upside-down."
-msgstr "上下翻转视图。"
+msgstr "上下镜像视图。"
 
 #: ../gui/resources.xml:845
 msgctxt "Menu→View (labels), Accel Editor (labels)"
 msgid "Layer Solo"
-msgstr "图层独显"
+msgstr "只显示单个图层"
 
 #: ../gui/resources.xml:846
 msgctxt "Accel Editor (descriptions)"
@@ -5660,12 +5660,12 @@ msgstr "切换是否只显示当前图层。"
 #: ../gui/resources.xml:856
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
 msgid "Symmetrical Painting Active"
-msgstr "对称绘画激活"
+msgstr "启用对称绘画"
 
 #: ../gui/resources.xml:857
 msgctxt "Accel Editor (descriptions)"
 msgid "Mirror brushstrokes along the axis of symmetry"
-msgstr "沿对称轴镜像笔画"
+msgstr "按对称轴对称笔画"
 
 #: ../gui/resources.xml:864
 msgctxt "Menu→File (labels), Accel Editor (labels)"
@@ -6128,7 +6128,7 @@ msgstr "视图"
 #: ../gui/resources.xml:1300
 msgctxt "Menu→View (labels)"
 msgid "Feedback"
-msgstr "反馈"
+msgstr "画面反馈"
 
 #: ../gui/resources.xml:1306
 msgctxt "Menu→View (labels)"
@@ -6237,7 +6237,7 @@ msgctxt "Accel Editor (descriptions)"
 msgid ""
 "Dockable cylindrical hue/chroma/luma color selector. The circular slices are "
 "equiluminant."
-msgstr "可停靠的柱状色相/色度/亮度颜色选择器。圆形片是亮度等值的。"
+msgstr "可停靠的色相/色度/亮度圆柱颜色选择器。圆柱的每个圆截面上色彩的亮度相同。"
 
 #: ../gui/resources.xml:1402
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
@@ -6269,7 +6269,7 @@ msgctxt "Accel Editor (descriptions)"
 msgid ""
 "Dockable color selector: HSV cube which can be rotated to show different "
 "planar slices."
-msgstr "可停靠的颜色选择器：HSV立方体旋转以显示不同的平面切片。"
+msgstr "可停靠的颜色选择器：HSV 立方体旋转以显示不同的平面切片。"
 
 #: ../gui/resources.xml:1427
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
@@ -6284,7 +6284,7 @@ msgstr "可停靠的颜色选择器：带色相环的 HSV 正方形。"
 #: ../gui/resources.xml:1435
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "Component Sliders"
-msgstr "构成要素滚动条"
+msgstr "坐标滑动条"
 
 #: ../gui/resources.xml:1436
 msgctxt "Accel Editor (descriptions)"
@@ -6309,7 +6309,7 @@ msgstr "同心环"
 #: ../gui/resources.xml:1452
 msgctxt "Accel Editor (descriptions)"
 msgid "Dockable color selector with concentric HSV rings."
-msgstr "可停靠的颜色选择器，带有HSV 同心环。"
+msgstr "可停靠的颜色选择器，带有 HSV 同心环。"
 
 #: ../gui/resources.xml:1459
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
@@ -6319,7 +6319,7 @@ msgstr "交叉碗"
 #: ../gui/resources.xml:1460
 msgctxt "Accel Editor (descriptions)"
 msgid "Dockable color selector with HSV ramps crossing a radial bowl of color."
-msgstr "可停靠的颜色选择器，带有穿过辐射状的碗形颜色的HSV坡道。"
+msgstr "可停靠的颜色选择器，带有色碗以及其上辐射状的 HSV 色条。"
 
 #: ../gui/resources.xml:1469
 msgctxt "Menu→Window (labels), Accel Editor (labels)"
@@ -6464,7 +6464,7 @@ msgstr "反转显示颜色"
 #: ../gui/resources.xml:1596
 msgctxt "Accel Editor (descriptions)"
 msgid "Filter colors: inverse video. Black is white and red is cyan."
-msgstr "过滤颜色：反转视频。黑色反转为白色，红色反转为青色。"
+msgstr "过滤颜色：反转画面。黑色反转为白色，红色反转为青色。"
 
 #: ../gui/resources.xml:1603
 msgctxt "Menu→View→Display Filter (labels), Accel Editor (labels)"
@@ -6475,7 +6475,7 @@ msgstr "用模拟的对红色不敏感方式显示颜色"
 msgctxt "Accel Editor (descriptions)"
 msgid ""
 "Filter colors to simulate deuteranopia, a common form of color blindness."
-msgstr "过滤颜色以模拟绿色盲(色盲的常见类型)。"
+msgstr "过滤颜色，模拟绿色盲(色盲的常见类型)。"
 
 #: ../gui/resources.xml:1611
 msgctxt "Menu→View→Display Filter (labels), Accel Editor (labels)"
@@ -6485,7 +6485,7 @@ msgstr "用模拟的对绿色不敏感方式显示颜色"
 #: ../gui/resources.xml:1612
 msgctxt "Accel Editor (descriptions)"
 msgid "Filter colors to simulate protanopia, a common form of color blindness."
-msgstr "过滤颜色以模拟红色盲(色盲的常见类型)。"
+msgstr "过滤颜色，模拟红色盲(色盲的常见类型)。"
 
 #: ../gui/resources.xml:1619
 msgctxt "Menu→View→Display Filter (labels), Accel Editor (labels)"
@@ -6495,7 +6495,7 @@ msgstr "用模拟的对蓝色不敏感方式显示颜色"
 #: ../gui/resources.xml:1620
 msgctxt "Accel Editor (descriptions)"
 msgid "Filter colors to simulate tritanopia, a rare form of color blindness."
-msgstr "过滤颜色以模拟蓝色盲(色盲中的罕见类型)。"
+msgstr "过滤颜色，模拟蓝色盲(色盲中的罕见类型)。"
 
 #: ../gui/resources.xml:1635
 msgctxt "Menu→Edit→Current Mode (labels)"
@@ -6635,7 +6635,7 @@ msgstr "连续线段"
 #: ../gui/resources.xml:1740
 msgctxt "Toolbar (tooltips)"
 msgid "Connected Lines: draw sequences of straight or curved lines."
-msgstr "连续线段：绘制直线或曲线的序列。"
+msgstr "连续线段：绘制首尾相连的直线或曲线。"
 
 #: ../gui/resources.xml:1748
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
@@ -6650,7 +6650,7 @@ msgstr "绘制直线或曲线的序列。"
 #: ../gui/resources.xml:1759
 msgctxt "Menu→Edit→Current Mode (labels)"
 msgid "Ellipses and Circles"
-msgstr "椭圆形和圆形"
+msgstr "圆与椭圆"
 
 #: ../gui/resources.xml:1760
 msgctxt "Toolbar (short labels)"
@@ -6660,22 +6660,22 @@ msgstr "椭圆形"
 #: ../gui/resources.xml:1761
 msgctxt "Toolbar (tooltips)"
 msgid "Ellipses and Circles: draw rounded shapes."
-msgstr "椭圆和圆：绘制圆形。"
+msgstr "圆与椭圆：绘制圆圈。"
 
 #: ../gui/resources.xml:1769
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
 msgid "Ellipses and Circles"
-msgstr "圆形与椭圆"
+msgstr "圆与椭圆"
 
 #: ../gui/resources.xml:1770
 msgctxt "Accel Editor (descriptions)"
 msgid "Draw circles and ellipses."
-msgstr "绘制圆和椭圆。"
+msgstr "绘制圆与椭圆。"
 
 #: ../gui/resources.xml:1780
 msgctxt "Menu→Edit→Current Mode (labels)"
 msgid "Inking"
-msgstr "墨迹作图"
+msgstr "描点作图"
 
 #: ../gui/resources.xml:1781
 msgctxt "Toolbar (short labels)"
@@ -6685,12 +6685,12 @@ msgstr "墨水"
 #: ../gui/resources.xml:1782
 msgctxt "Toolbar (tooltips)"
 msgid "Inking: draw smooth controlled lines."
-msgstr "墨迹作图：绘制平滑受控的线。"
+msgstr "描点作图：绘制平滑可调的线条。"
 
 #: ../gui/resources.xml:1790
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
 msgid "Inking"
-msgstr "墨迹作图"
+msgstr "描点作图"
 
 #: ../gui/resources.xml:1791
 msgctxt "Accel Editor (descriptions)"
@@ -6736,7 +6736,7 @@ msgstr "边框"
 msgctxt "Toolbar (tooltips)"
 msgid ""
 "Edit Frame: define a frame around the document to give it a finite size."
-msgstr "编辑边框：围绕文档定义一个边框以给它一个有限的大小。"
+msgstr "编辑边框：设置画布的边界，限制图画的尺寸。"
 
 #: ../gui/resources.xml:1832
 msgctxt "Menu→File (labels), Accel Editor (labels)"
@@ -6787,7 +6787,7 @@ msgstr "选取颜色."
 #: ../gui/resources.xml:1865
 msgctxt "Toolbar (tooltips)"
 msgid "Pick Color: set the painting color from screen pixels."
-msgstr "选取颜色：用来自屏幕像素的颜色设置绘画色彩。"
+msgstr "选取颜色：依屏幕上像素的颜色设置绘画的色彩。"
 
 #: ../gui/resources.xml:1897
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
@@ -6798,7 +6798,7 @@ msgstr "选取颜色色相"
 msgctxt "Accel Editor (descriptions)"
 msgid ""
 "Set the painting Hue from screen pixels while preserving the Chroma and Luma."
-msgstr "用来自屏幕像素的颜色设置绘画色调同时保留色度和亮度。"
+msgstr "从屏幕上的像素选取绘画的色相，但色度和亮度保持不变。"
 
 #: ../gui/resources.xml:1906
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
@@ -6809,7 +6809,7 @@ msgstr "选择色度"
 msgctxt "Accel Editor (descriptions)"
 msgid ""
 "Set the painting Chroma from screen pixels while preserving the Hue and Luma."
-msgstr "用来自屏幕像素的颜色设置绘画色彩同时保留色调和亮度。"
+msgstr "从屏幕上的像素选取绘画的色度，但色相和亮度保持不变。"
 
 #: ../gui/resources.xml:1915
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
@@ -6820,7 +6820,7 @@ msgstr "选择颜色亮度"
 msgctxt "Accel Editor (descriptions)"
 msgid ""
 "Set the painting Luma from screen pixels while preserving the Hue and Chroma."
-msgstr "从屏幕像素设置绘画亮度，同时保留色调和色度。"
+msgstr "从屏幕上的像素选取绘画的亮度，但色相和色度保持不变。"
 
 #: ../gui/resources.xml:1924
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
@@ -6830,7 +6830,7 @@ msgstr "选取颜色"
 #: ../gui/resources.xml:1925
 msgctxt "Accel Editor (descriptions)"
 msgid "Set the painting color from screen pixels."
-msgstr "用来自屏幕像素的颜色设置绘画色彩。"
+msgstr "依屏幕上像素的颜色设置绘画的色彩。"
 
 #: ../gui/resources.xml:1935
 msgctxt "Menu→Edit→Current Mode (labels)"
