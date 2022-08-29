@@ -5,8 +5,8 @@ msgstr ""
 "Project-Id-Version: mypaint v2.0.0-alpha.12-327-ga332f03\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-04-17 23:27+0200\n"
-"PO-Revision-Date: 2020-02-17 20:58+0000\n"
-"Last-Translator: geun-tak Jeong <beroberos@gmail.com>\n"
+"PO-Revision-Date: 2022-08-30 19:19+0000\n"
+"Last-Translator: 이정희 <daemul72@gmail.com>\n"
 "Language-Team: Korean <https://hosted.weblate.org/projects/mypaint/mypaint/"
 "ko/>\n"
 "Language: ko\n"
@@ -14,13 +14,13 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 3.11\n"
+"X-Generator: Weblate 4.14.1-dev\n"
 "X-Poedit-SourceCharset: utf-8\n"
 
 #: ../gui/accelmap.py:86
 msgctxt "placeholder for keymap filtering"
 msgid "Filter"
-msgstr ""
+msgstr "필터"
 
 #. TRANSLATORS: Name of first column in the button map preferences.
 #. TRANSLATORS: Refers to an action bound to a mod+button combination.
@@ -456,15 +456,14 @@ msgid "Unknown Brush"
 msgstr "알 수없는 브러시"
 
 #: ../gui/brushmanip.py:191
-#, fuzzy
 msgctxt "brush resize mode - name"
 msgid "Resize Brush"
-msgstr "브러시 이름 변경"
+msgstr "브러시 크기 조정"
 
 #: ../gui/brushmanip.py:196
 msgctxt "brush resize mode - usage"
 msgid "Change brush size by dragging on the canvas"
-msgstr ""
+msgstr "캔버스에서 드래그하여 브러시 크기 변경하기"
 
 #: ../gui/brushselectionwindow.py:220
 msgctxt "brush group: context menu for a single brush"
@@ -2024,7 +2023,9 @@ msgctxt ""
 msgid ""
 "How much pixel colors are allowed to vary from the start\n"
 "before Flood Fill will refuse to fill them"
-msgstr "플러드 필이 채우기를 거부하기 전에 시작부터 변할 수있는 픽셀 색상의 양"
+msgstr ""
+"플러드 채움이 채우기를 거부하기 전에 시작부터 변할 수 \n"
+"있는 픽셀 색상의 양"
 
 #: ../gui/fill.py:533
 msgctxt ""
@@ -2058,8 +2059,8 @@ msgid ""
 "temporary merge of all the visible layers\n"
 "underneath the current layer"
 msgstr ""
-"채울 영역을 고려할 때 현재 레이어 아래에있는 모든 보이는 레이어의 임시 병합"
-"을 사용"
+"채울 영역을 고려할 때 현재 레이어 아래에 \n"
+"보이는 모든 레이어의 임시 병합을 사용합니다"
 
 #: ../gui/fill.py:618
 msgctxt "fill options: toggle whether the fill will be limited by the viewport"
@@ -2076,9 +2077,9 @@ msgid ""
 "If the view is rotated, the fill will be limited to the\n"
 "smallest canvas-aligned rectangle that can fit the view."
 msgstr ""
-"뷰포트를 기준으로 채울 수 있는 영역을 제한합니다.\n"
-"보기가 회전되면 채우기는 뷰에 맞출 수 있는 가장 작은 캔버스 정렬 사각형으로 "
-"제한됩니다."
+"뷰포트를 기준으로 채울 수 있는 영역을 제한합니다. \n"
+"보기를 회전하면, 채우기가 보기에 적합한 가장 작은 \n"
+"캔버스 정렬 사각형으로 제한됩니다."
 
 #: ../gui/fill.py:641
 msgctxt ""
@@ -2299,7 +2300,6 @@ msgid "px"
 msgstr "px"
 
 #: ../gui/framewindow.py:916
-#, fuzzy
 msgid "in"
 msgstr "인치"
 
@@ -2339,7 +2339,7 @@ msgstr "비틀림:"
 
 #: ../gui/gtkexcepthook.py:163
 msgid "Bug Detected"
-msgstr "버그 발견"
+msgstr "버그 감지됨"
 
 #: ../gui/gtkexcepthook.py:166
 msgid "<big><b>A programming error has been detected.</b></big>"
@@ -2353,14 +2353,14 @@ msgid ""
 "Please tell the developers about this using the issue tracker if no-one else "
 "has reported it yet."
 msgstr ""
-"이 에러를 무시하고 작업을 계속할 수 있지만, 즉시 작업을 저장하시는 것을 추천"
-"합니다.\n"
-"이 문제가 아직 보고되지 않았다면 이슈 트래커를 이용해 개발자들에게 알려 주십"
-"시오."
+"이 오류를 무시하고 작업을 계속할 수 있지만, 빨리 작업을 저장해야 합니다. \n"
+" \n"
+"다른 사람이 아직 보고하지 않은 경우, 문제 추적기를 사용하여 개발자에게 이 "
+"사실을 알려 주십시오.."
 
 #: ../gui/gtkexcepthook.py:177
 msgid "Search Tracker…"
-msgstr "트랙커를 검색…"
+msgstr "트랙커 검색하기…"
 
 #. only development and prereleases
 #: ../gui/gtkexcepthook.py:179
@@ -2369,11 +2369,11 @@ msgstr "보고서…"
 
 #: ../gui/gtkexcepthook.py:181
 msgid "Ignore Error"
-msgstr "오류를 무시"
+msgstr "오류 무시하기"
 
 #: ../gui/gtkexcepthook.py:182
 msgid "Quit MyPaint"
-msgstr "MyPaint를 종료"
+msgstr "MyPaint 종료"
 
 #: ../gui/gtkexcepthook.py:192
 msgid "Details…"
@@ -2472,11 +2472,11 @@ msgstr "배럴 회전:"
 #. TRANSLATORS: Note "in the horizontal plane" - not "horizontally".
 #: ../gui/layermanip.py:47 ../lib/command.py:1061
 msgid "Move Layer"
-msgstr "레이어를 이동"
+msgstr "레이어 이동하기"
 
 #: ../gui/layermanip.py:50
 msgid "Move the current layer"
-msgstr "현재 레이어를 이동"
+msgstr "현재 레이어 이동하기"
 
 #: ../gui/layerprops.py:356
 msgctxt "layer properties dialog: name entry: icon tooltip"
@@ -2668,13 +2668,11 @@ msgid "Generic line/curve mode"
 msgstr "일반 라인/곡선 모드"
 
 #: ../gui/linemode.py:803
-#, fuzzy
 msgid ""
 "Draw straight lines; Shift adds curves, Shift + Ctrl moves line ends, Ctrl "
 "constrains angle"
-msgstr ""
-"직선을 그립니다. Ctrl을 누르며 그리면 고정된 각에 맞추어 그리고, 그린 후 "
-"Shift를 누르면 곡선으로 변형할 수 있습니다"
+msgstr "직선을 그립니다; Shift는 곡선을 추가하고, Shift + Ctrl은 선 끝을 이동하고, "
+"Ctrl은 각도를 제한합니다"
 
 #: ../gui/linemode.py:814
 msgid "Connected Lines"
@@ -2716,12 +2714,13 @@ msgid ""
 "This program is distributed in the hope that it will be useful, but WITHOUT "
 "ANY WARRANTY. See the COPYING file for more details."
 msgstr ""
-"MyPaint는 무료 소프트웨어입니다. 무료 소프트웨어 재단의 GNU 일반 공증 허가서"
-"를 준수할 경우 자유롭게 수정, 배포할 수 있습니다(이 허가서의 제2판, 혹은(사용"
-"자의 선택에 따라) 그 이후 버전 이용가능).\n"
+"이 프로그램은 자유 소프트웨어입니다; 자유 소프트웨어 재단에서 게시한 GNU "
+"일반 공중 사용 라이선스의 조건에 따라 프로그램을 재배포하거나 수정할 수 "
+"있습니다; 라이선스 버전 2 또는 (사용자의 선택에 따라) 이후 버전 중 하나를 "
+"선택합니다. \n"
 "\n"
-"MyPaint가 유용하게 사용되기를 바랍니다. 하지만 사용상의 어떠한 보장도 하지 않"
-"습니다. 이에 대한 자세한 사항은 COPYING  파일을 참고하시기 바랍니다."
+"이 프로그램은 유용하기를 바라며 배포되지만, 사용상의 어떠한 보장도 하지 "
+"않습니다. 자세한 내용은 COPYING 파일을 참조하십시오."
 
 #: ../gui/meta.py:60
 msgctxt "About dialog: credits: tasks"
@@ -2798,7 +2797,7 @@ msgstr ", "
 #: ../gui/meta.py:221
 msgctxt "About dialog: credits: translator credits (your name(s) here!)"
 msgid "translator-credits"
-msgstr "번역가-크레딧"
+msgstr "Junghee Lee <daemul72@gmail.com>, 2022"
 
 #. TRANSLATORS:"Brush radius" for the options panel. Short.
 #: ../gui/mode.py:592
@@ -2956,7 +2955,7 @@ msgstr "Y 위치:"
 #, python-format
 msgctxt "symmetry axis options panel: labels"
 msgid "Angle: %.2f°"
-msgstr ""
+msgstr "각도: %.2f°"
 
 #: ../gui/symmetry.py:357
 msgctxt "symmetry axis options panel: position button: no axis pos."
@@ -4308,8 +4307,8 @@ msgid ""
 "• The space bar can be used like Button2.\n"
 "• Some tablet pads' buttons cannot be held down when pressed."
 msgstr ""
-"스페이바를 button2 처럼 사용할 수 있습니다.\n"
-"눌렀을경우 몇몇 종의 타블랫 패드의 버튼이 작동이 되지 않을 수 있습니다"
+"• 스페이바를 button2 처럼 사용할 수 있습니다. \n"
+"• 눌렀을경우 몇몇 종의 타블랫 패드의 버튼이 작동이 되지 않을 수 있습니다."
 
 #: ../gui/preferenceswindow.glade:401
 msgctxt "Prefs Dialog|Button|"
@@ -4327,14 +4326,15 @@ msgstr "버튼"
 #. unless its key is bound to something else.
 #: ../gui/preferenceswindow.glade:453
 msgid "Disable fallback key bindings"
-msgstr ""
+msgstr "폴백 키 바인딩 비활성화"
 
 #. Tooltip for checkbox in the keyboard mappings preferences.
 #: ../gui/preferenceswindow.glade:457
 msgid ""
 "The fallback key bindings are static built-in bindings that are only used if "
 "their key combinations are not bound to anything else."
-msgstr ""
+msgstr "폴백 키 바인딩은 키 조합이 다른 것에 바인딩되지 않은 경우에만 사용되는 정적 "
+"기본 제공 바인딩입니다."
 
 #: ../gui/preferenceswindow.glade:476
 msgctxt "Prefs Dialog|Button|"
@@ -4572,21 +4572,20 @@ msgstr "페인팅하는 동안 커서를 숨기기"
 #: ../gui/preferenceswindow.glade:1132
 msgctxt "Prefs Dialog|View|Interface"
 msgid "Show crosshair for small brush cursors"
-msgstr ""
+msgstr "작은 브러시 커서에 대한 십자선 표시하기"
 
 #. Label for a spinbutton that is part of the "crosshair for small brush cursors" setting. Radius refers to the visual brush cursor radius.
 #: ../gui/preferenceswindow.glade:1149
-#, fuzzy
 msgctxt "Prefs Dialog|View|Interface"
 msgid "Radius threshold:"
-msgstr "자획 임계값"
+msgstr "반지름 임계값:"
 
 #. Description of the "Radius threshold" spinbox/spinner - the referenced "lines" are part of the brush cursor.
 #: ../gui/preferenceswindow.glade:1162
 msgctxt "Prefs Dialog|View|Interface"
 msgid ""
 "Lines will be shown when the brush circle radius is smaller than this value."
-msgstr ""
+msgstr "브러시 원 반지름이 이 값보다 작으면 선이 표시됩니다."
 
 #: ../gui/preferenceswindow.glade:1192
 msgctxt ""
@@ -4897,7 +4896,7 @@ msgstr "되돌리기"
 #: ../gui/resources.xml:104
 msgctxt "Accel Editor (descriptions)"
 msgid "Reload the file your current work was loaded from."
-msgstr "현재 작업으로 불러온 파일을 다시 불러옵니다."
+msgstr "사용자의 현재 작업에서 불러온 파일을 다시 불러옵니다."
 
 #: ../gui/resources.xml:111
 msgctxt "Menu→File (labels), Accel Editor (labels)"
@@ -4936,8 +4935,7 @@ msgstr "내보내기…"
 
 #: ../gui/resources.xml:139
 msgid "Export your work to a file, but keep working on the same file."
-msgstr ""
-"작업을 파일로 내보내고 사용자는 동일한 파일에서 계속 작업을 진행합니다."
+msgstr "사용자의 작업을 파일로 내보내지만, 동일한 파일에서 작업을 계속합니다."
 
 #: ../gui/resources.xml:147
 msgctxt "Menu→File (labels), Accel Editor (labels)"
@@ -6524,7 +6522,7 @@ msgstr "색상 노멀라이즈를 표시"
 #: ../gui/resources.xml:1579
 msgctxt "Accel Editor (descriptions)"
 msgid "Filter colors: show colors unchanged."
-msgstr "필터 색상: 색상 변경을 표시."
+msgstr "필터 색상: 변경되지 않은 색상을 표시합니다."
 
 #: ../gui/resources.xml:1587
 msgctxt "Menu→View→Display Filter (labels), Accel Editor (labels)"
