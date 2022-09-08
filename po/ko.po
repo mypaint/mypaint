@@ -5,7 +5,7 @@ msgstr ""
 "Project-Id-Version: mypaint v2.0.0-alpha.12-327-ga332f03\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-04-17 23:27+0200\n"
-"PO-Revision-Date: 2022-08-30 19:19+0000\n"
+"PO-Revision-Date: 2022-09-09 23:16+0000\n"
 "Last-Translator: 이정희 <daemul72@gmail.com>\n"
 "Language-Team: Korean <https://hosted.weblate.org/projects/mypaint/mypaint/"
 "ko/>\n"
@@ -40,7 +40,7 @@ msgstr "키 조합"
 #: ../gui/accelmap.py:369
 #, python-format
 msgid "Edit Key for '%s'"
-msgstr "'%s'에 대한 키를 편집"
+msgstr "'%s'에 대한 키 편집하기"
 
 #. TRANSLATORS: Part of interface when adding a new button map binding.
 #. TRANSLATORS: It's a label for the action part of the combination.
@@ -71,7 +71,7 @@ msgstr "키:"
 #. TRANSLATORS: keybinding dialog (Preferences | Keys).
 #: ../gui/accelmap.py:473
 msgid "Press keys to update this assignment"
-msgstr "자판을 눌러 키를 할당"
+msgstr "이 배치를 업데이트하려면 키를 누르세요"
 
 #. TRANSLATORS: Part of the keybinding dialog, refers
 #. TRANSLATORS: to an action bound to a key combination.
@@ -93,7 +93,7 @@ msgstr ""
 #: ../gui/application.py:626
 #, python-brace-format
 msgid "Open Folder “{folder_basename}”…"
-msgstr "폴더를 열기 “{folder_basename}”…"
+msgstr "“{folder_basename}” 폴더 열기…"
 
 #. ... so that the main actions end up in the bottom-right of the
 #. dialog (reversed for rtl scripts), where the eye ends up
@@ -112,7 +112,7 @@ msgstr "사용 가능한 백업이 없음"
 
 #: ../gui/autorecover.py:141
 msgid "Open the Cache Folder…"
-msgstr "캐시 폴더를 열기…"
+msgstr "캐시 폴더 열기…"
 
 #: ../gui/autorecover.py:170
 msgid "Backup Recovery Failed"
@@ -120,7 +120,7 @@ msgstr "백업 복구 실패"
 
 #: ../gui/autorecover.py:172
 msgid "Open the Backup’s Folder…"
-msgstr "백업 폴더를 열기…"
+msgstr "백업 폴더 열기…"
 
 #: ../gui/autorecover.py:181
 #, python-brace-format
@@ -244,7 +244,7 @@ msgstr "사용자 정의"
 #: ../gui/brusheditor.py:528
 msgctxt "brush settings editor: save brush: error message"
 msgid "No brush selected, please use “Add As New” instead."
-msgstr "목록에 해당 브러시가 없습니다. \"브러시 추가\"를 먼저 하십시오."
+msgstr "브러시를 선택하지 않았습니다. 대신 \"새로 추가하기\"를 사용하십시오."
 
 #: ../gui/brusheditor.py:553
 msgctxt "brush settings editor: rename brush: error message"
@@ -270,7 +270,7 @@ msgstr "브러시 선택이 없음!"
 #, python-brace-format
 msgctxt "brush settings editor: delete brush: confirm dialog question"
 msgid "Really delete brush “{brush_name}” from disk?"
-msgstr "정말 디스크에서 \"{brush_name}” 브러시를 삭제 하시겠습니까?"
+msgstr "디스크에서 \"{brush_name}\" 브러시를 삭제하시겠습니까?"
 
 #: ../gui/brusheditor.py:740
 msgctxt "brush settings editor: header: fallback name"
@@ -506,8 +506,7 @@ msgstr "{original_name} 사본 {n}"
 #, python-brace-format
 msgctxt "brush group: context menu: remove from group"
 msgid "Really remove brush “{brush_name}” from group “{group_name}”?"
-msgstr ""
-"브러시 \"{brush_name}\"을(를) 그룹 \"{group_name}\"에서 제거 하시겠습니까?"
+msgstr "\"{group_name}\" 그룹에서 \"{brush_name}\" 브러시를 제거하시겠습니까?"
 
 #. TRANSLATORS: number of brushes in a brush group, for tooltips
 #: ../gui/brushselectionwindow.py:381
@@ -567,7 +566,7 @@ msgstr ""
 #: ../gui/brushselectionwindow.py:511
 msgctxt "brush group export dialog: title"
 msgid "Export Brushes"
-msgstr "브러시를 내보내기"
+msgstr "브러시 내보내기"
 
 #: ../gui/brushselectionwindow.py:516
 msgctxt "brush group export dialog"
@@ -582,12 +581,12 @@ msgstr "새로운 그룹…"
 #: ../gui/brushselectionwindow.py:539
 msgctxt "brush groups menu"
 msgid "Import Brushes…"
-msgstr "브러시를 가져오기…"
+msgstr "브러시 가져오기…"
 
 #: ../gui/brushselectionwindow.py:543
 msgctxt "brush groups menu"
 msgid "Get More Brushes…"
-msgstr "더 많은 브러시를 얻기…"
+msgstr "더 많은 브러시 받기…"
 
 #: ../gui/brushselectionwindow.py:558
 msgctxt "new brush group dialog: title"
@@ -637,9 +636,7 @@ msgstr "버튼 누르기:"
 msgid ""
 "Hold down modifier keys, and press a button over this text to set a new "
 "binding."
-msgstr ""
-"새로운 바인딩을 설정하려면, 보조 키를 누른 채로 이 텍스트위의 단추를 누릅니"
-"다."
+msgstr "수정자 키를 누른 상태에서 이 텍스트 위의 버튼을 눌러 새 바인딩을 설정합니다."
 
 #. TRANSLATORS: "fixed" in the sense of "static" -
 #. TRANSLATORS: something which cannot be changed
@@ -661,31 +658,31 @@ msgstr "색상을 선택"
 
 #: ../gui/colorpicker.py:68
 msgid "Set the color used for painting"
-msgstr "페인팅에 사용할 색상을 설정"
+msgstr "페인팅에 사용할 색상 설정하기"
 
 #: ../gui/colorpicker.py:201
 msgid "Pick Hue"
-msgstr "색조를 선택"
+msgstr "색조 고르기"
 
 #: ../gui/colorpicker.py:204
 msgid "Set the color Hue used for painting"
-msgstr "페인팅에 사용되는 색조를 설정"
+msgstr "페인팅에 사용되는 색조 색상 설정하기"
 
 #: ../gui/colorpicker.py:222
 msgid "Pick Chroma"
-msgstr "채도를 선택"
+msgstr "채도 고르기"
 
 #: ../gui/colorpicker.py:225
 msgid "Set the color Chroma used for painting"
-msgstr "페인팅에 사용되는 색상 채도를 설정"
+msgstr "페인팅에 사용되는 채도 색상 설정하기"
 
 #: ../gui/colorpicker.py:242
 msgid "Pick Luma"
-msgstr "휘도를 선택"
+msgstr "휘도 고르기"
 
 #: ../gui/colorpicker.py:245
 msgid "Set the color Luma used for painting"
-msgstr "페인팅에 사용되는 색상 휘도를 설정"
+msgstr "페인팅에 사용되는 휘도 색상 설정하기"
 
 #: ../gui/colors/adjbases.py:699
 msgid "Color details"
@@ -710,7 +707,7 @@ msgstr "전체 마스크 활성"
 #: ../gui/colors/hcywheel.py:91
 msgctxt "Color Wheels: activity toggle: action tooltip"
 msgid "Limit your palette for specific moods using a gamut mask."
-msgstr "전체 마스크를 사용하여 특정 분위기에 대한 팔레트를 제한합니다."
+msgstr "색역 마스크를 사용하여 특정 분위기에 맞게 팔레트를 제한합니다."
 
 #: ../gui/colors/hcywheel.py:355
 msgctxt "HCY Color Wheel: tooltip"
@@ -722,9 +719,8 @@ msgctxt "HCY Mask Editor Wheel: tooltip"
 msgid ""
 "Gamut mask editor. Click in the middle to create or manipulate shapes, or "
 "rotate the mask using the edges of the disc."
-msgstr ""
-"색상 범위 편집기. 마우스 중간 단추를 눌러 만들거나 모양을 고친다. 원판 가장자"
-"리에서 하면 마스크가 돌아간다."
+msgstr "색상 범위 편집기. 마우스 가운데를 클릭하여 도형을 만들거나 조작하거나 "
+"디스크의 가장자리를 사용하여 마스크를 회전합니다."
 
 #: ../gui/colors/hcywheel.py:910
 msgctxt "HCY Gamut Mask template name"
@@ -817,42 +813,42 @@ msgstr "템플릿에서 마스크를 만듭니다."
 #: ../gui/colors/hcywheel.py:1112
 msgctxt "HCY Mask Editor: action button tooltips"
 msgid "Load mask from a GIMP palette file."
-msgstr "GIMP 파레트 파일로 마스크를 불러오기."
+msgstr "GIMP 팔레트 파일에서 마스크를 불러옵니다."
 
 #: ../gui/colors/hcywheel.py:1116
 msgctxt "HCY Mask Editor: action button tooltips"
 msgid "Save mask to a GIMP palette file."
-msgstr "GIMP 파레트 파일로 마스크를 저장하기."
+msgstr "GIMP 팔레트 파일에 마스크를 저장합니다."
 
 #: ../gui/colors/hcywheel.py:1120
 msgctxt "HCY Mask Editor: action button tooltips"
 msgid "Erase the mask."
-msgstr "마스크를 지우기."
+msgstr "마스크를 지웁니다."
 
 #: ../gui/colors/hcywheel.py:1124
 msgctxt "HCY Mask Editor: action button tooltips"
 msgid "Open the online help for this dialog in a web browser."
-msgstr "웹 브라우저에서이 대화 상자에 대한 온라인 도움말을 엽니다."
+msgstr "웹 브라우저에서 이 대화상자에 대한 온라인 도움말을 엽니다."
 
 #: ../gui/colors/hcywheel.py:1191
 msgctxt "HCY Gamut Mask load dialog: window title"
 msgid "Save Mask as a GIMP Palette"
-msgstr "김프 팔레트 파일에서 마스크를 저장하기"
+msgstr "GIMP 팔레트로 마스크 저장하기"
 
 #: ../gui/colors/hcywheel.py:1208
 msgctxt "HCY Gamut Mask load dialog: window title"
 msgid "Load Mask from a GIMP Palette"
-msgstr "김프 팔레트 파일에서 마스크를 불러오기"
+msgstr "GIMP 팔레트에서 마스크 불러오기"
 
 #: ../gui/colors/hcywheel.py:1281
 msgctxt "HCY Wheel color adjuster page: properties tooltip."
 msgid "Set gamut mask."
-msgstr "전체 마스크를 설정."
+msgstr "전체 마스크를 설정합니다."
 
 #: ../gui/colors/hcywheel.py:1299
 msgctxt "HCY Wheel color adjuster page: title for tooltips etc."
 msgid "HCY Wheel"
-msgstr "HCY 원형"
+msgstr "HCY 휠"
 
 #: ../gui/colors/hcywheel.py:1306
 msgctxt "HCY Wheel color adjuster page: description for tooltips etc."
@@ -890,7 +886,7 @@ msgstr "HSV 색조 및 채도"
 
 #: ../gui/colors/hsvcube.py:58
 msgid "Rotate cube (show different axes)"
-msgstr "큐브를 회전 (다른 축 표시)"
+msgstr "큐브 회전하기 (다른 축 표시)"
 
 #: ../gui/colors/hsvcube.py:85
 msgid "HSV Cube"
@@ -1268,7 +1264,7 @@ msgstr "어쨌든이 파일을 여시겠습니까?"
 #: ../gui/compatibility.py:129
 msgctxt "Version compat warning toggle"
 msgid "Don't show this warning again"
-msgstr "이 경고를 다시 표시하지 마십시오"
+msgstr "이 경고를 다시 표시하지 않음"
 
 #. TRANSLATORS: One of the options for the
 #. TRANSLATORS: "When Not Specified in File"
@@ -1406,7 +1402,7 @@ msgstr "이름"
 
 #: ../gui/dialogs.py:126
 msgid "Overwrite brush?"
-msgstr "브러시를 덮어쓸까요?"
+msgstr "브러시를 덮어쓰시겠습니까?"
 
 #: ../gui/dialogs.py:134 ../gui/dialogs.py:204
 msgid "Replace"
@@ -1459,12 +1455,12 @@ msgstr ""
 
 #: ../gui/dialogs.py:326
 msgid "Import brush package?"
-msgstr "브러시 패키지를 불러올까요?"
+msgstr "브러시 패키지를 가져오시겠습니까?"
 
 #: ../gui/dialogs.py:357
 #, python-brace-format
 msgid "<b>Do you really want to import package “{brushpack_name}”?</b>"
-msgstr "<b>“{brushpack_name}”패키지를 가져 오시겠습니까?</b>"
+msgstr "<b>“{brushpack_name}”패키지를 가져오시겠습니까?</b>"
 
 #: ../gui/document.py:193
 #, python-format
@@ -1559,7 +1555,7 @@ msgstr "이 유형의 레이어에 붙여 넣을 수 없습니다."
 #, python-brace-format
 msgctxt "Statusbar message: paste result"
 msgid "Pasted {w}×{h} image."
-msgstr "{w}×{h} 이미지를 붙여 넣었습니다."
+msgstr "{w}×{h} 이미지를 붙여넣었습니다."
 
 #: ../gui/document.py:2062
 #, python-brace-format
@@ -1594,7 +1590,7 @@ msgstr "현재 색상을 설정"
 
 #: ../gui/drawwindow.py:543
 msgid "Leave Fullscreen Mode"
-msgstr "전체 화면 모드를 종료"
+msgstr "전체화면 모드 나가기"
 
 #: ../gui/drawwindow.py:544
 msgid "Leave Fullscreen"
@@ -1620,7 +1616,7 @@ msgstr "종료(_Q)"
 
 #: ../gui/drawwindow.py:709
 msgid "Import brush package…"
-msgstr "브러시 패키지를 불러오기…"
+msgstr "브러시 패키지 가져오기…"
 
 #: ../gui/drawwindow.py:710
 msgid "MyPaint brush package (*.zip)"
@@ -1664,7 +1660,7 @@ msgstr "외부 편집을 통해 업데이트 된“{layer_name}”레이어"
 #, python-brace-format
 msgctxt "Edit in External App (statusbar message)"
 msgid "Failed to update layer with external edits from “{file_basename}”."
-msgstr "“{file_basename}”에서 외부 편집으로 레이어를 업데이트하지 못했습니다."
+msgstr "\"{file_basename}\"에서 외부 편집으로 레이어를 업데이트하지 못했습니다."
 
 #: ../gui/externalapp.py:146
 #, python-brace-format
@@ -1700,13 +1696,13 @@ msgstr "설명이 없습니다"
 #, python-brace-format
 msgctxt "Document I/O: message shown while working"
 msgid "Loading {files_summary}…"
-msgstr "{files_summary}를 불러오기…"
+msgstr "{files_summary} 불러오는 중…"
 
 #: ../gui/filehandling.py:131
 #, python-brace-format
 msgctxt "Document I/O: message shown while working"
 msgid "Importing layers from {files_summary}…"
-msgstr "{files_summary}에서 레이어를 가져 오는 중…"
+msgstr "{files_summary}에서 레이어 가져오는 중…"
 
 #: ../gui/filehandling.py:135
 #, python-brace-format
@@ -1757,7 +1753,7 @@ msgstr "내보내기 실패"
 #: ../gui/filehandling.py:173
 msgctxt "Document I/O: fail dialog title"
 msgid "Import Layers failed"
-msgstr "레이어 가져 오기를 실패"
+msgstr "레이어 가져오기 실패함"
 
 #: ../gui/filehandling.py:177
 msgctxt "Document I/O: fail dialog title"
@@ -1768,7 +1764,7 @@ msgstr "열기 실패"
 #, python-brace-format
 msgctxt "Document I/O: success"
 msgid "Exported to {files_summary} successfully."
-msgstr "{files_summary}을(를) 성공적으로 내보냈습니다."
+msgstr "{files_summary}로 성공적으로 내보냈습니다."
 
 #: ../gui/filehandling.py:188
 #, python-brace-format
@@ -1904,8 +1900,7 @@ msgstr "계속(_N)"
 #, python-brace-format
 msgctxt "Destructive action confirm dialog: warning message"
 msgid "You risk losing {abbreviated_time} of unsaved painting."
-msgstr ""
-"저장하지 않은 그림의 약 {abbreviated_time} 정도를 잃을 위험이 있습니다."
+msgstr "저장하지 않은 그림의 {abbreviated_time}를 잃을 위험이 있습니다."
 
 #: ../gui/filehandling.py:804
 msgctxt "File→New: confirm dialog: title question"
@@ -1935,12 +1930,12 @@ msgstr "파일 열기"
 #: ../gui/filehandling.py:1084
 msgctxt "load dialogs: title"
 msgid "Open Scratchpad…"
-msgstr "스크래치 패드를 열기…"
+msgstr "스크래치패드 열기…"
 
 #: ../gui/filehandling.py:1126
 msgctxt "Layers→Import Layers: files-chooser dialog: title"
 msgid "Import Layers"
-msgstr "레이어를 가져 오기"
+msgstr "레이어 가져오기"
 
 #: ../gui/filehandling.py:1433
 msgctxt "File→Open Recent→* confirm dialog: title"
@@ -2024,8 +2019,8 @@ msgid ""
 "How much pixel colors are allowed to vary from the start\n"
 "before Flood Fill will refuse to fill them"
 msgstr ""
-"플러드 채움이 채우기를 거부하기 전에 시작부터 변할 수 \n"
-"있는 픽셀 색상의 양"
+"플러드 채움이 채우기를 거부하기 전에 시작부터\n"
+"변경할 수 있는 픽셀 색상"
 
 #: ../gui/fill.py:533
 msgctxt ""
@@ -2042,7 +2037,7 @@ msgstr "채우기의 기반이되는 입력"
 #: ../gui/fill.py:580
 msgctxt "fill options: 'Source' category: Layer dropdown (tooltip)"
 msgid "Select a specific layer you want the fill to be based on"
-msgstr "채우기를 기반으로 할 특정 레이어를 선택"
+msgstr "채우기를 기반으로 할 특정 레이어 선택하기"
 
 #: ../gui/fill.py:598
 msgctxt ""
@@ -2153,7 +2148,7 @@ msgstr "칠에 적용 할 흐림 정도"
 #: ../gui/fill.py:783
 msgctxt "fill options: gap detection toggle (label)"
 msgid "Use Gap Detection"
-msgstr "간격 감지를 사용"
+msgstr "간격 감지 사용하기"
 
 #: ../gui/fill.py:788
 msgctxt "fill options: Use Gap Detection (tooltip)"
@@ -2317,7 +2312,7 @@ msgstr "자유형 그리기"
 
 #: ../gui/freehand.py:92
 msgid "Paint free-form brush strokes"
-msgstr "자유로운 형태의 브러시 스트로크를 그리기"
+msgstr "자유로운 형태의 브러시 자획 그리기"
 
 #. TRANSLATORS: Short alias for "Slow position tracking". This is
 #. TRANSLATORS: used on the options panel.
@@ -2566,7 +2561,7 @@ msgstr "레이어"
 
 #: ../gui/layerswindow.py:96
 msgid "Arrange layers and assign effects"
-msgstr "레이어를 정렬 및 효과를 할당"
+msgstr "레이어 정렬 및 효과 할당하기"
 
 #. TRANSLATORS: tooltip for the opacity slider (text)
 #. TRANSLATORS: note that "%%" turns into "%"
@@ -2586,12 +2581,12 @@ msgstr "%d%%"
 #. TRANSLATORS: status bar messages for drag, without/with modifiers
 #: ../gui/layerswindow.py:114
 msgid "Move layer in stack…"
-msgstr "스택에서 레이어를 이동…"
+msgstr "스택에서 레이어 이동하기…"
 
 #: ../gui/layerswindow.py:115
 msgid ""
 "Move layer in stack (dropping into a regular layer will create a new group)"
-msgstr "스택에서 레이어를 이동 (일반 레이어에 드롭하면 새 그룹을 만들기)"
+msgstr "스택에서 레이어를 이동하기 (일반 레이어에 드롭하면 새 그룹이 생성됨)"
 
 #: ../gui/layerswindow.py:156
 msgid "Layer"
@@ -2680,9 +2675,8 @@ msgstr "연결된 라인"
 
 #: ../gui/linemode.py:817
 msgid "Draw a sequence of lines; Shift adds curves, Ctrl constrains angle"
-msgstr ""
-"여러 개의 직선을 이어서 그립니다. Ctrl을 누르며 그리면 고정된 각에 맞추어 그"
-"리고, 그린 후 Shift를 누르면 곡선으로 변형할 수 있습니다"
+msgstr "여러 개의 직선을 이어서 그립니다; Shift는 곡선을 추가하고, Ctrl은 각도를 "
+"제한합니다"
 
 #: ../gui/linemode.py:827
 msgid "Ellipses and Circles"
@@ -2690,9 +2684,7 @@ msgstr "타원과 원"
 
 #: ../gui/linemode.py:830
 msgid "Draw ellipses; Shift rotates, Ctrl constrains ratio/angle"
-msgstr ""
-"원/타원을 그립니다. Ctrl을 누르며 그리면 고정된 각에 맞추어 그리고, Shift를 "
-"누르며 그리면 회전할 수 있습니다"
+msgstr "타원을 그립니다; Shift는 회전하고 Ctrl은 비율/각도를 제한합니다"
 
 #: ../gui/meta.py:39
 msgctxt "About dialog: copyright statement"
@@ -2832,7 +2824,7 @@ msgstr "도구 옵션"
 #: ../gui/optionspanel.py:51
 msgctxt "options panel: tab tooltip: description"
 msgid "Specialized settings for the current editing tool"
-msgstr "현재 편집중인 도구를 위한 독특한 설정"
+msgstr "현재 편집 도구에 대한 전문화된 설정"
 
 #: ../gui/optionspanel.py:58
 #, python-brace-format
@@ -2894,7 +2886,7 @@ msgstr "전체 그리는 영역의 미리보기"
 #. TRANSLATORS: main view is pointing.
 #: ../gui/previewwindow.py:263
 msgid "Show Viewfinder"
-msgstr "뷰파인더를 표시"
+msgstr "뷰파인더 표시하기"
 
 #: ../gui/scratchwindow.py:34
 msgid "Scratchpad"
@@ -2902,7 +2894,7 @@ msgstr "스크래치 패드"
 
 #: ../gui/scratchwindow.py:36
 msgid "Mix colors and make sketches on separate scrap pages"
-msgstr "각각의 스크랩 페이지에 스케치를 하거나 색을 혼합할 수 있음"
+msgstr "색상을 혼합하고 별도의 스크랩 페이지에 스케치 만들기"
 
 #: ../gui/spinbox.py:35
 msgid "Previous item"
@@ -3042,23 +3034,23 @@ msgstr "스크롤 보기"
 
 #: ../gui/viewmanip.py:43
 msgid "Drag the canvas view"
-msgstr "캔버스 보기를 드래그"
+msgstr "캔버스 보기 드래그"
 
 #: ../gui/viewmanip.py:79
 msgid "Zoom View"
-msgstr "보기를 줌"
+msgstr "확대/축소 보기"
 
 #: ../gui/viewmanip.py:82
 msgid "Zoom the canvas view"
-msgstr "캔버스 보기를 줌"
+msgstr "캔버스 보기 확대/축소"
 
 #: ../gui/viewmanip.py:122
 msgid "Rotate View"
-msgstr "보기를 회전"
+msgstr "보기 회전하기"
 
 #: ../gui/viewmanip.py:125
 msgid "Rotate the canvas view"
-msgstr "캔버스 보기를 회전"
+msgstr "캔버스 보기 회전하기"
 
 #: ../lib/command.py:177
 msgid "Unknown Command"
@@ -3082,7 +3074,7 @@ msgstr "색상 영역 채우기"
 
 #: ../lib/command.py:612
 msgid "Trim Layer"
-msgstr "레이어를 다듬기"
+msgstr "레이어 다듬기"
 
 #: ../lib/command.py:632
 msgid "Uniquify Layer Pixels"
@@ -3094,14 +3086,14 @@ msgstr "리팩터 그룹"
 
 #: ../lib/command.py:678
 msgid "Clear Layer"
-msgstr "레이어를 지우기"
+msgstr "레이어 지우기"
 
 #. This is used by Paste layer as well as when loading from a PNG
 #. file. However in the latter case, the undo stack is reset
 #. immediately afterward.
 #: ../lib/command.py:702
 msgid "Paste Layer"
-msgstr "레이어를 붙여넣기"
+msgstr "레이어 붙여넣기"
 
 #: ../lib/command.py:737
 msgid "New Layer from Visible"
@@ -3109,7 +3101,7 @@ msgstr "보이는 상태에서 새로운 레이어"
 
 #: ../lib/command.py:779
 msgid "Merge Visible Layers"
-msgstr "보이는 레이어를 병합"
+msgstr "보이는 레이어 합치기"
 
 #: ../lib/command.py:853
 msgid "Merge Down"
@@ -3121,7 +3113,7 @@ msgstr "노멀라이즈 레이어 모드"
 
 #: ../lib/command.py:955
 msgid "Import Layers"
-msgstr "레이어를 가져 오기"
+msgstr "레이어 가져 오기"
 
 #: ../lib/command.py:957
 #, python-brace-format
@@ -3130,27 +3122,27 @@ msgstr "추가{layer_default_name}"
 
 #: ../lib/command.py:981
 msgid "Remove Layer"
-msgstr "레이어를 제거"
+msgstr "레이어 제거하기"
 
 #: ../lib/command.py:1028
 msgid "Select Layer"
-msgstr "레이어를 선택"
+msgstr "레이어 선택하기"
 
 #: ../lib/command.py:1158
 msgid "Duplicate Layer"
-msgstr "레이어를 복제"
+msgstr "레이어 복제하기"
 
 #: ../lib/command.py:1182
 msgid "Move Layer Up"
-msgstr "레이어를 위로 이동"
+msgstr "레이어를 위로 이동하기"
 
 #: ../lib/command.py:1196
 msgid "Move Layer Down"
-msgstr "레이어를 아래로 이동"
+msgstr "레이어를 아래로 이동하기"
 
 #: ../lib/command.py:1223
 msgid "Move Layer in Stack"
-msgstr "스택에서 레이어를 이동"
+msgstr "스택에서 레이어 이동하기"
 
 #: ../lib/command.py:1342
 msgid "Rename Layer"
@@ -3175,7 +3167,7 @@ msgstr "레이어 잠금 해제"
 #: ../lib/command.py:1460
 #, python-format
 msgid "Set Layer Opacity: %0.1f%%"
-msgstr "레이어 불투명도를 설정: %0.1f%%"
+msgstr "레이어 불투명도 설정: %0.1f%%"
 
 #: ../lib/command.py:1499
 msgid "Unknown Mode"
@@ -3184,7 +3176,7 @@ msgstr "알 수 없는 모드"
 #: ../lib/command.py:1500
 #, python-format
 msgid "Set Layer Mode: %s"
-msgstr "레이어 모드를 설정: %s"
+msgstr "레이어 모드 설정하기: %s"
 
 #: ../lib/command.py:1524
 msgid "Enable Frame"
@@ -3200,7 +3192,7 @@ msgstr "프레임을 업데이트"
 
 #: ../lib/command.py:1573
 msgid "Edit Layer Externally"
-msgstr "레이어를 외부에서 편집"
+msgstr "외부에서 레이어 편집하기"
 
 #: ../lib/document.py:74
 #, python-brace-format
@@ -3235,9 +3227,9 @@ msgid ""
 "Are you running more than once instance of MyPaint?\n"
 "Close app and wait {cache_update_interval}s to retry."
 msgstr ""
-"캐시 폴더가 사용중인 상태일 수 있습니다.\n"
+"캐시 폴더가 아직 사용중인 상태일 수 있습니다.\n"
 "MyPaint를 여러 번 실행하셨나요?\n"
-"애플리케이션을 닫고 {cache_update_interval}초 후 다시 시도하세요."
+"앱을 닫고 {cache_update_interval}초 후 다시 시도하세요."
 
 #: ../lib/document.py:226
 #, python-brace-format
@@ -3505,12 +3497,12 @@ msgstr "활성보기가 없습니다"
 #: ../lib/layervis.py:579
 msgctxt "layer views: commands: add"
 msgid "Add Layer View"
-msgstr "레이어 보기를 추가"
+msgstr "레이어 보기 추가하기"
 
 #: ../lib/layervis.py:604 ../lib/layervis.py:633
 msgctxt "layer views: commands: remove"
 msgid "Remove Layer View"
-msgstr "레이어 보기를 제거"
+msgstr "레이어 보기 제거하기"
 
 #: ../lib/layervis.py:663
 #, python-brace-format
@@ -3521,12 +3513,12 @@ msgstr "활성 레이어 보기 \"{name}\""
 #: ../lib/layervis.py:692
 msgctxt "layer views: commands: set active view's lock flag"
 msgid "Lock Layer View"
-msgstr "레이어 보기를 잠금"
+msgstr "레이어 보기 잠금"
 
 #: ../lib/layervis.py:697
 msgctxt "layer views: commands: set active view's lock flag"
 msgid "Unlock Layer View"
-msgstr "레이어 보기를 잠금 해제"
+msgstr "레이어 보기 잠금 해제"
 
 #: ../lib/modes.py:47
 msgid "Pass-through"
@@ -3551,8 +3543,7 @@ msgstr "안료"
 #: ../lib/modes.py:55
 msgid ""
 "Similar to mixing actual pigments by upsampling to 10 spectral channels."
-msgstr ""
-"10 개의 스펙트럼 채널로 업샘플링하여 실제 안료를 혼합하는 것과 유사합니다."
+msgstr "10개의 스펙트럼 채널로 업샘플링하여 실제 안료를 혼합하는 것과 유사합니다."
 
 #: ../lib/modes.py:58
 msgid "Multiply"
@@ -3585,9 +3576,8 @@ msgstr "오버레이"
 msgid ""
 "Overlays the backdrop with the top layer, preserving the backdrop's "
 "highlights and shadows. This is the inverse of 'Hard Light'."
-msgstr ""
-"배경의 하이라이트와 그림자를 보존한 상태로, 위쪽 레이어를 덮어씌웁니다. '하"
-"드 라이트'의 반대의 기능을 합니다."
+msgstr "배경의 하이라이트와 그림자를 보존한 상태로, 맨 위 레이어를 덮어씌웁니다. "
+"'하드 라이트'의 반대의 기능을 합니다."
 
 #: ../lib/modes.py:71
 msgid "Darken"
@@ -3734,9 +3724,7 @@ msgstr "여기 위에다"
 msgid ""
 "Source which overlaps the destination, replaces the destination. Destination "
 "is placed elsewhere."
-msgstr ""
-"목적지가 겹쳐진 소스는 목적지를 바꿉니다. 목적지는 다른 곳으로 지정되었습니"
-"다."
+msgstr "대상과 겹쳐진 소스는 대상을 바꿉니다. 대상은 다른 곳에 배치됩니다."
 
 #: ../lib/modes.py:134
 msgid "Destination Atop"
@@ -3746,8 +3734,7 @@ msgstr "아래 위에다"
 msgid ""
 "Destination which overlaps the source replaces the source. Source is placed "
 "elsewhere."
-msgstr ""
-"소스가 겹쳐진 목적지는 소스를 바꿉니다. 소스는 다른 곳으로 지정되었습니다."
+msgstr "소스와 겹치는 대상이 소스를 바꿉니다. 소스는 다른 곳으로 지정되었습니다."
 
 #. TRANSLATORS: UNIQUE_NAME_TEMPLATE. Must match its regex.
 #. TRANSLATORS: Leave this untranslated if you are unsure.
@@ -5212,7 +5199,7 @@ msgstr "가장 최근에 사용되는 단축 키에 브러시 설정을 저장�
 #: ../gui/resources.xml:401
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Clear Layer"
-msgstr "레이어를 지우기"
+msgstr "레이어 지우기"
 
 #: ../gui/resources.xml:402
 msgctxt "Accel Editor (descriptions)"
@@ -5436,7 +5423,7 @@ msgstr "'보이는 레이어 병합'과 비슷하지만, 원본을 삭제하지 
 #: ../gui/resources.xml:583
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Delete Layer"
-msgstr "레이어를 삭제"
+msgstr "레이어 삭제하기"
 
 #: ../gui/resources.xml:584
 msgctxt "Accel Editor (descriptions)"
@@ -6074,7 +6061,7 @@ msgstr "단축 키 작동 방법에 대한 설명을 표시합니다."
 #: ../gui/resources.xml:1187
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
 msgid "Change Brush…"
-msgstr "브러시를 변경…"
+msgstr "브러시 변경하기…"
 
 #: ../gui/resources.xml:1188
 msgctxt "Accel Editor (descriptions)"
@@ -6107,7 +6094,7 @@ msgstr "나열된 단일 클릭 선택기로 커서 아래에 색상 변경기�
 #: ../gui/resources.xml:1213
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
 msgid "Get More Brushes…"
-msgstr "더 많은 브러시를 가져오기…"
+msgstr "더 많은 브러시 받기…"
 
 #: ../gui/resources.xml:1214
 msgctxt "Accel Editor (descriptions)"
