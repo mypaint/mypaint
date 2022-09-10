@@ -5,7 +5,7 @@ msgstr ""
 "Project-Id-Version: mypaint v2.0.0-alpha.12-327-ga332f03\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-04-17 23:27+0200\n"
-"PO-Revision-Date: 2022-09-09 23:16+0000\n"
+"PO-Revision-Date: 2022-09-11 16:18+0000\n"
 "Last-Translator: 이정희 <daemul72@gmail.com>\n"
 "Language-Team: Korean <https://hosted.weblate.org/projects/mypaint/mypaint/"
 "ko/>\n"
@@ -145,7 +145,7 @@ msgstr "색상"
 
 #: ../gui/backgroundwindow.py:92
 msgid "Add color to Patterns"
-msgstr "패턴에 색상을 추가"
+msgstr "패턴에 색상 추가하기"
 
 #: ../gui/backgroundwindow.py:256
 msgid "One or more backgrounds could not be loaded"
@@ -224,7 +224,7 @@ msgstr "트래킹"
 #: ../gui/brusheditor.py:422
 msgctxt "brush settings list: setting group"
 msgid "Stroke"
-msgstr "스트로크"
+msgstr "자획"
 
 #: ../gui/brusheditor.py:433
 msgctxt "brush settings list: setting group"
@@ -329,7 +329,7 @@ msgid ""
 "<small>Click ‘Edit’ to make changes to the icon</small>"
 msgstr ""
 "<b>%s</b>\n"
-"<small>'편집'을 클릭해 아이콘을 변경하십시오</small>"
+"<small>'편집하기'를 클릭하여 아이콘을 변경합니다</small>"
 
 #. TRANSLATORS: begin editing a brush's preview icon
 #: ../gui/brushiconeditor.py:157
@@ -338,7 +338,7 @@ msgstr "편집"
 
 #: ../gui/brushiconeditor.py:159
 msgid "Begin editing this preview icon"
-msgstr "미리보기 아이콘을 편집을 시작"
+msgstr "이 미리보기 아이콘 편집 시작"
 
 #. TRANSLATORS: revert edits to a brush icon
 #: ../gui/brushiconeditor.py:165
@@ -347,7 +347,7 @@ msgstr "되돌리기"
 
 #: ../gui/brushiconeditor.py:167
 msgid "Discard changes, and cancel editing"
-msgstr "변경 사항을 취소하고 편집을 취소"
+msgstr "변경 사항을 취소하고 편집을 취소합니다"
 
 #. TRANSLATORS: clear the brush preview icon being edited
 #: ../gui/brushiconeditor.py:174
@@ -356,7 +356,7 @@ msgstr "지우기"
 
 #: ../gui/brushiconeditor.py:176
 msgid "Clear the preview icon"
-msgstr "미리보기 아이콘을 지우기"
+msgstr "미리보기 아이콘 지우기"
 
 #. TRANSLATORS: set the brush icon to a built-in default
 #: ../gui/brushiconeditor.py:182
@@ -365,7 +365,7 @@ msgstr "자동"
 
 #: ../gui/brushiconeditor.py:184
 msgid "Use the default icon"
-msgstr "기본 아이콘을 사용"
+msgstr "기본 아이콘 사용하기"
 
 #. TRANSLATORS: save edits to a brush icon
 #: ../gui/brushiconeditor.py:190 ../gui/brusheditor.glade:111
@@ -374,7 +374,7 @@ msgstr "저장"
 
 #: ../gui/brushiconeditor.py:192
 msgid "Save this preview icon, and finish editing"
-msgstr "미리보기 아이콘을 저장하고 편집을 완료"
+msgstr "미리보기 아이콘을 저장하고 편집 마치기"
 
 #: ../gui/brushmanager.py:131
 msgid "Lost & Found"
@@ -483,7 +483,7 @@ msgstr "클론"
 #: ../gui/brushselectionwindow.py:242
 msgctxt "brush group: context menu for a single brush"
 msgid "Edit Brush Settings"
-msgstr "브러시 설정을 편집"
+msgstr "브러시 설정 편집하기"
 
 #: ../gui/brushselectionwindow.py:250
 msgctxt "brush group: context menu for a single brush"
@@ -525,7 +525,7 @@ msgstr "그룹 “{group_name}”"
 #: ../gui/brushselectionwindow.py:419
 msgctxt "brush group properties dialog: action buttons"
 msgid "Rename Group"
-msgstr "그룹 이름을 변경"
+msgstr "그룹 이름 바꾸기"
 
 #: ../gui/brushselectionwindow.py:425
 msgctxt "brush group properties dialog: action buttons"
@@ -535,12 +535,12 @@ msgstr "압축 브러시 셋으로 내보내기"
 #: ../gui/brushselectionwindow.py:431
 msgctxt "brush group properties dialog: action buttons"
 msgid "Delete Group"
-msgstr "그룹을 삭제"
+msgstr "그룹 삭제하기"
 
 #: ../gui/brushselectionwindow.py:451
 msgctxt "brush group rename dialog: title"
 msgid "Rename Group"
-msgstr "그룹 이름을 변경"
+msgstr "그룹 이름 바꾸기"
 
 #: ../gui/brushselectionwindow.py:469
 msgctxt "brush group rename"
@@ -560,7 +560,7 @@ msgid ""
 "Could not delete group “{group_name}”.\n"
 "Some special groups cannot be deleted."
 msgstr ""
-"그룹 “{group_name}” 을 삭제할 수 없습니다.\n"
+"“{group_name}” 그룹을 삭제할 수 없습니다.\n"
 "일부 특수 그룹은 삭제할 수 없습니다."
 
 #: ../gui/brushselectionwindow.py:511
@@ -591,7 +591,7 @@ msgstr "더 많은 브러시 받기…"
 #: ../gui/brushselectionwindow.py:558
 msgctxt "new brush group dialog: title"
 msgid "Create Group"
-msgstr "그룹을 만들기"
+msgstr "그룹 만들기"
 
 #. TRANSLATORS: "Button" refers to a mouse button
 #. TRANSLATORS: It is part of a button map label.
@@ -613,11 +613,11 @@ msgstr "버튼 누르기"
 
 #: ../gui/buttonmap.py:320
 msgid "Add a new binding"
-msgstr "새로운 바인딩을 추가"
+msgstr "새 바인딩 추가하기"
 
 #: ../gui/buttonmap.py:328
 msgid "Remove the current binding"
-msgstr "현재 바인딩을 제거"
+msgstr "현재 바인딩 제거하기"
 
 #: ../gui/buttonmap.py:475
 #, python-format
@@ -644,8 +644,8 @@ msgstr "수정자 키를 누른 상태에서 이 텍스트 위의 버튼을 눌�
 #, python-brace-format
 msgid ""
 "{button} cannot be bound without modifier keys (its meaning is fixed, sorry)"
-msgstr ""
-"{button}은(는) 보조 키 없이 바인팅될 수 없습니다 (고정을 의미, 죄송합니다)"
+msgstr "{button}은(는) 수정자 키 없이는 바인딩 할 수 없습니다 (그 의미는 고정되어 "
+"있습니다. 죄송합니다)"
 
 #: ../gui/buttonmap.py:601
 #, python-brace-format
@@ -654,7 +654,7 @@ msgstr "{button_combination}는 이미 '{action_name}'을 작업할 가능성이
 
 #: ../gui/colorpicker.py:65
 msgid "Pick Color"
-msgstr "색상을 선택"
+msgstr "색상 고르기"
 
 #: ../gui/colorpicker.py:68
 msgid "Set the color used for painting"
@@ -1997,12 +1997,12 @@ msgctxt ""
 "Name of the fill mode\n"
 "In other software, 'Flood Fill' is also known as 'Bucket Fill' or just 'Fill'"
 msgid "Flood Fill"
-msgstr "색상 영역을 채우기"
+msgstr "색상 영역 채우기"
 
 #: ../gui/fill.py:129
 msgctxt "Usage description of the Flood Fill mode"
 msgid "Fill areas with color"
-msgstr "색상으로 영역을 채우기"
+msgstr "색상으로 영역 채우기"
 
 #: ../gui/fill.py:505
 msgctxt ""
@@ -2019,8 +2019,8 @@ msgid ""
 "How much pixel colors are allowed to vary from the start\n"
 "before Flood Fill will refuse to fill them"
 msgstr ""
-"플러드 채움이 채우기를 거부하기 전에 시작부터\n"
-"변경할 수 있는 픽셀 색상"
+"색상 영역 채우기가 채우기를 거부하기 전에 시작부터\n"
+"얼마나 많은 픽셀 색상이 변경되도록 허용되는지"
 
 #: ../gui/fill.py:533
 msgctxt ""
@@ -2615,7 +2615,7 @@ msgstr "입구 압력"
 
 #: ../gui/linemode.py:42
 msgid "Stroke entrance pressure for line tools"
-msgstr "선 도구에 대한 스트로크 입구 압력"
+msgstr "선 도구에 대한 자획 진입 압력"
 
 #: ../gui/linemode.py:43
 msgid "Midpoint Pressure"
@@ -2623,7 +2623,7 @@ msgstr "중간 압력"
 
 #: ../gui/linemode.py:44
 msgid "Mid-Stroke pressure for line tools"
-msgstr "선 도구에 대한 중간 스트로크 압력"
+msgstr "선 도구에 대한 중간 자획 압력"
 
 #: ../gui/linemode.py:45
 msgid "Exit Pressure"
@@ -2631,7 +2631,7 @@ msgstr "압력 종료"
 
 #: ../gui/linemode.py:46
 msgid "Stroke exit pressure for line tools"
-msgstr "선 도구에 대한 스트로크 출구 압력"
+msgstr "선 도구에 대한 자획 종료 압력"
 
 #: ../gui/linemode.py:47
 msgid "Head"
@@ -2639,7 +2639,7 @@ msgstr "해드"
 
 #: ../gui/linemode.py:48
 msgid "Stroke lead-in end"
-msgstr "스트로크 리드 인 끝"
+msgstr "자획 인입선 끝"
 
 #: ../gui/linemode.py:49
 msgid "Tail"
@@ -2647,7 +2647,7 @@ msgstr "꼬리"
 
 #: ../gui/linemode.py:50
 msgid "Stroke trail-off beginning"
-msgstr "스트로크 트레일 오프 시작"
+msgstr "자획 끝맺음 시작"
 
 #: ../gui/linemode.py:174
 msgid "Pressure variation…"
@@ -2845,7 +2845,7 @@ msgstr "줌: %.01f%%"
 #: ../gui/picker.py:462
 msgctxt "context picker: statusbar text during grab"
 msgid "Pick brushstroke settings, stroke color, and layer…"
-msgstr "브러시 스트로크 설정, 스트로크 색상, 및 레이어 선택…"
+msgstr "브러시 자획 설정, 자획 색상, 및 레이어 고르기…"
 
 #: ../gui/picker.py:501
 msgctxt "color picker: statusbar text during grab"
@@ -3887,7 +3887,7 @@ msgstr "실시간 업데이트"
 msgid ""
 "Update the last stroke on the canvas with the settings in this window, in "
 "real time"
-msgstr "실시간으로, 이 창의 설정으로 캔버스의 마지막 스트로크를 업데이트"
+msgstr "실시간으로, 이 창의 설정으로 캔버스의 마지막 자획 업데이트"
 
 #: ../gui/brusheditor.glade:116
 msgid "Save these settings to the brush"
@@ -3910,7 +3910,7 @@ msgstr "삭제"
 
 #: ../gui/brusheditor.glade:156
 msgid "Delete this brush from the disk"
-msgstr "디스크에서 이 브러시를 삭제"
+msgstr "디스크에서 이 브러시 삭제하기"
 
 #: ../gui/brusheditor.glade:170
 msgid "Copy to New"
@@ -4093,7 +4093,7 @@ msgstr "시간:"
 #: ../gui/inktool.glade:205
 msgctxt "Inking tool options: node delete button: label"
 msgid "Delete Point"
-msgstr "포인트를 삭제"
+msgstr "포인트 삭제하기"
 
 #: ../gui/inktool.glade:209
 msgctxt "Inking tool options: node delete button: tooltip"
@@ -4102,11 +4102,11 @@ msgstr "현재 선택된 포인트을 삭제"
 
 #: ../gui/inktool.glade:221 ../gui/resources.xml:897
 msgid "Insert Point"
-msgstr "포인트를 삽입"
+msgstr "포인트 삽입하기"
 
 #: ../gui/inktool.glade:253 ../gui/resources.xml:911
 msgid "Simplify Points"
-msgstr "포인트를 단순화"
+msgstr "포인트 단순화하기"
 
 #: ../gui/inktool.glade:257
 msgid "Simplify the curve using the Reumann-Witkam algorithm."
@@ -4114,11 +4114,11 @@ msgstr "Reumann-Witkam 알고리즘을 사용하여 곡선을 단순화합니다
 
 #: ../gui/inktool.glade:269 ../gui/resources.xml:918
 msgid "Cull Points"
-msgstr "포인트를 도태"
+msgstr "포인트 추려내기"
 
 #: ../gui/inktool.glade:273
 msgid "Cull every other point from the curve."
-msgstr "커브에서 다른 모든 포인트를 도태시킵니다."
+msgstr "곡선에서 다른 모든 점을 추려냅니다."
 
 #: ../gui/layervis.glade:15
 msgctxt "Layers window: view list controls: tooltips"
@@ -4138,7 +4138,7 @@ msgstr "활성 보기를 제거합니다."
 #: ../gui/layervis.glade:78
 msgctxt "Layers window: view list controls: tooltips"
 msgid "Snapshot visible layers as a new view."
-msgstr "새로운 보기로 보이는 레이어를 스냅샷."
+msgstr "보이는 레이어를 새 보기로 스냅숏합니다."
 
 #: ../gui/layervis.glade:99
 msgctxt "Layers window: view list controls: tooltips"
@@ -4178,7 +4178,7 @@ msgstr ""
 #: ../gui/mypaint.glade:249
 msgctxt "footer: context picker button: tooltip"
 msgid "Pick brushstroke settings, stroke color, and layer"
-msgstr "브러시 스트로크 설정, 스트로크 색상 및 레이어를 선택"
+msgstr "브러시 자획 설정, 자획 색상 및 레이어 고르기"
 
 #: ../gui/preferenceswindow.glade:24
 msgctxt "Prefs Dialog|Saving|Save Formats and Locations|Default|"
@@ -4294,8 +4294,8 @@ msgid ""
 "• The space bar can be used like Button2.\n"
 "• Some tablet pads' buttons cannot be held down when pressed."
 msgstr ""
-"• 스페이바를 button2 처럼 사용할 수 있습니다. \n"
-"• 눌렀을경우 몇몇 종의 타블랫 패드의 버튼이 작동이 되지 않을 수 있습니다."
+"• 스페이스바를 button2 처럼 사용할 수 있습니다. \n"
+"• 몇몇의 타블랫 패드의 버튼은 눌렀어도 작동이 되지 않을 수 있습니다."
 
 #: ../gui/preferenceswindow.glade:401
 msgctxt "Prefs Dialog|Button|"
@@ -4525,7 +4525,7 @@ msgstr "부드러운 스크롤 이벤트 처리:"
 msgctxt ""
 "Prefs Dialog|View|Interface|Handle smooth scrolling events|checkbox label"
 msgid "When devices send them (needs restart)"
-msgstr "장치가 장치를 보낼 때 (다시 시작해야 함)"
+msgstr "장치에서 보낼 때 (다시 시작해야 함)"
 
 #: ../gui/preferenceswindow.glade:1065
 msgctxt ""
@@ -4553,7 +4553,7 @@ msgstr ""
 
 #: ../gui/preferenceswindow.glade:1112
 msgid "Hide cursor while painting"
-msgstr "페인팅하는 동안 커서를 숨기기"
+msgstr "페인팅하는 동안 커서 숨기기"
 
 #. Label for a toggle that is part of the "Freehand cursor type" settings. Crosshair refers to lines which are either horizontal, vertical, both (cross) or crossed in an x, depending on the brush cursor type.
 #: ../gui/preferenceswindow.glade:1132
@@ -4769,7 +4769,7 @@ msgstr ""
 #: ../gui/preferenceswindow.glade:1722
 msgctxt "Prefs Dialog|Compatibility"
 msgid "Show warning for files that may be partially incompatible"
-msgstr "부분적으로 호환되지 않는 파일에 대한 경고를 표시"
+msgstr "부분적으로 호환되지 않는 파일에 대한 경고 표시하기"
 
 #. Label for a set of options
 #: ../gui/preferenceswindow.glade:1739
@@ -4888,7 +4888,7 @@ msgstr "사용자의 현재 작업에서 불러온 파일을 다시 불러옵니
 #: ../gui/resources.xml:111
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "Import Layers…"
-msgstr "레이어를 가져 오기…"
+msgstr "레이어 가져오기…"
 
 #: ../gui/resources.xml:112
 msgctxt "Accel Editor (descriptions)"
@@ -5054,7 +5054,7 @@ msgstr "회전 입력을 지원하지 않는 장치의 배럴 회전을 감소�
 #: ../gui/resources.xml:271
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
 msgid "Increase Brush Size"
-msgstr "브러시 크기를 증가"
+msgstr "브러시 크기 증가하기"
 
 #: ../gui/resources.xml:272
 msgctxt "Accel Editor (descriptions)"
@@ -5064,7 +5064,7 @@ msgstr "작업 브러시가 더 커집니다."
 #: ../gui/resources.xml:279
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
 msgid "Decrease Brush Size"
-msgstr "브러시 크기를 감소"
+msgstr "브러시 크기 감소하기"
 
 #: ../gui/resources.xml:280
 msgctxt "Accel Editor (descriptions)"
@@ -5074,7 +5074,7 @@ msgstr "작업 브러시가 더 작아집니다."
 #: ../gui/resources.xml:288
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
 msgid "Increase Brush Opacity"
-msgstr "브러시 불투명도를 증가"
+msgstr "브러시 불투명도 증가하기"
 
 #: ../gui/resources.xml:289
 msgctxt "Accel Editor (descriptions)"
@@ -5084,7 +5084,7 @@ msgstr "작업 브러시가 더 불투명해집니다."
 #: ../gui/resources.xml:296
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
 msgid "Decrease Brush Opacity"
-msgstr "브러시 불투명도를 감소"
+msgstr "브러시 불투명도 감소하기"
 
 #: ../gui/resources.xml:297
 msgctxt "Accel Editor (descriptions)"
@@ -5099,7 +5099,7 @@ msgstr "페인팅 색상을 밝게"
 #: ../gui/resources.xml:306
 msgctxt "Accel Editor (descriptions)"
 msgid "Increase the lightness of the current painting color."
-msgstr "현재 페인팅 색상의 밝기를 증가 시킵니다."
+msgstr "현재 페인팅 색상의 밝기를 증가시킵니다."
 
 #: ../gui/resources.xml:313
 msgctxt "Menu→Color→Adjust Color (labels), Accel Editor (labels)"
@@ -5109,12 +5109,12 @@ msgstr "페인팅 색상을 어둠게"
 #: ../gui/resources.xml:314
 msgctxt "Accel Editor (descriptions)"
 msgid "Decrease the lightness of the current painting color."
-msgstr "현재 페인팅 색상의 밝기를 감소 시킵니다."
+msgstr "현재 페인팅 색상의 밝기를 감소시킵니다."
 
 #: ../gui/resources.xml:326
 msgctxt "Menu→Color→Adjust Color (labels), Accel Editor (labels)"
 msgid "Change Hue Clockwise"
-msgstr "색조를 시계 방향으로 변경"
+msgstr "색조를 시계 방향으로 변경하기"
 
 #: ../gui/resources.xml:327
 msgctxt "Accel Editor (descriptions)"
@@ -5124,7 +5124,7 @@ msgstr "페인팅 색상의 색조를 색상 원형의 시계 방향으로 돌�
 #: ../gui/resources.xml:334
 msgctxt "Menu→Color→Adjust Color (labels), Accel Editor (labels)"
 msgid "Change Hue Anticlockwise"
-msgstr "색조를 반 시계 방향으로 변경"
+msgstr "색조를 반시계 방향으로 변경하기"
 
 #: ../gui/resources.xml:335
 msgctxt "Accel Editor (descriptions)"
@@ -5134,22 +5134,22 @@ msgstr "페인팅 색상의 색조를 색상 원형의 시계 반대 방향으�
 #: ../gui/resources.xml:342
 msgctxt "Menu→Color→Adjust Color (labels), Accel Editor (labels)"
 msgid "Increase Saturation"
-msgstr "채도를 증가"
+msgstr "채도 증가하기"
 
 #: ../gui/resources.xml:343
 msgctxt "Accel Editor (descriptions)"
 msgid "Make the painting color more saturated (more colorful, purer)."
-msgstr "패인팅 색상 체도를 증가(더 화려한, 순수한) 시킵니다."
+msgstr "패인팅 색상 채도를 증가시킵니다(더 다채롭고, 더 순수하게)."
 
 #: ../gui/resources.xml:350
 msgctxt "Menu→Color→Adjust Color (labels), Accel Editor (labels)"
 msgid "Decrease Saturation"
-msgstr "채도를 감소"
+msgstr "채도 감소하기"
 
 #: ../gui/resources.xml:351
 msgctxt "Accel Editor (descriptions)"
 msgid "Make the painting color less saturated (grayer)."
-msgstr "패인팅 색상 체도를 감소(회색) 시킵니다."
+msgstr "패인팅 색상 채도를 감소시킵니다(회색)."
 
 #: ../gui/resources.xml:359
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
@@ -5164,14 +5164,13 @@ msgstr "현재 브러시의 저장 값으로 모든 브러시 설정을 복원�
 #: ../gui/resources.xml:370
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
 msgid "Pick Stroke and Layer"
-msgstr "스트로크 및 레이어를 선택"
+msgstr "자획 및 레이어 고르기"
 
 #: ../gui/resources.xml:371
 msgctxt "Accel Editor (descriptions)"
 msgid ""
 "Pick a brushstroke from the canvas, which restores brush, color, and layer."
-msgstr ""
-"캔버스에서 브러시 스트로크를 선택하면 브러시, 색상 및 레이어가 복원됩니다."
+msgstr "캔버스에서 브러시 자획을 고르면 브러시, 색상 및 레이어가 복원됩니다."
 
 #: ../gui/resources.xml:382
 msgctxt "Menu→Brush→Shortcut Keys (labels), Accel Editor (labels)"
@@ -5183,13 +5182,12 @@ msgctxt "Accel Editor (descriptions)"
 msgid ""
 "Toggle whether restoring the brush from a shortcut key also restores the "
 "saved color."
-msgstr ""
-"숏컷 키에서 브러시를 복원해도 저장된 색상이 복원되는지 여부를 토글합니다."
+msgstr "단축키에서 브러시를 복원해도 저장된 색상이 복원되는지 여부를 토글합니다."
 
 #: ../gui/resources.xml:390
 msgctxt "Menu→Brush→Shortcut Keys (labels), Accel Editor (labels)"
 msgid "Save Brush to Most Recent Shortcut Key"
-msgstr "가장 최근 단축 키에 브러시를 저장"
+msgstr "가장 최근 단축키에 브러시 저장하기"
 
 #: ../gui/resources.xml:391
 msgctxt "Accel Editor (descriptions)"
@@ -5214,7 +5212,7 @@ msgstr "슬라이스 작업"
 #: ../gui/resources.xml:416
 msgctxt "Menu→Layer→Slice (labels), Accel Editor (labels)"
 msgid "Trim Layer to Frame"
-msgstr "레이어를 프레임으로 손질"
+msgstr "프레임으로 레이어 손질하기"
 
 #: ../gui/resources.xml:417
 msgctxt "Accel Editor (descriptions)"
@@ -5252,7 +5250,7 @@ msgstr "리팩터 레이어 그룹 픽셀"
 msgctxt "Accel Editor (descriptions)"
 msgid ""
 "Normalize child layers, then factor out common parts to a new child layer."
-msgstr "자식 레이어를 정규화한 다음 공통 부품을 새 자식 레이어로 분리합니다."
+msgstr "하위 레이어를 정규화한 다음 공통 부분을 새 하위 레이어로 분리합니다."
 
 #: ../gui/resources.xml:444
 msgctxt "Menu→Layer→Slice (labels), Accel Editor (labels)"
@@ -5262,7 +5260,7 @@ msgstr "리 팩터 레이어 그룹 타일"
 #: ../gui/resources.xml:452
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Copy Layer to Clipboard"
-msgstr "레이어를 클립보드에 복사"
+msgstr "클립보드에 레이어 복사하기"
 
 #: ../gui/resources.xml:453
 msgctxt "Accel Editor (descriptions)"
@@ -5272,7 +5270,7 @@ msgstr "현재 레이어의 내용을 클립보드에 복사합니다."
 #: ../gui/resources.xml:461
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Paste Layer from Clipboard"
-msgstr "레이어를 클립보드에서 붙여넣기"
+msgstr "클립보드에서 레이어 붙여넣기"
 
 #: ../gui/resources.xml:462
 msgctxt "Accel Editor (descriptions)"
@@ -5282,17 +5280,17 @@ msgstr "현재 레이어를 클립 보드의 내용으로 대체합니다."
 #: ../gui/resources.xml:469
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Edit Layer in External App…"
-msgstr "레이어를 외부 응용 프로그램에서 편집…"
+msgstr "외부 응용프로그램에서 레이어 편집하기…"
 
 #: ../gui/resources.xml:470
 msgctxt "Accel Editor (descriptions)"
 msgid "Edit the active layer in an external application."
-msgstr "외부 응용 프로그램에서 활성 레이어를 편집하합니다."
+msgstr "외부 응용프로그램에서 활성 레이어를 편집합니다."
 
 #: ../gui/resources.xml:477
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Update Layer with External Edits"
-msgstr "외부 편집한 레이어를 업데이트"
+msgstr "외부 편집으로 레이어 업데이트"
 
 #: ../gui/resources.xml:478
 msgctxt "Accel Editor (descriptions)"
@@ -5308,7 +5306,7 @@ msgstr "커서에서 레이어로 이동"
 #: ../gui/resources.xml:485
 msgctxt "Accel Editor (descriptions)"
 msgid "Select a layer by picking something [drawn] on it."
-msgstr "[그려진] 무언가를 선택하여 레이어를 선택합니다."
+msgstr "[그려진] 항목을 선택하여 레이어를 선택합니다."
 
 #: ../gui/resources.xml:493
 msgctxt "Menu→Layer→Go to Layer (labels), Accel Editor (labels)"
@@ -5393,7 +5391,7 @@ msgstr "현재 레이어 아래에 새 레이어 그룹을 추가합니다."
 #: ../gui/resources.xml:559
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Merge Layer Down"
-msgstr "아래에 레이어를 병합"
+msgstr "아래쪽 레이어 병합하기"
 
 #: ../gui/resources.xml:560
 msgctxt "Accel Editor (descriptions)"
@@ -5403,7 +5401,7 @@ msgstr "아래의 레이어와 현재 레이어를 병합합니다."
 #: ../gui/resources.xml:567
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Merge Visible Layers"
-msgstr "보이는 레이어를 병합"
+msgstr "보이는 레이어 병합하기"
 
 #: ../gui/resources.xml:568
 msgctxt "Accel Editor (descriptions)"
@@ -5447,7 +5445,7 @@ msgstr ""
 #: ../gui/resources.xml:598
 msgctxt "Menu→Layer→Opacity (labels), Accel Editor (labels)"
 msgid "Increase Layer’s Opacity"
-msgstr "레이어의 불투명도를 증가"
+msgstr "레이어의 불투명도 증가하기"
 
 #: ../gui/resources.xml:599
 msgctxt "Accel Editor (descriptions)"
@@ -5457,7 +5455,7 @@ msgstr "레이어를 덜 투명하게 만듭니다."
 #: ../gui/resources.xml:606
 msgctxt "Menu→Layer→Opacity (labels), Accel Editor (labels)"
 msgid "Reduce Layer’s Opacity"
-msgstr "레이어의 불투명도를 감소"
+msgstr "레이어의 불투명도 감소하기"
 
 #: ../gui/resources.xml:607
 msgctxt "Accel Editor (descriptions)"
@@ -5467,7 +5465,7 @@ msgstr "레이어를 투명하게 만듭니다."
 #: ../gui/resources.xml:614
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Raise Layer"
-msgstr "레이어를 올리기"
+msgstr "레이어 올리기"
 
 #: ../gui/resources.xml:615
 msgctxt "Accel Editor (descriptions)"
@@ -5477,7 +5475,7 @@ msgstr "레이어 스택의 현재 레이어 한 단계 올립니다."
 #: ../gui/resources.xml:623
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Lower Layer"
-msgstr "레이어를 내리기"
+msgstr "레이어 내리기"
 
 #: ../gui/resources.xml:624
 msgctxt "Accel Editor (descriptions)"
@@ -5487,7 +5485,7 @@ msgstr "레이어 스택의 현재 레이어 한 단계 내립니다."
 #: ../gui/resources.xml:633
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Duplicate Layer"
-msgstr "레이어를 복제"
+msgstr "레이어 복제하기"
 
 #: ../gui/resources.xml:634
 msgctxt "Accel Editor (descriptions)"
@@ -5727,7 +5725,7 @@ msgstr "대칭 페인팅 활성"
 #: ../gui/resources.xml:857
 msgctxt "Accel Editor (descriptions)"
 msgid "Mirror brushstrokes along the axis of symmetry"
-msgstr "대칭 축을 따라 브러시 스트로크를 미러"
+msgstr "대칭 축을 따라 브러시 자획 미러링하기"
 
 #: ../gui/resources.xml:864
 msgctxt "Menu→File (labels), Accel Editor (labels)"
@@ -5774,16 +5772,16 @@ msgctxt "Accel Editor (descriptions)"
 msgid ""
 "Insert a point next to the currently selected point in the direction of the "
 "stroke."
-msgstr "스트로크 방향으로 현재 선택한 포인트 옆에 포인트를 삽입합니다."
+msgstr "자획 방향으로 현재 선택한 포인트 옆에 포인트를 삽입합니다."
 
 #: ../gui/resources.xml:904
 msgid "Delete Point"
-msgstr "포인트를 삭제"
+msgstr "포인트 삭제하기"
 
 #: ../gui/resources.xml:905
 msgctxt "Accel Editor (descriptions)"
 msgid "Delete currently selected point on the ink stroke."
-msgstr "잉크 스트로크에서 현재 선택된 포인트를 삭제합니다."
+msgstr "잉크 자획에서 현재 선택된 포인트를 삭제합니다."
 
 #: ../gui/resources.xml:912
 msgctxt "Accel Editor (descriptions)"
@@ -5794,7 +5792,7 @@ msgstr "노드 간 각도 및 거리에 따라 포인트를 단순화하고 삭�
 #: ../gui/resources.xml:919
 msgctxt "Accel Editor (descriptions)"
 msgid "Delete every other point on the ink stroke."
-msgstr "잉크 스트로크에서 다른 모든 포인트를 삭제합니다."
+msgstr "잉크 자획에서 다른 모든 포인트를 삭제합니다."
 
 #: ../gui/resources.xml:933
 msgctxt "Menu→Brush (labels)"
@@ -5975,12 +5973,12 @@ msgstr "스크래치 패드로 디스크의 이미지 파일을 불러옵니다.
 #: ../gui/resources.xml:1112
 msgctxt "Menu→Scratchpad (labels), Accel Editor (labels)"
 msgid "Save Scratchpad"
-msgstr "스크래치 패드를 저장"
+msgstr "스크래치패드 저장하기"
 
 #: ../gui/resources.xml:1113
 msgctxt "Accel Editor (descriptions)"
 msgid "Save the scratchpad to its existing file on disk."
-msgstr "디스크에 있는 기존 파일에 스크래치 패드를 저장합니다."
+msgstr "디스크에 있는 기존 파일에 스크래치패드를 저장합니다."
 
 #: ../gui/resources.xml:1120
 msgctxt "Menu→Scratchpad (labels), Accel Editor (labels)"
@@ -5990,37 +5988,37 @@ msgstr "다른 스크래치 패드로 내보내기…"
 #: ../gui/resources.xml:1121
 msgctxt "Accel Editor (descriptions)"
 msgid "Export the scratchpad to disk, under a file name of your choice."
-msgstr "원하는 파일 이름으로 디스크에 스크래치 패드를 내보냅니다."
+msgstr "원하는 파일 이름으로 디스크에 스크래치패드를 내보냅니다."
 
 #: ../gui/resources.xml:1128
 msgctxt "Menu→Scratchpad (labels), Accel Editor (labels)"
 msgid "Revert Scratchpad"
-msgstr "스크래치 패드를 되돌리기"
+msgstr "스크래치패드 되돌리기"
 
 #: ../gui/resources.xml:1129
 msgctxt "Accel Editor (descriptions)"
 msgid "Revert the scratchpad to its last saved state."
-msgstr "스크래치 패드를 마지막 저장된 상태로 되돌립니다."
+msgstr "스크래치패드를 마지막 저장된 상태로 되돌립니다."
 
 #: ../gui/resources.xml:1136
 msgctxt "Menu→Scratchpad (labels), Accel Editor (labels)"
 msgid "Save Scratchpad as Default"
-msgstr "스크래치 패드를 기본 값으로 저장"
+msgstr "스크래치패드를 기본값으로 저장하기"
 
 #: ../gui/resources.xml:1137
 msgctxt "Accel Editor (descriptions)"
 msgid "Save the scratchpad as the default for ‘New Scratchpad’."
-msgstr "'새로운 스크래치 패드'에 대한 기본 값으로 스크래치 패드를 저장합니다."
+msgstr "'새 스크래치패드'에 대한 기본값으로 스크래치패드를 저장합니다."
 
 #: ../gui/resources.xml:1143
 msgctxt "Menu→Scratchpad (labels), Accel Editor (labels)"
 msgid "Clear Default Scratchpad"
-msgstr "기본 스크래치 패드를 지우기"
+msgstr "기본 스크래치패드 지우기"
 
 #: ../gui/resources.xml:1144
 msgctxt "Accel Editor (descriptions)"
 msgid "Clear the default scratchpad to a blank canvas."
-msgstr "빈 캔버스를 기본 스크래치 패드로 만듭니다."
+msgstr "기본 스크래치패드를 빈 캔버스로 지웁니다."
 
 #: ../gui/resources.xml:1150
 msgctxt "Menu→Scratchpad (labels), Accel Editor (labels)"
@@ -6031,7 +6029,7 @@ msgstr "메인 배경을 스크래치 패드로 복사"
 msgctxt "Accel Editor (descriptions)"
 msgid ""
 "Copy the background image from the working document into the Scratchpad."
-msgstr "스크래치 패드로 작업 문서의 배경 이미지를 복사합니다."
+msgstr "스크래치패드로 작업 문서의 배경 이미지를 복사합니다."
 
 #: ../gui/resources.xml:1159
 msgctxt "Menu (labels)"
@@ -6071,7 +6069,7 @@ msgstr "커서 아래에 브러시 변경을 팝업합니다."
 #: ../gui/resources.xml:1195
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "Change Color…"
-msgstr "색상을 변경…"
+msgstr "색상 변경하기…"
 
 #: ../gui/resources.xml:1196
 msgctxt "Accel Editor (descriptions)"
@@ -6082,7 +6080,7 @@ msgstr "나열된 모든 색상 선택기로 커서 아래에 색상 변경기�
 #: ../gui/resources.xml:1204
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "Change Color (fast subset)…"
-msgstr "색상을 변경 (빠른 하위설정)…"
+msgstr "색상 변경하기 (빠른 하위설정)…"
 
 #: ../gui/resources.xml:1205
 msgctxt "Accel Editor (descriptions)"
@@ -6109,7 +6107,7 @@ msgstr "브러시 가져오기…"
 #: ../gui/resources.xml:1222
 msgctxt "Accel Editor (descriptions)"
 msgid "Load a brushpack from disk."
-msgstr "디스크에서 브러시팩를 불러옵니다."
+msgstr "디스크에서 브러시팩을 불러옵니다."
 
 #: ../gui/resources.xml:1231
 msgctxt "Menu (labels)"
@@ -6154,7 +6152,7 @@ msgstr "디버그 메모리 누수."
 #: ../gui/resources.xml:1269
 msgctxt "Menu→Help→Debug (labels), Accel Editor (labels)"
 msgid "Run Garbage Collector Now"
-msgstr "지금 가비지 수집기를 실행"
+msgstr "지금 Garbage 수집기 실행하기"
 
 #: ../gui/resources.xml:1270
 msgctxt "Accel Editor (descriptions)"
@@ -6180,7 +6178,7 @@ msgstr "충돌을 시뮬레이션…"
 #: ../gui/resources.xml:1286
 msgctxt "Accel Editor (descriptions)"
 msgid "Raise a Python exception, to test the crash dialog."
-msgstr "크래시 대화 상자를 테스트하기 위해 Python 예외를 발생시킵니다."
+msgstr "충돌 대화상자를 테스트하기 위해 Python 예외를 발생시킵니다."
 
 #: ../gui/resources.xml:1294
 msgctxt "Menu (labels)"
@@ -6195,7 +6193,7 @@ msgstr "피드백"
 #: ../gui/resources.xml:1306
 msgctxt "Menu→View (labels)"
 msgid "Adjust View"
-msgstr "보기를 조정"
+msgstr "보기 조정하기"
 
 #: ../gui/resources.xml:1312
 msgctxt "Menu→View (labels), Accel Editor (labels)"
@@ -6215,12 +6213,12 @@ msgstr "전체 화면"
 #: ../gui/resources.xml:1321
 msgctxt "Accel Editor (descriptions)"
 msgid "Toggle between full-screen and windowed mode."
-msgstr "전체 화면과 창 모드 사이를 전환."
+msgstr "전체 화면과 창 모드 사이를 전환합니다."
 
 #: ../gui/resources.xml:1332
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
 msgid "Edit Preferences"
-msgstr "환경 설정을 편집"
+msgstr "환경설정 편집하기"
 
 #: ../gui/resources.xml:1333
 msgctxt "Accel Editor (descriptions)"
@@ -6230,7 +6228,7 @@ msgstr "MyPaint의 전역 설정을 편집합니다."
 #: ../gui/resources.xml:1339
 msgctxt "Help→Debug (labels), Accel Editor (labels)"
 msgid "Test Input Devices"
-msgstr "입력 장치를 테스트"
+msgstr "입력 장치 테스트"
 
 #: ../gui/resources.xml:1340
 msgctxt "Accel Editor (descriptions)"
@@ -6277,12 +6275,12 @@ msgstr "레이어 패널"
 #: ../gui/resources.xml:1374
 msgctxt "Accel Editor (descriptions)"
 msgid "Dockable panel for managing layers."
-msgstr "레이어 관리를 위한 도킹가능 패널."
+msgstr "레이어 관리를 위한 도킹 가능 패널입니다."
 
 #: ../gui/resources.xml:1382
 msgctxt "Menu→Layers (labels), Accel Editor (labels)"
 msgid "Show Layers Panel"
-msgstr "레이어 패널을 보기"
+msgstr "레이어 패널 표시하기"
 
 #: ../gui/resources.xml:1383
 msgctxt "Accel Editor (descriptions)"
@@ -6353,7 +6351,7 @@ msgstr "구성 요소 슬라이더"
 #: ../gui/resources.xml:1436
 msgctxt "Accel Editor (descriptions)"
 msgid "Dockable color selector showing individual components of the color."
-msgstr "색상의 개별 구성 요소를 나타내는 고정 가능한 색상 선택기."
+msgstr "색상의 개별 구성 요소를 보여주는 도킹 가능한 색상 선택기입니다."
 
 #: ../gui/resources.xml:1443
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
@@ -6399,12 +6397,12 @@ msgstr "색상 혼합 및 브러시 테스트용 도킹가능 패널."
 #: ../gui/resources.xml:1478
 msgctxt "Menu→Scratchpad (labels), Accel Editor (labels)"
 msgid "Show Scratchpad Panel"
-msgstr "스크래치 패드 패널을 보기"
+msgstr "스크래치패드 패널 표시하기"
 
 #: ../gui/resources.xml:1479
 msgctxt "Accel Editor (descriptions)"
 msgid "Reveal the Scratchpad dockpanel (mix colors and make sketches)."
-msgstr "스크래치 패드 독패널을 보이기 (색상을 혼합하고 스케치를 만들기)."
+msgstr "스크래치패드 독패널을 표시합니다(색상을 혼합하고 스케치 만들기)."
 
 #: ../gui/resources.xml:1488
 msgctxt "Menu→Window (labels), Toolbar (labels), Accel Editor (labels)"
@@ -6439,7 +6437,7 @@ msgstr "활성화된 도구로 옵션을 조정하기 위한 도킹가능 패널
 #: ../gui/resources.xml:1517
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
 msgid "Show Tool Options Panel"
-msgstr "도구 옵션 패널을 보기"
+msgstr "도구 옵션 패널 표시하기"
 
 #: ../gui/resources.xml:1518
 msgctxt "Accel Editor (descriptions)"
@@ -6454,7 +6452,7 @@ msgstr "브러시 & 색상 기록 패널"
 #: ../gui/resources.xml:1529
 msgctxt "Accel Editor (descriptions)"
 msgid "Dockable panel for viewing recently changed colors and brushes."
-msgstr "최근 변경된 색상 및 브러시를 볼 수있는 도킹가능 패널."
+msgstr "최근에 변경된 색상과 브러시를 볼 수 있는 도킹 가능 패널입니다."
 
 #: ../gui/resources.xml:1537
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
@@ -6489,22 +6487,22 @@ msgstr "줌 레벨 피드백을 전환."
 #: ../gui/resources.xml:1563
 msgctxt "Menu→View→Feedback (labels), Accel Editor (labels)"
 msgid "Show Last Painting Position"
-msgstr "마지막 패인팅 위치를 표시"
+msgstr "마지막 패인팅 위치 표시하기"
 
 #: ../gui/resources.xml:1564
 msgctxt "Accel Editor (descriptions)"
 msgid "Toggle feedback showing where the last stroke ended."
-msgstr "마지막 스트로크가 끝난 위치를 보여주는 피드백을 토글합니다."
+msgstr "마지막 자획이 끝난 위치를 보여주는 피드백을 전환합니다."
 
 #: ../gui/resources.xml:1572
 msgctxt "Menu→View (labels)"
 msgid "Display Filter"
-msgstr "필터를 표시"
+msgstr "필터 내보이기"
 
 #: ../gui/resources.xml:1578
 msgctxt "Menu→View→Display Filter (labels), Accel Editor (labels)"
 msgid "Display Colors Normally"
-msgstr "색상 노멀라이즈를 표시"
+msgstr "정상적으로 색상 내보이기"
 
 #: ../gui/resources.xml:1579
 msgctxt "Accel Editor (descriptions)"
@@ -6529,7 +6527,7 @@ msgstr "색상 반전을 표시"
 #: ../gui/resources.xml:1596
 msgctxt "Accel Editor (descriptions)"
 msgid "Filter colors: inverse video. Black is white and red is cyan."
-msgstr "필터 색상 : 비디오를 반전. 검은 색은 흰색과 빨간색은 시안."
+msgstr "필터 색상 : 비디오를 반전합니다. 검정색은 흰색이고 빨간색은 청록색입니다."
 
 #: ../gui/resources.xml:1603
 msgctxt "Menu→View→Display Filter (labels), Accel Editor (labels)"
@@ -6620,7 +6618,7 @@ msgstr "대화형으로 수평 또는 수직으로 캔버스의 보기를 이동
 #: ../gui/resources.xml:1677
 msgctxt "Menu→Edit→Current Mode (labels)"
 msgid "Rotate View"
-msgstr "보기를 회전"
+msgstr "보기 회전하기"
 
 #: ../gui/resources.xml:1678
 msgctxt "Toolbar (short labels)"
@@ -6630,22 +6628,22 @@ msgstr "회전"
 #: ../gui/resources.xml:1679
 msgctxt "Toolbar (tooltips)"
 msgid "Rotate View: tilt your view of the canvas."
-msgstr "보기를 회전 : 캔버스의 보기를 회전합니다."
+msgstr "보기 회전하기 : 캔버스의 보기를 회전합니다."
 
 #: ../gui/resources.xml:1687
 msgctxt "Menu→View (labels), Accel Editor (labels)"
 msgid "Rotate View"
-msgstr "보기를 회전"
+msgstr "보기 회전하기"
 
 #: ../gui/resources.xml:1688
 msgctxt "Accel Editor (descriptions)"
 msgid "Interactively rotate your view of the canvas."
-msgstr "대화형으로 캔버스의 보기를 회전 할 수 있습니다."
+msgstr "대화형으로 캔버스의 보기를 회전할 수 있습니다."
 
 #: ../gui/resources.xml:1697
 msgctxt "Menu→Edit→Current Mode (labels)"
 msgid "Zoom View"
-msgstr "보기를 줌"
+msgstr "보기 확대/축소하기"
 
 #: ../gui/resources.xml:1698
 msgctxt "Toolbar (short labels)"
@@ -6655,12 +6653,12 @@ msgstr "줌"
 #: ../gui/resources.xml:1699
 msgctxt "Toolbar (tooltips)"
 msgid "Zoom View: zoom into or out of the canvas."
-msgstr "보기를 줌: 캔버스를 확대 또는 축소합니다."
+msgstr "보기 확대/축소하기: 캔버스를 확대 또는 축소합니다."
 
 #: ../gui/resources.xml:1707
 msgctxt "Menu→View (labels), Accel Editor (labels)"
 msgid "Zoom View"
-msgstr "보기를 줌"
+msgstr "보기 확대/축소하기"
 
 #: ../gui/resources.xml:1708
 msgctxt "Accel Editor (descriptions)"
@@ -6770,7 +6768,7 @@ msgstr "부드러운 제어선을 그립니다."
 #: ../gui/resources.xml:1801
 msgctxt "Menu→Edit→Current Mode (labels)"
 msgid "Reposition Layer"
-msgstr "레이어 위치를 조정"
+msgstr "레이어 위치 조정하기"
 
 #: ../gui/resources.xml:1802
 msgctxt "Toolbar (short labels)"
@@ -6780,7 +6778,7 @@ msgstr "레이어 순위."
 #: ../gui/resources.xml:1803
 msgctxt "Toolbar (tooltips)"
 msgid "Reposition Layer: move the current layer on the canvas."
-msgstr "레이어 위치를 조정: 캔버스에 현재 레이어를 이동합니다."
+msgstr "레이어 위치 조정하기: 캔버스에 현재 레이어를 이동합니다."
 
 #: ../gui/resources.xml:1811
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
@@ -6790,7 +6788,7 @@ msgstr "레이어 위치 조정"
 #: ../gui/resources.xml:1812
 msgctxt "Accel Editor (description)"
 msgid "Interactively move the current layer on the canvas."
-msgstr "캔버스에 현재 레이어를 대화형 이동합니다."
+msgstr "캔버스의 현재 레이어를 서로 작용하게 이동합니다."
 
 #: ../gui/resources.xml:1822
 msgctxt "Menu→Edit→Current Mode (labels)"
@@ -6806,14 +6804,13 @@ msgstr "프레임"
 msgctxt "Toolbar (tooltips)"
 msgid ""
 "Edit Frame: define a frame around the document to give it a finite size."
-msgstr ""
-"프레임을 편집: 그것을 유한한 크기를 사용하기 위해 문서 주위에 프레임을 정의합"
-"니다."
+msgstr "프레임 편집하기: 그것을 유한한 크기를 사용하기 위해 문서 주위에 프레임을 "
+"정의합니다."
 
 #: ../gui/resources.xml:1832
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "Edit Frame"
-msgstr "프레임을 편집"
+msgstr "프레임 편집하기"
 
 #: ../gui/resources.xml:1833
 msgctxt "Accel Editor (descriptions)"
@@ -6840,7 +6837,7 @@ msgstr "패인티 대칭을 편집 : 대칭 페인팅에 사용 된 축을 조�
 #: ../gui/resources.xml:1852
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "Edit Painting Symmetry"
-msgstr "페인팅 대칭을 편집"
+msgstr "페인팅 대칭 편집하기"
 
 #: ../gui/resources.xml:1853
 msgctxt "Accel Editor (description)"
@@ -6865,7 +6862,7 @@ msgstr "색상을 선택 : 화면 픽셀에서 페인팅 색상을 설정합니�
 #: ../gui/resources.xml:1897
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "Pick Color Hue"
-msgstr "색상 색조를 선택"
+msgstr "색상 색조 고르기"
 
 #: ../gui/resources.xml:1898
 msgctxt "Accel Editor (descriptions)"
@@ -6876,7 +6873,7 @@ msgstr "채도 및 휘도를 유지하면서 화면 픽셀에서 페인팅 색�
 #: ../gui/resources.xml:1906
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "Pick Color Chroma"
-msgstr "색상 채도를 선택"
+msgstr "색상 채도 고르기"
 
 #: ../gui/resources.xml:1907
 msgctxt "Accel Editor (descriptions)"
@@ -6887,7 +6884,7 @@ msgstr "색조와 휘도를 유지하면서 화면 픽셀에서 그림 채도를
 #: ../gui/resources.xml:1915
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "Pick Color Luma"
-msgstr "색상 휘도를 선택"
+msgstr "색상 휘도 고르기"
 
 #: ../gui/resources.xml:1916
 msgctxt "Accel Editor (descriptions)"
@@ -6898,7 +6895,7 @@ msgstr "색조와 채도를 유지하면서 화면 픽셀에서 휘도 페인팅
 #: ../gui/resources.xml:1924
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "Pick Color"
-msgstr "색상을 선택"
+msgstr "색상 고르기"
 
 #: ../gui/resources.xml:1925
 msgctxt "Accel Editor (descriptions)"
