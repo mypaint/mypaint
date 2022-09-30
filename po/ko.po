@@ -5,7 +5,7 @@ msgstr ""
 "Project-Id-Version: mypaint v2.0.0-alpha.12-327-ga332f03\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-04-17 23:27+0200\n"
-"PO-Revision-Date: 2022-09-11 16:18+0000\n"
+"PO-Revision-Date: 2022-10-01 05:19+0000\n"
 "Last-Translator: 이정희 <daemul72@gmail.com>\n"
 "Language-Team: Korean <https://hosted.weblate.org/projects/mypaint/mypaint/"
 "ko/>\n"
@@ -14,7 +14,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 4.14.1-dev\n"
+"X-Generator: Weblate 4.14.1\n"
 "X-Poedit-SourceCharset: utf-8\n"
 
 #: ../gui/accelmap.py:86
@@ -204,7 +204,7 @@ msgstr "뎁스"
 #: ../gui/brusheditor.py:365
 msgctxt "brush settings list: setting group"
 msgid "Smudge"
-msgstr "자국"
+msgstr "얼룩"
 
 #: ../gui/brusheditor.py:379
 msgctxt "brush settings list: setting group"
