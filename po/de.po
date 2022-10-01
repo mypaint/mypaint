@@ -4,8 +4,8 @@ msgstr ""
 "Project-Id-Version: mypaint v2.0.0-alpha.11-2-g0673fe8\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-04-17 23:27+0200\n"
-"PO-Revision-Date: 2022-01-26 08:53+0000\n"
-"Last-Translator: Masowick <d651483@nwytg.com>\n"
+"PO-Revision-Date: 2022-10-02 18:22+0000\n"
+"Last-Translator: Ettore Atalan <atalanttore@googlemail.com>\n"
 "Language-Team: German <https://hosted.weblate.org/projects/mypaint/mypaint/"
 "de/>\n"
 "Language: de\n"
@@ -13,7 +13,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 4.11-dev\n"
+"X-Generator: Weblate 4.14.1\n"
 "X-Poedit-Country: GERMANY\n"
 "X-Poedit-Language: German\n"
 "X-Poedit-SourceCharset: utf-8\n"
@@ -5350,11 +5350,11 @@ msgid "Uniquify Layer Pixels"
 msgstr ""
 
 #: ../gui/resources.xml:424
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Delete parts of the current layer which do not vary from the backdrop."
 msgstr ""
-"Bereiche der aktuellen Ebene löschen, die außerhalb des Rahmens liegen."
+"Teile der aktuellen Ebene, die sich nicht vom Hintergrund unterscheiden, "
+"löschen."
 
 #: ../gui/resources.xml:430
 msgctxt "Menu→Layer→Slice (labels), Accel Editor (labels)"
@@ -5367,24 +5367,28 @@ msgid ""
 "Delete whole tiles from the current layer which do not vary from the "
 "backdrop."
 msgstr ""
+"Ganze Kacheln aus der aktuellen Ebene, die sich nicht vom Hintergrund "
+"unterscheiden, löschen."
 
 #: ../gui/resources.xml:437
 #, fuzzy
 msgctxt "Menu→Layer→Slice (labels), Accel Editor (labels)"
 msgid "Refactor Layer Group Pixels"
-msgstr "Neue Ebenengruppe darunter"
+msgstr "Ebenengruppen-Pixel umgestalten"
 
 #: ../gui/resources.xml:438 ../gui/resources.xml:445
 msgctxt "Accel Editor (descriptions)"
 msgid ""
 "Normalize child layers, then factor out common parts to a new child layer."
 msgstr ""
+"Untergeordnete Ebenen normalisieren, dann gemeinsame Teile in eine neue "
+"untergeordnete Ebene auslagern."
 
 #: ../gui/resources.xml:444
 #, fuzzy
 msgctxt "Menu→Layer→Slice (labels), Accel Editor (labels)"
 msgid "Refactor Layer Group Tiles"
-msgstr "Neue Ebenengruppe darunter"
+msgstr "Ebenengruppen-Kacheln umgestalten"
 
 #: ../gui/resources.xml:452
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
@@ -5930,6 +5934,8 @@ msgctxt "Accel Editor (descriptions)"
 msgid ""
 "Simplify and delete points according to angle and distance between nodes."
 msgstr ""
+"Punkte je nach Winkel und Abstand zwischen den Knoten vereinfachen und "
+"löschen."
 
 #: ../gui/resources.xml:919
 msgctxt "Accel Editor (descriptions)"
@@ -6590,6 +6596,7 @@ msgstr "Werkzeugeinstellungsleiste"
 msgctxt "Accel Editor (descriptions)"
 msgid "Dockable panel for adjusting the options with the activated tool."
 msgstr ""
+"Andockbare Leiste zur Anpassung der Optionen mit dem aktivierten Werkzeug."
 
 #: ../gui/resources.xml:1517
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
@@ -7032,11 +7039,10 @@ msgid "Pick Color Hue"
 msgstr "Farbton aufnehmen"
 
 #: ../gui/resources.xml:1898
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid ""
 "Set the painting Hue from screen pixels while preserving the Chroma and Luma."
-msgstr "Die Zeichenfarbe von Bildschirmpixeln festlegen."
+msgstr ""
 
 #: ../gui/resources.xml:1906
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
@@ -7044,11 +7050,10 @@ msgid "Pick Color Chroma"
 msgstr "Farbsättigung aufnehmen"
 
 #: ../gui/resources.xml:1907
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid ""
 "Set the painting Chroma from screen pixels while preserving the Hue and Luma."
-msgstr "Die Zeichenfarbe von Bildschirmpixeln festlegen."
+msgstr ""
 
 #: ../gui/resources.xml:1915
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
