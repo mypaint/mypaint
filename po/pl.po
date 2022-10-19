@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: mypaint v1.2.0-350-g48487e9\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-04-17 23:27+0200\n"
-"PO-Revision-Date: 2022-10-17 00:56+0000\n"
+"PO-Revision-Date: 2022-10-20 21:06+0000\n"
 "Last-Translator: Jacek <uaie_wljjw94@jyplo.com>\n"
 "Language-Team: Polish <https://hosted.weblate.org/projects/mypaint/mypaint/"
 "pl/>\n"
@@ -18,7 +18,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=n==1 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 "
 "|| n%100>=20) ? 1 : 2;\n"
-"X-Generator: Weblate 4.15-dev\n"
+"X-Generator: Weblate 4.14.2-dev\n"
 "X-Poedit-Country: Polski\n"
 "X-Poedit-Language: Polish\n"
 "X-Poedit-SourceCharset: utf-8\n"
@@ -1452,7 +1452,7 @@ msgid ""
 "<b>A brush named “{brush_name}” already exists.</b>\n"
 "Do you want to replace it, or should the new brush be renamed?"
 msgstr ""
-"<b>Pędzel o nazwie `%s' już istnieje.</b>\n"
+"<b>Pędzel o nazwie “{brush_name}” już istnieje.</b>\n"
 "Chcesz go zastąpić, czy zmienić nazwę nowego pędzla?"
 
 #: ../gui/dialogs.py:196
@@ -1776,7 +1776,7 @@ msgstr "Importowanie warstw zakończone niepowodzeniem"
 #: ../gui/filehandling.py:177
 msgctxt "Document I/O: fail dialog title"
 msgid "Open failed"
-msgstr "Otwieranie zakończone niepowodzeniem."
+msgstr "Otwieranie zakończone niepowodzeniem"
 
 #: ../gui/filehandling.py:184
 #, python-brace-format
@@ -1991,10 +1991,9 @@ msgid "Open Next Scrap?"
 msgstr "Otworzyć kolejny projekt?"
 
 #: ../gui/filehandling.py:1488
-#, fuzzy
 msgctxt "File→Open Next/Prev Scrap confirm dialog: title"
 msgid "Open Previous Scrap?"
-msgstr "Otwórz Poprzedni Projekt"
+msgstr "Otworzyć poprzedni projekt?"
 
 #: ../gui/filehandling.py:1497
 msgctxt "File→Open Next/Prev Scrap confirm dialog: continue button"
@@ -3791,10 +3790,10 @@ msgstr "Zostawia tylko te części tła które pokrywają się z górną warstw�
 #. TRANSLATORS: Change only if your lang *REQUIRES* a different order or
 #. TRANSLATORS: if raw digits and a space aren't enough.
 #: ../lib/naming.py:22
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgctxt "unique names: serial number needed: template"
 msgid "{name} {number}"
-msgstr "%(name)s%(number)d"
+msgstr "{name} {number}"
 
 #. TRANSLATORS: UNIQUE_NAME_REGEX - regex for UNIQUE_NAME_TEMPLATE
 #. TRANSLATORS: Must match its template (msgid: '{name} {number}')
@@ -3876,21 +3875,20 @@ msgid ""
 msgstr ""
 "Otwórz ten dialog autozapisu po otwarciu MyPaint, jeśli są pliki do "
 "odzyskania.\n"
+"\n"
 "Możesz zawsze uruchomić ten dialog z menu \"Plik\", gdy MyPaint jest "
 "uruchomiony."
 
 #. Deletes the selected autosave backup file.
 #: ../gui/autorecover.glade:60
-#, fuzzy
 msgctxt "Autosave Recovery dialog|"
 msgid "_Delete…"
-msgstr "Usuń"
+msgstr "_Usuń…"
 
 #: ../gui/autorecover.glade:66
-#, fuzzy
 msgctxt "Autosave Recovery dialog|Delete button|"
 msgid "Delete this backup from the disk."
-msgstr "Usuń ten pędzel z dysku"
+msgstr "Usuń tę kopię zapasową z dysku."
 
 #. Recover in the sense or retrieval or salvage from a backup file. The user is asked to save the retrieved file immediately afterwards, hence the ellipsis.
 #: ../gui/autorecover.glade:78
@@ -4018,9 +4016,8 @@ msgstr ""
 
 #. field label
 #: ../gui/brusheditor.glade:426
-#, fuzzy
 msgid "Value:"
-msgstr "HSV Wartość"
+msgstr "Wartość:"
 
 #: ../gui/brusheditor.glade:491
 msgid "Reset this input to have no effect on the setting"
@@ -4096,9 +4093,8 @@ msgid "{dname}:"
 msgstr "{dname}:"
 
 #: ../gui/brusheditor.glade:841
-#, fuzzy
 msgid "Brush dynamics are not available for this setting."
-msgstr "Podstawowe szczegóły tego ustawienia"
+msgstr "Dynamika pędzla nie jest dostępna dla tego ustawienia."
 
 #: ../gui/brusheditor.glade:851
 #, fuzzy
@@ -4609,9 +4605,8 @@ msgid ""
 "device to be configured to send bidirectional scroll events."
 msgstr ""
 "Wsparcie płynnego przewijania sprawia że gesty przewijania i zdarzenia kółka "
-"myszy z niektórych urządzeń są płynniejsze niż \"krokowe\".\n"
-"To jest dobre dla touchpadów, ale może też być denerwujące gdy przewijasz "
-"myszą.\n"
+"myszy z niektórych urządzeń są płynniejsze niż \"krokowe\". To jest dobre "
+"dla touchpadów, ale może też być denerwujące gdy przewijasz myszą.\n"
 "\n"
 "Jeśli płynne przewijanie jest wspieranie, krokowe przewijanie może być "
 "włączone przez wciśnięcie i przytrzymanie klawisza Shift przy przewijaniu,.\n"
@@ -4817,10 +4812,9 @@ msgid "Default New Layer Type:"
 msgstr "Domyślny typ nowej warstwy:"
 
 #: ../gui/preferenceswindow.glade:1581 ../gui/preferenceswindow.glade:1595
-#, fuzzy
 msgctxt "Prefs Dialog|Compatibility"
 msgid "Default Pigment Brush Setting:"
-msgstr "Edytuj Ustawienia Pędzla"
+msgstr "Domyślne ustawienie pędzla pigmentowego:"
 
 #. Label description for the 1.x compatibility-mode-by-default setting
 #: ../gui/preferenceswindow.glade:1671
@@ -5588,10 +5582,9 @@ msgid "Make an exact clone of the current layer."
 msgstr "Utwórz dokładną kopię bieżącej warstwy."
 
 #: ../gui/resources.xml:642
-#, fuzzy
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Layer Properties…"
-msgstr "Właściwości"
+msgstr "Właściwości warstwy…"
 
 #: ../gui/resources.xml:643
 msgctxt "Accel Editor (descriptions)"
@@ -5599,7 +5592,7 @@ msgid ""
 "Change the layer’s properties (name, mode, visibility, locked, opacity)."
 msgstr ""
 "Zmień właściwości warstwy (nazwę, tryb, widoczność, zablokowana czy nie, "
-"krycie)"
+"krycie)."
 
 #: ../gui/resources.xml:650
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
@@ -5698,10 +5691,9 @@ msgid "Reset Mirroring"
 msgstr "Resetuj Odbicie"
 
 #: ../gui/resources.xml:723
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Reset the view's mirroring."
-msgstr "Resetuj Odbicie"
+msgstr "Zresetuj lustrzane odbicie widoku."
 
 #: ../gui/resources.xml:729
 msgctxt "Menu→View→Adjust View (labels), Accel Editor (labels)"
