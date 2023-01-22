@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: mypaint v2.0.0-alpha.12-324-g153de92\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-04-17 23:27+0200\n"
-"PO-Revision-Date: 2023-01-22 23:14+0000\n"
+"PO-Revision-Date: 2023-01-24 00:57+0000\n"
 "Last-Translator: Adolfo Jayme Barrientos <fitojb@ubuntu.com>\n"
 "Language-Team: Spanish <https://hosted.weblate.org/projects/mypaint/mypaint/"
 "es/>\n"
@@ -18,7 +18,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bits\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 4.15.1\n"
+"X-Generator: Weblate 4.16-dev\n"
 
 #: ../gui/accelmap.py:86
 msgctxt "placeholder for keymap filtering"
@@ -434,7 +434,7 @@ msgctxt "brushpack import failure messages"
 msgid "No file named “{order_conf_file}”. This is not a brushpack."
 msgstr ""
 "No hay ningún archivo denominado «{order_conf_file}». Este no es un paquete "
-"de pinceles."
+"de brochas."
 
 #: ../gui/brushmanager.py:704
 #, python-brace-format
@@ -5939,7 +5939,7 @@ msgstr "Modo de pintura: alfa bloqueado"
 #: ../gui/resources.xml:960
 msgctxt "Accel Editor (descriptions)"
 msgid "Applying the brush doesn't change the layer’s opacity."
-msgstr "Aplicando el pincel no cambia la opacidad de la capa."
+msgstr "Aplicar la brocha no cambia la opacidad de la capa."
 
 #: ../gui/resources.xml:968
 msgctxt "Menu→Brush→Blend Mode (labels), Accel Editor (labels)"
@@ -6232,7 +6232,7 @@ msgstr "Importar brochas…"
 #: ../gui/resources.xml:1222
 msgctxt "Accel Editor (descriptions)"
 msgid "Load a brushpack from disk."
-msgstr "Cargar un paquete de pinceles del disco."
+msgstr "Cargar un paquete de brochas del disco."
 
 #: ../gui/resources.xml:1231
 msgctxt "Menu (labels)"
@@ -6578,7 +6578,7 @@ msgstr ""
 #: ../gui/resources.xml:1517
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
 msgid "Show Tool Options Panel"
-msgstr "Mostrar el Panel Opciones de Herramienta"
+msgstr "Mostrar el panel Opciones de herramienta"
 
 #: ../gui/resources.xml:1518
 msgctxt "Accel Editor (descriptions)"
@@ -6590,7 +6590,7 @@ msgstr ""
 #: ../gui/resources.xml:1528
 msgctxt "Menu→Window (labels), Toolbar (labels), Accel Editor (labels)"
 msgid "Brush & Color History Panel"
-msgstr "Panel del Historial de Color y Pincel"
+msgstr "Panel Historial de colores y brochas"
 
 #: ../gui/resources.xml:1529
 msgctxt "Accel Editor (descriptions)"
@@ -6600,12 +6600,12 @@ msgstr "Panel empotrable para ver brochas y colores cambiados recientemente."
 #: ../gui/resources.xml:1537
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
 msgid "Recent Brushes & Colors"
-msgstr "Pinceles y Colores Recientes"
+msgstr "Brochas y colores recientes"
 
 #: ../gui/resources.xml:1538
 msgctxt "Accel Editor (descriptions)"
 msgid "Reveal the History panel (recently used brushes and colors)."
-msgstr "Revela el panel Historial (colores y pinceles usados recientemente)."
+msgstr "Revela el panel Historial (colores y brochas usados recientemente)."
 
 #: ../gui/resources.xml:1548
 msgctxt "Menu→View (labels), Accel Editor (labels)"
@@ -6834,7 +6834,7 @@ msgstr "Líneas y curvas: dibujar líneas rectas o curvas."
 #: ../gui/resources.xml:1727
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
 msgid "Lines and Curves"
-msgstr "Líneas y Curvas"
+msgstr "Líneas y curvas"
 
 #: ../gui/resources.xml:1728
 msgctxt "Accel Editor (descriptions)"
@@ -6859,7 +6859,7 @@ msgstr "Líneas conectadas: dibujar secuencias de líneas rectas o curvas."
 #: ../gui/resources.xml:1748
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
 msgid "Connected Lines"
-msgstr "Líneas Conectadas"
+msgstr "Líneas conectadas"
 
 #: ../gui/resources.xml:1749
 msgctxt "Accel Editor (descriptions)"
