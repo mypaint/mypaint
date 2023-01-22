@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: mypaint v2.0.0-alpha.12-324-g153de92\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-04-17 23:27+0200\n"
-"PO-Revision-Date: 2021-10-18 04:37+0000\n"
+"PO-Revision-Date: 2023-01-22 23:14+0000\n"
 "Last-Translator: Adolfo Jayme Barrientos <fitojb@ubuntu.com>\n"
 "Language-Team: Spanish <https://hosted.weblate.org/projects/mypaint/mypaint/"
 "es/>\n"
@@ -18,7 +18,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bits\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 4.9-dev\n"
+"X-Generator: Weblate 4.15.1\n"
 
 #: ../gui/accelmap.py:86
 msgctxt "placeholder for keymap filtering"
@@ -1372,7 +1372,7 @@ msgstr "Navegación solo"
 #: ../gui/device.py:130
 msgctxt "device settings: unmodified scroll action"
 msgid "Zoom"
-msgstr "Escala"
+msgstr "Zum"
 
 #: ../gui/device.py:131
 msgctxt "device settings: unmodified scroll action"
@@ -2872,7 +2872,7 @@ msgstr "<i>No hay opciones disponibles</i>"
 #: ../gui/overlays.py:161
 #, python-format
 msgid "Zoom: %.01f%%"
-msgstr "Escala: %.01f %%"
+msgstr "Zum: %.01f %%"
 
 #: ../gui/picker.py:462
 msgctxt "context picker: statusbar text during grab"
@@ -3070,11 +3070,11 @@ msgstr "Arrastrar Vista de lienzo"
 
 #: ../gui/viewmanip.py:79
 msgid "Zoom View"
-msgstr "Vista de escala"
+msgstr "Vista de zum"
 
 #: ../gui/viewmanip.py:82
 msgid "Zoom the canvas view"
-msgstr "Ampliar Vista de lienzo"
+msgstr "Acercar vista de lienzo"
 
 #: ../gui/viewmanip.py:122
 msgid "Rotate View"
@@ -4513,11 +4513,11 @@ msgstr "Cargar y guardar"
 #: ../gui/preferenceswindow.glade:807
 msgctxt "Prefs Dialog|View|"
 msgid "<b>Zoom and Rendering</b>"
-msgstr "<b>Escala y representación</b>"
+msgstr "<b>Zum y representación</b>"
 
 #: ../gui/preferenceswindow.glade:824
 msgid "Default zoom level:"
-msgstr "Nivel de escala predeterminado:"
+msgstr "Nivel de zum predeterminado:"
 
 #: ../gui/preferenceswindow.glade:862
 msgctxt "Prefs Dialog|View|"
@@ -4579,7 +4579,7 @@ msgid ""
 "Draw a real checkerboard pattern to show transparency.\n"
 "This slows down the display, but can be less confusing."
 msgstr ""
-"Dibujar un patrón de tablero de ajedrez real para mostrar transparencia.\n"
+"Dibujar un motivo de tablero de ajedrez real para mostrar transparencia.\n"
 "Esto ralentiza el tiempo de dibujo de la pantalla, pero puede ser menos "
 "confuso."
 
@@ -5658,7 +5658,7 @@ msgstr "Reiniciar y Centrar Vista"
 #: ../gui/resources.xml:685
 msgctxt "Accel Editor (descriptions)"
 msgid "Reset Zoom, Rotation and Mirroring, and recenter the document."
-msgstr "Restablecer Zoom, Rotación y Espejado, y recentrar el documento."
+msgstr "Restablecer zum, giro y espejado y recentrar el documento."
 
 #: ../gui/resources.xml:693
 msgctxt "Menu→View (labels), Accel Editor (labels)"
@@ -5678,12 +5678,12 @@ msgstr "Reiniciar"
 #: ../gui/resources.xml:708
 msgctxt "Menu→View→Reset (labels), Accel Editor (labels)"
 msgid "Reset Zoom"
-msgstr "Reiniciar ampliación"
+msgstr "Restablecer zum"
 
 #: ../gui/resources.xml:709
 msgctxt "Accel Editor (descriptions)"
 msgid "Reset view zoom level to default."
-msgstr "Restaurar el nivel de zoom a su valor predeterminado."
+msgstr "Restablecer el nivel de zum a su valor predeterminado."
 
 #: ../gui/resources.xml:715
 msgctxt "Menu→View→Reset (labels), Accel Editor (labels)"
@@ -6532,7 +6532,7 @@ msgstr "Panel Empotrable para mezclar colores y probar pinceles."
 #: ../gui/resources.xml:1478
 msgctxt "Menu→Scratchpad (labels), Accel Editor (labels)"
 msgid "Show Scratchpad Panel"
-msgstr "Mostrar Panel de Libreta de Esbozos"
+msgstr "Mostrar panel Libreta de esbozos"
 
 #: ../gui/resources.xml:1479
 msgctxt "Accel Editor (descriptions)"
@@ -6567,7 +6567,7 @@ msgstr ""
 #: ../gui/resources.xml:1508
 msgctxt "Menu→Window (labels), Toolbar (labels), Accel Editor (labels)"
 msgid "Tool Options Panel"
-msgstr "Panel Opciones de Herramienta"
+msgstr "Panel Opciones de herramienta"
 
 #: ../gui/resources.xml:1509
 msgctxt "Accel Editor (descriptions)"
@@ -6622,7 +6622,7 @@ msgstr ""
 #: ../gui/resources.xml:1556
 msgctxt "Menu→View→Feedback (labels), Accel Editor (labels)"
 msgid "Show Zoom Level"
-msgstr "Mostrar Nivel de ampliación"
+msgstr "Mostrar nivel de zum"
 
 #: ../gui/resources.xml:1557
 msgctxt "Accel Editor (descriptions)"
@@ -6799,7 +6799,7 @@ msgstr "Ampliar vista"
 #: ../gui/resources.xml:1698
 msgctxt "Toolbar (short labels)"
 msgid "Zoom"
-msgstr "Ampliación"
+msgstr "Zum"
 
 #: ../gui/resources.xml:1699
 msgctxt "Toolbar (tooltips)"
