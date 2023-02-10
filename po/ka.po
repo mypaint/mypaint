@@ -7,8 +7,8 @@ msgstr ""
 "Project-Id-Version: mypaint v2.0.0-alpha.8-1-g4490f06\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-04-17 23:27+0200\n"
-"PO-Revision-Date: 2019-02-27 14:18+0000\n"
-"Last-Translator: glixx <roman_romul@mail.ru>\n"
+"PO-Revision-Date: 2022-07-22 16:17+0000\n"
+"Last-Translator: Temuri Doghonadze <temuri.doghonadze@gmail.com>\n"
 "Language-Team: Georgian <https://hosted.weblate.org/projects/mypaint/mypaint/"
 "ka/>\n"
 "Language: ka\n"
@@ -16,18 +16,18 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 3.5-dev\n"
+"X-Generator: Weblate 4.14-dev\n"
 
 #: ../gui/accelmap.py:86
 msgctxt "placeholder for keymap filtering"
 msgid "Filter"
-msgstr ""
+msgstr "ფილტრი"
 
 #. TRANSLATORS: Name of first column in the button map preferences.
 #. TRANSLATORS: Refers to an action bound to a mod+button combination.
 #: ../gui/accelmap.py:115 ../gui/buttonmap.py:284
 msgid "Action"
-msgstr ""
+msgstr "ქმედება"
 
 #. TRANSLATORS: Refers to a keyboard key combination, such as "Ctrl+G".
 #. TRANSLATORS: Second column label in the keybinding preferences tab.
@@ -49,7 +49,7 @@ msgstr ""
 #. TRANSLATORS: "Action" with a trailing ":" or lang-specific symbol
 #: ../gui/accelmap.py:400 ../gui/buttonmap.py:502
 msgid "Action:"
-msgstr ""
+msgstr "ქმედება:"
 
 #. TRANSLATORS: Path refers to an "action path" that is part of an
 #. TRANSLATORS: accelerator (keybinding). Found in the dialog for
@@ -58,13 +58,13 @@ msgstr ""
 #. TRANSLATORS: so don't worry too much about the translation.
 #: ../gui/accelmap.py:418
 msgid "Path:"
-msgstr ""
+msgstr "ბილიკი:"
 
 #. TRANSLATORS: Key refers to a key on the keyboard, this is a label
 #. TRANSLATORS: in the dialog for adding new keyboard bindings.
 #: ../gui/accelmap.py:431
 msgid "Key:"
-msgstr ""
+msgstr "გასაღები:"
 
 #. TRANSLATORS: "keys" refers to keyboard keys, assignment refers
 #. TRANSLATORS: to an assignment of a keyboard key combination to
@@ -78,7 +78,7 @@ msgstr ""
 #. TRANSLATORS: to an action bound to a key combination.
 #: ../gui/accelmap.py:532
 msgid "Unknown Action"
-msgstr ""
+msgstr "უცნობი ქმედება"
 
 #. TRANSLATORS: Warning message when attempting to assign a
 #. TRANSLATORS: keyboard combination that is already used.
@@ -99,7 +99,7 @@ msgstr ""
 #. naturally at the end of the flow.
 #: ../gui/application.py:634
 msgid "OK"
-msgstr ""
+msgstr "დიახ"
 
 #: ../gui/autorecover.py:138
 msgid "No backups were found in the cache."
@@ -128,7 +128,7 @@ msgstr ""
 
 #: ../gui/backgroundwindow.py:55
 msgid "Background"
-msgstr ""
+msgstr "ფონი"
 
 #: ../gui/backgroundwindow.py:58
 msgid "Save as Default"
@@ -136,7 +136,7 @@ msgstr ""
 
 #: ../gui/backgroundwindow.py:75
 msgid "Pattern"
-msgstr ""
+msgstr "ნიმუში"
 
 #: ../gui/backgroundwindow.py:86 ../lib/modes.py:110
 msgid "Color"
@@ -177,22 +177,22 @@ msgstr ""
 #: ../gui/brusheditor.py:305
 msgctxt "brush settings list: brush metadata texts group"
 msgid "About"
-msgstr ""
+msgstr "შესახებ"
 
 #: ../gui/brusheditor.py:316
 msgctxt "brush settings list: setting group"
 msgid "Experimental"
-msgstr ""
+msgstr "ექსპერიმენტალური"
 
 #: ../gui/brusheditor.py:323
 msgctxt "brush settings list: setting group"
 msgid "Basic"
-msgstr ""
+msgstr "ძირითადი"
 
 #: ../gui/brusheditor.py:342
 msgctxt "brush settings list: setting group"
 msgid "Opacity"
-msgstr ""
+msgstr "გაუმჭვირვალობა"
 
 #: ../gui/brusheditor.py:354
 msgctxt "brush settings list: setting group"
@@ -202,12 +202,12 @@ msgstr ""
 #: ../gui/brusheditor.py:365
 msgctxt "brush settings list: setting group"
 msgid "Smudge"
-msgstr ""
+msgstr "გადღაბნა"
 
 #: ../gui/brusheditor.py:379
 msgctxt "brush settings list: setting group"
 msgid "Speed"
-msgstr ""
+msgstr "სიჩქარე"
 
 #: ../gui/brusheditor.py:393
 msgctxt "brush settings list: setting group"
@@ -217,7 +217,7 @@ msgstr ""
 #: ../gui/brusheditor.py:411
 msgctxt "brush settings list: setting group"
 msgid "Tracking"
-msgstr ""
+msgstr "ტრეკინგი"
 
 #: ../gui/brusheditor.py:422
 msgctxt "brush settings list: setting group"
@@ -227,7 +227,7 @@ msgstr ""
 #: ../gui/brusheditor.py:433
 msgctxt "brush settings list: setting group"
 msgid "Color"
-msgstr ""
+msgstr "ფერი"
 
 #: ../gui/brusheditor.py:451
 msgctxt "brush settings list: setting group"
@@ -237,7 +237,7 @@ msgstr ""
 #: ../gui/brusheditor.py:462
 msgctxt "brush settings list: setting group"
 msgid "Custom"
-msgstr ""
+msgstr "ხელით მითითება"
 
 #: ../gui/brusheditor.py:528
 msgctxt "brush settings editor: save brush: error message"
@@ -333,7 +333,7 @@ msgstr ""
 #. TRANSLATORS: revert edits to a brush icon
 #: ../gui/brushiconeditor.py:165
 msgid "Revert"
-msgstr ""
+msgstr "დაბრუნება"
 
 #: ../gui/brushiconeditor.py:167
 msgid "Discard changes, and cancel editing"
@@ -351,7 +351,7 @@ msgstr ""
 #. TRANSLATORS: set the brush icon to a built-in default
 #: ../gui/brushiconeditor.py:182
 msgid "Auto"
-msgstr ""
+msgstr "ავტომატური"
 
 #: ../gui/brushiconeditor.py:184
 msgid "Use the default icon"
@@ -368,23 +368,23 @@ msgstr ""
 
 #: ../gui/brushmanager.py:131
 msgid "Lost & Found"
-msgstr ""
+msgstr "დაკარგული და ნაპოვნი"
 
 #: ../gui/brushmanager.py:132
 msgid "Deleted"
-msgstr ""
+msgstr "წაშლილია"
 
 #: ../gui/brushmanager.py:133
 msgid "Favorites"
-msgstr ""
+msgstr "რჩეულები"
 
 #: ../gui/brushmanager.py:134
 msgid "Ink"
-msgstr ""
+msgstr "მელანი"
 
 #: ../gui/brushmanager.py:135
 msgid "Classic"
-msgstr ""
+msgstr "კლასიკური"
 
 #: ../gui/brushmanager.py:136
 msgid "Set#1"
@@ -408,7 +408,7 @@ msgstr ""
 
 #: ../gui/brushmanager.py:141
 msgid "Experimental"
-msgstr ""
+msgstr "ექსპერიმენტალური"
 
 #: ../gui/brushmanager.py:142
 msgid "New"
@@ -453,17 +453,17 @@ msgstr ""
 #: ../gui/brushselectionwindow.py:220
 msgctxt "brush group: context menu for a single brush"
 msgid "Add to Favorites"
-msgstr ""
+msgstr "რჩეულებში დამატება"
 
 #: ../gui/brushselectionwindow.py:227
 msgctxt "brush group: context menu for a single brush"
 msgid "Remove from Favorites"
-msgstr ""
+msgstr "რჩეულებიდან ამოშლა"
 
 #: ../gui/brushselectionwindow.py:235
 msgctxt "brush group: context menu for a single brush"
 msgid "Clone"
-msgstr ""
+msgstr "კლონირება"
 
 #: ../gui/brushselectionwindow.py:242
 msgctxt "brush group: context menu for a single brush"
@@ -575,13 +575,13 @@ msgstr ""
 #: ../gui/brushselectionwindow.py:558
 msgctxt "new brush group dialog: title"
 msgid "Create Group"
-msgstr ""
+msgstr "ჯგუფის შექმნა"
 
 #. TRANSLATORS: "Button" refers to a mouse button
 #. TRANSLATORS: It is part of a button map label.
 #: ../gui/buttonmap.py:60
 msgid "Button"
-msgstr ""
+msgstr "ღილაკი"
 
 #. TRANSLATORS: abbreviated "Button <number>" for forms like "Alt+Btn1"
 #: ../gui/buttonmap.py:63
@@ -728,7 +728,7 @@ msgstr ""
 #: ../gui/colors/hcywheel.py:937
 msgctxt "HCY Gamut Mask template name"
 msgid "Complementary"
-msgstr ""
+msgstr "შემცვლელი"
 
 #: ../gui/colors/hcywheel.py:941
 msgctxt "HCY Gamut Mask template description"
@@ -774,7 +774,7 @@ msgstr ""
 #: ../gui/colors/hcywheel.py:1078
 msgctxt "HCY Gamut Mask Editor dialog: mask-is-active checkbox"
 msgid "Active"
-msgstr ""
+msgstr "აქტიური"
 
 #: ../gui/colors/hcywheel.py:1102
 msgctxt "HCY Mask Editor: action button labels"
@@ -836,15 +836,15 @@ msgstr ""
 #. Tooltip mappings, indexed by whatever the slider currently represents
 #: ../gui/colors/hsvcube.py:46 ../gui/colors/hsvsquare.py:133
 msgid "HSV Hue"
-msgstr ""
+msgstr "HSV ტონი"
 
 #: ../gui/colors/hsvcube.py:47
 msgid "HSV Saturation"
-msgstr ""
+msgstr "HSV გაჯერებულობა"
 
 #: ../gui/colors/hsvcube.py:48
 msgid "HSV Value"
-msgstr ""
+msgstr "HSL მნიშვნელობა"
 
 #: ../gui/colors/hsvcube.py:49 ../gui/colors/hsvsquare.py:134
 msgid "HSV Saturation and Value"
@@ -894,7 +894,7 @@ msgstr ""
 #: ../gui/colors/paletteview.py:76
 msgctxt "palette panel tab tooltip title"
 msgid "Palette"
-msgstr ""
+msgstr "პალიტრა"
 
 #: ../gui/colors/paletteview.py:82
 msgctxt "palette panel tab tooltip description"
@@ -909,7 +909,7 @@ msgstr ""
 #: ../gui/colors/paletteview.py:114
 msgctxt "palette editor dialog: title"
 msgid "Palette Editor"
-msgstr ""
+msgstr "პალიტრის რედაქტორი"
 
 #: ../gui/colors/paletteview.py:160
 msgctxt "palette editor dialog: action buttons: tooltips"
@@ -939,7 +939,7 @@ msgstr ""
 #: ../gui/colors/paletteview.py:190
 msgctxt "palette editor dialog: palette name/title entry: label"
 msgid "Title:"
-msgstr ""
+msgstr "სათაური:"
 
 #: ../gui/colors/paletteview.py:194
 msgctxt "palette editor dialog: palette name/title entry: tooltip"
@@ -949,7 +949,7 @@ msgstr ""
 #: ../gui/colors/paletteview.py:206
 msgctxt "palette editor dialog: number-of-columns spinbutton: title"
 msgid "Columns:"
-msgstr ""
+msgstr "სვეტი:"
 
 #: ../gui/colors/paletteview.py:210
 msgctxt "palette editor dialog: number-of-columns spinbutton: tooltip"
@@ -959,7 +959,7 @@ msgstr ""
 #: ../gui/colors/paletteview.py:227
 msgctxt "palette editor dialog: color name entry: label"
 msgid "Color name:"
-msgstr ""
+msgstr "ფერის სახელი:"
 
 #: ../gui/colors/paletteview.py:231
 msgctxt "palette editor dialog: color name entry: tooltip"
@@ -974,12 +974,12 @@ msgstr ""
 #: ../gui/colors/paletteview.py:378
 msgctxt "palette load dialog: title"
 msgid "Load palette"
-msgstr ""
+msgstr "პალიტრის ჩატვირთვა"
 
 #: ../gui/colors/paletteview.py:391
 msgctxt "palette save dialog: title"
 msgid "Save palette"
-msgstr ""
+msgstr "პალიტრის შენახვა"
 
 #: ../gui/colors/paletteview.py:543
 msgctxt "palette view"
@@ -1038,7 +1038,7 @@ msgstr ""
 #: ../gui/colors/paletteview.py:1290
 msgctxt "palette load dialog: filters"
 msgid "All files (*)"
-msgstr ""
+msgstr "ყველა ფაილი (*)"
 
 #: ../gui/colors/paletteview.py:1332
 msgctxt "palette save dialog: filters"
@@ -1048,37 +1048,37 @@ msgstr ""
 #: ../gui/colors/paletteview.py:1339
 msgctxt "palette save dialog: filters"
 msgid "All files (*)"
-msgstr ""
+msgstr "ყველა ფაილი (*)"
 
 #: ../gui/colors/sliders.py:45
 msgctxt "color sliders panel: red/green/blue: slider label"
 msgid "R"
-msgstr ""
+msgstr "მარჯ"
 
 #: ../gui/colors/sliders.py:49
 msgctxt "color sliders panel: red/green/blue: slider label"
 msgid "G"
-msgstr ""
+msgstr "G"
 
 #: ../gui/colors/sliders.py:53
 msgctxt "color sliders panel: red/green/blue: slider label"
 msgid "B"
-msgstr ""
+msgstr "B"
 
 #: ../gui/colors/sliders.py:57
 msgctxt "color sliders panel: hue/chroma/luma: slider label"
 msgid "H"
-msgstr ""
+msgstr "H"
 
 #: ../gui/colors/sliders.py:61
 msgctxt "color sliders panel: hue/chroma/luma: slider label"
 msgid "C"
-msgstr ""
+msgstr "C"
 
 #: ../gui/colors/sliders.py:65
 msgctxt "color sliders panel: hue/chroma/luma: slider label"
 msgid "Y"
-msgstr ""
+msgstr "Y"
 
 #: ../gui/colors/sliders.py:109
 msgctxt "color sliders panel: tab title (in tooltip)"
@@ -1093,32 +1093,32 @@ msgstr ""
 #: ../gui/colors/sliders.py:161
 msgctxt "color component slider: tooltip"
 msgid "RGB Red"
-msgstr ""
+msgstr "RGB წითელი"
 
 #: ../gui/colors/sliders.py:178
 msgctxt "color component slider: tooltip"
 msgid "RGB Green"
-msgstr ""
+msgstr "RGB მწვანე"
 
 #: ../gui/colors/sliders.py:195
 msgctxt "color component slider: tooltip"
 msgid "RGB Blue"
-msgstr ""
+msgstr "RGB ლურჯი"
 
 #: ../gui/colors/sliders.py:212
 msgctxt "color component slider: tooltip"
 msgid "HSV Hue"
-msgstr ""
+msgstr "HSV ტონი"
 
 #: ../gui/colors/sliders.py:227
 msgctxt "color component slider: tooltip"
 msgid "HSV Saturation"
-msgstr ""
+msgstr "HSV გაჯერებულობა"
 
 #: ../gui/colors/sliders.py:240
 msgctxt "color component slider: tooltip"
 msgid "HSV Value"
-msgstr ""
+msgstr "HSL მნიშვნელობა"
 
 #: ../gui/colors/sliders.py:252
 msgctxt "color component slider: tooltip"
@@ -1220,7 +1220,7 @@ msgstr ""
 #: ../gui/compatibility.py:129
 msgctxt "Version compat warning toggle"
 msgid "Don't show this warning again"
-msgstr ""
+msgstr "მეტჯერ აღარ აჩვენო ეს გაფრთხილება"
 
 #. TRANSLATORS: One of the options for the
 #. TRANSLATORS: "When Not Specified in File"
@@ -1261,17 +1261,17 @@ msgstr ""
 #: ../gui/device.py:53
 msgctxt "prefs: device's type label"
 msgid "Eraser"
-msgstr ""
+msgstr "საშლელი"
 
 #: ../gui/device.py:57
 msgctxt "prefs: device's type label"
 msgid "Keyboard"
-msgstr ""
+msgstr "კლავიატურა"
 
 #: ../gui/device.py:61
 msgctxt "prefs: device's type label"
 msgid "Mouse"
-msgstr ""
+msgstr "თაგუნა"
 
 #: ../gui/device.py:65
 msgctxt "prefs: device's type label"
@@ -1281,7 +1281,7 @@ msgstr ""
 #: ../gui/device.py:69
 msgctxt "prefs: device's type label"
 msgid "Touchpad"
-msgstr ""
+msgstr "თაჩპედი"
 
 #: ../gui/device.py:73
 msgctxt "prefs: device's type label"
@@ -1291,7 +1291,7 @@ msgstr ""
 #: ../gui/device.py:93
 msgctxt "device settings: allowed usage"
 msgid "Ignore"
-msgstr ""
+msgstr "იგნორი"
 
 #: ../gui/device.py:97
 msgctxt "device settings: allowed usage"
@@ -1311,30 +1311,30 @@ msgstr ""
 #: ../gui/device.py:130
 msgctxt "device settings: unmodified scroll action"
 msgid "Zoom"
-msgstr ""
+msgstr "გადიდება"
 
 #: ../gui/device.py:131
 msgctxt "device settings: unmodified scroll action"
 msgid "Pan"
-msgstr ""
+msgstr "პანინგი"
 
 #. TRANSLATORS: Column's data is the device's name
 #: ../gui/device.py:432
 msgctxt "prefs: devices table: column header"
 msgid "Device"
-msgstr ""
+msgstr "მოწყობილობა"
 
 #. TRANSLATORS: Column's data is the number of axes (an integer)
 #: ../gui/device.py:446
 msgctxt "prefs: devices table: column header"
 msgid "Axes"
-msgstr ""
+msgstr "ღერძები"
 
 #. TRANSLATORS: Column shows type labels ("Touchscreen", "Pen" etc.)
 #: ../gui/device.py:460
 msgctxt "prefs: devices table: column header"
 msgid "Type"
-msgstr ""
+msgstr "ტიპი"
 
 #. TRANSLATORS: Column's data is a dropdown allowing the allowed
 #. TRANSLATORS: tasks for the row's device to be configured.
@@ -1362,7 +1362,7 @@ msgstr ""
 
 #: ../gui/dialogs.py:134 ../gui/dialogs.py:204
 msgid "Replace"
-msgstr ""
+msgstr "ჩანაცვლება"
 
 #: ../gui/dialogs.py:137 ../gui/dialogs.py:207 ../gui/brusheditor.glade:189
 msgid "Rename"
@@ -1533,7 +1533,7 @@ msgstr ""
 #: ../gui/drawwindow.py:305
 msgctxt "Open dragged file confirm dialog: continue button"
 msgid "_Open"
-msgstr ""
+msgstr "_გახსნა"
 
 #: ../gui/drawwindow.py:498
 msgid "Set current color"
@@ -1545,7 +1545,7 @@ msgstr ""
 
 #: ../gui/drawwindow.py:544
 msgid "Leave Fullscreen"
-msgstr ""
+msgstr "სრული ეკრანიდან გამოსვლა"
 
 #: ../gui/drawwindow.py:547
 msgid "Enter Fullscreen Mode"
@@ -1561,10 +1561,9 @@ msgid "Really Quit?"
 msgstr ""
 
 #: ../gui/drawwindow.py:691
-#, fuzzy
 msgctxt "Quit confirm dialog: continue button"
 msgid "_Quit"
-msgstr "გამორთე"
+msgstr "_გასვლა"
 
 #: ../gui/drawwindow.py:709
 msgid "Import brush package…"
@@ -1630,7 +1629,7 @@ msgstr ""
 
 #: ../gui/externalapp.py:208
 msgid "Icon"
-msgstr ""
+msgstr "ხატულა"
 
 #: ../gui/externalapp.py:251
 msgid "no description"
@@ -1692,7 +1691,7 @@ msgstr ""
 #: ../gui/filehandling.py:169
 msgctxt "Document I/O: fail dialog title"
 msgid "Export failed"
-msgstr ""
+msgstr "გატანის შეცდომა"
 
 #: ../gui/filehandling.py:173
 msgctxt "Document I/O: fail dialog title"
@@ -1809,10 +1808,9 @@ msgid "Export"
 msgstr ""
 
 #: ../gui/filehandling.py:586
-#, fuzzy
 msgctxt "Dialogs (window title): File→Save As…"
 msgid "Save As"
-msgstr "შენახვა"
+msgstr "შენახვა, როგორც"
 
 #: ../gui/filehandling.py:606
 msgctxt "save dialogs: formats and options: (label)"
@@ -1828,7 +1826,7 @@ msgstr ""
 #: ../gui/filehandling.py:706
 msgctxt "Destructive action confirm dialog: cancel button"
 msgid "_Cancel"
-msgstr ""
+msgstr "_გაუქმება"
 
 #: ../gui/filehandling.py:710
 msgctxt "Destructive action confirm dialog: save checkbox"
@@ -1866,13 +1864,12 @@ msgstr ""
 #: ../gui/filehandling.py:1028
 msgctxt "File→Open: confirm dialog: continue button"
 msgid "_Open…"
-msgstr ""
+msgstr "_გახსნა…"
 
 #: ../gui/filehandling.py:1036
-#, fuzzy
 msgctxt "File→Open: file chooser dialog: title"
 msgid "Open File"
-msgstr "ფაილი"
+msgstr "ფაილის გახსნა"
 
 #: ../gui/filehandling.py:1084
 msgctxt "load dialogs: title"
@@ -1892,7 +1889,7 @@ msgstr ""
 #: ../gui/filehandling.py:1437
 msgctxt "File→Open Recent→* confirm dialog: continue button"
 msgid "_Open"
-msgstr ""
+msgstr "_გახსნა"
 
 #: ../gui/filehandling.py:1452
 msgctxt "File→Open Most Recent confirm dialog: title"
@@ -1902,7 +1899,7 @@ msgstr ""
 #: ../gui/filehandling.py:1457
 msgctxt "File→Open Most Recent→* confirm dialog: continue button"
 msgid "_Open"
-msgstr ""
+msgstr "_გახსნა"
 
 #: ../gui/filehandling.py:1471
 msgctxt "File→Open Next/Prev Scrap: error message"
@@ -1922,7 +1919,7 @@ msgstr ""
 #: ../gui/filehandling.py:1497
 msgctxt "File→Open Next/Prev Scrap confirm dialog: continue button"
 msgid "_Open"
-msgstr ""
+msgstr "_გახსნა"
 
 #: ../gui/filehandling.py:1512
 msgctxt "File→Revert: status message: canvas has no filename yet"
@@ -1937,7 +1934,7 @@ msgstr ""
 #: ../gui/filehandling.py:1524
 msgctxt "File→Revert confirm dialog: continue button"
 msgid "_Revert"
-msgstr ""
+msgstr "და_ბრუნება"
 
 #: ../gui/fill.py:123
 msgctxt ""
@@ -1972,7 +1969,7 @@ msgctxt ""
 "fill options: option category (label) Options under this category relate to "
 "what the fill isbased on, not where the actual fill ends up."
 msgid "Source:"
-msgstr ""
+msgstr "წყარო:"
 
 #: ../gui/fill.py:536
 msgctxt "fill options: 'Source:' category (tooltip)"
@@ -2022,7 +2019,7 @@ msgctxt ""
 "Options under this category relate to where the fill will end up (default: "
 "the active layer) and how it will be combined with that layer."
 msgid "Target:"
-msgstr ""
+msgstr "სამიზნე:"
 
 #: ../gui/fill.py:644
 msgctxt "fill options: 'Target:' category (tooltip)"
@@ -2066,7 +2063,7 @@ msgstr ""
 #: ../gui/fill.py:725
 msgctxt "fill options: numeric option - grow/shrink fill (label)"
 msgid "Offset:"
-msgstr ""
+msgstr "წანაცვლება:"
 
 #: ../gui/fill.py:741
 msgctxt "fill options: Offset (tooltip)"
@@ -2125,7 +2122,7 @@ msgstr ""
 
 #: ../gui/fill.py:851 ../gui/mode.py:639
 msgid "Reset"
-msgstr ""
+msgstr "თავიდან"
 
 #: ../gui/fill.py:855
 msgctxt "fill options: Reset button (tooltip)"
@@ -2161,15 +2158,15 @@ msgstr ""
 
 #: ../gui/framewindow.py:470
 msgid "Height:"
-msgstr ""
+msgstr "სიმაღლე:"
 
 #: ../gui/framewindow.py:471
 msgid "Width:"
-msgstr ""
+msgstr "სიგანე:"
 
 #: ../gui/framewindow.py:472
 msgid "Resolution:"
-msgstr ""
+msgstr "გარჩევადობა:"
 
 #: ../gui/framewindow.py:474
 msgid "DPI"
@@ -2181,7 +2178,7 @@ msgstr ""
 
 #: ../gui/framewindow.py:479
 msgid "Color:"
-msgstr ""
+msgstr "ფერი:"
 
 #: ../gui/framewindow.py:515
 msgid "Frame Color"
@@ -2189,7 +2186,7 @@ msgstr ""
 
 #: ../gui/framewindow.py:537
 msgid "Enabled"
-msgstr ""
+msgstr "ჩართულია"
 
 #: ../gui/framewindow.py:541
 msgid "<b>Frame dimensions</b>"
@@ -2221,7 +2218,7 @@ msgstr ""
 
 #: ../gui/framewindow.py:915
 msgid "px"
-msgstr ""
+msgstr "px"
 
 #: ../gui/framewindow.py:916
 msgid "in"
@@ -2229,11 +2226,11 @@ msgstr ""
 
 #: ../gui/framewindow.py:917
 msgid "cm"
-msgstr ""
+msgstr "სმ"
 
 #: ../gui/framewindow.py:918
 msgid "mm"
-msgstr ""
+msgstr "მმ"
 
 #: ../gui/freehand.py:89
 msgid "Freehand Drawing"
@@ -2253,7 +2250,7 @@ msgstr ""
 #. TRANSLATORS: used on the options panel.
 #: ../gui/freehand.py:599 ../gui/inputtestwindow.py:62
 msgid "Pressure:"
-msgstr ""
+msgstr "წნევა:"
 
 #. TRANSLATORS: Short alias for "Fake Barrel Rotation (for mouse)".
 #. TRANSLATORS: This is used on the options panel.
@@ -2297,7 +2294,7 @@ msgstr ""
 
 #: ../gui/gtkexcepthook.py:192
 msgid "Details…"
-msgstr ""
+msgstr "დეტალები…"
 
 #: ../gui/gtkexcepthook.py:219 ../gui/gtkexcepthook.py:222
 msgid "Exception while analyzing the exception."
@@ -2360,7 +2357,7 @@ msgstr ""
 
 #: ../gui/inputtestwindow.py:71
 msgid "Device:"
-msgstr ""
+msgstr "მოწყობილობა:"
 
 #: ../gui/inputtestwindow.py:73
 msgid "(No Barrel Rotation)"
@@ -2375,7 +2372,7 @@ msgstr ""
 #. TRANSLATORS: Note "in the horizontal plane" - not "horizontally".
 #: ../gui/layermanip.py:47 ../lib/command.py:1061
 msgid "Move Layer"
-msgstr ""
+msgstr "ფენის გადაადგილება"
 
 #: ../gui/layermanip.py:50
 msgid "Move the current layer"
@@ -2399,17 +2396,17 @@ msgstr ""
 #: ../gui/layerprops.py:381
 msgctxt "layer properties dialog: done button"
 msgid "Done"
-msgstr ""
+msgstr "დასრულებულია"
 
 #. Visibility flag column
 #: ../gui/layers.py:406
 msgid "Visible"
-msgstr ""
+msgstr "ხილული"
 
 #. Other flags column
 #: ../gui/layers.py:438
 msgid "Flags"
-msgstr ""
+msgstr "ალმები"
 
 #: ../gui/layers.py:939
 msgctxt "Layers: description: no layer (\"never happens\" condition!)"
@@ -2424,7 +2421,7 @@ msgstr ""
 #: ../gui/layers.py:966
 msgctxt "Layers: description parts: layer hidden"
 msgid "Hidden"
-msgstr ""
+msgstr "დამალული"
 
 #: ../gui/layers.py:971
 #, python-format
@@ -2435,7 +2432,7 @@ msgstr ""
 #: ../gui/layers.py:978
 msgctxt "Layers dockable: description parts: layer locked flag"
 msgid "Locked"
-msgstr ""
+msgstr "ჩაკეტილი"
 
 #: ../gui/layers.py:989
 msgctxt "Layers: description parts: unknown type (fallback str!)"
@@ -2463,7 +2460,7 @@ msgstr ""
 
 #: ../gui/layerswindow.py:95
 msgid "Layers"
-msgstr ""
+msgstr "ფენები"
 
 #: ../gui/layerswindow.py:96
 msgid "Arrange layers and assign effects"
@@ -2482,7 +2479,7 @@ msgstr ""
 #: ../gui/layerswindow.py:107
 #, python-format
 msgid "%d%%"
-msgstr ""
+msgstr "%d%%"
 
 #. TRANSLATORS: status bar messages for drag, without/with modifiers
 #: ../gui/layerswindow.py:114
@@ -2496,7 +2493,7 @@ msgstr ""
 
 #: ../gui/layerswindow.py:156
 msgid "Layer"
-msgstr ""
+msgstr "ფენა"
 
 #: ../gui/layervis.py:53
 #, python-brace-format
@@ -2642,7 +2639,7 @@ msgstr ""
 #: ../gui/meta.py:84
 msgctxt "About dialog: credits: tasks: the main application icon"
 msgid "desktop icon"
-msgstr ""
+msgstr "სამუშაო დაფის ხატულა"
 
 #: ../gui/meta.py:88
 msgctxt "About dialog: credits: tasks: palettes"
@@ -2652,12 +2649,12 @@ msgstr ""
 #: ../gui/meta.py:93
 msgctxt "About dialog: credits: tasks: docs, manuals and HOWTOs"
 msgid "documentation"
-msgstr ""
+msgstr "დოკუმენტაცია"
 
 #: ../gui/meta.py:97
 msgctxt "About dialog: credits: tasks: user support"
 msgid "support"
-msgstr ""
+msgstr "მხარდაჭერა"
 
 #: ../gui/meta.py:101
 msgctxt "About dialog: credits: tasks: outreach (social media, ads?)"
@@ -2684,12 +2681,12 @@ msgstr ""
 #: ../gui/meta.py:221
 msgctxt "About dialog: credits: translator credits (your name(s) here!)"
 msgid "translator-credits"
-msgstr ""
+msgstr "თემური დოღონაძე"
 
 #. TRANSLATORS:"Brush radius" for the options panel. Short.
 #: ../gui/mode.py:592
 msgid "Size:"
-msgstr ""
+msgstr "ზომა:"
 
 #. TRANSLATORS:"Brush opacity" for the options panel. Short.
 #: ../gui/mode.py:594
@@ -2704,7 +2701,7 @@ msgstr ""
 #. TRANSLATORS:"Additional pressure gain" for the options panel. Short.
 #: ../gui/mode.py:598
 msgid "Gain:"
-msgstr ""
+msgstr "გაძლიერება:"
 
 #. TRANSLATORS:"Paint Pigment Mode" for the options panel. Short.
 #: ../gui/mode.py:600
@@ -2714,7 +2711,7 @@ msgstr ""
 #: ../gui/optionspanel.py:47
 msgctxt "options panel: tab tooltip: title"
 msgid "Tool Options"
-msgstr ""
+msgstr "ხელსაწყოების გამართვა"
 
 #: ../gui/optionspanel.py:51
 msgctxt "options panel: tab tooltip: description"
@@ -2749,14 +2746,14 @@ msgstr ""
 
 #: ../gui/preferenceswindow.py:44
 msgid "Preferences"
-msgstr ""
+msgstr "პარამეტრები"
 
 #. TRANSLATORS: This option means that MyPaint will try to use
 #. TRANSLATORS: the language the system tells it to use.
 #: ../gui/preferenceswindow.py:430
 msgctxt "Language preferences menu - default option"
 msgid "System Language"
-msgstr ""
+msgstr "სისტემური ენა"
 
 #. TRANSLATORS: lang_en is the english name of the language
 #. TRANSLATORS: lang_nat is the native name of the language
@@ -2771,7 +2768,7 @@ msgstr ""
 #. TRANSLATORS: title of panel showing an overview of the whole canvas
 #: ../gui/previewwindow.py:201
 msgid "Preview"
-msgstr ""
+msgstr "გადახედვა"
 
 #: ../gui/previewwindow.py:203
 msgid "Show preview of the whole drawing area"
@@ -2785,7 +2782,7 @@ msgstr ""
 
 #: ../gui/scratchwindow.py:34
 msgid "Scratchpad"
-msgstr ""
+msgstr "მონახაზი"
 
 #: ../gui/scratchwindow.py:36
 msgid "Mix colors and make sketches on separate scrap pages"
@@ -2847,12 +2844,12 @@ msgstr ""
 #: ../gui/symmetry.py:357
 msgctxt "symmetry axis options panel: position button: no axis pos."
 msgid "None"
-msgstr ""
+msgstr "არცერთი"
 
 #: ../gui/symmetry.py:361
 msgctxt "symmetry axis options panel: labels"
 msgid "Alpha:"
-msgstr ""
+msgstr "ალფა:"
 
 #: ../gui/symmetry.py:365
 msgctxt "symmetry axis options panel: labels"
@@ -2867,7 +2864,7 @@ msgstr ""
 #: ../gui/symmetry.py:536
 msgctxt "symmetry axis options panel: axis active checkbox"
 msgid "Enabled"
-msgstr ""
+msgstr "ჩართულია"
 
 #: ../gui/toolbar.py:28
 msgid "File handling"
@@ -2879,7 +2876,7 @@ msgstr ""
 
 #: ../gui/toolbar.py:30
 msgid "Undo and Redo"
-msgstr ""
+msgstr "გაუქმება/გამეორება"
 
 #: ../gui/toolbar.py:31
 msgid "Blend Modes"
@@ -2941,7 +2938,7 @@ msgstr ""
 
 #: ../gui/viewmanip.py:122
 msgid "Rotate View"
-msgstr ""
+msgstr "ხედის შემობრუნება"
 
 #: ../gui/viewmanip.py:125
 msgid "Rotate the canvas view"
@@ -2996,11 +2993,11 @@ msgstr ""
 
 #: ../lib/command.py:779
 msgid "Merge Visible Layers"
-msgstr ""
+msgstr "ხილული შრეების შერწყმა"
 
 #: ../lib/command.py:853
 msgid "Merge Down"
-msgstr ""
+msgstr "ქვემოთ შერწყმა"
 
 #: ../lib/command.py:902
 msgid "Normalize Layer Mode"
@@ -3017,7 +3014,7 @@ msgstr ""
 
 #: ../lib/command.py:981
 msgid "Remove Layer"
-msgstr ""
+msgstr "ფენის წაშლა"
 
 #: ../lib/command.py:1028
 msgid "Select Layer"
@@ -3041,7 +3038,7 @@ msgstr ""
 
 #: ../lib/command.py:1342
 msgid "Rename Layer"
-msgstr ""
+msgstr "ფენის სახელის შეცვლა"
 
 #: ../lib/command.py:1400
 msgid "Make Layer Visible"
@@ -3110,7 +3107,7 @@ msgstr ""
 #: ../lib/document.py:211
 msgctxt "Document autosave descriptions: the {ago} string: past"
 msgid "ago"
-msgstr ""
+msgstr "წინ"
 
 #. TRANSLATORS: String descriptions for an autosaved backup.
 #. TRANSLATORS: Time strings are localized: e.g. "3h42m" or "8s"
@@ -3278,13 +3275,13 @@ msgstr ""
 #: ../lib/layer/core.py:66 ../lib/layer/data.py:1309
 msgctxt "layer default names"
 msgid "Layer"
-msgstr ""
+msgstr "ფენა"
 
 #. TRANSLATORS: Short default name for vector (SVG/Inkscape) layers
 #: ../lib/layer/data.py:1161
 msgctxt "layer default names"
 msgid "Vectors"
-msgstr ""
+msgstr "ვექტორები"
 
 #: ../lib/layer/data.py:1166
 msgctxt "layer type descriptions"
@@ -3306,7 +3303,7 @@ msgstr ""
 #: ../lib/layer/data.py:1258
 msgctxt "layer default names"
 msgid "Data"
-msgstr ""
+msgstr "მონაცემები"
 
 #: ../lib/layer/data.py:1263
 msgctxt "layer type descriptions"
@@ -3322,12 +3319,12 @@ msgstr ""
 #: ../lib/layer/group.py:67
 msgctxt "layer default names"
 msgid "Group"
-msgstr ""
+msgstr "ჯგუფი"
 
 #: ../lib/layer/group.py:72
 msgctxt "layer type descriptions"
 msgid "Layer Group"
-msgstr ""
+msgstr "ფენების ჯგუფი"
 
 #. TRANSLATORS: Short default name for temporary placeholder layers.
 #. TRANSLATORS: (The user should never see this except in error cases)
@@ -3339,7 +3336,7 @@ msgstr ""
 #: ../lib/layer/tree.py:109
 msgctxt "layer default names"
 msgid "Root"
-msgstr ""
+msgstr "Root"
 
 #: ../lib/layer/tree.py:2055 ../lib/layer/tree.py:2121
 msgctxt "layer default names: joiner punctuation for merged layers"
@@ -3349,12 +3346,12 @@ msgstr ""
 #: ../lib/layer/tree.py:2243
 msgctxt "layer default names: refactor: name of the common areas layer"
 msgid "Common"
-msgstr ""
+msgstr "ჩვეულებრივი"
 
 #: ../lib/layervis.py:44
 msgctxt "layer visibility sets: default name for a user-managed view"
 msgid "View"
-msgstr ""
+msgstr "ხედი"
 
 #: ../lib/layervis.py:49
 msgctxt "layer visibility sets: text shown when no user-managed view is active"
@@ -3397,7 +3394,7 @@ msgstr ""
 
 #: ../lib/modes.py:51
 msgid "Normal"
-msgstr ""
+msgstr "ჩვეულებრივი"
 
 #: ../lib/modes.py:52
 msgid "The top layer only, without blending colors."
@@ -3405,7 +3402,7 @@ msgstr ""
 
 #: ../lib/modes.py:54
 msgid "Pigment"
-msgstr ""
+msgstr "პიგმენტი"
 
 #: ../lib/modes.py:55
 msgid ""
@@ -3414,7 +3411,7 @@ msgstr ""
 
 #: ../lib/modes.py:58
 msgid "Multiply"
-msgstr ""
+msgstr "გამრავლება"
 
 #: ../lib/modes.py:59
 msgid ""
@@ -3424,7 +3421,7 @@ msgstr ""
 
 #: ../lib/modes.py:62
 msgid "Screen"
-msgstr ""
+msgstr "ეკრანი"
 
 #: ../lib/modes.py:63
 msgid ""
@@ -3434,7 +3431,7 @@ msgstr ""
 
 #: ../lib/modes.py:66
 msgid "Overlay"
-msgstr ""
+msgstr "დადება"
 
 #: ../lib/modes.py:67
 msgid ""
@@ -3444,7 +3441,7 @@ msgstr ""
 
 #: ../lib/modes.py:71
 msgid "Darken"
-msgstr ""
+msgstr "გამუქება"
 
 #: ../lib/modes.py:72
 msgid "The top layer is used where it is darker than the backdrop."
@@ -3452,7 +3449,7 @@ msgstr ""
 
 #: ../lib/modes.py:75
 msgid "Lighten"
-msgstr ""
+msgstr "გაღიავება"
 
 #: ../lib/modes.py:76
 msgid "The top layer is used where it is lighter than the backdrop."
@@ -3460,7 +3457,7 @@ msgstr ""
 
 #: ../lib/modes.py:79
 msgid "Dodge"
-msgstr ""
+msgstr "აცილება"
 
 #: ../lib/modes.py:80
 msgid ""
@@ -3471,7 +3468,7 @@ msgstr ""
 
 #: ../lib/modes.py:84
 msgid "Burn"
-msgstr ""
+msgstr "CD-ზე ჩაწერა"
 
 #: ../lib/modes.py:85
 msgid ""
@@ -3498,7 +3495,7 @@ msgstr ""
 
 #: ../lib/modes.py:95
 msgid "Difference"
-msgstr ""
+msgstr "სხვაობა"
 
 #: ../lib/modes.py:96
 msgid "Subtracts the darker color from the lighter of the two."
@@ -3506,7 +3503,7 @@ msgstr ""
 
 #: ../lib/modes.py:98
 msgid "Exclusion"
-msgstr ""
+msgstr "გამორიცხვა"
 
 #: ../lib/modes.py:99
 msgid "Similar to the 'Difference' mode, but lower in contrast."
@@ -3514,7 +3511,7 @@ msgstr ""
 
 #: ../lib/modes.py:102
 msgid "Hue"
-msgstr ""
+msgstr "ტონი"
 
 #: ../lib/modes.py:103
 msgid ""
@@ -3524,7 +3521,7 @@ msgstr ""
 
 #: ../lib/modes.py:106
 msgid "Saturation"
-msgstr ""
+msgstr "გაჯერებულობა"
 
 #: ../lib/modes.py:107
 msgid ""
@@ -3540,7 +3537,7 @@ msgstr ""
 
 #: ../lib/modes.py:114
 msgid "Luminosity"
-msgstr ""
+msgstr "სიკაშკაშე"
 
 #: ../lib/modes.py:115
 msgid ""
@@ -3550,7 +3547,7 @@ msgstr ""
 
 #: ../lib/modes.py:119
 msgid "Plus"
-msgstr ""
+msgstr "პლუსი"
 
 #: ../lib/modes.py:120
 msgid "This layer and its backdrop are simply added together."
@@ -3633,11 +3630,11 @@ msgstr ""
 
 #: ../lib/tiledsurface.py:48
 msgid "Vertical"
-msgstr ""
+msgstr "ვერტიკალური"
 
 #: ../lib/tiledsurface.py:49
 msgid "Horizontal"
-msgstr ""
+msgstr "ჰორიზონტალური"
 
 #: ../lib/tiledsurface.py:50
 msgid "Vertical and horizontal"
@@ -3680,7 +3677,7 @@ msgstr ""
 #: ../gui/autorecover.glade:60
 msgctxt "Autosave Recovery dialog|"
 msgid "_Delete…"
-msgstr ""
+msgstr "_წაშლა…"
 
 #: ../gui/autorecover.glade:66
 msgctxt "Autosave Recovery dialog|Delete button|"
@@ -3719,11 +3716,11 @@ msgstr ""
 
 #: ../gui/autorecover.glade:157
 msgid "Thumbnail"
-msgstr ""
+msgstr "მინიატურა"
 
 #: ../gui/autorecover.glade:171
 msgid "Description"
-msgstr ""
+msgstr "აღწერა"
 
 #: ../gui/brusheditor.glade:88
 msgid "Live update"
@@ -3751,7 +3748,7 @@ msgstr ""
 
 #: ../gui/brusheditor.glade:151
 msgid "Delete"
-msgstr ""
+msgstr "წაშლა"
 
 #: ../gui/brusheditor.glade:156
 msgid "Delete this brush from the disk"
@@ -3793,7 +3790,7 @@ msgstr ""
 #: ../gui/brusheditor.glade:358
 msgctxt "brush editor|metadata settings|labels|"
 msgid "Notes:"
-msgstr ""
+msgstr "შენიშვნები:"
 
 #: ../gui/brusheditor.glade:420
 msgid ""
@@ -3803,7 +3800,7 @@ msgstr ""
 #. field label
 #: ../gui/brusheditor.glade:426
 msgid "Value:"
-msgstr ""
+msgstr "მნიშვნელობა:"
 
 #: ../gui/brusheditor.glade:491
 msgid "Reset this input to have no effect on the setting"
@@ -3823,11 +3820,11 @@ msgstr ""
 
 #: ../gui/brusheditor.glade:562
 msgid "Output"
-msgstr ""
+msgstr "გამოტანა"
 
 #: ../gui/brusheditor.glade:583
 msgid "Input"
-msgstr ""
+msgstr "შეტანის ფაილი"
 
 #: ../gui/brusheditor.glade:601
 msgid "Adjusts the maximum value"
@@ -3921,7 +3918,7 @@ msgstr ""
 #: ../gui/inktool.glade:172
 msgctxt "Inking tool options: point value sliders: labels"
 msgid "Time:"
-msgstr ""
+msgstr "დრო:"
 
 #: ../gui/inktool.glade:205
 msgctxt "Inking tool options: node delete button: label"
@@ -4034,17 +4031,17 @@ msgstr ""
 #: ../gui/preferenceswindow.glade:50
 msgctxt "Prefs Dialog|View|Zoom|Default|"
 msgid "50%"
-msgstr ""
+msgstr "50%"
 
 #: ../gui/preferenceswindow.glade:54
 msgctxt "Prefs Dialog|View|Zoom|Default|"
 msgid "100%"
-msgstr ""
+msgstr "100%"
 
 #: ../gui/preferenceswindow.glade:58
 msgctxt "Prefs Dialog|View|Zoom|Default|"
 msgid "200%"
-msgstr ""
+msgstr "200%"
 
 #: ../gui/preferenceswindow.glade:72
 msgctxt "Prefs Dialog|View|Cursors|Freehand Cursor|Type|"
@@ -4082,13 +4079,13 @@ msgstr ""
 #: ../gui/preferenceswindow.glade:174 ../gui/preferenceswindow.glade:202
 msgctxt "Prefs Dialog|Pen Input|Input Device Settings|Pressure Mapping|"
 msgid "0.0"
-msgstr ""
+msgstr "0.0"
 
 #. Graph label, range (0...1)
 #: ../gui/preferenceswindow.glade:188 ../gui/preferenceswindow.glade:217
 msgctxt "Prefs Dialog|Pen Input|Input Device Settings|Pressure Mapping|"
 msgid "1.0"
-msgstr ""
+msgstr "1.0"
 
 #: ../gui/preferenceswindow.glade:251
 msgctxt "Prefs Dialog|Pen Input|"
@@ -4099,7 +4096,7 @@ msgstr ""
 #: ../gui/preferenceswindow.glade:261
 msgctxt "Prefs Dialog|"
 msgid "Pressure"
-msgstr ""
+msgstr "წნევა"
 
 #: ../gui/preferenceswindow.glade:302
 msgctxt "Prefs Dialog|Devices|"
@@ -4115,7 +4112,7 @@ msgstr ""
 
 #: ../gui/preferenceswindow.glade:337
 msgid "Devices"
-msgstr ""
+msgstr "მოწყობილობები"
 
 #: ../gui/preferenceswindow.glade:380
 msgctxt "Prefs Dialog|Button|Pointer Button Mappings|"
@@ -4133,7 +4130,7 @@ msgstr ""
 #: ../gui/preferenceswindow.glade:414
 msgctxt "Prefs Dialog|"
 msgid "Buttons"
-msgstr ""
+msgstr "ღილაკები"
 
 #. Label for a checkbox in the keyboard mappings preferences.
 #. A fallback binding is a static built-in key binding that is used
@@ -4156,7 +4153,7 @@ msgstr ""
 
 #: ../gui/preferenceswindow.glade:489
 msgid "Keys"
-msgstr ""
+msgstr "გასაღებები"
 
 #: ../gui/preferenceswindow.glade:509
 msgctxt "Prefs Dialog|Load & Save|Saving|"
@@ -4305,7 +4302,7 @@ msgstr ""
 #: ../gui/preferenceswindow.glade:986
 msgctxt "Prefs Dialog|View|Interface|Icon size|"
 msgid "Small"
-msgstr ""
+msgstr "პატარა"
 
 #: ../gui/preferenceswindow.glade:1011
 msgctxt "Prefs Dialog|View|Zoom|"
@@ -4376,7 +4373,7 @@ msgstr ""
 msgctxt ""
 "Prefs Dialog|View|Interface|Blink layers on creation/selection|checkbox label"
 msgid "Enabled"
-msgstr ""
+msgstr "ჩართულია"
 
 #: ../gui/preferenceswindow.glade:1196
 msgctxt ""
@@ -4395,7 +4392,7 @@ msgstr ""
 #: ../gui/preferenceswindow.glade:1251
 msgctxt "Prefs Dialog|View|Interface|"
 msgid "Language:"
-msgstr ""
+msgstr "ენა:"
 
 #: ../gui/preferenceswindow.glade:1266
 msgctxt "Prefs Dialog|View|Interface|"
@@ -4406,7 +4403,7 @@ msgstr ""
 #: ../gui/preferenceswindow.glade:1283
 msgctxt "Prefs Dialog|"
 msgid "View"
-msgstr ""
+msgstr "ხედი"
 
 #: ../gui/preferenceswindow.glade:1315
 msgctxt "Prefs Dialog|Color|Color Wheel|Primaries|"
@@ -4493,7 +4490,7 @@ msgstr ""
 #: ../gui/preferenceswindow.glade:1425
 msgctxt "Prefs Dialog|"
 msgid "Color"
-msgstr ""
+msgstr "ფერი"
 
 #: ../gui/preferenceswindow.glade:1458
 msgctxt "Prefs Dialog|Compatibility"
@@ -4582,7 +4579,7 @@ msgstr ""
 #: ../gui/preferenceswindow.glade:1832
 msgctxt "Prefs Dialog|"
 msgid "Compatibility"
-msgstr ""
+msgstr "თავსებადობა"
 
 #: ../gui/preferenceswindow.glade:1850
 msgctxt "Prefs Dialog|Pen Input|Mode|"
@@ -4602,12 +4599,12 @@ msgstr ""
 #: ../gui/resources.xml:63
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "New"
-msgstr ""
+msgstr "ახალი"
 
 #: ../gui/resources.xml:64
 msgctxt "Toolbar (short labels)"
 msgid "New"
-msgstr ""
+msgstr "ახალი"
 
 #: ../gui/resources.xml:65
 msgctxt "Toolbar (tooltips), Accel Editor (descriptions)"
@@ -4642,12 +4639,12 @@ msgstr ""
 #: ../gui/resources.xml:90
 msgctxt "Menu→File (labels)"
 msgid "Open Recent"
-msgstr ""
+msgstr "ბოლოს გახსნილი ფაილი"
 
 #: ../gui/resources.xml:103
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "Revert"
-msgstr ""
+msgstr "დაბრუნება"
 
 #: ../gui/resources.xml:104
 msgctxt "Accel Editor (descriptions)"
@@ -4687,7 +4684,7 @@ msgstr ""
 #: ../gui/resources.xml:138
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "Export…"
-msgstr ""
+msgstr "გატანა…"
 
 #: ../gui/resources.xml:139
 msgid "Export your work to a file, but keep working on the same file."
@@ -4741,7 +4738,7 @@ msgstr ""
 #: ../gui/resources.xml:191
 msgctxt "Toolbar (short labels)"
 msgid "Brushes"
-msgstr ""
+msgstr "ფუნჯები"
 
 #: ../gui/resources.xml:192
 msgctxt "Toolbar (tooltips)"
@@ -4756,7 +4753,7 @@ msgstr ""
 #: ../gui/resources.xml:200
 msgctxt "Toolbar (short labels)"
 msgid "Colors"
-msgstr ""
+msgstr "ფერები"
 
 #: ../gui/resources.xml:201
 msgctxt "Toolbar (tooltips)"
@@ -4766,12 +4763,12 @@ msgstr ""
 #: ../gui/resources.xml:208
 msgctxt "Menu→Layer→Properties (label)"
 msgid "Mode"
-msgstr ""
+msgstr "რეჟიმი"
 
 #: ../gui/resources.xml:209
 msgctxt "Toolbar (short labels)"
 msgid "Mode"
-msgstr ""
+msgstr "რეჟიმი"
 
 #: ../gui/resources.xml:210
 msgctxt "Toolbar (tooltips)"
@@ -5167,7 +5164,7 @@ msgstr ""
 #: ../gui/resources.xml:567
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Merge Visible Layers"
-msgstr ""
+msgstr "ხილული შრეების შერწყმა"
 
 #: ../gui/resources.xml:568
 msgctxt "Accel Editor (descriptions)"
@@ -5229,7 +5226,7 @@ msgstr ""
 #: ../gui/resources.xml:614
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Raise Layer"
-msgstr ""
+msgstr "ფენის აწევა"
 
 #: ../gui/resources.xml:615
 msgctxt "Accel Editor (descriptions)"
@@ -5239,7 +5236,7 @@ msgstr ""
 #: ../gui/resources.xml:623
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Lower Layer"
-msgstr ""
+msgstr "ფენის დაწევა"
 
 #: ../gui/resources.xml:624
 msgctxt "Accel Editor (descriptions)"
@@ -5291,7 +5288,7 @@ msgstr ""
 #: ../gui/resources.xml:666
 msgctxt "Menu→View (labels), Accel Editor (labels)"
 msgid "Show Background"
-msgstr ""
+msgstr "ფონის ჩვენება"
 
 #: ../gui/resources.xml:667
 msgctxt "Accel Editor (descriptions)"
@@ -5331,12 +5328,12 @@ msgstr ""
 #: ../gui/resources.xml:701
 msgctxt "Menu→View (labels)"
 msgid "Reset"
-msgstr ""
+msgstr "თავიდან"
 
 #: ../gui/resources.xml:708
 msgctxt "Menu→View→Reset (labels), Accel Editor (labels)"
 msgid "Reset Zoom"
-msgstr ""
+msgstr "გადიდების საწყისი პარამეტრები"
 
 #: ../gui/resources.xml:709
 msgctxt "Accel Editor (descriptions)"
@@ -5366,7 +5363,7 @@ msgstr ""
 #: ../gui/resources.xml:729
 msgctxt "Menu→View→Adjust View (labels), Accel Editor (labels)"
 msgid "Zoom In"
-msgstr ""
+msgstr "გადიდება"
 
 #: ../gui/resources.xml:730
 msgctxt "Accel Editor (descriptions)"
@@ -5386,7 +5383,7 @@ msgstr ""
 #: ../gui/resources.xml:758
 msgctxt "Menu→View→Adjust View (labels), Accel Editor (labels)"
 msgid "Pan Left"
-msgstr ""
+msgstr "პანინგი მარცხნივ"
 
 #: ../gui/resources.xml:759
 msgctxt "Accel Editor (descriptions)"
@@ -5396,7 +5393,7 @@ msgstr ""
 #: ../gui/resources.xml:766
 msgctxt "Menu→View→Adjust View (labels), Accel Editor (labels)"
 msgid "Pan Right"
-msgstr ""
+msgstr "პანინგი მარჯვნივ"
 
 #: ../gui/resources.xml:767
 msgctxt "Accel Editor (descriptions)"
@@ -5560,7 +5557,7 @@ msgstr ""
 #: ../gui/resources.xml:933
 msgctxt "Menu→Brush (labels)"
 msgid "Paint Mode"
-msgstr ""
+msgstr "ხატვის რეჟიმი"
 
 #: ../gui/resources.xml:941
 msgctxt "Menu→Brush→Blend Mode (labels), Accel Editor (labels)"
@@ -5611,7 +5608,7 @@ msgstr "ფაილი"
 #: ../gui/resources.xml:989
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "Quit"
-msgstr ""
+msgstr "გასვლა"
 
 #: ../gui/resources.xml:990
 msgctxt "Accel Editor (descriptions)"
@@ -5626,7 +5623,7 @@ msgstr ""
 #: ../gui/resources.xml:1008
 msgctxt "Menu (labels)"
 msgid "Color"
-msgstr ""
+msgstr "ფერი"
 
 #: ../gui/resources.xml:1014
 msgctxt "Menu→Color (labels)"
@@ -5686,12 +5683,12 @@ msgstr ""
 #: ../gui/resources.xml:1058
 msgctxt "Menu (labels)"
 msgid "Layer"
-msgstr ""
+msgstr "ფენა"
 
 #: ../gui/resources.xml:1064
 msgctxt "Menu→Layer→Properties (labels)"
 msgid "Opacity"
-msgstr ""
+msgstr "გაუმჭვირვალობა"
 
 #: ../gui/resources.xml:1070
 msgctxt "Menu→Layer (labels)"
@@ -5706,12 +5703,12 @@ msgstr ""
 #: ../gui/resources.xml:1082
 msgctxt "Menu→Layer (labels)"
 msgid "Properties"
-msgstr ""
+msgstr "თვისებები"
 
 #: ../gui/resources.xml:1090
 msgctxt "Menu (labels)"
 msgid "Scratchpad"
-msgstr ""
+msgstr "მონახაზი"
 
 #: ../gui/resources.xml:1096
 msgctxt "Menu→Scratchpad (labels), Accel Editor (labels)"
@@ -5797,12 +5794,12 @@ msgstr ""
 #: ../gui/resources.xml:1159
 msgctxt "Menu (labels)"
 msgid "Window"
-msgstr ""
+msgstr "ფანჯარა"
 
 #: ../gui/resources.xml:1167
 msgctxt "Menu→Brush (labels)"
 msgid "Brush"
-msgstr ""
+msgstr "ფუნჯი"
 
 #: ../gui/resources.xml:1173
 msgctxt "Menu→Brush (labels)"
@@ -5875,12 +5872,12 @@ msgstr ""
 #: ../gui/resources.xml:1231
 msgctxt "Menu (labels)"
 msgid "Help"
-msgstr ""
+msgstr "დახმარება"
 
 #: ../gui/resources.xml:1237
 msgctxt "Menu→Help (labels), Accel Editor (labels)"
 msgid "Online Help"
-msgstr ""
+msgstr "ონლაინ დახმარება"
 
 #: ../gui/resources.xml:1238
 msgctxt "Accel Editor (descriptions)"
@@ -5900,7 +5897,7 @@ msgstr ""
 #: ../gui/resources.xml:1256
 msgctxt "Menu→Help (labels)"
 msgid "Debug"
-msgstr ""
+msgstr "გამართვა"
 
 #: ../gui/resources.xml:1262
 msgctxt "Menu→Help→Debug (labels), Accel Editor (labels)"
@@ -5946,12 +5943,12 @@ msgstr ""
 #: ../gui/resources.xml:1294
 msgctxt "Menu (labels)"
 msgid "View"
-msgstr ""
+msgstr "ხედი"
 
 #: ../gui/resources.xml:1300
 msgctxt "Menu→View (labels)"
 msgid "Feedback"
-msgstr ""
+msgstr "უკუკავშირი"
 
 #: ../gui/resources.xml:1306
 msgctxt "Menu→View (labels)"
@@ -5971,7 +5968,7 @@ msgstr ""
 #: ../gui/resources.xml:1320
 msgctxt "Menu→View (labels), Accel Editor (labels)"
 msgid "Fullscreen"
-msgstr ""
+msgstr "მთელს ეკრანზე"
 
 #: ../gui/resources.xml:1321
 msgctxt "Accel Editor (descriptions)"
@@ -5981,7 +5978,7 @@ msgstr ""
 #: ../gui/resources.xml:1332
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
 msgid "Edit Preferences"
-msgstr ""
+msgstr "მორგება"
 
 #: ../gui/resources.xml:1333
 msgctxt "Accel Editor (descriptions)"
@@ -6177,7 +6174,7 @@ msgstr ""
 #: ../gui/resources.xml:1497
 msgctxt "Menu→View (labels), Accel Editor (labels)"
 msgid "Preview"
-msgstr ""
+msgstr "გადახედვა"
 
 #: ../gui/resources.xml:1498
 msgctxt "Accel Editor (descriptions)"
@@ -6323,12 +6320,12 @@ msgstr ""
 #: ../gui/resources.xml:1635
 msgctxt "Menu→Edit→Current Mode (labels)"
 msgid "Freehand"
-msgstr ""
+msgstr "ხელით დახატული"
 
 #: ../gui/resources.xml:1636
 msgctxt "Toolbar (short labels)"
 msgid "Freehand"
-msgstr ""
+msgstr "ხელით დახატული"
 
 #: ../gui/resources.xml:1637
 msgctxt "Toolbar (tooltips)"
@@ -6338,7 +6335,7 @@ msgstr ""
 #: ../gui/resources.xml:1646
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
 msgid "Freehand"
-msgstr ""
+msgstr "ხელით დახატული"
 
 #: ../gui/resources.xml:1647
 msgctxt "Accel Editor (descriptions)"
@@ -6353,7 +6350,7 @@ msgstr ""
 #: ../gui/resources.xml:1658
 msgctxt "Toolbar (short labels)"
 msgid "Pan"
-msgstr ""
+msgstr "პანინგი"
 
 #: ../gui/resources.xml:1659
 msgctxt "Toolbar (tooltips)"
@@ -6373,12 +6370,12 @@ msgstr ""
 #: ../gui/resources.xml:1677
 msgctxt "Menu→Edit→Current Mode (labels)"
 msgid "Rotate View"
-msgstr ""
+msgstr "ხედის შემობრუნება"
 
 #: ../gui/resources.xml:1678
 msgctxt "Toolbar (short labels)"
 msgid "Rotate"
-msgstr ""
+msgstr "შემობრუნება"
 
 #: ../gui/resources.xml:1679
 msgctxt "Toolbar (tooltips)"
@@ -6388,7 +6385,7 @@ msgstr ""
 #: ../gui/resources.xml:1687
 msgctxt "Menu→View (labels), Accel Editor (labels)"
 msgid "Rotate View"
-msgstr ""
+msgstr "ხედის შემობრუნება"
 
 #: ../gui/resources.xml:1688
 msgctxt "Accel Editor (descriptions)"
@@ -6403,7 +6400,7 @@ msgstr ""
 #: ../gui/resources.xml:1698
 msgctxt "Toolbar (short labels)"
 msgid "Zoom"
-msgstr ""
+msgstr "გადიდება"
 
 #: ../gui/resources.xml:1699
 msgctxt "Toolbar (tooltips)"
@@ -6428,7 +6425,7 @@ msgstr ""
 #: ../gui/resources.xml:1718
 msgctxt "Toolbar (short labels)"
 msgid "Lines"
-msgstr ""
+msgstr "ხაზები"
 
 #: ../gui/resources.xml:1719
 msgctxt "Toolbar (tooltips)"
@@ -6478,7 +6475,7 @@ msgstr ""
 #: ../gui/resources.xml:1760
 msgctxt "Toolbar (short labels)"
 msgid "Ellipse"
-msgstr ""
+msgstr "ოვალი"
 
 #: ../gui/resources.xml:1761
 msgctxt "Toolbar (tooltips)"
@@ -6503,7 +6500,7 @@ msgstr ""
 #: ../gui/resources.xml:1781
 msgctxt "Toolbar (short labels)"
 msgid "Ink"
-msgstr ""
+msgstr "მელანი"
 
 #: ../gui/resources.xml:1782
 msgctxt "Toolbar (tooltips)"
@@ -6553,7 +6550,7 @@ msgstr ""
 #: ../gui/resources.xml:1823
 msgctxt "Toolbar (short labels)"
 msgid "Frame"
-msgstr ""
+msgstr "კადრი"
 
 #: ../gui/resources.xml:1824
 msgctxt "Toolbar (tooltips)"
@@ -6580,7 +6577,7 @@ msgstr ""
 #: ../gui/resources.xml:1843
 msgctxt "Toolbar (short labels)"
 msgid "Symmetry"
-msgstr ""
+msgstr "სიმეტრია"
 
 #: ../gui/resources.xml:1844
 msgctxt "Toolbar (tooltips)"
@@ -6663,7 +6660,7 @@ msgstr ""
 #: ../gui/resources.xml:1936
 msgctxt "Toolbar (short labels)"
 msgid "Fill"
-msgstr ""
+msgstr "შევსება"
 
 #: ../gui/resources.xml:1937
 msgctxt "Toolbar (tooltips)"

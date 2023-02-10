@@ -5,7 +5,7 @@ msgstr ""
 "Project-Id-Version: mypaint v2.0.0-alpha.8-1-g4490f06\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-04-17 23:27+0200\n"
-"PO-Revision-Date: 2021-03-10 04:02+0000\n"
+"PO-Revision-Date: 2021-06-16 07:34+0000\n"
 "Last-Translator: Reza Almanda <rezaalmanda27@gmail.com>\n"
 "Language-Team: Indonesian <https://hosted.weblate.org/projects/mypaint/"
 "mypaint/id/>\n"
@@ -14,7 +14,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 4.5.2-dev\n"
+"X-Generator: Weblate 4.7-dev\n"
 
 #: ../gui/accelmap.py:86
 msgctxt "placeholder for keymap filtering"
@@ -497,7 +497,7 @@ msgstr "Ganti Nama Kelompok"
 #, python-brace-format
 msgctxt "brush group: context menu: unique names for cloned brushes"
 msgid "{original_name} copy"
-msgstr ""
+msgstr "{original_name} salin"
 
 #: ../gui/brushselectionwindow.py:299
 #, python-brace-format
@@ -975,7 +975,7 @@ msgstr "Buka Berkas Terdahulu"
 #: ../gui/colors/paletteview.py:190
 msgctxt "palette editor dialog: palette name/title entry: label"
 msgid "Title:"
-msgstr ""
+msgstr "Tajuk:"
 
 #: ../gui/colors/paletteview.py:194
 msgctxt "palette editor dialog: palette name/title entry: tooltip"
@@ -1089,17 +1089,17 @@ msgstr "Berkas"
 #: ../gui/colors/sliders.py:45
 msgctxt "color sliders panel: red/green/blue: slider label"
 msgid "R"
-msgstr ""
+msgstr "R"
 
 #: ../gui/colors/sliders.py:49
 msgctxt "color sliders panel: red/green/blue: slider label"
 msgid "G"
-msgstr ""
+msgstr "G"
 
 #: ../gui/colors/sliders.py:53
 msgctxt "color sliders panel: red/green/blue: slider label"
 msgid "B"
-msgstr ""
+msgstr "B"
 
 #: ../gui/colors/sliders.py:57
 msgctxt "color sliders panel: hue/chroma/luma: slider label"
@@ -1211,13 +1211,13 @@ msgstr ""
 #: ../gui/preferenceswindow.glade:1667
 msgctxt "Prefs Dialog|Compatibility"
 msgid "1.x"
-msgstr ""
+msgstr "1.x"
 
 #. This refers to a version of MyPaint like 1.0, 1.1, 1.2 etc
 #: ../gui/compatibility.py:36 ../gui/preferenceswindow.glade:1686
 msgctxt "Prefs Dialog|Compatibility"
 msgid "2.x"
-msgstr ""
+msgstr "2.x"
 
 #. TRANSLATORS: This is probably a rare warning, and it will not
 #. TRANSLATORS: really be shown at all before the release of 3.0
@@ -1307,7 +1307,7 @@ msgstr ""
 #: ../gui/device.py:61
 msgctxt "prefs: device's type label"
 msgid "Mouse"
-msgstr ""
+msgstr "Tetikus"
 
 #: ../gui/device.py:65
 msgctxt "prefs: device's type label"
@@ -1519,7 +1519,7 @@ msgstr ""
 #: ../gui/document.py:895
 msgctxt "Statusbar message: copy result"
 msgid "Empty document, nothing copied."
-msgstr ""
+msgstr "Dokumen kosong, tidak ada yang tersalin."
 
 #: ../gui/document.py:906
 #, python-brace-format
@@ -1596,7 +1596,6 @@ msgid "Fullscreen"
 msgstr "Penuhi Layar"
 
 #: ../gui/drawwindow.py:687
-#, fuzzy
 msgctxt "Quit confirm dialog: title"
 msgid "Really Quit?"
 msgstr "Benar mau keluar?"
@@ -2199,7 +2198,7 @@ msgstr "Pilih lapisan oleh cursor"
 #, python-brace-format
 msgctxt "current brush indicator: tooltip (no-description case)"
 msgid "<b>{brush_name}</b>"
-msgstr ""
+msgstr "<b>{brush_name}</b>"
 
 #: ../gui/footer.py:200
 #, python-brace-format
@@ -2208,6 +2207,8 @@ msgid ""
 "<b>{brush_name}</b>\n"
 "{brush_desc}"
 msgstr ""
+"<b>{brush_name}</b>\n"
+"{brush_desc}"
 
 #: ../gui/framewindow.py:102
 msgid "Edit Frame"
@@ -2279,7 +2280,7 @@ msgstr ""
 
 #: ../gui/framewindow.py:915
 msgid "px"
-msgstr ""
+msgstr "px"
 
 #: ../gui/framewindow.py:916
 msgid "in"
@@ -2287,11 +2288,11 @@ msgstr ""
 
 #: ../gui/framewindow.py:917
 msgid "cm"
-msgstr ""
+msgstr "DPI"
 
 #: ../gui/framewindow.py:918
 msgid "mm"
-msgstr ""
+msgstr "mm"
 
 #: ../gui/freehand.py:89
 msgid "Freehand Drawing"
@@ -2425,9 +2426,8 @@ msgid "(No Barrel Rotation)"
 msgstr ""
 
 #: ../gui/inputtestwindow.py:75
-#, fuzzy
 msgid "Barrel Rotation:"
-msgstr "Putaran"
+msgstr "Rotasi barel:"
 
 #. TRANSLATORS: Command to move a layer in the horizontal plane,
 #. TRANSLATORS: preserving its position in the stack.
@@ -2457,9 +2457,10 @@ msgid "Layer Properties"
 msgstr "Palet Gimp (*.gpl)"
 
 #: ../gui/layerprops.py:381
+#, fuzzy
 msgctxt "layer properties dialog: done button"
 msgid "Done"
-msgstr ""
+msgstr "Beres"
 
 #. Visibility flag column
 #: ../gui/layers.py:406
@@ -2502,12 +2503,12 @@ msgstr "Lapisan"
 #: ../gui/layers.py:989
 msgctxt "Layers: description parts: unknown type (fallback str!)"
 msgid "?type"
-msgstr ""
+msgstr "?jenis"
 
 #: ../gui/layers.py:996
 msgctxt "Layers dockable: description parts joiner text"
 msgid ", "
-msgstr ""
+msgstr "꧊ "
 
 #: ../gui/layers.py:1004
 #, fuzzy, python-brace-format
@@ -2522,6 +2523,8 @@ msgid ""
 "<span size=\"smaller\">{layer_name}\n"
 "<span size=\"smaller\">{layer_description}</span></span>"
 msgstr ""
+"<span size=\"smaller\">{layer_name}\n"
+"<span size=\"smaller\">{layer_description}</span></span>"
 
 #: ../gui/layerswindow.py:95
 msgid "Layers"
@@ -2564,13 +2567,13 @@ msgstr "Lapisan"
 #, python-brace-format
 msgctxt "view controls: dropdown: item markup"
 msgid "<i>{builtin_view_name}</i>"
-msgstr ""
+msgstr "<i>{builtin_view_name}</i>"
 
 #: ../gui/layervis.py:125
 #, python-brace-format
 msgctxt "view controls: dropdown: item markup"
 msgid "{user_chosen_view_name}"
-msgstr ""
+msgstr "{user_chosen_view_name}"
 
 #: ../gui/layervis.py:187
 #, fuzzy
@@ -2744,7 +2747,7 @@ msgstr ""
 #: ../gui/meta.py:110
 msgctxt "About dialog: credits: tasks: joiner punctuation"
 msgid ", "
-msgstr ""
+msgstr "꧊ "
 
 #. TRANSLATORS: THIS SHOULD NOT BE TRANSLATED LITERALLY
 #. TRANSLATORS: The "translation" of this string should be a list of names
@@ -2797,7 +2800,7 @@ msgstr ""
 #, python-brace-format
 msgctxt "options panel: header"
 msgid "<b>{mode_name}</b>"
-msgstr ""
+msgstr "<b>{mode_name}</b>"
 
 #: ../gui/optionspanel.py:62
 msgctxt "options panel: body"
@@ -2807,7 +2810,7 @@ msgstr ""
 #: ../gui/overlays.py:161
 #, python-format
 msgid "Zoom: %.01f%%"
-msgstr ""
+msgstr "Zoom: %.01f%%"
 
 #: ../gui/picker.py:462
 msgctxt "context picker: statusbar text during grab"
@@ -3339,19 +3342,19 @@ msgstr ""
 #, python-brace-format
 msgctxt "Time period abbreviations"
 msgid "{hours}h{minutes}m"
-msgstr ""
+msgstr "{hours}h{minutes}m"
 
 #: ../lib/helpers.py:590
 #, python-brace-format
 msgctxt "Time period abbreviation"
 msgid "{minutes}m{seconds}s"
-msgstr ""
+msgstr "{minutes}m{seconds}s"
 
 #: ../lib/helpers.py:592
 #, python-brace-format
 msgctxt "Time period abbreviation"
 msgid "{seconds}s"
-msgstr ""
+msgstr "{seconds}s"
 
 #. TRANSLATORS: Default name for new normal, paintable layers
 #: ../lib/layer/core.py:66 ../lib/layer/data.py:1309
@@ -3428,7 +3431,7 @@ msgstr ""
 #: ../lib/layer/tree.py:2055 ../lib/layer/tree.py:2121
 msgctxt "layer default names: joiner punctuation for merged layers"
 msgid ", "
-msgstr ""
+msgstr "꧊ "
 
 #: ../lib/layer/tree.py:2243
 msgctxt "layer default names: refactor: name of the common areas layer"
@@ -3486,7 +3489,7 @@ msgstr ""
 
 #: ../lib/modes.py:51
 msgid "Normal"
-msgstr ""
+msgstr "Biasa"
 
 #: ../lib/modes.py:52
 msgid "The top layer only, without blending colors."
@@ -3895,9 +3898,8 @@ msgstr ""
 
 #. field label
 #: ../gui/brusheditor.glade:426
-#, fuzzy
 msgid "Value:"
-msgstr "Nilai HSV"
+msgstr "Nilai:"
 
 #: ../gui/brusheditor.glade:491
 msgid "Reset this input to have no effect on the setting"
@@ -3957,12 +3959,12 @@ msgstr ""
 
 #: ../gui/brusheditor.glade:802
 msgid "{tooltip}"
-msgstr ""
+msgstr "{tooltip}"
 
 #. field name (template)
 #: ../gui/brusheditor.glade:809
 msgid "{dname}:"
-msgstr ""
+msgstr "{dname}:"
 
 #: ../gui/brusheditor.glade:841
 #, fuzzy
@@ -4017,7 +4019,7 @@ msgstr ""
 #: ../gui/inktool.glade:172
 msgctxt "Inking tool options: point value sliders: labels"
 msgid "Time:"
-msgstr ""
+msgstr "Masa:"
 
 #: ../gui/inktool.glade:205
 msgctxt "Inking tool options: node delete button: label"
@@ -4106,6 +4108,8 @@ msgid ""
 "Z: {scale:.1f}%\n"
 "R: {rotation:+.1f}°"
 msgstr ""
+"Z: {scale:.1f}%\n"
+"R: {rotation:+.1f}°"
 
 #: ../gui/mypaint.glade:249
 msgctxt "footer: context picker button: tooltip"
@@ -4130,22 +4134,22 @@ msgstr "JPEG kualitas 90% (*.jpg; *.jpeg)"
 #: ../gui/preferenceswindow.glade:46
 msgctxt "Prefs Dialog|View|Zoom|Default|"
 msgid "25%"
-msgstr ""
+msgstr "25%"
 
 #: ../gui/preferenceswindow.glade:50
 msgctxt "Prefs Dialog|View|Zoom|Default|"
 msgid "50%"
-msgstr ""
+msgstr "50%"
 
 #: ../gui/preferenceswindow.glade:54
 msgctxt "Prefs Dialog|View|Zoom|Default|"
 msgid "100%"
-msgstr ""
+msgstr "100%"
 
 #: ../gui/preferenceswindow.glade:58
 msgctxt "Prefs Dialog|View|Zoom|Default|"
 msgid "200%"
-msgstr ""
+msgstr "200%"
 
 #: ../gui/preferenceswindow.glade:72
 msgctxt "Prefs Dialog|View|Cursors|Freehand Cursor|Type|"
@@ -4183,13 +4187,13 @@ msgstr "Tekanan Kuas"
 #: ../gui/preferenceswindow.glade:174 ../gui/preferenceswindow.glade:202
 msgctxt "Prefs Dialog|Pen Input|Input Device Settings|Pressure Mapping|"
 msgid "0.0"
-msgstr ""
+msgstr "0.0"
 
 #. Graph label, range (0...1)
 #: ../gui/preferenceswindow.glade:188 ../gui/preferenceswindow.glade:217
 msgctxt "Prefs Dialog|Pen Input|Input Device Settings|Pressure Mapping|"
 msgid "1.0"
-msgstr ""
+msgstr "1.0"
 
 #: ../gui/preferenceswindow.glade:251
 msgctxt "Prefs Dialog|Pen Input|"
@@ -4616,16 +4620,14 @@ msgid "<b>2.x Settings</b>"
 msgstr "<b>Menyimpan</b>"
 
 #: ../gui/preferenceswindow.glade:1535 ../gui/preferenceswindow.glade:1609
-#, fuzzy
 msgctxt "Prefs Dialog|Compatibility"
 msgid "Default New Layer Type:"
-msgstr "Hapus Lapisan"
+msgstr "Jenis Layer Baru Default:"
 
 #: ../gui/preferenceswindow.glade:1581 ../gui/preferenceswindow.glade:1595
-#, fuzzy
 msgctxt "Prefs Dialog|Compatibility"
 msgid "Default Pigment Brush Setting:"
-msgstr "Pengaturan kuas"
+msgstr "Pengaturan Pigmen Kuas Default:"
 
 #. Label description for the 1.x compatibility-mode-by-default setting
 #: ../gui/preferenceswindow.glade:1671
@@ -6795,7 +6797,7 @@ msgstr ""
 #: ../gui/resources.xml:1936
 msgctxt "Toolbar (short labels)"
 msgid "Fill"
-msgstr ""
+msgstr "Isi"
 
 #: ../gui/resources.xml:1937
 msgctxt "Toolbar (tooltips)"
