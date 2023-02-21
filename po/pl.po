@@ -8,8 +8,8 @@ msgstr ""
 "Project-Id-Version: mypaint v1.2.0-350-g48487e9\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-04-17 23:27+0200\n"
-"PO-Revision-Date: 2022-10-20 21:06+0000\n"
-"Last-Translator: Jacek <uaie_wljjw94@jyplo.com>\n"
+"PO-Revision-Date: 2023-02-22 10:38+0000\n"
+"Last-Translator: gnu-ewm <gnu.ewm@protonmail.com>\n"
 "Language-Team: Polish <https://hosted.weblate.org/projects/mypaint/mypaint/"
 "pl/>\n"
 "Language: pl\n"
@@ -18,7 +18,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=n==1 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 "
 "|| n%100>=20) ? 1 : 2;\n"
-"X-Generator: Weblate 4.14.2-dev\n"
+"X-Generator: Weblate 4.16-dev\n"
 "X-Poedit-Country: Polski\n"
 "X-Poedit-Language: Polish\n"
 "X-Poedit-SourceCharset: utf-8\n"
@@ -2319,7 +2319,6 @@ msgid "px"
 msgstr "px"
 
 #: ../gui/framewindow.py:916
-#, fuzzy
 msgid "in"
 msgstr "cali"
 
@@ -2697,11 +2696,10 @@ msgid "Generic line/curve mode"
 msgstr "Zwykła linia/tryb zakrzywiania"
 
 #: ../gui/linemode.py:803
-#, fuzzy
 msgid ""
 "Draw straight lines; Shift adds curves, Shift + Ctrl moves line ends, Ctrl "
 "constrains angle"
-msgstr "Rysuj proste linie; Shift dodaje zakrzywienia, Ctrl wymusza kąt"
+msgstr "Rysuj proste linie; Shift dodaje zakrzywienia, Ctrl ogranicza kąt"
 
 #: ../gui/linemode.py:814
 msgid "Connected Lines"
@@ -4791,20 +4789,18 @@ msgstr "Kolor"
 #: ../gui/preferenceswindow.glade:1458
 msgctxt "Prefs Dialog|Compatibility"
 msgid "Default Compatibility Mode:"
-msgstr ""
+msgstr "Domyślny tryb zgodności:"
 
 #: ../gui/preferenceswindow.glade:1483
-#, fuzzy
 msgctxt "Prefs Dialog|Compatibility"
 msgid "<b>1.x Settings</b>"
-msgstr "<b>Zapisywanie</b>"
+msgstr "<b>Ustawienia 1.x</b>"
 
 #. Make sure to be consistent w. other occurences of 2.x
 #: ../gui/preferenceswindow.glade:1497
-#, fuzzy
 msgctxt "Prefs Dialog|Compatibility"
 msgid "<b>2.x Settings</b>"
-msgstr "<b>Zapisywanie</b>"
+msgstr "<b>Ustawienia 2.x</b>"
 
 #: ../gui/preferenceswindow.glade:1535 ../gui/preferenceswindow.glade:1609
 msgctxt "Prefs Dialog|Compatibility"
@@ -4824,6 +4820,9 @@ msgid ""
 "default. In this mode 1.x .ora files will look the same as they did in older "
 "versions, but pigment blending will not work well."
 msgstr ""
+"Podczas tworzenia nowych dokumentów należy domyślnie używać trybu zgodności "
+"z wersją 1.x. W tym trybie pliki .ora w wersji 1.x będą wyglądały tak samo "
+"jak w starszych wersjach, ale mieszanie pigmentów nie będzie działać dobrze."
 
 #: ../gui/preferenceswindow.glade:1690
 msgctxt "Prefs Dialog|Compatibility"
@@ -4831,6 +4830,9 @@ msgid ""
 "When creating new documents, use the regular 2.x compatibility mode by "
 "default. Old documents will often look different in this mode."
 msgstr ""
+"Podczas tworzenia nowych dokumentów należy domyślnie używać zwykłego trybu "
+"zgodności z wersją 2.x. Stare dokumenty będą często wyglądać inaczej w tym "
+"trybie."
 
 #: ../gui/preferenceswindow.glade:1722
 msgctxt "Prefs Dialog|Compatibility"
@@ -4870,10 +4872,9 @@ msgstr "Gdy tryb nie jest określony:"
 
 #. This label indicates a subsection of the compatibility settings related to loading files.
 #: ../gui/preferenceswindow.glade:1796
-#, fuzzy
 msgctxt "Prefs|Compatibility"
 msgid "<b>File loading</b>"
-msgstr "<b>Zapisywanie</b>"
+msgstr "<b>Ładowanie plików</b>"
 
 #: ../gui/preferenceswindow.glade:1816
 msgid "<b>Compatibility settings</b>"
@@ -4881,10 +4882,9 @@ msgstr "<b>Ustawienia kompatybilności</b>"
 
 #. Tab label in preferences dialog
 #: ../gui/preferenceswindow.glade:1832
-#, fuzzy
 msgctxt "Prefs Dialog|"
 msgid "Compatibility"
-msgstr "przenoszenie na inne systemy"
+msgstr "Zgodność"
 
 #: ../gui/preferenceswindow.glade:1850
 msgctxt "Prefs Dialog|Pen Input|Mode|"
