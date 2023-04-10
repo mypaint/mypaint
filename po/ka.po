@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: mypaint v2.0.0-alpha.8-1-g4490f06\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-04-17 23:27+0200\n"
-"PO-Revision-Date: 2023-04-10 14:41+0000\n"
+"PO-Revision-Date: 2023-04-11 14:52+0000\n"
 "Last-Translator: Temuri Doghonadze <temuri.doghonadze@gmail.com>\n"
 "Language-Team: Georgian <https://hosted.weblate.org/projects/mypaint/mypaint/"
 "ka/>\n"
@@ -222,7 +222,7 @@ msgstr "ტრეკინგი"
 #: ../gui/brusheditor.py:422
 msgctxt "brush settings list: setting group"
 msgid "Stroke"
-msgstr ""
+msgstr "გამოძრავება"
 
 #: ../gui/brusheditor.py:433
 msgctxt "brush settings list: setting group"
@@ -511,7 +511,7 @@ msgstr ""
 #: ../gui/brushselectionwindow.py:419
 msgctxt "brush group properties dialog: action buttons"
 msgid "Rename Group"
-msgstr ""
+msgstr "ჯგუფის სახელის გადარქემვა"
 
 #: ../gui/brushselectionwindow.py:425
 msgctxt "brush group properties dialog: action buttons"
@@ -521,12 +521,12 @@ msgstr ""
 #: ../gui/brushselectionwindow.py:431
 msgctxt "brush group properties dialog: action buttons"
 msgid "Delete Group"
-msgstr ""
+msgstr "ჯგუფის წაშლა"
 
 #: ../gui/brushselectionwindow.py:451
 msgctxt "brush group rename dialog: title"
 msgid "Rename Group"
-msgstr ""
+msgstr "ჯგუფის სახელის გადარქემვა"
 
 #: ../gui/brushselectionwindow.py:469
 msgctxt "brush group rename"
@@ -560,7 +560,7 @@ msgstr ""
 #: ../gui/brushselectionwindow.py:536
 msgctxt "brush groups menu"
 msgid "New Group…"
-msgstr ""
+msgstr "ახალი ჯგუფი…"
 
 #: ../gui/brushselectionwindow.py:539
 msgctxt "brush groups menu"
@@ -637,7 +637,7 @@ msgstr ""
 
 #: ../gui/colorpicker.py:65
 msgid "Pick Color"
-msgstr ""
+msgstr "აირჩიეთ ფერი"
 
 #: ../gui/colorpicker.py:68
 msgid "Set the color used for painting"
@@ -779,7 +779,7 @@ msgstr "აქტიური"
 #: ../gui/colors/hcywheel.py:1102
 msgctxt "HCY Mask Editor: action button labels"
 msgid "Help…"
-msgstr ""
+msgstr "დახმარება…"
 
 #: ../gui/colors/hcywheel.py:1108
 msgctxt "HCY Mask Editor: action button tooltips"
@@ -954,7 +954,7 @@ msgstr "სვეტი:"
 #: ../gui/colors/paletteview.py:210
 msgctxt "palette editor dialog: number-of-columns spinbutton: tooltip"
 msgid "Number of columns"
-msgstr ""
+msgstr "სვეტების რაოდენობა"
 
 #: ../gui/colors/paletteview.py:227
 msgctxt "palette editor dialog: color name entry: label"
@@ -1004,7 +1004,7 @@ msgstr ""
 #: ../gui/colors/paletteview.py:796
 msgctxt "palette view: context menu"
 msgid "Insert Row"
-msgstr ""
+msgstr "მწკრივის ჩასმა"
 
 #. TRANSLATORS: inserting gaps (empty color swatches)
 #: ../gui/colors/paletteview.py:803
@@ -1276,7 +1276,7 @@ msgstr "თაგუნა"
 #: ../gui/device.py:65
 msgctxt "prefs: device's type label"
 msgid "Pen"
-msgstr ""
+msgstr "ფანქარი"
 
 #: ../gui/device.py:69
 msgctxt "prefs: device's type label"
@@ -1286,7 +1286,7 @@ msgstr "თაჩპედი"
 #: ../gui/device.py:73
 msgctxt "prefs: device's type label"
 msgid "Touchscreen"
-msgstr ""
+msgstr "სენსორული ეკრანი"
 
 #: ../gui/device.py:93
 msgctxt "device settings: allowed usage"
@@ -1366,11 +1366,11 @@ msgstr "ჩანაცვლება"
 
 #: ../gui/dialogs.py:137 ../gui/dialogs.py:207 ../gui/brusheditor.glade:189
 msgid "Rename"
-msgstr ""
+msgstr "%1 სურათის სახელის გადარქმევა"
 
 #: ../gui/dialogs.py:140
 msgid "Replace all"
-msgstr ""
+msgstr "ყველას ჩანაცვლება"
 
 #: ../gui/dialogs.py:142
 msgid "Rename all"
@@ -1457,7 +1457,7 @@ msgstr ""
 #: ../gui/document.py:853
 #, python-brace-format
 msgid "{button_combination} is {resultant_action}"
-msgstr ""
+msgstr "{button_combination} is {resultant_action}"
 
 #. TRANSLATORS: This is a separator for the list of button actions
 #. TRANSLATORS: that appears when a modifier key is held down.
@@ -1523,7 +1523,7 @@ msgstr ""
 #. TRANSLATORS: window title for use without a filename
 #: ../gui/drawwindow.py:278 ../gui/mypaint.glade:8
 msgid "MyPaint"
-msgstr ""
+msgstr "MyPaint"
 
 #: ../gui/drawwindow.py:301
 msgctxt "Open dragged file confirm dialog: title"
@@ -1558,7 +1558,7 @@ msgstr "მთელს ეკრანზე"
 #: ../gui/drawwindow.py:687
 msgctxt "Quit confirm dialog: title"
 msgid "Really Quit?"
-msgstr ""
+msgstr "მართლა გავიდე?"
 
 #: ../gui/drawwindow.py:691
 msgctxt "Quit confirm dialog: continue button"
@@ -1625,7 +1625,7 @@ msgstr ""
 
 #: ../gui/externalapp.py:156
 msgid "Open With…"
-msgstr ""
+msgstr "გამხსნელი პროგრამა…"
 
 #: ../gui/externalapp.py:208
 msgid "Icon"
@@ -1633,7 +1633,7 @@ msgstr "ხატულა"
 
 #: ../gui/externalapp.py:251
 msgid "no description"
-msgstr ""
+msgstr "აღწერის გარეშე"
 
 #: ../gui/filehandling.py:127
 #, python-brace-format
@@ -1686,7 +1686,7 @@ msgstr ""
 #: ../gui/filehandling.py:165
 msgctxt "Document I/O: fail dialog title"
 msgid "Save failed"
-msgstr ""
+msgstr "შენახვის შეცდომა"
 
 #: ../gui/filehandling.py:169
 msgctxt "Document I/O: fail dialog title"
@@ -1701,7 +1701,7 @@ msgstr ""
 #: ../gui/filehandling.py:177
 msgctxt "Document I/O: fail dialog title"
 msgid "Open failed"
-msgstr ""
+msgstr "გახსნის შეცდომა"
 
 #: ../gui/filehandling.py:184
 #, python-brace-format
@@ -1805,7 +1805,7 @@ msgstr ""
 #: ../gui/filehandling.py:581
 msgctxt "Dialogs (window title): File→Export…"
 msgid "Export"
-msgstr ""
+msgstr "გატანა"
 
 #: ../gui/filehandling.py:586
 msgctxt "Dialogs (window title): File→Save As…"
@@ -1838,7 +1838,7 @@ msgctxt ""
 "Destructive action confirm dialog: fallback continue button (normally "
 "overridden)"
 msgid "Co_ntinue"
-msgstr ""
+msgstr "_გაგრძელება"
 
 #: ../gui/filehandling.py:739
 #, python-brace-format
@@ -1941,7 +1941,7 @@ msgctxt ""
 "Name of the fill mode\n"
 "In other software, 'Flood Fill' is also known as 'Bucket Fill' or just 'Fill'"
 msgid "Flood Fill"
-msgstr ""
+msgstr "დატბორვით შევსება"
 
 #: ../gui/fill.py:129
 msgctxt "Usage description of the Flood Fill mode"
@@ -2150,7 +2150,7 @@ msgstr ""
 
 #: ../gui/framewindow.py:102
 msgid "Edit Frame"
-msgstr ""
+msgstr "ჩარჩოს ჩასწორება"
 
 #: ../gui/framewindow.py:105
 msgid "Adjust the document frame"
@@ -2170,7 +2170,7 @@ msgstr "გარჩევადობა:"
 
 #: ../gui/framewindow.py:474
 msgid "DPI"
-msgstr ""
+msgstr "DPI"
 
 #: ../gui/framewindow.py:476
 msgid "Dots Per Inch (really Pixels Per Inch)"
@@ -2182,7 +2182,7 @@ msgstr "ფერი:"
 
 #: ../gui/framewindow.py:515
 msgid "Frame Color"
-msgstr ""
+msgstr "ჩარჩოს ფერი"
 
 #: ../gui/framewindow.py:537
 msgid "Enabled"
@@ -2234,7 +2234,7 @@ msgstr "მმ"
 
 #: ../gui/freehand.py:89
 msgid "Freehand Drawing"
-msgstr ""
+msgstr "ხელით ხატვა"
 
 #: ../gui/freehand.py:92
 msgid "Paint free-form brush strokes"
@@ -2282,7 +2282,7 @@ msgstr ""
 #. only development and prereleases
 #: ../gui/gtkexcepthook.py:179
 msgid "Report…"
-msgstr ""
+msgstr "ანგარიში…"
 
 #: ../gui/gtkexcepthook.py:181
 msgid "Ignore Error"
@@ -2391,7 +2391,7 @@ msgstr ""
 #: ../gui/layerprops.py:377
 msgctxt "layer properties dialog: title"
 msgid "Layer Properties"
-msgstr ""
+msgstr "ფენის თვისებები"
 
 #: ../gui/layerprops.py:381
 msgctxt "layer properties dialog: done button"
@@ -2538,7 +2538,7 @@ msgstr ""
 
 #: ../gui/linemode.py:47
 msgid "Head"
-msgstr ""
+msgstr "თავი"
 
 #: ../gui/linemode.py:48
 msgid "Stroke lead-in end"
@@ -2573,7 +2573,7 @@ msgstr ""
 
 #: ../gui/linemode.py:814
 msgid "Connected Lines"
-msgstr ""
+msgstr "დაკავშირებული ხაზები"
 
 #: ../gui/linemode.py:817
 msgid "Draw a sequence of lines; Shift adds curves, Ctrl constrains angle"
@@ -2930,7 +2930,7 @@ msgstr ""
 
 #: ../gui/viewmanip.py:79
 msgid "Zoom View"
-msgstr ""
+msgstr "ხედის გადიდება"
 
 #: ../gui/viewmanip.py:82
 msgid "Zoom the canvas view"
@@ -2962,7 +2962,7 @@ msgstr ""
 
 #: ../lib/command.py:525
 msgid "Flood Fill"
-msgstr ""
+msgstr "დატბორვით შევსება"
 
 #: ../lib/command.py:612
 msgid "Trim Layer"
@@ -3018,7 +3018,7 @@ msgstr "ფენის წაშლა"
 
 #: ../lib/command.py:1028
 msgid "Select Layer"
-msgstr ""
+msgstr "ფენის მონიშვნა"
 
 #: ../lib/command.py:1158
 msgid "Duplicate Layer"
@@ -3218,7 +3218,7 @@ msgstr ""
 #: ../lib/floodfill.py:132
 msgctxt "floodfill status message: use active tense"
 msgid "Filling"
-msgstr ""
+msgstr "შევსება"
 
 #: ../lib/floodfill.py:133
 msgctxt "floodfill status message: use active tense"
@@ -3286,13 +3286,13 @@ msgstr "ვექტორები"
 #: ../lib/layer/data.py:1166
 msgctxt "layer type descriptions"
 msgid "Vector Layer"
-msgstr ""
+msgstr "ვექტორული ფენა"
 
 #. TRANSLATORS: Short default name for renderable fallback layers
 #: ../lib/layer/data.py:1237
 msgctxt "layer default names"
 msgid "Bitmap"
-msgstr ""
+msgstr "ბიტური რუკა"
 
 #: ../lib/layer/data.py:1242
 msgctxt "layer type descriptions"
@@ -3331,7 +3331,7 @@ msgstr "ფენების ჯგუფი"
 #: ../lib/layer/tree.py:70
 msgctxt "layer default names"
 msgid "Placeholder"
-msgstr ""
+msgstr "შემავსებელი"
 
 #: ../lib/layer/tree.py:109
 msgctxt "layer default names"
@@ -3386,7 +3386,7 @@ msgstr ""
 
 #: ../lib/modes.py:47
 msgid "Pass-through"
-msgstr ""
+msgstr "გატარება"
 
 #: ../lib/modes.py:48
 msgid "Group contents apply directly to the group's backdrop"
@@ -3479,7 +3479,7 @@ msgstr ""
 
 #: ../lib/modes.py:89
 msgid "Hard Light"
-msgstr ""
+msgstr "მაგარი სინათლე"
 
 #: ../lib/modes.py:90
 msgid "Similar to shining a harsh spotlight onto the backdrop."
@@ -3923,7 +3923,7 @@ msgstr "დრო:"
 #: ../gui/inktool.glade:205
 msgctxt "Inking tool options: node delete button: label"
 msgid "Delete Point"
-msgstr ""
+msgstr "წერტილის წაშლა"
 
 #: ../gui/inktool.glade:209
 msgctxt "Inking tool options: node delete button: tooltip"
@@ -3978,7 +3978,7 @@ msgstr ""
 #: ../gui/mypaint.glade:65
 msgctxt "footer: color picker button: tooltip"
 msgid "Pick color"
-msgstr ""
+msgstr "აირჩიეთ ფერი"
 
 #: ../gui/mypaint.glade:102
 msgctxt "Footerbar|"
@@ -4026,7 +4026,7 @@ msgstr ""
 #: ../gui/preferenceswindow.glade:46
 msgctxt "Prefs Dialog|View|Zoom|Default|"
 msgid "25%"
-msgstr ""
+msgstr "25%"
 
 #: ../gui/preferenceswindow.glade:50
 msgctxt "Prefs Dialog|View|Zoom|Default|"
@@ -4158,7 +4158,7 @@ msgstr "გასაღებები"
 #: ../gui/preferenceswindow.glade:509
 msgctxt "Prefs Dialog|Load & Save|Saving|"
 msgid "Default file format:"
-msgstr ""
+msgstr "ფაილის ნაგულისხმები ფორმატი:"
 
 #: ../gui/preferenceswindow.glade:524
 msgctxt "Prefs Dialog|Load & Save|Saving|"
@@ -4261,7 +4261,7 @@ msgstr ""
 #: ../gui/preferenceswindow.glade:862
 msgctxt "Prefs Dialog|View|"
 msgid "<b>Interface</b>"
-msgstr ""
+msgstr "<b>ინტერფეისი</b>"
 
 #: ../gui/preferenceswindow.glade:879
 msgctxt "Prefs Dialog|View|Interface|"
@@ -4397,7 +4397,7 @@ msgstr "ენა:"
 #: ../gui/preferenceswindow.glade:1266
 msgctxt "Prefs Dialog|View|Interface|"
 msgid "(needs restart)"
-msgstr ""
+msgstr "(საჭიროებს გადატვირთვას)"
 
 #. Tab label in preferences dialog
 #: ../gui/preferenceswindow.glade:1283
@@ -4818,7 +4818,7 @@ msgstr ""
 #: ../gui/resources.xml:271
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
 msgid "Increase Brush Size"
-msgstr ""
+msgstr "ფუნჯის ზომის გადიდება"
 
 #: ../gui/resources.xml:272
 msgctxt "Accel Editor (descriptions)"
@@ -4828,7 +4828,7 @@ msgstr ""
 #: ../gui/resources.xml:279
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
 msgid "Decrease Brush Size"
-msgstr ""
+msgstr "ფუნჯის ზომის შემცირება"
 
 #: ../gui/resources.xml:280
 msgctxt "Accel Editor (descriptions)"
@@ -4898,7 +4898,7 @@ msgstr ""
 #: ../gui/resources.xml:342
 msgctxt "Menu→Color→Adjust Color (labels), Accel Editor (labels)"
 msgid "Increase Saturation"
-msgstr ""
+msgstr "გაჯერებულობის გაზრდა"
 
 #: ../gui/resources.xml:343
 msgctxt "Accel Editor (descriptions)"
@@ -4908,7 +4908,7 @@ msgstr ""
 #: ../gui/resources.xml:350
 msgctxt "Menu→Color→Adjust Color (labels), Accel Editor (labels)"
 msgid "Decrease Saturation"
-msgstr ""
+msgstr "გაჯერებულობის შემცირება"
 
 #: ../gui/resources.xml:351
 msgctxt "Accel Editor (descriptions)"
@@ -5318,7 +5318,7 @@ msgstr ""
 #: ../gui/resources.xml:693
 msgctxt "Menu→View (labels), Accel Editor (labels)"
 msgid "Fit to View"
-msgstr ""
+msgstr "ხედში ჩატევა"
 
 #: ../gui/resources.xml:694
 msgctxt "Accel Editor (descriptions)"
@@ -5403,7 +5403,7 @@ msgstr ""
 #: ../gui/resources.xml:774
 msgctxt "Menu→View→Adjust View (labels), Accel Editor (labels)"
 msgid "Pan Up"
-msgstr ""
+msgstr "პანორამა მაღლა"
 
 #: ../gui/resources.xml:775
 msgctxt "Accel Editor (descriptions)"
@@ -5413,7 +5413,7 @@ msgstr ""
 #: ../gui/resources.xml:782
 msgctxt "Menu→View→Adjust View (labels), Accel Editor (labels)"
 msgid "Pan Down"
-msgstr ""
+msgstr "პანორამა დაბლა"
 
 #: ../gui/resources.xml:783
 msgctxt "Accel Editor (descriptions)"
@@ -5430,7 +5430,7 @@ msgstr ""
 #: ../gui/resources.xml:798
 msgctxt "Menu→View→Adjust View (labels), Accel Editor (labels)"
 msgid "Rotate Clockwise"
-msgstr ""
+msgstr "საათის ისრის მიმართულებით შებრუნება"
 
 #: ../gui/resources.xml:799
 msgctxt "Accel Editor (descriptions)"
@@ -5440,7 +5440,7 @@ msgstr ""
 #: ../gui/resources.xml:819
 msgctxt "Menu→View→Adjust View (labels), Accel Editor (labels)"
 msgid "Rotate Counterclockwise"
-msgstr ""
+msgstr "საათის ისრის საწინააღმდეგო მიმართულებით შებრუნება"
 
 #: ../gui/resources.xml:820
 msgctxt "Accel Editor (descriptions)"
@@ -5536,7 +5536,7 @@ msgstr ""
 
 #: ../gui/resources.xml:904
 msgid "Delete Point"
-msgstr ""
+msgstr "წერტილის წაშლა"
 
 #: ../gui/resources.xml:905
 msgctxt "Accel Editor (descriptions)"
@@ -6062,7 +6062,7 @@ msgstr ""
 #: ../gui/resources.xml:1402
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "Color Palette"
-msgstr ""
+msgstr "ფერის პალიტრა"
 
 #: ../gui/resources.xml:1403
 msgctxt "Accel Editor (descriptions)"
@@ -6345,7 +6345,7 @@ msgstr ""
 #: ../gui/resources.xml:1657
 msgctxt "Menu→Edit→Current Mode (labels)"
 msgid "Pan View"
-msgstr ""
+msgstr "პანორამული ხედი"
 
 #: ../gui/resources.xml:1658
 msgctxt "Toolbar (short labels)"
@@ -6360,7 +6360,7 @@ msgstr ""
 #: ../gui/resources.xml:1667
 msgctxt "Menu→View (labels), Accel Editor (labels)"
 msgid "Pan View"
-msgstr ""
+msgstr "პანორამული ხედი"
 
 #: ../gui/resources.xml:1668
 msgctxt "Accel Editor (descriptions)"
@@ -6395,7 +6395,7 @@ msgstr ""
 #: ../gui/resources.xml:1697
 msgctxt "Menu→Edit→Current Mode (labels)"
 msgid "Zoom View"
-msgstr ""
+msgstr "ხედის გადიდება"
 
 #: ../gui/resources.xml:1698
 msgctxt "Toolbar (short labels)"
@@ -6410,7 +6410,7 @@ msgstr ""
 #: ../gui/resources.xml:1707
 msgctxt "Menu→View (labels), Accel Editor (labels)"
 msgid "Zoom View"
-msgstr ""
+msgstr "ხედის გადიდება"
 
 #: ../gui/resources.xml:1708
 msgctxt "Accel Editor (descriptions)"
@@ -6445,7 +6445,7 @@ msgstr ""
 #: ../gui/resources.xml:1738
 msgctxt "Menu→Edit→Current Mode (labels)"
 msgid "Connected Lines"
-msgstr ""
+msgstr "დაკავშირებული ხაზები"
 
 #: ../gui/resources.xml:1739
 msgctxt "Toolbar (short labels)"
@@ -6460,7 +6460,7 @@ msgstr ""
 #: ../gui/resources.xml:1748
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
 msgid "Connected Lines"
-msgstr ""
+msgstr "დაკავშირებული ხაზები"
 
 #: ../gui/resources.xml:1749
 msgctxt "Accel Editor (descriptions)"
@@ -6545,7 +6545,7 @@ msgstr ""
 #: ../gui/resources.xml:1822
 msgctxt "Menu→Edit→Current Mode (labels)"
 msgid "Edit Frame"
-msgstr ""
+msgstr "ჩარჩოს ჩასწორება"
 
 #: ../gui/resources.xml:1823
 msgctxt "Toolbar (short labels)"
@@ -6561,7 +6561,7 @@ msgstr ""
 #: ../gui/resources.xml:1832
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "Edit Frame"
-msgstr ""
+msgstr "ჩარჩოს ჩასწორება"
 
 #: ../gui/resources.xml:1833
 msgctxt "Accel Editor (descriptions)"
@@ -6597,7 +6597,7 @@ msgstr ""
 #: ../gui/resources.xml:1863
 msgctxt "Menu→Edit→Current Mode (labels)"
 msgid "Pick Color"
-msgstr ""
+msgstr "აირჩიეთ ფერი"
 
 #: ../gui/resources.xml:1864
 msgctxt "Toolbar (short labels)"
@@ -6645,7 +6645,7 @@ msgstr ""
 #: ../gui/resources.xml:1924
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "Pick Color"
-msgstr ""
+msgstr "აირჩიეთ ფერი"
 
 #: ../gui/resources.xml:1925
 msgctxt "Accel Editor (descriptions)"
@@ -6655,7 +6655,7 @@ msgstr ""
 #: ../gui/resources.xml:1935
 msgctxt "Menu→Edit→Current Mode (labels)"
 msgid "Flood Fill"
-msgstr ""
+msgstr "დატბორვით შევსება"
 
 #: ../gui/resources.xml:1936
 msgctxt "Toolbar (short labels)"
@@ -6670,7 +6670,7 @@ msgstr ""
 #: ../gui/resources.xml:1945
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
 msgid "Flood Fill"
-msgstr ""
+msgstr "დატბორვით შევსება"
 
 #: ../gui/resources.xml:1946
 msgctxt "Accel Editor (descriptions)"
