@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: mypaint v2.0.0-alpha.8-1-g4490f06\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-04-17 23:27+0200\n"
-"PO-Revision-Date: 2022-07-22 16:17+0000\n"
+"PO-Revision-Date: 2023-04-10 14:41+0000\n"
 "Last-Translator: Temuri Doghonadze <temuri.doghonadze@gmail.com>\n"
 "Language-Team: Georgian <https://hosted.weblate.org/projects/mypaint/mypaint/"
 "ka/>\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 4.14-dev\n"
+"X-Generator: Weblate 4.17-dev\n"
 
 #: ../gui/accelmap.py:86
 msgctxt "placeholder for keymap filtering"
@@ -4614,7 +4614,7 @@ msgstr ""
 #: ../gui/resources.xml:73
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "Open…"
-msgstr ""
+msgstr "გახსნა…"
 
 #: ../gui/resources.xml:74
 msgctxt "Toolbar (short labels)"
@@ -4664,7 +4664,7 @@ msgstr ""
 #: ../gui/resources.xml:120
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "Save"
-msgstr ""
+msgstr "შენახვა"
 
 #: ../gui/resources.xml:121
 msgctxt "Accel Editor (descriptions)"
@@ -4674,7 +4674,7 @@ msgstr ""
 #: ../gui/resources.xml:129
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "Save As…"
-msgstr ""
+msgstr "შენახვა, როგორც…"
 
 #: ../gui/resources.xml:130
 msgctxt "Accel Editor (descriptions)"
@@ -4961,7 +4961,7 @@ msgstr ""
 #: ../gui/resources.xml:401
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Clear Layer"
-msgstr ""
+msgstr "ფენის გასუფთავება"
 
 #: ../gui/resources.xml:402
 msgctxt "Accel Editor (descriptions)"
@@ -5094,7 +5094,7 @@ msgstr ""
 #: ../gui/resources.xml:511
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "New Painting Layer"
-msgstr ""
+msgstr "ახალი სახატავი ფენა"
 
 #: ../gui/resources.xml:512
 msgctxt "Accel Editor (descriptions)"
@@ -5184,7 +5184,7 @@ msgstr ""
 #: ../gui/resources.xml:583
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Delete Layer"
-msgstr ""
+msgstr "ფენის წაშლა"
 
 #: ../gui/resources.xml:584
 msgctxt "Accel Editor (descriptions)"
@@ -5608,7 +5608,7 @@ msgstr "ფაილი"
 #: ../gui/resources.xml:989
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "Quit"
-msgstr "გასვლა"
+msgstr "გამოსვლა"
 
 #: ../gui/resources.xml:990
 msgctxt "Accel Editor (descriptions)"
@@ -5819,7 +5819,7 @@ msgstr ""
 #: ../gui/resources.xml:1187
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
 msgid "Change Brush…"
-msgstr ""
+msgstr "ფუნჯის შეცვლა…"
 
 #: ../gui/resources.xml:1188
 msgctxt "Accel Editor (descriptions)"
@@ -5829,7 +5829,7 @@ msgstr ""
 #: ../gui/resources.xml:1195
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "Change Color…"
-msgstr ""
+msgstr "ფერის შეცვლა…"
 
 #: ../gui/resources.xml:1196
 msgctxt "Accel Editor (descriptions)"
