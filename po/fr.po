@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: mypaint v2.0.0-alpha.8-1-g4490f06\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-04-17 23:27+0200\n"
-"PO-Revision-Date: 2023-04-19 10:48+0000\n"
+"PO-Revision-Date: 2023-04-23 12:52+0000\n"
 "Last-Translator: Jean-Christophe Sekinger <jc.sekinger@gmail.com>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/mypaint/mypaint/"
 "fr/>\n"
@@ -5813,17 +5813,17 @@ msgstr "Rotation"
 #: ../gui/resources.xml:716
 msgctxt "Accel Editor (descriptions)"
 msgid "Reset the view’s rotation to 0°"
-msgstr ""
+msgstr "Réinitialiser la rotation de la vue à 0°"
 
 #: ../gui/resources.xml:722
 msgctxt "Menu→View→Reset (labels), Accel Editor (labels)"
 msgid "Reset Mirroring"
-msgstr ""
+msgstr "Réinitialiser la mise en miroir"
 
 #: ../gui/resources.xml:723
 msgctxt "Accel Editor (descriptions)"
 msgid "Reset the view's mirroring."
-msgstr ""
+msgstr "Réinitialiser la mise en miroir de la vue."
 
 #: ../gui/resources.xml:729
 #, fuzzy
@@ -5873,9 +5873,10 @@ msgstr ""
 "et verticalement."
 
 #: ../gui/resources.xml:774
+#, fuzzy
 msgctxt "Menu→View→Adjust View (labels), Accel Editor (labels)"
 msgid "Pan Up"
-msgstr ""
+msgstr "Défilement vers le haut"
 
 #: ../gui/resources.xml:775
 #, fuzzy
@@ -5962,9 +5963,10 @@ msgid "Symmetrical Painting Active"
 msgstr "Peinture symétrique"
 
 #: ../gui/resources.xml:857
+#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Mirror brushstrokes along the axis of symmetry"
-msgstr ""
+msgstr "Coups de brosse en miroir, le long de l’axe de symmétrie"
 
 #: ../gui/resources.xml:864
 #, fuzzy
