@@ -12,7 +12,7 @@ msgstr ""
 "Project-Id-Version: mypaint v2.0.0-alpha.11-2-g0673fe8\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-04-17 23:27+0200\n"
-"PO-Revision-Date: 2023-06-25 06:51+0000\n"
+"PO-Revision-Date: 2023-06-26 07:48+0000\n"
 "Last-Translator: Сергей <asvmail.as@gmail.com>\n"
 "Language-Team: Russian <https://hosted.weblate.org/projects/mypaint/mypaint/"
 "ru/>\n"
@@ -4152,7 +4152,7 @@ msgstr "Наклон на холсте по оси Y"
 #: ../gui/inktool.glade:167
 msgctxt "Inking tool options: point value sliders: labels: tooltips"
 msgid "Time since the previous point, in seconds"
-msgstr "Время от последнего узла, в секундах"
+msgstr "Время от последней точки, в секундах"
 
 #: ../gui/inktool.glade:172
 msgctxt "Inking tool options: point value sliders: labels"
@@ -4162,12 +4162,12 @@ msgstr "Время:"
 #: ../gui/inktool.glade:205
 msgctxt "Inking tool options: node delete button: label"
 msgid "Delete Point"
-msgstr "Удалить узел"
+msgstr "Удалить точку"
 
 #: ../gui/inktool.glade:209
 msgctxt "Inking tool options: node delete button: tooltip"
 msgid "Delete the currently selected point"
-msgstr "Удалить выбранный узел"
+msgstr "Удалить выбранную точку"
 
 #: ../gui/inktool.glade:221 ../gui/resources.xml:897
 msgid "Insert Point"
@@ -4820,7 +4820,7 @@ msgstr "Тип нового слоя по умолчанию:"
 #: ../gui/preferenceswindow.glade:1581 ../gui/preferenceswindow.glade:1595
 msgctxt "Prefs Dialog|Compatibility"
 msgid "Default Pigment Brush Setting:"
-msgstr "Параметры кисти \"Краситель\" по умолчанию:"
+msgstr "Настройка красителя кисти по умолчанию:"
 
 #. Label description for the 1.x compatibility-mode-by-default setting
 #: ../gui/preferenceswindow.glade:1671
@@ -5361,7 +5361,7 @@ msgstr "Скопировать текущий слой в буфер обмен�
 #: ../gui/resources.xml:461
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Paste Layer from Clipboard"
-msgstr "Вставить слой"
+msgstr "Вставить слой из буфера обмена"
 
 #: ../gui/resources.xml:462
 msgctxt "Accel Editor (descriptions)"
@@ -6944,7 +6944,7 @@ msgstr "Симметричное рисование: регулировать о
 #: ../gui/resources.xml:1852
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "Edit Painting Symmetry"
-msgstr "Симметричное рисование"
+msgstr "Изменить симметрию рисования"
 
 #: ../gui/resources.xml:1853
 msgctxt "Accel Editor (description)"
