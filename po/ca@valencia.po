@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-04-17 23:27+0200\n"
-"PO-Revision-Date: 2023-05-30 14:54+0000\n"
+"PO-Revision-Date: 2023-07-10 10:53+0000\n"
 "Last-Translator: Ecron <ecron_89@hotmail.com>\n"
 "Language-Team: Valencian <https://hosted.weblate.org/projects/mypaint/"
 "mypaint/ca@valencia/>\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 4.18-dev\n"
+"X-Generator: Weblate 5.0-dev\n"
 
 #: ../gui/accelmap.py:86
 msgctxt "placeholder for keymap filtering"
@@ -3549,7 +3549,7 @@ msgstr "Bloqueja la capa"
 #: ../lib/layervis.py:697
 msgctxt "layer views: commands: set active view's lock flag"
 msgid "Unlock Layer View"
-msgstr "Desbloqueja la capa"
+msgstr "Desbloqueja la visualització de la capa"
 
 #: ../lib/modes.py:47
 msgid "Pass-through"
