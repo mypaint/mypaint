@@ -7,21 +7,21 @@ msgstr ""
 "Project-Id-Version: mypaint v1.2.0-724-gaf306e4\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-04-17 23:27+0200\n"
-"PO-Revision-Date: 2018-07-02 22:05+0000\n"
-"Last-Translator: Haval Abdulkarim <haval.abdulkarim@gmail.com>\n"
-"Language-Team: Sorani <https://hosted.weblate.org/projects/mypaint/mypaint/"
-"ckb/>\n"
+"PO-Revision-Date: 2023-09-17 01:59+0000\n"
+"Last-Translator: Rasti K5 <rasti.khdhr@gmail.com>\n"
+"Language-Team: Kurdish (Central) <https://hosted.weblate.org/projects/"
+"mypaint/mypaint/ckb/>\n"
 "Language: ckb\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 3.1-dev\n"
+"X-Generator: Weblate 5.0.2\n"
 
 #: ../gui/accelmap.py:86
 msgctxt "placeholder for keymap filtering"
 msgid "Filter"
-msgstr ""
+msgstr "پاڵفتە"
 
 #. TRANSLATORS: Name of first column in the button map preferences.
 #. TRANSLATORS: Refers to an action bound to a mod+button combination.
@@ -158,11 +158,12 @@ msgstr "هەڵە ڕوویدا لە بارکردنی پاشبەندەکان"
 msgid ""
 "Please remove the unloadable files, or check your libgdkpixbuf installation."
 msgstr ""
+"تکایە ئەو پەڕگانەی بارناکرێن لابدە، یان دڵنیابەوە لە دامەزرانی libgdkpixbuf٠"
 
 #: ../gui/backgroundwindow.py:372
 #, python-brace-format
 msgid "Gdk-Pixbuf couldn't load \"{filename}\", and reported \"{error}\""
-msgstr ""
+msgstr "Gdk-Pixbuf بار نەکرا \"{filename}\"، هەواڵ بدە لە \"{error}\""
 
 #: ../gui/backgroundwindow.py:382
 #, python-brace-format
@@ -217,7 +218,7 @@ msgstr ""
 #: ../gui/brusheditor.py:411
 msgctxt "brush settings list: setting group"
 msgid "Tracking"
-msgstr ""
+msgstr "بەدوایدا دەچێت"
 
 #: ../gui/brusheditor.py:422
 msgctxt "brush settings list: setting group"
@@ -232,7 +233,7 @@ msgstr "ڕەنگ"
 #: ../gui/brusheditor.py:451
 msgctxt "brush settings list: setting group"
 msgid "GridMap"
-msgstr ""
+msgstr "نەخشەی تۆڕی"
 
 #: ../gui/brusheditor.py:462
 msgctxt "brush settings list: setting group"
@@ -338,12 +339,12 @@ msgstr "دەستکاری"
 
 #: ../gui/brushiconeditor.py:159
 msgid "Begin editing this preview icon"
-msgstr ""
+msgstr "دەست بە دەستکاری ئەم وێنۆچکە پیشاندراوە بکە"
 
 #. TRANSLATORS: revert edits to a brush icon
 #: ../gui/brushiconeditor.py:165
 msgid "Revert"
-msgstr ""
+msgstr "گەڕاندنەوە"
 
 #: ../gui/brushiconeditor.py:167
 msgid "Discard changes, and cancel editing"
@@ -356,7 +357,7 @@ msgstr "خاوێنکردنەوە"
 
 #: ../gui/brushiconeditor.py:176
 msgid "Clear the preview icon"
-msgstr ""
+msgstr "سڕینەوەی وێنۆچکەی پیشاندراو"
 
 #. TRANSLATORS: set the brush icon to a built-in default
 #: ../gui/brushiconeditor.py:182
@@ -374,7 +375,7 @@ msgstr "پاشەکەوتکردن"
 
 #: ../gui/brushiconeditor.py:192
 msgid "Save this preview icon, and finish editing"
-msgstr ""
+msgstr "ئەم وێنۆچکە پێشاندراوە پاشەکەوت بکە و کۆتایی بە دەستکاری بهێنە"
 
 #: ../gui/brushmanager.py:131
 msgid "Lost & Found"
@@ -495,13 +496,13 @@ msgstr "ناولێنانەوەی دەستە"
 #, python-brace-format
 msgctxt "brush group: context menu: unique names for cloned brushes"
 msgid "{original_name} copy"
-msgstr ""
+msgstr "{original_name} لەبەر بگرەوە"
 
 #: ../gui/brushselectionwindow.py:299
 #, python-brace-format
 msgctxt "brush group: context menu: unique names for cloned brushes"
 msgid "{original_name} copy {n}"
-msgstr ""
+msgstr "{original_name} لەبەر بگرەوە {n}"
 
 #: ../gui/brushselectionwindow.py:325
 #, fuzzy, python-brace-format
@@ -5149,7 +5150,7 @@ msgstr ""
 #: ../gui/resources.xml:511
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "New Painting Layer"
-msgstr "چینێکی نوێی نیگارکردن"
+msgstr "چینێکی نوێی نیگارکێشان"
 
 #: ../gui/resources.xml:512
 msgctxt "Accel Editor (descriptions)"
@@ -6272,7 +6273,7 @@ msgstr ""
 #: ../gui/resources.xml:1537
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
 msgid "Recent Brushes & Colors"
-msgstr ""
+msgstr "فڵچە و ڕەنگەکانی بەم دواییە"
 
 #: ../gui/resources.xml:1538
 msgctxt "Accel Editor (descriptions)"
@@ -6378,7 +6379,7 @@ msgstr ""
 #: ../gui/resources.xml:1635
 msgctxt "Menu→Edit→Current Mode (labels)"
 msgid "Freehand"
-msgstr ""
+msgstr "بە دەست"
 
 #: ../gui/resources.xml:1636
 msgctxt "Toolbar (short labels)"
@@ -6393,7 +6394,7 @@ msgstr ""
 #: ../gui/resources.xml:1646
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
 msgid "Freehand"
-msgstr ""
+msgstr "بە دەست"
 
 #: ../gui/resources.xml:1647
 msgctxt "Accel Editor (descriptions)"
@@ -6518,7 +6519,7 @@ msgstr ""
 #: ../gui/resources.xml:1748
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
 msgid "Connected Lines"
-msgstr ""
+msgstr "هێڵە پێک بەستراوەکان"
 
 #: ../gui/resources.xml:1749
 msgctxt "Accel Editor (descriptions)"
