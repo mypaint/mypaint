@@ -6,7 +6,7 @@ msgstr ""
 "Project-Id-Version: mypaint v2.0.0-alpha.12-343-g82b4fc5\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-04-17 23:27+0200\n"
-"PO-Revision-Date: 2021-12-20 17:51+0000\n"
+"PO-Revision-Date: 2023-09-20 23:59+0000\n"
 "Last-Translator: Kristoffer Grundström <swedishsailfishosuser@tutanota.com>\n"
 "Language-Team: Swedish <https://hosted.weblate.org/projects/mypaint/mypaint/"
 "sv/>\n"
@@ -15,7 +15,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 4.10\n"
+"X-Generator: Weblate 5.1-dev\n"
 
 #: ../gui/accelmap.py:86
 msgctxt "placeholder for keymap filtering"
@@ -2823,7 +2823,8 @@ msgstr ""
 "Sebastian Rasmussen, 2018\n"
 "Anders Jonsson, 2018\n"
 "Jesper Lloyd, 2019-2020\n"
-"Henrik Cederblad, 2019"
+"Henrik Cederblad, 2019\n"
+"Kristoffer Grundström 2023"
 
 #. TRANSLATORS:"Brush radius" for the options panel. Short.
 #: ../gui/mode.py:592
@@ -2835,7 +2836,7 @@ msgstr "Storlek:"
 #. TRANSLATORS:"Brush opacity" for the options panel. Short.
 #: ../gui/mode.py:594
 msgid "Opaque:"
-msgstr "Opacitet:"
+msgstr "Ogenomskinligt:"
 
 #. TRANSLATORS:"Brush hardness/sharpness" for the options panel. Short.
 #: ../gui/mode.py:596
@@ -2850,7 +2851,7 @@ msgstr "Förstärkning:"
 #. TRANSLATORS:"Paint Pigment Mode" for the options panel. Short.
 #: ../gui/mode.py:600
 msgid "Pigment:"
-msgstr "Pigment:"
+msgstr "Färgämne:"
 
 #: ../gui/optionspanel.py:47
 msgctxt "options panel: tab tooltip: title"
