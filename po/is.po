@@ -4,7 +4,7 @@ msgstr ""
 "Project-Id-Version: mypaint v2.0.0-alpha.8-1-g4490f06\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-04-17 23:27+0200\n"
-"PO-Revision-Date: 2023-03-20 14:40+0000\n"
+"PO-Revision-Date: 2024-01-16 07:55+0000\n"
 "Last-Translator: Sveinn í Felli <sv1@fellsnet.is>\n"
 "Language-Team: Icelandic <https://hosted.weblate.org/projects/mypaint/"
 "mypaint/is/>\n"
@@ -13,7 +13,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n % 10 != 1 || n % 100 == 11;\n"
-"X-Generator: Weblate 4.16.2-dev\n"
+"X-Generator: Weblate 5.4-dev\n"
 
 #: ../gui/accelmap.py:86
 msgctxt "placeholder for keymap filtering"
@@ -426,7 +426,7 @@ msgstr "Nýtt"
 #, python-brace-format
 msgctxt "brushpack import failure messages"
 msgid "No file named “{order_conf_file}”. This is not a brushpack."
-msgstr ""
+msgstr "Engin skrá með heitinu “{order_conf_file}”. Þetta er ekki penslapakki."
 
 #: ../gui/brushmanager.py:704
 #, python-brace-format
@@ -435,6 +435,8 @@ msgid ""
 "Brush “{brush_name}” is listed in “{order_conf_file}”, but it does not exist "
 "in the zipfile."
 msgstr ""
+"Pensillinn “{brush_name}” er talinn upp í “{order_conf_file}”, en finnst "
+"ekki í zip-skránni."
 
 #: ../gui/brushmanager.py:717
 #, python-brace-format
@@ -443,6 +445,8 @@ msgid ""
 "Brush “{brush_name}” exists in the zipfile, but it is not listed in "
 "“{order_conf_file}”."
 msgstr ""
+"Pensillinn “{brush_name}” er í zip-skránni, en er ekki talinn upp í "
+"“{order_conf_file}”."
 
 #: ../gui/brushmanager.py:1328 ../gui/footer.py:66
 msgid "Unknown Brush"
@@ -1547,7 +1551,7 @@ msgstr "Límdi {w}×{h} mynd."
 #, python-brace-format
 msgctxt "Statusbar message: vacuum document"
 msgid "Vacuum: discarded {removed} of {total} tiles."
-msgstr ""
+msgstr "Hreinsun: fjarlægði {removed} af {total} flísum."
 
 #. TRANSLATORS: window title for use with a filename
 #: ../gui/drawwindow.py:275
@@ -1645,6 +1649,7 @@ msgstr "Uppfærði lagið “{layer_name}” með utanaðkomandi breytingum"
 msgctxt "Edit in External App (statusbar message)"
 msgid "Failed to update layer with external edits from “{file_basename}”."
 msgstr ""
+"Mistókst að uppfæra lag með utanaðkomandi breytingum úr “{file_basename}”."
 
 #: ../gui/externalapp.py:146
 #, python-brace-format
@@ -1829,16 +1834,14 @@ msgid "PNG, transparent RGBA (*.png)"
 msgstr "PNG, með RGBA-gegnsæi (*.png)"
 
 #: ../gui/filehandling.py:515
-#, fuzzy
 msgctxt "save dialogs: save formats and options"
 msgid "Multiple PNGs, by layer (*.NUM.png)"
-msgstr "PNG myndaröð með gegnsæi (*.XXX.png)"
+msgstr "Margar PNG-myndir, eftir lagi (*.NUM.png)"
 
 #: ../gui/filehandling.py:519
-#, fuzzy
 msgctxt "save dialogs: save formats and options"
 msgid "Multiple PNGs, by view (*.NAME.png)"
-msgstr "PNG myndaröð með gegnsæi (*.XXX.png)"
+msgstr "Margar PNG-myndir, eftir lagi (*.NAME.png)"
 
 #: ../gui/filehandling.py:523
 msgctxt "save dialogs: save formats and options"
@@ -1967,7 +1970,7 @@ msgstr "_Opna"
 #: ../gui/filehandling.py:1512
 msgctxt "File→Revert: status message: canvas has no filename yet"
 msgid "Cannot revert: canvas has not been saved to a file yet."
-msgstr ""
+msgstr "Get ekki afturkallað: myndflötur hefur enn ekki verið vistaður í skrá."
 
 #: ../gui/filehandling.py:1519
 msgctxt "File→Revert confirm dialog: title"
@@ -2019,7 +2022,7 @@ msgstr "Uppruni:"
 #: ../gui/fill.py:536
 msgctxt "fill options: 'Source:' category (tooltip)"
 msgid "The input that the fill will be based on"
-msgstr ""
+msgstr "Inntakið sem fyllingin verður byggð á"
 
 #: ../gui/fill.py:580
 msgctxt "fill options: 'Source' category: Layer dropdown (tooltip)"
@@ -2099,7 +2102,7 @@ msgstr ""
 #: ../gui/fill.py:684
 msgctxt "fill options: Target | Blend Mode dropdown (tooltip)"
 msgid "Blend mode used when filling"
-msgstr ""
+msgstr "Blöndunarhamur notaður við fyllingu"
 
 #: ../gui/fill.py:699
 msgid "Opacity:"
@@ -2418,11 +2421,11 @@ msgstr "Tæki:"
 
 #: ../gui/inputtestwindow.py:73
 msgid "(No Barrel Rotation)"
-msgstr ""
+msgstr "(enginn snúningur um ás)"
 
 #: ../gui/inputtestwindow.py:75
 msgid "Barrel Rotation:"
-msgstr "Núllstilla snúning:"
+msgstr "Snúningur um ás:"
 
 #. TRANSLATORS: Command to move a layer in the horizontal plane,
 #. TRANSLATORS: preserving its position in the stack.
@@ -2625,11 +2628,12 @@ msgid "Generic line/curve mode"
 msgstr "Almennur hamur línu/ferils"
 
 #: ../gui/linemode.py:803
-#, fuzzy
 msgid ""
 "Draw straight lines; Shift adds curves, Shift + Ctrl moves line ends, Ctrl "
 "constrains angle"
-msgstr "Teikna beinar línur; Shift bætir við boglínum, Ctrl skilyrðir horn"
+msgstr ""
+"Teikna beinar línur; Shift bætir við boglínum, Shift + Ctrl færir línuenda, "
+"Ctrl skilyrðir horn"
 
 #: ../gui/linemode.py:814
 msgid "Connected Lines"
@@ -2979,13 +2983,13 @@ msgstr "{tab_title}: loka flipa"
 #, python-brace-format
 msgctxt "workspace: sidebar tabs: button tooltips"
 msgid "{tab_title}: tab options and properties"
-msgstr ""
+msgstr "{tab_title}: valkostir flipa og eiginleikar"
 
 #: ../gui/toolstack.py:360
 #, python-brace-format
 msgctxt "workspace: sidebar tabs: button tooltips"
 msgid "{tab_title}: move tab to other sidebar"
-msgstr ""
+msgstr "{tab_title}: færa flipa á aðra hliðarstiku"
 
 #: ../gui/topbar.py:90
 msgid "<b>MyPaint</b>"
@@ -3041,12 +3045,11 @@ msgstr "Utanskera lag"
 
 #: ../lib/command.py:632
 msgid "Uniquify Layer Pixels"
-msgstr ""
+msgstr "Gera mynddíla lag einstaka"
 
 #: ../lib/command.py:655
-#, fuzzy
 msgid "Refactor Group"
-msgstr "Endurnefna hóp"
+msgstr "Endurgera hóp"
 
 #: ../lib/command.py:678
 msgid "Clear Layer"
@@ -3327,7 +3330,7 @@ msgstr "Fylling"
 #: ../lib/floodfill.py:133
 msgctxt "floodfill status message: use active tense"
 msgid "Morphing"
-msgstr ""
+msgstr "Myndbreyting"
 
 #: ../lib/floodfill.py:134
 msgctxt "floodfill status message: use active tense"
@@ -3759,9 +3762,8 @@ msgid "Vertical and horizontal"
 msgstr "Lóðrétt og lárétt"
 
 #: ../lib/tiledsurface.py:51
-#, fuzzy
 msgid "Rotational"
-msgstr "Núllstilla snúning"
+msgstr "Snúningsháð"
 
 #: ../lib/tiledsurface.py:52
 msgid "Snowflake"
@@ -3780,7 +3782,7 @@ msgstr "Endurheimta gögn sem urðu fyrir truflun?"
 #: ../gui/autorecover.glade:38
 msgctxt "Autosave Recovery dialog|"
 msgid "_Look for backups at startup"
-msgstr ""
+msgstr "_Leita að öryggisafritum við ræsingu"
 
 #: ../gui/autorecover.glade:42
 msgctxt "Autosave Recovery dialog|Show Dialog at Startup checkbutton|"
@@ -3940,12 +3942,16 @@ msgid ""
 "Minimum value for the output axis.\n"
 "This can be set using the main slider for {dname}."
 msgstr ""
+"Lágmarksgildi fyrir úttaksásinn.\n"
+"Þetta er hægt að stilla með aðalsleðanum fyrir {dname}."
 
 #: ../gui/brusheditor.glade:540
 msgid ""
 "Maximum value for the output axis.\n"
 "This can be set using the main slider for {dname}."
 msgstr ""
+"Hámarksgildi fyrir úttaksásinn.\n"
+"Þetta er hægt að stilla með aðalsleðanum fyrir {dname}."
 
 #: ../gui/brusheditor.glade:562
 msgid "Output"
@@ -3968,12 +3974,16 @@ msgid ""
 "Minimum value for the input axis.\n"
 "Use the popup scale to adjust this."
 msgstr ""
+"Lágmarksgildi fyrir inntaksásinn.\n"
+"Notaðu sprettgluggakvarðann til að aðlaga þetta."
 
 #: ../gui/brusheditor.glade:684
 msgid ""
 "Maximum value for the input axis.\n"
 "Use the popup scale to adjust this."
 msgstr ""
+"Hámarksgildi fyrir inntaksásinn.\n"
+"Notaðu sprettgluggakvarðann til að aðlaga þetta."
 
 #: ../gui/brusheditor.glade:739
 msgid "Variation of the base value by stylus input and other criteria"
@@ -4277,7 +4287,7 @@ msgstr "Hnappar"
 #. unless its key is bound to something else.
 #: ../gui/preferenceswindow.glade:453
 msgid "Disable fallback key bindings"
-msgstr ""
+msgstr "Gera lyklabindingar til vara óvirkar"
 
 #. Tooltip for checkbox in the keyboard mappings preferences.
 #: ../gui/preferenceswindow.glade:457
@@ -4496,20 +4506,20 @@ msgstr "Fela bendil á meðan málað er"
 #: ../gui/preferenceswindow.glade:1132
 msgctxt "Prefs Dialog|View|Interface"
 msgid "Show crosshair for small brush cursors"
-msgstr ""
+msgstr "Sýna krossmið fyrir smáa pensilbendla"
 
 #. Label for a spinbutton that is part of the "crosshair for small brush cursors" setting. Radius refers to the visual brush cursor radius.
 #: ../gui/preferenceswindow.glade:1149
 msgctxt "Prefs Dialog|View|Interface"
 msgid "Radius threshold:"
-msgstr ""
+msgstr "Mörk á radíus:"
 
 #. Description of the "Radius threshold" spinbox/spinner - the referenced "lines" are part of the brush cursor.
 #: ../gui/preferenceswindow.glade:1162
 msgctxt "Prefs Dialog|View|Interface"
 msgid ""
 "Lines will be shown when the brush circle radius is smaller than this value."
-msgstr ""
+msgstr "Línur birtast þegar radíus pensilhrings er minni en þetta gildi."
 
 #: ../gui/preferenceswindow.glade:1192
 msgctxt ""
@@ -4529,7 +4539,7 @@ msgstr ""
 #: ../gui/preferenceswindow.glade:1216
 msgctxt "Prefs Dialog|View|Interface|"
 msgid "Blink layers on creation/selection:"
-msgstr ""
+msgstr "Blikka lögum þegar þau eru útbúin/valin:"
 
 #: ../gui/preferenceswindow.glade:1251
 msgctxt "Prefs Dialog|View|Interface|"
@@ -4700,18 +4710,18 @@ msgstr ""
 #: ../gui/preferenceswindow.glade:1722
 msgctxt "Prefs Dialog|Compatibility"
 msgid "Show warning for files that may be partially incompatible"
-msgstr ""
+msgstr "Birta aðvörun vegna skráa sem gætu verið ósamhæfðar að hluta"
 
 #. Label for a set of options
 #: ../gui/preferenceswindow.glade:1739
 msgctxt "Prefs Dialog|Compatibility"
 msgid "File compatibility warnings:"
-msgstr ""
+msgstr "Aðvaranir varðandi samhæfni skráa:"
 
 #: ../gui/preferenceswindow.glade:1751
 msgctxt "Prefs Dialog|Compatibility"
 msgid "Show warning for files that may be fully incompatible"
-msgstr ""
+msgstr "Birta aðvörun vegna skráa sem ekki er víst að séu samhæfðar að fullu"
 
 #. This is a tooltip for the file behavior options label.
 #: ../gui/preferenceswindow.glade:1767
@@ -4726,7 +4736,7 @@ msgstr ""
 #: ../gui/preferenceswindow.glade:1769
 msgctxt "Prefs Dialog|Compatibility"
 msgid "When Mode is Unspecified:"
-msgstr ""
+msgstr "Þegar hamur er óskilgreindur:"
 
 #. This label indicates a subsection of the compatibility settings related to loading files.
 #: ../gui/preferenceswindow.glade:1796
@@ -4942,48 +4952,44 @@ msgid "The current layer's compositing mode."
 msgstr "Samsetningarhamur núverandi lags."
 
 #: ../gui/resources.xml:237
-#, fuzzy
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
 msgid "Increase Fake Pressure"
-msgstr "Upphafsþrýstingur"
+msgstr "Auka gerviþrýsting"
 
 #: ../gui/resources.xml:238
 msgctxt "Accel Editor (descriptions)"
 msgid "Send harder pressure for devices that don't support pressure input."
-msgstr ""
+msgstr "Auka þrýsting fyrir tæki sem ekki styðja þrýstingsinntak."
 
 #: ../gui/resources.xml:245
-#, fuzzy
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
 msgid "Decrease Fake Pressure"
-msgstr "Upphafsþrýstingur"
+msgstr "Minnka gerviþrýsting"
 
 #: ../gui/resources.xml:246
 msgctxt "Accel Editor (descriptions)"
 msgid "Send softer pressure for devices that don't support pressure input."
-msgstr ""
+msgstr "Minnka þrýsting fyrir tæki sem ekki styðja þrýstingsinntak."
 
 #: ../gui/resources.xml:254
-#, fuzzy
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
 msgid "Increase Fake Rotation"
-msgstr "Auka litmettun"
+msgstr "Auka gervisnúning"
 
 #: ../gui/resources.xml:255
 msgctxt "Accel Editor (descriptions)"
 msgid "Increase barrel rotation for devices that don't support rotation input."
-msgstr ""
+msgstr "Auka snúning um ás fyrir tæki sem ekki styðja snúningsinntak."
 
 #: ../gui/resources.xml:262
-#, fuzzy
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
 msgid "Decrease Fake Rotation"
-msgstr "Minnka litmettun"
+msgstr "Minnka gervisnúning"
 
 #: ../gui/resources.xml:263
 msgctxt "Accel Editor (descriptions)"
 msgid "Decrease barrel rotation for devices that don't support rotation input."
-msgstr ""
+msgstr "Minnka snúning um ás fyrir tæki sem ekki styðja snúningsinntak."
 
 #: ../gui/resources.xml:271
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
@@ -5159,18 +5165,18 @@ msgstr "Þurrka út þá hluta núverandi lags sem liggja utan rammans."
 #: ../gui/resources.xml:423
 msgctxt "Menu→Layer→Slice (labels), Accel Editor (labels)"
 msgid "Uniquify Layer Pixels"
-msgstr ""
+msgstr "Gera mynddíla lag einstaka"
 
 #: ../gui/resources.xml:424
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Delete parts of the current layer which do not vary from the backdrop."
-msgstr "Þurrka út þá hluta núverandi lags sem liggja utan rammans."
+msgstr ""
+"Þurrka út þá hluta núverandi lags sem lekki eru öðruvísi en bakgrunnurinn."
 
 #: ../gui/resources.xml:430
 msgctxt "Menu→Layer→Slice (labels), Accel Editor (labels)"
 msgid "Uniquify Layer Tiles"
-msgstr ""
+msgstr "Gera lagflísar einstakar"
 
 #: ../gui/resources.xml:431
 msgctxt "Accel Editor (descriptions)"
@@ -5178,6 +5184,8 @@ msgid ""
 "Delete whole tiles from the current layer which do not vary from the "
 "backdrop."
 msgstr ""
+"Eyða heilum flísum úr fyrirliggjandi lagi sem ekki eru öðruvísi en "
+"bakgrunnurinn."
 
 #: ../gui/resources.xml:437
 #, fuzzy
@@ -5223,10 +5231,9 @@ msgid "Edit Layer in External App…"
 msgstr "Breyta lagi með öðru forriti…"
 
 #: ../gui/resources.xml:470
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Edit the active layer in an external application."
-msgstr "Byrja að vinna með núverandi lag í utanaðkomandi forriti."
+msgstr "Byrja að vinna með virkt lag í utanaðkomandi forriti."
 
 #: ../gui/resources.xml:477
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
@@ -5245,10 +5252,9 @@ msgid "Go to Layer at Cursor"
 msgstr "Fara á lag við bendil"
 
 #: ../gui/resources.xml:485
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Select a layer by picking something [drawn] on it."
-msgstr "Veldu lag með því að plokka atriði á laginu."
+msgstr "Veldu lag með því að plokka eitthvað [teiknað] atriði á laginu."
 
 #: ../gui/resources.xml:493
 msgctxt "Menu→Layer→Go to Layer (labels), Accel Editor (labels)"
@@ -5482,13 +5488,12 @@ msgstr "Víxla sýnileika bakgrunnslags af/á."
 #: ../gui/resources.xml:674
 msgctxt "Menu→Help→Debug (labels), Accel Editor (labels)"
 msgid "Vacuum Empty Tiles"
-msgstr ""
+msgstr "Hreinsa auðar flísar"
 
 #: ../gui/resources.xml:675
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Remove empty tiles from the document."
-msgstr "Fjarlægja núverandi lag úr lagastaflanum."
+msgstr "Fjarlægja auðar flísar úr skjalinu."
 
 #: ../gui/resources.xml:684
 msgctxt "Menu→View (labels), Accel Editor (labels)"
@@ -5572,10 +5577,9 @@ msgid "Pan Left"
 msgstr "Hliðra til vinstri"
 
 #: ../gui/resources.xml:759
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Move your view of the canvas to the left."
-msgstr "Snúa sýn: halla sýn þinni á myndflötinn."
+msgstr "Færa sýn þína á myndflötinn til vinstri."
 
 #: ../gui/resources.xml:766
 msgctxt "Menu→View→Adjust View (labels), Accel Editor (labels)"
@@ -5583,10 +5587,9 @@ msgid "Pan Right"
 msgstr "Hliðra til hægri"
 
 #: ../gui/resources.xml:767
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Move your view of the canvas to the right."
-msgstr "Hliðra sýn: færa sýn þína á myndflötinn lárétt eða lóðrétt."
+msgstr "Færa sýn þína á myndflötinn til hægri."
 
 #: ../gui/resources.xml:774
 msgctxt "Menu→View→Adjust View (labels), Accel Editor (labels)"
@@ -5594,10 +5597,9 @@ msgid "Pan Up"
 msgstr "Hliðra upp"
 
 #: ../gui/resources.xml:775
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Move your view of the canvas upwards."
-msgstr "Snúa sýn: halla sýn þinni á myndflötinn."
+msgstr "Færa sýn þína á myndflötinn upp."
 
 #: ../gui/resources.xml:782
 msgctxt "Menu→View→Adjust View (labels), Accel Editor (labels)"
@@ -5605,10 +5607,9 @@ msgid "Pan Down"
 msgstr "Hliðra niður"
 
 #: ../gui/resources.xml:783
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Move your view of the canvas downwards."
-msgstr "Snúa sýn: halla sýn þinni á myndflötinn."
+msgstr "Færa sýn þína á myndflötinn niður."
 
 #.
 #. Note: the object we've agreed to present as being rotated
@@ -6230,7 +6231,7 @@ msgstr "Lagaspjald"
 #: ../gui/resources.xml:1374
 msgctxt "Accel Editor (descriptions)"
 msgid "Dockable panel for managing layers."
-msgstr ""
+msgstr "Tengjanlegt spjald fyrir umsýslu laga."
 
 #: ../gui/resources.xml:1382
 msgctxt "Menu→Layers (labels), Accel Editor (labels)"
