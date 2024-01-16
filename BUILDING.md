@@ -10,6 +10,7 @@ a stable version of MyPaint.
 * [Install third-party dependencies](#install-third-party-dependencies)
   - [Debian and derivatives](#debian-and-derivatives)
   - [Red Hat and derivatives](#red-hat-and-derivatives)
+  - [OpenSUSE](#opensuse)
   - [Windows MSYS2](#windows-msys2)
   - [OSX MacPorts](#osx-macports)
  * [Fetch the source](#fetch-the-source)
@@ -126,6 +127,20 @@ on a minimal CentOS 7.3 install, and Fedora 30.
 
     # For python 3
     sudo yum install -y python3-setuptools python3-devel python3-numpy
+
+### OpenSUSE
+
+Issue  the following commands to install the external dependencies.
+
+    sudo zypper install \
+    git swig gcc-c++ gobject-introspection gtk3-devel \
+    libpng16-devel liblcms2-devel libjson-c-devel \
+    librsvg-2-2 gettext-tools
+
+    # For python3
+    sudo zypper install \
+    python311-setuptools python311-devel python311-numpy-devel \
+    python311-pycairo python311-gobject-devel \
 
 ### Windows MSYS2
 
