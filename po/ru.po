@@ -12,22 +12,22 @@ msgstr ""
 "Project-Id-Version: mypaint v2.0.0-alpha.11-2-g0673fe8\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-04-17 23:27+0200\n"
-"PO-Revision-Date: 2020-10-13 15:27+0000\n"
-"Last-Translator: Olesya_Gerasimenko <gammaray@basealt.ru>\n"
+"PO-Revision-Date: 2023-06-26 07:48+0000\n"
+"Last-Translator: Сергей <asvmail.as@gmail.com>\n"
 "Language-Team: Russian <https://hosted.weblate.org/projects/mypaint/mypaint/"
 "ru/>\n"
 "Language: ru\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
-"%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
-"X-Generator: Weblate 4.3-dev\n"
+"Plural-Forms: nplurals=3; plural=n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
+"n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
+"X-Generator: Weblate 4.18.1\n"
 
 #: ../gui/accelmap.py:86
 msgctxt "placeholder for keymap filtering"
 msgid "Filter"
-msgstr ""
+msgstr "Фильтр"
 
 #. TRANSLATORS: Name of first column in the button map preferences.
 #. TRANSLATORS: Refers to an action bound to a mod+button combination.
@@ -1255,7 +1255,7 @@ msgstr ""
 "некорректно или даже привести к падению приложения.\n"
 "\n"
 "<b>Настоятельно рекомендуется</b> обновиться до <b>MyPaint {new_version}</b> "
-"или новее перед редактирование этого файла."
+"или новее перед редактирование этого файла!"
 
 #: ../gui/compatibility.py:54
 #, python-brace-format
@@ -1892,7 +1892,7 @@ msgstr "Экспортировать"
 #: ../gui/filehandling.py:586
 msgctxt "Dialogs (window title): File→Save As…"
 msgid "Save As"
-msgstr "Сохранить как…"
+msgstr "Сохранить как"
 
 #: ../gui/filehandling.py:606
 msgctxt "save dialogs: formats and options: (label)"
@@ -2099,10 +2099,9 @@ msgid ""
 "If the view is rotated, the fill will be limited to the\n"
 "smallest canvas-aligned rectangle that can fit the view."
 msgstr ""
-"Ограничить область заливки областью просмотра.\n"
-"Если обзор повёрнут, заливка будет ограничена\n"
-"наименьшим выровненным по холсту прямоугольником,\n"
-"который помещается в области просмотра."
+"Ограничить область заливки областью просмотра. Если обзор\n"
+"повёрнут, заливка будет ограничена наименьшим выровненным по\n"
+"холсту прямоугольником, который помещается в области просмотра."
 
 #: ../gui/fill.py:641
 msgctxt ""
@@ -2324,7 +2323,6 @@ msgid "px"
 msgstr "пикс."
 
 #: ../gui/framewindow.py:916
-#, fuzzy
 msgid "in"
 msgstr "дюймы"
 
@@ -2701,13 +2699,12 @@ msgid "Generic line/curve mode"
 msgstr "Режим простых линий и кривых"
 
 #: ../gui/linemode.py:803
-#, fuzzy
 msgid ""
 "Draw straight lines; Shift adds curves, Shift + Ctrl moves line ends, Ctrl "
 "constrains angle"
 msgstr ""
-"Рисование прямых линий; Shift добавляет кривизну, Ctrl ограничивает угол "
-"наклона"
+"Рисование прямых линий; Shift добавляет кривизну, Shift + Ctrl перемещает "
+"концы строк, Ctrl ограничивает угол наклона"
 
 #: ../gui/linemode.py:814
 msgid "Connected Lines"
@@ -2751,7 +2748,7 @@ msgid ""
 msgstr ""
 "Это свободное программное обеспечение; вы можете распространять его и/или "
 "изменять его на условиях Общей Публичной Лицензии GNU (GPL), опубликованной "
-"Free Software Foundation, используя версию 2 лицензии или (на  ваш выбор) "
+"Free Software Foundation, используя версию 2 лицензии или (на ваш выбор) "
 "любую более позднюю версию.\n"
 "\n"
 "Эта программа распространяется в надежде, что она будет полезной, но БЕЗО "
@@ -3477,7 +3474,7 @@ msgstr "Векторный слой"
 #: ../lib/layer/data.py:1237
 msgctxt "layer default names"
 msgid "Bitmap"
-msgstr "Растр"
+msgstr "Растровый"
 
 #: ../lib/layer/data.py:1242
 msgctxt "layer type descriptions"
@@ -3890,8 +3887,9 @@ msgid ""
 msgstr ""
 "Запускать диалог восстановления автосохранения при запуске MyPaint, если "
 "есть файлы для восстановления.\n"
+"\n"
 "Когда программа MyPaint работает, этот диалог всегда можно запустить с "
-"помощью меню \"Файл\"."
+"помощью меню «Файл»."
 
 #. Deletes the selected autosave backup file.
 #: ../gui/autorecover.glade:60
@@ -4116,7 +4114,7 @@ msgstr "<big><b>Нет динамики кисти</b></big>"
 #: ../gui/inktool.glade:44
 msgctxt "Inking tool options: point value sliders: labels: tooltips"
 msgid "Pressure value for the current point"
-msgstr "Величина нажима для текущего узла"
+msgstr "Величина нажима для текущей точки"
 
 #: ../gui/inktool.glade:49
 msgctxt "Inking tool options: point value sliders: labels"
@@ -4154,7 +4152,7 @@ msgstr "Наклон на холсте по оси Y"
 #: ../gui/inktool.glade:167
 msgctxt "Inking tool options: point value sliders: labels: tooltips"
 msgid "Time since the previous point, in seconds"
-msgstr "Время от последнего узла, в секундах"
+msgstr "Время от последней точки, в секундах"
 
 #: ../gui/inktool.glade:172
 msgctxt "Inking tool options: point value sliders: labels"
@@ -4164,12 +4162,12 @@ msgstr "Время:"
 #: ../gui/inktool.glade:205
 msgctxt "Inking tool options: node delete button: label"
 msgid "Delete Point"
-msgstr "Удалить узел"
+msgstr "Удалить точку"
 
 #: ../gui/inktool.glade:209
 msgctxt "Inking tool options: node delete button: tooltip"
 msgid "Delete the currently selected point"
-msgstr "Удалить выбранный узел"
+msgstr "Удалить выбранную точку"
 
 #: ../gui/inktool.glade:221 ../gui/resources.xml:897
 msgid "Insert Point"
@@ -4636,20 +4634,20 @@ msgstr "Скрыть курсор во время рисования"
 #: ../gui/preferenceswindow.glade:1132
 msgctxt "Prefs Dialog|View|Interface"
 msgid "Show crosshair for small brush cursors"
-msgstr ""
+msgstr "Показывать крестик для маленьких курсоров-кистей"
 
 #. Label for a spinbutton that is part of the "crosshair for small brush cursors" setting. Radius refers to the visual brush cursor radius.
 #: ../gui/preferenceswindow.glade:1149
 msgctxt "Prefs Dialog|View|Interface"
 msgid "Radius threshold:"
-msgstr ""
+msgstr "Порог радиуса:"
 
 #. Description of the "Radius threshold" spinbox/spinner - the referenced "lines" are part of the brush cursor.
 #: ../gui/preferenceswindow.glade:1162
 msgctxt "Prefs Dialog|View|Interface"
 msgid ""
 "Lines will be shown when the brush circle radius is smaller than this value."
-msgstr ""
+msgstr "Линии будут показываться когда радиус кисти меньше этого значения."
 
 #: ../gui/preferenceswindow.glade:1192
 msgctxt ""
@@ -4822,7 +4820,7 @@ msgstr "Тип нового слоя по умолчанию:"
 #: ../gui/preferenceswindow.glade:1581 ../gui/preferenceswindow.glade:1595
 msgctxt "Prefs Dialog|Compatibility"
 msgid "Default Pigment Brush Setting:"
-msgstr "Параметры кисти \"Краситель\" по умолчанию:"
+msgstr "Настройка красителя кисти по умолчанию:"
 
 #. Label description for the 1.x compatibility-mode-by-default setting
 #: ../gui/preferenceswindow.glade:1671
@@ -5115,8 +5113,8 @@ msgstr "Уменьшить эмулируемое давление"
 msgctxt "Accel Editor (descriptions)"
 msgid "Send softer pressure for devices that don't support pressure input."
 msgstr ""
-"Использовать более мягкий нажим для устройств, которые не поддерживают ввод "
-"давления."
+"Использовать более мягкий нажим для устройств, которые не умеют передавать "
+"степени давления."
 
 #: ../gui/resources.xml:254
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
@@ -5363,7 +5361,7 @@ msgstr "Скопировать текущий слой в буфер обмен�
 #: ../gui/resources.xml:461
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Paste Layer from Clipboard"
-msgstr "Вставить слой"
+msgstr "Вставить слой из буфера обмена"
 
 #: ../gui/resources.xml:462
 msgctxt "Accel Editor (descriptions)"
@@ -5871,7 +5869,7 @@ msgctxt "Accel Editor (descriptions)"
 msgid ""
 "Insert a point next to the currently selected point in the direction of the "
 "stroke."
-msgstr "Вставить точку рядом с текущей выбранной точкой в направлении штриха."
+msgstr "Вставить точку рядом с текущей выбранной точкой по направлению штриха."
 
 #: ../gui/resources.xml:904
 msgid "Delete Point"
@@ -6946,7 +6944,7 @@ msgstr "Симметричное рисование: регулировать о
 #: ../gui/resources.xml:1852
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "Edit Painting Symmetry"
-msgstr "Симметричное рисование"
+msgstr "Изменить симметрию рисования"
 
 #: ../gui/resources.xml:1853
 msgctxt "Accel Editor (description)"
