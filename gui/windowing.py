@@ -256,14 +256,19 @@ class ChooserPopup (Gtk.Window):
                            "regrabbing")
             self._ungrab_pointer_outside(device, time)
         cursor = self._outside_cursor
+        Gtk.main()
         grab_status = device.get_seat().grab(
             self.get_window(),
             Gdk.SeatCapabilities.ALL_POINTING,
             False,
             cursor,
             None,
-            None,
+            Gdk.SeatGrabPrepareFunc(
+                device.get_seat(),
+                self.get_window(),
+            )
         )
+        Gtk.main_quit()
         if grab_status == Gdk.GrabStatus.SUCCESS:
             logger.debug("grab: acquired grab on %r successfully", device)
             self._outside_grab_active = True
