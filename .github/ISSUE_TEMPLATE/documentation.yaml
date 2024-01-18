@@ -1,0 +1,49 @@
+name: Improve Documentation
+description: Help your fellow users/developers
+labels: ["cat.Docs.User", "info.Triage"]
+body:
+  - type: markdown
+    id: name
+    attributes:
+      value: |
+        Save the title for last. Try to create one that captures the essence of your issue whilst being concise.
+  - type: markdown
+    id: links
+    attributes:
+      value: |
+        Feeling lost? Check out the [reporting bugs](https://github.com/mypaint/mypaint/wiki/Reporting-Bugs) guide.
+  - type: input
+    id: url
+    attributes:
+      label: Documentation source
+      description: Which piece of documentation are you referring to?
+      placeholder: e.g. https://github.com/mypaint/mypaint/wiki/v1.2-Main-Toolbar
+  - type: textarea
+    id: issue
+    attributes:
+      label: Documentation issue
+      description: How is the documentation lacking?
+    validations:
+      required: true
+  - type: textarea
+    id: suggestions
+    attributes:
+      label: Documentation suggestions
+      description: How could the documentation be improved?
+  - type: input
+    id: mypaint_version
+    attributes:
+      label: MyPaint version
+      placeholder: e.g. v2.0.1
+    validations:
+      required: true
+  - type: checkboxes
+    id: coc
+    attributes:
+      label: Code of Conduct
+      description: |
+        MyPaint is libre software developed through a community effort.
+        By following our [Code of Conduct](https://github.com/mypaint/mypaint/blob/master/CODE_OF_CONDUCT.md), you help the developers focus on getting work done.
+      options:
+        - label: I acknowledge that my conduct contributes to shaping the community.
+          required: true

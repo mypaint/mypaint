@@ -1,0 +1,66 @@
+name: Bug Report
+description: Something isn't working
+labels: ["type.Bug", "info.Triage"]
+body:
+  - type: markdown
+    id: name
+    attributes:
+      value: |
+        Save the title for last. Try to create one that captures the essence of your issue whilst being concise.
+  - type: markdown
+    id: links
+    attributes:
+      value: |
+        Feeling lost? Check out the [reporting bugs](https://github.com/mypaint/mypaint/wiki/Reporting-Bugs) guide.
+  - type: textarea
+    id: description
+    attributes:
+      label: Description of bug
+      description: |
+        If you're experiencing multiple bugs, file multiple bug reports.
+        Also include what you expected to happen.
+    validations:
+      required: true
+  - type: textarea
+    id: reproduce
+    attributes:
+      label: Steps to reproduce
+      description: What steps did you take for the bug to occur?
+      value: "1. "
+    validations:
+      required: true
+  - type: textarea
+    id: logs
+    attributes:
+      label: Backtraces or error messages
+      description: This will be automatically formatted into code, so no need for backticks.
+      render: shell
+  - type: input
+    id: mypaint_version
+    attributes:
+      label: MyPaint version
+      placeholder: e.g. v2.0.1
+    validations:
+      required: true
+  - type: input
+    id: operating_system
+    attributes:
+      label: Operating System(s)
+      placeholder: e.g. Windows 10, MacOS Ventura, Fedora 39, OpenSUSE Tumbleweed
+    validations:
+      required: true
+  - type: input
+    id: desktop_environment
+    attributes:
+      label: Desktop Environment (Linux)
+      placeholder: e.g. Gnome running Wayland, KDE running X
+  - type: checkboxes
+    id: coc
+    attributes:
+      label: Code of Conduct
+      description: |
+        MyPaint is libre software developed through a community effort.
+        By following our [Code of Conduct](https://github.com/mypaint/mypaint/blob/master/CODE_OF_CONDUCT.md), you help the developers focus on getting work done.
+      options:
+        - label: I acknowledge that my conduct contributes to shaping the community.
+          required: true
