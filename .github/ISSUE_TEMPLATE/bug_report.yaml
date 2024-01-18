@@ -11,7 +11,8 @@ body:
     id: links
     attributes:
       value: |
-        Feeling lost? Check out the [reporting bugs](https://github.com/mypaint/mypaint/wiki/Reporting-Bugs) guide.
+        Not a bug, or just need help? Check out the [community forums](https://community.mypaint.app/c/support/32).
+        Feeling lost? The [reporting bugs](https://github.com/mypaint/mypaint/wiki/Reporting-Bugs) guide will get you started.
   - type: textarea
     id: description
     attributes:
