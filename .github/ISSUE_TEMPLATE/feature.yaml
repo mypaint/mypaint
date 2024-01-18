@@ -8,6 +8,12 @@ body:
       value: |
         **Please read:** Feature requests have been [migrated to the community forums](https://community.mypaint.app/c/feature-requests/).
         If you aren't a developer working on a feature, then the issue you post here will most likely be closed.
+  - type: input
+    id: url
+    attributes:
+      label: Community source
+      description: Did this feature originate from the MyPaint forums?
+      placeholder: e.g. https://community.mypaint.app/t/add-selection-tools/132
   - type: textarea
     id: text
     attributes:
