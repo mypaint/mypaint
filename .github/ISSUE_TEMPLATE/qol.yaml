@@ -1,0 +1,58 @@
+name: Quality of Life
+description: Making MyPaint more intuitive
+labels: ["cat.UX", "type.Enhancement", "info.Triage"]
+body:
+  - type: markdown
+    id: name
+    attributes:
+      value: |
+        Save the title for last. Try to create one that captures the essence of your issue whilst being concise.
+  - type: markdown
+    id: links
+    attributes:
+      value: |
+        Feeling lost? Check out the [reporting bugs](https://github.com/mypaint/mypaint/wiki/Reporting-Bugs) guide.
+  - type: textarea
+    id: text
+    attributes:
+      label: Quality of Life
+      description: |
+        1. What's not nice?
+        2. Why is it not nice?
+    validations:
+      required: true
+  - type: textarea
+    id: improvements
+    attributes:
+      label: Suggested improvements
+      description: |
+        How could you make it nicer?
+  - type: input
+    id: mypaint_version
+    attributes:
+      label: MyPaint Version
+      placeholder: e.g. v2.0.1
+    validations:
+      required: true
+  - type: input
+    id: operating_system
+    attributes:
+      label: Operating System(s)
+      placeholder: e.g. Windows 10, MacOS Ventura, Fedora 39, OpenSUSE Tumbleweed
+    validations:
+      required: true
+  - type: input
+    id: desktop_environment
+    attributes:
+      label: Desktop Environment (Linux)
+      placeholder: e.g. Gnome running Wayland, KDE running X
+  - type: checkboxes
+    id: coc
+    attributes:
+      label: Code of Conduct
+      description: |
+        MyPaint is libre software developed through a community effort.
+        By following our [Code of Conduct](https://github.com/mypaint/mypaint/blob/master/CODE_OF_CONDUCT.md), you help the developers focus on getting work done.
+      options:
+        - label: I acknowledge that my conduct contributes to shaping the community.
+          required: true

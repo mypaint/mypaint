@@ -1,0 +1,21 @@
+name: Technical Improvements
+description: Things that make MyPaint fast and efficient
+labels: ["type.CodeQuality", "info.Triage"]
+body:
+  - type: markdown
+    id: name
+    attributes:
+      value: |
+        Save the title for last. Try to create one that captures the essence of your issue whilst being concise.
+  - type: textarea
+    id: limitation
+    attributes:
+      label: Point of concern
+      description: What's at fault and how does it work?
+    validations:
+      required: true
+  - type: textarea
+    id: suggested_improvement
+    attributes:
+      label: Suggested improvements
+      description: Have any ideas about how to address the issue?
