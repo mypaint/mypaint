@@ -9,8 +9,8 @@ msgstr ""
 "Project-Id-Version: mypaint v2.0.0-alpha.8-1-g4490f06\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-04-17 23:27+0200\n"
-"PO-Revision-Date: 2021-04-01 20:27+0000\n"
-"Last-Translator: J. Lavoie <j.lavoie@net-c.ca>\n"
+"PO-Revision-Date: 2023-04-23 12:52+0000\n"
+"Last-Translator: Jean-Christophe Sekinger <jc.sekinger@gmail.com>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/mypaint/mypaint/"
 "fr/>\n"
 "Language: fr\n"
@@ -18,7 +18,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n > 1;\n"
-"X-Generator: Weblate 4.6-dev\n"
+"X-Generator: Weblate 4.18-dev\n"
 
 #: ../gui/accelmap.py:86
 msgctxt "placeholder for keymap filtering"
@@ -750,7 +750,6 @@ msgstr ""
 "deux autres moins intenses."
 
 #: ../gui/colors/hcywheel.py:922
-#, fuzzy
 msgctxt "HCY Gamut Mask template name"
 msgid "Shifted Triad"
 msgstr "Triade décalée"
@@ -1054,7 +1053,7 @@ msgstr "Ajouter un emplacement vide"
 #: ../gui/colors/paletteview.py:796
 msgctxt "palette view: context menu"
 msgid "Insert Row"
-msgstr "Insérer une Rangée"
+msgstr "Insérer une colonne"
 
 #. TRANSLATORS: inserting gaps (empty color swatches)
 #: ../gui/colors/paletteview.py:803
@@ -1066,19 +1065,19 @@ msgstr "Insérer une colonne"
 #: ../gui/colors/paletteview.py:811
 msgctxt "palette view: context menu"
 msgid "Fill Gap (RGB)"
-msgstr "Remplir l'espace (RGB)"
+msgstr "Combler les lacunes (RGB)"
 
 #. TRANSLATORS: Color interpolations
 #: ../gui/colors/paletteview.py:818
 msgctxt "palette view: context menu"
 msgid "Fill Gap (HCY)"
-msgstr "Remplir l'espace (HCY)"
+msgstr "Remplir l’espace (HCY)"
 
 #. TRANSLATORS: Color interpolations
 #: ../gui/colors/paletteview.py:825
 msgctxt "palette view: context menu"
 msgid "Fill Gap (HSV)"
-msgstr "Remplir l'espace (HSV)"
+msgstr "Combler les lacunes (HSV)"
 
 #: ../gui/colors/paletteview.py:1283
 msgctxt "palette load dialog: filters"
@@ -1188,7 +1187,7 @@ msgstr "Luminance HCY (Y')"
 #: ../gui/colortools.py:141
 msgctxt "color changer dock panels: tab tooltip title"
 msgid "Liquid Wash"
-msgstr "Adoucir"
+msgstr "Lavage Liquide"
 
 #: ../gui/colortools.py:145
 msgctxt "color changer dock panels: tab tooltip description"
@@ -1374,7 +1373,7 @@ msgstr "Toute tâche (non dessin)"
 #: ../gui/device.py:105
 msgctxt "device settings: allowed usage"
 msgid "Navigation only"
-msgstr "Navigation uniquement"
+msgstr "Navigation seule"
 
 #: ../gui/device.py:130
 msgctxt "device settings: unmodified scroll action"
@@ -2313,9 +2312,8 @@ msgid "Set Frame to Layer"
 msgstr "Appliquer le Cadre au Calque"
 
 #: ../gui/framewindow.py:563
-#, fuzzy
 msgid "Set frame to the extents of the current layer"
-msgstr "Créer une duplication exacte du calque actuel"
+msgstr "Définir le cadre dans les limites de la couche courante"
 
 #: ../gui/framewindow.py:565
 msgid "Set Frame to Document"
@@ -2339,9 +2337,8 @@ msgid "px"
 msgstr "px"
 
 #: ../gui/framewindow.py:916
-#, fuzzy
 msgid "in"
-msgstr "pouce"
+msgstr "Pouce"
 
 #: ../gui/framewindow.py:917
 msgid "cm"
@@ -2386,7 +2383,6 @@ msgid "<big><b>A programming error has been detected.</b></big>"
 msgstr "<big><b>Une erreur de programmation à été détectée.</b></big>"
 
 #: ../gui/gtkexcepthook.py:169
-#, fuzzy
 msgid ""
 "You may be able to ignore this error and carry on working, but you should "
 "probably save your work soon.\n"
@@ -2451,6 +2447,13 @@ msgid ""
 "            #### Traceback\n"
 "        "
 msgstr ""
+"            #### Description\n"
+"\n"
+"\tDonnez à ce rapport un titre descriptif court\n"
+"\tUtilisez quelque chose comme\n"
+"\t\"[fonctionnalité-qui-a-cassé]: [qu'est-ce-qui-a-mal tourné]\"\n"
+"\tpour le titre, si vous pouvez\n"
+"        "
 
 #: ../gui/inktool.py:97 ../gui/inktool.py:479
 msgid "Inking"
@@ -2488,7 +2491,7 @@ msgstr "Périphérique :"
 #: ../gui/inputtestwindow.py:73
 #, fuzzy
 msgid "(No Barrel Rotation)"
-msgstr "Pas de rotation"
+msgstr "(Pas de rotation)"
 
 #: ../gui/inputtestwindow.py:75
 #, fuzzy
@@ -2635,13 +2638,13 @@ msgstr "Calque"
 #, python-brace-format
 msgctxt "view controls: dropdown: item markup"
 msgid "<i>{builtin_view_name}</i>"
-msgstr ""
+msgstr "<i>{builtin_view_name}</i>"
 
 #: ../gui/layervis.py:125
 #, python-brace-format
 msgctxt "view controls: dropdown: item markup"
 msgid "{user_chosen_view_name}"
-msgstr ""
+msgstr "{user_chosen_view_name}"
 
 #: ../gui/layervis.py:187
 msgctxt "view controls: rename view dialog"
@@ -2810,7 +2813,7 @@ msgstr "support"
 #: ../gui/meta.py:101
 msgctxt "About dialog: credits: tasks: outreach (social media, ads?)"
 msgid "outreach"
-msgstr ""
+msgstr "partage"
 
 #: ../gui/meta.py:105
 msgctxt "About dialog: credits: tasks: running or building a community"
@@ -2996,7 +2999,7 @@ msgstr "Position Y :"
 #, python-format
 msgctxt "symmetry axis options panel: labels"
 msgid "Angle: %.2f°"
-msgstr ""
+msgstr "Angle : %.2f°"
 
 #: ../gui/symmetry.py:357
 msgctxt "symmetry axis options panel: position button: no axis pos."
@@ -3588,11 +3591,11 @@ msgstr "Déverrouiller le calque"
 
 #: ../lib/modes.py:47
 msgid "Pass-through"
-msgstr ""
+msgstr "Au travers"
 
 #: ../lib/modes.py:48
 msgid "Group contents apply directly to the group's backdrop"
-msgstr ""
+msgstr "Le contenu du groupe est directement appliqué au fond"
 
 #: ../lib/modes.py:51
 msgid "Normal"
@@ -3781,47 +3784,61 @@ msgstr "Addition"
 
 #: ../lib/modes.py:120
 msgid "This layer and its backdrop are simply added together."
-msgstr "Ce calque et son arrière-plan sont simplement additionnés ensemble."
+msgstr "Ce calque et son arrière-plan sont simplement additionnés."
 
 #: ../lib/modes.py:122
 msgid "Destination In"
-msgstr ""
+msgstr "Destination dans"
 
 #: ../lib/modes.py:123
+#, fuzzy
 msgid ""
 "Uses the backdrop only where this layer covers it. Everything else is "
 "ignored."
 msgstr ""
+"Utilise le fond uniquement où ce calque le recouvre. Le reste est ignoré."
 
 #: ../lib/modes.py:126
+#, fuzzy
 msgid "Destination Out"
-msgstr ""
+msgstr "Destination de sortie"
 
 #: ../lib/modes.py:127
+#, fuzzy
 msgid ""
 "Uses the backdrop only where this layer doesn't cover it. Everything else is "
 "ignored."
 msgstr ""
+"Utilise le fond uniquement où ce calque ne le recouvre pas. Le reste est "
+"ignoré."
 
 #: ../lib/modes.py:130
+#, fuzzy
 msgid "Source Atop"
-msgstr ""
+msgstr "Source au sommet"
 
 #: ../lib/modes.py:131
+#, fuzzy
 msgid ""
 "Source which overlaps the destination, replaces the destination. Destination "
 "is placed elsewhere."
 msgstr ""
+"La source qui chevauche la destination, remplace la destination. La "
+"destination est placée ailleurs."
 
 #: ../lib/modes.py:134
+#, fuzzy
 msgid "Destination Atop"
-msgstr ""
+msgstr "Destination au sommet"
 
 #: ../lib/modes.py:135
+#, fuzzy
 msgid ""
 "Destination which overlaps the source replaces the source. Source is placed "
 "elsewhere."
 msgstr ""
+"La source qui chevauche la destination, remplace la destination. La "
+"destination est placée ailleurs."
 
 #. TRANSLATORS: UNIQUE_NAME_TEMPLATE. Must match its regex.
 #. TRANSLATORS: Leave this untranslated if you are unsure.
@@ -3839,7 +3856,7 @@ msgstr "{name} {number}"
 #: ../lib/naming.py:30
 msgctxt "unique names: regex matching a string with a serial number"
 msgid "^(?P<name>.*?)\\s+(?P<number>\\d+)$"
-msgstr ""
+msgstr "^(?P<name>.*?)\\s+(?P<number>\\d+)$"
 
 #: ../lib/pixbufsurface.py:39
 msgctxt "user-facing error texts"
@@ -3847,8 +3864,8 @@ msgid ""
 "Unable to construct a vital internal object. Your system may not have enough "
 "memory to perform this operation."
 msgstr ""
-"Impossible de construire un élément interne vital. Votre système n'a peut-"
-"être pas assez de mémoire pour effectuer cette opération."
+"Impossible de poursuivre cette opération indispensable. Votre système n'a "
+"peut-être pas assez de mémoire pour effectuer cette opération."
 
 #: ../lib/surface.py:313
 #, python-brace-format
@@ -4066,16 +4083,21 @@ msgstr ""
 "Réinitialiser cette entrée pour qu'elle n'aie aucun effet sur le réglage"
 
 #: ../gui/brusheditor.glade:521
+#, fuzzy
 msgid ""
 "Minimum value for the output axis.\n"
 "This can be set using the main slider for {dname}."
 msgstr ""
+"Valeur minimale pour l'axe de sortie.\n"
+"Cela peut être défini à l'aide du curseur principal pour {dname}."
 
 #: ../gui/brusheditor.glade:540
 msgid ""
 "Maximum value for the output axis.\n"
 "This can be set using the main slider for {dname}."
 msgstr ""
+"Valeur maximale pour l'axe de sortie.\n"
+"Cela peut être défini à l'aide du curseur principal pour {dname}."
 
 #: ../gui/brusheditor.glade:562
 msgid "Output"
@@ -4106,25 +4128,30 @@ msgid ""
 msgstr ""
 
 #: ../gui/brusheditor.glade:739
+#, fuzzy
 msgid "Variation of the base value by stylus input and other criteria"
 msgstr ""
+"Variation de la valeur de base en fonction de la saisie au stylet et "
+"d'autres critères"
 
 #: ../gui/brusheditor.glade:746
 msgid "Brush Dynamics"
 msgstr "Dynamique de la brosse"
 
 #: ../gui/brusheditor.glade:780
+#, fuzzy
 msgid "Adjust this input mapping in detail"
-msgstr ""
+msgstr "Ajuster cette cartographie d'entrée en détail"
 
 #: ../gui/brusheditor.glade:802
 msgid "{tooltip}"
-msgstr ""
+msgstr "{info-bulle}"
 
 #. field name (template)
 #: ../gui/brusheditor.glade:809
+#, fuzzy
 msgid "{dname}:"
-msgstr ""
+msgstr "{«Délégation d'enregistrement de Nom» (dname)}:"
 
 #: ../gui/brusheditor.glade:841
 msgid "Brush dynamics are not available for this setting."
@@ -4150,12 +4177,16 @@ msgstr "Pression :"
 #. The widget's RTL/LTR layout, however, *is* affected.
 #. The value (and signs) *is* shown.
 #: ../gui/inktool.glade:83 ../gui/inktool.glade:103
+#, fuzzy
 msgctxt "Inking tool options: point value sliders: labels: tooltips"
 msgid ""
 "Tilt in the direction of the canvas’s X axis.\n"
 "A value of 0 means that the pen is vertical.\n"
 "Negative values mean leftwards tilts."
 msgstr ""
+"Inclinaison dans la direction de l’axe X du dessin.\n"
+"Une valeur de 0 signifie que le stylet est vertical.\n"
+"Des valeurs négatives signifient que le stylet est incliné à gauche."
 
 #: ../gui/inktool.glade:90
 msgctxt "Inking tool options: point value sliders: labels"
@@ -4169,7 +4200,7 @@ msgstr "Inclinaison sur Y :"
 
 #: ../gui/inktool.glade:145
 msgid "Tilt in the canvas Y axis"
-msgstr ""
+msgstr "Inclinaison sur l’axe Y du dessin"
 
 #: ../gui/inktool.glade:167
 msgctxt "Inking tool options: point value sliders: labels: tooltips"
@@ -4687,6 +4718,8 @@ msgctxt "Prefs Dialog|View|Interface"
 msgid ""
 "Lines will be shown when the brush circle radius is smaller than this value."
 msgstr ""
+"Les lignes seront affichées lorsque le rayon de la brosse est inférieur à "
+"cette valeur."
 
 #: ../gui/preferenceswindow.glade:1192
 #, fuzzy
@@ -4874,12 +4907,17 @@ msgstr "Réglage Pigment par défaut de la Brosse :"
 
 #. Label description for the 1.x compatibility-mode-by-default setting
 #: ../gui/preferenceswindow.glade:1671
+#, fuzzy
 msgctxt "Prefs Dialog|Compatibility"
 msgid ""
 "When creating new documents, use the legacy 1.x compatibility mode by "
 "default. In this mode 1.x .ora files will look the same as they did in older "
 "versions, but pigment blending will not work well."
 msgstr ""
+"Lorsque vous créez de nouveaux documents, utilisez le mode de compatibilité "
+"1.x par défaut. Dans ce mode les fichiers 1.x .ora seront les mêmes que dans "
+"les versions plus anciennes, mais le mélange de pigment ne fonctionnera pas "
+"bien."
 
 #: ../gui/preferenceswindow.glade:1690
 msgctxt "Prefs Dialog|Compatibility"
@@ -4887,22 +4925,30 @@ msgid ""
 "When creating new documents, use the regular 2.x compatibility mode by "
 "default. Old documents will often look different in this mode."
 msgstr ""
+"Lorsque vous créez de nouveaux documents, utilisez le mode de compatibilité "
+"normal 2.x par défaut. Les anciens documents seront souvent différents dans "
+"ce mode."
 
 #: ../gui/preferenceswindow.glade:1722
+#, fuzzy
 msgctxt "Prefs Dialog|Compatibility"
 msgid "Show warning for files that may be partially incompatible"
 msgstr ""
+"Afficher un avertissement pour les fichiers qui peuvent être partiellement "
+"incompatibles"
 
 #. Label for a set of options
 #: ../gui/preferenceswindow.glade:1739
 msgctxt "Prefs Dialog|Compatibility"
 msgid "File compatibility warnings:"
-msgstr ""
+msgstr "Avertissements de compatibilité de fichiers :"
 
 #: ../gui/preferenceswindow.glade:1751
 msgctxt "Prefs Dialog|Compatibility"
 msgid "Show warning for files that may be fully incompatible"
 msgstr ""
+"Afficher un avertissement pour les fichiers qui peuvent être totalement "
+"incompatibles"
 
 #. This is a tooltip for the file behavior options label.
 #: ../gui/preferenceswindow.glade:1767
@@ -5629,7 +5675,7 @@ msgstr "Réduire l'opacité du calque"
 #: ../gui/resources.xml:607
 msgctxt "Accel Editor (descriptions)"
 msgid "Make the layer more transparent."
-msgstr ""
+msgstr "Rendre le calque plus transparent."
 
 #: ../gui/resources.xml:614
 #, fuzzy
@@ -5673,6 +5719,8 @@ msgctxt "Accel Editor (descriptions)"
 msgid ""
 "Change the layer’s properties (name, mode, visibility, locked, opacity)."
 msgstr ""
+"Modifier les propriétés du calque (nom, mode, visibilité, verrouillage, "
+"opacité)."
 
 #: ../gui/resources.xml:650
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
@@ -5765,17 +5813,17 @@ msgstr "Rotation"
 #: ../gui/resources.xml:716
 msgctxt "Accel Editor (descriptions)"
 msgid "Reset the view’s rotation to 0°"
-msgstr ""
+msgstr "Réinitialiser la rotation de la vue à 0°"
 
 #: ../gui/resources.xml:722
 msgctxt "Menu→View→Reset (labels), Accel Editor (labels)"
 msgid "Reset Mirroring"
-msgstr ""
+msgstr "Réinitialiser la mise en miroir"
 
 #: ../gui/resources.xml:723
 msgctxt "Accel Editor (descriptions)"
 msgid "Reset the view's mirroring."
-msgstr ""
+msgstr "Réinitialiser la mise en miroir de la vue."
 
 #: ../gui/resources.xml:729
 #, fuzzy
@@ -5825,9 +5873,10 @@ msgstr ""
 "et verticalement."
 
 #: ../gui/resources.xml:774
+#, fuzzy
 msgctxt "Menu→View→Adjust View (labels), Accel Editor (labels)"
 msgid "Pan Up"
-msgstr ""
+msgstr "Défilement vers le haut"
 
 #: ../gui/resources.xml:775
 #, fuzzy
@@ -5914,9 +5963,10 @@ msgid "Symmetrical Painting Active"
 msgstr "Peinture symétrique"
 
 #: ../gui/resources.xml:857
+#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Mirror brushstrokes along the axis of symmetry"
-msgstr ""
+msgstr "Coups de brosse en miroir, le long de l’axe de symmétrie"
 
 #: ../gui/resources.xml:864
 #, fuzzy

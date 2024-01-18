@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: mypaint v1.2.0-393-g1633fb2\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-04-17 23:27+0200\n"
-"PO-Revision-Date: 2020-04-04 18:19+0000\n"
+"PO-Revision-Date: 2022-09-04 13:18+0000\n"
 "Last-Translator: sayyed hamed nasib <cghamed752@chmail.ir>\n"
 "Language-Team: Persian <https://hosted.weblate.org/projects/mypaint/mypaint/"
 "fa/>\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 4.0-dev\n"
+"X-Generator: Weblate 4.14.1-dev\n"
 
 #: ../gui/accelmap.py:86
 msgctxt "placeholder for keymap filtering"
@@ -424,7 +424,7 @@ msgstr "مجموعه۵"
 
 #: ../gui/brushmanager.py:141
 msgid "Experimental"
-msgstr ""
+msgstr "تجربی"
 
 #: ../gui/brushmanager.py:142
 msgid "New"
@@ -1280,7 +1280,7 @@ msgstr ""
 #: ../gui/compatibility.py:501
 msgctxt "File Load Compat Options"
 msgid "Compatibility mode:"
-msgstr ""
+msgstr "حالت سازگاری:"
 
 #: ../gui/device.py:49
 msgctxt "prefs: device's type label"
@@ -1729,12 +1729,12 @@ msgstr ""
 #: ../gui/filehandling.py:173
 msgctxt "Document I/O: fail dialog title"
 msgid "Import Layers failed"
-msgstr ""
+msgstr "وارد کردن لایه ها شکست خورد"
 
 #: ../gui/filehandling.py:177
 msgctxt "Document I/O: fail dialog title"
 msgid "Open failed"
-msgstr ""
+msgstr "وارد کردن شکست خورد"
 
 #: ../gui/filehandling.py:184
 #, fuzzy, python-brace-format
@@ -1926,10 +1926,9 @@ msgid "Open Scratchpad…"
 msgstr "باز کردن چرک نویس…"
 
 #: ../gui/filehandling.py:1126
-#, fuzzy
 msgctxt "Layers→Import Layers: files-chooser dialog: title"
 msgid "Import Layers"
-msgstr "قلم خارجی"
+msgstr "وارد کردن لایه ها"
 
 #: ../gui/filehandling.py:1433
 msgctxt "File→Open Recent→* confirm dialog: title"
@@ -3082,9 +3081,8 @@ msgid "Normalize Layer Mode"
 msgstr "طبیعی کردن حالت لایه"
 
 #: ../lib/command.py:955
-#, fuzzy
 msgid "Import Layers"
-msgstr "قلم خارجی"
+msgstr "وارد کردن لایه ها"
 
 #: ../lib/command.py:957
 #, python-brace-format
@@ -3276,10 +3274,9 @@ msgstr ""
 "پسوند این قالب ناشناخته است:“{ext}”"
 
 #: ../lib/document.py:1590
-#, fuzzy
 msgctxt "Document IO: group name for Import Layers"
 msgid "Imported layers"
-msgstr "قلم خارجی"
+msgstr "لایه های وارد شده"
 
 #: ../lib/document.py:1757
 #, python-brace-format
@@ -4620,7 +4617,7 @@ msgstr "رنگ"
 #: ../gui/preferenceswindow.glade:1458
 msgctxt "Prefs Dialog|Compatibility"
 msgid "Default Compatibility Mode:"
-msgstr ""
+msgstr "حالت سازگاری پیشفرض:"
 
 #: ../gui/preferenceswindow.glade:1483
 #, fuzzy
@@ -4636,16 +4633,14 @@ msgid "<b>2.x Settings</b>"
 msgstr "<b>ذخیره سازی</b>"
 
 #: ../gui/preferenceswindow.glade:1535 ../gui/preferenceswindow.glade:1609
-#, fuzzy
 msgctxt "Prefs Dialog|Compatibility"
 msgid "Default New Layer Type:"
-msgstr "حذف لایه"
+msgstr "نوع لایه جدید پیش فرض:"
 
 #: ../gui/preferenceswindow.glade:1581 ../gui/preferenceswindow.glade:1595
-#, fuzzy
 msgctxt "Prefs Dialog|Compatibility"
 msgid "Default Pigment Brush Setting:"
-msgstr "ویرایش تنظیمات قلم"
+msgstr "تنظیمات پیشفرض رنگدانه های قلم:"
 
 #. Label description for the 1.x compatibility-mode-by-default setting
 #: ../gui/preferenceswindow.glade:1671
@@ -4696,14 +4691,13 @@ msgstr ""
 
 #. This label indicates a subsection of the compatibility settings related to loading files.
 #: ../gui/preferenceswindow.glade:1796
-#, fuzzy
 msgctxt "Prefs|Compatibility"
 msgid "<b>File loading</b>"
-msgstr "<b>ذخیره سازی</b>"
+msgstr "<b>بارگیری پرونده</b>"
 
 #: ../gui/preferenceswindow.glade:1816
 msgid "<b>Compatibility settings</b>"
-msgstr ""
+msgstr "<b>تنظیمات سازگاری<b/>"
 
 #. Tab label in preferences dialog
 #: ../gui/preferenceswindow.glade:1832
@@ -4755,7 +4749,7 @@ msgstr "باز کردن"
 #: ../gui/resources.xml:75
 msgctxt "Toolbar (tooltips), Accel Editor (descriptions)"
 msgid "Load a file to work on."
-msgstr "بارگزاری یک پرونده برای کار."
+msgstr "بارگیری یک پرونده برای کار."
 
 #: ../gui/resources.xml:82
 msgctxt "Menu→File (labels), Accel Editor (labels)"
@@ -4765,7 +4759,7 @@ msgstr "باز کردن بسیار اخیر"
 #: ../gui/resources.xml:83
 msgctxt "Accel Editor (descriptions)"
 msgid "Load the file you saved most recently."
-msgstr "بارگزاری پرونده های که اخیرا ذخیره کرده اید."
+msgstr "بارگیری پرونده های که اخیرا ذخیره کرده اید."
 
 #: ../gui/resources.xml:90
 msgctxt "Menu→File (labels)"
@@ -4783,10 +4777,9 @@ msgid "Reload the file your current work was loaded from."
 msgstr ""
 
 #: ../gui/resources.xml:111
-#, fuzzy
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "Import Layers…"
-msgstr "وارد کردن مجموعه قلم…"
+msgstr "وارد کردن مجموعه لایه …"
 
 #: ../gui/resources.xml:112
 msgctxt "Accel Editor (descriptions)"

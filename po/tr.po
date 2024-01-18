@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: mypaint v2.0.0-alpha.12-343-g82b4fc5\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-04-17 23:27+0200\n"
-"PO-Revision-Date: 2021-04-05 21:27+0000\n"
+"PO-Revision-Date: 2023-10-03 21:11+0000\n"
 "Last-Translator: Sabri Ünal <libreajans@gmail.com>\n"
 "Language-Team: Turkish <https://hosted.weblate.org/projects/mypaint/mypaint/"
 "tr/>\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 4.6-dev\n"
+"X-Generator: Weblate 5.1-dev\n"
 
 #: ../gui/accelmap.py:86
 msgctxt "placeholder for keymap filtering"
@@ -1934,7 +1934,7 @@ msgstr "_Yeni Tuval"
 #: ../gui/filehandling.py:1024
 msgctxt "File→Open: confirm dialog: title question"
 msgid "Open File?"
-msgstr "Dosya Aç"
+msgstr "Dosya Açılsın Mı?"
 
 #: ../gui/filehandling.py:1028
 msgctxt "File→Open: confirm dialog: continue button"
@@ -1959,7 +1959,7 @@ msgstr "Katmanları İçe Aktar"
 #: ../gui/filehandling.py:1433
 msgctxt "File→Open Recent→* confirm dialog: title"
 msgid "Open File?"
-msgstr "Dosya Aç"
+msgstr "Dosya Açılsın Mı?"
 
 #: ../gui/filehandling.py:1437
 msgctxt "File→Open Recent→* confirm dialog: continue button"
