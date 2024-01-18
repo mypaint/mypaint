@@ -1,0 +1,29 @@
+name: Add Feature
+description: Adding stuff to MyPaint
+labels: ["type.Enhancement", "info.Triage"]
+body:
+  - type: markdown
+    id: warning
+    attributes:
+      value: |
+        **Please read:** Feature requests have been [migrated to the community forums](https://community.mypaint.app/c/feature-requests/).
+        If you aren't a developer working on a feature, then the issue you post here will most likely be closed.
+  - type: input
+    id: url
+    attributes:
+      label: Community source
+      description: Did this feature originate from the MyPaint forums?
+      placeholder: e.g. https://community.mypaint.app/t/add-selection-tools/132
+  - type: textarea
+    id: text
+    attributes:
+      label: Feature description
+    validations:
+      required: true
+  - type: checkboxes
+    id: ignorewarning
+    attributes:
+      label: I know what I'm doing
+      options:
+        - label: I understand that if I'm not a developer this issue will likely be removed.
+          required: true
