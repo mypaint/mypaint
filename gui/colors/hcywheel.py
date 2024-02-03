@@ -431,13 +431,20 @@ class HCYMaskEditorWheel (HCYHueChromaWheel):
     def _realize_cb(self, widget):
         display = self.get_window().get_display()
 
-        # non-standard cursor
-        self.__add_cursor = Gdk.Cursor.new_from_name(display, "plus")
+        try:
+            # non-standard cursor
+            self.__add_cursor = Gdk.Cursor.new_from_name(display, "plus")
+        except Exception:
+            self.__add_cursor = Gdk.Cursor.new_from_name(display, "default")
         self.__move_cursor = Gdk.Cursor.new_from_name(display, "move")
         self.__move_point_cursor = Gdk.Cursor.new_from_name(
             display, "crosshair")
-        # non-standard cursor
-        self.__rotate_cursor = Gdk.Cursor.new_from_name(display, "exchange")
+        try:
+            # non-standard cursor
+            self.__rotate_cursor = Gdk.Cursor.new_from_name(
+                display, "exchange")
+        except Exception:
+            self.__rotate_cursor = Gdk.Cursor.new_from_name(display, "grab")
 
     def __leave_cb(self, widget, event):
         # Reset the active objects when the pointer leaves.
