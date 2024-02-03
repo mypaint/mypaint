@@ -256,8 +256,7 @@ class FreehandMode (gui.mode.BrushworkModeMixin,
 
         if self._cursor_hidden is None:
             window = tdw.get_window()
-            cursor = Gdk.Cursor.new_for_display(
-                window.get_display(), Gdk.CursorType.BLANK_CURSOR)
+            cursor = Gdk.Cursor.new_from_name(window.get_display(), "none")
             self._cursor_hidden = cursor
 
         tdw.set_override_cursor(self._cursor_hidden)

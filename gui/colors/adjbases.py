@@ -112,8 +112,8 @@ class ColorManager (GObject.GObject):
         self._palette = None  #: Current working palette
         self._adjusters = weakref.WeakSet()  #: The set of registered adjusters
         #: Cursor for pickers
-        # FIXME: Use Gdk.Cursor.new_for_display()
-        self._picker_cursor = Gdk.Cursor.new(Gdk.CursorType.CROSSHAIR)
+        self._picker_cursor = Gdk.Cursor.new_from_name(
+            Gdk.Display.get_default(), "crosshair")
         self._datapath = datapath  #: Base path for saving palettes and masks
         self._hue_distorts = None  #: Hue-remapping table for color wheels
         self._prefs = prefs  #: Shared preferences dictionary
