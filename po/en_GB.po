@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: mypaint v1.2.0-576-g1f679d0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-04-17 23:27+0200\n"
-"PO-Revision-Date: 2021-02-19 19:50+0000\n"
+"PO-Revision-Date: 2022-03-26 16:09+0000\n"
 "Last-Translator: Andi Chandler <andi@gowling.com>\n"
 "Language-Team: English (United Kingdom) <https://hosted.weblate.org/projects/"
 "mypaint/mypaint/en_GB/>\n"
@@ -17,14 +17,14 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 4.5\n"
+"X-Generator: Weblate 4.12-dev\n"
 "X-Language: en_GB\n"
 "X-Source-Language: C\n"
 
 #: ../gui/accelmap.py:86
 msgctxt "placeholder for keymap filtering"
 msgid "Filter"
-msgstr ""
+msgstr "Filter"
 
 #. TRANSLATORS: Name of first column in the button map preferences.
 #. TRANSLATORS: Refers to an action bound to a mod+button combination.
@@ -4602,13 +4602,13 @@ msgstr "Hide cursor while painting"
 #: ../gui/preferenceswindow.glade:1132
 msgctxt "Prefs Dialog|View|Interface"
 msgid "Show crosshair for small brush cursors"
-msgstr ""
+msgstr "Show crosshair for small brush cursors"
 
 #. Label for a spinbutton that is part of the "crosshair for small brush cursors" setting. Radius refers to the visual brush cursor radius.
 #: ../gui/preferenceswindow.glade:1149
 msgctxt "Prefs Dialog|View|Interface"
 msgid "Radius threshold:"
-msgstr ""
+msgstr "Radius threshold:"
 
 #. Description of the "Radius threshold" spinbox/spinner - the referenced "lines" are part of the brush cursor.
 #: ../gui/preferenceswindow.glade:1162
@@ -4616,6 +4616,7 @@ msgctxt "Prefs Dialog|View|Interface"
 msgid ""
 "Lines will be shown when the brush circle radius is smaller than this value."
 msgstr ""
+"Lines will be shown when the brush circle radius is smaller than this value."
 
 #: ../gui/preferenceswindow.glade:1192
 msgctxt ""

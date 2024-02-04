@@ -4,7 +4,7 @@ msgstr ""
 "Project-Id-Version: mypaint v2.0.0-alpha.8-1-g4490f06\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-04-17 23:27+0200\n"
-"PO-Revision-Date: 2020-06-22 15:41+0000\n"
+"PO-Revision-Date: 2024-01-19 11:00+0000\n"
 "Last-Translator: Sveinn í Felli <sv1@fellsnet.is>\n"
 "Language-Team: Icelandic <https://hosted.weblate.org/projects/mypaint/"
 "mypaint/is/>\n"
@@ -13,12 +13,12 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n % 10 != 1 || n % 100 == 11;\n"
-"X-Generator: Weblate 4.2-dev\n"
+"X-Generator: Weblate 5.4-dev\n"
 
 #: ../gui/accelmap.py:86
 msgctxt "placeholder for keymap filtering"
 msgid "Filter"
-msgstr ""
+msgstr "Sía"
 
 #. TRANSLATORS: Name of first column in the button map preferences.
 #. TRANSLATORS: Refers to an action bound to a mod+button combination.
@@ -212,7 +212,7 @@ msgstr "Hraði"
 #: ../gui/brusheditor.py:393
 msgctxt "brush settings list: setting group"
 msgid "Directional Offsets"
-msgstr ""
+msgstr "Stefnuvirkar hliðranir"
 
 #: ../gui/brusheditor.py:411
 msgctxt "brush settings list: setting group"
@@ -232,7 +232,7 @@ msgstr "Litur"
 #: ../gui/brusheditor.py:451
 msgctxt "brush settings list: setting group"
 msgid "GridMap"
-msgstr ""
+msgstr "Rúðustrikun"
 
 #: ../gui/brusheditor.py:462
 msgctxt "brush settings list: setting group"
@@ -426,7 +426,7 @@ msgstr "Nýtt"
 #, python-brace-format
 msgctxt "brushpack import failure messages"
 msgid "No file named “{order_conf_file}”. This is not a brushpack."
-msgstr ""
+msgstr "Engin skrá með heitinu “{order_conf_file}”. Þetta er ekki penslapakki."
 
 #: ../gui/brushmanager.py:704
 #, python-brace-format
@@ -435,6 +435,8 @@ msgid ""
 "Brush “{brush_name}” is listed in “{order_conf_file}”, but it does not exist "
 "in the zipfile."
 msgstr ""
+"Pensillinn “{brush_name}” er talinn upp í “{order_conf_file}”, en finnst "
+"ekki í zip-skránni."
 
 #: ../gui/brushmanager.py:717
 #, python-brace-format
@@ -443,21 +445,22 @@ msgid ""
 "Brush “{brush_name}” exists in the zipfile, but it is not listed in "
 "“{order_conf_file}”."
 msgstr ""
+"Pensillinn “{brush_name}” er í zip-skránni, en er ekki talinn upp í "
+"“{order_conf_file}”."
 
 #: ../gui/brushmanager.py:1328 ../gui/footer.py:66
 msgid "Unknown Brush"
 msgstr "Óþekktur pensill"
 
 #: ../gui/brushmanip.py:191
-#, fuzzy
 msgctxt "brush resize mode - name"
 msgid "Resize Brush"
-msgstr "Endurnefna pensil"
+msgstr "Breyta stærð pensils"
 
 #: ../gui/brushmanip.py:196
 msgctxt "brush resize mode - usage"
 msgid "Change brush size by dragging on the canvas"
-msgstr ""
+msgstr "Breyttu stærð pensilsins með því að draga á myndfletinum"
 
 #: ../gui/brushselectionwindow.py:220
 msgctxt "brush group: context menu for a single brush"
@@ -771,7 +774,7 @@ msgctxt "HCY Gamut Mask template description"
 msgid ""
 "One main range of colors, with a complementary accent for variation and "
 "highlights."
-msgstr ""
+msgstr "Eitt aðalsvið lita, með gagnstæðum tónum fyrir tilbrigði og áherslur."
 
 #: ../gui/colors/hcywheel.py:970
 msgctxt "HCY Gamut Mask template name"
@@ -784,6 +787,7 @@ msgid ""
 "Two analogous colors and a complement to them, with no secondary colors "
 "between them."
 msgstr ""
+"Tveir venjulegir litir ásamt gagnstæðum litum, án aukalita á milli þeirra."
 
 #: ../gui/colors/hcywheel.py:985
 msgctxt "HCY Gamut Mask new-from-template dialog: window title"
@@ -1197,7 +1201,7 @@ msgstr "Skiptu um lit með HSV-litstiglum þvert á litgeislahring."
 #: ../gui/compatibility.py:34
 msgctxt "File Load Compat Options"
 msgid "Based on file"
-msgstr ""
+msgstr "Byggt á skránni"
 
 #. This refers to a version of MyPaint like 1.0, 1.1, 1.2 etc
 #: ../gui/compatibility.py:35 ../gui/drawwindow.py:281
@@ -1227,6 +1231,14 @@ msgid ""
 "It is <b>strongly recommended</b> to upgrade to <b>MyPaint {new_version}</b> "
 "or newer if you want to edit this file!"
 msgstr ""
+"“{filename}” var vistað með <b>MyPaint {new_version}</b>. Það gæti verið "
+"<b>ósamhæft</b> við <b>MyPaint {current_version}</b>.\n"
+"\n"
+"Ekki er víst að breytingar á þessari skrá með þessari útgáfu MyPaint virki "
+"rétt, og gætu jafnvel valdið hruni.\n"
+"\n"
+"<b>Mælt er eindregið með því</b> að uppfæra í <b>MyPaint {new_version}</b> "
+"eða nýrri útgáfu ef þú vilt breyta þessari skrá!"
 
 #: ../gui/compatibility.py:54
 #, python-brace-format
@@ -1240,11 +1252,19 @@ msgid ""
 "\n"
 "To be safe you should upgrade to MyPaint {new_version} or newer."
 msgstr ""
+"“{filename}” var vistað með <b>MyPaint {new_version}</b>. Það gæti verið "
+"ósamhæft við <b>MyPaint {current_version}</b>.\n"
+"\n"
+"Vistun á skránni með þessari útgáfu MyPaint gæti leitt til þess að gögn sem "
+"séu einungis studd af nýju útgáfunni tapist.\n"
+"\n"
+"Til að gæta öryggis ættirðu að uppfæra í MyPaint {new_version} eða nýrri "
+"útgáfu."
 
 #: ../gui/compatibility.py:65
 msgctxt "file compatibility question"
 msgid "Do you want to open this file anyway?"
-msgstr ""
+msgstr "Viltu samt opna þessa skrá?"
 
 #: ../gui/compatibility.py:129
 msgctxt "Version compat warning toggle"
@@ -1257,7 +1277,7 @@ msgstr "Ekki birta þessa aðvörun aftur"
 #: ../gui/compatibility.py:197
 msgctxt "Prefs Dialog|Compatibility"
 msgid "Always open in 1.x mode"
-msgstr ""
+msgstr "Alltaf opna í 1.x ham"
 
 #. TRANSLATORS: One of the options for the
 #. TRANSLATORS: "When Not Specified in File"
@@ -1265,7 +1285,7 @@ msgstr ""
 #: ../gui/compatibility.py:206
 msgctxt "Prefs Dialog|Compatibility"
 msgid "Always open in 2.x mode"
-msgstr ""
+msgstr "Alltaf opna í 2.x ham"
 
 #. TRANSLATORS: One of the options for the
 #. TRANSLATORS: "When Not Specified in File"
@@ -1273,7 +1293,7 @@ msgstr ""
 #: ../gui/compatibility.py:215
 msgctxt "Prefs Dialog|Compatibility"
 msgid "Open in 1.x mode unless file contains pigment layers"
-msgstr ""
+msgstr "Opna í 1.x ham nema skráin innihaldi litefnalög"
 
 #. TRANSLATORS: This is a label for a dropdown menu in the
 #. TRANSLATORS: file chooser dialog when loading .ora files.
@@ -1515,18 +1535,18 @@ msgstr "Þegar {modifiers} er haldið niðri:  {button_actions}."
 #: ../gui/document.py:895
 msgctxt "Statusbar message: copy result"
 msgid "Empty document, nothing copied."
-msgstr ""
+msgstr "Tómt skjal, ekkert afritað."
 
 #: ../gui/document.py:906
 #, python-brace-format
 msgctxt "Statusbar message: copy result"
 msgid "Copied layer as {w}×{h} image."
-msgstr ""
+msgstr "Afritaði lag sem {w}×{h} mynd."
 
 #: ../gui/document.py:923
 msgctxt "Statusbar message: paste result"
 msgid "Nothing on clipboard."
-msgstr ""
+msgstr "Ekkert á klippispjaldi."
 
 #: ../gui/document.py:932
 msgctxt "Statusbar message: paste result"
@@ -1536,7 +1556,7 @@ msgstr "Klippispjaldið inniheldur ekki neina mynd."
 #: ../gui/document.py:956
 msgctxt "Statusbar message: paste result"
 msgid "Cannot paste into this type of layer."
-msgstr ""
+msgstr "Get ekki límt í þessa tegund lags."
 
 #: ../gui/document.py:961
 #, python-brace-format
@@ -1548,7 +1568,7 @@ msgstr "Límdi {w}×{h} mynd."
 #, python-brace-format
 msgctxt "Statusbar message: vacuum document"
 msgid "Vacuum: discarded {removed} of {total} tiles."
-msgstr ""
+msgstr "Hreinsun: fjarlægði {removed} af {total} flísum."
 
 #. TRANSLATORS: window title for use with a filename
 #: ../gui/drawwindow.py:275
@@ -1599,7 +1619,7 @@ msgstr "Hætta í alvörunni?"
 #: ../gui/drawwindow.py:691
 msgctxt "Quit confirm dialog: continue button"
 msgid "_Quit"
-msgstr "_Hætta"
+msgstr "_Fara út"
 
 #: ../gui/drawwindow.py:709
 msgid "Import brush package…"
@@ -1646,6 +1666,7 @@ msgstr "Uppfærði lagið “{layer_name}” með utanaðkomandi breytingum"
 msgctxt "Edit in External App (statusbar message)"
 msgid "Failed to update layer with external edits from “{file_basename}”."
 msgstr ""
+"Mistókst að uppfæra lag með utanaðkomandi breytingum úr “{file_basename}”."
 
 #: ../gui/externalapp.py:146
 #, python-brace-format
@@ -1687,7 +1708,7 @@ msgstr "Hleð inn {files_summary}…"
 #, python-brace-format
 msgctxt "Document I/O: message shown while working"
 msgid "Importing layers from {files_summary}…"
-msgstr ""
+msgstr "Flyt inn lög úr {files_summary}…"
 
 #: ../gui/filehandling.py:135
 #, python-brace-format
@@ -1738,7 +1759,7 @@ msgstr "Útflutningur mistókst"
 #: ../gui/filehandling.py:173
 msgctxt "Document I/O: fail dialog title"
 msgid "Import Layers failed"
-msgstr ""
+msgstr "Innflutningur laga mistókst"
 
 #: ../gui/filehandling.py:177
 msgctxt "Document I/O: fail dialog title"
@@ -1761,7 +1782,7 @@ msgstr "Það tókst að vista {files_summary}."
 #, python-brace-format
 msgctxt "Document I/O: success"
 msgid "Imported layers from {files_summary}."
-msgstr ""
+msgstr "Flutti inn lög úr {files_summary}."
 
 #: ../gui/filehandling.py:196
 #, python-brace-format
@@ -1830,16 +1851,14 @@ msgid "PNG, transparent RGBA (*.png)"
 msgstr "PNG, með RGBA-gegnsæi (*.png)"
 
 #: ../gui/filehandling.py:515
-#, fuzzy
 msgctxt "save dialogs: save formats and options"
 msgid "Multiple PNGs, by layer (*.NUM.png)"
-msgstr "PNG myndaröð með gegnsæi (*.XXX.png)"
+msgstr "Margar PNG-myndir, eftir lagi (*.NUM.png)"
 
 #: ../gui/filehandling.py:519
-#, fuzzy
 msgctxt "save dialogs: save formats and options"
 msgid "Multiple PNGs, by view (*.NAME.png)"
-msgstr "PNG myndaröð með gegnsæi (*.XXX.png)"
+msgstr "Margar PNG-myndir, eftir lagi (*.NAME.png)"
 
 #: ../gui/filehandling.py:523
 msgctxt "save dialogs: save formats and options"
@@ -1968,7 +1987,7 @@ msgstr "_Opna"
 #: ../gui/filehandling.py:1512
 msgctxt "File→Revert: status message: canvas has no filename yet"
 msgid "Cannot revert: canvas has not been saved to a file yet."
-msgstr ""
+msgstr "Get ekki afturkallað: myndflötur hefur enn ekki verið vistaður í skrá."
 
 #: ../gui/filehandling.py:1519
 msgctxt "File→Revert confirm dialog: title"
@@ -2020,12 +2039,12 @@ msgstr "Uppruni:"
 #: ../gui/fill.py:536
 msgctxt "fill options: 'Source:' category (tooltip)"
 msgid "The input that the fill will be based on"
-msgstr ""
+msgstr "Inntakið sem fyllingin verður byggð á"
 
 #: ../gui/fill.py:580
 msgctxt "fill options: 'Source' category: Layer dropdown (tooltip)"
 msgid "Select a specific layer you want the fill to be based on"
-msgstr ""
+msgstr "Veldu sérstakt lag sem þú vilt að fyllingin byggist á"
 
 #: ../gui/fill.py:598
 msgctxt ""
@@ -2061,6 +2080,9 @@ msgid ""
 "If the view is rotated, the fill will be limited to the\n"
 "smallest canvas-aligned rectangle that can fit the view."
 msgstr ""
+"Takmarkaðu svæðið sem hægt er að fylla út frá skoðunarsvæðinu.\n"
+"Ef sýninni er snúið, verður fyllingin takmörkuð við minnsta \n"
+"ferhyrning á myndfleti sem passar innan sýnarinnar."
 
 #: ../gui/fill.py:641
 msgctxt ""
@@ -2095,12 +2117,12 @@ msgstr ""
 #: ../gui/fill.py:670
 msgctxt "fill options: Target | Blend Mode dropdown - warning text"
 msgid "This mode does nothing when alpha locking is enabled!"
-msgstr ""
+msgstr "Þessi hamur gerir ekkert þegar læsing gegnsæis er virk!"
 
 #: ../gui/fill.py:684
 msgctxt "fill options: Target | Blend Mode dropdown (tooltip)"
 msgid "Blend mode used when filling"
-msgstr ""
+msgstr "Blöndunarhamur notaður við fyllingu"
 
 #: ../gui/fill.py:699
 msgid "Opacity:"
@@ -2109,7 +2131,7 @@ msgstr "Ógegnsæi:"
 #: ../gui/fill.py:702
 msgctxt "fill options: Opacity slider (tooltip)"
 msgid "Opacity of the fill"
-msgstr ""
+msgstr "Ógegnsæi fyllingarinnar"
 
 #: ../gui/fill.py:725
 msgctxt "fill options: numeric option - grow/shrink fill (label)"
@@ -2119,7 +2141,7 @@ msgstr "Hliðrun:"
 #: ../gui/fill.py:741
 msgctxt "fill options: Offset (tooltip)"
 msgid "The distance in pixels to grow or shrink the fill"
-msgstr ""
+msgstr "Vegalengdin í mynddílum sem fyllingin á að vaxa eða minnka um"
 
 #: ../gui/fill.py:752
 msgctxt "fill options: numeric option for blurring fill (label)"
@@ -2129,12 +2151,12 @@ msgstr "Dofnun jaðra (fjöðrun):"
 #: ../gui/fill.py:767
 msgctxt "fill options: Feather (tooltip)"
 msgid "The amount of blur to apply to the fill"
-msgstr ""
+msgstr "Magn móðunar sem beita skal á fyllinguna"
 
 #: ../gui/fill.py:783
 msgctxt "fill options: gap detection toggle (label)"
 msgid "Use Gap Detection"
-msgstr ""
+msgstr "Nota greiningu bila"
 
 #: ../gui/fill.py:788
 msgctxt "fill options: Use Gap Detection (tooltip)"
@@ -2143,11 +2165,14 @@ msgid ""
 "Note: This can be a lot slower than the regular fill, only enable when you "
 "need it."
 msgstr ""
+"Reyna að finna bil og ekki fylla út fyrir þau.\n"
+"Athugaðu: Þetta getur verið mun hægvirkara en venjuleg fylling, ekki virkja "
+"þetta nema þú þarfnist þess í raun."
 
 #: ../gui/fill.py:806
 msgctxt "fill options: gap-detection sub-option, numeric setting (label)"
 msgid "Max Gap Size:"
-msgstr ""
+msgstr "Hámarksstærð bils:"
 
 #: ../gui/fill.py:821
 msgctxt "fill options: Max Gap Size (tooltip)"
@@ -2155,6 +2180,8 @@ msgid ""
 "The size of the largest gaps that can be detected.\n"
 "Using large values can make the fill run a lot slower."
 msgstr ""
+"Stærð stærstu bila sem hægt er að greina.\n"
+"Séu stór gildi notuð keyrir fyllingin mun hægar."
 
 #: ../gui/fill.py:834
 msgctxt ""
@@ -2170,6 +2197,8 @@ msgid ""
 "Try to prevent the fill from seeping into the gaps.\n"
 "If a fill starts in a detected gap, this option will do nothing."
 msgstr ""
+"Reyna að láta fyllinguna ekki leka út um bilin.\n"
+"Ef fylling byrjar í greindu bili, gerir þessi valkostur ekkert."
 
 #: ../gui/fill.py:851 ../gui/mode.py:639
 msgid "Reset"
@@ -2274,7 +2303,6 @@ msgid "px"
 msgstr "px"
 
 #: ../gui/framewindow.py:916
-#, fuzzy
 msgid "in"
 msgstr "tommur"
 
@@ -2310,7 +2338,7 @@ msgstr "Þrýstingur:"
 #. TRANSLATORS: This is used on the options panel.
 #: ../gui/freehand.py:617
 msgid "Twist:"
-msgstr ""
+msgstr "Aflögun:"
 
 #: ../gui/gtkexcepthook.py:163
 msgid "Bug Detected"
@@ -2385,6 +2413,26 @@ msgid ""
 "            #### Traceback\n"
 "        "
 msgstr ""
+"            #### Lýsing\n"
+"\n"
+"            Gefðu þessari tilkynningu lýsandi titil.\n"
+"            Notaðu eitthvað á borð við\n"
+"            \"[eiginleiki-sem-brást]: [hvað-fór-úrskeiðis]\"\n"
+"            í titlinum, ef þú getur.\n"
+"            Skiptu síðan þessum texta út\n"
+"            með lengri lýsingu á villunni.\n"
+"            Skjámyndir eða myndskeið eru líka vel þegin!\n"
+"\n"
+"            #### Skref til að endurtaka\n"
+"\n"
+"            Segðu okkur hvað þú varst að gera\n"
+"            þegar villuskilaboðin poppuðu upp.\n"
+"            Ef þú getur útbúið leiðbeiningar skref-fyrir-skref\n"
+"            um hvernig hægt sé að kalla aftur fram villuna,\n"
+"            væri það ennþá betra.\n"
+"\n"
+"            #### Afturrakning\n"
+"        "
 
 #: ../gui/inktool.py:97 ../gui/inktool.py:479
 msgid "Inking"
@@ -2420,12 +2468,11 @@ msgstr "Tæki:"
 
 #: ../gui/inputtestwindow.py:73
 msgid "(No Barrel Rotation)"
-msgstr ""
+msgstr "(enginn snúningur um ás)"
 
 #: ../gui/inputtestwindow.py:75
-#, fuzzy
 msgid "Barrel Rotation:"
-msgstr "Núllstilla snúning"
+msgstr "Snúningur um ás:"
 
 #. TRANSLATORS: Command to move a layer in the horizontal plane,
 #. TRANSLATORS: preserving its position in the stack.
@@ -2441,12 +2488,12 @@ msgstr "Flytja núverandi lag"
 #: ../gui/layerprops.py:356
 msgctxt "layer properties dialog: name entry: icon tooltip"
 msgid "Layer names cannot be empty."
-msgstr ""
+msgstr "Heiti lags má ekki vera tómt."
 
 #: ../gui/layerprops.py:361
 msgctxt "layer properties dialog: name entry: icon tooltip"
 msgid "Layer name is not unique."
-msgstr ""
+msgstr "Heiti lagsins er ekki einstakt."
 
 #: ../gui/layerprops.py:377
 msgctxt "layer properties dialog: title"
@@ -2517,6 +2564,8 @@ msgid ""
 "<span size=\"smaller\">{layer_name}\n"
 "<span size=\"smaller\">{layer_description}</span></span>"
 msgstr ""
+"<span size=\"smaller\">{layer_name}\n"
+"<span size=\"smaller\">{layer_description}</span></span>"
 
 #: ../gui/layerswindow.py:95
 msgid "Layers"
@@ -2626,11 +2675,12 @@ msgid "Generic line/curve mode"
 msgstr "Almennur hamur línu/ferils"
 
 #: ../gui/linemode.py:803
-#, fuzzy
 msgid ""
 "Draw straight lines; Shift adds curves, Shift + Ctrl moves line ends, Ctrl "
 "constrains angle"
-msgstr "Teikna beinar línur; Shift bætir við boglínum, Ctrl skilyrðir horn"
+msgstr ""
+"Teikna beinar línur; Shift bætir við boglínum, Shift + Ctrl færir línuenda, "
+"Ctrl skilyrðir horn"
 
 #: ../gui/linemode.py:814
 msgid "Connected Lines"
@@ -2639,7 +2689,7 @@ msgstr "Tengdar línur"
 #: ../gui/linemode.py:817
 msgid "Draw a sequence of lines; Shift adds curves, Ctrl constrains angle"
 msgstr ""
-"Teikna samhangandi línur; Shift bætir við boglínum, Ctrl skilyrðir horn"
+"Teikna samhangandi línur; Shift bætir við sveiglínum, Ctrl skilyrðir horn"
 
 #: ../gui/linemode.py:827
 msgid "Ellipses and Circles"
@@ -2835,7 +2885,7 @@ msgstr "Tungumál kerfis"
 #, python-brace-format
 msgctxt "Prefs Dialog|View|Interface - menu entries"
 msgid "{lang_en} - ({lang_nat})"
-msgstr ""
+msgstr "{lang_en} - ({lang_nat})"
 
 #. TRANSLATORS: title of panel showing an overview of the whole canvas
 #: ../gui/previewwindow.py:201
@@ -2911,7 +2961,7 @@ msgstr "Y-staðsetning:"
 #, python-format
 msgctxt "symmetry axis options panel: labels"
 msgid "Angle: %.2f°"
-msgstr ""
+msgstr "Horn: %.2f°"
 
 #: ../gui/symmetry.py:357
 msgctxt "symmetry axis options panel: position button: no axis pos."
@@ -2931,7 +2981,7 @@ msgstr "Gerð samhverfu:"
 #: ../gui/symmetry.py:369
 msgctxt "symmetry axis options panel: labels"
 msgid "Rotational lines:"
-msgstr ""
+msgstr "Snúningslínur:"
 
 #: ../gui/symmetry.py:536
 msgctxt "symmetry axis options panel: axis active checkbox"
@@ -2980,13 +3030,13 @@ msgstr "{tab_title}: loka flipa"
 #, python-brace-format
 msgctxt "workspace: sidebar tabs: button tooltips"
 msgid "{tab_title}: tab options and properties"
-msgstr ""
+msgstr "{tab_title}: valkostir flipa og eiginleikar"
 
 #: ../gui/toolstack.py:360
 #, python-brace-format
 msgctxt "workspace: sidebar tabs: button tooltips"
 msgid "{tab_title}: move tab to other sidebar"
-msgstr ""
+msgstr "{tab_title}: færa flipa á aðra hliðarstiku"
 
 #: ../gui/topbar.py:90
 msgid "<b>MyPaint</b>"
@@ -3042,12 +3092,11 @@ msgstr "Utanskera lag"
 
 #: ../lib/command.py:632
 msgid "Uniquify Layer Pixels"
-msgstr ""
+msgstr "Gera mynddíla lag einstaka"
 
 #: ../lib/command.py:655
-#, fuzzy
 msgid "Refactor Group"
-msgstr "Endurnefna hóp"
+msgstr "Endurgera hóp"
 
 #: ../lib/command.py:678
 msgid "Clear Layer"
@@ -3328,7 +3377,7 @@ msgstr "Fylling"
 #: ../lib/floodfill.py:133
 msgctxt "floodfill status message: use active tense"
 msgid "Morphing"
-msgstr ""
+msgstr "Myndbreyting"
 
 #: ../lib/floodfill.py:134
 msgctxt "floodfill status message: use active tense"
@@ -3416,10 +3465,9 @@ msgid "Unknown Data"
 msgstr "Óþekkt gögn"
 
 #: ../lib/layer/data.py:1314
-#, fuzzy
 msgctxt "layer type descriptions"
 msgid "Painting Layer"
-msgstr "Nýtt málunarlag"
+msgstr "Málunarlag"
 
 #. TRANSLATORS: Short default name for layer groups.
 #: ../lib/layer/group.py:67
@@ -3428,10 +3476,9 @@ msgid "Group"
 msgstr "Hópur"
 
 #: ../lib/layer/group.py:72
-#, fuzzy
 msgctxt "layer type descriptions"
 msgid "Layer Group"
-msgstr "Nýr hópur laga"
+msgstr "Lagahópur"
 
 #. TRANSLATORS: Short default name for temporary placeholder layers.
 #. TRANSLATORS: (The user should never see this except in error cases)
@@ -3479,7 +3526,7 @@ msgstr "Fjarlægja sýn á lag"
 #, python-brace-format
 msgctxt "layer views: commands: activate"
 msgid "Activate Layer View “{name}”"
-msgstr ""
+msgstr "Virkja lagsýn “{name}”"
 
 #: ../lib/layervis.py:692
 msgctxt "layer views: commands: set active view's lock flag"
@@ -3515,6 +3562,8 @@ msgstr "Litarefni"
 msgid ""
 "Similar to mixing actual pigments by upsampling to 10 spectral channels."
 msgstr ""
+"Svipað og að blanda saman raunverulegum litarefnum, gert með því að fjölga "
+"litsýnum í 10 rásir."
 
 #: ../lib/modes.py:58
 msgid "Multiply"
@@ -3549,6 +3598,8 @@ msgid ""
 "Overlays the backdrop with the top layer, preserving the backdrop's "
 "highlights and shadows. This is the inverse of 'Hard Light'."
 msgstr ""
+"Leggur efsta lagið yfir bakgrunn, en heldur í hátóna og skugga bakgrunnsins. "
+"Þetta er andstæða við 'Hart ljós'."
 
 #: ../lib/modes.py:71
 msgid "Darken"
@@ -3576,6 +3627,9 @@ msgid ""
 "photographic darkroom technique of the same name which is used for improving "
 "contrast in shadows."
 msgstr ""
+"Lýsir bakgrunninn með efsta laginu. Áhrifin eru svipuð og aðferð með sama "
+"nafni sem notuð var í myrkrakompum sem nýttist við að bæta birtuskil í "
+"skuggum."
 
 #: ../lib/modes.py:84
 msgid "Burn"
@@ -3587,6 +3641,9 @@ msgid ""
 "photographic darkroom technique of the same name which is used for reducing "
 "over-bright highlights."
 msgstr ""
+"Dekkir bakgrunninn með efsta laginu. Áhrifin eru svipuð og aðferð með sama "
+"nafni sem notuð var í myrkrakompum sem nýttist við að minnka yfirlýsingu í "
+"hátónum."
 
 #: ../lib/modes.py:89
 msgid "Hard Light"
@@ -3610,7 +3667,7 @@ msgstr "Mismunur"
 
 #: ../lib/modes.py:96
 msgid "Subtracts the darker color from the lighter of the two."
-msgstr ""
+msgstr "Dregur dekkri litinn frá þeim ljósari af þeim tveimur."
 
 #: ../lib/modes.py:98
 msgid "Exclusion"
@@ -3618,7 +3675,7 @@ msgstr "Útilokun"
 
 #: ../lib/modes.py:99
 msgid "Similar to the 'Difference' mode, but lower in contrast."
-msgstr ""
+msgstr "Svipað og 'Mismunur' hamurinn, en með minni birtuskil."
 
 #: ../lib/modes.py:102
 msgid "Hue"
@@ -3628,7 +3685,7 @@ msgstr "Litblær"
 msgid ""
 "Combines the hue of the top layer with the saturation and luminosity of the "
 "backdrop."
-msgstr ""
+msgstr "Sameinar litblæ efsta lagsins við litmettun og birtustig bakgrunnsins."
 
 #: ../lib/modes.py:106
 msgid "Saturation"
@@ -3638,13 +3695,13 @@ msgstr "Litmettun"
 msgid ""
 "Applies the saturation of the top layer's colors to the hue and luminosity "
 "of the backdrop."
-msgstr ""
+msgstr "Beitir litmettun efsta lagsins á litblæ og birtustig bakgrunnsins."
 
 #: ../lib/modes.py:111
 msgid ""
 "Applies the hue and saturation of the top layer to the luminosity of the "
 "backdrop."
-msgstr ""
+msgstr "Beitir litblæ og litmettun efsta lagsins á birtustig bakgrunnsins."
 
 #: ../lib/modes.py:114
 msgid "Luminosity"
@@ -3654,7 +3711,7 @@ msgstr "Birtustig"
 msgid ""
 "Applies the luminosity of the top layer to the hue and saturation of the "
 "backdrop."
-msgstr ""
+msgstr "Beitir birtustigi efsta lagsins á litblæ og litmettun bakgrunnsins."
 
 #: ../lib/modes.py:119
 msgid "Plus"
@@ -3697,6 +3754,8 @@ msgid ""
 "Source which overlaps the destination, replaces the destination. Destination "
 "is placed elsewhere."
 msgstr ""
+"Uppruni sem skarast við útkomu, kemur í stað útkomu. Útkoma er sett "
+"annarsstaðar."
 
 #: ../lib/modes.py:134
 msgid "Destination Atop"
@@ -3707,6 +3766,8 @@ msgid ""
 "Destination which overlaps the source replaces the source. Source is placed "
 "elsewhere."
 msgstr ""
+"Útkoma sem skarast við uppruna, kemur í stað upprunans. Uppruni er settur "
+"annarsstaðar."
 
 #. TRANSLATORS: UNIQUE_NAME_TEMPLATE. Must match its regex.
 #. TRANSLATORS: Leave this untranslated if you are unsure.
@@ -3762,13 +3823,12 @@ msgid "Vertical and horizontal"
 msgstr "Lóðrétt og lárétt"
 
 #: ../lib/tiledsurface.py:51
-#, fuzzy
 msgid "Rotational"
-msgstr "Núllstilla snúning"
+msgstr "Snúningsháð"
 
 #: ../lib/tiledsurface.py:52
 msgid "Snowflake"
-msgstr ""
+msgstr "Snjókorn"
 
 #: ../lib/tiledsurface.py:624
 #, python-format
@@ -3783,7 +3843,7 @@ msgstr "Endurheimta gögn sem urðu fyrir truflun?"
 #: ../gui/autorecover.glade:38
 msgctxt "Autosave Recovery dialog|"
 msgid "_Look for backups at startup"
-msgstr ""
+msgstr "_Leita að öryggisafritum við ræsingu"
 
 #: ../gui/autorecover.glade:42
 msgctxt "Autosave Recovery dialog|Show Dialog at Startup checkbutton|"
@@ -3794,6 +3854,11 @@ msgid ""
 "You can always launch this dialog from the ‘File’ menu when MyPaint is "
 "running."
 msgstr ""
+"Keyra þennan glugga með endurheimtu sjálfvirkrar vistunar þegar MyPaint "
+"ræsist, ef einhverjar skrár eru til að endurheimta.\n"
+"\n"
+"Þú getur alltaf ræst þennan glugga úr 'Skrá'-valmyndinni þegar MyPaint er í "
+"gangi."
 
 #. Deletes the selected autosave backup file.
 #: ../gui/autorecover.glade:60
@@ -3830,15 +3895,16 @@ msgstr ""
 "Byrja að vinna með nýjan myndflöt. Haldið verður upp á þessi öryggisafrit."
 
 #: ../gui/autorecover.glade:122
-#, fuzzy
 msgctxt "Autosave Recovery dialog|"
 msgid ""
 "MyPaint crashed with unsaved work, but it makes rolling backups. You can "
 "recover a working file from one of these automated backups now. You’ll be "
 "asked where to save it before continuing."
 msgstr ""
-"MyPaint hrundi með óvistuð gögn, en náði að gera öryggisafrit. Þú getur "
-"endurheimt skrá núna, eða geymt það þangað til þú ræsir MyPaint aftur."
+"MyPaint hrundi með óvistuð gögn, en náði að gera regluleg öryggisafrit. Þú "
+"getur endurheimt núna vinnsluskrá úr einu af þessum sjálfvirku "
+"öryggisafritum. Þú verður spurð/ur hvar eigi að vista það áður en haldið er "
+"áfram."
 
 #: ../gui/autorecover.glade:157
 msgid "Thumbnail"
@@ -3936,19 +4002,23 @@ msgstr "Gildi:"
 
 #: ../gui/brusheditor.glade:491
 msgid "Reset this input to have no effect on the setting"
-msgstr ""
+msgstr "Endurstilla þetta inntak til að hafa engin áhrif á þessa stillingu"
 
 #: ../gui/brusheditor.glade:521
 msgid ""
 "Minimum value for the output axis.\n"
 "This can be set using the main slider for {dname}."
 msgstr ""
+"Lágmarksgildi fyrir úttaksásinn.\n"
+"Þetta er hægt að stilla með aðalsleðanum fyrir {dname}."
 
 #: ../gui/brusheditor.glade:540
 msgid ""
 "Maximum value for the output axis.\n"
 "This can be set using the main slider for {dname}."
 msgstr ""
+"Hámarksgildi fyrir úttaksásinn.\n"
+"Þetta er hægt að stilla með aðalsleðanum fyrir {dname}."
 
 #: ../gui/brusheditor.glade:562
 msgid "Output"
@@ -3971,16 +4041,22 @@ msgid ""
 "Minimum value for the input axis.\n"
 "Use the popup scale to adjust this."
 msgstr ""
+"Lágmarksgildi fyrir inntaksásinn.\n"
+"Notaðu sprettgluggakvarðann til að aðlaga þetta."
 
 #: ../gui/brusheditor.glade:684
 msgid ""
 "Maximum value for the input axis.\n"
 "Use the popup scale to adjust this."
 msgstr ""
+"Hámarksgildi fyrir inntaksásinn.\n"
+"Notaðu sprettgluggakvarðann til að aðlaga þetta."
 
 #: ../gui/brusheditor.glade:739
 msgid "Variation of the base value by stylus input and other criteria"
 msgstr ""
+"Breytileiki grunngildisins út frá inntaki frá teiknipennanum og öðrum "
+"forsendum"
 
 #: ../gui/brusheditor.glade:746
 msgid "Brush Dynamics"
@@ -3988,7 +4064,7 @@ msgstr "Pensilhreyfingar"
 
 #: ../gui/brusheditor.glade:780
 msgid "Adjust this input mapping in detail"
-msgstr ""
+msgstr "Aðlaga þessa inntaksvörpun í smáatriðum"
 
 #: ../gui/brusheditor.glade:802
 msgid "{tooltip}"
@@ -4001,7 +4077,7 @@ msgstr "{dname}:"
 
 #: ../gui/brusheditor.glade:841
 msgid "Brush dynamics are not available for this setting."
-msgstr ""
+msgstr "Pensilhreyfingar eru ekki tiltækar fyrir þessa stillingu."
 
 #: ../gui/brusheditor.glade:851
 msgid "<big><b>No Brush Dynamics</b></big>"
@@ -4075,7 +4151,7 @@ msgstr "Einfalda punkta"
 
 #: ../gui/inktool.glade:257
 msgid "Simplify the curve using the Reumann-Witkam algorithm."
-msgstr ""
+msgstr "Einfalda sveiglínuna með Reumann-Witkam reikniritinu."
 
 #: ../gui/inktool.glade:269 ../gui/resources.xml:918
 msgid "Cull Points"
@@ -4083,13 +4159,12 @@ msgstr "Eyða punktum"
 
 #: ../gui/inktool.glade:273
 msgid "Cull every other point from the curve."
-msgstr ""
+msgstr "Eyða öllum öðrum punktum á sveiglínunni."
 
 #: ../gui/layervis.glade:15
-#, fuzzy
 msgctxt "Layers window: view list controls: tooltips"
 msgid "The currently active view."
-msgstr "Samsetningarhamur núverandi lags."
+msgstr "Fyrirliggjandi virka sýnin."
 
 #: ../gui/layervis.glade:36
 msgctxt "Layers window: view list controls: tooltips"
@@ -4109,7 +4184,7 @@ msgstr "Taka skyndiafrit af sýnilegum lögum sem nýja sýn."
 #: ../gui/layervis.glade:99
 msgctxt "Layers window: view list controls: tooltips"
 msgid "Lock or unlock the active view."
-msgstr ""
+msgstr "Læsa eða aflæsa virku sýninni."
 
 #: ../gui/mypaint.glade:65
 msgctxt "footer: color picker button: tooltip"
@@ -4280,7 +4355,7 @@ msgstr "Hnappar"
 #. unless its key is bound to something else.
 #: ../gui/preferenceswindow.glade:453
 msgid "Disable fallback key bindings"
-msgstr ""
+msgstr "Gera lyklabindingar til vara óvirkar"
 
 #. Tooltip for checkbox in the keyboard mappings preferences.
 #: ../gui/preferenceswindow.glade:457
@@ -4288,6 +4363,8 @@ msgid ""
 "The fallback key bindings are static built-in bindings that are only used if "
 "their key combinations are not bound to anything else."
 msgstr ""
+"Lyklabindingar til vara eru fastar innbyggðar lyklabindingar sem einungis "
+"eru notaðar ef lyklasamsetningar þeirra eru ekki bundnar við eitthvað annað."
 
 #: ../gui/preferenceswindow.glade:476
 msgctxt "Prefs Dialog|Button|"
@@ -4340,6 +4417,15 @@ msgid ""
 "monitors. If you know your display is radically different from this, use the "
 "\"no automatic conversions or tagging\" setting instead."
 msgstr ""
+"Myndum sem innihalda <i>fullar</i> upplýsingar um litrýmd verður umbreytt í "
+"sRGB þegar þeim er hlaðið inn í MyPaint. Þegar MyPaint vistar mynd, er "
+"ábendingum bætt við hana þannig að önnur forrit geti myndgert hana rétt.\n"
+"\n"
+"Þetta gengur út frá því sem vísu að skjárinn sé litkvarðaður í eitthvað sem "
+"líkist sRGB, staðlaða litrýmd fyrir birtingu á vef og fremur bölsýna nálgun "
+"við flesta skjái á einkatölvum. Ef þú veist að skjárinn þinn sé verulega "
+"frábrugðinn þessu, ættirðu frekar að nota stillinguna \"Engin sjálfvirk "
+"umbreyting eða merking\"."
 
 #: ../gui/preferenceswindow.glade:648
 msgctxt "Prefs Dialog|Load & Save|Color Management|"
@@ -4355,6 +4441,11 @@ msgid ""
 "This is MyPaint's old behaviour, and can be used as a stopgap for non-sRGB "
 "working."
 msgstr ""
+"Engar litaumbreytingar fara fram við innhleðslu mynda, og skrár eru vistaðar "
+"án upplýsinga varðandi litastýringu.\n"
+"\n"
+"Þetta er eldri hegðun MyPaint og er hægt að nota sem varaleið þegar ekki er "
+"unnið í sRGB-litrýmd."
 
 #: ../gui/preferenceswindow.glade:680
 msgctxt "Prefs Dialog|Load & Save|"
@@ -4380,6 +4471,9 @@ msgid ""
 "the program crashes, you'll have a chance to restore what you were working "
 "on."
 msgstr ""
+"Tekur öryggisafrit í bútum af verkum í bakgrunnsvinnslu yfir í diskminni "
+"MyPaint. Ef forritið hrynur, hefurðu möguleika á að endurheimta það sem þú "
+"varst að vinna við."
 
 #: ../gui/preferenceswindow.glade:768
 msgctxt "Prefs Dialog|Load & Save|Automated Backups|interval label"
@@ -4432,6 +4526,8 @@ msgid ""
 "Use a light-on-dark theme variant, when it's supported by the GTK theme. "
 "This is generally sensible for image editors and media viewers."
 msgstr ""
+"Nota ljóst-á-dökku tilbrigði þema, þegar slíkt er stutt af GTK-þemunni. "
+"Þetta er almennt skynsamlegt fyrir myndvinnslu og skoðun myndefnis."
 
 #: ../gui/preferenceswindow.glade:946
 msgid "Some of these settings require MyPaint to be restarted."
@@ -4490,6 +4586,15 @@ msgid ""
 "Scrolling to pan the view needs this setting to be turned on, and for your "
 "device to be configured to send bidirectional scroll events."
 msgstr ""
+"Stuðningur við mjúkt skrun gerir skrunbendingar og atvik frá skrunhjóli mjúk "
+"í stað þess að virka í skrefum. Þetta hentar vel á snetiplatta, en getur "
+"verið truflandi ef þú ert vanur/vön skruni með mús.\n"
+"\n"
+"Ef mjúkt skrun er virkjað, má kveikja tímabundið á þrepuðu skruni með því að "
+"halda niðri Shift-lyklinum á meðan skrunað er.\n"
+"\n"
+"Skrun til að hliðra sýn þarf að vera með þessa stillingu virka, og einnig ef "
+"stilla á tækið til að senda tvíátta (bidirectional) skrunatvik."
 
 #: ../gui/preferenceswindow.glade:1112
 msgid "Hide cursor while painting"
@@ -4499,20 +4604,20 @@ msgstr "Fela bendil á meðan málað er"
 #: ../gui/preferenceswindow.glade:1132
 msgctxt "Prefs Dialog|View|Interface"
 msgid "Show crosshair for small brush cursors"
-msgstr ""
+msgstr "Sýna krossmið fyrir smáa pensilbendla"
 
 #. Label for a spinbutton that is part of the "crosshair for small brush cursors" setting. Radius refers to the visual brush cursor radius.
 #: ../gui/preferenceswindow.glade:1149
 msgctxt "Prefs Dialog|View|Interface"
 msgid "Radius threshold:"
-msgstr ""
+msgstr "Mörk á radíus:"
 
 #. Description of the "Radius threshold" spinbox/spinner - the referenced "lines" are part of the brush cursor.
 #: ../gui/preferenceswindow.glade:1162
 msgctxt "Prefs Dialog|View|Interface"
 msgid ""
 "Lines will be shown when the brush circle radius is smaller than this value."
-msgstr ""
+msgstr "Línur birtast þegar radíus pensilhrings er minni en þetta gildi."
 
 #: ../gui/preferenceswindow.glade:1192
 msgctxt ""
@@ -4528,11 +4633,12 @@ msgid ""
 "When a layer is created or selected, show only that layer for a short time "
 "period."
 msgstr ""
+"Þegar lag er búið til eða valið, skal sýna einungis það lag í stuttan tíma."
 
 #: ../gui/preferenceswindow.glade:1216
 msgctxt "Prefs Dialog|View|Interface|"
 msgid "Blink layers on creation/selection:"
-msgstr ""
+msgstr "Blikka lögum þegar þau eru útbúin/valin:"
 
 #: ../gui/preferenceswindow.glade:1251
 msgctxt "Prefs Dialog|View|Interface|"
@@ -4556,6 +4662,8 @@ msgid ""
 "The set of colors to show as primary on disk-style color wheels.\n"
 "Different traditions have different color harmonies."
 msgstr ""
+"Litasettið sem sýna skal sem frumliti á litahringjum.\n"
+"Mismunandi hefðir eiga sér mismunandi litastef."
 
 #. Arrangement of MyPaint's custom colour wheels
 #: ../gui/preferenceswindow.glade:1317
@@ -4661,7 +4769,7 @@ msgstr "Litur"
 #: ../gui/preferenceswindow.glade:1458
 msgctxt "Prefs Dialog|Compatibility"
 msgid "Default Compatibility Mode:"
-msgstr ""
+msgstr "Sjálfgefinn samhæfnihamur:"
 
 #: ../gui/preferenceswindow.glade:1483
 msgctxt "Prefs Dialog|Compatibility"
@@ -4680,10 +4788,9 @@ msgid "Default New Layer Type:"
 msgstr "Sjálfgefin gerð nýs lags:"
 
 #: ../gui/preferenceswindow.glade:1581 ../gui/preferenceswindow.glade:1595
-#, fuzzy
 msgctxt "Prefs Dialog|Compatibility"
 msgid "Default Pigment Brush Setting:"
-msgstr "Breyta pensilstillingum"
+msgstr "Sjálfgefin stilling litpensils:"
 
 #. Label description for the 1.x compatibility-mode-by-default setting
 #: ../gui/preferenceswindow.glade:1671
@@ -4693,6 +4800,9 @@ msgid ""
 "default. In this mode 1.x .ora files will look the same as they did in older "
 "versions, but pigment blending will not work well."
 msgstr ""
+"Þegar ný skjöl eru búin til, skal nota sjálfgefið eldri 1.x samhæfnisham. Í "
+"þeim ham munu 1.x .ora-skrár líta út eins og þær gerður í eldri útgáfum, en "
+"blöndun litarefna mun samt ekki virka vel."
 
 #: ../gui/preferenceswindow.glade:1690
 msgctxt "Prefs Dialog|Compatibility"
@@ -4700,22 +4810,24 @@ msgid ""
 "When creating new documents, use the regular 2.x compatibility mode by "
 "default. Old documents will often look different in this mode."
 msgstr ""
+"Þegar ný skjöl eru búin til, skal nota sjálfgefið venjulegan 2.x "
+"samhæfnisham. Eldri skrár líta oft öðruvísi út í þeim ham."
 
 #: ../gui/preferenceswindow.glade:1722
 msgctxt "Prefs Dialog|Compatibility"
 msgid "Show warning for files that may be partially incompatible"
-msgstr ""
+msgstr "Birta aðvörun vegna skráa sem gætu verið ósamhæfðar að hluta"
 
 #. Label for a set of options
 #: ../gui/preferenceswindow.glade:1739
 msgctxt "Prefs Dialog|Compatibility"
 msgid "File compatibility warnings:"
-msgstr ""
+msgstr "Aðvaranir varðandi samhæfni skráa:"
 
 #: ../gui/preferenceswindow.glade:1751
 msgctxt "Prefs Dialog|Compatibility"
 msgid "Show warning for files that may be fully incompatible"
-msgstr ""
+msgstr "Birta aðvörun vegna skráa sem ekki er víst að séu samhæfðar að fullu"
 
 #. This is a tooltip for the file behavior options label.
 #: ../gui/preferenceswindow.glade:1767
@@ -4725,12 +4837,15 @@ msgid ""
 "When you save an OpenRaster file with MyPaint 2.0 or newer the active "
 "compatibility mode will be written to the file."
 msgstr ""
+"Þetta mun aðeins eiga við um skrár vistaðar með útgáfum MyPaint eldri en "
+"útgáfa 2.0. Þegar þú vistar OpenRaster-skrá með MyPaint 2.0 eða nýrri, "
+"verður virkur samhæfnishamur skrifaður í skrána."
 
 #. Label to the options for how to handle files which do not have a compatibility mode specified (whether they should be opened in 1.x compatibility mode, or 2.x mode)
 #: ../gui/preferenceswindow.glade:1769
 msgctxt "Prefs Dialog|Compatibility"
 msgid "When Mode is Unspecified:"
-msgstr ""
+msgstr "Þegar hamur er óskilgreindur:"
 
 #. This label indicates a subsection of the compatibility settings related to loading files.
 #: ../gui/preferenceswindow.glade:1796
@@ -4740,7 +4855,7 @@ msgstr "<b>Hleðsla skráa</b>"
 
 #: ../gui/preferenceswindow.glade:1816
 msgid "<b>Compatibility settings</b>"
-msgstr ""
+msgstr "<b>Samhæfnistillingar</b>"
 
 #. Tab label in preferences dialog
 #: ../gui/preferenceswindow.glade:1832
@@ -4826,7 +4941,7 @@ msgstr "Flytja inn lög…"
 #: ../gui/resources.xml:112
 msgctxt "Accel Editor (descriptions)"
 msgid "Import layers from one or more files."
-msgstr ""
+msgstr "Flytja inn lög úr einni eða fleiri skrám."
 
 #: ../gui/resources.xml:120
 msgctxt "Menu→File (labels), Accel Editor (labels)"
@@ -4946,48 +5061,44 @@ msgid "The current layer's compositing mode."
 msgstr "Samsetningarhamur núverandi lags."
 
 #: ../gui/resources.xml:237
-#, fuzzy
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
 msgid "Increase Fake Pressure"
-msgstr "Upphafsþrýstingur"
+msgstr "Auka gerviþrýsting"
 
 #: ../gui/resources.xml:238
 msgctxt "Accel Editor (descriptions)"
 msgid "Send harder pressure for devices that don't support pressure input."
-msgstr ""
+msgstr "Auka þrýsting fyrir tæki sem ekki styðja þrýstingsinntak."
 
 #: ../gui/resources.xml:245
-#, fuzzy
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
 msgid "Decrease Fake Pressure"
-msgstr "Upphafsþrýstingur"
+msgstr "Minnka gerviþrýsting"
 
 #: ../gui/resources.xml:246
 msgctxt "Accel Editor (descriptions)"
 msgid "Send softer pressure for devices that don't support pressure input."
-msgstr ""
+msgstr "Minnka þrýsting fyrir tæki sem ekki styðja þrýstingsinntak."
 
 #: ../gui/resources.xml:254
-#, fuzzy
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
 msgid "Increase Fake Rotation"
-msgstr "Auka litmettun"
+msgstr "Auka gervisnúning"
 
 #: ../gui/resources.xml:255
 msgctxt "Accel Editor (descriptions)"
 msgid "Increase barrel rotation for devices that don't support rotation input."
-msgstr ""
+msgstr "Auka snúning um ás fyrir tæki sem ekki styðja snúningsinntak."
 
 #: ../gui/resources.xml:262
-#, fuzzy
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
 msgid "Decrease Fake Rotation"
-msgstr "Minnka litmettun"
+msgstr "Minnka gervisnúning"
 
 #: ../gui/resources.xml:263
 msgctxt "Accel Editor (descriptions)"
 msgid "Decrease barrel rotation for devices that don't support rotation input."
-msgstr ""
+msgstr "Minnka snúning um ás fyrir tæki sem ekki styðja snúningsinntak."
 
 #: ../gui/resources.xml:271
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
@@ -5105,11 +5216,11 @@ msgid "Pick Stroke and Layer"
 msgstr "Velja stroku og lag"
 
 #: ../gui/resources.xml:371
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid ""
 "Pick a brushstroke from the canvas, which restores brush, color, and layer."
-msgstr "Veldu pensilstroku af myndfletinum: endurheimtir pensil, lit og lag."
+msgstr ""
+"Veldu pensilstroku af myndfletinum, sem endurheimtir pensil, lit og lag."
 
 #: ../gui/resources.xml:382
 msgctxt "Menu→Brush→Shortcut Keys (labels), Accel Editor (labels)"
@@ -5141,16 +5252,14 @@ msgid "Clear Layer"
 msgstr "Hreinsa lag"
 
 #: ../gui/resources.xml:402
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Clear the active layer’s content."
-msgstr "Hreinsa allt efni af núverandi lagi."
+msgstr "Hreinsa allt efni af virku lagi."
 
 #: ../gui/resources.xml:410
-#, fuzzy
 msgctxt "Menu→Layer (labels)"
 msgid "Slice Operations"
-msgstr "Valkostir verkfæra"
+msgstr "Aðgerðir sneiðingar"
 
 #: ../gui/resources.xml:416
 msgctxt "Menu→Layer→Slice (labels), Accel Editor (labels)"
@@ -5165,18 +5274,18 @@ msgstr "Þurrka út þá hluta núverandi lags sem liggja utan rammans."
 #: ../gui/resources.xml:423
 msgctxt "Menu→Layer→Slice (labels), Accel Editor (labels)"
 msgid "Uniquify Layer Pixels"
-msgstr ""
+msgstr "Gera mynddíla lag einstaka"
 
 #: ../gui/resources.xml:424
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Delete parts of the current layer which do not vary from the backdrop."
-msgstr "Þurrka út þá hluta núverandi lags sem liggja utan rammans."
+msgstr ""
+"Þurrka út þá hluta núverandi lags sem lekki eru öðruvísi en bakgrunnurinn."
 
 #: ../gui/resources.xml:430
 msgctxt "Menu→Layer→Slice (labels), Accel Editor (labels)"
 msgid "Uniquify Layer Tiles"
-msgstr ""
+msgstr "Gera lagflísar einstakar"
 
 #: ../gui/resources.xml:431
 msgctxt "Accel Editor (descriptions)"
@@ -5184,24 +5293,24 @@ msgid ""
 "Delete whole tiles from the current layer which do not vary from the "
 "backdrop."
 msgstr ""
+"Eyða heilum flísum úr fyrirliggjandi lagi sem ekki eru öðruvísi en "
+"bakgrunnurinn."
 
 #: ../gui/resources.xml:437
-#, fuzzy
 msgctxt "Menu→Layer→Slice (labels), Accel Editor (labels)"
 msgid "Refactor Layer Group Pixels"
-msgstr "Nýr hópur laga fyrir neðan"
+msgstr "Endurgera mynddíla lagahóps"
 
 #: ../gui/resources.xml:438 ../gui/resources.xml:445
 msgctxt "Accel Editor (descriptions)"
 msgid ""
 "Normalize child layers, then factor out common parts to a new child layer."
-msgstr ""
+msgstr "Samræma undirlög, veiða síðan sameiginlega hluta yfir í nýtt undirlag."
 
 #: ../gui/resources.xml:444
-#, fuzzy
 msgctxt "Menu→Layer→Slice (labels), Accel Editor (labels)"
 msgid "Refactor Layer Group Tiles"
-msgstr "Nýr hópur laga fyrir neðan"
+msgstr "Endurgera flísar lagahóps"
 
 #: ../gui/resources.xml:452
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
@@ -5229,10 +5338,9 @@ msgid "Edit Layer in External App…"
 msgstr "Breyta lagi með öðru forriti…"
 
 #: ../gui/resources.xml:470
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Edit the active layer in an external application."
-msgstr "Byrja að vinna með núverandi lag í utanaðkomandi forriti."
+msgstr "Byrja að vinna með virkt lag í utanaðkomandi forriti."
 
 #: ../gui/resources.xml:477
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
@@ -5251,10 +5359,9 @@ msgid "Go to Layer at Cursor"
 msgstr "Fara á lag við bendil"
 
 #: ../gui/resources.xml:485
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Select a layer by picking something [drawn] on it."
-msgstr "Veldu lag með því að plokka atriði á laginu."
+msgstr "Veldu lag með því að plokka eitthvað [teiknað] atriði á laginu."
 
 #: ../gui/resources.xml:493
 msgctxt "Menu→Layer→Go to Layer (labels), Accel Editor (labels)"
@@ -5451,7 +5558,7 @@ msgstr "Eiginleikar lags…"
 msgctxt "Accel Editor (descriptions)"
 msgid ""
 "Change the layer’s properties (name, mode, visibility, locked, opacity)."
-msgstr ""
+msgstr "Breyttu eiginleikum lagsins (heiti, ham, sýnileika, læsingu, ógegnsæi)."
 
 #: ../gui/resources.xml:650
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
@@ -5488,13 +5595,12 @@ msgstr "Víxla sýnileika bakgrunnslags af/á."
 #: ../gui/resources.xml:674
 msgctxt "Menu→Help→Debug (labels), Accel Editor (labels)"
 msgid "Vacuum Empty Tiles"
-msgstr ""
+msgstr "Hreinsa auðar flísar"
 
 #: ../gui/resources.xml:675
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Remove empty tiles from the document."
-msgstr "Fjarlægja núverandi lag úr lagastaflanum."
+msgstr "Fjarlægja auðar flísar úr skjalinu."
 
 #: ../gui/resources.xml:684
 msgctxt "Menu→View (labels), Accel Editor (labels)"
@@ -5578,10 +5684,9 @@ msgid "Pan Left"
 msgstr "Hliðra til vinstri"
 
 #: ../gui/resources.xml:759
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Move your view of the canvas to the left."
-msgstr "Snúa sýn: halla sýn þinni á myndflötinn."
+msgstr "Færa sýn þína á myndflötinn til vinstri."
 
 #: ../gui/resources.xml:766
 msgctxt "Menu→View→Adjust View (labels), Accel Editor (labels)"
@@ -5589,10 +5694,9 @@ msgid "Pan Right"
 msgstr "Hliðra til hægri"
 
 #: ../gui/resources.xml:767
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Move your view of the canvas to the right."
-msgstr "Hliðra sýn: færa sýn þína á myndflötinn lárétt eða lóðrétt."
+msgstr "Færa sýn þína á myndflötinn til hægri."
 
 #: ../gui/resources.xml:774
 msgctxt "Menu→View→Adjust View (labels), Accel Editor (labels)"
@@ -5600,10 +5704,9 @@ msgid "Pan Up"
 msgstr "Hliðra upp"
 
 #: ../gui/resources.xml:775
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Move your view of the canvas upwards."
-msgstr "Snúa sýn: halla sýn þinni á myndflötinn."
+msgstr "Færa sýn þína á myndflötinn upp."
 
 #: ../gui/resources.xml:782
 msgctxt "Menu→View→Adjust View (labels), Accel Editor (labels)"
@@ -5611,10 +5714,9 @@ msgid "Pan Down"
 msgstr "Hliðra niður"
 
 #: ../gui/resources.xml:783
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Move your view of the canvas downwards."
-msgstr "Snúa sýn: halla sýn þinni á myndflötinn."
+msgstr "Færa sýn þína á myndflötinn niður."
 
 #.
 #. Note: the object we've agreed to present as being rotated
@@ -5629,10 +5731,9 @@ msgid "Rotate Clockwise"
 msgstr "Snúa réttsælis"
 
 #: ../gui/resources.xml:799
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Rotate the canvas clockwise."
-msgstr "Snúa sýninni réttsælis."
+msgstr "Snúa myndfletinum réttsælis."
 
 #: ../gui/resources.xml:819
 msgctxt "Menu→View→Adjust View (labels), Accel Editor (labels)"
@@ -5640,10 +5741,9 @@ msgid "Rotate Counterclockwise"
 msgstr "Snúa rangsælis"
 
 #: ../gui/resources.xml:820
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Rotate the canvas counter-clockwise."
-msgstr "Snúa sýninni rangsælis."
+msgstr "Snúa myndfletinum rangsælis."
 
 #: ../gui/resources.xml:828
 msgctxt "Menu→View→Adjust View (labels), Accel Editor (labels)"
@@ -5731,7 +5831,7 @@ msgctxt "Accel Editor (descriptions)"
 msgid ""
 "Insert a point next to the currently selected point in the direction of the "
 "stroke."
-msgstr ""
+msgstr "Setja inn punkt í stefnu línunnar næst þeim punkti sem núna er valinn."
 
 #: ../gui/resources.xml:904
 msgid "Delete Point"
@@ -5746,12 +5846,12 @@ msgstr "Eyða þeim punkti sem núna er valinn á bleklínu."
 msgctxt "Accel Editor (descriptions)"
 msgid ""
 "Simplify and delete points according to angle and distance between nodes."
-msgstr ""
+msgstr "Einfalda og eyða punktum miðað við horn og fjarlægð milli liða."
 
 #: ../gui/resources.xml:919
 msgctxt "Accel Editor (descriptions)"
 msgid "Delete every other point on the ink stroke."
-msgstr ""
+msgstr "Eyða öllum öðrum punktum á bleklínunni."
 
 #: ../gui/resources.xml:933
 msgctxt "Menu→Brush (labels)"
@@ -6159,10 +6259,9 @@ msgid "Adjust View"
 msgstr "Aðlaga sýn"
 
 #: ../gui/resources.xml:1312
-#, fuzzy
 msgctxt "Menu→View (labels), Accel Editor (labels)"
 msgid "Popup Main Menu"
-msgstr "Sprettvalmynd"
+msgstr "Spretta upp aðalvalmynd"
 
 #: ../gui/resources.xml:1313
 msgctxt "Accel Editor (descriptions)"
@@ -6239,7 +6338,7 @@ msgstr "Lagaspjald"
 #: ../gui/resources.xml:1374
 msgctxt "Accel Editor (descriptions)"
 msgid "Dockable panel for managing layers."
-msgstr ""
+msgstr "Tengjanlegt spjald fyrir umsýslu laga."
 
 #: ../gui/resources.xml:1382
 msgctxt "Menu→Layers (labels), Accel Editor (labels)"
@@ -6305,10 +6404,9 @@ msgid "HSV Square"
 msgstr "HSV-ferningur"
 
 #: ../gui/resources.xml:1428
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Dockable color selector: HSV square with Hue ring."
-msgstr "Tengjanlegt litaspjald með sammiðja HSV-hringjum."
+msgstr "Tengjanlegt litaspjald: HSV-ferningur með litblæs-hring."
 
 #: ../gui/resources.xml:1435
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
@@ -6358,7 +6456,7 @@ msgstr "Krassblaðsspjald"
 #: ../gui/resources.xml:1470
 msgctxt "Accel Editor (descriptions)"
 msgid "Dockable Panel for mixing colors and testing brushes."
-msgstr ""
+msgstr "Tengjanlegt spjald fyrir blöndun lita og prófun á penslum."
 
 #: ../gui/resources.xml:1478
 msgctxt "Menu→Scratchpad (labels), Accel Editor (labels)"
@@ -6378,7 +6476,7 @@ msgstr "Birta forskoðunarspjald"
 #: ../gui/resources.xml:1489
 msgctxt "Accel Editor (descriptions)"
 msgid "Dockable panel for an overview and navigation of the whole canvas."
-msgstr ""
+msgstr "Tengjanlegt spjald með yfirsýn og flakk um myndflötinn."
 
 #: ../gui/resources.xml:1497
 msgctxt "Menu→View (labels), Accel Editor (labels)"
@@ -6398,7 +6496,7 @@ msgstr "Spjald fyrir valkosti verkfæra"
 #: ../gui/resources.xml:1509
 msgctxt "Accel Editor (descriptions)"
 msgid "Dockable panel for adjusting the options with the activated tool."
-msgstr ""
+msgstr "Tengjanlegt spjald til að aðlaga valkosti virkjaðs verkfæris."
 
 #: ../gui/resources.xml:1517
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
@@ -6418,7 +6516,7 @@ msgstr "Ferilsspjald fyrir pensla og liti"
 #: ../gui/resources.xml:1529
 msgctxt "Accel Editor (descriptions)"
 msgid "Dockable panel for viewing recently changed colors and brushes."
-msgstr ""
+msgstr "Tengjanlegt spjald til að skoða nýbreytta liti og pensla."
 
 #: ../gui/resources.xml:1537
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
@@ -6823,17 +6921,17 @@ msgid "Pick Color: set the painting color from screen pixels."
 msgstr "Litaplokkari: stilltu málunarlit eftir mynddílum á skjánum."
 
 #: ../gui/resources.xml:1897
-#, fuzzy
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "Pick Color Hue"
-msgstr "Veldu lit"
+msgstr "Veldu litblæ"
 
 #: ../gui/resources.xml:1898
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid ""
 "Set the painting Hue from screen pixels while preserving the Chroma and Luma."
-msgstr "Stilltu málunarlit eftir mynddílum á skjánum."
+msgstr ""
+"Stilltu málunarlitblæ (hue) eftir mynddílum á skjánum á meðan haldið er í "
+"litgildi (chroma) og litljóma (luma)."
 
 #: ../gui/resources.xml:1906
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
@@ -6841,24 +6939,25 @@ msgid "Pick Color Chroma"
 msgstr "Veldu litgildi (chroma)"
 
 #: ../gui/resources.xml:1907
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid ""
 "Set the painting Chroma from screen pixels while preserving the Hue and Luma."
-msgstr "Stilltu málunarlit eftir mynddílum á skjánum."
+msgstr ""
+"Stilltu málunarlitgildi (chroma) eftir mynddílum á skjánum á meðan haldið er "
+"í litblæ (hue) og litljóma (luma)."
 
 #: ../gui/resources.xml:1915
-#, fuzzy
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "Pick Color Luma"
-msgstr "Veldu lit"
+msgstr "Veldu litbjarma (luma)"
 
 #: ../gui/resources.xml:1916
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid ""
 "Set the painting Luma from screen pixels while preserving the Hue and Chroma."
-msgstr "Stilltu málunarlit eftir mynddílum á skjánum."
+msgstr ""
+"Stilltu málunarlitljóma (luma) eftir mynddílum á skjánum á meðan haldið er í "
+"litblæ (hue) og litgildi (chroma)."
 
 #: ../gui/resources.xml:1924
 msgctxt "Menu→Color (labels), Accel Editor (labels)"

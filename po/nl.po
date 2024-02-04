@@ -7,8 +7,8 @@ msgstr ""
 "Project-Id-Version: mypaint v1.2.0-593-g4e3245d\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-04-17 23:27+0200\n"
-"PO-Revision-Date: 2017-09-15 10:45+0000\n"
-"Last-Translator: Just Vecht <justvecht@ziggo.nl>\n"
+"PO-Revision-Date: 2023-11-23 18:03+0000\n"
+"Last-Translator: Ranforingus <ranforingus@hotmail.com>\n"
 "Language-Team: Dutch <https://hosted.weblate.org/projects/mypaint/mypaint/nl/"
 ">\n"
 "Language: nl\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 2.17-dev\n"
+"X-Generator: Weblate 5.2.1-rc\n"
 
 #: ../gui/accelmap.py:86
 msgctxt "placeholder for keymap filtering"
@@ -171,7 +171,7 @@ msgstr "Gdk-Pixbuf kan \"{filename}\" niet openen met de melding: \"{error}\""
 #: ../gui/backgroundwindow.py:382
 #, python-brace-format
 msgid "{filename} has zero size (w={w}, h={h})"
-msgstr "{filename} heeft als grootte nul  (w={w}, h={h})"
+msgstr "{filename} heeft als grootte nul (w={w}, h={h})"
 
 #: ../gui/brusheditor.py:117
 msgctxt "brush settings editor: subwindow title"
@@ -272,7 +272,7 @@ msgstr "Geen penseel gekozen!"
 #, python-brace-format
 msgctxt "brush settings editor: delete brush: confirm dialog question"
 msgid "Really delete brush “{brush_name}” from disk?"
-msgstr "Penseel  \"{brush_name}\" echt verwijderen?"
+msgstr "Penseel \"{brush_name}\" echt verwijderen?"
 
 #: ../gui/brusheditor.py:740
 msgctxt "brush settings editor: header: fallback name"
@@ -506,10 +506,10 @@ msgid "{original_name} copy {n}"
 msgstr ""
 
 #: ../gui/brushselectionwindow.py:325
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgctxt "brush group: context menu: remove from group"
 msgid "Really remove brush “{brush_name}” from group “{group_name}”?"
-msgstr "Penseel  \"{brush_name}\" echt verwijderen?"
+msgstr "Penseel \"{brush_name}\" echt verwijderen?"
 
 #. TRANSLATORS: number of brushes in a brush group, for tooltips
 #: ../gui/brushselectionwindow.py:381
@@ -1477,7 +1477,7 @@ msgstr "Herhaal"
 #: ../gui/document.py:195
 #, python-format
 msgid "Undo %s"
-msgstr "Annuleren  %s"
+msgstr "Annuleren %s"
 
 #: ../gui/document.py:196
 msgid "Undo"
@@ -2088,7 +2088,6 @@ msgid "Sample Merged"
 msgstr "Vlakken samenvoegen"
 
 #: ../gui/fill.py:602
-#, fuzzy
 msgctxt "fill options: Sample Merged (tooltip)"
 msgid ""
 "When considering which area to fill, use a\n"
@@ -2096,7 +2095,7 @@ msgid ""
 "underneath the current layer"
 msgstr ""
 "Om het te vullen gebied te bepalen kan je alle zichtbare lagen samenvoegen "
-"in een  laag onder de huidige laag"
+"in een laag onder de huidige laag"
 
 #: ../gui/fill.py:618
 #, fuzzy
@@ -4726,7 +4725,7 @@ msgid ""
 "The set of colors to show as primary on disk-style color wheels.\n"
 "Different traditions have different color harmonies."
 msgstr ""
-"Hoe kleuren worden getoond als primaire kleuren  op kleurenwielen (in schijf "
+"Hoe kleuren worden getoond als primaire kleuren op kleurenwielen (in schijf "
 "stijl).\n"
 "Verschillende tradities hebben hun eigen kleurencombinaties."
 
@@ -5898,7 +5897,7 @@ msgstr "Frame actief"
 #: ../gui/resources.xml:865
 msgctxt "Accel Editor (descriptions)"
 msgid "Toggle visibility of the document frame."
-msgstr "Zichtbaarheid van het document frame aan- of  uitzetten."
+msgstr "Zichtbaarheid van het document frame aan- of uitzetten."
 
 #: ../gui/resources.xml:874
 msgctxt "Menu→Help→Debug (labels), Accel Editor (labels)"
@@ -6801,8 +6800,7 @@ msgstr "Verplaats beeld"
 #: ../gui/resources.xml:1668
 msgctxt "Accel Editor (descriptions)"
 msgid "Interactively move your view of the canvas horizontally or vertically."
-msgstr ""
-"Verplaats het beeld op het canvas interactief  horizontaal of verticaal."
+msgstr "Verplaats het beeld op het canvas interactief horizontaal of verticaal."
 
 #: ../gui/resources.xml:1677
 msgctxt "Menu→Edit→Current Mode (labels)"

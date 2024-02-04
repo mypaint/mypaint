@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: mypaint v2.0.0-alpha.8-1-g4490f06\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-04-17 23:27+0200\n"
-"PO-Revision-Date: 2021-03-26 12:29+0000\n"
+"PO-Revision-Date: 2021-12-20 17:51+0000\n"
 "Last-Translator: Milo Ivir <mail@milotype.de>\n"
 "Language-Team: Croatian <https://hosted.weblate.org/projects/mypaint/mypaint/"
 "hr/>\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
 "%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
-"X-Generator: Weblate 4.5.2\n"
+"X-Generator: Weblate 4.10\n"
 
 #: ../gui/accelmap.py:86
 msgctxt "placeholder for keymap filtering"
@@ -207,7 +207,7 @@ msgstr "Otisci"
 #: ../gui/brusheditor.py:365
 msgctxt "brush settings list: setting group"
 msgid "Smudge"
-msgstr "Mrljanje"
+msgstr "Razmazivanje"
 
 #: ../gui/brusheditor.py:379
 msgctxt "brush settings list: setting group"
