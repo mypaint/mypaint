@@ -170,7 +170,8 @@ def with_wait_cursor(func):
     """python decorator that adds a wait cursor around a function"""
     @functools.wraps(func)
     def wrapper(self, *args, **kwargs):
-        wait_cursor = Gdk.Cursor.new(Gdk.CursorType.WATCH)
+        wait_cursor = Gdk.Cursor.new_from_name(
+            Gdk.Display.get_default(), "wait")
         toplevels = Gtk.Window.list_toplevels()
         toplevels = [t for t in toplevels if t.get_window() is not None]
         for toplevel in toplevels:
