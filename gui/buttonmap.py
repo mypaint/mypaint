@@ -561,7 +561,7 @@ class ButtonMappingEditor (Gtk.EventBox):
         window = evbox.get_window()
         disp = window.get_display()
         try:  # Wayland themes are a bit incomplete
-            cursor = Gdk.Cursor.new_for_display(disp, Gdk.CursorType.CROSSHAIR)
+            cursor = Gdk.Cursor.new_from_name(disp, "crosshair")
             window.set_cursor(cursor)
         except Exception:
             logger.exception("Cursor setting failed")  # and otherwise ignore

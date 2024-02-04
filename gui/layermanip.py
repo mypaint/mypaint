@@ -165,8 +165,7 @@ class LayerMoveMode (gui.mode.ScrollableModeMixin,
             tdw.set_sensitive(False)
 
             window = tdw.get_window()
-            cursor = Gdk.Cursor.new_for_display(
-                window.get_display(), Gdk.CursorType.WATCH)
+            cursor = Gdk.Cursor.new_from_name(window.get_display(), "wait")
             tdw.set_override_cursor(cursor)
 
             self.final_modifiers = self.current_modifiers()

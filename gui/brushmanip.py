@@ -201,7 +201,7 @@ class BrushResizeMode(gui.mode.OneshotDragMode):
 
     @property
     def active_cursor(self):
-        return Gdk.Cursor.new(Gdk.CursorType.BLANK_CURSOR)
+        return Gdk.Cursor.new_from_name(Gdk.Display.get_default(), "none")
 
     def enter(self, doc, **kwds):
         super(BrushResizeMode, self).enter(doc, **kwds)
