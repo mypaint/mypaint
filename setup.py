@@ -81,7 +81,7 @@ class BuildTranslations (Command):
 
     @staticmethod
     def all_locales():
-        return [f[:-3] for f in os.listdir("./po/") if f.endswith('.po')]
+        return [f[:-3] for f in os.listdir("./data/po/") if f.endswith('.po')]
 
     @staticmethod
     def get_translation_paths(command, lang_codes=None):
@@ -188,7 +188,7 @@ class BuildConfig (Command):
     share the same prefix as the mypaint installation.
     """
 
-    description = "generate lib/config.py using fetched or provided values"
+    description = "generate src/lib/config.py using fetched or provided values"
     user_options = [
         ("brushdir-path=", None,
          "use the provided argument as brush directory path"),
@@ -245,7 +245,7 @@ class BuildConfig (Command):
             'libmypaint_locale_dir': self.get_libmypaint_locale_dir(),
             'supported_locales': locstring,
         }
-        self.instantiate_template('config.py.in', 'lib/config.py', conf_vars)
+        self.instantiate_template('config.py.in', 'src/lib/config.py', conf_vars)
 
     def get_libmypaint_locale_dir(self):
         path = self.libmypaint_locale_path
@@ -542,7 +542,7 @@ class Clean (clean):
     """
 
     def run(self):
-        build_temp_files = glob.glob("lib/mypaintlib_wrap.c*")
+        build_temp_files = glob.glob("src/lib/mypaintlib_wrap.c*")
         for file in build_temp_files:
             self.announce("removing %r" % (file,), level=2)
             os.unlink(file)
@@ -971,18 +971,18 @@ def get_ext_modules():
     mypaintlib = Extension(
         'lib._mypaintlib',
         [
-            'lib/mypaintlib.i',
-            'lib/gdkpixbuf2numpy.cpp',
-            'lib/pixops.cpp',
-            'lib/fastpng.cpp',
-            'lib/brushsettings.cpp',
-            'lib/fill/fill_common.cpp',
-            'lib/fill/fill_constants.cpp',
-            'lib/fill/floodfill.cpp',
-            'lib/fill/gap_closing_fill.cpp',
-            'lib/fill/gap_detection.cpp',
-            'lib/fill/blur.cpp',
-            'lib/fill/morphology.cpp',
+            'src/lib/mypaintlib.i',
+            'src/lib/gdkpixbuf2numpy.cpp',
+            'src/lib/pixops.cpp',
+            'src/lib/fastpng.cpp',
+            'src/lib/brushsettings.cpp',
+            'src/lib/fill/fill_common.cpp',
+            'src/lib/fill/fill_constants.cpp',
+            'src/lib/fill/floodfill.cpp',
+            'src/lib/fill/gap_closing_fill.cpp',
+            'src/lib/fill/gap_detection.cpp',
+            'src/lib/fill/blur.cpp',
+            'src/lib/fill/morphology.cpp',
         ],
         swig_opts=mypaintlib_swig_opts,
         language='c++',
@@ -1050,8 +1050,8 @@ setup(
         "clean": Clean,
     },
     scripts=[
-        "mypaint.py",
-        "desktop/mypaint-ora-thumbnailer.py",
+        "src/mypaint.py",
+        "data/desktop/mypaint-ora-thumbnailer.py",
     ],
     test_suite='tests',
     ext_modules=get_ext_modules(),
