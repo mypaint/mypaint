@@ -8,8 +8,8 @@ msgstr ""
 "Project-Id-Version: mypaint v1.2.0-beta.3-43-g9e683e2\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-04-17 23:27+0200\n"
-"PO-Revision-Date: 2021-04-27 07:37+0000\n"
-"Last-Translator: liu lizhi <kz-xy@163.com>\n"
+"PO-Revision-Date: 2022-07-22 16:17+0000\n"
+"Last-Translator: poi <erbaotao@outlook.com>\n"
 "Language-Team: Chinese (Simplified) <https://hosted.weblate.org/projects/"
 "mypaint/mypaint/zh_Hans/>\n"
 "Language: zh_CN\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 4.7-dev\n"
+"X-Generator: Weblate 4.14-dev\n"
 
 #: ../gui/accelmap.py:86
 msgctxt "placeholder for keymap filtering"
@@ -198,7 +198,7 @@ msgstr "不透明度"
 #: ../gui/brusheditor.py:354
 msgctxt "brush settings list: setting group"
 msgid "Dabs"
-msgstr "笔触点"
+msgstr "笔尖印迹"
 
 #: ../gui/brusheditor.py:365
 msgctxt "brush settings list: setting group"
@@ -223,7 +223,7 @@ msgstr "跟踪"
 #: ../gui/brusheditor.py:422
 msgctxt "brush settings list: setting group"
 msgid "Stroke"
-msgstr "笔触"
+msgstr "笔画"
 
 #: ../gui/brusheditor.py:433
 msgctxt "brush settings list: setting group"
@@ -698,12 +698,12 @@ msgstr ""
 #: ../gui/colors/hcywheel.py:87
 msgctxt "Color Wheels: activity toggle: action title"
 msgid "Gamut Mask Active"
-msgstr "色域遮罩生效"
+msgstr "色域蒙版生效"
 
 #: ../gui/colors/hcywheel.py:91
 msgctxt "Color Wheels: activity toggle: action tooltip"
 msgid "Limit your palette for specific moods using a gamut mask."
-msgstr "为特定的气氛使用色域遮罩限制你的调色板。"
+msgstr "为特定的气氛使用色域蒙版限制你的色板。"
 
 #: ../gui/colors/hcywheel.py:355
 msgctxt "HCY Color Wheel: tooltip"
@@ -715,7 +715,7 @@ msgctxt "HCY Mask Editor Wheel: tooltip"
 msgid ""
 "Gamut mask editor. Click in the middle to create or manipulate shapes, or "
 "rotate the mask using the edges of the disc."
-msgstr "色域遮罩编辑器。点击中间创建、调整形状，或者使用圆盘的边缘旋转遮罩。"
+msgstr "色域蒙版编辑器。点击中间创建、调整形状，或者使用圆盘的边缘旋转蒙版。"
 
 #: ../gui/colors/hcywheel.py:910
 msgctxt "HCY Gamut Mask template name"
@@ -749,7 +749,7 @@ msgctxt "HCY Gamut Mask template description"
 msgid ""
 "Contrasting opposites, balanced by having central neutrals between them on "
 "the color wheel."
-msgstr "对比对立，并通过色轮上的中央中性色在它们进行平衡。"
+msgstr "对立色显示在相对的位置，通过色轮中央的中性色在它们之间进行平衡。"
 
 #: ../gui/colors/hcywheel.py:957
 msgctxt "HCY Gamut Mask template name"
@@ -778,12 +778,12 @@ msgstr "两种类似的颜色以及它们的补色，它们当中没有间色。
 #: ../gui/colors/hcywheel.py:985
 msgctxt "HCY Gamut Mask new-from-template dialog: window title"
 msgid "New Gamut Mask from Template"
-msgstr "从模板创建新色域遮罩"
+msgstr "从模板创建新色域蒙版"
 
 #: ../gui/colors/hcywheel.py:1054
 msgctxt "HCY Gamut Mask Editor dialog: window title"
 msgid "Gamut Mask Editor"
-msgstr "色域遮罩编辑器"
+msgstr "色域蒙版编辑器"
 
 #: ../gui/colors/hcywheel.py:1078
 msgctxt "HCY Gamut Mask Editor dialog: mask-is-active checkbox"
@@ -803,12 +803,12 @@ msgstr "从模板创建蒙版。"
 #: ../gui/colors/hcywheel.py:1112
 msgctxt "HCY Mask Editor: action button tooltips"
 msgid "Load mask from a GIMP palette file."
-msgstr "从 GIMP 调色板文件加载遮罩。"
+msgstr "从 GIMP 色板文件加载蒙版。"
 
 #: ../gui/colors/hcywheel.py:1116
 msgctxt "HCY Mask Editor: action button tooltips"
 msgid "Save mask to a GIMP palette file."
-msgstr "保存遮罩到GIMP调色板文件。"
+msgstr "保存蒙版到 GIMP 色板文件。"
 
 #: ../gui/colors/hcywheel.py:1120
 msgctxt "HCY Mask Editor: action button tooltips"
@@ -823,12 +823,12 @@ msgstr "在 web 浏览器中打开该对话框的在线帮助。"
 #: ../gui/colors/hcywheel.py:1191
 msgctxt "HCY Gamut Mask load dialog: window title"
 msgid "Save Mask as a GIMP Palette"
-msgstr "保存遮罩为 GIMP 调色板"
+msgstr "保存蒙版为 GIMP 色板"
 
 #: ../gui/colors/hcywheel.py:1208
 msgctxt "HCY Gamut Mask load dialog: window title"
 msgid "Load Mask from a GIMP Palette"
-msgstr "从 GIMP 调色板加载遮罩"
+msgstr "从 GIMP 色板加载蒙版"
 
 #: ../gui/colors/hcywheel.py:1281
 msgctxt "HCY Wheel color adjuster page: properties tooltip."
@@ -845,7 +845,7 @@ msgctxt "HCY Wheel color adjuster page: description for tooltips etc."
 msgid ""
 "Set the color using cylindrical hue/chroma/luma space. The circular slices "
 "are equiluminant."
-msgstr "使用色相/色度/亮度空间圆柱设置颜色。圆片亮度是同等的。"
+msgstr "使用色相/色度/亮度空间圆柱调整颜色。圆柱的每个圆截面上色彩的亮度相同。"
 
 #. Tooltip mappings, indexed by whatever the slider currently represents
 #: ../gui/colors/hsvcube.py:46 ../gui/colors/hsvsquare.py:133
@@ -882,15 +882,16 @@ msgstr "HSV 立方体"
 
 #: ../gui/colors/hsvcube.py:89
 msgid "An HSV cube which can be rotated to show different planar slices."
-msgstr "HSV 立方体(旋转可显示不同的平面切片)。"
+msgstr "显示 HSV 立方体的某切面（切面位置可调）。旋转立方体相当于切换色相、饱和度与明"
+"度的调整位置。"
 
 #: ../gui/colors/hsvsquare.py:56
 msgid "HSV Square"
-msgstr "HSV 方格"
+msgstr "HSV 正方形"
 
 #: ../gui/colors/hsvsquare.py:60
 msgid "An HSV Square which can be rotated to show different hues."
-msgstr "一个 HSV 正方形(旋转可显示不同的色相)。"
+msgstr "调整饱和度与明度的正方形，加上调整色相的色相环。"
 
 #: ../gui/colors/hsvwheel.py:91
 msgid "HSV Wheel"
@@ -903,42 +904,42 @@ msgstr "饱和度和明度颜色修改器。"
 #: ../gui/colors/paletteview.py:67
 msgctxt "palette panel: properties button tooltip"
 msgid "Palette properties"
-msgstr "调色板属性"
+msgstr "色板属性"
 
 #: ../gui/colors/paletteview.py:76
 msgctxt "palette panel tab tooltip title"
 msgid "Palette"
-msgstr "调色板"
+msgstr "色板"
 
 #: ../gui/colors/paletteview.py:82
 msgctxt "palette panel tab tooltip description"
 msgid "Set the color from a loadable, editable palette."
-msgstr "通过一个可加载的、 可编辑的调色板设置颜色。"
+msgstr "通过一个可加载的、 可编辑的色板设置颜色。"
 
 #: ../gui/colors/paletteview.py:108
 msgctxt "palette editor dialog: palette name entry"
 msgid "Untitled Palette"
-msgstr "无标题调色板"
+msgstr "无标题色板"
 
 #: ../gui/colors/paletteview.py:114
 msgctxt "palette editor dialog: title"
 msgid "Palette Editor"
-msgstr "调色板编辑器"
+msgstr "色板编辑器"
 
 #: ../gui/colors/paletteview.py:160
 msgctxt "palette editor dialog: action buttons: tooltips"
 msgid "Load from a GIMP palette file"
-msgstr "从 GIMP 调色板加载"
+msgstr "从 GIMP 色板加载"
 
 #: ../gui/colors/paletteview.py:164
 msgctxt "palette editor dialog: action buttons: tooltips"
 msgid "Save to a GIMP palette file"
-msgstr "保存至 GIMP 调色板文件"
+msgstr "保存至 GIMP 色板文件"
 
 #: ../gui/colors/paletteview.py:168
 msgctxt "palette editor dialog: action buttons: tooltips"
 msgid "Add a new empty swatch"
-msgstr "添加一个新的空色板"
+msgstr "添加一个新的空样本"
 
 #: ../gui/colors/paletteview.py:172
 msgctxt "palette editor dialog: action buttons: tooltips"
@@ -958,7 +959,7 @@ msgstr "标题："
 #: ../gui/colors/paletteview.py:194
 msgctxt "palette editor dialog: palette name/title entry: tooltip"
 msgid "Name or description for this palette"
-msgstr "调色板名称及描述"
+msgstr "色板名称及描述"
 
 #: ../gui/colors/paletteview.py:206
 msgctxt "palette editor dialog: number-of-columns spinbutton: title"
@@ -983,17 +984,17 @@ msgstr "当前颜色名称"
 #: ../gui/colors/paletteview.py:322
 msgctxt "palette editor dialog: color name entry"
 msgid "Empty palette slot"
-msgstr "空调色板位置"
+msgstr "空色板位置"
 
 #: ../gui/colors/paletteview.py:378
 msgctxt "palette load dialog: title"
 msgid "Load palette"
-msgstr "加载调色板"
+msgstr "加载色板"
 
 #: ../gui/colors/paletteview.py:391
 msgctxt "palette save dialog: title"
 msgid "Save palette"
-msgstr "保存调色板"
+msgstr "保存色板"
 
 #: ../gui/colors/paletteview.py:543
 msgctxt "palette view"
@@ -1002,14 +1003,14 @@ msgid ""
 "Drop colors here,\n"
 "drag them to organize."
 msgstr ""
-"调色板。\n"
+"色板。\n"
 "放置颜色到这里，\n"
 "拖动以重新组织颜色。"
 
 #: ../gui/colors/paletteview.py:702
 msgctxt "palette view"
 msgid "Empty palette slot (drag a color here)"
-msgstr "空调色板位置(拖放颜色至此)"
+msgstr "空色板位置(拖放颜色至此)"
 
 #. TRANSLATORS: inserting gaps (empty color swatches)
 #: ../gui/colors/paletteview.py:789
@@ -1043,14 +1044,15 @@ msgstr "填补空白 (HCY)"
 
 #. TRANSLATORS: Color interpolations
 #: ../gui/colors/paletteview.py:825
+#, fuzzy
 msgctxt "palette view: context menu"
 msgid "Fill Gap (HSV)"
-msgstr "填补空白 (HSV)"
+msgstr "过渡色差 (HSV)"
 
 #: ../gui/colors/paletteview.py:1283
 msgctxt "palette load dialog: filters"
 msgid "GIMP palette file (*.gpl)"
-msgstr "GIMP 调色板(*.gpl)"
+msgstr "GIMP 色板(*.gpl)"
 
 #: ../gui/colors/paletteview.py:1290
 msgctxt "palette load dialog: filters"
@@ -1060,7 +1062,7 @@ msgstr "全部文件(*)"
 #: ../gui/colors/paletteview.py:1332
 msgctxt "palette save dialog: filters"
 msgid "GIMP palette file (*.gpl)"
-msgstr "GIMP 调色板文件(*.gpl)"
+msgstr "GIMP 色板文件(*.gpl)"
 
 #: ../gui/colors/paletteview.py:1339
 msgctxt "palette save dialog: filters"
@@ -1100,7 +1102,7 @@ msgstr "Y"
 #: ../gui/colors/sliders.py:109
 msgctxt "color sliders panel: tab title (in tooltip)"
 msgid "Component Sliders"
-msgstr "构成要素滚动条"
+msgstr "坐标滑动条"
 
 #: ../gui/colors/sliders.py:116
 msgctxt "color sliders panel: tab description (in tooltip)"
@@ -1170,7 +1172,7 @@ msgstr "同心环"
 #: ../gui/colortools.py:159
 msgctxt "color changer dock panels: tab tooltip description"
 msgid "Change color using concentric HSV rings."
-msgstr "通过HSV同心环改变颜色。"
+msgstr "用表示 HSV 的 3 个同心环调整颜色。"
 
 #: ../gui/colortools.py:169
 msgctxt "color changer dock panels: tab tooltip title"
@@ -1180,7 +1182,7 @@ msgstr "交叉碗"
 #: ../gui/colortools.py:173
 msgctxt "color changer dock panels: tab tooltip description"
 msgid "Change color with HSV ramps crossing a radial bowl of color."
-msgstr "通过穿过辐射状的碗形颜色的HSV坡道改变颜色。"
+msgstr "使用色碗以及其上辐射状的 HSV 色条调整颜色。"
 
 #: ../gui/compatibility.py:34
 msgctxt "File Load Compat Options"
@@ -1235,6 +1237,12 @@ msgid ""
 "\n"
 "To be safe you should upgrade to MyPaint {new_version} or newer."
 msgstr ""
+"“{filename}” 是用 <b>MyPaint {new_version}</b>保存的。 它和 <b>Mypaint "
+"{current_version}</b> 不完全兼容。\n"
+"\n"
+"使用这版本 MyPaint 保存后会丢失只有新版才支持的内容。\n"
+"\n"
+"为了文件着想，您应该升级到 MyPaint {new_version} 或更新版本。"
 
 #: ../gui/compatibility.py:65
 msgctxt "file compatibility question"
@@ -1300,7 +1308,7 @@ msgstr "鼠标"
 #: ../gui/device.py:65
 msgctxt "prefs: device's type label"
 msgid "Pen"
-msgstr "钢笔"
+msgstr "笔"
 
 #: ../gui/device.py:69
 msgctxt "prefs: device's type label"
@@ -1637,7 +1645,7 @@ msgstr "已使用外部编辑更新层 “{layer_name}”"
 #, python-brace-format
 msgctxt "Edit in External App (statusbar message)"
 msgid "Failed to update layer with external edits from “{file_basename}”."
-msgstr ""
+msgstr "无法使用来自 “{file_basename}” 的外部编辑器更新图层。"
 
 #: ../gui/externalapp.py:146
 #, python-brace-format
@@ -1658,7 +1666,7 @@ msgstr ""
 
 #: ../gui/externalapp.py:156
 msgid "Open With…"
-msgstr "打开通过…"
+msgstr "打开方式…"
 
 #: ../gui/externalapp.py:208
 msgid "Icon"
@@ -1766,7 +1774,7 @@ msgstr "已加载 {files_summary}。"
 #, python-brace-format
 msgid "{n} file"
 msgid_plural "{n} files"
-msgstr[0] ""
+msgstr[0] "{n} 文件"
 
 #: ../gui/filehandling.py:223
 #, python-brace-format
@@ -1807,12 +1815,12 @@ msgstr "OpenRaster (*.ora)"
 #: ../gui/filehandling.py:503
 msgctxt "save dialogs: save formats and options"
 msgid "PNG, respecting “Show Background” (*.png)"
-msgstr ""
+msgstr "PNG, 当前视图显示背景 (*.png)"
 
 #: ../gui/filehandling.py:507
 msgctxt "save dialogs: save formats and options"
 msgid "PNG, solid RGB (*.png)"
-msgstr ""
+msgstr "PNG, 只含有RGB通道 (*.png)"
 
 #: ../gui/filehandling.py:511
 msgctxt "save dialogs: save formats and options"
@@ -1822,7 +1830,7 @@ msgstr "PNG 透明 RGBA (*.png)"
 #: ../gui/filehandling.py:515
 msgctxt "save dialogs: save formats and options"
 msgid "Multiple PNGs, by layer (*.NUM.png)"
-msgstr "多个 PNG 图片，分图层导出 (*.NUM.png)"
+msgstr "多张 PNG 图片，分图层导出 (*.NUM.png)"
 
 #: ../gui/filehandling.py:519
 msgctxt "save dialogs: save formats and options"
@@ -1906,7 +1914,7 @@ msgstr "打开文件"
 #: ../gui/filehandling.py:1084
 msgctxt "load dialogs: title"
 msgid "Open Scratchpad…"
-msgstr "打开暂存区…"
+msgstr "打开调色板…"
 
 #: ../gui/filehandling.py:1126
 msgctxt "Layers→Import Layers: files-chooser dialog: title"
@@ -1956,7 +1964,7 @@ msgstr "打开(_O)"
 #: ../gui/filehandling.py:1512
 msgctxt "File→Revert: status message: canvas has no filename yet"
 msgid "Cannot revert: canvas has not been saved to a file yet."
-msgstr ""
+msgstr "无法还原：画布尚未保存到文件中。"
 
 #: ../gui/filehandling.py:1519
 msgctxt "File→Revert confirm dialog: title"
@@ -1973,7 +1981,7 @@ msgctxt ""
 "Name of the fill mode\n"
 "In other software, 'Flood Fill' is also known as 'Bucket Fill' or just 'Fill'"
 msgid "Flood Fill"
-msgstr "满水法填充"
+msgstr "油漆桶"
 
 #: ../gui/fill.py:129
 msgctxt "Usage description of the Flood Fill mode"
@@ -2049,6 +2057,9 @@ msgid ""
 "If the view is rotated, the fill will be limited to the\n"
 "smallest canvas-aligned rectangle that can fit the view."
 msgstr ""
+"基于视区限制可以填充的区域。\n"
+"如果视图是旋转的，填充将被限制在\n"
+"画布对齐视图的最小矩形。"
 
 #: ../gui/fill.py:641
 msgctxt ""
@@ -2083,7 +2094,7 @@ msgstr ""
 #: ../gui/fill.py:670
 msgctxt "fill options: Target | Blend Mode dropdown - warning text"
 msgid "This mode does nothing when alpha locking is enabled!"
-msgstr ""
+msgstr "启用 alpha 锁定时该模式没有任何作用！"
 
 #: ../gui/fill.py:684
 msgctxt "fill options: Target | Blend Mode dropdown (tooltip)"
@@ -2107,7 +2118,7 @@ msgstr "偏移："
 #: ../gui/fill.py:741
 msgctxt "fill options: Offset (tooltip)"
 msgid "The distance in pixels to grow or shrink the fill"
-msgstr ""
+msgstr "以像素为单位扩大或缩小填充区域"
 
 #: ../gui/fill.py:752
 msgctxt "fill options: numeric option for blurring fill (label)"
@@ -2117,12 +2128,12 @@ msgstr "羽化："
 #: ../gui/fill.py:767
 msgctxt "fill options: Feather (tooltip)"
 msgid "The amount of blur to apply to the fill"
-msgstr ""
+msgstr "应用于填充区域边缘的模糊量"
 
 #: ../gui/fill.py:783
 msgctxt "fill options: gap detection toggle (label)"
 msgid "Use Gap Detection"
-msgstr ""
+msgstr "使用间隙检测"
 
 #: ../gui/fill.py:788
 msgctxt "fill options: Use Gap Detection (tooltip)"
@@ -2131,11 +2142,13 @@ msgid ""
 "Note: This can be a lot slower than the regular fill, only enable when you "
 "need it."
 msgstr ""
+"尝试发现间隙而不是通过它们填充出去。\n"
+"注意：这可能会比常规填充慢很多，仅在您需要时启用。"
 
 #: ../gui/fill.py:806
 msgctxt "fill options: gap-detection sub-option, numeric setting (label)"
 msgid "Max Gap Size:"
-msgstr ""
+msgstr "最大间隙大小:"
 
 #: ../gui/fill.py:821
 msgctxt "fill options: Max Gap Size (tooltip)"
@@ -2143,6 +2156,8 @@ msgid ""
 "The size of the largest gaps that can be detected.\n"
 "Using large values can make the fill run a lot slower."
 msgstr ""
+"可以检测到的最大间隙的大小。\n"
+"使用较大的数值会让填充变慢。"
 
 #: ../gui/fill.py:834
 msgctxt ""
@@ -2158,6 +2173,8 @@ msgid ""
 "Try to prevent the fill from seeping into the gaps.\n"
 "If a fill starts in a detected gap, this option will do nothing."
 msgstr ""
+"尽可能防止填充渗漏出间隙。\n"
+"如果在检测到的间隙处开始填充，则此选项无作用。"
 
 #: ../gui/fill.py:851 ../gui/mode.py:639
 msgid "Reset"
@@ -2279,7 +2296,7 @@ msgstr "徒手绘图"
 
 #: ../gui/freehand.py:92
 msgid "Paint free-form brush strokes"
-msgstr "绘画形式自由的画笔笔触"
+msgstr "绘制自由形式的笔刷笔画"
 
 #. TRANSLATORS: Short alias for "Slow position tracking". This is
 #. TRANSLATORS: used on the options panel.
@@ -2372,23 +2389,28 @@ msgid ""
 msgstr ""
 "            #### 描述\n"
 "\n"
-"            为该报告提供一个简短的描述性的标题。\n"
-"            如果可以，请提供形如\"[feature-that-broke]: [what-went-wrong]\"的"
-"标题。\n"
-"            接着请把这个文本替换为一段长一些的缺陷描述。\n"
-"            有屏幕截图或者录屏也非常好！            \n"
+"            给这份报告起一个简短的描述性标题。\n"
+"            使用类似\n"
+"            \"[feature-that-broke]: [what-went-wrong]\"\n"
+"            这样的东西作为标题, 如果你可以的话。\n"
+"            接着请用这个 bug 的较长描述\n"
+"            替换这段文本。\n"
+"            截图或视频也很棒！\n"
 "\n"
 "            #### 重现步骤\n"
 "\n"
-"            请告诉我们在错误信息出现之前，你做了什么。\n"
-"            如果你能够提供重现缺陷的步骤，那最好。\n"
-"            \n"
-"            #### 追踪\n"
+"            请告诉我们弹出错误信息时\n"
+"            你在做什么？\n"
+"            如果你能一步一步地告知 \n"
+"            如何重现这个 bug，\n"
+"            那就更好了。\n"
+"\n"
+"            #### 回溯\n"
 "        "
 
 #: ../gui/inktool.py:97 ../gui/inktool.py:479
 msgid "Inking"
-msgstr "墨迹作图"
+msgstr "描点作图"
 
 #: ../gui/inktool.py:100
 msgid "Draw, and then adjust smooth lines"
@@ -2396,7 +2418,7 @@ msgstr "先画，然后调整成流程的线条"
 
 #: ../gui/inputtestwindow.py:32
 msgid "Input Device Test"
-msgstr "输入装置测试"
+msgstr "输入设备测试"
 
 #: ../gui/inputtestwindow.py:61
 msgid "(no pressure)"
@@ -2412,19 +2434,19 @@ msgstr "倾斜："
 
 #: ../gui/inputtestwindow.py:70
 msgid "(no device)"
-msgstr "(无装置)"
+msgstr "(无设备)"
 
 #: ../gui/inputtestwindow.py:71
 msgid "Device:"
-msgstr "装置："
+msgstr "设备："
 
 #: ../gui/inputtestwindow.py:73
 msgid "(No Barrel Rotation)"
-msgstr ""
+msgstr "（无笔杆旋转）"
 
 #: ../gui/inputtestwindow.py:75
 msgid "Barrel Rotation:"
-msgstr "画桶旋转："
+msgstr "笔杆旋转："
 
 #. TRANSLATORS: Command to move a layer in the horizontal plane,
 #. TRANSLATORS: preserving its position in the stack.
@@ -2475,7 +2497,7 @@ msgstr "?图层"
 #: ../gui/layers.py:959
 msgctxt "Layers: description parts: unknown mode (fallback str!)"
 msgid "?mode"
-msgstr ""
+msgstr "?模式"
 
 #: ../gui/layers.py:966
 msgctxt "Layers: description parts: layer hidden"
@@ -2496,7 +2518,7 @@ msgstr "已锁定"
 #: ../gui/layers.py:989
 msgctxt "Layers: description parts: unknown type (fallback str!)"
 msgid "?type"
-msgstr ""
+msgstr "?类型"
 
 #: ../gui/layers.py:996
 msgctxt "Layers dockable: description parts joiner text"
@@ -2579,7 +2601,7 @@ msgstr "起始压力"
 
 #: ../gui/linemode.py:42
 msgid "Stroke entrance pressure for line tools"
-msgstr "线条工具笔划起始压力"
+msgstr "线条工具笔画起始压力"
 
 #: ../gui/linemode.py:43
 msgid "Midpoint Pressure"
@@ -2587,7 +2609,7 @@ msgstr "中点压力"
 
 #: ../gui/linemode.py:44
 msgid "Mid-Stroke pressure for line tools"
-msgstr "线条工具笔划中间压力"
+msgstr "线条工具笔画中间压力"
 
 #: ../gui/linemode.py:45
 msgid "Exit Pressure"
@@ -2595,7 +2617,7 @@ msgstr "结束压力"
 
 #: ../gui/linemode.py:46
 msgid "Stroke exit pressure for line tools"
-msgstr "线条工具笔划结束压力"
+msgstr "线条工具笔画结束压力"
 
 #: ../gui/linemode.py:47
 msgid "Head"
@@ -2603,7 +2625,7 @@ msgstr "头"
 
 #: ../gui/linemode.py:48
 msgid "Stroke lead-in end"
-msgstr "笔划引入末端"
+msgstr "笔画起头末端"
 
 #: ../gui/linemode.py:49
 msgid "Tail"
@@ -2611,7 +2633,7 @@ msgstr "尾"
 
 #: ../gui/linemode.py:50
 msgid "Stroke trail-off beginning"
-msgstr "笔划开始逐渐消失"
+msgstr "笔画结尾开端"
 
 #: ../gui/linemode.py:174
 msgid "Pressure variation…"
@@ -2642,7 +2664,7 @@ msgstr "绘制一系列直线;Shift键添加曲线， Ctrl 键限制角度"
 
 #: ../gui/linemode.py:827
 msgid "Ellipses and Circles"
-msgstr "椭圆形和圆形"
+msgstr "圆与椭圆"
 
 #: ../gui/linemode.py:830
 msgid "Draw ellipses; Shift rotates, Ctrl constrains ratio/angle"
@@ -2668,11 +2690,9 @@ msgid ""
 "This program is distributed in the hope that it will be useful, but WITHOUT "
 "ANY WARRANTY. See the COPYING file for more details."
 msgstr ""
-"此程序是免费软件;你可以将它重新分发和/或在GNU 通用公共许可的条款下修改并把它"
-"以自由软件基金会的名义出版；许可协议的版本 2，或 (由您选择) 任何之后的版"
-"本。\n"
+"本程序是自由软件；你可以根据自由软件基金会发布的GNU通用公共许可证的条款重新发布它和/或修改它；你可以选择该许可证的第2版，或任何更高的版本。\n"
 "\n"
-"希望此程序的分发是令人满意的，但没有任何担保。请参阅版权文件获取更多细节。"
+"发布这个程序是希望它会有用，但作者不做任何保证。更多细节见 COPYING 文件。"
 
 #: ../gui/meta.py:60
 msgctxt "About dialog: credits: tasks"
@@ -2713,7 +2733,7 @@ msgstr "桌面图标"
 #: ../gui/meta.py:88
 msgctxt "About dialog: credits: tasks: palettes"
 msgid "palettes"
-msgstr "调色板"
+msgstr "色板"
 
 #: ../gui/meta.py:93
 msgctxt "About dialog: credits: tasks: docs, manuals and HOWTOs"
@@ -2807,7 +2827,7 @@ msgstr "缩放：%.01f%%"
 #: ../gui/picker.py:462
 msgctxt "context picker: statusbar text during grab"
 msgid "Pick brushstroke settings, stroke color, and layer…"
-msgstr "选取笔触设置，笔触颜色，以及图层…"
+msgstr "选取笔画设置，笔画颜色，以及图层…"
 
 #: ../gui/picker.py:501
 msgctxt "color picker: statusbar text during grab"
@@ -2852,7 +2872,7 @@ msgstr "显示取景器"
 
 #: ../gui/scratchwindow.py:34
 msgid "Scratchpad"
-msgstr "暂存区"
+msgstr "调色板"
 
 #: ../gui/scratchwindow.py:36
 msgid "Mix colors and make sketches on separate scrap pages"
@@ -2909,7 +2929,7 @@ msgstr "Y 位置："
 #, python-format
 msgctxt "symmetry axis options panel: labels"
 msgid "Angle: %.2f°"
-msgstr ""
+msgstr "角度： %.2f°"
 
 #: ../gui/symmetry.py:357
 msgctxt "symmetry axis options panel: position button: no axis pos."
@@ -2929,7 +2949,7 @@ msgstr "对称类型："
 #: ../gui/symmetry.py:369
 msgctxt "symmetry axis options panel: labels"
 msgid "Rotational lines:"
-msgstr ""
+msgstr "旋转线条："
 
 #: ../gui/symmetry.py:536
 msgctxt "symmetry axis options panel: axis active checkbox"
@@ -3032,7 +3052,7 @@ msgstr "用笔刷 {brush_name} 绘制了{seconds:.01f}秒"
 
 #: ../lib/command.py:525
 msgid "Flood Fill"
-msgstr "满水法填充"
+msgstr "油漆桶"
 
 #: ../lib/command.py:612
 msgid "Trim Layer"
@@ -3492,7 +3512,7 @@ msgstr "组内容直接应用于组的背景"
 
 #: ../lib/modes.py:51
 msgid "Normal"
-msgstr "标准"
+msgstr "正常"
 
 #: ../lib/modes.py:52
 msgid "The top layer only, without blending colors."
@@ -3509,7 +3529,7 @@ msgstr ""
 
 #: ../lib/modes.py:58
 msgid "Multiply"
-msgstr "色彩增值"
+msgstr "正片叠底"
 
 #: ../lib/modes.py:59
 msgid ""
@@ -3556,7 +3576,7 @@ msgstr "顶部图层被使用在比背景亮的地方。"
 
 #: ../lib/modes.py:79
 msgid "Dodge"
-msgstr "加亮颜色"
+msgstr "减淡"
 
 #: ../lib/modes.py:80
 msgid ""
@@ -3568,7 +3588,7 @@ msgstr ""
 
 #: ../lib/modes.py:84
 msgid "Burn"
-msgstr "加深颜色"
+msgstr "加深"
 
 #: ../lib/modes.py:85
 msgid ""
@@ -3596,7 +3616,7 @@ msgstr "就像用漫射聚光灯照射到背景上。"
 
 #: ../lib/modes.py:95
 msgid "Difference"
-msgstr "差异"
+msgstr "差值"
 
 #: ../lib/modes.py:96
 msgid "Subtracts the darker color from the lighter of the two."
@@ -3608,7 +3628,7 @@ msgstr "排除"
 
 #: ../lib/modes.py:99
 msgid "Similar to the 'Difference' mode, but lower in contrast."
-msgstr "类似于 '差异' 模式，但对比度较低。"
+msgstr "类似于 '差值' 模式，但对比度较低。"
 
 #: ../lib/modes.py:102
 msgid "Hue"
@@ -3618,7 +3638,7 @@ msgstr "色相"
 msgid ""
 "Combines the hue of the top layer with the saturation and luminosity of the "
 "backdrop."
-msgstr "结合顶部图层的色相和背景的饱和度与亮度。"
+msgstr "结合顶部图层的色相和背景的饱和度与明度。"
 
 #: ../lib/modes.py:106
 msgid "Saturation"
@@ -3628,27 +3648,27 @@ msgstr "饱和度"
 msgid ""
 "Applies the saturation of the top layer's colors to the hue and luminosity "
 "of the backdrop."
-msgstr "将顶部图层颜色的饱和度应用到背景的色相和亮度上。"
+msgstr "将顶部图层颜色的饱和度应用到背景的色相和明度上。"
 
 #: ../lib/modes.py:111
 msgid ""
 "Applies the hue and saturation of the top layer to the luminosity of the "
 "backdrop."
-msgstr "将顶部图层的色相和饱和度应用到背景的亮度上。"
+msgstr "将顶部图层的色相和饱和度应用到背景的明度上。"
 
 #: ../lib/modes.py:114
 msgid "Luminosity"
-msgstr "光亮度"
+msgstr "明度"
 
 #: ../lib/modes.py:115
 msgid ""
 "Applies the luminosity of the top layer to the hue and saturation of the "
 "backdrop."
-msgstr "将顶部图层的亮度应用到背景的色相和饱和度上。"
+msgstr "将顶部图层的明度应用到背景的色相和饱和度上。"
 
 #: ../lib/modes.py:119
 msgid "Plus"
-msgstr "加号"
+msgstr "相加"
 
 #: ../lib/modes.py:120
 msgid "This layer and its backdrop are simply added together."
@@ -3777,6 +3797,9 @@ msgid ""
 "You can always launch this dialog from the ‘File’ menu when MyPaint is "
 "running."
 msgstr ""
+"如果有文件需要恢复，在MyPaint启动时运行这个自动保存恢复对话框。\n"
+"\n"
+" 你可以在MyPaint运行时从 \"文件 \"菜单中随时启动这个对话框。"
 
 #. Deletes the selected autosave backup file.
 #: ../gui/autorecover.glade:60
@@ -3837,7 +3860,7 @@ msgstr "实时更新"
 msgid ""
 "Update the last stroke on the canvas with the settings in this window, in "
 "real time"
-msgstr "实时地用此窗口中的设置更新画布上的最后一个笔触"
+msgstr "实时地用此窗口中的设置更新画布上的最后一个笔画"
 
 #: ../gui/brusheditor.glade:116
 msgid "Save these settings to the brush"
@@ -4106,7 +4129,7 @@ msgstr "详细编辑当前颜色"
 #: ../gui/mypaint.glade:126
 msgctxt "Footerbar|"
 msgid "Add the current color to the palette"
-msgstr "将当前颜色添加到调色板"
+msgstr "将当前颜色添加到色板"
 
 #: ../gui/mypaint.glade:161
 msgctxt "Footerbar|"
@@ -4126,7 +4149,7 @@ msgstr ""
 #: ../gui/mypaint.glade:249
 msgctxt "footer: context picker button: tooltip"
 msgid "Pick brushstroke settings, stroke color, and layer"
-msgstr "选取笔触设置，笔触颜色以及图层"
+msgstr "选取笔画设置，笔画颜色以及图层"
 
 #: ../gui/preferenceswindow.glade:24
 msgctxt "Prefs Dialog|Saving|Save Formats and Locations|Default|"
@@ -4166,17 +4189,17 @@ msgstr "200%"
 #: ../gui/preferenceswindow.glade:72
 msgctxt "Prefs Dialog|View|Cursors|Freehand Cursor|Type|"
 msgid "Circle with light outline"
-msgstr "带有轻微轮廓的圆"
+msgstr "带细微轮廓的圆圈"
 
 #: ../gui/preferenceswindow.glade:76
 msgctxt "Prefs Dialog|View|Cursors|Freehand Cursor|Type|"
 msgid "Circle with medium outline"
-msgstr "带有中等轮廓的圆"
+msgstr "带中等轮廓的圆圈"
 
 #: ../gui/preferenceswindow.glade:80
 msgctxt "Prefs Dialog|View|Cursors|Freehand Cursor|Type|"
 msgid "Circle with heavy outline"
-msgstr "带有重量级轮廓的圆"
+msgstr "带加粗轮廓的圆圈"
 
 #: ../gui/preferenceswindow.glade:84
 msgctxt "Prefs Dialog|View|Cursors|Freehand Cursor|Type|"
@@ -4430,7 +4453,7 @@ msgstr ""
 
 #: ../gui/preferenceswindow.glade:946
 msgid "Some of these settings require MyPaint to be restarted."
-msgstr "这些设置当中的一些需要MyPaint重启。"
+msgstr "调整部分设置需要重启 MyPaint。"
 
 #: ../gui/preferenceswindow.glade:969
 msgctxt "Prefs Dialog|View|Interface|Icon size|"
@@ -4488,7 +4511,7 @@ msgstr ""
 "平滑滚动支持使得来自一些设备的滚动手势以及滚轮事件平滑而不是分步的。该设置适"
 "应于触摸板，但使用鼠标滚动时会感到不适。\n"
 "\n"
-"如果支持平滑滚动，可用通过在滚动时按住Shift键简单地调回到逐步滚动。\n"
+"如果支持平滑滚动，可用通过在滚动时按住 Shift 键简单地调回到逐步滚动。\n"
 "\n"
 "通过滚动实现平移视图需要打开该设置，并且你的设备需要配置成发送双向滚动事件。"
 
@@ -4500,20 +4523,20 @@ msgstr "绘画时隐藏光标"
 #: ../gui/preferenceswindow.glade:1132
 msgctxt "Prefs Dialog|View|Interface"
 msgid "Show crosshair for small brush cursors"
-msgstr ""
+msgstr "显示小笔刷光标的十字准星"
 
 #. Label for a spinbutton that is part of the "crosshair for small brush cursors" setting. Radius refers to the visual brush cursor radius.
 #: ../gui/preferenceswindow.glade:1149
 msgctxt "Prefs Dialog|View|Interface"
 msgid "Radius threshold:"
-msgstr ""
+msgstr "半径阈值："
 
 #. Description of the "Radius threshold" spinbox/spinner - the referenced "lines" are part of the brush cursor.
 #: ../gui/preferenceswindow.glade:1162
 msgctxt "Prefs Dialog|View|Interface"
 msgid ""
 "Lines will be shown when the brush circle radius is smaller than this value."
-msgstr ""
+msgstr "当笔刷轮廓半径小于此值时会显示线条。"
 
 #: ../gui/preferenceswindow.glade:1192
 msgctxt ""
@@ -4528,7 +4551,7 @@ msgctxt ""
 msgid ""
 "When a layer is created or selected, show only that layer for a short time "
 "period."
-msgstr ""
+msgstr "创建或选择图层后，仅在短时间内显示该图层。"
 
 #: ../gui/preferenceswindow.glade:1216
 msgctxt "Prefs Dialog|View|Interface|"
@@ -4594,9 +4617,8 @@ msgid ""
 "The traditionally arranged red/yellow/blue wheel as used by many artists "
 "since the 18th century, approximated with pure display colors evenly "
 "arranged around the circle. Green is opposite red."
-msgstr ""
-"按传统排列的红/黄/蓝色色轮从18世纪就被众多艺术家所使用。纯显示颜色以接近均匀"
-"地方式围绕圆圈排列。绿色对着红色。"
+msgstr "按传统排列的红/黄/蓝色色轮从 18 世纪就被众多艺术家所使用。纯显示颜色以接近均"
+"匀地方式围绕圆圈排列。绿色对着红色。"
 
 #: ../gui/preferenceswindow.glade:1362
 msgctxt "Prefs Dialog|Color|Color Wheel|Primaries|RYB|"
@@ -4604,9 +4626,8 @@ msgid ""
 "The traditionally arranged red/yellow/blue wheel as used by many artists "
 "since the 18th century, approximated with pure display colors evenly "
 "arranged around the circle. Green is opposite red."
-msgstr ""
-"按传统排列的红/黄/蓝色色轮从18世纪就被众多艺术家所使用。纯显示颜色以接近均匀"
-"地方式围绕圆圈排列。绿色对着红色。"
+msgstr "按传统排列的红/黄/蓝色色轮从 18 世纪就被众多艺术家所使用。纯显示颜色以接近均"
+"匀地方式围绕圆圈排列。绿色对着红色。"
 
 #: ../gui/preferenceswindow.glade:1378
 msgctxt "Prefs Dialog|Color|Color Wheel|Primaries|"
@@ -4683,14 +4704,14 @@ msgid ""
 "When creating new documents, use the legacy 1.x compatibility mode by "
 "default. In this mode 1.x .ora files will look the same as they did in older "
 "versions, but pigment blending will not work well."
-msgstr ""
+msgstr "创建新文档时，默认使用旧版 1.x 兼容模式。 在此模式下，1.x .ora 文件看起来与旧版本相同，但颜料混合效果不佳。"
 
 #: ../gui/preferenceswindow.glade:1690
 msgctxt "Prefs Dialog|Compatibility"
 msgid ""
 "When creating new documents, use the regular 2.x compatibility mode by "
 "default. Old documents will often look different in this mode."
-msgstr ""
+msgstr "创建新文档时，默认使用常规 2.x 兼容模式。 在这种模式下，旧文档通常看起来不同。"
 
 #: ../gui/preferenceswindow.glade:1722
 msgctxt "Prefs Dialog|Compatibility"
@@ -4782,12 +4803,12 @@ msgstr "打开"
 #: ../gui/resources.xml:75
 msgctxt "Toolbar (tooltips), Accel Editor (descriptions)"
 msgid "Load a file to work on."
-msgstr "加载文件来继续工作。"
+msgstr "加载文件，继续之前的工作。"
 
 #: ../gui/resources.xml:82
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "Open Most Recent"
-msgstr "最近打开"
+msgstr "上次打开的文件"
 
 #: ../gui/resources.xml:83
 msgctxt "Accel Editor (descriptions)"
@@ -4961,7 +4982,7 @@ msgstr "增大 Fake Rotation"
 #: ../gui/resources.xml:255
 msgctxt "Accel Editor (descriptions)"
 msgid "Increase barrel rotation for devices that don't support rotation input."
-msgstr ""
+msgstr "增加不支持旋转输入设备的笔杆旋转。"
 
 #: ../gui/resources.xml:262
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
@@ -4971,7 +4992,7 @@ msgstr "降低 Fake Rotation"
 #: ../gui/resources.xml:263
 msgctxt "Accel Editor (descriptions)"
 msgid "Decrease barrel rotation for devices that don't support rotation input."
-msgstr ""
+msgstr "减少不支持旋转输入设备的笔杆旋转。"
 
 #: ../gui/resources.xml:271
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
@@ -5086,13 +5107,13 @@ msgstr "将画笔的所有设置都恢复到当前画笔保存的值。"
 #: ../gui/resources.xml:370
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
 msgid "Pick Stroke and Layer"
-msgstr "选取笔触和图层"
+msgstr "选取笔画和图层"
 
 #: ../gui/resources.xml:371
 msgctxt "Accel Editor (descriptions)"
 msgid ""
 "Pick a brushstroke from the canvas, which restores brush, color, and layer."
-msgstr "从画布上选取笔触：恢复笔刷，颜色和图层。"
+msgstr "从画布中选取一个笔画，它会恢复画笔、颜色和图层。"
 
 #: ../gui/resources.xml:382
 msgctxt "Menu→Brush→Shortcut Keys (labels), Accel Editor (labels)"
@@ -5421,7 +5442,7 @@ msgstr "图层属性…"
 msgctxt "Accel Editor (descriptions)"
 msgid ""
 "Change the layer’s properties (name, mode, visibility, locked, opacity)."
-msgstr ""
+msgstr "更改图层的属性（名称、模式、可见性、锁定、不透明度）。"
 
 #: ../gui/resources.xml:650
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
@@ -5472,7 +5493,7 @@ msgstr "重置和中心视图"
 #: ../gui/resources.xml:685
 msgctxt "Accel Editor (descriptions)"
 msgid "Reset Zoom, Rotation and Mirroring, and recenter the document."
-msgstr "重置缩放，旋转和镜像并将文档居中。"
+msgstr "重置缩放、旋转和镜像，将画布居中。"
 
 #: ../gui/resources.xml:693
 msgctxt "Menu→View (labels), Accel Editor (labels)"
@@ -5482,7 +5503,7 @@ msgstr "适合视图"
 #: ../gui/resources.xml:694
 msgctxt "Accel Editor (descriptions)"
 msgid "Switch between a fitted view and your working location and zoom."
-msgstr "在合适的视图，工作位置以及缩放间切换。"
+msgstr "在总览视图和工作位置的局部视图间缩放切换。"
 
 #: ../gui/resources.xml:701
 msgctxt "Menu→View (labels)"
@@ -5609,27 +5630,27 @@ msgstr "逆时针旋转画布。"
 #: ../gui/resources.xml:828
 msgctxt "Menu→View→Adjust View (labels), Accel Editor (labels)"
 msgid "Mirror Horizontal"
-msgstr "水平镜像"
+msgstr "上下镜像"
 
 #: ../gui/resources.xml:829
 msgctxt "Accel Editor (descriptions)"
 msgid "Flip the view left to right."
-msgstr "左右翻转视图。"
+msgstr "左右镜像视图。"
 
 #: ../gui/resources.xml:837
 msgctxt "Menu→View→Adjust View (labels), Accel Editor (labels)"
 msgid "Mirror Vertical"
-msgstr "垂直镜像"
+msgstr "上下镜像"
 
 #: ../gui/resources.xml:838
 msgctxt "Accel Editor (descriptions)"
 msgid "Flip the view upside-down."
-msgstr "上下翻转视图。"
+msgstr "上下镜像视图。"
 
 #: ../gui/resources.xml:845
 msgctxt "Menu→View (labels), Accel Editor (labels)"
 msgid "Layer Solo"
-msgstr "图层独显"
+msgstr "只显示单个图层"
 
 #: ../gui/resources.xml:846
 msgctxt "Accel Editor (descriptions)"
@@ -5639,12 +5660,12 @@ msgstr "切换是否只显示当前图层。"
 #: ../gui/resources.xml:856
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
 msgid "Symmetrical Painting Active"
-msgstr "对称绘画激活"
+msgstr "启用对称绘画"
 
 #: ../gui/resources.xml:857
 msgctxt "Accel Editor (descriptions)"
 msgid "Mirror brushstrokes along the axis of symmetry"
-msgstr "沿对称轴镜像笔触"
+msgstr "按对称轴对称笔画"
 
 #: ../gui/resources.xml:864
 msgctxt "Menu→File (labels), Accel Editor (labels)"
@@ -5691,7 +5712,7 @@ msgctxt "Accel Editor (descriptions)"
 msgid ""
 "Insert a point next to the currently selected point in the direction of the "
 "stroke."
-msgstr "在笔划方向上将一个点插入到当前选定点的旁边。"
+msgstr "在笔画方向上将一个点插入到当前选定点的旁边。"
 
 #: ../gui/resources.xml:904
 msgid "Delete Point"
@@ -5700,18 +5721,18 @@ msgstr "删除点"
 #: ../gui/resources.xml:905
 msgctxt "Accel Editor (descriptions)"
 msgid "Delete currently selected point on the ink stroke."
-msgstr "删除墨水笔划上的当前选定点。"
+msgstr "删除墨水笔画上的当前选定点。"
 
 #: ../gui/resources.xml:912
 msgctxt "Accel Editor (descriptions)"
 msgid ""
 "Simplify and delete points according to angle and distance between nodes."
-msgstr ""
+msgstr "根据节点之间的角度和距离简化和删除点。"
 
 #: ../gui/resources.xml:919
 msgctxt "Accel Editor (descriptions)"
 msgid "Delete every other point on the ink stroke."
-msgstr "删除墨水笔划上的所有其他点。"
+msgstr "删除墨水笔画上的所有其他点。"
 
 #: ../gui/resources.xml:933
 msgctxt "Menu→Brush (labels)"
@@ -5746,7 +5767,7 @@ msgstr "绘画模式：锁定alpha"
 #: ../gui/resources.xml:960
 msgctxt "Accel Editor (descriptions)"
 msgid "Applying the brush doesn't change the layer’s opacity."
-msgstr "应用笔刷时不改变图层的不透明度。"
+msgstr "应用笔刷时限制在不透明区域。"
 
 #: ../gui/resources.xml:968
 msgctxt "Menu→Brush→Blend Mode (labels), Accel Editor (labels)"
@@ -5812,32 +5833,32 @@ msgstr "显示带有文字描述的颜色详细信息对话框。"
 #: ../gui/resources.xml:1035
 msgctxt "Menu→Color"
 msgid "Next Palette Color"
-msgstr "下一个调色板颜色"
+msgstr "下一个色板颜色"
 
 #: ../gui/resources.xml:1036
 msgctxt "Accel Editor (descriptions)"
 msgid "Set painting color to the next color in the palette."
-msgstr "把绘画颜色设置为调色板上的下一个颜色。"
+msgstr "把绘画颜色设置为色板上的下一个颜色。"
 
 #: ../gui/resources.xml:1042
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "Previous Palette Color"
-msgstr "上一个调色板颜色"
+msgstr "上一个色板颜色"
 
 #: ../gui/resources.xml:1043
 msgctxt "Accel Editor (descriptions)"
 msgid "Set painting color to the previous color in the palette."
-msgstr "把绘画颜色设置为调色板上的上一个颜色。"
+msgstr "把绘画颜色设置为色板上的上一个颜色。"
 
 #: ../gui/resources.xml:1049
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "Add Color to Palette"
-msgstr "添加颜色到调色板"
+msgstr "添加颜色到色板"
 
 #: ../gui/resources.xml:1050
 msgctxt "Accel Editor (descriptions)"
 msgid "Append the current painting color to the palette."
-msgstr "追加当前绘画颜色到调色板。"
+msgstr "追加当前绘画颜色到色板。"
 
 #: ../gui/resources.xml:1058
 msgctxt "Menu (labels)"
@@ -5867,88 +5888,88 @@ msgstr "属性"
 #: ../gui/resources.xml:1090
 msgctxt "Menu (labels)"
 msgid "Scratchpad"
-msgstr "暂存区"
+msgstr "调色板"
 
 #: ../gui/resources.xml:1096
 msgctxt "Menu→Scratchpad (labels), Accel Editor (labels)"
 msgid "New Scratchpad"
-msgstr "新建暂存区"
+msgstr "新建调色板"
 
 #: ../gui/resources.xml:1097
 msgctxt "Accel Editor (descriptions)"
 msgid "Load the default scratchpad as a new scratchpad canvas."
-msgstr "加载默认暂存区作为新的暂存区画布。"
+msgstr "加载默认调色板作为新的调色板画布。"
 
 #: ../gui/resources.xml:1104
 msgctxt "Menu→Scratchpad (labels), Accel Editor (labels)"
 msgid "Open Scratchpad…"
-msgstr "打开暂存区…"
+msgstr "打开调色板…"
 
 #: ../gui/resources.xml:1105
 msgctxt "Accel Editor (descriptions)"
 msgid "Load an image file on disk into the scratchpad."
-msgstr "加载磁盘上图片文件到暂存区。"
+msgstr "加载磁盘上图片文件到调色板。"
 
 #: ../gui/resources.xml:1112
 msgctxt "Menu→Scratchpad (labels), Accel Editor (labels)"
 msgid "Save Scratchpad"
-msgstr "保存暂存区"
+msgstr "保存调色板"
 
 #: ../gui/resources.xml:1113
 msgctxt "Accel Editor (descriptions)"
 msgid "Save the scratchpad to its existing file on disk."
-msgstr "保存暂存区到磁盘上已存在的文件中。"
+msgstr "保存调色板到磁盘上已存在的文件中。"
 
 #: ../gui/resources.xml:1120
 msgctxt "Menu→Scratchpad (labels), Accel Editor (labels)"
 msgid "Export Scratchpad As…"
-msgstr "导出暂存区为…"
+msgstr "导出调色板为…"
 
 #: ../gui/resources.xml:1121
 msgctxt "Accel Editor (descriptions)"
 msgid "Export the scratchpad to disk, under a file name of your choice."
-msgstr "用你指定的文件名导出暂存区到磁盘。"
+msgstr "用你指定的文件名导出调色板到磁盘。"
 
 #: ../gui/resources.xml:1128
 msgctxt "Menu→Scratchpad (labels), Accel Editor (labels)"
 msgid "Revert Scratchpad"
-msgstr "恢复暂存区"
+msgstr "恢复调色板"
 
 #: ../gui/resources.xml:1129
 msgctxt "Accel Editor (descriptions)"
 msgid "Revert the scratchpad to its last saved state."
-msgstr "恢复暂存区到最后一次保存的状态。"
+msgstr "恢复调色板到最后一次保存的状态。"
 
 #: ../gui/resources.xml:1136
 msgctxt "Menu→Scratchpad (labels), Accel Editor (labels)"
 msgid "Save Scratchpad as Default"
-msgstr "将暂存区作为默认值保存"
+msgstr "将调色板作为默认值保存"
 
 #: ../gui/resources.xml:1137
 msgctxt "Accel Editor (descriptions)"
 msgid "Save the scratchpad as the default for ‘New Scratchpad’."
-msgstr "将暂存区作为“新建暂存区”的默认值保存。"
+msgstr "将调色板作为“新建调色板”的默认值保存。"
 
 #: ../gui/resources.xml:1143
 msgctxt "Menu→Scratchpad (labels), Accel Editor (labels)"
 msgid "Clear Default Scratchpad"
-msgstr "清除默认暂存区"
+msgstr "清除默认调色板"
 
 #: ../gui/resources.xml:1144
 msgctxt "Accel Editor (descriptions)"
 msgid "Clear the default scratchpad to a blank canvas."
-msgstr "清除默认暂存区为空白画布。"
+msgstr "清除默认调色板为空白画布。"
 
 #: ../gui/resources.xml:1150
 msgctxt "Menu→Scratchpad (labels), Accel Editor (labels)"
 msgid "Copy Main Background to Scratchpad"
-msgstr "复制主背景到暂存区"
+msgstr "复制主背景到调色板"
 
 #: ../gui/resources.xml:1151
 msgctxt "Accel Editor (descriptions)"
 msgid ""
 "Copy the background image from the working document into the Scratchpad."
-msgstr "复制工作文档的背景图片到暂存区内。"
+msgstr "复制工作文档的背景图片到调色板内。"
 
 #: ../gui/resources.xml:1159
 msgctxt "Menu (labels)"
@@ -6107,7 +6128,7 @@ msgstr "视图"
 #: ../gui/resources.xml:1300
 msgctxt "Menu→View (labels)"
 msgid "Feedback"
-msgstr "反馈"
+msgstr "画面反馈"
 
 #: ../gui/resources.xml:1306
 msgctxt "Menu→View (labels)"
@@ -6216,17 +6237,17 @@ msgctxt "Accel Editor (descriptions)"
 msgid ""
 "Dockable cylindrical hue/chroma/luma color selector. The circular slices are "
 "equiluminant."
-msgstr "可停靠的柱状色相/色度/亮度颜色选择器。圆形片是亮度等值的。"
+msgstr "可停靠的色相/色度/亮度圆柱颜色选择器。圆柱的每个圆截面上色彩的亮度相同。"
 
 #: ../gui/resources.xml:1402
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "Color Palette"
-msgstr "颜色调色板"
+msgstr "色板"
 
 #: ../gui/resources.xml:1403
 msgctxt "Accel Editor (descriptions)"
 msgid "Dockable palette color selector."
-msgstr "可停靠的调色板颜色选择器。"
+msgstr "可停靠的色板颜色选择器。"
 
 #: ../gui/resources.xml:1411
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
@@ -6248,7 +6269,7 @@ msgctxt "Accel Editor (descriptions)"
 msgid ""
 "Dockable color selector: HSV cube which can be rotated to show different "
 "planar slices."
-msgstr "可停靠的颜色选择器：HSV立方体旋转以显示不同的平面切片。"
+msgstr "可停靠的颜色选择器：HSV 立方体旋转以显示不同的平面切片。"
 
 #: ../gui/resources.xml:1427
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
@@ -6263,7 +6284,7 @@ msgstr "可停靠的颜色选择器：带色相环的 HSV 正方形。"
 #: ../gui/resources.xml:1435
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "Component Sliders"
-msgstr "构成要素滚动条"
+msgstr "坐标滑动条"
 
 #: ../gui/resources.xml:1436
 msgctxt "Accel Editor (descriptions)"
@@ -6288,7 +6309,7 @@ msgstr "同心环"
 #: ../gui/resources.xml:1452
 msgctxt "Accel Editor (descriptions)"
 msgid "Dockable color selector with concentric HSV rings."
-msgstr "可停靠的颜色选择器，带有HSV 同心环。"
+msgstr "可停靠的颜色选择器，带有 HSV 同心环。"
 
 #: ../gui/resources.xml:1459
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
@@ -6298,27 +6319,27 @@ msgstr "交叉碗"
 #: ../gui/resources.xml:1460
 msgctxt "Accel Editor (descriptions)"
 msgid "Dockable color selector with HSV ramps crossing a radial bowl of color."
-msgstr "可停靠的颜色选择器，带有穿过辐射状的碗形颜色的HSV坡道。"
+msgstr "可停靠的颜色选择器，带有色碗以及其上辐射状的 HSV 色条。"
 
 #: ../gui/resources.xml:1469
 msgctxt "Menu→Window (labels), Accel Editor (labels)"
 msgid "Scratchpad Panel"
-msgstr "暂存区面板"
+msgstr "调色板面板"
 
 #: ../gui/resources.xml:1470
 msgctxt "Accel Editor (descriptions)"
 msgid "Dockable Panel for mixing colors and testing brushes."
-msgstr ""
+msgstr "用于混合颜色和测试笔刷的可停靠面板。"
 
 #: ../gui/resources.xml:1478
 msgctxt "Menu→Scratchpad (labels), Accel Editor (labels)"
 msgid "Show Scratchpad Panel"
-msgstr "显示暂存区面板"
+msgstr "显示调色板面板"
 
 #: ../gui/resources.xml:1479
 msgctxt "Accel Editor (descriptions)"
 msgid "Reveal the Scratchpad dockpanel (mix colors and make sketches)."
-msgstr "显示暂存区可停靠面板 (混合颜色以及绘制草图)。"
+msgstr "显示调色板可停靠面板 (混合颜色以及绘制草图)。"
 
 #: ../gui/resources.xml:1488
 msgctxt "Menu→Window (labels), Toolbar (labels), Accel Editor (labels)"
@@ -6328,7 +6349,7 @@ msgstr "预览面板"
 #: ../gui/resources.xml:1489
 msgctxt "Accel Editor (descriptions)"
 msgid "Dockable panel for an overview and navigation of the whole canvas."
-msgstr ""
+msgstr "用于整个画布的概览和导航的可停靠面板。"
 
 #: ../gui/resources.xml:1497
 msgctxt "Menu→View (labels), Accel Editor (labels)"
@@ -6348,7 +6369,7 @@ msgstr "工具选项面板"
 #: ../gui/resources.xml:1509
 msgctxt "Accel Editor (descriptions)"
 msgid "Dockable panel for adjusting the options with the activated tool."
-msgstr ""
+msgstr "用于调整当前工具选项的可停靠面板。"
 
 #: ../gui/resources.xml:1517
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
@@ -6408,12 +6429,12 @@ msgstr "显示最后一个绘画位置"
 #: ../gui/resources.xml:1564
 msgctxt "Accel Editor (descriptions)"
 msgid "Toggle feedback showing where the last stroke ended."
-msgstr "切换用来显示最后一个笔触结束位置的反馈。"
+msgstr "切换用来显示最后一个笔画结束位置的反馈。"
 
 #: ../gui/resources.xml:1572
 msgctxt "Menu→View (labels)"
 msgid "Display Filter"
-msgstr "显示过滤"
+msgstr "显示滤镜"
 
 #: ../gui/resources.xml:1578
 msgctxt "Menu→View→Display Filter (labels), Accel Editor (labels)"
@@ -6443,7 +6464,7 @@ msgstr "反转显示颜色"
 #: ../gui/resources.xml:1596
 msgctxt "Accel Editor (descriptions)"
 msgid "Filter colors: inverse video. Black is white and red is cyan."
-msgstr "过滤颜色：反转视频。黑色反转为白色，红色反转为青色。"
+msgstr "过滤颜色：反转画面。黑色反转为白色，红色反转为青色。"
 
 #: ../gui/resources.xml:1603
 msgctxt "Menu→View→Display Filter (labels), Accel Editor (labels)"
@@ -6454,7 +6475,7 @@ msgstr "用模拟的对红色不敏感方式显示颜色"
 msgctxt "Accel Editor (descriptions)"
 msgid ""
 "Filter colors to simulate deuteranopia, a common form of color blindness."
-msgstr "过滤颜色以模拟绿色盲(色盲的常见类型)。"
+msgstr "过滤颜色，模拟绿色盲(色盲的常见类型)。"
 
 #: ../gui/resources.xml:1611
 msgctxt "Menu→View→Display Filter (labels), Accel Editor (labels)"
@@ -6464,7 +6485,7 @@ msgstr "用模拟的对绿色不敏感方式显示颜色"
 #: ../gui/resources.xml:1612
 msgctxt "Accel Editor (descriptions)"
 msgid "Filter colors to simulate protanopia, a common form of color blindness."
-msgstr "过滤颜色以模拟红色盲(色盲的常见类型)。"
+msgstr "过滤颜色，模拟红色盲(色盲的常见类型)。"
 
 #: ../gui/resources.xml:1619
 msgctxt "Menu→View→Display Filter (labels), Accel Editor (labels)"
@@ -6474,7 +6495,7 @@ msgstr "用模拟的对蓝色不敏感方式显示颜色"
 #: ../gui/resources.xml:1620
 msgctxt "Accel Editor (descriptions)"
 msgid "Filter colors to simulate tritanopia, a rare form of color blindness."
-msgstr "过滤颜色以模拟蓝色盲(色盲中的罕见类型)。"
+msgstr "过滤颜色，模拟蓝色盲(色盲中的罕见类型)。"
 
 #: ../gui/resources.xml:1635
 msgctxt "Menu→Edit→Current Mode (labels)"
@@ -6614,7 +6635,7 @@ msgstr "连续线段"
 #: ../gui/resources.xml:1740
 msgctxt "Toolbar (tooltips)"
 msgid "Connected Lines: draw sequences of straight or curved lines."
-msgstr "连续线段：绘制直线或曲线的序列。"
+msgstr "连续线段：绘制首尾相连的直线或曲线。"
 
 #: ../gui/resources.xml:1748
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
@@ -6629,7 +6650,7 @@ msgstr "绘制直线或曲线的序列。"
 #: ../gui/resources.xml:1759
 msgctxt "Menu→Edit→Current Mode (labels)"
 msgid "Ellipses and Circles"
-msgstr "椭圆形和圆形"
+msgstr "圆与椭圆"
 
 #: ../gui/resources.xml:1760
 msgctxt "Toolbar (short labels)"
@@ -6639,22 +6660,22 @@ msgstr "椭圆形"
 #: ../gui/resources.xml:1761
 msgctxt "Toolbar (tooltips)"
 msgid "Ellipses and Circles: draw rounded shapes."
-msgstr "椭圆和圆：绘制圆形。"
+msgstr "圆与椭圆：绘制圆圈。"
 
 #: ../gui/resources.xml:1769
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
 msgid "Ellipses and Circles"
-msgstr "圆形与椭圆"
+msgstr "圆与椭圆"
 
 #: ../gui/resources.xml:1770
 msgctxt "Accel Editor (descriptions)"
 msgid "Draw circles and ellipses."
-msgstr "绘制圆和椭圆。"
+msgstr "绘制圆与椭圆。"
 
 #: ../gui/resources.xml:1780
 msgctxt "Menu→Edit→Current Mode (labels)"
 msgid "Inking"
-msgstr "墨迹作图"
+msgstr "描点作图"
 
 #: ../gui/resources.xml:1781
 msgctxt "Toolbar (short labels)"
@@ -6664,12 +6685,12 @@ msgstr "墨水"
 #: ../gui/resources.xml:1782
 msgctxt "Toolbar (tooltips)"
 msgid "Inking: draw smooth controlled lines."
-msgstr "墨迹作图：绘制平滑受控的线。"
+msgstr "描点作图：绘制平滑可调的线条。"
 
 #: ../gui/resources.xml:1790
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
 msgid "Inking"
-msgstr "墨迹作图"
+msgstr "描点作图"
 
 #: ../gui/resources.xml:1791
 msgctxt "Accel Editor (descriptions)"
@@ -6715,7 +6736,7 @@ msgstr "边框"
 msgctxt "Toolbar (tooltips)"
 msgid ""
 "Edit Frame: define a frame around the document to give it a finite size."
-msgstr "编辑边框：围绕文档定义一个边框以给它一个有限的大小。"
+msgstr "编辑边框：设置画布的边界，限制图画的尺寸。"
 
 #: ../gui/resources.xml:1832
 msgctxt "Menu→File (labels), Accel Editor (labels)"
@@ -6766,7 +6787,7 @@ msgstr "选取颜色."
 #: ../gui/resources.xml:1865
 msgctxt "Toolbar (tooltips)"
 msgid "Pick Color: set the painting color from screen pixels."
-msgstr "选取颜色：用来自屏幕像素的颜色设置绘画色彩。"
+msgstr "选取颜色：依屏幕上像素的颜色设置绘画的色彩。"
 
 #: ../gui/resources.xml:1897
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
@@ -6777,7 +6798,7 @@ msgstr "选取颜色色相"
 msgctxt "Accel Editor (descriptions)"
 msgid ""
 "Set the painting Hue from screen pixels while preserving the Chroma and Luma."
-msgstr "用来自屏幕像素的颜色设置绘画色调同时保留色度和亮度。"
+msgstr "从屏幕上的像素选取绘画的色相，但色度和亮度保持不变。"
 
 #: ../gui/resources.xml:1906
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
@@ -6788,7 +6809,7 @@ msgstr "选择色度"
 msgctxt "Accel Editor (descriptions)"
 msgid ""
 "Set the painting Chroma from screen pixels while preserving the Hue and Luma."
-msgstr "用来自屏幕像素的颜色设置绘画色彩同时保留色调和亮度。"
+msgstr "从屏幕上的像素选取绘画的色度，但色相和亮度保持不变。"
 
 #: ../gui/resources.xml:1915
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
@@ -6799,7 +6820,7 @@ msgstr "选择颜色亮度"
 msgctxt "Accel Editor (descriptions)"
 msgid ""
 "Set the painting Luma from screen pixels while preserving the Hue and Chroma."
-msgstr "从屏幕像素设置绘画亮度，同时保留色调和色度。"
+msgstr "从屏幕上的像素选取绘画的亮度，但色相和色度保持不变。"
 
 #: ../gui/resources.xml:1924
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
@@ -6809,12 +6830,12 @@ msgstr "选取颜色"
 #: ../gui/resources.xml:1925
 msgctxt "Accel Editor (descriptions)"
 msgid "Set the painting color from screen pixels."
-msgstr "用来自屏幕像素的颜色设置绘画色彩。"
+msgstr "依屏幕上像素的颜色设置绘画的色彩。"
 
 #: ../gui/resources.xml:1935
 msgctxt "Menu→Edit→Current Mode (labels)"
 msgid "Flood Fill"
-msgstr "满水法填充"
+msgstr "油漆桶"
 
 #: ../gui/resources.xml:1936
 msgctxt "Toolbar (short labels)"
@@ -6824,12 +6845,12 @@ msgstr "填充"
 #: ../gui/resources.xml:1937
 msgctxt "Toolbar (tooltips)"
 msgid "Flood Fill: fill an area with color."
-msgstr "满水法填充：用颜色填充一块区域。"
+msgstr "油漆桶：用颜色填充一块区域。"
 
 #: ../gui/resources.xml:1945
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
 msgid "Flood Fill"
-msgstr "满水法填充"
+msgstr "油漆桶"
 
 #: ../gui/resources.xml:1946
 msgctxt "Accel Editor (descriptions)"

@@ -8,8 +8,8 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-04-17 23:27+0200\n"
-"PO-Revision-Date: 2020-10-16 11:26+0000\n"
-"Last-Translator: Raul <raurodse@gmail.com>\n"
+"PO-Revision-Date: 2023-07-10 10:53+0000\n"
+"Last-Translator: Ecron <ecron_89@hotmail.com>\n"
 "Language-Team: Valencian <https://hosted.weblate.org/projects/mypaint/"
 "mypaint/ca@valencia/>\n"
 "Language: ca@valencia\n"
@@ -17,12 +17,12 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 4.3.1-dev\n"
+"X-Generator: Weblate 5.0-dev\n"
 
 #: ../gui/accelmap.py:86
 msgctxt "placeholder for keymap filtering"
 msgid "Filter"
-msgstr ""
+msgstr "Filtre"
 
 #. TRANSLATORS: Name of first column in the button map preferences.
 #. TRANSLATORS: Refers to an action bound to a mod+button combination.
@@ -460,16 +460,14 @@ msgid "Unknown Brush"
 msgstr "Pinzell desconegut"
 
 #: ../gui/brushmanip.py:191
-#, fuzzy
 msgctxt "brush resize mode - name"
 msgid "Resize Brush"
-msgstr "Canvia el nom del pinzell"
+msgstr "Canvia la mida del pinzell"
 
 #: ../gui/brushmanip.py:196
-#, fuzzy
 msgctxt "brush resize mode - usage"
 msgid "Change brush size by dragging on the canvas"
-msgstr "Canvia la mida del pinzell arrossegant per el llenç"
+msgstr "Canvia la mida del pinzell arrossegant pel llenç"
 
 #: ../gui/brushselectionwindow.py:220
 msgctxt "brush group: context menu for a single brush"
@@ -2317,7 +2315,6 @@ msgid "px"
 msgstr "px"
 
 #: ../gui/framewindow.py:916
-#, fuzzy
 msgid "in"
 msgstr "polzades"
 
@@ -2692,11 +2689,12 @@ msgid "Generic line/curve mode"
 msgstr "Mode línia/corba genèric"
 
 #: ../gui/linemode.py:803
-#, fuzzy
 msgid ""
 "Draw straight lines; Shift adds curves, Shift + Ctrl moves line ends, Ctrl "
 "constrains angle"
-msgstr "Dibuixa línies rectes; Maj afegeix corbes, Ctrl redueix l'angle"
+msgstr ""
+"Dibuixa línies rectes; Maj afegeix corbes, Maj + Ctrl mou els extrems de "
+"línia, Ctrl redueix l'angle"
 
 #: ../gui/linemode.py:814
 msgid "Connected Lines"
@@ -2817,7 +2815,9 @@ msgstr ", "
 #: ../gui/meta.py:221
 msgctxt "About dialog: credits: translator credits (your name(s) here!)"
 msgid "translator-credits"
-msgstr "Carles Ferrando Garcia <carles.ferrando@gmail.com>"
+msgstr ""
+"Carles Ferrando Garcia <carles.ferrando@gmail.com>\n"
+"Artur V. <artur@softcatala.org> 2020-2023"
 
 #. TRANSLATORS:"Brush radius" for the options panel. Short.
 #: ../gui/mode.py:592
@@ -2976,7 +2976,7 @@ msgstr "Posició Y:"
 #, python-format
 msgctxt "symmetry axis options panel: labels"
 msgid "Angle: %.2f°"
-msgstr ""
+msgstr "Angle: %.2f°"
 
 #: ../gui/symmetry.py:357
 msgctxt "symmetry axis options panel: position button: no axis pos."
@@ -3549,7 +3549,7 @@ msgstr "Bloqueja la capa"
 #: ../lib/layervis.py:697
 msgctxt "layer views: commands: set active view's lock flag"
 msgid "Unlock Layer View"
-msgstr "Desbloqueja la capa"
+msgstr "Desbloqueja la visualització de la capa"
 
 #: ../lib/modes.py:47
 msgid "Pass-through"
@@ -4624,13 +4624,13 @@ msgstr "Amaga el cursor en pintar"
 #: ../gui/preferenceswindow.glade:1132
 msgctxt "Prefs Dialog|View|Interface"
 msgid "Show crosshair for small brush cursors"
-msgstr ""
+msgstr "Mostra el punt de mira en pinzells menuts"
 
 #. Label for a spinbutton that is part of the "crosshair for small brush cursors" setting. Radius refers to the visual brush cursor radius.
 #: ../gui/preferenceswindow.glade:1149
 msgctxt "Prefs Dialog|View|Interface"
 msgid "Radius threshold:"
-msgstr ""
+msgstr "Llindar del radi:"
 
 #. Description of the "Radius threshold" spinbox/spinner - the referenced "lines" are part of the brush cursor.
 #: ../gui/preferenceswindow.glade:1162
@@ -4638,6 +4638,8 @@ msgctxt "Prefs Dialog|View|Interface"
 msgid ""
 "Lines will be shown when the brush circle radius is smaller than this value."
 msgstr ""
+"Les línies es mostraran quan el radi del cercle del pinzell sigui menor que "
+"aquest valor."
 
 #: ../gui/preferenceswindow.glade:1192
 msgctxt ""
