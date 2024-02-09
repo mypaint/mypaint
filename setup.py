@@ -99,7 +99,7 @@ class BuildTranslations (Command):
         msg_path_pairs = []
         data_path_pairs = []
         for lang in lang_codes:
-            po_path = os.path.join("po", lang + ".po")
+            po_path = os.path.join("data/po", lang + ".po")
             mo_dir = os.path.join("locale", lang, "LC_MESSAGES")
             targ = os.path.join(tmpdir, mo_dir, "mypaint.mo")
             msg_path_pairs.append((po_path, targ))
@@ -998,15 +998,15 @@ def get_data_files():
     # default value for install-data.
     data_files = [
         # TARGDIR, SRCFILES
-        ("metainfo", ["desktop/mypaint.appdata.xml"]),
-        ("applications", ["desktop/mypaint.desktop"]),
-        ("thumbnailers", ["desktop/mypaint-ora.thumbnailer"]),
+        ("metainfo", ["data/desktop/mypaint.appdata.xml"]),
+        ("applications", ["data/desktop/mypaint.desktop"]),
+        ("thumbnailers", ["data/desktop/mypaint-ora.thumbnailer"]),
     ]
 
     # Paths which can only derived from globbing the source tree.
     data_file_patterns = [
         # SRCDIR, SRCPATT, TARGDIR
-        ("desktop/icons", "hicolor/*/*/*", "icons"),
+        ("desktop/icons", "hicolor/*/*/*", "data/icons"),
         ("backgrounds", "*.*", "mypaint/backgrounds"),
         ("backgrounds", "*/*.*", "mypaint/backgrounds"),
         ("palettes", "*.gpl", "mypaint/palettes"),
