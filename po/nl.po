@@ -509,7 +509,7 @@ msgstr ""
 #, python-brace-format
 msgctxt "brush group: context menu: remove from group"
 msgid "Really remove brush “{brush_name}” from group “{group_name}”?"
-msgstr "Penseel \"{brush_name}\" echt verwijderen?"
+msgstr "Penseel \"{brush_name}\" echt verwijderen uit \"{group_name}\"?"
 
 #. TRANSLATORS: number of brushes in a brush group, for tooltips
 #: ../gui/brushselectionwindow.py:381
