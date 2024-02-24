@@ -24,18 +24,17 @@
 ## Download
 [Latest stable release.](https://github.com/mypaint/mypaint/releases/latest)
 
-Releases and prereleases contain links to standalone packages
-(and installers for full releases) for Windows, and AppImage files for Linux.
+Releases and prereleases contain links to standalone packages (and installers for
+full releases) for Windows, and AppImage files for Linux.
 
 ### Nightly releases
-_Using alpha releases comes with its own risks.
-Sometimes bugs can sneak in that causes crashes, so don't be too surprised by that.
-If you come across any, please do [report those bugs][trackerlink] so they can be dealt with._
+_Using alpha releases comes with its own risks. Sometimes bugs can sneak in that
+causes crashes, so don't be too surprised by that. If you come across any, please
+do [report those bugs][trackerlink] so they can be dealt with._
 
 #### Linux
-If you don't want to [build from source](#buildtestinstall),
-the latest AppImage files can be found in a
-[rolling release](https://github.com/mypaint/mypaint-appimage/releases/tag/continuous).
+If you don't want to build from source the latest AppImage files can be found in
+a [rolling release](https://github.com/mypaint/mypaint-appimage/releases/tag/continuous).
 Just download the `.AppImage` file and make it executable.
 
 #### Windows
@@ -70,30 +69,14 @@ can be found there.
 [choco_prerel]: https://chocolatey.org/packages/mypaint/
 [choco_stable]: https://chocolatey.org/packages/mypaint/1.2.1
 
-## Build/Test/Install
-MyPaint depends on its brushstroke rendering library,
-[libmypaint](https://github.com/mypaint/libmypaint), as well as
-its brush library [mypaint-brushes](https://github.com/mypaint/mypaint-brushes).
-If you have those installed, plus MyPaint's third party dependencies,
-you can try it out without installing:
+## Building and Contributing Guides
+- [How to build MyPaint][mypaint-doc-build]
+- [How to contribute to the MyPaint project][mypaint-doc-contrib]
+- [MyPaint's code of conduct][mypaint-doc-coc]
 
-    git clone https://github.com/mypaint/mypaint.git
-    cd mypaint
-    python setup.py demo
-
-If the demo works, you can install
-
-    python setup.py managed_install
-    python setup.py managed_uninstall
-
-For more details, see the [Setup Instructions](BUILDING.md).
-
-[1]:https://github.com/mypaint/libmypaint
-
-## Contributing
-The MyPaint project welcomes and encourages participation by everyone. We want our community to be skilled and diverse, and we want it to be a community that anybody can feel good about joining. No matter who you are or what your background is, we welcome you.
-
-Please see the [Contributing Guide][contriblink] for full details of how you can begin contributing.  All contributors to the MyPaint project must abide by a [Code of Conduct](CODE_OF_CONDUCT.md).
+[mypaint-doc-contrib]: https://mypaint.org/docs/contributing/
+[mypaint-doc-coc]: https://mypaint.org/docs/contributing/code-of-conduct/
+[mypaint-doc-build]: https://mypaint.org/docs/contributing/building/
 
 ## Links
 * [mypaint.app](http://mypaint.app/)
@@ -105,7 +88,6 @@ Please see the [Contributing Guide][contriblink] for full details of how you can
   * [Issue tracker][trackerlink]
   * [Introductory docs for developers][contriblink]
 
-[contriblink]: https://github.com/mypaint/mypaint/wiki/Contributing
 [trackerlink]: https://github.com/mypaint/mypaint/issues
 
 ## Legal info
