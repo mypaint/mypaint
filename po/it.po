@@ -8,8 +8,8 @@ msgstr ""
 "Project-Id-Version: mypaint v2.0.0-alpha.12-345-g9079adb\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-04-17 23:27+0200\n"
-"PO-Revision-Date: 2020-05-19 16:06+0000\n"
-"Last-Translator: Giovanni Battaglia <iamgiovanni.gb@gmail.com>\n"
+"PO-Revision-Date: 2023-04-07 12:47+0000\n"
+"Last-Translator: Franco Rossi <franco.f.rossi@gmail.com>\n"
 "Language-Team: Italian <https://hosted.weblate.org/projects/mypaint/mypaint/"
 "it/>\n"
 "Language: it\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 4.1-dev\n"
+"X-Generator: Weblate 4.17-dev\n"
 "X-Poedit-Country: ITALY\n"
 "X-Poedit-Language: Italian\n"
 "X-Poedit-SourceCharset: utf-8\n"
@@ -25,7 +25,7 @@ msgstr ""
 #: ../gui/accelmap.py:86
 msgctxt "placeholder for keymap filtering"
 msgid "Filter"
-msgstr ""
+msgstr "Filtro"
 
 #. TRANSLATORS: Name of first column in the button map preferences.
 #. TRANSLATORS: Refers to an action bound to a mod+button combination.
@@ -462,10 +462,9 @@ msgid "Unknown Brush"
 msgstr "Pennello Sconosciuto"
 
 #: ../gui/brushmanip.py:191
-#, fuzzy
 msgctxt "brush resize mode - name"
 msgid "Resize Brush"
-msgstr "Rinomina Pennello"
+msgstr "Ridimensiona Pennello"
 
 #: ../gui/brushmanip.py:196
 msgctxt "brush resize mode - usage"
@@ -682,9 +681,8 @@ msgid "Set the color Hue used for painting"
 msgstr "Imposta la tonalità del colore utilizzata per la pittura"
 
 #: ../gui/colorpicker.py:222
-#, fuzzy
 msgid "Pick Chroma"
-msgstr "Preleva Col."
+msgstr "Prendi Colore"
 
 #: ../gui/colorpicker.py:225
 #, fuzzy
@@ -696,9 +694,8 @@ msgid "Pick Luma"
 msgstr "Preleva Luma"
 
 #: ../gui/colorpicker.py:245
-#, fuzzy
 msgid "Set the color Luma used for painting"
-msgstr "Imposta il colore usato per dipingere"
+msgstr "Imposta la luminositá del colore usato per dipingere"
 
 #: ../gui/colors/adjbases.py:699
 msgid "Color details"
@@ -1313,7 +1310,7 @@ msgstr "Apri sempre in modalità 2.x"
 #: ../gui/compatibility.py:215
 msgctxt "Prefs Dialog|Compatibility"
 msgid "Open in 1.x mode unless file contains pigment layers"
-msgstr ""
+msgstr "Apri in modo 1.x se il file non contiene layer pigmentati"
 
 #. TRANSLATORS: This is a label for a dropdown menu in the
 #. TRANSLATORS: file chooser dialog when loading .ora files.

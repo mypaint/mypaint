@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: mypaint v2.0.0-alpha.12-324-g153de92\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-04-17 23:27+0200\n"
-"PO-Revision-Date: 2021-04-27 07:37+0000\n"
+"PO-Revision-Date: 2023-01-24 00:57+0000\n"
 "Last-Translator: Adolfo Jayme Barrientos <fitojb@ubuntu.com>\n"
 "Language-Team: Spanish <https://hosted.weblate.org/projects/mypaint/mypaint/"
 "es/>\n"
@@ -18,7 +18,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bits\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 4.7-dev\n"
+"X-Generator: Weblate 4.16-dev\n"
 
 #: ../gui/accelmap.py:86
 msgctxt "placeholder for keymap filtering"
@@ -178,7 +178,7 @@ msgstr "{filename} tiene tamaño cero (w={w}, h={h})"
 #: ../gui/brusheditor.py:117
 msgctxt "brush settings editor: subwindow title"
 msgid "Brush Settings Editor"
-msgstr "Editor de Configuración de Brocha"
+msgstr "Editor de configuración de brocha"
 
 #: ../gui/brusheditor.py:305
 msgctxt "brush settings list: brush metadata texts group"
@@ -434,7 +434,7 @@ msgctxt "brushpack import failure messages"
 msgid "No file named “{order_conf_file}”. This is not a brushpack."
 msgstr ""
 "No hay ningún archivo denominado «{order_conf_file}». Este no es un paquete "
-"de pinceles."
+"de brochas."
 
 #: ../gui/brushmanager.py:704
 #, python-brace-format
@@ -654,8 +654,8 @@ msgstr ""
 msgid ""
 "{button} cannot be bound without modifier keys (its meaning is fixed, sorry)"
 msgstr ""
-"{button} no puede ser enlazado sin modificar teclas (esto significa que es "
-"fija, lo siento)"
+"{button} no puede vincularse sin teclas modificadoras (su significado es "
+"fijo)"
 
 #: ../gui/buttonmap.py:601
 #, python-brace-format
@@ -664,7 +664,7 @@ msgstr "{button_combination} ya se vinculó a la acción «{action_name}»"
 
 #: ../gui/colorpicker.py:65
 msgid "Pick Color"
-msgstr "Elija el Color"
+msgstr "Elegir un color"
 
 #: ../gui/colorpicker.py:68
 msgid "Set the color used for painting"
@@ -724,7 +724,7 @@ msgstr ""
 #: ../gui/colors/hcywheel.py:355
 msgctxt "HCY Color Wheel: tooltip"
 msgid "HCY hue and chroma."
-msgstr "Tono HCY y croma."
+msgstr "Tono y crominancia HCY."
 
 #: ../gui/colors/hcywheel.py:412
 msgctxt "HCY Mask Editor Wheel: tooltip"
@@ -1179,7 +1179,7 @@ msgstr "Croma HCY"
 #: ../gui/colors/sliders.py:281
 msgctxt "color component slider: tooltip"
 msgid "HCY Luma (Y')"
-msgstr "Luminancia (Y') HCY"
+msgstr "Luminancia (Y′) HCY"
 
 #: ../gui/colortools.py:141
 msgctxt "color changer dock panels: tab tooltip title"
@@ -1367,12 +1367,12 @@ msgstr "Tareas no-pintura"
 #: ../gui/device.py:105
 msgctxt "device settings: allowed usage"
 msgid "Navigation only"
-msgstr "Navegación sólo"
+msgstr "Navegación solo"
 
 #: ../gui/device.py:130
 msgctxt "device settings: unmodified scroll action"
 msgid "Zoom"
-msgstr "Escala"
+msgstr "Zum"
 
 #: ../gui/device.py:131
 msgctxt "device settings: unmodified scroll action"
@@ -1573,7 +1573,7 @@ msgstr "No se puede pegar en este tipo de capa."
 #, python-brace-format
 msgctxt "Statusbar message: paste result"
 msgid "Pasted {w}×{h} image."
-msgstr "Se pegó imagen de {w}×{h}."
+msgstr "Se pegó una imagen de {w}×{h}."
 
 #: ../gui/document.py:2062
 #, python-brace-format
@@ -1663,15 +1663,15 @@ msgstr ""
 msgid ""
 "Editing cancelled. You can still edit “{layer_name}” from the Layers menu."
 msgstr ""
-"Edición cancelada. Todavía puede editar \"{layer_name}\" desde el menú de "
-"capas."
+"Se canceló la edición. Todavía puede editar «{layer_name}» desde el menú "
+"Capas."
 
 #. TRANSLATORS: This is a statusbar message shown when
 #. TRANSLATORS:  a layer is updated from an external edit
 #: ../gui/externalapp.py:55
 #, python-brace-format
 msgid "Updated layer “{layer_name}” with external edits"
-msgstr "Capa actualizada \"{layer_name}\" con ediciones externas"
+msgstr "Se actualizó la capa «{layer_name}» con ediciones externas"
 
 #: ../gui/externalapp.py:59
 #, python-brace-format
@@ -1679,7 +1679,7 @@ msgctxt "Edit in External App (statusbar message)"
 msgid "Failed to update layer with external edits from “{file_basename}”."
 msgstr ""
 "No se pudo actualizar una capa con ediciones externas desde "
-"\"{file_basename}\"."
+"«{file_basename}»."
 
 #: ../gui/externalapp.py:146
 #, python-brace-format
@@ -1739,7 +1739,7 @@ msgstr "Exportando a {files_summary}…"
 #, python-brace-format
 msgctxt "Document I/O: fail message"
 msgid "Failed to export to {files_summary}."
-msgstr "No se pudo exportar a \"{files_summary}\"."
+msgstr "No se pudo exportar como «{files_summary}»."
 
 #: ../gui/filehandling.py:150
 #, python-brace-format
@@ -1886,12 +1886,12 @@ msgstr "Exportar"
 #: ../gui/filehandling.py:586
 msgctxt "Dialogs (window title): File→Save As…"
 msgid "Save As"
-msgstr "Guardar Como"
+msgstr "Guardar como"
 
 #: ../gui/filehandling.py:606
 msgctxt "save dialogs: formats and options: (label)"
 msgid "Format to save as:"
-msgstr "Formato a guardar:"
+msgstr "Formato en que guardar:"
 
 #: ../gui/filehandling.py:673
 msgctxt ""
@@ -1926,7 +1926,7 @@ msgstr ""
 #: ../gui/filehandling.py:804
 msgctxt "File→New: confirm dialog: title question"
 msgid "New Canvas?"
-msgstr "¿Nueva imagen?"
+msgstr "¿Quiere un lienzo nuevo?"
 
 #: ../gui/filehandling.py:808
 msgctxt "File→New: confirm dialog: continue button"
@@ -1936,7 +1936,7 @@ msgstr "Lienzo _nuevo"
 #: ../gui/filehandling.py:1024
 msgctxt "File→Open: confirm dialog: title question"
 msgid "Open File?"
-msgstr "¿Abrir Archivo?"
+msgstr "¿Quiere abrir el archivo?"
 
 #: ../gui/filehandling.py:1028
 msgctxt "File→Open: confirm dialog: continue button"
@@ -1946,7 +1946,7 @@ msgstr "_Abrir…"
 #: ../gui/filehandling.py:1036
 msgctxt "File→Open: file chooser dialog: title"
 msgid "Open File"
-msgstr "Abrir Archivo"
+msgstr "Abrir archivo"
 
 #: ../gui/filehandling.py:1084
 msgctxt "load dialogs: title"
@@ -1956,12 +1956,12 @@ msgstr "Abrir Libreta de Esbozos…"
 #: ../gui/filehandling.py:1126
 msgctxt "Layers→Import Layers: files-chooser dialog: title"
 msgid "Import Layers"
-msgstr "Importar Capas"
+msgstr "Importar capas"
 
 #: ../gui/filehandling.py:1433
 msgctxt "File→Open Recent→* confirm dialog: title"
 msgid "Open File?"
-msgstr "¿Abrir Archivo?"
+msgstr "¿Quiere abrir el archivo?"
 
 #: ../gui/filehandling.py:1437
 msgctxt "File→Open Recent→* confirm dialog: continue button"
@@ -1971,7 +1971,7 @@ msgstr "_Abrir"
 #: ../gui/filehandling.py:1452
 msgctxt "File→Open Most Recent confirm dialog: title"
 msgid "Open Most Recent File?"
-msgstr "¿Abrir Archivo Más Reciente?"
+msgstr "¿Quiere abrir el archivo más reciente?"
 
 #: ../gui/filehandling.py:1457
 msgctxt "File→Open Most Recent→* confirm dialog: continue button"
@@ -2006,7 +2006,7 @@ msgstr "No se puede revertir: el lienzo aún no se ha guardado en un archivo."
 #: ../gui/filehandling.py:1519
 msgctxt "File→Revert confirm dialog: title"
 msgid "Revert Changes?"
-msgstr "¿Revertir Cambios?"
+msgstr "¿Quiere revertir los cambios?"
 
 #: ../gui/filehandling.py:1524
 msgctxt "File→Revert confirm dialog: continue button"
@@ -2688,14 +2688,15 @@ msgstr "Líneas y curvas"
 #. TRANSLATORS: users should never see this message
 #: ../gui/linemode.py:225
 msgid "Generic line/curve mode"
-msgstr "Modo línea/curva Genérica"
+msgstr "Modo genérico línea/curva"
 
 #: ../gui/linemode.py:803
-#, fuzzy
 msgid ""
 "Draw straight lines; Shift adds curves, Shift + Ctrl moves line ends, Ctrl "
 "constrains angle"
-msgstr "Dibujar líneas rectas; Mayús añade curvas, Ctrl restringe el ángulo"
+msgstr ""
+"Dibujar líneas rectas; Mayús añade curvas, Mayús + Ctrl mueve los extremos "
+"de la línea, Ctrl restringe el ángulo"
 
 #: ../gui/linemode.py:814
 msgid "Connected Lines"
@@ -2734,15 +2735,13 @@ msgid ""
 "This program is distributed in the hope that it will be useful, but WITHOUT "
 "ANY WARRANTY. See the COPYING file for more details."
 msgstr ""
-"Este programa es software libre; puede redistribuirlo y/o modificarlo bajo "
-"los términos de la Licencia Pública General GNU tal como se publica por la "
-"Free Software Foundation; ya sea la versión 2 de la Licencia, o (a su "
-"elección) cualquier versión posterior.\n"
+"Este programa es libre; puede redistribuirlo o modificarlo en virtud de los "
+"términos de la Licencia Pública General de GNU, tal como la publica la Free "
+"Software Foundation; ya sea la versión 2 de la Licencia, o (a su elección) "
+"cualquier versión posterior.\n"
 "\n"
 "Este programa se distribuye con la esperanza de que le sea útil, pero SIN "
-"NINGUNA GARANTÍA; sin incluso la garantía implícita de MERCANTILIDAD o "
-"IDONEIDAD PARA UN PROPÓSITO PARTICULAR. Vea la Licencia Pública General GNU "
-"para más detalles."
+"NINGUNA GARANTÍA. Vea el archivo COPYING para más detalles."
 
 #: ../gui/meta.py:60
 msgctxt "About dialog: credits: tasks"
@@ -2757,7 +2756,7 @@ msgstr "portabilidad"
 #: ../gui/meta.py:68
 msgctxt "About dialog: credits: tasks"
 msgid "project management"
-msgstr "gestión de proyectos"
+msgstr "gerencia del proyecto"
 
 #: ../gui/meta.py:72
 msgctxt "About dialog: credits: tasks: brush presets and icons"
@@ -2821,6 +2820,7 @@ msgctxt "About dialog: credits: translator credits (your name(s) here!)"
 msgid "translator-credits"
 msgstr ""
 "Adolfo Jayme Barrientos <fitojb@ubuntu.com>, 2021\n"
+"Federico S. <elfederium@yahoo.com.ar>, 2020\n"
 "David Gámiz Jiménez, 2015"
 
 #. TRANSLATORS:"Brush radius" for the options panel. Short.
@@ -2872,7 +2872,7 @@ msgstr "<i>No hay opciones disponibles</i>"
 #: ../gui/overlays.py:161
 #, python-format
 msgid "Zoom: %.01f%%"
-msgstr "Escala: %.01f %%"
+msgstr "Zum: %.01f %%"
 
 #: ../gui/picker.py:462
 msgctxt "context picker: statusbar text during grab"
@@ -2938,17 +2938,17 @@ msgstr "Elemento siguiente"
 
 #: ../gui/spinbox.py:102
 msgid "(Nothing to show)"
-msgstr "(Nada para mostrar)"
+msgstr "(Nada que mostrar)"
 
 #: ../gui/symmetry.py:83
 msgctxt "symmetry axis edit mode: instructions shown in statusbar"
 msgid "Place axis"
-msgstr "Posicionar ejes"
+msgstr "Posicionar eje"
 
 #: ../gui/symmetry.py:87
 msgctxt "symmetry axis edit mode: instructions shown in statusbar"
 msgid "Move axis"
-msgstr "Mueva el eje"
+msgstr "Mover eje"
 
 #: ../gui/symmetry.py:91
 msgctxt "symmetry axis edit mode: instructions shown in statusbar"
@@ -3070,11 +3070,11 @@ msgstr "Arrastrar Vista de lienzo"
 
 #: ../gui/viewmanip.py:79
 msgid "Zoom View"
-msgstr "Vista de zoom"
+msgstr "Vista de zum"
 
 #: ../gui/viewmanip.py:82
 msgid "Zoom the canvas view"
-msgstr "Ampliar Vista de lienzo"
+msgstr "Acercar vista de lienzo"
 
 #: ../gui/viewmanip.py:122
 msgid "Rotate View"
@@ -3110,7 +3110,7 @@ msgstr "Recortar la capa"
 
 #: ../lib/command.py:632
 msgid "Uniquify Layer Pixels"
-msgstr "Eliminar Pixeles Vacíos de la Capa"
+msgstr "Quitar duplicaciones de píxeles de la capa"
 
 #: ../lib/command.py:655
 msgid "Refactor Group"
@@ -3241,7 +3241,7 @@ msgstr "Los registros pueden tener más detalles sobre este error."
 #: ../lib/document.py:205
 msgctxt "Document autosave descriptions: the {ago} string: future"
 msgid "from now"
-msgstr "desde ahora"
+msgstr "de aquí a"
 
 #. TRANSLATORS: string used in e.g. "8s ago"
 #: ../lib/document.py:211
@@ -3283,8 +3283,8 @@ msgid ""
 "num_layers}\n"
 "Contains {unsaved_time} of unsaved painting."
 msgstr ""
-"Copia de seguridad actualizada {last_modified_time} {ago}\n"
-"Tamaño: {autosave.width}×{autosave.height} píxeles, Capas: {autosave."
+"Copia de respaldo actualizada {ago} {last_modified_time}\n"
+"Tamaño: {autosave.width} × {autosave.height} píxeles, capas: {autosave."
 "num_layers}\n"
 "Contiene {unsaved_time} de pintura sin guardar."
 
@@ -3379,7 +3379,7 @@ msgid ""
 "\n"
 "{see_logs}"
 msgstr ""
-"Error al recuperar el trabajo de una copia de seguridad automatizada.\n"
+"No se pudo recuperar el trabajo de una copia de respaldo automatizada.\n"
 "\n"
 "Razón: {reason}\n"
 "\n"
@@ -3421,25 +3421,25 @@ msgstr "mosaicos"
 #, python-brace-format
 msgctxt "Time period abbreviations"
 msgid "{days}d{hours}h"
-msgstr "{days}d{hours}h"
+msgstr "{days} d {hours} h"
 
 #: ../lib/helpers.py:588
 #, python-brace-format
 msgctxt "Time period abbreviations"
 msgid "{hours}h{minutes}m"
-msgstr "{hours}h{minutes}m"
+msgstr "{hours} h {minutes} m"
 
 #: ../lib/helpers.py:590
 #, python-brace-format
 msgctxt "Time period abbreviation"
 msgid "{minutes}m{seconds}s"
-msgstr "{minutes}m{seconds}s"
+msgstr "{minutes} m {seconds} s"
 
 #: ../lib/helpers.py:592
 #, python-brace-format
 msgctxt "Time period abbreviation"
 msgid "{seconds}s"
-msgstr "{seconds}s"
+msgstr "{seconds} s"
 
 #. TRANSLATORS: Default name for new normal, paintable layers
 #: ../lib/layer/core.py:66 ../lib/layer/data.py:1309
@@ -3451,23 +3451,23 @@ msgstr "Capa"
 #: ../lib/layer/data.py:1161
 msgctxt "layer default names"
 msgid "Vectors"
-msgstr "Capa Vectorial"
+msgstr "Vectorial"
 
 #: ../lib/layer/data.py:1166
 msgctxt "layer type descriptions"
 msgid "Vector Layer"
-msgstr "Capa Vectorial"
+msgstr "Capa vectorial"
 
 #. TRANSLATORS: Short default name for renderable fallback layers
 #: ../lib/layer/data.py:1237
 msgctxt "layer default names"
 msgid "Bitmap"
-msgstr "Mapa de Bits"
+msgstr "Mapa de bits"
 
 #: ../lib/layer/data.py:1242
 msgctxt "layer type descriptions"
 msgid "Bitmap Data"
-msgstr "Datos del Mapa de Bits"
+msgstr "Datos de mapa de bits"
 
 #. TRANSLATORS: Short default name for non-renderable fallback layers
 #: ../lib/layer/data.py:1258
@@ -3478,7 +3478,7 @@ msgstr "Datos"
 #: ../lib/layer/data.py:1263
 msgctxt "layer type descriptions"
 msgid "Unknown Data"
-msgstr "Capa de datos desconocida"
+msgstr "Datos desconocidos"
 
 #: ../lib/layer/data.py:1314
 msgctxt "layer type descriptions"
@@ -3494,14 +3494,14 @@ msgstr "Grupo"
 #: ../lib/layer/group.py:72
 msgctxt "layer type descriptions"
 msgid "Layer Group"
-msgstr "Grupo de Capas"
+msgstr "Grupo de capas"
 
 #. TRANSLATORS: Short default name for temporary placeholder layers.
 #. TRANSLATORS: (The user should never see this except in error cases)
 #: ../lib/layer/tree.py:70
 msgctxt "layer default names"
 msgid "Placeholder"
-msgstr "Marcador de posición"
+msgstr "Sustitutorio"
 
 #: ../lib/layer/tree.py:109
 msgctxt "layer default names"
@@ -3531,32 +3531,32 @@ msgstr "No hay vista activa"
 #: ../lib/layervis.py:579
 msgctxt "layer views: commands: add"
 msgid "Add Layer View"
-msgstr "Agregar Vista de Capas"
+msgstr "Añadir vista de capas"
 
 #: ../lib/layervis.py:604 ../lib/layervis.py:633
 msgctxt "layer views: commands: remove"
 msgid "Remove Layer View"
-msgstr "Quitar Vista de Capas"
+msgstr "Quitar vista de capas"
 
 #: ../lib/layervis.py:663
 #, python-brace-format
 msgctxt "layer views: commands: activate"
 msgid "Activate Layer View “{name}”"
-msgstr "Activar Vista de Capas \"{name}\""
+msgstr "Activar vista de capas «{name}»"
 
 #: ../lib/layervis.py:692
 msgctxt "layer views: commands: set active view's lock flag"
 msgid "Lock Layer View"
-msgstr "Bloquear Vista de Capas"
+msgstr "Bloquear vista de capas"
 
 #: ../lib/layervis.py:697
 msgctxt "layer views: commands: set active view's lock flag"
 msgid "Unlock Layer View"
-msgstr "Desbloquear Vista de Capas"
+msgstr "Desbloquear vista de capas"
 
 #: ../lib/modes.py:47
 msgid "Pass-through"
-msgstr "Paso a través"
+msgstr "Atravesar"
 
 #: ../lib/modes.py:48
 msgid "Group contents apply directly to the group's backdrop"
@@ -3568,7 +3568,7 @@ msgstr "Normal"
 
 #: ../lib/modes.py:52
 msgid "The top layer only, without blending colors."
-msgstr "Sólo la capa de arriba, sin mezcla de colores."
+msgstr "Solo la capa de arriba, sin mezcla de colores."
 
 #: ../lib/modes.py:54
 msgid "Pigment"
@@ -3602,8 +3602,8 @@ msgid ""
 "Like shining two separate slide projectors onto a screen simultaneously. "
 "This is the inverse of 'Multiply'."
 msgstr ""
-"Como usar dos proyectores distintos simultáneamente en una misma pantalla. "
-"Es el inverso de 'Multiplicar'."
+"Como usar dos proyectores distintos simultáneamente en una sola pantalla. Es "
+"lo opuesto de «Multiplicar»."
 
 #: ../lib/modes.py:66
 msgid "Overlay"
@@ -3615,7 +3615,7 @@ msgid ""
 "highlights and shadows. This is the inverse of 'Hard Light'."
 msgstr ""
 "Superpone el fondo con la capa de arriba, preservando las luces y las "
-"sombras del fondo. Es el inverso de 'Claridad fuerte'."
+"sombras del fondo. Es lo opuesto de «Claridad fuerte»."
 
 #: ../lib/modes.py:71
 msgid "Darken"
@@ -3670,7 +3670,7 @@ msgstr "Claridad fuerte"
 
 #: ../lib/modes.py:90
 msgid "Similar to shining a harsh spotlight onto the backdrop."
-msgstr "Similar a iluminar con una luz spot dura lo que hay debajo."
+msgstr "Similar a iluminar con un reflector fuerte lo que hay debajo."
 
 #: ../lib/modes.py:92
 msgid "Soft Light"
@@ -3678,7 +3678,7 @@ msgstr "Claridad suave"
 
 #: ../lib/modes.py:93
 msgid "Like shining a diffuse spotlight onto the backdrop."
-msgstr "Como iluminar con una luz spot difusa lo que hay debajo."
+msgstr "Como iluminar con un reflector difuso lo que hay debajo."
 
 #: ../lib/modes.py:95
 msgid "Difference"
@@ -3850,7 +3850,7 @@ msgstr "Vertical y horizontal"
 
 #: ../lib/tiledsurface.py:51
 msgid "Rotational"
-msgstr "Radial rotacional"
+msgstr "Rotativo"
 
 #: ../lib/tiledsurface.py:52
 msgid "Snowflake"
@@ -3880,11 +3880,11 @@ msgid ""
 "You can always launch this dialog from the ‘File’ menu when MyPaint is "
 "running."
 msgstr ""
-"Abrir este diálogo de recuperación de copias de seguridad cuando MyPaint "
-"inicia,\n"
-"si hay archivos para recuperar.\n"
-"Siempre se puede abrir este diálogo desde el menú \"Archivo\", después que "
-"MyPaint ya inició."
+"Se ejecutará este diálogo de recuperación de copias guardadas "
+"automáticamente al iniciar MyPaint, si hubiere archivos que recuperar.\n"
+"\n"
+"Puede abrir este cuadro de diálogo en cualquier momento, mediante el menú "
+"Archivo, cuando MyPaint esté en ejecución."
 
 #. Deletes the selected autosave backup file.
 #: ../gui/autorecover.glade:60
@@ -3895,7 +3895,7 @@ msgstr "_Eliminar…"
 #: ../gui/autorecover.glade:66
 msgctxt "Autosave Recovery dialog|Delete button|"
 msgid "Delete this backup from the disk."
-msgstr "Borrar esta copia de respaldo del disco."
+msgstr "Elimina esta copia de respaldo del disco."
 
 #. Recover in the sense or retrieval or salvage from a backup file. The user is asked to save the retrieved file immediately afterwards, hence the ellipsis.
 #: ../gui/autorecover.glade:78
@@ -3990,7 +3990,7 @@ msgstr "Cambiar nombre de esta brocha"
 
 #: ../gui/brusheditor.glade:239
 msgid "Brush Setting"
-msgstr "Ajustes de Pincel"
+msgstr "Configuración de brocha"
 
 #: ../gui/brusheditor.glade:340
 msgctxt "brush editor|metadata settings|labels for widgets|tooltips|"
@@ -4365,7 +4365,7 @@ msgstr ""
 #: ../gui/preferenceswindow.glade:401
 msgctxt "Prefs Dialog|Button|"
 msgid "<b>Pointer Button Mappings</b>"
-msgstr "<b>Asignación de botones del Dispositivo</b>"
+msgstr "<b>Asignación de botones del dispositivo</b>"
 
 #. Tab label in preferences dialog
 #: ../gui/preferenceswindow.glade:414
@@ -4378,7 +4378,7 @@ msgstr "Botones"
 #. unless its key is bound to something else.
 #: ../gui/preferenceswindow.glade:453
 msgid "Disable fallback key bindings"
-msgstr "Deshabilitar atajos de teclado predefinidos"
+msgstr "Desactivar atajos de teclado de reserva"
 
 #. Tooltip for checkbox in the keyboard mappings preferences.
 #: ../gui/preferenceswindow.glade:457
@@ -4411,7 +4411,7 @@ msgstr "El prefijo al guardar esbozos:"
 #: ../gui/preferenceswindow.glade:575
 msgctxt "Prefs Dialog|Load & Save|"
 msgid "<b>Saving</b>"
-msgstr "<b>Guardando</b>"
+msgstr "<b>Guardado</b>"
 
 #: ../gui/preferenceswindow.glade:592
 msgctxt "Prefs Dialog|Load & Save|"
@@ -4474,12 +4474,12 @@ msgstr ""
 #: ../gui/preferenceswindow.glade:680
 msgctxt "Prefs Dialog|Load & Save|"
 msgid "<b>Automated Backups</b>"
-msgstr "<b>Copias de seguridad automatizadas</b>"
+msgstr "<b>Copias de respaldo automatizadas</b>"
 
 #: ../gui/preferenceswindow.glade:698
 msgctxt "Prefs Dialog|Load & Save|Automated Backups|switch label"
 msgid "Back up unsaved work:"
-msgstr "Copia de seguridad de trabajo sin guardar:"
+msgstr "Respaldar trabajo sin guardar:"
 
 #. In seconds. Lowest value is 5, highest is 300 (5 minutes). Only matters when enabled.
 #: ../gui/preferenceswindow.glade:733
@@ -4495,9 +4495,9 @@ msgid ""
 "the program crashes, you'll have a chance to restore what you were working "
 "on."
 msgstr ""
-"Las Copias de seguridad trabajaran incremental de fondo en el caché de disco "
-"de MyPaint. Si el programa se bloquea, tendrás una oportunidad para "
-"restaurar en lo que estabas trabajando."
+"Respalda el trabajo de forma incremental y en segundo plano en la "
+"antememoria en disco de MyPaint. Si el programa se cierra inesperadamente, "
+"tendrá una oportunidad de restaurar lo que estaba haciendo."
 
 #: ../gui/preferenceswindow.glade:768
 msgctxt "Prefs Dialog|Load & Save|Automated Backups|interval label"
@@ -4513,11 +4513,11 @@ msgstr "Cargar y guardar"
 #: ../gui/preferenceswindow.glade:807
 msgctxt "Prefs Dialog|View|"
 msgid "<b>Zoom and Rendering</b>"
-msgstr "<b>Escala y representación</b>"
+msgstr "<b>Zum y representación</b>"
 
 #: ../gui/preferenceswindow.glade:824
 msgid "Default zoom level:"
-msgstr "Nivel de escala predeterminado:"
+msgstr "Nivel de zum predeterminado:"
 
 #: ../gui/preferenceswindow.glade:862
 msgctxt "Prefs Dialog|View|"
@@ -4579,7 +4579,7 @@ msgid ""
 "Draw a real checkerboard pattern to show transparency.\n"
 "This slows down the display, but can be less confusing."
 msgstr ""
-"Dibujar un patrón de tablero de ajedrez real para mostrar transparencia.\n"
+"Dibujar un motivo de tablero de ajedrez real para mostrar transparencia.\n"
 "Esto ralentiza el tiempo de dibujo de la pantalla, pero puede ser menos "
 "confuso."
 
@@ -5316,7 +5316,7 @@ msgstr "Borrar partes de la capa actual que se encuentran fuera del marco."
 #: ../gui/resources.xml:423
 msgctxt "Menu→Layer→Slice (labels), Accel Editor (labels)"
 msgid "Uniquify Layer Pixels"
-msgstr "Eliminar Pixeles Vacíos de la Capa"
+msgstr "Quitar duplicaciones de píxeles de la capa"
 
 #: ../gui/resources.xml:424
 msgctxt "Accel Editor (descriptions)"
@@ -5357,7 +5357,7 @@ msgstr "Refactorizar Grupo de Capas por Piezas"
 #: ../gui/resources.xml:452
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Copy Layer to Clipboard"
-msgstr "Copiar Capa al portapapeles"
+msgstr "Copiar capa en portapapeles"
 
 #: ../gui/resources.xml:453
 msgctxt "Accel Editor (descriptions)"
@@ -5367,7 +5367,7 @@ msgstr "Copiar el contenido de la capa actual en el portapapeles."
 #: ../gui/resources.xml:461
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Paste Layer from Clipboard"
-msgstr "Pegar Capa desde el portapapeles"
+msgstr "Pegar capa desde portapapeles"
 
 #: ../gui/resources.xml:462
 msgctxt "Accel Editor (descriptions)"
@@ -5377,7 +5377,7 @@ msgstr "Reemplaza la capa actual con el contenido del portapapeles."
 #: ../gui/resources.xml:469
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Edit Layer in External App…"
-msgstr "Editar la capa en una aplicación externa…"
+msgstr "Editar capa en aplicación externa…"
 
 #: ../gui/resources.xml:470
 msgctxt "Accel Editor (descriptions)"
@@ -5387,7 +5387,7 @@ msgstr "Editar la capa activa en una aplicación externa."
 #: ../gui/resources.xml:477
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Update Layer with External Edits"
-msgstr "Actualizar capa con Ediciones Externas"
+msgstr "Actualizar capa con ediciones externas"
 
 #: ../gui/resources.xml:478
 msgctxt "Accel Editor (descriptions)"
@@ -5533,7 +5533,7 @@ msgstr "Borrar la capa actual de la pila de capas."
 #: ../gui/resources.xml:591
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Convert to Normal Painting Layer"
-msgstr "Convertir a Capa de pintura Normal"
+msgstr "Convertir en capa de pintura normal"
 
 #: ../gui/resources.xml:592
 msgctxt "Accel Editor (descriptions)"
@@ -5541,13 +5541,13 @@ msgid ""
 "Convert the current layer or group to a painting layer in ‘Normal’ mode, "
 "preserving its appearance."
 msgstr ""
-"Convertir la capa actual o el grupo a una capa de pintura en el modo "
-"'Normal', conservando su aspecto."
+"Convertir la capa o grupo actual en una capa de pintura en el modo «Normal», "
+"conservando su aspecto."
 
 #: ../gui/resources.xml:598
 msgctxt "Menu→Layer→Opacity (labels), Accel Editor (labels)"
 msgid "Increase Layer’s Opacity"
-msgstr "Aumentar la Opacidad de la Capa"
+msgstr "Aumentar opacidad de capa"
 
 #: ../gui/resources.xml:599
 msgctxt "Accel Editor (descriptions)"
@@ -5557,7 +5557,7 @@ msgstr "Hacer la capa menos transparente."
 #: ../gui/resources.xml:606
 msgctxt "Menu→Layer→Opacity (labels), Accel Editor (labels)"
 msgid "Reduce Layer’s Opacity"
-msgstr "Reducir la Opacidad de la Capa"
+msgstr "Reducir opacidad de capa"
 
 #: ../gui/resources.xml:607
 msgctxt "Accel Editor (descriptions)"
@@ -5587,7 +5587,7 @@ msgstr "Bajar la capa actual un nivel en la pila de capas."
 #: ../gui/resources.xml:633
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Duplicate Layer"
-msgstr "Duplicar Capa"
+msgstr "Duplicar capa"
 
 #: ../gui/resources.xml:634
 msgctxt "Accel Editor (descriptions)"
@@ -5658,7 +5658,7 @@ msgstr "Reiniciar y Centrar Vista"
 #: ../gui/resources.xml:685
 msgctxt "Accel Editor (descriptions)"
 msgid "Reset Zoom, Rotation and Mirroring, and recenter the document."
-msgstr "Restablecer Zoom, Rotación y Espejado, y recentrar el documento."
+msgstr "Restablecer zum, giro y espejado y recentrar el documento."
 
 #: ../gui/resources.xml:693
 msgctxt "Menu→View (labels), Accel Editor (labels)"
@@ -5678,12 +5678,12 @@ msgstr "Reiniciar"
 #: ../gui/resources.xml:708
 msgctxt "Menu→View→Reset (labels), Accel Editor (labels)"
 msgid "Reset Zoom"
-msgstr "Reiniciar ampliación"
+msgstr "Restablecer zum"
 
 #: ../gui/resources.xml:709
 msgctxt "Accel Editor (descriptions)"
 msgid "Reset view zoom level to default."
-msgstr "Restaurar el nivel de zoom a su valor predeterminado."
+msgstr "Restablecer el nivel de zum a su valor predeterminado."
 
 #: ../gui/resources.xml:715
 msgctxt "Menu→View→Reset (labels), Accel Editor (labels)"
@@ -5785,7 +5785,7 @@ msgstr "Girar el lienzo en sentido horario."
 #: ../gui/resources.xml:819
 msgctxt "Menu→View→Adjust View (labels), Accel Editor (labels)"
 msgid "Rotate Counterclockwise"
-msgstr "Rotar en sentido antihorario"
+msgstr "Girar en sentido antihorario"
 
 #: ../gui/resources.xml:820
 msgctxt "Accel Editor (descriptions)"
@@ -5795,27 +5795,27 @@ msgstr "Girar el lienzo en sentido antihorario."
 #: ../gui/resources.xml:828
 msgctxt "Menu→View→Adjust View (labels), Accel Editor (labels)"
 msgid "Mirror Horizontal"
-msgstr "Espejado Horizontal"
+msgstr "Reflejar horizontalmente"
 
 #: ../gui/resources.xml:829
 msgctxt "Accel Editor (descriptions)"
 msgid "Flip the view left to right."
-msgstr "Espejar la vista de izquierda a derecha."
+msgstr "Voltea la vista de izquierda a derecha."
 
 #: ../gui/resources.xml:837
 msgctxt "Menu→View→Adjust View (labels), Accel Editor (labels)"
 msgid "Mirror Vertical"
-msgstr "Espejado Vertical"
+msgstr "Reflejar verticalmente"
 
 #: ../gui/resources.xml:838
 msgctxt "Accel Editor (descriptions)"
 msgid "Flip the view upside-down."
-msgstr "Invierte la vista de arriba a abajo."
+msgstr "Voltea la vista de arriba abajo."
 
 #: ../gui/resources.xml:845
 msgctxt "Menu→View (labels), Accel Editor (labels)"
 msgid "Layer Solo"
-msgstr "Sólo la capa actual"
+msgstr "Capa sola"
 
 #: ../gui/resources.xml:846
 msgctxt "Accel Editor (descriptions)"
@@ -5857,13 +5857,13 @@ msgstr ""
 #: ../gui/resources.xml:881
 msgctxt "Menu→Help→Debug (labels), Accel Editor (labels)"
 msgid "Visualize Rendering"
-msgstr "Visualizar el Renderizado"
+msgstr "Visualizar representación"
 
 #: ../gui/resources.xml:882
 msgctxt "Accel Editor (descriptions)"
 msgid "Show rendering updates on-screen, for debugging."
 msgstr ""
-"Mostrar las actualizaciones del renderizado, para corrección de errores."
+"Mostrar actualizaciones de la representación en pantalla, para la depuración."
 
 #: ../gui/resources.xml:888
 msgctxt "Menu→Help→Debug (labels), Accel Editor (labels)"
@@ -5939,7 +5939,7 @@ msgstr "Modo de pintura: alfa bloqueado"
 #: ../gui/resources.xml:960
 msgctxt "Accel Editor (descriptions)"
 msgid "Applying the brush doesn't change the layer’s opacity."
-msgstr "Aplicando el pincel no cambia la opacidad de la capa."
+msgstr "Aplicar la brocha no cambia la opacidad de la capa."
 
 #: ../gui/resources.xml:968
 msgctxt "Menu→Brush→Blend Mode (labels), Accel Editor (labels)"
@@ -5985,18 +5985,17 @@ msgstr "Ajustar color"
 #: ../gui/resources.xml:1020
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "Color History Popup"
-msgstr "Historial de color Desplegable"
+msgstr "Ventana emergente Historial de colores"
 
 #: ../gui/resources.xml:1021
 msgctxt "Accel Editor (descriptions)"
 msgid "Pop up a timeline of recent colors under the cursor."
-msgstr ""
-"Dialogo emergente de línea de tiempo de los colores recientes bajo el cursor."
+msgstr "Muestra bajo el cursor una cronología de colores recientes."
 
 #: ../gui/resources.xml:1028
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "Color Details Dialog"
-msgstr "Diálogo de Detalles de Color"
+msgstr "Cuadro de diálogo Detalles de color"
 
 #: ../gui/resources.xml:1029
 msgctxt "Accel Editor (descriptions)"
@@ -6160,7 +6159,7 @@ msgstr "Ventana"
 #: ../gui/resources.xml:1167
 msgctxt "Menu→Brush (labels)"
 msgid "Brush"
-msgstr "Pincel"
+msgstr "Brocha"
 
 #: ../gui/resources.xml:1173
 msgctxt "Menu→Brush (labels)"
@@ -6233,7 +6232,7 @@ msgstr "Importar brochas…"
 #: ../gui/resources.xml:1222
 msgctxt "Accel Editor (descriptions)"
 msgid "Load a brushpack from disk."
-msgstr "Cargar un paquete de pinceles del disco."
+msgstr "Cargar un paquete de brochas del disco."
 
 #: ../gui/resources.xml:1231
 msgctxt "Menu (labels)"
@@ -6248,7 +6247,7 @@ msgstr "Ayuda en línea"
 #: ../gui/resources.xml:1238
 msgctxt "Accel Editor (descriptions)"
 msgid "Go to MyPaint’s documentation wiki."
-msgstr "Ir a la wiki de documentación de MyPaint."
+msgstr "Ir al wiki de documentación de MyPaint."
 
 #: ../gui/resources.xml:1246
 msgctxt "Menu→Help (labels), Accel Editor (labels)"
@@ -6263,22 +6262,22 @@ msgstr "Mostrar la licencia de MyPaint, el número de versión y los créditos."
 #: ../gui/resources.xml:1256
 msgctxt "Menu→Help (labels)"
 msgid "Debug"
-msgstr "Depurar"
+msgstr "Depuración"
 
 #: ../gui/resources.xml:1262
 msgctxt "Menu→Help→Debug (labels), Accel Editor (labels)"
 msgid "Print Memory Leak Info to Console (Slow!)"
-msgstr "Imprimir información de Fugas de Memoria en la consola (¡lento!)"
+msgstr "Mostrar información de fugas de memoria en consola (¡lento!)"
 
 #: ../gui/resources.xml:1263
 msgctxt "Accel Editor (descriptions)"
 msgid "Debug memory leaks."
-msgstr "Depuración de pérdidas de memoria."
+msgstr "Depure pérdidas de memoria."
 
 #: ../gui/resources.xml:1269
 msgctxt "Menu→Help→Debug (labels), Accel Editor (labels)"
 msgid "Run Garbage Collector Now"
-msgstr "Ejecutar el recolector de basura ahora"
+msgstr "Ejecutar recolector de elementos no utilizados ahora"
 
 #: ../gui/resources.xml:1270
 msgctxt "Accel Editor (descriptions)"
@@ -6289,7 +6288,7 @@ msgstr "Memoria libre utilizada para objetos de Python que ya no están en uso."
 #: ../gui/resources.xml:1277
 msgctxt "Menu→Help→Debug (labels), Accel Editor (labels)"
 msgid "Start/Stop Profiling…"
-msgstr "Iniciar/Detener el perfilado…"
+msgstr "Iniciar/detener creación de perfil…"
 
 #: ../gui/resources.xml:1278
 msgctxt "Accel Editor (descriptions)"
@@ -6299,7 +6298,7 @@ msgstr "Iniciar o Detener el perfilado de Python (cProfile)"
 #: ../gui/resources.xml:1285
 msgctxt "Menu→Help→Debug (labels), Accel Editor (labels)"
 msgid "Simulate a Crash…"
-msgstr "Simular un error…"
+msgstr "Simular bloqueo…"
 
 #: ../gui/resources.xml:1286
 msgctxt "Accel Editor (descriptions)"
@@ -6321,12 +6320,12 @@ msgstr "Comentarios"
 #: ../gui/resources.xml:1306
 msgctxt "Menu→View (labels)"
 msgid "Adjust View"
-msgstr "Ajustar Vista"
+msgstr "Ajustar vista"
 
 #: ../gui/resources.xml:1312
 msgctxt "Menu→View (labels), Accel Editor (labels)"
 msgid "Popup Main Menu"
-msgstr "Desplegar Menú Principal"
+msgstr "Menú principal emergente"
 
 #: ../gui/resources.xml:1313
 msgctxt "Accel Editor (descriptions)"
@@ -6346,7 +6345,7 @@ msgstr "Alternar entre modo de pantalla completa y ventana."
 #: ../gui/resources.xml:1332
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
 msgid "Edit Preferences"
-msgstr "Editar Preferencias"
+msgstr "Editar preferencias"
 
 #: ../gui/resources.xml:1333
 msgctxt "Accel Editor (descriptions)"
@@ -6378,7 +6377,7 @@ msgstr "Cambia la textura de papel de fondo."
 #: ../gui/resources.xml:1355
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
 msgid "Brush Settings Editor"
-msgstr "Editor de Ajustes de Brocha"
+msgstr "Editor de configuración de brocha"
 
 #: ../gui/resources.xml:1356
 msgctxt "Accel Editor (descriptions)"
@@ -6533,7 +6532,7 @@ msgstr "Panel Empotrable para mezclar colores y probar pinceles."
 #: ../gui/resources.xml:1478
 msgctxt "Menu→Scratchpad (labels), Accel Editor (labels)"
 msgid "Show Scratchpad Panel"
-msgstr "Mostrar Panel de Libreta de Esbozos"
+msgstr "Mostrar panel Libreta de esbozos"
 
 #: ../gui/resources.xml:1479
 msgctxt "Accel Editor (descriptions)"
@@ -6568,7 +6567,7 @@ msgstr ""
 #: ../gui/resources.xml:1508
 msgctxt "Menu→Window (labels), Toolbar (labels), Accel Editor (labels)"
 msgid "Tool Options Panel"
-msgstr "Panel Opciones de Herramienta"
+msgstr "Panel Opciones de herramienta"
 
 #: ../gui/resources.xml:1509
 msgctxt "Accel Editor (descriptions)"
@@ -6579,7 +6578,7 @@ msgstr ""
 #: ../gui/resources.xml:1517
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
 msgid "Show Tool Options Panel"
-msgstr "Mostrar el Panel Opciones de Herramienta"
+msgstr "Mostrar el panel Opciones de herramienta"
 
 #: ../gui/resources.xml:1518
 msgctxt "Accel Editor (descriptions)"
@@ -6591,7 +6590,7 @@ msgstr ""
 #: ../gui/resources.xml:1528
 msgctxt "Menu→Window (labels), Toolbar (labels), Accel Editor (labels)"
 msgid "Brush & Color History Panel"
-msgstr "Panel del Historial de Color y Pincel"
+msgstr "Panel Historial de colores y brochas"
 
 #: ../gui/resources.xml:1529
 msgctxt "Accel Editor (descriptions)"
@@ -6601,12 +6600,12 @@ msgstr "Panel empotrable para ver brochas y colores cambiados recientemente."
 #: ../gui/resources.xml:1537
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
 msgid "Recent Brushes & Colors"
-msgstr "Pinceles y Colores Recientes"
+msgstr "Brochas y colores recientes"
 
 #: ../gui/resources.xml:1538
 msgctxt "Accel Editor (descriptions)"
 msgid "Reveal the History panel (recently used brushes and colors)."
-msgstr "Revela el panel Historial (colores y pinceles usados recientemente)."
+msgstr "Revela el panel Historial (colores y brochas usados recientemente)."
 
 #: ../gui/resources.xml:1548
 msgctxt "Menu→View (labels), Accel Editor (labels)"
@@ -6623,7 +6622,7 @@ msgstr ""
 #: ../gui/resources.xml:1556
 msgctxt "Menu→View→Feedback (labels), Accel Editor (labels)"
 msgid "Show Zoom Level"
-msgstr "Mostrar Nivel de ampliación"
+msgstr "Mostrar nivel de zum"
 
 #: ../gui/resources.xml:1557
 msgctxt "Accel Editor (descriptions)"
@@ -6800,7 +6799,7 @@ msgstr "Ampliar vista"
 #: ../gui/resources.xml:1698
 msgctxt "Toolbar (short labels)"
 msgid "Zoom"
-msgstr "Ampliación"
+msgstr "Zum"
 
 #: ../gui/resources.xml:1699
 msgctxt "Toolbar (tooltips)"
@@ -6835,7 +6834,7 @@ msgstr "Líneas y curvas: dibujar líneas rectas o curvas."
 #: ../gui/resources.xml:1727
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
 msgid "Lines and Curves"
-msgstr "Líneas y Curvas"
+msgstr "Líneas y curvas"
 
 #: ../gui/resources.xml:1728
 msgctxt "Accel Editor (descriptions)"
@@ -6860,7 +6859,7 @@ msgstr "Líneas conectadas: dibujar secuencias de líneas rectas o curvas."
 #: ../gui/resources.xml:1748
 msgctxt "Menu→Edit (labels), Accel Editor (labels)"
 msgid "Connected Lines"
-msgstr "Líneas Conectadas"
+msgstr "Líneas conectadas"
 
 #: ../gui/resources.xml:1749
 msgctxt "Accel Editor (descriptions)"
@@ -7002,7 +7001,7 @@ msgstr "Ajustar interactivamente el eje utilizado para pintura simétrica."
 #: ../gui/resources.xml:1863
 msgctxt "Menu→Edit→Current Mode (labels)"
 msgid "Pick Color"
-msgstr "Elegir Color"
+msgstr "Elegir un color"
 
 #: ../gui/resources.xml:1864
 msgctxt "Toolbar (short labels)"
@@ -7057,7 +7056,7 @@ msgstr ""
 #: ../gui/resources.xml:1924
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
 msgid "Pick Color"
-msgstr "Elegir Color"
+msgstr "Elegir un color"
 
 #: ../gui/resources.xml:1925
 msgctxt "Accel Editor (descriptions)"

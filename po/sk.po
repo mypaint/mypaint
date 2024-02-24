@@ -7,8 +7,8 @@ msgstr ""
 "Project-Id-Version: mypaint v2.0.0-alpha.12-343-g82b4fc5\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-04-17 23:27+0200\n"
-"PO-Revision-Date: 2020-07-29 15:41+0000\n"
-"Last-Translator: Dušan Kazik <prescott66@gmail.com>\n"
+"PO-Revision-Date: 2024-02-10 14:02+0000\n"
+"Last-Translator: Marek Ľach <graweeld@googlemail.com>\n"
 "Language-Team: Slovak <https://hosted.weblate.org/projects/mypaint/mypaint/"
 "sk/>\n"
 "Language: sk\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
-"X-Generator: Weblate 4.2-dev\n"
+"X-Generator: Weblate 5.4-dev\n"
 
 #: ../gui/accelmap.py:86
 msgctxt "placeholder for keymap filtering"
@@ -462,15 +462,14 @@ msgid "Unknown Brush"
 msgstr "Neznámy štetec"
 
 #: ../gui/brushmanip.py:191
-#, fuzzy
 msgctxt "brush resize mode - name"
 msgid "Resize Brush"
-msgstr "Premenovanie štetca"
+msgstr "Zmeniť veľkosť štetca"
 
 #: ../gui/brushmanip.py:196
 msgctxt "brush resize mode - usage"
 msgid "Change brush size by dragging on the canvas"
-msgstr ""
+msgstr "Zmeniť veľkosť štetca ťahom na plátne"
 
 #: ../gui/brushselectionwindow.py:220
 msgctxt "brush group: context menu for a single brush"
@@ -2313,9 +2312,8 @@ msgid "px"
 msgstr "px"
 
 #: ../gui/framewindow.py:916
-#, fuzzy
 msgid "in"
-msgstr "palce"
+msgstr "palec"
 
 #: ../gui/framewindow.py:917
 msgid "cm"
@@ -2687,13 +2685,12 @@ msgid "Generic line/curve mode"
 msgstr "Všeobecný režim čiary/krivky"
 
 #: ../gui/linemode.py:803
-#, fuzzy
 msgid ""
 "Draw straight lines; Shift adds curves, Shift + Ctrl moves line ends, Ctrl "
 "constrains angle"
 msgstr ""
-"Nakreslí rovné čiary; Klávesou Shift sa pridajú krivky, klávesou Ctrl sa "
-"upravuje uhol"
+"Nakreslí rovné čiary; Klávesou Shift sa pridajú krivky, klávesami Shift + "
+"Ctrl sa posúvajú konce liniek, klávesou Ctrl sa upravuje uhol"
 
 #: ../gui/linemode.py:814
 msgid "Connected Lines"
@@ -3883,7 +3880,6 @@ msgstr "Odstráni túto zálohu z disku."
 
 #. Recover in the sense or retrieval or salvage from a backup file. The user is asked to save the retrieved file immediately afterwards, hence the ellipsis.
 #: ../gui/autorecover.glade:78
-#, fuzzy
 msgctxt "Autosave Recovery dialog|"
 msgid "_Recover & Save…"
 msgstr "_Obnoviť a uložiť…"
@@ -4163,19 +4159,17 @@ msgid "Simplify the curve using the Reumann-Witkam algorithm."
 msgstr ""
 
 #: ../gui/inktool.glade:269 ../gui/resources.xml:918
-#, fuzzy
 msgid "Cull Points"
-msgstr "Odstrániť bod"
+msgstr "Odstrániť body"
 
 #: ../gui/inktool.glade:273
 msgid "Cull every other point from the curve."
-msgstr ""
+msgstr "Odstráňiť každý ďalší bod z krivky."
 
 #: ../gui/layervis.glade:15
-#, fuzzy
 msgctxt "Layers window: view list controls: tooltips"
 msgid "The currently active view."
-msgstr "Režim kompozície aktuálnej vrstvy."
+msgstr "Práve aktívne zobrazenie."
 
 #: ../gui/layervis.glade:36
 msgctxt "Layers window: view list controls: tooltips"
@@ -4196,7 +4190,7 @@ msgstr "Ktoré viditeľné vrstvy majú byť vyplnené"
 #: ../gui/layervis.glade:99
 msgctxt "Layers window: view list controls: tooltips"
 msgid "Lock or unlock the active view."
-msgstr ""
+msgstr "Uzamknúť, alebo odomknúť aktívne zobrazenie."
 
 #: ../gui/mypaint.glade:65
 msgctxt "footer: color picker button: tooltip"
@@ -4601,7 +4595,7 @@ msgstr ""
 #: ../gui/preferenceswindow.glade:1149
 msgctxt "Prefs Dialog|View|Interface"
 msgid "Radius threshold:"
-msgstr ""
+msgstr "Prahová hodnota polomeru:"
 
 #. Description of the "Radius threshold" spinbox/spinner - the referenced "lines" are part of the brush cursor.
 #: ../gui/preferenceswindow.glade:1162
@@ -4611,7 +4605,6 @@ msgid ""
 msgstr ""
 
 #: ../gui/preferenceswindow.glade:1192
-#, fuzzy
 msgctxt ""
 "Prefs Dialog|View|Interface|Blink layers on creation/selection|checkbox label"
 msgid "Enabled"
@@ -4625,6 +4618,7 @@ msgid ""
 "When a layer is created or selected, show only that layer for a short time "
 "period."
 msgstr ""
+"Keď je vytvorená, alebo vybraná vrstva, na chvíľu ukázať iba danú vrstvu."
 
 #: ../gui/preferenceswindow.glade:1216
 msgctxt "Prefs Dialog|View|Interface|"
