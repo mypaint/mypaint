@@ -12,11 +12,13 @@
 from __future__ import division, print_function
 
 import os.path
+import sys
 from logging import getLogger
 from gettext import gettext as _
 
 from lib.gibindings import Gtk
 from lib.gibindings import Gdk
+from lib.gibindings import GLib
 
 from gui.compatibility import CompatibilityPreferences
 import lib.config
@@ -148,9 +150,13 @@ class PreferencesWindow (windowing.Dialog):
         disable_fb_bindings.set_active(
             p.get('keyboard.disable_fallbacks', False))
 
+        # folder for saving scraps
+        folder_entry = getobj("scrap_folder_entry")
+        folder_entry.set_text(p['saving.scrap_folder'])
+
         # prefix for saving scarps
-        entry = getobj("scrap_prefix_entry")
-        entry.set_text(p['saving.scrap_prefix'])
+        prefix_entry = getobj("scrap_prefix_entry")
+        prefix_entry.set_text(p['saving.scrap_prefix'])
 
         # Locale/language
         locale_combo = getobj("locale_combobox")
@@ -277,6 +283,37 @@ class PreferencesWindow (windowing.Dialog):
         points = self._pressure_curve.points[:]
         self.app.preferences['input.global_pressure_mapping'] = points
         self.app.apply_settings()
+
+    def scrap_folder_button_pressed_cb(self, widget):
+        dialog = Gtk.FileChooserDialog(
+            title="Choose a folder...",
+            transient_for=self.app.drawWindow,
+            action=Gtk.FileChooserAction.SELECT_FOLDER,
+        )
+        dialog.add_button(Gtk.STOCK_CANCEL, Gtk.ResponseType.CANCEL)
+        dialog.add_button(Gtk.STOCK_OPEN, Gtk.ResponseType.OK)
+        response = dialog.run()
+        # for formating the output nicely when in a home folder
+        if sys.platform == 'win32':
+            ud_docs = lib.glib.get_user_special_dir(
+                GLib.UserDirectory.DIRECTORY_DOCUMENTS,
+            )
+            folderprefix = ud_docs
+        else:
+            folderprefix = u'~/'
+        if response == Gtk.ResponseType.OK:
+            folder = dialog.get_filename()
+            folder = folder.replace(
+                os.path.expanduser('~') + os.sep, folderprefix)
+            self.app.preferences['saving.scrap_folder'] = folder
+            self.app.apply_settings()
+        dialog.destroy()
+
+    def scrap_folder_entry_changed_cb(self, widget):
+        scrap_folder = widget.get_text()
+        if isinstance(scrap_folder, bytes):
+            scrap_folder = scrap_folder.decode("utf-8")
+        self.app.preferences['saving.scrap_folder'] = scrap_folder
 
     def scrap_prefix_entry_changed_cb(self, widget):
         scrap_prefix = widget.get_text()

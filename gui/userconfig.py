@@ -55,11 +55,12 @@ def default_configuration():
         ud_docs = lib.glib.get_user_special_dir(
             GLib.UserDirectory.DIRECTORY_DOCUMENTS,
         )
-        scrappre = os.path.join(ud_docs, u'MyPaint', u'scrap')
+        scrapfldr = os.path.join(ud_docs, u'MyPaint')
     else:
-        scrappre = u'~/MyPaint/scrap'
+        scrapfldr = u'~/MyPaint'
     default_config = {
-        'saving.scrap_prefix': scrappre,
+        'saving.scrap_folder': scrapfldr,
+        'saving.scrap_prefix': 'scrap',
         'input.device_mode': 'screen',
         'input.global_pressure_mapping': [(0.0, 1.0), (1.0, 0.0)],
         'input.use_barrel_rotation': True,
