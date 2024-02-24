@@ -66,4 +66,4 @@ jobs:
                 MYPAINT_DEBUG=1 xvfb-run -a python setup.py demo --args='--run-and-quit'
                 sudo python3 setup.py managed_install
                 sudo python3 setup.py managed_uninstall
-                bash appimage/trigger_build.sh
+                bash build-aux/appimage/trigger_build.sh
