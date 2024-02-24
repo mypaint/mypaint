@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<interface>
+  <menu id="point_list_menu">
+    <section>
+      <item>
+        <attribute name="label" translatable="yes">Add point</attribute>
+        <attribute name="action">listMenu.add</attribute>
+      </item>
+      <item>
+        <attribute name="label" translatable="yes">Delete</attribute>
+        <attribute name="action">listMenu.delete</attribute>
+      </item>
+      <item>
+        <attribute name="label" translatable="yes">Add group</attribute>
+        <attribute name="action">listMenu.add_group</attribute>
+      </item>
+      <item>
+        <attribute name="label" translatable="yes">2P perspective</attribute>
+        <attribute name="action">listMenu.add_2P</attribute>
+      </item>
+      <item>
+        <attribute name="label" translatable="yes">3P perspective…</attribute>
+        <attribute name="action">listMenu.add_3P</attribute>
+      </item>
+      <item>
+        <attribute name="label" translatable="yes">Create measure points</attribute>
+        <attribute name="action">listMenu.add_MP</attribute>
+      </item>
+      <item>
+        <attribute name="label" translatable="yes">Create measure points (from 2 VPs)</attribute>
+        <attribute name="action">listMenu.add_MP_2</attribute>
+      </item>
+      <item>
+        <attribute name="label" translatable="yes">Create mirrored point</attribute>
+        <attribute name="action">listMenu.add_mirrored</attribute>
+      </item>
+      <item>
+        <attribute name="label" translatable="yes">Cross product (from 2 VPs)</attribute>
+        <attribute name="action">listMenu.add_cross_product</attribute>
+      </item>
+      <item>
+        <attribute name="label" translatable="yes">2D Direction (from 2 VPs)</attribute>
+        <attribute name="action">listMenu.add_2d_direction</attribute>
+      </item>
+      <item>
+        <attribute name="label" translatable="yes">2D Direction 90° (from 2 VPs)</attribute>
+        <attribute name="action">listMenu.add_2d_direction_90</attribute>
+      </item>
+    </section>
+  </menu>
+</interface>

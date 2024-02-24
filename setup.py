@@ -917,6 +917,7 @@ def get_ext_modules():
         '-D_POSIX_C_SOURCE=200809L',
         "-DNO_TESTS",  # FIXME: we're building against shared libmypaint now
         '-g',  # always include symbols, for profiling
+        '-std=c++14',
     ]
     extra_link_args = []
 
@@ -988,7 +989,19 @@ def get_ext_modules():
         language='c++',
         **mypaintlib_opts
     )
-    return [mypaintlib]
+    libperspective = Extension(
+        'lib._libperspective',
+        [
+            'lib/libperspective/libperspective.i',
+            'lib/libperspective/Graph.cpp',
+            'lib/libperspective/PythonGraph.cpp',
+            'lib/libperspective/Projection.cpp',
+        ],
+        swig_opts = ['-Wall', '-noproxydel', '-c++', '-outdir', 'lib'],
+        language = 'c++',
+        **mypaintlib_opts
+    )
+    return [mypaintlib, libperspective]
 
 
 def get_data_files():
@@ -1032,7 +1045,7 @@ setup(
     license="GPLv2+",
     url="http://mypaint.org",
 
-    packages=['lib', 'lib.layer', 'gui', 'gui.colors'],
+    packages=['lib', 'lib.layer', 'lib.libperspective', 'gui', 'gui.colors'],
     package_data={
         "gui": ['*.xml', '*.glade'],
     },
