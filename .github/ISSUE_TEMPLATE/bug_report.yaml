@@ -61,7 +61,7 @@ body:
       label: Code of Conduct
       description: |
         MyPaint is libre software developed through a community effort.
-        By following our [Code of Conduct](https://github.com/mypaint/mypaint/blob/master/CODE_OF_CONDUCT.md), you help the developers focus on getting work done.
+        By following our [Code of Conduct](https://mypaint.org/docs/contributing/code-of-conduct/), you help the developers focus on getting work done.
       options:
         - label: I acknowledge that my conduct contributes to shaping the community.
           required: true
