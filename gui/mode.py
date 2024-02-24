@@ -23,8 +23,6 @@ from lib.gibindings import GLib
 
 import lib.command
 from lib.brushsettings import settings_dict
-from lib.document import Document
-from lib.layer.data import SimplePaintingLayer
 from lib.observable import event
 from lib.pycompat import add_metaclass
 from lib.pycompat import unicode
@@ -427,6 +425,67 @@ class InteractionMode (object):
         win = self.doc.tdw.get_window()
         underwin, x, y, mods = win.get_device_position(dev)
         return x, y
+
+
+class GestureModeMixin (InteractionMode):
+    """Mixin for modes that support gestures for zooming, rotating, and panning.
+
+    Currently not compatible with modes that implement `DragMode`.
+    """
+
+    def __init__(self, **kwds):
+        self._gesture_rotate = None
+        assert not isinstance(self, DragMode)
+        super(GestureModeMixin, self).__init__(**kwds)
+
+    def enter(self, doc, **kwds):
+        """Create gesture for handling touch events. We use a rotate gesture,
+        but this will handle panning and zooming too.
+        """
+        if self._gesture_rotate is None:
+            self._gesture_rotate = Gtk.GestureRotate.new(doc.tdw)
+            self._gesture_rotate.set_propagation_phase(
+                Gtk.PropagationPhase.CAPTURE,
+            )
+        self._begin_connid = self._gesture_rotate.connect(
+            'begin',
+            self._gesture_begin_cb,
+        )
+        self._angle_changed_connid = self._gesture_rotate.connect(
+            'angle_changed',
+            self._gesture_angle_changed_cb,
+        )
+
+        return super(GestureModeMixin, self).enter(doc, **kwds)
+
+    def leave(self, **kwds):
+        self._gesture_rotate.disconnect(self._begin_connid)
+        self._gesture_rotate.disconnect(self._angle_changed_connid)
+        return super(GestureModeMixin, self).leave(**kwds)
+
+    def _gesture_begin_cb(self, gesture, sequence):
+        self._gesture_prev_angle_delta = 0.0
+        self._gesture_prev_center = None
+        self._gesture_prev_diag = None
+
+    def _gesture_angle_changed_cb(self, controller, gesture_angle,
+                                  angle_delta):
+        has_box, rect = controller.get_bounding_box()
+        if has_box and self.doc is not None:
+            center = (rect.x + rect.width // 2, rect.y + rect.height // 2)
+            diag = math.hypot(rect.width, rect.height)
+            if self._gesture_prev_center is not None:
+                rotate_delta = angle_delta - self._gesture_prev_angle_delta
+                scale_factor = 1.0 + (diag - self._gesture_prev_diag) / diag
+                dx = self._gesture_prev_center[0] - center[0]
+                dy = self._gesture_prev_center[1] - center[1]
+                self.doc.tdw.rotate(rotate_delta, center=center)
+                self.doc.tdw.zoom(scale_factor, center=center)
+                self.doc.tdw.scroll(dx, dy)
+
+            self._gesture_prev_angle_delta = angle_delta
+            self._gesture_prev_center = center
+            self._gesture_prev_diag = diag
 
 
 class ScrollableModeMixin (InteractionMode):
