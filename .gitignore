@@ -15,11 +15,6 @@ tags
 brushlib/*-gen.h
 brushlib/mypaint-config.h
 desktop/mypaint-ora-thumbnailer
-lib/config.py
-lib/test-python-surface
-lib/mypaintlib.py
-lib/mypaintlib_wrap.cc
-lib/mypaintlib_wrap.cpp
 mypaint
 options.cache
 *.mo
@@ -36,3 +31,10 @@ flatpak/.flatpak-builder/
 MyPaint.egg-info
 config.log
 config.py
+
+# src/
+src/lib/config.py
+src/lib/test-python-surface
+src/lib/mypaintlib.py
+src/lib/mypaintlib_wrap.cc
+src/lib/mypaintlib_wrap.cpp
