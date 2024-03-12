@@ -643,7 +643,8 @@ def device_is_eraser(device):
         return False
     if device.get_source() == Gdk.InputSource.ERASER:
         return True
-    if re.search(r'\<eraser\>', device.get_name(), re.I):
+    name = device.get_name()
+    if name is not None and re.search(r'\<eraser\>', name, re.I):
         return True
     return False
 

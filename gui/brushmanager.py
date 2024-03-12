@@ -92,7 +92,7 @@ def _device_name_uuid(device_name):
     """
     if not PY3:
         device_name = utf8(unicode(device_name))
-    return unicode(uuid.uuid5(_DEVICE_NAME_NAMESPACE, device_name))
+    return unicode(uuid.uuid5(_DEVICE_NAME_NAMESPACE, device_name or ''))
 
 
 def _quote_device_name(device_name):
