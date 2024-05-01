@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: mypaint v2.0.0-alpha.12-343-g82b4fc5\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-04-17 23:27+0200\n"
-"PO-Revision-Date: 2024-02-10 14:02+0000\n"
+"PO-Revision-Date: 2024-05-01 18:07+0000\n"
 "Last-Translator: Marek Ľach <graweeld@googlemail.com>\n"
 "Language-Team: Slovak <https://hosted.weblate.org/projects/mypaint/mypaint/"
 "sk/>\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
-"X-Generator: Weblate 5.4-dev\n"
+"X-Generator: Weblate 5.5.3-dev\n"
 
 #: ../gui/accelmap.py:86
 msgctxt "placeholder for keymap filtering"
@@ -4146,9 +4146,8 @@ msgid "Delete the currently selected point"
 msgstr "Odstráni aktuálnu vybratý bod"
 
 #: ../gui/inktool.glade:221 ../gui/resources.xml:897
-#, fuzzy
 msgid "Insert Point"
-msgstr "Vložiť riadok"
+msgstr "Vložiť bod"
 
 #: ../gui/inktool.glade:253 ../gui/resources.xml:911
 msgid "Simplify Points"
@@ -4156,7 +4155,7 @@ msgstr "Zjednodušiť body"
 
 #: ../gui/inktool.glade:257
 msgid "Simplify the curve using the Reumann-Witkam algorithm."
-msgstr ""
+msgstr "Zjednodušiť krivku pomocou Reumann-Witkam algoritmu."
 
 #: ../gui/inktool.glade:269 ../gui/resources.xml:918
 msgid "Cull Points"
@@ -4182,10 +4181,9 @@ msgid "Remove the active view."
 msgstr "Odstráni aktívne zobrazenie."
 
 #: ../gui/layervis.glade:78
-#, fuzzy
 msgctxt "Layers window: view list controls: tooltips"
 msgid "Snapshot visible layers as a new view."
-msgstr "Ktoré viditeľné vrstvy majú byť vyplnené"
+msgstr "Snímať viditeľné vrstvy, ako nové zobrazenie."
 
 #: ../gui/layervis.glade:99
 msgctxt "Layers window: view list controls: tooltips"
@@ -4522,6 +4520,8 @@ msgid ""
 "Use a light-on-dark theme variant, when it's supported by the GTK theme. "
 "This is generally sensible for image editors and media viewers."
 msgstr ""
+"Použiť obdobu témy svetlej na tmavom, keď je podporovaná GTK témou. Dáva to "
+"zmysel pre editory obrázkov a zobrazovače médií."
 
 #: ../gui/preferenceswindow.glade:946
 msgid "Some of these settings require MyPaint to be restarted."
