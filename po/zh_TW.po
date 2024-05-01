@@ -8,8 +8,8 @@ msgstr ""
 "Project-Id-Version: mypaint v1.2.0-586-g70ce73d\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-04-17 23:27+0200\n"
-"PO-Revision-Date: 2021-01-18 09:32+0000\n"
-"Last-Translator: WCK <wck317-wck317@yahoo.com>\n"
+"PO-Revision-Date: 2024-03-14 11:01+0000\n"
+"Last-Translator: Kisaragi Hiu <mail@kisaragi-hiu.com>\n"
 "Language-Team: Chinese (Traditional) <https://hosted.weblate.org/projects/"
 "mypaint/mypaint/zh_Hant/>\n"
 "Language: zh_TW\n"
@@ -17,12 +17,12 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 4.5-dev\n"
+"X-Generator: Weblate 5.5-dev\n"
 
 #: ../gui/accelmap.py:86
 msgctxt "placeholder for keymap filtering"
 msgid "Filter"
-msgstr ""
+msgstr "過濾器"
 
 #. TRANSLATORS: Name of first column in the button map preferences.
 #. TRANSLATORS: Refers to an action bound to a mod+button combination.
@@ -485,16 +485,16 @@ msgid "Remove from Group"
 msgstr "從群組移除"
 
 #: ../gui/brushselectionwindow.py:290
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgctxt "brush group: context menu: unique names for cloned brushes"
 msgid "{original_name} copy"
-msgstr "{original_name} 複製"
+msgstr "{original_name} 複本"
 
 #: ../gui/brushselectionwindow.py:299
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgctxt "brush group: context menu: unique names for cloned brushes"
 msgid "{original_name} copy {n}"
-msgstr "{original_name} 複製 {n}"
+msgstr "{original_name} 複本 {n}"
 
 #: ../gui/brushselectionwindow.py:325
 #, python-brace-format
@@ -663,7 +663,7 @@ msgstr "設定用來繪畫的色彩"
 
 #: ../gui/colorpicker.py:222
 msgid "Pick Chroma"
-msgstr "挑選顏色。"
+msgstr "挑選顏色"
 
 #: ../gui/colorpicker.py:225
 msgid "Set the color Chroma used for painting"
@@ -1235,10 +1235,11 @@ msgid ""
 "\n"
 "To be safe you should upgrade to MyPaint {new_version} or newer."
 msgstr ""
-"檔案 “{filename}”  是使用新版 <b>MyPaint {new_version}</b>儲存。這和您當前的"
-"舊版 <b>Mypaint {current_version}</b> 不相容。\n"
+"檔案 “{filename}” 是使用新版 <b>MyPaint {new_version}</b>儲存的。"
+"它可能與您目前的舊版 <b>Mypaint {current_version}</b> 不相容。\n"
 "\n"
-"以舊版 MyPaint 格式儲存此檔案時，其中支援新版本的資料將會遺失。\n"
+"以目前使用的舊版 MyPaint 格式儲存此檔案時，其中只有新版本支援的資料將會遺失。"
+"\n"
 "\n"
 "保險起見，您應該升級 MyPaint 到新版本 {new_version} 或以上。"
 
@@ -1568,7 +1569,7 @@ msgstr "開啟拖曳的檔案？"
 #: ../gui/drawwindow.py:305
 msgctxt "Open dragged file confirm dialog: continue button"
 msgid "_Open"
-msgstr "開啟…"
+msgstr "開啟(_O)"
 
 #: ../gui/drawwindow.py:498
 msgid "Set current color"
@@ -1842,12 +1843,12 @@ msgstr "JPEG 90% 品質(*.jpg; *.jpeg)"
 #: ../gui/filehandling.py:581
 msgctxt "Dialogs (window title): File→Export…"
 msgid "Export"
-msgstr "匯出…"
+msgstr "匯出"
 
 #: ../gui/filehandling.py:586
 msgctxt "Dialogs (window title): File→Save As…"
 msgid "Save As"
-msgstr "另存為…"
+msgstr "另存為"
 
 #: ../gui/filehandling.py:606
 msgctxt "save dialogs: formats and options: (label)"
@@ -1881,7 +1882,7 @@ msgstr "繼續"
 #, python-brace-format
 msgctxt "Destructive action confirm dialog: warning message"
 msgid "You risk losing {abbreviated_time} of unsaved painting."
-msgstr "這將會遺失 {abbreviated_time} 分鐘內尚未儲存的作畫"
+msgstr "這將會遺失 {abbreviated_time} 內尚未儲存的作畫。"
 
 #: ../gui/filehandling.py:804
 msgctxt "File→New: confirm dialog: title question"
@@ -1927,7 +1928,7 @@ msgstr "開啟最近的檔案？"
 #: ../gui/filehandling.py:1437
 msgctxt "File→Open Recent→* confirm dialog: continue button"
 msgid "_Open"
-msgstr "開啟…"
+msgstr "開啟(_O)"
 
 #: ../gui/filehandling.py:1452
 msgctxt "File→Open Most Recent confirm dialog: title"
@@ -1937,7 +1938,7 @@ msgstr "開啟最近的檔案？"
 #: ../gui/filehandling.py:1457
 msgctxt "File→Open Most Recent→* confirm dialog: continue button"
 msgid "_Open"
-msgstr "開啟…"
+msgstr "開啟(_O)"
 
 #: ../gui/filehandling.py:1471
 msgctxt "File→Open Next/Prev Scrap: error message"
@@ -1952,12 +1953,12 @@ msgstr "開啟下一個圖料？"
 #: ../gui/filehandling.py:1488
 msgctxt "File→Open Next/Prev Scrap confirm dialog: title"
 msgid "Open Previous Scrap?"
-msgstr "開啟上一個圖料"
+msgstr "開啟上一個圖料嗎？"
 
 #: ../gui/filehandling.py:1497
 msgctxt "File→Open Next/Prev Scrap confirm dialog: continue button"
 msgid "_Open"
-msgstr "開啟…"
+msgstr "開啟(_O)"
 
 #: ../gui/filehandling.py:1512
 msgctxt "File→Revert: status message: canvas has no filename yet"
@@ -2064,7 +2065,6 @@ msgid ""
 msgstr ""
 
 #: ../gui/fill.py:641
-#, fuzzy
 msgctxt ""
 "fill options: option category (label)\n"
 "Options under this category relate to where the fill will end up (default: "
@@ -2442,12 +2442,11 @@ msgstr "裝置："
 
 #: ../gui/inputtestwindow.py:73
 msgid "(No Barrel Rotation)"
-msgstr ""
+msgstr "(無筆桿旋轉)"
 
 #: ../gui/inputtestwindow.py:75
-#, fuzzy
 msgid "Barrel Rotation:"
-msgstr "重設旋轉"
+msgstr "筆桿旋轉："
 
 #. TRANSLATORS: Command to move a layer in the horizontal plane,
 #. TRANSLATORS: preserving its position in the stack.
@@ -2463,23 +2462,22 @@ msgstr "移動目前圖層"
 #: ../gui/layerprops.py:356
 msgctxt "layer properties dialog: name entry: icon tooltip"
 msgid "Layer names cannot be empty."
-msgstr ""
+msgstr "圖層名稱不能是空的。"
 
 #: ../gui/layerprops.py:361
 msgctxt "layer properties dialog: name entry: icon tooltip"
 msgid "Layer name is not unique."
-msgstr ""
+msgstr "圖層名稱重複。"
 
 #: ../gui/layerprops.py:377
-#, fuzzy
 msgctxt "layer properties dialog: title"
 msgid "Layer Properties"
-msgstr "屬性"
+msgstr "圖層屬性"
 
 #: ../gui/layerprops.py:381
 msgctxt "layer properties dialog: done button"
 msgid "Done"
-msgstr ""
+msgstr "完成"
 
 #. Visibility flag column
 #: ../gui/layers.py:406
@@ -2531,10 +2529,10 @@ msgid ", "
 msgstr ", "
 
 #: ../gui/layers.py:1004
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgctxt "Layers dockable: markup for a layer with no description"
 msgid "{layer_name}"
-msgstr "新增 {layer_default_name}"
+msgstr "{layer_name}"
 
 #: ../gui/layers.py:1009
 #, python-brace-format
@@ -2582,22 +2580,21 @@ msgid "Layer"
 msgstr "圖層"
 
 #: ../gui/layervis.py:53
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgctxt "view controls: dropdown: item markup"
 msgid "<i>{builtin_view_name}</i>"
-msgstr "<b>{brush_name}</b>"
+msgstr "<i>{builtin_view_name}</i>"
 
 #: ../gui/layervis.py:125
 #, python-brace-format
 msgctxt "view controls: dropdown: item markup"
 msgid "{user_chosen_view_name}"
-msgstr ""
+msgstr "{user_chosen_view_name}"
 
 #: ../gui/layervis.py:187
-#, fuzzy
 msgctxt "view controls: rename view dialog"
 msgid "Rename View"
-msgstr "旋轉視圖"
+msgstr "重新命名視圖"
 
 #: ../gui/linemode.py:41
 msgid "Entrance Pressure"
@@ -2778,7 +2775,13 @@ msgstr ", "
 #: ../gui/meta.py:221
 msgctxt "About dialog: credits: translator credits (your name(s) here!)"
 msgid "translator-credits"
-msgstr "translator-credits"
+msgstr ""
+"Kisaragi Hiu <mail@kisaragi-hiu.com>, 2024\n"
+"Jeff Huang, 2017\n"
+"Chang-Chia Tseng, 2017\n"
+"wck317, 2015\n"
+"hokkeiv, 2015\n"
+"以及其他 Weblate 貢獻者"
 
 #. TRANSLATORS:"Brush radius" for the options panel. Short.
 #: ../gui/mode.py:592
@@ -2999,16 +3002,16 @@ msgid "View (Resetting)"
 msgstr "檢視 (重設)"
 
 #: ../gui/toolstack.py:352
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgctxt "workspace: sidebar tabs: button tooltips"
 msgid "{tab_title}: close tab"
-msgstr "%s: 關閉分頁"
+msgstr "{tab_title}: 關閉分頁"
 
 #: ../gui/toolstack.py:356
 #, python-brace-format
 msgctxt "workspace: sidebar tabs: button tooltips"
 msgid "{tab_title}: tab options and properties"
-msgstr ""
+msgstr "{tab_title}：分頁選項與屬性"
 
 #: ../gui/toolstack.py:360
 #, python-brace-format
@@ -3486,45 +3489,40 @@ msgid "Common"
 msgstr ""
 
 #: ../lib/layervis.py:44
-#, fuzzy
 msgctxt "layer visibility sets: default name for a user-managed view"
 msgid "View"
-msgstr "檢視"
+msgstr "視圖"
 
 #: ../lib/layervis.py:49
 msgctxt "layer visibility sets: text shown when no user-managed view is active"
 msgid "No active view"
-msgstr ""
+msgstr "沒有作用中視圖"
 
 #: ../lib/layervis.py:579
-#, fuzzy
 msgctxt "layer views: commands: add"
 msgid "Add Layer View"
-msgstr "加入圖層"
+msgstr "新增圖層視圖"
 
 #: ../lib/layervis.py:604 ../lib/layervis.py:633
-#, fuzzy
 msgctxt "layer views: commands: remove"
 msgid "Remove Layer View"
-msgstr "移除圖層"
+msgstr "移除圖層視圖"
 
 #: ../lib/layervis.py:663
 #, python-brace-format
 msgctxt "layer views: commands: activate"
 msgid "Activate Layer View “{name}”"
-msgstr ""
+msgstr "啟動圖層視圖「{name}」"
 
 #: ../lib/layervis.py:692
-#, fuzzy
 msgctxt "layer views: commands: set active view's lock flag"
 msgid "Lock Layer View"
-msgstr "鎖定圖層"
+msgstr "鎖定圖層視圖"
 
 #: ../lib/layervis.py:697
-#, fuzzy
 msgctxt "layer views: commands: set active view's lock flag"
 msgid "Unlock Layer View"
-msgstr "解除圖層鎖"
+msgstr "解鎖圖層視圖"
 
 #: ../lib/modes.py:47
 msgid "Pass-through"
@@ -3744,10 +3742,10 @@ msgstr "「目標」與「來源」重疊的部份將會取代「來源」。「
 #. TRANSLATORS: Change only if your lang *REQUIRES* a different order or
 #. TRANSLATORS: if raw digits and a space aren't enough.
 #: ../lib/naming.py:22
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgctxt "unique names: serial number needed: template"
 msgid "{name} {number}"
-msgstr "%(name)s %(number)d"
+msgstr "{name} {number}"
 
 #. TRANSLATORS: UNIQUE_NAME_REGEX - regex for UNIQUE_NAME_TEMPLATE
 #. TRANSLATORS: Must match its template (msgid: '{name} {number}')
@@ -3828,16 +3826,14 @@ msgstr ""
 
 #. Deletes the selected autosave backup file.
 #: ../gui/autorecover.glade:60
-#, fuzzy
 msgctxt "Autosave Recovery dialog|"
 msgid "_Delete…"
-msgstr "刪除"
+msgstr "刪除(_D)…"
 
 #: ../gui/autorecover.glade:66
-#, fuzzy
 msgctxt "Autosave Recovery dialog|Delete button|"
 msgid "Delete this backup from the disk."
-msgstr "從磁碟中刪除筆刷"
+msgstr "從磁碟中刪除這個備份。"
 
 #. Recover in the sense or retrieval or salvage from a backup file. The user is asked to save the retrieved file immediately afterwards, hence the ellipsis.
 #: ../gui/autorecover.glade:78
@@ -4127,33 +4123,29 @@ msgid "Cull every other point from the curve."
 msgstr ""
 
 #: ../gui/layervis.glade:15
-#, fuzzy
 msgctxt "Layers window: view list controls: tooltips"
 msgid "The currently active view."
-msgstr "將畫框裁切至目前使用中的圖層尺寸"
+msgstr "目前作用中的視圖。"
 
 #: ../gui/layervis.glade:36
-#, fuzzy
 msgctxt "Layers window: view list controls: tooltips"
 msgid "Rename the active view."
-msgstr "旋轉畫布視圖"
+msgstr "重新命名目前作用中的視圖。"
 
 #: ../gui/layervis.glade:57
-#, fuzzy
 msgctxt "Layers window: view list controls: tooltips"
 msgid "Remove the active view."
-msgstr "旋轉畫布視圖"
+msgstr "移除目前作用中的視圖。"
 
 #: ../gui/layervis.glade:78
-#, fuzzy
 msgctxt "Layers window: view list controls: tooltips"
 msgid "Snapshot visible layers as a new view."
-msgstr "哪些可看見的圖層應被填充"
+msgstr "將可見圖層擷取為新的視圖。"
 
 #: ../gui/layervis.glade:99
 msgctxt "Layers window: view list controls: tooltips"
 msgid "Lock or unlock the active view."
-msgstr ""
+msgstr "鎖定或解鎖作用中的視圖。"
 
 #: ../gui/mypaint.glade:65
 msgctxt "footer: color picker button: tooltip"
@@ -4496,7 +4488,7 @@ msgstr "部分設定需要重啟 MyPaint 。"
 #: ../gui/preferenceswindow.glade:969
 msgctxt "Prefs Dialog|View|Interface|Icon size|"
 msgid "Large (requires recent GTK3)"
-msgstr "大 (需要新近的 GTK3 )"
+msgstr "大 (需要較新的 GTK3 )"
 
 #: ../gui/preferenceswindow.glade:986
 msgctxt "Prefs Dialog|View|Interface|Icon size|"
@@ -4578,7 +4570,6 @@ msgid ""
 msgstr ""
 
 #: ../gui/preferenceswindow.glade:1192
-#, fuzzy
 msgctxt ""
 "Prefs Dialog|View|Interface|Blink layers on creation/selection|checkbox label"
 msgid "Enabled"
@@ -4596,17 +4587,17 @@ msgstr ""
 #: ../gui/preferenceswindow.glade:1216
 msgctxt "Prefs Dialog|View|Interface|"
 msgid "Blink layers on creation/selection:"
-msgstr ""
+msgstr "在建立/選取圖層時閃爍它們："
 
 #: ../gui/preferenceswindow.glade:1251
 msgctxt "Prefs Dialog|View|Interface|"
 msgid "Language:"
-msgstr ""
+msgstr "語言："
 
 #: ../gui/preferenceswindow.glade:1266
 msgctxt "Prefs Dialog|View|Interface|"
 msgid "(needs restart)"
-msgstr ""
+msgstr "(需要重啟程式)"
 
 #. Tab label in preferences dialog
 #: ../gui/preferenceswindow.glade:1283
@@ -4735,10 +4726,9 @@ msgid "<b>2.x Settings</b>"
 msgstr "<b>儲存</b>"
 
 #: ../gui/preferenceswindow.glade:1535 ../gui/preferenceswindow.glade:1609
-#, fuzzy
 msgctxt "Prefs Dialog|Compatibility"
 msgid "Default New Layer Type:"
-msgstr "刪除圖層"
+msgstr "預設新圖層類型："
 
 #: ../gui/preferenceswindow.glade:1581 ../gui/preferenceswindow.glade:1595
 #, fuzzy
@@ -4849,7 +4839,7 @@ msgstr "開啟…"
 #: ../gui/resources.xml:74
 msgctxt "Toolbar (short labels)"
 msgid "Open"
-msgstr "開啟…"
+msgstr "開啟"
 
 #: ../gui/resources.xml:75
 msgctxt "Toolbar (tooltips), Accel Editor (descriptions)"
@@ -4859,17 +4849,17 @@ msgstr "開啟檔案以進行作業。"
 #: ../gui/resources.xml:82
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "Open Most Recent"
-msgstr "開啟最新近"
+msgstr "開啟最近的"
 
 #: ../gui/resources.xml:83
 msgctxt "Accel Editor (descriptions)"
 msgid "Load the file you saved most recently."
-msgstr "開啟您最新近儲存的檔案。"
+msgstr "開啟您最近儲存的檔案。"
 
 #: ../gui/resources.xml:90
 msgctxt "Menu→File (labels)"
 msgid "Open Recent"
-msgstr "開啟新近"
+msgstr "開啟近期使用"
 
 #: ../gui/resources.xml:103
 msgctxt "Menu→File (labels), Accel Editor (labels)"
@@ -5007,48 +4997,44 @@ msgid "The current layer's compositing mode."
 msgstr "目前圖層的合成模式。"
 
 #: ../gui/resources.xml:237
-#, fuzzy
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
 msgid "Increase Fake Pressure"
-msgstr "開端壓力"
+msgstr "提高模擬壓力"
 
 #: ../gui/resources.xml:238
 msgctxt "Accel Editor (descriptions)"
 msgid "Send harder pressure for devices that don't support pressure input."
-msgstr ""
+msgstr "為不支援筆壓輸入的裝置模擬傳送更高的筆壓。"
 
 #: ../gui/resources.xml:245
-#, fuzzy
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
 msgid "Decrease Fake Pressure"
-msgstr "開端壓力"
+msgstr "降低模擬壓力"
 
 #: ../gui/resources.xml:246
 msgctxt "Accel Editor (descriptions)"
 msgid "Send softer pressure for devices that don't support pressure input."
-msgstr ""
+msgstr "為不支援筆壓輸入的裝置模擬傳送更柔的筆壓。"
 
 #: ../gui/resources.xml:254
-#, fuzzy
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
 msgid "Increase Fake Rotation"
-msgstr "提高色彩飽和度"
+msgstr "提高模擬旋轉"
 
 #: ../gui/resources.xml:255
 msgctxt "Accel Editor (descriptions)"
 msgid "Increase barrel rotation for devices that don't support rotation input."
-msgstr ""
+msgstr "為不支援旋轉輸入的裝置模擬提高筆桿旋轉。"
 
 #: ../gui/resources.xml:262
-#, fuzzy
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
 msgid "Decrease Fake Rotation"
-msgstr "降低飽和度"
+msgstr "降低模擬旋轉"
 
 #: ../gui/resources.xml:263
 msgctxt "Accel Editor (descriptions)"
 msgid "Decrease barrel rotation for devices that don't support rotation input."
-msgstr ""
+msgstr "為不支援旋轉輸入的裝置模擬降低筆桿旋轉。"
 
 #: ../gui/resources.xml:271
 msgctxt "Menu→Brush (labels), Accel Editor (labels)"
@@ -5187,12 +5173,12 @@ msgstr "切換是否由快捷鍵復元筆刷時同時復元被儲存的色彩。
 #: ../gui/resources.xml:390
 msgctxt "Menu→Brush→Shortcut Keys (labels), Accel Editor (labels)"
 msgid "Save Brush to Most Recent Shortcut Key"
-msgstr "儲存筆刷至最新近的快捷鍵"
+msgstr "儲存筆刷至最近的快捷鍵"
 
 #: ../gui/resources.xml:391
 msgctxt "Accel Editor (descriptions)"
 msgid "Save brush settings to the most recently used shortcut key."
-msgstr "將筆刷設定儲存至最新近使用過的快捷鍵。"
+msgstr "將筆刷設定儲存至最近使用過的快捷鍵。"
 
 #: ../gui/resources.xml:401
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
@@ -5200,7 +5186,6 @@ msgid "Clear Layer"
 msgstr "清空圖層"
 
 #: ../gui/resources.xml:402
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Clear the active layer’s content."
 msgstr "清空目前圖層的內容。"
@@ -5498,16 +5483,15 @@ msgid "Make an exact clone of the current layer."
 msgstr "製作與目前圖層完全一致的副本。"
 
 #: ../gui/resources.xml:642
-#, fuzzy
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
 msgid "Layer Properties…"
-msgstr "屬性"
+msgstr "圖層屬性…"
 
 #: ../gui/resources.xml:643
 msgctxt "Accel Editor (descriptions)"
 msgid ""
 "Change the layer’s properties (name, mode, visibility, locked, opacity)."
-msgstr ""
+msgstr "變更圖層屬性 (名稱、模式、可見度、是否鎖定、透明度)。"
 
 #: ../gui/resources.xml:650
 msgctxt "Menu→Layer (labels), Accel Editor (labels)"
@@ -5582,10 +5566,9 @@ msgid "Reset Zoom"
 msgstr "重設縮放"
 
 #: ../gui/resources.xml:709
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Reset view zoom level to default."
-msgstr "恢復視圖的縮放到其預設。"
+msgstr "將視圖的縮放恢復到預設值。"
 
 #: ../gui/resources.xml:715
 msgctxt "Menu→View→Reset (labels), Accel Editor (labels)"
@@ -5593,7 +5576,6 @@ msgid "Reset Rotation"
 msgstr "重設旋轉"
 
 #: ../gui/resources.xml:716
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Reset the view’s rotation to 0°"
 msgstr "將視圖旋轉角度恢復到 0 度"
@@ -5604,10 +5586,9 @@ msgid "Reset Mirroring"
 msgstr "重設鏡像"
 
 #: ../gui/resources.xml:723
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Reset the view's mirroring."
-msgstr "重設鏡像"
+msgstr "重設視圖的鏡像狀態。"
 
 #: ../gui/resources.xml:729
 msgctxt "Menu→View→Adjust View (labels), Accel Editor (labels)"
@@ -5630,51 +5611,44 @@ msgid "Decrease magnification."
 msgstr "降低放大倍數。"
 
 #: ../gui/resources.xml:758
-#, fuzzy
 msgctxt "Menu→View→Adjust View (labels), Accel Editor (labels)"
 msgid "Pan Left"
-msgstr "平移視圖"
+msgstr "向左平移"
 
 #: ../gui/resources.xml:759
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Move your view of the canvas to the left."
-msgstr "旋轉視圖：傾斜你的畫布視圖。"
+msgstr "將您在畫布上的檢視向左移動。"
 
 #: ../gui/resources.xml:766
-#, fuzzy
 msgctxt "Menu→View→Adjust View (labels), Accel Editor (labels)"
 msgid "Pan Right"
-msgstr "強光"
+msgstr "向右平移"
 
 #: ../gui/resources.xml:767
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Move your view of the canvas to the right."
-msgstr "平移視圖：水平或垂直移動您的的畫布視圖。"
+msgstr "將您在畫布上的檢視向右移動。"
 
 #: ../gui/resources.xml:774
 msgctxt "Menu→View→Adjust View (labels), Accel Editor (labels)"
 msgid "Pan Up"
-msgstr ""
+msgstr "向上平移"
 
 #: ../gui/resources.xml:775
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Move your view of the canvas upwards."
-msgstr "旋轉視圖：傾斜你的畫布視圖。"
+msgstr "將您在畫布上的檢視向上移動。"
 
 #: ../gui/resources.xml:782
-#, fuzzy
 msgctxt "Menu→View→Adjust View (labels), Accel Editor (labels)"
 msgid "Pan Down"
-msgstr "平移視圖"
+msgstr "向下平移"
 
 #: ../gui/resources.xml:783
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Move your view of the canvas downwards."
-msgstr "旋轉視圖：傾斜你的畫布視圖。"
+msgstr "將您在畫布上的檢視向下移動。"
 
 #.
 #. Note: the object we've agreed to present as being rotated
@@ -5689,10 +5663,9 @@ msgid "Rotate Clockwise"
 msgstr "順時針旋轉"
 
 #: ../gui/resources.xml:799
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Rotate the canvas clockwise."
-msgstr "順時針旋轉視圖。"
+msgstr "順時針旋轉畫布。"
 
 #: ../gui/resources.xml:819
 msgctxt "Menu→View→Adjust View (labels), Accel Editor (labels)"
@@ -5700,10 +5673,9 @@ msgid "Rotate Counterclockwise"
 msgstr "逆時針旋轉"
 
 #: ../gui/resources.xml:820
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Rotate the canvas counter-clockwise."
-msgstr "逆時針旋轉視圖。"
+msgstr "逆時針旋轉畫布。"
 
 #: ../gui/resources.xml:828
 msgctxt "Menu→View→Adjust View (labels), Accel Editor (labels)"
@@ -6216,15 +6188,14 @@ msgid "Adjust View"
 msgstr "調整視圖"
 
 #: ../gui/resources.xml:1312
-#, fuzzy
 msgctxt "Menu→View (labels), Accel Editor (labels)"
 msgid "Popup Main Menu"
-msgstr "彈出選單"
+msgstr "彈出主選單"
 
 #: ../gui/resources.xml:1313
 msgctxt "Accel Editor (descriptions)"
 msgid "Show the main menu as a popup."
-msgstr "主選單彈出式顯示。"
+msgstr "以彈出視窗顯示主選單。"
 
 #: ../gui/resources.xml:1320
 msgctxt "Menu→View (labels), Accel Editor (labels)"
@@ -6287,17 +6258,16 @@ msgid "Edit brush icons."
 msgstr "編輯筆刷圖示。"
 
 #: ../gui/resources.xml:1373
-#, fuzzy
 msgctxt ""
 "Menu→Layer (labels), Menu→Window (labels), Toolbar (labels), Accel Editor "
 "(labels)"
 msgid "Layers Panel"
-msgstr "圖層面板"
+msgstr "圖層控制板"
 
 #: ../gui/resources.xml:1374
 msgctxt "Accel Editor (descriptions)"
 msgid "Dockable panel for managing layers."
-msgstr ""
+msgstr "管理圖層用的控制面板。"
 
 #: ../gui/resources.xml:1382
 msgctxt "Menu→Layers (labels), Accel Editor (labels)"
