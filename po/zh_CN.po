@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: mypaint v1.2.0-beta.3-43-g9e683e2\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-04-17 23:27+0200\n"
-"PO-Revision-Date: 2022-07-22 16:17+0000\n"
+"PO-Revision-Date: 2024-05-08 20:05+0000\n"
 "Last-Translator: poi <erbaotao@outlook.com>\n"
 "Language-Team: Chinese (Simplified) <https://hosted.weblate.org/projects/"
 "mypaint/mypaint/zh_Hans/>\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 4.14-dev\n"
+"X-Generator: Weblate 5.5.4-rc\n"
 
 #: ../gui/accelmap.py:86
 msgctxt "placeholder for keymap filtering"
@@ -2770,7 +2770,9 @@ msgstr ", "
 #: ../gui/meta.py:221
 msgctxt "About dialog: credits: translator credits (your name(s) here!)"
 msgid "translator-credits"
-msgstr "译员致谢"
+msgstr ""
+"匿名 <https://me-qr.com/entry/vcard/Wr2h6tBO>, 2023\n"
+"以及其他 Weblate 翻译者"
 
 #. TRANSLATORS:"Brush radius" for the options panel. Short.
 #: ../gui/mode.py:592
