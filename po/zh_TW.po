@@ -8,8 +8,8 @@ msgstr ""
 "Project-Id-Version: mypaint v1.2.0-586-g70ce73d\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-04-17 23:27+0200\n"
-"PO-Revision-Date: 2024-03-14 11:01+0000\n"
-"Last-Translator: Kisaragi Hiu <mail@kisaragi-hiu.com>\n"
+"PO-Revision-Date: 2024-05-29 05:09+0000\n"
+"Last-Translator: hugoalh <hugoalh@users.noreply.hosted.weblate.org>\n"
 "Language-Team: Chinese (Traditional) <https://hosted.weblate.org/projects/"
 "mypaint/mypaint/zh_Hant/>\n"
 "Language: zh_TW\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 5.5-dev\n"
+"X-Generator: Weblate 5.6-dev\n"
 
 #: ../gui/accelmap.py:86
 msgctxt "placeholder for keymap filtering"
@@ -2954,10 +2954,9 @@ msgid "Alpha:"
 msgstr "Alpha："
 
 #: ../gui/symmetry.py:365
-#, fuzzy
 msgctxt "symmetry axis options panel: labels"
 msgid "Symmetry Type:"
-msgstr "對稱性"
+msgstr "對稱類型："
 
 #: ../gui/symmetry.py:369
 msgctxt "symmetry axis options panel: labels"
@@ -3345,6 +3344,7 @@ msgid ""
 "{see_logs}"
 msgstr ""
 "無法從自動備份中回復作業。\n"
+"\n"
 "原因： {reason}\n"
 "\n"
 "{see_logs}"
@@ -3955,9 +3955,8 @@ msgstr "此筆刷設定的起始值。以下的筆刷動態將會在此之上作
 
 #. field label
 #: ../gui/brusheditor.glade:426
-#, fuzzy
 msgid "Value:"
-msgstr "HSV 明度"
+msgstr "數值："
 
 #: ../gui/brusheditor.glade:491
 msgid "Reset this input to have no effect on the setting"
@@ -4033,9 +4032,8 @@ msgid "{dname}:"
 msgstr "{dname}:"
 
 #: ../gui/brusheditor.glade:841
-#, fuzzy
 msgid "Brush dynamics are not available for this setting."
-msgstr "此設定的基本詳情"
+msgstr "畫筆動態不適用於此設定。"
 
 #: ../gui/brusheditor.glade:851
 #, fuzzy
@@ -4557,10 +4555,9 @@ msgstr ""
 
 #. Label for a spinbutton that is part of the "crosshair for small brush cursors" setting. Radius refers to the visual brush cursor radius.
 #: ../gui/preferenceswindow.glade:1149
-#, fuzzy
 msgctxt "Prefs Dialog|View|Interface"
 msgid "Radius threshold:"
-msgstr "筆劃閾值"
+msgstr "半徑閾值："
 
 #. Description of the "Radius threshold" spinbox/spinner - the referenced "lines" are part of the brush cursor.
 #: ../gui/preferenceswindow.glade:1162
@@ -4731,10 +4728,9 @@ msgid "Default New Layer Type:"
 msgstr "預設新圖層類型："
 
 #: ../gui/preferenceswindow.glade:1581 ../gui/preferenceswindow.glade:1595
-#, fuzzy
 msgctxt "Prefs Dialog|Compatibility"
 msgid "Default Pigment Brush Setting:"
-msgstr "編輯筆刷設定"
+msgstr "預設顏料刷設定："
 
 #. Label description for the 1.x compatibility-mode-by-default setting
 #: ../gui/preferenceswindow.glade:1671
@@ -5770,10 +5766,9 @@ msgid "Delete Point"
 msgstr "刪除點"
 
 #: ../gui/resources.xml:905
-#, fuzzy
 msgctxt "Accel Editor (descriptions)"
 msgid "Delete currently selected point on the ink stroke."
-msgstr "刪除目前已選擇的點"
+msgstr "刪除墨跡筆畫上目前選定的點。"
 
 #: ../gui/resources.xml:912
 msgctxt "Accel Editor (descriptions)"
