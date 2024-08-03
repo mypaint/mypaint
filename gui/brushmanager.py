@@ -19,6 +19,7 @@ from os.path import basename
 from warnings import warn
 import logging
 import shutil
+import urllib.parse
 import uuid
 import contextlib
 
@@ -38,13 +39,6 @@ import gui.mode
 import lib.config
 from lib.pycompat import unicode
 from lib.pycompat import xrange
-from lib.pycompat import PY3
-
-if PY3:
-    import urllib.parse
-else:
-    import urllib
-
 
 ## Public module constants
 
@@ -89,8 +83,6 @@ def _device_name_uuid(device_name):
     True
 
     """
-    if not PY3:
-        device_name = utf8(unicode(device_name))
     return unicode(uuid.uuid5(_DEVICE_NAME_NAMESPACE, device_name))
 
 
@@ -114,15 +106,11 @@ def _quote_device_name(device_name):
     Hopefully this is OK for Windows, UNIX and Mac OS X names.
     """
     device_name = unicode(device_name)
-    if PY3:
-        quoted = urllib.parse.quote_plus(
-            device_name,
-            safe="",
-            encoding="utf-8",
-        )
-    else:
-        u8bytes = device_name.encode("utf-8")
-        quoted = urllib.quote_plus(u8bytes, safe="")
+    quoted = urllib.parse.quote_plus(
+        device_name,
+        safe="",
+        encoding="utf-8",
+    )
     return unicode(quoted)
 
 

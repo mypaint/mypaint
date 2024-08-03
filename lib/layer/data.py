@@ -20,6 +20,7 @@ import time
 import tempfile
 import shutil
 from copy import deepcopy
+from io import BytesIO, StringIO
 from random import randint
 import uuid
 import struct
@@ -41,14 +42,7 @@ import lib.autosave
 import lib.xml
 import lib.feedback
 from . import rendering
-from lib.pycompat import PY3
 from lib.pycompat import unicode
-
-if PY3:
-    from io import StringIO
-    from io import BytesIO
-else:
-    from cStringIO import StringIO
 
 
 logger = logging.getLogger(__name__)
@@ -981,10 +975,7 @@ class _ManagedFile(object):
         return new_unique_path
 
     def __str__(self):
-        if PY3:
-            return self.__unicode__()
-        else:
-            return self.__bytes__()  # Always an error under Py2
+        return self.__unicode__()
 
     def __bytes__(self):
         raise NotImplementedError("Use unicode strings for file names.")
@@ -1550,11 +1541,7 @@ class StrokemappedPaintingLayer(SimplePaintingLayer):
         # attribute and the eotf attribute. This support will be temporary.
         invert = invert and not attrs.get(self._ORA_STROKEMAP_LEGACY_ATTR)
         if orazip:
-            if PY3:
-                ioclass = BytesIO
-            else:
-                ioclass = StringIO
-            sio = ioclass(orazip.read(strokemap_name))
+            sio = BytesIO(orazip.read(strokemap_name))
             self._load_strokemap_from_file(sio, x, y, invert)
             sio.close()
         elif oradir:
@@ -1684,10 +1671,7 @@ class StrokemappedPaintingLayer(SimplePaintingLayer):
         )
         # Store stroke shape data too
         x, y, w, h = self.get_bbox()
-        if PY3:
-            sio = BytesIO()
-        else:
-            sio = StringIO()
+        sio = BytesIO()
         t0 = time.time()
         _write_strokemap(sio, self.strokes, -x, -y)
         t1 = time.time()

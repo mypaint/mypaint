@@ -11,18 +11,13 @@ import logging
 import copy
 import math
 import json
+from urllib.parse import unquote
 
 from lib import mypaintlib
 from lib import helpers
 from lib import brushsettings
 from lib.eotf import eotf
 from lib.pycompat import unicode
-from lib.pycompat import PY3
-
-if PY3:
-    from urllib.parse import unquote
-else:
-    from urllib import unquote
 
 logger = logging.getLogger(__name__)
 
@@ -57,20 +52,16 @@ _BRUSHINFO_MATCH_IGNORES = [
 def brushinfo_unquote(quoted):
     """Unquote a serialised string value from a brush field.
 
-    >>> f = str if PY3 else bytes
-    >>> brushinfo_unquote(f("foo")) == u'foo'
+    >>> brushinfo_unquote(str("foo")) == u'foo'
     True
-    >>> brushinfo_unquote(f("foo%2fbar%20blah")) == u'foo/bar blah'
+    >>> brushinfo_unquote(str("foo%2fbar%20blah")) == u'foo/bar blah'
     True
     >>> expected = u'Have a nice day \u263A'
-    >>> brushinfo_unquote(f('Have%20a%20nice%20day%20%E2%98%BA')) == expected
+    >>> brushinfo_unquote(str('Have%20a%20nice%20day%20%E2%98%BA')) == expected
     True
 
     """
-    if PY3:
-        return unquote(quoted)
-    else:
-        return unicode(unquote(quoted).decode("utf-8"))
+    return unquote(quoted)
 
 
 # Exceptions raised during brush parsing:
@@ -399,8 +390,7 @@ class BrushInfo(object):
         if not isinstance(settings_str, unicode):
             if not isinstance(settings_str, bytes):
                 raise ValueError("Need either a str or a bytes object")
-            if PY3:
-                settings_str = settings_str.decode("utf-8")
+            settings_str = settings_str.decode("utf-8")
 
         # Split out the raw settings and grab the version we're dealing with
         rawsettings = []

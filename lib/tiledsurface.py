@@ -33,7 +33,7 @@ import lib.modes
 import lib.feedback
 import lib.floodfill
 from lib.pycompat import xrange
-from lib.pycompat import PY3, itervalues
+from lib.pycompat import itervalues
 
 logger = logging.getLogger(__name__)
 
@@ -626,9 +626,8 @@ class MyPaintSurface(TileAccessible, TileBlittable, TileCompositable):
             filename_sys = filename.encode(sys.getfilesystemencoding())
             # FIXME: should not do that, should use open(unicode_object)
 
-        if PY3:
-            filename_sys = filename_sys.decode()
-            # FIXME: https://github.com/mypaint/mypaint/issues/906
+        filename_sys = filename_sys.decode()
+        # FIXME: https://github.com/mypaint/mypaint/issues/906
 
         try:
             flags = mypaintlib.load_png_fast_progressive(
@@ -684,8 +683,7 @@ class MyPaintSurface(TileAccessible, TileBlittable, TileCompositable):
         removed = 0
         for surf in self._mipmaps:
             tmp_items_list = surf.tiledict.items()
-            if PY3:
-                tmp_items_list = list(tmp_items_list)
+            tmp_items_list = list(tmp_items_list)
             for pos, data in tmp_items_list:
                 total += 1
                 try:

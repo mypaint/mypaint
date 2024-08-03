@@ -23,7 +23,6 @@ from lib.gettext import C_
 from . import mypaintlib
 import lib.pixbuf
 import lib.glib
-from lib.pycompat import PY2
 from lib.pycompat import unicode
 
 logger = logging.getLogger(__name__)
@@ -608,10 +607,7 @@ def grouper(iterable, n, fillvalue=None):
     [True, True, True]
     """
     args = [iter(iterable)] * n
-    if PY2:
-        return itertools.izip_longest(*args, fillvalue=fillvalue)
-    else:
-        return itertools.zip_longest(*args, fillvalue=fillvalue)
+    return itertools.zip_longest(*args, fillvalue=fillvalue)
 
 
 def casefold(s):
@@ -628,12 +624,8 @@ def casefold(s):
     True
 
     """
-    if sys.version_info <= (3, 0, 0):
-        s = unicode(s)
-        return s.lower()
-    else:
-        s = str(s)
-        return s.casefold()
+    s = str(s)
+    return s.casefold()
 
 
 def _test():

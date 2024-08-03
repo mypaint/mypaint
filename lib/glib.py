@@ -22,7 +22,6 @@ unicode, and may not even be UTF-8). This module works around that.
 import logging
 import sys
 
-from lib.pycompat import PY3
 from lib.pycompat import unicode
 
 from lib.gibindings import GLib
@@ -65,7 +64,7 @@ def filename_to_unicode(opsysstring):
 
     # Let's assume that if the string is already unicode under Python 3,
     # then it's already correct.
-    if PY3 and isinstance(opsysstring, unicode):
+    if isinstance(opsysstring, unicode):
         return opsysstring
 
     # On Windows, they're always UTF-8 regardless.
@@ -237,8 +236,7 @@ def filename_from_uri(uri):
     >>> abspath1 = os.path.abspath(relpath)
     >>> uri = filename_to_uri(abspath1)
     >>> abspath2, hostname = filename_from_uri(uri)
-    >>> if PY3:
-    ...     unicode = str
+    >>> unicode = str
     >>> isinstance(abspath2, unicode)
     True
     >>> abspath2.replace('\\\\', "/") == abspath1.replace('\\\\', "/")

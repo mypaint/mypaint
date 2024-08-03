@@ -25,7 +25,6 @@ from lib.color import YCbCrColor
 from lib.color import UIColor  # noqa
 from lib.pycompat import unicode
 from lib.pycompat import xrange
-from lib.pycompat import PY3
 from io import open
 
 logger = logging.getLogger(__name__)
@@ -200,11 +199,7 @@ class Palette(object):
 
         :param filehandle: File-like object (.write suffices)
 
-        >>> from lib.pycompat import PY3
-        >>> if PY3:
-        ...     from io import StringIO
-        ... else:
-        ...     from cStringIO import StringIO
+        >>> from io import StringIO
         >>> fp = StringIO()
         >>> cols = RGBColor(1,.7,0).interpolate(RGBColor(.1,.1,.5), 16)
         >>> pal = Palette(colors=cols)
@@ -801,8 +796,6 @@ class Palette(object):
     def __str__(self):
         """Py3: serialize as str (=Unicode). Py2: as bytes (lossy!)."""
         s = self.__unicode__()
-        if not PY3:
-            s = s.encode("utf-8", errors="replace")
         return s
 
     def __copy__(self):

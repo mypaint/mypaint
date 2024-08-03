@@ -17,15 +17,8 @@ the battle for a lot of this stuff.
 import sys
 import types
 
-PY3 = sys.version_info >= (3,)
-PY2 = sys.version_info < (3,)
-
-if PY3:
-    xrange = range
-    unicode = str
-else:
-    xrange = xrange
-    unicode = unicode
+xrange = range
+unicode = str
 
 
 # These two functions are lifted from six.py.
@@ -102,15 +95,9 @@ def with_metaclass(meta, *bases):
 
 def iteritems(container):
     """Returns the iterate method of the given container"""
-    if PY3:
-        return container.items()
-    else:
-        return container.iteritems()
+    return container.items()
 
 
 def itervalues(container):
     """Returns the value iteration method of the given container"""
-    if PY3:
-        return container.values()
-    else:
-        return container.itervalues()
+    return container.values()

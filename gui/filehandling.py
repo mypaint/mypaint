@@ -37,7 +37,7 @@ import lib.glib
 from lib.glib import filename_to_unicode
 import lib.xml
 import lib.feedback
-from lib.pycompat import unicode, PY3
+from lib.pycompat import unicode
 
 logger = logging.getLogger(__name__)
 
@@ -241,7 +241,6 @@ class _IOProgressUI:
 
         """
         self._app = app
-        self.clock_func = time.perf_counter if PY3 else time.clock
 
         files_summary = unicode(files_summary)
         op_type = str(op_type)
@@ -314,7 +313,7 @@ class _IOProgressUI:
             statusbar.remove_all(cid)
             statusbar.push(cid, self._duration_msg)
 
-        self._start_time = self.clock_func()
+        self._start_time = time.perf_counter()
         self._last_pulse = None
         result = None
         try:
@@ -358,7 +357,7 @@ class _IOProgressUI:
 
     def _progress_changed_cb(self, progress):
         if self._progress_bar is None:
-            now = self.clock_func()
+            now = time.perf_counter()
             if (now - self._start_time) > 0.25:
                 dialog = Gtk.Dialog(
                     title=self._duration_msg,
@@ -397,7 +396,7 @@ class _IOProgressUI:
             return
         fraction = progress.fraction()
         if fraction is None:
-            now = self.clock_func()
+            now = time.perf_counter()
             if (now - self._last_pulse) > 0.1:
                 self._progress_bar.pulse()
                 self._last_pulse = now

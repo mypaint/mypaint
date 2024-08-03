@@ -21,7 +21,7 @@ from . import mypaintlib
 from . import idletask
 import lib.tiledsurface as tiledsurface
 from lib.surface import TileAccessible  # noqa
-from lib.pycompat import PY3, iteritems
+from lib.pycompat import iteritems
 
 logger = getLogger(__name__)
 TILE_SIZE = N = mypaintlib.TILE_SIZE
@@ -377,11 +377,7 @@ class _TileRecompressTask:
     def process_tile_subset(self, pred):
         """Compress & store a subset of queued tiles' data now."""
         processed = []
-        if PY3:
-            ti_iter = self._src_dict.keys()
-        else:
-            ti_iter = self._src_dict.iterkeys()
-        for ti in ti_iter:
+        for ti in self._src_dict.keys():
             if not pred(ti):
                 continue
             self._compress_tile(ti, self._src_dict[ti])
@@ -525,8 +521,7 @@ class _Tile:
         """
         warn("Do not use str(). Use to_bytes() instead.", DeprecationWarning)
         bstr = self.to_bytes()
-        if PY3:
-            return bstr.decode("utf-8")
+        return bstr.decode("utf-8")
 
     def __repr__(self):
         """String representation (summary only)
