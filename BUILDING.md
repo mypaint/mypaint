@@ -81,7 +81,7 @@ installed before you can build it.
 - setuptools
 - pygobject
 - gtk3 (>= 3.12)
-- python (>= 2.7.4)
+- python (>= 3.8)
 - swig (>= 3)
 - numpy
 - librsvg2 (and its svg gdk-pixbuf loader)
