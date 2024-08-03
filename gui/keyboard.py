@@ -15,7 +15,6 @@ for consistent keyboard handling.
 
 """
 
-from __future__ import division, print_function
 import logging
 
 from lib.gibindings import Gtk

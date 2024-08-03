@@ -12,8 +12,6 @@
 
 # Imports:
 
-from __future__ import division, print_function
-
 import lib.mypaintlib as _mypaintlib
 
 

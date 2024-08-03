@@ -10,8 +10,6 @@
 """Hue, Saturation and Value wheel.
 """
 
-from __future__ import division, print_function
-
 from gettext import gettext as _
 
 from lib.gibindings import Gtk

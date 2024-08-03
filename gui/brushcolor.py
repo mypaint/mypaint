@@ -9,8 +9,6 @@
 
 """Brush color changer."""
 
-from __future__ import division, print_function
-
 from . import colors
 import lib.color
 

@@ -14,8 +14,6 @@
 
 ## Imports
 
-from __future__ import division, print_function
-
 import re
 from copy import copy
 import logging

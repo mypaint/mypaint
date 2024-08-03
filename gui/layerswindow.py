@@ -13,8 +13,6 @@
 
 ## Imports
 
-from __future__ import division, print_function
-
 from gettext import gettext as _
 import os.path
 from logging import getLogger

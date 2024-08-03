@@ -2,7 +2,6 @@
 
 # Imports:
 
-from __future__ import print_function
 from contextlib import contextmanager
 import subprocess
 import glob

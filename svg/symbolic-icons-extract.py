@@ -10,8 +10,6 @@
 # Depends on python-scour
 
 ## Imports
-from __future__ import division, print_function
-
 import argparse
 from copy import deepcopy
 import gzip

@@ -10,8 +10,6 @@
 """Flood fill tool"""
 
 # Imports
-from __future__ import division, print_function
-
 import weakref
 from lib.gibindings import Gtk
 from lib.gibindings import Pango

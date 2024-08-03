@@ -10,7 +10,6 @@
 
 ## Imports
 
-from __future__ import division, print_function
 import logging
 
 from .toolstack import SizedVBoxToolWidget, TOOL_WIDGET_NATURAL_HEIGHT_SHORT

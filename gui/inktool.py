@@ -9,8 +9,6 @@
 
 ## Imports
 
-from __future__ import division, print_function
-
 import math
 import collections
 import weakref

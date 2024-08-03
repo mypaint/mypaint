@@ -10,7 +10,6 @@
 """Miscellaneous helpers & drawing utility functions for Cairo.
 """
 
-from __future__ import division, print_function
 import math
 
 from lib.pycompat import xrange

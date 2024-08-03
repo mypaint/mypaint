@@ -10,8 +10,6 @@
 """Component sliders for power users.
 """
 
-from __future__ import division, print_function
-
 from lib.gibindings import Gtk
 
 from lib.color import RGBColor

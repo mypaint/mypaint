@@ -10,7 +10,6 @@
 
 ## Imports
 
-from __future__ import division, print_function
 from warnings import warn
 import logging
 

@@ -11,8 +11,6 @@
 """Hacks for loading stuff from GtkBuilder files."""
 
 ## Imports
-from __future__ import division, print_function
-
 from lib.gibindings import Gtk
 
 import lib.xml

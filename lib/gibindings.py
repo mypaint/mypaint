@@ -13,8 +13,6 @@ the correct versions are always specified before import, even when individual
 modules are being loaded in isolation (for purposes of testing).
 """
 
-from __future__ import division, print_function
-
 import gi
 
 gi.require_version("Gdk", "3.0")

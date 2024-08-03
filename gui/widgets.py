@@ -8,7 +8,6 @@
 
 """Layout constants and helper functions for common widgets."""
 
-from __future__ import division, print_function
 import functools
 
 from lib.gibindings import Gtk

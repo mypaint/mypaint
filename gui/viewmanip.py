@@ -10,8 +10,6 @@
 
 
 ## Imports
-from __future__ import division, print_function
-
 import gui.mode
 
 import math

@@ -9,8 +9,6 @@
 
 """Base widgets for the colour selector module"""
 
-from __future__ import division, print_function
-
 import logging
 
 from lib.gibindings import Gtk

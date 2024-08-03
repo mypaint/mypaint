@@ -12,8 +12,6 @@
 
 ## Imports
 
-from __future__ import division, print_function
-
 import weakref
 import os.path
 import os

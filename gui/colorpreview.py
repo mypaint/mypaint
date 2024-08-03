@@ -12,8 +12,6 @@
 # TODO:   with a history row taking up the bottom. For now let's draw it at
 # TODO:   an aspect ratio of about 1:5 and see how users like it.
 
-from __future__ import division, print_function
-
 from .colors import PreviousCurrentColorAdjuster
 
 

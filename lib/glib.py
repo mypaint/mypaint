@@ -19,7 +19,6 @@ unicode, and may not even be UTF-8). This module works around that.
 
 ## Imports
 
-from __future__ import division, print_function
 import logging
 import sys
 

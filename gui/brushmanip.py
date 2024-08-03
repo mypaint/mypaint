@@ -9,8 +9,6 @@
 
 """Modes for manipulating brush properties"""
 
-from __future__ import print_function
-
 from math import ceil, hypot, log, pi
 
 import gui.overlays

@@ -8,7 +8,6 @@
 
 """Toolstacks with panels that can be closed/detached/reordered"""
 
-from __future__ import division, print_function
 from warnings import warn
 import logging
 import weakref

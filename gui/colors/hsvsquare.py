@@ -11,7 +11,6 @@
 """Axis-aligned planar slice of an HSV color cube, and a depth slider.
 """
 
-from __future__ import division, print_function
 import math
 from gettext import gettext as _
 

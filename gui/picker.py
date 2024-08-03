@@ -16,8 +16,6 @@ with a rather wide scope.
 """
 
 ## Imports
-from __future__ import division, print_function
-
 from gui.tileddrawwidget import TiledDrawWidget
 from gui.document import Document
 from lib.gettext import C_

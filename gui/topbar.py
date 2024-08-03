@@ -10,7 +10,6 @@
 
 ## Imports
 
-from __future__ import division, print_function
 import logging
 
 from lib.gibindings import GObject

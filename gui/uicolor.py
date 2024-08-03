@@ -16,8 +16,6 @@ They can't be part of lib/ because of the GDK dependency.
 
 """
 
-from __future__ import division, print_function
-
 import struct
 
 from lib.gibindings import Gdk

@@ -10,8 +10,6 @@
 """Manager+adjuster bases for tweaking a single color via many widgets.
 """
 
-from __future__ import division, print_function
-
 import math
 from copy import deepcopy, copy
 from warnings import warn

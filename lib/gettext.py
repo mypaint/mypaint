@@ -24,8 +24,6 @@ still uses a relative import, however.
 
 """
 
-from __future__ import absolute_import, division, print_function
-
 from warnings import warn
 from lib.gibindings import GLib
 

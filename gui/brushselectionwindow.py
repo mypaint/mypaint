@@ -17,7 +17,6 @@ They are responsible for ordering, loading and saving brush lists.
 
 ## Imports
 
-from __future__ import division, print_function
 import logging
 
 from lib.gibindings import Gtk

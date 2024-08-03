@@ -12,8 +12,6 @@
 
 ## Imports
 
-from __future__ import absolute_import, division, print_function
-
 from lib.pycompat import PY3
 
 import xml.etree.ElementTree as _ET

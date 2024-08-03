@@ -11,8 +11,6 @@
 
 
 ## Imports
-from __future__ import division, print_function
-
 from lib.gibindings import GdkPixbuf
 from lib.gibindings import Gdk
 

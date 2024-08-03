@@ -20,8 +20,6 @@ which are exposed on POSIX platforms.
 
 ## Imports
 
-from __future__ import division, print_function
-
 from lib.gibindings import GdkPixbuf
 
 import lib.fileutils

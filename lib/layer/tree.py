@@ -13,8 +13,6 @@
 
 ## Imports
 
-from __future__ import division, print_function
-
 import re
 import logging
 from copy import copy

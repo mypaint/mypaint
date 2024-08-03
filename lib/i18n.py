@@ -14,8 +14,6 @@ Stolen from QuodLibet (thanks, lazka!) <https://github.com/quodlibet
 
 """
 
-from __future__ import division, print_function
-
 import os
 import sys
 import locale

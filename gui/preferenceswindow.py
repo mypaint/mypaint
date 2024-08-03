@@ -9,8 +9,6 @@
 
 """Preferences dialog."""
 
-from __future__ import division, print_function
-
 import os.path
 from logging import getLogger
 from gettext import gettext as _

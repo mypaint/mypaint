@@ -11,8 +11,6 @@
 
 ## Imports
 
-from __future__ import division, print_function
-
 import lib.layer
 from lib.xml import escape
 from lib.observable import event

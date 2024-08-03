@@ -10,8 +10,6 @@
 
 """Common interfaces & routines for surface and surface-like objects"""
 
-from __future__ import division, print_function
-
 import abc
 import os
 import logging

@@ -13,7 +13,6 @@ Usage: PYTHONPATH=. python -m lib/brushes_migrate_json [BRUSHDIR...]
 
 """
 
-from __future__ import division, print_function, absolute_import
 import sys
 import os
 

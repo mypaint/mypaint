@@ -9,7 +9,6 @@
 
 """Autorecovery UI"""
 
-from __future__ import division, print_function
 import weakref
 import os.path
 from gettext import gettext as _

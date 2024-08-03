@@ -12,8 +12,6 @@
 
 ## Imports
 
-from __future__ import division, print_function
-
 from itertools import chain
 import os
 import zipfile

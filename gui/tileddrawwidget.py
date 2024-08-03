@@ -10,7 +10,6 @@
 
 ## Imports
 
-from __future__ import division, print_function
 import random
 from math import floor, ceil, log, exp
 import math

@@ -9,8 +9,6 @@
 
 """Dockable Workspace tools for color adjusters."""
 
-from __future__ import division, print_function
-
 from lib.gibindings import Gtk
 
 from lib.gettext import C_

@@ -9,8 +9,6 @@
 
 """Factory for creating custom toolbar and manu items via UIManager"""
 
-from __future__ import division, print_function
-
 from warnings import warn
 
 import gi

@@ -8,8 +8,6 @@
 
 """Custom GtkScale/GtkSpinButton combination widget."""
 
-from __future__ import division, print_function
-
 import weakref
 
 from lib.gibindings import Gtk

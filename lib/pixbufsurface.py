@@ -10,7 +10,6 @@
 
 ## Imports
 
-from __future__ import division, print_function
 import contextlib
 from logging import getLogger
 

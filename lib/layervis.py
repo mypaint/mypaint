@@ -24,8 +24,6 @@ the document changes accordingly. These transitions are undoable.
 
 # Imports:
 
-from __future__ import print_function, division
-
 import logging
 
 from lib.gettext import C_
