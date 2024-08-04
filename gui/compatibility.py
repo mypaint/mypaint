@@ -26,12 +26,12 @@ from lib.gettext import C_
 logger = getLogger(__name__)
 
 FILE_WARNINGS = {
-    Compatibility.INCOMPATIBLE: 'ui.file_compat_warning_severe',
-    Compatibility.PARTIALLY: 'ui.file_compat_warning_mild',
+    Compatibility.INCOMPATIBLE: "ui.file_compat_warning_severe",
+    Compatibility.PARTIALLY: "ui.file_compat_warning_mild",
 }
 
 _FILE_OPEN_OPTIONS = [
-    ('', C_("File Load Compat Options", "Based on file")),
+    ("", C_("File Load Compat Options", "Based on file")),
     (C1X, C_("Prefs Dialog|Compatibility", "1.x")),
     (C2X, C_("Prefs Dialog|Compatibility", "2.x")),
 ]
@@ -41,31 +41,30 @@ FILE_WARNING_MSGS = {
         "file compatibility warning",
         # TRANSLATORS: This is probably a rare warning, and it will not
         # TRANSLATORS: really be shown at all before the release of 3.0
-        u"“{filename}” was saved with <b>MyPaint {new_version}</b>."
+        "“{filename}” was saved with <b>MyPaint {new_version}</b>."
         " It may be <b>incompatible</b> with <b>MyPaint {current_version}</b>."
         "\n\n"
         "Editing this file with this version of MyPaint is not guaranteed"
         " to work, and may even result in crashes."
         "\n\n"
         "It is <b>strongly recommended</b> to upgrade to <b>MyPaint"
-        " {new_version}</b> or newer if you want to edit this file!"),
+        " {new_version}</b> or newer if you want to edit this file!",
+    ),
     Compatibility.PARTIALLY: C_(
         "file compatibility warning",
-        u"“{filename}” was saved with <b>MyPaint {new_version}</b>. "
+        "“{filename}” was saved with <b>MyPaint {new_version}</b>. "
         "It may not be fully compatible with <b>Mypaint {current_version}</b>."
         "\n\n"
         "Saving it with this version of MyPaint may result in data"
         " that is only supported by the newer version being lost."
         "\n\n"
-        "To be safe you should upgrade to MyPaint {new_version} or newer."),
+        "To be safe you should upgrade to MyPaint {new_version} or newer.",
+    ),
 }
 
-OPEN_ANYWAY = C_(
-    "file compatibility question",
-    "Do you want to open this file anyway?"
-)
+OPEN_ANYWAY = C_("file compatibility question", "Do you want to open this file anyway?")
 
-_PIGMENT_OP = combine_mode_get_info(CombineSpectralWGM)['name']
+_PIGMENT_OP = combine_mode_get_info(CombineSpectralWGM)["name"]
 
 
 def has_pigment_layers(elem):
@@ -81,13 +80,13 @@ def has_pigment_layers(elem):
     bg_attr = BackgroundLayer.ORA_BGTILE_ATTR
     if elem.get(bg_attr, None):
         return False
-    op = elem.attrib.get('composite-op', None)
+    op = elem.attrib.get("composite-op", None)
     return op == _PIGMENT_OP or any([has_pigment_layers(c) for c in elem])
 
 
 def incompatible_ora_cb(app):
     def cb(comp_type, prerel, filename, target_version):
-        """ Internal: callback that may show a confirmation/warning dialog
+        """Internal: callback that may show a confirmation/warning dialog
 
         Unless disabled in settings, when a potentially
         incompatible ora is opened, a warning dialog is
@@ -102,18 +101,20 @@ def incompatible_ora_cb(app):
                 filename=filename,
                 compat_desc=Compatibility.DESC[comp_type],
                 version=lib.meta.MYPAINT_VERSION,
-                file_version=target_version
-            ))
-        if prerel and comp_type > Compatibility.INCOMPATIBLE and PREREL != '':
+                file_version=target_version,
+            )
+        )
+        if prerel and comp_type > Compatibility.INCOMPATIBLE and PREREL != "":
             logger.info("Warning dialog skipped in prereleases.")
             return True
         return incompatible_ora_warning_dialog(
-            comp_type, prerel, filename, target_version, app)
+            comp_type, prerel, filename, target_version, app
+        )
+
     return cb
 
 
-def incompatible_ora_warning_dialog(
-        comp_type, prerel, filename, target_version, app):
+def incompatible_ora_warning_dialog(comp_type, prerel, filename, target_version, app):
     # Skip the dialog if the user has disabled the warning
     # for this level of incompatibility
     warn = app.preferences.get(FILE_WARNINGS[comp_type], True)
@@ -125,8 +126,7 @@ def incompatible_ora_warning_dialog(
     # The checkbutton code is pretty much copied from the filehandling
     # save-to-scrap checkbutton; a lot of duplication.
     skip_warning_text = C_(
-        "Version compat warning toggle",
-        u"Don't show this warning again"
+        "Version compat warning toggle", "Don't show this warning again"
     )
     skip_warning_button = Gtk.CheckButton.new()
     skip_warning_button.set_label(skip_warning_text)
@@ -142,14 +142,19 @@ def incompatible_ora_warning_dialog(
     def skip_warning_toggled(checkbut):
         app.preferences[FILE_WARNINGS[comp_type]] = not checkbut.get_active()
         app.preferences_window.compat_preferences.update_ui()
+
     skip_warning_button.connect("toggled", skip_warning_toggled)
 
     def_msg = "Invalid key, report this! key={key}".format(key=comp_type)
-    msg_markup = FILE_WARNING_MSGS.get(comp_type, def_msg).format(
-        filename=filename,
-        new_version=target_version,
-        current_version=MYPAINT_VERSION
-    ) + "\n\n" + OPEN_ANYWAY
+    msg_markup = (
+        FILE_WARNING_MSGS.get(comp_type, def_msg).format(
+            filename=filename,
+            new_version=target_version,
+            current_version=MYPAINT_VERSION,
+        )
+        + "\n\n"
+        + OPEN_ANYWAY
+    )
     d = Gtk.MessageDialog(
         transient_for=app.drawWindow,
         buttons=Gtk.ButtonsType.NONE,
@@ -171,6 +176,7 @@ def incompatible_ora_warning_dialog(
     def show_checkbut(*args):
         skip_warning_button.show()
         skip_warning_button.set_can_focus(True)
+
     d.connect("show", show_checkbut)
 
     response = d.run()
@@ -179,8 +185,8 @@ def incompatible_ora_warning_dialog(
 
 
 class CompatFileBehavior(config.CompatFileBehaviorConfig):
-    """ Holds data and functions related to per-file choice of compat mode
-    """
+    """Holds data and functions related to per-file choice of compat mode"""
+
     _CFBC = config.CompatFileBehaviorConfig
     _OPTIONS = [
         _CFBC.ALWAYS_1X,
@@ -194,7 +200,7 @@ class CompatFileBehavior(config.CompatFileBehaviorConfig):
                 # TRANSLATORS: One of the options for the
                 # TRANSLATORS: "When Not Specified in File"
                 # TRANSLATORS: compatibility setting.
-                "Always open in 1.x mode"
+                "Always open in 1.x mode",
             )
         ),
         _CFBC.ALWAYS_2X: (
@@ -203,7 +209,7 @@ class CompatFileBehavior(config.CompatFileBehaviorConfig):
                 # TRANSLATORS: One of the options for the
                 # TRANSLATORS: "When Not Specified in File"
                 # TRANSLATORS: compatibility setting.
-                "Always open in 2.x mode"
+                "Always open in 2.x mode",
             )
         ),
         _CFBC.UNLESS_PIGMENT_LAYER_1X: (
@@ -212,7 +218,7 @@ class CompatFileBehavior(config.CompatFileBehaviorConfig):
                 # TRANSLATORS: One of the options for the
                 # TRANSLATORS: "When Not Specified in File"
                 # TRANSLATORS: compatibility setting.
-                "Open in 1.x mode unless file contains pigment layers"
+                "Open in 1.x mode unless file contains pigment layers",
             )
         ),
     }
@@ -228,9 +234,9 @@ class CompatFileBehavior(config.CompatFileBehaviorConfig):
 
         cell = Gtk.CellRendererText()
         combobox.pack_start(cell, True)
-        combobox.add_attribute(cell, 'text', 1)
+        combobox.add_attribute(cell, "text", 1)
         self.update_ui()
-        combobox.connect('changed', self.changed_cb)
+        combobox.connect("changed", self.changed_cb)
 
     def update_ui(self):
         self.combo.set_active_id(self.prefs[self.SETTING])
@@ -241,7 +247,7 @@ class CompatFileBehavior(config.CompatFileBehaviorConfig):
 
     @staticmethod
     def get_compat_mode(setting, root_elem, default):
-        """ Get the compat mode to use for a file
+        """Get the compat mode to use for a file
 
         The decision is based on the given file behavior setting
         and the layer stack xml.
@@ -264,7 +270,7 @@ class CompatFileBehavior(config.CompatFileBehaviorConfig):
 
 
 class CompatibilityPreferences:
-    """ A single instance should be a part of the preference window
+    """A single instance should be a part of the preference window
 
     This class handles preferences related to the compatibility modes
     and their settings.
@@ -276,65 +282,70 @@ class CompatibilityPreferences:
         # Widget references
         getobj = builder.get_object
         # Default compat mode choice radio buttons
-        self.default_radio_1_x = getobj('compat_1_x_radiobutton')
-        self.default_radio_2_x = getobj('compat_2_x_radiobutton')
+        self.default_radio_1_x = getobj("compat_1_x_radiobutton")
+        self.default_radio_2_x = getobj("compat_2_x_radiobutton")
         # For each mode, choice for whether pigment is on or off by default
-        self.pigment_switch_1_x = getobj('pigment_setting_switch_1_x')
-        self.pigment_switch_2_x = getobj('pigment_setting_switch_2_x')
+        self.pigment_switch_1_x = getobj("pigment_setting_switch_1_x")
+        self.pigment_switch_2_x = getobj("pigment_setting_switch_2_x")
         # For each mode, choice of which layer type is the default
-        self.pigment_radio_1_x = getobj('def_new_layer_pigment_1_x')
-        self.pigment_radio_2_x = getobj('def_new_layer_pigment_2_x')
-        self.normal_radio_1_x = getobj('def_new_layer_normal_1_x')
-        self.normal_radio_2_x = getobj('def_new_layer_normal_2_x')
+        self.pigment_radio_1_x = getobj("def_new_layer_pigment_1_x")
+        self.pigment_radio_2_x = getobj("def_new_layer_pigment_2_x")
+        self.normal_radio_1_x = getobj("def_new_layer_normal_1_x")
+        self.normal_radio_2_x = getobj("def_new_layer_normal_2_x")
 
         def file_warning_cb(level):
             def cb(checkbut):
                 app.preferences[FILE_WARNINGS[level]] = checkbut.get_active()
+
             return cb
 
-        self.file_warning_mild = getobj('file_compat_warning_mild')
+        self.file_warning_mild = getobj("file_compat_warning_mild")
         self.file_warning_mild.connect(
-            "toggled", file_warning_cb(Compatibility.PARTIALLY))
+            "toggled", file_warning_cb(Compatibility.PARTIALLY)
+        )
 
-        self.file_warning_severe = getobj('file_compat_warning_severe')
+        self.file_warning_severe = getobj("file_compat_warning_severe")
         self.file_warning_severe.connect(
-            "toggled", file_warning_cb(Compatibility.INCOMPATIBLE))
+            "toggled", file_warning_cb(Compatibility.INCOMPATIBLE)
+        )
 
         self.compat_file_behavior = CompatFileBehavior(
-            getobj('compat_file_behavior_combobox'), self.app.preferences)
+            getobj("compat_file_behavior_combobox"), self.app.preferences
+        )
         # Initialize widgets and callbacks
         self.setup_layer_type_strings()
         self.setup_widget_callbacks()
 
     def setup_widget_callbacks(self):
-        """ Hook up callbacks for switches and radiobuttons
-        """
+        """Hook up callbacks for switches and radiobuttons"""
+
         # Convenience wrapper - here it is enough to act when toggling on,
         # so ignore callbacks triggered by radio buttons being toggled off.
         def ignore_detoggle(cb_func):
             def cb(btn, *args):
                 if btn.get_active():
                     cb_func(btn, *args)
+
             return cb
 
         # Connect default layer type toggles
         layer_type_cb = ignore_detoggle(self.set_compat_layer_type_cb)
-        self.normal_radio_1_x.connect('toggled', layer_type_cb, C1X, False)
-        self.pigment_radio_1_x.connect('toggled', layer_type_cb, C1X, True)
-        self.normal_radio_2_x.connect('toggled', layer_type_cb, C2X, False)
-        self.pigment_radio_2_x.connect('toggled', layer_type_cb, C2X, True)
+        self.normal_radio_1_x.connect("toggled", layer_type_cb, C1X, False)
+        self.pigment_radio_1_x.connect("toggled", layer_type_cb, C1X, True)
+        self.normal_radio_2_x.connect("toggled", layer_type_cb, C2X, False)
+        self.pigment_radio_2_x.connect("toggled", layer_type_cb, C2X, True)
 
         def_compat_cb = ignore_detoggle(self.set_default_compat_mode_cb)
-        self.default_radio_1_x.connect('toggled', def_compat_cb, C1X)
-        self.default_radio_2_x.connect('toggled', def_compat_cb, C2X)
+        self.default_radio_1_x.connect("toggled", def_compat_cb, C1X)
+        self.default_radio_2_x.connect("toggled", def_compat_cb, C2X)
 
         pigment_switch_cb = self.default_pigment_changed_cb
-        self.pigment_switch_1_x.connect('state-set', pigment_switch_cb, C1X)
-        self.pigment_switch_2_x.connect('state-set', pigment_switch_cb, C2X)
+        self.pigment_switch_1_x.connect("state-set", pigment_switch_cb, C1X)
+        self.pigment_switch_2_x.connect("state-set", pigment_switch_cb, C2X)
 
     def setup_layer_type_strings(self):
-        """ Replace the placeholder labels and add tooltips
-        """
+        """Replace the placeholder labels and add tooltips"""
+
         def string_setup(widget, label, tooltip):
             widget.set_label(label)
             widget.set_tooltip_text(tooltip)
@@ -350,9 +361,11 @@ class CompatibilityPreferences:
         prefs = self.app.preferences
         # File warnings update (can be changed from confirmation dialogs)
         self.file_warning_mild.set_active(
-            prefs.get(FILE_WARNINGS[Compatibility.PARTIALLY], True))
+            prefs.get(FILE_WARNINGS[Compatibility.PARTIALLY], True)
+        )
         self.file_warning_severe.set_active(
-            prefs.get(FILE_WARNINGS[Compatibility.INCOMPATIBLE], True))
+            prefs.get(FILE_WARNINGS[Compatibility.INCOMPATIBLE], True)
+        )
 
         # Even in a radio button group with 2 widgets, using set_active(False)
         # will not toggle the other button on, hence this ugly pattern.
@@ -363,14 +376,16 @@ class CompatibilityPreferences:
         mode_settings = prefs[COMPAT_SETTINGS]
         # 1.x
         self.pigment_switch_1_x.set_active(
-            mode_settings[C1X][config.PIGMENT_BY_DEFAULT])
+            mode_settings[C1X][config.PIGMENT_BY_DEFAULT]
+        )
         if mode_settings[C1X][config.PIGMENT_LAYER_BY_DEFAULT]:
             self.pigment_radio_1_x.set_active(True)
         else:
             self.normal_radio_1_x.set_active(True)
         # 2.x
         self.pigment_switch_2_x.set_active(
-            mode_settings[C2X][config.PIGMENT_BY_DEFAULT])
+            mode_settings[C2X][config.PIGMENT_BY_DEFAULT]
+        )
         if mode_settings[C2X][config.PIGMENT_LAYER_BY_DEFAULT]:
             self.pigment_radio_2_x.set_active(True)
         else:
@@ -412,8 +427,10 @@ def ora_compat_handler(app):
             # use the default value for the eotf, or the legacy value of 1.0
             setting = app.preferences[CompatFileBehavior.SETTING]
             compat = CompatFileBehavior.get_compat_mode(
-                setting, root_stack_elem, default)
+                setting, root_stack_elem, default
+            )
         set_compat_mode(app, compat, custom_eotf=eotf_value)
+
     return handler
 
 
@@ -448,14 +465,13 @@ def set_compat_mode(app, compat_mode, custom_eotf=None, update=True):
         # Reload scratchpad (with new eotf)
         app.drawWindow.revert_current_scratchpad_cb(None)
         for f in app.brush.observers:
-            f({'color_h', 'color_s', 'color_v'})
+            f({"color_h", "color_s", "color_v"})
         update_default_layer_type(app)
         update_default_pigment_setting(app)
 
 
 def update_default_layer_type(app):
-    """Update default layer type from settings
-    """
+    """Update default layer type from settings"""
     prefs = app.preferences
     mode_settings = prefs[COMPAT_SETTINGS][app.compat_mode]
     if mode_settings[config.PIGMENT_LAYER_BY_DEFAULT]:
@@ -467,17 +483,14 @@ def update_default_layer_type(app):
 
 
 def update_default_pigment_setting(app):
-    """Update default pigment brush setting value
-    """
+    """Update default pigment brush setting value"""
     prefs = app.preferences
     mode_settings = prefs[COMPAT_SETTINGS][app.compat_mode]
-    app.brushmanager.set_pigment_by_default(
-        mode_settings[config.PIGMENT_BY_DEFAULT]
-    )
+    app.brushmanager.set_pigment_by_default(mode_settings[config.PIGMENT_BY_DEFAULT])
 
 
 class CompatSelector:
-    """ A dropdown menu with file loading compatibility options
+    """A dropdown menu with file loading compatibility options
 
     If a file was accidentally set to use the wrong mode, these
     options are used to force opening in a particular mode.
@@ -494,7 +507,7 @@ class CompatSelector:
         combo.set_active(0)
         cell = Gtk.CellRendererText()
         combo.pack_start(cell, True)
-        combo.add_attribute(cell, 'text', 1)
+        combo.add_attribute(cell, "text", 1)
         combo_label = Gtk.Label(
             # TRANSLATORS: This is a label for a dropdown menu in the
             # TRANSLATORS: file chooser dialog when loading .ora files.
@@ -508,7 +521,7 @@ class CompatSelector:
         hbox.set_visible(False)
         self._compat_override = None
         self._combo = combo
-        combo.connect('changed', self._combo_changed_cb)
+        combo.connect("changed", self._combo_changed_cb)
         self._widget = hbox
 
     def _combo_changed_cb(self, combo):
@@ -519,10 +532,9 @@ class CompatSelector:
             self._compat_override = None
 
     def file_selection_changed_cb(self, chooser):
-        """ Show/hide widget and enable/disable override
-        """
+        """Show/hide widget and enable/disable override"""
         fn = chooser.get_filename()
-        applicable = fn is not None and fn.endswith('.ora')
+        applicable = fn is not None and fn.endswith(".ora")
         self.widget.set_visible(applicable)
         if not applicable:
             self._compat_override = None
@@ -535,7 +547,6 @@ class CompatSelector:
 
     @property
     def compat_function(self):
-        """ Returns an overriding compatibility handler or None
-        """
+        """Returns an overriding compatibility handler or None"""
         if self._compat_override:
             return lambda *a: set_compat_mode(self.app, self._compat_override)

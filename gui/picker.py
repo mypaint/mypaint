@@ -29,6 +29,7 @@ from lib.gibindings import GLib
 
 import abc
 import logging
+
 logger = logging.getLogger(__name__)
 
 
@@ -38,7 +39,8 @@ _PRESS_EVENTS = {Gdk.EventType.BUTTON_PRESS, Gdk.EventType.TOUCH_BEGIN}
 
 ## Class definitions
 
-class PickingGrabPresenter (object):
+
+class PickingGrabPresenter(object):
     """Picking something via a grab (abstract base, MVP presenter)
 
     This presenter mediates between passive GTK view widgets
@@ -54,9 +56,11 @@ class PickingGrabPresenter (object):
 
     __metaclass__ = abc.ABCMeta
 
-    _GRAB_MASK = (Gdk.EventMask.BUTTON_RELEASE_MASK
-                  | Gdk.EventMask.BUTTON_PRESS_MASK
-                  | Gdk.EventMask.BUTTON_MOTION_MASK)
+    _GRAB_MASK = (
+        Gdk.EventMask.BUTTON_RELEASE_MASK
+        | Gdk.EventMask.BUTTON_PRESS_MASK
+        | Gdk.EventMask.BUTTON_MOTION_MASK
+    )
 
     ## Initialization
 
@@ -231,8 +235,9 @@ class PickingGrabPresenter (object):
 
         # Ensure that it'll receive termination events.
         owner.add_events(self._GRAB_MASK)
-        assert (int(owner.get_events() & self._GRAB_MASK) == int(self._GRAB_MASK)), \
-            "Grab owner's events must match %r" % (self._GRAB_MASK,)
+        assert int(owner.get_events() & self._GRAB_MASK) == int(
+            self._GRAB_MASK
+        ), "Grab owner's events must match %r" % (self._GRAB_MASK,)
 
         # There should be no message in the statusbar from this Grab,
         # but clear it out anyway.
@@ -240,17 +245,16 @@ class PickingGrabPresenter (object):
 
         # Grab item, pointer first
         result = device.grab(
-            window = window,
-            grab_ownership = Gdk.GrabOwnership.APPLICATION,
-            owner_events = False,
-            event_mask = self._GRAB_MASK,
-            cursor = self.picking_cursor,
-            time_ = time,
+            window=window,
+            grab_ownership=Gdk.GrabOwnership.APPLICATION,
+            owner_events=False,
+            event_mask=self._GRAB_MASK,
+            cursor=self.picking_cursor,
+            time_=time,
         )
         if result != Gdk.GrabStatus.SUCCESS:
             logger.error(
-                "Failed to create pointer grab on %r. "
-                "Result: %r.",
+                "Failed to create pointer grab on %r. " "Result: %r.",
                 device.get_name(),
                 result,
             )
@@ -258,20 +262,18 @@ class PickingGrabPresenter (object):
             return False  # don't requeue
 
         # Need to grab the keyboard too, since Mypaint uses hotkeys.
-        keyboard_mask = Gdk.EventMask.KEY_PRESS_MASK \
-            | Gdk.EventMask.KEY_RELEASE_MASK
+        keyboard_mask = Gdk.EventMask.KEY_PRESS_MASK | Gdk.EventMask.KEY_RELEASE_MASK
         result = keyboard_device.grab(
-            window = window,
-            grab_ownership = Gdk.GrabOwnership.APPLICATION,
-            owner_events = False,
-            event_mask = keyboard_mask,
-            cursor = self.picking_cursor,
-            time_ = time,
+            window=window,
+            grab_ownership=Gdk.GrabOwnership.APPLICATION,
+            owner_events=False,
+            event_mask=keyboard_mask,
+            cursor=self.picking_cursor,
+            time_=time,
         )
         if result != Gdk.GrabStatus.SUCCESS:
             logger.error(
-                "Failed to create grab on keyboard associated with %r. "
-                "Result: %r",
+                "Failed to create grab on keyboard associated with %r. " "Result: %r",
                 device.get_name(),
                 result,
             )
@@ -309,7 +311,7 @@ class PickingGrabPresenter (object):
             logger.debug("Added handler for %r: hid=%d", signame, hid)
         self._grab_event_handler_ids = handler_ids
 
-        return False   # don't requeue
+        return False  # don't requeue
 
     def _in_grab_button_press_cb(self, widget, event):
         assert self._grab_button_num is None
@@ -443,15 +445,15 @@ class PickingGrabPresenter (object):
             return False
 
 
-class ContextPickingGrabPresenter (PickingGrabPresenter):
+class ContextPickingGrabPresenter(PickingGrabPresenter):
     """Context picking behaviour (concrete MVP presenter)"""
 
     @property
     def picking_cursor(self):
         """The cursor to use while picking"""
         return self.app.cursors.get_icon_cursor(
-            icon_name = "mypaint-brush-tip-symbolic",
-            cursor_name = gui.cursor.Name.CROSSHAIR_OPEN_PRECISE,
+            icon_name="mypaint-brush-tip-symbolic",
+            cursor_name=gui.cursor.Name.CROSSHAIR_OPEN_PRECISE,
         )
 
     @property
@@ -459,7 +461,7 @@ class ContextPickingGrabPresenter (PickingGrabPresenter):
         """The statusbar text to use during the grab."""
         return C_(
             "context picker: statusbar text during grab",
-            u"Pick brushstroke settings, stroke color, and layer…",
+            "Pick brushstroke settings, stroke color, and layer…",
         )
 
     def picking_update(self, device, x_root, y_root):
@@ -482,15 +484,15 @@ class ContextPickingGrabPresenter (PickingGrabPresenter):
         doc.pick_context(x, y)
 
 
-class ColorPickingGrabPresenter (PickingGrabPresenter):
+class ColorPickingGrabPresenter(PickingGrabPresenter):
     """Color picking behaviour (concrete MVP presenter)"""
 
     @property
     def picking_cursor(self):
         """The cursor to use while picking"""
         return self.app.cursors.get_icon_cursor(
-            icon_name = "mypaint-colors-symbolic",
-            cursor_name = gui.cursor.Name.PICKER,
+            icon_name="mypaint-colors-symbolic",
+            cursor_name=gui.cursor.Name.PICKER,
         )
 
     @property
@@ -498,7 +500,7 @@ class ColorPickingGrabPresenter (PickingGrabPresenter):
         """The statusbar text to use during the grab."""
         return C_(
             "color picker: statusbar text during grab",
-            u"Pick color…",
+            "Pick color…",
         )
 
     def picking_update(self, device, x_root, y_root):
@@ -511,7 +513,7 @@ class ColorPickingGrabPresenter (PickingGrabPresenter):
         cm.set_color(color)
 
 
-class ButtonPresenter (object):
+class ButtonPresenter(object):
     """Picking behaviour for a button (MVP presenter)
 
     This presenter mediates between a passive view consisting of a

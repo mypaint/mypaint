@@ -29,8 +29,11 @@ import lib.alg
 import lib.mypaintlib
 import lib.tiledsurface
 from lib.mypaintlib import (
-    SymmetryHorizontal, SymmetryVertical, SymmetryVertHorz,
-    SymmetryRotational, SymmetrySnowflake
+    SymmetryHorizontal,
+    SymmetryVertical,
+    SymmetryVertHorz,
+    SymmetryRotational,
+    SymmetrySnowflake,
 )
 from lib.helpers import Rect
 from lib.gettext import C_
@@ -43,10 +46,11 @@ from lib.gibindings import Gtk
 # Module settings
 
 _DEFAULT_ALPHA = 0.333
-_ALPHA_PREFS_KEY = 'symmetry.line_alpha'
+_ALPHA_PREFS_KEY = "symmetry.line_alpha"
 
 
 # Class defs
+
 
 class _EditZone:
 
@@ -57,12 +61,12 @@ class _EditZone:
     DISABLE = 4
 
 
-class SymmetryEditMode (gui.mode.ScrollableModeMixin, gui.mode.DragMode):
+class SymmetryEditMode(gui.mode.ScrollableModeMixin, gui.mode.DragMode):
     """Tool/mode for editing the axis of symmetry used when painting"""
 
     # Class-level config
 
-    ACTION_NAME = 'SymmetryEditMode'
+    ACTION_NAME = "SymmetryEditMode"
 
     pointer_behavior = gui.mode.Behavior.EDIT_OBJECTS
     scroll_behavior = gui.mode.Behavior.CHANGE_VIEW
@@ -73,22 +77,25 @@ class SymmetryEditMode (gui.mode.ScrollableModeMixin, gui.mode.DragMode):
 
     unmodified_persist = True
     permitted_switch_actions = {
-        'ShowPopupMenu', 'RotateViewMode', 'ZoomViewMode', 'PanViewMode',
+        "ShowPopupMenu",
+        "RotateViewMode",
+        "ZoomViewMode",
+        "PanViewMode",
     }
 
     # Statusbar stuff
-    _STATUSBAR_CONTEXT = 'symmetry-mode'
+    _STATUSBAR_CONTEXT = "symmetry-mode"
     _STATUSBAR_CREATE_AXIS_MSG = C_(
         "symmetry axis edit mode: instructions shown in statusbar",
-        u"Place axis",
+        "Place axis",
     )
     _STATUSBAR_MOVE_AXIS_MSG = C_(
         "symmetry axis edit mode: instructions shown in statusbar",
-        u"Move axis",
+        "Move axis",
     )
     _STATUSBAR_DELETE_AXIS_MSG = C_(
         "symmetry axis edit mode: instructions shown in statusbar",
-        u"Remove axis",
+        "Remove axis",
     )
 
     # Options widget singleton
@@ -100,13 +107,13 @@ class SymmetryEditMode (gui.mode.ScrollableModeMixin, gui.mode.DragMode):
     def get_name(cls):
         return C_(
             "symmetry axis edit mode: mode name (tooltips)",
-            u"Edit Symmetry Axis",
+            "Edit Symmetry Axis",
         )
 
     def get_usage(self):
         return C_(
             "symmetry axis edit mode: mode description (tooltips)",
-            u"Adjust the painting symmetry axis.",
+            "Adjust the painting symmetry axis.",
         )
 
     # Initization and mode interface
@@ -115,14 +122,15 @@ class SymmetryEditMode (gui.mode.ScrollableModeMixin, gui.mode.DragMode):
         """Initialize."""
         super(SymmetryEditMode, self).__init__(**kwds)
         from gui.application import get_app
+
         app = get_app()
         self.app = app
 
         # The overlay is always present and stores the information required to
         # draw the axes, as well as information about what the active zone is.
         self._overlay = [
-            o for o in app.doc.tdw.display_overlays
-            if isinstance(o, SymmetryOverlay)][0]
+            o for o in app.doc.tdw.display_overlays if isinstance(o, SymmetryOverlay)
+        ][0]
 
         statusbar_cid = app.statusbar.get_context_id(self._STATUSBAR_CONTEXT)
         self._statusbar_context_id = statusbar_cid
@@ -218,8 +226,8 @@ class SymmetryEditMode (gui.mode.ScrollableModeMixin, gui.mode.DragMode):
         # Symmetry was inactive - create axis based on cursor position
         elif zone_pressed == _EditZone.CREATE_AXIS:
             new_center = tuple(
-                int(round(c)) for c in
-                tdw.display_to_model(event.x, event.y))
+                int(round(c)) for c in tdw.display_to_model(event.x, event.y)
+            )
             if layer_stack.symmetry_unset:
                 layer_stack.symmetry_unset = False
             layer_stack.set_symmetry_state(True, center=new_center)
@@ -294,8 +302,7 @@ class SymmetryEditMode (gui.mode.ScrollableModeMixin, gui.mode.DragMode):
         if zone == _EditZone.MOVE_CENTER:
             self._queue_movement(zone, (ev_x, ev_y, tdw))
         elif zone == _EditZone.MOVE_AXIS:
-            self._queue_movement(
-                zone, (ev_x - self.start_x, ev_y - self.start_y, tdw))
+            self._queue_movement(zone, (ev_x - self.start_x, ev_y - self.start_y, tdw))
 
     def _queue_movement(self, zone, args):
         self._move_item = (zone, args)
@@ -338,35 +345,35 @@ class SymmetryEditMode (gui.mode.ScrollableModeMixin, gui.mode.DragMode):
         return super(SymmetryEditMode, self).drag_stop_cb(tdw)
 
 
-class SymmetryEditOptionsWidget (Gtk.Alignment):
+class SymmetryEditOptionsWidget(Gtk.Alignment):
 
     _POSITION_LABEL_X_TEXT = C_(
         "symmetry axis options panel: labels",
-        u"X Position:",
+        "X Position:",
     )
     _POSITION_LABEL_Y_TEXT = C_(
         "symmetry axis options panel: labels",
-        u"Y Position:",
+        "Y Position:",
     )
     _ANGLE_LABEL_TEXT = C_(
         "symmetry axis options panel: labels",
-        u"Angle: %.2f°",
+        "Angle: %.2f°",
     )
     _POSITION_BUTTON_TEXT_INACTIVE = C_(
         "symmetry axis options panel: position button: no axis pos.",
-        u"None",
+        "None",
     )
     _ALPHA_LABEL_TEXT = C_(
         "symmetry axis options panel: labels",
-        u"Alpha:",
+        "Alpha:",
     )
     _SYMMETRY_TYPE_TEXT = C_(
         "symmetry axis options panel: labels",
-        u"Symmetry Type:",
+        "Symmetry Type:",
     )
     _SYMMETRY_ROT_LINES_TEXT = C_(
         "symmetry axis options panel: labels",
-        u"Rotational lines:",
+        "Rotational lines:",
     )
 
     def __init__(self):
@@ -379,6 +386,7 @@ class SymmetryEditOptionsWidget (Gtk.Alignment):
         self._symmetry_type_combo = None
         self._axis_sym_lines_entry = None
         from gui.application import get_app
+
         self.app = get_app()
         rootstack = self.app.doc.model.layer_stack
         x, y = rootstack.symmetry_center
@@ -394,12 +402,12 @@ class SymmetryEditOptionsWidget (Gtk.Alignment):
 
         self._axis_pos_adj_x = pos_adj(x)
         self._xpos_cb_id = self._axis_pos_adj_x.connect(
-            'value-changed',
+            "value-changed",
             self._axis_pos_adj_x_changed,
         )
         self._axis_pos_adj_y = pos_adj(y)
         self._ypos_cb_id = self._axis_pos_adj_y.connect(
-            'value-changed',
+            "value-changed",
             self._axis_pos_adj_y_changed,
         )
         self._axis_angle = Gtk.Adjustment(
@@ -410,7 +418,8 @@ class SymmetryEditOptionsWidget (Gtk.Alignment):
             page_increment=15,
         )
         self._angle_cb_id = self._axis_angle.connect(
-            "value-changed", self._angle_value_changed)
+            "value-changed", self._angle_value_changed
+        )
         self._axis_symmetry_lines = Gtk.Adjustment(
             value=rootstack.symmetry_lines,
             upper=50,
@@ -419,7 +428,7 @@ class SymmetryEditOptionsWidget (Gtk.Alignment):
             page_increment=3,
         )
         self._lines_cb_id = self._axis_symmetry_lines.connect(
-            'value-changed',
+            "value-changed",
             self._axis_rot_symmetry_lines_changed,
         )
 
@@ -465,8 +474,7 @@ class SymmetryEditOptionsWidget (Gtk.Alignment):
         self._symmetry_type_combo.pack_start(cell, True)
         self._symmetry_type_combo.add_attribute(cell, "text", 1)
         self._type_cb_id = self._symmetry_type_combo.connect(
-            'changed',
-            self._symmetry_type_combo_changed_cb
+            "changed", self._symmetry_type_combo_changed_cb
         )
         label = Gtk.Label(label=self._SYMMETRY_TYPE_TEXT)
         label.set_hexpand(False)
@@ -479,8 +487,7 @@ class SymmetryEditOptionsWidget (Gtk.Alignment):
         label.set_hexpand(False)
         label.set_halign(Gtk.Align.START)
         self._axis_sym_lines_entry = Gtk.SpinButton(
-            adjustment=self._axis_symmetry_lines,
-            climb_rate=0.25
+            adjustment=self._axis_symmetry_lines, climb_rate=0.25
         )
         self._update_num_lines_sensitivity(rootstack.symmetry_type)
         grid.attach(label, 0, row, 1, 1)
@@ -491,9 +498,7 @@ class SymmetryEditOptionsWidget (Gtk.Alignment):
         label.set_hexpand(False)
         label.set_halign(Gtk.Align.START)
         entry = Gtk.SpinButton(
-            adjustment=self._axis_pos_adj_x,
-            climb_rate=0.25,
-            digits=0
+            adjustment=self._axis_pos_adj_x, climb_rate=0.25, digits=0
         )
         entry.set_hexpand(True)
         entry.set_vexpand(False)
@@ -505,9 +510,7 @@ class SymmetryEditOptionsWidget (Gtk.Alignment):
         label.set_hexpand(False)
         label.set_halign(Gtk.Align.START)
         entry = Gtk.SpinButton(
-            adjustment=self._axis_pos_adj_y,
-            climb_rate=0.25,
-            digits=0
+            adjustment=self._axis_pos_adj_y, climb_rate=0.25, digits=0
         )
         entry.set_hexpand(True)
         entry.set_vexpand(False)
@@ -531,10 +534,12 @@ class SymmetryEditOptionsWidget (Gtk.Alignment):
         button = Gtk.CheckButton()
         toggle_action = self.app.find_action("SymmetryActive")
         button.set_related_action(toggle_action)
-        button.set_label(C_(
-            "symmetry axis options panel: axis active checkbox",
-            u'Enabled',
-        ))
+        button.set_label(
+            C_(
+                "symmetry axis options panel: axis active checkbox",
+                "Enabled",
+            )
+        )
         button.set_hexpand(True)
         button.set_vexpand(False)
         grid.attach(button, 1, row, 2, 1)
@@ -545,7 +550,8 @@ class SymmetryEditOptionsWidget (Gtk.Alignment):
         )
 
     def _symmetry_state_changed_cb(
-            self, stack, active, center, sym_type, sym_lines, sym_angle):
+        self, stack, active, center, sym_type, sym_lines, sym_angle
+    ):
 
         if center:
             cx, cy = center
@@ -600,7 +606,7 @@ class SymmetryEditOptionsWidget (Gtk.Alignment):
                     yield ov
 
 
-class SymmetryOverlay (gui.overlays.Overlay):
+class SymmetryOverlay(gui.overlays.Overlay):
     """Symmetry overlay, operating in display coordinates"""
 
     _LINE_COL1 = gui.style.EDITABLE_ITEM_COLOR
@@ -779,7 +785,8 @@ class SymmetryOverlay (gui.overlays.Overlay):
 
         for i, p1, p2 in self._intersections:
             cursor_name = self.tdw.get_move_cursor_name_for_edge(
-                (x, y), p1, p2, self._GRAB_SENSITIVITY)
+                (x, y), p1, p2, self._GRAB_SENSITIVITY
+            )
             if cursor_name:
                 if self._active_axis == i:
                     return False, None, None
@@ -797,16 +804,22 @@ class SymmetryOverlay (gui.overlays.Overlay):
         cx, cy = stack.symmetry_center
         if stack.symmetry_active and self.line_alpha():
             self._intersections = get_viewport_intersections(
-                stack.symmetry_type, cx, cy,
-                stack.symmetry_angle, stack.symmetry_lines, self.view_corners,
+                stack.symmetry_type,
+                cx,
+                cy,
+                stack.symmetry_angle,
+                stack.symmetry_lines,
+                self.view_corners,
             )
 
             def rounded_view_coords(n):
                 x, y = self.tdw.model_to_display(*n)
                 return round(x), round(y)
+
             self._intersections_view = [
                 (i, rounded_view_coords(p1), rounded_view_coords(p2))
-                for i, p1, p2 in self._intersections]
+                for i, p1, p2 in self._intersections
+            ]
 
             if not self._full_redraw():
                 self._calculate_axis_rectangles()
@@ -816,8 +829,7 @@ class SymmetryOverlay (gui.overlays.Overlay):
     @property
     def tdw_allocation(self):
         if not self._alloc:
-            self._alloc = Rect.new_from_gdk_rectangle(
-                self.tdw.get_allocation())
+            self._alloc = Rect.new_from_gdk_rectangle(self.tdw.get_allocation())
         return self._alloc
 
     def _recalculate_edit_data(self, cx, cy):
@@ -832,7 +844,8 @@ class SymmetryOverlay (gui.overlays.Overlay):
         # placed in the location closest to the center. That way it can also be
         # used to locate the center visually, when the center is out of view.
         bp_x, bp_y = self.tdw.model_to_display(
-            *lib.alg.nearest_point_in_poly(self.view_corners, (cx, cy)))
+            *lib.alg.nearest_point_in_poly(self.view_corners, (cx, cy))
+        )
         margin = 2 * self._DISABLE_RADIUS
         # Position to left or right of the center, depending on whether
         # the center is closer to the left or the right edge of the view.
@@ -884,7 +897,8 @@ class SymmetryOverlay (gui.overlays.Overlay):
         self._alloc = None
 
     def _symmetry_state_changed_cb(
-            self, stack, active, center, symmetry_type, symmetry_lines, angle):
+        self, stack, active, center, symmetry_type, symmetry_lines, angle
+    ):
         redraw, recalc = False, False
         params = (center, symmetry_type, symmetry_lines, angle)
         if stack.symmetry_active and [p for p in params if p is not None]:
@@ -950,14 +964,17 @@ class SymmetryOverlay (gui.overlays.Overlay):
         x, y = self._disable_pos
         col = self._item_color(self._zone == _EditZone.DISABLE)
         gui.drawutils.render_round_floating_button(
-            cr, x, y, col, pixbuf=self.trash_icon_pixbuf,
+            cr,
+            x,
+            y,
+            col,
+            pixbuf=self.trash_icon_pixbuf,
         )
 
     def _draw_center_button(self, cr):
         radius, (x, y) = self._CENTER_RADIUS, self._center_pos
         col = self._item_color(self._zone == _EditZone.MOVE_CENTER)
-        gui.drawutils.render_round_floating_color_chip(
-            cr, x, y, col, radius, z=0)
+        gui.drawutils.render_round_floating_color_chip(cr, x, y, col, radius, z=0)
 
     def line_alpha(self):
         opaque_line_zones = (_EditZone.MOVE_AXIS, _EditZone.MOVE_CENTER)
@@ -985,12 +1002,15 @@ class SymmetryOverlay (gui.overlays.Overlay):
             # draw an axis as active if it is currently being moved.
             zone = self._zone
             active = self._edit_mode and (
-                zone == _EditZone.MOVE_CENTER or
-                self._active_axis == i and zone == _EditZone.MOVE_AXIS)
+                zone == _EditZone.MOVE_CENTER
+                or self._active_axis == i
+                and zone == _EditZone.MOVE_AXIS
+            )
             if not active:
                 for offs in (0, 1):
-                    dash_offset = self._DASH_OFFSET + (
-                        self._DASH_LENGTH + self._DASH_GAP) * offs
+                    dash_offset = (
+                        self._DASH_OFFSET + (self._DASH_LENGTH + self._DASH_GAP) * offs
+                    )
                     cr.set_dash(self._DASH_PATTERN, dash_offset)
                     cr.set_source_rgb(*self._LINE_COLS[offs])
                     cr.move_to(x0, y0)
@@ -1031,7 +1051,8 @@ def get_viewport_intersections(symm_type, x, y, angle, num_lines, corners_m):
     def append(a, **kwargs):
         # Reflected on y axis, due to display direction
         inter = lib.alg.intersection_of_vector_and_poly(
-            corners_m, p1, (x + math.cos(a), y - math.sin(a)), **kwargs)
+            corners_m, p1, (x + math.cos(a), y - math.sin(a)), **kwargs
+        )
         intersections.append(inter)
 
     if symm_type in (SymmetryHorizontal, SymmetryVertHorz):

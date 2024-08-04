@@ -39,19 +39,22 @@ logger = logging.getLogger(__name__)
 # Class defs:
 
 
-_LayerFlagUIInfo = namedtuple("_LayerFlagUIInfo", [
-    # View objects
-    "togglebutton",
-    "image",
-    # Model details
-    "property",
-    # Mapping: 2-tuples, indexed by int(property)
-    "togglebutton_active",
-    "image_icon_name",
-])
+_LayerFlagUIInfo = namedtuple(
+    "_LayerFlagUIInfo",
+    [
+        # View objects
+        "togglebutton",
+        "image",
+        # Model details
+        "property",
+        # Mapping: 2-tuples, indexed by int(property)
+        "togglebutton_active",
+        "image_icon_name",
+    ],
+)
 
 
-class LayerPropertiesUI (gui.mvp.BuiltUIPresenter, object):
+class LayerPropertiesUI(gui.mvp.BuiltUIPresenter, object):
     """Presents a widget for editing the current layer's properties.
 
     Implemented as a Pythonic MVP Presenter that observes the main
@@ -152,12 +155,10 @@ class LayerPropertiesUI (gui.mvp.BuiltUIPresenter, object):
         if "opacity" in changed:
             self._m2v_opacity()
         if "locked" in changed:
-            info = [i for i in self._BOOL_PROPERTIES
-                    if (i.property == "locked")][0]
+            info = [i for i in self._BOOL_PROPERTIES if (i.property == "locked")][0]
             self._m2v_layer_flag(info)
         if "visible" in changed:
-            info = [i for i in self._BOOL_PROPERTIES
-                    if (i.property == "visible")][0]
+            info = [i for i in self._BOOL_PROPERTIES if (i.property == "visible")][0]
             self._m2v_layer_flag(info)
         if "name" in changed:
             self._m2v_name()
@@ -223,7 +224,7 @@ class LayerPropertiesUI (gui.mvp.BuiltUIPresenter, object):
             mode = row[0]
             if mode == layer.mode:
                 active_iter = row.iter
-            row[2] = (mode in layer.PERMITTED_MODES)
+            row[2] = mode in layer.PERMITTED_MODES
 
         combo.set_active_iter(active_iter)
 
@@ -272,8 +273,8 @@ class LayerPropertiesUI (gui.mvp.BuiltUIPresenter, object):
             return False
         template = self._LAYER_MODE_TOOLTIP_MARKUP_TEMPLATE
         markup = template.format(
-            name = lib.xml.escape(label),
-            description = lib.xml.escape(desc),
+            name=lib.xml.escape(label),
+            description=lib.xml.escape(desc),
         )
         tooltip.set_markup(markup)
         return True
@@ -315,14 +316,12 @@ class LayerPropertiesUI (gui.mvp.BuiltUIPresenter, object):
 
     @gui.mvp.model_updater
     def _v_layer_hidden_togglebutton_toggled_cb(self, btn):
-        info = [i for i in self._BOOL_PROPERTIES
-                if (i.property == "visible")][0]
+        info = [i for i in self._BOOL_PROPERTIES if (i.property == "visible")][0]
         self._v2m_layer_flag(info)
 
     @gui.mvp.model_updater
     def _v_layer_locked_togglebutton_toggled_cb(self, btn):
-        info = [i for i in self._BOOL_PROPERTIES
-                if (i.property == "locked")][0]
+        info = [i for i in self._BOOL_PROPERTIES if (i.property == "locked")][0]
         self._v2m_layer_flag(info)
 
     def _v2m_layer_flag(self, info):
@@ -350,15 +349,15 @@ class LayerPropertiesUI (gui.mvp.BuiltUIPresenter, object):
             if not warning_showing:
                 entry.set_icon_from_icon_name(pos, "dialog-warning")
                 text = entry.get_text()
-                if text.strip() == u"":
+                if text.strip() == "":
                     msg = C_(
                         "layer properties dialog: name entry: icon tooltip",
-                        u"Layer names cannot be empty.",
+                        "Layer names cannot be empty.",
                     )
                 else:
                     msg = C_(
                         "layer properties dialog: name entry: icon tooltip",
-                        u"Layer name is not unique.",
+                        "Layer name is not unique.",
                     )
                 entry.set_icon_tooltip_text(pos, msg)
         elif warning_showing:
@@ -366,28 +365,29 @@ class LayerPropertiesUI (gui.mvp.BuiltUIPresenter, object):
             entry.set_icon_tooltip_text(pos, None)
 
 
-class LayerPropertiesDialog (Gtk.Dialog):
+class LayerPropertiesDialog(Gtk.Dialog):
     """Interim dialog for editing the current layer's properties."""
+
     # Expect this to be replaced with a popover hanging off the layers
     # dockable when the main UI workspace allows for that (floating
     # windows as GtkOverlay overlay children needed 1st)
 
     TITLE_TEXT = C_(
         "layer properties dialog: title",
-        u"Layer Properties",
+        "Layer Properties",
     )
     DONE_BUTTON_TEXT = C_(
         "layer properties dialog: done button",
-        u"Done",
+        "Done",
     )
 
     def __init__(self, parent, docmodel):
-        flags = (
-            Gtk.DialogFlags.MODAL |
-            Gtk.DialogFlags.DESTROY_WITH_PARENT
-        )
+        flags = Gtk.DialogFlags.MODAL | Gtk.DialogFlags.DESTROY_WITH_PARENT
         Gtk.Dialog.__init__(
-            self, self.TITLE_TEXT, parent, flags,
+            self,
+            self.TITLE_TEXT,
+            parent,
+            flags,
             (self.DONE_BUTTON_TEXT, Gtk.ResponseType.OK),
         )
         self.set_position(Gtk.WindowPosition.CENTER_ON_PARENT)
@@ -398,6 +398,7 @@ class LayerPropertiesDialog (Gtk.Dialog):
 
 # Helpers:
 
+
 def make_preview(thumb, preview_size):
     """Convert a layer's thumbnail into a nice preview image."""
 
@@ -407,8 +408,11 @@ def make_preview(thumb, preview_size):
         check_size *= 2
 
     blank = GdkPixbuf.Pixbuf.new(
-        GdkPixbuf.Colorspace.RGB, True, 8,
-        preview_size, preview_size,
+        GdkPixbuf.Colorspace.RGB,
+        True,
+        8,
+        preview_size,
+        preview_size,
     )
     blank.fill(0x00000000)
 
@@ -422,8 +426,8 @@ def make_preview(thumb, preview_size):
         interp_type=GdkPixbuf.InterpType.NEAREST,
         overall_alpha=255,
         check_size=check_size,
-        color1=0xff707070,
-        color2=0xff808080,
+        color1=0xFF707070,
+        color2=0xFF808080,
     )
 
     w = thumb.get_width()
@@ -455,7 +459,7 @@ def make_preview(thumb, preview_size):
     cr.paint()
 
     cr.set_source_rgba(1, 1, 1, 0.1)
-    cr.rectangle(0.5, 0.5, preview_size-1, preview_size-1)
+    cr.rectangle(0.5, 0.5, preview_size - 1, preview_size - 1)
     cr.set_line_width(1.0)
     cr.stroke()
 
@@ -463,7 +467,10 @@ def make_preview(thumb, preview_size):
 
     preview = Gdk.pixbuf_get_from_surface(
         surf,
-        0, 0, preview_size, preview_size,
+        0,
+        0,
+        preview_size,
+        preview_size,
     )
 
     return preview

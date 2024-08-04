@@ -15,7 +15,7 @@ from lib.gibindings import Gtk
 from .widgets import borderless_button
 
 
-class ItemSpinBox (Gtk.HBox):
+class ItemSpinBox(Gtk.HBox):
     """Control for selecting one of a small number of text items.
 
     Somewhat like a `Gtk.SpinButton`, but with a textual ``(value,
@@ -33,12 +33,12 @@ class ItemSpinBox (Gtk.HBox):
     def __init__(self, model=None, changed_cb=None, value=None):
         super(ItemSpinBox, self).__init__()
         self._left_button = borderless_button(tooltip=_("Previous item"))
-        self._left_button.add(
-            Gtk.Arrow.new(Gtk.ArrowType.LEFT, self.ARROW_SHADOW_TYPE))
+        self._left_button.add(Gtk.Arrow.new(Gtk.ArrowType.LEFT, self.ARROW_SHADOW_TYPE))
         self._left_button.connect("clicked", self._spin_button_clicked, -1)
         self._right_button = borderless_button(tooltip=_("Next item"))
         self._right_button.add(
-            Gtk.Arrow.new(Gtk.ArrowType.RIGHT, self.ARROW_SHADOW_TYPE))
+            Gtk.Arrow.new(Gtk.ArrowType.RIGHT, self.ARROW_SHADOW_TYPE)
+        )
         self._right_button.connect("clicked", self._spin_button_clicked, 1)
         self._label = Gtk.Label()
         self.pack_start(self._left_button, False, False, 0)
@@ -159,7 +159,7 @@ class ItemSpinBox (Gtk.HBox):
         self._spin(-1)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     win = Gtk.Window()
     win.set_title("spinbox test")
     win.connect("destroy", Gtk.main_quit)

@@ -22,7 +22,8 @@ from lib.gibindings import GLib
 
 ## Color picking mode, with a preview rectangle overlay
 
-class ColorPickMode (gui.mode.OneshotDragMode):
+
+class ColorPickMode(gui.mode.OneshotDragMode):
     """Mode for picking colors from the screen, with a preview
 
     This can be invoked in quite a number of ways:
@@ -44,12 +45,13 @@ class ColorPickMode (gui.mode.OneshotDragMode):
     slow or faulty.
 
     """
+
     # Class configuration
-    ACTION_NAME = 'ColorPickMode'
+    ACTION_NAME = "ColorPickMode"
 
     # Keyboard activation behaviour (instance defaults)
     # See keyboard.py and doc.mode_flip_action_activated_cb()
-    keyup_timeout = 0   # don't change behaviour by timeout
+    keyup_timeout = 0  # don't change behaviour by timeout
 
     pointer_behavior = gui.mode.Behavior.EDIT_OBJECTS
     scroll_behavior = gui.mode.Behavior.NONE
@@ -62,10 +64,10 @@ class ColorPickMode (gui.mode.OneshotDragMode):
 
     @classmethod
     def get_name(cls):
-        return _(u"Pick Color")
+        return _("Pick Color")
 
     def get_usage(self):
-        return _(u"Set the color used for painting")
+        return _("Set the color used for painting")
 
     def __init__(self, ignore_modifiers=False, **kwds):
         super(ColorPickMode, self).__init__(**kwds)
@@ -115,8 +117,7 @@ class ColorPickMode (gui.mode.OneshotDragMode):
     def drag_update_cb(self, tdw, event, ev_x, ev_y, dx, dy):
         self._pick_color(tdw, ev_x, ev_y)
         self._update_overlay(tdw, ev_x, ev_y, self._color)
-        return super(ColorPickMode, self).drag_update_cb(
-            tdw, event, ev_x, ev_y, dx, dy)
+        return super(ColorPickMode, self).drag_update_cb(tdw, event, ev_x, ev_y, dx, dy)
 
     def _update_overlay(self, tdw, x, y, col):
         if self._overlay is None:
@@ -174,11 +175,12 @@ _Y_MIN = 0.0001
 _Y_MAX = 0.9999
 
 
-class ColorPickModeHCYBase (ColorPickMode):
+class ColorPickModeHCYBase(ColorPickMode):
 
     def get_new_color(self, pick_color, brush_color):
         new_col_hcy = self.get_new_hcy_color(
-            HCYColor(color=pick_color), HCYColor(color=brush_color))
+            HCYColor(color=pick_color), HCYColor(color=brush_color)
+        )
         new_col_hcy.c = max(_C_MIN, new_col_hcy.c)
         new_col_hcy.y = min(_Y_MAX, max(_Y_MIN, new_col_hcy.y))
         return new_col_hcy
@@ -187,10 +189,10 @@ class ColorPickModeHCYBase (ColorPickMode):
         raise NotImplementedError
 
 
-class ColorPickModeH (ColorPickModeHCYBase):
+class ColorPickModeH(ColorPickModeHCYBase):
 
     # Class configuration
-    ACTION_NAME = 'ColorPickModeH'
+    ACTION_NAME = "ColorPickModeH"
 
     @property
     def inactive_cursor(self):
@@ -198,10 +200,10 @@ class ColorPickModeH (ColorPickModeHCYBase):
 
     @classmethod
     def get_name(cls):
-        return _(u"Pick Hue")
+        return _("Pick Hue")
 
     def get_usage(self):
-        return _(u"Set the color Hue used for painting")
+        return _("Set the color Hue used for painting")
 
     def get_new_hcy_color(self, pick_hcy, brush_hcy):
         if pick_hcy.c >= _C_MIN and pick_hcy.y >= _Y_MIN:
@@ -209,9 +211,9 @@ class ColorPickModeH (ColorPickModeHCYBase):
         return brush_hcy
 
 
-class ColorPickModeC (ColorPickModeHCYBase):
+class ColorPickModeC(ColorPickModeHCYBase):
     # Class configuration
-    ACTION_NAME = 'ColorPickModeC'
+    ACTION_NAME = "ColorPickModeC"
 
     @property
     def inactive_cursor(self):
@@ -219,19 +221,19 @@ class ColorPickModeC (ColorPickModeHCYBase):
 
     @classmethod
     def get_name(cls):
-        return _(u"Pick Chroma")
+        return _("Pick Chroma")
 
     def get_usage(self):
-        return _(u"Set the color Chroma used for painting")
+        return _("Set the color Chroma used for painting")
 
     def get_new_hcy_color(self, pick_hcy, brush_hcy):
         brush_hcy.c = pick_hcy.c
         return brush_hcy
 
 
-class ColorPickModeY (ColorPickModeHCYBase):
+class ColorPickModeY(ColorPickModeHCYBase):
     # Class configuration
-    ACTION_NAME = 'ColorPickModeY'
+    ACTION_NAME = "ColorPickModeY"
 
     @property
     def inactive_cursor(self):
@@ -239,17 +241,17 @@ class ColorPickModeY (ColorPickModeHCYBase):
 
     @classmethod
     def get_name(cls):
-        return _(u"Pick Luma")
+        return _("Pick Luma")
 
     def get_usage(self):
-        return _(u"Set the color Luma used for painting")
+        return _("Set the color Luma used for painting")
 
     def get_new_hcy_color(self, pick_hcy, brush_hcy):
         brush_hcy.y = pick_hcy.y
         return brush_hcy
 
 
-class ColorPickPreviewOverlay (Overlay):
+class ColorPickPreviewOverlay(Overlay):
     """Preview overlay during color picker mode.
 
     This is only shown when dragging the pointer with a button or the
@@ -271,8 +273,8 @@ class ColorPickPreviewOverlay (Overlay):
         Overlay.__init__(self)
         self._doc = doc
         self._tdw = tdw
-        self._x = int(x)+0.5
-        self._y = int(y)+0.5
+        self._x = int(x) + 0.5
+        self._y = int(y) + 0.5
         self._color = color
         alloc = tdw.get_allocation()
         self._tdw_w = alloc.width
@@ -282,15 +284,14 @@ class ColorPickPreviewOverlay (Overlay):
         self._queue_tdw_redraw()
 
     def cleanup(self):
-        """Cleans up temporary observer stuff, allowing garbage collection.
-        """
+        """Cleans up temporary observer stuff, allowing garbage collection."""
         self._tdw.display_overlays.remove(self)
         self._queue_tdw_redraw()
 
     def update(self, x, y, color):
         """Update the overlay's position and color"""
-        self._x = int(x)+0.5
-        self._y = int(y)+0.5
+        self._x = int(x) + 0.5
+        self._y = int(y) + 0.5
         self._color = color
         self._queue_tdw_redraw()
 

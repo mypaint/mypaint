@@ -19,16 +19,18 @@ UNIQUE_NAME_TEMPLATE = C_(
     # TRANSLATORS: Leave this untranslated if you are unsure.
     # TRANSLATORS: Change only if your lang *REQUIRES* a different order or
     # TRANSLATORS: if raw digits and a space aren't enough.
-    u'{name} {number}',
+    "{name} {number}",
 )
 
-UNIQUE_NAME_REGEX = re.compile(C_(
-    "unique names: regex matching a string with a serial number",
-    # TRANSLATORS: UNIQUE_NAME_REGEX - regex for UNIQUE_NAME_TEMPLATE
-    # TRANSLATORS: Must match its template (msgid: '{name} {number}')
-    # TRANSLATORS: Leave this untranslated (or copy it) if you are unsure.
-    u'^(?P<name>.*?)\\s+(?P<number>\\d+)$',
-))
+UNIQUE_NAME_REGEX = re.compile(
+    C_(
+        "unique names: regex matching a string with a serial number",
+        # TRANSLATORS: UNIQUE_NAME_REGEX - regex for UNIQUE_NAME_TEMPLATE
+        # TRANSLATORS: Must match its template (msgid: '{name} {number}')
+        # TRANSLATORS: Leave this untranslated (or copy it) if you are unsure.
+        "^(?P<name>.*?)\\s+(?P<number>\\d+)$",
+    )
+)
 
 
 def make_unique_name(name, existing, start=1, always_number=None):
@@ -71,7 +73,7 @@ def make_unique_name(name, existing, start=1, always_number=None):
     else:
         base = name
         num = max(0, int(start))
-    force_numbering = (name == always_number)
+    force_numbering = name == always_number
     while (name in existing) or force_numbering:
         name = UNIQUE_NAME_TEMPLATE.format(name=base, number=num)
         num += 1

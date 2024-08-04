@@ -50,7 +50,8 @@ logger = logging.getLogger(__name__)
 
 ## Class defs
 
-class PalettePage (CombinedAdjusterPage):
+
+class PalettePage(CombinedAdjusterPage):
     """User-editable palette, as a `CombinedAdjuster` element."""
 
     def __init__(self):
@@ -100,7 +101,7 @@ class PalettePage (CombinedAdjusterPage):
         self._edit_dialog.run()
 
 
-class PaletteEditorDialog (Gtk.Dialog):
+class PaletteEditorDialog(Gtk.Dialog):
     """Dialog for editing, loading and saving the current palette."""
 
     _UNTITLED_PALETTE_NAME = C_(
@@ -132,8 +133,9 @@ class PaletteEditorDialog (Gtk.Dialog):
 
         #: The working ColorManager, holding a working copy of the palette
         #: to be edited.
-        self._mgr = ColorManager(prefs={},
-                                 datapath=target_color_manager.get_data_path())
+        self._mgr = ColorManager(
+            prefs={}, datapath=target_color_manager.get_data_path()
+        )
         self._mgr.set_color(RGBColor(1, 1, 1))
         view.set_color_manager(self._mgr)
 
@@ -155,26 +157,36 @@ class PaletteEditorDialog (Gtk.Dialog):
         remove_btn.connect("clicked", self._remove_btn_clicked)
         add_btn.connect("clicked", self._add_btn_clicked)
         clear_btn.connect("clicked", self._clear_btn_clicked)
-        load_btn.set_tooltip_text(C_(
-            "palette editor dialog: action buttons: tooltips",
-            "Load from a GIMP palette file",
-        ))
-        save_btn.set_tooltip_text(C_(
-            "palette editor dialog: action buttons: tooltips",
-            "Save to a GIMP palette file",
-        ))
-        add_btn.set_tooltip_text(C_(
-            "palette editor dialog: action buttons: tooltips",
-            "Add a new empty swatch",
-        ))
-        remove_btn.set_tooltip_text(C_(
-            "palette editor dialog: action buttons: tooltips",
-            "Remove the current swatch",
-        ))
-        clear_btn.set_tooltip_text(C_(
-            "palette editor dialog: action buttons: tooltips",
-            "Remove all swatches",
-        ))
+        load_btn.set_tooltip_text(
+            C_(
+                "palette editor dialog: action buttons: tooltips",
+                "Load from a GIMP palette file",
+            )
+        )
+        save_btn.set_tooltip_text(
+            C_(
+                "palette editor dialog: action buttons: tooltips",
+                "Save to a GIMP palette file",
+            )
+        )
+        add_btn.set_tooltip_text(
+            C_(
+                "palette editor dialog: action buttons: tooltips",
+                "Add a new empty swatch",
+            )
+        )
+        remove_btn.set_tooltip_text(
+            C_(
+                "palette editor dialog: action buttons: tooltips",
+                "Remove the current swatch",
+            )
+        )
+        clear_btn.set_tooltip_text(
+            C_(
+                "palette editor dialog: action buttons: tooltips",
+                "Remove all swatches",
+            )
+        )
 
         # Button initial state and subsequent updates
         remove_btn.set_sensitive(False)
@@ -185,34 +197,44 @@ class PaletteEditorDialog (Gtk.Dialog):
 
         # Palette name and number of entries
         palette_details_hbox = Gtk.HBox()
-        palette_name_label = Gtk.Label(label=C_(
-            "palette editor dialog: palette name/title entry: label",
-            "Title:",
-        ))
-        palette_name_label.set_tooltip_text(C_(
-            "palette editor dialog: palette name/title entry: tooltip",
-            "Name or description for this palette",
-        ))
+        palette_name_label = Gtk.Label(
+            label=C_(
+                "palette editor dialog: palette name/title entry: label",
+                "Title:",
+            )
+        )
+        palette_name_label.set_tooltip_text(
+            C_(
+                "palette editor dialog: palette name/title entry: tooltip",
+                "Name or description for this palette",
+            )
+        )
         palette_name_entry = Gtk.Entry()
         palette_name_entry.connect("changed", self._palette_name_changed_cb)
         self._palette_name_entry = palette_name_entry
         self._columns_adj = Gtk.Adjustment(
-            value=0, lower=0, upper=99,
-            step_increment=1, page_increment=1, page_size=0
+            value=0,
+            lower=0,
+            upper=99,
+            step_increment=1,
+            page_increment=1,
+            page_size=0,
         )
         self._columns_adj.connect("value-changed", self._columns_changed_cb)
-        columns_label = Gtk.Label(label=C_(
-            "palette editor dialog: number-of-columns spinbutton: title",
-            "Columns:"
-        ))
-        columns_label.set_tooltip_text(C_(
-            "palette editor dialog: number-of-columns spinbutton: tooltip",
-            "Number of columns",
-        ))
+        columns_label = Gtk.Label(
+            label=C_(
+                "palette editor dialog: number-of-columns spinbutton: title",
+                "Columns:",
+            )
+        )
+        columns_label.set_tooltip_text(
+            C_(
+                "palette editor dialog: number-of-columns spinbutton: tooltip",
+                "Number of columns",
+            )
+        )
         columns_spinbutton = Gtk.SpinButton(
-            adjustment=self._columns_adj,
-            climb_rate=1.5,
-            digits=0
+            adjustment=self._columns_adj, climb_rate=1.5, digits=0
         )
         palette_details_hbox.set_spacing(0)
         palette_details_hbox.set_border_width(0)
@@ -222,14 +244,18 @@ class PaletteEditorDialog (Gtk.Dialog):
         palette_details_hbox.pack_start(columns_spinbutton, False, False, 0)
 
         color_name_hbox = Gtk.HBox()
-        color_name_label = Gtk.Label(label=C_(
-            "palette editor dialog: color name entry: label",
-            "Color name:",
-        ))
-        color_name_label.set_tooltip_text(C_(
-            "palette editor dialog: color name entry: tooltip",
-            "Current color's name",
-        ))
+        color_name_label = Gtk.Label(
+            label=C_(
+                "palette editor dialog: color name entry: label",
+                "Color name:",
+            )
+        )
+        color_name_label.set_tooltip_text(
+            C_(
+                "palette editor dialog: color name entry: tooltip",
+                "Current color's name",
+            )
+        )
         color_name_entry = Gtk.Entry()
         color_name_entry.connect("changed", self._color_name_changed_cb)
         color_name_entry.set_sensitive(False)
@@ -317,10 +343,12 @@ class PaletteEditorDialog (Gtk.Dialog):
                 col_name_entry.set_text(name)
             else:
                 col_name_entry.set_sensitive(False)
-                col_name_entry.set_text(C_(
-                    "palette editor dialog: color name entry",
-                    "Empty palette slot",
-                ))
+                col_name_entry.set_text(
+                    C_(
+                        "palette editor dialog: color name entry",
+                        "Empty palette slot",
+                    )
+                )
         else:
             col_name_entry.set_sensitive(False)
             col_name_entry.set_text("")
@@ -405,7 +433,7 @@ class PaletteEditorDialog (Gtk.Dialog):
         return pal.name
 
 
-class PaletteView (ColorAdjuster, Gtk.ScrolledWindow):
+class PaletteView(ColorAdjuster, Gtk.ScrolledWindow):
     """Scrollable view of a palette.
 
     Palette entries can be clicked to select the color, and all instances of
@@ -461,7 +489,7 @@ class PaletteView (ColorAdjuster, Gtk.ScrolledWindow):
         return minh, max(minh, nath)
 
 
-class _PalettePreview (Gtk.DrawingArea):
+class _PalettePreview(Gtk.DrawingArea):
     """Preview-only palette view."""
 
     _palette = None
@@ -503,10 +531,17 @@ class _PalettePreview (Gtk.DrawingArea):
         if (ncolumns * s) < w:
             dx = int(w - (ncolumns * s)) // 2
         bg_color = _widget_get_bg_color(self)
-        _palette_render(self._palette, cr, rows=nrows, columns=ncolumns,
-                        swatch_size=s, bg_color=bg_color,
-                        offset_x=dx, offset_y=dy,
-                        rtl=False)
+        _palette_render(
+            self._palette,
+            cr,
+            rows=nrows,
+            columns=ncolumns,
+            swatch_size=s,
+            bg_color=bg_color,
+            offset_x=dx,
+            offset_y=dy,
+            rtl=False,
+        )
 
     def set_palette(self, palette):
         self._palette = palette
@@ -531,9 +566,8 @@ def _widget_get_bg_color(widget):
     return RGBColor(0.5, 0.5, 0.5)
 
 
-class _PaletteGridLayout (ColorAdjusterWidget):
-    """The palette layout embedded in a scrolling PaletteView.
-    """
+class _PaletteGridLayout(ColorAdjusterWidget):
+    """The palette layout embedded in a scrolling PaletteView."""
 
     ## Class settings
     IS_DRAG_SOURCE = True
@@ -542,7 +576,7 @@ class _PaletteGridLayout (ColorAdjusterWidget):
         "palette view",
         "Color swatch palette.\nDrop colors here,\ndrag them to organize.",
     )
-    ALLOW_HCY_TWEAKING = False   # Interacts badly with menus
+    ALLOW_HCY_TWEAKING = False  # Interacts badly with menus
 
     ## Layout constants
     _SWATCH_SIZE_MIN = 8
@@ -582,8 +616,7 @@ class _PaletteGridLayout (ColorAdjusterWidget):
         self._swatch_size = self._SWATCH_SIZE_NOMINAL
 
     def _size_alloc_cb(self, widget, alloc):
-        """Caches layout details after size negotiation.
-        """
+        """Caches layout details after size negotiation."""
         width = alloc.width
         height = alloc.height
         ncolors, nrows, ncolumns = self._get_palette_dimensions()
@@ -601,8 +634,7 @@ class _PaletteGridLayout (ColorAdjusterWidget):
                 if int(ncolors % ncolumns) > 0:
                     nrows += 1
                 if nrows * size > height or ncolumns * size > width:
-                    size = max(1, min(int(height // nrows),
-                                      int(width // ncolumns)))
+                    size = max(1, min(int(height // nrows), int(width // ncolumns)))
                     size = self._constrain_swatch_size(size)
                     ncolumns = max(1, min(ncolors, width // size))
                     nrows = max(1, int(ncolors // ncolumns))
@@ -643,8 +675,10 @@ class _PaletteGridLayout (ColorAdjusterWidget):
                 ncells = self._rows * self._columns
                 ncolors = len(palette)
                 if ncolors > ncells or ncolors <= ncells - self._columns:
-                    logger.debug("layout changed: cannot fit palette into "
-                                 "currently calculated space")
+                    logger.debug(
+                        "layout changed: cannot fit palette into "
+                        "currently calculated space"
+                    )
                     layout_changed = True
         # Queue a resize (and an implicit redraw) if the layout has changed,
         # or just a redraw.
@@ -736,12 +770,12 @@ class _PaletteGridLayout (ColorAdjusterWidget):
         menu = self._get_context_menu(i)
         menu.show_all()
         menu.popup(
-            parent_menu_shell = None,
-            parent_menu_item = None,
-            func = lambda *a: (mx, my, True),
-            data = None,
-            button = event.button,
-            activate_time = event.time,
+            parent_menu_shell=None,
+            parent_menu_item=None,
+            func=lambda *a: (mx, my, True),
+            data=None,
+            button=event.button,
+            activate_time=event.time,
         )
         self._insert_target_index = i
         self.queue_draw()
@@ -864,8 +898,7 @@ class _PaletteGridLayout (ColorAdjusterWidget):
 
     def _insert_empty_column_cb(self, menuitem, target_i):
         palette = self.get_color_manager().palette
-        assert palette.get_columns(), \
-            "Can't insert columns into a free-flowing palette"
+        assert palette.get_columns(), "Can't insert columns into a free-flowing palette"
         row_di = target_i % self._columns
         columns_new = palette.get_columns() + 1
         r = 0
@@ -927,8 +960,7 @@ class _PaletteGridLayout (ColorAdjusterWidget):
         return (ncolors, nrows, ncolumns)
 
     def do_get_request_mode(self):
-        """GtkWidget size negotiation implementation
-        """
+        """GtkWidget size negotiation implementation"""
         ncolors, nrows, ncolumns = self._get_palette_dimensions()
         mode = Gtk.SizeRequestMode.HEIGHT_FOR_WIDTH
         if nrows and ncolumns:
@@ -937,8 +969,7 @@ class _PaletteGridLayout (ColorAdjusterWidget):
         return mode
 
     def do_get_preferred_width(self):
-        """GtkWidget size negotiation implementation.
-        """
+        """GtkWidget size negotiation implementation."""
         ncolors, nrows, ncolumns = self._get_palette_dimensions()
         if ncolumns and ncolumns:
             # Horizontal fit, assume rows <= columns
@@ -952,8 +983,7 @@ class _PaletteGridLayout (ColorAdjusterWidget):
         return min_w, max(min_w, nat_w)
 
     def do_get_preferred_height_for_width(self, width):
-        """GtkWidget size negotiation implementation.
-        """
+        """GtkWidget size negotiation implementation."""
         ncolors, nrows, ncolumns = self._get_palette_dimensions()
         if nrows and ncolumns:
             # Horizontal fit
@@ -963,13 +993,12 @@ class _PaletteGridLayout (ColorAdjusterWidget):
         else:
             # Free-flowing, across and then down
             # Since s = sqrt((w*h)/n),
-            min_h = int(((self._SWATCH_SIZE_MIN ** 2) * ncolors) // width)
-            nat_h = int(((self._SWATCH_SIZE_NOMINAL ** 2) * ncolors) // width)
+            min_h = int(((self._SWATCH_SIZE_MIN**2) * ncolors) // width)
+            nat_h = int(((self._SWATCH_SIZE_NOMINAL**2) * ncolors) // width)
         return min_h, max(min_h, nat_h)
 
     def do_get_preferred_height(self):
-        """GtkWidget size negotiation implementation.
-        """
+        """GtkWidget size negotiation implementation."""
         ncolors, nrows, ncolumns = self._get_palette_dimensions()
         if nrows and ncolumns:
             # Vertical fit, assume rows > columns
@@ -982,8 +1011,7 @@ class _PaletteGridLayout (ColorAdjusterWidget):
         return min_h, max(min_h, nat_h)
 
     def do_get_preferred_width_for_height(self, height):
-        """GtkWidget size negotiation implementation.
-        """
+        """GtkWidget size negotiation implementation."""
         ncolors, nrows, ncolumns = self._get_palette_dimensions()
         if nrows and ncolumns:
             # Vertical fit
@@ -1011,17 +1039,31 @@ class _PaletteGridLayout (ColorAdjusterWidget):
             return
         bg_col = _widget_get_bg_color(self)
         dx, dy = self.get_painting_offset()
-        _palette_render(mgr.palette, cr,
-                        rows=self._rows, columns=self._columns,
-                        swatch_size=self._swatch_size,
-                        bg_color=bg_col,
-                        offset_x=dx, offset_y=dy,
-                        rtl=False)
+        _palette_render(
+            mgr.palette,
+            cr,
+            rows=self._rows,
+            columns=self._columns,
+            swatch_size=self._swatch_size,
+            bg_color=bg_col,
+            offset_x=dx,
+            offset_y=dy,
+            rtl=False,
+        )
 
-    def _paint_marker(self, cr, x, y, insert=False,
-                      bg_rgb=(0, 0, 0), fg_rgb=(1, 1, 1),
-                      bg_dash=[1, 2], fg_dash=[1, 2],
-                      bg_width=2, fg_width=1):
+    def _paint_marker(
+        self,
+        cr,
+        x,
+        y,
+        insert=False,
+        bg_rgb=(0, 0, 0),
+        fg_rgb=(1, 1, 1),
+        bg_dash=[1, 2],
+        fg_dash=[1, 2],
+        bg_width=2,
+        fg_width=1,
+    ):
         cr.save()
         cr.set_line_join(cairo.LINE_JOIN_ROUND)
         cr.set_line_cap(cairo.LINE_CAP_ROUND)
@@ -1066,8 +1108,7 @@ class _PaletteGridLayout (ColorAdjusterWidget):
             if i is not None:
                 x, y = self.get_position_for_index(i)
                 marker_args = [cr, x, y]
-                marker_kw = dict(bg_width=3, fg_width=1,
-                                 bg_dash=[2, 3], fg_dash=[2, 3])
+                marker_kw = dict(bg_width=3, fg_width=1, bg_dash=[2, 3], fg_dash=[2, 3])
                 if not mgr.palette.match_is_approx:
                     marker_kw.update(dict(bg_width=4, fg_width=1))
                 self._paint_marker(*marker_args, **marker_kw)
@@ -1200,8 +1241,7 @@ class _PaletteGridLayout (ColorAdjusterWidget):
         # Cursor and status update
         Gdk.drag_status(context, action, t)
 
-    def drag_data_received_cb(self, widget, context, x, y,
-                              selection, info, t):
+    def drag_data_received_cb(self, widget, context, x, y, selection, info, t):
         if "application/x-color" not in map(str, context.list_targets()):
             return False
         data = selection.get_data()
@@ -1247,8 +1287,7 @@ class _PaletteGridLayout (ColorAdjusterWidget):
 ## Loading and saving of palettes via a dialog
 
 
-def palette_load_via_dialog(title, parent=None, preview=None,
-                            shortcuts=None):
+def palette_load_via_dialog(title, parent=None, preview=None, shortcuts=None):
     """Runs a file chooser dialog, returning a palette or `None`.
 
     The dialog is both modal and blocking. A new `Palette` object is returned
@@ -1269,26 +1308,32 @@ def palette_load_via_dialog(title, parent=None, preview=None,
     dialog.add_button(Gtk.STOCK_OPEN, Gtk.ResponseType.ACCEPT)
     if preview is not None:
         dialog.set_preview_widget(preview)
-        dialog.connect("update-preview",
-                       _palette_loadsave_dialog_update_preview_cb,
-                       preview)
+        dialog.connect(
+            "update-preview",
+            _palette_loadsave_dialog_update_preview_cb,
+            preview,
+        )
     if shortcuts is not None:
         for shortcut in shortcuts:
             dialog.add_shortcut_folder(shortcut)
     dialog.set_do_overwrite_confirmation(True)
     filter = Gtk.FileFilter()
     filter.add_pattern("*.gpl")
-    filter.set_name(C_(
-        "palette load dialog: filters",
-        "GIMP palette file (*.gpl)",
-    ))
+    filter.set_name(
+        C_(
+            "palette load dialog: filters",
+            "GIMP palette file (*.gpl)",
+        )
+    )
     dialog.add_filter(filter)
     filter = Gtk.FileFilter()
     filter.add_pattern("*")
-    filter.set_name(C_(
-        "palette load dialog: filters",
-        "All files (*)",
-    ))
+    filter.set_name(
+        C_(
+            "palette load dialog: filters",
+            "All files (*)",
+        )
+    )
     dialog.add_filter(filter)
     response_id = dialog.run()
     palette = None
@@ -1321,35 +1366,41 @@ def palette_save_via_dialog(palette, title, parent=None, preview=None):
     dialog.add_button(Gtk.STOCK_SAVE, Gtk.ResponseType.ACCEPT)
     if preview is not None:
         dialog.set_preview_widget(preview)
-        dialog.connect("update-preview",
-                       _palette_loadsave_dialog_update_preview_cb,
-                       preview)
+        dialog.connect(
+            "update-preview",
+            _palette_loadsave_dialog_update_preview_cb,
+            preview,
+        )
     dialog.set_do_overwrite_confirmation(True)
     filter = Gtk.FileFilter()
     filter.add_pattern("*.gpl")
-    filter.set_name(C_(
-        "palette save dialog: filters",
-        "GIMP palette file (*.gpl)",
-    ))
+    filter.set_name(
+        C_(
+            "palette save dialog: filters",
+            "GIMP palette file (*.gpl)",
+        )
+    )
     dialog.add_filter(filter)
     filter = Gtk.FileFilter()
     filter.add_pattern("*")
-    filter.set_name(C_(
-        "palette save dialog: filters",
-        "All files (*)",
-    ))
+    filter.set_name(
+        C_(
+            "palette save dialog: filters",
+            "All files (*)",
+        )
+    )
     dialog.add_filter(filter)
     response_id = dialog.run()
     result = False
     if response_id == Gtk.ResponseType.ACCEPT:
         filename = dialog.get_filename()
-        filename = re.sub(r'[.]?(?:[Gg][Pp][Ll])?$', "", filename)
+        filename = re.sub(r"[.]?(?:[Gg][Pp][Ll])?$", "", filename)
         filename += ".gpl"
         logger.info("Saving palette to %r", filename)
         # FIXME: this can overwrite files without prompting the user, if
         # the name hacking above changed the filename.  Should do the name
         # tweak within the dialog somehow and get that to confirm.
-        with open(filename, 'w', encoding="utf-8", errors="replace") as fp:
+        with open(filename, "w", encoding="utf-8", errors="replace") as fp:
             palette.save(fp)
             fp.flush()
         result = True
@@ -1378,9 +1429,17 @@ def _palette_loadsave_dialog_update_preview_cb(dialog, preview):
 ## Palette rendering using Cairo
 
 
-def _palette_render(palette, cr, rows, columns, swatch_size,
-                    bg_color, offset_x=0, offset_y=0,
-                    rtl=False):
+def _palette_render(
+    palette,
+    cr,
+    rows,
+    columns,
+    swatch_size,
+    bg_color,
+    offset_x=0,
+    offset_y=0,
+    rtl=False,
+):
     """Renders a Palette according to a precalculated grid.
 
     :param cr: a Cairo context
@@ -1494,9 +1553,10 @@ def _palette_render(palette, cr, rows, columns, swatch_size,
 
 ## Module testing
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     logging.basicConfig(level=logging.DEBUG)
     import sys
+
     win = Gtk.Window()
     win.set_title("palette view")
     win.connect("destroy", lambda *a: Gtk.main_quit())

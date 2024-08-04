@@ -14,7 +14,7 @@ from lib.helpers import rgb_to_hsv, hsv_to_rgb
 import gui.blendmodehandler
 
 
-class BrushModifier (object):
+class BrushModifier(object):
     """Applies changed brush settings to the active brush, with overrides.
 
     A single instance of this lives within the main `application.Application`
@@ -100,16 +100,16 @@ class BrushModifier (object):
         b.begin_atomic()
         color = b.get_color_hsv()
 
-        mix_old = b.get_base_value('restore_color')
+        mix_old = b.get_base_value("restore_color")
         b.load_from_brushinfo(brushinfo)
         self.unmodified_brushinfo = b.clone()
 
         # Preserve color
-        mix = b.get_base_value('restore_color')
+        mix = b.get_base_value("restore_color")
         if mix:
             c1 = hsv_to_rgb(*color)
             c2 = hsv_to_rgb(*b.get_color_hsv())
-            c3 = [(1.0-mix)*v1 + mix*v2 for v1, v2 in zip(c1, c2)]
+            c3 = [(1.0 - mix) * v1 + mix * v2 for v1, v2 in zip(c1, c2)]
             color = rgb_to_hsv(*c3)
         elif mix_old and self._last_selected_color:
             # switching from a brush with fixed color back to a normal one
@@ -146,15 +146,14 @@ class BrushModifier (object):
         return self.unmodified_brushinfo.is_eraser()
 
     def brush_modified_cb(self, changed_settings):
-        """Responds to changes of the brush settings.
-        """
+        """Responds to changes of the brush settings."""
         if self._brush_is_dedicated_eraser():
             return
 
-        if changed_settings.intersection(('color_h', 'color_s', 'color_v')):
+        if changed_settings.intersection(("color_h", "color_s", "color_v")):
             # Cancel eraser mode on ordinary brushes
             em = self.bm.eraser_mode
-            if em.active and 'eraser_mode' not in changed_settings:
+            if em.active and "eraser_mode" not in changed_settings:
                 em.active = False
 
             if not self._in_brush_selected_cb:

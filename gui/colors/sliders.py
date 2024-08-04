@@ -24,8 +24,9 @@ from .combined import CombinedAdjusterPage
 from lib.gettext import C_
 
 
-class ComponentSlidersAdjusterPage (CombinedAdjusterPage, IconRenderable):
-    """Component sliders for precise adjustment: page for `CombinedAdjuster`.
+class ComponentSlidersAdjusterPage(CombinedAdjusterPage, IconRenderable):
+    """
+    Component sliders for precise adjustment: page for `CombinedAdjuster`.
     """
 
     def __init__(self):
@@ -35,7 +36,7 @@ class ComponentSlidersAdjusterPage (CombinedAdjusterPage, IconRenderable):
         grid.set_row_spacing(6)
         grid.set_column_spacing(0)
         grid.set_border_width(6)
-        self._sliders = []   #: List of slider widgets.
+        self._sliders = []  #: List of slider widgets.
         grid.set_valign(0.5)
         grid.set_halign(0.5)
         grid.set_hexpand(True)
@@ -45,23 +46,28 @@ class ComponentSlidersAdjusterPage (CombinedAdjusterPage, IconRenderable):
                 C_("color sliders panel: red/green/blue: slider label", "R"),
                 RGBRedSlider,
                 0,
-            ), (
+            ),
+            (
                 C_("color sliders panel: red/green/blue: slider label", "G"),
                 RGBGreenSlider,
                 0,
-            ), (
+            ),
+            (
                 C_("color sliders panel: red/green/blue: slider label", "B"),
                 RGBBlueSlider,
                 0,
-            ), (
+            ),
+            (
                 C_("color sliders panel: hue/chroma/luma: slider label", "H"),
                 HCYHueSlider,
                 12,
-            ), (
+            ),
+            (
                 C_("color sliders panel: hue/chroma/luma: slider label", "C"),
                 HCYChromaSlider,
                 0,
-            ), (
+            ),
+            (
                 C_("color sliders panel: hue/chroma/luma: slider label", "Y"),
                 HCYLumaSlider,
                 0,
@@ -92,22 +98,21 @@ class ComponentSlidersAdjusterPage (CombinedAdjusterPage, IconRenderable):
             grid.attach(adj, 1, row, 1, 1)
             row += 1
         align = Gtk.Alignment(
-            xalign=0.5, yalign=0.5,
-            xscale=1.0, yscale=0.0,
+            xalign=0.5,
+            yalign=0.5,
+            xscale=1.0,
+            yscale=0.0,
         )
         align.add(grid)
         self._page_widget = align  #: Page's layout widget
 
     @classmethod
     def get_page_icon_name(self):
-        return 'mypaint-tool-component-sliders'
+        return "mypaint-tool-component-sliders"
 
     @classmethod
     def get_page_title(self):
-        return C_(
-            "color sliders panel: tab title (in tooltip)",
-            "Component Sliders"
-        )
+        return C_("color sliders panel: tab title (in tooltip)", "Component Sliders")
 
     @classmethod
     def get_page_description(self):
@@ -125,12 +130,12 @@ class ComponentSlidersAdjusterPage (CombinedAdjusterPage, IconRenderable):
             slider.set_color_manager(manager)
 
     def render_as_icon(self, cr, size):
-        """Renders as an icon into a Cairo context.
-        """
+        """Renders as an icon into a Cairo context."""
         # Strategy: construct tmp R,G,B sliders with a color that shows off
         # their primary a bit. Render carefully (might need special handling
         # for the 16px size).
         from adjbases import ColorManager
+
         mgr = ColorManager(prefs={}, datapath=".")
         mgr.set_color(RGBColor(0.3, 0.3, 0.4))
         adjs = [RGBRedSlider(), RGBGreenSlider(), RGBBlueSlider()]
@@ -146,7 +151,7 @@ class ComponentSlidersAdjusterPage (CombinedAdjusterPage, IconRenderable):
         else:
             cr.save()
             bar_ht = int(size // 3)
-            offset = int((size - bar_ht*3) // 2)
+            offset = int((size - bar_ht * 3) // 2)
             cr.translate(0, offset)
             for adj in adjs:
                 adj.BORDER_WIDTH = max(2, int(size // 16))
@@ -157,7 +162,7 @@ class ComponentSlidersAdjusterPage (CombinedAdjusterPage, IconRenderable):
             adj.set_color_manager(None)
 
 
-class RGBRedSlider (SliderColorAdjuster):
+class RGBRedSlider(SliderColorAdjuster):
     STATIC_TOOLTIP_TEXT = C_("color component slider: tooltip", "RGB Red")
 
     def get_background_validity(self):
@@ -174,7 +179,7 @@ class RGBRedSlider (SliderColorAdjuster):
         return col.r
 
 
-class RGBGreenSlider (SliderColorAdjuster):
+class RGBGreenSlider(SliderColorAdjuster):
     STATIC_TOOLTIP_TEXT = C_("color component slider: tooltip", "RGB Green")
 
     def get_background_validity(self):
@@ -191,7 +196,7 @@ class RGBGreenSlider (SliderColorAdjuster):
         return col.g
 
 
-class RGBBlueSlider (SliderColorAdjuster):
+class RGBBlueSlider(SliderColorAdjuster):
     STATIC_TOOLTIP_TEXT = C_("color component slider: tooltip", "RGB Blue")
 
     def get_background_validity(self):
@@ -208,7 +213,7 @@ class RGBBlueSlider (SliderColorAdjuster):
         return col.b
 
 
-class HSVHueSlider (SliderColorAdjuster):
+class HSVHueSlider(SliderColorAdjuster):
     STATIC_TOOLTIP_TEXT = C_("color component slider: tooltip", "HSV Hue")
     samples = 4
 
@@ -221,10 +226,10 @@ class HSVHueSlider (SliderColorAdjuster):
         return col.h
 
 
-class HSVSaturationSlider (SliderColorAdjuster):
+class HSVSaturationSlider(SliderColorAdjuster):
     STATIC_TOOLTIP_TEXT = C_(
         "color component slider: tooltip",
-        u"HSV Saturation",
+        "HSV Saturation",
     )
 
     def get_color_for_bar_amount(self, amt):
@@ -236,7 +241,7 @@ class HSVSaturationSlider (SliderColorAdjuster):
         return col.s
 
 
-class HSVValueSlider (SliderColorAdjuster):
+class HSVValueSlider(SliderColorAdjuster):
     STATIC_TOOLTIP_TEXT = C_("color component slider: tooltip", "HSV Value")
 
     def get_color_for_bar_amount(self, amt):
@@ -248,7 +253,7 @@ class HSVValueSlider (SliderColorAdjuster):
         return col.v
 
 
-class HCYHueSlider (SliderColorAdjuster):
+class HCYHueSlider(SliderColorAdjuster):
     STATIC_TOOLTIP_TEXT = C_("color component slider: tooltip", "HCY Hue")
     samples = 4
 
@@ -262,7 +267,7 @@ class HCYHueSlider (SliderColorAdjuster):
         return col.h
 
 
-class HCYChromaSlider (SliderColorAdjuster):
+class HCYChromaSlider(SliderColorAdjuster):
     STATIC_TOOLTIP_TEXT = C_("color component slider: tooltip", "HCY Chroma")
 
     def get_color_for_bar_amount(self, amt):
@@ -275,10 +280,10 @@ class HCYChromaSlider (SliderColorAdjuster):
         return col.c
 
 
-class HCYLumaSlider (SliderColorAdjuster):
+class HCYLumaSlider(SliderColorAdjuster):
     STATIC_TOOLTIP_TEXT = C_(
         "color component slider: tooltip",
-        u"HCY Luma (Y')",
+        "HCY Luma (Y')",
     )
 
     @property
@@ -302,10 +307,11 @@ class HCYLumaSlider (SliderColorAdjuster):
         return int(col.h * 1000), int(col.c * 1000)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     import os
     import sys
     from adjbases import ColorManager
+
     mgr = ColorManager(prefs={}, datapath=".")
     cs_adj = ComponentSlidersAdjusterPage()
     cs_adj.set_color_manager(mgr)

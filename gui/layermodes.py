@@ -22,7 +22,8 @@ from lib.modes import MODE_STRINGS
 
 ## Class definitions
 
-class LayerModeMenuItem (Gtk.ImageMenuItem):
+
+class LayerModeMenuItem(Gtk.ImageMenuItem):
     """Brush list menu item with a dynamic BrushGroupsMenu as its submenu
 
     This is instantiated by the app's UIManager using a FactoryAction which
@@ -38,7 +39,7 @@ class LayerModeMenuItem (Gtk.ImageMenuItem):
         self._menu_items = []
         prev_item = None
         spec_separator = (None,)
-        modes_menu_spec = (STACK_MODES + spec_separator + STANDARD_MODES)
+        modes_menu_spec = STACK_MODES + spec_separator + STANDARD_MODES
         for mode in modes_menu_spec:
             if mode is None:
                 menu.append(Gtk.SeparatorMenuItem())
@@ -58,6 +59,7 @@ class LayerModeMenuItem (Gtk.ImageMenuItem):
         self.set_submenu(self._submenu)
         self._submenu.show_all()
         from gui.application import get_app
+
         app = get_app()
         self._model = app.doc.model
         rootstack = self._model.layer_stack
@@ -80,7 +82,7 @@ class LayerModeMenuItem (Gtk.ImageMenuItem):
         rootstack = self._model.layer_stack
         current = rootstack.current
         for mode, item in self._menu_items:
-            active = (mode == current.mode)
+            active = mode == current.mode
             if bool(item.get_active()) != active:
                 item.set_active(active)
             item.set_sensitive(mode in current.PERMITTED_MODES)

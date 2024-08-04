@@ -43,6 +43,7 @@ LIBMYPAINT = "libmypaint-2.0"
 
 # Helper classes and routines:
 
+
 def print_err(msg):
     print(msg, file=sys.stderr)
 
@@ -56,21 +57,20 @@ def pkgconf():
 
 def pkgconfig_variable(package, variable_name):
     try:
-        cmd = [pkgconf(), '--variable=%s' % variable_name, package]
+        cmd = [pkgconf(), "--variable=%s" % variable_name, package]
         return subprocess.check_output(cmd).decode().strip()
     except subprocess.CalledProcessError as e:
         print_err(e)
-        print_err('pkg-config could not find package %s' % package)
+        print_err("pkg-config could not find package %s" % package)
         sys.exit(1)
 
 
 def msgfmt():
-    """Returns the name used to execute msgfmt
-    """
+    """Returns the name used to execute msgfmt"""
     return os.getenv("MSGFMT", "msgfmt")
 
 
-class BuildTranslations (Command):
+class BuildTranslations(Command):
     """Builds binary message catalogs for installation.
 
     This is declared as a subcommand of "build", but it can be invoked
@@ -81,7 +81,7 @@ class BuildTranslations (Command):
 
     @staticmethod
     def all_locales():
-        return [f[:-3] for f in os.listdir("./po/") if f.endswith('.po')]
+        return [f[:-3] for f in os.listdir("./po/") if f.endswith(".po")]
 
     @staticmethod
     def get_translation_paths(command, lang_codes=None):
@@ -127,7 +127,7 @@ class BuildTranslations (Command):
                 # It is removed here so further tests aren't skipped
                 shutil.rmtree(os.path.dirname(mo_path))
                 if not isinstance(e.output, str):
-                    e.output = e.output.decode('utf-8')
+                    e.output = e.output.decode("utf-8")
                 po_failures.append((po_path, e.output))
         if po_failures:
             paths, errors = map(list, zip(*po_failures))
@@ -148,18 +148,19 @@ class BuildTranslations (Command):
                 os.remove(link_dest)
             os.symlink(link_src, link_dest)
         except Exception:
-            msg = ("Could not make symlink: {symlink}\n"
-                   "In order to get working translations when running "
-                   "from the source directory, a corresponding link or "
-                   "copy needs to be created.")
+            msg = (
+                "Could not make symlink: {symlink}\n"
+                "In order to get working translations when running "
+                "from the source directory, a corresponding link or "
+                "copy needs to be created."
+            )
             symlink = str(link_dest) + " --> " + str(link_src)
             print_err(msg.format(symlink=symlink))
 
     def _compile_message_catalog(self, po_file_path, mo_file_path):
         needs_update = not (
-            os.path.exists(mo_file_path) and
-            os.stat(mo_file_path).st_mtime >=
-            os.stat(po_file_path).st_mtime
+            os.path.exists(mo_file_path)
+            and os.stat(mo_file_path).st_mtime >= os.stat(po_file_path).st_mtime
         )
 
         if needs_update:
@@ -174,7 +175,7 @@ class BuildTranslations (Command):
                 assert os.path.exists(mo_file_path)
 
 
-class BuildConfig (Command):
+class BuildConfig(Command):
     """Builds configuration file config.py.
 
     This allows python files to know where to find data when it is
@@ -190,21 +191,33 @@ class BuildConfig (Command):
 
     description = "generate lib/config.py using fetched or provided values"
     user_options = [
-        ("brushdir-path=", None,
-         "use the provided argument as brush directory path"),
-        ("libmypaint-locale-path-from-pkgconf", None,
-         "set the location of libmypaint's message catalogs using pkg-config"
-         "\n The path is set to {prefix}/share/locale, where \"prefix\" is"
-         " fetched from libmypaint's pkg-config data."),
-        ("libmypaint-locale-path=", None,
-         "set the location of the libmypaint message catalogs\n"
-         " If ``--libmypaint-locale-path-from-pkgconf`` is set, using this"
-         " flag will raise an error. If neither flag is used, or the value"
-         " passed is the empty string, the directory used for mypaint's own"
-         " locale data is used for libmypaint's as well."),
-        ("translation-threshold=", None,
-         "Limit translations to those with a completion percentage"
-         "at or above the given threshold. Argument range: [0..100]"),
+        (
+            "brushdir-path=",
+            None,
+            "use the provided argument as brush directory path",
+        ),
+        (
+            "libmypaint-locale-path-from-pkgconf",
+            None,
+            "set the location of libmypaint's message catalogs using pkg-config"
+            '\n The path is set to {prefix}/share/locale, where "prefix" is'
+            " fetched from libmypaint's pkg-config data.",
+        ),
+        (
+            "libmypaint-locale-path=",
+            None,
+            "set the location of the libmypaint message catalogs\n"
+            " If ``--libmypaint-locale-path-from-pkgconf`` is set, using this"
+            " flag will raise an error. If neither flag is used, or the value"
+            " passed is the empty string, the directory used for mypaint's own"
+            " locale data is used for libmypaint's as well.",
+        ),
+        (
+            "translation-threshold=",
+            None,
+            "Limit translations to those with a completion percentage"
+            "at or above the given threshold. Argument range: [0..100]",
+        ),
     ]
 
     LOCALE_CACHE = "locale_cache"
@@ -224,10 +237,10 @@ class BuildConfig (Command):
         self.translation_threshold = 0
 
     def finalize_options(self):
-        if self.brushdir_path and self.brushdir_path.strip()[0] == '/':
+        if self.brushdir_path and self.brushdir_path.strip()[0] == "/":
             print("WARNING: supplied brush directory path is not relative")
         self.translation_threshold = int(self.translation_threshold)
-        assert(0 <= self.translation_threshold <= 100)
+        assert 0 <= self.translation_threshold <= 100
 
     def run(self):
         # Determine path to the brushes directory
@@ -240,12 +253,12 @@ class BuildConfig (Command):
         locstring = " " + pprint.pformat(sorted(locales), indent=4)[1:-1] + ","
 
         conf_vars = {
-            'mypaint_brushdir': brushdir,
-            'libmypaint_version': LIBMYPAINT,
-            'libmypaint_locale_dir': self.get_libmypaint_locale_dir(),
-            'supported_locales': locstring,
+            "mypaint_brushdir": brushdir,
+            "libmypaint_version": LIBMYPAINT,
+            "libmypaint_locale_dir": self.get_libmypaint_locale_dir(),
+            "supported_locales": locstring,
         }
-        self.instantiate_template('config.py.in', 'lib/config.py', conf_vars)
+        self.instantiate_template("config.py.in", "lib/config.py", conf_vars)
 
     def get_libmypaint_locale_dir(self):
         path = self.libmypaint_locale_path
@@ -260,7 +273,7 @@ class BuildConfig (Command):
             return "None"
         elif use_pkgconf:
             path = pkgconfig_variable(LIBMYPAINT, "prefix")
-            path = os.path.join(path, 'share', 'locale')
+            path = os.path.join(path, "share", "locale")
         return "'%s'" % path
 
     @staticmethod
@@ -281,19 +294,21 @@ class BuildConfig (Command):
                     return len(po)
                 else:
                     return len(po.translated_entries())
+
             return py_completion
         except ImportError:
             print("polib not installed, falling back to shellscript!")
 
             def msgattrib_completion(path, template=False):
-                cmd = ['msgattrib']
+                cmd = ["msgattrib"]
                 if not template:
-                    cmd.extend(['--translated', '--no-fuzzy', '--no-obsolete'])
+                    cmd.extend(["--translated", "--no-fuzzy", "--no-obsolete"])
                 cmd.append(path)
                 result = subprocess.check_output(cmd)
                 if not isinstance(result, str):
-                    result = result.decode('utf-8')
-                return result.count('\nmsgstr')
+                    result = result.decode("utf-8")
+                return result.count("\nmsgstr")
+
             return msgattrib_completion
 
     def _get_locales(self):
@@ -361,20 +376,21 @@ class BuildConfig (Command):
             # Turn list of lines into a dict of (completion, timestamp)
             # tuples, keyed by the locale code.
             info_line_lists = [l.split("\t") for l in info_lines]
-            info_dict = {loc: (int(completion), float(timestamp))
-                         for loc, completion, timestamp in info_line_lists}
+            info_dict = {
+                loc: (int(completion), float(timestamp))
+                for loc, completion, timestamp in info_line_lists
+            }
         yield info_dict
         # Turn the (modified) dict back into space-separated values
         # and overwrite the cache file (cache file timestamp is irrelevant)
-        out = ["%s\t%d\t%f" % (loc, v[0], v[1])
-               for loc, v in info_dict.items()]
+        out = ["%s\t%d\t%f" % (loc, v[0], v[1]) for loc, v in info_dict.items()]
         self.mkpath(build_dir)
         with open(cache_file, "w") as f:
             f.write("\n".join(out))
 
     @staticmethod
     def pkgconf_brushdir_path():
-        return pkgconfig_variable('mypaint-brushes-2.0', 'brushesdir')
+        return pkgconfig_variable("mypaint-brushes-2.0", "brushesdir")
 
     def instantiate_template(self, template_path, output_path, substitutions):
         """Instantiate a template and write result to a file
@@ -404,7 +420,7 @@ class BuildConfig (Command):
             sys.exit(1)
 
 
-class Build (build):
+class Build(build):
     """Custom build (build_ext 1st for swig, run build_translations)
 
     distutils.command.build.build doesn't generate the extension.py for
@@ -416,15 +432,16 @@ class Build (build):
     This build also ensures that build_translations is run.
 
     """
+
     sub_commands = (
-        [("build_config", None)] +
-        [(a, b) for (a, b) in build.sub_commands if a == 'build_ext'] +
-        [(a, b) for (a, b) in build.sub_commands if a != 'build_ext'] +
-        [("build_translations", None)]
+        [("build_config", None)]
+        + [(a, b) for (a, b) in build.sub_commands if a == "build_ext"]
+        + [(a, b) for (a, b) in build.sub_commands if a != "build_ext"]
+        + [("build_translations", None)]
     )
 
 
-class BuildExt (build_ext):
+class BuildExt(build_ext):
     """Custom build_ext.
     Adds additional behaviour to --debug option and
     adds an option to amend the rpath with library paths
@@ -432,11 +449,17 @@ class BuildExt (build_ext):
     """
 
     user_options = [
-        ("set-rpath", "f",
-         "[MyPaint] Add dependency library paths from pkg-config "
-         "to the rpath of mypaintlib (linux/bsd only)"),
-        ("disable-openmp", None,
-         "Don't use openmp, even if the platform supports it."),
+        (
+            "set-rpath",
+            "f",
+            "[MyPaint] Add dependency library paths from pkg-config "
+            "to the rpath of mypaintlib (linux/bsd only)",
+        ),
+        (
+            "disable-openmp",
+            None,
+            "Don't use openmp, even if the platform supports it.",
+        ),
     ] + build_ext.user_options
 
     def initialize_options(self):
@@ -446,8 +469,9 @@ class BuildExt (build_ext):
 
     def finalize_options(self):
         build_ext.finalize_options(self)
-        if self.set_rpath and (sys.platform.startswith("linux")
-                               or "bsd" in sys.platform):
+        if self.set_rpath and (
+            sys.platform.startswith("linux") or "bsd" in sys.platform
+        ):
             # The directories in runtime_library_dirs will be added
             # to the linker args as '-Wl,-R{dirs}' This _should_ be
             # compatible with the --rpath= build_ext option
@@ -467,14 +491,18 @@ class BuildExt (build_ext):
         if self.debug:
             skip = ["-DNDEBUG"]
             ccflags[:] = [f for f in ccflags if f not in skip]
-            ccflags.extend([
-                "-O0",
-                "-g",
-                "-DHEAVY_DEBUG",
-            ])
-            linkflags.extend([
-                "-O0",
-            ])
+            ccflags.extend(
+                [
+                    "-O0",
+                    "-g",
+                    "-DHEAVY_DEBUG",
+                ]
+            )
+            linkflags.extend(
+                [
+                    "-O0",
+                ]
+            )
         else:
             linkflags.append("-O3")
             ccflags.append("-O3")
@@ -482,7 +510,7 @@ class BuildExt (build_ext):
         return build_ext.build_extension(self, ext)
 
 
-class Install (install):
+class Install(install):
     """Custom install to handle translation files
     Same options as the regular install command.
     """
@@ -496,17 +524,18 @@ class Install (install):
         # Store installation paths, to be used by `install_scripts`
         rel_to = functools.partial(rel_to_path, self.install_scripts)
         path_dict = {
-            'platlib': rel_to(self.install_platlib),
-            'purelib': rel_to(self.install_purelib),
-            'scripts': rel_to(self.install_scripts),
-            'headers': rel_to(self.install_headers),
-            'data': rel_to(self.install_data),
+            "platlib": rel_to(self.install_platlib),
+            "purelib": rel_to(self.install_purelib),
+            "scripts": rel_to(self.install_scripts),
+            "headers": rel_to(self.install_headers),
+            "data": rel_to(self.install_data),
         }
         self.INSTALLATION_PATHS.update(path_dict)
         # lib.config is a module generated as part of the build process,
         # and may not exist when the setup script is run,
         # hence it should not (and often cannot) be a top-level import.
         import lib.config
+
         # We only install the locales added in the build_config step.
         locales = lib.config.supported_locales
         data_paths = BuildTranslations.get_translation_paths(self, locales)[1]
@@ -525,14 +554,14 @@ def rel_to_path(src_path, dst_path):
     abs_src = abspath(normpath(src_path))
     abs_dst = abspath(normpath(dst_path))
     common_pref = os.path.commonprefix((abs_src, abs_dst))
-    unique_src = abs_src[len(common_pref):]
-    unique_dst = abs_dst[len(common_pref):]
+    unique_src = abs_src[len(common_pref) :]
+    unique_dst = abs_dst[len(common_pref) :]
     steps_back = (1 + unique_src.count(os.sep)) if unique_src else 0
-    steps = ('..',) * steps_back + (unique_dst,)
+    steps = ("..",) * steps_back + (unique_dst,)
     return join(*steps)
 
 
-class Clean (clean):
+class Clean(clean):
     """Custom clean: also remove swig-generated wrappers.
 
     distutils's clean has always left these lying around in the source,
@@ -549,14 +578,17 @@ class Clean (clean):
         return clean.run(self)
 
 
-class Demo (Command):
+class Demo(Command):
     """Builds, then do a test run from a temporary install tree"""
 
     description = "[MyPaint] build, install, and run in a throwaway folder"
     user_options = [
         ("args=", None, "flags and arguments to pass on, as a string"),
-        ("temp-root=", None,
-         "parent dir (retained) for the demo install (deleted)"),
+        (
+            "temp-root=",
+            None,
+            "parent dir (retained) for the demo install (deleted)",
+        ),
     ]
 
     def initialize_options(self):
@@ -611,7 +643,7 @@ class Demo (Command):
             demo_cmd.extend([script_path, "-c", config_dir])
             # Arguments to mypaint (e.g. a file path)
             if self.args:
-                demo_cmd.extend(self.args.split(' '))
+                demo_cmd.extend(self.args.split(" "))
             self.announce("Demo: running %r..." % (demo_cmd,), level=2)
             subprocess.check_call(demo_cmd)
         except Exception:
@@ -621,7 +653,7 @@ class Demo (Command):
             shutil.rmtree(temp_dir, ignore_errors=True)
 
 
-class InstallScripts (install_scripts):
+class InstallScripts(install_scripts):
     """Install scripts with ".py" suffix removal and version headers.
 
     Bakes version information into each installed script.
@@ -637,20 +669,23 @@ class InstallScripts (install_scripts):
                 "must be run as part of `install`, and not independently!"
             )
         if not self.skip_build:
-            self.run_command('build_scripts')
+            self.run_command("build_scripts")
 
         sys.path.insert(0, ".")
         import lib.meta
+
         relinfo_script = lib.meta._get_release_info_script(gitprefix="git")
 
-        header_tmpl = textwrap.dedent("""
+        header_tmpl = textwrap.dedent(
+            """
             #
             # ***DO NOT EDIT THIS FILE***: edit {source} instead.
             #
             # Auto-generated version info follows.
             {relinfo_script}
             {dir_paths}
-        """)
+        """
+        )
         self.mkpath(self.install_dir)
         self.outfiles = []
 
@@ -685,7 +720,7 @@ class InstallScripts (install_scripts):
                 if line.startswith("#!"):
                     print(line, file=out_fp)
                     print(header, file=out_fp)
-                    if os.name == 'posix':
+                    if os.name == "posix":
                         set_mode = True
                 else:
                     print(header, file=out_fp)
@@ -700,7 +735,7 @@ class InstallScripts (install_scripts):
         return [targ]
 
 
-class _ManagedInstBase (Command):
+class _ManagedInstBase(Command):
     """Base for commands that work on managed installs."""
 
     MANAGED_FILES_LIST = "managed_files.txt"
@@ -760,8 +795,9 @@ class _ManagedInstBase (Command):
         ]
         for path in mypaint_data_trees:
             path = os.path.normpath(path)
-            assert os.path.basename(path) == "mypaint", \
-                "path %r does not end in mypaint" % (path,)
+            assert (
+                os.path.basename(path) == "mypaint"
+            ), "path %r does not end in mypaint" % (path,)
             self.rmtree(path)
 
     def rmtree(self, path):
@@ -778,14 +814,13 @@ class _ManagedInstBase (Command):
                 os.unlink(path)
             elif os.path.exists(path):
                 raise RuntimeError(
-                    "ERROR: %r exists, but it is no longer a file"
-                    % (path,)
+                    "ERROR: %r exists, but it is no longer a file" % (path,)
                 )
             else:
                 self.announce("remove: %r is already gone" % (path,), level=1)
 
 
-class ManagedInstall (_ManagedInstBase):
+class ManagedInstall(_ManagedInstBase):
     """Simplified "install" with a list of installed files.
 
     This command and ManagedUninstall are temporary hacks which we have
@@ -823,7 +858,7 @@ class ManagedInstall (_ManagedInstBase):
             assert os.path.isfile(inst.record)
 
 
-class ManagedUninstall (_ManagedInstBase):
+class ManagedUninstall(_ManagedInstBase):
     """Removes the files created by ManagedInstall."""
 
     description = "[MyPaint] remove files that managed_install wrote"
@@ -862,15 +897,15 @@ def pkgconfig(packages, **kwopts):
 
     """
     flag_map = {
-        '-I': 'include_dirs',
-        '-L': 'library_dirs',
-        '-l': 'libraries',
+        "-I": "include_dirs",
+        "-L": "library_dirs",
+        "-l": "libraries",
     }
     extra_args_map = {
         "--libs": "extra_link_args",
         "--cflags": "extra_compile_args",
     }
-    for (pc_arg, extras_key) in extra_args_map.items():
+    for pc_arg, extras_key in extra_args_map.items():
         cmd = [pkgconf(), pc_arg] + list(packages)
         cmd_output = subprocess.check_output(
             cmd,
@@ -893,7 +928,7 @@ def pkgconfig(packages, **kwopts):
 
 
 def check_dependencies(deps):
-    with open(os.devnull, 'w') as devnull:
+    with open(os.devnull, "w") as devnull:
         # Check with a single invocation in case everything is available
         if subprocess.call([pkgconf(), "--libs"] + deps, stdout=devnull):
             # Already printed to stderr, but easier to see in a summary
@@ -910,26 +945,26 @@ def get_ext_modules():
     import numpy
 
     extra_compile_args = [
-        '--std=c++11',
-        '-Wall',
-        '-Wno-sign-compare',
-        '-Wno-write-strings',
-        '-D_POSIX_C_SOURCE=200809L',
+        "--std=c++11",
+        "-Wall",
+        "-Wno-sign-compare",
+        "-Wno-write-strings",
+        "-D_POSIX_C_SOURCE=200809L",
         "-DNO_TESTS",  # FIXME: we're building against shared libmypaint now
-        '-g',  # always include symbols, for profiling
+        "-g",  # always include symbols, for profiling
     ]
     extra_link_args = []
 
     if sys.platform == "darwin":
-        extra_compile_args.append('-D_DARWIN_C_SOURCE')
+        extra_compile_args.append("-D_DARWIN_C_SOURCE")
     elif sys.platform == "win32":
         pass
     elif sys.platform == "msys":
         pass
     elif sys.platform.startswith("linux") or "bsd" in sys.platform:
         # Look up libraries dependencies relative to the library.
-        extra_link_args.append('-Wl,-z,origin')
-        extra_link_args.append('-Wl,-rpath,$ORIGIN')
+        extra_link_args.append("-Wl,-z,origin")
+        extra_link_args.append("-Wl,-rpath,$ORIGIN")
 
     initial_deps = [LIBMYPAINT]
     remaining_deps = [
@@ -955,37 +990,31 @@ def get_ext_modules():
         extra_compile_args=extra_compile_args,
     )
     # Append the info from the rest of the dependencies
-    mypaintlib_opts = pkgconfig(
-        packages=remaining_deps,
-        **mypaintlib_opts
-    )
+    mypaintlib_opts = pkgconfig(packages=remaining_deps, **mypaintlib_opts)
 
-    mypaintlib_swig_opts = ['-Wall', '-noproxydel', '-c++']
-    mypaintlib_swig_opts.extend([
-        "-I" + d
-        for d in mypaintlib_opts["include_dirs"]
-    ])
+    mypaintlib_swig_opts = ["-Wall", "-noproxydel", "-c++"]
+    mypaintlib_swig_opts.extend(["-I" + d for d in mypaintlib_opts["include_dirs"]])
     # FIXME: building against the new shared lib, omit old test code
-    mypaintlib_swig_opts.extend(['-DNO_TESTS'])
+    mypaintlib_swig_opts.extend(["-DNO_TESTS"])
 
     mypaintlib = Extension(
-        'lib._mypaintlib',
+        "lib._mypaintlib",
         [
-            'lib/mypaintlib.i',
-            'lib/gdkpixbuf2numpy.cpp',
-            'lib/pixops.cpp',
-            'lib/fastpng.cpp',
-            'lib/brushsettings.cpp',
-            'lib/fill/fill_common.cpp',
-            'lib/fill/fill_constants.cpp',
-            'lib/fill/floodfill.cpp',
-            'lib/fill/gap_closing_fill.cpp',
-            'lib/fill/gap_detection.cpp',
-            'lib/fill/blur.cpp',
-            'lib/fill/morphology.cpp',
+            "lib/mypaintlib.i",
+            "lib/gdkpixbuf2numpy.cpp",
+            "lib/pixops.cpp",
+            "lib/fastpng.cpp",
+            "lib/brushsettings.cpp",
+            "lib/fill/fill_common.cpp",
+            "lib/fill/fill_constants.cpp",
+            "lib/fill/floodfill.cpp",
+            "lib/fill/gap_closing_fill.cpp",
+            "lib/fill/gap_detection.cpp",
+            "lib/fill/blur.cpp",
+            "lib/fill/morphology.cpp",
         ],
         swig_opts=mypaintlib_swig_opts,
-        language='c++',
+        language="c++",
         **mypaintlib_opts
     )
     return [mypaintlib]
@@ -1012,7 +1041,7 @@ def get_data_files():
         ("palettes", "*.gpl", "mypaint/palettes"),
         ("pixmaps", "*.png", "mypaint/pixmaps"),
     ]
-    for (src_prefix, src_pattern, targ_prefix) in data_file_patterns:
+    for src_prefix, src_pattern, targ_prefix in data_file_patterns:
         for src_file in glob.glob(os.path.join(src_prefix, src_pattern)):
             file_rel = os.path.relpath(src_file, src_prefix)
             targ_dir = os.path.join(targ_prefix, os.path.dirname(file_rel))
@@ -1024,17 +1053,16 @@ def get_data_files():
 # Setup script "main()":
 
 setup(
-    name='MyPaint',
-    version='2.0.0a0',
-    description='Simple painting program for use with graphics tablets.',
-    author='Andrew Chadwick',
-    author_email='a.t.chadwick@gmail.com',
+    name="MyPaint",
+    version="2.0.0a0",
+    description="Simple painting program for use with graphics tablets.",
+    author="Andrew Chadwick",
+    author_email="a.t.chadwick@gmail.com",
     license="GPLv2+",
     url="http://mypaint.org",
-
-    packages=['lib', 'lib.layer', 'gui', 'gui.colors'],
+    packages=["lib", "lib.layer", "gui", "gui.colors"],
     package_data={
-        "gui": ['*.xml', '*.glade'],
+        "gui": ["*.xml", "*.glade"],
     },
     data_files=get_data_files(),
     cmdclass={
@@ -1053,6 +1081,6 @@ setup(
         "mypaint.py",
         "desktop/mypaint-ora-thumbnailer.py",
     ],
-    test_suite='tests',
+    test_suite="tests",
     ext_modules=get_ext_modules(),
 )

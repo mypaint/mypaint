@@ -36,78 +36,54 @@ from lib.xml import escape
 
 COPYRIGHT_STRING = C_(
     "About dialog: copyright statement",
-    u"Copyright (C) 2005-2020\n"
-    u"Martin Renold and the MyPaint Development Team"
+    "Copyright (C) 2005-2020\n" "Martin Renold and the MyPaint Development Team",
 )
 WEBSITE_URI = "http://mypaint.org"
 LICENSE_SUMMARY = C_(
     "About dialog: license summary",
-    u"This program is free software; you can redistribute it and/or modify "
-    u"it under the terms of the GNU General Public License as published by "
-    u"the Free Software Foundation; either version 2 of the License, or "
-    u"(at your option) any later version.\n"
-    u"\n"
-    u"This program is distributed in the hope that it will be useful, "
-    u"but WITHOUT ANY WARRANTY. See the COPYING file for more details."
+    "This program is free software; you can redistribute it and/or modify "
+    "it under the terms of the GNU General Public License as published by "
+    "the Free Software Foundation; either version 2 of the License, or "
+    "(at your option) any later version.\n"
+    "\n"
+    "This program is distributed in the hope that it will be useful, "
+    "but WITHOUT ANY WARRANTY. See the COPYING file for more details.",
 )
 
 ## Credits-related string constants
 
 # Strings for specific tasks, all translated
 
-_TASK_PROGRAMMING = C_(
-    "About dialog: credits: tasks",
-    u"programming"
-)
-_TASK_PORTING = C_(
-    "About dialog: credits: tasks",
-    u"portability"
-)
-_TASK_PROJECT_MANAGEMENT = C_(
-    "About dialog: credits: tasks",
-    u"project management"
-)
-_TASK_BRUSHES = C_(
-    "About dialog: credits: tasks: brush presets and icons",
-    u"brushes"
-)
+_TASK_PROGRAMMING = C_("About dialog: credits: tasks", "programming")
+_TASK_PORTING = C_("About dialog: credits: tasks", "portability")
+_TASK_PROJECT_MANAGEMENT = C_("About dialog: credits: tasks", "project management")
+_TASK_BRUSHES = C_("About dialog: credits: tasks: brush presets and icons", "brushes")
 _TASK_PATTERNS = C_(
-    "About dialog: credits: tasks: background paper textures",
-    u"patterns"
+    "About dialog: credits: tasks: background paper textures", "patterns"
 )
 _TASK_TOOL_ICONS = C_(
-    "About dialog: credits: tasks: icons for internal tools",
-    u"tool icons"
+    "About dialog: credits: tasks: icons for internal tools", "tool icons"
 )
 _TASK_APP_ICON = C_(
-    "About dialog: credits: tasks: the main application icon",
-    u"desktop icon"
+    "About dialog: credits: tasks: the main application icon", "desktop icon"
 )
-_TASK_PALETTES = C_(
-    "About dialog: credits: tasks: palettes",
-    u"palettes"
-)
+_TASK_PALETTES = C_("About dialog: credits: tasks: palettes", "palettes")
 
 _TASK_DOCS = C_(
-    "About dialog: credits: tasks: docs, manuals and HOWTOs",
-    u"documentation"
+    "About dialog: credits: tasks: docs, manuals and HOWTOs", "documentation"
 )
-_TASK_SUPPORT = C_(
-    "About dialog: credits: tasks: user support",
-    u"support"
-)
+_TASK_SUPPORT = C_("About dialog: credits: tasks: user support", "support")
 _TASK_OUTREACH = C_(
-    "About dialog: credits: tasks: outreach (social media, ads?)",
-    u"outreach"
+    "About dialog: credits: tasks: outreach (social media, ads?)", "outreach"
 )
 _TASK_COMMUNITY = C_(
     "About dialog: credits: tasks: running or building a community",
-    u"community"
+    "community",
 )
 
 _TASK_COMMA = C_(
     "About dialog: credits: tasks: joiner punctuation",
-    u", ",
+    ", ",
 )
 
 # List contributors in order of their appearance.
@@ -128,86 +104,110 @@ _TASK_COMMA = C_(
 #  - Split out ’nyms and transliterations too?
 
 _AUTHOR_CREDITS = [
-    u"Martin Renold (%s)" % _TASK_PROGRAMMING,
-    u"Yves Combe (%s)" % _TASK_PORTING,
-    u"Popolon (%s)" % _TASK_PROGRAMMING,
-    u"Clement Skau (%s)" % _TASK_PROGRAMMING,
-    u"Jon Nordby (%s)" % _TASK_PROGRAMMING,
-    u"Álinson Santos (%s)" % _TASK_PROGRAMMING,
-    u"Tumagonx (%s)" % _TASK_PORTING,
-    u"Ilya Portnov (%s)" % _TASK_PROGRAMMING,
-    u"Jonas Wagner (%s)" % _TASK_PROGRAMMING,
-    u"Luka Čehovin (%s)" % _TASK_PROGRAMMING,
-    u"Andrew Chadwick (%s)" % _TASK_COMMA.join([
-        _TASK_PROGRAMMING,
-        _TASK_PROJECT_MANAGEMENT,
-        _TASK_PORTING,
-    ]),
-    u"Till Hartmann (%s)" % _TASK_PROGRAMMING,
-    u'David Grundberg (%s)' % _TASK_PROGRAMMING,
-    u"Krzysztof Pasek (%s)" % _TASK_PROGRAMMING,
-    u"Ben O’Steen (%s)" % _TASK_PROGRAMMING,
-    u"Ferry Jérémie (%s)" % _TASK_PROGRAMMING,
-    u"しげっち ‘sigetch’ (%s)" % _TASK_PROGRAMMING,
-    u"Richard Jones (%s)" % _TASK_PROGRAMMING,
-    u"David Gowers (%s)" % _TASK_PROGRAMMING,
-    u"Micael Dias (%s)" % _TASK_PROGRAMMING,
-    u"Anna Harren (%s)" % _TASK_COMMA.join([
-        _TASK_COMMUNITY,
-        _TASK_PROGRAMMING,
-        _TASK_DOCS,
-    ]),
-    u"Sebastien Leon (%s)" % _TASK_PROGRAMMING,
-    u"Ali Lown (%s)" % _TASK_PROGRAMMING,
-    u"Brien Dieterle (%s)" % _TASK_PROGRAMMING,
-    u"Jenny Wong (%s)" % _TASK_PROGRAMMING,
-    u"Dmitry Utkin ‘loentar’ (%s)" % _TASK_PROGRAMMING,
-    u"ShadowKyogre (%s)" % _TASK_PROGRAMMING,
-    u"Albert Westra (%s)" % _TASK_COMMA.join([
-        _TASK_COMMUNITY,
-        _TASK_PROGRAMMING,
-    ]),
-    u"Cortexer (%s)" % _TASK_PROGRAMMING,
-    u"Elliott Sales de Andrade (%s)" % _TASK_PORTING,
-    u"Alberto Leiva Popper (%s)" % _TASK_PROGRAMMING,
-    u"Alinson Xavier (%s)" % _TASK_PROGRAMMING,
-    u"Jesper Lloyd (%s)" % _TASK_COMMA.join([
-        _TASK_PROGRAMMING,
-        _TASK_PROJECT_MANAGEMENT,
-    ]),
+    "Martin Renold (%s)" % _TASK_PROGRAMMING,
+    "Yves Combe (%s)" % _TASK_PORTING,
+    "Popolon (%s)" % _TASK_PROGRAMMING,
+    "Clement Skau (%s)" % _TASK_PROGRAMMING,
+    "Jon Nordby (%s)" % _TASK_PROGRAMMING,
+    "Álinson Santos (%s)" % _TASK_PROGRAMMING,
+    "Tumagonx (%s)" % _TASK_PORTING,
+    "Ilya Portnov (%s)" % _TASK_PROGRAMMING,
+    "Jonas Wagner (%s)" % _TASK_PROGRAMMING,
+    "Luka Čehovin (%s)" % _TASK_PROGRAMMING,
+    "Andrew Chadwick (%s)"
+    % _TASK_COMMA.join(
+        [
+            _TASK_PROGRAMMING,
+            _TASK_PROJECT_MANAGEMENT,
+            _TASK_PORTING,
+        ]
+    ),
+    "Till Hartmann (%s)" % _TASK_PROGRAMMING,
+    "David Grundberg (%s)" % _TASK_PROGRAMMING,
+    "Krzysztof Pasek (%s)" % _TASK_PROGRAMMING,
+    "Ben O’Steen (%s)" % _TASK_PROGRAMMING,
+    "Ferry Jérémie (%s)" % _TASK_PROGRAMMING,
+    "しげっち ‘sigetch’ (%s)" % _TASK_PROGRAMMING,
+    "Richard Jones (%s)" % _TASK_PROGRAMMING,
+    "David Gowers (%s)" % _TASK_PROGRAMMING,
+    "Micael Dias (%s)" % _TASK_PROGRAMMING,
+    "Anna Harren (%s)"
+    % _TASK_COMMA.join(
+        [
+            _TASK_COMMUNITY,
+            _TASK_PROGRAMMING,
+            _TASK_DOCS,
+        ]
+    ),
+    "Sebastien Leon (%s)" % _TASK_PROGRAMMING,
+    "Ali Lown (%s)" % _TASK_PROGRAMMING,
+    "Brien Dieterle (%s)" % _TASK_PROGRAMMING,
+    "Jenny Wong (%s)" % _TASK_PROGRAMMING,
+    "Dmitry Utkin ‘loentar’ (%s)" % _TASK_PROGRAMMING,
+    "ShadowKyogre (%s)" % _TASK_PROGRAMMING,
+    "Albert Westra (%s)"
+    % _TASK_COMMA.join(
+        [
+            _TASK_COMMUNITY,
+            _TASK_PROGRAMMING,
+        ]
+    ),
+    "Cortexer (%s)" % _TASK_PROGRAMMING,
+    "Elliott Sales de Andrade (%s)" % _TASK_PORTING,
+    "Alberto Leiva Popper (%s)" % _TASK_PROGRAMMING,
+    "Alinson Xavier (%s)" % _TASK_PROGRAMMING,
+    "Jesper Lloyd (%s)"
+    % _TASK_COMMA.join(
+        [
+            _TASK_PROGRAMMING,
+            _TASK_PROJECT_MANAGEMENT,
+        ]
+    ),
 ]
 _ARTIST_CREDITS = [
-    u"Artis Rozentāls (%s)" % _TASK_BRUSHES,
-    u"Popolon (%s)" % _TASK_BRUSHES,
-    u"Marcelo ‘Tanda’ Cerviño (%s)" % _TASK_COMMA.join([
-        _TASK_PATTERNS,
-        _TASK_BRUSHES,
-    ]),
-    u"David Revoy (%s)" % _TASK_COMMA.join([
-        _TASK_BRUSHES,
-        _TASK_TOOL_ICONS,
-        _TASK_OUTREACH,
-    ]),
-    u"Ramón Miranda (%s)" % _TASK_COMMA.join([
-        _TASK_BRUSHES,
-        _TASK_PATTERNS,
-    ]),
-    u"Enrico Guarnieri ‘Ico_dY’ (%s)" % _TASK_BRUSHES,
-    u'Sebastian Kraft (%s)' % _TASK_APP_ICON,
-    u"Nicola Lunghi (%s)" % _TASK_PATTERNS,
-    u"Toni Kasurinen (%s)" % _TASK_BRUSHES,
-    u"Сан Саныч ‘MrMamurk’ (%s)" % _TASK_PATTERNS,
-    u"Andrew Chadwick (%s)" % _TASK_TOOL_ICONS,
-    u"Ben O’Steen (%s)" % _TASK_TOOL_ICONS,
-    u"Guillaume Loussarévian ‘Kaerhon’ (%s)" % _TASK_BRUSHES,
-    u"Jakub Steiner ‘jimmac’ (%s)" % _TASK_COMMA.join([
-        _TASK_APP_ICON,
-        _TASK_PALETTES,
-    ]),
-    u"ShadowKyogre (%s)" % _TASK_TOOL_ICONS,
-    u"Albert Westra (%s)" % _TASK_TOOL_ICONS,
-    u"Brien Dieterle (%s)" % _TASK_BRUSHES,
-    u"Jesper Lloyd (%s)" % _TASK_APP_ICON,
+    "Artis Rozentāls (%s)" % _TASK_BRUSHES,
+    "Popolon (%s)" % _TASK_BRUSHES,
+    "Marcelo ‘Tanda’ Cerviño (%s)"
+    % _TASK_COMMA.join(
+        [
+            _TASK_PATTERNS,
+            _TASK_BRUSHES,
+        ]
+    ),
+    "David Revoy (%s)"
+    % _TASK_COMMA.join(
+        [
+            _TASK_BRUSHES,
+            _TASK_TOOL_ICONS,
+            _TASK_OUTREACH,
+        ]
+    ),
+    "Ramón Miranda (%s)"
+    % _TASK_COMMA.join(
+        [
+            _TASK_BRUSHES,
+            _TASK_PATTERNS,
+        ]
+    ),
+    "Enrico Guarnieri ‘Ico_dY’ (%s)" % _TASK_BRUSHES,
+    "Sebastian Kraft (%s)" % _TASK_APP_ICON,
+    "Nicola Lunghi (%s)" % _TASK_PATTERNS,
+    "Toni Kasurinen (%s)" % _TASK_BRUSHES,
+    "Сан Саныч ‘MrMamurk’ (%s)" % _TASK_PATTERNS,
+    "Andrew Chadwick (%s)" % _TASK_TOOL_ICONS,
+    "Ben O’Steen (%s)" % _TASK_TOOL_ICONS,
+    "Guillaume Loussarévian ‘Kaerhon’ (%s)" % _TASK_BRUSHES,
+    "Jakub Steiner ‘jimmac’ (%s)"
+    % _TASK_COMMA.join(
+        [
+            _TASK_APP_ICON,
+            _TASK_PALETTES,
+        ]
+    ),
+    "ShadowKyogre (%s)" % _TASK_TOOL_ICONS,
+    "Albert Westra (%s)" % _TASK_TOOL_ICONS,
+    "Brien Dieterle (%s)" % _TASK_BRUSHES,
+    "Jesper Lloyd (%s)" % _TASK_APP_ICON,
 ]
 _TRANSLATOR_CREDITS = C_(
     "About dialog: credits: translator credits (your name(s) here!)",
@@ -218,11 +218,12 @@ _TRANSLATOR_CREDITS = C_(
     # TRANSLATORS: address within angle brackets "<email@somewhere.com>", and
     # TRANSLATORS: optionally with a year or year range indicating when the
     # TRANSLATORS: contributions were made, e.g: 2005 or 2010-2012 etc.
-    u"translator-credits",
+    "translator-credits",
 )
 
 
 ## About dialog for the app
+
 
 def get_libs_version_string():
     """Get a string describing the versions of important libs.
@@ -232,23 +233,32 @@ def get_libs_version_string():
 
     """
     versions = [
-        ("Python", "{major}.{minor}.{micro}".format(
-            major = sys.version_info.major,
-            minor = sys.version_info.minor,
-            micro = sys.version_info.micro,
-        )),
-        ("GTK", "{major}.{minor}.{micro}".format(
-            major = Gtk.get_major_version(),
-            minor = Gtk.get_minor_version(),
-            micro = Gtk.get_micro_version(),
-        )),
+        (
+            "Python",
+            "{major}.{minor}.{micro}".format(
+                major=sys.version_info.major,
+                minor=sys.version_info.minor,
+                micro=sys.version_info.micro,
+            ),
+        ),
+        (
+            "GTK",
+            "{major}.{minor}.{micro}".format(
+                major=Gtk.get_major_version(),
+                minor=Gtk.get_minor_version(),
+                micro=Gtk.get_micro_version(),
+            ),
+        ),
         ("GdkPixbuf", GdkPixbuf.PIXBUF_VERSION),
         ("Cairo", cairo.cairo_version_string()),  # NOT cairo.version
-        ("GLib", "{major}.{minor}.{micro}".format(
-            major = GLib.MAJOR_VERSION,
-            minor = GLib.MINOR_VERSION,
-            micro = GLib.MICRO_VERSION,
-        )),
+        (
+            "GLib",
+            "{major}.{minor}.{micro}".format(
+                major=GLib.MAJOR_VERSION,
+                minor=GLib.MINOR_VERSION,
+                micro=GLib.MICRO_VERSION,
+            ),
+        ),
     ]
     return ", ".join([" ".join(t) for t in versions])
 
@@ -261,8 +271,8 @@ def run_about_dialog(mainwin, app):
     p = lib.meta.MYPAINT_PROGRAM_NAME
     v_raw = app.version or lib.meta.MYPAINT_VERSION
     v = "{mypaint_version}\n\n<small>({libs_versions})</small>".format(
-        mypaint_version = escape(v_raw),
-        libs_versions = escape(get_libs_version_string()),
+        mypaint_version=escape(v_raw),
+        libs_versions=escape(get_libs_version_string()),
     )
     if os.name == "nt":
         # The architecture matters more on windows, to the extent that

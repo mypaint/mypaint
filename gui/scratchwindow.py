@@ -25,29 +25,34 @@ logger = logging.getLogger(__name__)
 
 ## Class defs
 
-class ScratchpadTool (SizedVBoxToolWidget):
 
-    __gtype_name__ = 'MyPaintScratchpadTool'
+class ScratchpadTool(SizedVBoxToolWidget):
+
+    __gtype_name__ = "MyPaintScratchpadTool"
 
     SIZED_VBOX_NATURAL_HEIGHT = TOOL_WIDGET_NATURAL_HEIGHT_SHORT
 
     tool_widget_title = _("Scratchpad")
-    tool_widget_icon_name = 'mypaint-scratchpad-symbolic'
-    tool_widget_description = _("Mix colors and make sketches on "
-                                "separate scrap pages")
+    tool_widget_icon_name = "mypaint-scratchpad-symbolic"
+    tool_widget_description = _(
+        "Mix colors and make sketches on " "separate scrap pages"
+    )
 
     def __init__(self):
         super(SizedVBoxToolWidget, self).__init__()
         from gui.application import get_app
+
         app = get_app()
         self.app = app
         toolbar = inline_toolbar(
-            app, [
+            app,
+            [
                 ("ScratchNew", "mypaint-add-symbolic"),
                 ("ScratchLoad", None),
                 ("ScratchSaveAs", "mypaint-document-save-symbolic"),
                 ("ScratchRevert", "mypaint-document-revert-symbolic"),
-            ])
+            ],
+        )
         scratchpad_view = app.scratchpad_doc.tdw
         scratchpad_view.set_size_request(64, 64)
         self.connect("destroy-event", self._save_cb)

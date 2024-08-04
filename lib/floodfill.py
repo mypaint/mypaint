@@ -30,7 +30,7 @@ from lib.pycompat import iteritems
 logger = logging.getLogger(__name__)
 
 TILE_SIZE = N = myplib.TILE_SIZE
-INF_DIST = 2*N*N
+INF_DIST = 2 * N * N
 
 # This should point to the array transparent_tile.rgba
 # defined in tiledsurface.py
@@ -48,13 +48,14 @@ class GapClosingOptions:
     to avoid updates to the call chain in case the parameter set
     is altered.
     """
+
     def __init__(self, max_gap_size, retract_seeps):
         self.max_gap_size = max_gap_size
         self.retract_seeps = retract_seeps
 
 
 def enqueue_overflows(queue, tile_coord, seeds, tiles_bbox, *p):
-    """ Conditionally add (coordinate, seed list, data...) tuples to a queue.
+    """Conditionally add (coordinate, seed list, data...) tuples to a queue.
 
     :param queue: the queue which may be appended
     :type queue: list
@@ -91,7 +92,7 @@ def seeds_by_tile(seeds):
     in a dictionary.
     """
     tile_seeds = dict()
-    for (x, y) in seeds:
+    for x, y in seeds:
         tx, ty, px, py = starting_coordinates(x, y)
         seed_list = tile_seeds.get((tx, ty), [])
         seed_list.append((px, py))
@@ -102,9 +103,7 @@ def seeds_by_tile(seeds):
 def get_target_color(src, tx, ty, px, py):
     """Get the pixel color for the given tile/pixel coordinates"""
     with src.tile_request(tx, ty, readonly=True) as start:
-        targ_r, targ_g, targ_b, targ_a = [
-            int(c) for c in start[py][px]
-        ]
+        targ_r, targ_g, targ_b, targ_a = [int(c) for c in start[py][px]]
     if targ_a == 0:
         targ_r, targ_g, targ_b = 0, 0, 0
 
@@ -112,6 +111,7 @@ def get_target_color(src, tx, ty, px, py):
 
 
 # Main fill interface
+
 
 class FillHandler:
     """Handles fill status and cancellation
@@ -133,7 +133,7 @@ class FillHandler:
         C_("floodfill status message: use active tense", "Morphing"),
         C_("floodfill status message: use active tense", "Blurring"),
         C_("floodfill status message: use active tense", "Compositing"),
-        C_("floodfill status message: use active tense", "Finishing up")
+        C_("floodfill status message: use active tense", "Finishing up"),
     ]
     TILES_STRING = C_("uniform square region of pixels, plural noun", "tiles")
     TILES_TEMPLATE = "{t} " + TILES_STRING
@@ -167,8 +167,9 @@ class FillHandler:
         self.stage_string = self.STAGE_STRINGS[stage]
         if num_tiles_to_process:
             self.tiles_max = num_tiles_to_process
-            self.stage_string += (
-                " " + self.TILES_TEMPLATE.format(t=num_tiles_to_process))
+            self.stage_string += " " + self.TILES_TEMPLATE.format(
+                t=num_tiles_to_process
+            )
 
     @property
     def progress_string(self):
@@ -176,7 +177,7 @@ class FillHandler:
         if self.stage == self.FILL:
             return self.TILES_TEMPLATE.format(t=self.tiles_processed)
         elif self.stage < self.FINISHING:
-            return str(int(100*self.tiles_processed/self.tiles_max)) + "%"
+            return str(int(100 * self.tiles_processed / self.tiles_max)) + "%"
         else:
             return ""
 
@@ -201,10 +202,21 @@ class FloodFillArguments(object):
     """
 
     def __init__(
-            self, target_pos, seeds, color, tolerance, offset, feather,
-            gap_closing_options, mode, lock_alpha, opacity, framed, bbox
+        self,
+        target_pos,
+        seeds,
+        color,
+        tolerance,
+        offset,
+        feather,
+        gap_closing_options,
+        mode,
+        lock_alpha,
+        opacity,
+        framed,
+        bbox,
     ):
-        """ Create a new fill argument set
+        """Create a new fill argument set
         :param target_pos: pixel coordinate of target color
         :type target_pos: tuple
         :param seeds: set of seed pixel coordinates {(x, y)...}
@@ -245,13 +257,11 @@ class FloodFillArguments(object):
 
     def skip_empty_dst(self):
         """If true, compositing to empty tiles does nothing"""
-        return (
-            self.lock_alpha or self.mode in [
-                myplib.CombineSourceAtop,
-                myplib.CombineDestinationOut,
-                myplib.CombineDestinationIn,
-            ]
-        )
+        return self.lock_alpha or self.mode in [
+            myplib.CombineSourceAtop,
+            myplib.CombineDestinationOut,
+            myplib.CombineDestinationIn,
+        ]
 
     def no_op(self):
         """If true, compositing will never alter the output layer
@@ -311,9 +321,7 @@ def _flood_fill(src, args, dst, handler):
     feather = lib.helpers.clamp(args.feather, 0, TILE_SIZE)
 
     # Initial parameters
-    target_color = get_target_color(
-        src, *starting_coordinates(*args.target_pos)
-    )
+    target_color = get_target_color(src, *starting_coordinates(*args.target_pos))
     filler = myplib.Filler(*(target_color + (tolerance,)))
     seed_lists = seeds_by_tile(args.seeds)
 
@@ -337,10 +345,7 @@ def _flood_fill(src, args, dst, handler):
     # bounding box limits if they are set by an active frame
     trim_result = args.framed and (offset > 0 or feather != 0)
     if handler.run:
-        composite(
-            handler, args,
-            trim_result, filled, tiles_bbox, dst
-        )
+        composite(handler, args, trim_result, filled, tiles_bbox, dst)
 
 
 def update_bbox(bbox, tx, ty):
@@ -363,9 +368,7 @@ def update_bbox(bbox, tx, ty):
         return tx, ty, tx, ty
 
 
-def composite(
-        handler, fill_args,
-        trim_result, filled, tiles_bbox, dst):
+def composite(handler, fill_args, trim_result, filled, tiles_bbox, dst):
     """Composite the filled tiles into the destination surface"""
 
     handler.set_stage(handler.COMPOSITE, len(filled))
@@ -374,7 +377,8 @@ def composite(
 
     # Prepare opaque color rgba tile for copying
     full_rgba = myplib.rgba_tile_from_alpha_tile(
-        _FULL_TILE, *(fill_col + (0, 0, N-1, N-1)))
+        _FULL_TILE, *(fill_col + (0, 0, N - 1, N - 1))
+    )
 
     # Bounding box of tiles that need updating
     dst_changed_bbox = None
@@ -429,7 +433,7 @@ def composite(
                 if trim_result:
                     tile_bounds = tiles_bbox.tile_bounds(tile_coord)
                 else:
-                    tile_bounds = (0, 0, N-1, N-1)
+                    tile_bounds = (0, 0, N - 1, N - 1)
                 src_tile_rgba = myplib.rgba_tile_from_alpha_tile(
                     src_tile, *(fill_col + tile_bounds)
                 )
@@ -450,16 +454,15 @@ def composite(
             if not handler.run:
                 break
             if tile_coord not in filled:
-                dst_changed_bbox = update_bbox(
-                    dst_changed_bbox, *tile_coord
-                )
+                dst_changed_bbox = update_bbox(dst_changed_bbox, *tile_coord)
                 with dst.tile_request(*tile_coord, readonly=False):
                     dst_tiles.pop(tile_coord)
 
     if dst_changed_bbox and handler.run:
         min_tx, min_ty, max_tx, max_ty = dst_changed_bbox
         bbox = (
-            min_tx * N, min_ty * N,
+            min_tx * N,
+            min_ty * N,
             (1 + max_tx - min_tx) * N,
             (1 + max_ty - min_ty) * N,
         )
@@ -474,7 +477,7 @@ def composite(
 
 
 def scanline_fill(handler, src, seed_lists, tiles_bbox, filler):
-    """ Perform a scanline fill and return the filled tiles
+    """Perform a scanline fill and return the filled tiles
 
     Perform a scanline fill using the given starting point and tile,
     with reference to the src surface and given bounding box, using the
@@ -494,12 +497,7 @@ def scanline_fill(handler, src, seed_lists, tiles_bbox, filler):
     # Dict of coord->tile data populated during the fill
     filled = {}
 
-    inv_edges = (
-        EDGE.south,
-        EDGE.west,
-        EDGE.north,
-        EDGE.east
-    )
+    inv_edges = (EDGE.south, EDGE.west, EDGE.north, EDGE.east)
 
     # Starting coordinates + direction of origin (from within)
     tileq = []
@@ -520,10 +518,13 @@ def scanline_fill(handler, src, seed_lists, tiles_bbox, filler):
             if overflows is None:
                 if tile_coord not in filled:
                     handler.inc_processed()
-                    filled[tile_coord] = np.zeros((N, N), 'uint16')
+                    filled[tile_coord] = np.zeros((N, N), "uint16")
                 overflows = filler.fill(
-                    src_tile, filled[tile_coord], seeds,
-                    from_dir, *tiles_bbox.tile_bounds(tile_coord)
+                    src_tile,
+                    filled[tile_coord],
+                    seeds,
+                    from_dir,
+                    *tiles_bbox.tile_bounds(tile_coord)
                 )
             else:
                 handler.inc_processed()
@@ -535,11 +536,16 @@ class _TileFillSkipper:
     """Provides checking for, and handling of, uniform tiles"""
 
     FULL_OVERFLOWS = [
-        ((), [(0, N-1)], [(0, N-1)], [(0, N-1)]),         # from north
-        ([(0, N-1)], (), [(0, N-1)], [(0, N-1)]),         # from east
-        ([(0, N-1)], [(0, N-1)], (), [(0, N-1)]),         # from south
-        ([(0, N-1)], [(0, N-1)], [(0, N-1)], ()),         # from west
-        ([(0, N-1)], [(0, N-1)], [(0, N-1)], [(0, N-1)])  # from within
+        ((), [(0, N - 1)], [(0, N - 1)], [(0, N - 1)]),  # from north
+        ([(0, N - 1)], (), [(0, N - 1)], [(0, N - 1)]),  # from east
+        ([(0, N - 1)], [(0, N - 1)], (), [(0, N - 1)]),  # from south
+        ([(0, N - 1)], [(0, N - 1)], [(0, N - 1)], ()),  # from west
+        (
+            [(0, N - 1)],
+            [(0, N - 1)],
+            [(0, N - 1)],
+            [(0, N - 1)],
+        ),  # from within
     ]
 
     def __init__(self, tiles_bbox, filler, final):
@@ -553,7 +559,7 @@ class _TileFillSkipper:
     # NOTE: these are usually not a result of an intentional fill, but
     # clicking a pixel with color very similar to the intended target pixel
     def uniform_tile(self, alpha):
-        """ Return a reference to a uniform alpha tile
+        """Return a reference to a uniform alpha tile
 
         If no uniform tile with the given alpha value exists, one is created
         """
@@ -597,9 +603,8 @@ class _TileFillSkipper:
         return self.FULL_OVERFLOWS[from_dir]
 
 
-def gap_closing_fill(
-        handler, src, seed_lists, tiles_bbox, filler, gap_closing_options):
-    """ Fill loop that finds and uses gap data to avoid unwanted leaks
+def gap_closing_fill(handler, src, seed_lists, tiles_bbox, filler, gap_closing_options):
+    """Fill loop that finds and uses gap data to avoid unwanted leaks
 
     Gaps are defined as distances of fillable pixels enclosed on two sides
     by unfillable pixels. Each tile considered, and their neighbours, are
@@ -646,7 +651,7 @@ def gap_closing_fill(
             # Create new output tile if not already present
             if tile_coord not in filled:
                 handler.inc_processed()
-                filled[tile_coord] = np.zeros((N, N), 'uint16')
+                filled[tile_coord] = np.zeros((N, N), "uint16")
             # Run the gap-closing fill for the tile
             result = gc_filler.fill(
                 alpha_t, dist_t, filled[tile_coord], seeds, *px_bounds
@@ -655,7 +660,7 @@ def gap_closing_fill(
             fill_edges, px_f = result[4:6]
             # The entire tile was filled, despite potential gaps;
             # replace data w. constant and mark tile as final.
-            if px_f == N*N:
+            if px_f == N * N:
                 final.add(tile_coord)
             # When seep inversion is enabled, track total pixels filled
             # and coordinates where the fill stopped due to distance conditions
@@ -668,8 +673,12 @@ def gap_closing_fill(
     # If enabled, pull the fill back into the gaps to stop before them
     if not skip_unseeping and handler.run:
         unseep(
-            unseep_queue, filled, gc_filler,
-            total_px, tiles_bbox, gc_handler.distances
+            unseep_queue,
+            filled,
+            gc_filler,
+            total_px,
+            tiles_bbox,
+            gc_handler.distances,
         )
     return filled
 
@@ -680,6 +689,7 @@ class _GCTileHandler(object):
     Manages input alpha tiles and distance tiles necessary to perform
     gap closing fill operations.
     """
+
     OVERFLOWS = [
         [(), (EDGE.west,), (EDGE.north,), (EDGE.east,)],
         [(EDGE.south,), (), (EDGE.north,), (EDGE.east,)],
@@ -721,9 +731,9 @@ class _GCTileHandler(object):
                 self.distances[tile_coord] = _GAPLESS_TILE
                 # Check if fill can be skipped directly
                 can_skip_fill = (
-                    (all_full or grid[0] is _FULL_TILE) and
-                    not self._bbox.crossing(tile_coord) and
-                    gc_seeds_skippable(seeds)
+                    (all_full or grid[0] is _FULL_TILE)
+                    and not self._bbox.crossing(tile_coord)
+                    and gc_seeds_skippable(seeds)
                 )
                 if can_skip_fill:
                     self.final.add(tile_coord)
@@ -765,9 +775,7 @@ class _GCTileHandler(object):
         grid = []
         for ntc in fc.nine_grid(tile_coord):
             if ntc not in alpha_tiles:
-                with self._src.tile_request(
-                        ntc[0], ntc[1], readonly=True
-                ) as src_tile:
+                with self._src.tile_request(ntc[0], ntc[1], readonly=True) as src_tile:
                     is_empty = src_tile is _EMPTY_RGBA
                     alpha = self._filler.tile_uniformity(is_empty, src_tile)
                     if alpha == _OPAQUE:
@@ -777,7 +785,7 @@ class _GCTileHandler(object):
                     elif alpha:
                         alpha_tiles[ntc] = fc.new_full_tile(alpha)
                     else:
-                        alpha_tile = np.empty((N, N), 'uint16')
+                        alpha_tile = np.empty((N, N), "uint16")
                         self._filler.flood(src_tile, alpha_tile)
                         alpha_tiles[ntc] = alpha_tile
             tile = alpha_tiles[ntc]
@@ -809,9 +817,7 @@ def unseep(seed_queue, filled, gc_filler, total_px, tiles_bbox, distances):
         overflows = result[0:4]
         num_erased_pixels = result[4]
         total_px -= num_erased_pixels
-        enqueue_overflows(
-            seed_queue, tile_coord, overflows, tiles_bbox, (False,) * 4
-        )
+        enqueue_overflows(seed_queue, tile_coord, overflows, tiles_bbox, (False,) * 4)
     if total_px <= 0:
         # For small areas, when starting on a distance-marked pixel,
         # backing off may remove the entire fill, in which case we
@@ -833,7 +839,7 @@ def complement_gc_seeds(seeds, distance_tile):
         # Fetch distance for initial seed coord
         complemented_seeds = []
         any_not_max = False
-        for (px, py) in seeds:
+        for px, py in seeds:
             distance = distance_tile[py][px]
             if distance < INF_DIST:
                 any_not_max = True
@@ -845,7 +851,7 @@ def complement_gc_seeds(seeds, distance_tile):
 
 def gc_seeds_skippable(seeds):
     return (
-        isinstance(seeds, tuple) or  # edge constant - a full edge of seeds
-        len(seeds[0]) == 2 or  # initial seeds
-        any([s[2] == INF_DIST for s in seeds])  # one seed can fill everything
+        isinstance(seeds, tuple)  # edge constant - a full edge of seeds
+        or len(seeds[0]) == 2  # initial seeds
+        or any([s[2] == INF_DIST for s in seeds])  # one seed can fill everything
     )

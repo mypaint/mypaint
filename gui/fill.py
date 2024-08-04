@@ -38,8 +38,8 @@ import lib.modes
 
 # Class defs
 
-class FloodFillMode (
-        gui.mode.ScrollableModeMixin, gui.mode.DragMode):
+
+class FloodFillMode(gui.mode.ScrollableModeMixin, gui.mode.DragMode):
     """Mode for flood-filling with the current brush color"""
 
     # Class constants
@@ -49,10 +49,15 @@ class FloodFillMode (
 
     SPRING_LOADED = False
 
-    permitted_switch_actions = set([
-        'RotateViewMode', 'ZoomViewMode', 'PanViewMode',
-        'ColorPickMode', 'ShowPopupMenu',
-        ])
+    permitted_switch_actions = set(
+        [
+            "RotateViewMode",
+            "ZoomViewMode",
+            "PanViewMode",
+            "ColorPickMode",
+            "ShowPopupMenu",
+        ]
+    )
 
     _OPTIONS_WIDGET = None
     _CURSOR_FILL_NORMAL = gui.cursor.Name.CROSSHAIR_OPEN_PRECISE
@@ -120,20 +125,18 @@ class FloodFillMode (
             "Name of the fill mode\n"
             "In other software, 'Flood Fill' is also known as "
             "'Bucket Fill' or just 'Fill'",
-            u'Flood Fill'
+            "Flood Fill",
         )
 
     def get_usage(self):
-        return C_(
-            "Usage description of the Flood Fill mode",
-            u"Fill areas with color"
-        )
+        return C_("Usage description of the Flood Fill mode", "Fill areas with color")
 
     def __init__(self, ignore_modifiers=False, **kwds):
         super(FloodFillMode, self).__init__(**kwds)
         opts = self.get_options_widget()
         self._current_cursor = (opts.gap_closing, self._CURSOR_FILL_NORMAL)
         from gui.application import get_app
+
         self.app = get_app()
         self.bm = self.get_blend_modes()
         self.bm.mode_changed += self.update_blend_mode
@@ -216,7 +219,7 @@ class FloodFillMode (
         eotf = lib.eotf.eotf()
         rgb = color.get_rgb()
         if eotf != 1.0:
-            rgb = (rgb[0]**eotf, rgb[1]**eotf, rgb[2]**eotf)
+            rgb = (rgb[0] ** eotf, rgb[1] ** eotf, rgb[2] ** eotf)
         view_bbox = None
         if opts.limit_to_view:
             corners = tdw.get_corners_model_coords()
@@ -239,7 +242,7 @@ class FloodFillMode (
             opacity=opts.opacity,
             # Below are set in lib.document
             framed=False,
-            bbox=None
+            bbox=None,
         )
 
         tdw.doc.flood_fill(
@@ -248,7 +251,7 @@ class FloodFillMode (
             sample_merged=opts.sample_merged,
             src_path=opts.src_path,
             make_new_layer=make_new_layer,
-            status_cb=status_callback
+            status_cb=status_callback,
         )
         opts.make_new_layer = False
 
@@ -280,7 +283,7 @@ class FloodFillMode (
             permitted = target_layer.visible and not target_layer.locked
         if permitted and model.frame_enabled:
             fx1, fy1, fw, fh = model.get_frame()
-            fx2, fy2 = fx1+fw, fy1+fh
+            fx2, fy2 = fx1 + fw, fy1 + fh
             permitted = fx1 <= x < fx2 and fy1 <= y < fy2
         self._fill_permitted = permitted
         self._update_cursor(opts)
@@ -326,7 +329,8 @@ def status_callback(handler):
     # Create new dialog for each occurrence, hopefully
     # occurrences are rare enough for it not to matter very much.
     status_dialog = Gtk.MessageDialog(
-        parent=app.drawWindow, buttons=Gtk.ButtonsType.CANCEL)
+        parent=app.drawWindow, buttons=Gtk.ButtonsType.CANCEL
+    )
 
     curr_stage = [None]
 
@@ -337,8 +341,7 @@ def status_callback(handler):
             if curr_stage[0] != handler.stage:
                 curr_stage[0] = handler.stage
                 status_dialog.set_property("text", handler.stage_string)
-            status_dialog.set_property(
-                "secondary-text", handler.progress_string)
+            status_dialog.set_property("secondary-text", handler.progress_string)
             return True
         else:
             # Destroy dialog when fill is done, whether cancelled or not
@@ -357,7 +360,7 @@ def status_callback(handler):
     return result == Gtk.ResponseType.OK
 
 
-class FloodFillOverlay (gui.overlays.Overlay):
+class FloodFillOverlay(gui.overlays.Overlay):
     """
     Overlay indicating pixels that constitute the fill seeds
 
@@ -408,7 +411,7 @@ class FloodFillOverlay (gui.overlays.Overlay):
             x0, y0, x1, y1 = bounds
             w, h = x1 - x0, y1 - y0
             m = 2
-            return x0 - m, y0 - m, w + 2*m, h + 2*m
+            return x0 - m, y0 - m, w + 2 * m, h + 2 * m
 
     def paint(self, cr):
         """
@@ -421,7 +424,7 @@ class FloodFillOverlay (gui.overlays.Overlay):
             cr.set_source_rgba(0.0, 0.0, 0.0, 0.8)
             cr.set_dash([d_len])
             cr.move_to(*self._line_points[0])
-            for (x, y) in self._line_points[1:]:
+            for x, y in self._line_points[1:]:
                 cr.line_to(x, y)
             cr.stroke_preserve()
             cr.set_source_rgba(1.0, 1.0, 1.0, 0.8)
@@ -429,21 +432,21 @@ class FloodFillOverlay (gui.overlays.Overlay):
             cr.stroke()
 
 
-class FloodFillOptionsWidget (Gtk.Grid):
+class FloodFillOptionsWidget(Gtk.Grid):
     """Configuration widget for the flood fill tool"""
 
-    TOLERANCE_PREF = 'flood_fill.tolerance'
-    LIM_TO_VIEW_PREF = 'flood_fill.limit_to_view'
-    SAMPLE_MERGED_PREF = 'flood_fill.sample_merged'
-    OFFSET_PREF = 'flood_fill.offset'
-    FEATHER_PREF = 'flood_fill.feather'
-    OPACITY_PREF = 'flood_fill.opacity'
-    BLEND_MODE_PREF = 'flood_fill.blend_mode'
+    TOLERANCE_PREF = "flood_fill.tolerance"
+    LIM_TO_VIEW_PREF = "flood_fill.limit_to_view"
+    SAMPLE_MERGED_PREF = "flood_fill.sample_merged"
+    OFFSET_PREF = "flood_fill.offset"
+    FEATHER_PREF = "flood_fill.feather"
+    OPACITY_PREF = "flood_fill.opacity"
+    BLEND_MODE_PREF = "flood_fill.blend_mode"
 
     # Gap closing related parameters
-    GAP_CLOSING_PREF = 'flood_fill.gap_closing'
-    GAP_SIZE_PREF = 'flood_fill.gap_size'
-    RETRACT_SEEPS_PREF = 'flood_fill.retract_seeps'
+    GAP_CLOSING_PREF = "flood_fill.gap_closing"
+    GAP_SIZE_PREF = "flood_fill.gap_size"
+    RETRACT_SEEPS_PREF = "flood_fill.retract_seeps"
     # "make new layer" is a temporary toggle, and is not saved to prefs
 
     DEFAULT_TOLERANCE = 0.05
@@ -464,7 +467,7 @@ class FloodFillOptionsWidget (Gtk.Grid):
     _BLEND_MODES = None
 
     def update_blend_mode(self, manager, old_mode, new_mode):
-        """ Enable/disable mode selection combo box"""
+        """Enable/disable mode selection combo box"""
         if old_mode == new_mode:
             return
         if new_mode.mode_type in [BlendModes.ERASE, BlendModes.COLORIZE]:
@@ -476,8 +479,8 @@ class FloodFillOptionsWidget (Gtk.Grid):
     def _update_blend_mode_warning(self, mode):
         """Show/hide warning label"""
         no_op_combination = (
-            mode.mode_type == BlendModes.LOCK_ALPHA and
-            self.blend_mode in lib.modes.MODES_DECREASING_BACKDROP_ALPHA
+            mode.mode_type == BlendModes.LOCK_ALPHA
+            and self.blend_mode in lib.modes.MODES_DECREASING_BACKDROP_ALPHA
         )
         if no_op_combination and not self._warning_shown:
             self.attach(*self._bm_warning_label)
@@ -494,29 +497,41 @@ class FloodFillOptionsWidget (Gtk.Grid):
         self.set_row_spacing(6)
         self.set_column_spacing(6)
         from gui.application import get_app
+
         self.app = get_app()
         prefs = self.app.preferences
 
         row = 0
         label = Gtk.Label()
-        label.set_markup(C_(
-            "fill options: numeric value that determines whether tested pixels"
-            " will be included in the fill, based on color difference",
-            u"Tolerance:"))
-        label.set_tooltip_text(C_(
-            "fill options: Tolerance (tooltip) "
-            "Note: 'the start' refers to the color of "
-            "the starting point (pixel) of the fill",
-            u"How much pixel colors are allowed to vary from the start\n"
-            u"before Flood Fill will refuse to fill them"))
+        label.set_markup(
+            C_(
+                "fill options: numeric value that determines whether tested pixels"
+                " will be included in the fill, based on color difference",
+                "Tolerance:",
+            )
+        )
+        label.set_tooltip_text(
+            C_(
+                "fill options: Tolerance (tooltip) "
+                "Note: 'the start' refers to the color of "
+                "the starting point (pixel) of the fill",
+                "How much pixel colors are allowed to vary from the start\n"
+                "before Flood Fill will refuse to fill them",
+            )
+        )
         label.set_alignment(1.0, 0.5)
         label.set_hexpand(False)
         self.attach(label, 0, row, 1, 1)
         value = prefs.get(self.TOLERANCE_PREF, self.DEFAULT_TOLERANCE)
         value = float(value)
-        adj = Gtk.Adjustment(value=value, lower=0.0, upper=1.0,
-                             step_increment=0.05, page_increment=0.05,
-                             page_size=0)
+        adj = Gtk.Adjustment(
+            value=value,
+            lower=0.0,
+            upper=1.0,
+            step_increment=0.05,
+            page_increment=0.05,
+            page_size=0,
+        )
         adj.connect("value-changed", self._tolerance_changed_cb)
         self._tolerance_adj = adj
         scale = InputSlider(adj)
@@ -526,14 +541,20 @@ class FloodFillOptionsWidget (Gtk.Grid):
 
         row += 1
         label = Gtk.Label()
-        label.set_markup(C_(
-            "fill options: option category (label) "
-            "Options under this category relate to what the fill is"
-            "based on, not where the actual fill ends up.",
-            u"Source:"))
-        label.set_tooltip_text(C_(
-            "fill options: 'Source:' category (tooltip)",
-            u"The input that the fill will be based on"))
+        label.set_markup(
+            C_(
+                "fill options: option category (label) "
+                "Options under this category relate to what the fill is"
+                "based on, not where the actual fill ends up.",
+                "Source:",
+            )
+        )
+        label.set_tooltip_text(
+            C_(
+                "fill options: 'Source:' category (tooltip)",
+                "The input that the fill will be based on",
+            )
+        )
         label.set_alignment(1.0, 0.5)
         label.set_hexpand(False)
         self.attach(label, 0, row, 1, 1)
@@ -557,15 +578,11 @@ class FloodFillOptionsWidget (Gtk.Grid):
             if name is None:
                 name = "Layer"
             if layer is None:
-                name_cell.set_property(
-                    "markup", "( <i>{text}</i> )".format(text=name)
-                )
+                name_cell.set_property("markup", "( <i>{text}</i> )".format(text=name))
                 return
             indented = "  " * (len(path) - 1) + name
             if isinstance(layer, lib.layer.LayerStack):
-                name_cell.set_property(
-                    "markup", "<i>{text}</i>".format(text=indented)
-                )
+                name_cell.set_property("markup", "<i>{text}</i>".format(text=indented))
             else:
                 name_cell.set_property("text", indented)
 
@@ -577,15 +594,13 @@ class FloodFillOptionsWidget (Gtk.Grid):
         combo.set_tooltip_text(
             C_(
                 "fill options: 'Source' category: Layer dropdown (tooltip)",
-                u"Select a specific layer you want the fill to be based on"
+                "Select a specific layer you want the fill to be based on",
             )
         )
         combo.set_active(0)
         self._prev_src_layer = None
         root.layer_inserted += self._layer_inserted_cb
-        self._src_combo_cb_id = combo.connect(
-            "changed", self._src_combo_changed_cb
-        )
+        self._src_combo_cb_id = combo.connect("changed", self._src_combo_changed_cb)
         self._src_combo = combo
         self.attach(combo, 1, row, 2, 1)
 
@@ -595,17 +610,19 @@ class FloodFillOptionsWidget (Gtk.Grid):
             "fill options: 'Source:' category: toggle (label)\n"
             "When this option is enabled, the fill is based\n"
             "on the combination of all visible layers",
-            u"Sample Merged")
+            "Sample Merged",
+        )
         checkbut = Gtk.CheckButton.new_with_label(text)
         checkbut.set_tooltip_text(
-            C_("fill options: Sample Merged (tooltip)",
-               u"When considering which area to fill, use a\n"
-               u"temporary merge of all the visible layers\n"
-               u"underneath the current layer")
+            C_(
+                "fill options: Sample Merged (tooltip)",
+                "When considering which area to fill, use a\n"
+                "temporary merge of all the visible layers\n"
+                "underneath the current layer",
+            )
         )
         self.attach(checkbut, 1, row, 1, 1)
-        active = bool(prefs.get(self.SAMPLE_MERGED_PREF,
-                                self.DEFAULT_SAMPLE_MERGED))
+        active = bool(prefs.get(self.SAMPLE_MERGED_PREF, self.DEFAULT_SAMPLE_MERGED))
         checkbut.set_active(active)
         checkbut.connect("toggled", self._sample_merged_toggled_cb)
         self._sample_merged_toggle = checkbut
@@ -613,35 +630,44 @@ class FloodFillOptionsWidget (Gtk.Grid):
 
         row += 1
 
-        text = C_("fill options: toggle whether the fill will be limited "
-                  "by the viewport",
-                  u"Limit to View")
+        text = C_(
+            "fill options: toggle whether the fill will be limited " "by the viewport",
+            "Limit to View",
+        )
         checkbut = Gtk.CheckButton.new_with_label(text)
         checkbut.set_tooltip_text(
-            C_("fill options: Limit to View (tooltip)\n"
-               "Note: 'that can fit the view' is equivalent to: "
-               "'in which the entire visible part of the canvas can fit",
-               u"Limit the area that can be filled, based on the viewport.\n"
-               u"If the view is rotated, the fill will be limited to the\n"
-               u"smallest canvas-aligned rectangle that can fit the view."))
+            C_(
+                "fill options: Limit to View (tooltip)\n"
+                "Note: 'that can fit the view' is equivalent to: "
+                "'in which the entire visible part of the canvas can fit",
+                "Limit the area that can be filled, based on the viewport.\n"
+                "If the view is rotated, the fill will be limited to the\n"
+                "smallest canvas-aligned rectangle that can fit the view.",
+            )
+        )
         self.attach(checkbut, 1, row, 1, 1)
-        active = bool(prefs.get(self.LIM_TO_VIEW_PREF,
-                                self.DEFAULT_LIM_TO_VIEW))
+        active = bool(prefs.get(self.LIM_TO_VIEW_PREF, self.DEFAULT_LIM_TO_VIEW))
         checkbut.set_active(active)
         checkbut.connect("toggled", self._limit_to_view_toggled_cb)
         self._limit_to_view_toggle = checkbut
 
         row += 1
         label = Gtk.Label()
-        label.set_markup(C_(
-            "fill options: option category (label)\n"
-            "Options under this category relate to where the fill "
-            "will end up (default: the active layer) and how it "
-            "will be combined with that layer.",
-            u"Target:"))
-        label.set_tooltip_text(C_(
-            "fill options: 'Target:' category (tooltip)",
-            u"Where the output should go"))
+        label.set_markup(
+            C_(
+                "fill options: option category (label)\n"
+                "Options under this category relate to where the fill "
+                "will end up (default: the active layer) and how it "
+                "will be combined with that layer.",
+                "Target:",
+            )
+        )
+        label.set_tooltip_text(
+            C_(
+                "fill options: 'Target:' category (tooltip)",
+                "Where the output should go",
+            )
+        )
         label.set_alignment(1.0, 0.5)
         label.set_hexpand(False)
         self.attach(label, 0, row, 1, 1)
@@ -650,13 +676,16 @@ class FloodFillOptionsWidget (Gtk.Grid):
             "fill options: Target | toggle (label)\n"
             "When this option is enabled, the fill will be placed on a new\n"
             "layer above the active layer. Option resets after each fill.",
-            u"New Layer (once)"
+            "New Layer (once)",
         )
         checkbut = Gtk.CheckButton.new_with_label(text)
         checkbut.set_tooltip_text(
-            C_("fill options: Target | New Layer (tooltip)",
-               u"Create a new layer with the results of the fill.\n"
-               u"This is turned off automatically after use."))
+            C_(
+                "fill options: Target | New Layer (tooltip)",
+                "Create a new layer with the results of the fill.\n"
+                "This is turned off automatically after use.",
+            )
+        )
         self.attach(checkbut, 1, row, 1, 1)
         active = self.DEFAULT_MAKE_NEW_LAYER
         checkbut.set_active(active)
@@ -664,10 +693,12 @@ class FloodFillOptionsWidget (Gtk.Grid):
 
         row += 1
         label = Gtk.Label()
-        label.set_markup(u"<b>\u26a0</b>")  # unicode warning sign
-        label.set_tooltip_text(C_(
-            "fill options: Target | Blend Mode dropdown - warning text",
-            u"This mode does nothing when alpha locking is enabled!")
+        label.set_markup("<b>\u26a0</b>")  # unicode warning sign
+        label.set_tooltip_text(
+            C_(
+                "fill options: Target | Blend Mode dropdown - warning text",
+                "This mode does nothing when alpha locking is enabled!",
+            )
         )
         label.set_alignment(1.0, 0.5)
         label.set_hexpand(False)
@@ -679,34 +710,40 @@ class FloodFillOptionsWidget (Gtk.Grid):
         modes.remove(lib.mypaintlib.CombineSpectralWGM)
         modes.insert(0, lib.mypaintlib.CombineSpectralWGM)
         combo = gui.layers.new_blend_mode_combo(modes, lib.modes.MODE_STRINGS)
-        combo.set_tooltip_text(C_(
-            "fill options: Target | Blend Mode dropdown (tooltip)",
-            u"Blend mode used when filling"))
+        combo.set_tooltip_text(
+            C_(
+                "fill options: Target | Blend Mode dropdown (tooltip)",
+                "Blend mode used when filling",
+            )
+        )
         # Reinstate the last _mode id_ independent of mode-list order
         mode_type = prefs.get(self.BLEND_MODE_PREF, self.DEFAULT_BLEND_MODE)
         mode_dict = {mode: index for index, mode, in enumerate(modes)}
         # Fallback is only necessary for compat. if a mode is ever removed
         active = mode_dict.get(int(mode_type), self.DEFAULT_BLEND_MODE)
         combo.set_active(active)
-        combo.connect(
-            "changed", self._bm_combo_changed_cb
-        )
+        combo.connect("changed", self._bm_combo_changed_cb)
         self._blend_mode_combo = combo
         self.attach(combo, 1, row, 2, 1)
 
         row += 1
         label = Gtk.Label()
-        label.set_markup(_(u"Opacity:"))
-        label.set_tooltip_text(C_(
-            "fill options: Opacity slider (tooltip)",
-            u"Opacity of the fill"))
+        label.set_markup(_("Opacity:"))
+        label.set_tooltip_text(
+            C_("fill options: Opacity slider (tooltip)", "Opacity of the fill")
+        )
         label.set_alignment(1.0, 0.5)
         label.set_hexpand(False)
         self.attach(label, 0, row, 1, 1)
         value = prefs.get(self.OPACITY_PREF, self.DEFAULT_OPACITY)
-        adj = Gtk.Adjustment(value=value, lower=0.0, upper=1.0,
-                             step_increment=0.05, page_increment=0.05,
-                             page_size=0)
+        adj = Gtk.Adjustment(
+            value=value,
+            lower=0.0,
+            upper=1.0,
+            step_increment=0.05,
+            page_increment=0.05,
+            page_size=0,
+        )
         adj.connect("value-changed", self._opacity_changed_cb)
         self._opacity_adj = adj
         scale = InputSlider()
@@ -720,26 +757,34 @@ class FloodFillOptionsWidget (Gtk.Grid):
 
         row += 1
         label = Gtk.Label()
-        label.set_markup(C_(
-            "fill options: numeric option - grow/shrink fill (label)",
-            u"Offset:"
-        ))
+        label.set_markup(
+            C_(
+                "fill options: numeric option - grow/shrink fill (label)",
+                "Offset:",
+            )
+        )
         label.set_alignment(1.0, 0.5)
         label.set_hexpand(False)
         self.attach(label, 0, row, 1, 1)
 
         TILE_SIZE = lib.floodfill.TILE_SIZE
         value = prefs.get(self.OFFSET_PREF, self.DEFAULT_OFFSET)
-        adj = Gtk.Adjustment(value=value,
-                             lower=-TILE_SIZE, upper=TILE_SIZE,
-                             step_increment=1, page_increment=4)
+        adj = Gtk.Adjustment(
+            value=value,
+            lower=-TILE_SIZE,
+            upper=TILE_SIZE,
+            step_increment=1,
+            page_increment=4,
+        )
         adj.connect("value-changed", self._offset_changed_cb)
         self._offset_adj = adj
         spinbut = Gtk.SpinButton()
-        spinbut.set_tooltip_text(C_(
-            "fill options: Offset (tooltip)",
-            u"The distance in pixels to grow or shrink the fill"
-        ))
+        spinbut.set_tooltip_text(
+            C_(
+                "fill options: Offset (tooltip)",
+                "The distance in pixels to grow or shrink the fill",
+            )
+        )
         spinbut.set_hexpand(True)
         spinbut.set_adjustment(adj)
         spinbut.set_numeric(True)
@@ -747,25 +792,33 @@ class FloodFillOptionsWidget (Gtk.Grid):
 
         row += 1
         label = Gtk.Label()
-        label.set_markup(C_(
-            "fill options: numeric option for blurring fill (label)",
-            u"Feather:"
-        ))
+        label.set_markup(
+            C_(
+                "fill options: numeric option for blurring fill (label)",
+                "Feather:",
+            )
+        )
         label.set_alignment(1.0, 0.5)
         label.set_hexpand(False)
         self.attach(label, 0, row, 1, 1)
 
         value = prefs.get(self.FEATHER_PREF, self.DEFAULT_FEATHER)
-        adj = Gtk.Adjustment(value=value,
-                             lower=0, upper=TILE_SIZE,
-                             step_increment=1, page_increment=4)
+        adj = Gtk.Adjustment(
+            value=value,
+            lower=0,
+            upper=TILE_SIZE,
+            step_increment=1,
+            page_increment=4,
+        )
         adj.connect("value-changed", self._feather_changed_cb)
         self._feather_adj = adj
         spinbut = Gtk.SpinButton()
-        spinbut.set_tooltip_text(C_(
-            "fill options: Feather (tooltip)",
-            u"The amount of blur to apply to the fill"
-        ))
+        spinbut.set_tooltip_text(
+            C_(
+                "fill options: Feather (tooltip)",
+                "The amount of blur to apply to the fill",
+            )
+        )
         spinbut.set_hexpand(True)
         spinbut.set_adjustment(adj)
         spinbut.set_numeric(True)
@@ -778,17 +831,16 @@ class FloodFillOptionsWidget (Gtk.Grid):
         gap_closing_params = Gtk.Grid()
         self._gap_closing_grid = gap_closing_params
 
-        text = C_(
-            "fill options: gap detection toggle (label)",
-            u'Use Gap Detection'
-        )
+        text = C_("fill options: gap detection toggle (label)", "Use Gap Detection")
         checkbut = Gtk.CheckButton.new_with_label(text)
-        checkbut.set_tooltip_text(C_(
-            "fill options: Use Gap Detection (tooltip)",
-            u"Try to detect gaps and not fill past them.\n"
-            u"Note: This can be a lot slower than the regular fill, "
-            u"only enable when you need it."
-        ))
+        checkbut.set_tooltip_text(
+            C_(
+                "fill options: Use Gap Detection (tooltip)",
+                "Try to detect gaps and not fill past them.\n"
+                "Note: This can be a lot slower than the regular fill, "
+                "only enable when you need it.",
+            )
+        )
         self._gap_closing_toggle = checkbut
         checkbut.connect("toggled", self._gap_closing_toggled_cb)
         active = prefs.get(self.GAP_CLOSING_PREF, self.DEFAULT_GAP_CLOSING)
@@ -801,26 +853,34 @@ class FloodFillOptionsWidget (Gtk.Grid):
 
         gcp_row = 0
         label = Gtk.Label()
-        label.set_markup(C_(
-            "fill options: gap-detection sub-option, numeric setting (label)",
-            u"Max Gap Size:"
-        ))
+        label.set_markup(
+            C_(
+                "fill options: gap-detection sub-option, numeric setting (label)",
+                "Max Gap Size:",
+            )
+        )
         label.set_alignment(1.0, 0.5)
         label.set_hexpand(False)
         gap_closing_params.attach(label, 0, gcp_row, 1, 1)
 
         value = prefs.get(self.GAP_SIZE_PREF, self.DEFAULT_GAP_SIZE)
-        adj = Gtk.Adjustment(value=value,
-                             lower=1, upper=int(TILE_SIZE/2),
-                             step_increment=1, page_increment=4)
+        adj = Gtk.Adjustment(
+            value=value,
+            lower=1,
+            upper=int(TILE_SIZE / 2),
+            step_increment=1,
+            page_increment=4,
+        )
         adj.connect("value-changed", self._max_gap_size_changed_cb)
         self._max_gap_adj = adj
         spinbut = Gtk.SpinButton()
-        spinbut.set_tooltip_text(C_(
-            "fill options: Max Gap Size (tooltip)",
-            u"The size of the largest gaps that can be detected.\n"
-            u"Using large values can make the fill run a lot slower."
-        ))
+        spinbut.set_tooltip_text(
+            C_(
+                "fill options: Max Gap Size (tooltip)",
+                "The size of the largest gaps that can be detected.\n"
+                "Using large values can make the fill run a lot slower.",
+            )
+        )
         spinbut.set_hexpand(True)
         spinbut.set_adjustment(adj)
         spinbut.set_numeric(True)
@@ -831,16 +891,18 @@ class FloodFillOptionsWidget (Gtk.Grid):
             "fill options: on/off sub-option, numeric (label)\n"
             "When enabled, if the fill stops after going past a detected gap, "
             "it 'pulls' the fill back out of the gap to the other side of it.",
-            u"Prevent seeping"
+            "Prevent seeping",
         )
         checkbut = Gtk.CheckButton.new_with_label(text)
         active = prefs.get(self.RETRACT_SEEPS_PREF, self.DEFAULT_RETRACT_SEEPS)
         checkbut.set_active(active)
-        checkbut.set_tooltip_text(C_(
-            "fill options: Prevent seeping (tooltip)",
-            u"Try to prevent the fill from seeping into the gaps.\n"
-            u"If a fill starts in a detected gap, this option will do nothing."
-        ))
+        checkbut.set_tooltip_text(
+            C_(
+                "fill options: Prevent seeping (tooltip)",
+                "Try to prevent the fill from seeping into the gaps.\n"
+                "If a fill starts in a detected gap, this option will do nothing.",
+            )
+        )
         checkbut.connect("toggled", self._retract_seeps_toggled_cb)
         self._retract_seeps_toggle = checkbut
         gap_closing_params.attach(checkbut, 1, gcp_row, 1, 1)
@@ -850,9 +912,12 @@ class FloodFillOptionsWidget (Gtk.Grid):
         align.set_vexpand(True)
         button = Gtk.Button(label=_("Reset"))
         button.connect("clicked", self._reset_clicked_cb)
-        button.set_tooltip_text(C_(
-            "fill options: Reset button (tooltip)",
-            "Reset options to their defaults"))
+        button.set_tooltip_text(
+            C_(
+                "fill options: Reset button (tooltip)",
+                "Reset options to their defaults",
+            )
+        )
         align.add(button)
         self.attach(align, 0, row, 2, 1)
 
@@ -930,7 +995,8 @@ class FloodFillOptionsWidget (Gtk.Grid):
     def gap_closing_options(self):
         if self.gap_closing:
             return lib.floodfill.GapClosingOptions(
-                self.max_gap_size, self.retract_seeps)
+                self.max_gap_size, self.retract_seeps
+            )
         else:
             return None
 
@@ -1030,7 +1096,7 @@ class FlatLayerList(Gtk.ListStore):
         self.set_column_types((str, object, object))
         default_selection = C_(
             "fill option: default option in the Source Layer dropdown",
-            u"Selected Layer"
+            "Selected Layer",
         )
         # Add default option and separator
         self.append((default_selection, None, None))
@@ -1041,7 +1107,7 @@ class FlatLayerList(Gtk.ListStore):
 
     def _layer_props_changed_cb(self, root, layerpath, layer, changed):
         """Update copies of layer names when changed"""
-        if 'name' in changed:
+        if "name" in changed:
             for item in self:
                 if item[1] == layerpath:
                     item[0] = layer.name
@@ -1067,6 +1133,7 @@ class FlatLayerList(Gtk.ListStore):
         """Remove the row for the deleted layer, and also any
         rows for layers that were children of the deleted layer
         """
+
         def is_child(p):
             return lib.layer.path_startswith(p, path)
 

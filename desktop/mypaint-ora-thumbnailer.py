@@ -42,7 +42,7 @@ def ora_thumbnail(infile, outfile, size):
 
     # Extract a GdkPixbuf from the OpenRaster file
     with zipfile.ZipFile(infile) as zf:
-        png_data = zf.read('Thumbnails/thumbnail.png')
+        png_data = zf.read("Thumbnails/thumbnail.png")
     loader = GdkPixbuf.PixbufLoader()
     loader.write(png_data)
     loader.close()
@@ -56,7 +56,8 @@ def ora_thumbnail(infile, outfile, size):
         new_w = int(orig_w * scale_factor)
         new_h = int(orig_h * scale_factor)
         pixbuf = pixbuf.scale_simple(
-            new_w, new_h,
+            new_w,
+            new_h,
             GdkPixbuf.InterpType.BILINEAR,
         )
 
@@ -67,10 +68,11 @@ def ora_thumbnail(infile, outfile, size):
     # Hopefully the method name won't change for posix typelibs.
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     import sys
+
     try:
         progname, infile, outfile, size = sys.argv
     except ValueError:
-        sys.exit('Usage: %s <Input> <Output> <Size>' % sys.argv[0])
+        sys.exit("Usage: %s <Input> <Output> <Size>" % sys.argv[0])
     ora_thumbnail(infile, outfile, int(size))

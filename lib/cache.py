@@ -13,8 +13,9 @@ from collections import OrderedDict
 DEFAULT_CACHE_SIZE = 16384
 
 
-class LRUCache (object):
+class LRUCache(object):
     """Least-recently-used cache with dict-like usage"""
+
     # The idea for using an OrderedDict comes from Kun Xi -
     # http://www.kunxi.org/blog/2014/05/lru-cache-in-python/
 

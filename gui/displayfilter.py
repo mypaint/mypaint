@@ -47,20 +47,20 @@ _SIM_TRITANOPIA_B_COEFFS = (-0.063, 0.881, 0.182)
 
 def luma_only(dst):
     """Convert an NxNx3 array to show only luma (brightness)"""
-    luma = (dst[...,0:3] * _LUMA_COEFFS).sum(axis=2)
+    luma = (dst[..., 0:3] * _LUMA_COEFFS).sum(axis=2)
     dst[..., 0:3] = luma[..., np.newaxis]
 
 
 def invert_colors(dst):
     """Invert each RGB channel in an RGB array"""
-    dst[...,0:3] = 255 - dst[...,0:3]
+    dst[..., 0:3] = 255 - dst[..., 0:3]
 
 
 def sim_deuteranopia(dst):
     """Simulate deuteranopia (insensitivity to red)"""
-    r = (dst[...,0:3] * _SIM_DEUTERANOPIA_R_COEFFS).sum(axis=2)
-    g = (dst[...,0:3] * _SIM_DEUTERANOPIA_G_COEFFS).sum(axis=2)
-    b = (dst[...,0:3] * _SIM_DEUTERANOPIA_B_COEFFS).sum(axis=2)
+    r = (dst[..., 0:3] * _SIM_DEUTERANOPIA_R_COEFFS).sum(axis=2)
+    g = (dst[..., 0:3] * _SIM_DEUTERANOPIA_G_COEFFS).sum(axis=2)
+    b = (dst[..., 0:3] * _SIM_DEUTERANOPIA_B_COEFFS).sum(axis=2)
     np.clip(r, 0, 255, dst[..., 0])
     np.clip(g, 0, 255, dst[..., 1])
     np.clip(b, 0, 255, dst[..., 2])
@@ -68,9 +68,9 @@ def sim_deuteranopia(dst):
 
 def sim_protanopia(dst):
     """Simulate protanopia (insensitivity to green)"""
-    r = (dst[...,0:3] * _SIM_PROTANOPIA_R_COEFFS).sum(axis=2)
-    g = (dst[...,0:3] * _SIM_PROTANOPIA_G_COEFFS).sum(axis=2)
-    b = (dst[...,0:3] * _SIM_PROTANOPIA_B_COEFFS).sum(axis=2)
+    r = (dst[..., 0:3] * _SIM_PROTANOPIA_R_COEFFS).sum(axis=2)
+    g = (dst[..., 0:3] * _SIM_PROTANOPIA_G_COEFFS).sum(axis=2)
+    b = (dst[..., 0:3] * _SIM_PROTANOPIA_B_COEFFS).sum(axis=2)
     np.clip(r, 0, 255, dst[..., 0])
     np.clip(g, 0, 255, dst[..., 1])
     np.clip(b, 0, 255, dst[..., 2])
@@ -78,9 +78,9 @@ def sim_protanopia(dst):
 
 def sim_tritanopia(dst):
     """Simulate tritanopia (insensitivity to green)"""
-    r = (dst[...,0:3] * _SIM_TRITANOPIA_R_COEFFS).sum(axis=2)
-    g = (dst[...,0:3] * _SIM_TRITANOPIA_G_COEFFS).sum(axis=2)
-    b = (dst[...,0:3] * _SIM_TRITANOPIA_B_COEFFS).sum(axis=2)
+    r = (dst[..., 0:3] * _SIM_TRITANOPIA_R_COEFFS).sum(axis=2)
+    g = (dst[..., 0:3] * _SIM_TRITANOPIA_G_COEFFS).sum(axis=2)
+    b = (dst[..., 0:3] * _SIM_TRITANOPIA_B_COEFFS).sum(axis=2)
     np.clip(r, 0, 255, dst[..., 0])
     np.clip(g, 0, 255, dst[..., 1])
     np.clip(b, 0, 255, dst[..., 2])

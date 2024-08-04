@@ -33,9 +33,12 @@ logger = logging.getLogger(__name__)
 
 ## Class defs
 
-class FreehandMode (gui.mode.BrushworkModeMixin,
-                    gui.mode.ScrollableModeMixin,
-                    gui.mode.InteractionMode):
+
+class FreehandMode(
+    gui.mode.BrushworkModeMixin,
+    gui.mode.ScrollableModeMixin,
+    gui.mode.InteractionMode,
+):
     """Freehand drawing mode
 
     To improve application responsiveness, this mode uses an internal
@@ -51,8 +54,8 @@ class FreehandMode (gui.mode.BrushworkModeMixin,
 
     ## Class constants & instance defaults
 
-    ACTION_NAME = 'FreehandMode'
-    permitted_switch_actions = set()   # Any action is permitted
+    ACTION_NAME = "FreehandMode"
+    permitted_switch_actions = set()  # Any action is permitted
 
     _OPTIONS_WIDGET = None
 
@@ -86,14 +89,14 @@ class FreehandMode (gui.mode.BrushworkModeMixin,
 
     @classmethod
     def get_name(cls):
-        return _(u"Freehand Drawing")
+        return _("Freehand Drawing")
 
     def get_usage(self):
-        return _(u"Paint free-form brush strokes")
+        return _("Paint free-form brush strokes")
 
     ## Per-TDW drawing state
 
-    class _DrawingState (object):
+    class _DrawingState(object):
         """Per-canvas drawing state
 
         Various kinds of queue for raw data capture or interpolation of
@@ -164,19 +167,35 @@ class FreehandMode (gui.mode.BrushworkModeMixin,
 
             """
 
-            (time, x, y, pressure,
-             xtilt, ytilt, viewzoom,
-             viewrotation, barrel_rotation) = event_data
+            (
+                time,
+                x,
+                y,
+                pressure,
+                xtilt,
+                ytilt,
+                viewzoom,
+                viewrotation,
+                barrel_rotation,
+            ) = event_data
             if time < self._last_queued_event_time:
-                logger.warning('Time is running backwards! Corrected.')
+                logger.warning("Time is running backwards! Corrected.")
                 time = self._last_queued_event_time
 
             if time == self._last_queued_event_time:
                 # On Windows, GTK timestamps have a resolution around
                 # 15ms, but tablet events arrive every 8ms.
                 # https://gna.org/bugs/index.php?16569
-                zdata = (x, y, pressure, xtilt, ytilt, viewzoom,
-                         viewrotation, barrel_rotation)
+                zdata = (
+                    x,
+                    y,
+                    pressure,
+                    xtilt,
+                    ytilt,
+                    viewzoom,
+                    viewrotation,
+                    barrel_rotation,
+                )
                 self._zero_dtime_motions.append(zdata)
             else:
                 # Queue any previous events that had identical
@@ -193,8 +212,16 @@ class FreehandMode (gui.mode.BrushworkModeMixin,
                         interval = dtime
                     step = interval / (len(self._zero_dtime_motions) + 1)
 
-                    for (zx, zy, zp, zxt,
-                         zyt, zvz, zvr, zbr) in self._zero_dtime_motions:
+                    for (
+                        zx,
+                        zy,
+                        zp,
+                        zxt,
+                        zyt,
+                        zvz,
+                        zvr,
+                        zbr,
+                    ) in self._zero_dtime_motions:
                         zt += step
                         zevent_data = (zt, zx, zy, zp, zxt, zyt, zvz, zvr, zbr)
                         self.motion_queue.append(zevent_data)
@@ -230,7 +257,7 @@ class FreehandMode (gui.mode.BrushworkModeMixin,
         super(FreehandMode, self).enter(doc, **kwds)
         self._drawing_state = {}
         self._reset_drawing_state()
-        self._debug = (logger.getEffectiveLevel() == logging.DEBUG)
+        self._debug = logger.getEffectiveLevel() == logging.DEBUG
 
     def leave(self, **kwds):
         """Leave freehand mode"""
@@ -282,8 +309,11 @@ class FreehandMode (gui.mode.BrushworkModeMixin,
     def button_press_cb(self, tdw, event):
         result = False
         current_layer = tdw.doc.layer_stack.current
-        if (current_layer.get_paintable() and event.button == 1
-                and event.type == Gdk.EventType.BUTTON_PRESS):
+        if (
+            current_layer.get_paintable()
+            and event.button == 1
+            and event.type == Gdk.EventType.BUTTON_PRESS
+        ):
             # Single button press
             # Stroke started, notify observers
             self.doc.input_stroke_started(event)
@@ -295,8 +325,7 @@ class FreehandMode (gui.mode.BrushworkModeMixin,
                 # "pressure" changes, so we simulate it. (Note: we can't
                 # use the event's button state because it carries the
                 # old state.)
-                self.motion_notify_cb(tdw, event,
-                                      fakepressure=tdw.app.fakepressure)
+                self.motion_notify_cb(tdw, event, fakepressure=tdw.app.fakepressure)
 
             drawstate.button_down = event.button
             drawstate.last_good_raw_pressure = 0.0
@@ -310,8 +339,7 @@ class FreehandMode (gui.mode.BrushworkModeMixin,
             self._hide_drawing_cursor(tdw)
 
             result = True
-        return (super(FreehandMode, self).button_press_cb(tdw, event)
-                or result)
+        return super(FreehandMode, self).button_press_cb(tdw, event) or result
 
     def button_release_cb(self, tdw, event):
         result = False
@@ -333,8 +361,7 @@ class FreehandMode (gui.mode.BrushworkModeMixin,
             self._reinstate_drawing_cursor(tdw)
 
             result = True
-        return (super(FreehandMode, self).button_release_cb(tdw, event)
-                or result)
+        return super(FreehandMode, self).button_release_cb(tdw, event) or result
 
     def motion_notify_cb(self, tdw, event, fakepressure=None):
         """Motion event handler: queues raw input and returns
@@ -409,8 +436,10 @@ class FreehandMode (gui.mode.BrushworkModeMixin,
                 pressure = clamp(fakepressure, 0.0, 1.0)
             else:
                 pressure = (
-                    (state & Gdk.ModifierType.BUTTON1_MASK) and
-                    tdw.app.fakepressure or 0.0)
+                    (state & Gdk.ModifierType.BUTTON1_MASK)
+                    and tdw.app.fakepressure
+                    or 0.0
+                )
             drawstate.last_event_had_pressure = False
 
         # Check whether tilt is present.  For some tablets without
@@ -431,20 +460,22 @@ class FreehandMode (gui.mode.BrushworkModeMixin,
         # This could be used to correct for different devices,
         # Left vs Right handed, etc.
         b_offset = tdw.app.preferences.get("input.barrel_rotation_offset")
-        if (barrel_rotation is not None):
+        if barrel_rotation is not None:
             barrel_rotation = (barrel_rotation + b_offset) % 1.0
 
         # barrel_rotation is likely affected by ascension (a bug?)
         # lets compensate but allow disabling
-        if (barrel_rotation is not None and tdw.app.preferences.get(
-           "input.barrel_rotation_subtract_ascension")):
+        if barrel_rotation is not None and tdw.app.preferences.get(
+            "input.barrel_rotation_subtract_ascension"
+        ):
             barrel_rotation = (barrel_rotation - tilt_ascension) % 1.0
 
         # If WHEEL is missing (barrel_rotation)
         # Use the fakerotation controller to allow keyboard control
         # We can't trust None so also look at preference
-        if (barrel_rotation is None
-           or not tdw.app.preferences.get("input.use_barrel_rotation")):
+        if barrel_rotation is None or not tdw.app.preferences.get(
+            "input.use_barrel_rotation"
+        ):
             barrel_rotation = (tdw.app.fakerotation + b_offset) % 1.0
 
         # Evdev workaround. X and Y tilts suffer from the same
@@ -477,16 +508,24 @@ class FreehandMode (gui.mode.BrushworkModeMixin,
         # Queue this event
         x, y = tdw.display_to_model(x, y)
 
-        event_data = (time, x, y, pressure,
-                      xtilt, ytilt, viewzoom,
-                      viewrotation, barrel_rotation)
+        event_data = (
+            time,
+            x,
+            y,
+            pressure,
+            xtilt,
+            ytilt,
+            viewzoom,
+            viewrotation,
+            barrel_rotation,
+        )
         drawstate.queue_motion(event_data)
         # Start the motion event processor, if it isn't already running
         if not drawstate.motion_processing_cbid:
             cbid = GLib.idle_add(
                 self._motion_queue_idle_cb,
                 tdw,
-                priority = self.MOTION_QUEUE_PRIORITY,
+                priority=self.MOTION_QUEUE_PRIORITY,
             )
             drawstate.motion_processing_cbid = cbid
 
@@ -512,8 +551,17 @@ class FreehandMode (gui.mode.BrushworkModeMixin,
     def _process_queued_event(self, tdw, event_data):
         """Process one motion event from the motion queue"""
         drawstate = self._get_drawing_state(tdw)
-        (time, x, y, pressure, xtilt, ytilt, viewzoom,
-         viewrotation, barrel_rotation) = event_data
+        (
+            time,
+            x,
+            y,
+            pressure,
+            xtilt,
+            ytilt,
+            viewzoom,
+            viewrotation,
+            barrel_rotation,
+        ) = event_data
         model = tdw.doc
 
         # Calculate time delta for the brush engine
@@ -532,8 +580,7 @@ class FreehandMode (gui.mode.BrushworkModeMixin,
                 tavg = dtime
                 nevents = 1
             if ((nevents * tavg) > 1.0) and nevents > 20:
-                logger.debug("Processing at %d events/s (t_avg=%0.3fs)",
-                             nevents, tavg)
+                logger.debug("Processing at %d events/s (t_avg=%0.3fs)", nevents, tavg)
                 drawstate.avgtime = None
             else:
                 drawstate.avgtime = (tavg, nevents)
@@ -552,9 +599,18 @@ class FreehandMode (gui.mode.BrushworkModeMixin,
         pressure = clamp(pressure, 0.0, 1.0)
         xtilt = clamp(xtilt, -1.0, 1.0)
         ytilt = clamp(ytilt, -1.0, 1.0)
-        self.stroke_to(model, dtime, x, y, pressure,
-                       xtilt, ytilt, viewzoom,
-                       viewrotation, barrel_rotation)
+        self.stroke_to(
+            model,
+            dtime,
+            x,
+            y,
+            pressure,
+            xtilt,
+            ytilt,
+            viewzoom,
+            viewrotation,
+            barrel_rotation,
+        )
 
         # Update the TDW's idea of where we last painted
         # FIXME: this should live in the model, not the view
@@ -572,7 +628,7 @@ class FreehandMode (gui.mode.BrushworkModeMixin,
         return cls._OPTIONS_WIDGET
 
 
-class FreehandOptionsWidget (gui.mode.PaintingModeOptionsWidgetBase):
+class FreehandOptionsWidget(gui.mode.PaintingModeOptionsWidgetBase):
     """Configuration widget for freehand mode"""
 
     def init_specialized_widgets(self, row):
@@ -599,9 +655,14 @@ class FreehandOptionsWidget (gui.mode.PaintingModeOptionsWidgetBase):
         label.set_alignment(1.0, 0.5)
         label.set_hexpand(False)
         changed_cb = self._fakepressure_value_changed_cb
-        adj = Gtk.Adjustment(value=0.5, lower=0.0, upper=1.0,
-                             step_increment=0.01, page_increment=0.1)
-        self.app.fake_adjustment['fakepressure'] = adj
+        adj = Gtk.Adjustment(
+            value=0.5,
+            lower=0.0,
+            upper=1.0,
+            step_increment=0.01,
+            page_increment=0.1,
+        )
+        self.app.fake_adjustment["fakepressure"] = adj
         adj.connect("value-changed", changed_cb)
         scale = InputSlider(adj)
         scale.set_draw_value(False)
@@ -617,9 +678,14 @@ class FreehandOptionsWidget (gui.mode.PaintingModeOptionsWidgetBase):
         label.set_alignment(1.0, 0.5)
         label.set_hexpand(False)
         changed_cb = self._fakerotation_value_changed_cb
-        adj = Gtk.Adjustment(value=0.5, lower=0.0, upper=1.0,
-                             step_increment=0.0625, page_increment=0.25)
-        self.app.fake_adjustment['fakerotation'] = adj
+        adj = Gtk.Adjustment(
+            value=0.5,
+            lower=0.0,
+            upper=1.0,
+            step_increment=0.0625,
+            page_increment=0.25,
+        )
+        self.app.fake_adjustment["fakerotation"] = adj
         adj.connect("value-changed", changed_cb)
         scale = InputSlider(adj)
         scale.set_draw_value(False)
@@ -636,7 +702,7 @@ class FreehandOptionsWidget (gui.mode.PaintingModeOptionsWidgetBase):
 
     def fakepressure_modified_cb(self, value):
         """Updates the fakepressure slider when changed elsewhere"""
-        adj = self.app.fake_adjustment.get('fakepressure', None)
+        adj = self.app.fake_adjustment.get("fakepressure", None)
         if adj is not None:
             adj.set_value(value)
 
@@ -647,12 +713,12 @@ class FreehandOptionsWidget (gui.mode.PaintingModeOptionsWidgetBase):
 
     def fakerotation_modified_cb(self, value):
         """Updates the fakerotation slider when changed elsewhere"""
-        adj = self.app.fake_adjustment.get('fakerotation', None)
+        adj = self.app.fake_adjustment.get("fakerotation", None)
         if adj is not None:
             adj.set_value(value)
 
 
-class PressureAndTiltInterpolator (object):
+class PressureAndTiltInterpolator(object):
     """Interpolates event sequences, filling in null pressure/tilt data
 
     The interpolator operates almost as a filter. Feed the interpolator
@@ -730,7 +796,7 @@ class PressureAndTiltInterpolator (object):
         # inserted between them.
         (110, 170.0, 170.0, 0.11, 0.1, 0.0, 1.0, 0.0, 0.0),
         (120, 171.0, 171.0, 0.33, 0.0, 0.0, 1.0, 0.0, 0.0),
-        (130, 172.0, 172.0, 0.00, 0.0, 0.0, 1.0, 0.0, 0.0)
+        (130, 172.0, 172.0, 0.00, 0.0, 0.0, 1.0, 0.0, 0.0),
     ]
 
     # Construction:
@@ -771,8 +837,7 @@ class PressureAndTiltInterpolator (object):
         """Interpolate between p0 and p1, but do not step or clear"""
         pt0p, pt0 = self._pt0_prev, self._pt0
         pt1, pt1n = self._pt1, self._pt1_next
-        can_interp = (pt0 is not None and pt1 is not None and
-                      len(self._np) > 0)
+        can_interp = pt0 is not None and pt1 is not None and len(self._np) > 0
         if can_interp:
             if pt0p is None:
                 pt0p = pt0
@@ -787,8 +852,10 @@ class PressureAndTiltInterpolator (object):
                 t, x, y = event[0:3]
                 p, xt, yt, vz, vr, br = spline_4p(
                     (t - t0) / dt,
-                    np.array(pt0p[3:]), np.array(pt0[3:]),
-                    np.array(pt1[3:]), np.array(pt1n[3:])
+                    np.array(pt0p[3:]),
+                    np.array(pt0[3:]),
+                    np.array(pt1[3:]),
+                    np.array(pt1n[3:]),
                 )
                 yield (t, x, y, p, xt, yt, vz, vr, br)
         if pt1 is not None:
@@ -798,19 +865,24 @@ class PressureAndTiltInterpolator (object):
         """Internal: interpolate & step forward or clear"""
         for ievent in self._interpolate_p0_p1():
             yield ievent
-        if ((self._pt1_next[3] > 0.0) and
-                (self._pt1 is not None) and
-                (self._pt1[3] <= 0.0)):
+        if (
+            (self._pt1_next[3] > 0.0)
+            and (self._pt1 is not None)
+            and (self._pt1[3] <= 0.0)
+        ):
             # Transitions from zero to nonzero pressure
             # Clear history to avoid artifacts
-            self._pt0_prev = None   # ignore the current pt0
+            self._pt0_prev = None  # ignore the current pt0
             self._pt0 = self._pt1
             self._pt1 = self._pt1_next
             self._pt1_next = None
-            self._np = []           # drop the buffer we've built up too
+            self._np = []  # drop the buffer we've built up too
             self._np_next = []
-        elif ((self._pt1_next[3] <= 0.0) and
-              (self._pt1 is not None) and (self._pt1[3] > 0.0)):
+        elif (
+            (self._pt1_next[3] <= 0.0)
+            and (self._pt1 is not None)
+            and (self._pt1[3] > 0.0)
+        ):
             # Transitions from nonzero to zero pressure
             # Tail off neatly by doubling the zero-pressure event
             self._step()
@@ -825,8 +897,18 @@ class PressureAndTiltInterpolator (object):
 
     # Public methods:
 
-    def feed(self, time, x, y, pressure, xtilt, ytilt, viewzoom,
-             viewrotation, barrel_rotation):
+    def feed(
+        self,
+        time,
+        x,
+        y,
+        pressure,
+        xtilt,
+        ytilt,
+        viewzoom,
+        viewrotation,
+        barrel_rotation,
+    ):
         """Feed in an event, yielding zero or more interpolated events
 
         :param time: event timestamp, integer number of milliseconds
@@ -845,21 +927,49 @@ class PressureAndTiltInterpolator (object):
         Event tuples have the form (TIME, X, Y, PRESSURE, XTILT, YTILT,
         VIEWZOOM, VIEWROTATION, BARREL_ROTATION).
         """
-        if None in (pressure, xtilt, ytilt, viewzoom,
-                    viewrotation, barrel_rotation):
-            self._np_next.append((time, x, y, pressure, xtilt, ytilt, viewzoom,
-                                  viewrotation, barrel_rotation))
+        if None in (
+            pressure,
+            xtilt,
+            ytilt,
+            viewzoom,
+            viewrotation,
+            barrel_rotation,
+        ):
+            self._np_next.append(
+                (
+                    time,
+                    x,
+                    y,
+                    pressure,
+                    xtilt,
+                    ytilt,
+                    viewzoom,
+                    viewrotation,
+                    barrel_rotation,
+                )
+            )
         else:
-            self._pt1_next = (time, x, y, pressure, xtilt, ytilt, viewzoom,
-                              viewrotation, barrel_rotation)
+            self._pt1_next = (
+                time,
+                x,
+                y,
+                pressure,
+                xtilt,
+                ytilt,
+                viewzoom,
+                viewrotation,
+                barrel_rotation,
+            )
             for t, x, y, p, xt, yt, vz, vr, br in self._interpolate_and_step():
                 yield (t, x, y, p, xt, yt, vz, vr, br)
 
 
 ## Module tests
 
+
 def _test():
     import doctest
+
     doctest.testmod()
     interp = PressureAndTiltInterpolator()
     # Emit CSV for ad-hoc plotting
@@ -869,5 +979,5 @@ def _test():
             print(",".join([str(c) for c in data]))
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     _test()

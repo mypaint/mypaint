@@ -11,6 +11,7 @@ from __future__ import absolute_import
 import os
 import sys
 import logging
+
 # This imports the global gettext package, not lib/gettext
 import gettext
 import lib.config as config
@@ -57,7 +58,7 @@ def init_gettext(localepath):
     # Required in Windows for the "Region and Language" settings
     # to take effect.
     try:
-        setlocale_result = locale.setlocale(locale.LC_ALL, '')
+        setlocale_result = locale.setlocale(locale.LC_ALL, "")
     except locale.Error:
         logger.exception("setlocale(LC_ALL, '') failed")
     else:
@@ -71,8 +72,7 @@ def init_gettext(localepath):
 
     if logger.isEnabledFor(logging.DEBUG):
         locale_categories = [
-            s for s in dir(locale)
-            if s.startswith("LC_") and s != "LC_ALL"
+            s for s in dir(locale) if s.startswith("LC_") and s != "LC_ALL"
         ]
         debug_locale_data(locale, locale_categories)
 
@@ -89,22 +89,20 @@ def init_gettext(localepath):
         bindtextdomain = locale.bindtextdomain
         textdomain = locale.textdomain
     except AttributeError:
-        logger.warning(
-            "No bindtextdomain builtins found in module 'locale'."
-        )
+        logger.warning("No bindtextdomain builtins found in module 'locale'.")
         logger.info(
-            "Trying platform-specific fallback hacks to find "
-            "bindtextdomain funcs.",
+            "Trying platform-specific fallback hacks to find " "bindtextdomain funcs.",
         )
         # Windows Python binaries tend not to expose bindtextdomain and
         # its buddies anywhere they can be called.
-        if sys.platform == 'win32':
+        if sys.platform == "win32":
             libintl = None
             import ctypes
+
             libnames = [
-                'libintl-8.dll',  # native for MSYS2's MINGW32
-                'libintl.dll',  # no known cases, but a potential fallback
-                'intl.dll',  # some old recipes off the internet
+                "libintl-8.dll",  # native for MSYS2's MINGW32
+                "libintl.dll",  # no known cases, but a potential fallback
+                "intl.dll",  # some old recipes off the internet
             ]
             for libname in libnames:
                 try:
@@ -116,9 +114,7 @@ def init_gettext(localepath):
                     )
                     bindtextdomain.restype = ctypes.c_char_p
                     textdomain = libintl.textdomain
-                    textdomain.argtypes = (
-                        ctypes.c_char_p,
-                    )
+                    textdomain.argtypes = (ctypes.c_char_p,)
                     textdomain.restype = ctypes.c_char_p
                 except Exception:
                     logger.exception(
@@ -128,8 +124,7 @@ def init_gettext(localepath):
                     )
                 else:
                     logger.info(
-                        "Windows: found working bindtextdomain funcs "
-                        "in %r (ctypes)",
+                        "Windows: found working bindtextdomain funcs " "in %r (ctypes)",
                         libname,
                     )
                     break
@@ -162,7 +157,8 @@ def init_gettext(localepath):
         if not os.path.isdir(path):
             logger.warning(
                 "No translations for %s. Missing locale dir %r.",
-                dom, path,
+                dom,
+                path,
             )
             continue
         # Only call the C library gettext setup funcs if there's a
@@ -172,8 +168,8 @@ def init_gettext(localepath):
         if bindtextdomain and textdomain:
             assert os.path.exists(path)
             assert os.path.isdir(path)
-            if sys.platform == 'win32':
-                p = bindtextdomain(dom.encode('utf-8'), path.encode('utf-8'))
+            if sys.platform == "win32":
+                p = bindtextdomain(dom.encode("utf-8"), path.encode("utf-8"))
             else:
                 p = bindtextdomain(dom, path)
             logger.debug("C bindtextdomain(%r, %r): %r", dom, path, p)
@@ -185,8 +181,8 @@ def init_gettext(localepath):
         p = gettext.bindtextdomain(dom, path)
         logger.debug("Python bindtextdomain(%r, %r): %r", dom, path, p)
     if bindtextdomain and textdomain:
-        if sys.platform == 'win32':
-            d = textdomain(defaultdom.encode('utf-8'))
+        if sys.platform == "win32":
+            d = textdomain(defaultdom.encode("utf-8"))
         else:
             d = textdomain(defaultdom)
         logger.debug("C textdomain(%r): %r", defaultdom, d)

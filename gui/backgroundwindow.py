@@ -33,35 +33,32 @@ logger = logging.getLogger(__name__)
 ## Settings and consts
 
 N = tiledsurface.N
-DEFAULT_BACKGROUND = 'default.png'
-FALLBACK_BACKGROUND = 'mrmamurk/mamurk_e_1.png'
-BACKGROUNDS_SUBDIR = 'backgrounds'
+DEFAULT_BACKGROUND = "default.png"
+FALLBACK_BACKGROUND = "mrmamurk/mamurk_e_1.png"
+BACKGROUNDS_SUBDIR = "backgrounds"
 RESPONSE_SAVE_AS_DEFAULT = 1
 BLOAT_MAX_SIZE = 1024
 
 
 ## Class defs
 
-class BackgroundWindow (windowing.Dialog):
+
+class BackgroundWindow(windowing.Dialog):
 
     def __init__(self):
         from gui import application
+
         app = application.get_app()
         assert app is not None
 
-        windowing.Dialog.__init__(
-            self,
-            app=app,
-            title=_('Background'),
-            modal=True
-        )
-        self.add_button(_('Save as Default'), RESPONSE_SAVE_AS_DEFAULT)
+        windowing.Dialog.__init__(self, app=app, title=_("Background"), modal=True)
+        self.add_button(_("Save as Default"), RESPONSE_SAVE_AS_DEFAULT)
         self.add_button(Gtk.STOCK_OK, Gtk.ResponseType.ACCEPT)
 
         self._current_background_pixbuf = None  # set when changed
 
         # Set up window.
-        self.connect('response', self._response_cb)
+        self.connect("response", self._response_cb)
 
         notebook = self.nb = Gtk.Notebook()
         self.vbox.pack_start(notebook, True, True, 0)
@@ -72,7 +69,7 @@ class BackgroundWindow (windowing.Dialog):
             Gtk.PolicyType.NEVER,
             Gtk.PolicyType.AUTOMATIC,
         )
-        notebook.append_page(patterns_scroll, Gtk.Label(label=_('Pattern')))
+        notebook.append_page(patterns_scroll, Gtk.Label(label=_("Pattern")))
 
         self.bgl = BackgroundList(self)
         patterns_scroll.add(self.bgl)
@@ -83,14 +80,14 @@ class BackgroundWindow (windowing.Dialog):
 
         # Set up colors tab.
         color_vbox = Gtk.VBox()
-        notebook.append_page(color_vbox, Gtk.Label(label=_('Color')))
+        notebook.append_page(color_vbox, Gtk.Label(label=_("Color")))
 
         self.cs = Gtk.ColorSelection()
-        self.cs.connect('color-changed', self._color_changed_cb)
+        self.cs.connect("color-changed", self._color_changed_cb)
         color_vbox.pack_start(self.cs, True, True, 0)
 
-        b = Gtk.Button(label=_('Add color to Patterns'))
-        b.connect('clicked', self._add_color_to_patterns_cb)
+        b = Gtk.Button(label=_("Add color to Patterns"))
+        b.connect("clicked", self._add_color_to_patterns_cb)
         color_vbox.pack_start(b, False, True, 0)
 
     def _realize_cb(self, dialog):
@@ -117,7 +114,7 @@ class BackgroundWindow (windowing.Dialog):
     def _get_selected_color_pixbuf(self):
         rgb = self.cs.get_current_color()
         rgb = (rgb.red, rgb.green, rgb.blue)
-        rgb = (c / 0xffff for c in rgb)
+        rgb = (c / 0xFFFF for c in rgb)
         pixbuf = new_blank_pixbuf(rgb, N, N)
         return pixbuf
 
@@ -129,7 +126,7 @@ class BackgroundWindow (windowing.Dialog):
             BACKGROUNDS_SUBDIR,
             DEFAULT_BACKGROUND,
         )
-        lib.pixbuf.save(pixbuf, path, 'png')
+        lib.pixbuf.save(pixbuf, path, "png")
         self.hide()
 
     def set_background(self, pixbuf):
@@ -142,28 +139,29 @@ class BackgroundWindow (windowing.Dialog):
         pixbuf = self._get_selected_color_pixbuf()
         i = 1
         while True:
-            filename = os.path.join(self.app.user_datapath,
-                                    BACKGROUNDS_SUBDIR,
-                                    'color%02d.png' % i)
+            filename = os.path.join(
+                self.app.user_datapath, BACKGROUNDS_SUBDIR, "color%02d.png" % i
+            )
             if not os.path.exists(filename):
                 break
             i += 1
-        lib.pixbuf.save(pixbuf, filename, 'png')
+        lib.pixbuf.save(pixbuf, filename, "png")
         self.bgl.backgrounds.append(pixbuf)
         self.bgl.update()
         self.bgl.set_selected(pixbuf)
         self.nb.set_current_page(0)
 
 
-class BackgroundList (pixbuflist.PixbufList):
+class BackgroundList(pixbuflist.PixbufList):
 
-    _SUFFIXES = ('.jpg', '.jpeg', '.png')
+    _SUFFIXES = (".jpg", ".jpeg", ".png")
 
     def __init__(self, win):
         pixbuflist.PixbufList.__init__(
             self,
             None,
-            N, N,
+            N,
+            N,
             namefunc=self._get_tooltip,
             pixbuffunc=self._get_preview_pixbuf,
         )
@@ -243,8 +241,11 @@ class BackgroundList (pixbuflist.PixbufList):
                 continue
             if os.path.basename(filename).lower() == DEFAULT_BACKGROUND:
                 if exclude_default:
-                    logger.warning("Excluding %r: is default background (%r)",
-                                   filename, DEFAULT_BACKGROUND)
+                    logger.warning(
+                        "Excluding %r: is default background (%r)",
+                        filename,
+                        DEFAULT_BACKGROUND,
+                    )
                     continue
             pixbufs.append(pixbuf)
             tooltip = _filename_to_display(filename)
@@ -255,15 +256,21 @@ class BackgroundList (pixbuflist.PixbufList):
             self.app.message_dialog(
                 text=_("One or more backgrounds could not be loaded"),
                 title=_("Error loading backgrounds"),
-                secondary_text=_("Please remove the unloadable files, or "
-                                 "check your libgdkpixbuf installation."),
+                secondary_text=_(
+                    "Please remove the unloadable files, or "
+                    "check your libgdkpixbuf installation."
+                ),
                 long_text=msg,
                 message_type=Gtk.MessageType.WARNING,
                 modal=True,
             )
 
-        logger.info("Loaded %d of %d background(s), with %d error(s)",
-                    len(pixbufs), len(files), len(errors))
+        logger.info(
+            "Loaded %d of %d background(s), with %d error(s)",
+            len(pixbufs),
+            len(files),
+            len(errors),
+        )
         return pixbufs
 
     def _get_preview_pixbuf(self, pixbuf):
@@ -278,19 +285,27 @@ class BackgroundList (pixbuflist.PixbufList):
         scaled = new_blank_pixbuf((0, 0, 0), N, N)
         pixbuf.composite(
             dest=scaled,
-            dest_x=0, dest_y=0,
-            dest_width=N, dest_height=N,
-            offset_x=0, offset_y=0,
-            scale_x=scale, scale_y=scale,
+            dest_x=0,
+            dest_y=0,
+            dest_width=N,
+            dest_height=N,
+            offset_x=0,
+            offset_y=0,
+            scale_x=scale,
+            scale_y=scale,
             interp_type=GdkPixbuf.InterpType.BILINEAR,
             overall_alpha=255,
         )
         self.app.pixmaps.plus.composite(
             dest=scaled,
-            dest_x=0, dest_y=0,
-            dest_width=N, dest_height=N,
-            offset_x=0, offset_y=0,
-            scale_x=1.0, scale_y=1.0,
+            dest_x=0,
+            dest_y=0,
+            dest_width=N,
+            dest_height=N,
+            offset_x=0,
+            offset_y=0,
+            scale_x=1.0,
+            scale_y=1.0,
             interp_type=GdkPixbuf.InterpType.BILINEAR,
             overall_alpha=255,
         )
@@ -330,11 +345,14 @@ def new_blank_pixbuf(rgb, w, h):
 
     """
     pixbuf = GdkPixbuf.Pixbuf.new(
-        GdkPixbuf.Colorspace.RGB, False, 8,
-        w, h,
+        GdkPixbuf.Colorspace.RGB,
+        False,
+        8,
+        w,
+        h,
     )
-    r, g, b = (helpers.clamp(int(round(0xff * x)), 0, 0xff) for x in rgb)
-    rgba_pixel = (r << 24) + (g << 16) + (b << 8) + 0xff
+    r, g, b = (helpers.clamp(int(round(0xFF * x)), 0, 0xFF) for x in rgb)
+    rgba_pixel = (r << 24) + (g << 16) + (b << 8) + 0xFF
     pixbuf.fill(rgba_pixel)
     return pixbuf
 
@@ -368,22 +386,27 @@ def load_background(filename, bloatmax=BLOAT_MAX_SIZE):
         pixbuf = GdkPixbuf.Pixbuf.new_from_file(filename)
     except Exception as ex:
         logger.error("Failed to load background %r: %s", filename, ex)
-        msg = unicode(_(
-            'Gdk-Pixbuf couldn\'t load "{filename}", and reported "{error}"'
-        ))
-        load_errors.append(msg.format(
-            filename=filename_display,
-            error=repr(ex),
-        ))
+        msg = unicode(
+            _('Gdk-Pixbuf couldn\'t load "{filename}", and reported "{error}"')
+        )
+        load_errors.append(
+            msg.format(
+                filename=filename_display,
+                error=repr(ex),
+            )
+        )
         return (None, load_errors)
     # Validity check
     w, h = pixbuf.get_width(), pixbuf.get_height()
     if w == 0 or h == 0:
         msg = unicode(_("{filename} has zero size (w={w}, h={h})"))
-        load_errors.append(msg.format(
-            filename=filename_display,
-            w=w, h=h,
-        ))
+        load_errors.append(
+            msg.format(
+                filename=filename_display,
+                w=w,
+                h=h,
+            )
+        )
         return (None, load_errors)
     # Flatten
     if pixbuf.get_has_alpha():
@@ -394,10 +417,14 @@ def load_background(filename, bloatmax=BLOAT_MAX_SIZE):
         new_pixbuf = new_blank_pixbuf((0, 0, 0), w, h)
         pixbuf.composite(
             dest=new_pixbuf,
-            dest_x=0, dest_y=0,
-            dest_width=w, dest_height=h,
-            offset_x=0, offset_y=0,
-            scale_x=1.0, scale_y=1.0,
+            dest_x=0,
+            dest_y=0,
+            dest_width=w,
+            dest_height=h,
+            offset_x=0,
+            offset_y=0,
+            scale_x=1.0,
+            scale_y=1.0,
             interp_type=GdkPixbuf.InterpType.NEAREST,
             overall_alpha=255,
         )
@@ -407,13 +434,15 @@ def load_background(filename, bloatmax=BLOAT_MAX_SIZE):
             filename,
         )
     # Attempt to fit the image into our grid.
-    exact_fit = ((w % N, h % N) == (0, 0))
+    exact_fit = (w % N, h % N) == (0, 0)
     if not exact_fit:
         logger.warning(
             "%r (%dx%d) does not fit the %dx%d tile grid exactly",
             filename,
-            w, h,
-            N, N,
+            w,
+            h,
+            N,
+            N,
         )
         repeats_x = _best_nrepeats_for_scaling(w, bloatmax)
         repeats_y = _best_nrepeats_for_scaling(h, bloatmax)
@@ -421,9 +450,12 @@ def load_background(filename, bloatmax=BLOAT_MAX_SIZE):
             logger.info(
                 "Tiling %r to %dx%d (was: %dx%d, repeats: %d vert, %d horiz)",
                 filename,
-                w * repeats_x, h * repeats_y,
-                w, h,
-                repeats_x, repeats_y,
+                w * repeats_x,
+                h * repeats_y,
+                w,
+                h,
+                repeats_x,
+                repeats_y,
             )
             pixbuf = _tile_pixbuf(pixbuf, repeats_x, repeats_y)
         w, h = pixbuf.get_width(), pixbuf.get_height()
@@ -434,11 +466,14 @@ def load_background(filename, bloatmax=BLOAT_MAX_SIZE):
             logger.info(
                 "Scaling %r to %dx%d (was: %dx%d)",
                 filename,
-                w, h,
-                orig_w, orig_h,
+                w,
+                h,
+                orig_w,
+                orig_h,
             )
             pixbuf = pixbuf.scale_simple(
-                dest_width=w, dest_height=h,
+                dest_width=w,
+                dest_height=h,
                 interp_type=GdkPixbuf.InterpType.BILINEAR,
             )
         assert (w % N == 0) and (h % N == 0)

@@ -39,16 +39,17 @@ settings_visible = []
 #: Migration plan and calculations for old setting names.
 settings_migrate = {
     # old cname              new cname        scale function
-    'color_hue': ('change_color_h', lambda y: y * 64.0 / 360.0),
-    'color_saturation': ('change_color_hsv_s', lambda y: y * 128.0 / 256.0),
-    'color_value': ('change_color_v', lambda y: y * 128.0 / 256.0),
-    'speed_slowness': ('speed1_slowness', None),
-    'change_color_s': ('change_color_hsv_s', None),
-    'stroke_treshold': ('stroke_threshold', None),
+    "color_hue": ("change_color_h", lambda y: y * 64.0 / 360.0),
+    "color_saturation": ("change_color_hsv_s", lambda y: y * 128.0 / 256.0),
+    "color_value": ("change_color_v", lambda y: y * 128.0 / 256.0),
+    "speed_slowness": ("speed1_slowness", None),
+    "change_color_s": ("change_color_hsv_s", None),
+    "stroke_treshold": ("stroke_threshold", None),
 }
 
 
 # Class definitions:
+
 
 class BrushInputInfo:
     """Information about an input known by the libmypaint brush engine.
@@ -83,10 +84,13 @@ class BrushInputInfo:
 
     _FIELDS = (
         "name",
-        "hard_min", "soft_min",
+        "hard_min",
+        "soft_min",
         "normal",
-        "hard_max", "soft_max",
-        "dname", "tooltip",
+        "hard_max",
+        "soft_max",
+        "dname",
+        "tooltip",
         "index",
     )
 
@@ -95,9 +99,9 @@ class BrushInputInfo:
             setattr(self, k, kwargs.get(k))
 
     def __repr__(self):
-        return u"<{classname} {fields}>".format(
-            classname = self.__class__.__name__,
-            fields = {k: getattr(self, k, None) for k in self._FIELDS},
+        return "<{classname} {fields}>".format(
+            classname=self.__class__.__name__,
+            fields={k: getattr(self, k, None) for k in self._FIELDS},
         )
 
 
@@ -131,7 +135,9 @@ class BrushSettingInfo:
         "cname",
         "name",
         "constant",
-        "min", "default", "max",
+        "min",
+        "default",
+        "max",
         "tooltip",
         "index",
     ]
@@ -164,10 +170,12 @@ for s in settings:
 
 # Module testing:
 
+
 def _test():
     import doctest
+
     doctest.testmod()
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     _test()

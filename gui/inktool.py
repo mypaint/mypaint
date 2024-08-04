@@ -42,14 +42,25 @@ logger = getLogger(__name__)
 
 class _Phase:
     """Enumeration of the states that an InkingMode can be in"""
+
     CAPTURE = 0
     ADJUST = 1
 
 
-_NODE_FIELDS = ("x", "y", "pressure", "xtilt", "ytilt", "time", "viewzoom", "viewrotation", "barrel_rotation")
+_NODE_FIELDS = (
+    "x",
+    "y",
+    "pressure",
+    "xtilt",
+    "ytilt",
+    "time",
+    "viewzoom",
+    "viewrotation",
+    "barrel_rotation",
+)
 
 
-class _Node (collections.namedtuple("_Node", _NODE_FIELDS)):
+class _Node(collections.namedtuple("_Node", _NODE_FIELDS)):
     """Recorded control point, as a namedtuple.
 
     Node tuples have the following 6 fields, in order
@@ -66,38 +77,41 @@ class _Node (collections.namedtuple("_Node", _NODE_FIELDS)):
 
 class _EditZone:
     """Enumeration of what the pointer is on in the ADJUST phase"""
+
     EMPTY_CANVAS = 0  #: Nothing, empty space
     CONTROL_NODE = 1  #: Any control node; see target_node_index
     REJECT_BUTTON = 2  #: On-canvas button that abandons the current line
     ACCEPT_BUTTON = 3  #: On-canvas button that commits the current line
 
 
-class InkingMode (gui.mode.ScrollableModeMixin,
-                  gui.mode.BrushworkModeMixin,
-                  gui.mode.DragMode):
+class InkingMode(
+    gui.mode.ScrollableModeMixin,
+    gui.mode.BrushworkModeMixin,
+    gui.mode.DragMode,
+):
 
     ## Metadata properties
 
     ACTION_NAME = "InkingMode"
     pointer_behavior = gui.mode.Behavior.PAINT_FREEHAND
     scroll_behavior = gui.mode.Behavior.CHANGE_VIEW
-    permitted_switch_actions = (
-        set(gui.mode.BUTTON_BINDING_ACTIONS).union([
-            'RotateViewMode',
-            'ZoomViewMode',
-            'PanViewMode',
-            'BrushResizeMode',
-        ])
+    permitted_switch_actions = set(gui.mode.BUTTON_BINDING_ACTIONS).union(
+        [
+            "RotateViewMode",
+            "ZoomViewMode",
+            "PanViewMode",
+            "BrushResizeMode",
+        ]
     )
 
     ## Metadata methods
 
     @classmethod
     def get_name(cls):
-        return _(u"Inking")
+        return _("Inking")
 
     def get_usage(self):
-        return _(u"Draw, and then adjust smooth lines")
+        return _("Draw, and then adjust smooth lines")
 
     @property
     def inactive_cursor(self):
@@ -115,25 +129,25 @@ class InkingMode (gui.mode.ScrollableModeMixin,
     ## Class config vars
 
     # Input node capture settings:
-    MAX_INTERNODE_DISTANCE_MIDDLE = 30   # display pixels
-    MAX_INTERNODE_DISTANCE_ENDS = 10   # display pixels
-    MAX_INTERNODE_TIME = 1 / 100.0   # seconds
+    MAX_INTERNODE_DISTANCE_MIDDLE = 30  # display pixels
+    MAX_INTERNODE_DISTANCE_ENDS = 10  # display pixels
+    MAX_INTERNODE_TIME = 1 / 100.0  # seconds
 
     # Captured input nodes are then interpolated with a spline.
     # The code tries to make nice smooth input for the brush engine,
     # but avoids generating too much work.
-    INTERPOLATION_MAX_SLICE_TIME = 1 / 200.0   # seconds
-    INTERPOLATION_MAX_SLICE_DISTANCE = 20   # model pixels
+    INTERPOLATION_MAX_SLICE_TIME = 1 / 200.0  # seconds
+    INTERPOLATION_MAX_SLICE_DISTANCE = 20  # model pixels
     INTERPOLATION_MAX_SLICES = MAX_INTERNODE_DISTANCE_MIDDLE * 5
     # In other words, limit to a set number of interpolation slices
     # per display pixel at the time of stroke capture.
 
     # Node value adjustment settings
-    MIN_INTERNODE_TIME = 1 / 200.0   # seconds (used to manage adjusting)
+    MIN_INTERNODE_TIME = 1 / 200.0  # seconds (used to manage adjusting)
 
     ## Other class vars
 
-    _OPTIONS_PRESENTER = None   #: Options presenter singleton
+    _OPTIONS_PRESENTER = None  #: Options presenter singleton
 
     ## Initialization & lifecycle methods
 
@@ -149,7 +163,7 @@ class InkingMode (gui.mode.ScrollableModeMixin,
         self._reset_adjust_data()
         self._task_queue = collections.deque()  # (cb, args, kwargs)
         self._task_queue_runner_id = None
-        self._click_info = None   # (button, zone)
+        self._click_info = None  # (button, zone)
         self._current_override_cursor = None
         # Button pressed while drawing
         # Not every device sends button presses, but evdev ones
@@ -269,8 +283,7 @@ class InkingMode (gui.mode.ScrollableModeMixin,
         self._update_current_node_index()
         button = event.button
         if self.phase == _Phase.ADJUST:
-            if self.zone in (_EditZone.REJECT_BUTTON,
-                             _EditZone.ACCEPT_BUTTON):
+            if self.zone in (_EditZone.REJECT_BUTTON, _EditZone.ACCEPT_BUTTON):
                 if button == 1 and event.type == Gdk.EventType.BUTTON_PRESS:
                     self._click_info = (button, self.zone)
                     return False
@@ -457,8 +470,10 @@ class InkingMode (gui.mode.ScrollableModeMixin,
             y = math.floor(y)
             size = math.ceil(gui.style.DRAGGABLE_POINT_HANDLE_SIZE * 2)
             tdw.queue_draw_area(
-                x - size, y - size,
-                (size * 2) + 1, (size * 2) + 1,
+                x - size,
+                y - size,
+                (size * 2) + 1,
+                (size * 2) + 1,
             )
 
     def _queue_redraw_all_nodes(self):
@@ -475,7 +490,8 @@ class InkingMode (gui.mode.ScrollableModeMixin,
                 continue
             self._queue_task(self.brushwork_rollback, model)
             self._queue_task(
-                self.brushwork_begin, model,
+                self.brushwork_begin,
+                model,
                 description=_("Inking"),
                 abrupt=True,
             )
@@ -484,8 +500,11 @@ class InkingMode (gui.mode.ScrollableModeMixin,
                 self._queue_task(
                     self._draw_curve_segment,
                     model,
-                    p_1, p0, p1, p2,
-                    state=interp_state
+                    p_1,
+                    p0,
+                    p1,
+                    p2,
+                    state=interp_state,
                 )
         self._start_task_queue_runner()
 
@@ -496,12 +515,21 @@ class InkingMode (gui.mode.ScrollableModeMixin,
         steps_t = dtime_p0_p1_real / self.INTERPOLATION_MAX_SLICE_TIME
         dist_p1_p2 = math.hypot(p1[0] - p2[0], p1[1] - p2[1])
         steps_d = dist_p1_p2 / self.INTERPOLATION_MAX_SLICE_DISTANCE
-        steps = math.ceil(min(self.INTERPOLATION_MAX_SLICES,
-                              max(2, steps_t, steps_d)))
+        steps = math.ceil(min(self.INTERPOLATION_MAX_SLICES, max(2, steps_t, steps_d)))
         for i in xrange(int(steps) + 1):
             t = i / steps
             point = gui.drawutils.spline_4p(t, p_1, p0, p1, p2)
-            x, y, pressure, xtilt, ytilt, t_abs, viewzoom, viewrotation, barrel_rotation = point
+            (
+                x,
+                y,
+                pressure,
+                xtilt,
+                ytilt,
+                t_abs,
+                viewzoom,
+                viewrotation,
+                barrel_rotation,
+            ) = point
             pressure = lib.helpers.clamp(pressure, 0.0, 1.0)
             xtilt = lib.helpers.clamp(xtilt, -1.0, 1.0)
             ytilt = lib.helpers.clamp(ytilt, -1.0, 1.0)
@@ -511,7 +539,16 @@ class InkingMode (gui.mode.ScrollableModeMixin,
             viewrotation = self.doc.tdw.rotation
             barrel_rotation = 0.0
             self.stroke_to(
-                model, dtime, x, y, pressure, xtilt, ytilt, viewzoom, viewrotation, barrel_rotation,
+                model,
+                dtime,
+                x,
+                y,
+                pressure,
+                xtilt,
+                ytilt,
+                viewzoom,
+                viewrotation,
+                barrel_rotation,
                 auto_split=False,
             )
             last_t_abs = t_abs
@@ -533,7 +570,7 @@ class InkingMode (gui.mode.ScrollableModeMixin,
         if self._task_queue_runner_id is None:
             return
         if complete:
-            for (callback, args, kwargs) in self._task_queue:
+            for callback, args, kwargs in self._task_queue:
                 callback(*args, **kwargs)
         self._task_queue.clear()
         GLib.source_remove(self._task_queue_runner_id)
@@ -599,10 +636,7 @@ class InkingMode (gui.mode.ScrollableModeMixin,
                 max_dist = self.MAX_INTERNODE_DISTANCE_MIDDLE
                 if len(self.nodes) < 2:
                     max_dist = self.MAX_INTERNODE_DISTANCE_ENDS
-                append_node = (
-                    dist > max_dist and
-                    dt > self.MAX_INTERNODE_TIME
-                )
+                append_node = dist > max_dist and dt > self.MAX_INTERNODE_TIME
             if append_node:
                 self.nodes.append(node)
                 self._queue_draw_node(len(self.nodes) - 1)
@@ -653,13 +687,15 @@ class InkingMode (gui.mode.ScrollableModeMixin,
         xm, ym = tdw.display_to_model(x, y)
         xtilt, ytilt = self._get_event_tilt(tdw, event)
         return _Node(
-            x=xm, y=ym,
+            x=xm,
+            y=ym,
             pressure=self._get_event_pressure(event),
-            xtilt=xtilt, ytilt=ytilt,
+            xtilt=xtilt,
+            ytilt=ytilt,
             time=(event.time / 1000.0),
-            viewzoom = self.doc.tdw.scale,
-            viewrotation = self.doc.tdw.rotation,
-            barrel_rotation = 0.0,
+            viewzoom=self.doc.tdw.scale,
+            viewrotation=self.doc.tdw.rotation,
+            barrel_rotation=0.0,
         )
 
     def _get_event_pressure(self, event):
@@ -688,7 +724,6 @@ class InkingMode (gui.mode.ScrollableModeMixin,
             elif pressure is not None and np.isfinite(pressure):
                 self._last_good_raw_pressure = pressure
         return pressure
-
 
     def _get_event_tilt(self, tdw, event):
         # FIXME: CODE DUPLICATION: copied from freehand.py
@@ -817,7 +852,8 @@ class InkingMode (gui.mode.ScrollableModeMixin,
         nn = self.nodes[i + 1]
 
         newnode = _Node(
-            x=(cn.x + nn.x) / 2.0, y=(cn.y + nn.y) / 2.0,
+            x=(cn.x + nn.x) / 2.0,
+            y=(cn.y + nn.y) / 2.0,
             pressure=(cn.pressure + nn.pressure) / 2.0,
             xtilt=(cn.xtilt + nn.xtilt) / 2.0,
             ytilt=(cn.ytilt + nn.ytilt) / 2.0,
@@ -919,7 +955,7 @@ class InkingMode (gui.mode.ScrollableModeMixin,
         self._nodes_deletion_operation(self._cull_nodes, ())
 
 
-class Overlay (gui.overlays.Overlay):
+class Overlay(gui.overlays.Overlay):
     """Overlay for an InkingMode's adjustable points"""
 
     def __init__(self, inkmode, tdw):
@@ -970,7 +1006,7 @@ class Overlay (gui.overlays.Overlay):
         )
         stroke_tail_len = math.hypot(*stroke_tail)
         if stroke_tail_len <= 0:
-            stroke_tail = (0., 1.)
+            stroke_tail = (0.0, 1.0)
         else:
             stroke_tail = tuple(c / stroke_tail_len for c in stroke_tail)
 
@@ -988,12 +1024,16 @@ class Overlay (gui.overlays.Overlay):
         # Natural hand strokes are often downwards,
         # so let the reject button to go above the accept button.
         reject_button_bbox = (
-            view_x0 + margin, view_x1 - margin,
-            view_y0 + margin, view_y1 - (2.666 * margin),
+            view_x0 + margin,
+            view_x1 - margin,
+            view_y0 + margin,
+            view_y1 - (2.666 * margin),
         )
         accept_button_bbox = (
-            view_x0 + margin, view_x1 - margin,
-            view_y0 + (2.666 * margin), view_y1 - margin,
+            view_x0 + margin,
+            view_x1 - margin,
+            view_y0 + (2.666 * margin),
+            view_y1 - margin,
         )
 
         # Force-update constants
@@ -1002,20 +1042,18 @@ class Overlay (gui.overlays.Overlay):
 
         # Let the buttons bounce around until they've settled.
         for iter_i in xrange(100):
-            accept_button \
-                .add_forces_inverse_square(fixed, k=k_repel) \
-                .add_forces_inverse_square([reject_button], k=k_repel) \
-                .add_forces_linear([fixed[accept_anchor_i]], k=k_attract)
-            reject_button \
-                .add_forces_inverse_square(fixed, k=k_repel) \
-                .add_forces_inverse_square([accept_button], k=k_repel) \
-                .add_forces_linear([fixed[reject_anchor_i]], k=k_attract)
-            reject_button \
-                .update_position() \
-                .constrain_position(*reject_button_bbox)
-            accept_button \
-                .update_position() \
-                .constrain_position(*accept_button_bbox)
+            accept_button.add_forces_inverse_square(
+                fixed, k=k_repel
+            ).add_forces_inverse_square([reject_button], k=k_repel).add_forces_linear(
+                [fixed[accept_anchor_i]], k=k_attract
+            )
+            reject_button.add_forces_inverse_square(
+                fixed, k=k_repel
+            ).add_forces_inverse_square([accept_button], k=k_repel).add_forces_linear(
+                [fixed[reject_anchor_i]], k=k_attract
+            )
+            reject_button.update_position().constrain_position(*reject_button_bbox)
+            accept_button.update_position().constrain_position(*accept_button_bbox)
             settled = [(p.speed < 0.5) for p in [accept_button, reject_button]]
             if all(settled):
                 break
@@ -1043,10 +1081,10 @@ class Overlay (gui.overlays.Overlay):
         for i, node in enumerate(mode.nodes):
             x, y = self._tdw.model_to_display(node.x, node.y)
             node_on_screen = (
-                x > alloc.x - (radius * 2) and
-                y > alloc.y - (radius * 2) and
-                x < alloc.x + alloc.width + (radius * 2) and
-                y < alloc.y + alloc.height + (radius * 2)
+                x > alloc.x - (radius * 2)
+                and y > alloc.y - (radius * 2)
+                and x < alloc.x + alloc.width + (radius * 2)
+                and y < alloc.y + alloc.height + (radius * 2)
             )
             if node_on_screen:
                 yield (i, node, x, y)
@@ -1064,7 +1102,9 @@ class Overlay (gui.overlays.Overlay):
                 elif i == mode.target_node_index:
                     color = gui.style.PRELIT_ITEM_COLOR
             gui.drawutils.render_round_floating_color_chip(
-                cr=cr, x=x, y=y,
+                cr=cr,
+                x=x,
+                y=y,
                 color=color,
                 radius=radius,
             )
@@ -1094,17 +1134,19 @@ class Overlay (gui.overlays.Overlay):
                     color = gui.style.EDITABLE_ITEM_COLOR
                 icon_pixbuf = self._get_button_pixbuf(icon_name)
                 gui.drawutils.render_round_floating_button(
-                    cr=cr, x=x, y=y,
+                    cr=cr,
+                    x=x,
+                    y=y,
                     color=color,
                     pixbuf=icon_pixbuf,
                     radius=radius,
                 )
 
 
-class _LayoutNode (object):
+class _LayoutNode(object):
     """Vertex/point for the button layout algorithm."""
 
-    def __init__(self, x, y, force=(0., 0.), velocity=(0., 0.)):
+    def __init__(self, x, y, force=(0.0, 0.0), velocity=(0.0, 0.0)):
         self.x = float(x)
         self.y = float(y)
         self.force = tuple(float(c) for c in force[:2])
@@ -1112,7 +1154,10 @@ class _LayoutNode (object):
 
     def __repr__(self):
         return "_LayoutNode(x=%r, y=%r, force=%r, velocity=%r)" % (
-            self.x, self.y, self.force, self.velocity,
+            self.x,
+            self.y,
+            self.force,
+            self.velocity,
         )
 
     @property
@@ -1186,7 +1231,7 @@ class _LayoutNode (object):
 
         """
         fx, fy = self.force
-        self.force = (0., 0.)
+        self.force = (0.0, 0.0)
         vx, vy = self.velocity
         vx = (vx + fx) * damping
         vy = (vy + fy) * damping
@@ -1213,7 +1258,7 @@ class _LayoutNode (object):
         return self
 
 
-class OptionsUI (gui.mvp.BuiltUIPresenter, object):
+class OptionsUI(gui.mvp.BuiltUIPresenter, object):
     """Presents UI for directly editing point values etc."""
 
     def __init__(self):

@@ -29,7 +29,8 @@ logger = logging.getLogger(__name__)
 
 ## Class defs and funcs
 
-class AccelMapEditor (Gtk.Grid):
+
+class AccelMapEditor(Gtk.Grid):
     """Ugly properties list for editing the global accel map
 
     MyPaint normally doesn't use properties lists for reasons of
@@ -37,13 +38,14 @@ class AccelMapEditor (Gtk.Grid):
     the menus themselves, so we must create an alternative for 3.12
     users who want to rebind keys.
     """
+
     # This interface is likely to evolve into an accelerator editor for
     # GtkApplication's GAction-based way of doing things when we drop
     # support for 3.10.
 
     ## Consts
 
-    __gtype_name__ = 'AccelMapEditor'
+    __gtype_name__ = "AccelMapEditor"
 
     _COLUMN_TYPES = (str, str, str, str, str, str, str)
     _PATH_COLUMN = 0
@@ -57,14 +59,13 @@ class AccelMapEditor (Gtk.Grid):
     _USE_NORMAL_DIALOG_KEYS = True
     _SHOW_ACCEL_PATH = True
 
-    _ACTION_LABEL_COLUMN_TEMPLATE = \
-        u"<b>{action_label}</b><small>\n" \
-        u"{action_desc}</small>"
-    _ACTION_LABEL_SORT_COLUMN_TEMPLATE = u"{action_label}\n{action_desc}"
-    _ACCEL_LABEL_COLUMN_TEMPLATE = u"<big><b>{accel_label}</b></big>"
-    _ACCEL_LABEL_SORT_COLUMN_TEMPLATE = u"{accel_label}"
-    _FILTER_TEXT_COLUMN_TEMPLATE = \
-        u"{action_label} {action_desc} {accel_label}"
+    _ACTION_LABEL_COLUMN_TEMPLATE = (
+        "<b>{action_label}</b><small>\n" "{action_desc}</small>"
+    )
+    _ACTION_LABEL_SORT_COLUMN_TEMPLATE = "{action_label}\n{action_desc}"
+    _ACCEL_LABEL_COLUMN_TEMPLATE = "<big><b>{accel_label}</b></big>"
+    _ACCEL_LABEL_SORT_COLUMN_TEMPLATE = "{accel_label}"
+    _FILTER_TEXT_COLUMN_TEMPLATE = "{action_label} {action_desc} {accel_label}"
 
     ## Setup
 
@@ -81,10 +82,10 @@ class AccelMapEditor (Gtk.Grid):
         self._accel_labels = {}
 
         self._filter_entry = Gtk.Entry()
-        self._filter_entry.set_placeholder_text(C_(
-            'placeholder for keymap filtering',
-            'Filter'))
-        self._filter_entry.connect('changed', self._entry_changed)
+        self._filter_entry.set_placeholder_text(
+            C_("placeholder for keymap filtering", "Filter")
+        )
+        self._filter_entry.connect("changed", self._entry_changed)
         self.attach(self._filter_entry, 0, 0, 1, 1)
         self._filter_txt = None
 
@@ -153,6 +154,7 @@ class AccelMapEditor (Gtk.Grid):
         """Initializes from the app UIManager and the global AccelMap"""
         if self.ui_manager is None:
             import gui.application
+
             app = gui.application.get_app()
             self.ui_manager = app.ui_manager
         assert self.ui_manager is not None
@@ -165,7 +167,7 @@ class AccelMapEditor (Gtk.Grid):
             group_name = group.get_name()
             for action in group.list_actions():
                 action_name = _udecode(action.get_name())
-                path = u"<Actions>/%s/%s" % (group_name, action_name)
+                path = "<Actions>/%s/%s" % (group_name, action_name)
                 if isinstance(action, Gtk.RecentAction):
                     logger.debug("Skipping %r: GtkRecentAction", path)
                     continue
@@ -179,11 +181,10 @@ class AccelMapEditor (Gtk.Grid):
                     # or a better way to do this in general.
                     action_suffix = "Centered"
                     if action_name.endswith(action_suffix):
-                        src_name = action_name[:-len(action_suffix)]
+                        src_name = action_name[: -len(action_suffix)]
                         logger.debug(
                             "Excluding toolbar-specific action: %s, but copy "
-                            "tooltip/label from %s."
-                            % (action_name, src_name)
+                            "tooltip/label from %s." % (action_name, src_name)
                         )
                         src_action = group.get_action(src_name)
                         action.set_tooltip(src_action.get_tooltip())
@@ -226,8 +227,7 @@ class AccelMapEditor (Gtk.Grid):
                 self._accel_labels[path] = accel_label
                 row = [None for t in self._COLUMN_TYPES]
 
-                self._populate_row(row, path, action_label,
-                                   action_desc, accel_label)
+                self._populate_row(row, path, action_label, action_desc, accel_label)
                 self._store.append(row)
 
     def _populate_row(self, row, path, action_label, action_desc, accel_label):
@@ -238,18 +238,13 @@ class AccelMapEditor (Gtk.Grid):
             "action_desc": action_desc,
             "accel_label": accel_label,
         }
-        markup_substs = {
-            k: lib.xml.escape(v)
-            for (k, v) in nonmarkup_substs.items()
-        }
-        action_markup = self._ACTION_LABEL_COLUMN_TEMPLATE \
-            .format(**markup_substs)
-        action_sort = self._ACTION_LABEL_SORT_COLUMN_TEMPLATE \
-            .format(**nonmarkup_substs)
-        accel_markup, accel_sort = \
-            self._fmt_accel_label(accel_label)
-        filter_text = self._FILTER_TEXT_COLUMN_TEMPLATE \
-            .format(**nonmarkup_substs).lower()
+        markup_substs = {k: lib.xml.escape(v) for (k, v) in nonmarkup_substs.items()}
+        action_markup = self._ACTION_LABEL_COLUMN_TEMPLATE.format(**markup_substs)
+        action_sort = self._ACTION_LABEL_SORT_COLUMN_TEMPLATE.format(**nonmarkup_substs)
+        accel_markup, accel_sort = self._fmt_accel_label(accel_label)
+        filter_text = self._FILTER_TEXT_COLUMN_TEMPLATE.format(
+            **nonmarkup_substs
+        ).lower()
         row[self._PATH_COLUMN] = path
         row[self._ACTION_LABEL_COLUMN] = action_markup
         row[self._ACTION_LABEL_SORT_COLUMN] = action_sort
@@ -261,10 +256,10 @@ class AccelMapEditor (Gtk.Grid):
     def _fmt_accel_label(self, label):
         if label:
             markup = self._ACCEL_LABEL_COLUMN_TEMPLATE.format(
-                accel_label = lib.xml.escape(label),
+                accel_label=lib.xml.escape(label),
             )
             sort = self._ACCEL_LABEL_SORT_COLUMN_TEMPLATE.format(
-                accel_label = label,
+                accel_label=label,
             )
         else:
             markup = ""
@@ -294,8 +289,10 @@ class AccelMapEditor (Gtk.Grid):
         accel_map = Gtk.AccelMap.get()
         entries = []
         accel_map.foreach_unfiltered(0, lambda *e: entries.append(e))
-        entries = [(accel_path, key, mods, changed)
-                   for data, accel_path, key, mods, changed in entries]
+        entries = [
+            (accel_path, key, mods, changed)
+            for data, accel_path, key, mods, changed in entries
+        ]
         return entries
 
     ## Search
@@ -320,7 +317,7 @@ class AccelMapEditor (Gtk.Grid):
             return True
 
         # I want to split 'Crtl+Shift+F' into ['Ctrl', 'Shift', '+F']
-        reg_sep = r'(?:(\+\w$)|(\+\w)\s|\+|\s)'
+        reg_sep = r"(?:(\+\w$)|(\+\w)\s|\+|\s)"
         filter_words = re.split(reg_sep, str(txt).lower())
 
         if search_text:
@@ -370,25 +367,19 @@ class AccelMapEditor (Gtk.Grid):
         dialog.set_transient_for(self.get_toplevel())
         dialog.set_position(Gtk.WindowPosition.CENTER_ON_PARENT)
         dialog.add_buttons(
-            Gtk.STOCK_DELETE, Gtk.ResponseType.REJECT,
-            Gtk.STOCK_CANCEL, Gtk.ResponseType.CANCEL,
-            Gtk.STOCK_OK, Gtk.ResponseType.OK,
+            Gtk.STOCK_DELETE,
+            Gtk.ResponseType.REJECT,
+            Gtk.STOCK_CANCEL,
+            Gtk.ResponseType.CANCEL,
+            Gtk.STOCK_OK,
+            Gtk.ResponseType.OK,
         )
         dialog.set_default_response(Gtk.ResponseType.OK)
-        dialog.connect(
-            "response",
-            self._edit_dialog_response_cb,
-            editable,
-            accel_path
-        )
+        dialog.connect("response", self._edit_dialog_response_cb, editable, accel_path)
 
         evbox = Gtk.EventBox()
         evbox.set_border_width(12)
-        dialog.connect(
-            "key-press-event",
-            self._edit_dialog_key_press_cb,
-            editable
-        )
+        dialog.connect("key-press-event", self._edit_dialog_key_press_cb, editable)
 
         grid = Gtk.Grid()
         grid.set_row_spacing(12)
@@ -498,13 +489,13 @@ class AccelMapEditor (Gtk.Grid):
                 event.state,
                 # https://github.com/mypaint/mypaint/issues/974
                 # event.group
-                1
-            ))
+                1,
+            )
+        )
         keyval = Gdk.keyval_to_lower(keyval)
         mods = Gdk.ModifierType(
-            event.state
-            & Gtk.accelerator_get_default_mod_mask()
-            & ~consumed_modifiers)
+            event.state & Gtk.accelerator_get_default_mod_mask() & ~consumed_modifiers
+        )
 
         # If lowercasing affects the keysym, then we need to include
         # SHIFT in the modifiers. We re-upper case when we match against
@@ -525,12 +516,14 @@ class AccelMapEditor (Gtk.Grid):
         for path, kv, m, changed in self._get_accel_map_entries():
             if (kv, m) == (keyval, mods):
                 clash_accel_path = path
-                clash_action_label = _udecode(self._action_labels.get(
-                    clash_accel_path,
-                    # TRANSLATORS: Part of the keybinding dialog, refers
-                    # TRANSLATORS: to an action bound to a key combination.
-                    _(u"Unknown Action"),
-                ))
+                clash_action_label = _udecode(
+                    self._action_labels.get(
+                        clash_accel_path,
+                        # TRANSLATORS: Part of the keybinding dialog, refers
+                        # TRANSLATORS: to an action bound to a key combination.
+                        _("Unknown Action"),
+                    )
+                )
                 break
         if clash_accel_path == dialog.accel_path:  # no change
             self._edit_dialog_set_standard_hint(dialog)
@@ -540,19 +533,19 @@ class AccelMapEditor (Gtk.Grid):
             markup_tmpl = _(
                 # TRANSLATORS: Warning message when attempting to assign a
                 # TRANSLATORS: keyboard combination that is already used.
-                u"<b>{accel} is already in use for '{action}'. "
-                u"The existing assignment will be replaced.</b>"
+                "<b>{accel} is already in use for '{action}'. "
+                "The existing assignment will be replaced.</b>"
             )
             markup = markup_tmpl.format(
                 accel=lib.xml.escape(accel_label),
                 action=lib.xml.escape(clash_action_label),
             )
             self._edit_dialog_set_hint(dialog, markup)
-            label = u"%s (replace)" % (accel_label,)
+            label = "%s (replace)" % (accel_label,)
             dialog.accel_label_widget.set_text(str(label))
         else:
             self._edit_dialog_set_standard_hint(dialog)
-            label = u"%s (changed)" % (accel_label,)
+            label = "%s (changed)" % (accel_label,)
             dialog.accel_label_widget.set_text(label)
         dialog.result_mods = mods
         dialog.result_keyval = keyval
@@ -584,11 +577,13 @@ class AccelMapEditor (Gtk.Grid):
             if (k, m) != (keyval, mods):
                 continue
             if not Gtk.AccelMap.change_entry(path, 0, 0, True):
-                logger.warning("Failed to delete clashing use of %r (%r)",
-                               accel_name, path)
+                logger.warning(
+                    "Failed to delete clashing use of %r (%r)",
+                    accel_name,
+                    path,
+                )
             else:
-                logger.debug("Deleted clashing use of %r (was %r)",
-                             accel_name, path)
+                logger.debug("Deleted clashing use of %r (was %r)", accel_name, path)
 
     @classmethod
     def _set_accelmap_entry(cls, path, keyval, mods):
@@ -619,12 +614,14 @@ def _udecode(s, enc="utf-8"):
 
 ## Testing
 
+
 def _test():
     win = Gtk.Window()
     win.set_title("accelmap.py")
     win.connect("destroy", Gtk.main_quit)
     builder = Gtk.Builder()
-    import gui.factoryaction   # noqa F401: for side effects only
+    import gui.factoryaction  # noqa F401: for side effects only
+
     builder.add_from_file("gui/resources.xml")
     uimgr = builder.get_object("app_ui_manager")
     editor = AccelMapEditor()
@@ -635,11 +632,13 @@ def _test():
     Gtk.main()
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     logging.basicConfig(level=logging.DEBUG)
     import signal
+
     signal.signal(signal.SIGINT, signal.SIG_DFL)
     import sys
+
     orig_excepthook = sys.excepthook
 
     def _excepthook(*args):

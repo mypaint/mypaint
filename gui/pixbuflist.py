@@ -24,7 +24,7 @@ from lib.pycompat import xrange
 
 logger = logging.getLogger(__name__)
 
-DRAG_ITEM_NAME = 'text/plain'
+DRAG_ITEM_NAME = "text/plain"
 DRAG_ITEM_ID = 103
 DRAG_TARGETS = [(DRAG_ITEM_NAME, Gtk.TargetFlags.SAME_APP, DRAG_ITEM_ID)]
 ITEM_SIZE_DEFAULT = 48
@@ -42,13 +42,17 @@ class PixbufList(Gtk.DrawingArea):
         widget.drag_insertion_index = None
 
     # GType naming, for GtkBuilder
-    __gtype_name__ = 'PixbufList'
+    __gtype_name__ = "PixbufList"
 
-    def __init__(self, itemlist=None,
-                 item_w=ITEM_SIZE_DEFAULT,
-                 item_h=ITEM_SIZE_DEFAULT,
-                 namefunc=None, pixbuffunc=lambda x: x,
-                 idfunc=lambda x: str(id(x))):
+    def __init__(
+        self,
+        itemlist=None,
+        item_w=ITEM_SIZE_DEFAULT,
+        item_h=ITEM_SIZE_DEFAULT,
+        namefunc=None,
+        pixbuffunc=lambda x: x,
+        idfunc=lambda x: str(id(x)),
+    ):
         super(PixbufList, self).__init__()
 
         if itemlist is not None:
@@ -78,10 +82,10 @@ class PixbufList(Gtk.DrawingArea):
         self.connect("configure-event", self.configure_event_cb)
         self.connect("motion-notify-event", self.motion_notify_cb)
         self.set_events(
-            Gdk.EventMask.BUTTON_PRESS_MASK |
-            Gdk.EventMask.BUTTON_RELEASE_MASK |
-            Gdk.EventMask.POINTER_MOTION_MASK |
-            Gdk.EventMask.EXPOSURE_MASK
+            Gdk.EventMask.BUTTON_PRESS_MASK
+            | Gdk.EventMask.BUTTON_RELEASE_MASK
+            | Gdk.EventMask.POINTER_MOTION_MASK
+            | Gdk.EventMask.EXPOSURE_MASK
         )
 
         self.realized_once = False
@@ -102,17 +106,20 @@ class PixbufList(Gtk.DrawingArea):
         self.realized_once = True
         if self.dragging_allowed:
             # DnD setup.
-            self.connect('drag-data-get', self.drag_data_get_cb)
-            self.connect('drag-motion', self.drag_motion_cb)
-            self.connect('drag-leave', self.drag_leave_cb)
-            self.connect('drag-begin', self.drag_begin_cb)
-            self.connect('drag-end', self.drag_end_cb)
-            self.connect('drag-data-received', self.drag_data_received_cb)
+            self.connect("drag-data-get", self.drag_data_get_cb)
+            self.connect("drag-motion", self.drag_motion_cb)
+            self.connect("drag-leave", self.drag_leave_cb)
+            self.connect("drag-begin", self.drag_begin_cb)
+            self.connect("drag-end", self.drag_end_cb)
+            self.connect("drag-data-received", self.drag_data_received_cb)
             # Users can drag pixbufs *to* anywhere on a pixbuflist
             # at all times.
             targets_list = [Gtk.TargetEntry.new(*e) for e in DRAG_TARGETS]
-            self.drag_dest_set(Gtk.DestDefaults.ALL, targets_list,
-                               Gdk.DragAction.MOVE | Gdk.DragAction.COPY)
+            self.drag_dest_set(
+                Gtk.DestDefaults.ALL,
+                targets_list,
+                Gdk.DragAction.MOVE | Gdk.DragAction.COPY,
+            )
             # Dragging *from* a list can only happen over a pixbuf:
             # see motion_notify_cb().
             self.drag_source_sensitive = False
@@ -147,11 +154,12 @@ class PixbufList(Gtk.DrawingArea):
                     # pop up on the 2nd
             if self.dragging_allowed:
                 if not self.drag_source_sensitive:
-                    targets_list = [Gtk.TargetEntry.new(*e) for e in
-                                    DRAG_TARGETS]
+                    targets_list = [Gtk.TargetEntry.new(*e) for e in DRAG_TARGETS]
                     self.drag_source_set(
-                        Gdk.ModifierType.BUTTON1_MASK, targets_list,
-                        Gdk.DragAction.COPY | Gdk.DragAction.MOVE)
+                        Gdk.ModifierType.BUTTON1_MASK,
+                        targets_list,
+                        Gdk.DragAction.COPY | Gdk.DragAction.MOVE,
+                    )
                     self.drag_source_sensitive = True
         else:
             if self.tooltip_text is not None:
@@ -205,12 +213,14 @@ class PixbufList(Gtk.DrawingArea):
             selection.get_data_type(),
         )
         logger.debug("drag-data-get: sending fmt=%r", selection.get_format())
-        logger.debug("drag-data-get: sending data=%r len=%r",
-                     selection.get_data(), len(selection.get_data()))
+        logger.debug(
+            "drag-data-get: sending data=%r len=%r",
+            selection.get_data(),
+            len(selection.get_data()),
+        )
         return True
 
-    def drag_data_received_cb(self, widget, context, x, y, selection,
-                              info, time):
+    def drag_data_received_cb(self, widget, context, x, y, selection, info, time):
         if info != DRAG_ITEM_ID:
             return False
         data = selection.get_text()
@@ -233,10 +243,11 @@ class PixbufList(Gtk.DrawingArea):
         """
         Redraws the widget from scratch.
         """
-        self.total_border = self.border_visible \
-            + self.spacing_inside + self.spacing_outside
-        self.total_w = self.item_w + 2*self.total_border
-        self.total_h = self.item_h + 2*self.total_border
+        self.total_border = (
+            self.border_visible + self.spacing_inside + self.spacing_outside
+        )
+        self.total_w = self.item_w + 2 * self.total_border
+        self.total_h = self.item_h + 2 * self.total_border
 
         if width is None:
             if not self.pixbuf:
@@ -252,10 +263,9 @@ class PixbufList(Gtk.DrawingArea):
         GLib.idle_add(self.set_size_request, self.total_w, height)
 
         self.pixbuf = GdkPixbuf.Pixbuf.new(
-            GdkPixbuf.Colorspace.RGB, True,
-            8, width, height
+            GdkPixbuf.Colorspace.RGB, True, 8, width, height
         )
-        self.pixbuf.fill(0xffffff00)  # transparent
+        self.pixbuf.fill(0xFFFFFF00)  # transparent
         for i, item in enumerate(self.itemlist):
             x = (i % self.tiles_w) * self.total_w
             y = (i // self.tiles_w) * self.total_h
@@ -266,12 +276,23 @@ class PixbufList(Gtk.DrawingArea):
             if pixbuf not in self.thumbnails:
                 self.thumbnails[pixbuf] = helpers.pixbuf_thumbnail(
                     pixbuf,
-                    self.item_w, self.item_h,
+                    self.item_w,
+                    self.item_h,
                 )
             pixbuf = self.thumbnails[pixbuf]
             pixbuf.composite(
-                self.pixbuf, x, y, self.item_w, self.item_h, x, y, 1, 1,
-                GdkPixbuf.InterpType.BILINEAR, 255)
+                self.pixbuf,
+                x,
+                y,
+                self.item_w,
+                self.item_h,
+                x,
+                y,
+                1,
+                1,
+                GdkPixbuf.InterpType.BILINEAR,
+                255,
+            )
 
         self.queue_draw()
 
@@ -305,7 +326,7 @@ class PixbufList(Gtk.DrawingArea):
         if i >= len(self.itemlist):
             return
         item = self.itemlist[i]
-        if (event.button == 3):
+        if event.button == 3:
             self.set_selected(item)
             self.item_popup(item)
         else:
@@ -313,10 +334,12 @@ class PixbufList(Gtk.DrawingArea):
             self.item_selected(item)
             if self.selected is not None:
                 # early exception if drag&drop would break
-                assert self.selected in self.itemlist, \
+                assert self.selected in self.itemlist, (
                     'selection failed: the user selected %r " \
                     "by pointing at it, but after calling item_selected() " \
-                    "%r is active instead!' % (item, self.selected)
+                    "%r is active instead!'
+                    % (item, self.selected)
+                )
             self.in_potential_drag = True
 
     @event
@@ -349,10 +372,12 @@ class PixbufList(Gtk.DrawingArea):
         cr.paint()
         # border colors
         gdkrgba = style_context.get_background_color(
-            state_flags | Gtk.StateFlags.SELECTED)
+            state_flags | Gtk.StateFlags.SELECTED
+        )
         selected_color = uicolor.from_gdk_rgba(gdkrgba)
         gdkrgba = style_context.get_background_color(
-            state_flags | Gtk.StateFlags.NORMAL)
+            state_flags | Gtk.StateFlags.NORMAL
+        )
         insertion_color = uicolor.from_gdk_rgba(gdkrgba)
         style_context.restore()
         # Draw borders
@@ -362,8 +387,9 @@ class PixbufList(Gtk.DrawingArea):
             if b is self.selected:
                 rect_color = selected_color
             elif self.drag_insertion_index is not None:
-                if i == self.drag_insertion_index \
-                        or (i == last_i and self.drag_insertion_index > i):
+                if i == self.drag_insertion_index or (
+                    i == last_i and self.drag_insertion_index > i
+                ):
                     rect_color = insertion_color
             if rect_color is None:
                 continue
@@ -375,22 +401,23 @@ class PixbufList(Gtk.DrawingArea):
             def shrink(pixels, x, y, w, h):
                 x += pixels
                 y += pixels
-                w -= 2*pixels
-                h -= 2*pixels
+                w -= 2 * pixels
+                h -= 2 * pixels
                 return (x, y, w, h)
+
             x, y, w, h = shrink(self.spacing_outside, x, y, w, h)
             for j in xrange(self.border_visible_outside_cell):
                 x, y, w, h = shrink(-1, x, y, w, h)
             max_j = self.border_visible + self.border_visible_outside_cell
             for j in xrange(max_j):
                 cr.set_source_rgb(*rect_color.get_rgb())
-                cr.rectangle(x, y, w-1, h-1)   # FIXME: check pixel alignment
+                cr.rectangle(x, y, w - 1, h - 1)  # FIXME: check pixel alignment
                 cr.stroke()
                 x, y, w, h = shrink(1, x, y, w, h)
         return True
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     logging.basicConfig()
     win = Gtk.Window()
     win.set_title("pixbuflist test")

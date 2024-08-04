@@ -57,7 +57,7 @@ TOOL_WIDGET_NATURAL_HEIGHT_SHORT = TOOL_WIDGET_MIN_WIDTH
 TOOL_WIDGET_NATURAL_HEIGHT_TALL = 1.25 * TOOL_WIDGET_MIN_WIDTH
 
 
-class ToolStack (Gtk.EventBox):
+class ToolStack(Gtk.EventBox):
     """Vertical stack of tool widget groups
 
     The layout has movable dividers between groups of tool widgets, and an
@@ -74,7 +74,7 @@ class ToolStack (Gtk.EventBox):
 
     ## Internal classes: Paned/Notebook tree elements
 
-    class _Paned (Gtk.VPaned):
+    class _Paned(Gtk.VPaned):
         """GtkVPaned specialization acting as an intermediate node in a tree"""
 
         ## Construction
@@ -120,8 +120,7 @@ class ToolStack (Gtk.EventBox):
 
             # Initial sizing and allocation
             self._initial_divider_position = None
-            self._first_alloc_id = self.connect("size-allocate",
-                                                self._first_alloc_cb)
+            self._first_alloc_id = self.connect("size-allocate", self._first_alloc_cb)
 
             # Don't hide stuff in 3.16+
             try:
@@ -132,26 +131,22 @@ class ToolStack (Gtk.EventBox):
         ## Custom widget packing
 
         def pack1_tool_widget_notebook(self, notebook):
-            """Pack a notebook intended for tool widgets as child1.
-            """
+            """Pack a notebook intended for tool widgets as child1."""
             assert isinstance(notebook, ToolStack._Notebook)
             self.pack1(notebook, False, False)
 
         def pack2_placeholder_notebook(self, notebook):
-            """Pack a notebook intended as a placeholder into child2.
-            """
+            """Pack a notebook intended as a placeholder into child2."""
             assert isinstance(notebook, ToolStack._Notebook)
             self.pack2(notebook, True, False)
 
         def pack2_subpaned(self, paned):
-            """Pack a subpaned into child2.
-            """
+            """Pack a subpaned into child2."""
             assert isinstance(paned, ToolStack._Paned)
             self.pack2(paned, True, False)
 
         def _first_alloc_cb(self, widget, alloc):
-            """Try to allocate child widgets their natural size when alloced.
-            """
+            """Try to allocate child widgets their natural size when alloced."""
             # Normally, if child widgets declare a real minimum size then in a
             # structure like this they'll be allocated their minimum size even
             # when there's enough space to give them their natural size. As a
@@ -198,12 +193,12 @@ class ToolStack (Gtk.EventBox):
 
     ## Notebook
 
-    class _Notebook (Gtk.Notebook):
+    class _Notebook(Gtk.Notebook):
         """Tabbed notebook containng a tool widget group"""
 
         ## Behavioural constants
 
-        NOTEBOOK_GROUP_NAME = 'mypaint-workspace-layout-group'
+        NOTEBOOK_GROUP_NAME = "mypaint-workspace-layout-group"
         PLACEHOLDER_HEIGHT = 8
         PLACEHOLDER_WIDTH = 16
         TAB_ICON_SIZE = Gtk.IconSize.MENU  # FIXME: use a central setting
@@ -238,8 +233,10 @@ class ToolStack (Gtk.EventBox):
             self.set_action_widget(action_hbox, Gtk.PackType.END)
             self.connect("show", lambda *a: action_hbox.show_all())
             # Properties button
-            btn = borderless_button(icon_name="mypaint-tab-options-symbolic",
-                                    size=self.ACTION_BUTTON_ICON_SIZE)
+            btn = borderless_button(
+                icon_name="mypaint-tab-options-symbolic",
+                size=self.ACTION_BUTTON_ICON_SIZE,
+            )
             btn.connect("clicked", self._properties_button_clicked_cb)
             action_hbox.pack_start(btn, False, False, 0)
             self._properties_button = btn
@@ -255,8 +252,10 @@ class ToolStack (Gtk.EventBox):
             self._sidebar_swap_button = btn
 
             # Close tab button
-            btn = borderless_button(icon_name="mypaint-close-symbolic",
-                                    size=self.ACTION_BUTTON_ICON_SIZE)
+            btn = borderless_button(
+                icon_name="mypaint-close-symbolic",
+                size=self.ACTION_BUTTON_ICON_SIZE,
+            )
             btn.connect("clicked", self._close_button_clicked_cb)
             action_hbox.pack_start(btn, False, False, 0)
             self._close_button = btn
@@ -317,8 +316,7 @@ class ToolStack (Gtk.EventBox):
             assert self.get_n_pages() > 0
             toolstack = self._toolstack
             toolstack_was_empty = self.get_parent() is toolstack
-            assert toolstack_was_empty \
-                or self is self.get_parent().get_child2()
+            assert toolstack_was_empty or self is self.get_parent().get_child2()
             # Reparenting dance
             parent_paned = ToolStack._Paned(toolstack, self)
             assert self is parent_paned.get_child1()
@@ -349,18 +347,18 @@ class ToolStack (Gtk.EventBox):
             title = _tool_widget_get_title(tool_widget)
             close_tooltip = C_(
                 "workspace: sidebar tabs: button tooltips",
-                u"{tab_title}: close tab",
+                "{tab_title}: close tab",
             ).format(tab_title=title)
             props_tooltip = C_(
                 "workspace: sidebar tabs: button tooltips",
-                u"{tab_title}: tab options and properties",
+                "{tab_title}: tab options and properties",
             ).format(tab_title=title)
             swap_tooltip = C_(
                 "workspace: sidebar tabs: button tooltips",
-                u"{tab_title}: move tab to other sidebar",
+                "{tab_title}: move tab to other sidebar",
             ).format(tab_title=title)
             if not has_properties:
-                props_tooltip = u""
+                props_tooltip = ""
             self._properties_button.set_tooltip_text(props_tooltip)
             self._close_button.set_tooltip_text(close_tooltip)
             self._sidebar_swap_button.set_tooltip_text(swap_tooltip)
@@ -477,17 +475,32 @@ class ToolStack (Gtk.EventBox):
             desc = getattr(tool_widget, "tool_widget_description", None)
             ttsize = cls.TAB_TOOLTIP_ICON_SIZE
             tooltip_icon_pixbuf, tooltip_icon_name = _tool_widget_get_icon(
-                tool_widget,
-                ttsize
+                tool_widget, ttsize
             )
-            label.connect("query-tooltip", cls._tab_label_tooltip_query_cb,
-                          title, desc, tooltip_icon_pixbuf, tooltip_icon_name)
+            label.connect(
+                "query-tooltip",
+                cls._tab_label_tooltip_query_cb,
+                title,
+                desc,
+                tooltip_icon_pixbuf,
+                tooltip_icon_name,
+            )
             label.set_property("has-tooltip", True)
             return label
 
         @classmethod
-        def _tab_label_tooltip_query_cb(cls, widget, x, y, kbd, tooltip,
-                                        title, desc, icon_pixbuf, icon_name):
+        def _tab_label_tooltip_query_cb(
+            cls,
+            widget,
+            x,
+            y,
+            kbd,
+            tooltip,
+            title,
+            desc,
+            icon_pixbuf,
+            icon_name,
+        ):
             """The query-tooltip routine for tool widgets"""
             if icon_pixbuf is not None:
                 tooltip.set_icon(icon_pixbuf)
@@ -498,10 +511,12 @@ class ToolStack (Gtk.EventBox):
                 markup_tmpl = "<b>{title}</b>\n{desc}"
             else:
                 markup_tmpl = "<b>{title}</b>"
-            tooltip.set_markup(markup_tmpl.format(
-                title = lib.xml.escape(title),
-                desc = lib.xml.escape(desc),
-            ))
+            tooltip.set_markup(
+                markup_tmpl.format(
+                    title=lib.xml.escape(title),
+                    desc=lib.xml.escape(desc),
+                )
+            )
             return True
 
         ## Updates
@@ -527,8 +542,7 @@ class ToolStack (Gtk.EventBox):
 
     @property
     def workspace(self):
-        """ Returns reference to the parent workspace, or None
-        """
+        """Returns reference to the parent workspace, or None"""
         return self._workspace_ref()
 
     ## Setup from layout descriptions (pre-realize)
@@ -576,8 +590,7 @@ class ToolStack (Gtk.EventBox):
                 if factory.cache_has(*tool_desc):
                     logger.warning("Duplicate entry %r ignored", tool_desc)
                     continue
-                logger.debug("build_from_layout: building tool %r",
-                             tool_desc)
+                logger.debug("build_from_layout: building tool %r", tool_desc)
                 try:
                     tool_widget = factory.get(*tool_desc)
                     tool_widgets.append(tool_widget)
@@ -683,8 +696,7 @@ class ToolStack (Gtk.EventBox):
         target_notebook = None
         notebooks = self._get_notebooks()
         assert len(notebooks) > 0, (
-            "There should always be at least one Notebook widget "
-            "in any ToolStack."
+            "There should always be at least one Notebook widget " "in any ToolStack."
         )
         for nb in notebooks:
             if nb.get_n_pages() < maxpages:
@@ -699,10 +711,7 @@ class ToolStack (Gtk.EventBox):
         # Adding a page to the placeholder would result in a split
         # in the idle routine later. Check constraint now.
         if maxnotebooks and (target_notebook.get_n_pages() == 0):
-            n_populated_notebooks = len([
-                n for n in notebooks
-                if n.get_n_pages() > 0
-            ])
+            n_populated_notebooks = len([n for n in notebooks if n.get_n_pages() > 0])
             if n_populated_notebooks >= maxnotebooks:
                 return False
         # We're good to go.
@@ -736,8 +745,12 @@ class ToolStack (Gtk.EventBox):
         if target_notebook:
             assert target_page is not None
             assert target_index is not None
-            logger.debug("Removing tool widget i=%d, p=%r, n=%r",
-                         target_index, target_page, target_notebook)
+            logger.debug(
+                "Removing tool widget i=%d, p=%r, n=%r",
+                target_index,
+                target_page,
+                target_notebook,
+            )
             target_page.hide()
             widget.hide()
             target_page.remove(widget)
@@ -780,8 +793,7 @@ class ToolStack (Gtk.EventBox):
             return
         # Show the stack's toplevel, or unfold sidebars
         if toplevel is self.workspace.get_toplevel():
-            logger.debug("Showing %r (ancestor of freshly shown tool %r)",
-                         self, widget)
+            logger.debug("Showing %r (ancestor of freshly shown tool %r)", self, widget)
             scrolls = self.get_parent().get_parent()
             scrolls.show_all()
         else:
@@ -859,8 +871,7 @@ class ToolStack (Gtk.EventBox):
     ## Paned/Notebook tree structure
 
     def _append_new_placeholder(self, old_placeholder):
-        """Appends a new placeholder after a current or former placeholder.
-        """
+        """Appends a new placeholder after a current or former placeholder."""
         paned = ToolStack._Paned(self, old_placeholder)
         return paned.get_child2()
 
@@ -951,7 +962,7 @@ class ToolStack (Gtk.EventBox):
         toplevel.update_title(page_titles)
 
 
-class _ToolWidgetNotebookPage (Gtk.Frame):
+class _ToolWidgetNotebookPage(Gtk.Frame):
     """Page widget container within a notebook.
 
     Intercepts drag-related events which have propagated up from the
@@ -972,7 +983,7 @@ class _ToolWidgetNotebookPage (Gtk.Frame):
         return True
 
 
-class ToolStackWindow (Gtk.Window):
+class ToolStackWindow(Gtk.Window):
     """A floating utility window containing a single `ToolStack`"""
 
     ## Class constants
@@ -1021,8 +1032,7 @@ class ToolStackWindow (Gtk.Window):
         return n_added
 
     def get_layout(self):
-        """Get the window's position and contents in simple dict form.
-        """
+        """Get the window's position and contents in simple dict form."""
         return {
             "position": self._layout_position,
             "contents": self.stack.get_layout(),
@@ -1108,8 +1118,10 @@ class ToolStackWindow (Gtk.Window):
         """Ensure a correct position after the next window map"""
         if self._layout_position is None:
             return
-        pos = (self._layout_position.get("x", None),
-               self._layout_position.get("y", None))
+        pos = (
+            self._layout_position.get("x", None),
+            self._layout_position.get("y", None),
+        )
         if None not in pos:
             self._onmap_position = pos
 
@@ -1145,7 +1157,7 @@ class ToolStackWindow (Gtk.Window):
         fw, fh = self._frame_size
         if None in (fx, fy, fw, fh):
             return False
-        return x >= fx-b and x <= fx+fw+b and y >= fy-b and y <= fy+fh+b
+        return x >= fx - b and x <= fx + fw + b and y >= fy - b and y <= fy + fh + b
 
     ## Window title
 
@@ -1159,17 +1171,17 @@ class ToolStackWindow (Gtk.Window):
             title_suffix = unicode(workspace.floating_window_title_suffix)
             if title_suffix:
                 title += unicode(title_suffix)
-            logger.debug(u"Renamed floating window title to \"%s\"", title)
+            logger.debug('Renamed floating window title to "%s"', title)
             self.set_title(title)
 
 
-class SizedVBoxToolWidget (Gtk.VBox):
-    """Base class for VBox tool widgets, with convenient natural height setting.
+class SizedVBoxToolWidget(Gtk.VBox):
+    """
+    Base class for VBox tool widgets, with convenient natural height setting.
 
     This mixin can be used for tool widgets implemented as `GtkVBox`es to give
     them a default natural height which might be greater than the sum of their
     constituent widgets' minimum heights.
-
     """
 
     #: Suggested natural height for the widget.
@@ -1189,6 +1201,7 @@ class SizedVBoxToolWidget (Gtk.VBox):
         nath = max(nath, self.SIZED_VBOX_NATURAL_HEIGHT)
         minh = max(minh, TOOL_WIDGET_MIN_HEIGHT)
         return minh, max(minh, nath)
+
 
 ## Utility functions
 
@@ -1236,5 +1249,5 @@ def _tool_widget_get_icon(widget, icon_size):
         if pixbuf:
             return (pixbuf, None)
     # Try the icon name property. Fallback is a name we know will work.
-    icon_name = getattr(widget, "tool_widget_icon_name", 'missing-image')
+    icon_name = getattr(widget, "tool_widget_icon_name", "missing-image")
     return (None, icon_name)

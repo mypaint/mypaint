@@ -24,9 +24,8 @@ from .util import clamp
 from .combined import CombinedAdjusterPage
 
 
-class HSVHueSaturationWheel (HueSaturationWheelAdjuster):
-    """Hue, Saturation and Value wheel.
-    """
+class HSVHueSaturationWheel(HueSaturationWheelAdjuster):
+    """Hue, Saturation and Value wheel."""
 
     STATIC_TOOLTIP_TEXT = _("HSV Hue and Saturation")
 
@@ -38,10 +37,12 @@ class HSVHueSaturationWheel (HueSaturationWheelAdjuster):
     def __scroll_cb(self, widget, event):
         d = self.SCROLL_DELTA
         if event.direction in (
-                Gdk.ScrollDirection.DOWN, Gdk.ScrollDirection.LEFT):
+            Gdk.ScrollDirection.DOWN,
+            Gdk.ScrollDirection.LEFT,
+        ):
             d *= -1
         col = HSVColor(color=self.get_managed_color())
-        v = clamp(col.v+d, 0.0, 1.0)
+        v = clamp(col.v + d, 0.0, 1.0)
         if col.v != v:
             col.v = v
             self.set_managed_color(col)
@@ -58,9 +59,8 @@ class HSVHueSaturationWheel (HueSaturationWheelAdjuster):
         return col
 
 
-class HSVAdjusterPage (CombinedAdjusterPage):
-    """Page details for the HSV wheel.
-    """
+class HSVAdjusterPage(CombinedAdjusterPage):
+    """Page details for the HSV wheel."""
 
     def __init__(self):
 
@@ -75,20 +75,18 @@ class HSVAdjusterPage (CombinedAdjusterPage):
         row = 0
         xopts = Gtk.AttachOptions.FILL | Gtk.AttachOptions.EXPAND
         yopts = Gtk.AttachOptions.FILL | Gtk.AttachOptions.EXPAND
-        table.attach(
-            v_align, 0, 1, row, row+1,
-            Gtk.AttachOptions.FILL, yopts, 3, 3)
-        table.attach(self.__hs_adj, 1, 2, row, row+1, xopts, yopts, 3, 3)
+        table.attach(v_align, 0, 1, row, row + 1, Gtk.AttachOptions.FILL, yopts, 3, 3)
+        table.attach(self.__hs_adj, 1, 2, row, row + 1, xopts, yopts, 3, 3)
 
         self.__table = table
 
     @classmethod
     def get_page_icon_name(self):
-        return 'mypaint-tool-hsvwheel'
+        return "mypaint-tool-hsvwheel"
 
     @classmethod
     def get_page_title(self):
-        return _('HSV Wheel')
+        return _("HSV Wheel")
 
     @classmethod
     def get_page_description(self):
@@ -106,11 +104,12 @@ class HSVAdjusterPage (CombinedAdjusterPage):
         self.__hs_adj.set_color_manager(manager)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     import os
     import sys
     from adjbases import ColorManager
-    mgr = ColorManager(prefs={}, datapath='.')
+
+    mgr = ColorManager(prefs={}, datapath=".")
     if len(sys.argv) > 1:
         # Generate icons
         mgr.set_color(HSVColor(0.0, 0.0, 0.8))

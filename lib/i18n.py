@@ -20,14 +20,14 @@ import os
 import sys
 import locale
 import logging
+
 logger = logging.getLogger(__name__)
 
 USER_LOCALE_PREF = "lib.i18n.userlocale"
 
 
 def getdefaultlocale():
-    """Return default locale or None
-    """
+    """Return default locale or None"""
     try:
         return locale.getdefaultlocale()
     except Exception:
@@ -101,9 +101,12 @@ def set_i18n_envvars():
         # overridden by a POSIX-style LANG or LANGUAGE var.
         try:
             import ctypes
+
             k32 = ctypes.windll.kernel32
-            for lang_k32 in [k32.GetUserDefaultUILanguage(),
-                             k32.GetSystemDefaultUILanguage()]:
+            for lang_k32 in [
+                k32.GetUserDefaultUILanguage(),
+                k32.GetSystemDefaultUILanguage(),
+            ]:
                 lang = locale.windows_locale.get(lang_k32)
                 if lang not in langs:
                     langs.append(lang)
@@ -133,8 +136,8 @@ def set_i18n_envvars():
         # override all of the above. Since MSYS2 shells are going to use
         # them, that's reasonable.
         if langs:
-            os.environ.setdefault('LANG', langs[0])
-            os.environ.setdefault('LANGUAGE', ":".join(langs))
+            os.environ.setdefault("LANG", langs[0])
+            os.environ.setdefault("LANGUAGE", ":".join(langs))
         logger.info("Windows: LANG=%r", os.environ.get("LANG"))
         logger.info("Windows: LANGUAGE=%r", os.environ.get("LANGUAGE"))
 
@@ -151,11 +154,11 @@ def set_i18n_envvars():
             )
             locale_id = NSLocale.currentLocale().localeIdentifier()
             lang = osx_locale_id_to_lang(locale_id)
-            os.environ.setdefault('LANG', lang)
+            os.environ.setdefault("LANG", lang)
             preferred_langs = NSLocale.preferredLanguages()
             if preferred_langs:
                 languages = map(bcp47_to_language, preferred_langs)
-                os.environ.setdefault('LANGUAGE', ":".join(languages))
+                os.environ.setdefault("LANGUAGE", ":".join(languages))
         logger.info("OSX: LANG=%r", os.environ.get("LANG"))
         logger.info("OSX: LANGUAGE=%r", os.environ.get("LANGUAGE"))
 

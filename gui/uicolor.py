@@ -45,7 +45,7 @@ def to_gdk_color(color):
     '#ffffffffffff'
 
     """
-    return Gdk.Color(*[int(c*65535) for c in color.get_rgb()])
+    return Gdk.Color(*[int(c * 65535) for c in color.get_rgb()])
 
 
 def from_gdk_rgba(gdk_rgba):
@@ -56,7 +56,7 @@ def from_gdk_rgba(gdk_rgba):
 
     """
     rgbflt = (gdk_rgba.red, gdk_rgba.green, gdk_rgba.blue)
-    return RGBColor(*[clamp(c, 0., 1.) for c in rgbflt])
+    return RGBColor(*[clamp(c, 0.0, 1.0) for c in rgbflt])
 
 
 def to_gdk_rgba(color):
@@ -79,23 +79,23 @@ def from_drag_data(bytes):
     The data format is 8 bytes, RRGGBBAA, with assumed native endianness.
     Alpha is ignored.
     """
-    r, g, b, a = [h / 0xffff for h in struct.unpack("=HHHH", bytes)]
+    r, g, b, a = [h / 0xFFFF for h in struct.unpack("=HHHH", bytes)]
     return RGBColor(r, g, b)
     # TODO: check endianness
 
 
 def to_drag_data(color):
     """Converts to bytes for dragging as application/x-color."""
-    rgba = [int(c * 0xffff) for c in color.get_rgb()]
-    rgba.append(0xffff)
+    rgba = [int(c * 0xFFFF) for c in color.get_rgb()]
+    rgba.append(0xFFFF)
     return struct.pack("=HHHH", *rgba)
 
 
 def _test():
     import doctest
+
     doctest.testmod()
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     _test()
-

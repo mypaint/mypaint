@@ -32,31 +32,34 @@ from lib.gibindings import Gtk
 import lib.xml
 
 import logging
+
 logger = logging.getLogger(__name__)
 
 ## UI string consts
 
 # TRANSLATORS: Statusbar message when "Edit in External App"
 # TRANSLATORS: (for a layer) is successfully initiated.
-_LAUNCH_SUCCESS_MSG = _(u"Launched {app_name} to edit layer “{layer_name}”")
+_LAUNCH_SUCCESS_MSG = _("Launched {app_name} to edit layer “{layer_name}”")
 
 # TRANSLATORS: Statusbar message shown when the app chosen for
 # TRANSLATORS: "Edit in External App" (for a layer) failed to open.
-_LAUNCH_FAILED_MSG = _(u"Error: failed to launch {app_name} to edit "
-                       u"layer “{layer_name}”")
+_LAUNCH_FAILED_MSG = _(
+    "Error: failed to launch {app_name} to edit " "layer “{layer_name}”"
+)
 
 # TRANSLATORS: Statusbar message for when an "Edit in External App"
 # TRANSLATORS: operation is cancelled by the user before it starts.
-_LAUNCH_CANCELLED_MSG = _(u"Editing cancelled. You can still edit "
-                          u"“{layer_name}” from the Layers menu.")
+_LAUNCH_CANCELLED_MSG = _(
+    "Editing cancelled. You can still edit " "“{layer_name}” from the Layers menu."
+)
 
 # TRANSLATORS: This is a statusbar message shown when
 # TRANSLATORS:  a layer is updated from an external edit
-_LAYER_UPDATED_MSG = _(u"Updated layer “{layer_name}” with external edits")
+_LAYER_UPDATED_MSG = _("Updated layer “{layer_name}” with external edits")
 
 _LAYER_UPDATE_FAILED_MSG = C_(
     "Edit in External App (statusbar message)",
-    u"Failed to update layer with external edits from “{file_basename}”.",
+    "Failed to update layer with external edits from “{file_basename}”.",
 )
 
 
@@ -64,7 +67,7 @@ _LAYER_UPDATE_FAILED_MSG = C_(
 # Required (in some cases) for launching programs for external
 # editing, and for opening web browsers, from appimages.
 
-_MYP_ENV_NAME = 'MYPAINT_ENV_CLEAN'
+_MYP_ENV_NAME = "MYPAINT_ENV_CLEAN"
 
 _ORIGINAL_ENV = None
 
@@ -96,11 +99,16 @@ def original_environ():
     elif _ORIGINAL_ENV is None:
         with open(os.environ[_MYP_ENV_NAME]) as f:
             orig = f.read()
-            _ORIGINAL_ENV = {
-                varname: value for
-                varname, value in
-                (s.split('=', 1)for s in orig.split('\0') if '=' in s)
-            } if orig else {}
+            _ORIGINAL_ENV = (
+                {
+                    varname: value
+                    for varname, value in (
+                        s.split("=", 1) for s in orig.split("\0") if "=" in s
+                    )
+                }
+                if orig
+                else {}
+            )
     return _ORIGINAL_ENV
 
 
@@ -130,7 +138,7 @@ def restore_env(ctx):
     # so we loop through and unset/set each name/pair instead.
     # If startup time needs to be reduced by (at most) a few ms:s,
     # the dirty/clean list/dict should both be safe to cache.
-    for varname, __ in (s.split('=', 1) for s in dirty):
+    for varname, __ in (s.split("=", 1) for s in dirty):
         ctx.unsetenv(varname)
     for varname, value in original_environ().items():
         ctx.setenv(varname, value)
@@ -138,22 +146,23 @@ def restore_env(ctx):
 
 # Class definitions
 
-class OpenWithDialog (Gtk.Dialog):
+
+class OpenWithDialog(Gtk.Dialog):
     """Choose an app from those recommended for a type"""
 
     ICON_SIZE = Gtk.IconSize.DIALOG
     SPECIFIC_FILE_MSG = _(
-        u"MyPaint needs to edit a file of type \u201c{type_name}\u201d "
-        u"({content_type}). What application should it use?"
+        "MyPaint needs to edit a file of type \u201c{type_name}\u201d "
+        "({content_type}). What application should it use?"
     )
     GENERIC_MSG = _(
-        u"What application should MyPaint use for editing files of "
-        u"type \u201c{type_name}\u201d ({content_type})?"
+        "What application should MyPaint use for editing files of "
+        "type \u201c{type_name}\u201d ({content_type})?"
     )
 
     def __init__(self, content_type, specific_file=False):
         Gtk.Dialog.__init__(self)
-        self.set_title(_(u"Open With…"))
+        self.set_title(_("Open With…"))
         self.add_button(Gtk.STOCK_CANCEL, Gtk.ResponseType.CANCEL)
         self.add_button(Gtk.STOCK_OK, Gtk.ResponseType.OK)
         self.set_default_response(Gtk.ResponseType.CANCEL)
@@ -234,7 +243,7 @@ class OpenWithDialog (Gtk.Dialog):
         selection.connect("changed", self._selection_changed_cb)
 
         # Results go here
-        self.selected_appinfo = default_app   #: The app the user chose
+        self.selected_appinfo = default_app  #: The app the user chose
 
     def _show_cb(self, dialog):
         content_box = self.get_content_area()
@@ -282,7 +291,7 @@ class OpenWithDialog (Gtk.Dialog):
             self.set_default_response(Gtk.ResponseType.CANCEL)
 
 
-class LayerEditManager (object):
+class LayerEditManager(object):
     """Launch external apps to edit layers, monitoring file changes"""
 
     def __init__(self, doc):
@@ -317,7 +326,7 @@ class LayerEditManager (object):
         except AttributeError:
             return
         file_path = new_edit_tempfile()
-        if os.name == 'nt':
+        if os.name == "nt":
             self._begin_file_edit_using_startfile(file_path, layer)
             # Avoid segfault: https://github.com/mypaint/mypaint/issues/531
             # Upstream: https://bugzilla.gnome.org/show_bug.cgi?id=758248
@@ -330,9 +339,10 @@ class LayerEditManager (object):
         os.startfile(file_path, "edit")
         self._doc.app.show_transient_message(
             _LAUNCH_SUCCESS_MSG.format(
-                app_name = "(unknown Win32 app)",  # FIXME: needs i18n
-                layer_name = layer.name,
-            ))
+                app_name="(unknown Win32 app)",  # FIXME: needs i18n
+                layer_name=layer.name,
+            )
+        )
 
     def _begin_file_edit_using_gio(self, file_path, layer):
         logger.info("Using OpenWithDialog and GIO to open %r", file_path)
@@ -354,7 +364,8 @@ class LayerEditManager (object):
             self._doc.app.show_transient_message(
                 _LAUNCH_CANCELLED_MSG.format(
                     layer_name=layer.name,
-                ))
+                )
+            )
             return
         appinfo = dialog.selected_appinfo
         assert appinfo is not None
@@ -375,7 +386,8 @@ class LayerEditManager (object):
                 _LAUNCH_FAILED_MSG.format(
                     app_name=appinfo.get_name(),
                     layer_name=layer.name,
-                ))
+                )
+            )
             logger.error(
                 "Failed to launch %r with %r",
                 appinfo.get_name(),
@@ -386,12 +398,12 @@ class LayerEditManager (object):
             _LAUNCH_SUCCESS_MSG.format(
                 app_name=appinfo.get_name(),
                 layer_name=layer.name,
-            ))
+            )
+        )
 
     def _begin_file_monitoring_using_gio(self, file_path, layer):
         self._cleanup_stale_monitors(added_layer=layer)
-        logger.debug("Begin monitoring %r for changes (layer=%r)",
-                     file_path, layer)
+        logger.debug("Begin monitoring %r for changes (layer=%r)", file_path, layer)
         file = Gio.File.new_for_path(file_path)
         file_mon = file.monitor_file(Gio.FileMonitorFlags.NONE, None)
         file_mon.connect("changed", self._file_changed_cb)
@@ -420,13 +432,13 @@ class LayerEditManager (object):
                     str(ex),
                 )
                 status_msg = _LAYER_UPDATE_FAILED_MSG.format(
-                    file_basename = file_basename,
-                    layer_name = layer.name,
+                    file_basename=file_basename,
+                    layer_name=layer.name,
                 )
             else:
                 status_msg = _LAYER_UPDATED_MSG.format(
-                    file_basename = file_basename,
-                    layer_name = layer.name,
+                    file_basename=file_basename,
+                    layer_name=layer.name,
                 )
             self._doc.app.show_transient_message(status_msg)
             return
@@ -462,10 +474,10 @@ class LayerEditManager (object):
             if stale:
                 mon.cancel()
                 logger.info("File %r is no longer monitored", file.get_path())
-                self._active_edits[i:i+1] = []
+                self._active_edits[i : i + 1] = []
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     logging.basicConfig(level=logging.DEBUG)
     dialog = OpenWithDialog("image/svg+xml")
     # dialog = OpenWithDialog("text/plain")

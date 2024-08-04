@@ -22,7 +22,7 @@ import xml.etree.ElementTree as _ET
 # Namespaces are registered by importing this module.
 
 OPENRASTER_MEDIA_TYPE = "image/openraster"
-OPENRASTER_VERSION = u"0.0.5"
+OPENRASTER_VERSION = "0.0.5"
 OPENRASTER_MYPAINT_NS = "http://mypaint.org/ns/openraster"
 
 _OPENRASTER_NAMESPACES = {
@@ -34,6 +34,7 @@ for prefix, uri in _OPENRASTER_NAMESPACES.items():
 
 ## Helper functions
 
+
 def indent_etree(elem, level=0):
     """Indent an XML etree.
 
@@ -41,14 +42,14 @@ def indent_etree(elem, level=0):
     Source: http://effbot.org/zone/element-lib.htm#prettyprint
 
     """
-    i = "\n" + level*"  "
+    i = "\n" + level * "  "
     if len(elem):
         if not elem.text or not elem.text.strip():
             elem.text = i + "  "
         if not elem.tail or not elem.tail.strip():
             elem.tail = i
         for elem in elem:
-            indent_etree(elem, level+1)
+            indent_etree(elem, level + 1)
         if not elem.tail or not elem.tail.strip():
             elem.tail = i
     else:
@@ -110,6 +111,7 @@ def escape(u, quot=False, apos=False):
 
 def _test(self):
     import doctest
+
     doctest.testmod()
 
 

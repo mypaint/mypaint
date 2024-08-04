@@ -101,10 +101,10 @@ from __future__ import division, print_function
 
 MYPAINT_PROGRAM_NAME = "MyPaint"
 
-ALPHA = '-alpha'
-BETA = '-beta'
-RC = '-rc'
-VALID_PRERELEASE_VALUES = {'', ALPHA, BETA, RC}
+ALPHA = "-alpha"
+BETA = "-beta"
+RC = "-rc"
+VALID_PRERELEASE_VALUES = {"", ALPHA, BETA, RC}
 
 MAJOR = 2
 MINOR = 1
@@ -123,11 +123,13 @@ if PREREL == ALPHA:
 #: This is required to match a tag in git for formal releases. However
 #: for pre-release (hyphenated) base versions, the formal version will
 #: be further decorated with the number of commits following the tag.
-MYPAINT_VERSION = '{major}.{minor}.{patch}{prerel}'.format(
-    major=MAJOR, minor=MINOR, patch=PATCH,
+MYPAINT_VERSION = "{major}.{minor}.{patch}{prerel}".format(
+    major=MAJOR,
+    minor=MINOR,
+    patch=PATCH,
     prerel=PREREL and
     # Prerelease numbers should only be used for beta releases
-    PREREL + ('.' + str(PREREL_NUM) if PREREL in {BETA, RC} else '')
+    PREREL + ("." + str(PREREL_NUM) if PREREL in {BETA, RC} else ""),
 )
 
 
@@ -155,26 +157,26 @@ def _parse_version_string(version_string):
     >>> _parse_version_string('2.2.1-rc')
     (2, 2, 1, '-rc')
     """
-    if '-' in version_string:
-        i = version_string.index('-')
+    if "-" in version_string:
+        i = version_string.index("-")
         prerel = version_string[i:]
         version_string = version_string[:i]
         # Strip prerelease number
-        if '.' in prerel:
-            prerel = prerel[:prerel.index('.')]
+        if "." in prerel:
+            prerel = prerel[: prerel.index(".")]
     else:
-        prerel = ''
+        prerel = ""
     try:
         assert prerel in VALID_PRERELEASE_VALUES
-        major, minor, patch = (int(f) for f in version_string.split('.'))
+        major, minor, patch = (int(f) for f in version_string.split("."))
         return major, minor, patch, prerel
     except (ValueError, AssertionError):
         return None
 
 
 class Compatibility:
-    """ Enum-like class holding only compatibility type constants
-    """
+    """Enum-like class holding only compatibility type constants"""
+
     # app major version < file major version
     INCOMPATIBLE = 1
     # app major version = file major version and
@@ -185,14 +187,14 @@ class Compatibility:
     FULLY = 3
 
     DESC = {
-        INCOMPATIBLE: 'incompatible',
-        PARTIALLY: 'only partially compatible',
-        FULLY: 'compatible',
+        INCOMPATIBLE: "incompatible",
+        PARTIALLY: "only partially compatible",
+        FULLY: "compatible",
     }
 
 
 def compatibility(target_version_string):
-    """ Check if the current version is compatible
+    """Check if the current version is compatible
 
     :param target_version_string: Version string to test against
     :return: The compatibility of the current version with the target version
@@ -205,7 +207,7 @@ def compatibility(target_version_string):
 
 
 def _compatibility(target_version_fields, current_version_fields):
-    """ Internal implementation of version compatibility check
+    """Internal implementation of version compatibility check
 
     >>> C = Compatibility
     >>> _compatibility((1,0,0,''), (1,0,0,'')) == (C.FULLY, False)
@@ -236,10 +238,11 @@ def _compatibility(target_version_fields, current_version_fields):
         comp = C.PARTIALLY
     else:
         comp = C.FULLY
-    return (comp, t_prerel != '')
+    return (comp, t_prerel != "")
 
 
 # Release building magic
+
 
 def _get_versions(gitprefix="gitexport"):
     """Gets all version strings for use in release/build scripting.
@@ -264,6 +267,7 @@ def _get_versions(gitprefix="gitexport"):
     import os
     import sys
     import subprocess
+
     # Establish some fallbacks for use when there's no .git present,
     # or no release_info.
     base_version = MYPAINT_VERSION
@@ -294,9 +298,11 @@ def _get_versions(gitprefix="gitexport"):
             try:
                 objsha = subprocess.check_output(cmd, universal_newlines=True)
             except (OSError, subprocess.CalledProcessError):
-                print("ERROR: Failed to invoke %r. Build will be marked as "
-                      "unsupported." % (" ".join(cmd), ),
-                      file=sys.stderr)
+                print(
+                    "ERROR: Failed to invoke %r. Build will be marked as "
+                    "unsupported." % (" ".join(cmd),),
+                    file=sys.stderr,
+                )
             else:
                 build_ids = [gitprefix, objsha.strip()]
                 build_metadata = ".".join(build_ids)
@@ -310,20 +316,24 @@ def _get_versions(gitprefix="gitexport"):
         try:
             git_desc = subprocess.check_output(cmd, universal_newlines=True)
         except (OSError, subprocess.CalledProcessError):
-            print("ERROR: Failed to invoke %r. Build will be marked as "
-                  "unsupported." % (" ".join(cmd), ),
-                  file=sys.stderr)
+            print(
+                "ERROR: Failed to invoke %r. Build will be marked as "
+                "unsupported." % (" ".join(cmd),),
+                file=sys.stderr,
+            )
         else:
             git_desc = git_desc.strip()
             # If MYPAINT_VERSION matches the most recent tag in git,
             # then use the extra information from `git describe`.
-            parse_pattern = r'''
+            parse_pattern = r"""
                 ^ v{base_version}   #  Expected base version.
                 (?:-(\d+))?         #1 Number of commits since the tag.
                 (?:-g([0-9a-f]+))?  #2 Abbr'd SHA of the git tree exported.
                 (?:-(dirty))?       #3 Highlight uncommitted changes.
                 $
-            '''.rstrip().format(base_version=re.escape(base_version))
+            """.rstrip().format(
+                base_version=re.escape(base_version)
+            )
             parse_re = re.compile(parse_pattern, re.VERBOSE | re.IGNORECASE)
             match = parse_re.match(git_desc)
             objsha = None
@@ -332,37 +342,49 @@ def _get_versions(gitprefix="gitexport"):
             if match:
                 (nrevs, objsha, dirty) = match.groups()
             else:
-                print("WARNING: Failed to parse output of \"{cmd}\". "
-                      "The base MYPAINT_VERSION ({ver}) from the code "
-                      "should be present in the output of this command "
-                      "({git_desc}).".format(cmd=" ".join(cmd),
-                                             git_desc=repr(git_desc),
-                                             ver=base_version),
-                      file=sys.stderr)
-                print("HINT: make sure you have the most recent tags: "
-                      "git fetch --tags",
-                      file=sys.stderr)
+                print(
+                    'WARNING: Failed to parse output of "{cmd}". '
+                    "The base MYPAINT_VERSION ({ver}) from the code "
+                    "should be present in the output of this command "
+                    "({git_desc}).".format(
+                        cmd=" ".join(cmd),
+                        git_desc=repr(git_desc),
+                        ver=base_version,
+                    ),
+                    file=sys.stderr,
+                )
+                print(
+                    "HINT: make sure you have the most recent tags: "
+                    "git fetch --tags",
+                    file=sys.stderr,
+                )
                 cmd = ["git", "rev-parse", "--short", "HEAD"]
                 print(
-                    "WARNING: falling back to using just \"{cmd}\".".format(
-                        cmd=" ".join(cmd)),
-                    file=sys.stderr)
+                    'WARNING: falling back to using just "{cmd}".'.format(
+                        cmd=" ".join(cmd)
+                    ),
+                    file=sys.stderr,
+                )
                 try:
-                    cmdout = subprocess.check_output(
-                        cmd, universal_newlines=True)
+                    cmdout = subprocess.check_output(cmd, universal_newlines=True)
                 except (OSError, subprocess.CalledProcessError):
-                    print("ERROR: Failed to invoke %r. Build will be marked "
-                          "as unsupported." % (" ".join(cmd), ),
-                          file=sys.stderr)
+                    print(
+                        "ERROR: Failed to invoke %r. Build will be marked "
+                        "as unsupported." % (" ".join(cmd),),
+                        file=sys.stderr,
+                    )
                 else:
                     cmdout = cmdout.strip()
-                if re.match(r'^([0-9a-f]{7,})$', cmdout, re.I):
+                if re.match(r"^([0-9a-f]{7,})$", cmdout, re.I):
                     objsha = cmdout
                 else:
-                    print("WARNING: Output of {cmd} ({output}) does not look "
-                          "like a git revision SHA.".format(cmd=" ".join(cmd),
-                                                            output=cmdout),
-                          file=sys.stderr)
+                    print(
+                        "WARNING: Output of {cmd} ({output}) does not look "
+                        "like a git revision SHA.".format(
+                            cmd=" ".join(cmd), output=cmdout
+                        ),
+                        file=sys.stderr,
+                    )
             # nrevs is None or zero if this commit is the matched tag.
             # If not, then incorporate the numbers somehow.
             if nrevs and int(nrevs) > 0:
@@ -374,8 +396,7 @@ def _get_versions(gitprefix="gitexport"):
                         "A new 'vX.Y.Z-alpha' phase tag needs to be "
                         "created for the next version now, "
                         "and lib.meta.MYPAINT_VERSION needs to be "
-                        "updated to match it."
-                        .format(
+                        "updated to match it.".format(
                             ver=base_version,
                         )
                     )
@@ -428,5 +449,5 @@ def _get_release_info_script(gitprefix="gitexport"):
 # it to generate the release_info script in the release tarball it
 # makes.
 
-if __name__ == '__main__':
-    print(_get_release_info_script(), end=' ')
+if __name__ == "__main__":
+    print(_get_release_info_script(), end=" ")

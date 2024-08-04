@@ -27,7 +27,7 @@ from lib.helpers import gdkpixbuf2numpy
 ## Class definitions
 
 
-class _CColorChanger (gui.colors.adjbases.IconRenderableColorAdjusterWidget):
+class _CColorChanger(gui.colors.adjbases.IconRenderableColorAdjusterWidget):
     """Color changer with a C++ backend in mypaintlib
 
     These are the old popup colour changers, exposed as sidebar-friendly
@@ -57,8 +57,11 @@ class _CColorChanger (gui.colors.adjbases.IconRenderableColorAdjusterWidget):
         self._backend.set_brush_color(*self._hsv)
         size = self._backend.get_size()
         pixbuf = GdkPixbuf.Pixbuf.new(
-            GdkPixbuf.Colorspace.RGB, True, 8,
-            size, size,
+            GdkPixbuf.Colorspace.RGB,
+            True,
+            8,
+            size,
+            size,
         )
         arr = gdkpixbuf2numpy(pixbuf)
         self._backend.render(arr)
@@ -101,20 +104,23 @@ class _CColorChanger (gui.colors.adjbases.IconRenderableColorAdjusterWidget):
         self._hsv = col.get_hsv()
 
 
-class CrossedBowl (_CColorChanger):
+class CrossedBowl(_CColorChanger):
     """Color changer with HSV ramps crossing a sort of bowl thing."""
+
     BACKEND_CLASS = mypaintlib.ColorChangerCrossedBowl
     IS_IMMEDIATE = False
 
 
-class Wash (_CColorChanger):
+class Wash(_CColorChanger):
     """Weird trippy wash of colors."""
+
     BACKEND_CLASS = mypaintlib.ColorChangerWash
     IS_IMMEDIATE = False
 
 
-class Rings (_CColorChanger):
+class Rings(_CColorChanger):
     """HSV color rings, nested one inside the other."""
+
     BACKEND_CLASS = mypaintlib.SCWSColorSelector
     IS_IMMEDIATE = True
 
@@ -122,11 +128,12 @@ class Rings (_CColorChanger):
 ## Testing and icon generation
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     from lib.gibindings import Gtk
     import os
     import sys
-    mgr = gui.colors.ColorManager(prefs={}, datapath='.')
+
+    mgr = gui.colors.ColorManager(prefs={}, datapath=".")
     widget_classes = [CrossedBowl, Wash, Rings]
     widgets = []
     for widget_class in widget_classes:

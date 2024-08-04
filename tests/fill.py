@@ -33,48 +33,49 @@ def exact_bbox(layer):
     _x, _y, w, h = bbox
     tile_coordinates = layer.get_tile_coords()
     surf = layer._surface
-    min_tx, min_ty = _x//N, _y//N
-    max_tx, max_ty = (_x + w - 1)//N, (_y + h - 1)//N
+    min_tx, min_ty = _x // N, _y // N
+    max_tx, max_ty = (_x + w - 1) // N, (_y + h - 1) // N
 
     # The x and y bound searches are very similar,
     # but much more legible when written separately
     def y_bound(ty, bound, base, offset):
-        for tx in range(min_tx, max_tx+1):
+        for tx in range(min_tx, max_tx + 1):
             if (tx, ty) not in tile_coordinates:
                 continue
             with surf.tile_request(tx, ty, readonly=True) as tile:
-                for (y, x) in product(range(base, bound, offset), range(N)):
+                for y, x in product(range(base, bound, offset), range(N)):
                     if tile[y, x, 3] > 0:
                         bound = y
                         break
         return bound
 
     def x_bound(tx, bound, base, offset):
-        for ty in range(min_ty, max_ty+1):
+        for ty in range(min_ty, max_ty + 1):
             if (tx, ty) not in tile_coordinates:
                 continue
             with surf.tile_request(tx, ty, readonly=True) as tile:
                 # Beware of awful (but convenient) memory access pattern below
-                for (x, y) in product(range(base, bound, offset), range(N)):
+                for x, y in product(range(base, bound, offset), range(N)):
                     if tile[y, x, 3] > 0:
                         bound = x
                         break
         return bound
 
-    min_y = y_bound(min_ty, N-1, 0, 1)
-    max_y = y_bound(max_ty, 0, N-1, -1)
-    min_x = x_bound(min_tx, N-1, 0, 1)
-    max_x = x_bound(max_tx, 0, N-1, -1)
+    min_y = y_bound(min_ty, N - 1, 0, 1)
+    max_y = y_bound(max_ty, 0, N - 1, -1)
+    min_x = x_bound(min_tx, N - 1, 0, 1)
+    max_x = x_bound(max_tx, 0, N - 1, -1)
 
     bbox.x += min_x
     bbox.y += min_y
-    bbox.w += max_x - (min_x + N-1)
-    bbox.h += max_y - (min_y + N-1)
+    bbox.w += max_x - (min_x + N - 1)
+    bbox.h += max_y - (min_y + N - 1)
     return bbox
 
 
 def fill_test(test_func):
     """Decorator for fill tests; clears fill layers between tests"""
+
     def inner(self, *args, **kwargs):
         assert isinstance(self, FillTestsBase)
         self.clear_fill_layers()
@@ -93,7 +94,7 @@ class FillTestsBase(unittest.TestCase):
     @staticmethod
     def center(bbox):
         x, y, w, h = bbox
-        return x + w//2, y + h//2
+        return x + w // 2, y + h // 2
 
     @staticmethod
     def area(bbox):
@@ -111,18 +112,21 @@ class FillTestsBase(unittest.TestCase):
             with s1.tile_request(tx, ty, readonly=True) as t1:
                 with s2.tile_request(tx, ty, readonly=True) as t2:
                     if not (t1 is t2 or (t1 == t2).all()):
-                        print(
-                            "\nTile not matching={tile}!".format(
-                                tile=(tx, ty)
-                            )
-                        )
+                        print("\nTile not matching={tile}!".format(tile=(tx, ty)))
                         return False
         return True
 
     def fill(
-            self, src, dst, bbox=None, init_xy=None,
-            tol=0.2, offset=0, feather=0, gc=None,
-            framed=False
+        self,
+        src,
+        dst,
+        bbox=None,
+        init_xy=None,
+        tol=0.2,
+        offset=0,
+        feather=0,
+        gc=None,
+        framed=False,
     ):
         """
         :param src: Outline goes here
@@ -152,9 +156,18 @@ class FillTestsBase(unittest.TestCase):
         seeds = {(x, y)}
         opacity = 1.0
         args = floodfill.FloodFillArguments(
-            (x, y), seeds, col, tol, offset,
-            feather, gc, mode, lock_alpha,
-            opacity, framed, bbox
+            (x, y),
+            seeds,
+            col,
+            tol,
+            offset,
+            feather,
+            gc,
+            mode,
+            lock_alpha,
+            opacity,
+            framed,
+            bbox,
         )
         handle = src.flood_fill(args, dst)
         handle.wait()
@@ -163,7 +176,7 @@ class FillTestsBase(unittest.TestCase):
     def setUpClass(cls):
         # Load test data
         doc = document.Document()
-        doc.load(join(paths.TESTS_DIR, 'fill_outlines.ora'))
+        doc.load(join(paths.TESTS_DIR, "fill_outlines.ora"))
         root = doc.layer_stack
 
         # Set up references to test layers
@@ -225,12 +238,11 @@ class CorrectnessTests(FillTestsBase):
             _bbox.w = w
             _bbox.h = h
             with self.fill_layers() as (f1, _):
-                self.fill(
-                    self.empty_layer, f1, bbox=_bbox
-                )
+                self.fill(self.empty_layer, f1, bbox=_bbox)
                 self.assertEqual(
-                    exact_bbox(f1), _bbox,
-                    msg="Filling with just a bbox should fill it completely"
+                    exact_bbox(f1),
+                    _bbox,
+                    msg="Filling with just a bbox should fill it completely",
                 )
 
     @fill_test
@@ -241,14 +253,15 @@ class CorrectnessTests(FillTestsBase):
                 self.fill(src, f1)
                 f1_bb = exact_bbox(f1)
                 self.assertGreater(
-                    self.area(f1_bb), 0,
+                    self.area(f1_bb),
+                    0,
                     msg="Fill should not be empty!"
-                    " layer={layer}".format(layer=src.name)
+                    " layer={layer}".format(layer=src.name),
                 )
                 self.assertTrue(
                     src_bb.contains(f1_bb),
                     msg="Fill should be smaller than the outline!"
-                    " layer={layer}".format(layer=src.name)
+                    " layer={layer}".format(layer=src.name),
                 )
                 # This assertion relies on the fact that the outlines are
                 # 1 pixel wide and do not stretch outside of the fill x,y
@@ -257,15 +270,15 @@ class CorrectnessTests(FillTestsBase):
                 self.assertTrue(
                     f1_bb.contains(src_bb),
                     msg="Fill should reach the inner edges of the outline!"
-                    " layer={layer}".format(layer=src.name)
+                    " layer={layer}".format(layer=src.name),
                 )
                 # Starting from a connected point
                 # should produce an identical result
                 (x, y) = self.center(src_bb)
-                self.fill(src, f2, init_xy=(x-10, y-10))
+                self.fill(src, f2, init_xy=(x - 10, y - 10))
                 self.assertTrue(
                     self.layers_identical(f1, f2),
-                    msg="Fill results should be identical!"
+                    msg="Fill results should be identical!",
                 )
 
     @fill_test
@@ -285,42 +298,49 @@ class CorrectnessTests(FillTestsBase):
                 self.fill(src, f1, bbox=src_bb)
                 f1_exact = exact_bbox(f1)
                 self.assertEqual(
-                    f1_exact, src_bb,
+                    f1_exact,
+                    src_bb,
                     msg="Regular fill should seep through the gaps!"
-                    " src='{layer}'".format(layer=src.name)
+                    " src='{layer}'".format(layer=src.name),
                 )
                 self.fill(src, f2, bbox=src_bb, gc=options)
                 f2_exact = exact_bbox(f2)
                 self.assertTrue(
                     src_outer_bb.contains(f2_exact),
                     msg="GC fill should not seep through the gaps!"
-                    " src='{layer}'".format(layer=src.name)
+                    " src='{layer}'".format(layer=src.name),
                 )
                 self.assertTrue(
                     f2_exact.contains(src_inner_bb),
                     msg="GC fill should fill to the outline!"
-                    " src='{layer}'".format(layer=src.name)
+                    " src='{layer}'".format(layer=src.name),
                 )
 
     @fill_test
     def test_translation_invariant(self):
-        offsets = ((0, 63), (-35, -77), (32, 21), (14, 26), (139, 64),)
+        offsets = (
+            (0, 63),
+            (-35, -77),
+            (32, 21),
+            (14, 26),
+            (139, 64),
+        )
         for src in (self.minimal,) + self.small:
-            for (x, y) in offsets:
-                rx, ry = -1*x, -1*y
+            for x, y in offsets:
+                rx, ry = -1 * x, -1 * y
                 with self.fill_layers() as (f1, f2):
                     ix, iy = self.center(src.get_bbox())
                     self.fill(src, f1, init_xy=(ix, iy), tol=0)
                     src_copy = copy.deepcopy(src)
                     src_copy.translate(x, y)
-                    self.fill(src_copy, f2, init_xy=(ix+x, iy+y), tol=0)
+                    self.fill(src_copy, f2, init_xy=(ix + x, iy + y), tol=0)
                     f2.translate(rx, ry)
                     self.assertTrue(
                         self.layers_identical(f1, f2),
                         msg="Fill should be invariant under translation!"
                         " src={layer} offset={offset}".format(
                             layer=src.name, offset=(x, y)
-                        )
+                        ),
                     )
 
     @fill_test
@@ -336,9 +356,10 @@ class CorrectnessTests(FillTestsBase):
                 eroded = exact_bbox(f2)
                 eroded.expand(offs)
                 self.assertEqual(
-                    normal, eroded,
+                    normal,
+                    eroded,
                     msg="Eroded fill should be smaller than uneroded "
-                        "counterpart! src={layer}!".format(layer=src.name)
+                    "counterpart! src={layer}!".format(layer=src.name),
                 )
 
     @fill_test
@@ -354,19 +375,20 @@ class CorrectnessTests(FillTestsBase):
                     dilated = exact_bbox(f2)
                     dilated.expand(-offs)
                     self.assertEqual(
-                        normal, dilated,
+                        normal,
+                        dilated,
                         msg="Dilated fill should be larger than undilated "
                         "counterpart! src={layer} offset={offs}".format(
                             layer=src.name, offs=offs
-                        )
+                        ),
                     )
 
 
 # Performance tests, not run as part of the standard test suite
 
+
 @unittest.skipUnless(
-    os.getenv('RUN_PERF'),
-    "Set RUN_PERF envvar to run performance tests"
+    os.getenv("RUN_PERF"), "Set RUN_PERF envvar to run performance tests"
 )
 class PerformanceTests(FillTestsBase):
     """
@@ -376,8 +398,13 @@ class PerformanceTests(FillTestsBase):
     """
 
     def fill_perf(
-            self, src, n, bbox=None, init_xy=None,
-            tolerance=0.2, gap_closing_options=None
+        self,
+        src,
+        n,
+        bbox=None,
+        init_xy=None,
+        tolerance=0.2,
+        gap_closing_options=None,
     ):
         """
         Run only the fill step, not the compositing step, n times
@@ -399,16 +426,21 @@ class PerformanceTests(FillTestsBase):
         fh = floodfill.FillHandler()
 
         if gap_closing_options:
-            for _ in range(n-1):
+            for _ in range(n - 1):
                 floodfill.gap_closing_fill(
-                    fh, src, seed_lists, bbox, filler, gap_closing_options,
+                    fh,
+                    src,
+                    seed_lists,
+                    bbox,
+                    filler,
+                    gap_closing_options,
                 )
 
             return floodfill.gap_closing_fill(
                 fh, src, seed_lists, bbox, filler, gap_closing_options
             )
         else:
-            for _ in range(n-1):
+            for _ in range(n - 1):
                 floodfill.scanline_fill(fh, src, seed_lists, bbox, filler)
 
             return floodfill.scanline_fill(fh, src, seed_lists, bbox, filler)
@@ -478,8 +510,7 @@ class PerformanceTests(FillTestsBase):
             print(src.name, "\t", repeats, "\t\t%0.2fms" % avg_time)
 
     @unittest.skipUnless(
-        os.getenv("MORPH_FULL"),
-        "This is a fairly heavy test, run separately"
+        os.getenv("MORPH_FULL"), "This is a fairly heavy test, run separately"
     )
     def test_morph_full(self):
         """
@@ -499,9 +530,7 @@ class PerformanceTests(FillTestsBase):
             for _ in range(repeats):
                 self.fill(src, dst, offset=offs)
             avg_time = 1000 * (time() - t0) / repeats
-            print(
-                src.name, "\t", offs, "\t\t", repeats, "\t\t%0.2fms" % avg_time
-            )
+            print(src.name, "\t", offs, "\t\t", repeats, "\t\t%0.2fms" % avg_time)
         dst.clear()
 
     def test_morph_only(self):
@@ -513,8 +542,8 @@ class PerformanceTests(FillTestsBase):
             tiles = self.fill_perf(src, 1)
             t0 = time()
             morphology.morph(handler, offset, tiles)
-            t = (time() - t0)
-            print(src.name, "morph time (ms)", 1000*t)
+            t = time() - t0
+            print(src.name, "morph time (ms)", 1000 * t)
 
     def test_blur_only(self):
         offset = 40
@@ -525,8 +554,8 @@ class PerformanceTests(FillTestsBase):
             tiles = self.fill_perf(src, 1)
             t0 = time()
             morphology.blur(handler, offset, tiles)
-            t = (time() - t0)
-            print(src.name, "blur time (ms)", 1000*t)
+            t = time() - t0
+            print(src.name, "blur time (ms)", 1000 * t)
 
 
 if __name__ == "__main__":

@@ -24,19 +24,17 @@ def migrate_brushes_to_json(dirpath):
 
     files = os.listdir(dirpath)
     files = [
-        os.path.join(dirpath, fn)
-        for fn in files
-        if os.path.splitext(fn)[1] == '.myb'
+        os.path.join(dirpath, fn) for fn in files if os.path.splitext(fn)[1] == ".myb"
     ]
 
     for fpath in files:
-        with open(fpath, 'r') as fp:
+        with open(fpath, "r") as fp:
             b = brush.BrushInfo(fp.read())
-        with open(fpath, 'w') as fp:
+        with open(fpath, "w") as fp:
             fp.write(b.to_json())
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
 
     directories = sys.argv[1:]
     for dir in directories:

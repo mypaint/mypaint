@@ -34,7 +34,7 @@ from .uimisc import PRIMARY_ADJUSTERS_MIN_HEIGHT
 from lib.pycompat import xrange
 
 
-class HSVCubePage (CombinedAdjusterPage):
+class HSVCubePage(CombinedAdjusterPage):
     """Slice+depth view through an HSV cube: page for `CombinedAdjuster`.
 
     The page includes a button for tumbling the cube, i.e. changing which of
@@ -43,19 +43,19 @@ class HSVCubePage (CombinedAdjusterPage):
     """
 
     # Tooltip mappings, indexed by whatever the slider currently represents
-    _slider_tooltip_map = dict(h=_("HSV Hue"),
-                               s=_("HSV Saturation"),
-                               v=_("HSV Value"))
-    _slice_tooltip_map = dict(h=_("HSV Saturation and Value"),
-                              s=_("HSV Hue and Value"),
-                              v=_("HSV Hue and Saturation"))
+    _slider_tooltip_map = dict(h=_("HSV Hue"), s=_("HSV Saturation"), v=_("HSV Value"))
+    _slice_tooltip_map = dict(
+        h=_("HSV Saturation and Value"),
+        s=_("HSV Hue and Value"),
+        v=_("HSV Hue and Saturation"),
+    )
 
     def __init__(self):
-        self._faces = ['h', 's', 'v']
+        self._faces = ["h", "s", "v"]
         button = borderless_button(
-            icon_name='mypaint-hsv-rotate-symbolic',
+            icon_name="mypaint-hsv-rotate-symbolic",
             size=Gtk.IconSize.MENU,
-            tooltip=_("Rotate cube (show different axes)")
+            tooltip=_("Rotate cube (show different axes)"),
         )
         button.connect("clicked", lambda *a: self.tumble())
         self.__slice = HSVCubeSlice(self)
@@ -70,24 +70,31 @@ class HSVCubePage (CombinedAdjusterPage):
 
         table.attach(s_align, 0, 1, 0, 1, Gtk.AttachOptions.FILL, yopts, 3, 3)
         table.attach(
-            button, 0, 1, 1, 2,
-            Gtk.AttachOptions.FILL, Gtk.AttachOptions.FILL, 3, 3)
+            button,
+            0,
+            1,
+            1,
+            2,
+            Gtk.AttachOptions.FILL,
+            Gtk.AttachOptions.FILL,
+            3,
+            3,
+        )
         table.attach(self.__slice, 1, 2, 0, 2, xopts, yopts, 3, 3)
         self.__table = table
         self._update_tooltips()
 
     @classmethod
     def get_page_icon_name(self):
-        return 'mypaint-tool-hsvcube'
+        return "mypaint-tool-hsvcube"
 
     @classmethod
     def get_page_title(self):
-        return _('HSV Cube')
+        return _("HSV Cube")
 
     @classmethod
     def get_page_description(self):
-        return _("An HSV cube which can be rotated to show different "
-                 "planar slices.")
+        return _("An HSV cube which can be rotated to show different " "planar slices.")
 
     def get_page_widget(self):
         return self.__table
@@ -110,9 +117,8 @@ class HSVCubePage (CombinedAdjusterPage):
         self.__slice.set_color_manager(manager)
 
 
-class HSVCubeSlider (SliderColorAdjuster):
-    """Depth of the planar slice of a cube.
-    """
+class HSVCubeSlider(SliderColorAdjuster):
+    """Depth of the planar slice of a cube."""
 
     vertical = True
     samples = 4
@@ -138,9 +144,8 @@ class HSVCubeSlider (SliderColorAdjuster):
         return amt
 
 
-class HSVCubeSlice (IconRenderableColorAdjusterWidget):
-    """Planar slice through an HSV cube.
-    """
+class HSVCubeSlice(IconRenderableColorAdjusterWidget):
+    """Planar slice through an HSV cube."""
 
     def __init__(self, cube):
         ColorAdjusterWidget.__init__(self)
@@ -152,7 +157,7 @@ class HSVCubeSlice (IconRenderableColorAdjusterWidget):
     def __get_faces(self):
         f1 = self.__cube._faces[1]
         f2 = self.__cube._faces[2]
-        if f2 == 'h':
+        if f2 == "h":
             f1, f2 = f2, f1
         return f1, f2
 
@@ -161,14 +166,14 @@ class HSVCubeSlice (IconRenderableColorAdjusterWidget):
         b = icon_border
         if b is None:
             b = self.BORDER_WIDTH
-        eff_wd = int(wd - 2*b)
-        eff_ht = int(ht - 2*b)
+        eff_wd = int(wd - 2 * b)
+        eff_ht = int(ht - 2 * b)
         f1, f2 = self.__get_faces()
 
         step = max(1, int(eff_wd // 128))
 
-        rect_x, rect_y = int(b)+0.5, int(b)+0.5
-        rect_w, rect_h = int(eff_wd)-1, int(eff_ht)-1
+        rect_x, rect_y = int(b) + 0.5, int(b) + 0.5
+        rect_w, rect_h = int(eff_wd) - 1, int(eff_ht) - 1
 
         # Paint the central area offscreen
         cr.push_group()
@@ -176,11 +181,11 @@ class HSVCubeSlice (IconRenderableColorAdjusterWidget):
             amt = x / eff_wd
             setattr(col, f1, amt)
             setattr(col, f2, 1.0)
-            lg = cairo.LinearGradient(b+x, b, b+x, b+eff_ht)
+            lg = cairo.LinearGradient(b + x, b, b + x, b + eff_ht)
             lg.add_color_stop_rgb(*([0.0] + list(col.get_rgb())))
             setattr(col, f2, 0.0)
             lg.add_color_stop_rgb(*([1.0] + list(col.get_rgb())))
-            cr.rectangle(b+x, b, step, eff_ht)
+            cr.rectangle(b + x, b, step, eff_ht)
             cr.set_source(lg)
             cr.fill()
         slice_patt = cr.pop_group()
@@ -212,10 +217,10 @@ class HSVCubeSlice (IconRenderableColorAdjusterWidget):
         b = self.BORDER_WIDTH
         wd = alloc.width
         ht = alloc.height
-        eff_wd = wd - 2*b
-        eff_ht = ht - 2*b
-        f1_amt = clamp((x-b) / eff_wd, 0, 1)
-        f2_amt = clamp((y-b) / eff_ht, 0, 1)
+        eff_wd = wd - 2 * b
+        eff_ht = ht - 2 * b
+        f1_amt = clamp((x - b) / eff_wd, 0, 1)
+        f2_amt = clamp((y - b) / eff_ht, 0, 1)
         col = HSVColor(color=self.get_managed_color())
         f1, f2 = self.__get_faces()
         f2_amt = 1.0 - f2_amt
@@ -233,10 +238,10 @@ class HSVCubeSlice (IconRenderableColorAdjusterWidget):
         b = self.BORDER_WIDTH
         wd = alloc.width
         ht = alloc.height
-        eff_wd = wd - 2*b
-        eff_ht = ht - 2*b
-        x = b + f1_amt*eff_wd
-        y = b + f2_amt*eff_ht
+        eff_wd = wd - 2 * b
+        eff_ht = ht - 2 * b
+        x = b + f1_amt * eff_wd
+        y = b + f2_amt * eff_ht
         return x, y
 
     def paint_foreground_cb(self, cr, wd, ht):
@@ -244,11 +249,12 @@ class HSVCubeSlice (IconRenderableColorAdjusterWidget):
         draw_marker_circle(cr, x, y)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     import os
     import sys
     from adjbases import ColorManager
-    mgr = ColorManager(prefs={}, datapath='.')
+
+    mgr = ColorManager(prefs={}, datapath=".")
     cube = HSVCubePage()
     cube.set_color_manager(mgr)
     mgr.set_color(RGBColor(0.3, 0.6, 0.7))

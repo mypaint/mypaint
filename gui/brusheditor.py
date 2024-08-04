@@ -32,7 +32,7 @@ from . import dialogs
 from . import brushmanager
 from .builderhacks import add_objects_from_template_string
 from .windowing import SubWindow
-from . import curve as notuseddirectly # noqa - needed for interactive testing
+from . import curve as notuseddirectly  # noqa - needed for interactive testing
 
 # The widget class needs to be in scope before it is
 # instantiated via the loading of the glade file.
@@ -54,7 +54,8 @@ _TMPL_LAYOUTS = [
 
 # Class definitions:
 
-class BrushEditorWindow (SubWindow):
+
+class BrushEditorWindow(SubWindow):
     """Window containing the brush settings editor"""
 
     # Class constants:
@@ -89,8 +90,9 @@ class BrushEditorWindow (SubWindow):
 
     def __init__(self):
         app = None
-        if __name__ != '__main__':
+        if __name__ != "__main__":
             from gui.application import get_app
+
             app = get_app()
             self._brush = app.brush
             bm = app.brushmanager
@@ -112,10 +114,12 @@ class BrushEditorWindow (SubWindow):
         self._input_xmax_adj = {}  #: input name => scale x min adj
         self._disable_input_adj_changed_cb = False
         self._init_adjustments()
-        self.set_title(C_(
-            "brush settings editor: subwindow title",
-            "Brush Settings Editor",
-        ))
+        self.set_title(
+            C_(
+                "brush settings editor: subwindow title",
+                "Brush Settings Editor",
+            )
+        )
         self._scales = []
         self._setting = None
         self._builder = Gtk.Builder()
@@ -123,7 +127,7 @@ class BrushEditorWindow (SubWindow):
         self._build_ui()
         self._base_value_scale = self._builder.get_object("base_value_scale")
         self.connect_after("show", self._post_show_cb)
-        self.connect('button-press-event', self._clear_focus)
+        self.connect("button-press-event", self._clear_focus)
         editor = self._builder.get_object("brush_editor")
         self.add(editor)
         self._brush.observers.append(self.brush_modified_cb)
@@ -148,18 +152,27 @@ class BrushEditorWindow (SubWindow):
             # The application instance manages value-changed callbacks itself.
         else:
             for s in brushsettings.settings_visible:
-                adj = Gtk.Adjustment(value=s.default,
-                                     lower=s.min, upper=s.max,
-                                     step_increment=0.01, page_increment=0.1)
+                adj = Gtk.Adjustment(
+                    value=s.default,
+                    lower=s.min,
+                    upper=s.max,
+                    step_increment=0.01,
+                    page_increment=0.1,
+                )
                 self._base_adj[s.cname] = adj
             changed_cb = self._testmode_base_value_adj_changed_cb
             for cname, adj in iteritems(self._base_adj):
-                adj.connect('value-changed', changed_cb, cname)
+                adj.connect("value-changed", changed_cb, cname)
         # Per-input scale maxima and minima
         for inp in brushsettings.inputs:
             name = inp.name
-            adj = Gtk.Adjustment(value=1.0 / 4.0, lower=-1.0, upper=1.0,
-                                 step_increment=0.01, page_increment=0.1)
+            adj = Gtk.Adjustment(
+                value=1.0 / 4.0,
+                lower=-1.0,
+                upper=1.0,
+                step_increment=0.01,
+                page_increment=0.1,
+            )
             adj.connect("value-changed", self.input_adj_changed_cb, inp)
             self._input_y_adj[name] = adj
             lower = -20.0
@@ -171,14 +184,22 @@ class BrushEditorWindow (SubWindow):
                 lower = inp.hard_min
             if abs(inp.hard_max) < 1e16:
                 upper = inp.hard_max
-            adj = Gtk.Adjustment(value=inp.soft_min,
-                                 lower=lower, upper=upper - 0.1,
-                                 step_increment=0.01, page_increment=0.1)
+            adj = Gtk.Adjustment(
+                value=inp.soft_min,
+                lower=lower,
+                upper=upper - 0.1,
+                step_increment=0.01,
+                page_increment=0.1,
+            )
             adj.connect("value-changed", self.input_adj_changed_cb, inp)
             self._input_xmin_adj[name] = adj
-            adj = Gtk.Adjustment(value=inp.soft_max,
-                                 lower=lower + 0.1, upper=upper,
-                                 step_increment=0.01, page_increment=0.1)
+            adj = Gtk.Adjustment(
+                value=inp.soft_max,
+                lower=lower + 0.1,
+                upper=upper,
+                step_increment=0.01,
+                page_increment=0.1,
+            )
             adj.connect("value-changed", self.input_adj_changed_cb, inp)
             self._input_xmax_adj[name] = adj
 
@@ -186,7 +207,7 @@ class BrushEditorWindow (SubWindow):
         """Builds the UI from ``brusheditor.glade``"""
         ui_dir = os.path.dirname(os.path.abspath(__file__))
         ui_path = os.path.join(ui_dir, self._UI_DEFINITION_FILE)
-        with open(ui_path, 'r') as ui_fp:
+        with open(ui_path, "r") as ui_fp:
             ui_xml = ui_fp.read()
         self._builder.add_from_string(ui_xml)
         self._populate_inputs(ui_xml)
@@ -211,7 +232,7 @@ class BrushEditorWindow (SubWindow):
                 "edit_icon_button",
                 "delete_button",
                 "live_update_checkbutton",
-                "save_button"
+                "save_button",
             ]
             for b_name in action_buttons:
                 w = self._builder.get_object(b_name)
@@ -244,8 +265,9 @@ class BrushEditorWindow (SubWindow):
             i = brushsettings.inputs_dict[input_id]
             params = dict(dname=i.dname, name=i.name, tooltip=i.tooltip)
             object_ids = [layout[-1] for layout in _TMPL_LAYOUTS]
-            widgets = add_objects_from_template_string(self._builder, ui_xml,
-                                                       object_ids, params)
+            widgets = add_objects_from_template_string(
+                self._builder, ui_xml, object_ids, params
+            )
             for layout, widget in zip(_TMPL_LAYOUTS, widgets):
                 x, y, w, h, tmpl_id = layout
                 y += group_start_row
@@ -310,175 +332,183 @@ class BrushEditorWindow (SubWindow):
         # Groups for settings.
         groups = [
             {
-                'id': 'experimental',
-                'title': C_(
-                    'brush settings list: setting group',
-                    'Experimental',
+                "id": "experimental",
+                "title": C_(
+                    "brush settings list: setting group",
+                    "Experimental",
                 ),
-                'settings': [],
-            }, {
-                'id': 'basic',
-                'title': C_(
-                    'brush settings list: setting group',
-                    'Basic',
+                "settings": [],
+            },
+            {
+                "id": "basic",
+                "title": C_(
+                    "brush settings list: setting group",
+                    "Basic",
                 ),
-                'settings': [
-                    'radius_logarithmic',
-                    'radius_by_random',
-                    'hardness',
-                    'snap_to_pixel',
-                    'anti_aliasing',
-                    'eraser',
-                    'offset_by_random',
-                    'elliptical_dab_angle',
-                    'elliptical_dab_ratio',
-                    'direction_filter',
-                    'pressure_gain_log',
+                "settings": [
+                    "radius_logarithmic",
+                    "radius_by_random",
+                    "hardness",
+                    "snap_to_pixel",
+                    "anti_aliasing",
+                    "eraser",
+                    "offset_by_random",
+                    "elliptical_dab_angle",
+                    "elliptical_dab_ratio",
+                    "direction_filter",
+                    "pressure_gain_log",
                 ],
-            }, {
-                'id': 'opacity',
-                'title': C_(
-                    'brush settings list: setting group',
-                    'Opacity',
+            },
+            {
+                "id": "opacity",
+                "title": C_(
+                    "brush settings list: setting group",
+                    "Opacity",
                 ),
-                'settings': [
-                    'opaque',
-                    'opaque_multiply',
-                    'opaque_linearize',
-                    'lock_alpha',
+                "settings": [
+                    "opaque",
+                    "opaque_multiply",
+                    "opaque_linearize",
+                    "lock_alpha",
                 ],
-            }, {
-                'id': 'dabs',
-                'title': C_(
-                    'brush settings list: setting group',
-                    'Dabs',
+            },
+            {
+                "id": "dabs",
+                "title": C_(
+                    "brush settings list: setting group",
+                    "Dabs",
                 ),
-                'settings': [
-                    'dabs_per_basic_radius',
-                    'dabs_per_actual_radius',
-                    'dabs_per_second',
+                "settings": [
+                    "dabs_per_basic_radius",
+                    "dabs_per_actual_radius",
+                    "dabs_per_second",
                 ],
-            }, {
-                'id': 'smudge',
-                'title': C_(
-                    'brush settings list: setting group',
-                    'Smudge',
+            },
+            {
+                "id": "smudge",
+                "title": C_(
+                    "brush settings list: setting group",
+                    "Smudge",
                 ),
-                'settings': [
-                    'smudge',
-                    'smudge_length',
-                    'smudge_length_log',
-                    'smudge_radius_log',
-                    'smudge_transparency',
-                    'smudge_bucket'
+                "settings": [
+                    "smudge",
+                    "smudge_length",
+                    "smudge_length_log",
+                    "smudge_radius_log",
+                    "smudge_transparency",
+                    "smudge_bucket",
                 ],
-            }, {
-                'id': 'speed',
-                'title': C_(
-                    'brush settings list: setting group',
-                    'Speed',
+            },
+            {
+                "id": "speed",
+                "title": C_(
+                    "brush settings list: setting group",
+                    "Speed",
                 ),
-                'settings': [
-                    'speed1_slowness',
-                    'speed2_slowness',
-                    'speed1_gamma',
-                    'speed2_gamma',
-                    'offset_by_speed',
-                    'offset_by_speed_slowness',
+                "settings": [
+                    "speed1_slowness",
+                    "speed2_slowness",
+                    "speed1_gamma",
+                    "speed2_gamma",
+                    "offset_by_speed",
+                    "offset_by_speed_slowness",
                 ],
-            }, {
-                'id': 'offsets',
-                'title': C_(
-                    'brush settings list: setting group',
-                    'Directional Offsets',
+            },
+            {
+                "id": "offsets",
+                "title": C_(
+                    "brush settings list: setting group",
+                    "Directional Offsets",
                 ),
-                'settings': [
-                    'offset_multiplier',
-                    'offset_angle_adj',
-                    'offset_x',
-                    'offset_y',
-                    'offset_angle',
-                    'offset_angle_2',
-                    'offset_angle_asc',
-                    'offset_angle_2_asc',
-                    'offset_angle_view',
-                    'offset_angle_2_view',
+                "settings": [
+                    "offset_multiplier",
+                    "offset_angle_adj",
+                    "offset_x",
+                    "offset_y",
+                    "offset_angle",
+                    "offset_angle_2",
+                    "offset_angle_asc",
+                    "offset_angle_2_asc",
+                    "offset_angle_view",
+                    "offset_angle_2_view",
                 ],
-            }, {
-                'id': 'tracking',
-                'title': C_(
-                    'brush settings list: setting group',
-                    'Tracking',
+            },
+            {
+                "id": "tracking",
+                "title": C_(
+                    "brush settings list: setting group",
+                    "Tracking",
                 ),
-                'settings': [
-                    'slow_tracking',
-                    'slow_tracking_per_dab',
-                    'tracking_noise',
+                "settings": [
+                    "slow_tracking",
+                    "slow_tracking_per_dab",
+                    "tracking_noise",
                 ],
-            }, {
-                'id': 'stroke',
-                'title': C_(
-                    'brush settings list: setting group',
-                    'Stroke',
+            },
+            {
+                "id": "stroke",
+                "title": C_(
+                    "brush settings list: setting group",
+                    "Stroke",
                 ),
-                'settings': [
-                    'stroke_threshold',
-                    'stroke_duration_logarithmic',
-                    'stroke_holdtime',
+                "settings": [
+                    "stroke_threshold",
+                    "stroke_duration_logarithmic",
+                    "stroke_holdtime",
                 ],
-            }, {
-                'id': 'color',
-                'title': C_(
-                    'brush settings list: setting group',
-                    'Color',
+            },
+            {
+                "id": "color",
+                "title": C_(
+                    "brush settings list: setting group",
+                    "Color",
                 ),
-                'settings': [
-                    'paint_mode',
-                    'change_color_h',
-                    'change_color_l',
-                    'change_color_hsl_s',
-                    'change_color_v',
-                    'change_color_hsv_s',
-                    'restore_color',
-                    'colorize',
-                    'posterize',
-                    'posterize_num',
+                "settings": [
+                    "paint_mode",
+                    "change_color_h",
+                    "change_color_l",
+                    "change_color_hsl_s",
+                    "change_color_v",
+                    "change_color_hsv_s",
+                    "restore_color",
+                    "colorize",
+                    "posterize",
+                    "posterize_num",
                 ],
-            }, {
-                'id': 'gridmap',
-                'title': C_(
-                    'brush settings list: setting group',
-                    'GridMap',
+            },
+            {
+                "id": "gridmap",
+                "title": C_(
+                    "brush settings list: setting group",
+                    "GridMap",
                 ),
-                'settings': [
-                    'gridmap_scale',
-                    'gridmap_scale_x',
-                    'gridmap_scale_y',
+                "settings": [
+                    "gridmap_scale",
+                    "gridmap_scale_x",
+                    "gridmap_scale_y",
                 ],
-            }, {
-                'id': 'custom',
-                'title': C_(
-                    'brush settings list: setting group',
-                    'Custom',
+            },
+            {
+                "id": "custom",
+                "title": C_(
+                    "brush settings list: setting group",
+                    "Custom",
                 ),
-                'settings': [
-                    'custom_input',
-                    'custom_input_slowness'
-                ],
-            }
+                "settings": ["custom_input", "custom_input_slowness"],
+            },
         ]
-        hidden_settings = ['color_h', 'color_s', 'color_v']
+        hidden_settings = ["color_h", "color_s", "color_v"]
         # Add new settings to the "experimental" group
         grouped_settings = set(hidden_settings)
         for g in groups:
-            grouped_settings.update(g['settings'])
+            grouped_settings.update(g["settings"])
         for s in brushsettings.settings:
             n = s.cname
             if n not in grouped_settings:
-                groups[0]['settings'].append(n)
-                logger.warning('Setting %r should be added to a group', n)
+                groups[0]["settings"].append(n)
+                logger.warning("Setting %r should be added to a group", n)
         # Hide experimental group if empty
-        if not groups[0]['settings']:
+        if not groups[0]["settings"]:
             groups.pop(0)
         # Groups to open by default
         open_paths = []
@@ -491,7 +521,7 @@ class BrushEditorWindow (SubWindow):
             group_iter = store.append(root_iter, row_data)
             group_path = store.get_path(group_iter)
             self._group_treepath[group_id] = group_path
-            for i, cname in enumerate(group['settings']):
+            for i, cname in enumerate(group["settings"]):
                 self._setting_group[cname] = group_id
                 s = brushsettings.settings_dict[cname]
                 row_data = [cname, s.name, True, Pango.Weight.NORMAL]
@@ -524,8 +554,8 @@ class BrushEditorWindow (SubWindow):
         b = bm.selected_brush
         if not b.name:
             msg = C_(
-                'brush settings editor: save brush: error message',
-                'No brush selected, please use “Add As New” instead.',
+                "brush settings editor: save brush: error message",
+                "No brush selected, please use “Add As New” instead.",
             )
             dialogs.error(self, msg)
             return
@@ -548,13 +578,16 @@ class BrushEditorWindow (SubWindow):
         bm = self.app.brushmanager
         src_brush = bm.selected_brush
         if not src_brush.name:
-            dialogs.error(self, C_(
-                'brush settings editor: rename brush: error message',
-                'No brush selected!',
-            ))
+            dialogs.error(
+                self,
+                C_(
+                    "brush settings editor: rename brush: error message",
+                    "No brush selected!",
+                ),
+            )
             return
 
-        src_name_pp = src_brush.name.replace('_', ' ')
+        src_name_pp = src_brush.name.replace("_", " ")
         dst_name = dialogs.ask_for_name(
             self,
             C_(
@@ -565,7 +598,7 @@ class BrushEditorWindow (SubWindow):
         )
         if not dst_name:
             return
-        dst_name = dst_name.replace(' ', '_')
+        dst_name = dst_name.replace(" ", "_")
         # ensure we don't overwrite an existing brush by accident
         dst_deleted = None
 
@@ -576,9 +609,8 @@ class BrushEditorWindow (SubWindow):
                         dst_deleted = b2
                     else:
                         msg = C_(
-                            'brush settings editor: '
-                            'rename brush: error message',
-                            'A brush with this name already exists!',
+                            "brush settings editor: " "rename brush: error message",
+                            "A brush with this name already exists!",
                         )
                         dialogs.error(self, msg)
                         return
@@ -610,17 +642,20 @@ class BrushEditorWindow (SubWindow):
         bm = self.app.brushmanager
         b = bm.selected_brush
         if not b.name:
-            dialogs.error(self, C_(
-                'brush settings editor: delete brush: error message',
-                'No brush selected!',
-            ))
+            dialogs.error(
+                self,
+                C_(
+                    "brush settings editor: delete brush: error message",
+                    "No brush selected!",
+                ),
+            )
             return
-        b_name_pp = b.name.replace('_', ' ')
+        b_name_pp = b.name.replace("_", " ")
         msg = C_(
             "brush settings editor: delete brush: confirm dialog question",
             "Really delete brush “{brush_name}” from disk?",
         ).format(
-            brush_name = b_name_pp,
+            brush_name=b_name_pp,
         )
         if not dialogs.confirm(self, msg):
             return
@@ -632,7 +667,7 @@ class BrushEditorWindow (SubWindow):
         bm = self.app.brushmanager
         # First, clone and save to disk. Set a null name to avoid a
         # mis-highlight in brush selectors.
-        b = bm.selected_brush.clone(name=None)    # ManagedBrush with preview
+        b = bm.selected_brush.clone(name=None)  # ManagedBrush with preview
         b.brushinfo = self._brush.clone()  # current unsaved settings
         b.brushinfo.set_string_property("parent_brush_name", None)
         b.save()
@@ -640,7 +675,7 @@ class BrushEditorWindow (SubWindow):
         group = brushmanager.NEW_BRUSH_GROUP
         brushes = bm.get_group_brushes(group)
         brushes.insert(0, b)
-        b.persistent = True   # Brush was saved
+        b.persistent = True  # Brush was saved
         bm.brushes_changed(brushes)
         # Highlight the new brush
         bm.select_brush(b)
@@ -660,8 +695,7 @@ class BrushEditorWindow (SubWindow):
         scale_y = scale_y_adj.get_value()
         if not scale_y:
             return []
-        brush_points = [self._point_widget2real(p, inp)
-                        for p in curve_widget.points]
+        brush_points = [self._point_widget2real(p, inp) for p in curve_widget.points]
         nonzero = [True for x, y in brush_points if y != 0]
         if not nonzero:
             return []
@@ -746,7 +780,7 @@ class BrushEditorWindow (SubWindow):
                 "brush settings editor: header: is-modified hint",
                 "{brush_name} [unsaved]",
             ).format(
-                brush_name = name,
+                brush_name=name,
             )
         label = self._builder.get_object("brush_name_label")
         label.set_text(name)
@@ -761,8 +795,7 @@ class BrushEditorWindow (SubWindow):
         if pixbuf:
             pixbuf = pixbuf.scale_simple(w, h, GdkPixbuf.InterpType.BILINEAR)
         if not pixbuf:
-            pixbuf = GdkPixbuf.Pixbuf.new(GdkPixbuf.Colorspace.RGB,
-                                          True, 8, w, h)
+            pixbuf = GdkPixbuf.Pixbuf.new(GdkPixbuf.Colorspace.RGB, True, 8, w, h)
         image.set_from_pixbuf(pixbuf)
 
     # GUI updating from the brush:
@@ -892,8 +925,7 @@ class BrushEditorWindow (SubWindow):
 
         # 2. calculate the default curve (the one we display if there is
         # no curve)
-        curve_points_zero = [self._point_real2widget(p, inp)
-                             for p in brush_points_zero]
+        curve_points_zero = [self._point_real2widget(p, inp) for p in brush_points_zero]
         # widget x coordinate of the "normal" input value
         x_normal = self._get_x_normal(inp)
 
@@ -915,8 +947,7 @@ class BrushEditorWindow (SubWindow):
         # 3. display the curve
 
         if scale_y:
-            curve_points = [self._point_real2widget(p, inp)
-                            for p in brush_points]
+            curve_points = [self._point_real2widget(p, inp) for p in brush_points]
         else:
             curve_points = curve_points_zero
 
@@ -1007,8 +1038,7 @@ class BrushEditorWindow (SubWindow):
     # Adjuster change callbacks:
 
     def _testmode_base_value_adj_changed_cb(self, adj, cname):
-        """User adjusted the setting's base value using the scale (test only)
-        """
+        """User adjusted the setting's base value using the scale (test only)"""
         value = adj.get_value()
         self._brush.set_base_value(cname, value)
 
@@ -1070,8 +1100,9 @@ class BrushEditorWindow (SubWindow):
                 else:
                     del brushes[idx]
                 bm.brushes_changed(brushes)
-                assert b not in brushes, \
-                    'Brush exists multiple times in the same group!'
+                assert (
+                    b not in brushes
+                ), "Brush exists multiple times in the same group!"
         if not b.delete_from_disk():
             # stock brush can't be deleted
             deleted_group = brushmanager.DELETED_BRUSH_GROUP
@@ -1174,5 +1205,5 @@ def _test():
     Gtk.main()
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     _test()

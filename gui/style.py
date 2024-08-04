@@ -84,7 +84,4 @@ ACTIVE_ITEM_COLOR = RGBColor.new_from_hex_str("#F1C40F")
 
 # Prelight color (for complex modes, when there needs to be a distinction)
 
-PRELIT_ITEM_COLOR = tuple(
-        ACTIVE_ITEM_COLOR.interpolate(EDITABLE_ITEM_COLOR, 3)
-    )[1]
-
+PRELIT_ITEM_COLOR = tuple(ACTIVE_ITEM_COLOR.interpolate(EDITABLE_ITEM_COLOR, 3))[1]

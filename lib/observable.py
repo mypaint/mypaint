@@ -17,7 +17,7 @@ import logging
 logger = logging.getLogger(__name__)
 
 
-class observable (object):  # noqa: N801
+class observable(object):  # noqa: N801
     """Decorator for methods which notify their observers after being called.
 
     To use, mark methods intended to be called on instances of a class with
@@ -233,7 +233,7 @@ class observable (object):  # noqa: N801
         instance.__wrappers = updated_wrappers
 
 
-class _MethodWithObservers (object):
+class _MethodWithObservers(object):
     """Callable wrapper: calls the decorated method, then its observers
 
     This is what a __get__ on the observed object's @observable descriptor
@@ -279,8 +279,7 @@ class _MethodWithObservers (object):
 
         result = self.func(observed, *args, **kwargs)
         if self.calling_observers:
-            logger.debug("Recursive call to %r detected and skipped",
-                         self)
+            logger.debug("Recursive call to %r detected and skipped", self)
             return result
         self.calling_observers = True
         try:
@@ -288,7 +287,7 @@ class _MethodWithObservers (object):
                 try:
                     observer(observed, *args, **kwargs)
                 except _BoundObserverMethod._ReferenceError:
-                    logger.debug('Removing %r' % (observer,))
+                    logger.debug("Removing %r" % (observer,))
                     self.observers.remove(observer)
                 except:
                     # Exceptions raised before the observer's stack frame
@@ -327,10 +326,10 @@ class _MethodWithObservers (object):
 
     def __repr__(self):
         """Pretty-printing"""
-        return ("<_MethodWithObservers %s>" % (self._func_repr))
+        return "<_MethodWithObservers %s>" % (self._func_repr)
 
 
-class event (observable):  # noqa: N801
+class event(observable):  # noqa: N801
     """Alias for observable methods with no predefined function body.
 
     This allows C#-style event declarations using an alternative shorthand
@@ -366,8 +365,10 @@ class event (observable):  # noqa: N801
 
         """
         if func is None:
+
             def func(*a):
                 pass
+
             func.__name__ = "<event>"
         super(event, self).__init__(func)
 
@@ -397,7 +398,7 @@ def _method_repr(bound=None, instance=None, func=None):
     is cached inside some internal objects.
     """
     if bound is not None:
-        assert(_is_bound_method(bound))
+        assert _is_bound_method(bound)
         func = bound.__func__
         instance = bound.__self__
     funcname = func.__name__
@@ -406,7 +407,7 @@ def _method_repr(bound=None, instance=None, func=None):
     return "%s.%s.%s" % (modname, clsname, funcname)
 
 
-class _BoundObserverMethod (object):
+class _BoundObserverMethod(object):
     """Wrapper for observer callbacks which are bound methods of some object.
 
     To allow short-lived objects to observe long-lived objects with bound
@@ -419,8 +420,9 @@ class _BoundObserverMethod (object):
 
     """
 
-    class _ReferenceError (ReferenceError):
+    class _ReferenceError(ReferenceError):
         """Raised when calling if the observing object is now dead."""
+
         pass
 
     def __init__(self, method):
@@ -438,8 +440,7 @@ class _BoundObserverMethod (object):
             obs_func = method.__func__
             orig_repr = _method_repr(bound=method)
         else:
-            raise ValueError("Unknown bound method type for %r"
-                             % (method,))
+            raise ValueError("Unknown bound method type for %r" % (method,))
         self._observer_ref = obs_ref
         self._observer_func = obs_func
         self._orig_repr = orig_repr
@@ -464,7 +465,7 @@ class _BoundObserverMethod (object):
         """
         dead = self._observer_ref() is None
         suff = " (dead)" if dead else ""
-        return ("<_BoundObserverMethod %s%s>" % (self._orig_repr, suff))
+        return "<_BoundObserverMethod %s%s>" % (self._orig_repr, suff)
 
     def __call__(self, observed, *args, **kwargs):
         """Call the bound method, or raise _ReferenceError"""
@@ -504,7 +505,7 @@ class _WasAbsent:
         return "<WasAbsent>"
 
 
-class ObservableDict (dict):
+class ObservableDict(dict):
     """A dict whose modify ops can be observed.
 
     ObservableDict objects work just like the builtin dict class, but
@@ -664,9 +665,11 @@ class ObservableDict (dict):
 
         """
 
+
 def _test():
     """Run doctest strings"""
     import doctest
+
     doctest.testmod(optionflags=doctest.ELLIPSIS)
 
 

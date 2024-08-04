@@ -29,6 +29,7 @@ logger = logging.getLogger(__name__)
 
 # Copied from Python 3.5's distutils/spawn.py
 
+
 def find_executable(executable, path=None):
     """Tries to find 'executable' in the directories listed in 'path'.
 
@@ -36,13 +37,13 @@ def find_executable(executable, path=None):
     os.environ['PATH'].  Returns the complete filename or None if not found.
     """
     if path is None:
-        path = os.environ['PATH']
+        path = os.environ["PATH"]
 
     paths = path.split(os.pathsep)
     base, ext = os.path.splitext(executable)
 
-    if (sys.platform == 'win32') and (ext != '.exe'):
-        executable = executable + '.exe'
+    if (sys.platform == "win32") and (ext != ".exe"):
+        executable = executable + ".exe"
 
     if not os.path.isfile(executable):
         for p in paths:
@@ -55,7 +56,7 @@ def find_executable(executable, path=None):
         return executable
 
 
-class Profiler (object):
+class Profiler(object):
     """Handles profiling state for the main app.
 
     The profiler's output is written to a tempdir, which is shown to the
@@ -100,27 +101,28 @@ class Profiler (object):
         """Runs the GTK main loop in the cProfile profiler till stopped."""
         self.profile_num += 1
         basename = "{isotime}-{n}".format(
-            isotime = time.strftime("%Y%m%d-%H%M%S"),
-            n = self.profile_num,
+            isotime=time.strftime("%Y%m%d-%H%M%S"),
+            n=self.profile_num,
         )
 
         import cProfile
+
         profile = cProfile.Profile()
 
         self.profiler_active = True
-        logger.info('--- GUI Profiling starts ---')
+        logger.info("--- GUI Profiling starts ---")
         while self.profiler_active:
             profile.runcall(Gtk.main_iteration_do, False)
             if not Gtk.events_pending():
                 time.sleep(0.050)
                 # ugly trick to remove "user does nothing" from profile
-        logger.info('--- GUI Profiling ends ---')
+        logger.info("--- GUI Profiling ends ---")
 
         pstats_filepath = os.path.join(self._tempdir, basename + ".pstats")
         if os.path.exists(pstats_filepath):
             os.unlink(pstats_filepath)
         profile.dump_stats(pstats_filepath)
-        logger.debug('profile written to %r', pstats_filepath)
+        logger.debug("profile written to %r", pstats_filepath)
 
         try:
             dot_filepath = os.path.join(self._tempdir, basename + ".dot")
@@ -137,9 +139,7 @@ class Profiler (object):
             logger.debug("Running %r...", cmd)
             subprocess.check_call(cmd)
         except Exception:
-            logger.exception(
-                "Profiling output post-processing failed."
-            )
+            logger.exception("Profiling output post-processing failed.")
             logger.info(
                 "This is normal if %r and/or graphviz's %r "
                 "are not both in your PATH and executable.",

@@ -26,7 +26,8 @@ logger = logging.getLogger(__name__)
 
 ## Base class definitions
 
-class Dialog (Gtk.Dialog):
+
+class Dialog(Gtk.Dialog):
     """Base dialog accepting all keyboard input.
 
     Dialogs hide when closed. By default, they accept all keyboard input and
@@ -34,15 +35,16 @@ class Dialog (Gtk.Dialog):
     be freely hidden and shown after construction.
 
     """
+
     def __init__(self, app, *args, **kwargs):
         Gtk.Dialog.__init__(self, *args, **kwargs)
         self.app = app
         if app and app.drawWindow:
             self.set_transient_for(app.drawWindow)
-        self.connect('delete-event', lambda w, e: self.hide_on_delete())
+        self.connect("delete-event", lambda w, e: self.hide_on_delete())
 
 
-class SubWindow (Gtk.Window):
+class SubWindow(Gtk.Window):
     """A subwindow in the GUI.
 
     SubWindows don't accept keyboard input by default, but if your subclass
@@ -69,7 +71,7 @@ class SubWindow (Gtk.Window):
         self.pre_hide_pos = None
         # Only hide when the close button is pressed if running as a subwindow
         if app:
-            self.connect('delete-event', lambda w, e: self.hide_on_delete())
+            self.connect("delete-event", lambda w, e: self.hide_on_delete())
         # Win32 and some Linux DEs are responsive to the following: keeps the
         # window above the main window in fullscreen.
         if app:
@@ -90,11 +92,12 @@ class SubWindow (Gtk.Window):
         Gtk.Window.hide(self)
 
 
-class PopupWindow (Gtk.Window):
+class PopupWindow(Gtk.Window):
     """
     A popup window, with no decoration. Popups always appear centred under the
     mouse, and don't accept keyboard input.
     """
+
     def __init__(self, app):
         Gtk.Window.__init__(self, type=Gtk.WindowType.POPUP)
         self.set_gravity(Gdk.Gravity.CENTER)
@@ -103,7 +106,7 @@ class PopupWindow (Gtk.Window):
         self.app.kbm.add_window(self)
 
 
-class ChooserPopup (Gtk.Window):
+class ChooserPopup(Gtk.Window):
     """A resizable popup window used for making fast choices
 
     Chooser popups can be used for fast selection of items
@@ -173,10 +176,9 @@ class ChooserPopup (Gtk.Window):
         self._size = None  # last recorded size from any show()
         self._motion_handler_id = None
         self._prefs_size_key = "%s.window_size" % (config_name,)
-        self._resize_info = None   # state during an edge resize
+        self._resize_info = None  # state during an edge resize
         self._outside_grab_active = False
-        self._outside_cursor = Gdk.Cursor.new_from_name(
-            self.get_display(), "default")
+        self._outside_cursor = Gdk.Cursor.new_from_name(self.get_display(), "default")
         self._popup_info = None
 
         # Initial positioning
@@ -214,15 +216,17 @@ class ChooserPopup (Gtk.Window):
         self.connect("hide", self._hide_cb)
         self.connect("button-press-event", self._button_press_cb)
         self.connect("button-release-event", self._button_release_cb)
-        self.add_events(Gdk.EventMask.BUTTON_PRESS_MASK |
-                        Gdk.EventMask.BUTTON_RELEASE_MASK)
+        self.add_events(
+            Gdk.EventMask.BUTTON_PRESS_MASK | Gdk.EventMask.BUTTON_RELEASE_MASK
+        )
 
         # Appearance
         self._frame = Gtk.Frame()
         self._frame.set_shadow_type(Gtk.ShadowType.OUT)
         self._align = Gtk.Alignment.new(0.5, 0.5, 1.0, 1.0)
-        self._align.set_padding(self.EDGE_SIZE, self.EDGE_SIZE,
-                                self.EDGE_SIZE, self.EDGE_SIZE)
+        self._align.set_padding(
+            self.EDGE_SIZE, self.EDGE_SIZE, self.EDGE_SIZE, self.EDGE_SIZE
+        )
         self._frame.add(self._align)
         Gtk.Window.add(self, self._frame)
 
@@ -236,25 +240,24 @@ class ChooserPopup (Gtk.Window):
         if event.get_window() is not self.get_window():
             return
         x, y, w, h = self._get_size()
-        inside = (x <= event.x_root < x+w) and (y <= event.y_root < y+h)
+        inside = (x <= event.x_root < x + w) and (y <= event.y_root < y + h)
         logger.debug("crossing: inside=%r", inside)
         # Grab the pointer if crossing from inside the popup to the
         # outside. Ungrab if doing the reverse.
         if inside:
             self._ungrab_pointer_outside(
-                device = event.get_device(),
-                time = event.time,
+                device=event.get_device(),
+                time=event.time,
             )
         else:
             self._grab_pointer_outside(
-                device = event.get_device(),
-                time = event.time,
+                device=event.get_device(),
+                time=event.time,
             )
 
     def _grab_pointer_outside(self, device, time):
         if self._outside_grab_active:
-            logger.warning("grab: outside-popup grab already active: "
-                           "regrabbing")
+            logger.warning("grab: outside-popup grab already active: " "regrabbing")
             self._ungrab_pointer_outside(device, time)
         event_mask = (
             Gdk.EventMask.POINTER_MOTION_MASK
@@ -265,19 +268,22 @@ class ChooserPopup (Gtk.Window):
         )
         cursor = self._outside_cursor
         grab_status = device.grab(
-            window = self.get_window(),
-            grab_ownership = Gdk.GrabOwnership.APPLICATION,
-            owner_events = False,
-            event_mask = Gdk.EventMask(event_mask),
-            cursor = cursor,
-            time_ = time,
+            window=self.get_window(),
+            grab_ownership=Gdk.GrabOwnership.APPLICATION,
+            owner_events=False,
+            event_mask=Gdk.EventMask(event_mask),
+            cursor=cursor,
+            time_=time,
         )
         if grab_status == Gdk.GrabStatus.SUCCESS:
             logger.debug("grab: acquired grab on %r successfully", device)
             self._outside_grab_active = True
         else:
-            logger.warning("grab: failed to acquire grab on %r (status=%s)",
-                           device, grab_status.value_nick)
+            logger.warning(
+                "grab: failed to acquire grab on %r (status=%s)",
+                device,
+                grab_status.value_nick,
+            )
 
     def _ungrab_pointer_outside(self, device, time):
         if not self._outside_grab_active:
@@ -297,9 +303,9 @@ class ChooserPopup (Gtk.Window):
         h = clamp(int(event.height), self.MIN_HEIGHT, self.MAX_HEIGHT)
         # Constrain position
         x, y = event.x, event.y
-        if y+h > mon_geom.y + mon_geom.height:
+        if y + h > mon_geom.y + mon_geom.height:
             y = mon_geom.y + mon_geom.height - h
-        if x+w > mon_geom.x + mon_geom.width:
+        if x + w > mon_geom.x + mon_geom.width:
             x = mon_geom.x + mon_geom.width - w
         if x < mon_geom.x:
             x = mon_geom.x
@@ -351,7 +357,7 @@ class ChooserPopup (Gtk.Window):
             x, y = win.get_origin()[1:]
             alloc = widget.get_allocation()
             style = widget.get_style_context()
-            rtl = (style.get_direction() == Gtk.TextDirection.RTL)
+            rtl = style.get_direction() == Gtk.TextDirection.RTL
             grav_table = {
                 # (Above, rtl, textwards): Gravity
                 (True, True, True): Gdk.Gravity.SOUTH_EAST,
@@ -363,8 +369,7 @@ class ChooserPopup (Gtk.Window):
                 (False, True, False): Gdk.Gravity.NORTH_WEST,
                 (False, False, True): Gdk.Gravity.NORTH_WEST,
             }
-            grav = grav_table.get((above, rtl, textwards),
-                                  Gdk.Gravity.NORTH_WEST)
+            grav = grav_table.get((above, rtl, textwards), Gdk.Gravity.NORTH_WEST)
             if not above:
                 y += alloc.height
             if (rtl and textwards) or ((not rtl) and (not textwards)):
@@ -408,8 +413,8 @@ class ChooserPopup (Gtk.Window):
         if self._popup_info:
             device, time = self._popup_info
             self._grab_pointer_outside(
-                device = device,
-                time = time,
+                device=device,
+                time=time,
             )
 
     def _hide_cb(self, widget):
@@ -438,17 +443,17 @@ class ChooserPopup (Gtk.Window):
             return None
         x, y, w, h = size
         s = self.EDGE_SIZE
-        inside = (x <= px < x+w) and (y <= py < y+h)
+        inside = (x <= px < x + w) and (y <= py < y + h)
         if not inside:
             return None
         north = east = south = west = False
-        if px >= x and px <= x+s:
+        if px >= x and px <= x + s:
             west = True
-        elif px <= x+w and px >= x+w-s:
+        elif px <= x + w and px >= x + w - s:
             east = True
-        if py >= y and py <= y+s:
+        if py >= y and py <= y + s:
             north = True
-        elif py <= y+h and py >= y+h-s:
+        elif py <= y + h and py >= y + h - s:
             south = True
         if north:
             if east:
@@ -474,7 +479,7 @@ class ChooserPopup (Gtk.Window):
     def _get_cursor(self, px, py):
         x, y, w, h = self._get_size()
         edge = self._get_edge(px, py)
-        outside_window = px < x or py < y or px > x+w or py > y+h
+        outside_window = px < x or py < y or px > x + w or py > y + h
         if outside_window:
             return self._outside_cursor
         else:
@@ -498,7 +503,7 @@ class ChooserPopup (Gtk.Window):
             return True
         else:
             x, y, w, h = size
-            inside = (x <= rx < x+w) and (y <= ry < y+h)
+            inside = (x <= rx < x + w) and (y <= ry < y + h)
             if not inside:
                 logger.debug("click outside detected: hiding popup")
                 self.hide()
@@ -533,22 +538,34 @@ class ChooserPopup (Gtk.Window):
         if self._resize_info:
             px0, py0, size0, edge0 = self._resize_info
             x0, y0, w0, h0 = size0
-            dx, dy = (px-px0, py-py0)
+            dx, dy = (px - px0, py - py0)
             x, y = x0, y0
             w, h = w0, h0
-            if edge0 in (Gdk.WindowEdge.NORTH_WEST, Gdk.WindowEdge.WEST,
-                         Gdk.WindowEdge.SOUTH_WEST):
+            if edge0 in (
+                Gdk.WindowEdge.NORTH_WEST,
+                Gdk.WindowEdge.WEST,
+                Gdk.WindowEdge.SOUTH_WEST,
+            ):
                 x += dx
                 w -= dx
-            elif edge0 in (Gdk.WindowEdge.NORTH_EAST, Gdk.WindowEdge.EAST,
-                           Gdk.WindowEdge.SOUTH_EAST):
+            elif edge0 in (
+                Gdk.WindowEdge.NORTH_EAST,
+                Gdk.WindowEdge.EAST,
+                Gdk.WindowEdge.SOUTH_EAST,
+            ):
                 w += dx
-            if edge0 in (Gdk.WindowEdge.NORTH_WEST, Gdk.WindowEdge.NORTH,
-                         Gdk.WindowEdge.NORTH_EAST):
+            if edge0 in (
+                Gdk.WindowEdge.NORTH_WEST,
+                Gdk.WindowEdge.NORTH,
+                Gdk.WindowEdge.NORTH_EAST,
+            ):
                 y += dy
                 h -= dy
-            elif edge0 in (Gdk.WindowEdge.SOUTH_EAST, Gdk.WindowEdge.SOUTH,
-                           Gdk.WindowEdge.SOUTH_WEST):
+            elif edge0 in (
+                Gdk.WindowEdge.SOUTH_EAST,
+                Gdk.WindowEdge.SOUTH,
+                Gdk.WindowEdge.SOUTH_WEST,
+            ):
                 h += dy
 
             # Apply constraints
@@ -576,7 +593,7 @@ class ChooserPopup (Gtk.Window):
             return True
 
         x, y, w, h = size
-        inside = (x <= px < x+w) and (y < py < y+h)
+        inside = (x <= px < x + w) and (y < py < y + h)
 
         # One oddity of the outside grab handling code is that it
         # doesn't always detect re-entry (in fact, it's cyclic; every
@@ -610,13 +627,14 @@ class ChooserPopup (Gtk.Window):
         # Moving outside the window more than a certain amount causes it
         # to close.
         s = self.LEAVE_SLACK
-        outside_tolerance = px < x-s or py < y-s or px > x+w+s or py > y+h+s
+        outside_tolerance = px < x - s or py < y - s or px > x + w + s or py > y + h + s
         if outside_tolerance:
             self.hide()
             return True
 
 
 # General window-related helper functions
+
 
 def clear_focus(window):
     """Clear focus and any selection in widget with focus
@@ -637,10 +655,9 @@ def clear_focus(window):
 
 # Window positioning helper functions
 
-def _final_rectangle(
-        x, y, w, h, screen_w, screen_h, targ_geom, min_usable_size):
-    """ Tries to create sensible (x, y, w, h) window pos/dim
-    """
+
+def _final_rectangle(x, y, w, h, screen_w, screen_h, targ_geom, min_usable_size):
+    """Tries to create sensible (x, y, w, h) window pos/dim"""
     # Generate a sensible, positive x and y position
     final_x, final_y, final_w, final_h = None, None, None, None
     if x is not None and y is not None:
@@ -669,12 +686,12 @@ def _final_rectangle(
                 if x is not None:
                     final_w = max(0, targ_geom.w - abs(x) - abs(w))
                 else:
-                    final_w = max(0, targ_geom.w - 2*abs(w))
+                    final_w = max(0, targ_geom.w - 2 * abs(w))
             if h < 0:
                 if x is not None:
                     final_h = max(0, targ_geom.h - abs(y) - abs(h))
                 else:
-                    final_h = max(0, targ_geom.h - 2*abs(h))
+                    final_h = max(0, targ_geom.h - 2 * abs(h))
         if final_w > screen_w or final_w < min_usable_size:
             final_w = None
         if final_h > screen_h or final_h < min_usable_size:
@@ -751,7 +768,8 @@ def set_initial_window_position(win, pos):
     # Positioning arguments
     x, y, w, h = (pos.get(k, None) for k in ("x", "y", "w", "h"))
     final_x, final_y, final_w, final_h = _final_rectangle(
-        x, y, w, h, screen_w, screen_h, targ_geom, min_usable_size)
+        x, y, w, h, screen_w, screen_h, targ_geom, min_usable_size
+    )
 
     # If the window is positioned, make sure it's on a monitor which still
     # exists. Users change display layouts...
@@ -769,8 +787,10 @@ def set_initial_window_position(win, pos):
                 onscreen = True
                 break
         if not onscreen:
-            logger.warning("Calculated window position is offscreen; "
-                           "ignoring %r" % ((final_x, final_y), ))
+            logger.warning(
+                "Calculated window position is offscreen; "
+                "ignoring %r" % ((final_x, final_y),)
+            )
             final_x = None
             final_y = None
 

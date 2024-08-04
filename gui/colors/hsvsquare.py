@@ -31,11 +31,11 @@ from .combined import CombinedAdjusterPage
 from lib.pycompat import xrange
 
 
-class HSVSquarePage (CombinedAdjusterPage, IconRenderable):
+class HSVSquarePage(CombinedAdjusterPage, IconRenderable):
     """Hue ring and Sat+Val square: page for `CombinedAdjuster`."""
 
     def __init__(self):
-        self._faces = ['h', 's', 'v']
+        self._faces = ["h", "s", "v"]
         table = Gtk.Table(n_rows=1, n_columns=1)
 
         xopts = Gtk.AttachOptions.FILL | Gtk.AttachOptions.EXPAND
@@ -49,11 +49,11 @@ class HSVSquarePage (CombinedAdjusterPage, IconRenderable):
 
     @classmethod
     def get_page_icon_name(self):
-        return 'mypaint-tool-hsvsquare'
+        return "mypaint-tool-hsvsquare"
 
     @classmethod
     def get_page_title(self):
-        return _('HSV Square')
+        return _("HSV Square")
 
     @classmethod
     def get_page_description(self):
@@ -67,12 +67,12 @@ class HSVSquarePage (CombinedAdjusterPage, IconRenderable):
         self.__adj.set_color_manager(manager)
 
     def render_as_icon(self, cr, size):
-        """Renders as an icon into a Cairo context.
-        """
+        """Renders as an icon into a Cairo context."""
         # Strategy: construct tmp R,G,B sliders with a color that shows off
         # their primary a bit. Render carefully (might need special handling
         # for the 16px size).
         from adjbases import ColorManager
+
         mgr = ColorManager(prefs={}, datapath=".")
         mgr.set_color(RGBColor(0.3, 0.3, 0.4))
         ring_adj = _HSVSquareOuterRing(self)
@@ -87,7 +87,7 @@ class HSVSquarePage (CombinedAdjusterPage, IconRenderable):
             cr.restore()
         else:
             cr.save()
-            square_offset = int(size/5.0 * 1.6)
+            square_offset = int(size / 5.0 * 1.6)
             square_dim = int(size * 0.64)
             ring_adj.render_background_cb(cr, wd=size, ht=size)
             # do minor rounding adjustments for hsvsquare icons at this size
@@ -104,18 +104,20 @@ class HSVSquarePage (CombinedAdjusterPage, IconRenderable):
 class HSVSquare(Gtk.VBox, ColorAdjuster):
     """Combined Sat+Val square and Hue ring color adjuster"""
 
-    __gtype_name__ = 'HSVSquare'
+    __gtype_name__ = "HSVSquare"
 
     def __init__(self):
         super(HSVSquare, self).__init__()
-        self._faces = ['h', 's', 'v']
+        self._faces = ["h", "s", "v"]
 
         self.__square = _HSVSquareInnerSquare(self)
         self.__ring = _HSVSquareOuterRing(self)
 
         s_align = Gtk.Alignment(
-            xalign=0.5, yalign=0.5,
-            xscale=0.54, yscale=0.54,
+            xalign=0.5,
+            yalign=0.5,
+            xscale=0.54,
+            yscale=0.54,
         )
         plz_be_square = Gtk.AspectFrame()
         plz_be_square.set_shadow_type(Gtk.ShadowType.NONE)
@@ -134,7 +136,7 @@ class HSVSquare(Gtk.VBox, ColorAdjuster):
         self.__square.set_tooltip_text(_("HSV Saturation and Value"))
 
 
-class _HSVSquareOuterRing (HueSaturationWheelAdjuster):
+class _HSVSquareOuterRing(HueSaturationWheelAdjuster):
     """Outer color ring"""
 
     vertical = True
@@ -149,31 +151,30 @@ class _HSVSquareOuterRing (HueSaturationWheelAdjuster):
         mgr = self.get_color_manager()
         if mgr:
             ntheta = mgr.distort_hue(ntheta)
-        nr **= 1.0/self.SAT_GAMMA
+        nr **= 1.0 / self.SAT_GAMMA
         alloc = self.get_allocation()
         wd, ht = alloc.width, alloc.height
         radius = self.get_radius(wd, ht, self.BORDER_WIDTH)
         cx, cy = self.get_center(wd, ht)
         r = radius * clamp(nr, 0, 1)
         t = clamp(ntheta, 0, 1) * 2 * math.pi
-        x = int(cx + r*math.cos(t)) + 0.5
-        y = int(cy + r*math.sin(t)) + 0.5
+        x = int(cx + r * math.cos(t)) + 0.5
+        y = int(cy + r * math.sin(t)) + 0.5
         return x, y
 
     def get_color_at_position(self, x, y):
-        """Gets the color at a position, for `ColorAdjusterWidget` impls.
-        """
+        """Gets the color at a position, for `ColorAdjusterWidget` impls."""
         alloc = self.get_allocation()
         cx, cy = self.get_center(alloc=alloc)
         # Normalized radius
-        r = math.sqrt((x-cx)**2 + (y-cy)**2)
+        r = math.sqrt((x - cx) ** 2 + (y - cy) ** 2)
         radius = self.get_radius(alloc=alloc)
         if r > radius:
             r = radius
         r /= radius
         r **= self.SAT_GAMMA
         # Normalized polar angle
-        theta = 1.25 - (math.atan2(x-cx, y-cy) / (2*math.pi))
+        theta = 1.25 - (math.atan2(x - cx, y - cy) / (2 * math.pi))
         while theta <= 0:
             theta += 1.0
         theta %= 1.0
@@ -197,8 +198,7 @@ class _HSVSquareOuterRing (HueSaturationWheelAdjuster):
         return f0, getattr(col, f0)
 
     def render_background_cb(self, cr, wd, ht, icon_border=None):
-        """Renders the offscreen bg, for `ColorAdjusterWidget` impls.
-        """
+        """Renders the offscreen bg, for `ColorAdjusterWidget` impls."""
         cr.save()
 
         border = icon_border
@@ -213,12 +213,12 @@ class _HSVSquareOuterRing (HueSaturationWheelAdjuster):
         cr.translate(cx, cy)
 
         # Clip, for a slight speedup
-        cr.arc(0, 0, radius+border, 0, 2*math.pi)
+        cr.arc(0, 0, radius + border, 0, 2 * math.pi)
         cr.clip()
 
         # Tangoesque outer border
         cr.set_line_width(self.OUTLINE_WIDTH)
-        cr.arc(0, 0, radius, 0, 2*math.pi)
+        cr.arc(0, 0, radius, 0, 2 * math.pi)
         cr.set_source_rgba(*self.OUTLINE_RGBA)
         cr.stroke()
 
@@ -226,10 +226,10 @@ class _HSVSquareOuterRing (HueSaturationWheelAdjuster):
         cr.save()
         cr.set_line_width(1.0)
         cr.set_line_join(cairo.LINE_JOIN_ROUND)
-        step_angle = 2.0*math.pi/steps
+        step_angle = 2.0 * math.pi / steps
         mgr = self.get_color_manager()
 
-        for ih in xrange(steps+1):  # overshoot by 1, no solid bit for final
+        for ih in xrange(steps + 1):  # overshoot by 1, no solid bit for final
             h = ih / steps
             if mgr:
                 h = mgr.undistort_hue(h)
@@ -266,11 +266,11 @@ class _HSVSquareOuterRing (HueSaturationWheelAdjuster):
         # Tangoesque inner border
         cr.set_source_rgba(*self.EDGE_HIGHLIGHT_RGBA)
         cr.set_line_width(self.EDGE_HIGHLIGHT_WIDTH)
-        cr.arc(0, 0, radius, 0, 2*math.pi)
+        cr.arc(0, 0, radius, 0, 2 * math.pi)
         cr.stroke()
 
         cr.set_line_width(self.OUTLINE_WIDTH)
-        cr.arc(0, 0, radius*0.8, 0, 2*math.pi)
+        cr.arc(0, 0, radius * 0.8, 0, 2 * math.pi)
         cr.set_source_rgba(0, 0, 0, 1)
         cr.set_operator(cairo.OPERATOR_DEST_OUT)
         cr.fill()
@@ -280,18 +280,17 @@ class _HSVSquareOuterRing (HueSaturationWheelAdjuster):
 
         cr.set_source_rgba(*self.EDGE_HIGHLIGHT_RGBA)
         cr.set_line_width(self.EDGE_HIGHLIGHT_WIDTH)
-        cr.arc(0, 0, radius*0.8, 0, 2*math.pi)
+        cr.arc(0, 0, radius * 0.8, 0, 2 * math.pi)
         cr.stroke()
 
     def paint_foreground_cb(self, cr, wd, ht):
-        """Fg marker painting, for `ColorAdjusterWidget` impls.
-        """
+        """Fg marker painting, for `ColorAdjusterWidget` impls."""
         col = HSVColor(color=self.get_managed_color())
         col.s = 1.0
         radius = self.get_radius(wd, ht, self.BORDER_WIDTH)
         cx = int(wd // 2)
         cy = int(ht // 2)
-        cr.arc(cx, cy, radius+0.5, 0, 2*math.pi)
+        cr.arc(cx, cy, radius + 0.5, 0, 2 * math.pi)
         cr.clip()
         x, y = self.get_pos_for_color(col)
         col.s = 0.70
@@ -312,13 +311,13 @@ class _HSVSquareOuterRing (HueSaturationWheelAdjuster):
         cr.stroke()
 
 
-class _HSVSquareInnerSquare (IconRenderableColorAdjusterWidget):
+class _HSVSquareInnerSquare(IconRenderableColorAdjusterWidget):
     """Inner saturation & value square"""
 
     def __init__(self, cube):
         ColorAdjusterWidget.__init__(self)
         self.__cube = cube
-        self.connect('button-press-event', self.stop_fallthrough)
+        self.connect("button-press-event", self.stop_fallthrough)
 
     def stop_fallthrough(self, widget, event):
         return True
@@ -326,7 +325,7 @@ class _HSVSquareInnerSquare (IconRenderableColorAdjusterWidget):
     def __get_faces(self):
         f1 = self.__cube._faces[1]
         f2 = self.__cube._faces[2]
-        if f2 == 'h':
+        if f2 == "h":
             f1, f2 = f2, f1
         return f1, f2
 
@@ -335,14 +334,14 @@ class _HSVSquareInnerSquare (IconRenderableColorAdjusterWidget):
         b = icon_border
         if b is None:
             b = self.BORDER_WIDTH
-        eff_wd = int(wd - 2*b)
-        eff_ht = int(ht - 2*b)
+        eff_wd = int(wd - 2 * b)
+        eff_ht = int(ht - 2 * b)
         f1, f2 = self.__get_faces()
 
         step = max(1, int(eff_wd // 128))
 
-        rect_x, rect_y = int(b)+0.5, int(b)+0.5
-        rect_w, rect_h = int(eff_wd)-1, int(eff_ht)-1
+        rect_x, rect_y = int(b) + 0.5, int(b) + 0.5
+        rect_w, rect_h = int(eff_wd) - 1, int(eff_ht) - 1
 
         # Paint the central area offscreen
         cr.push_group()
@@ -350,11 +349,11 @@ class _HSVSquareInnerSquare (IconRenderableColorAdjusterWidget):
             amt = x / eff_wd
             setattr(col, f1, amt)
             setattr(col, f2, 1.0)
-            lg = cairo.LinearGradient(b+x, b, b+x, b+eff_ht)
+            lg = cairo.LinearGradient(b + x, b, b + x, b + eff_ht)
             lg.add_color_stop_rgb(*([0.0] + list(col.get_rgb())))
             setattr(col, f2, 0.0)
             lg.add_color_stop_rgb(*([1.0] + list(col.get_rgb())))
-            cr.rectangle(b+x, b, step, eff_ht)
+            cr.rectangle(b + x, b, step, eff_ht)
             cr.set_source(lg)
             cr.fill()
         slice_patt = cr.pop_group()
@@ -386,10 +385,10 @@ class _HSVSquareInnerSquare (IconRenderableColorAdjusterWidget):
         b = self.BORDER_WIDTH
         wd = alloc.width
         ht = alloc.height
-        eff_wd = wd - 2*b
-        eff_ht = ht - 2*b
-        f1_amt = clamp((x-b) / eff_wd, 0, 1)
-        f2_amt = clamp((y-b) / eff_ht, 0, 1)
+        eff_wd = wd - 2 * b
+        eff_ht = ht - 2 * b
+        f1_amt = clamp((x - b) / eff_wd, 0, 1)
+        f2_amt = clamp((y - b) / eff_ht, 0, 1)
         col = HSVColor(color=self.get_managed_color())
         f1, f2 = self.__get_faces()
         f2_amt = 1.0 - f2_amt
@@ -407,10 +406,10 @@ class _HSVSquareInnerSquare (IconRenderableColorAdjusterWidget):
         b = self.BORDER_WIDTH
         wd = alloc.width
         ht = alloc.height
-        eff_wd = wd - 2*b
-        eff_ht = ht - 2*b
-        x = b + f1_amt*eff_wd
-        y = b + f2_amt*eff_ht
+        eff_wd = wd - 2 * b
+        eff_ht = ht - 2 * b
+        x = b + f1_amt * eff_wd
+        y = b + f2_amt * eff_ht
         return x, y
 
     def paint_foreground_cb(self, cr, wd, ht):
@@ -418,11 +417,12 @@ class _HSVSquareInnerSquare (IconRenderableColorAdjusterWidget):
         draw_marker_circle(cr, x, y)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     import os
     import sys
     from adjbases import ColorManager
-    mgr = ColorManager(prefs={}, datapath='.')
+
+    mgr = ColorManager(prefs={}, datapath=".")
     cube = HSVSquarePage()
     cube.set_color_manager(mgr)
     mgr.set_color(RGBColor(0.3, 0.6, 0.7))

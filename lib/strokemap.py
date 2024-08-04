@@ -30,7 +30,8 @@ TILE_SIZE = N = mypaintlib.TILE_SIZE
 
 ## Class defs
 
-class StrokeShape (object):
+
+class StrokeShape(object):
     """The shape of a single brushstroke.
 
     This class stores the shape of a stroke in as a 1-bit bitmap. The
@@ -38,6 +39,7 @@ class StrokeShape (object):
     tile (for fast lookup).
 
     """
+
     def __init__(self):
         """Construct a new, blank StrokeShape."""
         object.__init__(self)
@@ -72,19 +74,20 @@ class StrokeShape (object):
         before_tiles = set(before_dict.items())
         after_tiles = set(after_dict.items())
         changed_idxs = set(
-            pos for pos, data
-            in before_tiles.symmetric_difference(after_tiles)
+            pos for pos, data in before_tiles.symmetric_difference(after_tiles)
         )
         if not changed_idxs:
             return None
         shape = cls()
         assert not shape.strokemap
-        shape.tasks.add_work(_TileDiffUpdateTask(
-            before.tiledict,
-            after.tiledict,
-            changed_idxs,
-            shape.strokemap,
-        ))
+        shape.tasks.add_work(
+            _TileDiffUpdateTask(
+                before.tiledict,
+                after.tiledict,
+                changed_idxs,
+                shape.strokemap,
+            )
+        )
         return shape
 
     def init_from_string(self, data, translate_x, translate_y):
@@ -102,11 +105,11 @@ class StrokeShape (object):
         translate_x /= N
         translate_y /= N
         while data:
-            tx, ty, size = struct.unpack('>iiI', data[:3*4])
-            compressed_bitmap = data[3*4:size+3*4]
+            tx, ty, size = struct.unpack(">iiI", data[: 3 * 4])
+            compressed_bitmap = data[3 * 4 : size + 3 * 4]
             tile = _Tile.new_from_compressed_bitmap(compressed_bitmap)
             self.strokemap[tx + translate_x, ty + translate_y] = tile
-            data = data[size+3*4:]
+            data = data[size + 3 * 4 :]
 
     def save_to_string(self, translate_x, translate_y):
         """Return a compressed bytes string representing the stroke shape.
@@ -127,12 +130,12 @@ class StrokeShape (object):
         translate_x = int(translate_x // N)
         translate_y = int(translate_y // N)
         self.tasks.finish_all()
-        data = b''
+        data = b""
         for (tx, ty), tile in iteritems(self.strokemap):
             compressed_bitmap = tile.to_bytes()
             tx = int(tx + translate_x)
             ty = int(ty + translate_y)
-            data += struct.pack('>iiI', tx, ty, len(compressed_bitmap))
+            data += struct.pack(">iiI", tx, ty, len(compressed_bitmap))
             data += compressed_bitmap
         return data
 
@@ -191,16 +194,14 @@ class StrokeShape (object):
 
         """
         pred = _TileIndexPredicate(
-            bbox = bbox,
+            bbox=bbox,
             # center = center,
             # radius = 20*N,   # pixels
             # maxhits = 2000,   # tiles
         )
         self._complete_tile_tasks(pred)
         tile_idxs = list(pred.hits) + [
-            ti
-            for ti in self.strokemap
-            if ti not in pred.hits
+            ti for ti in self.strokemap if ti not in pred.hits
         ]
         for tx, ty in tile_idxs:
             if not pred((tx, ty)):
@@ -230,7 +231,7 @@ class StrokeShape (object):
         x, y, w, h = rect
         logger.debug("Trimming stroke to %dx%d%+d%+d", w, h, x, y)
         for tx, ty in list(self.strokemap.keys()):
-            if tx*N+N < x or ty*N+N < y or tx*N > x+w or ty*N > y+h:
+            if tx * N + N < x or ty * N + N < y or tx * N > x + w or ty * N > y + h:
                 self.strokemap.pop((tx, ty))
         return bool(self.strokemap)
 
@@ -258,8 +259,8 @@ class _TileDiffUpdateTask:
 
     def __repr__(self):
         return "<{name} remaining={remaining}>".format(
-            name = self.__class__.__name__,
-            remaining = len(self._remaining),
+            name=self.__class__.__name__,
+            remaining=len(self._remaining),
         )
 
     def __call__(self):
@@ -320,15 +321,13 @@ class _TileTranslateTask:
 
     def __repr__(self):
         return "<{name} dx={dx} dy={dy}>".format(
-            name = self.__class__.__name__,
-            dx = self._dx,
-            dy = self._dy,
+            name=self.__class__.__name__,
+            dx=self._dx,
+            dy=self._dy,
         )
 
     def __call__(self):
-        """Idle task: translate a single tile into the output array dict.
-
-        """
+        """Idle task: translate a single tile into the output array dict."""
         try:
             (src_tx, src_ty), src_tile = self._src.popitem()
         except KeyError:
@@ -346,10 +345,11 @@ class _TileTranslateTask:
                 else:
                     targ = self._targ.get((targ_tx, targ_ty), None)
                     if targ is None:
-                        targ = np.zeros((N, N), 'uint8')
+                        targ = np.zeros((N, N), "uint8")
                         self._targ[targ_tx, targ_ty] = targ
-                    targ[targ_y0:targ_y1, targ_x0:targ_x1] \
-                        = src[src_y0:src_y1, src_x0:src_x1]
+                    targ[targ_y0:targ_y1, targ_x0:targ_x1] = src[
+                        src_y0:src_y1, src_x0:src_x1
+                    ]
         return bool(self._src)
 
 
@@ -399,8 +399,8 @@ class _TileRecompressTask:
 
     def __repr__(self):
         return "<{name} remaining={n}>".format(
-            name = self.__class__.__name__,
-            n = len(self._src_dict),
+            name=self.__class__.__name__,
+            n=len(self._src_dict),
         )
 
 
@@ -411,7 +411,7 @@ class _Tile:
 
     """
 
-    _ZDATA_ONES = zlib.compress(np.ones((N, N), 'uint8').tostring())
+    _ZDATA_ONES = zlib.compress(np.ones((N, N), "uint8").tostring())
 
     def __init__(self):
         """Initialize, as a tile filled with all ones."""
@@ -421,20 +421,20 @@ class _Tile:
     @classmethod
     def _mocks(cls):
         """Return mockup tiles for testing."""
-        ar = np.ones((N, N), 'uint8')
-        m = int(N//2)
+        ar = np.ones((N, N), "uint8")
+        m = int(N // 2)
         ar[0:m, 0:m] = 0
-        ar[m+1:N, m+1:N] = 0
+        ar[m + 1 : N, m + 1 : N] = 0
         checks = cls.new_from_array(ar)
         ones = cls.new_from_compressed_bitmap(cls._ZDATA_ONES)
-        ar = np.zeros((N, N), 'uint8')
+        ar = np.zeros((N, N), "uint8")
         zeros = cls.new_from_array(ar)
         return (ones, checks, zeros)
 
     @classmethod
     def new_from_diff(cls, before, after):
         """Initialize from a diff or two RGBA arrays."""
-        differences = np.empty((N, N), 'uint8')
+        differences = np.empty((N, N), "uint8")
         mypaintlib.tile_perceptual_change_strokemap(
             before,
             after,
@@ -476,11 +476,11 @@ class _Tile:
     def to_array(self):
         """Convert to an uncompressed array of ones and zeros."""
         if self._all:
-            array = np.ones((N, N), 'uint8')
+            array = np.ones((N, N), "uint8")
         else:
             array = np.frombuffer(
                 zlib.decompress(self._zdata),
-                dtype='uint8',
+                dtype="uint8",
             )
             array.shape = (N, N)
         # Can this result always be treated as read-only?
@@ -505,15 +505,14 @@ class _Tile:
         warn("Please use to_bytes() instead here.", DeprecationWarning)
         return self.to_bytes()
 
-    def write_to_surface_tile_array(self, rgba,
-                                    _c=(1 << 15) / 4, _a=(1 << 15) / 2):
+    def write_to_surface_tile_array(self, rgba, _c=(1 << 15) / 4, _a=(1 << 15) / 2):
         """Write to a surface's RGBA tile."""
         # neutral gray, 50% opaque
         if self._all:
             rgba[:] = (_c, _c, _c, _a)
         else:
             array = self.to_array()
-            rgba[:, :, 3] = array.astype('uint16') * _a
+            rgba[:, :, 3] = array.astype("uint16") * _a
             rgba[:, :, 0] = rgba[:, :, 3] // 2
             rgba[:, :, 1] = rgba[:, :, 3] // 2
             rgba[:, :, 2] = rgba[:, :, 3] // 2
@@ -542,16 +541,16 @@ class _Tile:
         if not self._all:
             zb = len(self._zdata)
         return "<{name} all={all} zbytes={zbytes}>".format(
-            all = self._all,
-            name = self.__class__.__name__,
-            zbytes = zb,
+            all=self._all,
+            name=self.__class__.__name__,
+            zbytes=zb,
         )
 
 
 ## Helper funcs
 
 
-class _TileIndexPredicate (object):
+class _TileIndexPredicate(object):
     """Tile index tester callable for processing subsets of tiles.
 
     This predicate encodes a simple bbox and distance based metric for
@@ -622,7 +621,7 @@ class _TileIndexPredicate (object):
             return True
         if self._maxhits:
             if not (self._center_tile and self._max_tile_dist):
-                if (len(self.hits) > self._maxhits):
+                if len(self.hits) > self._maxhits:
                     return False
         if self._tile_range:
             if not _tile_in_range(ti, self._tile_range):
@@ -630,14 +629,16 @@ class _TileIndexPredicate (object):
         if self._center_tile and self._max_tile_dist:
             ctx, cty = self._center_tile
             tx, ty = ti
-            td = math.hypot(ctx-tx, cty-ty)
-            if td > 8*self._max_tile_dist:
+            td = math.hypot(ctx - tx, cty - ty)
+            if td > 8 * self._max_tile_dist:
                 return False
-            elif td > 4*self._max_tile_dist:
-                if not (((tx % 4) == 1 and (ty % 4) == 1)
-                        or ((tx % 4) == 3 and (ty % 4) == 3)):
+            elif td > 4 * self._max_tile_dist:
+                if not (
+                    ((tx % 4) == 1 and (ty % 4) == 1)
+                    or ((tx % 4) == 3 and (ty % 4) == 3)
+                ):
                     return False
-            elif td > 2*self._max_tile_dist:
+            elif td > 2 * self._max_tile_dist:
                 if not ((tx % 2) == 1 and (ty % 2) == 1):
                     return False
             elif td > self._max_tile_dist:

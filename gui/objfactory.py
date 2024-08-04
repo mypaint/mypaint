@@ -23,7 +23,8 @@ logger = logging.getLogger(__name__)
 
 ## Class definitions
 
-class ConstructError (Exception):
+
+class ConstructError(Exception):
     """Errors encountered when constructing objects.
 
     Raised when an object cannot be looked up by GType name:
@@ -49,7 +50,7 @@ class ConstructError (Exception):
     """
 
 
-class ObjFactory (object):
+class ObjFactory(object):
     """Pythonic cached factory for GObjects.
 
     Objects are constructable from their GObject type name and a simple tuple
@@ -141,8 +142,7 @@ class ObjFactory (object):
             gtype = GObject.type_from_name(gtype_name)
         except RuntimeError:
             raise ConstructError(
-                "Cannot construct a '%s': module not imported?"
-                % gtype_name
+                "Cannot construct a '%s': module not imported?" % gtype_name
             )
         if self._required_type:
             if not gtype.is_a(self._required_type):
@@ -153,9 +153,11 @@ class ObjFactory (object):
         try:
             product = gtype.pytype(*params)
         except Exception:
-            warn("Failed to construct a %s (pytype=%r, params=%r)"
-                 % (gtype_name, gtype.pytype, params),
-                 RuntimeWarning)
+            warn(
+                "Failed to construct a %s (pytype=%r, params=%r)"
+                % (gtype_name, gtype.pytype, params),
+                RuntimeWarning,
+            )
             raise
         product.__key = key
         self._cache[key] = product
@@ -246,7 +248,8 @@ class ObjFactory (object):
         """Event: object's construct params were updated by `rebadge()`"""
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     logging.basicConfig()
     import doctest
+
     doctest.testmod()

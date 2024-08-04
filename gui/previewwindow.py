@@ -32,15 +32,15 @@ import gui.style
 
 ## Module consts
 
-PHI = (1.+math.sqrt(2))/2.
+PHI = (1.0 + math.sqrt(2)) / 2.0
 REDRAW_PRIORITY = GLib.PRIORITY_LOW
 
 
 ## Helper funcs
 
+
 def _points_to_enclosing_rect(points):
-    """Convert a list of (x, y) points to their encompassing rect.
-    """
+    """Convert a list of (x, y) points to their encompassing rect."""
     points = list(points)
     x, y = points.pop(0)
     xmin = xmax = x
@@ -54,12 +54,13 @@ def _points_to_enclosing_rect(points):
             ymin = y
         if y > ymax:
             ymax = y
-    return xmin, ymin, xmax-xmin, ymax-ymin
+    return xmin, ymin, xmax - xmin, ymax - ymin
 
 
 ## Class defs
 
-class VisibleAreaOverlay (overlays.Overlay):
+
+class VisibleAreaOverlay(overlays.Overlay):
     """Overlay for the preview TDW which shows the main TDW's area"""
 
     ## Class vars
@@ -79,7 +80,7 @@ class VisibleAreaOverlay (overlays.Overlay):
             return
         cr.set_line_join(cairo.LINE_JOIN_MITER)
         cr.set_line_cap(cairo.LINE_CAP_SQUARE)
-        pixel_centered = (not self._preview.viewport_is_rotated)
+        pixel_centered = not self._preview.viewport_is_rotated
         line_color = gui.style.EDITABLE_ITEM_COLOR
         if self._preview.zone == _EditZone.INSIDE:
             line_color = gui.style.ACTIVE_ITEM_COLOR
@@ -88,13 +89,13 @@ class VisibleAreaOverlay (overlays.Overlay):
         pixel_centring_offset = 0.5 if (line_width % 2) else 0.0
         if self._paint_topleft:
             tlx, tly = self._paint_topleft
-            tlx = int(tlx) + pixel_centring_offset   # always centred
+            tlx = int(tlx) + pixel_centring_offset  # always centred
             tly = int(tly) + pixel_centring_offset
             cr.rectangle(tlx, tly, 1, 1)
             gui.drawutils.render_drop_shadow(
-                cr = cr,
-                z = 1,
-                line_width = line_width,
+                cr=cr,
+                z=1,
+                line_width=line_width,
             )
             cr.set_line_width(line_width)
             cr.set_source_rgb(*line_color.get_rgb())
@@ -117,9 +118,9 @@ class VisibleAreaOverlay (overlays.Overlay):
             cr.set_line_width(line_width)
             cr.set_source_rgb(*line_color.get_rgb())
             gui.drawutils.render_drop_shadow(
-                cr = cr,
-                z = 1,
-                line_width = line_width,
+                cr=cr,
+                z=1,
+                line_width=line_width,
             )
             cr.stroke()
 
@@ -155,16 +156,15 @@ class VisibleAreaOverlay (overlays.Overlay):
         x, y, w, h = _points_to_enclosing_rect(shape_points)
         # Accommodate a later render_drop_shadow()
         offsets = gui.drawutils.get_drop_shadow_offsets(
-            z = 1,
-            line_width = gui.style.DRAGGABLE_EDGE_WIDTH,
+            z=1,
+            line_width=gui.style.DRAGGABLE_EDGE_WIDTH,
         )
         (offs_left, offs_top, offs_right, offs_bottom) = offsets
         x -= offs_left
         y -= offs_top
         w += offs_right + offs_left
         h += offs_bottom + offs_top
-        outside = ((x > alloc.width) or (y > alloc.height) or
-                   (x+w < 0) or (y+h < 0))
+        outside = (x > alloc.width) or (y > alloc.height) or (x + w < 0) or (y + h < 0)
         if outside:
             self._paint_rect = None
             self._paint_shapes = None
@@ -181,7 +181,7 @@ class _EditZone:
     INSIDE = 1
 
 
-class PreviewTool (SizedVBoxToolWidget):
+class PreviewTool(SizedVBoxToolWidget):
     """Tool widget for previewing the whole canvas.
 
     We overlay a preview rectangle showing where the main document view is
@@ -202,7 +202,7 @@ class PreviewTool (SizedVBoxToolWidget):
 
     tool_widget_description = _("Show preview of the whole drawing area")
 
-    __gtype_name__ = 'MyPaintPreviewTool'
+    __gtype_name__ = "MyPaintPreviewTool"
 
     #: Zoom the preview only to a limited number of zoom levels - reduces
     #: the frequency of zooming, at the expence of a close match.
@@ -221,15 +221,16 @@ class PreviewTool (SizedVBoxToolWidget):
     def __init__(self):
         super(SizedVBoxToolWidget, self).__init__()
         from gui.application import get_app
+
         app = get_app()
         self.app = app
         self._main_tdw = app.doc.tdw
         self._model = app.doc.model
         self.tdw = tileddrawwidget.TiledDrawWidget(
-            idle_redraw_priority = REDRAW_PRIORITY,
+            idle_redraw_priority=REDRAW_PRIORITY,
         )
         self.tdw.set_model(self._model)
-        self.tdw.zoom_min = 1/50.0
+        self.tdw.zoom_min = 1 / 50.0
         self.tdw.set_size_request(64, 64)
         self.pack_start(self.tdw, True, True, 0)
         self._cursor = None
@@ -270,15 +271,24 @@ class PreviewTool (SizedVBoxToolWidget):
 
         if self.SUPPORTED_ZOOMLEVELS_ONLY:
             self._zoomlevel_values = [
-                1.0/128, 1.5/128,
-                1.0/64, 1.5/64,
-                1.0/32, 1.5/32,
-                1.0/16, 1.0/8, 2.0/11, 0.25, 1.0/3, 0.50, 2.0/3,
-                1.0
+                1.0 / 128,
+                1.5 / 128,
+                1.0 / 64,
+                1.5 / 64,
+                1.0 / 32,
+                1.5 / 32,
+                1.0 / 16,
+                1.0 / 8,
+                2.0 / 11,
+                0.25,
+                1.0 / 3,
+                0.50,
+                2.0 / 3,
+                1.0,
             ]
 
         self.tdw.zoom_min = 1.0 / 128
-        self.tdw.zoom_max = float(app.preferences.get('view.default_zoom', 1))
+        self.tdw.zoom_max = float(app.preferences.get("view.default_zoom", 1))
 
         # Used for detection of potential effective bbox changes during
         # canvas modify events
@@ -318,7 +328,8 @@ class PreviewTool (SizedVBoxToolWidget):
 
         # Events for the preview widget
         self.tdw.add_events(
-            Gdk.EventMask.BUTTON1_MOTION_MASK | Gdk.EventMask.SCROLL_MASK)
+            Gdk.EventMask.BUTTON1_MOTION_MASK | Gdk.EventMask.SCROLL_MASK
+        )
         preview_tdw_events = {
             # Clicks and drags
             "button-press-event": self._button_press_cb,
@@ -432,8 +443,8 @@ class PreviewTool (SizedVBoxToolWidget):
         if self._drag_start:
             pmx, pmy = self.tdw.display_to_model(event.x, event.y)
             cmx0, cmy0, pmx0, pmy0 = self._drag_start
-            dmx, dmy = pmx-pmx0, pmy-pmy0
-            self._main_tdw.recenter_on_model_coords(cmx0+dmx, cmy0+dmy)
+            dmx, dmy = pmx - pmx0, pmy - pmy0
+            self._main_tdw.recenter_on_model_coords(cmx0 + dmx, cmy0 + dmy)
             self.app.doc.notify_view_changed(prioritize=True)
         else:
             zone = self._get_zone_at_pos(event.x, event.y)
@@ -460,7 +471,7 @@ class PreviewTool (SizedVBoxToolWidget):
 
     def set_zone(self, value, update_ui=None):
         """Setter (property: `zone`), with redraw and cursor setting"""
-        value_changed = (value != self._zone)
+        value_changed = value != self._zone
         self._zone = value
         if update_ui is None:  # use the default unless explicitly overridden
             update_ui = value_changed
@@ -471,7 +482,7 @@ class PreviewTool (SizedVBoxToolWidget):
             _EditZone.OUTSIDE: self._cursor_move_here,
         }.get(value)
         self._set_cursor(cursor)
-        self.tdw.queue_draw()   # rendering is sensitive to zone
+        self.tdw.queue_draw()  # rendering is sensitive to zone
 
     zone = property(get_zone, set_zone)
 
@@ -482,35 +493,34 @@ class PreviewTool (SizedVBoxToolWidget):
     def _update_viewport_overlay(self):
         """Updates the viewport overlay's position"""
         alloc = self._main_tdw.get_allocation()
-        x, y = 0., 0.
+        x, y = 0.0, 0.0
         w, h = alloc.width, alloc.height
         # List of viewport corners
-        nw = w/4*PHI
-        nh = h/4*PHI
+        nw = w / 4 * PHI
+        nh = h / 4 * PHI
         overlay_shapes_disp = [
-            [(x, y+nh), (x, y), (x+nw, y)],
-            [(x, h-nh), (x, h), (x+nw, h)],
-            [(w-nw, y), (w, y), (w, x+nh)],
-            [(w-nw, h), (w, h), (w, h-nh)],
+            [(x, y + nh), (x, y), (x + nw, y)],
+            [(x, h - nh), (x, h), (x + nw, h)],
+            [(w - nw, y), (w, y), (w, x + nh)],
+            [(w - nw, h), (w, h), (w, h - nh)],
         ]
         # To model coords
         overlay_shapes_model = []
         for shape in overlay_shapes_disp:
-            shape = [self._main_tdw.display_to_model(*pos)
-                     for pos in shape]
+            shape = [self._main_tdw.display_to_model(*pos) for pos in shape]
             overlay_shapes_model.append(shape)
         self.viewport_overlay_shapes = overlay_shapes_model
         # Top left/right dot, for displaying the orientation
-        self.viewport_is_mirrored = (self._main_tdw.mirrored)
-        self.viewport_is_rotated = (self._main_tdw.rotation != 0)
+        self.viewport_is_mirrored = self._main_tdw.mirrored
+        self.viewport_is_rotated = self._main_tdw.rotation != 0
         if not (self.viewport_is_mirrored or self.viewport_is_rotated):
             self.viewport_overlay_topleft = None
         else:
-            k = nh/2
-            j = nw/2
+            k = nh / 2
+            j = nw / 2
             direction = self._main_tdw.get_direction()
             if direction == Gtk.TextDirection.RTL:
-                j = w-j
+                j = w - j
             topleft = j, k
             topleft = self._main_tdw.display_to_model(*topleft)
             self.viewport_overlay_topleft = topleft
@@ -532,7 +542,7 @@ class PreviewTool (SizedVBoxToolWidget):
             scale_i = bisect.bisect_left(self._zoomlevel_values, scale)
             if scale_i >= len(self._zoomlevel_values):
                 scale_i = len(self._zoomlevel_values) - 1
-            scale = self._zoomlevel_values[max(0, scale_i-1)]
+            scale = self._zoomlevel_values[max(0, scale_i - 1)]
         return scale
 
     def _frame_modified_cb(self, *_ignored):
@@ -570,14 +580,14 @@ class PreviewTool (SizedVBoxToolWidget):
             if self._x_min is None or x < self._x_min:
                 self._x_min = x
                 outside_existing = True
-            if self._x_max is None or x+w > self._x_max:
-                self._x_max = x+w
+            if self._x_max is None or x + w > self._x_max:
+                self._x_max = x + w
                 outside_existing = True
             if self._y_min is None or y < self._y_min:
                 self._y_min = y
                 outside_existing = True
-            if self._y_max is None or y+h > self._y_max:
-                self._y_max = y+h
+            if self._y_max is None or y + h > self._y_max:
+                self._y_max = y + h
                 outside_existing = True
         # Update if the user went outside the existing area.
         if outside_existing:
@@ -613,7 +623,7 @@ class PreviewTool (SizedVBoxToolWidget):
             defining_points = []
         model_bbox = tuple(self._model.get_effective_bbox())  # Axis aligned...
         x, y, w, h = model_bbox
-        defining_points.extend([(x, y), (x+w, y+h)])        # ...so two suffice
+        defining_points.extend([(x, y), (x + w, y + h)])  # ...so two suffice
 
         # Convert to an axis-aligned bounding box.
         # Don't resize unless this has actually changed.
@@ -634,12 +644,12 @@ class PreviewTool (SizedVBoxToolWidget):
         # The bbox is a pretty good seed value for them...
         if (self._x_min is None) or (x < self._x_min):
             self._x_min = x
-        if (self._x_max is None) or (x+w > self._x_max):
-            self._x_max = x+w
+        if (self._x_max is None) or (x + w > self._x_max):
+            self._x_max = x + w
         if (self._y_min is None) or (y < self._y_min):
             self._y_min = y
-        if (self._y_max is None) or (y+h > self._y_max):
-            self._y_max = y+h
+        if (self._y_max is None) or (y + h > self._y_max):
+            self._y_max = y + h
 
         # Scale to fit within a rectangle slightly smaller than the widget.
         # Slight borders are nice.
@@ -650,8 +660,8 @@ class PreviewTool (SizedVBoxToolWidget):
         # Set the preview canvas's size and scale
         scale = self._limit_scale(min(zoom_x, zoom_y))
         self.tdw.scale = scale
-        cx = x + w/2.
-        cy = y + h/2.
+        cx = x + w / 2.0
+        cy = y + h / 2.0
         self.tdw.recenter_on_model_coords(cx, cy)
 
         # Update the overlay, since the transformation has changed

@@ -50,6 +50,7 @@ RESPONSE_QUIT = 1
 RESPONSE_SEARCH = 2
 RESPONSE_REPORT = 3
 
+
 def analyse_simple(exctyp, value, tb):
     trace = StringIO()
     traceback.print_exception(exctyp, value, tb, None, trace)
@@ -57,19 +58,19 @@ def analyse_simple(exctyp, value, tb):
 
 
 def lookup(name, frame, lcls):
-    '''Find the value for a given name in the given frame'''
+    """Find the value for a given name in the given frame"""
     if name in lcls:
-        return 'local', lcls[name]
+        return "local", lcls[name]
     elif name in frame.f_globals:
-        return 'global', frame.f_globals[name]
-    elif '__builtins__' in frame.f_globals:
-        builtins = frame.f_globals['__builtins__']
+        return "global", frame.f_globals[name]
+    elif "__builtins__" in frame.f_globals:
+        builtins = frame.f_globals["__builtins__"]
         if type(builtins) is dict:
             if name in builtins:
-                return 'builtin', builtins[name]
+                return "builtin", builtins[name]
         else:
             if hasattr(builtins, name):
-                return 'builtin', getattr(builtins, name)
+                return "builtin", getattr(builtins, name)
     return None, []
 
 
@@ -86,11 +87,11 @@ def analyse(exctyp, value, tb):
     nlines = 3
     frecs = inspect.getinnerframes(tb, nlines)
 
-    trace.write('Mypaint version: %s\n' % app.version)
-    trace.write('System information: %s\n' % platform.platform())
-    trace.write('Using: %s\n' % (get_libs_version_string(),))
+    trace.write("Mypaint version: %s\n" % app.version)
+    trace.write("System information: %s\n" % platform.platform())
+    trace.write("Using: %s\n" % (get_libs_version_string(),))
 
-    trace.write('Traceback (most recent call last):\n')
+    trace.write("Traceback (most recent call last):\n")
     for frame, fname, lineno, funcname, context, cindex in frecs:
         trace.write('  File "%s", line %d, ' % (fname, lineno))
         args, varargs, varkw, lcls = inspect.getargvalues(frame)
@@ -103,11 +104,12 @@ def analyse(exctyp, value, tb):
                 return linecache.getline(fname, lno[0])
             finally:
                 lno[0] += 1
-        all, prev, name, scope = {}, None, '', None
+
+        all, prev, name, scope = {}, None, "", None
         for ttype, tstr, stup, etup, line in tokenize.generate_tokens(readline):
             if ttype == tokenize.NAME and tstr not in keyword.kwlist:
                 if name:
-                    if name[-1] == '.':
+                    if name[-1] == ".":
                         try:
                             val = getattr(prev, tstr)
                         except AttributeError:
@@ -120,29 +122,42 @@ def analyse(exctyp, value, tb):
                     name = tstr
                 if val is not None:
                     prev = val
-            elif tstr == '.':
+            elif tstr == ".":
                 if prev:
-                    name += '.'
+                    name += "."
             else:
                 if name:
                     all[name] = (scope, prev)
-                prev, name, scope = None, '', None
+                prev, name, scope = None, "", None
                 if ttype == tokenize.NEWLINE:
                     break
 
         try:
-            details = inspect.formatargvalues(args, varargs, varkw, lcls, formatvalue=lambda v: '=' + pydoc.text.repr(v))
+            details = inspect.formatargvalues(
+                args,
+                varargs,
+                varkw,
+                lcls,
+                formatvalue=lambda v: "=" + pydoc.text.repr(v),
+            )
         except:
             # seen that one on Windows (actual exception was KeyError: self)
-            details = '(no details)'
-        trace.write(funcname + details + '\n')
+            details = "(no details)"
+        trace.write(funcname + details + "\n")
         if context is None:
-            context = ['<source context missing>\n']
-        trace.write(''.join(['    ' + x.replace('\t', '  ') for x in filter(lambda a: a.strip(), context)]))
+            context = ["<source context missing>\n"]
+        trace.write(
+            "".join(
+                [
+                    "    " + x.replace("\t", "  ")
+                    for x in filter(lambda a: a.strip(), context)
+                ]
+            )
+        )
         if len(all):
-            trace.write('  variables: %s\n' % str(all))
+            trace.write("  variables: %s\n" % str(all))
 
-    trace.write('%s: %s' % (exctyp.__name__, value))
+    trace.write("%s: %s" % (exctyp.__name__, value))
     return trace
 
 
@@ -162,9 +177,7 @@ def _info(exctyp, value, tb):
     dialog = Gtk.MessageDialog(message_type=Gtk.MessageType.WARNING)
     dialog.set_title(_("Bug Detected"))
 
-    primary = _(
-        "<big><b>A programming error has been detected.</b></big>"
-    )
+    primary = _("<big><b>A programming error has been detected.</b></big>")
     secondary = _(
         "You may be able to ignore this error and carry on working, "
         "but you should probably save your work soon.\n\n"
@@ -174,7 +187,7 @@ def _info(exctyp, value, tb):
     dialog.set_markup(primary)
     dialog.format_secondary_text(secondary)
 
-    dialog.add_button(_(u"Search Tracker…"), RESPONSE_SEARCH)
+    dialog.add_button(_("Search Tracker…"), RESPONSE_SEARCH)
     if "-" in lib.meta.MYPAINT_VERSION:  # only development and prereleases
         dialog.add_button(_("Report…"), RESPONSE_REPORT)
         dialog.set_response_sensitive(RESPONSE_REPORT, False)
@@ -188,8 +201,9 @@ def _info(exctyp, value, tb):
             dialog.set_resizable(True)
         else:
             dialog.set_resizable(False)
+
     details_expander = Gtk.Expander()
-    details_expander.set_label(_(u"Details…"))
+    details_expander.set_label(_("Details…"))
     details_expander.connect("notify::expanded", expander_cb)
 
     textview = Gtk.TextView()
@@ -224,16 +238,16 @@ def _info(exctyp, value, tb):
     trace = "\n".join(["```python", trace, "```"])
     buf.set_text(trace)
     ## Would be nice to scroll to the bottom automatically, but @#&%*@
-    #first, last = buf.get_bounds()
-    #buf.place_cursor(last)
-    #mark = buf.get_insert()
+    # first, last = buf.get_bounds()
+    # buf.place_cursor(last)
+    # mark = buf.get_insert()
     ##buf.scroll_mark_onscreen()
     ##textview.scroll_mark_onscreen(buf.get_insert(), 0)
-    #textview.scroll_to_mark(mark, 0.0)
+    # textview.scroll_to_mark(mark, 0.0)
 
     # Connect callback and present the dialog
-    dialog.connect('response', _dialog_response_cb, trace, exctyp, value)
-    #dialog.set_modal(True) # this might actually be contra-productive...
+    dialog.connect("response", _dialog_response_cb, trace, exctyp, value)
+    # dialog.set_modal(True) # this might actually be contra-productive...
     dialog.show()
     # calling dialog.run() here locks everything up in some cases, so
     # we just return to the main loop instead
@@ -257,10 +271,7 @@ def _dialog_response_cb(dialog, resp, trace, exctyp, value):
             "?utf8=%E2%9C%93"
             "&q={}+{}"
             "&type=Issues"
-        ).format(
-            quote_plus(exctyp.__name__, "/"),
-            quote_plus(str(value), "/")
-        )
+        ).format(quote_plus(exctyp.__name__, "/"), quote_plus(str(value), "/"))
         Gtk.show_uri(None, search_url, Gdk.CURRENT_TIME)
         if "-" in lib.meta.MYPAINT_VERSION:
             dialog.set_response_sensitive(RESPONSE_REPORT, True)
@@ -268,7 +279,8 @@ def _dialog_response_cb(dialog, resp, trace, exctyp, value):
         # TRANSLATORS: Crash report template for github, preceding a traceback.
         # TRANSLATORS: Please ask users kindly to supply at least an English
         # TRANSLATORS: title if they are able.
-        body = _(u"""\
+        body = _(
+            """\
             #### Description
 
             Give this report a short descriptive title.
@@ -288,11 +300,15 @@ def _dialog_response_cb(dialog, resp, trace, exctyp, value):
             that's even better.
 
             #### Traceback
-        """)
-        body = "\n\n".join([
-            "".join(textwrap.wrap(p, sys.maxsize))
-            for p in textwrap.dedent(body).split("\n\n")
-        ] + [trace])
+        """
+        )
+        body = "\n\n".join(
+            [
+                "".join(textwrap.wrap(p, sys.maxsize))
+                for p in textwrap.dedent(body).split("\n\n")
+            ]
+            + [trace]
+        )
         report_url = (
             "https://github.com/mypaint/mypaint/issues/new"
             "?title={title}"
@@ -312,13 +328,14 @@ sys.excepthook = _info
 exception_dialog_active = False
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     import sys
     import os
 
     def _test_button_clicked_cb(*a):
-        class _TestException (Exception):
+        class _TestException(Exception):
             pass
+
         raise _TestException("That was supposed to happen.")
 
     win = Gtk.Window()

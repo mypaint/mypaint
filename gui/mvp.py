@@ -25,6 +25,7 @@ logger = logging.getLogger(__name__)
 
 # Main API classes:
 
+
 class Presenter:
     """Abstract interface for standardized MVP presenters.
 
@@ -186,7 +187,7 @@ class Presenter:
         return method_wrapper
 
 
-class BuiltUIPresenter (Presenter):
+class BuiltUIPresenter(Presenter):
     """Mixin providing Pythonic access to views built from GtkBuilder XML.
 
     This style of presenter has its view defined entirely by a
@@ -238,10 +239,7 @@ class BuiltUIPresenter (Presenter):
         except AttributeError:
             py_basename = os.path.basename(class_defn_file)
             py_basename, _oldext = os.path.splitext(py_basename)
-            ui_file_basenames = [
-                py_basename + e
-                for e in self._UI_FILE_EXTENSIONS
-            ]
+            ui_file_basenames = [py_basename + e for e in self._UI_FILE_EXTENSIONS]
 
         # Load objects, bind, cache and return.
         for basename in ui_file_basenames:
@@ -299,6 +297,7 @@ view_updater = Presenter._updater
 
 # Helper classes:
 
+
 class _ViewWrapper:
     """Private GTK+ view object abstraction.
 
@@ -330,6 +329,6 @@ class _ViewWrapper:
                 return obj
 
         raise AttributeError(
-            "No object with name %r (incl. \"_\" substs) in %r"
+            'No object with name %r (incl. "_" substs) in %r'
             % (attr_name, self._filename),
         )

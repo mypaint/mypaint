@@ -12,7 +12,7 @@
 from __future__ import division, print_function
 
 
-class FileHandlingError (Exception):
+class FileHandlingError(Exception):
     """Simple problem loading or saving files; user-facing string
 
     Covers expected things like missing required path elements, missing
@@ -35,7 +35,7 @@ class FileHandlingError (Exception):
         self.investigate_dir = investigate_dir
 
 
-class AllocationError (Exception):
+class AllocationError(Exception):
     """Indicates a failure to construct a required internal object.
 
     This may be used as a stopgap to cover probable out-of-memory
@@ -53,6 +53,3 @@ class AllocationError (Exception):
     info for the message string.
 
     """
-
-
-

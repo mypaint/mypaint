@@ -111,7 +111,7 @@ def get_app():
     return Application._INSTANCE
 
 
-def _init_icons(icon_path, default_icon='org.mypaint.MyPaint'):
+def _init_icons(icon_path, default_icon="org.mypaint.MyPaint"):
     """Set the icon theme search path, and GTK default window icon"""
     # Default location for our icons. The user's theme can override these.
     icon_theme = Gtk.IconTheme.get_default()
@@ -123,9 +123,9 @@ def _init_icons(icon_path, default_icon='org.mypaint.MyPaint'):
     icon_tests = [
         (
             default_icon,
-            "check that mypaint icons have been installed "
-            "into {}".format(icon_path),
-        ), (
+            "check that mypaint icons have been installed " "into {}".format(icon_path),
+        ),
+        (
             "mypaint-brush-symbolic",
             "check that librsvg is installed, and update loaders.cache",
         ),
@@ -138,7 +138,7 @@ def _init_icons(icon_path, default_icon='org.mypaint.MyPaint'):
             icons_missing = True
     if icons_missing:
         logger.critical("Required icon(s) missing")
-        logger.error('Icon search path: %r', icon_theme.get_search_path())
+        logger.error("Icon search path: %r", icon_theme.get_search_path())
         logger.error(
             "MyPaint can't run sensibly without its icons; "
             "please check your installation. See "
@@ -160,7 +160,7 @@ _STATEDIRS_FIELDS = (
 )
 
 
-class StateDirs (namedtuple("StateDirs", _STATEDIRS_FIELDS)):
+class StateDirs(namedtuple("StateDirs", _STATEDIRS_FIELDS)):
     """Where MyPaint stores its config, read-only data etc.
 
     This caches some special paths that will never change for the
@@ -190,7 +190,7 @@ class StateDirs (namedtuple("StateDirs", _STATEDIRS_FIELDS)):
     """
 
 
-class Application (object):
+class Application(object):
     """Main application singleton.
 
     This class serves as a global container for everything that needs
@@ -230,12 +230,12 @@ class Application (object):
         for basedir in [state_dirs.user_config, state_dirs.user_data]:
             if not os.path.isdir(basedir):
                 os.makedirs(basedir)
-                logger.info('Created basedir %r', basedir)
-        for datasubdir in [u'backgrounds', u'brushes', u'scratchpads']:
+                logger.info("Created basedir %r", basedir)
+        for datasubdir in ["backgrounds", "brushes", "scratchpads"]:
             datadir = os.path.join(state_dirs.user_data, datasubdir)
             if not os.path.isdir(datadir):
                 os.mkdir(datadir)
-                logger.info('Created data subdir %r', datadir)
+                logger.info("Created data subdir %r", datadir)
 
         _init_icons(state_dirs.app_icons)
 
@@ -249,28 +249,32 @@ class Application (object):
         self.ui_manager = self.builder.get_object("app_ui_manager")
         signal_callback_objs = [self]
 
-        Gdk.set_program_class('MyPaint')
+        Gdk.set_program_class("MyPaint")
 
-        self.pixmaps = PixbufDirectory(join(state_dirs.app_data, u'pixmaps'))
+        self.pixmaps = PixbufDirectory(join(state_dirs.app_data, "pixmaps"))
         self.cursor_color_picker = Gdk.Cursor.new_from_pixbuf(
             Gdk.Display.get_default(),
             self.pixmaps.cursor_color_picker,
-            3, 15,
+            3,
+            15,
         )
         self.cursor_color_picker_h = Gdk.Cursor.new_from_pixbuf(
             Gdk.Display.get_default(),
             self.pixmaps.cursor_color_picker_h,
-            3, 15,
+            3,
+            15,
         )
         self.cursor_color_picker_c = Gdk.Cursor.new_from_pixbuf(
             Gdk.Display.get_default(),
             self.pixmaps.cursor_color_picker_c,
-            3, 15,
+            3,
+            15,
         )
         self.cursor_color_picker_y = Gdk.Cursor.new_from_pixbuf(
             Gdk.Display.get_default(),
             self.pixmaps.cursor_color_picker_y,
-            3, 15,
+            3,
+            15,
         )
         self.cursors = gui.cursor.CustomCursorMaker(self)
 
@@ -331,18 +335,24 @@ class Application (object):
 
         # Working document: model and controller
         cache_size = self.preferences.get(
-            'ui.rendered_tile_cache_size', lib.cache.DEFAULT_CACHE_SIZE
+            "ui.rendered_tile_cache_size", lib.cache.DEFAULT_CACHE_SIZE
         )
         default_stack_size = lib.document.DEFAULT_UNDO_STACK_SIZE
         undo_stack_size = self.preferences.setdefault(
-            'command.max_undo_stack_size',
-            default_stack_size)
+            "command.max_undo_stack_size", default_stack_size
+        )
         undo_stack_size = validation.validate(
-            undo_stack_size, default_stack_size, int, lambda a: a > 0,
-            "The undo stack size ({value}) must be a positive integer!")
+            undo_stack_size,
+            default_stack_size,
+            int,
+            lambda a: a > 0,
+            "The undo stack size ({value}) must be a positive integer!",
+        )
         model = lib.document.Document(
-            self.brush, cache_size=cache_size,
-            max_undo_stack_size=undo_stack_size)
+            self.brush,
+            cache_size=cache_size,
+            max_undo_stack_size=undo_stack_size,
+        )
         self.doc = document.Document(self, app_canvas, model)
         app_canvas.set_model(model)
 
@@ -351,18 +361,18 @@ class Application (object):
 
         self.scratchpad_filename = ""
         scratchpad_model = lib.document.Document(
-            self.brush, painting_only=True,
-            cache_size=lib.cache.DEFAULT_CACHE_SIZE/4
+            self.brush,
+            painting_only=True,
+            cache_size=lib.cache.DEFAULT_CACHE_SIZE / 4,
         )
         scratchpad_tdw = tileddrawwidget.TiledDrawWidget()
         scratchpad_tdw.scroll_on_allocate = False
         scratchpad_tdw.set_model(scratchpad_model)
-        self.scratchpad_doc = document.Document(self, scratchpad_tdw,
-                                                scratchpad_model)
+        self.scratchpad_doc = document.Document(self, scratchpad_tdw, scratchpad_model)
 
         self.brushmanager = brushmanager.BrushManager(
             lib.config.mypaint_brushdir,
-            join(self.state_dirs.user_data, 'brushes'),
+            join(self.state_dirs.user_data, "brushes"),
             self,
         )
 
@@ -383,10 +393,10 @@ class Application (object):
         self.device_monitor = gui.device.Monitor(self)
 
         if not self.preferences.get("scratchpad.last_opened_scratchpad", None):
-            self.preferences["scratchpad.last_opened_scratchpad"] \
-                = self.filehandler.get_scratchpad_autosave()
-        self.scratchpad_filename \
-            = self.preferences["scratchpad.last_opened_scratchpad"]
+            self.preferences["scratchpad.last_opened_scratchpad"] = (
+                self.filehandler.get_scratchpad_autosave()
+            )
+        self.scratchpad_filename = self.preferences["scratchpad.last_opened_scratchpad"]
 
         self.brush_color_manager = BrushColorManager(self)
         self.brush_color_manager.set_picker_cursor(self.cursor_color_picker)
@@ -406,7 +416,7 @@ class Application (object):
         self.kbm.start_listening()
         self.filehandler.doc = self.doc
         self.filehandler.filename = None
-        Gtk.AccelMap.load(join(self.user_confpath, 'accelmap.conf'))
+        Gtk.AccelMap.load(join(self.user_confpath, "accelmap.conf"))
 
         # Load the default background image
         self.doc.reset_background()
@@ -492,7 +502,7 @@ class Application (object):
         self.brushmanager.save_brushes_for_devices()
         self.brushmanager.save_brush_history()
         self.filehandler.save_scratchpad(self.scratchpad_filename)
-        settingspath = join(self.user_confpath, u'settings.json')
+        settingspath = join(self.user_confpath, "settings.json")
         logger.debug("Writing app settings to %r", settingspath)
         json_data = json.dumps(self.preferences, indent=2)
         if isinstance(json_data, unicode):
@@ -500,7 +510,7 @@ class Application (object):
             # json.dumps() with a default encoding arg does.
             json_data = json_data.encode("utf-8")
         assert isinstance(json_data, bytes)
-        with open(settingspath, 'wb') as f:
+        with open(settingspath, "wb") as f:
             f.write(json_data)
 
     def apply_settings(self):
@@ -525,7 +535,7 @@ class Application (object):
         user_config = gui.userconfig.get_json_config(self.user_confpath)
         self.preferences.update(user_config)
         key = "input.button_mapping"
-        if 'ColorPickerPopup' in self.preferences[key].values():
+        if "ColorPickerPopup" in self.preferences[key].values():
             # old config file; users who never assigned any buttons would
             # end up with Ctrl-Click color picker broken after upgrade
             self.preferences[key] = default_config[key]
@@ -533,7 +543,8 @@ class Application (object):
     def reset_compat_mode(self, update=True):
         """Reset compatibility mode to configured default"""
         compat.set_compat_mode(
-            self, self.preferences[compat.DEFAULT_COMPAT], update=update)
+            self, self.preferences[compat.DEFAULT_COMPAT], update=update
+        )
 
     def add_action_group(self, ag):
         self.ui_manager.insert_action_group(ag, -1)
@@ -551,8 +562,13 @@ class Application (object):
         assert not self.brush_adjustment
         changed_cb = self._brush_adjustment_value_changed_cb
         for s in brushsettings.settings_visible:
-            adj = Gtk.Adjustment(value=s.default, lower=s.min, upper=s.max,
-                                 step_increment=0.01, page_increment=0.1)
+            adj = Gtk.Adjustment(
+                value=s.default,
+                lower=s.min,
+                upper=s.max,
+                step_increment=0.01,
+                page_increment=0.1,
+            )
             self.brush_adjustment[s.cname] = adj
             adj.connect("value-changed", changed_cb, s.cname)
         self.brush.observers.append(self._brush_modified_cb)
@@ -578,8 +594,8 @@ class Application (object):
         self.button_mapping.update(self.preferences["input.button_mapping"])
 
     def _apply_pressure_mapping_settings(self):
-        p = self.preferences['input.global_pressure_mapping']
-        if len(p) == 2 and abs(p[0][1]-1.0)+abs(p[1][1]-0.0) < 0.0001:
+        p = self.preferences["input.global_pressure_mapping"]
+        if len(p) == 2 and abs(p[0][1] - 1.0) + abs(p[1][1] - 0.0) < 0.0001:
             # 1:1 mapping (mapping disabled)
             self.pressure_mapping = None
         else:
@@ -588,10 +604,11 @@ class Application (object):
             m = mypaintlib.MappingWrapper(1)
             m.set_n(0, len(p))
             for i, (x, y) in enumerate(p):
-                m.set_point(0, i, x, 1.0-y)
+                m.set_point(0, i, x, 1.0 - y)
 
             def mapping(pressure):
                 return m.calculate_single_input(pressure)
+
             self.pressure_mapping = mapping
 
     def _apply_autosave_settings(self):
@@ -599,33 +616,39 @@ class Application (object):
         interval = self.preferences["document.autosave_interval"]
         logger.debug(
             "Applying autosave settings: active=%r, interval=%r",
-            active, interval,
+            active,
+            interval,
         )
         model = self.doc.model
         model.autosave_backups = active
         model.autosave_interval = interval
 
     def save_gui_config(self):
-        Gtk.AccelMap.save(join(self.user_confpath, 'accelmap.conf'))
+        Gtk.AccelMap.save(join(self.user_confpath, "accelmap.conf"))
         wkspace = self.workspace
         self.preferences["workspace.layout"] = wkspace.get_layout()
         self.save_settings()
 
-    def message_dialog(self, text,
-                       secondary_text=None, long_text=None, title=None,
-                       investigate_dir=None, investigate_str=None, **kwds):
+    def message_dialog(
+        self,
+        text,
+        secondary_text=None,
+        long_text=None,
+        title=None,
+        investigate_dir=None,
+        investigate_str=None,
+        **kwds
+    ):
         """Utility function to show a message/information dialog"""
         d = Gtk.MessageDialog(
-            transient_for=self.drawWindow,
-            buttons=Gtk.ButtonsType.NONE,
-            **kwds
+            transient_for=self.drawWindow, buttons=Gtk.ButtonsType.NONE, **kwds
         )
         # Auxiliary actions first...
         if investigate_dir and os.path.isdir(investigate_dir):
             if not investigate_str:
-                tmpl = _(u"Open Folder “{folder_basename}”…")
+                tmpl = _("Open Folder “{folder_basename}”…")
                 investigate_str = tmpl.format(
-                    folder_basename = os.path.basename(investigate_dir),
+                    folder_basename=os.path.basename(investigate_dir),
                 )
             d.add_button(investigate_str, -1)
         # ... so that the main actions end up in the bottom-right of the
@@ -793,7 +816,7 @@ class Application (object):
         raise Exception("This is a crash caused by the user.")
 
 
-class PixbufDirectory (object):
+class PixbufDirectory(object):
 
     def __init__(self, dirname):
         super(PixbufDirectory, self).__init__()
@@ -802,7 +825,7 @@ class PixbufDirectory (object):
 
     def __getattr__(self, name):
         if name not in self.cache:
-            pixbuf_file = join(self.dirname, name + '.png')
+            pixbuf_file = join(self.dirname, name + ".png")
             try:
                 pixbuf = GdkPixbuf.Pixbuf.new_from_file(pixbuf_file)
             except GObject.GError as e:
@@ -811,7 +834,7 @@ class PixbufDirectory (object):
         return self.cache[name]
 
 
-class CallbackFinder (object):
+class CallbackFinder(object):
     """Finds callbacks amongst a list of objects.
 
     It's not possible to call `GtkBuilder.connect_signals()` more than once,
@@ -828,8 +851,7 @@ class CallbackFinder (object):
 
     def __getattr__(self, name):
         name = str(name)
-        found = [getattr(obj, name) for obj in self._objs
-                 if hasattr(obj, name)]
+        found = [getattr(obj, name) for obj in self._objs if hasattr(obj, name)]
         if len(found) == 1:
             return found[0]
         elif len(found) > 1:
@@ -838,5 +860,5 @@ class CallbackFinder (object):
             return found[0]
         else:
             raise AttributeError(
-                "No method named %r was defined on any of %r"
-                % (name, self._objs))
+                "No method named %r was defined on any of %r" % (name, self._objs)
+            )

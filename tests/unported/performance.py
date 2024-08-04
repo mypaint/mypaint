@@ -40,7 +40,7 @@ def run_test(testfunction, profile=None):
         time_total += time() - t0
 
     if time_total:
-        print('result =', time_total)
+        print("result =", time_total)
     else:
         # test did not make time measurements,
         # it will print its own result (eg. memory)
@@ -55,10 +55,12 @@ def nogui_test(f):
 
 def gui_test(f):
     "decorator for test functions that require a gui"
+
     def f2():
         gui = guicontrol.GUI()
         for action in f(gui):
             yield action
+
     all_tests[f.__name__] = f2
     return f
 
@@ -82,8 +84,8 @@ def paint(gui):
     gui_doc = gui.app.doc
     tdw = gui_doc.tdw
 
-    b = gui.app.brushmanager.get_brush_by_name('redbrush')
-    assert b, 'brush not found'
+    b = gui.app.brushmanager.get_brush_by_name("redbrush")
+    assert b, "brush not found"
 
     dw.fullscreen_cb()
     gui.wait_for_idle()
@@ -94,7 +96,7 @@ def paint(gui):
 
     gui.wait_for_idle()
 
-    events = np.loadtxt('painting30sec.dat')
+    events = np.loadtxt("painting30sec.dat")
     yield start_measurement
     t_old = 0.0
     t_last_redraw = 0.0
@@ -123,7 +125,7 @@ def paint_zoomed_out_5x(gui):
 @gui_test
 def layerpaint_nozoom(gui):
     gui.wait_for_idle()
-    gui.app.filehandler.open_file('bigimage.ora')
+    gui.app.filehandler.open_file("bigimage.ora")
     gui_doc = gui.app.doc
     gui_doc.model.select_layer(index=len(gui_doc.model.layer_stack) // 2)
     for res in paint(gui):
@@ -134,7 +136,7 @@ def layerpaint_nozoom(gui):
 def layerpaint_zoomed_out_5x(gui):
     gui.wait_for_idle()
     gui_doc = gui.app.doc
-    gui.app.filehandler.open_file('bigimage.ora')
+    gui.app.filehandler.open_file("bigimage.ora")
     gui_doc.tdw.scroll(800, 1000)
     gui_doc.model.select_layer(index=len(gui_doc.model.layer_stack) // 3)
     gui.zoom_out(5)
@@ -153,62 +155,68 @@ def paint_rotated(gui):
 @nogui_test
 def load_ora():
     from lib import document
+
     d = document.Document()
     yield start_measurement
-    d.load('bigimage.ora')
+    d.load("bigimage.ora")
     yield stop_measurement
 
 
 @nogui_test
 def save_ora():
     from lib import document
+
     d = document.Document()
-    d.load('bigimage.ora')
+    d.load("bigimage.ora")
     yield start_measurement
-    d.save('test_save.ora')
+    d.save("test_save.ora")
     yield stop_measurement
 
 
 @nogui_test
 def save_ora_again():
     from lib import document
+
     d = document.Document()
-    d.load('bigimage.ora')
-    d.save('test_save.ora')
+    d.load("bigimage.ora")
+    d.save("test_save.ora")
     yield start_measurement
-    d.save('test_save.ora')
+    d.save("test_save.ora")
     yield stop_measurement
 
 
 @nogui_test
 def save_png():
     from lib import document
+
     d = document.Document()
-    d.load('bigimage.ora')
+    d.load("bigimage.ora")
     yield start_measurement
-    d.save('test_save.png')
+    d.save("test_save.png")
     yield stop_measurement
 
 
 @nogui_test
 def save_png_layer():
     from lib import document
+
     d = document.Document()
-    d.load('biglayer.png')
+    d.load("biglayer.png")
     yield start_measurement
-    d.layer_stack.current.save_as_png('test_save.png')
+    d.layer_stack.current.save_as_png("test_save.png")
     yield stop_measurement
 
 
 @nogui_test
 def brushengine_paint_hires():
     from lib import tiledsurface, brush
+
     s = tiledsurface.Surface()
-    with open('brushes/v2/watercolor.myb') as fp:
+    with open("brushes/v2/watercolor.myb") as fp:
         bi = brush.BrushInfo(fp.read())
     b = brush.Brush(bi)
 
-    events = np.loadtxt('painting30sec.dat')
+    events = np.loadtxt("painting30sec.dat")
     t_old = events[0][0]
     yield start_measurement
     s.begin_atomic()
@@ -234,7 +242,7 @@ def scroll_nozoom(gui):
     gui.wait_for_idle()
     dw = gui.app.drawWindow
     dw.fullscreen_cb()
-    gui.app.filehandler.open_file('bigimage.ora')
+    gui.app.filehandler.open_file("bigimage.ora")
     gui.wait_for_idle()
     yield start_measurement
     gui.scroll()
@@ -246,7 +254,7 @@ def scroll_nozoom_onelayer(gui):
     gui.wait_for_idle()
     dw = gui.app.drawWindow
     dw.fullscreen_cb()
-    gui.app.filehandler.open_file('biglayer.png')
+    gui.app.filehandler.open_file("biglayer.png")
     gui.wait_for_idle()
     yield start_measurement
     gui.scroll()
@@ -258,7 +266,7 @@ def scroll_zoomed_out_1x_onelayer(gui):
     gui.wait_for_idle()
     dw = gui.app.drawWindow
     dw.fullscreen_cb()
-    gui.app.filehandler.open_file('biglayer.png')
+    gui.app.filehandler.open_file("biglayer.png")
     gui.zoom_out(1)
     gui.wait_for_idle()
     yield start_measurement
@@ -271,7 +279,7 @@ def scroll_zoomed_out_2x_onelayer(gui):
     gui.wait_for_idle()
     dw = gui.app.drawWindow
     dw.fullscreen_cb()
-    gui.app.filehandler.open_file('biglayer.png')
+    gui.app.filehandler.open_file("biglayer.png")
     gui.zoom_out(2)
     gui.wait_for_idle()
     yield start_measurement
@@ -284,7 +292,7 @@ def scroll_zoomed_out_5x(gui):
     gui.wait_for_idle()
     dw = gui.app.drawWindow
     dw.fullscreen_cb()
-    gui.app.filehandler.open_file('bigimage.ora')
+    gui.app.filehandler.open_file("bigimage.ora")
     gui.zoom_out(5)
     gui.wait_for_idle()
     yield start_measurement
@@ -297,12 +305,12 @@ def memory_zoomed_out_5x(gui):
     gui.wait_for_idle()
     dw = gui.app.drawWindow
     dw.fullscreen_cb()
-    gui.app.filehandler.open_file('bigimage.ora')
+    gui.app.filehandler.open_file("bigimage.ora")
     gui.zoom_out(5)
     gui.wait_for_idle()
     gui.scroll()
-    with open('/proc/self/statm') as statm:
-        print('result =', statm.read().split()[0])
+    with open("/proc/self/statm") as statm:
+        print("result =", statm.read().split()[0])
     if False:
         yield None  # just to make this function iterator
 
@@ -314,21 +322,21 @@ def memory_after_startup(gui):
     gui.wait_for_idle()
     sleep(1)
     gui.wait_for_idle()
-    with open('/proc/self/statm') as statm:
-        print('result =', statm.read().split()[0])
+    with open("/proc/self/statm") as statm:
+        print("result =", statm.read().split()[0])
     if False:
         yield None  # just to make this function iterator
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
 
     os.chdir(os.path.dirname(__file__))
-    sys.path.insert(0, '..')
-    sys.path.insert(0, '.')
+    sys.path.insert(0, "..")
+    sys.path.insert(0, ".")
 
-    if len(sys.argv) == 4 and sys.argv[1] == 'SINGLE_TEST_RUN':
+    if len(sys.argv) == 4 and sys.argv[1] == "SINGLE_TEST_RUN":
         func = all_tests[sys.argv[2]]
-        if sys.argv[3] == 'NONE':
+        if sys.argv[3] == "NONE":
             run_test(func)
         else:
             profile = cProfile.Profile()
@@ -337,41 +345,38 @@ if __name__ == '__main__':
         sys.exit(0)
 
     from optparse import OptionParser
-    parser = OptionParser('usage: %prog [options] [test1 test2 test3 ...]')
+
+    parser = OptionParser("usage: %prog [options] [test1 test2 test3 ...]")
     parser.add_option(
-        '-a',
-        '--all',
-        action='store_true',
-        default=False,
-        help='run all tests'
+        "-a", "--all", action="store_true", default=False, help="run all tests"
     )
     parser.add_option(
-        '-l',
-        '--list',
-        action='store_true',
+        "-l",
+        "--list",
+        action="store_true",
         default=False,
-        help='list all available tests'
+        help="list all available tests",
     )
     parser.add_option(
-        '-c',
-        '--count',
-        metavar='N',
-        type='int',
+        "-c",
+        "--count",
+        metavar="N",
+        type="int",
         default=3,
-        help='number of repetitions (default: 3)'
+        help="number of repetitions (default: 3)",
     )
     parser.add_option(
-        '-p',
-        '--profile',
-        metavar='PREFIX',
-        help='dump cProfile info to PREFIX_TESTNAME_N.pstats'
+        "-p",
+        "--profile",
+        metavar="PREFIX",
+        help="dump cProfile info to PREFIX_TESTNAME_N.pstats",
     )
     parser.add_option(
-        '-s',
-        '--show-profile',
-        action='store_true',
+        "-s",
+        "--show-profile",
+        action="store_true",
         default=False,
-        help='run cProfile, gprof2dot.py and show last result'
+        help="run cProfile, gprof2dot.py and show last result",
     )
     options, tests = parser.parse_args()
 
@@ -389,37 +394,41 @@ if __name__ == '__main__':
 
     for t in tests:
         if t not in all_tests:
-            print('Unknown test:', t)
+            print("Unknown test:", t)
             sys.exit(1)
 
     results = []
     for t in tests:
         result = []
         for i in range(options.count):
-            print('---')
-            print('running test "%s" (run %d of %d)'
-                  % (t, i + 1, options.count))
-            print('---')
+            print("---")
+            print('running test "%s" (run %d of %d)' % (t, i + 1, options.count))
+            print("---")
             # spawn a new process for each test, to ensure proper cleanup
-            args = [sys.executable, './test_performance.py',
-                    'SINGLE_TEST_RUN', t, 'NONE']
+            args = [
+                sys.executable,
+                "./test_performance.py",
+                "SINGLE_TEST_RUN",
+                t,
+                "NONE",
+            ]
             if options.profile or options.show_profile:
                 if options.show_profile:
-                    fname = 'tmp.pstats'
+                    fname = "tmp.pstats"
                 else:
-                    fname = '%s_%s_%d.pstats' % (options.profile, t, i)
+                    fname = "%s_%s_%d.pstats" % (options.profile, t, i)
                 args[4] = fname
             child = subprocess.Popen(args, stdout=subprocess.PIPE)
             output, junk = child.communicate()
             if child.returncode != 0:
-                print('FAILED')
+                print("FAILED")
                 break
             else:
-                print(output, end=' ')
+                print(output, end=" ")
                 try:
-                    value = float(output.split('result = ')[-1].strip())
+                    value = float(output.split("result = ")[-1].strip())
                 except:
-                    print('FAILED to find result in test output.')
+                    print("FAILED to find result in test output.")
                     result = None
                     break
                 else:
@@ -430,30 +439,30 @@ if __name__ == '__main__':
             sleep(3.0)
         results.append(result)
     print()
-    print('=== DETAILS ===')
-    print('tests =', repr(tests))
-    print('results =', repr(results))
+    print("=== DETAILS ===")
+    print("tests =", repr(tests))
+    print("results =", repr(results))
     print()
-    print('=== SUMMARY ===')
+    print("=== SUMMARY ===")
     fail = False
     for t, result in zip(tests, results):
         if not result:
-            print(t, 'FAILED')
+            print(t, "FAILED")
             fail = True
         else:
-            print('%s %.3f' % (t, min(result)))
+            print("%s %.3f" % (t, min(result)))
     if fail:
         sys.exit(1)
 
     if options.show_profile:
-        gprof2dot = "gprof2dot.py" \
-            if distutils.spawn.find_executable("gprof2dot.py") \
+        gprof2dot = (
+            "gprof2dot.py"
+            if distutils.spawn.find_executable("gprof2dot.py")
             else "gprof2dot"
-        viewer = "feh" \
-            if distutils.spawn.find_executable("feh") \
-            else "eog"
+        )
+        viewer = "feh" if distutils.spawn.find_executable("feh") else "eog"
         # FIXME: use gui.profiling's improved code somehow
         os.system(
-            '%s -f pstats tmp.pstats | dot -Tpng -o tmp.png && %s tmp.png'
+            "%s -f pstats tmp.pstats | dot -Tpng -o tmp.png && %s tmp.png"
             % (gprof2dot, viewer)
         )

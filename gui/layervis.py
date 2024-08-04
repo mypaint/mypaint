@@ -31,7 +31,8 @@ logger = logging.getLogger(__name__)
 
 # Class definitions:
 
-class LayerViewUI (gui.mvp.BuiltUIPresenter, object):
+
+class LayerViewUI(gui.mvp.BuiltUIPresenter, object):
     """Presents the document's named layer views in a row of controls."""
 
     def __init__(self, docmodel):
@@ -47,17 +48,17 @@ class LayerViewUI (gui.mvp.BuiltUIPresenter, object):
 
     def init_view(self):
         self._init_model()
-        store = Gtk.ListStore(str, str)   # columns: <our_id, display_markup>
+        store = Gtk.ListStore(str, str)  # columns: <our_id, display_markup>
         markup = C_(
             "view controls: dropdown: item markup",
-            u"<i>{builtin_view_name}</i>",
+            "<i>{builtin_view_name}</i>",
         ).format(
             builtin_view_name=escape(lib.layervis.UNSAVED_VIEW_DISPLAY_NAME),
         )
         # None has a special meaning for GTK combo ID columns,
         # so we substitute the empty string. Corrolory: you can't name
         # views to the empty string.
-        store.append([u"", markup])
+        store.append(["", markup])
         store.set_sort_column_id(0, Gtk.SortType.ASCENDING)
         self._store = store
 
@@ -102,11 +103,11 @@ class LayerViewUI (gui.mvp.BuiltUIPresenter, object):
         kept_names = set()
         it = store.get_iter_first()
         while it is not None:
-            name, = store.get(it, 0)
+            (name,) = store.get(it, 0)
             if isinstance(name, bytes):
                 name = name.decode("utf-8")
             # Skip over our representation of the builtin
-            if name == u"":
+            if name == "":
                 it = store.iter_next(it)
                 continue
             # Drop or keep
@@ -122,7 +123,7 @@ class LayerViewUI (gui.mvp.BuiltUIPresenter, object):
             if name not in kept_names:
                 markup = C_(
                     "view controls: dropdown: item markup",
-                    u"{user_chosen_view_name}",
+                    "{user_chosen_view_name}",
                 ).format(
                     user_chosen_view_name=escape(name),
                 )
@@ -184,7 +185,7 @@ class LayerViewUI (gui.mvp.BuiltUIPresenter, object):
         new_name = gui.dialogs.ask_for_name(
             title=C_(
                 "view controls: rename view dialog",
-                u"Rename View",
+                "Rename View",
             ),
             widget=self._app.drawWindow,
             default=old_name,

@@ -42,8 +42,9 @@ def button_press_name(button, mods):
     return modif_name + "Button%d" % (button,)
 
 
-def button_press_displayname(button, mods, shorten = False):
-    """Converts a button number & modifier mask to a localized unicode string.
+def button_press_displayname(button, mods, shorten=False):
+    """
+    Converts a button number & modifier mask to a localized unicode string.
     """
     button = int(button)
     mods = int(mods)
@@ -54,7 +55,7 @@ def button_press_displayname(button, mods, shorten = False):
     modif_label = unicode(modif_label)
     separator = ""
     if modif_label:
-        separator = u"+"
+        separator = "+"
     # TRANSLATORS: "Button" refers to a mouse button
     # TRANSLATORS: It is part of a button map label.
     mouse_button_label = _("Button")
@@ -83,7 +84,7 @@ def button_press_parse(name):
     name = str(name)
     try:
         mods_s, button_s = name.split("Button", 1)
-        if button_s == '':
+        if button_s == "":
             button = 0
         else:
             button = int(button_s)
@@ -109,6 +110,7 @@ def get_handler_object(app, action_name):
 
     """
     from gui.mode import ModeRegistry, InteractionMode
+
     mode_class = ModeRegistry.get_mode_class(action_name)
     if mode_class is not None:
         assert issubclass(mode_class, InteractionMode)
@@ -124,7 +126,7 @@ def get_handler_object(app, action_name):
             return ("no_handler", None)
 
 
-class ButtonMapping (object):
+class ButtonMapping(object):
     """Button mapping table.
 
     An instance resides in the application, and is updated by the preferences
@@ -216,18 +218,16 @@ class ButtonMapping (object):
         return possibilities
 
 
-class ButtonMappingEditor (Gtk.EventBox):
-    """Editor for a prefs hash of pointer bindings mapped to action strings.
+class ButtonMappingEditor(Gtk.EventBox):
+    """Editor for a prefs hash of pointer bindings mapped to action strings."""
 
-    """
-
-    __gtype_name__ = 'ButtonMappingEditor'
+    __gtype_name__ = "ButtonMappingEditor"
 
     def __init__(self):
-        """Initialise.
-        """
+        """Initialise."""
         super(ButtonMappingEditor, self).__init__()
         import gui.application
+
         self.app = gui.application.get_app()
         self.actions = set()
         self.default_action = None
@@ -348,8 +348,7 @@ class ButtonMappingEditor (Gtk.EventBox):
             self.action_labels[act] = label
             self.action_liststore.append((act, label))
 
-    def _liststore_action_datafunc(self, column, cell, model, iter,
-                                   *user_data):
+    def _liststore_action_datafunc(self, column, cell, model, iter, *user_data):
         action_name = model.get_value(iter, self.action_column)
         label = self.action_labels.get(action_name, action_name)
         cell.set_property("text", label)
@@ -358,11 +357,11 @@ class ButtonMappingEditor (Gtk.EventBox):
         # Get a displayable (and translated) string for an action name
         handler_type, handler = get_handler_object(self.app, action_name)
         action_label = action_name
-        if handler_type == 'gtk_action':
+        if handler_type == "gtk_action":
             action_label = handler.get_label()
-        elif handler_type == 'popup_state':
+        elif handler_type == "popup_state":
             action_label = handler.label
-        elif handler_type == 'mode_class':
+        elif handler_type == "mode_class":
             action_label = handler.get_name()
             if handler.ACTION_NAME is not None:
                 action = self.app.find_action(handler.ACTION_NAME)
@@ -393,13 +392,11 @@ class ButtonMappingEditor (Gtk.EventBox):
         self._bindings_changed_cb()
 
     def _bindings_changed_cb(self):
-        """Updates the editor list to reflect the prefs hash changing.
-        """
+        """Updates the editor list to reflect the prefs hash changing."""
         self._updating_model = True
         self.liststore.clear()
         for bp_name, action_name in self.bindings.items():
-            bp_displayname = button_press_displayname(
-                *button_press_parse(bp_name))
+            bp_displayname = button_press_displayname(*button_press_parse(bp_name))
             self.liststore.append((action_name, bp_name, bp_displayname))
         self._updating_model = False
         self._update_list_buttons()
@@ -444,8 +441,7 @@ class ButtonMappingEditor (Gtk.EventBox):
 
     def _action_cell_changed_cb(self, combo, path_string, new_iter, *etc):
         action_name = self.action_liststore.get_value(
-            new_iter,
-            self.action_liststore_value_column
+            new_iter, self.action_liststore_value_column
         )
         iter = self.liststore.get_iter(path_string)
         self.liststore.set_value(iter, self.action_column, action_name)
@@ -475,8 +471,12 @@ class ButtonMappingEditor (Gtk.EventBox):
         dialog.set_title(_("Edit binding for '%s'") % action_name)
         dialog.set_transient_for(self.get_toplevel())
         dialog.set_position(Gtk.WindowPosition.CENTER_ON_PARENT)
-        dialog.add_buttons(Gtk.STOCK_CANCEL, Gtk.ResponseType.CANCEL,
-                           Gtk.STOCK_OK, Gtk.ResponseType.OK)
+        dialog.add_buttons(
+            Gtk.STOCK_CANCEL,
+            Gtk.ResponseType.CANCEL,
+            Gtk.STOCK_OK,
+            Gtk.ResponseType.OK,
+        )
         dialog.set_default_response(Gtk.ResponseType.OK)
         dialog.connect("response", self._bp_edit_dialog_response_cb, editable)
         dialog.ok_btn = dialog.get_widget_for_response(Gtk.ResponseType.OK)
@@ -484,8 +484,12 @@ class ButtonMappingEditor (Gtk.EventBox):
 
         evbox = Gtk.EventBox()
         evbox.set_border_width(12)
-        evbox.connect("button-press-event", self._bp_edit_box_button_press_cb,
-                      dialog, editable)
+        evbox.connect(
+            "button-press-event",
+            self._bp_edit_box_button_press_cb,
+            dialog,
+            editable,
+        )
         evbox.connect("enter-notify-event", self._bp_edit_box_enter_cb)
 
         table = Gtk.Table(3, 2)
@@ -506,8 +510,13 @@ class ButtonMappingEditor (Gtk.EventBox):
         label.set_alignment(0, 0.5)
         label.set_text(str(action_name))
         table.attach(
-            label, 1, 2, row, row + 1,
-            Gtk.AttachOptions.FILL | Gtk.AttachOptions.EXPAND)
+            label,
+            1,
+            2,
+            row,
+            row + 1,
+            Gtk.AttachOptions.FILL | Gtk.AttachOptions.EXPAND,
+        )
 
         row += 1
         label = Gtk.Label()
@@ -526,8 +535,13 @@ class ButtonMappingEditor (Gtk.EventBox):
         dialog.bp_name_orig = bp_name
         dialog.bp_label = label
         table.attach(
-            label, 1, 2, row, row + 1,
-            Gtk.AttachOptions.FILL | Gtk.AttachOptions.EXPAND)
+            label,
+            1,
+            2,
+            row,
+            row + 1,
+            Gtk.AttachOptions.FILL | Gtk.AttachOptions.EXPAND,
+        )
 
         row += 1
         label = Gtk.Label()
@@ -537,10 +551,16 @@ class ButtonMappingEditor (Gtk.EventBox):
         dialog.hint_label = label
         self._bp_edit_dialog_set_standard_hint(dialog)
         table.attach(
-            label, 0, 2, row, row + 1,
+            label,
+            0,
+            2,
+            row,
+            row + 1,
             Gtk.AttachOptions.FILL | Gtk.AttachOptions.EXPAND,
             Gtk.AttachOptions.FILL | Gtk.AttachOptions.EXPAND,
-            0, 12)
+            0,
+            12,
+        )
 
         evbox.add(table)
         dialog.get_content_area().pack_start(evbox, True, True, 0)
@@ -549,12 +569,13 @@ class ButtonMappingEditor (Gtk.EventBox):
         dialog.show()
 
     def _bp_edit_dialog_set_error(self, dialog, markup):
-        dialog.hint_label.set_markup(
-            "<span foreground='red'>%s</span>" % markup)
+        dialog.hint_label.set_markup("<span foreground='red'>%s</span>" % markup)
 
     def _bp_edit_dialog_set_standard_hint(self, dialog):
-        markup = _("Hold down modifier keys, and press a button "
-                   "over this text to set a new binding.")
+        markup = _(
+            "Hold down modifier keys, and press a button "
+            "over this text to set a new binding."
+        )
         dialog.hint_label.set_markup(markup)
 
     def _bp_edit_box_enter_cb(self, evbox, event):
@@ -583,9 +604,10 @@ class ButtonMappingEditor (Gtk.EventBox):
                 dialog,
                 # TRANSLATORS: "fixed" in the sense of "static" -
                 # TRANSLATORS: something which cannot be changed
-                _("{button} cannot be bound without modifier keys "
-                  "(its meaning is fixed, sorry)")
-                .format(
+                _(
+                    "{button} cannot be bound without modifier keys "
+                    "(its meaning is fixed, sorry)"
+                ).format(
                     button=lib.xml.escape(bp_displayname),
                 ),
             )
@@ -598,9 +620,10 @@ class ButtonMappingEditor (Gtk.EventBox):
             action_label = self.action_labels.get(action, action)
             self._bp_edit_dialog_set_error(
                 dialog,
-                _("{button_combination} is already bound "
-                  "to the action '{action_name}'")
-                .format(
+                _(
+                    "{button_combination} is already bound "
+                    "to the action '{action_name}'"
+                ).format(
                     button_combination=lib.xml.escape(str(bp_displayname)),
                     action_name=lib.xml.escape(str(action_label)),
                 ),

@@ -22,14 +22,14 @@ logger = logging.getLogger(__name__)
 
 
 def adjacent_tiles(tile_coord, filled):
-    """ Return a tuple of tiles adjacent to the input tile coordinate.
+    """Return a tuple of tiles adjacent to the input tile coordinate.
     Adjacent tiles that are not in the tileset are replaced by the empty tile.
     """
     return tuple([filled.get(c, _EMPTY_TILE) for c in fc.adjacent(tile_coord)])
 
 
 def complement_adjacent(tiles):
-    """ Ensure that each tile in the input tileset has a full neighbourhood
+    """Ensure that each tile in the input tileset has a full neighbourhood
     of eight tiles, setting missing tiles to the empty tile.
 
     The new set should only be used as input to tile operations, as the empty
@@ -44,7 +44,7 @@ def complement_adjacent(tiles):
 
 
 def directly_below(coord1, coord2):
-    """ Return true if the first coordinate is directly below the second"""
+    """Return true if the first coordinate is directly below the second"""
     return coord1[0] == coord2[0] and coord1[1] == coord2[1] + 1
 
 
@@ -93,7 +93,7 @@ def strand_partition(tiles, dilating=False):
 
 
 def morph(handler, offset, tiles):
-    """ Either dilate or erode the given set of alpha tiles, depending
+    """Either dilate or erode the given set of alpha tiles, depending
     on the sign of the offset, returning the set of morphed tiles.
     """
     # When dilating, create new tiles to account for edge overflow
@@ -112,8 +112,7 @@ def morph(handler, offset, tiles):
 
 
 def blur(handler, radius, tiles):
-    """ Return the set of blurred tiles based on the input tiles.
-    """
+    """Return the set of blurred tiles based on the input tiles."""
     complement_adjacent(tiles)
 
     handler.set_stage(handler.BLUR, len(tiles))
