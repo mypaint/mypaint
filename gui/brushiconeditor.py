@@ -11,17 +11,13 @@
 import logging
 from gettext import gettext as _
 
-from lib.gibindings import Gtk
-from lib.gibindings import GLib
-
-from . import tileddrawwidget
-from . import windowing
 import lib.document
 from gui.document import CanvasController
-from .freehand import FreehandMode
-from . import brushmanager
+from lib.gibindings import GLib, Gtk
 from lib.observable import event
-from . import drawutils
+
+from . import brushmanager, drawutils, tileddrawwidget, windowing
+from .freehand import FreehandMode
 
 logger = logging.getLogger(__name__)
 

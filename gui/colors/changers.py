@@ -9,17 +9,14 @@
 
 """The old popup color changers wrapped as new-style Adjusters"""
 
-
-## Imports
-from lib.gibindings import GdkPixbuf
-from lib.gibindings import Gdk
-
-import lib.color
 import gui.colors
 import gui.colors.adjbases
+import lib.color
 from lib import mypaintlib
-from lib.helpers import gdkpixbuf2numpy
 
+## Imports
+from lib.gibindings import Gdk, GdkPixbuf
+from lib.helpers import gdkpixbuf2numpy
 
 ## Class definitions
 
@@ -126,9 +123,10 @@ class Rings(_CColorChanger):
 
 
 if __name__ == "__main__":
-    from lib.gibindings import Gtk
     import os
     import sys
+
+    from lib.gibindings import Gtk
 
     mgr = gui.colors.ColorManager(prefs={}, datapath=".")
     widget_classes = [CrossedBowl, Wash, Rings]

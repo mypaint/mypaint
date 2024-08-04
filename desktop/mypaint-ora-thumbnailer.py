@@ -29,7 +29,6 @@ import zipfile
 
 import gi
 
-
 gi.require_version("GdkPixbuf", "2.0")
 try:
     from lib.gibindings import GdkPixbuf

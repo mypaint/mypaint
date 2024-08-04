@@ -12,9 +12,9 @@
 
 ## Imports
 
-from lib.pycompat import PY3
-
 import xml.etree.ElementTree as _ET
+
+from lib.pycompat import PY3
 
 ## Consts for XML dialects
 # Namespaces are registered by importing this module.

@@ -10,44 +10,40 @@
 
 ## Imports
 
-import os
-import sys
-import zipfile
-import tempfile
-import time
-from os.path import join
-import xml.etree.ElementTree as ET
-from warnings import warn
-import shutil
-from datetime import datetime
-from collections import namedtuple
 import json
 import logging
-from lib.fileutils import safename
-from lib.naming import make_unique_name
+import os
+import shutil
+import sys
+import tempfile
+import time
+import xml.etree.ElementTree as ET
+import zipfile
+from collections import namedtuple
+from datetime import datetime
+from os.path import join
+from warnings import warn
 
-from lib.gibindings import GObject
-from lib.gibindings import GLib
-
-import lib.meta
-import lib.helpers as helpers
-import lib.fileutils as fileutils
-import lib.tiledsurface as tiledsurface
-import lib.command as command
-import lib.layer as layer
 import lib.brush as brush
-from lib.observable import event
-from lib.observable import ObservableDict
-import lib.pixbuf
-from lib.cache import DEFAULT_CACHE_SIZE
-from lib.errors import FileHandlingError
-from lib.errors import AllocationError
-import lib.idletask
-from lib.gettext import C_
-import lib.xml
-import lib.glib
+import lib.command as command
 import lib.feedback
+import lib.fileutils as fileutils
+import lib.glib
+import lib.helpers as helpers
+import lib.idletask
+import lib.layer as layer
 import lib.layervis
+import lib.meta
+import lib.pixbuf
+import lib.tiledsurface as tiledsurface
+import lib.xml
+from lib.cache import DEFAULT_CACHE_SIZE
+from lib.errors import AllocationError, FileHandlingError
+from lib.fileutils import safename
+from lib.gettext import C_
+from lib.gibindings import GLib, GObject
+from lib.naming import make_unique_name
+from lib.observable import ObservableDict, event
 from lib.pycompat import unicode
 
 logger = logging.getLogger(__name__)

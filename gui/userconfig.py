@@ -8,16 +8,15 @@
 # the Free Software Foundation; either version 2 of the License, or
 # (at your option) any later version.
 
-import os
-import sys
 import json
 import logging
-
-from lib.gibindings import GLib
+import os
+import sys
 
 import lib.glib
-from lib.eotf import DEFAULT_EOTF
 from gui.compatconfig import DEFAULT_CONFIG as COMPAT_CONFIG
+from lib.eotf import DEFAULT_EOTF
+from lib.gibindings import GLib
 
 logger = logging.getLogger(__name__)
 

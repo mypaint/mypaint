@@ -14,7 +14,6 @@
 
 import lib.mypaintlib as _mypaintlib
 
-
 # Public variables:
 
 #: List of info about all brush engine inputs known to libmypaint.

@@ -19,18 +19,11 @@ They are responsible for ordering, loading and saving brush lists.
 
 import logging
 
-from lib.gibindings import Gtk
-from lib.gibindings import GdkPixbuf
-from lib.gibindings import GLib
+from lib.gettext import C_, ngettext
+from lib.gibindings import GdkPixbuf, GLib, Gtk
 
-from lib.gettext import C_
-from lib.gettext import ngettext
-
-from . import pixbuflist
-from . import dialogs
-from . import brushmanager
+from . import brushmanager, dialogs, pixbuflist, widgets
 from .toolstack import SizedVBoxToolWidget
-from . import widgets
 
 logger = logging.getLogger(__name__)
 

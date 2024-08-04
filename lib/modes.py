@@ -9,6 +9,7 @@
 """Layer mode constants"""
 
 from gettext import gettext as _
+
 import lib.mypaintlib
 
 #: Additional pass-through mode for layer groups (not saved, but reflected

@@ -1,17 +1,18 @@
 #!/usr/bin/env python
 
-from time import time
-import sys
-import os
 import gc
+import os
+import sys
+from time import time
 
 import numpy as np
 
 os.chdir(os.path.dirname(__file__))
 sys.path.insert(0, "..")
 
-from lib import mypaintlib, tiledsurface, brush, document, command, helpers
 import guicontrol
+
+from lib import brush, command, document, helpers, mypaintlib, tiledsurface
 
 # loadtxt is known to leak memory, thus we run it only once
 # http://projects.scipy.org/numpy/ticket/1356

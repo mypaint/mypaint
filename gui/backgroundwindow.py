@@ -11,21 +11,17 @@
 
 ## Imports
 
+import logging
 import os
 import sys
-import logging
-
 from gettext import gettext as _
-from lib.gibindings import Gtk
-from lib.gibindings import GdkPixbuf
 
-from . import pixbuflist
-from . import windowing
-from lib import tiledsurface
-from lib import helpers
 import lib.pixbuf
-from lib.pycompat import unicode
-from lib.pycompat import xrange
+from lib import helpers, tiledsurface
+from lib.gibindings import GdkPixbuf, Gtk
+from lib.pycompat import unicode, xrange
+
+from . import pixbuflist, windowing
 
 logger = logging.getLogger(__name__)
 

@@ -12,29 +12,32 @@
 
 ## Imports
 
+import abc
 import logging
 import os
-import xml.etree.ElementTree as ET
 import weakref
+import xml.etree.ElementTree as ET
 from warnings import warn
-import abc
 
-from lib.gettext import C_
-import lib.mypaintlib
-import lib.strokemap
-import lib.helpers as helpers
 import lib.fileutils
-import lib.pixbuf
-from lib.modes import PASS_THROUGH_MODE
-from lib.modes import STANDARD_MODES
-from lib.modes import ORA_MODES_BY_OPNAME
-from lib.modes import MODES_EFFECTIVE_AT_ZERO_ALPHA
-from lib.modes import MODES_DECREASING_BACKDROP_ALPHA
+import lib.helpers as helpers
 import lib.modes
-import lib.xml
+import lib.mypaintlib
+import lib.pixbuf
+import lib.strokemap
 import lib.tiledsurface
-from .rendering import Renderable
+import lib.xml
+from lib.gettext import C_
+from lib.modes import (
+    MODES_DECREASING_BACKDROP_ALPHA,
+    MODES_EFFECTIVE_AT_ZERO_ALPHA,
+    ORA_MODES_BY_OPNAME,
+    PASS_THROUGH_MODE,
+    STANDARD_MODES,
+)
 from lib.pycompat import unicode
+
+from .rendering import Renderable
 
 logger = logging.getLogger(__name__)
 

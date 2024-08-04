@@ -16,45 +16,45 @@ Painting is done in tileddrawwidget.py.
 
 ## Imports
 
+import logging
+import math
 import os
 import os.path
 import webbrowser
-from warnings import warn
-import logging
-import math
 import xml.etree.ElementTree as ET
+from warnings import warn
 
-from lib.gibindings import Gtk
-from lib.gibindings import Gdk
-
-from . import compatibility
-from . import historypopup
-from . import stategroup
-from . import colorpicker  # noqa: F401 (registration of GObject classes)
-from . import windowing  # noqa: F401 (registration of GObject classes)
-from . import toolbar
-from . import dialogs
-from . import layermodes  # noqa: F401 (registration of GObject classes)
-from . import quickchoice
-import gui.viewmanip  # noqa: F401 (registration of GObject classes)
-import gui.layermanip  # noqa: F401 (registration of GObject classes)
 import gui.brushmanip  # noqa: F401
-from lib.color import HSVColor
-from . import uicolor
-import gui.picker
-import gui.footer
-from . import brushselectionwindow  # noqa: F401 (registration)
-from .overlays import LastPaintPosOverlay
-from .overlays import ScaleOverlay
-from .framewindow import FrameOverlay
-from .symmetry import SymmetryOverlay
-import gui.tileddrawwidget
 import gui.displayfilter
+import gui.footer
+import gui.layermanip  # noqa: F401 (registration of GObject classes)
 import gui.meta
-import lib.xml
+import gui.picker
+import gui.tileddrawwidget
+import gui.viewmanip  # noqa: F401 (registration of GObject classes)
 import lib.glib
-from lib.gettext import gettext as _
+import lib.xml
+from lib.color import HSVColor
 from lib.gettext import C_
+from lib.gettext import gettext as _
+from lib.gibindings import Gdk, Gtk
+
+from . import brushselectionwindow  # noqa: F401 (registration)
+from . import colorpicker  # noqa: F401 (registration of GObject classes)
+from . import layermodes  # noqa: F401 (registration of GObject classes)
+from . import windowing  # noqa: F401 (registration of GObject classes)
+from . import (
+    compatibility,
+    dialogs,
+    historypopup,
+    quickchoice,
+    stategroup,
+    toolbar,
+    uicolor,
+)
+from .framewindow import FrameOverlay
+from .overlays import LastPaintPosOverlay, ScaleOverlay
+from .symmetry import SymmetryOverlay
 
 logger = logging.getLogger(__name__)
 

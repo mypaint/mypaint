@@ -21,14 +21,11 @@ with an adjuster does its type change to match the control's color space.
 
 ## Imports
 
-import re
 import colorsys
+import re
 
 from lib.gibindings import GdkPixbuf
-
-from lib.pycompat import xrange
-from lib.pycompat import PY3
-
+from lib.pycompat import PY3, xrange
 
 ## Lightweight color objects
 

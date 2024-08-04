@@ -14,13 +14,10 @@
 import logging
 import re
 
-from lib.gibindings import Gtk
-from lib.gibindings import Gdk
-from lib.gibindings import Pango
-from lib.gettext import gettext as _
-from lib.gettext import C_
-
 import lib.xml
+from lib.gettext import C_
+from lib.gettext import gettext as _
+from lib.gibindings import Gdk, Gtk, Pango
 from lib.pycompat import unicode
 
 logger = logging.getLogger(__name__)

@@ -12,24 +12,18 @@
 
 ## Imports
 
-import weakref
-import os.path
+import logging
 import os
+import os.path
 import subprocess
+import weakref
 
 import gui.document  # noqa
-
-from lib.gettext import gettext as _
-from lib.gettext import C_
-from lib.layer.core import LayerBase  # noqa
-
-from lib.gibindings import Gio
-from lib.gibindings import Pango
-from lib.gibindings import Gtk
-
 import lib.xml
-
-import logging
+from lib.gettext import C_
+from lib.gettext import gettext as _
+from lib.gibindings import Gio, Gtk, Pango
+from lib.layer.core import LayerBase  # noqa
 
 logger = logging.getLogger(__name__)
 

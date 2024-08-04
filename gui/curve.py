@@ -11,8 +11,7 @@
 import logging
 from math import pi
 
-from lib.gibindings import Gtk, Gdk
-
+from lib.gibindings import Gdk, Gtk
 from lib.helpers import clamp
 
 logger = logging.getLogger(__name__)

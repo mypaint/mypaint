@@ -8,17 +8,14 @@
 
 """Button press mapping."""
 
-from gettext import gettext as _
 import logging
-
-from lib.gibindings import Gtk
-from lib.gibindings import Gdk
-from lib.gibindings import GObject
-from lib.gibindings import Pango
+from gettext import gettext as _
 
 import lib.xml
-from . import widgets
+from lib.gibindings import Gdk, GObject, Gtk, Pango
 from lib.pycompat import unicode
+
+from . import widgets
 
 logger = logging.getLogger(__name__)
 
@@ -108,7 +105,7 @@ def get_handler_object(app, action_name):
     value None).
 
     """
-    from gui.mode import ModeRegistry, InteractionMode
+    from gui.mode import InteractionMode, ModeRegistry
 
     mode_class = ModeRegistry.get_mode_class(action_name)
     if mode_class is not None:

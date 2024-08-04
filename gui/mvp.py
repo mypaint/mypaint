@@ -11,14 +11,13 @@
 
 # Imports:
 
-import os
-import inspect
 import abc
 import functools
+import inspect
 import logging
+import os
 
 from lib.gibindings import Gtk
-
 
 logger = logging.getLogger(__name__)
 

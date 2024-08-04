@@ -9,37 +9,33 @@
 # (at your option) any later version.
 
 
-# Imports
-import cairo
 import math
 
-import gui.overlays
-import gui.mode
+# Imports
+import cairo
+
 import gui.cursor
 import gui.drawutils
+import gui.mode
+import gui.overlays
 import gui.style
+import gui.tileddrawwidget
 import gui.widgets
 import gui.windowing
-import gui.tileddrawwidget
-from gui.sliderwidget import InputSlider
-
 import lib.alg
 import lib.mypaintlib
 import lib.tiledsurface
+from gui.sliderwidget import InputSlider
+from lib.gettext import C_
+from lib.gibindings import Gdk, GLib, Gtk
+from lib.helpers import Rect
 from lib.mypaintlib import (
     SymmetryHorizontal,
-    SymmetryVertical,
-    SymmetryVertHorz,
     SymmetryRotational,
     SymmetrySnowflake,
+    SymmetryVertHorz,
+    SymmetryVertical,
 )
-from lib.helpers import Rect
-from lib.gettext import C_
-
-from lib.gibindings import Gdk
-from lib.gibindings import GLib
-from lib.gibindings import Gtk
-
 
 # Module settings
 

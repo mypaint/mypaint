@@ -11,16 +11,15 @@
 
 # Imports:
 
-import gui.mvp
 import logging
-import gui.dialogs
+
 import gui.application
+import gui.dialogs
+import gui.mvp
 import lib.layervis
 from lib.gettext import C_
-from lib.xml import escape
-
 from lib.gibindings import Gtk
-
+from lib.xml import escape
 
 # Module vars:
 

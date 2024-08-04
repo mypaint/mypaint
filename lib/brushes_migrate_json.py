@@ -13,8 +13,8 @@ Usage: PYTHONPATH=. python -m lib/brushes_migrate_json [BRUSHDIR...]
 
 """
 
-import sys
 import os
+import sys
 
 from lib import brush
 

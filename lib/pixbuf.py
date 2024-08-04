@@ -20,14 +20,13 @@ which are exposed on POSIX platforms.
 
 ## Imports
 
-from lib.gibindings import GdkPixbuf
-
-import lib.fileutils
-import lib.feedback
-
 import logging
 import os
 import zipfile  # noqa
+
+import lib.feedback
+import lib.fileutils
+from lib.gibindings import GdkPixbuf
 
 logger = logging.getLogger(__name__)
 

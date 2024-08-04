@@ -16,39 +16,37 @@ i.e. they convert user input into updates to the document model.
 
 ## Imports
 
+import logging
+import math
 import os
 import os.path
-import math
-from warnings import warn
 import weakref
-import logging
+from warnings import warn
 
-from lib.gibindings import Gtk
-from lib.gibindings import Gdk
-from lib.gibindings import GLib
-
-import lib.document
-import lib.layer
-import lib.helpers
-from lib.helpers import clamp
-import lib.observable
-from . import stategroup
 import gui.application
-import gui.mode
+import gui.backgroundwindow
+import gui.buttonmap
 import gui.colorpicker  # purely for registration
-import gui.symmetry  # registration only
+import gui.device
+import gui.externalapp
 import gui.freehand
 import gui.inktool  # registration only
 import gui.layerprops
-import gui.buttonmap
-import gui.externalapp
-import gui.device
-import gui.backgroundwindow
+import gui.mode
+import gui.symmetry  # registration only
 import gui.tileddrawwidget
+import lib.document
+import lib.helpers
+import lib.layer
+import lib.observable
 from gui.widgets import with_wait_cursor
-from lib.gettext import gettext as _
 from lib.gettext import C_
+from lib.gettext import gettext as _
+from lib.gibindings import Gdk, GLib, Gtk
+from lib.helpers import clamp
 from lib.modes import PASS_THROUGH_MODE
+
+from . import stategroup
 
 logger = logging.getLogger(__name__)
 

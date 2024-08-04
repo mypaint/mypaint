@@ -9,8 +9,8 @@
 
 """Observable method calls and C#-like syntactic sugar for events."""
 
-import weakref
 import logging
+import weakref
 
 logger = logging.getLogger(__name__)
 

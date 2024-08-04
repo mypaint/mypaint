@@ -9,13 +9,11 @@
 """Modes for manipulating the view"""
 
 
-## Imports
-import gui.mode
-
 import math
-
 from gettext import gettext as _
 
+## Imports
+import gui.mode
 
 ## Class defs
 

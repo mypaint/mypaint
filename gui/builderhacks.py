@@ -10,11 +10,10 @@
 
 """Hacks for loading stuff from GtkBuilder files."""
 
-## Imports
-from lib.gibindings import Gtk
-
 import lib.xml
 
+## Imports
+from lib.gibindings import Gtk
 
 ## Public functions
 

@@ -17,19 +17,16 @@
 
 ## Imports
 
-import math
 import logging
+import math
 from gettext import gettext as _
 
-from lib.gibindings import Gtk
-from lib.gibindings import Gdk
-from lib.gibindings import GLib
-
-from .curve import CurveWidget
-import gui.mode
 import gui.cursor
+import gui.mode
+from lib.gibindings import Gdk, GLib, Gtk
 from lib.pycompat import xrange
 
+from .curve import CurveWidget
 
 logger = logging.getLogger(__name__)
 

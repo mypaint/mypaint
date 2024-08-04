@@ -9,22 +9,20 @@
 """This module implements tile-based floodfill and related operations."""
 
 import logging
-
-import numpy as np
 import threading
 
-from lib.gibindings import GLib
+import numpy as np
 
+import lib.fill_common as fc
 import lib.helpers
+import lib.modes
+import lib.morphology
 import lib.mypaintlib as myplib
 import lib.surface
 import lib.tiledsurface
+from lib.fill_common import _EMPTY_TILE, _FULL_TILE, _OPAQUE
 from lib.gettext import C_
-import lib.fill_common as fc
-from lib.fill_common import _OPAQUE, _FULL_TILE, _EMPTY_TILE
-import lib.modes
-import lib.morphology
-
+from lib.gibindings import GLib
 from lib.pycompat import iteritems
 
 logger = logging.getLogger(__name__)

@@ -7,17 +7,14 @@
 # the Free Software Foundation; either version 2 of the License, or
 # (at your option) any later version.
 
-import logging
 import copy
-import math
 import json
+import logging
+import math
 
-from lib import mypaintlib
-from lib import helpers
-from lib import brushsettings
+from lib import brushsettings, helpers, mypaintlib
 from lib.eotf import eotf
-from lib.pycompat import unicode
-from lib.pycompat import PY3
+from lib.pycompat import PY3, unicode
 
 if PY3:
     from urllib.parse import unquote

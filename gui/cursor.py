@@ -7,16 +7,14 @@
 # the Free Software Foundation; either version 2 of the License, or
 # (at your option) any later version.
 
-import cairo
-import math
 import logging
+import math
+
+import cairo
 
 import gui.drawutils
+from lib.gibindings import Gdk, GdkPixbuf, Gtk
 from lib.pycompat import xrange
-
-from lib.gibindings import Gtk
-from lib.gibindings import Gdk
-from lib.gibindings import GdkPixbuf
 
 logger = logging.getLogger(__name__)
 

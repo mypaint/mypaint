@@ -12,11 +12,7 @@
 ## Imports
 
 from lib.gibindings import Gtk
-
-from lib.modes import STACK_MODES
-from lib.modes import STANDARD_MODES
-from lib.modes import MODE_STRINGS
-
+from lib.modes import MODE_STRINGS, STACK_MODES, STANDARD_MODES
 
 ## Class definitions
 

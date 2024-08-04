@@ -12,41 +12,40 @@
 """Data layer classes"""
 
 
-## Imports
-import zlib
+import contextlib
 import logging
 import os
-import time
-import tempfile
 import shutil
+import struct
+import tempfile
+import time
+import uuid
+
+## Imports
+import zlib
 from copy import deepcopy
 from random import randint
-import uuid
-import struct
-import contextlib
 
-from lib.brush import BrushInfo
-from lib.gettext import C_
-from lib.tiledsurface import N
-import lib.tiledsurface as tiledsurface
-import lib.strokemap
-import lib.helpers as helpers
+import lib.autosave
+import lib.feedback
 import lib.fileutils
-import lib.pixbuf
+import lib.helpers as helpers
+import lib.layer.error
 import lib.modes
 import lib.mypaintlib
-from . import core
-import lib.layer.error
-import lib.autosave
+import lib.pixbuf
+import lib.strokemap
+import lib.tiledsurface as tiledsurface
 import lib.xml
-import lib.feedback
-from . import rendering
-from lib.pycompat import PY3
-from lib.pycompat import unicode
+from lib.brush import BrushInfo
+from lib.gettext import C_
+from lib.pycompat import PY3, unicode
+from lib.tiledsurface import N
+
+from . import core, rendering
 
 if PY3:
-    from io import StringIO
-    from io import BytesIO
+    from io import BytesIO, StringIO
 else:
     from cStringIO import StringIO
 

@@ -2,23 +2,20 @@
 
 # Imports:
 
-from time import time
-from os.path import join
-from itertools import product
-import unittest
-import sys
 import os
-import tempfile
 import shutil
+import sys
+import tempfile
+import unittest
+from itertools import product
+from os.path import join
+from time import time
 
 import numpy as np
 
-from . import paths
-from lib import mypaintlib
-from lib import tiledsurface
-from lib import brush
-from lib import document
+from lib import brush, document, mypaintlib, tiledsurface
 
+from . import paths
 
 N = mypaintlib.TILE_SIZE
 

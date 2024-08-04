@@ -12,11 +12,11 @@
 
 import logging
 
-from .toolstack import SizedVBoxToolWidget, TOOL_WIDGET_NATURAL_HEIGHT_SHORT
 import lib.xml
 from lib.gettext import C_
-
 from lib.gibindings import Gtk
+
+from .toolstack import TOOL_WIDGET_NATURAL_HEIGHT_SHORT, SizedVBoxToolWidget
 
 logger = logging.getLogger(__name__)
 

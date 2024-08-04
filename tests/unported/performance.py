@@ -1,14 +1,13 @@
 #!/usr/bin/env python
-import sys
+import cProfile
+import distutils.spawn
 import os
 import subprocess
-import cProfile
-from time import time, sleep
-import distutils.spawn
-
-import numpy as np
+import sys
+from time import sleep, time
 
 import guicontrol
+import numpy as np
 
 start_measurement = -1
 stop_measurement = -2
@@ -207,7 +206,7 @@ def save_png_layer():
 
 @nogui_test
 def brushengine_paint_hires():
-    from lib import tiledsurface, brush
+    from lib import brush, tiledsurface
 
     s = tiledsurface.Surface()
     with open("brushes/v2/watercolor.myb") as fp:

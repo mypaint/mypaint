@@ -9,19 +9,19 @@
 
 ## Imports
 
+import math
 import struct
 import zlib
-import math
 from logging import getLogger
 from warnings import warn
 
 import numpy as np
 
-from . import mypaintlib
-from . import idletask
 import lib.tiledsurface as tiledsurface
-from lib.surface import TileAccessible  # noqa
 from lib.pycompat import PY3, iteritems
+from lib.surface import TileAccessible  # noqa
+
+from . import idletask, mypaintlib
 
 logger = getLogger(__name__)
 TILE_SIZE = N = mypaintlib.TILE_SIZE

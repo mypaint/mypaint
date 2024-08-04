@@ -11,12 +11,12 @@
 
 ## Imports
 import argparse
-from copy import deepcopy
 import gzip
 import logging
 import os
 import sys
 import xml.etree.ElementTree as ET
+from copy import deepcopy
 
 from scour.scour import start as scour_optimize
 

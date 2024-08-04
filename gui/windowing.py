@@ -13,11 +13,8 @@
 
 import logging
 
-from lib.gibindings import Gtk
-from lib.gibindings import Gdk
-from lib.gibindings import GLib
-
-from lib.helpers import clamp, Rect
+from lib.gibindings import Gdk, GLib, Gtk
+from lib.helpers import Rect, clamp
 from lib.pycompat import xrange
 
 logger = logging.getLogger(__name__)

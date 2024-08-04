@@ -7,9 +7,9 @@
 # (at your option) any later version.
 
 from gettext import gettext as _
-from lib.helpers import rgb_to_hsv, hsv_to_rgb
 
 import gui.blendmodehandler
+from lib.helpers import hsv_to_rgb, rgb_to_hsv
 
 
 class BrushModifier(object):

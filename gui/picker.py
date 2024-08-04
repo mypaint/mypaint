@@ -15,18 +15,16 @@ with a rather wide scope.
 
 """
 
-## Imports
-from gui.tileddrawwidget import TiledDrawWidget
-from gui.document import Document
-from lib.gettext import C_
-import gui.cursor
-
-from lib.gibindings import Gtk
-from lib.gibindings import Gdk
-from lib.gibindings import GLib
-
 import abc
 import logging
+
+import gui.cursor
+from gui.document import Document
+
+## Imports
+from gui.tileddrawwidget import TiledDrawWidget
+from lib.gettext import C_
+from lib.gibindings import Gdk, GLib, Gtk
 
 logger = logging.getLogger(__name__)
 

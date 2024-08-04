@@ -9,17 +9,16 @@
 
 """Autorecovery UI"""
 
-import weakref
-import os.path
-from gettext import gettext as _
-import shutil
 import logging
-
-from lib.gibindings import Gtk
+import os.path
+import shutil
+import weakref
+from gettext import gettext as _
 
 import lib.document
-import lib.helpers
 import lib.errors
+import lib.helpers
+from lib.gibindings import Gtk
 from lib.pycompat import unicode
 
 logger = logging.getLogger(__name__)

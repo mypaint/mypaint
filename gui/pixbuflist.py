@@ -7,18 +7,15 @@
 # the Free Software Foundation; either version 2 of the License, or
 # (at your option) any later version.
 
-from math import ceil
 import logging
-
-from lib.gibindings import Gtk
-from lib.gibindings import Gdk
-from lib.gibindings import GdkPixbuf
-from lib.gibindings import GLib
+from math import ceil
 
 from lib import helpers
+from lib.gibindings import Gdk, GdkPixbuf, GLib, Gtk
 from lib.observable import event
-from . import uicolor
 from lib.pycompat import xrange
+
+from . import uicolor
 
 logger = logging.getLogger(__name__)
 

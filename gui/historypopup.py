@@ -7,12 +7,11 @@
 # the Free Software Foundation; either version 2 of the License, or
 # (at your option) any later version.
 
-from lib.gibindings import Gtk
-from lib.gibindings import Gdk
 import cairo
 
-from . import windowing
+from lib.gibindings import Gdk, Gtk
 
+from . import windowing
 
 """Color history popup."""
 

@@ -2,30 +2,28 @@
 
 # Imports:
 
-from contextlib import contextmanager
-import subprocess
+import functools
 import glob
 import os
 import os.path
-from os.path import join, abspath, normpath
 import pprint
-import sys
-import textwrap
-import tempfile
 import shutil
-import functools
-
-from setuptools import setup
-from setuptools import Extension
-from setuptools import Command
-from setuptools.command.build_ext import build_ext
-from setuptools.command.install import install
-from setuptools.command.install_scripts import install_scripts
+import subprocess
+import sys
+import tempfile
+import textwrap
+from contextlib import contextmanager
 
 # setuptools must be imported first since they ensure
 # their distutils implementation will be used.
 from distutils.command.build import build
 from distutils.command.clean import clean
+from os.path import abspath, join, normpath
+
+from setuptools import Command, Extension, setup
+from setuptools.command.build_ext import build_ext
+from setuptools.command.install import install
+from setuptools.command.install_scripts import install_scripts
 
 # Constants
 

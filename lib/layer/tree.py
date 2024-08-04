@@ -13,38 +13,31 @@
 
 ## Imports
 
-import re
-import logging
-from copy import copy
-from copy import deepcopy
-import os.path
-from warnings import warn
 import contextlib
+import logging
+import os.path
+import re
+from copy import copy, deepcopy
+from warnings import warn
 
-from lib.gibindings import GdkPixbuf
-from lib.gibindings import GLib
 import numpy as np
 
+import lib.cache
+import lib.feedback
+import lib.helpers as helpers
+import lib.mypaintlib
+import lib.naming
+import lib.pixbuf
+import lib.tiledsurface as tiledsurface
 from lib.eotf import eotf
 from lib.gettext import C_
-import lib.mypaintlib
-import lib.tiledsurface as tiledsurface
-from lib.tiledsurface import TileAccessible
-from lib.tiledsurface import TileBlittable
-import lib.helpers as helpers
+from lib.gibindings import GdkPixbuf, GLib
+from lib.modes import MODES_DECREASING_BACKDROP_ALPHA, PASS_THROUGH_MODE
 from lib.observable import event
-import lib.pixbuf
-import lib.cache
-from lib.modes import PASS_THROUGH_MODE
-from lib.modes import MODES_DECREASING_BACKDROP_ALPHA
-from . import data
-from . import group
-from . import core
-from . import rendering
-import lib.feedback
-import lib.naming
 from lib.pycompat import xrange
+from lib.tiledsurface import TileAccessible, TileBlittable
 
+from . import core, data, group, rendering
 
 logger = logging.getLogger(__name__)
 

@@ -12,18 +12,15 @@
 
 ## Imports
 
-import logging
 import collections
+import logging
 import re
 
-from lib.gettext import C_
-from lib.gibindings import Gtk
-from lib.gibindings import Gdk
-from lib.gibindings import Pango
-
-from lib.observable import event
 import gui.application
 import gui.mode
+from lib.gettext import C_
+from lib.gibindings import Gdk, Gtk, Pango
+from lib.observable import event
 
 logger = logging.getLogger(__name__)
 

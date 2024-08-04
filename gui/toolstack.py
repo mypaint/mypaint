@@ -8,25 +8,20 @@
 
 """Toolstacks with panels that can be closed/detached/reordered"""
 
-from warnings import warn
 import logging
 import weakref
+from warnings import warn
 
-from lib.gibindings import GObject
-from lib.gibindings import Gtk
-from lib.gibindings import Gdk
-from lib.gibindings import GLib
-
-from gui.windowing import set_initial_window_position
-
-import lib.xml
 import lib.helpers
+import lib.xml
+from gui.windowing import set_initial_window_position
+from lib.gettext import C_
+from lib.gibindings import Gdk, GLib, GObject, Gtk
+from lib.pycompat import unicode, xrange
+
 from . import objfactory
 from .widgets import borderless_button
 from .windowing import clear_focus
-from lib.gettext import C_
-from lib.pycompat import xrange
-from lib.pycompat import unicode
 
 logger = logging.getLogger(__name__)
 

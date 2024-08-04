@@ -10,10 +10,7 @@
 import logging
 from gettext import gettext as _
 
-from lib.gibindings import Gtk
-from lib.gibindings import Gdk
-from lib.gibindings import GLib
-from lib.gibindings import Pango
+from lib.gibindings import Gdk, GLib, Gtk, Pango
 
 from . import windowing
 

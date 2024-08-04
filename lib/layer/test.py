@@ -15,8 +15,8 @@ def make_test_stack():
     :rtype: tuple
 
     """
-    import lib.layer.group
     import lib.layer.data
+    import lib.layer.group
     import lib.layer.tree
 
     root = lib.layer.tree.RootLayerStack(doc=None)

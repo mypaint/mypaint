@@ -10,32 +10,27 @@
 """Manager+adjuster bases for tweaking a single color via many widgets.
 """
 
-import math
-from copy import deepcopy, copy
-from warnings import warn
-import weakref
-import os
 import logging
+import math
+import os
+import weakref
+from copy import copy, deepcopy
 from gettext import gettext as _
+from warnings import warn
 
-from lib.gibindings import GObject
-from lib.gibindings import Gdk
-from lib.gibindings import Gtk
-from lib.gibindings import GdkPixbuf
 import cairo
 
-from .util import clamp
-from .util import add_distance_fade_stops
-from .util import draw_marker_circle
-from lib.color import RGBColor, HCYColor
-from .bases import CachedBgDrawingArea
-from .bases import IconRenderable
-from . import uimisc
-from lib.palette import Palette
-from lib.observable import event
 import gui.dialogs
 import gui.uicolor
+from lib.color import HCYColor, RGBColor
+from lib.gibindings import Gdk, GdkPixbuf, GObject, Gtk
+from lib.observable import event
+from lib.palette import Palette
 from lib.pycompat import xrange
+
+from . import uimisc
+from .bases import CachedBgDrawingArea, IconRenderable
+from .util import add_distance_fade_stops, clamp, draw_marker_circle
 
 logger = logging.getLogger(__name__)
 

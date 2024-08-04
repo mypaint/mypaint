@@ -11,9 +11,9 @@
 
 import logging
 
-from lib.gibindings import Gtk
 import cairo
 
+from lib.gibindings import Gtk
 
 logger = logging.getLogger(__name__)
 

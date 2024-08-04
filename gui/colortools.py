@@ -9,21 +9,19 @@
 
 """Dockable Workspace tools for color adjusters."""
 
-from lib.gibindings import Gtk
-
+import gui.colors.changers
+from gui.colors import ColorAdjuster
+from gui.colors.hcywheel import HCYAdjusterPage
+from gui.colors.hsvcube import HSVCubePage
+from gui.colors.hsvsquare import HSVSquarePage
+from gui.colors.hsvwheel import HSVAdjusterPage
+from gui.colors.paletteview import PalettePage
+from gui.colors.sliders import ComponentSlidersAdjusterPage
 from lib.gettext import C_
+from lib.gibindings import Gtk
 
 from . import widgets
 from .toolstack import TOOL_WIDGET_MIN_WIDTH
-from gui.colors.hcywheel import HCYAdjusterPage
-from gui.colors.hsvwheel import HSVAdjusterPage
-from gui.colors.paletteview import PalettePage
-from gui.colors.hsvcube import HSVCubePage
-from gui.colors.hsvsquare import HSVSquarePage
-from gui.colors.sliders import ComponentSlidersAdjusterPage
-import gui.colors.changers
-from gui.colors import ColorAdjuster
-
 
 ## Adapter classes for old-style "Page" ColorAdjuster classes
 

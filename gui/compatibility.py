@@ -9,19 +9,16 @@
 
 from logging import getLogger
 
+import lib.eotf
+from lib.gettext import C_
 from lib.gibindings import Gtk
+from lib.layer.data import BackgroundLayer
+from lib.meta import MYPAINT_VERSION, PREREL, Compatibility
+from lib.modes import MODE_STRINGS, set_default_mode
+from lib.mypaintlib import CombineNormal, CombineSpectralWGM, combine_mode_get_info
 
 from . import compatconfig as config
-
 from .compatconfig import C1X, C2X, COMPAT_SETTINGS, DEFAULT_COMPAT
-
-import lib.eotf
-from lib.layer.data import BackgroundLayer
-from lib.meta import Compatibility, PREREL, MYPAINT_VERSION
-from lib.modes import MODE_STRINGS, set_default_mode
-from lib.mypaintlib import CombineNormal, CombineSpectralWGM
-from lib.mypaintlib import combine_mode_get_info
-from lib.gettext import C_
 
 logger = getLogger(__name__)
 

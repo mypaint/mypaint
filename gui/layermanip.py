@@ -11,13 +11,10 @@
 ## Imports
 from gettext import gettext as _
 
-from lib.gibindings import Gdk
-from lib.gibindings import GLib
-
+import gui.cursor
 import gui.mode
 import lib.command
-import gui.cursor
-
+from lib.gibindings import Gdk, GLib
 
 ## Class defs
 

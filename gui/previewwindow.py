@@ -9,25 +9,21 @@
 
 ## Imports
 
-import math
 import bisect
-
+import math
 from gettext import gettext as _
 
-from lib.gibindings import Gtk
-from lib.gibindings import Gdk
-from lib.gibindings import GLib
 import cairo
 
-import gui.mode
-from . import overlays
-from . import tileddrawwidget
-from .toolstack import SizedVBoxToolWidget, TOOL_WIDGET_NATURAL_HEIGHT_SHORT
-import lib.alg as geom
 import gui.cursor
 import gui.drawutils
+import gui.mode
 import gui.style
+import lib.alg as geom
+from lib.gibindings import Gdk, GLib, Gtk
 
+from . import overlays, tileddrawwidget
+from .toolstack import TOOL_WIDGET_NATURAL_HEIGHT_SHORT, SizedVBoxToolWidget
 
 ## Module consts
 

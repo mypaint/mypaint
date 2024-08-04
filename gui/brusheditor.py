@@ -13,28 +13,24 @@
 
 # Imports:
 
-import os
 import logging
-
-from lib.gibindings import Gtk
-from lib.gibindings import Pango
-from lib.gibindings import GLib
-from lib.gibindings import GdkPixbuf
-
-from lib.gettext import C_
-from lib import brushsettings
-from lib.pycompat import iteritems, itervalues
+import os
 
 import lib.brush
-from . import dialogs
+from lib import brushsettings
+from lib.gettext import C_
+from lib.gibindings import GdkPixbuf, GLib, Gtk, Pango
+from lib.pycompat import iteritems, itervalues
+
 from . import brushmanager
-from .builderhacks import add_objects_from_template_string
-from .windowing import SubWindow
 from . import curve as notuseddirectly  # noqa - needed for interactive testing
+from . import dialogs
+from .builderhacks import add_objects_from_template_string
 
 # The widget class needs to be in scope before it is
 # instantiated via the loading of the glade file.
 from .sliderwidget import InputSlider  # noqa
+from .windowing import SubWindow
 
 logger = logging.getLogger(__name__)
 

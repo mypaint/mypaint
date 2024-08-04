@@ -11,18 +11,18 @@
 """Common interfaces & routines for surface and surface-like objects"""
 
 import abc
-import os
 import logging
+import os
 
 import numpy as np
 
-from . import mypaintlib
+import lib.feedback
 import lib.helpers
 from lib.errors import FileHandlingError
 from lib.gettext import C_
-import lib.feedback
 from lib.pycompat import xrange
 
+from . import mypaintlib
 
 logger = logging.getLogger(__name__)
 

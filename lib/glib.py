@@ -22,10 +22,8 @@ unicode, and may not even be UTF-8). This module works around that.
 import logging
 import sys
 
-from lib.pycompat import PY3
-from lib.pycompat import unicode
-
 from lib.gibindings import GLib
+from lib.pycompat import PY3, unicode
 
 logger = logging.getLogger(__name__)
 

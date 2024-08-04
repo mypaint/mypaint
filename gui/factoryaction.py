@@ -12,8 +12,8 @@
 from warnings import warn
 
 import gi
-from lib.gibindings import Gtk
-from lib.gibindings import GObject
+
+from lib.gibindings import GObject, Gtk
 
 
 class FactoryAction(Gtk.Action):

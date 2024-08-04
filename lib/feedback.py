@@ -11,9 +11,8 @@
 
 # Imports:
 
-from lib.observable import event
 import lib.helpers
-
+from lib.observable import event
 
 # Class defs:
 

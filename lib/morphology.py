@@ -11,10 +11,9 @@ dilation, erosion and blur
 """
 import logging
 
-import lib.mypaintlib as myplib
-
 import lib.fill_common as fc
-from lib.fill_common import _FULL_TILE, _EMPTY_TILE
+import lib.mypaintlib as myplib
+from lib.fill_common import _EMPTY_TILE, _FULL_TILE
 
 N = myplib.TILE_SIZE
 

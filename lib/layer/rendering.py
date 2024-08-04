@@ -17,7 +17,6 @@ and its "render_*()" methods.
 
 import abc
 
-
 # Public constants:
 
 

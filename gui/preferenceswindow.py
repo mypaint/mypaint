@@ -10,19 +10,17 @@
 """Preferences dialog."""
 
 import os.path
-from logging import getLogger
 from gettext import gettext as _
+from logging import getLogger
 
-from lib.gibindings import Gtk
-from lib.gibindings import Gdk
-
-from gui.compatibility import CompatibilityPreferences
 import lib.config
 import lib.localecodes
-from lib.i18n import USER_LOCALE_PREF
+from gui.compatibility import CompatibilityPreferences
 from lib.gettext import C_
-from . import windowing
+from lib.gibindings import Gdk, Gtk
+from lib.i18n import USER_LOCALE_PREF
 
+from . import windowing
 
 logger = getLogger(__name__)
 RESPONSE_REVERT = 1

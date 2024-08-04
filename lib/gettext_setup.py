@@ -6,12 +6,12 @@
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation; either version 2 of the License, or
 # (at your option) any later version.
-import os
-import sys
-import logging
-
 # This imports the global gettext package, not lib/gettext
 import gettext
+import logging
+import os
+import sys
+
 import lib.config as config
 
 logger = logging.getLogger(__file__)
@@ -39,6 +39,7 @@ def init_gettext(localepath):
     """
 
     import locale
+
     import lib.i18n
 
     # Required in Windows for the "Region and Language" settings
