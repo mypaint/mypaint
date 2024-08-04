@@ -406,7 +406,7 @@ class PaletteEditorDialog(Gtk.Dialog):
             title=C_("palette load dialog: title", "Load palette"),
             parent=self,
             preview=preview,
-            shortcuts=[palettes_dir],
+            shortcuts=(palettes_dir,),
         )
         if palette is not None:
             self._mgr.palette.update(palette)
@@ -1059,8 +1059,8 @@ class _PaletteGridLayout(ColorAdjusterWidget):
         insert=False,
         bg_rgb=(0, 0, 0),
         fg_rgb=(1, 1, 1),
-        bg_dash=[1, 2],
-        fg_dash=[1, 2],
+        bg_dash=(1, 2),
+        fg_dash=(1, 2),
         bg_width=2,
         fg_width=1,
     ):
@@ -1108,7 +1108,7 @@ class _PaletteGridLayout(ColorAdjusterWidget):
             if i is not None:
                 x, y = self.get_position_for_index(i)
                 marker_args = [cr, x, y]
-                marker_kw = dict(bg_width=3, fg_width=1, bg_dash=[2, 3], fg_dash=[2, 3])
+                marker_kw = dict(bg_width=3, fg_width=1, bg_dash=(2, 3), fg_dash=(2, 3))
                 if not mgr.palette.match_is_approx:
                     marker_kw.update(dict(bg_width=4, fg_width=1))
                 self._paint_marker(*marker_args, **marker_kw)

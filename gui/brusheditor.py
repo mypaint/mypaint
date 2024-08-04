@@ -521,7 +521,7 @@ class BrushEditorWindow(SubWindow):
             group_iter = store.append(root_iter, row_data)
             group_path = store.get_path(group_iter)
             self._group_treepath[group_id] = group_path
-            for i, cname in enumerate(group["settings"]):
+            for cname in group["settings"]:
                 self._setting_group[cname] = group_id
                 s = brushsettings.settings_dict[cname]
                 row_data = [cname, s.name, True, Pango.Weight.NORMAL]
