@@ -32,7 +32,6 @@ import lib.fileutils
 import lib.modes
 import lib.feedback
 import lib.floodfill
-from lib.pycompat import xrange
 from lib.pycompat import itervalues
 
 logger = logging.getLogger(__name__)
@@ -299,8 +298,8 @@ class MyPaintSurface(TileAccessible, TileBlittable, TileCompositable):
         self.tiledict[(tx, ty)] = t
         empty = True
 
-        for x in xrange(2):
-            for y in xrange(2):
+        for x in range(2):
+            for y in range(2):
                 src = self.parent.tiledict.get(
                     (tx * 2 + x, ty * 2 + y), transparent_tile
                 )
@@ -607,7 +606,7 @@ class MyPaintSurface(TileAccessible, TileBlittable, TileCompositable):
 
         def consume_buf():
             ty = state["ty"] - 1
-            for i in xrange(state["buf"].shape[1] // N):
+            for i in range(state["buf"].shape[1] // N):
                 tx = x // N + i
                 src = state["buf"][:, i * N : (i + 1) * N, :]
                 if src[:, :, 3].any():

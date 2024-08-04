@@ -26,8 +26,6 @@ import colorsys
 
 from lib.gibindings import GdkPixbuf
 
-from lib.pycompat import xrange
-
 
 ## Lightweight color objects
 
@@ -242,8 +240,8 @@ class UIColor(object):
         rowstride = pixbuf.get_rowstride()
         n_pixels = w * h
         r = g = b = 0
-        for y in xrange(h):
-            for x in xrange(w):
+        for y in range(h):
+            for x in range(w):
                 offs = y * rowstride + x * n_channels
                 # bytes=bytes. Indexing produces ints.
                 r += data[offs]
@@ -312,7 +310,7 @@ class RGBColor(UIColor):
         """
         assert steps >= 3
         other = RGBColor(color=other)
-        for step in xrange(steps):
+        for step in range(steps):
             p = step / (steps - 1)
             r = self.r + (other.r - self.r) * p
             g = self.g + (other.g - self.g) * p
@@ -429,7 +427,7 @@ class HSVColor(UIColor):
             if abs(hdx0) < abs(hdelta):
                 hdelta = hdx0
         # Interpolate, using shortest angular dist for hue
-        for step in xrange(steps):
+        for step in range(steps):
             p = step / (steps - 1)
             h = (self.h + hdelta * p) % 1.0
             s = self.s + (other.s - self.s) * p
@@ -584,7 +582,7 @@ class HCYColor(UIColor):
         for hdx0 in -(ha + 1 - hb), (hb + 1 - ha):
             if abs(hdx0) < abs(hdelta):
                 hdelta = hdx0
-        for step in xrange(steps):
+        for step in range(steps):
             p = step / (steps - 1)
             h = (self.h + hdelta * p) % 1.0
             c = self.c + (other.c - self.c) * p
@@ -701,7 +699,7 @@ class YCbCrColor(UIColor):
         assert steps >= 3
         other = YCbCrColor(color=other)
         # Like HSV, interpolate using the shortest angular distance.
-        for step in xrange(steps):
+        for step in range(steps):
             p = step / (steps - 1)
             Y = self.Y + (other.Y - self.Y) * p
             Cb = self.Cb + (other.Cb - self.Cb) * p

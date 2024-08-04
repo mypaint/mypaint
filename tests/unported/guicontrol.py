@@ -104,7 +104,7 @@ class GUI:
             tdw.scroll(int(dx[i]), int(dy[i]))
             self.wait_for_idle()
         # jump back to the start
-        for i in xrange(N):
+        for i in range(N):
             tdw.scroll(-int(dx[i]), -int(dy[i]))
 
     def zoom_out(self, steps):

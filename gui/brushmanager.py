@@ -38,7 +38,6 @@ from . import drawutils
 import gui.mode
 import lib.config
 from lib.pycompat import unicode
-from lib.pycompat import xrange
 
 ## Public module constants
 
@@ -443,7 +442,7 @@ class BrushManager(object):
             _len, _name, default_group = groups_by_len[-1]
 
         # Populate blank entries.
-        for i in xrange(_NUM_BRUSHKEYS):
+        for i in range(_NUM_BRUSHKEYS):
             if self.contexts[i] is None:
                 idx = (i + 9) % 10  # keyboard order
                 c_name = unicode("context%02d") % i
@@ -452,7 +451,7 @@ class BrushManager(object):
                 b = default_group[group_idx]
                 b.clone_into(c, c_name)
                 self.contexts[i] = c
-        for i in xrange(_BRUSH_HISTORY_SIZE):
+        for i in range(_BRUSH_HISTORY_SIZE):
             if self.history[i] is None:
                 h_name = unicode("%s%d") % (_BRUSH_HISTORY_NAME_PREFIX, i)
                 h = ManagedBrush(self, name=h_name, persistent=False)
@@ -464,8 +463,8 @@ class BrushManager(object):
     def _init_groups(self):
         """Initialize brush groups, loading them from disk."""
 
-        self.contexts = [None for i in xrange(_NUM_BRUSHKEYS)]
-        self.history = [None for i in xrange(_BRUSH_HISTORY_SIZE)]
+        self.contexts = [None] * _NUM_BRUSHKEYS
+        self.history = [None] * _BRUSH_HISTORY_SIZE
 
         brush_cache = {}
         self._init_ordered_groups(brush_cache)

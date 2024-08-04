@@ -35,7 +35,6 @@ from lib.palette import Palette
 from lib.observable import event
 import gui.dialogs
 import gui.uicolor
-from lib.pycompat import xrange
 
 logger = logging.getLogger(__name__)
 
@@ -981,7 +980,7 @@ class SliderColorAdjuster(ColorAdjusterWidget):
         else:
             bar_gradient = cairo.LinearGradient(b, 0, b + bar_length, 0)
         samples = self.samples + 2
-        for s in xrange(samples + 1):
+        for s in range(samples + 1):
             p = s / samples
             col = self.get_color_for_bar_amount(p)
             r, g, b = col.get_rgb()
@@ -1201,7 +1200,7 @@ class HueSaturationWheelMixin(object):
         cr.set_line_join(cairo.LINE_JOIN_ROUND)
         step_angle = 2.0 * math.pi / steps
         mgr = self.get_color_manager()
-        for ih in xrange(steps + 1):  # overshoot by 1, no solid bit for final
+        for ih in range(steps + 1):  # overshoot by 1, no solid bit for final
             h = ih / steps
             if mgr:
                 h = mgr.undistort_hue(h)

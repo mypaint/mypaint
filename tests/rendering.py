@@ -13,7 +13,6 @@ import unittest
 from . import paths
 from lib import mypaintlib
 from lib.document import Document
-from lib.pycompat import xrange
 
 
 TEST_BIGIMAGE = "bigimage.ora"
@@ -74,8 +73,8 @@ def _scroll(
     last_x = cx
     last_y = cy
     nframes = 0
-    for turn_i in xrange(turns):
-        for step_i in xrange(turn_steps):
+    for turn_i in range(turns):
+        for step_i in range(turn_steps):
             t = 2 * math.pi * (step_i / turn_steps)
             x = cx + math.cos(t) * radius
             y = cy + math.sin(t) * radius

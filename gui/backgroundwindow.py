@@ -25,7 +25,6 @@ from lib import tiledsurface
 from lib import helpers
 import lib.pixbuf
 from lib.pycompat import unicode
-from lib.pycompat import xrange
 
 logger = logging.getLogger(__name__)
 
@@ -485,8 +484,8 @@ def _tile_pixbuf(pixbuf, repeats_x, repeats_y):
     """Make a repeated tiled image of a pixbuf"""
     w, h = pixbuf.get_width(), pixbuf.get_height()
     result = new_blank_pixbuf((0, 0, 0), repeats_x * w, repeats_y * h)
-    for xi in xrange(repeats_x):
-        for yi in xrange(repeats_y):
+    for xi in range(repeats_x):
+        for yi in range(repeats_y):
             pixbuf.copy_area(0, 0, w, h, result, w * xi, h * yi)
     return result
 

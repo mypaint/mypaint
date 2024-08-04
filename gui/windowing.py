@@ -18,7 +18,6 @@ from lib.gibindings import Gdk
 from lib.gibindings import GLib
 
 from lib.helpers import clamp, Rect
-from lib.pycompat import xrange
 
 logger = logging.getLogger(__name__)
 
@@ -774,7 +773,7 @@ def set_initial_window_position(win, pos):
     # exists. Users change display layouts...
     if None not in (final_x, final_y):
         onscreen = False
-        for mon_num in xrange(screen.get_n_monitors()):
+        for mon_num in range(screen.get_n_monitors()):
             targ_geom = _get_target_area_geometry(screen, mon_num)
             in_targ_geom = (
                 final_x < (targ_geom.x + targ_geom.w)

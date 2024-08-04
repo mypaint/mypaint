@@ -21,7 +21,6 @@ import lib.helpers
 from lib.errors import FileHandlingError
 from lib.gettext import C_
 import lib.feedback
-from lib.pycompat import xrange
 
 
 logger = logging.getLogger(__name__)
@@ -197,7 +196,7 @@ def scanline_strips_iter(
             if ty != first_row:
                 skip_rendering = True
 
-        for tx_rel in xrange(render_tw):
+        for tx_rel in range(render_tw):
             # render one tile
             dst = arr[:, tx_rel * N : (tx_rel + 1) * N, :]
             if not skip_rendering:

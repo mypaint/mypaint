@@ -24,7 +24,6 @@ from lib.color import RGBColor
 from lib.color import YCbCrColor
 from lib.color import UIColor  # noqa
 from lib.pycompat import unicode
-from lib.pycompat import xrange
 from io import open
 
 logger = logging.getLogger(__name__)
@@ -349,7 +348,7 @@ class Palette(object):
         elif self.match_position is not None:
             search_order = _outwards_from(len(self), self.match_position)
         else:
-            search_order = xrange(len(self))
+            search_order = range(len(self))
         bestmatch_i = None
         bestmatch_d = None
         is_approx = True
@@ -526,7 +525,7 @@ class Palette(object):
         col = self._copy_color_in(col, name)
         if unique:
             # Find the final exact match, if one is present
-            for i in xrange(len(self._colors) - 1, -1, -1):
+            for i in range(len(self._colors) - 1, -1, -1):
                 if col == self._colors[i]:
                     if match:
                         self._match_position = i
@@ -862,7 +861,7 @@ def _outwards_from(n, i):
     """
     assert i < n and i >= 0
     yield i
-    for j in xrange(n):
+    for j in range(n):
         exhausted = True
         if i - j >= 0:
             yield i - j

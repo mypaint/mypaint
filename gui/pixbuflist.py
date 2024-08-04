@@ -18,7 +18,6 @@ from lib.gibindings import GLib
 from lib import helpers
 from lib.observable import event
 from . import uicolor
-from lib.pycompat import xrange
 
 logger = logging.getLogger(__name__)
 
@@ -404,10 +403,10 @@ class PixbufList(Gtk.DrawingArea):
                 return (x, y, w, h)
 
             x, y, w, h = shrink(self.spacing_outside, x, y, w, h)
-            for _ in xrange(self.border_visible_outside_cell):
+            for _ in range(self.border_visible_outside_cell):
                 x, y, w, h = shrink(-1, x, y, w, h)
             max_j = self.border_visible + self.border_visible_outside_cell
-            for _ in xrange(max_j):
+            for _ in range(max_j):
                 cr.set_source_rgb(*rect_color.get_rgb())
                 cr.rectangle(x, y, w - 1, h - 1)  # FIXME: check pixel alignment
                 cr.stroke()

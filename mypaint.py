@@ -28,7 +28,6 @@ import re
 import logging
 
 logger = logging.getLogger("mypaint")
-xrange = range
 unicode = str
 
 
@@ -121,7 +120,7 @@ def win32_unicode_argv():
                 start = 1
             else:
                 start = 0
-            return [argv[i] for i in xrange(start, argc.value)]
+            return [argv[i] for i in range(start, argc.value)]
     except Exception:
         logger.exception(
             "Specialized Win32 argument handling failed. Please "

@@ -43,7 +43,6 @@ from . import core
 from . import rendering
 import lib.feedback
 import lib.naming
-from lib.pycompat import xrange
 
 
 logger = logging.getLogger(__name__)
@@ -2782,7 +2781,7 @@ def path_startswith(path, prefix):
     """
     if len(prefix) > len(path):
         return False
-    for i in xrange(len(prefix)):
+    for i in range(len(prefix)):
         if path[i] != prefix[i]:
             return False
     return True

@@ -17,7 +17,6 @@ the battle for a lot of this stuff.
 import sys
 import types
 
-xrange = range
 unicode = str
 
 

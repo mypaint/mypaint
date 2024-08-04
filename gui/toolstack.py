@@ -25,7 +25,6 @@ from . import objfactory
 from .widgets import borderless_button
 from .windowing import clear_focus
 from lib.gettext import C_
-from lib.pycompat import xrange
 from lib.pycompat import unicode
 
 logger = logging.getLogger(__name__)
@@ -732,7 +731,7 @@ class ToolStack(Gtk.EventBox):
         target_index = None
         target_page = None
         for notebook in self._get_notebooks():
-            for index in xrange(notebook.get_n_pages()):
+            for index in range(notebook.get_n_pages()):
                 page = notebook.get_nth_page(index)
                 if widget is page.get_child():
                     target_index = index
@@ -768,7 +767,7 @@ class ToolStack(Gtk.EventBox):
         any placeholders, only the individual tool widgets.
         """
         for notebook in self._get_notebooks():
-            for index in xrange(notebook.get_n_pages()):
+            for index in range(notebook.get_n_pages()):
                 page = notebook.get_nth_page(index)
                 widget = page.get_child()
                 widget.hide()
