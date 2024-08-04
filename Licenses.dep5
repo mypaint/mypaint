@@ -8,12 +8,12 @@ Files: *
 Copyright: Copyright 2005-2016 Martin Renold and the MyPaint Development Team
 License: GPL-2+
 
-Files: lib/gdkpixbuf2numpy.*
+Files: src/lib/gdkpixbuf2numpy.*
 Copyright: Copyright 1998-2003 James Henstridge
   Copyright 2008-2016 Martin Renold and the MyPaint Development Team
 License: GPL-2+
 
-Files: gui/gtkexcepthook.py
+Files: src/gui/gtkexcepthook.py
 Comment: http://www.daa.com.au/pipermail/pygtk/2003-August/005775.html
 Copyright: Copyright 2003 Gustavo J A M Carneiro <gjc@inescporto.pt>
   Copyright 2004-2005 Filip Van Raemdonck

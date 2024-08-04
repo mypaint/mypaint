@@ -263,7 +263,7 @@ C++ extension or `libmypaint`.
 To cleanup between unit tests you may want to run:
 
     python setup.py clean --all
-    rm -vf lib/*_wrap.c*
+    rm -vf src/lib/*_wrap.c*
 
 ### Managed install and uninstall
 

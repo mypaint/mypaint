@@ -625,7 +625,7 @@ def _test():
     win.connect("destroy", Gtk.main_quit)
     builder = Gtk.Builder()
     import gui.factoryaction   # noqa F401: for side effects only
-    builder.add_from_file("gui/resources.xml")
+    builder.add_from_file("src/gui/resources.xml")
     uimgr = builder.get_object("app_ui_manager")
     editor = AccelMapEditor()
     editor.ui_manager = uimgr

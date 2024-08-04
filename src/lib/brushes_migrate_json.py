@@ -9,7 +9,7 @@
 
 """Bulk convert a directory of brushes to the new (v3) format.
 
-Usage: PYTHONPATH=. python -m lib/brushes_migrate_json [BRUSHDIR...]
+Usage: PYTHONPATH=. python -m src/lib/brushes_migrate_json [BRUSHDIR...]
 
 """
 

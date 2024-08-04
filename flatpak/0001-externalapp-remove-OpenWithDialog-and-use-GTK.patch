@@ -14,7 +14,7 @@ hood, `Gtk.show_uri_on_window()` will automatically use the `open_uri`
 portal from xdg-desktop-portal in those situations.
 ---
  BUILDING.md        |   4 +-
- gui/externalapp.py | 210 +++--------------------------------------------------
+ src/gui/externalapp.py | 210 +++--------------------------------------------------
  2 files changed, 12 insertions(+), 202 deletions(-)
 
 diff --git a/BUILDING.md b/BUILDING.md
@@ -36,10 +36,10 @@ index 6bdef41..df1a9c0 100644
  
  ### Debian and derivatives
  
-diff --git a/gui/externalapp.py b/gui/externalapp.py
+diff --git a/src/gui/externalapp.py b/src/gui/externalapp.py
 index 9c0a15f..a245796 100644
---- a/gui/externalapp.py
-+++ b/gui/externalapp.py
+--- a/src/gui/externalapp.py
++++ b/src/gui/externalapp.py
 @@ -33,11 +33,9 @@ import lib.xml
  
  ## UI string consts

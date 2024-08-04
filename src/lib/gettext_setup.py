@@ -11,7 +11,7 @@ from __future__ import absolute_import
 import os
 import sys
 import logging
-# This imports the global gettext package, not lib/gettext
+# This imports the global gettext package, not src/lib/gettext
 import gettext
 import lib.config as config
 

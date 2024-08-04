@@ -36,7 +36,7 @@ from gi.repository import PangoCairo  # noqa
 
 # This may look pointless, but is required to set up types
 # prior to their use, in dynamic property creation. See
-# gui/sliderwidget.py for an instance of this.
+# src/gui/sliderwidget.py for an instance of this.
 for i in dir(Gdk):
     getattr(Gdk, i)
 

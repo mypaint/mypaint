@@ -1140,7 +1140,7 @@ Surface = MyPaintSurface
 def _new_backend_surface():
     """Fetches a new backend surface object for C test code to use.
 
-    Used by mypaintlib internals during tests: see lib/tiledsurface.hpp.
+    Used by mypaintlib internals during tests: see src/lib/tiledsurface.hpp.
     The resultant pointer, after swizzling with SWIG_ConvertPtr(),
     exposes the libmypaint "MyPaintSurface" interface.
 

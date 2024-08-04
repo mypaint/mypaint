@@ -32,7 +32,7 @@ widgets, and a script for running glade in the right way. To run glade with the
 MyPaint catalog for testing, invoke
 
     $ glade/run.sh
-    $ glade/run.sh gui/something.glade
+    $ glade/run.sh src/gui/something.glade
 
 Making widgets compatible with Glade and GtkBuilder
 ---------------------------------------------------
