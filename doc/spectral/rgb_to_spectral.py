@@ -24,15 +24,6 @@ from colour.colorimetry import (
 )
 from colour.utilities import to_domain_1, from_range_100
 
-from colour import (
-    STANDARD_OBSERVERS_CMFS,
-    SpectralDistribution,
-    SpectralShape,
-    sd_ones,
-    colorimetry,
-)
-
-from colour.colorimetry import spectral_to_XYZ_integration
 
 # could use straight Meng but we can do Chromatic Adaptation via the illuminant_SPD instead
 # this is Meng modified to be more similar to Scott Allen Burns least log slope squared method
@@ -41,7 +32,7 @@ from colour.colorimetry import spectral_to_XYZ_integration
 
 def XYZ_to_spectral(
     XYZ,
-    cmfs=colour.STANDARD_OBSERVERS_CMFS["CIE 1931 2 Degree Standard Observer"],
+    cmfs=STANDARD_OBSERVERS_CMFS["CIE 1931 2 Degree Standard Observer"],
     interval=5,
     tolerance=1e-10,
     maximum_iterations=5000,
@@ -70,9 +61,7 @@ def XYZ_to_spectral(
         spd[:] = np.exp(a)
 
         return XYZ - (
-            colour.colorimetry.spectral_to_XYZ_integration(
-                spd, cmfs=cmfs, illuminant=illuminant
-            )
+            spectral_to_XYZ_integration(spd, cmfs=cmfs, illuminant=illuminant)
         )
 
     def function_constraint2(a):
@@ -139,7 +128,7 @@ XYZ_to_RGB_m = colorspace.XYZ_to_RGB_matrix
 # for performance use a larger interval.  Harder to solve, must raise tol
 
 interval = 40
-shape = colour.SpectralShape(380.0, 730.0, interval)
+shape = SpectralShape(380.0, 730.0, interval)
 
 # spd via Meng-ish Burns-ish recovery
 target_XYZ = colour.sRGB_to_XYZ([1, 0, 0])

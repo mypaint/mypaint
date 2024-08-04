@@ -17,7 +17,6 @@ from lib.gibindings import Gdk
 import lib.color
 import gui.colors
 import gui.colors.adjbases
-from lib.gettext import C_
 from lib import mypaintlib
 from lib.helpers import gdkpixbuf2numpy
 
