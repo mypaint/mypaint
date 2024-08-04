@@ -378,7 +378,7 @@ class PaletteEditorDialog (Gtk.Dialog):
             title=C_("palette load dialog: title", "Load palette"),
             parent=self,
             preview=preview,
-            shortcuts=[palettes_dir],
+            shortcuts=(palettes_dir,),
         )
         if palette is not None:
             self._mgr.palette.update(palette)
@@ -1007,17 +1007,31 @@ class _PaletteGridLayout (ColorAdjusterWidget):
             return
         bg_col = _widget_get_bg_color(self)
         dx, dy = self.get_painting_offset()
-        _palette_render(mgr.palette, cr,
-                        rows=self._rows, columns=self._columns,
-                        swatch_size=self._swatch_size,
-                        bg_color=bg_col,
-                        offset_x=dx, offset_y=dy,
-                        rtl=False)
+        _palette_render(
+            mgr.palette,
+            cr,
+            rows=self._rows,
+            columns=self._columns,
+            swatch_size=self._swatch_size,
+            bg_color=bg_col,
+            offset_x=dx,
+            offset_y=dy,
+            rtl=False,
+        )
 
-    def _paint_marker(self, cr, x, y, insert=False,
-                      bg_rgb=(0, 0, 0), fg_rgb=(1, 1, 1),
-                      bg_dash=[1, 2], fg_dash=[1, 2],
-                      bg_width=2, fg_width=1):
+    def _paint_marker(
+        self,
+        cr,
+        x,
+        y,
+        insert=False,
+        bg_rgb=(0, 0, 0),
+        fg_rgb=(1, 1, 1),
+        bg_dash=(1, 2),
+        fg_dash=(1, 2),
+        bg_width=2,
+        fg_width=1,
+    ):
         cr.save()
         cr.set_line_join(cairo.LINE_JOIN_ROUND)
         cr.set_line_cap(cairo.LINE_CAP_ROUND)
@@ -1062,8 +1076,7 @@ class _PaletteGridLayout (ColorAdjusterWidget):
             if i is not None:
                 x, y = self.get_position_for_index(i)
                 marker_args = [cr, x, y]
-                marker_kw = dict(bg_width=3, fg_width=1,
-                                 bg_dash=[2, 3], fg_dash=[2, 3])
+                marker_kw = dict(bg_width=3, fg_width=1, bg_dash=(2, 3), fg_dash=(2, 3))
                 if not mgr.palette.match_is_approx:
                     marker_kw.update(dict(bg_width=4, fg_width=1))
                 self._paint_marker(*marker_args, **marker_kw)
