@@ -1,10 +1,11 @@
 #!/usr/bin/env python
 import cProfile
-import distutils.spawn
 import os
 import subprocess
 import sys
 from time import sleep, time
+import shutil
+
 
 import guicontrol
 import numpy as np
@@ -452,12 +453,12 @@ if __name__ == "__main__":
         sys.exit(1)
 
     if options.show_profile:
-        gprof2dot = (
-            "gprof2dot.py"
-            if distutils.spawn.find_executable("gprof2dot.py")
+        gprof2dot = "gprof2dot.py" \
+            if shutil.which("gprof2dot.py") \
             else "gprof2dot"
-        )
-        viewer = "feh" if distutils.spawn.find_executable("feh") else "eog"
+        viewer = "feh" \
+            if shutil.which("feh") \
+            else "eog"
         # FIXME: use gui.profiling's improved code somehow
         os.system(
             "%s -f pstats tmp.pstats | dot -Tpng -o tmp.png && %s tmp.png"
