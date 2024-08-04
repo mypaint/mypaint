@@ -115,7 +115,7 @@ fi
 # Extract versions, either from the code and .git, or from release_info
 # if it exists.
 
-PYTHONPATH=. python lib/meta.py > "./.release_info.TMP"
+PYTHONPATH=. python src/lib/meta.py > "./.release_info.TMP"
 . "./.release_info.TMP"
 
 # Base version; a string like "1.1.0" for stable releases or "1.1.1-alpha"

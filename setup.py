@@ -188,7 +188,7 @@ class BuildConfig (Command):
     share the same prefix as the mypaint installation.
     """
 
-    description = "generate lib/config.py using fetched or provided values"
+    description = "generate src/lib/config.py using fetched or provided values"
     user_options = [
         ("brushdir-path=", None,
          "use the provided argument as brush directory path"),
@@ -245,7 +245,7 @@ class BuildConfig (Command):
             'libmypaint_locale_dir': self.get_libmypaint_locale_dir(),
             'supported_locales': locstring,
         }
-        self.instantiate_template('config.py.in', 'lib/config.py', conf_vars)
+        self.instantiate_template('src/config.py.in', 'src/lib/config.py', conf_vars)
 
     def get_libmypaint_locale_dir(self):
         path = self.libmypaint_locale_path
@@ -503,10 +503,12 @@ class Install (install):
             'data': rel_to(self.install_data),
         }
         self.INSTALLATION_PATHS.update(path_dict)
+        sys.path.insert(0, "src")
         # lib.config is a module generated as part of the build process,
         # and may not exist when the setup script is run,
         # hence it should not (and often cannot) be a top-level import.
         import lib.config
+        sys.path.remove("src")
         # We only install the locales added in the build_config step.
         locales = lib.config.supported_locales
         data_paths = BuildTranslations.get_translation_paths(self, locales)[1]
@@ -542,7 +544,7 @@ class Clean (clean):
     """
 
     def run(self):
-        build_temp_files = glob.glob("lib/mypaintlib_wrap.c*")
+        build_temp_files = glob.glob("src/lib/mypaintlib_wrap.c*")
         for file in build_temp_files:
             self.announce("removing %r" % (file,), level=2)
             os.unlink(file)
@@ -639,7 +641,7 @@ class InstallScripts (install_scripts):
         if not self.skip_build:
             self.run_command('build_scripts')
 
-        sys.path.insert(0, ".")
+        sys.path.insert(0, "src")
         import lib.meta
         relinfo_script = lib.meta._get_release_info_script(gitprefix="git")
 
@@ -971,18 +973,18 @@ def get_ext_modules():
     mypaintlib = Extension(
         'lib._mypaintlib',
         [
-            'lib/mypaintlib.i',
-            'lib/gdkpixbuf2numpy.cpp',
-            'lib/pixops.cpp',
-            'lib/fastpng.cpp',
-            'lib/brushsettings.cpp',
-            'lib/fill/fill_common.cpp',
-            'lib/fill/fill_constants.cpp',
-            'lib/fill/floodfill.cpp',
-            'lib/fill/gap_closing_fill.cpp',
-            'lib/fill/gap_detection.cpp',
-            'lib/fill/blur.cpp',
-            'lib/fill/morphology.cpp',
+            'src/lib/mypaintlib.i',
+            'src/lib/gdkpixbuf2numpy.cpp',
+            'src/lib/pixops.cpp',
+            'src/lib/fastpng.cpp',
+            'src/lib/brushsettings.cpp',
+            'src/lib/fill/fill_common.cpp',
+            'src/lib/fill/fill_constants.cpp',
+            'src/lib/fill/floodfill.cpp',
+            'src/lib/fill/gap_closing_fill.cpp',
+            'src/lib/fill/gap_detection.cpp',
+            'src/lib/fill/blur.cpp',
+            'src/lib/fill/morphology.cpp',
         ],
         swig_opts=mypaintlib_swig_opts,
         language='c++',
@@ -1032,6 +1034,7 @@ setup(
     license="GPLv2+",
     url="http://mypaint.org",
 
+    package_dir={'': 'src'},
     packages=['lib', 'lib.layer', 'gui', 'gui.colors'],
     package_data={
         "gui": ['*.xml', '*.glade'],
@@ -1050,8 +1053,8 @@ setup(
         "clean": Clean,
     },
     scripts=[
-        "mypaint.py",
-        "desktop/mypaint-ora-thumbnailer.py",
+        "src/mypaint.py",
+        "src/desktop/mypaint-ora-thumbnailer.py",
     ],
     test_suite='tests',
     ext_modules=get_ext_modules(),

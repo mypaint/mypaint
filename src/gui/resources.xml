@@ -927,7 +927,7 @@ Vocabulary
   <!-- {{{ BrushModifierActions -->
   <child>
     <object class="GtkActionGroup" id="BrushModifierActions">
-      <!-- Brush blend modes: defined in gui/brushmodifier.py -->
+      <!-- Brush blend modes: defined in src/gui/brushmodifier.py -->
       <child>
         <object class="GtkAction" id="BlendModeMenu">
           <property name="label" translatable="yes" context="Menu→Brush (labels)">Paint Mode</property>

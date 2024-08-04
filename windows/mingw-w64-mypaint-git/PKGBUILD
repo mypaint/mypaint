@@ -49,7 +49,7 @@ CXXFLAGS="-Ofast -ftree-vectorize -fopt-info-vec-optimized -funsafe-math-optimiz
 
 pkgver() {
     cd "${srcdir}"/${_realname}
-    eval `python3 lib/meta.py`
+    eval `python3 src/lib/meta.py`
     echo "$MYPAINT_VERSION_CEREMONIAL" \
       | sed 's,-\(alpha\),\1.'`date +d%Y%m%d`',' \
       | sed 's,-\(beta\|rc\),\1,' \

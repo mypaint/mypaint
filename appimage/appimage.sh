@@ -7,7 +7,7 @@
 ########################################################################
 
 export ARCH=$(arch)
-eval `python2 lib/meta.py`
+eval `python2 src/lib/meta.py`
 
 APP=MyPaint
 LOWERAPP=${APP,,}

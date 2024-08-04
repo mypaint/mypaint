@@ -48,11 +48,11 @@ for:
 # TODO: Override so that tags are always built on both archs
   only_commits:
     files:
-      - lib/*.cpp
-      - lib/*.hpp
-      - lib/**/*.cpp
-      - lib/**/*.hpp
-      - lib/**/*.i
+      - src/lib/*.cpp
+      - src/lib/*.hpp
+      - src/lib/**/*.cpp
+      - src/lib/**/*.hpp
+      - src/lib/**/*.i
 -
   skip_commits:
     files:

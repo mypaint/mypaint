@@ -280,7 +280,7 @@ build_for_testing() {
 clean_local_repo() {
     loginfo "Cleaning local build"
     python3 setup.py clean --all
-    rm -vf lib/*_wrap.c*
+    rm -vf src/lib/*_wrap.c*
     logok "Clean finished."
 }
 

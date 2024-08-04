@@ -241,7 +241,7 @@ class LayersTool (SizedVBoxToolWidget):
 
         # Pack
         self.pack_start(grid, False, True, 0)
-        # Updates from the real layers tree (TODO: move to lib/layers.py)
+        # Updates from the real layers tree (TODO: move to src/lib/layers.py)
         self._processing_model_updates = False
         self._opacity_adj.connect('value-changed',
                                   self._opacity_adj_changed_cb)

@@ -212,7 +212,7 @@ class InputSlider (with_metaclass(ScaleDelegator, Gtk.Bin)):
             return True
         # Swap back without changing the value whe pressing escape.
         # Only resets on key release, but absorbs both events to prevent the
-        # default behavior of a complete mode reset (see gui/keyboard.py)
+        # default behavior of a complete mode reset (see src/gui/keyboard.py)
         if event.keyval == Gdk.KEY_Escape:
             if event.type == Gdk.EventType.KEY_RELEASE:
                 self._swap_back(True)

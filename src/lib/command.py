@@ -427,7 +427,7 @@ class Brushwork (Command):
         Brushwork command on the CommandStack. Instead, callers should
         check `split_due` and split appropriately.
 
-        An example of a mode which does just this can be found in gui/.
+        An example of a mode which does just this can be found in src/gui/.
 
         """
         self._check_recording_started()

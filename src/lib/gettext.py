@@ -19,7 +19,7 @@ Also supported, but mildly deprecated (consider C_ instead!):
 
 Lots of older code uses ``from gettext import gettext as _``.
 Don't do that in new code: pull in this module as ``lib.gettext``.
-Importing this module should still work from within lib/ if code
+Importing this module should still work from within src/lib/ if code
 still uses a relative import, however.
 
 """

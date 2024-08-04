@@ -12,7 +12,7 @@
 These are functions which convert
 our display color classes (see `lib.color.UIColor`)
 to and from GDK's equivalents.
-They can't be part of lib/ because of the GDK dependency.
+They can't be part of src/lib/ because of the GDK dependency.
 
 """
 

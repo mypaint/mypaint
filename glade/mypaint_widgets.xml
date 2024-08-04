@@ -6,7 +6,7 @@
   Begin designing with 
 
    $ glade/run.sh
-   $ glade/run.sh gui/filename.glade
+   $ glade/run.sh src/gui/filename.glade
   
   There's no equivalent of the old library="gladepython" in glade3 +
   libgladeui2. libgladegtk is a libgladeui1 module, and it can't be used with
@@ -169,7 +169,7 @@
       </properties>
     </glade-widget-class>
 
-    <!-- gui/tileddrawwidget.py -->
+    <!-- src/gui/tileddrawwidget.py -->
     <glade-widget-class name="TiledDrawWidget"
         title="Tiled Drawing Widget" parent="GtkDrawingArea"
         generic-name="tdw">
@@ -182,7 +182,7 @@
       </properties>
     </glade-widget-class>
 
-    <!-- gui/pixbuflist.py -->
+    <!-- src/gui/pixbuflist.py -->
     <glade-widget-class name="PixbufList"
         title="Pixbuf List" parent="GtkSpinner"
         generic-name="pixbuflist">
@@ -197,7 +197,7 @@
       </properties>
     </glade-widget-class>
 
-    <!-- gui/curve.py -->
+    <!-- src/gui/curve.py -->
     <glade-widget-class name="CurveWidget"
         title="Curve Widget" parent="GtkSpinner"
         generic-name="curve">
@@ -212,7 +212,7 @@
       </properties>
     </glade-widget-class>
 
-    <!-- gui/spinbox.py -->
+    <!-- src/gui/spinbox.py -->
     <glade-widget-class name="ItemSpinBox"
         title="Item SpinBox" parent="GtkSpinner"
         generic-name="itemspinbox">
@@ -227,7 +227,7 @@
       </properties>
     </glade-widget-class>
 
-    <!-- gui/sliderwidget.py -->
+    <!-- src/gui/sliderwidget.py -->
     <!-- The actual parent is GtkBin. GtkScale is used for the visual -->
     <glade-widget-class name="InputSlider"
         title="Scale Entry" parent="GtkScale"
@@ -245,7 +245,7 @@
       </properties>
     </glade-widget-class>
 
-    <!-- gui/dropdownpanel.py -->
+    <!-- src/gui/dropdownpanel.py -->
     <glade-widget-class name="DropdownPanelButton"
         title="Dropdown Panel Button" parent="GtkToggleButton"
         generic-name="dropdownpanelbutton">
@@ -261,7 +261,7 @@
       </properties>
     </glade-widget-class>
 
-    <!-- gui/buttonmap.py -->
+    <!-- src/gui/buttonmap.py -->
     <glade-widget-class name="ButtonMappingEditor"
         title="Button Mapping Editor" parent="GtkSpinner"
         generic-name="buttonmappingeditor">
@@ -276,7 +276,7 @@
       </properties>
     </glade-widget-class>
 
-    <!-- gui/accelmap.py -->
+    <!-- src/gui/accelmap.py -->
     <glade-widget-class name="AccelMapEditor"
         title="AccelMap Editor" parent="GtkSpinner"
         generic-name="accelmapeditor">
@@ -291,7 +291,7 @@
       </properties>
     </glade-widget-class>
 
-    <!-- gui/device.py -->
+    <!-- src/gui/device.py -->
     <glade-widget-class name="MyPaintDeviceSettingsEditor"
         title="Device Settings Editor" parent="GtkSpinner"
         generic-name="devicesettingseditor">
@@ -306,7 +306,7 @@
       </properties>
     </glade-widget-class>
 
-    <!-- gui/colorpreview.py -->
+    <!-- src/gui/colorpreview.py -->
     <glade-widget-class name="MyPaintBrushColorIndicator"
         title="Brush Color Indicator" parent="GtkDrawingArea"
         generic-name="brushcolorindicator">
