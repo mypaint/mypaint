@@ -12,35 +12,32 @@
 
 ## Imports
 
-from __future__ import division, print_function
-
 import logging
 from copy import copy
 
-from lib.gettext import C_
-import lib.mypaintlib
-import lib.pixbufsurface
-import lib.helpers as helpers
-import lib.fileutils
-from lib.modes import STANDARD_MODES
-from lib.modes import STACK_MODES
-from lib.modes import PASS_THROUGH_MODE
-from . import core
-from . import data
-import lib.layer.error
-import lib.surface
 import lib.autosave
 import lib.feedback
+import lib.fileutils
+import lib.helpers as helpers
 import lib.layer.core
-from .rendering import Opcode
+import lib.layer.error
+import lib.mypaintlib
+import lib.pixbufsurface
+import lib.surface
+from lib.gettext import C_
+from lib.modes import PASS_THROUGH_MODE, STACK_MODES, STANDARD_MODES
 from lib.pycompat import unicode
+
+from . import core, data
+from .rendering import Opcode
 
 logger = logging.getLogger(__name__)
 
 
 ## Class defs
 
-class LayerStack (core.LayerBase, lib.autosave.Autosaveable):
+
+class LayerStack(core.LayerBase, lib.autosave.Autosaveable):
     """Ordered stack of layers, linear but nestable
 
     A stack's sub-layers are stored in the reverse order to that used by
@@ -69,7 +66,7 @@ class LayerStack (core.LayerBase, lib.autosave.Autosaveable):
 
     TYPE_DESCRIPTION = C_(
         "layer type descriptions",
-        u"Layer Group",
+        "Layer Group",
     )
 
     PERMITTED_MODES = set(STANDARD_MODES + STACK_MODES)
@@ -95,8 +92,9 @@ class LayerStack (core.LayerBase, lib.autosave.Autosaveable):
         self._layers = []  # must be done before supercall
         super(LayerStack, self).__init__(**kwargs)
 
-    def load_from_openraster(self, orazip, elem, cache_dir, progress,
-                             x=0, y=0, **kwargs):
+    def load_from_openraster(
+        self, orazip, elem, cache_dir, progress, x=0, y=0, **kwargs
+    ):
         """Load this layer from an open .ora file"""
         if elem.tag != "stack":
             raise lib.layer.error.LoadingFailed("<stack/> expected")
@@ -107,12 +105,7 @@ class LayerStack (core.LayerBase, lib.autosave.Autosaveable):
 
         # Item 1: supercall
         super(LayerStack, self).load_from_openraster(
-            orazip,
-            elem,
-            cache_dir,
-            progress.open(),
-            x=x, y=y,
-            **kwargs
+            orazip, elem, cache_dir, progress.open(), x=x, y=y, **kwargs
         )
         self.clear()
         x += int(elem.attrib.get("x", 0))
@@ -123,9 +116,11 @@ class LayerStack (core.LayerBase, lib.autosave.Autosaveable):
         # internally with a special mode to make the UI prettier.
         isolated_flag = unicode(elem.attrib.get("isolation", "auto"))
         # TODO: Check if this applies to CombineSpectralWGM as well
-        is_pass_through = (self.mode == lib.mypaintlib.CombineNormal
-                           and self.opacity == 1.0
-                           and (isolated_flag.lower() == "auto"))
+        is_pass_through = (
+            self.mode == lib.mypaintlib.CombineNormal
+            and self.opacity == 1.0
+            and (isolated_flag.lower() == "auto")
+        )
         if is_pass_through:
             self.mode = PASS_THROUGH_MODE
 
@@ -134,45 +129,31 @@ class LayerStack (core.LayerBase, lib.autosave.Autosaveable):
         for child_elem in elem.findall("./*"):
             assert child_elem is not elem
             self._load_child_layer_from_orazip(
-                orazip,
-                child_elem,
-                cache_dir,
-                progress.open(),
-                x=x, y=y,
-                **kwargs
+                orazip, child_elem, cache_dir, progress.open(), x=x, y=y, **kwargs
             )
         progress.close()
 
-    def _load_child_layer_from_orazip(self, orazip, elem, cache_dir,
-                                      progress, x=0, y=0, **kwargs):
+    def _load_child_layer_from_orazip(
+        self, orazip, elem, cache_dir, progress, x=0, y=0, **kwargs
+    ):
         """Loads a single child layer element from an open .ora file"""
         try:
             child = _layer_new_from_orazip(
-                orazip,
-                elem,
-                cache_dir,
-                progress,
-                self.root,
-                x=x, y=y,
-                **kwargs
+                orazip, elem, cache_dir, progress, self.root, x=x, y=y, **kwargs
             )
         except lib.layer.error.LoadingFailed:
             logger.warning("Skipping non-loadable layer")
         else:
             self.append(child)
 
-    def load_from_openraster_dir(self, oradir, elem, cache_dir, progress,
-                                 x=0, y=0, **kwargs):
+    def load_from_openraster_dir(
+        self, oradir, elem, cache_dir, progress, x=0, y=0, **kwargs
+    ):
         """Loads layer flags and data from an OpenRaster-style dir"""
         if elem.tag != "stack":
             raise lib.layer.error.LoadingFailed("<stack/> expected")
         super(LayerStack, self).load_from_openraster_dir(
-            oradir,
-            elem,
-            cache_dir,
-            progress,
-            x=x, y=y,
-            **kwargs
+            oradir, elem, cache_dir, progress, x=x, y=y, **kwargs
         )
         self.clear()
         x += int(elem.attrib.get("x", 0))
@@ -180,25 +161,23 @@ class LayerStack (core.LayerBase, lib.autosave.Autosaveable):
         # Convert normal+nonisolated to the internal pass-thru mode
         isolated_flag = unicode(elem.attrib.get("isolation", "auto"))
         # TODO: Check if this applies to CombineSpectralWGM as well
-        is_pass_through = (self.mode == lib.mypaintlib.CombineNormal
-                           and self.opacity == 1.0
-                           and (isolated_flag.lower() == "auto"))
+        is_pass_through = (
+            self.mode == lib.mypaintlib.CombineNormal
+            and self.opacity == 1.0
+            and (isolated_flag.lower() == "auto")
+        )
         if is_pass_through:
             self.mode = PASS_THROUGH_MODE
         # Delegate loading of child layers
         for child_elem in elem.findall("./*"):
             assert child_elem is not elem
             self._load_child_layer_from_oradir(
-                oradir,
-                child_elem,
-                cache_dir,
-                progress,
-                x=x, y=y,
-                **kwargs
+                oradir, child_elem, cache_dir, progress, x=x, y=y, **kwargs
             )
 
-    def _load_child_layer_from_oradir(self, oradir, elem, cache_dir,
-                                      progress, x=0, y=0, **kwargs):
+    def _load_child_layer_from_oradir(
+        self, oradir, elem, cache_dir, progress, x=0, y=0, **kwargs
+    ):
         """Loads a single child layer element from an open .ora file
 
         Child classes can override this, but otherwise it's an internal
@@ -207,13 +186,7 @@ class LayerStack (core.LayerBase, lib.autosave.Autosaveable):
         """
         try:
             child = _layer_new_from_oradir(
-                oradir,
-                elem,
-                cache_dir,
-                progress,
-                self.root,
-                x=x, y=y,
-                **kwargs
+                oradir, elem, cache_dir, progress, self.root, x=x, y=y, **kwargs
             )
         except lib.layer.error.LoadingFailed:
             logger.warning("Skipping non-loadable layer")
@@ -235,10 +208,13 @@ class LayerStack (core.LayerBase, lib.autosave.Autosaveable):
         "<LayerStack len=0 'test'>"
         """
         if self.name:
-            return '<%s len=%d %r>' % (self.__class__.__name__, len(self),
-                                       self.name)
+            return "<%s len=%d %r>" % (
+                self.__class__.__name__,
+                len(self),
+                self.name,
+            )
         else:
-            return '<%s len=%d>' % (self.__class__.__name__, len(self))
+            return "<%s len=%d>" % (self.__class__.__name__, len(self))
 
     ## Notification
 
@@ -308,7 +284,7 @@ class LayerStack (core.LayerBase, lib.autosave.Autosaveable):
     def pop(self, index=None):
         """Removes a layer by index (notifies root)"""
         if index is None:
-            index = len(self._layers)-1
+            index = len(self._layers) - 1
             removed = self._layers.pop()
         else:
             index = self._normidx(index)
@@ -443,7 +419,7 @@ class LayerStack (core.LayerBase, lib.autosave.Autosaveable):
         if not visible:
             return []
 
-        isolate_child_layers = (mode != PASS_THROUGH_MODE)
+        isolate_child_layers = mode != PASS_THROUGH_MODE
 
         ops = []
         if isolate_child_layers:
@@ -506,9 +482,9 @@ class LayerStack (core.LayerBase, lib.autosave.Autosaveable):
             )
         root.render_layer_to_png_file(self, filename, bbox=rect, **kwargs)
 
-    def save_to_openraster(self, orazip, tmpdir, path,
-                           canvas_bbox, frame_bbox, progress=None,
-                           **kwargs):
+    def save_to_openraster(
+        self, orazip, tmpdir, path, canvas_bbox, frame_bbox, progress=None, **kwargs
+    ):
         """Saves the stack's data into an open OpenRaster ZipFile"""
 
         if not progress:
@@ -524,10 +500,15 @@ class LayerStack (core.LayerBase, lib.autosave.Autosaveable):
         # Recursively save out the stack's child layers
         for layer_idx, layer in list(enumerate(self)):
             layer_path = tuple(list(path) + [layer_idx])
-            layer_elem = layer.save_to_openraster(orazip, tmpdir, layer_path,
-                                                  canvas_bbox, frame_bbox,
-                                                  progress=progress.open(),
-                                                  **kwargs)
+            layer_elem = layer.save_to_openraster(
+                orazip,
+                tmpdir,
+                layer_path,
+                canvas_bbox,
+                frame_bbox,
+                progress=progress.open(),
+                **kwargs
+            )
             stack_elem.append(layer_elem)
 
         # OpenRaster has no pass-through composite op: need to override.
@@ -552,8 +533,7 @@ class LayerStack (core.LayerBase, lib.autosave.Autosaveable):
         stack_elem = self._get_stackxml_element("stack")
         for layer in self._layers:
             layer_elem = layer.queue_autosave(
-                oradir, taskproc, manifest, bbox,
-                **kwargs
+                oradir, taskproc, manifest, bbox, **kwargs
             )
             stack_elem.append(layer_elem)
         # Convert the internal pass-through composite op to its
@@ -593,7 +573,7 @@ class LayerStack (core.LayerBase, lib.autosave.Autosaveable):
         return "mypaint-layer-group-symbolic"
 
 
-class LayerStackSnapshot (core.LayerBaseSnapshot):
+class LayerStackSnapshot(core.LayerBaseSnapshot):
     """Snapshot of a layer stack's state"""
 
     def __init__(self, layer):
@@ -610,7 +590,7 @@ class LayerStackSnapshot (core.LayerBaseSnapshot):
             layer.append(child)
 
 
-class LayerStackMove (object):
+class LayerStackMove(object):
     """Move object wrapper for layer stacks"""
 
     def __init__(self, layers, x, y):
@@ -648,19 +628,12 @@ _LAYER_LOADER_CLASS_ORDER = [
 ]
 
 
-def _layer_new_from_orazip(orazip, elem, cache_dir, progress,
-                           root, x=0, y=0, **kwargs):
+def _layer_new_from_orazip(orazip, elem, cache_dir, progress, root, x=0, y=0, **kwargs):
     """New layer from an OpenRaster zipfile (factory)"""
     for layer_class in _LAYER_LOADER_CLASS_ORDER:
         try:
             return layer_class.new_from_openraster(
-                orazip,
-                elem,
-                cache_dir,
-                progress,
-                root,
-                x=x, y=y,
-                **kwargs
+                orazip, elem, cache_dir, progress, root, x=x, y=y, **kwargs
             )
         except lib.layer.error.LoadingFailed:
             pass
@@ -669,19 +642,12 @@ def _layer_new_from_orazip(orazip, elem, cache_dir, progress,
     )
 
 
-def _layer_new_from_oradir(oradir, elem, cache_dir, progress,
-                           root, x=0, y=0, **kwargs):
+def _layer_new_from_oradir(oradir, elem, cache_dir, progress, root, x=0, y=0, **kwargs):
     """New layer from a dir with an OpenRaster-like layout (factory)"""
     for layer_class in _LAYER_LOADER_CLASS_ORDER:
         try:
             return layer_class.new_from_openraster_dir(
-                oradir,
-                elem,
-                cache_dir,
-                progress,
-                root,
-                x=x, y=y,
-                **kwargs
+                oradir, elem, cache_dir, progress, root, x=x, y=y, **kwargs
             )
         except lib.layer.error.LoadingFailed:
             pass
@@ -696,9 +662,10 @@ def _layer_new_from_oradir(oradir, elem, cache_dir, progress,
 def _test():
     """Run doctest strings"""
     import doctest
+
     doctest.testmod(optionflags=doctest.ELLIPSIS)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     logging.basicConfig(level=logging.DEBUG)
     _test()

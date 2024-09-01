@@ -10,46 +10,40 @@
 
 ## Imports
 
-from __future__ import absolute_import, division, print_function
-
-import os
-import sys
-import zipfile
-import tempfile
-import time
-from os.path import join
-import xml.etree.ElementTree as ET
-from warnings import warn
-import shutil
-from datetime import datetime
-from collections import namedtuple
 import json
 import logging
-from lib.fileutils import safename
-from lib.naming import make_unique_name
+import os
+import shutil
+import sys
+import tempfile
+import time
+import xml.etree.ElementTree as ET
+import zipfile
+from collections import namedtuple
+from datetime import datetime
+from os.path import join
+from warnings import warn
 
-from lib.gibindings import GObject
-from lib.gibindings import GLib
-
-import lib.meta
-import lib.helpers as helpers
-import lib.fileutils as fileutils
-import lib.tiledsurface as tiledsurface
-import lib.command as command
-import lib.layer as layer
 import lib.brush as brush
-from lib.observable import event
-from lib.observable import ObservableDict
-import lib.pixbuf
-from lib.cache import DEFAULT_CACHE_SIZE
-from lib.errors import FileHandlingError
-from lib.errors import AllocationError
-import lib.idletask
-from lib.gettext import C_
-import lib.xml
-import lib.glib
+import lib.command as command
 import lib.feedback
+import lib.fileutils as fileutils
+import lib.glib
+import lib.helpers as helpers
+import lib.idletask
+import lib.layer as layer
 import lib.layervis
+import lib.meta
+import lib.pixbuf
+import lib.tiledsurface as tiledsurface
+import lib.xml
+from lib.cache import DEFAULT_CACHE_SIZE
+from lib.errors import AllocationError, FileHandlingError
+from lib.fileutils import safename
+from lib.gettext import C_
+from lib.gibindings import GLib, GObject
+from lib.naming import make_unique_name
+from lib.observable import ObservableDict, event
 from lib.pycompat import unicode
 
 logger = logging.getLogger(__name__)
@@ -62,39 +56,35 @@ DEFAULT_UNDO_STACK_SIZE = 40
 
 N = tiledsurface.N
 
-CACHE_APP_SUBDIR_NAME = u"mypaint"
-CACHE_DOC_SUBDIR_PREFIX = u"doc."
-CACHE_DOC_AUTOSAVE_SUBDIR = u"autosave"
-CACHE_ACTIVITY_FILE = u"active"
+CACHE_APP_SUBDIR_NAME = "mypaint"
+CACHE_DOC_SUBDIR_PREFIX = "doc."
+CACHE_DOC_AUTOSAVE_SUBDIR = "autosave"
+CACHE_ACTIVITY_FILE = "active"
 CACHE_UPDATE_INTERVAL = 10  # seconds
 
 # Logging and error reporting strings
 _LOAD_FAILED_COMMON_TEMPLATE_LINE = C_(
     "Document IO: common error strings: {error_loading_common}",
-    u"Error loading “{basename}”."
+    "Error loading “{basename}”.",
 )
 _ERROR_SEE_LOGS_LINE = C_(
     "Document IO: common error strings: {see_logs}",
-    u"The logs may have more detail "
-    u"about this error."
+    "The logs may have more detail " "about this error.",
 )
 
 # OpenRaster dialect consts
 
-_ORA_MYPAINT_VERSION \
-    = "{%s}version" % (lib.xml.OPENRASTER_MYPAINT_NS,)
+_ORA_MYPAINT_VERSION = "{%s}version" % (lib.xml.OPENRASTER_MYPAINT_NS,)
 
-_ORA_FRAME_ACTIVE_ATTR \
-    = "{%s}frame-active" % (lib.xml.OPENRASTER_MYPAINT_NS,)
+_ORA_FRAME_ACTIVE_ATTR = "{%s}frame-active" % (lib.xml.OPENRASTER_MYPAINT_NS,)
 
-_ORA_UNSAVED_PAINTING_TIME_ATTR \
-    = "{%s}unsaved-painting-time" % (lib.xml.OPENRASTER_MYPAINT_NS,)
+_ORA_UNSAVED_PAINTING_TIME_ATTR = "{%s}unsaved-painting-time" % (
+    lib.xml.OPENRASTER_MYPAINT_NS,
+)
 
-_ORA_JSON_SETTINGS_ATTR \
-    = "{%s}json-settings" % (lib.xml.OPENRASTER_MYPAINT_NS,)
+_ORA_JSON_SETTINGS_ATTR = "{%s}json-settings" % (lib.xml.OPENRASTER_MYPAINT_NS,)
 
-_ORA_EOTF_ATTR \
-    = "{%s}eotf" % (lib.xml.OPENRASTER_MYPAINT_NS,)
+_ORA_EOTF_ATTR = "{%s}eotf" % (lib.xml.OPENRASTER_MYPAINT_NS,)
 
 
 _ORA_JSON_SETTINGS_ZIP_PATH = "data/mypaint-settings.json"
@@ -108,13 +98,14 @@ _AUTOSAVE_INFO_FIELDS = (
     "thumbnail",
     "num_layers",
     "unsaved_painting_time",
-    "width", "height",
+    "width",
+    "height",
     "valid",
     "cache_in_use",
 )
 
 
-class AutosaveInfo (namedtuple("AutosaveInfo", _AUTOSAVE_INFO_FIELDS)):
+class AutosaveInfo(namedtuple("AutosaveInfo", _AUTOSAVE_INFO_FIELDS)):
     """Information about an autosave dir.
 
     :ivar unicode path: Full path to the autosave directory itself
@@ -156,14 +147,17 @@ class AutosaveInfo (namedtuple("AutosaveInfo", _AUTOSAVE_INFO_FIELDS)):
                 valid = False
             else:
                 image_elem = doc.getroot()
-                unsaved_painting_time = max(0.0, float(
-                    image_elem.attrib.get(
-                        "mypaint_unsaved_painting_time",
-                        0.0,
-                    )
-                ))
-                width = max(0, int(image_elem.attrib.get('w', 0)))
-                height = max(0, int(image_elem.attrib.get('h', 0)))
+                unsaved_painting_time = max(
+                    0.0,
+                    float(
+                        image_elem.attrib.get(
+                            "mypaint_unsaved_painting_time",
+                            0.0,
+                        )
+                    ),
+                )
+                width = max(0, int(image_elem.attrib.get("w", 0)))
+                height = max(0, int(image_elem.attrib.get("h", 0)))
                 num_layers = max(0, len(image_elem.findall(".//layer")) - 1)
         thumbnail = None
         if os.path.exists(thumbnail_path):
@@ -177,15 +171,15 @@ class AutosaveInfo (namedtuple("AutosaveInfo", _AUTOSAVE_INFO_FIELDS)):
             if cache_activity_dt <= CACHE_UPDATE_INTERVAL + 3:
                 cache_in_use = True
         return cls(
-            path = path,
-            last_modified = last_modified,
-            valid = valid,
-            num_layers = num_layers,
-            unsaved_painting_time = unsaved_painting_time,
-            width = width,
-            height = height,
-            thumbnail = thumbnail,
-            cache_in_use = cache_in_use,
+            path=path,
+            last_modified=last_modified,
+            valid=valid,
+            num_layers=num_layers,
+            unsaved_painting_time=unsaved_painting_time,
+            width=width,
+            height=height,
+            thumbnail=thumbnail,
+            cache_in_use=cache_in_use,
         )
 
     def get_description(self):
@@ -202,13 +196,13 @@ class AutosaveInfo (namedtuple("AutosaveInfo", _AUTOSAVE_INFO_FIELDS)):
             last_modif_ago_str = C_(
                 "Document autosave descriptions: the {ago} string: future",
                 # TRANSLATORS: string used in e.g. "3h42m from now"
-                u"from now"
+                "from now",
             )
         else:
             last_modif_ago_str = C_(
                 "Document autosave descriptions: the {ago} string: past",
                 # TRANSLATORS: string used in e.g. "8s ago"
-                u"ago"
+                "ago",
             )
         last_modif_str = fmt_time(abs(last_modif_dt))
         if self.cache_in_use:
@@ -216,14 +210,14 @@ class AutosaveInfo (namedtuple("AutosaveInfo", _AUTOSAVE_INFO_FIELDS)):
                 "Document autosave descriptions",
                 # TRANSLATORS: String descriptions for an autosaved backup.
                 # TRANSLATORS: Time strings are localized: e.g. "3h42m" or "8s"
-                u"Cache folder still may be in use.\n"
-                u"Are you running more than once instance of MyPaint?\n"
-                u"Close app and wait {cache_update_interval}s to retry."
+                "Cache folder still may be in use.\n"
+                "Are you running more than once instance of MyPaint?\n"
+                "Close app and wait {cache_update_interval}s to retry.",
             )
         elif not self.valid:
             template = C_(
                 "Document autosave descriptions",
-                u"Incomplete backup updated {last_modified_time} {ago}"
+                "Incomplete backup updated {last_modified_time} {ago}",
             )
         else:
             template = C_(
@@ -232,21 +226,21 @@ class AutosaveInfo (namedtuple("AutosaveInfo", _AUTOSAVE_INFO_FIELDS)):
                 # TRANSLATORS: Look for the msgids "from now" and "ago"
                 # TRANSLATORS: (with context starting w. "Document autosave")
                 # TRANSLATORS: to make sure their translations match this one.
-                u"Backup updated {last_modified_time} {ago}\n"
-                u"Size: {autosave.width}×{autosave.height} pixels, "
-                u"Layers: {autosave.num_layers}\n"
-                u"Contains {unsaved_time} of unsaved painting."
+                "Backup updated {last_modified_time} {ago}\n"
+                "Size: {autosave.width}×{autosave.height} pixels, "
+                "Layers: {autosave.num_layers}\n"
+                "Contains {unsaved_time} of unsaved painting.",
             )
         return template.format(
-            autosave = self,
-            unsaved_time = unsaved_time_str,
-            last_modified_time = last_modif_str,
-            ago = last_modif_ago_str,
-            cache_update_interval = CACHE_UPDATE_INTERVAL,
+            autosave=self,
+            unsaved_time=unsaved_time_str,
+            last_modified_time=last_modif_str,
+            ago=last_modif_ago_str,
+            cache_update_interval=CACHE_UPDATE_INTERVAL,
         )
 
 
-class Document (object):
+class Document(object):
     """In-memory representation of everything to be worked on & saved
 
     This is the "model" in the Model-View-Controller design for the
@@ -275,9 +269,14 @@ class Document (object):
 
     ## Initialization and cleanup
 
-    def __init__(self, brushinfo=None, painting_only=False,
-                 cache_dir=None, cache_size=DEFAULT_CACHE_SIZE,
-                 max_undo_stack_size=DEFAULT_UNDO_STACK_SIZE):
+    def __init__(
+        self,
+        brushinfo=None,
+        painting_only=False,
+        cache_dir=None,
+        cache_size=DEFAULT_CACHE_SIZE,
+        max_undo_stack_size=DEFAULT_UNDO_STACK_SIZE,
+    ):
         """Initialize
 
         :param brushinfo: the lib.brush.BrushInfo instance to use
@@ -311,13 +310,11 @@ class Document (object):
         if cache_dir is not None:
             if painting_only:
                 raise ValueError(
-                    "painting_only and cache_dir arguments "
-                    "are mutually exclusive",
+                    "painting_only and cache_dir arguments " "are mutually exclusive",
                 )
             if not os.path.isdir(cache_dir):
                 raise ValueError(
-                    "cache_dir argument must be the path "
-                    "to an existing directory",
+                    "cache_dir argument must be the path " "to an existing directory",
                 )
             self._owns_cache_dir = False
         else:
@@ -352,8 +349,11 @@ class Document (object):
     def __repr__(self):
         bbox = self.get_bbox()
         nlayers = len(list(self.layer_stack.walk()))
-        return ("<Document nlayers=%d bbox=%r paintonly=%r>" %
-                (nlayers, bbox, self._painting_only))
+        return "<Document nlayers=%d bbox=%r paintonly=%r>" % (
+            nlayers,
+            bbox,
+            self._painting_only,
+        )
 
     ## Layer stack access
 
@@ -494,8 +494,8 @@ class Document (object):
             return
         logger.debug("cache_updater started")
         self._cache_updater_id = GLib.timeout_add_seconds(
-            interval = CACHE_UPDATE_INTERVAL,
-            function = self._cache_updater_cb,
+            interval=CACHE_UPDATE_INTERVAL,
+            function=self._cache_updater_cb,
         )
 
     def _stop_cache_updater(self):
@@ -566,8 +566,8 @@ class Document (object):
             return
         interval = lib.helpers.clamp(self.autosave_interval, 5, 300)
         self._autosave_countdown_id = GLib.timeout_add_seconds(
-            interval = interval,
-            function = self._autosave_countdown_cb,
+            interval=interval,
+            function=self._autosave_countdown_cb,
         )
         logger.debug(
             "autosave_countdown: autosave will run in %ds",
@@ -617,7 +617,7 @@ class Document (object):
             os.makedirs(datadir)
         # Mimetype entry
         manifest = set()
-        with open(os.path.join(oradir, 'mimetype'), 'w') as fp:
+        with open(os.path.join(oradir, "mimetype"), "w") as fp:
             fp.write(lib.xml.OPENRASTER_MEDIA_TYPE)
         manifest.add("mimetype")
         # Dimensions
@@ -628,17 +628,19 @@ class Document (object):
         # queue writes for those files
         taskproc = self._autosave_processor
         root_elem = self.layer_stack.queue_autosave(
-            oradir, taskproc, manifest,
-            save_srgb_chunks = True,  # internal-only, so sure.
-            bbox = image_bbox,
+            oradir,
+            taskproc,
+            manifest,
+            save_srgb_chunks=True,  # internal-only, so sure.
+            bbox=image_bbox,
         )
         # Build the image element
         x0, y0, w0, h0 = image_bbox
-        image_elem = ET.Element('image')
-        image_elem.attrib['w'] = str(w0)
-        image_elem.attrib['h'] = str(h0)
+        image_elem = ET.Element("image")
+        image_elem.attrib["w"] = str(w0)
+        image_elem.attrib["h"] = str(h0)
         image_elem.attrib[_ORA_EOTF_ATTR] = str(lib.eotf.eotf())
-        frame_active_value = ("true" if self.frame_enabled else "false")
+        frame_active_value = "true" if self.frame_enabled else "false"
         image_elem.attrib[_ORA_FRAME_ACTIVE_ATTR] = frame_active_value
         image_elem.append(root_elem)
         # Store the unsaved painting time too, since recovery needs it.
@@ -671,7 +673,7 @@ class Document (object):
             self._autosave_thumbnail_cb,
             rootstack_clone,
             image_bbox,
-            os.path.join(thumbdir, thumbfile_basename)
+            os.path.join(thumbdir, thumbfile_basename),
         )
         manifest.add(thumbfile_rel)
         # Final write
@@ -685,8 +687,8 @@ class Document (object):
         # Cleanup
         taskproc.add_work(
             self._autosave_cleanup_cb,
-            oradir = oradir,
-            manifest = manifest,
+            oradir=oradir,
+            manifest=manifest,
         )
 
     def _autosave_thumbnail_cb(self, rootstack, bbox, filename):
@@ -699,7 +701,7 @@ class Document (object):
         """
         assert not self._painting_only
         thumbnail = rootstack.render_thumbnail(bbox)
-        tmpname = filename + u".TMP"
+        tmpname = filename + ".TMP"
         lib.pixbuf.save(thumbnail, tmpname)
         lib.fileutils.replace(tmpname, filename)
         return False
@@ -713,9 +715,9 @@ class Document (object):
         """
         assert not self._painting_only
         lib.xml.indent_etree(image_elem)
-        tmpname = filename + u".TMP"
-        with open(tmpname, 'wb') as xml_fp:
-            xml = ET.tostring(image_elem, encoding='UTF-8')
+        tmpname = filename + ".TMP"
+        with open(tmpname, "wb") as xml_fp:
+            xml = ET.tostring(image_elem, encoding="UTF-8")
             xml_fp.write(xml)
         lib.fileutils.replace(tmpname, filename)
         return False
@@ -730,8 +732,8 @@ class Document (object):
             json_data = json_data.encode("utf-8")
         assert isinstance(json_data, bytes)
 
-        tmpname = filename + u".TMP"
-        with open(tmpname, 'wb') as fp:
+        tmpname = filename + ".TMP"
+        with open(tmpname, "wb") as fp:
             fp.write(json_data)
         lib.fileutils.replace(tmpname, filename)
 
@@ -822,13 +824,13 @@ class Document (object):
 
     def set_frame(self, frame, user_initiated=False):
         x, y, w, h = frame
-        self.update_frame(x=x, y=y, width=w, height=h,
-                          user_initiated=user_initiated)
+        self.update_frame(x=x, y=y, width=w, height=h, user_initiated=user_initiated)
 
     frame = property(get_frame, set_frame)
 
-    def update_frame(self, x=None, y=None, width=None, height=None,
-                     user_initiated=False):
+    def update_frame(
+        self, x=None, y=None, width=None, height=None, user_initiated=False
+    ):
         """Update parts of the frame"""
         frame = [x, y, width, height]
         if user_initiated:
@@ -931,7 +933,8 @@ class Document (object):
         self.layer_view_manager.clear()
         self._layers.symmetry_unset = True
         self._layers.set_symmetry_state(
-            False, (0, 0), lib.mypaintlib.SymmetryVertical, 2, 0)
+            False, (0, 0), lib.mypaintlib.SymmetryVertical, 2, 0
+        )
         prev_area = self.get_full_redraw_bbox()
         if self._owns_cache_dir:
             if self._cache_dir is not None:
@@ -960,8 +963,13 @@ class Document (object):
     def select_layer(self, index=None, path=None, layer=None):
         """Selects a layer undoably"""
         layers = self.layer_stack
-        sel_path = layers.canonpath(index=index, path=path, layer=layer,
-                                    usecurrent=False, usefirst=True)
+        sel_path = layers.canonpath(
+            index=index,
+            path=path,
+            layer=layer,
+            usecurrent=False,
+            usefirst=True,
+        )
         self.do(command.SelectLayer(self, path=sel_path))
 
     ## Layer stack (z-order and grouping)
@@ -999,8 +1007,9 @@ class Document (object):
     def clear_current_layer(self):
         """Clears the current layer (undoable)"""
         rootstack = self.layer_stack
-        can_clear = (rootstack.current is not rootstack
-                     and not rootstack.current.is_empty())
+        can_clear = (
+            rootstack.current is not rootstack and not rootstack.current.is_empty()
+        )
         if not can_clear:
             return
         self.do(command.ClearLayer(self))
@@ -1016,9 +1025,13 @@ class Document (object):
     ## Other painting/drawing
 
     def flood_fill(
-            self, fill_args,
-            view_bbox=None, sample_merged=False, src_path=None,
-            make_new_layer=False, status_cb=None
+        self,
+        fill_args,
+        view_bbox=None,
+        sample_merged=False,
+        src_path=None,
+        make_new_layer=False,
+        status_cb=None,
     ):
         """Flood-fills a point on the current layer with a color
 
@@ -1056,12 +1069,12 @@ class Document (object):
             max_y = max(ys)
 
             bbox = helpers.Rect()
-            bbox.x = N*int(min_x//N)
-            bbox.y = N*int(min_y//N)
-            bbox.w = N*int(max_x//N) - bbox.x + N
-            bbox.h = N*int(max_y//N) - bbox.y + N
+            bbox.x = N * int(min_x // N)
+            bbox.y = N * int(min_y // N)
+            bbox.w = N * int(max_x // N) - bbox.x + N
+            bbox.h = N * int(max_y // N) - bbox.y + N
         elif not self.frame_enabled:
-            for (x, y) in fill_args.seeds:
+            for x, y in fill_args.seeds:
                 bbox.expand_to_include_point(x, y)
         if view_bbox:
             view_bbox = helpers.Rect(*view_bbox)
@@ -1071,8 +1084,8 @@ class Document (object):
                 bbox = bbox.intersection(view_bbox)
         fill_args.bbox = bbox
         cmd = command.FloodFill(
-            self, fill_args, sample_merged, src_path,
-            make_new_layer, status_cb)
+            self, fill_args, sample_merged, src_path, make_new_layer, status_cb
+        )
         self.do(cmd)
 
     ## Graphical refresh
@@ -1276,12 +1289,7 @@ class Document (object):
 
         See: `lib.command.AddLayer`
         """
-        cmd = command.AddLayer(
-            self, path,
-            name=None,
-            layer_class=layer_class,
-            **kwds
-        )
+        cmd = command.AddLayer(self, path, name=None, layer_class=layer_class, **kwds)
         self.do(cmd)
 
     def remove_current_layer(self):
@@ -1339,8 +1347,7 @@ class Document (object):
         self.do(command.LoadLayer(self, s, to_new_layer=to_new_layer))
         return bbox
 
-    def load_layer_from_png(self, filename, x, y, progress=None,
-                            **kwargs):
+    def load_layer_from_png(self, filename, x, y, progress=None, **kwargs):
         s = tiledsurface.Surface()
         bbox = s.load_from_png(filename, x, y, progress, **kwargs)
         self.do(command.LoadLayer(self, s))
@@ -1433,8 +1440,8 @@ class Document (object):
         """
         self.sync_pending_changes(flush=True)
         junk, ext = os.path.splitext(filename)
-        ext = ext.lower().replace('.', '')
-        save = getattr(self, 'save_' + ext, self._unsupported)
+        ext = ext.lower().replace(".", "")
+        save = getattr(self, "save_" + ext, self._unsupported)
         result = None
         try:
             result = save(filename, **kwargs)
@@ -1445,28 +1452,32 @@ class Document (object):
                 # there is no space left on device
                 hint_tmpl = C_(
                     "Document IO: hint templates for user-facing exceptions",
-                    u'Unable to write “{filename}”: {err}\n'
-                    u'Do you have enough space left on the device?'
+                    "Unable to write “{filename}”: {err}\n"
+                    "Do you have enough space left on the device?",
                 )
             else:
                 hint_tmpl = C_(
                     "Document IO: hint templates for user-facing exceptions",
-                    u'Unable to write “{filename}”: {err}'
+                    "Unable to write “{filename}”: {err}",
                 )
-            raise FileHandlingError(hint_tmpl.format(
-                filename = filename,
-                err = e,
-            ))
+            raise FileHandlingError(
+                hint_tmpl.format(
+                    filename=filename,
+                    err=e,
+                )
+            )
         except IOError as e:
             logger.exception("IOError when writing %r: %s", filename, e)
             hint_tmpl = C_(
                 "Document IO: hint templates for user-facing exceptions",
-                u'Unable to write “{filename}”: {err}'
+                "Unable to write “{filename}”: {err}",
             )
-            raise FileHandlingError(hint_tmpl.format(
-                filename = filename,
-                err = e,
-            ))
+            raise FileHandlingError(
+                hint_tmpl.format(
+                    filename=filename,
+                    err=e,
+                )
+            )
         self.unsaved_painting_time = 0.0
         return result
 
@@ -1488,8 +1499,8 @@ class Document (object):
         """
         error_kwargs = {
             "error_loading_common": _LOAD_FAILED_COMMON_TEMPLATE_LINE.format(
-                basename = os.path.basename(filename),
-                filename = filename,
+                basename=os.path.basename(filename),
+                filename=filename,
             ),
             "see_logs": _ERROR_SEE_LOGS_LINE,
             "filename": filename,
@@ -1498,21 +1509,20 @@ class Document (object):
         if not os.path.isfile(filename):
             msg = C_(
                 "Document IO: loading errors",
-                u"{error_loading_common}\n"
-                u"The file does not exist."
+                "{error_loading_common}\n" "The file does not exist.",
             ).format(**error_kwargs)
             raise FileHandlingError(msg)
         if not os.access(filename, os.R_OK):
             msg = C_(
                 "Document IO: loading errors",
-                u"{error_loading_common}\n"
-                u"You do not have the permissions needed "
-                u"to open this file."
+                "{error_loading_common}\n"
+                "You do not have the permissions needed "
+                "to open this file.",
             ).format(**error_kwargs)
             raise FileHandlingError(msg)
         junk, ext = os.path.splitext(filename)
-        ext = ext.lower().replace('.', '')
-        load_method_name = 'load_' + ext
+        ext = ext.lower().replace(".", "")
+        load_method_name = "load_" + ext
         load_method = getattr(self, load_method_name, self._unsupported)
         logger.debug(
             "Using %r to load %r (kwargs=%r)",
@@ -1531,9 +1541,7 @@ class Document (object):
             logger.exception("Failed to load %r", filename)
             tmpl = C_(
                 "Document IO: loading errors",
-                u"{error_loading_common}\n\n"
-                u"Reason: {reason}\n\n"
-                u"{see_logs}"
+                "{error_loading_common}\n\n" "Reason: {reason}\n\n" "{see_logs}",
             )
             error_kwargs["reason"] = unicode(e)
             error_str = tmpl.format(**error_kwargs)
@@ -1547,8 +1555,8 @@ class Document (object):
         stemname, ext = os.path.splitext(filename)
         error_kwargs = {
             "error_loading_common": _LOAD_FAILED_COMMON_TEMPLATE_LINE.format(
-                basename = os.path.basename(filename),
-                filename = filename,
+                basename=os.path.basename(filename),
+                filename=filename,
             ),
             "ext": ext,
             "basename": os.path.basename(filename),
@@ -1556,8 +1564,7 @@ class Document (object):
         }
         tmpl = C_(
             "Document IO: loading errors",
-            u"{error_loading_common}\n"
-            u"Unknown file format extension: “{ext}”"
+            "{error_loading_common}\n" "Unknown file format extension: “{ext}”",
         )
         raise FileHandlingError(tmpl.format(**error_kwargs))
 
@@ -1587,16 +1594,12 @@ class Document (object):
         import_group = layer.LayerStack()
         import_group.name = C_(
             "Document IO: group name for Import Layers",
-            u"Imported layers",
+            "Imported layers",
         )
         try:
             tmp_doc = Document(cache_dir=self._cache_dir)
             for filename in filenames:
-                tmp_doc.load(
-                    filename,
-                    progress=progress.open(),
-                    **kwargs
-                )
+                tmp_doc.load(filename, progress=progress.open(), **kwargs)
                 tmp_root = tmp_doc.layer_stack
 
                 layers = list(tmp_root)
@@ -1633,12 +1636,10 @@ class Document (object):
         t0 = time.time()
         bbox = self.get_user_bbox()
         pixbuf = self.layer_stack.render_thumbnail(bbox, **kwargs)
-        logger.info('Rendered thumbnail in %d seconds.',
-                    time.time() - t0)
+        logger.info("Rendered thumbnail in %d seconds.", time.time() - t0)
         return pixbuf
 
-    def save_png(self, filename, alpha=None, multifile=None, progress=None,
-                 **kwargs):
+    def save_png(self, filename, alpha=None, multifile=None, progress=None, **kwargs):
         """Save to one or more PNG files"""
         if progress is None:
             progress = lib.feedback.Progress()
@@ -1646,13 +1647,11 @@ class Document (object):
         if multifile == "layers":
             if alpha is None:
                 alpha = True
-            self._save_layers_to_numbered_pngs(filename, alpha, progress,
-                                               **kwargs)
+            self._save_layers_to_numbered_pngs(filename, alpha, progress, **kwargs)
         elif multifile == "views":
             if alpha is None:
                 alpha = not self.layer_stack.background_visible
-            self._save_layer_views_to_named_pngs(filename, alpha, progress,
-                                                 **kwargs)
+            self._save_layer_views_to_named_pngs(filename, alpha, progress, **kwargs)
         elif multifile is not None:
             raise ValueError("only valid multifile values: 'layers', 'views'")
         else:
@@ -1666,20 +1665,22 @@ class Document (object):
 
         self.layer_stack.save_as_png(
             filename,
-            x, y, w, h,
+            x,
+            y,
+            w,
+            h,
             alpha=alpha,
             render_background=not alpha,
             progress=progress,
             **kwargs
         )
 
-    def _save_layers_to_numbered_pngs(self, filename, alpha, progress,
-                                      **kwargs):
+    def _save_layers_to_numbered_pngs(self, filename, alpha, progress, **kwargs):
         """Save layers to multiple number-suffixed PNG files."""
         prefix, ext = os.path.splitext(filename)
 
         # if we have a number already, strip it
-        s = prefix.rsplit('.', 1)
+        s = prefix.rsplit(".", 1)
         if s[-1].isdigit():
             prefix = s[0]
 
@@ -1688,17 +1689,12 @@ class Document (object):
         layers = [lr for path, lr in self.layer_stack.walk()]
         progress.items = len(layers)
         for i, lr in enumerate(layers):
-            filename = '%s.%03d%s' % (prefix, i+1, ext)
+            filename = "%s.%03d%s" % (prefix, i + 1, ext)
             lr.save_as_png(
-                filename,
-                x, y, w, h,
-                alpha=alpha,
-                progress=progress.open(),
-                **kwargs
+                filename, x, y, w, h, alpha=alpha, progress=progress.open(), **kwargs
             )
 
-    def _save_layer_views_to_named_pngs(self, filename, alpha, progress,
-                                        **kwargs):
+    def _save_layer_views_to_named_pngs(self, filename, alpha, progress, **kwargs):
         """Save the layer-views to multiple name-suffixed PNG files."""
         prefix, ext = os.path.splitext(filename)
 
@@ -1722,9 +1718,7 @@ class Document (object):
                 lvm.activate_view_by_name(view_name)
                 view_was_changed = True
                 self._save_single_file_png(
-                    filename, alpha,
-                    progress=progress.open(),
-                    **kwargs
+                    filename, alpha, progress=progress.open(), **kwargs
                 )
 
         finally:
@@ -1754,22 +1748,24 @@ class Document (object):
         except (AllocationError, MemoryError) as e:
             hint_tmpl = C_(
                 "Document IO: hint templates for user-facing exceptions",
-                u"Unable to save as JPEG: {original_msg}\n\n"
-                u"Try saving in PNG format instead, "
-                u"if your machine doesn’t have a lot of memory. "
-                u"MyPaint’s PNG save function is more efficient."
+                "Unable to save as JPEG: {original_msg}\n\n"
+                "Try saving in PNG format instead, "
+                "if your machine doesn’t have a lot of memory. "
+                "MyPaint’s PNG save function is more efficient.",
             )
-            raise AllocationError(hint_tmpl.format(
-                original_msg = str(e),
-            ))
-        lib.pixbuf.save(pixbuf, filename, 'jpeg', quality=str(quality))
+            raise AllocationError(
+                hint_tmpl.format(
+                    original_msg=str(e),
+                )
+            )
+        lib.pixbuf.save(pixbuf, filename, "jpeg", quality=str(quality))
 
     save_jpeg = save_jpg
 
     @fileutils.via_tempfile
     def save_ora(self, filename, options=None, **kwargs):
         """Saves OpenRaster data to a file"""
-        logger.info('save_ora: %r (%r, %r)', filename, options, kwargs)
+        logger.info("save_ora: %r (%r, %r)", filename, options, kwargs)
         t0 = time.time()
         self.sync_pending_changes(flush=True)
         thumbnail = _save_layers_to_new_orazip(
@@ -1778,11 +1774,11 @@ class Document (object):
             bbox=tuple(self.get_user_bbox()),
             xres=self._xres if self._xres else None,
             yres=self._yres if self._yres else None,
-            frame_active = self.frame_enabled,
+            frame_active=self.frame_enabled,
             settings=dict(self._settings),
             **kwargs
         )
-        logger.info('%.3fs save_ora total', time.time() - t0)
+        logger.info("%.3fs save_ora total", time.time() - t0)
         return thumbnail
 
     @staticmethod
@@ -1797,34 +1793,35 @@ class Document (object):
 
         def ignore(*a, **kw):
             return True
-        cb = kwargs.get('incompatible_ora_cb', ignore)
+
+        cb = kwargs.get("incompatible_ora_cb", ignore)
         return cb(compat_type, prerel, filename, target_version)
 
     def load_ora(self, filename, progress=None, **kwargs):
         """Loads from an OpenRaster file"""
-        logger.info('load_ora: %r', filename)
+        logger.info("load_ora: %r", filename)
         t0 = time.time()
         self.clear()
         cache_dir = self._cache_dir
         orazip = zipfile.ZipFile(filename)
-        logger.debug('mimetype: %r', orazip.read('mimetype').strip())
-        xml = orazip.read('stack.xml')
+        logger.debug("mimetype: %r", orazip.read("mimetype").strip())
+        xml = orazip.read("stack.xml")
         image_elem = ET.fromstring(xml)
-        root_stack_elem = image_elem.find('stack')
+        root_stack_elem = image_elem.find("stack")
         # Compatibility check
         if not Document._compat_check(image_elem, filename, **kwargs):
             return False
 
-        image_width = max(0, int(image_elem.attrib.get('w', 0)))
-        image_height = max(0, int(image_elem.attrib.get('h', 0)))
+        image_width = max(0, int(image_elem.attrib.get("w", 0)))
+        image_height = max(0, int(image_elem.attrib.get("h", 0)))
         # Resolution: false value, 0 specifically, means unspecified
-        image_xres = max(0, int(image_elem.attrib.get('xres', 0)))
-        image_yres = max(0, int(image_elem.attrib.get('yres', 0)))
+        image_xres = max(0, int(image_elem.attrib.get("xres", 0)))
+        image_yres = max(0, int(image_elem.attrib.get("yres", 0)))
 
         # Determine which compatibility mode the file should be opened with
         eotf = image_elem.attrib.get(_ORA_EOTF_ATTR, None)
-        if 'compat_handler' in kwargs:
-            kwargs['compat_handler'](eotf, root_stack_elem)
+        if "compat_handler" in kwargs:
+            kwargs["compat_handler"](eotf, root_stack_elem)
 
         # Delegate loading of image data to the layers tree itself
         self.layer_stack.load_from_openraster(
@@ -1832,7 +1829,8 @@ class Document (object):
             root_stack_elem,
             cache_dir,
             progress,
-            x=0, y=0,
+            x=0,
+            y=0,
             invert_strokemaps=(eotf is None),
             **kwargs
         )
@@ -1848,8 +1846,13 @@ class Document (object):
             self._yres = None
 
         # Set the frame size to that saved in the image.
-        self.update_frame(x=0, y=0, width=image_width, height=image_height,
-                          user_initiated=False)
+        self.update_frame(
+            x=0,
+            y=0,
+            width=image_width,
+            height=image_height,
+            user_initiated=False,
+        )
 
         # Enable frame if the image was saved with its frame active.
         frame_enab = lib.xml.xsd2bool(
@@ -1881,7 +1884,7 @@ class Document (object):
 
         orazip.close()
 
-        logger.info('%.3fs load_ora total', time.time() - t0)
+        logger.info("%.3fs load_ora total", time.time() - t0)
         return True
 
     def resume_from_autosave(self, autosave_dir, progress=None):
@@ -1890,8 +1893,9 @@ class Document (object):
         assert os.path.basename(autosave_dir) == CACHE_DOC_AUTOSAVE_SUBDIR
         doc_cache_dir = os.path.dirname(autosave_dir)
         app_cache_dir = get_app_cache_root()
-        assert (os.path.basename(os.path.dirname(doc_cache_dir)) ==
-                os.path.basename(app_cache_dir))
+        assert os.path.basename(os.path.dirname(doc_cache_dir)) == os.path.basename(
+            app_cache_dir
+        )
         self._stop_cache_updater()
         self._stop_autosave_writes()
         self.clear(new_cache=False)
@@ -1910,25 +1914,24 @@ class Document (object):
             logger.exception("Failed to resume from %r", autosave_dir)
             tmpl = C_(
                 "Document autosave: restoring: errors",
-                u"Failed to recover work from an automated backup.\n\n"
-                u"Reason: {reason}\n\n"
-                u"{see_logs}"
+                "Failed to recover work from an automated backup.\n\n"
+                "Reason: {reason}\n\n"
+                "{see_logs}",
             )
             raise FileHandlingError(
                 tmpl.format(
-                    app_cache_root = app_cache_dir,
-                    reason = unicode(e),
-                    see_logs = _ERROR_SEE_LOGS_LINE,
+                    app_cache_root=app_cache_dir,
+                    reason=unicode(e),
+                    see_logs=_ERROR_SEE_LOGS_LINE,
                 ),
-                investigate_dir = doc_cache_dir,
+                investigate_dir=doc_cache_dir,
             )
         else:
             self._cache_dir = doc_cache_dir
 
-    def _load_from_openraster_dir(self, oradir, cache_dir,
-                                  progress=None,
-                                  retain_autosave_info=False,
-                                  **kwargs):
+    def _load_from_openraster_dir(
+        self, oradir, cache_dir, progress=None, retain_autosave_info=False, **kwargs
+    ):
         """Load from an OpenRaster-style folder.
 
         :param unicode oradir: Directory with a .ORA-like structure
@@ -1943,28 +1946,24 @@ class Document (object):
         """
         self.clear()
         with open(os.path.join(oradir, "mimetype"), "r") as fp:
-            logger.debug('mimetype: %r', fp.read().strip())
+            logger.debug("mimetype: %r", fp.read().strip())
         doc = ET.parse(os.path.join(oradir, "stack.xml"))
         image_elem = doc.getroot()
-        width = max(0, int(image_elem.attrib.get('w', 0)))
-        height = max(0, int(image_elem.attrib.get('h', 0)))
-        xres = max(0, int(image_elem.attrib.get('xres', 0)))
-        yres = max(0, int(image_elem.attrib.get('yres', 0)))
+        width = max(0, int(image_elem.attrib.get("w", 0)))
+        height = max(0, int(image_elem.attrib.get("h", 0)))
+        xres = max(0, int(image_elem.attrib.get("xres", 0)))
+        yres = max(0, int(image_elem.attrib.get("yres", 0)))
         # Delegate layer loading to the layers tree.
         root_stack_elem = image_elem.find("stack")
         self.layer_stack.load_from_openraster_dir(
-            oradir,
-            root_stack_elem,
-            cache_dir,
-            progress,
-            x=0, y=0,
-            **kwargs
+            oradir, root_stack_elem, cache_dir, progress, x=0, y=0, **kwargs
         )
         assert len(self.layer_stack) > 0
         if retain_autosave_info:
-            self.unsaved_painting_time = max(0.0, float(
-                image_elem.attrib.get(_ORA_UNSAVED_PAINTING_TIME_ATTR, 0.0)
-            ))
+            self.unsaved_painting_time = max(
+                0.0,
+                float(image_elem.attrib.get(_ORA_UNSAVED_PAINTING_TIME_ATTR, 0.0)),
+            )
         # Resolution information if specified
         # Before frame to benefit from its observer call
         if xres and yres:
@@ -1974,8 +1973,7 @@ class Document (object):
             self._xres = None
             self._yres = None
         # Set the frame size to that saved in the image.
-        self.update_frame(x=0, y=0, width=width, height=height,
-                          user_initiated=False)
+        self.update_frame(x=0, y=0, width=width, height=height, user_initiated=False)
         # Enable frame if the image was saved with its frame active.
         frame_enab = lib.xml.xsd2bool(
             image_elem.attrib.get(_ORA_FRAME_ACTIVE_ATTR, "false"),
@@ -1989,7 +1987,7 @@ class Document (object):
             json_path = os.path.join(oradir, json_rel)
             new_settings = {}
             try:
-                with open(json_path, 'rb') as fp:
+                with open(json_path, "rb") as fp:
                     json_data = fp.read()
                     json_data = json_data.decode("utf-8")
                     # Py3: see note in load_ora().
@@ -2009,12 +2007,17 @@ class Document (object):
         return self._layer_view_manager
 
 
-def _save_layers_to_new_orazip(root_stack, filename, bbox=None,
-                               xres=None, yres=None,
-                               frame_active=False,
-                               progress=None,
-                               settings=None,
-                               **kwargs):
+def _save_layers_to_new_orazip(
+    root_stack,
+    filename,
+    bbox=None,
+    xres=None,
+    yres=None,
+    frame_active=False,
+    progress=None,
+    settings=None,
+    **kwargs
+):
     """Save a root layer stack to a new OpenRaster zipfile
 
     :param lib.layer.RootLayerStack root_stack: what to save
@@ -2051,46 +2054,50 @@ def _save_layers_to_new_orazip(root_stack, filename, bbox=None,
         progress = lib.feedback.Progress()
     progress.items = 100
 
-    tempdir = tempfile.mkdtemp(suffix='mypaint', prefix='save')
+    tempdir = tempfile.mkdtemp(suffix="mypaint", prefix="save")
     if not isinstance(tempdir, unicode):
         tempdir = tempdir.decode(sys.getfilesystemencoding())
 
     orazip = zipfile.ZipFile(
-        filename, 'w',
+        filename,
+        "w",
         compression=zipfile.ZIP_STORED,
     )
 
     # The mimetype entry must be first
-    helpers.zipfile_writestr(orazip, 'mimetype', lib.xml.OPENRASTER_MEDIA_TYPE)
+    helpers.zipfile_writestr(orazip, "mimetype", lib.xml.OPENRASTER_MEDIA_TYPE)
 
     # Update the initially-selected flag on all layers
     # Also get the data bounding box as we go
     data_bbox = helpers.Rect()
     for s_path, s_layer in root_stack.walk():
-        selected = (s_path == root_stack.current_path)
+        selected = s_path == root_stack.current_path
         s_layer.initially_selected = selected
         data_bbox.expand_to_include_rect(s_layer.get_bbox())
     data_bbox = tuple(data_bbox)
 
     # First 90%: save the layer stack
-    image = ET.Element('image')
+    image = ET.Element("image")
     if bbox is None:
         bbox = data_bbox
     x0, y0, w0, h0 = bbox
-    image.attrib['w'] = str(w0)
-    image.attrib['h'] = str(h0)
+    image.attrib["w"] = str(w0)
+    image.attrib["h"] = str(h0)
     image.attrib[_ORA_EOTF_ATTR] = str(lib.eotf.eotf())
     root_stack_path = ()
     root_stack_elem = root_stack.save_to_openraster(
-        orazip, tempdir, root_stack_path,
-        data_bbox, bbox,
+        orazip,
+        tempdir,
+        root_stack_path,
+        data_bbox,
+        bbox,
         progress=progress.open(90),
         **kwargs
     )
     image.append(root_stack_elem)
 
     # Frame-enabled state
-    frame_active_value = ("true" if frame_active else "false")
+    frame_active_value = "true" if frame_active else "false"
     image.attrib[_ORA_FRAME_ACTIVE_ATTR] = frame_active_value
 
     # Document-specific settings dict.
@@ -2123,28 +2130,30 @@ def _save_layers_to_new_orazip(root_stack, filename, bbox=None,
         bbox,
         progress=progress.open(1),
     )
-    tmpfile = join(tempdir, 'tmp.png')
-    lib.pixbuf.save(thumbnail, tmpfile, 'png')
-    orazip.write(tmpfile, 'Thumbnails/thumbnail.png')
+    tmpfile = join(tempdir, "tmp.png")
+    lib.pixbuf.save(thumbnail, tmpfile, "png")
+    orazip.write(tmpfile, "Thumbnails/thumbnail.png")
     os.remove(tmpfile)
 
     # Save fully rendered image too
     tmpfile = os.path.join(tempdir, "mergedimage.png")
     root_stack.save_as_png(
-        tmpfile, *bbox,
-        alpha=False, background=True,
+        tmpfile,
+        *bbox,
+        alpha=False,
+        background=True,
         progress=progress.open(9),
         **kwargs
     )
-    orazip.write(tmpfile, 'mergedimage.png')
+    orazip.write(tmpfile, "mergedimage.png")
     os.remove(tmpfile)
 
     # Prettification
     lib.xml.indent_etree(image)
-    xml = ET.tostring(image, encoding='UTF-8')
+    xml = ET.tostring(image, encoding="UTF-8")
 
     # Finalize
-    helpers.zipfile_writestr(orazip, 'stack.xml', xml)
+    helpers.zipfile_writestr(orazip, "stack.xml", xml)
     orazip.close()
     os.rmdir(tempdir)
 

@@ -9,28 +9,24 @@
 
 """Dockable Workspace tools for color adjusters."""
 
-from __future__ import division, print_function
-
-from lib.gibindings import Gtk
-
+import gui.colors.changers
+from gui.colors import ColorAdjuster
+from gui.colors.hcywheel import HCYAdjusterPage
+from gui.colors.hsvcube import HSVCubePage
+from gui.colors.hsvsquare import HSVSquarePage
+from gui.colors.hsvwheel import HSVAdjusterPage
+from gui.colors.paletteview import PalettePage
+from gui.colors.sliders import ComponentSlidersAdjusterPage
 from lib.gettext import C_
+from lib.gibindings import Gtk
 
 from . import widgets
 from .toolstack import TOOL_WIDGET_MIN_WIDTH
-from gui.colors.hcywheel import HCYAdjusterPage
-from gui.colors.hsvwheel import HSVAdjusterPage
-from gui.colors.paletteview import PalettePage
-from gui.colors.hsvcube import HSVCubePage
-from gui.colors.hsvsquare import HSVSquarePage
-from gui.colors.sliders import ComponentSlidersAdjusterPage
-import gui.colors.changers
-from gui.colors import ColorAdjuster
-
 
 ## Adapter classes for old-style "Page" ColorAdjuster classes
 
 
-class _PageToolAdapter (Gtk.VBox, ColorAdjuster):
+class _PageToolAdapter(Gtk.VBox, ColorAdjuster):
     """Adapts the CombinedAdjusterPage interface to a workspace tool widget"""
 
     #: The CombinedAdjusterPage class to adapt.
@@ -60,11 +56,12 @@ class _PageToolAdapter (Gtk.VBox, ColorAdjuster):
             self.tool_widget_properties = show_props
         # Adjuster setup
         from gui.application import get_app
+
         self._app = get_app()
         self.set_color_manager(self._app.brush_color_manager)
         # Sizing.
         size = TOOL_WIDGET_MIN_WIDTH
-        self.set_size_request(size, size*0.9)
+        self.set_size_request(size, size * 0.9)
 
     def set_color_manager(self, manager):
         ColorAdjuster.set_color_manager(self, manager)
@@ -72,39 +69,40 @@ class _PageToolAdapter (Gtk.VBox, ColorAdjuster):
             adj.set_color_manager(manager)
 
 
-class HCYWheelTool (_PageToolAdapter):
-    __gtype_name__ = 'MyPaintHCYWheelTool'
+class HCYWheelTool(_PageToolAdapter):
+    __gtype_name__ = "MyPaintHCYWheelTool"
     PAGE_CLASS = HCYAdjusterPage
 
 
-class HSVWheelTool (_PageToolAdapter):
-    __gtype_name__ = 'MyPaintHSVWheelTool'
+class HSVWheelTool(_PageToolAdapter):
+    __gtype_name__ = "MyPaintHSVWheelTool"
     PAGE_CLASS = HSVAdjusterPage
 
 
-class PaletteTool (_PageToolAdapter):
-    __gtype_name__ = 'MyPaintPaletteTool'
+class PaletteTool(_PageToolAdapter):
+    __gtype_name__ = "MyPaintPaletteTool"
     PAGE_CLASS = PalettePage
 
 
-class HSVCubeTool (_PageToolAdapter):
-    __gtype_name__ = 'MyPaintHSVCubeTool'
+class HSVCubeTool(_PageToolAdapter):
+    __gtype_name__ = "MyPaintHSVCubeTool"
     PAGE_CLASS = HSVCubePage
 
 
-class HSVSquareTool (_PageToolAdapter):
-    __gtype_name__ = 'MyPaintHSVSquareTool'
+class HSVSquareTool(_PageToolAdapter):
+    __gtype_name__ = "MyPaintHSVSquareTool"
     PAGE_CLASS = HSVSquarePage
 
 
-class ComponentSlidersTool (_PageToolAdapter):
-    __gtype_name__ = 'MyPaintComponentSlidersTool'
+class ComponentSlidersTool(_PageToolAdapter):
+    __gtype_name__ = "MyPaintComponentSlidersTool"
     PAGE_CLASS = ComponentSlidersAdjusterPage
 
 
 ## Adapters for newer ColorAdjusters
 
-class _SimpleAdjusterAdapter (Gtk.VBox):
+
+class _SimpleAdjusterAdapter(Gtk.VBox):
     """Adapts simple ColorAdjusters to a workspace tool widget.
 
     Subclasses must provide the following fields:
@@ -123,6 +121,7 @@ class _SimpleAdjusterAdapter (Gtk.VBox):
         super(_SimpleAdjusterAdapter, self).__init__()
         adjuster = self.ADJUSTER_CLASS()
         from gui.application import get_app
+
         self._app = get_app()
         adjuster.set_color_manager(self._app.brush_color_manager)
         self.pack_start(adjuster, True, True, 0)
@@ -132,7 +131,7 @@ class _SimpleAdjusterAdapter (Gtk.VBox):
         self._adjuster.set_color_manager(manager)
 
 
-class WashColorChangerTool (_SimpleAdjusterAdapter):
+class WashColorChangerTool(_SimpleAdjusterAdapter):
     __gtype_name__ = "MyPaintWashColorChangerTool"
     ADJUSTER_CLASS = gui.colors.changers.Wash
     tool_widget_icon_name = "mypaint-tool-wash-color-changer"
@@ -146,7 +145,7 @@ class WashColorChangerTool (_SimpleAdjusterAdapter):
     )
 
 
-class RingsColorChangerTool (_SimpleAdjusterAdapter):
+class RingsColorChangerTool(_SimpleAdjusterAdapter):
     __gtype_name__ = "MyPaintRingsColorChangerTool"
     ADJUSTER_CLASS = gui.colors.changers.Rings
     tool_widget_icon_name = "mypaint-tool-rings-color-changer"
@@ -160,7 +159,7 @@ class RingsColorChangerTool (_SimpleAdjusterAdapter):
     )
 
 
-class CrossedBowlColorChangerTool (_SimpleAdjusterAdapter):
+class CrossedBowlColorChangerTool(_SimpleAdjusterAdapter):
     __gtype_name__ = "MyPaintCrossedBowlColorChangerTool"
     ADJUSTER_CLASS = gui.colors.changers.CrossedBowl
     tool_widget_icon_name = "mypaint-tool-crossed-bowl-color-changer"
@@ -176,6 +175,7 @@ class CrossedBowlColorChangerTool (_SimpleAdjusterAdapter):
 
 def _new_color_adjusters_menu():
     from gui.application import get_app
+
     app = get_app()
     menu = Gtk.Menu()
     action_names = [
@@ -202,21 +202,21 @@ def _new_color_adjusters_menu():
     return menu
 
 
-class ColorAdjustersToolItem (widgets.MenuButtonToolItem):
+class ColorAdjustersToolItem(widgets.MenuButtonToolItem):
     """Toolbar item for launching any of the available color adjusters
 
     This is instantiated by the app's UIManager using a FactoryAction which
     must be named "ColorAdjusters" (see factoryaction.py).
     """
 
-    __gtype_name__ = 'MyPaintColorAdjustersToolItem'
+    __gtype_name__ = "MyPaintColorAdjustersToolItem"
 
     def __init__(self):
         widgets.MenuButtonToolItem.__init__(self)
         self.menu = _new_color_adjusters_menu()
 
 
-class ColorAdjustersMenuItem (Gtk.MenuItem):
+class ColorAdjustersMenuItem(Gtk.MenuItem):
     """Menu item with a static submenu of available color adjusters
 
     This is instantiated by the app's UIManager using a FactoryAction

@@ -9,48 +9,46 @@
 
 """Preferences dialog."""
 
-from __future__ import division, print_function
-
 import os.path
-from logging import getLogger
 from gettext import gettext as _
+from logging import getLogger
 
-from lib.gibindings import Gtk
-from lib.gibindings import Gdk
-
-from gui.compatibility import CompatibilityPreferences
 import lib.config
 import lib.localecodes
-from lib.i18n import USER_LOCALE_PREF
+from gui.compatibility import CompatibilityPreferences
 from lib.gettext import C_
-from . import windowing
+from lib.gibindings import Gdk, Gtk
+from lib.i18n import USER_LOCALE_PREF
 
+from . import windowing
 
 logger = getLogger(__name__)
 RESPONSE_REVERT = 1
 
 
-class PreferencesWindow (windowing.Dialog):
-    """Window for manipulating preferences.
-    """
+class PreferencesWindow(windowing.Dialog):
+    """Window for manipulating preferences."""
 
     def __init__(self):
         import gui.application
+
         app = gui.application.get_app()
         assert app is not None
 
         super(PreferencesWindow, self).__init__(
             app=app,
-            title=_('Preferences'),
+            title=_("Preferences"),
             transient_for=app.drawWindow,
             destroy_with_parent=True,
         )
         self.add_buttons(
-            Gtk.STOCK_REVERT_TO_SAVED, RESPONSE_REVERT,
-            Gtk.STOCK_OK, Gtk.ResponseType.ACCEPT,
+            Gtk.STOCK_REVERT_TO_SAVED,
+            RESPONSE_REVERT,
+            Gtk.STOCK_OK,
+            Gtk.ResponseType.ACCEPT,
         )
 
-        self.connect('response', self.on_response)
+        self.connect("response", self.on_response)
 
         self.in_update_ui = False
 
@@ -58,7 +56,7 @@ class PreferencesWindow (windowing.Dialog):
         builder = Gtk.Builder()
         builder.set_translation_domain("mypaint")
         ui_dir = os.path.dirname(os.path.abspath(__file__))
-        xml_path = os.path.join(ui_dir, 'preferenceswindow.glade')
+        xml_path = os.path.join(ui_dir, "preferenceswindow.glade")
         builder.add_from_file(xml_path)
         self._builder = builder
 
@@ -83,9 +81,11 @@ class PreferencesWindow (windowing.Dialog):
         # Button mappings editor
         assert "input.button_mapping" in app.preferences
         reg = gui.mode.ModeRegistry
-        actions_possible = [n for n in reg.get_action_names()
-                            if issubclass(reg.get_mode_class(n),
-                                          gui.mode.DragMode)]
+        actions_possible = [
+            n
+            for n in reg.get_action_names()
+            if issubclass(reg.get_mode_class(n), gui.mode.DragMode)
+        ]
         actions_possible += gui.mode.BUTTON_BINDING_ACTIONS
         bm_ed = getobj("button_mapping_editor")
         bm_ed.set_bindings(app.preferences["input.button_mapping"])
@@ -111,7 +111,9 @@ class PreferencesWindow (windowing.Dialog):
             value=dyn_ch_threshold,
             lower=(1 + p.get("cursor.freehand.min_size", 4) // 2),
             upper=max_cursor,
-            step_increment=1, page_increment=2)
+            step_increment=1,
+            page_increment=2,
+        )
         dyn_ch_spinner.set_adjustment(adj)
 
         dyn_ch_spinner.set_sensitive(dyn_ch_enabled)
@@ -131,8 +133,7 @@ class PreferencesWindow (windowing.Dialog):
             self.app.apply_settings()
 
     def update_ui(self):
-        """Update the preferences window to reflect the current settings.
-        """
+        """Update the preferences window to reflect the current settings."""
         if self.in_update_ui:
             return
         self.in_update_ui = True
@@ -141,16 +142,15 @@ class PreferencesWindow (windowing.Dialog):
         getobj = self._builder.get_object
 
         # Pen input curve
-        self._pressure_curve.points = p['input.global_pressure_mapping']
+        self._pressure_curve.points = p["input.global_pressure_mapping"]
 
         # Disable fallback keybindings (all)
         disable_fb_bindings = getobj("disable_fallback_bindings_checkbox")
-        disable_fb_bindings.set_active(
-            p.get('keyboard.disable_fallbacks', False))
+        disable_fb_bindings.set_active(p.get("keyboard.disable_fallbacks", False))
 
         # prefix for saving scarps
         entry = getobj("scrap_prefix_entry")
-        entry.set_text(p['saving.scrap_prefix'])
+        entry.set_text(p["saving.scrap_prefix"])
 
         # Locale/language
         locale_combo = getobj("locale_combobox")
@@ -161,7 +161,7 @@ class PreferencesWindow (windowing.Dialog):
             locale_combo.set_active_id(active_locale)
 
         # Zoom
-        zoom_float = p.get('view.default_zoom', 1.0)
+        zoom_float = p.get("view.default_zoom", 1.0)
         zoom_idcolstr = "%0.2f" % (zoom_float,)
         zoom_combo = getobj("default_zoom_combobox")
         zoom_combo.set_active_id(zoom_idcolstr)
@@ -194,7 +194,7 @@ class PreferencesWindow (windowing.Dialog):
 
         # Use real or faked alpha checks (faked is faster...)
         real_alpha_checks_checkbutton = getobj("real_alpha_checks_checkbutton")
-        real_alpha_checks_checkbutton.set_active(p['view.real_alpha_checks'])
+        real_alpha_checks_checkbutton.set_active(p["view.real_alpha_checks"])
 
         # Hide cursor when painting
         hidecsr = bool(p.get("ui.hide_cursor_while_painting", False))
@@ -202,7 +202,7 @@ class PreferencesWindow (windowing.Dialog):
         hidecsr_checkbut.set_active(hidecsr)
 
         # Default save format
-        fmt_config = p['saving.default_format']
+        fmt_config = p["saving.default_format"]
         fmt_combo = getobj("default_save_format_combobox")
         fmt_combo.set_active_id(fmt_config)
 
@@ -228,7 +228,7 @@ class PreferencesWindow (windowing.Dialog):
         cursor_combo = getobj("freehand_cursor_combobox")
         cursor_combo.set_active_id(cursor_config)
 
-        circle_cursor = cursor_config != 'crosshair'
+        circle_cursor = cursor_config != "crosshair"
         threshold_enabled = (
             circle_cursor and self._dynamic_crosshair_checkbut.get_active()
         )
@@ -239,8 +239,7 @@ class PreferencesWindow (windowing.Dialog):
         # Color wheel type
         cm = self.app.brush_color_manager
 
-        wheel_radiobutton_name = "color_wheel_%s_radiobutton" \
-            % (cm.get_wheel_type(),)
+        wheel_radiobutton_name = "color_wheel_%s_radiobutton" % (cm.get_wheel_type(),)
         wheel_radiobutton = getobj(wheel_radiobutton_name)
         if wheel_radiobutton:
             wheel_radiobutton.set_active(True)
@@ -261,13 +260,12 @@ class PreferencesWindow (windowing.Dialog):
     ## Callbacks for widgets that manipulate settings
 
     def disable_fallback_checkbutton_toggled_cb(self, checkbox):
-        self.app.preferences[
-            'keyboard.disable_fallbacks'] = checkbox.get_active()
+        self.app.preferences["keyboard.disable_fallbacks"] = checkbox.get_active()
         self.app.apply_settings()
 
     def input_mode_combobox_changed_cb(self, combobox):
         mode = combobox.get_active_id()
-        self.app.preferences['input.device_mode'] = mode
+        self.app.preferences["input.device_mode"] = mode
         self.app.apply_settings()
 
     def button_mapping_edited_cb(self, editor):
@@ -275,19 +273,19 @@ class PreferencesWindow (windowing.Dialog):
 
     def pressure_curve_changed_cb(self, widget):
         points = self._pressure_curve.points[:]
-        self.app.preferences['input.global_pressure_mapping'] = points
+        self.app.preferences["input.global_pressure_mapping"] = points
         self.app.apply_settings()
 
     def scrap_prefix_entry_changed_cb(self, widget):
         scrap_prefix = widget.get_text()
         if isinstance(scrap_prefix, bytes):
             scrap_prefix = scrap_prefix.decode("utf-8")
-        self.app.preferences['saving.scrap_prefix'] = scrap_prefix
+        self.app.preferences["saving.scrap_prefix"] = scrap_prefix
 
     def default_zoom_combobox_changed_cb(self, combobox):
         zoom_idcolstr = combobox.get_active_id()
         zoom = float(zoom_idcolstr)
-        self.app.preferences['view.default_zoom'] = zoom
+        self.app.preferences["view.default_zoom"] = zoom
 
     def toolbar_icon_size_small_toggled_cb(self, radio):
         if not radio.get_active():
@@ -305,11 +303,11 @@ class PreferencesWindow (windowing.Dialog):
 
     def real_alpha_checks_checkbutton_toggled_cb(self, button):
         real = bool(button.get_active())
-        self.app.preferences['view.real_alpha_checks'] = real
+        self.app.preferences["view.real_alpha_checks"] = real
 
     def default_save_format_combobox_changed_cb(self, combobox):
         formatstr = combobox.get_active_id()
-        self.app.preferences['saving.default_format'] = formatstr
+        self.app.preferences["saving.default_format"] = formatstr
 
     def display_colorspace_unknown_radiobutton_toggled_cb(self, radiobtn):
         if self.in_update_ui or not radiobtn.get_active():
@@ -348,7 +346,7 @@ class PreferencesWindow (windowing.Dialog):
         p = self.app.preferences
         p["cursor.freehand.style"] = cname
 
-        circle_cursor = cname != 'crosshair'
+        circle_cursor = cname != "crosshair"
         threshold_enabled = (
             circle_cursor and self._dynamic_crosshair_checkbut.get_active()
         )
@@ -356,7 +354,7 @@ class PreferencesWindow (windowing.Dialog):
         self._dyn_crosshair_threshold.set_sensitive(threshold_enabled)
         self._dynamic_crosshair_checkbut.set_sensitive(circle_cursor)
 
-        if cname == 'thin':
+        if cname == "thin":
             # The default.
             p.pop("cursor.freehand.min_size", None)
             p.pop("cursor.freehand.outer_line_width", None)
@@ -380,9 +378,7 @@ class PreferencesWindow (windowing.Dialog):
             p["cursor.freehand.inner_line_color"] = (1, 1, 1, 1)
 
     def _dynamic_crosshair_threshold_changed_cb(self, adj):
-        self.app.preferences["cursor.dynamic_crosshair_threshold"] = (
-            adj.get_value()
-        )
+        self.app.preferences["cursor.dynamic_crosshair_threshold"] = adj.get_value()
 
     def _enable_dynamic_crosshair_toggled_cb(self, checkbutton):
         active = checkbutton.get_active()
@@ -427,7 +423,7 @@ def setup_locale_combobox(locale_combo):
         "Language preferences menu - default option",
         # TRANSLATORS: This option means that MyPaint will try to use
         # TRANSLATORS: the language the system tells it to use.
-        "System Language"
+        "System Language",
     )
     # Default value - use the system locale
     locale_liststore.set_column_types((str, str, str))
@@ -462,27 +458,22 @@ def setup_locale_combobox(locale_combo):
         locale, lang_en, lang_nat = model[it][:3]
         # Mark default with bold font
         if locale is None:
-            name_cell.set_property(
-                "markup", "<b>{lang_en}</b>".format(lang_en=lang_en)
-            )
+            name_cell.set_property("markup", "<b>{lang_en}</b>".format(lang_en=lang_en))
         # If a language does not have its native spelling
         # available, only show its name in english.
         elif lang_en == lang_nat or lang_nat == "":
-            name_cell.set_property(
-                "text", lang_en
-            )
+            name_cell.set_property("text", lang_en)
         else:
             name_cell.set_property(
-                "text", C_(
+                "text",
+                C_(
                     "Prefs Dialog|View|Interface - menu entries",
                     # TRANSLATORS: lang_en is the english name of the language
                     # TRANSLATORS: lang_nat is the native name of the language
                     # TRANSLATORS: in that _same language_.
                     # TRANSLATORS: This can just be copied most of the time.
-                    "{lang_en} - ({lang_nat})"
-                ).format(
-                    lang_en=lang_en, lang_nat=lang_nat
-                )
+                    "{lang_en} - ({lang_nat})",
+                ).format(lang_en=lang_en, lang_nat=lang_nat),
             )
 
     # Remove the existing cell renderer

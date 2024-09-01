@@ -12,19 +12,15 @@
 
 ## Imports
 
-from __future__ import division, print_function
-import logging
 import collections
+import logging
 import re
 
-from lib.gettext import C_
-from lib.gibindings import Gtk
-from lib.gibindings import Gdk
-from lib.gibindings import Pango
-
-from lib.observable import event
 import gui.application
 import gui.mode
+from lib.gettext import C_
+from lib.gibindings import Gdk, Gtk, Pango
+from lib.observable import event
 
 logger = logging.getLogger(__name__)
 
@@ -90,19 +86,19 @@ class AllowedUsage:
     DISPLAY_STRING = {
         IGNORED: C_(
             "device settings: allowed usage",
-            u"Ignore",
+            "Ignore",
         ),
         ANY: C_(
             "device settings: allowed usage",
-            u"Any Task",
+            "Any Task",
         ),
         NOPAINT: C_(
             "device settings: allowed usage",
-            u"Non-painting tasks",
+            "Non-painting tasks",
         ),
         NAVONLY: C_(
             "device settings: allowed usage",
-            u"Navigation only",
+            "Navigation only",
         ),
     }
     BEHAVIOR_MASK = {
@@ -123,16 +119,16 @@ class ScrollAction:
     """
 
     ZOOM = "zoom"  #: Alter the canvas scaling
-    PAN = "pan"   #: Pan across the canvas
+    PAN = "pan"  #: Pan across the canvas
 
     VALUES = (ZOOM, PAN)
     DISPLAY_STRING = {
-        ZOOM: C_("device settings: unmodified scroll action", u"Zoom"),
-        PAN: C_("device settings: unmodified scroll action", u"Pan"),
+        ZOOM: C_("device settings: unmodified scroll action", "Zoom"),
+        PAN: C_("device settings: unmodified scroll action", "Pan"),
     }
 
 
-class Settings (object):
+class Settings(object):
     """A device's settings"""
 
     DEFAULT_USAGE = AllowedUsage.VALUES[0]
@@ -185,10 +181,12 @@ class Settings (object):
         self._update_usage_mask()
 
     def _save_to_prefs(self):
-        self._prefs.update({
-            "usage": self._usage,
-            "scroll": self._scroll,
-        })
+        self._prefs.update(
+            {
+                "usage": self._usage,
+                "scroll": self._scroll,
+            }
+        )
 
     def _update_usage_mask(self):
         self._usage_mask = AllowedUsage.BEHAVIOR_MASK[self._usage]
@@ -197,7 +195,7 @@ class Settings (object):
 ## Main class defs
 
 
-class Monitor (object):
+class Monitor(object):
     """Monitors device use & plugging, and manages their configuration
 
     An instance resides in the main application. It is responsible for
@@ -253,8 +251,7 @@ class Monitor (object):
         check this case.
 
         """
-        return (self._device_settings.get(device)
-                or self._init_device_settings(device))
+        return self._device_settings.get(device) or self._init_device_settings(device)
 
     def _init_device_settings(self, device):
         """Ensures that the device settings are loaded for a device"""
@@ -274,8 +271,7 @@ class Monitor (object):
                 vendor_id = "?"
                 product_id = "?"
             logger.info(
-                "New device %r"
-                " (%s, axes:%d, class=%s, vendor=%r, product=%r)",
+                "New device %r" " (%s, axes:%d, class=%s, vendor=%r, product=%r)",
                 device.get_name(),
                 source.value_name,
                 num_axes,
@@ -355,7 +351,8 @@ class Monitor (object):
 
         logger.debug(
             "Device change: name=%r source=%s",
-            new_device.name, new_device.source.value_name,
+            new_device.name,
+            new_device.source.value_name,
         )
 
         # When editing brush settings, it is often more convenient to use the
@@ -363,13 +360,15 @@ class Monitor (object):
         # to/from the mouse. We act as if the mouse was identical to the last
         # active pen device.
 
-        if (new_device.source == Gdk.InputSource.MOUSE and
-                self._last_pen_device):
+        if new_device.source == Gdk.InputSource.MOUSE and self._last_pen_device:
             new_device = self._last_pen_device
         if new_device.source == Gdk.InputSource.PEN:
             self._last_pen_device = new_device
-        if (old_device and old_device.source == Gdk.InputSource.MOUSE and
-                self._last_pen_device):
+        if (
+            old_device
+            and old_device.source == Gdk.InputSource.MOUSE
+            and self._last_pen_device
+        ):
             old_device = self._last_pen_device
 
         bm = self._app.brushmanager
@@ -380,7 +379,7 @@ class Monitor (object):
 
         if new_device.source == Gdk.InputSource.MOUSE:
             # Avoid fouling up unrelated devbrushes at stroke end
-            self._prefs.pop('devbrush.last_used', None)
+            self._prefs.pop("devbrush.last_used", None)
         else:
             # Select the brush and update the UI.
             # Use a sane default if there's nothing associated
@@ -391,11 +390,11 @@ class Monitor (object):
                     brush = bm.get_default_eraser()
                 else:
                     brush = bm.get_default_brush()
-            self._prefs['devbrush.last_used'] = new_device.name
+            self._prefs["devbrush.last_used"] = new_device.name
             bm.select_brush(brush)
 
 
-class SettingsEditor (Gtk.Grid):
+class SettingsEditor(Gtk.Grid):
     """Per-device settings editor"""
 
     ## Class consts
@@ -426,11 +425,13 @@ class SettingsEditor (Gtk.Grid):
         self._devices_store = Gtk.ListStore(object)
         self._devices_view = Gtk.TreeView(model=self._devices_store)
 
-        col = Gtk.TreeViewColumn(C_(
-            "prefs: devices table: column header",
-            # TRANSLATORS: Column's data is the device's name
-            "Device",
-        ))
+        col = Gtk.TreeViewColumn(
+            C_(
+                "prefs: devices table: column header",
+                # TRANSLATORS: Column's data is the device's name
+                "Device",
+            )
+        )
         col.set_min_width(200)
         col.set_expand(True)
         col.set_sizing(Gtk.TreeViewColumnSizing.AUTOSIZE)
@@ -440,11 +441,13 @@ class SettingsEditor (Gtk.Grid):
         col.pack_start(cell, True)
         col.set_cell_data_func(cell, self._device_name_datafunc)
 
-        col = Gtk.TreeViewColumn(C_(
-            "prefs: devices table: column header",
-            # TRANSLATORS: Column's data is the number of axes (an integer)
-            "Axes",
-        ))
+        col = Gtk.TreeViewColumn(
+            C_(
+                "prefs: devices table: column header",
+                # TRANSLATORS: Column's data is the number of axes (an integer)
+                "Axes",
+            )
+        )
         col.set_min_width(30)
         col.set_resizable(True)
         col.set_expand(False)
@@ -454,11 +457,13 @@ class SettingsEditor (Gtk.Grid):
         col.pack_start(cell, True)
         col.set_cell_data_func(cell, self._device_axes_datafunc)
 
-        col = Gtk.TreeViewColumn(C_(
-            "prefs: devices table: column header",
-            # TRANSLATORS: Column shows type labels ("Touchscreen", "Pen" etc.)
-            "Type",
-        ))
+        col = Gtk.TreeViewColumn(
+            C_(
+                "prefs: devices table: column header",
+                # TRANSLATORS: Column shows type labels ("Touchscreen", "Pen" etc.)
+                "Type",
+            )
+        )
         col.set_min_width(120)
         col.set_resizable(True)
         col.set_expand(False)
@@ -476,12 +481,14 @@ class SettingsEditor (Gtk.Grid):
             store.append([conf_val, string])
         self._usage_store = store
 
-        col = Gtk.TreeViewColumn(C_(
-            "prefs: devices table: column header",
-            # TRANSLATORS: Column's data is a dropdown allowing the allowed
-            # TRANSLATORS: tasks for the row's device to be configured.
-            u"Use for…",
-        ))
+        col = Gtk.TreeViewColumn(
+            C_(
+                "prefs: devices table: column header",
+                # TRANSLATORS: Column's data is a dropdown allowing the allowed
+                # TRANSLATORS: tasks for the row's device to be configured.
+                "Use for…",
+            )
+        )
         col.set_min_width(100)
         col.set_resizable(True)
         col.set_expand(False)
@@ -505,13 +512,15 @@ class SettingsEditor (Gtk.Grid):
             store.append([conf_val, string])
         self._scroll_store = store
 
-        col = Gtk.TreeViewColumn(C_(
-            "prefs: devices table: column header",
-            # TRANSLATORS: Column's data is a dropdown for how the device's
-            # TRANSLATORS: scroll wheel or scroll-gesture events are to be
-            # TRANSLATORS: interpreted normally.
-            u"Scroll…",
-        ))
+        col = Gtk.TreeViewColumn(
+            C_(
+                "prefs: devices table: column header",
+                # TRANSLATORS: Column's data is a dropdown for how the device's
+                # TRANSLATORS: scroll wheel or scroll-gesture events are to be
+                # TRANSLATORS: interpreted normally.
+                "Scroll…",
+            )
+        )
         col.set_min_width(100)
         col.set_resizable(True)
         col.set_expand(False)
@@ -576,8 +585,7 @@ class SettingsEditor (Gtk.Grid):
 
     ## Updates
 
-    def _usage_cell_changed_cb(self, combo, device_path_str,
-                               usage_iter, *etc):
+    def _usage_cell_changed_cb(self, combo, device_path_str, usage_iter, *etc):
         config = self._usage_store.get_value(
             usage_iter,
             self._USAGE_CONFIG_COL,
@@ -590,8 +598,7 @@ class SettingsEditor (Gtk.Grid):
         settings.usage = config
         self._devices_view.columns_autosize()
 
-    def _scroll_cell_changed_cb(self, conf_combo, device_path_str,
-                                conf_iter, *etc):
+    def _scroll_cell_changed_cb(self, conf_combo, device_path_str, conf_iter, *etc):
         conf_store = self._scroll_store
         conf_col = self._SCROLL_CONFIG_COL
         conf_value = conf_store.get_value(conf_iter, conf_col)
@@ -611,7 +618,7 @@ class SettingsEditor (Gtk.Grid):
         paths_for_removal = []
         devices_retained = set()
         for row in self._devices_store:
-            device, = row
+            (device,) = row
             if device not in updated_list_map:
                 paths_for_removal.append(row.path)
                 continue
@@ -634,7 +641,7 @@ def _device_prefs_key(device):
     source = device.get_source()
     name = device.get_name()
     n_axes = device.get_n_axes()
-    return u"%s:%s:%d" % (name, source.value_nick, n_axes)
+    return "%s:%s:%d" % (name, source.value_nick, n_axes)
 
 
 def device_is_eraser(device):
@@ -643,7 +650,7 @@ def device_is_eraser(device):
         return False
     if device.get_source() == Gdk.InputSource.ERASER:
         return True
-    if re.search(r'\<eraser\>', device.get_name(), re.I):
+    if re.search(r"\<eraser\>", device.get_name(), re.I):
         return True
     return False
 
@@ -666,5 +673,5 @@ def _test():
     print(monitor._prefs)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     _test()

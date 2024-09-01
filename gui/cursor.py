@@ -7,17 +7,14 @@
 # the Free Software Foundation; either version 2 of the License, or
 # (at your option) any later version.
 
-from __future__ import division, print_function
-import cairo
-import math
 import logging
+import math
+
+import cairo
 
 import gui.drawutils
+from lib.gibindings import Gdk, GdkPixbuf, Gtk
 from lib.pycompat import xrange
-
-from lib.gibindings import Gtk
-from lib.gibindings import Gdk
-from lib.gibindings import GdkPixbuf
 
 logger = logging.getLogger(__name__)
 
@@ -106,7 +103,7 @@ def get_brush_cursor(radius, style, prefs=None):
         cr = cairo.Context(surf)
         cr.set_source_rgba(1, 1, 1, 0)
         cr.paint()
-        draw_brush_cursor(cr, r, dim/2, style, prefs, threshold)
+        draw_brush_cursor(cr, r, dim / 2, style, prefs, threshold)
         surf.flush()
 
         # Calculate hotspot. Zero means topmost or leftmost. Cursors with an
@@ -119,8 +116,12 @@ def get_brush_cursor(radius, style, prefs=None):
         hot_x = hot_y = int(dim // 2)
 
         pixbuf = _image_surface_to_pixbuf(surf)
-        last_cursor = Gdk.Cursor.new_from_pixbuf(display, pixbuf,
-                                                 hot_x, hot_y,)
+        last_cursor = Gdk.Cursor.new_from_pixbuf(
+            display,
+            pixbuf,
+            hot_x,
+            hot_y,
+        )
     return last_cursor
 
 
@@ -132,8 +133,8 @@ def _image_surface_to_pixbuf(surf):
 
 
 def draw_brush_cursor(
-        cr, radius, cc,
-        style=BRUSH_CURSOR_STYLE_NORMAL, prefs=None, threshold=None):
+    cr, radius, cc, style=BRUSH_CURSOR_STYLE_NORMAL, prefs=None, threshold=None
+):
     """Draw a brush cursor into a Cairo context
 
     :param cr: A Cairo context
@@ -169,14 +170,18 @@ def draw_brush_cursor(
     inset = int(prefs.get("cursor.freehand.inner_line_inset", 2))
 
     # Colors
-    col_bg = tuple(prefs.get(
-        "cursor.freehand.outer_line_color",
-        (0, 0, 0, 1),
-    ))
-    col_fg = tuple(prefs.get(
-        "cursor.freehand.inner_line_color",
-        (1, 1, 1, 0.75),
-    ))
+    col_bg = tuple(
+        prefs.get(
+            "cursor.freehand.outer_line_color",
+            (0, 0, 0, 1),
+        )
+    )
+    col_fg = tuple(
+        prefs.get(
+            "cursor.freehand.inner_line_color",
+            (1, 1, 1, 0.75),
+        )
+    )
 
     # Cursor style
     arcs = cursor_arc_segments(style)
@@ -209,6 +214,7 @@ def draw_brush_cursor(
 
     # Crosshair lines, if enabled and radius is below threshold
     if lines:
+
         def stroke_lines():
             for (x_offs_0, y_offs_0), (x_offs_1, y_offs_1) in lines:
                 cr.new_sub_path()
@@ -250,8 +256,10 @@ def cursor_line_segments(style, r, threshold):
         return [((0, -r - offs), (0, -r)), ((0, r), (0, r + offs))]
     else:
         return [
-            ((-r - offs, 0), (-r, 0)), ((r, 0), (r + offs, 0)),
-            ((0, -r - offs), (0, -r)), ((0, r), (0, r + offs)),
+            ((-r - offs, 0), (-r, 0)),
+            ((r, 0), (r + offs, 0)),
+            ((0, -r - offs), (0, -r)),
+            ((0, r), (0, r + offs)),
         ]
 
 
@@ -265,7 +273,7 @@ def cursor_arc_segments(style):
             (k2, k2 + k),
             (k2 + 2 * k, k2 + 3 * k),
             (k2 + 4 * k, k2 + 5 * k),
-            (k2 + 6 * k, k2 + 7 * k)
+            (k2 + 6 * k, k2 + 7 * k),
         ]
     elif style == BRUSH_CURSOR_STYLE_LOCK_ALPHA:
         # same thing, but the two side voids are filled
@@ -278,7 +286,7 @@ def cursor_arc_segments(style):
         return [(0, 2 * math.pi)]
 
 
-class CustomCursorMaker (object):
+class CustomCursorMaker(object):
     """Factory and cache of custom cursors for actions."""
 
     CURSOR_HOTSPOTS = {
@@ -331,13 +339,21 @@ class CustomCursorMaker (object):
             hot_x = 1
             hot_y = 1
 
-        cursor_pixbuf = GdkPixbuf.Pixbuf.new(GdkPixbuf.Colorspace.RGB, True,
-                                             8, 32, 32)
+        cursor_pixbuf = GdkPixbuf.Pixbuf.new(GdkPixbuf.Colorspace.RGB, True, 8, 32, 32)
         cursor_pixbuf.fill(0x00000000)
 
         pointer_pixbuf.composite(
-            cursor_pixbuf, 0, 0, pointer_w, pointer_h, 0, 0, 1, 1,
-            GdkPixbuf.InterpType.NEAREST, 255
+            cursor_pixbuf,
+            0,
+            0,
+            pointer_w,
+            pointer_h,
+            0,
+            0,
+            1,
+            1,
+            GdkPixbuf.InterpType.NEAREST,
+            255,
         )
         if icon_pixbuf is not None:
             icon_w = icon_pixbuf.get_width()
@@ -345,13 +361,21 @@ class CustomCursorMaker (object):
             icon_x = 32 - icon_w
             icon_y = 32 - icon_h
             icon_pixbuf.composite(
-                cursor_pixbuf, icon_x, icon_y, icon_w, icon_h,
-                icon_x, icon_y, 1, 1, GdkPixbuf.InterpType.NEAREST, 255
+                cursor_pixbuf,
+                icon_x,
+                icon_y,
+                icon_w,
+                icon_h,
+                icon_x,
+                icon_y,
+                1,
+                1,
+                GdkPixbuf.InterpType.NEAREST,
+                255,
             )
 
         display = self.app.drawWindow.get_display()
-        cursor = Gdk.Cursor.new_from_pixbuf(display, cursor_pixbuf,
-                                            hot_x, hot_y)
+        cursor = Gdk.Cursor.new_from_pixbuf(display, cursor_pixbuf, hot_x, hot_y)
         return cursor
 
     def get_freehand_cursor(self, cursor_name=Name.CROSSHAIR_OPEN_PRECISE):
@@ -387,12 +411,10 @@ class CustomCursorMaker (object):
         # Find a small action icon for the overlay
         action = self.app.find_action(action_name)
         if action is None:
-            return Gdk.Cursor.new_from_name(
-                Gdk.Display.get_default(), "default")
+            return Gdk.Cursor.new_from_name(Gdk.Display.get_default(), "default")
         icon_name = action.get_icon_name()
         if icon_name is None:
-            return Gdk.Cursor.new_from_name(
-                Gdk.Display.get_default(), "default")
+            return Gdk.Cursor.new_from_name(Gdk.Display.get_default(), "default")
         return self.get_icon_cursor(icon_name, cursor_name)
 
     def get_icon_cursor(self, icon_name, cursor_name=Name.ARROW):
@@ -414,7 +436,8 @@ class CustomCursorMaker (object):
         if icon_name is not None:
             if "symbolic" in icon_name:
                 icon_pixbuf = gui.drawutils.load_symbolic_icon(
-                    icon_name, 18,
+                    icon_name,
+                    18,
                     fg=(1, 1, 1, 1),
                     outline=(0, 0, 0, 1),
                 )
@@ -482,8 +505,9 @@ def get_move_cursor_name_for_angle(angle):
 
 # Interactive testing
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     from random import randint
+
     win = Gtk.Window()
     win.set_title("cursor test")
 
@@ -494,18 +518,17 @@ if __name__ == '__main__':
     h = 4 * _max_size
     _surf = cairo.ImageSurface(cairo.FORMAT_ARGB32, w, h)
     _cr = cairo.Context(_surf)
-    _cr.set_source_rgb(.7, .7, .7)
+    _cr.set_source_rgb(0.7, 0.7, 0.7)
     _cr.paint()
 
     for _style in xrange(4):
         col = 0
-        for size in xrange(_min_size, _max_size + 1,
-                           (_max_size - _min_size) // nsteps):
+        for size in xrange(_min_size, _max_size + 1, (_max_size - _min_size) // nsteps):
             _cr.save()
             y = (_style * _max_size) + ((_max_size - size) / 2)
             x = (col * _max_size) + ((_max_size - size) / 2)
             _cr.translate(x, y)
-            draw_brush_cursor(_cr, size//2, size//2, _style)
+            draw_brush_cursor(_cr, size // 2, size // 2, _style)
             _cr.restore()
             col += 1
     pixbuf = _image_surface_to_pixbuf(_surf)
@@ -526,6 +549,7 @@ if __name__ == '__main__':
         _style += 1
         if _style >= num_styles:
             _style = 0
+
     win.connect("enter-notify-event", _enter_cb)
     win.add(image)
     win.connect("destroy", lambda *a: Gtk.main_quit())

@@ -1,17 +1,14 @@
-from __future__ import division, print_function
-
-import traceback
-import tempfile
 import os
 import sys
-
-import numpy as np
+import tempfile
+import traceback
 
 import gi
+import numpy as np
+
 try:
     gi.require_version("Gtk", "3.0")
-    from lib.gibindings import Gtk
-    from lib.gibindings import GObject
+    from lib.gibindings import GObject, Gtk
 except:
     raise
 
@@ -20,6 +17,7 @@ class GUI:
     """
     Class for driving the MyPaint GUI.
     """
+
     def __init__(self):
         self.app = None
         self.tempdir = None
@@ -28,34 +26,37 @@ class GUI:
 
     def __del__(self):
         if self.tempdir:
-            os.system('rm -rf ' + self.tempdir)
+            os.system("rm -rf " + self.tempdir)
 
     def setup(self):
         self.tempdir = tempfile.mkdtemp()
         from gui import application
-        os.system('cp -a brushes ' + self.tempdir)
+
+        os.system("cp -a brushes " + self.tempdir)
 
         app_statedirs = application.StateDirs(
-            app_data = u'..',
-            app_icons = u'../desktop',
-            user_data = unicode(self.tempdir),
-            user_config = unicode(self.tempdir),
+            app_data="..",
+            app_icons="../desktop",
+            user_data=unicode(self.tempdir),
+            user_config=unicode(self.tempdir),
         )
         self.app = application.Application(
-            filenames = [],
-            state_dirs = app_statedirs,
-            version = 'guicontrol_testing',
+            filenames=[],
+            state_dirs=app_statedirs,
+            version="guicontrol_testing",
         )
 
         # ignore mouse movements during testing (creating extra strokes)
         def motion_ignore_cb(*junk1, **junk2):
             pass
+
         self.app.doc.tdw.motion_notify_cb = motion_ignore_cb
 
         # fatal exceptions, please
         def excepthook(exctyp, value, tb):
             traceback.print_exception(exctyp, value, tb, None, sys.stderr)
             sys.exit(1)
+
         sys.excepthook = excepthook
 
     def signal_cb(self):

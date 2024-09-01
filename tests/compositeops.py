@@ -2,18 +2,17 @@
 # Tests the layer compositing/blending code for correctness of its
 # advertized optimization flags.
 
-from __future__ import division, print_function
-from random import random
 import unittest
+from random import random
 
 import numpy as np
 
-from . import paths
 from lib import mypaintlib
-from lib.tiledsurface import N
 from lib.modes import MODE_STRINGS
 from lib.pycompat import xrange
+from lib.tiledsurface import N
 
+from . import paths
 
 ALPHA_VALUES = (0.0, 0.5, 1.0)
 GREY_VALUES = (0.0, 0.25, 0.5, 0.75, 1.0)
@@ -21,7 +20,7 @@ COLOR_COMPONENT_VALUES = (0.333, 0.666)
 FIX15_ONE = 1 << 15
 
 
-class Ops (unittest.TestCase):
+class Ops(unittest.TestCase):
 
     def tearDown(self):
         pass
@@ -50,8 +49,8 @@ class Ops (unittest.TestCase):
         assert len(self.sample_data) == N
 
         # Prepare striped test data in a tile array
-        self.src = np.empty((N, N, 4), dtype='uint16')
-        self.dst_orig = np.empty((N, N, 4), dtype='uint16')
+        self.src = np.empty((N, N, 4), dtype="uint16")
+        self.dst_orig = np.empty((N, N, 4), dtype="uint16")
         for i, rgba1 in enumerate(self.sample_data):
             r1 = int(FIX15_ONE * rgba1[0] * rgba1[3])
             g1 = int(FIX15_ONE * rgba1[1] * rgba1[3])
@@ -82,7 +81,7 @@ class Ops (unittest.TestCase):
             mode_name = mode_info["name"]
 
             src = self.src
-            dst = np.empty((N, N, 4), dtype='uint16')
+            dst = np.empty((N, N, 4), dtype="uint16")
             dst[...] = self.dst_orig[...]
 
             # Combine using the current mode
@@ -104,17 +103,18 @@ class Ops (unittest.TestCase):
                     if (not can_decrease_alpha) and (new[3] < old[3]):
                         can_decrease_alpha = True
                     self.assertFalse(
-                        (new[0] > new[3] or
-                         new[1] > new[3] or
-                         new[2] > new[3]),
+                        (new[0] > new[3] or new[1] > new[3] or new[2] > new[3]),
                         msg="%s isn't writing premultiplied data properly"
-                            % (mode_name,),
+                        % (mode_name,),
                     )
                     self.assertFalse(
-                        (new[0] > FIX15_ONE or new[1] > FIX15_ONE or
-                         new[2] > FIX15_ONE or new[3] > FIX15_ONE),
-                        msg="%s isn't writing fix15 data properly"
-                            % (mode_name,),
+                        (
+                            new[0] > FIX15_ONE
+                            or new[1] > FIX15_ONE
+                            or new[2] > FIX15_ONE
+                            or new[3] > FIX15_ONE
+                        ),
+                        msg="%s isn't writing fix15 data properly" % (mode_name,),
                     )
 
             flag_test_results = [
@@ -125,9 +125,10 @@ class Ops (unittest.TestCase):
             for info_str, tested_value in flag_test_results:
                 current_value = bool(mode_info[info_str])
                 self.assertEqual(
-                    current_value, tested_value,
+                    current_value,
+                    tested_value,
                     msg="%s's %r is wrong: should be %r, not %r"
-                        % (mode_name, info_str, tested_value, current_value),
+                    % (mode_name, info_str, tested_value, current_value),
                 )
             self.assertTrue(
                 mode in MODE_STRINGS,

@@ -13,40 +13,31 @@
 
 ## Imports
 
-from __future__ import division, print_function
-
-import re
-import logging
-from copy import copy
-from copy import deepcopy
-import os.path
-from warnings import warn
 import contextlib
+import logging
+import os.path
+import re
+from copy import copy, deepcopy
+from warnings import warn
 
-from lib.gibindings import GdkPixbuf
-from lib.gibindings import GLib
 import numpy as np
 
+import lib.cache
+import lib.feedback
+import lib.helpers as helpers
+import lib.mypaintlib
+import lib.naming
+import lib.pixbuf
+import lib.tiledsurface as tiledsurface
 from lib.eotf import eotf
 from lib.gettext import C_
-import lib.mypaintlib
-import lib.tiledsurface as tiledsurface
-from lib.tiledsurface import TileAccessible
-from lib.tiledsurface import TileBlittable
-import lib.helpers as helpers
+from lib.gibindings import GdkPixbuf, GLib
+from lib.modes import MODES_DECREASING_BACKDROP_ALPHA, PASS_THROUGH_MODE
 from lib.observable import event
-import lib.pixbuf
-import lib.cache
-from lib.modes import PASS_THROUGH_MODE
-from lib.modes import MODES_DECREASING_BACKDROP_ALPHA
-from . import data
-from . import group
-from . import core
-from . import rendering
-import lib.feedback
-import lib.naming
 from lib.pycompat import xrange
+from lib.tiledsurface import TileAccessible, TileBlittable
 
+from . import core, data, group, rendering
 
 logger = logging.getLogger(__name__)
 
@@ -54,7 +45,7 @@ logger = logging.getLogger(__name__)
 ## Class defs
 
 
-class PlaceholderLayer (group.LayerStack):
+class PlaceholderLayer(group.LayerStack):
     """Trivial temporary placeholder layer, used for moves etc.
 
     The layer stack architecture does not allow for the same layer
@@ -67,11 +58,11 @@ class PlaceholderLayer (group.LayerStack):
         "layer default names",
         # TRANSLATORS: Short default name for temporary placeholder layers.
         # TRANSLATORS: (The user should never see this except in error cases)
-        u"Placeholder",
+        "Placeholder",
     )
 
 
-class RootLayerStack (group.LayerStack):
+class RootLayerStack(group.LayerStack):
     """Specialized document root layer stack
 
     In addition to the basic lib.layer.group.LayerStack implementation,
@@ -106,16 +97,14 @@ class RootLayerStack (group.LayerStack):
 
     DEFAULT_NAME = C_(
         "layer default names",
-        u"Root",
+        "Root",
     )
     INITIAL_MODE = lib.mypaintlib.CombineNormal
     PERMITTED_MODES = {INITIAL_MODE}
 
     ## Initialization
 
-    def __init__(self, doc=None,
-                 cache_size=lib.cache.DEFAULT_CACHE_SIZE,
-                 **kwargs):
+    def __init__(self, doc=None, cache_size=lib.cache.DEFAULT_CACHE_SIZE, **kwargs):
         """Construct, as part of a model
 
         :param doc: The model document. May be None for testing.
@@ -184,15 +173,15 @@ class RootLayerStack (group.LayerStack):
 
         n = lib.mypaintlib.TILE_SIZE
         tx_min = x // n
-        tx_max = ((x + w) // n)
+        tx_max = (x + w) // n
         ty_min = y // n
-        ty_max = ((y + h) // n)
+        ty_max = (y + h) // n
         mipmap_level_max = lib.mypaintlib.MAX_MIPMAP_LEVEL
 
         for tx in range(tx_min, tx_max + 1):
             for ty in range(ty_min, ty_max + 1):
                 for level in range(0, mipmap_level_max + 1):
-                    fac = 2 ** level
+                    fac = 2**level
                     key = ((tx // fac), (ty // fac), level)
                     self._render_cache.pop(key, None)
 
@@ -258,7 +247,8 @@ class RootLayerStack (group.LayerStack):
             total += t
         logger.debug(
             "remove_empty_tiles: removed %d of %d tiles",
-            removed, total,
+            removed,
+            total,
         )
         return (removed, total)
 
@@ -352,8 +342,10 @@ class RootLayerStack (group.LayerStack):
         path = tuple(path)
         hidden_paths = set()
         for p, layer in self.walk():
-            if not (path[0:len(p)] == p or    # ancestor of p, or p itself
-                    p[0:len(path)] == path):  # descendent of p
+            if not (
+                path[0 : len(p)] == p  # ancestor of p, or p itself
+                or p[0 : len(path)] == path
+            ):  # descendent of p
                 continue
             # Conditionally exclude hidden child layers
             if no_hidden_descendants and len(p) > len(path):
@@ -362,7 +354,6 @@ class RootLayerStack (group.LayerStack):
                         hidden_paths.add(p)
                     continue
             yield layer
-
 
     def _get_render_spec(self, respect_solo=True, respect_previewing=True):
         """Get a specification object for rendering the current state.
@@ -410,9 +401,20 @@ class RootLayerStack (group.LayerStack):
         bd_spec.layers = backdrop_layers
         return bd_spec
 
-    def render(self, surface, tiles, mipmap_level, overlay=None,
-               opaque_base_tile=None, filter=None, spec=None,
-               progress=None, background=None, alpha=None, **kwargs):
+    def render(
+        self,
+        surface,
+        tiles,
+        mipmap_level,
+        overlay=None,
+        opaque_base_tile=None,
+        filter=None,
+        spec=None,
+        progress=None,
+        background=None,
+        alpha=None,
+        **kwargs
+    ):
         """Render a batch of tiles into a tile-addressable surface.
 
         :param TileAccesible surface: The target surface.
@@ -456,7 +458,7 @@ class RootLayerStack (group.LayerStack):
         use_cache = False
         tx, ty = tiles[0]
         with surface.tile_request(tx, ty, readonly=True) as sample_tile:
-            target_surface_is_8bpc = (sample_tile.dtype == 'uint8')
+            target_surface_is_8bpc = sample_tile.dtype == "uint8"
             if target_surface_is_8bpc:
                 use_cache = spec.cacheable()
         key2 = (id(opaque_base_tile), dst_has_alpha)
@@ -482,7 +484,7 @@ class RootLayerStack (group.LayerStack):
                         dst = self._render_cache_get(key1, key2)
 
                     if dst is None:
-                        dst = np.zeros(tiledims, dtype='uint16')
+                        dst = np.zeros(tiledims, dtype="uint16")
                     else:
                         cache_hit = True  # note: dtype is now uint8
 
@@ -497,21 +499,26 @@ class RootLayerStack (group.LayerStack):
                             opaque_base_tile,
                             dst_over_opaque_base,
                         )
-                        dst = np.zeros(tiledims, dtype='uint16')
+                        dst = np.zeros(tiledims, dtype="uint16")
 
                     # Process the ops list.
                     self._process_ops_list(
                         ops,
-                        dst, dst_has_alpha,
-                        tx, ty, mipmap_level,
+                        dst,
+                        dst_has_alpha,
+                        tx,
+                        ty,
+                        mipmap_level,
                     )
 
                     if dst_over_opaque_base is not None:
                         dst_has_alpha = False
                         lib.mypaintlib.tile_combine(
                             lib.mypaintlib.CombineNormal,
-                            dst, dst_over_opaque_base,
-                            False, 1.0,
+                            dst,
+                            dst_over_opaque_base,
+                            False,
+                            1.0,
                         )
                         dst = dst_over_opaque_base
 
@@ -632,9 +639,7 @@ class RootLayerStack (group.LayerStack):
         which don't contain their own tile-accessible data.
 
         """
-        spec = self._get_render_spec_for_layer(
-            layer, no_hidden_descendants=True
-        )
+        spec = self._get_render_spec_for_layer(layer, no_hidden_descendants=True)
         rendering = _TileRenderWrapper(self, spec)
         return rendering
 
@@ -661,16 +666,23 @@ class RootLayerStack (group.LayerStack):
                 raise ValueError(
                     "Layer is not a descendent of this RootLayerStack.",
                 )
-            layers = self.layers_along_or_under_path(
-                layer_path, no_hidden_descendants)
+            layers = self.layers_along_or_under_path(layer_path, no_hidden_descendants)
             spec.layers = set(layers)
             spec.current = layer
             spec.solo = True
         return spec
 
-    def render_single_tile(self, dst, dst_has_alpha,
-                           tx, ty, mipmap_level=0,
-                           layer=None, spec=None, ops=None):
+    def render_single_tile(
+        self,
+        dst,
+        dst_has_alpha,
+        tx,
+        ty,
+        mipmap_level=0,
+        layer=None,
+        spec=None,
+        ops=None,
+    ):
         """Render one tile in a standardized way (by default).
 
         It's used in fix15 mode for enabling flood fill when the source
@@ -684,11 +696,11 @@ class RootLayerStack (group.LayerStack):
                 spec = self._get_render_spec_for_layer(layer)
             ops = self.get_render_ops(spec)
 
-        dst_is_8bpc = (dst.dtype == 'uint8')
+        dst_is_8bpc = dst.dtype == "uint8"
         if dst_is_8bpc:
             dst_8bpc_orig = dst
             tiledims = (tiledsurface.N, tiledsurface.N, 4)
-            dst = np.zeros(tiledims, dtype='uint16')
+            dst = np.zeros(tiledims, dtype="uint16")
 
         self._process_ops_list(ops, dst, dst_has_alpha, tx, ty, mipmap_level)
 
@@ -700,8 +712,9 @@ class RootLayerStack (group.LayerStack):
             conv(dst, dst_8bpc_orig, eotf())
             dst = dst_8bpc_orig
 
-    def _validate_layer_bbox_arg(self, layer, bbox,
-                                 min_size=lib.tiledsurface.TILE_SIZE):
+    def _validate_layer_bbox_arg(
+        self, layer, bbox, min_size=lib.tiledsurface.TILE_SIZE
+    ):
         """Check a bbox arg, defaulting it to the data size of a layer."""
         min_size = int(min_size)
         if bbox is not None:
@@ -726,29 +739,38 @@ class RootLayerStack (group.LayerStack):
         # GIL-holding C++ loop body might look like.
 
         stack = []
-        for (opcode, opdata, mode, opacity) in ops:
+        for opcode, opdata, mode, opacity in ops:
             if opcode == rendering.Opcode.COMPOSITE:
                 opdata.composite_tile(
-                    dst, dst_has_alpha, tx, ty,
+                    dst,
+                    dst_has_alpha,
+                    tx,
+                    ty,
                     mipmap_level=mipmap_level,
-                    mode=mode, opacity=opacity,
+                    mode=mode,
+                    opacity=opacity,
                 )
             elif opcode == rendering.Opcode.BLIT:
                 opdata.blit_tile_into(
-                    dst, dst_has_alpha, tx, ty,
+                    dst,
+                    dst_has_alpha,
+                    tx,
+                    ty,
                     mipmap_level,
                 )
             elif opcode == rendering.Opcode.PUSH:
                 stack.append((dst, dst_has_alpha))
                 tiledims = (tiledsurface.N, tiledsurface.N, 4)
-                dst = np.zeros(tiledims, dtype='uint16')
+                dst = np.zeros(tiledims, dtype="uint16")
                 dst_has_alpha = True
             elif opcode == rendering.Opcode.POP:
                 src = dst
                 (dst, dst_has_alpha) = stack.pop(-1)
                 lib.mypaintlib.tile_combine(
                     mode,
-                    src, dst, dst_has_alpha,
+                    src,
+                    dst,
+                    dst_has_alpha,
                     opacity,
                 )
             else:
@@ -849,8 +871,13 @@ class RootLayerStack (group.LayerStack):
         self.set_symmetry_state(True, angle=symmetry_angle)
 
     def set_symmetry_state(
-            self, active=None, center=None,
-            symmetry_type=None, symmetry_lines=None, angle=None):
+        self,
+        active=None,
+        center=None,
+        symmetry_type=None,
+        symmetry_lines=None,
+        angle=None,
+    ):
         """Set the central, propagated, symmetry state.
 
         The root layer stack specialization manages a central state,
@@ -880,7 +907,11 @@ class RootLayerStack (group.LayerStack):
         if current is not self:
             self._propagate_symmetry_state(current)
         self.symmetry_state_changed(
-            active, center, symmetry_type, symmetry_lines, angle,
+            active,
+            center,
+            symmetry_type,
+            symmetry_lines,
+            angle,
         )
 
     def _propagate_symmetry_state(self, layer):
@@ -896,7 +927,8 @@ class RootLayerStack (group.LayerStack):
 
     @event
     def symmetry_state_changed(
-            self, active, center, symmetry_type, symmetry_lines, angle):
+        self, active, center, symmetry_type, symmetry_lines, angle
+    ):
         """Event: symmetry state changed
 
         An argument value of None means that the state value has not changed,
@@ -1166,10 +1198,10 @@ class RootLayerStack (group.LayerStack):
         method can be used before or after the layer is inserted into
         the stack.
         """
-        existing = {l.name for path, l in self.walk()
-                    if l is not layer
-                    and l.name is not None}
-        blank = re.compile(r'^\s*$')
+        existing = {
+            l.name for path, l in self.walk() if l is not layer and l.name is not None
+        }
+        blank = re.compile(r"^\s*$")
         newname = layer._name
         if newname is None or blank.match(newname):
             newname = layer.DEFAULT_NAME
@@ -1631,14 +1663,15 @@ class RootLayerStack (group.LayerStack):
         True
         """
         if len(path) == 0:
-            raise IndexError('Cannot insert after the root')
+            raise IndexError("Cannot insert after the root")
         unused_path = list(path)
         stack = self
         while len(unused_path) > 0:
             idx = unused_path.pop(0)
             if not isinstance(stack, group.LayerStack):
-                raise IndexError("All nonfinal elements of %r must "
-                                 "identify a stack" % (path,))
+                raise IndexError(
+                    "All nonfinal elements of %r must " "identify a stack" % (path,)
+                )
             if unused_path:
                 stack = stack[idx]
             else:
@@ -1646,8 +1679,7 @@ class RootLayerStack (group.LayerStack):
                 layer.name = self.get_unique_name(layer)
                 self._propagate_symmetry_state(layer)
                 return
-        assert (len(unused_path) > 0), ("deepinsert() should never "
-                                        "exhaust the path")
+        assert len(unused_path) > 0, "deepinsert() should never " "exhaust the path"
 
     def deeppop(self, path):
         """Removes a layer by its path
@@ -1710,8 +1742,7 @@ class RootLayerStack (group.LayerStack):
             parent.remove(layer)
             self.current_path = old_current  # i.e. nearest remaining
             return None
-        raise ValueError("Layer is not in the root stack or "
-                         "any descendent")
+        raise ValueError("Layer is not in the root stack or " "any descendent")
 
     def deepindex(self, layer):
         """Return a path for a layer by searching the stack tree
@@ -1732,8 +1763,14 @@ class RootLayerStack (group.LayerStack):
 
     ## Convenience methods for commands
 
-    def canonpath(self, index=None, layer=None, path=None,
-                  usecurrent=False, usefirst=False):
+    def canonpath(
+        self,
+        index=None,
+        layer=None,
+        path=None,
+        usecurrent=False,
+        usefirst=False,
+    ):
         """Verify and return the path for a layer from various criteria
 
         :param index: index of the layer in walk() order
@@ -1788,15 +1825,13 @@ class RootLayerStack (group.LayerStack):
         if path is not None:
             layer = self.deepget(path)
             if layer is self:
-                raise ValueError("path=%r is root: must be descendent" %
-                                 (path,))
+                raise ValueError("path=%r is root: must be descendent" % (path,))
             if layer is not None:
                 path = self.deepindex(layer)
                 assert self.deepget(path) is layer
                 return path
             elif not usecurrent:
-                raise ValueError("layer not found with path=%r" %
-                                 (path,))
+                raise ValueError("layer not found with path=%r" % (path,))
         elif index is not None:
             if index < 0:
                 raise ValueError("negative layer index %r" % (index,))
@@ -1805,12 +1840,10 @@ class RootLayerStack (group.LayerStack):
                     assert self.deepget(path) is layer
                     return path
             if not usecurrent:
-                raise ValueError("layer not found with index=%r" %
-                                 (index,))
+                raise ValueError("layer not found with index=%r" % (index,))
         elif layer is not None:
             if layer is self:
-                raise ValueError("layer is root stack: must be "
-                                 "descendent")
+                raise ValueError("layer is root stack: must be " "descendent")
             path = self.deepindex(layer)
             if path is not None:
                 assert self.deepget(path) is layer
@@ -1823,14 +1856,16 @@ class RootLayerStack (group.LayerStack):
             layer = self.deepget(path)
             if layer is not None:
                 if layer is self:
-                    raise ValueError("The current layer path refers to "
-                                     "the root stack")
+                    raise ValueError(
+                        "The current layer path refers to " "the root stack"
+                    )
                 path = self.deepindex(layer)
                 assert self.deepget(path) is layer
                 return path
             if not usefirst:
-                raise ValueError("Invalid current path; usefirst "
-                                 "might work but not specified")
+                raise ValueError(
+                    "Invalid current path; usefirst " "might work but not specified"
+                )
         if usefirst:
             if len(self) > 0:
                 path = (0,)
@@ -1838,8 +1873,7 @@ class RootLayerStack (group.LayerStack):
                 return path
             else:
                 raise ValueError("Invalid current path; stack is empty")
-        raise TypeError("No layer/index/path criterion, and "
-                        "no fallback criteria")
+        raise TypeError("No layer/index/path criterion, and " "no fallback criteria")
 
     ## Layer merging
 
@@ -1892,21 +1926,18 @@ class RootLayerStack (group.LayerStack):
         # Surface-backed layers' tiles can just be used as-is if they're
         # already fairly normal.
         needs_backdrop_removal = True
-        if (srclayer.mode == lib.mypaintlib.CombineNormal
-            and srclayer.opacity == 1.0):
+        if srclayer.mode == lib.mypaintlib.CombineNormal and srclayer.opacity == 1.0:
 
             # Optimizations for the tiled-surface types
             if isinstance(srclayer, data.PaintingLayer):
                 return deepcopy(srclayer)  # include strokes
             elif isinstance(srclayer, data.SurfaceBackedLayer):
-                return data.PaintingLayer.new_from_surface_backed_layer(
-                    srclayer
-                )
+                return data.PaintingLayer.new_from_surface_backed_layer(srclayer)
 
             # Otherwise we're gonna have to render the source layer,
             # but we can skip the background removal *most* of the time.
             if isinstance(srclayer, group.LayerStack):
-                needs_backdrop_removal = (srclayer.mode == PASS_THROUGH_MODE)
+                needs_backdrop_removal = srclayer.mode == PASS_THROUGH_MODE
             else:
                 needs_backdrop_removal = False
         # Begin building output, collecting tile indices and strokemaps.
@@ -1921,9 +1952,11 @@ class RootLayerStack (group.LayerStack):
             if not path_startswith(p, path):
                 continue
             tiles.update(layer.get_tile_coords())
-            if (isinstance(layer, data.PaintingLayer)
-                    and not layer.locked
-                    and not layer.branch_locked):
+            if (
+                isinstance(layer, data.PaintingLayer)
+                and not layer.locked
+                and not layer.branch_locked
+            ):
                 dstlayer.strokes[:0] = layer.strokes
 
         # Might need to render the backdrop, in order to subtract it.
@@ -1937,7 +1970,7 @@ class RootLayerStack (group.LayerStack):
         src_spec = rendering.Spec(
             current=srclayer,
             solo=True,
-            layers=set(self.layers_along_or_under_path(path))
+            layers=set(self.layers_along_or_under_path(path)),
         )
         src_ops = self.get_render_ops(src_spec)
 
@@ -1949,7 +1982,7 @@ class RootLayerStack (group.LayerStack):
         dstsurf = dstlayer._surface
         tiledims = (tiledsurface.N, tiledsurface.N, 4)
         for tx, ty in tiles:
-            bd = np.zeros(tiledims, dtype='uint16')
+            bd = np.zeros(tiledims, dtype="uint16")
             with dstsurf.tile_request(tx, ty, readonly=False) as dst:
                 self._process_ops_list(bd_ops, bd, True, tx, ty, 0)
                 lib.mypaintlib.tile_copy_rgba16_into_rgba16(bd, dst)
@@ -1971,19 +2004,23 @@ class RootLayerStack (group.LayerStack):
             return None
 
         source = self.deepget(path)
-        if (source is None
-                or source.locked
-                or source.branch_locked
-                or not source.get_mode_normalizable()):
+        if (
+            source is None
+            or source.locked
+            or source.branch_locked
+            or not source.get_mode_normalizable()
+        ):
             return None
 
         target_path = path[:-1] + (path[-1] + 1,)
 
         target = self.deepget(target_path)
-        if (target is None
-                or target.locked
-                or target.branch_locked
-                or not target.get_mode_normalizable()):
+        if (
+            target is None
+            or target.locked
+            or target.branch_locked
+            or not target.get_mode_normalizable()
+        ):
             return None
 
         return target_path
@@ -2037,7 +2074,7 @@ class RootLayerStack (group.LayerStack):
         dstlayer = data.PaintingLayer()
         srclayer = self.deepget(path)
         if srclayer.mode == lib.mypaintlib.CombineSpectralWGM:
-            dstlayer.mode = srclayer.mode 
+            dstlayer.mode = srclayer.mode
         else:
             dstlayer.mode = lib.mypaintlib.CombineNormal
         tiles = set()
@@ -2048,13 +2085,12 @@ class RootLayerStack (group.LayerStack):
             assert not layer.branch_locked
             dstlayer.strokes[:0] = layer.strokes
         # Build a (hopefully sensible) combined name too
-        names = [l.name for l in reversed(merge_layers)
-                 if l.has_interesting_name()]
+        names = [l.name for l in reversed(merge_layers) if l.has_interesting_name()]
         name = C_(
             "layer default names: joiner punctuation for merged layers",
-            u", ",
+            ", ",
         ).join(names)
-        if name != '':
+        if name != "":
             dstlayer.name = name
         logger.debug("Merge Down: normalized source=%r", merge_layers)
         # Rendering loop
@@ -2066,9 +2102,13 @@ class RootLayerStack (group.LayerStack):
                     if mode != lib.mypaintlib.CombineSpectralWGM:
                         mode = lib.mypaintlib.CombineNormal
                     layer._surface.composite_tile(
-                        dst, True,
-                        tx, ty, mipmap_level=0,
-                        mode=mode, opacity=layer.opacity
+                        dst,
+                        True,
+                        tx,
+                        ty,
+                        mipmap_level=0,
+                        mode=mode,
+                        opacity=layer.opacity,
                     )
         return dstlayer
 
@@ -2105,9 +2145,11 @@ class RootLayerStack (group.LayerStack):
         names = []
         for path, layer in self.walk(visible=True):
             tiles.update(layer.get_tile_coords())
-            if (isinstance(layer, data.StrokemappedPaintingLayer)
-                    and not layer.locked
-                    and not layer.branch_locked):
+            if (
+                isinstance(layer, data.StrokemappedPaintingLayer)
+                and not layer.locked
+                and not layer.branch_locked
+            ):
                 strokes[:0] = layer.strokes
             if layer.has_interesting_name():
                 names.append(layer.name)
@@ -2118,9 +2160,9 @@ class RootLayerStack (group.LayerStack):
         dstlayer.strokes = strokes
         name = C_(
             "layer default names: joiner punctuation for merged layers",
-            u", ",
+            ", ",
         ).join(names)
-        if name != '':
+        if name != "":
             dstlayer.name = name
         dstsurf = dstlayer._surface
 
@@ -2168,7 +2210,7 @@ class RootLayerStack (group.LayerStack):
         targ_only_spec = rendering.Spec(
             current=targ_layer,
             solo=True,
-            layers=set(self.layers_along_or_under_path(targ_path))
+            layers=set(self.layers_along_or_under_path(targ_path)),
         )
         targ_only_ops = self.get_render_ops(targ_only_spec)
 
@@ -2178,13 +2220,13 @@ class RootLayerStack (group.LayerStack):
         targ_surf = targ_layer._surface
         tile_dims = (tiledsurface.N, tiledsurface.N, 4)
         unchanged_tile_indices = set()
-        zeros = np.zeros(tile_dims, dtype='uint16')
+        zeros = np.zeros(tile_dims, dtype="uint16")
         for tx, ty in targ_surf.get_tiles():
             bd_img = copy(zeros)
             self._process_ops_list(bd_ops, bd_img, True, tx, ty, 0)
             targ_img = copy(bd_img)
             self._process_ops_list(targ_only_ops, targ_img, True, tx, ty, 0)
-            equal_channels = (targ_img == bd_img)   # NxNn4 dtype=bool
+            equal_channels = targ_img == bd_img  # NxNn4 dtype=bool
             if equal_channels.all():
                 unchanged_tile_indices.add((tx, ty))
             elif pixels:
@@ -2229,7 +2271,7 @@ class RootLayerStack (group.LayerStack):
             spec = rendering.Spec(
                 current=child,
                 solo=True,
-                layers=set(self.layers_along_or_under_path(child_path))
+                layers=set(self.layers_along_or_under_path(child_path)),
             )
             ops = self.get_render_ops(spec)
             child_ops[child] = ops
@@ -2240,15 +2282,15 @@ class RootLayerStack (group.LayerStack):
         common_layer.mode = lib.mypaintlib.CombineNormal
         common_layer.name = C_(
             "layer default names: refactor: name of the common areas layer",
-            u"Common",
+            "Common",
         )
         common_surf = common_layer._surface
         targ_group.append(common_layer)
 
         # Process by tile
         n = tiledsurface.N
-        zeros_rgba = np.zeros((n, n, 4), dtype='uint16')
-        ones_bool = np.ones((n, n, 1), dtype='bool')
+        zeros_rgba = np.zeros((n, n, 4), dtype="uint16")
+        ones_bool = np.ones((n, n, 1), dtype="bool")
         common_data_tiles = set()
         child0 = normalized_child_layers[0]
         child0_surf = child0._surface
@@ -2287,8 +2329,9 @@ class RootLayerStack (group.LayerStack):
 
     ## Loading
 
-    def load_from_openraster(self, orazip, elem, cache_dir, progress,
-                             x=0, y=0, **kwargs):
+    def load_from_openraster(
+        self, orazip, elem, cache_dir, progress, x=0, y=0, **kwargs
+    ):
         """Load the root layer stack from an open .ora file
 
         >>> root = RootLayerStack(None)
@@ -2315,12 +2358,7 @@ class RootLayerStack (group.LayerStack):
         """
         self._no_background = True
         super(RootLayerStack, self).load_from_openraster(
-            orazip,
-            elem,
-            cache_dir,
-            progress,
-            x=x, y=y,
-            **kwargs
+            orazip, elem, cache_dir, progress, x=x, y=y, **kwargs
         )
         del self._no_background
         self._set_current_path_after_ora_load()
@@ -2343,9 +2381,9 @@ class RootLayerStack (group.LayerStack):
         logger.debug("Loaded %d layer(s)" % num_loaded)
         num_layers = num_loaded
         if num_loaded == 0:
-            logger.error('Could not load any layer, document is empty.')
+            logger.error("Could not load any layer, document is empty.")
             if self.doc and self.doc.CREATE_PAINTING_LAYER_IF_EMPTY:
-                logger.info('Adding an empty painting layer')
+                logger.info("Adding an empty painting layer")
                 self.ensure_populated()
                 selected_path = [0]
                 num_layers = len(self)
@@ -2359,8 +2397,9 @@ class RootLayerStack (group.LayerStack):
         logger.debug("Selecting %r after load", selected_path)
         self.set_current_path(selected_path)
 
-    def _load_child_layer_from_orazip(self, orazip, elem, cache_dir,
-                                      progress, x=0, y=0, **kwargs):
+    def _load_child_layer_from_orazip(
+        self, orazip, elem, cache_dir, progress, x=0, y=0, **kwargs
+    ):
         """Loads and appends a single child layer from an open .ora file"""
         attrs = elem.attrib
         # Handle MyPaint's special background tile notation
@@ -2390,34 +2429,26 @@ class RootLayerStack (group.LayerStack):
                 self._no_background = False
                 return
             except tiledsurface.BackgroundError as e:
-                logger.warning('ORA background tile not usable: %r', e)
+                logger.warning("ORA background tile not usable: %r", e)
         super(RootLayerStack, self)._load_child_layer_from_orazip(
-            orazip,
-            elem,
-            cache_dir,
-            progress,
-            x=x, y=y,
-            **kwargs
+            orazip, elem, cache_dir, progress, x=x, y=y, **kwargs
         )
 
-    def load_from_openraster_dir(self, oradir, elem, cache_dir, progress,
-                                 x=0, y=0, **kwargs):
+    def load_from_openraster_dir(
+        self, oradir, elem, cache_dir, progress, x=0, y=0, **kwargs
+    ):
         """Loads layer flags and data from an OpenRaster-style dir"""
         self._no_background = True
         super(RootLayerStack, self).load_from_openraster_dir(
-            oradir,
-            elem,
-            cache_dir,
-            progress,
-            x=x, y=y,
-            **kwargs
+            oradir, elem, cache_dir, progress, x=x, y=y, **kwargs
         )
         del self._no_background
         self._set_current_path_after_ora_load()
         self._mark_all_layers_for_rethumb()
 
-    def _load_child_layer_from_oradir(self, oradir, elem, cache_dir,
-                                      progress, x=0, y=0, **kwargs):
+    def _load_child_layer_from_oradir(
+        self, oradir, elem, cache_dir, progress, x=0, y=0, **kwargs
+    ):
         """Loads and appends a single child layer from an open .ora file"""
         attrs = elem.attrib
         # Handle MyPaint's special background tile notation
@@ -2439,27 +2470,23 @@ class RootLayerStack (group.LayerStack):
             assert self._no_background, "Only one background is permitted"
             try:
                 bg_pixbuf = lib.pixbuf.load_from_file(
-                    filename = os.path.join(oradir, bg_src),
-                    progress = progress,
+                    filename=os.path.join(oradir, bg_src),
+                    progress=progress,
                 )
                 self.set_background(bg_pixbuf)
                 self._no_background = False
                 return
             except tiledsurface.BackgroundError as e:
-                logger.warning('ORA background tile not usable: %r', e)
+                logger.warning("ORA background tile not usable: %r", e)
         super(RootLayerStack, self)._load_child_layer_from_oradir(
-            oradir,
-            elem,
-            cache_dir,
-            progress,
-            x=x, y=y,
-            **kwargs
+            oradir, elem, cache_dir, progress, x=x, y=y, **kwargs
         )
 
     ## Saving
 
-    def save_to_openraster(self, orazip, tmpdir, path, canvas_bbox,
-                           frame_bbox, progress=None, **kwargs):
+    def save_to_openraster(
+        self, orazip, tmpdir, path, canvas_bbox, frame_bbox, progress=None, **kwargs
+    ):
         """Saves the stack's data into an open OpenRaster ZipFile"""
         if not progress:
             progress = lib.feedback.Progress()
@@ -2467,7 +2494,10 @@ class RootLayerStack (group.LayerStack):
 
         # First 90%: save the stack contents normally.
         stack_elem = super(RootLayerStack, self).save_to_openraster(
-            orazip, tmpdir, path, canvas_bbox,
+            orazip,
+            tmpdir,
+            path,
+            canvas_bbox,
             frame_bbox,
             progress=progress.open(9),
             **kwargs
@@ -2478,8 +2508,11 @@ class RootLayerStack (group.LayerStack):
         bg_layer.initially_selected = False
         bg_path = (len(self),)
         bg_elem = bg_layer.save_to_openraster(
-            orazip, tmpdir, bg_path,
-            canvas_bbox, frame_bbox,
+            orazip,
+            tmpdir,
+            bg_path,
+            canvas_bbox,
+            frame_bbox,
             progress=progress.open(1),
             **kwargs
         )
@@ -2491,15 +2524,11 @@ class RootLayerStack (group.LayerStack):
     def queue_autosave(self, oradir, taskproc, manifest, bbox, **kwargs):
         """Queues the layer for auto-saving"""
         stack_elem = super(RootLayerStack, self).queue_autosave(
-            oradir, taskproc, manifest, bbox,
-            **kwargs
+            oradir, taskproc, manifest, bbox, **kwargs
         )
         # Queue background layer
         bg_layer = self.background_layer
-        bg_elem = bg_layer.queue_autosave(
-            oradir, taskproc, manifest, bbox,
-            **kwargs
-        )
+        bg_elem = bg_layer.queue_autosave(oradir, taskproc, manifest, bbox, **kwargs)
         stack_elem.append(bg_elem)
         return stack_elem
 
@@ -2616,7 +2645,7 @@ class RootLayerStack (group.LayerStack):
         pass
 
 
-class RootLayerStackSnapshot (group.LayerStackSnapshot):
+class RootLayerStackSnapshot(group.LayerStackSnapshot):
     """Snapshot of a root layer stack's state"""
 
     def __init__(self, layer):
@@ -2632,7 +2661,7 @@ class RootLayerStackSnapshot (group.LayerStackSnapshot):
         layer.current_path = self.current_path
 
 
-class _TileRenderWrapper (TileAccessible, TileBlittable):
+class _TileRenderWrapper(TileAccessible, TileBlittable):
     """Adapts a RootLayerStack to support RO tile_request()s.
 
     The wrapping is very minimal.
@@ -2687,10 +2716,13 @@ class _TileRenderWrapper (TileAccessible, TileBlittable):
                 dst = tiledsurface.transparent_tile.rgba
             else:
                 tiledims = (tiledsurface.N, tiledsurface.N, 4)
-                dst = np.zeros(tiledims, 'uint16')
+                dst = np.zeros(tiledims, "uint16")
                 self._root.render_single_tile(
-                    dst, True,
-                    tx, ty, 0,
+                    dst,
+                    True,
+                    tx,
+                    ty,
+                    0,
                     ops=self._ops,
                 )
             if self._use_cache:
@@ -2711,9 +2743,9 @@ class _TileRenderWrapper (TileAccessible, TileBlittable):
 
     def blit_tile_into(self, dst, dst_has_alpha, tx, ty, **kwargs):
         """Copy a rendered tile into a fix15 or 8bpp array."""
-        assert dst.dtype == 'uint8'
+        assert dst.dtype == "uint8"
         with self.tile_request(tx, ty, readonly=True) as src:
-            assert src.dtype == 'uint16'
+            assert src.dtype == "uint16"
             if dst_has_alpha:
                 conv = lib.mypaintlib.tile_convert_rgba16_to_rgba8
             else:
@@ -2755,9 +2787,10 @@ def path_startswith(path, prefix):
 def _test():
     """Run doctest strings"""
     import doctest
+
     doctest.testmod(optionflags=doctest.ELLIPSIS)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     logging.basicConfig(level=logging.DEBUG)
     _test()

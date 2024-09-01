@@ -9,22 +9,21 @@
 
 """Brush color changer."""
 
-from __future__ import division, print_function
-
-from . import colors
 import lib.color
 
+from . import colors
 
-class BrushColorManager (colors.ColorManager):
-    """Color manager mediating between brush settings and the color adjusters.
+
+class BrushColorManager(colors.ColorManager):
+    """
+    Color manager mediating between brush settings and the color adjusters.
     """
 
     __brush = None
     __in_callback = False
 
     def __init__(self, app):
-        """Initialize, binding to certain events.
-        """
+        """Initialize, binding to certain events."""
         colors.ColorManager.__init__(self, app.preferences, app.datapath)
         self.__brush = app.brush
         app.brush.observers.append(self.__settings_changed_cb)
@@ -33,15 +32,14 @@ class BrushColorManager (colors.ColorManager):
         self._app = app
 
     def set_color(self, color):
-        """Propagate user-set colors to the brush too (extension).
-        """
+        """Propagate user-set colors to the brush too (extension)."""
         colors.ColorManager.set_color(self, color)
         if not self.__in_callback:
             self.__brush.set_color_hsv(color.get_hsv())
 
     def __settings_changed_cb(self, settings):
         # When the color changes by external means, update the adjusters.
-        if not settings.intersection(('color_h', 'color_s', 'color_v')):
+        if not settings.intersection(("color_h", "color_s", "color_v")):
             return
         brush_color = lib.color.HSVColor(*self.__brush.get_color_hsv())
         if brush_color == self.get_color():

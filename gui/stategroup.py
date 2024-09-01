@@ -7,19 +7,14 @@
 # the Free Software Foundation; either version 2 of the License, or
 # (at your option) any later version.
 
-from __future__ import division, print_function
-
 import logging
 
-from lib.gibindings import Gtk
-from lib.gibindings import Gdk
-from lib.gibindings import GLib
-
+from lib.gibindings import Gdk, GLib, Gtk
 
 logger = logging.getLogger(__name__)
 
 
-class StateGroup (object):
+class StateGroup(object):
     """Supervisor instance for GUI states.
 
     This class mainly deals with the various ways how the user can
@@ -48,7 +43,7 @@ class StateGroup (object):
         return self.create_state(popup.enter, popup.leave, popup)
 
 
-class State (object):
+class State(object):
     """A GUI state.
 
     A GUI state is a mode which the GUI is in, for example an active
@@ -69,7 +64,7 @@ class State (object):
 
     # : popups only: how long the cursor is allowed outside before closing
     # : (ignored during press-and-hold)"
-    #outside_popup_timeout = 0.050
+    # outside_popup_timeout = 0.050
 
     #: state to activate when this state is activated while already active
     #: (None = just leave this state)
@@ -80,11 +75,11 @@ class State (object):
     allowed_buttons_masks = {
         1: Gdk.ModifierType.BUTTON1_MASK,
         2: Gdk.ModifierType.BUTTON2_MASK,
-        3: Gdk.ModifierType.BUTTON3_MASK, }
+        3: Gdk.ModifierType.BUTTON3_MASK,
+    }
 
     #: Human-readable display string for the state.
     label = None
-
 
     ## Methods
 
@@ -102,10 +97,10 @@ class State (object):
             self.outside_popup_timeout = popup.outside_popup_timeout
 
     def enter(self, **kwargs):
-        logger.debug('Entering State, calling %s', self.on_enter.__name__)
+        logger.debug("Entering State, calling %s", self.on_enter.__name__)
         assert not self.active
         self.active = True
-        self._enter_time = Gtk.get_current_event_time()/1000.0
+        self._enter_time = Gtk.get_current_event_time() / 1000.0
         try:
             self.on_enter(**kwargs)
         except:
@@ -115,7 +110,7 @@ class State (object):
 
     def leave(self, reason=None):
         logger.debug(
-            'Leaving State (reason=%r), calling %s',
+            "Leaving State (reason=%r), calling %s",
             reason,
             self.on_leave.__name__,
         )
@@ -165,8 +160,10 @@ class State (object):
                 e = action_or_event
                 # eat any multiple clicks. TODO should possibly try to e.g.
                 # split a triple click into three clicks in the future.
-                if (e.type == Gdk.EventType.DOUBLE_BUTTON_PRESS or
-                        e.type == Gdk.EventType.TRIPLE_BUTTON_PRESS):
+                if (
+                    e.type == Gdk.EventType.DOUBLE_BUTTON_PRESS
+                    or e.type == Gdk.EventType.TRIPLE_BUTTON_PRESS
+                ):
                     e.type = Gdk.EventType.BUTTON_PRESS
 
                 # currently we only support mouse buttons being single-pressed.
@@ -182,7 +179,9 @@ class State (object):
                 if a.keydown:
                     a.keyup_callback = self._keyup_cb
                     self.keydown = True
-        self.activated_by_keyboard = self.keydown  # FIXME: should probably be renamed (mouse button possible)
+        self.activated_by_keyboard = (
+            self.keydown
+        )  # FIXME: should probably be renamed (mouse button possible)
         self.enter(**kwargs)
 
     def toggle(self, action=None):
@@ -201,13 +200,13 @@ class State (object):
         if not self.active:
             return
         self.keydown = False
-        if event.time/1000.0 - self._enter_time < self.max_key_hit_duration:
+        if event.time / 1000.0 - self._enter_time < self.max_key_hit_duration:
             pass  # accept as one-time hit
         else:
             if self._outside_popup_timeout_id:
-                self.leave('outside')
+                self.leave("outside")
             else:
-                self.leave('keyup')
+                self.leave("keyup")
 
     ## Auto-leave timeout
 
@@ -222,13 +221,13 @@ class State (object):
             return
         self._stop_autoleave_timeout()
         self._autoleave_timeout_id = GLib.timeout_add(
-            int(1000*self.autoleave_timeout),
+            int(1000 * self.autoleave_timeout),
             self._autoleave_timeout_cb,
         )
 
     def _autoleave_timeout_cb(self):
         if not self.keydown:
-            self.leave('timeout')
+            self.leave("timeout")
         return False
 
     ## Outside-popup timer
@@ -244,7 +243,7 @@ class State (object):
             return
         self._stop_outside_popup_timeout()
         self._outside_popup_timeout_id = GLib.timeout_add(
-            int(1000*self.outside_popup_timeout),
+            int(1000 * self.outside_popup_timeout),
             self._outside_popup_timeout_cb,
         )
 
@@ -253,7 +252,7 @@ class State (object):
             return False
         self._outside_popup_timeout_id = None
         if not self.keydown:
-            self.leave('outside')
+            self.leave("outside")
         return False
 
     def _popup_enter_notify_cb(self, widget, event):
@@ -271,6 +270,6 @@ class State (object):
             GLib.source_remove(self._outside_popup_timeout_id)
             self._outside_popup_timeout_id = None
         self._outside_popup_timeout_id = GLib.timeout_add(
-            int(1000*self.outside_popup_timeout),
+            int(1000 * self.outside_popup_timeout),
             self._outside_popup_timeout_cb,
         )

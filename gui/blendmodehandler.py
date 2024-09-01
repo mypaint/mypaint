@@ -66,8 +66,10 @@ class BlendModes(object):
         self.normal_mode.mode_type = self.NORMAL
 
         self.modes = [
-            self.eraser_mode, self.lock_alpha_mode,
-            self.colorize_mode, self.normal_mode
+            self.eraser_mode,
+            self.lock_alpha_mode,
+            self.colorize_mode,
+            self.normal_mode,
         ]
         self.mode_names = map(lambda x: x.name, self.modes)
         # Keep track of the active mode
@@ -134,7 +136,7 @@ class BlendModeManager(object):
             "eraser_mode": self.eraser_mode,
             "lock_alpha_mode": self.lock_alpha_mode,
             "normal_mode": self.normal_mode,
-            "colorize_mode": self.colorize_mode
+            "colorize_mode": self.colorize_mode,
         }
 
         for name in self.actions:
@@ -186,7 +188,7 @@ class BlendModeManager(object):
         Remove the object from the stack and connect the next object in
         line for control, if such an object exists.
         """
-        assert(isinstance(bm, BlendModes))
+        assert isinstance(bm, BlendModes)
         if bm in self.delegates:
             self.delegates.remove(bm)
         else:

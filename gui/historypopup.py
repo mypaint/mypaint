@@ -7,14 +7,11 @@
 # the Free Software Foundation; either version 2 of the License, or
 # (at your option) any later version.
 
-from __future__ import division, print_function
-
-from lib.gibindings import Gtk
-from lib.gibindings import Gdk
 import cairo
 
-from . import windowing
+from lib.gibindings import Gdk, Gtk
 
+from . import windowing
 
 """Color history popup."""
 
@@ -28,7 +25,8 @@ smallcolor_width = popup_height // 2
 
 ## Class definitions
 
-class HistoryPopup (windowing.PopupWindow):
+
+class HistoryPopup(windowing.PopupWindow):
     """History popup window.
 
     This window is normally bound to the "X" key, and has the following
@@ -54,13 +52,14 @@ class HistoryPopup (windowing.PopupWindow):
         self.app.kbm.add_window(self)
 
         hist_len = len(self.app.brush_color_manager.get_history())
-        self.popup_width = bigcolor_width + (hist_len-1)*smallcolor_width
+        self.popup_width = bigcolor_width + (hist_len - 1) * smallcolor_width
 
-        self.set_events(Gdk.EventMask.BUTTON_PRESS_MASK |
-                        Gdk.EventMask.BUTTON_RELEASE_MASK |
-                        Gdk.EventMask.ENTER_NOTIFY_MASK |
-                        Gdk.EventMask.LEAVE_NOTIFY_MASK
-                        )
+        self.set_events(
+            Gdk.EventMask.BUTTON_PRESS_MASK
+            | Gdk.EventMask.BUTTON_RELEASE_MASK
+            | Gdk.EventMask.ENTER_NOTIFY_MASK
+            | Gdk.EventMask.LEAVE_NOTIFY_MASK
+        )
         self.connect("button-release-event", self.button_release_cb)
         self.connect("button-press-event", self.button_press_cb)
 
@@ -92,10 +91,8 @@ class HistoryPopup (windowing.PopupWindow):
 
         # popup placement
         x, y = self.get_position()
-        bigcolor_center_x = (self.selection * smallcolor_width +
-                             bigcolor_width // 2)
-        self.move(x + self.popup_width // 2 - bigcolor_center_x,
-                  y + bigcolor_width)
+        bigcolor_center_x = self.selection * smallcolor_width + bigcolor_width // 2
+        self.move(x + self.popup_width // 2 - bigcolor_center_x, y + bigcolor_width)
         self.show_all()
 
         window = self.get_window()
@@ -120,7 +117,7 @@ class HistoryPopup (windowing.PopupWindow):
 
         cr.set_line_join(cairo.LINE_JOIN_ROUND)
 
-        cr.translate(0.0, popup_height/2.0)
+        cr.translate(0.0, popup_height / 2.0)
 
         hist = self.app.brush_color_manager.get_history()
         for i, c in enumerate(hist):
@@ -128,10 +125,10 @@ class HistoryPopup (windowing.PopupWindow):
                 cr.scale(0.5, 0.5)
 
             line_width = 3.0
-            distance = 2*line_width
-            rect = [0, -popup_height/2.0, popup_height, popup_height]
-            rect[0] += distance/2.0
-            rect[1] += distance/2.0
+            distance = 2 * line_width
+            rect = [0, -popup_height / 2.0, popup_height, popup_height]
+            rect[0] += distance / 2.0
+            rect[1] += distance / 2.0
             rect[2] -= distance
             rect[3] -= distance
             cr.rectangle(*rect)

@@ -17,8 +17,8 @@ and its "render_*()" methods.
 
 import abc
 
-
 # Public constants:
+
 
 class Opcode:
     """Opcode values for Renderable.get_render_ops()."""
@@ -44,7 +44,8 @@ class Opcode:
 
 # Classes and interfaces:
 
-class Spec (object):
+
+class Spec(object):
     """Selection criteria for Renderable.get_render_ops()."""
 
     def __init__(self, **kwargs):
@@ -93,12 +94,12 @@ class Spec (object):
 
     def cacheable(self):
         """True if render methods can usefully cache output for this spec."""
-        result = (self.current_overlay is None)
-        result &= (self.global_overlay is None)
+        result = self.current_overlay is None
+        result &= self.global_overlay is None
         result &= not bool(self.solo)
         result &= not bool(self.previewing)
-        result &= (self.layers is None)
-        result &= (self.background is None)
+        result &= self.layers is None
+        result &= self.background is None
         return result
 
 

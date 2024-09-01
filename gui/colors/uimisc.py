@@ -10,10 +10,7 @@
 """UI miscellanea.
 """
 
-from __future__ import division, print_function
-
 from lib.gibindings import Gtk
-
 
 ## Layout constants ##
 
@@ -30,10 +27,13 @@ SLIDER_MIN_LENGTH = 50
 
 ## Helper functions ##
 
-def borderless_button(stock_id=None,
-                      icon_name=None,
-                      size=Gtk.IconSize.SMALL_TOOLBAR,
-                      tooltip=None):
+
+def borderless_button(
+    stock_id=None,
+    icon_name=None,
+    size=Gtk.IconSize.SMALL_TOOLBAR,
+    tooltip=None,
+):
     button = Gtk.Button()
     if stock_id is not None:
         image = Gtk.Image()

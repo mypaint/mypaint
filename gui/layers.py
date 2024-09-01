@@ -11,30 +11,20 @@
 
 ## Imports
 
-from __future__ import division, print_function
-
-import lib.layer
-from lib.xml import escape
-from lib.observable import event
-from lib import helpers
-
-from lib.document import Document
-from lib.gettext import gettext as _
-from lib.gettext import C_
-from gui.layerprops import make_preview
-import gui.drawutils
-from lib.pycompat import unicode
-
-from lib.gibindings import Gtk
-from lib.gibindings import Gdk
-from lib.gibindings import GObject
-from lib.gibindings import GLib
-from lib.gibindings import Pango
-from lib.gibindings import GdkPixbuf
-
-import sys
 import logging
+import sys
 
+import gui.drawutils
+import lib.layer
+from gui.layerprops import make_preview
+from lib import helpers
+from lib.document import Document
+from lib.gettext import C_
+from lib.gettext import gettext as _
+from lib.gibindings import Gdk, GdkPixbuf, GLib, GObject, Gtk, Pango
+from lib.observable import event
+from lib.pycompat import unicode
+from lib.xml import escape
 
 ## Module vars
 
@@ -44,7 +34,7 @@ logger = logging.getLogger(__name__)
 ## Class defs
 
 
-class RootStackTreeModelWrapper (GObject.GObject, Gtk.TreeModel):
+class RootStackTreeModelWrapper(GObject.GObject, Gtk.TreeModel):
     """Tree model wrapper presenting a document model's layers stack
 
     Together with the layers panel (defined in `gui.layerswindow`),
@@ -73,7 +63,7 @@ class RootStackTreeModelWrapper (GObject.GObject, Gtk.TreeModel):
         self._root = root
         self._iter_stamp = 1
         self._iter_id2path = {}  # {pathid: pathtuple}
-        self._iter_path2id = {}   # {pathtuple: pathid}
+        self._iter_path2id = {}  # {pathtuple: pathid}
         root.layer_properties_changed += self._layer_props_changed_cb
         root.layer_inserted += self._layer_inserted_cb
         root.layer_deleted += self._layer_deleted_cb
@@ -113,8 +103,7 @@ class RootStackTreeModelWrapper (GObject.GObject, Gtk.TreeModel):
         parent = self._root.deepget(parent_path)
         if len(parent) == 1:
             parent_it = self.get_iter(parent_path)
-            self.row_has_child_toggled(Gtk.TreePath(parent_path),
-                                       parent_it)
+            self.row_has_child_toggled(Gtk.TreePath(parent_path), parent_it)
 
     def _layer_deleted_cb(self, root, path):
         """Updates the display after a layer is removed"""
@@ -126,8 +115,7 @@ class RootStackTreeModelWrapper (GObject.GObject, Gtk.TreeModel):
         parent = self._root.deepget(parent_path)
         if len(parent) == 0:
             parent_it = self.get_iter(parent_path)
-            self.row_has_child_toggled(Gtk.TreePath(parent_path),
-                                       parent_it)
+            self.row_has_child_toggled(Gtk.TreePath(parent_path), parent_it)
 
     def _row_dragged(self, src_path, dst_path):
         """Handles the user dragging a row to a new location"""
@@ -340,10 +328,10 @@ class RootStackTreeModelWrapper (GObject.GObject, Gtk.TreeModel):
         return self._create_iter(parent_path)
 
 
-class RootStackTreeView (Gtk.TreeView):
+class RootStackTreeView(Gtk.TreeView):
     """GtkTreeView tailored for a doc's root layer stack"""
 
-    DRAG_HOVER_EXPAND_TIME = 1.25   # seconds
+    DRAG_HOVER_EXPAND_TIME = 1.25  # seconds
 
     def __init__(self, docmodel):
         super(RootStackTreeView, self).__init__()
@@ -353,19 +341,19 @@ class RootStackTreeView (Gtk.TreeView):
         self.set_model(treemodel)
 
         target1 = Gtk.TargetEntry.new(
-            target = "GTK_TREE_MODEL_ROW",
-            flags = Gtk.TargetFlags.SAME_WIDGET,
-            info = 1,
+            target="GTK_TREE_MODEL_ROW",
+            flags=Gtk.TargetFlags.SAME_WIDGET,
+            info=1,
         )
         self.drag_source_set(
-            start_button_mask = Gdk.ModifierType.BUTTON1_MASK,
-            targets = [target1],
-            actions = Gdk.DragAction.MOVE,
+            start_button_mask=Gdk.ModifierType.BUTTON1_MASK,
+            targets=[target1],
+            actions=Gdk.DragAction.MOVE,
         )
         self.drag_dest_set(
-            flags = Gtk.DestDefaults.MOTION | Gtk.DestDefaults.DROP,
-            targets = [target1],
-            actions = Gdk.DragAction.MOVE,
+            flags=Gtk.DestDefaults.MOTION | Gtk.DestDefaults.DROP,
+            targets=[target1],
+            actions=Gdk.DragAction.MOVE,
         )
 
         self.connect("button-press-event", self._button_press_cb)
@@ -375,10 +363,14 @@ class RootStackTreeView (Gtk.TreeView):
         # implemented, the events should neither be acted upon, nor consumed.
         GObject.signal_override_class_closure(
             GObject.signal_lookup("key-press-event", Gtk.Widget),
-            RootStackTreeView, self._key_event_cb)
+            RootStackTreeView,
+            self._key_event_cb,
+        )
         GObject.signal_override_class_closure(
             GObject.signal_lookup("key-release-event", Gtk.Widget),
-            RootStackTreeView, self._key_event_cb)
+            RootStackTreeView,
+            self._key_event_cb,
+        )
 
         # Motion and modifier keys during drag
         self.connect("drag-begin", self._drag_begin_cb)
@@ -471,8 +463,8 @@ class RootStackTreeView (Gtk.TreeView):
         """Handle button presses (visibility, locked, naming)"""
 
         # Basic details about the click
-        single_click = (event.type == Gdk.EventType.BUTTON_PRESS)
-        double_click = (event.type == Gdk.EventType._2BUTTON_PRESS)
+        single_click = event.type == Gdk.EventType.BUTTON_PRESS
+        double_click = event.type == Gdk.EventType._2BUTTON_PRESS
         is_menu = event.triggers_context_menu()
 
         # Determine which row & column was clicked
@@ -491,14 +483,16 @@ class RootStackTreeView (Gtk.TreeView):
         # the current layer should not be changed.
         col_handlers = [
             # (Column, CellRenderer, single, double, handler)
-            (self._flags1_col, None, True, False,
-             self._flags1_col_click_cb),
-            (self._flags2_col, None, True, False,
-             self._flags2_col_click_cb),
-            (self._name_col, None, False, True,
-             self._name_col_2click_cb),
-            (self._name_col, self._preview_cell, True, False,
-             self._preview_cell_click_cb),
+            (self._flags1_col, None, True, False, self._flags1_col_click_cb),
+            (self._flags2_col, None, True, False, self._flags2_col_click_cb),
+            (self._name_col, None, False, True, self._name_col_2click_cb),
+            (
+                self._name_col,
+                self._preview_cell,
+                True,
+                False,
+                self._preview_cell_click_cb,
+            ),
         ]
         if not is_menu:
             for col, cell, when_single, when_double, handler in col_handlers:
@@ -667,7 +661,8 @@ class RootStackTreeView (Gtk.TreeView):
             int(self.DRAG_HOVER_EXPAND_TIME * 1000),
             self._hover_expand_timer_cb,
             path,
-            x, y,
+            x,
+            y,
         )
 
     def _stop_hover_expand_timer(self):
@@ -718,10 +713,9 @@ class RootStackTreeView (Gtk.TreeView):
         if drop_pos == gtvdp.BEFORE:
             return dest_path
         elif drop_pos == gtvdp.AFTER:
-            is_expanded_group = (
-                isinstance(dest_layer, lib.layer.LayerStack) and
-                self.row_expanded(dest_treepath)
-            )
+            is_expanded_group = isinstance(
+                dest_layer, lib.layer.LayerStack
+            ) and self.row_expanded(dest_treepath)
             if is_expanded_group:
                 # This highlights like an insert before its first item
                 return tuple(list(dest_path) + [0])
@@ -899,11 +893,12 @@ class RootStackTreeView (Gtk.TreeView):
             self.__icon_cache = cache
         icon_name = layer.get_icon_name()
         icon_size = 16
-        icon_size += 2   # allow fopr the outline
+        icon_size += 2  # allow fopr the outline
         icon = cache.get(icon_name, None)
         if not icon:
             icon = gui.drawutils.load_symbolic_icon(
-                icon_name, icon_size,
+                icon_name,
+                icon_size,
                 fg=(1, 1, 1, 1),
                 outline=(0, 0, 0, 1),
             )
@@ -923,7 +918,7 @@ class RootStackTreeView (Gtk.TreeView):
             scale_x=1,
             scale_y=1,
             interp_type=GdkPixbuf.InterpType.NEAREST,
-            overall_alpha=255/6,
+            overall_alpha=255 / 6,
         )
 
     @staticmethod
@@ -935,8 +930,8 @@ class RootStackTreeView (Gtk.TreeView):
         if layer is None:
             name_markup = escape(lib.layer.PlaceholderLayer.DEFAULT_NAME)
             description = C_(
-                "Layers: description: no layer (\"never happens\" condition!)",
-                u"?layer",
+                'Layers: description: no layer ("never happens" condition!)',
+                "?layer",
             )
         elif layer.name is None:
             name_markup = escape(layer.DEFAULT_NAME)
@@ -954,29 +949,37 @@ class RootStackTreeView (Gtk.TreeView):
                     s, d = lib.modes.MODE_STRINGS[layer.mode]
                     desc_parts.append(s)
             else:
-                desc_parts.append(C_(
-                    "Layers: description parts: unknown mode (fallback str!)",
-                    u"?mode",
-                ))
+                desc_parts.append(
+                    C_(
+                        "Layers: description parts: unknown mode (fallback str!)",
+                        "?mode",
+                    )
+                )
 
             # Visibility and opacity (if interesting)
             if not layer.visible:
-                desc_parts.append(C_(
-                    "Layers: description parts: layer hidden",
-                    u"Hidden",
-                ))
+                desc_parts.append(
+                    C_(
+                        "Layers: description parts: layer hidden",
+                        "Hidden",
+                    )
+                )
             elif layer.opacity < 1.0:
-                desc_parts.append(C_(
-                    "Layers: description parts: opacity percentage",
-                    u"%d%% opaque" % (round(layer.opacity * 100),)
-                ))
+                desc_parts.append(
+                    C_(
+                        "Layers: description parts: opacity percentage",
+                        "%d%% opaque" % (round(layer.opacity * 100),),
+                    )
+                )
 
             # Locked flag (locked is interesting)
             if layer.locked:
-                desc_parts.append(C_(
-                    "Layers dockable: description parts: layer locked flag",
-                    u"Locked",
-                ))
+                desc_parts.append(
+                    C_(
+                        "Layers dockable: description parts: layer locked flag",
+                        "Locked",
+                    )
+                )
 
             # Description of the layer's type.
             # Currently always used, for visual rhythm reasons, but it goes
@@ -984,16 +987,18 @@ class RootStackTreeView (Gtk.TreeView):
             if layer.TYPE_DESCRIPTION is not None:
                 desc_parts.append(layer.TYPE_DESCRIPTION)
             else:
-                desc_parts.append(C_(
-                    "Layers: description parts: unknown type (fallback str!)",
-                    u"?type",
-                ))
+                desc_parts.append(
+                    C_(
+                        "Layers: description parts: unknown type (fallback str!)",
+                        "?type",
+                    )
+                )
 
             # Stitch it all together
             if desc_parts:
                 description = C_(
                     "Layers dockable: description parts joiner text",
-                    u", ",
+                    ", ",
                 ).join(desc_parts)
             else:
                 description = None
@@ -1001,14 +1006,14 @@ class RootStackTreeView (Gtk.TreeView):
         if description is None:
             markup_template = C_(
                 "Layers dockable: markup for a layer with no description",
-                u"{layer_name}",
+                "{layer_name}",
             )
         else:
             markup_template = C_(
                 "Layers dockable: markup for a layer with a description",
                 '<span size="smaller">{layer_name}\n'
                 '<span size="smaller">{layer_description}</span>'
-                '</span>'
+                "</span>",
             )
 
         markup = markup_template.format(
@@ -1023,7 +1028,7 @@ class RootStackTreeView (Gtk.TreeView):
         markup = self._layer_description_markup(layer)
 
         attrs = Pango.AttrList()
-        parse_result = Pango.parse_markup(markup, -1, '\000')
+        parse_result = Pango.parse_markup(markup, -1, "\000")
         parse_ok, attrs, text, accel_char = parse_result
         assert parse_ok
         cell.set_property("attributes", attrs)
@@ -1046,7 +1051,7 @@ class RootStackTreeView (Gtk.TreeView):
         """Use a padlock icon to show layer immutability statuses"""
         layer = model.get_layer(it=it)
         icon_name, sensitive = self._get_layer_locked_icon_state(layer)
-        icon_visible = (icon_name is not None)
+        icon_visible = icon_name is not None
         cell.set_property("icon-name", icon_name)
         cell.set_visible(icon_visible)
         cell.set_property("sensitive", sensitive)
@@ -1094,14 +1099,14 @@ class RootStackTreeView (Gtk.TreeView):
 
 # Helper functions
 
+
 def new_blend_mode_combo(modes, mode_strings):
-    """Create and return a new blend mode combo box
-    """
+    """Create and return a new blend mode combo box"""
     store = Gtk.ListStore(int, str, bool, float)
     for mode in modes:
         label, desc = mode_strings.get(mode)
         sensitive = True
-        scale = 1/1.2   # PANGO_SCALE_SMALL
+        scale = 1 / 1.2  # PANGO_SCALE_SMALL
         store.append([mode, label, sensitive, scale])
     combo = Gtk.ComboBox()
     combo.set_model(store)
@@ -1116,12 +1121,14 @@ def new_blend_mode_combo(modes, mode_strings):
     combo.set_app_paintable(True)
     return combo
 
+
 ## Testing
 
 
 def _test():
     """Test the custom model in an ad-hoc GUI window"""
-    from lib.layer import PaintingLayer, LayerStack
+    from lib.layer import LayerStack, PaintingLayer
+
     doc_model = Document()
     root = doc_model.layer_stack
     root.clear()
@@ -1183,6 +1190,6 @@ def _test():
     Gtk.main()
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     logging.basicConfig(level=logging.DEBUG)
     _test()

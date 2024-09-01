@@ -15,14 +15,11 @@ for consistent keyboard handling.
 
 """
 
-from __future__ import division, print_function
 import logging
-
-from lib.gibindings import Gtk
-from lib.gibindings import Gdk
 
 import gui.document
 import gui.tileddrawwidget
+from lib.gibindings import Gdk, Gtk
 
 logger = logging.getLogger(__name__)
 
@@ -64,10 +61,9 @@ class KeyboardManager:
         self.window_actions = {}  # GtkWindow -> set(['ActionName1', ...)
 
     def start_listening(self):
-        """Begin listening for changes to the keymap.
-        """
+        """Begin listening for changes to the keymap."""
         accel_map = Gtk.AccelMap.get()
-        accel_map.connect('changed', self._accel_map_changed_cb)
+        accel_map.connect("changed", self._accel_map_changed_cb)
 
     ## Handle changes to the user-defined keymap
 
@@ -88,7 +84,7 @@ class KeyboardManager:
                     shortcut = (key.accel_key, key.accel_mods)
                     self.keymap[shortcut] = action
                     return
-            logger.warning('Ignoring keybinding for %r', accel_path)
+            logger.warning("Ignoring keybinding for %r", accel_path)
 
     ## Keyboard handling
 
@@ -108,17 +104,21 @@ class KeyboardManager:
         # Instead of using event.keyval, we do it the lowlevel way.
         # Reason: ignoring CAPSLOCK and checking if SHIFT was pressed
         state = Gdk.ModifierType(event.state & ~Gdk.ModifierType.LOCK_MASK)
-        res = keymap.translate_keyboard_state(event.hardware_keycode, state,
-                                              # https://github.com/mypaint/mypaint/issues/974
-                                              # event.group)
-                                              1)
+        res = keymap.translate_keyboard_state(
+            event.hardware_keycode,
+            state,
+            # https://github.com/mypaint/mypaint/issues/974
+            # event.group)
+            1,
+        )
         if not res:
             # PyGTK returns None when gdk_keymap_translate_keyboard_state()
             # returns false.  Not sure if this is a bug or a feature - the only
             # time I have seen this happen is when I put my laptop into sleep
             # mode.
-            logger.warning('translate_keyboard_state() returned None. '
-                           'Strange key pressed?')
+            logger.warning(
+                "translate_keyboard_state() returned None. " "Strange key pressed?"
+            )
             return
 
         keyval = res[1]
@@ -127,9 +127,7 @@ class KeyboardManager:
         # We want to ignore irrelevant modifiers like ScrollLock.  The stored
         # key binding does not include modifiers that affected its keyval.
         modifiers = (
-            event.state
-            & Gtk.accelerator_get_default_mod_mask()
-            & ~consumed_modifiers
+            event.state & Gtk.accelerator_get_default_mod_mask() & ~consumed_modifiers
         )
 
         # Except that key bindings are always stored in lowercase.
@@ -157,7 +155,7 @@ class KeyboardManager:
         return self._dispatch_fallthru_key_press_event(widget, event)
 
     def fallbacks_disabled(self):
-        return self.app.preferences.get('keyboard.disable_fallbacks', False)
+        return self.app.preferences.get("keyboard.disable_fallbacks", False)
 
     def activate_keydown_event(self, action, event):
         """Activate a looked-up action triggered by an event
@@ -269,15 +267,18 @@ class KeyboardManager:
 
         """
         handler_ids = []
-        for name, cb in [("key-press-event", self._key_press_cb),
-                         ("key-release-event", self._key_release_cb)]:
+        for name, cb in [
+            ("key-press-event", self._key_press_cb),
+            ("key-release-event", self._key_release_cb),
+        ]:
             handler_id = window.connect(name, cb)
             handler_ids.append(handler_id)
         if actions is not None:
             action_names = [str(n) for n in actions]
             self.window_actions[window] = set(action_names)
-        handler_id = window.connect("destroy", self._added_window_destroy_cb,
-                                    handler_ids)
+        handler_id = window.connect(
+            "destroy", self._added_window_destroy_cb, handler_ids
+        )
         handler_ids.append(handler_id)
 
     def _added_window_destroy_cb(self, window, handler_ids):
@@ -289,7 +290,7 @@ class KeyboardManager:
         """
         self.window_actions.pop(window, None)
         for handler_id in handler_ids:
-            window.disconnect(handler_id)   # is this needed?
+            window.disconnect(handler_id)  # is this needed?
 
     ## Hardcoded fallback keymap
 
@@ -309,8 +310,9 @@ class KeyboardManager:
         else:
             # find an existing Gtk.Action by name
             res = [a for a in self.actions if a.get_name() == action]
-            assert len(res) == 1, \
-                'action %s not found, or found more than once' % action
+            assert len(res) == 1, (
+                "action %s not found, or found more than once" % action
+            )
             action = res[0]
         self.keymap2[(keyval, modifiers)] = action
 
@@ -328,7 +330,7 @@ class KeyboardManager:
         self._update_keymap(action.get_accel_path())
 
     def _add_custom_attributes(self, action):
-        assert not hasattr(action, 'keydown')
-        assert not hasattr(action, 'keyup_callback')
+        assert not hasattr(action, "keydown")
+        assert not hasattr(action, "keyup_callback")
         action.keydown = False
         action.keyup_callback = None

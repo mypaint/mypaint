@@ -10,21 +10,19 @@
 
 """Common interfaces & routines for surface and surface-like objects"""
 
-from __future__ import division, print_function
-
 import abc
-import os
 import logging
+import os
 
 import numpy as np
 
-from . import mypaintlib
+import lib.feedback
 import lib.helpers
 from lib.errors import FileHandlingError
 from lib.gettext import C_
-import lib.feedback
 from lib.pycompat import xrange
 
+from . import mypaintlib
 
 logger = logging.getLogger(__name__)
 
@@ -34,7 +32,7 @@ N = mypaintlib.TILE_SIZE
 TILES_PER_CALLBACK = 256
 
 
-class Bounded (object):
+class Bounded(object):
     """Interface for objects with an inherent size"""
 
     __metaclass__ = abc.ABCMeta
@@ -49,7 +47,7 @@ class Bounded (object):
         """
 
 
-class TileAccessible (Bounded):
+class TileAccessible(Bounded):
     """Interface for objects whose memory is accessible by tile"""
 
     __metaclass__ = abc.ABCMeta
@@ -74,7 +72,7 @@ class TileAccessible (Bounded):
         """
 
 
-class TileBlittable (Bounded):
+class TileBlittable(Bounded):
     """Interface for unconditional copying by tile"""
 
     __metaclass__ = abc.ABCMeta
@@ -106,14 +104,15 @@ class TileBlittable (Bounded):
         """
 
 
-class TileCompositable (Bounded):
+class TileCompositable(Bounded):
     """Interface for compositing by tile, with modes/opacities/flags"""
 
     __metaclass__ = abc.ABCMeta
 
     @abc.abstractmethod
-    def composite_tile(self, dst, dst_has_alpha, tx, ty, mipmap_level=0,
-                       *args, **kwargs):
+    def composite_tile(
+        self, dst, dst_has_alpha, tx, ty, mipmap_level=0, *args, **kwargs
+    ):
         """Composites one tile from this object over a NumPy array.
 
         :param dst: target tile array (uint16, NxNx4, 15-bit scaled int)
@@ -151,13 +150,12 @@ def get_tiles_bbox(tile_coords):
         return lib.helpers.Rect()
     else:
         x0, y0, x1, y1 = bounds
-        return lib.helpers.Rect(
-            N * x0, N * y0, N * (x1 - x0 + 1), N * (y1 - y0 + 1)
-        )
+        return lib.helpers.Rect(N * x0, N * y0, N * (x1 - x0 + 1), N * (y1 - y0 + 1))
 
 
-def scanline_strips_iter(surface, rect, alpha=False,
-                         single_tile_pattern=False, **kwargs):
+def scanline_strips_iter(
+    surface, rect, alpha=False, single_tile_pattern=False, **kwargs
+):
     """Generate (render) scanline strips from a tile-blittable object
 
     :param TileBlittable surface: Surface to iterate over
@@ -184,14 +182,14 @@ def scanline_strips_iter(surface, rect, alpha=False,
     render_th = (y + h - 1) // N - render_ty + 1
 
     # buffer for rendering one tile row at a time
-    arr = np.empty((N, render_tw * N, 4), 'uint8')  # rgba or rgbu
+    arr = np.empty((N, render_tw * N, 4), "uint8")  # rgba or rgbu
     # view into arr without the horizontal padding
-    arr_xcrop = arr[:, x-render_tx*N:x-render_tx*N+w, :]
+    arr_xcrop = arr[:, x - render_tx * N : x - render_tx * N + w, :]
 
     first_row = render_ty
-    last_row = render_ty+render_th-1
+    last_row = render_ty + render_th - 1
 
-    for ty in range(render_ty, render_ty+render_th):
+    for ty in range(render_ty, render_ty + render_th):
         skip_rendering = False
         if single_tile_pattern:
             # optimization for simple background patterns
@@ -201,22 +199,21 @@ def scanline_strips_iter(surface, rect, alpha=False,
 
         for tx_rel in xrange(render_tw):
             # render one tile
-            dst = arr[:, tx_rel*N:(tx_rel+1)*N, :]
+            dst = arr[:, tx_rel * N : (tx_rel + 1) * N, :]
             if not skip_rendering:
                 tx = render_tx + tx_rel
                 try:
                     surface.blit_tile_into(dst, alpha, tx, ty, **kwargs)
                 except Exception:
-                    logger.exception("Failed to blit tile %r of %r",
-                                     (tx, ty), surface)
+                    logger.exception("Failed to blit tile %r of %r", (tx, ty), surface)
                     mypaintlib.tile_clear_rgba8(dst)
 
         # yield a numpy array of the scanline without padding
         res = arr_xcrop
         if ty == last_row:
-            res = res[:y+h-ty*N, :, :]
+            res = res[: y + h - ty * N, :, :]
         if ty == first_row:
-            res = res[y-render_ty*N:, :, :]
+            res = res[y - render_ty * N :, :, :]
         yield res
 
 
@@ -247,8 +244,8 @@ def save_as_png(surface, filename, *rect, **kwargs):
 
     """
     # Horrible, dirty argument handling
-    alpha = kwargs.pop('alpha', False)
-    progress = kwargs.pop('progress', None)
+    alpha = kwargs.pop("alpha", False)
+    progress = kwargs.pop("progress", None)
     single_tile_pattern = kwargs.pop("single_tile_pattern", False)
     save_srgb_chunks = kwargs.pop("save_srgb_chunks", True)
 
@@ -269,19 +266,22 @@ def save_as_png(surface, filename, *rect, **kwargs):
         logger.debug(
             "Writing %r (%dx%d) alpha=%r srgb=%r",
             filename,
-            w, h,
+            w,
+            h,
             alpha,
             save_srgb_chunks,
         )
         with open(filename, "wb") as writer_fp:
             pngsave = mypaintlib.ProgressivePNGWriter(
                 writer_fp,
-                w, h,
+                w,
+                h,
                 alpha,
                 save_srgb_chunks,
             )
             scanline_strips = scanline_strips_iter(
-                surface, rect,
+                surface,
+                rect,
                 alpha=alpha,
                 single_tile_pattern=single_tile_pattern,
                 **kwargs
@@ -294,8 +294,7 @@ def save_as_png(surface, filename, *rect, **kwargs):
                     progress += 1
                 except Exception:
                     logger.exception(
-                        "Failed to update lib.feedback.Progress: "
-                        "dropping it"
+                        "Failed to update lib.feedback.Progress: " "dropping it"
                     )
                     progress = None
             pngsave.close()
@@ -304,20 +303,21 @@ def save_as_png(surface, filename, *rect, **kwargs):
             progress.close()
     except (IOError, OSError, RuntimeError) as err:
         logger.exception(
-            "Caught %r from C++ png-writer code, re-raising as a "
-            "FileHandlingError",
+            "Caught %r from C++ png-writer code, re-raising as a " "FileHandlingError",
             err,
         )
-        raise FileHandlingError(C_(
-            "low-level PNG writer failure report (dialog)",
-            u"Failed to write “{basename}”.\n\n"
-            u"Reason: {err}\n"
-            u"Target folder: “{dirname}”."
-        ).format(
-            err = err,
-            basename = os.path.basename(filename),
-            dirname = os.path.dirname(filename),
-        ))
+        raise FileHandlingError(
+            C_(
+                "low-level PNG writer failure report (dialog)",
+                "Failed to write “{basename}”.\n\n"
+                "Reason: {err}\n"
+                "Target folder: “{dirname}”.",
+            ).format(
+                err=err,
+                basename=os.path.basename(filename),
+                dirname=os.path.dirname(filename),
+            )
+        )
         # Other possible exceptions include TypeError, ValueError, but
         # those indicate incorrect coding usually; just raise them
         # normally.
@@ -325,4 +325,5 @@ def save_as_png(surface, filename, *rect, **kwargs):
 
 if __name__ == "__main__":
     import doctest
+
     doctest.testmod()

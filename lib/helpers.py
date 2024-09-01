@@ -7,31 +7,28 @@
 # the Free Software Foundation; either version 2 of the License, or
 # (at your option) any later version.
 
-from __future__ import division, print_function
-
-import itertools
-from math import floor, isnan
-import os
-import hashlib
-import zipfile
 import colorsys
 import gc
+import hashlib
+import itertools
 import logging
+import os
 import sys
+import zipfile
+from math import floor, isnan
 
-from lib.gibindings import GdkPixbuf
+import lib.glib
+import lib.pixbuf
 from lib.gettext import C_
+from lib.gibindings import GdkPixbuf
+from lib.pycompat import PY2, unicode
 
 from . import mypaintlib
-import lib.pixbuf
-import lib.glib
-from lib.pycompat import PY2
-from lib.pycompat import unicode
 
 logger = logging.getLogger(__name__)
 
 
-class Rect (object):
+class Rect(object):
     """Representation of a rectangular area.
 
     We use our own class here because (around GTK 3.18.x, at least) it's
@@ -88,10 +85,10 @@ class Rect (object):
     def new_from_gdk_rectangle(cls, gdk_rect):
         """Creates a new Rect based on a Gdk.Rectangle."""
         return Rect(
-            x = gdk_rect.x,
-            y = gdk_rect.y,
-            w = gdk_rect.width,
-            h = gdk_rect.height,
+            x=gdk_rect.x,
+            y=gdk_rect.y,
+            w=gdk_rect.width,
+            h=gdk_rect.height,
         )
 
     def __iter__(self):
@@ -127,16 +124,15 @@ class Rect (object):
     def contains(self, other):
         """Returns true if this rectangle entirely contains another."""
         return (
-            other.x >= self.x and
-            other.y >= self.y and
-            other.x + other.w <= self.x + self.w and
-            other.y + other.h <= self.y + self.h
+            other.x >= self.x
+            and other.y >= self.y
+            and other.x + other.w <= self.x + self.w
+            and other.y + other.h <= self.y + self.h
         )
 
     def contains_pixel(self, x, y):
         """Checks if pixel coordinates lie inside this rectangle"""
-        return (self.x <= x <= self.x + self.w - 1 and
-                self.y <= y <= self.y + self.h - 1)
+        return self.x <= x <= self.x + self.w - 1 and self.y <= y <= self.y + self.h - 1
 
     def clamped_point(self, x, y):
         """Returns the given point, clamped to the area of this rectangle"""
@@ -201,7 +197,7 @@ class Rect (object):
         return Rect(x, y, rx - x, ry - y)
 
     def __repr__(self):
-        return 'Rect(%d, %d, %d, %d)' % (self.x, self.y, self.w, self.h)
+        return "Rect(%d, %d, %d, %d)" % (self.x, self.y, self.w, self.h)
 
 
 def coordinate_bounds(tile_coords):
@@ -220,7 +216,7 @@ def coordinate_bounds(tile_coords):
     >>> coordinate_bounds([(3, 5), (0, 0), (-3, 7), (20, -10)])
     (-3, -10, 20, 7)
     """
-    lim = float('inf')
+    lim = float("inf")
     min_x, min_y, max_x, max_y = lim, lim, -lim, -lim
     # Determine minima and maxima in one pass
     for x, y in tile_coords:
@@ -305,15 +301,15 @@ def freedesktop_thumbnail(filename, pixbuf=None, force=False):
     file_hash = hashlib.md5(uri).hexdigest()
 
     cache_dir = lib.glib.get_user_cache_dir()
-    base_directory = os.path.join(cache_dir, u'thumbnails')
+    base_directory = os.path.join(cache_dir, "thumbnails")
 
-    directory = os.path.join(base_directory, u'normal')
-    tb_filename_normal = os.path.join(directory, file_hash) + u'.png'
+    directory = os.path.join(base_directory, "normal")
+    tb_filename_normal = os.path.join(directory, file_hash) + ".png"
 
     if not os.path.exists(directory):
         os.makedirs(directory, 0o700)
-    directory = os.path.join(base_directory, u'large')
-    tb_filename_large = os.path.join(directory, file_hash) + u'.png'
+    directory = os.path.join(base_directory, "large")
+    tb_filename_large = os.path.join(directory, file_hash) + ".png"
     if not os.path.exists(directory):
         os.makedirs(directory, 0o700)
 
@@ -321,7 +317,7 @@ def freedesktop_thumbnail(filename, pixbuf=None, force=False):
 
     save_thumbnail = True
 
-    if filename.lower().endswith(u'.ora'):
+    if filename.lower().endswith(".ora"):
         # don't bother with normal (128x128) thumbnails when we can
         # get a large one (256x256) from the file in an instant
         acceptable_tb_filenames = [tb_filename_large]
@@ -340,9 +336,9 @@ def freedesktop_thumbnail(filename, pixbuf=None, force=False):
             pixbuf = lib.pixbuf.load_from_file(fn)
         except Exception as e:
             logger.warning(
-                u"thumb: cache file %r looks corrupt (%r). "
-                u"It will be regenerated.",
-                fn, unicode(e),
+                "thumb: cache file %r looks corrupt (%r). " "It will be regenerated.",
+                fn,
+                unicode(e),
             )
             pixbuf = None
         else:
@@ -361,28 +357,24 @@ def freedesktop_thumbnail(filename, pixbuf=None, force=False):
     if pixbuf:
         pixbuf = scale_proportionally(pixbuf, 256, 256)
         if save_thumbnail:
-            png_opts = {"tEXt::Thumb::MTime": file_mtime,
-                        "tEXt::Thumb::URI": uri}
+            png_opts = {
+                "tEXt::Thumb::MTime": file_mtime,
+                "tEXt::Thumb::URI": uri,
+            }
             logger.debug("thumb: png_opts=%r", png_opts)
-            lib.pixbuf.save(
-                pixbuf,
+            lib.pixbuf.save(pixbuf, tb_filename_large, type="png", **png_opts)
+            logger.debug(
+                "thumb: saved large (256x256) thumbnail to %r",
                 tb_filename_large,
-                type='png',
-                **png_opts
             )
-            logger.debug("thumb: saved large (256x256) thumbnail to %r",
-                         tb_filename_large)
             # save normal size too, in case some implementations don't
             # bother with large thumbnails
             pixbuf_normal = scale_proportionally(pixbuf, 128, 128)
-            lib.pixbuf.save(
-                pixbuf_normal,
+            lib.pixbuf.save(pixbuf_normal, tb_filename_normal, type="png", **png_opts)
+            logger.debug(
+                "thumb: saved normal (128x128) thumbnail to %r",
                 tb_filename_normal,
-                type='png',
-                **png_opts
             )
-            logger.debug("thumb: saved normal (128x128) thumbnail to %r",
-                         tb_filename_normal)
 
     # Return the 256x256 scaled version.
     return pixbuf
@@ -455,26 +447,28 @@ def scale_proportionally(pixbuf, w, h, shrink_only=True):
     new_width, new_height = int(width * scale), int(height * scale)
     new_width = max(new_width, 1)
     new_height = max(new_height, 1)
-    return pixbuf.scale_simple(new_width, new_height,
-                               GdkPixbuf.InterpType.BILINEAR)
+    return pixbuf.scale_simple(new_width, new_height, GdkPixbuf.InterpType.BILINEAR)
 
 
 def pixbuf_thumbnail(src, w, h, alpha=False):
-    """Creates a centered thumbnail of a GdkPixbuf.
-    """
+    """Creates a centered thumbnail of a GdkPixbuf."""
     src2 = scale_proportionally(src, w, h)
     w2, h2 = src2.get_width(), src2.get_height()
     dst = GdkPixbuf.Pixbuf.new(GdkPixbuf.Colorspace.RGB, alpha, 8, w, h)
     if alpha:
-        dst.fill(0xffffff00)  # transparent background
+        dst.fill(0xFFFFFF00)  # transparent background
     else:
-        dst.fill(0xffffffff)  # white background
+        dst.fill(0xFFFFFFFF)  # white background
     src2.composite(
         dst,
-        (w - w2) // 2, (h - h2) // 2,
-        w2, h2,
-        (w - w2) // 2, (h - h2) // 2,
-        1, 1,
+        (w - w2) // 2,
+        (h - h2) // 2,
+        w2,
+        h2,
+        (w - w2) // 2,
+        (h - h2) // 2,
+        1,
+        1,
         GdkPixbuf.InterpType.BILINEAR,
         255,
     )
@@ -523,10 +517,11 @@ def zipfile_writestr(z, arcname, data):
 
 
 def run_garbage_collector():
-    logger.info('MEM: garbage collector run, collected %d objects',
-                gc.collect())
-    logger.info('MEM: gc.garbage contains %d items of uncollectible garbage',
-                len(gc.garbage))
+    logger.info("MEM: garbage collector run, collected %d objects", gc.collect())
+    logger.info(
+        "MEM: gc.garbage contains %d items of uncollectible garbage",
+        len(gc.garbage),
+    )
 
 
 old_stats = []
@@ -534,14 +529,14 @@ old_stats = []
 
 def record_memory_leak_status(print_diff=False):
     run_garbage_collector()
-    logger.info('MEM: collecting info (can take some time)...')
+    logger.info("MEM: collecting info (can take some time)...")
     new_stats = []
     for obj in gc.get_objects():
-        if 'A' <= getattr(obj, '__name__', ' ')[0] <= 'Z':
+        if "A" <= getattr(obj, "__name__", " ")[0] <= "Z":
             cnt = len(gc.get_referrers(obj))
-            new_stats.append((obj.__name__ + ' ' + str(obj), cnt))
+            new_stats.append((obj.__name__ + " " + str(obj), cnt))
     new_stats.sort()
-    logger.info('MEM: ...done collecting.')
+    logger.info("MEM: ...done collecting.")
     global old_stats
     if old_stats:
         if print_diff:
@@ -551,16 +546,15 @@ def record_memory_leak_status(print_diff=False):
             for obj, cnt in new_stats:
                 cnt_old = d.get(obj, 0)
                 if cnt != cnt_old:
-                    logger.info('MEM: DELTA %+d %s', cnt - cnt_old, obj)
+                    logger.info("MEM: DELTA %+d %s", cnt - cnt_old, obj)
     else:
-        logger.info('MEM: Stored stats to compare with the next '
-                    'info collection.')
+        logger.info("MEM: Stored stats to compare with the next " "info collection.")
     old_stats = new_stats
 
 
 def utf8(string):
     """Return the input as bytes encoded by utf-8"""
-    return string.encode('utf-8')
+    return string.encode("utf-8")
 
 
 def fmt_time_period_abbr(t):
@@ -583,18 +577,18 @@ def fmt_time_period_abbr(t):
     if t > 24 * 60 * 60:
         # TRANSLATORS: Assumption for all "Time period abbreviations":
         # TRANSLATORS: they don't need ngettext (to support plural/singular)
-        template = C_("Time period abbreviations", u"{days}d{hours}h")
+        template = C_("Time period abbreviations", "{days}d{hours}h")
     elif t > 60 * 60:
-        template = C_("Time period abbreviations", u"{hours}h{minutes}m")
+        template = C_("Time period abbreviations", "{hours}h{minutes}m")
     elif t > 60:
-        template = C_("Time period abbreviation", u"{minutes}m{seconds}s")
+        template = C_("Time period abbreviation", "{minutes}m{seconds}s")
     else:
-        template = C_("Time period abbreviation", u"{seconds}s")
+        template = C_("Time period abbreviation", "{seconds}s")
     return template.format(
-        days = days,
-        hours = hours,
-        minutes = minutes,
-        seconds = seconds,
+        days=days,
+        hours=hours,
+        minutes=minutes,
+        seconds=seconds,
     )
 
 
@@ -643,8 +637,9 @@ def casefold(s):
 
 def _test():
     import doctest
+
     doctest.testmod()
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     _test()

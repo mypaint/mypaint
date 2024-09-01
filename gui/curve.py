@@ -8,13 +8,10 @@
 # the Free Software Foundation; either version 2 of the License, or
 # (at your option) any later version.
 
-from __future__ import division, print_function
-
 import logging
 from math import pi
 
-from lib.gibindings import Gtk, Gdk
-
+from lib.gibindings import Gdk, Gtk
 from lib.helpers import clamp
 
 logger = logging.getLogger(__name__)
@@ -23,16 +20,15 @@ RADIUS = 2
 
 
 class CurveWidget(Gtk.DrawingArea):
-    """Widget for modifying a (restricted) nonlinear curve.
-    """
-    __gtype_name__ = 'CurveWidget'
-    _SNAP_TO = tuple(float(n)/100 for n in range(0, 105, 5))
+    """Widget for modifying a (restricted) nonlinear curve."""
+
+    __gtype_name__ = "CurveWidget"
+    _SNAP_TO = tuple(float(n) / 100 for n in range(0, 105, 5))
     _WHINED_ABOUT_ALPHA = False
 
-    def __init__(self, changed_cb=None, magnetic=True, npoints=None,
-                 ylockgroups=()):
+    def __init__(self, changed_cb=None, magnetic=True, npoints=None, ylockgroups=()):
         Gtk.DrawingArea.__init__(self)
-        self.points = [(0.0, 0.2), (.25, .5), (.75, .75), (1.0, 1.0)]
+        self.points = [(0.0, 0.2), (0.25, 0.5), (0.75, 0.75), (1.0, 1.0)]
         self._ylock = {}
         self.ylockgroups = ylockgroups
 
@@ -51,11 +47,12 @@ class CurveWidget(Gtk.DrawingArea):
         self.connect("button-press-event", self.button_press_cb)
         self.connect("button-release-event", self.button_release_cb)
         self.connect("motion-notify-event", self.motion_notify_cb)
-        self.set_events(Gdk.EventMask.EXPOSURE_MASK |
-                        Gdk.EventMask.BUTTON_PRESS_MASK |
-                        Gdk.EventMask.BUTTON_RELEASE_MASK |
-                        Gdk.EventMask.POINTER_MOTION_MASK
-                        )
+        self.set_events(
+            Gdk.EventMask.EXPOSURE_MASK
+            | Gdk.EventMask.BUTTON_PRESS_MASK
+            | Gdk.EventMask.BUTTON_RELEASE_MASK
+            | Gdk.EventMask.POINTER_MOTION_MASK
+        )
         self.set_size_request(300, 200)
 
         self.graypoint = None
@@ -116,8 +113,8 @@ class CurveWidget(Gtk.DrawingArea):
     def get_display_area(self):
         alloc = self.get_allocation()
         width, height = alloc.width, alloc.height
-        width -= 2*RADIUS
-        height -= 2*RADIUS
+        width -= 2 * RADIUS
+        height -= 2 * RADIUS
         width = width / 4 * 4
         height = height / 4 * 4
         return width, height
@@ -136,14 +133,15 @@ class CurveWidget(Gtk.DrawingArea):
 
         # Note: Squared distance used for comparisons
         def dist_squared(p):
-            return abs(x - p[0])**2 + abs(y - p[1])**2
+            return abs(x - p[0]) ** 2 + abs(y - p[1]) ** 2
+
         points = self.points
         dsq, pos = min((dist_squared(p), i) for i, p in enumerate(points))
 
         # Unless the number of points are fixed, maxed out, or the intent
         # was to move an existing point, insert a new curve point.
         if not (self.npoints or dsq <= 0.003 or len(points) >= self.maxpoints):
-            candidates = [i+1 for i, (px, _) in enumerate(points) if px < x]
+            candidates = [i + 1 for i, (px, _) in enumerate(points) if px < x]
             insert_pos = candidates and candidates[-1]
             if insert_pos and insert_pos < len(points):
                 points.insert(insert_pos, (x, clamp(y, 0.0, 1.0)))
@@ -175,8 +173,10 @@ class CurveWidget(Gtk.DrawingArea):
                 i_candidate = max((i,) + self._ylock[i])
             elif x < points[min(self._ylock[i])][0]:
                 i_candidate = min((i,) + self._ylock[i])
-            if (i_candidate is not None and
-                    abs(points[i][0] - points[i_candidate][0]) < 0.001):
+            if (
+                i_candidate is not None
+                and abs(points[i][0] - points[i_candidate][0]) < 0.001
+            ):
                 i = i_candidate
         out = False  # by default, points cannot be removed
         if i == len(points) - 1:
@@ -187,8 +187,8 @@ class CurveWidget(Gtk.DrawingArea):
             left_bound = right_bound = 0.0
         else:
             # other points can be dragged out
-            left_bound = points[i-1][0]
-            right_bound = points[i+1][0]
+            left_bound = points[i - 1][0]
+            right_bound = points[i + 1][0]
             margin = 0.02
             inside_x_bounds = left_bound - margin < x < right_bound + margin
             inside_y_bounds = -0.1 <= y <= 1.1
@@ -211,13 +211,16 @@ class CurveWidget(Gtk.DrawingArea):
 
         def gdk2rgb(c):
             if c.alpha < 1 and not self.__class__._WHINED_ABOUT_ALPHA:
-                logger.warning('The GTK3 style is reporting a color with '
-                               'alpha less than 1. This should be harmless, '
-                               'but please report any glitches with the curve '
-                               'widget. Adwaita is thought not to suffer from '
-                               'this problem.')
+                logger.warning(
+                    "The GTK3 style is reporting a color with "
+                    "alpha less than 1. This should be harmless, "
+                    "but please report any glitches with the curve "
+                    "widget. Adwaita is thought not to suffer from "
+                    "this problem."
+                )
                 self.__class__._WHINED_ABOUT_ALPHA = True
             return c.red, c.green, c.blue
+
         style = widget.get_style_context()
         state = widget.get_state_flags()
         fg = gdk2rgb(style.get_color(state))
@@ -234,27 +237,27 @@ class CurveWidget(Gtk.DrawingArea):
         cr.set_line_width(0.333)
         cr.set_source_rgb(*fg)
         for i in range(11):
-            cr.move_to(RADIUS, i*height/10 + RADIUS)
-            cr.line_to(width + RADIUS, i*height/10 + RADIUS)
-            cr.move_to(i*width/10 + RADIUS, RADIUS)
-            cr.line_to(i*width/10 + RADIUS, height + RADIUS)
+            cr.move_to(RADIUS, i * height / 10 + RADIUS)
+            cr.line_to(width + RADIUS, i * height / 10 + RADIUS)
+            cr.move_to(i * width / 10 + RADIUS, RADIUS)
+            cr.line_to(i * width / 10 + RADIUS, height + RADIUS)
             cr.stroke()
 
         # The graypoint is represented by a dashed vertical line spanning the
         # entire graph, with a gap where a circle marks the vertical position.
         if self.graypoint:
             x1, y1 = self.graypoint
-            x1 = int(x1*width) + RADIUS
-            y1 = int(y1*height) + RADIUS
+            x1 = int(x1 * width) + RADIUS
+            y1 = int(y1 * height) + RADIUS
             cr.set_line_width(0.5)
-            cr.set_dash([height/50.0])
+            cr.set_dash([height / 50.0])
             cr.move_to(x1, RADIUS)
             cr.line_to(x1, y1 - 2 * RADIUS)
             cr.move_to(x1, y1 + 2 * RADIUS)
             cr.line_to(x1, height + RADIUS)
             cr.stroke()
             cr.set_dash([])
-            cr.arc(x1, y1, 2 * RADIUS, 0, 2*pi)
+            cr.arc(x1, y1, 2 * RADIUS, 0, 2 * pi)
             cr.stroke()
 
         # back to regular weight
@@ -269,8 +272,10 @@ class CurveWidget(Gtk.DrawingArea):
             current_y = int(p[1] * height) + RADIUS
 
             cr.rectangle(
-                current_x-RADIUS-0.5, current_y-RADIUS-0.5,
-                2*RADIUS+1, 2*RADIUS+1
+                current_x - RADIUS - 0.5,
+                current_y - RADIUS - 0.5,
+                2 * RADIUS + 1,
+                2 * RADIUS + 1,
             )
             cr.fill()
 
@@ -293,7 +298,12 @@ def _test(case=1):
         curve.ylockgroups = [(1, 2), (3, 4)]
         curve.npoints = 6
         curve.points = [
-            (0., 0.), (.2, .5), (.4, .75), (.6, .5), (.8, .3), (1., 1.)
+            (0.0, 0.0),
+            (0.2, 0.5),
+            (0.4, 0.75),
+            (0.6, 0.5),
+            (0.8, 0.3),
+            (1.0, 1.0),
         ]
         curve.graypoint = (0.5, 0.0)
     win.add(curve)
@@ -303,5 +313,5 @@ def _test(case=1):
     Gtk.main()
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     _test()

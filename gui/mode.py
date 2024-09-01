@@ -10,26 +10,19 @@
 
 ## Imports
 
-from __future__ import division, print_function
 import logging
 import math
 from gettext import gettext as _
 
-from gui.sliderwidget import InputSlider
-
-from lib.gibindings import Gtk
-from lib.gibindings import Gdk
-from lib.gibindings import GLib
-
+import gui.cursor
 import lib.command
+from gui.sliderwidget import InputSlider
 from lib.brushsettings import settings_dict
 from lib.document import Document
+from lib.gibindings import Gdk, GLib, Gtk
 from lib.layer.data import SimplePaintingLayer
 from lib.observable import event
-from lib.pycompat import add_metaclass
-from lib.pycompat import unicode
-
-import gui.cursor
+from lib.pycompat import add_metaclass, unicode
 
 logger = logging.getLogger(__name__)
 
@@ -60,6 +53,7 @@ BUTTON_BINDING_ACTIONS = [
 
 ## Behaviour flags
 
+
 class Behavior:
     """Broad classification of what a mode's handler methods do
 
@@ -69,12 +63,13 @@ class Behavior:
     scroll_behavior properties.
 
     """
+
     NONE = 0x00  #: the mode does not perform any action
     PAINT_FREEHAND = 0x01  #: paint freehand brushstrokes
     PAINT_LINE = 0x02  #: non-freehand brushstrokes: lines, perspective
     EDIT_OBJECTS = 0x04  #: move and adjust objects on screen
     CHANGE_VIEW = 0x08  #: move the viewport around
-    PAINT_NOBRUSH = 0x10   #: painting independent of brush (eg. fill)
+    PAINT_NOBRUSH = 0x10  #: painting independent of brush (eg. fill)
     # Useful masks
     PAINT_BRUSH = PAINT_FREEHAND | PAINT_LINE  #: painting dependent of brush
     PAINT_CONSTRAINED = PAINT_LINE | PAINT_NOBRUSH  #: non-freehand painting
@@ -85,7 +80,8 @@ class Behavior:
 
 ## Metaclass for all modes
 
-class ModeRegistry (type):
+
+class ModeRegistry(type):
     """Lookup table for interaction modes and their associated actions
 
     Operates as the metaclass for `InteractionMode`, so all you need to do to
@@ -144,8 +140,9 @@ class ModeRegistry (type):
 
 ## Mode base classes
 
+
 @add_metaclass(ModeRegistry)
-class InteractionMode (object):
+class InteractionMode(object):
     """Required base class for temporary interaction modes.
 
     Active interaction mode objects process input events, and can manipulate
@@ -242,7 +239,7 @@ class InteractionMode (object):
         complete sentence, and always omit the the trailing period.
 
         """
-        return u""
+        return ""
 
     def __unicode__(self):
         return self.get_name()
@@ -268,7 +265,7 @@ class InteractionMode (object):
         if action:
             icon_name = action.get_icon_name()
         if not icon_name:
-            return 'missing-icon'
+            return "missing-icon"
         return icon_name
 
     ## Mode stacking interface
@@ -294,8 +291,7 @@ class InteractionMode (object):
         return mode.pointer_behavior & Behavior.PAINT_BRUSH
 
     def popped(self):
-        """Called when the mode is removed from the stack, after leave
-        """
+        """Called when the mode is removed from the stack, after leave"""
         assert self.doc is None
         assert not hasattr(super(InteractionMode, self), "popped")
 
@@ -355,8 +351,7 @@ class InteractionMode (object):
         assert not hasattr(super(InteractionMode, self), "button_release_cb")
 
     def scroll_cb(self, tdw, event):
-        """Handler for ``scroll-event``s.
-        """
+        """Handler for ``scroll-event``s."""
         assert not hasattr(super(InteractionMode, self), "scroll_cb")
 
     def key_press_cb(self, win, tdw, event):
@@ -429,7 +424,7 @@ class InteractionMode (object):
         return x, y
 
 
-class ScrollableModeMixin (InteractionMode):
+class ScrollableModeMixin(InteractionMode):
     """Mixin for scrollable modes.
 
     Implements some immediate rotation and zoom commands for the scroll wheel.
@@ -479,15 +474,15 @@ class ScrollableModeMixin (InteractionMode):
 
         # Invert scrolling and zooming if Ctrl or Alt is held
         import gui.device
-        if event.state & (
-                Gdk.ModifierType.MOD1_MASK | Gdk.ModifierType.CONTROL_MASK):
+
+        if event.state & (Gdk.ModifierType.MOD1_MASK | Gdk.ModifierType.CONTROL_MASK):
             if scroll_action == gui.device.ScrollAction.ZOOM:
                 scroll_action = gui.device.ScrollAction.PAN
             elif scroll_action == gui.device.ScrollAction.PAN:
                 scroll_action = gui.device.ScrollAction.ZOOM
 
         # Force incremental scrolling or zooming when shift is held.
-        constrain_smooth = (event.state & Gdk.ModifierType.SHIFT_MASK)
+        constrain_smooth = event.state & Gdk.ModifierType.SHIFT_MASK
         if direction == Gdk.ScrollDirection.SMOOTH:
             self.__total_dx += event.delta_x
             self.__total_dy += event.delta_y
@@ -520,8 +515,8 @@ class ScrollableModeMixin (InteractionMode):
                     dy *= -1
                     tdw.zoom(
                         math.exp(dy / 100.0),
-                        center = (event.x, event.y),
-                        ongoing = True,
+                        center=(event.x, event.y),
+                        ongoing=True,
                     )
                     tdw.renderer.update_cursor()
                     self.__reset_delta_totals()
@@ -584,20 +579,20 @@ class ScrollableModeMixin (InteractionMode):
         return super(ScrollableModeMixin, self).scroll_cb(tdw, event)
 
 
-class PaintingModeOptionsWidgetBase (Gtk.Grid):
+class PaintingModeOptionsWidgetBase(Gtk.Grid):
     """Base class for the options widget of a generic painting mode"""
 
     _COMMON_SETTINGS = [
         # TRANSLATORS:"Brush radius" for the options panel. Short.
-        ('radius_logarithmic', _("Size:")),
+        ("radius_logarithmic", _("Size:")),
         # TRANSLATORS:"Brush opacity" for the options panel. Short.
-        ('opaque', _("Opaque:")),
+        ("opaque", _("Opaque:")),
         # TRANSLATORS:"Brush hardness/sharpness" for the options panel. Short.
-        ('hardness', _("Sharp:")),
+        ("hardness", _("Sharp:")),
         # TRANSLATORS:"Additional pressure gain" for the options panel. Short.
-        ('pressure_gain_log', _("Gain:")),
+        ("pressure_gain_log", _("Gain:")),
         # TRANSLATORS:"Paint Pigment Mode" for the options panel. Short.
-        ('paint_mode', _("Pigment:")),
+        ("paint_mode", _("Pigment:")),
     ]
 
     def __init__(self):
@@ -605,6 +600,7 @@ class PaintingModeOptionsWidgetBase (Gtk.Grid):
         self.set_row_spacing(6)
         self.set_column_spacing(6)
         from gui.application import get_app
+
         self.app = get_app()
         self.adjustable_settings = set()  #: What the reset button resets
         row = self.init_common_widgets(0)
@@ -654,7 +650,7 @@ class PaintingModeOptionsWidgetBase (Gtk.Grid):
                 adj.set_value(parent_value)
 
 
-class BrushworkModeMixin (InteractionMode):
+class BrushworkModeMixin(InteractionMode):
     """Mixin for modes using brushes
 
     This mixin adds the ability to paint undoably to the current layer
@@ -681,8 +677,7 @@ class BrushworkModeMixin (InteractionMode):
         self.__first_begin = True
         self.__active_brushwork = {}  # {model: Brushwork}
 
-    def brushwork_begin(self, model, description=None, abrupt=False,
-                        layer=None):
+    def brushwork_begin(self, model, description=None, abrupt=False, layer=None):
         """Begins a new segment of active brushwork for a model
 
         :param Document model: The model to begin work on
@@ -751,8 +746,17 @@ class BrushworkModeMixin (InteractionMode):
             viewzoom = self.doc.tdw.scale
             viewrotation = self.doc.tdw.rotation
             barrel_rotation = 0.0
-            cmd.stroke_to(dtime, x, y, pressure, xtilt, ytilt,
-                          viewzoom, viewrotation, barrel_rotation)
+            cmd.stroke_to(
+                dtime,
+                x,
+                y,
+                pressure,
+                xtilt,
+                ytilt,
+                viewzoom,
+                viewrotation,
+                barrel_rotation,
+            )
         changed = cmd.stop_recording(revert=False)
         if changed:
             model.do(cmd)
@@ -784,9 +788,21 @@ class BrushworkModeMixin (InteractionMode):
         for model in list(self.__active_brushwork.keys()):
             self.brushwork_rollback(model)
 
-    def stroke_to(self, model, dtime, x, y, pressure, xtilt, ytilt,
-                  viewzoom, viewrotation, barrel_rotation,
-                  auto_split=True, layer=None):
+    def stroke_to(
+        self,
+        model,
+        dtime,
+        x,
+        y,
+        pressure,
+        xtilt,
+        ytilt,
+        viewzoom,
+        viewrotation,
+        barrel_rotation,
+        auto_split=True,
+        layer=None,
+    ):
         """Feeds an updated stroke position to the brush engine
 
         :param Document model: model on which to paint
@@ -829,10 +845,26 @@ class BrushworkModeMixin (InteractionMode):
                 layer=layer,
             )
             cmd = self.__active_brushwork[model]
-        cmd.stroke_to(dtime, x, y, pressure, xtilt, ytilt,
-                      viewzoom, viewrotation, barrel_rotation)
-        cmd.__last_pos = (x, y, xtilt, ytilt, viewzoom,
-                          viewrotation, barrel_rotation)
+        cmd.stroke_to(
+            dtime,
+            x,
+            y,
+            pressure,
+            xtilt,
+            ytilt,
+            viewzoom,
+            viewrotation,
+            barrel_rotation,
+        )
+        cmd.__last_pos = (
+            x,
+            y,
+            xtilt,
+            ytilt,
+            viewzoom,
+            viewrotation,
+            barrel_rotation,
+        )
 
     def leave(self, **kwds):
         """Leave mode, committing outstanding brushwork as necessary
@@ -878,7 +910,7 @@ class BrushworkModeMixin (InteractionMode):
         self.brushwork_commit_all(abrupt=False)
 
 
-class SingleClickMode (InteractionMode):
+class SingleClickMode(InteractionMode):
     """Base class for non-drag (single click) modes"""
 
     #: The cursor to use when entering the mode
@@ -894,7 +926,8 @@ class SingleClickMode (InteractionMode):
         self.doc.tdw.set_override_cursor(self.cursor)
         if self.cursor is None:
             self.cursor = self.doc.app.cursors.get_action_cursor(
-                    self.ACTION_NAME, gui.cursor.Name.ARROW)
+                self.ACTION_NAME, gui.cursor.Name.ARROW
+            )
 
     def leave(self, **kwds):
         if self.doc is not None:
@@ -920,7 +953,7 @@ class SingleClickMode (InteractionMode):
         assert not hasattr(super(SingleClickMode, self), "clicked_cb")
 
 
-class DragMode (InteractionMode):
+class DragMode(InteractionMode):
     """Base class for drag activities.
 
     Dragm modes can be entered when the button is pressed, or not yet
@@ -1006,20 +1039,22 @@ class DragMode (InteractionMode):
             self.start_x = last_x
             self.start_y = last_y
         tdw_window = tdw.get_window()
-        event_mask = (Gdk.EventMask.BUTTON_PRESS_MASK |
-                      Gdk.EventMask.BUTTON_RELEASE_MASK |
-                      Gdk.EventMask.POINTER_MOTION_MASK)
+        event_mask = (
+            Gdk.EventMask.BUTTON_PRESS_MASK
+            | Gdk.EventMask.BUTTON_RELEASE_MASK
+            | Gdk.EventMask.POINTER_MOTION_MASK
+        )
         cursor = self.active_cursor
         if cursor is None:
             cursor = self.inactive_cursor
 
         # Grab the pointer
-        grab_status = Gdk.pointer_grab(tdw_window, False, event_mask, None,
-                                       cursor, event.time)
+        grab_status = Gdk.pointer_grab(
+            tdw_window, False, event_mask, None, cursor, event.time
+        )
         if grab_status != Gdk.GrabStatus.SUCCESS:
             logger.warning("pointer grab failed: %r", grab_status)
-            logger.debug("gdk_pointer_is_grabbed(): %r",
-                         Gdk.pointer_is_grabbed())
+            logger.debug("gdk_pointer_is_grabbed(): %r", Gdk.pointer_is_grabbed())
             # There seems to be a race condition between this grab under
             # PyGTK/GTK2 and some other grab - possibly just the implicit grabs
             # on color selectors: https://gna.org/bugs/?20068 Only pointer
@@ -1076,11 +1111,11 @@ class DragMode (InteractionMode):
 
         """
         from gui.application import get_app
+
         app = get_app()
         if self not in app.doc.modes:
             logger.debug(
-                "bailout: cannot bail out of %r: "
-                "mode is not in the mode stack",
+                "bailout: cannot bail out of %r: " "mode is not in the mode stack",
                 self,
             )
             return
@@ -1123,9 +1158,9 @@ class DragMode (InteractionMode):
         if self.inactive_cursor is None:
             # some children might override self.inactive_cursor as read-only
             try:
-                self.inactive_cursor = self.doc.app.cursors. \
-                        get_action_cursor(self.ACTION_NAME,
-                                          gui.cursor.Name.ARROW)
+                self.inactive_cursor = self.doc.app.cursors.get_action_cursor(
+                    self.ACTION_NAME, gui.cursor.Name.ARROW
+                )
             except AttributeError:
                 pass
         self.doc.tdw.set_override_cursor(self.inactive_cursor)
@@ -1191,8 +1226,7 @@ class DragMode (InteractionMode):
         # a keypress to initiate the drag.
         if self._in_drag:
             x, y = event.x, event.y
-            self.drag_update_cb(
-                tdw, event, x, y, x - self.last_x, y - self.last_y)
+            self.drag_update_cb(tdw, event, x, y, x - self.last_x, y - self.last_y)
             self.last_x = x
             self.last_y = y
             return True
@@ -1234,14 +1268,14 @@ class DragMode (InteractionMode):
         return super(DragMode, self).key_release_cb(win, tdw, event)
 
 
-class OneshotDragMode (DragMode):
+class OneshotDragMode(DragMode):
     """Drag modes that can exit immediately when the drag stops
 
     These are utility modes which allow the user to do quick, simple
     tasks with the canvas like pick a color from it or pan the view.
     """
-    def __init__(self, unmodified_persist=True, temporary_activation=True,
-                 **kwargs):
+
+    def __init__(self, unmodified_persist=True, temporary_activation=True, **kwargs):
         """
         :param bool unmodified_persist: Stay active if entered without modkeys
         :param bool \*\*kwargs: Passed through to other __init__s.
@@ -1280,11 +1314,11 @@ class OneshotDragMode (DragMode):
 ## Mode stack
 
 
-class _NullMode (InteractionMode):
+class _NullMode(InteractionMode):
     """A mode that does nothing (placeholder only)"""
 
 
-class ModeStack (object):
+class ModeStack(object):
     """A stack of InteractionModes. The top mode is the active one.
 
     Mode stacks can never be empty. If the final element is popped, it
@@ -1384,8 +1418,7 @@ class ModeStack (object):
         self.changed(old=old_mode, new=mode)
 
     def pop(self):
-        """Pops a mode, leaving the old top mode and entering the exposed top.
-        """
+        """Pops a mode, leaving the old top mode and entering the exposed top."""
         old_mode = None
         if len(self._stack) > 0:
             old_mode = self._stack.pop(-1)
@@ -1470,9 +1503,9 @@ class ModeStack (object):
 
     def __repr__(self):
         """Plain-text representation."""
-        s = '<ModeStack ['
+        s = "<ModeStack ["
         s += ", ".join([m.__class__.__name__ for m in self._stack])
-        s += ']>'
+        s += "]>"
         return s
 
     def __len__(self):

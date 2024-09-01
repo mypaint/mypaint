@@ -13,41 +13,35 @@
 
 ## Imports
 
-from __future__ import division, print_function
-
+import logging
 import os
 import re
-from glob import glob
 import sys
-import logging
-from collections import OrderedDict
 import time
+from collections import OrderedDict
+from glob import glob
 
-from lib.gibindings import Gtk
-from lib.gibindings import Pango
-
-from lib import helpers
-from lib import fileutils
-from lib.errors import FileHandlingError
-from lib.errors import AllocationError
 import gui.compatibility as compat
-from gui.widgets import with_wait_cursor
-from lib import mypaintlib
-from lib.gettext import ngettext
-from lib.gettext import C_
-import lib.glib
-from lib.glib import filename_to_unicode
-import lib.xml
 import lib.feedback
-from lib.pycompat import unicode, PY3
+import lib.glib
+import lib.xml
+from gui.widgets import with_wait_cursor
+from lib import fileutils, helpers, mypaintlib
+from lib.errors import AllocationError, FileHandlingError
+from lib.gettext import C_, ngettext
+from lib.gibindings import Gtk, Pango
+from lib.glib import filename_to_unicode
+from lib.pycompat import PY3, unicode
 
 logger = logging.getLogger(__name__)
 
 
 ## Save format consts
 
+
 class _SaveFormat:
     """Safe format consts."""
+
     ANY = 0
     ORA = 1
     PNG_AUTO = 2
@@ -72,9 +66,9 @@ def _get_case_insensitive_glob(string):
     insensitive filters
 
     """
-    ext = string.split('.')[1]
+    ext = string.split(".")[1]
     globlist = ["[%s%s]" % (c.lower(), c.upper()) for c in ext]
-    return '*.%s' % ''.join(globlist)
+    return "*.%s" % "".join(globlist)
 
 
 def _add_filters_to_dialog(filters, dialog):
@@ -103,6 +97,7 @@ def _dialog_set_filename(dialog, s):
 
 ## Class definitions
 
+
 class _IOProgressUI:
     """Wraps IO activity calls to show progress to the user.
 
@@ -124,76 +119,76 @@ class _IOProgressUI:
     _OP_DURATION_TEMPLATES = {
         "load": C_(
             "Document I/O: message shown while working",
-            u"Loading {files_summary}…",
+            "Loading {files_summary}…",
         ),
         "import": C_(
             "Document I/O: message shown while working",
-            u"Importing layers from {files_summary}…",
+            "Importing layers from {files_summary}…",
         ),
         "save": C_(
             "Document I/O: message shown while working",
-            u"Saving {files_summary}…",
+            "Saving {files_summary}…",
         ),
         "export": C_(
             "Document I/O: message shown while working",
-            u"Exporting to {files_summary}…",
+            "Exporting to {files_summary}…",
         ),
     }
 
     _OP_FAILED_TEMPLATES = {
         "export": C_(
             "Document I/O: fail message",
-            u"Failed to export to {files_summary}.",
+            "Failed to export to {files_summary}.",
         ),
         "save": C_(
             "Document I/O: fail message",
-            u"Failed to save {files_summary}.",
+            "Failed to save {files_summary}.",
         ),
         "import": C_(
             "Document I/O: fail message",
-            u"Could not import layers from {files_summary}.",
+            "Could not import layers from {files_summary}.",
         ),
         "load": C_(
             "Document I/O: fail message",
-            u"Could not load {files_summary}.",
+            "Could not load {files_summary}.",
         ),
     }
 
     _OP_FAIL_DIALOG_TITLES = {
         "save": C_(
             "Document I/O: fail dialog title",
-            u"Save failed",
+            "Save failed",
         ),
         "export": C_(
             "Document I/O: fail dialog title",
-            u"Export failed",
+            "Export failed",
         ),
         "import": C_(
             "Document I/O: fail dialog title",
-            u"Import Layers failed",
+            "Import Layers failed",
         ),
         "load": C_(
             "Document I/O: fail dialog title",
-            u"Open failed",
+            "Open failed",
         ),
     }
 
     _OP_SUCCEEDED_TEMPLATES = {
         "export": C_(
             "Document I/O: success",
-            u"Exported to {files_summary} successfully.",
+            "Exported to {files_summary} successfully.",
         ),
         "save": C_(
             "Document I/O: success",
-            u"Saved {files_summary} successfully.",
+            "Saved {files_summary} successfully.",
         ),
         "import": C_(
             "Document I/O: success",
-            u"Imported layers from {files_summary}.",
+            "Imported layers from {files_summary}.",
         ),
         "load": C_(
             "Document I/O: success",
-            u"Loaded {files_summary}.",
+            "Loaded {files_summary}.",
         ),
     }
 
@@ -212,7 +207,7 @@ class _IOProgressUI:
             nfiles = len(f)
             # TRANSLATORS: formatting for {files_summary} for multiple files.
             # TRANSLATORS: corresponding msgid for single files: "“{basename}”"
-            return ngettext(u"{n} file", u"{n} files", nfiles).format(
+            return ngettext("{n} file", "{n} files", nfiles).format(
                 n=nfiles,
             )
         elif isinstance(f, bytes) or isinstance(f, unicode):
@@ -220,15 +215,16 @@ class _IOProgressUI:
                 f = f.decode("utf-8")
             return C_(
                 "Document I/O: the {files_summary} for a single file",
-                u"“{basename}”",
+                "“{basename}”",
             ).format(basename=os.path.basename(f))
         else:
             raise TypeError("Expected a string, or a sequence of strings.")
 
     # Method defs:
 
-    def __init__(self, app, op_type, files_summary,
-                 use_statusbar=True, use_dialogs=True):
+    def __init__(
+        self, app, op_type, files_summary, use_statusbar=True, use_dialogs=True
+    ):
         """Construct, describing what UI messages to show.
 
         :param app: The top-level MyPaint application object.
@@ -247,24 +243,24 @@ class _IOProgressUI:
             raise ValueError("Unknown operation type %r" % (op_type,))
 
         msg = self._OP_DURATION_TEMPLATES[op_type].format(
-            files_summary = files_summary,
+            files_summary=files_summary,
         )
         self._duration_msg = msg
 
         msg = self._OP_SUCCEEDED_TEMPLATES[op_type].format(
-            files_summary = files_summary,
+            files_summary=files_summary,
         )
         self._success_msg = msg
 
         msg = self._OP_FAILED_TEMPLATES[op_type].format(
-            files_summary = files_summary,
+            files_summary=files_summary,
         )
         self._fail_msg = msg
 
         msg = self._OP_FAIL_DIALOG_TITLES[op_type]
         self._fail_dialog_title = msg
 
-        self._is_write = (op_type in ["save", "export"])
+        self._is_write = op_type in ["save", "export"]
 
         cid = self._app.statusbar.get_context_id("filehandling-message")
         self._statusbar_context_id = cid
@@ -322,7 +318,7 @@ class _IOProgressUI:
             # them. Dialogs may be shown, but they will use
             # understandable language.
             logger.exception(
-                u"IO failed (user-facing explanations: %s / %s)",
+                "IO failed (user-facing explanations: %s / %s)",
                 self._fail_msg,
                 unicode(e),
             )
@@ -407,7 +403,7 @@ class _IOProgressUI:
             Gtk.main_iteration()
 
 
-class FileHandler (object):
+class FileHandler(object):
     """File handling object, part of the central app object.
 
     A single app-wide instance of this object is accessible from the
@@ -426,27 +422,36 @@ class FileHandler (object):
 
         # File filters definitions, for dialogs
         # (name, patterns)
-        self.file_filters = [(
-            C_(
-                "save/load dialogs: filter patterns",
-                u"All Recognized Formats",
-            ), ["*.ora", "*.png", "*.jpg", "*.jpeg"],
-        ), (
-            C_(
-                "save/load dialogs: filter patterns",
-                u"OpenRaster (*.ora)",
-            ), ["*.ora"],
-        ), (
-            C_(
-                "save/load dialogs: filter patterns",
-                u"PNG (*.png)",
-            ), ["*.png"],
-        ), (
-            C_(
-                "save/load dialogs: filter patterns",
-                u"JPEG (*.jpg; *.jpeg)",
-            ), ["*.jpg", "*.jpeg"],
-        )]
+        self.file_filters = [
+            (
+                C_(
+                    "save/load dialogs: filter patterns",
+                    "All Recognized Formats",
+                ),
+                ["*.ora", "*.png", "*.jpg", "*.jpeg"],
+            ),
+            (
+                C_(
+                    "save/load dialogs: filter patterns",
+                    "OpenRaster (*.ora)",
+                ),
+                ["*.ora"],
+            ),
+            (
+                C_(
+                    "save/load dialogs: filter patterns",
+                    "PNG (*.png)",
+                ),
+                ["*.png"],
+            ),
+            (
+                C_(
+                    "save/load dialogs: filter patterns",
+                    "JPEG (*.jpg; *.jpeg)",
+                ),
+                ["*.jpg", "*.jpeg"],
+            ),
+        ]
 
         # Recent filter, for the menu.
         # Better to use a regex with re.IGNORECASE than
@@ -460,24 +465,21 @@ class FileHandler (object):
             for p in patts:
                 e = p.replace("*.", "", 1)
                 file_regex_exts.add(re.escape(e))
-        file_re = r'[.](?:' + ('|'.join(file_regex_exts)) + r')$'
+        file_re = r"[.](?:" + ("|".join(file_regex_exts)) + r")$"
         logger.debug("Using regex /%s/i for filtering recent files", file_re)
         self._file_extension_regex = re.compile(file_re, re.IGNORECASE)
         rf = Gtk.RecentFilter()
-        rf.add_pattern('')
+        rf.add_pattern("")
         # The blank-string pattern is eeded so the custom func will
         # get URIs at all, despite the needed flags below.
         rf.add_custom(
-            func = self._recentfilter_func,
-            needed = (
-                Gtk.RecentFilterFlags.APPLICATION |
-                Gtk.RecentFilterFlags.URI
-            )
+            func=self._recentfilter_func,
+            needed=(Gtk.RecentFilterFlags.APPLICATION | Gtk.RecentFilterFlags.URI),
         )
         ra = app.find_action("OpenRecent")
         ra.add_filter(rf)
 
-        ag = app.builder.get_object('FileActions')
+        ag = app.builder.get_object("FileActions")
         for action in ag.list_actions():
             self.app.kbm.takeover_action(action)
 
@@ -489,40 +491,98 @@ class FileHandler (object):
         self._update_recent_items()
 
         # { FORMAT: (name, extension, options) }
-        self.saveformats = OrderedDict([
-            (_SaveFormat.ANY, (C_(
-                "save dialogs: save formats and options",
-                u"By extension (prefer default format)",
-            ), None, {})),
-            (_SaveFormat.ORA, (C_(
-                "save dialogs: save formats and options",
-                u"OpenRaster (*.ora)",
-            ), '.ora', {})),
-            (_SaveFormat.PNG_AUTO, (C_(
-                "save dialogs: save formats and options",
-                u"PNG, respecting “Show Background” (*.png)"
-            ), '.png', {})),
-            (_SaveFormat.PNG_SOLID, (C_(
-                "save dialogs: save formats and options",
-                u"PNG, solid RGB (*.png)",
-            ), '.png', {'alpha': False})),
-            (_SaveFormat.PNG_TRANS, (C_(
-                "save dialogs: save formats and options",
-                u"PNG, transparent RGBA (*.png)",
-            ), '.png', {'alpha': True})),
-            (_SaveFormat.PNGS_BY_LAYER, (C_(
-                "save dialogs: save formats and options",
-                u"Multiple PNGs, by layer (*.NUM.png)",
-            ), '.png', {'multifile': 'layers'})),
-            (_SaveFormat.PNGS_BY_VIEW, (C_(
-                "save dialogs: save formats and options",
-                u"Multiple PNGs, by view (*.NAME.png)",
-            ), '.png', {'multifile': 'views'})),
-            (_SaveFormat.JPEG, (C_(
-                "save dialogs: save formats and options",
-                u"JPEG 90% quality (*.jpg; *.jpeg)",
-            ), '.jpg', {'quality': 90})),
-        ])
+        self.saveformats = OrderedDict(
+            [
+                (
+                    _SaveFormat.ANY,
+                    (
+                        C_(
+                            "save dialogs: save formats and options",
+                            "By extension (prefer default format)",
+                        ),
+                        None,
+                        {},
+                    ),
+                ),
+                (
+                    _SaveFormat.ORA,
+                    (
+                        C_(
+                            "save dialogs: save formats and options",
+                            "OpenRaster (*.ora)",
+                        ),
+                        ".ora",
+                        {},
+                    ),
+                ),
+                (
+                    _SaveFormat.PNG_AUTO,
+                    (
+                        C_(
+                            "save dialogs: save formats and options",
+                            "PNG, respecting “Show Background” (*.png)",
+                        ),
+                        ".png",
+                        {},
+                    ),
+                ),
+                (
+                    _SaveFormat.PNG_SOLID,
+                    (
+                        C_(
+                            "save dialogs: save formats and options",
+                            "PNG, solid RGB (*.png)",
+                        ),
+                        ".png",
+                        {"alpha": False},
+                    ),
+                ),
+                (
+                    _SaveFormat.PNG_TRANS,
+                    (
+                        C_(
+                            "save dialogs: save formats and options",
+                            "PNG, transparent RGBA (*.png)",
+                        ),
+                        ".png",
+                        {"alpha": True},
+                    ),
+                ),
+                (
+                    _SaveFormat.PNGS_BY_LAYER,
+                    (
+                        C_(
+                            "save dialogs: save formats and options",
+                            "Multiple PNGs, by layer (*.NUM.png)",
+                        ),
+                        ".png",
+                        {"multifile": "layers"},
+                    ),
+                ),
+                (
+                    _SaveFormat.PNGS_BY_VIEW,
+                    (
+                        C_(
+                            "save dialogs: save formats and options",
+                            "Multiple PNGs, by view (*.NAME.png)",
+                        ),
+                        ".png",
+                        {"multifile": "views"},
+                    ),
+                ),
+                (
+                    _SaveFormat.JPEG,
+                    (
+                        C_(
+                            "save dialogs: save formats and options",
+                            "JPEG 90% quality (*.jpg; *.jpeg)",
+                        ),
+                        ".jpg",
+                        {"quality": 90},
+                    ),
+                ),
+            ]
+        )
         self.ext2saveformat = {
             ".ora": (_SaveFormat.ORA, "image/openraster"),
             ".png": (_SaveFormat.PNG_AUTO, "image/png"),
@@ -530,9 +590,9 @@ class FileHandler (object):
             ".jpg": (_SaveFormat.JPEG, "image/jpeg"),
         }
         self.config2saveformat = {
-            'openraster': _SaveFormat.ORA,
-            'jpeg-90%': _SaveFormat.JPEG,
-            'png-solid': _SaveFormat.PNG_SOLID,
+            "openraster": _SaveFormat.ORA,
+            "jpeg-90%": _SaveFormat.JPEG,
+            "png-solid": _SaveFormat.PNG_SOLID,
         }
 
     def _update_recent_items(self):
@@ -576,22 +636,18 @@ class FileHandler (object):
 
     def init_save_dialog(self, export):
         if export:
-            save_dialog_name = C_(
-                "Dialogs (window title): File→Export…",
-                u"Export"
-            )
+            save_dialog_name = C_("Dialogs (window title): File→Export…", "Export")
         else:
-            save_dialog_name = C_(
-                "Dialogs (window title): File→Save As…",
-                u"Save As"
-            )
+            save_dialog_name = C_("Dialogs (window title): File→Save As…", "Save As")
         dialog = Gtk.FileChooserDialog(
             save_dialog_name,
             self.app.drawWindow,
             Gtk.FileChooserAction.SAVE,
             (
-                Gtk.STOCK_CANCEL, Gtk.ResponseType.CANCEL,
-                Gtk.STOCK_SAVE, Gtk.ResponseType.OK,
+                Gtk.STOCK_CANCEL,
+                Gtk.ResponseType.CANCEL,
+                Gtk.STOCK_SAVE,
+                Gtk.ResponseType.OK,
             ),
         )
         dialog.set_default_response(Gtk.ResponseType.OK)
@@ -601,16 +657,18 @@ class FileHandler (object):
         # Add widget for selecting save format
         box = Gtk.HBox()
         box.set_spacing(12)
-        label = Gtk.Label(label=C_(
-            "save dialogs: formats and options: (label)",
-            u"Format to save as:",
-        ))
+        label = Gtk.Label(
+            label=C_(
+                "save dialogs: formats and options: (label)",
+                "Format to save as:",
+            )
+        )
         label.set_alignment(0.0, 0.5)
         combo = Gtk.ComboBoxText()
-        for (name, ext, opt) in self.saveformats.values():
+        for name, _ext, _opt in self.saveformats.values():
             combo.append_text(name)
         combo.set_active(0)
-        combo.connect('changed', self.selected_save_format_changed_cb)
+        combo.connect("changed", self.selected_save_format_changed_cb)
         self.saveformat_combo = combo
 
         box.pack_start(label, True, True, 0)
@@ -633,8 +691,7 @@ class FileHandler (object):
                 if ext is not None:
                     _dialog_set_filename(dialog, filename + ext)
 
-    def confirm_destructive_action(self, title=None, confirm=None,
-                                   offer_save=True):
+    def confirm_destructive_action(self, title=None, confirm=None, offer_save=True):
         """Asks the user to confirm an action that might lose work.
 
         :param unicode title: Short question to ask the user.
@@ -670,7 +727,7 @@ class FileHandler (object):
             title = C_(
                 "Destructive action confirm dialog: "
                 "fallback title (normally overridden)",
-                "Really Continue?"
+                "Really Continue?",
             )
 
         # Get an accurate assessment of how much change is unsaved.
@@ -697,23 +754,23 @@ class FileHandler (object):
             title=title,
             transient_for=self.app.drawWindow,
             message_type=Gtk.MessageType.QUESTION,
-            modal=True
+            modal=True,
         )
 
         # Translated strings for things
         cancel_btn_text = C_(
             "Destructive action confirm dialog: cancel button",
-            u"_Cancel",
+            "_Cancel",
         )
         save_to_scraps_first_text = C_(
             "Destructive action confirm dialog: save checkbox",
-            u"_Save to Scraps first",
+            "_Save to Scraps first",
         )
         if not confirm:
             continue_btn_text = C_(
                 "Destructive action confirm dialog: "
                 "fallback continue button (normally overridden)",
-                u"Co_ntinue",
+                "Co_ntinue",
             )
         else:
             continue_btn_text = confirm
@@ -736,13 +793,15 @@ class FileHandler (object):
             file_basename = None
         warning_msg_tmpl = C_(
             "Destructive action confirm dialog: warning message",
-            u"You risk losing {abbreviated_time} of unsaved painting."
+            "You risk losing {abbreviated_time} of unsaved painting.",
         )
         markup_tmpl = warning_msg_tmpl
-        d.set_markup(markup_tmpl.format(
-            abbreviated_time = lib.xml.escape(helpers.fmt_time_period_abbr(t)),
-            current_file_name = lib.xml.escape(file_basename),
-        ))
+        d.set_markup(
+            markup_tmpl.format(
+                abbreviated_time=lib.xml.escape(helpers.fmt_time_period_abbr(t)),
+                current_file_name=lib.xml.escape(file_basename),
+            )
+        )
 
         # Checkbox for saving
         if offer_save:
@@ -799,13 +858,13 @@ class FileHandler (object):
 
     def new_cb(self, action):
         ok_to_start_new_doc = self.confirm_destructive_action(
-            title = C_(
-                u'File→New: confirm dialog: title question',
-                u"New Canvas?",
+            title=C_(
+                "File→New: confirm dialog: title question",
+                "New Canvas?",
             ),
-            confirm = C_(
-                u'File→New: confirm dialog: continue button',
-                u"_New Canvas",
+            confirm=C_(
+                "File→New: confirm dialog: continue button",
+                "_New Canvas",
             ),
         )
         if not ok_to_start_new_doc:
@@ -825,7 +884,8 @@ class FileHandler (object):
     def open_file(self, filename, **kwargs):
         """Load a file, replacing the current working document."""
         if not self._call_doc_load_method(
-                self.doc.model.load, filename, False, **kwargs):
+            self.doc.model.load, filename, False, **kwargs
+        ):
             # Without knowledge of _when_ the process failed, clear
             # the document to make sure we're not in an inconsistent state.
             # TODO: Improve the control flow to permit a less draconian
@@ -838,7 +898,7 @@ class FileHandler (object):
         self.filename = os.path.abspath(filename)
         for func in self.file_opened_observers:
             func(self.filename)
-        logger.info('Loaded from %r', self.filename)
+        logger.info("Loaded from %r", self.filename)
         self.app.doc.reset_view(True, True, True)
         # try to restore the last used brush and color
         layers = self.doc.model.layer_stack
@@ -855,13 +915,13 @@ class FileHandler (object):
     def import_layers(self, filenames):
         """Load a file, replacing the current working document."""
 
-        if not self._call_doc_load_method(self.doc.model.import_layers,
-                                          filenames, True):
+        if not self._call_doc_load_method(
+            self.doc.model.import_layers, filenames, True
+        ):
             return
-        logger.info('Imported layers from %r', filenames)
+        logger.info("Imported layers from %r", filenames)
 
-    def _call_doc_load_method(
-            self, method, arg, is_import, compat_handler=None):
+    def _call_doc_load_method(self, method, arg, is_import, compat_handler=None):
         """Internal: common GUI aspects of loading or importing files.
 
         Calls a document model loader method (on lib.document.Document)
@@ -879,10 +939,11 @@ class FileHandler (object):
         files_summary = _IOProgressUI.format_files_summary(arg)
         ioui = _IOProgressUI(self.app, op_type, files_summary)
         result = ioui.call(
-            method, arg,
+            method,
+            arg,
             convert_to_srgb=(display_colorspace_setting == "srgb"),
             compat_handler=compat_handler,
-            incompatible_ora_cb=compat.incompatible_ora_cb(self.app)
+            incompatible_ora_cb=compat.incompatible_ora_cb(self.app),
         )
         return (result is not False) and ioui.success
 
@@ -895,19 +956,17 @@ class FileHandler (object):
                 progress=no_ui_progress,
             )
             self.app.scratchpad_filename = os.path.abspath(filename)
-            self.app.preferences["scratchpad.last_opened_scratchpad"] \
-                = self.app.scratchpad_filename
-        except (FileHandlingError, AllocationError, MemoryError) as e:
-            self.app.message_dialog(
-                unicode(e),
-                message_type=Gtk.MessageType.ERROR
+            self.app.preferences["scratchpad.last_opened_scratchpad"] = (
+                self.app.scratchpad_filename
             )
+        except (FileHandlingError, AllocationError, MemoryError) as e:
+            self.app.message_dialog(unicode(e), message_type=Gtk.MessageType.ERROR)
         else:
             self.app.scratchpad_filename = os.path.abspath(filename)
-            self.app.preferences["scratchpad.last_opened_scratchpad"] \
-                = self.app.scratchpad_filename
-            logger.info('Loaded scratchpad from %r',
-                        self.app.scratchpad_filename)
+            self.app.preferences["scratchpad.last_opened_scratchpad"] = (
+                self.app.scratchpad_filename
+            )
+            logger.info("Loaded scratchpad from %r", self.app.scratchpad_filename)
             self.app.scratchpad_doc.reset_view(True, True, True)
 
     def save_file(self, filename, export=False, **options):
@@ -924,11 +983,7 @@ class FileHandler (object):
         See `_save_doc_to_file()`
         """
         thumbnail_pixbuf = self._save_doc_to_file(
-            filename,
-            self.doc,
-            export=export,
-            use_statusbar=True,
-            **options
+            filename, self.doc, export=export, use_statusbar=True, **options
         )
         if "multifile" in options:  # thumbs & recents are inappropriate
             return
@@ -970,12 +1025,13 @@ class FileHandler (object):
             )
         if not export:
             self.app.scratchpad_filename = os.path.abspath(filename)
-            self.app.preferences["scratchpad.last_opened_scratchpad"] \
-                = self.app.scratchpad_filename
+            self.app.preferences["scratchpad.last_opened_scratchpad"] = (
+                self.app.scratchpad_filename
+            )
 
-    def _save_doc_to_file(self, filename, doc, export=False,
-                          use_statusbar=True,
-                          **options):
+    def _save_doc_to_file(
+        self, filename, doc, export=False, use_statusbar=True, **options
+    ):
         """Saves a document to one or more files
 
         :param filename: The base filename to save
@@ -991,12 +1047,13 @@ class FileHandler (object):
         thumbnail_pixbuf = None
         prefs = self.app.preferences
         display_colorspace_setting = prefs["display.colorspace"]
-        options['save_srgb_chunks'] = (display_colorspace_setting == "srgb")
+        options["save_srgb_chunks"] = display_colorspace_setting == "srgb"
 
         files_summary = _IOProgressUI.format_files_summary(filename)
         op_type = export and "export" or "save"
-        ioui = _IOProgressUI(self.app, op_type, files_summary,
-                             use_statusbar=use_statusbar)
+        ioui = _IOProgressUI(
+            self.app, op_type, files_summary, use_statusbar=use_statusbar
+        )
 
         thumbnail_pixbuf = ioui.call(doc.model.save, filename, **options)
         self.lastsavefailed = not ioui.success
@@ -1019,21 +1076,21 @@ class FileHandler (object):
 
     def open_cb(self, action):
         ok_to_open = self.app.filehandler.confirm_destructive_action(
-            title = C_(
-                u'File→Open: confirm dialog: title question',
-                u"Open File?",
+            title=C_(
+                "File→Open: confirm dialog: title question",
+                "Open File?",
             ),
-            confirm = C_(
-                u'File→Open: confirm dialog: continue button',
-                u"_Open…",
+            confirm=C_(
+                "File→Open: confirm dialog: continue button",
+                "_Open…",
             ),
         )
         if not ok_to_open:
             return
         dialog = Gtk.FileChooserDialog(
             title=C_(
-                u'File→Open: file chooser dialog: title',
-                u"Open File",
+                "File→Open: file chooser dialog: title",
+                "Open File",
             ),
             transient_for=self.app.drawWindow,
             action=Gtk.FileChooserAction.OPEN,
@@ -1044,7 +1101,7 @@ class FileHandler (object):
 
         # Compatibility override options for .ora files
         selector = compat.CompatSelector(self.app)
-        dialog.connect('selection-changed', selector.file_selection_changed_cb)
+        dialog.connect("selection-changed", selector.file_selection_changed_cb)
         dialog.set_extra_widget(selector.widget)
 
         preview = Gtk.Image()
@@ -1070,10 +1127,7 @@ class FileHandler (object):
                 dialog.hide()
                 filename = dialog.get_filename()
                 filename = filename_to_unicode(filename)
-                self.open_file(
-                    filename,
-                    compat_handler=selector.compat_function
-                )
+                self.open_file(filename, compat_handler=selector.compat_function)
         finally:
             dialog.destroy()
 
@@ -1081,12 +1135,16 @@ class FileHandler (object):
         dialog = Gtk.FileChooserDialog(
             C_(
                 "load dialogs: title",
-                u"Open Scratchpad…",
+                "Open Scratchpad…",
             ),
             self.app.drawWindow,
             Gtk.FileChooserAction.OPEN,
-            (Gtk.STOCK_CANCEL, Gtk.ResponseType.CANCEL,
-             Gtk.STOCK_OPEN, Gtk.ResponseType.OK),
+            (
+                Gtk.STOCK_CANCEL,
+                Gtk.ResponseType.CANCEL,
+                Gtk.STOCK_OPEN,
+                Gtk.ResponseType.OK,
+            ),
         )
         dialog.set_default_response(Gtk.ResponseType.OK)
 
@@ -1121,12 +1179,12 @@ class FileHandler (object):
     def import_layers_cb(self, action):
         """Action callback: import layers from multiple files."""
         dialog = Gtk.FileChooserDialog(
-            title = C_(
-                u'Layers→Import Layers: files-chooser dialog: title',
-                u"Import Layers",
+            title=C_(
+                "Layers→Import Layers: files-chooser dialog: title",
+                "Import Layers",
             ),
-            parent = self.app.drawWindow,
-            action = Gtk.FileChooserAction.OPEN,
+            parent=self.app.drawWindow,
+            action=Gtk.FileChooserAction.OPEN,
         )
         dialog.add_button(Gtk.STOCK_CANCEL, Gtk.ResponseType.CANCEL)
         dialog.add_button(Gtk.STOCK_OPEN, Gtk.ResponseType.OK)
@@ -1173,7 +1231,7 @@ class FileHandler (object):
         if self.filename:
             current_filename = self.filename
         else:
-            current_filename = ''
+            current_filename = ""
             # choose the most recent save folder
             self._update_recent_items()
             for item in reversed(self._recent_items):
@@ -1186,14 +1244,14 @@ class FileHandler (object):
         self.save_as_dialog(
             self.save_file,
             suggested_filename=current_filename,
-            export = (action.get_name() == 'Export'),
+            export=(action.get_name() == "Export"),
         )
 
     def save_scratchpad_as_dialog(self, export=False):
         if self.app.scratchpad_filename:
             current_filename = self.app.scratchpad_filename
         else:
-            current_filename = ''
+            current_filename = ""
 
         self.save_as_dialog(
             self.save_scratchpad,
@@ -1201,9 +1259,14 @@ class FileHandler (object):
             export=export,
         )
 
-    def save_as_dialog(self, save_method_reference, suggested_filename=None,
-                       start_in_folder=None, export=False,
-                       **options):
+    def save_as_dialog(
+        self,
+        save_method_reference,
+        suggested_filename=None,
+        start_in_folder=None,
+        export=False,
+        **options
+    ):
         if not self.save_dialog:
             self.save_dialog = self.init_save_dialog(export)
         dialog = self.save_dialog
@@ -1211,7 +1274,7 @@ class FileHandler (object):
         if suggested_filename:
             _dialog_set_filename(dialog, suggested_filename)
         else:
-            _dialog_set_filename(dialog, '')
+            _dialog_set_filename(dialog, "")
             # Recent directory?
             if start_in_folder:
                 dialog.set_current_folder(start_in_folder)
@@ -1229,7 +1292,7 @@ class FileHandler (object):
                 # If no explicitly selected format, use the extension to
                 # figure it out
                 if saveformat == _SaveFormat.ANY:
-                    cfg = self.app.preferences['saving.default_format']
+                    cfg = self.app.preferences["saving.default_format"]
                     default_saveformat = self.config2saveformat[cfg]
                     if ext:
                         try:
@@ -1242,7 +1305,7 @@ class FileHandler (object):
                 # if saveformat isn't a key, it must be SAVE_FORMAT_PNGAUTO.
                 desc, ext_format, options = self.saveformats.get(
                     saveformat,
-                    ("", ext, {'alpha': None}),
+                    ("", ext, {"alpha": None}),
                 )
 
                 if ext:
@@ -1252,7 +1315,7 @@ class FileHandler (object):
                         # use the default options instead of those
                         # above. However, they are the same at the moment.
                         options = {}
-                    assert(filename)
+                    assert filename
                     dialog.hide()
                     if export:
                         # Do not change working file
@@ -1307,37 +1370,37 @@ class FileHandler (object):
                     self.save_scratchpad(filename)
                 return filename
 
-            found_nums = re.findall(re.escape(prefix) + '([0-9]+)', filename)
+            found_nums = re.findall(re.escape(prefix) + "([0-9]+)", filename)
             if found_nums:
                 number = found_nums[0]
 
         if number:
             # reuse the number, find the next character
-            char = 'a'
-            for filename in glob(prefix + number + '_*'):
-                c = filename[len(prefix + number + '_')]
-                if c >= 'a' and c <= 'z' and c >= char:
+            char = "a"
+            for filename in glob(prefix + number + "_*"):
+                c = filename[len(prefix + number + "_")]
+                if c >= "a" and c <= "z" and c >= char:
                     char = chr(ord(c) + 1)
-            if char > 'z':
+            if char > "z":
                 # out of characters, increase the number
                 filename = None
                 return self.save_autoincrement_file(filename, prefix, main_doc)
-            filename = '%s%s_%c' % (prefix, number, char)
+            filename = "%s%s_%c" % (prefix, number, char)
         else:
             # we don't have a scrap filename yet, find the next number
             maximum = 0
-            for filename in glob(prefix + '[0-9][0-9][0-9]*'):
-                filename = filename[len(prefix):]
-                res = re.findall(r'[0-9]*', filename)
+            for filename in glob(prefix + "[0-9][0-9][0-9]*"):
+                filename = filename[len(prefix) :]
+                res = re.findall(r"[0-9]*", filename)
                 if not res:
                     continue
                 number = int(res[0])
                 if number > maximum:
                     maximum = number
-            filename = '%s%03d_a' % (prefix, maximum + 1)
+            filename = "%s%03d_a" % (prefix, maximum + 1)
 
         # Add extension
-        cfg = self.app.preferences['saving.default_format']
+        cfg = self.app.preferences["saving.default_format"]
         default_saveformat = self.config2saveformat[cfg]
         filename += self.saveformats[default_saveformat][1]
 
@@ -1349,7 +1412,7 @@ class FileHandler (object):
         return filename
 
     def get_scrap_prefix(self):
-        prefix = self.app.preferences['saving.scrap_prefix']
+        prefix = self.app.preferences["saving.scrap_prefix"]
         # This should really use two separate settings, not one.
         # https://github.com/mypaint/mypaint/issues/375
         prefix = fileutils.expanduser_unicode(prefix)
@@ -1361,7 +1424,7 @@ class FileHandler (object):
 
     def get_scratchpad_prefix(self):
         # TODO allow override via prefs, maybe
-        prefix = os.path.join(self.app.user_datapath, 'scratchpads')
+        prefix = os.path.join(self.app.user_datapath, "scratchpads")
         prefix = os.path.abspath(prefix)
         if os.path.isdir(prefix):
             if not prefix.endswith(os.path.sep):
@@ -1391,11 +1454,11 @@ class FileHandler (object):
 
     def _list_prefixed_dir(self, prefix):
         filenames = []
-        for ext in ['png', 'ora', 'jpg', 'jpeg']:
-            filenames += glob(prefix + '[0-9]*.' + ext)
-            filenames += glob(prefix + '[0-9]*.' + ext.upper())
+        for ext in ["png", "ora", "jpg", "jpeg"]:
+            filenames += glob(prefix + "[0-9]*." + ext)
+            filenames += glob(prefix + "[0-9]*." + ext.upper())
             # For the special linked scratchpads
-            filenames += glob(prefix + '_md5[0-9a-f]*.' + ext)
+            filenames += glob(prefix + "_md5[0-9a-f]*." + ext)
         filenames.sort()
         return filenames
 
@@ -1409,11 +1472,13 @@ class FileHandler (object):
 
     def list_files_grouped(self, filenames):
         """return scraps grouped by their major number"""
+
         def scrap_id(filename):
             s = os.path.basename(filename)
             if s.startswith("_md5"):
                 return s
-            return re.findall('([0-9]+)', s)[0]
+            return re.findall("([0-9]+)", s)[0]
+
         groups = []
         while filenames:
             group = []
@@ -1428,14 +1493,8 @@ class FileHandler (object):
         uri = action.get_current_uri()
         fn, _h = lib.glib.filename_from_uri(uri)
         ok_to_open = self.app.filehandler.confirm_destructive_action(
-            title = C_(
-                u'File→Open Recent→* confirm dialog: title',
-                u"Open File?"
-            ),
-            confirm = C_(
-                u'File→Open Recent→* confirm dialog: continue button',
-                u"_Open"
-            ),
+            title=C_("File→Open Recent→* confirm dialog: title", "Open File?"),
+            confirm=C_("File→Open Recent→* confirm dialog: continue button", "_Open"),
         )
         if not ok_to_open:
             return
@@ -1446,15 +1505,13 @@ class FileHandler (object):
         if not self._recent_items:
             return
         ok_to_open = self.app.filehandler.confirm_destructive_action(
-            title = C_(
-                u'File→Open Most Recent confirm dialog: '
-                u'title',
-                u"Open Most Recent File?",
+            title=C_(
+                "File→Open Most Recent confirm dialog: " "title",
+                "Open Most Recent File?",
             ),
-            confirm = C_(
-                u'File→Open Most Recent→* confirm dialog: '
-                u'continue button',
-                u"_Open"
+            confirm=C_(
+                "File→Open Most Recent→* confirm dialog: " "continue button",
+                "_Open",
             ),
         )
         if not ok_to_open:
@@ -1467,34 +1524,31 @@ class FileHandler (object):
         groups = self.list_scraps_grouped()
         if not groups:
             msg = C_(
-                'File→Open Next/Prev Scrap: error message',
-                u"There are no scrap files yet. Try saving one first.",
+                "File→Open Next/Prev Scrap: error message",
+                "There are no scrap files yet. Try saving one first.",
             )
             self.app.message_dialog(msg, message_type=Gtk.MessageType.WARNING)
             return
-        next = action.get_name() == 'NextScrap'
+        next = action.get_name() == "NextScrap"
         if next:
             dialog_title = C_(
-                u'File→Open Next/Prev Scrap confirm dialog: '
-                u'title',
-                u"Open Next Scrap?"
+                "File→Open Next/Prev Scrap confirm dialog: " "title",
+                "Open Next Scrap?",
             )
             idx = 0
             delta = 1
         else:
             dialog_title = C_(
-                u'File→Open Next/Prev Scrap confirm dialog: '
-                u'title',
-                u"Open Previous Scrap?"
+                "File→Open Next/Prev Scrap confirm dialog: " "title",
+                "Open Previous Scrap?",
             )
             idx = -1
             delta = -1
         ok_to_open = self.app.filehandler.confirm_destructive_action(
-            title = dialog_title,
-            confirm = C_(
-                u'File→Open Next/Prev Scrap confirm dialog: '
-                u'continue button',
-                u"_Open"
+            title=dialog_title,
+            confirm=C_(
+                "File→Open Next/Prev Scrap confirm dialog: " "continue button",
+                "_Open",
             ),
         )
         if not ok_to_open:
@@ -1507,22 +1561,19 @@ class FileHandler (object):
 
     def reload_cb(self, action):
         if not self.filename:
-            self.app.show_transient_message(C_(
-                u'File→Revert: status message: canvas has no filename yet',
-                u"Cannot revert: canvas has not been saved to a file yet.",
-            ))
+            self.app.show_transient_message(
+                C_(
+                    "File→Revert: status message: canvas has no filename yet",
+                    "Cannot revert: canvas has not been saved to a file yet.",
+                )
+            )
             return
         ok_to_reload = self.app.filehandler.confirm_destructive_action(
-            title = C_(
-                u'File→Revert confirm dialog: '
-                u'title',
-                u"Revert Changes?",
+            title=C_(
+                "File→Revert confirm dialog: " "title",
+                "Revert Changes?",
             ),
-            confirm = C_(
-                u'File→Revert confirm dialog: '
-                u'continue button',
-                u"_Revert"
-            ),
+            confirm=C_("File→Revert confirm dialog: " "continue button", "_Revert"),
         )
         if ok_to_reload:
             self.open_file(self.filename)
@@ -1531,8 +1582,10 @@ class FileHandler (object):
         prefix = self.get_scratchpad_prefix()
         prefix = os.path.abspath(prefix)
         for filename in filenames:
-            if not (os.path.isfile(filename) and
-                    os.path.abspath(filename).startswith(prefix)):
+            if not (
+                os.path.isfile(filename)
+                and os.path.abspath(filename).startswith(prefix)
+            ):
                 continue
             os.remove(filename)
             logger.info("Removed %s", filename)

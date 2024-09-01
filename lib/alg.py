@@ -10,8 +10,6 @@
 """Miscellaneous little algorithms"""
 
 ## Imports
-from __future__ import division, print_function
-
 from math import sqrt
 
 
@@ -22,6 +20,7 @@ class LineType:
 
 
 ## Polygon and convex polygon computational geometry routines.
+
 
 def convex_hull(points):
     """Returns the convex hull of a set of points, in clockwise order.
@@ -50,8 +49,10 @@ def convex_hull(points):
     # p0->p makes with the X axis. Or just the cosine, which suffices since
     # p0 has the lowest Y value and the angle is therefore in (0, pi).
     def p0cos(p):
-        return ((p0[0] - p[0]) / sqrt((p0[0] - p[0])**2 + (p0[1] - p[1])**2),
-                p)
+        return (
+            (p0[0] - p[0]) / sqrt((p0[0] - p[0]) ** 2 + (p0[1] - p[1]) ** 2),
+            p,
+        )
 
     points = sorted(points, key=p0cos)
     points.insert(0, p0)
@@ -75,21 +76,21 @@ def det(p, q, r):
     are collinear, return zero.
 
     """
-    sum1 = q[0]*r[1] + p[0]*q[1] + r[0]*p[1]
-    sum2 = q[0]*p[1] + r[0]*q[1] + p[0]*r[1]
+    sum1 = q[0] * r[1] + p[0] * q[1] + r[0] * p[1]
+    sum2 = q[0] * p[1] + r[0] * q[1] + p[0] * r[1]
     return sum1 - sum2
 
 
 def poly_area(poly):
     """Calculates the area of a (non-self-intersecting) polygon.
 
-      >>> poly_area([(-1, -1), (1, -1), (1, 1), (-1, 1)])
-      4.0
+    >>> poly_area([(-1, -1), (1, -1), (1, 1), (-1, 1)])
+    4.0
 
     """
     area = 0.0
     for pa, pb in pairwise(poly):
-        area += pa[0]*pb[1] - pb[0]*pa[1]
+        area += pa[0] * pb[1] - pb[0] * pa[1]
     area /= 2.0
     return area
 
@@ -97,23 +98,23 @@ def poly_area(poly):
 def poly_centroid(poly):
     """Calculates the centroid of a (non-self-intersecting) polygon.
 
-      >>> poly_centroid([(-1, -1), (1, -1), (1, 1), (-1, 1)])
-      (0.0, 0.0)
-      >>> poly_centroid([(0, 1), (0, 4), (0, 3)])
-      (0.0, 2.5)
+    >>> poly_centroid([(-1, -1), (1, -1), (1, 1), (-1, 1)])
+    (0.0, 0.0)
+    >>> poly_centroid([(0, 1), (0, 4), (0, 3)])
+    (0.0, 2.5)
 
     """
     cx, cy = 0.0, 0.0
     area = 0.0
     for pa, pb in pairwise(poly):
-        n = (pa[0]*pb[1] - pb[0]*pa[1])
-        cx += (pa[0]+pb[0]) * n
-        cy += (pa[1]+pb[1]) * n
-        area += pa[0]*pb[1] - pb[0]*pa[1]
+        n = pa[0] * pb[1] - pb[0] * pa[1]
+        cx += (pa[0] + pb[0]) * n
+        cy += (pa[1] + pb[1]) * n
+        area += pa[0] * pb[1] - pb[0] * pa[1]
     if area > 0.0:
         area /= 2.0
-        cx /= 6.0*area
-        cy /= 6.0*area
+        cx /= 6.0 * area
+        cy /= 6.0 * area
         return cx, cy
     else:  # Line
         xs = [x for x, y in poly]
@@ -144,7 +145,7 @@ def point_in_convex_poly(point, poly):
     for p0, p1 in pairwise(poly):
         x0, y0 = p0
         x1, y1 = p1
-        det = ((y-y0)*(x1-x0)) - ((x-x0)*(y1-y0))
+        det = ((y - y0) * (x1 - x0)) - ((x - x0) * (y1 - y0))
         if det < 0:  # point lies to right of segment
             if seen_left:
                 return False
@@ -255,60 +256,66 @@ def nearest_point_on_line(p1, p2, point, unidirectional=False):
     for e.g. the line (0,0), (1, 1) and point (2, 0), the closest point will be
     (1, 1) and not None.
     """
-    return _nearest_point(
-        p1, p2, point, inclusive=True, line_type=int(unidirectional))
+    return _nearest_point(p1, p2, point, inclusive=True, line_type=int(unidirectional))
 
 
 def _nearest_point(
-        seg_start, seg_end, point,
-        perpendicular=True, inclusive=False, line_type=LineType.SEGMENT):
+    seg_start,
+    seg_end,
+    point,
+    perpendicular=True,
+    inclusive=False,
+    line_type=LineType.SEGMENT,
+):
     """Generic impl, supporting non-perpendicular shortest distance
 
-      >>> _nearest_point((0, 0), (3, 0), (0, 1), inclusive=True)
-      (0.0, 0.0)
-      >>> _nearest_point((0, 0), (3, 0), (0, 1), perpendicular=False)
-      (0.0, 0.0)
-      >>> _nearest_point((0, 0), (3, 0), (-1, 1), perpendicular=False)
-      (0.0, 0.0)
-      >>> _nearest_point((3, 0), (0, 0), (-1, 1), perpendicular=False)
-      (0.0, 0.0)
-      >>> _nearest_point((0, 0), (3, 0), (4, 1), perpendicular=False)
-      (3.0, 0.0)
-      >>> _nearest_point((3, 0), (0, 0), (4, 1), perpendicular=False)
-      (3.0, 0.0)
-      >>> _nearest_point((-1, 1), (1, -1), (-3, 1), perpendicular=False)
-      (-1.0, 1.0)
-      >>> _nearest_point((-1, 1), (1, -1), (-1, 3), perpendicular=False)
-      (-1.0, 1.0)
-      >>> _nearest_point((1, -1), (-1, 1), (-3, 1), perpendicular=False)
-      (-1.0, 1.0)
-      >>> _nearest_point((1, -1), (-1, 1), (-1, 3), perpendicular=False)
-      (-1.0, 1.0)
-      >>> _nearest_point((0, 0), (-2, 3), (-1, -5))
-      >>> _nearest_point((0, 0), (-2, 3), (-1, -5), perpendicular=False)
-      (0.0, 0.0)
-      >>> _nearest_point((0, 0), (-2, 3), (-1, -5), line_type=LineType.LINE)
-      (2.0, -3.0)
-      >>> _nearest_point((0, 0), (-2, 3), (-1, -5),
-      ...                line_type=LineType.DIRECTIONAL)
-      >>> _nearest_point((-2, 3), (0, 0), (-1, -5),
-      ...                line_type=LineType.DIRECTIONAL)
-      (2.0, -3.0)
+    >>> _nearest_point((0, 0), (3, 0), (0, 1), inclusive=True)
+    (0.0, 0.0)
+    >>> _nearest_point((0, 0), (3, 0), (0, 1), perpendicular=False)
+    (0.0, 0.0)
+    >>> _nearest_point((0, 0), (3, 0), (-1, 1), perpendicular=False)
+    (0.0, 0.0)
+    >>> _nearest_point((3, 0), (0, 0), (-1, 1), perpendicular=False)
+    (0.0, 0.0)
+    >>> _nearest_point((0, 0), (3, 0), (4, 1), perpendicular=False)
+    (3.0, 0.0)
+    >>> _nearest_point((3, 0), (0, 0), (4, 1), perpendicular=False)
+    (3.0, 0.0)
+    >>> _nearest_point((-1, 1), (1, -1), (-3, 1), perpendicular=False)
+    (-1.0, 1.0)
+    >>> _nearest_point((-1, 1), (1, -1), (-1, 3), perpendicular=False)
+    (-1.0, 1.0)
+    >>> _nearest_point((1, -1), (-1, 1), (-3, 1), perpendicular=False)
+    (-1.0, 1.0)
+    >>> _nearest_point((1, -1), (-1, 1), (-1, 3), perpendicular=False)
+    (-1.0, 1.0)
+    >>> _nearest_point((0, 0), (-2, 3), (-1, -5))
+    >>> _nearest_point((0, 0), (-2, 3), (-1, -5), perpendicular=False)
+    (0.0, 0.0)
+    >>> _nearest_point((0, 0), (-2, 3), (-1, -5), line_type=LineType.LINE)
+    (2.0, -3.0)
+    >>> _nearest_point((0, 0), (-2, 3), (-1, -5),
+    ...                line_type=LineType.DIRECTIONAL)
+    >>> _nearest_point((-2, 3), (0, 0), (-1, -5),
+    ...                line_type=LineType.DIRECTIONAL)
+    (2.0, -3.0)
     """
     x1, y1 = [float(n) for n in seg_start]
     x2, y2 = [float(n) for n in seg_end]
     x3, y3 = [float(n) for n in point]
-    denominator = (x2-x1)**2 + (y2-y1)**2
+    denominator = (x2 - x1) ** 2 + (y2 - y1) ** 2
     if denominator == 0:
         return None  # seg_start and seg_end are coincident
-    u = ((x3 - x1)*(x2 - x1) + (y3 - y1)*(y2 - y1)) / denominator
+    u = ((x3 - x1) * (x2 - x1) + (y3 - y1) * (y2 - y1)) / denominator
     outside = not inclusive and not (0 < u < 1)
     outside = outside or (inclusive and not (0 <= u <= 1))
 
     if outside and perpendicular:
-        if (line_type == LineType.SEGMENT
-                or line_type == LineType.DIRECTIONAL and
-                (inclusive and u < 0 or not inclusive and u <= 0)):
+        if (
+            line_type == LineType.SEGMENT
+            or line_type == LineType.DIRECTIONAL
+            and (inclusive and u < 0 or not inclusive and u <= 0)
+        ):
             return None
     elif outside:
         return (x1, y1) if u <= 0 else (x2, y2)
@@ -316,8 +323,7 @@ def _nearest_point(
     return x1 + u * (x2 - x1), y1 + u * (y2 - y1)
 
 
-def intersection_of_vector_and_poly(
-        poly, p1, p2, line_type=LineType.LINE):
+def intersection_of_vector_and_poly(poly, p1, p2, line_type=LineType.LINE):
     """Intersection of a vector and a convex polygon
 
     Returns two coordinate pairs indicating the section of the line that
@@ -366,7 +372,8 @@ def intersection_of_vector_and_poly(
     # are not added.
     for q1, q2 in pairwise(poly):
         inter = intersection_of_vectors(
-            p1, p2, q1, q2, a_type=line_type, b_type=LineType.SEGMENT)
+            p1, p2, q1, q2, a_type=line_type, b_type=LineType.SEGMENT
+        )
         if inter and inter != prev:
             result.append(inter)
             prev = inter
@@ -404,11 +411,14 @@ def _intersects(line_type, k):
 
 
 def intersection_of_vectors(
-        a1, a2, b1, b2,
-        a_type=LineType.LINE,
-        b_type=LineType.LINE,
+    a1,
+    a2,
+    b1,
+    b2,
+    a_type=LineType.LINE,
+    b_type=LineType.LINE,
 ):
-    """ Intersection of two vectors, interpreted as segments or lines
+    """Intersection of two vectors, interpreted as segments or lines
 
     The two vectors are defined by four coordinate pairs, and each can be
     either interpreted as a finite segment, or an infinite line which is either
@@ -481,9 +491,9 @@ def intersection_of_vectors(
         return None
     u1 = ((x3 - x2) * (y0 - y2) - (y3 - y2) * (x0 - x2)) / d
     if not (
-            _intersects(a_type, u1) and
-            _intersects(b_type,
-                        ((x1 - x0) * (y0 - y2) - (y1 - y0) * (x0 - x2)) / d)):
+        _intersects(a_type, u1)
+        and _intersects(b_type, ((x1 - x0) * (y0 - y2) - (y1 - y0) * (x0 - x2)) / d)
+    ):
         return None
     return u1 * (x1 - x0) + x0, u1 * (y1 - y0) + y0
 
@@ -532,9 +542,9 @@ def intersection_of_segments(p1, p2, p3, p4):
     #   y1 + ua (y2 - y1)  =  y3 + ub (y4 - y3)
     # Solving gives equations for the intersection
     # ua=numera/denom and ub=numerb/denom, where:
-    numera = (x4-x3)*(y1-y3) - (y4-y3)*(x1-x3)
-    numerb = (x2-x1)*(y1-y3) - (y2-y1)*(x1-x3)
-    denom = (y4-y3)*(x2-x1) - (x4-x3)*(y2-y1)
+    numera = (x4 - x3) * (y1 - y3) - (y4 - y3) * (x1 - x3)
+    numerb = (x2 - x1) * (y1 - y3) - (y2 - y1) * (x1 - x3)
+    denom = (y4 - y3) * (x2 - x1) - (x4 - x3) * (y2 - y1)
 
     # Zero(ish) in the denominator indicates either coincident lines
     # or parallel (and therefore nonitersecting) lines.
@@ -544,7 +554,7 @@ def intersection_of_segments(p1, p2, p3, p4):
             y = (y1 + y2) / 2
             return (x, y)
         else:
-            return None   # parallel
+            return None  # parallel
 
     # The intersection is defined in terms of the parameters ua and ub.
     # If these are outside their range, the intersection point lies
@@ -589,6 +599,7 @@ def pairwise(seq):
 ## Testing
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     import doctest
+
     doctest.testmod()

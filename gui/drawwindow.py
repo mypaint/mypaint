@@ -16,64 +16,63 @@ Painting is done in tileddrawwidget.py.
 
 ## Imports
 
-from __future__ import division, print_function
-
+import logging
+import math
 import os
 import os.path
 import webbrowser
-from warnings import warn
-import logging
-import math
 import xml.etree.ElementTree as ET
+from warnings import warn
 
-from lib.gibindings import Gtk
-from lib.gibindings import Gdk
-
-from . import compatibility
-from . import historypopup
-from . import stategroup
-from . import colorpicker  # noqa: F401 (registration of GObject classes)
-from . import windowing  # noqa: F401 (registration of GObject classes)
-from . import toolbar
-from . import dialogs
-from . import layermodes  # noqa: F401 (registration of GObject classes)
-from . import quickchoice
-import gui.viewmanip  # noqa: F401 (registration of GObject classes)
-import gui.layermanip  # noqa: F401 (registration of GObject classes)
 import gui.brushmanip  # noqa: F401
-from lib.color import HSVColor
-from . import uicolor
-import gui.picker
-import gui.footer
-from . import brushselectionwindow  # noqa: F401 (registration)
-from .overlays import LastPaintPosOverlay
-from .overlays import ScaleOverlay
-from .framewindow import FrameOverlay
-from .symmetry import SymmetryOverlay
-import gui.tileddrawwidget
 import gui.displayfilter
+import gui.footer
+import gui.layermanip  # noqa: F401 (registration of GObject classes)
 import gui.meta
-import lib.xml
+import gui.picker
+import gui.tileddrawwidget
+import gui.viewmanip  # noqa: F401 (registration of GObject classes)
 import lib.glib
-from lib.gettext import gettext as _
+import lib.xml
+from lib.color import HSVColor
 from lib.gettext import C_
+from lib.gettext import gettext as _
+from lib.gibindings import Gdk, Gtk
+
+from . import brushselectionwindow  # noqa: F401 (registration)
+from . import colorpicker  # noqa: F401 (registration of GObject classes)
+from . import layermodes  # noqa: F401 (registration of GObject classes)
+from . import windowing  # noqa: F401 (registration of GObject classes)
+from . import (
+    compatibility,
+    dialogs,
+    historypopup,
+    quickchoice,
+    stategroup,
+    toolbar,
+    uicolor,
+)
+from .framewindow import FrameOverlay
+from .overlays import LastPaintPosOverlay, ScaleOverlay
+from .symmetry import SymmetryOverlay
 
 logger = logging.getLogger(__name__)
 
 
 ## Module constants
 
-BRUSHPACK_URI = 'https://github.com/mypaint/mypaint/wiki/Brush-Packages'
+BRUSHPACK_URI = "https://github.com/mypaint/mypaint/wiki/Brush-Packages"
 
 
 ## Class definitions
 
-class DrawWindow (Gtk.Window):
+
+class DrawWindow(Gtk.Window):
     """Main drawing window"""
 
     ## Class configuration
 
-    __gtype_name__ = 'MyPaintDrawWindow'
+    __gtype_name__ = "MyPaintDrawWindow"
 
     _MODE_ICON_TEMPLATE = "<b>{name}</b>\n{description}"
 
@@ -81,13 +80,16 @@ class DrawWindow (Gtk.Window):
     #: instances. Used by _get_quick_chooser().
     _QUICK_CHOOSER_CONSTRUCT_INFO = {
         "BrushChooserPopup": (
-            quickchoice.BrushChooserPopup, [],
+            quickchoice.BrushChooserPopup,
+            [],
         ),
         "ColorChooserPopup": (
-            quickchoice.ColorChooserPopup, [],
+            quickchoice.ColorChooserPopup,
+            [],
         ),
         "ColorChooserPopupFastSubset": (
-            quickchoice.ColorChooserPopup, ["fast_subset", True],
+            quickchoice.ColorChooserPopup,
+            ["fast_subset", True],
         ),
     }
 
@@ -97,6 +99,7 @@ class DrawWindow (Gtk.Window):
         super(DrawWindow, self).__init__()
 
         import gui.application
+
         app = gui.application.get_app()
         self.app = app
         self.app.kbm.add_window(self)
@@ -108,17 +111,16 @@ class DrawWindow (Gtk.Window):
         # Enable drag & drop
         drag_targets = [
             Gtk.TargetEntry.new("text/uri-list", 0, 1),
-            Gtk.TargetEntry.new("application/x-color", 0, 2)
+            Gtk.TargetEntry.new("application/x-color", 0, 2),
         ]
         drag_flags = (
-            Gtk.DestDefaults.MOTION |
-            Gtk.DestDefaults.HIGHLIGHT |
-            Gtk.DestDefaults.DROP)
+            Gtk.DestDefaults.MOTION | Gtk.DestDefaults.HIGHLIGHT | Gtk.DestDefaults.DROP
+        )
         drag_actions = Gdk.DragAction.DEFAULT | Gdk.DragAction.COPY
         self.drag_dest_set(drag_flags, drag_targets, drag_actions)
 
         # Connect events
-        self.connect('delete-event', self.quit_cb)
+        self.connect("delete-event", self.quit_cb)
         self.connect("drag-data-received", self._drag_data_received_cb)
         self.connect("window-state-event", self.window_state_event_cb)
         self.connect("button-press-event", self._button_press_cb)
@@ -157,8 +159,8 @@ class DrawWindow (Gtk.Window):
         self.update_overlays()
         self._init_actions()
         kbm = self.app.kbm
-        kbm.add_extra_key('Menu', 'ShowPopupMenu')
-        kbm.add_extra_key('Tab', 'FullscreenAutohide')
+        kbm.add_extra_key("Menu", "ShowPopupMenu")
+        kbm.add_extra_key("Tab", "FullscreenAutohide")
         self._init_stategroups()
 
         self._init_menubar()
@@ -198,9 +200,11 @@ class DrawWindow (Gtk.Window):
 
         # Set initial state from user prefs
         ag.get_action("ToggleScaleFeedback").set_active(
-            self.app.preferences.get("ui.feedback.scale", False))
+            self.app.preferences.get("ui.feedback.scale", False)
+        )
         ag.get_action("ToggleLastPosFeedback").set_active(
-            self.app.preferences.get("ui.feedback.last_pos", False))
+            self.app.preferences.get("ui.feedback.last_pos", False)
+        )
 
         # Keyboard handling
         for action in self.action_group.list_actions():
@@ -212,7 +216,7 @@ class DrawWindow (Gtk.Window):
         hist = p2s(historypopup.HistoryPopup(self.app, self.app.doc.model))
 
         self.popup_states = {
-            'ColorHistoryPopup': hist,
+            "ColorHistoryPopup": hist,
         }
 
         hist.autoleave_timeout = 0.600
@@ -225,16 +229,16 @@ class DrawWindow (Gtk.Window):
     def _init_menubar(self):
         # Load Menubar, duplicate into self.popupmenu
         ui_dir = os.path.dirname(os.path.abspath(__file__))
-        menupath = os.path.join(ui_dir, 'menu.xml')
+        menupath = os.path.join(ui_dir, "menu.xml")
         with open(menupath) as fp:
             menubar_xml = fp.read()
         self.app.ui_manager.add_ui_from_string(menubar_xml)
         self.popupmenu = self._clone_menu(
             menubar_xml,
-            'PopupMenu',
+            "PopupMenu",
             self.app.doc.tdw,
         )
-        self.menubar = self.app.ui_manager.get_widget('/Menubar')
+        self.menubar = self.app.ui_manager.get_widget("/Menubar")
 
     def _init_toolbars(self):
         self._toolbar_manager = toolbar.ToolbarManager(self)
@@ -255,7 +259,7 @@ class DrawWindow (Gtk.Window):
         xml = ET.tostring(ui_elt)
         xml = xml.decode("utf-8")
         self.app.ui_manager.add_ui_from_string(xml)
-        tmp_menubar = self.app.ui_manager.get_widget('/' + name)
+        tmp_menubar = self.app.ui_manager.get_widget("/" + name)
         popupmenu = Gtk.Menu()
         for item in tmp_menubar.get_children():
             tmp_menubar.remove(item)
@@ -296,13 +300,13 @@ class DrawWindow (Gtk.Window):
             file_path, _h = lib.glib.filename_from_uri(uri)
             if os.path.exists(file_path):
                 ok_to_open = self.app.filehandler.confirm_destructive_action(
-                    title = C_(
-                        u'Open dragged file confirm dialog: title',
-                        u"Open Dragged File?",
+                    title=C_(
+                        "Open dragged file confirm dialog: title",
+                        "Open Dragged File?",
                     ),
-                    confirm = C_(
-                        u'Open dragged file confirm dialog: continue button',
-                        u"_Open",
+                    confirm=C_(
+                        "Open dragged file confirm dialog: continue button",
+                        "_Open",
                     ),
                 )
                 if ok_to_open:
@@ -409,19 +413,19 @@ class DrawWindow (Gtk.Window):
     # conventional statusbar for textual types of feedback.
 
     def toggle_scale_feedback_cb(self, action):
-        self.app.preferences['ui.feedback.scale'] = action.get_active()
+        self.app.preferences["ui.feedback.scale"] = action.get_active()
         self.update_overlays()
 
     def toggle_last_pos_feedback_cb(self, action):
-        self.app.preferences['ui.feedback.last_pos'] = action.get_active()
+        self.app.preferences["ui.feedback.last_pos"] = action.get_active()
         self.update_overlays()
 
     def update_overlays(self):
         # Updates the list of overlays on the main doc's TDW to match the prefs
         doc = self.app.doc
         disp_overlays = [
-            ('ui.feedback.scale', ScaleOverlay),
-            ('ui.feedback.last_pos', LastPaintPosOverlay),
+            ("ui.feedback.scale", ScaleOverlay),
+            ("ui.feedback.last_pos", LastPaintPosOverlay),
         ]
         overlays_changed = False
         for key, class_ in disp_overlays:
@@ -524,9 +528,7 @@ class DrawWindow (Gtk.Window):
         # Respond to changes of the fullscreen state only
         if not event.changed_mask & Gdk.WindowState.FULLSCREEN:
             return
-        self.is_fullscreen = (
-            event.new_window_state & Gdk.WindowState.FULLSCREEN
-        )
+        self.is_fullscreen = event.new_window_state & Gdk.WindowState.FULLSCREEN
         self.update_fullscreen_action()
         # Reset all state for the top mode on the stack. Mainly for
         # freehand modes: https://github.com/mypaint/mypaint/issues/39
@@ -551,7 +553,7 @@ class DrawWindow (Gtk.Window):
         self.show_popupmenu()
 
     def show_popupmenu(self, event=None):
-        self.menubar.set_sensitive(False)   # excessive feedback?
+        self.menubar.set_sensitive(False)  # excessive feedback?
         button = 1
         time = 0
         if event is not None:
@@ -560,9 +562,14 @@ class DrawWindow (Gtk.Window):
                 time = event.time
         # GTK3: arguments have a different order, and "data" is required.
         # GTK3: Use keyword arguments for max compatibility.
-        self.popupmenu.popup(parent_menu_shell=None, parent_menu_item=None,
-                             func=None, button=button, activate_time=time,
-                             data=None)
+        self.popupmenu.popup(
+            parent_menu_shell=None,
+            parent_menu_item=None,
+            func=None,
+            button=button,
+            activate_time=time,
+            data=None,
+        )
         if event is None:
             # We're responding to an Action, most probably the menu key.
             # Open out the last highlighted menu to speed key navigation up.
@@ -601,7 +608,7 @@ class DrawWindow (Gtk.Window):
             self._copy_main_background_to_scratchpad()
         scratchpad_path = app.filehandler.get_scratchpad_autosave()
         app.scratchpad_filename = scratchpad_path
-        app.preferences['scratchpad.last_opened'] = scratchpad_path
+        app.preferences["scratchpad.last_opened"] = scratchpad_path
 
     def load_scratchpad_cb(self, action):
         if self.app.scratchpad_filename:
@@ -618,7 +625,7 @@ class DrawWindow (Gtk.Window):
         if not path_abs.startswith(pfx_abs):
             # file is NOT within the scratchpad directory -
             # load copy as current scratchpad
-            self.app.preferences['scratchpad.last_opened'] = current_pad
+            self.app.preferences["scratchpad.last_opened"] = current_pad
             self.app.scratchpad_filename = current_pad
 
     def save_as_scratchpad_cb(self, action):
@@ -682,13 +689,13 @@ class DrawWindow (Gtk.Window):
         self.app.doc.model.sync_pending_changes()
         self.app.save_gui_config()  # FIXME: should do this periodically
         ok_to_quit = self.app.filehandler.confirm_destructive_action(
-            title = C_(
+            title=C_(
                 "Quit confirm dialog: title",
-                u"Really Quit?",
+                "Really Quit?",
             ),
-            confirm = C_(
+            confirm=C_(
                 "Quit confirm dialog: continue button",
-                u"_Quit",
+                "_Quit",
             ),
         )
         if not ok_to_quit:
@@ -701,13 +708,14 @@ class DrawWindow (Gtk.Window):
 
     def download_brush_pack_cb(self, *junk):
         uri = BRUSHPACK_URI
-        logger.info('Opening URI %r in web browser', uri)
+        logger.info("Opening URI %r in web browser", uri)
         webbrowser.open(uri)
 
     def import_brush_pack_cb(self, *junk):
         format_id, filename = dialogs.open_dialog(
-            _(u"Import brush package…"), self,
-            [(_("MyPaint brush package (*.zip)"), "*.zip")]
+            _("Import brush package…"),
+            self,
+            [(_("MyPaint brush package (*.zip)"), "*.zip")],
         )
         if not filename:
             return
@@ -735,7 +743,7 @@ class DrawWindow (Gtk.Window):
         }.get(action_name)
         if help_page:
             help_uri = wiki_base + help_page
-            logger.info('Opening URI %r in web browser', help_uri)
+            logger.info("Opening URI %r in web browser", help_uri)
             webbrowser.open(help_uri)
         else:
             raise RuntimeError("Unknown online help %r" % action_name)
@@ -744,7 +752,7 @@ class DrawWindow (Gtk.Window):
 
     def _update_footer_color_widgets(self, settings):
         """Updates the footer bar color info when the brush color changes."""
-        if not settings.intersection(('color_h', 'color_s', 'color_v')):
+        if not settings.intersection(("color_h", "color_s", "color_v")):
             return
         bm_btn_name = "footer_bookmark_current_color_button"
         bm_btn = self.app.builder.get_object(bm_btn_name)
@@ -756,7 +764,7 @@ class DrawWindow (Gtk.Window):
         """Updates the footer's scale label when the transformation changes"""
         label = self.app.builder.get_object("app_canvas_scale_label")
         scale = renderer.scale * 100.0
-        rotation = (renderer.rotation / (2*math.pi)) % 1.0
+        rotation = (renderer.rotation / (2 * math.pi)) % 1.0
         if rotation > 0.5:
             rotation -= 1.0
         rotation *= 360.0
@@ -765,10 +773,7 @@ class DrawWindow (Gtk.Window):
         except AttributeError:
             template = label.get_label()
             label.__template = template
-        params = {
-            "scale": scale,
-            "rotation": rotation
-        }
+        params = {"scale": scale, "rotation": rotation}
         label.set_text(template.format(**params))
 
     def _modestack_changed_cb(self, modestack, old, new):
@@ -780,8 +785,7 @@ class DrawWindow (Gtk.Window):
         statusbar = self.app.statusbar
         context_id = self._active_mode_context_id
         statusbar.pop(context_id)
-        statusbar_msg = u"{usage!s}".format(name=mode.get_name(),
-                                            usage=mode.get_usage())
+        statusbar_msg = "{usage!s}".format(name=mode.get_name(), usage=mode.get_usage())
         statusbar.push(context_id, statusbar_msg)
         # Icon
         icon_name = mode.get_icon_name()
@@ -806,7 +810,7 @@ class DrawWindow (Gtk.Window):
             description = mode.get_usage()
         params = {
             "name": lib.xml.escape(mode.get_name()),
-            "description": lib.xml.escape(description)
+            "description": lib.xml.escape(description),
         }
         markup = self._MODE_ICON_TEMPLATE.format(**params)
         tooltip.set_markup(markup)

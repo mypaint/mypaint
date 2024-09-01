@@ -10,15 +10,13 @@
 
 """Hacks for loading stuff from GtkBuilder files."""
 
-## Imports
-from __future__ import division, print_function
-
-from lib.gibindings import Gtk
-
 import lib.xml
 
+## Imports
+from lib.gibindings import Gtk
 
 ## Public functions
+
 
 def add_objects_from_template_string(builder, buffer_, object_ids, params):
     """Templatizes, parses, merges, and returns objects from a Builder UI-def
@@ -47,8 +45,7 @@ def add_objects_from_template_string(builder, buffer_, object_ids, params):
     for oid in object_ids:
         oid2 = oid.format(**params)
         if oid == oid2:
-            raise ValueError("object_id %s unchanged after .format()ing"
-                             % oid)
+            raise ValueError("object_id %s unchanged after .format()ing" % oid)
         object_ids2.append(oid2)
     params_esc = {}
     for p, v in params.items():
@@ -85,6 +82,7 @@ def _test():
     """Interactive module test function"""
     import os
     import sys
+
     vbox = Gtk.VBox()
     builder = Gtk.Builder()
 
@@ -96,18 +94,19 @@ def _test():
         id_ = Gtk.Buildable.get_name(widget)
         if isinstance(id_, bytes):
             id_ = id_.decode("utf-8")
-        print("Clicked: id=%r" % (id_, ))
-        print("          i=%r" % (widget._i, ))
+        print("Clicked: id=%r" % (id_,))
+        print("          i=%r" % (widget._i,))
 
     # Unicode is supported in IDs and template values.
     # The XML template may be plain ASCII since escape() is used when
     # filling it.
-    object_ids = [u"button_{id}"]
-    words = [u"à", u"chacun", u"son", u"goût"]
+    object_ids = ["button_{id}"]
+    words = ["à", "chacun", "son", "goût"]
     for i in words:
         params = {"id": i, "label": i.upper()}
-        objs = add_objects_from_template_string(builder, _TEST_TEMPLATE,
-                                                object_ids, params)
+        objs = add_objects_from_template_string(
+            builder, _TEST_TEMPLATE, object_ids, params
+        )
         for w in objs:
             w.connect("clicked", _test_button_clicked_cb)
             vbox.pack_start(w, True, True, 0)
@@ -126,5 +125,5 @@ def _test():
     Gtk.main()
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     _test()

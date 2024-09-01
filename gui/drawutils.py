@@ -14,23 +14,20 @@ See also: gui.style
 
 ## Imports
 
-from __future__ import division, print_function
 import logging
 import math
 
-from lib.brush import Brush, BrushInfo
-import lib.tiledsurface
-from lib.pixbufsurface import render_as_pixbuf
-from lib.helpers import clamp
+import cairo
+import numpy
+
 import gui.style
 import lib.color
+import lib.tiledsurface
+from lib.brush import Brush, BrushInfo
+from lib.gibindings import Gdk, GdkPixbuf, Gtk
+from lib.helpers import clamp
+from lib.pixbufsurface import render_as_pixbuf
 from lib.pycompat import xrange
-
-import numpy
-import cairo
-from lib.gibindings import GdkPixbuf
-from lib.gibindings import Gdk
-from lib.gibindings import Gtk
 
 logger = logging.getLogger(__name__)
 
@@ -38,17 +35,25 @@ logger = logging.getLogger(__name__)
 
 _BRUSH_PREVIEW_POINTS = [
     # px,  py,  press, xtilt, ytilt # px, py,   press, xtilt, ytilt
-    (0.00, 0.00, 0.00, 0.00, 0.00), (1.00, 0.05, 0.00, -0.06, 0.05),
-    (0.10, 0.10, 0.20, 0.10, 0.05), (0.90, 0.15, 0.90, -0.05, 0.05),
-    (0.11, 0.30, 0.90, 0.08, 0.05), (0.86, 0.35, 0.90, -0.04, 0.05),
-    (0.13, 0.50, 0.90, 0.06, 0.05), (0.84, 0.55, 0.90, -0.03, 0.05),
-    (0.17, 0.70, 0.90, 0.04, 0.05), (0.83, 0.75, 0.90, -0.02, 0.05),
-    (0.25, 0.90, 0.20, 0.02, 0.00), (0.81, 0.95, 0.00, 0.00, 0.00),
-    (0.41, 0.95, 0.00, 0.00, 0.00), (0.80, 1.00, 0.00, 0.00, 0.00),
+    (0.00, 0.00, 0.00, 0.00, 0.00),
+    (1.00, 0.05, 0.00, -0.06, 0.05),
+    (0.10, 0.10, 0.20, 0.10, 0.05),
+    (0.90, 0.15, 0.90, -0.05, 0.05),
+    (0.11, 0.30, 0.90, 0.08, 0.05),
+    (0.86, 0.35, 0.90, -0.04, 0.05),
+    (0.13, 0.50, 0.90, 0.06, 0.05),
+    (0.84, 0.55, 0.90, -0.03, 0.05),
+    (0.17, 0.70, 0.90, 0.04, 0.05),
+    (0.83, 0.75, 0.90, -0.02, 0.05),
+    (0.25, 0.90, 0.20, 0.02, 0.00),
+    (0.81, 0.95, 0.00, 0.00, 0.00),
+    (0.41, 0.95, 0.00, 0.00, 0.00),
+    (0.80, 1.00, 0.00, 0.00, 0.00),
 ]
 
 
 ## Drawing functions
+
 
 def spline_4p(t, p_1, p0, p1, p2):
     """Interpolated point using a Catmull-Rom spline
@@ -72,10 +77,10 @@ def spline_4p(t, p_1, p0, p1, p2):
     * http://stackoverflow.com/questions/1251438
     """
     return (
-        t*((2-t)*t - 1) * p_1 +
-        (t*t*(3*t - 5) + 2) * p0 +
-        t*((4 - 3*t)*t + 1) * p1 +
-        (t-1)*t*t * p2
+        t * ((2 - t) * t - 1) * p_1
+        + (t * t * (3 * t - 5) + 2) * p0
+        + t * ((4 - 3 * t) * t + 1) * p1
+        + (t - 1) * t * t * p2
     ) / 2
 
 
@@ -111,18 +116,18 @@ def spline_iter(tuples, double_first=True, double_last=True):
 def _variable_pressure_scribble(w, h, tmult):
     points = _BRUSH_PREVIEW_POINTS
     px, py, press, xtilt, ytilt = points[0]
-    yield (10, px*w, py*h, 0.0, xtilt, ytilt)
+    yield (10, px * w, py * h, 0.0, xtilt, ytilt)
     event_dtime = 0.005
     point_time = 0.1
     for p_1, p0, p1, p2 in spline_iter(points, True, True):
         dt = 0.0
         while dt < point_time:
-            t = dt/point_time
+            t = dt / point_time
             px, py, press, xtilt, ytilt = spline_4p(t, p_1, p0, p1, p2)
-            yield (event_dtime, px*w, py*h, press, xtilt, ytilt)
+            yield (event_dtime, px * w, py * h, press, xtilt, ytilt)
             dt += event_dtime
     px, py, press, xtilt, ytilt = points[-1]
-    yield (10, px*w, py*h, 0.0, xtilt, ytilt)
+    yield (10, px * w, py * h, 0.0, xtilt, ytilt)
 
 
 def render_brush_preview_pixbuf(brushinfo, max_edge_tiles=4):
@@ -159,8 +164,7 @@ def render_brush_preview_pixbuf(brushinfo, max_edge_tiles=4):
         shape = _variable_pressure_scribble(width, height, size_in_tiles)
         surface.begin_atomic()
         for dt, x, y, p, xt, yt in shape:
-            brush.stroke_to(
-                surface.backend, x, y, p, xt, yt, dt, 1.0, 0.0, 0.0)
+            brush.stroke_to(surface.backend, x, y, p, xt, yt, dt, 1.0, 0.0, 0.0)
         surface.end_atomic()
         # Check rendered size
         tposs = surface.tiledict.keys()
@@ -176,8 +180,11 @@ def render_brush_preview_pixbuf(brushinfo, max_edge_tiles=4):
     rect = (0, 0, width, height)
     pixbuf = render_as_pixbuf(surface, *rect, alpha=True)
     if max(width, height) != 128:
-        interp = (GdkPixbuf.InterpType.NEAREST if max(width, height) < 128
-                  else GdkPixbuf.InterpType.BILINEAR)
+        interp = (
+            GdkPixbuf.InterpType.NEAREST
+            if max(width, height) < 128
+            else GdkPixbuf.InterpType.BILINEAR
+        )
         pixbuf = pixbuf.scale_simple(128, 128, interp)
     # Composite over a checquered bg via Cairo: shows erases
     size = gui.style.ALPHA_CHECK_SIZE
@@ -204,22 +211,31 @@ def _brush_preview_bg_fg(surface, size_in_tiles, brushinfo):
             "eraser",  # pink=rubber=eraser; red=danger
             (0.8, 0.7, 0.7),  # pink/red tones: pencil eraser/danger
             (0.75, 0.60, 0.60),
-            False, fgcol
+            False,
+            fgcol,
         ),
         (
             "colorize",
             (0.8, 0.8, 0.8),  # orange on gray
             (0.6, 0.6, 0.6),
-            False, (0.6, 0.2, 0.0)
+            False,
+            (0.6, 0.2, 0.0),
         ),
         (
             "smudge",  # blue=water=wet, with some contrast
             (0.85, 0.85, 0.80),  # same as the regular paper color
             (0.60, 0.60, 0.70),  # bluer (water, wet); more contrast
-            True, fgcol
+            True,
+            fgcol,
         ),
     ]
-    for cname, c1, c2, c_spiral, c_fg, in fx:
+    for (
+        cname,
+        c1,
+        c2,
+        c_spiral,
+        c_fg,
+    ) in fx:
         if brushinfo.has_large_base_value(cname):
             col1 = c1
             col2 = c2
@@ -227,16 +243,17 @@ def _brush_preview_bg_fg(surface, size_in_tiles, brushinfo):
             spiral = c_spiral
             break
 
-    never_smudger = (brushinfo.has_small_base_value("smudge") and
-                     brushinfo.has_only_base_value("smudge"))
+    never_smudger = brushinfo.has_small_base_value(
+        "smudge"
+    ) and brushinfo.has_only_base_value("smudge")
     colorizer = brushinfo.has_large_base_value("colorize")
 
     if never_smudger and not colorizer:
         col2 = col1
 
     a = 1 << 15
-    col1_fix15 = [c*a for c in col1] + [a]
-    col2_fix15 = [c*a for c in col2] + [a]
+    col1_fix15 = [c * a for c in col1] + [a]
+    col2_fix15 = [c * a for c in col2] + [a]
     for ty in range(0, size_in_tiles):
         tx_thres = max(0, size_in_tiles - ty - 1)
         for tx in range(0, size_in_tiles):
@@ -251,8 +268,8 @@ def _brush_preview_bg_fg(surface, size_in_tiles, brushinfo):
                     dst[:] = topcol
                 else:
                     for i in range(n):
-                        dst[0:n-i, i, ...] = topcol
-                        dst[n-i:n, i, ...] = botcol
+                        dst[0 : n - i, i, ...] = topcol
+                        dst[n - i : n, i, ...] = botcol
     return fgcol, spiral
 
 
@@ -263,14 +280,21 @@ def render_checks(cr, size, nchecks):
     cr.set_source_rgb(*gui.style.ALPHA_CHECK_COLOR_2)
     for i in xrange(0, nchecks):
         for j in xrange(0, nchecks):
-            if (i+j) % 2 == 0:
+            if (i + j) % 2 == 0:
                 continue
-            cr.rectangle(i*size, j*size, size, size)
+            cr.rectangle(i * size, j * size, size, size)
             cr.fill()
 
 
-def load_symbolic_icon(icon_name, size, fg=None, success=None,
-                       warning=None, error=None, outline=None):
+def load_symbolic_icon(
+    icon_name,
+    size,
+    fg=None,
+    success=None,
+    warning=None,
+    error=None,
+    outline=None,
+):
     """More Pythonic wrapper for gtk_icon_info_load_symbolic() etc.
 
     :param str icon_name: Name of the symbolic icon to render
@@ -309,8 +333,11 @@ def load_symbolic_icon(icon_name, size, fg=None, success=None,
         return icon_pixbuf
 
     result = GdkPixbuf.Pixbuf.new(
-        GdkPixbuf.Colorspace.RGB, True, 8,
-        size+2, size+2,
+        GdkPixbuf.Colorspace.RGB,
+        True,
+        8,
+        size + 2,
+        size + 2,
     )
     result.fill(0x00000000)
     outline_rgba = list(outline)
@@ -326,28 +353,48 @@ def load_symbolic_icon(icon_name, size, fg=None, success=None,
     h = outline_stamp.get_height()
     assert was_symbolic
     offsets = [
-        (-1, -1), (0, -1), (1, -1),
-        (-1, 0),          (1, 0),   # noqa: E241 (it's clearer)
-        (-1, 1), (0, 1), (1, 1),
+        (-1, -1),
+        (0, -1),
+        (1, -1),
+        (-1, 0),
+        (1, 0),  # noqa: E241 (it's clearer)
+        (-1, 1),
+        (0, 1),
+        (1, 1),
     ]
     for dx, dy in offsets:
         outline_stamp.composite(
             result,
-            dx+1, dy+1, w, h,
-            dx+1, dy+1, 1, 1,
-            GdkPixbuf.InterpType.NEAREST, 255,
+            dx + 1,
+            dy + 1,
+            w,
+            h,
+            dx + 1,
+            dy + 1,
+            1,
+            1,
+            GdkPixbuf.InterpType.NEAREST,
+            255,
         )
     icon_pixbuf.composite(
         result,
-        1, 1, w, h,
-        1, 1, 1, 1,
-        GdkPixbuf.InterpType.NEAREST, 255,
+        1,
+        1,
+        w,
+        h,
+        1,
+        1,
+        1,
+        1,
+        GdkPixbuf.InterpType.NEAREST,
+        255,
     )
     return result
 
 
-def render_round_floating_button(cr, x, y, color, pixbuf, z=2,
-                                 radius=gui.style.FLOATING_BUTTON_RADIUS):
+def render_round_floating_button(
+    cr, x, y, color, pixbuf, z=2, radius=gui.style.FLOATING_BUTTON_RADIUS
+):
     """Draw a round floating button with a standard size.
 
     :param cairo.Context cr: Context in which to draw.
@@ -368,8 +415,8 @@ def render_round_floating_button(cr, x, y, color, pixbuf, z=2,
     cr.save()
     w = pixbuf.get_width()
     h = pixbuf.get_height()
-    x -= w/2
-    y -= h/2
+    x -= w / 2
+    y -= h / 2
     Gdk.cairo_set_source_pixbuf(cr, pixbuf, x, y)
     cr.rectangle(x, y, w, h)
     cr.clip()
@@ -429,7 +476,7 @@ def render_round_floating_color_chip(cr, x, y, color, radius, z=2):
     base_col = lib.color.RGBColor(color=color)
     hi_col = _get_paint_chip_highlight(base_col)
 
-    cr.arc(x, y, radius+0, 0, 2*math.pi)
+    cr.arc(x, y, radius + 0, 0, 2 * math.pi)
     cr.set_line_width(2)
     render_drop_shadow(cr, z=z)
 
@@ -472,9 +519,9 @@ def render_drop_shadow(cr, z=2, line_width=None):
     alpha = gui.style.DROP_SHADOW_ALPHA / steps
     for i in reversed(range(steps)):
         cr.set_source_rgba(0.0, 0.0, 0.0, alpha)
-        cr.set_line_width(line_width + 2*i)
+        cr.set_line_width(line_width + 2 * i)
         cr.stroke_preserve()
-        alpha += alpha/2
+        alpha += alpha / 2
     cr.translate(-dx, -dy)
     cr.new_path()
     cr.append_path(path)
@@ -498,27 +545,32 @@ def get_drop_shadow_offsets(line_width, z=2):
     dx = math.ceil(gui.style.DROP_SHADOW_X_OFFSET * z)
     dy = math.ceil(gui.style.DROP_SHADOW_Y_OFFSET * z)
     max_i = int(math.ceil(gui.style.DROP_SHADOW_BLUR)) - 1
-    max_line_width = line_width + 2*max_i
+    max_line_width = line_width + 2 * max_i
     slack = 1
-    return tuple(int(max(0, n)) for n in [
-        -dx + max_line_width + slack,
-        -dy + max_line_width + slack,
-        dx + max_line_width + slack,
-        dy + max_line_width + slack,
-    ])
+    return tuple(
+        int(max(0, n))
+        for n in [
+            -dx + max_line_width + slack,
+            -dy + max_line_width + slack,
+            dx + max_line_width + slack,
+            dy + max_line_width + slack,
+        ]
+    )
 
 
 ## Test code
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     logging.basicConfig(level=logging.DEBUG)
     import sys
+
     import lib.pixbuf
+
     for myb_file in sys.argv[1:]:
         if not myb_file.lower().endswith(".myb"):
             logger.warning("Ignored %r: not a .myb file", myb_file)
             continue
-        with open(myb_file, 'r') as myb_fp:
+        with open(myb_file, "r") as myb_fp:
             myb_json = myb_fp.read()
         myb_brushinfo = BrushInfo(myb_json)
         myb_pixbuf = render_brush_preview_pixbuf(myb_brushinfo)

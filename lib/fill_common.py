@@ -8,10 +8,10 @@
 
 """Functions and constants common to fill and morphological operations"""
 
-import lib.helpers
-import lib.mypaintlib
 import numpy
 
+import lib.helpers
+import lib.mypaintlib
 
 N = lib.mypaintlib.TILE_SIZE
 
@@ -31,7 +31,7 @@ _EMPTY_TILE = lib.mypaintlib.ConstTiles.ALPHA_TRANSPARENT()
 _EMPTY_TILE.flags.writeable = False
 
 
-def new_full_tile(value, dimensions=(N, N), value_type='uint16'):
+def new_full_tile(value, dimensions=(N, N), value_type="uint16"):
     """Return a new tile filled with the given value"""
     tile = numpy.empty(dimensions, value_type)
     tile.fill(value)
@@ -39,7 +39,7 @@ def new_full_tile(value, dimensions=(N, N), value_type='uint16'):
 
 
 def nine_grid(tile_coord):
-    """ Return the input coordinate along with its neighbours.
+    """Return the input coordinate along with its neighbours.
 
     Return tile coordinates of the full nine-grid,
     relative to the input coordinate, in the following order:
@@ -50,14 +50,21 @@ def nine_grid(tile_coord):
     """
     tile_x, tile_y = tile_coord
     offsets = [
-        (0, 0), (0, -1), (1, 0), (0, 1), (-1, 0),
-        (1, -1), (1, 1), (-1, 1), (-1, -1)
+        (0, 0),
+        (0, -1),
+        (1, 0),
+        (0, 1),
+        (-1, 0),
+        (1, -1),
+        (1, 1),
+        (-1, 1),
+        (-1, -1),
     ]
-    return [(tile_x+o[0], tile_y+o[1]) for o in offsets]
+    return [(tile_x + o[0], tile_y + o[1]) for o in offsets]
 
 
 def adjacent(tile_coord):
-    """ Return the coordinates adjacent to the input coordinate.
+    """Return the coordinates adjacent to the input coordinate.
 
     Return coordinates of the neighbourhood
     of the input coordinate, in the following order:
@@ -70,7 +77,7 @@ def adjacent(tile_coord):
 
 
 def orthogonal(tile_coord):
-    """ Return the coordinates orthogonal to the input coordinate.
+    """Return the coordinates orthogonal to the input coordinate.
 
     Return coordinates orthogonal to the input coordinate,
     in the following order:
@@ -83,7 +90,7 @@ def orthogonal(tile_coord):
 
 
 class TileBoundingBox(object):
-    """ Bounding box helper for checking tiles by their coordinates
+    """Bounding box helper for checking tiles by their coordinates
 
     Defines a bounding box in pixel coordinates that allows
     checking conditions and retrieving in-tile pixel bounds
@@ -109,12 +116,14 @@ class TileBoundingBox(object):
         self.max_px = int(bb_rx % N)
         self.max_py = int(bb_ry % N)
         self.no_tile_crossing = (
-            (self.min_px, self.min_py, self.max_px, self.max_py) ==
-            (0, 0, N - 1, N - 1)
-        )
+            self.min_px,
+            self.min_py,
+            self.max_px,
+            self.max_py,
+        ) == (0, 0, N - 1, N - 1)
 
     def tile_bounds(self, tc):
-        """ Return the in-tile pixel bounds as a 4-tuple.
+        """Return the in-tile pixel bounds as a 4-tuple.
         Bounds cover the entire tile, unless it crosses
         an edge of the bounding box. Does not check if
         the tile actually lies inside the bounding box.
@@ -129,18 +138,17 @@ class TileBoundingBox(object):
         return min_x, min_y, max_x, max_y
 
     def outside(self, tc):
-        """ Check if tile is outside bounding box.
+        """Check if tile is outside bounding box.
         Checks if the tile of the given coordinate
         lies completely outside of the bounding box.
         """
         tx, ty = tc
         return (
-            tx < self.min_tx or tx > self.max_tx or
-            ty < self.min_ty or ty > self.max_ty
+            tx < self.min_tx or tx > self.max_tx or ty < self.min_ty or ty > self.max_ty
         )
 
     def crossing(self, tc):
-        """ Check if tile crosses the bounding box.
+        """Check if tile crosses the bounding box.
         Checks if the tile of the given coordinate
         crosses at least one edge of the bounding box.
         """
@@ -148,21 +156,18 @@ class TileBoundingBox(object):
             return False
         tx, ty = tc
         return (
-            (tx == self.min_tx and self.min_px != 0) or
-            (ty == self.min_ty and self.min_py != 0) or
-            (tx == self.max_tx and self.max_px != (N - 1)) or
-            (ty == self.max_ty and self.max_py != (N - 1))
+            (tx == self.min_tx and self.min_px != 0)
+            or (ty == self.min_ty and self.min_py != 0)
+            or (tx == self.max_tx and self.max_px != (N - 1))
+            or (ty == self.max_ty and self.max_py != (N - 1))
         )
 
     def inside(self, tc):
-        """ Check if tile is inside the bounding box.
+        """Check if tile is inside the bounding box.
         Checks if the tile of the given coordinate
         is fully enclosed by the bounding box.
         """
         tx, ty = tc
         if self.crossing(tc):
             return False
-        return (
-            self.min_tx <= tx <= self.max_tx and
-            self.min_ty <= ty <= self.max_ty
-        )
+        return self.min_tx <= tx <= self.max_tx and self.min_ty <= ty <= self.max_ty

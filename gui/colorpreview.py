@@ -12,12 +12,10 @@
 # TODO:   with a history row taking up the bottom. For now let's draw it at
 # TODO:   an aspect ratio of about 1:5 and see how users like it.
 
-from __future__ import division, print_function
-
 from .colors import PreviousCurrentColorAdjuster
 
 
-class BrushColorIndicator (PreviousCurrentColorAdjuster):
+class BrushColorIndicator(PreviousCurrentColorAdjuster):
     """Previous/Current color adjuster bound to app.brush_color_manager"""
 
     __gtype_name__ = "MyPaintBrushColorIndicator"
@@ -32,6 +30,7 @@ class BrushColorIndicator (PreviousCurrentColorAdjuster):
 
     def _init_color_manager(self, widget):
         from gui.application import get_app
+
         self._app = get_app()
         mgr = self._app.brush_color_manager
         assert mgr is not None

@@ -14,12 +14,10 @@ gui.workspace instead of implementing this interface.
 
 """
 
-from __future__ import division, print_function
-
 from .adjbases import ColorAdjuster
 
 
-class CombinedAdjusterPage (ColorAdjuster):
+class CombinedAdjusterPage(ColorAdjuster):
     """Interface for multitab page content.
 
     Page instances are expected to distribute `set_color_manager()` to each of
@@ -30,8 +28,7 @@ class CombinedAdjusterPage (ColorAdjuster):
 
     @classmethod
     def get_page_icon_name(class_):
-        """Returns the page's icon name.
-        """
+        """Returns the page's icon name."""
         raise NotImplementedError
 
     @classmethod
@@ -61,11 +58,9 @@ class CombinedAdjusterPage (ColorAdjuster):
         return None
 
     def show_properties(self):
-        """Override to show the page's properties dialog.
-        """
+        """Override to show the page's properties dialog."""
         pass
 
     def get_page_widget(self):
-        """Returns the `Gtk.Table` instance for the page body.
-        """
+        """Returns the `Gtk.Table` instance for the page body."""
         raise NotImplementedError

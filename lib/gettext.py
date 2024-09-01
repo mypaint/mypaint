@@ -24,14 +24,14 @@ still uses a relative import, however.
 
 """
 
-from __future__ import absolute_import, division, print_function
-
+import sys
 from warnings import warn
+
 from lib.gibindings import GLib
 
 # Set the default encoding like PyGTK
 from lib.pycompat import PY3
-import sys
+
 if not PY3:
     reload(sys)  # noqa: F821
     sys.setdefaultencoding("utf-8")
@@ -43,9 +43,9 @@ if not PY3:
 from gettext import gettext  # noqa: F401 E402
 from gettext import ngettext  # noqa: F401 E402
 
-
 # Newer code should use C_() even for simple cases, and provide contexts
 # for translators.
+
 
 def C_(context, msgid):  # noqa: N802
     """Mark a string for translation, with supplied context.
@@ -77,7 +77,7 @@ def C_(context, msgid):  # noqa: N802
         warn(
             wtmpl % (e,),
             RuntimeWarning,
-            stacklevel = 1,
+            stacklevel=1,
         )
         return msgid
     else:

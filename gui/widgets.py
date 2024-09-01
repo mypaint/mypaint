@@ -8,29 +8,31 @@
 
 """Layout constants and helper functions for common widgets."""
 
-from __future__ import division, print_function
 import functools
 
-from lib.gibindings import Gtk
-from lib.gibindings import Gdk
-
+from lib.gibindings import Gdk, Gtk
 
 # Exact icon sizes
 
-ICON_SIZE_LARGE = Gtk.IconSize.LARGE_TOOLBAR   # 24x24, the docs promise
-ICON_SIZE_SMALL = Gtk.IconSize.SMALL_TOOLBAR   # 16x16
+ICON_SIZE_LARGE = Gtk.IconSize.LARGE_TOOLBAR  # 24x24, the docs promise
+ICON_SIZE_SMALL = Gtk.IconSize.SMALL_TOOLBAR  # 16x16
 
 
 # Spacing constants
 
-SPACING_CRAMPED = 3    # for use in dockables only
+SPACING_CRAMPED = 3  # for use in dockables only
 SPACING_TIGHT = 2 * SPACING_CRAMPED
 SPACING = 2 * SPACING_TIGHT
-SPACING_LOOSE = 3*SPACING_TIGHT
+SPACING_LOOSE = 3 * SPACING_TIGHT
 
 
-def borderless_button(stock_id=None, icon_name=None, size=ICON_SIZE_SMALL,
-                      tooltip=None, action=None):
+def borderless_button(
+    stock_id=None,
+    icon_name=None,
+    size=ICON_SIZE_SMALL,
+    tooltip=None,
+    action=None,
+):
     """Create a button styled to be borderless.
 
     >>> borderless_button(icon_name="mypaint")  # doctest: +ELLIPSIS
@@ -72,8 +74,9 @@ def borderless_button(stock_id=None, icon_name=None, size=ICON_SIZE_SMALL,
     return button
 
 
-def set_margins(widget, all_=0, tb=None, lr=None,
-                t=None, b=None, l=None, r=None):  # noqa: E741
+def set_margins(
+    widget, all_=0, tb=None, lr=None, t=None, b=None, l=None, r=None
+):  # noqa: E741
     """Set margins compatibly on a widget.
 
     >>> w = Gtk.Label(label="i have wide margins")
@@ -111,8 +114,8 @@ def set_margins(widget, all_=0, tb=None, lr=None,
 def inline_toolbar(app, tool_defs):
     """Builds a styled inline toolbar"""
     bar = Gtk.Toolbar(
-        show_arrow = False,
-        icon_size = ICON_SIZE_SMALL,
+        show_arrow=False,
+        icon_size=ICON_SIZE_SMALL,
     )
     bar.set_style(Gtk.ToolbarStyle.ICONS)
     styles = bar.get_style_context()
@@ -131,7 +134,7 @@ def inline_toolbar(app, tool_defs):
     return bar
 
 
-class MenuButtonToolItem (Gtk.ToolItem):
+class MenuButtonToolItem(Gtk.ToolItem):
     """ToolItem which contains a Gtk.MenuButton"""
 
     def __init__(self):
@@ -158,9 +161,10 @@ class MenuButtonToolItem (Gtk.ToolItem):
 
 def get_toolbar_icon_size():
     from gui.application import get_app
+
     app = get_app()
     size = str(app.preferences.get("ui.toolbar_icon_size", "large"))
-    if size.lower() == 'small':
+    if size.lower() == "small":
         return ICON_SIZE_SMALL
     else:
         return ICON_SIZE_LARGE
@@ -168,10 +172,10 @@ def get_toolbar_icon_size():
 
 def with_wait_cursor(func):
     """python decorator that adds a wait cursor around a function"""
+
     @functools.wraps(func)
     def wrapper(self, *args, **kwargs):
-        wait_cursor = Gdk.Cursor.new_from_name(
-            Gdk.Display.get_default(), "wait")
+        wait_cursor = Gdk.Cursor.new_from_name(Gdk.Display.get_default(), "wait")
         toplevels = Gtk.Window.list_toplevels()
         toplevels = [t for t in toplevels if t.get_window() is not None]
         for toplevel in toplevels:
@@ -189,4 +193,5 @@ def with_wait_cursor(func):
                 toplevel_win = toplevel.get_window()
                 if toplevel_win is not None:
                     toplevel_win.set_cursor(None)
+
     return wrapper

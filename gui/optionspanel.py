@@ -10,21 +10,21 @@
 
 ## Imports
 
-from __future__ import division, print_function
 import logging
 
-from .toolstack import SizedVBoxToolWidget, TOOL_WIDGET_NATURAL_HEIGHT_SHORT
 import lib.xml
 from lib.gettext import C_
-
 from lib.gibindings import Gtk
+
+from .toolstack import TOOL_WIDGET_NATURAL_HEIGHT_SHORT, SizedVBoxToolWidget
 
 logger = logging.getLogger(__name__)
 
 
 ## Class defs
 
-class ModeOptionsTool (SizedVBoxToolWidget):
+
+class ModeOptionsTool(SizedVBoxToolWidget):
     """Dockable panel showing options for the current mode
 
     This panel has a title and an icon reflecting the current mode, and
@@ -51,7 +51,7 @@ class ModeOptionsTool (SizedVBoxToolWidget):
         "Specialized settings for the current editing tool",
     )
 
-    __gtype_name__ = 'MyPaintModeOptionsTool'
+    __gtype_name__ = "MyPaintModeOptionsTool"
 
     OPTIONS_MARKUP = C_(
         "options panel: header",
@@ -68,6 +68,7 @@ class ModeOptionsTool (SizedVBoxToolWidget):
         """Construct, and connect internal signals & callbacks"""
         SizedVBoxToolWidget.__init__(self)
         from gui.application import get_app
+
         self._app = get_app()
         self._app.doc.modes.changed += self._modestack_changed_cb
         self.set_border_width(3)

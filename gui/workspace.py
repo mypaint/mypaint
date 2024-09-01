@@ -10,18 +10,14 @@
 
 ## Imports
 
-from __future__ import division, print_function
-from warnings import warn
 import logging
-
-from lib.gibindings import GObject
-from lib.gibindings import Gtk
-from lib.gibindings import Gdk
-from lib.gibindings import GLib
+from warnings import warn
 
 from gui.toolstack import ToolStack, ToolStackWindow
 from gui.windowing import set_initial_window_position
+from lib.gibindings import Gdk, GLib, GObject, Gtk
 from lib.observable import event
+
 from . import objfactory
 
 logger = logging.getLogger(__name__)
@@ -30,7 +26,7 @@ logger = logging.getLogger(__name__)
 # Class defs
 
 
-class Workspace (Gtk.VBox, Gtk.Buildable):
+class Workspace(Gtk.VBox, Gtk.Buildable):
     """Widget housing a central canvas flanked by two sidebar toolstacks
 
     Workspaces also manage zero or more floating ToolStacks, and can set the
@@ -92,9 +88,11 @@ class Workspace (Gtk.VBox, Gtk.Buildable):
     #: down. Prevents a possible source of distraction when the user is
     #: drawing.
     _ALL_BUTTONS_MASK = (
-        Gdk.ModifierType.BUTTON1_MASK | Gdk.ModifierType.BUTTON2_MASK |
-        Gdk.ModifierType.BUTTON3_MASK | Gdk.ModifierType.BUTTON4_MASK |
-        Gdk.ModifierType.BUTTON5_MASK
+        Gdk.ModifierType.BUTTON1_MASK
+        | Gdk.ModifierType.BUTTON2_MASK
+        | Gdk.ModifierType.BUTTON3_MASK
+        | Gdk.ModifierType.BUTTON4_MASK
+        | Gdk.ModifierType.BUTTON5_MASK
     )
 
     # Edges the pointer can bump: used for autohide reveals
@@ -107,26 +105,26 @@ class Workspace (Gtk.VBox, Gtk.Buildable):
 
     ## GObject integration (type name, properties)
 
-    __gtype_name__ = 'MyPaintWorkspace'
+    __gtype_name__ = "MyPaintWorkspace"
 
     #: Title suffix property for floating windows.
     floating_window_title_suffix = GObject.Property(
         type=str,
         flags=GObject.ParamFlags.READWRITE,
-        nick='Floating window title suffix',
-        blurb='The suffix to append to floating windows: typically a '
-              'hyphen followed by the application name.',
-        default=None
+        nick="Floating window title suffix",
+        blurb="The suffix to append to floating windows: typically a "
+        "hyphen followed by the application name.",
+        default=None,
     )
 
     #: Title separator property for floating windows.
     floating_window_title_separator = GObject.Property(
         type=str,
         flags=GObject.ParamFlags.READWRITE,
-        nick='Floating window title separator',
-        blurb='String used to separate the names of tools in a '
-              'floating window. By default, a comma is used.',
-        default=", "
+        nick="Floating window title separator",
+        blurb="String used to separate the names of tools in a "
+        "floating window. By default, a comma is used.",
+        default=", ",
     )
 
     #: Header bar widget, to be hidden when entering fullscreen mode. This
@@ -134,12 +132,12 @@ class Workspace (Gtk.VBox, Gtk.Buildable):
     header_bar = GObject.Property(
         type=Gtk.Widget,
         flags=GObject.ParamFlags.READWRITE,
-        nick='Header bar widget',
+        nick="Header bar widget",
         blurb="External Menubar/toolbar widget to be hidden when "
-              "entering fullscreen mode, and re-shown when leaving "
-              "it. The pointer position is also used for reveals and "
-              "hides in fullscreen.",
-        default=None
+        "entering fullscreen mode, and re-shown when leaving "
+        "it. The pointer position is also used for reveals and "
+        "hides in fullscreen.",
+        default=None,
     )
 
     #: Footer bar widget, to be hidden when entering fullscreen mode. This
@@ -147,12 +145,12 @@ class Workspace (Gtk.VBox, Gtk.Buildable):
     footer_bar = GObject.Property(
         type=Gtk.Widget,
         flags=GObject.ParamFlags.READWRITE,
-        nick='Footer bar widget',
+        nick="Footer bar widget",
         blurb="External footer bar widget to be hidden when entering "
-              "fullscreen mode, and re-shown when leaving it. The "
-              "pointer position is also used for reveals and hides "
-              "in fullscreen.",
-        default=None
+        "fullscreen mode, and re-shown when leaving it. The "
+        "pointer position is also used for reveals and hides "
+        "in fullscreen.",
+        default=None,
     )
 
     def __init__(self):
@@ -267,8 +265,7 @@ class Workspace (Gtk.VBox, Gtk.Buildable):
         elif layout.get("maximized", False):
             toplevel_win.maximize()
             GLib.idle_add(lambda *a: toplevel_win.maximize())
-        toplevel_win.connect("window-state-event",
-                             self._toplevel_window_state_event_cb)
+        toplevel_win.connect("window-state-event", self._toplevel_window_state_event_cb)
         self.autohide_enabled = layout.get("autohide", True)
         self._initial_layout = layout
 
@@ -282,11 +279,15 @@ class Workspace (Gtk.VBox, Gtk.Buildable):
         llayout = self._lstack.get_layout()
         rlayout = self._rstack.get_layout()
         float_layouts = [w.get_layout() for w in self._floating]
-        return dict(left_sidebar=llayout, right_sidebar=rlayout,
-                    floating=float_layouts, position=self._toplevel_pos,
-                    autohide=self._autohide_enabled,
-                    fullscreen=self._is_fullscreen,
-                    maximized=self._is_maximized)
+        return dict(
+            left_sidebar=llayout,
+            right_sidebar=rlayout,
+            floating=float_layouts,
+            position=self._toplevel_pos,
+            autohide=self._autohide_enabled,
+            fullscreen=self._is_fullscreen,
+            maximized=self._is_maximized,
+        )
 
     ## Initial layout (pre/post-realize)
 
@@ -332,8 +333,7 @@ class Workspace (Gtk.VBox, Gtk.Buildable):
                 GLib.idle_add(win.show_all)
             else:
                 logger.warning(
-                    "Floating window %d is initially unpopulated. "
-                    "Destroying it.",
+                    "Floating window %d is initially unpopulated. " "Destroying it.",
                     fi,
                 )
                 GLib.idle_add(win.destroy)
@@ -405,13 +405,15 @@ class Workspace (Gtk.VBox, Gtk.Buildable):
         if not self.get_tool_widget_added(tool_gtypename, tool_params):
             logger.debug(
                 "Reveal: %r %r not in UI, attempting to add it",
-                tool_gtypename, tool_params,
+                tool_gtypename,
+                tool_params,
             )
             self.add_tool_widget(tool_gtypename, tool_params)
             return
         logger.debug(
             "Reveal: %r %r already in UI, finding and revealing its stack",
-            tool_gtypename, tool_params,
+            tool_gtypename,
+            tool_params,
         )
         assert self._tool_widgets.cache_has(tool_gtypename, *tool_params)
         widget = self._tool_widgets.get(tool_gtypename, *tool_params)
@@ -451,8 +453,7 @@ class Workspace (Gtk.VBox, Gtk.Buildable):
             stack = None
             while maxpages < 100 and not added:
                 for stack in self._get_tool_stacks():
-                    if stack.add_tool_widget(widget, maxnotebooks=3,
-                                             maxpages=maxpages):
+                    if stack.add_tool_widget(widget, maxnotebooks=3, maxpages=maxpages):
                         added = True
                         break
                 maxpages += 1
@@ -488,8 +489,10 @@ class Workspace (Gtk.VBox, Gtk.Buildable):
             if stack.remove_tool_widget(widget):
                 return True
         # Should never happen...
-        warn("Asked to remove a visible widget, but it wasn't in any stack",
-             RuntimeWarning)
+        warn(
+            "Asked to remove a visible widget, but it wasn't in any stack",
+            RuntimeWarning,
+        )
         return False
 
     def get_tool_widget_added(self, gtype_name, params):
@@ -510,8 +513,7 @@ class Workspace (Gtk.VBox, Gtk.Buildable):
                 stack = stack.get_parent()
         return stack
 
-    def update_tool_widget_params(self, tool_gtypename,
-                                  old_params, new_params):
+    def update_tool_widget_params(self, tool_gtypename, old_params, new_params):
         """Update the construction params of a tool widget
 
         :param tool_gtypename: GType system name for the widget's class
@@ -575,8 +577,7 @@ class Workspace (Gtk.VBox, Gtk.Buildable):
     ## Sidebar toolstack width
 
     def set_right_sidebar_width(self, width):
-        """Sets the width of the right sidebar toolstack
-        """
+        """Sets the width of the right sidebar toolstack"""
         if self._rstack.is_empty():
             return
         width = max(width, 100)
@@ -589,8 +590,7 @@ class Workspace (Gtk.VBox, Gtk.Buildable):
         self._rpaned.set_position(position)
 
     def set_left_sidebar_width(self, width):
-        """Sets the width of the left sidebar toolstack
-        """
+        """Sets the width of the left sidebar toolstack"""
         if self._lstack.is_empty():
             return
         width = max(width, 100)
@@ -599,8 +599,7 @@ class Workspace (Gtk.VBox, Gtk.Buildable):
     ## Position saving (toplevel window)
 
     def _toplevel_configure_cb(self, toplevel, event):
-        """Record the toplevel window's position ("configure-event" callback)
-        """
+        """Record the toplevel window's position ("configure-event" callback)"""
         # Avoid saving fullscreen positions. The timeout is a bit of hack, but
         # it's necessary because the state change event and the configure event
         # when fullscreening don't have a sensible order.
@@ -611,7 +610,8 @@ class Workspace (Gtk.VBox, Gtk.Buildable):
         srcid = GLib.timeout_add(
             250,
             self._save_toplevel_pos_timeout_cb,
-            w, h,
+            w,
+            h,
         )
         self._save_toplevel_pos_timeout = srcid
 
@@ -637,8 +637,7 @@ class Workspace (Gtk.VBox, Gtk.Buildable):
     ## Toolstack order for searching, tool insertion etc.
 
     def _get_tool_stacks(self):
-        """Yields all known ToolStacks, in floating-first order.
-        """
+        """Yields all known ToolStacks, in floating-first order."""
         for win in self._floating:
             yield win.stack
         yield self._rstack
@@ -785,8 +784,10 @@ class Workspace (Gtk.VBox, Gtk.Buildable):
     def _start_autohide_timeout(self):
         """Start a timer to hide the UI after a brief period of inactivity"""
         if not self._autohide_timeout:
-            logger.debug("Starting autohide timeout (%d milliseconds)",
-                         self.AUTOHIDE_TIMEOUT)
+            logger.debug(
+                "Starting autohide timeout (%d milliseconds)",
+                self.AUTOHIDE_TIMEOUT,
+            )
         else:
             self._cancel_autohide_timeout()
         srcid = GLib.timeout_add(
@@ -814,8 +815,10 @@ class Workspace (Gtk.VBox, Gtk.Buildable):
         of edge contact
         """
         if not self._autoreveal_timeout:
-            logger.debug("Starting autoreveal timeout (%d milliseconds)",
-                         self.AUTOHIDE_REVEAL_TIMEOUT)
+            logger.debug(
+                "Starting autoreveal timeout (%d milliseconds)",
+                self.AUTOHIDE_REVEAL_TIMEOUT,
+            )
         else:
             self._cancel_autoreveal_timeout()
         srcid = GLib.timeout_add(
@@ -849,15 +852,17 @@ class Workspace (Gtk.VBox, Gtk.Buildable):
         if not evwidget:
             return
         mask = (
-            Gdk.EventMask.POINTER_MOTION_HINT_MASK |
-            Gdk.EventMask.POINTER_MOTION_MASK |
-            Gdk.EventMask.LEAVE_NOTIFY_MASK |
-            Gdk.EventMask.ENTER_NOTIFY_MASK
+            Gdk.EventMask.POINTER_MOTION_HINT_MASK
+            | Gdk.EventMask.POINTER_MOTION_MASK
+            | Gdk.EventMask.LEAVE_NOTIFY_MASK
+            | Gdk.EventMask.ENTER_NOTIFY_MASK
         )
         evwidget.add_events(mask)
-        handlers = [("motion-notify-event", self._fs_motion_cb),
-                    ("leave-notify-event", self._fs_leave_cb),
-                    ("enter-notify-event", self._fs_enter_cb)]
+        handlers = [
+            ("motion-notify-event", self._fs_motion_cb),
+            ("leave-notify-event", self._fs_leave_cb),
+            ("enter-notify-event", self._fs_enter_cb),
+        ]
         for event_name, handler_callback in handlers:
             handler_id = evwidget.connect(event_name, handler_callback)
             self._fs_event_handlers.append((evwidget, handler_id))
@@ -942,10 +947,10 @@ class Workspace (Gtk.VBox, Gtk.Buildable):
         w, h = alloc.width, alloc.height
         x, y = event.x, event.y
         b = cls.AUTOHIDE_REVEAL_BORDER
-        if not (x < b or x > w-b or y < b or y > h-b):
+        if not (x < b or x > w - b or y < b or y > h - b):
             return cls._EDGE_NONE
         edges = cls._EDGE_NONE
-        if y < b or (y < 5*b and (x < b or x > w-b)):
+        if y < b or (y < 5 * b and (x < b or x > w - b)):
             edges |= cls._EDGE_TOP
         if y > h - b:
             edges |= cls._EDGE_BOTTOM
@@ -976,23 +981,24 @@ class Workspace (Gtk.VBox, Gtk.Buildable):
 
 ## Module testing (interactive, but fairly minimal)
 
+
 def _test():
     logging.basicConfig(level=logging.DEBUG)
     import os
     import sys
 
-    class _TestLabel (Gtk.Label):
-        __gtype_name__ = 'TestLabel'
-        tool_widget_icon_name = 'gtk-ok'
+    class _TestLabel(Gtk.Label):
+        __gtype_name__ = "TestLabel"
+        tool_widget_icon_name = "gtk-ok"
         tool_widget_description = "Just a test widget"
 
         def __init__(self, text):
             Gtk.Label.__init__(self, text)
             self.set_size_request(200, 150)
 
-    class _TestSpinner (Gtk.Spinner):
+    class _TestSpinner(Gtk.Spinner):
         __gtype_name__ = "TestSpinner"
-        tool_widget_icon_name = 'gtk-cancel'
+        tool_widget_icon_name = "gtk-cancel"
         tool_widget_description = "Spinner test"
 
         def __init__(self):
@@ -1008,8 +1014,9 @@ def _test():
 
     def _floating_window_created(*a):
         logger.debug("FLOATING-WINDOW-CREATED %r", a)
+
     workspace = Workspace()
-    workspace.floating_window_title_suffix = u" - Test"
+    workspace.floating_window_title_suffix = " - Test"
     button = Gtk.Button(label="Click to close this demo")
     frame = Gtk.Frame()
     frame.add(button)
@@ -1022,40 +1029,55 @@ def _test():
     workspace.tool_widget_added += _tool_shown_cb
     workspace.tool_widget_removed += _tool_hidden_cb
     workspace.floating_window_created += _floating_window_created
-    workspace.build_from_layout({
-        'position': {'x': 100, 'y': 75, 'h': -100, 'w': -100},
-        'floating': [{
-            'position': {'y': -100, 'h': 189, 'w': 152, 'x': -200},
-            'contents': {
-                'groups': [{
-                    'tools': [('TestLabel', "1"), ('TestLabel', "2")],
-                }],
-            }}],
-        'right_sidebar': {
-            'w': 400,
-            'groups': [{
-                'tools': [('TestSpinner',), ("TestLabel", "3")],
-            }],
-        },
-        'left_sidebar': {
-            'w': 250,
-            'groups': [{
-                'tools': [('TestLabel', "4"), ('TestLabel', "5")],
-            }],
-        },
-        'maximized': False,
-        'fullscreen': True,
-    })
+    workspace.build_from_layout(
+        {
+            "position": {"x": 100, "y": 75, "h": -100, "w": -100},
+            "floating": [
+                {
+                    "position": {"y": -100, "h": 189, "w": 152, "x": -200},
+                    "contents": {
+                        "groups": [
+                            {
+                                "tools": [
+                                    ("TestLabel", "1"),
+                                    ("TestLabel", "2"),
+                                ],
+                            }
+                        ],
+                    },
+                }
+            ],
+            "right_sidebar": {
+                "w": 400,
+                "groups": [
+                    {
+                        "tools": [("TestSpinner",), ("TestLabel", "3")],
+                    }
+                ],
+            },
+            "left_sidebar": {
+                "w": 250,
+                "groups": [
+                    {
+                        "tools": [("TestLabel", "4"), ("TestLabel", "5")],
+                    }
+                ],
+            },
+            "maximized": False,
+            "fullscreen": True,
+        }
+    )
     window.show_all()
 
     def _quit_cb(*a):
         logger.info("Demo quit, workspace dump follows")
         print(workspace.get_layout())
         Gtk.main_quit()
+
     window.connect("destroy", _quit_cb)
     button.connect("clicked", _quit_cb)
     Gtk.main()
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     _test()

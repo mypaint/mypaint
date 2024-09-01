@@ -8,36 +8,32 @@
 # the Free Software Foundation; either version 2 of the License, or
 # (at your option) any later version.
 
-from __future__ import division, print_function
 import logging
 from gettext import gettext as _
 
-from lib.gibindings import Gtk
-from lib.gibindings import GLib
-
-from . import tileddrawwidget
-from . import windowing
 import lib.document
 from gui.document import CanvasController
-from .freehand import FreehandMode
-from . import brushmanager
+from lib.gibindings import GLib, Gtk
 from lib.observable import event
-from . import drawutils
+
+from . import brushmanager, drawutils, tileddrawwidget, windowing
+from .freehand import FreehandMode
 
 logger = logging.getLogger(__name__)
 
 
-class BrushIconEditorWindow (windowing.SubWindow):
+class BrushIconEditorWindow(windowing.SubWindow):
     """Main app subwindow for editing a brush's icon
 
     See `BrushIconEditor` for details of how this operates.
     """
 
-    _TITLE_PREVIEWING = _('Brush Icon')
-    _TITLE_EDITING = _('Brush Icon (editing)')
+    _TITLE_PREVIEWING = _("Brush Icon")
+    _TITLE_EDITING = _("Brush Icon (editing)")
 
     def __init__(self):
         from gui.application import get_app
+
         app = get_app()
         self._app = app
         windowing.SubWindow.__init__(self, app)
@@ -53,7 +49,7 @@ class BrushIconEditorWindow (windowing.SubWindow):
             self.set_title(self._TITLE_PREVIEWING)
 
 
-class BrushIconEditor (Gtk.Grid):
+class BrushIconEditor(Gtk.Grid):
     """Widget for previewing and editing a brush's icon at a large size
 
     The editor has two modes: previewing and editing.  In preview mode, the
@@ -72,18 +68,16 @@ class BrushIconEditor (Gtk.Grid):
 
     _SCALE = 2
     _NO_BRUSH_NAME = _("No brush selected")
-    _ICON_INVALID_TMPL = _(
-        u'<b>%s</b>\n'
-        '<small>Select a valid brush first</small>')
+    _ICON_INVALID_TMPL = _("<b>%s</b>\n" "<small>Select a valid brush first</small>")
     _ICON_MODIFIED_TMPL = _(
-        u'<b>%s</b> <i>(modified)</i>\n'
-        u'<small>Changes are not yet saved</small>')
+        "<b>%s</b> <i>(modified)</i>\n" "<small>Changes are not yet saved</small>"
+    )
     _ICON_MODIFIABLE_TMPL = _(
-        u'<b>%s</b> (editing)\n'
-        u'<small>Paint with any brush or color</small>')
+        "<b>%s</b> (editing)\n" "<small>Paint with any brush or color</small>"
+    )
     _ICON_PREVIEWING_TMPL = _(
-        '<b>%s</b>\n'
-        u'<small>Click ‘Edit’ to make changes to the icon</small>')
+        "<b>%s</b>\n" "<small>Click ‘Edit’ to make changes to the icon</small>"
+    )
 
     ## Construction
 
@@ -92,6 +86,7 @@ class BrushIconEditor (Gtk.Grid):
         self.set_row_spacing(6)
         self.set_column_spacing(12)
         from gui.application import get_app
+
         app = get_app()
         self._app = app
         self._bm = app.brushmanager
@@ -99,8 +94,7 @@ class BrushIconEditor (Gtk.Grid):
         self._bm.brush_selected += self._brush_selected_cb
         self._brush_to_edit = None
         self._preview_modified = False
-        self._model = lib.document.Document(self._app.brush,
-                                            painting_only=True)
+        self._model = lib.document.Document(self._app.brush, painting_only=True)
         self._model.layer_stack.ensure_populated()
         self._model.canvas_area_modified += self._preview_area_modified_cb
         self._init_widgets()
@@ -123,13 +117,12 @@ class BrushIconEditor (Gtk.Grid):
         self._tdw.set_model(self._model)
         self._tdw.set_size_request(
             brushmanager.PREVIEW_W * self._SCALE,
-            brushmanager.PREVIEW_H * self._SCALE
+            brushmanager.PREVIEW_H * self._SCALE,
         )
         self._tdw.scale = 1  # it will be corrected later
         self._tdw.scroll_on_allocate = False
         self._tdw.pixelize_threshold = 0
-        tdw_align = Gtk.Alignment(xalign=0.5, yalign=0.0,
-                                  xscale=0.0, yscale=0.0)
+        tdw_align = Gtk.Alignment(xalign=0.5, yalign=0.0, xscale=0.0, yscale=0.0)
         tdw_align.add(self._tdw)
         self.attach(tdw_align, 0, 0, 1, 1)
 
@@ -154,7 +147,9 @@ class BrushIconEditor (Gtk.Grid):
 
         b = self._make_image_button(
             # TRANSLATORS: begin editing a brush's preview icon
-            _('Edit'), "mypaint-freehand-symbolic", self._edit_cb
+            _("Edit"),
+            "mypaint-freehand-symbolic",
+            self._edit_cb,
         )
         b.set_tooltip_text(_("Begin editing this preview icon"))
         button_box.pack_start(b, False, True, 0)
@@ -162,7 +157,9 @@ class BrushIconEditor (Gtk.Grid):
 
         b = self._make_image_button(
             # TRANSLATORS: revert edits to a brush icon
-            _('Revert'), "mypaint-document-revert-symbolic", self._revert_cb
+            _("Revert"),
+            "mypaint-document-revert-symbolic",
+            self._revert_cb,
         )
         b.set_tooltip_text(_("Discard changes, and cancel editing"))
         button_box.pack_start(b, False, True, 0)
@@ -171,7 +168,9 @@ class BrushIconEditor (Gtk.Grid):
 
         b = self._make_image_button(
             # TRANSLATORS: clear the brush preview icon being edited
-            _('Clear'), "mypaint-clear-all-symbolic", self._clear_cb
+            _("Clear"),
+            "mypaint-clear-all-symbolic",
+            self._clear_cb,
         )
         b.set_tooltip_text(_("Clear the preview icon"))
         button_box.pack_start(b, False, True, 0)
@@ -179,7 +178,9 @@ class BrushIconEditor (Gtk.Grid):
 
         b = self._make_image_button(
             # TRANSLATORS: set the brush icon to a built-in default
-            _('Auto'), "mypaint-document-new-symbolic", self._default_cb
+            _("Auto"),
+            "mypaint-document-new-symbolic",
+            self._default_cb,
         )
         b.set_tooltip_text(_("Use the default icon"))
         button_box.pack_start(b, False, True, 0)
@@ -187,7 +188,9 @@ class BrushIconEditor (Gtk.Grid):
 
         b = self._make_image_button(
             # TRANSLATORS: save edits to a brush icon
-            _('Save'), "mypaint-document-save-symbolic", self._save_cb
+            _("Save"),
+            "mypaint-document-save-symbolic",
+            self._save_cb,
         )
         b.set_tooltip_text(_("Save this preview icon, and finish editing"))
         button_box.pack_start(b, False, True, 0)
@@ -239,8 +242,7 @@ class BrushIconEditor (Gtk.Grid):
 
     def _default_cb(self, button):
         assert self._brush_to_edit
-        logger.debug("Set preview of %r to a procedural default",
-                     self._brush_to_edit)
+        logger.debug("Set preview of %r to a procedural default", self._brush_to_edit)
         preview = drawutils.render_brush_preview_pixbuf(
             self._brush_to_edit.get_brushinfo(),
         )
@@ -287,8 +289,9 @@ class BrushIconEditor (Gtk.Grid):
         # Failed to save the icon.
         # This can happen if the user deletes a brush whose icon is being
         # edited. To recover, add the saved settings as a new brush
-        logger.info("Failed to save preview, so saving cached settings"
-                    "as a new brush")
+        logger.info(
+            "Failed to save preview, so saving cached settings" "as a new brush"
+        )
         b = self._brush_to_edit.clone(name=None)
         group = brushmanager.NEW_BRUSH_GROUP
         brushes = self._bm.get_group_brushes(group)

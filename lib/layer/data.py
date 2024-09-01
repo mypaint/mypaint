@@ -12,43 +12,40 @@
 """Data layer classes"""
 
 
-## Imports
-from __future__ import division, print_function
-
-import zlib
+import contextlib
 import logging
 import os
-import time
-import tempfile
 import shutil
+import struct
+import tempfile
+import time
+import uuid
+
+## Imports
+import zlib
 from copy import deepcopy
 from random import randint
-import uuid
-import struct
-import contextlib
 
-from lib.brush import BrushInfo
-from lib.gettext import C_
-from lib.tiledsurface import N
-import lib.tiledsurface as tiledsurface
-import lib.strokemap
-import lib.helpers as helpers
+import lib.autosave
+import lib.feedback
 import lib.fileutils
-import lib.pixbuf
+import lib.helpers as helpers
+import lib.layer.error
 import lib.modes
 import lib.mypaintlib
-from . import core
-import lib.layer.error
-import lib.autosave
+import lib.pixbuf
+import lib.strokemap
+import lib.tiledsurface as tiledsurface
 import lib.xml
-import lib.feedback
-from . import rendering
-from lib.pycompat import PY3
-from lib.pycompat import unicode
+from lib.brush import BrushInfo
+from lib.gettext import C_
+from lib.pycompat import PY3, unicode
+from lib.tiledsurface import N
+
+from . import core, rendering
 
 if PY3:
-    from io import StringIO
-    from io import BytesIO
+    from io import BytesIO, StringIO
 else:
     from cStringIO import StringIO
 
@@ -59,7 +56,7 @@ logger = logging.getLogger(__name__)
 ## Base classes
 
 
-class SurfaceBackedLayer (core.LayerBase, lib.autosave.Autosaveable):
+class SurfaceBackedLayer(core.LayerBase, lib.autosave.Autosaveable):
     """Minimal Surface-backed layer implementation
 
     This minimal implementation is backed by a surface, which is used
@@ -133,8 +130,9 @@ class SurfaceBackedLayer (core.LayerBase, lib.autosave.Autosaveable):
 
     ## Loading
 
-    def load_from_openraster(self, orazip, elem, cache_dir, progress,
-                             x=0, y=0, **kwargs):
+    def load_from_openraster(
+        self, orazip, elem, cache_dir, progress, x=0, y=0, **kwargs
+    ):
         """Loads layer flags and bitmap/surface data from a .ora zipfile
 
         The normal behaviour is to load the surface data directly from
@@ -147,12 +145,7 @@ class SurfaceBackedLayer (core.LayerBase, lib.autosave.Autosaveable):
         """
         # Load layer flags
         super(SurfaceBackedLayer, self).load_from_openraster(
-            orazip,
-            elem,
-            cache_dir,
-            progress,
-            x=x, y=y,
-            **kwargs
+            orazip, elem, cache_dir, progress, x=x, y=y, **kwargs
         )
         # Read bitmap content into the surface
         attrs = elem.attrib
@@ -160,12 +153,13 @@ class SurfaceBackedLayer (core.LayerBase, lib.autosave.Autosaveable):
         src_rootname, src_ext = os.path.splitext(src)
         src_rootname = os.path.basename(src_rootname)
         src_ext = src_ext.lower()
-        x += int(attrs.get('x', 0))
-        y += int(attrs.get('y', 0))
+        x += int(attrs.get("x", 0))
+        y += int(attrs.get("y", 0))
         logger.debug(
             "Trying to load %r at %+d%+d, as %r",
             src,
-            x, y,
+            x,
+            y,
             self.__class__.__name__,
         )
         suffixes = self.ALLOWED_SUFFIXES
@@ -186,11 +180,11 @@ class SurfaceBackedLayer (core.LayerBase, lib.autosave.Autosaveable):
             cache_dir,
             src,
             progress,
-            x, y,
+            x,
+            y,
         )
 
-    def _load_surface_from_orazip_member(self, orazip, cache_dir,
-                                         src, progress, x, y):
+    def _load_surface_from_orazip_member(self, orazip, cache_dir, src, progress, x, y):
         """Loads the surface from a member of an OpenRaster zipfile
 
         Intended strictly for override by subclasses which need to first
@@ -204,17 +198,13 @@ class SurfaceBackedLayer (core.LayerBase, lib.autosave.Autosaveable):
         )
         self.load_surface_from_pixbuf(pixbuf, x=x, y=y)
 
-    def load_from_openraster_dir(self, oradir, elem, cache_dir, progress,
-                                 x=0, y=0, **kwargs):
+    def load_from_openraster_dir(
+        self, oradir, elem, cache_dir, progress, x=0, y=0, **kwargs
+    ):
         """Loads layer flags and data from an OpenRaster-style dir"""
         # Load layer flags
         super(SurfaceBackedLayer, self).load_from_openraster_dir(
-            oradir,
-            elem,
-            cache_dir,
-            progress,
-            x=x, y=y,
-            **kwargs
+            oradir, elem, cache_dir, progress, x=x, y=y, **kwargs
         )
         # Read bitmap content into the surface
         attrs = elem.attrib
@@ -222,12 +212,13 @@ class SurfaceBackedLayer (core.LayerBase, lib.autosave.Autosaveable):
         src_rootname, src_ext = os.path.splitext(src)
         src_rootname = os.path.basename(src_rootname)
         src_ext = src_ext.lower()
-        x += int(attrs.get('x', 0))
-        y += int(attrs.get('y', 0))
+        x += int(attrs.get("x", 0))
+        y += int(attrs.get("y", 0))
         logger.debug(
             "Trying to load %r at %+d%+d, as %r",
             src,
-            x, y,
+            x,
+            y,
             self.__class__.__name__,
         )
         suffixes = self.ALLOWED_SUFFIXES
@@ -248,11 +239,11 @@ class SurfaceBackedLayer (core.LayerBase, lib.autosave.Autosaveable):
             cache_dir,
             src,
             progress,
-            x, y,
+            x,
+            y,
         )
 
-    def _load_surface_from_oradir_member(self, oradir, cache_dir,
-                                         src, progress, x, y):
+    def _load_surface_from_oradir_member(self, oradir, cache_dir, src, progress, x, y):
         """Loads the surface from a file in an OpenRaster-like folder
 
         Intended strictly for override by subclasses which need to
@@ -261,12 +252,14 @@ class SurfaceBackedLayer (core.LayerBase, lib.autosave.Autosaveable):
         """
         self.load_surface_from_pixbuf_file(
             os.path.join(oradir, src),
-            x, y,
+            x,
+            y,
             progress,
         )
 
-    def load_surface_from_pixbuf_file(self, filename, x=0, y=0,
-                                      progress=None, image_type=None):
+    def load_surface_from_pixbuf_file(
+        self, filename, x=0, y=0, progress=None, image_type=None
+    ):
         """Loads the layer's surface from any file which GdkPixbuf can open"""
         if progress:
             if progress.items is not None:
@@ -277,7 +270,7 @@ class SurfaceBackedLayer (core.LayerBase, lib.autosave.Autosaveable):
             s = os.stat(filename)
             progress.items = int(s.st_size)
         try:
-            with open(filename, 'rb') as fp:
+            with open(filename, "rb") as fp:
                 pixbuf = lib.pixbuf.load_from_stream(fp, progress, image_type)
         except Exception as err:
             if self.FALLBACK_CONTENT is None:
@@ -367,16 +360,26 @@ class SurfaceBackedLayer (core.LayerBase, lib.autosave.Autosaveable):
         if (spec.current_overlay is not None) and (self is spec.current):
             # Temporary special effects, e.g. layer blink.
             ops.append((rendering.Opcode.PUSH, None, None, None))
-            ops.append((
-                rendering.Opcode.COMPOSITE, self._surface, mode_default, 1.0,
-            ))
+            ops.append(
+                (
+                    rendering.Opcode.COMPOSITE,
+                    self._surface,
+                    mode_default,
+                    1.0,
+                )
+            )
             ops.extend(spec.current_overlay.get_render_ops(spec))
             ops.append(rendering.Opcode.POP, None, mode, opacity)
         else:
             # The 99%+ case☺
-            ops.append((
-                rendering.Opcode.COMPOSITE, self._surface, mode, opacity,
-            ))
+            ops.append(
+                (
+                    rendering.Opcode.COMPOSITE,
+                    self._surface,
+                    mode,
+                    opacity,
+                )
+            )
         return ops
 
     ## Translating
@@ -404,12 +407,14 @@ class SurfaceBackedLayer (core.LayerBase, lib.autosave.Autosaveable):
         """
         self._surface.save_as_png(filename, *rect, **kwargs)
 
-    def save_to_openraster(self, orazip, tmpdir, path,
-                           canvas_bbox, frame_bbox, **kwargs):
+    def save_to_openraster(
+        self, orazip, tmpdir, path, canvas_bbox, frame_bbox, **kwargs
+    ):
         """Saves the layer's data into an open OpenRaster ZipFile"""
         rect = self.get_bbox()
-        return self._save_rect_to_ora(orazip, tmpdir, "layer", path,
-                                      frame_bbox, rect, **kwargs)
+        return self._save_rect_to_ora(
+            orazip, tmpdir, "layer", path, frame_bbox, rect, **kwargs
+        )
 
     def queue_autosave(self, oradir, taskproc, manifest, bbox, **kwargs):
         """Queues the layer for auto-saving"""
@@ -433,10 +438,10 @@ class SurfaceBackedLayer (core.LayerBase, lib.autosave.Autosaveable):
         png_bbox = self._surface.looped and bbox or tuple(self.get_bbox())
         if self.autosave_dirty or not os.path.exists(png_path):
             task = tiledsurface.PNGFileUpdateTask(
-                surface = self._surface,
-                filename = png_path,
-                rect = png_bbox,
-                alpha = (not self._surface.looped),  # assume that means bg
+                surface=self._surface,
+                filename=png_path,
+                rect=png_bbox,
+                alpha=(not self._surface.looped),  # assume that means bg
                 **kwargs
             )
             taskproc.add_work(task)
@@ -454,7 +459,7 @@ class SurfaceBackedLayer (core.LayerBase, lib.autosave.Autosaveable):
         return elem
 
     @staticmethod
-    def _make_refname(prefix, path, suffix, sep='-'):
+    def _make_refname(prefix, path, suffix, sep="-"):
         """Internal: standardized filename for something with a path"""
         assert "." in suffix
         path_ref = sep.join([("%02d" % (n,)) for n in path])
@@ -462,8 +467,9 @@ class SurfaceBackedLayer (core.LayerBase, lib.autosave.Autosaveable):
             suffix = sep + suffix
         return "".join([prefix, sep, path_ref, suffix])
 
-    def _save_rect_to_ora(self, orazip, tmpdir, prefix, path,
-                          frame_bbox, rect, progress=None, **kwargs):
+    def _save_rect_to_ora(
+        self, orazip, tmpdir, prefix, path, frame_bbox, rect, progress=None, **kwargs
+    ):
         """Internal: saves a rectangle of the surface to an ORA zip"""
         # Write PNG data via a tempfile
         pngname = self._make_refname(prefix, path, ".png")
@@ -471,7 +477,7 @@ class SurfaceBackedLayer (core.LayerBase, lib.autosave.Autosaveable):
         t0 = time.time()
         self._surface.save_as_png(pngpath, *rect, progress=progress, **kwargs)
         t1 = time.time()
-        logger.debug('%.3fs surface saving %r', t1 - t0, pngname)
+        logger.debug("%.3fs surface saving %r", t1 - t0, pngname)
         # Archive and remove
         storepath = "data/%s" % (pngname,)
         orazip.write(pngpath, storepath)
@@ -489,8 +495,7 @@ class SurfaceBackedLayer (core.LayerBase, lib.autosave.Autosaveable):
 
     ## Painting symmetry axis
 
-    def set_symmetry_state(
-            self, active, center, symmetry_type, symmetry_lines, angle):
+    def set_symmetry_state(self, active, center, symmetry_type, symmetry_lines, angle):
         """Set the surface's painting symmetry axis and active flag.
 
         See `LayerBase.set_symmetry_state` for the params.
@@ -498,9 +503,11 @@ class SurfaceBackedLayer (core.LayerBase, lib.autosave.Autosaveable):
         cx, cy = center
         self._surface.set_symmetry_state(
             bool(active),
-            float(cx), float(cy),
-            int(symmetry_type), int(symmetry_lines),
-            float(angle)
+            float(cx),
+            float(cy),
+            int(symmetry_type),
+            int(symmetry_lines),
+            float(angle),
         )
 
     ## Snapshots
@@ -541,7 +548,7 @@ class SurfaceBackedLayer (core.LayerBase, lib.autosave.Autosaveable):
         return (removed, total)
 
 
-class SurfaceBackedLayerMove (object):
+class SurfaceBackedLayerMove(object):
     """Move object wrapper for surface-backed layers
 
     Layer Subclasses should extend this minimal implementation to
@@ -565,7 +572,7 @@ class SurfaceBackedLayerMove (object):
         return self._wrapped.process(n)
 
 
-class SurfaceBackedLayerSnapshot (core.LayerBaseSnapshot):
+class SurfaceBackedLayerSnapshot(core.LayerBaseSnapshot):
     """Minimal layer implementation's snapshot
 
     Snapshots are stored in commands, and used to implement undo and redo.
@@ -586,7 +593,7 @@ class SurfaceBackedLayerSnapshot (core.LayerBaseSnapshot):
         layer._surface.load_snapshot(self.surface_sshot)
 
 
-class FileBackedLayer (SurfaceBackedLayer, core.ExternallyEditable):
+class FileBackedLayer(SurfaceBackedLayer, core.ExternallyEditable):
     """A layer with primarily file-based storage
 
     File-based layers use temporary files for storage, and create one
@@ -603,7 +610,7 @@ class FileBackedLayer (SurfaceBackedLayer, core.ExternallyEditable):
     ## Class constants
 
     ALLOWED_SUFFIXES = []
-    REVISIONS_SUBDIR = u"revisions"
+    REVISIONS_SUBDIR = "revisions"
 
     ## Construction
 
@@ -622,10 +629,10 @@ class FileBackedLayer (SurfaceBackedLayer, core.ExternallyEditable):
             return
         ext = self.ALLOWED_SUFFIXES[0]
         rev0_fp = tempfile.NamedTemporaryFile(
-            mode = "wb",
-            suffix = ext,
-            dir = self.revisions_dir,
-            delete = False,
+            mode="wb",
+            suffix=ext,
+            dir=self.revisions_dir,
+            delete=False,
         )
         self.write_blank_backing_file(rev0_fp, **self._keywords)
         rev0_fp.close()
@@ -658,8 +665,7 @@ class FileBackedLayer (SurfaceBackedLayer, core.ExternallyEditable):
         """
         raise NotImplementedError
 
-    def _load_surface_from_orazip_member(self, orazip, cache_dir,
-                                         src, progress, x, y):
+    def _load_surface_from_orazip_member(self, orazip, cache_dir, src, progress, x, y):
         """Loads the surface from a member of an OpenRaster zipfile
 
         This override retains a managed copy of the extracted file in
@@ -674,7 +680,8 @@ class FileBackedLayer (SurfaceBackedLayer, core.ExternallyEditable):
         tmp_filename = os.path.join(tmpdir, src)
         self.load_surface_from_pixbuf_file(
             tmp_filename,
-            x, y,
+            x,
+            y,
             progress,
         )
         # Move it to the revisions subdir, and manage it there.
@@ -690,8 +697,7 @@ class FileBackedLayer (SurfaceBackedLayer, core.ExternallyEditable):
         self._x = x
         self._y = y
 
-    def _load_surface_from_oradir_member(self, oradir, cache_dir,
-                                         src, progress, x, y):
+    def _load_surface_from_oradir_member(self, oradir, cache_dir, src, progress, x, y):
         """Loads the surface from a file in an OpenRaster-like folder
 
         This override makes a managed copy of the original file in the
@@ -700,9 +706,12 @@ class FileBackedLayer (SurfaceBackedLayer, core.ExternallyEditable):
         """
         # Load the displayed surface tiles
         super(FileBackedLayer, self)._load_surface_from_oradir_member(
-            oradir, cache_dir,
-            src, progress,
-            x, y,
+            oradir,
+            cache_dir,
+            src,
+            progress,
+            x,
+            y,
         )
         # Copy it to the revisions subdir, and manage it there.
         revisions_dir = os.path.join(cache_dir, self.REVISIONS_SUBDIR)
@@ -744,8 +753,9 @@ class FileBackedLayer (SurfaceBackedLayer, core.ExternallyEditable):
 
     ## Saving
 
-    def save_to_openraster(self, orazip, tmpdir, path,
-                           canvas_bbox, frame_bbox, **kwargs):
+    def save_to_openraster(
+        self, orazip, tmpdir, path, canvas_bbox, frame_bbox, **kwargs
+    ):
         """Saves the working file to an OpenRaster zipfile"""
         # No supercall in this override, but the base implementation's
         # attributes method is useful.
@@ -784,10 +794,10 @@ class FileBackedLayer (SurfaceBackedLayer, core.ExternallyEditable):
         if self.autosave_dirty or not os.path.exists(final_path):
             final_dir = os.path.join(oradir, "data")
             tmp_fp = tempfile.NamedTemporaryFile(
-                mode = "wb",
-                prefix = final_basename,
-                dir = final_dir,
-                delete = False,
+                mode="wb",
+                prefix=final_basename,
+                dir=final_dir,
+                delete=False,
             )
             tmp_path = tmp_fp.name
             # Copy the managed tempfile now.
@@ -812,8 +822,8 @@ class FileBackedLayer (SurfaceBackedLayer, core.ExternallyEditable):
         self._ensure_valid_working_file()
         self._edit_tempfile = _ManagedFile(
             unicode(self._workfile),
-            copy = True,
-            dir = self.external_edits_dir,
+            copy=True,
+            dir=self.external_edits_dir,
         )
         return unicode(self._edit_tempfile)
 
@@ -827,14 +837,14 @@ class FileBackedLayer (SurfaceBackedLayer, core.ExternallyEditable):
         redraw_bboxes.append(self.get_full_redraw_bbox())
         self._workfile = _ManagedFile(
             tempfile_path,
-            copy = True,
-            dir = self.revisions_dir,
+            copy=True,
+            dir=self.revisions_dir,
         )
         self._content_changed(*tuple(core.combine_redraws(redraw_bboxes)))
         self.autosave_dirty = True
 
 
-class FileBackedLayerSnapshot (SurfaceBackedLayerSnapshot):
+class FileBackedLayerSnapshot(SurfaceBackedLayerSnapshot):
     """Snapshot subclass for file-backed layers"""
 
     def __init__(self, layer):
@@ -851,7 +861,7 @@ class FileBackedLayerSnapshot (SurfaceBackedLayerSnapshot):
         layer.autosave_dirty = True
 
 
-class FileBackedLayerMove (SurfaceBackedLayerMove):
+class FileBackedLayerMove(SurfaceBackedLayerMove):
     """Move object wrapper for file-backed layers"""
 
     def __init__(self, layer, x, y):
@@ -873,7 +883,7 @@ class FileBackedLayerMove (SurfaceBackedLayerMove):
 ## Utility classes
 
 
-class _ManagedFile (object):
+class _ManagedFile(object):
     """Working copy of a file, as used by file-backed layers
 
     Managed files take control of an unmanaged file on disk when they
@@ -927,8 +937,12 @@ class _ManagedFile (object):
         """Deep-copying a _ManagedFile copies the file"""
         orig_path = unicode(self)
         clone_path = self._get_file_to_manage(orig_path, copy=True)
-        logger.debug("_ManagedFile: cloned %r as %r within %r",
-                     self._basename, os.path.basename(clone_path), self._dir)
+        logger.debug(
+            "_ManagedFile: cloned %r as %r within %r",
+            self._basename,
+            os.path.basename(clone_path),
+            self._dir,
+        )
         return _ManagedFile(clone_path)
 
     @staticmethod
@@ -986,22 +1000,26 @@ class _ManagedFile (object):
         try:
             file_path = unicode(self)
         except Exception:
-            logger.exception("_ManagedFile: cleanup of incomplete object. "
-                             "File may still exist on disk.")
+            logger.exception(
+                "_ManagedFile: cleanup of incomplete object. "
+                "File may still exist on disk."
+            )
             return
         if os.path.exists(file_path):
-            logger.debug("_ManagedFile: %r is no longer referenced, deleting",
-                         file_path)
+            logger.debug(
+                "_ManagedFile: %r is no longer referenced, deleting", file_path
+            )
             os.unlink(file_path)
         else:
-            logger.debug("_ManagedFile: %r was already removed, not deleting",
-                         file_path)
+            logger.debug(
+                "_ManagedFile: %r was already removed, not deleting", file_path
+            )
 
 
 ## Data layer classes
 
 
-class BackgroundLayer (SurfaceBackedLayer):
+class BackgroundLayer(SurfaceBackedLayer):
     """Background layer, with a repeating tiled image
 
     By convention only, there is just a single non-editable background
@@ -1025,17 +1043,16 @@ class BackgroundLayer (SurfaceBackedLayer):
     # no distinction is made when such files are subseqently saved.
 
     ORA_BGTILE_LEGACY_ATTR = "background_tile"
-    ORA_BGTILE_ATTR = "{%s}background-tile" % (
-        lib.xml.OPENRASTER_MYPAINT_NS,
-    )
+    ORA_BGTILE_ATTR = "{%s}background-tile" % (lib.xml.OPENRASTER_MYPAINT_NS,)
 
     def __init__(self, bg, **kwargs):
         if isinstance(bg, tiledsurface.Background):
             surface = bg
         else:
             surface = tiledsurface.Background(bg)
-        super(BackgroundLayer, self).__init__(name=u"background",
-                                              surface=surface, **kwargs)
+        super(BackgroundLayer, self).__init__(
+            name="background", surface=surface, **kwargs
+        )
         self.locked = False
         self.visible = True
         self.mode = lib.mypaintlib.CombineNormal
@@ -1047,9 +1064,9 @@ class BackgroundLayer (SurfaceBackedLayer):
         self.autosave_dirty = True
         self._surface = surface
 
-    def save_to_openraster(self, orazip, tmpdir, path,
-                           canvas_bbox, frame_bbox,
-                           progress=None, **kwargs):
+    def save_to_openraster(
+        self, orazip, tmpdir, path, canvas_bbox, frame_bbox, progress=None, **kwargs
+    ):
 
         if not progress:
             progress = lib.feedback.Progress()
@@ -1058,8 +1075,12 @@ class BackgroundLayer (SurfaceBackedLayer):
         # Item 1: save as a regular layer for other apps.
         # Background surfaces repeat, so just the bit filling the frame.
         elem = self._save_rect_to_ora(
-            orazip, tmpdir, "background", path,
-            frame_bbox, frame_bbox,
+            orazip,
+            tmpdir,
+            "background",
+            path,
+            frame_bbox,
+            frame_bbox,
             progress=progress.open(),
             **kwargs
         )
@@ -1072,17 +1093,11 @@ class BackgroundLayer (SurfaceBackedLayer):
         tmppath = os.path.join(tmpdir, pngname)
         t0 = time.time()
         self._surface.save_as_png(
-            tmppath,
-            x=x + x0,
-            y=y + y0,
-            w=w,
-            h=h,
-            progress=progress.open(),
-            **kwargs
+            tmppath, x=x + x0, y=y + y0, w=w, h=h, progress=progress.open(), **kwargs
         )
         t1 = time.time()
-        storename = 'data/%s' % (pngname,)
-        logger.debug('%.3fs surface saving %s', t1 - t0, storename)
+        storename = "data/%s" % (pngname,)
+        logger.debug("%.3fs surface saving %s", t1 - t0, storename)
         orazip.write(tmppath, storename)
         os.remove(tmppath)
         elem.attrib[self.ORA_BGTILE_ATTR] = storename
@@ -1102,17 +1117,16 @@ class BackgroundLayer (SurfaceBackedLayer):
         tilepng_path = os.path.join(oradir, tilepng_relpath)
         if self.autosave_dirty or not os.path.exists(tilepng_path):
             task = tiledsurface.PNGFileUpdateTask(
-                surface = self._surface,
-                filename = tilepng_path,
-                rect = tilepng_bbox,
-                alpha = False,
+                surface=self._surface,
+                filename=tilepng_path,
+                rect=tilepng_bbox,
+                alpha=False,
                 **kwargs
             )
             taskproc.add_work(task)
         # Supercall will clear the dirty flag, no need to do it here
         elem = super(BackgroundLayer, self).queue_autosave(
-            oradir, taskproc, manifest, bbox,
-            **kwargs
+            oradir, taskproc, manifest, bbox, **kwargs
         )
         elem.attrib[self.ORA_BGTILE_LEGACY_ATTR] = tilepng_relpath
         elem.attrib[self.ORA_BGTILE_ATTR] = tilepng_relpath
@@ -1123,7 +1137,7 @@ class BackgroundLayer (SurfaceBackedLayer):
         return BackgroundLayerSnapshot(self)
 
 
-class BackgroundLayerSnapshot (core.LayerBaseSnapshot):
+class BackgroundLayerSnapshot(core.LayerBaseSnapshot):
     """Snapshot of a root layer stack's state"""
 
     def __init__(self, layer):
@@ -1135,7 +1149,7 @@ class BackgroundLayerSnapshot (core.LayerBaseSnapshot):
         layer._surface = self.surface
 
 
-class VectorLayer (FileBackedLayer):
+class VectorLayer(FileBackedLayer):
     """SVG-based vector layer
 
     Vector layers respect a wider set of construction parameters than
@@ -1158,12 +1172,12 @@ class VectorLayer (FileBackedLayer):
     DEFAULT_NAME = C_(
         "layer default names",
         # TRANSLATORS: Short default name for vector (SVG/Inkscape) layers
-        u"Vectors",
+        "Vectors",
     )
 
     TYPE_DESCRIPTION = C_(
         "layer type descriptions",
-        u"Vector Layer",
+        "Vector Layer",
     )
 
     ALLOWED_SUFFIXES = [".svg"]
@@ -1174,8 +1188,7 @@ class VectorLayer (FileBackedLayer):
     def load_surface_from_pixbuf_file(self, *args, **kwds):
         """Overrides pixbuf loading to explicitly handle svg data"""
         kwds.update({"image_type": "svg"})
-        return super(VectorLayer, self).load_surface_from_pixbuf_file(
-            *args, **kwds)
+        return super(VectorLayer, self).load_surface_from_pixbuf_file(*args, **kwds)
 
     def write_blank_backing_file(self, file, **kwargs):
         x = kwargs.get("x", 0)
@@ -1187,7 +1200,7 @@ class VectorLayer (FileBackedLayer):
             outline = [(0, 0), (0, N), (N, N), (N, 0)]
         svg = (
             '<?xml version="1.0" encoding="UTF-8" standalone="no"?>'
-            '<!-- Created by MyPaint (http://mypaint.org/) -->'
+            "<!-- Created by MyPaint (http://mypaint.org/) -->"
             '<svg version="1.1" width="{w}" height="{h}">'
             '<path d="M '
         ).format(**kwargs)
@@ -1198,9 +1211,9 @@ class VectorLayer (FileBackedLayer):
         svg += (
             'Z" id="path0" '
             'style="fill:none;stroke:{col};stroke-width:5;'
-            'stroke-linecap:round;stroke-linejoin:round;'
+            "stroke-linecap:round;stroke-linejoin:round;"
             'stroke-dasharray:9, 9;stroke-dashoffset:0" />'
-            '</svg>'
+            "</svg>"
         ).format(col=col)
 
         if not isinstance(svg, bytes):
@@ -1225,7 +1238,7 @@ class VectorLayer (FileBackedLayer):
         return tiledsurface.flood_fill(src, fill_args, dst)
 
 
-class FallbackBitmapLayer (FileBackedLayer):
+class FallbackBitmapLayer(FileBackedLayer):
     """An unpaintable, fallback bitmap layer"""
 
     def get_icon_name(self):
@@ -1239,14 +1252,14 @@ class FallbackBitmapLayer (FileBackedLayer):
 
     TYPE_DESCRIPTION = C_(
         "layer type descriptions",
-        u"Bitmap Data",
+        "Bitmap Data",
     )
 
     #: Any suffix is allowed, no preference for defaults
     ALLOWED_SUFFIXES = [""]
 
 
-class FallbackDataLayer (FileBackedLayer):
+class FallbackDataLayer(FileBackedLayer):
     """An unpaintable, fallback, non-bitmap layer"""
 
     def get_icon_name(self):
@@ -1255,12 +1268,12 @@ class FallbackDataLayer (FileBackedLayer):
     DEFAULT_NAME = C_(
         "layer default names",
         # TRANSLATORS: Short default name for non-renderable fallback layers
-        u"Data",
+        "Data",
     )
 
     TYPE_DESCRIPTION = C_(
         "layer type descriptions",
-        u"Unknown Data",
+        "Unknown Data",
     )
 
     #: Any suffix is allowed, favour ".dat".
@@ -1268,7 +1281,7 @@ class FallbackDataLayer (FileBackedLayer):
 
     #: Use a silly little icon so that the layer can be positioned
     FALLBACK_CONTENT = (
-        '''<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+        """<?xml version="1.0" encoding="UTF-8" standalone="no"?>
         <svg width="64" height="64" version="1.1"
                 xmlns="http://www.w3.org/2000/svg">
         <rect width="62" height="62" x="1.5" y="1.5"
@@ -1281,13 +1294,14 @@ class FallbackDataLayer (FileBackedLayer):
             <text x="32.5" y="49.5"
                 style="{textstyle};fill:{text};stroke:{textstroke}"
                 >?</text>
-        </svg>''').format(
+        </svg>"""
+    ).format(
         rectstyle="stroke-width:1",
         shadow="#000",
         base="#eee",
         basestroke="#fff",
         textstyle="text-align:center;text-anchor:middle;"
-                  "font-size:48px;font-weight:bold;font-family:sans",
+        "font-size:48px;font-weight:bold;font-family:sans",
         text="#9c0",
         textshadow="#360",
         textstroke="#ad1",
@@ -1296,7 +1310,8 @@ class FallbackDataLayer (FileBackedLayer):
 
 ## User-paintable layer classes
 
-class SimplePaintingLayer (SurfaceBackedLayer):
+
+class SimplePaintingLayer(SurfaceBackedLayer):
     """A layer you can paint on, but not much else."""
 
     ## Class constants
@@ -1306,12 +1321,12 @@ class SimplePaintingLayer (SurfaceBackedLayer):
     DEFAULT_NAME = C_(
         "layer default names",
         # TRANSLATORS: Default name for new normal, paintable layers
-        u"Layer",
+        "Layer",
     )
 
     TYPE_DESCRIPTION = C_(
         "layer type descriptions",
-        u"Painting Layer",
+        "Painting Layer",
     )
 
     ## Flood fill
@@ -1340,7 +1355,7 @@ class SimplePaintingLayer (SurfaceBackedLayer):
         """
         if dst_layer is None:
             dst_layer = self
-        dst_layer.autosave_dirty = True   # XXX hmm, not working?
+        dst_layer.autosave_dirty = True  # XXX hmm, not working?
         return self._surface.flood_fill(fill_args, dst=dst_layer._surface)
 
     ## Simple painting
@@ -1354,9 +1369,19 @@ class SimplePaintingLayer (SurfaceBackedLayer):
             and not self.branch_locked
         )
 
-
-    def stroke_to(self, brush, x, y, pressure, xtilt, ytilt, dtime,
-                  viewzoom, viewrotation, barrel_rotation):
+    def stroke_to(
+        self,
+        brush,
+        x,
+        y,
+        pressure,
+        xtilt,
+        ytilt,
+        dtime,
+        viewzoom,
+        viewrotation,
+        barrel_rotation,
+    ):
         """Render a part of a stroke to the canvas surface
 
         :param brush: The brush to use for rendering dabs
@@ -1385,9 +1410,16 @@ class SimplePaintingLayer (SurfaceBackedLayer):
         """
         self._surface.begin_atomic()
         split = brush.stroke_to(
-            self._surface.backend, x, y,
-            pressure, xtilt, ytilt, dtime, viewzoom,
-            viewrotation, barrel_rotation
+            self._surface.backend,
+            x,
+            y,
+            pressure,
+            xtilt,
+            ytilt,
+            dtime,
+            viewzoom,
+            viewrotation,
+            barrel_rotation,
         )
         self._surface.end_atomic()
         self.autosave_dirty = True
@@ -1411,7 +1443,7 @@ class SimplePaintingLayer (SurfaceBackedLayer):
         return "mypaint-layer-painting-symbolic"
 
 
-class StrokemappedPaintingLayer (SimplePaintingLayer):
+class StrokemappedPaintingLayer(SimplePaintingLayer):
     """Painting layer with a record of user brushstrokes.
 
     This class definition adds a strokemap to the simple implementation.
@@ -1459,43 +1491,41 @@ class StrokemappedPaintingLayer (SimplePaintingLayer):
         super(StrokemappedPaintingLayer, self).load_from_surface(surface)
         self.strokes = []
 
-    def load_from_openraster(self, orazip, elem, cache_dir, progress,
-                             x=0, y=0, invert_strokemaps=False, **kwargs):
+    def load_from_openraster(
+        self,
+        orazip,
+        elem,
+        cache_dir,
+        progress,
+        x=0,
+        y=0,
+        invert_strokemaps=False,
+        **kwargs
+    ):
         """Loads layer flags, PNG data, and strokemap from a .ora zipfile"""
         # Load layer tile data and flags
         super(StrokemappedPaintingLayer, self).load_from_openraster(
-            orazip,
-            elem,
-            cache_dir,
-            progress,
-            x=x, y=y,
-            **kwargs
+            orazip, elem, cache_dir, progress, x=x, y=y, **kwargs
         )
-        self._load_strokemap_from_ora(
-            elem, x, y, invert_strokemaps, orazip=orazip
-        )
+        self._load_strokemap_from_ora(elem, x, y, invert_strokemaps, orazip=orazip)
 
-    def load_from_openraster_dir(self, oradir, elem, cache_dir, progress,
-                                 x=0, y=0, **kwargs):
+    def load_from_openraster_dir(
+        self, oradir, elem, cache_dir, progress, x=0, y=0, **kwargs
+    ):
         """Loads layer flags and data from an OpenRaster-style dir"""
         # Load layer tile data and flags
         super(StrokemappedPaintingLayer, self).load_from_openraster_dir(
-            oradir,
-            elem,
-            cache_dir,
-            progress,
-            x=x, y=y,
-            **kwargs
+            oradir, elem, cache_dir, progress, x=x, y=y, **kwargs
         )
         self._load_strokemap_from_ora(elem, x, y, False, oradir=oradir)
 
     def _load_strokemap_from_ora(
-            self, elem, x, y, invert=False, orazip=None, oradir=None
+        self, elem, x, y, invert=False, orazip=None, oradir=None
     ):
         """Load the strokemap from a layer elem & an ora{zip|dir}."""
         attrs = elem.attrib
-        x += int(attrs.get('x', 0))
-        y += int(attrs.get('y', 0))
+        x += int(attrs.get("x", 0))
+        y += int(attrs.get("y", 0))
         supported_strokemap_attrs = [
             self._ORA_STROKEMAP_ATTR,
             self._ORA_STROKEMAP_LEGACY_ATTR,
@@ -1604,14 +1634,14 @@ class StrokemappedPaintingLayer (SimplePaintingLayer):
         while True:
             t = f.read(1)
             if t == b"b":
-                length, = struct.unpack('>I', f.read(4))
+                (length,) = struct.unpack(">I", f.read(4))
                 tmp = f.read(length)
                 b_string = zlib.decompress(tmp)
                 if invert:
                     b_string = BrushInfo.brush_string_inverted_eotf(b_string)
                 brushes.append(b_string)
             elif t == b"s":
-                brush_id, length = struct.unpack('>II', f.read(2 * 4))
+                brush_id, length = struct.unpack(">II", f.read(2 * 4))
                 stroke = lib.strokemap.StrokeShape()
                 tmp = f.read(length)
                 stroke.init_from_string(tmp, x, y)
@@ -1642,14 +1672,14 @@ class StrokemappedPaintingLayer (SimplePaintingLayer):
 
     ## Saving
 
-    def save_to_openraster(self, orazip, tmpdir, path,
-                           canvas_bbox, frame_bbox, **kwargs):
+    def save_to_openraster(
+        self, orazip, tmpdir, path, canvas_bbox, frame_bbox, **kwargs
+    ):
         """Save the strokemap too, in addition to the base implementation"""
         # Save the layer normally
 
         elem = super(StrokemappedPaintingLayer, self).save_to_openraster(
-            orazip, tmpdir, path,
-            canvas_bbox, frame_bbox, **kwargs
+            orazip, tmpdir, path, canvas_bbox, frame_bbox, **kwargs
         )
         # Store stroke shape data too
         x, y, w, h = self.get_bbox()
@@ -1673,7 +1703,7 @@ class StrokemappedPaintingLayer (SimplePaintingLayer):
 
     def queue_autosave(self, oradir, taskproc, manifest, bbox, **kwargs):
         """Queues the layer for auto-saving"""
-        dat_basename = u"%s-strokemap.dat" % (self.autosave_uuid,)
+        dat_basename = "%s-strokemap.dat" % (self.autosave_uuid,)
         dat_relpath = os.path.join("data", dat_basename)
         dat_path = os.path.join(oradir, dat_relpath)
         # Have to do this before the supercall because that will clear
@@ -1683,13 +1713,13 @@ class StrokemappedPaintingLayer (SimplePaintingLayer):
             task = _StrokemapFileUpdateTask(
                 self.strokes,
                 dat_path,
-                -x, -y,
+                -x,
+                -y,
             )
             taskproc.add_work(task)
         # Supercall to queue saving PNG and obtain basic XML
         elem = super(StrokemappedPaintingLayer, self).queue_autosave(
-            oradir, taskproc, manifest, bbox,
-            **kwargs
+            oradir, taskproc, manifest, bbox, **kwargs
         )
         # Add strokemap XML attrs and return.
         # See comment above for compatibility strategy.
@@ -1698,7 +1728,7 @@ class StrokemappedPaintingLayer (SimplePaintingLayer):
         return elem
 
 
-class PaintingLayer (StrokemappedPaintingLayer, core.ExternallyEditable):
+class PaintingLayer(StrokemappedPaintingLayer, core.ExternallyEditable):
     """The normal paintable bitmap layer that the user sees."""
 
     def __init__(self, **kwargs):
@@ -1712,7 +1742,7 @@ class PaintingLayer (StrokemappedPaintingLayer, core.ExternallyEditable):
             return
         tmp_filename = os.path.join(
             self.external_edits_dir,
-            u"%s%s" % (unicode(uuid.uuid4()), u".png"),
+            "%s%s" % (unicode(uuid.uuid4()), ".png"),
         )
         # Overwrite, saving only the data area.
         # Record the data area for later.
@@ -1747,11 +1777,12 @@ class PaintingLayer (StrokemappedPaintingLayer, core.ExternallyEditable):
 
 ## Stroke-mapped layer implementation details and helpers
 
+
 def _write_strokemap(f, strokes, dx, dy):
     brush2id = {}
     for stroke in strokes:
         _write_strokemap_stroke(f, stroke, brush2id, dx, dy)
-    f.write(b'}')
+    f.write(b"}")
 
 
 def _write_strokemap_stroke(f, stroke, brush2id, dx, dy):
@@ -1763,27 +1794,27 @@ def _write_strokemap_stroke(f, stroke, brush2id, dx, dy):
         if isinstance(b, unicode):
             b = b.encode("utf-8")
         b = zlib.compress(b)
-        f.write(b'b')
-        f.write(struct.pack('>I', len(b)))
+        f.write(b"b")
+        f.write(struct.pack(">I", len(b)))
         f.write(b)
 
     # save stroke
     s = stroke.save_to_string(dx, dy)
-    f.write(b's')
-    f.write(struct.pack('>II', brush2id[stroke.brush_string], len(s)))
+    f.write(b"s")
+    f.write(struct.pack(">II", brush2id[stroke.brush_string], len(s)))
     f.write(s)
 
 
-class _StrokemapFileUpdateTask (object):
+class _StrokemapFileUpdateTask(object):
     """Updates a strokemap file in chunked calls (for autosave)"""
 
     def __init__(self, strokes, filename, dx, dy):
         super(_StrokemapFileUpdateTask, self).__init__()
         tmp = tempfile.NamedTemporaryFile(
-            mode = "wb",
-            prefix = os.path.basename(filename),
-            dir = os.path.dirname(filename),
-            delete = False,
+            mode="wb",
+            prefix=os.path.basename(filename),
+            dir=os.path.dirname(filename),
+            delete=False,
         )
         self._tmp = tmp
         self._final_name = filename
@@ -1803,19 +1834,20 @@ class _StrokemapFileUpdateTask (object):
                 self._tmp,
                 stroke,
                 self._brush2id,
-                self._dx, self._dy,
+                self._dx,
+                self._dy,
             )
             self._strokes_i += 1
             return True
         else:
-            self._tmp.write(b'}')
+            self._tmp.write(b"}")
             self._tmp.close()
             lib.fileutils.replace(self._tmp.name, self._final_name)
             logger.debug("autosave: updated %r", self._final_name)
             return False
 
 
-class StrokemappedPaintingLayerSnapshot (SurfaceBackedLayerSnapshot):
+class StrokemappedPaintingLayerSnapshot(SurfaceBackedLayerSnapshot):
     """Snapshot subclass for painting layers with strokemaps"""
 
     def __init__(self, layer):
@@ -1828,7 +1860,7 @@ class StrokemappedPaintingLayerSnapshot (SurfaceBackedLayerSnapshot):
         layer.autosave_dirty = True
 
 
-class StrokemappedPaintingLayerMove (SurfaceBackedLayerMove):
+class StrokemappedPaintingLayerMove(SurfaceBackedLayerMove):
     """Move object wrapper for painting layers with strokemaps"""
 
     def __init__(self, layer, x, y):
@@ -1866,9 +1898,10 @@ class StrokemappedPaintingLayerMove (SurfaceBackedLayerMove):
 def _test():
     """Run doctest strings"""
     import doctest
+
     doctest.testmod(optionflags=doctest.ELLIPSIS)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     logging.basicConfig(level=logging.DEBUG)
     _test()

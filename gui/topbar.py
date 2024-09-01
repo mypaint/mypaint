@@ -10,20 +10,18 @@
 
 ## Imports
 
-from __future__ import division, print_function
 import logging
-
-from lib.gibindings import GObject
-from lib.gibindings import Gtk
-from lib.gibindings import Gdk
 from gettext import gettext as _
+
+from lib.gibindings import Gdk, GObject, Gtk
 
 logger = logging.getLogger(__name__)
 
 
 ## Class definitions
 
-class TopBar (Gtk.Grid):
+
+class TopBar(Gtk.Grid):
     """Combined menubar and toolbars which compacts when fullscreened.
 
     This is a container widget for two horizontal toolbars and a menubar
@@ -40,7 +38,7 @@ class TopBar (Gtk.Grid):
 
     ## Class constants
 
-    __gtype_name__ = 'MyPaintTopBar'
+    __gtype_name__ = "MyPaintTopBar"
     ICON_NAMES = {
         "FileMenu": "mypaint-file-symbolic",
         "EditMenu": "mypaint-edit-symbolic",
@@ -58,24 +56,24 @@ class TopBar (Gtk.Grid):
     toolbar1 = GObject.Property(
         type=Gtk.Toolbar,
         flags=GObject.ParamFlags.READABLE | GObject.ParamFlags.WRITABLE,
-        nick='Toolbar-1 widget',
-        blurb="First GtkToolbar to show. This must be set at realize time."
+        nick="Toolbar-1 widget",
+        blurb="First GtkToolbar to show. This must be set at realize time.",
     )
 
     #: The toolbar to present in position 2.
     toolbar1 = GObject.Property(
         type=Gtk.Toolbar,
         flags=GObject.ParamFlags.READABLE | GObject.ParamFlags.WRITABLE,
-        nick='Toolbar-2 widget',
-        blurb="Second GtkToolbar to show. This must be set at realize time."
+        nick="Toolbar-2 widget",
+        blurb="Second GtkToolbar to show. This must be set at realize time.",
     )
 
     #: The menubar to present.
     menubar = GObject.Property(
         type=Gtk.MenuBar,
         flags=GObject.ParamFlags.READABLE | GObject.ParamFlags.WRITABLE,
-        nick='Menu Bar widget',
-        blurb="The GtkMenuBar to show. This must be set at realize time."
+        nick="Menu Bar widget",
+        blurb="The GtkMenuBar to show. This must be set at realize time.",
     )
 
     ## Construction & initialization
@@ -102,12 +100,14 @@ class TopBar (Gtk.Grid):
         self._fs_menubutton.set_hexpand(False)
         # Specialized styles
         prov = Gtk.CssProvider()
-        prov.load_from_data(b"""
+        prov.load_from_data(
+            b"""
                 .topbar {
                     padding: 0px; /* required by toolbars */
                     margin: 0px;  /* required by menubar */
                 }
-            """)
+            """
+        )
         bars = [self.toolbar1, self.toolbar2, self.menubar]
         for b in bars:
             style = b.get_style_context()
@@ -189,7 +189,7 @@ class TopBar (Gtk.Grid):
         toolbar2.show_all()
 
 
-class FakeMenuButton (Gtk.EventBox):
+class FakeMenuButton(Gtk.EventBox):
     """Button-styled widget that launches a dropdown menu when clicked"""
 
     def __init__(self, markup, menu):
@@ -245,9 +245,14 @@ class FakeMenuButton (Gtk.EventBox):
         event handler.
         """
         pos_func = self._get_popup_menu_position
-        self.menu.popup(parent_menu_shell=None, parent_menu_item=None,
-                        func=pos_func, data=None, button=event.button,
-                        activate_time=event.time)
+        self.menu.popup(
+            parent_menu_shell=None,
+            parent_menu_item=None,
+            func=pos_func,
+            data=None,
+            button=event.button,
+            activate_time=event.time,
+        )
         self.togglebutton.set_active(True)
 
     def _togglebutton_toggled_cb(self, togglebutton):
@@ -287,6 +292,7 @@ class FakeMenuButton (Gtk.EventBox):
 
 ## Testing
 
+
 def _test():
     """Run an interactive test"""
     toplevel = Gtk.Window()
@@ -298,15 +304,19 @@ def _test():
     toplevel.set_size_request(500, 300)
 
     # Fullscreen action
-    fs_act = Gtk.ToggleAction.new("Fullscreen", "Fullscreen",
-                                  "Enter fullscreen mode",
-                                  Gtk.STOCK_FULLSCREEN)
+    fs_act = Gtk.ToggleAction.new(
+        "Fullscreen",
+        "Fullscreen",
+        "Enter fullscreen mode",
+        Gtk.STOCK_FULLSCREEN,
+    )
 
     def _fullscreen_cb(action, toplevel):
         if action.get_active():
             toplevel.fullscreen()
         else:
             toplevel.unfullscreen()
+
     fs_act.connect("toggled", _fullscreen_cb, toplevel)
 
     # One normally constructed menubar
@@ -363,6 +373,6 @@ def _test():
     Gtk.main()
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     logging.basicConfig(level=logging.DEBUG)
     _test()

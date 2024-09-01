@@ -12,31 +12,32 @@
 
 ## Imports
 
-from __future__ import division, print_function
-
+import abc
 import logging
 import os
-import xml.etree.ElementTree as ET
 import weakref
+import xml.etree.ElementTree as ET
 from warnings import warn
-import abc
 
-from lib.gettext import C_
-import lib.mypaintlib
-import lib.strokemap
-import lib.helpers as helpers
 import lib.fileutils
-import lib.pixbuf
-from lib.modes import PASS_THROUGH_MODE
-from lib.modes import STANDARD_MODES
-from lib.modes import ORA_MODES_BY_OPNAME
-from lib.modes import MODES_EFFECTIVE_AT_ZERO_ALPHA
-from lib.modes import MODES_DECREASING_BACKDROP_ALPHA
+import lib.helpers as helpers
 import lib.modes
-import lib.xml
+import lib.mypaintlib
+import lib.pixbuf
+import lib.strokemap
 import lib.tiledsurface
-from .rendering import Renderable
+import lib.xml
+from lib.gettext import C_
+from lib.modes import (
+    MODES_DECREASING_BACKDROP_ALPHA,
+    MODES_EFFECTIVE_AT_ZERO_ALPHA,
+    ORA_MODES_BY_OPNAME,
+    PASS_THROUGH_MODE,
+    STANDARD_MODES,
+)
 from lib.pycompat import unicode
+
+from .rendering import Renderable
 
 logger = logging.getLogger(__name__)
 
@@ -44,7 +45,7 @@ logger = logging.getLogger(__name__)
 ## Base class defs
 
 
-class LayerBase (Renderable):
+class LayerBase(Renderable):
     """Base class defining the layer API
 
     Layers support the Renderable interface, and are rendered with the
@@ -63,7 +64,7 @@ class LayerBase (Renderable):
     #: Forms the default name, may be suffixed per lib.naming consts.
     DEFAULT_NAME = C_(
         "layer default names",
-        u"Layer",
+        "Layer",
     )
 
     #: A string for the layer type.
@@ -96,8 +97,9 @@ class LayerBase (Renderable):
         self.initially_selected = False
 
     @classmethod
-    def new_from_openraster(cls, orazip, elem, cache_dir, progress,
-                            root, x=0, y=0, **kwargs):
+    def new_from_openraster(
+        cls, orazip, elem, cache_dir, progress, root, x=0, y=0, **kwargs
+    ):
         """Reads and returns a layer from an OpenRaster zipfile
 
         This implementation just creates a new instance of its class and
@@ -107,18 +109,14 @@ class LayerBase (Renderable):
 
         layer = cls()
         layer.load_from_openraster(
-            orazip,
-            elem,
-            cache_dir,
-            progress,
-            x=x, y=y,
-            **kwargs
+            orazip, elem, cache_dir, progress, x=x, y=y, **kwargs
         )
         return layer
 
     @classmethod
-    def new_from_openraster_dir(cls, oradir, elem, cache_dir, progress,
-                                root, x=0, y=0, **kwargs):
+    def new_from_openraster_dir(
+        cls, oradir, elem, cache_dir, progress, root, x=0, y=0, **kwargs
+    ):
         """Reads and returns a layer from an OpenRaster-like folder
 
         This implementation just creates a new instance of its class and
@@ -128,17 +126,13 @@ class LayerBase (Renderable):
         """
         layer = cls()
         layer.load_from_openraster_dir(
-            oradir,
-            elem,
-            cache_dir,
-            progress,
-            x=x, y=y,
-            **kwargs
+            oradir, elem, cache_dir, progress, x=x, y=y, **kwargs
         )
         return layer
 
-    def load_from_openraster(self, orazip, elem, cache_dir, progress,
-                             x=0, y=0, **kwargs):
+    def load_from_openraster(
+        self, orazip, elem, cache_dir, progress, x=0, y=0, **kwargs
+    ):
         """Loads layer data from an open OpenRaster zipfile
 
         :param orazip: An OpenRaster zipfile, opened for extracting
@@ -159,8 +153,9 @@ class LayerBase (Renderable):
         """
         self._load_common_flags_from_ora_elem(elem)
 
-    def load_from_openraster_dir(self, oradir, elem, cache_dir, progress,
-                                 x=0, y=0, **kwargs):
+    def load_from_openraster_dir(
+        self, oradir, elem, cache_dir, progress, x=0, y=0, **kwargs
+    ):
         """Loads layer data from an OpenRaster-style folder.
 
         Parameters are the same as for load_from_openraster, with the
@@ -173,16 +168,15 @@ class LayerBase (Renderable):
 
     def _load_common_flags_from_ora_elem(self, elem):
         attrs = elem.attrib
-        self.name = unicode(attrs.get('name', ''))
-        compop = str(attrs.get('composite-op', ''))
+        self.name = unicode(attrs.get("name", ""))
+        compop = str(attrs.get("composite-op", ""))
         self.mode = ORA_MODES_BY_OPNAME.get(compop, lib.modes.default_mode())
-        self.opacity = helpers.clamp(float(attrs.get('opacity', '1.0')),
-                                     0.0, 1.0)
-        visible = attrs.get('visibility', 'visible').lower()
-        self.visible = (visible != "hidden")
-        locked = attrs.get("edit-locked", 'false').lower()
+        self.opacity = helpers.clamp(float(attrs.get("opacity", "1.0")), 0.0, 1.0)
+        visible = attrs.get("visibility", "visible").lower()
+        self.visible = visible != "hidden"
+        locked = attrs.get("edit-locked", "false").lower()
         self.locked = lib.xml.xsd2bool(locked)
-        selected = attrs.get("selected", 'false').lower()
+        selected = attrs.get("selected", "false").lower()
         self.initially_selected = lib.xml.xsd2bool(selected)
 
     def __deepcopy__(self, memo):
@@ -293,9 +287,12 @@ class LayerBase (Renderable):
         if opacity == self._opacity:
             return
         if self.mode == PASS_THROUGH_MODE:
-            warn("Cannot change the change the opacity multiplier "
-                 "of a layer group in PASS_THROUGH_MODE",
-                 RuntimeWarning, stacklevel=2)
+            warn(
+                "Cannot change the change the opacity multiplier "
+                "of a layer group in PASS_THROUGH_MODE",
+                RuntimeWarning,
+                stacklevel=2,
+            )
             return
         self._opacity = opacity
         self._properties_changed(["opacity"])
@@ -668,7 +665,7 @@ class LayerBase (Renderable):
         boring names.
         """
         name = self._name
-        if name is None or name.strip() == '':
+        if name is None or name.strip() == "":
             return False
         if name == self.DEFAULT_NAME:
             return False
@@ -786,8 +783,9 @@ class LayerBase (Renderable):
         """
         pass
 
-    def save_to_openraster(self, orazip, tmpdir, path,
-                           canvas_bbox, frame_bbox, **kwargs):
+    def save_to_openraster(
+        self, orazip, tmpdir, path, canvas_bbox, frame_bbox, **kwargs
+    ):
         """Saves the layer's data into an open OpenRaster ZipFile
 
         :param orazip: a `zipfile.ZipFile` open for write
@@ -853,8 +851,7 @@ class LayerBase (Renderable):
 
     ## Painting symmetry axis
 
-    def set_symmetry_state(self, active, center,
-                           symmetry_type, symmetry_lines, angle):
+    def set_symmetry_state(self, active, center, symmetry_type, symmetry_lines, angle):
         """Set the surface's painting symmetry axis and active flag.
 
         :param bool active: Whether painting should be symmetrical.
@@ -956,14 +953,14 @@ class LayerBase (Renderable):
         pass
 
 
-class _StubLayerBase (LayerBase):
+class _StubLayerBase(LayerBase):
     """An instantiable (but broken) LayerBase, for testing."""
 
     def get_render_ops(self, *argv, **kwargs):
         pass
 
 
-class LayerBaseSnapshot (object):
+class LayerBaseSnapshot(object):
     """Base snapshot implementation
 
     Snapshots are stored in commands, and used to implement undo and redo.
@@ -992,7 +989,7 @@ class ExternallyEditable:
     """Interface for layers which can be edited in an external app"""
 
     __metaclass__ = abc.ABCMeta
-    _EDITS_SUBDIR = u"edits"
+    _EDITS_SUBDIR = "edits"
 
     @abc.abstractmethod
     def new_external_edit_tempfile(self):
@@ -1026,6 +1023,7 @@ class ExternallyEditable:
 
 ## Helper functions
 
+
 def combine_redraws(bboxes):
     """Combine multiple rectangles representing redraw areas into one
 
@@ -1056,9 +1054,10 @@ def combine_redraws(bboxes):
 def _test():
     """Run doctest strings"""
     import doctest
+
     doctest.testmod(optionflags=doctest.ELLIPSIS)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     logging.basicConfig(level=logging.DEBUG)
     _test()

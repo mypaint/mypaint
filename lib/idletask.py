@@ -10,14 +10,12 @@
 
 """Non-threaded, prioritizable background processing."""
 
-from __future__ import division, print_function
-
 import collections
 
 from lib.gibindings import GLib
 
 
-class Processor (object):
+class Processor(object):
     """Queue of low priority tasks for background processing
 
     Queued tasks are automatically processed in the main thread.

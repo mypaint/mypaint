@@ -2,32 +2,42 @@
 
 # Imports:
 
-from __future__ import division, print_function
-from os.path import join
+import math
 import sys
 import time
-import math
-import cairo
-from collections import namedtuple
 import unittest
+from collections import namedtuple
+from os.path import join
 
-from . import paths
+import cairo
+
 from lib import mypaintlib
 from lib.document import Document
-from lib.pycompat import xrange, PY3
+from lib.pycompat import PY3, xrange
 
+from . import paths
 
 TEST_BIGIMAGE = "bigimage.ora"
 
 
 # Helpers:
 
-def _scroll(tdw, model, width=1920, height=1080,
-            zoom=1.0, mirrored=False, rotation=0.0,
-            turns=8, turn_steps=8, turn_radius=0.3,
-            save_pngs=False,
-            set_modes=None,
-            use_background=True):
+
+def _scroll(
+    tdw,
+    model,
+    width=1920,
+    height=1080,
+    zoom=1.0,
+    mirrored=False,
+    rotation=0.0,
+    turns=8,
+    turn_steps=8,
+    turn_radius=0.3,
+    save_pngs=False,
+    set_modes=None,
+    use_background=True,
+):
     """Test scroll performance
 
     Scroll around in a circle centred on the virtual display, testing
@@ -97,7 +107,8 @@ def _scroll(tdw, model, width=1920, height=1080,
 
 # Test cases:
 
-class Scroll (unittest.TestCase):
+
+class Scroll(unittest.TestCase):
     """Not-quite headless raw panning/scrolling performance tests."""
 
     def test_5x_1rev(self):
@@ -200,7 +211,8 @@ class Scroll (unittest.TestCase):
         self._run_test(
             _scroll,
             zoom=1.0,
-            turn_steps=16, turns=3,  # 3 lazy turns
+            turn_steps=16,
+            turns=3,  # 3 lazy turns
             turn_radius=0.1,
         )
 
@@ -208,7 +220,8 @@ class Scroll (unittest.TestCase):
         self._run_test(
             _scroll,
             zoom=1.0,
-            turn_steps=16, turns=3,  # 3 lazy turns
+            turn_steps=16,
+            turns=3,  # 3 lazy turns
             turn_radius=0.1,
             set_modes={
                 (10,): mypaintlib.CombineDestinationIn,
@@ -220,7 +233,8 @@ class Scroll (unittest.TestCase):
         self._run_test(
             _scroll,
             zoom=1.0,
-            turn_steps=16, turns=3,  # 3 lazy turns
+            turn_steps=16,
+            turns=3,  # 3 lazy turns
             turn_radius=0.1,
             use_background=False,
         )
@@ -229,7 +243,8 @@ class Scroll (unittest.TestCase):
         self._run_test(
             _scroll,
             zoom=1.0,
-            turn_steps=16, turns=3,  # 3 lazy turns
+            turn_steps=16,
+            turns=3,  # 3 lazy turns
             turn_radius=1,  # circles show some empty space
         )
 
@@ -237,7 +252,8 @@ class Scroll (unittest.TestCase):
         self._run_test(
             _scroll,
             zoom=1.0,
-            turn_steps=16, turns=3,  # 3 lazy turns
+            turn_steps=16,
+            turns=3,  # 3 lazy turns
             turn_radius=1,  # circles show some empty space
             set_modes={
                 (10,): mypaintlib.CombineDestinationIn,
@@ -249,7 +265,8 @@ class Scroll (unittest.TestCase):
         self._run_test(
             _scroll,
             zoom=1.0,
-            turn_steps=16, turns=3,  # 3 lazy turns
+            turn_steps=16,
+            turns=3,  # 3 lazy turns
             turn_radius=1,  # circles show some empty space
             use_background=False,
         )
@@ -258,7 +275,8 @@ class Scroll (unittest.TestCase):
         self._run_test(
             _scroll,
             zoom=1.0,
-            turn_steps=16, turns=3,  # 3 lazy turns
+            turn_steps=16,
+            turns=3,  # 3 lazy turns
             turn_radius=2,  # now mostly empty space outside the image
         )
 
@@ -266,7 +284,8 @@ class Scroll (unittest.TestCase):
         self._run_test(
             _scroll,
             zoom=1.0,
-            turn_steps=16, turns=3,  # 3 lazy turns
+            turn_steps=16,
+            turns=3,  # 3 lazy turns
             turn_radius=2,  # now mostly empty space outside the image
             set_modes={
                 (10,): mypaintlib.CombineDestinationIn,
@@ -278,7 +297,8 @@ class Scroll (unittest.TestCase):
         self._run_test(
             _scroll,
             zoom=1.0,
-            turn_steps=16, turns=3,  # 3 lazy turns
+            turn_steps=16,
+            turns=3,  # 3 lazy turns
             turn_radius=2,  # now mostly empty space outside the image
             use_background=False,
         )
@@ -292,6 +312,7 @@ class Scroll (unittest.TestCase):
         cls._model = None
 
         from lib.gibindings import Gdk
+
         if Gdk.Display.get_default() is None:
             return
 
@@ -300,12 +321,11 @@ class Scroll (unittest.TestCase):
         except Exception:
             return
 
-        class TiledDrawWidget (gui.tileddrawwidget.TiledDrawWidget):
+        class TiledDrawWidget(gui.tileddrawwidget.TiledDrawWidget):
             """Monkeypatched TDW for testing purposes"""
 
             def __init__(self, *args, **kwargs):
-                gui.tileddrawwidget.TiledDrawWidget\
-                    .__init__(self, *args, **kwargs)
+                gui.tileddrawwidget.TiledDrawWidget.__init__(self, *args, **kwargs)
                 self.renderer.get_allocation = self._get_allocation
 
             def set_allocation(self, alloc):
@@ -339,5 +359,5 @@ class Scroll (unittest.TestCase):
         print(msg, end=", ", file=sys.stderr)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     unittest.main()

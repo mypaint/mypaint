@@ -12,17 +12,12 @@
 
 ## Imports
 
-from __future__ import division, print_function
-
-from lib.gibindings import Gtk
-from lib.gibindings import GLib
-from lib.gibindings import GdkPixbuf
-
 from lib.color import RGBColor
-from .colors import ColorAdjuster
+from lib.gibindings import GdkPixbuf, GLib, Gtk
 from lib.observable import event
-from . import widgets
 
+from . import widgets
+from .colors import ColorAdjuster
 
 ## Module constants
 
@@ -32,7 +27,7 @@ HISTORY_PREVIEW_SIZE = 32
 ## Class definitions
 
 
-class BrushHistoryView (Gtk.HBox):
+class BrushHistoryView(Gtk.HBox):
     """A set of clickable images showing the brush usage history"""
 
     def __init__(self, app):
@@ -78,7 +73,7 @@ class BrushHistoryView (Gtk.HBox):
         """Event: a color history button was clicked"""
 
 
-class ManagedBrushPreview (Gtk.Image):
+class ManagedBrushPreview(Gtk.Image):
     """Updateable widget displaying a brushmanager.ManagedBrush's preview"""
 
     ICON_SIZE = HISTORY_PREVIEW_SIZE
@@ -117,9 +112,12 @@ class ManagedBrushPreview (Gtk.Image):
         if self.pixbuf is None:
             pixbuf = GdkPixbuf.Pixbuf.new(
                 GdkPixbuf.Colorspace.RGB,
-                False, 8, size, size,
+                False,
+                8,
+                size,
+                size,
             )
-            pixbuf.fill(0xffffffff)
+            pixbuf.fill(0xFFFFFFFF)
             return pixbuf
         else:
             interp = GdkPixbuf.InterpType.BILINEAR
@@ -142,7 +140,7 @@ class ManagedBrushPreview (Gtk.Image):
         self.set_from_pixbuf(scaled_pixbuf)
 
 
-class ColorHistoryView (Gtk.HBox, ColorAdjuster):
+class ColorHistoryView(Gtk.HBox, ColorAdjuster):
     """A set of clickable ColorPreviews showing the usage history"""
 
     def __init__(self, app):
@@ -185,13 +183,14 @@ class ColorHistoryView (Gtk.HBox, ColorAdjuster):
         """Event: a color history button was clicked"""
 
 
-class ColorPreview (Gtk.AspectFrame):
+class ColorPreview(Gtk.AspectFrame):
     """Updatable widget displaying a single color"""
 
     def __init__(self, color=None):
         """Initialize with a color (default is black"""
-        Gtk.AspectFrame.__init__(self, xalign=0.5, yalign=0.5,
-                                 ratio=1.0, obey_child=False)
+        Gtk.AspectFrame.__init__(
+            self, xalign=0.5, yalign=0.5, ratio=1.0, obey_child=False
+        )
         self.set_shadow_type(Gtk.ShadowType.IN)
         self.drawingarea = Gtk.DrawingArea()
         self.add(self.drawingarea)
@@ -215,18 +214,20 @@ class ColorPreview (Gtk.AspectFrame):
         cr.paint()
 
 
-class HistoryPanel (Gtk.VBox):
+class HistoryPanel(Gtk.VBox):
 
     __gtype_name__ = "MyPaintHistoryPanel"
 
     tool_widget_icon_name = "mypaint-history-symbolic"
     tool_widget_title = "Recent Brushes & Colors"
-    tool_widget_description = ("The most recently used brush\n"
-                               "presets and painting colors")
+    tool_widget_description = (
+        "The most recently used brush\n" "presets and painting colors"
+    )
 
     def __init__(self):
         Gtk.VBox.__init__(self)
         from gui.application import get_app
+
         app = get_app()
         color_hist_view = ColorHistoryView(app)
         self.pack_start(color_hist_view, True, False, 0)

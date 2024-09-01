@@ -10,9 +10,8 @@
 
 """Exception classes"""
 
-from __future__ import division, print_function
 
-
-class LoadingFailed (Exception):
+class LoadingFailed(Exception):
     """Raised when loading to indicate that a layer cannot be loaded"""
+
     pass

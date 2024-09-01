@@ -10,15 +10,13 @@
 """Miscellaneous helpers & drawing utility functions for Cairo.
 """
 
-from __future__ import division, print_function
 import math
 
 from lib.pycompat import xrange
 
 
 def clamp(v, bottom, top):
-    """Returns `v`, clamped to within a particular range.
-    """
+    """Returns `v`, clamped to within a particular range."""
     if v > top:
         return top
     if v < bottom:
@@ -36,19 +34,18 @@ def add_distance_fade_stops(gr, rgb, nstops=3, gamma=2, alpha=1.0):
     """
     red, green, blue = rgb
     nstops = int(nstops) + 2
-    for s in xrange(nstops+1):
+    for s in xrange(nstops + 1):
         a = alpha * (((nstops - s) / nstops) ** gamma)
         stop = s / nstops
         gr.add_color_stop_rgba(stop, red, green, blue, a)
 
 
 def draw_marker_circle(cr, x, y, size=2):
-    """Draws an outlined circular marker.
-    """
+    """Draws an outlined circular marker."""
     cr.save()
     cr.set_source_rgb(0, 0, 0)
-    cr.set_line_width(size+2)
-    cr.arc(x, y, (2*size)+0.5, 0, 2*math.pi)
+    cr.set_line_width(size + 2)
+    cr.arc(x, y, (2 * size) + 0.5, 0, 2 * math.pi)
     cr.stroke_preserve()
     cr.set_source_rgb(1, 1, 1)
     cr.set_line_width(size)

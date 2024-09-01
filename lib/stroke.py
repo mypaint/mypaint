@@ -7,14 +7,12 @@
 # the Free Software Foundation; either version 2 of the License, or
 # (at your option) any later version.
 
-from __future__ import division, print_function
-
 import numpy as np
 
 from . import brush
 
 
-class Stroke (object):
+class Stroke(object):
     """Replayable record of a stroke's data
 
     Stroke recording objects store all information required to replay a stroke
@@ -42,7 +40,7 @@ class Stroke (object):
         self.brush_name = bi.get_string_property("parent_brush_name")
 
         states = brush.get_states_as_array()
-        assert states.dtype == 'float32'
+        assert states.dtype == "float32"
         self.brush_state = states.tostring()
 
         self.brush = brush
@@ -50,11 +48,32 @@ class Stroke (object):
 
         self.tmp_event_list = []
 
-    def record_event(self, dtime, x, y, pressure, xtilt, ytilt,
-                     viewzoom, viewrotation, barrel_rotation):
+    def record_event(
+        self,
+        dtime,
+        x,
+        y,
+        pressure,
+        xtilt,
+        ytilt,
+        viewzoom,
+        viewrotation,
+        barrel_rotation,
+    ):
         assert not self.finished
-        self.tmp_event_list.append((dtime, x, y, pressure, xtilt, ytilt,
-                                    viewzoom, viewrotation, barrel_rotation))
+        self.tmp_event_list.append(
+            (
+                dtime,
+                x,
+                y,
+                pressure,
+                xtilt,
+                ytilt,
+                viewzoom,
+                viewrotation,
+                barrel_rotation,
+            )
+        )
 
     def stop_recording(self):
         if self.finished:
@@ -62,9 +81,9 @@ class Stroke (object):
         # OPTIMIZE
         # - for space: just gzip? use integer datatypes?
         # - for time: maybe already use array storage while recording?
-        data = np.array(self.tmp_event_list, dtype='float64')
+        data = np.array(self.tmp_event_list, dtype="float64")
         data = data.tostring()
-        version = b'2'
+        version = b"2"
         self.stroke_data = version + data
 
         self.total_painting_time = self.brush.get_total_stroke_painting_time()
@@ -82,19 +101,38 @@ class Stroke (object):
         # OPTIMIZE: check if parsing of settings is a performance bottleneck
         b = brush.Brush(brush.BrushInfo(self.brush_settings))
 
-        states = np.fromstring(self.brush_state, dtype='float32')
+        states = np.fromstring(self.brush_state, dtype="float32")
         b.set_states_from_array(states)
 
         version, data = self.stroke_data[0:1], self.stroke_data[1:]
-        assert version == b'2'
-        data = np.fromstring(data, dtype='float64')
+        assert version == b"2"
+        data = np.fromstring(data, dtype="float64")
         data.shape = (len(data) // 9, 9)
 
         surface.begin_atomic()
-        for (dtime, x, y, pressure, xtilt, ytilt, viewzoom,
-             viewrotation, barrel_rotation) in data:
-            b.stroke_to(surface.backend, x, y, pressure, xtilt, ytilt, dtime,
-                        viewzoom, viewrotation, barrel_rotation)
+        for (
+            dtime,
+            x,
+            y,
+            pressure,
+            xtilt,
+            ytilt,
+            viewzoom,
+            viewrotation,
+            barrel_rotation,
+        ) in data:
+            b.stroke_to(
+                surface.backend,
+                x,
+                y,
+                pressure,
+                xtilt,
+                ytilt,
+                dtime,
+                viewzoom,
+                viewrotation,
+                barrel_rotation,
+            )
         surface.end_atomic()
 
     def copy_using_different_brush(self, brushinfo):

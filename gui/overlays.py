@@ -11,22 +11,19 @@
 
 ## Imports
 
-from __future__ import division, print_function
-from math import pi
 from gettext import gettext as _
+from math import pi
 
-from lib.gibindings import Pango
-from lib.gibindings import PangoCairo
-from lib.gibindings import GLib
 import cairo
 
-from lib.helpers import clamp
 import gui.style
-
+from lib.gibindings import GLib, Pango, PangoCairo
+from lib.helpers import clamp
 
 ## Base classes and utils
 
-class Overlay (object):
+
+class Overlay(object):
     """Base class/interface for objects which paint things over a TDW."""
 
     def paint(self, cr):
@@ -39,8 +36,9 @@ class Overlay (object):
         pass
 
 
-class FadingOverlay (Overlay):
-    """Base class for temporary overlays which fade to alpha over a short time
+class FadingOverlay(Overlay):
+    """
+    Base class for temporary overlays which fade to alpha over a short time
     """
 
     # Overridable animation controls
@@ -88,26 +86,22 @@ class FadingOverlay (Overlay):
             return True
 
     def __restart_anim_if_needed(self):
-        """Restart if not currently running, without changing the alpha.
-        """
+        """Restart if not currently running, without changing the alpha."""
         if self.__anim_srcid is None:
             delay = int(1000 // self.fade_fps)
             self.__anim_srcid = GLib.timeout_add(delay, self.anim_cb)
 
     def stop_anim(self):
-        """Stops the animation after the next frame is drawn.
-        """
+        """Stops the animation after the next frame is drawn."""
         self.alpha = 0.0
 
     def start_anim(self):
-        """Restarts the animation, setting alpha to 1.
-        """
+        """Restarts the animation, setting alpha to 1."""
         self.alpha = 1.0
         self.__restart_anim_if_needed()
 
     def paint_frame(self, cr):
-        """Paint a single frame.
-        """
+        """Paint a single frame."""
         raise NotImplementedError
 
     def overlay_changed(self):
@@ -128,20 +122,20 @@ def rounded_box(cr, x, y, w, h, r):
     """
     assert r <= min(w, h) / 2
     cr.new_sub_path()
-    cr.arc(x+r, y+r, r, pi, pi*1.5)
-    cr.line_to(x+w-r, y)
-    cr.arc(x+w-r, y+r, r, pi*1.5, pi*2)
-    cr.line_to(x+w, y+h-r)
-    cr.arc(x+w-r, y+h-r, r, 0, pi*0.5)
-    cr.line_to(x+r, y+h)
-    cr.arc(x+r, y+h-r, r, pi*0.5, pi)
+    cr.arc(x + r, y + r, r, pi, pi * 1.5)
+    cr.line_to(x + w - r, y)
+    cr.arc(x + w - r, y + r, r, pi * 1.5, pi * 2)
+    cr.line_to(x + w, y + h - r)
+    cr.arc(x + w - r, y + h - r, r, 0, pi * 0.5)
+    cr.line_to(x + r, y + h)
+    cr.arc(x + r, y + h - r, r, pi * 0.5, pi)
     cr.close_path()
 
 
 ## Minor builtin overlays
 
 
-class ScaleOverlay (FadingOverlay):
+class ScaleOverlay(FadingOverlay):
     """Overlays its TDW's current zoom, fading to transparent.
 
     The animation is started by the normal full canvas repaint which happens
@@ -158,7 +152,7 @@ class ScaleOverlay (FadingOverlay):
 
     def paint_frame(self, cr):
         self.shown_scale = self.tdw.scale
-        text = _("Zoom: %.01f%%") % (100*self.shown_scale)
+        text = _("Zoom: %.01f%%") % (100 * self.shown_scale)
         layout = self.tdw.create_pango_layout(text)
 
         # Set a bold font
@@ -178,7 +172,7 @@ class ScaleOverlay (FadingOverlay):
         vm = self.hmargin
         w = alloc.width
         p = self.padding
-        area = bx, by, bw, bh = w-lw-hm-p-p, vm, lw+p+p, lh+p+p
+        area = bx, by, bw, bh = w - lw - hm - p - p, vm, lw + p + p, lh + p + p
         rounded_box(cr, bx, by, bw, bh, p)
         rgba = list(gui.style.TRANSIENT_INFO_BG_RGBA)
         rgba[3] *= self.alpha
@@ -186,7 +180,7 @@ class ScaleOverlay (FadingOverlay):
         cr.fill()
 
         # Text
-        cr.translate(w-lw-hm-p, vm+p)
+        cr.translate(w - lw - hm - p, vm + p)
         rgba = list(gui.style.TRANSIENT_INFO_RGBA)
         rgba[3] *= self.alpha
         cr.set_source_rgba(*rgba)
@@ -196,7 +190,7 @@ class ScaleOverlay (FadingOverlay):
         return area
 
 
-class LastPaintPosOverlay (FadingOverlay):
+class LastPaintPosOverlay(FadingOverlay):
     """Displays the last painting position after a stroke has finished.
 
     Not especially useful, but serves as an example of how to drive an overlay
@@ -246,7 +240,12 @@ class LastPaintPosOverlay (FadingOverlay):
     def _calc_area(self, x, y):
         r = self.radius
         lw = max(self.inner_line_width, self.outer_line_width)
-        return (int(x-r-lw), int(y-r-lw), int(2*(r+lw)), int(2*(r+lw)))
+        return (
+            int(x - r - lw),
+            int(y - r - lw),
+            int(2 * (r + lw)),
+            int(2 * (r + lw)),
+        )
 
     def paint_frame(self, cr):
         if self.in_input_stroke:
@@ -263,10 +262,10 @@ class LastPaintPosOverlay (FadingOverlay):
         rgba[3] *= self.alpha
         cr.set_source_rgba(*rgba)
         cr.set_line_width(self.outer_line_width)
-        cr.move_to(x-r, y-r)
-        cr.line_to(x+r, y+r)
-        cr.move_to(x+r, y-r)
-        cr.line_to(x-r, y+r)
+        cr.move_to(x - r, y - r)
+        cr.line_to(x + r, y + r)
+        cr.move_to(x + r, y - r)
+        cr.line_to(x - r, y + r)
         cr.stroke_preserve()
         rgba = list(self.inner_line_rgba)
         rgba[3] *= self.alpha

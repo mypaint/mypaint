@@ -12,21 +12,17 @@
 
 ## Imports
 
-from __future__ import division, print_function
-
-import os
-import os.path
-import sys
 import functools
 import logging
+import os
+import os.path
 import shutil
+import sys
 import unicodedata
 
 import lib.helpers
+from lib.gibindings import Gio, GLib
 from lib.pycompat import unicode
-
-from lib.gibindings import GLib
-from lib.gibindings import Gio
 
 logger = logging.getLogger(__name__)
 
@@ -35,7 +31,7 @@ logger = logging.getLogger(__name__)
 
 
 VIA_TEMPFILE_MAKES_BACKUP_COPY = True
-VIA_TEMPFILE_BACKUP_COPY_SUFFIX = '~'
+VIA_TEMPFILE_BACKUP_COPY_SUFFIX = "~"
 
 
 ## Utility funcs
@@ -87,6 +83,7 @@ def via_tempfile(save_method):
     args passed to the decorated method are passed on to the save method
     itself.
     """
+
     @functools.wraps(save_method)
     def _wrapped_save_method(self, filename, *args, **kwds):
         # Where the user told us to save into.
@@ -125,8 +122,8 @@ def via_tempfile(save_method):
                 if os.path.exists(backup_path):
                     logger.debug("Removing old backup %r", backup_path)
                     os.remove(backup_path)
-                with open(target_path, 'rb') as target_fp:
-                    with open(backup_path, 'wb') as backup_fp:
+                with open(target_path, "rb") as target_fp:
+                    with open(backup_path, "wb") as backup_fp:
                         logger.debug("Making new backup %r", backup_path)
                         shutil.copyfileobj(target_fp, backup_fp)
                         backup_fp.flush()
@@ -142,19 +139,23 @@ def via_tempfile(save_method):
 
 
 try:
-    _replace = os.replace   # python 3
+    _replace = os.replace  # python 3
 except AttributeError:
-    if sys.platform == 'win32':
+    if sys.platform == "win32":
         try:
             import win32api
             import win32con
 
             def _replace(s, d):
                 win32api.MoveFileEx(
-                    s, d, win32con.MOVEFILE_REPLACE_EXISTING,
+                    s,
+                    d,
+                    win32con.MOVEFILE_REPLACE_EXISTING,
                 )
+
         except ImportError:
             import ctypes
+
             _MoveFileEx = ctypes.windll.kernel32.MoveFileExW
             _MoveFileEx.argtypes = (
                 ctypes.c_wchar_p,
@@ -166,6 +167,7 @@ except AttributeError:
             def _replace(s, d):
                 if not _MoveFileEx(s, d, 1):  # MOVEFILE_REPLACE_EXISTING
                     raise OSError("_MoveFileEx(%r, %r)" % (s, d))
+
     else:
         _replace = os.rename
 
@@ -210,7 +212,7 @@ def startfile(filepath, operation="open"):
 
     """
     try:
-        if os.name == 'nt':
+        if os.name == "nt":
             os.startfile(filepath, operation)  # raises: WindowsError
         else:
             uri = GLib.filename_to_uri(filepath)
@@ -228,6 +230,7 @@ def startfile(filepath, operation="open"):
 def _test():
     """Run doctests"""
     import doctest
+
     doctest.testmod()
 
 
@@ -275,21 +278,27 @@ def safename(s, fragment=False):
     s = s.strip()
 
     # Strip characters that break interop.
-    forbidden = [ord(c) for c in u"\\|/:*?\"<>"]
-    forbidden += list(range(31))   # control chars
+    forbidden = [ord(c) for c in '\\|/:*?"<>']
+    forbidden += list(range(31))  # control chars
     table = {n: ord("_") for n in forbidden}
     s = s.translate(table)
 
     if not fragment:
         # Certain whole-filenames are reserved on Windows.
-        reserved = lib.helpers.casefold(u"""
+        reserved = (
+            lib.helpers.casefold(
+                """
             NUL CON PRN AUX
             COM1 COM2 COM3 COM4 COM5 COM6 COM7 COM8 COM9
             LPT1 LPT2 LPT3 LPT4 LPT5 LPT6 LPT7 LPT8 LPT9
-        """).strip().split()
+        """
+            )
+            .strip()
+            .split()
+        )
 
         # A blank name is invalid for all systems.
-        reserved += [u""]
+        reserved += [""]
         if lib.helpers.casefold(s) in reserved:
             s = "_" + s
 
@@ -301,5 +310,5 @@ def safename(s, fragment=False):
     return s
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     _test()

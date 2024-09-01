@@ -9,18 +9,16 @@
 
 """Base widgets for the colour selector module"""
 
-from __future__ import division, print_function
-
 import logging
 
-from lib.gibindings import Gtk
 import cairo
 
+from lib.gibindings import Gtk
 
 logger = logging.getLogger(__name__)
 
 
-class CachedBgWidgetMixin (object):
+class CachedBgWidgetMixin(object):
     """Provides widgets with a cached background and drawing callbacks
 
     The background is invalidated whenever the size changes,
@@ -83,7 +81,7 @@ class CachedBgWidgetMixin (object):
         raise NotImplementedError
 
     def paint_foreground_cb(self, cr, w, h):
-        """Paints the foreground over the background """
+        """Paints the foreground over the background"""
         raise NotImplementedError
 
     def clear_background(self):
@@ -93,7 +91,7 @@ class CachedBgWidgetMixin (object):
         self.queue_draw()
 
 
-class CachedBgDrawingArea (CachedBgWidgetMixin, Gtk.EventBox):
+class CachedBgDrawingArea(CachedBgWidgetMixin, Gtk.EventBox):
     """Base class for widgets with cached backgrounds"""
 
     def __init__(self):
@@ -102,7 +100,7 @@ class CachedBgDrawingArea (CachedBgWidgetMixin, Gtk.EventBox):
         CachedBgWidgetMixin.__init__(self)
 
 
-class IconRenderable (object):
+class IconRenderable(object):
     """Mixin for objects that can be rendered as a XDG icons
 
     Typically a cached icon file from disk will be quicker
@@ -121,16 +119,17 @@ class IconRenderable (object):
     def save_icon_tree(self, dir_name, icon_name):
         """Saves a full set of XDG icons into a given root directory"""
         import os
+
         dpi = 90.0
-        for size in (48, 32, 24, 22, 16, 'scalable'):
-            if size == 'scalable':
+        for size in (48, 32, 24, 22, 16, "scalable"):
+            if size == "scalable":
                 path = "%s/hicolor/scalable/actions" % (dir_name,)
                 if not os.path.exists(path):
                     os.makedirs(path)
                 filename = "%s/%s.svg" % (path, icon_name)
                 s = 48.0
-                scale = 72/dpi
-                pts = s*scale
+                scale = 72 / dpi
+                pts = s * scale
                 surf = cairo.SVGSurface(filename, pts, pts)
                 cr = cairo.Context(surf)
                 cr.scale(scale, scale)
@@ -144,6 +143,6 @@ class IconRenderable (object):
                 cr = cairo.Context(surf)
             self.render_as_icon(cr, size=int(s))
             surf.flush()
-            if size != 'scalable':
+            if size != "scalable":
                 surf.write_to_png(filename)
             logger.info("rendered %r (size=%s)...", filename, size)

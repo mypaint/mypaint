@@ -9,30 +9,27 @@
 """Footer widget behaviour."""
 
 
-## Imports
-from __future__ import division, print_function
-
-import math
 import logging
+
+## Imports
+import math
+from gettext import gettext as _
 
 import cairo
 
-from lib.gibindings import Gdk
-from lib.gibindings import GdkPixbuf
-
 import gui.brushmanager
-from gui.quickchoice import BrushChooserPopup  # noqa
-
 import lib.xml
+from gui.quickchoice import BrushChooserPopup  # noqa
 from lib.gettext import C_
-from gettext import gettext as _
+from lib.gibindings import Gdk, GdkPixbuf
 
 logger = logging.getLogger(__name__)
 
 
 ## Class definitions
 
-class BrushIndicatorPresenter (object):
+
+class BrushIndicatorPresenter(object):
     """Behaviour for a clickable footer brush indicator
 
     This presenter's view is a DrawingArea instance
@@ -91,8 +88,7 @@ class BrushIndicatorPresenter (object):
         self._drawing_area = da
         da.set_has_window(True)
         da.add_events(
-            Gdk.EventMask.BUTTON_PRESS_MASK |
-            Gdk.EventMask.BUTTON_RELEASE_MASK
+            Gdk.EventMask.BUTTON_PRESS_MASK | Gdk.EventMask.BUTTON_RELEASE_MASK
         )
         da.connect("draw", self._draw_cb)
         da.connect("query-tooltip", self._query_tooltip_cb)
@@ -137,7 +133,7 @@ class BrushIndicatorPresenter (object):
         # There's an additional top border of one pixel
         # for alignment with the color preview widget
         # in the other corner.
-        cr.rectangle(1.5, 2.5, aw-3, ah)
+        cr.rectangle(1.5, 2.5, aw - 3, ah)
         cr.set_line_join(cairo.LINE_JOIN_ROUND)
         cr.set_source_rgba(*self._OUTLINE_RGBA)
         cr.set_line_width(3)
@@ -147,7 +143,7 @@ class BrushIndicatorPresenter (object):
         cr.save()
         # Clip rectangle for the bit in the middle of the shadow.
         # Note that the bottom edge isn't shadowed.
-        cr.rectangle(1, 2, aw-2, ah)
+        cr.rectangle(1, 2, aw - 2, ah)
         cr.clip()
         # Scale and align the preview to the top of that clip rect.
         preview = self._brush_preview
@@ -155,9 +151,9 @@ class BrushIndicatorPresenter (object):
         ph = preview.get_height()
         area_size = float(max(aw, ah)) - 2
         preview_size = float(max(pw, ph))
-        x = math.floor(-pw/2.0)
+        x = math.floor(-pw / 2.0)
         y = 0
-        cr.translate(aw/2.0, 2)
+        cr.translate(aw / 2.0, 2)
         scale = area_size / preview_size
         cr.scale(scale, scale)
         Gdk.cairo_set_source_pixbuf(cr, preview, x, y)
@@ -166,7 +162,7 @@ class BrushIndicatorPresenter (object):
 
         # Finally a highlight around the edge in the house style
         # Note that the bottom edge isn't highlighted.
-        cr.rectangle(1.5, 2.5, aw-3, ah)
+        cr.rectangle(1.5, 2.5, aw - 3, ah)
         cr.set_line_width(1)
         cr.set_source_rgba(*self._EDGE_HIGHLIGHT_RGBA)
         cr.stroke()
@@ -192,12 +188,12 @@ class BrushIndicatorPresenter (object):
         template_params = {"brush_name": lib.xml.escape(brush_name)}
         markup_template = C_(
             "current brush indicator: tooltip (no-description case)",
-            u"<b>{brush_name}</b>",
+            "<b>{brush_name}</b>",
         )
         if self._brush_desc:
             markup_template = C_(
                 "current brush indicator: tooltip (description case)",
-                u"<b>{brush_name}</b>\n{brush_desc}",
+                "<b>{brush_name}</b>\n{brush_desc}",
             )
             template_params["brush_desc"] = lib.xml.escape(self._brush_desc)
         markup = markup_template.format(**template_params)
@@ -226,10 +222,10 @@ class BrushIndicatorPresenter (object):
             chooser.hide()
         else:
             chooser.popup(
-                widget = self._drawing_area,
-                above = True,
-                textwards = False,
-                event = event,
+                widget=self._drawing_area,
+                above=True,
+                textwards=False,
+                event=event,
             )
         return True
 
@@ -249,9 +245,12 @@ class BrushIndicatorPresenter (object):
         if self._brush_preview is None:
             pixbuf = GdkPixbuf.Pixbuf.new(
                 GdkPixbuf.Colorspace.RGB,
-                False, 8, size, size,
+                False,
+                8,
+                size,
+                size,
             )
-            pixbuf.fill(0x00ff00ff)
+            pixbuf.fill(0x00FF00FF)
             return pixbuf
         else:
             interp = GdkPixbuf.InterpType.BILINEAR

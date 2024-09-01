@@ -11,26 +11,24 @@
 
 ## Imports *nothing involving mypaintlib at this point*
 
-from __future__ import division, print_function
-
+import logging
 import os
 import sys
-import logging
 import warnings
-
-from lib.gibindings import GdkPixbuf
 from optparse import OptionParser
 
+import gui.userconfig
 import lib.config
 import lib.glib
+from lib.gibindings import GdkPixbuf
 from lib.i18n import USER_LOCALE_PREF
 from lib.meta import MYPAINT_VERSION
-import gui.userconfig
 
 logger = logging.getLogger(__name__)
 
 
 ## Method defs
+
 
 def _init_gtk_workarounds():
     """Initialize some workarounds for unoptimal GTK behavior"""
@@ -40,22 +38,26 @@ def _init_gtk_workarounds():
     # On windows the default variants only do ANSI paths, so replace them.
     # In some typelibs they are replaced by default, in some don't..
     if os.name == "nt":
-        for name in ["new_from_file_at_scale", "new_from_file_at_size",
-                     "new_from_file"]:
+        for name in [
+            "new_from_file_at_scale",
+            "new_from_file_at_size",
+            "new_from_file",
+        ]:
             cls = GdkPixbuf.Pixbuf
             func = getattr(cls, name + "_utf8", None)
             if func:
                 logger.debug(
                     "Monkeypatching GdkPixbuf.Pixbuf.%s with %r",
-                    name, func,
+                    name,
+                    func,
                 )
                 setattr(cls, name, func)
 
     # Wayland "workaround" to avoid input freeze on pointer grabs.
     # Respect existing envvars for testing (and general courtesy).
     # This relies on XWayland being available.
-    if sys.platform.startswith("linux") and 'GDK_BACKEND' not in os.environ:
-        os.environ['GDK_BACKEND'] = 'x11'
+    if sys.platform.startswith("linux") and "GDK_BACKEND" not in os.environ:
+        os.environ["GDK_BACKEND"] = "x11"
 
     logger.debug("GTK workarounds added.")
 
@@ -85,12 +87,12 @@ def set_user_configured_locale(userconfpath):
 
 
 def main(
-        datapath,
-        iconspath,
-        localepath,
-        oldstyle_confpath=None,
-        version=MYPAINT_VERSION,
-        debug=False
+    datapath,
+    iconspath,
+    localepath,
+    oldstyle_confpath=None,
+    version=MYPAINT_VERSION,
+    debug=False,
 ):
     """Run MyPaint with `sys.argv_unicode`, called from the "mypaint" script.
 
@@ -136,7 +138,7 @@ def main(
 
     # XDG support for new users on POSIX platforms
     if options.config is None:
-        appsubdir = u"mypaint"
+        appsubdir = "mypaint"
         basedir = lib.glib.get_user_data_dir()
         userdatapath = os.path.join(basedir, appsubdir)
         basedir = lib.glib.get_user_config_dir()
@@ -154,7 +156,8 @@ def main(
             os.makedirs(logdirpath)
         logger.info("Copying log messages to %r", logfilepath)
         logfile_handler = logging.FileHandler(
-            logfilepath, mode="a",
+            logfilepath,
+            mode="a",
             encoding="utf-8",
         )
         logfile_format = "%(asctime)s;%(levelname)s;%(name)s;%(message)s"
@@ -169,34 +172,35 @@ def main(
 
     if options.version:
         # Output (rather than log) the version
-        print("MyPaint version %s" % (version, ))
+        print("MyPaint version %s" % (version,))
         sys.exit(0)
 
     def run():
-        logger.debug('user_datapath: %r', userdatapath)
-        logger.debug('user_confpath: %r', userconfpath)
+        logger.debug("user_datapath: %r", userdatapath)
+        logger.debug("user_confpath: %r", userconfpath)
 
         # User-configured locale (if enabled by user)
         set_user_configured_locale(userconfpath)
 
         # Locale setting
         from lib.gettext_setup import init_gettext
+
         init_gettext(localepath)
 
         # mypaintlib import is performed first in gui.application now.
         from gui import application
 
         app_state_dirs = application.StateDirs(
-            app_data = datapath,
-            app_icons = iconspath,
-            user_data = userdatapath,
-            user_config = userconfpath,
+            app_data=datapath,
+            app_icons=iconspath,
+            user_data=userdatapath,
+            user_config=userconfpath,
         )
         app = application.Application(
-            filenames = args,
-            state_dirs = app_state_dirs,
-            version = version,
-            fullscreen = options.fullscreen,
+            filenames=args,
+            state_dirs=app_state_dirs,
+            version=version,
+            fullscreen=options.fullscreen,
         )
 
         # Gtk must not be imported before init_gettext
@@ -205,26 +209,31 @@ def main(
         # Note that this is not the first import of Gtk in the __program__;
         # it is imported indirectly via the import of gui.application
         from lib.gibindings import Gtk
+
         settings = Gtk.Settings.get_default()
         dark = app.preferences.get("ui.dark_theme_variant", True)
         settings.set_property("gtk-application-prefer-dark-theme", dark)
 
         if debug and options.run_and_quit:
             from lib.gibindings import GLib
+
             GLib.timeout_add(1000, lambda *a: Gtk.main_quit())
         else:
             from gui import gtkexcepthook
+
             func = app.filehandler.confirm_destructive_action
             gtkexcepthook.quit_confirmation_func = func
 
         # temporary workaround for gtk3 Ctrl-C bug:
         # https://bugzilla.gnome.org/show_bug.cgi?id=622084
         import signal
+
         signal.signal(signal.SIGINT, signal.SIG_DFL)
         Gtk.main()
 
     if options.trace:
         import trace
+
         tracer = trace.Trace(trace=1, count=0)
         tracer.runfunc(run)
     else:
@@ -236,45 +245,45 @@ def parsed_cmdline_arguments(default_confpath, debug=False):
 
     :return: (options, positional arguments)
     """
-    parser = OptionParser('usage: %prog [options] [FILE]')
+    parser = OptionParser("usage: %prog [options] [FILE]")
     parser.add_option(
-        '-c',
-        '--config',
-        metavar='DIR',
+        "-c",
+        "--config",
+        metavar="DIR",
         default=default_confpath,
-        help='use old-style merged config directory DIR, e.g. ~/.mypaint'
+        help="use old-style merged config directory DIR, e.g. ~/.mypaint",
     )
     parser.add_option(
-        '-l',
-        '--logfile',
-        metavar='FILE',
+        "-l",
+        "--logfile",
+        metavar="FILE",
         default=None,
-        help='log console messages to FILE (rel. to config location)'
+        help="log console messages to FILE (rel. to config location)",
     )
     parser.add_option(
-        '-t',
-        '--trace',
+        "-t",
+        "--trace",
         action="store_true",
-        help='print all executed Python statements'
+        help="print all executed Python statements",
     )
     parser.add_option(
-        '-f',
-        '--fullscreen',
+        "-f",
+        "--fullscreen",
         action="store_true",
-        help='start in fullscreen mode'
+        help="start in fullscreen mode",
     )
     parser.add_option(
         "-V",
-        '--version',
+        "--version",
         action="store_true",
-        help='print version information and exit'
+        help="print version information and exit",
     )
     if debug:
         parser.add_option(
             "-R",
-            '--run-and-quit',
+            "--run-and-quit",
             action="store_true",
-            help='start the program and shut it down after 1 second'
+            help="start the program and shut it down after 1 second",
         )
 
     return parser.parse_args(sys.argv_unicode[1:])

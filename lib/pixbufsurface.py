@@ -10,22 +10,20 @@
 
 ## Imports
 
-from __future__ import division, print_function
 import contextlib
 from logging import getLogger
 
-from lib.gibindings import GdkPixbuf
-from lib.gibindings import Gdk
 import cairo
 
-from . import mypaintlib
-from . import helpers
-from lib.eotf import eotf
+import lib.feedback
 import lib.surface
-from lib.surface import TileAccessible, TileBlittable
+from lib.eotf import eotf
 from lib.errors import AllocationError
 from lib.gettext import C_
-import lib.feedback
+from lib.gibindings import Gdk, GdkPixbuf
+from lib.surface import TileAccessible, TileBlittable
+
+from . import helpers, mypaintlib
 
 logger = getLogger(__name__)
 
@@ -36,15 +34,16 @@ TILE_SIZE = N = mypaintlib.TILE_SIZE
 
 _POSSIBLE_OOM_USERTEXT = C_(
     "user-facing error texts",
-    u"Unable to construct a vital internal object. "
-    u"Your system may not have enough memory to perform "
-    u"this operation."
+    "Unable to construct a vital internal object. "
+    "Your system may not have enough memory to perform "
+    "this operation.",
 )
 
 
 ## Class defs
 
-class Surface (TileAccessible, TileBlittable):
+
+class Surface(TileAccessible, TileBlittable):
     """Wrapper for a GdkPixbuf, with memory accessible by tile.
 
     Wraps a GdkPixbuf.Pixbuf (8 bit RGBU or RGBA data) with memory also
@@ -80,8 +79,7 @@ class Surface (TileAccessible, TileBlittable):
         # Tile-aligned pixbuf: also accessible by tile
         try:
             self.epixbuf = GdkPixbuf.Pixbuf.new(
-                GdkPixbuf.Colorspace.RGB, True, 8,
-                self.ew, self.eh
+                GdkPixbuf.Colorspace.RGB, True, 8, self.ew, self.eh
             )
         except Exception as te:
             logger.exception("GdkPixbuf.Pixbuf.new() failed")
@@ -114,7 +112,7 @@ class Surface (TileAccessible, TileBlittable):
         discard_transparent = False
 
         if data is not None:
-            dst = arr[dy:dy + h, dx:dx + w, :]
+            dst = arr[dy : dy + h, dx : dx + w, :]
             if data.shape[2] == 4:
                 dst[:, :, :] = data
                 discard_transparent = True
@@ -128,7 +126,7 @@ class Surface (TileAccessible, TileBlittable):
         self.tile_memory_dict = {}
         for ty in range(th):
             for tx in range(tw):
-                buf = arr[ty * N:(ty + 1) * N, tx * N:(tx + 1) * N, :]
+                buf = arr[ty * N : (ty + 1) * N, tx * N : (tx + 1) * N, :]
                 if discard_transparent and not buf[:, :, 3].any():
                     continue
                 self.tile_memory_dict[(self.tx + tx, self.ty + ty)] = buf
@@ -155,9 +153,9 @@ class Surface (TileAccessible, TileBlittable):
     def blit_tile_into(self, dst, dst_has_alpha, tx, ty):
         # (used mainly for loading transparent PNGs)
         assert dst_has_alpha is True
-        assert dst.dtype == 'uint16', '16 bit dst expected'
+        assert dst.dtype == "uint16", "16 bit dst expected"
         src = self.tile_memory_dict[(tx, ty)]
-        assert src.shape[2] == 4, 'alpha required'
+        assert src.shape[2] == 4, "alpha required"
         mypaintlib.tile_convert_rgba8_to_rgba16(src, dst, eotf())
 
     @contextlib.contextmanager
@@ -171,7 +169,8 @@ class Surface (TileAccessible, TileBlittable):
         # Make a Cairo surface copy of the subpixbuf
         surf = cairo.ImageSurface(
             cairo.FORMAT_ARGB32,
-            self.pixbuf.get_width(), self.pixbuf.get_height(),
+            self.pixbuf.get_width(),
+            self.pixbuf.get_height(),
         )
         cr = cairo.Context(surf)
         Gdk.cairo_set_source_pixbuf(cr, self.pixbuf, 0, 0)
@@ -187,10 +186,17 @@ class Surface (TileAccessible, TileBlittable):
         pixbuf.copy_area(0, 0, self.w, self.h, self.epixbuf, dx, dy)
 
 
-def render_as_pixbuf(surface, x=None, y=None, w=None, h=None,
-                     alpha=False, mipmap_level=0,
-                     progress=None,
-                     **kwargs):
+def render_as_pixbuf(
+    surface,
+    x=None,
+    y=None,
+    w=None,
+    h=None,
+    alpha=False,
+    mipmap_level=0,
+    progress=None,
+    **kwargs
+):
     """Renders a surface within a given rectangle as a GdkPixbuf
 
     :param lib.surface.TileBlittable surface: source surface
@@ -218,9 +224,9 @@ def render_as_pixbuf(surface, x=None, y=None, w=None, h=None,
     tn = 0
     for tx, ty in s_tiles:
         with s.tile_request(tx, ty, readonly=False) as dst:
-            surface.blit_tile_into(dst, alpha, tx, ty,
-                                   mipmap_level=mipmap_level,
-                                   **kwargs)
+            surface.blit_tile_into(
+                dst, alpha, tx, ty, mipmap_level=mipmap_level, **kwargs
+            )
             if tn % lib.surface.TILES_PER_CALLBACK == 0:
                 progress.completed(tn)
             tn += 1

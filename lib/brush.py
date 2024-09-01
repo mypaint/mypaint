@@ -7,18 +7,14 @@
 # the Free Software Foundation; either version 2 of the License, or
 # (at your option) any later version.
 
-from __future__ import division, print_function
-import logging
 import copy
-import math
 import json
+import logging
+import math
 
-from lib import mypaintlib
-from lib import helpers
-from lib import brushsettings
+from lib import brushsettings, helpers, mypaintlib
 from lib.eotf import eotf
-from lib.pycompat import unicode
-from lib.pycompat import PY3
+from lib.pycompat import PY3, unicode
 
 if PY3:
     from urllib.parse import unquote
@@ -30,25 +26,30 @@ logger = logging.getLogger(__name__)
 
 # Module constants:
 
-STRING_VALUE_SETTINGS = set((
-    "parent_brush_name",
-    "group",  # Possibly obsolete group field (replaced by order.conf?)
-    "comment",  # MyPaint uses this to explanation what the file is
-    "notes",  # Brush developer's notes field, multiline
-    "description",  # Short, user-facing description field, single line
-))
+STRING_VALUE_SETTINGS = set(
+    (
+        "parent_brush_name",
+        "group",  # Possibly obsolete group field (replaced by order.conf?)
+        "comment",  # MyPaint uses this to explanation what the file is
+        "notes",  # Brush developer's notes field, multiline
+        "description",  # Short, user-facing description field, single line
+    )
+)
 OLDFORMAT_BRUSHFILE_VERSION = 2
 
 BRUSH_SETTINGS = set([s.cname for s in brushsettings.settings])
 ALL_SETTINGS = BRUSH_SETTINGS.union(STRING_VALUE_SETTINGS)
 
 _BRUSHINFO_MATCH_IGNORES = [
-    "color_h", "color_s", "color_v",
+    "color_h",
+    "color_s",
+    "color_v",
     "parent_brush_name",
 ]
 
 
 # Helpers
+
 
 def brushinfo_unquote(quoted):
     """Unquote a serialised string value from a brush field.
@@ -71,15 +72,17 @@ def brushinfo_unquote(quoted):
 
 # Exceptions raised during brush parsing:
 
-class ParseError (Exception):
+
+class ParseError(Exception):
     pass
 
 
-class Obsolete (ParseError):
+class Obsolete(ParseError):
     pass
 
 
 # Helper functions for parsing the old brush format:
+
 
 def _oldfmt_parse_value(rawvalue, cname, version):
     """Parses a raw setting value.
@@ -91,35 +94,35 @@ def _oldfmt_parse_value(rawvalue, cname, version):
     if cname in STRING_VALUE_SETTINGS:
         string = brushinfo_unquote(rawvalue)
         return [(cname, string)]
-    elif version <= 1 and cname == 'color':
+    elif version <= 1 and cname == "color":
         rgb = [int(c) / 255.0 for c in rawvalue.split(" ")]
         h, s, v = helpers.rgb_to_hsv(*rgb)
         return [
-            ('color_h', [h, {}]),
-            ('color_s', [s, {}]),
-            ('color_v', [v, {}]),
+            ("color_h", [h, {}]),
+            ("color_s", [s, {}]),
+            ("color_v", [v, {}]),
         ]
-    elif version <= 1 and cname == 'change_radius':
-        if rawvalue == '0.0':
+    elif version <= 1 and cname == "change_radius":
+        if rawvalue == "0.0":
             return []
-        raise Obsolete('change_radius is not supported any more')
-    elif version <= 2 and cname == 'adapt_color_from_image':
-        if rawvalue == '0.0':
+        raise Obsolete("change_radius is not supported any more")
+    elif version <= 2 and cname == "adapt_color_from_image":
+        if rawvalue == "0.0":
             return []
         raise Obsolete(
-            'adapt_color_from_image is obsolete, ignored;'
-            ' use smudge and smudge_length instead'
+            "adapt_color_from_image is obsolete, ignored;"
+            " use smudge and smudge_length instead"
         )
-    elif version <= 1 and cname == 'painting_time':
+    elif version <= 1 and cname == "painting_time":
         return []
 
-    if version <= 1 and cname == 'speed':
-        cname = 'speed1'
-    parts = rawvalue.split('|')
+    if version <= 1 and cname == "speed":
+        cname = "speed1"
+    parts = rawvalue.split("|")
     basevalue = float(parts[0])
     input_points = {}
     for part in parts[1:]:
-        inputname, rawpoints = part.strip().split(' ', 1)
+        inputname, rawpoints = part.strip().split(" ", 1)
         if version <= 1:
             points = _oldfmt_parse_points_v1(rawpoints)
         else:
@@ -146,12 +149,12 @@ def _oldfmt_parse_points_v1(rawpoints):
 def _oldfmt_parse_points_v2(rawpoints):
     """Parses the newer points list format of v2 and beyond."""
     points = []
-    for s in rawpoints.split(', '):
+    for s in rawpoints.split(", "):
         s = s.strip()
-        if not (s.startswith('(') and s.endswith(')') and ' ' in s):
+        if not (s.startswith("(") and s.endswith(")") and " " in s):
             return '(x y) expected, got "%s"' % s
         s = s[1:-1]
-        x, y = [float(ss) for ss in s.split(' ')]
+        x, y = [float(ss) for ss in s.split(" ")]
         points.append((x, y))
     return points
 
@@ -169,9 +172,9 @@ def _oldfmt_transform_y(valuepair, func):
 
 # Class defs:
 
-class BrushInfo (object):
-    """Fully parsed description of a brush.
-    """
+
+class BrushInfo(object):
+    """Fully parsed description of a brush."""
 
     def __init__(self, string=None, default_overrides=None):
         """Construct a BrushInfo object, optionally parsing it.
@@ -229,9 +232,9 @@ class BrushInfo (object):
         else:
             basevalue = s.default
 
-        if cname == 'opaque_multiply':
+        if cname == "opaque_multiply":
             # make opaque depend on pressure by default
-            input_points = {'pressure': [(0.0, 0.0), (1.0, 1.0)]}
+            input_points = {"pressure": [(0.0, 0.0), (1.0, 1.0)]}
         else:
             input_points = {}
         self.settings[cname] = [basevalue, input_points]
@@ -246,27 +249,27 @@ class BrushInfo (object):
         settings = dict(self.settings)
 
         # Fields we save that aren't really brush engine settings
-        parent_brush_name = settings.pop('parent_brush_name', '')
-        brush_group = settings.pop('group', '')
-        description = settings.pop('description', '')
-        notes = settings.pop('notes', '')
+        parent_brush_name = settings.pop("parent_brush_name", "")
+        brush_group = settings.pop("group", "")
+        description = settings.pop("description", "")
+        notes = settings.pop("notes", "")
 
         # The comment we save is always the same
-        settings.pop('comment', '')
+        settings.pop("comment", "")
 
         # Make the contents of each setting a bit more explicit
         for k, v in list(settings.items()):
             base_value, inputs = v
-            settings[k] = {'base_value': base_value, 'inputs': inputs}
+            settings[k] = {"base_value": base_value, "inputs": inputs}
 
         document = {
-            'version': 3,
-            'comment': """MyPaint brush file""",
-            'parent_brush_name': parent_brush_name,
-            'settings': settings,
-            'group': brush_group,
-            'notes': notes,
-            'description': description,
+            "version": 3,
+            "comment": """MyPaint brush file""",
+            "parent_brush_name": parent_brush_name,
+            "settings": settings,
+            "group": brush_group,
+            "notes": notes,
+            "description": description,
         }
         return json.dumps(document, sort_keys=True, indent=4)
 
@@ -298,10 +301,10 @@ class BrushInfo (object):
             json_string = json_string.decode("utf-8")
 
         brush_def = json.loads(json_string)
-        if brush_def.get('version', 0) < 3:
+        if brush_def.get("version", 0) < 3:
             raise BrushInfo.ParseError(
-                'brush is not compatible with this version of mypaint '
-                '(json file version=%r)' % (brush_def.get('version'),)
+                "brush is not compatible with this version of mypaint "
+                "(json file version=%r)" % (brush_def.get("version"),)
             )
 
         # settings not in json_string must still be present in self.settings
@@ -309,20 +312,20 @@ class BrushInfo (object):
 
         # settings not defined in the json
         self.undefined_settings = BRUSH_SETTINGS.difference(
-            set(brush_def['settings'].keys())
+            set(brush_def["settings"].keys())
         )
         # MyPaint expects that each setting has an array, where
         # index 0 is base value, and index 1 is inputs
-        for k, v in brush_def['settings'].items():
-            base_value, inputs = v['base_value'], v['inputs']
+        for k, v in brush_def["settings"].items():
+            base_value, inputs = v["base_value"], v["inputs"]
             if k not in self.settings:
-                logger.warning('ignoring unknown brush setting %r', k)
+                logger.warning("ignoring unknown brush setting %r", k)
                 continue
             self.settings[k] = [base_value, inputs]
 
         # Non-libmypaint string fields
         for cname in STRING_VALUE_SETTINGS:
-            self.settings[cname] = brush_def.get(cname, '')
+            self.settings[cname] = brush_def.get(cname, "")
         # FIXME: Who uses "group"?
         # FIXME: Brush groups are stored externally in order.conf,
         # FIXME: is that one redundant?
@@ -333,13 +336,13 @@ class BrushInfo (object):
             brush_string = brush_string.decode("utf-8")
         try:
             brush = json.loads(brush_string)
-            bsett = brush['settings']
-            k = 'base_value'
-            hsv = bsett['color_h'][k], bsett['color_s'][k], bsett['color_v'][k]
+            bsett = brush["settings"]
+            k = "base_value"
+            hsv = bsett["color_h"][k], bsett["color_s"][k], bsett["color_v"][k]
             h, s, v = helpers.transform_hsv(hsv, 1.0 / 2.2)
-            bsett['color_h'][k] = h
-            bsett['color_s'][k] = s
-            bsett['color_v'][k] = v
+            bsett["color_h"][k] = h
+            bsett["color_s"][k] = s
+            bsett["color_v"][k] = v
             return json.dumps(brush)
         except Exception:
             logger.exception("Failed to invert color in brush string")
@@ -354,14 +357,14 @@ class BrushInfo (object):
                 raise ValueError("Need either a str or a bytes object")
             settings_unicode = settings_unicode.decode("utf-8")
 
-        if settings_unicode.startswith(u'{'):
+        if settings_unicode.startswith("{"):
             # new json-based brush format
             self.from_json(settings_str)
-        elif settings_unicode.startswith(u'#'):
+        elif settings_unicode.startswith("#"):
             # old brush format
             self._load_old_format(settings_str)
         else:
-            raise BrushInfo.ParseError('brush format not recognized')
+            raise BrushInfo.ParseError("brush format not recognized")
 
         for f in self.observers:
             f(ALL_SETTINGS)
@@ -400,13 +403,13 @@ class BrushInfo (object):
         rawsettings = []
         errors = []
         version = 1  # for files without a 'version' field
-        for line in settings_str.split('\n'):
+        for line in settings_str.split("\n"):
             try:
                 line = line.strip()
-                if not line or line.startswith('#'):
+                if not line or line.startswith("#"):
                     continue
-                cname, rawvalue = line.split(' ', 1)
-                if cname == 'version':
+                cname, rawvalue = line.split(" ", 1)
+                if cname == "version":
                     version = int(rawvalue)
                     if version > OLDFORMAT_BRUSHFILE_VERSION:
                         raise BrushInfo.ParseError(
@@ -424,7 +427,7 @@ class BrushInfo (object):
         self.load_defaults()
         # compatibility hack: keep disabled for old brushes,
         # but still use non-zero default
-        self.settings['anti_aliasing'][0] = 0.0
+        self.settings["anti_aliasing"][0] = 0.0
         num_parsed = 0
         settings_loaded = set()
         for rawcname, rawvalue in rawsettings:
@@ -472,8 +475,9 @@ class BrushInfo (object):
         number of settings into account, and no dynamics (input mappings).
         """
         return brush_visual_radius(
-            self.get_base_value('radius_logarithmic'),
-            self.get_base_value('offset_by_random'))
+            self.get_base_value("radius_logarithmic"),
+            self.get_base_value("offset_by_random"),
+        )
 
     def get_base_value(self, cname):
         return self.settings[cname][0]
@@ -570,9 +574,9 @@ class BrushInfo (object):
                 f(pending)
 
     def get_color_hsv(self):
-        h = self.get_base_value('color_h')
-        s = self.get_base_value('color_s')
-        v = self.get_base_value('color_v')
+        h = self.get_base_value("color_h")
+        s = self.get_base_value("color_s")
+        v = self.get_base_value("color_v")
         assert not math.isnan(h)
         return h, s, v
 
@@ -582,9 +586,9 @@ class BrushInfo (object):
         self.begin_atomic()
         try:
             h, s, v = hsv
-            self.set_base_value('color_h', h)
-            self.set_base_value('color_s', s)
-            self.set_base_value('color_v', v)
+            self.set_base_value("color_h", h)
+            self.set_base_value("color_s", s)
+            self.set_base_value("color_v", v)
         finally:
             self.end_atomic()
 
@@ -618,7 +622,7 @@ def brush_visual_radius(base_radius, base_random_offset):
     return base_r + 2 * base_r * base_random_offset
 
 
-class Brush (mypaintlib.PythonBrush):
+class Brush(mypaintlib.PythonBrush):
     """A brush, capable of painting to a surface
 
     Low-level extension of the C++ brush class, propagating all changes
@@ -626,7 +630,7 @@ class Brush (mypaintlib.PythonBrush):
 
     """
 
-    HSV_CNAMES = ('color_h', 'color_s', 'color_v')
+    HSV_CNAMES = ("color_h", "color_s", "color_v")
     HSV_SET = set(HSV_CNAMES)
 
     def __init__(self, brushinfo):
@@ -636,7 +640,7 @@ class Brush (mypaintlib.PythonBrush):
         self._update_from_brushinfo(ALL_SETTINGS)
 
     def stroke_to(self, *args):
-        """ Delegates to mypaintlib with information about color space
+        """Delegates to mypaintlib with information about color space
 
         Checks whether color transforms should be done in linear sRGB
         so that HSV/HSL adjustments can be handled correctly.
@@ -661,7 +665,7 @@ class Brush (mypaintlib.PythonBrush):
             self._update_setting_from_brushinfo(cname)
 
     def _transform_brush_color(self):
-        """ Apply eotf transform to the backend color.
+        """Apply eotf transform to the backend color.
 
         By only applying the transform here, the issue of
         strokemap and brush color consistency between new
@@ -670,9 +674,9 @@ class Brush (mypaintlib.PythonBrush):
         hsv_orig = (self.brushinfo.get_base_value(k) for k in self.HSV_CNAMES)
         h, s, v = helpers.transform_hsv(hsv_orig, eotf())
         settings_dict = brushsettings.settings_dict
-        self.set_base_value(settings_dict['color_h'].index, h)
-        self.set_base_value(settings_dict['color_s'].index, s)
-        self.set_base_value(settings_dict['color_v'].index, v)
+        self.set_base_value(settings_dict["color_h"].index, h)
+        self.set_base_value(settings_dict["color_s"].index, s)
+        self.set_base_value(settings_dict["color_v"].index, v)
 
     def _update_setting_from_brushinfo(self, cname):
         setting = brushsettings.settings_dict.get(cname)
@@ -681,8 +685,7 @@ class Brush (mypaintlib.PythonBrush):
         base = self.brushinfo.get_base_value(cname)
         self.set_base_value(setting.index, base)
         for input in brushsettings.inputs:
-            points = self.brushinfo.get_points(cname, input.name,
-                                               readonly=True)
+            points = self.brushinfo.get_points(cname, input.name, readonly=True)
             assert len(points) != 1
             self.set_mapping_n(setting.index, input.index, len(points))
             for i, (x, y) in enumerate(points):
@@ -691,4 +694,5 @@ class Brush (mypaintlib.PythonBrush):
 
 if __name__ == "__main__":
     import doctest
+
     doctest.testmod()

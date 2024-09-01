@@ -9,24 +9,22 @@
 
 """Autorecovery UI"""
 
-from __future__ import division, print_function
-import weakref
-import os.path
-from gettext import gettext as _
-import shutil
 import logging
-
-from lib.gibindings import Gtk
+import os.path
+import shutil
+import weakref
+from gettext import gettext as _
 
 import lib.document
-import lib.helpers
 import lib.errors
+import lib.helpers
+from lib.gibindings import Gtk
 from lib.pycompat import unicode
 
 logger = logging.getLogger(__name__)
 
 
-class Presenter (object):
+class Presenter(object):
     """Shows and runs a dialog, allowing the user to resume autosaves.
 
     See also: lib.document.Document.resume_from_autosave().
@@ -135,11 +133,11 @@ class Presenter (object):
             if not startup:
                 cache_root = lib.document.get_app_cache_root()
                 self._app.message_dialog(
-                    _(u"No backups were found in the cache."),
-                    title = _(u"No Available Backups"),
-                    investigate_dir = cache_root,
-                    investigate_str = _(u"Open the Cache Folder…"),
-                    message_type = Gtk.MessageType.ERROR,
+                    _("No backups were found in the cache."),
+                    title=_("No Available Backups"),
+                    investigate_dir=cache_root,
+                    investigate_str=_("Open the Cache Folder…"),
+                    message_type=Gtk.MessageType.ERROR,
                 )
             return
         doc = self._app.doc
@@ -167,10 +165,10 @@ class Presenter (object):
         if error:
             self._app.message_dialog(
                 unicode(error),
-                title = _(u"Backup Recovery Failed"),
-                investigate_dir = error.investigate_dir,
-                investigate_str = _(u"Open the Backup’s Folder…"),
-                message_type = Gtk.MessageType.ERROR,
+                title=_("Backup Recovery Failed"),
+                investigate_dir=error.investigate_dir,
+                investigate_str=_("Open the Backup’s Folder…"),
+                message_type=Gtk.MessageType.ERROR,
             )
         # If it loaded OK, get the user to save the recovered file ASAP.
         elif autosave:
@@ -178,9 +176,9 @@ class Presenter (object):
             fh.set_filename(None)
             lastmod = autosave.last_modified
             strftime_tmpl = "%Y-%m-%d %H%M%S"
-            sugg_name_tmpl = _(u"Recovered file from {iso_datetime}.ora")
+            sugg_name_tmpl = _("Recovered file from {iso_datetime}.ora")
             sugg_name = sugg_name_tmpl.format(
-                iso_datetime = lastmod.strftime(strftime_tmpl),
+                iso_datetime=lastmod.strftime(strftime_tmpl),
             )
             fh.save_as_dialog(fh.save_file, suggested_filename=sugg_name)
 
@@ -215,8 +213,11 @@ class Presenter (object):
 
     def _delete_autosave_button_clicked_cb(self, button):
         autosave = self._get_selected_autosave()
-        if autosave is None or autosave.cache_in_use \
-                or not os.path.isdir(autosave.path):
+        if (
+            autosave is None
+            or autosave.cache_in_use
+            or not os.path.isdir(autosave.path)
+        ):
             return
         logger.info("Recursively deleting %r...", autosave.path)
         try:

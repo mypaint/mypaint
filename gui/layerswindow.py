@@ -13,27 +13,20 @@
 
 ## Imports
 
-from __future__ import division, print_function
-
-from gettext import gettext as _
 import os.path
+from gettext import gettext as _
 from logging import getLogger
 
-from lib.gibindings import Gtk
-from lib.gibindings import GObject
-
-import lib.layer
-import lib.xml
-from . import widgets
-from .widgets import inline_toolbar
-from .toolstack import SizedVBoxToolWidget
-from . import layers
-from lib.modes import STACK_MODES
-from lib.modes import STANDARD_MODES
-from lib.modes import MODE_STRINGS
-from lib.modes import PASS_THROUGH_MODE
-import lib.modes
 import gui.layervis
+import lib.layer
+import lib.modes
+import lib.xml
+from lib.gibindings import GObject, Gtk
+from lib.modes import MODE_STRINGS, PASS_THROUGH_MODE, STACK_MODES, STANDARD_MODES
+
+from . import layers, widgets
+from .toolstack import SizedVBoxToolWidget
+from .widgets import inline_toolbar
 
 logger = getLogger(__name__)
 
@@ -41,14 +34,19 @@ logger = getLogger(__name__)
 
 #: UI XML for the current layer's class (framework: ``layerswindow.xml``)
 LAYER_CLASS_UI = [
-    (lib.layer.SurfaceBackedLayer, """
+    (
+        lib.layer.SurfaceBackedLayer,
+        """
         <popup name='LayersWindowPopup'>
             <placeholder name="BasicLayerActions">
                 <menuitem action='CopyLayer'/>
             </placeholder>
         </popup>
-        """),
-    (lib.layer.PaintingLayer, """
+        """,
+    ),
+    (
+        lib.layer.PaintingLayer,
+        """
         <popup name='LayersWindowPopup'>
             <placeholder name="BasicLayerActions">
                 <menuitem action='PasteLayer'/>
@@ -61,8 +59,11 @@ LAYER_CLASS_UI = [
                 <menuitem action='UniqLayerTiles'/>
             </placeholder>
         </popup>
-        """),
-    (lib.layer.ExternallyEditable, """
+        """,
+    ),
+    (
+        lib.layer.ExternallyEditable,
+        """
         <popup name='LayersWindowPopup'>
             <placeholder name='BasicLayerActions'>
                 <separator/>
@@ -71,22 +72,26 @@ LAYER_CLASS_UI = [
                 <separator/>
             </placeholder>
         </popup>
-        """),
-    (lib.layer.LayerStack, """
+        """,
+    ),
+    (
+        lib.layer.LayerStack,
+        """
         <popup name='LayersWindowPopup'>
             <placeholder name='AdvancedLayerActions'>
                 <menuitem action='RefactorLayerGroupPixels'/>
                 <menuitem action='RefactorLayerGroupTiles'/>
             </placeholder>
         </popup>
-        """),
+        """,
+    ),
 ]
 
 
 ## Class definitions
 
 
-class LayersTool (SizedVBoxToolWidget):
+class LayersTool(SizedVBoxToolWidget):
     """Panel for arranging layers within a tree structure"""
 
     ## Class properties
@@ -104,22 +109,24 @@ class LayersTool (SizedVBoxToolWidget):
     # TRANSLATORS: label for the opacity slider (text)
     # TRANSLATORS: note that "%%" turns into "%"
     # TRANSLATORS: most of the time this can just be copied, or left alone
-    OPACITY_LABEL_TEXT_TEMPLATE = _(u"%d%%")
+    OPACITY_LABEL_TEXT_TEMPLATE = _("%d%%")
 
-    __gtype_name__ = 'MyPaintLayersTool'
+    __gtype_name__ = "MyPaintLayersTool"
 
-    STATUSBAR_CONTEXT = 'layerstool-dnd'
+    STATUSBAR_CONTEXT = "layerstool-dnd"
 
     # TRANSLATORS: status bar messages for drag, without/with modifiers
-    STATUSBAR_DRAG_MSG = _(u"Move layer in stack…")
-    STATUSBAR_DRAG_INTO_MSG = _("Move layer in stack (dropping into a "
-                                "regular layer will create a new group)")
+    STATUSBAR_DRAG_MSG = _("Move layer in stack…")
+    STATUSBAR_DRAG_INTO_MSG = _(
+        "Move layer in stack (dropping into a " "regular layer will create a new group)"
+    )
 
     ## Construction
 
     def __init__(self):
         GObject.GObject.__init__(self)
         from gui.application import get_app
+
         app = get_app()
         self.app = app
         self.set_spacing(widgets.SPACING_CRAMPED)
@@ -183,8 +190,7 @@ class LayersTool (SizedVBoxToolWidget):
         grid.attach(combo, 0, row, 5, 1)
 
         # Opacity widgets
-        adj = Gtk.Adjustment(lower=0, upper=100,
-                             step_increment=1, page_increment=10)
+        adj = Gtk.Adjustment(lower=0, upper=100, step_increment=1, page_increment=10)
         sbut = Gtk.ScaleButton()
         sbut.set_adjustment(adj)
         sbut.remove(sbut.get_child())
@@ -219,7 +225,7 @@ class LayersTool (SizedVBoxToolWidget):
                 ("LowerLayerInStack", "mypaint-down-symbolic"),
                 ("DuplicateLayer", None),
                 ("MergeLayerDown", None),
-            ]
+            ],
         )
         style = list_tools.get_style_context()
         style.set_junction_sides(Gtk.JunctionSides.TOP)
@@ -243,10 +249,8 @@ class LayersTool (SizedVBoxToolWidget):
         self.pack_start(grid, False, True, 0)
         # Updates from the real layers tree (TODO: move to lib/layers.py)
         self._processing_model_updates = False
-        self._opacity_adj.connect('value-changed',
-                                  self._opacity_adj_changed_cb)
-        self._layer_mode_combo.connect('changed',
-                                       self._layer_mode_combo_changed_cb)
+        self._opacity_adj.connect("value-changed", self._opacity_adj_changed_cb)
+        self._layer_mode_combo.connect("changed", self._layer_mode_combo_changed_cb)
         rootstack = docmodel.layer_stack
         rootstack.layer_properties_changed += self._layer_propchange_cb
         rootstack.current_path_updated += self._current_path_updated_cb
@@ -268,8 +272,10 @@ class LayersTool (SizedVBoxToolWidget):
 
     def _layer_propchange_cb(self, rootstack, path, layer, changed):
         if self._processing_model_updates:
-            logger.debug("Property change skipped: already processing "
-                         "an update from the document model")
+            logger.debug(
+                "Property change skipped: already processing "
+                "an update from the document model"
+            )
         if layer is not rootstack.current:
             return
         self._processing_model_updates = True
@@ -304,13 +310,13 @@ class LayersTool (SizedVBoxToolWidget):
             mode = row[0]
             if mode == current_mode:
                 active_iter = row.iter
-            row[2] = (mode in current.PERMITTED_MODES)
+            row[2] = mode in current.PERMITTED_MODES
         combo.set_active_iter(active_iter)
         label, desc = MODE_STRINGS.get(current_mode)
         template = self.LAYER_MODE_TOOLTIP_MARKUP_TEMPLATE
         tooltip = template.format(
-            name = lib.xml.escape(label),
-            description = lib.xml.escape(desc),
+            name=lib.xml.escape(label),
+            description=lib.xml.escape(desc),
         )
         combo.set_tooltip_markup(tooltip)
 
@@ -324,9 +330,7 @@ class LayersTool (SizedVBoxToolWidget):
         rootstack = self.app.doc.model.layer_stack
         layer = rootstack.current
         opacity_is_adjustable = not (
-            layer is None
-            or layer is rootstack
-            or layer.mode == PASS_THROUGH_MODE
+            layer is None or layer is rootstack or layer.mode == PASS_THROUGH_MODE
         )
         sbut.set_sensitive(opacity_is_adjustable)
 

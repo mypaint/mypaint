@@ -14,28 +14,23 @@
 
 ## Imports
 
-from __future__ import division, print_function
-
+import logging
 import re
 from copy import copy
-import logging
+from io import open
 
+from lib.color import UIColor  # noqa
+from lib.color import RGBColor, YCbCrColor
 from lib.helpers import clamp
 from lib.observable import event
-from lib.color import RGBColor
-from lib.color import YCbCrColor
-from lib.color import UIColor  # noqa
-from lib.pycompat import unicode
-from lib.pycompat import xrange
-from lib.pycompat import PY3
-from io import open
+from lib.pycompat import PY3, unicode, xrange
 
 logger = logging.getLogger(__name__)
 
 ## Class and function defs
 
 
-class Palette (object):
+class Palette(object):
     """A flat list of color swatches, compatible with the GIMP
 
     As a (sideways-compatible) extension to the GIMP's format, MyPaint supports
@@ -146,11 +141,11 @@ class Palette (object):
         If the file format is incorrect, a RuntimeError will be raised.
 
         """
-        comment_line_re = re.compile(r'^#')
-        field_line_re = re.compile(r'^(\w+)\s*:\s*(.*)$')
-        color_line_re = re.compile(r'^(\d+)\s+(\d+)\s+(\d+)\s*(?:\b(.*))$')
+        comment_line_re = re.compile(r"^#")
+        field_line_re = re.compile(r"^(\w+)\s*:\s*(.*)$")
+        color_line_re = re.compile(r"^(\d+)\s+(\d+)\s+(\d+)\s*(?:\b(.*))$")
         fp = filehandle
-        self.clear(silent=True)   # method fires events itself
+        self.clear(silent=True)  # method fires events itself
         line = fp.readline()
         if line.strip() != "GIMP Palette":
             raise RuntimeError("Not a valid GIMP Palette")
@@ -159,7 +154,7 @@ class Palette (object):
         for line in fp:
             line = line.strip()
             line_num += 1
-            if line == '':
+            if line == "":
                 continue
             if comment_line_re.match(line):
                 continue
@@ -168,9 +163,9 @@ class Palette (object):
                 if match:
                     key, value = match.groups()
                     key = key.lower()
-                    if key == 'name':
+                    if key == "name":
                         self._name = value.strip()
-                    elif key == 'columns':
+                    elif key == "columns":
                         self._columns = int(value)
                     else:
                         logger.warning("Unknown 'key:value' pair %r", line)
@@ -183,9 +178,9 @@ class Palette (object):
                 continue
             r, g, b, col_name = match.groups()
             col_name = col_name.strip()
-            r = clamp(int(r), 0, 0xff) / 0xff
-            g = clamp(int(g), 0, 0xff) / 0xff
-            b = clamp(int(b), 0, 0xff) / 0xff
+            r = clamp(int(r), 0, 0xFF) / 0xFF
+            g = clamp(int(g), 0, 0xFF) / 0xFF
+            b = clamp(int(b), 0, 0xFF) / 0xFF
             if r == g == b == 0 and col_name == self._EMPTY_SLOT_NAME:
                 self.append(None)
             else:
@@ -533,7 +528,7 @@ class Palette (object):
         col = self._copy_color_in(col, name)
         if unique:
             # Find the final exact match, if one is present
-            for i in xrange(len(self._colors)-1, -1, -1):
+            for i in xrange(len(self._colors) - 1, -1, -1):
                 if col == self._colors[i]:
                     if match:
                         self._match_position = i
@@ -734,10 +729,10 @@ class Palette (object):
     def get_color_by_name(self, name):
         """Looks up the first color with the given name.
 
-          >>> pltt = Palette()
-          >>> pltt.append(RGBColor(1,0,1), "Magenta")
-          >>> pltt.get_color_by_name("Magenta")
-          <RGBColor r=1.0000, g=0.0000, b=1.0000>
+        >>> pltt = Palette()
+        >>> pltt.append(RGBColor(1,0,1), "Magenta")
+        >>> pltt.get_color_by_name("Magenta")
+        <RGBColor r=1.0000, g=0.0000, b=1.0000>
 
         """
         for col in self:
@@ -781,23 +776,23 @@ class Palette (object):
         Used by the Py3 __str__() while we are in transition.
 
         """
-        result = u"GIMP Palette\n"
+        result = "GIMP Palette\n"
         if self._name is not None:
-            result += u"Name: %s\n" % self._name
+            result += "Name: %s\n" % self._name
         if self._columns > 0:
-            result += u"Columns: %d\n" % self._columns
-        result += u"#\n"
+            result += "Columns: %d\n" % self._columns
+        result += "#\n"
         for col in self._colors:
             if col is self._EMPTY_SLOT_ITEM:
                 col_name = self._EMPTY_SLOT_NAME
                 r = g = b = 0
             else:
                 col_name = col.__name
-                r, g, b = [clamp(int(c*0xff), 0, 0xff) for c in col.get_rgb()]
+                r, g, b = [clamp(int(c * 0xFF), 0, 0xFF) for c in col.get_rgb()]
             if col_name is None:
-                result += u"%d %d %d\n" % (r, g, b)
+                result += "%d %d %d\n" % (r, g, b)
             else:
-                result += u"%d %d %d    %s\n" % (r, g, b, col_name)
+                result += "%d %d %d    %s\n" % (r, g, b, col_name)
         return result
 
     def __str__(self):
@@ -863,6 +858,7 @@ class Palette (object):
 
 ## Helper functions
 
+
 def _outwards_from(n, i):
     """Search order within the palette, outwards from a given index.
 
@@ -895,13 +891,14 @@ def _color_distance(c1, c2):
     d_cb = c1.Cb - c2.Cb
     d_cr = c1.Cr - c2.Cr
     d_y = c1.Y - c2.Y
-    return ((d_cb**2) + (d_cr**2) + (d_y)**2) ** (1.0/3)
+    return ((d_cb**2) + (d_cr**2) + (d_y) ** 2) ** (1.0 / 3)
 
 
 ## Module testing
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     logging.basicConfig(level=logging.DEBUG)
     import doctest
+
     doctest.testmod()

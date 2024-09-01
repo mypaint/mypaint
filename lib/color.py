@@ -21,20 +21,16 @@ with an adjuster does its type change to match the control's color space.
 
 ## Imports
 
-from __future__ import division, print_function
-import re
 import colorsys
+import re
 
 from lib.gibindings import GdkPixbuf
-
-from lib.pycompat import xrange
-from lib.pycompat import PY3
-
+from lib.pycompat import PY3, xrange
 
 ## Lightweight color objects
 
 
-class UIColor (object):
+class UIColor(object):
     """Base class for color objects which can be manipulated via the UI.
 
     This base provides a common interface allowing concrete subclasses to be
@@ -126,7 +122,7 @@ class UIColor (object):
 
         """
         r, g, b = self.get_rgb()
-        return 0.299*r + 0.587*g + 0.114*b
+        return 0.299 * r + 0.587 * g + 0.114 * b
 
     def to_greyscale(self):
         """Returns a greyscaled version of the color.
@@ -146,9 +142,9 @@ class UIColor (object):
     def to_contrasting(self, k=0.333):
         """Returns a contrasting `UIColor` suitable for drawing.
 
-          >>> col = RGBColor(r=1.0, g=0.8, b=0.2)
-          >>> col != col.to_contrasting()
-          True
+        >>> col = RGBColor(r=1.0, g=0.8, b=0.2)
+        >>> col != col.to_contrasting()
+        True
 
         """
         luma = self.get_luma()
@@ -165,9 +161,9 @@ class UIColor (object):
 
         """
         # Round to 8bpc for comparison
-        rgb1 = [int(c * 0xff) for c in self.get_rgb()]
+        rgb1 = [int(c * 0xFF) for c in self.get_rgb()]
         try:
-            rgb2 = [int(c * 0xff) for c in col.get_rgb()]
+            rgb2 = [int(c * 0xFF) for c in col.get_rgb()]
         except AttributeError:
             return False
         return rgb1 == rgb2
@@ -177,51 +173,47 @@ class UIColor (object):
         #   return ((a_ - b_)**2).sum() < (3*1.0/256)**2
 
     def __copy__(self):
-        """Clones the object using its own constructor; see `copy.copy()`.
-        """
+        """Clones the object using its own constructor; see `copy.copy()`."""
         color_class = type(self)
         return color_class(color=self)
 
     def __deepcopy__(self, memo):
-        """Clones the object using its own constructor; see `copy.deepcopy()`.
-        """
+        """Clones the object using its own constructor; see `copy.deepcopy()`."""
         color_class = type(self)
         return color_class(color=self)
 
     __HEX_PARSE_TABLE = [
-        (re.compile('^(?:#|0x)' + '([0-9a-fA-F]{2})' * 3 + '$'), 0xff),
-        (re.compile('^(?:#|0x)' + '([0-9a-fA-F])' * 3 + '$'), 0xf),
+        (re.compile("^(?:#|0x)" + "([0-9a-fA-F]{2})" * 3 + "$"), 0xFF),
+        (re.compile("^(?:#|0x)" + "([0-9a-fA-F])" * 3 + "$"), 0xF),
     ]
 
     @classmethod
     def new_from_hex_str(class_, hex_str, default=[0.5, 0.5, 0.5]):
-        """Construct from an RGB hex string, e.g. ``#ff0000``.
-        """
+        """Construct from an RGB hex string, e.g. ``#ff0000``."""
         hex_str = str(hex_str)
         r, g, b = default
         for pr, pd in class_.__HEX_PARSE_TABLE:
             m = pr.match(hex_str)
             if m:
-                r, g, b = [float.fromhex(x)/pd for x in m.groups()]
+                r, g, b = [float.fromhex(x) / pd for x in m.groups()]
                 break
         return RGBColor(r, g, b)
 
-    def to_hex_str(self, prefix='#'):
-        """Converts to an RGB hex string of the form ``#RRGGBB``
-        """
-        r, g, b = [int(c * 0xff) for c in self.get_rgb()]
+    def to_hex_str(self, prefix="#"):
+        """Converts to an RGB hex string of the form ``#RRGGBB``"""
+        r, g, b = [int(c * 0xFF) for c in self.get_rgb()]
         return "%s%02x%02x%02x" % (prefix, r, g, b)
 
     def to_fill_pixel(self):
         """Converts to a pixel value for `Gdk.Pixbuf.fill()`.
 
-          >>> col = RGBColor(1,1,1)
-          >>> "%08x" % (col.to_fill_pixel(),)
-          'ffffffff'
+        >>> col = RGBColor(1,1,1)
+        >>> "%08x" % (col.to_fill_pixel(),)
+        'ffffffff'
 
         """
-        r, g, b = [int(c * 0xff) for c in self.get_rgb()]
-        pixel = (r << 24) | (g << 16) | (b << 8) | 0xff
+        r, g, b = [int(c * 0xFF) for c in self.get_rgb()]
+        pixel = (r << 24) | (g << 16) | (b << 8) | 0xFF
         return pixel
 
     @classmethod
@@ -246,32 +238,32 @@ class UIColor (object):
         assert isinstance(data, bytes)
         w, h = pixbuf.get_width(), pixbuf.get_height()
         rowstride = pixbuf.get_rowstride()
-        n_pixels = w*h
+        n_pixels = w * h
         r = g = b = 0
         for y in xrange(h):
             for x in xrange(w):
-                offs = y*rowstride + x*n_channels
+                offs = y * rowstride + x * n_channels
                 if PY3:
                     # bytes=bytes. Indexing produces ints.
                     r += data[offs]
-                    g += data[offs+1]
-                    b += data[offs+2]
+                    g += data[offs + 1]
+                    b += data[offs + 2]
                 else:
                     # bytes=str. Indexing of produces a str of len 1.
                     r += ord(data[offs])
-                    g += ord(data[offs+1])
-                    b += ord(data[offs+2])
+                    g += ord(data[offs + 1])
+                    b += ord(data[offs + 2])
         r = r / n_pixels
         g = g / n_pixels
         b = b / n_pixels
-        return RGBColor(r/255, g/255, b/255)
+        return RGBColor(r / 255, g / 255, b / 255)
 
     def interpolate(self, other, steps):
         """Generator: interpolate between this color and another."""
         raise NotImplementedError
 
 
-class RGBColor (UIColor):
+class RGBColor(UIColor):
     """Additive Red/Green/Blue representation of a color."""
 
     # Base class overrides: make r,g,b attributes read/write
@@ -282,12 +274,12 @@ class RGBColor (UIColor):
     def __init__(self, r=None, g=None, b=None, rgb=None, color=None):
         """Initializes from individual values, or another UIColor
 
-          >>> col1 = RGBColor(1, 0, 1)
-          >>> col2 = RGBColor(r=1, g=0.0, b=1)
-          >>> col1 == col2
-          True
-          >>> RGBColor(color=HSVColor(0.0, 0.0, 0.5))
-          <RGBColor r=0.5000, g=0.5000, b=0.5000>
+        >>> col1 = RGBColor(1, 0, 1)
+        >>> col2 = RGBColor(r=1, g=0.0, b=1)
+        >>> col1 == col2
+        True
+        >>> RGBColor(color=HSVColor(0.0, 0.0, 0.5))
+        <RGBColor r=0.5000, g=0.5000, b=0.5000>
         """
         UIColor.__init__(self)
         if color is not None:
@@ -305,8 +297,11 @@ class RGBColor (UIColor):
         return self.r, self.g, self.b
 
     def __repr__(self):
-        return "<RGBColor r=%0.4f, g=%0.4f, b=%0.4f>" \
-            % (self.r, self.g, self.b)
+        return "<RGBColor r=%0.4f, g=%0.4f, b=%0.4f>" % (
+            self.r,
+            self.g,
+            self.b,
+        )
 
     def interpolate(self, other, steps):
         """RGB interpolation.
@@ -355,15 +350,15 @@ class RGBColor (UIColor):
             return t1 == t2
 
 
-class HSVColor (UIColor):
+class HSVColor(UIColor):
     """Cylindrical Hue/Saturation/Value representation of a color.
 
-      >>> col = HSVColor(0.6, 0.5, 0.4)
-      >>> col.h = 0.7
-      >>> col.s = 0.0
-      >>> col.v = 0.1
-      >>> col.get_rgb()
-      (0.1, 0.1, 0.1)
+    >>> col = HSVColor(0.6, 0.5, 0.4)
+    >>> col.h = 0.7
+    >>> col.s = 0.0
+    >>> col.v = 0.1
+    >>> col.get_rgb()
+    (0.1, 0.1, 0.1)
 
     """
 
@@ -375,12 +370,12 @@ class HSVColor (UIColor):
     def __init__(self, h=None, s=None, v=None, hsv=None, color=None):
         """Initializes from individual values, or another UIColor
 
-          >>> col1 = HSVColor(1.0, 0.5, 0.7)
-          >>> col2 = HSVColor(h=1, s=0.5, v=0.7)
-          >>> col1 == col2
-          True
-          >>> HSVColor(color=RGBColor(0.5, 0.5, 0.5))
-          <HSVColor h=0.0000, s=0.0000, v=0.5000>
+        >>> col1 = HSVColor(1.0, 0.5, 0.7)
+        >>> col2 = HSVColor(h=1, s=0.5, v=0.7)
+        >>> col1 == col2
+        True
+        >>> HSVColor(color=RGBColor(0.5, 0.5, 0.5))
+        <HSVColor h=0.0000, s=0.0000, v=0.5000>
         """
         UIColor.__init__(self)
         if color is not None:
@@ -401,8 +396,11 @@ class HSVColor (UIColor):
         return colorsys.hsv_to_rgb(self.h, self.s, self.v)
 
     def __repr__(self):
-        return "<HSVColor h=%0.4f, s=%0.4f, v=%0.4f>" \
-            % (self.h, self.s, self.v)
+        return "<HSVColor h=%0.4f, s=%0.4f, v=%0.4f>" % (
+            self.h,
+            self.s,
+            self.v,
+        )
 
     def interpolate(self, other, steps):
         """HSV interpolation, sometimes nicer looking than RGB.
@@ -431,7 +429,7 @@ class HSVColor (UIColor):
         hdelta = hb - ha
         # But the shortest distance might pass through zero either antilockwise
         # or clockwise. Smallest magnitude wins.
-        for hdx0 in -(ha+1-hb), (hb+1-ha):
+        for hdx0 in -(ha + 1 - hb), (hb + 1 - ha):
             if abs(hdx0) < abs(hdelta):
                 hdelta = hdx0
         # Interpolate, using shortest angular dist for hue
@@ -480,7 +478,7 @@ class HSVColor (UIColor):
             return t1 == t2
 
 
-class HCYColor (UIColor):
+class HCYColor(UIColor):
     """Cylindrical Hue/Chroma/Luma color, with perceptually weighted luma.
 
     Not an especially common color space. Sometimes referred to as HSY, HSI,
@@ -508,13 +506,13 @@ class HCYColor (UIColor):
     def __init__(self, h=None, c=None, y=None, hcy=None, color=None):
         """Initializes from individual values, or another UIColor
 
-          >>> col1 = HCYColor(0, 0.1, 0.2)
-          >>> col2 = HCYColor(h=0, c=0.1, y=.2)
-          >>> col3 = HCYColor(hcy=[0, 0.1, .2])
-          >>> col1 == col2 and col2 == col3
-          True
-          >>> HCYColor(color=RGBColor(0.5, 0.5, 0.5))
-          <HCYColor h=0.0000, c=0.0000, y=0.5000>
+        >>> col1 = HCYColor(0, 0.1, 0.2)
+        >>> col2 = HCYColor(h=0, c=0.1, y=.2)
+        >>> col3 = HCYColor(hcy=[0, 0.1, .2])
+        >>> col1 == col2 and col2 == col3
+        True
+        >>> HCYColor(color=RGBColor(0.5, 0.5, 0.5))
+        <HCYColor h=0.0000, c=0.0000, y=0.5000>
         """
         UIColor.__init__(self)
         if color is not None:
@@ -552,8 +550,11 @@ class HCYColor (UIColor):
         return self.y
 
     def __repr__(self):
-        return "<HCYColor h=%0.4f, c=%0.4f, y=%0.4f>" \
-            % (self.h, self.c, self.y)
+        return "<HCYColor h=%0.4f, c=%0.4f, y=%0.4f>" % (
+            self.h,
+            self.c,
+            self.y,
+        )
 
     def interpolate(self, other, steps):
         """HCY interpolation.
@@ -584,7 +585,7 @@ class HCYColor (UIColor):
         ha = self.h % 1.0
         hb = other.h % 1.0
         hdelta = hb - ha
-        for hdx0 in -(ha+1-hb), (hb+1-ha):
+        for hdx0 in -(ha + 1 - hb), (hb + 1 - ha):
             if abs(hdx0) < abs(hdelta):
                 hdelta = hdx0
         for step in xrange(steps):
@@ -634,7 +635,7 @@ class HCYColor (UIColor):
             return t1 == t2
 
 
-class YCbCrColor (UIColor):
+class YCbCrColor(UIColor):
     """YUV-type color, using the BT601 definition.
 
     This implementation uses the BT601 Y'CbCr definition. Luma (`Y`) ranges
@@ -673,13 +674,15 @@ class YCbCrColor (UIColor):
         return self.Y
 
     def get_rgb(self):
-        """Gets a raw RGB triple, possibly out of gamut.
-        """
+        """Gets a raw RGB triple, possibly out of gamut."""
         return YCbCr_to_RGB_BT601((self.Y, self.Cb, self.Cr))
 
     def __repr__(self):
-        return "<YCbCrColor Y=%0.4f, Cb=%0.4f, Cr=%0.4f>" \
-            % (self.Y, self.Cb, self.Cr)
+        return "<YCbCrColor Y=%0.4f, Cb=%0.4f, Cr=%0.4f>" % (
+            self.Y,
+            self.Cb,
+            self.Cr,
+        )
 
     def interpolate(self, other, steps):
         """YCbCr interpolation.
@@ -806,23 +809,23 @@ def RGB_to_HCY(rgb):
     r, g, b = rgb
 
     # Luma is just a weighted sum of the three components.
-    y = _HCY_RED_LUMA*r + _HCY_GREEN_LUMA*g + _HCY_BLUE_LUMA*b
+    y = _HCY_RED_LUMA * r + _HCY_GREEN_LUMA * g + _HCY_BLUE_LUMA * b
 
     # Hue. First pick a sector based on the greatest RGB component, then add
     # the scaled difference of the other two RGB components.
     p = max(r, g, b)
     n = min(r, g, b)
-    d = p - n   # An absolute measure of chroma: only used for scaling.
+    d = p - n  # An absolute measure of chroma: only used for scaling.
     if n == p:
         h = 0.0
     elif p == r:
-        h = (g - b)/d
+        h = (g - b) / d
         if h < 0:
             h += 6.0
     elif p == g:
-        h = ((b - r)/d) + 2.0
+        h = ((b - r) / d) + 2.0
     else:  # p==b
-        h = ((r - g)/d) + 4.0
+        h = ((r - g) / d) + 4.0
     h /= 6.0
 
     # Chroma, relative to the RGB gamut envelope.
@@ -831,7 +834,7 @@ def RGB_to_HCY(rgb):
         c = 0.0
     else:
         # For the derivation, see the GLHS paper.
-        c = max((y-n)/y, (p-y)/(1-y))
+        c = max((y - n) / y, (p - y) / (1 - y))
     return h, c, y
 
 
@@ -887,13 +890,13 @@ def HCY_to_RGB(hcy):
 
     # Calculate the RGB components in sorted order
     if tm >= y:
-        p = y + y*c*(1-tm)/tm
-        o = y + y*c*(th-tm)/tm
-        n = y - (y*c)
+        p = y + y * c * (1 - tm) / tm
+        o = y + y * c * (th - tm) / tm
+        n = y - (y * c)
     else:
-        p = y + (1-y)*c
-        o = y + (1-y)*c*(th-tm)/(1-tm)
-        n = y - (1-y)*c*tm/(1-tm)
+        p = y + (1 - y) * c
+        o = y + (1 - y) * c * (th - tm) / (1 - tm)
+        n = y - (1 - y) * c * tm / (1 - tm)
 
     # Back to RGB order
     if h < 1:
@@ -912,11 +915,13 @@ def HCY_to_RGB(hcy):
 
 ## Module testing
 
+
 def _test():
     """Run all doctests in this module"""
     import doctest
+
     doctest.testmod()
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     _test()

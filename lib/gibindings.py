@@ -13,8 +13,6 @@ the correct versions are always specified before import, even when individual
 modules are being loaded in isolation (for purposes of testing).
 """
 
-from __future__ import division, print_function
-
 import gi
 
 gi.require_version("Gdk", "3.0")
@@ -47,6 +45,7 @@ for i in dir(Gdk):
 # A GtkWrapper instance is used as a go-between that only triggers the real
 # import when an attribute of the module is requested.
 
+
 class GtkWrapper(object):
 
     _initialized = False
@@ -54,6 +53,7 @@ class GtkWrapper(object):
     def __getattr__(self, attr):
         # Deferred import
         from gi.repository import Gtk as RealGtk
+
         # Create attributes on this instance reflecting
         # everything in the real proxy module - this also allows the use of the
         # derived python versions of classes and enums in custom properties,

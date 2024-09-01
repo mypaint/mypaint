@@ -10,28 +10,23 @@
 
 ## Imports
 
-from __future__ import division, print_function
 import abc
 
-from lib.gibindings import Gtk
-
-from .pixbuflist import PixbufList
-from . import brushmanager
-from . import brushselectionwindow
-from . import widgets
-from . import spinbox
-from . import windowing
-from lib.observable import event
 import gui.colortools
+from lib.gibindings import Gtk
+from lib.observable import event
 from lib.pycompat import add_metaclass
 
+from . import brushmanager, brushselectionwindow, spinbox, widgets, windowing
+from .pixbuflist import PixbufList
 
 ## Module consts
 
-_DEFAULT_PREFS_ID = u"default"
+_DEFAULT_PREFS_ID = "default"
 
 
 ## Interfaces
+
 
 @add_metaclass(abc.ABCMeta)
 class Advanceable:
@@ -58,12 +53,13 @@ class Advanceable:
 
 ## Class defs
 
-class QuickBrushChooser (Gtk.VBox):
+
+class QuickBrushChooser(Gtk.VBox):
     """A quick chooser widget for brushes"""
 
     ## Class constants
 
-    _PREFS_KEY_TEMPLATE = u"brush_chooser.%s.selected_group"
+    _PREFS_KEY_TEMPLATE = "brush_chooser.%s.selected_group"
     ICON_SIZE = 48
 
     ## Method defs
@@ -78,17 +74,20 @@ class QuickBrushChooser (Gtk.VBox):
         active_group_name = app.preferences.get(self._prefs_key, None)
 
         model = self._make_groups_sb_model()
-        self.groups_sb = spinbox.ItemSpinBox(model, self._groups_sb_changed_cb,
-                                             active_group_name)
+        self.groups_sb = spinbox.ItemSpinBox(
+            model, self._groups_sb_changed_cb, active_group_name
+        )
         active_group_name = self.groups_sb.get_value()
 
         brushes = self.bm.get_group_brushes(active_group_name)
 
         self.brushlist = PixbufList(
-            brushes, self.ICON_SIZE, self.ICON_SIZE,
+            brushes,
+            self.ICON_SIZE,
+            self.ICON_SIZE,
             namefunc=brushselectionwindow.managedbrush_namefunc,
             pixbuffunc=brushselectionwindow.managedbrush_pixbuffunc,
-            idfunc=brushselectionwindow.managedbrush_idfunc
+            idfunc=brushselectionwindow.managedbrush_idfunc,
         )
         self.brushlist.dragging_allowed = False
         self.bm.groups_changed += self._groups_changed_cb
@@ -160,7 +159,7 @@ class QuickBrushChooser (Gtk.VBox):
         self.groups_sb.next()
 
 
-class BrushChooserPopup (windowing.ChooserPopup):
+class BrushChooserPopup(windowing.ChooserPopup):
     """Speedy brush chooser popup"""
 
     def __init__(self, app, prefs_id=_DEFAULT_PREFS_ID):
@@ -176,13 +175,13 @@ class BrushChooserPopup (windowing.ChooserPopup):
         """
         windowing.ChooserPopup.__init__(
             self,
-            app = app,
-            actions = [
-                'ColorChooserPopup',
-                'ColorChooserPopupFastSubset',
-                'BrushChooserPopup',
+            app=app,
+            actions=[
+                "ColorChooserPopup",
+                "ColorChooserPopupFastSubset",
+                "BrushChooserPopup",
             ],
-            config_name = "brush_chooser.%s" % (prefs_id,),
+            config_name="brush_chooser.%s" % (prefs_id,),
         )
         self._chosen_brush = None
         self._chooser = QuickBrushChooser(app, prefs_id=prefs_id)
@@ -214,11 +213,11 @@ class BrushChooserPopup (windowing.ChooserPopup):
         self._chooser.advance()
 
 
-class QuickColorChooser (Gtk.VBox):
+class QuickColorChooser(Gtk.VBox):
     """A quick chooser widget for colors"""
 
     ## Class constants
-    _PREFS_KEY_TEMPLATE = u"color_chooser.%s.selected_adjuster"
+    _PREFS_KEY_TEMPLATE = "color_chooser.%s.selected_adjuster"
     _ALL_ADJUSTER_CLASSES = [
         gui.colortools.HCYWheelTool,
         gui.colortools.HSVWheelTool,
@@ -261,8 +260,9 @@ class QuickColorChooser (Gtk.VBox):
                 )
         self._prefs_key = self._PREFS_KEY_TEMPLATE % (prefs_id,)
         active_page = app.preferences.get(self._prefs_key, None)
-        sb = spinbox.ItemSpinBox(self._spinbox_model, self._spinbox_changed_cb,
-                                 active_page)
+        sb = spinbox.ItemSpinBox(
+            self._spinbox_model, self._spinbox_changed_cb, active_page
+        )
         active_page = sb.get_value()
         self._spinbox = sb
         self._active_adj = self._adjs[active_page]
@@ -300,7 +300,7 @@ class QuickColorChooser (Gtk.VBox):
         self._spinbox.next()
 
 
-class ColorChooserPopup (windowing.ChooserPopup):
+class ColorChooserPopup(windowing.ChooserPopup):
     """Speedy color chooser dialog"""
 
     def __init__(self, app, prefs_id=_DEFAULT_PREFS_ID, single_click=False):
@@ -317,13 +317,13 @@ class ColorChooserPopup (windowing.ChooserPopup):
         """
         windowing.ChooserPopup.__init__(
             self,
-            app = app,
-            actions = [
-                'ColorChooserPopup',
-                'ColorChooserPopupFastSubset',
-                'BrushChooserPopup',
+            app=app,
+            actions=[
+                "ColorChooserPopup",
+                "ColorChooserPopupFastSubset",
+                "BrushChooserPopup",
             ],
-            config_name = u"color_chooser.%s" % (prefs_id,),
+            config_name="color_chooser.%s" % (prefs_id,),
         )
         self._chooser = QuickColorChooser(
             app,

@@ -10,20 +10,20 @@
 
 ## Imports
 
-from __future__ import division, print_function
-from collections import deque
-from warnings import warn
-from copy import deepcopy
 import weakref
+from collections import deque
+from copy import deepcopy
 from gettext import gettext as _
 from logging import getLogger
+from warnings import warn
 
 import lib.layer
 import lib.layer.data
-from . import helpers
-from lib.observable import event
 import lib.stroke
+from lib.observable import event
 from lib.pycompat import unicode
+
+from . import helpers
 
 logger = getLogger(__name__)
 
@@ -31,7 +31,7 @@ logger = getLogger(__name__)
 ## Command stack and action interface
 
 
-class CommandStack (object):
+class CommandStack(object):
     """Undo/redo stack"""
 
     def __init__(self, max_stack_size, **kwargs):
@@ -43,8 +43,10 @@ class CommandStack (object):
         self.stack_updated()
 
     def __repr__(self):
-        return ("<CommandStack undo_len=%d redo_len=%d>" %
-                (len(self.undo_stack), len(self.redo_stack),))
+        return "<CommandStack undo_len=%d redo_len=%d>" % (
+            len(self.undo_stack),
+            len(self.redo_stack),
+        )
 
     def clear(self):
         self._discard_undo()
@@ -148,7 +150,7 @@ class CommandStack (object):
         pass
 
 
-class Command (object):
+class Command(object):
     """A reversible change to the document model
 
     Commands represent alterations made by the user to a document which
@@ -231,8 +233,11 @@ class Command (object):
 
     def _notify_canvas_observers(self, layer_bboxes):
         """Notifies the document's redraw observers"""
-        warn("Layers should issue their own canvas updates",
-             PendingDeprecationWarning, stacklevel=2)
+        warn(
+            "Layers should issue their own canvas updates",
+            PendingDeprecationWarning,
+            stacklevel=2,
+        )
         redraw_bbox = helpers.Rect()
         for layer_bbox in layer_bboxes:
             if layer_bbox.w == 0 and layer_bbox.h == 0:
@@ -243,11 +248,18 @@ class Command (object):
         self.doc.canvas_area_modified(*redraw_bbox)
 
 
-class Brushwork (Command):
+class Brushwork(Command):
     """Some seconds of painting on a layer in a document."""
 
-    def __init__(self, doc, layer_path=None, description=None,
-                 abrupt_start=False, layer=None, **kwds):
+    def __init__(
+        self,
+        doc,
+        layer_path=None,
+        description=None,
+        abrupt_start=False,
+        layer=None,
+        **kwds
+    ):
         """Initializes as an active brushwork command
 
         :param doc: document being updated
@@ -273,7 +285,7 @@ class Brushwork (Command):
         super(Brushwork, self).__init__(doc, **kwds)
         if not (layer_path or layer):
             raise ValueError("Either layer_path or layer must be set")
-        elif (layer_path and layer):
+        elif layer_path and layer:
             raise ValueError("Cannot set both layer_path and layer")
         self._layer = layer
         self._layer_path = layer_path
@@ -299,14 +311,11 @@ class Brushwork (Command):
         time = 0.0
         if self._stroke_seq is not None:
             time = self._stroke_seq.total_painting_time
-        repstr = (
-            "<{cls} {id:#x} {seconds:.03f}s "
-            "{self.description!r}>"
-        ).format(
-            cls = self.__class__.__name__,
-            id = id(self),
-            seconds = time,
-            self = self,
+        repstr = ("<{cls} {id:#x} {seconds:.03f}s " "{self.description!r}>").format(
+            cls=self.__class__.__name__,
+            id=id(self),
+            seconds=time,
+            self=self,
         )
         return repstr
 
@@ -324,7 +333,7 @@ class Brushwork (Command):
         # TRANSLATORS: A short time spent painting / making brushwork.
         # TRANSLATORS: This can correspond to zero or more touches of
         # TRANSLATORS: the physical stylus to the tablet.
-        return _(u"{seconds:.01f}s of painting with {brush_name}").format(
+        return _("{seconds:.01f}s of painting with {brush_name}").format(
             seconds=time,
             brush_name=brush_name,
         )
@@ -370,8 +379,9 @@ class Brushwork (Command):
         """Retrace the last stroke with a new brush"""
         layer = self._target_layer
         assert self._recording_finished, "Call stop_recording() first"
-        assert self._sshot_after_applied, \
-            "command.Brushwork must be applied before being updated"
+        assert (
+            self._sshot_after_applied
+        ), "command.Brushwork must be applied before being updated"
         layer.load_snapshot(self._sshot_before)
         stroke = self._stroke_seq.copy_using_different_brush(brushinfo)
         layer.render_stroke(stroke)
@@ -388,8 +398,9 @@ class Brushwork (Command):
         # during the painting phase.
         model = self.doc
         layer = self._target_layer
-        assert layer is not None, \
-            "Layer with path %r not available" % (self._layer_path,)
+        assert layer is not None, "Layer with path %r not available" % (
+            self._layer_path,
+        )
         if not layer.get_paintable():
             logger.warning(
                 "Brushwork: skipped non-paintable layer %r",
@@ -408,8 +419,18 @@ class Brushwork (Command):
         assert self._sshot_after is None
         self._recording_started = True
 
-    def stroke_to(self, dtime, x, y, pressure, xtilt, ytilt,
-                  viewzoom, viewrotation, barrel_rotation):
+    def stroke_to(
+        self,
+        dtime,
+        x,
+        y,
+        pressure,
+        xtilt,
+        ytilt,
+        viewzoom,
+        viewrotation,
+        barrel_rotation,
+    ):
         """Painting: forward a stroke position update to the model
 
         :param float dtime: Seconds since the last call to this method
@@ -420,7 +441,7 @@ class Brushwork (Command):
         :param float ytilt: Y-axis tilt, ranging from -1.0 to 1.0
         :param float viewzoom: current view zoom level from 0 to 64
         :param float viewrotation; current view rotation from -180.0 to 180.0
-        :param float barrel_rotation: Barrel Rotation of stylus, ranging from 0.0 to 1.0 
+        :param float barrel_rotation: Barrel Rotation of stylus, ranging from 0.0 to 1.0
 
         Stroke data is recorded at this level, but strokes are not
         autosplit here because that would involve the creation of a new
@@ -440,23 +461,41 @@ class Brushwork (Command):
         if self._abrupt_start and not self._abrupt_start_done:
             brush.reset()
             layer.stroke_to(
-                brush, x, y,
+                brush,
+                x,
+                y,
                 0.0,
-                xtilt, ytilt,
+                xtilt,
+                ytilt,
                 10.0,
-                viewzoom, viewrotation, barrel_rotation,
+                viewzoom,
+                viewrotation,
+                barrel_rotation,
             )
             self._abrupt_start_done = True
         # Record and paint this position
         self._stroke_seq.record_event(
             dtime,
-            x, y, pressure,
-            xtilt, ytilt, viewzoom, viewrotation, barrel_rotation,
+            x,
+            y,
+            pressure,
+            xtilt,
+            ytilt,
+            viewzoom,
+            viewrotation,
+            barrel_rotation,
         )
         self.split_due = layer.stroke_to(
             brush,
-            x, y, pressure,
-            xtilt, ytilt, dtime, viewzoom, viewrotation, barrel_rotation,
+            x,
+            y,
+            pressure,
+            xtilt,
+            ytilt,
+            dtime,
+            viewzoom,
+            viewrotation,
+            barrel_rotation,
         )
 
     def stop_recording(self, revert=False):
@@ -508,10 +547,11 @@ class Brushwork (Command):
         layer.add_stroke_shape(self._stroke_seq, self._sshot_before)
         self._sshot_after = layer.save_snapshot()
         self._sshot_after_applied = True  # changes happened before redo()
-        tiles_changed = (not self._stroke_seq.empty)
+        tiles_changed = not self._stroke_seq.empty
         logger.debug(
             "Stopped recording %r: tiles_changed=%r",
-            self, tiles_changed,
+            self,
+            tiles_changed,
         )
         return tiles_changed
 
@@ -519,14 +559,14 @@ class Brushwork (Command):
 ## Concrete command classes
 
 
-class FloodFill (Command):
+class FloodFill(Command):
     """Flood-fill on the current layer"""
 
     display_name = _("Flood Fill")
 
     def __init__(
-            self, doc, fill_args,
-            sample_merged, src_path, make_new_layer, status_cb, **kwds):
+        self, doc, fill_args, sample_merged, src_path, make_new_layer, status_cb, **kwds
+    ):
         """
         Create a new fill command
 
@@ -606,7 +646,7 @@ class FloodFill (Command):
             self.snapshot = None
 
 
-class TrimLayer (Command):
+class TrimLayer(Command):
     """Trim the current layer to the extent of the document frame"""
 
     display_name = _("Trim Layer")
@@ -626,10 +666,10 @@ class TrimLayer (Command):
         layer.load_snapshot(self.before)
 
 
-class UniqLayer (Command):
+class UniqLayer(Command):
     """Remove areas from the current layer that don't alter the backdrop."""
 
-    display_name = _(u"Uniquify Layer Pixels")
+    display_name = _("Uniquify Layer Pixels")
 
     def __init__(self, doc, pixels=False, **kwds):
         super(UniqLayer, self).__init__(doc, **kwds)
@@ -649,10 +689,10 @@ class UniqLayer (Command):
         layer.load_snapshot(self._before)
 
 
-class RefactorGroup (Command):
+class RefactorGroup(Command):
     """Extract common parts of sublayers to a new layer, then delete them."""
 
-    display_name = _(u"Refactor Group")
+    display_name = _("Refactor Group")
 
     def __init__(self, doc, pixels=False, **kwds):
         super(RefactorGroup, self).__init__(doc, **kwds)
@@ -672,7 +712,7 @@ class RefactorGroup (Command):
         layer.load_snapshot(self._before)
 
 
-class ClearLayer (Command):
+class ClearLayer(Command):
     """Clears the current layer"""
 
     display_name = _("Clear Layer")
@@ -692,7 +732,7 @@ class ClearLayer (Command):
         self._before = None
 
 
-class LoadLayer (Command):
+class LoadLayer(Command):
     """Loads a layer from a surface"""
 
     # This is used by Paste layer as well as when loading from a PNG
@@ -727,7 +767,7 @@ class LoadLayer (Command):
             del self.before
 
 
-class NewLayerMergedFromVisible (Command):
+class NewLayerMergedFromVisible(Command):
     """Create a new layer from the merge of all visible layers
 
     Performs a Merge Visible, and inserts the result into the layer
@@ -767,7 +807,7 @@ class NewLayerMergedFromVisible (Command):
         rootstack.current_path = self._old_current_path
 
 
-class MergeVisibleLayers (Command):
+class MergeVisibleLayers(Command):
     """Consolidate all visible layers into one
 
     Deletes all visible layers, but inserts the result of merging them
@@ -785,8 +825,8 @@ class MergeVisibleLayers (Command):
         self._result_layer = None
         self._result_insert_path = None
         self._result_final_path = None
-        self._paths_merged = None    # paths to merge (and remove)
-        self._layers_merged = None   # zip()s with _paths_merged
+        self._paths_merged = None  # paths to merge (and remove)
+        self._layers_merged = None  # zip()s with _paths_merged
 
     def redo(self):
         rootstack = self.doc.layer_stack
@@ -847,7 +887,7 @@ class MergeVisibleLayers (Command):
         rootstack.current_path = self._old_current_path
 
 
-class MergeLayerDown (Command):
+class MergeLayerDown(Command):
     """Merge the current layer and the one below it into a new layer"""
 
     display_name = _("Merge Down")
@@ -891,7 +931,7 @@ class MergeLayerDown (Command):
         rootstack.current_path = self._upper_path
 
 
-class NormalizeLayerMode (Command):
+class NormalizeLayerMode(Command):
     """Normalize a layer's mode & opacity, incorporating its backdrop
 
     If the layer has any non-zero-alpha pixels, they will take on a
@@ -904,8 +944,9 @@ class NormalizeLayerMode (Command):
     def __init__(self, doc, layer=None, path=None, index=None, **kwds):
         super(NormalizeLayerMode, self).__init__(doc, **kwds)
         layers = self.doc.layer_stack
-        self._path = layers.canonpath(layer=layer, path=path,
-                                      index=index, usecurrent=True)
+        self._path = layers.canonpath(
+            layer=layer, path=path, index=index, usecurrent=True
+        )
         self._old_layer = None
         self._old_current_path = None
 
@@ -928,7 +969,7 @@ class NormalizeLayerMode (Command):
         layers.current_path = self._old_current_path
 
 
-class AddLayer (Command):
+class AddLayer(Command):
     """Inserts a layer into the layer stack.
 
     The layer can be supplied at construction time. Alternatively a
@@ -940,9 +981,16 @@ class AddLayer (Command):
 
     """
 
-    def __init__(self, doc, insert_path, name=None,
-                 layer_class=lib.layer.PaintingLayer,
-                 layer=None, is_import=False, **kwds):
+    def __init__(
+        self,
+        doc,
+        insert_path,
+        name=None,
+        layer_class=lib.layer.PaintingLayer,
+        layer=None,
+        is_import=False,
+        **kwds
+    ):
         super(AddLayer, self).__init__(doc, **kwds)
         self._insert_path = insert_path
         self._prev_currentlayer_path = None
@@ -975,7 +1023,7 @@ class AddLayer (Command):
         self._prev_currentlayer_path = None
 
 
-class RemoveLayer (Command):
+class RemoveLayer(Command):
     """Removes the current layer"""
 
     display_name = _("Remove Layer")
@@ -1022,7 +1070,7 @@ class RemoveLayer (Command):
         self._removed_layer = None
 
 
-class SelectLayer (Command):
+class SelectLayer(Command):
     """Select a layer"""
 
     display_name = _("Select Layer")
@@ -1043,7 +1091,7 @@ class SelectLayer (Command):
         layers.set_current_path(self.prev_path)
 
 
-class MoveLayer (Command):
+class MoveLayer(Command):
     """Moves a layer around the canvas
 
     Layer move commands are intended to be manipulated by the UI after
@@ -1069,7 +1117,7 @@ class MoveLayer (Command):
         :param float x0: Reference point X coordinate
         :param float y0: Reference point Y coordinate
         """
-        super(MoveLayer, self). __init__(doc, **kwds)
+        super(MoveLayer, self).__init__(doc, **kwds)
         self._layer_path = layer_path
         layer = self.doc.layer_stack.deepget(layer_path)
         y0 = int(y0)
@@ -1152,7 +1200,7 @@ class MoveLayer (Command):
         self._notify_canvas_observers(redraw_bboxes)
 
 
-class DuplicateLayer (Command):
+class DuplicateLayer(Command):
     """Make an exact copy of the current layer"""
 
     display_name = _("Duplicate Layer")
@@ -1176,7 +1224,7 @@ class DuplicateLayer (Command):
         self._notify_canvas_observers([orig_layer.get_full_redraw_bbox()])
 
 
-class BubbleLayerUp (Command):
+class BubbleLayerUp(Command):
     """Move the current layer up through the stack"""
 
     display_name = _("Move Layer Up")
@@ -1190,7 +1238,7 @@ class BubbleLayerUp (Command):
         layers.bubble_layer_down(layers.current_path)
 
 
-class BubbleLayerDown (Command):
+class BubbleLayerDown(Command):
     """Move the current layer down through the stack"""
 
     display_name = _("Move Layer Down")
@@ -1204,7 +1252,7 @@ class BubbleLayerDown (Command):
         layers.bubble_layer_up(layers.current_path)
 
 
-class RestackLayer (Command):
+class RestackLayer(Command):
     """Move a layer from one position in the stack to another
 
     Layer restacking operations allow layers to be moved inside other
@@ -1238,16 +1286,15 @@ class RestackLayer (Command):
         targ_path = tuple(targ_path)
         rootstack = self.doc.layer_stack
         if lib.layer.path_startswith(targ_path, src_path):
-            raise ValueError("Target path %r is inside source path %r"
-                             % (targ_path, src_path))
+            raise ValueError(
+                "Target path %r is inside source path %r" % (targ_path, src_path)
+            )
         if len(targ_path) == 0:
             raise ValueError("Cannot move a layer to path ()")
         if rootstack.deepget(src_path) is None:
-            raise ValueError("Source path %r does not exist"
-                             % (src_path,))
+            raise ValueError("Source path %r does not exist" % (src_path,))
         if rootstack.deepget(targ_path[:-1]) is None:
-            raise ValueError("Parent of target path %r doesn't exist"
-                             % (targ_path,))
+            raise ValueError("Parent of target path %r doesn't exist" % (targ_path,))
         self._src_path = src_path
         self._src_path_after = None
         self._targ_path = targ_path
@@ -1310,8 +1357,7 @@ class RestackLayer (Command):
         # Remove the layer that was moved
         if self._new_parent:
             assert len(self._new_parent) == 2
-            assert (rootstack.deepget(src_path_after[:-1])
-                    is self._new_parent)
+            assert rootstack.deepget(src_path_after[:-1]) is self._new_parent
             src = self._new_parent[0]
             oldleaf = self._new_parent[1]
             oldleaf_parent = rootstack.deepget(src_path_after[:-2])
@@ -1336,18 +1382,18 @@ class RestackLayer (Command):
         self._notify_canvas_observers(redraw_bboxes)
 
 
-class RenameLayer (Command):
+class RenameLayer(Command):
     """Renames a layer."""
 
     display_name = _("Rename Layer")
 
-    def __init__(self, doc, name, layer=None, path=None, index=None,
-                 **kwds):
+    def __init__(self, doc, name, layer=None, path=None, index=None, **kwds):
         super(RenameLayer, self).__init__(doc, **kwds)
         layers = self.doc.layer_stack
         assert layers.current_path
-        self._path = layers.canonpath(layer=layer, path=path, index=index,
-                                      usecurrent=True)
+        self._path = layers.canonpath(
+            layer=layer, path=path, index=index, usecurrent=True
+        )
         self._new_name = name
         self._old_name = None
 
@@ -1367,15 +1413,15 @@ class RenameLayer (Command):
         self._new_name = name
 
 
-class SetLayerVisibility (Command):
+class SetLayerVisibility(Command):
     """Sets the visibility status of a layer"""
 
-    def __init__(self, doc, visible, layer=None, path=None, index=None,
-                 **kwds):
+    def __init__(self, doc, visible, layer=None, path=None, index=None, **kwds):
         super(SetLayerVisibility, self).__init__(doc, **kwds)
         layers = self.doc.layer_stack
-        self._path = layers.canonpath(layer=layer, path=path, index=index,
-                                      usecurrent=True)
+        self._path = layers.canonpath(
+            layer=layer, path=path, index=index, usecurrent=True
+        )
         self._new_visibility = visible
         self._old_visibility = None
 
@@ -1402,16 +1448,16 @@ class SetLayerVisibility (Command):
             return _("Make Layer Invisible")
 
 
-class SetLayerLocked (Command):
+class SetLayerLocked(Command):
     """Sets the locking status of a layer"""
 
-    def __init__(self, doc, locked, layer=None, path=None, index=None,
-                 **kwds):
+    def __init__(self, doc, locked, layer=None, path=None, index=None, **kwds):
         super(SetLayerLocked, self).__init__(doc, **kwds)
         self.new_locked = locked
         layers = self.doc.layer_stack
-        self._path = layers.canonpath(layer=layer, path=path, index=index,
-                                      usecurrent=True)
+        self._path = layers.canonpath(
+            layer=layer, path=path, index=index, usecurrent=True
+        )
 
     @property
     def layer(self):
@@ -1442,22 +1488,22 @@ class SetLayerLocked (Command):
             return _("Unlock Layer")
 
 
-class SetLayerOpacity (Command):
+class SetLayerOpacity(Command):
     """Sets the opacity of a layer"""
 
-    def __init__(self, doc, opacity, layer=None, path=None, index=None,
-                 **kwds):
+    def __init__(self, doc, opacity, layer=None, path=None, index=None, **kwds):
         super(SetLayerOpacity, self).__init__(doc, **kwds)
         layers = doc.layer_stack
-        self._path = layers.canonpath(layer=layer, path=path, index=index,
-                                      usecurrent=True)
+        self._path = layers.canonpath(
+            layer=layer, path=path, index=index, usecurrent=True
+        )
         self._new_opacity = opacity
         self._old_opacity = None
 
     @property
     def display_name(self):
         percent = self._new_opacity * 100.0
-        return _(u"Set Layer Opacity: %0.1f%%") % (percent,)
+        return _("Set Layer Opacity: %0.1f%%") % (percent,)
 
     @property
     def layer(self):
@@ -1480,15 +1526,15 @@ class SetLayerOpacity (Command):
         layer.opacity = self._old_opacity
 
 
-class SetLayerMode (Command):
+class SetLayerMode(Command):
     """Sets the combining mode for a layer"""
 
-    def __init__(self, doc, mode, layer=None, path=None, index=None,
-                 **kwds):
+    def __init__(self, doc, mode, layer=None, path=None, index=None, **kwds):
         super(SetLayerMode, self).__init__(doc, **kwds)
         layers = self.doc.layer_stack
-        self._path = layers.canonpath(layer=layer, path=path, index=index,
-                                      usecurrent=True)
+        self._path = layers.canonpath(
+            layer=layer, path=path, index=index, usecurrent=True
+        )
         self._new_mode = mode
         self._old_mode = None
         self._old_opacity = None
@@ -1496,8 +1542,8 @@ class SetLayerMode (Command):
     @property
     def display_name(self):
         info = lib.modes.MODE_STRINGS.get(self._new_mode)
-        name = info and info[0] or _(u"Unknown Mode")
-        return _(u"Set Layer Mode: %s") % (name,)
+        name = info and info[0] or _("Unknown Mode")
+        return _("Set Layer Mode: %s") % (name,)
 
     @property
     def layer(self):
@@ -1515,7 +1561,7 @@ class SetLayerMode (Command):
         layer.opacity = self._old_opacity
 
 
-class SetFrameEnabled (Command):
+class SetFrameEnabled(Command):
     """Enable or disable the document frame"""
 
     @property
@@ -1538,7 +1584,7 @@ class SetFrameEnabled (Command):
         self.doc.set_frame_enabled(self.before, user_initiated=False)
 
 
-class UpdateFrame (Command):
+class UpdateFrame(Command):
     """Update frame dimensions"""
 
     display_name = _("Update Frame")
@@ -1567,7 +1613,7 @@ class UpdateFrame (Command):
         self.doc.set_frame_enabled(self.old_enabled, user_initiated=False)
 
 
-class ExternalLayerEdit (Command):
+class ExternalLayerEdit(Command):
     """An edit made in a external application"""
 
     display_name = _("Edit Layer Externally")

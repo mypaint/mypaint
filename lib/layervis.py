@@ -24,16 +24,13 @@ the document changes accordingly. These transitions are undoable.
 
 # Imports:
 
-from __future__ import print_function, division
-
 import logging
 
-from lib.gettext import C_
 import lib.naming
-from lib.observable import event
 from lib.command import Command
+from lib.gettext import C_
+from lib.observable import event
 from lib.pycompat import unicode
-
 
 # Module vars:
 
@@ -41,18 +38,19 @@ logger = logging.getLogger(__name__)
 
 NEW_VIEW_IDENT = C_(
     "layer visibility sets: default name for a user-managed view",
-    u"View",
+    "View",
 )
 
 UNSAVED_VIEW_DISPLAY_NAME = C_(
     "layer visibility sets: text shown when no user-managed view is active",
-    u"No active view",
+    "No active view",
 )
 
 
 # Data model classes:
 
-class _View (object):
+
+class _View(object):
     """Lightweight representation of a layer viewing context.
 
     Views are represented as essentially just a tag.  They intentionally
@@ -133,7 +131,7 @@ class _View (object):
         return cls(**jsf)
 
 
-class _NamedViewsSet (object):
+class _NamedViewsSet(object):
     """A set of _View objects that enforces unique naming."""
 
     def __init__(self):
@@ -145,7 +143,8 @@ class _NamedViewsSet (object):
         if view in self.objs:
             return
         name = lib.naming.make_unique_name(
-            view.name, self.names,
+            view.name,
+            self.names,
             always_number=NEW_VIEW_IDENT,
         )
         assert name not in self.names
@@ -171,7 +170,7 @@ class _NamedViewsSet (object):
         self.names.clear()
 
 
-class LayerViewManager (object):
+class LayerViewManager(object):
     """Controls which layers are visible in a document with named views."""
 
     _SETTINGS_KEY = "layervis"
@@ -204,8 +203,9 @@ class LayerViewManager (object):
         self.current_view_changed += self._current_view_changed_cb
 
         # Save and load.
-        docmodel.settings.sync_pending_changes \
-            += self._doc_settings_sync_pending_changes_cb
+        docmodel.settings.sync_pending_changes += (
+            self._doc_settings_sync_pending_changes_cb
+        )
         docmodel.settings.modified += self._doc_settings_modified_cb
 
     # Loading and saving via the doc settings dictionary:
@@ -526,7 +526,8 @@ class LayerViewManager (object):
         popped_tag = self._views.names.pop(old_name)
         assert popped_tag is view
         new_name = lib.naming.make_unique_name(
-            name, self._views.names,
+            name,
+            self._views.names,
             always_number=NEW_VIEW_IDENT,
         )
         self._views.names[new_name] = popped_tag
@@ -549,7 +550,8 @@ class LayerViewManager (object):
 
 # Command classes:
 
-class AddLayerView (Command):
+
+class AddLayerView(Command):
     """Adds a new layer visibility set, capturing what's visible now."""
 
     def __init__(self, doc, name=None, **kwds):
@@ -576,11 +578,11 @@ class AddLayerView (Command):
     def display_name(self):
         return C_(
             "layer views: commands: add",
-            u"Add Layer View",
+            "Add Layer View",
         )
 
 
-class RemoveActiveLayerView (Command):
+class RemoveActiveLayerView(Command):
     """Removes the active layer view."""
 
     def __init__(self, doc, **kwds):
@@ -601,11 +603,11 @@ class RemoveActiveLayerView (Command):
     def display_name(self):
         return C_(
             "layer views: commands: remove",
-            u"Remove Layer View",
+            "Remove Layer View",
         )
 
 
-class RenameActiveLayerView (Command):
+class RenameActiveLayerView(Command):
     """Renames the active layer view."""
 
     def __init__(self, doc, name, **kwds):
@@ -630,11 +632,11 @@ class RenameActiveLayerView (Command):
     def display_name(self):
         return C_(
             "layer views: commands: remove",
-            u"Remove Layer View",
+            "Remove Layer View",
         )
 
 
-class ActivateLayerView (Command):
+class ActivateLayerView(Command):
     """Makes a different layer view active."""
 
     def __init__(self, doc, name, **kwds):
@@ -660,18 +662,17 @@ class ActivateLayerView (Command):
     def display_name(self):
         return C_(
             "layer views: commands: activate",
-            u"Activate Layer View “{name}”",
+            "Activate Layer View “{name}”",
         ).format(
             name=self._next_view_name,
         )
 
 
-class SetActiveLayerViewLocked (Command):
+class SetActiveLayerViewLocked(Command):
     """Sets the locked state of the active layer view."""
 
     def __init__(self, doc, locked, **kwds):
-        super(SetActiveLayerViewLocked, self) \
-            .__init__(doc, locked=locked, **kwds)
+        super(SetActiveLayerViewLocked, self).__init__(doc, locked=locked, **kwds)
         self._lvm = doc.layer_view_manager
         self._old_locked = None
         self._new_locked = locked
@@ -689,10 +690,10 @@ class SetActiveLayerViewLocked (Command):
         if self._new_locked:
             return C_(
                 "layer views: commands: set active view's lock flag",
-                u"Lock Layer View",
+                "Lock Layer View",
             )
         else:
             return C_(
                 "layer views: commands: set active view's lock flag",
-                u"Unlock Layer View",
+                "Unlock Layer View",
             )

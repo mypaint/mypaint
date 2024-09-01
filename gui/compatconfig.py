@@ -11,31 +11,30 @@
 class CompatFileBehaviorConfig:
 
     # Key for the behavior setting in user preferences
-    SETTING = 'compat_behavior_when_unknown'
+    SETTING = "compat_behavior_when_unknown"
 
     # Setting options
-    ALWAYS_1X = 'always-1.x'
-    ALWAYS_2X = 'always-2.x'
-    UNLESS_PIGMENT_LAYER_1X = 'unless-pigment-layer-1.x'
+    ALWAYS_1X = "always-1.x"
+    ALWAYS_2X = "always-2.x"
+    UNLESS_PIGMENT_LAYER_1X = "unless-pigment-layer-1.x"
 
 
 CFBC = CompatFileBehaviorConfig
 
 # Keys for settings in the user preferences
-DEFAULT_COMPAT = 'default_compatibility_mode'
-COMPAT_SETTINGS = 'compability_settings'
+DEFAULT_COMPAT = "default_compatibility_mode"
+COMPAT_SETTINGS = "compability_settings"
 
 # Keys for compat mode sub-options in the user preferences
-PIGMENT_BY_DEFAULT = 'pigment_on_by_default'
-PIGMENT_LAYER_BY_DEFAULT = 'pigment_layer_is_default'
+PIGMENT_BY_DEFAULT = "pigment_on_by_default"
+PIGMENT_LAYER_BY_DEFAULT = "pigment_layer_is_default"
 
-C1X = '1.x'
-C2X = '2.x'
+C1X = "1.x"
+C2X = "2.x"
 
 # Default compatibility settings
 DEFAULT_CONFIG = {
-    CFBC.SETTING:
-    CFBC.UNLESS_PIGMENT_LAYER_1X,
+    CFBC.SETTING: CFBC.UNLESS_PIGMENT_LAYER_1X,
     DEFAULT_COMPAT: C2X,
     COMPAT_SETTINGS: {
         C1X: {

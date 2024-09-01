@@ -10,27 +10,25 @@
 
 ## Imports
 
-from __future__ import division, print_function
-import math
 import functools
-
-from lib.gibindings import Gtk
-from lib.gibindings import Gdk
-from lib.gibindings import GLib
+import math
 from gettext import gettext as _
+
 import cairo
 
-from gui.tileddrawwidget import TiledDrawWidget  # noqa
+import gui.cursor
 import gui.mode
+import gui.style
+import lib.helpers
+from gui.tileddrawwidget import TiledDrawWidget  # noqa
+from lib.alg import LineType, intersection_of_vector_and_poly, pairwise
 from lib.color import RGBColor
-from lib.alg import pairwise, intersection_of_vector_and_poly, LineType
+from lib.document import DEFAULT_RESOLUTION
+from lib.gibindings import Gdk, GLib, Gtk
+from lib.helpers import Rect
+
 from . import uicolor
 from .overlays import Overlay
-import lib.helpers
-from lib.helpers import Rect
-from lib.document import DEFAULT_RESOLUTION
-import gui.cursor
-import gui.style
 
 
 class _EditZone:
@@ -47,15 +45,14 @@ class _EditZone:
 _SIDES = (_EditZone.LEFT, _EditZone.TOP, _EditZone.RIGHT, _EditZone.BOTTOM)
 
 
-class FrameEditMode (gui.mode.ScrollableModeMixin,
-                     gui.mode.DragMode):
+class FrameEditMode(gui.mode.ScrollableModeMixin, gui.mode.DragMode):
     """Stackable interaction mode for editing the document frame.
 
     The frame editing mode has an associated settings panel.
     """
 
     # Class-level configuration
-    ACTION_NAME = 'FrameEditMode'
+    ACTION_NAME = "FrameEditMode"
 
     pointer_behavior = gui.mode.Behavior.EDIT_OBJECTS
     scroll_behavior = gui.mode.Behavior.CHANGE_VIEW
@@ -66,10 +63,10 @@ class FrameEditMode (gui.mode.ScrollableModeMixin,
 
     unmodified_persist = True
     permitted_switch_actions = {
-        'ShowPopupMenu',
-        'RotateViewMode',
-        'ZoomViewMode',
-        'PanViewMode',
+        "ShowPopupMenu",
+        "RotateViewMode",
+        "ZoomViewMode",
+        "PanViewMode",
     }
 
     EDGE_SENSITIVITY = 10  # pixels
@@ -99,10 +96,10 @@ class FrameEditMode (gui.mode.ScrollableModeMixin,
 
     @classmethod
     def get_name(cls):
-        return _(u"Edit Frame")
+        return _("Edit Frame")
 
     def get_usage(cls):
-        return _(u"Adjust the document frame")
+        return _("Adjust the document frame")
 
     def __init__(self, **kwds):
         """Initialize."""
@@ -110,7 +107,7 @@ class FrameEditMode (gui.mode.ScrollableModeMixin,
         self._zone = None
         self._orig_frame = None
         self._start_model_pos = None
-        self.remove_button_pos = None   # updated by overlay's paint()
+        self.remove_button_pos = None  # updated by overlay's paint()
         self._click_info = None
         self._entered_before = False
         self._change_timeout_id = None
@@ -168,8 +165,8 @@ class FrameEditMode (gui.mode.ScrollableModeMixin,
         # Set the frame size to the smallest diagonal
         shortest = min(math.hypot(_x - cx, _y - cy) for _x, _y in corners[:2])
         frame_size = int(round(max(100, shortest)))
-        x = int(round(cx - frame_size/2.0))
-        y = int(round(cy - frame_size/2.0))
+        x = int(round(cx - frame_size / 2.0))
+        y = int(round(cy - frame_size / 2.0))
         tdw.doc.set_frame([x, y, frame_size, frame_size], user_initiated=True)
 
     def leave(self, **kwds):
@@ -184,7 +181,7 @@ class FrameEditMode (gui.mode.ScrollableModeMixin,
         # Test button hits
         if self.remove_button_pos:
             xbd, ybd = self.remove_button_pos
-            dist = math.hypot(xbd-xd, ybd-yd)
+            dist = math.hypot(xbd - xd, ybd - yd)
             if dist <= gui.style.FLOATING_BUTTON_RADIUS:
                 return _EditZone.REMOVE_FRAME
         # Click anywhere when the frame is off to create a new one
@@ -195,16 +192,13 @@ class FrameEditMode (gui.mode.ScrollableModeMixin,
         x, y = tdw.display_to_model(xd, yd)
         # Frame top-left and bottom-right, in model coords
         fx1, fy1, fw, fh = model.get_frame()
-        fx2, fy2 = fx1+fw, fy1+fh
+        fx2, fy2 = fx1 + fw, fy1 + fh
         # Calculate the maximum permissible distance from the edges
         dx1, dy1 = tdw.display_to_model(0, 0)
         dx2, dy2 = tdw.display_to_model(0, self.EDGE_SENSITIVITY)
-        max_d = math.hypot(dx1-dx2, dy1-dy2)
+        max_d = math.hypot(dx1 - dx2, dy1 - dy2)
         cursor_is_outside = (
-            x < fx1 - max_d or
-            x > fx2 + max_d or
-            y < fy1 - max_d or
-            y > fy2 + max_d
+            x < fx1 - max_d or x > fx2 + max_d or y < fy1 - max_d or y > fy2 + max_d
         )
         if cursor_is_outside:
             return _EditZone.OUTSIDE
@@ -261,44 +255,44 @@ class FrameEditMode (gui.mode.ScrollableModeMixin,
         # Centre of frame, in display coordinates
         model = self.doc.model
         fx, fy, fw, fh = model.get_frame()
-        cx, cy = fx+(fw/2.0), fy+(fh/2.0)
+        cx, cy = fx + (fw / 2.0), fy + (fh / 2.0)
         cxd, cyd = tdw.model_to_display(cx, cy)
 
         # A reference point, reflecting the side or edge where the pointer is
         rx, ry = cx, cy
         if zone & _EditZone.RIGHT:
-            rx = fx+fw
+            rx = fx + fw
         elif zone & _EditZone.LEFT:
             rx = fx
         if zone & _EditZone.BOTTOM:
-            ry = fy+fh
+            ry = fy + fh
         elif zone & _EditZone.TOP:
             ry = fy
         rxd, ryd = tdw.model_to_display(rx, ry)
 
         # Angle of the line from (cx, cy) to (rx, ry), in display space
         # First constrain to {0..2pi}
-        theta = math.atan2((ryd-cyd), (rxd-cxd))
-        while theta < 2*math.pi:
-            theta += 2*math.pi
-        theta %= 2*math.pi
+        theta = math.atan2((ryd - cyd), (rxd - cxd))
+        while theta < 2 * math.pi:
+            theta += 2 * math.pi
+        theta %= 2 * math.pi
         assert theta >= 0
-        assert theta < 2*math.pi
+        assert theta < 2 * math.pi
 
         # The cursor chosen reflects how the chosen edge can be moved.
         cursors = [
-            (1, self.cursor_move_w_e),     # right side
-            (3, self.cursor_move_nw_se),   # bottom right corner
-            (5, self.cursor_move_n_s),     # bottom side
-            (7, self.cursor_move_ne_sw),   # bottom left corner
-            (9, self.cursor_move_w_e),     # left side
+            (1, self.cursor_move_w_e),  # right side
+            (3, self.cursor_move_nw_se),  # bottom right corner
+            (5, self.cursor_move_n_s),  # bottom side
+            (7, self.cursor_move_ne_sw),  # bottom left corner
+            (9, self.cursor_move_w_e),  # left side
             (11, self.cursor_move_nw_se),  # top left corner
-            (13, self.cursor_move_n_s),    # top side
+            (13, self.cursor_move_n_s),  # top side
             (15, self.cursor_move_ne_sw),  # top right corner
-            (17, self.cursor_move_w_e),    # right side
+            (17, self.cursor_move_w_e),  # right side
         ]
         for i, cursor in cursors:
-            if theta < i*(2.0/16)*math.pi:
+            if theta < i * (2.0 / 16) * math.pi:
                 self.inactive_cursor = cursor
                 self.active_cursor = cursor
                 tdw.set_override_cursor(self.inactive_cursor)
@@ -378,11 +372,11 @@ class FrameEditMode (gui.mode.ScrollableModeMixin,
                 if mdx:
                     x += mdx * fdx
                     if mdw == -1:  # compensating: user is dragging left edge
-                        x = min(x, x0+w-self._MIN_FRAME_SIZE)
+                        x = min(x, x0 + w - self._MIN_FRAME_SIZE)
                 if mdy:
                     y += mdy * fdy
                     if mdh == -1:  # compensating: user is dragging top edge
-                        y = min(y, y0+h-self._MIN_FRAME_SIZE)
+                        y = min(y, y0 + h - self._MIN_FRAME_SIZE)
                 if mdw:
                     w += mdw * fdx
                     w = max(w, self._MIN_FRAME_SIZE)
@@ -390,8 +384,7 @@ class FrameEditMode (gui.mode.ScrollableModeMixin,
                     h += mdh * fdy
                     h = max(h, self._MIN_FRAME_SIZE)
                 self._queue_frame_change(model, (x, y, w, h))
-        return super(FrameEditMode, self).drag_update_cb(
-            tdw, event, ev_x, ev_y, dx, dy)
+        return super(FrameEditMode, self).drag_update_cb(tdw, event, ev_x, ev_y, dx, dy)
 
     def _queue_frame_change(self, model, new_frame):
         """Queue a frame change (that may trigger a redraw)"""
@@ -418,13 +411,14 @@ class FrameEditMode (gui.mode.ScrollableModeMixin,
         return cls._OPTIONS_WIDGET
 
 
-class FrameEditOptionsWidget (Gtk.Grid):
+class FrameEditOptionsWidget(Gtk.Grid):
     """An options widget for directly editing frame values"""
 
     def __init__(self):
         super(FrameEditOptionsWidget, self).__init__()
 
         from gui.application import get_app
+
         self.app = get_app()
 
         self.callbacks_active = False
@@ -435,72 +429,71 @@ class FrameEditOptionsWidget (Gtk.Grid):
         dpi = docmodel.get_resolution()
 
         self.width_adj = UnitAdjustment(
-            w, upper=32000, lower=1,
-            step_increment=1, page_increment=128,
-            dpi=dpi
+            w,
+            upper=32000,
+            lower=1,
+            step_increment=1,
+            page_increment=128,
+            dpi=dpi,
         )
         self.height_adj = UnitAdjustment(
-            h, upper=32000, lower=1,
-            step_increment=1, page_increment=128,
-            dpi=dpi
+            h,
+            upper=32000,
+            lower=1,
+            step_increment=1,
+            page_increment=128,
+            dpi=dpi,
         )
         self.dpi_adj = Gtk.Adjustment(
-            value=dpi, upper=9600, lower=1,
+            value=dpi,
+            upper=9600,
+            lower=1,
             step_increment=76,  # hack: 3 clicks 72->300
-            page_increment=dpi)
+            page_increment=dpi,
+        )
 
-        frame_overlays = list(filter(
-            lambda o: isinstance(o, FrameOverlay),
-            self.app.doc.tdw.display_overlays))
+        frame_overlays = list(
+            filter(
+                lambda o: isinstance(o, FrameOverlay),
+                self.app.doc.tdw.display_overlays,
+            )
+        )
         assert len(frame_overlays) == 1, "Should be exactly 1 frame overlay!"
         self._overlay = frame_overlays[0]
 
         docmodel.frame_updated += self._frame_updated_cb
 
         self._init_ui()
-        self.width_adj.connect('value-changed',
-                               self.on_size_adjustment_changed)
-        self.height_adj.connect('value-changed',
-                                self.on_size_adjustment_changed)
-        self.dpi_adj.connect('value-changed',
-                             self.on_dpi_adjustment_changed)
+        self.width_adj.connect("value-changed", self.on_size_adjustment_changed)
+        self.height_adj.connect("value-changed", self.on_size_adjustment_changed)
+        self.dpi_adj.connect("value-changed", self.on_dpi_adjustment_changed)
 
     def _init_ui(self):
 
-        height_label = self._new_key_label(_('Height:'))
-        width_label = self._new_key_label(_('Width:'))
-        dpi_label1 = self._new_key_label(_('Resolution:'))
+        height_label = self._new_key_label(_("Height:"))
+        width_label = self._new_key_label(_("Width:"))
+        dpi_label1 = self._new_key_label(_("Resolution:"))
 
-        dpi_label2 = self._new_key_label(_('DPI'))
-        dpi_label2.set_tooltip_text(
-            _("Dots Per Inch (really Pixels Per Inch)")
-        )
+        dpi_label2 = self._new_key_label(_("DPI"))
+        dpi_label2.set_tooltip_text(_("Dots Per Inch (really Pixels Per Inch)"))
 
-        color_label = self._new_key_label(_('Color:'))
+        color_label = self._new_key_label(_("Color:"))
 
         height_entry = Gtk.SpinButton(
-            adjustment=self.height_adj,
-            climb_rate=0.25,
-            digits=0
+            adjustment=self.height_adj, climb_rate=0.25, digits=0
         )
         height_entry.set_vexpand(False)
         height_entry.set_hexpand(True)
         self.height_adj.set_spin_button(height_entry)
 
         width_entry = Gtk.SpinButton(
-            adjustment=self.width_adj,
-            climb_rate=0.25,
-            digits=0
+            adjustment=self.width_adj, climb_rate=0.25, digits=0
         )
         width_entry.set_vexpand(False)
         width_entry.set_hexpand(True)
         self.width_adj.set_spin_button(width_entry)
 
-        dpi_entry = Gtk.SpinButton(
-            adjustment=self.dpi_adj,
-            climb_rate=0.0,
-            digits=0
-        )
+        dpi_entry = Gtk.SpinButton(adjustment=self.dpi_adj, climb_rate=0.0, digits=0)
         dpi_entry.set_vexpand(False)
         dpi_entry.set_hexpand(True)
 
@@ -519,7 +512,7 @@ class FrameEditOptionsWidget (Gtk.Grid):
         for unit in sorted(UnitAdjustment.CONVERT_UNITS.keys()):
             unit_combobox.append_text(_Unit.STRINGS[unit])
         unit_combobox.set_active(_Unit.PX)
-        unit_combobox.connect('changed', self.on_unit_changed)
+        unit_combobox.connect("changed", self.on_unit_changed)
         unit_combobox.set_hexpand(False)
         unit_combobox.set_vexpand(False)
         self._unit_combobox = unit_combobox
@@ -534,7 +527,7 @@ class FrameEditOptionsWidget (Gtk.Grid):
         self.enable_button = Gtk.CheckButton()
         frame_toggle_action = self.app.find_action("FrameToggle")
         self.enable_button.set_related_action(frame_toggle_action)
-        self.enable_button.set_label(_('Enabled'))
+        self.enable_button.set_label(_("Enabled"))
         self.attach(self.enable_button, 0, row, 3, 1)
 
         row += 1
@@ -559,23 +552,26 @@ class FrameEditOptionsWidget (Gtk.Grid):
         self.attach(color_label, 0, row, 1, 1)
         self.attach(color_button, 1, row, 3, 1)
 
-        crop_layer_button = Gtk.Button(label=_('Set Frame to Layer'))
-        crop_layer_button.set_tooltip_text(_("Set frame to the extents of "
-                                             "the current layer"))
-        crop_document_button = Gtk.Button(label=_('Set Frame to Document'))
-        crop_document_button.set_tooltip_text(_("Set frame to the combination "
-                                                "of all layers"))
-        crop_layer_button.connect('clicked', self.crop_frame_cb,
-                                  'CropFrameToLayer')
-        crop_document_button.connect('clicked', self.crop_frame_cb,
-                                     'CropFrameToDocument')
+        crop_layer_button = Gtk.Button(label=_("Set Frame to Layer"))
+        crop_layer_button.set_tooltip_text(
+            _("Set frame to the extents of " "the current layer")
+        )
+        crop_document_button = Gtk.Button(label=_("Set Frame to Document"))
+        crop_document_button.set_tooltip_text(
+            _("Set frame to the combination " "of all layers")
+        )
+        crop_layer_button.connect("clicked", self.crop_frame_cb, "CropFrameToLayer")
+        crop_document_button.connect(
+            "clicked", self.crop_frame_cb, "CropFrameToDocument"
+        )
 
         trim_button = Gtk.Button()
         trim_action = self.app.find_action("TrimLayer")
         trim_button.set_related_action(trim_action)
-        trim_button.set_label(_('Trim Layer to Frame'))
-        trim_button.set_tooltip_text(_("Trim parts of the current layer "
-                                       "which lie outside the frame"))
+        trim_button.set_label(_("Trim Layer to Frame"))
+        trim_button.set_tooltip_text(
+            _("Trim parts of the current layer " "which lie outside the frame")
+        )
 
         row += 1
         self.attach(crop_layer_button, 0, row, 3, 1)
@@ -609,9 +605,9 @@ class FrameEditOptionsWidget (Gtk.Grid):
 
     def crop_frame_cb(self, button, command):
         model = self.app.doc.model
-        if command == 'CropFrameToLayer':
+        if command == "CropFrameToLayer":
             model.set_frame_to_current_layer(user_initiated=True)
-        elif command == 'CropFrameToDocument':
+        elif command == "CropFrameToDocument":
             model.set_frame_to_document(user_initiated=True)
 
     def _color_set_cb(self, colorbutton):
@@ -634,8 +630,7 @@ class FrameEditOptionsWidget (Gtk.Grid):
         self.height_adj.update_px_value()
         width = int(self.width_adj.get_px_value())
         height = int(self.height_adj.get_px_value())
-        self.app.doc.model.update_frame(width=width, height=height,
-                                        user_initiated=True)
+        self.app.doc.model.update_frame(width=width, height=height, user_initiated=True)
 
     def on_dpi_adjustment_changed(self, adjustment):
         """Update the resolution used to calculate framesize in px."""
@@ -657,7 +652,8 @@ class FrameEditOptionsWidget (Gtk.Grid):
         self.height_adj.set_px_value(h)
         self.callbacks_active = False
 
-class FrameOverlay (Overlay):
+
+class FrameOverlay(Overlay):
     """Overlay showing the frame, and edit boxes if in FrameEditMode
 
     This is a display-space overlay, since the edit boxes need to be drawn with
@@ -712,18 +708,17 @@ class FrameOverlay (Overlay):
         tdw = self.doc.tdw
         # Canvas rectangle - regular and offset
         self._canvas_rect = Rect.new_from_gdk_rectangle(tdw.get_allocation())
-        self._canvas_rect_offset = self._canvas_rect.expanded(
-            self.OUTLINE_WIDTH * 4)
+        self._canvas_rect_offset = self._canvas_rect.expanded(self.OUTLINE_WIDTH * 4)
         # Frame corners in model coordinates
         x, y, w, h = tuple(self.doc.model.get_frame())
-        corners = [(x, y), (x+w, y), (x+w, y+h), (x, y+h)]
+        corners = [(x, y), (x + w, y), (x + w, y + h), (x, y + h)]
         # Pixel-aligned frame corners in display space
         d_corners = [tdw.model_to_display(mx, my) for mx, my in corners]
         pxoffs = 0.5 if (self.OUTLINE_WIDTH % 2) else 0.0
         self._prev_display_corners = self._display_corners
         self._display_corners = tuple(
-            (int(x) + pxoffs, int(y) + pxoffs)
-            for x, y in d_corners)
+            (int(x) + pxoffs, int(y) + pxoffs) for x, y in d_corners
+        )
         # Position of the button for disabling/deleting the frame
         # Placed near the center of the frame, clamped to the viewport,
         # with an offset so it does not cover visually small frames
@@ -731,7 +726,8 @@ class FrameOverlay (Overlay):
         xs, ys = zip(*d_corners)
         r = gui.style.FLOATING_BUTTON_RADIUS
         tx, ty = self._canvas_rect.expanded(-2 * r).clamped_point(
-            sum(xs) / 4.0, sum(ys) / 4.0)
+            sum(xs) / 4.0, sum(ys) / 4.0
+        )
         self._trash_btn_pos = tx, ty
         r += 6  # margin for drop shadows
         self._prev_disable_button_rectangle = self._disable_button_rectangle
@@ -747,10 +743,15 @@ class FrameOverlay (Overlay):
         l_type = LineType.SEGMENT
         cx, cy, cw, ch = self._canvas_rect
         canvas_corners = (
-            (cx, cy), (cx + cw, cy), (cx + cw, cy + ch), (cx, cy + ch))
+            (cx, cy),
+            (cx + cw, cy),
+            (cx + cw, cy + ch),
+            (cx, cy + ch),
+        )
         intersections = [
             intersection_of_vector_and_poly(canvas_corners, p1, p2, l_type)
-            for p1, p2 in pairwise(d_corners)]
+            for p1, p2 in pairwise(d_corners)
+        ]
 
         self._prev_rectangles = self._new_rectangles
         self._new_rectangles = [(), (), (), ()]
@@ -874,7 +875,8 @@ class FrameOverlay (Overlay):
                 col = gui.style.EDITABLE_ITEM_COLOR
             gui.drawutils.render_round_floating_color_chip(
                 cr=cr,
-                x=x, y=y,
+                x=x,
+                y=y,
                 color=col,
                 radius=gui.style.DRAGGABLE_POINT_HANDLE_SIZE,
             )
@@ -887,7 +889,8 @@ class FrameOverlay (Overlay):
         bx, by = self._trash_btn_pos
         gui.drawutils.render_round_floating_button(
             cr=cr,
-            x=bx, y=by,
+            x=bx,
+            y=by,
             color=button_color,
             radius=gui.style.FLOATING_BUTTON_RADIUS,
             pixbuf=self._trash_icon(),
@@ -912,10 +915,10 @@ class _Unit:
     MM = 3
 
     STRINGS = {
-        PX: _('px'),
-        IN: _('in'),
-        CM: _('cm'),
-        MM: _('mm'),
+        PX: _("px"),
+        IN: _("in"),
+        CM: _("cm"),
+        MM: _("mm"),
     }
 
 
@@ -929,14 +932,24 @@ class UnitAdjustment(Gtk.Adjustment):
         _Unit.MM: (25.4, 5000, 1, 1, 10, 0),
     }
 
-    def __init__(self, value=0, lower=0, upper=0, step_increment=0,
-                 page_increment=0, page_size=0, dpi=DEFAULT_RESOLUTION):
+    def __init__(
+        self,
+        value=0,
+        lower=0,
+        upper=0,
+        step_increment=0,
+        page_increment=0,
+        page_size=0,
+        dpi=DEFAULT_RESOLUTION,
+    ):
         Gtk.Adjustment.__init__(
-            self, value=value, lower=lower,
+            self,
+            value=value,
+            lower=lower,
             upper=upper,
             step_increment=step_increment,
             page_increment=page_increment,
-            page_size=page_size
+            page_size=page_size,
         )
         self.px_value = value
         self.unit_value = value
