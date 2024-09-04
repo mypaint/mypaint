@@ -90,10 +90,10 @@ class _View:
             locked="locked" if self._locked else "unlocked",
         )
 
-    def __str__(self):
+    def __bytes__(self):
         return self._name.encode("unicode_escape")
 
-    def __unicode__(self):
+    def __str__(self):
         return self._name
 
     def __eq__(self, other):
