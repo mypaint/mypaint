@@ -767,12 +767,7 @@ class Palette:
 
     ## Dumping and cloning
 
-    def __unicode__(self):
-        """Py2-era serialization as a Unicode string.
-
-        Used by the Py3 __str__() while we are in transition.
-
-        """
+    def __str__(self):
         result = "GIMP Palette\n"
         if self._name is not None:
             result += "Name: %s\n" % self._name
@@ -791,11 +786,6 @@ class Palette:
             else:
                 result += "%d %d %d    %s\n" % (r, g, b, col_name)
         return result
-
-    def __str__(self):
-        """Py3: serialize as str (=Unicode). Py2: as bytes (lossy!)."""
-        s = self.__unicode__()
-        return s
 
     def __copy__(self):
         clone = Palette()
