@@ -610,24 +610,6 @@ def grouper(iterable, n, fillvalue=None):
     return itertools.zip_longest(*args, fillvalue=fillvalue)
 
 
-def casefold(s):
-    """Converts a unicode string into a case-insensitively comparable form.
-
-    Forward-compat marker for things that should be .casefold() in
-    Python 3, but which need to be .lower() in Python2.
-
-    :param str s: The string to convert.
-    :rtype: str
-    :returns: The converted string.
-
-    >>> casefold("Xyz") == u'xyz'
-    True
-
-    """
-    s = str(s)
-    return s.casefold()
-
-
 def _test():
     import doctest
 

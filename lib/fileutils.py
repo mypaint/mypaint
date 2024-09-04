@@ -20,7 +20,6 @@ import logging
 import shutil
 import unicodedata
 
-import lib.helpers
 from lib.pycompat import unicode
 
 from lib.gibindings import GLib
@@ -288,20 +287,18 @@ def safename(s, fragment=False):
     if not fragment:
         # Certain whole-filenames are reserved on Windows.
         reserved = (
-            lib.helpers.casefold(
-                """
+            """
             NUL CON PRN AUX
             COM1 COM2 COM3 COM4 COM5 COM6 COM7 COM8 COM9
             LPT1 LPT2 LPT3 LPT4 LPT5 LPT6 LPT7 LPT8 LPT9
-        """
-            )
+            """.casefold()
             .strip()
             .split()
         )
 
         # A blank name is invalid for all systems.
         reserved += [""]
-        if lib.helpers.casefold(s) in reserved:
+        if s.casefold() in reserved:
             s = "_" + s
 
         # Windows file names cannot end with a dot or a space.
