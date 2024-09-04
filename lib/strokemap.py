@@ -130,7 +130,7 @@ class StrokeShape:
         self.tasks.finish_all()
         data = b""
         for (tx, ty), tile in self.strokemap.items():
-            compressed_bitmap = tile.to_bytes()
+            compressed_bitmap = bytes(tile)
             tx = int(tx + translate_x)
             ty = int(ty + translate_y)
             data += struct.pack(">iiI", tx, ty, len(compressed_bitmap))
@@ -453,8 +453,8 @@ class _Tile:
         """Initialize from raw compressed zlib bitmap data.
 
         >>> for i, m in enumerate(_Tile._mocks()):
-        ...     logger.debug("Restoring from to_bytes() of mock tile %d", i)
-        ...     t = _Tile.new_from_compressed_bitmap(m.to_bytes())
+        ...     logger.debug("Restoring from bytes() of mock tile %d", i)
+        ...     t = _Tile.new_from_compressed_bitmap(bytes(m))
 
         """
         tile = cls()
@@ -480,24 +480,19 @@ class _Tile:
         # Can this result always be treated as read-only?
         return array
 
-    def to_bytes(self):
+    def __bytes__(self):
         """Convert to a bytestring which is storable in "v2" strokemaps.
 
         >>> for i, m in enumerate(_Tile._mocks()):
-        ...     s = m.to_bytes()
+        ...     s = bytes(m)
         ...     assert isinstance(s, bytes), \\
-        ...         "item i=%r to_bytes() is %r, not bytes" % (i, type(s))
+        ...         "item i=%r bytes() is %r, not bytes" % (i, type(s))
 
         """
         if self._all:
             return self._ZDATA_ONES
         else:
             return self._zdata
-
-    def to_string(self):
-        """Deprecated alias for to_bytes()."""
-        warn("Please use to_bytes() instead here.", DeprecationWarning)
-        return self.to_bytes()
 
     def write_to_surface_tile_array(self, rgba, _c=(1 << 15) / 4, _a=(1 << 15) / 2):
         """Write to a surface's RGBA tile."""
@@ -510,17 +505,6 @@ class _Tile:
             rgba[:, :, 0] = rgba[:, :, 3] // 2
             rgba[:, :, 1] = rgba[:, :, 3] // 2
             rgba[:, :, 2] = rgba[:, :, 3] // 2
-
-    def __str__(self):
-        """Deprecated stringification. Do not use.
-
-        Do not use this method, because in Py3 you get unicode strings.
-        In Py2, the returned value is a bytes string.
-
-        """
-        warn("Do not use str(). Use to_bytes() instead.", DeprecationWarning)
-        bstr = self.to_bytes()
-        return bstr.decode("utf-8")
 
     def __repr__(self):
         """String representation (summary only)
