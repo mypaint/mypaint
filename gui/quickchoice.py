@@ -169,7 +169,7 @@ class BrushChooserPopup(windowing.ChooserPopup):
         """Initialize.
 
         :param gui.application.Application app: main app instance
-        :param unicode prefs_id: prefs identifier for the chooser
+        :param str prefs_id: prefs identifier for the chooser
 
         The prefs identifier forms part of preferences key which store
         layout and which page of the chooser is selected. It should
@@ -310,7 +310,7 @@ class ColorChooserPopup(windowing.ChooserPopup):
         """Initialize.
 
         :param gui.application.Application app: main app instance
-        :param unicode prefs_id: prefs identifier for the chooser
+        :param str prefs_id: prefs identifier for the chooser
         :param bool single_click: limit to just the single-click adjusters
 
         The prefs identifier forms part of preferences key which store

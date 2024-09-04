@@ -20,7 +20,6 @@ from lib.gibindings import Gtk
 import lib.document
 import lib.helpers
 import lib.errors
-from lib.pycompat import unicode
 
 logger = logging.getLogger(__name__)
 
@@ -113,8 +112,8 @@ class Presenter:
                 thumb = lib.helpers.scale_proportionally(thumb, s, s)
                 thumb = lib.helpers.pixbuf_thumbnail(thumb, s, s, alpha=True)
             desc = autosave.get_description()
-            assert isinstance(desc, unicode)
-            assert isinstance(autosave.path, unicode)
+            assert isinstance(desc, str)
+            assert isinstance(autosave.path, str)
             self._liststore.append((thumb, desc, autosave.path))
         return autosaves
 
@@ -165,7 +164,7 @@ class Presenter:
         # They'll be given a new working doc & cache automatically.
         if error:
             self._app.message_dialog(
-                unicode(error),
+                str(error),
                 title=_("Backup Recovery Failed"),
                 investigate_dir=error.investigate_dir,
                 investigate_str=_("Open the Backup’s Folder…"),
@@ -205,9 +204,9 @@ class Presenter:
         if iter is None:
             return None
         path = model.get_value(iter, self._LISTSTORE_PATH_COLUMN)
-        if not isinstance(path, unicode):
+        if not isinstance(path, str):
             path = path.decode("utf-8")
-        assert isinstance(path, unicode)
+        assert isinstance(path, str)
         if not os.path.isdir(path):
             return None
         return lib.document.AutosaveInfo.new_for_path(path)

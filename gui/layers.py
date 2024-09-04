@@ -21,7 +21,6 @@ from lib.gettext import gettext as _
 from lib.gettext import C_
 from gui.layerprops import make_preview
 import gui.drawutils
-from lib.pycompat import unicode
 
 from lib.gibindings import Gtk
 from lib.gibindings import Gdk
@@ -1189,7 +1188,7 @@ def _test():
     view_scroll.set_size_request(-1, 100)
 
     win = Gtk.Window()
-    win.set_title(unicode(__package__))
+    win.set_title(str(__package__))
     win.connect("destroy", Gtk.main_quit)
     win.add(view_scroll)
     win.set_default_size(300, 500)

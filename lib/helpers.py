@@ -23,7 +23,6 @@ from lib.gettext import C_
 from . import mypaintlib
 import lib.pixbuf
 import lib.glib
-from lib.pycompat import unicode
 
 logger = logging.getLogger(__name__)
 
@@ -338,7 +337,7 @@ def freedesktop_thumbnail(filename, pixbuf=None, force=False):
             logger.warning(
                 "thumb: cache file %r looks corrupt (%r). " "It will be regenerated.",
                 fn,
-                unicode(e),
+                str(e),
             )
             pixbuf = None
         else:
@@ -501,7 +500,7 @@ def zipfile_writestr(z, arcname, data):
     """Write a string into a zipfile entry, with standard permissions
 
     :param zipfile.ZipFile z: A zip file open for write.
-    :param unicode arcname: Name of the file entry to add.
+    :param str arcname: Name of the file entry to add.
     :param bytes data: Content to add.
 
     Work around bad permissions with the standard
@@ -562,7 +561,7 @@ def fmt_time_period_abbr(t):
 
     :param int t: A positive number of seconds
     :returns: short localized string
-    :rtype: unicode
+    :rtype: str
 
     The result looks like like "<minutes>m<seconds>s",
     or just "<seconds>s".

@@ -12,7 +12,7 @@
 
 MyPaint is strict about using Unicode internally for everything, but
 when GLib returns a filename, all hell can break loose (the data isn't
-unicode, and may not even be UTF-8). This module works around that.
+str, and may not even be UTF-8). This module works around that.
 
 """
 
@@ -22,8 +22,6 @@ unicode, and may not even be UTF-8). This module works around that.
 import logging
 import sys
 
-from lib.pycompat import unicode
-
 from lib.gibindings import GLib
 
 logger = logging.getLogger(__name__)
@@ -32,16 +30,16 @@ logger = logging.getLogger(__name__)
 ## File path getter functions
 
 
-def filename_to_unicode(opsysstring):
-    """Converts a str representing a filename from GLib to unicode.
+def filename_to_str(opsysstring):
+    """Converts a bytes representing a filename from GLib to str.
 
     :param bytes opsysstring: a string in the (GLib) encoding for filenames
     :returns: the converted filename
-    :rtype: unicode|str
+    :rtype: str
 
-    >>> filename_to_unicode(b'/ascii/only/path') == u'/ascii/only/path'
+    >>> filename_to_str(b'/ascii/only/path') == u'/ascii/only/path'
     True
-    >>> filename_to_unicode(None) is None
+    >>> filename_to_str(None) is None
     True
 
     This is just a more Pythonic wrapper around g_filename_to_utf8() for
@@ -49,9 +47,9 @@ def filename_to_unicode(opsysstring):
     the typelib annotations for it. It is intended for cleaning up the
     output of certain GLib functions.
 
-    Currently, if you're using Python 3 and the input is already unicode
+    Currently, if you're using Python 3 and the input is already str
     then this function assumes that GLib+GI have already done the work,
-    and that the unicode string was correct. You get the same string
+    and that the str string was correct. You get the same string
     back.
 
     For Python 2, this accepts only "bytes" string input. If we find a
@@ -62,9 +60,9 @@ def filename_to_unicode(opsysstring):
     if opsysstring is None:
         return None
 
-    # Let's assume that if the string is already unicode under Python 3,
+    # Let's assume that if the string is already str under Python 3,
     # then it's already correct.
-    if isinstance(opsysstring, unicode):
+    if isinstance(opsysstring, str):
         return opsysstring
 
     # On Windows, they're always UTF-8 regardless.
@@ -81,7 +79,7 @@ def filename_to_unicode(opsysstring):
     # See https://github.com/mypaint/mypaint/issues/634
     ustring = None
 
-    # The sensible, modern case! Byte strings in, unicode strings
+    # The sensible, modern case! Byte strings in, str strings
     # out hopefully, and the C func's arguments are correctly
     # [out]-annotated. It works like this as of...
     #
@@ -140,27 +138,27 @@ def filename_to_unicode(opsysstring):
 
 
 def get_user_config_dir():
-    """Like g_get_user_config_dir(), but always unicode"""
+    """Like g_get_user_config_dir(), but always str"""
     d_fs = GLib.get_user_config_dir()
-    return filename_to_unicode(d_fs)
+    return filename_to_str(d_fs)
 
 
 def get_user_data_dir():
-    """Like g_get_user_data_dir(), but always unicode"""
+    """Like g_get_user_data_dir(), but always str"""
     d_fs = GLib.get_user_data_dir()
-    return filename_to_unicode(d_fs)
+    return filename_to_str(d_fs)
 
 
 def get_user_cache_dir():
-    """Like g_get_user_cache_dir(), but always unicode"""
+    """Like g_get_user_cache_dir(), but always str"""
     d_fs = GLib.get_user_cache_dir()
-    return filename_to_unicode(d_fs)
+    return filename_to_str(d_fs)
 
 
 def get_user_special_dir(d_id):
-    """Like g_get_user_special_dir(), but always unicode"""
+    """Like g_get_user_special_dir(), but always str"""
     d_fs = GLib.get_user_special_dir(d_id)
-    return filename_to_unicode(d_fs)
+    return filename_to_str(d_fs)
 
 
 ## First-import cache forcing
@@ -236,8 +234,7 @@ def filename_from_uri(uri):
     >>> abspath1 = os.path.abspath(relpath)
     >>> uri = filename_to_uri(abspath1)
     >>> abspath2, hostname = filename_from_uri(uri)
-    >>> unicode = str
-    >>> isinstance(abspath2, unicode)
+    >>> isinstance(abspath2, str)
     True
     >>> abspath2.replace('\\\\', "/") == abspath1.replace('\\\\', "/")
     True
@@ -260,7 +257,7 @@ def filename_from_uri(uri):
         abspath = g_filename_from_uri(uri, "")
         hostname = None
     assert not hostname, "Only URIs without hostnames are supported."
-    return (filename_to_unicode(abspath), None)
+    return (filename_to_str(abspath), None)
 
 
 ## Module testing

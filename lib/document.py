@@ -48,7 +48,6 @@ import lib.xml
 import lib.glib
 import lib.feedback
 import lib.layervis
-from lib.pycompat import unicode
 
 logger = logging.getLogger(__name__)
 
@@ -112,7 +111,7 @@ _AUTOSAVE_INFO_FIELDS = (
 class AutosaveInfo(namedtuple("AutosaveInfo", _AUTOSAVE_INFO_FIELDS)):
     """Information about an autosave dir.
 
-    :ivar unicode path: Full path to the autosave directory itself
+    :ivar str path: Full path to the autosave directory itself
     :ivar datetime.datetime last_modified: When its data was last changed
     :ivar GdkPixbuf.Pixbuf thumbnail: 256x256 pixel thumbnail, or None
     :ivar int num_layers: how many data layers exist in the doc
@@ -126,8 +125,8 @@ class AutosaveInfo(namedtuple("AutosaveInfo", _AUTOSAVE_INFO_FIELDS)):
 
     @classmethod
     def new_for_path(cls, path):
-        if not isinstance(path, unicode):
-            raise ValueError("path argument must be unicode")
+        if not isinstance(path, str):
+            raise ValueError("path argument must be str")
         if not os.path.isdir(path):
             raise ValueError("Autosave folder %r does not exist", path)
         has_data = os.path.isdir(os.path.join(path, "data"))
@@ -189,7 +188,7 @@ class AutosaveInfo(namedtuple("AutosaveInfo", _AUTOSAVE_INFO_FIELDS)):
     def get_description(self):
         """Human-readable description of the autosave
 
-        :rtype: unicode
+        :rtype: str
 
         """
         fmt_time = lib.helpers.fmt_time_period_abbr
@@ -393,7 +392,7 @@ class Document:
             prefix=CACHE_DOC_SUBDIR_PREFIX,
             dir=app_cache_root,
         )
-        if not isinstance(doc_cache_dir, unicode):
+        if not isinstance(doc_cache_dir, str):
             doc_cache_dir = doc_cache_dir.decode(sys.getfilesystemencoding())
         logger.debug("Created working-doc cache dir %r", doc_cache_dir)
         self._cache_dir = doc_cache_dir
@@ -453,7 +452,7 @@ class Document:
 
         The settings dict is conserved when saving and loading
         OpenRaster files. Note however that a round-trip converts
-        strings and dict keys to unicode objects.
+        strings and dict keys to str objects.
 
         >>> import tempfile, shutil, os.path
         >>> tmpdir = tempfile.mkdtemp()
@@ -1536,14 +1535,14 @@ class Document:
             result = load_method(filename, **kwargs)
         except (GObject.GError, IOError) as e:
             logger.exception("Error when loading %r", filename)
-            error_str = unicode(e)
+            error_str = str(e)
         except Exception as e:
             logger.exception("Failed to load %r", filename)
             tmpl = C_(
                 "Document IO: loading errors",
                 "{error_loading_common}\n\n" "Reason: {reason}\n\n" "{see_logs}",
             )
-            error_kwargs["reason"] = unicode(e)
+            error_kwargs["reason"] = str(e)
             error_str = tmpl.format(**error_kwargs)
         if error_str:
             raise FileHandlingError(error_str)
@@ -1914,7 +1913,7 @@ class Document:
             raise FileHandlingError(
                 tmpl.format(
                     app_cache_root=app_cache_dir,
-                    reason=unicode(e),
+                    reason=str(e),
                     see_logs=_ERROR_SEE_LOGS_LINE,
                 ),
                 investigate_dir=doc_cache_dir,
@@ -1927,8 +1926,8 @@ class Document:
     ):
         """Load from an OpenRaster-style folder.
 
-        :param unicode oradir: Directory with a .ORA-like structure
-        :param unicode cache_dir: Doc cache for storing layer revs etc.
+        :param str oradir: Directory with a .ORA-like structure
+        :param str cache_dir: Doc cache for storing layer revs etc.
         :param progress: Unsized progress object: updates UI.
         :type progress: lib.feedback.Progress or None
         :param bool retain_autosave_info: Restore unsaved time etc.
@@ -2012,7 +2011,7 @@ def _save_layers_to_new_orazip(
     """Save a root layer stack to a new OpenRaster zipfile
 
     :param lib.layer.RootLayerStack root_stack: what to save
-    :param unicode filename: where to save
+    :param str filename: where to save
     :param tuple bbox: area to save, None to use the inherent data bbox
     :param int xres: nominal X resolution for the doc
     :param int yres: nominal Y resolution for the doc
@@ -2046,7 +2045,7 @@ def _save_layers_to_new_orazip(
     progress.items = 100
 
     tempdir = tempfile.mkdtemp(suffix="mypaint", prefix="save")
-    if not isinstance(tempdir, unicode):
+    if not isinstance(tempdir, str):
         tempdir = tempdir.decode(sys.getfilesystemencoding())
 
     orazip = zipfile.ZipFile(
@@ -2151,7 +2150,7 @@ def get_app_cache_root():
     """Get the app-specific cache root dir, creating it if needed.
 
     :returns: The cache folder root for the app.
-    :rtype: unicode
+    :rtype: str
 
     Document-specific cache folders go inside this.
 
@@ -2161,7 +2160,7 @@ def get_app_cache_root():
     if not os.path.exists(app_cache_root):
         logger.debug("Creating %r", app_cache_root)
         os.makedirs(app_cache_root)
-    assert isinstance(app_cache_root, unicode)
+    assert isinstance(app_cache_root, str)
     return app_cache_root
 
 

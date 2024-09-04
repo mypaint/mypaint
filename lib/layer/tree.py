@@ -1197,7 +1197,7 @@ class RootLayerStack(group.LayerStack):
         """Get a unique name for a layer to use
 
         :param LayerBase layer: Any layer
-        :rtype: unicode
+        :rtype: str
         :returns: A unique name
 
         The returned name is guaranteed not to occur in the tree.  This

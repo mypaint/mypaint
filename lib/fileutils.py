@@ -20,8 +20,6 @@ import logging
 import shutil
 import unicodedata
 
-from lib.pycompat import unicode
-
 from lib.gibindings import GLib
 from lib.gibindings import Gio
 
@@ -38,15 +36,15 @@ VIA_TEMPFILE_BACKUP_COPY_SUFFIX = "~"
 ## Utility funcs
 
 
-def expanduser_unicode(s):
-    """Expands a ~/ on the front of a unicode path, where meaningful.
+def expanduser_str(s):
+    """Expands a ~/ on the front of a path, where meaningful.
 
-    :param s: path to expand, coercable to unicode
+    :param s: path to expand, coercable to str
     :returns: The expanded path
-    :rtype: unicode
+    :rtype: str
 
     This doesn't do anything on the Windows platform other than coerce
-    its argument to unicode. On other platforms, it converts a "~"
+    its argument to str. On other platforms, it converts a "~"
     component on the front of a relative path to the user's absolute
     home, like os.expanduser().
 
@@ -54,7 +52,7 @@ def expanduser_unicode(s):
     implemented here too.
 
     """
-    s = unicode(s)
+    s = str(s)
     # The sys.getfilesystemencoding() on Win32 (mbcs) is for encode
     # only, and isn't roundtrippable. Luckily ~ is not meaningful on
     # Windows, and MyPaint uses a better default for the scrap prefix on
@@ -236,7 +234,7 @@ def _test():
 
 
 def safename(s, fragment=False):
-    """Returns a safe filename based on its unicode-string argument.
+    """Returns a safe filename based on its argument.
 
     Returns a safe filename or filename fragment based on an arbitrary
     string. The name generated in this way should be good for all OSes.
@@ -244,7 +242,7 @@ def safename(s, fragment=False):
     Slashes, colons and other special characters will be stripped. The
     string will have its leading and trailing whitespace trimmed.
 
-    :param unicode s: The string to convert.
+    :param str s: The string to convert.
     :param bool fragment: Name will never be used as a complete file name.
 
     Normally, extra checks are applied that assume the returned name
@@ -274,7 +272,7 @@ def safename(s, fragment=False):
 
     """
     # A little cleanup first
-    s = unicode(s)
+    s = str(s)
     s = unicodedata.normalize("NFKC", s)
     s = s.strip()
 

@@ -25,7 +25,6 @@ from lib.brushsettings import settings_dict
 from lib.document import Document
 from lib.layer.data import SimplePaintingLayer
 from lib.observable import event
-from lib.pycompat import unicode
 
 import gui.cursor
 
@@ -210,7 +209,7 @@ class InteractionMode(metaclass=ModeRegistry):
     def get_name(cls):
         """Returns a short human-readable description of the mode.
 
-        :rtype: unicode
+        :rtype: str
 
         This is used for status bar messages, and potentially elsewhere before
         the mode has been instantiated.  All concrete subclasses should
@@ -222,12 +221,12 @@ class InteractionMode(metaclass=ModeRegistry):
         words).  Do not use trailing punctuation.
 
         """
-        return unicode(cls.__name__)
+        return str(cls.__name__)
 
     def get_usage(self):
         """Returns a medium-length usage message for the mode.
 
-        :rtype: unicode
+        :rtype: str
 
         This is used for status bar messages.  All concrete subclasses should
         override this.  The default return value is an empty string.
@@ -685,7 +684,7 @@ class BrushworkModeMixin(InteractionMode):
         """Begins a new segment of active brushwork for a model
 
         :param Document model: The model to begin work on
-        :param unicode description: Optional description of the work
+        :param str description: Optional description of the work
         :param bool abrupt: Tail out/in abruptly with faked zero pressure.
         :param SimplePaintingLayer layer: explicit target layer.
 

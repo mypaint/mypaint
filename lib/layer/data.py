@@ -42,7 +42,6 @@ import lib.autosave
 import lib.xml
 import lib.feedback
 from . import rendering
-from lib.pycompat import unicode
 
 
 logger = logging.getLogger(__name__)
@@ -684,7 +683,7 @@ class FileBackedLayer(SurfaceBackedLayer, core.ExternallyEditable):
         if not os.path.isdir(revisions_dir):
             os.makedirs(revisions_dir)
         self._workfile = _ManagedFile(
-            unicode(tmp_filename),
+            str(tmp_filename),
             move=True,
             dir=revisions_dir,
         )
@@ -713,7 +712,7 @@ class FileBackedLayer(SurfaceBackedLayer, core.ExternallyEditable):
         if not os.path.isdir(revisions_dir):
             os.makedirs(revisions_dir)
         self._workfile = _ManagedFile(
-            unicode(os.path.join(oradir, src)),
+            str(os.path.join(oradir, src)),
             copy=True,
             dir=revisions_dir,
         )
@@ -760,7 +759,7 @@ class FileBackedLayer(SurfaceBackedLayer, core.ExternallyEditable):
         elem = self._get_stackxml_element("layer", x, y)
         # Pick a suitable name to store under.
         self._ensure_valid_working_file()
-        src_path = unicode(self._workfile)
+        src_path = str(self._workfile)
         src_rootname, src_ext = os.path.splitext(src_path)
         src_ext = src_ext.lower()
         storename = self._make_refname("layer", path, src_ext)
@@ -768,7 +767,7 @@ class FileBackedLayer(SurfaceBackedLayer, core.ExternallyEditable):
         # Archive (but do not remove) the managed tempfile
         orazip.write(src_path, storepath)
         # Return details of what was written.
-        elem.attrib["src"] = unicode(storepath)
+        elem.attrib["src"] = str(storepath)
         return elem
 
     def queue_autosave(self, oradir, taskproc, manifest, bbox, **kwargs):
@@ -780,7 +779,7 @@ class FileBackedLayer(SurfaceBackedLayer, core.ExternallyEditable):
         elem = self._get_stackxml_element("layer", x, y)
         # Pick a suitable name to store under.
         self._ensure_valid_working_file()
-        src_path = unicode(self._workfile)
+        src_path = str(self._workfile)
         src_rootname, src_ext = os.path.splitext(src_path)
         src_ext = src_ext.lower()
         final_basename = self.autosave_uuid + src_ext
@@ -805,7 +804,7 @@ class FileBackedLayer(SurfaceBackedLayer, core.ExternallyEditable):
             self.autosave_dirty = False
         # Return details of what gets written.
         manifest.add(final_relpath)
-        elem.attrib["src"] = unicode(final_relpath)
+        elem.attrib["src"] = str(final_relpath)
         return elem
 
     ## Editing via external apps
@@ -816,11 +815,11 @@ class FileBackedLayer(SurfaceBackedLayer, core.ExternallyEditable):
             return
         self._ensure_valid_working_file()
         self._edit_tempfile = _ManagedFile(
-            unicode(self._workfile),
+            str(self._workfile),
             copy=True,
             dir=self.external_edits_dir,
         )
-        return unicode(self._edit_tempfile)
+        return str(self._edit_tempfile)
 
     def load_from_external_edit_tempfile(self, tempfile_path):
         """Load content from an external-edit tempfile"""
@@ -886,17 +885,17 @@ class _ManagedFile:
     destroyed. If you need a fresh copy to work on, the standard copy()
     implementation handles that in the way you'd expect.
 
-    The underlying filename can be accessed by converting to `unicode`.
+    The underlying filename can be accessed by converting to `str`.
 
     """
 
     def __init__(self, file_path, copy=False, move=False, dir=None):
         """Initialize, taking control of an unmanaged file or a copy
 
-        :param unicode file_path: File to manage or manage a copy of
+        :param str file_path: File to manage or manage a copy of
         :param bool copy: Copy first, and manage the copy
         :param bool move: Move first, and manage under the new name
-        :param unicode dir: Target folder for move or copy.
+        :param str dir: Target folder for move or copy.
 
         The file can be automatically copied or renamed first,
         in which case the new file is managed instead of the original.
@@ -909,7 +908,7 @@ class _ManagedFile:
         attempted from the main thread.
 
         """
-        assert isinstance(file_path, unicode)
+        assert isinstance(file_path, str)
         assert os.path.isfile(file_path)
         if dir:
             assert os.path.isdir(dir)
@@ -930,7 +929,7 @@ class _ManagedFile:
 
     def __deepcopy__(self, memo):
         """Deep-copying a _ManagedFile copies the file"""
-        orig_path = unicode(self)
+        orig_path = str(self)
         clone_path = self._get_file_to_manage(orig_path, copy=True)
         logger.debug(
             "_ManagedFile: cloned %r as %r within %r",
@@ -960,7 +959,7 @@ class _ManagedFile:
             dir = orig_dir
         new_unique_path = None
         while new_unique_path is None:
-            new_rootname = unicode(uuid.uuid4())
+            new_rootname = str(uuid.uuid4())
             new_basename = new_rootname + orig_ext
             new_path = os.path.join(dir, new_basename)
             if os.path.exists(new_path):  # yeah, paranoia
@@ -978,11 +977,11 @@ class _ManagedFile:
         return self.__unicode__()
 
     def __bytes__(self):
-        raise NotImplementedError("Use unicode strings for file names.")
+        raise NotImplementedError("Use str strings for file names.")
 
     def __unicode__(self):
         file_path = os.path.join(self._dir, self._basename)
-        assert isinstance(file_path, unicode)
+        assert isinstance(file_path, str)
         return file_path
 
     def __repr__(self):
@@ -990,7 +989,7 @@ class _ManagedFile:
 
     def __del__(self):
         try:
-            file_path = unicode(self)
+            file_path = str(self)
         except Exception:
             logger.exception(
                 "_ManagedFile: cleanup of incomplete object. "
@@ -1727,7 +1726,7 @@ class PaintingLayer(StrokemappedPaintingLayer, core.ExternallyEditable):
             return
         tmp_filename = os.path.join(
             self.external_edits_dir,
-            "%s%s" % (unicode(uuid.uuid4()), ".png"),
+            "%s%s" % (str(uuid.uuid4()), ".png"),
         )
         # Overwrite, saving only the data area.
         # Record the data area for later.
@@ -1776,7 +1775,7 @@ def _write_strokemap_stroke(f, stroke, brush2id, dx, dy):
     b = stroke.brush_string
     if b not in brush2id:
         brush2id[b] = len(brush2id)
-        if isinstance(b, unicode):
+        if isinstance(b, str):
             b = b.encode("utf-8")
         b = zlib.compress(b)
         f.write(b"b")

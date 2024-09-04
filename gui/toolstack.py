@@ -25,7 +25,6 @@ from . import objfactory
 from .widgets import borderless_button
 from .windowing import clear_focus
 from lib.gettext import C_
-from lib.pycompat import unicode
 
 logger = logging.getLogger(__name__)
 
@@ -1161,14 +1160,14 @@ class ToolStackWindow(Gtk.Window):
 
     def update_title(self, tool_widget_titles):
         """Update the title from a list of strings"""
-        titles = [unicode(s) for s in tool_widget_titles]
+        titles = [str(s) for s in tool_widget_titles]
         workspace = self.stack.workspace
         if workspace is not None:
-            title_sep = unicode(workspace.floating_window_title_separator)
+            title_sep = str(workspace.floating_window_title_separator)
             title = title_sep.join(titles)
-            title_suffix = unicode(workspace.floating_window_title_suffix)
+            title_suffix = str(workspace.floating_window_title_suffix)
             if title_suffix:
-                title += unicode(title_suffix)
+                title += str(title_suffix)
             logger.debug('Renamed floating window title to "%s"', title)
             self.set_title(title)
 
@@ -1209,14 +1208,14 @@ def _tool_widget_get_title(widget):
 
     :param widget: a tool widget
     :type widget: Gtk.Widget
-    :rtype: unicode
+    :rtype: str
 
     """
     for attr in ("tool_widget_title", "__gtype_name__"):
         title = getattr(widget, attr, None)
         if title is not None:
-            return unicode(title)
-    return unicode(widget.__class__.__name__)
+            return str(title)
+    return str(widget.__class__.__name__)
 
 
 def _tool_widget_get_icon(widget, icon_size):

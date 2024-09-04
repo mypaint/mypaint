@@ -34,10 +34,9 @@ from lib import mypaintlib
 from lib.gettext import ngettext
 from lib.gettext import C_
 import lib.glib
-from lib.glib import filename_to_unicode
+from lib.glib import filename_to_str
 import lib.xml
 import lib.feedback
-from lib.pycompat import unicode
 
 logger = logging.getLogger(__name__)
 
@@ -206,7 +205,7 @@ class _IOProgressUI:
 
         :param f: A list of filenames, or a single filename.
         :returns: A files_summary value for the constructor.
-        :rtype: unicode|str
+        :rtype: str
 
         """
         if isinstance(f, tuple) or isinstance(f, list):
@@ -216,7 +215,7 @@ class _IOProgressUI:
             return ngettext("{n} file", "{n} files", nfiles).format(
                 n=nfiles,
             )
-        elif isinstance(f, bytes) or isinstance(f, unicode):
+        elif isinstance(f, bytes) or isinstance(f, str):
             if isinstance(f, bytes):
                 f = f.decode("utf-8")
             return C_(
@@ -235,14 +234,14 @@ class _IOProgressUI:
 
         :param app: The top-level MyPaint application object.
         :param str op_type: What kind of operation is about to happen.
-        :param unicode files-summary: User-visible descripion of files.
+        :param str files-summary: User-visible descripion of files.
         :param bool use_statusbar: Show statusbar messages for feedback.
         :param bool use_dialogs: Whether to use dialogs for feedback.
 
         """
         self._app = app
 
-        files_summary = unicode(files_summary)
+        files_summary = str(files_summary)
         op_type = str(op_type)
         if op_type not in self._OP_DURATION_TEMPLATES:
             raise ValueError("Unknown operation type %r" % (op_type,))
@@ -325,7 +324,7 @@ class _IOProgressUI:
             logger.exception(
                 "IO failed (user-facing explanations: %s / %s)",
                 self._fail_msg,
-                unicode(e),
+                str(e),
             )
             if self._use_statusbar:
                 statusbar.remove_all(cid)
@@ -334,7 +333,7 @@ class _IOProgressUI:
                 self._app.message_dialog(
                     title=self._fail_dialog_title,
                     text=self._fail_msg,
-                    secondary_text=unicode(e),
+                    secondary_text=str(e),
                     message_type=Gtk.MessageType.ERROR,
                 )
             self.success = False
@@ -688,7 +687,7 @@ class FileHandler:
         dialog = self.save_dialog
         filename = dialog.get_filename()
         if filename:
-            filename = filename_to_unicode(filename)
+            filename = filename_to_str(filename)
             filename, ext = os.path.splitext(filename)
             if ext:
                 saveformat = self.saveformat_combo.get_active()
@@ -699,8 +698,8 @@ class FileHandler:
     def confirm_destructive_action(self, title=None, confirm=None, offer_save=True):
         """Asks the user to confirm an action that might lose work.
 
-        :param unicode title: Short question to ask the user.
-        :param unicode confirm: Imperative verb for the "do it" button.
+        :param str title: Short question to ask the user.
+        :param str confirm: Imperative verb for the "do it" button.
         :param bool offer_save: Set False to turn off the save checkbox.
         :rtype: bool
         :returns: True if the user allows the destructive action
@@ -965,7 +964,7 @@ class FileHandler:
                 self.app.scratchpad_filename
             )
         except (FileHandlingError, AllocationError, MemoryError) as e:
-            self.app.message_dialog(unicode(e), message_type=Gtk.MessageType.ERROR)
+            self.app.message_dialog(str(e), message_type=Gtk.MessageType.ERROR)
         else:
             self.app.scratchpad_filename = os.path.abspath(filename)
             self.app.preferences["scratchpad.last_opened_scratchpad"] = (
@@ -1002,7 +1001,7 @@ class FileHandler:
             recent_data = Gtk.RecentData()
             recent_data.app_name = "mypaint"
             app_exec = sys.argv_unicode[0]
-            assert isinstance(app_exec, unicode)
+            assert isinstance(app_exec, str)
             recent_data.app_exec = app_exec
             mime_default = "application/octet-stream"
             fmt, mime_type = self.ext2saveformat.get(ext, (None, mime_default))
@@ -1067,7 +1066,7 @@ class FileHandler:
     def update_preview_cb(self, file_chooser, preview):
         filename = file_chooser.get_preview_filename()
         if filename:
-            filename = filename_to_unicode(filename)
+            filename = filename_to_str(filename)
             pixbuf = helpers.freedesktop_thumbnail(filename)
             if pixbuf:
                 # if pixbuf is smaller than 256px in width, copy it onto
@@ -1131,7 +1130,7 @@ class FileHandler:
             if dialog.run() == Gtk.ResponseType.OK:
                 dialog.hide()
                 filename = dialog.get_filename()
-                filename = filename_to_unicode(filename)
+                filename = filename_to_str(filename)
                 self.open_file(filename, compat_handler=selector.compat_function)
         finally:
             dialog.destroy()
@@ -1175,7 +1174,7 @@ class FileHandler:
             if dialog.run() == Gtk.ResponseType.OK:
                 dialog.hide()
                 filename = dialog.get_filename()
-                filename = filename_to_unicode(filename)
+                filename = filename_to_str(filename)
                 self.app.scratchpad_filename = filename
                 self.open_scratchpad(filename)
         finally:
@@ -1223,7 +1222,7 @@ class FileHandler:
             dialog.destroy()
 
         if filenames:
-            filenames = [filename_to_unicode(f) for f in filenames]
+            filenames = [filename_to_str(f) for f in filenames]
             self.import_layers(filenames)
 
     def save_cb(self, action):
@@ -1290,7 +1289,7 @@ class FileHandler:
                 filename = dialog.get_filename()
                 if filename is None:
                     continue
-                filename = filename_to_unicode(filename)
+                filename = filename_to_str(filename)
                 name, ext = os.path.splitext(filename)
                 saveformat = self.saveformat_combo.get_active()
 
@@ -1420,7 +1419,7 @@ class FileHandler:
         prefix = self.app.preferences["saving.scrap_prefix"]
         # This should really use two separate settings, not one.
         # https://github.com/mypaint/mypaint/issues/375
-        prefix = fileutils.expanduser_unicode(prefix)
+        prefix = fileutils.expanduser_str(prefix)
         prefix = os.path.abspath(prefix)
         if os.path.isdir(prefix):
             if not prefix.endswith(os.path.sep):

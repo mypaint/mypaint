@@ -18,7 +18,6 @@ from lib.gibindings import Pango
 
 import lib.xml
 from . import widgets
-from lib.pycompat import unicode
 
 logger = logging.getLogger(__name__)
 
@@ -43,7 +42,7 @@ def button_press_name(button, mods):
 
 def button_press_displayname(button, mods, shorten=False):
     """
-    Converts a button number & modifier mask to a localized unicode string.
+    Converts a button number & modifier mask to a localized string.
     """
     button = int(button)
     mods = int(mods)
@@ -51,7 +50,7 @@ def button_press_displayname(button, mods, shorten=False):
         return None
     mods = Gdk.ModifierType(mods)
     modif_label = Gtk.accelerator_get_label(0, mods)
-    modif_label = unicode(modif_label)
+    modif_label = str(modif_label)
     separator = ""
     if modif_label:
         separator = "+"

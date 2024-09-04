@@ -24,7 +24,6 @@ from . import windowing
 from lib import tiledsurface
 from lib import helpers
 import lib.pixbuf
-from lib.pycompat import unicode
 
 logger = logging.getLogger(__name__)
 
@@ -323,7 +322,7 @@ class BackgroundList(pixbuflist.PixbufList):
 def _filename_to_display(s):
     """Convert a str filename to Unicode without obsessing too much."""
     # That said, try to be be correct about Windows/POSIX weirdness.
-    if not isinstance(s, unicode):
+    if not isinstance(s, str):
         if sys.platform == "win32":
             enc = "UTF-8"  # always, and sys.getfilesystemencoding() breaks
         else:
@@ -384,9 +383,7 @@ def load_background(filename, bloatmax=BLOAT_MAX_SIZE):
         pixbuf = GdkPixbuf.Pixbuf.new_from_file(filename)
     except Exception as ex:
         logger.error("Failed to load background %r: %s", filename, ex)
-        msg = unicode(
-            _('Gdk-Pixbuf couldn\'t load "{filename}", and reported "{error}"')
-        )
+        msg = str(_('Gdk-Pixbuf couldn\'t load "{filename}", and reported "{error}"'))
         load_errors.append(
             msg.format(
                 filename=filename_display,
@@ -397,7 +394,7 @@ def load_background(filename, bloatmax=BLOAT_MAX_SIZE):
     # Validity check
     w, h = pixbuf.get_width(), pixbuf.get_height()
     if w == 0 or h == 0:
-        msg = unicode(_("{filename} has zero size (w={w}, h={h})"))
+        msg = str(_("{filename} has zero size (w={w}, h={h})"))
         load_errors.append(
             msg.format(
                 filename=filename_display,

@@ -95,7 +95,6 @@ import gui.factoryaction  # registration only
 import gui.autorecover
 import lib.xml
 import gui.profiling
-from lib.pycompat import unicode
 
 logger = logging.getLogger(__name__)
 
@@ -165,21 +164,21 @@ class StateDirs(namedtuple("StateDirs", _STATEDIRS_FIELDS)):
     lifetime of the application. An instance resides in the main
     Application object as `app.state_dirs`.
 
-    :ivar unicode app_data:
+    :ivar str app_data:
         App-specific read-only data area.
         Path used for UI definition XML, and the default sets of
         backgrounds, palettes, and brush definitions.
         Often $PREFIX/share/.
-    :ivar unicode app_icons:
+    :ivar str app_icons:
         Extra search path for read-only themeable UI icons.
         This will be used in addition to $XDG_DATA_DIRS for the purposes of
         icon lookup. Normally it's $PREFIX/share/icons.
-    :ivar unicode user_data:
+    :ivar str user_data:
         Read-write location of the user's app-specific data.
         For MyPaint, this means the user's brushes, backgrounds, and
         scratchpads. Commonly $XDG_DATA_HOME/mypaint, i.e.
         ~/.local/share/mypaint
-    :ivar unicode user_config:
+    :ivar str user_config:
         Location of the user's app-specific config area.
         This is where MyPaint will save user preferences data and the
         keyboard accelerator map.
@@ -205,9 +204,9 @@ class Application:
     def __init__(self, filenames, state_dirs, version, fullscreen=False):
         """Construct, but do not run.
 
-        :param list filenames: The list of files to load (unicode required)
+        :param list filenames: The list of files to load (str required)
         :param StateDirs state_dirs: static special paths.
-        :param unicode version: Version string for the about dialog.
+        :param str version: Version string for the about dialog.
         :param bool fullscreen: Go fullscreen after starting.
 
         Only the first filename listed will be loaded. If no files are
@@ -648,16 +647,16 @@ class Application:
         # dialog (reversed for rtl scripts), where the eye ends up
         # naturally at the end of the flow.
         d.add_button(_("OK"), Gtk.ResponseType.OK)
-        markup = lib.xml.escape(unicode(text))
+        markup = lib.xml.escape(str(text))
         d.set_markup(markup)
         if title is not None:
-            d.set_title(unicode(title))
+            d.set_title(str(title))
         if secondary_text is not None:
-            secondary_markup = lib.xml.escape(unicode(secondary_text))
+            secondary_markup = lib.xml.escape(str(secondary_text))
             d.format_secondary_markup(secondary_markup)
         if long_text is not None:
             buf = Gtk.TextBuffer()
-            buf.set_text(unicode(long_text))
+            buf.set_text(str(long_text))
             tv = Gtk.TextView.new_with_buffer(buf)
             tv.show()
             tv.set_editable(False)
@@ -678,7 +677,7 @@ class Application:
         """Display a brief, impermanent status message"""
         context_id = self._transient_msg_context_id
         self.statusbar.remove_all(context_id)
-        self.statusbar.push(context_id, unicode(text))
+        self.statusbar.push(context_id, str(text))
         timeout_id = self._transient_msg_remove_timeout_id
         if timeout_id is not None:
             GLib.source_remove(timeout_id)

@@ -212,7 +212,7 @@ def save_as_png(surface, filename, *rect, **kwargs):
     """Saves a tile-blittable surface to a file in PNG format
 
     :param TileBlittable surface: Surface to save
-    :param unicode filename: The file to write
+    :param str filename: The file to write
     :param tuple \*rect: Rectangle (x, y, w, h) to save
     :param bool alpha: If true, write a PNG with alpha
     :param progress: Updates a UI every scanline strip.

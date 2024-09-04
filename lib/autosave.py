@@ -67,7 +67,7 @@ class Autosaveable(metaclass=abc.ABCMeta):
         changed since the file was last written, re-writing the file can
         be skipped.
 
-        :param unicode oradir: Root of OpenRaster-like structure
+        :param str oradir: Root of OpenRaster-like structure
         :param lib.idletask.Processor taskproc: Output: queue of tasks
         :param set manifest: Output: files in data/ to retain afterward
         :param tuple bbox: frame bounding box, (x,y,w,h)

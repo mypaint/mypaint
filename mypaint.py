@@ -28,7 +28,6 @@ import re
 import logging
 
 logger = logging.getLogger("mypaint")
-unicode = str
 
 
 ## Logging classes
@@ -132,7 +131,7 @@ def win32_unicode_argv():
 
 def get_paths():
 
-    # Convert sys.argv to a list of unicode objects
+    # Convert sys.argv to a list of str objects
     # (actually converting sys.argv confuses gtk, thus we add a new variable)
     # Post-Py3: almost certainly not needed, but check *all* platforms
     # before removing this stuff.
@@ -151,7 +150,7 @@ def get_paths():
 
     # Script and its location, in canonical absolute form
     prefix = dirname(abspath(sys.argv_unicode[0]))
-    assert isinstance(prefix, unicode)
+    assert isinstance(prefix, str)
 
     # Usually, when installed with setup.py, MYPAINT_DIR_PATHS
     # is defined in the module, containing all paths we need to set up.
@@ -206,8 +205,8 @@ def get_paths():
     lib.config.mypaint_brushdir = brushdir_path
 
     old_confpath = check_old_style_config()
-    assert isinstance(data_path, unicode)
-    assert isinstance(icons_path, unicode)
+    assert isinstance(data_path, str)
+    assert isinstance(icons_path, str)
 
     return data_path, icons_path, old_confpath, locale_path
 
@@ -220,7 +219,7 @@ def check_old_style_config():
     else:
         from lib import fileutils
 
-        homepath = fileutils.expanduser_unicode("~")
+        homepath = fileutils.expanduser_str("~")
         old_confpath = join(homepath, ".mypaint/")
 
     if old_confpath:
@@ -235,7 +234,7 @@ def check_old_style_config():
                 "and $XDG_DATA_HOME if you wish."
             )
             logger.info("For further instructions, see: %s" % wiki_page)
-    assert isinstance(old_confpath, unicode) or old_confpath is None
+    assert isinstance(old_confpath, str) or old_confpath is None
     return old_confpath
 
 

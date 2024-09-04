@@ -22,7 +22,6 @@ import lib.layer.data
 from . import helpers
 from lib.observable import event
 import lib.stroke
-from lib.pycompat import unicode
 
 logger = getLogger(__name__)
 
@@ -264,7 +263,7 @@ class Brushwork(Command):
         :param doc: document being updated
         :type doc: lib.document.Document
         :param tuple layer_path: path of the layer to affect within doc
-        :param unicode description: Descriptive name for this brushwork
+        :param str description: Descriptive name for this brushwork
         :param bool abrupt_start: Reset brush & dwell before starting
         :param lib.layer.data.SimplePaintingLayer layer: explicit target layer
 
@@ -328,7 +327,7 @@ class Brushwork(Command):
             brush_name = _("Undefined (command not started yet)")
         else:
             time = self._stroke_seq.total_painting_time
-            brush_name = unicode(self._stroke_seq.brush_name)
+            brush_name = str(self._stroke_seq.brush_name)
         # TRANSLATORS: A short time spent painting / making brushwork.
         # TRANSLATORS: This can correspond to zero or more touches of
         # TRANSLATORS: the physical stylus to the tablet.

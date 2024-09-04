@@ -39,8 +39,8 @@ class GUI:
         app_statedirs = application.StateDirs(
             app_data="..",
             app_icons="../desktop",
-            user_data=unicode(self.tempdir),
-            user_config=unicode(self.tempdir),
+            user_data=str(self.tempdir),
+            user_config=str(self.tempdir),
         )
         self.app = application.Application(
             filenames=[],

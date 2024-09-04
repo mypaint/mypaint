@@ -30,7 +30,6 @@ from lib.gettext import C_
 import lib.naming
 from lib.observable import event
 from lib.command import Command
-from lib.pycompat import unicode
 
 
 # Module vars:
@@ -63,7 +62,7 @@ class _View:
 
     def __init__(self, name, locked=True, **kwargs):
         super(_View, self).__init__()
-        self._name = unicode(name)
+        self._name = str(name)
         self._locked = bool(locked)
 
     @property
@@ -72,7 +71,7 @@ class _View:
 
     @name.setter
     def name(self, value):
-        self._name = unicode(value)
+        self._name = str(value)
 
     @property
     def locked(self):
@@ -334,7 +333,7 @@ class LayerViewManager:
         """RO property: the current view's name.
 
         :returns: The name of the current view, or None
-        :rtype: unicode
+        :rtype: str
 
         If the current view name is None, the current view is the
         built-in unnamed and unsaved view.
@@ -444,7 +443,7 @@ class LayerViewManager:
     def add_new_view(self, name=None):
         """Adds a new named view capturing the currently visible layers.
 
-        :param unicode name: Base name for a new named view, or None.
+        :param str name: Base name for a new named view, or None.
         :rtype: _View
         :returns: the added view.
 
@@ -455,7 +454,7 @@ class LayerViewManager:
         """
         if name is None or name == "":
             name = NEW_VIEW_IDENT
-        name = unicode(name)
+        name = str(name)
 
         # All currently visible layers are tagged as visible in the new view.
         view = _View(name)
@@ -513,7 +512,7 @@ class LayerViewManager:
     def rename_active_view(self, name):
         """Renames the currently active view.
 
-        :param unicode name: Base name for the new named view.
+        :param str name: Base name for the new named view.
         :rtype: tuple
         :returns: The old and new names, as (old_name, new_unique_name)
 
