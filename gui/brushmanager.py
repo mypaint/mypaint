@@ -175,7 +175,7 @@ def _parse_order_conf(file_content):
 ## Class definitions
 
 
-class BrushManager(object):
+class BrushManager:
     """Brush manager, responsible for groups of brushes."""
 
     ## Initialization
@@ -1169,7 +1169,7 @@ class BrushManager(object):
         self.save_brushorder()
 
 
-class ManagedBrush(object):
+class ManagedBrush:
     """User-facing representation of a brush's settings.
 
     Managed brushes have a name, a preview image, and brush settings.

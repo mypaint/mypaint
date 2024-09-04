@@ -25,7 +25,7 @@ from lib.pycompat import unicode
 logger = logging.getLogger(__name__)
 
 
-class Presenter(object):
+class Presenter:
     """Shows and runs a dialog, allowing the user to resume autosaves.
 
     See also: lib.document.Document.resume_from_autosave().

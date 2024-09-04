@@ -46,7 +46,7 @@ for i in dir(Gdk):
 # import when an attribute of the module is requested.
 
 
-class GtkWrapper(object):
+class GtkWrapper:
 
     _initialized = False
 

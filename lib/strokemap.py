@@ -29,7 +29,7 @@ TILE_SIZE = N = mypaintlib.TILE_SIZE
 ## Class defs
 
 
-class StrokeShape(object):
+class StrokeShape:
     """The shape of a single brushstroke.
 
     This class stores the shape of a stroke in as a 1-bit bitmap. The
@@ -543,7 +543,7 @@ class _Tile:
 ## Helper funcs
 
 
-class _TileIndexPredicate(object):
+class _TileIndexPredicate:
     """Tile index tester callable for processing subsets of tiles.
 
     This predicate encodes a simple bbox and distance based metric for

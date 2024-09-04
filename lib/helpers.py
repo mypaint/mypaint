@@ -28,7 +28,7 @@ from lib.pycompat import unicode
 logger = logging.getLogger(__name__)
 
 
-class Rect(object):
+class Rect:
     """Representation of a rectangular area.
 
     We use our own class here because (around GTK 3.18.x, at least) it's

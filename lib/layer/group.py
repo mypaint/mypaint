@@ -592,7 +592,7 @@ class LayerStackSnapshot(core.LayerBaseSnapshot):
             layer.append(child)
 
 
-class LayerStackMove(object):
+class LayerStackMove:
     """Move object wrapper for layer stacks"""
 
     def __init__(self, layers, x, y):

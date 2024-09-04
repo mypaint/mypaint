@@ -287,7 +287,7 @@ def cursor_arc_segments(style):
         return [(0, 2 * math.pi)]
 
 
-class CustomCursorMaker(object):
+class CustomCursorMaker:
     """Factory and cache of custom cursors for actions."""
 
     CURSOR_HOTSPOTS = {

@@ -15,13 +15,13 @@ import logging
 logger = logging.getLogger(__name__)
 
 
-class observable(object):  # noqa: N801
+class observable:  # noqa: N801
     """Decorator for methods which notify their observers after being called.
 
     To use, mark methods intended to be called on instances of a class with
     the ``@observable`` decorator:
 
-    >>> class Tester (object):
+    >>> class Tester:
     ...     @observable
     ...     def foo(self, a, b):
     ...         return a + b
@@ -62,7 +62,7 @@ class observable(object):  # noqa: N801
     silently when the observed method is called.  Be cautious when writing
     something like:
 
-    >>> class TesterObserver (object):
+    >>> class TesterObserver:
     ...     def obs(self, tester, a, b):
     ...         print ("Obsr: %r, %r" % (a, b))
     >>> tester = Tester()
@@ -192,12 +192,12 @@ class observable(object):  # noqa: N801
         Given an observer function that requires a particular identity for the
         object being observed,
 
-          >>> class ListMunger (object):
+          >>> class ListMunger:
           ...     @observable
           ...     def append_sum(self, items):
           ...         items.append(sum(items))
           >>> m1 = ListMunger()
-          >>> class ListMungerExtras (object):
+          >>> class ListMungerExtras:
           ...     def bump_last(self, munger, items):
           ...         if munger is m1: items.append("invoked on m1")
           ...         else:            items.append("not invoked on m1")
@@ -231,7 +231,7 @@ class observable(object):  # noqa: N801
         instance.__wrappers = updated_wrappers
 
 
-class _MethodWithObservers(object):
+class _MethodWithObservers:
     """Callable wrapper: calls the decorated method, then its observers
 
     This is what a __get__ on the observed object's @observable descriptor
@@ -335,7 +335,7 @@ class event(observable):  # noqa: N801
     use Python's decorator notation and a method body consisting of just a
     docstring.
 
-    >>> class Popcorn (object):
+    >>> class Popcorn:
     ...     @event
     ...     def popped(self):
     ...        '''Popped event, called when...'''
@@ -405,7 +405,7 @@ def _method_repr(bound=None, instance=None, func=None):
     return "%s.%s.%s" % (modname, clsname, funcname)
 
 
-class _BoundObserverMethod(object):
+class _BoundObserverMethod:
     """Wrapper for observer callbacks which are bound methods of some object.
 
     To allow short-lived objects to observe long-lived objects with bound
@@ -450,7 +450,7 @@ class _BoundObserverMethod(object):
     def __repr__(self):
         """String representation of a bound observer method
 
-        >>> class C (object):
+        >>> class C:
         ...    def m(self):
         ...        return 42
         >>> c = C()

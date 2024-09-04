@@ -1140,7 +1140,7 @@ class Overlay(gui.overlays.Overlay):
                 )
 
 
-class _LayoutNode(object):
+class _LayoutNode:
     """Vertex/point for the button layout algorithm."""
 
     def __init__(self, x, y, force=(0.0, 0.0), velocity=(0.0, 0.0)):

@@ -408,7 +408,7 @@ class _IOProgressUI:
             Gtk.main_iteration()
 
 
-class FileHandler(object):
+class FileHandler:
     """File handling object, part of the central app object.
 
     A single app-wide instance of this object is accessible from the

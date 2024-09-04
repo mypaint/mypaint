@@ -46,7 +46,7 @@ MASK_EDITOR_HELP_URI = C_(
 )
 
 
-class MaskableWheelMixin(object):
+class MaskableWheelMixin:
     """Provides wheel widgets with maskable areas.
 
     For use with implementations of `HueSaturationWheelAdjusterMixin`.
@@ -315,7 +315,7 @@ class MaskableWheelMixin(object):
         HueSaturationWheelMixin.paint_foreground_cb(self, cr, wd, ht)
 
 
-class HCYHueChromaWheelMixin(object):
+class HCYHueChromaWheelMixin:
     """Mixin for wheel-style adjusters to display the H+C from the HCY model.
 
     For use with implementations of `HueSaturationWheelAdjusterMixin`; make

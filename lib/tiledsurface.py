@@ -55,7 +55,7 @@ for sym_type in SYMMETRY_TYPES:
 ## Tile class and marker tile constants
 
 
-class _Tile(object):
+class _Tile:
     """Internal tile storage, with readonly flag
 
     Note: pixels are stored with premultiplied alpha.
@@ -89,7 +89,7 @@ del mipmap_dirty_tile.rgba
 ## Class defs: surfaces
 
 
-class _SurfaceSnapshot(object):
+class _SurfaceSnapshot:
     pass
 
 
@@ -848,7 +848,7 @@ class MyPaintSurface(TileAccessible, TileBlittable, TileCompositable):
         self.notify_observers(*bbox)
 
 
-class _TiledSurfaceMove(object):
+class _TiledSurfaceMove:
     """Ongoing move state for a tiled surface, processed in chunks
 
     Tile move processing involves slicing and copying data from a
@@ -1257,7 +1257,7 @@ def flood_fill(src, fill_args, dst):
     return lib.floodfill.flood_fill(src, fill_args, dst)
 
 
-class PNGFileUpdateTask(object):
+class PNGFileUpdateTask:
     """Piecemeal callable: writes to or replaces a PNG file
 
     See lib.autosave.Autosaveable.

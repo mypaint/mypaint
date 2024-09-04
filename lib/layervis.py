@@ -51,7 +51,7 @@ UNSAVED_VIEW_DISPLAY_NAME = C_(
 # Data model classes:
 
 
-class _View(object):
+class _View:
     """Lightweight representation of a layer viewing context.
 
     Views are represented as essentially just a tag.  They intentionally
@@ -132,7 +132,7 @@ class _View(object):
         return cls(**jsf)
 
 
-class _NamedViewsSet(object):
+class _NamedViewsSet:
     """A set of _View objects that enforces unique naming."""
 
     def __init__(self):
@@ -171,7 +171,7 @@ class _NamedViewsSet(object):
         self.names.clear()
 
 
-class LayerViewManager(object):
+class LayerViewManager:
     """Controls which layers are visible in a document with named views."""
 
     _SETTINGS_KEY = "layervis"

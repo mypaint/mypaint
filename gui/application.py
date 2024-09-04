@@ -188,7 +188,7 @@ class StateDirs(namedtuple("StateDirs", _STATEDIRS_FIELDS)):
     """
 
 
-class Application(object):
+class Application:
     """Main application singleton.
 
     This class serves as a global container for everything that needs
@@ -814,7 +814,7 @@ class Application(object):
         raise Exception("This is a crash caused by the user.")
 
 
-class PixbufDirectory(object):
+class PixbufDirectory:
 
     def __init__(self, dirname):
         super(PixbufDirectory, self).__init__()
@@ -832,7 +832,7 @@ class PixbufDirectory(object):
         return self.cache[name]
 
 
-class CallbackFinder(object):
+class CallbackFinder:
     """Finds callbacks amongst a list of objects.
 
     It's not possible to call `GtkBuilder.connect_signals()` more than once,

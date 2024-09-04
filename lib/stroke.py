@@ -12,7 +12,7 @@ import numpy as np
 from . import brush
 
 
-class Stroke(object):
+class Stroke:
     """Replayable record of a stroke's data
 
     Stroke recording objects store all information required to replay a stroke

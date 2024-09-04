@@ -26,7 +26,7 @@ import gui.style
 ## Base classes and utils
 
 
-class Overlay(object):
+class Overlay:
     """Base class/interface for objects which paint things over a TDW."""
 
     def paint(self, cr):

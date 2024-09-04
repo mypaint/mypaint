@@ -356,7 +356,7 @@ class ColorManager(GObject.GObject):
         prefs[PREFS_PALETTE_DICT_KEY] = palette.to_simple_dict()
 
 
-class ColorAdjuster(object):
+class ColorAdjuster:
     """Base class for any object which can manipulate a shared `UIColor`.
 
     Color adjusters are used for changing one or more elements of a color.
@@ -1082,7 +1082,7 @@ class SliderColorAdjuster(ColorAdjusterWidget):
         return True
 
 
-class HueSaturationWheelMixin(object):
+class HueSaturationWheelMixin:
     """Mixin for wheel-style hue/saturation adjusters, indep. of color space
 
     Implementing most of the wheel-drawing machinery as a mixin allows the

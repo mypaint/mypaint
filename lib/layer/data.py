@@ -543,7 +543,7 @@ class SurfaceBackedLayer(core.LayerBase, lib.autosave.Autosaveable):
         return (removed, total)
 
 
-class SurfaceBackedLayerMove(object):
+class SurfaceBackedLayerMove:
     """Move object wrapper for surface-backed layers
 
     Layer Subclasses should extend this minimal implementation to
@@ -878,7 +878,7 @@ class FileBackedLayerMove(SurfaceBackedLayerMove):
 ## Utility classes
 
 
-class _ManagedFile(object):
+class _ManagedFile:
     """Working copy of a file, as used by file-backed layers
 
     Managed files take control of an unmanaged file on disk when they
@@ -1790,7 +1790,7 @@ def _write_strokemap_stroke(f, stroke, brush2id, dx, dy):
     f.write(s)
 
 
-class _StrokemapFileUpdateTask(object):
+class _StrokemapFileUpdateTask:
     """Updates a strokemap file in chunked calls (for autosave)"""
 
     def __init__(self, strokes, filename, dx, dy):

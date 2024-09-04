@@ -30,7 +30,7 @@ logger = getLogger(__name__)
 ## Command stack and action interface
 
 
-class CommandStack(object):
+class CommandStack:
     """Undo/redo stack"""
 
     def __init__(self, max_stack_size, **kwargs):
@@ -149,7 +149,7 @@ class CommandStack(object):
         pass
 
 
-class Command(object):
+class Command:
     """A reversible change to the document model
 
     Commands represent alterations made by the user to a document which

@@ -193,7 +193,7 @@ class FillHandler:
         self.run = False
 
 
-class FloodFillArguments(object):
+class FloodFillArguments:
     """Container holding a set of flood fill arguments
     The purpose of this class is to avoid unnecessary
     call chain updates when changing/adding parameters.
@@ -681,7 +681,7 @@ def gap_closing_fill(handler, src, seed_lists, tiles_bbox, filler, gap_closing_o
     return filled
 
 
-class _GCTileHandler(object):
+class _GCTileHandler:
     """Gap-closing-fill Tile Handler
 
     Manages input alpha tiles and distance tiles necessary to perform

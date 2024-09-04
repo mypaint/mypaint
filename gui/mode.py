@@ -148,7 +148,7 @@ class ModeRegistry(type):
 
 
 @add_metaclass(ModeRegistry)
-class InteractionMode(object):
+class InteractionMode:
     """Required base class for temporary interaction modes.
 
     Active interaction mode objects process input events, and can manipulate
@@ -1324,7 +1324,7 @@ class _NullMode(InteractionMode):
     """A mode that does nothing (placeholder only)"""
 
 
-class ModeStack(object):
+class ModeStack:
     """A stack of InteractionModes. The top mode is the active one.
 
     Mode stacks can never be empty. If the final element is popped, it

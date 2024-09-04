@@ -89,7 +89,7 @@ def orthogonal(tile_coord):
     return nine_grid(tile_coord)[1:5]
 
 
-class TileBoundingBox(object):
+class TileBoundingBox:
     """Bounding box helper for checking tiles by their coordinates
 
     Defines a bounding box in pixel coordinates that allows

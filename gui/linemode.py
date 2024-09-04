@@ -87,7 +87,7 @@ _LINE_MODE_SETTINGS_LIST = [
 ## Line pressure settings
 
 
-class LineModeSettings(object):
+class LineModeSettings:
     """Manage GtkAdjustments for tweaking LineMode settings.
 
     An instance resides in the main application singleton. Changes to the

@@ -515,7 +515,7 @@ class TiledDrawWidget(Gtk.EventBox):
             return cursor.get_move_cursor_name_for_angle(edge_angle_perp)
 
 
-class CanvasTransformation(object):
+class CanvasTransformation:
     """Record of a TiledDrawWidget's canvas (view) transformation."""
 
     translation_x = 0.0
@@ -535,7 +535,7 @@ class CanvasTransformation(object):
         )
 
 
-class DrawCursorMixin(object):
+class DrawCursorMixin:
     """Mixin for renderer widgets needing a managed drawing cursor.
 
     Required members: self.doc, self.scale, Gtk.Widget stuff.

@@ -31,7 +31,7 @@ N = mypaintlib.TILE_SIZE
 TILES_PER_CALLBACK = 256
 
 
-class Bounded(object):
+class Bounded:
     """Interface for objects with an inherent size"""
 
     __metaclass__ = abc.ABCMeta

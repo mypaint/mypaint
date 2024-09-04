@@ -957,7 +957,7 @@ class _StubLayerBase(LayerBase):
         pass
 
 
-class LayerBaseSnapshot(object):
+class LayerBaseSnapshot:
     """Base snapshot implementation
 
     Snapshots are stored in commands, and used to implement undo and redo.

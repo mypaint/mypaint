@@ -42,7 +42,7 @@ MERGEABLE_XML = [
 ## Class definitions
 
 
-class ToolbarManager(object):
+class ToolbarManager:
     """Manager for toolbars, currently just the main one.
 
     The main toolbar, /toolbar1, contains a menu button and quick

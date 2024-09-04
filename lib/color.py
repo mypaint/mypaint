@@ -30,7 +30,7 @@ from lib.gibindings import GdkPixbuf
 ## Lightweight color objects
 
 
-class UIColor(object):
+class UIColor:
     """Base class for color objects which can be manipulated via the UI.
 
     This base provides a common interface allowing concrete subclasses to be

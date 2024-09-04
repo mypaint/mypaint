@@ -46,7 +46,7 @@ class Opcode:
 # Classes and interfaces:
 
 
-class Spec(object):
+class Spec:
     """Selection criteria for Renderable.get_render_ops()."""
 
     def __init__(self, **kwargs):

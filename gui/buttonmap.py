@@ -125,7 +125,7 @@ def get_handler_object(app, action_name):
             return ("no_handler", None)
 
 
-class ButtonMapping(object):
+class ButtonMapping:
     """Button mapping table.
 
     An instance resides in the application, and is updated by the preferences

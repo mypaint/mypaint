@@ -31,7 +31,7 @@ logger = logging.getLogger(__name__)
 ## Class and function defs
 
 
-class Palette(object):
+class Palette:
     """A flat list of color swatches, compatible with the GIMP
 
     As a (sideways-compatible) extension to the GIMP's format, MyPaint supports

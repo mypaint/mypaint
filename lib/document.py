@@ -244,7 +244,7 @@ class AutosaveInfo(namedtuple("AutosaveInfo", _AUTOSAVE_INFO_FIELDS)):
         )
 
 
-class Document(object):
+class Document:
     """In-memory representation of everything to be worked on & saved
 
     This is the "model" in the Model-View-Controller design for the

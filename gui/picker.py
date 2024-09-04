@@ -38,7 +38,7 @@ _PRESS_EVENTS = {Gdk.EventType.BUTTON_PRESS, Gdk.EventType.TOUCH_BEGIN}
 ## Class definitions
 
 
-class PickingGrabPresenter(object):
+class PickingGrabPresenter:
     """Picking something via a grab (abstract base, MVP presenter)
 
     This presenter mediates between passive GTK view widgets
@@ -511,7 +511,7 @@ class ColorPickingGrabPresenter(PickingGrabPresenter):
         cm.set_color(color)
 
 
-class ButtonPresenter(object):
+class ButtonPresenter:
     """Picking behaviour for a button (MVP presenter)
 
     This presenter mediates between a passive view consisting of a

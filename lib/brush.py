@@ -167,7 +167,7 @@ def _oldfmt_transform_y(valuepair, func):
 # Class defs:
 
 
-class BrushInfo(object):
+class BrushInfo:
     """Fully parsed description of a brush."""
 
     def __init__(self, string=None, default_overrides=None):

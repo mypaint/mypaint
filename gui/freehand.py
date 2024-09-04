@@ -95,7 +95,7 @@ class FreehandMode(
 
     ## Per-TDW drawing state
 
-    class _DrawingState(object):
+    class _DrawingState:
         """Per-canvas drawing state
 
         Various kinds of queue for raw data capture or interpolation of
@@ -717,7 +717,7 @@ class FreehandOptionsWidget(gui.mode.PaintingModeOptionsWidgetBase):
             adj.set_value(value)
 
 
-class PressureAndTiltInterpolator(object):
+class PressureAndTiltInterpolator:
     """Interpolates event sequences, filling in null pressure/tilt data
 
     The interpolator operates almost as a filter. Feed the interpolator
