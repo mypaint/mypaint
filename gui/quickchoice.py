@@ -22,7 +22,6 @@ from . import spinbox
 from . import windowing
 from lib.observable import event
 import gui.colortools
-from lib.pycompat import add_metaclass
 
 
 ## Module consts
@@ -33,8 +32,7 @@ _DEFAULT_PREFS_ID = "default"
 ## Interfaces
 
 
-@add_metaclass(abc.ABCMeta)
-class Advanceable:
+class Advanceable(metaclass=abc.ABCMeta):
     """Interface for choosers which can be advanced by pressing keys.
 
     Advancing happens if the chooser is already visible and its key is

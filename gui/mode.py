@@ -25,7 +25,6 @@ from lib.brushsettings import settings_dict
 from lib.document import Document
 from lib.layer.data import SimplePaintingLayer
 from lib.observable import event
-from lib.pycompat import add_metaclass
 from lib.pycompat import unicode
 
 import gui.cursor
@@ -147,8 +146,7 @@ class ModeRegistry(type):
 ## Mode base classes
 
 
-@add_metaclass(ModeRegistry)
-class InteractionMode:
+class InteractionMode(metaclass=ModeRegistry):
     """Required base class for temporary interaction modes.
 
     Active interaction mode objects process input events, and can manipulate
