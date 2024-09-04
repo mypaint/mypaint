@@ -25,8 +25,6 @@ from lib.fill_common import _OPAQUE, _FULL_TILE, _EMPTY_TILE
 import lib.modes
 import lib.morphology
 
-from lib.pycompat import iteritems
-
 logger = logging.getLogger(__name__)
 
 TILE_SIZE = N = myplib.TILE_SIZE
@@ -392,7 +390,7 @@ def composite(handler, fill_args, trim_result, filled, tiles_bbox, dst):
     tile_combine = myplib.tile_combine
 
     # Composite filled tiles into the destination surface
-    for tile_coord, src_tile in iteritems(filled):
+    for tile_coord, src_tile in filled.items():
 
         if not handler.run:
             break
@@ -501,7 +499,7 @@ def scanline_fill(handler, src, seed_lists, tiles_bbox, filler):
 
     # Starting coordinates + direction of origin (from within)
     tileq = []
-    for seed_tile_coord, seeds in iteritems(seed_lists):
+    for seed_tile_coord, seeds in seed_lists.items():
         tileq.append((seed_tile_coord, seeds, myplib.edges.none))
 
     tfs = _TileFillSkipper(tiles_bbox, filler, set({}))
@@ -618,7 +616,7 @@ def gap_closing_fill(handler, src, seed_lists, tiles_bbox, filler, gap_closing_o
     final = set({})
 
     seed_queue = []
-    for seed_tile_coord, seeds in iteritems(seed_lists):
+    for seed_tile_coord, seeds in seed_lists.items():
         seed_queue.append((seed_tile_coord, seeds))
 
     options = gap_closing_options
@@ -822,7 +820,7 @@ def unseep(seed_queue, filled, gc_filler, total_px, tiles_bbox, distances):
         # For small areas, when starting on a distance-marked pixel,
         # backing off may remove the entire fill, in which case we
         # roll back the tiles that were processed
-        for tile_coord, tile in iteritems(backup):
+        for tile_coord, tile in backup.items():
             filled[tile_coord] = tile
 
 

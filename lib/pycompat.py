@@ -87,16 +87,3 @@ def with_metaclass(meta, *bases):
             return meta.__prepare__(name, bases)
 
     return type.__new__(metaclass, "temporary_class", (), {})
-
-
-# Convenience wrappers for iteritems->items, itervalues->values transition
-
-
-def iteritems(container):
-    """Returns the iterate method of the given container"""
-    return container.items()
-
-
-def itervalues(container):
-    """Returns the value iteration method of the given container"""
-    return container.values()

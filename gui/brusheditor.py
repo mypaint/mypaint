@@ -23,7 +23,6 @@ from lib.gibindings import GdkPixbuf
 
 from lib.gettext import C_
 from lib import brushsettings
-from lib.pycompat import iteritems, itervalues
 
 import lib.brush
 from . import dialogs
@@ -159,7 +158,7 @@ class BrushEditorWindow(SubWindow):
                 )
                 self._base_adj[s.cname] = adj
             changed_cb = self._testmode_base_value_adj_changed_cb
-            for cname, adj in iteritems(self._base_adj):
+            for cname, adj in self._base_adj.items():
                 adj.connect("value-changed", changed_cb, cname)
         # Per-input scale maxima and minima
         for inp in brushsettings.inputs:
@@ -600,7 +599,7 @@ class BrushEditorWindow(SubWindow):
         # ensure we don't overwrite an existing brush by accident
         dst_deleted = None
 
-        for group, brushes in iteritems(bm.groups):
+        for group, brushes in bm.groups.items():
             for b2 in brushes:
                 if b2.name == dst_name:
                     if group == brushmanager.DELETED_BRUSH_GROUP:
@@ -1090,7 +1089,7 @@ class BrushEditorWindow(SubWindow):
 
     def _delete_brush(self, b, replacement=None):
         bm = self.app.brushmanager
-        for brushes in itervalues(bm.groups):
+        for brushes in bm.groups.values():
             if b in brushes:
                 idx = brushes.index(b)
                 if replacement:

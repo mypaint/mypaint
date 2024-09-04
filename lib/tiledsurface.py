@@ -32,7 +32,6 @@ import lib.fileutils
 import lib.modes
 import lib.feedback
 import lib.floodfill
-from lib.pycompat import itervalues
 
 logger = logging.getLogger(__name__)
 
@@ -466,7 +465,7 @@ class MyPaintSurface(TileAccessible, TileBlittable, TileCompositable):
 
         """
         sshot = _SurfaceSnapshot()
-        for t in itervalues(self.tiledict):
+        for t in self.tiledict.values():
             t.readonly = True
         sshot.tiledict = self.tiledict.copy()
         return sshot
