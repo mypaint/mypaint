@@ -38,7 +38,7 @@ _PRESS_EVENTS = {Gdk.EventType.BUTTON_PRESS, Gdk.EventType.TOUCH_BEGIN}
 ## Class definitions
 
 
-class PickingGrabPresenter:
+class PickingGrabPresenter(metaclass=abc.ABCMeta):
     """Picking something via a grab (abstract base, MVP presenter)
 
     This presenter mediates between passive GTK view widgets
@@ -51,8 +51,6 @@ class PickingGrabPresenter:
     """
 
     ## Class configuration
-
-    __metaclass__ = abc.ABCMeta
 
     _GRAB_MASK = (
         Gdk.EventMask.BUTTON_RELEASE_MASK

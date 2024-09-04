@@ -982,10 +982,9 @@ class LayerBaseSnapshot:
         layer.locked = self.locked
 
 
-class ExternallyEditable:
+class ExternallyEditable(metaclass=abc.ABCMeta):
     """Interface for layers which can be edited in an external app"""
 
-    __metaclass__ = abc.ABCMeta
     _EDITS_SUBDIR = "edits"
 
     @abc.abstractmethod

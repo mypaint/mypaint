@@ -31,10 +31,8 @@ N = mypaintlib.TILE_SIZE
 TILES_PER_CALLBACK = 256
 
 
-class Bounded:
+class Bounded(metaclass=abc.ABCMeta):
     """Interface for objects with an inherent size"""
-
-    __metaclass__ = abc.ABCMeta
 
     @abc.abstractmethod
     def get_bbox(self):
@@ -46,10 +44,8 @@ class Bounded:
         """
 
 
-class TileAccessible(Bounded):
+class TileAccessible(Bounded, metaclass=abc.ABCMeta):
     """Interface for objects whose memory is accessible by tile"""
-
-    __metaclass__ = abc.ABCMeta
 
     @abc.abstractmethod
     def tile_request(self, tx, ty, readonly):
@@ -71,10 +67,8 @@ class TileAccessible(Bounded):
         """
 
 
-class TileBlittable(Bounded):
+class TileBlittable(Bounded, metaclass=abc.ABCMeta):
     """Interface for unconditional copying by tile"""
-
-    __metaclass__ = abc.ABCMeta
 
     @abc.abstractmethod
     def blit_tile_into(self, dst, dst_has_alpha, tx, ty, *args, **kwargs):
@@ -103,10 +97,8 @@ class TileBlittable(Bounded):
         """
 
 
-class TileCompositable(Bounded):
+class TileCompositable(Bounded, metaclass=abc.ABCMeta):
     """Interface for compositing by tile, with modes/opacities/flags"""
-
-    __metaclass__ = abc.ABCMeta
 
     @abc.abstractmethod
     def composite_tile(

@@ -15,10 +15,8 @@ import uuid
 import lib.idletask  # noqa
 
 
-class Autosaveable:
+class Autosaveable(metaclass=abc.ABCMeta):
     """Mixin and abstract base for auto-saveable structures"""
-
-    __metaclass__ = abc.ABCMeta
 
     @property
     def autosave_dirty(self):
