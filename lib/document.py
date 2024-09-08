@@ -730,14 +730,10 @@ class Document:
         """Autosaved backup task: save the doc-specific settings dict"""
         assert not self._painting_only
 
-        # Py2/Py3: always feed print() a UTF-8 encoded byte string.
         json_data = json.dumps(settings, indent=2)
-        if isinstance(json_data, unicode):
-            json_data = json_data.encode("utf-8")
-        assert isinstance(json_data, bytes)
 
         tmpname = filename + ".TMP"
-        with open(tmpname, "wb") as fp:
+        with open(tmpname, "w", encoding="utf-8") as fp:
             fp.write(json_data)
         lib.fileutils.replace(tmpname, filename)
 
@@ -2097,12 +2093,7 @@ def _save_layers_to_new_orazip(
 
     # Document-specific settings dict.
     if settings is not None:
-
-        # Py2/Py3: always feed writestr() a UTF-8 encoded byte string.
         json_data = json.dumps(dict(settings), indent=2)
-        if isinstance(json_data, unicode):
-            json_data = json_data.encode("utf-8")
-        assert isinstance(json_data, bytes)
 
         zip_path = _ORA_JSON_SETTINGS_ZIP_PATH
         helpers.zipfile_writestr(orazip, zip_path, json_data)

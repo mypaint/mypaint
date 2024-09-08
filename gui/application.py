@@ -503,12 +503,7 @@ class Application:
         settingspath = join(self.user_confpath, "settings.json")
         logger.debug("Writing app settings to %r", settingspath)
         json_data = json.dumps(self.preferences, indent=2)
-        if isinstance(json_data, unicode):
-            # Py3. Let's write UTF-8 bytes, just like the stuff Py2's
-            # json.dumps() with a default encoding arg does.
-            json_data = json_data.encode("utf-8")
-        assert isinstance(json_data, bytes)
-        with open(settingspath, "wb") as f:
+        with open(settingspath, "w", encoding="utf-8") as f:
             f.write(json_data)
 
     def apply_settings(self):
