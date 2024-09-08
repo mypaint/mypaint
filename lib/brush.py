@@ -287,12 +287,8 @@ class BrushInfo:
 
         """
 
-        # Py3: Ubuntu Trusty's 3.4.3 json.loads() requires unicode strs.
-        # Layer Py3, and Py2 is OK with either.
-        if not isinstance(json_string, unicode):
-            if not isinstance(json_string, bytes):
-                raise ValueError("Need either a str or a bytes object")
-            json_string = json_string.decode("utf-8")
+        if not isinstance(json_string, (unicode, bytes)):
+            raise ValueError("Need either a str or a bytes object")
 
         brush_def = json.loads(json_string)
         if brush_def.get("version", 0) < 3:
@@ -326,8 +322,6 @@ class BrushInfo:
 
     @staticmethod
     def brush_string_inverted_eotf(brush_string):
-        if isinstance(brush_string, bytes):
-            brush_string = brush_string.decode("utf-8")
         try:
             brush = json.loads(brush_string)
             bsett = brush["settings"]

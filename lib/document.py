@@ -1870,14 +1870,7 @@ class Document:
         if json_entry is not None:
             new_settings = {}
             try:
-                # Py3: on our Travis-CI, they're using Ubuntu Trusty's
-                # ancient Python 3.4.0, and that has a regression. Need
-                # to always feed that version unicode strings.
-                # Normally json.loads() doesn't care, provided that any
-                # bytes it sees are UTF-8. Which they always have been.
                 json_str = orazip.read(json_entry)
-                if isinstance(json_str, bytes):
-                    json_str = json_str.decode("utf-8")
                 new_settings = json.loads(json_str)
             except Exception:
                 logger.exception(
@@ -1993,8 +1986,6 @@ class Document:
             try:
                 with open(json_path, "rb") as fp:
                     json_data = fp.read()
-                    json_data = json_data.decode("utf-8")
-                    # Py3: see note in load_ora().
                     new_settings = json.loads(json_data)
             except Exception:
                 logger.exception(
