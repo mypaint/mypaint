@@ -1345,7 +1345,7 @@ class PNGFileUpdateTask:
             self._png_writer = None
             self._strips_iter = None
             self._tmp_fp.close()
-            lib.fileutils.replace(
+            os.replace(
                 self._tmp_filename,
                 self._final_filename,
             )

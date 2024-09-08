@@ -130,71 +130,11 @@ def via_tempfile(save_method):
                 assert os.path.exists(backup_path)
         # Finally, replace the original
         logger.debug("Replacing %r with %r", target_path, temp_path)
-        replace(temp_path, target_path)
+        os.replace(temp_path, target_path)
         assert os.path.exists(target_path)
         return save_result
 
     return _wrapped_save_method
-
-
-try:
-    _replace = os.replace  # python 3
-except AttributeError:
-    if sys.platform == "win32":
-        try:
-            import win32api
-            import win32con
-
-            def _replace(s, d):
-                win32api.MoveFileEx(
-                    s,
-                    d,
-                    win32con.MOVEFILE_REPLACE_EXISTING,
-                )
-
-        except ImportError:
-            import ctypes
-
-            _MoveFileEx = ctypes.windll.kernel32.MoveFileExW
-            _MoveFileEx.argtypes = (
-                ctypes.c_wchar_p,
-                ctypes.c_wchar_p,
-                ctypes.c_uint32,
-            )
-            _MoveFileEx.restype = ctypes.c_bool
-
-            def _replace(s, d):
-                if not _MoveFileEx(s, d, 1):  # MOVEFILE_REPLACE_EXISTING
-                    raise OSError("_MoveFileEx(%r, %r)" % (s, d))
-
-    else:
-        _replace = os.rename
-
-
-def replace(src, dst):
-    """os.replace compat wrapper
-
-    This has the semantics of a simple os.replace in Python3.
-
-    >>> import tempfile, shutil
-    >>> t = tempfile.mkdtemp()
-    >>> f1 = os.path.join(t, "f1");
-    >>> f2 = os.path.join(t, "f2");
-    >>> for i, f in enumerate([f1, f2]):
-    ...     with open(f, "w") as fp:
-    ...         pass
-    >>> assert os.path.isfile(f1)
-    >>> assert os.path.isfile(f2)
-    >>> replace(f1, f2)
-    >>> assert not os.path.isfile(f1)
-    >>> assert os.path.isfile(f2)
-    >>> shutil.rmtree(t)
-
-    Idea adapted from <http://stupidpythonideas.blogspot.co.uk/2014/07/
-    getting-atomic-writes-right.html>.
-
-    """
-    _replace(src, dst)
 
 
 def startfile(filepath, operation="open"):

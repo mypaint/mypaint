@@ -800,7 +800,7 @@ class FileBackedLayer(SurfaceBackedLayer, core.ExternallyEditable):
             with open(src_path, "rb") as src_fp:
                 shutil.copyfileobj(src_fp, tmp_fp)
             tmp_fp.close()
-            lib.fileutils.replace(tmp_path, final_path)
+            os.replace(tmp_path, final_path)
             self.autosave_dirty = False
         # Return details of what gets written.
         manifest.add(final_relpath)
@@ -1826,7 +1826,7 @@ class _StrokemapFileUpdateTask:
         else:
             self._tmp.write(b"}")
             self._tmp.close()
-            lib.fileutils.replace(self._tmp.name, self._final_name)
+            os.replace(self._tmp.name, self._final_name)
             logger.debug("autosave: updated %r", self._final_name)
             return False
 

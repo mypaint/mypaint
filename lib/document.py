@@ -706,7 +706,7 @@ class Document:
         thumbnail = rootstack.render_thumbnail(bbox)
         tmpname = filename + ".TMP"
         lib.pixbuf.save(thumbnail, tmpname)
-        lib.fileutils.replace(tmpname, filename)
+        os.replace(tmpname, filename)
         return False
 
     def _autosave_stackxml_cb(self, image_elem, filename):
@@ -722,7 +722,7 @@ class Document:
         with open(tmpname, "wb") as xml_fp:
             xml = ET.tostring(image_elem, encoding="UTF-8")
             xml_fp.write(xml)
-        lib.fileutils.replace(tmpname, filename)
+        os.replace(tmpname, filename)
         return False
 
     def _autosave_settings_cb(self, settings, filename):
@@ -734,7 +734,7 @@ class Document:
         tmpname = filename + ".TMP"
         with open(tmpname, "w", encoding="utf-8") as fp:
             fp.write(json_data)
-        lib.fileutils.replace(tmpname, filename)
+        os.replace(tmpname, filename)
 
     def _autosave_cleanup_cb(self, oradir, manifest):
         """Autosaved backup task: final cleanup task"""
