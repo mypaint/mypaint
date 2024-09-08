@@ -1039,7 +1039,7 @@ class Overlay(gui.overlays.Overlay):
         k_attract = 0.05
 
         # Let the buttons bounce around until they've settled.
-        for iter_i in xrange(100):
+        for _i in xrange(100):
             accept_button.add_forces_inverse_square(
                 fixed, k=k_repel
             ).add_forces_inverse_square([reject_button], k=k_repel).add_forces_linear(

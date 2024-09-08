@@ -404,10 +404,10 @@ class PixbufList(Gtk.DrawingArea):
                 return (x, y, w, h)
 
             x, y, w, h = shrink(self.spacing_outside, x, y, w, h)
-            for j in xrange(self.border_visible_outside_cell):
+            for _ in xrange(self.border_visible_outside_cell):
                 x, y, w, h = shrink(-1, x, y, w, h)
             max_j = self.border_visible + self.border_visible_outside_cell
-            for j in xrange(max_j):
+            for _ in xrange(max_j):
                 cr.set_source_rgb(*rect_color.get_rgb())
                 cr.rectangle(x, y, w - 1, h - 1)  # FIXME: check pixel alignment
                 cr.stroke()
