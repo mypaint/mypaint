@@ -1,17 +1,16 @@
 # This file is part of MyPaint.
-# -*- coding: utf-8 -*-
 # Copyright (C) 2007-2013 by Martin Renold <martinxyz@gmx.ch>
-# Copyright (C) 2013-2015 by the MyPaint Development Team.
+# Copyright (C) 2013-2024 by the MyPaint Development Team.
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation; either version 2 of the License, or
 # (at your option) any later version
 
-mypaint_brushdir = "{mypaint_brushdir}"
-libmypaint_version = "{libmypaint_version}"
-libmypaint_locale_dir = {libmypaint_locale_dir}
+# This file should be encoded in utf-8
+
+mypaint_brushdir = "@brushes_dir@"
+libmypaint_version = "@brushlib_ver@"
+libmypaint_locale_dir = @libmypaint_locale_dir@
 # List of locales for which translation files are available
-supported_locales = [
-{supported_locales}
-]
+supported_locales = [@supported_locales@]

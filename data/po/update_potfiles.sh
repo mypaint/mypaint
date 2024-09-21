@@ -1,13 +1,13 @@
 #!/usr/bin/env bash
 
 # Generate the po template file from the sources
+ggrep="git grep --full-name --files-with-matches"
+MYPAINT_SRC="../../src/"
 
 # Python files containing "from [lib.]gettext import ..."
-ggrep="git grep --full-name --files-with-matches"
-py_files=$($ggrep "^from .*gettext import" .. | grep "\.py$" | sed 's:^:../:')
-
+py_files=$($ggrep "^from .*gettext import" ${MYPAINT_SRC} | grep "\.py$" | sed 's:^:../:')
 # UI resource and layout files
-ui_files=$($ggrep "^<interface>" .. | grep -v "\.py$" | sed 's:^:../:')
+ui_files=$($ggrep "^<interface>" ${MYPAINT_SRC} | grep -v "\.py$" | sed 's:^:../:')
 
 # Temp files
 py_messages=$(mktemp)
