@@ -1,4 +1,5 @@
-#!/usr/bin/env python
+#@python_path@
+
 # Thumbnailer for GNOME/Cinnamon Nautilus, and compatible desktops.
 #
 # Copyright (c)  2010 Jon Nordby <jononor@gmail.com>
@@ -28,6 +29,19 @@
 import zipfile
 
 import gi
+
+## Variables configured at buildtime
+MYPAINT_VERSION_BASE='@mypaint_version_base@'
+MYPAINT_VERSION_FORMAL='@mypaint_version_formal@'
+MYPAINT_VERSION_CEREMONIAL='@mypaint_version_ceremonial@'
+
+MYPAINT_DIR_PATHS = {
+    'data': '@os_datadir@',
+    'headers': '@os_includedir@',
+    'platlib': '@platlibdir@',
+    'purelib': '@purelibdir@',
+    'scripts': '@os_bindir@'
+}
 
 
 gi.require_version("GdkPixbuf", "2.0")
