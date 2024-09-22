@@ -17,17 +17,19 @@ See also: gui.style
 import logging
 import math
 
-import cairo
-import numpy
-
+from lib.brush import Brush, BrushInfo
+import lib.tiledsurface
+from lib.pixbufsurface import render_as_pixbuf
+from lib.helpers import clamp
 import gui.style
 import lib.color
-import lib.tiledsurface
-from lib.brush import Brush, BrushInfo
-from lib.gibindings import Gdk, GdkPixbuf, Gtk
-from lib.helpers import clamp
-from lib.pixbufsurface import render_as_pixbuf
 from lib.pycompat import xrange
+
+import numpy
+import cairo
+from lib.gibindings import GdkPixbuf
+from lib.gibindings import Gdk
+from lib.gibindings import Gtk
 
 logger = logging.getLogger(__name__)
 
@@ -563,7 +565,6 @@ def get_drop_shadow_offsets(line_width, z=2):
 if __name__ == "__main__":
     logging.basicConfig(level=logging.DEBUG)
     import sys
-
     import lib.pixbuf
 
     for myb_file in sys.argv[1:]:

@@ -12,6 +12,7 @@
 
 from lib.gibindings import Gtk
 
+
 ## Layout constants ##
 
 # Most pages in the old combined adjuster widget were split into a primary area

@@ -12,28 +12,33 @@
 
 ## Imports
 
-import contextlib
-import logging
-import os
-import shutil
-import uuid
-import zipfile
 from itertools import chain
+import os
+import zipfile
 from os.path import basename
 from warnings import warn
+import logging
+import shutil
+import uuid
+import contextlib
 
+from lib.gettext import gettext as _
+from lib.gettext import C_
+from lib.helpers import utf8
+
+from lib.gibindings import Gtk
+from lib.gibindings import GdkPixbuf
+
+from . import dialogs
+from lib.brush import BrushInfo
+from lib.observable import event
+import lib.pixbuf
+from . import drawutils
 import gui.mode
 import lib.config
-import lib.pixbuf
-from lib.brush import BrushInfo
-from lib.gettext import C_
-from lib.gettext import gettext as _
-from lib.gibindings import GdkPixbuf, Gtk
-from lib.helpers import utf8
-from lib.observable import event
-from lib.pycompat import PY3, unicode, xrange
-
-from . import dialogs, drawutils
+from lib.pycompat import unicode
+from lib.pycompat import xrange
+from lib.pycompat import PY3
 
 if PY3:
     import urllib.parse
@@ -263,8 +268,8 @@ class BrushManager(object):
         any zipfile.Zipfile()s you open, even for read.
 
         """
-        from shutil import rmtree
         from tempfile import mkdtemp
+        from shutil import rmtree
 
         dist_brushes = lib.config.mypaint_brushdir
         tmp_user_brushes = mkdtemp(suffix="_brushes")

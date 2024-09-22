@@ -12,10 +12,12 @@
 from gettext import gettext as _
 
 import gui.mode
+from .overlays import Overlay
+from .overlays import rounded_box
 from lib.color import HCYColor, HSVColor
+
 from lib.gibindings import GLib
 
-from .overlays import Overlay, rounded_box
 
 ## Color picking mode, with a preview rectangle overlay
 

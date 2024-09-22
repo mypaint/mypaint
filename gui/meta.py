@@ -15,18 +15,20 @@ See also `lib.meta`.
 
 """
 
+## Imports
+import sys
 import os
 import platform
 
-## Imports
-import sys
-
+from lib.gibindings import Gtk
+from lib.gibindings import GdkPixbuf
+from lib.gibindings import GLib
 import cairo
 
-import lib.meta
 from lib.gettext import C_
-from lib.gibindings import GdkPixbuf, GLib, Gtk
+import lib.meta
 from lib.xml import escape
+
 
 ## Program-related string constants
 

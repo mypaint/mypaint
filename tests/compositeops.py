@@ -2,17 +2,17 @@
 # Tests the layer compositing/blending code for correctness of its
 # advertized optimization flags.
 
-import unittest
 from random import random
+import unittest
 
 import numpy as np
 
+from . import paths
 from lib import mypaintlib
+from lib.tiledsurface import N
 from lib.modes import MODE_STRINGS
 from lib.pycompat import xrange
-from lib.tiledsurface import N
 
-from . import paths
 
 ALPHA_VALUES = (0.0, 0.5, 1.0)
 GREY_VALUES = (0.0, 0.25, 0.5, 0.75, 1.0)

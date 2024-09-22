@@ -10,18 +10,20 @@
 
 ## Imports
 
-import logging
 import math
+import logging
 from collections import deque
 from gettext import gettext as _
 
+from lib.gibindings import Gtk
+from lib.gibindings import Gdk
+from lib.gibindings import GLib
 import numpy as np
 
-import gui.mode
 from gui.tileddrawwidget import TiledDrawWidget
-from lib.gibindings import Gdk, GLib, Gtk
-from lib.helpers import clamp
 
+from lib.helpers import clamp
+import gui.mode
 from .drawutils import spline_4p
 from .sliderwidget import InputSlider
 

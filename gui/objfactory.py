@@ -14,6 +14,7 @@ import logging
 from warnings import warn
 
 from lib.gibindings import GObject
+
 from lib.observable import event
 
 logger = logging.getLogger(__name__)

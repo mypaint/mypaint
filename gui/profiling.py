@@ -8,16 +8,19 @@
 # the Free Software Foundation; either version 2 of the License, or
 # (at your option) any later version.
 
-import logging
 import os
-import shutil
-import subprocess
 import sys
-import tempfile
 import time
+import tempfile
+import subprocess
+import shutil
+import logging
+
+from lib.gibindings import GLib
+from lib.gibindings import Gtk
 
 import lib.fileutils
-from lib.gibindings import GLib, Gtk
+
 
 logger = logging.getLogger(__name__)
 

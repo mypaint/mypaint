@@ -2,18 +2,21 @@
 
 # Imports:
 
-import contextlib
-import copy
+from time import time
 import os
 import sys
-import unittest
-from itertools import chain, product, repeat
 from os.path import join
-from time import time
-
-from lib import document, fill_common, floodfill, morphology, mypaintlib
+import unittest
+import contextlib
+import copy
+from itertools import repeat, chain, product
 
 from . import paths
+from lib import mypaintlib
+from lib import document
+from lib import floodfill
+from lib import fill_common
+from lib import morphology
 
 N = mypaintlib.TILE_SIZE
 

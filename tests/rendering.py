@@ -2,20 +2,19 @@
 
 # Imports:
 
-import math
+from os.path import join
 import sys
 import time
-import unittest
-from collections import namedtuple
-from os.path import join
-
+import math
 import cairo
-
-from lib import mypaintlib
-from lib.document import Document
-from lib.pycompat import PY3, xrange
+from collections import namedtuple
+import unittest
 
 from . import paths
+from lib import mypaintlib
+from lib.document import Document
+from lib.pycompat import xrange, PY3
+
 
 TEST_BIGIMAGE = "bigimage.ora"
 

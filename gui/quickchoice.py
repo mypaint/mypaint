@@ -12,13 +12,18 @@
 
 import abc
 
-import gui.colortools
 from lib.gibindings import Gtk
+
+from .pixbuflist import PixbufList
+from . import brushmanager
+from . import brushselectionwindow
+from . import widgets
+from . import spinbox
+from . import windowing
 from lib.observable import event
+import gui.colortools
 from lib.pycompat import add_metaclass
 
-from . import brushmanager, brushselectionwindow, spinbox, widgets, windowing
-from .pixbuflist import PixbufList
 
 ## Module consts
 

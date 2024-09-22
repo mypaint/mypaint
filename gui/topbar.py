@@ -11,9 +11,11 @@
 ## Imports
 
 import logging
-from gettext import gettext as _
 
-from lib.gibindings import Gdk, GObject, Gtk
+from lib.gibindings import GObject
+from lib.gibindings import Gtk
+from lib.gibindings import Gdk
+from gettext import gettext as _
 
 logger = logging.getLogger(__name__)
 

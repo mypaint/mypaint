@@ -9,19 +9,21 @@
 """Footer widget behaviour."""
 
 
-import logging
-
 ## Imports
 import math
-from gettext import gettext as _
+import logging
 
 import cairo
 
+from lib.gibindings import Gdk
+from lib.gibindings import GdkPixbuf
+
 import gui.brushmanager
-import lib.xml
 from gui.quickchoice import BrushChooserPopup  # noqa
+
+import lib.xml
 from lib.gettext import C_
-from lib.gibindings import Gdk, GdkPixbuf
+from gettext import gettext as _
 
 logger = logging.getLogger(__name__)
 

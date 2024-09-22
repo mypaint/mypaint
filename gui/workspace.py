@@ -10,14 +10,17 @@
 
 ## Imports
 
-import logging
 from warnings import warn
+import logging
+
+from lib.gibindings import GObject
+from lib.gibindings import Gtk
+from lib.gibindings import Gdk
+from lib.gibindings import GLib
 
 from gui.toolstack import ToolStack, ToolStackWindow
 from gui.windowing import set_initial_window_position
-from lib.gibindings import Gdk, GLib, GObject, Gtk
 from lib.observable import event
-
 from . import objfactory
 
 logger = logging.getLogger(__name__)

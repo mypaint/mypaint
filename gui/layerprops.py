@@ -15,13 +15,19 @@
 import logging
 from collections import namedtuple
 
-import cairo
-
-import gui.mvp
+from lib.modes import STACK_MODES
+from lib.modes import STANDARD_MODES
+from lib.modes import PASS_THROUGH_MODE
+from lib.modes import MODE_STRINGS
 import lib.xml
 from lib.gettext import C_
-from lib.gibindings import Gdk, GdkPixbuf, Gtk
-from lib.modes import MODE_STRINGS, PASS_THROUGH_MODE, STACK_MODES, STANDARD_MODES
+import gui.mvp
+
+import cairo
+from lib.gibindings import Gtk
+from lib.gibindings import Gdk
+from lib.gibindings import GdkPixbuf
+
 
 # Module constants:
 

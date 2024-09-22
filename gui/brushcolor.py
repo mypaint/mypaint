@@ -9,9 +9,8 @@
 
 """Brush color changer."""
 
-import lib.color
-
 from . import colors
+import lib.color
 
 
 class BrushColorManager(colors.ColorManager):

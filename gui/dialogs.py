@@ -10,15 +10,18 @@
 
 """Common dialog functions"""
 
-from fnmatch import fnmatch
-from gettext import gettext as _
-
-from lib.color import RGBColor
-
 ## Imports
-from lib.gibindings import Gdk, GdkPixbuf, Gtk
+from lib.gibindings import Gtk
+from lib.gibindings import Gdk
+from lib.gibindings import GdkPixbuf
 
-from . import uicolor, widgets
+from gettext import gettext as _
+from fnmatch import fnmatch
+
+from . import widgets
+from lib.color import RGBColor
+from . import uicolor
+
 
 ## Module constants
 

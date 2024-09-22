@@ -11,26 +11,29 @@
 
 ## Imports
 
+import time
+import sys
+import os
 import contextlib
 import logging
-import os
-import sys
-import time
-from gettext import gettext as _
 
+from gettext import gettext as _
 import numpy as np
 
-import lib.feedback
-import lib.fileutils
-import lib.floodfill
-import lib.modes
-import lib.surface
+from . import mypaintlib
+from . import pixbufsurface
 from lib.eotf import eotf
-from lib.pycompat import PY3, itervalues, xrange
-from lib.surface import TileAccessible, TileBlittable, TileCompositable
-
-from . import mypaintlib, pixbufsurface
+import lib.surface
+from lib.surface import TileAccessible
+from lib.surface import TileBlittable
+from lib.surface import TileCompositable
 from .errors import FileHandlingError
+import lib.fileutils
+import lib.modes
+import lib.feedback
+import lib.floodfill
+from lib.pycompat import xrange
+from lib.pycompat import PY3, itervalues
 
 logger = logging.getLogger(__name__)
 

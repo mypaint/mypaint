@@ -10,9 +10,14 @@
 
 import weakref
 
-from lib.gibindings import Gdk, GObject, Gtk
-from lib.observable import event
+from lib.gibindings import Gtk
+from lib.gibindings import Gdk
+from lib.gibindings import GObject
+
 from lib.pycompat import with_metaclass
+
+from lib.observable import event
+
 
 # Can't access the constant as a normal attribute - it starts with a digit.
 _DOUBLE_CLICK = getattr(Gdk.EventType, "2BUTTON_PRESS")

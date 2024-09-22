@@ -12,30 +12,33 @@
 """
 
 import math
-import os.path
-import re
 from copy import deepcopy
+import re
+import os.path
 
+from lib.gibindings import Gtk
+from lib.gibindings import Gdk
 import cairo
 
+from .adjbases import ColorManager
+from .adjbases import ColorAdjuster
+from .adjbases import HueSaturationWheelMixin
+from .adjbases import HueSaturationWheelAdjuster
+from .sliders import HCYLumaSlider
+from .combined import CombinedAdjusterPage
+from lib.color import RGBColor
+from lib.color import HCYColor
+from lib.color import HSVColor
 import gui.uicolor
-import lib.alg as geom
-from lib.color import HCYColor, HSVColor, RGBColor
-from lib.gettext import C_
-from lib.gibindings import Gdk, Gtk
+from .util import clamp
 from lib.palette import Palette
+import lib.alg as geom
+from .paletteview import palette_load_via_dialog
+from .paletteview import palette_save_via_dialog
+from lib.gettext import C_
+
 from lib.pycompat import xrange
 
-from .adjbases import (
-    ColorAdjuster,
-    ColorManager,
-    HueSaturationWheelAdjuster,
-    HueSaturationWheelMixin,
-)
-from .combined import CombinedAdjusterPage
-from .paletteview import palette_load_via_dialog, palette_save_via_dialog
-from .sliders import HCYLumaSlider
-from .util import clamp
 
 PREFS_MASK_KEY = "colors.hcywheel.mask.gamuts"
 PREFS_ACTIVE_KEY = "colors.hcywheel.mask.active"

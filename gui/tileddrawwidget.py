@@ -10,28 +10,29 @@
 
 ## Imports
 
+import random
+from math import floor, ceil, log, exp
+import math
+import weakref
 import contextlib
 import logging
-import math
-import random
-import weakref
-from math import ceil, exp, floor, log
 
+from lib.gibindings import Gtk
+from lib.gibindings import Gdk
+from lib.gibindings import GLib
 import cairo
 import numpy as np
 
-import gui.style
-import lib.alg
-import lib.color
-import lib.layer
-from lib import helpers, pixbufsurface, tiledsurface
-from lib.gibindings import Gdk, GLib, Gtk
+from lib import helpers, tiledsurface, pixbufsurface
 from lib.observable import event
-from lib.pycompat import xrange
-
+import lib.layer
 from . import cursor
 from .drawutils import render_checks
 from .windowing import clear_focus
+import gui.style
+import lib.color
+import lib.alg
+from lib.pycompat import xrange
 
 logger = logging.getLogger(__name__)
 

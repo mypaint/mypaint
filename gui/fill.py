@@ -11,24 +11,28 @@
 
 # Imports
 import weakref
+from lib.gibindings import Gtk
+from lib.gibindings import Pango
+from lib.gibindings import GLib
 from gettext import gettext as _
+from lib.gettext import C_
 
 import cairo
 
-import gui.cursor
-import gui.layers
 import gui.mode
+import gui.cursor
+from gui.blendmodehandler import BlendModes
+import gui.layers
 import gui.overlays
+from gui.sliderwidget import InputSlider
+
 import lib.eotf
 import lib.floodfill
 import lib.helpers
+import lib.mypaintlib
 import lib.layer
 import lib.modes
-import lib.mypaintlib
-from gui.blendmodehandler import BlendModes
-from gui.sliderwidget import InputSlider
-from lib.gettext import C_
-from lib.gibindings import GLib, Gtk, Pango
+
 
 # Class defs
 

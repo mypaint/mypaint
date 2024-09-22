@@ -17,9 +17,11 @@ for consistent keyboard handling.
 
 import logging
 
+from lib.gibindings import Gtk
+from lib.gibindings import Gdk
+
 import gui.document
 import gui.tileddrawwidget
-from lib.gibindings import Gdk, Gtk
 
 logger = logging.getLogger(__name__)
 

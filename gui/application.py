@@ -28,68 +28,74 @@
 # guess GTK is caching something internally, like GLib's g_get_*_dir()
 # stuff, but wtf is libmypaint doing to break those?
 
-import json
-import logging
 import os
 import sys
-from collections import namedtuple
-from gettext import gettext as _
 from os.path import join
+from collections import namedtuple
+import logging
+import json
 
-import gui.autorecover
-import gui.compatibility as compat
-import gui.cursor
-import gui.device
-import gui.factoryaction  # registration only
-import gui.picker
-import gui.profiling
-import gui.userconfig
-import lib.cache
-import lib.config
-import lib.document
-import lib.fileutils
-import lib.glib
+from lib.gibindings import GObject
+from lib.gibindings import Gtk
+from lib.gibindings import Gdk
+from lib.gibindings import GdkPixbuf
+from lib.gibindings import GLib
+from gettext import gettext as _
+
 import lib.observable
+import lib.cache
+import lib.document
 import lib.strokemap
-import lib.xml
-from lib import brush, brushsettings, helpers, mypaintlib, validation
-from lib.gibindings import Gdk, GdkPixbuf, GLib, GObject, Gtk
-from lib.pycompat import unicode
-
-from . import accelmap  # noqa: F401
-from . import colorpreview  # noqa: F401
-from . import colors  # noqa: F401
-from . import colortools  # noqa: F401
-from . import drawwindow  # noqa: F401
-from . import fill  # noqa: F401
-from . import framewindow  # noqa: F401
-from . import history  # noqa: F401
-from . import layerswindow  # noqa: F401
-from . import optionspanel  # noqa: F401
-from . import previewwindow  # noqa: F401
-from . import scratchwindow  # noqa: F401
-from . import toolbar  # noqa: F401
-from . import topbar  # noqa: F401
+from lib import brush
+from lib import helpers
+from lib import mypaintlib
+from lib import brushsettings
+from lib import validation
+import gui.compatibility as compat
+import gui.device
+from . import filehandling
+from . import keyboard
+from . import brushmanager
+from . import document
+from . import tileddrawwidget
 from . import workspace  # noqa: F401
-from . import (
-    backgroundwindow,
-    blendmodehandler,
-    brusheditor,
-    brushiconeditor,
-    brushmanager,
-    brushmodifier,
-    document,
-    filehandling,
-    inputtestwindow,
-    keyboard,
-    linemode,
-    preferenceswindow,
-    tileddrawwidget,
-)
+from . import topbar  # noqa: F401
+from . import drawwindow  # noqa: F401
+from . import backgroundwindow
+from . import preferenceswindow
+from . import brusheditor
+from . import layerswindow  # noqa: F401
+from . import previewwindow  # noqa: F401
+from . import optionspanel  # noqa: F401
+from . import framewindow  # noqa: F401
+from . import scratchwindow  # noqa: F401
+from . import inputtestwindow
+from . import brushiconeditor
+from . import history  # noqa: F401
+from . import colortools  # noqa: F401
+from . import brushmodifier
+from . import blendmodehandler
+from . import toolbar  # noqa: F401
+from . import linemode
+from . import colors  # noqa: F401
+from . import colorpreview  # noqa: F401
+from . import fill  # noqa: F401
+from . import accelmap  # noqa: F401
 from .brushcolor import BrushColorManager
-from .buttonmap import ButtonMapping
 from .overlays import LastPaintPosOverlay  # noqa: F401
 from .overlays import ScaleOverlay  # noqa: F401
+from .buttonmap import ButtonMapping
+import lib.config
+import lib.glib
+import gui.cursor
+import lib.fileutils
+import gui.picker
+import gui.userconfig
+import gui.factoryaction  # registration only
+import gui.autorecover
+import lib.xml
+import gui.profiling
+from lib.pycompat import unicode
 
 logger = logging.getLogger(__name__)
 

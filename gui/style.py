@@ -18,6 +18,7 @@ See also: gui.drawutils
 
 from lib.color import HCYColor, RGBColor
 
+
 ## Alpha checks (chequerboard pattern)
 
 ALPHA_CHECK_SIZE = 16

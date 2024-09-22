@@ -11,18 +11,19 @@
 
 ## Imports *nothing involving mypaintlib at this point*
 
-import logging
 import os
 import sys
+import logging
 import warnings
+
+from lib.gibindings import GdkPixbuf
 from optparse import OptionParser
 
-import gui.userconfig
 import lib.config
 import lib.glib
-from lib.gibindings import GdkPixbuf
 from lib.i18n import USER_LOCALE_PREF
 from lib.meta import MYPAINT_VERSION
+import gui.userconfig
 
 logger = logging.getLogger(__name__)
 

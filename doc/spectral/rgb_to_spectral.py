@@ -9,19 +9,21 @@ Original file is located at
 
 # !pip install git+git://github.com/colour-science/colour
 
-
 import colour
 import numpy as np
+from scipy.optimize import minimize
+
+
 from colour.colorimetry import (
     STANDARD_OBSERVERS_CMFS,
     SpectralDistribution,
     SpectralShape,
     sd_ones,
-    sd_zeros,
     spectral_to_XYZ_integration,
+    sd_zeros,
 )
-from colour.utilities import from_range_100, to_domain_1
-from scipy.optimize import minimize
+from colour.utilities import to_domain_1, from_range_100
+
 
 # could use straight Meng but we can do Chromatic Adaptation via the illuminant_SPD instead
 # this is Meng modified to be more similar to Scott Allen Burns least log slope squared method

@@ -10,7 +10,9 @@
 
 import functools
 
-from lib.gibindings import Gdk, Gtk
+from lib.gibindings import Gtk
+from lib.gibindings import Gdk
+
 
 # Exact icon sizes
 

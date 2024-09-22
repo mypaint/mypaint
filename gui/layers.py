@@ -11,20 +11,28 @@
 
 ## Imports
 
-import logging
-import sys
-
-import gui.drawutils
 import lib.layer
-from gui.layerprops import make_preview
-from lib import helpers
-from lib.document import Document
-from lib.gettext import C_
-from lib.gettext import gettext as _
-from lib.gibindings import Gdk, GdkPixbuf, GLib, GObject, Gtk, Pango
-from lib.observable import event
-from lib.pycompat import unicode
 from lib.xml import escape
+from lib.observable import event
+from lib import helpers
+
+from lib.document import Document
+from lib.gettext import gettext as _
+from lib.gettext import C_
+from gui.layerprops import make_preview
+import gui.drawutils
+from lib.pycompat import unicode
+
+from lib.gibindings import Gtk
+from lib.gibindings import Gdk
+from lib.gibindings import GObject
+from lib.gibindings import GLib
+from lib.gibindings import Pango
+from lib.gibindings import GdkPixbuf
+
+import sys
+import logging
+
 
 ## Module vars
 
@@ -1127,7 +1135,7 @@ def new_blend_mode_combo(modes, mode_strings):
 
 def _test():
     """Test the custom model in an ad-hoc GUI window"""
-    from lib.layer import LayerStack, PaintingLayer
+    from lib.layer import PaintingLayer, LayerStack
 
     doc_model = Document()
     root = doc_model.layer_stack

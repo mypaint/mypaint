@@ -18,6 +18,7 @@ from lib.gibindings import Gtk
 
 from . import widgets
 
+
 ## Module constants
 
 

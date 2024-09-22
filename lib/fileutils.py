@@ -12,17 +12,19 @@
 
 ## Imports
 
-import functools
-import logging
 import os
 import os.path
-import shutil
 import sys
+import functools
+import logging
+import shutil
 import unicodedata
 
 import lib.helpers
-from lib.gibindings import Gio, GLib
 from lib.pycompat import unicode
+
+from lib.gibindings import GLib
+from lib.gibindings import Gio
 
 logger = logging.getLogger(__name__)
 

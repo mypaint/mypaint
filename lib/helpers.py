@@ -7,23 +7,24 @@
 # the Free Software Foundation; either version 2 of the License, or
 # (at your option) any later version.
 
+import itertools
+from math import floor, isnan
+import os
+import hashlib
+import zipfile
 import colorsys
 import gc
-import hashlib
-import itertools
 import logging
-import os
 import sys
-import zipfile
-from math import floor, isnan
 
-import lib.glib
-import lib.pixbuf
-from lib.gettext import C_
 from lib.gibindings import GdkPixbuf
-from lib.pycompat import PY2, unicode
+from lib.gettext import C_
 
 from . import mypaintlib
+import lib.pixbuf
+import lib.glib
+from lib.pycompat import PY2
+from lib.pycompat import unicode
 
 logger = logging.getLogger(__name__)
 

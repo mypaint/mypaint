@@ -1,14 +1,16 @@
+import traceback
+import tempfile
 import os
 import sys
-import tempfile
-import traceback
+
+import numpy as np
 
 import gi
-import numpy as np
 
 try:
     gi.require_version("Gtk", "3.0")
-    from lib.gibindings import GObject, Gtk
+    from lib.gibindings import Gtk
+    from lib.gibindings import GObject
 except:
     raise
 

@@ -9,24 +9,26 @@
 
 ## Imports
 
-import collections
 import math
+import collections
 import weakref
-from gettext import gettext as _
 from logging import getLogger
 
+from gettext import gettext as _
+from lib.gibindings import Gdk
+from lib.gibindings import GLib
 import numpy as np
 
-import gui.cursor
-import gui.drawutils
 import gui.mode
-import gui.mvp
 import gui.overlays
 import gui.style
+import gui.drawutils
 import lib.helpers
+import gui.cursor
 import lib.observable
-from lib.gibindings import Gdk, GLib
+import gui.mvp
 from lib.pycompat import xrange
+
 
 ## Module constants
 

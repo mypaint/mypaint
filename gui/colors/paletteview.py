@@ -15,31 +15,33 @@
 #   - sort palette by approx. hue+chroma binning, then luma variations
 
 
-import logging
-
 ## Imports
 import math
 import os
 import re
+import logging
 from io import open
 
+from lib.gibindings import Gdk
+from lib.gibindings import Gtk
+from lib.gibindings import GLib
 import cairo
-
-import gui.uicolor
-from lib.color import HCYColor, HSVColor, RGBColor
 from lib.gettext import C_
-from lib.gibindings import Gdk, GLib, Gtk
+
+from .util import clamp
 from lib.palette import Palette
+from lib.color import RGBColor
+from lib.color import HCYColor
+from lib.color import HSVColor
+import gui.uicolor
+from .adjbases import ColorAdjuster
+from .adjbases import ColorAdjusterWidget
+from .adjbases import ColorManager
+from .adjbases import DATAPATH_PALETTES_SUBDIR
+from .combined import CombinedAdjusterPage
+
 from lib.pycompat import unicode
 
-from .adjbases import (
-    DATAPATH_PALETTES_SUBDIR,
-    ColorAdjuster,
-    ColorAdjusterWidget,
-    ColorManager,
-)
-from .combined import CombinedAdjusterPage
-from .util import clamp
 
 logger = logging.getLogger(__name__)
 

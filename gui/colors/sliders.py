@@ -10,13 +10,16 @@
 """Component sliders for power users.
 """
 
-from lib.color import HCYColor, HSVColor, RGBColor
-from lib.gettext import C_
 from lib.gibindings import Gtk
 
-from .adjbases import ColorAdjuster, SliderColorAdjuster
+from lib.color import RGBColor
+from lib.color import HSVColor
+from lib.color import HCYColor
 from .bases import IconRenderable
+from .adjbases import ColorAdjuster
+from .adjbases import SliderColorAdjuster
 from .combined import CombinedAdjusterPage
+from lib.gettext import C_
 
 
 class ComponentSlidersAdjusterPage(CombinedAdjusterPage, IconRenderable):
@@ -305,7 +308,6 @@ class HCYLumaSlider(SliderColorAdjuster):
 if __name__ == "__main__":
     import os
     import sys
-
     from adjbases import ColorManager
 
     mgr = ColorManager(prefs={}, datapath=".")

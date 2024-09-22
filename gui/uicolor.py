@@ -18,8 +18,9 @@ They can't be part of lib/ because of the GDK dependency.
 
 import struct
 
-from lib.color import RGBColor
 from lib.gibindings import Gdk
+
+from lib.color import RGBColor
 from lib.helpers import clamp
 
 

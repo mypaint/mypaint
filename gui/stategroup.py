@@ -9,7 +9,10 @@
 
 import logging
 
-from lib.gibindings import Gdk, GLib, Gtk
+from lib.gibindings import Gtk
+from lib.gibindings import Gdk
+from lib.gibindings import GLib
+
 
 logger = logging.getLogger(__name__)
 

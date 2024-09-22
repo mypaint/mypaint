@@ -11,14 +11,17 @@
 
 ## Imports
 
-from gettext import gettext as _
 from math import pi
+from gettext import gettext as _
 
+from lib.gibindings import Pango
+from lib.gibindings import PangoCairo
+from lib.gibindings import GLib
 import cairo
 
-import gui.style
-from lib.gibindings import GLib, Pango, PangoCairo
 from lib.helpers import clamp
+import gui.style
+
 
 ## Base classes and utils
 

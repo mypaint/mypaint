@@ -17,25 +17,28 @@
 # - fix lockup with dialog.run(), return to mainloop instead
 # see also http://faq.pygtk.org/index.py?req=show&file=faq20.010.htp
 # (The license is still whatever you want.)
+from lib.pycompat import PY3
+
 import inspect
 import linecache
 import pydoc
 import sys
-import textwrap
 import traceback
 from gettext import gettext as _
+import textwrap
+
+from lib.gibindings import Gtk
+from lib.gibindings import Gdk
+from lib.gibindings import Pango
 
 import lib.meta
-from lib.gibindings import Gdk, Gtk, Pango
-from lib.pycompat import PY3
 
 if PY3:
     from io import StringIO
     from urllib.parse import quote_plus
 else:
-    from urllib import quote_plus
-
     from cStringIO import StringIO
+    from urllib import quote_plus
 
 
 # Function that will be called when the user presses "Quit"
@@ -71,10 +74,9 @@ def lookup(name, frame, lcls):
 
 
 def analyse(exctyp, value, tb):
+    import tokenize
     import keyword
     import platform
-    import tokenize
-
     from gui import application
     from gui.meta import get_libs_version_string
 
@@ -326,8 +328,8 @@ exception_dialog_active = False
 
 
 if __name__ == "__main__":
-    import os
     import sys
+    import os
 
     def _test_button_clicked_cb(*a):
         class _TestException(Exception):

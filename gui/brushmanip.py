@@ -11,11 +11,12 @@
 
 from math import ceil, hypot, log, pi
 
-import gui.mode
 import gui.overlays
+import gui.mode
+
 from lib.brush import brush_visual_radius
-from lib.gettext import C_
 from lib.gibindings import Gdk
+from lib.gettext import C_
 
 
 class BrushSizeOverlay(gui.overlays.Overlay):

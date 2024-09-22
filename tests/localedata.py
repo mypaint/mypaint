@@ -1,6 +1,5 @@
 import unittest
 from glob import glob
-
 from lib import localecodes as lc
 
 

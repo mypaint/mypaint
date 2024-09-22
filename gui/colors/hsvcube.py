@@ -14,24 +14,22 @@
 from gettext import gettext as _
 
 import cairo
-
-from lib.color import HSVColor, RGBColor
 from lib.gibindings import Gtk
-from lib.pycompat import xrange
 
-from .adjbases import (
-    ColorAdjuster,
-    ColorAdjusterWidget,
-    IconRenderableColorAdjusterWidget,
-    SliderColorAdjuster,
-)
+from .util import clamp
+from .util import draw_marker_circle
+from lib.color import HSVColor
+from lib.color import RGBColor
+from .adjbases import ColorAdjusterWidget
+from .adjbases import ColorAdjuster
+from .adjbases import SliderColorAdjuster
+from .adjbases import IconRenderableColorAdjusterWidget
 from .combined import CombinedAdjusterPage
-from .uimisc import (
-    PRIMARY_ADJUSTERS_MIN_HEIGHT,
-    PRIMARY_ADJUSTERS_MIN_WIDTH,
-    borderless_button,
-)
-from .util import clamp, draw_marker_circle
+from .uimisc import borderless_button
+from .uimisc import PRIMARY_ADJUSTERS_MIN_WIDTH
+from .uimisc import PRIMARY_ADJUSTERS_MIN_HEIGHT
+
+from lib.pycompat import xrange
 
 
 class HSVCubePage(CombinedAdjusterPage):
@@ -252,7 +250,6 @@ class HSVCubeSlice(IconRenderableColorAdjusterWidget):
 if __name__ == "__main__":
     import os
     import sys
-
     from adjbases import ColorManager
 
     mgr = ColorManager(prefs={}, datapath=".")

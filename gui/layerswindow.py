@@ -13,20 +13,25 @@
 
 ## Imports
 
-import os.path
 from gettext import gettext as _
+import os.path
 from logging import getLogger
 
-import gui.layervis
-import lib.layer
-import lib.modes
-import lib.xml
-from lib.gibindings import GObject, Gtk
-from lib.modes import MODE_STRINGS, PASS_THROUGH_MODE, STACK_MODES, STANDARD_MODES
+from lib.gibindings import Gtk
+from lib.gibindings import GObject
 
-from . import layers, widgets
-from .toolstack import SizedVBoxToolWidget
+import lib.layer
+import lib.xml
+from . import widgets
 from .widgets import inline_toolbar
+from .toolstack import SizedVBoxToolWidget
+from . import layers
+from lib.modes import STACK_MODES
+from lib.modes import STANDARD_MODES
+from lib.modes import MODE_STRINGS
+from lib.modes import PASS_THROUGH_MODE
+import lib.modes
+import gui.layervis
 
 logger = getLogger(__name__)
 

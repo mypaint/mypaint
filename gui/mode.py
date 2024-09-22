@@ -14,15 +14,21 @@ import logging
 import math
 from gettext import gettext as _
 
-import gui.cursor
-import lib.command
 from gui.sliderwidget import InputSlider
+
+from lib.gibindings import Gtk
+from lib.gibindings import Gdk
+from lib.gibindings import GLib
+
+import lib.command
 from lib.brushsettings import settings_dict
 from lib.document import Document
-from lib.gibindings import Gdk, GLib, Gtk
 from lib.layer.data import SimplePaintingLayer
 from lib.observable import event
-from lib.pycompat import add_metaclass, unicode
+from lib.pycompat import add_metaclass
+from lib.pycompat import unicode
+
+import gui.cursor
 
 logger = logging.getLogger(__name__)
 

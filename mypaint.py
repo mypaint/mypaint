@@ -20,12 +20,12 @@ It then passes control to gui.main.main() for command line launching.
 
 ## Imports (standard Python only at this point)
 
-import logging
+import sys
 import os
 import os.path
+from os.path import join, isdir, dirname, abspath
 import re
-import sys
-from os.path import abspath, dirname, isdir, join
+import logging
 
 logger = logging.getLogger("mypaint")
 if sys.version_info >= (3,):
@@ -103,7 +103,7 @@ def win32_unicode_argv():
     characters with '?'.
     """
     try:
-        from ctypes import POINTER, byref, c_int, cdll, windll
+        from ctypes import POINTER, byref, cdll, c_int, windll
         from ctypes.wintypes import LPCWSTR, LPWSTR
 
         get_cmd = cdll.kernel32.GetCommandLineW

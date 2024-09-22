@@ -8,10 +8,10 @@
 
 """Functions and constants common to fill and morphological operations"""
 
-import numpy
-
 import lib.helpers
 import lib.mypaintlib
+import numpy
+
 
 N = lib.mypaintlib.TILE_SIZE
 

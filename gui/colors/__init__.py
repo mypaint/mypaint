@@ -9,7 +9,9 @@
 
 """Color manipulation submodule."""
 
-from .adjbases import ColorAdjuster, ColorManager, PreviousCurrentColorAdjuster
+from .adjbases import ColorManager
+from .adjbases import ColorAdjuster
+from .adjbases import PreviousCurrentColorAdjuster
 from .hsvsquare import HSVSquare
 
 __all__ = [

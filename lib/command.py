@@ -10,20 +10,19 @@
 
 ## Imports
 
-import weakref
 from collections import deque
+from warnings import warn
 from copy import deepcopy
+import weakref
 from gettext import gettext as _
 from logging import getLogger
-from warnings import warn
 
 import lib.layer
 import lib.layer.data
-import lib.stroke
-from lib.observable import event
-from lib.pycompat import unicode
-
 from . import helpers
+from lib.observable import event
+import lib.stroke
+from lib.pycompat import unicode
 
 logger = getLogger(__name__)
 

@@ -13,25 +13,31 @@
 
 ## Imports
 
-import logging
 import os
 import re
-import sys
-import time
-from collections import OrderedDict
 from glob import glob
+import sys
+import logging
+from collections import OrderedDict
+import time
 
+from lib.gibindings import Gtk
+from lib.gibindings import Pango
+
+from lib import helpers
+from lib import fileutils
+from lib.errors import FileHandlingError
+from lib.errors import AllocationError
 import gui.compatibility as compat
-import lib.feedback
-import lib.glib
-import lib.xml
 from gui.widgets import with_wait_cursor
-from lib import fileutils, helpers, mypaintlib
-from lib.errors import AllocationError, FileHandlingError
-from lib.gettext import C_, ngettext
-from lib.gibindings import Gtk, Pango
+from lib import mypaintlib
+from lib.gettext import ngettext
+from lib.gettext import C_
+import lib.glib
 from lib.glib import filename_to_unicode
-from lib.pycompat import PY3, unicode
+import lib.xml
+import lib.feedback
+from lib.pycompat import unicode, PY3
 
 logger = logging.getLogger(__name__)
 

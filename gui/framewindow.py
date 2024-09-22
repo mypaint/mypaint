@@ -10,25 +10,26 @@
 
 ## Imports
 
-import functools
 import math
-from gettext import gettext as _
+import functools
 
+from lib.gibindings import Gtk
+from lib.gibindings import Gdk
+from lib.gibindings import GLib
+from gettext import gettext as _
 import cairo
 
-import gui.cursor
-import gui.mode
-import gui.style
-import lib.helpers
 from gui.tileddrawwidget import TiledDrawWidget  # noqa
-from lib.alg import LineType, intersection_of_vector_and_poly, pairwise
+import gui.mode
 from lib.color import RGBColor
-from lib.document import DEFAULT_RESOLUTION
-from lib.gibindings import Gdk, GLib, Gtk
-from lib.helpers import Rect
-
+from lib.alg import pairwise, intersection_of_vector_and_poly, LineType
 from . import uicolor
 from .overlays import Overlay
+import lib.helpers
+from lib.helpers import Rect
+from lib.document import DEFAULT_RESOLUTION
+import gui.cursor
+import gui.style
 
 
 class _EditZone:

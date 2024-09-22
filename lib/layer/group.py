@@ -15,21 +15,23 @@
 import logging
 from copy import copy
 
-import lib.autosave
-import lib.feedback
-import lib.fileutils
-import lib.helpers as helpers
-import lib.layer.core
-import lib.layer.error
+from lib.gettext import C_
 import lib.mypaintlib
 import lib.pixbufsurface
+import lib.helpers as helpers
+import lib.fileutils
+from lib.modes import STANDARD_MODES
+from lib.modes import STACK_MODES
+from lib.modes import PASS_THROUGH_MODE
+from . import core
+from . import data
+import lib.layer.error
 import lib.surface
-from lib.gettext import C_
-from lib.modes import PASS_THROUGH_MODE, STACK_MODES, STANDARD_MODES
-from lib.pycompat import unicode
-
-from . import core, data
+import lib.autosave
+import lib.feedback
+import lib.layer.core
 from .rendering import Opcode
+from lib.pycompat import unicode
 
 logger = logging.getLogger(__name__)
 

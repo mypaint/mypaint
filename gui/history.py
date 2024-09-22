@@ -12,12 +12,15 @@
 
 ## Imports
 
-from lib.color import RGBColor
-from lib.gibindings import GdkPixbuf, GLib, Gtk
-from lib.observable import event
+from lib.gibindings import Gtk
+from lib.gibindings import GLib
+from lib.gibindings import GdkPixbuf
 
-from . import widgets
+from lib.color import RGBColor
 from .colors import ColorAdjuster
+from lib.observable import event
+from . import widgets
+
 
 ## Module constants
 

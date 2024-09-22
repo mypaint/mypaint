@@ -261,10 +261,10 @@ def _get_versions(gitprefix="gitexport"):
     to derive the additional information.
 
     """
-    import os
     import re
-    import subprocess
+    import os
     import sys
+    import subprocess
 
     # Establish some fallbacks for use when there's no .git present,
     # or no release_info.

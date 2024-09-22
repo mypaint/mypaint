@@ -12,13 +12,14 @@
 
 from gettext import gettext as _
 
-from lib.color import HSVColor
-from lib.gibindings import Gdk, Gtk
+from lib.gibindings import Gtk
+from lib.gibindings import Gdk
 
 from .adjbases import HueSaturationWheelAdjuster
-from .combined import CombinedAdjusterPage
 from .sliders import HSVValueSlider
+from lib.color import HSVColor
 from .util import clamp
+from .combined import CombinedAdjusterPage
 
 
 class HSVHueSaturationWheel(HueSaturationWheelAdjuster):
@@ -104,7 +105,6 @@ class HSVAdjusterPage(CombinedAdjusterPage):
 if __name__ == "__main__":
     import os
     import sys
-
     from adjbases import ColorManager
 
     mgr = ColorManager(prefs={}, datapath=".")

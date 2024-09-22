@@ -14,16 +14,19 @@
 
 ## Imports
 
-import logging
 import re
 from copy import copy
-from io import open
+import logging
 
-from lib.color import UIColor  # noqa
-from lib.color import RGBColor, YCbCrColor
 from lib.helpers import clamp
 from lib.observable import event
-from lib.pycompat import PY3, unicode, xrange
+from lib.color import RGBColor
+from lib.color import YCbCrColor
+from lib.color import UIColor  # noqa
+from lib.pycompat import unicode
+from lib.pycompat import xrange
+from lib.pycompat import PY3
+from io import open
 
 logger = logging.getLogger(__name__)
 

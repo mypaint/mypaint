@@ -14,21 +14,20 @@
 import math
 from gettext import gettext as _
 
+from lib.gibindings import Gtk
 import cairo
 
-from lib.color import HSVColor, RGBColor
-from lib.gibindings import Gtk
-from lib.pycompat import xrange
-
-from .adjbases import (
-    ColorAdjuster,
-    ColorAdjusterWidget,
-    HueSaturationWheelAdjuster,
-    IconRenderableColorAdjusterWidget,
-)
+from .util import clamp
+from .util import draw_marker_circle
+from lib.color import RGBColor, HSVColor
 from .bases import IconRenderable
+from .adjbases import ColorAdjusterWidget
+from .adjbases import ColorAdjuster
+from .adjbases import IconRenderableColorAdjusterWidget
+from .adjbases import HueSaturationWheelAdjuster
 from .combined import CombinedAdjusterPage
-from .util import clamp, draw_marker_circle
+
+from lib.pycompat import xrange
 
 
 class HSVSquarePage(CombinedAdjusterPage, IconRenderable):
@@ -420,7 +419,6 @@ class _HSVSquareInnerSquare(IconRenderableColorAdjusterWidget):
 if __name__ == "__main__":
     import os
     import sys
-
     from adjbases import ColorManager
 
     mgr = ColorManager(prefs={}, datapath=".")

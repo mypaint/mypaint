@@ -13,17 +13,18 @@
 import contextlib
 from logging import getLogger
 
+from lib.gibindings import GdkPixbuf
+from lib.gibindings import Gdk
 import cairo
 
-import lib.feedback
-import lib.surface
+from . import mypaintlib
+from . import helpers
 from lib.eotf import eotf
+import lib.surface
+from lib.surface import TileAccessible, TileBlittable
 from lib.errors import AllocationError
 from lib.gettext import C_
-from lib.gibindings import Gdk, GdkPixbuf
-from lib.surface import TileAccessible, TileBlittable
-
-from . import helpers, mypaintlib
+import lib.feedback
 
 logger = getLogger(__name__)
 

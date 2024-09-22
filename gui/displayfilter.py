@@ -13,6 +13,7 @@
 ## Imports
 import numpy as np
 
+
 ## Constants
 
 # sRGB coefficients: the usual sRGB / Rec. 709 ones

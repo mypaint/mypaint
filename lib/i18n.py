@@ -14,10 +14,10 @@ Stolen from QuodLibet (thanks, lazka!) <https://github.com/quodlibet
 
 """
 
-import locale
-import logging
 import os
 import sys
+import locale
+import logging
 
 logger = logging.getLogger(__name__)
 
