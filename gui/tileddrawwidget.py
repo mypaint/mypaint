@@ -11,7 +11,7 @@
 ## Imports
 
 import random
-from math import floor, ceil, log, exp
+from math import floor, ceil, log
 import math
 import weakref
 import contextlib
