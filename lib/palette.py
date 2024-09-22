@@ -266,10 +266,6 @@ class Palette:
         """Palette length is the number of color slots within it."""
         return len(self._colors)
 
-    ## PY2/PY3 compat
-
-    __nonzero__ = __bool__
-
     ## Match position marker
 
     def get_match_position(self):

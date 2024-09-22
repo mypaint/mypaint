@@ -1515,7 +1515,7 @@ class ModeStack:
         """Returns the number of modes on the stack."""
         return len(self._stack)
 
-    def __nonzero__(self):
+    def __bool__(self):
         """Mode stacks never test false, regardless of length."""
         return True
 
