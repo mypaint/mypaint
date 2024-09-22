@@ -12,8 +12,6 @@
 
 ## Imports
 
-from lib.pycompat import PY3
-
 import xml.etree.ElementTree as _ET
 
 ## Consts for XML dialects
@@ -99,8 +97,7 @@ def escape(u, quot=False, apos=False):
     if quot:
         u = u.replace('"', "&quot;")
     s = u.encode("ascii", "xmlcharrefreplace")
-    if PY3:
-        s = s.decode("ascii")
+    s = s.decode("ascii")
     return s
 
 

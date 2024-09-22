@@ -97,10 +97,10 @@ def main(
 ):
     """Run MyPaint with `sys.argv_unicode`, called from the "mypaint" script.
 
-    :param unicode datapath: The app's read-only data location.
-    :param unicode iconspath: Extra search root for finding icons.
-    :param unicode oldstyle_confpath: Old-style merged config folder.
-    :param unicode version: full version string for the about box.
+    :param str datapath: The app's read-only data location.
+    :param str iconspath: Extra search root for finding icons.
+    :param str oldstyle_confpath: Old-style merged config folder.
+    :param str version: full version string for the about box.
     :param bool debug: whether debug functionality and logging is enabled.
 
     The ``datapath`` parameter defines where MyPaint should find its

@@ -12,7 +12,6 @@ import math
 import logging
 
 import gui.drawutils
-from lib.pycompat import xrange
 
 from lib.gibindings import Gtk
 from lib.gibindings import Gdk
@@ -288,7 +287,7 @@ def cursor_arc_segments(style):
         return [(0, 2 * math.pi)]
 
 
-class CustomCursorMaker(object):
+class CustomCursorMaker:
     """Factory and cache of custom cursors for actions."""
 
     CURSOR_HOTSPOTS = {
@@ -523,9 +522,9 @@ if __name__ == "__main__":
     _cr.set_source_rgb(0.7, 0.7, 0.7)
     _cr.paint()
 
-    for _style in xrange(4):
+    for _style in range(4):
         col = 0
-        for size in xrange(_min_size, _max_size + 1, (_max_size - _min_size) // nsteps):
+        for size in range(_min_size, _max_size + 1, (_max_size - _min_size) // nsteps):
             _cr.save()
             y = (_style * _max_size) + ((_max_size - size) / 2)
             x = (col * _max_size) + ((_max_size - size) / 2)

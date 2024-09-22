@@ -15,7 +15,7 @@ import collections
 from lib.gibindings import GLib
 
 
-class Processor(object):
+class Processor:
     """Queue of low priority tasks for background processing
 
     Queued tasks are automatically processed in the main thread.

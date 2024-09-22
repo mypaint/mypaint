@@ -27,8 +27,6 @@ from .adjbases import IconRenderableColorAdjusterWidget
 from .adjbases import HueSaturationWheelAdjuster
 from .combined import CombinedAdjusterPage
 
-from lib.pycompat import xrange
-
 
 class HSVSquarePage(CombinedAdjusterPage, IconRenderable):
     """Hue ring and Sat+Val square: page for `CombinedAdjuster`."""
@@ -228,7 +226,7 @@ class _HSVSquareOuterRing(HueSaturationWheelAdjuster):
         step_angle = 2.0 * math.pi / steps
         mgr = self.get_color_manager()
 
-        for ih in xrange(steps + 1):  # overshoot by 1, no solid bit for final
+        for ih in range(steps + 1):  # overshoot by 1, no solid bit for final
             h = ih / steps
             if mgr:
                 h = mgr.undistort_hue(h)
@@ -344,7 +342,7 @@ class _HSVSquareInnerSquare(IconRenderableColorAdjusterWidget):
 
         # Paint the central area offscreen
         cr.push_group()
-        for x in xrange(0, eff_wd, step):
+        for x in range(0, eff_wd, step):
             amt = x / eff_wd
             setattr(col, f1, amt)
             setattr(col, f2, 1.0)

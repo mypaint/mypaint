@@ -31,7 +31,7 @@ logger = logging.getLogger(__name__)
 ## Class definitions
 
 
-class BrushIndicatorPresenter(object):
+class BrushIndicatorPresenter:
     """Behaviour for a clickable footer brush indicator
 
     This presenter's view is a DrawingArea instance

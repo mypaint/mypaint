@@ -17,7 +17,7 @@ from lib.gibindings import GLib
 logger = logging.getLogger(__name__)
 
 
-class StateGroup(object):
+class StateGroup:
     """Supervisor instance for GUI states.
 
     This class mainly deals with the various ways how the user can
@@ -46,7 +46,7 @@ class StateGroup(object):
         return self.create_state(popup.enter, popup.leave, popup)
 
 
-class State(object):
+class State:
     """A GUI state.
 
     A GUI state is a mode which the GUI is in, for example an active

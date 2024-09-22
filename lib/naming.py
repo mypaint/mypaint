@@ -11,7 +11,6 @@
 import re
 
 from lib.gettext import C_
-from lib.pycompat import unicode
 
 UNIQUE_NAME_TEMPLATE = C_(
     "unique names: serial number needed: template",
@@ -36,13 +35,13 @@ UNIQUE_NAME_REGEX = re.compile(
 def make_unique_name(name, existing, start=1, always_number=None):
     """Ensures that a name is unique.
 
-    :param unicode name: Name to be made unique.
+    :param str name: Name to be made unique.
     :param existing: An existing list or set of names.
     :type existing: anything supporting ``in``
     :param int start: starting number for numbering.
-    :param unicode always_number: always number if name is this value.
+    :param str always_number: always number if name is this value.
     :returns: A unique name.
-    :rtype: unicode
+    :rtype: str
 
     >>> existing = set([u"abc 1", u"abc 2", u"abc"])
     >>> expected = u'abc 3'
@@ -65,7 +64,7 @@ def make_unique_name(name, existing, start=1, always_number=None):
     True
 
     """
-    name = unicode(name)
+    name = str(name)
     match = UNIQUE_NAME_REGEX.match(name)
     if match:
         base = match.group("name")

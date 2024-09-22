@@ -23,7 +23,6 @@ from lib.pixbufsurface import render_as_pixbuf
 from lib.helpers import clamp
 import gui.style
 import lib.color
-from lib.pycompat import xrange
 
 import numpy
 import cairo
@@ -280,8 +279,8 @@ def render_checks(cr, size, nchecks):
     cr.set_source_rgb(*gui.style.ALPHA_CHECK_COLOR_1)
     cr.paint()
     cr.set_source_rgb(*gui.style.ALPHA_CHECK_COLOR_2)
-    for i in xrange(0, nchecks):
-        for j in xrange(0, nchecks):
+    for i in range(0, nchecks):
+        for j in range(0, nchecks):
             if (i + j) % 2 == 0:
                 continue
             cr.rectangle(i * size, j * size, size, size)

@@ -14,8 +14,6 @@ from lib.gibindings import Gtk
 from lib.gibindings import Gdk
 from lib.gibindings import GObject
 
-from lib.pycompat import with_metaclass
-
 from lib.observable import event
 
 
@@ -51,7 +49,7 @@ class ScaleDelegator(type(Gtk.Bin)):
         super(ScaleDelegator, cls).__init__(name, bases, dict)
 
 
-class InputSlider(with_metaclass(ScaleDelegator, Gtk.Bin)):
+class InputSlider(Gtk.Bin, metaclass=ScaleDelegator):
     """Custom container widget switching between slider and spinner box
 
     This widget is a container with a single child - normally a slider, but

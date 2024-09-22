@@ -54,7 +54,7 @@ def find_executable(executable, path=None):
         return executable
 
 
-class Profiler(object):
+class Profiler:
     """Handles profiling state for the main app.
 
     The profiler's output is written to a tempdir, which is shown to the

@@ -29,8 +29,6 @@ from .uimisc import borderless_button
 from .uimisc import PRIMARY_ADJUSTERS_MIN_WIDTH
 from .uimisc import PRIMARY_ADJUSTERS_MIN_HEIGHT
 
-from lib.pycompat import xrange
-
 
 class HSVCubePage(CombinedAdjusterPage):
     """Slice+depth view through an HSV cube: page for `CombinedAdjuster`.
@@ -175,7 +173,7 @@ class HSVCubeSlice(IconRenderableColorAdjusterWidget):
 
         # Paint the central area offscreen
         cr.push_group()
-        for x in xrange(0, eff_wd, step):
+        for x in range(0, eff_wd, step):
             amt = x / eff_wd
             setattr(col, f1, amt)
             setattr(col, f2, 1.0)

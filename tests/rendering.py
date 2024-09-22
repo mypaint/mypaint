@@ -13,7 +13,6 @@ import unittest
 from . import paths
 from lib import mypaintlib
 from lib.document import Document
-from lib.pycompat import xrange, PY3
 
 
 TEST_BIGIMAGE = "bigimage.ora"
@@ -69,14 +68,13 @@ def _scroll(
     tdw.set_mirrored(mirrored)
     tdw.recenter_document()
 
-    clock_func = time.perf_counter if PY3 else time.clock
-    start = clock_func()
+    start = time.perf_counter()
     cx, cy = tdw.get_center()
     last_x = cx
     last_y = cy
     nframes = 0
-    for turn_i in xrange(turns):
-        for step_i in xrange(turn_steps):
+    for turn_i in range(turns):
+        for step_i in range(turn_steps):
             t = 2 * math.pi * (step_i / turn_steps)
             x = cx + math.cos(t) * radius
             y = cy + math.sin(t) * radius
@@ -94,7 +92,7 @@ def _scroll(
                 filename = "/tmp/scroll-%03d-%03d.png" % (turn_i, step_i)
                 surf.write_to_png(filename)
             nframes += 1
-    dt = clock_func() - start
+    dt = time.perf_counter() - start
     for i in range(num_undos_needed):
         model.undo()
     if set_modes:
