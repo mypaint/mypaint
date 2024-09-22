@@ -51,12 +51,12 @@ _BRUSHINFO_MATCH_IGNORES = [
 def brushinfo_unquote(quoted):
     """Unquote a serialised string value from a brush field.
 
-    >>> brushinfo_unquote(str("foo")) == u'foo'
+    >>> brushinfo_unquote("foo") == u'foo'
     True
-    >>> brushinfo_unquote(str("foo%2fbar%20blah")) == u'foo/bar blah'
+    >>> brushinfo_unquote("foo%2fbar%20blah") == u'foo/bar blah'
     True
     >>> expected = u'Have a nice day \u263A'
-    >>> brushinfo_unquote(str('Have%20a%20nice%20day%20%E2%98%BA')) == expected
+    >>> brushinfo_unquote("Have%20a%20nice%20day%20%E2%98%BA") == expected
     True
 
     """

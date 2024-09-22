@@ -109,7 +109,7 @@ def _quote_device_name(device_name):
         safe="",
         encoding="utf-8",
     )
-    return str(quoted)
+    return quoted
 
 
 def translate_group_name(name):
@@ -444,7 +444,7 @@ class BrushManager:
         for i in range(_NUM_BRUSHKEYS):
             if self.contexts[i] is None:
                 idx = (i + 9) % 10  # keyboard order
-                c_name = str("context%02d") % i
+                c_name = "context%02d" % i
                 c = ManagedBrush(self, name=c_name, persistent=False)
                 group_idx = idx % len(default_group)
                 b = default_group[group_idx]
@@ -452,7 +452,7 @@ class BrushManager:
                 self.contexts[i] = c
         for i in range(_BRUSH_HISTORY_SIZE):
             if self.history[i] is None:
-                h_name = str("%s%d") % (_BRUSH_HISTORY_NAME_PREFIX, i)
+                h_name = "%s%d" % (_BRUSH_HISTORY_NAME_PREFIX, i)
                 h = ManagedBrush(self, name=h_name, persistent=False)
                 group_i = i % len(default_group)
                 b = default_group[group_i]
@@ -1003,7 +1003,7 @@ class BrushManager:
         brush = managed_brush
         if brush.name is not None:
             brush = brush.clone()
-        brush.name = str(_DEVBRUSH_NAME_PREFIX + _device_name_uuid(device_name))
+        brush.name = _DEVBRUSH_NAME_PREFIX + _device_name_uuid(device_name)
         self._brush_by_device[device_name] = brush
 
     def fetch_brush_for_device(self, device_name):
@@ -1028,7 +1028,7 @@ class BrushManager:
                 try:
                     b = ManagedBrush(
                         self,
-                        str(_DEVBRUSH_NAME_PREFIX + name),
+                        _DEVBRUSH_NAME_PREFIX + name,
                         persistent=True,
                     )
                 except IOError as e:

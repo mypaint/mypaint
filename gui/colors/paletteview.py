@@ -299,7 +299,7 @@ class PaletteEditorDialog(Gtk.Dialog):
         if not name:
             name = ""  # note: not None (it'll be stringified)
         pal = self._mgr.palette
-        pal.name = str(name)
+        pal.name = name
 
     def _columns_changed_cb(self, adj):
         ncolumns = int(adj.get_value())

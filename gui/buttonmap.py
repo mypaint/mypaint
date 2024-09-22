@@ -50,7 +50,6 @@ def button_press_displayname(button, mods, shorten=False):
         return None
     mods = Gdk.ModifierType(mods)
     modif_label = Gtk.accelerator_get_label(0, mods)
-    modif_label = str(modif_label)
     separator = ""
     if modif_label:
         separator = "+"

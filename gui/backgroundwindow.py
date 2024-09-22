@@ -383,7 +383,7 @@ def load_background(filename, bloatmax=BLOAT_MAX_SIZE):
         pixbuf = GdkPixbuf.Pixbuf.new_from_file(filename)
     except Exception as ex:
         logger.error("Failed to load background %r: %s", filename, ex)
-        msg = str(_('Gdk-Pixbuf couldn\'t load "{filename}", and reported "{error}"'))
+        msg = _('Gdk-Pixbuf couldn\'t load "{filename}", and reported "{error}"')
         load_errors.append(
             msg.format(
                 filename=filename_display,
@@ -394,7 +394,7 @@ def load_background(filename, bloatmax=BLOAT_MAX_SIZE):
     # Validity check
     w, h = pixbuf.get_width(), pixbuf.get_height()
     if w == 0 or h == 0:
-        msg = str(_("{filename} has zero size (w={w}, h={h})"))
+        msg = _("{filename} has zero size (w={w}, h={h})")
         load_errors.append(
             msg.format(
                 filename=filename_display,

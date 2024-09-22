@@ -1215,7 +1215,7 @@ def _tool_widget_get_title(widget):
         title = getattr(widget, attr, None)
         if title is not None:
             return str(title)
-    return str(widget.__class__.__name__)
+    return widget.__class__.__name__
 
 
 def _tool_widget_get_icon(widget, icon_size):

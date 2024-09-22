@@ -667,7 +667,7 @@ class LayerBase(Renderable):
             return False
         match = lib.naming.UNIQUE_NAME_REGEX.match(name)
         if match is not None:
-            base = str(match.group("name"))
+            base = match.group("name")
             if base == self.DEFAULT_NAME:
                 return False
         return True
