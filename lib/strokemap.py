@@ -410,7 +410,7 @@ class _Tile:
 
     """
 
-    _ZDATA_ONES = zlib.compress(np.ones((N, N), 'uint8').tobytes())
+    _ZDATA_ONES = zlib.compress(np.ones((N, N), "uint8").tobytes())
 
     def __init__(self):
         """Initialize, as a tile filled with all ones."""

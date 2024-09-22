@@ -860,10 +860,10 @@ class BrushManager(object):
 
         """
         brushes = self.get_group_brushes(group)
-        order_conf = b'Group: %s\n' % utf8(group)
+        order_conf = b"Group: %s\n" % utf8(group)
         with zipfile.ZipFile(
             filename,
-            mode='w',
+            mode="w",
             strict_timestamps=False,
         ) as zf:
             for brush in brushes:

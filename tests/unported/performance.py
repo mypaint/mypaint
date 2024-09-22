@@ -453,12 +453,8 @@ if __name__ == "__main__":
         sys.exit(1)
 
     if options.show_profile:
-        gprof2dot = "gprof2dot.py" \
-            if shutil.which("gprof2dot.py") \
-            else "gprof2dot"
-        viewer = "feh" \
-            if shutil.which("feh") \
-            else "eog"
+        gprof2dot = "gprof2dot.py" if shutil.which("gprof2dot.py") else "gprof2dot"
+        viewer = "feh" if shutil.which("feh") else "eog"
         # FIXME: use gui.profiling's improved code somehow
         os.system(
             "%s -f pstats tmp.pstats | dot -Tpng -o tmp.png && %s tmp.png"
