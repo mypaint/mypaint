@@ -157,8 +157,7 @@ class Settings:
         return self._usage
 
     @usage.setter
-    def usage(self, value):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def usage(self, value: Types.ELLIPSIS) -> Types.NONE:
         """
 
         Args:
@@ -186,8 +185,7 @@ class Settings:
         return self._scroll
 
     @scroll.setter
-    def scroll(self, value):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def scroll(self, value: Types.ELLIPSIS) -> Types.NONE:
         """
 
         Args:
@@ -279,8 +277,7 @@ class Monitor:
 
     ## Devices list
 
-    def get_device_settings(self, device):
-        # type: (Gdk.Device) -> Settings
+    def get_device_settings(self, device: Gdk.Device) -> Settings:
         """Gets the settings for a device
 
         Args:
@@ -298,8 +295,7 @@ check this case.: A settings object which can be manipulated, or None
         """
         return self._device_settings.get(device) or self._init_device_settings(device)
 
-    def _init_device_settings(self, device):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def _init_device_settings(self, device: Types.ELLIPSIS) -> Types.NONE:
         """Ensures that the device settings are loaded for a device
 
         Args:
@@ -396,8 +392,7 @@ check this case.: A settings object which can be manipulated, or None
     ## Current device
 
     @event
-    def current_device_changed(self, old_device, new_device):
-        # type: (Gdk.Device, Gdk.Device) -> Types.NONE
+    def current_device_changed(self, old_device: Gdk.Device, new_device: Gdk.Device) -> Types.NONE:
         """Event: the current device has changed
 
         Args:
@@ -410,8 +405,7 @@ check this case.: A settings object which can be manipulated, or None
 
         """
 
-    def device_used(self, device):
-        # type: (Gdk.Device) -> Types.NONE
+    def device_used(self, device: Gdk.Device) -> Types.NONE:
         """Informs about a device being used, for use by controllers
 
         Args:
@@ -809,8 +803,7 @@ class SettingsEditor(Gtk.Grid):
         settings.scroll = conf_value
         self._devices_view.columns_autosize()
 
-    def _update_devices_store(self, *_ignored):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def _update_devices_store(self, *_ignored: Types.ELLIPSIS) -> Types.NONE:
         """Repopulates the displayed list
 
         Args:
@@ -844,8 +837,7 @@ class SettingsEditor(Gtk.Grid):
 ## Helper funcs
 
 
-def _device_prefs_key(device):
-    # type: (Types.ELLIPSIS) -> Types.NONE
+def _device_prefs_key(device: Types.ELLIPSIS) -> Types.NONE:
     """Returns the subkey to use in the app prefs for a device
 
     Args:
@@ -862,8 +854,7 @@ def _device_prefs_key(device):
     return "%s:%s:%d" % (name, source.value_nick, n_axes)
 
 
-def device_is_eraser(device):
-    # type: (Types.ELLIPSIS) -> Types.NONE
+def device_is_eraser(device: Types.ELLIPSIS) -> Types.NONE:
     """Tests whether a device appears to be an eraser
 
     Args:

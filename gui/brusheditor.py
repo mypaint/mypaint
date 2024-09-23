@@ -132,8 +132,7 @@ class BrushEditorWindow(SubWindow):
         self._updating_metadata_ui = False
         self.set_default_size(1000, 800)
 
-    def _clear_focus(self, *args):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def _clear_focus(self, *args: Types.ELLIPSIS) -> Types.NONE:
         """
 
         Args:
@@ -264,8 +263,7 @@ class BrushEditorWindow(SubWindow):
                 w = self._builder.get_object(b_name)
                 w.set_sensitive(False)
 
-    def _populate_inputs(self, ui_xml):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def _populate_inputs(self, ui_xml: Types.ELLIPSIS) -> Types.NONE:
         """
 
         Args:
@@ -591,8 +589,7 @@ class BrushEditorWindow(SubWindow):
         for path in open_paths:
             v.expand_to_path(Gtk.TreePath(path))
 
-    def _post_show_cb(self, widget):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def _post_show_cb(self, widget: Types.ELLIPSIS) -> Types.NONE:
         """
 
         Args:
@@ -610,8 +607,7 @@ class BrushEditorWindow(SubWindow):
 
     # Main action buttons:
 
-    def save_button_clicked_cb(self, button):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def save_button_clicked_cb(self, button: Types.ELLIPSIS) -> Types.NONE:
         """Save the current brush settings (overwrites)
 
         Args:
@@ -636,8 +632,7 @@ class BrushEditorWindow(SubWindow):
         self._mark_all_settings_unmodified_in_treeview()
         self._update_brush_header(modified=False)
 
-    def live_update_checkbutton_toggled_cb(self, checkbutton):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def live_update_checkbutton_toggled_cb(self, checkbutton: Types.ELLIPSIS) -> Types.NONE:
         """Realtime update of last stroke with the current brush settings
 
         Args:
@@ -650,8 +645,7 @@ class BrushEditorWindow(SubWindow):
         """
         self._queue_live_update()
 
-    def edit_icon_button_clicked_cb(self, button):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def edit_icon_button_clicked_cb(self, button: Types.ELLIPSIS) -> Types.NONE:
         """
 
         Args:
@@ -666,8 +660,7 @@ class BrushEditorWindow(SubWindow):
         action = self.app.find_action("BrushIconEditorWindow")
         action.activate()
 
-    def rename_button_clicked_cb(self, button):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def rename_button_clicked_cb(self, button: Types.ELLIPSIS) -> Types.NONE:
         """Rename the current brush; user is prompted for a new name
 
         Args:
@@ -740,8 +733,7 @@ class BrushEditorWindow(SubWindow):
 
         bm.select_brush(dst_brush)
 
-    def delete_button_clicked_cb(self, button):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def delete_button_clicked_cb(self, button: Types.ELLIPSIS) -> Types.NONE:
         """Deletes the current brush, with a confirmation dialog
 
         Args:
@@ -775,8 +767,7 @@ class BrushEditorWindow(SubWindow):
         bm.select_brush(None)
         self._delete_brush(b, replacement=None)
 
-    def clone_button_clicked_cb(self, button):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def clone_button_clicked_cb(self, button: Types.ELLIPSIS) -> Types.NONE:
         """Create and save a new brush based on the current working brush
 
         Args:
@@ -812,8 +803,7 @@ class BrushEditorWindow(SubWindow):
 
     # Utility functions for managing curves:
 
-    def _get_brushpoints_from_curvewidget(self, inp):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def _get_brushpoints_from_curvewidget(self, inp: Types.ELLIPSIS) -> Types.NONE:
         """
 
         Args:
@@ -889,8 +879,7 @@ class BrushEditorWindow(SubWindow):
         x = (x - xmin) / scale_x
         return (x, y)
 
-    def _get_x_normal(self, inp):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def _get_x_normal(self, inp: Types.ELLIPSIS) -> Types.NONE:
         """Returns the x coordinate of the 'normal' value of the input
 
         Args:
@@ -903,8 +892,7 @@ class BrushEditorWindow(SubWindow):
         """
         return self._point_real2widget((inp.normal, 0.0), inp)[0]
 
-    def _update_graypoint(self, inp):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def _update_graypoint(self, inp: Types.ELLIPSIS) -> Types.NONE:
         """
 
         Args:
@@ -920,8 +908,7 @@ class BrushEditorWindow(SubWindow):
         curve_widget.queue_draw()
 
     @staticmethod
-    def _points_equal(points_a, points_b):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def _points_equal(points_a, points_b: Types.ELLIPSIS) -> Types.NONE:
         """
 
         Args:
@@ -962,8 +949,7 @@ class BrushEditorWindow(SubWindow):
         self._update_setting_ui(expanders=True)
         self._update_metadata_ui()
 
-    def _update_brush_header(self, modified=False):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def _update_brush_header(self, modified: Types.ELLIPSIS = False) -> Types.NONE:
         """Updates the header strip with the current brush's icon and name
 
         Args:
@@ -1013,8 +999,7 @@ class BrushEditorWindow(SubWindow):
 
     # GUI updating from the brush:
 
-    def _mark_setting_modified_in_treeview(self, setting_cname):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def _mark_setting_modified_in_treeview(self, setting_cname: Types.ELLIPSIS) -> Types.NONE:
         """Updates the TreeView to show a single setting as modified
 
         Args:
@@ -1075,8 +1060,7 @@ class BrushEditorWindow(SubWindow):
         # Live update
         self._queue_live_update()
 
-    def _update_setting_ui(self, expanders=False):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def _update_setting_ui(self, expanders: Types.ELLIPSIS = False) -> Types.NONE:
         """Updates all the UI elements for the current setting
 
         Args:
@@ -1263,8 +1247,7 @@ class BrushEditorWindow(SubWindow):
         else:
             view.expand_row(path, True)
 
-    def settings_treeview_cursor_changed_cb(self, view):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def settings_treeview_cursor_changed_cb(self, view: Types.ELLIPSIS) -> Types.NONE:
         """User has chosen a different setting using the treeview
 
         Args:
@@ -1344,8 +1327,7 @@ class BrushEditorWindow(SubWindow):
         value = adj.get_value()
         self._brush.set_base_value(cname, value)
 
-    def base_value_reset_button_clicked_cb(self, button):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def base_value_reset_button_clicked_cb(self, button: Types.ELLIPSIS) -> Types.NONE:
         """User reset the setting's base value using the button
 
         Args:
@@ -1419,8 +1401,7 @@ class BrushEditorWindow(SubWindow):
 
     # Brush updating:
 
-    def _update_brush_from_input_widgets(self, inp):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def _update_brush_from_input_widgets(self, inp: Types.ELLIPSIS) -> Types.NONE:
         """
 
         Args:
@@ -1499,8 +1480,7 @@ class BrushEditorWindow(SubWindow):
 
     # Expander button callbacks:
 
-    def byname_expander_button_clicked_cb(self, button):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def byname_expander_button_clicked_cb(self, button: Types.ELLIPSIS) -> Types.NONE:
         """
 
         Args:
@@ -1543,8 +1523,7 @@ class BrushEditorWindow(SubWindow):
             arrow.set_property("arrow-type", Gtk.ArrowType.RIGHT)
             grid.hide()
 
-    def _scroll_setting_editor(self, widget=None):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def _scroll_setting_editor(self, widget: Types.ELLIPSIS = None) -> Types.NONE:
         """
 
         Args:
@@ -1573,8 +1552,7 @@ class BrushEditorWindow(SubWindow):
 
     # Metadata UI ("About" texts):
 
-    def description_entry_changed_cb(self, entry):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def description_entry_changed_cb(self, entry: Types.ELLIPSIS) -> Types.NONE:
         """
 
         Args:

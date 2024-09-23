@@ -28,8 +28,7 @@ class Autosaveable(metaclass=abc.ABCMeta):
             return self.__autosave_dirty
 
     @autosave_dirty.setter
-    def autosave_dirty(self, value):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def autosave_dirty(self, value: Types.ELLIPSIS) -> Types.NONE:
         """Setter for the dirty flag
 
         Args:

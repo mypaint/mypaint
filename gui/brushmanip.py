@@ -68,8 +68,7 @@ class BrushSizeOverlay(gui.overlays.Overlay):
         self._tdw.display_overlays.remove(self)
         self._queue_tdw_redraw(clear=True)
 
-    def _queue_tdw_redraw(self, clear=False):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def _queue_tdw_redraw(self, clear: Types.ELLIPSIS = False) -> Types.NONE:
         """
 
         Args:
@@ -156,8 +155,7 @@ class BrushSizeOverlay(gui.overlays.Overlay):
         self._hy = handle_y
         self._queue_tdw_redraw()
 
-    def paint(self, cr):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def paint(self, cr: Types.ELLIPSIS) -> Types.NONE:
         """
 
         Args:
@@ -349,8 +347,7 @@ class BrushResizeMode(gui.mode.OneshotDragMode):
         mod_pressed = self.current_modifiers() & self.mod_key_mask
         self._precision_mode = self._mod_pressed_initially ^ mod_pressed
 
-    def leave(self, **kwds):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def leave(self, **kwds: Types.ELLIPSIS) -> Types.NONE:
         """
 
         Args:
@@ -402,8 +399,7 @@ class BrushResizeMode(gui.mode.OneshotDragMode):
         self._new_radius = new_radius
         self._overlay.update(radius_px, self._handle_x, self._handle_y)
 
-    def drag_stop_cb(self, tdw):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def drag_stop_cb(self, tdw: Types.ELLIPSIS) -> Types.NONE:
         """
 
         Args:

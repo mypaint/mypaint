@@ -60,8 +60,7 @@ class CommandStack:
         """ """
         self.redo_stack = deque()
 
-    def do(self, command):
-        # type: (Command) -> Types.NONE
+    def do(self, command: Command) -> Types.NONE:
         """Performs a new command
 
         Args:
@@ -155,8 +154,7 @@ class CommandStack:
             return None
         return self.undo_stack[-1]
 
-    def update_last_command(self, **kwargs):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def update_last_command(self, **kwargs: Types.ELLIPSIS) -> Types.NONE:
         """Updates the most recently performed command
 
         Args:
@@ -267,8 +265,7 @@ class Command:
         """
         raise NotImplementedError
 
-    def update(self, **kwargs):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def update(self, **kwargs: Types.ELLIPSIS) -> Types.NONE:
         """In-place update on the tip of the undo stack.
         
         This method should update the model in the way specified in
@@ -293,8 +290,7 @@ class Command:
 
     ## Deprecated utility functions for subclasses
 
-    def _notify_canvas_observers(self, layer_bboxes):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def _notify_canvas_observers(self, layer_bboxes: Types.ELLIPSIS) -> Types.NONE:
         """Notifies the document's redraw observers
 
         Args:
@@ -453,8 +449,7 @@ class Brushwork(Command):
         model.unsaved_painting_time = self._time_before
         self._sshot_after_applied = False
 
-    def update(self, brushinfo):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def update(self, brushinfo: Types.ELLIPSIS) -> Types.NONE:
         """Retrace the last stroke with a new brush
 
         Args:
@@ -509,17 +504,16 @@ class Brushwork(Command):
 
     def stroke_to(
         self,
-        dtime,
-        x,
-        y,
-        pressure,
-        xtilt,
-        ytilt,
-        viewzoom,
-        viewrotation,
-        barrel_rotation,
-    ):
-        # type: (float, float, float, float, float, float, float, float, float) -> Types.NONE
+        dtime: float,
+        x: float,
+        y: float,
+        pressure: float,
+        xtilt: float,
+        ytilt: float,
+        viewzoom: float,
+        viewrotation: float,
+        barrel_rotation: float,
+    ) -> Types.NONE:
         """Painting: forward a stroke position update to the model
 
         Args:
@@ -1595,8 +1589,7 @@ class RenameLayer(Command):
         """ """
         self.layer.name = self._old_name
 
-    def update(self, name):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def update(self, name: Types.ELLIPSIS) -> Types.NONE:
         """
 
         Args:
@@ -1637,8 +1630,7 @@ class SetLayerVisibility(Command):
         """ """
         self.layer.visible = self._old_visibility
 
-    def update(self, visible):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def update(self, visible: Types.ELLIPSIS) -> Types.NONE:
         """
 
         Args:
@@ -1690,8 +1682,7 @@ class SetLayerLocked(Command):
         redraw_bboxes = [self.layer.get_full_redraw_bbox()]
         self._notify_canvas_observers(redraw_bboxes)
 
-    def update(self, locked):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def update(self, locked: Types.ELLIPSIS) -> Types.NONE:
         """
 
         Args:
@@ -1745,8 +1736,7 @@ class SetLayerOpacity(Command):
         self._old_opacity = layer.opacity
         layer.opacity = self._new_opacity
 
-    def update(self, opacity):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def update(self, opacity: Types.ELLIPSIS) -> Types.NONE:
         """
 
         Args:
@@ -1852,8 +1842,7 @@ class UpdateFrame(Command):
         self.doc.update_frame(*self.new_frame, user_initiated=False)
         self.doc.set_frame_enabled(True, user_initiated=False)
 
-    def update(self, frame):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def update(self, frame: Types.ELLIPSIS) -> Types.NONE:
         """
 
         Args:

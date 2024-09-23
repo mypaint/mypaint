@@ -48,8 +48,7 @@ _BRUSHINFO_MATCH_IGNORES = [
 # Helpers
 
 
-def brushinfo_unquote(quoted):
-    # type: (Types.ELLIPSIS) -> Types.NONE
+def brushinfo_unquote(quoted: Types.ELLIPSIS) -> Types.NONE:
     """Unquote a serialised string value from a brush field.
 
     Args:
@@ -144,8 +143,7 @@ def _oldfmt_parse_value(rawvalue, cname, version):
     return [(cname, [float(basevalue), input_points])]
 
 
-def _oldfmt_parse_points_v1(rawpoints):
-    # type: (Types.ELLIPSIS) -> Types.NONE
+def _oldfmt_parse_points_v1(rawpoints: Types.ELLIPSIS) -> Types.NONE:
     """Parses the points list format from v1
 
     Args:
@@ -168,8 +166,7 @@ def _oldfmt_parse_points_v1(rawpoints):
     return points
 
 
-def _oldfmt_parse_points_v2(rawpoints):
-    # type: (Types.ELLIPSIS) -> Types.NONE
+def _oldfmt_parse_points_v2(rawpoints: Types.ELLIPSIS) -> Types.NONE:
     """Parses the newer points list format of v2 and beyond.
 
     Args:
@@ -191,8 +188,7 @@ def _oldfmt_parse_points_v2(rawpoints):
     return points
 
 
-def _oldfmt_transform_y(valuepair, func):
-    # type: (Types.ELLIPSIS) -> Types.NONE
+def _oldfmt_transform_y(valuepair, func: Types.ELLIPSIS) -> Types.NONE:
     """Used during migration from earlier versions.
 
     Args:
@@ -241,8 +237,7 @@ class BrushInfo:
         if string:
             self.load_from_string(string)
 
-    def settings_changed_cb(self, settings):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def settings_changed_cb(self, settings: Types.ELLIPSIS) -> Types.NONE:
         """
 
         Args:
@@ -261,8 +256,7 @@ class BrushInfo:
         res.load_from_brushinfo(self)
         return res
 
-    def load_from_brushinfo(self, other):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def load_from_brushinfo(self, other: Types.ELLIPSIS) -> Types.NONE:
         """Updates the brush's Settings from (a clone of) ``brushinfo``.
 
         Args:
@@ -288,8 +282,7 @@ class BrushInfo:
             self.reset_setting(s.cname)
         self.end_atomic()
 
-    def reset_setting(self, cname):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def reset_setting(self, cname: Types.ELLIPSIS) -> Types.NONE:
         """
 
         Args:
@@ -316,8 +309,7 @@ class BrushInfo:
         for f in self.observers:
             f(set([cname]))
 
-    def reset_if_undefined(self, cname):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def reset_if_undefined(self, cname: Types.ELLIPSIS) -> Types.NONE:
         """
 
         Args:
@@ -360,8 +352,7 @@ class BrushInfo:
         }
         return json.dumps(document, sort_keys=True, indent=4)
 
-    def from_json(self, json_string):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def from_json(self, json_string: Types.ELLIPSIS) -> Types.NONE:
         """Loads settings from a JSON string.
         
         
@@ -422,8 +413,7 @@ class BrushInfo:
         # FIXME: is that one redundant?
 
     @staticmethod
-    def brush_string_inverted_eotf(brush_string):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def brush_string_inverted_eotf(brush_string: Types.ELLIPSIS) -> Types.NONE:
         """
 
         Args:
@@ -448,8 +438,7 @@ class BrushInfo:
             logger.exception("Failed to invert color in brush string")
             return brush_string
 
-    def load_from_string(self, settings_bytes):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def load_from_string(self, settings_bytes: Types.ELLIPSIS) -> Types.NONE:
         """Load a setting string, overwriting all current settings.
 
         Args:
@@ -480,8 +469,7 @@ class BrushInfo:
             f(ALL_SETTINGS)
         self.cache_str = settings_bytes
 
-    def _load_old_format(self, settings_bytes):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def _load_old_format(self, settings_bytes: Types.ELLIPSIS) -> Types.NONE:
         """Loads brush settings in the old (v2) format.
         
         
@@ -603,8 +591,7 @@ class BrushInfo:
             self.get_base_value("offset_by_random"),
         )
 
-    def get_base_value(self, cname):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def get_base_value(self, cname: Types.ELLIPSIS) -> Types.NONE:
         """
 
         Args:
@@ -705,8 +692,7 @@ class BrushInfo:
         for f in self.observers:
             f(set([cname]))
 
-    def get_setting(self, cname):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def get_setting(self, cname: Types.ELLIPSIS) -> Types.NONE:
         """
 
         Args:
@@ -719,8 +705,7 @@ class BrushInfo:
         """
         return copy.deepcopy(self.settings[cname])
 
-    def get_string_property(self, name):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def get_string_property(self, name: Types.ELLIPSIS) -> Types.NONE:
         """
 
         Args:
@@ -758,8 +743,7 @@ class BrushInfo:
         for f in self.observers:
             f(set([name]))
 
-    def has_only_base_value(self, cname):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def has_only_base_value(self, cname: Types.ELLIPSIS) -> Types.NONE:
         """
 
         Args:
@@ -829,8 +813,7 @@ class BrushInfo:
         del self.observers[:]
         self.observers.append(self.add_pending_update)
 
-    def add_pending_update(self, settings):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def add_pending_update(self, settings: Types.ELLIPSIS) -> Types.NONE:
         """
 
         Args:
@@ -860,8 +843,7 @@ class BrushInfo:
         assert not math.isnan(h)
         return h, s, v
 
-    def set_color_hsv(self, hsv):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def set_color_hsv(self, hsv: Types.ELLIPSIS) -> Types.NONE:
         """
 
         Args:
@@ -883,8 +865,7 @@ class BrushInfo:
         finally:
             self.end_atomic()
 
-    def set_color_rgb(self, rgb):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def set_color_rgb(self, rgb: Types.ELLIPSIS) -> Types.NONE:
         """
 
         Args:
@@ -935,8 +916,7 @@ class BrushInfo:
         return s1 == s2
 
 
-def brush_visual_radius(base_radius, base_random_offset):
-    # type: (Types.ELLIPSIS) -> Types.NONE
+def brush_visual_radius(base_radius, base_random_offset: Types.ELLIPSIS) -> Types.NONE:
     """
 
     Args:
@@ -975,8 +955,7 @@ class Brush(mypaintlib.PythonBrush):
         brushinfo.observers.append(self._update_from_brushinfo)
         self._update_from_brushinfo(ALL_SETTINGS)
 
-    def stroke_to(self, *args):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def stroke_to(self, *args: Types.ELLIPSIS) -> Types.NONE:
         """Delegates to mypaintlib with information about color space
         
         Checks whether color transforms should be done in linear sRGB
@@ -994,8 +973,7 @@ class Brush(mypaintlib.PythonBrush):
         args += (linear,)
         return super(Brush, self).stroke_to(*args)
 
-    def _update_from_brushinfo(self, settings):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def _update_from_brushinfo(self, settings: Types.ELLIPSIS) -> Types.NONE:
         """Updates changed low-level settings from the BrushInfo
 
         Args:
@@ -1040,8 +1018,7 @@ class Brush(mypaintlib.PythonBrush):
         self.set_base_value(settings_dict["color_s"].index, s)
         self.set_base_value(settings_dict["color_v"].index, v)
 
-    def _update_setting_from_brushinfo(self, cname):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def _update_setting_from_brushinfo(self, cname: Types.ELLIPSIS) -> Types.NONE:
         """
 
         Args:

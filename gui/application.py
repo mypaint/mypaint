@@ -108,8 +108,7 @@ def get_app():
     return Application._INSTANCE
 
 
-def _init_icons(icon_path, default_icon="org.mypaint.MyPaint"):
-    # type: (Types.ELLIPSIS) -> Types.NONE
+def _init_icons(icon_path, default_icon: Types.ELLIPSIS = "org.mypaint.MyPaint") -> Types.NONE:
     """Set the icon theme search path, and GTK default window icon
 
     Args:
@@ -576,8 +575,7 @@ class Application:
             # end up with Ctrl-Click color picker broken after upgrade
             self.preferences[key] = default_config[key]
 
-    def reset_compat_mode(self, update=True):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def reset_compat_mode(self, update: Types.ELLIPSIS = True) -> Types.NONE:
         """Reset compatibility mode to configured default
 
         Args:
@@ -592,8 +590,7 @@ class Application:
             self, self.preferences[compat.DEFAULT_COMPAT], update=update
         )
 
-    def add_action_group(self, ag):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def add_action_group(self, ag: Types.ELLIPSIS) -> Types.NONE:
         """
 
         Args:
@@ -606,8 +603,7 @@ class Application:
         """
         self.ui_manager.insert_action_group(ag, -1)
 
-    def find_action(self, name):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def find_action(self, name: Types.ELLIPSIS) -> Types.NONE:
         """
 
         Args:
@@ -658,8 +654,7 @@ class Application:
         if self.brush.get_base_value(cname) != newvalue:
             self.brush.set_base_value(cname, newvalue)
 
-    def _brush_modified_cb(self, settings):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def _brush_modified_cb(self, settings: Types.ELLIPSIS) -> Types.NONE:
         """Updates the brush's base setting adjustments on brush changes
 
         Args:
@@ -825,8 +820,7 @@ class Application:
         )
         self._transient_msg_remove_timeout_id = timeout_id
 
-    def _transient_msg_remove_timer_cb(self, *_ignored):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def _transient_msg_remove_timer_cb(self, *_ignored: Types.ELLIPSIS) -> Types.NONE:
         """
 
         Args:
@@ -874,8 +868,7 @@ class Application:
         """The input test window."""
         return self.get_subwindow("InputTestWindow")
 
-    def get_subwindow(self, name):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def get_subwindow(self, name: Types.ELLIPSIS) -> Types.NONE:
         """Get a subwindow by its name.
 
         Args:
@@ -898,8 +891,7 @@ class Application:
             raise ValueError("Unknown subwindow %r" % name)
         return window
 
-    def has_subwindow(self, name):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def has_subwindow(self, name: Types.ELLIPSIS) -> Types.NONE:
         """True if the named subwindow is known.
 
         Args:
@@ -912,8 +904,7 @@ class Application:
         """
         return name in self._subwindow_classes
 
-    def _subwindow_hide_cb(self, subwindow):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def _subwindow_hide_cb(self, subwindow: Types.ELLIPSIS) -> Types.NONE:
         """Toggles off a subwindow's related action when it's hidden.
 
         Args:
@@ -928,8 +919,7 @@ class Application:
         if action and action.get_active():
             action.set_active(False)
 
-    def autorecover_cb(self, action):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def autorecover_cb(self, action: Types.ELLIPSIS) -> Types.NONE:
         """
 
         Args:
@@ -964,8 +954,7 @@ class Application:
 
     # App-wide, while the single painting brush still lives here.
 
-    def restore_brush_from_stroke_info(self, strokeinfo):
-        # type: (lib.strokemap.StrokeShape) -> Types.NONE
+    def restore_brush_from_stroke_info(self, strokeinfo: lib.strokemap.StrokeShape) -> Types.NONE:
         """Restores the app brush from a stroke
 
         Args:
@@ -1000,8 +989,7 @@ class Application:
 
     ## Profiling and debugging
 
-    def start_profiling_cb(self, action):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def start_profiling_cb(self, action: Types.ELLIPSIS) -> Types.NONE:
         """Starts profiling, or stops it (and tries to show the results)
 
         Args:
@@ -1014,8 +1002,7 @@ class Application:
         """
         self.profiler.toggle_profiling()
 
-    def print_memory_leak_cb(self, action):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def print_memory_leak_cb(self, action: Types.ELLIPSIS) -> Types.NONE:
         """
 
         Args:
@@ -1028,8 +1015,7 @@ class Application:
         """
         helpers.record_memory_leak_status(print_diff=True)
 
-    def run_garbage_collector_cb(self, action):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def run_garbage_collector_cb(self, action: Types.ELLIPSIS) -> Types.NONE:
         """
 
         Args:
@@ -1042,8 +1028,7 @@ class Application:
         """
         helpers.run_garbage_collector()
 
-    def crash_program_cb(self, action):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def crash_program_cb(self, action: Types.ELLIPSIS) -> Types.NONE:
         """Tests exception handling.
 
         Args:

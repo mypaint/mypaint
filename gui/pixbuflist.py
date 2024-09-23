@@ -136,8 +136,7 @@ class PixbufList(Gtk.DrawingArea):
 
         self.update()
 
-    def on_realize(self, widget):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def on_realize(self, widget: Types.ELLIPSIS) -> Types.NONE:
         """
 
         Args:
@@ -171,8 +170,7 @@ class PixbufList(Gtk.DrawingArea):
             # see motion_notify_cb().
             self.drag_source_sensitive = False
 
-    def set_itemlist(self, items):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def set_itemlist(self, items: Types.ELLIPSIS) -> Types.NONE:
         """
 
         Args:
@@ -446,8 +444,7 @@ class PixbufList(Gtk.DrawingArea):
 
         self.queue_draw()
 
-    def set_selected(self, item):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def set_selected(self, item: Types.ELLIPSIS) -> Types.NONE:
         """
 
         Args:
@@ -540,8 +537,7 @@ class PixbufList(Gtk.DrawingArea):
             self.in_potential_drag = True
 
     @event
-    def item_selected(self, item):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def item_selected(self, item: Types.ELLIPSIS) -> Types.NONE:
         """Event: the user selected an item in the list
 
         Args:
@@ -554,8 +550,7 @@ class PixbufList(Gtk.DrawingArea):
         """
 
     @event
-    def item_popup(self, item):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def item_popup(self, item: Types.ELLIPSIS) -> Types.NONE:
         """Event: the user brought up the popup menu for an item in the list
 
         Args:

@@ -51,8 +51,7 @@ def new_full_tile(value, dimensions=(N, N), value_type="uint16"):
     return tile
 
 
-def nine_grid(tile_coord):
-    # type: (Types.ELLIPSIS) -> Types.NONE
+def nine_grid(tile_coord: Types.ELLIPSIS) -> Types.NONE:
     """Return the input coordinate along with its neighbours.
 
     Args:
@@ -83,8 +82,7 @@ def nine_grid(tile_coord):
     return [(tile_x + o[0], tile_y + o[1]) for o in offsets]
 
 
-def adjacent(tile_coord):
-    # type: (Types.ELLIPSIS) -> Types.NONE
+def adjacent(tile_coord: Types.ELLIPSIS) -> Types.NONE:
     """Return the coordinates adjacent to the input coordinate.
 
     Args:
@@ -103,8 +101,7 @@ def adjacent(tile_coord):
     return nine_grid(tile_coord)[1:]
 
 
-def orthogonal(tile_coord):
-    # type: (Types.ELLIPSIS) -> Types.NONE
+def orthogonal(tile_coord: Types.ELLIPSIS) -> Types.NONE:
     """Return the coordinates orthogonal to the input coordinate.
 
     Args:
@@ -163,8 +160,7 @@ class TileBoundingBox:
             self.max_py,
         ) == (0, 0, N - 1, N - 1)
 
-    def tile_bounds(self, tc):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def tile_bounds(self, tc: Types.ELLIPSIS) -> Types.NONE:
         """
 
         Args:
@@ -187,8 +183,7 @@ class TileBoundingBox:
         max_y = self.max_py if ty == self.max_ty else N - 1
         return min_x, min_y, max_x, max_y
 
-    def outside(self, tc):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def outside(self, tc: Types.ELLIPSIS) -> Types.NONE:
         """Check if tile is outside bounding box.
         Checks if the tile of the given coordinate
         lies completely outside of the bounding box.
@@ -206,8 +201,7 @@ class TileBoundingBox:
             tx < self.min_tx or tx > self.max_tx or ty < self.min_ty or ty > self.max_ty
         )
 
-    def crossing(self, tc):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def crossing(self, tc: Types.ELLIPSIS) -> Types.NONE:
         """Check if tile crosses the bounding box.
         Checks if the tile of the given coordinate
         crosses at least one edge of the bounding box.
@@ -230,8 +224,7 @@ class TileBoundingBox:
             or (ty == self.max_ty and self.max_py != (N - 1))
         )
 
-    def inside(self, tc):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def inside(self, tc: Types.ELLIPSIS) -> Types.NONE:
         """Check if tile is inside the bounding box.
         Checks if the tile of the given coordinate
         is fully enclosed by the bounding box.

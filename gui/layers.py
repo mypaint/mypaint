@@ -222,8 +222,7 @@ class RootStackTreeModelWrapper(GObject.GObject, Gtk.TreeModel):
             self._row_changed_all_descendents(treepath, it)
             it = self.iter_next(it)
 
-    def _lvm_current_view_changed_cb(self, lvm):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def _lvm_current_view_changed_cb(self, lvm: Types.ELLIPSIS) -> Types.NONE:
         """Respond to changes of/on the currently active layer-view.
         
         For the sake of the related TreeView, announce a change to all
@@ -256,8 +255,7 @@ class RootStackTreeModelWrapper(GObject.GObject, Gtk.TreeModel):
         else:
             self._iter_stamp += 1
 
-    def iter_is_valid(self, it):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def iter_is_valid(self, it: Types.ELLIPSIS) -> Types.NONE:
         """True if an iterator produced by this model is valid
 
         Args:
@@ -271,8 +269,7 @@ class RootStackTreeModelWrapper(GObject.GObject, Gtk.TreeModel):
         return it.stamp == self._iter_stamp
 
     @classmethod
-    def _invalidate_iter(cls, it):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def _invalidate_iter(cls, it: Types.ELLIPSIS) -> Types.NONE:
         """Invalidates an iterator
 
         Args:
@@ -286,8 +283,7 @@ class RootStackTreeModelWrapper(GObject.GObject, Gtk.TreeModel):
         it.stamp = cls.INVALID_STAMP
         it.user_data = None
 
-    def _get_iter_path(self, it):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def _get_iter_path(self, it: Types.ELLIPSIS) -> Types.NONE:
         """Gets an iterator's path: None if invalid
 
         Args:
@@ -329,8 +325,7 @@ class RootStackTreeModelWrapper(GObject.GObject, Gtk.TreeModel):
                 self._iter_id2path[pathid] = path
             it.user_data = pathid
 
-    def _create_iter(self, path):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def _create_iter(self, path: Types.ELLIPSIS) -> Types.NONE:
         """Creates an iterator for the given path
         
         The returned pair can be returned by the ``do_*()`` virtual
@@ -411,8 +406,7 @@ class RootStackTreeModelWrapper(GObject.GObject, Gtk.TreeModel):
         """Count of GtkTreeModel columns"""
         return len(self.COLUMN_TYPES)
 
-    def do_get_column_type(self, n):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def do_get_column_type(self, n: Types.ELLIPSIS) -> Types.NONE:
         """
 
         Args:
@@ -425,8 +419,7 @@ class RootStackTreeModelWrapper(GObject.GObject, Gtk.TreeModel):
         """
         return self.COLUMN_TYPES[n]
 
-    def do_get_iter(self, treepath):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def do_get_iter(self, treepath: Types.ELLIPSIS) -> Types.NONE:
         """New iterator pointing at a node identified by GtkTreePath
 
         Args:
@@ -441,8 +434,7 @@ class RootStackTreeModelWrapper(GObject.GObject, Gtk.TreeModel):
             treepath = None
         return self._create_iter(treepath)
 
-    def do_get_path(self, it):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def do_get_path(self, it: Types.ELLIPSIS) -> Types.NONE:
         """New GtkTreePath for a treeiter
 
         Args:
@@ -476,8 +468,7 @@ class RootStackTreeModelWrapper(GObject.GObject, Gtk.TreeModel):
             return None
         return self.get_layer(it=it)
 
-    def do_iter_next(self, it):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def do_iter_next(self, it: Types.ELLIPSIS) -> Types.NONE:
         """Move an iterator to the node after it, returning success
 
         Args:
@@ -490,8 +481,7 @@ class RootStackTreeModelWrapper(GObject.GObject, Gtk.TreeModel):
         """
         return self._iter_bump(it, 1)
 
-    def do_iter_previous(self, it):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def do_iter_previous(self, it: Types.ELLIPSIS) -> Types.NONE:
         """Move an iterator to the node before it, returning success
 
         Args:
@@ -504,8 +494,7 @@ class RootStackTreeModelWrapper(GObject.GObject, Gtk.TreeModel):
         """
         return self._iter_bump(it, -1)
 
-    def do_iter_children(self, parent):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def do_iter_children(self, parent: Types.ELLIPSIS) -> Types.NONE:
         """Fetch an iterator pointing at the first child of a parent
 
         Args:
@@ -518,8 +507,7 @@ class RootStackTreeModelWrapper(GObject.GObject, Gtk.TreeModel):
         """
         return self.do_iter_nth_child(parent, 0)
 
-    def do_iter_has_child(self, it):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def do_iter_has_child(self, it: Types.ELLIPSIS) -> Types.NONE:
         """True if an iterator has children
 
         Args:
@@ -533,8 +521,7 @@ class RootStackTreeModelWrapper(GObject.GObject, Gtk.TreeModel):
         layer = self.get_layer(it=it)
         return isinstance(layer, lib.layer.LayerStack) and len(layer) > 0
 
-    def do_iter_n_children(self, it):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def do_iter_n_children(self, it: Types.ELLIPSIS) -> Types.NONE:
         """Count of the children of a given iterator
 
         Args:
@@ -576,8 +563,7 @@ class RootStackTreeModelWrapper(GObject.GObject, Gtk.TreeModel):
             path = None
         return self._create_iter(path)
 
-    def do_iter_parent(self, it):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def do_iter_parent(self, it: Types.ELLIPSIS) -> Types.NONE:
         """Fetches the parent of a valid iterator
 
         Args:
@@ -731,8 +717,7 @@ class RootStackTreeView(Gtk.TreeView):
 
     ## Low-level GDK event handlers
 
-    def _key_event_cb(self, *args):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def _key_event_cb(self, *args: Types.ELLIPSIS) -> Types.NONE:
         """
 
         Args:
@@ -1217,8 +1202,7 @@ class RootStackTreeView(Gtk.TreeView):
 
     ## Model compat
 
-    def do_drag_data_delete(self, context):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def do_drag_data_delete(self, context: Types.ELLIPSIS) -> Types.NONE:
         """Suppress the default GtkWidgetClass.drag_data_delete handler.
         
         Suppress warning(s?) about missing default handlers, since our
@@ -1326,8 +1310,7 @@ class RootStackTreeView(Gtk.TreeView):
             sel.select_path(Gtk.TreePath(layerpath))
             self.scroll_to_current_layer()
 
-    def scroll_to_current_layer(self, *_ignored):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def scroll_to_current_layer(self, *_ignored: Types.ELLIPSIS) -> Types.NONE:
         """Scroll to show the current layer
 
         Args:
@@ -1356,8 +1339,7 @@ class RootStackTreeView(Gtk.TreeView):
         """Event: the current layer was just changed by clicking it"""
 
     @event
-    def current_layer_menu_requested(self, gdkevent):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def current_layer_menu_requested(self, gdkevent: Types.ELLIPSIS) -> Types.NONE:
         """Event: user invoked the menu action over the current layer
 
         Args:
@@ -1501,8 +1483,7 @@ class RootStackTreeView(Gtk.TreeView):
         )
 
     @staticmethod
-    def _layer_description_markup(layer):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def _layer_description_markup(layer: Types.ELLIPSIS) -> Types.NONE:
         """GMarkup text description of a layer, used in the list.
 
         Args:
@@ -1638,8 +1619,7 @@ class RootStackTreeView(Gtk.TreeView):
         cell.set_property("text", text)
 
     @staticmethod
-    def _get_layer_locked_icon_state(layer):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def _get_layer_locked_icon_state(layer: Types.ELLIPSIS) -> Types.NONE:
         """
 
         Args:
@@ -1686,8 +1666,7 @@ class RootStackTreeView(Gtk.TreeView):
 
     ## Weird but necessary hacks
 
-    def _post_show_cb(self, widget):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def _post_show_cb(self, widget: Types.ELLIPSIS) -> Types.NONE:
         """
 
         Args:
@@ -1745,8 +1724,7 @@ class RootStackTreeView(Gtk.TreeView):
 # Helper functions
 
 
-def new_blend_mode_combo(modes, mode_strings):
-    # type: (Types.ELLIPSIS) -> Types.NONE
+def new_blend_mode_combo(modes, mode_strings: Types.ELLIPSIS) -> Types.NONE:
     """Create and return a new blend mode combo box
 
     Args:

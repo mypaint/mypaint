@@ -182,8 +182,7 @@ Fires `object_created()` after an object has been successfully created.
         return self.get(gtype_name, *params)
 
     @event
-    def object_created(self, product):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def object_created(self, product: Types.ELLIPSIS) -> Types.NONE:
         """Event: an object was created by `get()`
 
         Args:
@@ -212,8 +211,7 @@ Fires `object_created()` after an object has been successfully created.
         key = self._make_key(gtype_name, params)
         return key in self._cache
 
-    def identify(self, product):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def identify(self, product: Types.ELLIPSIS) -> Types.NONE:
         """Gets the typename & params of an object created by this factory.
 
         Args:
@@ -232,8 +230,7 @@ Fires `object_created()` after an object has been successfully created.
         return key
 
     @staticmethod
-    def _make_key(gtype_name, params):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def _make_key(gtype_name, params: Types.ELLIPSIS) -> Types.NONE:
         """Internal cache key creation function.
 
         Args:

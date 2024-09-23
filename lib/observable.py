@@ -192,8 +192,7 @@ class observable:  # noqa: N801
         pass
 
     @classmethod
-    def _update_observers(cls, instance):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def _update_observers(cls, instance: Types.ELLIPSIS) -> Types.NONE:
         """Internal: required updates after observable instances are copied
 
         Args:
@@ -411,8 +410,7 @@ class event(observable):  # noqa: N801
         super(event, self).__init__(func)
 
 
-def _wrap_observer(observer):
-    # type: (Types.ELLIPSIS) -> Types.NONE
+def _wrap_observer(observer: Types.ELLIPSIS) -> Types.NONE:
     """Factory function for the observers in a _MethodWithObservers.
 
     Args:
@@ -429,8 +427,7 @@ def _wrap_observer(observer):
         return observer
 
 
-def _is_bound_method(func):
-    # type: (Types.ELLIPSIS) -> Types.NONE
+def _is_bound_method(func: Types.ELLIPSIS) -> Types.NONE:
     """True if a callable is a bound method
 
     Args:
@@ -638,8 +635,7 @@ class ObservableDict(dict):
     # Observable interface:
 
     @event
-    def modified(self, old_values):
-        # type: (dict) -> Types.NONE
+    def modified(self, old_values: dict) -> Types.NONE:
         """Event: one or more data keys were modified.
 
         Args:

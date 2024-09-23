@@ -247,8 +247,7 @@ class Workspace(Gtk.VBox, Gtk.Buildable):
 
     ## Setup from layout descriptions (pre-realize)
 
-    def build_from_layout(self, layout):
-        # type: (dict) -> Types.NONE
+    def build_from_layout(self, layout: dict) -> Types.NONE:
         """Builds the workspace from a definition dict.
 
         Args:
@@ -323,8 +322,7 @@ class Workspace(Gtk.VBox, Gtk.Buildable):
 
     ## Initial layout (pre/post-realize)
 
-    def _realize_cb(self, widget):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def _realize_cb(self, widget: Types.ELLIPSIS) -> Types.NONE:
         """Kick off the deferred layout code when the widget is realized
 
         Args:
@@ -380,8 +378,7 @@ class Workspace(Gtk.VBox, Gtk.Buildable):
                 )
                 GLib.idle_add(win.destroy)
 
-    def _map_cb(self, widget):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def _map_cb(self, widget: Types.ELLIPSIS) -> Types.NONE:
         """
 
         Args:
@@ -424,8 +421,7 @@ class Workspace(Gtk.VBox, Gtk.Buildable):
 
     ## Canvas widget
 
-    def set_canvas(self, widget):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def set_canvas(self, widget: Types.ELLIPSIS) -> Types.NONE:
         """Canvas widget (setter)
 
         Args:
@@ -598,8 +594,7 @@ class Workspace(Gtk.VBox, Gtk.Buildable):
         widget = self._tool_widgets.get(gtype_name, *params)
         return widget.get_parent() is not None
 
-    def _get_tool_widget_stack(self, widget):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def _get_tool_widget_stack(self, widget: Types.ELLIPSIS) -> Types.NONE:
         """Gets the ToolStack a widget is currently parented underneath.
 
         Args:
@@ -678,8 +673,7 @@ class Workspace(Gtk.VBox, Gtk.Buildable):
     ## Tool widget events
 
     @event
-    def tool_widget_added(self, widget):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def tool_widget_added(self, widget: Types.ELLIPSIS) -> Types.NONE:
         """Event: tool widget added
 
         Args:
@@ -692,8 +686,7 @@ class Workspace(Gtk.VBox, Gtk.Buildable):
         """
 
     @event
-    def tool_widget_removed(self, widget):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def tool_widget_removed(self, widget: Types.ELLIPSIS) -> Types.NONE:
         """Event: tool widget removed either by the user or programmatically
 
         Args:
@@ -706,8 +699,7 @@ class Workspace(Gtk.VBox, Gtk.Buildable):
         """
 
     @event
-    def floating_window_created(self, toplevel):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def floating_window_created(self, toplevel: Types.ELLIPSIS) -> Types.NONE:
         """Event: a floating window was created to house a toolstack.
 
         Args:
@@ -720,8 +712,7 @@ class Workspace(Gtk.VBox, Gtk.Buildable):
         """
 
     @event
-    def floating_window_destroyed(self, toplevel):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def floating_window_destroyed(self, toplevel: Types.ELLIPSIS) -> Types.NONE:
         """Event: a floating window was just `destroy()`ed.
 
         Args:
@@ -735,8 +726,7 @@ class Workspace(Gtk.VBox, Gtk.Buildable):
 
     ## Sidebar toolstack width
 
-    def set_right_sidebar_width(self, width):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def set_right_sidebar_width(self, width: Types.ELLIPSIS) -> Types.NONE:
         """Sets the width of the right sidebar toolstack
 
         Args:
@@ -758,8 +748,7 @@ class Workspace(Gtk.VBox, Gtk.Buildable):
         position -= handle_size.get_int()
         self._rpaned.set_position(position)
 
-    def set_left_sidebar_width(self, width):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def set_left_sidebar_width(self, width: Types.ELLIPSIS) -> Types.NONE:
         """Sets the width of the left sidebar toolstack
 
         Args:
@@ -956,8 +945,7 @@ class Workspace(Gtk.VBox, Gtk.Buildable):
         """Auto-hide is enabled in fullscreen (getter)"""
         return self._autohide_enabled
 
-    def set_autohide_enabled(self, autohide_enabled):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def set_autohide_enabled(self, autohide_enabled: Types.ELLIPSIS) -> Types.NONE:
         """Auto-hide is enabled in fullscreen (setter)
 
         Args:
@@ -1057,8 +1045,7 @@ class Workspace(Gtk.VBox, Gtk.Buildable):
 
     # Autohide mode: auto-reveal timer
 
-    def _start_autoreveal_timeout(self, widget):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def _start_autoreveal_timeout(self, widget: Types.ELLIPSIS) -> Types.NONE:
         """Start a timer to reveal the widget after a brief period
         of edge contact
 
@@ -1092,8 +1079,7 @@ class Workspace(Gtk.VBox, Gtk.Buildable):
             GLib.source_remove(timer)
         self._autoreveal_timeout = []
 
-    def _autoreveal_timeout_cb(self, widget):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def _autoreveal_timeout_cb(self, widget: Types.ELLIPSIS) -> Types.NONE:
         """Show widgets when the auto-reveal timer finishes
 
         Args:
@@ -1294,8 +1280,7 @@ class Workspace(Gtk.VBox, Gtk.Buildable):
         """
         self._update_tool_widget_ui(product)
 
-    def _update_tool_widget_ui(self, widget):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def _update_tool_widget_ui(self, widget: Types.ELLIPSIS) -> Types.NONE:
         """Internal: update UI elements for a known descendent tool widget
 
         Args:
@@ -1341,8 +1326,7 @@ def _test():
             self.set_size_request(150, 150)
             self.set_property("active", True)
 
-    def _tool_shown_cb(*a):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def _tool_shown_cb(*a: Types.ELLIPSIS) -> Types.NONE:
         """
 
         Args:
@@ -1355,8 +1339,7 @@ def _test():
         """
         logger.debug("TOOL-SHOWN %r", a)
 
-    def _tool_hidden_cb(*a):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def _tool_hidden_cb(*a: Types.ELLIPSIS) -> Types.NONE:
         """
 
         Args:
@@ -1369,8 +1352,7 @@ def _test():
         """
         logger.debug("TOOL-HIDDEN %r", a)
 
-    def _floating_window_created(*a):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def _floating_window_created(*a: Types.ELLIPSIS) -> Types.NONE:
         """
 
         Args:
@@ -1437,8 +1419,7 @@ def _test():
     )
     window.show_all()
 
-    def _quit_cb(*a):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def _quit_cb(*a: Types.ELLIPSIS) -> Types.NONE:
         """
 
         Args:

@@ -212,8 +212,7 @@ class MyPaintSurface(TileAccessible, TileBlittable, TileCompositable):
         """ """
         return self._backend
 
-    def notify_observers(self, *args):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def notify_observers(self, *args: Types.ELLIPSIS) -> Types.NONE:
         """
 
         Args:
@@ -289,8 +288,7 @@ class MyPaintSurface(TileAccessible, TileBlittable, TileCompositable):
         self.notify_observers(*lib.surface.get_tiles_bbox(trimmed))
 
     @contextlib.contextmanager
-    def tile_request(self, tx, ty, readonly):
-        # type: (int, int, bool) -> Types.NONE
+    def tile_request(self, tx: int, ty: int, readonly: bool) -> Types.NONE:
         """Get a tile as a NumPy array, then put it back
 
         Args:
@@ -600,8 +598,7 @@ class MyPaintSurface(TileAccessible, TileBlittable, TileCompositable):
         sshot.tiledict = self.tiledict.copy()
         return sshot
 
-    def load_snapshot(self, sshot):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def load_snapshot(self, sshot: Types.ELLIPSIS) -> Types.NONE:
         """Loads a saved snapshot, replacing the internal tiledict
 
         Args:
@@ -614,8 +611,7 @@ class MyPaintSurface(TileAccessible, TileBlittable, TileCompositable):
         """
         self._load_tiledict(sshot.tiledict)
 
-    def _load_tiledict(self, d):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def _load_tiledict(self, d: Types.ELLIPSIS) -> Types.NONE:
         """Efficiently loads a tiledict, and notifies the observers
 
         Args:
@@ -643,8 +639,7 @@ class MyPaintSurface(TileAccessible, TileBlittable, TileCompositable):
 
     ## Loading tile data
 
-    def load_from_surface(self, other):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def load_from_surface(self, other: Types.ELLIPSIS) -> Types.NONE:
         """Loads tile data from another surface, via a snapshot
 
         Args:
@@ -657,8 +652,7 @@ class MyPaintSurface(TileAccessible, TileBlittable, TileCompositable):
         """
         self.load_snapshot(other.save_snapshot())
 
-    def _load_from_pixbufsurface(self, s):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def _load_from_pixbufsurface(self, s: Types.ELLIPSIS) -> Types.NONE:
         """
 
         Args:
@@ -910,8 +904,7 @@ class MyPaintSurface(TileAccessible, TileBlittable, TileCompositable):
                 removed += 1
         return removed, total
 
-    def remove_tiles(self, indices):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def remove_tiles(self, indices: Types.ELLIPSIS) -> Types.NONE:
         """Removes a set of tiles from the surface by tile index.
 
         Args:
@@ -959,8 +952,7 @@ class MyPaintSurface(TileAccessible, TileBlittable, TileCompositable):
             raise ValueError("Only call this on the top-level surface.")
         return _TiledSurfaceMove(self, x, y, sort=sort)
 
-    def flood_fill(self, fill_args, dst):
-        # type: (lib.floodfill.FloodFillArguments, MyPaintSurface) -> Types.NONE
+    def flood_fill(self, fill_args: lib.floodfill.FloodFillArguments, dst: MyPaintSurface) -> Types.NONE:
         """Fills connected areas of this surface into another
 
         Args:
@@ -1301,8 +1293,7 @@ Specify zero or negative `n` to process all remaining tiles.: whether there are 
         self.surface.notify_observers(*bbox)
         return blanks_remaining or moves_remaining
 
-    def _process_moves(self, n, updated):
-        # type: (int, set) -> bool
+    def _process_moves(self, n: int, updated: set) -> bool:
         """Internal: process pending tile moves
 
         Args:
@@ -1363,8 +1354,7 @@ Specify zero or negative `n` to process all remaining tiles.: whether there are 
         self.chunks_i += n
         return self.chunks_i < len(self.chunks)
 
-    def _process_blanks(self, n, updated):
-        # type: (int, set) -> bool
+    def _process_blanks(self, n: int, updated: set) -> bool:
         """Internal: process blanking-out queue
 
         Args:
@@ -1388,8 +1378,7 @@ Specify zero or negative `n` to process all remaining tiles.: whether there are 
         return len(self.blank_queue) > 0
 
 
-def calc_translation_slices(dc):
-    # type: (int) -> Types.NONE
+def calc_translation_slices(dc: int) -> Types.NONE:
     """Returns a list of offsets and slice extents for a translation
 
     Args:

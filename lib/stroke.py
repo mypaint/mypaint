@@ -39,8 +39,7 @@ class Stroke:
         self._SERIAL_NUMBER += 1
         self.serial_number = self._SERIAL_NUMBER
 
-    def start_recording(self, brush):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def start_recording(self, brush: Types.ELLIPSIS) -> Types.NONE:
         """
 
         Args:
@@ -134,8 +133,7 @@ class Stroke:
 
     empty = property(is_empty)
 
-    def render(self, surface):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def render(self, surface: Types.ELLIPSIS) -> Types.NONE:
         """
 
         Args:
@@ -185,8 +183,7 @@ class Stroke:
             )
         surface.end_atomic()
 
-    def copy_using_different_brush(self, brushinfo):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def copy_using_different_brush(self, brushinfo: Types.ELLIPSIS) -> Types.NONE:
         """
 
         Args:

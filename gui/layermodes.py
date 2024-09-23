@@ -90,8 +90,7 @@ class LayerModeMenuItem(Gtk.ImageMenuItem):
             return
         self._model.set_current_layer_mode(mode)
 
-    def _update_actions(self, *_ignored):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def _update_actions(self, *_ignored: Types.ELLIPSIS) -> Types.NONE:
         """Updates menu actions to reflect the current layer's mode
 
         Args:

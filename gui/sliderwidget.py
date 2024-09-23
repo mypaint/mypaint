@@ -138,8 +138,7 @@ class InputSlider(Gtk.Bin, metaclass=ScaleDelegator):
         return self._tooltip_cb_id is not None
 
     @dynamic_tooltip.setter
-    def dynamic_tooltip(self, enabled):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def dynamic_tooltip(self, enabled: Types.ELLIPSIS) -> Types.NONE:
         """
 
         Args:
@@ -269,8 +268,7 @@ class InputSlider(Gtk.Bin, metaclass=ScaleDelegator):
         self.spin_button_created(scale, weakref.ref(spin_button))
         return spin_button
 
-    def _scale_precision(self, scale):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def _scale_precision(self, scale: Types.ELLIPSIS) -> Types.NONE:
         """
 
         Args:
@@ -287,8 +285,7 @@ class InputSlider(Gtk.Bin, metaclass=ScaleDelegator):
             precision = max(1, upper)
         return precision
 
-    def _spin_button_focus_out(self, *args):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def _spin_button_focus_out(self, *args: Types.ELLIPSIS) -> Types.NONE:
         """
 
         Args:
@@ -327,8 +324,7 @@ class InputSlider(Gtk.Bin, metaclass=ScaleDelegator):
             return True
         return False
 
-    def _swap_back(self, reset_value=False):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def _swap_back(self, reset_value: Types.ELLIPSIS = False) -> Types.NONE:
         """
 
         Args:

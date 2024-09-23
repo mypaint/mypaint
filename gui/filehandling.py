@@ -60,8 +60,7 @@ class _SaveFormat:
 ## Internal helper funcs
 
 
-def _get_case_insensitive_glob(string):
-    # type: (Types.ELLIPSIS) -> Types.NONE
+def _get_case_insensitive_glob(string: Types.ELLIPSIS) -> Types.NONE:
     """Converts a glob pattern into a case-insensitive glob pattern.
     
     
@@ -84,8 +83,7 @@ def _get_case_insensitive_glob(string):
     return "*.%s" % "".join(globlist)
 
 
-def _add_filters_to_dialog(filters, dialog):
-    # type: (Types.ELLIPSIS) -> Types.NONE
+def _add_filters_to_dialog(filters, dialog: Types.ELLIPSIS) -> Types.NONE:
     """Adds Gtk.FileFilter objs for patterns to a dialog.
 
     Args:
@@ -105,8 +103,7 @@ def _add_filters_to_dialog(filters, dialog):
         dialog.add_filter(f)
 
 
-def _dialog_set_filename(dialog, s):
-    # type: (Types.ELLIPSIS) -> Types.NONE
+def _dialog_set_filename(dialog, s: Types.ELLIPSIS) -> Types.NONE:
     """Sets the filename and folder visible in a dialog.
     
     According to the PyGTK documentation we should use set_filename();
@@ -234,8 +231,7 @@ class _IOProgressUI:
     # Message templating:
 
     @staticmethod
-    def format_files_summary(f):
-        # type: (Types.ELLIPSIS) -> str
+    def format_files_summary(f: Types.ELLIPSIS) -> str:
         """The suggested way of formatting 1+ filenames for display.
 
         Args:
@@ -398,8 +394,7 @@ class _IOProgressUI:
                 self._progress_bar = None
         return result
 
-    def _progress_changed_cb(self, progress):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def _progress_changed_cb(self, progress: Types.ELLIPSIS) -> Types.NONE:
         """
 
         Args:
@@ -445,8 +440,7 @@ class _IOProgressUI:
         self._update_progress_bar(progress)
         self._process_gtk_events()
 
-    def _update_progress_bar(self, progress):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def _update_progress_bar(self, progress: Types.ELLIPSIS) -> Types.NONE:
         """
 
         Args:
@@ -707,8 +701,7 @@ class FileHandler:
         """ """
         return self._filename
 
-    def set_filename(self, value):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def set_filename(self, value: Types.ELLIPSIS) -> Types.NONE:
         """
 
         Args:
@@ -729,8 +722,7 @@ class FileHandler:
 
     filename = property(get_filename, set_filename)
 
-    def init_save_dialog(self, export):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def init_save_dialog(self, export: Types.ELLIPSIS) -> Types.NONE:
         """
 
         Args:
@@ -783,8 +775,7 @@ class FileHandler:
         dialog.show_all()
         return dialog
 
-    def selected_save_format_changed_cb(self, widget):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def selected_save_format_changed_cb(self, widget: Types.ELLIPSIS) -> Types.NONE:
         """When the user changes the selected format to save as in the dialog,
         change the extension of the filename (if existing) immediately.
 
@@ -1001,8 +992,7 @@ class FileHandler:
         cancel_btn = dialog.get_widget_for_response(Gtk.ResponseType.CANCEL)
         cancel_btn.set_sensitive(cancel_allowed)
 
-    def new_cb(self, action):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def new_cb(self, action: Types.ELLIPSIS) -> Types.NONE:
         """
 
         Args:
@@ -1033,8 +1023,7 @@ class FileHandler:
         self.app.doc.reset_view(True, True, True)
 
     @staticmethod
-    def gtk_main_tick(*args, **kwargs):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def gtk_main_tick(*args: Types.ELLIPSIS, **kwargs) -> Types.NONE:
         """
 
         Args:
@@ -1091,8 +1080,7 @@ class FileHandler:
                 self.app.restore_brush_from_stroke_info(si)
                 break
 
-    def import_layers(self, filenames):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def import_layers(self, filenames: Types.ELLIPSIS) -> Types.NONE:
         """Load a file, replacing the current working document.
 
         Args:
@@ -1147,8 +1135,7 @@ class FileHandler:
         )
         return (result is not False) and ioui.success
 
-    def open_scratchpad(self, filename):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def open_scratchpad(self, filename: Types.ELLIPSIS) -> Types.NONE:
         """
 
         Args:
@@ -1323,8 +1310,7 @@ class FileHandler:
                 # TODO: display "no preview available" image?
                 file_chooser.set_preview_widget_active(False)
 
-    def open_cb(self, action):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def open_cb(self, action: Types.ELLIPSIS) -> Types.NONE:
         """
 
         Args:
@@ -1437,8 +1423,7 @@ class FileHandler:
         finally:
             dialog.destroy()
 
-    def import_layers_cb(self, action):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def import_layers_cb(self, action: Types.ELLIPSIS) -> Types.NONE:
         """Action callback: import layers from multiple files.
 
         Args:
@@ -1492,8 +1477,7 @@ class FileHandler:
             filenames = [filename_to_str(f) for f in filenames]
             self.import_layers(filenames)
 
-    def save_cb(self, action):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def save_cb(self, action: Types.ELLIPSIS) -> Types.NONE:
         """
 
         Args:
@@ -1509,8 +1493,7 @@ class FileHandler:
         else:
             self.save_file(self.filename)
 
-    def save_as_cb(self, action):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def save_as_cb(self, action: Types.ELLIPSIS) -> Types.NONE:
         """
 
         Args:
@@ -1540,8 +1523,7 @@ class FileHandler:
             export=(action.get_name() == "Export"),
         )
 
-    def save_scratchpad_as_dialog(self, export=False):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def save_scratchpad_as_dialog(self, export: Types.ELLIPSIS = False) -> Types.NONE:
         """
 
         Args:
@@ -1654,8 +1636,7 @@ class FileHandler:
             dialog.destroy()  # avoid GTK crash: https://gna.org/bugs/?17902
             self.save_dialog = None
 
-    def save_scrap_cb(self, action):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def save_scrap_cb(self, action: Types.ELLIPSIS) -> Types.NONE:
         """
 
         Args:
@@ -1674,8 +1655,7 @@ class FileHandler:
             main_doc=True,
         )
 
-    def save_scratchpad_cb(self, action):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def save_scratchpad_cb(self, action: Types.ELLIPSIS) -> Types.NONE:
         """
 
         Args:
@@ -1812,8 +1792,7 @@ class FileHandler:
             files += self._list_prefixed_dir(special_prefix + os.path.sep)
         return files
 
-    def _list_prefixed_dir(self, prefix):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def _list_prefixed_dir(self, prefix: Types.ELLIPSIS) -> Types.NONE:
         """
 
         Args:
@@ -1843,8 +1822,7 @@ class FileHandler:
         filenames = self.list_scratchpads()
         return self.list_files_grouped(filenames)
 
-    def list_files_grouped(self, filenames):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def list_files_grouped(self, filenames: Types.ELLIPSIS) -> Types.NONE:
         """
 
         Args:
@@ -1882,8 +1860,7 @@ class FileHandler:
             groups.append(group)
         return groups
 
-    def open_recent_cb(self, action):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def open_recent_cb(self, action: Types.ELLIPSIS) -> Types.NONE:
         """Callback for RecentAction
 
         Args:
@@ -1904,8 +1881,7 @@ class FileHandler:
             return
         self.open_file(fn)
 
-    def open_last_cb(self, action):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def open_last_cb(self, action: Types.ELLIPSIS) -> Types.NONE:
         """Callback to open the last file
 
         Args:
@@ -1934,8 +1910,7 @@ class FileHandler:
         fn, _h = lib.glib.filename_from_uri(uri)
         self.open_file(fn)
 
-    def open_scrap_cb(self, action):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def open_scrap_cb(self, action: Types.ELLIPSIS) -> Types.NONE:
         """
 
         Args:
@@ -1984,8 +1959,7 @@ class FileHandler:
         filename = groups[idx % len(groups)][-1]
         self.open_file(filename)
 
-    def reload_cb(self, action):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def reload_cb(self, action: Types.ELLIPSIS) -> Types.NONE:
         """
 
         Args:
@@ -2014,8 +1988,7 @@ class FileHandler:
         if ok_to_reload:
             self.open_file(self.filename)
 
-    def delete_scratchpads(self, filenames):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def delete_scratchpads(self, filenames: Types.ELLIPSIS) -> Types.NONE:
         """
 
         Args:
@@ -2049,8 +2022,7 @@ class FileHandler:
             os.remove(self.get_scratchpad_autosave())
             logger.info("Removed the scratchpad autosave file")
 
-    def _recentfilter_func(self, rfinfo):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def _recentfilter_func(self, rfinfo: Types.ELLIPSIS) -> Types.NONE:
         """Recent-file filter function.
         
         This does a filename extension check, and also verifies that the
@@ -2072,8 +2044,7 @@ class FileHandler:
         return self._uri_is_loadable(rfinfo.uri)
         # Keep this test in sync with _update_recent_items().
 
-    def _uri_is_loadable(self, file_uri):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def _uri_is_loadable(self, file_uri: Types.ELLIPSIS) -> Types.NONE:
         """True if a URI is valid to be loaded by MyPaint.
 
         Args:

@@ -63,8 +63,7 @@ class HSVSquarePage(CombinedAdjusterPage, IconRenderable):
         """ """
         return self.__table
 
-    def set_color_manager(self, manager):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def set_color_manager(self, manager: Types.ELLIPSIS) -> Types.NONE:
         """
 
         Args:
@@ -149,8 +148,7 @@ class HSVSquare(Gtk.VBox, ColorAdjuster):
         self.__ring.add(s_align)
         self.pack_start(self.__ring, True, True, 0)
 
-    def set_color_manager(self, manager):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def set_color_manager(self, manager: Types.ELLIPSIS) -> Types.NONE:
         """
 
         Args:
@@ -181,8 +179,7 @@ class _HSVSquareOuterRing(HueSaturationWheelAdjuster):
         HueSaturationWheelAdjuster.__init__(self)
         self.__cube = cube
 
-    def get_pos_for_color(self, col):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def get_pos_for_color(self, col: Types.ELLIPSIS) -> Types.NONE:
         """
 
         Args:
@@ -240,8 +237,7 @@ class _HSVSquareOuterRing(HueSaturationWheelAdjuster):
             theta = mgr.undistort_hue(theta)
         return self.color_at_normalized_polar_pos(r, theta)
 
-    def get_normalized_polar_pos_for_color(self, col):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def get_normalized_polar_pos_for_color(self, col: Types.ELLIPSIS) -> Types.NONE:
         """
 
         Args:
@@ -541,8 +537,7 @@ class _HSVSquareInnerSquare(IconRenderableColorAdjusterWidget):
         setattr(col, f2, f2_amt)
         return col
 
-    def get_position_for_color(self, col):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def get_position_for_color(self, col: Types.ELLIPSIS) -> Types.NONE:
         """
 
         Args:

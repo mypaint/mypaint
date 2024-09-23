@@ -31,8 +31,7 @@ for prefix, uri in _OPENRASTER_NAMESPACES.items():
 ## Helper functions
 
 
-def indent_etree(elem, level=0):
-    # type: (Types.ELLIPSIS) -> Types.NONE
+def indent_etree(elem, level: Types.ELLIPSIS = 0) -> Types.NONE:
     """Indent an XML etree.
     
     This does not seem to come with python?
@@ -62,8 +61,7 @@ def indent_etree(elem, level=0):
             elem.tail = i
 
 
-def xsd2bool(arg):
-    # type: (Types.ELLIPSIS) -> Types.NONE
+def xsd2bool(arg: Types.ELLIPSIS) -> Types.NONE:
     """Converts an XSD boolean datatype string from XML to a Python bool
     
     

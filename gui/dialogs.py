@@ -35,8 +35,7 @@ CANCEL = 5
 ## Function defs
 
 
-def confirm(widget, question):
-    # type: (Types.ELLIPSIS) -> Types.NONE
+def confirm(widget, question: Types.ELLIPSIS) -> Types.NONE:
     """
 
     Args:
@@ -140,8 +139,7 @@ def ask_for_name(widget, title, default):
     return result
 
 
-def error(widget, message):
-    # type: (Types.ELLIPSIS) -> Types.NONE
+def error(widget, message: Types.ELLIPSIS) -> Types.NONE:
     """
 
     Args:
@@ -165,8 +163,7 @@ def error(widget, message):
     d.destroy()
 
 
-def image_new_from_png_data(data):
-    # type: (Types.ELLIPSIS) -> Types.NONE
+def image_new_from_png_data(data: Types.ELLIPSIS) -> Types.NONE:
     """
 
     Args:

@@ -368,8 +368,7 @@ class Scroll(unittest.TestCase):
                 gui.tileddrawwidget.TiledDrawWidget.__init__(self, *args, **kwargs)
                 self.renderer.get_allocation = self._get_allocation
 
-            def set_allocation(self, alloc):
-                # type: (Types.ELLIPSIS) -> Types.NONE
+            def set_allocation(self, alloc: Types.ELLIPSIS) -> Types.NONE:
                 """
 
                 Args:

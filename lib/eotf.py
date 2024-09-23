@@ -21,8 +21,7 @@ __EOTF = dict()
 # load/save and other color operations.
 
 
-def set_eotf(value):
-    # type: (Types.ELLIPSIS) -> Types.NONE
+def set_eotf(value: Types.ELLIPSIS) -> Types.NONE:
     """Set the EOTF value to be used for color transforms
 
     Args:
@@ -46,8 +45,7 @@ def eotf():
 # when inverting already applied color transforms.
 
 
-def set_base_eotf(value):
-    # type: (Types.ELLIPSIS) -> Types.NONE
+def set_base_eotf(value: Types.ELLIPSIS) -> Types.NONE:
     """Set the base EOTF value used to invert transforms
 
     Args:

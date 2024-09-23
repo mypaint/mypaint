@@ -130,8 +130,7 @@ class AutosaveInfo(namedtuple("AutosaveInfo", _AUTOSAVE_INFO_FIELDS)):
     """
 
     @classmethod
-    def new_for_path(cls, path):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def new_for_path(cls, path: Types.ELLIPSIS) -> Types.NONE:
         """
 
         Args:
@@ -572,8 +571,7 @@ See also: ``json``.: dict-like object that can be monitored for simple changes.
         return self._autosave_backups
 
     @autosave_backups.setter
-    def autosave_backups(self, newval):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def autosave_backups(self, newval: Types.ELLIPSIS) -> Types.NONE:
         """
 
         Args:
@@ -888,8 +886,7 @@ See also: ``json``.: dict-like object that can be monitored for simple changes.
         logger.debug("autosave stopped: clearing task queue")
         self._autosave_processor.stop()
 
-    def _command_stack_updated_cb(self, cmdstack):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def _command_stack_updated_cb(self, cmdstack: Types.ELLIPSIS) -> Types.NONE:
         """
 
         Args:
@@ -934,8 +931,7 @@ See also: ``json``.: dict-like object that can be monitored for simple changes.
         else:
             return DEFAULT_RESOLUTION
 
-    def set_resolution(self, res):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def set_resolution(self, res: Types.ELLIPSIS) -> Types.NONE:
         """Sets the document model's nominal resolution
         
         The OpenRaster format saves resolution information in both vertical and
@@ -1063,8 +1059,7 @@ See also: ``json``.: dict-like object that can be monitored for simple changes.
     frame_enabled = property(get_frame_enabled)
 
     @event
-    def frame_enabled_changed(self, enabled):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def frame_enabled_changed(self, enabled: Types.ELLIPSIS) -> Types.NONE:
         """Event: the frame_enabled field changed value
 
         Args:
@@ -1076,8 +1071,7 @@ See also: ``json``.: dict-like object that can be monitored for simple changes.
 
         """
 
-    def set_frame_to_current_layer(self, user_initiated=False):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def set_frame_to_current_layer(self, user_initiated: Types.ELLIPSIS = False) -> Types.NONE:
         """
 
         Args:
@@ -1092,8 +1086,7 @@ See also: ``json``.: dict-like object that can be monitored for simple changes.
         x, y, w, h = current.get_bbox()
         self.update_frame(x, y, w, h, user_initiated=user_initiated)
 
-    def set_frame_to_document(self, user_initiated=False):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def set_frame_to_document(self, user_initiated: Types.ELLIPSIS = False) -> Types.NONE:
         """
 
         Args:
@@ -1123,8 +1116,7 @@ See also: ``json``.: dict-like object that can be monitored for simple changes.
             return
         self.do(command.TrimLayer(self))
 
-    def uniq_current_layer(self, pixels=False):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def uniq_current_layer(self, pixels: Types.ELLIPSIS = False) -> Types.NONE:
         """Udoably remove non-unique tiles or pixels from the current layer.
 
         Args:
@@ -1137,8 +1129,7 @@ See also: ``json``.: dict-like object that can be monitored for simple changes.
         """
         self.do(command.UniqLayer(self, pixels=pixels))
 
-    def refactor_current_layer_group(self, pixels=False):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def refactor_current_layer_group(self, pixels: Types.ELLIPSIS = False) -> Types.NONE:
         """Undoably factor out common parts of child layers to a new child.
 
         Args:
@@ -1155,8 +1146,7 @@ See also: ``json``.: dict-like object that can be monitored for simple changes.
     def effective_bbox_changed(self):
         """Event: the effective bounding box was changed"""
 
-    def _effective_bbox_changed_cb(self, *_ignored):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def _effective_bbox_changed_cb(self, *_ignored: Types.ELLIPSIS) -> Types.NONE:
         """
 
         Args:
@@ -1221,8 +1211,7 @@ See also: ``json``.: dict-like object that can be monitored for simple changes.
         self._settings.clear()
         self.canvas_area_modified(*prev_area)
 
-    def brushsettings_changed_cb(self, settings):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def brushsettings_changed_cb(self, settings: Types.ELLIPSIS) -> Types.NONE:
         """
 
         Args:
@@ -1261,8 +1250,7 @@ See also: ``json``.: dict-like object that can be monitored for simple changes.
 
     ## Layer stack (z-order and grouping)
 
-    def restack_layer(self, src_path, targ_path):
-        # type: (tuple, tuple) -> Types.NONE
+    def restack_layer(self, src_path: tuple, targ_path: tuple) -> Types.NONE:
         """Moves a layer within the layer stack by path, undoably
 
         Args:
@@ -1310,8 +1298,7 @@ See also: ``json``.: dict-like object that can be monitored for simple changes.
 
     ## Drawing/painting strokes
 
-    def redo_last_stroke_with_different_brush(self, brushinfo):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def redo_last_stroke_with_different_brush(self, brushinfo: Types.ELLIPSIS) -> Types.NONE:
         """
 
         Args:
@@ -1507,8 +1494,7 @@ See also: ``json``.: dict-like object that can be monitored for simple changes.
             if not cmd or not cmd.automatic_undo:
                 return cmd
 
-    def do(self, cmd):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def do(self, cmd: Types.ELLIPSIS) -> Types.NONE:
         """Do a command
 
         Args:
@@ -1522,8 +1508,7 @@ See also: ``json``.: dict-like object that can be monitored for simple changes.
         self.sync_pending_changes()
         self.command_stack.do(cmd)
 
-    def update_last_command(self, **kwargs):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def update_last_command(self, **kwargs: Types.ELLIPSIS) -> Types.NONE:
         """Updates the most recently done command
 
         Args:
@@ -1688,8 +1673,7 @@ See also: ``json``.: dict-like object that can be monitored for simple changes.
             return
         self.do(command.RemoveLayer(self))
 
-    def rename_current_layer(self, name):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def rename_current_layer(self, name: Types.ELLIPSIS) -> Types.NONE:
         """Rename the current layer
 
         Args:
@@ -1847,8 +1831,7 @@ See also: ``json``.: dict-like object that can be monitored for simple changes.
             cmd = cmd_class(self, locked, layer)
             self.do(cmd)
 
-    def set_current_layer_opacity(self, opacity):
-        # type: (float) -> Types.NONE
+    def set_current_layer_opacity(self, opacity: float) -> Types.NONE:
         """Sets the opacity of the current layer
 
         Args:
@@ -1874,8 +1857,7 @@ See also: ``json``.: dict-like object that can be monitored for simple changes.
             cmd = cmd_class(self, opacity, layer=current)
             self.do(cmd)
 
-    def set_current_layer_mode(self, mode):
-        # type: (int) -> Types.NONE
+    def set_current_layer_mode(self, mode: int) -> Types.NONE:
         """Sets the mode for the current layer
 
         Args:
@@ -2144,8 +2126,7 @@ The filename's extension is used to determine the save format, and a
         self.do(cmd)
         progress.close()
 
-    def render_thumbnail(self, **kwargs):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def render_thumbnail(self, **kwargs: Types.ELLIPSIS) -> Types.NONE:
         """Renders a thumbnail for the user bbox
 
         Args:
@@ -2875,8 +2856,7 @@ See: Document.resume_from_autosave().: a sequence of AutosaveInfo instances
         yield AutosaveInfo.new_for_path(autosave_path)
 
 
-def _get_path_mtime(path):
-    # type: (Types.ELLIPSIS) -> Types.NONE
+def _get_path_mtime(path: Types.ELLIPSIS) -> Types.NONE:
     """
 
     Args:

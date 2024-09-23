@@ -28,8 +28,7 @@ class BrushColorIndicator(PreviousCurrentColorAdjuster):
         self._app = None
         self.clicked += self._clicked_cb
 
-    def _init_color_manager(self, widget):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def _init_color_manager(self, widget: Types.ELLIPSIS) -> Types.NONE:
         """
 
         Args:

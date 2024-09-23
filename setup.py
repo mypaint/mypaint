@@ -43,8 +43,7 @@ LIBMYPAINT = "libmypaint-2.0"
 # Helper classes and routines:
 
 
-def print_err(msg):
-    # type: (Types.ELLIPSIS) -> Types.NONE
+def print_err(msg: Types.ELLIPSIS) -> Types.NONE:
     """
 
     Args:
@@ -72,8 +71,7 @@ def pkgconf():
     return os.getenv("PKG_CONFIG", "pkg-config")
 
 
-def pkgconfig_variable(package, variable_name):
-    # type: (Types.ELLIPSIS) -> Types.NONE
+def pkgconfig_variable(package, variable_name: Types.ELLIPSIS) -> Types.NONE:
     """
 
     Args:
@@ -120,8 +118,7 @@ class BuildTranslations(Command):
         return [f[:-3] for f in os.listdir("./po/") if f.endswith(".po")]
 
     @staticmethod
-    def get_translation_paths(command, lang_codes=None):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def get_translation_paths(command, lang_codes: Types.ELLIPSIS = None) -> Types.NONE:
         """Returns paths for building and installing message catalogs
         
         The returned data is a tuple with two lists.
@@ -613,8 +610,7 @@ class BuildExt(build_ext):
                 # Retain original list reference, just in case
                 ext.runtime_library_dirs[:] = rt_libs
 
-    def build_extension(self, ext):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def build_extension(self, ext: Types.ELLIPSIS) -> Types.NONE:
         """
 
         Args:
@@ -695,8 +691,7 @@ class Install(install):
         install.run(self)
 
 
-def rel_to_path(src_path, dst_path):
-    # type: (Types.ELLIPSIS) -> Types.NONE
+def rel_to_path(src_path, dst_path: Types.ELLIPSIS) -> Types.NONE:
     """
 
     Args:
@@ -992,8 +987,7 @@ class _ManagedInstBase(Command):
             ), "path %r does not end in mypaint" % (path,)
             self.rmtree(path)
 
-    def rmtree(self, path):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def rmtree(self, path: Types.ELLIPSIS) -> Types.NONE:
         """Remove a tree recursively.
 
         Args:
@@ -1008,8 +1002,7 @@ class _ManagedInstBase(Command):
         if not self.dry_run:
             shutil.rmtree(path, ignore_errors=True)
 
-    def rm(self, path):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def rm(self, path: Types.ELLIPSIS) -> Types.NONE:
         """Remove a single file.
 
         Args:
@@ -1099,8 +1092,7 @@ class ManagedUninstall(_ManagedInstBase):
         self.uninstall()
 
 
-def uniq(items):
-    # type: (Types.ELLIPSIS) -> Types.NONE
+def uniq(items: Types.ELLIPSIS) -> Types.NONE:
     """Order-preserving uniq()
 
     Args:
@@ -1121,8 +1113,7 @@ def uniq(items):
     return result
 
 
-def pkgconfig(packages, **kwopts):
-    # type: (Types.ELLIPSIS) -> Types.NONE
+def pkgconfig(packages, **kwopts: Types.ELLIPSIS) -> Types.NONE:
     """Runs pkgconfig to update its args.
     
     Also returns the modified args dict. Recipe adapted from
@@ -1168,8 +1159,7 @@ def pkgconfig(packages, **kwopts):
     return kwopts
 
 
-def check_dependencies(deps):
-    # type: (Types.ELLIPSIS) -> Types.NONE
+def check_dependencies(deps: Types.ELLIPSIS) -> Types.NONE:
     """
 
     Args:

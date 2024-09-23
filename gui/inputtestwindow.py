@@ -96,8 +96,7 @@ class InputTestWindow(windowing.SubWindow):
         vbox.pack_start(tv, True, True, 0)
         self.log = []
 
-    def map_cb(self, *junk):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def map_cb(self, *junk: Types.ELLIPSIS) -> Types.NONE:
         """
 
         Args:
@@ -117,8 +116,7 @@ class InputTestWindow(windowing.SubWindow):
             1000, self.second_timer_cb, priority=GLib.PRIORITY_HIGH
         )
 
-    def unmap_cb(self, *junk):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def unmap_cb(self, *junk: Types.ELLIPSIS) -> Types.NONE:
         """
 
         Args:
@@ -215,8 +213,7 @@ class InputTestWindow(windowing.SubWindow):
                 msg += " [%r]" % widget
         return msg
 
-    def report(self, msg):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def report(self, msg: Types.ELLIPSIS) -> Types.NONE:
         """
 
         Args:

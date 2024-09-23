@@ -29,8 +29,7 @@ import gui.style
 class Overlay:
     """Base class/interface for objects which paint things over a TDW."""
 
-    def paint(self, cr):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def paint(self, cr: Types.ELLIPSIS) -> Types.NONE:
         """Paint information onto a TiledDrawWidget.
         
         The drawing interface is very simple. `cr` is a Cairo context in either
@@ -65,8 +64,7 @@ class FadingOverlay(Overlay):
         Overlay.__init__(self)
         self.tdw = doc.tdw
 
-    def paint(self, cr):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def paint(self, cr: Types.ELLIPSIS) -> Types.NONE:
         """Repaint the overlay and start animating if necessary.
         
         Individual frames are handled by `paint_frame()`.
@@ -126,8 +124,7 @@ class FadingOverlay(Overlay):
         self.alpha = 1.0
         self.__restart_anim_if_needed()
 
-    def paint_frame(self, cr):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def paint_frame(self, cr: Types.ELLIPSIS) -> Types.NONE:
         """Paint a single frame.
 
         Args:
@@ -214,8 +211,7 @@ class ScaleOverlay(FadingOverlay):
         """ """
         return self.tdw.scale != self.shown_scale
 
-    def paint_frame(self, cr):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def paint_frame(self, cr: Types.ELLIPSIS) -> Types.NONE:
         """
 
         Args:
@@ -366,8 +362,7 @@ class LastPaintPosOverlay(FadingOverlay):
             int(2 * (r + lw)),
         )
 
-    def paint_frame(self, cr):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def paint_frame(self, cr: Types.ELLIPSIS) -> Types.NONE:
         """
 
         Args:

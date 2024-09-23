@@ -414,8 +414,7 @@ if __name__ == "__main__":
     import sys
     import os
 
-    def _test_button_clicked_cb(*a):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def _test_button_clicked_cb(*a: Types.ELLIPSIS) -> Types.NONE:
         """
 
         Args:

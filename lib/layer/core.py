@@ -214,8 +214,7 @@ class LayerBase(Renderable):
         """
         self._load_common_flags_from_ora_elem(elem)
 
-    def _load_common_flags_from_ora_elem(self, elem):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def _load_common_flags_from_ora_elem(self, elem: Types.ELLIPSIS) -> Types.NONE:
         """
 
         Args:
@@ -293,8 +292,7 @@ class LayerBase(Renderable):
         return None
 
     @group.setter
-    def group(self, group):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def group(self, group: Types.ELLIPSIS) -> Types.NONE:
         """
 
         Args:
@@ -340,8 +338,7 @@ class LayerBase(Renderable):
         return None
 
     @root.setter
-    def root(self, newroot):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def root(self, newroot: Types.ELLIPSIS) -> Types.NONE:
         """
 
         Args:
@@ -381,8 +378,7 @@ class LayerBase(Renderable):
         return self._opacity
 
     @opacity.setter
-    def opacity(self, opacity):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def opacity(self, opacity: Types.ELLIPSIS) -> Types.NONE:
         """
 
         Args:
@@ -435,8 +431,7 @@ class LayerBase(Renderable):
         return self._name
 
     @name.setter
-    def name(self, name):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def name(self, name: Types.ELLIPSIS) -> Types.NONE:
         """
 
         Args:
@@ -481,8 +476,7 @@ class LayerBase(Renderable):
         return self._visible
 
     @visible.setter
-    def visible(self, visible):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def visible(self, visible: Types.ELLIPSIS) -> Types.NONE:
         """
 
         Args:
@@ -563,8 +557,7 @@ class LayerBase(Renderable):
         return self._locked
 
     @locked.setter
-    def locked(self, locked):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def locked(self, locked: Types.ELLIPSIS) -> Types.NONE:
         """
 
         Args:
@@ -655,8 +648,7 @@ class LayerBase(Renderable):
         return self._mode
 
     @mode.setter
-    def mode(self, mode):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def mode(self, mode: Types.ELLIPSIS) -> Types.NONE:
         """
 
         Args:
@@ -690,8 +682,7 @@ class LayerBase(Renderable):
 
     ## Notifications
 
-    def _content_changed(self, *args):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def _content_changed(self, *args: Types.ELLIPSIS) -> Types.NONE:
         """Notifies the root's content observers
         
         If this layer's root stack is defined, i.e. if it is part of a
@@ -710,8 +701,7 @@ class LayerBase(Renderable):
         if root is not None:
             root.layer_content_changed(self, *args)
 
-    def _properties_changed(self, properties):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def _properties_changed(self, properties: Types.ELLIPSIS) -> Types.NONE:
         """Notifies the root's layer properties observers
         
         If this layer's root stack is defined, i.e. if it is part of a
@@ -1162,8 +1152,7 @@ unaddressable background layer right now, for example.: element describing data 
         """
         return LayerBaseSnapshot(self)
 
-    def load_snapshot(self, sshot):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def load_snapshot(self, sshot: Types.ELLIPSIS) -> Types.NONE:
         """Restores the layer from snapshot data
 
         Args:
@@ -1294,8 +1283,7 @@ class LayerBaseSnapshot:
         self.visible = layer.visible
         self.locked = layer.locked
 
-    def restore_to_layer(self, layer):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def restore_to_layer(self, layer: Types.ELLIPSIS) -> Types.NONE:
         """
 
         Args:
@@ -1335,8 +1323,7 @@ class ExternallyEditable(metaclass=abc.ABCMeta):
         """
 
     @abc.abstractmethod
-    def load_from_external_edit_tempfile(self, tempfile_path):
-        # type: (str) -> Types.NONE
+    def load_from_external_edit_tempfile(self, tempfile_path: str) -> Types.NONE:
         """Load content from an external-edit tempfile
 
         Args:

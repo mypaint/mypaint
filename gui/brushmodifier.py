@@ -192,8 +192,7 @@ class BrushModifier:
             return False
         return self.unmodified_brushinfo.is_eraser()
 
-    def brush_modified_cb(self, changed_settings):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def brush_modified_cb(self, changed_settings: Types.ELLIPSIS) -> Types.NONE:
         """Responds to changes of the brush settings.
 
         Args:

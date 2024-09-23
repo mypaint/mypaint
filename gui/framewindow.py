@@ -196,8 +196,7 @@ class FrameEditMode(gui.mode.ScrollableModeMixin, gui.mode.DragMode):
         y = int(round(cy - frame_size / 2.0))
         tdw.doc.set_frame([x, y, frame_size, frame_size], user_initiated=True)
 
-    def leave(self, **kwds):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def leave(self, **kwds: Types.ELLIPSIS) -> Types.NONE:
         """
 
         Args:
@@ -266,8 +265,7 @@ class FrameEditMode(gui.mode.ScrollableModeMixin, gui.mode.DragMode):
             zone = _EditZone.INSIDE
         return zone
 
-    def _update_cursors(self, tdw):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def _update_cursors(self, tdw: Types.ELLIPSIS) -> Types.NONE:
         """Update the cursors based on the current zone
         
         Only need to call this when the edit zone changes.
@@ -472,8 +470,7 @@ class FrameEditMode(gui.mode.ScrollableModeMixin, gui.mode.DragMode):
         self._start_model_pos = tdw.display_to_model(x0, y0)
         return super(FrameEditMode, self).drag_start_cb(tdw, event)
 
-    def drag_stop_cb(self, tdw):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def drag_stop_cb(self, tdw: Types.ELLIPSIS) -> Types.NONE:
         """
 
         Args:
@@ -742,8 +739,7 @@ class FrameEditOptionsWidget(Gtk.Grid):
         self.attach(trim_button, 0, row, 3, 1)
 
     @classmethod
-    def _new_header_label(cls, markup):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def _new_header_label(cls, markup: Types.ELLIPSIS) -> Types.NONE:
         """
 
         Args:
@@ -764,8 +760,7 @@ class FrameEditOptionsWidget(Gtk.Grid):
         return label
 
     @classmethod
-    def _new_key_label(cls, text):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def _new_key_label(cls, text: Types.ELLIPSIS) -> Types.NONE:
         """
 
         Args:
@@ -803,8 +798,7 @@ class FrameEditOptionsWidget(Gtk.Grid):
         elif command == "CropFrameToDocument":
             model.set_frame_to_document(user_initiated=True)
 
-    def _color_set_cb(self, colorbutton):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def _color_set_cb(self, colorbutton: Types.ELLIPSIS) -> Types.NONE:
         """
 
         Args:
@@ -821,8 +815,7 @@ class FrameEditOptionsWidget(Gtk.Grid):
         self.app.preferences["frame.color_rgba"] = (r, g, b, a)
         self._overlay.redraw(color_change=True)
 
-    def on_unit_changed(self, unit_combobox):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def on_unit_changed(self, unit_combobox: Types.ELLIPSIS) -> Types.NONE:
         """
 
         Args:
@@ -837,8 +830,7 @@ class FrameEditOptionsWidget(Gtk.Grid):
         self.width_adj.set_unit(active_unit)
         self.height_adj.set_unit(active_unit)
 
-    def on_size_adjustment_changed(self, adjustment):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def on_size_adjustment_changed(self, adjustment: Types.ELLIPSIS) -> Types.NONE:
         """Update the frame size in the model.
 
         Args:
@@ -857,8 +849,7 @@ class FrameEditOptionsWidget(Gtk.Grid):
         height = int(self.height_adj.get_px_value())
         self.app.doc.model.update_frame(width=width, height=height, user_initiated=True)
 
-    def on_dpi_adjustment_changed(self, adjustment):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def on_dpi_adjustment_changed(self, adjustment: Types.ELLIPSIS) -> Types.NONE:
         """Update the resolution used to calculate framesize in px.
 
         Args:
@@ -946,8 +937,7 @@ class FrameOverlay(Overlay):
         self.app.doc.model.frame_updated += self._frame_updated_cb
         self.doc.tdw.transformation_updated += self._transformation_updated_cb
 
-    def _frame_updated_cb(self, *args):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def _frame_updated_cb(self, *args: Types.ELLIPSIS) -> Types.NONE:
         """
 
         Args:
@@ -960,8 +950,7 @@ class FrameOverlay(Overlay):
         """
         self._recalculate_coordinates(True, *args)
 
-    def _transformation_updated_cb(self, *args):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def _transformation_updated_cb(self, *args: Types.ELLIPSIS) -> Types.NONE:
         """
 
         Args:
@@ -1059,8 +1048,7 @@ class FrameOverlay(Overlay):
         if redraw:
             self.redraw()
 
-    def redraw(self, color_change=False):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def redraw(self, color_change: Types.ELLIPSIS = False) -> Types.NONE:
         """
 
         Args:
@@ -1103,8 +1091,7 @@ class FrameOverlay(Overlay):
                         tdw.queue_draw()
                         return
 
-    def paint(self, cr):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def paint(self, cr: Types.ELLIPSIS) -> Types.NONE:
         """Paints the frame, and the edit boxes if appropriate
 
         Args:
@@ -1268,8 +1255,7 @@ class UnitAdjustment(Gtk.Adjustment):
         self.old_unit = _Unit.PX
         self.dpi = dpi
 
-    def set_spin_button(self, button):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def set_spin_button(self, button: Types.ELLIPSIS) -> Types.NONE:
         """
 
         Args:
@@ -1282,8 +1268,7 @@ class UnitAdjustment(Gtk.Adjustment):
         """
         self.spin_button = button
 
-    def set_dpi(self, dpi):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def set_dpi(self, dpi: Types.ELLIPSIS) -> Types.NONE:
         """
 
         Args:
@@ -1296,8 +1281,7 @@ class UnitAdjustment(Gtk.Adjustment):
         """
         self.dpi = dpi
 
-    def set_unit(self, unit):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def set_unit(self, unit: Types.ELLIPSIS) -> Types.NONE:
         """
 
         Args:
@@ -1339,8 +1323,7 @@ class UnitAdjustment(Gtk.Adjustment):
         digits = self.CONVERT_UNITS[unit][5]
         return round(self.unit_value, digits)
 
-    def set_px_value(self, value):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def set_px_value(self, value: Types.ELLIPSIS) -> Types.NONE:
         """
 
         Args:

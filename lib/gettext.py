@@ -39,8 +39,7 @@ from gettext import ngettext  # noqa: F401 E402
 # for translators.
 
 
-def C_(context, msgid):  # noqa: N802
-    # type: (str, str) -> str
+def C_(context: str, msgid: str) -> str:  # noqa: N802
     """Mark a string for translation, with supplied context.
 
     Args:

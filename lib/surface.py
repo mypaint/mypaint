@@ -52,8 +52,7 @@ class TileAccessible(Bounded, metaclass=abc.ABCMeta):
     """Interface for objects whose memory is accessible by tile"""
 
     @abc.abstractmethod
-    def tile_request(self, tx, ty, readonly):
-        # type: (int, int, bool) -> Types.NONE
+    def tile_request(self, tx: int, ty: int, readonly: bool) -> Types.NONE:
         """Access by tile, read-only or read/write
 
         Args:
@@ -126,8 +125,7 @@ class TileCompositable(Bounded, metaclass=abc.ABCMeta):
         """
 
 
-def get_tiles_bbox(tile_coords):
-    # type: (Types.ELLIPSIS) -> Types.NONE
+def get_tiles_bbox(tile_coords: Types.ELLIPSIS) -> Types.NONE:
     """Convert tile coords to a data bounding box
 
     Args:

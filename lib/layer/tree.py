@@ -246,8 +246,7 @@ class RootLayerStack(group.LayerStack):
                     key = ((tx // fac), (ty // fac), level)
                     self._render_cache.pop(key, None)
 
-    def _render_cache_clear(self, *_ignored):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def _render_cache_clear(self, *_ignored: Types.ELLIPSIS) -> Types.NONE:
         """Clears all rendered tiles from the cache.
 
         Args:
@@ -339,8 +338,7 @@ class RootLayerStack(group.LayerStack):
         return self
 
     @root.setter
-    def root(self, newroot):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def root(self, newroot: Types.ELLIPSIS) -> Types.NONE:
         """
 
         Args:
@@ -361,8 +359,7 @@ class RootLayerStack(group.LayerStack):
 
     ## Rendering: root stack API
 
-    def _get_render_background(self, spec):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def _get_render_background(self, spec: Types.ELLIPSIS) -> Types.NONE:
         """True if render() should render the internal background
 
         Args:
@@ -382,8 +379,7 @@ class RootLayerStack(group.LayerStack):
         else:
             return self._background_visible
 
-    def get_render_is_opaque(self, spec=None):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def get_render_is_opaque(self, spec: Types.ELLIPSIS = None) -> Types.NONE:
         """True if the rendering is known to be 100% opaque
 
         Args:
@@ -407,8 +403,7 @@ class RootLayerStack(group.LayerStack):
                 return False
         return True
 
-    def layers_along_path(self, path):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def layers_along_path(self, path: Types.ELLIPSIS) -> Types.NONE:
         """Yields all layers along a path, not including the root
 
         Args:
@@ -490,8 +485,7 @@ class RootLayerStack(group.LayerStack):
 
         return spec
 
-    def _get_backdrop_render_spec_for_layer(self, path):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def _get_backdrop_render_spec_for_layer(self, path: Types.ELLIPSIS) -> Types.NONE:
         """Get a render spec for the backdrop of a layer.
         
         This method returns a spec object expressing the natural
@@ -782,8 +776,7 @@ class RootLayerStack(group.LayerStack):
             options["alpha"] = True
         lib.surface.save_as_png(rendering, filename, *bbox, **options)
 
-    def get_tile_accessible_layer_rendering(self, layer):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def get_tile_accessible_layer_rendering(self, layer: Types.ELLIPSIS) -> Types.NONE:
         """Get a TileAccessible temporary rendering of a sublayer.
 
         Args:
@@ -993,8 +986,7 @@ class RootLayerStack(group.LayerStack):
 
     ## Renderable implementation
 
-    def get_render_ops(self, spec):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def get_render_ops(self, spec: Types.ELLIPSIS) -> Types.NONE:
         """Get rendering instructions.
 
         Args:
@@ -1024,8 +1016,7 @@ class RootLayerStack(group.LayerStack):
         return self._symmetry_unset
 
     @symmetry_unset.setter
-    def symmetry_unset(self, unset):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def symmetry_unset(self, unset: Types.ELLIPSIS) -> Types.NONE:
         """
 
         Args:
@@ -1055,8 +1046,7 @@ class RootLayerStack(group.LayerStack):
         return self._symmetry_active
 
     @symmetry_active.setter
-    def symmetry_active(self, active):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def symmetry_active(self, active: Types.ELLIPSIS) -> Types.NONE:
         """
 
         Args:
@@ -1075,8 +1065,7 @@ class RootLayerStack(group.LayerStack):
         return self._symmetry_center
 
     @symmetry_center.setter
-    def symmetry_center(self, center):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def symmetry_center(self, center: Types.ELLIPSIS) -> Types.NONE:
         """
 
         Args:
@@ -1095,8 +1084,7 @@ class RootLayerStack(group.LayerStack):
         return self._symmetry_center[0]
 
     @symmetry_x.setter
-    def symmetry_x(self, x):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def symmetry_x(self, x: Types.ELLIPSIS) -> Types.NONE:
         """
 
         Args:
@@ -1115,8 +1103,7 @@ class RootLayerStack(group.LayerStack):
         return self._symmetry_center[1]
 
     @symmetry_y.setter
-    def symmetry_y(self, y):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def symmetry_y(self, y: Types.ELLIPSIS) -> Types.NONE:
         """
 
         Args:
@@ -1135,8 +1122,7 @@ class RootLayerStack(group.LayerStack):
         return self._symmetry_type
 
     @symmetry_type.setter
-    def symmetry_type(self, symmetry_type):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def symmetry_type(self, symmetry_type: Types.ELLIPSIS) -> Types.NONE:
         """
 
         Args:
@@ -1155,8 +1141,7 @@ class RootLayerStack(group.LayerStack):
         return self._symmetry_lines
 
     @symmetry_lines.setter
-    def symmetry_lines(self, symmetry_lines):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def symmetry_lines(self, symmetry_lines: Types.ELLIPSIS) -> Types.NONE:
         """
 
         Args:
@@ -1175,8 +1160,7 @@ class RootLayerStack(group.LayerStack):
         return self._symmetry_angle
 
     @symmetry_angle.setter
-    def symmetry_angle(self, symmetry_angle):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def symmetry_angle(self, symmetry_angle: Types.ELLIPSIS) -> Types.NONE:
         """
 
         Args:
@@ -1245,8 +1229,7 @@ class RootLayerStack(group.LayerStack):
             angle,
         )
 
-    def _propagate_symmetry_state(self, layer):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def _propagate_symmetry_state(self, layer: Types.ELLIPSIS) -> Types.NONE:
         """Copy the symmetry state to the a descendant layer
 
         Args:
@@ -1268,9 +1251,8 @@ class RootLayerStack(group.LayerStack):
 
     @event
     def symmetry_state_changed(
-        self, active, center, symmetry_type, symmetry_lines, angle
-    ):
-        # type: (bool, tuple, int, int, float) -> Types.NONE
+        self, active: bool, center: tuple, symmetry_type: int, symmetry_lines: int, angle: float
+    ) -> Types.NONE:
         """Event: symmetry state changed
         
         An argument value of None means that the state value has not changed,
@@ -1298,8 +1280,7 @@ class RootLayerStack(group.LayerStack):
             return ()
         return self._current_path
 
-    def set_current_path(self, path):
-        # type: (tuple) -> Types.NONE
+    def set_current_path(self, path: tuple) -> Types.NONE:
         """Set the current layer path
 
         Args:
@@ -1409,8 +1390,7 @@ class RootLayerStack(group.LayerStack):
         return bool(self._background_visible)
 
     @background_visible.setter
-    def background_visible(self, value):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def background_visible(self, value: Types.ELLIPSIS) -> Types.NONE:
         """
 
         Args:
@@ -1493,8 +1473,7 @@ class RootLayerStack(group.LayerStack):
         return self._current_layer_overlay
 
     @current_layer_overlay.setter
-    def current_layer_overlay(self, overlay):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def current_layer_overlay(self, overlay: Types.ELLIPSIS) -> Types.NONE:
         """
 
         Args:
@@ -1522,8 +1501,7 @@ class RootLayerStack(group.LayerStack):
             self.layer_content_changed(self, *update_bbox)
 
     @event
-    def current_layer_overlay_changed(self, old):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def current_layer_overlay_changed(self, old: Types.ELLIPSIS) -> Types.NONE:
         """Event: current_layer_overlay was altered
 
         Args:
@@ -1555,8 +1533,7 @@ class RootLayerStack(group.LayerStack):
         return self._current_layer_solo
 
     @current_layer_solo.setter
-    def current_layer_solo(self, value):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def current_layer_solo(self, value: Types.ELLIPSIS) -> Types.NONE:
         """
 
         Args:
@@ -1599,8 +1576,7 @@ class RootLayerStack(group.LayerStack):
         return self._current_layer_previewing
 
     @current_layer_previewing.setter
-    def current_layer_previewing(self, value):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def current_layer_previewing(self, value: Types.ELLIPSIS) -> Types.NONE:
         """Layer-previewing state, as used when blinking a layer
 
         Args:
@@ -1915,8 +1891,7 @@ layer at the very bottom of the stack.: the layer below `path` in walk order
             return True
 
     @event
-    def collapse_layer(self, path):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def collapse_layer(self, path: Types.ELLIPSIS) -> Types.NONE:
         """Event: request that the UI collapse a given path
 
         Args:
@@ -1929,8 +1904,7 @@ layer at the very bottom of the stack.: the layer below `path` in walk order
         """
 
     @event
-    def expand_layer(self, path):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def expand_layer(self, path: Types.ELLIPSIS) -> Types.NONE:
         """Event: request that the UI expand a given path
 
         Args:
@@ -1942,8 +1916,7 @@ layer at the very bottom of the stack.: the layer below `path` in walk order
 
         """
 
-    def bubble_layer_up(self, path):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def bubble_layer_up(self, path: Types.ELLIPSIS) -> Types.NONE:
         """Move a layer up through the stack
 
         Args:
@@ -1975,8 +1948,7 @@ layer at the very bottom of the stack.: the layer below `path` in walk order
             self.current_path = self.canonpath(layer=old_current)
         return modified
 
-    def bubble_layer_down(self, path):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def bubble_layer_down(self, path: Types.ELLIPSIS) -> Types.NONE:
         """Move a layer down through the stack
 
         Args:
@@ -2076,8 +2048,7 @@ The special background layer itself is never returned by walk().: Iterator yield
                 continue
             queue[:0] = [(path + (i,), c) for i, c in enumerate(layer)]
 
-    def deepiter(self, visible=None):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def deepiter(self, visible: Types.ELLIPSIS = None) -> Types.NONE:
         """Iterates across all descendents of the stack
 
         Args:
@@ -2206,8 +2177,7 @@ The special background layer itself is never returned by walk().: Iterator yield
                 return
         assert len(unused_path) > 0, "deepinsert() should never " "exhaust the path"
 
-    def deeppop(self, path):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def deeppop(self, path: Types.ELLIPSIS) -> Types.NONE:
         """Removes a layer by its path
 
         Args:
@@ -2245,8 +2215,7 @@ The special background layer itself is never returned by walk().: Iterator yield
         self.current_path = old_current  # i.e. nearest remaining
         return removed
 
-    def deepremove(self, layer):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def deepremove(self, layer: Types.ELLIPSIS) -> Types.NONE:
         """Removes a layer from any of the root's descendents
 
         Args:
@@ -2285,8 +2254,7 @@ The special background layer itself is never returned by walk().: Iterator yield
             return None
         raise ValueError("Layer is not in the root stack or " "any descendent")
 
-    def deepindex(self, layer):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def deepindex(self, layer: Types.ELLIPSIS) -> Types.NONE:
         """
 
         Args:
@@ -2431,8 +2399,7 @@ If no matching layer exists, a ValueError is raised::: a new, verified path refe
 
     ## Layer merging
 
-    def layer_new_normalized(self, path):
-        # type: (tuple) -> PaintingLayer
+    def layer_new_normalized(self, path: tuple) -> PaintingLayer:
         """Copy a layer to a normal painting layer that looks the same
 
         Args:
@@ -2548,8 +2515,7 @@ the same name as the original, initially.: New normalized layer
 
         return dstlayer
 
-    def get_merge_down_target(self, path):
-        # type: (tuple) -> Types.NONE
+    def get_merge_down_target(self, path: tuple) -> Types.NONE:
         """Returns the target path for Merge Down, after checks
 
         Args:
@@ -2586,8 +2552,7 @@ the same name as the original, initially.: New normalized layer
 
         return target_path
 
-    def layer_new_merge_down(self, path):
-        # type: (tuple) -> PaintingLayer
+    def layer_new_merge_down(self, path: tuple) -> PaintingLayer:
         """Create a new layer containing the Merge Down of two layers
 
         Args:
@@ -3215,8 +3180,7 @@ See also: `walk()`, `background_visible`.: New merged layer
     ## Notification mechanisms
 
     @event
-    def layer_content_changed(self, *args):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def layer_content_changed(self, *args: Types.ELLIPSIS) -> Types.NONE:
         """Event: notifies that sub-layer's pixels have changed
 
         Args:
@@ -3287,8 +3251,7 @@ See also: `walk()`, `background_visible`.: New merged layer
         self.layer_deleted(path)
 
     @event
-    def layer_deleted(self, path):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def layer_deleted(self, path: Types.ELLIPSIS) -> Types.NONE:
         """Event: notifies that a sub-layer has been deleted
 
         Args:
@@ -3323,8 +3286,7 @@ See also: `walk()`, `background_visible`.: New merged layer
         self.layer_inserted(path)
 
     @event
-    def layer_inserted(self, path):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def layer_inserted(self, path: Types.ELLIPSIS) -> Types.NONE:
         """Event: notifies that a sub-layer has been added
 
         Args:
@@ -3338,8 +3300,7 @@ See also: `walk()`, `background_visible`.: New merged layer
         pass
 
     @event
-    def current_path_updated(self, path):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def current_path_updated(self, path: Types.ELLIPSIS) -> Types.NONE:
         """Event: notifies that the layer selection has been updated
 
         Args:
@@ -3419,8 +3380,7 @@ See also: `walk()`, `background_visible`.: New merged layer
         return False
 
     @event
-    def layer_thumbnail_updated(self, path, layer):
-        # type: (tuple, LayerBase) -> Types.NONE
+    def layer_thumbnail_updated(self, path: tuple, layer: LayerBase) -> Types.NONE:
         """Event: a layer thumbnail was updated.
 
         Args:
@@ -3446,8 +3406,7 @@ class RootLayerStackSnapshot(group.LayerStackSnapshot):
         self.bg_visible = layer.background_visible
         self.current_path = layer.current_path
 
-    def restore_to_layer(self, layer):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def restore_to_layer(self, layer: Types.ELLIPSIS) -> Types.NONE:
         """
 
         Args:
@@ -3503,8 +3462,7 @@ class _TileRenderWrapper(TileAccessible, TileBlittable):
             self._visible_layers = list(root.deepiter(visible=True))
 
     @contextlib.contextmanager
-    def tile_request(self, tx, ty, readonly):
-        # type: (int, int, bool) -> Types.NONE
+    def tile_request(self, tx: int, ty: int, readonly: bool) -> Types.NONE:
         """Context manager that fetches a single tile as fix15 RGBA data.
 
         Args:
@@ -3600,8 +3558,7 @@ class _TileRenderWrapper(TileAccessible, TileBlittable):
 ## Layer path tuple functions
 
 
-def path_startswith(path, prefix):
-    # type: (tuple, tuple) -> Types.NONE
+def path_startswith(path: tuple, prefix: tuple) -> Types.NONE:
     """Returns whether one path starts with another
 
     Args:

@@ -22,8 +22,7 @@ from gui.compatconfig import DEFAULT_CONFIG as COMPAT_CONFIG
 logger = logging.getLogger(__name__)
 
 
-def get_json_config(conf_path):
-    # type: (str) -> Types.NONE
+def get_json_config(conf_path: str) -> Types.NONE:
     """Return user settings read from the settings file
 
     Args:

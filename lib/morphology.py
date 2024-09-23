@@ -21,8 +21,7 @@ N = myplib.TILE_SIZE
 logger = logging.getLogger(__name__)
 
 
-def adjacent_tiles(tile_coord, filled):
-    # type: (Types.ELLIPSIS) -> Types.NONE
+def adjacent_tiles(tile_coord, filled: Types.ELLIPSIS) -> Types.NONE:
     """
 
     Args:
@@ -38,8 +37,7 @@ def adjacent_tiles(tile_coord, filled):
     return tuple([filled.get(c, _EMPTY_TILE) for c in fc.adjacent(tile_coord)])
 
 
-def complement_adjacent(tiles):
-    # type: (Types.ELLIPSIS) -> Types.NONE
+def complement_adjacent(tiles: Types.ELLIPSIS) -> Types.NONE:
     """Ensure that each tile in the input tileset has a full neighbourhood
     of eight tiles, setting missing tiles to the empty tile.
     
@@ -62,8 +60,7 @@ def complement_adjacent(tiles):
     tiles.update(new)
 
 
-def directly_below(coord1, coord2):
-    # type: (Types.ELLIPSIS) -> Types.NONE
+def directly_below(coord1, coord2: Types.ELLIPSIS) -> Types.NONE:
     """
 
     Args:
@@ -79,8 +76,7 @@ def directly_below(coord1, coord2):
     return coord1[0] == coord2[0] and coord1[1] == coord2[1] + 1
 
 
-def strand_partition(tiles, dilating=False):
-    # type: (Types.ELLIPSIS) -> Types.NONE
+def strand_partition(tiles, dilating: Types.ELLIPSIS = False) -> Types.NONE:
     """Partition input tiles for easier processing
     This function partitions a tile dictionary into
     two parts: one dictionary containing tiles that
@@ -187,8 +183,7 @@ def blur(handler, radius, tiles):
     return blurred
 
 
-def adj_full(coord, tiles):
-    # type: (Types.ELLIPSIS) -> Types.NONE
+def adj_full(coord, tiles: Types.ELLIPSIS) -> Types.NONE:
     """
 
     Args:

@@ -86,8 +86,7 @@ class Rect:
         self.h = h
 
     @classmethod
-    def new_from_gdk_rectangle(cls, gdk_rect):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def new_from_gdk_rectangle(cls, gdk_rect: Types.ELLIPSIS) -> Types.NONE:
         """Creates a new Rect based on a Gdk.Rectangle.
 
         Args:
@@ -122,8 +121,7 @@ class Rect:
         """Copies and returns the Rect."""
         return Rect(self.x, self.y, self.w, self.h)
 
-    def expand(self, border):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def expand(self, border: Types.ELLIPSIS) -> Types.NONE:
         """Expand the area by a fixed border size.
 
         Args:
@@ -139,8 +137,7 @@ class Rect:
         self.x -= border
         self.y -= border
 
-    def expanded(self, border):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def expanded(self, border: Types.ELLIPSIS) -> Types.NONE:
         """
 
         Args:
@@ -156,8 +153,7 @@ class Rect:
         copy.expand(border)
         return copy
 
-    def contains(self, other):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def contains(self, other: Types.ELLIPSIS) -> Types.NONE:
         """Returns true if this rectangle entirely contains another.
 
         Args:
@@ -214,8 +210,7 @@ class Rect:
         except TypeError:  # e.g. comparison to None
             return False
 
-    def overlaps(self, r2):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def overlaps(self, r2: Types.ELLIPSIS) -> Types.NONE:
         """Returns true if this rectangle intersects another.
 
         Args:
@@ -262,8 +257,7 @@ class Rect:
         if y > self.y + self.h - 1:
             self.h += y - (self.y + self.h - 1)
 
-    def expand_to_include_rect(self, other):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def expand_to_include_rect(self, other: Types.ELLIPSIS) -> Types.NONE:
         """
 
         Args:
@@ -282,8 +276,7 @@ class Rect:
             other.y + other.h - 1,
         )
 
-    def intersection(self, other):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def intersection(self, other: Types.ELLIPSIS) -> Types.NONE:
         """Creates new Rect for the intersection with another
         If the rectangles do not intersect, None is returned
 
@@ -343,8 +336,7 @@ def coordinate_bounds(tile_coords):
         return min_x, min_y, max_x, max_y
 
 
-def rotated_rectangle_bbox(corners):
-    # type: (Types.ELLIPSIS) -> Types.NONE
+def rotated_rectangle_bbox(corners: Types.ELLIPSIS) -> Types.NONE:
     """
 
     Args:
@@ -385,8 +377,7 @@ def clamp(x, lo, hi):
     return x
 
 
-def gdkpixbuf2numpy(pixbuf):
-    # type: (Types.ELLIPSIS) -> Types.NONE
+def gdkpixbuf2numpy(pixbuf: Types.ELLIPSIS) -> Types.NONE:
     """
 
     Args:
@@ -532,8 +523,7 @@ the file is still open.: the large (256x256) thumbnail, or None.
     return pixbuf
 
 
-def get_pixbuf(filename):
-    # type: (Types.ELLIPSIS) -> GdkPixbuf.Pixbuf
+def get_pixbuf(filename: Types.ELLIPSIS) -> GdkPixbuf.Pixbuf:
     """Loads a thumbnail pixbuf loaded from a file.
 
     Args:
@@ -701,8 +691,7 @@ def hsv_to_rgb(h, s, v):
     return colorsys.hsv_to_rgb(h, s, v)
 
 
-def transform_hsv(hsv, eotf):
-    # type: (Types.ELLIPSIS) -> Types.NONE
+def transform_hsv(hsv, eotf: Types.ELLIPSIS) -> Types.NONE:
     """
 
     Args:
@@ -718,8 +707,7 @@ def transform_hsv(hsv, eotf):
     return rgb_to_hsv(r**eotf, g**eotf, b**eotf)
 
 
-def zipfile_writestr(z, arcname, data):
-    # type: (zipfile.ZipFile, str, bytes) -> Types.NONE
+def zipfile_writestr(z: zipfile.ZipFile, arcname: str, data: bytes) -> Types.NONE:
     """Write a string into a zipfile entry, with standard permissions
 
     Args:
@@ -755,8 +743,7 @@ def run_garbage_collector():
 old_stats = []
 
 
-def record_memory_leak_status(print_diff=False):
-    # type: (Types.ELLIPSIS) -> Types.NONE
+def record_memory_leak_status(print_diff: Types.ELLIPSIS = False) -> Types.NONE:
     """
 
     Args:
@@ -791,8 +778,7 @@ def record_memory_leak_status(print_diff=False):
     old_stats = new_stats
 
 
-def utf8(string):
-    # type: (Types.ELLIPSIS) -> Types.NONE
+def utf8(string: Types.ELLIPSIS) -> Types.NONE:
     """
 
     Args:
@@ -807,8 +793,7 @@ def utf8(string):
     return string.encode("utf-8")
 
 
-def fmt_time_period_abbr(t):
-    # type: (int) -> str
+def fmt_time_period_abbr(t: int) -> str:
     """Get a localized abbreviated minutes+seconds string
 
     Args:

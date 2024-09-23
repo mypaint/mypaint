@@ -28,8 +28,7 @@ class BrushColorManager(colors.ColorManager):
         app.doc.model.sync_pending_changes += self.__sync_pending_changes_cb
         self._app = app
 
-    def set_color(self, color):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def set_color(self, color: Types.ELLIPSIS) -> Types.NONE:
         """Propagate user-set colors to the brush too (extension).
 
         Args:

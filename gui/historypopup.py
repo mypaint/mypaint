@@ -107,8 +107,7 @@ class HistoryPopup(windowing.PopupWindow):
         cursor = Gdk.Cursor.new_from_name(window.get_display(), "crosshair")
         window.set_cursor(cursor)
 
-    def leave(self, reason):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def leave(self, reason: Types.ELLIPSIS) -> Types.NONE:
         """
 
         Args:

@@ -22,8 +22,7 @@ from . import widgets
 logger = logging.getLogger(__name__)
 
 
-def button_press_name(button, mods):
-    # type: (Types.ELLIPSIS) -> Types.NONE
+def button_press_name(button, mods: Types.ELLIPSIS) -> Types.NONE:
     """Converts button number & modifier mask to a prefs-storable string.
     
     Analogous to `Gtk.accelerator_name()`.  Buttonpress names look similar to
@@ -86,8 +85,7 @@ def button_press_displayname(button, mods, shorten=False):
     )
 
 
-def button_press_parse(name):
-    # type: (Types.ELLIPSIS) -> Types.NONE
+def button_press_parse(name: Types.ELLIPSIS) -> Types.NONE:
     """Converts button press names to a button number & modifier mask.
     
     Analogous to `Gtk.accelerator_parse()`. This function parses the strings
@@ -120,8 +118,7 @@ def button_press_parse(name):
     return button, mods
 
 
-def get_handler_object(app, action_name):
-    # type: (Types.ELLIPSIS) -> Types.NONE
+def get_handler_object(app, action_name: Types.ELLIPSIS) -> Types.NONE:
     """Find a (nominal) handler for a named buttonmap action.
 
     Args:
@@ -175,8 +172,7 @@ class ButtonMapping:
         self._mapping = {}
         self._modifiers = []
 
-    def update(self, mapping):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def update(self, mapping: Types.ELLIPSIS) -> Types.NONE:
         """Updates from a prefs sub-hash.
 
         Args:
@@ -427,8 +423,7 @@ class ButtonMappingEditor(Gtk.EventBox):
         label = self.action_labels.get(action_name, action_name)
         cell.set_property("text", label)
 
-    def _get_action_label(self, action_name):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def _get_action_label(self, action_name: Types.ELLIPSIS) -> Types.NONE:
         """
 
         Args:
@@ -517,8 +512,7 @@ class ButtonMappingEditor(Gtk.EventBox):
         for func in self.bindings_observers:
             func(self)
 
-    def _selection_changed_cb(self, selection):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def _selection_changed_cb(self, selection: Types.ELLIPSIS) -> Types.NONE:
         """
 
         Args:
@@ -539,8 +533,7 @@ class ButtonMappingEditor(Gtk.EventBox):
         has_selected = self.selection.count_selected_rows() > 0
         self.remove_button.set_sensitive(is_populated and has_selected)
 
-    def _add_button_clicked_cb(self, button):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def _add_button_clicked_cb(self, button: Types.ELLIPSIS) -> Types.NONE:
         """
 
         Args:
@@ -557,8 +550,7 @@ class ButtonMappingEditor(Gtk.EventBox):
         focus_col = self.treeview.get_column(self.action_column)
         self.treeview.set_cursor_on_cell(added_path, focus_col, None, True)
 
-    def _remove_button_clicked_cb(self, button):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def _remove_button_clicked_cb(self, button: Types.ELLIPSIS) -> Types.NONE:
         """
 
         Args:
@@ -759,8 +751,7 @@ class ButtonMappingEditor(Gtk.EventBox):
         """
         dialog.hint_label.set_markup("<span foreground='red'>%s</span>" % markup)
 
-    def _bp_edit_dialog_set_standard_hint(self, dialog):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def _bp_edit_dialog_set_standard_hint(self, dialog: Types.ELLIPSIS) -> Types.NONE:
         """
 
         Args:

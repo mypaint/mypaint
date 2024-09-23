@@ -36,8 +36,7 @@ VIA_TEMPFILE_BACKUP_COPY_SUFFIX = "~"
 ## Utility funcs
 
 
-def expanduser_str(s):
-    # type: (Types.ELLIPSIS) -> str
+def expanduser_str(s: Types.ELLIPSIS) -> str:
     """Expands a ~/ on the front of a path, where meaningful.
 
     Args:
@@ -157,8 +156,7 @@ def via_tempfile(save_method):
     return _wrapped_save_method
 
 
-def startfile(filepath, operation="open"):
-    # type: (Types.ELLIPSIS) -> Types.NONE
+def startfile(filepath, operation: Types.ELLIPSIS = "open") -> Types.NONE:
     """os.startfile / g_app_info_launch_default_for_uri compat
     
     This has the similar semantics to os.startfile, where it's

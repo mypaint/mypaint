@@ -55,8 +55,7 @@ class FakeFile:
     def __init__(self, string):
         self.string = string
 
-    def write(self, newstring):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def write(self, newstring: Types.ELLIPSIS) -> Types.NONE:
         """
 
         Args:
@@ -101,8 +100,7 @@ class FakeOptions:
             setattr(self, k, v)
 
 
-def get_by_attrib(parent, pred):
-    # type: (Types.ELLIPSIS) -> Types.NONE
+def get_by_attrib(parent, pred: Types.ELLIPSIS) -> Types.NONE:
     """Utility function for retrieving child elements by attribute predicates
 
     Args:
@@ -156,8 +154,7 @@ def by_attrib(parent, attr, attr_pred):
 # This reference resolution only handles simple cases
 # and does not produce optimal (or even correct) results
 # in the general case, but is sufficient for the current icons.
-def resolve_references(refsvg, base):
-    # type: (Types.ELLIPSIS) -> Types.NONE
+def resolve_references(refsvg, base: Types.ELLIPSIS) -> Types.NONE:
     """Resolve external references in ``base``
     Any <use> tag in base will be replaced with the element it refers
     to unless that element is already a part of base. Assumes valid svg.
@@ -267,8 +264,7 @@ def extract_icon(svg, icon_elem, output_dir, output_svg):
         f.write(svgstr.read())
 
 
-def parse_style(string):
-    # type: (Types.ELLIPSIS) -> Types.NONE
+def parse_style(string: Types.ELLIPSIS) -> Types.NONE:
     """Given a well-formed style string, return the corresponding dict
 
     Args:
@@ -282,8 +278,7 @@ def parse_style(string):
     return {k: v for k, v in (p.split(":") for p in string.split(";") if ":" in p)}
 
 
-def serialize_style(style_dict):
-    # type: (Types.ELLIPSIS) -> Types.NONE
+def serialize_style(style_dict: Types.ELLIPSIS) -> Types.NONE:
     """Serialize a dict to a well-formed style string
 
     Args:
@@ -297,8 +292,7 @@ def serialize_style(style_dict):
     return ";".join([k + ":" + v for k, v in style_dict.items()])
 
 
-def clean_styles(elem):
-    # type: (Types.ELLIPSIS) -> Types.NONE
+def clean_styles(elem: Types.ELLIPSIS) -> Types.NONE:
     """Recursively remove useless style attributes
     Also moves common fill declarations to the topmost element.
 
@@ -331,8 +325,7 @@ def clean_styles(elem):
     return fill_cols
 
 
-def gethref(icon):
-    # type: (Types.ELLIPSIS) -> Types.NONE
+def gethref(icon: Types.ELLIPSIS) -> Types.NONE:
     """
 
     Args:
@@ -346,8 +339,7 @@ def gethref(icon):
     return icon.attrib["{%s}href" % XLINK][1:]
 
 
-def clean_style(elem):
-    # type: (Types.ELLIPSIS) -> Types.NONE
+def clean_style(elem: Types.ELLIPSIS) -> Types.NONE:
     """Remove unused style attributes based on a fixed list
     A style attribute is removed if:
     1. it is not in the list
@@ -376,8 +368,7 @@ def clean_style(elem):
     useful = ["opacity", "fill"]
     defaults = {"opacity": (float, 1.0)}
 
-    def is_default(k, v):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def is_default(k, v: Types.ELLIPSIS) -> Types.NONE:
         """
 
         Args:
@@ -408,8 +399,7 @@ def clean_style(elem):
     return {v for k, v in (styles or dict()).items() if k == "fill"}
 
 
-def is_icon(e):
-    # type: (Types.ELLIPSIS) -> Types.NONE
+def is_icon(e: Types.ELLIPSIS) -> Types.NONE:
     """
 
     Args:
@@ -424,8 +414,7 @@ def is_icon(e):
     return valid_tag and e.get("id") and e.get("id").startswith("mypaint-")
 
 
-def get_icon_layer(svg):
-    # type: (Types.ELLIPSIS) -> Types.NONE
+def get_icon_layer(svg: Types.ELLIPSIS) -> Types.NONE:
     """
 
     Args:
@@ -478,8 +467,7 @@ def extract_icons(svg, basedir, *ids):
     logger.info("Finished extracting %d icons" % num_extracted)
 
 
-def get_icon_ids(svg):
-    # type: (Types.ELLIPSIS) -> Types.NONE
+def get_icon_ids(svg: Types.ELLIPSIS) -> Types.NONE:
     """Returns the ids of elements marked as being icons
 
     Args:
@@ -493,8 +481,7 @@ def get_icon_ids(svg):
     return (e.get("id") for e in get_icon_layer(svg) if is_icon(e))
 
 
-def invalid_ids(svg, ids):
-    # type: (Types.ELLIPSIS) -> Types.NONE
+def invalid_ids(svg, ids: Types.ELLIPSIS) -> Types.NONE:
     """
 
     Args:
@@ -509,8 +496,7 @@ def invalid_ids(svg, ids):
     return ids.difference(ids.intersection(set(get_icon_ids(svg))))
 
 
-def main(options):
-    # type: (Types.ELLIPSIS) -> Types.NONE
+def main(options: Types.ELLIPSIS) -> Types.NONE:
     """Main function for the tool
 
     Args:

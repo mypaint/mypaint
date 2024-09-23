@@ -119,8 +119,7 @@ class ManagedBrushPreview(Gtk.Image):
         self.connect("query-tooltip", self.on_query_tooltip)
         self.set_property("has-tooltip", True)
 
-    def set_from_managed_brush(self, brush):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def set_from_managed_brush(self, brush: Types.ELLIPSIS) -> Types.NONE:
         """
 
         Args:
@@ -159,8 +158,7 @@ class ManagedBrushPreview(Gtk.Image):
             self.image_size = alloc.width, alloc.height
             self._update()
 
-    def _get_scaled_pixbuf(self, size):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def _get_scaled_pixbuf(self, size: Types.ELLIPSIS) -> Types.NONE:
         """
 
         Args:
@@ -289,8 +287,7 @@ class ColorPreview(Gtk.AspectFrame):
         self.drawingarea.set_size_request(8, 8)
         self.drawingarea.connect("draw", self._draw_cb)
 
-    def set_color(self, color):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def set_color(self, color: Types.ELLIPSIS) -> Types.NONE:
         """
 
         Args:

@@ -72,8 +72,7 @@ class Presenter:
         return bool(prefs.get(self._CHECK_AT_STARTUP_PREFS_KEY, True))
 
     @check_at_startup.setter
-    def check_at_startup(self, value):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def check_at_startup(self, value: Types.ELLIPSIS) -> Types.NONE:
         """
 
         Args:
@@ -221,8 +220,7 @@ class Presenter:
         """
         self._dialog.response(self._RESPONSE_CONTINUE)
 
-    def _recovery_tree_selection_changed_cb(self, sel):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def _recovery_tree_selection_changed_cb(self, sel: Types.ELLIPSIS) -> Types.NONE:
         """When a row's clicked, update button sensitivities etc.
 
         Args:
@@ -258,8 +256,7 @@ class Presenter:
             return None
         return lib.document.AutosaveInfo.new_for_path(path)
 
-    def _delete_autosave_button_clicked_cb(self, button):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def _delete_autosave_button_clicked_cb(self, button: Types.ELLIPSIS) -> Types.NONE:
         """
 
         Args:
@@ -286,8 +283,7 @@ class Presenter:
             logger.info("Deleted %r successfully.", autosave.path)
         self._reload_liststore()
 
-    def _at_startup_checkbutton_toggled_cb(self, toggle):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def _at_startup_checkbutton_toggled_cb(self, toggle: Types.ELLIPSIS) -> Types.NONE:
         """
 
         Args:

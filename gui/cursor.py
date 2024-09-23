@@ -137,8 +137,7 @@ def get_brush_cursor(radius, style, prefs=None):
     return last_cursor
 
 
-def _image_surface_to_pixbuf(surf):
-    # type: (Types.ELLIPSIS) -> Types.NONE
+def _image_surface_to_pixbuf(surf: Types.ELLIPSIS) -> Types.NONE:
     """Convert a Cairo surface to a GdkPixbuf
 
     Args:
@@ -303,8 +302,7 @@ def cursor_line_segments(style, r, threshold):
         ]
 
 
-def cursor_arc_segments(style):
-    # type: (Types.ELLIPSIS) -> Types.NONE
+def cursor_arc_segments(style: Types.ELLIPSIS) -> Types.NONE:
     """Returns a list of arc segments based on style - pairs of radians
 
     Args:
@@ -433,8 +431,7 @@ class CustomCursorMaker:
         cursor = Gdk.Cursor.new_from_pixbuf(display, cursor_pixbuf, hot_x, hot_y)
         return cursor
 
-    def get_freehand_cursor(self, cursor_name=Name.CROSSHAIR_OPEN_PRECISE):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def get_freehand_cursor(self, cursor_name: Types.ELLIPSIS = Name.CROSSHAIR_OPEN_PRECISE) -> Types.NONE:
         """Returns a cursor for the current app.brush. Cached.
 
         Args:
@@ -546,8 +543,7 @@ class CustomCursorMaker:
         return cursor
 
 
-def get_move_cursor_name_for_angle(angle):
-    # type: (Types.ELLIPSIS) -> Types.NONE
+def get_move_cursor_name_for_angle(angle: Types.ELLIPSIS) -> Types.NONE:
     """Cursor name to use for a motion in a given direction
     
     To get the cursor appropriate for edge adjustments, provide the angle
@@ -621,8 +617,7 @@ if __name__ == "__main__":
     num_styles = 4
     _style = 0
 
-    def _enter_cb(widget, event):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def _enter_cb(widget, event: Types.ELLIPSIS) -> Types.NONE:
         """
 
         Args:

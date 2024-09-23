@@ -16,8 +16,7 @@ stop_measurement = -2
 all_tests = {}
 
 
-def run_test(testfunction, profile=None):
-    # type: (Types.ELLIPSIS) -> Types.NONE
+def run_test(testfunction, profile: Types.ELLIPSIS = None) -> Types.NONE:
     """Run a single test
     testfunction must be a generator (using yield)
 
@@ -56,8 +55,7 @@ def run_test(testfunction, profile=None):
         pass
 
 
-def nogui_test(f):
-    # type: (Types.ELLIPSIS) -> Types.NONE
+def nogui_test(f: Types.ELLIPSIS) -> Types.NONE:
     """
 
     Args:
@@ -73,8 +71,7 @@ def nogui_test(f):
     return f
 
 
-def gui_test(f):
-    # type: (Types.ELLIPSIS) -> Types.NONE
+def gui_test(f: Types.ELLIPSIS) -> Types.NONE:
     """
 
     Args:
@@ -98,8 +95,7 @@ def gui_test(f):
 
 
 @gui_test
-def startup(gui):
-    # type: (Types.ELLIPSIS) -> Types.NONE
+def startup(gui: Types.ELLIPSIS) -> Types.NONE:
     """
 
     Args:
@@ -116,8 +112,7 @@ def startup(gui):
 
 
 @gui_test
-def paint(gui):
-    # type: (Types.ELLIPSIS) -> Types.NONE
+def paint(gui: Types.ELLIPSIS) -> Types.NONE:
     """Paint with a constant number of frames per recorded second.
     Not entirely realistic, but gives good and stable measurements.
 
@@ -166,8 +161,7 @@ def paint(gui):
 
 
 @gui_test
-def paint_zoomed_out_5x(gui):
-    # type: (Types.ELLIPSIS) -> Types.NONE
+def paint_zoomed_out_5x(gui: Types.ELLIPSIS) -> Types.NONE:
     """
 
     Args:
@@ -185,8 +179,7 @@ def paint_zoomed_out_5x(gui):
 
 
 @gui_test
-def layerpaint_nozoom(gui):
-    # type: (Types.ELLIPSIS) -> Types.NONE
+def layerpaint_nozoom(gui: Types.ELLIPSIS) -> Types.NONE:
     """
 
     Args:
@@ -206,8 +199,7 @@ def layerpaint_nozoom(gui):
 
 
 @gui_test
-def layerpaint_zoomed_out_5x(gui):
-    # type: (Types.ELLIPSIS) -> Types.NONE
+def layerpaint_zoomed_out_5x(gui: Types.ELLIPSIS) -> Types.NONE:
     """
 
     Args:
@@ -229,8 +221,7 @@ def layerpaint_zoomed_out_5x(gui):
 
 
 @gui_test
-def paint_rotated(gui):
-    # type: (Types.ELLIPSIS) -> Types.NONE
+def paint_rotated(gui: Types.ELLIPSIS) -> Types.NONE:
     """
 
     Args:
@@ -339,8 +330,7 @@ def brushengine_paint_hires():
 
 
 @gui_test
-def scroll_nozoom(gui):
-    # type: (Types.ELLIPSIS) -> Types.NONE
+def scroll_nozoom(gui: Types.ELLIPSIS) -> Types.NONE:
     """
 
     Args:
@@ -362,8 +352,7 @@ def scroll_nozoom(gui):
 
 
 @gui_test
-def scroll_nozoom_onelayer(gui):
-    # type: (Types.ELLIPSIS) -> Types.NONE
+def scroll_nozoom_onelayer(gui: Types.ELLIPSIS) -> Types.NONE:
     """
 
     Args:
@@ -385,8 +374,7 @@ def scroll_nozoom_onelayer(gui):
 
 
 @gui_test
-def scroll_zoomed_out_1x_onelayer(gui):
-    # type: (Types.ELLIPSIS) -> Types.NONE
+def scroll_zoomed_out_1x_onelayer(gui: Types.ELLIPSIS) -> Types.NONE:
     """
 
     Args:
@@ -409,8 +397,7 @@ def scroll_zoomed_out_1x_onelayer(gui):
 
 
 @gui_test
-def scroll_zoomed_out_2x_onelayer(gui):
-    # type: (Types.ELLIPSIS) -> Types.NONE
+def scroll_zoomed_out_2x_onelayer(gui: Types.ELLIPSIS) -> Types.NONE:
     """
 
     Args:
@@ -433,8 +420,7 @@ def scroll_zoomed_out_2x_onelayer(gui):
 
 
 @gui_test
-def scroll_zoomed_out_5x(gui):
-    # type: (Types.ELLIPSIS) -> Types.NONE
+def scroll_zoomed_out_5x(gui: Types.ELLIPSIS) -> Types.NONE:
     """
 
     Args:
@@ -457,8 +443,7 @@ def scroll_zoomed_out_5x(gui):
 
 
 @gui_test
-def memory_zoomed_out_5x(gui):
-    # type: (Types.ELLIPSIS) -> Types.NONE
+def memory_zoomed_out_5x(gui: Types.ELLIPSIS) -> Types.NONE:
     """
 
     Args:
@@ -483,8 +468,7 @@ def memory_zoomed_out_5x(gui):
 
 
 @gui_test
-def memory_after_startup(gui):
-    # type: (Types.ELLIPSIS) -> Types.NONE
+def memory_after_startup(gui: Types.ELLIPSIS) -> Types.NONE:
     """
 
     Args:

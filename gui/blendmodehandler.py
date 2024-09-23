@@ -24,8 +24,7 @@ class BlendMode:
         return self._active
 
     @active.setter
-    def active(self, active):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def active(self, active: Types.ELLIPSIS) -> Types.NONE:
         """
 
         Args:
@@ -106,8 +105,7 @@ class BlendModes:
         for m in self.modes:
             m.changed += self._update
 
-    def _push_history(self, mode):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def _push_history(self, mode: Types.ELLIPSIS) -> Types.NONE:
         """
 
         Args:
@@ -125,8 +123,7 @@ class BlendModes:
             self.history.remove(mode)
         self.history.append(mode)
 
-    def _pop_history(self, removed):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def _pop_history(self, removed: Types.ELLIPSIS) -> Types.NONE:
         """
 
         Args:
@@ -144,8 +141,7 @@ class BlendModes:
                 return
         self.normal_mode.active = True
 
-    def _update(self, mode):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def _update(self, mode: Types.ELLIPSIS) -> Types.NONE:
         """
 
         Args:
@@ -224,8 +220,7 @@ class BlendModeManager:
 
         self._bm = None
 
-    def register(self, bm):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def register(self, bm: Types.ELLIPSIS) -> Types.NONE:
         """Connect the blend mode actions to the given BlendModes object
 
         Args:
@@ -264,8 +259,7 @@ class BlendModeManager:
         new_action.set_active(True)
         new_action.unblock_activate()
 
-    def _setup(self, bm):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def _setup(self, bm: Types.ELLIPSIS) -> Types.NONE:
         """Set up listener and controls for new model and
         remove listener for old model
 
@@ -291,8 +285,7 @@ class BlendModeManager:
             action.set_sensitive(mode.enabled)
             action.unblock_activate()
 
-    def deregister(self, bm):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def deregister(self, bm: Types.ELLIPSIS) -> Types.NONE:
         """Disconnect the blend mode actions from the given BlendModes
         if it is active.
         
@@ -320,8 +313,7 @@ class BlendModeManager:
                 action.set_active(False)
                 action.set_enabled(False)
 
-    def blend_mode_normal_cb(self, action):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def blend_mode_normal_cb(self, action: Types.ELLIPSIS) -> Types.NONE:
         """
 
         Args:
@@ -335,8 +327,7 @@ class BlendModeManager:
         if self._bm:
             self._bm.normal_mode.active = action.get_active()
 
-    def blend_mode_eraser_cb(self, action):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def blend_mode_eraser_cb(self, action: Types.ELLIPSIS) -> Types.NONE:
         """
 
         Args:
@@ -350,8 +341,7 @@ class BlendModeManager:
         if self._bm:
             self._bm.eraser_mode.active = action.get_active()
 
-    def blend_mode_lock_alpha_cb(self, action):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def blend_mode_lock_alpha_cb(self, action: Types.ELLIPSIS) -> Types.NONE:
         """
 
         Args:
@@ -365,8 +355,7 @@ class BlendModeManager:
         if self._bm:
             self._bm.lock_alpha_mode.active = action.get_active()
 
-    def blend_mode_colorize_cb(self, action):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def blend_mode_colorize_cb(self, action: Types.ELLIPSIS) -> Types.NONE:
         """
 
         Args:

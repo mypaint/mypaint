@@ -67,8 +67,7 @@ OPEN_ANYWAY = C_("file compatibility question", "Do you want to open this file a
 _PIGMENT_OP = combine_mode_get_info(CombineSpectralWGM)["name"]
 
 
-def has_pigment_layers(elem):
-    # type: (Types.ELLIPSIS) -> Types.NONE
+def has_pigment_layers(elem: Types.ELLIPSIS) -> Types.NONE:
     """Check if the layer stack xml contains a pigment layer
     
     Has to be done before any layers are loaded, since the
@@ -93,8 +92,7 @@ def has_pigment_layers(elem):
     return op == _PIGMENT_OP or any([has_pigment_layers(c) for c in elem])
 
 
-def incompatible_ora_cb(app):
-    # type: (Types.ELLIPSIS) -> Types.NONE
+def incompatible_ora_cb(app: Types.ELLIPSIS) -> Types.NONE:
     """
 
     Args:
@@ -310,8 +308,7 @@ class CompatFileBehavior(config.CompatFileBehaviorConfig):
         """ """
         self.combo.set_active_id(self.prefs[self.SETTING])
 
-    def changed_cb(self, combo):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def changed_cb(self, combo: Types.ELLIPSIS) -> Types.NONE:
         """
 
         Args:
@@ -612,8 +609,7 @@ class CompatibilityPreferences:
         update_default_pigment_setting(self.app)
 
 
-def ora_compat_handler(app):
-    # type: (Types.ELLIPSIS) -> Types.NONE
+def ora_compat_handler(app: Types.ELLIPSIS) -> Types.NONE:
     """
 
     Args:
@@ -624,8 +620,7 @@ def ora_compat_handler(app):
     Raises:
 
     """
-    def handler(eotf_value, root_stack_elem):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def handler(eotf_value, root_stack_elem: Types.ELLIPSIS) -> Types.NONE:
         """
 
         Args:
@@ -708,8 +703,7 @@ def set_compat_mode(app, compat_mode, custom_eotf=None, update=True):
         update_default_pigment_setting(app)
 
 
-def update_default_layer_type(app):
-    # type: (Types.ELLIPSIS) -> Types.NONE
+def update_default_layer_type(app: Types.ELLIPSIS) -> Types.NONE:
     """Update default layer type from settings
 
     Args:
@@ -730,8 +724,7 @@ def update_default_layer_type(app):
         set_default_mode(CombineNormal)
 
 
-def update_default_pigment_setting(app):
-    # type: (Types.ELLIPSIS) -> Types.NONE
+def update_default_pigment_setting(app: Types.ELLIPSIS) -> Types.NONE:
     """Update default pigment brush setting value
 
     Args:
@@ -789,8 +782,7 @@ class CompatSelector:
         combo.connect("changed", self._combo_changed_cb)
         self._widget = hbox
 
-    def _combo_changed_cb(self, combo):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def _combo_changed_cb(self, combo: Types.ELLIPSIS) -> Types.NONE:
         """
 
         Args:
@@ -807,8 +799,7 @@ class CompatSelector:
         else:
             self._compat_override = None
 
-    def file_selection_changed_cb(self, chooser):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def file_selection_changed_cb(self, chooser: Types.ELLIPSIS) -> Types.NONE:
         """Show/hide widget and enable/disable override
 
         Args:

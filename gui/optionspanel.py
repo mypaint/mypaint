@@ -130,8 +130,7 @@ class ModeOptionsTool(SizedVBoxToolWidget):
         mode = self._app.doc.modes.top
         self._update_ui_for_mode(mode)
 
-    def _update_ui_for_mode(self, mode):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def _update_ui_for_mode(self, mode: Types.ELLIPSIS) -> Types.NONE:
         """
 
         Args:

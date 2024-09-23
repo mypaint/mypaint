@@ -160,8 +160,7 @@ class ColorManager(GObject.GObject):
 
     ## Picker cursor
 
-    def set_picker_cursor(self, cursor):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def set_picker_cursor(self, cursor: Types.ELLIPSIS) -> Types.NONE:
         """Sets the color picker cursor.
 
         Args:
@@ -193,8 +192,7 @@ class ColorManager(GObject.GObject):
 
     ## Template/read-only data path for palettes, masks etc.
 
-    def set_data_path(self, datapath):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def set_data_path(self, datapath: Types.ELLIPSIS) -> Types.NONE:
         """Sets the template/read-only data path for palettes, masks etc.
 
         Args:
@@ -224,8 +222,7 @@ class ColorManager(GObject.GObject):
 
     ## Attached ColorAdjusters
 
-    def add_adjuster(self, adjuster):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def add_adjuster(self, adjuster: Types.ELLIPSIS) -> Types.NONE:
         """Adds an adjuster to the internal set of adjusters.
 
         Args:
@@ -238,8 +235,7 @@ class ColorManager(GObject.GObject):
         """
         self._adjusters.add(adjuster)
 
-    def remove_adjuster(self, adjuster):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def remove_adjuster(self, adjuster: Types.ELLIPSIS) -> Types.NONE:
         """Removes an adjuster.
 
         Args:
@@ -258,8 +254,7 @@ class ColorManager(GObject.GObject):
 
     ## Main shared UIColor object
 
-    def set_color(self, color):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def set_color(self, color: Types.ELLIPSIS) -> Types.NONE:
         """Sets the shared `UIColor`, and notifies all registered adjusters.
         
         Calling this invokes the `color_updated()` method on each
@@ -310,8 +305,7 @@ class ColorManager(GObject.GObject):
         """ """
         self._hist = self._hist[-self._HIST_LEN :]
 
-    def push_history(self, color):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def push_history(self, color: Types.ELLIPSIS) -> Types.NONE:
         """Pushes a color to the user history list.
         
         Calling this invokes the `color_history_updated()` method on
@@ -376,8 +370,7 @@ class ColorManager(GObject.GObject):
 
     ## Color wheel distortion table (support for RYGB/RGB/RYB-wheels)
 
-    def set_wheel_type(self, typename):
-        # type: (str) -> Types.NONE
+    def set_wheel_type(self, typename: str) -> Types.NONE:
         """Sets the type of attached color wheels by name.
 
         Args:
@@ -407,8 +400,7 @@ class ColorManager(GObject.GObject):
         default = self._DEFAULT_WHEEL_TYPE
         return self._prefs.get(PREFS_KEY_WHEEL_TYPE, default)
 
-    def distort_hue(self, h):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def distort_hue(self, h: Types.ELLIPSIS) -> Types.NONE:
         """Distorts a hue from RGB-wheel angles to the current wheel type's.
 
         Args:
@@ -432,8 +424,7 @@ class ColorManager(GObject.GObject):
                 break
         return h
 
-    def undistort_hue(self, h):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def undistort_hue(self, h: Types.ELLIPSIS) -> Types.NONE:
         """Reverses the mapping imposed by ``distort_hue()``.
 
         Args:
@@ -503,8 +494,7 @@ class ColorAdjuster:
 
     ## Central ColorManager instance (accessors)
 
-    def set_color_manager(self, manager):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def set_color_manager(self, manager: Types.ELLIPSIS) -> Types.NONE:
         """Sets the shared color adjustment manager this adjuster points to.
 
         Args:
@@ -543,8 +533,7 @@ class ColorAdjuster:
             return RGBColor(color=self._DEFAULT_COLOR)
         return self.color_manager.get_color()
 
-    def set_managed_color(self, color):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def set_managed_color(self, color: Types.ELLIPSIS) -> Types.NONE:
         """Sets the managed color. Convenience method for use by subclasses.
 
         Args:
@@ -697,8 +686,7 @@ class ColorAdjusterWidget(CachedBgDrawingArea, ColorAdjuster):
 
     ## Color drag and drop
 
-    def _init_color_drag(self, *_junk):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def _init_color_drag(self, *_junk: Types.ELLIPSIS) -> Types.NONE:
         """
 
         Args:
@@ -878,8 +866,7 @@ class ColorAdjusterWidget(CachedBgDrawingArea, ColorAdjuster):
         else:
             raise AttributeError("unknown property %s" % prop.name)
 
-    def do_get_property(self, prop):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def do_get_property(self, prop: Types.ELLIPSIS) -> Types.NONE:
         """
 
         Args:
@@ -1114,8 +1101,7 @@ class ColorAdjusterWidget(CachedBgDrawingArea, ColorAdjuster):
         return False
 
     @event
-    def clicked(self, event, pos):
-        # type: (Gdk.Event, tuple) -> Types.NONE
+    def clicked(self, event: Gdk.Event, pos: tuple) -> Types.NONE:
         """The user has clicked. Implies no drag was started.
 
         Args:
@@ -1394,8 +1380,7 @@ class SliderColorAdjuster(ColorAdjusterWidget):
             cr.rectangle(b_x, b_y, b_w, b_h)
             cr.stroke()
 
-    def get_bar_amount_for_color(self, color):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def get_bar_amount_for_color(self, color: Types.ELLIPSIS) -> Types.NONE:
         """Bar amount for a given `UIColor`; subclasses must implement.
 
         Args:
@@ -1408,8 +1393,7 @@ class SliderColorAdjuster(ColorAdjusterWidget):
         """
         raise NotImplementedError
 
-    def get_color_for_bar_amount(self, amt):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def get_color_for_bar_amount(self, amt: Types.ELLIPSIS) -> Types.NONE:
         """The `UIColor` for a given bar amount; subclasses must implement.
 
         Args:
@@ -1799,8 +1783,7 @@ class HueSaturationWheelMixin:
         """
         raise NotImplementedError
 
-    def get_normalized_polar_pos_for_color(self, col):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def get_normalized_polar_pos_for_color(self, col: Types.ELLIPSIS) -> Types.NONE:
         """Inverse of `color_at_normalized_polar_pos`.
 
         Args:
@@ -1814,8 +1797,7 @@ class HueSaturationWheelMixin:
         # FIXME: make the names consistent
         raise NotImplementedError
 
-    def get_pos_for_color(self, col):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def get_pos_for_color(self, col: Types.ELLIPSIS) -> Types.NONE:
         """
 
         Args:

@@ -148,8 +148,7 @@ class AccelMapEditor(Gtk.Grid):
             Gtk.SortType.ASCENDING,
         )
 
-    def _entry_changed(self, widget):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def _entry_changed(self, widget: Types.ELLIPSIS) -> Types.NONE:
         """
 
         Args:
@@ -163,8 +162,7 @@ class AccelMapEditor(Gtk.Grid):
         self._filter_txt = self._filter_entry.get_text()
         self._filter.refilter()
 
-    def _show_cb(self, widget):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def _show_cb(self, widget: Types.ELLIPSIS) -> Types.NONE:
         """
 
         Args:
@@ -294,8 +292,7 @@ class AccelMapEditor(Gtk.Grid):
         row[self._FILTER_TEXT_COLUMN] = filter_text
         row[self._SEARCH_TEXT_COLUMN] = accel_label
 
-    def _fmt_accel_label(self, label):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def _fmt_accel_label(self, label: Types.ELLIPSIS) -> Types.NONE:
         """
 
         Args:
@@ -569,8 +566,7 @@ class AccelMapEditor(Gtk.Grid):
         """
         dialog.hint_widget.set_markup(markup)
 
-    def _edit_dialog_set_standard_hint(self, dialog):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def _edit_dialog_set_standard_hint(self, dialog: Types.ELLIPSIS) -> Types.NONE:
         """Set the boring how-to message in capture dialog
 
         Args:
@@ -775,8 +771,7 @@ class AccelMapEditor(Gtk.Grid):
         assert entry_exists
 
 
-def _udecode(s, enc="utf-8"):
-    # type: (Types.ELLIPSIS) -> Types.NONE
+def _udecode(s, enc: Types.ELLIPSIS = "utf-8") -> Types.NONE:
     """The APIs sometimes return Unicode strings as bytes objects.
     
     This is more often a Python2 thing, and is sometimes OK back then,
@@ -828,8 +823,7 @@ if __name__ == "__main__":
 
     orig_excepthook = sys.excepthook
 
-    def _excepthook(*args):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def _excepthook(*args: Types.ELLIPSIS) -> Types.NONE:
         """
 
         Args:

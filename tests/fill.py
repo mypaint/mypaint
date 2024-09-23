@@ -22,8 +22,7 @@ from lib.layer import SimplePaintingLayer
 N = mypaintlib.TILE_SIZE
 
 
-def exact_bbox(layer):
-    # type: (SimplePaintingLayer) -> Types.NONE
+def exact_bbox(layer: SimplePaintingLayer) -> Types.NONE:
     """Expensively determine the bounding box
     coordinates of the actual pixel data
 
@@ -108,8 +107,7 @@ def exact_bbox(layer):
     return bbox
 
 
-def fill_test(test_func):
-    # type: (Types.ELLIPSIS) -> Types.NONE
+def fill_test(test_func: Types.ELLIPSIS) -> Types.NONE:
     """Decorator for fill tests; clears fill layers between tests
 
     Args:
@@ -149,8 +147,7 @@ class FillTestsBase(unittest.TestCase):
 
     # Helpers
     @staticmethod
-    def center(bbox):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def center(bbox: Types.ELLIPSIS) -> Types.NONE:
         """
 
         Args:
@@ -165,8 +162,7 @@ class FillTestsBase(unittest.TestCase):
         return x + w // 2, y + h // 2
 
     @staticmethod
-    def area(bbox):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def area(bbox: Types.ELLIPSIS) -> Types.NONE:
         """
 
         Args:
@@ -180,8 +176,7 @@ class FillTestsBase(unittest.TestCase):
         return bbox.w * bbox.h
 
     @staticmethod
-    def layers_identical(l1, l2):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def layers_identical(l1, l2: Types.ELLIPSIS) -> Types.NONE:
         """Check the layers are tile-for-tile identical
 
         Args:

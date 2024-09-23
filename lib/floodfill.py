@@ -82,8 +82,7 @@ def enqueue_overflows(queue, tile_coord, seeds, tiles_bbox, *p):
             queue.append(edge)
 
 
-def starting_coordinates(x, y):
-    # type: (Types.ELLIPSIS) -> Types.NONE
+def starting_coordinates(x, y: Types.ELLIPSIS) -> Types.NONE:
     """Get the coordinates of starting tile and pixel (tx, ty, px, py)
 
     Args:
@@ -100,8 +99,7 @@ def starting_coordinates(x, y):
     return init_tx, init_ty, init_x, init_y
 
 
-def seeds_by_tile(seeds):
-    # type: (Types.ELLIPSIS) -> Types.NONE
+def seeds_by_tile(seeds: Types.ELLIPSIS) -> Types.NONE:
     """Partition and convert seed coordinates
     
     Partition a list of model-space seed coordinates into lists of
@@ -238,8 +236,7 @@ class FillHandler:
         else:
             return ""
 
-    def wait(self, t=None):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def wait(self, t: Types.ELLIPSIS = None) -> Types.NONE:
         """Wait t seconds for the fill to complete
 
         Args:
@@ -673,8 +670,7 @@ class _TileFillSkipper:
     # Dict of alpha->tile, used for uniform non-opaque tile fills
     # NOTE: these are usually not a result of an intentional fill, but
     # clicking a pixel with color very similar to the intended target pixel
-    def uniform_tile(self, alpha):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def uniform_tile(self, alpha: Types.ELLIPSIS) -> Types.NONE:
         """
 
         Args:
@@ -913,8 +909,7 @@ class _GCTileHandler:
         # already been tried, no skipping possible.
         return self._alpha_tiles[tile_coord], self.distances[tile_coord], ()
 
-    def find_gaps(self, *grid):
-        # type: (Types.ELLIPSIS) -> bool
+    def find_gaps(self, *grid: Types.ELLIPSIS) -> bool:
         """Search for and mark gaps, given a nine-grid of alpha tiles
 
         Args:
@@ -930,8 +925,7 @@ class _GCTileHandler:
             self._dist_data = fc.new_full_tile(INF_DIST)
         return myplib.find_gaps(self._distbucket, self._dist_data, *grid)
 
-    def alpha_grid(self, tile_coord):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def alpha_grid(self, tile_coord: Types.ELLIPSIS) -> Types.NONE:
         """When needed, create and calculate alpha tiles for distance searching.
         
         For the tile of the given coordinate, ensure that a corresponding tile
@@ -1018,8 +1012,7 @@ def unseep(seed_queue, filled, gc_filler, total_px, tiles_bbox, distances):
             filled[tile_coord] = tile
 
 
-def complement_gc_seeds(seeds, distance_tile):
-    # type: (Types.ELLIPSIS) -> Types.NONE
+def complement_gc_seeds(seeds, distance_tile: Types.ELLIPSIS) -> Types.NONE:
     """Add distances to initial seeds, check if all seeds lie on detected gaps
     
     If the input seeds are not initial seeds, they are returned unchanged.
@@ -1050,8 +1043,7 @@ def complement_gc_seeds(seeds, distance_tile):
         return seeds, False
 
 
-def gc_seeds_skippable(seeds):
-    # type: (Types.ELLIPSIS) -> Types.NONE
+def gc_seeds_skippable(seeds: Types.ELLIPSIS) -> Types.NONE:
     """
 
     Args:

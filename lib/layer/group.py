@@ -356,8 +356,7 @@ class LayerStack(core.LayerBase, lib.autosave.Autosaveable):
         """Iterates across child layers in the order used by append()"""
         return iter(self._layers)
 
-    def append(self, layer):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def append(self, layer: Types.ELLIPSIS) -> Types.NONE:
         """Appends a layer (notifies root)
 
         Args:
@@ -373,8 +372,7 @@ class LayerStack(core.LayerBase, lib.autosave.Autosaveable):
         self._notify_adopt(layer, newindex)
         self._content_changed(*layer.get_full_redraw_bbox())
 
-    def remove(self, layer):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def remove(self, layer: Types.ELLIPSIS) -> Types.NONE:
         """Removes a layer by equality (notifies root)
 
         Args:
@@ -392,8 +390,7 @@ class LayerStack(core.LayerBase, lib.autosave.Autosaveable):
         self._notify_disown(removed, oldindex)
         self._content_changed(*removed.get_full_redraw_bbox())
 
-    def pop(self, index=None):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def pop(self, index: Types.ELLIPSIS = None) -> Types.NONE:
         """Removes a layer by index (notifies root)
 
         Args:
@@ -478,8 +475,7 @@ class LayerStack(core.LayerBase, lib.autosave.Autosaveable):
         """Fetches the layer at an index"""
         return self._layers[index]
 
-    def index(self, layer):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def index(self, layer: Types.ELLIPSIS) -> Types.NONE:
         """Fetches the index of a child layer, by equality
 
         Args:
@@ -527,8 +523,7 @@ class LayerStack(core.LayerBase, lib.autosave.Autosaveable):
 
     ## Renderable implementation
 
-    def get_render_ops(self, spec):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def get_render_ops(self, spec: Types.ELLIPSIS) -> Types.NONE:
         """Get rendering instructions.
 
         Args:
@@ -776,8 +771,7 @@ class LayerStack(core.LayerBase, lib.autosave.Autosaveable):
 
     ## Trimming
 
-    def trim(self, rect):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def trim(self, rect: Types.ELLIPSIS) -> Types.NONE:
         """Trim the layer to a rectangle, discarding data outside it
 
         Args:
@@ -815,8 +809,7 @@ class LayerStackSnapshot(core.LayerBaseSnapshot):
         self.layer_snaps = [l.save_snapshot() for l in layer]
         self.layer_classes = [l.__class__ for l in layer]
 
-    def restore_to_layer(self, layer):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def restore_to_layer(self, layer: Types.ELLIPSIS) -> Types.NONE:
         """
 
         Args:
@@ -865,8 +858,7 @@ class LayerStackMove:
         for move in self._moves:
             move.cleanup()
 
-    def process(self, n=200):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def process(self, n: Types.ELLIPSIS = 200) -> Types.NONE:
         """
 
         Args:

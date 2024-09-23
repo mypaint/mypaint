@@ -112,8 +112,7 @@ class GUI:
         while self.waiting:
             Gtk.main_iteration()
 
-    def wait_for_duration(self, duration):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def wait_for_duration(self, duration: Types.ELLIPSIS) -> Types.NONE:
         """
 
         Args:
@@ -132,8 +131,7 @@ class GUI:
         while self.waiting:
             Gtk.main_iteration()
 
-    def scroll(self, N=20):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def scroll(self, N: Types.ELLIPSIS = 20) -> Types.NONE:
         """
 
         Args:
@@ -154,8 +152,7 @@ class GUI:
         for i in range(N):
             tdw.scroll(-int(dx[i]), -int(dy[i]))
 
-    def zoom_out(self, steps):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def zoom_out(self, steps: Types.ELLIPSIS) -> Types.NONE:
         """
 
         Args:

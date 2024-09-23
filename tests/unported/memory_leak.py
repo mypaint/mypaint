@@ -27,8 +27,7 @@ def mem():
         return int(statm.read().split()[0])
 
 
-def check_garbage(msg="uncollectable garbage left over from previous tests"):
-    # type: (Types.ELLIPSIS) -> Types.NONE
+def check_garbage(msg: Types.ELLIPSIS = "uncollectable garbage left over from previous tests") -> Types.NONE:
     """
 
     Args:
@@ -105,8 +104,7 @@ def iterations():
 all_tests = {}
 
 
-def leaktest(f):
-    # type: (Types.ELLIPSIS) -> Types.NONE
+def leaktest(f: Types.ELLIPSIS) -> Types.NONE:
     """
 
     Args:
@@ -153,8 +151,7 @@ def surface_alloc():
         tiledsurface.Surface()
 
 
-def paint_doc(doc):
-    # type: (Types.ELLIPSIS) -> Types.NONE
+def paint_doc(doc: Types.ELLIPSIS) -> Types.NONE:
     """
 
     Args:
@@ -206,8 +203,7 @@ def paint_save_clear():
     doc.cleanup()
 
 
-def paint_gui(gui):
-    # type: (Types.ELLIPSIS) -> Types.NONE
+def paint_gui(gui: Types.ELLIPSIS) -> Types.NONE:
     """Paint with a constant number of frames per recorded second.
     Not entirely realistic, but gives good and stable measurements.
 

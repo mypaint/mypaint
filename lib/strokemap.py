@@ -62,8 +62,7 @@ class StrokeShape:
         return StrokeShape.new_from_snapshots(snap1, snap2)
 
     @classmethod
-    def new_from_snapshots(cls, before, after):
-        # type: (_TiledSurfaceSnapshot, _TiledSurfaceSnapshot) -> Types.NONE
+    def new_from_snapshots(cls, before: _TiledSurfaceSnapshot, after: _TiledSurfaceSnapshot) -> Types.NONE:
         """Build a new StrokeShape from before+after pair of snapshots.
 
         Args:
@@ -197,8 +196,7 @@ class StrokeShape:
         else:
             self.tasks.finish_all()
 
-    def touches_pixel(self, x, y):
-        # type: (int, int) -> bool
+    def touches_pixel(self, x: int, y: int) -> bool:
         """Returns whether the stroke shape hits a specific pixel
 
         Args:
@@ -337,8 +335,7 @@ class _TileDiffUpdateTask:
         self._update_tile(ti)
         return bool(self._remaining)
 
-    def process_tile_subset(self, pred):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def process_tile_subset(self, pred: Types.ELLIPSIS) -> Types.NONE:
         """Diff and update a subset of queued tiles now.
 
         Args:
@@ -357,8 +354,7 @@ class _TileDiffUpdateTask:
             processed.add(ti)
         self._remaining -= processed
 
-    def _update_tile(self, ti):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def _update_tile(self, ti: Types.ELLIPSIS) -> Types.NONE:
         """Diff and update the tile at a specified position.
 
         Args:
@@ -466,8 +462,7 @@ class _TileRecompressTask:
         self._compress_tile(ti, array)
         return len(self._src_dict) > 0
 
-    def process_tile_subset(self, pred):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def process_tile_subset(self, pred: Types.ELLIPSIS) -> Types.NONE:
         """Compress & store a subset of queued tiles' data now.
 
         Args:
@@ -569,8 +564,7 @@ class _Tile:
         return cls.new_from_array(differences)
 
     @classmethod
-    def new_from_array(cls, array):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def new_from_array(cls, array: Types.ELLIPSIS) -> Types.NONE:
         """Initialize from a single uncompressed diff array.
 
         Args:
@@ -591,8 +585,7 @@ class _Tile:
         return tile
 
     @classmethod
-    def new_from_compressed_bitmap(cls, zdata):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def new_from_compressed_bitmap(cls, zdata: Types.ELLIPSIS) -> Types.NONE:
         """Initialize from raw compressed zlib bitmap data.
 
         Args:
@@ -796,8 +789,7 @@ class _TileIndexPredicate:
         return True
 
 
-def _pixel_bbox_to_tile_range(bbox):
-    # type: (tuple) -> tuple
+def _pixel_bbox_to_tile_range(bbox: tuple) -> tuple:
     """Convert a pixel area to testable ranges of tiles.
 
     Args:
@@ -833,8 +825,7 @@ See also `_tile_in_ranges()`.: Tile ranges, as (txmin, txmax, tymin, tymax).
     return (txmin, txmax, tymin, tymax)
 
 
-def _tile_in_range(ti, trange):
-    # type: (tuple, tuple) -> Types.NONE
+def _tile_in_range(ti: tuple, trange: tuple) -> Types.NONE:
     """Tests whether a tile index is within a range.
 
     Args:

@@ -62,8 +62,7 @@ class ScratchpadTool(SizedVBoxToolWidget):
         self.pack_start(scratchpad_box, True, True, 0)
         self.pack_start(toolbar, False, True, 0)
 
-    def _save_cb(self, action):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def _save_cb(self, action: Types.ELLIPSIS) -> Types.NONE:
         """
 
         Args:

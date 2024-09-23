@@ -162,8 +162,7 @@ class FreehandMode(
             self.last_good_raw_viewrotation = 0.0
             self.last_good_raw_barrel_rotation = 0.0
 
-        def queue_motion(self, event_data):
-            # type: (tuple) -> Types.NONE
+        def queue_motion(self, event_data: tuple) -> Types.NONE:
             """Append one raw motion event to the motion queue
 
             Args:
@@ -262,8 +261,7 @@ class FreehandMode(
         """Resets all per-TDW drawing state"""
         self._drawing_state = {}
 
-    def _get_drawing_state(self, tdw):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def _get_drawing_state(self, tdw: Types.ELLIPSIS) -> Types.NONE:
         """
 
         Args:
@@ -300,8 +298,7 @@ class FreehandMode(
         self._reset_drawing_state()
         self._debug = logger.getEffectiveLevel() == logging.DEBUG
 
-    def leave(self, **kwds):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def leave(self, **kwds: Types.ELLIPSIS) -> Types.NONE:
         """Leave freehand mode
 
         Args:
@@ -318,8 +315,7 @@ class FreehandMode(
 
     ## Special cursor state while there's pressure
 
-    def _hide_drawing_cursor(self, tdw):
-        # type: (TiledDrawWidget) -> Types.NONE
+    def _hide_drawing_cursor(self, tdw: TiledDrawWidget) -> Types.NONE:
         """Hide the cursor while painting, if configured to.
 
         Args:
@@ -621,8 +617,7 @@ class FreehandMode(
 
     ## Motion queue processing
 
-    def _motion_queue_idle_cb(self, tdw):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def _motion_queue_idle_cb(self, tdw: Types.ELLIPSIS) -> Types.NONE:
         """Idle callback; processes each queued event
 
         Args:
@@ -742,8 +737,7 @@ class FreehandMode(
 class FreehandOptionsWidget(gui.mode.PaintingModeOptionsWidgetBase):
     """Configuration widget for freehand mode"""
 
-    def init_specialized_widgets(self, row):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def init_specialized_widgets(self, row: Types.ELLIPSIS) -> Types.NONE:
         """
 
         Args:
@@ -817,8 +811,7 @@ class FreehandOptionsWidget(gui.mode.PaintingModeOptionsWidgetBase):
         row += 1
         return row
 
-    def _fakepressure_value_changed_cb(self, adj):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def _fakepressure_value_changed_cb(self, adj: Types.ELLIPSIS) -> Types.NONE:
         """Updates fakepressure when the user tweaks it using a scale
 
         Args:
@@ -832,8 +825,7 @@ class FreehandOptionsWidget(gui.mode.PaintingModeOptionsWidgetBase):
         newvalue = adj.get_value()
         self.app.fakepressure = newvalue
 
-    def fakepressure_modified_cb(self, value):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def fakepressure_modified_cb(self, value: Types.ELLIPSIS) -> Types.NONE:
         """Updates the fakepressure slider when changed elsewhere
 
         Args:
@@ -848,8 +840,7 @@ class FreehandOptionsWidget(gui.mode.PaintingModeOptionsWidgetBase):
         if adj is not None:
             adj.set_value(value)
 
-    def _fakerotation_value_changed_cb(self, adj):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def _fakerotation_value_changed_cb(self, adj: Types.ELLIPSIS) -> Types.NONE:
         """Updates fakerotation when the user tweaks it using a scale
 
         Args:
@@ -863,8 +854,7 @@ class FreehandOptionsWidget(gui.mode.PaintingModeOptionsWidgetBase):
         newvalue = adj.get_value()
         self.app.fakerotation = newvalue
 
-    def fakerotation_modified_cb(self, value):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def fakerotation_modified_cb(self, value: Types.ELLIPSIS) -> Types.NONE:
         """Updates the fakerotation slider when changed elsewhere
 
         Args:

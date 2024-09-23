@@ -131,8 +131,7 @@ MYPAINT_VERSION = "{major}.{minor}.{patch}{prerel}".format(
 )
 
 
-def _parse_version_string(version_string):
-    # type: (Types.ELLIPSIS) -> Types.NONE
+def _parse_version_string(version_string: Types.ELLIPSIS) -> Types.NONE:
     """Parse version string into fields
     
     If the string is not a valid version string, None is returned.
@@ -196,8 +195,7 @@ class Compatibility:
     }
 
 
-def compatibility(target_version_string):
-    # type: (Types.ELLIPSIS) -> Types.NONE
+def compatibility(target_version_string: Types.ELLIPSIS) -> Types.NONE:
     """Check if the current version is compatible
 
     Args:
@@ -215,8 +213,7 @@ def compatibility(target_version_string):
     return target and _compatibility(target, (MAJOR, MINOR, PATCH, PREREL))
 
 
-def _compatibility(target_version_fields, current_version_fields):
-    # type: (Types.ELLIPSIS) -> Types.NONE
+def _compatibility(target_version_fields, current_version_fields: Types.ELLIPSIS) -> Types.NONE:
     """Internal implementation of version compatibility check
 
     Args:
@@ -453,8 +450,7 @@ def _get_versions(gitprefix="gitexport"):
     return (base_version, formal_version, ceremonial_version)
 
 
-def _get_release_info_script(gitprefix="gitexport"):
-    # type: (Types.ELLIPSIS) -> Types.NONE
+def _get_release_info_script(gitprefix: Types.ELLIPSIS = "gitexport") -> Types.NONE:
     """Returns a script fragment describing the release.
     
     Like _get_versions(), this must only be called from build scripting

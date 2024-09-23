@@ -46,8 +46,7 @@ class HSVHueSaturationWheel(HueSaturationWheelAdjuster):
             self.set_managed_color(col)
         return True
 
-    def get_normalized_polar_pos_for_color(self, col):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def get_normalized_polar_pos_for_color(self, col: Types.ELLIPSIS) -> Types.NONE:
         """
 
         Args:
@@ -123,8 +122,7 @@ class HSVAdjusterPage(CombinedAdjusterPage):
         frame.add(self.__table)
         return frame
 
-    def set_color_manager(self, manager):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def set_color_manager(self, manager: Types.ELLIPSIS) -> Types.NONE:
         """
 
         Args:

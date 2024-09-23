@@ -100,8 +100,7 @@ class MaskableWheelMixin:
         prefs[PREFS_ACTIVE_KEY] = active
         self.queue_draw()
 
-    def set_color_manager(self, manager):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def set_color_manager(self, manager: Types.ELLIPSIS) -> Types.NONE:
         """Sets the color manager, and reads an initial mask from prefs.
         
         Extends `ColorAdjuster`'s implementation.
@@ -123,8 +122,7 @@ class MaskableWheelMixin:
             self.mask_toggle.set_active(mask_active)
 
     @staticmethod
-    def _flatten_mask(mask):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def _flatten_mask(mask: Types.ELLIPSIS) -> Types.NONE:
         """
 
         Args:
@@ -142,8 +140,7 @@ class MaskableWheelMixin:
         return flat_mask
 
     @staticmethod
-    def _unflatten_mask(flat_mask):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def _unflatten_mask(flat_mask: Types.ELLIPSIS) -> Types.NONE:
         """
 
         Args:
@@ -160,8 +157,7 @@ class MaskableWheelMixin:
             mask.append(shape_colors)
         return mask
 
-    def set_mask_from_palette(self, pal):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def set_mask_from_palette(self, pal: Types.ELLIPSIS) -> Types.NONE:
         """Sets the mask from a palette.
         
         Any `palette.Palette` can be loaded into the wheel widget, and color
@@ -200,8 +196,7 @@ class MaskableWheelMixin:
             mask_list.append(mask_shapes[shape_id])
         self.set_mask(mask_list)
 
-    def set_mask(self, mask):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def set_mask(self, mask: Types.ELLIPSIS) -> Types.NONE:
         """Sets the mask (a list of lists of `UIColor`s).
 
         Args:
@@ -240,8 +235,7 @@ class MaskableWheelMixin:
                 voids.append(void)
         return voids
 
-    def colors_to_mask_void(self, colors):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def colors_to_mask_void(self, colors: Types.ELLIPSIS) -> Types.NONE:
         """Converts a set of colors to a mask void (convex hull).
         
         Mask voids are the convex hulls of the (x, y) positions for the
@@ -308,8 +302,7 @@ class MaskableWheelMixin:
         return sup.get_color_at_position(self, x, y)
 
     @staticmethod
-    def _get_void_size(void):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def _get_void_size(void: Types.ELLIPSIS) -> Types.NONE:
         """Size metric for a mask void (list of x,y points; convex hull)
 
         Args:
@@ -433,8 +426,7 @@ class HCYHueChromaWheelMixin:
 
     """
 
-    def get_normalized_polar_pos_for_color(self, col):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def get_normalized_polar_pos_for_color(self, col: Types.ELLIPSIS) -> Types.NONE:
         """
 
         Args:
@@ -548,8 +540,7 @@ class HCYMaskEditorWheel(HCYHueChromaWheel):
             Gdk.EventMask.POINTER_MOTION_MASK | Gdk.EventMask.LEAVE_NOTIFY_MASK
         )
 
-    def _realize_cb(self, widget):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def _realize_cb(self, widget: Types.ELLIPSIS) -> Types.NONE:
         """
 
         Args:
@@ -982,8 +973,7 @@ class HCYMaskEditorWheel(HCYHueChromaWheel):
         col.y = clamp(col.y, self.__MIN_LUMA, self.__MAX_LUMA)
         return col
 
-    def set_managed_color(self, color):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def set_managed_color(self, color: Types.ELLIPSIS) -> Types.NONE:
         """Override, limiting the luma range.
 
         Args:
@@ -1062,8 +1052,7 @@ class HCYMaskPreview(
         """ """
         return deepcopy(self.get_mask())
 
-    def set_palette(self, palette):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def set_palette(self, palette: Types.ELLIPSIS) -> Types.NONE:
         """
 
         Args:
@@ -1561,8 +1550,7 @@ class HCYAdjusterPage(CombinedAdjusterPage):
         frame.add(self.__table)
         return frame
 
-    def set_color_manager(self, manager):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def set_color_manager(self, manager: Types.ELLIPSIS) -> Types.NONE:
         """
 
         Args:

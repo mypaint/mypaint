@@ -109,8 +109,7 @@ class Renderable(metaclass=abc.ABCMeta):
     """Abstract interface for elements that can be rendered."""
 
     @abc.abstractmethod
-    def get_render_ops(self, spec):
-        # type: (lib.layer.rendering.Spec) -> Types.NONE
+    def get_render_ops(self, spec: lib.layer.rendering.Spec) -> Types.NONE:
         """Returns a flat sequence of rendering ops.
         
         Implementations of this function are expected

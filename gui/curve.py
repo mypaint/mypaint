@@ -404,8 +404,7 @@ class CurveWidget(Gtk.DrawingArea):
         return True
 
 
-def _test(case=1):
-    # type: (Types.ELLIPSIS) -> Types.NONE
+def _test(case: Types.ELLIPSIS = 1) -> Types.NONE:
     """
 
     Args:

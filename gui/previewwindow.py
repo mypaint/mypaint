@@ -38,8 +38,7 @@ REDRAW_PRIORITY = GLib.PRIORITY_LOW
 ## Helper funcs
 
 
-def _points_to_enclosing_rect(points):
-    # type: (Types.ELLIPSIS) -> Types.NONE
+def _points_to_enclosing_rect(points: Types.ELLIPSIS) -> Types.NONE:
     """Convert a list of (x, y) points to their encompassing rect.
 
     Args:
@@ -83,8 +82,7 @@ class VisibleAreaOverlay(overlays.Overlay):
         self._paint_shapes = None  #: Preview box, display coords
         self._paint_topleft = None
 
-    def paint(self, cr):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def paint(self, cr: Types.ELLIPSIS) -> Types.NONE:
         """Paint a viewfinder box showing the main TDW's viewport
 
         Args:
@@ -371,8 +369,7 @@ class PreviewTool(SizedVBoxToolWidget):
 
     ## Show Viewfinder toggle
 
-    def _show_viewfinder_toggled_cb(self, checkbtn):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def _show_viewfinder_toggled_cb(self, checkbtn: Types.ELLIPSIS) -> Types.NONE:
         """Show Viewfinder action callback
 
         Args:
@@ -392,8 +389,7 @@ class PreviewTool(SizedVBoxToolWidget):
         return self.app.preferences.get(self.SHOW_VIEWFINDER_PREFS_KEY, True)
 
     @show_viewfinder.setter
-    def show_viewfinder(self, value):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def show_viewfinder(self, value: Types.ELLIPSIS) -> Types.NONE:
         """
 
         Args:
@@ -411,8 +407,7 @@ class PreviewTool(SizedVBoxToolWidget):
 
     ## Cursor for the preview TDW
 
-    def _set_cursor(self, value):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def _set_cursor(self, value: Types.ELLIPSIS) -> Types.NONE:
         """Sets the preview TDW cursor
 
         Args:
@@ -624,8 +619,7 @@ class PreviewTool(SizedVBoxToolWidget):
 
     zone = property(get_zone, set_zone)
 
-    def _main_view_changed_cb(self, doc):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def _main_view_changed_cb(self, doc: Types.ELLIPSIS) -> Types.NONE:
         """Callback: viewport changed on the main drawing canvas
 
         Args:
@@ -681,8 +675,7 @@ class PreviewTool(SizedVBoxToolWidget):
             if not updated:
                 self._overlay.update_location()
 
-    def _limit_scale(self, scale):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def _limit_scale(self, scale: Types.ELLIPSIS) -> Types.NONE:
         """Limits a calculated scale to the permitted ones
 
         Args:
@@ -703,8 +696,7 @@ class PreviewTool(SizedVBoxToolWidget):
             scale = self._zoomlevel_values[max(0, scale_i - 1)]
         return scale
 
-    def _frame_modified_cb(self, *_ignored):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def _frame_modified_cb(self, *_ignored: Types.ELLIPSIS) -> Types.NONE:
         """
 
         Args:
@@ -722,8 +714,7 @@ class PreviewTool(SizedVBoxToolWidget):
         if not updated:
             self.tdw.queue_draw()
 
-    def _recreate_preview_transformation(self, *_ignored):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def _recreate_preview_transformation(self, *_ignored: Types.ELLIPSIS) -> Types.NONE:
         """Update the preview transformation fully: no optimizations
         
         Handler for the layer stack being restructured, or the preview
@@ -783,8 +774,7 @@ class PreviewTool(SizedVBoxToolWidget):
         if outside_existing:
             self._update_preview_transformation()
 
-    def _update_preview_transformation(self, force=False):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def _update_preview_transformation(self, force: Types.ELLIPSIS = False) -> Types.NONE:
         """Update preview's scale and centering, if needed.
         
         This only updates the preview transformation when needed, to

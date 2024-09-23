@@ -111,8 +111,7 @@ class ColorPickMode(gui.mode.OneshotDragMode):
             # Start the drag when possible
             self._start_drag_on_next_motion_event = True
 
-    def leave(self, **kwds):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def leave(self, **kwds: Types.ELLIPSIS) -> Types.NONE:
         """
 
         Args:
@@ -164,8 +163,7 @@ class ColorPickMode(gui.mode.OneshotDragMode):
             self._start_drag_on_next_motion_event = False
         return super(ColorPickMode, self).motion_notify_cb(tdw, event)
 
-    def drag_stop_cb(self, tdw):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def drag_stop_cb(self, tdw: Types.ELLIPSIS) -> Types.NONE:
         """
 
         Args:
@@ -334,8 +332,7 @@ class ColorPickModeHCYBase(ColorPickMode):
         new_col_hcy.y = min(_Y_MAX, max(_Y_MIN, new_col_hcy.y))
         return new_col_hcy
 
-    def get_new_hcy_color(self, *args):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def get_new_hcy_color(self, *args: Types.ELLIPSIS) -> Types.NONE:
         """
 
         Args:
@@ -573,8 +570,7 @@ class ColorPickPreviewOverlay(Overlay):
 
         return (int(x), int(y), size, size)
 
-    def paint(self, cr):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def paint(self, cr: Types.ELLIPSIS) -> Types.NONE:
         """
 
         Args:

@@ -96,8 +96,7 @@ class TopBar(Gtk.Grid):
         self._fs_menubutton = FakeMenuButton(_("<b>MyPaint</b>"), fs_menu)
         self._fs_toolitem = Gtk.ToolItem()
 
-    def _realize_cb(self, widget):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def _realize_cb(self, widget: Types.ELLIPSIS) -> Types.NONE:
         """Assorted setup when the widget is realized
 
         Args:
@@ -316,8 +315,7 @@ class FakeMenuButton(Gtk.EventBox):
         )
         self.togglebutton.set_active(True)
 
-    def _togglebutton_toggled_cb(self, togglebutton):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def _togglebutton_toggled_cb(self, togglebutton: Types.ELLIPSIS) -> Types.NONE:
         """Post the menu from a keypress activating the toggle
         
         The menu dismiss handler untoggles it.
@@ -403,8 +401,7 @@ def _test():
         Gtk.STOCK_FULLSCREEN,
     )
 
-    def _fullscreen_cb(action, toplevel):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def _fullscreen_cb(action, toplevel: Types.ELLIPSIS) -> Types.NONE:
         """
 
         Args:

@@ -169,8 +169,7 @@ class UIColor:
         luma = self.get_luma()
         return RGBColor(luma, luma, luma)
 
-    def to_contrasting(self, k=0.333):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def to_contrasting(self, k: Types.ELLIPSIS = 0.333) -> Types.NONE:
         """Returns a contrasting `UIColor` suitable for drawing.
 
         Args:
@@ -247,8 +246,7 @@ class UIColor:
                 break
         return RGBColor(r, g, b)
 
-    def to_hex_str(self, prefix="#"):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def to_hex_str(self, prefix: Types.ELLIPSIS = "#") -> Types.NONE:
         """Converts to an RGB hex string of the form ``#RRGGBB``
 
         Args:
@@ -862,8 +860,7 @@ class YCbCrColor(UIColor):
 # ref http://www.itu.int/rec/R-REC-BT.601/en
 
 
-def RGB_to_YCbCr_BT601(rgb):
-    # type: (Types.ELLIPSIS) -> Types.NONE
+def RGB_to_YCbCr_BT601(rgb: Types.ELLIPSIS) -> Types.NONE:
     """RGB → BT601 YCbCr: R,G,B,Y ∈ [0, 1]; Cb,Cr ∈ [-0.5, 0.5]
 
     Args:
@@ -881,8 +878,7 @@ def RGB_to_YCbCr_BT601(rgb):
     return Y, Cb, Cr
 
 
-def YCbCr_to_RGB_BT601(YCbCr):
-    # type: (Types.ELLIPSIS) -> Types.NONE
+def YCbCr_to_RGB_BT601(YCbCr: Types.ELLIPSIS) -> Types.NONE:
     """BT601 YCbCr → RGB: R,G,B,Y ∈ [0, 1]; Cb,Cr ∈ [-0.5, 0.5]
 
     Args:

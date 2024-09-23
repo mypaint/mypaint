@@ -255,8 +255,7 @@ class BrushIconEditor(Gtk.Grid):
     ## Public subscriber interface
 
     @event
-    def mode_changed(self, editing):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def mode_changed(self, editing: Types.ELLIPSIS) -> Types.NONE:
         """Event: called when the mode changes
 
         Args:
@@ -270,8 +269,7 @@ class BrushIconEditor(Gtk.Grid):
 
     ## Event handling
 
-    def _show_cb(self, widget):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def _show_cb(self, widget: Types.ELLIPSIS) -> Types.NONE:
         """
 
         Args:
@@ -323,8 +321,7 @@ class BrushIconEditor(Gtk.Grid):
 
     ## Button callbacks
 
-    def _clear_cb(self, button):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def _clear_cb(self, button: Types.ELLIPSIS) -> Types.NONE:
         """
 
         Args:
@@ -338,8 +335,7 @@ class BrushIconEditor(Gtk.Grid):
         assert self._brush_to_edit
         self._tdw.doc.clear_current_layer()
 
-    def _default_cb(self, button):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def _default_cb(self, button: Types.ELLIPSIS) -> Types.NONE:
         """
 
         Args:
@@ -358,8 +354,7 @@ class BrushIconEditor(Gtk.Grid):
         self._set_preview_pixbuf(preview)
         self.mode_changed(False)
 
-    def _edit_cb(self, button):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def _edit_cb(self, button: Types.ELLIPSIS) -> Types.NONE:
         """
 
         Args:
@@ -377,8 +372,7 @@ class BrushIconEditor(Gtk.Grid):
         self._update_widgets()
         self.mode_changed(True)
 
-    def _revert_cb(self, button):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def _revert_cb(self, button: Types.ELLIPSIS) -> Types.NONE:
         """
 
         Args:
@@ -397,8 +391,7 @@ class BrushIconEditor(Gtk.Grid):
         self._update_widgets()
         self.mode_changed(False)
 
-    def _save_cb(self, button):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def _save_cb(self, button: Types.ELLIPSIS) -> Types.NONE:
         """
 
         Args:
@@ -495,8 +488,7 @@ class BrushIconEditor(Gtk.Grid):
             self._tdw.scale = scale
             self._tdw.queue_draw()
 
-    def _set_preview_pixbuf(self, pixbuf):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def _set_preview_pixbuf(self, pixbuf: Types.ELLIPSIS) -> Types.NONE:
         """
 
         Args:

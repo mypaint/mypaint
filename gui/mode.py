@@ -134,8 +134,7 @@ class ModeRegistry(type):
         return mode_class
 
     @classmethod
-    def get_mode_class(cls, action_name):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def get_mode_class(cls, action_name: Types.ELLIPSIS) -> Types.NONE:
         """Looks up a registered mode class by its associated action's name.
 
         Args:
@@ -270,8 +269,7 @@ class InteractionMode(metaclass=ModeRegistry):
 
     ## Mode stacking interface
 
-    def stackable_on(self, mode):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def stackable_on(self, mode: Types.ELLIPSIS) -> Types.NONE:
         """Tests whether the mode can usefully stack onto an active mode.
 
         Args:
@@ -339,8 +337,7 @@ class InteractionMode(metaclass=ModeRegistry):
         self.doc = None
         assert not hasattr(super(InteractionMode, self), "leave")
 
-    def checkpoint(self, **kwargs):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def checkpoint(self, **kwargs: Types.ELLIPSIS) -> Types.NONE:
         """Commits any of the mode's uncommitted work
         
         This is called on the active mode at various times to signal
@@ -507,8 +504,7 @@ class InteractionMode(metaclass=ModeRegistry):
         """
         assert not hasattr(super(InteractionMode, self), "drag_update_cb")
 
-    def drag_stop_cb(self, tdw):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def drag_stop_cb(self, tdw: Types.ELLIPSIS) -> Types.NONE:
         """
 
         Args:
@@ -799,8 +795,7 @@ class PaintingModeOptionsWidgetBase(Gtk.Grid):
         row = self.init_specialized_widgets(row)
         row = self.init_reset_widgets(row)
 
-    def init_common_widgets(self, row):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def init_common_widgets(self, row: Types.ELLIPSIS) -> Types.NONE:
         """
 
         Args:
@@ -828,8 +823,7 @@ class PaintingModeOptionsWidgetBase(Gtk.Grid):
             row += 1
         return row
 
-    def init_specialized_widgets(self, row):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def init_specialized_widgets(self, row: Types.ELLIPSIS) -> Types.NONE:
         """
 
         Args:
@@ -842,8 +836,7 @@ class PaintingModeOptionsWidgetBase(Gtk.Grid):
         """
         return row
 
-    def init_reset_widgets(self, row):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def init_reset_widgets(self, row: Types.ELLIPSIS) -> Types.NONE:
         """
 
         Args:
@@ -863,8 +856,7 @@ class PaintingModeOptionsWidgetBase(Gtk.Grid):
         row += 1
         return row
 
-    def reset_button_clicked_cb(self, button):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def reset_button_clicked_cb(self, button: Types.ELLIPSIS) -> Types.NONE:
         """
 
         Args:
@@ -1015,8 +1007,7 @@ class BrushworkModeMixin(InteractionMode):
         if changed:
             model.do(cmd)
 
-    def brushwork_rollback(self, model):
-        # type: (Document) -> Types.NONE
+    def brushwork_rollback(self, model: Document) -> Types.NONE:
         """Rolls back any active brushwork for a model
 
         Args:
@@ -1039,8 +1030,7 @@ class BrushworkModeMixin(InteractionMode):
             return
         cmd.stop_recording(revert=True)
 
-    def brushwork_commit_all(self, abrupt=False):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def brushwork_commit_all(self, abrupt: Types.ELLIPSIS = False) -> Types.NONE:
         """Commits all active brushwork
 
         Args:
@@ -1142,8 +1132,7 @@ class BrushworkModeMixin(InteractionMode):
             barrel_rotation,
         )
 
-    def leave(self, **kwds):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def leave(self, **kwds: Types.ELLIPSIS) -> Types.NONE:
         """Leave mode, committing outstanding brushwork as necessary
         
         The leave action defined here is careful to tail off strokes
@@ -1180,8 +1169,7 @@ class BrushworkModeMixin(InteractionMode):
             self.brushwork_commit_all(abrupt=True)
         super(BrushworkModeMixin, self).leave(**kwds)
 
-    def checkpoint(self, **kwargs):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def checkpoint(self, **kwargs: Types.ELLIPSIS) -> Types.NONE:
         """Commit any outstanding brushwork
         
         Like `leave()`, this commits the currently recording Brushwork
@@ -1233,8 +1221,7 @@ class SingleClickMode(InteractionMode):
                 self.ACTION_NAME, gui.cursor.Name.ARROW
             )
 
-    def leave(self, **kwds):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def leave(self, **kwds: Types.ELLIPSIS) -> Types.NONE:
         """
 
         Args:
@@ -1372,8 +1359,7 @@ class DragMode(InteractionMode):
             tdw.disconnect(connid)
             self._tdw_grab_broken_conninfo = None
 
-    def _stop_drag(self, t=Gdk.CURRENT_TIME):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def _stop_drag(self, t: Types.ELLIPSIS = Gdk.CURRENT_TIME) -> Types.NONE:
         """
 
         Args:
@@ -1509,8 +1495,7 @@ class DragMode(InteractionMode):
         logger.debug("bailout: starting idler to safely bail out of %r", self)
         GLib.idle_add(self._bailout_idle_cb, app.doc.modes)
 
-    def _bailout_idle_cb(self, modestack):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def _bailout_idle_cb(self, modestack: Types.ELLIPSIS) -> Types.NONE:
         """Bail out of this mode if it's anywhere in the mode stack
 
         Args:
@@ -1612,8 +1597,7 @@ class DragMode(InteractionMode):
                 self.doc.modes.pop()
         return False
 
-    def leave(self, **kwds):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def leave(self, **kwds: Types.ELLIPSIS) -> Types.NONE:
         """
 
         Args:
@@ -1788,8 +1772,7 @@ class OneshotDragMode(DragMode):
         self.unmodified_persist = unmodified_persist
         self.temporary_activation = temporary_activation
 
-    def stackable_on(self, mode):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def stackable_on(self, mode: Types.ELLIPSIS) -> Types.NONE:
         """Oneshot modes return to the mode the user came from on exit
 
         Args:
@@ -1802,8 +1785,7 @@ class OneshotDragMode(DragMode):
         """
         return not isinstance(mode, OneshotDragMode)
 
-    def drag_stop_cb(self, tdw):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def drag_stop_cb(self, tdw: Types.ELLIPSIS) -> Types.NONE:
         """
 
         Args:
@@ -1972,8 +1954,7 @@ class ModeStack:
         top_mode.enter(doc=self._doc)
         self.changed(old=old_mode, new=top_mode)
 
-    def push(self, mode):
-        # type: (InteractionMode) -> Types.NONE
+    def push(self, mode: InteractionMode) -> Types.NONE:
         """Pushes a mode, and enters it.
 
         Args:

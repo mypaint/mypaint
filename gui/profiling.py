@@ -28,8 +28,7 @@ logger = logging.getLogger(__name__)
 # Copied from Python 3.5's distutils/spawn.py
 
 
-def find_executable(executable, path=None):
-    # type: (Types.ELLIPSIS) -> Types.NONE
+def find_executable(executable, path: Types.ELLIPSIS = None) -> Types.NONE:
     """Tries to find 'executable' in the directories listed in 'path'.
     
     A string listing directories separated by 'os.pathsep'; defaults to

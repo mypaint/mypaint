@@ -138,8 +138,7 @@ class QuickBrushChooser(Gtk.VBox):
         self.brush_selected(brush)
 
     @event
-    def brush_selected(self, brush):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def brush_selected(self, brush: Types.ELLIPSIS) -> Types.NONE:
         """Event: a brush was selected
 
         Args:
@@ -160,8 +159,7 @@ class QuickBrushChooser(Gtk.VBox):
             model.append((name, label_text))
         return model
 
-    def _groups_changed_cb(self, bm):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def _groups_changed_cb(self, bm: Types.ELLIPSIS) -> Types.NONE:
         """Internal: update the spinbox model at the top of the widget
 
         Args:
@@ -201,8 +199,7 @@ class QuickBrushChooser(Gtk.VBox):
         if brushes is group_brushes:
             self.brushlist.update()
 
-    def _groups_sb_changed_cb(self, group_name):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def _groups_sb_changed_cb(self, group_name: Types.ELLIPSIS) -> Types.NONE:
         """Internal: update the list of brush icons when the group changes
 
         Args:
@@ -271,8 +268,7 @@ class BrushChooserPopup(windowing.ChooserPopup):
         """
         self._chosen_brush = brush
 
-    def _brushlist_button_release_cb(self, *junk):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def _brushlist_button_release_cb(self, *junk: Types.ELLIPSIS) -> Types.NONE:
         """Internal: send an accept response on a button release
         
         We only send the response (and close the dialog) on button release to
@@ -354,8 +350,7 @@ class QuickColorChooser(Gtk.VBox):
         self.pack_start(self._active_adj, True, True, 0)
         self.set_spacing(widgets.SPACING_TIGHT)
 
-    def _spinbox_changed_cb(self, page_name):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def _spinbox_changed_cb(self, page_name: Types.ELLIPSIS) -> Types.NONE:
         """
 
         Args:
@@ -446,8 +441,7 @@ class ColorChooserPopup(windowing.ChooserPopup):
         self._chooser.choice_completed += self._choice_completed_cb
         self.add(self._chooser)
 
-    def _choice_completed_cb(self, chooser):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def _choice_completed_cb(self, chooser: Types.ELLIPSIS) -> Types.NONE:
         """Internal: close when a choice is (fully) made
         
         Close the dialog on button release only to avoid accidental dabs

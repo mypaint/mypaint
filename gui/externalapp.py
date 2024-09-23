@@ -118,8 +118,7 @@ def original_environ():
     return _ORIGINAL_ENV
 
 
-def restore_env(ctx):
-    # type: (Types.ELLIPSIS) -> Types.NONE
+def restore_env(ctx: Types.ELLIPSIS) -> Types.NONE:
     """Clear existing envvars in context & use the given envvars instead
     
     This is used to restore the original environment when starting
@@ -257,8 +256,7 @@ class OpenWithDialog(Gtk.Dialog):
         # Results go here
         self.selected_appinfo = default_app  #: The app the user chose
 
-    def _show_cb(self, dialog):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def _show_cb(self, dialog: Types.ELLIPSIS) -> Types.NONE:
         """
 
         Args:
@@ -344,8 +342,7 @@ class OpenWithDialog(Gtk.Dialog):
             self.selected_appinfo = appinfo
             self.response(Gtk.ResponseType.OK)
 
-    def _selection_changed_cb(self, selection):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def _selection_changed_cb(self, selection: Types.ELLIPSIS) -> Types.NONE:
         """
 
         Args:
@@ -381,8 +378,7 @@ class LayerEditManager:
         self._doc = doc
         self._active_edits = []
 
-    def begin(self, layer):
-        # type: (LayerBase) -> Types.NONE
+    def begin(self, layer: LayerBase) -> Types.NONE:
         """Begin editing a layer in an external application
 
         Args:
@@ -529,8 +525,7 @@ class LayerEditManager:
         edit_info = (file_mon, weakref.ref(layer), file, file_path)
         self._active_edits.append(edit_info)
 
-    def commit(self, layer):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def commit(self, layer: Types.ELLIPSIS) -> Types.NONE:
         """Commit a layer's ongoing external edit
 
         Args:

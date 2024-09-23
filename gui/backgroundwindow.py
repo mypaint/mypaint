@@ -88,8 +88,7 @@ class BackgroundWindow(windowing.Dialog):
         b.connect("clicked", self._add_color_to_patterns_cb)
         color_vbox.pack_start(b, False, True, 0)
 
-    def _realize_cb(self, dialog):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def _realize_cb(self, dialog: Types.ELLIPSIS) -> Types.NONE:
         """
 
         Args:
@@ -103,8 +102,7 @@ class BackgroundWindow(windowing.Dialog):
         if not self.bgl.initialized:
             self.bgl.initialize()
 
-    def _show_cb(self, dialog):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def _show_cb(self, dialog: Types.ELLIPSIS) -> Types.NONE:
         """
 
         Args:
@@ -118,8 +116,7 @@ class BackgroundWindow(windowing.Dialog):
         self._current_background_pixbuf = None
         self.set_response_sensitive(RESPONSE_SAVE_AS_DEFAULT, False)
 
-    def _hide_cb(self, dialog):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def _hide_cb(self, dialog: Types.ELLIPSIS) -> Types.NONE:
         """
 
         Args:
@@ -151,8 +148,7 @@ class BackgroundWindow(windowing.Dialog):
         elif response == Gtk.ResponseType.ACCEPT:
             self.hide()
 
-    def _color_changed_cb(self, widget):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def _color_changed_cb(self, widget: Types.ELLIPSIS) -> Types.NONE:
         """
 
         Args:
@@ -186,8 +182,7 @@ class BackgroundWindow(windowing.Dialog):
         lib.pixbuf.save(pixbuf, path, "png")
         self.hide()
 
-    def set_background(self, pixbuf):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def set_background(self, pixbuf: Types.ELLIPSIS) -> Types.NONE:
         """
 
         Args:
@@ -203,8 +198,7 @@ class BackgroundWindow(windowing.Dialog):
         self._current_background_pixbuf = pixbuf
         self.set_response_sensitive(RESPONSE_SAVE_AS_DEFAULT, True)
 
-    def _add_color_to_patterns_cb(self, widget):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def _add_color_to_patterns_cb(self, widget: Types.ELLIPSIS) -> Types.NONE:
         """
 
         Args:
@@ -270,8 +264,7 @@ class BackgroundList(pixbuflist.PixbufList):
         self.item_selected += self._item_selected_cb
 
     @classmethod
-    def _list_dir(cls, path):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def _list_dir(cls, path: Types.ELLIPSIS) -> Types.NONE:
         """Recursively find images by suffix
 
         Args:
@@ -377,8 +370,7 @@ class BackgroundList(pixbuflist.PixbufList):
         )
         return pixbufs
 
-    def _get_preview_pixbuf(self, pixbuf):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def _get_preview_pixbuf(self, pixbuf: Types.ELLIPSIS) -> Types.NONE:
         """
 
         Args:
@@ -427,8 +419,7 @@ class BackgroundList(pixbuflist.PixbufList):
         self._pixbufs_scaled[pixbuf] = scaled
         return scaled
 
-    def _get_tooltip(self, pixbuf):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def _get_tooltip(self, pixbuf: Types.ELLIPSIS) -> Types.NONE:
         """
 
         Args:
@@ -460,8 +451,7 @@ class BackgroundList(pixbuflist.PixbufList):
 ## Helpers
 
 
-def _filename_to_display(s):
-    # type: (Types.ELLIPSIS) -> Types.NONE
+def _filename_to_display(s: Types.ELLIPSIS) -> Types.NONE:
     """Convert a str filename to Unicode without obsessing too much.
 
     Args:
@@ -482,8 +472,7 @@ def _filename_to_display(s):
     return s
 
 
-def new_blank_pixbuf(rgb, w, h):
-    # type: (tuple, int, int) -> Types.NONE
+def new_blank_pixbuf(rgb: tuple, w: int, h: int) -> Types.NONE:
     """Create a blank pixbuf with all pixels set to a color
 
     Args:
@@ -661,8 +650,7 @@ def _tile_pixbuf(pixbuf, repeats_x, repeats_y):
     return result
 
 
-def _best_nrepeats_for_scaling(src_size, max_dest_size):
-    # type: (Types.ELLIPSIS) -> Types.NONE
+def _best_nrepeats_for_scaling(src_size, max_dest_size: Types.ELLIPSIS) -> Types.NONE:
     """
 
     Args:

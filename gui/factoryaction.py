@@ -97,8 +97,7 @@ class FactoryAction(Gtk.Action):
         # menu_item.connect("parent-set", self._tool_item_parent_set)
         return menu_item
 
-    def _construct(self, gtype_name):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def _construct(self, gtype_name: Types.ELLIPSIS) -> Types.NONE:
         """
 
         Args:

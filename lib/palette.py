@@ -106,8 +106,7 @@ class Palette:
             with open(filename, "r", encoding="utf-8", errors="replace") as fp:
                 self.load(fp, silent=True)
 
-    def clear(self, silent=False):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def clear(self, silent: Types.ELLIPSIS = False) -> Types.NONE:
         """Resets the palette to its initial state.
         
         
@@ -212,8 +211,7 @@ class Palette:
             self.sequence_changed()
             self.match_changed()
 
-    def save(self, filehandle):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def save(self, filehandle: Types.ELLIPSIS) -> Types.NONE:
         """Saves the palette to an open file handle.
 
         Args:
@@ -240,8 +238,7 @@ class Palette:
         """
         filehandle.write(str(self))
 
-    def update(self, other):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def update(self, other: Types.ELLIPSIS) -> Types.NONE:
         """Updates all details of this palette from another palette.
         
         Fires the `info_changed()`, `sequence_changed()`, and `match_changed()`
@@ -271,8 +268,7 @@ class Palette:
         """Get the number of columns (0 means unspecified)."""
         return self._columns
 
-    def set_columns(self, n):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def set_columns(self, n: Types.ELLIPSIS) -> Types.NONE:
         """Set the number of columns (0 means unspecified).
 
         Args:
@@ -290,8 +286,7 @@ class Palette:
         """Gets the palette's name."""
         return self._name
 
-    def set_name(self, name):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def set_name(self, name: Types.ELLIPSIS) -> Types.NONE:
         """Sets the palette's name.
 
         Args:
@@ -327,8 +322,7 @@ class Palette:
         """ """
         return self._match_position
 
-    def set_match_position(self, i):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def set_match_position(self, i: Types.ELLIPSIS) -> Types.NONE:
         """Sets the position of the current match (int or None)
         
         Fires `match_changed()` if the value is changed.
@@ -353,8 +347,7 @@ class Palette:
         """Returns whether the current match is approximate."""
         return self._match_is_approx
 
-    def set_match_is_approx(self, approx):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def set_match_is_approx(self, approx: Types.ELLIPSIS) -> Types.NONE:
         """Sets whether the current match is approximate
         
         Fires match_changed() if the boolean value changes.
@@ -566,8 +559,7 @@ method produces a new exact match.: the color newly matched, if the match positi
 
     ## Color access
 
-    def _copy_color_out(self, col):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def _copy_color_out(self, col: Types.ELLIPSIS) -> Types.NONE:
         """
 
         Args:
@@ -781,8 +773,7 @@ method produces a new exact match.: the color newly matched, if the match positi
             self.match_position = match_pos
             self.match_changed()
 
-    def pop(self, i):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def pop(self, i: Types.ELLIPSIS) -> Types.NONE:
         """Removes a color, returning it.
         
         Fires the `match_changed()` event if the match index changes as a
@@ -809,8 +800,7 @@ method produces a new exact match.: the color newly matched, if the match positi
         self.sequence_changed()
         return self._copy_color_out(col)
 
-    def get_color(self, i):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def get_color(self, i: Types.ELLIPSIS) -> Types.NONE:
         """Looks up a color by its list index.
 
         Args:
@@ -838,8 +828,7 @@ method produces a new exact match.: the color newly matched, if the match positi
 
     ## Color name access
 
-    def get_color_name(self, i):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def get_color_name(self, i: Types.ELLIPSIS) -> Types.NONE:
         """Looks up a color's name by its list index.
 
         Args:
@@ -880,8 +869,7 @@ method produces a new exact match.: the color newly matched, if the match positi
         col.__name = name
         self.color_changed(i)
 
-    def get_color_by_name(self, name):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def get_color_by_name(self, name: Types.ELLIPSIS) -> Types.NONE:
         """Looks up the first color with the given name.
 
         Args:
@@ -926,8 +914,7 @@ method produces a new exact match.: the color newly matched, if the match positi
         """Event: the color ordering or palette length was changed."""
 
     @event
-    def color_changed(self, i):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def color_changed(self, i: Types.ELLIPSIS) -> Types.NONE:
         """Event: the color in the given slot, or its name, was modified.
 
         Args:
@@ -1000,8 +987,7 @@ method produces a new exact match.: the color newly matched, if the match positi
         return simple
 
     @classmethod
-    def new_from_simple_dict(cls, simple):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def new_from_simple_dict(cls, simple: Types.ELLIPSIS) -> Types.NONE:
         """Constructs and returns a palette from the simple dict form.
 
         Args:
@@ -1028,8 +1014,7 @@ method produces a new exact match.: the color newly matched, if the match positi
 ## Helper functions
 
 
-def _outwards_from(n, i):
-    # type: (Types.ELLIPSIS) -> Types.NONE
+def _outwards_from(n, i: Types.ELLIPSIS) -> Types.NONE:
     """Search order within the palette, outwards from a given index.
     
     Defined for a sequence of len() `n`, outwards from index `i`.
@@ -1057,8 +1042,7 @@ def _outwards_from(n, i):
             break
 
 
-def _color_distance(c1, c2):
-    # type: (Types.ELLIPSIS) -> Types.NONE
+def _color_distance(c1, c2: Types.ELLIPSIS) -> Types.NONE:
     """Distance metric for color matching in the palette.
     
     Use a geometric YCbCr distance, as recommended by Graphics Programming with

@@ -89,8 +89,7 @@ class PalettePage(CombinedAdjusterPage):
         #        app require access to the PaletteView itself.
         return self._adj
 
-    def set_color_manager(self, manager):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def set_color_manager(self, manager: Types.ELLIPSIS) -> Types.NONE:
         """
 
         Args:
@@ -322,8 +321,7 @@ class PaletteEditorDialog(Gtk.Dialog):
         self._columns_adj.set_value(palette.get_columns())
         self._mgr.palette.update(palette)
 
-    def _palette_name_changed_cb(self, editable):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def _palette_name_changed_cb(self, editable: Types.ELLIPSIS) -> Types.NONE:
         """
 
         Args:
@@ -340,8 +338,7 @@ class PaletteEditorDialog(Gtk.Dialog):
         pal = self._mgr.palette
         pal.name = name
 
-    def _columns_changed_cb(self, adj):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def _columns_changed_cb(self, adj: Types.ELLIPSIS) -> Types.NONE:
         """
 
         Args:
@@ -356,8 +353,7 @@ class PaletteEditorDialog(Gtk.Dialog):
         pal = self._mgr.palette
         pal.set_columns(ncolumns)
 
-    def _color_name_changed_cb(self, editable):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def _color_name_changed_cb(self, editable: Types.ELLIPSIS) -> Types.NONE:
         """
 
         Args:
@@ -399,8 +395,7 @@ class PaletteEditorDialog(Gtk.Dialog):
         self.hide()
         return True
 
-    def _palette_match_changed_cb(self, palette):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def _palette_match_changed_cb(self, palette: Types.ELLIPSIS) -> Types.NONE:
         """
 
         Args:
@@ -473,8 +468,7 @@ class PaletteEditorDialog(Gtk.Dialog):
         self._columns_adj.set_value(palette.get_columns())
         self._update_buttons()
 
-    def _add_btn_clicked(self, button):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def _add_btn_clicked(self, button: Types.ELLIPSIS) -> Types.NONE:
         """
 
         Args:
@@ -494,8 +488,7 @@ class PaletteEditorDialog(Gtk.Dialog):
         else:
             palette.insert(i, None)
 
-    def _remove_btn_clicked(self, button):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def _remove_btn_clicked(self, button: Types.ELLIPSIS) -> Types.NONE:
         """
 
         Args:
@@ -513,8 +506,7 @@ class PaletteEditorDialog(Gtk.Dialog):
             if len(palette) == 0:
                 palette.append(None)
 
-    def _load_btn_clicked(self, button):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def _load_btn_clicked(self, button: Types.ELLIPSIS) -> Types.NONE:
         """
 
         Args:
@@ -539,8 +531,7 @@ class PaletteEditorDialog(Gtk.Dialog):
             self._mgr.palette.update(palette)
             self._ensure_valid_palette_name()
 
-    def _save_btn_clicked(self, button):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def _save_btn_clicked(self, button: Types.ELLIPSIS) -> Types.NONE:
         """
 
         Args:
@@ -559,8 +550,7 @@ class PaletteEditorDialog(Gtk.Dialog):
             preview=preview,
         )
 
-    def _clear_btn_clicked(self, button):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def _clear_btn_clicked(self, button: Types.ELLIPSIS) -> Types.NONE:
         """
 
         Args:
@@ -609,8 +599,7 @@ class PaletteView(ColorAdjuster, Gtk.ScrolledWindow):
         self.set_policy(Gtk.PolicyType.NEVER, Gtk.PolicyType.AUTOMATIC)
         self.add(self.grid)
 
-    def set_color_manager(self, mgr):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def set_color_manager(self, mgr: Types.ELLIPSIS) -> Types.NONE:
         """
 
         Args:
@@ -646,8 +635,7 @@ class PaletteView(ColorAdjuster, Gtk.ScrolledWindow):
         nath = min(gnath, self._MAX_NATURAL_HEIGHT)
         return minh, max(minh, nath)
 
-    def do_get_preferred_width_for_height(self, height):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def do_get_preferred_width_for_height(self, height: Types.ELLIPSIS) -> Types.NONE:
         """
 
         Args:
@@ -663,8 +651,7 @@ class PaletteView(ColorAdjuster, Gtk.ScrolledWindow):
         natw = min(gnatw, self._MAX_NATURAL_WIDTH)
         return minw, max(minw, natw)
 
-    def do_get_preferred_height_for_width(self, width):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def do_get_preferred_height_for_width(self, width: Types.ELLIPSIS) -> Types.NONE:
         """
 
         Args:
@@ -747,8 +734,7 @@ class _PalettePreview(Gtk.DrawingArea):
             rtl=False,
         )
 
-    def set_palette(self, palette):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def set_palette(self, palette: Types.ELLIPSIS) -> Types.NONE:
         """
 
         Args:
@@ -763,8 +749,7 @@ class _PalettePreview(Gtk.DrawingArea):
         self.queue_draw()
 
 
-def _widget_get_bg_color(widget):
-    # type: (Types.ELLIPSIS) -> Types.NONE
+def _widget_get_bg_color(widget: Types.ELLIPSIS) -> Types.NONE:
     """Valid background color from the first ancestor widget having one
     
     Workaround for some widget arrangements in Adwaita for 3.14 having
@@ -884,8 +869,7 @@ class _PaletteGridLayout(ColorAdjusterWidget):
 
     ## Palette monitoring
 
-    def set_color_manager(self, mgr):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def set_color_manager(self, mgr: Types.ELLIPSIS) -> Types.NONE:
         """
 
         Args:
@@ -1041,8 +1025,7 @@ class _PaletteGridLayout(ColorAdjusterWidget):
             return False
         self._popup_context_menu(event)
 
-    def _popup_context_menu(self, event):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def _popup_context_menu(self, event: Types.ELLIPSIS) -> Types.NONE:
         """
 
         Args:
@@ -1072,8 +1055,7 @@ class _PaletteGridLayout(ColorAdjusterWidget):
         self.queue_draw()
         return False
 
-    def _get_empty_range(self, index):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def _get_empty_range(self, index: Types.ELLIPSIS) -> Types.NONE:
         """Returns the populated start and end of a range of empty slots
         
         Returns the indices of two populated swatches around the target
@@ -1111,8 +1093,7 @@ class _PaletteGridLayout(ColorAdjusterWidget):
                 return (start_index, end_index)
         return None
 
-    def _get_context_menu(self, i):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def _get_context_menu(self, i: Types.ELLIPSIS) -> Types.NONE:
         """
 
         Args:
@@ -1203,8 +1184,7 @@ class _PaletteGridLayout(ColorAdjusterWidget):
 
     ## Context menu handlers
 
-    def _context_menu_deactivate_cb(self, menu):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def _context_menu_deactivate_cb(self, menu: Types.ELLIPSIS) -> Types.NONE:
         """
 
         Args:
@@ -1310,8 +1290,7 @@ class _PaletteGridLayout(ColorAdjusterWidget):
     ## Dimensions and sizing
 
     @classmethod
-    def _constrain_swatch_size(cls, size):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def _constrain_swatch_size(cls, size: Types.ELLIPSIS) -> Types.NONE:
         """
 
         Args:
@@ -1381,8 +1360,7 @@ class _PaletteGridLayout(ColorAdjusterWidget):
             nat_w = self._SWATCH_SIZE_NOMINAL * ncolumns
         return min_w, max(min_w, nat_w)
 
-    def do_get_preferred_height_for_width(self, width):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def do_get_preferred_height_for_width(self, width: Types.ELLIPSIS) -> Types.NONE:
         """GtkWidget size negotiation implementation.
 
         Args:
@@ -1419,8 +1397,7 @@ class _PaletteGridLayout(ColorAdjusterWidget):
             min_h, nat_h = self.do_get_preferred_height_for_width(min_w)
         return min_h, max(min_h, nat_h)
 
-    def do_get_preferred_width_for_height(self, height):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def do_get_preferred_width_for_height(self, height: Types.ELLIPSIS) -> Types.NONE:
         """GtkWidget size negotiation implementation.
 
         Args:
@@ -1467,8 +1444,7 @@ class _PaletteGridLayout(ColorAdjusterWidget):
         """
         return
 
-    def _paint_palette_layout(self, cr):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def _paint_palette_layout(self, cr: Types.ELLIPSIS) -> Types.NONE:
         """
 
         Args:
@@ -1591,8 +1567,7 @@ class _PaletteGridLayout(ColorAdjusterWidget):
                     marker_kw.update(dict(bg_width=4, fg_width=1))
                 self._paint_marker(*marker_args, **marker_kw)
 
-    def get_position_for_index(self, i):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def get_position_for_index(self, i: Types.ELLIPSIS) -> Types.NONE:
         """Gets the X and Y positions for a color cell at the given index
 
         Args:
@@ -1998,8 +1973,7 @@ def palette_save_via_dialog(palette, title, parent=None, preview=None):
     return result
 
 
-def _palette_loadsave_dialog_update_preview_cb(dialog, preview):
-    # type: (Types.ELLIPSIS) -> Types.NONE
+def _palette_loadsave_dialog_update_preview_cb(dialog, preview: Types.ELLIPSIS) -> Types.NONE:
     """Updates the preview widget when loading/saving palettes via dialog
 
     Args:

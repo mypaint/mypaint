@@ -55,8 +55,7 @@ class ColorFormatter(logging.Formatter):
     UNDERLINEOFF = "\033[24m"
     RESET = "\033[0m"
 
-    def _replace_bold(self, m):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def _replace_bold(self, m: Types.ELLIPSIS) -> Types.NONE:
         """
 
         Args:
@@ -69,8 +68,7 @@ class ColorFormatter(logging.Formatter):
         """
         return self.BOLD + m.group(0) + self.BOLDOFF
 
-    def _replace_underline(self, m):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def _replace_underline(self, m: Types.ELLIPSIS) -> Types.NONE:
         """
 
         Args:
@@ -83,8 +81,7 @@ class ColorFormatter(logging.Formatter):
         """
         return self.UNDERLINE + m.group(0) + self.UNDERLINEOFF
 
-    def format(self, record):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def format(self, record: Types.ELLIPSIS) -> Types.NONE:
         """
 
         Args:

@@ -30,8 +30,7 @@ logger = logging.getLogger(__name__)
 ## File path getter functions
 
 
-def filename_to_str(opsysstring):
-    # type: (bytes) -> str
+def filename_to_str(opsysstring: bytes) -> str:
     """Converts a bytes representing a filename from GLib to str.
 
     Args:
@@ -157,8 +156,7 @@ def get_user_cache_dir():
     return filename_to_str(d_fs)
 
 
-def get_user_special_dir(d_id):
-    # type: (Types.ELLIPSIS) -> Types.NONE
+def get_user_special_dir(d_id: Types.ELLIPSIS) -> Types.NONE:
     """Like g_get_user_special_dir(), but always str
 
     Args:
@@ -213,8 +211,7 @@ def init_user_dir_caches():
 ## Filename <-> URI conversion
 
 
-def filename_to_uri(abspath, hostname=None):
-    # type: (Types.ELLIPSIS) -> Types.NONE
+def filename_to_uri(abspath, hostname: Types.ELLIPSIS = None) -> Types.NONE:
     """More Pythonic & stable g_filename_to_uri(), with OS workarounds.
 
     Args:
@@ -252,8 +249,7 @@ def filename_to_uri(abspath, hostname=None):
     return g_filename_to_uri(abspath, hostname)
 
 
-def filename_from_uri(uri):
-    # type: (Types.ELLIPSIS) -> Types.NONE
+def filename_from_uri(uri: Types.ELLIPSIS) -> Types.NONE:
     """More Pythonic & stable g_filename_from_uri(), with OS workarounds.
 
     Args:

@@ -86,8 +86,7 @@ class BrushIndicatorPresenter:
         self._chooser = None
         self._click_button = None
 
-    def set_drawing_area(self, da):
-        # type: (DrawingArea) -> Types.NONE
+    def set_drawing_area(self, da: DrawingArea) -> Types.NONE:
         """Set the view DrawingArea.
 
         Args:
@@ -111,8 +110,7 @@ class BrushIndicatorPresenter:
         da.connect("button-press-event", self._button_press_cb)
         da.connect("button-release-event", self._button_release_cb)
 
-    def set_brush_manager(self, bm):
-        # type: (gui.brushmanager.BrushManager) -> Types.NONE
+    def set_brush_manager(self, bm: gui.brushmanager.BrushManager) -> Types.NONE:
         """Set the model BrushManager.
 
         Args:
@@ -126,8 +124,7 @@ class BrushIndicatorPresenter:
         self._brush_manager = bm
         bm.brush_selected += self._brush_selected_cb
 
-    def set_chooser(self, chooser):
-        # type: (BrushChooserPopup) -> Types.NONE
+    def set_chooser(self, chooser: BrushChooserPopup) -> Types.NONE:
         """Set an optional popup, to be shown when clicked.
 
         Args:
@@ -331,8 +328,7 @@ class BrushIndicatorPresenter:
 
     ## Utility methods
 
-    def _get_scaled_pixbuf(self, size):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def _get_scaled_pixbuf(self, size: Types.ELLIPSIS) -> Types.NONE:
         """
 
         Args:

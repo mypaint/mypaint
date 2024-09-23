@@ -256,8 +256,7 @@ def get_libs_version_string():
     return ", ".join([" ".join(t) for t in versions])
 
 
-def run_about_dialog(mainwin, app):
-    # type: (Types.ELLIPSIS) -> Types.NONE
+def run_about_dialog(mainwin, app: Types.ELLIPSIS) -> Types.NONE:
     """Runs MyPaint's about window as a transient modal dialog.
 
     Args:

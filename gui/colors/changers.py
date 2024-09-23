@@ -147,8 +147,7 @@ class _CColorChanger(gui.colors.adjbases.IconRenderableColorAdjusterWidget):
         """
         pass
 
-    def set_color_manager(self, manager):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def set_color_manager(self, manager: Types.ELLIPSIS) -> Types.NONE:
         """
 
         Args:
@@ -162,8 +161,7 @@ class _CColorChanger(gui.colors.adjbases.IconRenderableColorAdjusterWidget):
         super(_CColorChanger, self).set_color_manager(manager)
         self._update_hsv()
 
-    def _map_cb(self, widget):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def _map_cb(self, widget: Types.ELLIPSIS) -> Types.NONE:
         """
 
         Args:

@@ -93,8 +93,7 @@ class KeyboardManager:
         """
         self._update_keymap(accel_path)
 
-    def _update_keymap(self, accel_path):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def _update_keymap(self, accel_path: Types.ELLIPSIS) -> Types.NONE:
         """
 
         Args:
@@ -436,8 +435,7 @@ invoke popup states via their action as proper keypresses.: True if the event sh
 
     ## Action registration
 
-    def takeover_action(self, action):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def takeover_action(self, action: Types.ELLIPSIS) -> Types.NONE:
         """Registers a GtkAction, and sets up custom attributes on it.
         
         The custom attributes are used internally by the kbm.
@@ -455,8 +453,7 @@ invoke popup states via their action as proper keypresses.: True if the event sh
         self.actions.append(action)
         self._update_keymap(action.get_accel_path())
 
-    def _add_custom_attributes(self, action):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def _add_custom_attributes(self, action: Types.ELLIPSIS) -> Types.NONE:
         """
 
         Args:

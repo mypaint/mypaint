@@ -102,8 +102,7 @@ class SurfaceBackedLayer(core.LayerBase, lib.autosave.Autosaveable):
             self._surface = surface
 
     @classmethod
-    def new_from_surface_backed_layer(cls, src):
-        # type: (SurfaceBackedLayer) -> Types.NONE
+    def new_from_surface_backed_layer(cls, src: SurfaceBackedLayer) -> Types.NONE:
         """Clone from another SurfaceBackedLayer
 
         Args:
@@ -123,8 +122,7 @@ class SurfaceBackedLayer(core.LayerBase, lib.autosave.Autosaveable):
         SurfaceBackedLayerSnapshot.restore_to_layer(src_snap, layer)
         return layer
 
-    def load_from_surface(self, surface):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def load_from_surface(self, surface: Types.ELLIPSIS) -> Types.NONE:
         """Load the backing surface image's tiles from another surface
 
         Args:
@@ -462,8 +460,7 @@ class SurfaceBackedLayer(core.LayerBase, lib.autosave.Autosaveable):
         """ """
         return self._surface.get_tiles().keys()
 
-    def get_render_ops(self, spec):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def get_render_ops(self, spec: Types.ELLIPSIS) -> Types.NONE:
         """Get rendering instructions.
 
         Args:
@@ -821,8 +818,7 @@ class SurfaceBackedLayerMove:
         """ """
         self._wrapped.cleanup()
 
-    def process(self, n=200):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def process(self, n: Types.ELLIPSIS = 200) -> Types.NONE:
         """
 
         Args:
@@ -859,8 +855,7 @@ class SurfaceBackedLayerSnapshot(core.LayerBaseSnapshot):
         super(SurfaceBackedLayerSnapshot, self).__init__(layer)
         self.surface_sshot = layer._surface.save_snapshot()
 
-    def restore_to_layer(self, layer):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def restore_to_layer(self, layer: Types.ELLIPSIS) -> Types.NONE:
         """
 
         Args:
@@ -1082,8 +1077,7 @@ class FileBackedLayer(SurfaceBackedLayer, core.ExternallyEditable):
         """ """
         return False
 
-    def trim(self, rect):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def trim(self, rect: Types.ELLIPSIS) -> Types.NONE:
         """
 
         Args:
@@ -1201,8 +1195,7 @@ class FileBackedLayer(SurfaceBackedLayer, core.ExternallyEditable):
         )
         return str(self._edit_tempfile)
 
-    def load_from_external_edit_tempfile(self, tempfile_path):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def load_from_external_edit_tempfile(self, tempfile_path: Types.ELLIPSIS) -> Types.NONE:
         """Load content from an external-edit tempfile
 
         Args:
@@ -1237,8 +1230,7 @@ class FileBackedLayerSnapshot(SurfaceBackedLayerSnapshot):
         self.x = layer._x
         self.y = layer._y
 
-    def restore_to_layer(self, layer):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def restore_to_layer(self, layer: Types.ELLIPSIS) -> Types.NONE:
         """
 
         Args:
@@ -1486,8 +1478,7 @@ class BackgroundLayer(SurfaceBackedLayer):
         self.mode = lib.mypaintlib.CombineNormal
         self.opacity = 1.0
 
-    def set_surface(self, surface):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def set_surface(self, surface: Types.ELLIPSIS) -> Types.NONE:
         """Sets the surface from a tiledsurface.Background
 
         Args:
@@ -1613,8 +1604,7 @@ class BackgroundLayerSnapshot(core.LayerBaseSnapshot):
         super(BackgroundLayerSnapshot, self).__init__(layer)
         self.surface = layer._surface
 
-    def restore_to_layer(self, layer):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def restore_to_layer(self, layer: Types.ELLIPSIS) -> Types.NONE:
         """
 
         Args:
@@ -2023,8 +2013,7 @@ class StrokemappedPaintingLayer(SimplePaintingLayer):
         super(StrokemappedPaintingLayer, self).clear()
         self.strokes = []
 
-    def load_from_surface(self, surface):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def load_from_surface(self, surface: Types.ELLIPSIS) -> Types.NONE:
         """Load the surface image's tiles from another surface
 
         Args:
@@ -2155,8 +2144,7 @@ class StrokemappedPaintingLayer(SimplePaintingLayer):
 
     ## Stroke recording and rendering
 
-    def render_stroke(self, stroke):
-        # type: (Stroke) -> Types.NONE
+    def render_stroke(self, stroke: Stroke) -> Types.NONE:
         """Render a whole captured stroke to the canvas
 
         Args:
@@ -2170,8 +2158,7 @@ class StrokemappedPaintingLayer(SimplePaintingLayer):
         stroke.render(self._surface)
         self.autosave_dirty = True
 
-    def add_stroke_shape(self, stroke, before):
-        # type: (Stroke, lib.layer.StrokemappedPaintingLayerSnapshot) -> Types.NONE
+    def add_stroke_shape(self, stroke: Stroke, before: lib.layer.StrokemappedPaintingLayerSnapshot) -> Types.NONE:
         """Adds a rendered stroke's shape to the strokemap
 
         Args:
@@ -2223,8 +2210,7 @@ class StrokemappedPaintingLayer(SimplePaintingLayer):
 
     ## Trimming
 
-    def trim(self, rect):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def trim(self, rect: Types.ELLIPSIS) -> Types.NONE:
         """Trim the layer and its strokemap
 
         Args:
@@ -2430,8 +2416,7 @@ class PaintingLayer(StrokemappedPaintingLayer, core.ExternallyEditable):
         self._external_edit = edit_info
         return tmp_filename
 
-    def load_from_external_edit_tempfile(self, tempfile_path):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def load_from_external_edit_tempfile(self, tempfile_path: Types.ELLIPSIS) -> Types.NONE:
         """Load content from an external-edit tempfile
 
         Args:
@@ -2567,8 +2552,7 @@ class StrokemappedPaintingLayerSnapshot(SurfaceBackedLayerSnapshot):
         super(StrokemappedPaintingLayerSnapshot, self).__init__(layer)
         self.strokes = layer.strokes[:]
 
-    def restore_to_layer(self, layer):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def restore_to_layer(self, layer: Types.ELLIPSIS) -> Types.NONE:
         """
 
         Args:

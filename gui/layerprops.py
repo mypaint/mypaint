@@ -212,8 +212,7 @@ class LayerPropertiesUI(gui.mvp.BuiltUIPresenter, object):
         self._m2v_preview()
 
     @gui.mvp.view_updater
-    def _m_current_view_changed_cb(self, lvm):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def _m_current_view_changed_cb(self, lvm: Types.ELLIPSIS) -> Types.NONE:
         """
 
         Args:
@@ -302,8 +301,7 @@ class LayerPropertiesUI(gui.mvp.BuiltUIPresenter, object):
         percentage = layer.opacity * 100
         adj.set_value(percentage)
 
-    def _m2v_layer_flag(self, info):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def _m2v_layer_flag(self, info: Types.ELLIPSIS) -> Types.NONE:
         """
 
         Args:
@@ -364,8 +362,7 @@ class LayerPropertiesUI(gui.mvp.BuiltUIPresenter, object):
         return True
 
     @gui.mvp.model_updater
-    def _v_layer_name_entry_changed_cb(self, entry):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def _v_layer_name_entry_changed_cb(self, entry: Types.ELLIPSIS) -> Types.NONE:
         """
 
         Args:
@@ -389,8 +386,7 @@ class LayerPropertiesUI(gui.mvp.BuiltUIPresenter, object):
         self._set_name_entry_warning_flag(proposed_name != approved_name)
 
     @gui.mvp.model_updater
-    def _v_layer_mode_combo_changed_cb(self, combo):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def _v_layer_mode_combo_changed_cb(self, combo: Types.ELLIPSIS) -> Types.NONE:
         """
 
         Args:
@@ -433,8 +429,7 @@ class LayerPropertiesUI(gui.mvp.BuiltUIPresenter, object):
         self._docmodel.set_current_layer_opacity(opacity)
 
     @gui.mvp.model_updater
-    def _v_layer_hidden_togglebutton_toggled_cb(self, btn):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def _v_layer_hidden_togglebutton_toggled_cb(self, btn: Types.ELLIPSIS) -> Types.NONE:
         """
 
         Args:
@@ -449,8 +444,7 @@ class LayerPropertiesUI(gui.mvp.BuiltUIPresenter, object):
         self._v2m_layer_flag(info)
 
     @gui.mvp.model_updater
-    def _v_layer_locked_togglebutton_toggled_cb(self, btn):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def _v_layer_locked_togglebutton_toggled_cb(self, btn: Types.ELLIPSIS) -> Types.NONE:
         """
 
         Args:
@@ -464,8 +458,7 @@ class LayerPropertiesUI(gui.mvp.BuiltUIPresenter, object):
         info = [i for i in self._BOOL_PROPERTIES if (i.property == "locked")][0]
         self._v2m_layer_flag(info)
 
-    def _v2m_layer_flag(self, info):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def _v2m_layer_flag(self, info: Types.ELLIPSIS) -> Types.NONE:
         """
 
         Args:
@@ -492,8 +485,7 @@ class LayerPropertiesUI(gui.mvp.BuiltUIPresenter, object):
 
     # Utility methods:
 
-    def _set_name_entry_warning_flag(self, show_warning):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def _set_name_entry_warning_flag(self, show_warning: Types.ELLIPSIS) -> Types.NONE:
         """
 
         Args:
@@ -561,8 +553,7 @@ class LayerPropertiesDialog(Gtk.Dialog):
 # Helpers:
 
 
-def make_preview(thumb, preview_size):
-    # type: (Types.ELLIPSIS) -> Types.NONE
+def make_preview(thumb, preview_size: Types.ELLIPSIS) -> Types.NONE:
     """Convert a layer's thumbnail into a nice preview image.
 
     Args:

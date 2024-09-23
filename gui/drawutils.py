@@ -56,8 +56,7 @@ _BRUSH_PREVIEW_POINTS = [
 ## Drawing functions
 
 
-def spline_4p(t, p_1, p0, p1, p2):
-    # type: (float, numpy.array, numpy.array, numpy.array, numpy.array) -> numpy.array
+def spline_4p(t: float, p_1: numpy.array, p0: numpy.array, p1: numpy.array, p2: numpy.array) -> numpy.array:
     """Interpolated point using a Catmull-Rom spline
 
     Args:
@@ -374,8 +373,7 @@ The returned value should be cached somewhere.: The rendered symbolic icon
         size -= 2
     info = theme.lookup_icon(icon_name, size, Gtk.IconLookupFlags(0))
 
-    def rgba_or_none(tup):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def rgba_or_none(tup: Types.ELLIPSIS) -> Types.NONE:
         """
 
         Args:
@@ -495,8 +493,7 @@ def render_round_floating_button(
     cr.restore()
 
 
-def _get_paint_chip_highlight(color):
-    # type: (Types.ELLIPSIS) -> Types.NONE
+def _get_paint_chip_highlight(color: Types.ELLIPSIS) -> Types.NONE:
     """Paint chip highlight edge color
 
     Args:
@@ -515,8 +512,7 @@ def _get_paint_chip_highlight(color):
     return highlight
 
 
-def _get_paint_chip_shadow(color):
-    # type: (Types.ELLIPSIS) -> Types.NONE
+def _get_paint_chip_shadow(color: Types.ELLIPSIS) -> Types.NONE:
     """Paint chip shadow edge color
 
     Args:

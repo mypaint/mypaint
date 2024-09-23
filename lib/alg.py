@@ -23,8 +23,7 @@ class LineType:
 ## Polygon and convex polygon computational geometry routines.
 
 
-def convex_hull(points):
-    # type: (Types.ELLIPSIS) -> Types.NONE
+def convex_hull(points: Types.ELLIPSIS) -> Types.NONE:
     """Returns the convex hull of a set of points, in clockwise order.
     
     
@@ -57,8 +56,7 @@ def convex_hull(points):
     # Sort other points clockwise in increasing order of the angle the vector
     # p0->p makes with the X axis. Or just the cosine, which suffices since
     # p0 has the lowest Y value and the angle is therefore in (0, pi).
-    def p0cos(p):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def p0cos(p: Types.ELLIPSIS) -> Types.NONE:
         """
 
         Args:
@@ -111,8 +109,7 @@ def det(p, q, r):
     return sum1 - sum2
 
 
-def poly_area(poly):
-    # type: (Types.ELLIPSIS) -> Types.NONE
+def poly_area(poly: Types.ELLIPSIS) -> Types.NONE:
     """Calculates the area of a (non-self-intersecting) polygon.
 
     Args:
@@ -132,8 +129,7 @@ def poly_area(poly):
     return area
 
 
-def poly_centroid(poly):
-    # type: (Types.ELLIPSIS) -> Types.NONE
+def poly_centroid(poly: Types.ELLIPSIS) -> Types.NONE:
     """Calculates the centroid of a (non-self-intersecting) polygon.
 
     Args:
@@ -168,8 +164,7 @@ def poly_centroid(poly):
         return cx, cy
 
 
-def point_in_convex_poly(point, poly):
-    # type: (Types.ELLIPSIS) -> Types.NONE
+def point_in_convex_poly(point, poly: Types.ELLIPSIS) -> Types.NONE:
     """True if a point is inside a convex polygon.
     
     
@@ -282,8 +277,7 @@ def nearest_point_on_segment(seg_start, seg_end, point):
     return _nearest_point(seg_start, seg_end, point, perpendicular=False)
 
 
-def nearest_point_in_poly(poly, point):
-    # type: (Types.ELLIPSIS) -> Types.NONE
+def nearest_point_in_poly(poly, point: Types.ELLIPSIS) -> Types.NONE:
     """
 
     Args:
@@ -520,8 +514,7 @@ def intersection_of_vector_and_poly(poly, p1, p2, line_type=LineType.LINE):
         return result
 
 
-def _intersects(line_type, k):
-    # type: (Types.ELLIPSIS) -> Types.NONE
+def _intersects(line_type, k: Types.ELLIPSIS) -> Types.NONE:
     """Helper function used to distinguish handling of segment/line types
 
     Args:
@@ -637,8 +630,7 @@ def intersection_of_vectors(
     return u1 * (x1 - x0) + x0, u1 * (y1 - y0) + y0
 
 
-def intersection_of_segments(p1, p2, p3, p4):
-    # type: (tuple, tuple, tuple, tuple) -> Types.NONE
+def intersection_of_segments(p1: tuple, p2: tuple, p3: tuple, p4: tuple) -> Types.NONE:
     """Intersection of two segments
 
     Args:
@@ -718,8 +710,7 @@ Ref: https://en.wikipedia.org/wiki/Line-line_intersection: The point of intersec
 ## Iterations
 
 
-def pairwise(seq):
-    # type: (Types.ELLIPSIS) -> Types.NONE
+def pairwise(seq: Types.ELLIPSIS) -> Types.NONE:
     """Pairwise sequence iterator.
     
     

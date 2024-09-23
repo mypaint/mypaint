@@ -43,8 +43,7 @@ _SIM_TRITANOPIA_B_COEFFS = (-0.063, 0.881, 0.182)
 ## Filter functions
 
 
-def luma_only(dst):
-    # type: (Types.ELLIPSIS) -> Types.NONE
+def luma_only(dst: Types.ELLIPSIS) -> Types.NONE:
     """Convert an NxNx3 array to show only luma (brightness)
 
     Args:
@@ -59,8 +58,7 @@ def luma_only(dst):
     dst[..., 0:3] = luma[..., np.newaxis]
 
 
-def invert_colors(dst):
-    # type: (Types.ELLIPSIS) -> Types.NONE
+def invert_colors(dst: Types.ELLIPSIS) -> Types.NONE:
     """Invert each RGB channel in an RGB array
 
     Args:
@@ -74,8 +72,7 @@ def invert_colors(dst):
     dst[..., 0:3] = 255 - dst[..., 0:3]
 
 
-def sim_deuteranopia(dst):
-    # type: (Types.ELLIPSIS) -> Types.NONE
+def sim_deuteranopia(dst: Types.ELLIPSIS) -> Types.NONE:
     """Simulate deuteranopia (insensitivity to red)
 
     Args:
@@ -94,8 +91,7 @@ def sim_deuteranopia(dst):
     np.clip(b, 0, 255, dst[..., 2])
 
 
-def sim_protanopia(dst):
-    # type: (Types.ELLIPSIS) -> Types.NONE
+def sim_protanopia(dst: Types.ELLIPSIS) -> Types.NONE:
     """Simulate protanopia (insensitivity to green)
 
     Args:
@@ -114,8 +110,7 @@ def sim_protanopia(dst):
     np.clip(b, 0, 255, dst[..., 2])
 
 
-def sim_tritanopia(dst):
-    # type: (Types.ELLIPSIS) -> Types.NONE
+def sim_tritanopia(dst: Types.ELLIPSIS) -> Types.NONE:
     """Simulate tritanopia (insensitivity to green)
 
     Args:

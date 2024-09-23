@@ -77,8 +77,7 @@ class _View:
         return self._name
 
     @name.setter
-    def name(self, value):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def name(self, value: Types.ELLIPSIS) -> Types.NONE:
         """
 
         Args:
@@ -97,8 +96,7 @@ class _View:
         return self._locked
 
     @locked.setter
-    def locked(self, state):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def locked(self, state: Types.ELLIPSIS) -> Types.NONE:
         """
 
         Args:
@@ -156,8 +154,7 @@ class _View:
         }
 
     @classmethod
-    def new_from_jsf(cls, jsf):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def new_from_jsf(cls, jsf: Types.ELLIPSIS) -> Types.NONE:
         """Returns a new _View built from the json-serializable form.
 
         Args:
@@ -179,8 +176,7 @@ class _NamedViewsSet:
         self.objs = set()  # {_View}
         self.names = dict()  # {str: _View}
 
-    def add(self, view):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def add(self, view: Types.ELLIPSIS) -> Types.NONE:
         """
 
         Args:
@@ -204,8 +200,7 @@ class _NamedViewsSet:
         self.names[name] = view
         self.objs.add(view)
 
-    def remove(self, view):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def remove(self, view: Types.ELLIPSIS) -> Types.NONE:
         """
 
         Args:
@@ -221,8 +216,7 @@ class _NamedViewsSet:
         self.remove_by_name(view.name)
         assert view not in self.objs
 
-    def remove_by_name(self, name):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def remove_by_name(self, name: Types.ELLIPSIS) -> Types.NONE:
         """
 
         Args:
@@ -474,8 +468,7 @@ The built-in, unsaved view is always unlocked.: Whether the current view is lock
 
     # Self-observation:
 
-    def _current_view_changed_cb(self, _lvm):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def _current_view_changed_cb(self, _lvm: Types.ELLIPSIS) -> Types.NONE:
         """Respond to a change of the current view: set layer visibilities.
         
         Doing this as a self-observer callback method allows
@@ -556,8 +549,7 @@ The built-in, unsaved view is always unlocked.: Whether the current view is lock
         elif view in vset:
             vset.remove(view)
 
-    def _get_vset_for_layer(self, layer):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def _get_vset_for_layer(self, layer: Types.ELLIPSIS) -> Types.NONE:
         """Gets the "visible in views" set for a layer.
 
         Args:
@@ -617,8 +609,7 @@ The built-in, unsaved view is always unlocked.: Whether the current view is lock
         self.activate_view(view)
         return view
 
-    def add_view(self, view):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def add_view(self, view: Types.ELLIPSIS) -> Types.NONE:
         """Adds a view, but does not activate it.
 
         Args:
@@ -634,8 +625,7 @@ The built-in, unsaved view is always unlocked.: Whether the current view is lock
         self._views.add(view)
         self.view_names_changed()
 
-    def activate_view(self, view):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def activate_view(self, view: Types.ELLIPSIS) -> Types.NONE:
         """Activates a view.
 
         Args:
@@ -652,8 +642,7 @@ The built-in, unsaved view is always unlocked.: Whether the current view is lock
         self._current_view = view
         self.current_view_changed()
 
-    def activate_view_by_name(self, name):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def activate_view_by_name(self, name: Types.ELLIPSIS) -> Types.NONE:
         """Activates a view by name.
 
         Args:
@@ -693,8 +682,7 @@ The built-in, unsaved view is always unlocked.: Whether the current view is lock
 
         return view
 
-    def rename_active_view(self, name):
-        # type: (str) -> Types.NONE
+    def rename_active_view(self, name: str) -> Types.NONE:
         """Renames the currently active view.
 
         Args:
@@ -728,8 +716,7 @@ The built-in, unsaved view is always unlocked.: Whether the current view is lock
 
         return (old_name, new_name)
 
-    def set_active_view_locked(self, locked):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def set_active_view_locked(self, locked: Types.ELLIPSIS) -> Types.NONE:
         """
 
         Args:

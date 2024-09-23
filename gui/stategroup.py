@@ -63,8 +63,7 @@ class StateGroup:
         self.states.append(s)
         return s
 
-    def create_popup_state(self, popup):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def create_popup_state(self, popup: Types.ELLIPSIS) -> Types.NONE:
         """
 
         Args:
@@ -138,8 +137,7 @@ class State:
             popup.popup_state = self  # FIXME: hacky?
             self.outside_popup_timeout = popup.outside_popup_timeout
 
-    def enter(self, **kwargs):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def enter(self, **kwargs: Types.ELLIPSIS) -> Types.NONE:
         """
 
         Args:
@@ -161,8 +159,7 @@ class State:
             raise
         self._restart_autoleave_timeout()
 
-    def leave(self, reason=None):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def leave(self, reason: Types.ELLIPSIS = None) -> Types.NONE:
         """
 
         Args:
@@ -245,8 +242,7 @@ class State:
         )  # FIXME: should probably be renamed (mouse button possible)
         self.enter(**kwargs)
 
-    def toggle(self, action=None):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def toggle(self, action: Types.ELLIPSIS = None) -> Types.NONE:
         """
 
         Args:

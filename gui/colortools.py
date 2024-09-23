@@ -65,8 +65,7 @@ class _PageToolAdapter(Gtk.VBox, ColorAdjuster):
         size = TOOL_WIDGET_MIN_WIDTH
         self.set_size_request(size, size * 0.9)
 
-    def set_color_manager(self, manager):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def set_color_manager(self, manager: Types.ELLIPSIS) -> Types.NONE:
         """
 
         Args:
@@ -152,8 +151,7 @@ class _SimpleAdjusterAdapter(Gtk.VBox):
         self.pack_start(adjuster, True, True, 0)
         self._adjuster = adjuster
 
-    def set_color_manager(self, manager):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def set_color_manager(self, manager: Types.ELLIPSIS) -> Types.NONE:
         """
 
         Args:

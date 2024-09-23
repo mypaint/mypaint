@@ -119,8 +119,7 @@ class HSVCubePage(CombinedAdjusterPage):
         self.__slice.set_tooltip_text(self._slice_tooltip_map[f0])
         self.__slider.set_tooltip_text(self._slider_tooltip_map[f0])
 
-    def set_color_manager(self, manager):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def set_color_manager(self, manager: Types.ELLIPSIS) -> Types.NONE:
         """
 
         Args:
@@ -152,8 +151,7 @@ class HSVCubeSlider(SliderColorAdjuster):
         f0, f1, f2 = self.__cube._faces
         return f0, getattr(col, f1), getattr(col, f2)
 
-    def get_color_for_bar_amount(self, amt):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def get_color_for_bar_amount(self, amt: Types.ELLIPSIS) -> Types.NONE:
         """
 
         Args:
@@ -169,8 +167,7 @@ class HSVCubeSlider(SliderColorAdjuster):
         setattr(col, f0, amt)
         return col
 
-    def get_bar_amount_for_color(self, col):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def get_bar_amount_for_color(self, col: Types.ELLIPSIS) -> Types.NONE:
         """
 
         Args:
@@ -297,8 +294,7 @@ class HSVCubeSlice(IconRenderableColorAdjusterWidget):
         setattr(col, f2, f2_amt)
         return col
 
-    def get_position_for_color(self, col):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def get_position_for_color(self, col: Types.ELLIPSIS) -> Types.NONE:
         """
 
         Args:

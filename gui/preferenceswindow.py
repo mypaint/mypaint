@@ -274,8 +274,7 @@ class PreferencesWindow(windowing.Dialog):
 
     ## Callbacks for widgets that manipulate settings
 
-    def disable_fallback_checkbutton_toggled_cb(self, checkbox):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def disable_fallback_checkbutton_toggled_cb(self, checkbox: Types.ELLIPSIS) -> Types.NONE:
         """
 
         Args:
@@ -289,8 +288,7 @@ class PreferencesWindow(windowing.Dialog):
         self.app.preferences["keyboard.disable_fallbacks"] = checkbox.get_active()
         self.app.apply_settings()
 
-    def input_mode_combobox_changed_cb(self, combobox):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def input_mode_combobox_changed_cb(self, combobox: Types.ELLIPSIS) -> Types.NONE:
         """
 
         Args:
@@ -305,8 +303,7 @@ class PreferencesWindow(windowing.Dialog):
         self.app.preferences["input.device_mode"] = mode
         self.app.apply_settings()
 
-    def button_mapping_edited_cb(self, editor):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def button_mapping_edited_cb(self, editor: Types.ELLIPSIS) -> Types.NONE:
         """
 
         Args:
@@ -319,8 +316,7 @@ class PreferencesWindow(windowing.Dialog):
         """
         self.app.button_mapping.update(editor.bindings)
 
-    def pressure_curve_changed_cb(self, widget):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def pressure_curve_changed_cb(self, widget: Types.ELLIPSIS) -> Types.NONE:
         """
 
         Args:
@@ -335,8 +331,7 @@ class PreferencesWindow(windowing.Dialog):
         self.app.preferences["input.global_pressure_mapping"] = points
         self.app.apply_settings()
 
-    def scrap_prefix_entry_changed_cb(self, widget):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def scrap_prefix_entry_changed_cb(self, widget: Types.ELLIPSIS) -> Types.NONE:
         """
 
         Args:
@@ -352,8 +347,7 @@ class PreferencesWindow(windowing.Dialog):
             scrap_prefix = scrap_prefix.decode("utf-8")
         self.app.preferences["saving.scrap_prefix"] = scrap_prefix
 
-    def default_zoom_combobox_changed_cb(self, combobox):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def default_zoom_combobox_changed_cb(self, combobox: Types.ELLIPSIS) -> Types.NONE:
         """
 
         Args:
@@ -368,8 +362,7 @@ class PreferencesWindow(windowing.Dialog):
         zoom = float(zoom_idcolstr)
         self.app.preferences["view.default_zoom"] = zoom
 
-    def toolbar_icon_size_small_toggled_cb(self, radio):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def toolbar_icon_size_small_toggled_cb(self, radio: Types.ELLIPSIS) -> Types.NONE:
         """
 
         Args:
@@ -384,8 +377,7 @@ class PreferencesWindow(windowing.Dialog):
             return
         self.app.preferences["ui.toolbar_icon_size"] = "small"
 
-    def toolbar_icon_size_large_toggled_cb(self, radio):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def toolbar_icon_size_large_toggled_cb(self, radio: Types.ELLIPSIS) -> Types.NONE:
         """
 
         Args:
@@ -400,8 +392,7 @@ class PreferencesWindow(windowing.Dialog):
             return
         self.app.preferences["ui.toolbar_icon_size"] = "large"
 
-    def dark_theme_toggled_cb(self, checkbut):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def dark_theme_toggled_cb(self, checkbut: Types.ELLIPSIS) -> Types.NONE:
         """
 
         Args:
@@ -415,8 +406,7 @@ class PreferencesWindow(windowing.Dialog):
         dark = bool(checkbut.get_active())
         self.app.preferences["ui.dark_theme_variant"] = dark
 
-    def real_alpha_checks_checkbutton_toggled_cb(self, button):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def real_alpha_checks_checkbutton_toggled_cb(self, button: Types.ELLIPSIS) -> Types.NONE:
         """
 
         Args:
@@ -430,8 +420,7 @@ class PreferencesWindow(windowing.Dialog):
         real = bool(button.get_active())
         self.app.preferences["view.real_alpha_checks"] = real
 
-    def default_save_format_combobox_changed_cb(self, combobox):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def default_save_format_combobox_changed_cb(self, combobox: Types.ELLIPSIS) -> Types.NONE:
         """
 
         Args:
@@ -445,8 +434,7 @@ class PreferencesWindow(windowing.Dialog):
         formatstr = combobox.get_active_id()
         self.app.preferences["saving.default_format"] = formatstr
 
-    def display_colorspace_unknown_radiobutton_toggled_cb(self, radiobtn):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def display_colorspace_unknown_radiobutton_toggled_cb(self, radiobtn: Types.ELLIPSIS) -> Types.NONE:
         """
 
         Args:
@@ -462,8 +450,7 @@ class PreferencesWindow(windowing.Dialog):
         p = self.app.preferences
         p["display.colorspace"] = "unknown"
 
-    def display_colorspace_srgb_radiobutton_toggled_cb(self, radiobtn):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def display_colorspace_srgb_radiobutton_toggled_cb(self, radiobtn: Types.ELLIPSIS) -> Types.NONE:
         """
 
         Args:
@@ -479,8 +466,7 @@ class PreferencesWindow(windowing.Dialog):
         p = self.app.preferences
         p["display.colorspace"] = "srgb"
 
-    def color_wheel_rgb_radiobutton_toggled_cb(self, radiobtn):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def color_wheel_rgb_radiobutton_toggled_cb(self, radiobtn: Types.ELLIPSIS) -> Types.NONE:
         """
 
         Args:
@@ -496,8 +482,7 @@ class PreferencesWindow(windowing.Dialog):
         cm = self.app.brush_color_manager
         cm.set_wheel_type("rgb")
 
-    def color_wheel_ryb_radiobutton_toggled_cb(self, radiobtn):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def color_wheel_ryb_radiobutton_toggled_cb(self, radiobtn: Types.ELLIPSIS) -> Types.NONE:
         """
 
         Args:
@@ -513,8 +498,7 @@ class PreferencesWindow(windowing.Dialog):
         cm = self.app.brush_color_manager
         cm.set_wheel_type("ryb")
 
-    def color_wheel_rygb_radiobutton_toggled_cb(self, radiobtn):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def color_wheel_rygb_radiobutton_toggled_cb(self, radiobtn: Types.ELLIPSIS) -> Types.NONE:
         """
 
         Args:
@@ -530,8 +514,7 @@ class PreferencesWindow(windowing.Dialog):
         cm = self.app.brush_color_manager
         cm.set_wheel_type("rygb")
 
-    def freehand_cursor_combobox_changed_cb(self, combobox):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def freehand_cursor_combobox_changed_cb(self, combobox: Types.ELLIPSIS) -> Types.NONE:
         """
 
         Args:
@@ -579,8 +562,7 @@ class PreferencesWindow(windowing.Dialog):
             p["cursor.freehand.outer_line_color"] = (0, 0, 0, 1)
             p["cursor.freehand.inner_line_color"] = (1, 1, 1, 1)
 
-    def _dynamic_crosshair_threshold_changed_cb(self, adj):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def _dynamic_crosshair_threshold_changed_cb(self, adj: Types.ELLIPSIS) -> Types.NONE:
         """
 
         Args:
@@ -593,8 +575,7 @@ class PreferencesWindow(windowing.Dialog):
         """
         self.app.preferences["cursor.dynamic_crosshair_threshold"] = adj.get_value()
 
-    def _enable_dynamic_crosshair_toggled_cb(self, checkbutton):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def _enable_dynamic_crosshair_toggled_cb(self, checkbutton: Types.ELLIPSIS) -> Types.NONE:
         """
 
         Args:
@@ -627,8 +608,7 @@ class PreferencesWindow(windowing.Dialog):
         self.app.preferences["document.autosave_backups"] = active
         self._autosave_interval_spinbutton.set_sensitive(active)
 
-    def autosave_interval_adjustment_value_changed_cb(self, adj):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def autosave_interval_adjustment_value_changed_cb(self, adj: Types.ELLIPSIS) -> Types.NONE:
         """
 
         Args:
@@ -642,8 +622,7 @@ class PreferencesWindow(windowing.Dialog):
         interval = int(round(adj.get_value()))
         self.app.preferences["document.autosave_interval"] = interval
 
-    def smooth_scrolling_toggled_cb(self, checkbut):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def smooth_scrolling_toggled_cb(self, checkbut: Types.ELLIPSIS) -> Types.NONE:
         """
 
         Args:
@@ -657,8 +636,7 @@ class PreferencesWindow(windowing.Dialog):
         smoothsc = bool(checkbut.get_active())
         self.app.preferences["ui.support_smooth_scrolling"] = smoothsc
 
-    def _hide_cursor_while_painting_toggled_cb(self, checkbut):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def _hide_cursor_while_painting_toggled_cb(self, checkbut: Types.ELLIPSIS) -> Types.NONE:
         """
 
         Args:
@@ -672,8 +650,7 @@ class PreferencesWindow(windowing.Dialog):
         hide = bool(checkbut.get_active())
         self.app.preferences["ui.hide_cursor_while_painting"] = hide
 
-    def blink_layers_toggled_cb(self, checkbut):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def blink_layers_toggled_cb(self, checkbut: Types.ELLIPSIS) -> Types.NONE:
         """
 
         Args:
@@ -687,8 +664,7 @@ class PreferencesWindow(windowing.Dialog):
         blink = bool(checkbut.get_active())
         self.app.preferences["ui.blink_layers"] = blink
 
-    def locale_changed_cb(self, combo):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def locale_changed_cb(self, combo: Types.ELLIPSIS) -> Types.NONE:
         """
 
         Args:
@@ -707,8 +683,7 @@ class PreferencesWindow(windowing.Dialog):
             self.app.preferences[USER_LOCALE_PREF] = locale
 
 
-def setup_locale_combobox(locale_combo):
-    # type: (Types.ELLIPSIS) -> Types.NONE
+def setup_locale_combobox(locale_combo: Types.ELLIPSIS) -> Types.NONE:
     """
 
     Args:
@@ -741,8 +716,7 @@ def setup_locale_combobox(locale_combo):
 
     supported_locales = lib.config.supported_locales
 
-    def tuplify(loc):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def tuplify(loc: Types.ELLIPSIS) -> Types.NONE:
         """
 
         Args:
@@ -764,8 +738,7 @@ def setup_locale_combobox(locale_combo):
     for i in sorted(map(tuplify, supported_locales), key=lambda a: a[1]):
         locale_liststore.append(i)
 
-    def sep_func(model, it):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def sep_func(model, it: Types.ELLIPSIS) -> Types.NONE:
         """
 
         Args:

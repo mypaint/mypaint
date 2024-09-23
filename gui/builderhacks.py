@@ -97,8 +97,7 @@ def _test():
     # name (using the GtkBuildable interface). Alternatively, you can set
     # up private attributes in the instantiation loop.
 
-    def _test_button_clicked_cb(widget):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def _test_button_clicked_cb(widget: Types.ELLIPSIS) -> Types.NONE:
         """
 
         Args:

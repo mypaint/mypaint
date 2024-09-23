@@ -156,8 +156,7 @@ class SymmetryEditMode(gui.mode.ScrollableModeMixin, gui.mode.DragMode):
         self.cursor_movable = self._get_cursor(gui.cursor.Name.HAND_OPEN)
         self.cursor_moving = self._get_cursor(gui.cursor.Name.HAND_CLOSED)
 
-    def _get_cursor(self, name):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def _get_cursor(self, name: Types.ELLIPSIS) -> Types.NONE:
         """
 
         Args:
@@ -197,8 +196,7 @@ class SymmetryEditMode(gui.mode.ScrollableModeMixin, gui.mode.DragMode):
         self._overlay.disable_edit_mode()
         super(SymmetryEditMode, self).popped()
 
-    def _update_statusbar(self, zone):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def _update_statusbar(self, zone: Types.ELLIPSIS) -> Types.NONE:
         """
 
         Args:
@@ -482,8 +480,7 @@ class SymmetryEditMode(gui.mode.ScrollableModeMixin, gui.mode.DragMode):
             self._drag_prev_pos = new_pos
             stack.symmetry_center = new_pos
 
-    def drag_stop_cb(self, tdw):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def drag_stop_cb(self, tdw: Types.ELLIPSIS) -> Types.NONE:
         """
 
         Args:
@@ -755,8 +752,7 @@ class SymmetryEditOptionsWidget(Gtk.Alignment):
                 self._axis_angle.set_value(sym_angle)
             self._update_angle_label()
 
-    def _update_num_lines_sensitivity(self, sym_type):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def _update_num_lines_sensitivity(self, sym_type: Types.ELLIPSIS) -> Types.NONE:
         """
 
         Args:
@@ -771,8 +767,7 @@ class SymmetryEditOptionsWidget(Gtk.Alignment):
             sym_type in (SymmetryRotational, SymmetrySnowflake)
         )
 
-    def _axis_pos_adj_x_changed(self, adj):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def _axis_pos_adj_x_changed(self, adj: Types.ELLIPSIS) -> Types.NONE:
         """
 
         Args:
@@ -785,8 +780,7 @@ class SymmetryEditOptionsWidget(Gtk.Alignment):
         """
         self.app.doc.model.layer_stack.symmetry_x = int(adj.get_value())
 
-    def _axis_rot_symmetry_lines_changed(self, adj):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def _axis_rot_symmetry_lines_changed(self, adj: Types.ELLIPSIS) -> Types.NONE:
         """
 
         Args:
@@ -799,8 +793,7 @@ class SymmetryEditOptionsWidget(Gtk.Alignment):
         """
         self.app.doc.model.layer_stack.symmetry_lines = int(adj.get_value())
 
-    def _axis_pos_adj_y_changed(self, adj):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def _axis_pos_adj_y_changed(self, adj: Types.ELLIPSIS) -> Types.NONE:
         """
 
         Args:
@@ -813,8 +806,7 @@ class SymmetryEditOptionsWidget(Gtk.Alignment):
         """
         self.app.doc.model.layer_stack.symmetry_y = int(adj.get_value())
 
-    def _angle_value_changed(self, adj):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def _angle_value_changed(self, adj: Types.ELLIPSIS) -> Types.NONE:
         """
 
         Args:
@@ -828,8 +820,7 @@ class SymmetryEditOptionsWidget(Gtk.Alignment):
         self._update_angle_label()
         self.app.doc.model.layer_stack.symmetry_angle = adj.get_value()
 
-    def _symmetry_type_combo_changed_cb(self, combo):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def _symmetry_type_combo_changed_cb(self, combo: Types.ELLIPSIS) -> Types.NONE:
         """
 
         Args:
@@ -843,8 +834,7 @@ class SymmetryEditOptionsWidget(Gtk.Alignment):
         sym_type = combo.get_model()[combo.get_active()][0]
         self.app.doc.model.layer_stack.symmetry_type = sym_type
 
-    def _scale_value_changed_cb(self, alpha_scale):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def _scale_value_changed_cb(self, alpha_scale: Types.ELLIPSIS) -> Types.NONE:
         """
 
         Args:
@@ -974,8 +964,7 @@ class SymmetryOverlay(gui.overlays.Overlay):
         self._active_axis = None
         self._zone = None
 
-    def set_line_alpha(self, alpha):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def set_line_alpha(self, alpha: Types.ELLIPSIS) -> Types.NONE:
         """
 
         Args:
@@ -1106,8 +1095,7 @@ class SymmetryOverlay(gui.overlays.Overlay):
                 self._active_axis = i
                 return True, cursor_name, (p1, p2)
 
-    def _transformation_updated_cb(self, *args):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def _transformation_updated_cb(self, *args: Types.ELLIPSIS) -> Types.NONE:
         """
 
         Args:
@@ -1318,8 +1306,7 @@ class SymmetryOverlay(gui.overlays.Overlay):
         """ """
         return len(self._intersections_view) > 4
 
-    def _redraw(self, only_button=False):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def _redraw(self, only_button: Types.ELLIPSIS = False) -> Types.NONE:
         """
 
         Args:
@@ -1362,8 +1349,7 @@ class SymmetryOverlay(gui.overlays.Overlay):
         for area in areas:
             self.tdw.queue_draw_area(*area)
 
-    def paint(self, cr):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def paint(self, cr: Types.ELLIPSIS) -> Types.NONE:
         """Paint the overlay, in display coordinates
 
         Args:
@@ -1382,8 +1368,7 @@ class SymmetryOverlay(gui.overlays.Overlay):
                 if self._center_pos:
                     self._draw_center_button(cr)
 
-    def _draw_disable_button(self, cr):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def _draw_disable_button(self, cr: Types.ELLIPSIS) -> Types.NONE:
         """
 
         Args:
@@ -1404,8 +1389,7 @@ class SymmetryOverlay(gui.overlays.Overlay):
             pixbuf=self.trash_icon_pixbuf,
         )
 
-    def _draw_center_button(self, cr):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def _draw_center_button(self, cr: Types.ELLIPSIS) -> Types.NONE:
         """
 
         Args:
@@ -1430,8 +1414,7 @@ class SymmetryOverlay(gui.overlays.Overlay):
         else:
             return self._line_alpha
 
-    def _render_axis_lines(self, cr):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def _render_axis_lines(self, cr: Types.ELLIPSIS) -> Types.NONE:
         """
 
         Args:
@@ -1484,8 +1467,7 @@ class SymmetryOverlay(gui.overlays.Overlay):
         cr.restore()
 
     @staticmethod
-    def _item_color(active):
-        # type: (Types.ELLIPSIS) -> Types.NONE
+    def _item_color(active: Types.ELLIPSIS) -> Types.NONE:
         """
 
         Args:

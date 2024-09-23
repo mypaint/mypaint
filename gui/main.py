@@ -63,8 +63,7 @@ def _init_gtk_workarounds():
     logger.debug("GTK workarounds added.")
 
 
-def set_user_configured_locale(userconfpath):
-    # type: (Types.ELLIPSIS) -> Types.NONE
+def set_user_configured_locale(userconfpath: Types.ELLIPSIS) -> Types.NONE:
     """If configured, set envvars for a custom locale
     The user can choose to not use their system locale
     by explicitly choosing another, and restarting.
@@ -257,8 +256,7 @@ def main(
         run()
 
 
-def parsed_cmdline_arguments(default_confpath, debug=False):
-    # type: (Types.ELLIPSIS) -> Types.NONE
+def parsed_cmdline_arguments(default_confpath, debug: Types.ELLIPSIS = False) -> Types.NONE:
     """Parse command line arguments and return result
     
     :return: (options, positional arguments)
