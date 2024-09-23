@@ -30,9 +30,18 @@ logger = logging.getLogger(__name__)
 
 def find_executable(executable, path=None):
     """Tries to find 'executable' in the directories listed in 'path'.
-
+    
     A string listing directories separated by 'os.pathsep'; defaults to
     os.environ['PATH'].  Returns the complete filename or None if not found.
+
+    Args:
+        executable: 
+        path:  (Default value = None)
+
+    Returns:
+
+    Raises:
+
     """
     if path is None:
         path = os.environ["PATH"]
@@ -56,15 +65,21 @@ def find_executable(executable, path=None):
 
 class Profiler:
     """Handles profiling state for the main app.
-
+    
     The profiler's output is written to a tempdir, which is shown to the
     user in their file browser once processing is complete. Ideally
     you'll have gprof2dot.py and graphviz installed, so you can compare
     pretty PNG files directly. However even in the absence of these
     tools, you can copy the output .pstats files elsewhere and run
     gprof2dot.py and dot on them manually.
-
+    
     The tempdir is deleted when the application exits normally.
+
+    Args:
+
+    Returns:
+
+    Raises:
 
     """
 
@@ -89,6 +104,7 @@ class Profiler:
 
     @property
     def _tempdir(self):
+        """ """
         td = self.__temp_dir
         if not td:
             td = tempfile.mkdtemp(prefix="mypaint-profile-")

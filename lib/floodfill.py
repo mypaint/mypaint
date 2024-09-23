@@ -45,6 +45,13 @@ class GapClosingOptions:
     """Container of parameters for gap closing fill operations
     to avoid updates to the call chain in case the parameter set
     is altered.
+
+    Args:
+
+    Returns:
+
+    Raises:
+
     """
 
     def __init__(self, max_gap_size, retract_seeps):
@@ -55,18 +62,17 @@ class GapClosingOptions:
 def enqueue_overflows(queue, tile_coord, seeds, tiles_bbox, *p):
     """Conditionally add (coordinate, seed list, data...) tuples to a queue.
 
-    :param queue: the queue which may be appended
-    :type queue: list
-    :param tile_coord: the 2d coordinate in the middle of the seed coordinates
-    :type tile_coord: (int, int)
-    :param seeds: 4-tuple of seed lists for n, e, s, w, relative to tile_coord
-    :type seeds: (list, list, list, list)
-    :param tiles_bbox: the bounding box of the fill operation
-    :type tiles_bbox: lib.fill_common.TileBoundingBox
-    :param p: tuples of length >= 4, items added to queue items w. same index
+    Args:
+        queue (list): the queue which may be appended
+        tile_coord ((int, int)): the 2d coordinate in the middle of the seed coordinates
+        seeds ((list, list, list, list)): 4-tuple of seed lists for n, e, s, w, relative to tile_coord
+        tiles_bbox (lib.fill_common.TileBoundingBox): the bounding box of the fill operation
+        *p: 
 
-    NOTE: This function improves readability significantly in exchange for a
-    small performance hit. Replace with explicit queueing if too slow.
+    Returns:
+
+    Raises:
+
     """
     for edge in zip(*(fc.orthogonal(tile_coord), seeds) + p):
         edge_coord = edge[0]
@@ -76,7 +82,17 @@ def enqueue_overflows(queue, tile_coord, seeds, tiles_bbox, *p):
 
 
 def starting_coordinates(x, y):
-    """Get the coordinates of starting tile and pixel (tx, ty, px, py)"""
+    """Get the coordinates of starting tile and pixel (tx, ty, px, py)
+
+    Args:
+        x: 
+        y: 
+
+    Returns:
+
+    Raises:
+
+    """
     init_tx, init_ty = int(x // N), int(y // N)
     init_x, init_y = int(x % N), int(y % N)
     return init_tx, init_ty, init_x, init_y
@@ -84,10 +100,18 @@ def starting_coordinates(x, y):
 
 def seeds_by_tile(seeds):
     """Partition and convert seed coordinates
-
+    
     Partition a list of model-space seed coordinates into lists of
     in-tile coordinates associated to their respective tile coordinate
     in a dictionary.
+
+    Args:
+        seeds: 
+
+    Returns:
+
+    Raises:
+
     """
     tile_seeds = dict()
     for x, y in seeds:
@@ -99,7 +123,20 @@ def seeds_by_tile(seeds):
 
 
 def get_target_color(src, tx, ty, px, py):
-    """Get the pixel color for the given tile/pixel coordinates"""
+    """Get the pixel color for the given tile/pixel coordinates
+
+    Args:
+        src: 
+        tx: 
+        ty: 
+        px: 
+        py: 
+
+    Returns:
+
+    Raises:
+
+    """
     with src.tile_request(tx, ty, readonly=True) as start:
         targ_r, targ_g, targ_b, targ_a = [int(c) for c in start[py][px]]
     if targ_a == 0:
@@ -113,10 +150,17 @@ def get_target_color(src, tx, ty, px, py):
 
 class FillHandler:
     """Handles fill status and cancellation
-
+    
     The fill is run in a separate thread, and this controller
     is used to start and (optionally) cancel the fill, as well
     as provide information about its current status.
+
+    Args:
+
+    Returns:
+
+    Raises:
+
     """
 
     # Stages that the fill operation can be in
@@ -159,7 +203,17 @@ class FillHandler:
         self.controller.inc_processed(1)
 
     def set_stage(self, stage, num_tiles_to_process=None):
-        """Change stage, updating strings and tile data"""
+        """Change stage, updating strings and tile data
+
+        Args:
+            stage: 
+            num_tiles_to_process:  (Default value = None)
+
+        Returns:
+
+        Raises:
+
+        """
         self.stage = stage
         self.controller.reset()
         self.stage_string = self.STAGE_STRINGS[stage]
@@ -180,7 +234,16 @@ class FillHandler:
             return ""
 
     def wait(self, t=None):
-        """Wait t seconds for the fill to complete"""
+        """Wait t seconds for the fill to complete
+
+        Args:
+            t:  (Default value = None)
+
+        Returns:
+
+        Raises:
+
+        """
         self.fill_thread.join(t)
 
     def running(self):
@@ -197,6 +260,13 @@ class FloodFillArguments:
     """Container holding a set of flood fill arguments
     The purpose of this class is to avoid unnecessary
     call chain updates when changing/adding parameters.
+
+    Args:
+
+    Returns:
+
+    Raises:
+
     """
 
     def __init__(
@@ -263,10 +333,17 @@ class FloodFillArguments:
 
     def no_op(self):
         """If true, compositing will never alter the output layer
-
+        
         These are comp modes for which alpha locking does not really
         make any sense, as any visible change caused by them requires
         the alpha of the destination to change as well.
+
+        Args:
+
+        Returns:
+
+        Raises:
+
         """
         return self.lock_alpha and (
             self.mode in lib.modes.MODES_DECREASING_BACKDROP_ALPHA
@@ -277,12 +354,15 @@ def flood_fill(src, fill_args, dst):
     """Top-level fill interface
     Delegates actual fill in separate thread and returns a FillHandler
 
-    :param src: source, surface-like object
-    :type src: anything supporting readonly tile_request()
-    :param fill_args: arguments common to all fill calls
-    :type fill_args: FloodFillArguments
-    :param dst: target surface
-    :type dst: lib.tiledsurface.MyPaintSurface
+    Args:
+        src (anything supporting readonly tile_request()): source, surface-like object
+        fill_args (FloodFillArguments): arguments common to all fill calls
+        dst (lib.tiledsurface.MyPaintSurface): target surface
+
+    Returns:
+
+    Raises:
+
     """
     handler = FillHandler()
     fill_function_args = (src, fill_args, dst, handler)
@@ -294,18 +374,20 @@ def flood_fill(src, fill_args, dst):
 
 def _flood_fill(src, args, dst, handler):
     """Main flood fill function
-
+    
     The fill is performed with reference to src.
     The resulting tiles are composited into dst.
 
-    :param src: source, surface-like object
-    :type src: anything supporting readonly tile_request()
-    :param args: arguments common to all fill calls
-    :type args: FloodFillArguments
-    :param dst: target surface
-    :type dst: lib.tiledsurface.MyPaintSurface
-    :param handler: controller used to track state and cancel fill
-    :type handler: FillHandler
+    Args:
+        src (anything supporting readonly tile_request()): source, surface-like object
+        args (FloodFillArguments): arguments common to all fill calls
+        dst (lib.tiledsurface.MyPaintSurface): target surface
+        handler (FillHandler): controller used to track state and cancel fill
+
+    Returns:
+
+    Raises:
+
     """
     _, _, width, height = args.bbox
     if width <= 0 or height <= 0 or args.no_op():
@@ -350,6 +432,16 @@ def update_bbox(bbox, tx, ty):
     """Update given the min/max, x/y bounding box
     If a coordinate lies outside of the current
     bounds, set the bounds based on that coordinate
+
+    Args:
+        bbox: 
+        tx: 
+        ty: 
+
+    Returns:
+
+    Raises:
+
     """
     if bbox:
         min_tx, min_ty, max_tx, max_ty = bbox
@@ -367,7 +459,21 @@ def update_bbox(bbox, tx, ty):
 
 
 def composite(handler, fill_args, trim_result, filled, tiles_bbox, dst):
-    """Composite the filled tiles into the destination surface"""
+    """Composite the filled tiles into the destination surface
+
+    Args:
+        handler: 
+        fill_args: 
+        trim_result: 
+        filled: 
+        tiles_bbox: 
+        dst: 
+
+    Returns:
+
+    Raises:
+
+    """
 
     handler.set_stage(handler.COMPOSITE, len(filled))
 
@@ -476,21 +582,23 @@ def composite(handler, fill_args, trim_result, filled, tiles_bbox, dst):
 
 def scanline_fill(handler, src, seed_lists, tiles_bbox, filler):
     """Perform a scanline fill and return the filled tiles
-
+    
     Perform a scanline fill using the given starting point and tile,
     with reference to the src surface and given bounding box, using the
     provided filler instance.
 
-    :param handler: updates fill status and permits cancelling
-    :type handler: FillHandler
-    :param src: Source surface-like object
-    :param seed_lists: dictionary, pairing tile coords with lists of seeds
-    :type seed_lists: dict
-    :param tiles_bbox: Bounding box for the fill
-    :type tiles_bbox: lib.fill_common.TileBoundingBox
-    :param filler: filler instance performing the per-tile fill operation
-    :type filler: myplib.Filler
-    :returns: a dictionary of coord->tile mappings for the filled tiles
+    Args:
+        handler (FillHandler): updates fill status and permits cancelling
+        src: Source surface-like object
+        seed_lists (dict): dictionary, pairing tile coords with lists of seeds
+        tiles_bbox (lib.fill_common.TileBoundingBox): Bounding box for the fill
+        filler (myplib.Filler): filler instance performing the per-tile fill operation
+
+    Returns:
+        a dictionary of coord->tile mappings for the filled tiles
+
+    Raises:
+
     """
     # Dict of coord->tile data populated during the fill
     filled = {}
@@ -557,9 +665,16 @@ class _TileFillSkipper:
     # NOTE: these are usually not a result of an intentional fill, but
     # clicking a pixel with color very similar to the intended target pixel
     def uniform_tile(self, alpha):
-        """Return a reference to a uniform alpha tile
+        """
 
-        If no uniform tile with the given alpha value exists, one is created
+        Args:
+            alpha: 
+
+        Returns:
+            If no uniform tile with the given alpha value exists, one is created
+
+        Raises:
+
         """
         if alpha not in self.uniform_tiles:
             self.uniform_tiles[alpha] = fc.new_full_tile(alpha)
@@ -567,14 +682,25 @@ class _TileFillSkipper:
 
     def check(self, tile_coord, src_tile, filled, from_dir):
         """Check if the tile can be handled without using the fill loop.
-
+        
         The first time the tile is encountered, check if it is uniform
         and if so, handle it immediately depending on whether it is
         fillable or not.
-
+        
         If the tile can be handled immediately, returns the overflows
         (new seed ranges), otherwise return None to indicate that the
         fill algorithm needs to be invoked.
+
+        Args:
+            tile_coord: 
+            src_tile: 
+            filled: 
+            from_dir: 
+
+        Returns:
+
+        Raises:
+
         """
         if tile_coord in filled or self.tiles_bbox.crossing(tile_coord):
             return None
@@ -603,12 +729,25 @@ class _TileFillSkipper:
 
 def gap_closing_fill(handler, src, seed_lists, tiles_bbox, filler, gap_closing_options):
     """Fill loop that finds and uses gap data to avoid unwanted leaks
-
+    
     Gaps are defined as distances of fillable pixels enclosed on two sides
     by unfillable pixels. Each tile considered, and their neighbours, are
     flooded with alpha values based on the target color and threshold values.
     The resulting alphas are then searched for gaps, and the size of these gaps
     are marked in separate tiles - one for each tile filled.
+
+    Args:
+        handler: 
+        src: 
+        seed_lists: 
+        tiles_bbox: 
+        filler: 
+        gap_closing_options: 
+
+    Returns:
+
+    Raises:
+
     """
 
     unseep_queue = []
@@ -683,9 +822,16 @@ def gap_closing_fill(handler, src, seed_lists, tiles_bbox, filler, gap_closing_o
 
 class _GCTileHandler:
     """Gap-closing-fill Tile Handler
-
+    
     Manages input alpha tiles and distance tiles necessary to perform
     gap closing fill operations.
+
+    Args:
+
+    Returns:
+
+    Raises:
+
     """
 
     OVERFLOWS = [
@@ -708,16 +854,23 @@ class _GCTileHandler:
 
     def get_gc_data(self, tile_coord, seeds):
         """Get the data necessary to run a gap-closing fill
-
+        
         For the given tile coordinate, prepare the data necessary to
         run a gap-closing fill operation for that tile, namely the
         corresponding input alpha tile and distance tile.
-
+        
         The first time a coordinate is reached, also check if it can be
         skipped directly, and return the overflows if that is the case.
 
-        :returns: (alpha_tile, distance_tile, overflows)
-        :rtype: tuple
+        Args:
+            tile_coord: 
+            seeds: 
+
+        Returns:
+            tuple: alpha_tile, distance_tile, overflows)
+
+        Raises:
+
         """
         if tile_coord not in self.distances:
             # Ensure that alpha data exists for the tile and its neighbours
@@ -750,9 +903,14 @@ class _GCTileHandler:
     def find_gaps(self, *grid):
         """Search for and mark gaps, given a nine-grid of alpha tiles
 
-        :param grid: nine-grid of alpha tiles
-        :return: True if any gaps were found, otherwise false
-        :rtype: bool
+        Args:
+            *grid: 
+
+        Returns:
+            bool: True if any gaps were found, otherwise false
+
+        Raises:
+
         """
         if self._dist_data is None:
             self._dist_data = fc.new_full_tile(INF_DIST)
@@ -760,13 +918,20 @@ class _GCTileHandler:
 
     def alpha_grid(self, tile_coord):
         """When needed, create and calculate alpha tiles for distance searching.
-
+        
         For the tile of the given coordinate, ensure that a corresponding tile
         of alpha values (based on the tolerance function) exists in the
         full_alphas dict for both the tile and all of its neighbors
 
-        :returns: Tuple with the grid and a boolean value indicating
-        whether every tile in the grid is the constant full alpha tile
+        Args:
+            tile_coord: 
+
+        Returns:
+            Tuple with the grid and a boolean value indicating
+            whether every tile in the grid is the constant full alpha tile
+
+        Raises:
+
         """
         all_full = True
         alpha_tiles = self._alpha_tiles
@@ -797,6 +962,19 @@ def unseep(seed_queue, filled, gc_filler, total_px, tiles_bbox, distances):
     with different conditions. It only backs off into the original
     fill and therefore does not require creation of new tiles or use
     of an input alpha tile.
+
+    Args:
+        seed_queue: 
+        filled: 
+        gc_filler: 
+        total_px: 
+        tiles_bbox: 
+        distances: 
+
+    Returns:
+
+    Raises:
+
     """
     backup = {}
     while len(seed_queue) > 0:
@@ -826,11 +1004,19 @@ def unseep(seed_queue, filled, gc_filler, total_px, tiles_bbox, distances):
 
 def complement_gc_seeds(seeds, distance_tile):
     """Add distances to initial seeds, check if all seeds lie on detected gaps
-
+    
     If the input seeds are not initial seeds, they are returned unchanged.
-
+    
     Returns a tuple with complemented seeds and a boolean indicating whether
     all seeds lie on detected gaps (this check is only done for initial seeds)
+
+    Args:
+        seeds: 
+        distance_tile: 
+
+    Returns:
+
+    Raises:
 
     """
     if isinstance(seeds, list) and len(seeds[0]) < 3:
@@ -848,6 +1034,16 @@ def complement_gc_seeds(seeds, distance_tile):
 
 
 def gc_seeds_skippable(seeds):
+    """
+
+    Args:
+        seeds: 
+
+    Returns:
+
+    Raises:
+
+    """
     return (
         isinstance(seeds, tuple)  # edge constant - a full edge of seeds
         or len(seeds[0]) == 2  # initial seeds

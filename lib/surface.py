@@ -38,8 +38,12 @@ class Bounded(metaclass=abc.ABCMeta):
     def get_bbox(self):
         """Returns the bounding box of the object, in model coords
 
-        :returns: the data bounding box
-        :rtype: lib.helpers.Rect
+        Args:
+
+        Returns:
+            lib.helpers.Rect: the data bounding box
+
+        Raises:
 
         """
 
@@ -51,18 +55,23 @@ class TileAccessible(Bounded, metaclass=abc.ABCMeta):
     def tile_request(self, tx, ty, readonly):
         """Access by tile, read-only or read/write
 
-        :param int tx: Tile X coord (multiply by TILE_SIZE for pixels)
-        :param int ty: Tile Y coord (multiply by TILE_SIZE for pixels)
-        :param bool readonly: get a read-only tile
-
+        Args:
+            tx (int): Tile X coord (multiply by TILE_SIZE for pixels)
+            ty (int): Tile Y coord (multiply by TILE_SIZE for pixels)
+            readonly (bool): get a read-only tile
+        
         Implementations must be `@contextlib.contextmanager`s which
         yield one tile array (NxNx16, fix15 data). If called in
         read/write mode, implementations must either put back changed
         data, or alternatively they must allow the underlying data to be
         manipulated directly via the yielded object.
-
+        
         See lib.tiledsurface.MyPaintSurface.tile_request() for a fuller
         explanation of this interface and its expectations.
+
+        Returns:
+
+        Raises:
 
         """
 
@@ -74,25 +83,17 @@ class TileBlittable(Bounded, metaclass=abc.ABCMeta):
     def blit_tile_into(self, dst, dst_has_alpha, tx, ty, *args, **kwargs):
         """Copies one tile from this object into a NumPy array
 
-        :param numpy.ndarray dst: destination array
-        :param bool dst_has_alpha: destination has an alpha channel
-        :param int tx: Tile X coord (multiply by TILE_SIZE for pixels)
-        :param int ty: Tile Y coord (multiply by TILE_SIZE for pixels)
-        :param \*args: Implementation may extend this interface
-        :param \*\*kwargs: Implementation may extend this interface
+        Args:
+            dst (numpy.ndarray): destination array
+            dst_has_alpha (bool): destination has an alpha channel
+            tx (int): Tile X coord (multiply by TILE_SIZE for pixels)
+            ty (int): Tile Y coord (multiply by TILE_SIZE for pixels)
+            *args: 
+            **kwargs: 
 
-        The destination is typically of dimensions NxNx4, and is
-        typically of type uint16 or uint8. Implementations are expected
-        to check the details, and should raise ValueError if dst doesn't
-        have a sensible shape or type.
+        Returns:
 
-        This is an unconditional copy of this object's raw visible data,
-        ignoring any flags or opacities on the object itself which would
-        otherwise control what you see.
-
-        If the source object really consists of multiple compositables
-        with special rendering flags, they should be composited normally
-        into an empty tile, and that resultant tile blitted.
+        Raises:
 
         """
 
@@ -106,17 +107,18 @@ class TileCompositable(Bounded, metaclass=abc.ABCMeta):
     ):
         """Composites one tile from this object over a NumPy array.
 
-        :param dst: target tile array (uint16, NxNx4, 15-bit scaled int)
-        :param dst_has_alpha: alpha channel in dst should be preserved
-        :param int tx: Tile X coord (multiply by TILE_SIZE for pixels)
-        :param int ty: Tile Y coord (multiply by TILE_SIZE for pixels)
-        :param int mode: mode to use when compositing
-        :param \*args: Implementation may extend this interface
-        :param \*\*kwargs: Implementation may extend this interface
+        Args:
+            dst: target tile array (uint16, NxNx4, 15-bit scaled int)
+            dst_has_alpha: alpha channel in dst should be preserved
+            tx (int): Tile X coord (multiply by TILE_SIZE for pixels)
+            ty (int): Tile Y coord (multiply by TILE_SIZE for pixels)
+            mipmap_level:  (Default value = 0)
+            *args: 
+            **kwargs: 
 
-        Composite one tile of this surface over the array dst, modifying
-        only dst. Unlike `blit_tile_into()`, this method must respect
-        any special rendering settings on the object itself.
+        Returns:
+
+        Raises:
 
         """
 
@@ -124,7 +126,12 @@ class TileCompositable(Bounded, metaclass=abc.ABCMeta):
 def get_tiles_bbox(tile_coords):
     """Convert tile coords to a data bounding box
 
-    :param tile_coords: iterable of (tx, ty) coordinate pairs
+    Args:
+        tile_coords: iterable of (tx, ty) coordinate pairs
+
+    Returns:
+
+    Raises:
 
     >>> coords = [(0, 0), (-10, 4), (5, -2), (-3, 7)]
     >>> get_tiles_bbox(coords[0:1])
@@ -149,16 +156,16 @@ def scanline_strips_iter(
 ):
     """Generate (render) scanline strips from a tile-blittable object
 
-    :param TileBlittable surface: Surface to iterate over
-    :param bool alpha: If true, write a PNG with alpha
-    :param bool single_tile_pattern: True if surface is a one tile only.
-    :param tuple \*\*kwargs: Passed to blit_tile_into.
+    Args:
+        surface (TileBlittable): Surface to iterate over
+        rect: 
+        alpha (bool, optional): If true, write a PNG with alpha (Default value = False)
+        single_tile_pattern (bool, optional): True if surface is a one tile only. (Default value = False)
+        **kwargs: 
 
-    The `alpha` parameter is passed to the surface's `blit_tile_into()`.
-    Rendering is skipped for all but the first line of single-tile patterns.
+    Returns:
 
-    The scanline strips yielded by this generator are suitable for
-    feeding to a mypaintlib.ProgressivePNGWriter.
+    Raises:
 
     """
     # Sizes
@@ -211,27 +218,15 @@ def scanline_strips_iter(
 def save_as_png(surface, filename, *rect, **kwargs):
     """Saves a tile-blittable surface to a file in PNG format
 
-    :param TileBlittable surface: Surface to save
-    :param str filename: The file to write
-    :param tuple \*rect: Rectangle (x, y, w, h) to save
-    :param bool alpha: If true, write a PNG with alpha
-    :param progress: Updates a UI every scanline strip.
-    :type progress: lib.feedback.Progress or None
-    :param bool single_tile_pattern: True if surface is one tile only.
-    :param bool save_srgb_chunks: Set to False to not save sRGB flags.
-    :param tuple \*\*kwargs: Passed to blit_tile_into (minus the above)
+    Args:
+        surface (TileBlittable): Surface to save
+        filename (str): The file to write
+        *rect: 
+        **kwargs: 
 
-    The `alpha` parameter is passed to the surface's `blit_tile_into()`
-    method, as well as to the PNG writer.  Rendering is
-    skipped for all but the first line for single-tile patterns.
-    If `*rect` is left unspecified, the surface's own bounding box will
-    be used.
-    If `save_srgb_chunks` is set to False, sRGB (and associated fallback
-    cHRM and gAMA) will not be saved. MyPaint's default behaviour is
-    currently to save these chunks.
+    Returns:
 
-    Raises `lib.errors.FileHandlingError` with a descriptive string if
-    something went wrong.
+    Raises:
 
     """
     # Horrible, dirty argument handling

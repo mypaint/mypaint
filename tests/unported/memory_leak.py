@@ -21,12 +21,23 @@ LEAK_EXIT_CODE = 33
 
 
 def mem():
+    """ """
     gc.collect()
     with open("/proc/self/statm") as statm:
         return int(statm.read().split()[0])
 
 
 def check_garbage(msg="uncollectable garbage left over from previous tests"):
+    """
+
+    Args:
+        msg:  (Default value = "uncollectable garbage left over from previous tests")
+
+    Returns:
+
+    Raises:
+
+    """
     gc.collect()
     garbage = []
     for obj in gc.garbage:
@@ -40,6 +51,7 @@ def check_garbage(msg="uncollectable garbage left over from previous tests"):
 
 
 def iterations():
+    """ """
     check_garbage()
 
     max_mem = 0
@@ -93,6 +105,16 @@ all_tests = {}
 
 
 def leaktest(f):
+    """
+
+    Args:
+        f: 
+
+    Returns:
+
+    Raises:
+
+    """
     "decorator to declare leak test functions"
     all_tests[f.__name__] = f
     return f
@@ -100,6 +122,7 @@ def leaktest(f):
 
 # @leaktest
 def provoke_leak():
+    """ """
     for i in iterations():
         # note: interestingly this leaky only shows in the later iterations
         #       (and very small leaks might not be detected)
@@ -108,12 +131,14 @@ def provoke_leak():
 
 @leaktest
 def noleak():
+    """ """
     for i in iterations():
         setattr(gc, "my_test_leak", np.zeros(50000))
 
 
 @leaktest
 def document_alloc():
+    """ """
     for i in iterations():
         doc = document.Document()
         doc.cleanup()
@@ -121,11 +146,22 @@ def document_alloc():
 
 @leaktest
 def surface_alloc():
+    """ """
     for i in iterations():
         tiledsurface.Surface()
 
 
 def paint_doc(doc):
+    """
+
+    Args:
+        doc: 
+
+    Returns:
+
+    Raises:
+
+    """
     events = painting30sec_events
     t_old = events[0][0]
     layer = doc.layer_stack.current
@@ -137,6 +173,7 @@ def paint_doc(doc):
 
 @leaktest
 def save_test():
+    """ """
     doc = document.Document()
     paint_doc(doc)
     for i in iterations():
@@ -148,6 +185,7 @@ def save_test():
 
 @leaktest
 def repeated_loading():
+    """ """
     doc = document.Document()
     for i in iterations():
         doc.load("bigimage.ora")
@@ -156,6 +194,7 @@ def repeated_loading():
 
 @leaktest
 def paint_save_clear():
+    """ """
     doc = document.Document()
     for i in iterations():
         paint_doc(doc)
@@ -165,9 +204,16 @@ def paint_save_clear():
 
 
 def paint_gui(gui):
-    """
-    Paint with a constant number of frames per recorded second.
+    """Paint with a constant number of frames per recorded second.
     Not entirely realistic, but gives good and stable measurements.
+
+    Args:
+        gui: 
+
+    Returns:
+
+    Raises:
+
     """
     FPS = 30
     gui_doc = gui.app.doc
@@ -192,6 +238,7 @@ def paint_gui(gui):
 
 @leaktest
 def gui_test():
+    """ """
     # NOTE: this an all-in-one GUI test as a workaround for the
     # problem that the GUI does not cleanly terminate after the test fork()
     gui = guicontrol.GUI()

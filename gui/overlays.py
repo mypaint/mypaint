@@ -31,18 +31,24 @@ class Overlay:
 
     def paint(self, cr):
         """Paint information onto a TiledDrawWidget.
-
+        
         The drawing interface is very simple. `cr` is a Cairo context in either
         display coordinates or model coordinates: which one you get depends on
         which list the Overlay is appended to on its tdw.
+
+        Args:
+            cr: 
+
+        Returns:
+
+        Raises:
+
         """
         pass
 
 
 class FadingOverlay(Overlay):
-    """
-    Base class for temporary overlays which fade to alpha over a short time
-    """
+    """Base class for temporary overlays which fade to alpha over a short time"""
 
     # Overridable animation controls
     fade_fps = 20  #: Nominal frames per second
@@ -60,8 +66,16 @@ class FadingOverlay(Overlay):
 
     def paint(self, cr):
         """Repaint the overlay and start animating if necessary.
-
+        
         Individual frames are handled by `paint_frame()`.
+
+        Args:
+            cr: 
+
+        Returns:
+
+        Raises:
+
         """
         if self.overlay_changed():
             self.alpha = 1.0
@@ -73,9 +87,16 @@ class FadingOverlay(Overlay):
 
     def anim_cb(self):
         """Animation callback.
-
+        
         Each step fades the alpha multiplier slightly and invalidates the area
         last painted.
+
+        Args:
+
+        Returns:
+
+        Raises:
+
         """
         self.alpha -= 1 / (self.fade_fps * self.fade_duration)
         self.alpha = clamp(self.alpha, 0.0, 1.0)
@@ -104,24 +125,52 @@ class FadingOverlay(Overlay):
         self.__restart_anim_if_needed()
 
     def paint_frame(self, cr):
-        """Paint a single frame."""
+        """Paint a single frame.
+
+        Args:
+            cr: 
+
+        Returns:
+
+        Raises:
+
+        """
         raise NotImplementedError
 
     def overlay_changed(self):
-        """Return true if the overlay has changed.
+        """
 
-        This virtual method is called by paint() to determine whether the
-        alpha should be reset to 1.0 and the fade begun anew.
+        Args:
+
+        Returns:
+            This virtual method is called by paint() to determine whether the
+            alpha should be reset to 1.0 and the fade begun anew.
+
+        Raises:
+
         """
         raise NotImplementedError
 
 
 def rounded_box(cr, x, y, w, h, r):
     """Paint a rounded box path into a Cairo context.
-
+    
     The position is given by `x` and `y`, and the size by `w` and `h`. The
     cornders are of radius `r`, and must be smaller than half the minimum
     dimension. The path is created as a new, closed subpath.
+
+    Args:
+        cr: 
+        x: 
+        y: 
+        w: 
+        h: 
+        r: 
+
+    Returns:
+
+    Raises:
+
     """
     assert r <= min(w, h) / 2
     cr.new_sub_path()
@@ -140,9 +189,16 @@ def rounded_box(cr, x, y, w, h, r):
 
 class ScaleOverlay(FadingOverlay):
     """Overlays its TDW's current zoom, fading to transparent.
-
+    
     The animation is started by the normal full canvas repaint which happens
     after the scale changes.
+
+    Args:
+
+    Returns:
+
+    Raises:
+
     """
 
     vmargin = 6
@@ -151,9 +207,20 @@ class ScaleOverlay(FadingOverlay):
     shown_scale = None
 
     def overlay_changed(self):
+        """ """
         return self.tdw.scale != self.shown_scale
 
     def paint_frame(self, cr):
+        """
+
+        Args:
+            cr: 
+
+        Returns:
+
+        Raises:
+
+        """
         self.shown_scale = self.tdw.scale
         text = _("Zoom: %.01f%%") % (100 * self.shown_scale)
         layout = self.tdw.create_pango_layout(text)
@@ -195,9 +262,16 @@ class ScaleOverlay(FadingOverlay):
 
 class LastPaintPosOverlay(FadingOverlay):
     """Displays the last painting position after a stroke has finished.
-
+    
     Not especially useful, but serves as an example of how to drive an overlay
     from user input events.
+
+    Args:
+
+    Returns:
+
+    Raises:
+
     """
 
     inner_line_rgba = gui.style.TRANSIENT_INFO_RGBA
@@ -214,6 +288,17 @@ class LastPaintPosOverlay(FadingOverlay):
         self.in_input_stroke = False
 
     def input_stroke_started(self, doc, event):
+        """
+
+        Args:
+            doc: 
+            event: 
+
+        Returns:
+
+        Raises:
+
+        """
         self.in_input_stroke = True
         if self.current_marker_pos is None:
             return
@@ -226,6 +311,17 @@ class LastPaintPosOverlay(FadingOverlay):
         self.stop_anim()
 
     def input_stroke_ended(self, doc, event):
+        """
+
+        Args:
+            doc: 
+            event: 
+
+        Returns:
+
+        Raises:
+
+        """
         self.in_input_stroke = False
         if self.tdw.last_painting_pos is None:
             return
@@ -238,9 +334,21 @@ class LastPaintPosOverlay(FadingOverlay):
         self.start_anim()
 
     def overlay_changed(self):
+        """ """
         return False
 
     def _calc_area(self, x, y):
+        """
+
+        Args:
+            x: 
+            y: 
+
+        Returns:
+
+        Raises:
+
+        """
         r = self.radius
         lw = max(self.inner_line_width, self.outer_line_width)
         return (
@@ -251,6 +359,16 @@ class LastPaintPosOverlay(FadingOverlay):
         )
 
     def paint_frame(self, cr):
+        """
+
+        Args:
+            cr: 
+
+        Returns:
+
+        Raises:
+
+        """
         if self.in_input_stroke:
             return
         if self.current_marker_pos is None:

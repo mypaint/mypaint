@@ -126,6 +126,18 @@ class PreferencesWindow(windowing.Dialog):
         self._builder.connect_signals(self)
 
     def on_response(self, dialog, response, *args):
+        """
+
+        Args:
+            dialog: 
+            response: 
+            *args: 
+
+        Returns:
+
+        Raises:
+
+        """
         if response == Gtk.ResponseType.ACCEPT:
             self.app.save_settings()
             self.app.apply_settings()
@@ -262,86 +274,256 @@ class PreferencesWindow(windowing.Dialog):
     ## Callbacks for widgets that manipulate settings
 
     def disable_fallback_checkbutton_toggled_cb(self, checkbox):
+        """
+
+        Args:
+            checkbox: 
+
+        Returns:
+
+        Raises:
+
+        """
         self.app.preferences["keyboard.disable_fallbacks"] = checkbox.get_active()
         self.app.apply_settings()
 
     def input_mode_combobox_changed_cb(self, combobox):
+        """
+
+        Args:
+            combobox: 
+
+        Returns:
+
+        Raises:
+
+        """
         mode = combobox.get_active_id()
         self.app.preferences["input.device_mode"] = mode
         self.app.apply_settings()
 
     def button_mapping_edited_cb(self, editor):
+        """
+
+        Args:
+            editor: 
+
+        Returns:
+
+        Raises:
+
+        """
         self.app.button_mapping.update(editor.bindings)
 
     def pressure_curve_changed_cb(self, widget):
+        """
+
+        Args:
+            widget: 
+
+        Returns:
+
+        Raises:
+
+        """
         points = self._pressure_curve.points[:]
         self.app.preferences["input.global_pressure_mapping"] = points
         self.app.apply_settings()
 
     def scrap_prefix_entry_changed_cb(self, widget):
+        """
+
+        Args:
+            widget: 
+
+        Returns:
+
+        Raises:
+
+        """
         scrap_prefix = widget.get_text()
         if isinstance(scrap_prefix, bytes):
             scrap_prefix = scrap_prefix.decode("utf-8")
         self.app.preferences["saving.scrap_prefix"] = scrap_prefix
 
     def default_zoom_combobox_changed_cb(self, combobox):
+        """
+
+        Args:
+            combobox: 
+
+        Returns:
+
+        Raises:
+
+        """
         zoom_idcolstr = combobox.get_active_id()
         zoom = float(zoom_idcolstr)
         self.app.preferences["view.default_zoom"] = zoom
 
     def toolbar_icon_size_small_toggled_cb(self, radio):
+        """
+
+        Args:
+            radio: 
+
+        Returns:
+
+        Raises:
+
+        """
         if not radio.get_active():
             return
         self.app.preferences["ui.toolbar_icon_size"] = "small"
 
     def toolbar_icon_size_large_toggled_cb(self, radio):
+        """
+
+        Args:
+            radio: 
+
+        Returns:
+
+        Raises:
+
+        """
         if not radio.get_active():
             return
         self.app.preferences["ui.toolbar_icon_size"] = "large"
 
     def dark_theme_toggled_cb(self, checkbut):
+        """
+
+        Args:
+            checkbut: 
+
+        Returns:
+
+        Raises:
+
+        """
         dark = bool(checkbut.get_active())
         self.app.preferences["ui.dark_theme_variant"] = dark
 
     def real_alpha_checks_checkbutton_toggled_cb(self, button):
+        """
+
+        Args:
+            button: 
+
+        Returns:
+
+        Raises:
+
+        """
         real = bool(button.get_active())
         self.app.preferences["view.real_alpha_checks"] = real
 
     def default_save_format_combobox_changed_cb(self, combobox):
+        """
+
+        Args:
+            combobox: 
+
+        Returns:
+
+        Raises:
+
+        """
         formatstr = combobox.get_active_id()
         self.app.preferences["saving.default_format"] = formatstr
 
     def display_colorspace_unknown_radiobutton_toggled_cb(self, radiobtn):
+        """
+
+        Args:
+            radiobtn: 
+
+        Returns:
+
+        Raises:
+
+        """
         if self.in_update_ui or not radiobtn.get_active():
             return
         p = self.app.preferences
         p["display.colorspace"] = "unknown"
 
     def display_colorspace_srgb_radiobutton_toggled_cb(self, radiobtn):
+        """
+
+        Args:
+            radiobtn: 
+
+        Returns:
+
+        Raises:
+
+        """
         if self.in_update_ui or not radiobtn.get_active():
             return
         p = self.app.preferences
         p["display.colorspace"] = "srgb"
 
     def color_wheel_rgb_radiobutton_toggled_cb(self, radiobtn):
+        """
+
+        Args:
+            radiobtn: 
+
+        Returns:
+
+        Raises:
+
+        """
         if self.in_update_ui or not radiobtn.get_active():
             return
         cm = self.app.brush_color_manager
         cm.set_wheel_type("rgb")
 
     def color_wheel_ryb_radiobutton_toggled_cb(self, radiobtn):
+        """
+
+        Args:
+            radiobtn: 
+
+        Returns:
+
+        Raises:
+
+        """
         if self.in_update_ui or not radiobtn.get_active():
             return
         cm = self.app.brush_color_manager
         cm.set_wheel_type("ryb")
 
     def color_wheel_rygb_radiobutton_toggled_cb(self, radiobtn):
+        """
+
+        Args:
+            radiobtn: 
+
+        Returns:
+
+        Raises:
+
+        """
         if self.in_update_ui or not radiobtn.get_active():
             return
         cm = self.app.brush_color_manager
         cm.set_wheel_type("rygb")
 
     def freehand_cursor_combobox_changed_cb(self, combobox):
+        """
+
+        Args:
+            combobox: 
+
+        Returns:
+
+        Raises:
+
+        """
         cname = combobox.get_active_id()
         if self.in_update_ui:
             return
@@ -380,36 +562,117 @@ class PreferencesWindow(windowing.Dialog):
             p["cursor.freehand.inner_line_color"] = (1, 1, 1, 1)
 
     def _dynamic_crosshair_threshold_changed_cb(self, adj):
+        """
+
+        Args:
+            adj: 
+
+        Returns:
+
+        Raises:
+
+        """
         self.app.preferences["cursor.dynamic_crosshair_threshold"] = adj.get_value()
 
     def _enable_dynamic_crosshair_toggled_cb(self, checkbutton):
+        """
+
+        Args:
+            checkbutton: 
+
+        Returns:
+
+        Raises:
+
+        """
         active = checkbutton.get_active()
         self.app.preferences["cursor.dynamic_crosshair"] = active
         self._dyn_crosshair_threshold.set_sensitive(active)
         self._dyn_crosshair_label.set_sensitive(active)
 
     def autosave_backups_switch_active_notify_cb(self, switch, param):
+        """
+
+        Args:
+            switch: 
+            param: 
+
+        Returns:
+
+        Raises:
+
+        """
         active = bool(switch.props.active)
         self.app.preferences["document.autosave_backups"] = active
         self._autosave_interval_spinbutton.set_sensitive(active)
 
     def autosave_interval_adjustment_value_changed_cb(self, adj):
+        """
+
+        Args:
+            adj: 
+
+        Returns:
+
+        Raises:
+
+        """
         interval = int(round(adj.get_value()))
         self.app.preferences["document.autosave_interval"] = interval
 
     def smooth_scrolling_toggled_cb(self, checkbut):
+        """
+
+        Args:
+            checkbut: 
+
+        Returns:
+
+        Raises:
+
+        """
         smoothsc = bool(checkbut.get_active())
         self.app.preferences["ui.support_smooth_scrolling"] = smoothsc
 
     def _hide_cursor_while_painting_toggled_cb(self, checkbut):
+        """
+
+        Args:
+            checkbut: 
+
+        Returns:
+
+        Raises:
+
+        """
         hide = bool(checkbut.get_active())
         self.app.preferences["ui.hide_cursor_while_painting"] = hide
 
     def blink_layers_toggled_cb(self, checkbut):
+        """
+
+        Args:
+            checkbut: 
+
+        Returns:
+
+        Raises:
+
+        """
         blink = bool(checkbut.get_active())
         self.app.preferences["ui.blink_layers"] = blink
 
     def locale_changed_cb(self, combo):
+        """
+
+        Args:
+            combo: 
+
+        Returns:
+
+        Raises:
+
+        """
         active = combo.get_active()
         locale = combo.get_model()[active][0]
         if locale is None:
@@ -419,6 +682,16 @@ class PreferencesWindow(windowing.Dialog):
 
 
 def setup_locale_combobox(locale_combo):
+    """
+
+    Args:
+        locale_combo: 
+
+    Returns:
+
+    Raises:
+
+    """
     # Set up locales liststore
     locale_liststore = Gtk.ListStore()
     default_loc = C_(
@@ -442,6 +715,16 @@ def setup_locale_combobox(locale_combo):
     supported_locales = lib.config.supported_locales
 
     def tuplify(loc):
+        """
+
+        Args:
+            loc: 
+
+        Returns:
+
+        Raises:
+
+        """
         if loc in loc_names:
             name_en, name_native = loc_names[loc]
             return loc, name_en, name_native
@@ -454,9 +737,33 @@ def setup_locale_combobox(locale_combo):
         locale_liststore.append(i)
 
     def sep_func(model, it):
+        """
+
+        Args:
+            model: 
+            it: 
+
+        Returns:
+
+        Raises:
+
+        """
         return model[it][1] is None
 
     def render_language_names(_, name_cell, model, it):
+        """
+
+        Args:
+            _: 
+            name_cell: 
+            model: 
+            it: 
+
+        Returns:
+
+        Raises:
+
+        """
         locale, lang_en, lang_nat = model[it][:3]
         # Mark default with bold font
         if locale is None:

@@ -40,6 +40,7 @@ class LRUCache:
         )
 
     def clear(self):
+        """ """
         self._cache.clear()
         self._hits = 0
         self._misses = 0
@@ -57,6 +58,17 @@ class LRUCache:
         return item
 
     def get(self, key, default=None):
+        """
+
+        Args:
+            key: 
+            default:  (Default value = None)
+
+        Returns:
+
+        Raises:
+
+        """
         try:
             item = self._cache.pop(key)
             self._cache[key] = item
@@ -67,6 +79,17 @@ class LRUCache:
             return default
 
     def pop(self, key, default=_SENTINEL):
+        """
+
+        Args:
+            key: 
+            default:  (Default value = _SENTINEL)
+
+        Returns:
+
+        Raises:
+
+        """
         try:
             item = self._cache.pop(key)
             self._hits += 1

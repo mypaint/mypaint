@@ -14,15 +14,22 @@ import gui.blendmodehandler
 
 class BrushModifier:
     """Applies changed brush settings to the active brush, with overrides.
-
+    
     A single instance of this lives within the main `application.Application`
     instance. The BrushModifier tracks brush settings like color, eraser and
     lock alpha mode that can be overridden by the GUI.::
-
+    
       BrushManager ---select_brush---> BrushModifier --> TiledDrawWidget
-
+    
     The `BrushManager` provides the brush settings as stored on disk, and
     the BrushModifier passes them via `TiledDrawWidget` to the brush engine.
+
+    Args:
+
+    Returns:
+
+    Raises:
+
     """
 
     MODE_FORCED_ON_SETTINGS = [1.0, {}]
@@ -40,6 +47,18 @@ class BrushModifier:
         self.bm.mode_changed += self.update_blendmodes
 
     def update_blendmodes(self, bm, old, new):
+        """
+
+        Args:
+            bm: 
+            old: 
+            new: 
+
+        Returns:
+
+        Raises:
+
+        """
         if old is new:
             return
         if old.setting_name:
@@ -49,13 +68,22 @@ class BrushModifier:
 
     def set_override_setting(self, setting_name, override):
         """Overrides a boolean setting currently in effect.
-
+        
         If `override` is true, the named setting will be forced to a base value
         greater than 0.9, and if it is false a base value less than 0.1 will be
         applied. Where possible, values from the base brush will be used. The
         setting from `unmodified_brushinfo`, including any input mapping, will
         be used if its base value is suitably large (or small). If not, a base
         value of either 1 or 0 and no input mapping will be applied.
+
+        Args:
+            setting_name: 
+            override: 
+
+        Returns:
+
+        Raises:
+
         """
         unmod_b = self.unmodified_brushinfo
         modif_b = self.app.brush
@@ -74,21 +102,38 @@ class BrushModifier:
 
     def restore_context_of_selected_brush(self):
         """Restores color from the unmodified base brush.
-
+        
         After a brush has been selected, restore additional brush settings -
         currently just color - from `unmodified_brushinfo`. This is called
         after selecting a brush by picking a stroke from the canvas.
+
+        Args:
+
+        Returns:
+
+        Raises:
+
         """
         c = self.unmodified_brushinfo.get_color_hsv()
         self.app.brush.set_color_hsv(c)
 
     def brush_selected_cb(self, bm, managed_brush, brushinfo):
         """Responds to the user changing their brush.
-
+        
         This observer callback is responsible for allocating the current brush
         settings to the current brush singleton in `self.app`. The Brush
         Selector, the Pick Context action, and the Brushkeys and
         Device-specific brush associations all cause this to be invoked.
+
+        Args:
+            bm: 
+            managed_brush: 
+            brushinfo: 
+
+        Returns:
+
+        Raises:
+
         """
         self._in_brush_selected_cb = True
         b = self.app.brush
@@ -139,12 +184,22 @@ class BrushModifier:
         self._in_brush_selected_cb = False
 
     def _brush_is_dedicated_eraser(self):
+        """ """
         if self.unmodified_brushinfo is None:
             return False
         return self.unmodified_brushinfo.is_eraser()
 
     def brush_modified_cb(self, changed_settings):
-        """Responds to changes of the brush settings."""
+        """Responds to changes of the brush settings.
+
+        Args:
+            changed_settings: 
+
+        Returns:
+
+        Raises:
+
+        """
         if self._brush_is_dedicated_eraser():
             return
 

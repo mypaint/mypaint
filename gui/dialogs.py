@@ -36,6 +36,17 @@ CANCEL = 5
 
 
 def confirm(widget, question):
+    """
+
+    Args:
+        widget: 
+        question: 
+
+    Returns:
+
+    Raises:
+
+    """
     window = widget.get_toplevel()
     d = Gtk.MessageDialog(
         window,
@@ -53,10 +64,34 @@ def confirm(widget, question):
 
 
 def _entry_activate_dialog_response_cb(entry, dialog, response=Gtk.ResponseType.ACCEPT):
+    """
+
+    Args:
+        entry: 
+        dialog: 
+        response:  (Default value = Gtk.ResponseType.ACCEPT)
+
+    Returns:
+
+    Raises:
+
+    """
     dialog.response(response)
 
 
 def ask_for_name(widget, title, default):
+    """
+
+    Args:
+        widget: 
+        title: 
+        default: 
+
+    Returns:
+
+    Raises:
+
+    """
     window = widget.get_toplevel()
     d = Gtk.Dialog(
         title,
@@ -103,6 +138,17 @@ def ask_for_name(widget, title, default):
 
 
 def error(widget, message):
+    """
+
+    Args:
+        widget: 
+        message: 
+
+    Returns:
+
+    Raises:
+
+    """
     window = widget.get_toplevel()
     d = Gtk.MessageDialog(
         window,
@@ -116,6 +162,16 @@ def error(widget, message):
 
 
 def image_new_from_png_data(data):
+    """
+
+    Args:
+        data: 
+
+    Returns:
+
+    Raises:
+
+    """
     loader = GdkPixbuf.PixbufLoader.new_with_type("png")
     loader.write(data)
     loader.close()
@@ -128,6 +184,19 @@ def image_new_from_png_data(data):
 def confirm_rewrite_brush(
     window, brushname, existing_preview_pixbuf, imported_preview_data
 ):
+    """
+
+    Args:
+        window: 
+        brushname: 
+        existing_preview_pixbuf: 
+        imported_preview_data: 
+
+    Returns:
+
+    Raises:
+
+    """
     flags = Gtk.DialogFlags.MODAL | Gtk.DialogFlags.DESTROY_WITH_PARENT
     dialog = Gtk.Dialog(_("Overwrite brush?"), window, flags)
 
@@ -200,6 +269,18 @@ def confirm_rewrite_brush(
 
 
 def confirm_rewrite_group(window, groupname, deleted_groupname):
+    """
+
+    Args:
+        window: 
+        groupname: 
+        deleted_groupname: 
+
+    Returns:
+
+    Raises:
+
+    """
     flags = Gtk.DialogFlags.MODAL | Gtk.DialogFlags.DESTROY_WITH_PARENT
     dialog = Gtk.Dialog(_("Overwrite brush group?"), window, flags)
 
@@ -247,13 +328,22 @@ def confirm_rewrite_group(window, groupname, deleted_groupname):
 
 def open_dialog(title, window, filters):
     """Show a file chooser dialog.
-
+    
     Filters should be a list of tuples: (filtertitle, globpattern).
-
+    
     Returns a tuple of the form (fileformat, filename). Here
     "fileformat" is the index of the filter that matched filename, or
     None if there were no matches).  "filename" is None if no file was
     selected.
+
+    Args:
+        title: 
+        window: 
+        filters: 
+
+    Returns:
+
+    Raises:
 
     """
     dialog = Gtk.FileChooserDialog(
@@ -291,15 +381,25 @@ def open_dialog(title, window, filters):
 
 def save_dialog(title, window, filters, default_format=None):
     """Shows a file save dialog.
-
+    
     "filters" should be a list of tuples: (filter title, glob pattern).
-
+    
     "default_format" may be a pair (format id, suffix).
     That suffix will be added to filename if it does not match any of filters.
-
+    
     Returns a tuple of the form (fileformat, filename).  Here
     "fileformat" is index of filter that matches filename, or None if no
     matches).  "filename" is None if no file was selected.
+
+    Args:
+        title: 
+        window: 
+        filters: 
+        default_format:  (Default value = None)
+
+    Returns:
+
+    Raises:
 
     """
     dialog = Gtk.FileChooserDialog(
@@ -345,6 +445,18 @@ def save_dialog(title, window, filters, default_format=None):
 
 
 def confirm_brushpack_import(packname, window=None, readme=None):
+    """
+
+    Args:
+        packname: 
+        window:  (Default value = None)
+        readme:  (Default value = None)
+
+    Returns:
+
+    Raises:
+
+    """
 
     dialog = Gtk.Dialog(
         _("Import brush package?"),
@@ -394,10 +506,20 @@ def confirm_brushpack_import(packname, window=None, readme=None):
 
 def ask_for_color(title, color=None, previous_color=None, parent=None):
     """Returns a color chosen by the user via a modal dialog.
-
+    
     The dialog is a standard `Gtk.ColorSelectionDialog`.
     The returned value may be `None`,
     which means that the user pressed Cancel in the dialog.
+
+    Args:
+        title: 
+        color:  (Default value = None)
+        previous_color:  (Default value = None)
+        parent:  (Default value = None)
+
+    Returns:
+
+    Raises:
 
     """
     if color is None:

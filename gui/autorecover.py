@@ -26,8 +26,14 @@ logger = logging.getLogger(__name__)
 
 class Presenter:
     """Shows and runs a dialog, allowing the user to resume autosaves.
-
+    
     See also: lib.document.Document.resume_from_autosave().
+
+    Args:
+
+    Returns:
+
+    Raises:
 
     """
 
@@ -61,11 +67,22 @@ class Presenter:
 
     @property
     def check_at_startup(self):
+        """ """
         prefs = self._app.preferences
         return bool(prefs.get(self._CHECK_AT_STARTUP_PREFS_KEY, True))
 
     @check_at_startup.setter
     def check_at_startup(self, value):
+        """
+
+        Args:
+            value: 
+
+        Returns:
+
+        Raises:
+
+        """
         prefs = self._app.preferences
         prefs[self._CHECK_AT_STARTUP_PREFS_KEY] = bool(value)
 
@@ -120,7 +137,12 @@ class Presenter:
     def run(self, startup=False):
         """Show and run the dialog, and possibly resume an autosave.
 
-        :param bool startup: indicates that MyPaint is starting up.
+        Args:
+            startup (bool, optional): indicates that MyPaint is starting up. (Default value = False)
+
+        Returns:
+
+        Raises:
 
         """
         # Don't run at startup if asked not to.
@@ -183,14 +205,35 @@ class Presenter:
             fh.save_as_dialog(fh.save_file, suggested_filename=sugg_name)
 
     def _recovery_treeview_row_activated_cb(self, treeview, treepath, column):
-        """When a row's double-clicked, resume work on that doc."""
+        """When a row's double-clicked, resume work on that doc.
+
+        Args:
+            treeview: 
+            treepath: 
+            column: 
+
+        Returns:
+
+        Raises:
+
+        """
         self._dialog.response(self._RESPONSE_CONTINUE)
 
     def _recovery_tree_selection_changed_cb(self, sel):
-        """When a row's clicked, update button sensitivities etc."""
+        """When a row's clicked, update button sensitivities etc.
+
+        Args:
+            sel: 
+
+        Returns:
+
+        Raises:
+
+        """
         self._update_buttons()
 
     def _update_buttons(self):
+        """ """
         autosave = self._get_selected_autosave()
         sensitive = False
         if autosave is not None:
@@ -199,6 +242,7 @@ class Presenter:
         self._delete_button.set_sensitive(sensitive)
 
     def _get_selected_autosave(self):
+        """ """
         sel = self._treeview.get_selection()
         model, iter = sel.get_selected()
         if iter is None:
@@ -212,6 +256,16 @@ class Presenter:
         return lib.document.AutosaveInfo.new_for_path(path)
 
     def _delete_autosave_button_clicked_cb(self, button):
+        """
+
+        Args:
+            button: 
+
+        Returns:
+
+        Raises:
+
+        """
         autosave = self._get_selected_autosave()
         if (
             autosave is None
@@ -229,4 +283,14 @@ class Presenter:
         self._reload_liststore()
 
     def _at_startup_checkbutton_toggled_cb(self, toggle):
+        """
+
+        Args:
+            toggle: 
+
+        Returns:
+
+        Raises:
+
+        """
         self.check_at_startup = bool(toggle.get_active())

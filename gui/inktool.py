@@ -59,9 +59,9 @@ _NODE_FIELDS = (
 
 class _Node(collections.namedtuple("_Node", _NODE_FIELDS)):
     """Recorded control point, as a namedtuple.
-
+    
     Node tuples have the following 6 fields, in order
-
+    
     * x, y: model coords, float
     * pressure: float in [0.0, 1.0]
     * xtilt, ytilt: float in [-1.0, 1.0]
@@ -69,6 +69,13 @@ class _Node(collections.namedtuple("_Node", _NODE_FIELDS)):
     * viewzoom: current zoom level [0.0, 64]
     * viewrotation: current view rotation [-180.0, 180.0]
     * barrel_rotation: float in [0.0, 1.0]
+
+    Args:
+
+    Returns:
+
+    Raises:
+
     """
 
 
@@ -86,6 +93,7 @@ class InkingMode(
     gui.mode.BrushworkModeMixin,
     gui.mode.DragMode,
 ):
+    """ """
 
     ## Metadata properties
 
@@ -105,17 +113,21 @@ class InkingMode(
 
     @classmethod
     def get_name(cls):
+        """ """
         return _("Inking")
 
     def get_usage(self):
+        """ """
         return _("Draw, and then adjust smooth lines")
 
     @property
     def inactive_cursor(self):
+        """ """
         return None
 
     @property
     def active_cursor(self):
+        """ """
         if self.phase == _Phase.ADJUST:
             if self.zone == _EditZone.CONTROL_NODE:
                 return self._crosshair_cursor
@@ -175,19 +187,32 @@ class InkingMode(
         self._last_good_raw_barrel_rotation = 0.0
 
     def _reset_nodes(self):
+        """ """
         self.nodes = []  # nodes that met the distance+time criteria
 
     def _reset_capture_data(self):
+        """ """
         self._last_event_node = None  # node for the last event
         self._last_node_evdata = None  # (xdisp, ydisp, tmilli) for nodes[-1]
 
     def _reset_adjust_data(self):
+        """ """
         self.zone = _EditZone.EMPTY_CANVAS
         self.current_node_index = None
         self.target_node_index = None
         self._dragged_node_start_pos = None
 
     def _ensure_overlay_for_tdw(self, tdw):
+        """
+
+        Args:
+            tdw: 
+
+        Returns:
+
+        Raises:
+
+        """
         overlay = self._overlays.get(tdw)
         if not overlay:
             overlay = Overlay(self, tdw)
@@ -196,19 +221,31 @@ class InkingMode(
         return overlay
 
     def _is_active(self):
+        """ """
         for mode in self.doc.modes:
             if mode is self:
                 return True
         return False
 
     def _discard_overlays(self):
+        """ """
         for tdw, overlay in self._overlays.items():
             tdw.display_overlays.remove(overlay)
             tdw.queue_draw()
         self._overlays.clear()
 
     def enter(self, doc, **kwds):
-        """Enters the mode: called by `ModeStack.push()` etc."""
+        """Enters the mode: called by `ModeStack.push()` etc.
+
+        Args:
+            doc: 
+            **kwds: 
+
+        Returns:
+
+        Raises:
+
+        """
         super(InkingMode, self).enter(doc, **kwds)
         if not self._is_active():
             self._discard_overlays()
@@ -223,7 +260,16 @@ class InkingMode(
         )
 
     def leave(self, **kwds):
-        """Leaves the mode: called by `ModeStack.pop()` etc."""
+        """Leaves the mode: called by `ModeStack.pop()` etc.
+
+        Args:
+            **kwds: 
+
+        Returns:
+
+        Raises:
+
+        """
         if not self._is_active():
             self._discard_overlays()
         self._stop_task_queue_runner(complete=True)
@@ -231,14 +277,22 @@ class InkingMode(
 
     def checkpoint(self, flush=True, **kwargs):
         """Sync pending changes from (and to) the model
-
+        
         If called with flush==False, this is an override which just
         redraws the pending stroke with the current brush settings and
         color. This is the behavior our testers expect:
         https://github.com/mypaint/mypaint/issues/226
-
+        
         When this mode is left for another mode (see `leave()`), the
         pending brushwork is committed properly.
+
+        Args:
+            flush:  (Default value = True)
+            **kwargs: 
+
+        Returns:
+
+        Raises:
 
         """
         if flush:
@@ -254,7 +308,16 @@ class InkingMode(
             self._queue_redraw_curve()
 
     def _start_new_capture_phase(self, rollback=False):
-        """Let the user capture a new ink stroke"""
+        """Let the user capture a new ink stroke
+
+        Args:
+            rollback:  (Default value = False)
+
+        Returns:
+
+        Raises:
+
+        """
         if rollback:
             self._stop_task_queue_runner(complete=False)
             self.brushwork_rollback_all()
@@ -272,6 +335,17 @@ class InkingMode(
     ## Raw event handling (prelight & zone selection in adjust phase)
 
     def button_press_cb(self, tdw, event):
+        """
+
+        Args:
+            tdw: 
+            event: 
+
+        Returns:
+
+        Raises:
+
+        """
         self._ensure_overlay_for_tdw(tdw)
         current_layer = tdw.doc._layers.current
         if not (tdw.is_sensitive and current_layer.get_paintable()):
@@ -314,6 +388,17 @@ class InkingMode(
         return super(InkingMode, self).button_press_cb(tdw, event)
 
     def button_release_cb(self, tdw, event):
+        """
+
+        Args:
+            tdw: 
+            event: 
+
+        Returns:
+
+        Raises:
+
+        """
         if event.button == self._button_down:
             self._button_down = None
         self._ensure_overlay_for_tdw(tdw)
@@ -353,6 +438,17 @@ class InkingMode(
         return super(InkingMode, self).button_release_cb(tdw, event)
 
     def motion_notify_cb(self, tdw, event):
+        """
+
+        Args:
+            tdw: 
+            event: 
+
+        Returns:
+
+        Raises:
+
+        """
         self._ensure_overlay_for_tdw(tdw)
         current_layer = tdw.doc._layers.current
         if not (tdw.is_sensitive and current_layer.get_paintable()):
@@ -375,10 +471,30 @@ class InkingMode(
 
     @lib.observable.event
     def current_node_changed(self, index):
-        """Event: current_node_index was changed"""
+        """Event: current_node_index was changed
+
+        Args:
+            index: 
+
+        Returns:
+
+        Raises:
+
+        """
 
     def _update_zone_and_target(self, tdw, x, y):
-        """Update the zone and target node under a cursor position"""
+        """Update the zone and target node under a cursor position
+
+        Args:
+            tdw: 
+            x: 
+            y: 
+
+        Returns:
+
+        Raises:
+
+        """
         self._ensure_overlay_for_tdw(tdw)
         new_zone = _EditZone.EMPTY_CANVAS
         if self.phase == _Phase.ADJUST and not self.in_drag:
@@ -459,7 +575,16 @@ class InkingMode(
                 tdw.queue_draw_area(x - r, y - r, (2 * r) + 1, (2 * r) + 1)
 
     def _queue_draw_node(self, i):
-        """Redraws a specific control node on all known view TDWs"""
+        """Redraws a specific control node on all known view TDWs
+
+        Args:
+            i: 
+
+        Returns:
+
+        Raises:
+
+        """
         for tdw in self._overlays:
             node = self.nodes[i]
             x, y = tdw.model_to_display(node.x, node.y)
@@ -506,7 +631,21 @@ class InkingMode(
         self._start_task_queue_runner()
 
     def _draw_curve_segment(self, model, p_1, p0, p1, p2, state):
-        """Draw the curve segment between the middle two points"""
+        """Draw the curve segment between the middle two points
+
+        Args:
+            model: 
+            p_1: 
+            p0: 
+            p1: 
+            p2: 
+            state: 
+
+        Returns:
+
+        Raises:
+
+        """
         last_t_abs = state["t_abs"]
         dtime_p0_p1_real = p1[-1] - p0[-1]
         steps_t = dtime_p0_p1_real / self.INTERPOLATION_MAX_SLICE_TIME
@@ -552,7 +691,18 @@ class InkingMode(
         state["t_abs"] = last_t_abs
 
     def _queue_task(self, callback, *args, **kwargs):
-        """Append a task to be done later in an idle cycle"""
+        """Append a task to be done later in an idle cycle
+
+        Args:
+            callback: 
+            *args: 
+            **kwargs: 
+
+        Returns:
+
+        Raises:
+
+        """
         self._task_queue.append((callback, args, kwargs))
 
     def _start_task_queue_runner(self):
@@ -563,7 +713,16 @@ class InkingMode(
         self._task_queue_runner_id = idler_id
 
     def _stop_task_queue_runner(self, complete=True):
-        """Halts processing of the task queue, and clears it"""
+        """Halts processing of the task queue, and clears it
+
+        Args:
+            complete:  (Default value = True)
+
+        Returns:
+
+        Raises:
+
+        """
         if self._task_queue_runner_id is None:
             return
         if complete:
@@ -587,6 +746,17 @@ class InkingMode(
     ## Drag handling (both capture and adjust phases)
 
     def drag_start_cb(self, tdw, event):
+        """
+
+        Args:
+            tdw: 
+            event: 
+
+        Returns:
+
+        Raises:
+
+        """
         # A drag started with the space key will bypass the check in
         # the button_press_cb, so we check for them here and cancel
         # those drags for the capture phase.
@@ -612,6 +782,21 @@ class InkingMode(
             raise NotImplementedError("Unknown phase %r" % self.phase)
 
     def drag_update_cb(self, tdw, event, ev_x, ev_y, dx, dy):
+        """
+
+        Args:
+            tdw: 
+            event: 
+            ev_x: 
+            ev_y: 
+            dx: 
+            dy: 
+
+        Returns:
+
+        Raises:
+
+        """
         self._ensure_overlay_for_tdw(tdw)
         if self.phase == _Phase.CAPTURE:
             node = self._get_event_data(tdw, event, ev_x, ev_y)
@@ -652,6 +837,16 @@ class InkingMode(
             raise NotImplementedError("Unknown phase %r" % self.phase)
 
     def drag_stop_cb(self, tdw):
+        """
+
+        Args:
+            tdw: 
+
+        Returns:
+
+        Raises:
+
+        """
         self._ensure_overlay_for_tdw(tdw)
         if self.phase == _Phase.CAPTURE:
             if not self.nodes:
@@ -681,6 +876,19 @@ class InkingMode(
     ## Interrogating events
 
     def _get_event_data(self, tdw, event, x, y):
+        """
+
+        Args:
+            tdw: 
+            event: 
+            x: 
+            y: 
+
+        Returns:
+
+        Raises:
+
+        """
         xm, ym = tdw.display_to_model(x, y)
         xtilt, ytilt = self._get_event_tilt(tdw, event)
         return _Node(
@@ -696,6 +904,16 @@ class InkingMode(
         )
 
     def _get_event_pressure(self, event):
+        """
+
+        Args:
+            event: 
+
+        Returns:
+
+        Raises:
+
+        """
         # FIXME: CODE DUPLICATION: copied from freehand.py
         pressure = event.get_axis(Gdk.AxisUse.PRESSURE)
         if pressure is not None:
@@ -723,6 +941,17 @@ class InkingMode(
         return pressure
 
     def _get_event_tilt(self, tdw, event):
+        """
+
+        Args:
+            tdw: 
+            event: 
+
+        Returns:
+
+        Raises:
+
+        """
         # FIXME: CODE DUPLICATION: copied from freehand.py
         xtilt = event.get_axis(Gdk.AxisUse.XTILT)
         ytilt = event.get_axis(Gdk.AxisUse.YTILT)
@@ -766,7 +995,17 @@ class InkingMode(
         return self.options_presenter.widget
 
     def update_node(self, i, **kwargs):
-        """Updates properties of a node, and redraws it"""
+        """Updates properties of a node, and redraws it
+
+        Args:
+            i: 
+            **kwargs: 
+
+        Returns:
+
+        Raises:
+
+        """
         changing_pos = bool({"x", "y"}.intersection(kwargs))
         oldnode = self.nodes[i]
         if changing_pos:
@@ -781,6 +1020,16 @@ class InkingMode(
             self._queue_draw_node(i)
 
     def get_node_dtime(self, i):
+        """
+
+        Args:
+            i: 
+
+        Returns:
+
+        Raises:
+
+        """
         if not (0 < i < len(self.nodes)):
             return 0.0
         n0 = self.nodes[i - 1]
@@ -790,6 +1039,17 @@ class InkingMode(
         return dtime
 
     def set_node_dtime(self, i, dtime):
+        """
+
+        Args:
+            i: 
+            dtime: 
+
+        Returns:
+
+        Raises:
+
+        """
         dtime = max(dtime, self.MIN_INTERNODE_TIME)
         nodes = self.nodes
         if not (0 < i < len(nodes)):
@@ -801,12 +1061,31 @@ class InkingMode(
             self.update_node(j, time=new_time)
 
     def can_delete_node(self, i):
+        """
+
+        Args:
+            i: 
+
+        Returns:
+
+        Raises:
+
+        """
         if i is None:
             return False
         return 0 < i < len(self.nodes) - 1
 
     def delete_node(self, i):
-        """Delete a node, and issue redraws & updates"""
+        """Delete a node, and issue redraws & updates
+
+        Args:
+            i: 
+
+        Returns:
+
+        Raises:
+
+        """
         assert self.can_delete_node(i), "Can't delete endpoints"
         # Redraw old locations of things while the node still exists
         self._queue_draw_buttons()
@@ -827,6 +1106,7 @@ class InkingMode(
         self._queue_draw_buttons()
 
     def delete_current_node(self):
+        """ """
         if self.can_delete_node(self.current_node_index):
             self.delete_node(self.current_node_index)
 
@@ -834,12 +1114,31 @@ class InkingMode(
             self.target_node_index = None
 
     def can_insert_node(self, i):
+        """
+
+        Args:
+            i: 
+
+        Returns:
+
+        Raises:
+
+        """
         if i is None:
             return False
         return 0 <= i < (len(self.nodes) - 1)
 
     def insert_node(self, i):
-        """Insert a node, and issue redraws & updates"""
+        """Insert a node, and issue redraws & updates
+
+        Args:
+            i: 
+
+        Returns:
+
+        Raises:
+
+        """
         assert self.can_insert_node(i), "Can't insert back of the endpoint"
         # Redraw old locations of things while the node still exists
         self._queue_draw_buttons()
@@ -867,13 +1166,21 @@ class InkingMode(
         self._queue_draw_buttons()
 
     def insert_current_node(self):
+        """ """
         if self.can_insert_node(self.current_node_index):
             self.insert_node(self.current_node_index)
 
     def _simplify_nodes(self, tolerance):
         """Internal method of simplify nodes.
-
+        
         Algorithm: Reumann-Witkam.
+
+        Args:
+            tolerance: 
+
+        Returns:
+
+        Raises:
 
         """
         i = 0
@@ -918,7 +1225,17 @@ class InkingMode(
         return curcnt - len(self.nodes)
 
     def _nodes_deletion_operation(self, func, args):
-        """Internal method for delete-related operation of multiple nodes."""
+        """Internal method for delete-related operation of multiple nodes.
+
+        Args:
+            func: 
+            args: 
+
+        Returns:
+
+        Raises:
+
+        """
         # To ensure redraw entire overlay,avoiding glitches.
         self._queue_redraw_curve()
         self._queue_redraw_all_nodes()
@@ -1058,7 +1375,16 @@ class Overlay(gui.overlays.Overlay):
         self.reject_button_pos = reject_button.x, reject_button.y
 
     def _get_button_pixbuf(self, name):
-        """Loads the pixbuf corresponding to a button name (cached)"""
+        """Loads the pixbuf corresponding to a button name (cached)
+
+        Args:
+            name: 
+
+        Returns:
+
+        Raises:
+
+        """
         cache = self._button_pixbuf_cache
         pixbuf = cache.get(name)
         if not pixbuf:
@@ -1087,7 +1413,16 @@ class Overlay(gui.overlays.Overlay):
                 yield (i, node, x, y)
 
     def paint(self, cr):
-        """Draw adjustable nodes to the screen"""
+        """Draw adjustable nodes to the screen
+
+        Args:
+            cr: 
+
+        Returns:
+
+        Raises:
+
+        """
         # Control nodes
         mode = self._inkmode
         radius = gui.style.DRAGGABLE_POINT_HANDLE_SIZE
@@ -1159,25 +1494,32 @@ class _LayoutNode:
 
     @property
     def pos(self):
+        """ """
         return (self.x, self.y)
 
     @property
     def speed(self):
+        """ """
         return math.hypot(*self.velocity)
 
     def add_forces_inverse_square(self, others, k=20.0):
         """Adds inverse-square components to the effective force.
 
-        :param [_LayoutNode] others: _LayoutNodes affecting this one
-        :param float k: scaling factor
-        :returns: self
+        Args:
+            others ([_LayoutNode]): _LayoutNodes affecting this one
+            k (float, optional): scaling factor (Default value = 20.0)
 
-        The forces applied are proportional to k, and inversely
-        proportional to the square of the distances. Examples:
-        gravity, electrostatic repulsion.
+        Returns:
+            self
+            
+            The forces applied are proportional to k, and inversely
+            proportional to the square of the distances. Examples:
+            gravity, electrostatic repulsion.
+            
+            With the default arguments, the added force components are
+            attractive. Use negative k to simulate repulsive forces.
 
-        With the default arguments, the added force components are
-        attractive. Use negative k to simulate repulsive forces.
+        Raises:
 
         """
         fx, fy = self.force
@@ -1196,15 +1538,20 @@ class _LayoutNode:
     def add_forces_linear(self, others, k=0.05):
         """Adds linear components to the total effective force.
 
-        :param [_LayoutNode] others: _LayoutNodes affecting this one
-        :param float k: scaling factor
-        :returns: self
+        Args:
+            others ([_LayoutNode]): _LayoutNodes affecting this one
+            k (float, optional): scaling factor (Default value = 0.05)
 
-        The forces applied are proportional to k, and to the distance.
-        Example: springs.
+        Returns:
+            self
+            
+            The forces applied are proportional to k, and to the distance.
+            Example: springs.
+            
+            With the default arguments, the added force components are
+            attractive. Use negative k to simulate repulsive forces.
 
-        With the default arguments, the added force components are
-        attractive. Use negative k to simulate repulsive forces.
+        Raises:
 
         """
         fx, fy = self.force
@@ -1219,12 +1566,17 @@ class _LayoutNode:
     def update_position(self, damping=0.85):
         """Updates velocity & position from total force, then resets it.
 
-        :param float damping: Damping factor for velocity/speed.
-        :returns: self
+        Args:
+            damping (float, optional): Damping factor for velocity/speed. (Default value = 0.85)
 
-        Calling this method should be done just once per iteration,
-        after all the force components have been added in. The effective
-        force is reset to zero after calling this method.
+        Returns:
+            self
+            
+            Calling this method should be done just once per iteration,
+            after all the force components have been added in. The effective
+            force is reset to zero after calling this method.
+
+        Raises:
 
         """
         fx, fy = self.force
@@ -1238,6 +1590,19 @@ class _LayoutNode:
         return self
 
     def constrain_position(self, x0, x1, y0, y1):
+        """
+
+        Args:
+            x0: 
+            x1: 
+            y0: 
+            y1: 
+
+        Returns:
+
+        Raises:
+
+        """
         vx, vy = self.velocity
         if self.x < x0:
             self.x = x0
@@ -1263,6 +1628,7 @@ class OptionsUI(gui.mvp.BuiltUIPresenter, object):
         self._target = (None, None)
 
     def init_view(self):
+        """ """
         self.view.point_values_grid.set_sensitive(False)
         self.view.insert_point_button.set_sensitive(False)
         self.view.delete_point_button.set_sensitive(False)
@@ -1271,18 +1637,23 @@ class OptionsUI(gui.mvp.BuiltUIPresenter, object):
 
     @property
     def widget(self):
+        """ """
         return self.view.options_grid
 
     @property
     def target(self):
         """The active mode and its current node index
 
-        :returns: a pair of the form (inkmode, node_idx)
-        :rtype: tuple
+        Args:
 
-        Updating this pair via the property also updates the options UI
-        view, shortly afterwards. The target mode must be an InkingTool
-        instance.
+        Returns:
+            tuple
+
+Updating this pair via the property also updates the options UI
+view, shortly afterwards. The target mode must be an InkingTool
+instance.: a pair of the form (inkmode, node_idx)
+
+        Raises:
 
         """
         mode_ref, node_idx = self._target
@@ -1293,6 +1664,16 @@ class OptionsUI(gui.mvp.BuiltUIPresenter, object):
 
     @target.setter
     def target(self, targ):
+        """
+
+        Args:
+            targ: 
+
+        Returns:
+
+        Raises:
+
+        """
         inkmode, cn_idx = targ
         inkmode_ref = None
         if inkmode:
@@ -1303,6 +1684,7 @@ class OptionsUI(gui.mvp.BuiltUIPresenter, object):
 
     @gui.mvp.view_updater(default=False)
     def _update_ui_for_current_target(self):
+        """ """
         (inkmode, cn_idx) = self.target
         if (cn_idx is not None) and (0 <= cn_idx < len(inkmode.nodes)):
             cn = inkmode.nodes[cn_idx]
@@ -1333,46 +1715,126 @@ class OptionsUI(gui.mvp.BuiltUIPresenter, object):
 
     @gui.mvp.model_updater
     def _pressure_adj_value_changed_cb(self, adj):
+        """
+
+        Args:
+            adj: 
+
+        Returns:
+
+        Raises:
+
+        """
         inkmode, node_idx = self.target
         inkmode.update_node(node_idx, pressure=float(adj.get_value()))
 
     @gui.mvp.model_updater
     def _dtime_adj_value_changed_cb(self, adj):
+        """
+
+        Args:
+            adj: 
+
+        Returns:
+
+        Raises:
+
+        """
         inkmode, node_idx = self.target
         inkmode.set_node_dtime(node_idx, adj.get_value())
 
     @gui.mvp.model_updater
     def _xtilt_adj_value_changed_cb(self, adj):
+        """
+
+        Args:
+            adj: 
+
+        Returns:
+
+        Raises:
+
+        """
         value = float(adj.get_value())
         inkmode, node_idx = self.target
         inkmode.update_node(node_idx, xtilt=value)
 
     @gui.mvp.model_updater
     def _ytilt_adj_value_changed_cb(self, adj):
+        """
+
+        Args:
+            adj: 
+
+        Returns:
+
+        Raises:
+
+        """
         value = float(adj.get_value())
         inkmode, node_idx = self.target
         inkmode.update_node(node_idx, ytilt=value)
 
     @gui.mvp.model_updater
     def _insert_point_button_clicked_cb(self, button):
+        """
+
+        Args:
+            button: 
+
+        Returns:
+
+        Raises:
+
+        """
         inkmode, node_idx = self.target
         if inkmode.can_insert_node(node_idx):
             inkmode.insert_node(node_idx)
 
     @gui.mvp.model_updater
     def _delete_point_button_clicked_cb(self, button):
+        """
+
+        Args:
+            button: 
+
+        Returns:
+
+        Raises:
+
+        """
         inkmode, node_idx = self.target
         if inkmode.can_delete_node(node_idx):
             inkmode.delete_node(node_idx)
 
     @gui.mvp.model_updater
     def _simplify_points_button_clicked_cb(self, button):
+        """
+
+        Args:
+            button: 
+
+        Returns:
+
+        Raises:
+
+        """
         inkmode, node_idx = self.target
         if len(inkmode.nodes) > 3:
             inkmode.simplify_nodes()
 
     @gui.mvp.model_updater
     def _cull_points_button_clicked_cb(self, button):
+        """
+
+        Args:
+            button: 
+
+        Returns:
+
+        Raises:
+
+        """
         inkmode, node_idx = self.target
         if len(inkmode.nodes) > 2:
             inkmode.cull_nodes()

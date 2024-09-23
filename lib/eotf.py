@@ -22,7 +22,16 @@ __EOTF = dict()
 
 
 def set_eotf(value):
-    """Set the EOTF value to be used for color transforms"""
+    """Set the EOTF value to be used for color transforms
+
+    Args:
+        value: 
+
+    Returns:
+
+    Raises:
+
+    """
     assert isinstance(value, float)
     __EOTF["current"] = value
 
@@ -37,7 +46,16 @@ def eotf():
 
 
 def set_base_eotf(value):
-    """Set the base EOTF value used to invert transforms"""
+    """Set the base EOTF value used to invert transforms
+
+    Args:
+        value: 
+
+    Returns:
+
+    Raises:
+
+    """
     assert isinstance(value, float)
     __EOTF["base"] = value
 

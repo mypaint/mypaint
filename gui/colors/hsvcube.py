@@ -32,9 +32,15 @@ from .uimisc import PRIMARY_ADJUSTERS_MIN_HEIGHT
 
 class HSVCubePage(CombinedAdjusterPage):
     """Slice+depth view through an HSV cube: page for `CombinedAdjuster`.
-
+    
     The page includes a button for tumbling the cube, i.e. changing which of
     the color components the slice and the depth slider refer to.
+
+    Args:
+
+    Returns:
+
+    Raises:
 
     """
 
@@ -82,20 +88,25 @@ class HSVCubePage(CombinedAdjusterPage):
 
     @classmethod
     def get_page_icon_name(self):
+        """ """
         return "mypaint-tool-hsvcube"
 
     @classmethod
     def get_page_title(self):
+        """ """
         return _("HSV Cube")
 
     @classmethod
     def get_page_description(self):
+        """ """
         return _("An HSV cube which can be rotated to show different " "planar slices.")
 
     def get_page_widget(self):
+        """ """
         return self.__table
 
     def tumble(self):
+        """ """
         f0 = self._faces.pop(0)
         self._faces.append(f0)
         self.__slider.queue_draw()
@@ -103,11 +114,22 @@ class HSVCubePage(CombinedAdjusterPage):
         self._update_tooltips()
 
     def _update_tooltips(self):
+        """ """
         f0 = self._faces[0]
         self.__slice.set_tooltip_text(self._slice_tooltip_map[f0])
         self.__slider.set_tooltip_text(self._slider_tooltip_map[f0])
 
     def set_color_manager(self, manager):
+        """
+
+        Args:
+            manager: 
+
+        Returns:
+
+        Raises:
+
+        """
         ColorAdjuster.set_color_manager(self, manager)
         self.__slider.set_color_manager(manager)
         self.__slice.set_color_manager(manager)
@@ -124,17 +146,38 @@ class HSVCubeSlider(SliderColorAdjuster):
         self.__cube = cube
 
     def get_background_validity(self):
+        """ """
         col = HSVColor(color=self.get_managed_color())
         f0, f1, f2 = self.__cube._faces
         return f0, getattr(col, f1), getattr(col, f2)
 
     def get_color_for_bar_amount(self, amt):
+        """
+
+        Args:
+            amt: 
+
+        Returns:
+
+        Raises:
+
+        """
         col = HSVColor(color=self.get_managed_color())
         f0 = self.__cube._faces[0]
         setattr(col, f0, amt)
         return col
 
     def get_bar_amount_for_color(self, col):
+        """
+
+        Args:
+            col: 
+
+        Returns:
+
+        Raises:
+
+        """
         f0 = self.__cube._faces[0]
         amt = getattr(col, f0)
         return amt
@@ -158,6 +201,19 @@ class HSVCubeSlice(IconRenderableColorAdjusterWidget):
         return f1, f2
 
     def render_background_cb(self, cr, wd, ht, icon_border=None):
+        """
+
+        Args:
+            cr: 
+            wd: 
+            ht: 
+            icon_border:  (Default value = None)
+
+        Returns:
+
+        Raises:
+
+        """
         col = HSVColor(color=self.get_managed_color())
         b = icon_border
         if b is None:
@@ -204,11 +260,23 @@ class HSVCubeSlice(IconRenderableColorAdjusterWidget):
         cr.stroke()
 
     def get_background_validity(self):
+        """ """
         col = HSVColor(color=self.get_managed_color())
         f0 = self.__cube._faces[0]
         return f0, getattr(col, f0)
 
     def get_color_at_position(self, x, y):
+        """
+
+        Args:
+            x: 
+            y: 
+
+        Returns:
+
+        Raises:
+
+        """
         alloc = self.get_allocation()
         b = self.BORDER_WIDTH
         wd = alloc.width
@@ -225,6 +293,16 @@ class HSVCubeSlice(IconRenderableColorAdjusterWidget):
         return col
 
     def get_position_for_color(self, col):
+        """
+
+        Args:
+            col: 
+
+        Returns:
+
+        Raises:
+
+        """
         col = HSVColor(color=col)
         f1, f2 = self.__get_faces()
         f1_amt = getattr(col, f1)
@@ -241,6 +319,18 @@ class HSVCubeSlice(IconRenderableColorAdjusterWidget):
         return x, y
 
     def paint_foreground_cb(self, cr, wd, ht):
+        """
+
+        Args:
+            cr: 
+            wd: 
+            ht: 
+
+        Returns:
+
+        Raises:
+
+        """
         x, y = self.get_position_for_color(self.get_managed_color())
         draw_marker_circle(cr, x, y)
 

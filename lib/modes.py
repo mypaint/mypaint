@@ -29,12 +29,23 @@ _DEFAULT_MODE = lib.mypaintlib.CombineSpectralWGM
 
 
 def set_default_mode(mode):
+    """
+
+    Args:
+        mode: 
+
+    Returns:
+
+    Raises:
+
+    """
     assert mode in STANDARD_MODES
     global _DEFAULT_MODE
     _DEFAULT_MODE = mode
 
 
 def default_mode():
+    """ """
     return _DEFAULT_MODE
 
 

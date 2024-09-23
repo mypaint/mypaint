@@ -17,51 +17,89 @@ logger = logging.getLogger(__name__)
 
 class observable:  # noqa: N801
     """Decorator for methods which notify their observers after being called.
-
+    
     To use, mark methods intended to be called on instances of a class with
     the ``@observable`` decorator:
-
-    >>> class Tester:
-    ...     @observable
-    ...     def foo(self, a, b):
-    ...         return a + b
-
+    
+    
     This allows it to be subscribed to with a "+= callable" syntax that's
     similar to the way C# does events.  In this implementation, you can hook up
     any Python callable which has the same signature as the observable method.
     Observer callables are passed a reference to the observed instance as their
     first positional argument, just like the observable method itself.
+    
+    
+    When the decorated method is called, the original definition of the method
+    is invoked first, then each registered observer callback in turn. Observer
+    callbacks are invoked before the observable function returns, and their
 
+    Args:
+
+    Returns:
+        Only instance methods can be appended to. Trying to do this via the class
+        results in an exception.
+        
+        
+        Observable methods do not keep any references to the objects behind
+        observers which happen to be bound methods, to avoid circular reference
+        chains which could prevent garbage collection.  Instead, they store
+        weakrefs to the bound methods' objects.  Any dead weakrefs are removed
+        silently when the observed method is called.  Be cautious when writing
+        something like:
+        
+        
+        Nothing is printed here because the ``TesterObserver`` instance had no
+        permanent refs and was garbage collected before the call to ``foo()``.
+        However, observable methods *do* retain strong references to simple
+        functions like lambda expressions, so if you absolutely must observe with
+        methods on purely throwaway objects, you can do
+        
+        
+        The more normal case involves observer objects which still have remaining
+        strong references at the times their observed functions get called:
+        
+        
+        You can remove bound methods and static functions using in-place
+        notation too, and test for their presence using "in":
+        
+        
+        If you remove the last strong ref to such an observer, the observable
+        method cleans up its internal weakref to it without any fuss the next time
+        it's called:
+        
+        
+        The rationale for this is that observer objects are likely to have quite
+        different lifetimes than the things they observe.  Sometimes the observer
+        will have a longer lifetime, sometimes the observed object will live
+        longer.  Avoiding a live reference hidden away in an observable method
+        allows the observer to perish when it (or its owner) expects.
+        Additionally, observers quite often construct and own the things they
+        observe.  It's a natural style that's also a recipe for an accidental
+        circular reference chain, so special-casing observables for bound methods
+        makes sense.
+
+    Raises:
+
+    >>> class Tester:
+    ...     @observable
+    ...     def foo(self, a, b):
+    ...         return a + b
+    
     >>> tester = Tester()
     >>> arr = []
     >>> tester.foo += lambda t, a, b: arr.extend([a, b])
     >>> tester.foo += lambda t, a, b: arr.extend([a+1, b+1])
-
-    When the decorated method is called, the original definition of the method
-    is invoked first, then each registered observer callback in turn. Observer
-    callbacks are invoked before the observable function returns, and their
-    return values are ignored.
-
+    
     >>> tester.foo(41, 1)
     42
     >>> arr
     [41, 1, 42, 2]
-
-    Only instance methods can be appended to. Trying to do this via the class
-    results in an exception.
-
+    
     >>> Tester.foo += lambda t, a: a+1
     Traceback (most recent call last):
     ...
     TypeError: unsupported operand type(s) for +=: 'observable' and 'function'
-
-    Observable methods do not keep any references to the objects behind
-    observers which happen to be bound methods, to avoid circular reference
-    chains which could prevent garbage collection.  Instead, they store
-    weakrefs to the bound methods' objects.  Any dead weakrefs are removed
-    silently when the observed method is called.  Be cautious when writing
-    something like:
-
+    
     >>> class TesterObserver:
     ...     def obs(self, tester, a, b):
     ...         print ("Obsr: %r, %r" % (a, b))
@@ -69,31 +107,19 @@ class observable:  # noqa: N801
     >>> tester.foo += TesterObserver().obs
     >>> tester.foo(2, 1)
     3
-
-    Nothing is printed here because the ``TesterObserver`` instance had no
-    permanent refs and was garbage collected before the call to ``foo()``.
-    However, observable methods *do* retain strong references to simple
-    functions like lambda expressions, so if you absolutely must observe with
-    methods on purely throwaway objects, you can do
-
+    
     >>> tester.foo += lambda t, a, b: TesterObserver().obs(t, a, b)
     >>> tester.foo(2, 1)
     Obsr: 2, 1
     3
-
-    The more normal case involves observer objects which still have remaining
-    strong references at the times their observed functions get called:
-
+    
     >>> tester = Tester()
     >>> obsr = TesterObserver();
     >>> tester.foo += obsr.obs
     >>> tester.foo(6, 2)
     Obsr: 6, 2
     8
-
-    You can remove bound methods and static functions using in-place
-    notation too, and test for their presence using "in":
-
+    
     >>> fn = lambda t, a: a+1
     >>> tester.foo += fn
     >>> fn in tester.foo
@@ -106,25 +132,11 @@ class observable:  # noqa: N801
     False
     >>> obsr.obs in tester.foo
     False
-
-    If you remove the last strong ref to such an observer, the observable
-    method cleans up its internal weakref to it without any fuss the next time
-    it's called:
-
+    
     >>> tester.foo += obsr.obs
     >>> del obsr
     >>> tester.foo(6, 2)
     8
-
-    The rationale for this is that observer objects are likely to have quite
-    different lifetimes than the things they observe.  Sometimes the observer
-    will have a longer lifetime, sometimes the observed object will live
-    longer.  Avoiding a live reference hidden away in an observable method
-    allows the observer to perish when it (or its owner) expects.
-    Additionally, observers quite often construct and own the things they
-    observe.  It's a natural style that's also a recipe for an accidental
-    circular reference chain, so special-casing observables for bound methods
-    makes sense.
     """
 
     def __init__(self, func):
@@ -183,16 +195,24 @@ class observable:  # noqa: N801
     def _update_observers(cls, instance):
         """Internal: required updates after observable instances are copied
 
-        :param instance: The object to update
-
+        Args:
+            instance: The object to update
+        
         This is called on the first access via a descriptor on the copy, and
         replaces the private __wrappers dict with one whose values refer back
         to the copy, not the original.
-
+        
         Given an observer function that requires a particular identity for the
         object being observed,
+        
+        
+        this hack allows both deep and shallow copies to work as expected.
 
-          >>> class ListMunger:
+        Returns:
+
+        Raises:
+
+        >>> class ListMunger:
           ...     @observable
           ...     def append_sum(self, items):
           ...         items.append(sum(items))
@@ -205,22 +225,19 @@ class observable:  # noqa: N801
           >>> m1.append_sum += mx.bump_last
           >>> nums = [1, 1, 2]; m1.append_sum(nums); nums
           [1, 1, 2, 4, 'invoked on m1']
-
-        this hack allows both deep and shallow copies to work as expected.
-
+        
           >>> from copy import copy, deepcopy
           >>> m2 = deepcopy(m1)
           >>> m1.append_sum is m2.append_sum
           False
           >>> nums = [0, 1, 2]; m2.append_sum(nums); nums
           [0, 1, 2, 3, 'not invoked on m1']
-
+        
           >>> m3 = copy(m1)
           >>> m1.append_sum is m3.append_sum
           False
           >>> nums = [3, 2, 1]; m3.append_sum(nums); nums
           [3, 2, 1, 6, 'not invoked on m1']
-
         """
         logger.debug("Updating wrappers for %r", instance)
         updated_wrappers = {}
@@ -233,12 +250,19 @@ class observable:  # noqa: N801
 
 class _MethodWithObservers:
     """Callable wrapper: calls the decorated method, then its observers
-
+    
     This is what a __get__ on the observed object's @observable descriptor
     actually returns. Instances are stashed in the ``_<mangling>_wrappers``
     member of the observed object itself. Each `_MethodWithObservers` instance
     is callable, and when called invokes all the registered observers in
     turn.
+
+    Args:
+
+    Returns:
+
+    Raises:
+
     """
 
     def __init__(self, instance, func):
@@ -329,11 +353,17 @@ class _MethodWithObservers:
 
 class event(observable):  # noqa: N801
     """Alias for observable methods with no predefined function body.
-
+    
     This allows C#-style event declarations using an alternative shorthand
     syntax, but for events forming part of a public API it's clearest to to
     use Python's decorator notation and a method body consisting of just a
     docstring.
+
+    Args:
+
+    Returns:
+
+    Raises:
 
     >>> class Popcorn:
     ...     @event
@@ -352,7 +382,6 @@ class event(observable):  # noqa: N801
     >>> popcorn.popped()
     >>> pops
     ['pop', 'yum', 'pop', 'pop']
-
     """
 
     def __init__(self, func=None):
@@ -365,6 +394,16 @@ class event(observable):  # noqa: N801
         if func is None:
 
             def func(*a):
+                """
+
+                Args:
+                    *a: 
+
+                Returns:
+
+                Raises:
+
+                """
                 pass
 
             func.__name__ = "<event>"
@@ -372,7 +411,16 @@ class event(observable):  # noqa: N801
 
 
 def _wrap_observer(observer):
-    """Factory function for the observers in a _MethodWithObservers."""
+    """Factory function for the observers in a _MethodWithObservers.
+
+    Args:
+        observer: 
+
+    Returns:
+
+    Raises:
+
+    """
     if _is_bound_method(observer):
         return _BoundObserverMethod(observer)
     else:
@@ -380,7 +428,16 @@ def _wrap_observer(observer):
 
 
 def _is_bound_method(func):
-    """True if a callable is a bound method"""
+    """True if a callable is a bound method
+
+    Args:
+        func: 
+
+    Returns:
+
+    Raises:
+
+    """
     assert callable(func)
     if hasattr(func, "__self__") and hasattr(func, "__func__"):
         # Python2 needs this test, Python3 doesn't:
@@ -391,9 +448,19 @@ def _is_bound_method(func):
 
 def _method_repr(bound=None, instance=None, func=None):
     """Terse, useful, hopefully permanent string repr() for a method
-
+    
     Names only, given that object repr()s may change over time and this
     is cached inside some internal objects.
+
+    Args:
+        bound:  (Default value = None)
+        instance:  (Default value = None)
+        func:  (Default value = None)
+
+    Returns:
+
+    Raises:
+
     """
     if bound is not None:
         assert _is_bound_method(bound)
@@ -407,7 +474,7 @@ def _method_repr(bound=None, instance=None, func=None):
 
 class _BoundObserverMethod:
     """Wrapper for observer callbacks which are bound methods of some object.
-
+    
     To allow short-lived objects to observe long-lived objects with bound
     methods and still be gc'able, we need weakrefs.  However it's not possible
     to take a weakref to a bound method and have that be the only thing
@@ -416,10 +483,16 @@ class _BoundObserverMethod:
     function (which is always a statically allocated thing belonging to the
     class definition: those are eternal and we don't care about them).
 
+    Args:
+
+    Returns:
+
+    Raises:
+
     """
 
     class _ReferenceError(ReferenceError):
-        """Raised when calling if the observing object is now dead."""
+        """ """
 
         pass
 
@@ -491,11 +564,17 @@ class _BoundObserverMethod:
 
 class _WasAbsent:
     """The prior absence of a key in modification announcements.
-
+    
     This class is only here to provide a predictable repr() for the
     doctests: use the "is" operator for any actual tests in code.
-
+    
     See: ObservableDict.ABSENT (this class's only instance).
+
+    Args:
+
+    Returns:
+
+    Raises:
 
     """
 
@@ -505,10 +584,21 @@ class _WasAbsent:
 
 class ObservableDict(dict):
     """A dict whose modify ops can be observed.
-
+    
     ObservableDict objects work just like the builtin dict class, but
     operations which modify the dict's contents using the modified()
     event.
+    
+    
+    Limitations: you need to monitor values in the dict separately.
+    However, key insertions and deletions, and assignments of values to
+    keys can be monitored quite nicely.
+
+    Args:
+
+    Returns:
+
+    Raises:
 
     >>> od = ObservableDict({"a": 199})
     >>> od
@@ -533,11 +623,6 @@ class ObservableDict(dict):
     10
     >>> od
     ObservableDict({})
-
-    Limitations: you need to monitor values in the dict separately.
-    However, key insertions and deletions, and assignments of values to
-    keys can be monitored quite nicely.
-
     """
 
     # Class constants:
@@ -552,23 +637,28 @@ class ObservableDict(dict):
     def modified(self, old_values):
         """Event: one or more data keys were modified.
 
-        :param dict old_values: modified keys, and the old values.
-
+        Args:
+            old_values (dict): modified keys, and the old values.
+        
         You should not modify the ObservableDict in any function you
         attach to this event.  Also, note that the keys listed may no
         longer exist in the dict.
-
+        
         The old_values argument is a dict mapping the keys that were
         changed by an operation to their *previous* values. Event
         observers can look up the new values (or their absences) in the
         OrderedDict itself.
-
+        
         When a key was created by an operation, it will be listed in
         old_values. However, it will be mapped to the unique value
         ObservableDict.ABSENT.
-
+        
         This event is always announced after the changes are complete.
         Batch operations like clear() or update() call it exactly once.
+
+        Returns:
+
+        Raises:
 
         """
 
@@ -581,6 +671,7 @@ class ObservableDict(dict):
     # Same as the builtin dict type, but announcing changes:
 
     def clear(self):
+        """ """
         keys = list(self.keys())
         result = dict.clear(self)
         self.modified(keys)
@@ -601,6 +692,14 @@ class ObservableDict(dict):
     def update(self, *args, **kwargs):
         """Update from a dict, or one built from the args.
 
+        Args:
+            *args: 
+            **kwargs: 
+
+        Returns:
+
+        Raises:
+
         >>> od = ObservableDict({"a": 101})
         >>> hist = []
         >>> od.modified += lambda d, o: hist.append(o)
@@ -611,7 +710,6 @@ class ObservableDict(dict):
         [('a', 101), ('b', <WasAbsent>)]
         >>> hist[0]["b"] is ObservableDict.ABSENT
         True
-
         """
         updates = dict(*args, **kwargs)
         old_values = {k: self.get(k, self.ABSENT) for k in updates}
@@ -620,18 +718,43 @@ class ObservableDict(dict):
         return result
 
     def pop(self, key, *args, **kwargs):
+        """
+
+        Args:
+            key: 
+            *args: 
+            **kwargs: 
+
+        Returns:
+
+        Raises:
+
+        """
         old_value = self.get(key, self.ABSENT)
         result = dict.pop(self, key, *args, **kwargs)
         self.modified({key: old_value})
         return result
 
     def setdefault(self, key, *args, **kwargs):
+        """
+
+        Args:
+            key: 
+            *args: 
+            **kwargs: 
+
+        Returns:
+
+        Raises:
+
+        """
         old_value = self.get(key, self.ABSENT)
         result = dict.setdefault(self, key, *args, **kwargs)
         self.modified({key: old_value})
         return result
 
     def popitem(self):
+        """ """
         (key, old_value) = dict.popitem(self)
         self.modified({key: old_value})
         return (key, old_value)
@@ -639,8 +762,12 @@ class ObservableDict(dict):
     def copy(self):
         """Make a shallow copy of the ObservableDict.
 
-        :returns: An unobserved shallow clone.
-        :rtype: ObservableDict
+        Args:
+
+        Returns:
+            ObservableDict: An unobserved shallow clone.
+
+        Raises:
 
         """
         return self.__class__(self)
@@ -648,18 +775,19 @@ class ObservableDict(dict):
     @event
     def sync_pending_changes(self, flush=True, **kwargs):
         """Ask for pending changes to be synchronized (updated/flushed)
-
+        
         This event is triggered to signal objects which have their own
         internal state that need to be be reflected in the per-doc
         settings to write their changes to the settings dict. By
         default, the request to flush changes is non-optional.
 
-        :param bool flush: if this is False, the flush is optional too
-        :param \*\*kwargs: passed through to observers
+        Args:
+            flush (bool, optional): if this is False, the flush is optional too (Default value = True)
+            **kwargs: 
 
-        See: `lib.observable.event` for details of the signalling
-        mechanism.
-        See also: lib.document.Document.sync_pending_changes().
+        Returns:
+
+        Raises:
 
         """
 

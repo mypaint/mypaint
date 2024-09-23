@@ -62,14 +62,21 @@ class _SaveFormat:
 
 def _get_case_insensitive_glob(string):
     """Converts a glob pattern into a case-insensitive glob pattern.
-
-    >>> _get_case_insensitive_glob('*.ora')
-    '*.[oO][rR][aA]'
-
+    
+    
     This utility function is a workaround for the GTK
     FileChooser/FileFilter not having an easy way to use case
     insensitive filters
 
+    Args:
+        string: 
+
+    Returns:
+
+    Raises:
+
+    >>> _get_case_insensitive_glob('*.ora')
+    '*.[oO][rR][aA]'
     """
     ext = string.split(".")[1]
     globlist = ["[%s%s]" % (c.lower(), c.upper()) for c in ext]
@@ -77,7 +84,17 @@ def _get_case_insensitive_glob(string):
 
 
 def _add_filters_to_dialog(filters, dialog):
-    """Adds Gtk.FileFilter objs for patterns to a dialog."""
+    """Adds Gtk.FileFilter objs for patterns to a dialog.
+
+    Args:
+        filters: 
+        dialog: 
+
+    Returns:
+
+    Raises:
+
+    """
     for name, patterns in filters:
         f = Gtk.FileFilter()
         f.set_name(name)
@@ -88,11 +105,19 @@ def _add_filters_to_dialog(filters, dialog):
 
 def _dialog_set_filename(dialog, s):
     """Sets the filename and folder visible in a dialog.
-
+    
     According to the PyGTK documentation we should use set_filename();
     however, doing so removes the selected file filter.
-
+    
     TODO: verify whether this is still needed with GTK3+PyGI.
+
+    Args:
+        dialog: 
+        s: 
+
+    Returns:
+
+    Raises:
 
     """
     path, name = os.path.split(s)
@@ -105,7 +130,7 @@ def _dialog_set_filename(dialog, s):
 
 class _IOProgressUI:
     """Wraps IO activity calls to show progress to the user.
-
+    
     Code about to do a potentially lengthy save or load operation
     constructs one one of these temporary state manager objects, and
     uses it to call their supplied IO callable.  The _IOProgressUI
@@ -113,9 +138,15 @@ class _IOProgressUI:
     deeper levels will need to call regularly to keep the UI updated.
     Statusbar messages and error or progress dialogs may be shown via
     the main application.
-
+    
     Yes, this sounds a lot like context managers and IO coroutines,
     and maybe one day it all will be just that.
+
+    Args:
+
+    Returns:
+
+    Raises:
 
     """
 
@@ -203,9 +234,13 @@ class _IOProgressUI:
     def format_files_summary(f):
         """The suggested way of formatting 1+ filenames for display.
 
-        :param f: A list of filenames, or a single filename.
-        :returns: A files_summary value for the constructor.
-        :rtype: str
+        Args:
+            f: A list of filenames, or a single filename.
+
+        Returns:
+            str: A files_summary value for the constructor.
+
+        Raises:
 
         """
         if isinstance(f, tuple) or isinstance(f, list):
@@ -284,21 +319,26 @@ class _IOProgressUI:
     def call(self, func, *args, **kwargs):
         """Call a save or load callable and watch its progress.
 
-        :param callable func: The IO function to be called.
-        :param \*args: Passed to func.
-        :param \*\*kwargs: Passed to func.
-        :returns: The return value of func.
+        Args:
+            func (callable): The IO function to be called.
+            *args: 
+            **kwargs: 
 
-        Messages about the operation in progress may be shown to the
-        user according to the object's op_type and files_summary.  The
-        supplied callable is called with a *args and **kwargs, plus a
-        "progress" keyword argument that when updated will keep the UI
-        managed by this object updated.
+        Returns:
+            The return value of func.
+            
+            Messages about the operation in progress may be shown to the
+            user according to the object's op_type and files_summary.  The
+            supplied callable is called with a *args and **kwargs, plus a
+            "progress" keyword argument that when updated will keep the UI
+            managed by this object updated.
+            
+            If the callable returned, self.success is set to True. If it
+            raised an exception, it will remain False.
+            
+            See also: lib.feedback.Progress.
 
-        If the callable returned, self.success is set to True. If it
-        raised an exception, it will remain False.
-
-        See also: lib.feedback.Progress.
+        Raises:
 
         """
         statusbar = self._app.statusbar
@@ -355,6 +395,16 @@ class _IOProgressUI:
         return result
 
     def _progress_changed_cb(self, progress):
+        """
+
+        Args:
+            progress: 
+
+        Returns:
+
+        Raises:
+
+        """
         if self._progress_bar is None:
             now = time.perf_counter()
             if (now - self._start_time) > 0.25:
@@ -391,6 +441,16 @@ class _IOProgressUI:
         self._process_gtk_events()
 
     def _update_progress_bar(self, progress):
+        """
+
+        Args:
+            progress: 
+
+        Returns:
+
+        Raises:
+
+        """
         if not self._progress_bar:
             return
         fraction = progress.fraction()
@@ -403,20 +463,27 @@ class _IOProgressUI:
             self._progress_bar.set_fraction(fraction)
 
     def _process_gtk_events(self):
+        """ """
         while Gtk.events_pending():
             Gtk.main_iteration()
 
 
 class FileHandler:
     """File handling object, part of the central app object.
-
+    
     A single app-wide instance of this object is accessible from the
     central gui.application.Application instance as as app.filehandler.
     Several GTK action callbacks for opening and saving files reside
     here, and the object's public methods may be called from other parts
     of the application.
-
+    
     NOTE: filehandling and drawwindow are very tightly coupled.
+
+    Args:
+
+    Returns:
+
+    Raises:
 
     """
 
@@ -601,8 +668,14 @@ class FileHandler:
 
     def _update_recent_items(self):
         """Updates self._recent_items from the GTK RecentManager.
-
+        
         This list is consumed in open_last_cb.
+
+        Args:
+
+        Returns:
+
+        Raises:
 
         """
         # Note: i.exists() does not work on Windows if the pathname
@@ -625,9 +698,20 @@ class FileHandler:
         self._recent_items = recent_items
 
     def get_filename(self):
+        """ """
         return self._filename
 
     def set_filename(self, value):
+        """
+
+        Args:
+            value: 
+
+        Returns:
+
+        Raises:
+
+        """
         self._filename = value
         for f in self.current_file_observers:
             f(self.filename)
@@ -639,6 +723,16 @@ class FileHandler:
     filename = property(get_filename, set_filename)
 
     def init_save_dialog(self, export):
+        """
+
+        Args:
+            export: 
+
+        Returns:
+
+        Raises:
+
+        """
         if export:
             save_dialog_name = C_("Dialogs (window title): File→Export…", "Export")
         else:
@@ -683,7 +777,16 @@ class FileHandler:
 
     def selected_save_format_changed_cb(self, widget):
         """When the user changes the selected format to save as in the dialog,
-        change the extension of the filename (if existing) immediately."""
+        change the extension of the filename (if existing) immediately.
+
+        Args:
+            widget: 
+
+        Returns:
+
+        Raises:
+
+        """
         dialog = self.save_dialog
         filename = dialog.get_filename()
         if filename:
@@ -698,33 +801,38 @@ class FileHandler:
     def confirm_destructive_action(self, title=None, confirm=None, offer_save=True):
         """Asks the user to confirm an action that might lose work.
 
-        :param str title: Short question to ask the user.
-        :param str confirm: Imperative verb for the "do it" button.
-        :param bool offer_save: Set False to turn off the save checkbox.
-        :rtype: bool
-        :returns: True if the user allows the destructive action
+        Args:
+            title (str, optional): Short question to ask the user. (Default value = None)
+            confirm (str, optional): Imperative verb for the "do it" button. (Default value = None)
+            offer_save (bool, optional): Set False to turn off the save checkbox.
+        :rtype: bool (Default value = True)
 
-        Phrase the title question tersely.
-        In English/source, use title case for it, and with a question mark.
-        Good examples are “Really Quit?”,
-        or “Delete Everything?”.
-        The title should always tell the user
-        what destructive action is about to take place.
-        If it is not specified, a default title is used.
+        Returns:
+            True if the user allows the destructive action
+            
+            Phrase the title question tersely.
+            In English/source, use title case for it, and with a question mark.
+            Good examples are “Really Quit?”,
+            or “Delete Everything?”.
+            The title should always tell the user
+            what destructive action is about to take place.
+            If it is not specified, a default title is used.
+            
+            Use a single, specific, imperative verb for the confirm string.
+            It should reflect the title question.
+            This is used for the primary confirmation button, if specified.
+            See the GNOME HIG for further guidelines on what to use here.
+            
+            This method doesn't bother asking
+            if there's less than a handful of seconds of unsaved work.
+            By default, that's 1 second.
+            The build-time and runtime debugging flags
+            make this period longer
+            to allow more convenient development and testing.
+            
+            Ref: https://developer.gnome.org/hig/stable/dialogs.html.en
 
-        Use a single, specific, imperative verb for the confirm string.
-        It should reflect the title question.
-        This is used for the primary confirmation button, if specified.
-        See the GNOME HIG for further guidelines on what to use here.
-
-        This method doesn't bother asking
-        if there's less than a handful of seconds of unsaved work.
-        By default, that's 1 second.
-        The build-time and runtime debugging flags
-        make this period longer
-        to allow more convenient development and testing.
-
-        Ref: https://developer.gnome.org/hig/stable/dialogs.html.en
+        Raises:
 
         """
         if title is None:
@@ -849,10 +957,32 @@ class FileHandler:
             return False
 
     def _destructive_action_dialog_show_cb(self, dialog, checkbox):
+        """
+
+        Args:
+            dialog: 
+            checkbox: 
+
+        Returns:
+
+        Raises:
+
+        """
         checkbox.show_all()
         checkbox.set_can_focus(True)
 
     def _destructive_action_dialog_save1st_toggled_cb(self, checkbox, dialog):
+        """
+
+        Args:
+            checkbox: 
+            dialog: 
+
+        Returns:
+
+        Raises:
+
+        """
         # Choosing to save locks you into a particular course of action.
         # Hopefully this isn't too strange.
         # Escape will still work.
@@ -861,6 +991,16 @@ class FileHandler:
         cancel_btn.set_sensitive(cancel_allowed)
 
     def new_cb(self, action):
+        """
+
+        Args:
+            action: 
+
+        Returns:
+
+        Raises:
+
+        """
         ok_to_start_new_doc = self.confirm_destructive_action(
             title=C_(
                 "File→New: confirm dialog: title question",
@@ -882,11 +1022,32 @@ class FileHandler:
 
     @staticmethod
     def gtk_main_tick(*args, **kwargs):
+        """
+
+        Args:
+            *args: 
+            **kwargs: 
+
+        Returns:
+
+        Raises:
+
+        """
         while Gtk.events_pending():
             Gtk.main_iteration()
 
     def open_file(self, filename, **kwargs):
-        """Load a file, replacing the current working document."""
+        """Load a file, replacing the current working document.
+
+        Args:
+            filename: 
+            **kwargs: 
+
+        Returns:
+
+        Raises:
+
+        """
         if not self._call_doc_load_method(
             self.doc.model.load, filename, False, **kwargs
         ):
@@ -917,7 +1078,16 @@ class FileHandler:
                 break
 
     def import_layers(self, filenames):
-        """Load a file, replacing the current working document."""
+        """Load a file, replacing the current working document.
+
+        Args:
+            filenames: 
+
+        Returns:
+
+        Raises:
+
+        """
 
         if not self._call_doc_load_method(
             self.doc.model.import_layers, filenames, True
@@ -927,10 +1097,20 @@ class FileHandler:
 
     def _call_doc_load_method(self, method, arg, is_import, compat_handler=None):
         """Internal: common GUI aspects of loading or importing files.
-
+        
         Calls a document model loader method (on lib.document.Document)
         with the given argument. Catches common loading exceptions and
         shows appropriate error messages.
+
+        Args:
+            method: 
+            arg: 
+            is_import: 
+            compat_handler:  (Default value = None)
+
+        Returns:
+
+        Raises:
 
         """
         if not compat_handler:
@@ -952,6 +1132,16 @@ class FileHandler:
         return (result is not False) and ioui.success
 
     def open_scratchpad(self, filename):
+        """
+
+        Args:
+            filename: 
+
+        Returns:
+
+        Raises:
+
+        """
         no_ui_progress = lib.feedback.Progress()
         no_ui_progress.changed += self.gtk_main_tick
         try:
@@ -976,15 +1166,21 @@ class FileHandler:
     def save_file(self, filename, export=False, **options):
         """Saves the main document to one or more files (app/toplevel)
 
-        :param filename: The base filename to save
-        :param bool export: True if exporting
-        :param **options: Pass-through options
-
+        Args:
+            filename: The base filename to save
+            export (bool, optional): True if exporting (Default value = False)
+            **options: Pass-through options
+        
         This method invokes `_save_doc_to_file()` with the main working
         doc, but also attempts to save thumbnails and perform recent
         files list management, when appropriate.
-
+        
         See `_save_doc_to_file()`
+
+        Returns:
+
+        Raises:
+
         """
         thumbnail_pixbuf = self._save_doc_to_file(
             filename, self.doc, export=export, use_statusbar=True, **options
@@ -1014,6 +1210,18 @@ class FileHandler:
 
     @with_wait_cursor
     def save_scratchpad(self, filename, export=False, **options):
+        """
+
+        Args:
+            filename: 
+            export:  (Default value = False)
+            **options: 
+
+        Returns:
+
+        Raises:
+
+        """
         save_needed = (
             self.app.scratchpad_doc.model.unsaved_painting_time
             or export
@@ -1038,15 +1246,22 @@ class FileHandler:
     ):
         """Saves a document to one or more files
 
-        :param filename: The base filename to save
-        :param Document doc: Controller for the document to save
-        :param bool export: True if exporting
-        :param **options: Pass-through options
-
+        Args:
+            filename: The base filename to save
+            doc (Document): Controller for the document to save
+            export (bool, optional): True if exporting (Default value = False)
+            use_statusbar:  (Default value = True)
+            **options: Pass-through options
+        
         This method handles logging, statusbar messages,
         and alerting the user to when the save failed.
-
+        
         See also: lib.document.Document.save(), _IOProgressUI.
+
+        Returns:
+
+        Raises:
+
         """
         thumbnail_pixbuf = None
         prefs = self.app.preferences
@@ -1064,6 +1279,17 @@ class FileHandler:
         return thumbnail_pixbuf
 
     def update_preview_cb(self, file_chooser, preview):
+        """
+
+        Args:
+            file_chooser: 
+            preview: 
+
+        Returns:
+
+        Raises:
+
+        """
         filename = file_chooser.get_preview_filename()
         if filename:
             filename = filename_to_str(filename)
@@ -1079,6 +1305,16 @@ class FileHandler:
                 file_chooser.set_preview_widget_active(False)
 
     def open_cb(self, action):
+        """
+
+        Args:
+            action: 
+
+        Returns:
+
+        Raises:
+
+        """
         ok_to_open = self.app.filehandler.confirm_destructive_action(
             title=C_(
                 "File→Open: confirm dialog: title question",
@@ -1136,6 +1372,7 @@ class FileHandler:
             dialog.destroy()
 
     def open_scratchpad_dialog(self):
+        """ """
         dialog = Gtk.FileChooserDialog(
             C_(
                 "load dialogs: title",
@@ -1181,7 +1418,16 @@ class FileHandler:
             dialog.destroy()
 
     def import_layers_cb(self, action):
-        """Action callback: import layers from multiple files."""
+        """Action callback: import layers from multiple files.
+
+        Args:
+            action: 
+
+        Returns:
+
+        Raises:
+
+        """
         dialog = Gtk.FileChooserDialog(
             title=C_(
                 "Layers→Import Layers: files-chooser dialog: title",
@@ -1226,12 +1472,32 @@ class FileHandler:
             self.import_layers(filenames)
 
     def save_cb(self, action):
+        """
+
+        Args:
+            action: 
+
+        Returns:
+
+        Raises:
+
+        """
         if not self.filename:
             self.save_as_cb(action)
         else:
             self.save_file(self.filename)
 
     def save_as_cb(self, action):
+        """
+
+        Args:
+            action: 
+
+        Returns:
+
+        Raises:
+
+        """
         if self.filename:
             current_filename = self.filename
         else:
@@ -1252,6 +1518,16 @@ class FileHandler:
         )
 
     def save_scratchpad_as_dialog(self, export=False):
+        """
+
+        Args:
+            export:  (Default value = False)
+
+        Returns:
+
+        Raises:
+
+        """
         if self.app.scratchpad_filename:
             current_filename = self.app.scratchpad_filename
         else:
@@ -1271,6 +1547,20 @@ class FileHandler:
         export=False,
         **options
     ):
+        """
+
+        Args:
+            save_method_reference: 
+            suggested_filename:  (Default value = None)
+            start_in_folder:  (Default value = None)
+            export:  (Default value = False)
+            **options: 
+
+        Returns:
+
+        Raises:
+
+        """
         if not self.save_dialog:
             self.save_dialog = self.init_save_dialog(export)
         dialog = self.save_dialog
@@ -1340,6 +1630,16 @@ class FileHandler:
             self.save_dialog = None
 
     def save_scrap_cb(self, action):
+        """
+
+        Args:
+            action: 
+
+        Returns:
+
+        Raises:
+
+        """
         filename = self.filename
         prefix = self.get_scrap_prefix()
         self.app.filename = self.save_autoincrement_file(
@@ -1349,6 +1649,16 @@ class FileHandler:
         )
 
     def save_scratchpad_cb(self, action):
+        """
+
+        Args:
+            action: 
+
+        Returns:
+
+        Raises:
+
+        """
         filename = self.app.scratchpad_filename
         prefix = self.get_scratchpad_prefix()
         self.app.scratchpad_filename = self.save_autoincrement_file(
@@ -1358,6 +1668,18 @@ class FileHandler:
         )
 
     def save_autoincrement_file(self, filename, prefix, main_doc=True):
+        """
+
+        Args:
+            filename: 
+            prefix: 
+            main_doc:  (Default value = True)
+
+        Returns:
+
+        Raises:
+
+        """
         # If necessary, create the folder(s) the scraps are stored under
         prefix_dir = os.path.dirname(prefix)
         if not os.path.exists(prefix_dir):
@@ -1416,6 +1738,7 @@ class FileHandler:
         return filename
 
     def get_scrap_prefix(self):
+        """ """
         prefix = self.app.preferences["saving.scrap_prefix"]
         # This should really use two separate settings, not one.
         # https://github.com/mypaint/mypaint/issues/375
@@ -1427,6 +1750,7 @@ class FileHandler:
         return prefix
 
     def get_scratchpad_prefix(self):
+        """ """
         # TODO allow override via prefs, maybe
         prefix = os.path.join(self.app.user_datapath, "scratchpads")
         prefix = os.path.abspath(prefix)
@@ -1436,19 +1760,23 @@ class FileHandler:
         return prefix
 
     def get_scratchpad_default(self):
+        """ """
         # TODO get the default name from preferences
         prefix = self.get_scratchpad_prefix()
         return os.path.join(prefix, "scratchpad_default.ora")
 
     def get_scratchpad_autosave(self):
+        """ """
         prefix = self.get_scratchpad_prefix()
         return os.path.join(prefix, "autosave.ora")
 
     def list_scraps(self):
+        """ """
         prefix = self.get_scrap_prefix()
         return self._list_prefixed_dir(prefix)
 
     def list_scratchpads(self):
+        """ """
         prefix = self.get_scratchpad_prefix()
         files = self._list_prefixed_dir(prefix)
         special_prefix = os.path.join(prefix, "special")
@@ -1457,6 +1785,16 @@ class FileHandler:
         return files
 
     def _list_prefixed_dir(self, prefix):
+        """
+
+        Args:
+            prefix: 
+
+        Returns:
+
+        Raises:
+
+        """
         filenames = []
         for ext in ["png", "ora", "jpg", "jpeg"]:
             filenames += glob(prefix + "[0-9]*." + ext)
@@ -1467,17 +1805,39 @@ class FileHandler:
         return filenames
 
     def list_scraps_grouped(self):
+        """ """
         filenames = self.list_scraps()
         return self.list_files_grouped(filenames)
 
     def list_scratchpads_grouped(self):
+        """ """
         filenames = self.list_scratchpads()
         return self.list_files_grouped(filenames)
 
     def list_files_grouped(self, filenames):
-        """return scraps grouped by their major number"""
+        """
+
+        Args:
+            filenames: 
+
+        Returns:
+            
+
+        Raises:
+
+        """
 
         def scrap_id(filename):
+            """
+
+            Args:
+                filename: 
+
+            Returns:
+
+            Raises:
+
+            """
             s = os.path.basename(filename)
             if s.startswith("_md5"):
                 return s
@@ -1493,7 +1853,16 @@ class FileHandler:
         return groups
 
     def open_recent_cb(self, action):
-        """Callback for RecentAction"""
+        """Callback for RecentAction
+
+        Args:
+            action: 
+
+        Returns:
+
+        Raises:
+
+        """
         uri = action.get_current_uri()
         fn, _h = lib.glib.filename_from_uri(uri)
         ok_to_open = self.app.filehandler.confirm_destructive_action(
@@ -1505,7 +1874,16 @@ class FileHandler:
         self.open_file(fn)
 
     def open_last_cb(self, action):
-        """Callback to open the last file"""
+        """Callback to open the last file
+
+        Args:
+            action: 
+
+        Returns:
+
+        Raises:
+
+        """
         if not self._recent_items:
             return
         ok_to_open = self.app.filehandler.confirm_destructive_action(
@@ -1525,6 +1903,16 @@ class FileHandler:
         self.open_file(fn)
 
     def open_scrap_cb(self, action):
+        """
+
+        Args:
+            action: 
+
+        Returns:
+
+        Raises:
+
+        """
         groups = self.list_scraps_grouped()
         if not groups:
             msg = C_(
@@ -1564,6 +1952,16 @@ class FileHandler:
         self.open_file(filename)
 
     def reload_cb(self, action):
+        """
+
+        Args:
+            action: 
+
+        Returns:
+
+        Raises:
+
+        """
         if not self.filename:
             self.app.show_transient_message(
                 C_(
@@ -1583,6 +1981,16 @@ class FileHandler:
             self.open_file(self.filename)
 
     def delete_scratchpads(self, filenames):
+        """
+
+        Args:
+            filenames: 
+
+        Returns:
+
+        Raises:
+
+        """
         prefix = self.get_scratchpad_prefix()
         prefix = os.path.abspath(prefix)
         for filename in filenames:
@@ -1595,20 +2003,29 @@ class FileHandler:
             logger.info("Removed %s", filename)
 
     def delete_default_scratchpad(self):
+        """ """
         if os.path.isfile(self.get_scratchpad_default()):
             os.remove(self.get_scratchpad_default())
             logger.info("Removed the scratchpad default file")
 
     def delete_autosave_scratchpad(self):
+        """ """
         if os.path.isfile(self.get_scratchpad_autosave()):
             os.remove(self.get_scratchpad_autosave())
             logger.info("Removed the scratchpad autosave file")
 
     def _recentfilter_func(self, rfinfo):
         """Recent-file filter function.
-
+        
         This does a filename extension check, and also verifies that the
         file actually exists.
+
+        Args:
+            rfinfo: 
+
+        Returns:
+
+        Raises:
 
         """
         if not rfinfo:
@@ -1620,7 +2037,16 @@ class FileHandler:
         # Keep this test in sync with _update_recent_items().
 
     def _uri_is_loadable(self, file_uri):
-        """True if a URI is valid to be loaded by MyPaint."""
+        """True if a URI is valid to be loaded by MyPaint.
+
+        Args:
+            file_uri: 
+
+        Returns:
+
+        Raises:
+
+        """
         if file_uri is None:
             return False
         if not file_uri.startswith("file://"):

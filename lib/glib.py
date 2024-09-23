@@ -33,29 +33,33 @@ logger = logging.getLogger(__name__)
 def filename_to_str(opsysstring):
     """Converts a bytes representing a filename from GLib to str.
 
-    :param bytes opsysstring: a string in the (GLib) encoding for filenames
-    :returns: the converted filename
-    :rtype: str
+    Args:
+        opsysstring (bytes): a string in the (GLib) encoding for filenames
+
+    Returns:
+        str
+
+
+This is just a more Pythonic wrapper around g_filename_to_utf8() for
+now, which works around a ton of weird bugs and corner cases with
+the typelib annotations for it. It is intended for cleaning up the
+output of certain GLib functions.
+
+Currently, if you're using Python 3 and the input is already str
+then this function assumes that GLib+GI have already done the work,
+and that the str string was correct. You get the same string
+back.
+
+For Python 2, this accepts only "bytes" string input. If we find a
+corner case where GLib functions return degenerate unicode, we can
+adapt it for that case (those funcs need their own wrappers though).: the converted filename
+
+    Raises:
 
     >>> filename_to_str(b'/ascii/only/path') == u'/ascii/only/path'
     True
     >>> filename_to_str(None) is None
     True
-
-    This is just a more Pythonic wrapper around g_filename_to_utf8() for
-    now, which works around a ton of weird bugs and corner cases with
-    the typelib annotations for it. It is intended for cleaning up the
-    output of certain GLib functions.
-
-    Currently, if you're using Python 3 and the input is already str
-    then this function assumes that GLib+GI have already done the work,
-    and that the str string was correct. You get the same string
-    back.
-
-    For Python 2, this accepts only "bytes" string input. If we find a
-    corner case where GLib functions return degenerate unicode, we can
-    adapt it for that case (those funcs need their own wrappers though).
-
     """
     if opsysstring is None:
         return None
@@ -156,7 +160,16 @@ def get_user_cache_dir():
 
 
 def get_user_special_dir(d_id):
-    """Like g_get_user_special_dir(), but always str"""
+    """Like g_get_user_special_dir(), but always str
+
+    Args:
+        d_id: 
+
+    Returns:
+
+    Raises:
+
+    """
     d_fs = GLib.get_user_special_dir(d_id)
     return filename_to_str(d_fs)
 
@@ -166,18 +179,24 @@ def get_user_special_dir(d_id):
 
 def init_user_dir_caches():
     """Caches the GLib user directories
-
-    >>> init_user_dir_caches()
-
+    
+    
     The first time this module is imported is from a particular point in
     the launch script, after all the i18n setup is done and before
     lib.mypaintlib is imported. If they're not cached up-front in this
     manner, get_user_config_dir() & friends may return literal "?"s in
     place of non-ASCII characters (Windows systems with non-ASCII user
     profile dirs are known to trigger this).
-
+    
     The debugging prints may be useful too.
 
+    Args:
+
+    Returns:
+
+    Raises:
+
+    >>> init_user_dir_caches()
     """
     logger.debug("Init g_get_user_config_dir(): %r", get_user_config_dir())
     logger.debug("Init g_get_user_data_dir(): %r", get_user_data_dir())
@@ -198,6 +217,14 @@ def init_user_dir_caches():
 def filename_to_uri(abspath, hostname=None):
     """More Pythonic & stable g_filename_to_uri(), with OS workarounds.
 
+    Args:
+        abspath: 
+        hostname:  (Default value = None)
+
+    Returns:
+
+    Raises:
+
     >>> import os.path
     >>> relpath = os.path.join(u'tmp', u'smile (\u263a).ora')
     >>> abspath = os.path.abspath(relpath)
@@ -208,7 +235,6 @@ def filename_to_uri(abspath, hostname=None):
     True
     >>> uri.startswith('file:///')
     True
-
     """
     if hostname:
         raise ValueError("Only NULL hostnames are supported")
@@ -229,6 +255,13 @@ def filename_to_uri(abspath, hostname=None):
 def filename_from_uri(uri):
     """More Pythonic & stable g_filename_from_uri(), with OS workarounds.
 
+    Args:
+        uri: 
+
+    Returns:
+
+    Raises:
+
     >>> import os.path
     >>> relpath = os.path.join(u'tmp', u'smile (\u263a).ora')
     >>> abspath1 = os.path.abspath(relpath)
@@ -238,7 +271,6 @@ def filename_from_uri(uri):
     True
     >>> abspath2.replace('\\\\', "/") == abspath1.replace('\\\\', "/")
     True
-
     """
     # First find the right g_filename_from_uri.
     # See the note above.
@@ -264,6 +296,7 @@ def filename_from_uri(uri):
 
 
 def _test():
+    """ """
     import doctest
 
     doctest.testmod()

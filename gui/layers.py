@@ -43,10 +43,16 @@ logger = logging.getLogger(__name__)
 
 class RootStackTreeModelWrapper(GObject.GObject, Gtk.TreeModel):
     """Tree model wrapper presenting a document model's layers stack
-
+    
     Together with the layers panel (defined in `gui.layerswindow`),
     and `RootStackTreeView`, this forms part of the presentation logic
     for the layer stack.
+
+    Args:
+
+    Returns:
+
+    Raises:
 
     """
 
@@ -88,19 +94,52 @@ class RootStackTreeModelWrapper(GObject.GObject, Gtk.TreeModel):
     ## Event and update handling
 
     def _layer_props_changed_cb(self, root, layerpath, layer, changed):
-        """Updates the display after a layer's properties change"""
+        """Updates the display after a layer's properties change
+
+        Args:
+            root: 
+            layerpath: 
+            layer: 
+            changed: 
+
+        Returns:
+
+        Raises:
+
+        """
         treepath = Gtk.TreePath(layerpath)
         it = self.get_iter(treepath)
         self._row_changed_all_descendents(treepath, it)
 
     def _layer_thumbnail_updated_cb(self, root, layerpath, layer):
-        """Updates the display after a layer's thumbnail changes."""
+        """Updates the display after a layer's thumbnail changes.
+
+        Args:
+            root: 
+            layerpath: 
+            layer: 
+
+        Returns:
+
+        Raises:
+
+        """
         treepath = Gtk.TreePath(layerpath)
         it = self.get_iter(treepath)
         self.row_changed(treepath, it)
 
     def _layer_inserted_cb(self, root, path):
-        """Updates the display after a layer is added"""
+        """Updates the display after a layer is added
+
+        Args:
+            root: 
+            path: 
+
+        Returns:
+
+        Raises:
+
+        """
         self.invalidate_iters()
         it = self.get_iter(path)
         self.row_inserted(Gtk.TreePath(path), it)
@@ -113,7 +152,17 @@ class RootStackTreeModelWrapper(GObject.GObject, Gtk.TreeModel):
             self.row_has_child_toggled(Gtk.TreePath(parent_path), parent_it)
 
     def _layer_deleted_cb(self, root, path):
-        """Updates the display after a layer is removed"""
+        """Updates the display after a layer is removed
+
+        Args:
+            root: 
+            path: 
+
+        Returns:
+
+        Raises:
+
+        """
         self.invalidate_iters()
         self.row_deleted(Gtk.TreePath(path))
         parent_path = path[:-1]
@@ -125,11 +174,31 @@ class RootStackTreeModelWrapper(GObject.GObject, Gtk.TreeModel):
             self.row_has_child_toggled(Gtk.TreePath(parent_path), parent_it)
 
     def _row_dragged(self, src_path, dst_path):
-        """Handles the user dragging a row to a new location"""
+        """Handles the user dragging a row to a new location
+
+        Args:
+            src_path: 
+            dst_path: 
+
+        Returns:
+
+        Raises:
+
+        """
         self._docmodel.restack_layer(src_path, dst_path)
 
     def _row_changed_all_descendents(self, treepath, it):
-        """Like GtkTreeModel.row_changed(), but all descendents too."""
+        """Like GtkTreeModel.row_changed(), but all descendents too.
+
+        Args:
+            treepath: 
+            it: 
+
+        Returns:
+
+        Raises:
+
+        """
         self.row_changed(treepath, it)
         if self.iter_n_children(it) <= 0:
             return
@@ -149,15 +218,22 @@ class RootStackTreeModelWrapper(GObject.GObject, Gtk.TreeModel):
 
     def _lvm_current_view_changed_cb(self, lvm):
         """Respond to changes of/on the currently active layer-view.
-
+        
         For the sake of the related TreeView, announce a change to all
         rows to make sure any bulk changes to the sensitive state of the
         visibility column are visible instantly.
-
+        
         This is slightly incorrect, since it means that the TreeModel
         needs to know what its TreeView does. Maybe the model
         implemented here should expose its data in proper columns, with
         effective-visibility, visibility-sensitive and so on.
+
+        Args:
+            lvm: 
+
+        Returns:
+
+        Raises:
 
         """
         self._row_changed_all()
@@ -174,17 +250,44 @@ class RootStackTreeModelWrapper(GObject.GObject, Gtk.TreeModel):
             self._iter_stamp += 1
 
     def iter_is_valid(self, it):
-        """True if an iterator produced by this model is valid"""
+        """True if an iterator produced by this model is valid
+
+        Args:
+            it: 
+
+        Returns:
+
+        Raises:
+
+        """
         return it.stamp == self._iter_stamp
 
     @classmethod
     def _invalidate_iter(cls, it):
-        """Invalidates an iterator"""
+        """Invalidates an iterator
+
+        Args:
+            it: 
+
+        Returns:
+
+        Raises:
+
+        """
         it.stamp = cls.INVALID_STAMP
         it.user_data = None
 
     def _get_iter_path(self, it):
-        """Gets an iterator's path: None if invalid"""
+        """Gets an iterator's path: None if invalid
+
+        Args:
+            it: 
+
+        Returns:
+
+        Raises:
+
+        """
         if not self.iter_is_valid(it):
             return None
         else:
@@ -192,7 +295,17 @@ class RootStackTreeModelWrapper(GObject.GObject, Gtk.TreeModel):
             return tuple(path)
 
     def _set_iter_path(self, it, path):
-        """Sets an iterator's path, invalidating it if path=None"""
+        """Sets an iterator's path, invalidating it if path=None
+
+        Args:
+            it: 
+            path: 
+
+        Returns:
+
+        Raises:
+
+        """
         if path is None:
             self._invalidate_iter(it)
         else:
@@ -207,10 +320,18 @@ class RootStackTreeModelWrapper(GObject.GObject, Gtk.TreeModel):
 
     def _create_iter(self, path):
         """Creates an iterator for the given path
-
+        
         The returned pair can be returned by the ``do_*()`` virtual
         function implementations. Use this method in preference to the
         regular `Gtk.TreeIter` constructor.
+
+        Args:
+            path: 
+
+        Returns:
+
+        Raises:
+
         """
         if not path:
             return (False, None)
@@ -220,7 +341,17 @@ class RootStackTreeModelWrapper(GObject.GObject, Gtk.TreeModel):
             return (True, it)
 
     def _iter_bump(self, it, delta):
-        """Move an iter at its current level"""
+        """Move an iter at its current level
+
+        Args:
+            it: 
+            delta: 
+
+        Returns:
+
+        Raises:
+
+        """
         path = self._get_iter_path(it)
         if path is not None:
             path = list(path)
@@ -236,7 +367,17 @@ class RootStackTreeModelWrapper(GObject.GObject, Gtk.TreeModel):
     ## Data lookup
 
     def get_layer(self, treepath=None, it=None):
-        """Look up a layer using paths or iterators"""
+        """Look up a layer using paths or iterators
+
+        Args:
+            treepath:  (Default value = None)
+            it:  (Default value = None)
+
+        Returns:
+
+        Raises:
+
+        """
         if treepath is None:
             if it is not None:
                 treepath = self._get_iter_path(it)
@@ -257,16 +398,44 @@ class RootStackTreeModelWrapper(GObject.GObject, Gtk.TreeModel):
         return len(self.COLUMN_TYPES)
 
     def do_get_column_type(self, n):
+        """
+
+        Args:
+            n: 
+
+        Returns:
+
+        Raises:
+
+        """
         return self.COLUMN_TYPES[n]
 
     def do_get_iter(self, treepath):
-        """New iterator pointing at a node identified by GtkTreePath"""
+        """New iterator pointing at a node identified by GtkTreePath
+
+        Args:
+            treepath: 
+
+        Returns:
+
+        Raises:
+
+        """
         if not self.get_layer(treepath=treepath):
             treepath = None
         return self._create_iter(treepath)
 
     def do_get_path(self, it):
-        """New GtkTreePath for a treeiter"""
+        """New GtkTreePath for a treeiter
+
+        Args:
+            it: 
+
+        Returns:
+
+        Raises:
+
+        """
         path = self._get_iter_path(it)
         if path is None:
             return None
@@ -274,30 +443,85 @@ class RootStackTreeModelWrapper(GObject.GObject, Gtk.TreeModel):
             return Gtk.TreePath(path)
 
     def do_get_value(self, it, column):
-        """Value at a particular row-iterator and column index"""
+        """Value at a particular row-iterator and column index
+
+        Args:
+            it: 
+            column: 
+
+        Returns:
+
+        Raises:
+
+        """
         if column != 0:
             return None
         return self.get_layer(it=it)
 
     def do_iter_next(self, it):
-        """Move an iterator to the node after it, returning success"""
+        """Move an iterator to the node after it, returning success
+
+        Args:
+            it: 
+
+        Returns:
+
+        Raises:
+
+        """
         return self._iter_bump(it, 1)
 
     def do_iter_previous(self, it):
-        """Move an iterator to the node before it, returning success"""
+        """Move an iterator to the node before it, returning success
+
+        Args:
+            it: 
+
+        Returns:
+
+        Raises:
+
+        """
         return self._iter_bump(it, -1)
 
     def do_iter_children(self, parent):
-        """Fetch an iterator pointing at the first child of a parent"""
+        """Fetch an iterator pointing at the first child of a parent
+
+        Args:
+            parent: 
+
+        Returns:
+
+        Raises:
+
+        """
         return self.do_iter_nth_child(parent, 0)
 
     def do_iter_has_child(self, it):
-        """True if an iterator has children"""
+        """True if an iterator has children
+
+        Args:
+            it: 
+
+        Returns:
+
+        Raises:
+
+        """
         layer = self.get_layer(it=it)
         return isinstance(layer, lib.layer.LayerStack) and len(layer) > 0
 
     def do_iter_n_children(self, it):
-        """Count of the children of a given iterator"""
+        """Count of the children of a given iterator
+
+        Args:
+            it: 
+
+        Returns:
+
+        Raises:
+
+        """
         layer = self.get_layer(it=it)
         if not isinstance(layer, lib.layer.LayerStack):
             return 0
@@ -305,7 +529,17 @@ class RootStackTreeModelWrapper(GObject.GObject, Gtk.TreeModel):
             return len(layer)
 
     def do_iter_nth_child(self, it, n):
-        """Fetch a specific child iterator of a parent iter"""
+        """Fetch a specific child iterator of a parent iter
+
+        Args:
+            it: 
+            n: 
+
+        Returns:
+
+        Raises:
+
+        """
         if it is None:
             path = (n,)
         else:
@@ -319,7 +553,16 @@ class RootStackTreeModelWrapper(GObject.GObject, Gtk.TreeModel):
         return self._create_iter(path)
 
     def do_iter_parent(self, it):
-        """Fetches the parent of a valid iterator"""
+        """Fetches the parent of a valid iterator
+
+        Args:
+            it: 
+
+        Returns:
+
+        Raises:
+
+        """
         if it is None:
             parent_path = None
         else:
@@ -464,10 +707,30 @@ class RootStackTreeView(Gtk.TreeView):
     ## Low-level GDK event handlers
 
     def _key_event_cb(self, *args):
+        """
+
+        Args:
+            *args: 
+
+        Returns:
+
+        Raises:
+
+        """
         return False
 
     def _button_press_cb(self, view, event):
-        """Handle button presses (visibility, locked, naming)"""
+        """Handle button presses (visibility, locked, naming)
+
+        Args:
+            view: 
+            event: 
+
+        Returns:
+
+        Raises:
+
+        """
 
         # Basic details about the click
         single_click = event.type == Gdk.EventType.BUTTON_PRESS
@@ -541,14 +804,38 @@ class RootStackTreeView(Gtk.TreeView):
         return False
 
     def _name_col_2click_cb(self, event, layer, path, area):
-        """Rename the current layer."""
+        """Rename the current layer.
+
+        Args:
+            event: 
+            layer: 
+            path: 
+            area: 
+
+        Returns:
+
+        Raises:
+
+        """
         # At this point, a layer will have already been selected by
         # a single-click event.
         self.current_layer_rename_requested()
         return True
 
     def _flags1_col_click_cb(self, event, layer, path, area):
-        """Toggle visibility or Layer Solo (with Ctrl held)."""
+        """Toggle visibility or Layer Solo (with Ctrl held).
+
+        Args:
+            event: 
+            layer: 
+            path: 
+            area: 
+
+        Returns:
+
+        Raises:
+
+        """
         rootstack = self._docmodel.layer_stack
         lvm = self._docmodel.layer_view_manager
 
@@ -569,13 +856,37 @@ class RootStackTreeView(Gtk.TreeView):
         return True
 
     def _flags2_col_click_cb(self, event, layer, path, area):
-        """Toggle the clicked layer's visibility."""
+        """Toggle the clicked layer's visibility.
+
+        Args:
+            event: 
+            layer: 
+            path: 
+            area: 
+
+        Returns:
+
+        Raises:
+
+        """
         new_locked = not layer.locked
         self._docmodel.set_layer_locked(new_locked, layer)
         return True
 
     def _preview_cell_click_cb(self, event, layer, path, area):
-        """Expand the clicked layer if the preview is clicked."""
+        """Expand the clicked layer if the preview is clicked.
+
+        Args:
+            event: 
+            layer: 
+            path: 
+            area: 
+
+        Returns:
+
+        Raises:
+
+        """
         # The idea here is that the preview cell area acts as an extra
         # expander. Some themes' expander arrows are very small.
         treepath = Gtk.TreePath(path)
@@ -583,6 +894,17 @@ class RootStackTreeView(Gtk.TreeView):
         return False  # fallthru: allow the layer to be selected
 
     def _drag_begin_cb(self, view, context):
+        """
+
+        Args:
+            view: 
+            context: 
+
+        Returns:
+
+        Raises:
+
+        """
         self.drag_began()
         src_path = self._docmodel.layer_stack.get_current_path()
         self._drag_src_path = src_path
@@ -593,7 +915,17 @@ class RootStackTreeView(Gtk.TreeView):
         self._hover_expand_timer_id = None
 
     def _get_checked_dest_row_at_pos(self, x, y):
-        """Like get_dest_row_at_pos(), but with structural checks"""
+        """Like get_dest_row_at_pos(), but with structural checks
+
+        Args:
+            x: 
+            y: 
+
+        Returns:
+
+        Raises:
+
+        """
         # Some pre-flight checks
         src_path = self._drag_src_path
         if src_path is None:
@@ -642,6 +974,20 @@ class RootStackTreeView(Gtk.TreeView):
         return (dest_treepath, drop_pos)
 
     def _drag_motion_cb(self, view, context, x, y, t):
+        """
+
+        Args:
+            view: 
+            context: 
+            x: 
+            y: 
+            t: 
+
+        Returns:
+
+        Raises:
+
+        """
         dest_treepath, drop_pos = self._get_checked_dest_row_at_pos(x, y)
         self.set_drag_dest_row(dest_treepath, drop_pos)
         if dest_treepath is None:
@@ -657,6 +1003,18 @@ class RootStackTreeView(Gtk.TreeView):
         return True
 
     def _restart_hover_expand_timer(self, path, x, y):
+        """
+
+        Args:
+            path: 
+            x: 
+            y: 
+
+        Returns:
+
+        Raises:
+
+        """
         self._stop_hover_expand_timer()
         root = self._docmodel.layer_stack
         layer = root.deepget(path)
@@ -673,12 +1031,25 @@ class RootStackTreeView(Gtk.TreeView):
         )
 
     def _stop_hover_expand_timer(self):
+        """ """
         if self._hover_expand_timer_id is None:
             return
         GLib.source_remove(self._hover_expand_timer_id)
         self._hover_expand_timer_id = None
 
     def _hover_expand_timer_cb(self, path, x, y):
+        """
+
+        Args:
+            path: 
+            x: 
+            y: 
+
+        Returns:
+
+        Raises:
+
+        """
         self.expand_to_path(Gtk.TreePath(path))
         # The insertion marker may need updating after the expand
         dest_treepath, drop_pos = self._get_checked_dest_row_at_pos(x, y)
@@ -687,18 +1058,37 @@ class RootStackTreeView(Gtk.TreeView):
         return False
 
     def _drag_leave_cb(self, view, context, t):
-        """Reset the insertion point when the drag leaves"""
+        """Reset the insertion point when the drag leaves
+
+        Args:
+            view: 
+            context: 
+            t: 
+
+        Returns:
+
+        Raises:
+
+        """
         logger.debug("drag-leave t=%d", t)
         self._stop_hover_expand_timer()
         self.set_drag_dest_row(None, Gtk.TreeViewDropPosition.BEFORE)
 
     def _get_insert_path_for_dest_row(self, dest_treepath, drop_pos):
         """Convert a GTK destination row to a tree insert point.
-
+        
         This adjusts some path indices to be closer to what's intuitive
         at the end of the drag, based on what the user saw during it.
         The returned value must be checked before passing to the model
         to ensure it isn't the same as or within the dragged tree path.
+
+        Args:
+            dest_treepath: 
+            drop_pos: 
+
+        Returns:
+
+        Raises:
 
         """
         root = self._docmodel.layer_stack
@@ -734,6 +1124,20 @@ class RootStackTreeView(Gtk.TreeView):
             raise NotImplemented("Unhandled position %r", drop_pos)
 
     def _drag_drop_cb(self, view, context, x, y, t):
+        """
+
+        Args:
+            view: 
+            context: 
+            x: 
+            y: 
+            t: 
+
+        Returns:
+
+        Raises:
+
+        """
         self._stop_hover_expand_timer()
         dest_treepath, drop_pos = self._get_checked_dest_row_at_pos(x, y)
         if dest_treepath is not None:
@@ -754,6 +1158,17 @@ class RootStackTreeView(Gtk.TreeView):
         return False
 
     def _drag_end_cb(self, view, context):
+        """
+
+        Args:
+            view: 
+            context: 
+
+        Returns:
+
+        Raises:
+
+        """
         logger.debug("drag-end")
         self._stop_hover_expand_timer()
         self._drag_src_path = None
@@ -764,36 +1179,87 @@ class RootStackTreeView(Gtk.TreeView):
 
     def do_drag_data_delete(self, context):
         """Suppress the default GtkWidgetClass.drag_data_delete handler.
-
+        
         Suppress warning(s?) about missing default handlers, since our
         model no longer implements GtkTreeDragSource.
+
+        Args:
+            context: 
+
+        Returns:
+
+        Raises:
 
         """
 
     ## Model change tracking
 
     def _current_path_updated_cb(self, rootstack, layerpath):
-        """Respond to the current layer changing in the doc-model"""
+        """Respond to the current layer changing in the doc-model
+
+        Args:
+            rootstack: 
+            layerpath: 
+
+        Returns:
+
+        Raises:
+
+        """
         self._update_selection()
 
     def _expand_layer_cb(self, rootstack, path):
+        """
+
+        Args:
+            rootstack: 
+            path: 
+
+        Returns:
+
+        Raises:
+
+        """
         if not path:
             return
         treepath = Gtk.TreePath(path)
         self.expand_to_path(treepath)
 
     def _collapse_layer_cb(self, rootstack, path):
+        """
+
+        Args:
+            rootstack: 
+            path: 
+
+        Returns:
+
+        Raises:
+
+        """
         if not path:
             return
         treepath = Gtk.TreePath(path)
         self.collapse_row(treepath)
 
     def _layer_content_changed_cb(self, rootstack, layer, *args):
-        """Scroll to the current layer when it is modified."""
+        """Scroll to the current layer when it is modified.
+
+        Args:
+            rootstack: 
+            layer: 
+            *args: 
+
+        Returns:
+
+        Raises:
+
+        """
         if layer and layer is rootstack.current:
             self.scroll_to_current_layer()
 
     def _update_selection(self):
+        """ """
         sel = self.get_selection()
         root = self._docmodel.layer_stack
         layerpath = root.current_path
@@ -816,7 +1282,16 @@ class RootStackTreeView(Gtk.TreeView):
             self.scroll_to_current_layer()
 
     def scroll_to_current_layer(self, *_ignored):
-        """Scroll to show the current layer"""
+        """Scroll to show the current layer
+
+        Args:
+            *_ignored: 
+
+        Returns:
+
+        Raises:
+
+        """
         sel = self.get_selection()
         tree_model, sel_row_paths = sel.get_selected_rows()
         if len(sel_row_paths) > 0:
@@ -836,7 +1311,16 @@ class RootStackTreeView(Gtk.TreeView):
 
     @event
     def current_layer_menu_requested(self, gdkevent):
-        """Event: user invoked the menu action over the current layer"""
+        """Event: user invoked the menu action over the current layer
+
+        Args:
+            gdkevent: 
+
+        Returns:
+
+        Raises:
+
+        """
 
     @event
     def drag_began(self):
@@ -849,7 +1333,20 @@ class RootStackTreeView(Gtk.TreeView):
     ## View datafuncs
 
     def _layer_visible_pixbuf_datafunc(self, column, cell, model, it, data):
-        """Use an open/closed eye icon to show layer visibilities"""
+        """Use an open/closed eye icon to show layer visibilities
+
+        Args:
+            column: 
+            cell: 
+            model: 
+            it: 
+            data: 
+
+        Returns:
+
+        Raises:
+
+        """
         layer = model.get_layer(it=it)
         rootstack = model._root
         visible = True
@@ -872,7 +1369,19 @@ class RootStackTreeView(Gtk.TreeView):
 
     @staticmethod
     def _datafunc_get_pixbuf_height(initial, column, multiple=8, maximum=256):
-        """Nearest multiple-of-n height for a pixbuf data cell."""
+        """Nearest multiple-of-n height for a pixbuf data cell.
+
+        Args:
+            initial: 
+            column: 
+            multiple:  (Default value = 8)
+            maximum:  (Default value = 256)
+
+        Returns:
+
+        Raises:
+
+        """
         ox, oy, w, h = column.cell_get_size(None)
         s = initial
         if h is not None:
@@ -880,7 +1389,20 @@ class RootStackTreeView(Gtk.TreeView):
         return s
 
     def _layer_preview_pixbuf_datafunc(self, column, cell, model, it, data):
-        """Render layer preview icons and type info."""
+        """Render layer preview icons and type info.
+
+        Args:
+            column: 
+            cell: 
+            model: 
+            it: 
+            data: 
+
+        Returns:
+
+        Raises:
+
+        """
 
         # Get the layer's thumbnail
         layer = model.get_layer(it=it)
@@ -930,7 +1452,16 @@ class RootStackTreeView(Gtk.TreeView):
 
     @staticmethod
     def _layer_description_markup(layer):
-        """GMarkup text description of a layer, used in the list."""
+        """GMarkup text description of a layer, used in the list.
+
+        Args:
+            layer: 
+
+        Returns:
+
+        Raises:
+
+        """
         name_markup = None
         description = None
 
@@ -1030,7 +1561,20 @@ class RootStackTreeView(Gtk.TreeView):
         return markup
 
     def _layer_name_text_datafunc(self, column, cell, model, it, data):
-        """Show the layer name, with italics for layer groups"""
+        """Show the layer name, with italics for layer groups
+
+        Args:
+            column: 
+            cell: 
+            model: 
+            it: 
+            data: 
+
+        Returns:
+
+        Raises:
+
+        """
         layer = model.get_layer(it=it)
         markup = self._layer_description_markup(layer)
 
@@ -1043,6 +1587,16 @@ class RootStackTreeView(Gtk.TreeView):
 
     @staticmethod
     def _get_layer_locked_icon_state(layer):
+        """
+
+        Args:
+            layer: 
+
+        Returns:
+
+        Raises:
+
+        """
         icon_name = None
         sensitive = True
         if layer:
@@ -1055,7 +1609,20 @@ class RootStackTreeView(Gtk.TreeView):
         return (icon_name, sensitive)
 
     def _layer_locked_pixbuf_datafunc(self, column, cell, model, it, data):
-        """Use a padlock icon to show layer immutability statuses"""
+        """Use a padlock icon to show layer immutability statuses
+
+        Args:
+            column: 
+            cell: 
+            model: 
+            it: 
+            data: 
+
+        Returns:
+
+        Raises:
+
+        """
         layer = model.get_layer(it=it)
         icon_name, sensitive = self._get_layer_locked_icon_state(layer)
         icon_visible = icon_name is not None
@@ -1066,6 +1633,16 @@ class RootStackTreeView(Gtk.TreeView):
     ## Weird but necessary hacks
 
     def _post_show_cb(self, widget):
+        """
+
+        Args:
+            widget: 
+
+        Returns:
+
+        Raises:
+
+        """
         # Ensure the tree selection matches the root stack's current layer.
         self._update_selection()
 
@@ -1077,10 +1654,16 @@ class RootStackTreeView(Gtk.TreeView):
 
     def _sizeify_flag_columns(self):
         """Sneakily scale the fixed size of the flag icons to match texts.
-
+        
         This can only be called after the list has rendered once, because
         GTK doesn't know how tall the treeview's rows will be till then.
         Therefore it's called in an idle callback after the first show.
+
+        Args:
+
+        Returns:
+
+        Raises:
 
         """
         # Get the maximum height for all columns.
@@ -1108,7 +1691,17 @@ class RootStackTreeView(Gtk.TreeView):
 
 
 def new_blend_mode_combo(modes, mode_strings):
-    """Create and return a new blend mode combo box"""
+    """Create and return a new blend mode combo box
+
+    Args:
+        modes: 
+        mode_strings: 
+
+    Returns:
+
+    Raises:
+
+    """
     store = Gtk.ListStore(int, str, bool, float)
     for mode in modes:
         label, desc = mode_strings.get(mode)

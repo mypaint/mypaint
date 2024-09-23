@@ -30,11 +30,18 @@ logger = logging.getLogger(__name__)
 
 class AccelMapEditor(Gtk.Grid):
     """Ugly properties list for editing the global accel map
-
+    
     MyPaint normally doesn't use properties lists for reasons of
     simplicity. However since Gtk 3.12 these are no longer editable via
     the menus themselves, so we must create an alternative for 3.12
     users who want to rebind keys.
+
+    Args:
+
+    Returns:
+
+    Raises:
+
     """
 
     # This interface is likely to evolve into an accelerator editor for
@@ -142,10 +149,30 @@ class AccelMapEditor(Gtk.Grid):
         )
 
     def _entry_changed(self, widget):
+        """
+
+        Args:
+            widget: 
+
+        Returns:
+
+        Raises:
+
+        """
         self._filter_txt = self._filter_entry.get_text()
         self._filter.refilter()
 
     def _show_cb(self, widget):
+        """
+
+        Args:
+            widget: 
+
+        Returns:
+
+        Raises:
+
+        """
         self._init_from_accel_map()
 
     def _init_from_accel_map(self):
@@ -229,7 +256,20 @@ class AccelMapEditor(Gtk.Grid):
                 self._store.append(row)
 
     def _populate_row(self, row, path, action_label, action_desc, accel_label):
-        """Write correctly formatted row data into a list-like obj."""
+        """Write correctly formatted row data into a list-like obj.
+
+        Args:
+            row: 
+            path: 
+            action_label: 
+            action_desc: 
+            accel_label: 
+
+        Returns:
+
+        Raises:
+
+        """
         assert len(row) == len(self._COLUMN_TYPES)
         nonmarkup_substs = {
             "action_label": action_label,
@@ -252,6 +292,16 @@ class AccelMapEditor(Gtk.Grid):
         row[self._SEARCH_TEXT_COLUMN] = accel_label
 
     def _fmt_accel_label(self, label):
+        """
+
+        Args:
+            label: 
+
+        Returns:
+
+        Raises:
+
+        """
         if label:
             markup = self._ACCEL_LABEL_COLUMN_TEMPLATE.format(
                 accel_label=lib.xml.escape(label),
@@ -296,12 +346,37 @@ class AccelMapEditor(Gtk.Grid):
     ## Search
 
     def _view_search_equal_cb(self, model, col, key, it):
+        """
+
+        Args:
+            model: 
+            col: 
+            key: 
+            it: 
+
+        Returns:
+
+        Raises:
+
+        """
         is_sub = self._filter_check(model, it, key)
         return not is_sub  # inverted sense (as in equality w. strcmp)
 
     # Filter
 
     def _filter_check(self, model, iter, search_key):
+        """
+
+        Args:
+            model: 
+            iter: 
+            search_key: 
+
+        Returns:
+
+        Raises:
+
+        """
         if search_key:
             # Gtk.TreeView Search
             # Search only for key bindings
@@ -345,11 +420,33 @@ class AccelMapEditor(Gtk.Grid):
     ## Editing
 
     def _accel_edited_cb(self, cell, path, newname):
-        """Arrange for list updates to happen after editing is done"""
+        """Arrange for list updates to happen after editing is done
+
+        Args:
+            cell: 
+            path: 
+            newname: 
+
+        Returns:
+
+        Raises:
+
+        """
         self._update_from_accel_map()
 
     def _accel_editing_started_cb(self, cell, editable, treepath):
-        """Begin editing by showing a key capture dialog"""
+        """Begin editing by showing a key capture dialog
+
+        Args:
+            cell: 
+            editable: 
+            treepath: 
+
+        Returns:
+
+        Raises:
+
+        """
         it = self._filter.get_iter(treepath)
         accel_path = self._filter.get_value(it, self._PATH_COLUMN)
         accel_label = self._accel_labels[accel_path]
@@ -450,11 +547,30 @@ class AccelMapEditor(Gtk.Grid):
         dialog.show()
 
     def _edit_dialog_set_hint(self, dialog, markup):
-        """Sets the hint message label in the capture dialog"""
+        """Sets the hint message label in the capture dialog
+
+        Args:
+            dialog: 
+            markup: 
+
+        Returns:
+
+        Raises:
+
+        """
         dialog.hint_widget.set_markup(markup)
 
     def _edit_dialog_set_standard_hint(self, dialog):
-        """Set the boring how-to message in capture dialog"""
+        """Set the boring how-to message in capture dialog
+
+        Args:
+            dialog: 
+
+        Returns:
+
+        Raises:
+
+        """
         # TRANSLATORS: "keys" refers to keyboard keys, assignment refers
         # TRANSLATORS: to an assignment of a keyboard key combination to
         # TRANSLATORS: an action. This is an instructive message in the
@@ -463,6 +579,18 @@ class AccelMapEditor(Gtk.Grid):
         self._edit_dialog_set_hint(dialog, markup)
 
     def _edit_dialog_key_press_cb(self, dialog, event, editable):
+        """
+
+        Args:
+            dialog: 
+            event: 
+            editable: 
+
+        Returns:
+
+        Raises:
+
+        """
         if event.type != Gdk.EventType.KEY_PRESS:
             return False
         if event.is_modifier:
@@ -550,6 +678,19 @@ class AccelMapEditor(Gtk.Grid):
         return True
 
     def _edit_dialog_response_cb(self, dialog, response_id, editable, path):
+        """
+
+        Args:
+            dialog: 
+            response_id: 
+            editable: 
+            path: 
+
+        Returns:
+
+        Raises:
+
+        """
         mods = dialog.result_mods
         keyval = dialog.result_keyval
         if response_id == Gtk.ResponseType.REJECT:
@@ -568,6 +709,18 @@ class AccelMapEditor(Gtk.Grid):
 
     @classmethod
     def _delete_clashing_accelmap_entries(cls, keyval, mods, path_to_keep):
+        """
+
+        Args:
+            keyval: 
+            mods: 
+            path_to_keep: 
+
+        Returns:
+
+        Raises:
+
+        """
         accel_name = Gtk.accelerator_name(keyval, mods)
         for path, k, m, changed in cls._get_accel_map_entries():
             if path == path_to_keep:
@@ -585,6 +738,18 @@ class AccelMapEditor(Gtk.Grid):
 
     @classmethod
     def _set_accelmap_entry(cls, path, keyval, mods):
+        """
+
+        Args:
+            path: 
+            keyval: 
+            mods: 
+
+        Returns:
+
+        Raises:
+
+        """
         cls._delete_clashing_accelmap_entries(keyval, mods, path)
         accel_name = Gtk.accelerator_name(keyval, mods)
         logger.info("Changing entry %r: %r", accel_name, path)
@@ -598,9 +763,17 @@ class AccelMapEditor(Gtk.Grid):
 
 def _udecode(s, enc="utf-8"):
     """The APIs sometimes return Unicode strings as bytes objects.
-
+    
     This is more often a Python2 thing, and is sometimes OK back then,
     but for porting to Py3 we need to be more explicit about everything.
+
+    Args:
+        s: 
+        enc:  (Default value = "utf-8")
+
+    Returns:
+
+    Raises:
 
     """
     if s is None:
@@ -614,6 +787,7 @@ def _udecode(s, enc="utf-8"):
 
 
 def _test():
+    """ """
     win = Gtk.Window()
     win.set_title("accelmap.py")
     win.connect("destroy", Gtk.main_quit)
@@ -640,6 +814,16 @@ if __name__ == "__main__":
     orig_excepthook = sys.excepthook
 
     def _excepthook(*args):
+        """
+
+        Args:
+            *args: 
+
+        Returns:
+
+        Raises:
+
+        """
         orig_excepthook(*args)
         while Gtk.main_level():
             Gtk.main_quit()

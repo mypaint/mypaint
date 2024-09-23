@@ -67,6 +67,14 @@ def set_user_configured_locale(userconfpath):
     """If configured, set envvars for a custom locale
     The user can choose to not use their system locale
     by explicitly choosing another, and restarting.
+
+    Args:
+        userconfpath: 
+
+    Returns:
+
+    Raises:
+
     """
     settings = gui.userconfig.get_json_config(userconfpath)
     if USER_LOCALE_PREF in settings:
@@ -97,20 +105,22 @@ def main(
 ):
     """Run MyPaint with `sys.argv_unicode`, called from the "mypaint" script.
 
-    :param str datapath: The app's read-only data location.
-    :param str iconspath: Extra search root for finding icons.
-    :param str oldstyle_confpath: Old-style merged config folder.
-    :param str version: full version string for the about box.
-    :param bool debug: whether debug functionality and logging is enabled.
-
+    Args:
+        datapath (str): The app's read-only data location.
+        iconspath (str): Extra search root for finding icons.
+        localepath: 
+        oldstyle_confpath (str, optional): Old-style merged config folder. (Default value = None)
+        version (str, optional): full version string for the about box. (Default value = MYPAINT_VERSION)
+        debug (bool, optional): whether debug functionality and logging is enabled.
+    
     The ``datapath`` parameter defines where MyPaint should find its
     static data, e.g. UI definition XML, backgrounds, and brush
     definitions. $PREFIX/share/mypaint is usual.
-
+    
     The iconspath`` parameter tells MyPaint where to find its themeable UI
     icons. This will be used in addition to $XDG_DATA_DIRS for the
     purposes of icon lookup.  Normally it's $PREFIX/share/icons.
-
+    
     If specified oldstyle_confpath must be a single directory path.  all
     user-specific data that MyPaint writes is written here.  If omitted,
     this data will be stored under the basedirs returned by
@@ -119,8 +129,12 @@ def main(
     these will be the same location.  On POSIX systems,
     $HOME/.config/mypaint and $HOME/.local/share/mypaint are a typical
     division.
+    
+    See `lib.meta` for details of what normally goes in `version`. (Default value = False)
 
-    See `lib.meta` for details of what normally goes in `version`.
+    Returns:
+
+    Raises:
 
     """
 
@@ -177,6 +191,7 @@ def main(
         sys.exit(0)
 
     def run():
+        """ """
         logger.debug("user_datapath: %r", userdatapath)
         logger.debug("user_confpath: %r", userconfpath)
 
@@ -243,8 +258,17 @@ def main(
 
 def parsed_cmdline_arguments(default_confpath, debug=False):
     """Parse command line arguments and return result
-
+    
     :return: (options, positional arguments)
+
+    Args:
+        default_confpath: 
+        debug:  (Default value = False)
+
+    Returns:
+
+    Raises:
+
     """
     parser = OptionParser("usage: %prog [options] [FILE]")
     parser.add_option(

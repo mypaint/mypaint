@@ -33,9 +33,17 @@ for prefix, uri in _OPENRASTER_NAMESPACES.items():
 
 def indent_etree(elem, level=0):
     """Indent an XML etree.
-
+    
     This does not seem to come with python?
     Source: http://effbot.org/zone/element-lib.htm#prettyprint
+
+    Args:
+        elem: 
+        level:  (Default value = 0)
+
+    Returns:
+
+    Raises:
 
     """
     i = "\n" + level * "  "
@@ -55,8 +63,18 @@ def indent_etree(elem, level=0):
 
 def xsd2bool(arg):
     """Converts an XSD boolean datatype string from XML to a Python bool
+    
+    
+    Ref: http://www.w3.org/TR/xmlschema-2/#boolean
 
-      >>> xsd2bool("true")
+    Args:
+        arg: 
+
+    Returns:
+
+    Raises:
+
+    >>> xsd2bool("true")
       True
       >>> xsd2bool("false")
       False
@@ -64,28 +82,34 @@ def xsd2bool(arg):
       True
       >>> xsd2bool(0)
       False
-
-    Ref: http://www.w3.org/TR/xmlschema-2/#boolean
-
     """
     return str(arg).lower() in ("true", "1")
 
 
 def escape(u, quot=False, apos=False):
     """Escapes a Unicode string for use in XML/HTML.
+    
+    
+    Works like ``cgi.escape()``, but adds character ref encoding for
+    characters which lie outside the ASCII range.
+    The returned str is ASCII.
 
-      >>> u = u'<foo> & "bar"'
+    Args:
+        u: 
+        quot:  (Default value = False)
+        apos:  (Default value = False)
+
+    Returns:
+
+    Raises:
+
+    >>> u = u'<foo> & "bar"'
       >>> escape(u)
       '&lt;foo&gt; &amp; "bar"'
       >>> escape(u, quot=True)
       '&lt;foo&gt; &amp; &quot;bar&quot;'
       >>> escape(None) is None
       True
-
-    Works like ``cgi.escape()``, but adds character ref encoding for
-    characters which lie outside the ASCII range.
-    The returned str is ASCII.
-
     """
     if u is None:
         return None
@@ -105,6 +129,7 @@ def escape(u, quot=False, apos=False):
 
 
 def _test(self):
+    """ """
     import doctest
 
     doctest.testmod()

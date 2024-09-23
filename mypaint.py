@@ -56,12 +56,42 @@ class ColorFormatter(logging.Formatter):
     RESET = "\033[0m"
 
     def _replace_bold(self, m):
+        """
+
+        Args:
+            m: 
+
+        Returns:
+
+        Raises:
+
+        """
         return self.BOLD + m.group(0) + self.BOLDOFF
 
     def _replace_underline(self, m):
+        """
+
+        Args:
+            m: 
+
+        Returns:
+
+        Raises:
+
+        """
         return self.UNDERLINE + m.group(0) + self.UNDERLINEOFF
 
     def format(self, record):
+        """
+
+        Args:
+            record: 
+
+        Returns:
+
+        Raises:
+
+        """
         record = logging.makeLogRecord(record.__dict__)
         msg = record.msg
         token_formatting = [
@@ -90,6 +120,7 @@ class ColorFormatter(logging.Formatter):
 
 
 def win32_unicode_argv():
+    """ """
     # fix for https://gna.org/bugs/?17739
     # code mostly comes from http://code.activestate.com/recipes/572200/
     """Uses shell32.GetCommandLineArgvW to get sys.argv as a list of Unicode
@@ -130,6 +161,7 @@ def win32_unicode_argv():
 
 
 def get_paths():
+    """ """
 
     # Convert sys.argv to a list of str objects
     # (actually converting sys.argv confuses gtk, thus we add a new variable)
@@ -212,6 +244,7 @@ def get_paths():
 
 
 def check_old_style_config():
+    """ """
     # Old style config file and user data locations.
     # Return None if using XDG will be correct.
     if sys.platform == "win32":

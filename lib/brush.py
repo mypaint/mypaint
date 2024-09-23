@@ -51,6 +51,13 @@ _BRUSHINFO_MATCH_IGNORES = [
 def brushinfo_unquote(quoted):
     """Unquote a serialised string value from a brush field.
 
+    Args:
+        quoted: 
+
+    Returns:
+
+    Raises:
+
     >>> brushinfo_unquote("foo") == u'foo'
     True
     >>> brushinfo_unquote("foo%2fbar%20blah") == u'foo/bar blah'
@@ -58,7 +65,6 @@ def brushinfo_unquote(quoted):
     >>> expected = u'Have a nice day \u263A'
     >>> brushinfo_unquote("Have%20a%20nice%20day%20%E2%98%BA") == expected
     True
-
     """
     return unquote(quoted)
 
@@ -67,10 +73,12 @@ def brushinfo_unquote(quoted):
 
 
 class ParseError(Exception):
+    """ """
     pass
 
 
 class Obsolete(ParseError):
+    """ """
     pass
 
 
@@ -79,9 +87,18 @@ class Obsolete(ParseError):
 
 def _oldfmt_parse_value(rawvalue, cname, version):
     """Parses a raw setting value.
-
+    
     This code handles a format that changed over time, so the
     parse is for a given setting name and brushfile version.
+
+    Args:
+        rawvalue: 
+        cname: 
+        version: 
+
+    Returns:
+
+    Raises:
 
     """
     if cname in STRING_VALUE_SETTINGS:
@@ -126,7 +143,16 @@ def _oldfmt_parse_value(rawvalue, cname, version):
 
 
 def _oldfmt_parse_points_v1(rawpoints):
-    """Parses the points list format from v1"""
+    """Parses the points list format from v1
+
+    Args:
+        rawpoints: 
+
+    Returns:
+
+    Raises:
+
+    """
     points_seq = [float(f) for f in rawpoints.split()]
     points = [(0, 0)]
     while points_seq:
@@ -140,7 +166,16 @@ def _oldfmt_parse_points_v1(rawpoints):
 
 
 def _oldfmt_parse_points_v2(rawpoints):
-    """Parses the newer points list format of v2 and beyond."""
+    """Parses the newer points list format of v2 and beyond.
+
+    Args:
+        rawpoints: 
+
+    Returns:
+
+    Raises:
+
+    """
     points = []
     for s in rawpoints.split(", "):
         s = s.strip()
@@ -153,7 +188,17 @@ def _oldfmt_parse_points_v2(rawpoints):
 
 
 def _oldfmt_transform_y(valuepair, func):
-    """Used during migration from earlier versions."""
+    """Used during migration from earlier versions.
+
+    Args:
+        valuepair: 
+        func: 
+
+    Returns:
+
+    Raises:
+
+    """
     basevalue, input_points = valuepair
     basevalue = func(basevalue)
     input_points_new = {}
@@ -192,6 +237,16 @@ class BrushInfo:
             self.load_from_string(string)
 
     def settings_changed_cb(self, settings):
+        """
+
+        Args:
+            settings: 
+
+        Returns:
+
+        Raises:
+
+        """
         self.cache_str = None
 
     def clone(self):
@@ -201,7 +256,16 @@ class BrushInfo:
         return res
 
     def load_from_brushinfo(self, other):
-        """Updates the brush's Settings from (a clone of) ``brushinfo``."""
+        """Updates the brush's Settings from (a clone of) ``brushinfo``.
+
+        Args:
+            other: 
+
+        Returns:
+
+        Raises:
+
+        """
         self.settings = copy.deepcopy(other.settings)
         self.default_overrides = other.default_overrides
         self.undefined_settings = set(other.undefined_settings)
@@ -218,6 +282,16 @@ class BrushInfo:
         self.end_atomic()
 
     def reset_setting(self, cname):
+        """
+
+        Args:
+            cname: 
+
+        Returns:
+
+        Raises:
+
+        """
         s = brushsettings.settings_dict[cname]
         if self.default_overrides and cname in self.default_overrides:
             override = self.default_overrides[cname]
@@ -235,10 +309,21 @@ class BrushInfo:
             f(set([cname]))
 
     def reset_if_undefined(self, cname):
+        """
+
+        Args:
+            cname: 
+
+        Returns:
+
+        Raises:
+
+        """
         if cname in self.undefined_settings:
             self.reset_setting(cname)
 
     def to_json(self):
+        """ """
         settings = dict(self.settings)
 
         # Fields we save that aren't really brush engine settings
@@ -268,6 +353,19 @@ class BrushInfo:
 
     def from_json(self, json_string):
         """Loads settings from a JSON string.
+        
+        
+        See also load_from_string(), which can handle the old v2 format.
+        
+        Accepts both str and bytes. Byte strings are assumed
+        to be encoded as UTF-8 when any decoding's needed.
+
+        Args:
+            json_string: 
+
+        Returns:
+
+        Raises:
 
         >>> from glob import glob
         >>> for p in glob("tests/brushes/v3/*.myb"):
@@ -278,12 +376,6 @@ class BrushInfo:
         ...     b1.from_json(bstr)
         ...     b1 = BrushInfo()
         ...     b1.from_json(ustr)
-
-        See also load_from_string(), which can handle the old v2 format.
-
-        Accepts both str and bytes. Byte strings are assumed
-        to be encoded as UTF-8 when any decoding's needed.
-
         """
 
         if not isinstance(json_string, (str, bytes)):
@@ -321,6 +413,16 @@ class BrushInfo:
 
     @staticmethod
     def brush_string_inverted_eotf(brush_string):
+        """
+
+        Args:
+            brush_string: 
+
+        Returns:
+
+        Raises:
+
+        """
         try:
             brush = json.loads(brush_string)
             bsett = brush["settings"]
@@ -336,7 +438,16 @@ class BrushInfo:
             return brush_string
 
     def load_from_string(self, settings_bytes):
-        """Load a setting string, overwriting all current settings."""
+        """Load a setting string, overwriting all current settings.
+
+        Args:
+            settings_bytes: 
+
+        Returns:
+
+        Raises:
+
+        """
 
         settings = settings_bytes
         if not isinstance(settings, str):
@@ -359,6 +470,17 @@ class BrushInfo:
 
     def _load_old_format(self, settings_bytes):
         """Loads brush settings in the old (v2) format.
+        
+        
+        Accepts both unicode and byte strings. Byte strings are assumed
+        to be encoded as UTF-8 when any decoding's needed.
+
+        Args:
+            settings_bytes: 
+
+        Returns:
+
+        Raises:
 
         >>> from glob import glob
         >>> for p in glob("tests/brushes/v2/*.myb"):
@@ -369,10 +491,6 @@ class BrushInfo:
         ...     b1._load_old_format(bstr)
         ...     b2 = BrushInfo()
         ...     b2._load_old_format(ustr)
-
-        Accepts both unicode and byte strings. Byte strings are assumed
-        to be encoded as UTF-8 when any decoding's needed.
-
         """
 
         # Py2 is happy natively comparing unicode with str, no encode
@@ -456,9 +574,16 @@ class BrushInfo:
 
     def get_visual_radius(self):
         """Approximation of the brush radius, in model units
-
+        
         This is a static representation of the brush radius - taking a limited
         number of settings into account, and no dynamics (input mappings).
+
+        Args:
+
+        Returns:
+
+        Raises:
+
         """
         return brush_visual_radius(
             self.get_base_value("radius_logarithmic"),
@@ -466,15 +591,48 @@ class BrushInfo:
         )
 
     def get_base_value(self, cname):
+        """
+
+        Args:
+            cname: 
+
+        Returns:
+
+        Raises:
+
+        """
         return self.settings[cname][0]
 
     def get_points(self, cname, input, readonly=False):
+        """
+
+        Args:
+            cname: 
+            input: 
+            readonly:  (Default value = False)
+
+        Returns:
+
+        Raises:
+
+        """
         res = self.settings[cname][1].get(input, ())
         if not readonly:  # slow
             res = copy.deepcopy(res)
         return res
 
     def set_base_value(self, cname, value):
+        """
+
+        Args:
+            cname: 
+            value: 
+
+        Returns:
+
+        Raises:
+
+        """
         assert cname in BRUSH_SETTINGS
         assert not math.isnan(value)
         assert not math.isinf(value)
@@ -486,6 +644,18 @@ class BrushInfo:
                 f(set([cname]))
 
     def set_points(self, cname, input, points):
+        """
+
+        Args:
+            cname: 
+            input: 
+            points: 
+
+        Returns:
+
+        Raises:
+
+        """
         assert cname in BRUSH_SETTINGS
         if cname in self.undefined_settings:
             self.undefined_settings.remove(cname)
@@ -500,6 +670,17 @@ class BrushInfo:
             f(set([cname]))
 
     def set_setting(self, cname, value):
+        """
+
+        Args:
+            cname: 
+            value: 
+
+        Returns:
+
+        Raises:
+
+        """
         self.settings[cname] = copy.deepcopy(value)
         if cname in self.undefined_settings:
             self.undefined_settings.remove(cname)
@@ -507,15 +688,46 @@ class BrushInfo:
             f(set([cname]))
 
     def get_setting(self, cname):
+        """
+
+        Args:
+            cname: 
+
+        Returns:
+
+        Raises:
+
+        """
         return copy.deepcopy(self.settings[cname])
 
     def get_string_property(self, name):
+        """
+
+        Args:
+            name: 
+
+        Returns:
+
+        Raises:
+
+        """
         value = self.settings.get(name, None)
         if value is None:
             return None
         return str(value)
 
     def set_string_property(self, name, value):
+        """
+
+        Args:
+            name: 
+            value: 
+
+        Returns:
+
+        Raises:
+
+        """
         assert name in STRING_VALUE_SETTINGS
         if value is None:
             self.settings.pop(name, None)
@@ -526,32 +738,87 @@ class BrushInfo:
             f(set([name]))
 
     def has_only_base_value(self, cname):
-        """Return whether a setting is constant for this brush."""
+        """
+
+        Args:
+            cname: 
+
+        Returns:
+            
+
+        Raises:
+
+        """
         for i in brushsettings.inputs:
             if self.has_input(cname, i.name):
                 return False
         return True
 
     def has_large_base_value(self, cname, threshold=0.9):
+        """
+
+        Args:
+            cname: 
+            threshold:  (Default value = 0.9)
+
+        Returns:
+
+        Raises:
+
+        """
         return self.get_base_value(cname) > threshold
 
     def has_small_base_value(self, cname, threshold=0.1):
+        """
+
+        Args:
+            cname: 
+            threshold:  (Default value = 0.1)
+
+        Returns:
+
+        Raises:
+
+        """
         return self.get_base_value(cname) < threshold
 
     def has_input(self, cname, input):
-        """Return whether a given input is used by some setting."""
+        """
+
+        Args:
+            cname: 
+            input: 
+
+        Returns:
+            
+
+        Raises:
+
+        """
         points = self.get_points(cname, input, readonly=True)
         return bool(points)
 
     def begin_atomic(self):
+        """ """
         self.observers_hidden.append(self.observers[:])
         del self.observers[:]
         self.observers.append(self.add_pending_update)
 
     def add_pending_update(self, settings):
+        """
+
+        Args:
+            settings: 
+
+        Returns:
+
+        Raises:
+
+        """
         self.pending_updates.update(settings)
 
     def end_atomic(self):
+        """ """
         self.observers[:] = self.observers_hidden.pop()
         pending = self.pending_updates.copy()
         if pending:
@@ -560,6 +827,7 @@ class BrushInfo:
                 f(pending)
 
     def get_color_hsv(self):
+        """ """
         h = self.get_base_value("color_h")
         s = self.get_base_value("color_s")
         v = self.get_base_value("color_v")
@@ -567,6 +835,16 @@ class BrushInfo:
         return h, s, v
 
     def set_color_hsv(self, hsv):
+        """
+
+        Args:
+            hsv: 
+
+        Returns:
+
+        Raises:
+
+        """
         if not hsv:
             return
         self.begin_atomic()
@@ -579,22 +857,47 @@ class BrushInfo:
             self.end_atomic()
 
     def set_color_rgb(self, rgb):
+        """
+
+        Args:
+            rgb: 
+
+        Returns:
+
+        Raises:
+
+        """
         self.set_color_hsv(helpers.rgb_to_hsv(*rgb))
 
     def get_color_rgb(self):
+        """ """
         hsv = self.get_color_hsv()
         return helpers.hsv_to_rgb(*hsv)
 
     def is_eraser(self):
+        """ """
         return self.has_large_base_value("eraser")
 
     def is_alpha_locked(self):
+        """ """
         return self.has_large_base_value("lock_alpha")
 
     def is_colorize(self):
+        """ """
         return self.has_large_base_value("colorize")
 
     def matches(self, other, ignore=_BRUSHINFO_MATCH_IGNORES):
+        """
+
+        Args:
+            other: 
+            ignore:  (Default value = _BRUSHINFO_MATCH_IGNORES)
+
+        Returns:
+
+        Raises:
+
+        """
         s1 = self.settings.copy()
         s2 = other.settings.copy()
         for k in ignore:
@@ -604,15 +907,32 @@ class BrushInfo:
 
 
 def brush_visual_radius(base_radius, base_random_offset):
+    """
+
+    Args:
+        base_radius: 
+        base_random_offset: 
+
+    Returns:
+
+    Raises:
+
+    """
     base_r = math.exp(base_radius)
     return base_r + 2 * base_r * base_random_offset
 
 
 class Brush(mypaintlib.PythonBrush):
     """A brush, capable of painting to a surface
-
+    
     Low-level extension of the C++ brush class, propagating all changes
     made to a BrushInfo instance down into the C brush struct.
+
+    Args:
+
+    Returns:
+
+    Raises:
 
     """
 
@@ -627,16 +947,33 @@ class Brush(mypaintlib.PythonBrush):
 
     def stroke_to(self, *args):
         """Delegates to mypaintlib with information about color space
-
+        
         Checks whether color transforms should be done in linear sRGB
         so that HSV/HSL adjustments can be handled correctly.
+
+        Args:
+            *args: 
+
+        Returns:
+
+        Raises:
+
         """
         linear = eotf() != 1.0
         args += (linear,)
         return super(Brush, self).stroke_to(*args)
 
     def _update_from_brushinfo(self, settings):
-        """Updates changed low-level settings from the BrushInfo"""
+        """Updates changed low-level settings from the BrushInfo
+
+        Args:
+            settings: 
+
+        Returns:
+
+        Raises:
+
+        """
 
         # When eotf != 1.0, store transformed hsv values in the backend.
         transform = eotf() != 1.0
@@ -652,10 +989,17 @@ class Brush(mypaintlib.PythonBrush):
 
     def _transform_brush_color(self):
         """Apply eotf transform to the backend color.
-
+        
         By only applying the transform here, the issue of
         strokemap and brush color consistency between new
         and old color rendering modes does not arise.
+
+        Args:
+
+        Returns:
+
+        Raises:
+
         """
         hsv_orig = (self.brushinfo.get_base_value(k) for k in self.HSV_CNAMES)
         h, s, v = helpers.transform_hsv(hsv_orig, eotf())
@@ -665,6 +1009,16 @@ class Brush(mypaintlib.PythonBrush):
         self.set_base_value(settings_dict["color_v"].index, v)
 
     def _update_setting_from_brushinfo(self, cname):
+        """
+
+        Args:
+            cname: 
+
+        Returns:
+
+        Raises:
+
+        """
         setting = brushsettings.settings_dict.get(cname)
         if not setting:
             return

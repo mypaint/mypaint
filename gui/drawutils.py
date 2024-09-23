@@ -59,23 +59,28 @@ _BRUSH_PREVIEW_POINTS = [
 def spline_4p(t, p_1, p0, p1, p2):
     """Interpolated point using a Catmull-Rom spline
 
-    :param float t: Time parameter, between 0.0 and 1.0
-    :param numpy.array p_1: Point p[-1]
-    :param numpy.array p0: Point p[0]
-    :param numpy.array p1: Point p[1]
-    :param numpy.array p2: Point p[2]
-    :returns: Interpolated point, between p0 and p1
-    :rtype: numpy.array
+    Args:
+        t (float): Time parameter, between 0.0 and 1.0
+        p_1 (numpy.array): Point p[-1]
+        p0 (numpy.array): Point p[0]
+        p1 (numpy.array): Point p[1]
+        p2 (numpy.array): Point p[2]
 
-    Used for a succession of points, this function makes smooth curves
-    passing through all specified points, other than the first and last.
-    For each pair of points, and their immediate predecessor and
-    successor points, the `t` parameter should be stepped incrementally
-    from 0 (for point p0) to 1 (for point p1).  See also:
+    Returns:
+        numpy.array
 
-    * `spline_iter()`
-    * http://en.wikipedia.org/wiki/Cubic_Hermite_spline
-    * http://stackoverflow.com/questions/1251438
+Used for a succession of points, this function makes smooth curves
+passing through all specified points, other than the first and last.
+For each pair of points, and their immediate predecessor and
+successor points, the `t` parameter should be stepped incrementally
+from 0 (for point p0) to 1 (for point p1).  See also:
+
+* `spline_iter()`
+* http://en.wikipedia.org/wiki/Cubic_Hermite_spline
+* http://stackoverflow.com/questions/1251438: Interpolated point, between p0 and p1
+
+    Raises:
+
     """
     return (
         t * ((2 - t) * t - 1) * p_1
@@ -88,15 +93,20 @@ def spline_4p(t, p_1, p0, p1, p2):
 def spline_iter(tuples, double_first=True, double_last=True):
     """Converts an list of control point tuples to interpolatable numpy.arrays
 
-    :param list tuples: Sequence of tuples of floats
-    :param bool double_first: Repeat 1st point, putting it in the result
-    :param bool double_last: Repeat last point, putting it in the result
-    :returns: Iterator producing (p-1, p0, p1, p2)
+    Args:
+        tuples (list): Sequence of tuples of floats
+        double_first (bool, optional): Repeat 1st point, putting it in the result (Default value = True)
+        double_last (bool, optional): Repeat last point, putting it in the result (Default value = True)
 
-    The resulting sequence of 4-tuples is intended to be fed into
-    spline_4p().  The start and end points are therefore normally
-    doubled, producing a curve that passes through them, along a vector
-    aimed at the second or penultimate point respectively.
+    Returns:
+        Iterator producing (p-1, p0, p1, p2)
+        
+        The resulting sequence of 4-tuples is intended to be fed into
+        spline_4p().  The start and end points are therefore normally
+        doubled, producing a curve that passes through them, along a vector
+        aimed at the second or penultimate point respectively.
+
+    Raises:
 
     """
     cint = [None, None, None, None]
@@ -115,6 +125,18 @@ def spline_iter(tuples, double_first=True, double_last=True):
 
 
 def _variable_pressure_scribble(w, h, tmult):
+    """
+
+    Args:
+        w: 
+        h: 
+        tmult: 
+
+    Returns:
+
+    Raises:
+
+    """
     points = _BRUSH_PREVIEW_POINTS
     px, py, press, xtilt, ytilt = points[0]
     yield (10, px * w, py * h, 0.0, xtilt, ytilt)
@@ -134,20 +156,25 @@ def _variable_pressure_scribble(w, h, tmult):
 def render_brush_preview_pixbuf(brushinfo, max_edge_tiles=4):
     """Renders brush preview images
 
-    :param BrushInfo brushinfo: settings to render
-    :param int max_edge_tiles: Use at most this many tiles along an edge
-    :returns: Preview image, at 128x128 pixels
-    :rtype: GdkPixbuf
+    Args:
+        brushinfo (BrushInfo): settings to render
+        max_edge_tiles (int, optional): Use at most this many tiles along an edge (Default value = 4)
 
-    This generates the preview image (128px icon) used for brushes which
-    don't have saved ones. These include brushes picked from .ORA files
-    where the parent_brush_name doesn't correspond to a brush in the
-    user's MyPaint brushes - they're used as the default, and for the
-    Auto button in the Brush Icon editor.
+    Returns:
+        GdkPixbuf
 
-    Brushstrokes are inherently unpredictable in size, so the allowable
-    area is grown until the brush fits or until the rendering becomes
-    too big. `max_edge_tiles` limits this growth.
+This generates the preview image (128px icon) used for brushes which
+don't have saved ones. These include brushes picked from .ORA files
+where the parent_brush_name doesn't correspond to a brush in the
+user's MyPaint brushes - they're used as the default, and for the
+Auto button in the Brush Icon editor.
+
+Brushstrokes are inherently unpredictable in size, so the allowable
+area is grown until the brush fits or until the rendering becomes
+too big. `max_edge_tiles` limits this growth.: Preview image, at 128x128 pixels
+
+    Raises:
+
     """
     assert max_edge_tiles >= 1
     brushinfo = brushinfo.clone()  # avoid capturing a ref
@@ -200,7 +227,18 @@ def render_brush_preview_pixbuf(brushinfo, max_edge_tiles=4):
 
 
 def _brush_preview_bg_fg(surface, size_in_tiles, brushinfo):
-    """Render the background for brush previews, return paint color"""
+    """Render the background for brush previews, return paint color
+
+    Args:
+        surface: 
+        size_in_tiles: 
+        brushinfo: 
+
+    Returns:
+
+    Raises:
+
+    """
     # The background color represents the overall nature of the brush
     col1 = (0.85, 0.85, 0.80)  # Boring grey, with a hint of paper-yellow
     col2 = (0.80, 0.80, 0.80)  # Grey, but will appear blueish in contrast
@@ -275,7 +313,18 @@ def _brush_preview_bg_fg(surface, size_in_tiles, brushinfo):
 
 
 def render_checks(cr, size, nchecks):
-    """Render a checquerboard pattern to a cairo surface"""
+    """Render a checquerboard pattern to a cairo surface
+
+    Args:
+        cr: 
+        size: 
+        nchecks: 
+
+    Returns:
+
+    Raises:
+
+    """
     cr.set_source_rgb(*gui.style.ALPHA_CHECK_COLOR_1)
     cr.paint()
     cr.set_source_rgb(*gui.style.ALPHA_CHECK_COLOR_2)
@@ -298,21 +347,25 @@ def load_symbolic_icon(
 ):
     """More Pythonic wrapper for gtk_icon_info_load_symbolic() etc.
 
-    :param str icon_name: Name of the symbolic icon to render
-    :param int size: Pixel size to render at
-    :param tuple fg: foreground color (rgba tuple, values in [0..1])
-    :param tuple success: success color (rgba tuple, values in [0..1])
-    :param tuple warning: warning color (rgba tuple, values in [0..1])
-    :param tuple error: error color (rgba tuple, values in [0..1])
-    :param tuple outline: outline color (rgba tuple, values in [0..1])
-    :returns: The rendered symbolic icon
-    :rtype: GdkPixbuf.Pixbuf
+    Args:
+        icon_name (str): Name of the symbolic icon to render
+        size (int): Pixel size to render at
+        fg (tuple, optional): foreground color (rgba tuple, values in [0..1]) (Default value = None)
+        success (tuple, optional): success color (rgba tuple, values in [0..1]) (Default value = None)
+        warning (tuple, optional): warning color (rgba tuple, values in [0..1]) (Default value = None)
+        error (tuple, optional): error color (rgba tuple, values in [0..1]) (Default value = None)
+        outline (tuple, optional): outline color (rgba tuple, values in [0..1]) (Default value = None)
 
-    If the outline color is specified, a single-pixel outline is faked
-    for the icon. Outlined renderings require a size 2 pixels larger
-    than non-outlined if the central icon is to be of the same size.
+    Returns:
+        GdkPixbuf.Pixbuf
 
-    The returned value should be cached somewhere.
+If the outline color is specified, a single-pixel outline is faked
+for the icon. Outlined renderings require a size 2 pixels larger
+than non-outlined if the central icon is to be of the same size.
+
+The returned value should be cached somewhere.: The rendered symbolic icon
+
+    Raises:
 
     """
     theme = Gtk.IconTheme.get_default()
@@ -321,6 +374,16 @@ def load_symbolic_icon(
     info = theme.lookup_icon(icon_name, size, Gtk.IconLookupFlags(0))
 
     def rgba_or_none(tup):
+        """
+
+        Args:
+            tup: 
+
+        Returns:
+
+        Raises:
+
+        """
         return (tup is not None) and Gdk.RGBA(*tup) or None
 
     icon_pixbuf, was_symbolic = info.load_symbolic(
@@ -398,16 +461,21 @@ def render_round_floating_button(
 ):
     """Draw a round floating button with a standard size.
 
-    :param cairo.Context cr: Context in which to draw.
-    :param float x: X coordinate of the center pixel.
-    :param float y: Y coordinate of the center pixel.
-    :param lib.color.UIColor color: Color for the button base.
-    :param GdkPixbuf.Pixbuf pixbuf: Icon to render.
-    :param int z: Simulated height of the button above the canvas.
-    :param float radius: Button radius, in pixels.
-
+    Args:
+        cr (cairo.Context): Context in which to draw.
+        x (float): X coordinate of the center pixel.
+        y (float): Y coordinate of the center pixel.
+        color (lib.color.UIColor): Color for the button base.
+        pixbuf (GdkPixbuf.Pixbuf): Icon to render.
+        z (int, optional): Simulated height of the button above the canvas. (Default value = 2)
+        radius (float, optional): Button radius, in pixels.
+    
     These are used within certain overlays tightly associated with
-    particular interaction modes for manipulating things on the canvas.
+    particular interaction modes for manipulating things on the canvas. (Default value = gui.style.FLOATING_BUTTON_RADIUS)
+
+    Returns:
+
+    Raises:
 
     """
     x = round(float(x))
@@ -426,7 +494,16 @@ def render_round_floating_button(
 
 
 def _get_paint_chip_highlight(color):
-    """Paint chip highlight edge color"""
+    """Paint chip highlight edge color
+
+    Args:
+        color: 
+
+    Returns:
+
+    Raises:
+
+    """
     highlight = lib.color.HCYColor(color=color)
     ky = gui.style.PAINT_CHIP_HIGHLIGHT_HCY_Y_MULT
     kc = gui.style.PAINT_CHIP_HIGHLIGHT_HCY_C_MULT
@@ -436,7 +513,16 @@ def _get_paint_chip_highlight(color):
 
 
 def _get_paint_chip_shadow(color):
-    """Paint chip shadow edge color"""
+    """Paint chip shadow edge color
+
+    Args:
+        color: 
+
+    Returns:
+
+    Raises:
+
+    """
     shadow = lib.color.HCYColor(color=color)
     ky = gui.style.PAINT_CHIP_SHADOW_HCY_Y_MULT
     kc = gui.style.PAINT_CHIP_SHADOW_HCY_C_MULT
@@ -448,22 +534,27 @@ def _get_paint_chip_shadow(color):
 def render_round_floating_color_chip(cr, x, y, color, radius, z=2):
     """Draw a round color chip with a slight drop shadow
 
-    :param cairo.Context cr: Context in which to draw.
-    :param float x: X coordinate of the center pixel.
-    :param float y: Y coordinate of the center pixel.
-    :param lib.color.UIColor color: Color for the chip.
-    :param float radius: Circle radius, in pixels.
-    :param int z: Simulated height of the object above the canvas.
-
+    Args:
+        cr (cairo.Context): Context in which to draw.
+        x (float): X coordinate of the center pixel.
+        y (float): Y coordinate of the center pixel.
+        color (lib.color.UIColor): Color for the chip.
+        radius (float): Circle radius, in pixels.
+        z (int, optional): Simulated height of the object above the canvas.
+    
     Currently used for accept/dismiss/delete buttons and control points
     on the painting canvas, in certain modes.
-
+    
     The button's style is similar to that used for the paint chips in
     the dockable palette panel. As used here with drop shadows to
     indicate that the blob can be interacted with, the style is similar
     to Google's Material Design approach. This style adds a subtle edge
     highlight in a brighter variant of "color", which seems to help
-    address adjacent color interactions.
+    address adjacent color interactions. (Default value = 2)
+
+    Returns:
+
+    Raises:
 
     """
     x = round(float(x))
@@ -494,17 +585,23 @@ def render_round_floating_color_chip(cr, x, y, color, radius, z=2):
 def render_drop_shadow(cr, z=2, line_width=None):
     """Draws a drop shadow for the current path.
 
-    :param int z: Simulated height of the object above the canvas.
-    :param float line_width: Override width of the line to shadow.
-
+    Args:
+        cr: 
+        z (int, optional): Simulated height of the object above the canvas. (Default value = 2)
+        line_width (float, optional): Override width of the line to shadow.
+    
     This function assumes that the object will be drawn immediately
     afterwards using the current path, so the current path and transform
     are preserved. The line width will be inferred automatically from
     the current path if it is not specified.
-
+    
     These shadows are suitable for lines of a single brightish color
     drawn over them. The combined style indicates that the object can be
-    moved or clicked.
+    moved or clicked. (Default value = None)
+
+    Returns:
+
+    Raises:
 
     """
     if line_width is None:
@@ -532,15 +629,19 @@ def render_drop_shadow(cr, z=2, line_width=None):
 def get_drop_shadow_offsets(line_width, z=2):
     """Get how much extra space is needed to draw the drop shadow.
 
-    :param float line_width: Width of the line to shadow.
-    :param int z: Simulated height of the object above the canvas.
-    :returns: Offsets: (offs_left, offs_top, offs_right, offs_bottom)
-    :rtype: tuple
+    Args:
+        line_width (float): Width of the line to shadow.
+        z (int, optional): Simulated height of the object above the canvas. (Default value = 2)
 
-    The offsets returned can be added to redraw bboxes, and are always
-    positive. They reflect how much extra space is required around the
-    bounding box for a line of the given width by the shadow rendered by
-    render_drop_shadow().
+    Returns:
+        tuple
+
+The offsets returned can be added to redraw bboxes, and are always
+positive. They reflect how much extra space is required around the
+bounding box for a line of the given width by the shadow rendered by
+render_drop_shadow().: Offsets: (offs_left, offs_top, offs_right, offs_bottom)
+
+    Raises:
 
     """
     dx = math.ceil(gui.style.DROP_SHADOW_X_OFFSET * z)

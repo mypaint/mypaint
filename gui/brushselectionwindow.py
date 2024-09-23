@@ -39,12 +39,30 @@ logger = logging.getLogger(__name__)
 
 
 def managedbrush_idfunc(managedbrush):
-    """Returns the id of a ManagedBrush."""
+    """Returns the id of a ManagedBrush.
+
+    Args:
+        managedbrush: 
+
+    Returns:
+
+    Raises:
+
+    """
     return managedbrush.name
 
 
 def managedbrush_namefunc(managedbrush):
-    """Returns tooltip of a ManagedBrush."""
+    """Returns tooltip of a ManagedBrush.
+
+    Args:
+        managedbrush: 
+
+    Returns:
+
+    Raises:
+
+    """
     template = "{name}"
     if managedbrush.description:
         template = "{name}\n{description}"
@@ -55,7 +73,16 @@ def managedbrush_namefunc(managedbrush):
 
 
 def managedbrush_pixbuffunc(managedbrush):
-    """Returns pixbuf preview of a ManagedBrush."""
+    """Returns pixbuf preview of a ManagedBrush.
+
+    Args:
+        managedbrush: 
+
+    Returns:
+
+    Raises:
+
+    """
     return managedbrush.preview
 
 
@@ -94,26 +121,44 @@ class BrushList(pixbuflist.PixbufList):
     @property
     def brushes(self):
         """The list of brushes being shown.
-
+        
         The returned list belongs to the main app's BrushManager,
         and is created on demand if there is no such group.
         If you reorder it or remove brushes,
         you must call the BrushManager's brushes_changed() method too.
+
+        Args:
+
+        Returns:
+
+        Raises:
 
         """
         group_name = self.group
         return self.bm.get_group_brushes(group_name)
 
     def do_get_request_mode(self):
+        """ """
         return Gtk.SizeRequestMode.HEIGHT_FOR_WIDTH
 
     def do_get_preferred_width(self):
+        """ """
         return (
             self.MIN_WIDTH_NICONS * self.ICON_SIZE,
             self.NATURAL_WIDTH_NICONS * self.ICON_SIZE,
         )
 
     def do_get_preferred_height_for_width(self, width):
+        """
+
+        Args:
+            width: 
+
+        Returns:
+
+        Raises:
+
+        """
         icons_wide = max(1, int(width // self.ICON_SIZE))
         num_brushes = len(self.brushes)
         icons_tall = max(int(num_brushes // icons_wide), max(self.MIN_HEIGHT_NICONS, 1))
@@ -122,6 +167,16 @@ class BrushList(pixbuflist.PixbufList):
         return (icons_tall * self.ICON_SIZE, icons_tall * self.ICON_SIZE)
 
     def _groups_changed_cb(self, bm):
+        """
+
+        Args:
+            bm: 
+
+        Returns:
+
+        Raises:
+
+        """
         # In case the group has been deleted and recreated, we do this
         group_name = self.group
         group_brushes = self.bm.groups.get(group_name, [])
@@ -130,6 +185,17 @@ class BrushList(pixbuflist.PixbufList):
         # See https://github.com/mypaint/mypaint/issues/654
 
     def _brushes_changed_cb(self, bm, brushes):
+        """
+
+        Args:
+            bm: 
+            brushes: 
+
+        Returns:
+
+        Raises:
+
+        """
         # CARE: this might be called in response to the group being deleted.
         # Don't recreate it by accident.
         group_name = self.group
@@ -138,22 +204,77 @@ class BrushList(pixbuflist.PixbufList):
             self.update()
 
     def _brush_selected_cb(self, bm, managed_brush, brushinfo):
+        """
+
+        Args:
+            bm: 
+            managed_brush: 
+            brushinfo: 
+
+        Returns:
+
+        Raises:
+
+        """
         self.set_selected(managed_brush)
 
     def remove_brush(self, brush):
+        """
+
+        Args:
+            brush: 
+
+        Returns:
+
+        Raises:
+
+        """
         self.brushes.remove(brush)
         self.bm.brushes_changed(self.brushes)
 
     def insert_brush(self, idx, brush):
+        """
+
+        Args:
+            idx: 
+            brush: 
+
+        Returns:
+
+        Raises:
+
+        """
         self.brushes.insert(idx, brush)
         self.bm.brushes_changed(self.brushes)
 
     def button_press_cb(self, widget, event):
+        """
+
+        Args:
+            widget: 
+            event: 
+
+        Returns:
+
+        Raises:
+
+        """
         device = event.get_source_device()
         self.app.device_monitor.device_used(device)
         return super(BrushList, self).button_press_cb(widget, event)
 
     def drag_begin_cb(self, widget, context):
+        """
+
+        Args:
+            widget: 
+            context: 
+
+        Returns:
+
+        Raises:
+
+        """
         preview = self.bm.selected_brush.preview
         preview = preview.scale_simple(
             preview.get_width() // 2,
@@ -164,6 +285,19 @@ class BrushList(pixbuflist.PixbufList):
         super(BrushList, self).drag_begin_cb(widget, context)
 
     def on_drag_data(self, copy, source_widget, brush_dragid, target_idx):
+        """
+
+        Args:
+            copy: 
+            source_widget: 
+            brush_dragid: 
+            target_idx: 
+
+        Returns:
+
+        Raises:
+
+        """
         assert source_widget, "cannot handle drag data from another app"
         brush = None
         for b in source_widget.brushes:
@@ -187,6 +321,17 @@ class BrushList(pixbuflist.PixbufList):
         return True
 
     def _item_selected_cb(self, self_, brush):
+        """
+
+        Args:
+            self_: 
+            brush: 
+
+        Returns:
+
+        Raises:
+
+        """
         # brush changed on harddisk?
         if brush.reload_if_changed():
             for brushes in self.bm.groups.values():
@@ -194,6 +339,17 @@ class BrushList(pixbuflist.PixbufList):
         self.bm.select_brush(brush)
 
     def _item_popup_cb(self, self_, brush):
+        """
+
+        Args:
+            self_: 
+            brush: 
+
+        Returns:
+
+        Raises:
+
+        """
         time = Gtk.get_current_event_time()
         menu = BrushPopupMenu(self, brush)
         menu.show_all()
@@ -265,6 +421,16 @@ class BrushPopupMenu(Gtk.Menu):
             self.append(item)
 
     def _favorite_cb(self, menuitem):
+        """
+
+        Args:
+            menuitem: 
+
+        Returns:
+
+        Raises:
+
+        """
         bl = self._brushlist
         brush = self._brush
         # Update the faves group if the brush isn't already there.
@@ -283,6 +449,16 @@ class BrushPopupMenu(Gtk.Menu):
         bl.bm.select_brush(brush)
 
     def _unfavorite_cb(self, menuitem):
+        """
+
+        Args:
+            menuitem: 
+
+        Returns:
+
+        Raises:
+
+        """
         bl = self._brushlist
         brush = self._brush
         faves = bl.bm.get_group_brushes(brushmanager.FAVORITES_BRUSH_GROUP)
@@ -294,6 +470,16 @@ class BrushPopupMenu(Gtk.Menu):
         bl.bm.save_brushorder()
 
     def _clone_cb(self, menuitem):
+        """
+
+        Args:
+            menuitem: 
+
+        Returns:
+
+        Raises:
+
+        """
         bl = self._brushlist
         brush = self._brush
         # Pick a nice unique name
@@ -323,6 +509,16 @@ class BrushPopupMenu(Gtk.Menu):
         bl.bm.select_brush(brush_copy)
 
     def _edit_cb(self, menuitem):
+        """
+
+        Args:
+            menuitem: 
+
+        Returns:
+
+        Raises:
+
+        """
         bl = self._brushlist
         brush = self._brush
         bl.bm.select_brush(brush)
@@ -330,6 +526,16 @@ class BrushPopupMenu(Gtk.Menu):
         brush_editor.show_all()
 
     def _remove_cb(self, menuitem):
+        """
+
+        Args:
+            menuitem: 
+
+        Returns:
+
+        Raises:
+
+        """
         bl = self._brushlist
         brush = self._brush
         msg = C_(
@@ -382,10 +588,12 @@ class BrushGroupTool(SizedVBoxToolWidget):
 
     @property
     def tool_widget_title(self):
+        """ """
         return brushmanager.translate_group_name(self._group)
 
     @property
     def tool_widget_description(self):
+        """ """
         if self._group not in self._app.brushmanager.groups:
             return None
         nbrushes = len(self._app.brushmanager.groups[self._group])
@@ -396,9 +604,20 @@ class BrushGroupTool(SizedVBoxToolWidget):
 
     @property
     def tool_widget_icon_name(self):
+        """ """
         return "mypaint-brushes-symbolic"  # fallback only
 
     def tool_widget_get_icon_pixbuf(self, size):
+        """
+
+        Args:
+            size: 
+
+        Returns:
+
+        Raises:
+
+        """
         if self._group not in self._app.brushmanager.groups:
             return None
         brushes = self._app.brushmanager.groups[self._group]
@@ -460,7 +679,16 @@ class BrushGroupTool(SizedVBoxToolWidget):
     ## Properties dialog action callbacks
 
     def _rename_cb(self, widget):
-        """Properties dialog rename callback"""
+        """Properties dialog rename callback
+
+        Args:
+            widget: 
+
+        Returns:
+
+        Raises:
+
+        """
         # XXX Because of the way this works, groups can only be renamed from
         # XXX    the widget's properties dialog at present. Maybe that's OK.
         self._dialog.hide()
@@ -491,7 +719,16 @@ class BrushGroupTool(SizedVBoxToolWidget):
             )
 
     def _delete_cb(self, widget):
-        """Properties dialog delete callback"""
+        """Properties dialog delete callback
+
+        Args:
+            widget: 
+
+        Returns:
+
+        Raises:
+
+        """
         self._dialog.hide()
         name = brushmanager.translate_group_name(self._group)
         msg = C_(
@@ -523,11 +760,31 @@ class BrushGroupTool(SizedVBoxToolWidget):
         dialogs.error(self, msg)
 
     def _remove_panel_idle_cb(self, typespec, paramspec):
+        """
+
+        Args:
+            typespec: 
+            paramspec: 
+
+        Returns:
+
+        Raises:
+
+        """
         self._app.workspace.remove_tool_widget(typespec, paramspec)
         return False
 
     def _export_cb(self, widget):
-        """Properties dialog export callback"""
+        """Properties dialog export callback
+
+        Args:
+            widget: 
+
+        Returns:
+
+        Raises:
+
+        """
         self._dialog.hide()
         format_id, filename = dialogs.save_dialog(
             C_("brush group export dialog: title", "Export Brushes"),
@@ -574,6 +831,16 @@ class BrushGroupsMenu(Gtk.Menu):
         bm.groups_changed += self._update
 
     def _new_brush_group_cb(self, widget):
+        """
+
+        Args:
+            widget: 
+
+        Returns:
+
+        Raises:
+
+        """
         # XXX should be moved somewhere more sensible than this
         toplevel = self.app.drawWindow
         name = dialogs.ask_for_name(
@@ -589,7 +856,16 @@ class BrushGroupsMenu(Gtk.Menu):
             bm.create_group(name)
 
     def _update(self, bm):
-        """Update dynamic items in response to the groups list changing"""
+        """Update dynamic items in response to the groups list changing
+
+        Args:
+            bm: 
+
+        Returns:
+
+        Raises:
+
+        """
         for item in self._items.values():
             if item not in self:
                 continue
@@ -612,6 +888,17 @@ class BrushGroupsMenu(Gtk.Menu):
         self.show_all()
 
     def _brush_group_item_activate_cb(self, menuitem, group_name):
+        """
+
+        Args:
+            menuitem: 
+            group_name: 
+
+        Returns:
+
+        Raises:
+
+        """
         workspace = self.app.workspace
         gtype_name = BrushGroupTool.__gtype_name__
         params = (group_name,)
@@ -620,9 +907,16 @@ class BrushGroupsMenu(Gtk.Menu):
 
 class BrushGroupsToolItem(widgets.MenuButtonToolItem):
     """Toolbar item showing a dynamic dropdown BrushGroupsMenu
-
+    
     This is instantiated by the app's UIManager using a FactoryAction which
     must be named "BrushGroups" (see factoryaction.py).
+
+    Args:
+
+    Returns:
+
+    Raises:
+
     """
 
     __gtype_name__ = "MyPaintBrushGroupsToolItem"
@@ -634,9 +928,16 @@ class BrushGroupsToolItem(widgets.MenuButtonToolItem):
 
 class BrushGroupsMenuItem(Gtk.MenuItem):
     """Brush list menu item with a dynamic BrushGroupsMenu as its submenu
-
+    
     This is instantiated by the app's UIManager using a FactoryAction which
     must be named "BrushGroups" (see factoryaction.py).
+
+    Args:
+
+    Returns:
+
+    Raises:
+
     """
 
     __gtype_name__ = "MyPaintBrushGroupsMenuItem"

@@ -46,25 +46,49 @@ class HSVSquarePage(CombinedAdjusterPage, IconRenderable):
 
     @classmethod
     def get_page_icon_name(self):
+        """ """
         return "mypaint-tool-hsvsquare"
 
     @classmethod
     def get_page_title(self):
+        """ """
         return _("HSV Square")
 
     @classmethod
     def get_page_description(self):
+        """ """
         return _("An HSV Square which can be rotated to show different hues.")
 
     def get_page_widget(self):
+        """ """
         return self.__table
 
     def set_color_manager(self, manager):
+        """
+
+        Args:
+            manager: 
+
+        Returns:
+
+        Raises:
+
+        """
         ColorAdjuster.set_color_manager(self, manager)
         self.__adj.set_color_manager(manager)
 
     def render_as_icon(self, cr, size):
-        """Renders as an icon into a Cairo context."""
+        """Renders as an icon into a Cairo context.
+
+        Args:
+            cr: 
+            size: 
+
+        Returns:
+
+        Raises:
+
+        """
         # Strategy: construct tmp R,G,B sliders with a color that shows off
         # their primary a bit. Render carefully (might need special handling
         # for the 16px size).
@@ -124,11 +148,22 @@ class HSVSquare(Gtk.VBox, ColorAdjuster):
         self.pack_start(self.__ring, True, True, 0)
 
     def set_color_manager(self, manager):
+        """
+
+        Args:
+            manager: 
+
+        Returns:
+
+        Raises:
+
+        """
         super(HSVSquare, self).set_color_manager(manager)
         self.__square.set_color_manager(manager)
         self.__ring.set_color_manager(manager)
 
     def _update_tooltips(self):
+        """ """
         self.__ring.set_tooltip_text(_("HSV Hue"))
         self.__square.set_tooltip_text(_("HSV Saturation and Value"))
 
@@ -144,6 +179,16 @@ class _HSVSquareOuterRing(HueSaturationWheelAdjuster):
         self.__cube = cube
 
     def get_pos_for_color(self, col):
+        """
+
+        Args:
+            col: 
+
+        Returns:
+
+        Raises:
+
+        """
         nr, ntheta = self.get_normalized_polar_pos_for_color(col)
         mgr = self.get_color_manager()
         if mgr:
@@ -160,7 +205,17 @@ class _HSVSquareOuterRing(HueSaturationWheelAdjuster):
         return x, y
 
     def get_color_at_position(self, x, y):
-        """Gets the color at a position, for `ColorAdjusterWidget` impls."""
+        """Gets the color at a position, for `ColorAdjusterWidget` impls.
+
+        Args:
+            x: 
+            y: 
+
+        Returns:
+
+        Raises:
+
+        """
         alloc = self.get_allocation()
         cx, cy = self.get_center(alloc=alloc)
         # Normalized radius
@@ -181,21 +236,55 @@ class _HSVSquareOuterRing(HueSaturationWheelAdjuster):
         return self.color_at_normalized_polar_pos(r, theta)
 
     def get_normalized_polar_pos_for_color(self, col):
+        """
+
+        Args:
+            col: 
+
+        Returns:
+
+        Raises:
+
+        """
         col = HSVColor(color=col)
         return col.s, col.h
 
     def color_at_normalized_polar_pos(self, r, theta):
+        """
+
+        Args:
+            r: 
+            theta: 
+
+        Returns:
+
+        Raises:
+
+        """
         col = HSVColor(color=self.get_managed_color())
         col.h = theta
         return col
 
     def get_background_validity(self):
+        """ """
         col = HSVColor(color=self.get_managed_color())
         f0, f1, f2 = self.__cube._faces
         return f0, getattr(col, f0)
 
     def render_background_cb(self, cr, wd, ht, icon_border=None):
-        """Renders the offscreen bg, for `ColorAdjusterWidget` impls."""
+        """Renders the offscreen bg, for `ColorAdjusterWidget` impls.
+
+        Args:
+            cr: 
+            wd: 
+            ht: 
+            icon_border:  (Default value = None)
+
+        Returns:
+
+        Raises:
+
+        """
         cr.save()
 
         border = icon_border
@@ -281,7 +370,18 @@ class _HSVSquareOuterRing(HueSaturationWheelAdjuster):
         cr.stroke()
 
     def paint_foreground_cb(self, cr, wd, ht):
-        """Fg marker painting, for `ColorAdjusterWidget` impls."""
+        """Fg marker painting, for `ColorAdjusterWidget` impls.
+
+        Args:
+            cr: 
+            wd: 
+            ht: 
+
+        Returns:
+
+        Raises:
+
+        """
         col = HSVColor(color=self.get_managed_color())
         col.s = 1.0
         radius = self.get_radius(wd, ht, self.BORDER_WIDTH)
@@ -317,6 +417,17 @@ class _HSVSquareInnerSquare(IconRenderableColorAdjusterWidget):
         self.connect("button-press-event", self.stop_fallthrough)
 
     def stop_fallthrough(self, widget, event):
+        """
+
+        Args:
+            widget: 
+            event: 
+
+        Returns:
+
+        Raises:
+
+        """
         return True
 
     def __get_faces(self):
@@ -327,6 +438,19 @@ class _HSVSquareInnerSquare(IconRenderableColorAdjusterWidget):
         return f1, f2
 
     def render_background_cb(self, cr, wd, ht, icon_border=None):
+        """
+
+        Args:
+            cr: 
+            wd: 
+            ht: 
+            icon_border:  (Default value = None)
+
+        Returns:
+
+        Raises:
+
+        """
         col = HSVColor(color=self.get_managed_color())
         b = icon_border
         if b is None:
@@ -373,11 +497,23 @@ class _HSVSquareInnerSquare(IconRenderableColorAdjusterWidget):
         cr.stroke()
 
     def get_background_validity(self):
+        """ """
         col = HSVColor(color=self.get_managed_color())
         f0 = self.__cube._faces[0]
         return f0, getattr(col, f0)
 
     def get_color_at_position(self, x, y):
+        """
+
+        Args:
+            x: 
+            y: 
+
+        Returns:
+
+        Raises:
+
+        """
         alloc = self.get_allocation()
         b = self.BORDER_WIDTH
         wd = alloc.width
@@ -394,6 +530,16 @@ class _HSVSquareInnerSquare(IconRenderableColorAdjusterWidget):
         return col
 
     def get_position_for_color(self, col):
+        """
+
+        Args:
+            col: 
+
+        Returns:
+
+        Raises:
+
+        """
         col = HSVColor(color=col)
         f1, f2 = self.__get_faces()
         f1_amt = getattr(col, f1)
@@ -410,6 +556,18 @@ class _HSVSquareInnerSquare(IconRenderableColorAdjusterWidget):
         return x, y
 
     def paint_foreground_cb(self, cr, wd, ht):
+        """
+
+        Args:
+            cr: 
+            wd: 
+            ht: 
+
+        Returns:
+
+        Raises:
+
+        """
         x, y = self.get_position_for_color(self.get_managed_color())
         draw_marker_circle(cr, x, y)
 

@@ -109,7 +109,17 @@ def get_app():
 
 
 def _init_icons(icon_path, default_icon="org.mypaint.MyPaint"):
-    """Set the icon theme search path, and GTK default window icon"""
+    """Set the icon theme search path, and GTK default window icon
+
+    Args:
+        icon_path: 
+        default_icon:  (Default value = "org.mypaint.MyPaint")
+
+    Returns:
+
+    Raises:
+
+    """
     # Default location for our icons. The user's theme can override these.
     icon_theme = Gtk.IconTheme.get_default()
     icon_theme.append_search_path(icon_path)
@@ -159,11 +169,11 @@ _STATEDIRS_FIELDS = (
 
 class StateDirs(namedtuple("StateDirs", _STATEDIRS_FIELDS)):
     """Where MyPaint stores its config, read-only data etc.
-
+    
     This caches some special paths that will never change for the
     lifetime of the application. An instance resides in the main
     Application object as `app.state_dirs`.
-
+    
     :ivar str app_data:
         App-specific read-only data area.
         Path used for UI definition XML, and the default sets of
@@ -184,17 +194,29 @@ class StateDirs(namedtuple("StateDirs", _STATEDIRS_FIELDS)):
         keyboard accelerator map.
         Commonly $XDG_CONFIG_HOME/mypaint, i.e. ~/.config/mypaint
 
+    Args:
+
+    Returns:
+
+    Raises:
+
     """
 
 
 class Application:
     """Main application singleton.
-
+    
     This class serves as a global container for everything that needs
     to be shared in the GUI. Its constructor is the last part of the
     initialization, called by main.py or by the testing scripts.
-
+    
     Access via `gui.application.get_app()`.
+
+    Args:
+
+    Returns:
+
+    Raises:
 
     """
 
@@ -446,14 +468,21 @@ class Application:
 
     @property
     def preferences(self):
-        """Application-level settings, as an observable dict object.
-
-        :rtype: lib.observable.ObservableDict
-
-        """
+        """Application-level settings, as an observable dict object."""
         return self._preferences
 
     def _at_application_start(self, filenames, fullscreen):
+        """
+
+        Args:
+            filenames: 
+            fullscreen: 
+
+        Returns:
+
+        Raises:
+
+        """
         col = self.brush_color_manager.get_color()
         self.brushmanager.select_initial_brush()
         self.brush_color_manager.set_color(col)
@@ -507,8 +536,15 @@ class Application:
 
     def apply_settings(self):
         """Applies the current settings.
-
+        
         Called at startup and from the prefs dialog.
+
+        Args:
+
+        Returns:
+
+        Raises:
+
         """
         self._apply_pressure_mapping_settings()
         self._apply_button_mapping_settings()
@@ -517,8 +553,14 @@ class Application:
 
     def load_settings(self):
         """Loads the settings from persistent storage.
-
+        
         Uses defaults if not explicitly configured.
+
+        Args:
+
+        Returns:
+
+        Raises:
 
         """
         default_config = gui.userconfig.default_configuration()
@@ -533,15 +575,44 @@ class Application:
             self.preferences[key] = default_config[key]
 
     def reset_compat_mode(self, update=True):
-        """Reset compatibility mode to configured default"""
+        """Reset compatibility mode to configured default
+
+        Args:
+            update:  (Default value = True)
+
+        Returns:
+
+        Raises:
+
+        """
         compat.set_compat_mode(
             self, self.preferences[compat.DEFAULT_COMPAT], update=update
         )
 
     def add_action_group(self, ag):
+        """
+
+        Args:
+            ag: 
+
+        Returns:
+
+        Raises:
+
+        """
         self.ui_manager.insert_action_group(ag, -1)
 
     def find_action(self, name):
+        """
+
+        Args:
+            name: 
+
+        Returns:
+
+        Raises:
+
+        """
         for ag in self.ui_manager.get_action_groups():
             result = ag.get_action(name)
             if result is not None:
@@ -566,13 +637,32 @@ class Application:
         self.brush.observers.append(self._brush_modified_cb)
 
     def _brush_adjustment_value_changed_cb(self, adj, cname):
-        """Updates a brush setting when the user tweaks it using a scale"""
+        """Updates a brush setting when the user tweaks it using a scale
+
+        Args:
+            adj: 
+            cname: 
+
+        Returns:
+
+        Raises:
+
+        """
         newvalue = adj.get_value()
         if self.brush.get_base_value(cname) != newvalue:
             self.brush.set_base_value(cname, newvalue)
 
     def _brush_modified_cb(self, settings):
-        """Updates the brush's base setting adjustments on brush changes"""
+        """Updates the brush's base setting adjustments on brush changes
+
+        Args:
+            settings: 
+
+        Returns:
+
+        Raises:
+
+        """
         for cname in settings:
             adj = self.brush_adjustment.get(cname, None)
             if adj is None:
@@ -583,9 +673,11 @@ class Application:
     ## Button mappings, global pressure curve
 
     def _apply_button_mapping_settings(self):
+        """ """
         self.button_mapping.update(self.preferences["input.button_mapping"])
 
     def _apply_pressure_mapping_settings(self):
+        """ """
         p = self.preferences["input.global_pressure_mapping"]
         if len(p) == 2 and abs(p[0][1] - 1.0) + abs(p[1][1] - 0.0) < 0.0001:
             # 1:1 mapping (mapping disabled)
@@ -599,11 +691,22 @@ class Application:
                 m.set_point(0, i, x, 1.0 - y)
 
             def mapping(pressure):
+                """
+
+                Args:
+                    pressure: 
+
+                Returns:
+
+                Raises:
+
+                """
                 return m.calculate_single_input(pressure)
 
             self.pressure_mapping = mapping
 
     def _apply_autosave_settings(self):
+        """ """
         active = self.preferences["document.autosave_backups"]
         interval = self.preferences["document.autosave_interval"]
         logger.debug(
@@ -616,6 +719,7 @@ class Application:
         model.autosave_interval = interval
 
     def save_gui_config(self):
+        """ """
         Gtk.AccelMap.save(join(self.user_confpath, "accelmap.conf"))
         wkspace = self.workspace
         self.preferences["workspace.layout"] = wkspace.get_layout()
@@ -631,7 +735,22 @@ class Application:
         investigate_str=None,
         **kwds
     ):
-        """Utility function to show a message/information dialog"""
+        """Utility function to show a message/information dialog
+
+        Args:
+            text: 
+            secondary_text:  (Default value = None)
+            long_text:  (Default value = None)
+            title:  (Default value = None)
+            investigate_dir:  (Default value = None)
+            investigate_str:  (Default value = None)
+            **kwds: 
+
+        Returns:
+
+        Raises:
+
+        """
         d = Gtk.MessageDialog(
             transient_for=self.drawWindow, buttons=Gtk.ButtonsType.NONE, **kwds
         )
@@ -674,7 +793,17 @@ class Application:
             lib.fileutils.startfile(investigate_dir, "open")
 
     def show_transient_message(self, text, seconds=5):
-        """Display a brief, impermanent status message"""
+        """Display a brief, impermanent status message
+
+        Args:
+            text: 
+            seconds:  (Default value = 5)
+
+        Returns:
+
+        Raises:
+
+        """
         context_id = self._transient_msg_context_id
         self.statusbar.remove_all(context_id)
         self.statusbar.push(context_id, str(text))
@@ -688,6 +817,16 @@ class Application:
         self._transient_msg_remove_timeout_id = timeout_id
 
     def _transient_msg_remove_timer_cb(self, *_ignored):
+        """
+
+        Args:
+            *_ignored: 
+
+        Returns:
+
+        Raises:
+
+        """
         context_id = self._transient_msg_context_id
         self.statusbar.remove_all(context_id)
         self._transient_msg_remove_timeout_id = None
@@ -726,7 +865,16 @@ class Application:
         return self.get_subwindow("InputTestWindow")
 
     def get_subwindow(self, name):
-        """Get a subwindow by its name."""
+        """Get a subwindow by its name.
+
+        Args:
+            name: 
+
+        Returns:
+
+        Raises:
+
+        """
         if name in self._subwindows:
             window = self._subwindows[name]
         elif name in self._subwindow_classes:
@@ -740,23 +888,61 @@ class Application:
         return window
 
     def has_subwindow(self, name):
-        """True if the named subwindow is known."""
+        """True if the named subwindow is known.
+
+        Args:
+            name: 
+
+        Returns:
+
+        Raises:
+
+        """
         return name in self._subwindow_classes
 
     def _subwindow_hide_cb(self, subwindow):
-        """Toggles off a subwindow's related action when it's hidden."""
+        """Toggles off a subwindow's related action when it's hidden.
+
+        Args:
+            subwindow: 
+
+        Returns:
+
+        Raises:
+
+        """
         action = subwindow.__toggle_action
         if action and action.get_active():
             action.set_active(False)
 
     def autorecover_cb(self, action):
+        """
+
+        Args:
+            action: 
+
+        Returns:
+
+        Raises:
+
+        """
         autosave_recovery = gui.autorecover.Presenter(self)
         autosave_recovery.run(startup=False)
 
     ## Workspace callbacks
 
     def _floating_window_created_cb(self, wkspace, floatwin):
-        """Adds newly created `workspace.ToolStackWindow`s to the kbm."""
+        """Adds newly created `workspace.ToolStackWindow`s to the kbm.
+
+        Args:
+            wkspace: 
+            floatwin: 
+
+        Returns:
+
+        Raises:
+
+        """
         self.kbm.add_window(floatwin)
 
     ## Stroke loading support
@@ -766,8 +952,13 @@ class Application:
     def restore_brush_from_stroke_info(self, strokeinfo):
         """Restores the app brush from a stroke
 
-        :param strokeinfo: Stroke details from the stroke map
-        :type strokeinfo: lib.strokemap.StrokeShape
+        Args:
+            strokeinfo (lib.strokemap.StrokeShape): Stroke details from the stroke map
+
+        Returns:
+
+        Raises:
+
         """
         mb = brushmanager.ManagedBrush(self.brushmanager)
         mb.brushinfo.load_from_string(strokeinfo.brush_string)
@@ -794,21 +985,60 @@ class Application:
     ## Profiling and debugging
 
     def start_profiling_cb(self, action):
-        """Starts profiling, or stops it (and tries to show the results)"""
+        """Starts profiling, or stops it (and tries to show the results)
+
+        Args:
+            action: 
+
+        Returns:
+
+        Raises:
+
+        """
         self.profiler.toggle_profiling()
 
     def print_memory_leak_cb(self, action):
+        """
+
+        Args:
+            action: 
+
+        Returns:
+
+        Raises:
+
+        """
         helpers.record_memory_leak_status(print_diff=True)
 
     def run_garbage_collector_cb(self, action):
+        """
+
+        Args:
+            action: 
+
+        Returns:
+
+        Raises:
+
+        """
         helpers.run_garbage_collector()
 
     def crash_program_cb(self, action):
-        """Tests exception handling."""
+        """Tests exception handling.
+
+        Args:
+            action: 
+
+        Returns:
+
+        Raises:
+
+        """
         raise Exception("This is a crash caused by the user.")
 
 
 class PixbufDirectory:
+    """ """
 
     def __init__(self, dirname):
         super(PixbufDirectory, self).__init__()
@@ -828,12 +1058,18 @@ class PixbufDirectory:
 
 class CallbackFinder:
     """Finds callbacks amongst a list of objects.
-
+    
     It's not possible to call `GtkBuilder.connect_signals()` more than once,
     but we use more tnan one backend object. Thus, this little workaround is
     necessary during construction.
-
+    
     See http://stackoverflow.com/questions/4637792
+
+    Args:
+
+    Returns:
+
+    Raises:
 
     """
 

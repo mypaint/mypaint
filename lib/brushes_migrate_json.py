@@ -20,6 +20,16 @@ from lib import brush
 
 
 def migrate_brushes_to_json(dirpath):
+    """
+
+    Args:
+        dirpath: 
+
+    Returns:
+
+    Raises:
+
+    """
 
     files = os.listdir(dirpath)
     files = [

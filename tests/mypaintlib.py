@@ -51,12 +51,14 @@ class Painting(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
+        """ """
         cls._old_cwd = os.getcwd()
         cls._temp_dir = tempfile.mkdtemp()
         os.chdir(cls._temp_dir)
 
     @classmethod
     def tearDownClass(cls):
+        """ """
         os.chdir(cls._old_cwd)
         shutil.rmtree(cls._temp_dir, ignore_errors=True)
 
@@ -120,13 +122,46 @@ class DocPaint(unittest.TestCase):
     # Helpers:
 
     def files_equal(self, a, b):
+        """
+
+        Args:
+            a: 
+            b: 
+
+        Returns:
+
+        Raises:
+
+        """
         with open(a, "rb") as af, open(b, "rb") as bf:
             return af.read() == bf.read()
 
     def assert_files_equal(self, a, b):
+        """
+
+        Args:
+            a: 
+            b: 
+
+        Returns:
+
+        Raises:
+
+        """
         self.assertTrue(self.files_equal(a, b), "Files %r and %r differ")
 
     def assert_pngs_equal(self, a, b):
+        """
+
+        Args:
+            a: 
+            b: 
+
+        Returns:
+
+        Raises:
+
+        """
         try:
             import matplotlib.pyplot as plt
         except ImportError:
@@ -222,12 +257,14 @@ class DocPaint(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
+        """ """
         cls._old_cwd = os.getcwd()
         cls._temp_dir = tempfile.mkdtemp()
         os.chdir(cls._temp_dir)
 
     @classmethod
     def tearDownClass(cls):
+        """ """
         os.chdir(cls._old_cwd)
         shutil.rmtree(cls._temp_dir, ignore_errors=True)
 
@@ -376,12 +413,14 @@ class Frame(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
+        """ """
         cls._old_cwd = os.getcwd()
         cls._temp_dir = tempfile.mkdtemp()
         os.chdir(cls._temp_dir)
 
     @classmethod
     def tearDownClass(cls):
+        """ """
         os.chdir(cls._old_cwd)
         shutil.rmtree(cls._temp_dir, ignore_errors=True)
 
@@ -399,10 +438,31 @@ class Frame(unittest.TestCase):
         positions.extend(range(+N - 1, +N + 2))
 
         def valid(c):
+            """
+
+            Args:
+                c: 
+
+            Returns:
+
+            Raises:
+
+            """
             x1, y1, x2, y2 = c
             return x1 < x2 and y1 < y2
 
         def nth(g, n):
+            """
+
+            Args:
+                g: 
+                n: 
+
+            Returns:
+
+            Raises:
+
+            """
             _n = 0
             for a in g:
                 if _n == 0:

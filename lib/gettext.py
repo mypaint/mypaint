@@ -42,19 +42,23 @@ from gettext import ngettext  # noqa: F401 E402
 def C_(context, msgid):  # noqa: N802
     """Mark a string for translation, with supplied context.
 
-    :param str context: Disambiguating context.
-    :param str msgid: String to translate.
-    :returns: the translated Unicode string
-    :rtype: str
+    Args:
+        context (str): Disambiguating context.
+        msgid (str): String to translate.
 
-    Convenience wrapper around g_dpgettext2. It's a function not a
-    macro, but use it as if it was a C macro only: in other words, only
-    use string literals so that the strings marked for translation can
-    be extracted.
+    Returns:
+        str
 
-    Writing the context as a regular string literal and the string
-    marked for translation as an explicit unicode lteral makes the fake
-    macro easier to read in the code.
+Convenience wrapper around g_dpgettext2. It's a function not a
+macro, but use it as if it was a C macro only: in other words, only
+use string literals so that the strings marked for translation can
+be extracted.
+
+Writing the context as a regular string literal and the string
+marked for translation as an explicit unicode lteral makes the fake
+macro easier to read in the code.: the translated Unicode string
+
+    Raises:
 
     """
     g_dpgettext2 = GLib.dpgettext2

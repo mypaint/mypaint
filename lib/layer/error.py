@@ -12,6 +12,6 @@
 
 
 class LoadingFailed(Exception):
-    """Raised when loading to indicate that a layer cannot be loaded"""
+    """ """
 
     pass

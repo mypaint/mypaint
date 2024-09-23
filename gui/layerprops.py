@@ -54,14 +54,20 @@ _LayerFlagUIInfo = namedtuple(
 
 class LayerPropertiesUI(gui.mvp.BuiltUIPresenter, object):
     """Presents a widget for editing the current layer's properties.
-
+    
     Implemented as a Pythonic MVP Presenter that observes the main
     document Model via its exposed lib.observable events.
-
+    
     The View part is an opaque GTK widget that can be plugged into the
     rest of the UI anywhere.  It's instantiated on demand: its
     corresponding UI XML can be found in layerprops.glade in the same
     directory as this one.
+
+    Args:
+
+    Returns:
+
+    Raises:
 
     """
 
@@ -132,6 +138,7 @@ class LayerPropertiesUI(gui.mvp.BuiltUIPresenter, object):
 
     @property
     def _layer(self):
+        """ """
         root = self._docmodel.layer_stack
         return root.current
 
@@ -139,13 +146,35 @@ class LayerPropertiesUI(gui.mvp.BuiltUIPresenter, object):
 
     @gui.mvp.view_updater
     def _m_layer_changed_cb(self, root, layerpath):
-        """Handle a change of the currently active layer."""
+        """Handle a change of the currently active layer.
+
+        Args:
+            root: 
+            layerpath: 
+
+        Returns:
+
+        Raises:
+
+        """
         self._set_name_entry_warning_flag(False)
         self._m2v_all()
 
     @gui.mvp.view_updater
     def _m_layer_props_changed_cb(self, root, layerpath, layer, changed):
-        """Handle a change of layer properties."""
+        """Handle a change of layer properties.
+
+        Args:
+            root: 
+            layerpath: 
+            layer: 
+            changed: 
+
+        Returns:
+
+        Raises:
+
+        """
         if layer is not self._layer:
             return
         if "mode" in changed:
@@ -163,16 +192,38 @@ class LayerPropertiesUI(gui.mvp.BuiltUIPresenter, object):
 
     @gui.mvp.view_updater
     def _m_layer_thumbnail_updated_cb(self, root, layerpath, layer):
-        """Handle the thumbnail of a layer changing."""
+        """Handle the thumbnail of a layer changing.
+
+        Args:
+            root: 
+            layerpath: 
+            layer: 
+
+        Returns:
+
+        Raises:
+
+        """
         if layer is not self._layer:
             return
         self._m2v_preview()
 
     @gui.mvp.view_updater
     def _m_current_view_changed_cb(self, lvm):
+        """
+
+        Args:
+            lvm: 
+
+        Returns:
+
+        Raises:
+
+        """
         self._m2v_layerview_locked()
 
     def _m2v_all(self):
+        """ """
         self._m2v_preview()
         self._m2v_name()
         self._m2v_mode()
@@ -182,6 +233,7 @@ class LayerPropertiesUI(gui.mvp.BuiltUIPresenter, object):
         self._m2v_layerview_locked()
 
     def _m2v_preview(self):
+        """ """
         layer = self._layer
         if not layer:
             return
@@ -190,6 +242,7 @@ class LayerPropertiesUI(gui.mvp.BuiltUIPresenter, object):
         image.set_from_pixbuf(preview)
 
     def _m2v_name(self):
+        """ """
         entry = self.view.layer_name_entry
         layer = self._layer
 
@@ -208,6 +261,7 @@ class LayerPropertiesUI(gui.mvp.BuiltUIPresenter, object):
             entry.set_text(name)
 
     def _m2v_mode(self):
+        """ """
         combo = self.view.layer_mode_combo
         layer = self._layer
 
@@ -227,6 +281,7 @@ class LayerPropertiesUI(gui.mvp.BuiltUIPresenter, object):
         combo.set_active_iter(active_iter)
 
     def _m2v_opacity(self):
+        """ """
         adj = self.view.layer_opacity_adjustment
         scale = self.view.layer_opacity_scale
         layer = self._layer
@@ -244,6 +299,16 @@ class LayerPropertiesUI(gui.mvp.BuiltUIPresenter, object):
         adj.set_value(percentage)
 
     def _m2v_layer_flag(self, info):
+        """
+
+        Args:
+            info: 
+
+        Returns:
+
+        Raises:
+
+        """
         layer = self._layer
         propval = getattr(layer, info.property)
         propval_idx = int(propval)
@@ -257,6 +322,7 @@ class LayerPropertiesUI(gui.mvp.BuiltUIPresenter, object):
         image.set_from_icon_name(new_icon, self._FLAG_ICON_SIZE)
 
     def _m2v_layerview_locked(self):
+        """ """
         lvm = self._docmodel.layer_view_manager
         sensitive = not lvm.current_view_locked
         btn = self.view.layer_hidden_togglebutton
@@ -265,6 +331,20 @@ class LayerPropertiesUI(gui.mvp.BuiltUIPresenter, object):
     # View monitoring and response (callback names defined in .glade XML):
 
     def _v_layer_mode_combo_query_tooltip_cb(self, combo, x, y, kbd, tooltip):
+        """
+
+        Args:
+            combo: 
+            x: 
+            y: 
+            kbd: 
+            tooltip: 
+
+        Returns:
+
+        Raises:
+
+        """
 
         label, desc = MODE_STRINGS.get(self._layer.mode, (None, None))
         if not (label and desc):
@@ -279,6 +359,16 @@ class LayerPropertiesUI(gui.mvp.BuiltUIPresenter, object):
 
     @gui.mvp.model_updater
     def _v_layer_name_entry_changed_cb(self, entry):
+        """
+
+        Args:
+            entry: 
+
+        Returns:
+
+        Raises:
+
+        """
         if not self._layer:
             return
         proposed_name = entry.get_text().strip()
@@ -293,6 +383,16 @@ class LayerPropertiesUI(gui.mvp.BuiltUIPresenter, object):
 
     @gui.mvp.model_updater
     def _v_layer_mode_combo_changed_cb(self, combo):
+        """
+
+        Args:
+            combo: 
+
+        Returns:
+
+        Raises:
+
+        """
         if not self._layer:
             return
         old_mode = self._layer.mode
@@ -307,6 +407,17 @@ class LayerPropertiesUI(gui.mvp.BuiltUIPresenter, object):
 
     @gui.mvp.model_updater
     def _v_layer_opacity_adjustment_value_changed_cb(self, adjustment, *etc):
+        """
+
+        Args:
+            adjustment: 
+            *etc: 
+
+        Returns:
+
+        Raises:
+
+        """
         if not self._layer:
             return
         opacity = adjustment.get_value() / 100.0
@@ -314,15 +425,45 @@ class LayerPropertiesUI(gui.mvp.BuiltUIPresenter, object):
 
     @gui.mvp.model_updater
     def _v_layer_hidden_togglebutton_toggled_cb(self, btn):
+        """
+
+        Args:
+            btn: 
+
+        Returns:
+
+        Raises:
+
+        """
         info = [i for i in self._BOOL_PROPERTIES if (i.property == "visible")][0]
         self._v2m_layer_flag(info)
 
     @gui.mvp.model_updater
     def _v_layer_locked_togglebutton_toggled_cb(self, btn):
+        """
+
+        Args:
+            btn: 
+
+        Returns:
+
+        Raises:
+
+        """
         info = [i for i in self._BOOL_PROPERTIES if (i.property == "locked")][0]
         self._v2m_layer_flag(info)
 
     def _v2m_layer_flag(self, info):
+        """
+
+        Args:
+            info: 
+
+        Returns:
+
+        Raises:
+
+        """
         layer = self._layer
         if not layer:
             return
@@ -340,6 +481,16 @@ class LayerPropertiesUI(gui.mvp.BuiltUIPresenter, object):
     # Utility methods:
 
     def _set_name_entry_warning_flag(self, show_warning):
+        """
+
+        Args:
+            show_warning: 
+
+        Returns:
+
+        Raises:
+
+        """
         entry = self.view.layer_name_entry
         pos = Gtk.EntryIconPosition.SECONDARY
         warning_showing = entry.get_icon_name(pos)
@@ -398,7 +549,17 @@ class LayerPropertiesDialog(Gtk.Dialog):
 
 
 def make_preview(thumb, preview_size):
-    """Convert a layer's thumbnail into a nice preview image."""
+    """Convert a layer's thumbnail into a nice preview image.
+
+    Args:
+        thumb: 
+        preview_size: 
+
+    Returns:
+
+    Raises:
+
+    """
 
     # Check size
     check_size = 2

@@ -14,9 +14,7 @@ import lib.color
 
 
 class BrushColorManager(colors.ColorManager):
-    """
-    Color manager mediating between brush settings and the color adjusters.
-    """
+    """Color manager mediating between brush settings and the color adjusters."""
 
     __brush = None
     __in_callback = False
@@ -31,7 +29,16 @@ class BrushColorManager(colors.ColorManager):
         self._app = app
 
     def set_color(self, color):
-        """Propagate user-set colors to the brush too (extension)."""
+        """Propagate user-set colors to the brush too (extension).
+
+        Args:
+            color: 
+
+        Returns:
+
+        Raises:
+
+        """
         colors.ColorManager.set_color(self, color)
         if not self.__in_callback:
             self.__brush.set_color_hsv(color.get_hsv())

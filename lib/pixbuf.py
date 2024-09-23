@@ -43,12 +43,16 @@ LOAD_CHUNK_SIZE = 64 * 1024
 def save(pixbuf, filename, type="png", **kwargs):
     """Save pixbuf to a named file (compatibility wrapper)
 
-    :param GdkPixbuf.Pixbuf pixbuf: the pixbuf to save
-    :param str filename: file path to save as
-    :param str type: type to save as: 'jpeg'/'png'/...
-    :param \*\*kwargs: passed through to GdkPixbuf
-    :rtype: bool
-    :returns: whether the file was saved fully
+    Args:
+        pixbuf (GdkPixbuf.Pixbuf): the pixbuf to save
+        filename (str): file path to save as
+        type (str, optional): type to save as: 'jpeg'/'png'/... (Default value = "png")
+        **kwargs: 
+
+    Returns:
+        whether the file was saved fully
+
+    Raises:
 
     >>> import tempfile, shutil, os
     >>> p = GdkPixbuf.Pixbuf.new(GdkPixbuf.Colorspace.RGB,True,8,64,64)
@@ -57,7 +61,6 @@ def save(pixbuf, filename, type="png", **kwargs):
     ...      **{"tEXt::greeting": "Hello, world"})
     True
     >>> shutil.rmtree(d, ignore_errors=True)
-
     """
     with open(filename, "wb") as fp:
         try:
@@ -91,18 +94,20 @@ def save(pixbuf, filename, type="png", **kwargs):
 def load_from_file(filename, progress=None, image_type=None):
     """Load a pixbuf from a named file
 
-    :param str filename: name of the file to open and read
-    :param progress: Provides UI feedback. Must be unsized or None.
-    :type progress: lib.feedback.Progress or None
-    :param image_type: type of image expected from the file
-    :type image_type: str | None
-    :rtype: GdkPixbuf.Pixbuf
-    :returns: the loaded pixbuf
+    Args:
+        filename (str): name of the file to open and read
+        progress (lib.feedback.Progress or None, optional): Provides UI feedback. Must be unsized or None. (Default value = None)
+        image_type (str | None, optional): type of image expected from the file
+    :rtype: GdkPixbuf.Pixbuf (Default value = None)
+
+    Returns:
+        the loaded pixbuf
+
+    Raises:
 
     >>> p = load_from_file("pixmaps/mypaint_logo.png")
     >>> isinstance(p, GdkPixbuf.Pixbuf)
     True
-
     """
     if not progress:
         progress = lib.feedback.Progress()
@@ -120,23 +125,26 @@ def load_from_file(filename, progress=None, image_type=None):
 def load_from_stream(fp, progress=None, image_type=None):
     """Load a pixbuf from an open file-like object
 
-    :param fp: file-like object opened for reading
-    :param progress: Provides UI feedback. Must be sized (expected bytes).
-    :type progress: lib.feedback.Progress or None
-    :param image_type: type of image to be expected from the data stream
-    :type image_type: str | None
-    :rtype: GdkPixbuf.Pixbuf
-    :returns: the loaded pixbuf
+    Args:
+        fp: file-like object opened for reading
+        progress (lib.feedback.Progress or None, optional): Provides UI feedback. Must be sized (expected bytes). (Default value = None)
+        image_type (str | None, optional): type of image to be expected from the data stream
+    :rtype: GdkPixbuf.Pixbuf (Default value = None)
+
+    Returns:
+        the loaded pixbuf
+        
+        
+        If a progress feedback object is specified, its `items` field must
+        have been pre-filled with the number of bytes expected before
+        fp.read() returns an empty string.
+
+    Raises:
 
     >>> with open("pixmaps/mypaint_logo.png", "rb") as fp:
     ...     p = load_from_stream(fp)
     >>> isinstance(p, GdkPixbuf.Pixbuf)
     True
-
-    If a progress feedback object is specified, its `items` field must
-    have been pre-filled with the number of bytes expected before
-    fp.read() returns an empty string.
-
     """
     if progress and (progress.items is None):
         raise ValueError("progress argument must be sized if specified")
@@ -159,21 +167,23 @@ def load_from_stream(fp, progress=None, image_type=None):
 def load_from_zipfile(datazip, filename, progress=None, image_type=None):
     """Extract and return a pixbuf from a zipfile entry
 
-    :param zipfile.ZipFile datazip: ZipFile object opened for extracting
-    :param str filename: pixbuf entry (file name) in the zipfile
-    :param progress: Provides UI feedback. Must be unsized or None.
-    :type progress: lib.feedback.Progress or None
-    :param image_type: type of image expected from the file
-    :type image_type: str | None
-    :rtype: GdkPixbuf.Pixbuf
-    :returns: the loaded pixbuf
+    Args:
+        datazip (zipfile.ZipFile): ZipFile object opened for extracting
+        filename (str): pixbuf entry (file name) in the zipfile
+        progress (lib.feedback.Progress or None, optional): Provides UI feedback. Must be unsized or None. (Default value = None)
+        image_type (str | None, optional): type of image expected from the file
+    :rtype: GdkPixbuf.Pixbuf (Default value = None)
+
+    Returns:
+        the loaded pixbuf
+
+    Raises:
 
     >>> import zipfile
     >>> with zipfile.ZipFile("tests/smallimage.ora", mode="r") as z:
     ...     p = load_from_zipfile(z, "Thumbnails/thumbnail.png")
     >>> isinstance(p, GdkPixbuf.Pixbuf)
     True
-
     """
     if not progress:
         progress = lib.feedback.Progress()

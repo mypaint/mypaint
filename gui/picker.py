@@ -40,13 +40,19 @@ _PRESS_EVENTS = {Gdk.EventType.BUTTON_PRESS, Gdk.EventType.TOUCH_BEGIN}
 
 class PickingGrabPresenter(metaclass=abc.ABCMeta):
     """Picking something via a grab (abstract base, MVP presenter)
-
+    
     This presenter mediates between passive GTK view widgets
     accessed via the central app,
     and a model consisting of some drawing state within the application.
     When activated, it establishes a pointer grab and a keyboard grab,
     updates the thing being grabbed zero or more times,
     then exits making sure that the grab is cleaned up correctly.
+
+    Args:
+
+    Returns:
+
+    Raises:
 
     """
 
@@ -83,6 +89,16 @@ class PickingGrabPresenter(metaclass=abc.ABCMeta):
 
     @app.setter
     def app(self, app):
+        """
+
+        Args:
+            app: 
+
+        Returns:
+
+        Raises:
+
+        """
         self._app = app
         self._statusbar_info_cache = None
 
@@ -116,17 +132,24 @@ class PickingGrabPresenter(metaclass=abc.ABCMeta):
 
     def activate_from_button_event(self, event):
         """Activate during handling of a GdkEventButton (press/release)
-
+        
         If the event is a button press, then the grab will start
         immediately, begin updating immediately, and will terminate by
         the release of the initiating button.
-
+        
         If the event is a button release, then the grab start will be
         deferred to start in an idle handler. When the grab starts, it
         won't begin updating until the user clicks button 1 (and only
         button 1), and it will only be terminated with a button1
         release. This covers the case of events delivered to "clicked"
         signal handlers
+
+        Args:
+            event: 
+
+        Returns:
+
+        Raises:
 
         """
         if event.type in _PRESS_EVENTS:
@@ -150,11 +173,15 @@ class PickingGrabPresenter(metaclass=abc.ABCMeta):
     def picking_cursor(self):
         """The cursor to use while picking.
 
-        :returns: The cursor to use during the picking grab.
-        :rtype: Gdk.Cursor
+        Args:
 
-        This abstract property must be overridden with an implementation
-        giving an appropriate cursor to display during the picking grab.
+        Returns:
+            Gdk.Cursor
+
+This abstract property must be overridden with an implementation
+giving an appropriate cursor to display during the picking grab.: The cursor to use during the picking grab.
+
+        Raises:
 
         """
 
@@ -166,20 +193,25 @@ class PickingGrabPresenter(metaclass=abc.ABCMeta):
     def picking_update(self, device, x_root, y_root):
         """Update whatever's being picked during & after picking.
 
-        :param Gdk.Device device: Pointer device currently grabbed
-        :param int x_root: Absolute screen X coordinate
-        :param int y_root: Absolute screen Y coordinate
-
+        Args:
+            device (Gdk.Device): Pointer device currently grabbed
+            x_root (int): Absolute screen X coordinate
+            y_root (int): Absolute screen Y coordinate
+        
         This abstract method must be overridden with an implementation
         which updates the model object being picked.
         It is always called at the end of the picking grab
         when button1 is released,
         and may be called several times during the grab
         while button1 is held.
-
+        
         See gui.tileddrawwidget.TiledDrawWidget.get_tdw_under_device()
         for details of how to get canvas widgets
         and their related document models and controllers.
+
+        Returns:
+
+        Raises:
 
         """
 
@@ -188,13 +220,18 @@ class PickingGrabPresenter(metaclass=abc.ABCMeta):
     def _start_grab(self, device, time, inibutton):
         """Start the pointer grab, and enter the picking state.
 
-        :param Gdk.Device device: Initiating pointer device.
-        :param int time: The grab start timestamp.
-        :param int inibutton: Initiating pointer button.
-
+        Args:
+            device (Gdk.Device): Initiating pointer device.
+            time (int): The grab start timestamp.
+            inibutton (int): Initiating pointer button.
+        
         The associated keyboard device is grabbed too.
         This method assumes that inibutton is currently held. The grab
         terminates when inibutton is released.
+
+        Returns:
+
+        Raises:
 
         """
         logger.debug("Starting picking grab...")
@@ -310,6 +347,17 @@ class PickingGrabPresenter(metaclass=abc.ABCMeta):
         return False  # don't requeue
 
     def _in_grab_button_press_cb(self, widget, event):
+        """
+
+        Args:
+            widget: 
+            event: 
+
+        Returns:
+
+        Raises:
+
+        """
         assert self._grab_button_num is None
         if event.type not in _PRESS_EVENTS:
             return False
@@ -324,6 +372,17 @@ class PickingGrabPresenter(metaclass=abc.ABCMeta):
         return True
 
     def _in_grab_button_release_cb(self, widget, event):
+        """
+
+        Args:
+            widget: 
+            event: 
+
+        Returns:
+
+        Raises:
+
+        """
         assert self._grab_button_num is not None
         if event.type not in _RELEASE_EVENTS:
             return False
@@ -341,6 +400,17 @@ class PickingGrabPresenter(metaclass=abc.ABCMeta):
         return True
 
     def _in_grab_motion_cb(self, widget, event):
+        """
+
+        Args:
+            widget: 
+            event: 
+
+        Returns:
+
+        Raises:
+
+        """
         assert self._grabbed_pointer_dev is not None
         if not self._check_event_devices_still_grabbed(event):
             return True
@@ -361,12 +431,32 @@ class PickingGrabPresenter(metaclass=abc.ABCMeta):
         return True
 
     def _in_grab_grab_broken_cb(self, widget, event):
+        """
+
+        Args:
+            widget: 
+            event: 
+
+        Returns:
+
+        Raises:
+
+        """
         logger.debug("Grab broken, cleaning up.")
         self._ungrab_grabbed_devices()
         return False
 
     def _end_grab(self, event):
-        """Finishes the picking grab normally."""
+        """Finishes the picking grab normally.
+
+        Args:
+            event: 
+
+        Returns:
+
+        Raises:
+
+        """
         if not self._check_event_devices_still_grabbed(event):
             return
         device = event.device
@@ -377,10 +467,17 @@ class PickingGrabPresenter(metaclass=abc.ABCMeta):
 
     def _check_event_devices_still_grabbed(self, event):
         """Abandon picking if devices aren't still grabbed.
-
+        
         This can happen if the escape key is pressed during the grab -
         the gui.keyboard handler is still invoked in the normal way,
         and Escape just does an ungrab.
+
+        Args:
+            event: 
+
+        Returns:
+
+        Raises:
 
         """
         cleanup_needed = False
@@ -400,7 +497,16 @@ class PickingGrabPresenter(metaclass=abc.ABCMeta):
         return not cleanup_needed
 
     def _ungrab_grabbed_devices(self, time=Gdk.CURRENT_TIME):
-        """Ungrabs devices thought to be grabbed, and cleans up."""
+        """Ungrabs devices thought to be grabbed, and cleans up.
+
+        Args:
+            time:  (Default value = Gdk.CURRENT_TIME)
+
+        Returns:
+
+        Raises:
+
+        """
         for dev in (self._grabbed_pointer_dev, self._grabbed_keyboard_dev):
             if not dev:
                 continue
@@ -421,13 +527,22 @@ class PickingGrabPresenter(metaclass=abc.ABCMeta):
 
     def _delayed_picking_update_cb(self, ptrdev, x_root, y_root):
         """Delayed picking updates during grab.
-
+        
         Some picking operations can be CPU-intensive, so this is called
         by an idle handler. If the user clicks and releases immediately,
         this never gets called, so a final call to picking_update() is
         made separately after the grab finishes.
-
+        
         See: picking_update().
+
+        Args:
+            ptrdev: 
+            x_root: 
+            y_root: 
+
+        Returns:
+
+        Raises:
 
         """
         try:
@@ -461,7 +576,18 @@ class ContextPickingGrabPresenter(PickingGrabPresenter):
         )
 
     def picking_update(self, device, x_root, y_root):
-        """Update brush and layer during & after picking."""
+        """Update brush and layer during & after picking.
+
+        Args:
+            device: 
+            x_root: 
+            y_root: 
+
+        Returns:
+
+        Raises:
+
+        """
         # Can only pick from TDWs
         tdw, x, y = TiledDrawWidget.get_tdw_under_device(device)
         if tdw is None:
@@ -500,7 +626,18 @@ class ColorPickingGrabPresenter(PickingGrabPresenter):
         )
 
     def picking_update(self, device, x_root, y_root):
-        """Update brush and layer during & after picking."""
+        """Update brush and layer during & after picking.
+
+        Args:
+            device: 
+            x_root: 
+            y_root: 
+
+        Returns:
+
+        Raises:
+
+        """
         tdw, x, y = TiledDrawWidget.get_tdw_under_device(device)
         if tdw is None:
             return
@@ -511,10 +648,16 @@ class ColorPickingGrabPresenter(PickingGrabPresenter):
 
 class ButtonPresenter:
     """Picking behaviour for a button (MVP presenter)
-
+    
     This presenter mediates between a passive view consisting of a
     button, and a peer PickingGrabPresenter instance which does the
     actual work after the button is clicked.
+
+    Args:
+
+    Returns:
+
+    Raises:
 
     """
 
@@ -528,12 +671,27 @@ class ButtonPresenter:
         self._grab = None
 
     def set_picking_grab(self, grab):
+        """
+
+        Args:
+            grab: 
+
+        Returns:
+
+        Raises:
+
+        """
         self._grab = grab
 
     def set_button(self, button):
         """Connect view button.
 
-        :param Gtk.Button button: the initiator button
+        Args:
+            button (Gtk.Button): the initiator button
+
+        Returns:
+
+        Raises:
 
         """
         button.connect("clicked", self._clicked_cb)
@@ -542,7 +700,16 @@ class ButtonPresenter:
     ## Event handling
 
     def _clicked_cb(self, button):
-        """Handle click events on the initiator button."""
+        """Handle click events on the initiator button.
+
+        Args:
+            button: 
+
+        Returns:
+
+        Raises:
+
+        """
         event = Gtk.get_current_event()
         assert event is not None
         assert event.type in _RELEASE_EVENTS, (

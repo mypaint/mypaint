@@ -142,9 +142,30 @@ class DrawWindow(Gtk.Window):
         #   self.main_widget.grab_focus()
 
     def _button_press_cb(self, window, event):
+        """
+
+        Args:
+            window: 
+            event: 
+
+        Returns:
+
+        Raises:
+
+        """
         windowing.clear_focus(window)
 
     def _realize_cb(self, drawwindow):
+        """
+
+        Args:
+            drawwindow: 
+
+        Returns:
+
+        Raises:
+
+        """
         # Deferred setup: anything that needs to be done when self.app is fully
         # initialized.
         if self._done_realize:
@@ -192,6 +213,7 @@ class DrawWindow(Gtk.Window):
         layerstack.layer_deleted += self._update_layer_pick_action
 
     def _init_actions(self):
+        """ """
         # Actions are defined in resources.xml.
         # all we need to do here is connect some extra state management.
 
@@ -211,6 +233,7 @@ class DrawWindow(Gtk.Window):
             self.app.kbm.takeover_action(action)
 
     def _init_stategroups(self):
+        """ """
         sg = stategroup.StateGroup()
         p2s = sg.create_popup_state
         hist = p2s(historypopup.HistoryPopup(self.app, self.app.doc.model))
@@ -227,6 +250,7 @@ class DrawWindow(Gtk.Window):
             popup_state.label = label
 
     def _init_menubar(self):
+        """ """
         # Load Menubar, duplicate into self.popupmenu
         ui_dir = os.path.dirname(os.path.abspath(__file__))
         menupath = os.path.join(ui_dir, "menu.xml")
@@ -241,17 +265,28 @@ class DrawWindow(Gtk.Window):
         self.menubar = self.app.ui_manager.get_widget("/Menubar")
 
     def _init_toolbars(self):
+        """ """
         self._toolbar_manager = toolbar.ToolbarManager(self)
         self._toolbar1 = self._toolbar_manager.toolbar1
         self._toolbar2 = self._toolbar_manager.toolbar2
 
     def _clone_menu(self, xml, name, owner=None):
         """Menu duplicator
-
+        
         Hopefully temporary hack for converting UIManager XML describing the
         main menubar into a rebindable popup menu. UIManager by itself doesn't
         let you do this, by design, but we need a bigger menu than the little
         things it allows you to build.
+
+        Args:
+            xml: 
+            name: 
+            owner:  (Default value = None)
+
+        Returns:
+
+        Raises:
+
         """
         ui_elt = ET.fromstring(xml)
         rootmenu_elt = ui_elt.find("menubar")
@@ -274,6 +309,16 @@ class DrawWindow(Gtk.Window):
         return popupmenu
 
     def update_title(self, filename):
+        """
+
+        Args:
+            filename: 
+
+        Returns:
+
+        Raises:
+
+        """
         if filename:
             # TRANSLATORS: window title for use with a filename
             title_base = _("%s - MyPaint") % os.path.basename(filename)
@@ -288,7 +333,22 @@ class DrawWindow(Gtk.Window):
         self.set_title(title_base + compat_str)
 
     def _drag_data_received_cb(self, widget, context, x, y, data, info, time):
-        """Handles data being received"""
+        """Handles data being received
+
+        Args:
+            widget: 
+            context: 
+            x: 
+            y: 
+            data: 
+            info: 
+            time: 
+
+        Returns:
+
+        Raises:
+
+        """
         rawdata = data.get_data()
         if not rawdata:
             return
@@ -320,16 +380,23 @@ class DrawWindow(Gtk.Window):
 
     def reveal_dockpanel_cb(self, action):
         """Action callback: reveal a dockpanel in its current location.
-
+        
         This adds the related dockpanel if it has not yet been added to
         the workspace. In fullscreen mode, the action also acts to show
         the sidebar or floating window which contains the dockpanel.
         It also brings its tab to the fore.
-
+        
         The panel's name is parsed from the action name. An action name
         of 'RevealFooPanel' relates to a panel whose GType-system class
         name is "MyPaintFooPanel". Old-style "Tool" suffixes are
         supported too, but are deprecated.
+
+        Args:
+            action: 
+
+        Returns:
+
+        Raises:
 
         """
         action_name = action.get_name()
@@ -343,7 +410,16 @@ class DrawWindow(Gtk.Window):
         workspace.reveal_tool_widget(gtype_name, [])
 
     def toggle_dockpanel_cb(self, action):
-        """Action callback: add or remove a dockpanel from the UI."""
+        """Action callback: add or remove a dockpanel from the UI.
+
+        Args:
+            action: 
+
+        Returns:
+
+        Raises:
+
+        """
         action_name = action.get_name()
         type_name = action_name
         for prefix in ["Toggle"]:
@@ -363,11 +439,18 @@ class DrawWindow(Gtk.Window):
 
     def toggle_window_cb(self, action):
         """Handles a variety of window-toggling GtkActions.
-
+        
         Handled here:
-
+        
         * Workspace-managed dockpanels which require no constructor args.
         * Regular app subwindows, exposed via its get_subwindow() method.
+
+        Args:
+            action: 
+
+        Returns:
+
+        Raises:
 
         """
         action_name = action.get_name()
@@ -388,14 +471,47 @@ class DrawWindow(Gtk.Window):
             logger.warning("unknown window or tool %r" % (action_name,))
 
     def app_workspace_tool_widget_added_cb(self, ws, widget):
+        """
+
+        Args:
+            ws: 
+            widget: 
+
+        Returns:
+
+        Raises:
+
+        """
         gtype_name = widget.__gtype_name__
         self._set_tool_widget_related_toggleaction_active(gtype_name, True)
 
     def app_workspace_tool_widget_removed_cb(self, ws, widget):
+        """
+
+        Args:
+            ws: 
+            widget: 
+
+        Returns:
+
+        Raises:
+
+        """
         gtype_name = widget.__gtype_name__
         self._set_tool_widget_related_toggleaction_active(gtype_name, False)
 
     def _set_tool_widget_related_toggleaction_active(self, gtype_name, active):
+        """
+
+        Args:
+            gtype_name: 
+            active: 
+
+        Returns:
+
+        Raises:
+
+        """
         active = bool(active)
         assert gtype_name.startswith("MyPaint")
         for prefix in ("Toggle", ""):
@@ -413,14 +529,35 @@ class DrawWindow(Gtk.Window):
     # conventional statusbar for textual types of feedback.
 
     def toggle_scale_feedback_cb(self, action):
+        """
+
+        Args:
+            action: 
+
+        Returns:
+
+        Raises:
+
+        """
         self.app.preferences["ui.feedback.scale"] = action.get_active()
         self.update_overlays()
 
     def toggle_last_pos_feedback_cb(self, action):
+        """
+
+        Args:
+            action: 
+
+        Returns:
+
+        Raises:
+
+        """
         self.app.preferences["ui.feedback.last_pos"] = action.get_active()
         self.update_overlays()
 
     def update_overlays(self):
+        """ """
         # Updates the list of overlays on the main doc's TDW to match the prefs
         doc = self.app.doc
         disp_overlays = [
@@ -446,7 +583,16 @@ class DrawWindow(Gtk.Window):
     ## Popup windows and dialogs
 
     def popup_cb(self, action):
-        """Action callback: show a popup window (old mechanism)"""
+        """Action callback: show a popup window (old mechanism)
+
+        Args:
+            action: 
+
+        Returns:
+
+        Raises:
+
+        """
         warn(
             "The old UI states mechanism is scheduled for replacement. "
             "Don't use this in new code.",
@@ -457,7 +603,16 @@ class DrawWindow(Gtk.Window):
         state.activate(action)
 
     def _get_quick_chooser(self, name):
-        """Get a named quick chooser instance (factory method)"""
+        """Get a named quick chooser instance (factory method)
+
+        Args:
+            name: 
+
+        Returns:
+
+        Raises:
+
+        """
         chooser = self._quick_choosers.get(name)
         if not chooser:
             ctor_info = self._QUICK_CHOOSER_CONSTRUCT_INFO.get(name)
@@ -468,7 +623,16 @@ class DrawWindow(Gtk.Window):
         return chooser
 
     def _popup_quick_chooser(self, name):
-        """Pops up a named quick chooser instance, hides the others"""
+        """Pops up a named quick chooser instance, hides the others
+
+        Args:
+            name: 
+
+        Returns:
+
+        Raises:
+
+        """
         chooser = self._get_quick_chooser(name)
         if chooser.get_visible():
             chooser.advance()
@@ -482,7 +646,16 @@ class DrawWindow(Gtk.Window):
         chooser.popup()
 
     def quick_chooser_popup_cb(self, action):
-        """Action callback: show the named quick chooser (new system)"""
+        """Action callback: show the named quick chooser (new system)
+
+        Args:
+            action: 
+
+        Returns:
+
+        Raises:
+
+        """
         chooser_name = action.get_name()
         self._popup_quick_chooser(chooser_name)
 
@@ -497,6 +670,16 @@ class DrawWindow(Gtk.Window):
         return self._get_quick_chooser("ColorChooserPopup")
 
     def color_details_dialog_cb(self, action):
+        """
+
+        Args:
+            action: 
+
+        Returns:
+
+        Raises:
+
+        """
         mgr = self.app.brush_color_manager
         new_col = dialogs.ask_for_color(
             title=_("Set current color"),
@@ -510,6 +693,16 @@ class DrawWindow(Gtk.Window):
     ## Subwindows
 
     def fullscreen_autohide_toggled_cb(self, action):
+        """
+
+        Args:
+            action: 
+
+        Returns:
+
+        Raises:
+
+        """
         workspace = self.app.workspace
         workspace.autohide_enabled = action.get_active()
 
@@ -519,12 +712,33 @@ class DrawWindow(Gtk.Window):
     # available.
 
     def fullscreen_cb(self, *junk):
+        """
+
+        Args:
+            *junk: 
+
+        Returns:
+
+        Raises:
+
+        """
         if not self.is_fullscreen:
             self.fullscreen()
         else:
             self.unfullscreen()
 
     def window_state_event_cb(self, widget, event):
+        """
+
+        Args:
+            widget: 
+            event: 
+
+        Returns:
+
+        Raises:
+
+        """
         # Respond to changes of the fullscreen state only
         if not event.changed_mask & Gdk.WindowState.FULLSCREEN:
             return
@@ -539,6 +753,7 @@ class DrawWindow(Gtk.Window):
         # to reinit its workarounds, that might cause glitches.
 
     def update_fullscreen_action(self):
+        """ """
         action = self.action_group.get_action("Fullscreen")
         if self.is_fullscreen:
             action.set_icon_name("mypaint-unfullscreen-symbolic")
@@ -550,9 +765,29 @@ class DrawWindow(Gtk.Window):
             action.set_label(_("Fullscreen"))
 
     def popupmenu_show_cb(self, action):
+        """
+
+        Args:
+            action: 
+
+        Returns:
+
+        Raises:
+
+        """
         self.show_popupmenu()
 
     def show_popupmenu(self, event=None):
+        """
+
+        Args:
+            event:  (Default value = None)
+
+        Returns:
+
+        Raises:
+
+        """
         self.menubar.set_sensitive(False)  # excessive feedback?
         button = 1
         time = 0
@@ -579,6 +814,17 @@ class DrawWindow(Gtk.Window):
                 self.popupmenu.select_item(self.popupmenu_last_active)
 
     def popupmenu_done_cb(self, *a, **kw):
+        """
+
+        Args:
+            *a: 
+            **kw: 
+
+        Returns:
+
+        Raises:
+
+        """
         # Not sure if we need to bother with this level of feedback,
         # but it actually looks quite nice to see one menu taking over
         # the other. Makes it clear that the popups are the same thing as
@@ -589,15 +835,45 @@ class DrawWindow(Gtk.Window):
     ## Scratchpad menu options
 
     def save_scratchpad_as_default_cb(self, action):
+        """
+
+        Args:
+            action: 
+
+        Returns:
+
+        Raises:
+
+        """
         self.app.filehandler.save_scratchpad(
             self.app.filehandler.get_scratchpad_default(),
             export=True,
         )
 
     def clear_default_scratchpad_cb(self, action):
+        """
+
+        Args:
+            action: 
+
+        Returns:
+
+        Raises:
+
+        """
         self.app.filehandler.delete_default_scratchpad()
 
     def new_scratchpad_cb(self, action):
+        """
+
+        Args:
+            action: 
+
+        Returns:
+
+        Raises:
+
+        """
         app = self.app
         default_scratchpad_path = app.filehandler.get_scratchpad_default()
         if os.path.isfile(default_scratchpad_path):
@@ -611,6 +887,16 @@ class DrawWindow(Gtk.Window):
         app.preferences["scratchpad.last_opened"] = scratchpad_path
 
     def load_scratchpad_cb(self, action):
+        """
+
+        Args:
+            action: 
+
+        Returns:
+
+        Raises:
+
+        """
         if self.app.scratchpad_filename:
             self.save_current_scratchpad_cb(action)
             current_pad = self.app.scratchpad_filename
@@ -629,9 +915,29 @@ class DrawWindow(Gtk.Window):
             self.app.scratchpad_filename = current_pad
 
     def save_as_scratchpad_cb(self, action):
+        """
+
+        Args:
+            action: 
+
+        Returns:
+
+        Raises:
+
+        """
         self.app.filehandler.save_scratchpad_as_dialog()
 
     def revert_current_scratchpad_cb(self, action):
+        """
+
+        Args:
+            action: 
+
+        Returns:
+
+        Raises:
+
+        """
         filename = self.app.scratchpad_filename
         if os.path.isfile(filename):
             self.app.filehandler.open_scratchpad(filename)
@@ -640,12 +946,33 @@ class DrawWindow(Gtk.Window):
             logger.warning("No file to revert to yet.")
 
     def save_current_scratchpad_cb(self, action):
+        """
+
+        Args:
+            action: 
+
+        Returns:
+
+        Raises:
+
+        """
         self.app.filehandler.save_scratchpad(self.app.scratchpad_filename)
 
     def scratchpad_copy_background_cb(self, action):
+        """
+
+        Args:
+            action: 
+
+        Returns:
+
+        Raises:
+
+        """
         self._copy_main_background_to_scratchpad()
 
     def _copy_main_background_to_scratchpad(self):
+        """ """
         app = self.app
         if not app.scratchpad_doc:
             return
@@ -657,6 +984,16 @@ class DrawWindow(Gtk.Window):
     ## Palette actions
 
     def palette_next_cb(self, action):
+        """
+
+        Args:
+            action: 
+
+        Returns:
+
+        Raises:
+
+        """
         mgr = self.app.brush_color_manager
         newcolor = mgr.palette.move_match_position(1, mgr.get_color())
         if newcolor:
@@ -666,6 +1003,16 @@ class DrawWindow(Gtk.Window):
         workspace.reveal_tool_widget("MyPaintPaletteTool", [])
 
     def palette_prev_cb(self, action):
+        """
+
+        Args:
+            action: 
+
+        Returns:
+
+        Raises:
+
+        """
         mgr = self.app.brush_color_manager
         newcolor = mgr.palette.move_match_position(-1, mgr.get_color())
         if newcolor:
@@ -675,7 +1022,17 @@ class DrawWindow(Gtk.Window):
         workspace.reveal_tool_widget("MyPaintPaletteTool", [])
 
     def palette_add_current_color_cb(self, *args, **kwargs):
-        """Append the current color to the palette (action or clicked cb)"""
+        """Append the current color to the palette (action or clicked cb)
+
+        Args:
+            *args: 
+            **kwargs: 
+
+        Returns:
+
+        Raises:
+
+        """
         mgr = self.app.brush_color_manager
         color = mgr.get_color()
         mgr.palette.append(color, name=None, unique=True, match=True)
@@ -686,6 +1043,16 @@ class DrawWindow(Gtk.Window):
     ## Miscellaneous actions
 
     def quit_cb(self, *junk):
+        """
+
+        Args:
+            *junk: 
+
+        Returns:
+
+        Raises:
+
+        """
         self.app.doc.model.sync_pending_changes()
         self.app.save_gui_config()  # FIXME: should do this periodically
         ok_to_quit = self.app.filehandler.confirm_destructive_action(
@@ -707,11 +1074,31 @@ class DrawWindow(Gtk.Window):
         return False
 
     def download_brush_pack_cb(self, *junk):
+        """
+
+        Args:
+            *junk: 
+
+        Returns:
+
+        Raises:
+
+        """
         uri = BRUSHPACK_URI
         logger.info("Opening URI %r in web browser", uri)
         webbrowser.open(uri)
 
     def import_brush_pack_cb(self, *junk):
+        """
+
+        Args:
+            *junk: 
+
+        Returns:
+
+        Raises:
+
+        """
         format_id, filename = dialogs.open_dialog(
             _("Import brush package…"),
             self,
@@ -730,9 +1117,29 @@ class DrawWindow(Gtk.Window):
     # TODO: Move into dialogs.py?
 
     def about_cb(self, action):
+        """
+
+        Args:
+            action: 
+
+        Returns:
+
+        Raises:
+
+        """
         gui.meta.run_about_dialog(self, self.app)
 
     def show_online_help_cb(self, action):
+        """
+
+        Args:
+            action: 
+
+        Returns:
+
+        Raises:
+
+        """
         # The online help texts are migrating to the wiki for v1.2.x.
         wiki_base = "https://github.com/mypaint/mypaint/wiki/"
         action_name = action.get_name()
@@ -751,7 +1158,16 @@ class DrawWindow(Gtk.Window):
     ## Footer bar stuff
 
     def _update_footer_color_widgets(self, settings):
-        """Updates the footer bar color info when the brush color changes."""
+        """Updates the footer bar color info when the brush color changes.
+
+        Args:
+            settings: 
+
+        Returns:
+
+        Raises:
+
+        """
         if not settings.intersection(("color_h", "color_s", "color_v")):
             return
         bm_btn_name = "footer_bookmark_current_color_button"
@@ -761,7 +1177,16 @@ class DrawWindow(Gtk.Window):
         bm_btn.set_sensitive(brush_color not in palette)
 
     def _update_footer_scale_label(self, renderer):
-        """Updates the footer's scale label when the transformation changes"""
+        """Updates the footer's scale label when the transformation changes
+
+        Args:
+            renderer: 
+
+        Returns:
+
+        Raises:
+
+        """
         label = self.app.builder.get_object("app_canvas_scale_label")
         scale = renderer.scale * 100.0
         rotation = (renderer.rotation / (2 * math.pi)) % 1.0
@@ -777,10 +1202,31 @@ class DrawWindow(Gtk.Window):
         label.set_text(template.format(**params))
 
     def _modestack_changed_cb(self, modestack, old, new):
+        """
+
+        Args:
+            modestack: 
+            old: 
+            new: 
+
+        Returns:
+
+        Raises:
+
+        """
         self._update_status_bar_mode_widgets(new)
 
     def _update_status_bar_mode_widgets(self, mode):
-        """Updates widgets on the status bar that reflect the current mode"""
+        """Updates widgets on the status bar that reflect the current mode
+
+        Args:
+            mode: 
+
+        Returns:
+
+        Raises:
+
+        """
         # Update the status bar
         statusbar = self.app.statusbar
         context_id = self._active_mode_context_id
@@ -796,6 +1242,20 @@ class DrawWindow(Gtk.Window):
         mode_img.set_from_icon_name(icon_name, icon_size)
 
     def _mode_icon_query_tooltip_cb(self, widget, x, y, kbmode, tooltip):
+        """
+
+        Args:
+            widget: 
+            x: 
+            y: 
+            kbmode: 
+            tooltip: 
+
+        Returns:
+
+        Raises:
+
+        """
         mode = self.app.doc.modes.top
         icon_name = mode.get_icon_name()
         if not icon_name:
@@ -817,18 +1277,48 @@ class DrawWindow(Gtk.Window):
         return True
 
     def _footer_color_details_button_realize_cb(self, button):
+        """
+
+        Args:
+            button: 
+
+        Returns:
+
+        Raises:
+
+        """
         action = self.app.find_action("ColorDetailsDialog")
         button.set_related_action(action)
 
     ## Footer picker buttons
 
     def _footer_context_picker_button_realize_cb(self, button):
+        """
+
+        Args:
+            button: 
+
+        Returns:
+
+        Raises:
+
+        """
         presenter = gui.picker.ButtonPresenter()
         presenter.set_button(button)
         presenter.set_picking_grab(self.app.context_grab)
         self._footer_context_picker_button_presenter = presenter
 
     def _footer_color_picker_button_realize_cb(self, button):
+        """
+
+        Args:
+            button: 
+
+        Returns:
+
+        Raises:
+
+        """
         presenter = gui.picker.ButtonPresenter()
         presenter.set_button(button)
         presenter.set_picking_grab(self.app.color_grab)
@@ -837,6 +1327,16 @@ class DrawWindow(Gtk.Window):
     ## Footer indicator widgets
 
     def _footer_brush_indicator_drawingarea_realize_cb(self, drawarea):
+        """
+
+        Args:
+            drawarea: 
+
+        Returns:
+
+        Raises:
+
+        """
         presenter = gui.footer.BrushIndicatorPresenter()
         presenter.set_drawing_area(drawarea)
         presenter.set_brush_manager(self.app.brushmanager)
@@ -849,7 +1349,16 @@ class DrawWindow(Gtk.Window):
     # there's only one window.
 
     def pick_context_cb(self, action):
-        """Pick Context action: select layer and brush from stroke"""
+        """Pick Context action: select layer and brush from stroke
+
+        Args:
+            action: 
+
+        Returns:
+
+        Raises:
+
+        """
         # Get the controller owning most recently moved painted to or
         # moved over view widget as its primary tdw.
         # That controller points at the doc we want to pick from.
@@ -860,7 +1369,16 @@ class DrawWindow(Gtk.Window):
         doc.pick_context(x, y, action)
 
     def pick_layer_cb(self, action):
-        """Pick Layer action: select the layer under the pointer"""
+        """Pick Layer action: select the layer under the pointer
+
+        Args:
+            action: 
+
+        Returns:
+
+        Raises:
+
+        """
         doc = self.app.doc.get_active_instance()
         if not doc:
             return
@@ -868,7 +1386,17 @@ class DrawWindow(Gtk.Window):
         doc.pick_layer(x, y, action)
 
     def _update_layer_pick_action(self, layerstack, *_ignored):
-        """Updates the Layer Picking action's sensitivity"""
+        """Updates the Layer Picking action's sensitivity
+
+        Args:
+            layerstack: 
+            *_ignored: 
+
+        Returns:
+
+        Raises:
+
+        """
         # PickContext is always sensitive, however
         pickable = len(layerstack) > 1
         self.app.find_action("PickLayer").set_sensitive(pickable)
@@ -876,7 +1404,17 @@ class DrawWindow(Gtk.Window):
     ## Display filter choice
 
     def _display_filter_radioaction_changed_cb(self, action, newaction):
-        """Handle changes to the Display Filter radioaction set."""
+        """Handle changes to the Display Filter radioaction set.
+
+        Args:
+            action: 
+            newaction: 
+
+        Returns:
+
+        Raises:
+
+        """
         newaction_name = newaction.get_name()
         newfilter = {
             "DisplayFilterNone": None,

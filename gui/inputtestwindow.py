@@ -21,6 +21,7 @@ logger = logging.getLogger(__name__)
 
 
 class InputTestWindow(windowing.SubWindow):
+    """ """
 
     def __init__(self):
         from gui.application import get_app
@@ -50,6 +51,18 @@ class InputTestWindow(windowing.SubWindow):
         vbox.pack_start(table, False, True, 0)
 
         def add(row, name, value_widget):
+            """
+
+            Args:
+                row: 
+                name: 
+                value_widget: 
+
+            Returns:
+
+            Raises:
+
+            """
             l1 = Gtk.Label(label=name)
             l1.set_justify(Gtk.Justification.LEFT)
             l1.set_alignment(0.0, 0.5)
@@ -84,6 +97,16 @@ class InputTestWindow(windowing.SubWindow):
         self.log = []
 
     def map_cb(self, *junk):
+        """
+
+        Args:
+            *junk: 
+
+        Returns:
+
+        Raises:
+
+        """
         logger.info("Event statistics enabled.")
 
         self.app.doc.tdw.connect("event", self.event_cb)
@@ -94,6 +117,16 @@ class InputTestWindow(windowing.SubWindow):
         )
 
     def unmap_cb(self, *junk):
+        """
+
+        Args:
+            *junk: 
+
+        Returns:
+
+        Raises:
+
+        """
         GLib.source_remove(self._timer_id)
 
         self.app.doc.tdw.disconnect_by_func(self.event_cb)
@@ -102,6 +135,7 @@ class InputTestWindow(windowing.SubWindow):
         logger.info("Event statistics disabled.")
 
     def second_timer_cb(self):
+        """ """
         s = str(self.motion_event_counter)
         s += " events, timestamp spacing: "
         if self.motion_dtime_sample:
@@ -116,6 +150,17 @@ class InputTestWindow(windowing.SubWindow):
         return True
 
     def event2str(self, widget, event):
+        """
+
+        Args:
+            widget: 
+            event: 
+
+        Returns:
+
+        Raises:
+
+        """
         t = str(getattr(event, "time", "-"))
         msg = "% 6s % 15s" % (
             t[-6:],
@@ -168,12 +213,33 @@ class InputTestWindow(windowing.SubWindow):
         return msg
 
     def report(self, msg):
+        """
+
+        Args:
+            msg: 
+
+        Returns:
+
+        Raises:
+
+        """
         logger.info(msg)
         self.log.append(msg)
         self.log = self.log[-28:]
         GLib.idle_add(lambda: self.tv.get_buffer().set_text("\n".join(self.log)))
 
     def event_cb(self, widget, event):
+        """
+
+        Args:
+            widget: 
+            event: 
+
+        Returns:
+
+        Raises:
+
+        """
         if event.type == Gdk.EventType.EXPOSE:
             return False
         msg = self.event2str(widget, event)

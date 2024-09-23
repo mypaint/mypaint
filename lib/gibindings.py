@@ -47,6 +47,7 @@ for i in dir(Gdk):
 
 
 class GtkWrapper:
+    """ """
 
     _initialized = False
 

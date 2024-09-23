@@ -28,8 +28,15 @@ logger = logging.getLogger(__name__)
 
 class BrushIconEditorWindow(windowing.SubWindow):
     """Main app subwindow for editing a brush's icon
-
+    
     See `BrushIconEditor` for details of how this operates.
+
+    Args:
+
+    Returns:
+
+    Raises:
+
     """
 
     _TITLE_PREVIEWING = _("Brush Icon")
@@ -47,6 +54,17 @@ class BrushIconEditorWindow(windowing.SubWindow):
         self.set_title(self._TITLE_PREVIEWING)
 
     def _editor_mode_changed(self, editor, editing):
+        """
+
+        Args:
+            editor: 
+            editing: 
+
+        Returns:
+
+        Raises:
+
+        """
         if editing:
             self.set_title(self._TITLE_EDITING)
         else:
@@ -55,16 +73,22 @@ class BrushIconEditorWindow(windowing.SubWindow):
 
 class BrushIconEditor(Gtk.Grid):
     """Widget for previewing and editing a brush's icon at a large size
-
+    
     The editor has two modes: previewing and editing.  In preview mode, the
     widget's view of the brush icon just tracks the current brush.  When the
     Edit button is clicked, the icon is locked for editing and made sensitive,
     and the user can switch brushes and colors as necessary to draw a pretty
     icon.  The Clear, Save and Revert buttons do what you'd expect; saving and
     reverting also exit the editing mode.
-
+    
     The name of the brush which will be affected is shown at all times, along
     with an indication of the current mode.
+
+    Args:
+
+    Returns:
+
+    Raises:
 
     """
 
@@ -105,6 +129,18 @@ class BrushIconEditor(Gtk.Grid):
 
     @staticmethod
     def _make_image_button(text, icon_name, cb):
+        """
+
+        Args:
+            text: 
+            icon_name: 
+            cb: 
+
+        Returns:
+
+        Raises:
+
+        """
         b = Gtk.Button(label=text)
         i = Gtk.Image()
         i.set_from_icon_name(icon_name, Gtk.IconSize.BUTTON)
@@ -116,6 +152,7 @@ class BrushIconEditor(Gtk.Grid):
         return b
 
     def _init_widgets(self):
+        """ """
         # Icon preview and edit TDW
         self._tdw = tileddrawwidget.TiledDrawWidget()
         self._tdw.set_model(self._model)
@@ -219,21 +256,61 @@ class BrushIconEditor(Gtk.Grid):
     def mode_changed(self, editing):
         """Event: called when the mode changes
 
-        :param editing: True if the editor is now in edit-mode.
+        Args:
+            editing: True if the editor is now in edit-mode.
+
+        Returns:
+
+        Raises:
+
         """
 
     ## Event handling
 
     def _show_cb(self, widget):
+        """
+
+        Args:
+            widget: 
+
+        Returns:
+
+        Raises:
+
+        """
         self._update_widgets()
 
     def _preview_area_modified_cb(self, preview_model, x, y, w, h):
-        """Handles changes made to the preview canvas"""
+        """Handles changes made to the preview canvas
+
+        Args:
+            preview_model: 
+            x: 
+            y: 
+            w: 
+            h: 
+
+        Returns:
+
+        Raises:
+
+        """
         self._preview_modified = True
         GLib.idle_add(self._update_widgets)
 
     def _brush_selected_cb(self, bm, managed_brush, brushinfo):
-        """Updates the brush icon preview if it is not in edit mode"""
+        """Updates the brush icon preview if it is not in edit mode
+
+        Args:
+            bm: 
+            managed_brush: 
+            brushinfo: 
+
+        Returns:
+
+        Raises:
+
+        """
         if not self._brush_to_edit:
             self._set_preview_pixbuf(managed_brush.preview)
             self._update_widgets()
@@ -241,10 +318,30 @@ class BrushIconEditor(Gtk.Grid):
     ## Button callbacks
 
     def _clear_cb(self, button):
+        """
+
+        Args:
+            button: 
+
+        Returns:
+
+        Raises:
+
+        """
         assert self._brush_to_edit
         self._tdw.doc.clear_current_layer()
 
     def _default_cb(self, button):
+        """
+
+        Args:
+            button: 
+
+        Returns:
+
+        Raises:
+
+        """
         assert self._brush_to_edit
         logger.debug("Set preview of %r to a procedural default", self._brush_to_edit)
         preview = drawutils.render_brush_preview_pixbuf(
@@ -254,6 +351,16 @@ class BrushIconEditor(Gtk.Grid):
         self.mode_changed(False)
 
     def _edit_cb(self, button):
+        """
+
+        Args:
+            button: 
+
+        Returns:
+
+        Raises:
+
+        """
         mb = self._bm.selected_brush
         assert not self._brush_to_edit
         self._brush_to_edit = mb
@@ -262,6 +369,16 @@ class BrushIconEditor(Gtk.Grid):
         self.mode_changed(True)
 
     def _revert_cb(self, button):
+        """
+
+        Args:
+            button: 
+
+        Returns:
+
+        Raises:
+
+        """
         assert self._brush_to_edit
         logger.debug("Reverted edits to %r", self._brush_to_edit)
         preview = self._bm.selected_brush.preview
@@ -271,6 +388,16 @@ class BrushIconEditor(Gtk.Grid):
         self.mode_changed(False)
 
     def _save_cb(self, button):
+        """
+
+        Args:
+            button: 
+
+        Returns:
+
+        Raises:
+
+        """
         pixbuf = self._get_preview_pixbuf()
         assert self._brush_to_edit is not None
         b = self._brush_to_edit
@@ -315,6 +442,7 @@ class BrushIconEditor(Gtk.Grid):
     ## Utility methods
 
     def _update_widgets(self):
+        """ """
         editing = self._brush_to_edit is not None
         if editing:
             brush = self._brush_to_edit
@@ -357,6 +485,16 @@ class BrushIconEditor(Gtk.Grid):
             self._tdw.queue_draw()
 
     def _set_preview_pixbuf(self, pixbuf):
+        """
+
+        Args:
+            pixbuf: 
+
+        Returns:
+
+        Raises:
+
+        """
         if pixbuf is None:
             self._tdw.doc.clear()
         else:
@@ -364,6 +502,7 @@ class BrushIconEditor(Gtk.Grid):
         self._preview_modified = False
 
     def _get_preview_pixbuf(self):
+        """ """
         w, h = brushmanager.PREVIEW_W, brushmanager.PREVIEW_H
         rootstack = self._tdw.doc.layer_stack
         bbox = (0, 0, w, h)

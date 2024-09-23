@@ -26,6 +26,7 @@ logger = logging.getLogger(__name__)
 
 
 class ScratchpadTool(SizedVBoxToolWidget):
+    """ """
 
     __gtype_name__ = "MyPaintScratchpadTool"
 
@@ -62,6 +63,16 @@ class ScratchpadTool(SizedVBoxToolWidget):
         self.pack_start(toolbar, False, True, 0)
 
     def _save_cb(self, action):
+        """
+
+        Args:
+            action: 
+
+        Returns:
+
+        Raises:
+
+        """
         filename = self.app.scratchpad_filename
         logger.info("Saving the scratchpad to %r", filename)
         self.app.filehandler.save_scratchpad(filename)

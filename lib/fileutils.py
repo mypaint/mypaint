@@ -39,17 +39,21 @@ VIA_TEMPFILE_BACKUP_COPY_SUFFIX = "~"
 def expanduser_str(s):
     """Expands a ~/ on the front of a path, where meaningful.
 
-    :param s: path to expand, coercable to str
-    :returns: The expanded path
-    :rtype: str
+    Args:
+        s: path to expand, coercable to str
 
-    This doesn't do anything on the Windows platform other than coerce
-    its argument to str. On other platforms, it converts a "~"
-    component on the front of a relative path to the user's absolute
-    home, like os.expanduser().
+    Returns:
+        str
 
-    Certain workarounds for OS and filesystem encoding issues are
-    implemented here too.
+This doesn't do anything on the Windows platform other than coerce
+its argument to str. On other platforms, it converts a "~"
+component on the front of a relative path to the user's absolute
+home, like os.expanduser().
+
+Certain workarounds for OS and filesystem encoding issues are
+implemented here too.: The expanded path
+
+    Raises:
 
     """
     s = str(s)
@@ -70,21 +74,39 @@ def expanduser_str(s):
 def via_tempfile(save_method):
     """Filename save method decorator: write via a tempfile
 
-    :param callable save_method: A valid save method to be wrapped
-    :returns: a new decorated method
+    Args:
+        save_method (callable): A valid save method to be wrapped
 
-    This decorator wraps save methods which operate only on filenames
-    to write to tempfiles in the same location. Rename is then used to
-    atomically overwrite the original file, where possible.
+    Returns:
+        a new decorated method
+        
+        This decorator wraps save methods which operate only on filenames
+        to write to tempfiles in the same location. Rename is then used to
+        atomically overwrite the original file, where possible.
+        
+        Any method with a filename as its first non-self parameter which
+        creates a file of that name can be wrapped by this decorator. Other
+        args passed to the decorated method are passed on to the save method
+        itself.
 
-    Any method with a filename as its first non-self parameter which
-    creates a file of that name can be wrapped by this decorator. Other
-    args passed to the decorated method are passed on to the save method
-    itself.
+    Raises:
+
     """
 
     @functools.wraps(save_method)
     def _wrapped_save_method(self, filename, *args, **kwds):
+        """
+
+        Args:
+            filename: 
+            *args: 
+            **kwds: 
+
+        Returns:
+
+        Raises:
+
+        """
         # Where the user told us to save into.
         # Any backup files are written to this folder.
         user_specified_dirname = os.path.dirname(filename)
@@ -139,15 +161,23 @@ def via_tempfile(save_method):
 
 def startfile(filepath, operation="open"):
     """os.startfile / g_app_info_launch_default_for_uri compat
-
+    
     This has the similar semantics to os.startfile, where it's
     supported: it launches the given file or folder path with the
     default app. On Windows, operation can be set to "edit" to use the
     default editor for a file. The operation parameter is ignored on
     other systems, and GIO's equivalent routine is used.
-
+    
     The relevant app is started in the background, and there are no
     means for getting its pid.
+
+    Args:
+        filepath: 
+        operation:  (Default value = "open")
+
+    Returns:
+
+    Raises:
 
     """
     try:
@@ -175,22 +205,31 @@ def _test():
 
 def safename(s, fragment=False):
     """Returns a safe filename based on its argument.
-
+    
     Returns a safe filename or filename fragment based on an arbitrary
     string. The name generated in this way should be good for all OSes.
-
+    
     Slashes, colons and other special characters will be stripped. The
     string will have its leading and trailing whitespace trimmed.
 
-    :param str s: The string to convert.
-    :param bool fragment: Name will never be used as a complete file name.
-
+    Args:
+        s (str): The string to convert.
+        fragment (bool, optional): Name will never be used as a complete file name.
+    
     Normally, extra checks are applied that assume the returned name
     will be used for a complete file basename, including extension.  If
     the "fragment" parameter is True, these additional safety
     conversions will be ignored, and its is the caller's responsibility
     to make the name safe. Appending other safe fragments or an
     extension will make the combined name safe again.
+    
+    
+    Note that fragments can be blank.  Whole names cannot.
+    A completely blank name is treated like the reserved words. (Default value = False)
+
+    Returns:
+
+    Raises:
 
     >>> safename("test 1/4") == u'test 1_4'
     True
@@ -201,15 +240,11 @@ def safename(s, fragment=False):
     True
     >>> safename("lpt3", fragment=True) == u'lpt3'
     True
-
-    Note that fragments can be blank.  Whole names cannot.
-    A completely blank name is treated like the reserved words.
-
+    
     >>> safename("   ", fragment=True) == u''
     True
     >>> safename("   ", fragment=False) == u'_'
     True
-
     """
     # A little cleanup first
     s = str(s)

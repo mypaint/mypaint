@@ -62,8 +62,13 @@ class CurveWidget(Gtk.DrawingArea):
     def npoints(self):
         """If the curve contains a fixed number of points, return that number.
 
-        :return: The point count if the count is fixed, otherwise None
-        :rtype: int | None
+        Args:
+
+        Returns:
+            int | None: The point count if the count is fixed, otherwise None
+
+        Raises:
+
         """
         return self._npoints
 
@@ -71,8 +76,13 @@ class CurveWidget(Gtk.DrawingArea):
     def npoints(self, n):
         """Set the number of points for a fixed curve, or disable fixedness.
 
-        :param n: The number of points, or None to disable
-        :type n: int | None
+        Args:
+            n (int | None): The number of points, or None to disable
+
+        Returns:
+
+        Raises:
+
         """
         self._npoints = n
         self.maxpoints = 64 if not n else n
@@ -81,21 +91,31 @@ class CurveWidget(Gtk.DrawingArea):
     def ylockgroups(self):
         """Get a copy of the y-lock groups used by the curve.
 
-        :return: Dictionary of index-> (i1, i2, ...) associations
-        :rtype: dict
+        Args:
+
+        Returns:
+            dict: Dictionary of index-> (i1, i2, ...) associations
+
+        Raises:
+
         """
         return {k: w for k, w in self._ylock.items()}
 
     @ylockgroups.setter
     def ylockgroups(self, ylockgroups):
         """Set y-lock groups from a list of index tuples.
-
+        
         Each tuple should contain a up a set of indices that represent curve
         points that will share the same y-value. When the y-value of one point
         in a group is changed, all other points in that same group are changed.
 
-        :param ylockgroups: List of tuples of indices
-        :type ylockgroups: [(int, int, ..)]
+        Args:
+            ylockgroups ([(int, int, ..)]): List of tuples of indices
+
+        Returns:
+
+        Raises:
+
         """
         self._ylock.clear()
         for group in ylockgroups:
@@ -103,6 +123,17 @@ class CurveWidget(Gtk.DrawingArea):
                 self._ylock[idx] = tuple(i for i in group if i != idx)
 
     def eventpoint(self, event_x, event_y):
+        """
+
+        Args:
+            event_x: 
+            event_y: 
+
+        Returns:
+
+        Raises:
+
+        """
         width, height = self.get_display_area()
         x, y = event_x, event_y
         x -= RADIUS
@@ -112,6 +143,7 @@ class CurveWidget(Gtk.DrawingArea):
         return x, y
 
     def get_display_area(self):
+        """ """
         alloc = self.get_allocation()
         width, height = alloc.width, alloc.height
         width -= 2 * RADIUS
@@ -121,6 +153,17 @@ class CurveWidget(Gtk.DrawingArea):
         return width, height
 
     def set_point(self, index, value):
+        """
+
+        Args:
+            index: 
+            value: 
+
+        Returns:
+
+        Raises:
+
+        """
         y = value[1]
         self.points[index] = value
         if index in self._ylock:
@@ -128,12 +171,33 @@ class CurveWidget(Gtk.DrawingArea):
                 self.points[locked_to] = (self.points[locked_to][0], y)
 
     def button_press_cb(self, widget, event):
+        """
+
+        Args:
+            widget: 
+            event: 
+
+        Returns:
+
+        Raises:
+
+        """
         if not (self.points or event.button == 1):
             return
         x, y = self.eventpoint(event.x, event.y)
 
         # Note: Squared distance used for comparisons
         def dist_squared(p):
+            """
+
+            Args:
+                p: 
+
+            Returns:
+
+            Raises:
+
+            """
             return abs(x - p[0]) ** 2 + abs(y - p[1]) ** 2
 
         points = self.points
@@ -152,6 +216,17 @@ class CurveWidget(Gtk.DrawingArea):
         self.grabbed = pos
 
     def button_release_cb(self, widget, event):
+        """
+
+        Args:
+            widget: 
+            event: 
+
+        Returns:
+
+        Raises:
+
+        """
         if not event.button == 1:
             return
         if self.grabbed:
@@ -162,6 +237,17 @@ class CurveWidget(Gtk.DrawingArea):
         self.changed_cb(self)
 
     def motion_notify_cb(self, widget, event):
+        """
+
+        Args:
+            widget: 
+            event: 
+
+        Returns:
+
+        Raises:
+
+        """
         if self.grabbed is None:
             return
         x, y = self.eventpoint(event.x, event.y)
@@ -209,8 +295,29 @@ class CurveWidget(Gtk.DrawingArea):
         self.queue_draw()
 
     def draw_cb(self, widget, cr):
+        """
+
+        Args:
+            widget: 
+            cr: 
+
+        Returns:
+
+        Raises:
+
+        """
 
         def gdk2rgb(c):
+            """
+
+            Args:
+                c: 
+
+            Returns:
+
+            Raises:
+
+            """
             if c.alpha < 1 and not self.__class__._WHINED_ABOUT_ALPHA:
                 logger.warning(
                     "The GTK3 style is reporting a color with "
@@ -292,6 +399,16 @@ class CurveWidget(Gtk.DrawingArea):
 
 
 def _test(case=1):
+    """
+
+    Args:
+        case:  (Default value = 1)
+
+    Returns:
+
+    Raises:
+
+    """
     logging.basicConfig()
     win = Gtk.Window()
     curve = CurveWidget()

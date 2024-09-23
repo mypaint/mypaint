@@ -21,25 +21,30 @@ import lib.xml
 
 def add_objects_from_template_string(builder, buffer_, object_ids, params):
     """Templatizes, parses, merges, and returns objects from a Builder UI-def
-
+    
     This function wraps `Gtk.Builder.add_objects_from_string()`, with the
     addition that the `buffer_` parameter, and each element of `object_ids` is
     formatted using `str.format()` using `params` before use. This templatizing
     is required to produce a different result for the string buffer of XML
     data, and for each object ID.
 
-    :param builder: a Gtk.Buider
-    :param buffer_: the string to templatize then parse
-    :param object_ids: list of object names to build (after templatizing)
-    :param params: dict of template params
-    :returns: a list of constructed objects
+    Args:
+        builder: a Gtk.Buider
+        buffer_: the string to templatize then parse
+        object_ids: list of object names to build (after templatizing)
+        params: dict of template params
 
-    The constructed objects are returned in a Python list if this wrapped
-    method call is successful.
+    Returns:
+        a list of constructed objects
+        
+        The constructed objects are returned in a Python list if this wrapped
+        method call is successful.
+        
+        When templatizing the XML fragment, parameter values will be escaped using
+        `lib.xml.escape()`. Therefore `params` is limited to fairly simple
+        dicts.
 
-    When templatizing the XML fragment, parameter values will be escaped using
-    `lib.xml.escape()`. Therefore `params` is limited to fairly simple
-    dicts.
+    Raises:
 
     """
     object_ids2 = []
@@ -92,6 +97,16 @@ def _test():
     # up private attributes in the instantiation loop.
 
     def _test_button_clicked_cb(widget):
+        """
+
+        Args:
+            widget: 
+
+        Returns:
+
+        Raises:
+
+        """
         id_ = Gtk.Buildable.get_name(widget)
         if isinstance(id_, bytes):
             id_ = id_.decode("utf-8")

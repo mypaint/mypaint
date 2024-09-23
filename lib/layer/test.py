@@ -11,8 +11,12 @@
 def make_test_stack():
     """Makes a simple test RootLayerStack (2 branches of 3 leaves each)
 
-    :return: The root stack, and a list of its leaves.
-    :rtype: tuple
+    Args:
+
+    Returns:
+        tuple: The root stack, and a list of its leaves.
+
+    Raises:
 
     """
     import lib.layer.group

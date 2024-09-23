@@ -33,6 +33,7 @@ import gui.style
 
 
 class _EditZone:
+    """ """
     INSIDE = 0x00
     LEFT = 0x01
     RIGHT = 0x02
@@ -48,8 +49,15 @@ _SIDES = (_EditZone.LEFT, _EditZone.TOP, _EditZone.RIGHT, _EditZone.BOTTOM)
 
 class FrameEditMode(gui.mode.ScrollableModeMixin, gui.mode.DragMode):
     """Stackable interaction mode for editing the document frame.
-
+    
     The frame editing mode has an associated settings panel.
+
+    Args:
+
+    Returns:
+
+    Raises:
+
     """
 
     # Class-level configuration
@@ -97,9 +105,11 @@ class FrameEditMode(gui.mode.ScrollableModeMixin, gui.mode.DragMode):
 
     @classmethod
     def get_name(cls):
+        """ """
         return _("Edit Frame")
 
     def get_usage(cls):
+        """ """
         return _("Adjust the document frame")
 
     def __init__(self, **kwds):
@@ -115,7 +125,17 @@ class FrameEditMode(gui.mode.ScrollableModeMixin, gui.mode.DragMode):
         self._queued_frame = None
 
     def enter(self, doc, **kwds):
-        """Enter the mode"""
+        """Enter the mode
+
+        Args:
+            doc: 
+            **kwds: 
+
+        Returns:
+
+        Raises:
+
+        """
         super(FrameEditMode, self).enter(doc, **kwds)
         # Assign cursors
         mkcursor = functools.partial(
@@ -149,12 +169,17 @@ class FrameEditMode(gui.mode.ScrollableModeMixin, gui.mode.DragMode):
     def _place_new_frame(self, tdw, pos=None):
         """Place a new frame on the screen so that it's visible
 
-        :param TiledDrawWidget tdw: canvas widget
-        :param tuple pos: position of the frame centre, display (x, y)
-
+        Args:
+            tdw (TiledDrawWidget): canvas widget
+            pos (tuple, optional): position of the frame centre, display (x, y)
+        
         The existing frame position is discarded, and a new position is
         chosen for the frame so that as many of its edges are as visible
-        as possible.
+        as possible. (Default value = None)
+
+        Returns:
+
+        Raises:
 
         """
         corners = tdw.get_corners_model_coords()
@@ -171,6 +196,16 @@ class FrameEditMode(gui.mode.ScrollableModeMixin, gui.mode.DragMode):
         tdw.doc.set_frame([x, y, frame_size, frame_size], user_initiated=True)
 
     def leave(self, **kwds):
+        """
+
+        Args:
+            **kwds: 
+
+        Returns:
+
+        Raises:
+
+        """
         if not self._change_timeout_id and self._queued_frame is not None:
             self._set_frame()
         if self.doc:
@@ -178,7 +213,18 @@ class FrameEditMode(gui.mode.ScrollableModeMixin, gui.mode.DragMode):
         super(FrameEditMode, self).leave(**kwds)
 
     def _get_zone(self, tdw, xd, yd):
-        """Get an edit zone for a cursor position"""
+        """Get an edit zone for a cursor position
+
+        Args:
+            tdw: 
+            xd: 
+            yd: 
+
+        Returns:
+
+        Raises:
+
+        """
         # Test button hits
         if self.remove_button_pos:
             xbd, ybd = self.remove_button_pos
@@ -219,10 +265,17 @@ class FrameEditMode(gui.mode.ScrollableModeMixin, gui.mode.DragMode):
 
     def _update_cursors(self, tdw):
         """Update the cursors based on the current zone
-
+        
         Only need to call this when the edit zone changes.
         Still need the TDW the event that may required the change
         originated on for coordinate translations.
+
+        Args:
+            tdw: 
+
+        Returns:
+
+        Raises:
 
         """
 
@@ -304,6 +357,18 @@ class FrameEditMode(gui.mode.ScrollableModeMixin, gui.mode.DragMode):
         tdw.set_override_cursor(self.cursor)
 
     def _update_zone_and_cursors(self, tdw, x, y):
+        """
+
+        Args:
+            tdw: 
+            x: 
+            y: 
+
+        Returns:
+
+        Raises:
+
+        """
         zone = self._get_zone(tdw, x, y)
         if zone == self._zone:
             return
@@ -312,6 +377,17 @@ class FrameEditMode(gui.mode.ScrollableModeMixin, gui.mode.DragMode):
         tdw.queue_draw()
 
     def button_press_cb(self, tdw, event):
+        """
+
+        Args:
+            tdw: 
+            event: 
+
+        Returns:
+
+        Raises:
+
+        """
         self._update_zone_and_cursors(tdw, event.x, event.y)
         if self._zone in (_EditZone.CREATE_FRAME, _EditZone.REMOVE_FRAME):
             button = event.button
@@ -321,6 +397,17 @@ class FrameEditMode(gui.mode.ScrollableModeMixin, gui.mode.DragMode):
         return super(FrameEditMode, self).button_press_cb(tdw, event)
 
     def button_release_cb(self, tdw, event):
+        """
+
+        Args:
+            tdw: 
+            event: 
+
+        Returns:
+
+        Raises:
+
+        """
         if self._click_info:
             button0, zone0 = self._click_info
             if event.button == button0:
@@ -336,6 +423,17 @@ class FrameEditMode(gui.mode.ScrollableModeMixin, gui.mode.DragMode):
         return super(FrameEditMode, self).button_release_cb(tdw, event)
 
     def motion_notify_cb(self, tdw, event):
+        """
+
+        Args:
+            tdw: 
+            event: 
+
+        Returns:
+
+        Raises:
+
+        """
         if self._click_info:
             return False
         if not self.in_drag:
@@ -343,6 +441,17 @@ class FrameEditMode(gui.mode.ScrollableModeMixin, gui.mode.DragMode):
         return super(FrameEditMode, self).motion_notify_cb(tdw, event)
 
     def drag_start_cb(self, tdw, event):
+        """
+
+        Args:
+            tdw: 
+            event: 
+
+        Returns:
+
+        Raises:
+
+        """
         tdw.renderer.defer_hq_rendering(20)
         model = self.doc.model
         self._orig_frame = tuple(model.get_frame())  # independent copy
@@ -355,10 +464,35 @@ class FrameEditMode(gui.mode.ScrollableModeMixin, gui.mode.DragMode):
         return super(FrameEditMode, self).drag_start_cb(tdw, event)
 
     def drag_stop_cb(self, tdw):
+        """
+
+        Args:
+            tdw: 
+
+        Returns:
+
+        Raises:
+
+        """
         tdw.renderer.defer_hq_rendering(0)
         return super(FrameEditMode, self).drag_stop_cb(tdw)
 
     def drag_update_cb(self, tdw, event, ev_x, ev_y, dx, dy):
+        """
+
+        Args:
+            tdw: 
+            event: 
+            ev_x: 
+            ev_y: 
+            dx: 
+            dy: 
+
+        Returns:
+
+        Raises:
+
+        """
         model = self.doc.model
         if model.frame_enabled:
             drag_effect = self.DRAG_EFFECTS.get(self._zone)
@@ -388,7 +522,17 @@ class FrameEditMode(gui.mode.ScrollableModeMixin, gui.mode.DragMode):
         return super(FrameEditMode, self).drag_update_cb(tdw, event, ev_x, ev_y, dx, dy)
 
     def _queue_frame_change(self, model, new_frame):
-        """Queue a frame change (that may trigger a redraw)"""
+        """Queue a frame change (that may trigger a redraw)
+
+        Args:
+            model: 
+            new_frame: 
+
+        Returns:
+
+        Raises:
+
+        """
         self._queued_frame = (model, new_frame)
         if not self._change_timeout_id:
             self._change_timeout_id = GLib.timeout_add(
@@ -397,6 +541,7 @@ class FrameEditMode(gui.mode.ScrollableModeMixin, gui.mode.DragMode):
             )
 
     def _set_queued_frame(self):
+        """ """
         model, new_frame = self._queued_frame
         self._queued_frame = None
         if new_frame != model.get_frame():
@@ -470,6 +615,7 @@ class FrameEditOptionsWidget(Gtk.Grid):
         self.dpi_adj.connect("value-changed", self.on_dpi_adjustment_changed)
 
     def _init_ui(self):
+        """ """
 
         height_label = self._new_key_label(_("Height:"))
         width_label = self._new_key_label(_("Width:"))
@@ -585,6 +731,16 @@ class FrameEditOptionsWidget(Gtk.Grid):
 
     @classmethod
     def _new_header_label(cls, markup):
+        """
+
+        Args:
+            markup: 
+
+        Returns:
+
+        Raises:
+
+        """
         label = Gtk.Label()
         label.set_markup(markup)
         label.set_alignment(0.0, 0.5)
@@ -596,6 +752,16 @@ class FrameEditOptionsWidget(Gtk.Grid):
 
     @classmethod
     def _new_key_label(cls, text):
+        """
+
+        Args:
+            text: 
+
+        Returns:
+
+        Raises:
+
+        """
         label = Gtk.Label(label=text)
         label.set_alignment(0.0, 0.5)
         label.set_hexpand(False)
@@ -605,6 +771,17 @@ class FrameEditOptionsWidget(Gtk.Grid):
         return label
 
     def crop_frame_cb(self, button, command):
+        """
+
+        Args:
+            button: 
+            command: 
+
+        Returns:
+
+        Raises:
+
+        """
         model = self.app.doc.model
         if command == "CropFrameToLayer":
             model.set_frame_to_current_layer(user_initiated=True)
@@ -612,6 +789,16 @@ class FrameEditOptionsWidget(Gtk.Grid):
             model.set_frame_to_document(user_initiated=True)
 
     def _color_set_cb(self, colorbutton):
+        """
+
+        Args:
+            colorbutton: 
+
+        Returns:
+
+        Raises:
+
+        """
         color_gdk = colorbutton.get_color()
         r, g, b = uicolor.from_gdk_color(color_gdk).get_rgb()
         a = colorbutton.get_alpha() / 65535
@@ -619,12 +806,31 @@ class FrameEditOptionsWidget(Gtk.Grid):
         self._overlay.redraw(color_change=True)
 
     def on_unit_changed(self, unit_combobox):
+        """
+
+        Args:
+            unit_combobox: 
+
+        Returns:
+
+        Raises:
+
+        """
         active_unit = unit_combobox.get_active()
         self.width_adj.set_unit(active_unit)
         self.height_adj.set_unit(active_unit)
 
     def on_size_adjustment_changed(self, adjustment):
-        """Update the frame size in the model."""
+        """Update the frame size in the model.
+
+        Args:
+            adjustment: 
+
+        Returns:
+
+        Raises:
+
+        """
         if self.callbacks_active:
             return
         self.width_adj.update_px_value()
@@ -634,7 +840,16 @@ class FrameEditOptionsWidget(Gtk.Grid):
         self.app.doc.model.update_frame(width=width, height=height, user_initiated=True)
 
     def on_dpi_adjustment_changed(self, adjustment):
-        """Update the resolution used to calculate framesize in px."""
+        """Update the resolution used to calculate framesize in px.
+
+        Args:
+            adjustment: 
+
+        Returns:
+
+        Raises:
+
+        """
         if self.callbacks_active:
             return
         dpi = self.dpi_adj.get_value()
@@ -645,7 +860,18 @@ class FrameEditOptionsWidget(Gtk.Grid):
         self.on_size_adjustment_changed(self.height_adj)
 
     def _frame_updated_cb(self, model, old_frame, new_frame):
-        """Update the UI to reflect the model."""
+        """Update the UI to reflect the model.
+
+        Args:
+            model: 
+            old_frame: 
+            new_frame: 
+
+        Returns:
+
+        Raises:
+
+        """
         self.callbacks_active = True  # Prevent callback loops
         self.dpi_adj.set_value(model.get_resolution())
         x, y, w, h = new_frame
@@ -656,11 +882,19 @@ class FrameEditOptionsWidget(Gtk.Grid):
 
 class FrameOverlay(Overlay):
     """Overlay showing the frame, and edit boxes if in FrameEditMode
-
+    
     This is a display-space overlay, since the edit boxes need to be drawn with
     pixel precision at a consistent weight regardless of zoom.
+    
+    Only the main TDW is supported.
 
-    Only the main TDW is supported."""
+    Args:
+
+    Returns:
+
+    Raises:
+
+    """
 
     OUTLINE_WIDTH = 1
 
@@ -693,14 +927,44 @@ class FrameOverlay(Overlay):
         self.doc.tdw.transformation_updated += self._transformation_updated_cb
 
     def _frame_updated_cb(self, *args):
+        """
+
+        Args:
+            *args: 
+
+        Returns:
+
+        Raises:
+
+        """
         self._recalculate_coordinates(True, *args)
 
     def _transformation_updated_cb(self, *args):
+        """
+
+        Args:
+            *args: 
+
+        Returns:
+
+        Raises:
+
+        """
         # The redraw is already triggered at this point
         self._recalculate_coordinates(False, *args)
 
     def _recalculate_coordinates(self, redraw, *args):
-        """Calculates geometric data that does not need updating every time"""
+        """Calculates geometric data that does not need updating every time
+
+        Args:
+            redraw: 
+            *args: 
+
+        Returns:
+
+        Raises:
+
+        """
         # Skip calculations when the frame is not enabled (this is important
         # because otherwise all of this would be recalculated on moving,
         # scaling and rotating the canvas.
@@ -773,6 +1037,16 @@ class FrameOverlay(Overlay):
             self.redraw()
 
     def redraw(self, color_change=False):
+        """
+
+        Args:
+            color_change:  (Default value = False)
+
+        Returns:
+
+        Raises:
+
+        """
         tdw = self.doc.tdw
         if color_change:
             tdw.queue_draw()
@@ -806,7 +1080,16 @@ class FrameOverlay(Overlay):
                         return
 
     def paint(self, cr):
-        """Paints the frame, and the edit boxes if appropriate"""
+        """Paints the frame, and the edit boxes if appropriate
+
+        Args:
+            cr: 
+
+        Returns:
+
+        Raises:
+
+        """
 
         if not self.doc.model.frame_enabled:
             return
@@ -899,7 +1182,7 @@ class FrameOverlay(Overlay):
         editmode.remove_button_pos = (bx, by)
 
     def _trash_icon(self):
-        """Return trash icon, using cached instance if it exists"""
+        """ """
         if not self._trash_icon_pixbuf:
             self._trash_icon_pixbuf = gui.drawutils.load_symbolic_icon(
                 icon_name="mypaint-trash-symbolic",
@@ -910,6 +1193,7 @@ class FrameOverlay(Overlay):
 
 
 class _Unit:
+    """ """
     PX = 0
     IN = 1
     CM = 2
@@ -924,6 +1208,7 @@ class _Unit:
 
 
 class UnitAdjustment(Gtk.Adjustment):
+    """ """
 
     CONVERT_UNITS = {
         # {unit: (conv_factor, upper, lower, step_incr, page_incr, digits)}
@@ -959,12 +1244,42 @@ class UnitAdjustment(Gtk.Adjustment):
         self.dpi = dpi
 
     def set_spin_button(self, button):
+        """
+
+        Args:
+            button: 
+
+        Returns:
+
+        Raises:
+
+        """
         self.spin_button = button
 
     def set_dpi(self, dpi):
+        """
+
+        Args:
+            dpi: 
+
+        Returns:
+
+        Raises:
+
+        """
         self.dpi = dpi
 
     def set_unit(self, unit):
+        """
+
+        Args:
+            unit: 
+
+        Returns:
+
+        Raises:
+
+        """
         self.old_unit = self.active_unit
         self.active_unit = unit
 
@@ -979,12 +1294,15 @@ class UnitAdjustment(Gtk.Adjustment):
         self.set_value(self.unit_value)
 
     def update_px_value(self):
+        """ """
         self.px_value = self.convert_to_px(self.get_value(), self.active_unit)
 
     def get_unit(self):
+        """ """
         return self.unit
 
     def get_unit_value(self):
+        """ """
         return self.unit_value
 
     def get_unit_value_display(self):
@@ -994,25 +1312,70 @@ class UnitAdjustment(Gtk.Adjustment):
         return round(self.unit_value, digits)
 
     def set_px_value(self, value):
+        """
+
+        Args:
+            value: 
+
+        Returns:
+
+        Raises:
+
+        """
         self.px_value = value
         self.unit_value = self.convert_to_unit(value, self.active_unit)
         self.set_value(self.unit_value)
 
     def get_px_value(self):
+        """ """
         self.px_value = self.convert_to_px(self.get_value(), self.active_unit)
         return self.px_value
 
     def convert(self, value, unit_from, unit_to):
+        """
+
+        Args:
+            value: 
+            unit_from: 
+            unit_to: 
+
+        Returns:
+
+        Raises:
+
+        """
         px = self.convert_to_px(value, unit_from)
         uvalue = self.convert_to_unit(px, unit_to)
         return uvalue
 
     def convert_to_px(self, value, unit):
+        """
+
+        Args:
+            value: 
+            unit: 
+
+        Returns:
+
+        Raises:
+
+        """
         if unit == _Unit.PX:
             return value
         return value / UnitAdjustment.CONVERT_UNITS[unit][0] * self.dpi
 
     def convert_to_unit(self, px, unit):
+        """
+
+        Args:
+            px: 
+            unit: 
+
+        Returns:
+
+        Raises:
+
+        """
         if unit == _Unit.PX:
             return px
         return px * UnitAdjustment.CONVERT_UNITS[unit][0] / self.dpi

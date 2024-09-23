@@ -114,10 +114,16 @@ class AllowedUsage:
 
 class ScrollAction:
     """Consts describing how a device's scroll events should be used.
-
+    
     The user can assign one of these values to a device to configure
     whether they'd prefer panning or scrolling for unmodified scroll
     events. This setting can be queried via the device monitor.
+
+    Args:
+
+    Returns:
+
+    Raises:
 
     """
 
@@ -147,10 +153,21 @@ class Settings:
 
     @property
     def usage(self):
+        """ """
         return self._usage
 
     @usage.setter
     def usage(self, value):
+        """
+
+        Args:
+            value: 
+
+        Returns:
+
+        Raises:
+
+        """
         if value not in AllowedUsage.VALUES:
             raise ValueError("Unrecognized usage value")
         self._usage = value
@@ -159,20 +176,33 @@ class Settings:
 
     @property
     def usage_mask(self):
+        """ """
         return self._usage_mask
 
     @property
     def scroll(self):
+        """ """
         return self._scroll
 
     @scroll.setter
     def scroll(self, value):
+        """
+
+        Args:
+            value: 
+
+        Returns:
+
+        Raises:
+
+        """
         if value not in ScrollAction.VALUES:
             raise ValueError("Unrecognized scroll value")
         self._scroll = value
         self._save_to_prefs()
 
     def _load_from_prefs(self):
+        """ """
         usage = self._prefs.get("usage", self.DEFAULT_USAGE)
         if usage not in AllowedUsage.VALUES:
             usage = self.DEFAULT_USAGE
@@ -184,6 +214,7 @@ class Settings:
         self._update_usage_mask()
 
     def _save_to_prefs(self):
+        """ """
         self._prefs.update(
             {
                 "usage": self._usage,
@@ -192,6 +223,7 @@ class Settings:
         )
 
     def _update_usage_mask(self):
+        """ """
         self._usage_mask = AllowedUsage.BEHAVIOR_MASK[self._usage]
 
 
@@ -200,11 +232,17 @@ class Settings:
 
 class Monitor:
     """Monitors device use & plugging, and manages their configuration
-
+    
     An instance resides in the main application. It is responsible for
     monitoring known devices, determining their characteristics, and
     storing their settings. Per-device settings are stored in the main
     application preferences.
+
+    Args:
+
+    Returns:
+
+    Raises:
 
     """
 
@@ -242,22 +280,35 @@ class Monitor:
     def get_device_settings(self, device):
         """Gets the settings for a device
 
-        :param Gdk.Device device: a physical ("slave") device
-        :returns: A settings object which can be manipulated, or None
-        :rtype: Settings
+        Args:
+            device (Gdk.Device): a physical ("slave") device
 
-        Changes to the returned object made via its API are saved to the
-        user preferences immediately.
+        Returns:
+            Settings
 
-        If the device is a keyboard, or is otherwise unsuitable as a
-        pointing device, None is returned instead. The caller needs to
-        check this case.
+Changes to the returned object made via its API are saved to the
+user preferences immediately.
+
+If the device is a keyboard, or is otherwise unsuitable as a
+pointing device, None is returned instead. The caller needs to
+check this case.: A settings object which can be manipulated, or None
+
+        Raises:
 
         """
         return self._device_settings.get(device) or self._init_device_settings(device)
 
     def _init_device_settings(self, device):
-        """Ensures that the device settings are loaded for a device"""
+        """Ensures that the device settings are loaded for a device
+
+        Args:
+            device: 
+
+        Returns:
+
+        Raises:
+
+        """
         source = device.get_source()
         if source == Gdk.InputSource.KEYBOARD:
             return
@@ -291,12 +342,32 @@ class Monitor:
         return settings
 
     def _device_added_cb(self, mgr, device):
-        """Informs that a device has been plugged in"""
+        """Informs that a device has been plugged in
+
+        Args:
+            mgr: 
+            device: 
+
+        Returns:
+
+        Raises:
+
+        """
         logger.debug("device-added %r", device.get_name())
         self._init_device_settings(device)
 
     def _device_removed_cb(self, mgr, device):
-        """Informs that a device has been unplugged"""
+        """Informs that a device has been unplugged
+
+        Args:
+            mgr: 
+            device: 
+
+        Returns:
+
+        Raises:
+
+        """
         logger.debug("device-removed %r", device.get_name())
         self._device_settings.pop(device, None)
         self.devices_updated()
@@ -308,8 +379,12 @@ class Monitor:
     def get_devices(self):
         """Yields devices and their settings, for UI stuff
 
-        :rtype: iterator
-        :returns: ultimately a sequence of (Gdk.Device, Settings) pairs
+        Args:
+
+        Returns:
+            ultimately a sequence of (Gdk.Device, Settings) pairs
+
+        Raises:
 
         """
         for device, settings in self._device_settings.items():
@@ -321,21 +396,33 @@ class Monitor:
     def current_device_changed(self, old_device, new_device):
         """Event: the current device has changed
 
-        :param Gdk.Device old_device: Previous device used
-        :param Gdk.Device new_device: New device used
+        Args:
+            old_device (Gdk.Device): Previous device used
+            new_device (Gdk.Device): New device used
+
+        Returns:
+
+        Raises:
+
         """
 
     def device_used(self, device):
         """Informs about a device being used, for use by controllers
 
-        :param Gdk.Device device: the device being used
-        :returns: whether the device changed
+        Args:
+            device (Gdk.Device): the device being used
 
-        If the device has changed, this method then notifies interested
-        parties via the device_changed observable @event.
+        Returns:
+            whether the device changed
+            
+            If the device has changed, this method then notifies interested
+            parties via the device_changed observable @event.
+            
+            This method returns True if the device was the same as the previous
+            device, and False if it has changed.
 
-        This method returns True if the device was the same as the previous
-        device, and False if it has changed.
+        Raises:
+
         """
         if not self.get_device_settings(device):
             return False
@@ -556,21 +643,77 @@ class SettingsEditor(Gtk.Grid):
     ## Display and sort funcs
 
     def _device_name_datafunc(self, column, cell, model, iter_, *data):
+        """
+
+        Args:
+            column: 
+            cell: 
+            model: 
+            iter_: 
+            *data: 
+
+        Returns:
+
+        Raises:
+
+        """
         device = model.get_value(iter_, 0)
         cell.set_property("text", device.get_name())
 
     def _device_axes_datafunc(self, column, cell, model, iter_, *data):
+        """
+
+        Args:
+            column: 
+            cell: 
+            model: 
+            iter_: 
+            *data: 
+
+        Returns:
+
+        Raises:
+
+        """
         device = model.get_value(iter_, 0)
         n_axes = device.get_n_axes()
         cell.set_property("text", "%d" % (n_axes,))
 
     def _device_type_datafunc(self, column, cell, model, iter_, *data):
+        """
+
+        Args:
+            column: 
+            cell: 
+            model: 
+            iter_: 
+            *data: 
+
+        Returns:
+
+        Raises:
+
+        """
         device = model.get_value(iter_, 0)
         source = device.get_source()
         text = _DEVICE_TYPE_STRING.get(source, source.value_nick)
         cell.set_property("text", text)
 
     def _device_usage_datafunc(self, column, cell, model, iter_, *data):
+        """
+
+        Args:
+            column: 
+            cell: 
+            model: 
+            iter_: 
+            *data: 
+
+        Returns:
+
+        Raises:
+
+        """
         device = model.get_value(iter_, 0)
         settings = self._monitor.get_device_settings(device)
         if not settings:
@@ -579,6 +722,20 @@ class SettingsEditor(Gtk.Grid):
         cell.set_property("text", text)
 
     def _device_scroll_datafunc(self, column, cell, model, iter_, *data):
+        """
+
+        Args:
+            column: 
+            cell: 
+            model: 
+            iter_: 
+            *data: 
+
+        Returns:
+
+        Raises:
+
+        """
         device = model.get_value(iter_, 0)
         settings = self._monitor.get_device_settings(device)
         if not settings:
@@ -589,6 +746,19 @@ class SettingsEditor(Gtk.Grid):
     ## Updates
 
     def _usage_cell_changed_cb(self, combo, device_path_str, usage_iter, *etc):
+        """
+
+        Args:
+            combo: 
+            device_path_str: 
+            usage_iter: 
+            *etc: 
+
+        Returns:
+
+        Raises:
+
+        """
         config = self._usage_store.get_value(
             usage_iter,
             self._USAGE_CONFIG_COL,
@@ -602,6 +772,19 @@ class SettingsEditor(Gtk.Grid):
         self._devices_view.columns_autosize()
 
     def _scroll_cell_changed_cb(self, conf_combo, device_path_str, conf_iter, *etc):
+        """
+
+        Args:
+            conf_combo: 
+            device_path_str: 
+            conf_iter: 
+            *etc: 
+
+        Returns:
+
+        Raises:
+
+        """
         conf_store = self._scroll_store
         conf_col = self._SCROLL_CONFIG_COL
         conf_value = conf_store.get_value(conf_iter, conf_col)
@@ -615,7 +798,16 @@ class SettingsEditor(Gtk.Grid):
         self._devices_view.columns_autosize()
 
     def _update_devices_store(self, *_ignored):
-        """Repopulates the displayed list"""
+        """Repopulates the displayed list
+
+        Args:
+            *_ignored: 
+
+        Returns:
+
+        Raises:
+
+        """
         updated_list = list(self._monitor.get_devices())
         updated_list_map = dict(updated_list)
         paths_for_removal = []
@@ -640,7 +832,16 @@ class SettingsEditor(Gtk.Grid):
 
 
 def _device_prefs_key(device):
-    """Returns the subkey to use in the app prefs for a device"""
+    """Returns the subkey to use in the app prefs for a device
+
+    Args:
+        device: 
+
+    Returns:
+
+    Raises:
+
+    """
     source = device.get_source()
     name = device.get_name()
     n_axes = device.get_n_axes()
@@ -648,7 +849,16 @@ def _device_prefs_key(device):
 
 
 def device_is_eraser(device):
-    """Tests whether a device appears to be an eraser"""
+    """Tests whether a device appears to be an eraser
+
+    Args:
+        device: 
+
+    Returns:
+
+    Raises:
+
+    """
     if device is None:
         return False
     if device.get_source() == Gdk.InputSource.ERASER:

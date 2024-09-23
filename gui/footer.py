@@ -33,29 +33,35 @@ logger = logging.getLogger(__name__)
 
 class BrushIndicatorPresenter:
     """Behaviour for a clickable footer brush indicator
-
+    
     This presenter's view is a DrawingArea instance
     which is used to display the current brush's preview image.
     Its model is the BrushManager instance belonging to the main app.
     Both the view and the model
     must be set after construction
     and before or during realization.
-
+    
     When the view DrawingArea is clicked,
     a QuickBrushChooser is popped up near it,
     allowing the user to change the current brush.
-
+    
     The code assumes that
     a single instance of the view DrawingArea
     is packed into the lower right corner
     (lower left, for rtl locales)
     of the main drawing window's footer bar.
-
+    
     48px is a good width for the view widget.
     If the preview is too tall to display fully,
     it is drawn truncated with a cute gradient effect.
     The user can hover the pointer to show a tooltip
     with the full preview image.
+
+    Args:
+
+    Returns:
+
+    Raises:
 
     """
 
@@ -82,9 +88,14 @@ class BrushIndicatorPresenter:
     def set_drawing_area(self, da):
         """Set the view DrawingArea.
 
-        :param Gtk.DrawingArea da: the drawing area
-
+        Args:
+            da (Gtk.DrawingArea): the drawing area
+        
         The view should be set before or during its realization.
+
+        Returns:
+
+        Raises:
 
         """
         self._drawing_area = da
@@ -101,7 +112,12 @@ class BrushIndicatorPresenter:
     def set_brush_manager(self, bm):
         """Set the model BrushManager.
 
-        :param gui.brushmanager.BrushManager bm: the model BrushManager
+        Args:
+            bm (gui.brushmanager.BrushManager): the model BrushManager
+
+        Returns:
+
+        Raises:
 
         """
         self._brush_manager = bm
@@ -110,7 +126,12 @@ class BrushIndicatorPresenter:
     def set_chooser(self, chooser):
         """Set an optional popup, to be shown when clicked.
 
-        :param BrushChooserPopup chooser: popup to show
+        Args:
+            chooser (BrushChooserPopup): popup to show
+
+        Returns:
+
+        Raises:
 
         """
         self._chooser = chooser
@@ -118,7 +139,17 @@ class BrushIndicatorPresenter:
     ## View event handlers
 
     def _draw_cb(self, da, cr):
-        """Paint a preview of the current brush to the view."""
+        """Paint a preview of the current brush to the view.
+
+        Args:
+            da: 
+            cr: 
+
+        Returns:
+
+        Raises:
+
+        """
         if not self._brush_preview:
             cr.set_source_rgb(1, 0, 1)
             cr.paint()
@@ -179,6 +210,20 @@ class BrushIndicatorPresenter:
         cr.mask(mask)
 
     def _query_tooltip_cb(self, da, x, y, keyboard_mode, tooltip):
+        """
+
+        Args:
+            da: 
+            x: 
+            y: 
+            keyboard_mode: 
+            tooltip: 
+
+        Returns:
+
+        Raises:
+
+        """
         s = self._TOOLTIP_ICON_SIZE
         scaled_pixbuf = self._get_scaled_pixbuf(s)
         tooltip.set_icon(scaled_pixbuf)
@@ -204,6 +249,17 @@ class BrushIndicatorPresenter:
         return True
 
     def _button_press_cb(self, widget, event):
+        """
+
+        Args:
+            widget: 
+            event: 
+
+        Returns:
+
+        Raises:
+
+        """
         if not self._chooser:
             return False
         if event.button != 1:
@@ -214,6 +270,17 @@ class BrushIndicatorPresenter:
         return True
 
     def _button_release_cb(self, widget, event):
+        """
+
+        Args:
+            widget: 
+            event: 
+
+        Returns:
+
+        Raises:
+
+        """
         if event.button != self._click_button:
             return False
         self._click_button = None
@@ -234,6 +301,18 @@ class BrushIndicatorPresenter:
     ## Model event handlers
 
     def _brush_selected_cb(self, bm, brush, brushinfo):
+        """
+
+        Args:
+            bm: 
+            brush: 
+            brushinfo: 
+
+        Returns:
+
+        Raises:
+
+        """
         if brush is None:
             return
         self._brush_preview = brush.preview.copy()
@@ -244,6 +323,16 @@ class BrushIndicatorPresenter:
     ## Utility methods
 
     def _get_scaled_pixbuf(self, size):
+        """
+
+        Args:
+            size: 
+
+        Returns:
+
+        Raises:
+
+        """
         if self._brush_preview is None:
             pixbuf = GdkPixbuf.Pixbuf.new(
                 GdkPixbuf.Colorspace.RGB,

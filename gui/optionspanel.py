@@ -26,7 +26,7 @@ logger = logging.getLogger(__name__)
 
 class ModeOptionsTool(SizedVBoxToolWidget):
     """Dockable panel showing options for the current mode
-
+    
     This panel has a title and an icon reflecting the current mode, and
     displays its options widget if it has one: define an object method named
     ``get_options_widget()`` returning an arbitrary GTK widget. Singletons work
@@ -35,6 +35,13 @@ class ModeOptionsTool(SizedVBoxToolWidget):
     this case, any widget already displayed will not be replaced, which is
     particularly appropriate for modes which only persist for the length of
     time the mouse button is held, and stack on top of other modes.
+
+    Args:
+
+    Returns:
+
+    Raises:
+
     """
 
     ## Class constants
@@ -103,7 +110,18 @@ class ModeOptionsTool(SizedVBoxToolWidget):
         )
 
     def _modestack_changed_cb(self, modestack, old, new):
-        """Update the UI when the mode changes"""
+        """Update the UI when the mode changes
+
+        Args:
+            modestack: 
+            old: 
+            new: 
+
+        Returns:
+
+        Raises:
+
+        """
         self._update_ui()
 
     def _update_ui(self):
@@ -112,6 +130,16 @@ class ModeOptionsTool(SizedVBoxToolWidget):
         self._update_ui_for_mode(mode)
 
     def _update_ui_for_mode(self, mode):
+        """
+
+        Args:
+            mode: 
+
+        Returns:
+
+        Raises:
+
+        """
         # Get the new options widget
         try:
             get_options_widget = mode.get_options_widget
@@ -130,6 +158,18 @@ class ModeOptionsTool(SizedVBoxToolWidget):
         self._update_ui_with_options_widget(new_options, name, icon_name)
 
     def _update_ui_with_options_widget(self, new_options, name, icon_name):
+        """
+
+        Args:
+            new_options: 
+            name: 
+            icon_name: 
+
+        Returns:
+
+        Raises:
+
+        """
         old_options = self._options_bin.get_child()
         logger.debug("name: %r, icon name: %r", name, icon_name)
         if name:

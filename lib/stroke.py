@@ -14,13 +14,20 @@ from . import brush
 
 class Stroke:
     """Replayable record of a stroke's data
-
+    
     Stroke recording objects store all information required to replay a stroke
     with the brush engine, event by event. This includes the RNG seed etc.
-
+    
     A "finished" stroke object is immutable, except right after creation (when
     it has never been fully rendered).  To modify an existing stroke, the old
     one must be deleted and a new Stroke instance must be used to replace it.
+
+    Args:
+
+    Returns:
+
+    Raises:
+
     """
 
     _SERIAL_NUMBER = 0
@@ -33,6 +40,16 @@ class Stroke:
         self.serial_number = self._SERIAL_NUMBER
 
     def start_recording(self, brush):
+        """
+
+        Args:
+            brush: 
+
+        Returns:
+
+        Raises:
+
+        """
         assert not self.finished
 
         bi = brush.brushinfo
@@ -60,6 +77,24 @@ class Stroke:
         viewrotation,
         barrel_rotation,
     ):
+        """
+
+        Args:
+            dtime: 
+            x: 
+            y: 
+            pressure: 
+            xtilt: 
+            ytilt: 
+            viewzoom: 
+            viewrotation: 
+            barrel_rotation: 
+
+        Returns:
+
+        Raises:
+
+        """
         assert not self.finished
         self.tmp_event_list.append(
             (
@@ -76,6 +111,7 @@ class Stroke:
         )
 
     def stop_recording(self):
+        """ """
         if self.finished:
             return
         # OPTIMIZE
@@ -91,11 +127,22 @@ class Stroke:
         self.finished = True
 
     def is_empty(self):
+        """ """
         return self.total_painting_time == 0
 
     empty = property(is_empty)
 
     def render(self, surface):
+        """
+
+        Args:
+            surface: 
+
+        Returns:
+
+        Raises:
+
+        """
         assert self.finished
 
         # OPTIMIZE: check if parsing of settings is a performance bottleneck
@@ -136,6 +183,16 @@ class Stroke:
         surface.end_atomic()
 
     def copy_using_different_brush(self, brushinfo):
+        """
+
+        Args:
+            brushinfo: 
+
+        Returns:
+
+        Raises:
+
+        """
         assert self.finished
         # Make a shallow clone of almost everything
         clone = Stroke()

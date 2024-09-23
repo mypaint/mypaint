@@ -110,7 +110,7 @@ class Renderable(metaclass=abc.ABCMeta):
     @abc.abstractmethod
     def get_render_ops(self, spec):
         """Returns a flat sequence of rendering ops.
-
+        
         Implementations of this function are expected
         to perform all decisions about what to render,
         and it is reasonable to make quite complex decisions here.
@@ -119,22 +119,27 @@ class Renderable(metaclass=abc.ABCMeta):
         It's expected that it will visit descendents recursively
         and serve up a small program in rendering order.
 
-        :param lib.layer.rendering.Spec spec: what to render.
+        Args:
+            spec (lib.layer.rendering.Spec): what to render.
         :rtype: sequence
-        :returns: sequence of ops
 
-        The "spec" parameter works pretty much as a query.
-        The tree of renderables being searched/visited
-        may choose to return different things
-        based on what it contains.
-        See: lib.layer.rendering.Spec.
+        Returns:
+            sequence of ops
+            
+            The "spec" parameter works pretty much as a query.
+            The tree of renderables being searched/visited
+            may choose to return different things
+            based on what it contains.
+            See: lib.layer.rendering.Spec.
+            
+            The returned sequence of ops needs to be completely flat.
+            Each op is a tuple, [(OPCODE, DATA, MODE, OPACITY), ...]
+            
+            OPCODE is an Opcode constant.
+            The DATA, MODE, and OPACITY members will vary
+            according to the specific operation.
+            See lib.layer.rendering.Opcode for details.
 
-        The returned sequence of ops needs to be completely flat.
-        Each op is a tuple, [(OPCODE, DATA, MODE, OPACITY), ...]
-
-        OPCODE is an Opcode constant.
-        The DATA, MODE, and OPACITY members will vary
-        according to the specific operation.
-        See lib.layer.rendering.Opcode for details.
+        Raises:
 
         """

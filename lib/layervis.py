@@ -52,11 +52,17 @@ UNSAVED_VIEW_DISPLAY_NAME = C_(
 
 class _View:
     """Lightweight representation of a layer viewing context.
-
+    
     Views are represented as essentially just a tag.  They intentionally
     do not contain references to their layers to avoid circular refs.
     Instead, layers contain refs to their views in a private set that
     the LayerViewManager knows about.
+
+    Args:
+
+    Returns:
+
+    Raises:
 
     """
 
@@ -67,18 +73,40 @@ class _View:
 
     @property
     def name(self):
+        """ """
         return self._name
 
     @name.setter
     def name(self, value):
+        """
+
+        Args:
+            value: 
+
+        Returns:
+
+        Raises:
+
+        """
         self._name = str(value)
 
     @property
     def locked(self):
+        """ """
         return self._locked
 
     @locked.setter
     def locked(self, state):
+        """
+
+        Args:
+            state: 
+
+        Returns:
+
+        Raises:
+
+        """
         self._locked = bool(state)
 
     def __repr__(self):
@@ -127,7 +155,16 @@ class _View:
 
     @classmethod
     def new_from_jsf(cls, jsf):
-        """Returns a new _View built from the json-serializable form."""
+        """Returns a new _View built from the json-serializable form.
+
+        Args:
+            jsf: 
+
+        Returns:
+
+        Raises:
+
+        """
         return cls(**jsf)
 
 
@@ -140,6 +177,16 @@ class _NamedViewsSet:
         self.names = dict()  # {str: _View}
 
     def add(self, view):
+        """
+
+        Args:
+            view: 
+
+        Returns:
+
+        Raises:
+
+        """
         if view in self.objs:
             return
         name = lib.naming.make_unique_name(
@@ -154,18 +201,39 @@ class _NamedViewsSet:
         self.objs.add(view)
 
     def remove(self, view):
+        """
+
+        Args:
+            view: 
+
+        Returns:
+
+        Raises:
+
+        """
         if view not in self.objs:
             return
         self.remove_by_name(view.name)
         assert view not in self.objs
 
     def remove_by_name(self, name):
+        """
+
+        Args:
+            name: 
+
+        Returns:
+
+        Raises:
+
+        """
         if name not in self.names:
             return
         view = self.names.pop(name)
         self.objs.remove(view)
 
     def clear(self):
+        """ """
         self.objs.clear()
         self.names.clear()
 
@@ -212,12 +280,20 @@ class LayerViewManager:
 
     def _doc_settings_sync_pending_changes_cb(self, settings, flush=False):
         """Save to the doc settings when needed (e.g. before ORA save)
-
+        
         This is called before the document is saved (and at many other
         times, including autosave), so use it to store a serializable
         copy of the running state into the settings dict.
-
+        
         See also: _doc_settings_modified_cb().
+
+        Args:
+            settings: 
+            flush:  (Default value = False)
+
+        Returns:
+
+        Raises:
 
         """
         # Don't do anything while the doc settings are being updated.
@@ -251,13 +327,21 @@ class LayerViewManager:
 
     def _doc_settings_modified_cb(self, settings, oldvalues):
         """Update state when the doc settings change (e.g. ORA load).
-
+        
         This clears and completely rebuilds the internal state of the
         manager object to match the serializable form in the settings
         dict. An important use is to restore the state after the
         document settings have been loaded from a .ora file.
-
+        
         See also: _doc_sync_pending_changes_cb().
+
+        Args:
+            settings: 
+            oldvalues: 
+
+        Returns:
+
+        Raises:
 
         """
         # Don't run when storing.
@@ -332,11 +416,15 @@ class LayerViewManager:
     def current_view_name(self):
         """RO property: the current view's name.
 
-        :returns: The name of the current view, or None
-        :rtype: str
+        Args:
 
-        If the current view name is None, the current view is the
-        built-in unnamed and unsaved view.
+        Returns:
+            str
+
+If the current view name is None, the current view is the
+built-in unnamed and unsaved view.: The name of the current view, or None
+
+        Raises:
 
         """
         if self._current_view is None:
@@ -347,10 +435,14 @@ class LayerViewManager:
     def current_view_locked(self):
         """RO property: the current view's lock state.
 
-        :returns: Whether the current view is locked.
-        :rtype: bool
+        Args:
 
-        The built-in, unsaved view is always unlocked.
+        Returns:
+            bool
+
+The built-in, unsaved view is always unlocked.: Whether the current view is locked.
+
+        Raises:
 
         """
         if self._current_view is None:
@@ -376,10 +468,17 @@ class LayerViewManager:
 
     def _current_view_changed_cb(self, _lvm):
         """Respond to a change of the current view: set layer visibilities.
-
+        
         Doing this as a self-observer callback method allows
         _stack_layer_props_changed_cb to safely ignore the changes to
         layer visibilities that originate here.
+
+        Args:
+            _lvm: 
+
+        Returns:
+
+        Raises:
 
         """
         view = self._current_view
@@ -396,7 +495,19 @@ class LayerViewManager:
     # Document observation:
 
     def _stack_layer_props_changed_cb(self, root, path, layer, changed):
-        """Respond to any outside change of layer "visible" properties."""
+        """Respond to any outside change of layer "visible" properties.
+
+        Args:
+            root: 
+            path: 
+            layer: 
+            changed: 
+
+        Returns:
+
+        Raises:
+
+        """
         view = self._current_view
         if view is None:
             return
@@ -411,6 +522,17 @@ class LayerViewManager:
             vset.remove(view)
 
     def _stack_layer_inserted_cb(self, root, path):
+        """
+
+        Args:
+            root: 
+            path: 
+
+        Returns:
+
+        Raises:
+
+        """
         view = self._current_view
         if view is None:
             return
@@ -424,7 +546,16 @@ class LayerViewManager:
             vset.remove(view)
 
     def _get_vset_for_layer(self, layer):
-        """Gets the "visible in views" set for a layer."""
+        """Gets the "visible in views" set for a layer.
+
+        Args:
+            layer: 
+
+        Returns:
+
+        Raises:
+
+        """
         try:
             vset = layer.__visible_in_views
         except AttributeError:
@@ -435,6 +566,7 @@ class LayerViewManager:
     # Higher-level API:
 
     def clear(self):
+        """ """
         self._current_view = None
         self.current_view_changed()
         self._views.clear()
@@ -443,13 +575,18 @@ class LayerViewManager:
     def add_new_view(self, name=None):
         """Adds a new named view capturing the currently visible layers.
 
-        :param str name: Base name for a new named view, or None.
-        :rtype: _View
-        :returns: the added view.
+        Args:
+            name (str, optional): Base name for a new named view, or None.
+        :rtype: _View (Default value = None)
 
-        If name=None or name="" is passed, the new view will be named
-        uniquely after NEW_VIEW_IDENT. The None value is reserved for
-        representing the default working view.
+        Returns:
+            the added view.
+            
+            If name=None or name="" is passed, the new view will be named
+            uniquely after NEW_VIEW_IDENT. The None value is reserved for
+            representing the default working view.
+
+        Raises:
 
         """
         if name is None or name == "":
@@ -469,14 +606,32 @@ class LayerViewManager:
         return view
 
     def add_view(self, view):
-        """Adds a view, but does not activate it."""
+        """Adds a view, but does not activate it.
+
+        Args:
+            view: 
+
+        Returns:
+
+        Raises:
+
+        """
         if view is None:
             raise ValueError("Cannot add None")
         self._views.add(view)
         self.view_names_changed()
 
     def activate_view(self, view):
-        """Activates a view."""
+        """Activates a view.
+
+        Args:
+            view: 
+
+        Returns:
+
+        Raises:
+
+        """
         if view is not None:
             if view not in self._views.objs:
                 raise ValueError("view not in views list")
@@ -484,7 +639,16 @@ class LayerViewManager:
         self.current_view_changed()
 
     def activate_view_by_name(self, name):
-        """Activates a view by name."""
+        """Activates a view by name.
+
+        Args:
+            name: 
+
+        Returns:
+
+        Raises:
+
+        """
         view = None
         if name is not None:
             view = self._views.names.get(name, None)
@@ -495,7 +659,12 @@ class LayerViewManager:
     def remove_active_view(self, restore=None):
         """Removes the currently active view.
 
-        :param _View restore: Optional view to restore.
+        Args:
+            restore (_View, optional): Optional view to restore. (Default value = None)
+
+        Returns:
+
+        Raises:
 
         """
         view = self._current_view
@@ -512,9 +681,14 @@ class LayerViewManager:
     def rename_active_view(self, name):
         """Renames the currently active view.
 
-        :param str name: Base name for the new named view.
+        Args:
+            name (str): Base name for the new named view.
         :rtype: tuple
-        :returns: The old and new names, as (old_name, new_unique_name)
+
+        Returns:
+            The old and new names, as (old_name, new_unique_name)
+
+        Raises:
 
         """
         view = self._current_view
@@ -539,6 +713,16 @@ class LayerViewManager:
         return (old_name, new_name)
 
     def set_active_view_locked(self, locked):
+        """
+
+        Args:
+            locked: 
+
+        Returns:
+
+        Raises:
+
+        """
         view = self._current_view
         if view is None:
             raise ValueError("Cannot lock or unlock the default view.")
@@ -561,6 +745,7 @@ class AddLayerView(Command):
         self._new_view_name_orig = name
 
     def redo(self):
+        """ """
         assert self._prev_active_view is None
         self._prev_active_view = self._lvm._current_view
         name = self._new_view_name_orig
@@ -569,6 +754,7 @@ class AddLayerView(Command):
         assert self._lvm._current_view is not None
 
     def undo(self):
+        """ """
         assert self._lvm._current_view is not None
         self._lvm.remove_active_view(restore=self._prev_active_view)
         assert self._lvm._current_view is self._prev_active_view
@@ -576,6 +762,7 @@ class AddLayerView(Command):
 
     @property
     def display_name(self):
+        """ """
         return C_(
             "layer views: commands: add",
             "Add Layer View",
@@ -591,16 +778,19 @@ class RemoveActiveLayerView(Command):
         self._removed_view = None
 
     def redo(self):
+        """ """
         removed = self._lvm.remove_active_view()
         self._removed_view = removed
 
     def undo(self):
+        """ """
         self._lvm.add_view(self._removed_view)
         self._lvm.activate_view(self._removed_view)
         self._removed_view = None
 
     @property
     def display_name(self):
+        """ """
         return C_(
             "layer views: commands: remove",
             "Remove Layer View",
@@ -618,11 +808,13 @@ class RenameActiveLayerView(Command):
         self._new_name = name
 
     def redo(self):
+        """ """
         assert self._old_name is None
         (old_name, new_name) = self._lvm.rename_active_view(self._new_name)
         self._old_name = old_name
 
     def undo(self):
+        """ """
         assert self._old_name is not None
         old_name = self._old_name
         self._lvm.rename_active_view(old_name)
@@ -630,6 +822,7 @@ class RenameActiveLayerView(Command):
 
     @property
     def display_name(self):
+        """ """
         return C_(
             "layer views: commands: remove",
             "Remove Layer View",
@@ -648,11 +841,13 @@ class ActivateLayerView(Command):
         self._next_view_name = name
 
     def redo(self):
+        """ """
         prev = self._lvm._current_view
         self._lvm.activate_view_by_name(self._next_view_name)
         self._prev_view = prev
 
     def undo(self):
+        """ """
         prev = self._prev_view
         self._lvm.activate_view(prev)
         assert prev is self._lvm._current_view
@@ -660,6 +855,7 @@ class ActivateLayerView(Command):
 
     @property
     def display_name(self):
+        """ """
         return C_(
             "layer views: commands: activate",
             "Activate Layer View “{name}”",
@@ -678,15 +874,18 @@ class SetActiveLayerViewLocked(Command):
         self._new_locked = locked
 
     def redo(self):
+        """ """
         self._old_locked = self._lvm.current_view_locked
         self._lvm.set_active_view_locked(self._new_locked)
 
     def undo(self):
+        """ """
         self._lvm.set_active_view_locked(self._old_locked)
         self._old_locked = None
 
     @property
     def display_name(self):
+        """ """
         if self._new_locked:
             return C_(
                 "layer views: commands: set active view's lock flag",

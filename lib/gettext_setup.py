@@ -18,6 +18,17 @@ logger = logging.getLogger(__file__)
 
 
 def debug_locale_data(locale, locale_categories):
+    """
+
+    Args:
+        locale: 
+        locale_categories: 
+
+    Returns:
+
+    Raises:
+
+    """
     for category in sorted(locale_categories):
         try:
             logger.debug(
@@ -32,9 +43,16 @@ def debug_locale_data(locale, locale_categories):
 
 def init_gettext(localepath):
     """Initialize locales and gettext.
-
+    
     This must be done before importing any translated python modules
     (to get global strings translated, especially brushsettings.py).
+
+    Args:
+        localepath: 
+
+    Returns:
+
+    Raises:
 
     """
 

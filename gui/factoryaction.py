@@ -18,17 +18,23 @@ from lib.gibindings import GObject
 
 class FactoryAction(Gtk.Action):
     """Generic factory action for UI components.
-
+    
     Define an instance of the factory once for each family of custom proxy
     classes (GtkToolItem, GtkMenuItem etc.) that you need.  Each instance must
     be named after the custom proxy classes the factory is to produce, so the
     definition is best done in a central snippet of GtkBuilder XML.
-
+    
     For example, if the factory is named ``FooBar``, then its proxy ToolItems
     are expected to have ``__gtype_name__``s of``"MyPaintFooBarToolItem``.
-
+    
     Creation of proxies can then be done cleanly in the GtkUIManager XML
     definitions by referring to the factory's name as many times as needed.
+
+    Args:
+
+    Returns:
+
+    Raises:
 
     """
 
@@ -49,13 +55,19 @@ class FactoryAction(Gtk.Action):
 
     def do_create_tool_item(self):
         """Returns a new ToolItem
-
+        
         Invoked by UIManager when it needs a GtkToolItem proxy for a toolbar.
-
+        
         This method instantiates and returns a new widget from a class named
         after the factory action's own name.  Class lookup is done via GObject:
         see `TOOL_ITEM_NAME_PATTERN` for the ``__gtype_name__`` this method
         will expect.
+
+        Args:
+
+        Returns:
+
+        Raises:
 
         """
         gtype_name = self.TOOL_ITEM_NAME_PATTERN % (self.get_name(),)
@@ -65,13 +77,19 @@ class FactoryAction(Gtk.Action):
 
     def do_create_menu_item(self):
         """Returns a new MenuItem
-
+        
         Invoked by UIManager when it needs a MenuItem proxy for a menu.
-
+        
         This method instantiates and returns a new widget from a class named
         after the factory action's own name.  Class lookup is done via GObject:
         see `TOOL_ITEM_NAME_PATTERN` for the ``__gtype_name__`` this method
         will expect.
+
+        Args:
+
+        Returns:
+
+        Raises:
 
         """
         gtype_name = self.MENU_ITEM_NAME_PATTERN % (self.get_name(),)
@@ -80,6 +98,16 @@ class FactoryAction(Gtk.Action):
         return menu_item
 
     def _construct(self, gtype_name):
+        """
+
+        Args:
+            gtype_name: 
+
+        Returns:
+
+        Raises:
+
+        """
         try:
             gtype = GObject.type_from_name(gtype_name)
         except RuntimeError:
@@ -98,6 +126,17 @@ class FactoryAction(Gtk.Action):
         return widget
 
     def _tool_item_parent_set(self, widget, old_parent):
+        """
+
+        Args:
+            widget: 
+            old_parent: 
+
+        Returns:
+
+        Raises:
+
+        """
         parent = widget.get_parent()
         if parent and parent.get_visible():
             widget.show_all()

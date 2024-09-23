@@ -20,11 +20,14 @@ FIX15_ONE = 1 << 15
 
 
 class Ops(unittest.TestCase):
+    """ """
 
     def tearDown(self):
+        """ """
         pass
 
     def setUp(self):
+        """ """
         if not mypaintlib.heavy_debug:
             self.skipTest("not compiled with HEAVY_DEBUG")
 

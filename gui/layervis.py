@@ -40,11 +40,13 @@ class LayerViewUI(gui.mvp.BuiltUIPresenter, object):
         self._app = gui.application.get_app()
 
     def _init_model(self):
+        """ """
         lvm = self._lvm
         lvm.current_view_changed += self._current_view_changed_cb
         lvm.view_names_changed += self._view_names_changed_cb
 
     def init_view(self):
+        """ """
         self._init_model()
         store = Gtk.ListStore(str, str)  # columns: <our_id, display_markup>
         markup = C_(
@@ -73,21 +75,43 @@ class LayerViewUI(gui.mvp.BuiltUIPresenter, object):
 
     @property
     def widget(self):
+        """ """
         return self.view.layout_grid
 
     # View updater callbacks:
 
     @gui.mvp.view_updater
     def _current_view_changed_cb(self, lvm):
+        """
+
+        Args:
+            lvm: 
+
+        Returns:
+
+        Raises:
+
+        """
         self._update_current_view_name()
         self._update_buttons()
 
     @gui.mvp.view_updater
     def _view_names_changed_cb(self, lvm):
+        """
+
+        Args:
+            lvm: 
+
+        Returns:
+
+        Raises:
+
+        """
         self._update_view_combo_names()
 
     @gui.mvp.view_updater
     def _refresh_ui(self):
+        """ """
         self._update_view_combo_names()
         self._update_current_view_name()
         self._update_buttons()
@@ -129,6 +153,7 @@ class LayerViewUI(gui.mvp.BuiltUIPresenter, object):
 
     @gui.mvp.view_updater
     def _update_buttons(self):
+        """ """
         current = self._lvm.current_view_name
         op_buttons = [
             self.view.rename_button,
@@ -152,6 +177,7 @@ class LayerViewUI(gui.mvp.BuiltUIPresenter, object):
 
     @gui.mvp.view_updater
     def _update_current_view_name(self):
+        """ """
         combo = self.view.current_view_combo
         id_ = self._lvm.current_view_name
         if id_ is None:
@@ -162,6 +188,16 @@ class LayerViewUI(gui.mvp.BuiltUIPresenter, object):
 
     @gui.mvp.model_updater
     def _add_button_clicked_cb(self, button):
+        """
+
+        Args:
+            button: 
+
+        Returns:
+
+        Raises:
+
+        """
         doc = self._docmodel
         name = self._lvm.current_view_name
         if name is None:
@@ -171,12 +207,32 @@ class LayerViewUI(gui.mvp.BuiltUIPresenter, object):
 
     @gui.mvp.model_updater
     def _remove_button_clicked_cb(self, button):
+        """
+
+        Args:
+            button: 
+
+        Returns:
+
+        Raises:
+
+        """
         doc = self._docmodel
         cmd = lib.layervis.RemoveActiveLayerView(doc)
         doc.do(cmd)
 
     @gui.mvp.model_updater
     def _rename_button_clicked_cb(self, button):
+        """
+
+        Args:
+            button: 
+
+        Returns:
+
+        Raises:
+
+        """
         old_name = self._lvm.current_view_name
         if old_name is None:
             return
@@ -199,6 +255,16 @@ class LayerViewUI(gui.mvp.BuiltUIPresenter, object):
 
     @gui.mvp.model_updater
     def _locked_button_toggled_cb(self, button):
+        """
+
+        Args:
+            button: 
+
+        Returns:
+
+        Raises:
+
+        """
         if self._lvm.current_view_name is None:
             return
         new_locked = button.get_active()
@@ -208,6 +274,16 @@ class LayerViewUI(gui.mvp.BuiltUIPresenter, object):
 
     @gui.mvp.model_updater
     def _current_view_combo_changed_cb(self, combo):
+        """
+
+        Args:
+            combo: 
+
+        Returns:
+
+        Raises:
+
+        """
         name = combo.get_active_id()
         if name is None:
             return  # specifically means "nothing active" in GTK

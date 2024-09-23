@@ -32,7 +32,19 @@ _EMPTY_TILE.flags.writeable = False
 
 
 def new_full_tile(value, dimensions=(N, N), value_type="uint16"):
-    """Return a new tile filled with the given value"""
+    """
+
+    Args:
+        value: 
+        dimensions:  (Default value = (N, N))
+        value_type:  (Default value = "uint16")
+
+    Returns:
+        
+
+    Raises:
+
+    """
     tile = numpy.empty(dimensions, value_type)
     tile.fill(value)
     return tile
@@ -41,12 +53,18 @@ def new_full_tile(value, dimensions=(N, N), value_type="uint16"):
 def nine_grid(tile_coord):
     """Return the input coordinate along with its neighbours.
 
-    Return tile coordinates of the full nine-grid,
-    relative to the input coordinate, in the following order:
+    Args:
+        tile_coord: 
 
-    8 1 5
-    4 0 2
-    7 3 6
+    Returns:
+        relative to the input coordinate, in the following order:
+        
+        8 1 5
+        4 0 2
+        7 3 6
+
+    Raises:
+
     """
     tile_x, tile_y = tile_coord
     offsets = [
@@ -66,12 +84,18 @@ def nine_grid(tile_coord):
 def adjacent(tile_coord):
     """Return the coordinates adjacent to the input coordinate.
 
-    Return coordinates of the neighbourhood
-    of the input coordinate, in the following order:
+    Args:
+        tile_coord: 
 
-    7 0 4
-    3   1
-    6 2 5
+    Returns:
+        of the input coordinate, in the following order:
+        
+        7 0 4
+        3   1
+        6 2 5
+
+    Raises:
+
     """
     return nine_grid(tile_coord)[1:]
 
@@ -79,22 +103,35 @@ def adjacent(tile_coord):
 def orthogonal(tile_coord):
     """Return the coordinates orthogonal to the input coordinate.
 
-    Return coordinates orthogonal to the input coordinate,
-    in the following order:
+    Args:
+        tile_coord: 
 
-      0
-    3   1
-      2
+    Returns:
+        in the following order:
+        
+        0
+        3   1
+        2
+
+    Raises:
+
     """
     return nine_grid(tile_coord)[1:5]
 
 
 class TileBoundingBox:
     """Bounding box helper for checking tiles by their coordinates
-
+    
     Defines a bounding box in pixel coordinates that allows
     checking conditions and retrieving in-tile pixel bounds
     for individual tiles, based on their coordinates.
+
+    Args:
+
+    Returns:
+
+    Raises:
+
     """
 
     def __init__(self, bbox):
@@ -123,10 +160,18 @@ class TileBoundingBox:
         ) == (0, 0, N - 1, N - 1)
 
     def tile_bounds(self, tc):
-        """Return the in-tile pixel bounds as a 4-tuple.
-        Bounds cover the entire tile, unless it crosses
-        an edge of the bounding box. Does not check if
-        the tile actually lies inside the bounding box.
+        """
+
+        Args:
+            tc: 
+
+        Returns:
+            Bounds cover the entire tile, unless it crosses
+            an edge of the bounding box. Does not check if
+            the tile actually lies inside the bounding box.
+
+        Raises:
+
         """
         if self.no_tile_crossing:
             return 0, 0, N - 1, N - 1
@@ -141,6 +186,14 @@ class TileBoundingBox:
         """Check if tile is outside bounding box.
         Checks if the tile of the given coordinate
         lies completely outside of the bounding box.
+
+        Args:
+            tc: 
+
+        Returns:
+
+        Raises:
+
         """
         tx, ty = tc
         return (
@@ -151,6 +204,14 @@ class TileBoundingBox:
         """Check if tile crosses the bounding box.
         Checks if the tile of the given coordinate
         crosses at least one edge of the bounding box.
+
+        Args:
+            tc: 
+
+        Returns:
+
+        Raises:
+
         """
         if self.no_tile_crossing:
             return False
@@ -166,6 +227,14 @@ class TileBoundingBox:
         """Check if tile is inside the bounding box.
         Checks if the tile of the given coordinate
         is fully enclosed by the bounding box.
+
+        Args:
+            tc: 
+
+        Returns:
+
+        Raises:
+
         """
         tx, ty = tc
         if self.crossing(tc):

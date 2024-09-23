@@ -24,10 +24,16 @@ logger = logging.getLogger(__name__)
 
 def get_json_config(conf_path):
     """Return user settings read from the settings file
-    :param conf_path: The path to the directory containing settings.json
-    :type conf_path: str
-    :returns: Dict with settings, or the empty dict if the settings file
-    cannot be found/read or parsed.
+
+    Args:
+        conf_path (str): The path to the directory containing settings.json
+
+    Returns:
+        Dict with settings, or the empty dict if the settings file
+        cannot be found/read or parsed.
+
+    Raises:
+
     """
     settingspath = os.path.join(conf_path, "settings.json")
     logger.debug("Reading app settings from %r", settingspath)
@@ -43,8 +49,15 @@ def get_json_config(conf_path):
 
 
 def default_configuration():
-    """Return the default settings
-    A subset of these settings are platform dependent.
+    """
+
+    Args:
+
+    Returns:
+        A subset of these settings are platform dependent.
+
+    Raises:
+
     """
     if sys.platform == "win32":
         ud_docs = lib.glib.get_user_special_dir(

@@ -19,6 +19,15 @@ all_tests = {}
 def run_test(testfunction, profile=None):
     """Run a single test
     testfunction must be a generator (using yield)
+
+    Args:
+        testfunction: 
+        profile:  (Default value = None)
+
+    Returns:
+
+    Raises:
+
     """
     tst = testfunction()
 
@@ -27,6 +36,7 @@ def run_test(testfunction, profile=None):
         assert res == start_measurement, res
 
         def run_function_under_test():
+            """ """
             res = next(tst)
             assert res == stop_measurement
 
@@ -46,15 +56,36 @@ def run_test(testfunction, profile=None):
 
 
 def nogui_test(f):
+    """
+
+    Args:
+        f: 
+
+    Returns:
+
+    Raises:
+
+    """
     "decorator for test functions that require no gui"
     all_tests[f.__name__] = f
     return f
 
 
 def gui_test(f):
+    """
+
+    Args:
+        f: 
+
+    Returns:
+
+    Raises:
+
+    """
     "decorator for test functions that require a gui"
 
     def f2():
+        """ """
         gui = guicontrol.GUI()
         for action in f(gui):
             yield action
@@ -65,6 +96,16 @@ def gui_test(f):
 
 @gui_test
 def startup(gui):
+    """
+
+    Args:
+        gui: 
+
+    Returns:
+
+    Raises:
+
+    """
     yield start_measurement
     gui.wait_for_idle()
     yield stop_measurement
@@ -72,9 +113,16 @@ def startup(gui):
 
 @gui_test
 def paint(gui):
-    """
-    Paint with a constant number of frames per recorded second.
+    """Paint with a constant number of frames per recorded second.
     Not entirely realistic, but gives good and stable measurements.
+
+    Args:
+        gui: 
+
+    Returns:
+
+    Raises:
+
     """
     gui.wait_for_gui()
     FPS = 30
@@ -114,6 +162,16 @@ def paint(gui):
 
 @gui_test
 def paint_zoomed_out_5x(gui):
+    """
+
+    Args:
+        gui: 
+
+    Returns:
+
+    Raises:
+
+    """
     gui.wait_for_idle()
     gui.zoom_out(5)
     for res in paint(gui):
@@ -122,6 +180,16 @@ def paint_zoomed_out_5x(gui):
 
 @gui_test
 def layerpaint_nozoom(gui):
+    """
+
+    Args:
+        gui: 
+
+    Returns:
+
+    Raises:
+
+    """
     gui.wait_for_idle()
     gui.app.filehandler.open_file("bigimage.ora")
     gui_doc = gui.app.doc
@@ -132,6 +200,16 @@ def layerpaint_nozoom(gui):
 
 @gui_test
 def layerpaint_zoomed_out_5x(gui):
+    """
+
+    Args:
+        gui: 
+
+    Returns:
+
+    Raises:
+
+    """
     gui.wait_for_idle()
     gui_doc = gui.app.doc
     gui.app.filehandler.open_file("bigimage.ora")
@@ -144,6 +222,16 @@ def layerpaint_zoomed_out_5x(gui):
 
 @gui_test
 def paint_rotated(gui):
+    """
+
+    Args:
+        gui: 
+
+    Returns:
+
+    Raises:
+
+    """
     gui.wait_for_idle()
     gui.app.doc.tdw.rotate(46.0 / 360 * 2 * np.pi)
     for res in paint(gui):
@@ -152,6 +240,7 @@ def paint_rotated(gui):
 
 @nogui_test
 def load_ora():
+    """ """
     from lib import document
 
     d = document.Document()
@@ -162,6 +251,7 @@ def load_ora():
 
 @nogui_test
 def save_ora():
+    """ """
     from lib import document
 
     d = document.Document()
@@ -173,6 +263,7 @@ def save_ora():
 
 @nogui_test
 def save_ora_again():
+    """ """
     from lib import document
 
     d = document.Document()
@@ -185,6 +276,7 @@ def save_ora_again():
 
 @nogui_test
 def save_png():
+    """ """
     from lib import document
 
     d = document.Document()
@@ -196,6 +288,7 @@ def save_png():
 
 @nogui_test
 def save_png_layer():
+    """ """
     from lib import document
 
     d = document.Document()
@@ -207,6 +300,7 @@ def save_png_layer():
 
 @nogui_test
 def brushengine_paint_hires():
+    """ """
     from lib import tiledsurface, brush
 
     s = tiledsurface.Surface()
@@ -237,6 +331,16 @@ def brushengine_paint_hires():
 
 @gui_test
 def scroll_nozoom(gui):
+    """
+
+    Args:
+        gui: 
+
+    Returns:
+
+    Raises:
+
+    """
     gui.wait_for_idle()
     dw = gui.app.drawWindow
     dw.fullscreen_cb()
@@ -249,6 +353,16 @@ def scroll_nozoom(gui):
 
 @gui_test
 def scroll_nozoom_onelayer(gui):
+    """
+
+    Args:
+        gui: 
+
+    Returns:
+
+    Raises:
+
+    """
     gui.wait_for_idle()
     dw = gui.app.drawWindow
     dw.fullscreen_cb()
@@ -261,6 +375,16 @@ def scroll_nozoom_onelayer(gui):
 
 @gui_test
 def scroll_zoomed_out_1x_onelayer(gui):
+    """
+
+    Args:
+        gui: 
+
+    Returns:
+
+    Raises:
+
+    """
     gui.wait_for_idle()
     dw = gui.app.drawWindow
     dw.fullscreen_cb()
@@ -274,6 +398,16 @@ def scroll_zoomed_out_1x_onelayer(gui):
 
 @gui_test
 def scroll_zoomed_out_2x_onelayer(gui):
+    """
+
+    Args:
+        gui: 
+
+    Returns:
+
+    Raises:
+
+    """
     gui.wait_for_idle()
     dw = gui.app.drawWindow
     dw.fullscreen_cb()
@@ -287,6 +421,16 @@ def scroll_zoomed_out_2x_onelayer(gui):
 
 @gui_test
 def scroll_zoomed_out_5x(gui):
+    """
+
+    Args:
+        gui: 
+
+    Returns:
+
+    Raises:
+
+    """
     gui.wait_for_idle()
     dw = gui.app.drawWindow
     dw.fullscreen_cb()
@@ -300,6 +444,16 @@ def scroll_zoomed_out_5x(gui):
 
 @gui_test
 def memory_zoomed_out_5x(gui):
+    """
+
+    Args:
+        gui: 
+
+    Returns:
+
+    Raises:
+
+    """
     gui.wait_for_idle()
     dw = gui.app.drawWindow
     dw.fullscreen_cb()
@@ -315,6 +469,16 @@ def memory_zoomed_out_5x(gui):
 
 @gui_test
 def memory_after_startup(gui):
+    """
+
+    Args:
+        gui: 
+
+    Returns:
+
+    Raises:
+
+    """
     gui.wait_for_idle()
     sleep(1)
     gui.wait_for_idle()

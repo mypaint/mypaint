@@ -44,13 +44,36 @@ RESPONSE_REPORT = 3
 
 
 def analyse_simple(exctyp, value, tb):
+    """
+
+    Args:
+        exctyp: 
+        value: 
+        tb: 
+
+    Returns:
+
+    Raises:
+
+    """
     trace = StringIO()
     traceback.print_exception(exctyp, value, tb, None, trace)
     return trace
 
 
 def lookup(name, frame, lcls):
-    """Find the value for a given name in the given frame"""
+    """Find the value for a given name in the given frame
+
+    Args:
+        name: 
+        frame: 
+        lcls: 
+
+    Returns:
+
+    Raises:
+
+    """
     if name in lcls:
         return "local", lcls[name]
     elif name in frame.f_globals:
@@ -67,6 +90,18 @@ def lookup(name, frame, lcls):
 
 
 def analyse(exctyp, value, tb):
+    """
+
+    Args:
+        exctyp: 
+        value: 
+        tb: 
+
+    Returns:
+
+    Raises:
+
+    """
     import tokenize
     import keyword
     import platform
@@ -89,6 +124,17 @@ def analyse(exctyp, value, tb):
         args, varargs, varkw, lcls = inspect.getargvalues(frame)
 
         def readline(lno=[lineno], *args):
+            """
+
+            Args:
+                lno:  (Default value = [lineno])
+                *args: 
+
+            Returns:
+
+            Raises:
+
+            """
             if args:
                 print(args)
 
@@ -154,6 +200,18 @@ def analyse(exctyp, value, tb):
 
 
 def _info(exctyp, value, tb):
+    """
+
+    Args:
+        exctyp: 
+        value: 
+        tb: 
+
+    Returns:
+
+    Raises:
+
+    """
     global exception_dialog_active
     if exctyp is KeyboardInterrupt:
         return original_excepthook(exctyp, value, tb)
@@ -188,6 +246,17 @@ def _info(exctyp, value, tb):
 
     # Add an expander with details of the problem to the dialog
     def expander_cb(expander, *ignore):
+        """
+
+        Args:
+            expander: 
+            *ignore: 
+
+        Returns:
+
+        Raises:
+
+        """
         # Ensures that on deactivating the expander, the dialog is resized down
         if expander.get_expanded():
             dialog.set_resizable(True)
@@ -246,6 +315,20 @@ def _info(exctyp, value, tb):
 
 
 def _dialog_response_cb(dialog, resp, trace, exctyp, value):
+    """
+
+    Args:
+        dialog: 
+        resp: 
+        trace: 
+        exctyp: 
+        value: 
+
+    Returns:
+
+    Raises:
+
+    """
     global exception_dialog_active
 
     if resp == RESPONSE_QUIT and Gtk.main_level() > 0:
@@ -325,7 +408,18 @@ if __name__ == "__main__":
     import os
 
     def _test_button_clicked_cb(*a):
+        """
+
+        Args:
+            *a: 
+
+        Returns:
+
+        Raises:
+
+        """
         class _TestException(Exception):
+            """ """
             pass
 
         raise _TestException("That was supposed to happen.")

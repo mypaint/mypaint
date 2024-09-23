@@ -72,23 +72,40 @@ logger = logging.getLogger(__name__)
 
 
 def _device_name_uuid(device_name):
-    """Return UUID5 string for a given device name
+    """
+
+    Args:
+        device_name: 
+
+    Returns:
+        
+
+    Raises:
 
     >>> result = _device_name_uuid(u'Wacom Intuos5 touch S Pen stylus')
     >>> result == u'e97830e9-f9f9-50a5-8fff-68bead1a7021'
     True
     >>> type(result) == type(u'')
     True
-
     """
     return str(uuid.uuid5(_DEVICE_NAME_NAMESPACE, device_name))
 
 
 def _quote_device_name(device_name):
     """Converts a device name to something safely storable on the disk
-
+    
     Quotes an arbitrary device name for use as the basename of a
     device-specific brush.
+    
+    
+    Hopefully this is OK for Windows, UNIX and Mac OS X names.
+
+    Args:
+        device_name: 
+
+    Returns:
+
+    Raises:
 
     >>> result = _quote_device_name(u'Heavy Metal Umlaut D\u00ebvice')
     >>> result == 'Heavy+Metal+Umlaut+D%C3%ABvice'
@@ -100,8 +117,6 @@ def _quote_device_name(device_name):
     True
     >>> type(result) == type(u'')
     True
-
-    Hopefully this is OK for Windows, UNIX and Mac OS X names.
     """
     device_name = str(device_name)
     quoted = urllib.parse.quote_plus(
@@ -113,7 +128,16 @@ def _quote_device_name(device_name):
 
 
 def translate_group_name(name):
-    """Translates a group name from a disk name to a display name."""
+    """Translates a group name from a disk name to a display name.
+
+    Args:
+        name: 
+
+    Returns:
+
+    Raises:
+
+    """
     d = {
         FOUND_BRUSHES_GROUP: _("Lost & Found"),
         DELETED_BRUSH_GROUP: _("Deleted"),
@@ -134,11 +158,16 @@ def translate_group_name(name):
 def _parse_order_conf(file_content):
     """Parse order.conf file data.
 
-    :param bytes file_content: data from an order.conf (encoded UTF-8)
-    :returns: a group dict
+    Args:
+        file_content (bytes): data from an order.conf (encoded UTF-8)
 
-    The returned dict is of the form "{u'group1' : [u'brush1',
-    u'brush2'], u'group2' : [u'brush3']}".
+    Returns:
+        a group dict
+        
+        The returned dict is of the form "{u'group1' : [u'brush1',
+        u'brush2'], u'group2' : [u'brush3']}".
+
+    Raises:
 
     """
     groups = {}
@@ -242,16 +271,22 @@ class BrushManager:
     @contextlib.contextmanager
     def _mock(cls):
         """Context-managed mock BrushManager object for tests.
-
+        
         Brushes are imported from the shipped brushes subfolder,
         and the user temp area is a temporary directory that's
         cleaned up by the context manager.
-
+        
         Body yields (BrushManager_instance, tmp_dir_path).
-
+        
         Please ensure that there are no open files in the tmpdir after
         use to that it can be rmtree()d. On Windows, that means closing
         any zipfile.Zipfile()s you open, even for read.
+
+        Args:
+
+        Returns:
+
+        Raises:
 
         """
         from tempfile import mkdtemp
@@ -266,13 +301,35 @@ class BrushManager:
             rmtree(tmp_user_brushes)
 
     def _load_brush(self, brush_cache, name, **kwargs):
-        """Load a ManagedBrush from disk by name, via a cache."""
+        """Load a ManagedBrush from disk by name, via a cache.
+
+        Args:
+            brush_cache: 
+            name: 
+            **kwargs: 
+
+        Returns:
+
+        Raises:
+
+        """
         if name not in brush_cache:
             b = ManagedBrush(self, name, persistent=True, **kwargs)
             brush_cache[name] = b
         return brush_cache[name]
 
     def _load_ordered_groups(self, brush_cache, filename):
+        """
+
+        Args:
+            brush_cache: 
+            filename: 
+
+        Returns:
+
+        Raises:
+
+        """
         try:
             return self._load_ordered_groups_inner(brush_cache, filename)
         except Exception:
@@ -280,7 +337,17 @@ class BrushManager:
             return {}
 
     def _load_ordered_groups_inner(self, brush_cache, filename):
-        """Load a groups dict from an order.conf file."""
+        """Load a groups dict from an order.conf file.
+
+        Args:
+            brush_cache: 
+            filename: 
+
+        Returns:
+
+        Raises:
+
+        """
         groups = {}
         if os.path.exists(filename):
             with open(filename, "rb") as fp:
@@ -300,10 +367,17 @@ class BrushManager:
 
     def _init_ordered_groups(self, brush_cache):
         """Initialize the ordered subset of available brush groups.
-
+        
         The ordered subset consists of those brushes which are listed in
         the stock and user brush directories' `order.conf` files.  This
         method safely merges upstream changes into the user's ordering.
+
+        Args:
+            brush_cache: 
+
+        Returns:
+
+        Raises:
 
         """
         join = os.path.join
@@ -355,8 +429,13 @@ class BrushManager:
     def _list_brushes(self, path):
         """Recursively list the brushes within a directory.
 
-        Return a list of brush names relative to path, using slashes
-        for subdirectories on all platforms.
+        Args:
+            path: 
+
+        Returns:
+            for subdirectories on all platforms.
+
+        Raises:
 
         """
         path += "/"
@@ -373,15 +452,22 @@ class BrushManager:
 
     def _init_unordered_groups(self, brush_cache):
         """Initialize the unordered subset of available brushes+groups.
-
+        
         The unordered subset consists of all brushes that are not listed
         in an `order.conf` file. It includes brushkey brushes,
         per-device brushes, brushes in the painting history.
-
+        
         This method trawls the stock and user brush directories for
         brushes which aren't listed in in an existing group, and adds
         them to the Lost & Found group, creating it if necessary. It
         should therefore be called after `_init_ordered_groups()`.
+
+        Args:
+            brush_cache: 
+
+        Returns:
+
+        Raises:
 
         """
         listbrushes = self._list_brushes
@@ -425,9 +511,15 @@ class BrushManager:
 
     def _init_default_brushkeys_and_history(self):
         """Assign sensible defaults for brushkeys and history.
-
+        
         Operates by filling in the gaps after `_init_unordered_groups()`
         has had a chance to populate the two lists.
+
+        Args:
+
+        Returns:
+
+        Raises:
 
         """
 
@@ -480,33 +572,53 @@ class BrushManager:
     @event
     def brushes_changed(self, brushes):
         """Event: brushes changed (within their groups).
-
+        
         Each observer is called with the following args:
 
-        :param self: this BrushManager object
-        :param brushes: Affected brushes
-        :type brushes: list of ManagedBrushes
-
+        Args:
+            brushes (list of ManagedBrushes): Affected brushes
+        
         This event is used to notify about brush ordering changes or brushes
         being moved between groups.
+
+        Returns:
+
+        Raises:
+
         """
 
     @event
     def groups_changed(self):
         """Event: brush groups changed (deleted, renamed, created)
-
+        
         Observer callbacks are invoked with no args (other than a ref to the
         brushgroup).  This is used when the "set" of groups change, e.g. when a
         group is renamed, deleted, or created.  It's invoked when self.groups
         changes.
+
+        Args:
+
+        Returns:
+
+        Raises:
+
         """
 
     @event
     def brush_selected(self, brush, info):
         """Event: a different brush was selected.
-
+        
         Observer callbacks are invoked with the newly selected ManagedBrush and
         its corresponding BrushInfo.
+
+        Args:
+            brush: 
+            info: 
+
+        Returns:
+
+        Raises:
+
         """
 
     ## Initial and default brushes
@@ -540,11 +652,22 @@ class BrushManager:
         fallback_eraser=0.0,
     ):
         """Gets a brush robustly by name, by partial name, or a default.
-
+        
         If a brush named `name` exists, use that. Otherwise search though all
         groups, `favored_group` first, for brushes with any of `keywords`
         in their name. If that fails, construct a new default brush and use
         a given value for its 'eraser' property.
+
+        Args:
+            name:  (Default value = None)
+            keywords:  (Default value = None)
+            favored_group:  (Default value = _DEFAULT_STARTUP_GROUP)
+            fallback_eraser:  (Default value = 0.0)
+
+        Returns:
+
+        Raises:
+
         """
         if name is not None:
             brush = self.get_brush_by_name(name)
@@ -582,9 +705,17 @@ class BrushManager:
 
     def set_pigment_by_default(self, pigment_by_default):
         """Change the default pigment setting to on/off
-
+        
         This updates loaded managed brushes as well, if they
         do not have the pigment setting set explicitly.
+
+        Args:
+            pigment_by_default: 
+
+        Returns:
+
+        Raises:
+
         """
         if self.pigment_by_default != pigment_by_default:
             msg = "Switching default pigment setting to {state}"
@@ -593,13 +724,23 @@ class BrushManager:
             self._reset_pigment_setting()
 
     def default_pigment_setting(self, setting_info):
-        """Pigment (paint_mode) setting override"""
+        """Pigment (paint_mode) setting override
+
+        Args:
+            setting_info: 
+
+        Returns:
+
+        Raises:
+
+        """
         if self.pigment_by_default:
             return setting_info.default
         else:
             return setting_info.min
 
     def _reset_pigment_setting(self):
+        """ """
         appbrush = ()
         if self.app:
             appbrush = (self.app.brush,)
@@ -633,15 +774,17 @@ class BrushManager:
     def import_brushpack(self, path, window=None):
         """Import a brushpack from a zipfile, with confirmation dialogs.
 
-        :param path: Brush pack zipfile path
-        :type path: str
-        :param window: Parent window, for dialogs to set.
-        :type window: GtkWindow or None
-        :returns: Set of imported group names
-        :rtype: set
+        Args:
+            path (str): Brush pack zipfile path
+            window (GtkWindow or None, optional): Parent window, for dialogs to set. (Default value = None)
 
-        Confirmation dialogs are only shown if "window" is a suitable
-        toplevel to attach the dialogs to.
+        Returns:
+            set
+
+Confirmation dialogs are only shown if "window" is a suitable
+toplevel to attach the dialogs to.: Set of imported group names
+
+        Raises:
 
         >>> with BrushManager._mock() as (bm, tmpdir):
         ...     imp = bm.import_brushpack(_TEST_BRUSHPACK_PY27, window=None)
@@ -653,7 +796,6 @@ class BrushManager:
         True
         >>> u'brushlib-test/fancy_\U0001f308\U0001f984\u2728' in g_names
         True
-
         """
 
         with zipfile.ZipFile(path) as zf:
@@ -838,8 +980,13 @@ class BrushManager:
     def export_group(self, group, filename):
         """Exports a group to a brushpack zipfile.
 
-        :param str group: Name of the group to save.
-        :param str filename: Path to a .zip file to create.
+        Args:
+            group (str): Name of the group to save.
+            filename (str): Path to a .zip file to create.
+
+        Returns:
+
+        Raises:
 
         >>> with BrushManager._mock() as (bm, tmpdir):
         ...     group = list(bm.groups)[0]
@@ -848,7 +995,6 @@ class BrushManager:
         ...     with zipfile.ZipFile(zipname, mode="r") as zf:
         ...         assert len(zf.namelist()) > 0
         ...         assert u"order.conf" in zf.namelist()
-
         """
         brushes = self.get_group_brushes(group)
         order_conf = b"Group: %s\n" % utf8(group)
@@ -868,14 +1014,20 @@ class BrushManager:
 
     def get_brush_by_name(self, name):
         """Gets a ManagedBrush by its name.
-
+        
         Slow method, should not be called too often.
+
+        Args:
+            name: 
+
+        Returns:
+
+        Raises:
 
         >>> with BrushManager._mock() as (bm, tmpdir):
         ...     brush1 = bm.get_brush_by_name(u"classic/pen")
         >>> brush1 # doctest: +ELLIPSIS
         <ManagedBrush...>
-
         """
         # FIXME: speed up, use a dict.
         for group, brushes in self.groups.items():
@@ -884,14 +1036,33 @@ class BrushManager:
                     return b
 
     def is_in_brushlist(self, brush):
-        """Returns whether this brush is in some brush group's list."""
+        """Returns whether this brush is in some brush group's list.
+
+        Args:
+            brush: 
+
+        Returns:
+
+        Raises:
+
+        """
         for group, brushes in self.groups.items():
             if brush in brushes:
                 return True
         return False
 
     def get_parent_brush(self, brush=None, brushinfo=None):
-        """Gets the parent `ManagedBrush` for a brush or a `BrushInfo`."""
+        """Gets the parent `ManagedBrush` for a brush or a `BrushInfo`.
+
+        Args:
+            brush:  (Default value = None)
+            brushinfo:  (Default value = None)
+
+        Returns:
+
+        Raises:
+
+        """
         if brush is not None:
             brushinfo = brush.brushinfo
         if brushinfo is None:
@@ -908,16 +1079,21 @@ class BrushManager:
     ## Brush order within groups, order.conf
 
     def _brushes_modified_cb(self, bm, brushes):
-        """Saves the brush order when it changes."""
+        """Saves the brush order when it changes.
+
+        Args:
+            bm: 
+            brushes: 
+
+        Returns:
+
+        Raises:
+
+        """
         self.save_brushorder()
 
     def save_brushorder(self):
-        """Save the user's chosen brush order to disk.
-
-        >>> with BrushManager._mock() as (bm, tmpdir):
-        ...     bm.save_brushorder()
-
-        """
+        """Save the user's chosen brush order to disk."""
 
         path = os.path.join(self.user_brushpath, "order.conf")
         with open(path, "wb") as f:
@@ -932,8 +1108,12 @@ class BrushManager:
     def select_brush(self, brush):
         """Selects a ManagedBrush, highlights it, & updates the live brush.
 
-        :param brush: brush to select
-        :type brush: BrushInfo
+        Args:
+            brush (BrushInfo): brush to select
+
+        Returns:
+
+        Raises:
 
         """
         if brush is None:
@@ -956,11 +1136,18 @@ class BrushManager:
 
     def clone_selected_brush(self, name):
         """Clones the current and selected brush into a new `BrushInfo`.
-
+        
         Creates a new ManagedBrush based on the selected brush in the brushlist
         and the currently active lib.brush. The brush settings are copied from
         the active brush, and the preview is copied from the currently selected
         BrushInfo.
+
+        Args:
+            name: 
+
+        Returns:
+
+        Raises:
 
         """
         if self.app is None:
@@ -974,11 +1161,20 @@ class BrushManager:
 
     def _brush_selected_cb(self, bm, brush, brushinfo):
         """Internal callback: User just picked a brush preset.
-
+        
         Called when the user changes to a brush preset somehow (e.g.
         from a shortcut or the brush panel). Makes sure a
         brush-dependant tool (e.g. Freehand, Connected Lines, etc.) is
         selected.
+
+        Args:
+            bm: 
+            brush: 
+            brushinfo: 
+
+        Returns:
+
+        Raises:
 
         """
         if not self.app:
@@ -990,14 +1186,17 @@ class BrushManager:
     def store_brush_for_device(self, device_name, managed_brush):
         """Records a brush as associated with an input device.
 
-        :param device_name: name of an input device
-        :type device_name: str
-        :param managed_brush: the brush to associate
-        :type managed_brush: ManagedBrush
-
+        Args:
+            device_name (str): name of an input device
+            managed_brush (ManagedBrush): the brush to associate
+        
         Normally the brush will be cloned first, since it will be given a new
         name. However, if the brush has a 'name' attribute of None, it will
         *not* be cloned and just modified in place and stored.
+
+        Returns:
+
+        Raises:
 
         """
         brush = managed_brush
@@ -1007,7 +1206,16 @@ class BrushManager:
         self._brush_by_device[device_name] = brush
 
     def fetch_brush_for_device(self, device_name):
-        """Fetches the brush associated with an input device."""
+        """Fetches the brush associated with an input device.
+
+        Args:
+            device_name: 
+
+        Returns:
+
+        Raises:
+
+        """
         if not device_name:
             return None
 
@@ -1050,7 +1258,17 @@ class BrushManager:
     ## Brush history
 
     def _input_stroke_ended_cb(self, doc, event):
-        """Update brush usage history at the end of an input stroke."""
+        """Update brush usage history at the end of an input stroke.
+
+        Args:
+            doc: 
+            event: 
+
+        Returns:
+
+        Raises:
+
+        """
         if self.app is None:
             raise ValueError("No app. BrushManager in test mode?")
         wb_info = self.app.brush
@@ -1094,17 +1312,21 @@ class BrushManager:
 
     def get_group_brushes(self, group):
         """Get a group's active brush list.
-
+        
         If the group does not exist, it will be created.
 
-        :param str group: Name of the group to fetch
-        :returns: The active list of `ManagedBrush`es.
-        :rtype: list
+        Args:
+            group (str): Name of the group to fetch
 
-        The returned list is owned by the BrushManager. You can modify
-        it, but you'll have to do your own notifications.
+        Returns:
+            list
 
-        See also: groups_changed(), brushes_changed().
+The returned list is owned by the BrushManager. You can modify
+it, but you'll have to do your own notifications.
+
+See also: groups_changed(), brushes_changed().: The active list of `ManagedBrush`es.
+
+        Raises:
 
         """
         if group not in self.groups:
@@ -1117,11 +1339,12 @@ class BrushManager:
     def create_group(self, new_group):
         """Creates a new brush group
 
-        :param group: Name of the group to create
-        :type group: str
-        :rtype: empty list, owned by the BrushManager
+        Args:
+            new_group: 
 
-        Returns the newly created group as a(n empty) list.
+        Returns:
+
+        Raises:
 
         """
         return self.get_group_brushes(new_group)
@@ -1129,10 +1352,13 @@ class BrushManager:
     def rename_group(self, old_group, new_group):
         """Renames a group.
 
-        :param old_group: Name of the group to assign the new name to.
-        :type old_group: str
-        :param new_group: New name for the group.
-        :type new_group: str
+        Args:
+            old_group (str): Name of the group to assign the new name to.
+            new_group (str): New name for the group.
+
+        Returns:
+
+        Raises:
 
         """
         brushes = self.create_group(new_group)
@@ -1142,11 +1368,15 @@ class BrushManager:
     def delete_group(self, group):
         """Deletes a group.
 
-        :param group: Name of the group to delete
-        :type group: str
-
+        Args:
+            group (str): Name of the group to delete
+        
         Orphaned brushes will be placed into `DELETED_BRUSH_GROUP`, which
         will be created if necessary.
+
+        Returns:
+
+        Raises:
 
         """
 
@@ -1170,12 +1400,18 @@ class BrushManager:
 
 class ManagedBrush:
     """User-facing representation of a brush's settings.
-
+    
     Managed brushes have a name, a preview image, and brush settings.
     The settings and the preview are loaded on demand.
     They cannot be selected or painted with directly,
     but their settings can be loaded into the running app:
     see `Brushmanager.select_brush()`.
+
+    Args:
+
+    Returns:
+
+    Raises:
 
     """
 
@@ -1221,23 +1457,31 @@ class ManagedBrush:
             assert self.name is not None
 
     def loaded(self):
+        """ """
         return self._settings_loaded
 
     ## Preview image: loaded on demand
 
     def get_preview(self):
         """Gets a preview image for the brush
-
+        
         For persistent brushes, this loads the disk preview; otherwise a
         fairly slow automated brush preview is used.
+        
+        
+        The results are cached in RAM.
+
+        Args:
+
+        Returns:
+
+        Raises:
 
         >>> with BrushManager._mock() as (bm, tmpdir):
         ...     b = ManagedBrush(bm, name=None, persistent=False)
         ...     b.get_preview()   # doctest: +ELLIPSIS
         <GdkPixbuf.Pixbuf...>
-
-        The results are cached in RAM.
-
+        
         >>> with BrushManager._mock() as (bm, tmpdir):
         ...     imported = bm.import_brushpack(_TEST_BRUSHPACK_PY27)
         ...     assert(imported)
@@ -1257,7 +1501,6 @@ class ManagedBrush:
         True
         >>> pixbufs1 == pixbufs2
         True
-
         """
         if self._preview is None and self.name:
             self._load_preview()
@@ -1267,6 +1510,16 @@ class ManagedBrush:
         return self._preview
 
     def set_preview(self, pixbuf):
+        """
+
+        Args:
+            pixbuf: 
+
+        Returns:
+
+        Raises:
+
+        """
         self._preview = pixbuf
 
     preview = property(get_preview, set_preview)
@@ -1275,50 +1528,60 @@ class ManagedBrush:
 
     @property
     def description(self):
-        """Short, user-facing tooltip description for the brush.
-
-        >>> with BrushManager._mock() as (bm, tmpdir):
-        ...     for gn, gbs in bm.groups.items():
-        ...         for b in gbs:
-        ...             assert isinstance(b.description, str)
-        ...             b.description = u"junk"
-        ...             assert isinstance(b.description, str)
-        ...             b.save()
-
-        """
+        """Short, user-facing tooltip description for the brush."""
         return self.brushinfo.get_string_property("description")
 
     @description.setter
     def description(self, s):
+        """
+
+        Args:
+            s: 
+
+        Returns:
+
+        Raises:
+
+        """
         self.brushinfo.set_string_property("description", s)
 
     @property
     def notes(self):
-        """Longer, brush developer's notes field for a brush.
-
-        >>> with BrushManager._mock() as (bm, tmpdir):
-        ...     imp = bm.import_brushpack(_TEST_BRUSHPACK_PY27)
-        ...     imp_g = list(imp)[0]
-        ...     for b in bm.groups[imp_g]:
-        ...         assert isinstance(b.notes, str)
-        ...         b.notes = u"junk note"
-        ...         assert isinstance(b.notes, str)
-        ...         b.save()
-
-        """
+        """Longer, brush developer's notes field for a brush."""
         return self.brushinfo.get_string_property("notes")
 
     @notes.setter
     def notes(self, s):
+        """
+
+        Args:
+            s: 
+
+        Returns:
+
+        Raises:
+
+        """
         self.brushinfo.set_string_property("notes", s)
 
     ## Brush settings: loaded on demand
 
     def get_brushinfo(self):
+        """ """
         self._ensure_settings_loaded()
         return self._brushinfo
 
     def set_brushinfo(self, brushinfo):
+        """
+
+        Args:
+            brushinfo: 
+
+        Returns:
+
+        Raises:
+
+        """
         self._brushinfo = brushinfo
 
     brushinfo = property(get_brushinfo, set_brushinfo)
@@ -1346,9 +1609,16 @@ class ManagedBrush:
 
     def clone(self, name):
         """Clone this brush, and give it a new name.
-
+        
         Creates a new brush with all the settings of this brush,
         assigning it a new name
+
+        Args:
+            name: 
+
+        Returns:
+
+        Raises:
 
         """
         clone = ManagedBrush(self.bm)
@@ -1356,6 +1626,17 @@ class ManagedBrush:
         return clone
 
     def clone_into(self, target, name):
+        """
+
+        Args:
+            target: 
+            name: 
+
+        Returns:
+
+        Raises:
+
+        """
         "Copies all brush settings into another brush, giving it a new name"
         self._ensure_settings_loaded()
         target.brushinfo = self.brushinfo.clone()
@@ -1372,23 +1653,27 @@ class ManagedBrush:
     def _get_fileprefix(self, saving=False):
         """Returns the filesystem prefix to use when saving or loading.
 
-        :param saving: caller wants a prefix to save to
-        :type saving: bool
+        Args:
+            saving (bool, optional): caller wants a prefix to save to
         :rtype: str
-
+        
         This assigns ``self.name`` if it isn't defined.
-
+        
         Files are stored with the returned prefix,
         with the extension ".myb" for brush data
         and "_prev.myb" for preview images.
-
+        
         If `saving` is true, intermediate directories will be created,
         and the returned prefix will always contain the user brushpath.
         Otherwise the prefix you get depends on
         whether a stock brush exists and
         whether a user brush with the same name does not.
+        
+        See also `delete_from_disk()`. (Default value = False)
 
-        See also `delete_from_disk()`.
+        Returns:
+
+        Raises:
 
         """
         prefix = "b"
@@ -1427,6 +1712,7 @@ class ManagedBrush:
         return prefix
 
     def _remember_mtimes(self):
+        """ """
         prefix = self._get_fileprefix()
         try:
             preview_file = prefix + "_prev.png"
@@ -1470,18 +1756,7 @@ class ManagedBrush:
         self._remember_mtimes()
 
     def delete_from_disk(self):
-        """Tries to delete the files for this brush from disk.
-
-        :rtype: bool
-
-        Returns True if the disk files can no longer be loaded. Stock brushes
-        cannot be deleted, but if a user brush is hiding a stock brush with the
-        same name, then although this method will remove the files describing
-        the user brush, the stock brush is left intact. In this case, False is
-        returned (because a load() attempt will now load the stock brush - and
-        in fact has just done so).
-
-        """
+        """Tries to delete the files for this brush from disk."""
 
         prefix = os.path.join(self.bm.user_brushpath, self.name)
         if os.path.isfile(prefix + ".myb"):
@@ -1546,6 +1821,7 @@ class ManagedBrush:
         self.persistent = True
 
     def _has_changed_on_disk(self):
+        """ """
         prefix = self._get_fileprefix()
         if self._preview_mtime != os.path.getmtime(prefix + "_prev.png"):
             return True
@@ -1554,6 +1830,7 @@ class ManagedBrush:
         return False
 
     def reload_if_changed(self):
+        """ """
         if self._settings_mtime is None:
             return
         if self._preview_mtime is None:
@@ -1575,7 +1852,7 @@ class ManagedBrush:
 
 
 class InvalidBrushpack(Exception):
-    """Raised when brushpacks cannot be imported."""
+    """ """
 
 
 ## Module testing

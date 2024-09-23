@@ -47,27 +47,36 @@ class CommandStack:
         )
 
     def clear(self):
+        """ """
         self._discard_undo()
         self._discard_redo()
         self.stack_updated()
 
     def _discard_undo(self):
+        """ """
         self.undo_stack = deque()
 
     def _discard_redo(self):
+        """ """
         self.redo_stack = deque()
 
     def do(self, command):
         """Performs a new command
 
-        :param Command command: New action to perform and push
-
+        Args:
+            command (Command): New action to perform and push
+        
         This operation adds a new command to the undo stack after
         calling its redo() method to perform the work it represents.
         It also trims the undo stack.
-
+        
         If the command is cancelled, indicated by it returning False,
         its undo() method is called and it is not added to the stack.
+
+        Returns:
+
+        Raises:
+
         """
         # Discard the redo stack regardless of cancellation
         # This follows the behavior of Krita, but might not be desirable
@@ -84,9 +93,16 @@ class CommandStack:
 
     def undo(self):
         """Un-performs the last performed command
-
+        
         This operation undoes one command, moving it from the undo stack
         to the redo stack, and invoking its its undo() method.
+
+        Args:
+
+        Returns:
+
+        Raises:
+
         """
         if not self.undo_stack:
             return
@@ -98,15 +114,22 @@ class CommandStack:
 
     def redo(self):
         """Re-performs the last command undone with undo()
-
+        
         This operation re-does one command, moving it from the undo
         stack to the redo stack, and invoking its its redo() method.
-
+        
         If the command is cancelled, as indicated by it returning False,
         the undo() method of the same command is run, and no stack changes
         are performed.
-
+        
         Calls stack_updated() if the command is not cancelled
+
+        Args:
+
+        Returns:
+
+        Raises:
+
         """
         if not self.redo_stack:
             return
@@ -132,7 +155,16 @@ class CommandStack:
         return self.undo_stack[-1]
 
     def update_last_command(self, **kwargs):
-        """Updates the most recently performed command"""
+        """Updates the most recently performed command
+
+        Args:
+            **kwargs: 
+
+        Returns:
+
+        Raises:
+
+        """
         cmd = self.get_last_command()
         if cmd is None:
             return None
@@ -150,13 +182,13 @@ class CommandStack:
 
 class Command:
     """A reversible change to the document model
-
+    
     Commands represent alterations made by the user to a document which
     they might wish to undo. They should in general be lightweight
     mementos of the of the work carried out, but may store snapshots of
     layer data provided those those don't create circular reference
     chains.
-
+    
     Typical commands are constructed as a complete description of the
     work to be done by a simple action callback, and perform all the
     actual work in their `redo()` method.  Alternatively, a command can
@@ -165,10 +197,17 @@ class Command:
     case, the UI code *must* ensure that the work being done is
     committed to the document (via `lib.document.Document.redo()`) when
     it resuests that input is flushed.
-
+    
     This class is the base for all commands.  Subclasses must implement
     at least the `redo()` and `undo()` methods, and may implement an
     update method if it makes sense for the data being changed.
+
+    Args:
+
+    Returns:
+
+    Raises:
+
     """
 
     ## Defaults for object properties
@@ -196,41 +235,72 @@ class Command:
 
     def redo(self):
         """Callback used to perform, or re-perform the work
-
+        
         Initially, this is essentially a commit to the in-memory
         document. It should finalize any changes made at construction or
         subsequently, and make sure that notifications are issued
         correctly.  Redo may also be called after an undo if the user
         changes their mind about undoing something.
+
+        Args:
+
+        Returns:
+
+        Raises:
+
         """
         raise NotImplementedError
 
     def undo(self):
         """Callback used to roll back work
-
+        
         This is the rollback to `redo()`'s commit action.
+
+        Args:
+
+        Returns:
+
+        Raises:
+
         """
         raise NotImplementedError
 
     def update(self, **kwargs):
         """In-place update on the tip of the undo stack.
-
+        
         This method should update the model in the way specified in
         `**kwargs`.  The interpretation of arguments is left to the
         concrete implementation.
-
+        
         The alternative to implementing this method is an undo()
         followed by a redo(). This can result in too many notifications
         being sent, however.  In general, this method should be
         implemented whenever only the final value of a change matters,
         for example a change to a layer's opacity or its locked status.
+
+        Args:
+            **kwargs: 
+
+        Returns:
+
+        Raises:
+
         """
         raise NotImplementedError
 
     ## Deprecated utility functions for subclasses
 
     def _notify_canvas_observers(self, layer_bboxes):
-        """Notifies the document's redraw observers"""
+        """Notifies the document's redraw observers
+
+        Args:
+            layer_bboxes: 
+
+        Returns:
+
+        Raises:
+
+        """
         warn(
             "Layers should issue their own canvas updates",
             PendingDeprecationWarning,
@@ -339,11 +409,17 @@ class Brushwork(Command):
     @property
     def _target_layer(self):
         """The command's target layer.
-
+        
         This is either the explicit target layer from the constructor,
         or the layer accessed via its path.
-
+        
         The _stroke_target_layer cache property is used during painting.
+
+        Args:
+
+        Returns:
+
+        Raises:
 
         """
         model = self.doc
@@ -374,7 +450,16 @@ class Brushwork(Command):
         self._sshot_after_applied = False
 
     def update(self, brushinfo):
-        """Retrace the last stroke with a new brush"""
+        """Retrace the last stroke with a new brush
+
+        Args:
+            brushinfo: 
+
+        Returns:
+
+        Raises:
+
+        """
         layer = self._target_layer
         assert self._recording_finished, "Call stop_recording() first"
         assert (
@@ -431,22 +516,27 @@ class Brushwork(Command):
     ):
         """Painting: forward a stroke position update to the model
 
-        :param float dtime: Seconds since the last call to this method
-        :param float x: Document X position update
-        :param float y: Document Y position update
-        :param float pressure: Pressure, ranging from 0.0 to 1.0
-        :param float xtilt: X-axis tilt, ranging from -1.0 to 1.0
-        :param float ytilt: Y-axis tilt, ranging from -1.0 to 1.0
-        :param float viewzoom: current view zoom level from 0 to 64
-        :param float viewrotation: current view rotation from -180.0 to 180.0
-        :param float barrel_rotation: Barrel Rotation of stylus, ranging from 0.0 to 1.0
-
+        Args:
+            dtime (float): Seconds since the last call to this method
+            x (float): Document X position update
+            y (float): Document Y position update
+            pressure (float): Pressure, ranging from 0.0 to 1.0
+            xtilt (float): X-axis tilt, ranging from -1.0 to 1.0
+            ytilt (float): Y-axis tilt, ranging from -1.0 to 1.0
+            viewzoom (float): current view zoom level from 0 to 64
+            viewrotation (float): current view rotation from -180.0 to 180.0
+            barrel_rotation (float): Barrel Rotation of stylus, ranging from 0.0 to 1.0
+        
         Stroke data is recorded at this level, but strokes are not
         autosplit here because that would involve the creation of a new
         Brushwork command on the CommandStack. Instead, callers should
         check `split_due` and split appropriately.
-
+        
         An example of a mode which does just this can be found in gui/.
+
+        Returns:
+
+        Raises:
 
         """
         self._check_recording_started()
@@ -499,24 +589,29 @@ class Brushwork(Command):
     def stop_recording(self, revert=False):
         """Ends the recording phase
 
-        :param bool revert: revert any changes to the model
-        :rtype: bool
-        :returns: whether any changes were made
+        Args:
+            revert (bool, optional): revert any changes to the model
+        :rtype: bool (Default value = False)
 
-        When called with default arguments,
-        this method makes the command ready to add to the command stack
-        using the document model's do() method.
-        If no changes were made, you can (and should)
-        just discard the command instead.
+        Returns:
+            whether any changes were made
+            
+            When called with default arguments,
+            this method makes the command ready to add to the command stack
+            using the document model's do() method.
+            If no changes were made, you can (and should)
+            just discard the command instead.
+            
+            If `revert` is true,
+            all changes made to the layer during recording
+            will be rolled back,
+            so that the layer has its original appearance and state.
+            Reverted commands should be discarded.
+            
+            After this method is called,
+            the `stroke_to()` method must not be called again.
 
-        If `revert` is true,
-        all changes made to the layer during recording
-        will be rolled back,
-        so that the layer has its original appearance and state.
-        Reverted commands should be discarded.
-
-        After this method is called,
-        the `stroke_to()` method must not be called again.
+        Raises:
 
         """
         self._check_recording_started()
@@ -588,6 +683,7 @@ class FloodFill(Command):
         self.status_cb = status_cb
 
     def redo(self):
+        """ """
         # Pick a source
         layers = self.doc.layer_stack
         if self.sample_merged:
@@ -630,6 +726,7 @@ class FloodFill(Command):
         handle.wait()
 
     def undo(self):
+        """ """
         layers = self.doc.layer_stack
         if self.make_new_layer:
             assert self.new_layer is not None
@@ -654,12 +751,14 @@ class TrimLayer(Command):
         self.before = None
 
     def redo(self):
+        """ """
         layer = self.doc.layer_stack.current
         self.before = layer.save_snapshot()
         frame = self.doc.get_frame()
         layer.trim(frame)
 
     def undo(self):
+        """ """
         layer = self.doc.layer_stack.current
         layer.load_snapshot(self.before)
 
@@ -675,6 +774,7 @@ class UniqLayer(Command):
         self._pixels = pixels
 
     def redo(self):
+        """ """
         root = self.doc.layer_stack
         layer = root.current
         self._before = layer.save_snapshot()
@@ -682,6 +782,7 @@ class UniqLayer(Command):
         root.uniq_layer(path, pixels=self._pixels)
 
     def undo(self):
+        """ """
         root = self.doc.layer_stack
         layer = root.current
         layer.load_snapshot(self._before)
@@ -698,6 +799,7 @@ class RefactorGroup(Command):
         self._pixels = pixels
 
     def redo(self):
+        """ """
         root = self.doc.layer_stack
         layer = root.current
         self._before = layer.save_snapshot()
@@ -705,6 +807,7 @@ class RefactorGroup(Command):
         root.refactor_layer_group(path, pixels=self._pixels)
 
     def undo(self):
+        """ """
         root = self.doc.layer_stack
         layer = root.current
         layer.load_snapshot(self._before)
@@ -720,11 +823,13 @@ class ClearLayer(Command):
         self._before = None
 
     def redo(self):
+        """ """
         layer = self.doc.layer_stack.current
         self._before = layer.save_snapshot()
         layer.clear()
 
     def undo(self):
+        """ """
         layer = self.doc.layer_stack.current
         layer.load_snapshot(self._before)
         self._before = None
@@ -750,6 +855,7 @@ class LoadLayer(Command):
             self.add_layer_cmd = AddLayer(doc, insert_path)
 
     def redo(self):
+        """ """
         if self.add_layer_cmd:
             self.add_layer_cmd.redo()
         layer = self.doc.layer_stack.current
@@ -758,6 +864,7 @@ class LoadLayer(Command):
         layer.load_from_surface(self.surface)
 
     def undo(self):
+        """ """
         if self.add_layer_cmd:
             self.add_layer_cmd.undo()
         else:
@@ -767,9 +874,16 @@ class LoadLayer(Command):
 
 class NewLayerMergedFromVisible(Command):
     """Create a new layer from the merge of all visible layers
-
+    
     Performs a Merge Visible, and inserts the result into the layer
     stack just before the highest root of any visible layer.
+
+    Args:
+
+    Returns:
+
+    Raises:
+
     """
 
     display_name = _("New Layer from Visible")
@@ -783,6 +897,7 @@ class NewLayerMergedFromVisible(Command):
         self._paths_merged = None
 
     def redo(self):
+        """ """
         rootstack = self.doc.layer_stack
         merged = self._result_layer
         if merged is None:
@@ -800,6 +915,7 @@ class NewLayerMergedFromVisible(Command):
         rootstack.current_path = self._result_final_path
 
     def undo(self):
+        """ """
         rootstack = self.doc.layer_stack
         rootstack.deeppop(self._result_final_path)
         rootstack.current_path = self._old_current_path
@@ -807,10 +923,16 @@ class NewLayerMergedFromVisible(Command):
 
 class MergeVisibleLayers(Command):
     """Consolidate all visible layers into one
-
+    
     Deletes all visible layers, but inserts the result of merging them
     into the layer stack just before the highest root of any of the
     merged+deleted layers.
+
+    Args:
+
+    Returns:
+
+    Raises:
 
     """
 
@@ -827,6 +949,7 @@ class MergeVisibleLayers(Command):
         self._layers_merged = None  # zip()s with _paths_merged
 
     def redo(self):
+        """ """
         rootstack = self.doc.layer_stack
         # First time, we calculate the merged layer and cache it once.
         # Also store the paths to remove,
@@ -871,6 +994,7 @@ class MergeVisibleLayers(Command):
         rootstack.current_path = self._result_final_path
 
     def undo(self):
+        """ """
         if self._nothing_initially_visible:
             return
         # Remove the merged path
@@ -900,6 +1024,7 @@ class MergeLayerDown(Command):
         self._merged_layer = None
 
     def redo(self):
+        """ """
         rootstack = self.doc.layer_stack
         merged = self._merged_layer
         if merged is None:
@@ -916,6 +1041,7 @@ class MergeLayerDown(Command):
         rootstack.current_path = self._upper_path
 
     def undo(self):
+        """ """
         rootstack = self.doc.layer_stack
         merged = self._merged_layer
         removed = rootstack.deeppop(self._upper_path)
@@ -931,10 +1057,17 @@ class MergeLayerDown(Command):
 
 class NormalizeLayerMode(Command):
     """Normalize a layer's mode & opacity, incorporating its backdrop
-
+    
     If the layer has any non-zero-alpha pixels, they will take on a
     ghost image of the its current backdrop as a result of this
     operation.
+
+    Args:
+
+    Returns:
+
+    Raises:
+
     """
 
     display_name = _("Normalize Layer Mode")
@@ -949,6 +1082,7 @@ class NormalizeLayerMode(Command):
         self._old_current_path = None
 
     def redo(self):
+        """ """
         layers = self.doc.layer_stack
         self._old_current_path = layers.current_path
         parent_path, idx = self._path[:-1], self._path[-1]
@@ -959,6 +1093,7 @@ class NormalizeLayerMode(Command):
         layers.current_path = self._path
 
     def undo(self):
+        """ """
         layers = self.doc.layer_stack
         parent_path, idx = self._path[:-1], self._path[-1]
         parent = layers.deepget(parent_path)
@@ -969,13 +1104,19 @@ class NormalizeLayerMode(Command):
 
 class AddLayer(Command):
     """Inserts a layer into the layer stack.
-
+    
     The layer can be supplied at construction time. Alternatively a
     constructor function or class can be passed in, along with a name
     and any other **kwds you need. The default class if neither is
     specified is the normal painting layer type.
-
+    
     In both cases, the command object takes ownership of the layer.
+
+    Args:
+
+    Returns:
+
+    Raises:
 
     """
 
@@ -997,6 +1138,7 @@ class AddLayer(Command):
 
     @property
     def display_name(self):
+        """ """
         if self._is_import:
             tmpl = _("Import Layers")
         else:
@@ -1006,6 +1148,7 @@ class AddLayer(Command):
         )
 
     def redo(self):
+        """ """
         layers = self.doc.layer_stack
         self._prev_currentlayer_path = layers.get_current_path()
         layers.deepinsert(self._insert_path, self._layer)
@@ -1015,6 +1158,7 @@ class AddLayer(Command):
         layers.set_current_path(inserted_path)
 
     def undo(self):
+        """ """
         layers = self.doc.layer_stack
         layers.deepremove(self._layer)
         layers.set_current_path(self._prev_currentlayer_path)
@@ -1035,6 +1179,7 @@ class RemoveLayer(Command):
         self._replacement_layer = None
 
     def redo(self):
+        """ """
         assert self._removed_layer is None, "double redo()?"
         layers = self.doc.layer_stack
         path = layers.get_current_path()
@@ -1060,6 +1205,7 @@ class RemoveLayer(Command):
                     layers.set_current_path((0,))
 
     def undo(self):
+        """ """
         layers = self.doc.layer_stack
         if self._replacement_layer is not None:
             layers.deepremove(self._replacement_layer)
@@ -1081,17 +1227,19 @@ class SelectLayer(Command):
         self.prev_path = layers.canonpath(path=layers.get_current_path())
 
     def redo(self):
+        """ """
         layers = self.doc.layer_stack
         layers.set_current_path(self.path)
 
     def undo(self):
+        """ """
         layers = self.doc.layer_stack
         layers.set_current_path(self.prev_path)
 
 
 class MoveLayer(Command):
     """Moves a layer around the canvas
-
+    
     Layer move commands are intended to be manipulated by the UI after
     creation, and before being committed to the command stack.  During
     this initial active move phase, `move_to()` repositions the
@@ -1099,6 +1247,13 @@ class MoveLayer(Command):
     this in chunks so that the screen can be updated smoothly.  After
     the layer is committed to the command stack, the active move phase
     methods can no longer be used.
+
+    Args:
+
+    Returns:
+
+    Raises:
+
     """
 
     # TRANSLATORS: Command to move a layer in the horizontal plane,
@@ -1131,11 +1286,17 @@ class MoveLayer(Command):
     def move_to(self, x, y):
         """Move the reference point to a new position
 
-        :param x: New reference point X coordinate
-        :param y: New reference point Y coordinate
-
+        Args:
+            x: New reference point X coordinate
+            y: New reference point Y coordinate
+        
         This is a higher-level wrapper around the raw layer and surface
         moving API, tailored for use by GUI code.
+
+        Returns:
+
+        Raises:
+
         """
         assert self._move is not None
         x = int(x)
@@ -1152,11 +1313,16 @@ class MoveLayer(Command):
     def process_move(self):
         """Process chunks of the updated move
 
-        :returns: True if there are remaining chunks of work to do
-        :rtype: bool
+        Args:
 
-        This is a higher-level wrapper around the raw layer and surface
-        moving API, tailored for use by GUI code.
+        Returns:
+            bool
+
+This is a higher-level wrapper around the raw layer and surface
+moving API, tailored for use by GUI code.: True if there are remaining chunks of work to do
+
+        Raises:
+
         """
         assert self._move is not None
         more_needed = self._move.process()
@@ -1208,6 +1374,7 @@ class DuplicateLayer(Command):
         self._path = self.doc.layer_stack.current_path
 
     def redo(self):
+        """ """
         layers = self.doc.layer_stack
         layer_copy = deepcopy(layers.current)
         layers.deepinsert(self._path, layer_copy)
@@ -1216,6 +1383,7 @@ class DuplicateLayer(Command):
         self._notify_canvas_observers([layer_copy.get_full_redraw_bbox()])
 
     def undo(self):
+        """ """
         layers = self.doc.layer_stack
         layers.deeppop(self._path)
         orig_layer = layers.deepget(self._path)
@@ -1228,10 +1396,12 @@ class BubbleLayerUp(Command):
     display_name = _("Move Layer Up")
 
     def redo(self):
+        """ """
         layers = self.doc.layer_stack
         layers.bubble_layer_up(layers.current_path)
 
     def undo(self):
+        """ """
         layers = self.doc.layer_stack
         layers.bubble_layer_down(layers.current_path)
 
@@ -1242,28 +1412,37 @@ class BubbleLayerDown(Command):
     display_name = _("Move Layer Down")
 
     def redo(self):
+        """ """
         layers = self.doc.layer_stack
         layers.bubble_layer_down(layers.current_path)
 
     def undo(self):
+        """ """
         layers = self.doc.layer_stack
         layers.bubble_layer_up(layers.current_path)
 
 
 class RestackLayer(Command):
     """Move a layer from one position in the stack to another
-
+    
     Layer restacking operations allow layers to be moved inside other
     layers even if the target layer type doesn't permit sub-layers. In
     this case, a new parent layer stack is created::
-
+    
       layer1            layer1
       targetlayer       newparent
       layer2        →    ├─ movedlayer
       movedlayer         └─ targetlayer
                         layer2
-
+    
     This shows a move of path ``(3,)`` to the path ``(1, 0)``.
+
+    Args:
+
+    Returns:
+
+    Raises:
+
     """
 
     display_name = _("Move Layer in Stack")
@@ -1397,16 +1576,29 @@ class RenameLayer(Command):
 
     @property
     def layer(self):
+        """ """
         return self.doc.layer_stack.deepget(self._path)
 
     def redo(self):
+        """ """
         self._old_name = self.layer.name
         self.layer.name = self._new_name
 
     def undo(self):
+        """ """
         self.layer.name = self._old_name
 
     def update(self, name):
+        """
+
+        Args:
+            name: 
+
+        Returns:
+
+        Raises:
+
+        """
         self.layer.name = name
         self._new_name = name
 
@@ -1425,21 +1617,35 @@ class SetLayerVisibility(Command):
 
     @property
     def layer(self):
+        """ """
         return self.doc.layer_stack.deepget(self._path)
 
     def redo(self):
+        """ """
         self._old_visibility = self.layer.visible
         self.layer.visible = self._new_visibility
 
     def undo(self):
+        """ """
         self.layer.visible = self._old_visibility
 
     def update(self, visible):
+        """
+
+        Args:
+            visible: 
+
+        Returns:
+
+        Raises:
+
+        """
         self.layer.visible = visible
         self._new_visibility = visible
 
     @property
     def display_name(self):
+        """ """
         if self._new_visibility:
             return _("Make Layer Visible")
         else:
@@ -1459,20 +1665,33 @@ class SetLayerLocked(Command):
 
     @property
     def layer(self):
+        """ """
         return self.doc.layer_stack.deepget(self._path)
 
     def redo(self):
+        """ """
         self.old_locked = self.layer.locked
         self.layer.locked = self.new_locked
         redraw_bboxes = [self.layer.get_full_redraw_bbox()]
         self._notify_canvas_observers(redraw_bboxes)
 
     def undo(self):
+        """ """
         self.layer.locked = self.old_locked
         redraw_bboxes = [self.layer.get_full_redraw_bbox()]
         self._notify_canvas_observers(redraw_bboxes)
 
     def update(self, locked):
+        """
+
+        Args:
+            locked: 
+
+        Returns:
+
+        Raises:
+
+        """
         self.layer.locked = locked
         self.new_locked = locked
         redraw_bboxes = [self.layer.get_full_redraw_bbox()]
@@ -1480,6 +1699,7 @@ class SetLayerLocked(Command):
 
     @property
     def display_name(self):
+        """ """
         if self.new_locked:
             return _("Lock Layer")
         else:
@@ -1500,19 +1720,32 @@ class SetLayerOpacity(Command):
 
     @property
     def display_name(self):
+        """ """
         percent = self._new_opacity * 100.0
         return _("Set Layer Opacity: %0.1f%%") % (percent,)
 
     @property
     def layer(self):
+        """ """
         return self.doc.layer_stack.deepget(self._path)
 
     def redo(self):
+        """ """
         layer = self.layer
         self._old_opacity = layer.opacity
         layer.opacity = self._new_opacity
 
     def update(self, opacity):
+        """
+
+        Args:
+            opacity: 
+
+        Returns:
+
+        Raises:
+
+        """
         layer = self.layer
         if layer.opacity == opacity:
             return
@@ -1520,6 +1753,7 @@ class SetLayerOpacity(Command):
         layer.opacity = opacity
 
     def undo(self):
+        """ """
         layer = self.layer
         layer.opacity = self._old_opacity
 
@@ -1539,21 +1773,25 @@ class SetLayerMode(Command):
 
     @property
     def display_name(self):
+        """ """
         info = lib.modes.MODE_STRINGS.get(self._new_mode)
         name = info and info[0] or _("Unknown Mode")
         return _("Set Layer Mode: %s") % (name,)
 
     @property
     def layer(self):
+        """ """
         return self.doc.layer_stack.deepget(self._path)
 
     def redo(self):
+        """ """
         layer = self.layer
         self._old_mode = layer.mode
         self._old_opacity = layer.opacity
         layer.mode = self._new_mode
 
     def undo(self):
+        """ """
         layer = self.layer
         layer.mode = self._old_mode
         layer.opacity = self._old_opacity
@@ -1564,6 +1802,7 @@ class SetFrameEnabled(Command):
 
     @property
     def display_name(self):
+        """ """
         if self.after:
             return _("Enable Frame")
         else:
@@ -1575,10 +1814,12 @@ class SetFrameEnabled(Command):
         self.after = enable
 
     def redo(self):
+        """ """
         self.before = self.doc.frame_enabled
         self.doc.set_frame_enabled(self.after, user_initiated=False)
 
     def undo(self):
+        """ """
         self.doc.set_frame_enabled(self.before, user_initiated=False)
 
 
@@ -1594,18 +1835,30 @@ class UpdateFrame(Command):
         self.old_enabled = doc.get_frame_enabled()
 
     def redo(self):
+        """ """
         if self.old_frame is None:
             self.old_frame = self.doc.frame[:]
         self.doc.update_frame(*self.new_frame, user_initiated=False)
         self.doc.set_frame_enabled(True, user_initiated=False)
 
     def update(self, frame):
+        """
+
+        Args:
+            frame: 
+
+        Returns:
+
+        Raises:
+
+        """
         assert self.old_frame is not None
         self.new_frame = frame
         self.doc.update_frame(*self.new_frame, user_initiated=False)
         self.doc.set_frame_enabled(True, user_initiated=False)
 
     def undo(self):
+        """ """
         assert self.old_frame is not None
         self.doc.update_frame(*self.old_frame, user_initiated=False)
         self.doc.set_frame_enabled(self.old_enabled, user_initiated=False)
@@ -1624,6 +1877,7 @@ class ExternalLayerEdit(Command):
         self._after = None
 
     def redo(self):
+        """ """
         layer = self.doc.layer_stack.deepget(self._layer_path)
         if not self._before:
             self._before = layer.save_snapshot()
@@ -1634,5 +1888,6 @@ class ExternalLayerEdit(Command):
             self._after = layer.save_snapshot()
 
     def undo(self):
+        """ """
         layer = self.doc.layer_stack.deepget(self._layer_path)
         layer.load_snapshot(self._before)

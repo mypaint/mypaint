@@ -89,9 +89,16 @@ _LINE_MODE_SETTINGS_LIST = [
 
 class LineModeSettings:
     """Manage GtkAdjustments for tweaking LineMode settings.
-
+    
     An instance resides in the main application singleton. Changes to the
     adjustments are reflected into the app preferences.
+
+    Args:
+
+    Returns:
+
+    Raises:
+
     """
 
     def __init__(self, app):
@@ -117,6 +124,17 @@ class LineModeSettings:
             self.adjustments[cname] = adj
 
     def _value_changed_cb(self, adj, prefs_key):
+        """
+
+        Args:
+            adj: 
+            prefs_key: 
+
+        Returns:
+
+        Raises:
+
+        """
         # Direct GtkAdjustment callback for a single adjustment being changed.
         value = float(adj.get_value())
         self.app.preferences[prefs_key] = value
@@ -125,6 +143,7 @@ class LineModeSettings:
             self._idle_srcid = GLib.idle_add(self._values_changed_idle_cb)
 
     def _values_changed_idle_cb(self):
+        """ """
         # Aggregate, idle-state callback for multiple adjustments being changed
         # in a single event. Queues redraws, and runs observers. The curve sets
         # multiple settings at once, and we might as well not queue too many
@@ -164,10 +183,30 @@ class LineModeCurveWidget(CurveWidget):
         self._update()
 
     def _adjs_changed_cb(self, changed):
+        """
+
+        Args:
+            changed: 
+
+        Returns:
+
+        Raises:
+
+        """
         logger.debug("Updating curve (changed: %r)", changed)
         self._update()
 
     def _update(self, from_defaults=False):
+        """
+
+        Args:
+            from_defaults:  (Default value = False)
+
+        Returns:
+
+        Raises:
+
+        """
         if from_defaults:
             self.points = [(0.0, 0.2), (0.33, 0.5), (0.66, 0.5), (1.0, 0.33)]
         for setting, coord_pair in self._SETTINGS_COORDINATE:
@@ -192,7 +231,16 @@ class LineModeCurveWidget(CurveWidget):
         self.queue_draw()
 
     def _changed_cb(self, curve):
-        """Updates the linemode pressure settings when the curve is altered"""
+        """Updates the linemode pressure settings when the curve is altered
+
+        Args:
+            curve: 
+
+        Returns:
+
+        Raises:
+
+        """
         for setting, coord_pair in self._SETTINGS_COORDINATE:
             index, subindex = coord_pair
             value = self.points[index][subindex]
@@ -210,6 +258,16 @@ class LineModeOptionsWidget(gui.mode.PaintingModeOptionsWidgetBase):
     """Options widget for geometric line modes"""
 
     def init_specialized_widgets(self, row=0):
+        """
+
+        Args:
+            row:  (Default value = 0)
+
+        Returns:
+
+        Raises:
+
+        """
         curve = LineModeCurveWidget()
         curve.set_size_request(175, 125)
         self._curve = curve
@@ -222,6 +280,16 @@ class LineModeOptionsWidget(gui.mode.PaintingModeOptionsWidgetBase):
         return row
 
     def reset_button_clicked_cb(self, button):
+        """
+
+        Args:
+            button: 
+
+        Returns:
+
+        Raises:
+
+        """
         super(LineModeOptionsWidget, self).reset_button_clicked_cb(button)
         self._curve._update(from_defaults=True)
 
@@ -254,6 +322,7 @@ class LineModeBase(
 
     @property
     def active_cursor(self):
+        """ """
         cursor_name = gui.cursor.Name.PENCIL
         if not self._line_possible:
             cursor_name = gui.cursor.Name.FORBIDDEN_EVERYWHERE
@@ -261,14 +330,17 @@ class LineModeBase(
 
     @classmethod
     def get_name(cls):
+        """ """
         return _("Lines and Curves")
 
     def get_usage(self):
+        """ """
         # TRANSLATORS: users should never see this message
         return _("Generic line/curve mode")
 
     @property
     def inactive_cursor(self):
+        """ """
         cursor_name = gui.cursor.Name.CROSSHAIR_OPEN_PRECISE
         if not self._line_possible:
             cursor_name = gui.cursor.Name.FORBIDDEN_EVERYWHERE
@@ -295,11 +367,19 @@ class LineModeBase(
 
     def enter(self, doc, **kwds):
         """Enter the mode.
-
+        
         If modifiers are held when the mode is entered, the mode is a oneshot
         mode and is popped from the mode stack automatically at the end of the
         drag. Without modifiers, line modes may be continued, and some
         subclasses offer additional options for adjusting control points.
+
+        Args:
+            doc: 
+            **kwds: 
+
+        Returns:
+
+        Raises:
 
         """
         super(LineModeBase, self).enter(doc, **kwds)
@@ -310,12 +390,32 @@ class LineModeBase(
         self._update_cursors()
 
     def leave(self, **kwds):
+        """
+
+        Args:
+            **kwds: 
+
+        Returns:
+
+        Raises:
+
+        """
         rootstack = self.doc.model.layer_stack
         rootstack.current_path_updated -= self._update_cursors
         rootstack.layer_properties_changed -= self._update_cursors
         return super(LineModeBase, self).leave(**kwds)
 
     def _update_cursors(self, *_ignored):
+        """
+
+        Args:
+            *_ignored: 
+
+        Returns:
+
+        Raises:
+
+        """
         if self.in_drag:
             return  # defer update to the end of the drag
         layer = self.doc.model.layer_stack.current
@@ -323,11 +423,37 @@ class LineModeBase(
         self.doc.tdw.set_override_cursor(self.inactive_cursor)
 
     def drag_start_cb(self, tdw, event):
+        """
+
+        Args:
+            tdw: 
+            event: 
+
+        Returns:
+
+        Raises:
+
+        """
         super(LineModeBase, self).drag_start_cb(tdw, event)
         if self._line_possible:
             self.start_command(self.initial_modifiers)
 
     def drag_update_cb(self, tdw, event, ev_x, ev_y, dx, dy):
+        """
+
+        Args:
+            tdw: 
+            event: 
+            ev_x: 
+            ev_y: 
+            dx: 
+            dy: 
+
+        Returns:
+
+        Raises:
+
+        """
         if self._line_possible:
             self.update_position(ev_x, ev_y)
             if self.idle_srcid is None:
@@ -335,6 +461,16 @@ class LineModeBase(
         return super(LineModeBase, self).drag_update_cb(tdw, event, ev_x, ev_y, dx, dy)
 
     def drag_stop_cb(self, tdw):
+        """
+
+        Args:
+            tdw: 
+
+        Returns:
+
+        Raises:
+
+        """
         if self._line_possible:
             self.idle_srcid = None
             self.stop_command()
@@ -342,12 +478,24 @@ class LineModeBase(
         return super(LineModeBase, self).drag_stop_cb(tdw)
 
     def _drag_idle_cb(self):
+        """ """
         # Updates the on-screen line during drags.
         if self.idle_srcid is not None:
             self.idle_srcid = None
             self.process_line()
 
     def checkpoint(self, flush=True, **kwargs):
+        """
+
+        Args:
+            flush:  (Default value = True)
+            **kwargs: 
+
+        Returns:
+
+        Raises:
+
+        """
         # Only push outstanding changes to the document's undo stack on
         # a request for a flushing sync. Without this, users can't curve
         # the previously drawn line. See also inkmode.py and
@@ -368,6 +516,16 @@ class LineModeBase(
     ### Draw dynamic Line, Curve, or Ellipse
 
     def start_command(self, modifier):
+        """
+
+        Args:
+            modifier: 
+
+        Returns:
+
+        Raises:
+
+        """
         # :param modifier: the keyboard modifiers which ere in place
         #                   when the mode was created
 
@@ -450,9 +608,21 @@ class LineModeBase(
                 self.sx, self.sy = self.tdw.last_painting_pos
 
     def update_position(self, x, y):
+        """
+
+        Args:
+            x: 
+            y: 
+
+        Returns:
+
+        Raises:
+
+        """
         self.lx, self.ly = self.tdw.display_to_model(x, y)
 
     def stop_command(self):
+        """ """
         # End mode
         self.done = True
         x, y = self.process_line()
@@ -462,12 +632,18 @@ class LineModeBase(
 
     def record_last_stroke(self, cmd, x, y):
         """Store last stroke data
-
+        
         Stroke data is used for redraws and modifications of the line.
 
-        :param str cmd: name of the last command
-        :param int x: last cursor x-coordinate
-        :param int y: last cursor y-coordinate
+        Args:
+            cmd (str): name of the last command
+            x (int): last cursor x-coordinate
+            y (int): last cursor y-coordinate
+
+        Returns:
+
+        Raises:
+
         """
         last_line = None
         self.tdw.last_painting_pos = x, y
@@ -533,6 +709,16 @@ class LineModeBase(
         self.model.brush.reset()
 
     def local_mouse_state(self, last_update=False):
+        """
+
+        Args:
+            last_update:  (Default value = False)
+
+        Returns:
+
+        Raises:
+
+        """
         tdw_win = self.tdw.get_window()
         display = self.tdw.get_display()
         devmgr = display and display.get_device_manager() or None
@@ -547,6 +733,7 @@ class LineModeBase(
         return x, y, kbmods
 
     def process_line(self):
+        """ """
         sx, sy = self.sx, self.sy
         x, y, kbmods = self.local_mouse_state(last_update=True)
         kbmods ^= self.invert_kbmods  # invert using bitwise xor
@@ -594,6 +781,20 @@ class LineModeBase(
         return x, y
 
     def ellipse_rotation_angle(self, x, y, sx, sy, constrain):
+        """
+
+        Args:
+            x: 
+            y: 
+            sx: 
+            sy: 
+            constrain: 
+
+        Returns:
+
+        Raises:
+
+        """
         x1, y1 = normal(sx, sy, x, y)
         if self.ellipse_vec is None:
             self.ellipse_vec = x1, y1
@@ -613,6 +814,19 @@ class LineModeBase(
 
     # Straight Line
     def dynamic_straight_line(self, x, y, sx, sy):
+        """
+
+        Args:
+            x: 
+            y: 
+            sx: 
+            sy: 
+
+        Returns:
+
+        Raises:
+
+        """
         self.brush_prep(sx, sy)
         entry_p, midpoint_p, junk, prange2, head, tail = self.line_settings()
         # Beginning
@@ -631,6 +845,19 @@ class LineModeBase(
 
     # Ellipse
     def dynamic_ellipse(self, x, y, sx, sy):
+        """
+
+        Args:
+            x: 
+            y: 
+            sx: 
+            sy: 
+
+        Returns:
+
+        Raises:
+
+        """
         points_in_curve = 360
         x1, y1 = difference(sx, sy, x, y)
         x1, y1, sin, cos = starting_point_for_ellipse(x1, y1, self.angle)
@@ -664,10 +891,42 @@ class LineModeBase(
             self._stroke_to(sx + px, sy + py, pressure)
 
     def dynamic_curve_1(self, cx, cy, sx, sy, ex, ey):
+        """
+
+        Args:
+            cx: 
+            cy: 
+            sx: 
+            sy: 
+            ex: 
+            ey: 
+
+        Returns:
+
+        Raises:
+
+        """
         self.brush_prep(sx, sy)
         self.draw_curve_1(cx, cy, sx, sy, ex, ey)
 
     def dynamic_curve_2(self, cx, cy, sx, sy, ex, ey, kx, ky):
+        """
+
+        Args:
+            cx: 
+            cy: 
+            sx: 
+            sy: 
+            ex: 
+            ey: 
+            kx: 
+            ky: 
+
+        Returns:
+
+        Raises:
+
+        """
         self.brush_prep(sx, sy)
         self.draw_curve_2(cx, cy, sx, sy, ex, ey, kx, ky)
 
@@ -675,6 +934,21 @@ class LineModeBase(
     # Found this page helpful:
     # http://www.caffeineowl.com/graphics/2d/vectorial/bezierintro.html
     def draw_curve_1(self, cx, cy, sx, sy, ex, ey):
+        """
+
+        Args:
+            cx: 
+            cy: 
+            sx: 
+            sy: 
+            ex: 
+            ey: 
+
+        Returns:
+
+        Raises:
+
+        """
         points_in_curve = 100
         entry_p, midpoint_p, prange1, prange2, h, t = self.line_settings()
         mx, my = midpoint(sx, sy, ex, ey)
@@ -709,6 +983,23 @@ class LineModeBase(
             self._stroke_to(px, py, pressure)
 
     def draw_curve_2(self, cx, cy, sx, sy, ex, ey, kx, ky):
+        """
+
+        Args:
+            cx: 
+            cy: 
+            sx: 
+            sy: 
+            ex: 
+            ey: 
+            kx: 
+            ky: 
+
+        Returns:
+
+        Raises:
+
+        """
         points_in_curve = 100
         self.brush_prep(sx, sy)
         entry_p, midpoint_p, prange1, prange2, h, t = self.line_settings()
@@ -747,6 +1038,18 @@ class LineModeBase(
             self._stroke_to(px, py, pressure)
 
     def _stroke_to(self, x, y, pressure):
+        """
+
+        Args:
+            x: 
+            y: 
+            pressure: 
+
+        Returns:
+
+        Raises:
+
+        """
         # FIXME add control for time, similar to inktool
         duration = 1.0
 
@@ -765,6 +1068,17 @@ class LineModeBase(
         )
 
     def brush_prep(self, sx, sy):
+        """
+
+        Args:
+            sx: 
+            sy: 
+
+        Returns:
+
+        Raises:
+
+        """
         # Send brush to where the stroke will begin
         self.model.brush.reset()
         self.brushwork_rollback(self.model)
@@ -787,30 +1101,36 @@ class LineModeBase(
 
     @property
     def entry_pressure(self):
+        """ """
         adj = self.app.line_mode_settings.adjustments["entry_pressure"]
         return adj.get_value()
 
     @property
     def midpoint_pressure(self):
+        """ """
         adj = self.app.line_mode_settings.adjustments["midpoint_pressure"]
         return adj.get_value()
 
     @property
     def exit_pressure(self):
+        """ """
         adj = self.app.line_mode_settings.adjustments["exit_pressure"]
         return adj.get_value()
 
     @property
     def head(self):
+        """ """
         adj = self.app.line_mode_settings.adjustments["line_head"]
         return adj.get_value()
 
     @property
     def tail(self):
+        """ """
         adj = self.app.line_mode_settings.adjustments["line_tail"]
         return adj.get_value()
 
     def line_settings(self):
+        """ """
         p1 = self.entry_pressure
         p2 = self.midpoint_pressure
         p3 = self.exit_pressure
@@ -821,6 +1141,7 @@ class LineModeBase(
         return p1, p2, prange1, prange2, self.head, self.tail
 
     def redraw_line_cb(self):
+        """ """
         # Redraws the line when the line_mode_settings change
         last_line = self.last_line_data
         if last_line is not None:
@@ -868,14 +1189,17 @@ class LineModeBase(
 
 
 class StraightMode(LineModeBase):
+    """ """
     ACTION_NAME = "StraightMode"
     line_mode = "StraightMode"
 
     @classmethod
     def get_name(cls):
+        """ """
         return _("Lines and Curves")
 
     def get_usage(self):
+        """ """
         return _(
             "Draw straight lines; Shift adds curves, "
             "Shift + Ctrl moves line ends, "
@@ -884,33 +1208,57 @@ class StraightMode(LineModeBase):
 
 
 class SequenceMode(LineModeBase):
+    """ """
     ACTION_NAME = "SequenceMode"
     line_mode = "SequenceMode"
 
     @classmethod
     def get_name(cls):
+        """ """
         return _("Connected Lines")
 
     def get_usage(cls):
+        """ """
         return _(
             "Draw a sequence of lines; Shift adds curves, " "Ctrl constrains angle"
         )
 
 
 class EllipseMode(LineModeBase):
+    """ """
     ACTION_NAME = "EllipseMode"
     line_mode = "EllipseMode"
 
     @classmethod
     def get_name(cls):
+        """ """
         return _("Ellipses and Circles")
 
     def get_usage(self):
+        """ """
         return _("Draw ellipses; Shift rotates, Ctrl constrains ratio/angle")
 
 
 ## Curve Math
 def point_on_curve_1(t, cx, cy, sx, sy, x1, y1, x2, y2):
+    """
+
+    Args:
+        t: 
+        cx: 
+        cy: 
+        sx: 
+        sy: 
+        x1: 
+        y1: 
+        x2: 
+        y2: 
+
+    Returns:
+
+    Raises:
+
+    """
     ratio = t / 100.0
     x3, y3 = multiply_add(sx, sy, x1, y1, ratio)
     x4, y4 = multiply_add(cx, cy, x2, y2, ratio)
@@ -920,6 +1268,28 @@ def point_on_curve_1(t, cx, cy, sx, sy, x1, y1, x2, y2):
 
 
 def point_on_curve_2(t, cx, cy, sx, sy, kx, ky, x1, y1, x2, y2, x3, y3):
+    """
+
+    Args:
+        t: 
+        cx: 
+        cy: 
+        sx: 
+        sy: 
+        kx: 
+        ky: 
+        x1: 
+        y1: 
+        x2: 
+        y2: 
+        x3: 
+        y3: 
+
+    Returns:
+
+    Raises:
+
+    """
     ratio = t / 100.0
     x4, y4 = multiply_add(sx, sy, x1, y1, ratio)
     x5, y5 = multiply_add(cx, cy, x2, y2, ratio)
@@ -935,6 +1305,18 @@ def point_on_curve_2(t, cx, cy, sx, sy, kx, ky, x1, y1, x2, y2, x3, y3):
 
 ## Ellipse Math
 def starting_point_for_ellipse(x, y, rotate):
+    """
+
+    Args:
+        x: 
+        y: 
+        rotate: 
+
+    Returns:
+
+    Raises:
+
+    """
     # Rotate starting point
     r = math.radians(rotate)
     sin = math.sin(r)
@@ -944,6 +1326,20 @@ def starting_point_for_ellipse(x, y, rotate):
 
 
 def point_in_ellipse(x, y, r_sin, r_cos, degree):
+    """
+
+    Args:
+        x: 
+        y: 
+        r_sin: 
+        r_cos: 
+        degree: 
+
+    Returns:
+
+    Raises:
+
+    """
     # Find point in ellipse
     r2 = math.radians(degree)
     cos = math.cos(r2)
@@ -956,6 +1352,19 @@ def point_in_ellipse(x, y, r_sin, r_cos, degree):
 
 
 def rotate_ellipse(x, y, sin, cos):
+    """
+
+    Args:
+        x: 
+        y: 
+        sin: 
+        cos: 
+
+    Returns:
+
+    Raises:
+
+    """
     x1, y1 = multiply(x, y, sin)
     x2, y2 = multiply(x, y, cos)
     x = x2 - y1
@@ -965,6 +1374,19 @@ def rotate_ellipse(x, y, sin, cos):
 
 ## Vector Math
 def get_angle(x1, y1, x2, y2):
+    """
+
+    Args:
+        x1: 
+        y1: 
+        x2: 
+        y2: 
+
+    Returns:
+
+    Raises:
+
+    """
     dot = dot_product(x1, y1, x2, y2)
     if abs(dot) < 1.0:
         angle = math.acos(dot) * 180 / math.pi
@@ -974,6 +1396,19 @@ def get_angle(x1, y1, x2, y2):
 
 
 def constrain_to_angle(x, y, sx, sy):
+    """
+
+    Args:
+        x: 
+        y: 
+        sx: 
+        sy: 
+
+    Returns:
+
+    Raises:
+
+    """
     length, nx, ny = length_and_normal(sx, sy, x, y)
     # dot = nx*1 + ny*0 therefore nx
     angle = math.acos(nx) * 180 / math.pi
@@ -985,6 +1420,16 @@ def constrain_to_angle(x, y, sx, sy):
 
 
 def constraint_angle(angle):
+    """
+
+    Args:
+        angle: 
+
+    Returns:
+
+    Raises:
+
+    """
     n = angle // 15
     n1 = n * 15
     rem = angle - n1
@@ -996,6 +1441,17 @@ def constraint_angle(angle):
 
 
 def angle_normal(ny, angle):
+    """
+
+    Args:
+        ny: 
+        angle: 
+
+    Returns:
+
+    Raises:
+
+    """
     if ny < 0.0:
         angle = 360.0 - angle
     radians = math.radians(angle)
@@ -1005,6 +1461,19 @@ def angle_normal(ny, angle):
 
 
 def length_and_normal(x1, y1, x2, y2):
+    """
+
+    Args:
+        x1: 
+        y1: 
+        x2: 
+        y2: 
+
+    Returns:
+
+    Raises:
+
+    """
     x, y = difference(x1, y1, x2, y2)
     length = vector_length(x, y)
     if length == 0.0:
@@ -1015,32 +1484,108 @@ def length_and_normal(x1, y1, x2, y2):
 
 
 def normal(x1, y1, x2, y2):
+    """
+
+    Args:
+        x1: 
+        y1: 
+        x2: 
+        y2: 
+
+    Returns:
+
+    Raises:
+
+    """
     junk, x, y = length_and_normal(x1, y1, x2, y2)
     return x, y
 
 
 def vector_length(x, y):
+    """
+
+    Args:
+        x: 
+        y: 
+
+    Returns:
+
+    Raises:
+
+    """
     length = math.sqrt(x * x + y * y)
     return length
 
 
 def distance(x1, y1, x2, y2):
+    """
+
+    Args:
+        x1: 
+        y1: 
+        x2: 
+        y2: 
+
+    Returns:
+
+    Raises:
+
+    """
     x, y = difference(x1, y1, x2, y2)
     length = vector_length(x, y)
     return length
 
 
 def dot_product(x1, y1, x2, y2):
+    """
+
+    Args:
+        x1: 
+        y1: 
+        x2: 
+        y2: 
+
+    Returns:
+
+    Raises:
+
+    """
     return x1 * x2 + y1 * y2
 
 
 def multiply_add(x1, y1, x2, y2, d):
+    """
+
+    Args:
+        x1: 
+        y1: 
+        x2: 
+        y2: 
+        d: 
+
+    Returns:
+
+    Raises:
+
+    """
     x3, y3 = multiply(x2, y2, d)
     x, y = add(x1, y1, x3, y3)
     return x, y
 
 
 def multiply(x, y, d):
+    """
+
+    Args:
+        x: 
+        y: 
+        d: 
+
+    Returns:
+
+    Raises:
+
+    """
     # Multiply vector
     x = x * d
     y = y * d
@@ -1048,6 +1593,19 @@ def multiply(x, y, d):
 
 
 def add(x1, y1, x2, y2):
+    """
+
+    Args:
+        x1: 
+        y1: 
+        x2: 
+        y2: 
+
+    Returns:
+
+    Raises:
+
+    """
     # Add vectors
     x = x1 + x2
     y = y1 + y2
@@ -1055,6 +1613,19 @@ def add(x1, y1, x2, y2):
 
 
 def difference(x1, y1, x2, y2):
+    """
+
+    Args:
+        x1: 
+        y1: 
+        x2: 
+        y2: 
+
+    Returns:
+
+    Raises:
+
+    """
     # Difference in x and y between two points
     x = x2 - x1
     y = y2 - y1
@@ -1062,6 +1633,19 @@ def difference(x1, y1, x2, y2):
 
 
 def midpoint(x1, y1, x2, y2):
+    """
+
+    Args:
+        x1: 
+        y1: 
+        x2: 
+        y2: 
+
+    Returns:
+
+    Raises:
+
+    """
     # Midpoint between to points
     x = (x1 + x2) / 2.0
     y = (y1 + y2) / 2.0
@@ -1069,6 +1653,17 @@ def midpoint(x1, y1, x2, y2):
 
 
 def perpendicular(x1, y1):
+    """
+
+    Args:
+        x1: 
+        y1: 
+
+    Returns:
+
+    Raises:
+
+    """
     # Swap x and y, then flip one sign to give vector at 90 degree
     x = -y1
     y = x1

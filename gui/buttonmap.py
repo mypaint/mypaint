@@ -24,11 +24,19 @@ logger = logging.getLogger(__name__)
 
 def button_press_name(button, mods):
     """Converts button number & modifier mask to a prefs-storable string.
-
+    
     Analogous to `Gtk.accelerator_name()`.  Buttonpress names look similar to
     GDK accelerator names, for example ``<Control><Shift>Button2`` or
     ``<Primary><Alt>Button4`` for newer versions of GTK.  If the button is
     equal to zero (see `button_press_parse()`), `None` is returned.
+
+    Args:
+        button: 
+        mods: 
+
+    Returns:
+
+    Raises:
 
     """
     button = int(button)
@@ -41,8 +49,17 @@ def button_press_name(button, mods):
 
 
 def button_press_displayname(button, mods, shorten=False):
-    """
-    Converts a button number & modifier mask to a localized string.
+    """Converts a button number & modifier mask to a localized string.
+
+    Args:
+        button: 
+        mods: 
+        shorten:  (Default value = False)
+
+    Returns:
+
+    Raises:
+
     """
     button = int(button)
     mods = int(mods)
@@ -69,11 +86,18 @@ def button_press_displayname(button, mods, shorten=False):
 
 def button_press_parse(name):
     """Converts button press names to a button number & modifier mask.
-
+    
     Analogous to `Gtk.accelerator_parse()`. This function parses the strings
     created by `button_press_name()`, and returns a 2-tuple containing the
     button number and modifier mask corresponding to `name`. If the parse
     fails, both values will be 0 (zero).
+
+    Args:
+        name: 
+
+    Returns:
+
+    Raises:
 
     """
     if name is None:
@@ -96,14 +120,19 @@ def button_press_parse(name):
 def get_handler_object(app, action_name):
     """Find a (nominal) handler for a named buttonmap action.
 
-    :param app: MyPaint application instance to use for the lookup
-    :param action_name: machine-readable action name string.
+    Args:
+        app: MyPaint application instance to use for the lookup
+        action_name: machine-readable action name string.
     :rtype: tuple of the form (handler_type, handler_obj)
-
+    
     Defined handler_type strings and their handler_objs are: "mode_class" (an
     instantiable InteractionMode class), "popup_state" (an activatable popup
     state), "gtk_action" (an activatable Gtk.Action), or "no_handler" (the
     value None).
+
+    Returns:
+
+    Raises:
 
     """
     from gui.mode import ModeRegistry, InteractionMode
@@ -125,9 +154,15 @@ def get_handler_object(app, action_name):
 
 class ButtonMapping:
     """Button mapping table.
-
+    
     An instance resides in the application, and is updated by the preferences
     window.
+
+    Args:
+
+    Returns:
+
+    Raises:
 
     """
 
@@ -139,8 +174,13 @@ class ButtonMapping:
     def update(self, mapping):
         """Updates from a prefs sub-hash.
 
-        :param mapping: dict of button_press_name()s to action names.
-           A reference is not maintained.
+        Args:
+            mapping: dict of button_press_name()s to action names.
+        A reference is not maintained.
+
+        Returns:
+
+        Raises:
 
         """
         self._mapping = {}
@@ -155,9 +195,14 @@ class ButtonMapping:
     def get_unique_action_for_modifiers(self, modifiers, button=1):
         """Gets a single, unique action name for a modifier mask.
 
-        :param modifiers: a bitmask of GDK Modifier Constants
-        :param button: the button number to require; defaults to 1.
+        Args:
+            modifiers: a bitmask of GDK Modifier Constants
+            button: the button number to require; defaults to 1.
         :rtype: string containing an action name, or None
+
+        Returns:
+
+        Raises:
 
         """
         try:
@@ -171,11 +216,14 @@ class ButtonMapping:
     def lookup(self, modifiers, button):
         """Look up a single pointer binding efficiently.
 
-        :param modifiers: a bitmask of GDK Modifier Constants.
-        :type modifiers: GdkModifierType or int
-        :param button: a button number
-        :type button: int
+        Args:
+            modifiers (GdkModifierType or int): a bitmask of GDK Modifier Constants.
+            button (int): a button number
         :rtype: string containing an action name, or None
+
+        Returns:
+
+        Raises:
 
         """
         if modifiers not in self._mapping:
@@ -185,17 +233,21 @@ class ButtonMapping:
     def lookup_possibilities(self, modifiers):
         """Find potential actions, reachable via buttons or more modifiers
 
-        :param modifiers: a bitmask of GDK Modifier Constants.
-        :type modifiers: GdkModifierType or int
+        Args:
+            modifiers (GdkModifierType or int): a bitmask of GDK Modifier Constants.
         :rtype: list
-
+        
         Returns those actions which can be reached from the currently held
         modifier keys by either pressing a pointer button right now, or by
         holding down additional modifiers and then pressing a pointer button.
         If `modifiers` is empty, an empty list will be returned.
-
+        
         Each element in the returned list is a 3-tuple of the form ``(MODS,
         BUTTON, ACTION NAME)``.
+
+        Returns:
+
+        Raises:
 
         """
         # This enables us to display:
@@ -332,9 +384,13 @@ class ButtonMappingEditor(Gtk.EventBox):
     def set_actions(self, actions):
         """Sets the internal list of possible actions.
 
-        :param actions: List of all possible action strings. The 0th
-          entry in the list is the default.
-        :type actions: indexable sequence
+        Args:
+            actions (indexable sequence): List of all possible action strings. The 0th
+        entry in the list is the default.
+
+        Returns:
+
+        Raises:
 
         """
         self.default_action = actions[0]
@@ -346,11 +402,35 @@ class ButtonMappingEditor(Gtk.EventBox):
             self.action_liststore.append((act, label))
 
     def _liststore_action_datafunc(self, column, cell, model, iter, *user_data):
+        """
+
+        Args:
+            column: 
+            cell: 
+            model: 
+            iter: 
+            *user_data: 
+
+        Returns:
+
+        Raises:
+
+        """
         action_name = model.get_value(iter, self.action_column)
         label = self.action_labels.get(action_name, action_name)
         cell.set_property("text", label)
 
     def _get_action_label(self, action_name):
+        """
+
+        Args:
+            action_name: 
+
+        Returns:
+
+        Raises:
+
+        """
         # Get a displayable (and translated) string for an action name
         handler_type, handler = get_handler_object(self.app, action_name)
         action_label = action_name
@@ -371,13 +451,17 @@ class ButtonMappingEditor(Gtk.EventBox):
     def set_bindings(self, bindings):
         """Sets the mapping of binding names to actions.
 
-        :param bindings: Mapping of pointer binding names to their actions. A
-          reference is kept internally, and the entries will be
-          modified.
-        :type bindings: dict of bindings being edited
-
+        Args:
+            bindings (dict of bindings being edited): Mapping of pointer binding names to their actions. A
+        reference is kept internally, and the entries will be
+        modified.
+        
         The binding names in ``bindings`` will be canonicalized from the older
         ``<Control>`` prefix to ``<Primary>`` if supported by this Gtk.
+
+        Returns:
+
+        Raises:
 
         """
         tmp_bindings = dict(bindings)
@@ -399,6 +483,18 @@ class ButtonMappingEditor(Gtk.EventBox):
         self._update_list_buttons()
 
     def _liststore_updated_cb(self, ls, *args, **kwargs):
+        """
+
+        Args:
+            ls: 
+            *args: 
+            **kwargs: 
+
+        Returns:
+
+        Raises:
+
+        """
         if self._updating_model:
             return
         iter = ls.get_iter_first()
@@ -413,16 +509,37 @@ class ButtonMappingEditor(Gtk.EventBox):
             func(self)
 
     def _selection_changed_cb(self, selection):
+        """
+
+        Args:
+            selection: 
+
+        Returns:
+
+        Raises:
+
+        """
         if self._updating_model:
             return
         self._update_list_buttons()
 
     def _update_list_buttons(self):
+        """ """
         is_populated = len(self.bindings) > 0
         has_selected = self.selection.count_selected_rows() > 0
         self.remove_button.set_sensitive(is_populated and has_selected)
 
     def _add_button_clicked_cb(self, button):
+        """
+
+        Args:
+            button: 
+
+        Returns:
+
+        Raises:
+
+        """
         added_iter = self.liststore.append((self.default_action, None, None))
         self.selection.select_iter(added_iter)
         added_path = self.liststore.get_path(added_iter)
@@ -430,6 +547,16 @@ class ButtonMappingEditor(Gtk.EventBox):
         self.treeview.set_cursor_on_cell(added_path, focus_col, None, True)
 
     def _remove_button_clicked_cb(self, button):
+        """
+
+        Args:
+            button: 
+
+        Returns:
+
+        Raises:
+
+        """
         if self.selection.count_selected_rows() > 0:
             ls, selected = self.selection.get_selected()
             ls.remove(selected)
@@ -437,6 +564,19 @@ class ButtonMappingEditor(Gtk.EventBox):
     ## "Controller" callbacks
 
     def _action_cell_changed_cb(self, combo, path_string, new_iter, *etc):
+        """
+
+        Args:
+            combo: 
+            path_string: 
+            new_iter: 
+            *etc: 
+
+        Returns:
+
+        Raises:
+
+        """
         action_name = self.action_liststore.get_value(
             new_iter, self.action_liststore_value_column
         )
@@ -451,12 +591,36 @@ class ButtonMappingEditor(Gtk.EventBox):
             self.treeview.set_cursor_on_cell(tree_path, focus_col, None, True)
 
     def _bp_cell_edited_cb(self, cell, path, bp_name):
+        """
+
+        Args:
+            cell: 
+            path: 
+            bp_name: 
+
+        Returns:
+
+        Raises:
+
+        """
         iter = self.liststore.get_iter(path)
         bp_displayname = button_press_displayname(*button_press_parse(bp_name))
         self.liststore.set_value(iter, self.bp_column, bp_name)
         self.liststore.set_value(iter, self.bpd_column, bp_displayname)
 
     def _bp_cell_editing_started_cb(self, cell, editable, path):
+        """
+
+        Args:
+            cell: 
+            editable: 
+            path: 
+
+        Returns:
+
+        Raises:
+
+        """
         iter = self.liststore.get_iter(path)
         action_name = self.liststore.get_value(iter, self.action_column)
         bp_name = self.liststore.get_value(iter, self.bp_column)
@@ -566,9 +730,30 @@ class ButtonMappingEditor(Gtk.EventBox):
         dialog.show()
 
     def _bp_edit_dialog_set_error(self, dialog, markup):
+        """
+
+        Args:
+            dialog: 
+            markup: 
+
+        Returns:
+
+        Raises:
+
+        """
         dialog.hint_label.set_markup("<span foreground='red'>%s</span>" % markup)
 
     def _bp_edit_dialog_set_standard_hint(self, dialog):
+        """
+
+        Args:
+            dialog: 
+
+        Returns:
+
+        Raises:
+
+        """
         markup = _(
             "Hold down modifier keys, and press a button "
             "over this text to set a new binding."
@@ -576,6 +761,17 @@ class ButtonMappingEditor(Gtk.EventBox):
         dialog.hint_label.set_markup(markup)
 
     def _bp_edit_box_enter_cb(self, evbox, event):
+        """
+
+        Args:
+            evbox: 
+            event: 
+
+        Returns:
+
+        Raises:
+
+        """
         window = evbox.get_window()
         disp = window.get_display()
         try:  # Wayland themes are a bit incomplete
@@ -585,6 +781,18 @@ class ButtonMappingEditor(Gtk.EventBox):
             logger.exception("Cursor setting failed")  # and otherwise ignore
 
     def _bp_edit_dialog_response_cb(self, dialog, response_id, editable):
+        """
+
+        Args:
+            dialog: 
+            response_id: 
+            editable: 
+
+        Returns:
+
+        Raises:
+
+        """
         if response_id == Gtk.ResponseType.OK:
             if dialog.bp_name is not None:
                 editable.set_text(dialog.bp_name)
@@ -593,6 +801,19 @@ class ButtonMappingEditor(Gtk.EventBox):
         dialog.destroy()
 
     def _bp_edit_box_button_press_cb(self, evbox, event, dialog, editable):
+        """
+
+        Args:
+            evbox: 
+            event: 
+            dialog: 
+            editable: 
+
+        Returns:
+
+        Raises:
+
+        """
         modifiers = event.state & Gtk.accelerator_get_default_mod_mask()
         bp_name = button_press_name(event.button, modifiers)
         bp_displayname = button_press_displayname(event.button, modifiers)

@@ -41,6 +41,7 @@ BLOAT_MAX_SIZE = 1024
 
 
 class BackgroundWindow(windowing.Dialog):
+    """ """
 
     def __init__(self):
         from gui import application
@@ -88,27 +89,80 @@ class BackgroundWindow(windowing.Dialog):
         color_vbox.pack_start(b, False, True, 0)
 
     def _realize_cb(self, dialog):
+        """
+
+        Args:
+            dialog: 
+
+        Returns:
+
+        Raises:
+
+        """
         if not self.bgl.initialized:
             self.bgl.initialize()
 
     def _show_cb(self, dialog):
+        """
+
+        Args:
+            dialog: 
+
+        Returns:
+
+        Raises:
+
+        """
         self._current_background_pixbuf = None
         self.set_response_sensitive(RESPONSE_SAVE_AS_DEFAULT, False)
 
     def _hide_cb(self, dialog):
+        """
+
+        Args:
+            dialog: 
+
+        Returns:
+
+        Raises:
+
+        """
         self._current_background_pixbuf = None
 
     def _response_cb(self, dialog, response, *args):
+        """
+
+        Args:
+            dialog: 
+            response: 
+            *args: 
+
+        Returns:
+
+        Raises:
+
+        """
         if response == RESPONSE_SAVE_AS_DEFAULT:
             self._save_as_default_cb()
         elif response == Gtk.ResponseType.ACCEPT:
             self.hide()
 
     def _color_changed_cb(self, widget):
+        """
+
+        Args:
+            widget: 
+
+        Returns:
+
+        Raises:
+
+        """
         pixbuf = self._get_selected_color_pixbuf()
         self.set_background(pixbuf)
 
     def _get_selected_color_pixbuf(self):
+        """ """
         rgb = self.cs.get_current_color()
         rgb = (rgb.red, rgb.green, rgb.blue)
         rgb = (c / 0xFFFF for c in rgb)
@@ -116,6 +170,7 @@ class BackgroundWindow(windowing.Dialog):
         return pixbuf
 
     def _save_as_default_cb(self):
+        """ """
         pixbuf = self._current_background_pixbuf
         assert pixbuf is not None, "BG pixbuf was not changed."
         path = os.path.join(
@@ -127,12 +182,32 @@ class BackgroundWindow(windowing.Dialog):
         self.hide()
 
     def set_background(self, pixbuf):
+        """
+
+        Args:
+            pixbuf: 
+
+        Returns:
+
+        Raises:
+
+        """
         doc = self.app.doc.model
         doc.layer_stack.set_background(pixbuf, make_default=True)
         self._current_background_pixbuf = pixbuf
         self.set_response_sensitive(RESPONSE_SAVE_AS_DEFAULT, True)
 
     def _add_color_to_patterns_cb(self, widget):
+        """
+
+        Args:
+            widget: 
+
+        Returns:
+
+        Raises:
+
+        """
         pixbuf = self._get_selected_color_pixbuf()
         i = 1
         while True:
@@ -150,6 +225,7 @@ class BackgroundWindow(windowing.Dialog):
 
 
 class BackgroundList(pixbuflist.PixbufList):
+    """ """
 
     _SUFFIXES = (".jpg", ".jpeg", ".png")
 
@@ -188,7 +264,16 @@ class BackgroundList(pixbuflist.PixbufList):
 
     @classmethod
     def _list_dir(cls, path):
-        """Recursively find images by suffix"""
+        """Recursively find images by suffix
+
+        Args:
+            path: 
+
+        Returns:
+
+        Raises:
+
+        """
         contents = []
         for dir_path, dir_subdirs, dir_files in os.walk(path):
             for file_name in dir_files:
@@ -207,13 +292,26 @@ class BackgroundList(pixbuflist.PixbufList):
 
     @property
     def initialized(self):
+        """ """
         return len(self.backgrounds) != 0
 
     def initialize(self):
+        """ """
         self.backgrounds = self._load_pixbufs(self._background_files)
         self.set_itemlist(self.backgrounds)
 
     def _load_pixbufs(self, files, exclude_default=False):
+        """
+
+        Args:
+            files: 
+            exclude_default:  (Default value = False)
+
+        Returns:
+
+        Raises:
+
+        """
         pixbufs = []
         load_errors = []
         for filename in files:
@@ -271,6 +369,16 @@ class BackgroundList(pixbuflist.PixbufList):
         return pixbufs
 
     def _get_preview_pixbuf(self, pixbuf):
+        """
+
+        Args:
+            pixbuf: 
+
+        Returns:
+
+        Raises:
+
+        """
         if pixbuf in self._pixbufs_scaled:
             return self._pixbufs_scaled[pixbuf]
         w, h = pixbuf.get_width(), pixbuf.get_height()
@@ -310,9 +418,30 @@ class BackgroundList(pixbuflist.PixbufList):
         return scaled
 
     def _get_tooltip(self, pixbuf):
+        """
+
+        Args:
+            pixbuf: 
+
+        Returns:
+
+        Raises:
+
+        """
         return self._pixbuf_tooltip.get(pixbuf, None)
 
     def _item_selected_cb(self, self_, pixbuf):
+        """
+
+        Args:
+            self_: 
+            pixbuf: 
+
+        Returns:
+
+        Raises:
+
+        """
         self.win.set_background(pixbuf)
 
 
@@ -320,7 +449,16 @@ class BackgroundList(pixbuflist.PixbufList):
 
 
 def _filename_to_display(s):
-    """Convert a str filename to Unicode without obsessing too much."""
+    """Convert a str filename to Unicode without obsessing too much.
+
+    Args:
+        s: 
+
+    Returns:
+
+    Raises:
+
+    """
     # That said, try to be be correct about Windows/POSIX weirdness.
     if not isinstance(s, str):
         if sys.platform == "win32":
@@ -334,11 +472,16 @@ def _filename_to_display(s):
 def new_blank_pixbuf(rgb, w, h):
     """Create a blank pixbuf with all pixels set to a color
 
-    :param tuple rgb: Color to blank the pixbuf to (``R,G,B``, floats)
-    :param int w: Width for the new pixbuf
-    :param int h: Width for the new pixbuf
-
+    Args:
+        rgb (tuple): Color to blank the pixbuf to (``R,G,B``, floats)
+        w (int): Width for the new pixbuf
+        h (int): Width for the new pixbuf
+    
     The returned pixbuf has no alpha channel.
+
+    Returns:
+
+    Raises:
 
     """
     pixbuf = GdkPixbuf.Pixbuf.new(
@@ -357,24 +500,29 @@ def new_blank_pixbuf(rgb, w, h):
 def load_background(filename, bloatmax=BLOAT_MAX_SIZE):
     """Load a pixbuf, testing it for suitability as a background
 
-    :param str filename: Full path to the filename to load.
-    :param int bloatmax: Repeat up to this size
+    Args:
+        filename (str): Full path to the filename to load.
+        bloatmax (int, optional): Repeat up to this size
     :rtype: tuple
-
+    
     The returned tuple is a pair ``(PIXBUF, ERRORS)``,
     where ``ERRORS`` is a list of localized strings
     describing the errors encountered,
     and ``PIXBUF`` contains the loaded background pixbuf.
     If there were errors, ``PIXBUF`` is None.
-
+    
     The MyPaint rendering engine can only manage
     background layers which fit into its tile structure.
     Formerly, only background images with dimensions
     which were exact multiples of the tile size were permitted.
     We have a couple of workarounds now:
-
+    
     * "Bloating" the background by repetition (pixel-perfect)
-    * Scaling the image down to fit (distorts the image)
+    * Scaling the image down to fit (distorts the image) (Default value = BLOAT_MAX_SIZE)
+
+    Returns:
+
+    Raises:
 
     """
     filename_display = _filename_to_display(filename)
@@ -478,7 +626,18 @@ def load_background(filename, bloatmax=BLOAT_MAX_SIZE):
 
 
 def _tile_pixbuf(pixbuf, repeats_x, repeats_y):
-    """Make a repeated tiled image of a pixbuf"""
+    """Make a repeated tiled image of a pixbuf
+
+    Args:
+        pixbuf: 
+        repeats_x: 
+        repeats_y: 
+
+    Returns:
+
+    Raises:
+
+    """
     w, h = pixbuf.get_width(), pixbuf.get_height()
     result = new_blank_pixbuf((0, 0, 0), repeats_x * w, repeats_y * h)
     for xi in range(repeats_x):
@@ -488,6 +647,17 @@ def _tile_pixbuf(pixbuf, repeats_x, repeats_y):
 
 
 def _best_nrepeats_for_scaling(src_size, max_dest_size):
+    """
+
+    Args:
+        src_size: 
+        max_dest_size: 
+
+    Returns:
+
+    Raises:
+
+    """
     min_remainder = N
     min_remainder_nrepeats = 1
     nrepeats = 0

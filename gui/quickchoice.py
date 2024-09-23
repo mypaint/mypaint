@@ -34,22 +34,34 @@ _DEFAULT_PREFS_ID = "default"
 
 class Advanceable(metaclass=abc.ABCMeta):
     """Interface for choosers which can be advanced by pressing keys.
-
+    
     Advancing happens if the chooser is already visible and its key is
     pressed again.  This can happen repeatedly.  The actual action
     performed is up to the implementation: advancing some some choosers
     may move them forward through pages of alternatives, while other
     choosers may actually change a brush setting as they advance.
 
+    Args:
+
+    Returns:
+
+    Raises:
+
     """
 
     @abc.abstractmethod
     def advance(self):
         """Advances the chooser to the next page or choice.
-
+        
         Choosers should remain open when their advance() method is
         invoked. The actual action performed is up to the concrete
         implementation: see the class docs.
+
+        Args:
+
+        Returns:
+
+        Raises:
 
         """
 
@@ -111,14 +123,30 @@ class QuickBrushChooser(Gtk.VBox):
         self.set_spacing(widgets.SPACING_TIGHT)
 
     def _item_selected_cb(self, pixbuf_list, brush):
-        """Internal: call brush_selected event when an item is chosen"""
+        """Internal: call brush_selected event when an item is chosen
+
+        Args:
+            pixbuf_list: 
+            brush: 
+
+        Returns:
+
+        Raises:
+
+        """
         self.brush_selected(brush)
 
     @event
     def brush_selected(self, brush):
         """Event: a brush was selected
 
-        :param brush: The newly chosen brush
+        Args:
+            brush: The newly chosen brush
+
+        Returns:
+
+        Raises:
+
         """
 
     def _make_groups_sb_model(self):
@@ -131,7 +159,16 @@ class QuickBrushChooser(Gtk.VBox):
         return model
 
     def _groups_changed_cb(self, bm):
-        """Internal: update the spinbox model at the top of the widget"""
+        """Internal: update the spinbox model at the top of the widget
+
+        Args:
+            bm: 
+
+        Returns:
+
+        Raises:
+
+        """
         model = self._make_groups_sb_model()
         self.groups_sb.set_model(model)
         # In case the group has been deleted and recreated, we do this:
@@ -142,7 +179,17 @@ class QuickBrushChooser(Gtk.VBox):
         # See https://github.com/mypaint/mypaint/issues/654
 
     def _brushes_changed_cb(self, bm, brushes):
-        """Internal: update the PixbufList if its group was changed."""
+        """Internal: update the PixbufList if its group was changed.
+
+        Args:
+            bm: 
+            brushes: 
+
+        Returns:
+
+        Raises:
+
+        """
         # CARE: this might be called in response to the group being deleted.
         # Don't recreate it by accident.
         group_name = self.groups_sb.get_value()
@@ -151,7 +198,16 @@ class QuickBrushChooser(Gtk.VBox):
             self.brushlist.update()
 
     def _groups_sb_changed_cb(self, group_name):
-        """Internal: update the list of brush icons when the group changes"""
+        """Internal: update the list of brush icons when the group changes
+
+        Args:
+            group_name: 
+
+        Returns:
+
+        Raises:
+
+        """
         self.app.preferences[self._prefs_key] = group_name
         group_brushes = self.bm.groups.get(group_name, [])
         self.brushlist.itemlist = group_brushes
@@ -196,14 +252,32 @@ class BrushChooserPopup(windowing.ChooserPopup):
         self.add(self._chooser)
 
     def _brush_selected_cb(self, chooser, brush):
-        """Internal: update the response brush when an icon is clicked"""
+        """Internal: update the response brush when an icon is clicked
+
+        Args:
+            chooser: 
+            brush: 
+
+        Returns:
+
+        Raises:
+
+        """
         self._chosen_brush = brush
 
     def _brushlist_button_release_cb(self, *junk):
         """Internal: send an accept response on a button release
-
+        
         We only send the response (and close the dialog) on button release to
         avoid accidental dabs with the stylus.
+
+        Args:
+            *junk: 
+
+        Returns:
+
+        Raises:
+
         """
         if self._chosen_brush is not None:
             bm = self.app.brushmanager
@@ -274,6 +348,16 @@ class QuickColorChooser(Gtk.VBox):
         self.set_spacing(widgets.SPACING_TIGHT)
 
     def _spinbox_changed_cb(self, page_name):
+        """
+
+        Args:
+            page_name: 
+
+        Returns:
+
+        Raises:
+
+        """
         self._app.preferences[self._prefs_key] = page_name
         self.remove(self._active_adj)
         new_adj = self._adjs[page_name]
@@ -282,20 +366,37 @@ class QuickColorChooser(Gtk.VBox):
         self._active_adj.show_all()
 
     def _ccwidget_btn_release_cb(self, ccwidget, event):
-        """Internal: fire "choice_completed" after clicking certain widgets"""
+        """Internal: fire "choice_completed" after clicking certain widgets
+
+        Args:
+            ccwidget: 
+            event: 
+
+        Returns:
+
+        Raises:
+
+        """
         self.choice_completed()
         return False
 
     @event
     def choice_completed(self):
         """Event: a complete selection was made
-
+        
         This is emitted by button-release events on certain kinds of colour
         chooser page. Not every page in the chooser emits this event, because
         colour is a three-dimensional quantity: clicking on a two-dimensional
         popup can't make a complete choice of colour with most pages.
-
+        
         The palette page does emit this event, and it's the default.
+
+        Args:
+
+        Returns:
+
+        Raises:
+
         """
 
     def advance(self):
@@ -338,9 +439,17 @@ class ColorChooserPopup(windowing.ChooserPopup):
 
     def _choice_completed_cb(self, chooser):
         """Internal: close when a choice is (fully) made
-
+        
         Close the dialog on button release only to avoid accidental dabs
         with the stylus.
+
+        Args:
+            chooser: 
+
+        Returns:
+
+        Raises:
+
         """
         self.hide()
 

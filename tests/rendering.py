@@ -37,13 +37,32 @@ def _scroll(
     use_background=True,
 ):
     """Test scroll performance
-
+    
     Scroll around in a circle centred on the virtual display, testing
     the same sort of render that's used for display - albeit to an
     in-memory surface.
-
+    
     This tests rendering and cache performance quite well, though it
     discounts Cairo acceleration.
+
+    Args:
+        tdw: 
+        model: 
+        width:  (Default value = 1920)
+        height:  (Default value = 1080)
+        zoom:  (Default value = 1.0)
+        mirrored:  (Default value = False)
+        rotation:  (Default value = 0.0)
+        turns:  (Default value = 8)
+        turn_steps:  (Default value = 8)
+        turn_radius:  (Default value = 0.3)
+        save_pngs:  (Default value = False)
+        set_modes:  (Default value = None)
+        use_background:  (Default value = True)
+
+    Returns:
+
+    Raises:
 
     """
     num_undos_needed = 0
@@ -109,6 +128,7 @@ class Scroll(unittest.TestCase):
     """Not-quite headless raw panning/scrolling performance tests."""
 
     def test_5x_1rev(self):
+        """ """
         self._run_test(
             _scroll,
             zoom=5.0,
@@ -116,6 +136,7 @@ class Scroll(unittest.TestCase):
         )
 
     def test_5x_30revs(self):
+        """ """
         self._run_test(
             _scroll,
             zoom=5.0,
@@ -123,6 +144,7 @@ class Scroll(unittest.TestCase):
         )
 
     def test_1x_1rev(self):
+        """ """
         self._run_test(
             _scroll,
             zoom=1.0,
@@ -130,6 +152,7 @@ class Scroll(unittest.TestCase):
         )
 
     def test_1x_30revs(self):
+        """ """
         self._run_test(
             _scroll,
             zoom=1.0,
@@ -141,6 +164,7 @@ class Scroll(unittest.TestCase):
     # of a typical 1920x1080 screen.
 
     def test_0x10(self):
+        """ """
         # Figure is not clipped by the edges of the screen
         self._run_test(
             _scroll,
@@ -148,6 +172,7 @@ class Scroll(unittest.TestCase):
         )
 
     def test_0x25(self):
+        """ """
         # Figure is clipped at the top and bottom of the circle,
         # but "only just" (in reality, tens of tiles)
         self._run_test(
@@ -156,6 +181,7 @@ class Scroll(unittest.TestCase):
         )
 
     def test_0x50(self):
+        """ """
         # Figure fits comfortably within the width of the screen
         # at this zoom
         self._run_test(
@@ -164,6 +190,7 @@ class Scroll(unittest.TestCase):
         )
 
     def test_1x(self):
+        """ """
         # No blank tiles visible onscreen at 100% zoom and above.
         self._run_test(
             _scroll,
@@ -171,30 +198,35 @@ class Scroll(unittest.TestCase):
         ),
 
     def test_2x(self):
+        """ """
         self._run_test(
             _scroll,
             zoom=2.0,
         )
 
     def test_8x(self):
+        """ """
         self._run_test(
             _scroll,
             zoom=8.0,
         )
 
     def test_16x(self):
+        """ """
         self._run_test(
             _scroll,
             zoom=16.0,
         )
 
     def test_32x(self):
+        """ """
         self._run_test(
             _scroll,
             zoom=32.0,
         )
 
     def test_64x(self):
+        """ """
         self._run_test(
             _scroll,
             zoom=64.0,
@@ -205,6 +237,7 @@ class Scroll(unittest.TestCase):
     # next have the same identity.
 
     def test_1x_lazy_all_onscreen(self):
+        """ """
         self._run_test(
             _scroll,
             zoom=1.0,
@@ -214,6 +247,7 @@ class Scroll(unittest.TestCase):
         )
 
     def test_1x_lazy_all_onscreen_masks(self):
+        """ """
         self._run_test(
             _scroll,
             zoom=1.0,
@@ -227,6 +261,7 @@ class Scroll(unittest.TestCase):
         )
 
     def test_1x_lazy_all_onscreen_nobg(self):
+        """ """
         self._run_test(
             _scroll,
             zoom=1.0,
@@ -237,6 +272,7 @@ class Scroll(unittest.TestCase):
         )
 
     def test_1x_lazy_mostly_onscreen(self):
+        """ """
         self._run_test(
             _scroll,
             zoom=1.0,
@@ -246,6 +282,7 @@ class Scroll(unittest.TestCase):
         )
 
     def test_1x_lazy_mostly_onscreen_masks(self):
+        """ """
         self._run_test(
             _scroll,
             zoom=1.0,
@@ -259,6 +296,7 @@ class Scroll(unittest.TestCase):
         )
 
     def test_1x_lazy_mostly_onscreen_nobg(self):
+        """ """
         self._run_test(
             _scroll,
             zoom=1.0,
@@ -269,6 +307,7 @@ class Scroll(unittest.TestCase):
         )
 
     def test_1x_lazy_mostly_offscreen(self):
+        """ """
         self._run_test(
             _scroll,
             zoom=1.0,
@@ -278,6 +317,7 @@ class Scroll(unittest.TestCase):
         )
 
     def test_1x_lazy_mostly_offscreen_masks(self):
+        """ """
         self._run_test(
             _scroll,
             zoom=1.0,
@@ -291,6 +331,7 @@ class Scroll(unittest.TestCase):
         )
 
     def test_1x_lazy_mostly_offscreen_nobg(self):
+        """ """
         self._run_test(
             _scroll,
             zoom=1.0,
@@ -302,6 +343,7 @@ class Scroll(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
+        """ """
         # The tdw import below just segfaults on my system right now, if
         # there's no X11 display available. Be careful about proceeding.
 
@@ -326,9 +368,20 @@ class Scroll(unittest.TestCase):
                 self.renderer.get_allocation = self._get_allocation
 
             def set_allocation(self, alloc):
+                """
+
+                Args:
+                    alloc: 
+
+                Returns:
+
+                Raises:
+
+                """
                 self._alloc = alloc
 
             def _get_allocation(self):
+                """ """
                 return self._alloc
 
         tdw = TiledDrawWidget()
@@ -342,10 +395,22 @@ class Scroll(unittest.TestCase):
 
     @classmethod
     def tearDownClass(cls):
+        """ """
         if cls._model:
             cls._model.cleanup()
 
     def _run_test(self, func, **kwargs):
+        """
+
+        Args:
+            func: 
+            **kwargs: 
+
+        Returns:
+
+        Raises:
+
+        """
         if not (self._tdw and self._model):
             self.skipTest("no GUI or unable to import TDW class")
         nframes, dt = func(self._tdw, self._model, **kwargs)
