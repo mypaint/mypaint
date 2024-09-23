@@ -64,10 +64,21 @@ class BrushSizeOverlay(gui.overlays.Overlay):
         self._queue_tdw_redraw()
 
     def cleanup(self):
+        """ """
         self._tdw.display_overlays.remove(self)
         self._queue_tdw_redraw(clear=True)
 
-    def _queue_tdw_redraw(self, clear=False):
+    def _queue_tdw_redraw(self, clear: Types.ELLIPSIS = False) -> Types.NONE:
+        """
+
+        Args:
+            clear:  (Default value = False)
+
+        Returns:
+
+        Raises:
+
+        """
         regions = []
         if self._prev_handle_area:
             regions.append(self._prev_handle_area)
@@ -94,6 +105,7 @@ class BrushSizeOverlay(gui.overlays.Overlay):
             self._tdw.queue_draw_area(*region)
 
     def _get_areas(self):
+        """ """
         big_r = max(self._radius, self._old_radius)
         if big_r <= 32:
             # Small radius: return a rectangle covering the circle.
@@ -124,13 +136,36 @@ class BrushSizeOverlay(gui.overlays.Overlay):
             return top, lft, rgt, bot
 
     def update(self, radius, handle_x, handle_y):
+        # type: (Types.ELLIPSIS) -> Types.NONE
+        """
+
+        Args:
+            radius: 
+            handle_x: 
+            handle_y: 
+
+        Returns:
+
+        Raises:
+
+        """
         self._old_radius = self._radius
         self._radius = int(round(radius))
         self._hx = handle_x
         self._hy = handle_y
         self._queue_tdw_redraw()
 
-    def paint(self, cr):
+    def paint(self, cr: Types.ELLIPSIS) -> Types.NONE:
+        """
+
+        Args:
+            cr: 
+
+        Returns:
+
+        Raises:
+
+        """
         cx = self._x
         cy = self._y
 
@@ -157,9 +192,7 @@ class BrushSizeOverlay(gui.overlays.Overlay):
 
 
 class BrushResizeMode(gui.mode.OneshotDragMode):
-    """
-    Mode for changing the size of the active brush by dragging on the canvas
-    """
+    """Mode for changing the size of the active brush by dragging on the canvas"""
 
     # Does not actually refer to a GtkAction, only used to register the class
     ACTION_NAME = "BrushResizeMode"
@@ -188,13 +221,16 @@ class BrushResizeMode(gui.mode.OneshotDragMode):
         self._mod_pressed_initially = False
 
     def get_icon_name(self):
+        """ """
         return self._prev_mode.get_icon_name()
 
     @classmethod
     def get_name(cls):
+        """ """
         return C_("brush resize mode - name", "Resize Brush")
 
     def get_usage(self):
+        """ """
         return C_(
             "brush resize mode - usage",
             "Change brush size by dragging on the canvas",
@@ -202,13 +238,27 @@ class BrushResizeMode(gui.mode.OneshotDragMode):
 
     @property
     def inactive_cursor(self):
+        """ """
         return None
 
     @property
     def active_cursor(self):
+        """ """
         return Gdk.Cursor.new_from_name(Gdk.Display.get_default(), "none")
 
     def enter(self, doc, **kwds):
+        # type: (Types.ELLIPSIS) -> Types.NONE
+        """
+
+        Args:
+            doc: 
+            **kwds: 
+
+        Returns:
+
+        Raises:
+
+        """
         super(BrushResizeMode, self).enter(doc, **kwds)
         # Record the mode that was on the top of the stack before entering
         # resize mode. It's used to retain the icon and options widget of
@@ -218,6 +268,18 @@ class BrushResizeMode(gui.mode.OneshotDragMode):
             self._prev_mode.doc = doc
 
     def drag_start_cb(self, tdw, event):
+        # type: (Types.ELLIPSIS) -> Types.NONE
+        """
+
+        Args:
+            tdw: 
+            event: 
+
+        Returns:
+
+        Raises:
+
+        """
         super(BrushResizeMode, self).drag_start_cb(tdw, event)
         x, y = self.start_x, self.start_y
         brush_info = tdw.doc.brush.brushinfo
@@ -247,18 +309,55 @@ class BrushResizeMode(gui.mode.OneshotDragMode):
         )
 
     def key_press_cb(self, win, tdw, event):
+        # type: (Types.ELLIPSIS) -> Types.NONE
+        """
+
+        Args:
+            win: 
+            tdw: 
+            event: 
+
+        Returns:
+
+        Raises:
+
+        """
         self._update_precision_state()
         return super(BrushResizeMode, self).key_press_cb(win, tdw, event)
 
     def key_release_cb(self, win, tdw, event):
+        # type: (Types.ELLIPSIS) -> Types.NONE
+        """
+
+        Args:
+            win: 
+            tdw: 
+            event: 
+
+        Returns:
+
+        Raises:
+
+        """
         self._update_precision_state()
         return super(BrushResizeMode, self).key_release_cb(win, tdw, event)
 
     def _update_precision_state(self):
+        """ """
         mod_pressed = self.current_modifiers() & self.mod_key_mask
         self._precision_mode = self._mod_pressed_initially ^ mod_pressed
 
-    def leave(self, **kwds):
+    def leave(self, **kwds: Types.ELLIPSIS) -> Types.NONE:
+        """
+
+        Args:
+            **kwds: 
+
+        Returns:
+
+        Raises:
+
+        """
         self._overlay.cleanup()
         self._overlay = None
         self._prev_mode.doc = None
@@ -266,6 +365,22 @@ class BrushResizeMode(gui.mode.OneshotDragMode):
         return super(BrushResizeMode, self).leave(**kwds)
 
     def drag_update_cb(self, tdw, event, ev_x, ev_y, dx, dy):
+        # type: (Types.ELLIPSIS) -> Types.NONE
+        """
+
+        Args:
+            tdw: 
+            event: 
+            ev_x: 
+            ev_y: 
+            dx: 
+            dy: 
+
+        Returns:
+
+        Raises:
+
+        """
         # Change size at a quarter of the normal rate when
         # high-precision mode is enabled.
         move_factor = 0.125 if self._precision_mode else 0.5
@@ -284,10 +399,21 @@ class BrushResizeMode(gui.mode.OneshotDragMode):
         self._new_radius = new_radius
         self._overlay.update(radius_px, self._handle_x, self._handle_y)
 
-    def drag_stop_cb(self, tdw):
+    def drag_stop_cb(self, tdw: Types.ELLIPSIS) -> Types.NONE:
+        """
+
+        Args:
+            tdw: 
+
+        Returns:
+
+        Raises:
+
+        """
         if self._base_radius_adj and self._new_radius is not None:
             self._base_radius_adj.set_value(self._new_radius)
         return super(BrushResizeMode, self).drag_stop_cb(tdw)
 
     def get_options_widget(self):
+        """ """
         return self._prev_mode.get_options_widget()

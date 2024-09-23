@@ -23,9 +23,6 @@ from lib.observable import event
 from lib.color import RGBColor
 from lib.color import YCbCrColor
 from lib.color import UIColor  # noqa
-from lib.pycompat import unicode
-from lib.pycompat import xrange
-from lib.pycompat import PY3
 from io import open
 
 logger = logging.getLogger(__name__)
@@ -33,21 +30,27 @@ logger = logging.getLogger(__name__)
 ## Class and function defs
 
 
-class Palette(object):
+class Palette:
     """A flat list of color swatches, compatible with the GIMP
-
+    
     As a (sideways-compatible) extension to the GIMP's format, MyPaint supports
     empty slots in the palette. These slots are represented by pure black
     swatches with the name ``__NONE__``.
-
+    
     Palette objects expose the position within the palette of a current color
     match, which can be declared to be approximate or exact. This is used for
     highlighting the user concept of the "current color" in the GUI.
-
+    
     Palette objects can be serialized in the GIMP's file format (the regular
-    `unicode()` function on a Palette will do this too), or converted to and
+    `str()` function on a Palette will do this too), or converted to and
     from a simpler JSON-ready representation for storing in the MyPaint prefs.
     Support for loading and saving via modal dialogs is defined here too.
+
+    Args:
+
+    Returns:
+
+    Raises:
 
     """
 
@@ -103,10 +106,21 @@ class Palette(object):
             with open(filename, "r", encoding="utf-8", errors="replace") as fp:
                 self.load(fp, silent=True)
 
-    def clear(self, silent=False):
+    def clear(self, silent: Types.ELLIPSIS = False) -> Types.NONE:
         """Resets the palette to its initial state.
+        
+        
+        Fires the `info_changed()`, `sequence_changed()`, and `match_changed()`
+        events, unless the `silent` parameter tests true.
 
-          >>> grey16 = RGBColor(1,1,1).interpolate(RGBColor(0,0,0), 16)
+        Args:
+            silent:  (Default value = False)
+
+        Returns:
+
+        Raises:
+
+        >>> grey16 = RGBColor(1,1,1).interpolate(RGBColor(0,0,0), 16)
           >>> p = Palette(colors=grey16)
           >>> p.name = "Greyscale"
           >>> p.columns = 3
@@ -115,9 +129,6 @@ class Palette(object):
           >>> p.clear()
           >>> p
           <Palette colors=0, columns=0, name=None>
-
-        Fires the `info_changed()`, `sequence_changed()`, and `match_changed()`
-        events, unless the `silent` parameter tests true.
         """
         self._colors = []
         self._columns = 0
@@ -132,17 +143,22 @@ class Palette(object):
     def load(self, filehandle, silent=False):
         """Load contents from a file handle containing a GIMP palette.
 
-        :param filehandle: File-like object (.readline, line iteration)
-        :param bool silent: If true, don't emit any events.
+        Args:
+            filehandle: File-like object (.readline, line iteration)
+            silent (bool, optional): If true, don't emit any events.
+        
+        
+        If the file format is incorrect, a RuntimeError will be raised. (Default value = False)
+
+        Returns:
+
+        Raises:
 
         >>> pal = Palette()
         >>> with open("palettes/MyPaint_Default.gpl", "r") as fp:
         ...     pal.load(fp)
         >>> len(pal) > 1
         True
-
-        If the file format is incorrect, a RuntimeError will be raised.
-
         """
         comment_line_re = re.compile(r"^#")
         field_line_re = re.compile(r"^(\w+)\s*:\s*(.*)$")
@@ -195,37 +211,46 @@ class Palette(object):
             self.sequence_changed()
             self.match_changed()
 
-    def save(self, filehandle):
+    def save(self, filehandle: Types.ELLIPSIS) -> Types.NONE:
         """Saves the palette to an open file handle.
 
-        :param filehandle: File-like object (.write suffices)
+        Args:
+            filehandle: File-like object (.write suffices)
+        
+        
+        The file handle is not flushed, and is left open after the
+        write.
 
-        >>> from lib.pycompat import PY3
-        >>> if PY3:
-        ...     from io import StringIO
-        ... else:
-        ...     from cStringIO import StringIO
+        Returns:
+
+        Raises:
+
+        >>> from io import StringIO
         >>> fp = StringIO()
         >>> cols = RGBColor(1,.7,0).interpolate(RGBColor(.1,.1,.5), 16)
         >>> pal = Palette(colors=cols)
         >>> pal.save(fp)
-        >>> fp.getvalue() == unicode(pal)
+        >>> fp.getvalue() == str(pal)
         True
-
-        The file handle is not flushed, and is left open after the
-        write.
-
+        
         >>> fp.flush()
         >>> fp.close()
-
         """
-        filehandle.write(unicode(self))
+        filehandle.write(str(self))
 
-    def update(self, other):
+    def update(self, other: Types.ELLIPSIS) -> Types.NONE:
         """Updates all details of this palette from another palette.
-
+        
         Fires the `info_changed()`, `sequence_changed()`, and `match_changed()`
         events.
+
+        Args:
+            other: 
+
+        Returns:
+
+        Raises:
+
         """
         self.clear(silent=True)
         for col in other._colors:
@@ -243,8 +268,17 @@ class Palette(object):
         """Get the number of columns (0 means unspecified)."""
         return self._columns
 
-    def set_columns(self, n):
-        """Set the number of columns (0 means unspecified)."""
+    def set_columns(self, n: Types.ELLIPSIS) -> Types.NONE:
+        """Set the number of columns (0 means unspecified).
+
+        Args:
+            n: 
+
+        Returns:
+
+        Raises:
+
+        """
         self._columns = int(n)
         self.info_changed()
 
@@ -252,10 +286,19 @@ class Palette(object):
         """Gets the palette's name."""
         return self._name
 
-    def set_name(self, name):
-        """Sets the palette's name."""
+    def set_name(self, name: Types.ELLIPSIS) -> Types.NONE:
+        """Sets the palette's name.
+
+        Args:
+            name: 
+
+        Returns:
+
+        Raises:
+
+        """
         if name is not None:
-            name = unicode(name)
+            name = str(name)
         self._name = name
         self.info_changed()
 
@@ -273,20 +316,25 @@ class Palette(object):
         """Palette length is the number of color slots within it."""
         return len(self._colors)
 
-    ## PY2/PY3 compat
-
-    __nonzero__ = __bool__
-
     ## Match position marker
 
     def get_match_position(self):
-        """Return the position of the current match (int or None)"""
+        """ """
         return self._match_position
 
-    def set_match_position(self, i):
+    def set_match_position(self, i: Types.ELLIPSIS) -> Types.NONE:
         """Sets the position of the current match (int or None)
+        
+        Fires `match_changed()` if the value is changed.
 
-        Fires `match_changed()` if the value is changed."""
+        Args:
+            i: 
+
+        Returns:
+
+        Raises:
+
+        """
         if i is not None:
             i = int(i)
             if i < 0 or i >= len(self):
@@ -299,10 +347,19 @@ class Palette(object):
         """Returns whether the current match is approximate."""
         return self._match_is_approx
 
-    def set_match_is_approx(self, approx):
+    def set_match_is_approx(self, approx: Types.ELLIPSIS) -> Types.NONE:
         """Sets whether the current match is approximate
+        
+        Fires match_changed() if the boolean value changes.
 
-        Fires match_changed() if the boolean value changes."""
+        Args:
+            approx: 
+
+        Returns:
+
+        Raises:
+
+        """
         approx = bool(approx)
         if approx != self._match_is_approx:
             self._match_is_approx = approx
@@ -311,24 +368,28 @@ class Palette(object):
     def match_color(self, col, exact=False, order=None):
         """Moves the match position to the color closest to the argument.
 
-        :param col: The color to match.
-        :type col: lib.color.UIColor
-        :param exact: Only consider exact matches, and not near-exact or
-                approximate matches.
-        :type exact: bool
-        :param order: a search order to use. Default is outwards from the
-                match position, or in order if the match is unset.
-        :type order: sequence or iterator of integer color indices.
-        :returns: Whether the match succeeded.
-        :rtype: bool
+        Args:
+            col (lib.color.UIColor): The color to match.
+            exact (bool, optional): Only consider exact matches, and not near-exact or
+        approximate matches. (Default value = False)
+            order (sequence or iterator of integer color indices., optional): a search order to use. Default is outwards from the
+        match position, or in order if the match is unset.
 
-        By default, the matching algorithm favours exact or near-exact matches
-        which are close to the current position. If the current position is
-        unset, this search starts at 0. If there are no exact or near-exact
-        matches, a looser approximate match will be used, again favouring
-        matches with nearby positions.
+        Returns:
+            bool
 
-          >>> red2blue = RGBColor(1, 0, 0).interpolate(RGBColor(0, 1, 1), 5)
+By default, the matching algorithm favours exact or near-exact matches
+which are close to the current position. If the current position is
+unset, this search starts at 0. If there are no exact or near-exact
+matches, a looser approximate match will be used, again favouring
+matches with nearby positions.
+
+
+Fires the ``match_changed()`` event when changes happen.: Whether the match succeeded.
+
+        Raises:
+
+        >>> red2blue = RGBColor(1, 0, 0).interpolate(RGBColor(0, 1, 1), 5)
           >>> p = Palette(colors=red2blue)
           >>> p.match_color(RGBColor(0.45, 0.45, 0.45))
           True
@@ -346,15 +407,13 @@ class Palette(object):
           False
           >>> p.match_color(RGBColor(0.5, 0.5, 0.5), exact=True)
           True
-
-        Fires the ``match_changed()`` event when changes happen.
         """
         if order is not None:
             search_order = order
         elif self.match_position is not None:
             search_order = _outwards_from(len(self), self.match_position)
         else:
-            search_order = xrange(len(self))
+            search_order = range(len(self))
         bestmatch_i = None
         bestmatch_d = None
         is_approx = True
@@ -401,16 +460,32 @@ class Palette(object):
     def move_match_position(self, direction, refcol):
         """Move the match position in steps, matching first if needed.
 
-        :param direction: Direction for moving, positive or negative
-        :type direction: int:, ``1`` or ``-1``
-        :param refcol: Reference color, used for initial matching when needed.
-        :type refcol: UIColor
-        :returns: the color newly matched, if the match position has changed
-        :rtype: UIColor|NoneType
+        Args:
+            direction (int:, ``1`` or ``-1``): Direction for moving, positive or negative
+            refcol (UIColor): Reference color, used for initial matching when needed.
 
-        Invoking this method when there's no current match position will select
-        the color that's closest to the reference color, just like
-        `match_color()`
+        Returns:
+            UIColor|NoneType
+
+Invoking this method when there's no current match position will select
+the color that's closest to the reference color, just like
+`match_color()`
+
+
+When the current match is defined, but only an approximate match, this
+method converts it to an exact match but does not change its position.
+
+
+When the match is initially exact, its position is stepped in the
+direction indicated, either by +1 or -1. Blank palette entries are
+skipped.
+
+
+Fires ``match_position_changed()`` and ``match_is_approx_changed()`` as
+appropriate.  The return value is the newly matched color whenever this
+method produces a new exact match.: the color newly matched, if the match position has changed
+
+        Raises:
 
         >>> greys = RGBColor(1,1,1).interpolate(RGBColor(0,0,0), 16)
         >>> pal = Palette(colors=greys)
@@ -420,32 +495,20 @@ class Palette(object):
         7
         >>> pal.match_is_approx
         True
-
-        When the current match is defined, but only an approximate match, this
-        method converts it to an exact match but does not change its position.
-
+        
           >>> pal.move_match_position(-1, refcol) is None
           False
           >>> pal.match_position
           7
           >>> pal.match_is_approx
           False
-
-        When the match is initially exact, its position is stepped in the
-        direction indicated, either by +1 or -1. Blank palette entries are
-        skipped.
-
+        
           >>> pal.move_match_position(-1, refcol) is None
           False
           >>> pal.match_position
           6
           >>> pal.match_is_approx
           False
-
-        Fires ``match_position_changed()`` and ``match_is_approx_changed()`` as
-        appropriate.  The return value is the newly matched color whenever this
-        method produces a new exact match.
-
         """
         # Normalize direction
         direction = int(direction)
@@ -496,7 +559,17 @@ class Palette(object):
 
     ## Color access
 
-    def _copy_color_out(self, col):
+    def _copy_color_out(self, col: Types.ELLIPSIS) -> Types.NONE:
+        """
+
+        Args:
+            col: 
+
+        Returns:
+
+        Raises:
+
+        """
         if col is self._EMPTY_SLOT_ITEM:
             return None
         result = RGBColor(color=col)
@@ -504,6 +577,18 @@ class Palette(object):
         return result
 
     def _copy_color_in(self, col, name=None):
+        # type: (Types.ELLIPSIS) -> Types.NONE
+        """
+
+        Args:
+            col: 
+            name:  (Default value = None)
+
+        Returns:
+
+        Raises:
+
+        """
         if col is self._EMPTY_SLOT_ITEM or col is None:
             result = self._EMPTY_SLOT_ITEM
         else:
@@ -513,7 +598,7 @@ class Palette(object):
                 except AttributeError:
                     pass
             if name is not None:
-                name = unicode(name)
+                name = str(name)
             result = RGBColor(color=col)
             result.__name = name
         return result
@@ -521,17 +606,23 @@ class Palette(object):
     def append(self, col, name=None, unique=False, match=False):
         """Appends a color, optionally setting a name for it.
 
-        :param col: The color to append.
-        :param name: Name of the color to insert.
-        :param unique: If true, don't append if the color already exists
-                in the palette. Only exact matches count.
-        :param match: If true, set the match position to the
-                appropriate palette entry.
+        Args:
+            col: The color to append.
+            name: Name of the color to insert. (Default value = None)
+            unique: If true, don't append if the color already exists
+        in the palette. Only exact matches count. (Default value = False)
+            match: If true, set the match position to the
+        appropriate palette entry. (Default value = False)
+
+        Returns:
+
+        Raises:
+
         """
         col = self._copy_color_in(col, name)
         if unique:
             # Find the final exact match, if one is present
-            for i in xrange(len(self._colors) - 1, -1, -1):
+            for i in range(len(self._colors) - 1, -1, -1):
                 if col == self._colors[i]:
                     if match:
                         self._match_position = i
@@ -548,23 +639,29 @@ class Palette(object):
         self.sequence_changed()
 
     def insert(self, i, col, name=None):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Inserts a color, setting an optional name for it.
 
-        :param i: Target index. `None` indicates appending a color.
-        :param col: Color to insert. `None` indicates an empty slot.
-        :param name: Name of the color to insert.
+        Args:
+            i: Target index. `None` indicates appending a color.
+            col: Color to insert. `None` indicates an empty slot.
+            name: Name of the color to insert.
+        
+        
+        Fires the `sequence_changed()` event. If the match position changes as
+        a result, `match_changed()` is fired too. (Default value = None)
 
-          >>> grey16 = RGBColor(1, 1, 1).interpolate(RGBColor(0, 0, 0), 16)
+        Returns:
+
+        Raises:
+
+        >>> grey16 = RGBColor(1, 1, 1).interpolate(RGBColor(0, 0, 0), 16)
           >>> p = Palette(colors=grey16)
           >>> p.insert(5, RGBColor(1, 0, 0), name="red")
           >>> p
           <Palette colors=17, columns=0, name=None>
           >>> p[5]
           <RGBColor r=1.0000, g=0.0000, b=0.0000>
-
-        Fires the `sequence_changed()` event. If the match position changes as
-        a result, `match_changed()` is fired too.
-
         """
         col = self._copy_color_in(col, name)
         if i is None:
@@ -577,15 +674,26 @@ class Palette(object):
         self.sequence_changed()
 
     def reposition(self, src_i, targ_i):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Moves a color, or copies it to empty slots, or moves it the end.
 
-        :param src_i: Source color index.
-        :param targ_i: Source color index, or None to indicate the end.
-
+        Args:
+            src_i: Source color index.
+            targ_i: Source color index, or None to indicate the end.
+        
         This operation performs a copy if the target is an empty slot, and a
         remove followed by an insert if the target slot contains a color.
+        
+        
+        Fires the `color_changed()` event for copies to empty slots, or
+        `sequence_changed()` for moves. If the match position changes as a
+        result, `match_changed()` is fired too.
 
-          >>> grey16 = RGBColor(1, 1, 1).interpolate(RGBColor(0, 0, 0), 16)
+        Returns:
+
+        Raises:
+
+        >>> grey16 = RGBColor(1, 1, 1).interpolate(RGBColor(0, 0, 0), 16)
           >>> p = Palette(colors=grey16)
           >>> p[5] = None           # creates an empty slot
           >>> p.match_position = 8
@@ -602,11 +710,6 @@ class Palette(object):
           9
           >>> len(p)       # repositioning doesn't change the length
           16
-
-        Fires the `color_changed()` event for copies to empty slots, or
-        `sequence_changed()` for moves. If the match position changes as a
-        result, `match_changed()` is fired too.
-
         """
         assert src_i is not None
         if src_i == targ_i:
@@ -670,12 +773,20 @@ class Palette(object):
             self.match_position = match_pos
             self.match_changed()
 
-    def pop(self, i):
+    def pop(self, i: Types.ELLIPSIS) -> Types.NONE:
         """Removes a color, returning it.
-
+        
         Fires the `match_changed()` event if the match index changes as a
         result of the removal, and `sequence_changed()` if a color was removed,
         prior to its return.
+
+        Args:
+            i: 
+
+        Returns:
+
+        Raises:
+
         """
         i = int(i)
         try:
@@ -689,8 +800,17 @@ class Palette(object):
         self.sequence_changed()
         return self._copy_color_out(col)
 
-    def get_color(self, i):
-        """Looks up a color by its list index."""
+    def get_color(self, i: Types.ELLIPSIS) -> Types.NONE:
+        """Looks up a color by its list index.
+
+        Args:
+            i: 
+
+        Returns:
+
+        Raises:
+
+        """
         if i is None:
             return None
         try:
@@ -708,8 +828,17 @@ class Palette(object):
 
     ## Color name access
 
-    def get_color_name(self, i):
-        """Looks up a color's name by its list index."""
+    def get_color_name(self, i: Types.ELLIPSIS) -> Types.NONE:
+        """Looks up a color's name by its list index.
+
+        Args:
+            i: 
+
+        Returns:
+
+        Raises:
+
+        """
         try:
             col = self._colors[i]
         except IndexError:
@@ -719,7 +848,18 @@ class Palette(object):
         return col.__name
 
     def set_color_name(self, i, name):
-        """Sets a color's name by its list index."""
+        # type: (Types.ELLIPSIS) -> Types.NONE
+        """Sets a color's name by its list index.
+
+        Args:
+            i: 
+            name: 
+
+        Returns:
+
+        Raises:
+
+        """
         try:
             col = self._colors[i]
         except IndexError:
@@ -729,14 +869,20 @@ class Palette(object):
         col.__name = name
         self.color_changed(i)
 
-    def get_color_by_name(self, name):
+    def get_color_by_name(self, name: Types.ELLIPSIS) -> Types.NONE:
         """Looks up the first color with the given name.
+
+        Args:
+            name: 
+
+        Returns:
+
+        Raises:
 
         >>> pltt = Palette()
         >>> pltt.append(RGBColor(1,0,1), "Magenta")
         >>> pltt.get_color_by_name("Magenta")
         <RGBColor r=1.0000, g=0.0000, b=1.0000>
-
         """
         for col in self:
             if col.__name == name:
@@ -768,17 +914,21 @@ class Palette(object):
         """Event: the color ordering or palette length was changed."""
 
     @event
-    def color_changed(self, i):
-        """Event: the color in the given slot, or its name, was modified."""
+    def color_changed(self, i: Types.ELLIPSIS) -> Types.NONE:
+        """Event: the color in the given slot, or its name, was modified.
+
+        Args:
+            i: 
+
+        Returns:
+
+        Raises:
+
+        """
 
     ## Dumping and cloning
 
-    def __unicode__(self):
-        """Py2-era serialization as a Unicode string.
-
-        Used by the Py3 __str__() while we are in transition.
-
-        """
+    def __str__(self):
         result = "GIMP Palette\n"
         if self._name is not None:
             result += "Name: %s\n" % self._name
@@ -797,13 +947,6 @@ class Palette(object):
             else:
                 result += "%d %d %d    %s\n" % (r, g, b, col_name)
         return result
-
-    def __str__(self):
-        """Py3: serialize as str (=Unicode). Py2: as bytes (lossy!)."""
-        s = self.__unicode__()
-        if not PY3:
-            s = s.encode("utf-8", errors="replace")
-        return s
 
     def __copy__(self):
         clone = Palette()
@@ -844,8 +987,17 @@ class Palette(object):
         return simple
 
     @classmethod
-    def new_from_simple_dict(cls, simple):
-        """Constructs and returns a palette from the simple dict form."""
+    def new_from_simple_dict(cls, simple: Types.ELLIPSIS) -> Types.NONE:
+        """Constructs and returns a palette from the simple dict form.
+
+        Args:
+            simple: 
+
+        Returns:
+
+        Raises:
+
+        """
         pal = cls()
         pal.set_name(simple.get("name", None))
         pal.set_columns(simple.get("columns", None))
@@ -862,14 +1014,23 @@ class Palette(object):
 ## Helper functions
 
 
-def _outwards_from(n, i):
+def _outwards_from(n, i: Types.ELLIPSIS) -> Types.NONE:
     """Search order within the palette, outwards from a given index.
-
+    
     Defined for a sequence of len() `n`, outwards from index `i`.
+
+    Args:
+        n: 
+        i: 
+
+    Returns:
+
+    Raises:
+
     """
     assert i < n and i >= 0
     yield i
-    for j in xrange(n):
+    for j in range(n):
         exhausted = True
         if i - j >= 0:
             yield i - j
@@ -881,12 +1042,20 @@ def _outwards_from(n, i):
             break
 
 
-def _color_distance(c1, c2):
+def _color_distance(c1, c2: Types.ELLIPSIS) -> Types.NONE:
     """Distance metric for color matching in the palette.
-
+    
     Use a geometric YCbCr distance, as recommended by Graphics Programming with
     Perl, chapter 1, Martien Verbruggen. If we want to give the chrominance
     dimensions a different weighting to luma, we can.
+
+    Args:
+        c1: 
+        c2: 
+
+    Returns:
+
+    Raises:
 
     """
     c1 = YCbCrColor(color=c1)

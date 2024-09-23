@@ -25,8 +25,6 @@ from lib.brushsettings import settings_dict
 from lib.document import Document
 from lib.layer.data import SimplePaintingLayer
 from lib.observable import event
-from lib.pycompat import add_metaclass
-from lib.pycompat import unicode
 
 import gui.cursor
 
@@ -62,11 +60,17 @@ BUTTON_BINDING_ACTIONS = [
 
 class Behavior:
     """Broad classification of what a mode's handler methods do
-
+    
     These flags are assigned to devices in `gui.device` to allow the
     user to limit what devices are allowed to do. Mode instances expose
     their behaviour by defining their pointer_behavior and
     scroll_behavior properties.
+
+    Args:
+
+    Returns:
+
+    Raises:
 
     """
 
@@ -89,11 +93,17 @@ class Behavior:
 
 class ModeRegistry(type):
     """Lookup table for interaction modes and their associated actions
-
+    
     Operates as the metaclass for `InteractionMode`, so all you need to do to
     create the association for a mode subclass is to define an
     ``ACTION_NAME`` entry in the class's namespace containing the name of
     the associated `Gtk.Action` defined in ``resources.xml``.
+
+    Args:
+
+    Returns:
+
+    Raises:
 
     """
 
@@ -124,49 +134,55 @@ class ModeRegistry(type):
         return mode_class
 
     @classmethod
-    def get_mode_class(cls, action_name):
+    def get_mode_class(cls, action_name: Types.ELLIPSIS) -> Types.NONE:
         """Looks up a registered mode class by its associated action's name.
 
-        :param action_name: a string containing an action name (see this
-           metaclass's docs regarding the ``ACTION_NAME`` class variable)
+        Args:
+            action_name: a string containing an action name (see this
+        metaclass's docs regarding the ``ACTION_NAME`` class variable)
         :rtype: an InteractionMode class object, or `None`.
+
+        Returns:
+
+        Raises:
 
         """
         return cls.action_name_to_mode_class.get(action_name, None)
 
     @classmethod
     def get_action_names(cls):
-        """Returns all action names associated with interaction.
-
-        :rtype: an iterable of action name strings.
-
-        """
+        """Returns all action names associated with interaction."""
         return cls.action_name_to_mode_class.keys()
 
 
 ## Mode base classes
 
 
-@add_metaclass(ModeRegistry)
-class InteractionMode(object):
+class InteractionMode(metaclass=ModeRegistry):
     """Required base class for temporary interaction modes.
-
+    
     Active interaction mode objects process input events, and can manipulate
     document views (TiledDrawWidget), the document model data (lib.document),
     and the mode stack they sit on. Interactions encapsulate state about their
     particular kind of interaction; for example a drag interaction typically
     contains the starting position for the drag.
-
+    
     Event handler methods can create new sub-modes and push them to the stack.
     It is conventional to pass the current event to the equivalent method on
     the new object when this transfer of control happens.
-
+    
     Subclasses may nominate a related `GtkAction` instance in the UI by setting
     the class-level variable ``ACTION_NAME``: this should be the name of an
     action defined in `gui.app.Application.builder`'s XML file.
-
+    
     All InteractionMode subclasses register themselves in ModeRegistry
     when their class is defined.
+
+    Args:
+
+    Returns:
+
+    Raises:
 
     """
 
@@ -210,41 +226,11 @@ class InteractionMode(object):
 
     @classmethod
     def get_name(cls):
-        """Returns a short human-readable description of the mode.
-
-        :rtype: unicode
-
-        This is used for status bar messages, and potentially elsewhere before
-        the mode has been instantiated.  All concrete subclasses should
-        override this.  By default the (non-localized) class name is returned.
-
-        When capitalizing, use whatever style the GNOME HIG specifies for menu
-        items.  In English, this is currently "header", or title case (first
-        word capitalized, all other words capitalized except closed-class
-        words).  Do not use trailing punctuation.
-
-        """
-        return unicode(cls.__name__)
+        """Returns a short human-readable description of the mode."""
+        return str(cls.__name__)
 
     def get_usage(self):
-        """Returns a medium-length usage message for the mode.
-
-        :rtype: unicode
-
-        This is used for status bar messages.  All concrete subclasses should
-        override this.  The default return value is an empty string.
-
-        The usage message should be a short, natural-sounding explanation to
-        the user detailing what the current mode is for.  Note that the usage
-        message is typically displayed after the mode's name or explanatory
-        icon, so there is no need to repeat that.  Brevity is important because
-        space is limited.
-
-        When capitalizing, use whatever style the GNOME HIG specifies for
-        tooltips.  In English, this is currently sentence case.  Use one
-        complete sentence, and always omit the the trailing period.
-
-        """
+        """Returns a medium-length usage message for the mode."""
         return ""
 
     def __unicode__(self):
@@ -262,9 +248,16 @@ class InteractionMode(object):
 
     def get_icon_name(self):
         """Returns the icon to use when representing the mode.
-
+        
         If there's an associated action, this method returns the icon
         associated with the action.
+
+        Args:
+
+        Returns:
+
+        Raises:
+
         """
         icon_name = None
         action = self.get_action()
@@ -276,14 +269,19 @@ class InteractionMode(object):
 
     ## Mode stacking interface
 
-    def stackable_on(self, mode):
+    def stackable_on(self, mode: Types.ELLIPSIS) -> Types.NONE:
         """Tests whether the mode can usefully stack onto an active mode.
 
-        :param mode: another mode object
+        Args:
+            mode: another mode object
         :rtype: bool
-
+        
         This method should return True if this mode can usefully be stacked
         onto another mode when switching via toolbars buttons or other actions.
+
+        Returns:
+
+        Raises:
 
         """
         # By default, anything can be stacked on brush tools, except for brush
@@ -304,13 +302,19 @@ class InteractionMode(object):
     def enter(self, doc, **kwds):
         """Enters the mode: called by `ModeStack.push()` etc.
 
-        :param doc: the `gui.document.Document` this mode should affect.
-            A reference is kept in `self.doc`.
-
+        Args:
+            doc (gui.document.Document): A document this mode should affect.
+        A reference is kept in `self.doc`.
+        
         This is called when the mode becomes active, i.e. when it becomes the
         top mode on a ModeStack, and before input is sent to it. Note that a
         mode may be entered only to be left immediately: mode stacks are
         cleared by repeated pop()ing.
+            **kwds: 
+
+        Returns:
+
+        Raises:
 
         """
         self.doc = doc
@@ -318,27 +322,40 @@ class InteractionMode(object):
 
     def leave(self):
         """Leaves the mode: called by `ModeStack.pop()` etc.
-
+        
         This is called when an active mode becomes inactive, i.e. when it is
         no longer the top mode on its ModeStack. It should commit any
         uncommitted work to the undo stack, just as `checkpoint()` does.
+
+        Args:
+
+        Returns:
+
+        Raises:
 
         """
         self.doc = None
         assert not hasattr(super(InteractionMode, self), "leave")
 
-    def checkpoint(self, **kwargs):
+    def checkpoint(self, **kwargs: Types.ELLIPSIS) -> Types.NONE:
         """Commits any of the mode's uncommitted work
-
+        
         This is called on the active mode at various times to signal
         that pending work should be committed to the command stack now,
         so that the Undo command would be able to undo it if it were
         called next.
-
+        
         The mode continues to be active.
-
+        
         This method is not automatically invoked when changing modes:
         leave() should manage that transition.
+
+        Args:
+            **kwargs: 
+
+        Returns:
+
+        Raises:
 
         """
         assert not hasattr(super(InteractionMode, self), "checkpoint")
@@ -346,38 +363,102 @@ class InteractionMode(object):
     ## Event handler defaults (no-ops)
 
     def button_press_cb(self, tdw, event):
-        """Handler for ``button-press-event``s."""
+        # type: (Types.ELLIPSIS) -> Types.NONE
+        """Handler for ``button-press-event``s.
+
+        Args:
+            tdw: 
+            event: 
+
+        Returns:
+
+        Raises:
+
+        """
         assert not hasattr(super(InteractionMode, self), "button_press_cb")
 
     def motion_notify_cb(self, tdw, event):
-        """Handler for ``motion-notify-event``s."""
+        # type: (Types.ELLIPSIS) -> Types.NONE
+        """Handler for ``motion-notify-event``s.
+
+        Args:
+            tdw: 
+            event: 
+
+        Returns:
+
+        Raises:
+
+        """
 
     def button_release_cb(self, tdw, event):
-        """Handler for ``button-release-event``s."""
+        # type: (Types.ELLIPSIS) -> Types.NONE
+        """Handler for ``button-release-event``s.
+
+        Args:
+            tdw: 
+            event: 
+
+        Returns:
+
+        Raises:
+
+        """
         assert not hasattr(super(InteractionMode, self), "button_release_cb")
 
     def scroll_cb(self, tdw, event):
-        """Handler for ``scroll-event``s."""
+        # type: (Types.ELLIPSIS) -> Types.NONE
+        """Handler for ``scroll-event``s.
+
+        Args:
+            tdw: 
+            event: 
+
+        Returns:
+
+        Raises:
+
+        """
         assert not hasattr(super(InteractionMode, self), "scroll_cb")
 
     def key_press_cb(self, win, tdw, event):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Handler for ``key-press-event``s.
-
+        
         The base class implementation does nothing.
         Keypresses are received by the main window only, but at this point it
         has applied some heuristics to determine the active doc and view.
         These are passed through to the active mode and are accessible to
         keypress handlers via `self.doc` and the `tdw` argument.
 
+        Args:
+            win: 
+            tdw: 
+            event: 
+
+        Returns:
+
+        Raises:
+
         """
         assert not hasattr(super(InteractionMode, self), "key_press_cb")
         return True
 
     def key_release_cb(self, win, tdw, event):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Handler for ``key-release-event``s.
-
+        
         The base class implementation does nothing. See `key_press_cb` for
         details of the additional arguments.
+
+        Args:
+            win: 
+            tdw: 
+            event: 
+
+        Returns:
+
+        Raises:
 
         """
         assert not hasattr(super(InteractionMode, self), "key_release_cb")
@@ -390,20 +471,64 @@ class InteractionMode(object):
     # somewhere more sensible.
 
     def drag_start_cb(self, tdw, event):
+        # type: (Types.ELLIPSIS) -> Types.NONE
+        """
+
+        Args:
+            tdw: 
+            event: 
+
+        Returns:
+
+        Raises:
+
+        """
         assert not hasattr(super(InteractionMode, self), "drag_start_cb")
 
     def drag_update_cb(self, tdw, event, ev_x, ev_y, dx, dy):
+        # type: (Types.ELLIPSIS) -> Types.NONE
+        """
+
+        Args:
+            tdw: 
+            event: 
+            ev_x: 
+            ev_y: 
+            dx: 
+            dy: 
+
+        Returns:
+
+        Raises:
+
+        """
         assert not hasattr(super(InteractionMode, self), "drag_update_cb")
 
-    def drag_stop_cb(self, tdw):
+    def drag_stop_cb(self, tdw: Types.ELLIPSIS) -> Types.NONE:
+        """
+
+        Args:
+            tdw: 
+
+        Returns:
+
+        Raises:
+
+        """
         assert not hasattr(super(InteractionMode, self), "drag_stop_cb")
 
     ## Internal utility functions
 
     def current_modifiers(self):
         """Returns the current set of modifier keys as a Gdk bitmask.
-
+        
         See: gui.document.Document.get_current_modifiers()
+
+        Args:
+
+        Returns:
+
+        Raises:
 
         """
         doc = self.doc
@@ -415,11 +540,17 @@ class InteractionMode(object):
 
     def current_position(self):
         """Returns the current client pointer position on the main TDW.
-
+        
         For use in enter() methods: since the mode may be being entered
         by the user pressing a key, no position is available at this
         point. Normal event handlers should use their argument GdkEvents
         to determine position.
+
+        Args:
+
+        Returns:
+
+        Raises:
 
         """
         disp = self.doc.tdw.get_display()
@@ -432,9 +563,15 @@ class InteractionMode(object):
 
 class ScrollableModeMixin(InteractionMode):
     """Mixin for scrollable modes.
-
+    
     Implements some immediate rotation and zoom commands for the scroll wheel.
     These should be useful in many modes, but perhaps not all.
+
+    Args:
+
+    Returns:
+
+    Raises:
 
     """
 
@@ -449,26 +586,71 @@ class ScrollableModeMixin(InteractionMode):
         self.__total_dy = 0.0
 
     def enter(self, doc, **kwds):
+        # type: (Types.ELLIPSIS) -> Types.NONE
+        """
+
+        Args:
+            doc: 
+            **kwds: 
+
+        Returns:
+
+        Raises:
+
+        """
         self.__reset_delta_totals()
         return super(ScrollableModeMixin, self).enter(doc, **kwds)
 
     def button_press_cb(self, tdw, event):
+        # type: (Types.ELLIPSIS) -> Types.NONE
+        """
+
+        Args:
+            tdw: 
+            event: 
+
+        Returns:
+
+        Raises:
+
+        """
         self.__reset_delta_totals()
         return super(ScrollableModeMixin, self).button_press_cb(tdw, event)
 
     def button_release_cb(self, tdw, event):
+        # type: (Types.ELLIPSIS) -> Types.NONE
+        """
+
+        Args:
+            tdw: 
+            event: 
+
+        Returns:
+
+        Raises:
+
+        """
         self.__reset_delta_totals()
         return super(ScrollableModeMixin, self).button_release_cb(tdw, event)
 
     def scroll_cb(self, tdw, event):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Handles scroll-wheel events.
-
+        
         Normal scroll wheel events: whichever of {panning, scrolling}
         the device is configured to do. With Ctrl or Alt: invert
         scrolling and zooming.
-
+        
         With shift, if smooth scroll events are being sent, constrain
         the zoom or scroll in appropriate chunks.
+
+        Args:
+            tdw: 
+            event: 
+
+        Returns:
+
+        Raises:
 
         """
         doc = self.doc
@@ -613,7 +795,17 @@ class PaintingModeOptionsWidgetBase(Gtk.Grid):
         row = self.init_specialized_widgets(row)
         row = self.init_reset_widgets(row)
 
-    def init_common_widgets(self, row):
+    def init_common_widgets(self, row: Types.ELLIPSIS) -> Types.NONE:
+        """
+
+        Args:
+            row: 
+
+        Returns:
+
+        Raises:
+
+        """
         for cname, text in self._COMMON_SETTINGS:
             label = Gtk.Label()
             label.set_text(text)
@@ -631,10 +823,30 @@ class PaintingModeOptionsWidgetBase(Gtk.Grid):
             row += 1
         return row
 
-    def init_specialized_widgets(self, row):
+    def init_specialized_widgets(self, row: Types.ELLIPSIS) -> Types.NONE:
+        """
+
+        Args:
+            row: 
+
+        Returns:
+
+        Raises:
+
+        """
         return row
 
-    def init_reset_widgets(self, row):
+    def init_reset_widgets(self, row: Types.ELLIPSIS) -> Types.NONE:
+        """
+
+        Args:
+            row: 
+
+        Returns:
+
+        Raises:
+
+        """
         align = Gtk.Alignment.new(0.5, 1.0, 1.0, 0.0)
         align.set_vexpand(True)
         self.attach(align, 0, row, 2, 1)
@@ -644,7 +856,17 @@ class PaintingModeOptionsWidgetBase(Gtk.Grid):
         row += 1
         return row
 
-    def reset_button_clicked_cb(self, button):
+    def reset_button_clicked_cb(self, button: Types.ELLIPSIS) -> Types.NONE:
+        """
+
+        Args:
+            button: 
+
+        Returns:
+
+        Raises:
+
+        """
         app = self.app
         bm = app.brushmanager
         parent_brush = bm.get_parent_brush(brushinfo=app.brush)
@@ -658,19 +880,26 @@ class PaintingModeOptionsWidgetBase(Gtk.Grid):
 
 class BrushworkModeMixin(InteractionMode):
     """Mixin for modes using brushes
-
+    
     This mixin adds the ability to paint undoably to the current layer
     with proper atomicity and handling of checkpoints, and time-based
     automatic commits.
-
+    
     Classes using this mixin should use `stroke_to()` to paint, and then
     may use the `brushwork_commit()` method to commit completed segments
     atomically to the command stack.  If a subclass needs greater
     control over new segments, `brushwork_begin()` can be used to start
     them recording.
-
+    
     The `leave()` and `checkpoint()` methods defined here cooperatively
     commit all outstanding brushwork.
+
+    Args:
+
+    Returns:
+
+    Raises:
+
     """
 
     def __init__(self, **kwds):
@@ -686,28 +915,33 @@ class BrushworkModeMixin(InteractionMode):
     def brushwork_begin(self, model, description=None, abrupt=False, layer=None):
         """Begins a new segment of active brushwork for a model
 
-        :param Document model: The model to begin work on
-        :param unicode description: Optional description of the work
-        :param bool abrupt: Tail out/in abruptly with faked zero pressure.
-        :param SimplePaintingLayer layer: explicit target layer.
-
+        Args:
+            model (Document): The model to begin work on
+            description (str, optional): Optional description of the work (Default value = None)
+            abrupt (bool, optional): Tail out/in abruptly with faked zero pressure. (Default value = False)
+            layer (SimplePaintingLayer, optional): explicit target layer.
+        
         Any current segment of brushwork is committed, and a new segment
         is begun.
-
+        
         Passing ``None`` for the description is suitable for freehand
         drawing modes.  This method will be called automatically with
         the default options by `stroke_to()` if needed, so not all
         mode classes will need to use it.
-
+        
         The first segment of brushwork begun by a newly created
         BrushworkMode object always starts abruptly.
         The second and subsequent segments are assumed to be
         continuations by default. Set abrupt=True to break off any
         existing segment cleanly, and start the new segment cleanly.
-
+        
         If an explicit target layer is used, it must be one that's
         guaranteed to persist for the lifetime of the current document
         model to prevent leaks.
+
+        Returns:
+
+        Raises:
 
         """
         # Commit any previous work for this model
@@ -733,14 +967,20 @@ class BrushworkModeMixin(InteractionMode):
     def brushwork_commit(self, model, abrupt=False):
         """Commits any active brushwork for a model to the command stack
 
-        :param Document model: The model to commit work to
-        :param bool abrupt: End with a faked zero pressure "stroke_to()"
-
+        Args:
+            model (Document): The model to commit work to
+            abrupt (bool, optional): End with a faked zero pressure "stroke_to()"
+        
         This only makes a new entry on the command stack if
         the currently active brushwork segment made
         any changes to the model.
+        
+        See also `brushwork_rollback()`. (Default value = False)
 
-        See also `brushwork_rollback()`.
+        Returns:
+
+        Raises:
+
         """
         cmd = self.__active_brushwork.pop(model, None)
         if cmd is None:
@@ -767,25 +1007,40 @@ class BrushworkModeMixin(InteractionMode):
         if changed:
             model.do(cmd)
 
-    def brushwork_rollback(self, model):
+    def brushwork_rollback(self, model: Document) -> Types.NONE:
         """Rolls back any active brushwork for a model
 
-        :param Document model: The model to roll back
-
+        Args:
+            model: The model to roll back
+        
         This restores the model's appearance and state to how it was
         when the current segment of brushwork started.
         For input patterns where this makes sense,
         your calls to `stroke_to()` should have ``auto_split=False``.
-
+        
         See also `brushwork_commit()`.
+
+        Returns:
+
+        Raises:
+
         """
         cmd = self.__active_brushwork.pop(model, None)
         if cmd is None:
             return
         cmd.stop_recording(revert=True)
 
-    def brushwork_commit_all(self, abrupt=False):
-        """Commits all active brushwork"""
+    def brushwork_commit_all(self, abrupt: Types.ELLIPSIS = False) -> Types.NONE:
+        """Commits all active brushwork
+
+        Args:
+            abrupt:  (Default value = False)
+
+        Returns:
+
+        Raises:
+
+        """
         for model in list(self.__active_brushwork.keys()):
             self.brushwork_commit(model, abrupt=abrupt)
 
@@ -811,29 +1066,34 @@ class BrushworkModeMixin(InteractionMode):
     ):
         """Feeds an updated stroke position to the brush engine
 
-        :param Document model: model on which to paint
-        :param float dtime: Seconds since the last call to this method
-        :param float x: Document X position update
-        :param float y: Document Y position update
-        :param float pressure: Pressure, ranging from 0.0 to 1.0
-        :param float xtilt: X-axis tilt, ranging from -1.0 to 1.0
-        :param float ytilt: Y-axis tilt, ranging from -1.0 to 1.0
-        :param viewzoom: The view's current zoom level, [0, 64]
-        :param viewrotation: The view's current rotation, [-180.0, 180.0]
-        :param float barrel_rotation: Stylus barrel rotation, [0.0 to 1.0]
-        :param bool auto_split: Split ongoing brushwork if due
-        :param SimplePaintingLayer layer: explicit target layer
-
+        Args:
+            model (Document): model on which to paint
+            dtime (float): Seconds since the last call to this method
+            x (float): Document X position update
+            y (float): Document Y position update
+            pressure (float): Pressure, ranging from 0.0 to 1.0
+            xtilt (float): X-axis tilt, ranging from -1.0 to 1.0
+            ytilt (float): Y-axis tilt, ranging from -1.0 to 1.0
+            viewzoom: The view's current zoom level, [0, 64]
+            viewrotation: The view's current rotation, [-180.0, 180.0]
+            barrel_rotation (float): Stylus barrel rotation, [0.0 to 1.0]
+            auto_split (bool, optional): Split ongoing brushwork if due (Default value = True)
+            layer (SimplePaintingLayer, optional): explicit target layer
+        
         During normal operation, successive calls to `stroke_to()` record
         an ongoing sequence of `lib.command.Brushwork` commands on the
         undo stack, stopping and committing the currently recording
         command when it becomes due.
-
+        
         The explicit target layer is intended for simple painting modes
         operating on out-of-tree layers which rely on stroke_to()
         automatically calling brushwork_begin(). Normally the currently
         selected layer is used as the target layer for each new segment
-        of brushwork.
+        of brushwork. (Default value = None)
+
+        Returns:
+
+        Raises:
 
         """
         cmd = self.__active_brushwork.get(model, None)
@@ -872,9 +1132,9 @@ class BrushworkModeMixin(InteractionMode):
             barrel_rotation,
         )
 
-    def leave(self, **kwds):
+    def leave(self, **kwds: Types.ELLIPSIS) -> Types.NONE:
         """Leave mode, committing outstanding brushwork as necessary
-
+        
         The leave action defined here is careful to tail off strokes
         cleanly: certain subclasses are geared towards fast capture of
         data and queued delivery of stroke information, so we have to
@@ -882,11 +1142,18 @@ class BrushworkModeMixin(InteractionMode):
         interrupted queued stroke can result in a *huge* sequence of
         dabs from the last processed position to wherever the cursor is
         right now.
-
+        
         This leave() knows about the mode stack, and only commits if it
         knows it isn't still stacked. That's to allow temporary view
         manipulation modes to work without disrupting `gui.inktool`'s
         mode, which normally has a lot pending.
+
+        Args:
+            **kwds: 
+
+        Returns:
+
+        Raises:
 
         """
         logger.debug("BrushworkModeMixin: leave()")
@@ -902,13 +1169,20 @@ class BrushworkModeMixin(InteractionMode):
             self.brushwork_commit_all(abrupt=True)
         super(BrushworkModeMixin, self).leave(**kwds)
 
-    def checkpoint(self, **kwargs):
+    def checkpoint(self, **kwargs: Types.ELLIPSIS) -> Types.NONE:
         """Commit any outstanding brushwork
-
+        
         Like `leave()`, this commits the currently recording Brushwork
         command for each known model; however we do not attempt to tail
         off brushstrokes cleanly because that would make Freehand mode
         discontinuous when the user changes the brush color.
+
+        Args:
+            **kwargs: 
+
+        Returns:
+
+        Raises:
 
         """
         logger.debug("BrushworkModeMixin: checkpoint()")
@@ -927,6 +1201,18 @@ class SingleClickMode(InteractionMode):
         self._button_pressed = None
 
     def enter(self, doc, **kwds):
+        # type: (Types.ELLIPSIS) -> Types.NONE
+        """
+
+        Args:
+            doc: 
+            **kwds: 
+
+        Returns:
+
+        Raises:
+
+        """
         super(SingleClickMode, self).enter(doc, **kwds)
         assert self.doc is not None
         self.doc.tdw.set_override_cursor(self.cursor)
@@ -935,12 +1221,34 @@ class SingleClickMode(InteractionMode):
                 self.ACTION_NAME, gui.cursor.Name.ARROW
             )
 
-    def leave(self, **kwds):
+    def leave(self, **kwds: Types.ELLIPSIS) -> Types.NONE:
+        """
+
+        Args:
+            **kwds: 
+
+        Returns:
+
+        Raises:
+
+        """
         if self.doc is not None:
             self.doc.tdw.set_override_cursor(None)
         super(SingleClickMode, self).leave(**kwds)
 
     def button_press_cb(self, tdw, event):
+        # type: (Types.ELLIPSIS) -> Types.NONE
+        """
+
+        Args:
+            tdw: 
+            event: 
+
+        Returns:
+
+        Raises:
+
+        """
         if event.button == 1 and event.type == Gdk.EventType.BUTTON_PRESS:
             self._button_pressed = 1
             return False
@@ -948,6 +1256,18 @@ class SingleClickMode(InteractionMode):
             return super(SingleClickMode, self).button_press_cb(tdw, event)
 
     def button_release_cb(self, tdw, event):
+        # type: (Types.ELLIPSIS) -> Types.NONE
+        """
+
+        Args:
+            tdw: 
+            event: 
+
+        Returns:
+
+        Raises:
+
+        """
         if event.button == self._button_pressed:
             self._button_pressed = None
             self.clicked_cb(tdw, event)
@@ -956,19 +1276,37 @@ class SingleClickMode(InteractionMode):
             return super(SingleClickMode, self).button_press_cb(tdw, event)
 
     def clicked_cb(self, tdw, event):
+        # type: (Types.ELLIPSIS) -> Types.NONE
+        """
+
+        Args:
+            tdw: 
+            event: 
+
+        Returns:
+
+        Raises:
+
+        """
         assert not hasattr(super(SingleClickMode, self), "clicked_cb")
 
 
 class DragMode(InteractionMode):
     """Base class for drag activities.
-
+    
     Dragm modes can be entered when the button is pressed, or not yet
     pressed.  If the button is pressed when the mode is entered. the
     initial position will be determined from the first motion event.
-
+    
     Drag modes are normally "spring-loaded", meaning that when a drag
     mode is first entered, it remembers which modifier keys were held
     down at that time. When these keys are released, the mode will exit.
+
+    Args:
+
+    Returns:
+
+    Raises:
 
     """
 
@@ -1007,6 +1345,7 @@ class DragMode(InteractionMode):
         self.ignore_modifiers = ignore_modifiers
 
     def _reset_drag_state(self):
+        """ """
         self.last_x = None
         self.last_y = None
         self.start_x = None
@@ -1020,7 +1359,17 @@ class DragMode(InteractionMode):
             tdw.disconnect(connid)
             self._tdw_grab_broken_conninfo = None
 
-    def _stop_drag(self, t=Gdk.CURRENT_TIME):
+    def _stop_drag(self, t: Types.ELLIPSIS = Gdk.CURRENT_TIME) -> Types.NONE:
+        """
+
+        Args:
+            t:  (Default value = Gdk.CURRENT_TIME)
+
+        Returns:
+
+        Raises:
+
+        """
         # Stops any active drag, calls drag_stop_cb(), and cleans up.
         if not self.in_drag:
             return
@@ -1034,6 +1383,18 @@ class DragMode(InteractionMode):
         self._reset_drag_state()
 
     def _start_drag(self, tdw, event):
+        # type: (Types.ELLIPSIS) -> Types.NONE
+        """
+
+        Args:
+            tdw: 
+            event: 
+
+        Returns:
+
+        Raises:
+
+        """
         # Attempt to start a new drag, calling drag_start_cb() if successful.
         if self.in_drag:
             return
@@ -1110,10 +1471,16 @@ class DragMode(InteractionMode):
 
     def _bailout(self):
         """Attempt to exit this mode safely, via an idle routine
-
+        
         The actual task is handled by an idle callback to make this
         method safe to call during a mode's enter() or leave() methods.
         Modes on top of the one requesting bailout will also be ejected.
+
+        Args:
+
+        Returns:
+
+        Raises:
 
         """
         from gui.application import get_app
@@ -1128,8 +1495,17 @@ class DragMode(InteractionMode):
         logger.debug("bailout: starting idler to safely bail out of %r", self)
         GLib.idle_add(self._bailout_idle_cb, app.doc.modes)
 
-    def _bailout_idle_cb(self, modestack):
-        """Bail out of this mode if it's anywhere in the mode stack"""
+    def _bailout_idle_cb(self, modestack: Types.ELLIPSIS) -> Types.NONE:
+        """Bail out of this mode if it's anywhere in the mode stack
+
+        Args:
+            modestack: 
+
+        Returns:
+
+        Raises:
+
+        """
         while self in modestack:
             logger.debug("bailout idler: leaving %r", modestack.top)
             modestack.pop()
@@ -1137,6 +1513,18 @@ class DragMode(InteractionMode):
         return False
 
     def _tdw_grab_broken_cb(self, tdw, event):
+        # type: (Types.ELLIPSIS) -> Types.NONE
+        """
+
+        Args:
+            tdw: 
+            event: 
+
+        Returns:
+
+        Raises:
+
+        """
         # Cede control as cleanly as possible if something else grabs either
         # the keyboard or the pointer while a grab is active.
         # One possible cause for https://gna.org/bugs/?20333
@@ -1150,13 +1538,23 @@ class DragMode(InteractionMode):
 
     @property
     def in_drag(self):
+        """ """
         return self._in_drag
 
     def enter(self, doc, **kwds):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Enter the mode, recording the held modifier keys the 1st time
-
+        
         The attribute `self.initial_modifiers` is set the first time the
         mode is entered.
+
+        Args:
+            doc: 
+            **kwds: 
+
+        Returns:
+
+        Raises:
 
         """
         super(DragMode, self).enter(doc, **kwds)
@@ -1199,13 +1597,35 @@ class DragMode(InteractionMode):
                 self.doc.modes.pop()
         return False
 
-    def leave(self, **kwds):
+    def leave(self, **kwds: Types.ELLIPSIS) -> Types.NONE:
+        """
+
+        Args:
+            **kwds: 
+
+        Returns:
+
+        Raises:
+
+        """
         self._stop_drag()
         if self.doc is not None:
             self.doc.tdw.set_override_cursor(None)
         super(DragMode, self).leave(**kwds)
 
     def button_press_cb(self, tdw, event):
+        # type: (Types.ELLIPSIS) -> Types.NONE
+        """
+
+        Args:
+            tdw: 
+            event: 
+
+        Returns:
+
+        Raises:
+
+        """
         if event.type == Gdk.EventType.BUTTON_PRESS:
             if self.in_drag:
                 if self._start_button is None:
@@ -1221,12 +1641,36 @@ class DragMode(InteractionMode):
         return super(DragMode, self).button_press_cb(tdw, event)
 
     def button_release_cb(self, tdw, event):
+        # type: (Types.ELLIPSIS) -> Types.NONE
+        """
+
+        Args:
+            tdw: 
+            event: 
+
+        Returns:
+
+        Raises:
+
+        """
         if self.in_drag:
             if event.button == self._start_button:
                 self._stop_drag()
         return super(DragMode, self).button_release_cb(tdw, event)
 
     def motion_notify_cb(self, tdw, event):
+        # type: (Types.ELLIPSIS) -> Types.NONE
+        """
+
+        Args:
+            tdw: 
+            event: 
+
+        Returns:
+
+        Raises:
+
+        """
         # We might be here because an Action manipulated the modes stack
         # but if that's the case then we should wait for a button or
         # a keypress to initiate the drag.
@@ -1240,6 +1684,19 @@ class DragMode(InteractionMode):
         return super(DragMode, self).motion_notify_cb(tdw, event)
 
     def key_press_cb(self, win, tdw, event):
+        # type: (Types.ELLIPSIS) -> Types.NONE
+        """
+
+        Args:
+            win: 
+            tdw: 
+            event: 
+
+        Returns:
+
+        Raises:
+
+        """
         if self.in_drag:
             # Eat keypresses in the middle of a drag no matter how
             # it was started.
@@ -1254,6 +1711,19 @@ class DragMode(InteractionMode):
         return super(DragMode, self).key_press_cb(win, tdw, event)
 
     def key_release_cb(self, win, tdw, event):
+        # type: (Types.ELLIPSIS) -> Types.NONE
+        """
+
+        Args:
+            win: 
+            tdw: 
+            event: 
+
+        Returns:
+
+        Raises:
+
+        """
         if self.in_drag:
             if event.keyval == self._start_keyval:
                 self._stop_drag()
@@ -1276,9 +1746,16 @@ class DragMode(InteractionMode):
 
 class OneshotDragMode(DragMode):
     """Drag modes that can exit immediately when the drag stops
-
+    
     These are utility modes which allow the user to do quick, simple
     tasks with the canvas like pick a color from it or pan the view.
+
+    Args:
+
+    Returns:
+
+    Raises:
+
     """
 
     def __init__(self, unmodified_persist=True, temporary_activation=True, **kwargs):
@@ -1295,11 +1772,30 @@ class OneshotDragMode(DragMode):
         self.unmodified_persist = unmodified_persist
         self.temporary_activation = temporary_activation
 
-    def stackable_on(self, mode):
-        """Oneshot modes return to the mode the user came from on exit"""
+    def stackable_on(self, mode: Types.ELLIPSIS) -> Types.NONE:
+        """Oneshot modes return to the mode the user came from on exit
+
+        Args:
+            mode: 
+
+        Returns:
+
+        Raises:
+
+        """
         return not isinstance(mode, OneshotDragMode)
 
-    def drag_stop_cb(self, tdw):
+    def drag_stop_cb(self, tdw: Types.ELLIPSIS) -> Types.NONE:
+        """
+
+        Args:
+            tdw: 
+
+        Returns:
+
+        Raises:
+
+        """
         # Always exit at the end of a drag if not spring-loaded.
         pop = True
         if self.SPRING_LOADED:
@@ -1324,11 +1820,17 @@ class _NullMode(InteractionMode):
     """A mode that does nothing (placeholder only)"""
 
 
-class ModeStack(object):
+class ModeStack:
     """A stack of InteractionModes. The top mode is the active one.
-
+    
     Mode stacks can never be empty. If the final element is popped, it
     will be replaced with a new instance of its ``default_mode_class``.
+
+    Args:
+
+    Returns:
+
+    Raises:
 
     """
 
@@ -1352,12 +1854,17 @@ class ModeStack(object):
         self.default_mode_class = _NullMode
 
     def _sync_pending_changes_cb(self, model, **kwargs):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Syncs pending changes with the model
 
-        :param Document model: the requesting model
-        :param \*\*kwargs: passed through to checkpoint()
+        Args:
+            model: the requesting model
+            **kwargs: 
 
-        This issues a `checkpoint()` on the current InteractionMode.
+        Returns:
+
+        Raises:
+
         """
         if self._syncing_pending_changes:
             return
@@ -1367,18 +1874,24 @@ class ModeStack(object):
 
     @event
     def changed(self, old, new):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Event: emitted when the active mode changes
 
-        :param old: The previous active mode
-        :param new: The new `top` (current) mode
-
+        Args:
+            old: The previous active mode
+            new: The new `top` (current) mode
+        
         This event is emitted after the ``enter()`` method of the new
         mode has been called, and therefore after the ``leave()`` of the
         old mode too. On occasion, the old mode may be null.
-
+        
         Context-aware pushes call this only once, with the old active
         and newly active mode only regardless of how many modes were
         skipped.
+
+        Returns:
+
+        Raises:
 
         """
 
@@ -1395,13 +1908,17 @@ class ModeStack(object):
     def context_push(self, mode):
         """Context-aware push.
 
-        :param mode: mode to be stacked and made active
-        :type mode: `InteractionMode`
-
+        Args:
+            mode (`InteractionMode`): mode to be stacked and made active
+        
         Stacks a mode onto the topmost element in the stack it is compatible
         with, as determined by its ``stackable_on()`` method. Incompatible
         top modes are popped one by one until either a compatible mode is
         found, or the stack is emptied, then the new mode is pushed.
+
+        Returns:
+
+        Raises:
 
         """
         # Pop until the stack is empty, or the top mode is compatible
@@ -1437,11 +1954,16 @@ class ModeStack(object):
         top_mode.enter(doc=self._doc)
         self.changed(old=old_mode, new=top_mode)
 
-    def push(self, mode):
+    def push(self, mode: InteractionMode) -> Types.NONE:
         """Pushes a mode, and enters it.
 
-        :param mode: Mode to be stacked and made active
-        :type mode: InteractionMode
+        Args:
+            mode: Mode to be stacked and made active
+
+        Returns:
+
+        Raises:
+
         """
         old_mode = None
         if len(self._stack) > 0:
@@ -1455,8 +1977,12 @@ class ModeStack(object):
     def reset(self, replacement=None):
         """Clears the stack, popping the final element and replacing it.
 
-        :param replacement: Optional mode to go on top of the cleared stack.
-        :type replacement: `InteractionMode`.
+        Args:
+            replacement (`InteractionMode`., optional): Optional mode to go on top of the cleared stack. (Default value = None)
+
+        Returns:
+
+        Raises:
 
         """
         old_top_mode = None
@@ -1477,11 +2003,16 @@ class ModeStack(object):
         If the stack does not contain such a node, you will simply end up with
         an empty ModeStack.
 
-        :param flags: Descriptors of the node you want.
-        :type flags: `Behavior`.
-
+        Args:
+            flags (`Behavior`.): Descriptors of the node you want.
+        
         By "empty ModeStack" I mean a ModeStack with a single
         ``default_mode_class`` instance, as usual.
+
+        Returns:
+
+        Raises:
+
         """
         while self.top.pointer_behavior & flags == 0:
             if len(self._stack) == 1:
@@ -1492,10 +2023,15 @@ class ModeStack(object):
     def _check(self, replacement=None):
         """Ensures that the stack is non-empty
 
-        :param replacement: Optional replacement mode instance.
-        :type replacement: `InteractionMode`.
+        Args:
+            replacement (`InteractionMode`., optional): Optional replacement mode instance.
+        
+        Returns the new top mode if one was pushed. (Default value = None)
 
-        Returns the new top mode if one was pushed.
+        Returns:
+
+        Raises:
+
         """
         if len(self._stack) > 0:
             return None
@@ -1518,7 +2054,7 @@ class ModeStack(object):
         """Returns the number of modes on the stack."""
         return len(self._stack)
 
-    def __nonzero__(self):
+    def __bool__(self):
         """Mode stacks never test false, regardless of length."""
         return True
 

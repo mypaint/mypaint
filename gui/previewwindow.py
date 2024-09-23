@@ -38,8 +38,17 @@ REDRAW_PRIORITY = GLib.PRIORITY_LOW
 ## Helper funcs
 
 
-def _points_to_enclosing_rect(points):
-    """Convert a list of (x, y) points to their encompassing rect."""
+def _points_to_enclosing_rect(points: Types.ELLIPSIS) -> Types.NONE:
+    """Convert a list of (x, y) points to their encompassing rect.
+
+    Args:
+        points: 
+
+    Returns:
+
+    Raises:
+
+    """
     points = list(points)
     x, y = points.pop(0)
     xmin = xmax = x
@@ -73,8 +82,17 @@ class VisibleAreaOverlay(overlays.Overlay):
         self._paint_shapes = None  #: Preview box, display coords
         self._paint_topleft = None
 
-    def paint(self, cr):
-        """Paint a viewfinder box showing the main TDW's viewport"""
+    def paint(self, cr: Types.ELLIPSIS) -> Types.NONE:
+        """Paint a viewfinder box showing the main TDW's viewport
+
+        Args:
+            cr: 
+
+        Returns:
+
+        Raises:
+
+        """
         if not self._paint_shapes:
             return
         cr.set_line_join(cairo.LINE_JOIN_MITER)
@@ -176,17 +194,24 @@ class VisibleAreaOverlay(overlays.Overlay):
 
 
 class _EditZone:
+    """ """
     OUTSIDE = 0
     INSIDE = 1
 
 
 class PreviewTool(SizedVBoxToolWidget):
     """Tool widget for previewing the whole canvas.
-
+    
     We overlay a preview rectangle showing where the main document view is
     pointing. The zoom and centering of the preview widget encompasses the
     document's bounding box,
     TODO: and also the viewing rectangle.
+
+    Args:
+
+    Returns:
+
+    Raises:
 
     """
 
@@ -344,8 +369,17 @@ class PreviewTool(SizedVBoxToolWidget):
 
     ## Show Viewfinder toggle
 
-    def _show_viewfinder_toggled_cb(self, checkbtn):
-        """Show Viewfinder action callback"""
+    def _show_viewfinder_toggled_cb(self, checkbtn: Types.ELLIPSIS) -> Types.NONE:
+        """Show Viewfinder action callback
+
+        Args:
+            checkbtn: 
+
+        Returns:
+
+        Raises:
+
+        """
         self.show_viewfinder = checkbtn.get_active()
         self._set_cursor(self._cursor_no_op)
 
@@ -355,7 +389,17 @@ class PreviewTool(SizedVBoxToolWidget):
         return self.app.preferences.get(self.SHOW_VIEWFINDER_PREFS_KEY, True)
 
     @show_viewfinder.setter
-    def show_viewfinder(self, value):
+    def show_viewfinder(self, value: Types.ELLIPSIS) -> Types.NONE:
+        """
+
+        Args:
+            value: 
+
+        Returns:
+
+        Raises:
+
+        """
         old_value = self.show_viewfinder
         self.app.preferences[self.SHOW_VIEWFINDER_PREFS_KEY] = bool(value)
         if old_value != value:
@@ -363,8 +407,17 @@ class PreviewTool(SizedVBoxToolWidget):
 
     ## Cursor for the preview TDW
 
-    def _set_cursor(self, value):
-        """Sets the preview TDW cursor"""
+    def _set_cursor(self, value: Types.ELLIPSIS) -> Types.NONE:
+        """Sets the preview TDW cursor
+
+        Args:
+            value: 
+
+        Returns:
+
+        Raises:
+
+        """
         if value == self._cursor:
             return
         self._cursor = value
@@ -373,6 +426,18 @@ class PreviewTool(SizedVBoxToolWidget):
     ## Preview TDW event handlers
 
     def _leave_notify_cb(self, widget, event):
+        # type: (Types.ELLIPSIS) -> Types.NONE
+        """
+
+        Args:
+            widget: 
+            event: 
+
+        Returns:
+
+        Raises:
+
+        """
         if self._drag_start:
             return
         if event.mode != Gdk.CrossingMode.NORMAL:
@@ -380,7 +445,18 @@ class PreviewTool(SizedVBoxToolWidget):
         self.set_zone(_EditZone.OUTSIDE, update_ui=True)
 
     def _scroll_event_cb(self, widget, event):
-        """Scroll events on the preview manipulate the main view"""
+        # type: (Types.ELLIPSIS) -> Types.NONE
+        """Scroll events on the preview manipulate the main view
+
+        Args:
+            widget: 
+            event: 
+
+        Returns:
+
+        Raises:
+
+        """
         if not self.show_viewfinder:
             return False
         # Zoom or rotate the main document's view via its controller
@@ -407,6 +483,18 @@ class PreviewTool(SizedVBoxToolWidget):
         return True
 
     def _button_press_cb(self, widget, event):
+        # type: (Types.ELLIPSIS) -> Types.NONE
+        """
+
+        Args:
+            widget: 
+            event: 
+
+        Returns:
+
+        Raises:
+
+        """
         if not self.show_viewfinder:
             return False
         if not self._drag_start and event.button == 1:
@@ -421,6 +509,18 @@ class PreviewTool(SizedVBoxToolWidget):
         return True
 
     def _button_release_cb(self, widget, event):
+        # type: (Types.ELLIPSIS) -> Types.NONE
+        """
+
+        Args:
+            widget: 
+            event: 
+
+        Returns:
+
+        Raises:
+
+        """
         if not self.show_viewfinder:
             return False
         if event.button == self._button_pressed:
@@ -437,6 +537,18 @@ class PreviewTool(SizedVBoxToolWidget):
         return True
 
     def _motion_notify_cb(self, widget, event):
+        # type: (Types.ELLIPSIS) -> Types.NONE
+        """
+
+        Args:
+            widget: 
+            event: 
+
+        Returns:
+
+        Raises:
+
+        """
         if not self.show_viewfinder:
             return False
         if self._drag_start:
@@ -451,7 +563,18 @@ class PreviewTool(SizedVBoxToolWidget):
         return True
 
     def _get_zone_at_pos(self, x, y):
-        """Gets the hover zone for a pointer position"""
+        # type: (Types.ELLIPSIS) -> Types.NONE
+        """Gets the hover zone for a pointer position
+
+        Args:
+            x: 
+            y: 
+
+        Returns:
+
+        Raises:
+
+        """
         if self._drag_start is not None:
             return _EditZone.OUTSIDE
         elif self.viewport_overlay_shapes:
@@ -469,7 +592,18 @@ class PreviewTool(SizedVBoxToolWidget):
         return self._zone
 
     def set_zone(self, value, update_ui=None):
-        """Setter (property: `zone`), with redraw and cursor setting"""
+        # type: (Types.ELLIPSIS) -> Types.NONE
+        """Setter (property: `zone`), with redraw and cursor setting
+
+        Args:
+            value: 
+            update_ui:  (Default value = None)
+
+        Returns:
+
+        Raises:
+
+        """
         value_changed = value != self._zone
         self._zone = value
         if update_ui is None:  # use the default unless explicitly overridden
@@ -485,8 +619,17 @@ class PreviewTool(SizedVBoxToolWidget):
 
     zone = property(get_zone, set_zone)
 
-    def _main_view_changed_cb(self, doc):
-        """Callback: viewport changed on the main drawing canvas"""
+    def _main_view_changed_cb(self, doc: Types.ELLIPSIS) -> Types.NONE:
+        """Callback: viewport changed on the main drawing canvas
+
+        Args:
+            doc: 
+
+        Returns:
+
+        Raises:
+
+        """
         self._update_viewport_overlay()
 
     def _update_viewport_overlay(self):
@@ -532,8 +675,17 @@ class PreviewTool(SizedVBoxToolWidget):
             if not updated:
                 self._overlay.update_location()
 
-    def _limit_scale(self, scale):
-        """Limits a calculated scale to the permitted ones"""
+    def _limit_scale(self, scale: Types.ELLIPSIS) -> Types.NONE:
+        """Limits a calculated scale to the permitted ones
+
+        Args:
+            scale: 
+
+        Returns:
+
+        Raises:
+
+        """
         scale = min(scale, self.tdw.zoom_max)
         scale = max(scale, self.tdw.zoom_min)
         if self.SUPPORTED_ZOOMLEVELS_ONLY:
@@ -544,7 +696,17 @@ class PreviewTool(SizedVBoxToolWidget):
             scale = self._zoomlevel_values[max(0, scale_i - 1)]
         return scale
 
-    def _frame_modified_cb(self, *_ignored):
+    def _frame_modified_cb(self, *_ignored: Types.ELLIPSIS) -> Types.NONE:
+        """
+
+        Args:
+            *_ignored: 
+
+        Returns:
+
+        Raises:
+
+        """
         # Effective bbox change due to frame adjustment or toggle. The
         # only reason to do this separately is to support
         # ZOOM_INCLUDES_VIEWPORT_RECT.
@@ -552,22 +714,42 @@ class PreviewTool(SizedVBoxToolWidget):
         if not updated:
             self.tdw.queue_draw()
 
-    def _recreate_preview_transformation(self, *_ignored):
+    def _recreate_preview_transformation(self, *_ignored: Types.ELLIPSIS) -> Types.NONE:
         """Update the preview transformation fully: no optimizations
-
+        
         Handler for the layer stack being restructured, or the preview
         panel being resized. Both need a full transformation update and
         redraw.
+
+        Args:
+            *_ignored: 
+
+        Returns:
+
+        Raises:
+
         """
         self._update_preview_transformation(force=True)
 
     def _canvas_area_modified_cb(self, main_model, x, y, w, h):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Callback: layer contents have changed on the main canvas.
-
+        
         Called when layer contents change and a redraw is
         required.  This tries to avoid unnecessary updates to the
         projection, for example when the the drawing happens draws
         inside the previously known area.
+
+        Args:
+            main_model: 
+            x: 
+            y: 
+            w: 
+            h: 
+
+        Returns:
+
+        Raises:
 
         """
         outside_existing = False
@@ -592,15 +774,20 @@ class PreviewTool(SizedVBoxToolWidget):
         if outside_existing:
             self._update_preview_transformation()
 
-    def _update_preview_transformation(self, force=False):
+    def _update_preview_transformation(self, force: Types.ELLIPSIS = False) -> Types.NONE:
         """Update preview's scale and centering, if needed.
-
+        
         This only updates the preview transformation when needed, to
         avoid unncecessary redraws: if the transformation is updated, a
         full redraw is performed.
 
-        :param force: Always update scale and centering.
-        :return: True if an update was performed.
+        Args:
+            force: Always update scale and centering. (Default value = False)
+
+        Returns:
+            True if an update was performed.
+
+        Raises:
 
         """
 

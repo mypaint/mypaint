@@ -23,9 +23,16 @@ from lib.modes import MODE_STRINGS
 
 class LayerModeMenuItem(Gtk.ImageMenuItem):
     """Brush list menu item with a dynamic BrushGroupsMenu as its submenu
-
+    
     This is instantiated by the app's UIManager using a FactoryAction which
     must be named "LayerMode" (see factoryaction.py).
+
+    Args:
+
+    Returns:
+
+    Raises:
+
     """
 
     __gtype_name__ = "MyPaintLayerModeMenuItem"
@@ -67,13 +74,33 @@ class LayerModeMenuItem(Gtk.ImageMenuItem):
         self._update_actions()
 
     def _item_activated_cb(self, item, mode):
-        """Callback: Update the model when the user selects a menu item"""
+        # type: (Types.ELLIPSIS) -> Types.NONE
+        """Callback: Update the model when the user selects a menu item
+
+        Args:
+            item: 
+            mode: 
+
+        Returns:
+
+        Raises:
+
+        """
         if self._updating:
             return
         self._model.set_current_layer_mode(mode)
 
-    def _update_actions(self, *_ignored):
-        """Updates menu actions to reflect the current layer's mode"""
+    def _update_actions(self, *_ignored: Types.ELLIPSIS) -> Types.NONE:
+        """Updates menu actions to reflect the current layer's mode
+
+        Args:
+            *_ignored: 
+
+        Returns:
+
+        Raises:
+
+        """
         if self._updating:
             return
         self._updating = True

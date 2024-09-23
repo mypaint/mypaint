@@ -224,12 +224,7 @@ _TRANSLATOR_CREDITS = C_(
 
 
 def get_libs_version_string():
-    """Get a string describing the versions of important libs.
-
-    >>> type(get_libs_version_string()) == str
-    True
-
-    """
+    """Get a string describing the versions of important libs."""
     versions = [
         (
             "Python",
@@ -261,8 +256,18 @@ def get_libs_version_string():
     return ", ".join([" ".join(t) for t in versions])
 
 
-def run_about_dialog(mainwin, app):
-    """Runs MyPaint's about window as a transient modal dialog."""
+def run_about_dialog(mainwin, app: Types.ELLIPSIS) -> Types.NONE:
+    """Runs MyPaint's about window as a transient modal dialog.
+
+    Args:
+        mainwin: 
+        app: 
+
+    Returns:
+
+    Raises:
+
+    """
     d = Gtk.AboutDialog()
     d.set_transient_for(mainwin)
     d.set_program_name(lib.meta.MYPAINT_PROGRAM_NAME)

@@ -51,6 +51,7 @@ _ALPHA_PREFS_KEY = "symmetry.line_alpha"
 
 
 class _EditZone:
+    """ """
 
     NONE = 0
     CREATE_AXIS = 1
@@ -103,12 +104,14 @@ class SymmetryEditMode(gui.mode.ScrollableModeMixin, gui.mode.DragMode):
 
     @classmethod
     def get_name(cls):
+        """ """
         return C_(
             "symmetry axis edit mode: mode name (tooltips)",
             "Edit Symmetry Axis",
         )
 
     def get_usage(self):
+        """ """
         return C_(
             "symmetry axis edit mode: mode description (tooltips)",
             "Adjust the painting symmetry axis.",
@@ -153,11 +156,32 @@ class SymmetryEditMode(gui.mode.ScrollableModeMixin, gui.mode.DragMode):
         self.cursor_movable = self._get_cursor(gui.cursor.Name.HAND_OPEN)
         self.cursor_moving = self._get_cursor(gui.cursor.Name.HAND_CLOSED)
 
-    def _get_cursor(self, name):
+    def _get_cursor(self, name: Types.ELLIPSIS) -> Types.NONE:
+        """
+
+        Args:
+            name: 
+
+        Returns:
+
+        Raises:
+
+        """
         return self.app.cursors.get_action_cursor(self.ACTION_NAME, name)
 
     def enter(self, doc, **kwds):
-        """Enter the mode"""
+        # type: (Types.ELLIPSIS) -> Types.NONE
+        """Enter the mode
+
+        Args:
+            doc: 
+            **kwds: 
+
+        Returns:
+
+        Raises:
+
+        """
         super(SymmetryEditMode, self).enter(doc, **kwds)
         # Set overlay to draw edit controls (center point, disable button)
         self._overlay.enable_edit_mode()
@@ -167,11 +191,22 @@ class SymmetryEditMode(gui.mode.ScrollableModeMixin, gui.mode.DragMode):
             self._entered_before = True
 
     def popped(self):
+        """ """
         # Set overlay to draw normally, without controls
         self._overlay.disable_edit_mode()
         super(SymmetryEditMode, self).popped()
 
-    def _update_statusbar(self, zone):
+    def _update_statusbar(self, zone: Types.ELLIPSIS) -> Types.NONE:
+        """
+
+        Args:
+            zone: 
+
+        Returns:
+
+        Raises:
+
+        """
         if self.in_drag:
             return
         if self._last_msg_zone == zone:
@@ -201,6 +236,18 @@ class SymmetryEditMode(gui.mode.ScrollableModeMixin, gui.mode.DragMode):
     # Events and internals
 
     def button_press_cb(self, tdw, event):
+        # type: (Types.ELLIPSIS) -> Types.NONE
+        """
+
+        Args:
+            tdw: 
+            event: 
+
+        Returns:
+
+        Raises:
+
+        """
         if self._zone in (_EditZone.CREATE_AXIS, _EditZone.DISABLE):
             button = event.button
             if button == 1 and event.type == Gdk.EventType.BUTTON_PRESS:
@@ -209,6 +256,18 @@ class SymmetryEditMode(gui.mode.ScrollableModeMixin, gui.mode.DragMode):
         return super(SymmetryEditMode, self).button_press_cb(tdw, event)
 
     def button_release_cb(self, tdw, event):
+        # type: (Types.ELLIPSIS) -> Types.NONE
+        """
+
+        Args:
+            tdw: 
+            event: 
+
+        Returns:
+
+        Raises:
+
+        """
         # If the corresponding press was not on a clickable zone, or the cursor
         # was moved away from it before the button was released.
         info = self._click_info
@@ -233,12 +292,18 @@ class SymmetryEditMode(gui.mode.ScrollableModeMixin, gui.mode.DragMode):
         return False
 
     def _update_zone_and_cursor(self, x, y):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Update UI & some internal zone flags from pointer position
 
-        :param x: cursor x position
-        :param y: cursor y position
-
+        Args:
+            x: cursor x position
+            y: cursor y position
+        
         See also: `SymmetryOverlay`.
+
+        Returns:
+
+        Raises:
 
         """
         if self.in_drag:
@@ -265,12 +330,36 @@ class SymmetryEditMode(gui.mode.ScrollableModeMixin, gui.mode.DragMode):
                 self.inactive_cursor = self._get_cursor(inactive)
 
     def motion_notify_cb(self, tdw, event):
+        # type: (Types.ELLIPSIS) -> Types.NONE
+        """
+
+        Args:
+            tdw: 
+            event: 
+
+        Returns:
+
+        Raises:
+
+        """
         if not self.in_drag:
             self._update_zone_and_cursor(event.x, event.y)
             tdw.set_override_cursor(self.inactive_cursor)
         return super(SymmetryEditMode, self).motion_notify_cb(tdw, event)
 
     def drag_start_cb(self, tdw, event):
+        # type: (Types.ELLIPSIS) -> Types.NONE
+        """
+
+        Args:
+            tdw: 
+            event: 
+
+        Returns:
+
+        Raises:
+
+        """
         tdw.renderer.defer_hq_rendering(10)
         if self._zone in (_EditZone.MOVE_AXIS, _EditZone.MOVE_CENTER):
             self._drag_start_pos = tdw.doc.layer_stack.symmetry_center
@@ -296,6 +385,22 @@ class SymmetryEditMode(gui.mode.ScrollableModeMixin, gui.mode.DragMode):
         return super(SymmetryEditMode, self).drag_start_cb(tdw, event)
 
     def drag_update_cb(self, tdw, event, ev_x, ev_y, dx, dy):
+        # type: (Types.ELLIPSIS) -> Types.NONE
+        """
+
+        Args:
+            tdw: 
+            event: 
+            ev_x: 
+            ev_y: 
+            dx: 
+            dy: 
+
+        Returns:
+
+        Raises:
+
+        """
         zone = self._zone
         if zone == _EditZone.MOVE_CENTER:
             self._queue_movement(zone, (ev_x, ev_y, tdw))
@@ -303,6 +408,18 @@ class SymmetryEditMode(gui.mode.ScrollableModeMixin, gui.mode.DragMode):
             self._queue_movement(zone, (ev_x - self.start_x, ev_y - self.start_y, tdw))
 
     def _queue_movement(self, zone, args):
+        # type: (Types.ELLIPSIS) -> Types.NONE
+        """
+
+        Args:
+            zone: 
+            args: 
+
+        Returns:
+
+        Raises:
+
+        """
         self._move_item = (zone, args)
         if not self._move_timeout_id:
             self._move_timeout_id = GLib.timeout_add(
@@ -311,6 +428,7 @@ class SymmetryEditMode(gui.mode.ScrollableModeMixin, gui.mode.DragMode):
             )
 
     def _do_move(self):
+        """ """
         if self._move_item:
             zone, args = self._move_item
             self._move_item = None
@@ -323,10 +441,36 @@ class SymmetryEditMode(gui.mode.ScrollableModeMixin, gui.mode.DragMode):
         self._move_timeout_id = None
 
     def _move_center(self, x, y, tdw):
+        # type: (Types.ELLIPSIS) -> Types.NONE
+        """
+
+        Args:
+            x: 
+            y: 
+            tdw: 
+
+        Returns:
+
+        Raises:
+
+        """
         xm, ym = tdw.display_to_model(x, y)
         tdw.doc.layer_stack.symmetry_center = (xm, ym)
 
     def _move_axis(self, dx_full, dy_full, stack):
+        # type: (Types.ELLIPSIS) -> Types.NONE
+        """
+
+        Args:
+            dx_full: 
+            dy_full: 
+            stack: 
+
+        Returns:
+
+        Raises:
+
+        """
         xs, ys = self._drag_start_pos
         xx, xy, yx, yy = self._drag_factors
         xm = round(xs + (dx_full * xx + dy_full * yx))
@@ -336,7 +480,17 @@ class SymmetryEditMode(gui.mode.ScrollableModeMixin, gui.mode.DragMode):
             self._drag_prev_pos = new_pos
             stack.symmetry_center = new_pos
 
-    def drag_stop_cb(self, tdw):
+    def drag_stop_cb(self, tdw: Types.ELLIPSIS) -> Types.NONE:
+        """
+
+        Args:
+            tdw: 
+
+        Returns:
+
+        Raises:
+
+        """
         if self._move_item and not self._move_timeout_id:
             self._do_move()
         tdw.renderer.defer_hq_rendering(0)
@@ -344,6 +498,7 @@ class SymmetryEditMode(gui.mode.ScrollableModeMixin, gui.mode.DragMode):
 
 
 class SymmetryEditOptionsWidget(Gtk.Alignment):
+    """ """
 
     _POSITION_LABEL_X_TEXT = C_(
         "symmetry axis options panel: labels",
@@ -390,6 +545,16 @@ class SymmetryEditOptionsWidget(Gtk.Alignment):
         x, y = rootstack.symmetry_center
 
         def pos_adj(start_val):
+            """
+
+            Args:
+                start_val: 
+
+            Returns:
+
+            Raises:
+
+            """
             return Gtk.Adjustment(
                 value=start_val,
                 upper=32000,
@@ -434,6 +599,7 @@ class SymmetryEditOptionsWidget(Gtk.Alignment):
         rootstack.symmetry_state_changed += self._symmetry_state_changed_cb
 
     def _init_ui(self):
+        """ """
 
         # Layout grid
         row = 0
@@ -543,6 +709,7 @@ class SymmetryEditOptionsWidget(Gtk.Alignment):
         grid.attach(button, 1, row, 2, 1)
 
     def _update_angle_label(self):
+        """ """
         self._angle_label.set_text(
             self._ANGLE_LABEL_TEXT % self._axis_angle.get_value()
         )
@@ -550,6 +717,22 @@ class SymmetryEditOptionsWidget(Gtk.Alignment):
     def _symmetry_state_changed_cb(
         self, stack, active, center, sym_type, sym_lines, sym_angle
     ):
+        # type: (Types.ELLIPSIS) -> Types.NONE
+        """
+
+        Args:
+            stack: 
+            active: 
+            center: 
+            sym_type: 
+            sym_lines: 
+            sym_angle: 
+
+        Returns:
+
+        Raises:
+
+        """
 
         if center:
             cx, cy = center
@@ -569,35 +752,106 @@ class SymmetryEditOptionsWidget(Gtk.Alignment):
                 self._axis_angle.set_value(sym_angle)
             self._update_angle_label()
 
-    def _update_num_lines_sensitivity(self, sym_type):
+    def _update_num_lines_sensitivity(self, sym_type: Types.ELLIPSIS) -> Types.NONE:
+        """
+
+        Args:
+            sym_type: 
+
+        Returns:
+
+        Raises:
+
+        """
         self._axis_sym_lines_entry.set_sensitive(
             sym_type in (SymmetryRotational, SymmetrySnowflake)
         )
 
-    def _axis_pos_adj_x_changed(self, adj):
+    def _axis_pos_adj_x_changed(self, adj: Types.ELLIPSIS) -> Types.NONE:
+        """
+
+        Args:
+            adj: 
+
+        Returns:
+
+        Raises:
+
+        """
         self.app.doc.model.layer_stack.symmetry_x = int(adj.get_value())
 
-    def _axis_rot_symmetry_lines_changed(self, adj):
+    def _axis_rot_symmetry_lines_changed(self, adj: Types.ELLIPSIS) -> Types.NONE:
+        """
+
+        Args:
+            adj: 
+
+        Returns:
+
+        Raises:
+
+        """
         self.app.doc.model.layer_stack.symmetry_lines = int(adj.get_value())
 
-    def _axis_pos_adj_y_changed(self, adj):
+    def _axis_pos_adj_y_changed(self, adj: Types.ELLIPSIS) -> Types.NONE:
+        """
+
+        Args:
+            adj: 
+
+        Returns:
+
+        Raises:
+
+        """
         self.app.doc.model.layer_stack.symmetry_y = int(adj.get_value())
 
-    def _angle_value_changed(self, adj):
+    def _angle_value_changed(self, adj: Types.ELLIPSIS) -> Types.NONE:
+        """
+
+        Args:
+            adj: 
+
+        Returns:
+
+        Raises:
+
+        """
         self._update_angle_label()
         self.app.doc.model.layer_stack.symmetry_angle = adj.get_value()
 
-    def _symmetry_type_combo_changed_cb(self, combo):
+    def _symmetry_type_combo_changed_cb(self, combo: Types.ELLIPSIS) -> Types.NONE:
+        """
+
+        Args:
+            combo: 
+
+        Returns:
+
+        Raises:
+
+        """
         sym_type = combo.get_model()[combo.get_active()][0]
         self.app.doc.model.layer_stack.symmetry_type = sym_type
 
-    def _scale_value_changed_cb(self, alpha_scale):
+    def _scale_value_changed_cb(self, alpha_scale: Types.ELLIPSIS) -> Types.NONE:
+        """
+
+        Args:
+            alpha_scale: 
+
+        Returns:
+
+        Raises:
+
+        """
         self.app.preferences[_ALPHA_PREFS_KEY] = alpha_scale.get_value()
         for overlay in self._symmetry_overlays():
             overlay.set_line_alpha(alpha_scale.get_value())
 
     @staticmethod
     def _symmetry_overlays():
+        """ """
         for tdw in gui.tileddrawwidget.TiledDrawWidget.get_visible_tdws():
             for ov in tdw.display_overlays:
                 if isinstance(ov, SymmetryOverlay):
@@ -675,6 +929,7 @@ class SymmetryOverlay(gui.overlays.Overlay):
 
     @property
     def trash_icon_pixbuf(self):
+        """ """
         if not self._trash_icon_pixbuf:
             self._trash_icon_pixbuf = gui.drawutils.load_symbolic_icon(
                 icon_name="mypaint-trash-symbolic",
@@ -684,6 +939,7 @@ class SymmetryOverlay(gui.overlays.Overlay):
         return self._trash_icon_pixbuf
 
     def enable_edit_mode(self):
+        """ """
         stack = self.doc.model.layer_stack
         cx, cy = stack.symmetry_center
         self._real_alpha = False
@@ -692,6 +948,7 @@ class SymmetryOverlay(gui.overlays.Overlay):
         self._redraw()
 
     def disable_edit_mode(self):
+        """ """
         was_true = self._edit_mode
         self._edit_mode = False
         # invalidate any data specific to edit mode
@@ -703,10 +960,21 @@ class SymmetryOverlay(gui.overlays.Overlay):
             self.tdw.queue_draw()
 
     def _invalidate_edit_data(self):
+        """ """
         self._active_axis = None
         self._zone = None
 
-    def set_line_alpha(self, alpha):
+    def set_line_alpha(self, alpha: Types.ELLIPSIS) -> Types.NONE:
+        """
+
+        Args:
+            alpha: 
+
+        Returns:
+
+        Raises:
+
+        """
         invis = not self.line_alpha()
         alpha_changed = self._line_alpha != alpha
         self._line_alpha = alpha
@@ -719,12 +987,35 @@ class SymmetryOverlay(gui.overlays.Overlay):
             self._redraw()
 
     def update_zone_data(self, x, y):
+        # type: (Types.ELLIPSIS) -> Types.NONE
+        """
+
+        Args:
+            x: 
+            y: 
+
+        Returns:
+
+        Raises:
+
+        """
 
         axis_changed = False
         data = {}
         layer_stack = self.doc.model.layer_stack
 
         def cursor_in_circle(center, radius):
+            """
+
+            Args:
+                center: 
+                radius: 
+
+            Returns:
+
+            Raises:
+
+            """
             if center:
                 cx, cy = center
                 return math.hypot(cx - x, cy - y) <= radius
@@ -761,6 +1052,7 @@ class SymmetryOverlay(gui.overlays.Overlay):
         return changed, new_zone, data
 
     def _calculate_axis_rectangles(self):
+        """ """
         if self._axis_rectangles:
             self._prev_rectangles.extend(self._axis_rectangles)
         self._axis_rectangles = []
@@ -780,6 +1072,18 @@ class SymmetryOverlay(gui.overlays.Overlay):
             self._axis_rectangles.append((x, y, w, h))
 
     def _axis_check(self, x, y):
+        # type: (Types.ELLIPSIS) -> Types.NONE
+        """
+
+        Args:
+            x: 
+            y: 
+
+        Returns:
+
+        Raises:
+
+        """
 
         for i, p1, p2 in self._intersections:
             cursor_name = self.tdw.get_move_cursor_name_for_edge(
@@ -791,13 +1095,24 @@ class SymmetryOverlay(gui.overlays.Overlay):
                 self._active_axis = i
                 return True, cursor_name, (p1, p2)
 
-    def _transformation_updated_cb(self, *args):
+    def _transformation_updated_cb(self, *args: Types.ELLIPSIS) -> Types.NONE:
+        """
+
+        Args:
+            *args: 
+
+        Returns:
+
+        Raises:
+
+        """
         self._corners = None
         self._invalidate_edit_data()
         if self._prev_active:
             self._recalculate_gui_data()
 
     def _recalculate_gui_data(self):
+        """ """
         stack = self.doc.model.layer_stack
         cx, cy = stack.symmetry_center
         if stack.symmetry_active and self.line_alpha():
@@ -811,6 +1126,16 @@ class SymmetryOverlay(gui.overlays.Overlay):
             )
 
             def rounded_view_coords(n):
+                """
+
+                Args:
+                    n: 
+
+                Returns:
+
+                Raises:
+
+                """
                 x, y = self.tdw.model_to_display(*n)
                 return round(x), round(y)
 
@@ -826,11 +1151,24 @@ class SymmetryOverlay(gui.overlays.Overlay):
 
     @property
     def tdw_allocation(self):
+        """ """
         if not self._alloc:
             self._alloc = Rect.new_from_gdk_rectangle(self.tdw.get_allocation())
         return self._alloc
 
     def _recalculate_edit_data(self, cx, cy):
+        # type: (Types.ELLIPSIS) -> Types.NONE
+        """
+
+        Args:
+            cx: 
+            cy: 
+
+        Returns:
+
+        Raises:
+
+        """
         assert self._edit_mode
 
         # TiledDrawWidget allocation
@@ -877,6 +1215,18 @@ class SymmetryOverlay(gui.overlays.Overlay):
                 self._center_rectangle = None
 
     def _enter_notify_cb(self, tdw, event):
+        # type: (Types.ELLIPSIS) -> Types.NONE
+        """
+
+        Args:
+            tdw: 
+            event: 
+
+        Returns:
+
+        Raises:
+
+        """
         if self._edit_mode and self._real_alpha:
             self._real_alpha = False
             if not self._line_alpha:
@@ -884,12 +1234,36 @@ class SymmetryOverlay(gui.overlays.Overlay):
             self._redraw()
 
     def _leave_notify_cb(self, twd, event):
+        # type: (Types.ELLIPSIS) -> Types.NONE
+        """
+
+        Args:
+            twd: 
+            event: 
+
+        Returns:
+
+        Raises:
+
+        """
         if self._edit_mode:
             self._zone = None
             self._real_alpha = True
             self._redraw()
 
     def _size_allocate_cb(self, tdw, allocation):
+        # type: (Types.ELLIPSIS) -> Types.NONE
+        """
+
+        Args:
+            tdw: 
+            allocation: 
+
+        Returns:
+
+        Raises:
+
+        """
         # The value is only needed in edit mode, so the cached value is
         # invalidated and the new one fetched when needed.
         self._alloc = None
@@ -897,6 +1271,22 @@ class SymmetryOverlay(gui.overlays.Overlay):
     def _symmetry_state_changed_cb(
         self, stack, active, center, symmetry_type, symmetry_lines, angle
     ):
+        # type: (Types.ELLIPSIS) -> Types.NONE
+        """
+
+        Args:
+            stack: 
+            active: 
+            center: 
+            symmetry_type: 
+            symmetry_lines: 
+            angle: 
+
+        Returns:
+
+        Raises:
+
+        """
         redraw, recalc = False, False
         params = (center, symmetry_type, symmetry_lines, angle)
         if stack.symmetry_active and [p for p in params if p is not None]:
@@ -913,9 +1303,20 @@ class SymmetryOverlay(gui.overlays.Overlay):
             self._redraw()
 
     def _full_redraw(self):
+        """ """
         return len(self._intersections_view) > 4
 
-    def _redraw(self, only_button=False):
+    def _redraw(self, only_button: Types.ELLIPSIS = False) -> Types.NONE:
+        """
+
+        Args:
+            only_button:  (Default value = False)
+
+        Returns:
+
+        Raises:
+
+        """
 
         if only_button:
             self.tdw.queue_draw_area(*self._disable_rectangle)
@@ -948,8 +1349,17 @@ class SymmetryOverlay(gui.overlays.Overlay):
         for area in areas:
             self.tdw.queue_draw_area(*area)
 
-    def paint(self, cr):
-        """Paint the overlay, in display coordinates"""
+    def paint(self, cr: Types.ELLIPSIS) -> Types.NONE:
+        """Paint the overlay, in display coordinates
+
+        Args:
+            cr: 
+
+        Returns:
+
+        Raises:
+
+        """
         if self.doc.model.layer_stack.symmetry_active:
             self._render_axis_lines(cr)
             if self._edit_mode:
@@ -958,7 +1368,17 @@ class SymmetryOverlay(gui.overlays.Overlay):
                 if self._center_pos:
                     self._draw_center_button(cr)
 
-    def _draw_disable_button(self, cr):
+    def _draw_disable_button(self, cr: Types.ELLIPSIS) -> Types.NONE:
+        """
+
+        Args:
+            cr: 
+
+        Returns:
+
+        Raises:
+
+        """
         x, y = self._disable_pos
         col = self._item_color(self._zone == _EditZone.DISABLE)
         gui.drawutils.render_round_floating_button(
@@ -969,12 +1389,23 @@ class SymmetryOverlay(gui.overlays.Overlay):
             pixbuf=self.trash_icon_pixbuf,
         )
 
-    def _draw_center_button(self, cr):
+    def _draw_center_button(self, cr: Types.ELLIPSIS) -> Types.NONE:
+        """
+
+        Args:
+            cr: 
+
+        Returns:
+
+        Raises:
+
+        """
         radius, (x, y) = self._CENTER_RADIUS, self._center_pos
         col = self._item_color(self._zone == _EditZone.MOVE_CENTER)
         gui.drawutils.render_round_floating_color_chip(cr, x, y, col, radius, z=0)
 
     def line_alpha(self):
+        """ """
         opaque_line_zones = (_EditZone.MOVE_AXIS, _EditZone.MOVE_CENTER)
         if self._edit_mode and self._zone in opaque_line_zones:
             return 1.0
@@ -983,7 +1414,17 @@ class SymmetryOverlay(gui.overlays.Overlay):
         else:
             return self._line_alpha
 
-    def _render_axis_lines(self, cr):
+    def _render_axis_lines(self, cr: Types.ELLIPSIS) -> Types.NONE:
+        """
+
+        Args:
+            cr: 
+
+        Returns:
+
+        Raises:
+
+        """
         # Convert to display coordinates, with rounding and pixel centering
 
         line_alpha = self.line_alpha()
@@ -1026,7 +1467,17 @@ class SymmetryOverlay(gui.overlays.Overlay):
         cr.restore()
 
     @staticmethod
-    def _item_color(active):
+    def _item_color(active: Types.ELLIPSIS) -> Types.NONE:
+        """
+
+        Args:
+            active: 
+
+        Returns:
+
+        Raises:
+
+        """
         if active:
             return gui.style.ACTIVE_ITEM_COLOR
         else:
@@ -1034,19 +1485,45 @@ class SymmetryOverlay(gui.overlays.Overlay):
 
 
 def get_viewport_intersections(symm_type, x, y, angle, num_lines, corners_m):
+    # type: (Types.ELLIPSIS) -> Types.NONE
     """Get indexed tuples with pairs of coordinates for each intersection
-
+    
     The returned data is of the form [(index, (x0, y0), (x1, y1)), ...] where
     the index canonically identifies an axis, when there are multiple. Index
     values are partially ordered, but not always contiguous.
-
+    
     If there are no intersections, the empty list is returned.
+
+    Args:
+        symm_type: 
+        x: 
+        y: 
+        angle: 
+        num_lines: 
+        corners_m: 
+
+    Returns:
+
+    Raises:
+
     """
     intersections = []
     p1 = (x, y)
     angle = math.pi * ((angle % 360) / 180)
 
     def append(a, **kwargs):
+        # type: (Types.ELLIPSIS) -> Types.NONE
+        """
+
+        Args:
+            a: 
+            **kwargs: 
+
+        Returns:
+
+        Raises:
+
+        """
         # Reflected on y axis, due to display direction
         inter = lib.alg.intersection_of_vector_and_poly(
             corners_m, p1, (x + math.cos(a), y - math.sin(a)), **kwargs

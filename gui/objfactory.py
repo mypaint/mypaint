@@ -26,68 +26,79 @@ logger = logging.getLogger(__name__)
 class ConstructError(Exception):
     """Errors encountered when constructing objects.
 
-    Raised when an object cannot be looked up by GType name:
+    Args:
 
-        >>> import gi
+    Returns:
+
+    Raises:
+        Just: importing a module defining a class
+        with: a
+        is: sufficient to clue GObject
+        into: the existence of the class
+        This: exception is also raised when construction
+        fails: because the type subclassing requirements are not met
+
+    >>> import gi
         >>> from lib.gibindings import Gtk
         >>> make_widget = ObjFactory(gtype=Gtk.Entry)
         >>> make_widget("NonExist12345")  # doctest: +IGNORE_EXCEPTION_DETAIL
         Traceback (most recent call last):
         ConstructError: Cannot construct a 'NonExist12345': module not imp[...]
-
-    Just importing a module defining a class
-    with a "__gtype_name__" defined for it into the running Python interpreter
-    is sufficient to clue GObject's type system
-    into the existence of the class, so the error message refers to that.
-    This exception is also raised when construction
-    fails because the type subclassing requirements are not met:
-
+    
         >>> make_widget("GtkLabel")  # doctest: +IGNORE_EXCEPTION_DETAIL
         Traceback (most recent call last):
         ConstructError: GtkLabel is not a subclass of GtkEntry
-
     """
 
 
-class ObjFactory(object):
+class ObjFactory:
     """Pythonic cached factory for GObjects.
-
+    
     Objects are constructable from their GObject type name and a simple tuple
     containing any construction parameters needed.
+    
+    
+    Factories can be used as functions, given that they basically have only a
+    single job to do.
+    
+    
+    The combination of GObject type name and parameters provides a meaningful
+    identity for a UI element, e.g. a particular window with its own button
+    launcher.  The identifiers are used as a cache key internally.
+    
+    
+    Identities can be extracted from objects built by the factory:
+    
+    
+    and allow their reconstruction in future app sessions:
 
-      >>> import gi
+    Args:
+
+    Returns:
+
+    Raises:
+
+    >>> import gi
       >>> from lib.gibindings import Gtk
       >>> make_widget = ObjFactory(gtype=Gtk.Widget)
       >>> w1 = make_widget.get("GtkLabel", "Hello, World",)
       >>> w1 is not None
       True
-
-    Factories can be used as functions, given that they basically have only a
-    single job to do.
-
+    
       >>> w2 = make_widget("GtkLabel", "Hello, World")
-
-    The combination of GObject type name and parameters provides a meaningful
-    identity for a UI element, e.g. a particular window with its own button
-    launcher.  The identifiers are used as a cache key internally.
-
+    
       >>> w1 is w2
       True
-
-    Identities can be extracted from objects built by the factory:
-
+    
       >>> make_widget.identify("constructed elsewhere") is None
       True
       >>> saved_ident = make_widget.identify(w1)
       >>> saved_ident
       ('GtkLabel', 'Hello, World')
-
-    and allow their reconstruction in future app sessions:
-
+    
       >>> w3 = make_widget(*saved_ident)
       >>> w3 is w1
       True
-
     """
 
     def __init__(self, gtype=None):
@@ -105,32 +116,35 @@ class ObjFactory(object):
         self._cache = {}
 
     def get(self, gtype_name, *params):
+        # type: (Types.ELLIPSIS) -> GObject
         """Fetch an object by identity, via an internal cache.
-
+        
         A cache is used, to avoid overconstruction.  If construction is needed,
         the type name is used to obtain the Python class representing the
         GObject type, which is then instantiated by passing its Python
         constructor the supplied parameters as its ``*args``.
-
+        
         Construction parameters are assumed to qualify and specialize objects
         sufficiently for `params` plus the type name to form a meaningful
         identity for the object.
-
+        
         This is the same concept of identity the cache uses.  If the
         construction parameters need to change during the lifetime of the
         object to maintain this identity, the `rebadge()` method can be used to
         update them and allow the object to be reconstructed correctly for the
         next session.
 
-        :param gtype_name: a registered name (cf. __gtype_name__)
-        :type gtype_name: str
-        :param params: parameters for the Python constructor
-        :type params: tuple
-        :returns: the newly constructed object
-        :rtype: GObject
-        :raises ConstructError: when construction fails.
+        Args:
+            gtype_name: a registered name (cf. __gtype_name__)
+            *params: 
 
-        Fires `object_created()` after an object has been successfully created.
+        Returns:
+            the newly constructed object
+
+        Raises:
+            ConstructError: when construction fails.
+
+Fires `object_created()` after an object has been successfully created.
 
         """
         key = self._make_key(gtype_name, params)
@@ -168,29 +182,46 @@ class ObjFactory(object):
         return self.get(gtype_name, *params)
 
     @event
-    def object_created(self, product):
+    def object_created(self, product: Types.ELLIPSIS) -> Types.NONE:
         """Event: an object was created by `get()`
 
-        :param product: The newly constructed object.
+        Args:
+            product: The newly constructed object.
+
+        Returns:
+
+        Raises:
+
         """
 
     def cache_has(self, gtype_name, *params):
+        # type: (Types.ELLIPSIS) -> bool
         """Returns whether an object with the given key is in the cache.
 
-        :param gtype_name: gtype-system name for the object's class.
-        :param params: Sequence of construction params.
-        :returns: Whether the object with this identity exists in the cache.
-        :rtype: bool
+        Args:
+            gtype_name: gtype-system name for the object's class.
+            *params: 
+
+        Returns:
+            Whether the object with this identity exists in the cache.
+
+        Raises:
+
         """
         key = self._make_key(gtype_name, params)
         return key in self._cache
 
-    def identify(self, product):
+    def identify(self, product: Types.ELLIPSIS) -> Types.NONE:
         """Gets the typename & params of an object created by this factory.
 
-        :param product: An object created by this factory
-        :returns: identity tuple, or `None`
-        :rtype: None, or a tuple, ``(GTYPENAME, PARAMS...)``
+        Args:
+            product: An object created by this factory
+
+        Returns:
+            None, or a tuple, ``(GTYPENAME, PARAMS...)``: identity tuple, or `None`
+
+        Raises:
+
         """
         try:
             key = product.__key
@@ -199,33 +230,45 @@ class ObjFactory(object):
         return key
 
     @staticmethod
-    def _make_key(gtype_name, params):
+    def _make_key(gtype_name, params: Types.ELLIPSIS) -> Types.NONE:
         """Internal cache key creation function.
+
+        Args:
+            gtype_name: 
+            params: 
+
+        Returns:
+
+        Raises:
 
         >>> ObjFactory._make_key("GtkLabel", ["test test"])
         ('GtkLabel', 'test test')
-
         """
         return tuple([gtype_name] + list(params))
 
     def rebadge(self, product, new_params):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Changes the construct params of an object.
-
+        
         Use this when a constructed object has had something intrinsic changed
         that's encoded as a construction parameter.
 
-        :params product: An object created by this factory.
-        :params new_params: A new sequence of identifying parameters.
-        :rtype: bool
-        :returns: Whether the rebadge succeeded.
+        Args:
+            product: An object created by this factory.
+            new_params: A new sequence of identifying parameters.
 
-        Rebadging will fail if another object exists in the cache with the same
-        identity.  If successful, this updates the factory cache, and the
-        embedded identifier in the object itself.
+        Returns: bool
+            Whether the rebadge succeeded.
+            
+            Rebadging will fail if another object exists in the cache with the same
+            identity.  If successful, this updates the factory cache, and the
+            embedded identifier in the object itself.
+            
+            Fires `object_rebadged()` if the parameters were actually changed.
+            Changing the params to their current values has no effect, and does not
+            fire the @event.
 
-        Fires `object_rebadged()` if the parameters were actually changed.
-        Changing the params to their current values has no effect, and does not
-        fire the @event.
+        Raises:
 
         """
         old_key = self.identify(product)
@@ -244,7 +287,19 @@ class ObjFactory(object):
 
     @event
     def object_rebadged(self, product, old_params, new_params):
-        """Event: object's construct params were updated by `rebadge()`"""
+        # type: (Types.ELLIPSIS) -> Types.NONE
+        """Event: object's construct params were updated by `rebadge()`
+
+        Args:
+            product: 
+            old_params: 
+            new_params: 
+
+        Returns:
+
+        Raises:
+
+        """
 
 
 if __name__ == "__main__":

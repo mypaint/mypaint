@@ -12,7 +12,6 @@ import math
 import logging
 
 import gui.drawutils
-from lib.pycompat import xrange
 
 from lib.gibindings import Gtk
 from lib.gibindings import Gdk
@@ -37,9 +36,15 @@ max_cursor_size = None
 
 class Name:
     """Cursor name constants
-
+    
     These correspond to the names of small (22x22px) png files in the
     installation's pixmaps directory.
+
+    Args:
+
+    Returns:
+
+    Raises:
 
     """
 
@@ -69,9 +74,14 @@ class Name:
 def get_brush_cursor(radius, style, prefs=None):
     """Get a cursor for use with a brush of a particular size and type
 
-    :param float radius: Radius of the ring
-    :param int style: A cursor style constant (for now, see the source)
-    :param dict prefs: User preferences dict
+    Args:
+        radius (float): Radius of the ring
+        style (int): A cursor style constant (for now, see the source)
+        prefs (dict, optional): User preferences dict (Default value = None)
+
+    Returns:
+
+    Raises:
 
     """
     prefs = prefs or {}
@@ -127,8 +137,17 @@ def get_brush_cursor(radius, style, prefs=None):
     return last_cursor
 
 
-def _image_surface_to_pixbuf(surf):
-    """Convert a Cairo surface to a GdkPixbuf"""
+def _image_surface_to_pixbuf(surf: Types.ELLIPSIS) -> Types.NONE:
+    """Convert a Cairo surface to a GdkPixbuf
+
+    Args:
+        surf: 
+
+    Returns:
+
+    Raises:
+
+    """
     w = surf.get_width()
     h = surf.get_height()
     return Gdk.pixbuf_get_from_surface(surf, 0, 0, w, h)
@@ -139,16 +158,21 @@ def draw_brush_cursor(
 ):
     """Draw a brush cursor into a Cairo context
 
-    :param cr: A Cairo context
-    :param radius: The radius of the brush cursor circle
-    :param cc: The center of the cursor (single value)
-    :param int style: A cursor style constant (for now, see the source)
-    :param dict prefs: User preferences dict
-    :param threshold: if set, draw crosshair lines if the brush circle radius
-           is smaller than the threshold value.
-
+    Args:
+        cr: A Cairo context
+        radius: The radius of the brush cursor circle
+        cc: The center of the cursor (single value)
+        style (int, optional): A cursor style constant (for now, see the source) (Default value = BRUSH_CURSOR_STYLE_NORMAL)
+        prefs (dict, optional): User preferences dict (Default value = None)
+        threshold: if set, draw crosshair lines if the brush circle radius
+    is smaller than the threshold value.
+    
     The Cairo context is assumed to have width and height `d`+1, at
-    least.
+    least. (Default value = None)
+
+    Returns:
+
+    Raises:
 
     """
     prefs = prefs or {}
@@ -218,6 +242,7 @@ def draw_brush_cursor(
     if lines:
 
         def stroke_lines():
+            """ """
             for (x_offs_0, y_offs_0), (x_offs_1, y_offs_1) in lines:
                 cr.new_sub_path()
                 cr.move_to(cx + x_offs_0, cy + y_offs_0)
@@ -236,7 +261,19 @@ def draw_brush_cursor(
 
 
 def cursor_line_segments(style, r, threshold):
-    """Returns tuples of crosshair line coordinates for the given style"""
+    # type: (Types.ELLIPSIS) -> Types.NONE
+    """Returns tuples of crosshair line coordinates for the given style
+
+    Args:
+        style: 
+        r: 
+        threshold: 
+
+    Returns:
+
+    Raises:
+
+    """
     if r >= threshold:
         return []
 
@@ -265,8 +302,17 @@ def cursor_line_segments(style, r, threshold):
         ]
 
 
-def cursor_arc_segments(style):
-    """Returns a list of arc segments based on style - pairs of radians"""
+def cursor_arc_segments(style: Types.ELLIPSIS) -> Types.NONE:
+    """Returns a list of arc segments based on style - pairs of radians
+
+    Args:
+        style: 
+
+    Returns:
+
+    Raises:
+
+    """
     k = math.pi / 4
     k2 = k / 2
     if style == BRUSH_CURSOR_STYLE_ERASER:
@@ -288,7 +334,7 @@ def cursor_arc_segments(style):
         return [(0, 2 * math.pi)]
 
 
-class CustomCursorMaker(object):
+class CustomCursorMaker:
     """Factory and cache of custom cursors for actions."""
 
     CURSOR_HOTSPOTS = {
@@ -323,13 +369,18 @@ class CustomCursorMaker(object):
     def _get_overlay_cursor(self, icon_pixbuf, cursor_name=Name.ARROW):
         """Returns an overlay cursor. Not cached.
 
-        :param icon_pixbuf: a GdkPixbuf.Pixbuf containing a small (~22px)
-           image, or None
-        :param cursor_name: name of a pixmaps/ cursor image to use for the
-           pointer part, minus the .png
-
+        Args:
+            icon_pixbuf: a GdkPixbuf.Pixbuf containing a small (~22px)
+        image, or None
+            cursor_name: name of a pixmaps/ cursor image to use for the
+        pointer part, minus the .png
+        
         The overlay icon will be overlaid to the bottom and right of the
-        returned cursor image.
+        returned cursor image. (Default value = Name.ARROW)
+
+        Returns:
+
+        Raises:
 
         """
 
@@ -380,13 +431,18 @@ class CustomCursorMaker(object):
         cursor = Gdk.Cursor.new_from_pixbuf(display, cursor_pixbuf, hot_x, hot_y)
         return cursor
 
-    def get_freehand_cursor(self, cursor_name=Name.CROSSHAIR_OPEN_PRECISE):
+    def get_freehand_cursor(self, cursor_name: Types.ELLIPSIS = Name.CROSSHAIR_OPEN_PRECISE) -> Types.NONE:
         """Returns a cursor for the current app.brush. Cached.
 
-        :param cursor_name: name of a pixmaps/ image to use, minus the .png
-
+        Args:
+            cursor_name: name of a pixmaps/ image to use, minus the .png
+        
         An icon for the brush blend mode will be overlaid to the bottom and
-        right of the cursor image.
+        right of the cursor image. (Default value = Name.CROSSHAIR_OPEN_PRECISE)
+
+        Returns:
+
+        Raises:
 
         """
         # Pick an icon
@@ -401,13 +457,19 @@ class CustomCursorMaker(object):
         return self.get_icon_cursor(icon_name, cursor_name)
 
     def get_action_cursor(self, action_name, cursor_name=Name.ARROW):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Returns an overlay cursor for a named action. Cached.
 
-        :param action_name: the name of a GtkAction defined in resources.xml
-        :param cursor_name: name of a pixmaps/ image to use, minus the .png
-
+        Args:
+            action_name: the name of a GtkAction defined in resources.xml
+            cursor_name: name of a pixmaps/ image to use, minus the .png
+        
         The action's icon will be overlaid at a small size to the bottom and
-        right of the cursor image.
+        right of the cursor image. (Default value = Name.ARROW)
+
+        Returns:
+
+        Raises:
 
         """
         # Find a small action icon for the overlay
@@ -420,13 +482,19 @@ class CustomCursorMaker(object):
         return self.get_icon_cursor(icon_name, cursor_name)
 
     def get_icon_cursor(self, icon_name, cursor_name=Name.ARROW):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Returns an overlay cursor for a named icon. Cached.
 
-        :param icon_name: themed icon system name.
-        :param cursor_name: name of a pixmaps/ image to use, minus the .png
-
+        Args:
+            icon_name: themed icon system name.
+            cursor_name: name of a pixmaps/ image to use, minus the .png
+        
         The icon will be overlaid at a small size to the bottom and right of
-        the cursor image.
+        the cursor image. (Default value = Name.ARROW)
+
+        Returns:
+
+        Raises:
 
         """
 
@@ -475,13 +543,20 @@ class CustomCursorMaker(object):
         return cursor
 
 
-def get_move_cursor_name_for_angle(angle):
+def get_move_cursor_name_for_angle(angle: Types.ELLIPSIS) -> Types.NONE:
     """Cursor name to use for a motion in a given direction
-
+    
     To get the cursor appropriate for edge adjustments, provide the angle
     perpendicular to the angle of the edge.
 
-      >>> f = get_move_cursor_name_for_angle
+    Args:
+        angle: 
+
+    Returns:
+
+    Raises:
+
+    >>> f = get_move_cursor_name_for_angle
       >>> pi = math.pi
       >>> offs = pi / 16 - 0.01
       >>> (Name.MOVE_WEST_OR_EAST
@@ -523,9 +598,9 @@ if __name__ == "__main__":
     _cr.set_source_rgb(0.7, 0.7, 0.7)
     _cr.paint()
 
-    for _style in xrange(4):
+    for _style in range(4):
         col = 0
-        for size in xrange(_min_size, _max_size + 1, (_max_size - _min_size) // nsteps):
+        for size in range(_min_size, _max_size + 1, (_max_size - _min_size) // nsteps):
             _cr.save()
             y = (_style * _max_size) + ((_max_size - size) / 2)
             x = (col * _max_size) + ((_max_size - size) / 2)
@@ -542,7 +617,18 @@ if __name__ == "__main__":
     num_styles = 4
     _style = 0
 
-    def _enter_cb(widget, event):
+    def _enter_cb(widget, event: Types.ELLIPSIS) -> Types.NONE:
+        """
+
+        Args:
+            widget: 
+            event: 
+
+        Returns:
+
+        Raises:
+
+        """
         global _style, _max_size
         r = randint(3, _max_size // 2)
         print("DEBUG: radius=%s, style=%s" % (r, _style))

@@ -35,20 +35,40 @@ class PanViewMode(gui.mode.ScrollableModeMixin, gui.mode.OneshotDragMode):
 
     @classmethod
     def get_name(cls):
+        """ """
         return _("Scroll View")
 
     def get_usage(self):
+        """ """
         return _("Drag the canvas view")
 
     @property
     def inactive_cursor(self):
+        """ """
         return self.doc.app.cursors.get_action_cursor(self.ACTION_NAME)
 
     @property
     def active_cursor(self):
+        """ """
         return self.doc.app.cursors.get_action_cursor(self.ACTION_NAME)
 
     def drag_update_cb(self, tdw, event, ev_x, ev_y, dx, dy):
+        # type: (Types.ELLIPSIS) -> Types.NONE
+        """
+
+        Args:
+            tdw: 
+            event: 
+            ev_x: 
+            ev_y: 
+            dx: 
+            dy: 
+
+        Returns:
+
+        Raises:
+
+        """
         # NOTE: keep in line with gui.mode.ScrollableViewMixin
         tdw.scroll(-dx, -dy)
         self.doc.notify_view_changed()
@@ -73,20 +93,40 @@ class ZoomViewMode(gui.mode.ScrollableModeMixin, gui.mode.OneshotDragMode):
 
     @classmethod
     def get_name(cls):
+        """ """
         return _("Zoom View")
 
     def get_usage(self):
+        """ """
         return _("Zoom the canvas view")
 
     @property
     def active_cursor(self):
+        """ """
         return self.doc.app.cursors.get_action_cursor(self.ACTION_NAME)
 
     @property
     def inactive_cursor(self):
+        """ """
         return self.doc.app.cursors.get_action_cursor(self.ACTION_NAME)
 
     def drag_update_cb(self, tdw, event, ev_x, ev_y, dx, dy):
+        # type: (Types.ELLIPSIS) -> Types.NONE
+        """
+
+        Args:
+            tdw: 
+            event: 
+            ev_x: 
+            ev_y: 
+            dx: 
+            dy: 
+
+        Returns:
+
+        Raises:
+
+        """
         tdw.scroll(-dx, -dy)
         tdw.zoom(math.exp(dy / 100.0), center=(ev_x, ev_y))
         # TODO: Let modifiers constrain the zoom amount to
@@ -115,20 +155,40 @@ class RotateViewMode(gui.mode.ScrollableModeMixin, gui.mode.OneshotDragMode):
 
     @classmethod
     def get_name(cls):
+        """ """
         return _("Rotate View")
 
     def get_usage(cls):
+        """ """
         return _("Rotate the canvas view")
 
     @property
     def active_cursor(self):
+        """ """
         return self.doc.app.cursors.get_action_cursor(self.ACTION_NAME)
 
     @property
     def inactive_cursor(self):
+        """ """
         return self.doc.app.cursors.get_action_cursor(self.ACTION_NAME)
 
     def drag_update_cb(self, tdw, event, ev_x, ev_y, dx, dy):
+        # type: (Types.ELLIPSIS) -> Types.NONE
+        """
+
+        Args:
+            tdw: 
+            event: 
+            ev_x: 
+            ev_y: 
+            dx: 
+            dy: 
+
+        Returns:
+
+        Raises:
+
+        """
         # calculate angular velocity from the rotation center
         cx, cy = tdw.get_center()
         x, y = ev_x - cx, ev_y - cy

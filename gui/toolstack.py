@@ -25,8 +25,6 @@ from . import objfactory
 from .widgets import borderless_button
 from .windowing import clear_focus
 from lib.gettext import C_
-from lib.pycompat import xrange
-from lib.pycompat import unicode
 
 logger = logging.getLogger(__name__)
 
@@ -58,12 +56,18 @@ TOOL_WIDGET_NATURAL_HEIGHT_TALL = 1.25 * TOOL_WIDGET_MIN_WIDTH
 
 class ToolStack(Gtk.EventBox):
     """Vertical stack of tool widget groups
-
+    
     The layout has movable dividers between groups of tool widgets, and an
     empty group on the end which accepts tabs dragged to it. The groups are
     implemented as `Gtk.Notebook`s, but that interface is not exposed.
     ToolStacks are built up from layout definitions represented by simple
     types: see `Workspace` and `build_from_layout()` for details.
+
+    Args:
+
+    Returns:
+
+    Raises:
 
     """
 
@@ -129,23 +133,61 @@ class ToolStack(Gtk.EventBox):
 
         ## Custom widget packing
 
-        def pack1_tool_widget_notebook(self, notebook):
-            """Pack a notebook intended for tool widgets as child1."""
+        def pack1_tool_widget_notebook(self, notebook: Types.ELLIPSIS) -> Types.NONE:
+            """Pack a notebook intended for tool widgets as child1.
+
+            Args:
+                notebook: 
+
+            Returns:
+
+            Raises:
+
+            """
             assert isinstance(notebook, ToolStack._Notebook)
             self.pack1(notebook, False, False)
 
-        def pack2_placeholder_notebook(self, notebook):
-            """Pack a notebook intended as a placeholder into child2."""
+        def pack2_placeholder_notebook(self, notebook: Types.ELLIPSIS) -> Types.NONE:
+            """Pack a notebook intended as a placeholder into child2.
+
+            Args:
+                notebook: 
+
+            Returns:
+
+            Raises:
+
+            """
             assert isinstance(notebook, ToolStack._Notebook)
             self.pack2(notebook, True, False)
 
-        def pack2_subpaned(self, paned):
-            """Pack a subpaned into child2."""
+        def pack2_subpaned(self, paned: Types.ELLIPSIS) -> Types.NONE:
+            """Pack a subpaned into child2.
+
+            Args:
+                paned: 
+
+            Returns:
+
+            Raises:
+
+            """
             assert isinstance(paned, ToolStack._Paned)
             self.pack2(paned, True, False)
 
         def _first_alloc_cb(self, widget, alloc):
-            """Try to allocate child widgets their natural size when alloced."""
+            # type: (Types.ELLIPSIS) -> Types.NONE
+            """Try to allocate child widgets their natural size when alloced.
+
+            Args:
+                widget: 
+                alloc: 
+
+            Returns:
+
+            Raises:
+
+            """
             # Normally, if child widgets declare a real minimum size then in a
             # structure like this they'll be allocated their minimum size even
             # when there's enough space to give them their natural size. As a
@@ -261,8 +303,17 @@ class ToolStack(Gtk.EventBox):
 
         ## Tool widget pages
 
-        def append_tool_widget_page(self, tool_widget):
-            """Appends a tool widget as a new page/tab."""
+        def append_tool_widget_page(self, tool_widget: Types.ELLIPSIS) -> Types.NONE:
+            """Appends a tool widget as a new page/tab.
+
+            Args:
+                tool_widget: 
+
+            Returns:
+
+            Raises:
+
+            """
             page = _ToolWidgetNotebookPage()
             page.add(tool_widget)
             label = self._make_tab_label(tool_widget)
@@ -277,6 +328,19 @@ class ToolStack(Gtk.EventBox):
         ## ToolStack structure: event callbacks
 
         def _page_added_cb(self, notebook, child, page_num):
+            # type: (Types.ELLIPSIS) -> Types.NONE
+            """
+
+            Args:
+                notebook: 
+                child: 
+                page_num: 
+
+            Returns:
+
+            Raises:
+
+            """
             stack = self._toolstack
             GLib.idle_add(stack._update_structure)
             # Reinstate the previous size on the divider
@@ -296,19 +360,38 @@ class ToolStack(Gtk.EventBox):
             GLib.idle_add(stack._set_first_paned_position, h)
 
         def _page_removed_cb(self, notebook, child, page_num):
+            # type: (Types.ELLIPSIS) -> Types.NONE
+            """
+
+            Args:
+                notebook: 
+                child: 
+                page_num: 
+
+            Returns:
+
+            Raises:
+
+            """
             GLib.idle_add(self._toolstack._update_structure)
 
         ## ToolStack structure: utility methods
 
         def split_former_placeholder(self):
             """Splits the space used by a placeholder after a tab drag into it.
-
+            
             After the placeholder has a tab dragged into it, it can no longer
             fill the placeholder's role. This method creates a new empty
             placeholder after it in the stack, and updates the hierarchy
             appropriately. It also tries to retain the dragged-in tab's page's
             size as much as possible by setting paned divider positions
             appropriately.
+
+            Args:
+
+            Returns:
+
+            Raises:
 
             """
             # Bail if not a former placeholder
@@ -340,6 +423,19 @@ class ToolStack(Gtk.EventBox):
         ## Action buttons
 
         def _switch_page_cb(self, notebook, page, page_num):
+            # type: (Types.ELLIPSIS) -> Types.NONE
+            """
+
+            Args:
+                notebook: 
+                page: 
+                page_num: 
+
+            Returns:
+
+            Raises:
+
+            """
             tool_widget = page.get_child()
             has_properties = hasattr(tool_widget, "tool_widget_properties")
             self._properties_button.set_sensitive(has_properties)
@@ -362,11 +458,18 @@ class ToolStack(Gtk.EventBox):
             self._close_button.set_tooltip_text(close_tooltip)
             self._sidebar_swap_button.set_tooltip_text(swap_tooltip)
 
-        def _close_button_clicked_cb(self, button):
+        def _close_button_clicked_cb(self, button: Types.ELLIPSIS) -> Types.NONE:
             """Remove the current page (close button "clicked" event callback)
-
+            
             Ultimately fires the ``tool_widget_removed()`` @event of the owning
             workspace.
+
+            Args:
+                button: 
+
+            Returns:
+
+            Raises:
 
             """
             page_num = self.get_current_page()
@@ -378,25 +481,51 @@ class ToolStack(Gtk.EventBox):
             # by the notebook itself. gtk_notebook_button_release()
             # needs the structure to be unchanging or it'll segfault.
 
-        def _deferred_remove_tool_widget(self, page):
+        def _deferred_remove_tool_widget(self, page: Types.ELLIPSIS) -> Types.NONE:
+            """
+
+            Args:
+                page: 
+
+            Returns:
+
+            Raises:
+
+            """
             assert page is not None
             tool_widget = page.get_child()
             self._toolstack.remove_tool_widget(tool_widget)
             return False
 
-        def _properties_button_clicked_cb(self, button):
-            """Invoke the current page's properties callback."""
+        def _properties_button_clicked_cb(self, button: Types.ELLIPSIS) -> Types.NONE:
+            """Invoke the current page's properties callback.
+
+            Args:
+                button: 
+
+            Returns:
+
+            Raises:
+
+            """
             page_num = self.get_current_page()
             page = self.get_nth_page(page_num)
             tool_widget = page.get_child()
             if hasattr(tool_widget, "tool_widget_properties"):
                 tool_widget.tool_widget_properties()
 
-        def _sidebar_swap_button_clicked_cb(self, button):
+        def _sidebar_swap_button_clicked_cb(self, button: Types.ELLIPSIS) -> Types.NONE:
             """Switch the current page's sidebar ("clicked" event handler)
-
+            
             Ultimately fires the tool_widget_removed() and
             tool_widget_added() @events of the owning workspace.
+
+            Args:
+                button: 
+
+            Returns:
+
+            Raises:
 
             """
             page_num = self.get_current_page()
@@ -404,7 +533,17 @@ class ToolStack(Gtk.EventBox):
             if page is not None:
                 GLib.idle_add(self._deferred_swap_tool_widget_sidebar, page)
 
-        def _deferred_swap_tool_widget_sidebar(self, page):
+        def _deferred_swap_tool_widget_sidebar(self, page: Types.ELLIPSIS) -> Types.NONE:
+            """
+
+            Args:
+                page: 
+
+            Returns:
+
+            Raises:
+
+            """
             try:
                 workspace = self._toolstack.workspace
             except AttributeError:
@@ -429,6 +568,18 @@ class ToolStack(Gtk.EventBox):
         ## Dragging tabs
 
         def _drag_begin_cb(self, nb, *a):
+            # type: (Types.ELLIPSIS) -> Types.NONE
+            """
+
+            Args:
+                nb: 
+                *a: 
+
+            Returns:
+
+            Raises:
+
+            """
             # Record the notebook's size in the page; this will be recreated
             # if a valid drop happens into a fresh ToolStackWindow or into a
             # placeholder notebook.
@@ -440,11 +591,37 @@ class ToolStack(Gtk.EventBox):
             self._toolstack.workspace._tool_tab_drag_begin_cb()
 
         def _drag_end_cb(self, nb, *a):
+            # type: (Types.ELLIPSIS) -> Types.NONE
+            """
+
+            Args:
+                nb: 
+                *a: 
+
+            Returns:
+
+            Raises:
+
+            """
             # Notify the workspace that dragging has finished. Causes empty
             # sidebars to hide again.
             self._toolstack.workspace._tool_tab_drag_end_cb()
 
         def _create_window_cb(self, notebook, page, x, y):
+            # type: (Types.ELLIPSIS) -> Types.NONE
+            """
+
+            Args:
+                notebook: 
+                page: 
+                x: 
+                y: 
+
+            Returns:
+
+            Raises:
+
+            """
             # Create and show the parent window for a dragged-out tab.
             win = ToolStackWindow(self._toolstack.workspace)
             self._toolstack.workspace.floating_window_created(win)
@@ -461,8 +638,17 @@ class ToolStack(Gtk.EventBox):
         ## Tab labels
 
         @classmethod
-        def _make_tab_label(cls, tool_widget):
-            """Creates and returns a tab label widget for a tool widget"""
+        def _make_tab_label(cls, tool_widget: Types.ELLIPSIS) -> Types.NONE:
+            """Creates and returns a tab label widget for a tool widget
+
+            Args:
+                tool_widget: 
+
+            Returns:
+
+            Raises:
+
+            """
             label = Gtk.Image()
             lsize = cls.TAB_ICON_SIZE
             icon_pixbuf, icon_name = _tool_widget_get_icon(tool_widget, lsize)
@@ -500,7 +686,25 @@ class ToolStack(Gtk.EventBox):
             icon_pixbuf,
             icon_name,
         ):
-            """The query-tooltip routine for tool widgets"""
+            # type: (Types.ELLIPSIS) -> Types.NONE
+            """The query-tooltip routine for tool widgets
+
+            Args:
+                widget: 
+                x: 
+                y: 
+                kbd: 
+                tooltip: 
+                title: 
+                desc: 
+                icon_pixbuf: 
+                icon_name: 
+
+            Returns:
+
+            Raises:
+
+            """
             if icon_pixbuf is not None:
                 tooltip.set_icon(icon_pixbuf)
             else:
@@ -520,7 +724,17 @@ class ToolStack(Gtk.EventBox):
 
         ## Updates
 
-        def update_tool_widget_ui(self, tool_widget):
+        def update_tool_widget_ui(self, tool_widget: Types.ELLIPSIS) -> Types.NONE:
+            """
+
+            Args:
+                tool_widget: 
+
+            Returns:
+
+            Raises:
+
+            """
             # Update the tab label
             logger.debug("notebook: updating UI parts for %r", tool_widget)
             label = self._make_tab_label(tool_widget)
@@ -549,32 +763,35 @@ class ToolStack(Gtk.EventBox):
     def build_from_layout(self, desc, init_sizes_state=None):
         """Loads groups and pages from a layout description
 
-        :param desc: stack definition
-        :type desc: dict
-        :param init_sizes_state: toplevel window state transition on
-            which to set the group dividers' initial positions. If left
-            unset, set the sizes immediately.
-        :type init_sizes_state: Gdk.WindowState
-        :rtype: int
-        :returns: the number of groups added
+        Args:
+            desc (dict): stack definition
+            init_sizes_state (Gdk.WindowState, optional): toplevel window state transition on
+        which to set the group dividers' initial positions. If left
+        unset, set the sizes immediately.
+        :rtype: int (Default value = None)
 
-        The `desc` parameter has the following keys and values:
+        Returns:
+            the number of groups added
+            
+            The `desc` parameter has the following keys and values:
+            
+            * w: integer width (ignored here)
+            * h: integer height (ignored here)
+            * groups: list of group definitions - see below
+            
+            Width and height may be of relevance to the parent widget, but are not
+            consumed by this method. `get_layout()` writes them, however.  Each
+            group definition is a dict with the following keys and values.
+            
+            * tools: a list of tool definitions - see below
+            * h: integer height: used here to set the height of the group
+            * w: integer width (ignored here)
+            
+            Each tool definition is a tuple of the form (GTYPENAME,*CONSTRUCTARGS).
+            GTYPENAME is a string containing a GType name which is used for finding
+            and constructing the tool instance. CONSTRUCTARGS is currently ignored.
 
-        * w: integer width (ignored here)
-        * h: integer height (ignored here)
-        * groups: list of group definitions - see below
-
-        Width and height may be of relevance to the parent widget, but are not
-        consumed by this method. `get_layout()` writes them, however.  Each
-        group definition is a dict with the following keys and values.
-
-        * tools: a list of tool definitions - see below
-        * h: integer height: used here to set the height of the group
-        * w: integer width (ignored here)
-
-        Each tool definition is a tuple of the form (GTYPENAME,*CONSTRUCTARGS).
-        GTYPENAME is a string containing a GType name which is used for finding
-        and constructing the tool instance. CONSTRUCTARGS is currently ignored.
+        Raises:
 
         """
         next_nb = self._get_first_notebook()
@@ -624,13 +841,7 @@ class ToolStack(Gtk.EventBox):
         return num_groups_added
 
     def get_layout(self):
-        """Returns a description of the current layout using simple types
-
-        :rtype: dict
-
-        See `build_from_layout()` for details of the dict which is returned.
-
-        """
+        """Returns a description of the current layout using simple types"""
         group_descs = []
         factory = self.workspace._tool_widgets
         for nb in self._get_notebooks():
@@ -672,22 +883,23 @@ class ToolStack(Gtk.EventBox):
 
     def add_tool_widget(self, widget, maxnotebooks=None, maxpages=3):
         """Tries to find space for, then add and show a tool widget
-
+        
         Finding space is based on constraints, adjustable via the parameters.
         The process is driven by `Workspace.add_tool_widget()`.
 
-        :param widget: the widget that needs adoption.
-        :type widget: Gtk.Widget created by the Workspace's factory.
-        :param maxnotebooks: never make more than this many groups in the stack
-        :type maxnotebooks: int
-        :param maxpages: never make more than this many pages in a group
-        :type maxpages: int
-        :return: whether space was found for the widget
-        :rtype: bool
+        Args:
+            widget (Gtk.Widget created by the Workspace's factory.): the widget that needs adoption.
+            maxnotebooks (int, optional): never make more than this many groups in the stack (Default value = None)
+            maxpages (int, optional): never make more than this many pages in a group (Default value = 3)
 
-        The idea is to try repeatedly with gradually relaxing constraint
-        parameters across all stacks in the system until space is found
-        somewhere.
+        Returns:
+            bool
+
+The idea is to try repeatedly with gradually relaxing constraint
+parameters across all stacks in the system until space is found
+somewhere.: whether space was found for the widget
+
+        Raises:
 
         """
         # Try to find a notebook with few enough pages.
@@ -722,17 +934,21 @@ class ToolStack(Gtk.EventBox):
     def remove_tool_widget(self, widget):
         """Removes a tool widget from the stack, hiding it
 
-        :param widget: the GType name of the tab to be removed.
-        :type widget: Gtk.Widget created by the Workspace's factory
+        Args:
+            widget (Gtk.Widget created by the Workspace's factory): the GType name of the tab to be removed.
         :rtype: bool
-        :returns: whether the widget was removed
+
+        Returns:
+            whether the widget was removed
+
+        Raises:
 
         """
         target_notebook = None
         target_index = None
         target_page = None
         for notebook in self._get_notebooks():
-            for index in xrange(notebook.get_n_pages()):
+            for index in range(notebook.get_n_pages()):
                 page = notebook.get_nth_page(index)
                 if widget is page.get_child():
                     target_index = index
@@ -762,13 +978,20 @@ class ToolStack(Gtk.EventBox):
 
     def remove_all_tool_widgets(self):
         """Remove all tool widgets in the stack, without cleanup
-
+        
         This method is only intended to be used right before the
         parent of a ToolStack is destroyed. It does not remove
         any placeholders, only the individual tool widgets.
+
+        Args:
+
+        Returns:
+
+        Raises:
+
         """
         for notebook in self._get_notebooks():
-            for index in xrange(notebook.get_n_pages()):
+            for index in range(notebook.get_n_pages()):
                 page = notebook.get_nth_page(index)
                 widget = page.get_child()
                 widget.hide()
@@ -784,8 +1007,17 @@ class ToolStack(Gtk.EventBox):
         assert isinstance(widget, Gtk.Notebook)
         return widget.get_n_pages() == 0
 
-    def reveal_tool_widget(self, widget):
-        """Reveals a widget in this tool stack"""
+    def reveal_tool_widget(self, widget: Types.ELLIPSIS) -> Types.NONE:
+        """Reveals a widget in this tool stack
+
+        Args:
+            widget: 
+
+        Returns:
+
+        Raises:
+
+        """
         toplevel = self.get_toplevel()
         if widget is None or (widget.get_toplevel() is not toplevel):
             logger.warning("Can't reveal %r: not in this toolstack", widget)
@@ -806,6 +1038,7 @@ class ToolStack(Gtk.EventBox):
     ## Internal structure helpers
 
     def _get_first_notebook(self):
+        """ """
         widget = self.get_child()
         if isinstance(widget, Gtk.Paned):
             widget = widget.get_child1()
@@ -813,6 +1046,7 @@ class ToolStack(Gtk.EventBox):
         return widget
 
     def _get_notebooks(self):
+        """ """
         child = self.get_child()
         if child is None:
             return []
@@ -830,7 +1064,17 @@ class ToolStack(Gtk.EventBox):
         assert len(notebooks) > 0
         return notebooks
 
-    def _set_first_paned_position(self, size):
+    def _set_first_paned_position(self, size: Types.ELLIPSIS) -> Types.NONE:
+        """
+
+        Args:
+            size: 
+
+        Returns:
+
+        Raises:
+
+        """
         widget = self.get_child()
         if isinstance(widget, Gtk.Paned):
             widget.set_position(size)
@@ -839,6 +1083,7 @@ class ToolStack(Gtk.EventBox):
     ## Group size management (somewhat dubious)
 
     def _get_paneds(self):
+        """ """
         child = self.get_child()
         if child is None:
             return []
@@ -852,7 +1097,17 @@ class ToolStack(Gtk.EventBox):
                 queue.append(widget.get_child2())
         return result
 
-    def do_size_allocate(self, alloc):
+    def do_size_allocate(self, alloc: Types.ELLIPSIS) -> Types.NONE:
+        """
+
+        Args:
+            alloc: 
+
+        Returns:
+
+        Raises:
+
+        """
         # When the size changes, manage the divider position of the final
         # paned, shrinking or growing the final set of tabs.
         paneds = self._get_paneds()
@@ -869,8 +1124,17 @@ class ToolStack(Gtk.EventBox):
 
     ## Paned/Notebook tree structure
 
-    def _append_new_placeholder(self, old_placeholder):
-        """Appends a new placeholder after a current or former placeholder."""
+    def _append_new_placeholder(self, old_placeholder: Types.ELLIPSIS) -> Types.NONE:
+        """Appends a new placeholder after a current or former placeholder.
+
+        Args:
+            old_placeholder: 
+
+        Returns:
+
+        Raises:
+
+        """
         paned = ToolStack._Paned(self, old_placeholder)
         return paned.get_child2()
 
@@ -878,16 +1142,22 @@ class ToolStack(Gtk.EventBox):
 
     def _update_structure(self):
         """Maintains structure after "page-added" & "page-deleted" events.
-
+        
         If a page is added to the placeholder notebook on the end by the user
         dragging a tab there, a new placeholder must be created and the tree
         structure repacked. Similarly emptying out a notebook by dragging
         tabs around must result in the empty notebook being removed.
-
+        
         This callback is queued as an idle function in response to the above
         events because moving from one paned to another invokes both remove
         and add. If the structure doesn't need changing, calling it multiple
         times is harmless.
+
+        Args:
+
+        Returns:
+
+        Raises:
 
         """
 
@@ -963,11 +1233,17 @@ class ToolStack(Gtk.EventBox):
 
 class _ToolWidgetNotebookPage(Gtk.Frame):
     """Page widget container within a notebook.
-
+    
     Intercepts drag-related events which have propagated up from the
     tool widget itself to prevent them propagating out to the containing
     notebook. This prevents accidental drags of the tab itself starting
     since 3.20: https://github.com/mypaint/mypaint/issues/643
+
+    Args:
+
+    Returns:
+
+    Raises:
 
     """
 
@@ -979,6 +1255,18 @@ class _ToolWidgetNotebookPage(Gtk.Frame):
         self.connect("motion-notify-event", self._event_sink)
 
     def _event_sink(self, *args, **kwargs):
+        # type: (Types.ELLIPSIS) -> Types.NONE
+        """
+
+        Args:
+            *args: 
+            **kwargs: 
+
+        Returns:
+
+        Raises:
+
+        """
         return True
 
 
@@ -1015,12 +1303,16 @@ class ToolStackWindow(Gtk.Window):
 
     ## Setup from layout definitions (pre-realize)
 
-    def build_from_layout(self, layout):
+    def build_from_layout(self, layout: dict) -> int:
         """Build the window's contents from a layout description.
 
-        :param dict layout: A layout defnition
-        :returns: the number of groups added (can be zero)
-        :rtype: int
+        Args:
+            layout: A layout defnition
+
+        Returns:
+            the number of groups added (can be zero)
+
+        Raises:
 
         """
         logger.debug("build_from_layout %r", self)
@@ -1039,15 +1331,33 @@ class ToolStackWindow(Gtk.Window):
 
     ## Window lifecycle events (initial state, position tracking)
 
-    def _realize_cb(self, widget):
-        """Set the initial position (with lots of sanity checks)"""
+    def _realize_cb(self, widget: Types.ELLIPSIS) -> Types.NONE:
+        """Set the initial position (with lots of sanity checks)
+
+        Args:
+            widget: 
+
+        Returns:
+
+        Raises:
+
+        """
         lpos = self._layout_position
         if lpos is None:
             return
         self._onmap_position = set_initial_window_position(self, lpos)
 
-    def _map_cb(self, widget):
-        """Window map event actions"""
+    def _map_cb(self, widget: Types.ELLIPSIS) -> Types.NONE:
+        """Window map event actions
+
+        Args:
+            widget: 
+
+        Returns:
+
+        Raises:
+
+        """
         toplevel = None
         workspace = self.stack.workspace
         if workspace:
@@ -1088,13 +1398,20 @@ class ToolStackWindow(Gtk.Window):
         if toplevel:
             GLib.idle_add(lambda *a: toplevel.present())
 
-    def _set_onmap_position(self, reset):
+    def _set_onmap_position(self, reset: Types.ELLIPSIS) -> Types.NONE:
         """Hack to set the requested position, as much as one can
-
+        
         Window managers don't always get it right when the window is initially
         positioned, and some don't keep window positions always when a window
         is hidden and later re-shown. Doing a move() in a map handler improves
         the user experience vastly in these WMs.
+
+        Args:
+            reset: 
+
+        Returns:
+
+        Raises:
 
         """
         if self._onmap_position:
@@ -1104,7 +1421,18 @@ class ToolStackWindow(Gtk.Window):
         return False
 
     def _configure_cb(self, widget, event):
-        """Track the window size and position when it changes"""
+        # type: (Types.ELLIPSIS) -> Types.NONE
+        """Track the window size and position when it changes
+
+        Args:
+            widget: 
+            event: 
+
+        Returns:
+
+        Raises:
+
+        """
         frame = self.get_window().get_frame_extents()
         x = max(0, frame.x)
         y = max(0, frame.y)
@@ -1113,8 +1441,17 @@ class ToolStackWindow(Gtk.Window):
         # Frame extents, used internally for rollover accuracy; not saved
         self._frame_size = frame.width, frame.height
 
-    def _hide_cb(self, widget):
-        """Ensure a correct position after the next window map"""
+    def _hide_cb(self, widget: Types.ELLIPSIS) -> Types.NONE:
+        """Ensure a correct position after the next window map
+
+        Args:
+            widget: 
+
+        Returns:
+
+        Raises:
+
+        """
         if self._layout_position is None:
             return
         pos = (
@@ -1125,28 +1462,66 @@ class ToolStackWindow(Gtk.Window):
             self._onmap_position = pos
 
     def _delete_cb(self, widget, event):
+        # type: (Types.ELLIPSIS) -> Types.NONE
+        """
+
+        Args:
+            widget: 
+            event: 
+
+        Returns:
+
+        Raises:
+
+        """
         self.stack.remove_all_tool_widgets()
 
-    def _destroy_cb(self, widget):
+    def _destroy_cb(self, widget: Types.ELLIPSIS) -> Types.NONE:
+        """
+
+        Args:
+            widget: 
+
+        Returns:
+
+        Raises:
+
+        """
         workspace = self.stack.workspace
         if workspace is not None:
             if self in workspace._floating:
                 workspace._floating.remove(self)
 
-    def _clear_focus(self, *args):
+    def _clear_focus(self, *args: Types.ELLIPSIS) -> Types.NONE:
+        """
+
+        Args:
+            *args: 
+
+        Returns:
+
+        Raises:
+
+        """
         clear_focus(self)
 
     ## Autohide in fullscreen
 
     def contains_point(self, x, y, b=0):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """True if a screen point is over this window's last known position.
 
-        :param x: Root window X-coordinate
-        :param y: Root window Y-coordinate
-        :param b: Additional sensitive border around the window, in pixels
+        Args:
+            x: Root window X-coordinate
+            y: Root window Y-coordinate
+            b: Additional sensitive border around the window, in pixels
         :rtype: bool
+        
+        Used for revealing floating windows after they have been auto-hidden. (Default value = 0)
 
-        Used for revealing floating windows after they have been auto-hidden.
+        Returns:
+
+        Raises:
 
         """
         if not (self._layout_position and self._frame_size):
@@ -1160,42 +1535,69 @@ class ToolStackWindow(Gtk.Window):
 
     ## Window title
 
-    def update_title(self, tool_widget_titles):
-        """Update the title from a list of strings"""
-        titles = [unicode(s) for s in tool_widget_titles]
+    def update_title(self, tool_widget_titles: Types.ELLIPSIS) -> Types.NONE:
+        """Update the title from a list of strings
+
+        Args:
+            tool_widget_titles: 
+
+        Returns:
+
+        Raises:
+
+        """
+        titles = [str(s) for s in tool_widget_titles]
         workspace = self.stack.workspace
         if workspace is not None:
-            title_sep = unicode(workspace.floating_window_title_separator)
+            title_sep = str(workspace.floating_window_title_separator)
             title = title_sep.join(titles)
-            title_suffix = unicode(workspace.floating_window_title_suffix)
+            title_suffix = str(workspace.floating_window_title_suffix)
             if title_suffix:
-                title += unicode(title_suffix)
+                title += str(title_suffix)
             logger.debug('Renamed floating window title to "%s"', title)
             self.set_title(title)
 
 
 class SizedVBoxToolWidget(Gtk.VBox):
-    """
-    Base class for VBox tool widgets, with convenient natural height setting.
-
+    """Base class for VBox tool widgets, with convenient natural height setting.
+    
     This mixin can be used for tool widgets implemented as `GtkVBox`es to give
     them a default natural height which might be greater than the sum of their
     constituent widgets' minimum heights.
+
+    Args:
+
+    Returns:
+
+    Raises:
+
     """
 
     #: Suggested natural height for the widget.
     SIZED_VBOX_NATURAL_HEIGHT = TOOL_WIDGET_NATURAL_HEIGHT_TALL
 
     def do_get_request_mode(self):
+        """ """
         return Gtk.SizeRequestMode.HEIGHT_FOR_WIDTH
 
     def do_get_preferred_width(self):
+        """ """
         minw, natw = Gtk.VBox.do_get_preferred_width(self)
         minw = max(minw, TOOL_WIDGET_MIN_WIDTH)
         natw = max(natw, TOOL_WIDGET_MIN_WIDTH)
         return minw, max(minw, natw)
 
-    def do_get_preferred_height_for_width(self, width):
+    def do_get_preferred_height_for_width(self, width: Types.ELLIPSIS) -> Types.NONE:
+        """
+
+        Args:
+            width: 
+
+        Returns:
+
+        Raises:
+
+        """
         minh, nath = Gtk.VBox.do_get_preferred_height_for_width(self, width)
         nath = max(nath, self.SIZED_VBOX_NATURAL_HEIGHT)
         minh = max(minh, TOOL_WIDGET_MIN_HEIGHT)
@@ -1205,37 +1607,46 @@ class SizedVBoxToolWidget(Gtk.VBox):
 ## Utility functions
 
 
-def _tool_widget_get_title(widget):
+def _tool_widget_get_title(widget: Gtk.Widget) -> Types.NONE:
     """Returns the title to use for a tool-widget.
 
-    :param widget: a tool widget
-    :type widget: Gtk.Widget
-    :rtype: unicode
+    Args:
+        widget: a tool widget
+    :rtype: str
+
+    Returns:
+
+    Raises:
 
     """
     for attr in ("tool_widget_title", "__gtype_name__"):
         title = getattr(widget, attr, None)
         if title is not None:
-            return unicode(title)
-    return unicode(widget.__class__.__name__)
+            return str(title)
+    return widget.__class__.__name__
 
 
-def _tool_widget_get_icon(widget, icon_size):
+def _tool_widget_get_icon(widget, icon_size: Types.ELLIPSIS) -> Types.NONE:
     """Returns the pixbuf or icon name to use for a tool widget
 
-    :param widget: a tool widget
-    :param icon_size: a registered Gtk.IconSize
-    :returns: a pixbuf or an icon name: as a pair, one of which is None
-    :rtype: (GdkPixbuf.Pixbuf, str)
+    Args:
+        widget: a tool widget
+        icon_size: a registered Gtk.IconSize
 
-    Use whichever of the return values is not None. To get the pixbuf or icon
-    name, one or both of
+    Returns:
+        GdkPixbuf.Pixbuf, str)
 
-    * ``widget.tool_widget_get_icon_pixbuf(pixel_size)``
-    * ``widget.tool_widget_icon_name``
+Use whichever of the return values is not None. To get the pixbuf or icon
+name, one or both of
 
-    are tried, in that order. The former should create and return a new pixbuf,
-    the latter should be an icon name string.
+* ``widget.tool_widget_get_icon_pixbuf(pixel_size)``
+* ``widget.tool_widget_icon_name``
+
+are tried, in that order. The former should create and return a new pixbuf,
+the latter should be an icon name string.: a pixbuf or an icon name: as a pair, one of which is None
+
+    Raises:
+
     """
     # Try the pixbuf method first.
     # Only brush group tool widgets will define this, typically.

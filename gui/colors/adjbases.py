@@ -35,7 +35,6 @@ from lib.palette import Palette
 from lib.observable import event
 import gui.dialogs
 import gui.uicolor
-from lib.pycompat import xrange
 
 logger = logging.getLogger(__name__)
 
@@ -53,6 +52,7 @@ DEFAULT_PALETTE_FILE = "MyPaint_Default.gpl"
 
 
 class DeprecatedAPIWarning(UserWarning):
+    """ """
     pass
 
 
@@ -61,11 +61,17 @@ class DeprecatedAPIWarning(UserWarning):
 
 class ColorManager(GObject.GObject):
     """Manages the data common to several attached `ColorAdjuster`s.
-
+    
     This data is basically everything that one or more adjusters might want to
     display. It includes a working color (used by the main app as the active
     brush color), a short history of previously-painted-with colors, tables of
     angular distortions for color wheels etc.
+
+    Args:
+
+    Returns:
+
+    Raises:
 
     """
 
@@ -154,15 +160,29 @@ class ColorManager(GObject.GObject):
 
     ## Picker cursor
 
-    def set_picker_cursor(self, cursor):
-        """Sets the color picker cursor."""
+    def set_picker_cursor(self, cursor: Types.ELLIPSIS) -> Types.NONE:
+        """Sets the color picker cursor.
+
+        Args:
+            cursor: 
+
+        Returns:
+
+        Raises:
+
+        """
         self._picker_cursor = cursor
 
     def get_picker_cursor(self):
-        """Return the color picker cursor.
+        """
 
-        This shared cursor is for use by adjusters connected to this manager
-        which have a screen color picker. The default is a crosshair.
+        Args:
+
+        Returns:
+            This shared cursor is for use by adjusters connected to this manager
+            which have a screen color picker. The default is a crosshair.
+
+        Raises:
 
         """
         return self._picker_cursor
@@ -172,27 +192,60 @@ class ColorManager(GObject.GObject):
 
     ## Template/read-only data path for palettes, masks etc.
 
-    def set_data_path(self, datapath):
-        """Sets the template/read-only data path for palettes, masks etc."""
+    def set_data_path(self, datapath: Types.ELLIPSIS) -> Types.NONE:
+        """Sets the template/read-only data path for palettes, masks etc.
+
+        Args:
+            datapath: 
+
+        Returns:
+
+        Raises:
+
+        """
         self._datapath = datapath
 
     def get_data_path(self):
         """Returns the template/read-only data path for palettes, masks etc.
-
+        
         This is for use by adjusters connected to this manager which need to
         load template resources, e.g. palette selectors.
+
+        Args:
+
+        Returns:
+
+        Raises:
 
         """
         return self._datapath
 
     ## Attached ColorAdjusters
 
-    def add_adjuster(self, adjuster):
-        """Adds an adjuster to the internal set of adjusters."""
+    def add_adjuster(self, adjuster: Types.ELLIPSIS) -> Types.NONE:
+        """Adds an adjuster to the internal set of adjusters.
+
+        Args:
+            adjuster: 
+
+        Returns:
+
+        Raises:
+
+        """
         self._adjusters.add(adjuster)
 
-    def remove_adjuster(self, adjuster):
-        """Removes an adjuster."""
+    def remove_adjuster(self, adjuster: Types.ELLIPSIS) -> Types.NONE:
+        """Removes an adjuster.
+
+        Args:
+            adjuster: 
+
+        Returns:
+
+        Raises:
+
+        """
         self._adjusters.remove(adjuster)
 
     def get_adjusters(self):
@@ -201,13 +254,20 @@ class ColorManager(GObject.GObject):
 
     ## Main shared UIColor object
 
-    def set_color(self, color):
+    def set_color(self, color: Types.ELLIPSIS) -> Types.NONE:
         """Sets the shared `UIColor`, and notifies all registered adjusters.
-
+        
         Calling this invokes the `color_updated()` method on each
         registered color adjuster after the color has been updated. The
         change is also announced via the color_updated method of the
         ColorManager itself.
+
+        Args:
+            color: 
+
+        Returns:
+
+        Raises:
 
         """
         if color == self._color:
@@ -228,22 +288,37 @@ class ColorManager(GObject.GObject):
     @event
     def color_updated(self):
         """Event: announces changes to the managed color.
-
+        
         See lib.observable.event for details of how to subscribe.
+
+        Args:
+
+        Returns:
+
+        Raises:
+
         """
 
     ## History of colors used for painting
 
     def _trim_hist(self):
+        """ """
         self._hist = self._hist[-self._HIST_LEN :]
 
-    def push_history(self, color):
+    def push_history(self, color: Types.ELLIPSIS) -> Types.NONE:
         """Pushes a color to the user history list.
-
+        
         Calling this invokes the `color_history_updated()` method on
         each registered color adjuster after the history has been
         updated. The change is also announced via the
         color_history_updated method of the ColorManager itself.
+
+        Args:
+            color: 
+
+        Returns:
+
+        Raises:
 
         """
         self._hist[:] = [
@@ -268,8 +343,15 @@ class ColorManager(GObject.GObject):
     @event
     def color_history_updated(self):
         """Event: announces changes to the color history.
-
+        
         See lib.observable.event for details of how to subscribe.
+
+        Args:
+
+        Returns:
+
+        Raises:
+
         """
 
     def get_history(self):
@@ -288,14 +370,18 @@ class ColorManager(GObject.GObject):
 
     ## Color wheel distortion table (support for RYGB/RGB/RYB-wheels)
 
-    def set_wheel_type(self, typename):
+    def set_wheel_type(self, typename: str) -> Types.NONE:
         """Sets the type of attached color wheels by name.
 
-        :param typename: Wheel type name: "rgb", "ryb", or "rygb".
-        :type typename: str
-
+        Args:
+            typename: Wheel type name: "rgb", "ryb", or "rygb".
+        
         This corresponds to a hue-angle remapping, which will be adopted by
         all wheel-style adjusters attached to this ColorManager.
+
+        Returns:
+
+        Raises:
 
         """
         old_typename = self.get_wheel_type()
@@ -314,8 +400,17 @@ class ColorManager(GObject.GObject):
         default = self._DEFAULT_WHEEL_TYPE
         return self._prefs.get(PREFS_KEY_WHEEL_TYPE, default)
 
-    def distort_hue(self, h):
-        """Distorts a hue from RGB-wheel angles to the current wheel type's."""
+    def distort_hue(self, h: Types.ELLIPSIS) -> Types.NONE:
+        """Distorts a hue from RGB-wheel angles to the current wheel type's.
+
+        Args:
+            h: 
+
+        Returns:
+
+        Raises:
+
+        """
         if self._hue_distorts is None:
             return h
         h %= 1.0
@@ -329,8 +424,17 @@ class ColorManager(GObject.GObject):
                 break
         return h
 
-    def undistort_hue(self, h):
-        """Reverses the mapping imposed by ``distort_hue()``."""
+    def undistort_hue(self, h: Types.ELLIPSIS) -> Types.NONE:
+        """Reverses the mapping imposed by ``distort_hue()``.
+
+        Args:
+            h: 
+
+        Returns:
+
+        Raises:
+
+        """
         if self._hue_distorts is None:
             return h
         h %= 1.0
@@ -352,17 +456,35 @@ class ColorManager(GObject.GObject):
         return self._palette
 
     def _palette_changed_cb(self, palette, *args, **kwargs):
-        """Stores changes made to the palette to the prefs"""
+        # type: (Types.ELLIPSIS) -> Types.NONE
+        """Stores changes made to the palette to the prefs
+
+        Args:
+            palette: 
+            *args: 
+            **kwargs: 
+
+        Returns:
+
+        Raises:
+
+        """
         prefs = self.get_prefs()
         prefs[PREFS_PALETTE_DICT_KEY] = palette.to_simple_dict()
 
 
-class ColorAdjuster(object):
+class ColorAdjuster:
     """Base class for any object which can manipulate a shared `UIColor`.
-
+    
     Color adjusters are used for changing one or more elements of a color.
     Several are bound to a central `ColorManager`, and broadcast
     changes to it.
+
+    Args:
+
+    Returns:
+
+    Raises:
 
     """
 
@@ -372,8 +494,17 @@ class ColorAdjuster(object):
 
     ## Central ColorManager instance (accessors)
 
-    def set_color_manager(self, manager):
-        """Sets the shared color adjustment manager this adjuster points to."""
+    def set_color_manager(self, manager: Types.ELLIPSIS) -> Types.NONE:
+        """Sets the shared color adjustment manager this adjuster points to.
+
+        Args:
+            manager: 
+
+        Returns:
+
+        Raises:
+
+        """
         if manager is not None:
             if self in manager.get_adjusters():
                 return
@@ -402,8 +533,17 @@ class ColorAdjuster(object):
             return RGBColor(color=self._DEFAULT_COLOR)
         return self.color_manager.get_color()
 
-    def set_managed_color(self, color):
-        """Sets the managed color. Convenience method for use by subclasses."""
+    def set_managed_color(self, color: Types.ELLIPSIS) -> Types.NONE:
+        """Sets the managed color. Convenience method for use by subclasses.
+
+        Args:
+            color: 
+
+        Returns:
+
+        Raises:
+
+        """
         if self.color_manager is None:
             return
         if color is not None:
@@ -414,6 +554,7 @@ class ColorAdjuster(object):
     ## Central shared prefs access (convenience methods)
 
     def get_prefs(self):
+        """ """
         if self.color_manager is not None:
             return self.color_manager.get_prefs()
         return {}
@@ -431,16 +572,22 @@ class ColorAdjuster(object):
 
 class ColorAdjusterWidget(CachedBgDrawingArea, ColorAdjuster):
     """Base class for sliders, wheels, picker areas etc.
-
+    
     Provides access to the central color manager via the gobject property
     ``color-manager``, and click/drag event handlers for picking colors.
     Derived classes should draw a colorful background by overriding
     `CachedBgWidgetMixin.render_background_cb()`, and keep handlers registered
     here happy by implementing `get_color_at_position()`.
-
+    
     Color adjusters can operate as sources for dragging colors: subclasses
     should set `IS_DRAG_SOURCE` to `True` before the object is realized to
     enable this.
+
+    Args:
+
+    Returns:
+
+    Raises:
 
     """
 
@@ -464,31 +611,37 @@ class ColorAdjusterWidget(CachedBgDrawingArea, ColorAdjuster):
 
     @property
     def border(self):
+        """ """
         warn("Use BORDER_WIDTH instead", DeprecatedAPIWarning, 2)
         return self.BORDER_WIDTH
 
     @property
     def outline_width(self):
+        """ """
         warn("Use OUTLINE_WIDTH instead", DeprecatedAPIWarning, 2)
         return self.OUTLINE_WIDTH
 
     @property
     def outline_rgba(self):
+        """ """
         warn("Use OUTLINE_RGBA instead", DeprecatedAPIWarning, 2)
         return self.OUTLINE_RGBA
 
     @property
     def edge_highlight_rgba(self):
+        """ """
         warn("Use EDGE_HIGHLIGHT_RGBA instead", DeprecatedAPIWarning, 2)
         return self.EDGE_HIGHLIGHT_RGBA
 
     @property
     def edge_highlight_width(self):
+        """ """
         warn("Use EDGE_HIGHLIGHT_WIDTH instead", DeprecatedAPIWarning, 2)
         return self.EDGE_HIGHLIGHT_WIDTH
 
     @property
     def tooltip_text(self):
+        """ """
         warn("Use STATIC_TOOLTIP_TEXT instead", DeprecatedAPIWarning, 2)
         return self.STATIC_TOOLTIP_TEXT
 
@@ -533,7 +686,17 @@ class ColorAdjusterWidget(CachedBgDrawingArea, ColorAdjuster):
 
     ## Color drag and drop
 
-    def _init_color_drag(self, *_junk):
+    def _init_color_drag(self, *_junk: Types.ELLIPSIS) -> Types.NONE:
+        """
+
+        Args:
+            *_junk: 
+
+        Returns:
+
+        Raises:
+
+        """
         # Drag init
         self._drag_dest_set()
         self.connect("drag-motion", self.drag_motion_cb)
@@ -545,18 +708,59 @@ class ColorAdjusterWidget(CachedBgDrawingArea, ColorAdjuster):
         self.connect("drag-data-received", self.drag_data_received_cb)
 
     def _drag_dest_set(self):
+        """ """
         targets = [Gtk.TargetEntry.new(*e) for e in self._DRAG_TARGETS]
         flags = Gtk.DestDefaults.MOTION | Gtk.DestDefaults.DROP
         actions = Gdk.DragAction.MOVE | Gdk.DragAction.COPY
         self.drag_dest_set(flags, targets, actions)
 
     def drag_motion_cb(self, widget, context, x, y, t):
+        # type: (Types.ELLIPSIS) -> Types.NONE
+        """
+
+        Args:
+            widget: 
+            context: 
+            x: 
+            y: 
+            t: 
+
+        Returns:
+
+        Raises:
+
+        """
         pass
 
     def drag_leave_cb(self, widget, context, time):
+        # type: (Types.ELLIPSIS) -> Types.NONE
+        """
+
+        Args:
+            widget: 
+            context: 
+            time: 
+
+        Returns:
+
+        Raises:
+
+        """
         pass
 
     def drag_begin_cb(self, widget, context):
+        # type: (Types.ELLIPSIS) -> Types.NONE
+        """
+
+        Args:
+            widget: 
+            context: 
+
+        Returns:
+
+        Raises:
+
+        """
         color = self.get_managed_color()
         preview = GdkPixbuf.Pixbuf.new(GdkPixbuf.Colorspace.RGB, False, 8, 32, 32)
         pixel = color.to_fill_pixel()
@@ -564,10 +768,36 @@ class ColorAdjusterWidget(CachedBgDrawingArea, ColorAdjuster):
         Gtk.drag_set_icon_pixbuf(context, preview, 0, 0)
 
     def drag_end_cb(self, widget, context):
+        # type: (Types.ELLIPSIS) -> Types.NONE
+        """
+
+        Args:
+            widget: 
+            context: 
+
+        Returns:
+
+        Raises:
+
+        """
         pass
 
     def drag_data_get_cb(self, widget, context, selection, target_type, time):
-        """Gets the current color when a drop happens somewhere"""
+        # type: (Types.ELLIPSIS) -> Types.NONE
+        """Gets the current color when a drop happens somewhere
+
+        Args:
+            widget: 
+            context: 
+            selection: 
+            target_type: 
+            time: 
+
+        Returns:
+
+        Raises:
+
+        """
         if "application/x-color" not in map(str, context.list_targets()):
             return False
         color = self.get_managed_color()
@@ -586,7 +816,23 @@ class ColorAdjusterWidget(CachedBgDrawingArea, ColorAdjuster):
         return True
 
     def drag_data_received_cb(self, widget, context, x, y, selection, info, time):
-        """Gets the current color when a drop happens on the widget"""
+        # type: (Types.ELLIPSIS) -> Types.NONE
+        """Gets the current color when a drop happens on the widget
+
+        Args:
+            widget: 
+            context: 
+            x: 
+            y: 
+            selection: 
+            info: 
+            time: 
+
+        Returns:
+
+        Raises:
+
+        """
         if "application/x-color" not in map(str, context.list_targets()):
             return False
         data = selection.get_data()
@@ -603,12 +849,34 @@ class ColorAdjusterWidget(CachedBgDrawingArea, ColorAdjuster):
     ## GObject properties (TODO: use decorator syntax instead)
 
     def do_set_property(self, prop, value):
+        # type: (Types.ELLIPSIS) -> Types.NONE
+        """
+
+        Args:
+            prop: 
+            value: 
+
+        Returns:
+
+        Raises:
+
+        """
         if prop.name == "color-manager":
             self.set_color_manager(value)
         else:
             raise AttributeError("unknown property %s" % prop.name)
 
-    def do_get_property(self, prop):
+    def do_get_property(self, prop: Types.ELLIPSIS) -> Types.NONE:
+        """
+
+        Args:
+            prop: 
+
+        Returns:
+
+        Raises:
+
+        """
         if prop.name == "color-manager":
             return self.get_color_manager()
         else:
@@ -617,20 +885,39 @@ class ColorAdjusterWidget(CachedBgDrawingArea, ColorAdjuster):
     ## Color-at-position interface (for subclasses, primarily)
 
     def get_color_at_position(self, x, y):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Get the color a position represents. Subclasses must override.
-
+        
         Can be legitimately used by drawing routines, but at this level
         it's used only by the private handlers for button presses etc.
+
+        Args:
+            x: 
+            y: 
+
+        Returns:
+
+        Raises:
 
         """
         raise NotImplementedError
 
     def set_color_at_position(self, x, y, color):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Handles colors set by the double-click color selection dialog.
-
+        
         Certain subclasses which are sensitive to the `x` and `y` position of
         the double click that launches the dialog override this. At this level
         these parameters are ignored.
+
+        Args:
+            x: 
+            y: 
+            color: 
+
+        Returns:
+
+        Raises:
 
         """
         self.set_managed_color(color)
@@ -639,16 +926,22 @@ class ColorAdjusterWidget(CachedBgDrawingArea, ColorAdjuster):
 
     def get_background_validity(self):
         """Returns a validity token for the displayed background.
-
+        
         This implementation of `CachedBgWidgetMixin.get_background_validity()`
         uses the full string representation of the managed color, but can be
         overridden to return a smaller subset of its channels or quantize it
         for fewer redraws.
-
+        
         This implementation also respects the IS_IMMEDIATE flag:
         if background rerendering is non-immediate,
         it ensures that the token doesn't change
         while the pointer button is held.
+
+        Args:
+
+        Returns:
+
+        Raises:
 
         """
         if (not self.IS_IMMEDIATE) and self.__button_down == 1:
@@ -808,17 +1101,22 @@ class ColorAdjusterWidget(CachedBgDrawingArea, ColorAdjuster):
         return False
 
     @event
-    def clicked(self, event, pos):
+    def clicked(self, event: Gdk.Event, pos: tuple) -> Types.NONE:
         """The user has clicked. Implies no drag was started.
 
-        :param Gdk.Event event: The final button release GdkEvent.
-        :param tuple pos: The initial click position.
-
+        Args:
+            event: The final button release GdkEvent.
+            pos: The initial click position.
+        
         Only do things in response to this observable.event if you need
         to do something in addition to setting the colour.  This event
         fires on button-up events, i.e. after initial click.  The
         pointer is guraraneed not to have travelled further than the
         drag threshold.
+
+        Returns:
+
+        Raises:
 
         """
 
@@ -831,20 +1129,35 @@ class ColorAdjusterWidget(CachedBgDrawingArea, ColorAdjuster):
 
 class IconRenderableColorAdjusterWidget(ColorAdjusterWidget, IconRenderable):
     """Base class for ajuster widgets whose background can be used for icons.
-
+    
     Typically the background of something like a wheel adjuster is the most
     useful part for the purposes of icon making.
+
+    Args:
+
+    Returns:
+
+    Raises:
 
     """
 
     ## Rendering
 
     def render_as_icon(self, cr, size):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Renders the background into an icon.
-
+        
         This implementation requires a `render_background_cb()` method which
         supports an extra argument named ``icon_border``, the pixel size of a
         suggested small outer border.
+
+        Args:
+            cr: 
+            size: 
+
+        Returns:
+
+        Raises:
 
         """
         b = max(2, int(size // 16))
@@ -873,6 +1186,19 @@ class PreviousCurrentColorAdjuster(ColorAdjusterWidget):
     ## Rendering
 
     def render_background_cb(self, cr, wd, ht):
+        # type: (Types.ELLIPSIS) -> Types.NONE
+        """
+
+        Args:
+            cr: 
+            wd: 
+            ht: 
+
+        Returns:
+
+        Raises:
+
+        """
         mgr = self.get_color_manager()
         if mgr is None:
             return
@@ -903,6 +1229,7 @@ class PreviousCurrentColorAdjuster(ColorAdjusterWidget):
         cr.stroke()
 
     def get_background_validity(self):
+        """ """
         mgr = self.get_color_manager()
         if mgr is None:
             return
@@ -911,11 +1238,36 @@ class PreviousCurrentColorAdjuster(ColorAdjusterWidget):
         return (curr.get_rgb(), prev.get_rgb())
 
     def paint_foreground_cb(self, cr, wd, ht):
+        # type: (Types.ELLIPSIS) -> Types.NONE
+        """
+
+        Args:
+            cr: 
+            wd: 
+            ht: 
+
+        Returns:
+
+        Raises:
+
+        """
         pass
 
     ## Color-at-position
 
     def get_color_at_position(self, x, y):
+        # type: (Types.ELLIPSIS) -> Types.NONE
+        """
+
+        Args:
+            x: 
+            y: 
+
+        Returns:
+
+        Raises:
+
+        """
         alloc = self.get_allocation()
         mgr = self.get_color_manager()
         if x < alloc.width // 2:
@@ -927,16 +1279,23 @@ class PreviousCurrentColorAdjuster(ColorAdjusterWidget):
     ## Update notifications
 
     def color_history_updated(self):
+        """ """
         self.queue_draw()
 
 
 class SliderColorAdjuster(ColorAdjusterWidget):
     """Base class for slider controls with a colored background.
-
+    
     Supports both simple and complex gradients. A simple gradient is a
     continuous linear interpolation between the two endpoints; complex
     gradients are sampled many times along their length and then interpolated
     between linearly.
+
+    Args:
+
+    Returns:
+
+    Raises:
 
     """
 
@@ -968,6 +1327,19 @@ class SliderColorAdjuster(ColorAdjusterWidget):
             self.set_size_request(bl, bw)
 
     def render_background_cb(self, cr, wd, ht):
+        # type: (Types.ELLIPSIS) -> Types.NONE
+        """
+
+        Args:
+            cr: 
+            wd: 
+            ht: 
+
+        Returns:
+
+        Raises:
+
+        """
         b = self.BORDER_WIDTH
         bar_length = (self.vertical and ht or wd) - b - b
         b_x = b + 0.5
@@ -981,7 +1353,7 @@ class SliderColorAdjuster(ColorAdjusterWidget):
         else:
             bar_gradient = cairo.LinearGradient(b, 0, b + bar_length, 0)
         samples = self.samples + 2
-        for s in xrange(samples + 1):
+        for s in range(samples + 1):
             p = s / samples
             col = self.get_color_for_bar_amount(p)
             r, g, b = col.get_rgb()
@@ -1008,20 +1380,62 @@ class SliderColorAdjuster(ColorAdjusterWidget):
             cr.rectangle(b_x, b_y, b_w, b_h)
             cr.stroke()
 
-    def get_bar_amount_for_color(self, color):
-        """Bar amount for a given `UIColor`; subclasses must implement."""
+    def get_bar_amount_for_color(self, color: Types.ELLIPSIS) -> Types.NONE:
+        """Bar amount for a given `UIColor`; subclasses must implement.
+
+        Args:
+            color: 
+
+        Returns:
+
+        Raises:
+
+        """
         raise NotImplementedError
 
-    def get_color_for_bar_amount(self, amt):
-        """The `UIColor` for a given bar amount; subclasses must implement."""
+    def get_color_for_bar_amount(self, amt: Types.ELLIPSIS) -> Types.NONE:
+        """The `UIColor` for a given bar amount; subclasses must implement.
+
+        Args:
+            amt: 
+
+        Returns:
+
+        Raises:
+
+        """
         raise NotImplementedError
 
     def get_color_at_position(self, x, y):
-        """Color for a particular position using ``bar_amount`` methods."""
+        # type: (Types.ELLIPSIS) -> Types.NONE
+        """Color for a particular position using ``bar_amount`` methods.
+
+        Args:
+            x: 
+            y: 
+
+        Returns:
+
+        Raises:
+
+        """
         amt = self.point_to_amount(x, y)
         return self.get_color_for_bar_amount(amt)
 
     def paint_foreground_cb(self, cr, wd, ht):
+        # type: (Types.ELLIPSIS) -> Types.NONE
+        """
+
+        Args:
+            cr: 
+            wd: 
+            ht: 
+
+        Returns:
+
+        Raises:
+
+        """
         b = int(self.BORDER_WIDTH)
         col = self.get_managed_color()
         amt = self.get_bar_amount_for_color(col)
@@ -1053,6 +1467,18 @@ class SliderColorAdjuster(ColorAdjusterWidget):
         cr.stroke()
 
     def point_to_amount(self, x, y):
+        # type: (Types.ELLIPSIS) -> Types.NONE
+        """
+
+        Args:
+            x: 
+            y: 
+
+        Returns:
+
+        Raises:
+
+        """
         alloc = self.get_allocation()
         if self.vertical:
             len = alloc.height - 2 * self.BORDER_WIDTH
@@ -1083,22 +1509,28 @@ class SliderColorAdjuster(ColorAdjusterWidget):
         return True
 
 
-class HueSaturationWheelMixin(object):
+class HueSaturationWheelMixin:
     """Mixin for wheel-style hue/saturation adjusters, indep. of color space
-
+    
     Implementing most of the wheel-drawing machinery as a mixin allows the
     methods to be reused independently of the usual base classes for
     Adjusters, which might be inconvenient if sub-widgets are required.
-
+    
     This base class is independent of the color space, but assumes a
     cylindrical shape with the central axis representing lightness and angle
     representing hue.
-
+    
     Desaturated colors reside at the centre of the wheel. This makes them
     somewhat harder to pick ordinarily, but desaturated colors are handy for
     artists. Therefore, we apply a subtle gamma curve when drawing, and when
     interpreting clicked values at this level. The internal API presented here
     for use by subclasses already has this compensation applied.
+
+    Args:
+
+    Returns:
+
+    Raises:
 
     """
 
@@ -1114,7 +1546,20 @@ class HueSaturationWheelMixin(object):
     SAT_GAMMA = 1.50
 
     def get_radius(self, wd=None, ht=None, border=None, alloc=None):
-        """Returns the radius, suitable for a pixel-edge-aligned centre."""
+        # type: (Types.ELLIPSIS) -> Types.NONE
+        """Returns the radius, suitable for a pixel-edge-aligned centre.
+
+        Args:
+            wd:  (Default value = None)
+            ht:  (Default value = None)
+            border:  (Default value = None)
+            alloc:  (Default value = None)
+
+        Returns:
+
+        Raises:
+
+        """
         if wd is None or ht is None:
             if alloc is None:
                 alloc = self.get_allocation()
@@ -1125,7 +1570,19 @@ class HueSaturationWheelMixin(object):
         return int((min(wd, ht) / 2.0)) - int(border) + 0.5
 
     def get_center(self, wd=None, ht=None, alloc=None):
-        """Returns the wheel centre, suitable for an N+0.5 radius."""
+        # type: (Types.ELLIPSIS) -> Types.NONE
+        """Returns the wheel centre, suitable for an N+0.5 radius.
+
+        Args:
+            wd:  (Default value = None)
+            ht:  (Default value = None)
+            alloc:  (Default value = None)
+
+        Returns:
+
+        Raises:
+
+        """
         if wd is None or ht is None:
             if alloc is None:
                 alloc = self.get_allocation()
@@ -1146,7 +1603,18 @@ class HueSaturationWheelMixin(object):
         return int(k * 1000)
 
     def get_color_at_position(self, x, y):
-        """Gets the color at a position, for `ColorAdjusterWidget` impls."""
+        # type: (Types.ELLIPSIS) -> Types.NONE
+        """Gets the color at a position, for `ColorAdjusterWidget` impls.
+
+        Args:
+            x: 
+            y: 
+
+        Returns:
+
+        Raises:
+
+        """
         alloc = self.get_allocation()
         cx, cy = self.get_center(alloc=alloc)
         # Normalized radius
@@ -1167,7 +1635,20 @@ class HueSaturationWheelMixin(object):
         return self.color_at_normalized_polar_pos(r, theta)
 
     def render_background_cb(self, cr, wd, ht, icon_border=None):
-        """Renders the offscreen bg, for `ColorAdjusterWidget` impls."""
+        # type: (Types.ELLIPSIS) -> Types.NONE
+        """Renders the offscreen bg, for `ColorAdjusterWidget` impls.
+
+        Args:
+            cr: 
+            wd: 
+            ht: 
+            icon_border:  (Default value = None)
+
+        Returns:
+
+        Raises:
+
+        """
         cr.save()
 
         ref_grey = self.color_at_normalized_polar_pos(0, 0)
@@ -1201,7 +1682,7 @@ class HueSaturationWheelMixin(object):
         cr.set_line_join(cairo.LINE_JOIN_ROUND)
         step_angle = 2.0 * math.pi / steps
         mgr = self.get_color_manager()
-        for ih in xrange(steps + 1):  # overshoot by 1, no solid bit for final
+        for ih in range(steps + 1):  # overshoot by 1, no solid bit for final
             h = ih / steps
             if mgr:
                 h = mgr.undistort_hue(h)
@@ -1285,20 +1766,48 @@ class HueSaturationWheelMixin(object):
         cr.restore()
 
     def color_at_normalized_polar_pos(self, r, theta):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Get the color represented by a polar position.
-
+        
         The terms `r` and `theta` are normalised to the range 0...1 and refer
         to the undistorted color space.
+
+        Args:
+            r: 
+            theta: 
+
+        Returns:
+
+        Raises:
 
         """
         raise NotImplementedError
 
-    def get_normalized_polar_pos_for_color(self, col):
-        """Inverse of `color_at_normalized_polar_pos`."""
+    def get_normalized_polar_pos_for_color(self, col: Types.ELLIPSIS) -> Types.NONE:
+        """Inverse of `color_at_normalized_polar_pos`.
+
+        Args:
+            col: 
+
+        Returns:
+
+        Raises:
+
+        """
         # FIXME: make the names consistent
         raise NotImplementedError
 
-    def get_pos_for_color(self, col):
+    def get_pos_for_color(self, col: Types.ELLIPSIS) -> Types.NONE:
+        """
+
+        Args:
+            col: 
+
+        Returns:
+
+        Raises:
+
+        """
         nr, ntheta = self.get_normalized_polar_pos_for_color(col)
         mgr = self.get_color_manager()
         if mgr:
@@ -1315,7 +1824,19 @@ class HueSaturationWheelMixin(object):
         return x, y
 
     def paint_foreground_cb(self, cr, wd, ht):
-        """Fg marker painting, for `ColorAdjusterWidget` impls."""
+        # type: (Types.ELLIPSIS) -> Types.NONE
+        """Fg marker painting, for `ColorAdjusterWidget` impls.
+
+        Args:
+            cr: 
+            wd: 
+            ht: 
+
+        Returns:
+
+        Raises:
+
+        """
         col = self.get_managed_color()
         radius = self.get_radius(wd, ht, self.BORDER_WIDTH)
         cx = int(wd // 2)

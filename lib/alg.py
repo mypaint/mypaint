@@ -14,6 +14,7 @@ from math import sqrt
 
 
 class LineType:
+    """ """
     LINE = 0  # Infinite line
     DIRECTIONAL = 1  # Infinite in one direction
     SEGMENT = 2  # Fixed segment
@@ -22,16 +23,23 @@ class LineType:
 ## Polygon and convex polygon computational geometry routines.
 
 
-def convex_hull(points):
+def convex_hull(points: Types.ELLIPSIS) -> Types.NONE:
     """Returns the convex hull of a set of points, in clockwise order.
-
-      >>> convex_hull([(1,1), (1,-1), (0,0), (-1,-1), (-1,1)])
-      [(-1, -1), (1, -1), (1, 1), (-1, 1)]
-
+    
+    
     Uses the Graham scan algorithm for finding the ordered set of points.
     Ref: http://en.wikipedia.org/wiki/Graham_scan
     Ref: http://cgm.cs.mcgill.ca/~beezer/cs507/3coins.html
 
+    Args:
+        points: 
+
+    Returns:
+
+    Raises:
+
+    >>> convex_hull([(1,1), (1,-1), (0,0), (-1,-1), (-1,1)])
+      [(-1, -1), (1, -1), (1, 1), (-1, 1)]
     """
 
     # Uniquify
@@ -48,7 +56,17 @@ def convex_hull(points):
     # Sort other points clockwise in increasing order of the angle the vector
     # p0->p makes with the X axis. Or just the cosine, which suffices since
     # p0 has the lowest Y value and the angle is therefore in (0, pi).
-    def p0cos(p):
+    def p0cos(p: Types.ELLIPSIS) -> Types.NONE:
+        """
+
+        Args:
+            p: 
+
+        Returns:
+
+        Raises:
+
+        """
         return (
             (p0[0] - p[0]) / sqrt((p0[0] - p[0]) ** 2 + (p0[1] - p[1]) ** 2),
             p,
@@ -70,10 +88,20 @@ def convex_hull(points):
 
 
 def det(p, q, r):
+    # type: (Types.ELLIPSIS) -> Types.NONE
     """Determinant of the vector pq:qr
-
+    
     If pq:qr is a clockwise turn, result is negative. If the points
     are collinear, return zero.
+
+    Args:
+        p: 
+        q: 
+        r: 
+
+    Returns:
+
+    Raises:
 
     """
     sum1 = q[0] * r[1] + p[0] * q[1] + r[0] * p[1]
@@ -81,12 +109,18 @@ def det(p, q, r):
     return sum1 - sum2
 
 
-def poly_area(poly):
+def poly_area(poly: Types.ELLIPSIS) -> Types.NONE:
     """Calculates the area of a (non-self-intersecting) polygon.
+
+    Args:
+        poly: 
+
+    Returns:
+
+    Raises:
 
     >>> poly_area([(-1, -1), (1, -1), (1, 1), (-1, 1)])
     4.0
-
     """
     area = 0.0
     for pa, pb in pairwise(poly):
@@ -95,14 +129,20 @@ def poly_area(poly):
     return area
 
 
-def poly_centroid(poly):
+def poly_centroid(poly: Types.ELLIPSIS) -> Types.NONE:
     """Calculates the centroid of a (non-self-intersecting) polygon.
+
+    Args:
+        poly: 
+
+    Returns:
+
+    Raises:
 
     >>> poly_centroid([(-1, -1), (1, -1), (1, 1), (-1, 1)])
     (0.0, 0.0)
     >>> poly_centroid([(0, 1), (0, 4), (0, 3)])
     (0.0, 2.5)
-
     """
     cx, cy = 0.0, 0.0
     area = 0.0
@@ -124,21 +164,29 @@ def poly_centroid(poly):
         return cx, cy
 
 
-def point_in_convex_poly(point, poly):
+def point_in_convex_poly(point, poly: Types.ELLIPSIS) -> Types.NONE:
     """True if a point is inside a convex polygon.
+    
+    
+    A point exactly on the boundary is considered to lie inside the
+    polygon. `poly` can be described in either direction, but the points
+    must be ordered. Ref: http://paulbourke.net/geometry/insidepoly/
 
-      >>> square = [(-1, -1), (1, -1), (1, 1), (-1, 1)]
+    Args:
+        point: 
+        poly: 
+
+    Returns:
+
+    Raises:
+
+    >>> square = [(-1, -1), (1, -1), (1, 1), (-1, 1)]
       >>> point_in_convex_poly((0,0), square)
       True
       >>> point_in_convex_poly((0,1), square)
       True
       >>> point_in_convex_poly((0,1.1), square)
       False
-
-    A point exactly on the boundary is considered to lie inside the
-    polygon. `poly` can be described in either direction, but the points
-    must be ordered. Ref: http://paulbourke.net/geometry/insidepoly/
-
     """
     x, y = point
     seen_left = seen_right = False
@@ -160,41 +208,62 @@ def point_in_convex_poly(point, poly):
 
 
 def nearest_point_in_segment(seg_start, seg_end, point):
+    # type: (Types.ELLIPSIS) -> Types.NONE
     """Intersection of a segment & the line perpendicular to it through a point
-
+    
     The points `seg_start` and `seg_end` bound the line segment. The return
     value is the point where this segment intersects the line perpendicular to
     it passing through `point`.
+    
+    
+    If the points `p1` and `p2` are coincident, or the intersection would lie
+    outside the segment, `None` is returned.
+    
+    
+    Ref: http://paulbourke.net/geometry/pointline/
 
-      >>> nearest_point_in_segment((0,0), (4,0), (2,2))
+    Args:
+        seg_start: 
+        seg_end: 
+        point: 
+
+    Returns:
+
+    Raises:
+
+    >>> nearest_point_in_segment((0,0), (4,0), (2,2))
       (2.0, 0.0)
       >>> nearest_point_in_segment((1,1), (3,3), (2,1))
       (1.5, 1.5)
       >>> nearest_point_in_segment((0,0), (3,0), (0,1))
-
-    If the points `p1` and `p2` are coincident, or the intersection would lie
-    outside the segment, `None` is returned.
-
+    
       >>> nearest_point_in_segment((1,1), (3,3), (12,-1)) is None # not in seg
       True
       >>> nearest_point_in_segment((1,1), (1,1), (2,2)) is None # coincident
       True
-
-    Ref: http://paulbourke.net/geometry/pointline/
-
     """
     return _nearest_point(seg_start, seg_end, point)
 
 
 def nearest_point_on_segment(seg_start, seg_end, point):
+    # type: (Types.ELLIPSIS) -> Types.NONE
     """Get the point on a segment closest to the given point
-
+    
     The points `seg_start` and `seg_end` bound the line segment. The return
     value is either the point where the segment intersects the line
     perpendicular to it passing through `point`, or whichever end
     of the segment is closer to the point.
 
-      >>> nearest_point_on_segment((0, 0), (0, 4), (0, 2))
+    Args:
+        seg_start: 
+        seg_end: 
+        point: 
+
+    Returns:
+
+    Raises:
+
+    >>> nearest_point_on_segment((0, 0), (0, 4), (0, 2))
       (0.0, 2.0)
       >>> nearest_point_on_segment((0, 0), (0, 4), (2, 3))
       (0.0, 3.0)
@@ -208,8 +277,17 @@ def nearest_point_on_segment(seg_start, seg_end, point):
     return _nearest_point(seg_start, seg_end, point, perpendicular=False)
 
 
-def nearest_point_in_poly(poly, point):
-    """Return the point in a given convex polygon closest to the given point.
+def nearest_point_in_poly(poly, point: Types.ELLIPSIS) -> Types.NONE:
+    """
+
+    Args:
+        poly: 
+        point: 
+
+    Returns:
+        
+
+    Raises:
 
     >>> poly = [(-3, 1), (2, 3), (4, 1), (2, -4)]
     >>> nearest_point_in_poly(poly, (-4, -2))
@@ -242,19 +320,31 @@ def nearest_point_in_poly(poly, point):
 
 
 def nearest_point_on_line(p1, p2, point, unidirectional=False):
+    # type: (Types.ELLIPSIS) -> Types.NONE
     """For a line l and a point p, return the point on l closest to p
-
+    
     The line is defined by two pairs of coordinates, and is either considered
     infinite in both directions, or in one direction (starting at the first
     coordinates) if `unidirectional` is set to True.
-
+    
     If `unidirectional` is False, and the line is valid, the closest point
     will always be returned. If `unidirectional` is True and the closest point
     on the line is not perpendicular to `point`, None is returned.
-
+    
     Line ends are inclusive (only relevant for directional lines), meaning that
     for e.g. the line (0,0), (1, 1) and point (2, 0), the closest point will be
     (1, 1) and not None.
+
+    Args:
+        p1: 
+        p2: 
+        point: 
+        unidirectional:  (Default value = False)
+
+    Returns:
+
+    Raises:
+
     """
     return _nearest_point(p1, p2, point, inclusive=True, line_type=int(unidirectional))
 
@@ -267,7 +357,20 @@ def _nearest_point(
     inclusive=False,
     line_type=LineType.SEGMENT,
 ):
+    # type: (Types.ELLIPSIS) -> Types.NONE
     """Generic impl, supporting non-perpendicular shortest distance
+
+    Args:
+        seg_start: 
+        seg_end: 
+        point: 
+        perpendicular:  (Default value = True)
+        inclusive:  (Default value = False)
+        line_type:  (Default value = LineType.SEGMENT)
+
+    Returns:
+
+    Raises:
 
     >>> _nearest_point((0, 0), (3, 0), (0, 1), inclusive=True)
     (0.0, 0.0)
@@ -324,18 +427,33 @@ def _nearest_point(
 
 
 def intersection_of_vector_and_poly(poly, p1, p2, line_type=LineType.LINE):
+    # type: (Types.ELLIPSIS) -> Types.NONE
     """Intersection of a vector and a convex polygon
-
+    
     Returns two coordinate pairs indicating the section of the line that
     lies within the polygon, or None if there either is no intersection,
     or the line is only tangential to a single point.
 
-    :param poly: An ordered sequence of coordinates defining a convex polygon
-    :param p1: The first point of the vector/line
-    :param p2: The second point of the vector/line
-    :param line_type: The type of line/segment to intersect with the polygon.
+    Args:
+        poly: An ordered sequence of coordinates defining a convex polygon
+        p1: The first point of the vector/line
+        p2: The second point of the vector/line
+        line_type: The type of line/segment to intersect with the polygon.
+    
+    
+    Tangential to a single point
+    
+    Coinciding with edge, infinite
+    
+    Coinciding with edge, directional
+    
+    Coinciding with edge, directional (reversed direction) (Default value = LineType.LINE)
 
-      >>> isect = intersection_of_vector_and_poly
+    Returns:
+
+    Raises:
+
+    >>> isect = intersection_of_vector_and_poly
       >>> poly = [(-5, -5), (-7, 1), (-1, 3), (1, -2)]
       >>> p1, p2 = (-4, -2), (-4, 1)
       >>> isect(poly, p1, p2)
@@ -346,21 +464,17 @@ def intersection_of_vector_and_poly(poly, p1, p2, line_type=LineType.LINE):
       [(-4, -2), (-4.0, 2.0)]
       >>> isect(poly, p2, p1, line_type=LineType.DIRECTIONAL)
       [(-4, 1), (-4.0, -4.5)]
-
-    Tangential to a single point
+    
       >>> q1, q2 = (-7, -2), (-3, -8)
       >>> isect(poly, q1, q2)
-
-    Coinciding with edge, infinite
+    
       >>> w1, w2 = (), ()
       >>> isect(poly, (-7, 1), (-4, 2))
       [(-7.0, 1.0), (-1.0, 3.0)]
-
-    Coinciding with edge, directional
+    
       >>> isect(poly, (-7, 1), (-4, 2), LineType.DIRECTIONAL)
       [(-7.0, 1.0), (-1.0, 3.0)]
-
-    Coinciding with edge, directional (reversed direction)
+    
       >>> isect(poly, (-4, 2), (-7, 1), LineType.DIRECTIONAL)
       [(-4, 2), (-7.0, 1.0)]
     """
@@ -400,8 +514,18 @@ def intersection_of_vector_and_poly(poly, p1, p2, line_type=LineType.LINE):
         return result
 
 
-def _intersects(line_type, k):
-    """Helper function used to distinguish handling of segment/line types"""
+def _intersects(line_type, k: Types.ELLIPSIS) -> Types.NONE:
+    """Helper function used to distinguish handling of segment/line types
+
+    Args:
+        line_type: 
+        k: 
+
+    Returns:
+
+    Raises:
+
+    """
     if line_type == LineType.LINE:
         return True  # Unless parallel/coinciding, lines always intersect
     elif line_type == LineType.DIRECTIONAL:
@@ -418,28 +542,41 @@ def intersection_of_vectors(
     a_type=LineType.LINE,
     b_type=LineType.LINE,
 ):
+    # type: (Types.ELLIPSIS) -> Types.NONE
     """Intersection of two vectors, interpreted as segments or lines
-
+    
     The two vectors are defined by four coordinate pairs, and each can be
     either interpreted as a finite segment, or an infinite line which is either
     unidirectional or bidirectional. By default, both vectors are interpreted
     as defining bidirectional infinite lines.
-
+    
     If there is an intersection, its coordinate is returned, otherwise
     (if the vectors coincide, are parallel, or never cross) None is returned.
 
-    :param a1: The first point of the first vector
-    :param a2: The second point of the first vector
-    :param b1: The first point of the second vector
-    :param b2: The second point of the second vector
-    :param a_type: The type of the first vector
-    :param b_type: The type of the second vector
-    :return: an (x, y) tuple or None
+    Args:
+        a1: The first point of the first vector
+        a2: The second point of the first vector
+        b1: The first point of the second vector
+        b2: The second point of the second vector
+        a_type: The type of the first vector (Default value = LineType.LINE)
+        b_type: The type of the second vector (Default value = LineType.LINE)
 
-      Two segments that do not intersect, but whose bidir infinite lines do,
-      and, where if unidirectional, the second line intersects the first
-      segment if the second stretches in one direction, but not the other.
-      >>> isect = intersection_of_vectors
+    Returns:
+        an (x, y) tuple or None
+        
+        Two segments that do not intersect, but whose bidir infinite lines do,
+        and, where if unidirectional, the second line intersects the first
+        segment if the second stretches in one direction, but not the other.
+        
+        Two segments that intersect - should always intersect regardless of type.
+        
+        Two segments that do not intersect, whose infinite lines do, but where
+        the single-direction infinite lines/segments only intersect if both
+        segments have a specific direction.
+
+    Raises:
+
+    >>> isect = intersection_of_vectors
       >>> SEGMENT = LineType.SEGMENT
       >>> DIR = LineType.DIRECTIONAL
       >>> a1, a2 = (-1, 1), (-4, 4)
@@ -454,8 +591,7 @@ def intersection_of_vectors(
       >>> isect(a1, a2, b1, b2, b_type=DIR)
       (-3.0, 3.0)
       >>> isect(a1, a2, b2, b1, b_type=DIR)
-
-      Two segments that intersect - should always intersect regardless of type.
+    
       >>> c1, c2 = (0, -4), (6, 0)
       >>> d1, d2 = (1, 0), (5, -4)
       >>> i = (3.0, -2.0)
@@ -464,10 +600,7 @@ def intersection_of_vectors(
       >>> r = isect(c1, c2, d1, d2, SEGMENT, DIR); None if r == i else r
       >>> r = isect(c1, c2, d1, d2, DIR, SEGMENT); None if r == i else r
       >>> r = isect(c1, c2, d1, d2, DIR, DIR); None if r == i else r
-
-      Two segments that do not intersect, whose infinite lines do, but where
-      the single-direction infinite lines/segments only intersect if both
-      segments have a specific direction.
+    
       >>> e1, e2 = (-6, 0), (-4, -2)
       >>> f1, f2 = (0, 0), (-2, -2)
       >>> i = (-3.0, -3.0)
@@ -482,7 +615,6 @@ def intersection_of_vectors(
       >>> isect(e2, e1, f2, f1, a_type=DIR)
       >>> isect(e1, e2, f2, f1, b_type=DIR)
       >>> isect(e2, e1, f2, f1, b_type=DIR)
-
     """
     (x0, y0), (x1, y1) = a1, a2
     (x2, y2), (x3, y3) = b1, b2
@@ -498,31 +630,36 @@ def intersection_of_vectors(
     return u1 * (x1 - x0) + x0, u1 * (y1 - y0) + y0
 
 
-def intersection_of_segments(p1, p2, p3, p4):
+def intersection_of_segments(p1: tuple, p2: tuple, p3: tuple, p4: tuple) -> Types.NONE:
     """Intersection of two segments
 
-    :param tuple p1: point on segment A, ``(x, y)``
-    :param tuple p2: point on segment A, ``(x, y)``
-    :param tuple p3: point on segment B, ``(x, y)``
-    :param tuple p4: point on segment B, ``(x, y)``
-    :returns: The point of intersection of the two segments
-    :rtype: tuple or None
+    Args:
+        p1: point on segment A, ``(x, y)``
+        p2: point on segment A, ``(x, y)``
+        p3: point on segment B, ``(x, y)``
+        p4: point on segment B, ``(x, y)``
 
-    If the two segments cross, the intersection point is returned:
+    Returns:
+        tuple or None
 
-      >>> intersection_of_segments((0,1), (1,0), (0,0), (2,2))
+If the two segments cross, the intersection point is returned:
+
+
+The return value is ``None`` if the two segments do not intersect.
+
+
+Ref: http://paulbourke.net/geometry/pointlineplane/
+Ref: https://en.wikipedia.org/wiki/Line-line_intersection: The point of intersection of the two segments
+
+    Raises:
+
+    >>> intersection_of_segments((0,1), (1,0), (0,0), (2,2))
       (0.5, 0.5)
       >>> intersection_of_segments((0,1), (1,0), (-1,-3), (1,3))
       (0.25, 0.75)
-
-    The return value is ``None`` if the two segments do not intersect.
-
+    
       >>> intersection_of_segments((0,1), (1,0), (0,2), (1,1)) is None
       True
-
-    Ref: http://paulbourke.net/geometry/pointlineplane/
-    Ref: https://en.wikipedia.org/wiki/Line-line_intersection
-
     """
     # Unpack and validate args
     x1, y1 = [float(c) for c in p1]
@@ -573,14 +710,21 @@ def intersection_of_segments(p1, p2, p3, p4):
 ## Iterations
 
 
-def pairwise(seq):
+def pairwise(seq: Types.ELLIPSIS) -> Types.NONE:
     """Pairwise sequence iterator.
-
-      >>> list(pairwise("spam"))
-      [('s', 'p'), ('p', 'a'), ('a', 'm'), ('m', 's')]
-
+    
+    
     Returns {seq[i],seq[i+1], ..., seq[n],seq[0]} for seq[0...n].
 
+    Args:
+        seq: 
+
+    Returns:
+
+    Raises:
+
+    >>> list(pairwise("spam"))
+      [('s', 'p'), ('p', 'a'), ('a', 'm'), ('m', 's')]
     """
     n = 0
     first_item = None

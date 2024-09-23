@@ -16,6 +16,7 @@ and its "render_*()" methods.
 # Imports:
 
 import abc
+import lib.layer.rendering
 
 
 # Public constants:
@@ -46,7 +47,7 @@ class Opcode:
 # Classes and interfaces:
 
 
-class Spec(object):
+class Spec:
     """Selection criteria for Renderable.get_render_ops()."""
 
     def __init__(self, **kwargs):
@@ -104,15 +105,13 @@ class Spec(object):
         return result
 
 
-class Renderable:
+class Renderable(metaclass=abc.ABCMeta):
     """Abstract interface for elements that can be rendered."""
 
-    __metaclass__ = abc.ABCMeta
-
     @abc.abstractmethod
-    def get_render_ops(self, spec):
+    def get_render_ops(self, spec: lib.layer.rendering.Spec) -> Types.NONE:
         """Returns a flat sequence of rendering ops.
-
+        
         Implementations of this function are expected
         to perform all decisions about what to render,
         and it is reasonable to make quite complex decisions here.
@@ -121,22 +120,27 @@ class Renderable:
         It's expected that it will visit descendents recursively
         and serve up a small program in rendering order.
 
-        :param lib.layer.rendering.Spec spec: what to render.
+        Args:
+            spec: what to render.
         :rtype: sequence
-        :returns: sequence of ops
 
-        The "spec" parameter works pretty much as a query.
-        The tree of renderables being searched/visited
-        may choose to return different things
-        based on what it contains.
-        See: lib.layer.rendering.Spec.
+        Returns:
+            sequence of ops
+            
+            The "spec" parameter works pretty much as a query.
+            The tree of renderables being searched/visited
+            may choose to return different things
+            based on what it contains.
+            See: lib.layer.rendering.Spec.
+            
+            The returned sequence of ops needs to be completely flat.
+            Each op is a tuple, [(OPCODE, DATA, MODE, OPACITY), ...]
+            
+            OPCODE is an Opcode constant.
+            The DATA, MODE, and OPACITY members will vary
+            according to the specific operation.
+            See lib.layer.rendering.Opcode for details.
 
-        The returned sequence of ops needs to be completely flat.
-        Each op is a tuple, [(OPCODE, DATA, MODE, OPACITY), ...]
-
-        OPCODE is an Opcode constant.
-        The DATA, MODE, and OPACITY members will vary
-        according to the specific operation.
-        See lib.layer.rendering.Opcode for details.
+        Raises:
 
         """

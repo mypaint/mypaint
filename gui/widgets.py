@@ -37,9 +37,19 @@ def borderless_button(
 ):
     """Create a button styled to be borderless.
 
+    Args:
+        stock_id:  (Default value = None)
+        icon_name:  (Default value = None)
+        size:  (Default value = ICON_SIZE_SMALL)
+        tooltip:  (Default value = None)
+        action:  (Default value = None)
+
+    Returns:
+
+    Raises:
+
     >>> borderless_button(icon_name="mypaint")  # doctest: +ELLIPSIS
     <Gtk.Button...>
-
     """
     button = Gtk.Button()
     if stock_id is not None:
@@ -90,6 +100,23 @@ def set_margins(
     """
     top = bot = left = right = 0
     if all_ is not None:
+    """
+
+    Args:
+        widget: 
+        all_:  (Default value = 0)
+        tb:  (Default value = None)
+        lr:  (Default value = None)
+        t:  (Default value = None)
+        b:  (Default value = None)
+        l:  (Default value = None)
+        r:  (Default value = None)
+
+    Returns:
+
+    Raises:
+
+    """
         top = bot = left = right = int(all_)
     if tb is not None:
         top = bot = int(tb)
@@ -114,7 +141,17 @@ def set_margins(
 
 
 def inline_toolbar(app, tool_defs):
-    """Builds a styled inline toolbar"""
+    """Builds a styled inline toolbar
+
+    Args:
+        app: 
+        tool_defs: 
+
+    Returns:
+
+    Raises:
+
+    """
     bar = Gtk.Toolbar(
         show_arrow=False,
         icon_size=ICON_SIZE_SMALL,
@@ -150,6 +187,16 @@ class MenuButtonToolItem(Gtk.ToolItem):
         self.menu = None  #: Populate with the menu to show before realize
 
     def _realize_cb(self, widget):
+        """
+
+        Args:
+            widget: 
+
+        Returns:
+
+        Raises:
+
+        """
         action = self.get_related_action()
         icon_name = action.get_icon_name()
         image = Gtk.Image.new_from_icon_name(
@@ -162,6 +209,7 @@ class MenuButtonToolItem(Gtk.ToolItem):
 
 
 def get_toolbar_icon_size():
+    """ """
     from gui.application import get_app
 
     app = get_app()
@@ -173,10 +221,30 @@ def get_toolbar_icon_size():
 
 
 def with_wait_cursor(func):
-    """python decorator that adds a wait cursor around a function"""
+    """python decorator that adds a wait cursor around a function
+
+    Args:
+        func: 
+
+    Returns:
+
+    Raises:
+
+    """
 
     @functools.wraps(func)
     def wrapper(self, *args, **kwargs):
+        """
+
+        Args:
+            *args: 
+            **kwargs: 
+
+        Returns:
+
+        Raises:
+
+        """
         wait_cursor = Gdk.Cursor.new_from_name(Gdk.Display.get_default(), "wait")
         toplevels = Gtk.Window.list_toplevels()
         toplevels = [t for t in toplevels if t.get_window() is not None]

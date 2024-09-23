@@ -43,7 +43,8 @@ from . import core
 from . import rendering
 import lib.feedback
 import lib.naming
-from lib.pycompat import xrange
+from lib.layer.core import LayerBase
+from lib.layer.data import PaintingLayer
 
 
 logger = logging.getLogger(__name__)
@@ -54,11 +55,18 @@ logger = logging.getLogger(__name__)
 
 class PlaceholderLayer(group.LayerStack):
     """Trivial temporary placeholder layer, used for moves etc.
-
+    
     The layer stack architecture does not allow for the same layer
     appearing twice in a tree structure. Layer operations therefore
     require unique placeholder layers occasionally, typically when
     swapping nodes in the tree or handling drags.
+
+    Args:
+
+    Returns:
+
+    Raises:
+
     """
 
     DEFAULT_NAME = C_(
@@ -71,10 +79,10 @@ class PlaceholderLayer(group.LayerStack):
 
 class RootLayerStack(group.LayerStack):
     """Specialized document root layer stack
-
+    
     In addition to the basic lib.layer.group.LayerStack implementation,
     this class's methods and properties provide:
-
+    
      * the document's background, using an internal BackgroundLayer;
      * tile rendering for the doc via the regular rendering interface;
      * special viewing modes (solo, previewing);
@@ -83,20 +91,26 @@ class RootLayerStack(group.LayerStack):
      * a global symmetry axis for painting;
      * manipulation of layer paths; and
      * convenient iteration over the tree structure.
-
+    
     In other words, root layer stacks handle anything that needs
     document-scale oversight of the tree structure to operate.  An
     instance of this instantiated for the running app as part of the
     primary `lib.document.Document` object.  The descendent layers of
     this object are those that are presented as user-addressable layers
     in the Layers panel.
-
+    
     Be careful to maintain global uniqueness of layers within the root
     layer stack. If this isn't respected, then replacing an instance of
     item which exists in two or more places in the tree will break that
     layer's root reference and cause it to silently stop emitting
     updates. Use a `PlaceholderLayer` to work around this, or just
     reinstate the root ref when you're done juggling layers.
+
+    Args:
+
+    Returns:
+
+    Raises:
 
     """
 
@@ -156,6 +170,18 @@ class RootLayerStack(group.LayerStack):
     # Render cache management:
 
     def _render_cache_get(self, key1, key2):
+        # type: (Types.ELLIPSIS) -> Types.NONE
+        """
+
+        Args:
+            key1: 
+            key2: 
+
+        Returns:
+
+        Raises:
+
+        """
         try:
             cache2 = self._render_cache[key1]
             return cache2[key2]
@@ -164,6 +190,19 @@ class RootLayerStack(group.LayerStack):
         return None
 
     def _render_cache_set(self, key1, key2, data):
+        # type: (Types.ELLIPSIS) -> Types.NONE
+        """
+
+        Args:
+            key1: 
+            key2: 
+            data: 
+
+        Returns:
+
+        Raises:
+
+        """
         try:
             cache2 = self._render_cache[key1]
         except KeyError:
@@ -172,7 +211,22 @@ class RootLayerStack(group.LayerStack):
         cache2[key2] = data
 
     def _render_cache_clear_area(self, root, layer, x, y, w, h):
-        """Clears rendered tiles from the cache in a specific area."""
+        # type: (Types.ELLIPSIS) -> Types.NONE
+        """Clears rendered tiles from the cache in a specific area.
+
+        Args:
+            root: 
+            layer: 
+            x: 
+            y: 
+            w: 
+            h: 
+
+        Returns:
+
+        Raises:
+
+        """
 
         if (w <= 0) or (h <= 0):  # update all notifications
             self._render_cache_clear()
@@ -192,8 +246,17 @@ class RootLayerStack(group.LayerStack):
                     key = ((tx // fac), (ty // fac), level)
                     self._render_cache.pop(key, None)
 
-    def _render_cache_clear(self, *_ignored):
-        """Clears all rendered tiles from the cache."""
+    def _render_cache_clear(self, *_ignored: Types.ELLIPSIS) -> Types.NONE:
+        """Clears all rendered tiles from the cache.
+
+        Args:
+            *_ignored: 
+
+        Returns:
+
+        Raises:
+
+        """
         self._render_cache.clear()
 
     # Global ops:
@@ -208,24 +271,28 @@ class RootLayerStack(group.LayerStack):
     def ensure_populated(self, layer_class=None):
         """Ensures that the stack is non-empty by making a new layer if needed
 
-        :param layer_class: The class of layer to add, if necessary
-        :type layer_class: LayerBase
-        :returns: The new layer instance, or None if nothing was created
+        Args:
+            layer_class (LayerBase, optional): The class of layer to add, if necessary (Default value = None)
+
+        Returns:
+            The new layer instance, or None if nothing was created
+            
+            
+            The default `layer_class` is the regular painting layer.
+
+        Raises:
 
         >>> root = RootLayerStack(None); root
         <RootLayerStack len=0>
         >>> root.ensure_populated(layer_class=group.LayerStack); root
         <LayerStack len=0>
         <RootLayerStack len=1>
-
-        The default `layer_class` is the regular painting layer.
-
+        
         >>> root.clear(); root
         <RootLayerStack len=0>
         >>> root.ensure_populated(); root
         <PaintingLayer>
         <RootLayerStack len=1>
-
         """
         if layer_class is None:
             layer_class = data.PaintingLayer
@@ -239,8 +306,12 @@ class RootLayerStack(group.LayerStack):
     def remove_empty_tiles(self):
         """Removes empty tiles in all layers backed by a tiled surface.
 
-        :returns: Stats about the removal: (nremoved, ntotal)
-        :rtype: tuple
+        Args:
+
+        Returns:
+            tuple: Stats about the removal: (nremoved, ntotal)
+
+        Raises:
 
         """
         removed, total = (0, 0)
@@ -267,7 +338,17 @@ class RootLayerStack(group.LayerStack):
         return self
 
     @root.setter
-    def root(self, newroot):
+    def root(self, newroot: Types.ELLIPSIS) -> Types.NONE:
+        """
+
+        Args:
+            newroot: 
+
+        Returns:
+
+        Raises:
+
+        """
         raise ValueError("Cannot set the root of the root layer stack")
 
     ## Info methods
@@ -278,20 +359,15 @@ class RootLayerStack(group.LayerStack):
 
     ## Rendering: root stack API
 
-    def _get_render_background(self, spec):
+    def _get_render_background(self, spec: Types.ELLIPSIS) -> Types.NONE:
         """True if render() should render the internal background
 
-        :rtype: bool
+        Args:
+            spec: 
 
-        This reflects the background visibility flag normally,
-        but the layer-previewing flag inverts its effect.
-        This has the effect of making the current layer
-        blink very appreciably when changing layers.
+        Returns:
 
-        Solo mode never shows the background, currently.
-        If this changes, layer normalization and thumbnails will break.
-
-        See also: background_visible, current_layer_previewing.
+        Raises:
 
         """
         if spec.background is not None:
@@ -303,17 +379,15 @@ class RootLayerStack(group.LayerStack):
         else:
             return self._background_visible
 
-    def get_render_is_opaque(self, spec=None):
+    def get_render_is_opaque(self, spec: Types.ELLIPSIS = None) -> Types.NONE:
         """True if the rendering is known to be 100% opaque
 
-        :rtype: bool
+        Args:
+            spec:  (Default value = None)
 
-        The UI should draw its own checquered background if this is
-        false, and expect `render()` to write RGBA data with lots
-        of transparent areas.
+        Returns:
 
-        Even if the special background layer is enabled, it may be
-        knocked out by certain compositing modes of layers above it.
+        Raises:
 
         """
         if spec is None:
@@ -329,8 +403,17 @@ class RootLayerStack(group.LayerStack):
                 return False
         return True
 
-    def layers_along_path(self, path):
-        """Yields all layers along a path, not including the root"""
+    def layers_along_path(self, path: Types.ELLIPSIS) -> Types.NONE:
+        """Yields all layers along a path, not including the root
+
+        Args:
+            path: 
+
+        Returns:
+
+        Raises:
+
+        """
         if not path:
             return
         unused_path = list(path)
@@ -345,7 +428,18 @@ class RootLayerStack(group.LayerStack):
             yield layer
 
     def layers_along_or_under_path(self, path, no_hidden_descendants=False):
-        """All parents, and all descendents of a path."""
+        # type: (Types.ELLIPSIS) -> Types.NONE
+        """All parents, and all descendents of a path.
+
+        Args:
+            path: 
+            no_hidden_descendants:  (Default value = False)
+
+        Returns:
+
+        Raises:
+
+        """
         path = tuple(path)
         hidden_paths = set()
         for p, layer in self.walk():
@@ -363,11 +457,20 @@ class RootLayerStack(group.LayerStack):
             yield layer
 
     def _get_render_spec(self, respect_solo=True, respect_previewing=True):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Get a specification object for rendering the current state.
-
+        
         The returned spec object captures the current layer and all the
         fiddly bits about layer preview and solo state, and exactly what
         layers to render when one of those modes is active.
+
+        Args:
+            respect_solo:  (Default value = True)
+            respect_previewing:  (Default value = True)
+
+        Returns:
+
+        Raises:
 
         """
         spec = rendering.Spec(current=self.current)
@@ -382,15 +485,22 @@ class RootLayerStack(group.LayerStack):
 
         return spec
 
-    def _get_backdrop_render_spec_for_layer(self, path):
+    def _get_backdrop_render_spec_for_layer(self, path: Types.ELLIPSIS) -> Types.NONE:
         """Get a render spec for the backdrop of a layer.
-
+        
         This method returns a spec object expressing the natural
         rendering of the backdrop to a specific layer path. This is used
         for extracts and subtractions.
-
+        
         The backdrop consists of all layers underneath the layer in
         question, plus all of their parents.
+
+        Args:
+            path: 
+
+        Returns:
+
+        Raises:
 
         """
         seen_srclayer = False
@@ -424,19 +534,25 @@ class RootLayerStack(group.LayerStack):
     ):
         """Render a batch of tiles into a tile-addressable surface.
 
-        :param TileAccesible surface: The target surface.
-        :param iterable tiles: The tile indices to render into "surface".
-        :param int mipmap_level: downscale degree. Ensure tile indices match.
-        :param lib.layer.core.LayerBase overlay: A global overlay layer.
-        :param callable filter: Display filter (8bpc tile array mangler).
-        :param lib.layer.rendering.Spec spec: Explicit rendering spec.
-        :param lib.feedback.Progress progress: Feedback object.
-        :param bool background: Render the background? (None means natural).
-        :param bool alpha: Deprecated alias for "background" (reverse sense).
-        :param **kwargs: Extensibility.
-
+        Args:
+            surface (TileAccesible): The target surface.
+            tiles (iterable): The tile indices to render into "surface".
+            mipmap_level (int): downscale degree. Ensure tile indices match.
+            overlay (lib.layer.core.LayerBase, optional): A global overlay layer. (Default value = None)
+            opaque_base_tile:  (Default value = None)
+            filter (callable, optional): Display filter (8bpc tile array mangler). (Default value = None)
+            spec (lib.layer.rendering.Spec, optional): Explicit rendering spec. (Default value = None)
+            progress (lib.feedback.Progress, optional): Feedback object. (Default value = None)
+            background (bool, optional): Render the background? (None means natural). (Default value = None)
+            alpha (bool, optional): Deprecated alias for "background" (reverse sense). (Default value = None)
+            **kwargs: Extensibility.
+        
         This API may evolve to use only the "spec" argument rather than
         the explicit overlay etc.
+
+        Returns:
+
+        Raises:
 
         """
         if progress is None:
@@ -564,11 +680,16 @@ class RootLayerStack(group.LayerStack):
     def render_layer_preview(self, layer, size=256, bbox=None, **options):
         """Render a standardized thumbnail/preview of a specific layer.
 
-        :param lib.layer.core.LayerBase layer: The layer to preview.
-        :param int size: Size of the output pixbuf.
-        :param tuple bbox: Rectangle to render (x, y, w, h).
-        :param **options: Passed to render().
+        Args:
+            layer (lib.layer.core.LayerBase): The layer to preview.
+            size (int, optional): Size of the output pixbuf. (Default value = 256)
+            bbox (tuple, optional): Rectangle to render (x, y, w, h). (Default value = None)
+            **options: Passed to render().
         :rtype: GdkPixbuf.Pixbuf
+
+        Returns:
+
+        Raises:
 
         """
         x, y, w, h = self._validate_layer_bbox_arg(layer, bbox)
@@ -602,16 +723,21 @@ class RootLayerStack(group.LayerStack):
     def render_layer_as_pixbuf(self, layer, bbox=None, **options):
         """Render a layer as a GdkPixbuf.
 
-        :param lib.layer.core.LayerBase layer: The layer to preview.
-        :param tuple bbox: Rectangle to render (x, y, w, h).
-        :param **options: Passed to render().
+        Args:
+            layer (lib.layer.core.LayerBase): The layer to preview.
+            bbox (tuple, optional): Rectangle to render (x, y, w, h). (Default value = None)
+            **options: Passed to render().
         :rtype: GdkPixbuf.Pixbuf
-
+        
         The "layer" param must be a descendent layer or the root layer
         stack itself.
-
+        
         The "bbox" parameter defaults to the natural data bounding box
         of "layer", and has a minimum size of one tile.
+
+        Returns:
+
+        Raises:
 
         """
         x, y, w, h = self._validate_layer_bbox_arg(layer, bbox)
@@ -628,7 +754,20 @@ class RootLayerStack(group.LayerStack):
         return pixbuf
 
     def render_layer_to_png_file(self, layer, filename, bbox=None, **options):
-        """Render out to a PNG file. Used by LayerGroup.save_as_png()."""
+        # type: (Types.ELLIPSIS) -> Types.NONE
+        """Render out to a PNG file. Used by LayerGroup.save_as_png().
+
+        Args:
+            layer: 
+            filename: 
+            bbox:  (Default value = None)
+            **options: 
+
+        Returns:
+
+        Raises:
+
+        """
         bbox = self._validate_layer_bbox_arg(layer, bbox)
         spec = self._get_render_spec_for_layer(layer)
         spec.background = options.get("render_background")
@@ -637,13 +776,19 @@ class RootLayerStack(group.LayerStack):
             options["alpha"] = True
         lib.surface.save_as_png(rendering, filename, *bbox, **options)
 
-    def get_tile_accessible_layer_rendering(self, layer):
+    def get_tile_accessible_layer_rendering(self, layer: Types.ELLIPSIS) -> Types.NONE:
         """Get a TileAccessible temporary rendering of a sublayer.
 
-        :returns: A temporary rendering object with inbuilt tile cache.
+        Args:
+            layer: 
 
-        The result is used to implement flood_fill for layer types
-        which don't contain their own tile-accessible data.
+        Returns:
+            A temporary rendering object with inbuilt tile cache.
+            
+            The result is used to implement flood_fill for layer types
+            which don't contain their own tile-accessible data.
+
+        Raises:
 
         """
         spec = self._get_render_spec_for_layer(layer, no_hidden_descendants=True)
@@ -653,14 +798,20 @@ class RootLayerStack(group.LayerStack):
     def _get_render_spec_for_layer(self, layer, no_hidden_descendants=False):
         """Get a standardized rendering spec for a single layer.
 
-        :param layer: The layer to render, can be the RootLayerStack.
+        Args:
+            layer: The layer to render, can be the RootLayerStack.
         :rtype: lib.layer.rendering.Spec
-
+        
         This method prepares a standardized rendering spec that shows a
         specific sublayer by itself, or the root stack complete with
         background. The spec returned does not introduce any special
         effects, and ignores any special viewing modes. It is suitable
         for the standardized "render_layer_*()" methods.
+            no_hidden_descendants:  (Default value = False)
+
+        Returns:
+
+        Raises:
 
         """
         spec = self._get_render_spec(
@@ -690,10 +841,25 @@ class RootLayerStack(group.LayerStack):
         spec=None,
         ops=None,
     ):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Render one tile in a standardized way (by default).
-
+        
         It's used in fix15 mode for enabling flood fill when the source
         is a group, or when sample_merged is turned on.
+
+        Args:
+            dst: 
+            dst_has_alpha: 
+            tx: 
+            ty: 
+            mipmap_level:  (Default value = 0)
+            layer:  (Default value = None)
+            spec:  (Default value = None)
+            ops:  (Default value = None)
+
+        Returns:
+
+        Raises:
 
         """
         if ops is None:
@@ -722,7 +888,19 @@ class RootLayerStack(group.LayerStack):
     def _validate_layer_bbox_arg(
         self, layer, bbox, min_size=lib.tiledsurface.TILE_SIZE
     ):
-        """Check a bbox arg, defaulting it to the data size of a layer."""
+        # type: (Types.ELLIPSIS) -> Types.NONE
+        """Check a bbox arg, defaulting it to the data size of a layer.
+
+        Args:
+            layer: 
+            bbox: 
+            min_size:  (Default value = lib.tiledsurface.TILE_SIZE)
+
+        Returns:
+
+        Raises:
+
+        """
         min_size = int(min_size)
         if bbox is not None:
             x, y, w, h = (int(n) for n in bbox)
@@ -739,7 +917,22 @@ class RootLayerStack(group.LayerStack):
 
     @staticmethod
     def _process_ops_list(ops, dst, dst_has_alpha, tx, ty, mipmap_level):
-        """Process a list of ops to render a tile. fix15 data only!"""
+        # type: (Types.ELLIPSIS) -> Types.NONE
+        """Process a list of ops to render a tile. fix15 data only!
+
+        Args:
+            ops: 
+            dst: 
+            dst_has_alpha: 
+            tx: 
+            ty: 
+            mipmap_level: 
+
+        Returns:
+
+        Raises:
+
+        """
         # FIXME: should this be expanded to cover caching and 8bpc
         # targets? It would save on some code duplication elsewhere.
         # On the other hand, this is sort of what a parallelized,
@@ -793,8 +986,17 @@ class RootLayerStack(group.LayerStack):
 
     ## Renderable implementation
 
-    def get_render_ops(self, spec):
-        """Get rendering instructions."""
+    def get_render_ops(self, spec: Types.ELLIPSIS) -> Types.NONE:
+        """Get rendering instructions.
+
+        Args:
+            spec: 
+
+        Returns:
+
+        Raises:
+
+        """
         ops = []
         if self._get_render_background(spec):
             bg_opcode = rendering.Opcode.BLIT
@@ -810,71 +1012,165 @@ class RootLayerStack(group.LayerStack):
 
     @property
     def symmetry_unset(self):
+        """ """
         return self._symmetry_unset
 
     @symmetry_unset.setter
-    def symmetry_unset(self, unset):
+    def symmetry_unset(self, unset: Types.ELLIPSIS) -> Types.NONE:
+        """
+
+        Args:
+            unset: 
+
+        Returns:
+
+        Raises:
+
+        """
         self._symmetry_unset = bool(unset)
 
     @property
     def symmetry_active(self):
         """Whether symmetrical painting is active.
-
+        
         This is a convenience property for part of
         the state managed by `set_symmetry_state()`.
+
+        Args:
+
+        Returns:
+
+        Raises:
+
         """
         return self._symmetry_active
 
     @symmetry_active.setter
-    def symmetry_active(self, active):
+    def symmetry_active(self, active: Types.ELLIPSIS) -> Types.NONE:
+        """
+
+        Args:
+            active: 
+
+        Returns:
+
+        Raises:
+
+        """
         self.set_symmetry_state(active)
 
     @property
     def symmetry_center(self):
+        """ """
         return self._symmetry_center
 
     @symmetry_center.setter
-    def symmetry_center(self, center):
+    def symmetry_center(self, center: Types.ELLIPSIS) -> Types.NONE:
+        """
+
+        Args:
+            center: 
+
+        Returns:
+
+        Raises:
+
+        """
         self.set_symmetry_state(True, center=center)
 
     @property
     def symmetry_x(self):
+        """ """
         return self._symmetry_center[0]
 
     @symmetry_x.setter
-    def symmetry_x(self, x):
+    def symmetry_x(self, x: Types.ELLIPSIS) -> Types.NONE:
+        """
+
+        Args:
+            x: 
+
+        Returns:
+
+        Raises:
+
+        """
         self.set_symmetry_state(True, center=(x, self._symmetry_center[1]))
 
     @property
     def symmetry_y(self):
+        """ """
         return self._symmetry_center[1]
 
     @symmetry_y.setter
-    def symmetry_y(self, y):
+    def symmetry_y(self, y: Types.ELLIPSIS) -> Types.NONE:
+        """
+
+        Args:
+            y: 
+
+        Returns:
+
+        Raises:
+
+        """
         self.set_symmetry_state(True, center=(self._symmetry_center[0], y))
 
     @property
     def symmetry_type(self):
+        """ """
         return self._symmetry_type
 
     @symmetry_type.setter
-    def symmetry_type(self, symmetry_type):
+    def symmetry_type(self, symmetry_type: Types.ELLIPSIS) -> Types.NONE:
+        """
+
+        Args:
+            symmetry_type: 
+
+        Returns:
+
+        Raises:
+
+        """
         self.set_symmetry_state(True, symmetry_type=symmetry_type)
 
     @property
     def symmetry_lines(self):
+        """ """
         return self._symmetry_lines
 
     @symmetry_lines.setter
-    def symmetry_lines(self, symmetry_lines):
+    def symmetry_lines(self, symmetry_lines: Types.ELLIPSIS) -> Types.NONE:
+        """
+
+        Args:
+            symmetry_lines: 
+
+        Returns:
+
+        Raises:
+
+        """
         self.set_symmetry_state(True, symmetry_lines=symmetry_lines)
 
     @property
     def symmetry_angle(self):
+        """ """
         return self._symmetry_angle
 
     @symmetry_angle.setter
-    def symmetry_angle(self, symmetry_angle):
+    def symmetry_angle(self, symmetry_angle: Types.ELLIPSIS) -> Types.NONE:
+        """
+
+        Args:
+            symmetry_angle: 
+
+        Returns:
+
+        Raises:
+
+        """
         self.set_symmetry_state(True, angle=symmetry_angle)
 
     def set_symmetry_state(
@@ -885,14 +1181,26 @@ class RootLayerStack(group.LayerStack):
         symmetry_lines=None,
         angle=None,
     ):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Set the central, propagated, symmetry state.
-
+        
         The root layer stack specialization manages a central state,
         which is propagated to the current layer automatically.
-
+        
         See `LayerBase.set_symmetry_state` for the params.
         This override allows the shared `center_x` to be ``None``:
         see `symmetry_x` for what that means.
+
+        Args:
+            active:  (Default value = None)
+            center:  (Default value = None)
+            symmetry_type:  (Default value = None)
+            symmetry_lines:  (Default value = None)
+            angle:  (Default value = None)
+
+        Returns:
+
+        Raises:
 
         """
         if active is not None:
@@ -921,8 +1229,17 @@ class RootLayerStack(group.LayerStack):
             angle,
         )
 
-    def _propagate_symmetry_state(self, layer):
-        """Copy the symmetry state to the a descendant layer"""
+    def _propagate_symmetry_state(self, layer: Types.ELLIPSIS) -> Types.NONE:
+        """Copy the symmetry state to the a descendant layer
+
+        Args:
+            layer: 
+
+        Returns:
+
+        Raises:
+
+        """
         assert layer is not self
         layer.set_symmetry_state(
             self._symmetry_active,
@@ -934,42 +1251,45 @@ class RootLayerStack(group.LayerStack):
 
     @event
     def symmetry_state_changed(
-        self, active, center, symmetry_type, symmetry_lines, angle
-    ):
+        self, active: bool, center: tuple, symmetry_type: int, symmetry_lines: int, angle: float
+    ) -> Types.NONE:
         """Event: symmetry state changed
-
+        
         An argument value of None means that the state value has not changed,
         allowing for granular updates but also making it necessary to add
         None-checks if the values are to be used.
 
-        :param bool active: whether symmetry is enabled or not
-        :param tuple center: the (x, y) coordinates of the symmetry center
-        :param int symmetry_type: the symmetry type
-        :param int symmetry_lines: new number of symmetry lines
-        :param float angle: the angle of the symmetry line(s)
+        Args:
+            active: whether symmetry is enabled or not
+            center: the (x, y) coordinates of the symmetry center
+            symmetry_type: the symmetry type
+            symmetry_lines: new number of symmetry lines
+            angle: the angle of the symmetry line(s)
+
+        Returns:
+
+        Raises:
+
         """
 
     ## Current layer
 
     def get_current_path(self):
-        """Get the current layer's path
-
-        :rtype: tuple
-
-        If the current path was set to a path which was invalid at the
-        time of setting, the returned value is always an empty tuple for
-        convenience of casting. This is however an invalid path for
-        addressing sub-layers.
-        """
+        """Get the current layer's path"""
         if not self._current_path:
             return ()
         return self._current_path
 
-    def set_current_path(self, path):
+    def set_current_path(self, path: tuple) -> Types.NONE:
         """Set the current layer path
 
-        :param path: The path to use; will be trimmed until it fits
-        :type path: tuple
+        Args:
+            path: The path to use; will be trimmed until it fits
+
+        Returns:
+
+        Raises:
+
         """
         if len(self) == 0:
             self._current_path = None
@@ -991,9 +1311,16 @@ class RootLayerStack(group.LayerStack):
 
     def get_current(self):
         """Get the current layer (also exposed as a read-only property)
-
+        
         This returns the root layer stack itself if the current path
         doesn't address a sub-layer.
+
+        Args:
+
+        Returns:
+
+        Raises:
+
         """
         return self.deepget(self.get_current_path(), self)
 
@@ -1009,18 +1336,22 @@ class RootLayerStack(group.LayerStack):
     def set_background(self, obj, make_default=False):
         """Set the background layer's surface from an object
 
-        :param obj: Background object
-        :type obj: layer.data.BackgroundLayer or tuple or numpy array
-        :param make_default: make this the default bg for clear()
-        :type make_default: bool
-
+        Args:
+            obj (layer.data.BackgroundLayer or tuple or numpy array): Background object
+            make_default (bool, optional): make this the default bg for clear()
+        
         The background object argument `obj` can be a background layer,
         or an RGB triple (uint8), or a HxWx4 or HxWx3 numpy array which
         can be either uint8 or uint16.
-
+        
         Setting the background issues a full redraw for the root layer,
         and also issues the `background_changed` event. The background
         will also be made visible if it isn't already.
+
+        Returns:
+
+        Raises:
+
         """
         if isinstance(obj, data.BackgroundLayer):
             obj = obj._surface
@@ -1044,15 +1375,32 @@ class RootLayerStack(group.LayerStack):
     @property
     def background_visible(self):
         """Whether the background is visible
-
+        
         Accepts only values which can be converted to bool.  Changing
         the background visibility flag issues a full redraw for the root
         layer, and also issues the `background_changed` event.
+
+        Args:
+
+        Returns:
+
+        Raises:
+
         """
         return bool(self._background_visible)
 
     @background_visible.setter
-    def background_visible(self, value):
+    def background_visible(self, value: Types.ELLIPSIS) -> Types.NONE:
+        """
+
+        Args:
+            value: 
+
+        Returns:
+
+        Raises:
+
+        """
         value = bool(value)
         old_value = self._background_visible
         self._background_visible = value
@@ -1069,23 +1417,33 @@ class RootLayerStack(group.LayerStack):
     @property
     def current_layer_overlay(self):
         """A temporary overlay layer for the current layer.
-
+        
         This isn't saved as part of the document, and strictly speaking
         it exists outside the doument tree. If it is present, then
         during rendering it is composited onto the current painting
         layer in isolation. The effect is as if the overlay were part of
         the current painting layer.
-
+        
         The intent of this layer type is to collect together and preview
         sets of updates to the current layer in response to user input.
         The updates can then be applied all together by an action.
         Another possibility might be for brush preview special effects.
-
+        
         The current layer overlay can be a group, which allows capture
         of masked drawing. If you want updates to propagate back to the
         root, the group needs to be set as the ``current_layer_overlay``
         first. Otherwise, ``root``s won't be hooked up and managed in
         the right order.
+        
+        
+        Setting the overlay or setting it to None generates content
+        change notifications too.
+
+        Args:
+
+        Returns:
+
+        Raises:
 
         >>> root = RootLayerStack()
         >>> root.append(data.SimplePaintingLayer())
@@ -1106,20 +1464,26 @@ class RootLayerStack(group.LayerStack):
         >>> ovdata2.clear()
         >>> change_count
         2
-
-        Setting the overlay or setting it to None generates content
-        change notifications too.
-
+        
         >>> root.current_layer_overlay = None
         >>> root.current_layer_overlay = data.SimplePaintingLayer()
         >>> change_count
         4
-
         """
         return self._current_layer_overlay
 
     @current_layer_overlay.setter
-    def current_layer_overlay(self, overlay):
+    def current_layer_overlay(self, overlay: Types.ELLIPSIS) -> Types.NONE:
+        """
+
+        Args:
+            overlay: 
+
+        Returns:
+
+        Raises:
+
+        """
         old_overlay = self._current_layer_overlay
         self._current_layer_overlay = overlay
         self.current_layer_overlay_changed(old_overlay)
@@ -1137,23 +1501,49 @@ class RootLayerStack(group.LayerStack):
             self.layer_content_changed(self, *update_bbox)
 
     @event
-    def current_layer_overlay_changed(self, old):
-        """Event: current_layer_overlay was altered"""
+    def current_layer_overlay_changed(self, old: Types.ELLIPSIS) -> Types.NONE:
+        """Event: current_layer_overlay was altered
+
+        Args:
+            old: 
+
+        Returns:
+
+        Raises:
+
+        """
 
     ## Layer Solo toggle (not saved)
 
     @property
     def current_layer_solo(self):
         """Layer-solo state for the document
-
+        
         Accepts only values which can be converted to bool.
         Altering this property issues the `current_layer_solo_changed`
         event, and a full `layer_content_changed` for the root stack.
+
+        Args:
+
+        Returns:
+
+        Raises:
+
         """
         return self._current_layer_solo
 
     @current_layer_solo.setter
-    def current_layer_solo(self, value):
+    def current_layer_solo(self, value: Types.ELLIPSIS) -> Types.NONE:
+        """
+
+        Args:
+            value: 
+
+        Returns:
+
+        Raises:
+
+        """
         # TODO: make this undoable
         value = bool(value)
         old_value = self._current_layer_solo
@@ -1171,16 +1561,32 @@ class RootLayerStack(group.LayerStack):
     @property
     def current_layer_previewing(self):
         """Layer-previewing state, as used when blinking a layer
-
+        
         Accepts only values which can be converted to bool.  Altering
         this property calls `current_layer_previewing_changed` and also
         issues a full `layer_content_changed` for the root stack.
+
+        Args:
+
+        Returns:
+
+        Raises:
+
         """
         return self._current_layer_previewing
 
     @current_layer_previewing.setter
-    def current_layer_previewing(self, value):
-        """Layer-previewing state, as used when blinking a layer"""
+    def current_layer_previewing(self, value: Types.ELLIPSIS) -> Types.NONE:
+        """Layer-previewing state, as used when blinking a layer
+
+        Args:
+            value: 
+
+        Returns:
+
+        Raises:
+
+        """
         value = bool(value)
         old_value = self._current_layer_previewing
         self._current_layer_previewing = value
@@ -1197,13 +1603,19 @@ class RootLayerStack(group.LayerStack):
     def get_unique_name(self, layer):
         """Get a unique name for a layer to use
 
-        :param LayerBase layer: Any layer
-        :rtype: unicode
-        :returns: A unique name
+        Args:
+            layer (LayerBase): Any layer
+        :rtype: str
 
-        The returned name is guaranteed not to occur in the tree.  This
-        method can be used before or after the layer is inserted into
-        the stack.
+        Returns:
+            A unique name
+            
+            The returned name is guaranteed not to occur in the tree.  This
+            method can be used before or after the layer is inserted into
+            the stack.
+
+        Raises:
+
         """
         existing = {
             l.name for path, l in self.walk() if l is not layer and l.name is not None
@@ -1219,18 +1631,40 @@ class RootLayerStack(group.LayerStack):
     def path_above(self, path, insert=False):
         """Return the path for the layer stacked above a given path
 
-        :param path: a layer path
-        :type path: list or tuple
-        :param insert: get an insertion path
-        :type insert: bool
-        :return: the layer above `path` in walk order
-        :rtype: tuple
+        Args:
+            path (list or tuple): a layer path
+            insert (bool, optional): get an insertion path (Default value = False)
 
-        Normally this is used for locating the layer above a given node
-        in the layers stack as the user sees it in a typical user
-        interface:
+        Returns:
+            tuple
 
-          >>> root = RootLayerStack(doc=None)
+Normally this is used for locating the layer above a given node
+in the layers stack as the user sees it in a typical user
+interface:
+
+
+Ascending the stack using this method can enter and leave
+subtrees:
+
+
+There is no existing path above the topmost node in the stack:
+
+
+This method can also be used to get a path for use with
+`deepinsert()` which will allow insertion above a particular
+existing layer.  Normally this is the same path as the input,
+
+
+however for nonexistent paths, you're guaranteed to get back a
+valid insertion path:
+
+
+which of necessity is the insertion point for a new layer at the
+very top of the stack.: the layer above `path` in walk order
+
+        Raises:
+
+        >>> root = RootLayerStack(doc=None)
           >>> for p, l in [ ([0], data.PaintingLayer()),
           ...               ([1], group.LayerStack()),
           ...               ([1, 0], group.LayerStack()),
@@ -1240,35 +1674,20 @@ class RootLayerStack(group.LayerStack):
           ...    root.deepinsert(p, l)
           >>> root.path_above([1])
           (0,)
-
-        Ascending the stack using this method can enter and leave
-        subtrees:
-
+        
           >>> root.path_above([1, 1])
           (1, 0, 0, 0)
           >>> root.path_above([1, 0, 0, 0])
           (1, 0, 0)
-
-        There is no existing path above the topmost node in the stack:
-
+        
           >>> root.path_above([0]) is None
           True
-
-        This method can also be used to get a path for use with
-        `deepinsert()` which will allow insertion above a particular
-        existing layer.  Normally this is the same path as the input,
-
+        
           >>> root.path_above([0, 1], insert=True)
           (0, 1)
-
-        however for nonexistent paths, you're guaranteed to get back a
-        valid insertion path:
-
+        
           >>> root.path_above([42, 1, 101], insert=True)
           (0,)
-
-        which of necessity is the insertion point for a new layer at the
-        very top of the stack.
         """
         path = tuple(path)
         if len(path) == 0:
@@ -1293,18 +1712,46 @@ class RootLayerStack(group.LayerStack):
     def path_below(self, path, insert=False):
         """Return the path for the layer stacked below a given path
 
-        :param path: a layer path
-        :type path: list or tuple
-        :param insert: get an insertion path
-        :type insert: bool
-        :return: the layer below `path` in walk order
-        :rtype: tuple or None
+        Args:
+            path (list or tuple): a layer path
+            insert (bool, optional): get an insertion path (Default value = False)
 
-        This method is the inverse of `path_above()`: it normally
-        returns the tree path below its `path` as the user would see it
-        in a typical user interface:
+        Returns:
+            tuple or None
 
-          >>> root = RootLayerStack(doc=None)
+This method is the inverse of `path_above()`: it normally
+returns the tree path below its `path` as the user would see it
+in a typical user interface:
+
+
+Descending the stack using this method can enter and leave
+subtrees:
+
+
+There is no path below the lowest addressable layer:
+
+
+Asking for an insertion path tries to get you somewhere to put a
+new layer that would make intuitive sense.  For most kinds of
+layer, that means one at the same level as the reference point
+
+
+However for sub-stacks, the insert-path "below" the stack is
+that for a new node as the stack's top child node
+
+
+Another exception to the general rule is that invalid paths
+always have an insertion path "below" them:
+
+  >> root.path_below([999, 42, 67], insert=True)
+  (2,)
+
+although this of necessity returns the insertion point for a new
+layer at the very bottom of the stack.: the layer below `path` in walk order
+
+        Raises:
+
+        >>> root = RootLayerStack(doc=None)
           >>> for p, l in [ ([0], data.PaintingLayer()),
           ...               ([1], group.LayerStack()),
           ...               ([1, 0], group.LayerStack()),
@@ -1314,45 +1761,24 @@ class RootLayerStack(group.LayerStack):
           ...    root.deepinsert(p, l)
           >>> root.path_below([0])
           (1,)
-
-        Descending the stack using this method can enter and leave
-        subtrees:
-
+        
           >>> root.path_below([1, 0])
           (1, 0, 0)
           >>> root.path_below([1, 0, 0, 0])
           (1, 1)
-
-        There is no path below the lowest addressable layer:
-
+        
           >>> root.path_below([1, 1]) is None
           True
-
-        Asking for an insertion path tries to get you somewhere to put a
-        new layer that would make intuitive sense.  For most kinds of
-        layer, that means one at the same level as the reference point
-
+        
           >>> root.path_below([0], insert=True)
           (1,)
           >>> root.path_below([1, 1], insert=True)
           (1, 2)
           >>> root.path_below([1, 0, 0, 0], insert=True)
           (1, 0, 0, 1)
-
-        However for sub-stacks, the insert-path "below" the stack is
-        that for a new node as the stack's top child node
-
+        
           >>> root.path_below([1, 0], insert=True)
           (1, 0, 0)
-
-        Another exception to the general rule is that invalid paths
-        always have an insertion path "below" them:
-
-          >> root.path_below([999, 42, 67], insert=True)
-          (2,)
-
-        although this of necessity returns the insertion point for a new
-        layer at the very bottom of the stack.
         """
         path = tuple(path)
         if len(path) == 0:
@@ -1378,13 +1804,21 @@ class RootLayerStack(group.LayerStack):
     ## Layer bubbling
 
     def _bubble_layer(self, path, upstack):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Move a layer up or down, preserving the tree structure
-
+        
         Parameters and return values are the same as for the public
         methods (`bubble_layer_up()`, `bubble_layer_down()`), with the
         following addition:
 
-        :param upstack: true to bubble up, false to bubble down
+        Args:
+            path: 
+            upstack: true to bubble up, false to bubble down
+
+        Returns:
+
+        Raises:
+
         """
         path = tuple(path)
         if len(path) == 0:
@@ -1457,32 +1891,56 @@ class RootLayerStack(group.LayerStack):
             return True
 
     @event
-    def collapse_layer(self, path):
-        """Event: request that the UI collapse a given path"""
+    def collapse_layer(self, path: Types.ELLIPSIS) -> Types.NONE:
+        """Event: request that the UI collapse a given path
+
+        Args:
+            path: 
+
+        Returns:
+
+        Raises:
+
+        """
 
     @event
-    def expand_layer(self, path):
-        """Event: request that the UI expand a given path"""
+    def expand_layer(self, path: Types.ELLIPSIS) -> Types.NONE:
+        """Event: request that the UI expand a given path
 
-    def bubble_layer_up(self, path):
+        Args:
+            path: 
+
+        Returns:
+
+        Raises:
+
+        """
+
+    def bubble_layer_up(self, path: Types.ELLIPSIS) -> Types.NONE:
         """Move a layer up through the stack
 
-        :param path: Layer path identifying the layer to move
-        :returns: True if the stack structure was modified
+        Args:
+            path: Layer path identifying the layer to move
 
-        Bubbling follows the layout of the tree and preserves its
-        structure apart from the layers touched by the move, so it can
-        be driven by the keyboard usefully. `bubble_layer_down()` is the
-        exact inverse of this operation.
+        Returns:
+            True if the stack structure was modified
+            
+            Bubbling follows the layout of the tree and preserves its
+            structure apart from the layers touched by the move, so it can
+            be driven by the keyboard usefully. `bubble_layer_down()` is the
+            exact inverse of this operation.
+            
+            These methods assume the existence of a UI which lays out layers
+            from top to bottom down the page, and which shows nodes or rows
+            for LayerStacks (groups) before their contents.  If the path
+            identifies a substack, the substack is moved as a whole.
+            
+            Bubbling layers may issue several layer_inserted and
+            layer_deleted events depending on what's moved, and may alter
+            the current path too (see current_path_changed).
 
-        These methods assume the existence of a UI which lays out layers
-        from top to bottom down the page, and which shows nodes or rows
-        for LayerStacks (groups) before their contents.  If the path
-        identifies a substack, the substack is moved as a whole.
+        Raises:
 
-        Bubbling layers may issue several layer_inserted and
-        layer_deleted events depending on what's moved, and may alter
-        the current path too (see current_path_changed).
         """
         old_current = self.current
         modified = self._bubble_layer(path, True)
@@ -1490,15 +1948,21 @@ class RootLayerStack(group.LayerStack):
             self.current_path = self.canonpath(layer=old_current)
         return modified
 
-    def bubble_layer_down(self, path):
+    def bubble_layer_down(self, path: Types.ELLIPSIS) -> Types.NONE:
         """Move a layer down through the stack
 
-        :param path: Layer path identifying the layer to move
-        :returns: True if the stack structure was modified
+        Args:
+            path: Layer path identifying the layer to move
 
-        This is the inverse operation to bubbling a layer up.
-        Parameters, notifications, and return values are the same as
-        those for `bubble_layer_up()`.
+        Returns:
+            True if the stack structure was modified
+            
+            This is the inverse operation to bubbling a layer up.
+            Parameters, notifications, and return values are the same as
+            those for `bubble_layer_up()`.
+
+        Raises:
+
         """
         old_current = self.current
         modified = self._bubble_layer(path, False)
@@ -1513,21 +1977,38 @@ class RootLayerStack(group.LayerStack):
 
     def walk(self, visible=None, bghit=None):
         """Walks the tree, listing addressable layers & their paths
-
+        
         The parameters control how the walk operates as well as limiting
         its generated output.
 
-        :param visible: Only visible layers
-        :type visible: bool
-        :param bghit: Only layers compositing directly on the background
-        :type bghit: bool
-        :returns: Iterator yielding ``(path, layer)`` tuples
-        :rtype: collections.Iterable
+        Args:
+            visible (bool, optional): Only visible layers (Default value = None)
+            bghit (bool, optional): Only layers compositing directly on the background (Default value = None)
 
-        Layer substacks are listed before their contents, but the root
-        of the walk is always excluded::
+        Returns:
+            collections.Iterable
 
-            >>> from . import data
+Layer substacks are listed before their contents, but the root
+of the walk is always excluded::
+
+
+The default behaviour is to return all layers.  If `visible`
+is true, hidden layers are excluded.  This excludes child layers
+of invisible layer stacks as well as the invisible stacks
+themselves.
+
+
+If `bghit` is true, layers which could never affect the special
+background layer are excluded from the listing.  Specifically,
+all children of isolated layers are excluded, but not the
+isolated layers themselves.
+
+
+The special background layer itself is never returned by walk().: Iterator yielding ``(path, layer)`` tuples
+
+        Raises:
+
+        >>> from . import data
             >>> root = RootLayerStack(doc=None)
             >>> for p, l in [([0], data.PaintingLayer()),
             ...              ([1], group.LayerStack(name="A")),
@@ -1542,30 +2023,18 @@ class RootLayerStack(group.LayerStack):
             ((1,), <LayerStack len=2 ...'A'>)
             >>> walk[2]  # doctest: +ELLIPSIS
             ((1, 0), <PaintingLayer ...'B'>)
-
-        The default behaviour is to return all layers.  If `visible`
-        is true, hidden layers are excluded.  This excludes child layers
-        of invisible layer stacks as well as the invisible stacks
-        themselves.
-
+        
             >>> root.deepget([0]).visible = False
             >>> root.deepget([1]).visible = False
             >>> list(root.walk(visible=True))  # doctest: +ELLIPSIS
             [((2,), <PaintingLayer ...'C'>)]
-
-        If `bghit` is true, layers which could never affect the special
-        background layer are excluded from the listing.  Specifically,
-        all children of isolated layers are excluded, but not the
-        isolated layers themselves.
-
+        
             >>> root.deepget([1]).mode = lib.mypaintlib.CombineMultiply
             >>> walk = list(root.walk(bghit=True))
             >>> root.deepget([1]) in {l for p, l in walk}
             True
             >>> root.deepget([1, 0]) in {l for p, l in walk}
             False
-
-        The special background layer itself is never returned by walk().
         """
         queue = [((i,), c) for i, c in enumerate(self)]
         while len(queue) > 0:
@@ -1579,8 +2048,15 @@ class RootLayerStack(group.LayerStack):
                 continue
             queue[:0] = [(path + (i,), c) for i, c in enumerate(layer)]
 
-    def deepiter(self, visible=None):
+    def deepiter(self, visible: Types.ELLIPSIS = None) -> Types.NONE:
         """Iterates across all descendents of the stack
+
+        Args:
+            visible:  (Default value = None)
+
+        Returns:
+
+        Raises:
 
         >>> from . import test
         >>> stack, leaves = test.make_test_stack()
@@ -1598,7 +2074,20 @@ class RootLayerStack(group.LayerStack):
         return (t[1] for t in self.walk(visible=visible))
 
     def deepget(self, path, default=None):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Gets a layer based on its path
+        
+        
+        If the layer cannot be found, None is returned; however a
+        different default value can be specified::
+
+        Args:
+            path: 
+            default:  (Default value = None)
+
+        Returns:
+
+        Raises:
 
         >>> from . import test
         >>> stack, leaves = test.make_test_stack()
@@ -1608,14 +2097,10 @@ class RootLayerStack(group.LayerStack):
         <PaintingLayer '01'>
         >>> stack.deepget((0,))
         <LayerStack len=3 '0'>
-
-        If the layer cannot be found, None is returned; however a
-        different default value can be specified::
-
+        
         >>> stack.deepget((42,0), None)
         >>> stack.deepget((0,11), default="missing")
         'missing'
-
         """
         if path is None:
             return default
@@ -1638,11 +2123,10 @@ class RootLayerStack(group.LayerStack):
     def deepinsert(self, path, layer):
         """Inserts a layer before the final index in path
 
-        :param path: an insertion path: see below
-        :type path: iterable of integers
-        :param layer: the layer to insert
-        :type layer: LayerBase
-
+        Args:
+            path (iterable of integers): an insertion path: see below
+            layer (LayerBase): the layer to insert
+        
         Deepinsert cannot create sub-stacks. Every element of `path`
         before the final element must be a valid `list`-style ``[]``
         index into an existing stack along the chain being addressed,
@@ -1650,6 +2134,14 @@ class RootLayerStack(group.LayerStack):
         which `list.insert()` accepts.  Negative final indices, and
         final indices greater than the number of layers in the addressed
         stack are quite valid in `path`::
+        
+        
+        Inserting a layer using this method gives it a unique name
+        within the tree::
+
+        Returns:
+
+        Raises:
 
         >>> from . import data
         >>> from . import test
@@ -1662,10 +2154,7 @@ class RootLayerStack(group.LayerStack):
         >>> stack.deepinsert([0], layer)
         >>> stack.deepget([0]) is layer
         True
-
-        Inserting a layer using this method gives it a unique name
-        within the tree::
-
+        
         >>> layer.name != 'foo'
         True
         """
@@ -1688,8 +2177,15 @@ class RootLayerStack(group.LayerStack):
                 return
         assert len(unused_path) > 0, "deepinsert() should never " "exhaust the path"
 
-    def deeppop(self, path):
+    def deeppop(self, path: Types.ELLIPSIS) -> Types.NONE:
         """Removes a layer by its path
+
+        Args:
+            path: 
+
+        Returns:
+
+        Raises:
 
         >>> from . import test
         >>> stack, leaves = test.make_test_stack()
@@ -1719,8 +2215,15 @@ class RootLayerStack(group.LayerStack):
         self.current_path = old_current  # i.e. nearest remaining
         return removed
 
-    def deepremove(self, layer):
+    def deepremove(self, layer: Types.ELLIPSIS) -> Types.NONE:
         """Removes a layer from any of the root's descendents
+
+        Args:
+            layer: 
+
+        Returns:
+
+        Raises:
 
         >>> from . import test
         >>> stack, leaves = test.make_test_stack()
@@ -1751,8 +2254,16 @@ class RootLayerStack(group.LayerStack):
             return None
         raise ValueError("Layer is not in the root stack or " "any descendent")
 
-    def deepindex(self, layer):
-        """Return a path for a layer by searching the stack tree
+    def deepindex(self, layer: Types.ELLIPSIS) -> Types.NONE:
+        """
+
+        Args:
+            layer: 
+
+        Returns:
+            
+
+        Raises:
 
         >>> from . import test
         >>> stack, leaves = test.make_test_stack()
@@ -1778,21 +2289,30 @@ class RootLayerStack(group.LayerStack):
         usecurrent=False,
         usefirst=False,
     ):
+        # type: (Types.ELLIPSIS) -> tuple
         """Verify and return the path for a layer from various criteria
 
-        :param index: index of the layer in walk() order
-        :param layer: a layer, which must be a descendent of this root
-        :param path: a layer path
-        :param usecurrent: if true, use the current path as fallback
-        :param usefirst: if true, use the first path as fallback
-        :return: a new, verified path referring to an existing layer
-        :rtype: tuple
+        Args:
+            index: index of the layer in walk() order (Default value = None)
+            layer: a layer, which must be a descendent of this root (Default value = None)
+            path: a layer path (Default value = None)
+            usecurrent: if true, use the current path as fallback (Default value = False)
+            usefirst: if true, use the first path as fallback (Default value = False)
 
-        The returned path is guaranteed to refer to an existing layer
-        other than the root, and be the path in its most canonical
-        form::
+The returned path is guaranteed to refer to an existing layer
+other than the root, and be the path in its most canonical
+form::
 
-          >>> root = RootLayerStack(doc=None)
+
+Fallbacks can be specified for times when the regular criteria
+don't work::
+
+
+If no matching layer exists, a ValueError is raised::: a new, verified path referring to an existing layer
+
+        Raises:
+
+        >>> root = RootLayerStack(doc=None)
           >>> root.deepinsert([0], data.PaintingLayer())
           >>> root.deepinsert([1], group.LayerStack())
           >>> root.deepinsert([1, 0], data.PaintingLayer())
@@ -1805,18 +2325,13 @@ class RootLayerStack(group.LayerStack):
           (1, 1)
           >>> root.canonpath(index=3)
           (1, 1)
-
-        Fallbacks can be specified for times when the regular criteria
-        don't work::
-
+        
           >>> root.current_path = (1, 1)
           >>> root.canonpath(usecurrent=True)
           (1, 1)
           >>> root.canonpath(usefirst=True)
           (0,)
-
-        If no matching layer exists, a ValueError is raised::
-
+        
           >>> root.clear()
           >>> root.canonpath(usecurrent=True)
           ... # doctest: +ELLIPSIS
@@ -1884,28 +2399,29 @@ class RootLayerStack(group.LayerStack):
 
     ## Layer merging
 
-    def layer_new_normalized(self, path):
+    def layer_new_normalized(self, path: tuple) -> PaintingLayer:
         """Copy a layer to a normal painting layer that looks the same
 
-        :param tuple path: Path to normalize
-        :returns: New normalized layer
-        :rtype: lib.layer.data.PaintingLayer
+        Args:
+            path: Path to normalize
 
-        The normalize operation does whatever is needed to convert a
-        layer of any type into a normal painting layer with full opacity
-        and Normal combining mode, while retaining its appearance at the
-        current time. This may mean:
+The normalize operation does whatever is needed to convert a
+layer of any type into a normal painting layer with full opacity
+and Normal combining mode, while retaining its appearance at the
+current time. This may mean:
 
-        * Just a simple copy
-        * Merging all of its visible sublayers into the copy
-        * Removing the effect the backdrop has on its appearance
+* Just a simple copy
+* Merging all of its visible sublayers into the copy
+* Removing the effect the backdrop has on its appearance
 
-        The returned painting layer is not inserted into the tree
-        structure, and nothing in the tree structure is changed by this
-        operation. The layer returned is always fully opaque, visible,
-        and has normal mode. Its strokemap is constructed from all
-        visible and tangible painting layers in the original, and it has
-        the same name as the original, initially.
+The returned painting layer is not inserted into the tree
+structure, and nothing in the tree structure is changed by this
+operation. The layer returned is always fully opaque, visible,
+and has normal mode. Its strokemap is constructed from all
+visible and tangible painting layers in the original, and it has
+the same name as the original, initially.: New normalized layer
+
+        Raises:
 
         >>> from . import test
         >>> root, leaves = test.make_test_stack()
@@ -1915,7 +2431,6 @@ class RootLayerStack(group.LayerStack):
         ...     normized = root.layer_new_normalized(path)
         ...     assert normized not in orig_layers  # always a new layer
         >>> assert list(root.walk()) == orig_walk  # structure unchanged
-
         """
         srclayer = self.deepget(path)
         if not srclayer:
@@ -2000,12 +2515,17 @@ class RootLayerStack(group.LayerStack):
 
         return dstlayer
 
-    def get_merge_down_target(self, path):
+    def get_merge_down_target(self, path: tuple) -> Types.NONE:
         """Returns the target path for Merge Down, after checks
 
-        :param tuple path: Source path for the Merge Down
-        :returns: Target path for the merge, if it exists
-        :rtype: tuple (or None)
+        Args:
+            path: Source path for the Merge Down
+
+        Returns:
+            tuple (or None): Target path for the merge, if it exists
+
+        Raises:
+
         """
         if not path:
             return None
@@ -2032,21 +2552,22 @@ class RootLayerStack(group.LayerStack):
 
         return target_path
 
-    def layer_new_merge_down(self, path):
+    def layer_new_merge_down(self, path: tuple) -> PaintingLayer:
         """Create a new layer containing the Merge Down of two layers
 
-        :param tuple path: Path to the top layer to Merge Down
-        :returns: New merged layer
-        :rtype: lib.layer.data.PaintingLayer
+        Args:
+            path: Path to the top layer to Merge Down
 
-        The current layer and the one below it are merged into a new
-        layer, if that is possible, and the new layer is returned.
-        Nothing is inserted or removed from the stack.  Any merged layer
-        will contain a combined strokemap based on the input layers -
-        although locked layers' strokemaps are not merged.
+The current layer and the one below it are merged into a new
+layer, if that is possible, and the new layer is returned.
+Nothing is inserted or removed from the stack.  Any merged layer
+will contain a combined strokemap based on the input layers -
+although locked layers' strokemaps are not merged.
 
-        You get what you see. This means that both layers must be
-        visible to be used in the output.
+You get what you see. This means that both layers must be
+visible to be used in the output.: New merged layer
+
+        Raises:
 
         >>> from . import test
         >>> root, leaves = test.make_test_stack()
@@ -2065,7 +2586,6 @@ class RootLayerStack(group.LayerStack):
         >>> assert list(root.walk()) == orig_walk  # structure unchanged
         >>> assert n_merged > 0
         >>> assert n_not_merged > 0
-
         """
         target_path = self.get_merge_down_target(path)
         if not target_path:
@@ -2122,18 +2642,25 @@ class RootLayerStack(group.LayerStack):
     def layer_new_merge_visible(self):
         """Create and return the merge of all currently visible layers
 
-        :returns: New merged layer
-        :rtype: lib.layer.data.PaintingLayer
+        Args:
 
-        All visible layers are merged into a new PaintingLayer, which is
-        returned. Nothing is inserted or removed from the stack.  The
-        merged layer will contain a combined strokemap based on those
-        layers which are visible but not locked.
+        Returns:
+            lib.layer.data.PaintingLayer
 
-        You get what you see. If the background layer is visible at the
-        time of the merge, then many modes will pick up an image of it.
-        It will be "subtracted" from the result of the merge so that the
-        merge result can be stacked above the same background.
+All visible layers are merged into a new PaintingLayer, which is
+returned. Nothing is inserted or removed from the stack.  The
+merged layer will contain a combined strokemap based on those
+layers which are visible but not locked.
+
+You get what you see. If the background layer is visible at the
+time of the merge, then many modes will pick up an image of it.
+It will be "subtracted" from the result of the merge so that the
+merge result can be stacked above the same background.
+
+
+See also: `walk()`, `background_visible`.: New merged layer
+
+        Raises:
 
         >>> from . import test
         >>> root, leaves = test.make_test_stack()
@@ -2142,8 +2669,6 @@ class RootLayerStack(group.LayerStack):
         >>> merged = root.layer_new_merge_visible()
         >>> assert list(root.walk()) == orig_walk  # structure unchanged
         >>> assert merged not in orig_layers   # layer is a new object
-
-        See also: `walk()`, `background_visible`.
         """
 
         # Extract tile indices, names, and strokemaps.
@@ -2199,7 +2724,18 @@ class RootLayerStack(group.LayerStack):
     ## Layer uniquifying (sort of the opposite of Merge Down)
 
     def uniq_layer(self, path, pixels=False):
-        """Uniquify a painting layer's tiles or pixels."""
+        # type: (Types.ELLIPSIS) -> Types.NONE
+        """Uniquify a painting layer's tiles or pixels.
+
+        Args:
+            path: 
+            pixels:  (Default value = False)
+
+        Returns:
+
+        Raises:
+
+        """
         targ_path = path
         targ_layer = self.deepget(path)
 
@@ -2244,7 +2780,18 @@ class RootLayerStack(group.LayerStack):
         targ_surf.remove_tiles(unchanged_tile_indices)
 
     def refactor_layer_group(self, path, pixels=False):
-        """Factor common stuff out of a group's child layers."""
+        # type: (Types.ELLIPSIS) -> Types.NONE
+        """Factor common stuff out of a group's child layers.
+
+        Args:
+            path: 
+            pixels:  (Default value = False)
+
+        Returns:
+
+        Raises:
+
+        """
         targ_path = path
         targ_group = self.deepget(path)
 
@@ -2339,7 +2886,21 @@ class RootLayerStack(group.LayerStack):
     def load_from_openraster(
         self, orazip, elem, cache_dir, progress, x=0, y=0, **kwargs
     ):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Load the root layer stack from an open .ora file
+
+        Args:
+            orazip: 
+            elem: 
+            cache_dir: 
+            progress: 
+            x:  (Default value = 0)
+            y:  (Default value = 0)
+            **kwargs: 
+
+        Returns:
+
+        Raises:
 
         >>> root = RootLayerStack(None)
         >>> import zipfile
@@ -2361,7 +2922,6 @@ class RootLayerStack(group.LayerStack):
         True
         >>> shutil.rmtree(tmpdir)
         >>> assert not os.path.exists(tmpdir)
-
         """
         self._no_background = True
         super(RootLayerStack, self).load_from_openraster(
@@ -2407,7 +2967,23 @@ class RootLayerStack(group.LayerStack):
     def _load_child_layer_from_orazip(
         self, orazip, elem, cache_dir, progress, x=0, y=0, **kwargs
     ):
-        """Loads and appends a single child layer from an open .ora file"""
+        # type: (Types.ELLIPSIS) -> Types.NONE
+        """Loads and appends a single child layer from an open .ora file
+
+        Args:
+            orazip: 
+            elem: 
+            cache_dir: 
+            progress: 
+            x:  (Default value = 0)
+            y:  (Default value = 0)
+            **kwargs: 
+
+        Returns:
+
+        Raises:
+
+        """
         attrs = elem.attrib
         # Handle MyPaint's special background tile notation
         # MyPaint will support reading .ora files using the legacy
@@ -2444,7 +3020,23 @@ class RootLayerStack(group.LayerStack):
     def load_from_openraster_dir(
         self, oradir, elem, cache_dir, progress, x=0, y=0, **kwargs
     ):
-        """Loads layer flags and data from an OpenRaster-style dir"""
+        # type: (Types.ELLIPSIS) -> Types.NONE
+        """Loads layer flags and data from an OpenRaster-style dir
+
+        Args:
+            oradir: 
+            elem: 
+            cache_dir: 
+            progress: 
+            x:  (Default value = 0)
+            y:  (Default value = 0)
+            **kwargs: 
+
+        Returns:
+
+        Raises:
+
+        """
         self._no_background = True
         super(RootLayerStack, self).load_from_openraster_dir(
             oradir, elem, cache_dir, progress, x=x, y=y, **kwargs
@@ -2456,7 +3048,23 @@ class RootLayerStack(group.LayerStack):
     def _load_child_layer_from_oradir(
         self, oradir, elem, cache_dir, progress, x=0, y=0, **kwargs
     ):
-        """Loads and appends a single child layer from an open .ora file"""
+        # type: (Types.ELLIPSIS) -> Types.NONE
+        """Loads and appends a single child layer from an open .ora file
+
+        Args:
+            oradir: 
+            elem: 
+            cache_dir: 
+            progress: 
+            x:  (Default value = 0)
+            y:  (Default value = 0)
+            **kwargs: 
+
+        Returns:
+
+        Raises:
+
+        """
         attrs = elem.attrib
         # Handle MyPaint's special background tile notation
         # MyPaint will support reading .ora files using the legacy
@@ -2494,7 +3102,23 @@ class RootLayerStack(group.LayerStack):
     def save_to_openraster(
         self, orazip, tmpdir, path, canvas_bbox, frame_bbox, progress=None, **kwargs
     ):
-        """Saves the stack's data into an open OpenRaster ZipFile"""
+        # type: (Types.ELLIPSIS) -> Types.NONE
+        """Saves the stack's data into an open OpenRaster ZipFile
+
+        Args:
+            orazip: 
+            tmpdir: 
+            path: 
+            canvas_bbox: 
+            frame_bbox: 
+            progress:  (Default value = None)
+            **kwargs: 
+
+        Returns:
+
+        Raises:
+
+        """
         if not progress:
             progress = lib.feedback.Progress()
         progress.items = 10
@@ -2529,7 +3153,21 @@ class RootLayerStack(group.LayerStack):
         return stack_elem
 
     def queue_autosave(self, oradir, taskproc, manifest, bbox, **kwargs):
-        """Queues the layer for auto-saving"""
+        # type: (Types.ELLIPSIS) -> Types.NONE
+        """Queues the layer for auto-saving
+
+        Args:
+            oradir: 
+            taskproc: 
+            manifest: 
+            bbox: 
+            **kwargs: 
+
+        Returns:
+
+        Raises:
+
+        """
         stack_elem = super(RootLayerStack, self).queue_autosave(
             oradir, taskproc, manifest, bbox, **kwargs
         )
@@ -2542,10 +3180,31 @@ class RootLayerStack(group.LayerStack):
     ## Notification mechanisms
 
     @event
-    def layer_content_changed(self, *args):
-        """Event: notifies that sub-layer's pixels have changed"""
+    def layer_content_changed(self, *args: Types.ELLIPSIS) -> Types.NONE:
+        """Event: notifies that sub-layer's pixels have changed
+
+        Args:
+            *args: 
+
+        Returns:
+
+        Raises:
+
+        """
 
     def _notify_layer_properties_changed(self, layer, changed):
+        # type: (Types.ELLIPSIS) -> Types.NONE
+        """
+
+        Args:
+            layer: 
+            changed: 
+
+        Returns:
+
+        Raises:
+
+        """
         if layer is self:
             return
         assert layer.root is self
@@ -2555,9 +3214,34 @@ class RootLayerStack(group.LayerStack):
 
     @event
     def layer_properties_changed(self, path, layer, changed):
-        """Event: notifies that a sub-layer's properties have changed"""
+        # type: (Types.ELLIPSIS) -> Types.NONE
+        """Event: notifies that a sub-layer's properties have changed
+
+        Args:
+            path: 
+            layer: 
+            changed: 
+
+        Returns:
+
+        Raises:
+
+        """
 
     def _notify_layer_deleted(self, parent, oldchild, oldindex):
+        # type: (Types.ELLIPSIS) -> Types.NONE
+        """
+
+        Args:
+            parent: 
+            oldchild: 
+            oldindex: 
+
+        Returns:
+
+        Raises:
+
+        """
         assert parent.root is self
         assert oldchild.root is not self
         path = self.deepindex(parent)
@@ -2567,10 +3251,32 @@ class RootLayerStack(group.LayerStack):
         self.layer_deleted(path)
 
     @event
-    def layer_deleted(self, path):
-        """Event: notifies that a sub-layer has been deleted"""
+    def layer_deleted(self, path: Types.ELLIPSIS) -> Types.NONE:
+        """Event: notifies that a sub-layer has been deleted
+
+        Args:
+            path: 
+
+        Returns:
+
+        Raises:
+
+        """
 
     def _notify_layer_inserted(self, parent, newchild, newindex):
+        # type: (Types.ELLIPSIS) -> Types.NONE
+        """
+
+        Args:
+            parent: 
+            newchild: 
+            newindex: 
+
+        Returns:
+
+        Raises:
+
+        """
         assert parent.root is self
         assert newchild.root is self
         path = self.deepindex(newchild)
@@ -2580,13 +3286,31 @@ class RootLayerStack(group.LayerStack):
         self.layer_inserted(path)
 
     @event
-    def layer_inserted(self, path):
-        """Event: notifies that a sub-layer has been added"""
+    def layer_inserted(self, path: Types.ELLIPSIS) -> Types.NONE:
+        """Event: notifies that a sub-layer has been added
+
+        Args:
+            path: 
+
+        Returns:
+
+        Raises:
+
+        """
         pass
 
     @event
-    def current_path_updated(self, path):
-        """Event: notifies that the layer selection has been updated"""
+    def current_path_updated(self, path: Types.ELLIPSIS) -> Types.NONE:
+        """Event: notifies that the layer selection has been updated
+
+        Args:
+            path: 
+
+        Returns:
+
+        Raises:
+
+        """
         pass
 
     def save_snapshot(self):
@@ -2596,17 +3320,32 @@ class RootLayerStack(group.LayerStack):
     ## Layer preview thumbnails
 
     def _mark_all_layers_for_rethumb(self):
+        """ """
         self._rethumb_layers[:] = []
         for path, layer in self.walk():
             self._rethumb_layers.append(layer)
         self._restart_rethumb_timer()
 
     def _mark_layer_for_rethumb(self, root, layer, *_ignored):
+        # type: (Types.ELLIPSIS) -> Types.NONE
+        """
+
+        Args:
+            root: 
+            layer: 
+            *_ignored: 
+
+        Returns:
+
+        Raises:
+
+        """
         if layer not in self._rethumb_layers:
             self._rethumb_layers.append(layer)
         self._restart_rethumb_timer()
 
     def _restart_rethumb_timer(self):
+        """ """
         timer_id = self._rethumb_layers_timer_id
         if timer_id is not None:
             GLib.source_remove(timer_id)
@@ -2618,6 +3357,7 @@ class RootLayerStack(group.LayerStack):
         self._rethumb_layers_timer_id = timer_id
 
     def _rethumb_layers_timer_cb(self):
+        """ """
         if len(self._rethumb_layers) >= 1:
             layer0 = self._rethumb_layers.pop(-1)
             path0 = self.deepindex(layer0)
@@ -2640,13 +3380,18 @@ class RootLayerStack(group.LayerStack):
         return False
 
     @event
-    def layer_thumbnail_updated(self, path, layer):
+    def layer_thumbnail_updated(self, path: tuple, layer: LayerBase) -> Types.NONE:
         """Event: a layer thumbnail was updated.
 
-        :param tuple path: The path to _layer_.
-        :param lib.layer.core.LayerBase layer: The layer that was updated.
-
+        Args:
+            path: The path to _layer_.
+            layer: The layer that was updated.
+        
         See lib.layer.core.LayerBase.thumbnail
+
+        Returns:
+
+        Raises:
 
         """
         pass
@@ -2661,7 +3406,17 @@ class RootLayerStackSnapshot(group.LayerStackSnapshot):
         self.bg_visible = layer.background_visible
         self.current_path = layer.current_path
 
-    def restore_to_layer(self, layer):
+    def restore_to_layer(self, layer: Types.ELLIPSIS) -> Types.NONE:
+        """
+
+        Args:
+            layer: 
+
+        Returns:
+
+        Raises:
+
+        """
         super(RootLayerStackSnapshot, self).restore_to_layer(layer)
         layer.background_layer.load_snapshot(self.bg_sshot)
         layer.background_visible = self.bg_visible
@@ -2670,11 +3425,17 @@ class RootLayerStackSnapshot(group.LayerStackSnapshot):
 
 class _TileRenderWrapper(TileAccessible, TileBlittable):
     """Adapts a RootLayerStack to support RO tile_request()s.
-
+    
     The wrapping is very minimal.
     Tiles are rendered into empty buffers on demand and cached.
     The tile request interface is therefore read only,
     and these wrappers should be used only as temporary objects.
+
+    Args:
+
+    Returns:
+
+    Raises:
 
     """
 
@@ -2701,15 +3462,20 @@ class _TileRenderWrapper(TileAccessible, TileBlittable):
             self._visible_layers = list(root.deepiter(visible=True))
 
     @contextlib.contextmanager
-    def tile_request(self, tx, ty, readonly):
+    def tile_request(self, tx: int, ty: int, readonly: bool) -> Types.NONE:
         """Context manager that fetches a single tile as fix15 RGBA data.
 
-        :param int tx: Location to access (X coordinate).
-        :param int ty: Location to access (Y coordinate).
-        :param bool readonly: Must be True.
+        Args:
+            tx: Location to access (X coordinate).
+            ty: Location to access (Y coordinate).
+            readonly: Must be True.
         :yields: One NumPy tile array.
-
+        
         To be used with the 'with' statement.
+
+        Returns:
+
+        Raises:
 
         """
         if not readonly:
@@ -2737,7 +3503,18 @@ class _TileRenderWrapper(TileAccessible, TileBlittable):
         yield dst
 
     def _all_empty(self, tx, ty):
-        """Check that no tile exists at (tx, ty) in any visible layer"""
+        # type: (Types.ELLIPSIS) -> Types.NONE
+        """Check that no tile exists at (tx, ty) in any visible layer
+
+        Args:
+            tx: 
+            ty: 
+
+        Returns:
+
+        Raises:
+
+        """
         tc = (tx, ty)
         for layer in self._visible_layers:
             if tc in layer.get_tile_coords():
@@ -2749,7 +3526,21 @@ class _TileRenderWrapper(TileAccessible, TileBlittable):
         return self._root.get_bbox()
 
     def blit_tile_into(self, dst, dst_has_alpha, tx, ty, **kwargs):
-        """Copy a rendered tile into a fix15 or 8bpp array."""
+        # type: (Types.ELLIPSIS) -> Types.NONE
+        """Copy a rendered tile into a fix15 or 8bpp array.
+
+        Args:
+            dst: 
+            dst_has_alpha: 
+            tx: 
+            ty: 
+            **kwargs: 
+
+        Returns:
+
+        Raises:
+
+        """
         assert dst.dtype == "uint8"
         with self.tile_request(tx, ty, readonly=True) as src:
             assert src.dtype == "uint16"
@@ -2767,11 +3558,16 @@ class _TileRenderWrapper(TileAccessible, TileBlittable):
 ## Layer path tuple functions
 
 
-def path_startswith(path, prefix):
+def path_startswith(path: tuple, prefix: tuple) -> Types.NONE:
     """Returns whether one path starts with another
 
-    :param tuple path: Path to be tested
-    :param tuple prefix: Prefix path to be tested against
+    Args:
+        path: Path to be tested
+        prefix: Prefix path to be tested against
+
+    Returns:
+
+    Raises:
 
     >>> path_startswith((1,2,3), (1,2))
     True
@@ -2782,7 +3578,7 @@ def path_startswith(path, prefix):
     """
     if len(prefix) > len(path):
         return False
-    for i in xrange(len(prefix)):
+    for i in range(len(prefix)):
         if path[i] != prefix[i]:
             return False
     return True

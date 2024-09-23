@@ -29,16 +29,22 @@ smallcolor_width = popup_height // 2
 
 class HistoryPopup(windowing.PopupWindow):
     """History popup window.
-
+    
     This window is normally bound to the "X" key, and has the following
     behavior:
-
+    
     1. x, x, x, draw: cycles 3 colours back;
     2. x, draw, x, draw, x, draw, ...: flips between two most recent
        colours at the time this sequence started.
-
+    
     It's managed from a StateGroup: see gui.stategroup. See also
     https://github.com/mypaint/mypaint/issues/93 for discussion.
+
+    Args:
+
+    Returns:
+
+    Raises:
 
     """
 
@@ -78,6 +84,7 @@ class HistoryPopup(windowing.PopupWindow):
         model.canvas_area_modified += self._reset_selection_cb
 
     def enter(self):
+        """ """
         mgr = self.app.brush_color_manager
         hist = mgr.get_history()
         if self.selection is None:
@@ -100,19 +107,77 @@ class HistoryPopup(windowing.PopupWindow):
         cursor = Gdk.Cursor.new_from_name(window.get_display(), "crosshair")
         window.set_cursor(cursor)
 
-    def leave(self, reason):
+    def leave(self, reason: Types.ELLIPSIS) -> Types.NONE:
+        """
+
+        Args:
+            reason: 
+
+        Returns:
+
+        Raises:
+
+        """
         self.hide()
 
     def button_press_cb(self, widget, event):
+        # type: (Types.ELLIPSIS) -> Types.NONE
+        """
+
+        Args:
+            widget: 
+            event: 
+
+        Returns:
+
+        Raises:
+
+        """
         pass
 
     def button_release_cb(self, widget, event):
+        # type: (Types.ELLIPSIS) -> Types.NONE
+        """
+
+        Args:
+            widget: 
+            event: 
+
+        Returns:
+
+        Raises:
+
+        """
         pass
 
     def _reset_selection_cb(self, *_args, **_kwargs):
+        # type: (Types.ELLIPSIS) -> Types.NONE
+        """
+
+        Args:
+            *_args: 
+            **_kwargs: 
+
+        Returns:
+
+        Raises:
+
+        """
         self.selection = None
 
     def draw_cb(self, widget, cr):
+        # type: (Types.ELLIPSIS) -> Types.NONE
+        """
+
+        Args:
+            widget: 
+            cr: 
+
+        Returns:
+
+        Raises:
+
+        """
         cr.set_source_rgb(0.9, 0.9, 0.9)
         cr.paint()
 

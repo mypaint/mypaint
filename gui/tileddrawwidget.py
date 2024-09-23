@@ -25,6 +25,7 @@ import numpy as np
 
 from lib import helpers, tiledsurface, pixbufsurface
 from lib.observable import event
+
 import lib.layer
 from . import cursor
 from .drawutils import render_checks
@@ -32,7 +33,6 @@ from .windowing import clear_focus
 import gui.style
 import lib.color
 import lib.alg
-from lib.pycompat import xrange
 
 logger = logging.getLogger(__name__)
 
@@ -41,8 +41,14 @@ logger = logging.getLogger(__name__)
 
 class TiledDrawWidget(Gtk.EventBox):
     """Widget for showing a lib.document.Document
-
+    
     Rendering is delegated to a dedicated class: see `CanvasRenderer`.
+
+    Args:
+
+    Returns:
+
+    Raises:
 
     """
 
@@ -54,7 +60,16 @@ class TiledDrawWidget(Gtk.EventBox):
 
     @classmethod
     def get_active_tdw(kin):  # noqa: N804
-        """Returns the most recently created or entered TDW."""
+        """Returns the most recently created or entered TDW.
+
+        Args:
+            kin: 
+
+        Returns:
+
+        Raises:
+
+        """
         # Find and return the first visible, mapped etc. TDW in the list
         invis_refs = []
         active_tdw = None
@@ -81,24 +96,29 @@ class TiledDrawWidget(Gtk.EventBox):
                 yield tdw
 
     @classmethod
-    def get_tdw_under_device(cls, device):
+    def get_tdw_under_device(cls, device: Gdk.Device) -> Types.NONE:
         """Get the TDW directly under a device's pointer
 
-        :param Gdk.Device device: the device to look up
+        Args:
+            device: the device to look up
         :rtype: tuple
-        :returns: (tdw, x, y)
 
-        This classmethod returns
-        the TDW directly under the master pointer for a given device,
-        and the pointer's coordinates
-        relative to the top-left of that TDW's window.
-        It is intended for use in picker code,
-        and within the kinds of device-specific pointer grabs
-        which the lib.picker presenters establish.
-        Most pointer event handling code doesn't need to call this.
+        Returns:
+            tdw, x, y)
+            
+            This classmethod returns
+            the TDW directly under the master pointer for a given device,
+            and the pointer's coordinates
+            relative to the top-left of that TDW's window.
+            It is intended for use in picker code,
+            and within the kinds of device-specific pointer grabs
+            which the lib.picker presenters establish.
+            Most pointer event handling code doesn't need to call this.
+            
+            If no known tdw is under the device's position,
+            the tuple `(None, -1, -1)` is returned.
 
-        If no known tdw is under the device's position,
-        the tuple `(None, -1, -1)` is returned.
+        Raises:
 
         """
         # get_last_event_window() does not work in pointer grabs.
@@ -167,7 +187,17 @@ class TiledDrawWidget(Gtk.EventBox):
         forwarder = self._announce_transformation_updated
         self.renderer.transformation_updated += forwarder
 
-    def _announce_transformation_updated(self, *args):
+    def _announce_transformation_updated(self, *args: Types.ELLIPSIS) -> Types.NONE:
+        """
+
+        Args:
+            *args: 
+
+        Returns:
+
+        Raises:
+
+        """
         self.transformation_updated()
 
     @event
@@ -175,14 +205,23 @@ class TiledDrawWidget(Gtk.EventBox):
         """Forwarded event: transformation was updated"""
 
     def _size_allocate_cb(self, widget, alloc):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Allow for allocation changes under certain circumstances
-
+        
         We need to allow for changes like toolbars or sidebars appearing or
         disappearing on the top or the left.  The canvas position should remain
         stationary on the screen in these cases.  This size-allocate handler
         deals with that by issuing appropriate scroll() events.
-
+        
         See also `scroll_on_allocate`.
+
+        Args:
+            widget: 
+            alloc: 
+
+        Returns:
+
+        Raises:
 
         """
         # Capture the last allocated position in toplevel coords
@@ -200,12 +239,32 @@ class TiledDrawWidget(Gtk.EventBox):
             dy = new_pos[1] - old_pos[1]
             self.renderer.scroll(dx, dy, ongoing=False)
 
-    def _realize_cb(self, widget):
+    def _realize_cb(self, widget: Types.ELLIPSIS) -> Types.NONE:
+        """
+
+        Args:
+            widget: 
+
+        Returns:
+
+        Raises:
+
+        """
         logger.debug("Turning off event compression for %r's window", widget)
         win = widget.get_window()
         win.set_event_compression(False)
 
-    def set_model(self, model):
+    def set_model(self, model: Types.ELLIPSIS) -> Types.NONE:
+        """
+
+        Args:
+            model: 
+
+        Returns:
+
+        Raises:
+
+        """
         assert self.doc is None
         renderer = self.renderer
         model.canvas_area_modified += renderer.canvas_modified_cb
@@ -219,6 +278,18 @@ class TiledDrawWidget(Gtk.EventBox):
         self.renderer.queue_draw()
 
     def enter_notify_cb(self, widget, event):
+        # type: (Types.ELLIPSIS) -> Types.NONE
+        """
+
+        Args:
+            widget: 
+            event: 
+
+        Returns:
+
+        Raises:
+
+        """
         clear_focus(widget.get_toplevel())
         # Track the active TDW
         self_ref = weakref.ref(self)
@@ -231,89 +302,167 @@ class TiledDrawWidget(Gtk.EventBox):
 
     @property
     def scale(self):
+        """ """
         return self.renderer.scale
 
     @scale.setter
-    def scale(self, n):
+    def scale(self, n: Types.ELLIPSIS) -> Types.NONE:
+        """
+
+        Args:
+            n: 
+
+        Returns:
+
+        Raises:
+
+        """
         self.renderer.scale = n
 
     @property
     def zoom_min(self):
+        """ """
         return self.renderer.zoom_min
 
     @zoom_min.setter
-    def zoom_min(self, n):
+    def zoom_min(self, n: Types.ELLIPSIS) -> Types.NONE:
+        """
+
+        Args:
+            n: 
+
+        Returns:
+
+        Raises:
+
+        """
         self.renderer.zoom_min = n
 
     @property
     def zoom_max(self):
+        """ """
         return self.renderer.zoom_max
 
     @zoom_max.setter
-    def zoom_max(self, n):
+    def zoom_max(self, n: Types.ELLIPSIS) -> Types.NONE:
+        """
+
+        Args:
+            n: 
+
+        Returns:
+
+        Raises:
+
+        """
         self.renderer.zoom_max = n
 
     @property
     def rotation(self):
+        """ """
         return self.renderer.rotation
 
     @property
     def mirrored(self):
+        """ """
         return self.renderer.mirrored
 
     @property
     def pixelize_threshold(self):
+        """ """
         return self.renderer.pixelize_threshold
 
     @pixelize_threshold.setter
-    def pixelize_threshold(self, n):
+    def pixelize_threshold(self, n: Types.ELLIPSIS) -> Types.NONE:
+        """
+
+        Args:
+            n: 
+
+        Returns:
+
+        Raises:
+
+        """
         self.renderer.pixelize_threshold = n
 
     @property
     def display_overlays(self):
+        """ """
         return self.renderer.display_overlays
 
     @property
     def model_overlays(self):
+        """ """
         return self.renderer.model_overlays
 
     @property
     def overlay_layer(self):
+        """ """
         return self.renderer.overlay_layer
 
     @overlay_layer.setter
-    def overlay_layer(self, l):
+    def overlay_layer(self, l: Types.ELLIPSIS) -> Types.NONE:
+        """
+
+        Args:
+            l: 
+
+        Returns:
+
+        Raises:
+
+        """
         self.renderer.overlay_layer = l
 
     @property
     def recenter_document(self):
+        """ """
         return self.renderer.recenter_document
 
     @property
     def display_to_model(self):
+        """ """
         return self.renderer.display_to_model
 
     @property
     def model_to_display(self):
+        """ """
         return self.renderer.model_to_display
 
     @property
     def set_override_cursor(self):
+        """ """
         return self.renderer.set_override_cursor
 
     def get_last_painting_pos(self):
+        """ """
         return self.last_painting_pos
 
-    def set_last_painting_pos(self, value):
+    def set_last_painting_pos(self, value: Types.ELLIPSIS) -> Types.NONE:
+        """
+
+        Args:
+            value: 
+
+        Returns:
+
+        Raises:
+
+        """
         self.last_painting_pos = value
 
     def get_pointer_in_model_coordinates(self):
         """Returns the pointer/cursor location in model coords.
 
-        :returns: core pointer's position, as a model-relative (x, y)
-        :rtype: tuple
+        Args:
 
-        This should only be used in action callbacks, never for events.
+        Returns:
+            tuple
+
+This should only be used in action callbacks, never for events.: core pointer's position, as a model-relative (x, y)
+
+        Raises:
 
         """
         win = self.get_window()
@@ -328,24 +477,31 @@ class TiledDrawWidget(Gtk.EventBox):
 
     @property
     def scroll(self):
+        """ """
         return self.renderer.scroll
 
     @property
     def get_center(self):
+        """ """
         return self.renderer.get_center
 
     @property
     def get_center_model_coords(self):
+        """ """
         return self.renderer.get_center_model_coords
 
     def get_corners_model_coords(self):
         """Returns the viewport corners in model coordinates.
 
-        :returns: Corners [TL, TR, BR, BL] as (x, y) pairs of floats.
-        :rtype: list
+        Args:
 
-        See also lib.helpers.rotated_rectangle_bbox() if you need to
-        turn this into a bounding box in model-space.
+        Returns:
+            list
+
+See also lib.helpers.rotated_rectangle_bbox() if you need to
+turn this into a bounding box in model-space.: Corners [TL, TR, BR, BL] as (x, y) pairs of floats.
+
+        Raises:
 
         """
         alloc = self.get_allocation()
@@ -359,14 +515,17 @@ class TiledDrawWidget(Gtk.EventBox):
 
     @property
     def recenter_on_model_coords(self):
+        """ """
         return self.renderer.recenter_on_model_coords
 
     @property
     def pick_color(self):
+        """ """
         return self.renderer.pick_color
 
     @property
     def queue_draw_area(self):
+        """ """
         return self.renderer.queue_draw_area
 
     # Transform logic
@@ -375,15 +534,20 @@ class TiledDrawWidget(Gtk.EventBox):
     def _fixed_center(self, center=None, ongoing=True):
         """Keep a fixed center when zoom or rotation changes
 
-        :param tuple center: Center of the rotation, display (X, Y)
-        :param bool ongoing: Hint that this is in an ongoing change
-
+        Args:
+            center (tuple, optional): Center of the rotation, display (X, Y) (Default value = None)
+            ongoing (bool, optional): Hint that this is in an ongoing change
+        
         This context manager's cleanup phase applies a corrective
         transform which keeps the specified center in the same position
         on the screen. If the center isn't specified, the center pixel
         of the widget itself is used.
+        
+        It also queues a redraw. (Default value = True)
 
-        It also queues a redraw.
+        Returns:
+
+        Raises:
 
         """
         # Determine the requested (or default) center in model space
@@ -409,46 +573,98 @@ class TiledDrawWidget(Gtk.EventBox):
         self.renderer.queue_draw()
 
     def zoom(self, zoom_step, center=None, ongoing=True):
-        """Multiply the current scale factor"""
+        # type: (Types.ELLIPSIS) -> Types.NONE
+        """Multiply the current scale factor
+
+        Args:
+            zoom_step: 
+            center:  (Default value = None)
+            ongoing:  (Default value = True)
+
+        Returns:
+
+        Raises:
+
+        """
         with self._fixed_center(center, ongoing):
             self.renderer.scale *= zoom_step
 
     def set_zoom(self, zoom, center=None, ongoing=False):
-        """Set the zoom to an exact value"""
+        # type: (Types.ELLIPSIS) -> Types.NONE
+        """Set the zoom to an exact value
+
+        Args:
+            zoom: 
+            center:  (Default value = None)
+            ongoing:  (Default value = False)
+
+        Returns:
+
+        Raises:
+
+        """
         with self._fixed_center(center, ongoing):
             self.renderer.scale = zoom
         self.renderer.update_cursor()
 
     def rotate(self, angle_step, center=None, ongoing=True):
-        """Rotate the view by a step"""
+        # type: (Types.ELLIPSIS) -> Types.NONE
+        """Rotate the view by a step
+
+        Args:
+            angle_step: 
+            center:  (Default value = None)
+            ongoing:  (Default value = True)
+
+        Returns:
+
+        Raises:
+
+        """
         if self.renderer.mirrored:
             angle_step = -angle_step
         with self._fixed_center(center, ongoing):
             self.renderer.rotation += angle_step
 
     def set_rotation(self, angle, ongoing=False):
-        """Set the rotation to an exact value"""
+        # type: (Types.ELLIPSIS) -> Types.NONE
+        """Set the rotation to an exact value
+
+        Args:
+            angle: 
+            ongoing:  (Default value = False)
+
+        Returns:
+
+        Raises:
+
+        """
         if self.renderer.mirrored:
             angle = -angle
         with self._fixed_center(None, ongoing):
             self.renderer.rotation = angle
 
     def mirror(self):
+        """ """
         with self._fixed_center(None, False):
             self.renderer.mirrored = not self.renderer.mirrored
 
-    def set_mirrored(self, mirrored):
-        """Set mirroring to a discrete state"""
+    def set_mirrored(self, mirrored: Types.ELLIPSIS) -> Types.NONE:
+        """Set mirroring to a discrete state
+
+        Args:
+            mirrored: 
+
+        Returns:
+
+        Raises:
+
+        """
         with self._fixed_center(None, False):
             self.renderer.mirrored = mirrored
 
     def get_transformation(self):
-        """Returns a snapshot/memento/record of the current transformation.
-
-        :rtype: a CanvasTransformation initialized with a copy of the current
-          transformation variables.
-
-        """
+        """Returns a snapshot/memento/record of the current transformation."""
         tr = CanvasTransformation()
         tr.translation_x = self.renderer.translation_x
         tr.translation_y = self.renderer.translation_y
@@ -457,10 +673,15 @@ class TiledDrawWidget(Gtk.EventBox):
         tr.mirrored = self.renderer.mirrored
         return tr
 
-    def set_transformation(self, transformation):
+    def set_transformation(self, transformation: Types.ELLIPSIS) -> Types.NONE:
         """Sets the current transformation, and redraws.
 
-        :param transformation: a CanvasTransformation object.
+        Args:
+            transformation: a CanvasTransformation object.
+
+        Returns:
+
+        Raises:
 
         """
         self.renderer.translation_x = transformation.translation_x
@@ -476,24 +697,28 @@ class TiledDrawWidget(Gtk.EventBox):
     ):
         """Get move cursor & detect hits on a line between two points
 
-        :param tuple cursor_pos: cursor position, as display (x, y)
-        :param tuple edge_p1: point on the edge, as model (x, y)
-        :param tuple edge_p2: point on the edge, as model (x, y)
-        :param int tolerance: slack for cursor pos., in display pixels
-        :param bool finite: if false, the edge extends beyond p1, p2
-        :returns: move direction cursor string, or None
-        :rtype: str
+        Args:
+            cursor_pos (tuple): cursor position, as display (x, y)
+            edge_p1 (tuple): point on the edge, as model (x, y)
+            edge_p2 (tuple): point on the edge, as model (x, y)
+            tolerance (int, optional): slack for cursor pos., in display pixels (Default value = 5)
+            finite (bool, optional): if false, the edge extends beyond p1, p2 (Default value = True)
 
-        This can be used by special input modes when resizing objects on
-        screen, for example frame edges and the symmetry axis.
+        Returns:
+            str
 
-        If the returned cursor isn't None, its value is the name of the
-        most appropriate move cursor to use during the move. This method
-        does not return a normal vector in model space; you'll have to
-        calculate that for yourself.
+This can be used by special input modes when resizing objects on
+screen, for example frame edges and the symmetry axis.
 
-        See also:
-        * gui.cursor.Name (naming consts for cursors)
+If the returned cursor isn't None, its value is the name of the
+most appropriate move cursor to use during the move. This method
+does not return a normal vector in model space; you'll have to
+calculate that for yourself.
+
+See also:
+* gui.cursor.Name (naming consts for cursors): move direction cursor string, or None
+
+        Raises:
 
         """
         if finite:
@@ -515,7 +740,7 @@ class TiledDrawWidget(Gtk.EventBox):
             return cursor.get_move_cursor_name_for_angle(edge_angle_perp)
 
 
-class CanvasTransformation(object):
+class CanvasTransformation:
     """Record of a TiledDrawWidget's canvas (view) transformation."""
 
     translation_x = 0.0
@@ -535,10 +760,16 @@ class CanvasTransformation(object):
         )
 
 
-class DrawCursorMixin(object):
+class DrawCursorMixin:
     """Mixin for renderer widgets needing a managed drawing cursor.
-
+    
     Required members: self.doc, self.scale, Gtk.Widget stuff.
+
+    Args:
+
+    Returns:
+
+    Raises:
 
     """
 
@@ -548,7 +779,18 @@ class DrawCursorMixin(object):
         self._first_map_cb_id = self.connect("map", self._first_map_cb)
 
     def _first_map_cb(self, widget, *a):
-        """Updates the cursor on the first map"""
+        # type: (Types.ELLIPSIS) -> Types.NONE
+        """Updates the cursor on the first map
+
+        Args:
+            widget: 
+            *a: 
+
+        Returns:
+
+        Raises:
+
+        """
         assert self.get_window() is not None
         assert self.get_mapped()
         self.disconnect(self._first_map_cb_id)
@@ -556,6 +798,7 @@ class DrawCursorMixin(object):
         self.update_cursor()
 
     def update_cursor(self):
+        """ """
         # Callback for updating the cursor
         if not self.get_mapped():
             return
@@ -590,18 +833,26 @@ class DrawCursorMixin(object):
             c = cursor.get_brush_cursor(radius, style, self.app.preferences)
         window.set_cursor(c)
 
-    def set_override_cursor(self, cursor):
+    def set_override_cursor(self, cursor: Types.ELLIPSIS) -> Types.NONE:
         """Set a cursor which will always be used.
-
+        
         Used by the color picker. The override cursor will be used regardless
         of the criteria update_cursor() normally uses. Pass None to let it
         choose normally again.
+
+        Args:
+            cursor: 
+
+        Returns:
+
+        Raises:
+
         """
         self._override_cursor = cursor
         GLib.idle_add(self.update_cursor)
 
     def _get_cursor_info(self):
-        """Return factors determining the cursor size and shape."""
+        """ """
         b = self.doc.brush.brushinfo
         r = b.get_visual_radius() * self.scale + 0.5
         if b.is_eraser():
@@ -614,8 +865,17 @@ class DrawCursorMixin(object):
             style = cursor.BRUSH_CURSOR_STYLE_NORMAL
         return r, style
 
-    def brush_modified_cb(self, settings):
-        """Handles brush modifications: set up by the main TDW."""
+    def brush_modified_cb(self, settings: Types.ELLIPSIS) -> Types.NONE:
+        """Handles brush modifications: set up by the main TDW.
+
+        Args:
+            settings: 
+
+        Returns:
+
+        Raises:
+
+        """
         if settings & set(
             [
                 "radius_logarithmic",
@@ -632,6 +892,21 @@ class DrawCursorMixin(object):
 def calculate_transformation_matrix(
     scale, rotation, translation_x, translation_y, mirrored
 ):
+    # type: (Types.ELLIPSIS) -> Types.NONE
+    """
+
+    Args:
+        scale: 
+        rotation: 
+        translation_x: 
+        translation_y: 
+        mirrored: 
+
+    Returns:
+
+    Raises:
+
+    """
     scale = scale
     # check if scale is almost a power of two
     scale_log2 = log(scale, 2)
@@ -665,9 +940,15 @@ def calculate_transformation_matrix(
 
 class CanvasRenderer(Gtk.DrawingArea, DrawCursorMixin):
     """Render the document model to screen.
-
+    
     Can render the document in a transformed way, including translation,
     scaling and rotation.
+
+    Args:
+
+    Returns:
+
+    Raises:
 
     """
 
@@ -758,8 +1039,8 @@ class CanvasRenderer(Gtk.DrawingArea, DrawCursorMixin):
         col1 = [int(f * c) for c in gui.style.ALPHA_CHECK_COLOR_1] + [f]
         col2 = [int(f * c) for c in gui.style.ALPHA_CHECK_COLOR_2] + [f]
         tile[:] = col1
-        for i in xrange(nchecks):
-            for j in xrange(nchecks):
+        for i in range(nchecks):
+            for j in range(nchecks):
                 if (i + j) % 2 == 0:
                     continue
                 ia, ib = (i * size), ((i + 1) * size)
@@ -769,10 +1050,12 @@ class CanvasRenderer(Gtk.DrawingArea, DrawCursorMixin):
 
     @property
     def app(self):
+        """ """
         return self._tdw.app
 
     @property
     def doc(self):
+        """ """
         return self._tdw.doc
 
     @event
@@ -780,61 +1063,126 @@ class CanvasRenderer(Gtk.DrawingArea, DrawCursorMixin):
         """Event: transformation was updated"""
 
     def _invalidate_cached_transform_matrix(self):
+        """ """
         self.cached_transformation_matrix = None
 
     def _get_x(self):
+        """ """
         return self._translation_x
 
-    def _set_x(self, val):
+    def _set_x(self, val: Types.ELLIPSIS) -> Types.NONE:
+        """
+
+        Args:
+            val: 
+
+        Returns:
+
+        Raises:
+
+        """
         self._translation_x = val
         self._invalidate_cached_transform_matrix()
 
     translation_x = property(_get_x, _set_x)
 
     def _get_y(self):
+        """ """
         return self._translation_y
 
-    def _set_y(self, val):
+    def _set_y(self, val: Types.ELLIPSIS) -> Types.NONE:
+        """
+
+        Args:
+            val: 
+
+        Returns:
+
+        Raises:
+
+        """
         self._translation_y = val
         self._invalidate_cached_transform_matrix()
 
     translation_y = property(_get_y, _set_y)
 
     def _get_scale(self):
+        """ """
         return self._scale
 
-    def _set_scale(self, val):
+    def _set_scale(self, val: Types.ELLIPSIS) -> Types.NONE:
+        """
+
+        Args:
+            val: 
+
+        Returns:
+
+        Raises:
+
+        """
         self._scale = val
         self._invalidate_cached_transform_matrix()
 
     scale = property(_get_scale, _set_scale)
 
     def _get_rotation(self):
+        """ """
         return self._rotation
 
-    def _set_rotation(self, val):
+    def _set_rotation(self, val: Types.ELLIPSIS) -> Types.NONE:
+        """
+
+        Args:
+            val: 
+
+        Returns:
+
+        Raises:
+
+        """
         self._rotation = val
         self._invalidate_cached_transform_matrix()
 
     rotation = property(_get_rotation, _set_rotation)
 
     def _get_mirrored(self):
+        """ """
         return self._mirrored
 
-    def _set_mirrored(self, val):
+    def _set_mirrored(self, val: Types.ELLIPSIS) -> Types.NONE:
+        """
+
+        Args:
+            val: 
+
+        Returns:
+
+        Raises:
+
+        """
         self._mirrored = val
         self._invalidate_cached_transform_matrix()
 
     mirrored = property(_get_mirrored, _set_mirrored)
 
     def _state_changed_cb(self, widget, oldstate):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Handle the sensitivity state changing
-
+        
         Saving and loading images toggles the sensitivity state on all
         toplevel windows. This causes a state shift on the TDW too.
         While the TDW is insensitive, its cursor is updated to respect
         the toplevel's cursor (typically a watch or an hourglass or
         something).
+
+        Args:
+            widget: 
+            oldstate: 
+
+        Returns:
+
+        Raises:
 
         """
         insensitive = self.get_state_flags() & Gtk.StateFlags.INSENSITIVE
@@ -851,7 +1199,21 @@ class CanvasRenderer(Gtk.DrawingArea, DrawCursorMixin):
     ## Redrawing
 
     def canvas_modified_cb(self, model, x, y, w, h):
-        """Handles area redraw notifications from the underlying model"""
+        # type: (Types.ELLIPSIS) -> Types.NONE
+        """Handles area redraw notifications from the underlying model
+
+        Args:
+            model: 
+            x: 
+            y: 
+            w: 
+            h: 
+
+        Returns:
+
+        Raises:
+
+        """
 
         if self._insensitive_state_content:
             return False
@@ -872,19 +1234,44 @@ class CanvasRenderer(Gtk.DrawingArea, DrawCursorMixin):
         self.queue_draw_area(*bbox)
 
     def queue_draw(self):
+        """ """
         if self._idle_redraw_priority is None:
             super(CanvasRenderer, self).queue_draw()
             return
         self._queue_idle_redraw(None)
 
     def queue_draw_area(self, x, y, w, h):
+        # type: (Types.ELLIPSIS) -> Types.NONE
+        """
+
+        Args:
+            x: 
+            y: 
+            w: 
+            h: 
+
+        Returns:
+
+        Raises:
+
+        """
         if self._idle_redraw_priority is None:
             super(CanvasRenderer, self).queue_draw_area(x, y, w, h)
             return
         bbox = helpers.Rect(x, y, w, h)
         self._queue_idle_redraw(bbox)
 
-    def _queue_idle_redraw(self, bbox):
+    def _queue_idle_redraw(self, bbox: Types.ELLIPSIS) -> Types.NONE:
+        """
+
+        Args:
+            bbox: 
+
+        Returns:
+
+        Raises:
+
+        """
         queue = self._idle_redraw_queue
         if bbox is None:
             queue[:] = []
@@ -905,6 +1292,7 @@ class CanvasRenderer(Gtk.DrawingArea, DrawCursorMixin):
         self._idle_redraw_src_id = src_id
 
     def _idle_redraw_cb(self):
+        """ """
         assert self._idle_redraw_src_id is not None
         queue = self._idle_redraw_queue
         if len(queue) > 0:
@@ -921,33 +1309,107 @@ class CanvasRenderer(Gtk.DrawingArea, DrawCursorMixin):
     ## Redraw events
 
     def current_layer_changed_cb(self, rootstack, path):
+        # type: (Types.ELLIPSIS) -> Types.NONE
+        """
+
+        Args:
+            rootstack: 
+            path: 
+
+        Returns:
+
+        Raises:
+
+        """
         self.update_cursor()
 
     def layer_props_changed_cb(self, rootstack, path, layer, changed):
+        # type: (Types.ELLIPSIS) -> Types.NONE
+        """
+
+        Args:
+            rootstack: 
+            path: 
+            layer: 
+            changed: 
+
+        Returns:
+
+        Raises:
+
+        """
         self.update_cursor()
 
     def frame_enabled_changed_cb(self, model, enabled):
+        # type: (Types.ELLIPSIS) -> Types.NONE
+        """
+
+        Args:
+            model: 
+            enabled: 
+
+        Returns:
+
+        Raises:
+
+        """
         self.queue_draw()
 
     def frame_updated_cb(self, model, old_frame, new_frame):
+        # type: (Types.ELLIPSIS) -> Types.NONE
+        """
+
+        Args:
+            model: 
+            old_frame: 
+            new_frame: 
+
+        Returns:
+
+        Raises:
+
+        """
         pass
         # self.queue_draw()
 
     ## Transformations and coords
 
     def display_to_model(self, disp_x, disp_y):
-        """Converts display coordinates to model coordinates."""
+        # type: (Types.ELLIPSIS) -> Types.NONE
+        """Converts display coordinates to model coordinates.
+
+        Args:
+            disp_x: 
+            disp_y: 
+
+        Returns:
+
+        Raises:
+
+        """
         matrix = cairo.Matrix(*self._get_model_view_transformation())
         assert not matrix.invert()
         view_model = matrix
         return view_model.transform_point(disp_x, disp_y)
 
     def model_to_display(self, model_x, model_y):
-        """Converts model coordinates to display coordinates."""
+        # type: (Types.ELLIPSIS) -> Types.NONE
+        """Converts model coordinates to display coordinates.
+
+        Args:
+            model_x: 
+            model_y: 
+
+        Returns:
+
+        Raises:
+
+        """
         model_view = self._get_model_view_transformation()
         return model_view.transform_point(model_x, model_y)
 
     def _get_model_view_transformation(self):
+        """ """
         if self.cached_transformation_matrix is None:
             scale_factor = self.get_scale_factor()
             # HiDPI: logical "device" (widget) pixels to screen pixels
@@ -963,6 +1425,18 @@ class CanvasRenderer(Gtk.DrawingArea, DrawCursorMixin):
         return self.cached_transformation_matrix
 
     def _configure_event_cb(self, widget, event):
+        # type: (Types.ELLIPSIS) -> Types.NONE
+        """
+
+        Args:
+            widget: 
+            event: 
+
+        Returns:
+
+        Raises:
+
+        """
         # The docs say to handle this on the toplevel to be notified of
         # HiDPI scale_factor changes. Not sure yet whether this will
         # work down at this level - I've no fancy HiDPI hardware to test
@@ -972,20 +1446,25 @@ class CanvasRenderer(Gtk.DrawingArea, DrawCursorMixin):
         self.queue_draw()
 
     def is_translation_only(self):
+        """ """
         return self.rotation == 0.0 and self.scale == 1.0 and not self.mirrored
 
     def pick_color(self, x, y, size=3):
         """Picks the rendered colour at a particular point.
 
-        :param int x: X coord of pixel to pick (widget/device coords)
-        :param int y: Y coord of pixel to pick (widget/device coords)
-        :param int size: Size of the sampling square.
-        :returns: The colour sampled.
-        :rtype: lib.color.UIColor
+        Args:
+            x (int): X coord of pixel to pick (widget/device coords)
+            y (int): Y coord of pixel to pick (widget/device coords)
+            size (int, optional): Size of the sampling square. (Default value = 3)
 
-        This method operates by rendering part of the document using the
-        current settings, then averaging the colour values of the pixels
-        within the sampling square.
+        Returns:
+            lib.color.UIColor
+
+This method operates by rendering part of the document using the
+current settings, then averaging the colour values of the pixels
+within the sampling square.: The colour sampled.
+
+        Raises:
 
         """
         # TODO: the ability to turn *off* this kind of "sample merged".
@@ -1015,20 +1494,25 @@ class CanvasRenderer(Gtk.DrawingArea, DrawCursorMixin):
     def _new_image_surface_from_visible_area(self, x, y, w, h, use_filter=True):
         """Render part of the doc to a new cairo image surface, as seen.
 
-        :param int x: Rectangle left edge (widget/device coords)
-        :param int y: Rectangle top edge (widget/device coords)
-        :param int w: Rectangle width (widget/device coords)
-        :param int h: Rectangle height (widget/device coords)
-        :param bool use_filter: Apply display filters to rendering.
-        :rtype: cairo.ImageSurface
-        :returns: A rendered of the document, as seen on screen
+        Args:
+            x (int): Rectangle left edge (widget/device coords)
+            y (int): Rectangle top edge (widget/device coords)
+            w (int): Rectangle width (widget/device coords)
+            h (int): Rectangle height (widget/device coords)
+            use_filter (bool, optional): Apply display filters to rendering.
+        :rtype: cairo.ImageSurface (Default value = True)
 
-        Creates and returns a new cairo.ImageSurface of the given size,
-        containing an image of the document as it would appears on
-        screen within the given rectangle. The area to extract is a
-        rectangle in display (widget) coordinates, but it doesn't
-        actually have to be within the visible area. Used for
-        snapshotting and sampling colours.
+        Returns:
+            A rendered of the document, as seen on screen
+            
+            Creates and returns a new cairo.ImageSurface of the given size,
+            containing an image of the document as it would appears on
+            screen within the given rectangle. The area to extract is a
+            rectangle in display (widget) coordinates, but it doesn't
+            actually have to be within the visible area. Used for
+            snapshotting and sampling colours.
+
+        Raises:
 
         """
 
@@ -1076,12 +1560,24 @@ class CanvasRenderer(Gtk.DrawingArea, DrawCursorMixin):
 
     @property
     def _draw_real_alpha_checks(self):
+        """ """
         if not self.app:
             return True
         return self.app.preferences["view.real_alpha_checks"]
 
     def _draw_cb(self, widget, cr):
-        """Draw handler"""
+        # type: (Types.ELLIPSIS) -> Types.NONE
+        """Draw handler
+
+        Args:
+            widget: 
+            cr: 
+
+        Returns:
+
+        Raises:
+
+        """
 
         # Don't render any partial views of the document if the widget
         # isn't sensitive to user input. If we don't do this, loading a
@@ -1157,9 +1653,9 @@ class CanvasRenderer(Gtk.DrawingArea, DrawCursorMixin):
 
         return True
 
-    def _render_get_clip_region(self, cr, device_bbox):
+    def _render_get_clip_region(self, cr: cairo.Context, device_bbox: tuple) -> tuple:
         """Get the area that needs to be updated, in device coords.
-
+        
         Called when handling "draw" events.  This uses Cairo's clip
         region, which ultimately derives from the areas sent by
         lib.document.Document.canvas_area_modified().  These can be
@@ -1167,17 +1663,18 @@ class CanvasRenderer(Gtk.DrawingArea, DrawCursorMixin):
         something. When panning or zooming the canvas, it's a full
         redraw, and the area corresponds to the entire display.
 
-        :param cairo.Context cr: as passed to the "draw" event handler.
-        :param tuple device_bbox: (x,y,w,h) widget extents
-        :returns: (clipregion, sparse)
-        :rtype: tuple
+        Args:
+            cr: as passed to the "draw" event handler.
+            device_bbox: (x,y,w,h) widget extents
 
-        The clip region return value is a lib.helpers.Rect containing
-        the area to redraw in display coordinates, or None.
+The clip region return value is a lib.helpers.Rect containing
+the area to redraw in display coordinates, or None.
 
-        This also determines whether the redraw is "sparse", meaning
-        that the clip region returned does not contain the centre of the
-        device bbox.
+This also determines whether the redraw is "sparse", meaning
+that the clip region returned does not contain the centre of the
+device bbox.: clipregion, sparse)
+
+        Raises:
 
         """
 
@@ -1231,22 +1728,34 @@ class CanvasRenderer(Gtk.DrawingArea, DrawCursorMixin):
         return rect, sparse
 
     def _tile_is_visible(self, tx, ty, transformation, clip_rect, translation_only):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Tests whether an individual tile is visible.
-
+        
         This is sometimes worth doing during rendering, but not always.
         Currently we use _render_get_clip_region()'s sparse flag to
         determine whether this is necessary. The original logic for
         this function was documented as...
-
+        
         > it is worth checking whether this tile really will be visible
         > (to speed up the L-shaped expose event during scrolling)
         > (speedup clearly visible; slowdown measurable when always
         > executing this code)
-
+        
         I'm not 100% certain that GTK3 does panning redraws this way,
         so perhaps this method is uneccessary for those?
         However this method is always used when rendering during
         painting, or other activities that send partial updates.
+
+        Args:
+            tx: 
+            ty: 
+            transformation: 
+            clip_rect: 
+            translation_only: 
+
+        Returns:
+
+        Raises:
 
         """
         n = tiledsurface.N
@@ -1265,14 +1774,20 @@ class CanvasRenderer(Gtk.DrawingArea, DrawCursorMixin):
         tile_rect = helpers.Rect(*bbox)
         return clip_rect.overlaps(tile_rect)
 
-    def _render_prepare(self, cr):
+    def _render_prepare(self, cr: Types.ELLIPSIS) -> Types.NONE:
         """Prepares a blank pixbuf & other details for later rendering.
-
+        
         Called when handling "draw" events. The size and shape of the
-        returned pixbuf (wrapped in a tile-accessible and read/write
-        lib.pixbufsurface.Surface) is determined by the Cairo clipping
-        region that expresses what we've been asked to redraw, and by
-        the TDW's own view transformation of the document.
+
+        Args:
+            cr: 
+
+        Returns:
+            lib.pixbufsurface.Surface) is determined by the Cairo clipping
+            region that expresses what we've been asked to redraw, and by
+            the TDW's own view transformation of the document.
+
+        Raises:
 
         """
         # Determine what to draw, and the nature of the reveal.
@@ -1337,7 +1852,23 @@ class CanvasRenderer(Gtk.DrawingArea, DrawCursorMixin):
         clip_rect,
         filter=None,
     ):
-        """Renders tiles into a prepared pixbufsurface, then blits it."""
+        # type: (Types.ELLIPSIS) -> Types.NONE
+        """Renders tiles into a prepared pixbufsurface, then blits it.
+
+        Args:
+            cr: 
+            transformation: 
+            surface: 
+            sparse: 
+            mipmap_level: 
+            clip_rect: 
+            filter:  (Default value = None)
+
+        Returns:
+
+        Raises:
+
+        """
         translation_only = self.is_translation_only()
 
         if self.visualize_rendering:
@@ -1385,6 +1916,19 @@ class CanvasRenderer(Gtk.DrawingArea, DrawCursorMixin):
         cr.paint()
 
     def scroll(self, dx, dy, ongoing=True):
+        # type: (Types.ELLIPSIS) -> Types.NONE
+        """
+
+        Args:
+            dx: 
+            dy: 
+            ongoing:  (Default value = True)
+
+        Returns:
+
+        Raises:
+
+        """
         self.translation_x -= dx
         self.translation_y -= dy
         if ongoing:
@@ -1405,12 +1949,12 @@ class CanvasRenderer(Gtk.DrawingArea, DrawCursorMixin):
         # solve this problem, I think.)
 
     def get_center(self):
-        """Return the center position in display coordinates."""
+        """ """
         alloc = self.get_allocation()
         return (alloc.width / 2.0, alloc.height / 2.0)
 
     def get_center_model_coords(self):
-        """Return the center position in model coordinates."""
+        """ """
         center = self.get_center()
         return self.display_to_model(*center)
 
@@ -1422,11 +1966,34 @@ class CanvasRenderer(Gtk.DrawingArea, DrawCursorMixin):
         self.recenter_on_model_coords(cx, cy)
 
     def recenter_on_model_coords(self, cx, cy):
-        """Recentres the view to a specified point, in model coordinates."""
+        # type: (Types.ELLIPSIS) -> Types.NONE
+        """Recentres the view to a specified point, in model coordinates.
+
+        Args:
+            cx: 
+            cy: 
+
+        Returns:
+
+        Raises:
+
+        """
         dcx, dcy = self.model_to_display(cx, cy)
         self.recenter_on_display_coords(dcx, dcy)
 
     def recenter_on_display_coords(self, cx, cy):
+        # type: (Types.ELLIPSIS) -> Types.NONE
+        """
+
+        Args:
+            cx: 
+            cy: 
+
+        Returns:
+
+        Raises:
+
+        """
         current_cx, current_cy = self.get_center()
         self.translation_x += current_cx - cx
         self.translation_y += current_cy - cy
@@ -1435,8 +2002,9 @@ class CanvasRenderer(Gtk.DrawingArea, DrawCursorMixin):
     def defer_hq_rendering(self, t=1.0 / 8):
         """Use faster but lower-quality rendering for a brief period
 
-        :param float t: The time to defer for, in seconds
-
+        Args:
+            t (float, optional): The time to defer for, in seconds
+        
         This method is intended to be called repeatedly
         from scroll or drag event handlers,
         or other times when the entire display
@@ -1445,11 +2013,15 @@ class CanvasRenderer(Gtk.DrawingArea, DrawCursorMixin):
         at which normal rendering will be automatically resumed.
         Resumption of normal service entails a full redraw,
         so choose `t` appropriately.
-
+        
         Normal rendering looks better (it uses a better mipmap),
         and it's OK for most screen updates.
         However it's slow enough to make rendering
-        lag appreciably when scrolling.
+        lag appreciably when scrolling. (Default value = 1.0 / 8)
+
+        Returns:
+
+        Raises:
 
         """
         if self._restore_hq_rendering_timeout_id:
@@ -1464,6 +2036,7 @@ class CanvasRenderer(Gtk.DrawingArea, DrawCursorMixin):
         )
 
     def _resume_hq_rendering_timeout_cb(self):
+        """ """
         self._hq_rendering = True
         self.queue_draw()
         self._restore_hq_rendering_timeout_id = None
@@ -1475,6 +2048,7 @@ class CanvasRenderer(Gtk.DrawingArea, DrawCursorMixin):
 
 
 def _make_testbed_model():
+    """ """
     import lib.brush
     import lib.document
 
@@ -1484,6 +2058,7 @@ def _make_testbed_model():
 
 
 def _test():
+    """ """
     from document import CanvasController
     from freehand import FreehandMode
 

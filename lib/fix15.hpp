@@ -98,7 +98,7 @@ static const uint16_t _int15_sqrt_approx16[] = {
     49151, 51809, 54338, 56754, 59072, 61302, 63453, 65535
 };
 // Values use a scaling factor of 1/2**16
-// in Python: [int(((i/16.0)**0.5)*(1<<16))-1 for i in xrange(1, 17)]
+// in Python: [int(((i/16.0)**0.5)*(1<<16))-1 for i in range(1, 17)]
 
 
 static inline fix15_t

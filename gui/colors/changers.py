@@ -26,9 +26,15 @@ from lib.helpers import gdkpixbuf2numpy
 
 class _CColorChanger(gui.colors.adjbases.IconRenderableColorAdjusterWidget):
     """Color changer with a C++ backend in mypaintlib
-
+    
     These are the old popup colour changers, exposed as sidebar-friendly
     new-style colour adjuster widgets.
+
+    Args:
+
+    Returns:
+
+    Raises:
 
     """
 
@@ -47,10 +53,25 @@ class _CColorChanger(gui.colors.adjbases.IconRenderableColorAdjusterWidget):
         self.add_events(Gdk.EventMask.STRUCTURE_MASK)
 
     def color_updated(self):
+        """ """
         self._update_hsv()
         super(_CColorChanger, self).color_updated()
 
     def render_background_cb(self, cr, wd, ht, icon_border=None):
+        # type: (Types.ELLIPSIS) -> Types.NONE
+        """
+
+        Args:
+            cr: 
+            wd: 
+            ht: 
+            icon_border:  (Default value = None)
+
+        Returns:
+
+        Raises:
+
+        """
         self._backend.set_brush_color(*self._hsv)
         size = self._backend.get_size()
         pixbuf = GdkPixbuf.Pixbuf.new(
@@ -69,6 +90,18 @@ class _CColorChanger(gui.colors.adjbases.IconRenderableColorAdjusterWidget):
         cr.paint()
 
     def render_as_icon(self, cr, size):
+        # type: (Types.ELLIPSIS) -> Types.NONE
+        """
+
+        Args:
+            cr: 
+            size: 
+
+        Returns:
+
+        Raises:
+
+        """
         backend_size = float(self._backend.get_size())
         scale = size / backend_size
         cr.translate(size // 2, size // 2)
@@ -77,6 +110,18 @@ class _CColorChanger(gui.colors.adjbases.IconRenderableColorAdjusterWidget):
         super(_CColorChanger, self).render_as_icon(cr, size)
 
     def get_color_at_position(self, x, y):
+        # type: (Types.ELLIPSIS) -> Types.NONE
+        """
+
+        Args:
+            x: 
+            y: 
+
+        Returns:
+
+        Raises:
+
+        """
         x -= self._dx
         y -= self._dy
         size = self._backend.get_size()
@@ -87,16 +132,50 @@ class _CColorChanger(gui.colors.adjbases.IconRenderableColorAdjusterWidget):
         return None
 
     def paint_foreground_cb(self, cr, wd, ht):
+        # type: (Types.ELLIPSIS) -> Types.NONE
+        """
+
+        Args:
+            cr: 
+            wd: 
+            ht: 
+
+        Returns:
+
+        Raises:
+
+        """
         pass
 
-    def set_color_manager(self, manager):
+    def set_color_manager(self, manager: Types.ELLIPSIS) -> Types.NONE:
+        """
+
+        Args:
+            manager: 
+
+        Returns:
+
+        Raises:
+
+        """
         super(_CColorChanger, self).set_color_manager(manager)
         self._update_hsv()
 
-    def _map_cb(self, widget):
+    def _map_cb(self, widget: Types.ELLIPSIS) -> Types.NONE:
+        """
+
+        Args:
+            widget: 
+
+        Returns:
+
+        Raises:
+
+        """
         self._update_hsv()
 
     def _update_hsv(self):
+        """ """
         col = lib.color.HSVColor(color=self.get_managed_color())
         self._hsv = col.get_hsv()
 

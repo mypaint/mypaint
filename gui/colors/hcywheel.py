@@ -37,8 +37,6 @@ from .paletteview import palette_load_via_dialog
 from .paletteview import palette_save_via_dialog
 from lib.gettext import C_
 
-from lib.pycompat import xrange
-
 
 PREFS_MASK_KEY = "colors.hcywheel.mask.gamuts"
 PREFS_ACTIVE_KEY = "colors.hcywheel.mask.active"
@@ -48,18 +46,24 @@ MASK_EDITOR_HELP_URI = C_(
 )
 
 
-class MaskableWheelMixin(object):
+class MaskableWheelMixin:
     """Provides wheel widgets with maskable areas.
-
+    
     For use with implementations of `HueSaturationWheelAdjusterMixin`.
     Concrete implementations can be masked so that they ignore clicks outside
     certain color areas. If the mask is active, clicks inside the mask
     shapes are treated as normal, but clicks outside them are remapped to a
     point on the nearest edge of the nearest shape. This can be useful for
     artists who wish to plan the color gamut of their artwork in advance.
-
+    
     http://gurneyjourney.blogspot.com/2011/09/part-1-gamut-masking-method.html
     http://gurneyjourney.blogspot.com/2008/01/color-wheel-masking-part-1.html
+
+    Args:
+
+    Returns:
+
+    Raises:
 
     """
 
@@ -96,10 +100,17 @@ class MaskableWheelMixin(object):
         prefs[PREFS_ACTIVE_KEY] = active
         self.queue_draw()
 
-    def set_color_manager(self, manager):
+    def set_color_manager(self, manager: Types.ELLIPSIS) -> Types.NONE:
         """Sets the color manager, and reads an initial mask from prefs.
-
+        
         Extends `ColorAdjuster`'s implementation.
+
+        Args:
+            manager: 
+
+        Returns:
+
+        Raises:
 
         """
         ColorAdjuster.set_color_manager(self, manager)
@@ -111,7 +122,17 @@ class MaskableWheelMixin(object):
             self.mask_toggle.set_active(mask_active)
 
     @staticmethod
-    def _flatten_mask(mask):
+    def _flatten_mask(mask: Types.ELLIPSIS) -> Types.NONE:
+        """
+
+        Args:
+            mask: 
+
+        Returns:
+
+        Raises:
+
+        """
         flat_mask = []
         for shape_colors in mask:
             shape_flat = [c.to_hex_str() for c in shape_colors]
@@ -119,27 +140,44 @@ class MaskableWheelMixin(object):
         return flat_mask
 
     @staticmethod
-    def _unflatten_mask(flat_mask):
+    def _unflatten_mask(flat_mask: Types.ELLIPSIS) -> Types.NONE:
+        """
+
+        Args:
+            flat_mask: 
+
+        Returns:
+
+        Raises:
+
+        """
         mask = []
         for shape_flat in flat_mask:
             shape_colors = [RGBColor.new_from_hex_str(s) for s in shape_flat]
             mask.append(shape_colors)
         return mask
 
-    def set_mask_from_palette(self, pal):
+    def set_mask_from_palette(self, pal: Types.ELLIPSIS) -> Types.NONE:
         """Sets the mask from a palette.
-
+        
         Any `palette.Palette` can be loaded into the wheel widget, and color
         names are used for distinguishing mask shapes. If a color name
         matches the pattern "``mask #<decimal-int>``", it will be associated
         with the shape having the ID ``<decimal-int>``.
+
+        Args:
+            pal: 
+
+        Returns:
+
+        Raises:
 
         """
         if pal is None:
             return
         mask_id_re = re.compile(r"\bmask\s*#?\s*(\d+)\b")
         mask_shapes = {}
-        for i in xrange(len(pal)):
+        for i in range(len(pal)):
             color = pal.get_color(i)
             if color is None:
                 continue
@@ -158,8 +196,17 @@ class MaskableWheelMixin(object):
             mask_list.append(mask_shapes[shape_id])
         self.set_mask(mask_list)
 
-    def set_mask(self, mask):
-        """Sets the mask (a list of lists of `UIColor`s)."""
+    def set_mask(self, mask: Types.ELLIPSIS) -> Types.NONE:
+        """Sets the mask (a list of lists of `UIColor`s).
+
+        Args:
+            mask: 
+
+        Returns:
+
+        Raises:
+
+        """
         prefs = self.get_prefs()
         if mask is None:
             self.__mask = None
@@ -188,12 +235,19 @@ class MaskableWheelMixin(object):
                 voids.append(void)
         return voids
 
-    def colors_to_mask_void(self, colors):
+    def colors_to_mask_void(self, colors: Types.ELLIPSIS) -> Types.NONE:
         """Converts a set of colors to a mask void (convex hull).
-
+        
         Mask voids are the convex hulls of the (x, y) positions for the
         colors making up the mask, so mask shapes with fewer than 3 colors
         are returned as the empty list.
+
+        Args:
+            colors: 
+
+        Returns:
+
+        Raises:
 
         """
         points = []
@@ -204,11 +258,21 @@ class MaskableWheelMixin(object):
         return geom.convex_hull(points)
 
     def get_color_at_position(self, x, y, ignore_mask=False):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Converts an `x`, `y` position to a color.
-
+        
         Ordinarily, this implementation uses any active mask to limit the
         colors which can be clicked on. Set `ignore_mask` to disable this
         added behaviour.
+
+        Args:
+            x: 
+            y: 
+            ignore_mask:  (Default value = False)
+
+        Returns:
+
+        Raises:
 
         """
         sup = HueSaturationWheelMixin
@@ -238,8 +302,17 @@ class MaskableWheelMixin(object):
         return sup.get_color_at_position(self, x, y)
 
     @staticmethod
-    def _get_void_size(void):
-        """Size metric for a mask void (list of x,y points; convex hull)"""
+    def _get_void_size(void: Types.ELLIPSIS) -> Types.NONE:
+        """Size metric for a mask void (list of x,y points; convex hull)
+
+        Args:
+            void: 
+
+        Returns:
+
+        Raises:
+
+        """
         area = geom.poly_area(void)
         return math.sqrt(area)
 
@@ -258,10 +331,20 @@ class MaskableWheelMixin(object):
         return gui.uicolor.from_gdk_rgba(c).get_rgb()
 
     def draw_mask(self, cr, wd, ht):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Draws the mask, if enabled and if it has any usable voids.
-
+        
         For the sake of the editor subclass, this doesn't draw any voids
         which are smaller than `self.min_shape_size` times the wheel radius.
+
+        Args:
+            cr: 
+            wd: 
+            ht: 
+
+        Returns:
+
+        Raises:
 
         """
 
@@ -312,24 +395,64 @@ class MaskableWheelMixin(object):
         cr.restore()
 
     def paint_foreground_cb(self, cr, wd, ht):
-        """Paints the foreground items: mask, then marker."""
+        # type: (Types.ELLIPSIS) -> Types.NONE
+        """Paints the foreground items: mask, then marker.
+
+        Args:
+            cr: 
+            wd: 
+            ht: 
+
+        Returns:
+
+        Raises:
+
+        """
         self.draw_mask(cr, wd, ht)
         HueSaturationWheelMixin.paint_foreground_cb(self, cr, wd, ht)
 
 
-class HCYHueChromaWheelMixin(object):
+class HCYHueChromaWheelMixin:
     """Mixin for wheel-style adjusters to display the H+C from the HCY model.
-
+    
     For use with implementations of `HueSaturationWheelAdjusterMixin`; make
     sure this mixin comes before it in the MRO.
 
+    Args:
+
+    Returns:
+
+    Raises:
+
     """
 
-    def get_normalized_polar_pos_for_color(self, col):
+    def get_normalized_polar_pos_for_color(self, col: Types.ELLIPSIS) -> Types.NONE:
+        """
+
+        Args:
+            col: 
+
+        Returns:
+
+        Raises:
+
+        """
         col = HCYColor(color=col)
         return col.c, col.h
 
     def color_at_normalized_polar_pos(self, r, theta):
+        # type: (Types.ELLIPSIS) -> Types.NONE
+        """
+
+        Args:
+            r: 
+            theta: 
+
+        Returns:
+
+        Raises:
+
+        """
         col = HCYColor(color=self.get_managed_color())
         col.h = theta
         col.c = r
@@ -417,7 +540,17 @@ class HCYMaskEditorWheel(HCYHueChromaWheel):
             Gdk.EventMask.POINTER_MOTION_MASK | Gdk.EventMask.LEAVE_NOTIFY_MASK
         )
 
-    def _realize_cb(self, widget):
+    def _realize_cb(self, widget: Types.ELLIPSIS) -> Types.NONE:
+        """
+
+        Args:
+            widget: 
+
+        Returns:
+
+        Raises:
+
+        """
         display = self.get_window().get_display()
 
         try:
@@ -461,7 +594,7 @@ class HCYMaskEditorWheel(HCYHueChromaWheel):
 
         # Possible mask void manipulations
         mask = self.get_mask()
-        for mask_idx in xrange(len(mask)):
+        for mask_idx in range(len(mask)):
             colors = mask[mask_idx]
             if len(colors) < 3:
                 continue
@@ -469,7 +602,7 @@ class HCYMaskEditorWheel(HCYHueChromaWheel):
             # If the pointer is near an existing control point, clicking and
             # dragging will move it.
             void = []
-            for col_idx in xrange(len(colors)):
+            for col_idx in range(len(colors)):
                 col = colors[col_idx]
                 px, py = self.get_pos_for_color(col)
                 dp = math.sqrt((x - px) ** 2 + (y - py) ** 2)
@@ -724,7 +857,7 @@ class HCYMaskEditorWheel(HCYHueChromaWheel):
         nsides = 3 + len(self.get_mask())
         psi = math.atan2(dy, dx) + (math.pi / nsides)
         psi += math.pi
-        for i in xrange(nsides):
+        for i in range(nsides):
             theta = 2.0 * math.pi * i / nsides
             theta += psi
             px = int(x + size * math.cos(theta))
@@ -736,6 +869,19 @@ class HCYMaskEditorWheel(HCYHueChromaWheel):
         self.set_mask(mask)
 
     def draw_mask_control_points(self, cr, wd, ht):
+        # type: (Types.ELLIPSIS) -> Types.NONE
+        """
+
+        Args:
+            cr: 
+            wd: 
+            ht: 
+
+        Returns:
+
+        Raises:
+
+        """
         # Draw active and inactive control points on the active shape.
 
         if self.__active_shape is None:
@@ -804,7 +950,19 @@ class HCYMaskEditorWheel(HCYHueChromaWheel):
         cr.restore()
 
     def paint_foreground_cb(self, cr, wd, ht):
-        """Foreground drawing override."""
+        # type: (Types.ELLIPSIS) -> Types.NONE
+        """Foreground drawing override.
+
+        Args:
+            cr: 
+            wd: 
+            ht: 
+
+        Returns:
+
+        Raises:
+
+        """
         self.draw_mask(cr, wd, ht)
         self.draw_mask_control_points(cr, wd, ht)
 
@@ -815,8 +973,17 @@ class HCYMaskEditorWheel(HCYHueChromaWheel):
         col.y = clamp(col.y, self.__MIN_LUMA, self.__MAX_LUMA)
         return col
 
-    def set_managed_color(self, color):
-        """Override, limiting the luma range."""
+    def set_managed_color(self, color: Types.ELLIPSIS) -> Types.NONE:
+        """Override, limiting the luma range.
+
+        Args:
+            color: 
+
+        Returns:
+
+        Raises:
+
+        """
         col = HCYColor(color=color)
         col.y = clamp(col.y, self.__MIN_LUMA, self.__MAX_LUMA)
         super(HCYMaskEditorWheel, self).set_managed_color(col)
@@ -826,9 +993,15 @@ class HCYMaskPreview(
     MaskableWheelMixin, HCYHueChromaWheelMixin, HueSaturationWheelAdjuster
 ):
     """Mask preview widget; not scrollable.
-
+    
     These widgets can be used with `paletteview.palette_load_via_dialog()` as
     preview widgets during mask selection.
+
+    Args:
+
+    Returns:
+
+    Raises:
 
     """
 
@@ -842,25 +1015,68 @@ class HCYMaskPreview(
         self.set_size_request(64, 64)
 
     def render_background_cb(self, cr, wd, ht):
+        # type: (Types.ELLIPSIS) -> Types.NONE
+        """
+
+        Args:
+            cr: 
+            wd: 
+            ht: 
+
+        Returns:
+
+        Raises:
+
+        """
         sup = HueSaturationWheelAdjuster
         sup.render_background_cb(self, cr, wd=wd, ht=ht)
         self.draw_mask(cr, wd=wd, ht=ht)
 
     def paint_foreground_cb(self, cr, wd, ht):
+        # type: (Types.ELLIPSIS) -> Types.NONE
+        """
+
+        Args:
+            cr: 
+            wd: 
+            ht: 
+
+        Returns:
+
+        Raises:
+
+        """
         pass
 
     def get_background_validity(self):
+        """ """
         return deepcopy(self.get_mask())
 
-    def set_palette(self, palette):
+    def set_palette(self, palette: Types.ELLIPSIS) -> Types.NONE:
+        """
+
+        Args:
+            palette: 
+
+        Returns:
+
+        Raises:
+
+        """
         # Compatibility with palette_load_via_dialog()
         self.set_mask_from_palette(palette)
 
 
 class HCYMaskTemplateDialog(Gtk.Dialog):
     """Dialog for choosing a mask from a small set of templates.
-
+    
     http://gurneyjourney.blogspot.co.uk/2008/02/shapes-of-color-schemes.html
+
+    Args:
+
+    Returns:
+
+    Raises:
 
     """
 
@@ -1291,12 +1507,14 @@ class HCYAdjusterPage(CombinedAdjusterPage):
 
     @classmethod
     def get_properties_description(cls):
+        """ """
         return C_(
             "HCY Wheel color adjuster page: properties tooltip.",
             "Set gamut mask.",
         )
 
     def show_properties(self):
+        """ """
         if self.__mask_dialog is None:
             toplevel = self.__hc_adj.get_toplevel()
             dia = HCYMaskPropertiesDialog(toplevel, self.__hc_adj)
@@ -1305,10 +1523,12 @@ class HCYAdjusterPage(CombinedAdjusterPage):
 
     @classmethod
     def get_page_icon_name(cls):
+        """ """
         return "mypaint-tool-hcywheel"
 
     @classmethod
     def get_page_title(cls):
+        """ """
         return C_(
             "HCY Wheel color adjuster page: title for tooltips etc.",
             "HCY Wheel",
@@ -1316,6 +1536,7 @@ class HCYAdjusterPage(CombinedAdjusterPage):
 
     @classmethod
     def get_page_description(cls):
+        """ """
         return C_(
             "HCY Wheel color adjuster page: description for tooltips etc.",
             "Set the color using cylindrical hue/chroma/luma space. "
@@ -1323,12 +1544,23 @@ class HCYAdjusterPage(CombinedAdjusterPage):
         )
 
     def get_page_widget(self):
+        """ """
         frame = Gtk.AspectFrame(obey_child=True)
         frame.set_shadow_type(Gtk.ShadowType.NONE)
         frame.add(self.__table)
         return frame
 
-    def set_color_manager(self, manager):
+    def set_color_manager(self, manager: Types.ELLIPSIS) -> Types.NONE:
+        """
+
+        Args:
+            manager: 
+
+        Returns:
+
+        Raises:
+
+        """
         ColorAdjuster.set_color_manager(self, manager)
         self.__y_adj.set_property("color-manager", manager)
         self.__hc_adj.set_property("color-manager", manager)
