@@ -438,7 +438,7 @@ class Brushwork(Command):
         :param float xtilt: X-axis tilt, ranging from -1.0 to 1.0
         :param float ytilt: Y-axis tilt, ranging from -1.0 to 1.0
         :param float viewzoom: current view zoom level from 0 to 64
-        :param float viewrotation; current view rotation from -180.0 to 180.0
+        :param float viewrotation: current view rotation from -180.0 to 180.0
         :param float barrel_rotation: Barrel Rotation of stylus, ranging from 0.0 to 1.0
 
         Stroke data is recorded at this level, but strokes are not
