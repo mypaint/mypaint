@@ -251,11 +251,10 @@ Fires `object_created()` after an object has been successfully created.
         that's encoded as a construction parameter.
 
         Args:
-            product (s): An object created by this factory.
-            new_params (s): A new sequence of identifying parameters.
-        :rtype: bool
+            product: An object created by this factory.
+            new_params: A new sequence of identifying parameters.
 
-        Returns:
+        Returns: bool
             Whether the rebadge succeeded.
             
             Rebadging will fail if another object exists in the cache with the same

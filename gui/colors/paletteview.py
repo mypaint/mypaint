@@ -1994,7 +1994,7 @@ def _palette_render(
     """Renders a Palette according to a precalculated grid.
 
     Args:
-        palette: 
+        palette (Palette): 
         cr: a Cairo context
         rows (int): number of rows in the layout
         columns (int): number of columns in the layout

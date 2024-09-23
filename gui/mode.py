@@ -303,7 +303,7 @@ class InteractionMode(metaclass=ModeRegistry):
         """Enters the mode: called by `ModeStack.push()` etc.
 
         Args:
-            doc: the `gui.document.Document` this mode should affect.
+            doc (gui.document.Document): A document this mode should affect.
         A reference is kept in `self.doc`.
         
         This is called when the mode becomes active, i.e. when it becomes the
