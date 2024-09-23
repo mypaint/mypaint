@@ -21,6 +21,7 @@ from . import mypaintlib
 from . import idletask
 import lib.tiledsurface as tiledsurface
 from lib.surface import TileAccessible  # noqa
+from tiledsurface import _TiledSurfaceSnapshot
 
 logger = getLogger(__name__)
 TILE_SIZE = N = mypaintlib.TILE_SIZE
@@ -62,11 +63,12 @@ class StrokeShape:
 
     @classmethod
     def new_from_snapshots(cls, before, after):
+        # type: (_TiledSurfaceSnapshot, _TiledSurfaceSnapshot) -> Types.NONE
         """Build a new StrokeShape from before+after pair of snapshots.
 
         Args:
-            before (tiledsurface._TiledSurfaceSnapshot): snapshot of the layer before the stroke
-            after (tiledsurface._TiledSurfaceSnapshot): snapshot of the layer after the stroke
+            before: snapshot of the layer before the stroke
+            after: snapshot of the layer after the stroke
 
         Returns:
             A new StrokeShape, or None.
@@ -99,6 +101,7 @@ class StrokeShape:
         return shape
 
     def init_from_string(self, data, translate_x, translate_y):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Initialize from a saved compressed byte string.
         
         See lib.layer.data.PaintingLayer.load_from_openraster().
@@ -129,6 +132,7 @@ class StrokeShape:
             data = data[size + 3 * 4 :]
 
     def save_to_string(self, translate_x, translate_y):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -194,14 +198,15 @@ class StrokeShape:
             self.tasks.finish_all()
 
     def touches_pixel(self, x, y):
+        # type: (int, int) -> bool
         """Returns whether the stroke shape hits a specific pixel
 
         Args:
-            x (int): Pixel X position.
-            y (int): Pixel Y position.
+            x: Pixel X position.
+            y: Pixel Y position.
 
         Returns:
-            bool: True if (x, y) is a set pixel in this shape's bitmap.
+            True if (x, y) is a set pixel in this shape's bitmap.
 
         Raises:
 
@@ -250,6 +255,7 @@ class StrokeShape:
                 diff_tile.write_to_surface_tile_array(surf_arr)
 
     def translate(self, dx, dy):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Translate the shape by (dx, dy)
 
         Args:
@@ -332,6 +338,7 @@ class _TileDiffUpdateTask:
         return bool(self._remaining)
 
     def process_tile_subset(self, pred):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Diff and update a subset of queued tiles now.
 
         Args:
@@ -351,6 +358,7 @@ class _TileDiffUpdateTask:
         self._remaining -= processed
 
     def _update_tile(self, ti):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Diff and update the tile at a specified position.
 
         Args:
@@ -459,6 +467,7 @@ class _TileRecompressTask:
         return len(self._src_dict) > 0
 
     def process_tile_subset(self, pred):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Compress & store a subset of queued tiles' data now.
 
         Args:
@@ -479,6 +488,7 @@ class _TileRecompressTask:
             self._src_dict.pop(ti)
 
     def _compress_tile(self, ti, array):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -538,6 +548,7 @@ class _Tile:
 
     @classmethod
     def new_from_diff(cls, before, after):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Initialize from a diff or two RGBA arrays.
 
         Args:
@@ -559,6 +570,7 @@ class _Tile:
 
     @classmethod
     def new_from_array(cls, array):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Initialize from a single uncompressed diff array.
 
         Args:
@@ -580,6 +592,7 @@ class _Tile:
 
     @classmethod
     def new_from_compressed_bitmap(cls, zdata):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Initialize from raw compressed zlib bitmap data.
 
         Args:
@@ -631,6 +644,7 @@ class _Tile:
             return self._zdata
 
     def write_to_surface_tile_array(self, rgba, _c=(1 << 15) / 4, _a=(1 << 15) / 2):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Write to a surface's RGBA tile.
 
         Args:
@@ -783,13 +797,11 @@ class _TileIndexPredicate:
 
 
 def _pixel_bbox_to_tile_range(bbox):
+    # type: (tuple) -> tuple
     """Convert a pixel area to testable ranges of tiles.
 
     Args:
-        bbox (tuple): The area to complete, as pixel (x, y, w, h)
-
-    Returns:
-        tuple
+        bbox: The area to complete, as pixel (x, y, w, h)
 
 The returned ranges allow tile indices to be tested as, e.g.,
 
@@ -822,11 +834,12 @@ See also `_tile_in_ranges()`.: Tile ranges, as (txmin, txmax, tymin, tymax).
 
 
 def _tile_in_range(ti, trange):
+    # type: (tuple, tuple) -> Types.NONE
     """Tests whether a tile index is within a range.
 
     Args:
-        ti (tuple): tile index, as (tx, ty).
-        trange (tuple): ranges, as (txmin, txmax, tymin, tymax).
+        ti: tile index, as (tx, ty).
+        trange: ranges, as (txmin, txmax, tymin, tymax).
     :rtype: bool
     
     This function expects the kinds of ranges returned by

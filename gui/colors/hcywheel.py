@@ -101,6 +101,7 @@ class MaskableWheelMixin:
         self.queue_draw()
 
     def set_color_manager(self, manager):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Sets the color manager, and reads an initial mask from prefs.
         
         Extends `ColorAdjuster`'s implementation.
@@ -123,6 +124,7 @@ class MaskableWheelMixin:
 
     @staticmethod
     def _flatten_mask(mask):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -141,6 +143,7 @@ class MaskableWheelMixin:
 
     @staticmethod
     def _unflatten_mask(flat_mask):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -158,6 +161,7 @@ class MaskableWheelMixin:
         return mask
 
     def set_mask_from_palette(self, pal):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Sets the mask from a palette.
         
         Any `palette.Palette` can be loaded into the wheel widget, and color
@@ -197,6 +201,7 @@ class MaskableWheelMixin:
         self.set_mask(mask_list)
 
     def set_mask(self, mask):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Sets the mask (a list of lists of `UIColor`s).
 
         Args:
@@ -236,6 +241,7 @@ class MaskableWheelMixin:
         return voids
 
     def colors_to_mask_void(self, colors):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Converts a set of colors to a mask void (convex hull).
         
         Mask voids are the convex hulls of the (x, y) positions for the
@@ -258,6 +264,7 @@ class MaskableWheelMixin:
         return geom.convex_hull(points)
 
     def get_color_at_position(self, x, y, ignore_mask=False):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Converts an `x`, `y` position to a color.
         
         Ordinarily, this implementation uses any active mask to limit the
@@ -302,6 +309,7 @@ class MaskableWheelMixin:
 
     @staticmethod
     def _get_void_size(void):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Size metric for a mask void (list of x,y points; convex hull)
 
         Args:
@@ -330,6 +338,7 @@ class MaskableWheelMixin:
         return gui.uicolor.from_gdk_rgba(c).get_rgb()
 
     def draw_mask(self, cr, wd, ht):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Draws the mask, if enabled and if it has any usable voids.
         
         For the sake of the editor subclass, this doesn't draw any voids
@@ -393,6 +402,7 @@ class MaskableWheelMixin:
         cr.restore()
 
     def paint_foreground_cb(self, cr, wd, ht):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Paints the foreground items: mask, then marker.
 
         Args:
@@ -424,6 +434,7 @@ class HCYHueChromaWheelMixin:
     """
 
     def get_normalized_polar_pos_for_color(self, col):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -438,6 +449,7 @@ class HCYHueChromaWheelMixin:
         return col.c, col.h
 
     def color_at_normalized_polar_pos(self, r, theta):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -537,6 +549,7 @@ class HCYMaskEditorWheel(HCYHueChromaWheel):
         )
 
     def _realize_cb(self, widget):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -865,6 +878,7 @@ class HCYMaskEditorWheel(HCYHueChromaWheel):
         self.set_mask(mask)
 
     def draw_mask_control_points(self, cr, wd, ht):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -945,6 +959,7 @@ class HCYMaskEditorWheel(HCYHueChromaWheel):
         cr.restore()
 
     def paint_foreground_cb(self, cr, wd, ht):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Foreground drawing override.
 
         Args:
@@ -968,6 +983,7 @@ class HCYMaskEditorWheel(HCYHueChromaWheel):
         return col
 
     def set_managed_color(self, color):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Override, limiting the luma range.
 
         Args:
@@ -1009,6 +1025,7 @@ class HCYMaskPreview(
         self.set_size_request(64, 64)
 
     def render_background_cb(self, cr, wd, ht):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -1026,6 +1043,7 @@ class HCYMaskPreview(
         self.draw_mask(cr, wd=wd, ht=ht)
 
     def paint_foreground_cb(self, cr, wd, ht):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -1045,6 +1063,7 @@ class HCYMaskPreview(
         return deepcopy(self.get_mask())
 
     def set_palette(self, palette):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -1543,6 +1562,7 @@ class HCYAdjusterPage(CombinedAdjusterPage):
         return frame
 
     def set_color_manager(self, manager):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:

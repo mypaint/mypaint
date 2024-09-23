@@ -56,6 +56,7 @@ class FakeFile:
         self.string = string
 
     def write(self, newstring):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -101,6 +102,7 @@ class FakeOptions:
 
 
 def get_by_attrib(parent, pred):
+    # type: (Types.ELLIPSIS) -> Types.NONE
     """Utility function for retrieving child elements by attribute predicates
 
     Args:
@@ -116,6 +118,7 @@ def get_by_attrib(parent, pred):
 
 
 def by_attrib(parent, attr, attr_pred):
+    # type: (Types.ELLIPSIS) -> Types.NONE
     """Retrieves the elements matching an attribute predicate
     The predicate is only evaluated if the attribute is present.
 
@@ -131,6 +134,7 @@ def by_attrib(parent, attr, attr_pred):
     """
 
     def pred(attribs):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -153,6 +157,7 @@ def by_attrib(parent, attr, attr_pred):
 # and does not produce optimal (or even correct) results
 # in the general case, but is sufficient for the current icons.
 def resolve_references(refsvg, base):
+    # type: (Types.ELLIPSIS) -> Types.NONE
     """Resolve external references in ``base``
     Any <use> tag in base will be replaced with the element it refers
     to unless that element is already a part of base. Assumes valid svg.
@@ -168,6 +173,7 @@ def resolve_references(refsvg, base):
     """
 
     def deref(parent, child, index):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -201,6 +207,7 @@ def resolve_references(refsvg, base):
 
 
 def extract_icon(svg, icon_elem, output_dir, output_svg):
+    # type: (Types.ELLIPSIS) -> Types.NONE
     """Extract one icon
 
     Args:
@@ -261,6 +268,7 @@ def extract_icon(svg, icon_elem, output_dir, output_svg):
 
 
 def parse_style(string):
+    # type: (Types.ELLIPSIS) -> Types.NONE
     """Given a well-formed style string, return the corresponding dict
 
     Args:
@@ -275,6 +283,7 @@ def parse_style(string):
 
 
 def serialize_style(style_dict):
+    # type: (Types.ELLIPSIS) -> Types.NONE
     """Serialize a dict to a well-formed style string
 
     Args:
@@ -289,6 +298,7 @@ def serialize_style(style_dict):
 
 
 def clean_styles(elem):
+    # type: (Types.ELLIPSIS) -> Types.NONE
     """Recursively remove useless style attributes
     Also moves common fill declarations to the topmost element.
 
@@ -322,6 +332,7 @@ def clean_styles(elem):
 
 
 def gethref(icon):
+    # type: (Types.ELLIPSIS) -> Types.NONE
     """
 
     Args:
@@ -336,6 +347,7 @@ def gethref(icon):
 
 
 def clean_style(elem):
+    # type: (Types.ELLIPSIS) -> Types.NONE
     """Remove unused style attributes based on a fixed list
     A style attribute is removed if:
     1. it is not in the list
@@ -365,6 +377,7 @@ def clean_style(elem):
     defaults = {"opacity": (float, 1.0)}
 
     def is_default(k, v):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -396,6 +409,7 @@ def clean_style(elem):
 
 
 def is_icon(e):
+    # type: (Types.ELLIPSIS) -> Types.NONE
     """
 
     Args:
@@ -411,6 +425,7 @@ def is_icon(e):
 
 
 def get_icon_layer(svg):
+    # type: (Types.ELLIPSIS) -> Types.NONE
     """
 
     Args:
@@ -425,6 +440,7 @@ def get_icon_layer(svg):
 
 
 def extract_icons(svg, basedir, *ids):
+    # type: (Types.ELLIPSIS) -> Types.NONE
     """Extract icon groups using Inkscape, both 16px scalable & 24x24
 
     Args:
@@ -463,6 +479,7 @@ def extract_icons(svg, basedir, *ids):
 
 
 def get_icon_ids(svg):
+    # type: (Types.ELLIPSIS) -> Types.NONE
     """Returns the ids of elements marked as being icons
 
     Args:
@@ -477,6 +494,7 @@ def get_icon_ids(svg):
 
 
 def invalid_ids(svg, ids):
+    # type: (Types.ELLIPSIS) -> Types.NONE
     """
 
     Args:
@@ -492,6 +510,7 @@ def invalid_ids(svg, ids):
 
 
 def main(options):
+    # type: (Types.ELLIPSIS) -> Types.NONE
     """Main function for the tool
 
     Args:

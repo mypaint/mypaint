@@ -109,6 +109,7 @@ def get_app():
 
 
 def _init_icons(icon_path, default_icon="org.mypaint.MyPaint"):
+    # type: (Types.ELLIPSIS) -> Types.NONE
     """Set the icon theme search path, and GTK default window icon
 
     Args:
@@ -472,6 +473,7 @@ class Application:
         return self._preferences
 
     def _at_application_start(self, filenames, fullscreen):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -575,6 +577,7 @@ class Application:
             self.preferences[key] = default_config[key]
 
     def reset_compat_mode(self, update=True):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Reset compatibility mode to configured default
 
         Args:
@@ -590,6 +593,7 @@ class Application:
         )
 
     def add_action_group(self, ag):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -603,6 +607,7 @@ class Application:
         self.ui_manager.insert_action_group(ag, -1)
 
     def find_action(self, name):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -637,6 +642,7 @@ class Application:
         self.brush.observers.append(self._brush_modified_cb)
 
     def _brush_adjustment_value_changed_cb(self, adj, cname):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Updates a brush setting when the user tweaks it using a scale
 
         Args:
@@ -653,6 +659,7 @@ class Application:
             self.brush.set_base_value(cname, newvalue)
 
     def _brush_modified_cb(self, settings):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Updates the brush's base setting adjustments on brush changes
 
         Args:
@@ -735,6 +742,7 @@ class Application:
         investigate_str=None,
         **kwds
     ):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Utility function to show a message/information dialog
 
         Args:
@@ -793,6 +801,7 @@ class Application:
             lib.fileutils.startfile(investigate_dir, "open")
 
     def show_transient_message(self, text, seconds=5):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Display a brief, impermanent status message
 
         Args:
@@ -817,6 +826,7 @@ class Application:
         self._transient_msg_remove_timeout_id = timeout_id
 
     def _transient_msg_remove_timer_cb(self, *_ignored):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -865,6 +875,7 @@ class Application:
         return self.get_subwindow("InputTestWindow")
 
     def get_subwindow(self, name):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Get a subwindow by its name.
 
         Args:
@@ -888,6 +899,7 @@ class Application:
         return window
 
     def has_subwindow(self, name):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """True if the named subwindow is known.
 
         Args:
@@ -901,6 +913,7 @@ class Application:
         return name in self._subwindow_classes
 
     def _subwindow_hide_cb(self, subwindow):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Toggles off a subwindow's related action when it's hidden.
 
         Args:
@@ -916,6 +929,7 @@ class Application:
             action.set_active(False)
 
     def autorecover_cb(self, action):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -932,6 +946,7 @@ class Application:
     ## Workspace callbacks
 
     def _floating_window_created_cb(self, wkspace, floatwin):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Adds newly created `workspace.ToolStackWindow`s to the kbm.
 
         Args:
@@ -950,10 +965,11 @@ class Application:
     # App-wide, while the single painting brush still lives here.
 
     def restore_brush_from_stroke_info(self, strokeinfo):
+        # type: (lib.strokemap.StrokeShape) -> Types.NONE
         """Restores the app brush from a stroke
 
         Args:
-            strokeinfo (lib.strokemap.StrokeShape): Stroke details from the stroke map
+            strokeinfo: Stroke details from the stroke map
 
         Returns:
 
@@ -985,6 +1001,7 @@ class Application:
     ## Profiling and debugging
 
     def start_profiling_cb(self, action):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Starts profiling, or stops it (and tries to show the results)
 
         Args:
@@ -998,6 +1015,7 @@ class Application:
         self.profiler.toggle_profiling()
 
     def print_memory_leak_cb(self, action):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -1011,6 +1029,7 @@ class Application:
         helpers.record_memory_leak_status(print_diff=True)
 
     def run_garbage_collector_cb(self, action):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -1024,6 +1043,7 @@ class Application:
         helpers.run_garbage_collector()
 
     def crash_program_cb(self, action):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Tests exception handling.
 
         Args:

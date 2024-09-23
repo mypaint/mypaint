@@ -108,6 +108,7 @@ class HistoryPopup(windowing.PopupWindow):
         window.set_cursor(cursor)
 
     def leave(self, reason):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -121,6 +122,7 @@ class HistoryPopup(windowing.PopupWindow):
         self.hide()
 
     def button_press_cb(self, widget, event):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -135,6 +137,7 @@ class HistoryPopup(windowing.PopupWindow):
         pass
 
     def button_release_cb(self, widget, event):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -149,6 +152,7 @@ class HistoryPopup(windowing.PopupWindow):
         pass
 
     def _reset_selection_cb(self, *_args, **_kwargs):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -163,6 +167,7 @@ class HistoryPopup(windowing.PopupWindow):
         self.selection = None
 
     def draw_cb(self, widget, cr):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:

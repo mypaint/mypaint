@@ -17,16 +17,18 @@ from lib import document
 from lib import floodfill
 from lib import fill_common
 from lib import morphology
+from lib.layer import SimplePaintingLayer
 
 N = mypaintlib.TILE_SIZE
 
 
 def exact_bbox(layer):
+    # type: (SimplePaintingLayer) -> Types.NONE
     """Expensively determine the bounding box
     coordinates of the actual pixel data
 
     Args:
-        layer (lib.layer.SimplePaintingLayer): Layer to calculate bbox of
+        layer: Layer to calculate bbox of
     :rtype: lib.helpers.Rect
 
     Returns:
@@ -44,6 +46,7 @@ def exact_bbox(layer):
     # The x and y bound searches are very similar,
     # but much more legible when written separately
     def y_bound(ty, bound, base, offset):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -68,6 +71,7 @@ def exact_bbox(layer):
         return bound
 
     def x_bound(tx, bound, base, offset):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -105,6 +109,7 @@ def exact_bbox(layer):
 
 
 def fill_test(test_func):
+    # type: (Types.ELLIPSIS) -> Types.NONE
     """Decorator for fill tests; clears fill layers between tests
 
     Args:
@@ -145,6 +150,7 @@ class FillTestsBase(unittest.TestCase):
     # Helpers
     @staticmethod
     def center(bbox):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -160,6 +166,7 @@ class FillTestsBase(unittest.TestCase):
 
     @staticmethod
     def area(bbox):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -174,6 +181,7 @@ class FillTestsBase(unittest.TestCase):
 
     @staticmethod
     def layers_identical(l1, l2):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Check the layers are tile-for-tile identical
 
         Args:
@@ -512,6 +520,7 @@ class PerformanceTests(FillTestsBase):
         tolerance=0.2,
         gap_closing_options=None,
     ):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Run only the fill step, not the compositing step, n times
 
         Args:

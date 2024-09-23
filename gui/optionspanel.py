@@ -110,6 +110,7 @@ class ModeOptionsTool(SizedVBoxToolWidget):
         )
 
     def _modestack_changed_cb(self, modestack, old, new):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Update the UI when the mode changes
 
         Args:
@@ -130,6 +131,7 @@ class ModeOptionsTool(SizedVBoxToolWidget):
         self._update_ui_for_mode(mode)
 
     def _update_ui_for_mode(self, mode):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -158,6 +160,7 @@ class ModeOptionsTool(SizedVBoxToolWidget):
         self._update_ui_with_options_widget(new_options, name, icon_name)
 
     def _update_ui_with_options_widget(self, new_options, name, icon_name):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:

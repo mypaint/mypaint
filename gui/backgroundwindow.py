@@ -89,6 +89,7 @@ class BackgroundWindow(windowing.Dialog):
         color_vbox.pack_start(b, False, True, 0)
 
     def _realize_cb(self, dialog):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -103,6 +104,7 @@ class BackgroundWindow(windowing.Dialog):
             self.bgl.initialize()
 
     def _show_cb(self, dialog):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -117,6 +119,7 @@ class BackgroundWindow(windowing.Dialog):
         self.set_response_sensitive(RESPONSE_SAVE_AS_DEFAULT, False)
 
     def _hide_cb(self, dialog):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -130,6 +133,7 @@ class BackgroundWindow(windowing.Dialog):
         self._current_background_pixbuf = None
 
     def _response_cb(self, dialog, response, *args):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -148,6 +152,7 @@ class BackgroundWindow(windowing.Dialog):
             self.hide()
 
     def _color_changed_cb(self, widget):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -182,6 +187,7 @@ class BackgroundWindow(windowing.Dialog):
         self.hide()
 
     def set_background(self, pixbuf):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -198,6 +204,7 @@ class BackgroundWindow(windowing.Dialog):
         self.set_response_sensitive(RESPONSE_SAVE_AS_DEFAULT, True)
 
     def _add_color_to_patterns_cb(self, widget):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -264,6 +271,7 @@ class BackgroundList(pixbuflist.PixbufList):
 
     @classmethod
     def _list_dir(cls, path):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Recursively find images by suffix
 
         Args:
@@ -301,6 +309,7 @@ class BackgroundList(pixbuflist.PixbufList):
         self.set_itemlist(self.backgrounds)
 
     def _load_pixbufs(self, files, exclude_default=False):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -369,6 +378,7 @@ class BackgroundList(pixbuflist.PixbufList):
         return pixbufs
 
     def _get_preview_pixbuf(self, pixbuf):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -418,6 +428,7 @@ class BackgroundList(pixbuflist.PixbufList):
         return scaled
 
     def _get_tooltip(self, pixbuf):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -431,6 +442,7 @@ class BackgroundList(pixbuflist.PixbufList):
         return self._pixbuf_tooltip.get(pixbuf, None)
 
     def _item_selected_cb(self, self_, pixbuf):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -449,6 +461,7 @@ class BackgroundList(pixbuflist.PixbufList):
 
 
 def _filename_to_display(s):
+    # type: (Types.ELLIPSIS) -> Types.NONE
     """Convert a str filename to Unicode without obsessing too much.
 
     Args:
@@ -470,12 +483,13 @@ def _filename_to_display(s):
 
 
 def new_blank_pixbuf(rgb, w, h):
+    # type: (tuple, int, int) -> Types.NONE
     """Create a blank pixbuf with all pixels set to a color
 
     Args:
-        rgb (tuple): Color to blank the pixbuf to (``R,G,B``, floats)
-        w (int): Width for the new pixbuf
-        h (int): Width for the new pixbuf
+        rgb: Color to blank the pixbuf to (``R,G,B``, floats)
+        w: Width for the new pixbuf
+        h: Width for the new pixbuf
     
     The returned pixbuf has no alpha channel.
 
@@ -626,6 +640,7 @@ def load_background(filename, bloatmax=BLOAT_MAX_SIZE):
 
 
 def _tile_pixbuf(pixbuf, repeats_x, repeats_y):
+    # type: (Types.ELLIPSIS) -> Types.NONE
     """Make a repeated tiled image of a pixbuf
 
     Args:
@@ -647,6 +662,7 @@ def _tile_pixbuf(pixbuf, repeats_x, repeats_y):
 
 
 def _best_nrepeats_for_scaling(src_size, max_dest_size):
+    # type: (Types.ELLIPSIS) -> Types.NONE
     """
 
     Args:

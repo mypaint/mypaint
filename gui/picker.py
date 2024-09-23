@@ -89,6 +89,7 @@ class PickingGrabPresenter(metaclass=abc.ABCMeta):
 
     @app.setter
     def app(self, app):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -131,6 +132,7 @@ class PickingGrabPresenter(metaclass=abc.ABCMeta):
     ## Activation
 
     def activate_from_button_event(self, event):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Activate during handling of a GdkEventButton (press/release)
         
         If the event is a button press, then the grab will start
@@ -191,12 +193,13 @@ giving an appropriate cursor to display during the picking grab.: The cursor to 
 
     @abc.abstractmethod
     def picking_update(self, device, x_root, y_root):
+        # type: (Gdk.Device, int, int) -> Types.NONE
         """Update whatever's being picked during & after picking.
 
         Args:
-            device (Gdk.Device): Pointer device currently grabbed
-            x_root (int): Absolute screen X coordinate
-            y_root (int): Absolute screen Y coordinate
+            device: Pointer device currently grabbed
+            x_root: Absolute screen X coordinate
+            y_root: Absolute screen Y coordinate
         
         This abstract method must be overridden with an implementation
         which updates the model object being picked.
@@ -218,12 +221,13 @@ giving an appropriate cursor to display during the picking grab.: The cursor to 
     ## Internals
 
     def _start_grab(self, device, time, inibutton):
+        # type: (Gdk.Device, int, int) -> Types.NONE
         """Start the pointer grab, and enter the picking state.
 
         Args:
-            device (Gdk.Device): Initiating pointer device.
-            time (int): The grab start timestamp.
-            inibutton (int): Initiating pointer button.
+            device: Initiating pointer device.
+            time: The grab start timestamp.
+            inibutton: Initiating pointer button.
         
         The associated keyboard device is grabbed too.
         This method assumes that inibutton is currently held. The grab
@@ -347,6 +351,7 @@ giving an appropriate cursor to display during the picking grab.: The cursor to 
         return False  # don't requeue
 
     def _in_grab_button_press_cb(self, widget, event):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -372,6 +377,7 @@ giving an appropriate cursor to display during the picking grab.: The cursor to 
         return True
 
     def _in_grab_button_release_cb(self, widget, event):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -400,6 +406,7 @@ giving an appropriate cursor to display during the picking grab.: The cursor to 
         return True
 
     def _in_grab_motion_cb(self, widget, event):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -431,6 +438,7 @@ giving an appropriate cursor to display during the picking grab.: The cursor to 
         return True
 
     def _in_grab_grab_broken_cb(self, widget, event):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -447,6 +455,7 @@ giving an appropriate cursor to display during the picking grab.: The cursor to 
         return False
 
     def _end_grab(self, event):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Finishes the picking grab normally.
 
         Args:
@@ -466,6 +475,7 @@ giving an appropriate cursor to display during the picking grab.: The cursor to 
             self._ungrab_grabbed_devices(time=event.time)
 
     def _check_event_devices_still_grabbed(self, event):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Abandon picking if devices aren't still grabbed.
         
         This can happen if the escape key is pressed during the grab -
@@ -497,6 +507,7 @@ giving an appropriate cursor to display during the picking grab.: The cursor to 
         return not cleanup_needed
 
     def _ungrab_grabbed_devices(self, time=Gdk.CURRENT_TIME):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Ungrabs devices thought to be grabbed, and cleans up.
 
         Args:
@@ -526,6 +537,7 @@ giving an appropriate cursor to display during the picking grab.: The cursor to 
         self._hide_status_message()
 
     def _delayed_picking_update_cb(self, ptrdev, x_root, y_root):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Delayed picking updates during grab.
         
         Some picking operations can be CPU-intensive, so this is called
@@ -576,6 +588,7 @@ class ContextPickingGrabPresenter(PickingGrabPresenter):
         )
 
     def picking_update(self, device, x_root, y_root):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Update brush and layer during & after picking.
 
         Args:
@@ -626,6 +639,7 @@ class ColorPickingGrabPresenter(PickingGrabPresenter):
         )
 
     def picking_update(self, device, x_root, y_root):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Update brush and layer during & after picking.
 
         Args:
@@ -671,6 +685,7 @@ class ButtonPresenter:
         self._grab = None
 
     def set_picking_grab(self, grab):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -684,10 +699,11 @@ class ButtonPresenter:
         self._grab = grab
 
     def set_button(self, button):
+        # type: (Gtk.Button) -> Types.NONE
         """Connect view button.
 
         Args:
-            button (Gtk.Button): the initiator button
+            button: the initiator button
 
         Returns:
 
@@ -700,6 +716,7 @@ class ButtonPresenter:
     ## Event handling
 
     def _clicked_cb(self, button):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Handle click events on the initiator button.
 
         Args:

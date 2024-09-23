@@ -43,6 +43,7 @@ class StateGroup:
         return [s for s in self.states if s.active]
 
     def create_state(self, enter, leave, popup=None):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -63,6 +64,7 @@ class StateGroup:
         return s
 
     def create_popup_state(self, popup):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -137,6 +139,7 @@ class State:
             self.outside_popup_timeout = popup.outside_popup_timeout
 
     def enter(self, **kwargs):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -159,6 +162,7 @@ class State:
         self._restart_autoleave_timeout()
 
     def leave(self, reason=None):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -186,6 +190,7 @@ class State:
             raise
 
     def activate(self, action_or_event=None, **kwargs):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Activate a State from an action or a button press event.
 
         Args:
@@ -241,6 +246,7 @@ class State:
         self.enter(**kwargs)
 
     def toggle(self, action=None):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -263,6 +269,7 @@ class State:
                 self.leave()
 
     def _keyup_cb(self, widget, event):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -339,6 +346,7 @@ class State:
         return False
 
     def _popup_enter_notify_cb(self, widget, event):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -357,6 +365,7 @@ class State:
             self._outside_popup_timeout_id = None
 
     def _popup_leave_notify_cb(self, widget, event):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:

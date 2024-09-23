@@ -20,6 +20,7 @@ import lib.xml
 
 
 def add_objects_from_template_string(builder, buffer_, object_ids, params):
+    # type: (Types.ELLIPSIS) -> Types.NONE
     """Templatizes, parses, merges, and returns objects from a Builder UI-def
     
     This function wraps `Gtk.Builder.add_objects_from_string()`, with the
@@ -97,6 +98,7 @@ def _test():
     # up private attributes in the instantiation loop.
 
     def _test_button_clicked_cb(widget):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:

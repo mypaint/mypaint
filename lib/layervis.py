@@ -78,6 +78,7 @@ class _View:
 
     @name.setter
     def name(self, value):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -97,6 +98,7 @@ class _View:
 
     @locked.setter
     def locked(self, state):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -155,6 +157,7 @@ class _View:
 
     @classmethod
     def new_from_jsf(cls, jsf):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Returns a new _View built from the json-serializable form.
 
         Args:
@@ -177,6 +180,7 @@ class _NamedViewsSet:
         self.names = dict()  # {str: _View}
 
     def add(self, view):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -201,6 +205,7 @@ class _NamedViewsSet:
         self.objs.add(view)
 
     def remove(self, view):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -217,6 +222,7 @@ class _NamedViewsSet:
         assert view not in self.objs
 
     def remove_by_name(self, name):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -279,6 +285,7 @@ class LayerViewManager:
     # Loading and saving via the doc settings dictionary:
 
     def _doc_settings_sync_pending_changes_cb(self, settings, flush=False):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Save to the doc settings when needed (e.g. before ORA save)
         
         This is called before the document is saved (and at many other
@@ -326,6 +333,7 @@ class LayerViewManager:
         }
 
     def _doc_settings_modified_cb(self, settings, oldvalues):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Update state when the doc settings change (e.g. ORA load).
         
         This clears and completely rebuilds the internal state of the
@@ -467,6 +475,7 @@ The built-in, unsaved view is always unlocked.: Whether the current view is lock
     # Self-observation:
 
     def _current_view_changed_cb(self, _lvm):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Respond to a change of the current view: set layer visibilities.
         
         Doing this as a self-observer callback method allows
@@ -495,6 +504,7 @@ The built-in, unsaved view is always unlocked.: Whether the current view is lock
     # Document observation:
 
     def _stack_layer_props_changed_cb(self, root, path, layer, changed):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Respond to any outside change of layer "visible" properties.
 
         Args:
@@ -522,6 +532,7 @@ The built-in, unsaved view is always unlocked.: Whether the current view is lock
             vset.remove(view)
 
     def _stack_layer_inserted_cb(self, root, path):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -546,6 +557,7 @@ The built-in, unsaved view is always unlocked.: Whether the current view is lock
             vset.remove(view)
 
     def _get_vset_for_layer(self, layer):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Gets the "visible in views" set for a layer.
 
         Args:
@@ -606,6 +618,7 @@ The built-in, unsaved view is always unlocked.: Whether the current view is lock
         return view
 
     def add_view(self, view):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Adds a view, but does not activate it.
 
         Args:
@@ -622,6 +635,7 @@ The built-in, unsaved view is always unlocked.: Whether the current view is lock
         self.view_names_changed()
 
     def activate_view(self, view):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Activates a view.
 
         Args:
@@ -639,6 +653,7 @@ The built-in, unsaved view is always unlocked.: Whether the current view is lock
         self.current_view_changed()
 
     def activate_view_by_name(self, name):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Activates a view by name.
 
         Args:
@@ -679,10 +694,11 @@ The built-in, unsaved view is always unlocked.: Whether the current view is lock
         return view
 
     def rename_active_view(self, name):
+        # type: (str) -> Types.NONE
         """Renames the currently active view.
 
         Args:
-            name (str): Base name for the new named view.
+            name: Base name for the new named view.
         :rtype: tuple
 
         Returns:
@@ -713,6 +729,7 @@ The built-in, unsaved view is always unlocked.: Whether the current view is lock
         return (old_name, new_name)
 
     def set_active_view_locked(self, locked):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:

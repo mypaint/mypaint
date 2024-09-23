@@ -28,6 +28,7 @@ def mem():
 
 
 def check_garbage(msg="uncollectable garbage left over from previous tests"):
+    # type: (Types.ELLIPSIS) -> Types.NONE
     """
 
     Args:
@@ -105,6 +106,7 @@ all_tests = {}
 
 
 def leaktest(f):
+    # type: (Types.ELLIPSIS) -> Types.NONE
     """
 
     Args:
@@ -152,6 +154,7 @@ def surface_alloc():
 
 
 def paint_doc(doc):
+    # type: (Types.ELLIPSIS) -> Types.NONE
     """
 
     Args:
@@ -204,6 +207,7 @@ def paint_save_clear():
 
 
 def paint_gui(gui):
+    # type: (Types.ELLIPSIS) -> Types.NONE
     """Paint with a constant number of frames per recorded second.
     Not entirely realistic, but gives good and stable measurements.
 

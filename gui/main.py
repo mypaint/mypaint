@@ -64,6 +64,7 @@ def _init_gtk_workarounds():
 
 
 def set_user_configured_locale(userconfpath):
+    # type: (Types.ELLIPSIS) -> Types.NONE
     """If configured, set envvars for a custom locale
     The user can choose to not use their system locale
     by explicitly choosing another, and restarting.
@@ -257,6 +258,7 @@ def main(
 
 
 def parsed_cmdline_arguments(default_confpath, debug=False):
+    # type: (Types.ELLIPSIS) -> Types.NONE
     """Parse command line arguments and return result
     
     :return: (options, positional arguments)

@@ -116,6 +116,7 @@ class ObjFactory:
         self._cache = {}
 
     def get(self, gtype_name, *params):
+        # type: (Types.ELLIPSIS) -> GObject
         """Fetch an object by identity, via an internal cache.
         
         A cache is used, to avoid overconstruction.  If construction is needed,
@@ -134,11 +135,11 @@ class ObjFactory:
         next session.
 
         Args:
-            gtype_name (str): a registered name (cf. __gtype_name__)
+            gtype_name: a registered name (cf. __gtype_name__)
             *params: 
 
         Returns:
-            GObject: the newly constructed object
+            the newly constructed object
 
         Raises:
             ConstructError: when construction fails.
@@ -182,6 +183,7 @@ Fires `object_created()` after an object has been successfully created.
 
     @event
     def object_created(self, product):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Event: an object was created by `get()`
 
         Args:
@@ -194,6 +196,7 @@ Fires `object_created()` after an object has been successfully created.
         """
 
     def cache_has(self, gtype_name, *params):
+        # type: (Types.ELLIPSIS) -> bool
         """Returns whether an object with the given key is in the cache.
 
         Args:
@@ -201,7 +204,7 @@ Fires `object_created()` after an object has been successfully created.
             *params: 
 
         Returns:
-            bool: Whether the object with this identity exists in the cache.
+            Whether the object with this identity exists in the cache.
 
         Raises:
 
@@ -210,6 +213,7 @@ Fires `object_created()` after an object has been successfully created.
         return key in self._cache
 
     def identify(self, product):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Gets the typename & params of an object created by this factory.
 
         Args:
@@ -229,6 +233,7 @@ Fires `object_created()` after an object has been successfully created.
 
     @staticmethod
     def _make_key(gtype_name, params):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Internal cache key creation function.
 
         Args:
@@ -245,6 +250,7 @@ Fires `object_created()` after an object has been successfully created.
         return tuple([gtype_name] + list(params))
 
     def rebadge(self, product, new_params):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Changes the construct params of an object.
         
         Use this when a constructed object has had something intrinsic changed
@@ -284,6 +290,7 @@ Fires `object_created()` after an object has been successfully created.
 
     @event
     def object_rebadged(self, product, old_params, new_params):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Event: object's construct params were updated by `rebadge()`
 
         Args:

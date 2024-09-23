@@ -161,6 +161,7 @@ class ColorManager(GObject.GObject):
     ## Picker cursor
 
     def set_picker_cursor(self, cursor):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Sets the color picker cursor.
 
         Args:
@@ -193,6 +194,7 @@ class ColorManager(GObject.GObject):
     ## Template/read-only data path for palettes, masks etc.
 
     def set_data_path(self, datapath):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Sets the template/read-only data path for palettes, masks etc.
 
         Args:
@@ -223,6 +225,7 @@ class ColorManager(GObject.GObject):
     ## Attached ColorAdjusters
 
     def add_adjuster(self, adjuster):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Adds an adjuster to the internal set of adjusters.
 
         Args:
@@ -236,6 +239,7 @@ class ColorManager(GObject.GObject):
         self._adjusters.add(adjuster)
 
     def remove_adjuster(self, adjuster):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Removes an adjuster.
 
         Args:
@@ -255,6 +259,7 @@ class ColorManager(GObject.GObject):
     ## Main shared UIColor object
 
     def set_color(self, color):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Sets the shared `UIColor`, and notifies all registered adjusters.
         
         Calling this invokes the `color_updated()` method on each
@@ -306,6 +311,7 @@ class ColorManager(GObject.GObject):
         self._hist = self._hist[-self._HIST_LEN :]
 
     def push_history(self, color):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Pushes a color to the user history list.
         
         Calling this invokes the `color_history_updated()` method on
@@ -371,10 +377,11 @@ class ColorManager(GObject.GObject):
     ## Color wheel distortion table (support for RYGB/RGB/RYB-wheels)
 
     def set_wheel_type(self, typename):
+        # type: (str) -> Types.NONE
         """Sets the type of attached color wheels by name.
 
         Args:
-            typename (str): Wheel type name: "rgb", "ryb", or "rygb".
+            typename: Wheel type name: "rgb", "ryb", or "rygb".
         
         This corresponds to a hue-angle remapping, which will be adopted by
         all wheel-style adjusters attached to this ColorManager.
@@ -401,6 +408,7 @@ class ColorManager(GObject.GObject):
         return self._prefs.get(PREFS_KEY_WHEEL_TYPE, default)
 
     def distort_hue(self, h):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Distorts a hue from RGB-wheel angles to the current wheel type's.
 
         Args:
@@ -425,6 +433,7 @@ class ColorManager(GObject.GObject):
         return h
 
     def undistort_hue(self, h):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Reverses the mapping imposed by ``distort_hue()``.
 
         Args:
@@ -456,6 +465,7 @@ class ColorManager(GObject.GObject):
         return self._palette
 
     def _palette_changed_cb(self, palette, *args, **kwargs):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Stores changes made to the palette to the prefs
 
         Args:
@@ -494,6 +504,7 @@ class ColorAdjuster:
     ## Central ColorManager instance (accessors)
 
     def set_color_manager(self, manager):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Sets the shared color adjustment manager this adjuster points to.
 
         Args:
@@ -533,6 +544,7 @@ class ColorAdjuster:
         return self.color_manager.get_color()
 
     def set_managed_color(self, color):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Sets the managed color. Convenience method for use by subclasses.
 
         Args:
@@ -686,6 +698,7 @@ class ColorAdjusterWidget(CachedBgDrawingArea, ColorAdjuster):
     ## Color drag and drop
 
     def _init_color_drag(self, *_junk):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -714,6 +727,7 @@ class ColorAdjusterWidget(CachedBgDrawingArea, ColorAdjuster):
         self.drag_dest_set(flags, targets, actions)
 
     def drag_motion_cb(self, widget, context, x, y, t):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -731,6 +745,7 @@ class ColorAdjusterWidget(CachedBgDrawingArea, ColorAdjuster):
         pass
 
     def drag_leave_cb(self, widget, context, time):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -746,6 +761,7 @@ class ColorAdjusterWidget(CachedBgDrawingArea, ColorAdjuster):
         pass
 
     def drag_begin_cb(self, widget, context):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -764,6 +780,7 @@ class ColorAdjusterWidget(CachedBgDrawingArea, ColorAdjuster):
         Gtk.drag_set_icon_pixbuf(context, preview, 0, 0)
 
     def drag_end_cb(self, widget, context):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -778,6 +795,7 @@ class ColorAdjusterWidget(CachedBgDrawingArea, ColorAdjuster):
         pass
 
     def drag_data_get_cb(self, widget, context, selection, target_type, time):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Gets the current color when a drop happens somewhere
 
         Args:
@@ -810,6 +828,7 @@ class ColorAdjusterWidget(CachedBgDrawingArea, ColorAdjuster):
         return True
 
     def drag_data_received_cb(self, widget, context, x, y, selection, info, time):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Gets the current color when a drop happens on the widget
 
         Args:
@@ -842,6 +861,7 @@ class ColorAdjusterWidget(CachedBgDrawingArea, ColorAdjuster):
     ## GObject properties (TODO: use decorator syntax instead)
 
     def do_set_property(self, prop, value):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -859,6 +879,7 @@ class ColorAdjusterWidget(CachedBgDrawingArea, ColorAdjuster):
             raise AttributeError("unknown property %s" % prop.name)
 
     def do_get_property(self, prop):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -877,6 +898,7 @@ class ColorAdjusterWidget(CachedBgDrawingArea, ColorAdjuster):
     ## Color-at-position interface (for subclasses, primarily)
 
     def get_color_at_position(self, x, y):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Get the color a position represents. Subclasses must override.
         
         Can be legitimately used by drawing routines, but at this level
@@ -894,6 +916,7 @@ class ColorAdjusterWidget(CachedBgDrawingArea, ColorAdjuster):
         raise NotImplementedError
 
     def set_color_at_position(self, x, y, color):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Handles colors set by the double-click color selection dialog.
         
         Certain subclasses which are sensitive to the `x` and `y` position of
@@ -1092,11 +1115,12 @@ class ColorAdjusterWidget(CachedBgDrawingArea, ColorAdjuster):
 
     @event
     def clicked(self, event, pos):
+        # type: (Gdk.Event, tuple) -> Types.NONE
         """The user has clicked. Implies no drag was started.
 
         Args:
-            event (Gdk.Event): The final button release GdkEvent.
-            pos (tuple): The initial click position.
+            event: The final button release GdkEvent.
+            pos: The initial click position.
         
         Only do things in response to this observable.event if you need
         to do something in addition to setting the colour.  This event
@@ -1134,6 +1158,7 @@ class IconRenderableColorAdjusterWidget(ColorAdjusterWidget, IconRenderable):
     ## Rendering
 
     def render_as_icon(self, cr, size):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Renders the background into an icon.
         
         This implementation requires a `render_background_cb()` method which
@@ -1175,6 +1200,7 @@ class PreviousCurrentColorAdjuster(ColorAdjusterWidget):
     ## Rendering
 
     def render_background_cb(self, cr, wd, ht):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -1226,6 +1252,7 @@ class PreviousCurrentColorAdjuster(ColorAdjusterWidget):
         return (curr.get_rgb(), prev.get_rgb())
 
     def paint_foreground_cb(self, cr, wd, ht):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -1243,6 +1270,7 @@ class PreviousCurrentColorAdjuster(ColorAdjusterWidget):
     ## Color-at-position
 
     def get_color_at_position(self, x, y):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -1313,6 +1341,7 @@ class SliderColorAdjuster(ColorAdjusterWidget):
             self.set_size_request(bl, bw)
 
     def render_background_cb(self, cr, wd, ht):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -1366,6 +1395,7 @@ class SliderColorAdjuster(ColorAdjusterWidget):
             cr.stroke()
 
     def get_bar_amount_for_color(self, color):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Bar amount for a given `UIColor`; subclasses must implement.
 
         Args:
@@ -1379,6 +1409,7 @@ class SliderColorAdjuster(ColorAdjusterWidget):
         raise NotImplementedError
 
     def get_color_for_bar_amount(self, amt):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """The `UIColor` for a given bar amount; subclasses must implement.
 
         Args:
@@ -1392,6 +1423,7 @@ class SliderColorAdjuster(ColorAdjusterWidget):
         raise NotImplementedError
 
     def get_color_at_position(self, x, y):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Color for a particular position using ``bar_amount`` methods.
 
         Args:
@@ -1407,6 +1439,7 @@ class SliderColorAdjuster(ColorAdjusterWidget):
         return self.get_color_for_bar_amount(amt)
 
     def paint_foreground_cb(self, cr, wd, ht):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -1450,6 +1483,7 @@ class SliderColorAdjuster(ColorAdjusterWidget):
         cr.stroke()
 
     def point_to_amount(self, x, y):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -1528,6 +1562,7 @@ class HueSaturationWheelMixin:
     SAT_GAMMA = 1.50
 
     def get_radius(self, wd=None, ht=None, border=None, alloc=None):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Returns the radius, suitable for a pixel-edge-aligned centre.
 
         Args:
@@ -1551,6 +1586,7 @@ class HueSaturationWheelMixin:
         return int((min(wd, ht) / 2.0)) - int(border) + 0.5
 
     def get_center(self, wd=None, ht=None, alloc=None):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Returns the wheel centre, suitable for an N+0.5 radius.
 
         Args:
@@ -1583,6 +1619,7 @@ class HueSaturationWheelMixin:
         return int(k * 1000)
 
     def get_color_at_position(self, x, y):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Gets the color at a position, for `ColorAdjusterWidget` impls.
 
         Args:
@@ -1614,6 +1651,7 @@ class HueSaturationWheelMixin:
         return self.color_at_normalized_polar_pos(r, theta)
 
     def render_background_cb(self, cr, wd, ht, icon_border=None):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Renders the offscreen bg, for `ColorAdjusterWidget` impls.
 
         Args:
@@ -1744,6 +1782,7 @@ class HueSaturationWheelMixin:
         cr.restore()
 
     def color_at_normalized_polar_pos(self, r, theta):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Get the color represented by a polar position.
         
         The terms `r` and `theta` are normalised to the range 0...1 and refer
@@ -1761,6 +1800,7 @@ class HueSaturationWheelMixin:
         raise NotImplementedError
 
     def get_normalized_polar_pos_for_color(self, col):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Inverse of `color_at_normalized_polar_pos`.
 
         Args:
@@ -1775,6 +1815,7 @@ class HueSaturationWheelMixin:
         raise NotImplementedError
 
     def get_pos_for_color(self, col):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -1801,6 +1842,7 @@ class HueSaturationWheelMixin:
         return x, y
 
     def paint_foreground_cb(self, cr, wd, ht):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Fg marker painting, for `ColorAdjusterWidget` impls.
 
         Args:

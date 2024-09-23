@@ -158,6 +158,7 @@ class Settings:
 
     @usage.setter
     def usage(self, value):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -186,6 +187,7 @@ class Settings:
 
     @scroll.setter
     def scroll(self, value):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -278,13 +280,11 @@ class Monitor:
     ## Devices list
 
     def get_device_settings(self, device):
+        # type: (Gdk.Device) -> Settings
         """Gets the settings for a device
 
         Args:
-            device (Gdk.Device): a physical ("slave") device
-
-        Returns:
-            Settings
+            device: a physical ("slave") device
 
 Changes to the returned object made via its API are saved to the
 user preferences immediately.
@@ -299,6 +299,7 @@ check this case.: A settings object which can be manipulated, or None
         return self._device_settings.get(device) or self._init_device_settings(device)
 
     def _init_device_settings(self, device):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Ensures that the device settings are loaded for a device
 
         Args:
@@ -342,6 +343,7 @@ check this case.: A settings object which can be manipulated, or None
         return settings
 
     def _device_added_cb(self, mgr, device):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Informs that a device has been plugged in
 
         Args:
@@ -357,6 +359,7 @@ check this case.: A settings object which can be manipulated, or None
         self._init_device_settings(device)
 
     def _device_removed_cb(self, mgr, device):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Informs that a device has been unplugged
 
         Args:
@@ -394,11 +397,12 @@ check this case.: A settings object which can be manipulated, or None
 
     @event
     def current_device_changed(self, old_device, new_device):
+        # type: (Gdk.Device, Gdk.Device) -> Types.NONE
         """Event: the current device has changed
 
         Args:
-            old_device (Gdk.Device): Previous device used
-            new_device (Gdk.Device): New device used
+            old_device: Previous device used
+            new_device: New device used
 
         Returns:
 
@@ -407,10 +411,11 @@ check this case.: A settings object which can be manipulated, or None
         """
 
     def device_used(self, device):
+        # type: (Gdk.Device) -> Types.NONE
         """Informs about a device being used, for use by controllers
 
         Args:
-            device (Gdk.Device): the device being used
+            device: the device being used
 
         Returns:
             whether the device changed
@@ -643,6 +648,7 @@ class SettingsEditor(Gtk.Grid):
     ## Display and sort funcs
 
     def _device_name_datafunc(self, column, cell, model, iter_, *data):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -661,6 +667,7 @@ class SettingsEditor(Gtk.Grid):
         cell.set_property("text", device.get_name())
 
     def _device_axes_datafunc(self, column, cell, model, iter_, *data):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -680,6 +687,7 @@ class SettingsEditor(Gtk.Grid):
         cell.set_property("text", "%d" % (n_axes,))
 
     def _device_type_datafunc(self, column, cell, model, iter_, *data):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -700,6 +708,7 @@ class SettingsEditor(Gtk.Grid):
         cell.set_property("text", text)
 
     def _device_usage_datafunc(self, column, cell, model, iter_, *data):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -722,6 +731,7 @@ class SettingsEditor(Gtk.Grid):
         cell.set_property("text", text)
 
     def _device_scroll_datafunc(self, column, cell, model, iter_, *data):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -746,6 +756,7 @@ class SettingsEditor(Gtk.Grid):
     ## Updates
 
     def _usage_cell_changed_cb(self, combo, device_path_str, usage_iter, *etc):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -772,6 +783,7 @@ class SettingsEditor(Gtk.Grid):
         self._devices_view.columns_autosize()
 
     def _scroll_cell_changed_cb(self, conf_combo, device_path_str, conf_iter, *etc):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -798,6 +810,7 @@ class SettingsEditor(Gtk.Grid):
         self._devices_view.columns_autosize()
 
     def _update_devices_store(self, *_ignored):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Repopulates the displayed list
 
         Args:
@@ -832,6 +845,7 @@ class SettingsEditor(Gtk.Grid):
 
 
 def _device_prefs_key(device):
+    # type: (Types.ELLIPSIS) -> Types.NONE
     """Returns the subkey to use in the app prefs for a device
 
     Args:
@@ -849,6 +863,7 @@ def _device_prefs_key(device):
 
 
 def device_is_eraser(device):
+    # type: (Types.ELLIPSIS) -> Types.NONE
     """Tests whether a device appears to be an eraser
 
     Args:

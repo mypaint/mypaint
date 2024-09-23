@@ -23,6 +23,7 @@ logger = logging.getLogger(__name__)
 
 
 def button_press_name(button, mods):
+    # type: (Types.ELLIPSIS) -> Types.NONE
     """Converts button number & modifier mask to a prefs-storable string.
     
     Analogous to `Gtk.accelerator_name()`.  Buttonpress names look similar to
@@ -49,6 +50,7 @@ def button_press_name(button, mods):
 
 
 def button_press_displayname(button, mods, shorten=False):
+    # type: (Types.ELLIPSIS) -> Types.NONE
     """Converts a button number & modifier mask to a localized string.
 
     Args:
@@ -85,6 +87,7 @@ def button_press_displayname(button, mods, shorten=False):
 
 
 def button_press_parse(name):
+    # type: (Types.ELLIPSIS) -> Types.NONE
     """Converts button press names to a button number & modifier mask.
     
     Analogous to `Gtk.accelerator_parse()`. This function parses the strings
@@ -118,6 +121,7 @@ def button_press_parse(name):
 
 
 def get_handler_object(app, action_name):
+    # type: (Types.ELLIPSIS) -> Types.NONE
     """Find a (nominal) handler for a named buttonmap action.
 
     Args:
@@ -172,6 +176,7 @@ class ButtonMapping:
         self._modifiers = []
 
     def update(self, mapping):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Updates from a prefs sub-hash.
 
         Args:
@@ -193,6 +198,7 @@ class ButtonMapping:
             self._modifiers.append((modifiers, button, action_name))
 
     def get_unique_action_for_modifiers(self, modifiers, button=1):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Gets a single, unique action name for a modifier mask.
 
         Args:
@@ -402,6 +408,7 @@ class ButtonMappingEditor(Gtk.EventBox):
             self.action_liststore.append((act, label))
 
     def _liststore_action_datafunc(self, column, cell, model, iter, *user_data):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -421,6 +428,7 @@ class ButtonMappingEditor(Gtk.EventBox):
         cell.set_property("text", label)
 
     def _get_action_label(self, action_name):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -483,6 +491,7 @@ class ButtonMappingEditor(Gtk.EventBox):
         self._update_list_buttons()
 
     def _liststore_updated_cb(self, ls, *args, **kwargs):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -509,6 +518,7 @@ class ButtonMappingEditor(Gtk.EventBox):
             func(self)
 
     def _selection_changed_cb(self, selection):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -530,6 +540,7 @@ class ButtonMappingEditor(Gtk.EventBox):
         self.remove_button.set_sensitive(is_populated and has_selected)
 
     def _add_button_clicked_cb(self, button):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -547,6 +558,7 @@ class ButtonMappingEditor(Gtk.EventBox):
         self.treeview.set_cursor_on_cell(added_path, focus_col, None, True)
 
     def _remove_button_clicked_cb(self, button):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -564,6 +576,7 @@ class ButtonMappingEditor(Gtk.EventBox):
     ## "Controller" callbacks
 
     def _action_cell_changed_cb(self, combo, path_string, new_iter, *etc):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -591,6 +604,7 @@ class ButtonMappingEditor(Gtk.EventBox):
             self.treeview.set_cursor_on_cell(tree_path, focus_col, None, True)
 
     def _bp_cell_edited_cb(self, cell, path, bp_name):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -609,6 +623,7 @@ class ButtonMappingEditor(Gtk.EventBox):
         self.liststore.set_value(iter, self.bpd_column, bp_displayname)
 
     def _bp_cell_editing_started_cb(self, cell, editable, path):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -730,6 +745,7 @@ class ButtonMappingEditor(Gtk.EventBox):
         dialog.show()
 
     def _bp_edit_dialog_set_error(self, dialog, markup):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -744,6 +760,7 @@ class ButtonMappingEditor(Gtk.EventBox):
         dialog.hint_label.set_markup("<span foreground='red'>%s</span>" % markup)
 
     def _bp_edit_dialog_set_standard_hint(self, dialog):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -761,6 +778,7 @@ class ButtonMappingEditor(Gtk.EventBox):
         dialog.hint_label.set_markup(markup)
 
     def _bp_edit_box_enter_cb(self, evbox, event):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -781,6 +799,7 @@ class ButtonMappingEditor(Gtk.EventBox):
             logger.exception("Cursor setting failed")  # and otherwise ignore
 
     def _bp_edit_dialog_response_cb(self, dialog, response_id, editable):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -801,6 +820,7 @@ class ButtonMappingEditor(Gtk.EventBox):
         dialog.destroy()
 
     def _bp_edit_box_button_press_cb(self, evbox, event, dialog, editable):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:

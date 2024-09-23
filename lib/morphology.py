@@ -22,6 +22,7 @@ logger = logging.getLogger(__name__)
 
 
 def adjacent_tiles(tile_coord, filled):
+    # type: (Types.ELLIPSIS) -> Types.NONE
     """
 
     Args:
@@ -38,6 +39,7 @@ def adjacent_tiles(tile_coord, filled):
 
 
 def complement_adjacent(tiles):
+    # type: (Types.ELLIPSIS) -> Types.NONE
     """Ensure that each tile in the input tileset has a full neighbourhood
     of eight tiles, setting missing tiles to the empty tile.
     
@@ -61,6 +63,7 @@ def complement_adjacent(tiles):
 
 
 def directly_below(coord1, coord2):
+    # type: (Types.ELLIPSIS) -> Types.NONE
     """
 
     Args:
@@ -77,6 +80,7 @@ def directly_below(coord1, coord2):
 
 
 def strand_partition(tiles, dilating=False):
+    # type: (Types.ELLIPSIS) -> Types.NONE
     """Partition input tiles for easier processing
     This function partitions a tile dictionary into
     two parts: one dictionary containing tiles that
@@ -130,6 +134,7 @@ def strand_partition(tiles, dilating=False):
 
 
 def morph(handler, offset, tiles):
+    # type: (Types.ELLIPSIS) -> Types.NONE
     """Either dilate or erode the given set of alpha tiles, depending
     on the sign of the offset, returning the set of morphed tiles.
 
@@ -159,6 +164,7 @@ def morph(handler, offset, tiles):
 
 
 def blur(handler, radius, tiles):
+    # type: (Types.ELLIPSIS) -> Types.NONE
     """
 
     Args:
@@ -182,6 +188,7 @@ def blur(handler, radius, tiles):
 
 
 def adj_full(coord, tiles):
+    # type: (Types.ELLIPSIS) -> Types.NONE
     """
 
     Args:

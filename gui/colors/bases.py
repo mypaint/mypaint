@@ -92,6 +92,7 @@ class CachedBgWidgetMixin:
         raise NotImplementedError
 
     def render_background_cb(self, cr, w, h, *kw):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Render the background when needed
 
         Args:
@@ -108,6 +109,7 @@ class CachedBgWidgetMixin:
         raise NotImplementedError
 
     def paint_foreground_cb(self, cr, w, h):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Paints the foreground over the background
 
         Args:
@@ -155,6 +157,7 @@ class IconRenderable:
     """
 
     def render_as_icon(self, cr, size):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Renders as an icon into a Cairo context (unimplemented)
         
         The icon pixel size, `size`, is one of 48, 32, 24, 22 or 16.
@@ -171,6 +174,7 @@ class IconRenderable:
         raise NotImplementedError
 
     def save_icon_tree(self, dir_name, icon_name):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Saves a full set of XDG icons into a given root directory
 
         Args:

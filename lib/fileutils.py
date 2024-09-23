@@ -37,13 +37,11 @@ VIA_TEMPFILE_BACKUP_COPY_SUFFIX = "~"
 
 
 def expanduser_str(s):
+    # type: (Types.ELLIPSIS) -> str
     """Expands a ~/ on the front of a path, where meaningful.
 
     Args:
         s: path to expand, coercable to str
-
-    Returns:
-        str
 
 This doesn't do anything on the Windows platform other than coerce
 its argument to str. On other platforms, it converts a "~"
@@ -160,6 +158,7 @@ def via_tempfile(save_method):
 
 
 def startfile(filepath, operation="open"):
+    # type: (Types.ELLIPSIS) -> Types.NONE
     """os.startfile / g_app_info_launch_default_for_uri compat
     
     This has the similar semantics to os.startfile, where it's

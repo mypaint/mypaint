@@ -39,6 +39,7 @@ REDRAW_PRIORITY = GLib.PRIORITY_LOW
 
 
 def _points_to_enclosing_rect(points):
+    # type: (Types.ELLIPSIS) -> Types.NONE
     """Convert a list of (x, y) points to their encompassing rect.
 
     Args:
@@ -83,6 +84,7 @@ class VisibleAreaOverlay(overlays.Overlay):
         self._paint_topleft = None
 
     def paint(self, cr):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Paint a viewfinder box showing the main TDW's viewport
 
         Args:
@@ -370,6 +372,7 @@ class PreviewTool(SizedVBoxToolWidget):
     ## Show Viewfinder toggle
 
     def _show_viewfinder_toggled_cb(self, checkbtn):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Show Viewfinder action callback
 
         Args:
@@ -390,6 +393,7 @@ class PreviewTool(SizedVBoxToolWidget):
 
     @show_viewfinder.setter
     def show_viewfinder(self, value):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -408,6 +412,7 @@ class PreviewTool(SizedVBoxToolWidget):
     ## Cursor for the preview TDW
 
     def _set_cursor(self, value):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Sets the preview TDW cursor
 
         Args:
@@ -426,6 +431,7 @@ class PreviewTool(SizedVBoxToolWidget):
     ## Preview TDW event handlers
 
     def _leave_notify_cb(self, widget, event):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -444,6 +450,7 @@ class PreviewTool(SizedVBoxToolWidget):
         self.set_zone(_EditZone.OUTSIDE, update_ui=True)
 
     def _scroll_event_cb(self, widget, event):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Scroll events on the preview manipulate the main view
 
         Args:
@@ -481,6 +488,7 @@ class PreviewTool(SizedVBoxToolWidget):
         return True
 
     def _button_press_cb(self, widget, event):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -506,6 +514,7 @@ class PreviewTool(SizedVBoxToolWidget):
         return True
 
     def _button_release_cb(self, widget, event):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -533,6 +542,7 @@ class PreviewTool(SizedVBoxToolWidget):
         return True
 
     def _motion_notify_cb(self, widget, event):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -558,6 +568,7 @@ class PreviewTool(SizedVBoxToolWidget):
         return True
 
     def _get_zone_at_pos(self, x, y):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Gets the hover zone for a pointer position
 
         Args:
@@ -586,6 +597,7 @@ class PreviewTool(SizedVBoxToolWidget):
         return self._zone
 
     def set_zone(self, value, update_ui=None):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Setter (property: `zone`), with redraw and cursor setting
 
         Args:
@@ -613,6 +625,7 @@ class PreviewTool(SizedVBoxToolWidget):
     zone = property(get_zone, set_zone)
 
     def _main_view_changed_cb(self, doc):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Callback: viewport changed on the main drawing canvas
 
         Args:
@@ -669,6 +682,7 @@ class PreviewTool(SizedVBoxToolWidget):
                 self._overlay.update_location()
 
     def _limit_scale(self, scale):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Limits a calculated scale to the permitted ones
 
         Args:
@@ -690,6 +704,7 @@ class PreviewTool(SizedVBoxToolWidget):
         return scale
 
     def _frame_modified_cb(self, *_ignored):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -708,6 +723,7 @@ class PreviewTool(SizedVBoxToolWidget):
             self.tdw.queue_draw()
 
     def _recreate_preview_transformation(self, *_ignored):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Update the preview transformation fully: no optimizations
         
         Handler for the layer stack being restructured, or the preview
@@ -725,6 +741,7 @@ class PreviewTool(SizedVBoxToolWidget):
         self._update_preview_transformation(force=True)
 
     def _canvas_area_modified_cb(self, main_model, x, y, w, h):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Callback: layer contents have changed on the main canvas.
         
         Called when layer contents change and a redraw is
@@ -767,6 +784,7 @@ class PreviewTool(SizedVBoxToolWidget):
             self._update_preview_transformation()
 
     def _update_preview_transformation(self, force=False):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Update preview's scale and centering, if needed.
         
         This only updates the preview transformation when needed, to

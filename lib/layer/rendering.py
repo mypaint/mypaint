@@ -16,6 +16,7 @@ and its "render_*()" methods.
 # Imports:
 
 import abc
+import lib.layer.rendering
 
 
 # Public constants:
@@ -109,6 +110,7 @@ class Renderable(metaclass=abc.ABCMeta):
 
     @abc.abstractmethod
     def get_render_ops(self, spec):
+        # type: (lib.layer.rendering.Spec) -> Types.NONE
         """Returns a flat sequence of rendering ops.
         
         Implementations of this function are expected
@@ -120,7 +122,7 @@ class Renderable(metaclass=abc.ABCMeta):
         and serve up a small program in rendering order.
 
         Args:
-            spec (lib.layer.rendering.Spec): what to render.
+            spec: what to render.
         :rtype: sequence
 
         Returns:

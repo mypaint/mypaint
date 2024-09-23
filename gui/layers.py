@@ -94,6 +94,7 @@ class RootStackTreeModelWrapper(GObject.GObject, Gtk.TreeModel):
     ## Event and update handling
 
     def _layer_props_changed_cb(self, root, layerpath, layer, changed):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Updates the display after a layer's properties change
 
         Args:
@@ -112,6 +113,7 @@ class RootStackTreeModelWrapper(GObject.GObject, Gtk.TreeModel):
         self._row_changed_all_descendents(treepath, it)
 
     def _layer_thumbnail_updated_cb(self, root, layerpath, layer):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Updates the display after a layer's thumbnail changes.
 
         Args:
@@ -129,6 +131,7 @@ class RootStackTreeModelWrapper(GObject.GObject, Gtk.TreeModel):
         self.row_changed(treepath, it)
 
     def _layer_inserted_cb(self, root, path):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Updates the display after a layer is added
 
         Args:
@@ -152,6 +155,7 @@ class RootStackTreeModelWrapper(GObject.GObject, Gtk.TreeModel):
             self.row_has_child_toggled(Gtk.TreePath(parent_path), parent_it)
 
     def _layer_deleted_cb(self, root, path):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Updates the display after a layer is removed
 
         Args:
@@ -174,6 +178,7 @@ class RootStackTreeModelWrapper(GObject.GObject, Gtk.TreeModel):
             self.row_has_child_toggled(Gtk.TreePath(parent_path), parent_it)
 
     def _row_dragged(self, src_path, dst_path):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Handles the user dragging a row to a new location
 
         Args:
@@ -188,6 +193,7 @@ class RootStackTreeModelWrapper(GObject.GObject, Gtk.TreeModel):
         self._docmodel.restack_layer(src_path, dst_path)
 
     def _row_changed_all_descendents(self, treepath, it):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Like GtkTreeModel.row_changed(), but all descendents too.
 
         Args:
@@ -217,6 +223,7 @@ class RootStackTreeModelWrapper(GObject.GObject, Gtk.TreeModel):
             it = self.iter_next(it)
 
     def _lvm_current_view_changed_cb(self, lvm):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Respond to changes of/on the currently active layer-view.
         
         For the sake of the related TreeView, announce a change to all
@@ -250,6 +257,7 @@ class RootStackTreeModelWrapper(GObject.GObject, Gtk.TreeModel):
             self._iter_stamp += 1
 
     def iter_is_valid(self, it):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """True if an iterator produced by this model is valid
 
         Args:
@@ -264,6 +272,7 @@ class RootStackTreeModelWrapper(GObject.GObject, Gtk.TreeModel):
 
     @classmethod
     def _invalidate_iter(cls, it):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Invalidates an iterator
 
         Args:
@@ -278,6 +287,7 @@ class RootStackTreeModelWrapper(GObject.GObject, Gtk.TreeModel):
         it.user_data = None
 
     def _get_iter_path(self, it):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Gets an iterator's path: None if invalid
 
         Args:
@@ -295,6 +305,7 @@ class RootStackTreeModelWrapper(GObject.GObject, Gtk.TreeModel):
             return tuple(path)
 
     def _set_iter_path(self, it, path):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Sets an iterator's path, invalidating it if path=None
 
         Args:
@@ -319,6 +330,7 @@ class RootStackTreeModelWrapper(GObject.GObject, Gtk.TreeModel):
             it.user_data = pathid
 
     def _create_iter(self, path):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Creates an iterator for the given path
         
         The returned pair can be returned by the ``do_*()`` virtual
@@ -341,6 +353,7 @@ class RootStackTreeModelWrapper(GObject.GObject, Gtk.TreeModel):
             return (True, it)
 
     def _iter_bump(self, it, delta):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Move an iter at its current level
 
         Args:
@@ -367,6 +380,7 @@ class RootStackTreeModelWrapper(GObject.GObject, Gtk.TreeModel):
     ## Data lookup
 
     def get_layer(self, treepath=None, it=None):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Look up a layer using paths or iterators
 
         Args:
@@ -398,6 +412,7 @@ class RootStackTreeModelWrapper(GObject.GObject, Gtk.TreeModel):
         return len(self.COLUMN_TYPES)
 
     def do_get_column_type(self, n):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -411,6 +426,7 @@ class RootStackTreeModelWrapper(GObject.GObject, Gtk.TreeModel):
         return self.COLUMN_TYPES[n]
 
     def do_get_iter(self, treepath):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """New iterator pointing at a node identified by GtkTreePath
 
         Args:
@@ -426,6 +442,7 @@ class RootStackTreeModelWrapper(GObject.GObject, Gtk.TreeModel):
         return self._create_iter(treepath)
 
     def do_get_path(self, it):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """New GtkTreePath for a treeiter
 
         Args:
@@ -443,6 +460,7 @@ class RootStackTreeModelWrapper(GObject.GObject, Gtk.TreeModel):
             return Gtk.TreePath(path)
 
     def do_get_value(self, it, column):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Value at a particular row-iterator and column index
 
         Args:
@@ -459,6 +477,7 @@ class RootStackTreeModelWrapper(GObject.GObject, Gtk.TreeModel):
         return self.get_layer(it=it)
 
     def do_iter_next(self, it):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Move an iterator to the node after it, returning success
 
         Args:
@@ -472,6 +491,7 @@ class RootStackTreeModelWrapper(GObject.GObject, Gtk.TreeModel):
         return self._iter_bump(it, 1)
 
     def do_iter_previous(self, it):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Move an iterator to the node before it, returning success
 
         Args:
@@ -485,6 +505,7 @@ class RootStackTreeModelWrapper(GObject.GObject, Gtk.TreeModel):
         return self._iter_bump(it, -1)
 
     def do_iter_children(self, parent):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Fetch an iterator pointing at the first child of a parent
 
         Args:
@@ -498,6 +519,7 @@ class RootStackTreeModelWrapper(GObject.GObject, Gtk.TreeModel):
         return self.do_iter_nth_child(parent, 0)
 
     def do_iter_has_child(self, it):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """True if an iterator has children
 
         Args:
@@ -512,6 +534,7 @@ class RootStackTreeModelWrapper(GObject.GObject, Gtk.TreeModel):
         return isinstance(layer, lib.layer.LayerStack) and len(layer) > 0
 
     def do_iter_n_children(self, it):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Count of the children of a given iterator
 
         Args:
@@ -529,6 +552,7 @@ class RootStackTreeModelWrapper(GObject.GObject, Gtk.TreeModel):
             return len(layer)
 
     def do_iter_nth_child(self, it, n):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Fetch a specific child iterator of a parent iter
 
         Args:
@@ -553,6 +577,7 @@ class RootStackTreeModelWrapper(GObject.GObject, Gtk.TreeModel):
         return self._create_iter(path)
 
     def do_iter_parent(self, it):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Fetches the parent of a valid iterator
 
         Args:
@@ -707,6 +732,7 @@ class RootStackTreeView(Gtk.TreeView):
     ## Low-level GDK event handlers
 
     def _key_event_cb(self, *args):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -720,6 +746,7 @@ class RootStackTreeView(Gtk.TreeView):
         return False
 
     def _button_press_cb(self, view, event):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Handle button presses (visibility, locked, naming)
 
         Args:
@@ -804,6 +831,7 @@ class RootStackTreeView(Gtk.TreeView):
         return False
 
     def _name_col_2click_cb(self, event, layer, path, area):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Rename the current layer.
 
         Args:
@@ -823,6 +851,7 @@ class RootStackTreeView(Gtk.TreeView):
         return True
 
     def _flags1_col_click_cb(self, event, layer, path, area):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Toggle visibility or Layer Solo (with Ctrl held).
 
         Args:
@@ -856,6 +885,7 @@ class RootStackTreeView(Gtk.TreeView):
         return True
 
     def _flags2_col_click_cb(self, event, layer, path, area):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Toggle the clicked layer's visibility.
 
         Args:
@@ -874,6 +904,7 @@ class RootStackTreeView(Gtk.TreeView):
         return True
 
     def _preview_cell_click_cb(self, event, layer, path, area):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Expand the clicked layer if the preview is clicked.
 
         Args:
@@ -894,6 +925,7 @@ class RootStackTreeView(Gtk.TreeView):
         return False  # fallthru: allow the layer to be selected
 
     def _drag_begin_cb(self, view, context):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -915,6 +947,7 @@ class RootStackTreeView(Gtk.TreeView):
         self._hover_expand_timer_id = None
 
     def _get_checked_dest_row_at_pos(self, x, y):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Like get_dest_row_at_pos(), but with structural checks
 
         Args:
@@ -974,6 +1007,7 @@ class RootStackTreeView(Gtk.TreeView):
         return (dest_treepath, drop_pos)
 
     def _drag_motion_cb(self, view, context, x, y, t):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -1003,6 +1037,7 @@ class RootStackTreeView(Gtk.TreeView):
         return True
 
     def _restart_hover_expand_timer(self, path, x, y):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -1038,6 +1073,7 @@ class RootStackTreeView(Gtk.TreeView):
         self._hover_expand_timer_id = None
 
     def _hover_expand_timer_cb(self, path, x, y):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -1058,6 +1094,7 @@ class RootStackTreeView(Gtk.TreeView):
         return False
 
     def _drag_leave_cb(self, view, context, t):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Reset the insertion point when the drag leaves
 
         Args:
@@ -1075,6 +1112,7 @@ class RootStackTreeView(Gtk.TreeView):
         self.set_drag_dest_row(None, Gtk.TreeViewDropPosition.BEFORE)
 
     def _get_insert_path_for_dest_row(self, dest_treepath, drop_pos):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Convert a GTK destination row to a tree insert point.
         
         This adjusts some path indices to be closer to what's intuitive
@@ -1124,6 +1162,7 @@ class RootStackTreeView(Gtk.TreeView):
             raise NotImplemented("Unhandled position %r", drop_pos)
 
     def _drag_drop_cb(self, view, context, x, y, t):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -1158,6 +1197,7 @@ class RootStackTreeView(Gtk.TreeView):
         return False
 
     def _drag_end_cb(self, view, context):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -1178,6 +1218,7 @@ class RootStackTreeView(Gtk.TreeView):
     ## Model compat
 
     def do_drag_data_delete(self, context):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Suppress the default GtkWidgetClass.drag_data_delete handler.
         
         Suppress warning(s?) about missing default handlers, since our
@@ -1195,6 +1236,7 @@ class RootStackTreeView(Gtk.TreeView):
     ## Model change tracking
 
     def _current_path_updated_cb(self, rootstack, layerpath):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Respond to the current layer changing in the doc-model
 
         Args:
@@ -1209,6 +1251,7 @@ class RootStackTreeView(Gtk.TreeView):
         self._update_selection()
 
     def _expand_layer_cb(self, rootstack, path):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -1226,6 +1269,7 @@ class RootStackTreeView(Gtk.TreeView):
         self.expand_to_path(treepath)
 
     def _collapse_layer_cb(self, rootstack, path):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -1243,6 +1287,7 @@ class RootStackTreeView(Gtk.TreeView):
         self.collapse_row(treepath)
 
     def _layer_content_changed_cb(self, rootstack, layer, *args):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Scroll to the current layer when it is modified.
 
         Args:
@@ -1282,6 +1327,7 @@ class RootStackTreeView(Gtk.TreeView):
             self.scroll_to_current_layer()
 
     def scroll_to_current_layer(self, *_ignored):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Scroll to show the current layer
 
         Args:
@@ -1311,6 +1357,7 @@ class RootStackTreeView(Gtk.TreeView):
 
     @event
     def current_layer_menu_requested(self, gdkevent):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Event: user invoked the menu action over the current layer
 
         Args:
@@ -1333,6 +1380,7 @@ class RootStackTreeView(Gtk.TreeView):
     ## View datafuncs
 
     def _layer_visible_pixbuf_datafunc(self, column, cell, model, it, data):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Use an open/closed eye icon to show layer visibilities
 
         Args:
@@ -1369,6 +1417,7 @@ class RootStackTreeView(Gtk.TreeView):
 
     @staticmethod
     def _datafunc_get_pixbuf_height(initial, column, multiple=8, maximum=256):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Nearest multiple-of-n height for a pixbuf data cell.
 
         Args:
@@ -1389,6 +1438,7 @@ class RootStackTreeView(Gtk.TreeView):
         return s
 
     def _layer_preview_pixbuf_datafunc(self, column, cell, model, it, data):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Render layer preview icons and type info.
 
         Args:
@@ -1452,6 +1502,7 @@ class RootStackTreeView(Gtk.TreeView):
 
     @staticmethod
     def _layer_description_markup(layer):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """GMarkup text description of a layer, used in the list.
 
         Args:
@@ -1561,6 +1612,7 @@ class RootStackTreeView(Gtk.TreeView):
         return markup
 
     def _layer_name_text_datafunc(self, column, cell, model, it, data):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Show the layer name, with italics for layer groups
 
         Args:
@@ -1587,6 +1639,7 @@ class RootStackTreeView(Gtk.TreeView):
 
     @staticmethod
     def _get_layer_locked_icon_state(layer):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -1609,6 +1662,7 @@ class RootStackTreeView(Gtk.TreeView):
         return (icon_name, sensitive)
 
     def _layer_locked_pixbuf_datafunc(self, column, cell, model, it, data):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Use a padlock icon to show layer immutability statuses
 
         Args:
@@ -1633,6 +1687,7 @@ class RootStackTreeView(Gtk.TreeView):
     ## Weird but necessary hacks
 
     def _post_show_cb(self, widget):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -1691,6 +1746,7 @@ class RootStackTreeView(Gtk.TreeView):
 
 
 def new_blend_mode_combo(modes, mode_strings):
+    # type: (Types.ELLIPSIS) -> Types.NONE
     """Create and return a new blend mode combo box
 
     Args:

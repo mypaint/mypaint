@@ -106,6 +106,7 @@ class FloodFillMode(gui.mode.ScrollableModeMixin, gui.mode.DragMode):
     # Method defs
 
     def enter(self, doc, **kwds):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -126,6 +127,7 @@ class FloodFillMode(gui.mode.ScrollableModeMixin, gui.mode.DragMode):
         self._update_ui()
 
     def leave(self, **kwds):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -175,6 +177,7 @@ class FloodFillMode(gui.mode.ScrollableModeMixin, gui.mode.DragMode):
         return self.get_options_widget().get_blend_modes()
 
     def update_blend_mode(self, mode_manager, old_mode, new_mode):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -191,6 +194,7 @@ class FloodFillMode(gui.mode.ScrollableModeMixin, gui.mode.DragMode):
             self._update_cursor(self.get_options_widget())
 
     def drag_update_cb(self, tdw, event, ev_x, ev_y, dx, dy):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Add pixel coordinate to seed set (if not there already)
 
         Args:
@@ -213,6 +217,7 @@ class FloodFillMode(gui.mode.ScrollableModeMixin, gui.mode.DragMode):
             self._seed_pixels.add(seed_candidate)
 
     def drag_start_cb(self, tdw, event):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Create overlay and set initial target pixel & seed
 
         Args:
@@ -235,6 +240,7 @@ class FloodFillMode(gui.mode.ScrollableModeMixin, gui.mode.DragMode):
             self._seed_pixels.add((int(x), int(y)))
 
     def drag_stop_cb(self, tdw):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Remove overlay and run the fill if valid seeds were marked
 
         Args:
@@ -251,6 +257,7 @@ class FloodFillMode(gui.mode.ScrollableModeMixin, gui.mode.DragMode):
             self.fill(tdw)
 
     def _blend_parameters(self, comp_mode):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Get lock_alpha flag and compositing mode
 
         Args:
@@ -283,6 +290,7 @@ class FloodFillMode(gui.mode.ScrollableModeMixin, gui.mode.DragMode):
         return lock_alpha, comp_mode
 
     def fill(self, tdw):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Flood-fill with the current settings and marked seeds
         
         If the current layer is not fillable, a new layer will always be
@@ -344,6 +352,7 @@ class FloodFillMode(gui.mode.ScrollableModeMixin, gui.mode.DragMode):
         opts.make_new_layer = False
 
     def motion_notify_cb(self, tdw, event):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Track position, and update cursor
 
         Args:
@@ -363,6 +372,7 @@ class FloodFillMode(gui.mode.ScrollableModeMixin, gui.mode.DragMode):
         return super(FloodFillMode, self).motion_notify_cb(tdw, event)
 
     def _update_ui(self, *_ignored):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Updates the UI from the model
 
         Args:
@@ -396,6 +406,7 @@ class FloodFillMode(gui.mode.ScrollableModeMixin, gui.mode.DragMode):
         self._update_cursor(opts)
 
     def _update_cursor(self, opts):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Update the cursor
         The cursor used is based on fill options, blend mode,
         and if a fill can be run for the current position and layer.
@@ -431,6 +442,7 @@ class FloodFillMode(gui.mode.ScrollableModeMixin, gui.mode.DragMode):
 
 
 def status_callback(handler):
+    # type: (Types.ELLIPSIS) -> Types.NONE
     """Set up and run fill info/cancellation dialog
 
     Args:
@@ -518,6 +530,7 @@ class FloodFillOverlay(gui.overlays.Overlay):
             self._tdw.queue_draw_area(*bounds)
 
     def add_point(self, point):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -554,6 +567,7 @@ class FloodFillOverlay(gui.overlays.Overlay):
             return x0 - m, y0 - m, w + 2 * m, h + 2 * m
 
     def paint(self, cr):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Paint the pixels of the marked set (approximately) as a stroke
         with alternating white and black dashes, for visibility
 
@@ -614,6 +628,7 @@ class FloodFillOptionsWidget(Gtk.Grid):
     _BLEND_MODES = None
 
     def update_blend_mode(self, manager, old_mode, new_mode):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Enable/disable mode selection combo box
 
         Args:
@@ -635,6 +650,7 @@ class FloodFillOptionsWidget(Gtk.Grid):
         self._update_blend_mode_warning(new_mode)
 
     def _update_blend_mode_warning(self, mode):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Show/hide warning label
 
         Args:
@@ -1138,6 +1154,7 @@ class FloodFillOptionsWidget(Gtk.Grid):
 
     @make_new_layer.setter
     def make_new_layer(self, value):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -1212,6 +1229,7 @@ class FloodFillOptionsWidget(Gtk.Grid):
             return None
 
     def _tolerance_changed_cb(self, adj):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -1225,6 +1243,7 @@ class FloodFillOptionsWidget(Gtk.Grid):
         self.app.preferences[self.TOLERANCE_PREF] = self.tolerance
 
     def _limit_to_view_toggled_cb(self, checkbut):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -1238,6 +1257,7 @@ class FloodFillOptionsWidget(Gtk.Grid):
         self.app.preferences[self.LIM_TO_VIEW_PREF] = self.limit_to_view
 
     def _sample_merged_toggled_cb(self, checkbut):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -1252,6 +1272,7 @@ class FloodFillOptionsWidget(Gtk.Grid):
         self.app.preferences[self.SAMPLE_MERGED_PREF] = self.sample_merged
 
     def _opacity_changed_cb(self, adj):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -1265,6 +1286,7 @@ class FloodFillOptionsWidget(Gtk.Grid):
         self.app.preferences[self.OPACITY_PREF] = self.opacity
 
     def _offset_changed_cb(self, adj):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -1278,6 +1300,7 @@ class FloodFillOptionsWidget(Gtk.Grid):
         self.app.preferences[self.OFFSET_PREF] = self.offset
 
     def _feather_changed_cb(self, adj):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -1291,6 +1314,7 @@ class FloodFillOptionsWidget(Gtk.Grid):
         self.app.preferences[self.FEATHER_PREF] = self.feather
 
     def _gap_closing_toggled_cb(self, adj):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -1305,6 +1329,7 @@ class FloodFillOptionsWidget(Gtk.Grid):
         self.app.preferences[self.GAP_CLOSING_PREF] = self.gap_closing
 
     def _max_gap_size_changed_cb(self, adj):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -1318,6 +1343,7 @@ class FloodFillOptionsWidget(Gtk.Grid):
         self.app.preferences[self.GAP_SIZE_PREF] = self.max_gap_size
 
     def _retract_seeps_toggled_cb(self, adj):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -1331,6 +1357,7 @@ class FloodFillOptionsWidget(Gtk.Grid):
         self.app.preferences[self.RETRACT_SEEPS_PREF] = self.retract_seeps
 
     def _bm_combo_changed_cb(self, combo):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -1345,6 +1372,7 @@ class FloodFillOptionsWidget(Gtk.Grid):
         self._update_blend_mode_warning(self.get_blend_modes().active_mode)
 
     def _layer_inserted_cb(self, root, path):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Check if the newly inserted layer was the last actively
         selected fill src layer, and reinstate the selection if so.
 
@@ -1369,6 +1397,7 @@ class FloodFillOptionsWidget(Gtk.Grid):
                     return
 
     def _src_combo_changed_cb(self, combo):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Track the last selected choice of layer to maintain
         selection between layer moves that use intermediate
         layer deletion (as well undoing layer deletions)
@@ -1395,6 +1424,7 @@ class FloodFillOptionsWidget(Gtk.Grid):
                 combo.set_active(0)
 
     def _reset_clicked_cb(self, button):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -1444,6 +1474,7 @@ class FlatLayerList(Gtk.ListStore):
             self._initalize(layer)
 
     def _layer_props_changed_cb(self, root, layerpath, layer, changed):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Update copies of layer names when changed
 
         Args:
@@ -1464,6 +1495,7 @@ class FlatLayerList(Gtk.ListStore):
                     return
 
     def _layer_inserted_cb(self, root, path):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Create a row for the inserted layer and update
         the paths of existing layers if necessary
 
@@ -1489,6 +1521,7 @@ class FlatLayerList(Gtk.ListStore):
         self.append(new_row)
 
     def _layer_deleted_cb(self, root, path):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Remove the row for the deleted layer, and also any
         rows for layers that were children of the deleted layer
 
@@ -1527,6 +1560,7 @@ class FlatLayerList(Gtk.ListStore):
                 return
 
     def _update_paths(self, row_iter):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Update the paths for existing layers
         at or below the point of the given iterator
 
@@ -1546,6 +1580,7 @@ class FlatLayerList(Gtk.ListStore):
             row_iter = self.iter_next(row_iter)
 
     def _initalize(self, layer):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Add a new row for the layer (unless it is the root)
         Subtrees are added recursively, depth-first traversal.
 

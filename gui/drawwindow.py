@@ -142,6 +142,7 @@ class DrawWindow(Gtk.Window):
         #   self.main_widget.grab_focus()
 
     def _button_press_cb(self, window, event):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -156,6 +157,7 @@ class DrawWindow(Gtk.Window):
         windowing.clear_focus(window)
 
     def _realize_cb(self, drawwindow):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -271,6 +273,7 @@ class DrawWindow(Gtk.Window):
         self._toolbar2 = self._toolbar_manager.toolbar2
 
     def _clone_menu(self, xml, name, owner=None):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Menu duplicator
         
         Hopefully temporary hack for converting UIManager XML describing the
@@ -309,6 +312,7 @@ class DrawWindow(Gtk.Window):
         return popupmenu
 
     def update_title(self, filename):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -333,6 +337,7 @@ class DrawWindow(Gtk.Window):
         self.set_title(title_base + compat_str)
 
     def _drag_data_received_cb(self, widget, context, x, y, data, info, time):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Handles data being received
 
         Args:
@@ -379,6 +384,7 @@ class DrawWindow(Gtk.Window):
     ## Window and dockpanel handling
 
     def reveal_dockpanel_cb(self, action):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Action callback: reveal a dockpanel in its current location.
         
         This adds the related dockpanel if it has not yet been added to
@@ -410,6 +416,7 @@ class DrawWindow(Gtk.Window):
         workspace.reveal_tool_widget(gtype_name, [])
 
     def toggle_dockpanel_cb(self, action):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Action callback: add or remove a dockpanel from the UI.
 
         Args:
@@ -438,6 +445,7 @@ class DrawWindow(Gtk.Window):
             workspace.remove_tool_widget(gtype_name, [])
 
     def toggle_window_cb(self, action):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Handles a variety of window-toggling GtkActions.
         
         Handled here:
@@ -471,6 +479,7 @@ class DrawWindow(Gtk.Window):
             logger.warning("unknown window or tool %r" % (action_name,))
 
     def app_workspace_tool_widget_added_cb(self, ws, widget):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -486,6 +495,7 @@ class DrawWindow(Gtk.Window):
         self._set_tool_widget_related_toggleaction_active(gtype_name, True)
 
     def app_workspace_tool_widget_removed_cb(self, ws, widget):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -501,6 +511,7 @@ class DrawWindow(Gtk.Window):
         self._set_tool_widget_related_toggleaction_active(gtype_name, False)
 
     def _set_tool_widget_related_toggleaction_active(self, gtype_name, active):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -529,6 +540,7 @@ class DrawWindow(Gtk.Window):
     # conventional statusbar for textual types of feedback.
 
     def toggle_scale_feedback_cb(self, action):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -543,6 +555,7 @@ class DrawWindow(Gtk.Window):
         self.update_overlays()
 
     def toggle_last_pos_feedback_cb(self, action):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -583,6 +596,7 @@ class DrawWindow(Gtk.Window):
     ## Popup windows and dialogs
 
     def popup_cb(self, action):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Action callback: show a popup window (old mechanism)
 
         Args:
@@ -603,6 +617,7 @@ class DrawWindow(Gtk.Window):
         state.activate(action)
 
     def _get_quick_chooser(self, name):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Get a named quick chooser instance (factory method)
 
         Args:
@@ -623,6 +638,7 @@ class DrawWindow(Gtk.Window):
         return chooser
 
     def _popup_quick_chooser(self, name):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Pops up a named quick chooser instance, hides the others
 
         Args:
@@ -646,6 +662,7 @@ class DrawWindow(Gtk.Window):
         chooser.popup()
 
     def quick_chooser_popup_cb(self, action):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Action callback: show the named quick chooser (new system)
 
         Args:
@@ -670,6 +687,7 @@ class DrawWindow(Gtk.Window):
         return self._get_quick_chooser("ColorChooserPopup")
 
     def color_details_dialog_cb(self, action):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -693,6 +711,7 @@ class DrawWindow(Gtk.Window):
     ## Subwindows
 
     def fullscreen_autohide_toggled_cb(self, action):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -712,6 +731,7 @@ class DrawWindow(Gtk.Window):
     # available.
 
     def fullscreen_cb(self, *junk):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -728,6 +748,7 @@ class DrawWindow(Gtk.Window):
             self.unfullscreen()
 
     def window_state_event_cb(self, widget, event):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -765,6 +786,7 @@ class DrawWindow(Gtk.Window):
             action.set_label(_("Fullscreen"))
 
     def popupmenu_show_cb(self, action):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -778,6 +800,7 @@ class DrawWindow(Gtk.Window):
         self.show_popupmenu()
 
     def show_popupmenu(self, event=None):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -814,6 +837,7 @@ class DrawWindow(Gtk.Window):
                 self.popupmenu.select_item(self.popupmenu_last_active)
 
     def popupmenu_done_cb(self, *a, **kw):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -835,6 +859,7 @@ class DrawWindow(Gtk.Window):
     ## Scratchpad menu options
 
     def save_scratchpad_as_default_cb(self, action):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -851,6 +876,7 @@ class DrawWindow(Gtk.Window):
         )
 
     def clear_default_scratchpad_cb(self, action):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -864,6 +890,7 @@ class DrawWindow(Gtk.Window):
         self.app.filehandler.delete_default_scratchpad()
 
     def new_scratchpad_cb(self, action):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -887,6 +914,7 @@ class DrawWindow(Gtk.Window):
         app.preferences["scratchpad.last_opened"] = scratchpad_path
 
     def load_scratchpad_cb(self, action):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -915,6 +943,7 @@ class DrawWindow(Gtk.Window):
             self.app.scratchpad_filename = current_pad
 
     def save_as_scratchpad_cb(self, action):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -928,6 +957,7 @@ class DrawWindow(Gtk.Window):
         self.app.filehandler.save_scratchpad_as_dialog()
 
     def revert_current_scratchpad_cb(self, action):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -946,6 +976,7 @@ class DrawWindow(Gtk.Window):
             logger.warning("No file to revert to yet.")
 
     def save_current_scratchpad_cb(self, action):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -959,6 +990,7 @@ class DrawWindow(Gtk.Window):
         self.app.filehandler.save_scratchpad(self.app.scratchpad_filename)
 
     def scratchpad_copy_background_cb(self, action):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -984,6 +1016,7 @@ class DrawWindow(Gtk.Window):
     ## Palette actions
 
     def palette_next_cb(self, action):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -1003,6 +1036,7 @@ class DrawWindow(Gtk.Window):
         workspace.reveal_tool_widget("MyPaintPaletteTool", [])
 
     def palette_prev_cb(self, action):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -1022,6 +1056,7 @@ class DrawWindow(Gtk.Window):
         workspace.reveal_tool_widget("MyPaintPaletteTool", [])
 
     def palette_add_current_color_cb(self, *args, **kwargs):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Append the current color to the palette (action or clicked cb)
 
         Args:
@@ -1043,6 +1078,7 @@ class DrawWindow(Gtk.Window):
     ## Miscellaneous actions
 
     def quit_cb(self, *junk):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -1074,6 +1110,7 @@ class DrawWindow(Gtk.Window):
         return False
 
     def download_brush_pack_cb(self, *junk):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -1089,6 +1126,7 @@ class DrawWindow(Gtk.Window):
         webbrowser.open(uri)
 
     def import_brush_pack_cb(self, *junk):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -1117,6 +1155,7 @@ class DrawWindow(Gtk.Window):
     # TODO: Move into dialogs.py?
 
     def about_cb(self, action):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -1130,6 +1169,7 @@ class DrawWindow(Gtk.Window):
         gui.meta.run_about_dialog(self, self.app)
 
     def show_online_help_cb(self, action):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -1158,6 +1198,7 @@ class DrawWindow(Gtk.Window):
     ## Footer bar stuff
 
     def _update_footer_color_widgets(self, settings):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Updates the footer bar color info when the brush color changes.
 
         Args:
@@ -1177,6 +1218,7 @@ class DrawWindow(Gtk.Window):
         bm_btn.set_sensitive(brush_color not in palette)
 
     def _update_footer_scale_label(self, renderer):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Updates the footer's scale label when the transformation changes
 
         Args:
@@ -1202,6 +1244,7 @@ class DrawWindow(Gtk.Window):
         label.set_text(template.format(**params))
 
     def _modestack_changed_cb(self, modestack, old, new):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -1217,6 +1260,7 @@ class DrawWindow(Gtk.Window):
         self._update_status_bar_mode_widgets(new)
 
     def _update_status_bar_mode_widgets(self, mode):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Updates widgets on the status bar that reflect the current mode
 
         Args:
@@ -1242,6 +1286,7 @@ class DrawWindow(Gtk.Window):
         mode_img.set_from_icon_name(icon_name, icon_size)
 
     def _mode_icon_query_tooltip_cb(self, widget, x, y, kbmode, tooltip):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -1277,6 +1322,7 @@ class DrawWindow(Gtk.Window):
         return True
 
     def _footer_color_details_button_realize_cb(self, button):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -1293,6 +1339,7 @@ class DrawWindow(Gtk.Window):
     ## Footer picker buttons
 
     def _footer_context_picker_button_realize_cb(self, button):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -1309,6 +1356,7 @@ class DrawWindow(Gtk.Window):
         self._footer_context_picker_button_presenter = presenter
 
     def _footer_color_picker_button_realize_cb(self, button):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -1327,6 +1375,7 @@ class DrawWindow(Gtk.Window):
     ## Footer indicator widgets
 
     def _footer_brush_indicator_drawingarea_realize_cb(self, drawarea):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -1349,6 +1398,7 @@ class DrawWindow(Gtk.Window):
     # there's only one window.
 
     def pick_context_cb(self, action):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Pick Context action: select layer and brush from stroke
 
         Args:
@@ -1369,6 +1419,7 @@ class DrawWindow(Gtk.Window):
         doc.pick_context(x, y, action)
 
     def pick_layer_cb(self, action):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Pick Layer action: select the layer under the pointer
 
         Args:
@@ -1386,6 +1437,7 @@ class DrawWindow(Gtk.Window):
         doc.pick_layer(x, y, action)
 
     def _update_layer_pick_action(self, layerstack, *_ignored):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Updates the Layer Picking action's sensitivity
 
         Args:
@@ -1404,6 +1456,7 @@ class DrawWindow(Gtk.Window):
     ## Display filter choice
 
     def _display_filter_radioaction_changed_cb(self, action, newaction):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Handle changes to the Display Filter radioaction set.
 
         Args:

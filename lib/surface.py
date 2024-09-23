@@ -53,12 +53,13 @@ class TileAccessible(Bounded, metaclass=abc.ABCMeta):
 
     @abc.abstractmethod
     def tile_request(self, tx, ty, readonly):
+        # type: (int, int, bool) -> Types.NONE
         """Access by tile, read-only or read/write
 
         Args:
-            tx (int): Tile X coord (multiply by TILE_SIZE for pixels)
-            ty (int): Tile Y coord (multiply by TILE_SIZE for pixels)
-            readonly (bool): get a read-only tile
+            tx: Tile X coord (multiply by TILE_SIZE for pixels)
+            ty: Tile Y coord (multiply by TILE_SIZE for pixels)
+            readonly: get a read-only tile
         
         Implementations must be `@contextlib.contextmanager`s which
         yield one tile array (NxNx16, fix15 data). If called in
@@ -81,13 +82,14 @@ class TileBlittable(Bounded, metaclass=abc.ABCMeta):
 
     @abc.abstractmethod
     def blit_tile_into(self, dst, dst_has_alpha, tx, ty, *args, **kwargs):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Copies one tile from this object into a NumPy array
 
         Args:
-            dst (numpy.ndarray): destination array
-            dst_has_alpha (bool): destination has an alpha channel
-            tx (int): Tile X coord (multiply by TILE_SIZE for pixels)
-            ty (int): Tile Y coord (multiply by TILE_SIZE for pixels)
+            dst: destination array
+            dst_has_alpha: destination has an alpha channel
+            tx: Tile X coord (multiply by TILE_SIZE for pixels)
+            ty: Tile Y coord (multiply by TILE_SIZE for pixels)
             *args: 
             **kwargs: 
 
@@ -105,13 +107,14 @@ class TileCompositable(Bounded, metaclass=abc.ABCMeta):
     def composite_tile(
         self, dst, dst_has_alpha, tx, ty, mipmap_level=0, *args, **kwargs
     ):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Composites one tile from this object over a NumPy array.
 
         Args:
             dst: target tile array (uint16, NxNx4, 15-bit scaled int)
             dst_has_alpha: alpha channel in dst should be preserved
-            tx (int): Tile X coord (multiply by TILE_SIZE for pixels)
-            ty (int): Tile Y coord (multiply by TILE_SIZE for pixels)
+            tx: Tile X coord (multiply by TILE_SIZE for pixels)
+            ty: Tile Y coord (multiply by TILE_SIZE for pixels)
             mipmap_level:  (Default value = 0)
             *args: 
             **kwargs: 
@@ -124,6 +127,7 @@ class TileCompositable(Bounded, metaclass=abc.ABCMeta):
 
 
 def get_tiles_bbox(tile_coords):
+    # type: (Types.ELLIPSIS) -> Types.NONE
     """Convert tile coords to a data bounding box
 
     Args:
@@ -216,11 +220,12 @@ def scanline_strips_iter(
 
 
 def save_as_png(surface, filename, *rect, **kwargs):
+    # type: (Types.ELLIPSIS) -> Types.NONE
     """Saves a tile-blittable surface to a file in PNG format
 
     Args:
-        surface (TileBlittable): Surface to save
-        filename (str): The file to write
+        surface: Surface to save
+        filename: The file to write
         *rect: 
         **kwargs: 
 

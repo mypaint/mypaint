@@ -123,6 +123,7 @@ class QuickBrushChooser(Gtk.VBox):
         self.set_spacing(widgets.SPACING_TIGHT)
 
     def _item_selected_cb(self, pixbuf_list, brush):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Internal: call brush_selected event when an item is chosen
 
         Args:
@@ -138,6 +139,7 @@ class QuickBrushChooser(Gtk.VBox):
 
     @event
     def brush_selected(self, brush):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Event: a brush was selected
 
         Args:
@@ -159,6 +161,7 @@ class QuickBrushChooser(Gtk.VBox):
         return model
 
     def _groups_changed_cb(self, bm):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Internal: update the spinbox model at the top of the widget
 
         Args:
@@ -179,6 +182,7 @@ class QuickBrushChooser(Gtk.VBox):
         # See https://github.com/mypaint/mypaint/issues/654
 
     def _brushes_changed_cb(self, bm, brushes):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Internal: update the PixbufList if its group was changed.
 
         Args:
@@ -198,6 +202,7 @@ class QuickBrushChooser(Gtk.VBox):
             self.brushlist.update()
 
     def _groups_sb_changed_cb(self, group_name):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Internal: update the list of brush icons when the group changes
 
         Args:
@@ -252,6 +257,7 @@ class BrushChooserPopup(windowing.ChooserPopup):
         self.add(self._chooser)
 
     def _brush_selected_cb(self, chooser, brush):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Internal: update the response brush when an icon is clicked
 
         Args:
@@ -266,6 +272,7 @@ class BrushChooserPopup(windowing.ChooserPopup):
         self._chosen_brush = brush
 
     def _brushlist_button_release_cb(self, *junk):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Internal: send an accept response on a button release
         
         We only send the response (and close the dialog) on button release to
@@ -348,6 +355,7 @@ class QuickColorChooser(Gtk.VBox):
         self.set_spacing(widgets.SPACING_TIGHT)
 
     def _spinbox_changed_cb(self, page_name):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -366,6 +374,7 @@ class QuickColorChooser(Gtk.VBox):
         self._active_adj.show_all()
 
     def _ccwidget_btn_release_cb(self, ccwidget, event):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Internal: fire "choice_completed" after clicking certain widgets
 
         Args:
@@ -438,6 +447,7 @@ class ColorChooserPopup(windowing.ChooserPopup):
         self.add(self._chooser)
 
     def _choice_completed_cb(self, chooser):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Internal: close when a choice is (fully) made
         
         Close the dialog on button release only to avoid accidental dabs

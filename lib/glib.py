@@ -31,13 +31,11 @@ logger = logging.getLogger(__name__)
 
 
 def filename_to_str(opsysstring):
+    # type: (bytes) -> str
     """Converts a bytes representing a filename from GLib to str.
 
     Args:
-        opsysstring (bytes): a string in the (GLib) encoding for filenames
-
-    Returns:
-        str
+        opsysstring: a string in the (GLib) encoding for filenames
 
 
 This is just a more Pythonic wrapper around g_filename_to_utf8() for
@@ -160,6 +158,7 @@ def get_user_cache_dir():
 
 
 def get_user_special_dir(d_id):
+    # type: (Types.ELLIPSIS) -> Types.NONE
     """Like g_get_user_special_dir(), but always str
 
     Args:
@@ -215,6 +214,7 @@ def init_user_dir_caches():
 
 
 def filename_to_uri(abspath, hostname=None):
+    # type: (Types.ELLIPSIS) -> Types.NONE
     """More Pythonic & stable g_filename_to_uri(), with OS workarounds.
 
     Args:
@@ -253,6 +253,7 @@ def filename_to_uri(abspath, hostname=None):
 
 
 def filename_from_uri(uri):
+    # type: (Types.ELLIPSIS) -> Types.NONE
     """More Pythonic & stable g_filename_from_uri(), with OS workarounds.
 
     Args:

@@ -61,10 +61,11 @@ class CommandStack:
         self.redo_stack = deque()
 
     def do(self, command):
+        # type: (Command) -> Types.NONE
         """Performs a new command
 
         Args:
-            command (Command): New action to perform and push
+            command: New action to perform and push
         
         This operation adds a new command to the undo stack after
         calling its redo() method to perform the work it represents.
@@ -155,6 +156,7 @@ class CommandStack:
         return self.undo_stack[-1]
 
     def update_last_command(self, **kwargs):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Updates the most recently performed command
 
         Args:
@@ -266,6 +268,7 @@ class Command:
         raise NotImplementedError
 
     def update(self, **kwargs):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """In-place update on the tip of the undo stack.
         
         This method should update the model in the way specified in
@@ -291,6 +294,7 @@ class Command:
     ## Deprecated utility functions for subclasses
 
     def _notify_canvas_observers(self, layer_bboxes):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Notifies the document's redraw observers
 
         Args:
@@ -450,6 +454,7 @@ class Brushwork(Command):
         self._sshot_after_applied = False
 
     def update(self, brushinfo):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Retrace the last stroke with a new brush
 
         Args:
@@ -514,18 +519,19 @@ class Brushwork(Command):
         viewrotation,
         barrel_rotation,
     ):
+        # type: (float, float, float, float, float, float, float, float, float) -> Types.NONE
         """Painting: forward a stroke position update to the model
 
         Args:
-            dtime (float): Seconds since the last call to this method
-            x (float): Document X position update
-            y (float): Document Y position update
-            pressure (float): Pressure, ranging from 0.0 to 1.0
-            xtilt (float): X-axis tilt, ranging from -1.0 to 1.0
-            ytilt (float): Y-axis tilt, ranging from -1.0 to 1.0
-            viewzoom (float): current view zoom level from 0 to 64
-            viewrotation (float): current view rotation from -180.0 to 180.0
-            barrel_rotation (float): Barrel Rotation of stylus, ranging from 0.0 to 1.0
+            dtime: Seconds since the last call to this method
+            x: Document X position update
+            y: Document Y position update
+            pressure: Pressure, ranging from 0.0 to 1.0
+            xtilt: X-axis tilt, ranging from -1.0 to 1.0
+            ytilt: Y-axis tilt, ranging from -1.0 to 1.0
+            viewzoom: current view zoom level from 0 to 64
+            viewrotation: current view rotation from -180.0 to 180.0
+            barrel_rotation: Barrel Rotation of stylus, ranging from 0.0 to 1.0
         
         Stroke data is recorded at this level, but strokes are not
         autosplit here because that would involve the creation of a new
@@ -1284,6 +1290,7 @@ class MoveLayer(Command):
     ## Active moving phase
 
     def move_to(self, x, y):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Move the reference point to a new position
 
         Args:
@@ -1589,6 +1596,7 @@ class RenameLayer(Command):
         self.layer.name = self._old_name
 
     def update(self, name):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -1630,6 +1638,7 @@ class SetLayerVisibility(Command):
         self.layer.visible = self._old_visibility
 
     def update(self, visible):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -1682,6 +1691,7 @@ class SetLayerLocked(Command):
         self._notify_canvas_observers(redraw_bboxes)
 
     def update(self, locked):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -1736,6 +1746,7 @@ class SetLayerOpacity(Command):
         layer.opacity = self._new_opacity
 
     def update(self, opacity):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -1842,6 +1853,7 @@ class UpdateFrame(Command):
         self.doc.set_frame_enabled(True, user_initiated=False)
 
     def update(self, frame):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:

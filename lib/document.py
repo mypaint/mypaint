@@ -131,6 +131,7 @@ class AutosaveInfo(namedtuple("AutosaveInfo", _AUTOSAVE_INFO_FIELDS)):
 
     @classmethod
     def new_for_path(cls, path):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -572,6 +573,7 @@ See also: ``json``.: dict-like object that can be monitored for simple changes.
 
     @autosave_backups.setter
     def autosave_backups(self, newval):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -766,6 +768,7 @@ See also: ``json``.: dict-like object that can be monitored for simple changes.
         )
 
     def _autosave_thumbnail_cb(self, rootstack, bbox, filename):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Autosaved backup task: write Thumbnails/thumbnail.png
         
         This runs every time currently for the same reason we rewrite
@@ -790,6 +793,7 @@ See also: ``json``.: dict-like object that can be monitored for simple changes.
         return False
 
     def _autosave_stackxml_cb(self, image_elem, filename):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Autosaved backup task: write stack.xml
         
         This runs every time because the document's layer structure can
@@ -814,6 +818,7 @@ See also: ``json``.: dict-like object that can be monitored for simple changes.
         return False
 
     def _autosave_settings_cb(self, settings, filename):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Autosaved backup task: save the doc-specific settings dict
 
         Args:
@@ -835,6 +840,7 @@ See also: ``json``.: dict-like object that can be monitored for simple changes.
         os.replace(tmpname, filename)
 
     def _autosave_cleanup_cb(self, oradir, manifest):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Autosaved backup task: final cleanup task
 
         Args:
@@ -883,6 +889,7 @@ See also: ``json``.: dict-like object that can be monitored for simple changes.
         self._autosave_processor.stop()
 
     def _command_stack_updated_cb(self, cmdstack):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -928,6 +935,7 @@ See also: ``json``.: dict-like object that can be monitored for simple changes.
             return DEFAULT_RESOLUTION
 
     def set_resolution(self, res):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Sets the document model's nominal resolution
         
         The OpenRaster format saves resolution information in both vertical and
@@ -957,6 +965,7 @@ See also: ``json``.: dict-like object that can be monitored for simple changes.
         return self._frame
 
     def set_frame(self, frame, user_initiated=False):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -976,6 +985,7 @@ See also: ``json``.: dict-like object that can be monitored for simple changes.
     def update_frame(
         self, x=None, y=None, width=None, height=None, user_initiated=False
     ):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Update parts of the frame
 
         Args:
@@ -1010,6 +1020,7 @@ See also: ``json``.: dict-like object that can be monitored for simple changes.
 
     @event
     def frame_updated(self, old_frame, new_frame):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Event: the frame's dimensions were updated
 
         Args:
@@ -1027,6 +1038,7 @@ See also: ``json``.: dict-like object that can be monitored for simple changes.
         return self._frame_enabled
 
     def set_frame_enabled(self, enabled, user_initiated=False):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -1052,6 +1064,7 @@ See also: ``json``.: dict-like object that can be monitored for simple changes.
 
     @event
     def frame_enabled_changed(self, enabled):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Event: the frame_enabled field changed value
 
         Args:
@@ -1064,6 +1077,7 @@ See also: ``json``.: dict-like object that can be monitored for simple changes.
         """
 
     def set_frame_to_current_layer(self, user_initiated=False):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -1079,6 +1093,7 @@ See also: ``json``.: dict-like object that can be monitored for simple changes.
         self.update_frame(x, y, w, h, user_initiated=user_initiated)
 
     def set_frame_to_document(self, user_initiated=False):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -1109,6 +1124,7 @@ See also: ``json``.: dict-like object that can be monitored for simple changes.
         self.do(command.TrimLayer(self))
 
     def uniq_current_layer(self, pixels=False):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Udoably remove non-unique tiles or pixels from the current layer.
 
         Args:
@@ -1122,6 +1138,7 @@ See also: ``json``.: dict-like object that can be monitored for simple changes.
         self.do(command.UniqLayer(self, pixels=pixels))
 
     def refactor_current_layer_group(self, pixels=False):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Undoably factor out common parts of child layers to a new child.
 
         Args:
@@ -1139,6 +1156,7 @@ See also: ``json``.: dict-like object that can be monitored for simple changes.
         """Event: the effective bounding box was changed"""
 
     def _effective_bbox_changed_cb(self, *_ignored):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -1204,6 +1222,7 @@ See also: ``json``.: dict-like object that can be monitored for simple changes.
         self.canvas_area_modified(*prev_area)
 
     def brushsettings_changed_cb(self, settings):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -1217,6 +1236,7 @@ See also: ``json``.: dict-like object that can be monitored for simple changes.
         self.sync_pending_changes(flush=False)
 
     def select_layer(self, index=None, path=None, layer=None):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Selects a layer undoably
 
         Args:
@@ -1242,11 +1262,12 @@ See also: ``json``.: dict-like object that can be monitored for simple changes.
     ## Layer stack (z-order and grouping)
 
     def restack_layer(self, src_path, targ_path):
+        # type: (tuple, tuple) -> Types.NONE
         """Moves a layer within the layer stack by path, undoably
 
         Args:
-            src_path (tuple): path of the layer to be moved
-            targ_path (tuple): target insert path
+            src_path: path of the layer to be moved
+            targ_path: target insert path
         
         The source path must identify an existing layer. The target
         path must be a valid insertion path at the time this method is
@@ -1290,6 +1311,7 @@ See also: ``json``.: dict-like object that can be monitored for simple changes.
     ## Drawing/painting strokes
 
     def redo_last_stroke_with_different_brush(self, brushinfo):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -1375,6 +1397,7 @@ See also: ``json``.: dict-like object that can be monitored for simple changes.
     ## Graphical refresh
 
     def _canvas_modified_cb(self, root, layer, x, y, w, h):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Internal callback: forwards redraw nofifications
 
         Args:
@@ -1394,6 +1417,7 @@ See also: ``json``.: dict-like object that can be monitored for simple changes.
 
     @event
     def canvas_area_modified(self, x, y, w, h):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Event: canvas was updated, either within a rectangle or fully
 
         Args:
@@ -1449,6 +1473,7 @@ See also: ``json``.: dict-like object that can be monitored for simple changes.
         """
 
     def _settings_sync_pending_changes_cb(self, doc, flush=True, **kwargs):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Make sure the settings get synced when the doc is synced.
         
         In addition to this, there are times when the doc settings need
@@ -1483,6 +1508,7 @@ See also: ``json``.: dict-like object that can be monitored for simple changes.
                 return cmd
 
     def do(self, cmd):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Do a command
 
         Args:
@@ -1497,6 +1523,7 @@ See also: ``json``.: dict-like object that can be monitored for simple changes.
         self.command_stack.do(cmd)
 
     def update_last_command(self, **kwargs):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Updates the most recently done command
 
         Args:
@@ -1662,6 +1689,7 @@ See also: ``json``.: dict-like object that can be monitored for simple changes.
         self.do(command.RemoveLayer(self))
 
     def rename_current_layer(self, name):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Rename the current layer
 
         Args:
@@ -1713,6 +1741,7 @@ See also: ``json``.: dict-like object that can be monitored for simple changes.
     ## Layer import/export
 
     def load_layer_from_pixbuf(self, pixbuf, x=0, y=0, to_new_layer=False):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -1733,6 +1762,7 @@ See also: ``json``.: dict-like object that can be monitored for simple changes.
         return bbox
 
     def load_layer_from_png(self, filename, x, y, progress=None, **kwargs):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -1753,6 +1783,7 @@ See also: ``json``.: dict-like object that can be monitored for simple changes.
         return bbox
 
     def update_layer_from_external_edit_tempfile(self, layer, file_path):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Update a layer after external edits to its tempfile
 
         Args:
@@ -1771,6 +1802,7 @@ See also: ``json``.: dict-like object that can be monitored for simple changes.
     ## Even more layer command frontends
 
     def set_layer_visibility(self, visible, layer):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Sets the visibility of a layer.
 
         Args:
@@ -1793,6 +1825,7 @@ See also: ``json``.: dict-like object that can be monitored for simple changes.
             self.do(cmd)
 
     def set_layer_locked(self, locked, layer):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Sets the input-locked status of a layer.
 
         Args:
@@ -1815,10 +1848,11 @@ See also: ``json``.: dict-like object that can be monitored for simple changes.
             self.do(cmd)
 
     def set_current_layer_opacity(self, opacity):
+        # type: (float) -> Types.NONE
         """Sets the opacity of the current layer
 
         Args:
-            opacity (float): New layer opacity
+            opacity: New layer opacity
 
         Returns:
 
@@ -1841,10 +1875,11 @@ See also: ``json``.: dict-like object that can be monitored for simple changes.
             self.do(cmd)
 
     def set_current_layer_mode(self, mode):
+        # type: (int) -> Types.NONE
         """Sets the mode for the current layer
 
         Args:
-            mode (int): New layer mode to use
+            mode: New layer mode to use
 
         Returns:
 
@@ -1861,6 +1896,7 @@ See also: ``json``.: dict-like object that can be monitored for simple changes.
     ## Saving and loading
 
     def load_from_pixbuf(self, pixbuf, to_new_layer=False):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Load a document from a pixbuf.
 
         Args:
@@ -2007,6 +2043,7 @@ The filename's extension is used to determine the save format, and a
         return result
 
     def _unsupported(self, filename, *args, **kwargs):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -2036,6 +2073,7 @@ The filename's extension is used to determine the save format, and a
         raise FileHandlingError(tmpl.format(**error_kwargs))
 
     def import_layers(self, filenames, progress=None, **kwargs):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Imports layers at the current position from files.
 
         Args:
@@ -2107,6 +2145,7 @@ The filename's extension is used to determine the save format, and a
         progress.close()
 
     def render_thumbnail(self, **kwargs):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Renders a thumbnail for the user bbox
 
         Args:
@@ -2124,6 +2163,7 @@ The filename's extension is used to determine the save format, and a
         return pixbuf
 
     def save_png(self, filename, alpha=None, multifile=None, progress=None, **kwargs):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Save to one or more PNG files
 
         Args:
@@ -2157,6 +2197,7 @@ The filename's extension is used to determine the save format, and a
             self._save_single_file_png(filename, alpha, progress, **kwargs)
 
     def _save_single_file_png(self, filename, alpha, progress, **kwargs):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Save to a single PNG, with optional alpha.
 
         Args:
@@ -2185,6 +2226,7 @@ The filename's extension is used to determine the save format, and a
         )
 
     def _save_layers_to_numbered_pngs(self, filename, alpha, progress, **kwargs):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Save layers to multiple number-suffixed PNG files.
 
         Args:
@@ -2216,6 +2258,7 @@ The filename's extension is used to determine the save format, and a
             )
 
     def _save_layer_views_to_named_pngs(self, filename, alpha, progress, **kwargs):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Save the layer-views to multiple name-suffixed PNG files.
 
         Args:
@@ -2259,6 +2302,7 @@ The filename's extension is used to determine the save format, and a
                 lvm.activate_view_by_name(old_active_view)
 
     def load_png(self, filename, progress=None, **kwargs):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Load (speedily) from a PNG file
 
         Args:
@@ -2276,6 +2320,7 @@ The filename's extension is used to determine the save format, and a
         self.set_frame(bbox, user_initiated=False)
 
     def load_from_pixbuf_file(self, filename, progress=None, **kwargs):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Load from a file which GdkPixbuf can open
 
         Args:
@@ -2296,6 +2341,7 @@ The filename's extension is used to determine the save format, and a
 
     @fileutils.via_tempfile
     def save_jpg(self, filename, quality=90, **kwargs):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -2331,6 +2377,7 @@ The filename's extension is used to determine the save format, and a
 
     @fileutils.via_tempfile
     def save_ora(self, filename, options=None, **kwargs):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Saves OpenRaster data to a file
 
         Args:
@@ -2361,6 +2408,7 @@ The filename's extension is used to determine the save format, and a
 
     @staticmethod
     def _compat_check(image_elem, filename, **kwargs):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -2399,6 +2447,7 @@ The filename's extension is used to determine the save format, and a
         return cb(compat_type, prerel, filename, target_version)
 
     def load_ora(self, filename, progress=None, **kwargs):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Loads from an OpenRaster file
 
         Args:
@@ -2493,6 +2542,7 @@ The filename's extension is used to determine the save format, and a
         return True
 
     def resume_from_autosave(self, autosave_dir, progress=None):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Resume using an autosave dir (and its parent cache dir)
 
         Args:
@@ -2826,6 +2876,7 @@ See: Document.resume_from_autosave().: a sequence of AutosaveInfo instances
 
 
 def _get_path_mtime(path):
+    # type: (Types.ELLIPSIS) -> Types.NONE
     """
 
     Args:

@@ -82,6 +82,7 @@ class LayerViewUI(gui.mvp.BuiltUIPresenter, object):
 
     @gui.mvp.view_updater
     def _current_view_changed_cb(self, lvm):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -97,6 +98,7 @@ class LayerViewUI(gui.mvp.BuiltUIPresenter, object):
 
     @gui.mvp.view_updater
     def _view_names_changed_cb(self, lvm):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -188,6 +190,7 @@ class LayerViewUI(gui.mvp.BuiltUIPresenter, object):
 
     @gui.mvp.model_updater
     def _add_button_clicked_cb(self, button):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -207,6 +210,7 @@ class LayerViewUI(gui.mvp.BuiltUIPresenter, object):
 
     @gui.mvp.model_updater
     def _remove_button_clicked_cb(self, button):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -223,6 +227,7 @@ class LayerViewUI(gui.mvp.BuiltUIPresenter, object):
 
     @gui.mvp.model_updater
     def _rename_button_clicked_cb(self, button):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -255,6 +260,7 @@ class LayerViewUI(gui.mvp.BuiltUIPresenter, object):
 
     @gui.mvp.model_updater
     def _locked_button_toggled_cb(self, button):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -274,6 +280,7 @@ class LayerViewUI(gui.mvp.BuiltUIPresenter, object):
 
     @gui.mvp.model_updater
     def _current_view_combo_changed_cb(self, combo):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:

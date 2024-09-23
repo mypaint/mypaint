@@ -34,6 +34,7 @@ def getdefaultlocale():
 
 
 def bcp47_to_language(code):
+    # type: (Types.ELLIPSIS) -> Types.NONE
     """Takes a BCP 47 language identifier and returns a value suitable for the
     LANGUAGE env var.
     Only supports a small set of inputs and might return garbage..
@@ -71,6 +72,7 @@ def bcp47_to_language(code):
 
 
 def _is_iso_639_1(s):
+    # type: (Types.ELLIPSIS) -> Types.NONE
     """
 
     Args:
@@ -85,6 +87,7 @@ def _is_iso_639_1(s):
 
 
 def osx_locale_id_to_lang(id_):
+    # type: (Types.ELLIPSIS) -> Types.NONE
     """Converts a NSLocale identifier to something suitable for LANG
 
     Args:

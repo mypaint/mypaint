@@ -263,6 +263,7 @@ class LayersTool(SizedVBoxToolWidget):
         self.connect("show", self._show_cb)
 
     def _show_cb(self, event):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -280,6 +281,7 @@ class LayersTool(SizedVBoxToolWidget):
     ## Updates from the model
 
     def _current_path_updated_cb(self, rootstack, layerpath):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Respond to the current layer changing in the doc-model
 
         Args:
@@ -296,6 +298,7 @@ class LayersTool(SizedVBoxToolWidget):
         self._processing_model_updates = False
 
     def _layer_propchange_cb(self, rootstack, path, layer, changed):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -416,6 +419,7 @@ class LayersTool(SizedVBoxToolWidget):
     ## Updates from the user
 
     def _layer_properties_cb(self, view):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -430,6 +434,7 @@ class LayersTool(SizedVBoxToolWidget):
         action.activate()
 
     def _blink_current_layer_cb(self, view):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -443,6 +448,7 @@ class LayersTool(SizedVBoxToolWidget):
         self.app.doc.blink_layer()
 
     def _view_drag_began_cb(self, view):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -460,6 +466,7 @@ class LayersTool(SizedVBoxToolWidget):
         statusbar.push(statusbar_cid, self.STATUSBAR_DRAG_MSG)
 
     def _view_drag_ended_cb(self, view):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -476,6 +483,7 @@ class LayersTool(SizedVBoxToolWidget):
         statusbar.remove_all(statusbar_cid)
 
     def _opacity_adj_changed_cb(self, *ignore):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -494,6 +502,7 @@ class LayersTool(SizedVBoxToolWidget):
         self._treeview.scroll_to_current_layer()
 
     def _layer_mode_combo_changed_cb(self, *ignored):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Propagate the user's choice of layer mode to the model
 
         Args:
@@ -518,6 +527,7 @@ class LayersTool(SizedVBoxToolWidget):
     ## Utility methods
 
     def _popup_context_menu(self, event=None):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Display the popup context menu
 
         Args:
@@ -537,6 +547,7 @@ class LayersTool(SizedVBoxToolWidget):
         self._menu.popup(None, None, None, None, button, time)
 
     def _popup_menu_cb(self, widget, event=None):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Handler for "popup-menu" GtkEvents, and the view's @event
 
         Args:

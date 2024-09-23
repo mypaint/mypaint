@@ -138,6 +138,7 @@ def get_brush_cursor(radius, style, prefs=None):
 
 
 def _image_surface_to_pixbuf(surf):
+    # type: (Types.ELLIPSIS) -> Types.NONE
     """Convert a Cairo surface to a GdkPixbuf
 
     Args:
@@ -261,6 +262,7 @@ def draw_brush_cursor(
 
 
 def cursor_line_segments(style, r, threshold):
+    # type: (Types.ELLIPSIS) -> Types.NONE
     """Returns tuples of crosshair line coordinates for the given style
 
     Args:
@@ -302,6 +304,7 @@ def cursor_line_segments(style, r, threshold):
 
 
 def cursor_arc_segments(style):
+    # type: (Types.ELLIPSIS) -> Types.NONE
     """Returns a list of arc segments based on style - pairs of radians
 
     Args:
@@ -431,6 +434,7 @@ class CustomCursorMaker:
         return cursor
 
     def get_freehand_cursor(self, cursor_name=Name.CROSSHAIR_OPEN_PRECISE):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Returns a cursor for the current app.brush. Cached.
 
         Args:
@@ -456,6 +460,7 @@ class CustomCursorMaker:
         return self.get_icon_cursor(icon_name, cursor_name)
 
     def get_action_cursor(self, action_name, cursor_name=Name.ARROW):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Returns an overlay cursor for a named action. Cached.
 
         Args:
@@ -480,6 +485,7 @@ class CustomCursorMaker:
         return self.get_icon_cursor(icon_name, cursor_name)
 
     def get_icon_cursor(self, icon_name, cursor_name=Name.ARROW):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Returns an overlay cursor for a named icon. Cached.
 
         Args:
@@ -541,6 +547,7 @@ class CustomCursorMaker:
 
 
 def get_move_cursor_name_for_angle(angle):
+    # type: (Types.ELLIPSIS) -> Types.NONE
     """Cursor name to use for a motion in a given direction
     
     To get the cursor appropriate for edge adjustments, provide the angle
@@ -615,6 +622,7 @@ if __name__ == "__main__":
     _style = 0
 
     def _enter_cb(widget, event):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:

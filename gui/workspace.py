@@ -230,6 +230,7 @@ class Workspace(Gtk.VBox, Gtk.Buildable):
     ## GtkBuildable implementation (pre-realize)
 
     def do_add_child(self, builder, child, type_):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Adds a child as the canvas: gtk_buildable_add_child() impl.
 
         Args:
@@ -247,10 +248,11 @@ class Workspace(Gtk.VBox, Gtk.Buildable):
     ## Setup from layout descriptions (pre-realize)
 
     def build_from_layout(self, layout):
+        # type: (dict) -> Types.NONE
         """Builds the workspace from a definition dict.
 
         Args:
-            layout (dict): a layout definition
+            layout: a layout definition
         
         In order to have any effect, this must be called before the workspace
         widget is realized, but after it has been packed into its toplevel
@@ -322,6 +324,7 @@ class Workspace(Gtk.VBox, Gtk.Buildable):
     ## Initial layout (pre/post-realize)
 
     def _realize_cb(self, widget):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Kick off the deferred layout code when the widget is realized
 
         Args:
@@ -378,6 +381,7 @@ class Workspace(Gtk.VBox, Gtk.Buildable):
                 GLib.idle_add(win.destroy)
 
     def _map_cb(self, widget):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -421,6 +425,7 @@ class Workspace(Gtk.VBox, Gtk.Buildable):
     ## Canvas widget
 
     def set_canvas(self, widget):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Canvas widget (setter)
 
         Args:
@@ -451,6 +456,7 @@ class Workspace(Gtk.VBox, Gtk.Buildable):
     ## Tool widgets
 
     def reveal_tool_widget(self, tool_gtypename, tool_params):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Show and present a widget.
         
         This is a keyboard-friendly alternative to the add/remove toggle
@@ -489,6 +495,7 @@ class Workspace(Gtk.VBox, Gtk.Buildable):
         stack.reveal_tool_widget(widget)
 
     def add_tool_widget(self, tool_gtypename, tool_params):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Shows a tool widget identified by GType name and construct params
 
         Args:
@@ -536,6 +543,7 @@ class Workspace(Gtk.VBox, Gtk.Buildable):
         stack.reveal_tool_widget(widget)
 
     def remove_tool_widget(self, tool_gtypename, tool_params):
+        # type: (Types.ELLIPSIS) -> bool
         """Removes a tool widget by typename+params
         
         This hides the widget and orphans it from the widget hierarchy, but a
@@ -547,7 +555,7 @@ class Workspace(Gtk.VBox, Gtk.Buildable):
             tool_params: construct params further identifying the widget
 
         Returns:
-            bool: whether the widget was found and hidden
+            whether the widget was found and hidden
 
         Raises:
 
@@ -571,6 +579,7 @@ class Workspace(Gtk.VBox, Gtk.Buildable):
         return False
 
     def get_tool_widget_added(self, gtype_name, params):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Returns whether a tool widget is currently in the widget tree
 
         Args:
@@ -590,6 +599,7 @@ class Workspace(Gtk.VBox, Gtk.Buildable):
         return widget.get_parent() is not None
 
     def _get_tool_widget_stack(self, widget):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Gets the ToolStack a widget is currently parented underneath.
 
         Args:
@@ -608,6 +618,7 @@ class Workspace(Gtk.VBox, Gtk.Buildable):
         return stack
 
     def update_tool_widget_params(self, tool_gtypename, old_params, new_params):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Update the construction params of a tool widget
 
         Args:
@@ -640,6 +651,7 @@ class Workspace(Gtk.VBox, Gtk.Buildable):
             self._tool_widgets.rebadge(widget, new_params)
 
     def update_tool_widget_ui(self, gtype_name, params):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Updates tooltips and tab labels for a specified tool widget
         
         Calling this method causes the workspace to re-read the tool widget's
@@ -667,6 +679,7 @@ class Workspace(Gtk.VBox, Gtk.Buildable):
 
     @event
     def tool_widget_added(self, widget):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Event: tool widget added
 
         Args:
@@ -680,6 +693,7 @@ class Workspace(Gtk.VBox, Gtk.Buildable):
 
     @event
     def tool_widget_removed(self, widget):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Event: tool widget removed either by the user or programmatically
 
         Args:
@@ -693,6 +707,7 @@ class Workspace(Gtk.VBox, Gtk.Buildable):
 
     @event
     def floating_window_created(self, toplevel):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Event: a floating window was created to house a toolstack.
 
         Args:
@@ -706,6 +721,7 @@ class Workspace(Gtk.VBox, Gtk.Buildable):
 
     @event
     def floating_window_destroyed(self, toplevel):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Event: a floating window was just `destroy()`ed.
 
         Args:
@@ -720,6 +736,7 @@ class Workspace(Gtk.VBox, Gtk.Buildable):
     ## Sidebar toolstack width
 
     def set_right_sidebar_width(self, width):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Sets the width of the right sidebar toolstack
 
         Args:
@@ -742,6 +759,7 @@ class Workspace(Gtk.VBox, Gtk.Buildable):
         self._rpaned.set_position(position)
 
     def set_left_sidebar_width(self, width):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Sets the width of the left sidebar toolstack
 
         Args:
@@ -760,6 +778,7 @@ class Workspace(Gtk.VBox, Gtk.Buildable):
     ## Position saving (toplevel window)
 
     def _toplevel_configure_cb(self, toplevel, event):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Record the toplevel window's position ("configure-event" callback)
 
         Args:
@@ -787,6 +806,7 @@ class Workspace(Gtk.VBox, Gtk.Buildable):
         self._save_toplevel_pos_timeout = srcid
 
     def _save_toplevel_pos_timeout_cb(self, w, h):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Toplevel window position recording (post-"configure-event" oneshot)
         
         Saves the (x,y) from the frame and the (w,h) from the configure event:
@@ -871,6 +891,7 @@ class Workspace(Gtk.VBox, Gtk.Buildable):
                 stack.hide()
 
     def _sidebar_stack_hide_cb(self, stack, paned):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Resets sidebar sizes when they're emptied (sidebar "hide" callback)
         
         If the hide is due to the sidebar stack having been emptied out,
@@ -898,6 +919,7 @@ class Workspace(Gtk.VBox, Gtk.Buildable):
     ## Fullscreen (event callbacks)
 
     def _toplevel_window_state_event_cb(self, toplevel, event):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Handle transitions between fullscreen and windowed.
 
         Args:
@@ -935,6 +957,7 @@ class Workspace(Gtk.VBox, Gtk.Buildable):
         return self._autohide_enabled
 
     def set_autohide_enabled(self, autohide_enabled):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Auto-hide is enabled in fullscreen (setter)
 
         Args:
@@ -1035,6 +1058,7 @@ class Workspace(Gtk.VBox, Gtk.Buildable):
     # Autohide mode: auto-reveal timer
 
     def _start_autoreveal_timeout(self, widget):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Start a timer to reveal the widget after a brief period
         of edge contact
 
@@ -1069,6 +1093,7 @@ class Workspace(Gtk.VBox, Gtk.Buildable):
         self._autoreveal_timeout = []
 
     def _autoreveal_timeout_cb(self, widget):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Show widgets when the auto-reveal timer finishes
 
         Args:
@@ -1115,6 +1140,7 @@ class Workspace(Gtk.VBox, Gtk.Buildable):
         self._fs_event_handlers = []
 
     def _fs_leave_cb(self, widget, event):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Handles leaving the canvas in fullscreen
 
         Args:
@@ -1145,6 +1171,7 @@ class Workspace(Gtk.VBox, Gtk.Buildable):
         return False
 
     def _fs_enter_cb(self, widget, event):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Handles entering the canvas in fullscreen
 
         Args:
@@ -1163,6 +1190,7 @@ class Workspace(Gtk.VBox, Gtk.Buildable):
         return False
 
     def _fs_motion_cb(self, widget, event):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Handles edge bumping and other rollovers in fullscreen mode
 
         Args:
@@ -1213,6 +1241,7 @@ class Workspace(Gtk.VBox, Gtk.Buildable):
 
     @classmethod
     def _get_bumped_edges(cls, widget, event):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -1245,6 +1274,7 @@ class Workspace(Gtk.VBox, Gtk.Buildable):
     ## Tool widget tab & title updates
 
     def _tool_widget_rebadged(self, factory, product, old_params, new_params):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Internal: update UI elements when the ID of a tool widget changes
         
         For parameterized ones like the brush group tool widget, the tooltip
@@ -1265,6 +1295,7 @@ class Workspace(Gtk.VBox, Gtk.Buildable):
         self._update_tool_widget_ui(product)
 
     def _update_tool_widget_ui(self, widget):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Internal: update UI elements for a known descendent tool widget
 
         Args:
@@ -1311,6 +1342,7 @@ def _test():
             self.set_property("active", True)
 
     def _tool_shown_cb(*a):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -1324,6 +1356,7 @@ def _test():
         logger.debug("TOOL-SHOWN %r", a)
 
     def _tool_hidden_cb(*a):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -1337,6 +1370,7 @@ def _test():
         logger.debug("TOOL-HIDDEN %r", a)
 
     def _floating_window_created(*a):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -1404,6 +1438,7 @@ def _test():
     window.show_all()
 
     def _quit_cb(*a):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:

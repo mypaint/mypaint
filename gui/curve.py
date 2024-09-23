@@ -123,6 +123,7 @@ class CurveWidget(Gtk.DrawingArea):
                 self._ylock[idx] = tuple(i for i in group if i != idx)
 
     def eventpoint(self, event_x, event_y):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -153,6 +154,7 @@ class CurveWidget(Gtk.DrawingArea):
         return width, height
 
     def set_point(self, index, value):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -171,6 +173,7 @@ class CurveWidget(Gtk.DrawingArea):
                 self.points[locked_to] = (self.points[locked_to][0], y)
 
     def button_press_cb(self, widget, event):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -216,6 +219,7 @@ class CurveWidget(Gtk.DrawingArea):
         self.grabbed = pos
 
     def button_release_cb(self, widget, event):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -237,6 +241,7 @@ class CurveWidget(Gtk.DrawingArea):
         self.changed_cb(self)
 
     def motion_notify_cb(self, widget, event):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -295,6 +300,7 @@ class CurveWidget(Gtk.DrawingArea):
         self.queue_draw()
 
     def draw_cb(self, widget, cr):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -399,6 +405,7 @@ class CurveWidget(Gtk.DrawingArea):
 
 
 def _test(case=1):
+    # type: (Types.ELLIPSIS) -> Types.NONE
     """
 
     Args:

@@ -87,6 +87,7 @@ class Rect:
 
     @classmethod
     def new_from_gdk_rectangle(cls, gdk_rect):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Creates a new Rect based on a Gdk.Rectangle.
 
         Args:
@@ -122,6 +123,7 @@ class Rect:
         return Rect(self.x, self.y, self.w, self.h)
 
     def expand(self, border):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Expand the area by a fixed border size.
 
         Args:
@@ -138,6 +140,7 @@ class Rect:
         self.y -= border
 
     def expanded(self, border):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -154,6 +157,7 @@ class Rect:
         return copy
 
     def contains(self, other):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Returns true if this rectangle entirely contains another.
 
         Args:
@@ -172,6 +176,7 @@ class Rect:
         )
 
     def contains_pixel(self, x, y):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Checks if pixel coordinates lie inside this rectangle
 
         Args:
@@ -186,6 +191,7 @@ class Rect:
         return self.x <= x <= self.x + self.w - 1 and self.y <= y <= self.y + self.h - 1
 
     def clamped_point(self, x, y):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Returns the given point, clamped to the area of this rectangle
 
         Args:
@@ -209,6 +215,7 @@ class Rect:
             return False
 
     def overlaps(self, r2):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Returns true if this rectangle intersects another.
 
         Args:
@@ -226,6 +233,7 @@ class Rect:
         return True
 
     def expand_to_include_point(self, x, y):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -255,6 +263,7 @@ class Rect:
             self.h += y - (self.y + self.h - 1)
 
     def expand_to_include_rect(self, other):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -274,6 +283,7 @@ class Rect:
         )
 
     def intersection(self, other):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Creates new Rect for the intersection with another
         If the rectangles do not intersect, None is returned
 
@@ -334,6 +344,7 @@ def coordinate_bounds(tile_coords):
 
 
 def rotated_rectangle_bbox(corners):
+    # type: (Types.ELLIPSIS) -> Types.NONE
     """
 
     Args:
@@ -354,6 +365,7 @@ def rotated_rectangle_bbox(corners):
 
 
 def clamp(x, lo, hi):
+    # type: (Types.ELLIPSIS) -> Types.NONE
     """
 
     Args:
@@ -374,6 +386,7 @@ def clamp(x, lo, hi):
 
 
 def gdkpixbuf2numpy(pixbuf):
+    # type: (Types.ELLIPSIS) -> Types.NONE
     """
 
     Args:
@@ -520,13 +533,14 @@ the file is still open.: the large (256x256) thumbnail, or None.
 
 
 def get_pixbuf(filename):
+    # type: (Types.ELLIPSIS) -> GdkPixbuf.Pixbuf
     """Loads a thumbnail pixbuf loaded from a file.
 
     Args:
         filename: File to get a thumbnail image from.
 
     Returns:
-        GdkPixbuf.Pixbuf: Thumbnail puixbuf, or None.
+        Thumbnail puixbuf, or None.
 
     Raises:
 
@@ -582,6 +596,7 @@ def get_pixbuf(filename):
 
 
 def scale_proportionally(pixbuf, w, h, shrink_only=True):
+    # type: (Types.ELLIPSIS) -> Types.NONE
     """
 
     Args:
@@ -606,6 +621,7 @@ def scale_proportionally(pixbuf, w, h, shrink_only=True):
 
 
 def pixbuf_thumbnail(src, w, h, alpha=False):
+    # type: (Types.ELLIPSIS) -> Types.NONE
     """Creates a centered thumbnail of a GdkPixbuf.
 
     Args:
@@ -643,6 +659,7 @@ def pixbuf_thumbnail(src, w, h, alpha=False):
 
 
 def rgb_to_hsv(r, g, b):
+    # type: (Types.ELLIPSIS) -> Types.NONE
     """
 
     Args:
@@ -665,6 +682,7 @@ def rgb_to_hsv(r, g, b):
 
 
 def hsv_to_rgb(h, s, v):
+    # type: (Types.ELLIPSIS) -> Types.NONE
     """
 
     Args:
@@ -684,6 +702,7 @@ def hsv_to_rgb(h, s, v):
 
 
 def transform_hsv(hsv, eotf):
+    # type: (Types.ELLIPSIS) -> Types.NONE
     """
 
     Args:
@@ -700,12 +719,13 @@ def transform_hsv(hsv, eotf):
 
 
 def zipfile_writestr(z, arcname, data):
+    # type: (zipfile.ZipFile, str, bytes) -> Types.NONE
     """Write a string into a zipfile entry, with standard permissions
 
     Args:
-        z (zipfile.ZipFile): A zip file open for write.
-        arcname (str): Name of the file entry to add.
-        data (bytes): Content to add.
+        z: A zip file open for write.
+        arcname: Name of the file entry to add.
+        data: Content to add.
     
     Work around bad permissions with the standard
     `zipfile.Zipfile.writestr`: http://bugs.python.org/issue3394. The
@@ -736,6 +756,7 @@ old_stats = []
 
 
 def record_memory_leak_status(print_diff=False):
+    # type: (Types.ELLIPSIS) -> Types.NONE
     """
 
     Args:
@@ -771,6 +792,7 @@ def record_memory_leak_status(print_diff=False):
 
 
 def utf8(string):
+    # type: (Types.ELLIPSIS) -> Types.NONE
     """
 
     Args:
@@ -786,13 +808,11 @@ def utf8(string):
 
 
 def fmt_time_period_abbr(t):
+    # type: (int) -> str
     """Get a localized abbreviated minutes+seconds string
 
     Args:
-        t (int): A positive number of seconds
-
-    Returns:
-        str
+        t: A positive number of seconds
 
 The result looks like like "<minutes>m<seconds>s",
 or just "<seconds>s".: short localized string

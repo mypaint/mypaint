@@ -58,6 +58,7 @@ class LRUCache:
         return item
 
     def get(self, key, default=None):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -79,6 +80,7 @@ class LRUCache:
             return default
 
     def pop(self, key, default=_SENTINEL):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:

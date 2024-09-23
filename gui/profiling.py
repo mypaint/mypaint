@@ -29,6 +29,7 @@ logger = logging.getLogger(__name__)
 
 
 def find_executable(executable, path=None):
+    # type: (Types.ELLIPSIS) -> Types.NONE
     """Tries to find 'executable' in the directories listed in 'path'.
     
     A string listing directories separated by 'os.pathsep'; defaults to

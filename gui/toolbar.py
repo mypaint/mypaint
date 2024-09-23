@@ -107,6 +107,7 @@ class ToolbarManager:
             ag.add_action(action)
 
     def on_toolbar1_popup_context_menu(self, toolbar, x, y, button):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -139,6 +140,7 @@ class ToolbarManager:
         menu.popup(None, None, _posfunc, None, button, time)
 
     def on_settings_toggle(self, toggleaction, ui_xml_file):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:

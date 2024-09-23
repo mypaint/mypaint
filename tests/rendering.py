@@ -36,6 +36,7 @@ def _scroll(
     set_modes=None,
     use_background=True,
 ):
+    # type: (Types.ELLIPSIS) -> Types.NONE
     """Test scroll performance
     
     Scroll around in a circle centred on the virtual display, testing
@@ -368,6 +369,7 @@ class Scroll(unittest.TestCase):
                 self.renderer.get_allocation = self._get_allocation
 
             def set_allocation(self, alloc):
+                # type: (Types.ELLIPSIS) -> Types.NONE
                 """
 
                 Args:
@@ -400,6 +402,7 @@ class Scroll(unittest.TestCase):
             cls._model.cleanup()
 
     def _run_test(self, func, **kwargs):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:

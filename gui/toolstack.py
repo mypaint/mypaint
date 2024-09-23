@@ -134,6 +134,7 @@ class ToolStack(Gtk.EventBox):
         ## Custom widget packing
 
         def pack1_tool_widget_notebook(self, notebook):
+            # type: (Types.ELLIPSIS) -> Types.NONE
             """Pack a notebook intended for tool widgets as child1.
 
             Args:
@@ -148,6 +149,7 @@ class ToolStack(Gtk.EventBox):
             self.pack1(notebook, False, False)
 
         def pack2_placeholder_notebook(self, notebook):
+            # type: (Types.ELLIPSIS) -> Types.NONE
             """Pack a notebook intended as a placeholder into child2.
 
             Args:
@@ -162,6 +164,7 @@ class ToolStack(Gtk.EventBox):
             self.pack2(notebook, True, False)
 
         def pack2_subpaned(self, paned):
+            # type: (Types.ELLIPSIS) -> Types.NONE
             """Pack a subpaned into child2.
 
             Args:
@@ -176,6 +179,7 @@ class ToolStack(Gtk.EventBox):
             self.pack2(paned, True, False)
 
         def _first_alloc_cb(self, widget, alloc):
+            # type: (Types.ELLIPSIS) -> Types.NONE
             """Try to allocate child widgets their natural size when alloced.
 
             Args:
@@ -303,6 +307,7 @@ class ToolStack(Gtk.EventBox):
         ## Tool widget pages
 
         def append_tool_widget_page(self, tool_widget):
+            # type: (Types.ELLIPSIS) -> Types.NONE
             """Appends a tool widget as a new page/tab.
 
             Args:
@@ -327,6 +332,7 @@ class ToolStack(Gtk.EventBox):
         ## ToolStack structure: event callbacks
 
         def _page_added_cb(self, notebook, child, page_num):
+            # type: (Types.ELLIPSIS) -> Types.NONE
             """
 
             Args:
@@ -358,6 +364,7 @@ class ToolStack(Gtk.EventBox):
             GLib.idle_add(stack._set_first_paned_position, h)
 
         def _page_removed_cb(self, notebook, child, page_num):
+            # type: (Types.ELLIPSIS) -> Types.NONE
             """
 
             Args:
@@ -420,6 +427,7 @@ class ToolStack(Gtk.EventBox):
         ## Action buttons
 
         def _switch_page_cb(self, notebook, page, page_num):
+            # type: (Types.ELLIPSIS) -> Types.NONE
             """
 
             Args:
@@ -455,6 +463,7 @@ class ToolStack(Gtk.EventBox):
             self._sidebar_swap_button.set_tooltip_text(swap_tooltip)
 
         def _close_button_clicked_cb(self, button):
+            # type: (Types.ELLIPSIS) -> Types.NONE
             """Remove the current page (close button "clicked" event callback)
             
             Ultimately fires the ``tool_widget_removed()`` @event of the owning
@@ -478,6 +487,7 @@ class ToolStack(Gtk.EventBox):
             # needs the structure to be unchanging or it'll segfault.
 
         def _deferred_remove_tool_widget(self, page):
+            # type: (Types.ELLIPSIS) -> Types.NONE
             """
 
             Args:
@@ -494,6 +504,7 @@ class ToolStack(Gtk.EventBox):
             return False
 
         def _properties_button_clicked_cb(self, button):
+            # type: (Types.ELLIPSIS) -> Types.NONE
             """Invoke the current page's properties callback.
 
             Args:
@@ -511,6 +522,7 @@ class ToolStack(Gtk.EventBox):
                 tool_widget.tool_widget_properties()
 
         def _sidebar_swap_button_clicked_cb(self, button):
+            # type: (Types.ELLIPSIS) -> Types.NONE
             """Switch the current page's sidebar ("clicked" event handler)
             
             Ultimately fires the tool_widget_removed() and
@@ -530,6 +542,7 @@ class ToolStack(Gtk.EventBox):
                 GLib.idle_add(self._deferred_swap_tool_widget_sidebar, page)
 
         def _deferred_swap_tool_widget_sidebar(self, page):
+            # type: (Types.ELLIPSIS) -> Types.NONE
             """
 
             Args:
@@ -564,6 +577,7 @@ class ToolStack(Gtk.EventBox):
         ## Dragging tabs
 
         def _drag_begin_cb(self, nb, *a):
+            # type: (Types.ELLIPSIS) -> Types.NONE
             """
 
             Args:
@@ -586,6 +600,7 @@ class ToolStack(Gtk.EventBox):
             self._toolstack.workspace._tool_tab_drag_begin_cb()
 
         def _drag_end_cb(self, nb, *a):
+            # type: (Types.ELLIPSIS) -> Types.NONE
             """
 
             Args:
@@ -602,6 +617,7 @@ class ToolStack(Gtk.EventBox):
             self._toolstack.workspace._tool_tab_drag_end_cb()
 
         def _create_window_cb(self, notebook, page, x, y):
+            # type: (Types.ELLIPSIS) -> Types.NONE
             """
 
             Args:
@@ -632,6 +648,7 @@ class ToolStack(Gtk.EventBox):
 
         @classmethod
         def _make_tab_label(cls, tool_widget):
+            # type: (Types.ELLIPSIS) -> Types.NONE
             """Creates and returns a tab label widget for a tool widget
 
             Args:
@@ -679,6 +696,7 @@ class ToolStack(Gtk.EventBox):
             icon_pixbuf,
             icon_name,
         ):
+            # type: (Types.ELLIPSIS) -> Types.NONE
             """The query-tooltip routine for tool widgets
 
             Args:
@@ -717,6 +735,7 @@ class ToolStack(Gtk.EventBox):
         ## Updates
 
         def update_tool_widget_ui(self, tool_widget):
+            # type: (Types.ELLIPSIS) -> Types.NONE
             """
 
             Args:
@@ -1000,6 +1019,7 @@ somewhere.: whether space was found for the widget
         return widget.get_n_pages() == 0
 
     def reveal_tool_widget(self, widget):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Reveals a widget in this tool stack
 
         Args:
@@ -1057,6 +1077,7 @@ somewhere.: whether space was found for the widget
         return notebooks
 
     def _set_first_paned_position(self, size):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -1090,6 +1111,7 @@ somewhere.: whether space was found for the widget
         return result
 
     def do_size_allocate(self, alloc):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -1117,6 +1139,7 @@ somewhere.: whether space was found for the widget
     ## Paned/Notebook tree structure
 
     def _append_new_placeholder(self, old_placeholder):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Appends a new placeholder after a current or former placeholder.
 
         Args:
@@ -1247,6 +1270,7 @@ class _ToolWidgetNotebookPage(Gtk.Frame):
         self.connect("motion-notify-event", self._event_sink)
 
     def _event_sink(self, *args, **kwargs):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -1295,13 +1319,14 @@ class ToolStackWindow(Gtk.Window):
     ## Setup from layout definitions (pre-realize)
 
     def build_from_layout(self, layout):
+        # type: (dict) -> int
         """Build the window's contents from a layout description.
 
         Args:
-            layout (dict): A layout defnition
+            layout: A layout defnition
 
         Returns:
-            int: the number of groups added (can be zero)
+            the number of groups added (can be zero)
 
         Raises:
 
@@ -1323,6 +1348,7 @@ class ToolStackWindow(Gtk.Window):
     ## Window lifecycle events (initial state, position tracking)
 
     def _realize_cb(self, widget):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Set the initial position (with lots of sanity checks)
 
         Args:
@@ -1339,6 +1365,7 @@ class ToolStackWindow(Gtk.Window):
         self._onmap_position = set_initial_window_position(self, lpos)
 
     def _map_cb(self, widget):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Window map event actions
 
         Args:
@@ -1390,6 +1417,7 @@ class ToolStackWindow(Gtk.Window):
             GLib.idle_add(lambda *a: toplevel.present())
 
     def _set_onmap_position(self, reset):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Hack to set the requested position, as much as one can
         
         Window managers don't always get it right when the window is initially
@@ -1412,6 +1440,7 @@ class ToolStackWindow(Gtk.Window):
         return False
 
     def _configure_cb(self, widget, event):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Track the window size and position when it changes
 
         Args:
@@ -1432,6 +1461,7 @@ class ToolStackWindow(Gtk.Window):
         self._frame_size = frame.width, frame.height
 
     def _hide_cb(self, widget):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Ensure a correct position after the next window map
 
         Args:
@@ -1452,6 +1482,7 @@ class ToolStackWindow(Gtk.Window):
             self._onmap_position = pos
 
     def _delete_cb(self, widget, event):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -1466,6 +1497,7 @@ class ToolStackWindow(Gtk.Window):
         self.stack.remove_all_tool_widgets()
 
     def _destroy_cb(self, widget):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -1482,6 +1514,7 @@ class ToolStackWindow(Gtk.Window):
                 workspace._floating.remove(self)
 
     def _clear_focus(self, *args):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -1497,6 +1530,7 @@ class ToolStackWindow(Gtk.Window):
     ## Autohide in fullscreen
 
     def contains_point(self, x, y, b=0):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """True if a screen point is over this window's last known position.
 
         Args:
@@ -1524,6 +1558,7 @@ class ToolStackWindow(Gtk.Window):
     ## Window title
 
     def update_title(self, tool_widget_titles):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Update the title from a list of strings
 
         Args:
@@ -1576,6 +1611,7 @@ class SizedVBoxToolWidget(Gtk.VBox):
         return minw, max(minw, natw)
 
     def do_get_preferred_height_for_width(self, width):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -1596,10 +1632,11 @@ class SizedVBoxToolWidget(Gtk.VBox):
 
 
 def _tool_widget_get_title(widget):
+    # type: (Gtk.Widget) -> Types.NONE
     """Returns the title to use for a tool-widget.
 
     Args:
-        widget (Gtk.Widget): a tool widget
+        widget: a tool widget
     :rtype: str
 
     Returns:
@@ -1615,6 +1652,7 @@ def _tool_widget_get_title(widget):
 
 
 def _tool_widget_get_icon(widget, icon_size):
+    # type: (Types.ELLIPSIS) -> Types.NONE
     """Returns the pixbuf or icon name to use for a tool widget
 
     Args:

@@ -97,6 +97,7 @@ class TopBar(Gtk.Grid):
         self._fs_toolitem = Gtk.ToolItem()
 
     def _realize_cb(self, widget):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Assorted setup when the widget is realized
 
         Args:
@@ -142,6 +143,7 @@ class TopBar(Gtk.Grid):
     ## Event handling
 
     def _toplevel_state_event_cb(self, toplevel, event):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Repacks widgets when the toplevel changes fullsceen state
 
         Args:
@@ -257,6 +259,7 @@ class FakeMenuButton(Gtk.EventBox):
             menu.connect(sig, self._menu_dismiss_cb)
 
     def _enter_cb(self, widget, event):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Prelight the button when hovered
 
         Args:
@@ -271,6 +274,7 @@ class FakeMenuButton(Gtk.EventBox):
         self.togglebutton.set_state_flags(Gtk.StateFlags.PRELIGHT, False)
 
     def _leave_cb(self, widget, event):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Un-prelight the button when the pointer leaves
 
         Args:
@@ -285,6 +289,7 @@ class FakeMenuButton(Gtk.EventBox):
         self.togglebutton.unset_state_flags(Gtk.StateFlags.PRELIGHT)
 
     def _button_press_cb(self, widget, event):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Post the menmu when clicked
         
         Menu operation is much more convincing if we call popup() with event
@@ -312,6 +317,7 @@ class FakeMenuButton(Gtk.EventBox):
         self.togglebutton.set_active(True)
 
     def _togglebutton_toggled_cb(self, togglebutton):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Post the menu from a keypress activating the toggle
         
         The menu dismiss handler untoggles it.
@@ -337,6 +343,7 @@ class FakeMenuButton(Gtk.EventBox):
                 )
 
     def _menu_dismiss_cb(self, *a, **kw):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Reset the button state when the user's finished
         
         Also transfer focus back to the menu button.
@@ -355,6 +362,7 @@ class FakeMenuButton(Gtk.EventBox):
         self.togglebutton.grab_focus()
 
     def _get_popup_menu_position(self, menu, *junk):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Position function for menu popup
         
         This places the menu underneath the button, at the same x position.
@@ -396,6 +404,7 @@ def _test():
     )
 
     def _fullscreen_cb(action, toplevel):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:

@@ -40,14 +40,12 @@ from gettext import ngettext  # noqa: F401 E402
 
 
 def C_(context, msgid):  # noqa: N802
+    # type: (str, str) -> str
     """Mark a string for translation, with supplied context.
 
     Args:
-        context (str): Disambiguating context.
-        msgid (str): String to translate.
-
-    Returns:
-        str
+        context: Disambiguating context.
+        msgid: String to translate.
 
 Convenience wrapper around g_dpgettext2. It's a function not a
 macro, but use it as if it was a C macro only: in other words, only

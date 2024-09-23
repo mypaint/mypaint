@@ -52,6 +52,7 @@ class BrushHistoryView(Gtk.HBox):
         self._update_history_images()
 
     def _stroke_ended_cb(self, doc, event):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -74,6 +75,7 @@ class BrushHistoryView(Gtk.HBox):
             image.set_from_managed_brush(brush)
 
     def _history_button_clicked_cb(self, button, i):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -118,6 +120,7 @@ class ManagedBrushPreview(Gtk.Image):
         self.set_property("has-tooltip", True)
 
     def set_from_managed_brush(self, brush):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -135,6 +138,7 @@ class ManagedBrushPreview(Gtk.Image):
         self._update()
 
     def on_size_allocate(self, widget, alloc):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -156,6 +160,7 @@ class ManagedBrushPreview(Gtk.Image):
             self._update()
 
     def _get_scaled_pixbuf(self, size):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -181,6 +186,7 @@ class ManagedBrushPreview(Gtk.Image):
             return self.pixbuf.scale_simple(size, size, interp)
 
     def on_query_tooltip(self, widget, x, y, keyboard_mode, tooltip):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -239,6 +245,7 @@ class ColorHistoryView(Gtk.HBox, ColorAdjuster):
             preview.color = color
 
     def _button_clicked_cb(self, button, i):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Internal: on history button clicks, set the current color
 
         Args:
@@ -283,6 +290,7 @@ class ColorPreview(Gtk.AspectFrame):
         self.drawingarea.connect("draw", self._draw_cb)
 
     def set_color(self, color):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -303,6 +311,7 @@ class ColorPreview(Gtk.AspectFrame):
     color = property(get_color, set_color)
 
     def _draw_cb(self, widget, cr):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:

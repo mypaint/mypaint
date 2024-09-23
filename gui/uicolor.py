@@ -25,6 +25,7 @@ from lib.helpers import clamp
 
 
 def from_gdk_color(gdk_color):
+    # type: (Types.ELLIPSIS) -> Types.NONE
     """Construct a new UIColor from a Gdk.Color.
 
     Args:
@@ -42,6 +43,7 @@ def from_gdk_color(gdk_color):
 
 
 def to_gdk_color(color):
+    # type: (Types.ELLIPSIS) -> Types.NONE
     """Convert a UIColor to a Gdk.Color.
 
     Args:
@@ -59,6 +61,7 @@ def to_gdk_color(color):
 
 
 def from_gdk_rgba(gdk_rgba):
+    # type: (Types.ELLIPSIS) -> Types.NONE
     """Construct a new UIColor from a `Gdk.RGBA` (omitting alpha)
 
     Args:
@@ -76,6 +79,7 @@ def from_gdk_rgba(gdk_rgba):
 
 
 def to_gdk_rgba(color):
+    # type: (Types.ELLIPSIS) -> Types.NONE
     """Convert to a `GdkRGBA` (with alpha=1.0).
 
     Args:
@@ -96,6 +100,7 @@ def to_gdk_rgba(color):
 
 
 def from_drag_data(bytes):
+    # type: (Types.ELLIPSIS) -> Types.NONE
     """Construct from drag+dropped bytes of type application/x-color.
     
     The data format is 8 bytes, RRGGBBAA, with assumed native endianness.
@@ -115,6 +120,7 @@ def from_drag_data(bytes):
 
 
 def to_drag_data(color):
+    # type: (Types.ELLIPSIS) -> Types.NONE
     """Converts to bytes for dragging as application/x-color.
 
     Args:

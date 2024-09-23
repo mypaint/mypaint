@@ -125,6 +125,7 @@ class ComponentSlidersAdjusterPage(CombinedAdjusterPage, IconRenderable):
         return self._page_widget
 
     def set_color_manager(self, manager):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -140,6 +141,7 @@ class ComponentSlidersAdjusterPage(CombinedAdjusterPage, IconRenderable):
             slider.set_color_manager(manager)
 
     def render_as_icon(self, cr, size):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Renders as an icon into a Cairo context.
 
         Args:
@@ -193,6 +195,7 @@ class RGBRedSlider(SliderColorAdjuster):
         return g, b
 
     def get_color_for_bar_amount(self, amt):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -208,6 +211,7 @@ class RGBRedSlider(SliderColorAdjuster):
         return col
 
     def get_bar_amount_for_color(self, col):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -232,6 +236,7 @@ class RGBGreenSlider(SliderColorAdjuster):
         return r, b
 
     def get_color_for_bar_amount(self, amt):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -247,6 +252,7 @@ class RGBGreenSlider(SliderColorAdjuster):
         return col
 
     def get_bar_amount_for_color(self, col):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -271,6 +277,7 @@ class RGBBlueSlider(SliderColorAdjuster):
         return r, g
 
     def get_color_for_bar_amount(self, amt):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -286,6 +293,7 @@ class RGBBlueSlider(SliderColorAdjuster):
         return col
 
     def get_bar_amount_for_color(self, col):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -305,6 +313,7 @@ class HSVHueSlider(SliderColorAdjuster):
     samples = 4
 
     def get_color_for_bar_amount(self, amt):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -320,6 +329,7 @@ class HSVHueSlider(SliderColorAdjuster):
         return col
 
     def get_bar_amount_for_color(self, col):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -341,6 +351,7 @@ class HSVSaturationSlider(SliderColorAdjuster):
     )
 
     def get_color_for_bar_amount(self, amt):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -356,6 +367,7 @@ class HSVSaturationSlider(SliderColorAdjuster):
         return col
 
     def get_bar_amount_for_color(self, col):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -374,6 +386,7 @@ class HSVValueSlider(SliderColorAdjuster):
     STATIC_TOOLTIP_TEXT = C_("color component slider: tooltip", "HSV Value")
 
     def get_color_for_bar_amount(self, amt):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -389,6 +402,7 @@ class HSVValueSlider(SliderColorAdjuster):
         return col
 
     def get_bar_amount_for_color(self, col):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -408,6 +422,7 @@ class HCYHueSlider(SliderColorAdjuster):
     samples = 4
 
     def get_color_for_bar_amount(self, amt):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -423,6 +438,7 @@ class HCYHueSlider(SliderColorAdjuster):
         return col
 
     def get_bar_amount_for_color(self, col):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -442,6 +458,7 @@ class HCYChromaSlider(SliderColorAdjuster):
     STATIC_TOOLTIP_TEXT = C_("color component slider: tooltip", "HCY Chroma")
 
     def get_color_for_bar_amount(self, amt):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -457,6 +474,7 @@ class HCYChromaSlider(SliderColorAdjuster):
         return col
 
     def get_bar_amount_for_color(self, col):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -487,6 +505,7 @@ class HCYLumaSlider(SliderColorAdjuster):
         return min(int(len // 3), 64)
 
     def get_color_for_bar_amount(self, amt):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -502,6 +521,7 @@ class HCYLumaSlider(SliderColorAdjuster):
         return col
 
     def get_bar_amount_for_color(self, col):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:

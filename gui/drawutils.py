@@ -57,17 +57,15 @@ _BRUSH_PREVIEW_POINTS = [
 
 
 def spline_4p(t, p_1, p0, p1, p2):
+    # type: (float, numpy.array, numpy.array, numpy.array, numpy.array) -> numpy.array
     """Interpolated point using a Catmull-Rom spline
 
     Args:
-        t (float): Time parameter, between 0.0 and 1.0
-        p_1 (numpy.array): Point p[-1]
-        p0 (numpy.array): Point p[0]
-        p1 (numpy.array): Point p[1]
-        p2 (numpy.array): Point p[2]
-
-    Returns:
-        numpy.array
+        t: Time parameter, between 0.0 and 1.0
+        p_1: Point p[-1]
+        p0: Point p[0]
+        p1: Point p[1]
+        p2: Point p[2]
 
 Used for a succession of points, this function makes smooth curves
 passing through all specified points, other than the first and last.
@@ -125,6 +123,7 @@ def spline_iter(tuples, double_first=True, double_last=True):
 
 
 def _variable_pressure_scribble(w, h, tmult):
+    # type: (Types.ELLIPSIS) -> Types.NONE
     """
 
     Args:
@@ -227,6 +226,7 @@ too big. `max_edge_tiles` limits this growth.: Preview image, at 128x128 pixels
 
 
 def _brush_preview_bg_fg(surface, size_in_tiles, brushinfo):
+    # type: (Types.ELLIPSIS) -> Types.NONE
     """Render the background for brush previews, return paint color
 
     Args:
@@ -313,6 +313,7 @@ def _brush_preview_bg_fg(surface, size_in_tiles, brushinfo):
 
 
 def render_checks(cr, size, nchecks):
+    # type: (Types.ELLIPSIS) -> Types.NONE
     """Render a checquerboard pattern to a cairo surface
 
     Args:
@@ -374,6 +375,7 @@ The returned value should be cached somewhere.: The rendered symbolic icon
     info = theme.lookup_icon(icon_name, size, Gtk.IconLookupFlags(0))
 
     def rgba_or_none(tup):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -494,6 +496,7 @@ def render_round_floating_button(
 
 
 def _get_paint_chip_highlight(color):
+    # type: (Types.ELLIPSIS) -> Types.NONE
     """Paint chip highlight edge color
 
     Args:
@@ -513,6 +516,7 @@ def _get_paint_chip_highlight(color):
 
 
 def _get_paint_chip_shadow(color):
+    # type: (Types.ELLIPSIS) -> Types.NONE
     """Paint chip shadow edge color
 
     Args:

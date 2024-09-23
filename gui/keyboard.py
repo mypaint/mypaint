@@ -77,6 +77,7 @@ class KeyboardManager:
     ## Handle changes to the user-defined keymap
 
     def _accel_map_changed_cb(self, object, accel_path, accel_key, accel_mods):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -93,6 +94,7 @@ class KeyboardManager:
         self._update_keymap(accel_path)
 
     def _update_keymap(self, accel_path):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -121,6 +123,7 @@ class KeyboardManager:
     ## Keyboard handling
 
     def _key_press_cb(self, widget, event):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """App-wide keypress handler for toplevel windows.
 
         Args:
@@ -201,14 +204,12 @@ class KeyboardManager:
         return self.app.preferences.get("keyboard.disable_fallbacks", False)
 
     def activate_keydown_event(self, action, event):
+        # type: (Types.ELLIPSIS) -> bool
         """Activate a looked-up action triggered by an event
 
         Args:
-            action (Gtk.Action): action looked up in some keymap
+            action: action looked up in some keymap
             event: 
-
-        Returns:
-            bool
 
 The KeyboardManager is responsible for activating events which
 correspond to keypresses so that it can keep track of which keys
@@ -241,6 +242,7 @@ invoke popup states via their action as proper keypresses.: True if the event sh
         return True
 
     def _key_release_cb(self, widget, event):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Application-wide key release handler.
 
         Args:
@@ -307,6 +309,7 @@ invoke popup states via their action as proper keypresses.: True if the event sh
         return (None, None)
 
     def _dispatch_fallthru_key_press_event(self, win, event):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -325,6 +328,7 @@ invoke popup states via their action as proper keypresses.: True if the event sh
         return target_doc.key_press_cb(win, target_tdw, event)
 
     def _dispatch_fallthru_key_release_event(self, win, event):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -378,6 +382,7 @@ invoke popup states via their action as proper keypresses.: True if the event sh
         handler_ids.append(handler_id)
 
     def _added_window_destroy_cb(self, window, handler_ids):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Clean up references to a window when it's destroyed.
         
         The main Workspace's undocked toolstack windows are created and
@@ -399,6 +404,7 @@ invoke popup states via their action as proper keypresses.: True if the event sh
     ## Hardcoded fallback keymap
 
     def add_extra_key(self, keystring, action):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Adds a hardcoded keymap definition.
         
         These are processed as fallbacks and are used for things like
@@ -431,6 +437,7 @@ invoke popup states via their action as proper keypresses.: True if the event sh
     ## Action registration
 
     def takeover_action(self, action):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Registers a GtkAction, and sets up custom attributes on it.
         
         The custom attributes are used internally by the kbm.
@@ -449,6 +456,7 @@ invoke popup states via their action as proper keypresses.: True if the event sh
         self._update_keymap(action.get_accel_path())
 
     def _add_custom_attributes(self, action):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:

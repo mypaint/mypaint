@@ -97,6 +97,7 @@ class InputTestWindow(windowing.SubWindow):
         self.log = []
 
     def map_cb(self, *junk):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -117,6 +118,7 @@ class InputTestWindow(windowing.SubWindow):
         )
 
     def unmap_cb(self, *junk):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -150,6 +152,7 @@ class InputTestWindow(windowing.SubWindow):
         return True
 
     def event2str(self, widget, event):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -213,6 +216,7 @@ class InputTestWindow(windowing.SubWindow):
         return msg
 
     def report(self, msg):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -229,6 +233,7 @@ class InputTestWindow(windowing.SubWindow):
         GLib.idle_add(lambda: self.tv.get_buffer().set_text("\n".join(self.log)))
 
     def event_cb(self, widget, event):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:

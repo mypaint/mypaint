@@ -96,6 +96,7 @@ class InputSlider(Gtk.Bin, metaclass=ScaleDelegator):
     _REAL_MAX_DIGITS = 20
 
     def _notify(self, _, prop):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Delegate property changes to the scale instance
 
         Args:
@@ -138,6 +139,7 @@ class InputSlider(Gtk.Bin, metaclass=ScaleDelegator):
 
     @dynamic_tooltip.setter
     def dynamic_tooltip(self, enabled):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -159,6 +161,7 @@ class InputSlider(Gtk.Bin, metaclass=ScaleDelegator):
             self._tooltip_cb_id = None
 
     def _dynamic_tooltip(self, scale, x, y, kb_mode, tooltip):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -188,6 +191,7 @@ class InputSlider(Gtk.Bin, metaclass=ScaleDelegator):
 
     @event
     def spin_button_created(self, scale, button_weakref):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Event allowing users of this class to modify spinbutton setup
 
         Args:
@@ -205,6 +209,7 @@ class InputSlider(Gtk.Bin, metaclass=ScaleDelegator):
         return getattr(self._scale, attr)
 
     def _bin_button_press_cb(self, widget, event):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Trigger mode switch o double click
 
         Args:
@@ -265,6 +270,7 @@ class InputSlider(Gtk.Bin, metaclass=ScaleDelegator):
         return spin_button
 
     def _scale_precision(self, scale):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -282,6 +288,7 @@ class InputSlider(Gtk.Bin, metaclass=ScaleDelegator):
         return precision
 
     def _spin_button_focus_out(self, *args):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -296,6 +303,7 @@ class InputSlider(Gtk.Bin, metaclass=ScaleDelegator):
         self._swap_back()
 
     def _spin_button_key_event(self, spinbut, event):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Switch back on return/enter/escape - reset old value on escape
 
         Args:
@@ -320,6 +328,7 @@ class InputSlider(Gtk.Bin, metaclass=ScaleDelegator):
         return False
 
     def _swap_back(self, reset_value=False):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:

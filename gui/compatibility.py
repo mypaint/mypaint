@@ -68,6 +68,7 @@ _PIGMENT_OP = combine_mode_get_info(CombineSpectralWGM)["name"]
 
 
 def has_pigment_layers(elem):
+    # type: (Types.ELLIPSIS) -> Types.NONE
     """Check if the layer stack xml contains a pigment layer
     
     Has to be done before any layers are loaded, since the
@@ -93,6 +94,7 @@ def has_pigment_layers(elem):
 
 
 def incompatible_ora_cb(app):
+    # type: (Types.ELLIPSIS) -> Types.NONE
     """
 
     Args:
@@ -104,6 +106,7 @@ def incompatible_ora_cb(app):
 
     """
     def cb(comp_type, prerel, filename, target_version):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Internal: callback that may show a confirmation/warning dialog
         
         Unless disabled in settings, when a potentially
@@ -143,6 +146,7 @@ def incompatible_ora_cb(app):
 
 
 def incompatible_ora_warning_dialog(comp_type, prerel, filename, target_version, app):
+    # type: (Types.ELLIPSIS) -> Types.NONE
     """
 
     Args:
@@ -182,6 +186,7 @@ def incompatible_ora_warning_dialog(comp_type, prerel, filename, target_version,
     skip_warning_button.set_can_focus(False)
 
     def skip_warning_toggled(checkbut):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -226,6 +231,7 @@ def incompatible_ora_warning_dialog(comp_type, prerel, filename, target_version,
 
     # Without this, the check button takes initial focus
     def show_checkbut(*args):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -305,6 +311,7 @@ class CompatFileBehavior(config.CompatFileBehaviorConfig):
         self.combo.set_active_id(self.prefs[self.SETTING])
 
     def changed_cb(self, combo):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -320,6 +327,7 @@ class CompatFileBehavior(config.CompatFileBehaviorConfig):
 
     @staticmethod
     def get_compat_mode(setting, root_elem, default):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Get the compat mode to use for a file
         
         The decision is based on the given file behavior setting
@@ -536,6 +544,7 @@ class CompatibilityPreferences:
             self.normal_radio_2_x.set_active(True)
 
     def _update_prefs(self, mode, setting, value):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -554,6 +563,7 @@ class CompatibilityPreferences:
     # Widget callbacks
 
     def set_default_compat_mode_cb(self, radiobutton, compat_mode):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -568,6 +578,7 @@ class CompatibilityPreferences:
         self.app.preferences[DEFAULT_COMPAT] = compat_mode
 
     def set_compat_layer_type_cb(self, btn, mode, use_pigment):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -584,6 +595,7 @@ class CompatibilityPreferences:
         update_default_layer_type(self.app)
 
     def default_pigment_changed_cb(self, switch, use_pigment, mode):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -601,6 +613,7 @@ class CompatibilityPreferences:
 
 
 def ora_compat_handler(app):
+    # type: (Types.ELLIPSIS) -> Types.NONE
     """
 
     Args:
@@ -612,6 +625,7 @@ def ora_compat_handler(app):
 
     """
     def handler(eotf_value, root_stack_elem):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -647,6 +661,7 @@ def ora_compat_handler(app):
 
 
 def set_compat_mode(app, compat_mode, custom_eotf=None, update=True):
+    # type: (Types.ELLIPSIS) -> Types.NONE
     """Set compatibility mode
     
     Set compatibility mode and update associated settings;
@@ -694,6 +709,7 @@ def set_compat_mode(app, compat_mode, custom_eotf=None, update=True):
 
 
 def update_default_layer_type(app):
+    # type: (Types.ELLIPSIS) -> Types.NONE
     """Update default layer type from settings
 
     Args:
@@ -715,6 +731,7 @@ def update_default_layer_type(app):
 
 
 def update_default_pigment_setting(app):
+    # type: (Types.ELLIPSIS) -> Types.NONE
     """Update default pigment brush setting value
 
     Args:
@@ -773,6 +790,7 @@ class CompatSelector:
         self._widget = hbox
 
     def _combo_changed_cb(self, combo):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -790,6 +808,7 @@ class CompatSelector:
             self._compat_override = None
 
     def file_selection_changed_cb(self, chooser):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Show/hide widget and enable/disable override
 
         Args:

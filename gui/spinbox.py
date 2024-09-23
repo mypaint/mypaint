@@ -56,6 +56,7 @@ class ItemSpinBox(Gtk.HBox):
         self.set_model(model, value)
 
     def set_changed_callback(self, changed_cb):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Set the value-changed callback.
         
         `changed_cb` will be called each time the user chooses a different item
@@ -73,6 +74,7 @@ class ItemSpinBox(Gtk.HBox):
         self._changed_cb = changed_cb
 
     def set_model(self, model, value=None):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Set the model.
         
         The `model` argument is either `None`, or a list of pairs of the form
@@ -138,6 +140,7 @@ class ItemSpinBox(Gtk.HBox):
         return value
 
     def set_value(self, value, notify=False):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -172,6 +175,7 @@ class ItemSpinBox(Gtk.HBox):
             self._changed_cb(new_value)
 
     def _spin_button_clicked(self, widget, delta):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -186,6 +190,7 @@ class ItemSpinBox(Gtk.HBox):
         self._spin(delta)
 
     def _spin(self, delta):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -225,6 +230,7 @@ if __name__ == "__main__":
     win.add(vbox)
 
     def changed_cb(new_value):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:

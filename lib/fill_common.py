@@ -32,6 +32,7 @@ _EMPTY_TILE.flags.writeable = False
 
 
 def new_full_tile(value, dimensions=(N, N), value_type="uint16"):
+    # type: (Types.ELLIPSIS) -> Types.NONE
     """
 
     Args:
@@ -51,6 +52,7 @@ def new_full_tile(value, dimensions=(N, N), value_type="uint16"):
 
 
 def nine_grid(tile_coord):
+    # type: (Types.ELLIPSIS) -> Types.NONE
     """Return the input coordinate along with its neighbours.
 
     Args:
@@ -82,6 +84,7 @@ def nine_grid(tile_coord):
 
 
 def adjacent(tile_coord):
+    # type: (Types.ELLIPSIS) -> Types.NONE
     """Return the coordinates adjacent to the input coordinate.
 
     Args:
@@ -101,6 +104,7 @@ def adjacent(tile_coord):
 
 
 def orthogonal(tile_coord):
+    # type: (Types.ELLIPSIS) -> Types.NONE
     """Return the coordinates orthogonal to the input coordinate.
 
     Args:
@@ -160,6 +164,7 @@ class TileBoundingBox:
         ) == (0, 0, N - 1, N - 1)
 
     def tile_bounds(self, tc):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -183,6 +188,7 @@ class TileBoundingBox:
         return min_x, min_y, max_x, max_y
 
     def outside(self, tc):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Check if tile is outside bounding box.
         Checks if the tile of the given coordinate
         lies completely outside of the bounding box.
@@ -201,6 +207,7 @@ class TileBoundingBox:
         )
 
     def crossing(self, tc):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Check if tile crosses the bounding box.
         Checks if the tile of the given coordinate
         crosses at least one edge of the bounding box.
@@ -224,6 +231,7 @@ class TileBoundingBox:
         )
 
     def inside(self, tc):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Check if tile is inside the bounding box.
         Checks if the tile of the given coordinate
         is fully enclosed by the bounding box.

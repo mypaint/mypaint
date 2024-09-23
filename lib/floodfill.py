@@ -24,6 +24,7 @@ import lib.fill_common as fc
 from lib.fill_common import _OPAQUE, _FULL_TILE, _EMPTY_TILE
 import lib.modes
 import lib.morphology
+from myplib import Filler
 
 logger = logging.getLogger(__name__)
 
@@ -82,6 +83,7 @@ def enqueue_overflows(queue, tile_coord, seeds, tiles_bbox, *p):
 
 
 def starting_coordinates(x, y):
+    # type: (Types.ELLIPSIS) -> Types.NONE
     """Get the coordinates of starting tile and pixel (tx, ty, px, py)
 
     Args:
@@ -99,6 +101,7 @@ def starting_coordinates(x, y):
 
 
 def seeds_by_tile(seeds):
+    # type: (Types.ELLIPSIS) -> Types.NONE
     """Partition and convert seed coordinates
     
     Partition a list of model-space seed coordinates into lists of
@@ -123,6 +126,7 @@ def seeds_by_tile(seeds):
 
 
 def get_target_color(src, tx, ty, px, py):
+    # type: (Types.ELLIPSIS) -> Types.NONE
     """Get the pixel color for the given tile/pixel coordinates
 
     Args:
@@ -203,6 +207,7 @@ class FillHandler:
         self.controller.inc_processed(1)
 
     def set_stage(self, stage, num_tiles_to_process=None):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Change stage, updating strings and tile data
 
         Args:
@@ -234,6 +239,7 @@ class FillHandler:
             return ""
 
     def wait(self, t=None):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Wait t seconds for the fill to complete
 
         Args:
@@ -429,6 +435,7 @@ def _flood_fill(src, args, dst, handler):
 
 
 def update_bbox(bbox, tx, ty):
+    # type: (Types.ELLIPSIS) -> Types.NONE
     """Update given the min/max, x/y bounding box
     If a coordinate lies outside of the current
     bounds, set the bounds based on that coordinate
@@ -459,6 +466,7 @@ def update_bbox(bbox, tx, ty):
 
 
 def composite(handler, fill_args, trim_result, filled, tiles_bbox, dst):
+    # type: (Types.ELLIPSIS) -> Types.NONE
     """Composite the filled tiles into the destination surface
 
     Args:
@@ -581,6 +589,7 @@ def composite(handler, fill_args, trim_result, filled, tiles_bbox, dst):
 
 
 def scanline_fill(handler, src, seed_lists, tiles_bbox, filler):
+    # type: (Types.ELLIPSIS) -> Types.NONE
     """Perform a scanline fill and return the filled tiles
     
     Perform a scanline fill using the given starting point and tile,
@@ -588,11 +597,11 @@ def scanline_fill(handler, src, seed_lists, tiles_bbox, filler):
     provided filler instance.
 
     Args:
-        handler (FillHandler): updates fill status and permits cancelling
+        handler: updates fill status and permits cancelling
         src: Source surface-like object
-        seed_lists (dict): dictionary, pairing tile coords with lists of seeds
-        tiles_bbox (lib.fill_common.TileBoundingBox): Bounding box for the fill
-        filler (myplib.Filler): filler instance performing the per-tile fill operation
+        seed_lists: dictionary, pairing tile coords with lists of seeds
+        tiles_bbox: Bounding box for the fill
+        filler: filler instance performing the per-tile fill operation
 
     Returns:
         a dictionary of coord->tile mappings for the filled tiles
@@ -665,6 +674,7 @@ class _TileFillSkipper:
     # NOTE: these are usually not a result of an intentional fill, but
     # clicking a pixel with color very similar to the intended target pixel
     def uniform_tile(self, alpha):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -681,6 +691,7 @@ class _TileFillSkipper:
         return self.uniform_tiles[alpha]
 
     def check(self, tile_coord, src_tile, filled, from_dir):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Check if the tile can be handled without using the fill loop.
         
         The first time the tile is encountered, check if it is uniform
@@ -728,6 +739,7 @@ class _TileFillSkipper:
 
 
 def gap_closing_fill(handler, src, seed_lists, tiles_bbox, filler, gap_closing_options):
+    # type: (Types.ELLIPSIS) -> Types.NONE
     """Fill loop that finds and uses gap data to avoid unwanted leaks
     
     Gaps are defined as distances of fillable pixels enclosed on two sides
@@ -853,6 +865,7 @@ class _GCTileHandler:
         self._distbucket = myplib.DistanceBucket(max_gap_size)
 
     def get_gc_data(self, tile_coord, seeds):
+        # type: (Types.ELLIPSIS) -> tuple
         """Get the data necessary to run a gap-closing fill
         
         For the given tile coordinate, prepare the data necessary to
@@ -867,7 +880,7 @@ class _GCTileHandler:
             seeds: 
 
         Returns:
-            tuple: alpha_tile, distance_tile, overflows)
+            alpha_tile, distance_tile, overflows)
 
         Raises:
 
@@ -901,13 +914,14 @@ class _GCTileHandler:
         return self._alpha_tiles[tile_coord], self.distances[tile_coord], ()
 
     def find_gaps(self, *grid):
+        # type: (Types.ELLIPSIS) -> bool
         """Search for and mark gaps, given a nine-grid of alpha tiles
 
         Args:
             *grid: 
 
         Returns:
-            bool: True if any gaps were found, otherwise false
+            True if any gaps were found, otherwise false
 
         Raises:
 
@@ -917,6 +931,7 @@ class _GCTileHandler:
         return myplib.find_gaps(self._distbucket, self._dist_data, *grid)
 
     def alpha_grid(self, tile_coord):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """When needed, create and calculate alpha tiles for distance searching.
         
         For the tile of the given coordinate, ensure that a corresponding tile
@@ -958,6 +973,7 @@ class _GCTileHandler:
 
 
 def unseep(seed_queue, filled, gc_filler, total_px, tiles_bbox, distances):
+    # type: (Types.ELLIPSIS) -> Types.NONE
     """Seep inversion is basically a four-way 0-alpha fill
     with different conditions. It only backs off into the original
     fill and therefore does not require creation of new tiles or use
@@ -1003,6 +1019,7 @@ def unseep(seed_queue, filled, gc_filler, total_px, tiles_bbox, distances):
 
 
 def complement_gc_seeds(seeds, distance_tile):
+    # type: (Types.ELLIPSIS) -> Types.NONE
     """Add distances to initial seeds, check if all seeds lie on detected gaps
     
     If the input seeds are not initial seeds, they are returned unchanged.
@@ -1034,6 +1051,7 @@ def complement_gc_seeds(seeds, distance_tile):
 
 
 def gc_seeds_skippable(seeds):
+    # type: (Types.ELLIPSIS) -> Types.NONE
     """
 
     Args:

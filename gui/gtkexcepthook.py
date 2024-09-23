@@ -44,6 +44,7 @@ RESPONSE_REPORT = 3
 
 
 def analyse_simple(exctyp, value, tb):
+    # type: (Types.ELLIPSIS) -> Types.NONE
     """
 
     Args:
@@ -62,6 +63,7 @@ def analyse_simple(exctyp, value, tb):
 
 
 def lookup(name, frame, lcls):
+    # type: (Types.ELLIPSIS) -> Types.NONE
     """Find the value for a given name in the given frame
 
     Args:
@@ -90,6 +92,7 @@ def lookup(name, frame, lcls):
 
 
 def analyse(exctyp, value, tb):
+    # type: (Types.ELLIPSIS) -> Types.NONE
     """
 
     Args:
@@ -124,6 +127,7 @@ def analyse(exctyp, value, tb):
         args, varargs, varkw, lcls = inspect.getargvalues(frame)
 
         def readline(lno=[lineno], *args):
+            # type: (Types.ELLIPSIS) -> Types.NONE
             """
 
             Args:
@@ -200,6 +204,7 @@ def analyse(exctyp, value, tb):
 
 
 def _info(exctyp, value, tb):
+    # type: (Types.ELLIPSIS) -> Types.NONE
     """
 
     Args:
@@ -246,6 +251,7 @@ def _info(exctyp, value, tb):
 
     # Add an expander with details of the problem to the dialog
     def expander_cb(expander, *ignore):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -315,6 +321,7 @@ def _info(exctyp, value, tb):
 
 
 def _dialog_response_cb(dialog, resp, trace, exctyp, value):
+    # type: (Types.ELLIPSIS) -> Types.NONE
     """
 
     Args:
@@ -408,6 +415,7 @@ if __name__ == "__main__":
     import os
 
     def _test_button_clicked_cb(*a):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:

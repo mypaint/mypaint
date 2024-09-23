@@ -98,6 +98,7 @@ class FactoryAction(Gtk.Action):
         return menu_item
 
     def _construct(self, gtype_name):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -126,6 +127,7 @@ class FactoryAction(Gtk.Action):
         return widget
 
     def _tool_item_parent_set(self, widget, old_parent):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:

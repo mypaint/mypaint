@@ -122,6 +122,7 @@ class DocPaint(unittest.TestCase):
     # Helpers:
 
     def files_equal(self, a, b):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -137,6 +138,7 @@ class DocPaint(unittest.TestCase):
             return af.read() == bf.read()
 
     def assert_files_equal(self, a, b):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -151,6 +153,7 @@ class DocPaint(unittest.TestCase):
         self.assertTrue(self.files_equal(a, b), "Files %r and %r differ")
 
     def assert_pngs_equal(self, a, b):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:

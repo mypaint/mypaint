@@ -42,6 +42,9 @@ import lib.autosave
 import lib.xml
 import lib.feedback
 from . import rendering
+import lib.layer
+from lib.brush import Brush
+from lib.stroke import Stroke
 
 
 logger = logging.getLogger(__name__)
@@ -100,10 +103,11 @@ class SurfaceBackedLayer(core.LayerBase, lib.autosave.Autosaveable):
 
     @classmethod
     def new_from_surface_backed_layer(cls, src):
+        # type: (SurfaceBackedLayer) -> Types.NONE
         """Clone from another SurfaceBackedLayer
 
         Args:
-            src (SurfaceBackedLayer): Source layer
+            src: Source layer
 
         Returns:
             A new instance of type `cls`.
@@ -120,6 +124,7 @@ class SurfaceBackedLayer(core.LayerBase, lib.autosave.Autosaveable):
         return layer
 
     def load_from_surface(self, surface):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Load the backing surface image's tiles from another surface
 
         Args:
@@ -152,6 +157,7 @@ class SurfaceBackedLayer(core.LayerBase, lib.autosave.Autosaveable):
     def load_from_openraster(
         self, orazip, elem, cache_dir, progress, x=0, y=0, **kwargs
     ):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Loads layer flags and bitmap/surface data from a .ora zipfile
         
         The normal behaviour is to load the surface data directly from
@@ -217,6 +223,7 @@ class SurfaceBackedLayer(core.LayerBase, lib.autosave.Autosaveable):
         )
 
     def _load_surface_from_orazip_member(self, orazip, cache_dir, src, progress, x, y):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Loads the surface from a member of an OpenRaster zipfile
         
         Intended strictly for override by subclasses which need to first
@@ -245,6 +252,7 @@ class SurfaceBackedLayer(core.LayerBase, lib.autosave.Autosaveable):
     def load_from_openraster_dir(
         self, oradir, elem, cache_dir, progress, x=0, y=0, **kwargs
     ):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Loads layer flags and data from an OpenRaster-style dir
 
         Args:
@@ -303,6 +311,7 @@ class SurfaceBackedLayer(core.LayerBase, lib.autosave.Autosaveable):
         )
 
     def _load_surface_from_oradir_member(self, oradir, cache_dir, src, progress, x, y):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Loads the surface from a file in an OpenRaster-like folder
         
         Intended strictly for override by subclasses which need to
@@ -331,6 +340,7 @@ class SurfaceBackedLayer(core.LayerBase, lib.autosave.Autosaveable):
     def load_surface_from_pixbuf_file(
         self, filename, x=0, y=0, progress=None, image_type=None
     ):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Loads the layer's surface from any file which GdkPixbuf can open
 
         Args:
@@ -369,6 +379,7 @@ class SurfaceBackedLayer(core.LayerBase, lib.autosave.Autosaveable):
         return self.load_surface_from_pixbuf(pixbuf, x, y)
 
     def load_surface_from_pixbuf(self, pixbuf, x=0, y=0):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Loads the layer's surface from a GdkPixbuf
 
         Args:
@@ -402,6 +413,7 @@ class SurfaceBackedLayer(core.LayerBase, lib.autosave.Autosaveable):
             return 0.0
 
     def get_alpha(self, x, y, radius):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Gets the average alpha within a certain radius at a point
 
         Args:
@@ -427,6 +439,7 @@ class SurfaceBackedLayer(core.LayerBase, lib.autosave.Autosaveable):
     ## Flood fill
 
     def flood_fill(self, fill_args, dst_layer=None):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Fills a point on the surface with a color
         
         See `PaintingLayer.flood_fill() for parameters and semantics. This
@@ -450,6 +463,7 @@ class SurfaceBackedLayer(core.LayerBase, lib.autosave.Autosaveable):
         return self._surface.get_tiles().keys()
 
     def get_render_ops(self, spec):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Get rendering instructions.
 
         Args:
@@ -510,6 +524,7 @@ class SurfaceBackedLayer(core.LayerBase, lib.autosave.Autosaveable):
     ## Translating
 
     def get_move(self, x, y):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Get a translation/move object for this layer
 
         Args:
@@ -528,6 +543,7 @@ class SurfaceBackedLayer(core.LayerBase, lib.autosave.Autosaveable):
 
     @lib.fileutils.via_tempfile
     def save_as_png(self, filename, *rect, **kwargs):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Save to a named PNG file
 
         Args:
@@ -546,6 +562,7 @@ class SurfaceBackedLayer(core.LayerBase, lib.autosave.Autosaveable):
     def save_to_openraster(
         self, orazip, tmpdir, path, canvas_bbox, frame_bbox, **kwargs
     ):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Saves the layer's data into an open OpenRaster ZipFile
 
         Args:
@@ -567,6 +584,7 @@ class SurfaceBackedLayer(core.LayerBase, lib.autosave.Autosaveable):
         )
 
     def queue_autosave(self, oradir, taskproc, manifest, bbox, **kwargs):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Queues the layer for auto-saving
 
         Args:
@@ -623,6 +641,7 @@ class SurfaceBackedLayer(core.LayerBase, lib.autosave.Autosaveable):
 
     @staticmethod
     def _make_refname(prefix, path, suffix, sep="-"):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Internal: standardized filename for something with a path
 
         Args:
@@ -645,6 +664,7 @@ class SurfaceBackedLayer(core.LayerBase, lib.autosave.Autosaveable):
     def _save_rect_to_ora(
         self, orazip, tmpdir, prefix, path, frame_bbox, rect, progress=None, **kwargs
     ):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Internal: saves a rectangle of the surface to an ORA zip
 
         Args:
@@ -687,6 +707,7 @@ class SurfaceBackedLayer(core.LayerBase, lib.autosave.Autosaveable):
     ## Painting symmetry axis
 
     def set_symmetry_state(self, active, center, symmetry_type, symmetry_lines, angle):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Set the surface's painting symmetry axis and active flag.
         
         See `LayerBase.set_symmetry_state` for the params.
@@ -782,6 +803,7 @@ class SurfaceBackedLayerMove:
         self._wrapped = surface_move
 
     def update(self, dx, dy):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -800,6 +822,7 @@ class SurfaceBackedLayerMove:
         self._wrapped.cleanup()
 
     def process(self, n=200):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -837,6 +860,7 @@ class SurfaceBackedLayerSnapshot(core.LayerBaseSnapshot):
         self.surface_sshot = layer._surface.save_snapshot()
 
     def restore_to_layer(self, layer):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -921,6 +945,7 @@ class FileBackedLayer(SurfaceBackedLayer, core.ExternallyEditable):
         return revisions_dir
 
     def write_blank_backing_file(self, file, **kwargs):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Write out the zeroth backing file revision.
 
         Args:
@@ -937,6 +962,7 @@ class FileBackedLayer(SurfaceBackedLayer, core.ExternallyEditable):
         raise NotImplementedError
 
     def _load_surface_from_orazip_member(self, orazip, cache_dir, src, progress, x, y):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Loads the surface from a member of an OpenRaster zipfile
         
         This override retains a managed copy of the extracted file in
@@ -981,6 +1007,7 @@ class FileBackedLayer(SurfaceBackedLayer, core.ExternallyEditable):
         self._y = y
 
     def _load_surface_from_oradir_member(self, oradir, cache_dir, src, progress, x, y):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Loads the surface from a file in an OpenRaster-like folder
         
         This override makes a managed copy of the original file in the
@@ -1035,6 +1062,7 @@ class FileBackedLayer(SurfaceBackedLayer, core.ExternallyEditable):
     ## Moving
 
     def get_move(self, x, y):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Start a new move for the layer
 
         Args:
@@ -1055,6 +1083,7 @@ class FileBackedLayer(SurfaceBackedLayer, core.ExternallyEditable):
         return False
 
     def trim(self, rect):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -1072,6 +1101,7 @@ class FileBackedLayer(SurfaceBackedLayer, core.ExternallyEditable):
     def save_to_openraster(
         self, orazip, tmpdir, path, canvas_bbox, frame_bbox, **kwargs
     ):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Saves the working file to an OpenRaster zipfile
 
         Args:
@@ -1107,6 +1137,7 @@ class FileBackedLayer(SurfaceBackedLayer, core.ExternallyEditable):
         return elem
 
     def queue_autosave(self, oradir, taskproc, manifest, bbox, **kwargs):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Queues the layer for auto-saving
 
         Args:
@@ -1171,6 +1202,7 @@ class FileBackedLayer(SurfaceBackedLayer, core.ExternallyEditable):
         return str(self._edit_tempfile)
 
     def load_from_external_edit_tempfile(self, tempfile_path):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Load content from an external-edit tempfile
 
         Args:
@@ -1206,6 +1238,7 @@ class FileBackedLayerSnapshot(SurfaceBackedLayerSnapshot):
         self.y = layer._y
 
     def restore_to_layer(self, layer):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -1233,6 +1266,7 @@ class FileBackedLayerMove(SurfaceBackedLayerMove):
         self._start_y = layer._y
 
     def update(self, dx, dy):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -1326,6 +1360,7 @@ class _ManagedFile:
 
     @staticmethod
     def _get_file_to_manage(orig_path, copy=False, move=False, dir=None):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Obtain a file path to manage. Same params as constructor.
         
         If asked to copy or rename first,
@@ -1452,6 +1487,7 @@ class BackgroundLayer(SurfaceBackedLayer):
         self.opacity = 1.0
 
     def set_surface(self, surface):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Sets the surface from a tiledsurface.Background
 
         Args:
@@ -1469,6 +1505,7 @@ class BackgroundLayer(SurfaceBackedLayer):
     def save_to_openraster(
         self, orazip, tmpdir, path, canvas_bbox, frame_bbox, progress=None, **kwargs
     ):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -1524,6 +1561,7 @@ class BackgroundLayer(SurfaceBackedLayer):
         return elem
 
     def queue_autosave(self, oradir, taskproc, manifest, bbox, **kwargs):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Queues the layer for auto-saving
 
         Args:
@@ -1576,6 +1614,7 @@ class BackgroundLayerSnapshot(core.LayerBaseSnapshot):
         self.surface = layer._surface
 
     def restore_to_layer(self, layer):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -1622,6 +1661,7 @@ class VectorLayer(FileBackedLayer):
         return "mypaint-layer-vector-symbolic"
 
     def load_surface_from_pixbuf_file(self, *args, **kwds):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Overrides pixbuf loading to explicitly handle svg data
 
         Args:
@@ -1637,6 +1677,7 @@ class VectorLayer(FileBackedLayer):
         return super(VectorLayer, self).load_surface_from_pixbuf_file(*args, **kwds)
 
     def write_blank_backing_file(self, file, **kwargs):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -1678,6 +1719,7 @@ class VectorLayer(FileBackedLayer):
         file.write(svg)
 
     def flood_fill(self, fill_args, dst_layer=None):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Fill to dst_layer, with ref. to a rasterization of this layer.
         This implementation is virtually identical to the one in LayerStack.
 
@@ -1854,10 +1896,11 @@ class SimplePaintingLayer(SurfaceBackedLayer):
         viewrotation,
         barrel_rotation,
     ):
+        # type: (Types.ELLIPSIS) -> bool
         """Render a part of a stroke to the canvas surface
 
         Args:
-            brush (lib.brush.Brush): The brush to use for rendering dabs
+            brush: The brush to use for rendering dabs
             x: Input event's X coord, translated to document coords
             y: Input event's Y coord, translated to document coords
             pressure: Input event's pressure
@@ -1867,9 +1910,6 @@ class SimplePaintingLayer(SurfaceBackedLayer):
             viewzoom: 
             viewrotation: 
             barrel_rotation: 
-
-        Returns:
-            bool
 
 This method renders zero or more dabs to the surface of this
 layer, but it won't affect any strokemap maintained by this
@@ -1905,6 +1945,7 @@ SimplePaintingLayer and not recording strokes.: whether the stroke should now be
 
     @contextlib.contextmanager
     def cairo_request(self, x, y, w, h, mode=lib.modes.default_mode):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Get a Cairo context for a given area, then put back changes.
         
         See lib.tiledsurface.MyPaintSurface.cairo_request() for details.
@@ -1983,6 +2024,7 @@ class StrokemappedPaintingLayer(SimplePaintingLayer):
         self.strokes = []
 
     def load_from_surface(self, surface):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Load the surface image's tiles from another surface
 
         Args:
@@ -2007,6 +2049,7 @@ class StrokemappedPaintingLayer(SimplePaintingLayer):
         invert_strokemaps=False,
         **kwargs
     ):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Loads layer flags, PNG data, and strokemap from a .ora zipfile
 
         Args:
@@ -2033,6 +2076,7 @@ class StrokemappedPaintingLayer(SimplePaintingLayer):
     def load_from_openraster_dir(
         self, oradir, elem, cache_dir, progress, x=0, y=0, **kwargs
     ):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Loads layer flags and data from an OpenRaster-style dir
 
         Args:
@@ -2058,6 +2102,7 @@ class StrokemappedPaintingLayer(SimplePaintingLayer):
     def _load_strokemap_from_ora(
         self, elem, x, y, invert=False, orazip=None, oradir=None
     ):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Load the strokemap from a layer elem & an ora{zip|dir}.
 
         Args:
@@ -2111,10 +2156,11 @@ class StrokemappedPaintingLayer(SimplePaintingLayer):
     ## Stroke recording and rendering
 
     def render_stroke(self, stroke):
+        # type: (Stroke) -> Types.NONE
         """Render a whole captured stroke to the canvas
 
         Args:
-            stroke (lib.stroke.Stroke): The stroke to render
+            stroke: The stroke to render
 
         Returns:
 
@@ -2125,11 +2171,12 @@ class StrokemappedPaintingLayer(SimplePaintingLayer):
         self.autosave_dirty = True
 
     def add_stroke_shape(self, stroke, before):
+        # type: (Stroke, lib.layer.StrokemappedPaintingLayerSnapshot) -> Types.NONE
         """Adds a rendered stroke's shape to the strokemap
 
         Args:
-            stroke (lib.stroke.Stroke): the stroke sequence which has been rendered
-            before (lib.layer.StrokemappedPaintingLayerSnapshot): layer snapshot taken before the stroke started
+            stroke: the stroke sequence which has been rendered
+            before: layer snapshot taken before the stroke started
         
         The StrokeMap is a stack of lib.strokemap.StrokeShape objects which
         encapsulate the shape of a rendered stroke, and the brush settings
@@ -2160,6 +2207,7 @@ class StrokemappedPaintingLayer(SimplePaintingLayer):
     ## Translating
 
     def get_move(self, x, y):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Get an interactive move object for the surface and its strokemap
 
         Args:
@@ -2176,6 +2224,7 @@ class StrokemappedPaintingLayer(SimplePaintingLayer):
     ## Trimming
 
     def trim(self, rect):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Trim the layer and its strokemap
 
         Args:
@@ -2198,6 +2247,7 @@ class StrokemappedPaintingLayer(SimplePaintingLayer):
     ## Strokemap load and save
 
     def _load_strokemap_from_file(self, f, translate_x, translate_y, invert):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -2245,6 +2295,7 @@ class StrokemappedPaintingLayer(SimplePaintingLayer):
     ## Strokemap querying
 
     def get_stroke_info_at(self, x, y):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Get the stroke at the given point
 
         Args:
@@ -2272,6 +2323,7 @@ class StrokemappedPaintingLayer(SimplePaintingLayer):
     def save_to_openraster(
         self, orazip, tmpdir, path, canvas_bbox, frame_bbox, **kwargs
     ):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Save the strokemap too, in addition to the base implementation
 
         Args:
@@ -2310,6 +2362,7 @@ class StrokemappedPaintingLayer(SimplePaintingLayer):
         return elem
 
     def queue_autosave(self, oradir, taskproc, manifest, bbox, **kwargs):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Queues the layer for auto-saving
 
         Args:
@@ -2378,6 +2431,7 @@ class PaintingLayer(StrokemappedPaintingLayer, core.ExternallyEditable):
         return tmp_filename
 
     def load_from_external_edit_tempfile(self, tempfile_path):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Load content from an external-edit tempfile
 
         Args:
@@ -2409,6 +2463,7 @@ class PaintingLayer(StrokemappedPaintingLayer, core.ExternallyEditable):
 
 
 def _write_strokemap(f, strokes, dx, dy):
+    # type: (Types.ELLIPSIS) -> Types.NONE
     """
 
     Args:
@@ -2429,6 +2484,7 @@ def _write_strokemap(f, strokes, dx, dy):
 
 
 def _write_strokemap_stroke(f, stroke, brush2id, dx, dy):
+    # type: (Types.ELLIPSIS) -> Types.NONE
     """
 
     Args:
@@ -2512,6 +2568,7 @@ class StrokemappedPaintingLayerSnapshot(SurfaceBackedLayerSnapshot):
         self.strokes = layer.strokes[:]
 
     def restore_to_layer(self, layer):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -2537,6 +2594,7 @@ class StrokemappedPaintingLayerMove(SurfaceBackedLayerMove):
         self._final_dy = 0
 
     def update(self, dx, dy):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:

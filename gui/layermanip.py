@@ -99,6 +99,7 @@ class LayerMoveMode(gui.mode.ScrollableModeMixin, gui.mode.DragMode):
     ## Layer stacking API
 
     def enter(self, doc, **kwds):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -118,6 +119,7 @@ class LayerMoveMode(gui.mode.ScrollableModeMixin, gui.mode.DragMode):
         self._update_ui()
 
     def leave(self, **kwds):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -137,6 +139,7 @@ class LayerMoveMode(gui.mode.ScrollableModeMixin, gui.mode.DragMode):
         return super(LayerMoveMode, self).leave(**kwds)
 
     def checkpoint(self, **kwds):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Commits any pending work to the command stack
 
         Args:
@@ -155,6 +158,7 @@ class LayerMoveMode(gui.mode.ScrollableModeMixin, gui.mode.DragMode):
     ## Drag-mode API
 
     def drag_start_cb(self, tdw, event):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Drag initialization
 
         Args:
@@ -177,6 +181,7 @@ class LayerMoveMode(gui.mode.ScrollableModeMixin, gui.mode.DragMode):
         return super(LayerMoveMode, self).drag_start_cb(tdw, event)
 
     def drag_update_cb(self, tdw, event, ev_x, ev_y, dx, dy):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """UI and model updates during a drag
 
         Args:
@@ -217,6 +222,7 @@ class LayerMoveMode(gui.mode.ScrollableModeMixin, gui.mode.DragMode):
         return False
 
     def drag_stop_cb(self, tdw):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """UI and model updates at the end of a drag
 
         Args:
@@ -268,6 +274,7 @@ class LayerMoveMode(gui.mode.ScrollableModeMixin, gui.mode.DragMode):
     ## Helpers
 
     def _update_ui(self, *_ignored):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Updates the cursor, and the internal move-possible flag
 
         Args:

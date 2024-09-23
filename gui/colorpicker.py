@@ -87,6 +87,7 @@ class ColorPickMode(gui.mode.OneshotDragMode):
         self._timeout_id = None
 
     def enter(self, doc, **kwds):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Enters the mode, arranging for necessary grabs ASAP
 
         Args:
@@ -111,6 +112,7 @@ class ColorPickMode(gui.mode.OneshotDragMode):
             self._start_drag_on_next_motion_event = True
 
     def leave(self, **kwds):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -127,6 +129,7 @@ class ColorPickMode(gui.mode.OneshotDragMode):
         super(ColorPickMode, self).leave(**kwds)
 
     def button_press_cb(self, tdw, event):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -144,6 +147,7 @@ class ColorPickMode(gui.mode.OneshotDragMode):
         return super(ColorPickMode, self).button_press_cb(tdw, event)
 
     def motion_notify_cb(self, tdw, event):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -161,6 +165,7 @@ class ColorPickMode(gui.mode.OneshotDragMode):
         return super(ColorPickMode, self).motion_notify_cb(tdw, event)
 
     def drag_stop_cb(self, tdw):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -175,6 +180,7 @@ class ColorPickMode(gui.mode.OneshotDragMode):
         super(ColorPickMode, self).drag_stop_cb(tdw)
 
     def drag_update_cb(self, tdw, event, ev_x, ev_y, dx, dy):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -195,6 +201,7 @@ class ColorPickMode(gui.mode.OneshotDragMode):
         return super(ColorPickMode, self).drag_update_cb(tdw, event, ev_x, ev_y, dx, dy)
 
     def _update_overlay(self, tdw, x, y, col):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -224,6 +231,7 @@ class ColorPickMode(gui.mode.OneshotDragMode):
         return None
 
     def get_new_color(self, pick_color, brush_color):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -243,6 +251,7 @@ class ColorPickMode(gui.mode.OneshotDragMode):
             return pick_color
 
     def _pick_color(self, tdw, x, y, direct=False):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -267,6 +276,7 @@ class ColorPickMode(gui.mode.OneshotDragMode):
                 self._queue_color_change(new_color, cm)
 
     def _queue_color_change(self, new_col, cm):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -305,6 +315,7 @@ class ColorPickModeHCYBase(ColorPickMode):
     """ """
 
     def get_new_color(self, pick_color, brush_color):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -324,6 +335,7 @@ class ColorPickModeHCYBase(ColorPickMode):
         return new_col_hcy
 
     def get_new_hcy_color(self, *args):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -358,6 +370,7 @@ class ColorPickModeH(ColorPickModeHCYBase):
         return _("Set the color Hue used for painting")
 
     def get_new_hcy_color(self, pick_hcy, brush_hcy):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -394,6 +407,7 @@ class ColorPickModeC(ColorPickModeHCYBase):
         return _("Set the color Chroma used for painting")
 
     def get_new_hcy_color(self, pick_hcy, brush_hcy):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -429,6 +443,7 @@ class ColorPickModeY(ColorPickModeHCYBase):
         return _("Set the color Luma used for painting")
 
     def get_new_hcy_color(self, pick_hcy, brush_hcy):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -488,6 +503,7 @@ class ColorPickPreviewOverlay(Overlay):
         self._queue_tdw_redraw()
 
     def update(self, x, y, color):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Update the overlay's position and color
 
         Args:
@@ -558,6 +574,7 @@ class ColorPickPreviewOverlay(Overlay):
         return (int(x), int(y), size, size)
 
     def paint(self, cr):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:

@@ -102,6 +102,7 @@ class LayerBase(Renderable):
     def new_from_openraster(
         cls, orazip, elem, cache_dir, progress, root, x=0, y=0, **kwargs
     ):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Reads and returns a layer from an OpenRaster zipfile
         
         This implementation just creates a new instance of its class and
@@ -134,6 +135,7 @@ class LayerBase(Renderable):
     def new_from_openraster_dir(
         cls, oradir, elem, cache_dir, progress, root, x=0, y=0, **kwargs
     ):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Reads and returns a layer from an OpenRaster-like folder
         
         This implementation just creates a new instance of its class and
@@ -190,13 +192,14 @@ class LayerBase(Renderable):
     def load_from_openraster_dir(
         self, oradir, elem, cache_dir, progress, x=0, y=0, **kwargs
     ):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Loads layer data from an OpenRaster-style folder.
         
         Parameters are the same as for load_from_openraster, with the
         following exception (replacing ``orazip``):
 
         Args:
-            oradir (str): Folder with a .ORA-like tree structure.
+            oradir: Folder with a .ORA-like tree structure.
             elem: 
             cache_dir: 
             progress: 
@@ -212,6 +215,7 @@ class LayerBase(Renderable):
         self._load_common_flags_from_ora_elem(elem)
 
     def _load_common_flags_from_ora_elem(self, elem):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -290,6 +294,7 @@ class LayerBase(Renderable):
 
     @group.setter
     def group(self, group):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -336,6 +341,7 @@ class LayerBase(Renderable):
 
     @root.setter
     def root(self, newroot):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -376,6 +382,7 @@ class LayerBase(Renderable):
 
     @opacity.setter
     def opacity(self, opacity):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -429,6 +436,7 @@ class LayerBase(Renderable):
 
     @name.setter
     def name(self, name):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -474,6 +482,7 @@ class LayerBase(Renderable):
 
     @visible.setter
     def visible(self, visible):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -555,6 +564,7 @@ class LayerBase(Renderable):
 
     @locked.setter
     def locked(self, locked):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -646,6 +656,7 @@ class LayerBase(Renderable):
 
     @mode.setter
     def mode(self, mode):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -680,6 +691,7 @@ class LayerBase(Renderable):
     ## Notifications
 
     def _content_changed(self, *args):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Notifies the root's content observers
         
         If this layer's root stack is defined, i.e. if it is part of a
@@ -699,6 +711,7 @@ class LayerBase(Renderable):
             root.layer_content_changed(self, *args)
 
     def _properties_changed(self, properties):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Notifies the root's layer properties observers
         
         If this layer's root stack is defined, i.e. if it is part of a
@@ -754,6 +767,7 @@ class LayerBase(Renderable):
         return 0.0
 
     def get_alpha(self, x, y, radius):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Gets the average alpha within a certain radius at a point
 
         Args:
@@ -828,6 +842,7 @@ class LayerBase(Renderable):
         return False
 
     def get_stroke_info_at(self, x, y):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Return the brushstroke at a given point
 
         Args:
@@ -890,6 +905,7 @@ class LayerBase(Renderable):
     ## Flood fill
 
     def flood_fill(self, fill_args, dst_layer=None):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Fills a point on the surface with a color
         
         See PaintingLayer.flood_fill() for parameters and semantics.
@@ -932,6 +948,7 @@ The base implementation returns an empty sequence.: All tiles with data
     ## Translation
 
     def get_move(self, x, y):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Get a translation/move object for this layer
 
         Args:
@@ -947,14 +964,12 @@ The base implementation returns an empty sequence.: All tiles with data
         raise NotImplementedError
 
     def translate(self, dx, dy):
+        # type: (Types.ELLIPSIS) -> list
         """Translate a layer non-interactively
 
         Args:
             dx: Horizontal offset in model coordinates
             dy: Vertical offset in model coordinates
-
-        Returns:
-            list
 
 The base implementation uses `get_move()` and the object it returns.: full redraw bboxes for the move: ``[before, after]``
 
@@ -1003,6 +1018,7 @@ The base implementation uses `get_move()` and the object it returns.: full redra
     ## Saving
 
     def save_as_png(self, filename, *rect, **kwargs):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Save to a named PNG file
 
         Args:
@@ -1060,6 +1076,7 @@ unaddressable background layer right now, for example.: element describing data 
         raise NotImplementedError
 
     def _get_stackxml_element(self, tag, x=None, y=None):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Internal: get a basic etree Element for .ora saving
 
         Args:
@@ -1146,6 +1163,7 @@ unaddressable background layer right now, for example.: element describing data 
         return LayerBaseSnapshot(self)
 
     def load_snapshot(self, sshot):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Restores the layer from snapshot data
 
         Args:
@@ -1192,10 +1210,11 @@ unaddressable background layer right now, for example.: element describing data 
             self._thumbnail = None
 
     def render_thumbnail(self, bbox, **options):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Renders a 256x256 thumb of the layer in an arbitrary bbox.
 
         Args:
-            bbox (tuple): Bounding box to make a thumbnail of.
+            bbox: Bounding box to make a thumbnail of.
             **options: Passed to RootLayerStack.render_layer_preview().
         :rtype: GtkPixbuf or None
         
@@ -1236,6 +1255,7 @@ class _StubLayerBase(LayerBase):
     """An instantiable (but broken) LayerBase, for testing."""
 
     def get_render_ops(self, *argv, **kwargs):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -1275,6 +1295,7 @@ class LayerBaseSnapshot:
         self.locked = layer.locked
 
     def restore_to_layer(self, layer):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -1315,10 +1336,11 @@ class ExternallyEditable(metaclass=abc.ABCMeta):
 
     @abc.abstractmethod
     def load_from_external_edit_tempfile(self, tempfile_path):
+        # type: (str) -> Types.NONE
         """Load content from an external-edit tempfile
 
         Args:
-            tempfile_path (str): Tempfile to load.
+            tempfile_path: Tempfile to load.
 
         Returns:
 

@@ -146,6 +146,7 @@ class LayerPropertiesUI(gui.mvp.BuiltUIPresenter, object):
 
     @gui.mvp.view_updater
     def _m_layer_changed_cb(self, root, layerpath):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Handle a change of the currently active layer.
 
         Args:
@@ -162,6 +163,7 @@ class LayerPropertiesUI(gui.mvp.BuiltUIPresenter, object):
 
     @gui.mvp.view_updater
     def _m_layer_props_changed_cb(self, root, layerpath, layer, changed):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Handle a change of layer properties.
 
         Args:
@@ -192,6 +194,7 @@ class LayerPropertiesUI(gui.mvp.BuiltUIPresenter, object):
 
     @gui.mvp.view_updater
     def _m_layer_thumbnail_updated_cb(self, root, layerpath, layer):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Handle the thumbnail of a layer changing.
 
         Args:
@@ -210,6 +213,7 @@ class LayerPropertiesUI(gui.mvp.BuiltUIPresenter, object):
 
     @gui.mvp.view_updater
     def _m_current_view_changed_cb(self, lvm):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -299,6 +303,7 @@ class LayerPropertiesUI(gui.mvp.BuiltUIPresenter, object):
         adj.set_value(percentage)
 
     def _m2v_layer_flag(self, info):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -331,6 +336,7 @@ class LayerPropertiesUI(gui.mvp.BuiltUIPresenter, object):
     # View monitoring and response (callback names defined in .glade XML):
 
     def _v_layer_mode_combo_query_tooltip_cb(self, combo, x, y, kbd, tooltip):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -359,6 +365,7 @@ class LayerPropertiesUI(gui.mvp.BuiltUIPresenter, object):
 
     @gui.mvp.model_updater
     def _v_layer_name_entry_changed_cb(self, entry):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -383,6 +390,7 @@ class LayerPropertiesUI(gui.mvp.BuiltUIPresenter, object):
 
     @gui.mvp.model_updater
     def _v_layer_mode_combo_changed_cb(self, combo):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -407,6 +415,7 @@ class LayerPropertiesUI(gui.mvp.BuiltUIPresenter, object):
 
     @gui.mvp.model_updater
     def _v_layer_opacity_adjustment_value_changed_cb(self, adjustment, *etc):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -425,6 +434,7 @@ class LayerPropertiesUI(gui.mvp.BuiltUIPresenter, object):
 
     @gui.mvp.model_updater
     def _v_layer_hidden_togglebutton_toggled_cb(self, btn):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -440,6 +450,7 @@ class LayerPropertiesUI(gui.mvp.BuiltUIPresenter, object):
 
     @gui.mvp.model_updater
     def _v_layer_locked_togglebutton_toggled_cb(self, btn):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -454,6 +465,7 @@ class LayerPropertiesUI(gui.mvp.BuiltUIPresenter, object):
         self._v2m_layer_flag(info)
 
     def _v2m_layer_flag(self, info):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -481,6 +493,7 @@ class LayerPropertiesUI(gui.mvp.BuiltUIPresenter, object):
     # Utility methods:
 
     def _set_name_entry_warning_flag(self, show_warning):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -549,6 +562,7 @@ class LayerPropertiesDialog(Gtk.Dialog):
 
 
 def make_preview(thumb, preview_size):
+    # type: (Types.ELLIPSIS) -> Types.NONE
     """Convert a layer's thumbnail into a nice preview image.
 
     Args:

@@ -120,6 +120,7 @@ class HSVCubePage(CombinedAdjusterPage):
         self.__slider.set_tooltip_text(self._slider_tooltip_map[f0])
 
     def set_color_manager(self, manager):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -152,6 +153,7 @@ class HSVCubeSlider(SliderColorAdjuster):
         return f0, getattr(col, f1), getattr(col, f2)
 
     def get_color_for_bar_amount(self, amt):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -168,6 +170,7 @@ class HSVCubeSlider(SliderColorAdjuster):
         return col
 
     def get_bar_amount_for_color(self, col):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -201,6 +204,7 @@ class HSVCubeSlice(IconRenderableColorAdjusterWidget):
         return f1, f2
 
     def render_background_cb(self, cr, wd, ht, icon_border=None):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -266,6 +270,7 @@ class HSVCubeSlice(IconRenderableColorAdjusterWidget):
         return f0, getattr(col, f0)
 
     def get_color_at_position(self, x, y):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -293,6 +298,7 @@ class HSVCubeSlice(IconRenderableColorAdjusterWidget):
         return col
 
     def get_position_for_color(self, col):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -319,6 +325,7 @@ class HSVCubeSlice(IconRenderableColorAdjusterWidget):
         return x, y
 
     def paint_foreground_cb(self, cr, wd, ht):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:

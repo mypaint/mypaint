@@ -29,6 +29,7 @@ class BrushColorManager(colors.ColorManager):
         self._app = app
 
     def set_color(self, color):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Propagate user-set colors to the brush too (extension).
 
         Args:

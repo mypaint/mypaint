@@ -163,10 +163,11 @@ class FreehandMode(
             self.last_good_raw_barrel_rotation = 0.0
 
         def queue_motion(self, event_data):
+            # type: (tuple) -> Types.NONE
             """Append one raw motion event to the motion queue
 
             Args:
-                event_data (tuple): Extracted data from an event.
+                event_data: Extracted data from an event.
             
             Events are tuples of the form ``(time, x, y, pressure,
             xtilt, ytilt, viewzoom, viewrotation, barrel_rotation)``.
@@ -262,6 +263,7 @@ class FreehandMode(
         self._drawing_state = {}
 
     def _get_drawing_state(self, tdw):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -281,6 +283,7 @@ class FreehandMode(
     ## Mode stack & current mode
 
     def enter(self, doc, **kwds):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Enter freehand mode
 
         Args:
@@ -298,6 +301,7 @@ class FreehandMode(
         self._debug = logger.getEffectiveLevel() == logging.DEBUG
 
     def leave(self, **kwds):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Leave freehand mode
 
         Args:
@@ -315,10 +319,11 @@ class FreehandMode(
     ## Special cursor state while there's pressure
 
     def _hide_drawing_cursor(self, tdw):
+        # type: (TiledDrawWidget) -> Types.NONE
         """Hide the cursor while painting, if configured to.
 
         Args:
-            tdw (TiledDrawWidget): Canvas widget to hide the cursor on.
+            tdw: Canvas widget to hide the cursor on.
 
         Returns:
 
@@ -362,6 +367,7 @@ class FreehandMode(
     ## Input handlers
 
     def button_press_cb(self, tdw, event):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -408,6 +414,7 @@ class FreehandMode(
         return super(FreehandMode, self).button_press_cb(tdw, event) or result
 
     def button_release_cb(self, tdw, event):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -441,6 +448,7 @@ class FreehandMode(
         return super(FreehandMode, self).button_release_cb(tdw, event) or result
 
     def motion_notify_cb(self, tdw, event, fakepressure=None):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Motion event handler: queues raw input and returns
 
         Args:
@@ -614,6 +622,7 @@ class FreehandMode(
     ## Motion queue processing
 
     def _motion_queue_idle_cb(self, tdw):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Idle callback; processes each queued event
 
         Args:
@@ -640,6 +649,7 @@ class FreehandMode(
         return True
 
     def _process_queued_event(self, tdw, event_data):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Process one motion event from the motion queue
 
         Args:
@@ -733,6 +743,7 @@ class FreehandOptionsWidget(gui.mode.PaintingModeOptionsWidgetBase):
     """Configuration widget for freehand mode"""
 
     def init_specialized_widgets(self, row):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -807,6 +818,7 @@ class FreehandOptionsWidget(gui.mode.PaintingModeOptionsWidgetBase):
         return row
 
     def _fakepressure_value_changed_cb(self, adj):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Updates fakepressure when the user tweaks it using a scale
 
         Args:
@@ -821,6 +833,7 @@ class FreehandOptionsWidget(gui.mode.PaintingModeOptionsWidgetBase):
         self.app.fakepressure = newvalue
 
     def fakepressure_modified_cb(self, value):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Updates the fakepressure slider when changed elsewhere
 
         Args:
@@ -836,6 +849,7 @@ class FreehandOptionsWidget(gui.mode.PaintingModeOptionsWidgetBase):
             adj.set_value(value)
 
     def _fakerotation_value_changed_cb(self, adj):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Updates fakerotation when the user tweaks it using a scale
 
         Args:
@@ -850,6 +864,7 @@ class FreehandOptionsWidget(gui.mode.PaintingModeOptionsWidgetBase):
         self.app.fakerotation = newvalue
 
     def fakerotation_modified_cb(self, value):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Updates the fakerotation slider when changed elsewhere
 
         Args:
@@ -1061,12 +1076,13 @@ class PressureAndTiltInterpolator:
         viewrotation,
         barrel_rotation,
     ):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Feed in an event, yielding zero or more interpolated events
 
         Args:
             time: event timestamp, integer number of milliseconds
-            x (float): Horizontal coordinate of the event, in model space
-            y (float): Vertical coordinate of the event, in model space
+            x: Horizontal coordinate of the event, in model space
+            y: Vertical coordinate of the event, in model space
             pressure: Effective pen pressure, [0.0, 1.0]
             xtilt: Pen tilt in the model X direction, [-1.0, 1.0]
             ytilt: Pen tilt in the model's Y direction, [-1.0, 1.0]

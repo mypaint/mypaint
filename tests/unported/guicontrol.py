@@ -113,6 +113,7 @@ class GUI:
             Gtk.main_iteration()
 
     def wait_for_duration(self, duration):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -132,6 +133,7 @@ class GUI:
             Gtk.main_iteration()
 
     def scroll(self, N=20):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -153,6 +155,7 @@ class GUI:
             tdw.scroll(-int(dx[i]), -int(dy[i]))
 
     def zoom_out(self, steps):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:

@@ -255,6 +255,7 @@ class ChooserPopup(Gtk.Window):
         Gtk.Window.add(self, self._frame)
 
     def _crossing_cb(self, widget, event):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -291,6 +292,7 @@ class ChooserPopup(Gtk.Window):
             )
 
     def _grab_pointer_outside(self, device, time):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -332,6 +334,7 @@ class ChooserPopup(Gtk.Window):
             )
 
     def _ungrab_pointer_outside(self, device, time):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -350,6 +353,7 @@ class ChooserPopup(Gtk.Window):
         self._outside_grab_active = False
 
     def _configure_cb(self, widget, event):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Internal: Update size and prefs when window is adjusted
 
         Args:
@@ -405,6 +409,7 @@ class ChooserPopup(Gtk.Window):
         return self._size
 
     def _realize_cb(self, widget):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -419,6 +424,7 @@ class ChooserPopup(Gtk.Window):
         gdk_window.set_type_hint(Gdk.WindowTypeHint.POPUP_MENU)
 
     def popup(self, widget=None, above=False, textwards=True, event=None):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Display, with an optional position relative to a widget
 
         Args:
@@ -482,6 +488,7 @@ class ChooserPopup(Gtk.Window):
         self.move(x, y)
 
     def _show_cb(self, widget):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Internal: show child widgets, grab, start the motion handler
 
         Args:
@@ -511,6 +518,7 @@ class ChooserPopup(Gtk.Window):
             )
 
     def _hide_cb(self, widget):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Internal: reset during-show state when the window is hidden
 
         Args:
@@ -531,6 +539,7 @@ class ChooserPopup(Gtk.Window):
         self._outside_grab_active = False
 
     def add(self, child):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Override: add() adds the child widget to an internal alignment
 
         Args:
@@ -544,6 +553,7 @@ class ChooserPopup(Gtk.Window):
         return self._align.add(child)
 
     def remove(self, child):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Override: remove() removes the child from an internal alignment
 
         Args:
@@ -557,6 +567,7 @@ class ChooserPopup(Gtk.Window):
         return self._align.remove(child)
 
     def _get_edge(self, px, py):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Internal: returns which window edge the pointer is pointing at
 
         Args:
@@ -607,6 +618,7 @@ class ChooserPopup(Gtk.Window):
             return None
 
     def _get_cursor(self, px, py):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -627,6 +639,7 @@ class ChooserPopup(Gtk.Window):
             return self._edge_cursors.get(edge, None)
 
     def _button_press_cb(self, widget, event):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Internal: starts resizing if the pointer is at the edge
 
         Args:
@@ -662,6 +675,7 @@ class ChooserPopup(Gtk.Window):
         return False
 
     def _button_release_cb(self, widget, event):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Internal: stops any active resize
 
         Args:
@@ -683,6 +697,7 @@ class ChooserPopup(Gtk.Window):
         return True
 
     def _motion_cb(self, widget, event):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Internal: handle motions: resizing, or leave checks
 
         Args:
@@ -808,6 +823,7 @@ class ChooserPopup(Gtk.Window):
 
 
 def clear_focus(window):
+    # type: (Types.ELLIPSIS) -> Types.NONE
     """Clear focus and any selection in widget with focus
     
     Immediately after calling this, there should be no widget with focus in the
@@ -836,6 +852,7 @@ def clear_focus(window):
 
 
 def _final_rectangle(x, y, w, h, screen_w, screen_h, targ_geom, min_usable_size):
+    # type: (Types.ELLIPSIS) -> Types.NONE
     """Tries to create sensible (x, y, w, h) window pos/dim
 
     Args:
@@ -896,6 +913,7 @@ def _final_rectangle(x, y, w, h, screen_w, screen_h, targ_geom, min_usable_size)
 
 
 def set_initial_window_position(win, pos):
+    # type: (Types.ELLIPSIS) -> Types.NONE
     """Set the position of a Gtk.Window, used during initial positioning.
     
     This is used both for restoring a saved window position, and for the
@@ -1015,14 +1033,12 @@ def set_initial_window_position(win, pos):
 
 
 def _get_target_area_geometry(screen, mon_num):
+    # type: (Gdk.Screen, int) -> Rect
     """Get a rect for putting windows in: normally based on monitor.
 
     Args:
-        screen (Gdk.Screen): Target screen.
-        mon_num (int): Monitor number, e.g. that of the pointer.
-
-    Returns:
-        Rect
+        screen: Target screen.
+        mon_num: Monitor number, e.g. that of the pointer.
 
 This function operates like gdk_screen_get_monitor_geometry(), but
 falls back to the screen geometry for cases when that returns NULL.

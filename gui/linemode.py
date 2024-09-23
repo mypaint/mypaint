@@ -124,6 +124,7 @@ class LineModeSettings:
             self.adjustments[cname] = adj
 
     def _value_changed_cb(self, adj, prefs_key):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -183,6 +184,7 @@ class LineModeCurveWidget(CurveWidget):
         self._update()
 
     def _adjs_changed_cb(self, changed):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -197,6 +199,7 @@ class LineModeCurveWidget(CurveWidget):
         self._update()
 
     def _update(self, from_defaults=False):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -231,6 +234,7 @@ class LineModeCurveWidget(CurveWidget):
         self.queue_draw()
 
     def _changed_cb(self, curve):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Updates the linemode pressure settings when the curve is altered
 
         Args:
@@ -258,6 +262,7 @@ class LineModeOptionsWidget(gui.mode.PaintingModeOptionsWidgetBase):
     """Options widget for geometric line modes"""
 
     def init_specialized_widgets(self, row=0):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -280,6 +285,7 @@ class LineModeOptionsWidget(gui.mode.PaintingModeOptionsWidgetBase):
         return row
 
     def reset_button_clicked_cb(self, button):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -366,6 +372,7 @@ class LineModeBase(
     ## InteractionMode/DragMode implementation
 
     def enter(self, doc, **kwds):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Enter the mode.
         
         If modifiers are held when the mode is entered, the mode is a oneshot
@@ -390,6 +397,7 @@ class LineModeBase(
         self._update_cursors()
 
     def leave(self, **kwds):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -406,6 +414,7 @@ class LineModeBase(
         return super(LineModeBase, self).leave(**kwds)
 
     def _update_cursors(self, *_ignored):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -423,6 +432,7 @@ class LineModeBase(
         self.doc.tdw.set_override_cursor(self.inactive_cursor)
 
     def drag_start_cb(self, tdw, event):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -439,6 +449,7 @@ class LineModeBase(
             self.start_command(self.initial_modifiers)
 
     def drag_update_cb(self, tdw, event, ev_x, ev_y, dx, dy):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -461,6 +472,7 @@ class LineModeBase(
         return super(LineModeBase, self).drag_update_cb(tdw, event, ev_x, ev_y, dx, dy)
 
     def drag_stop_cb(self, tdw):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -485,6 +497,7 @@ class LineModeBase(
             self.process_line()
 
     def checkpoint(self, flush=True, **kwargs):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -516,6 +529,7 @@ class LineModeBase(
     ### Draw dynamic Line, Curve, or Ellipse
 
     def start_command(self, modifier):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -608,6 +622,7 @@ class LineModeBase(
                 self.sx, self.sy = self.tdw.last_painting_pos
 
     def update_position(self, x, y):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -631,14 +646,15 @@ class LineModeBase(
         self.record_last_stroke(cmd, x, y)
 
     def record_last_stroke(self, cmd, x, y):
+        # type: (str, int, int) -> Types.NONE
         """Store last stroke data
         
         Stroke data is used for redraws and modifications of the line.
 
         Args:
-            cmd (str): name of the last command
-            x (int): last cursor x-coordinate
-            y (int): last cursor y-coordinate
+            cmd: name of the last command
+            x: last cursor x-coordinate
+            y: last cursor y-coordinate
 
         Returns:
 
@@ -709,6 +725,7 @@ class LineModeBase(
         self.model.brush.reset()
 
     def local_mouse_state(self, last_update=False):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -781,6 +798,7 @@ class LineModeBase(
         return x, y
 
     def ellipse_rotation_angle(self, x, y, sx, sy, constrain):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -814,6 +832,7 @@ class LineModeBase(
 
     # Straight Line
     def dynamic_straight_line(self, x, y, sx, sy):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -845,6 +864,7 @@ class LineModeBase(
 
     # Ellipse
     def dynamic_ellipse(self, x, y, sx, sy):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -891,6 +911,7 @@ class LineModeBase(
             self._stroke_to(sx + px, sy + py, pressure)
 
     def dynamic_curve_1(self, cx, cy, sx, sy, ex, ey):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -910,6 +931,7 @@ class LineModeBase(
         self.draw_curve_1(cx, cy, sx, sy, ex, ey)
 
     def dynamic_curve_2(self, cx, cy, sx, sy, ex, ey, kx, ky):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -934,6 +956,7 @@ class LineModeBase(
     # Found this page helpful:
     # http://www.caffeineowl.com/graphics/2d/vectorial/bezierintro.html
     def draw_curve_1(self, cx, cy, sx, sy, ex, ey):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -983,6 +1006,7 @@ class LineModeBase(
             self._stroke_to(px, py, pressure)
 
     def draw_curve_2(self, cx, cy, sx, sy, ex, ey, kx, ky):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -1038,6 +1062,7 @@ class LineModeBase(
             self._stroke_to(px, py, pressure)
 
     def _stroke_to(self, x, y, pressure):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -1068,6 +1093,7 @@ class LineModeBase(
         )
 
     def brush_prep(self, sx, sy):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -1241,6 +1267,7 @@ class EllipseMode(LineModeBase):
 
 ## Curve Math
 def point_on_curve_1(t, cx, cy, sx, sy, x1, y1, x2, y2):
+    # type: (Types.ELLIPSIS) -> Types.NONE
     """
 
     Args:
@@ -1268,6 +1295,7 @@ def point_on_curve_1(t, cx, cy, sx, sy, x1, y1, x2, y2):
 
 
 def point_on_curve_2(t, cx, cy, sx, sy, kx, ky, x1, y1, x2, y2, x3, y3):
+    # type: (Types.ELLIPSIS) -> Types.NONE
     """
 
     Args:
@@ -1305,6 +1333,7 @@ def point_on_curve_2(t, cx, cy, sx, sy, kx, ky, x1, y1, x2, y2, x3, y3):
 
 ## Ellipse Math
 def starting_point_for_ellipse(x, y, rotate):
+    # type: (Types.ELLIPSIS) -> Types.NONE
     """
 
     Args:
@@ -1326,6 +1355,7 @@ def starting_point_for_ellipse(x, y, rotate):
 
 
 def point_in_ellipse(x, y, r_sin, r_cos, degree):
+    # type: (Types.ELLIPSIS) -> Types.NONE
     """
 
     Args:
@@ -1352,6 +1382,7 @@ def point_in_ellipse(x, y, r_sin, r_cos, degree):
 
 
 def rotate_ellipse(x, y, sin, cos):
+    # type: (Types.ELLIPSIS) -> Types.NONE
     """
 
     Args:
@@ -1374,6 +1405,7 @@ def rotate_ellipse(x, y, sin, cos):
 
 ## Vector Math
 def get_angle(x1, y1, x2, y2):
+    # type: (Types.ELLIPSIS) -> Types.NONE
     """
 
     Args:
@@ -1396,6 +1428,7 @@ def get_angle(x1, y1, x2, y2):
 
 
 def constrain_to_angle(x, y, sx, sy):
+    # type: (Types.ELLIPSIS) -> Types.NONE
     """
 
     Args:
@@ -1420,6 +1453,7 @@ def constrain_to_angle(x, y, sx, sy):
 
 
 def constraint_angle(angle):
+    # type: (Types.ELLIPSIS) -> Types.NONE
     """
 
     Args:
@@ -1441,6 +1475,7 @@ def constraint_angle(angle):
 
 
 def angle_normal(ny, angle):
+    # type: (Types.ELLIPSIS) -> Types.NONE
     """
 
     Args:
@@ -1461,6 +1496,7 @@ def angle_normal(ny, angle):
 
 
 def length_and_normal(x1, y1, x2, y2):
+    # type: (Types.ELLIPSIS) -> Types.NONE
     """
 
     Args:
@@ -1484,6 +1520,7 @@ def length_and_normal(x1, y1, x2, y2):
 
 
 def normal(x1, y1, x2, y2):
+    # type: (Types.ELLIPSIS) -> Types.NONE
     """
 
     Args:
@@ -1502,6 +1539,7 @@ def normal(x1, y1, x2, y2):
 
 
 def vector_length(x, y):
+    # type: (Types.ELLIPSIS) -> Types.NONE
     """
 
     Args:
@@ -1518,6 +1556,7 @@ def vector_length(x, y):
 
 
 def distance(x1, y1, x2, y2):
+    # type: (Types.ELLIPSIS) -> Types.NONE
     """
 
     Args:
@@ -1537,6 +1576,7 @@ def distance(x1, y1, x2, y2):
 
 
 def dot_product(x1, y1, x2, y2):
+    # type: (Types.ELLIPSIS) -> Types.NONE
     """
 
     Args:
@@ -1554,6 +1594,7 @@ def dot_product(x1, y1, x2, y2):
 
 
 def multiply_add(x1, y1, x2, y2, d):
+    # type: (Types.ELLIPSIS) -> Types.NONE
     """
 
     Args:
@@ -1574,6 +1615,7 @@ def multiply_add(x1, y1, x2, y2, d):
 
 
 def multiply(x, y, d):
+    # type: (Types.ELLIPSIS) -> Types.NONE
     """
 
     Args:
@@ -1593,6 +1635,7 @@ def multiply(x, y, d):
 
 
 def add(x1, y1, x2, y2):
+    # type: (Types.ELLIPSIS) -> Types.NONE
     """
 
     Args:
@@ -1613,6 +1656,7 @@ def add(x1, y1, x2, y2):
 
 
 def difference(x1, y1, x2, y2):
+    # type: (Types.ELLIPSIS) -> Types.NONE
     """
 
     Args:
@@ -1633,6 +1677,7 @@ def difference(x1, y1, x2, y2):
 
 
 def midpoint(x1, y1, x2, y2):
+    # type: (Types.ELLIPSIS) -> Types.NONE
     """
 
     Args:
@@ -1653,6 +1698,7 @@ def midpoint(x1, y1, x2, y2):
 
 
 def perpendicular(x1, y1):
+    # type: (Types.ELLIPSIS) -> Types.NONE
     """
 
     Args:

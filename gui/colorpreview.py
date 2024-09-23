@@ -29,6 +29,7 @@ class BrushColorIndicator(PreviousCurrentColorAdjuster):
         self.clicked += self._clicked_cb
 
     def _init_color_manager(self, widget):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -47,6 +48,7 @@ class BrushColorIndicator(PreviousCurrentColorAdjuster):
         self.set_color_manager(mgr)
 
     def _clicked_cb(self, adj, event, pos):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:

@@ -53,6 +53,7 @@ class PanViewMode(gui.mode.ScrollableModeMixin, gui.mode.OneshotDragMode):
         return self.doc.app.cursors.get_action_cursor(self.ACTION_NAME)
 
     def drag_update_cb(self, tdw, event, ev_x, ev_y, dx, dy):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -110,6 +111,7 @@ class ZoomViewMode(gui.mode.ScrollableModeMixin, gui.mode.OneshotDragMode):
         return self.doc.app.cursors.get_action_cursor(self.ACTION_NAME)
 
     def drag_update_cb(self, tdw, event, ev_x, ev_y, dx, dy):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -171,6 +173,7 @@ class RotateViewMode(gui.mode.ScrollableModeMixin, gui.mode.OneshotDragMode):
         return self.doc.app.cursors.get_action_cursor(self.ACTION_NAME)
 
     def drag_update_cb(self, tdw, event, ev_x, ev_y, dx, dy):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:

@@ -32,6 +32,7 @@ for prefix, uri in _OPENRASTER_NAMESPACES.items():
 
 
 def indent_etree(elem, level=0):
+    # type: (Types.ELLIPSIS) -> Types.NONE
     """Indent an XML etree.
     
     This does not seem to come with python?
@@ -62,6 +63,7 @@ def indent_etree(elem, level=0):
 
 
 def xsd2bool(arg):
+    # type: (Types.ELLIPSIS) -> Types.NONE
     """Converts an XSD boolean datatype string from XML to a Python bool
     
     
@@ -87,6 +89,7 @@ def xsd2bool(arg):
 
 
 def escape(u, quot=False, apos=False):
+    # type: (Types.ELLIPSIS) -> Types.NONE
     """Escapes a Unicode string for use in XML/HTML.
     
     

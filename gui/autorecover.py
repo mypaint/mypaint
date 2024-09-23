@@ -73,6 +73,7 @@ class Presenter:
 
     @check_at_startup.setter
     def check_at_startup(self, value):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -205,6 +206,7 @@ class Presenter:
             fh.save_as_dialog(fh.save_file, suggested_filename=sugg_name)
 
     def _recovery_treeview_row_activated_cb(self, treeview, treepath, column):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """When a row's double-clicked, resume work on that doc.
 
         Args:
@@ -220,6 +222,7 @@ class Presenter:
         self._dialog.response(self._RESPONSE_CONTINUE)
 
     def _recovery_tree_selection_changed_cb(self, sel):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """When a row's clicked, update button sensitivities etc.
 
         Args:
@@ -256,6 +259,7 @@ class Presenter:
         return lib.document.AutosaveInfo.new_for_path(path)
 
     def _delete_autosave_button_clicked_cb(self, button):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -283,6 +287,7 @@ class Presenter:
         self._reload_liststore()
 
     def _at_startup_checkbutton_toggled_cb(self, toggle):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:

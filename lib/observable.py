@@ -193,6 +193,7 @@ class observable:  # noqa: N801
 
     @classmethod
     def _update_observers(cls, instance):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Internal: required updates after observable instances are copied
 
         Args:
@@ -411,6 +412,7 @@ class event(observable):  # noqa: N801
 
 
 def _wrap_observer(observer):
+    # type: (Types.ELLIPSIS) -> Types.NONE
     """Factory function for the observers in a _MethodWithObservers.
 
     Args:
@@ -428,6 +430,7 @@ def _wrap_observer(observer):
 
 
 def _is_bound_method(func):
+    # type: (Types.ELLIPSIS) -> Types.NONE
     """True if a callable is a bound method
 
     Args:
@@ -447,6 +450,7 @@ def _is_bound_method(func):
 
 
 def _method_repr(bound=None, instance=None, func=None):
+    # type: (Types.ELLIPSIS) -> Types.NONE
     """Terse, useful, hopefully permanent string repr() for a method
     
     Names only, given that object repr()s may change over time and this
@@ -635,10 +639,11 @@ class ObservableDict(dict):
 
     @event
     def modified(self, old_values):
+        # type: (dict) -> Types.NONE
         """Event: one or more data keys were modified.
 
         Args:
-            old_values (dict): modified keys, and the old values.
+            old_values: modified keys, and the old values.
         
         You should not modify the ObservableDict in any function you
         attach to this event.  Also, note that the keys listed may no
@@ -690,6 +695,7 @@ class ObservableDict(dict):
         return result
 
     def update(self, *args, **kwargs):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Update from a dict, or one built from the args.
 
         Args:
@@ -718,6 +724,7 @@ class ObservableDict(dict):
         return result
 
     def pop(self, key, *args, **kwargs):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -736,6 +743,7 @@ class ObservableDict(dict):
         return result
 
     def setdefault(self, key, *args, **kwargs):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:

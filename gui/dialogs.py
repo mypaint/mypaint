@@ -36,6 +36,7 @@ CANCEL = 5
 
 
 def confirm(widget, question):
+    # type: (Types.ELLIPSIS) -> Types.NONE
     """
 
     Args:
@@ -64,6 +65,7 @@ def confirm(widget, question):
 
 
 def _entry_activate_dialog_response_cb(entry, dialog, response=Gtk.ResponseType.ACCEPT):
+    # type: (Types.ELLIPSIS) -> Types.NONE
     """
 
     Args:
@@ -80,6 +82,7 @@ def _entry_activate_dialog_response_cb(entry, dialog, response=Gtk.ResponseType.
 
 
 def ask_for_name(widget, title, default):
+    # type: (Types.ELLIPSIS) -> Types.NONE
     """
 
     Args:
@@ -138,6 +141,7 @@ def ask_for_name(widget, title, default):
 
 
 def error(widget, message):
+    # type: (Types.ELLIPSIS) -> Types.NONE
     """
 
     Args:
@@ -162,6 +166,7 @@ def error(widget, message):
 
 
 def image_new_from_png_data(data):
+    # type: (Types.ELLIPSIS) -> Types.NONE
     """
 
     Args:
@@ -184,6 +189,7 @@ def image_new_from_png_data(data):
 def confirm_rewrite_brush(
     window, brushname, existing_preview_pixbuf, imported_preview_data
 ):
+    # type: (Types.ELLIPSIS) -> Types.NONE
     """
 
     Args:
@@ -269,6 +275,7 @@ def confirm_rewrite_brush(
 
 
 def confirm_rewrite_group(window, groupname, deleted_groupname):
+    # type: (Types.ELLIPSIS) -> Types.NONE
     """
 
     Args:
@@ -327,6 +334,7 @@ def confirm_rewrite_group(window, groupname, deleted_groupname):
 
 
 def open_dialog(title, window, filters):
+    # type: (Types.ELLIPSIS) -> Types.NONE
     """Show a file chooser dialog.
     
     Filters should be a list of tuples: (filtertitle, globpattern).
@@ -380,6 +388,7 @@ def open_dialog(title, window, filters):
 
 
 def save_dialog(title, window, filters, default_format=None):
+    # type: (Types.ELLIPSIS) -> Types.NONE
     """Shows a file save dialog.
     
     "filters" should be a list of tuples: (filter title, glob pattern).
@@ -445,6 +454,7 @@ def save_dialog(title, window, filters, default_format=None):
 
 
 def confirm_brushpack_import(packname, window=None, readme=None):
+    # type: (Types.ELLIPSIS) -> Types.NONE
     """
 
     Args:
@@ -505,6 +515,7 @@ def confirm_brushpack_import(packname, window=None, readme=None):
 
 
 def ask_for_color(title, color=None, previous_color=None, parent=None):
+    # type: (Types.ELLIPSIS) -> Types.NONE
     """Returns a color chosen by the user via a modal dialog.
     
     The dialog is a standard `Gtk.ColorSelectionDialog`.

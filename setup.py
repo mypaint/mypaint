@@ -44,6 +44,7 @@ LIBMYPAINT = "libmypaint-2.0"
 
 
 def print_err(msg):
+    # type: (Types.ELLIPSIS) -> Types.NONE
     """
 
     Args:
@@ -72,6 +73,7 @@ def pkgconf():
 
 
 def pkgconfig_variable(package, variable_name):
+    # type: (Types.ELLIPSIS) -> Types.NONE
     """
 
     Args:
@@ -119,6 +121,7 @@ class BuildTranslations(Command):
 
     @staticmethod
     def get_translation_paths(command, lang_codes=None):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Returns paths for building and installing message catalogs
         
         The returned data is a tuple with two lists.
@@ -202,6 +205,7 @@ class BuildTranslations(Command):
             print_err(msg.format(symlink=symlink))
 
     def _compile_message_catalog(self, po_file_path, mo_file_path):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -500,6 +504,7 @@ class BuildConfig(Command):
         return pkgconfig_variable("mypaint-brushes-2.0", "brushesdir")
 
     def instantiate_template(self, template_path, output_path, substitutions):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Instantiate a template and write result to a file
 
         Args:
@@ -609,6 +614,7 @@ class BuildExt(build_ext):
                 ext.runtime_library_dirs[:] = rt_libs
 
     def build_extension(self, ext):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -690,6 +696,7 @@ class Install(install):
 
 
 def rel_to_path(src_path, dst_path):
+    # type: (Types.ELLIPSIS) -> Types.NONE
     """
 
     Args:
@@ -873,6 +880,7 @@ class InstallScripts(install_scripts):
             self.outfiles.extend(outfiles)
 
     def _install_script(self, src, header):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -985,6 +993,7 @@ class _ManagedInstBase(Command):
             self.rmtree(path)
 
     def rmtree(self, path):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Remove a tree recursively.
 
         Args:
@@ -1000,6 +1009,7 @@ class _ManagedInstBase(Command):
             shutil.rmtree(path, ignore_errors=True)
 
     def rm(self, path):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Remove a single file.
 
         Args:
@@ -1090,6 +1100,7 @@ class ManagedUninstall(_ManagedInstBase):
 
 
 def uniq(items):
+    # type: (Types.ELLIPSIS) -> Types.NONE
     """Order-preserving uniq()
 
     Args:
@@ -1111,6 +1122,7 @@ def uniq(items):
 
 
 def pkgconfig(packages, **kwopts):
+    # type: (Types.ELLIPSIS) -> Types.NONE
     """Runs pkgconfig to update its args.
     
     Also returns the modified args dict. Recipe adapted from
@@ -1157,6 +1169,7 @@ def pkgconfig(packages, **kwopts):
 
 
 def check_dependencies(deps):
+    # type: (Types.ELLIPSIS) -> Types.NONE
     """
 
     Args:

@@ -58,6 +58,7 @@ class _CColorChanger(gui.colors.adjbases.IconRenderableColorAdjusterWidget):
         super(_CColorChanger, self).color_updated()
 
     def render_background_cb(self, cr, wd, ht, icon_border=None):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -89,6 +90,7 @@ class _CColorChanger(gui.colors.adjbases.IconRenderableColorAdjusterWidget):
         cr.paint()
 
     def render_as_icon(self, cr, size):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -108,6 +110,7 @@ class _CColorChanger(gui.colors.adjbases.IconRenderableColorAdjusterWidget):
         super(_CColorChanger, self).render_as_icon(cr, size)
 
     def get_color_at_position(self, x, y):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -129,6 +132,7 @@ class _CColorChanger(gui.colors.adjbases.IconRenderableColorAdjusterWidget):
         return None
 
     def paint_foreground_cb(self, cr, wd, ht):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -144,6 +148,7 @@ class _CColorChanger(gui.colors.adjbases.IconRenderableColorAdjusterWidget):
         pass
 
     def set_color_manager(self, manager):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -158,6 +163,7 @@ class _CColorChanger(gui.colors.adjbases.IconRenderableColorAdjusterWidget):
         self._update_hsv()
 
     def _map_cb(self, widget):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:

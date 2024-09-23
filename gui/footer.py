@@ -24,6 +24,7 @@ from gui.quickchoice import BrushChooserPopup  # noqa
 import lib.xml
 from lib.gettext import C_
 from gettext import gettext as _
+from Gtk import DrawingArea
 
 logger = logging.getLogger(__name__)
 
@@ -86,10 +87,11 @@ class BrushIndicatorPresenter:
         self._click_button = None
 
     def set_drawing_area(self, da):
+        # type: (DrawingArea) -> Types.NONE
         """Set the view DrawingArea.
 
         Args:
-            da (Gtk.DrawingArea): the drawing area
+            da: the drawing area
         
         The view should be set before or during its realization.
 
@@ -110,10 +112,11 @@ class BrushIndicatorPresenter:
         da.connect("button-release-event", self._button_release_cb)
 
     def set_brush_manager(self, bm):
+        # type: (gui.brushmanager.BrushManager) -> Types.NONE
         """Set the model BrushManager.
 
         Args:
-            bm (gui.brushmanager.BrushManager): the model BrushManager
+            bm: the model BrushManager
 
         Returns:
 
@@ -124,10 +127,11 @@ class BrushIndicatorPresenter:
         bm.brush_selected += self._brush_selected_cb
 
     def set_chooser(self, chooser):
+        # type: (BrushChooserPopup) -> Types.NONE
         """Set an optional popup, to be shown when clicked.
 
         Args:
-            chooser (BrushChooserPopup): popup to show
+            chooser: popup to show
 
         Returns:
 
@@ -139,6 +143,7 @@ class BrushIndicatorPresenter:
     ## View event handlers
 
     def _draw_cb(self, da, cr):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Paint a preview of the current brush to the view.
 
         Args:
@@ -210,6 +215,7 @@ class BrushIndicatorPresenter:
         cr.mask(mask)
 
     def _query_tooltip_cb(self, da, x, y, keyboard_mode, tooltip):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -249,6 +255,7 @@ class BrushIndicatorPresenter:
         return True
 
     def _button_press_cb(self, widget, event):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -270,6 +277,7 @@ class BrushIndicatorPresenter:
         return True
 
     def _button_release_cb(self, widget, event):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -301,6 +309,7 @@ class BrushIndicatorPresenter:
     ## Model event handlers
 
     def _brush_selected_cb(self, bm, brush, brushinfo):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -323,6 +332,7 @@ class BrushIndicatorPresenter:
     ## Utility methods
 
     def _get_scaled_pixbuf(self, size):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:

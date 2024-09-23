@@ -43,6 +43,7 @@ class Processor:
         return len(self._queue) > 0
 
     def add_work(self, func, *args, **kwargs):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Adds work
 
         Args:

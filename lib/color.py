@@ -170,6 +170,7 @@ class UIColor:
         return RGBColor(luma, luma, luma)
 
     def to_contrasting(self, k=0.333):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Returns a contrasting `UIColor` suitable for drawing.
 
         Args:
@@ -247,6 +248,7 @@ class UIColor:
         return RGBColor(r, g, b)
 
     def to_hex_str(self, prefix="#"):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Converts to an RGB hex string of the form ``#RRGGBB``
 
         Args:
@@ -310,6 +312,7 @@ class UIColor:
         return RGBColor(r / 255, g / 255, b / 255)
 
     def interpolate(self, other, steps):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Generator: interpolate between this color and another.
 
         Args:
@@ -366,6 +369,7 @@ class RGBColor(UIColor):
         )
 
     def interpolate(self, other, steps):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """RGB interpolation.
 
         Args:
@@ -465,6 +469,7 @@ class HSVColor(UIColor):
         )
 
     def interpolate(self, other, steps):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """HSV interpolation, sometimes nicer looking than RGB.
         
         
@@ -636,6 +641,7 @@ class HCYColor(UIColor):
         )
 
     def interpolate(self, other, steps):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """HCY interpolation.
         
         
@@ -779,6 +785,7 @@ class YCbCrColor(UIColor):
         )
 
     def interpolate(self, other, steps):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """YCbCr interpolation.
         
         
@@ -856,6 +863,7 @@ class YCbCrColor(UIColor):
 
 
 def RGB_to_YCbCr_BT601(rgb):
+    # type: (Types.ELLIPSIS) -> Types.NONE
     """RGB → BT601 YCbCr: R,G,B,Y ∈ [0, 1]; Cb,Cr ∈ [-0.5, 0.5]
 
     Args:
@@ -874,6 +882,7 @@ def RGB_to_YCbCr_BT601(rgb):
 
 
 def YCbCr_to_RGB_BT601(YCbCr):
+    # type: (Types.ELLIPSIS) -> Types.NONE
     """BT601 YCbCr → RGB: R,G,B,Y ∈ [0, 1]; Cb,Cr ∈ [-0.5, 0.5]
 
     Args:

@@ -69,6 +69,7 @@ class BrushSizeOverlay(gui.overlays.Overlay):
         self._queue_tdw_redraw(clear=True)
 
     def _queue_tdw_redraw(self, clear=False):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -136,6 +137,7 @@ class BrushSizeOverlay(gui.overlays.Overlay):
             return top, lft, rgt, bot
 
     def update(self, radius, handle_x, handle_y):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -155,6 +157,7 @@ class BrushSizeOverlay(gui.overlays.Overlay):
         self._queue_tdw_redraw()
 
     def paint(self, cr):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -246,6 +249,7 @@ class BrushResizeMode(gui.mode.OneshotDragMode):
         return Gdk.Cursor.new_from_name(Gdk.Display.get_default(), "none")
 
     def enter(self, doc, **kwds):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -266,6 +270,7 @@ class BrushResizeMode(gui.mode.OneshotDragMode):
             self._prev_mode.doc = doc
 
     def drag_start_cb(self, tdw, event):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -306,6 +311,7 @@ class BrushResizeMode(gui.mode.OneshotDragMode):
         )
 
     def key_press_cb(self, win, tdw, event):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -322,6 +328,7 @@ class BrushResizeMode(gui.mode.OneshotDragMode):
         return super(BrushResizeMode, self).key_press_cb(win, tdw, event)
 
     def key_release_cb(self, win, tdw, event):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -343,6 +350,7 @@ class BrushResizeMode(gui.mode.OneshotDragMode):
         self._precision_mode = self._mod_pressed_initially ^ mod_pressed
 
     def leave(self, **kwds):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -360,6 +368,7 @@ class BrushResizeMode(gui.mode.OneshotDragMode):
         return super(BrushResizeMode, self).leave(**kwds)
 
     def drag_update_cb(self, tdw, event, ev_x, ev_y, dx, dy):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -394,6 +403,7 @@ class BrushResizeMode(gui.mode.OneshotDragMode):
         self._overlay.update(radius_px, self._handle_x, self._handle_y)
 
     def drag_stop_cb(self, tdw):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:

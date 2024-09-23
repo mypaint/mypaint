@@ -135,6 +135,7 @@ class ModeRegistry(type):
 
     @classmethod
     def get_mode_class(cls, action_name):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Looks up a registered mode class by its associated action's name.
 
         Args:
@@ -270,6 +271,7 @@ class InteractionMode(metaclass=ModeRegistry):
     ## Mode stacking interface
 
     def stackable_on(self, mode):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Tests whether the mode can usefully stack onto an active mode.
 
         Args:
@@ -338,6 +340,7 @@ class InteractionMode(metaclass=ModeRegistry):
         assert not hasattr(super(InteractionMode, self), "leave")
 
     def checkpoint(self, **kwargs):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Commits any of the mode's uncommitted work
         
         This is called on the active mode at various times to signal
@@ -363,6 +366,7 @@ class InteractionMode(metaclass=ModeRegistry):
     ## Event handler defaults (no-ops)
 
     def button_press_cb(self, tdw, event):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Handler for ``button-press-event``s.
 
         Args:
@@ -377,6 +381,7 @@ class InteractionMode(metaclass=ModeRegistry):
         assert not hasattr(super(InteractionMode, self), "button_press_cb")
 
     def motion_notify_cb(self, tdw, event):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Handler for ``motion-notify-event``s.
 
         Args:
@@ -390,6 +395,7 @@ class InteractionMode(metaclass=ModeRegistry):
         """
 
     def button_release_cb(self, tdw, event):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Handler for ``button-release-event``s.
 
         Args:
@@ -404,6 +410,7 @@ class InteractionMode(metaclass=ModeRegistry):
         assert not hasattr(super(InteractionMode, self), "button_release_cb")
 
     def scroll_cb(self, tdw, event):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Handler for ``scroll-event``s.
 
         Args:
@@ -418,6 +425,7 @@ class InteractionMode(metaclass=ModeRegistry):
         assert not hasattr(super(InteractionMode, self), "scroll_cb")
 
     def key_press_cb(self, win, tdw, event):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Handler for ``key-press-event``s.
         
         The base class implementation does nothing.
@@ -440,6 +448,7 @@ class InteractionMode(metaclass=ModeRegistry):
         return True
 
     def key_release_cb(self, win, tdw, event):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Handler for ``key-release-event``s.
         
         The base class implementation does nothing. See `key_press_cb` for
@@ -465,6 +474,7 @@ class InteractionMode(metaclass=ModeRegistry):
     # somewhere more sensible.
 
     def drag_start_cb(self, tdw, event):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -479,6 +489,7 @@ class InteractionMode(metaclass=ModeRegistry):
         assert not hasattr(super(InteractionMode, self), "drag_start_cb")
 
     def drag_update_cb(self, tdw, event, ev_x, ev_y, dx, dy):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -497,6 +508,7 @@ class InteractionMode(metaclass=ModeRegistry):
         assert not hasattr(super(InteractionMode, self), "drag_update_cb")
 
     def drag_stop_cb(self, tdw):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -578,6 +590,7 @@ class ScrollableModeMixin(InteractionMode):
         self.__total_dy = 0.0
 
     def enter(self, doc, **kwds):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -593,6 +606,7 @@ class ScrollableModeMixin(InteractionMode):
         return super(ScrollableModeMixin, self).enter(doc, **kwds)
 
     def button_press_cb(self, tdw, event):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -608,6 +622,7 @@ class ScrollableModeMixin(InteractionMode):
         return super(ScrollableModeMixin, self).button_press_cb(tdw, event)
 
     def button_release_cb(self, tdw, event):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -623,6 +638,7 @@ class ScrollableModeMixin(InteractionMode):
         return super(ScrollableModeMixin, self).button_release_cb(tdw, event)
 
     def scroll_cb(self, tdw, event):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Handles scroll-wheel events.
         
         Normal scroll wheel events: whichever of {panning, scrolling}
@@ -784,6 +800,7 @@ class PaintingModeOptionsWidgetBase(Gtk.Grid):
         row = self.init_reset_widgets(row)
 
     def init_common_widgets(self, row):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -812,6 +829,7 @@ class PaintingModeOptionsWidgetBase(Gtk.Grid):
         return row
 
     def init_specialized_widgets(self, row):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -825,6 +843,7 @@ class PaintingModeOptionsWidgetBase(Gtk.Grid):
         return row
 
     def init_reset_widgets(self, row):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -845,6 +864,7 @@ class PaintingModeOptionsWidgetBase(Gtk.Grid):
         return row
 
     def reset_button_clicked_cb(self, button):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -996,10 +1016,11 @@ class BrushworkModeMixin(InteractionMode):
             model.do(cmd)
 
     def brushwork_rollback(self, model):
+        # type: (Document) -> Types.NONE
         """Rolls back any active brushwork for a model
 
         Args:
-            model (Document): The model to roll back
+            model: The model to roll back
         
         This restores the model's appearance and state to how it was
         when the current segment of brushwork started.
@@ -1019,6 +1040,7 @@ class BrushworkModeMixin(InteractionMode):
         cmd.stop_recording(revert=True)
 
     def brushwork_commit_all(self, abrupt=False):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Commits all active brushwork
 
         Args:
@@ -1121,6 +1143,7 @@ class BrushworkModeMixin(InteractionMode):
         )
 
     def leave(self, **kwds):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Leave mode, committing outstanding brushwork as necessary
         
         The leave action defined here is careful to tail off strokes
@@ -1158,6 +1181,7 @@ class BrushworkModeMixin(InteractionMode):
         super(BrushworkModeMixin, self).leave(**kwds)
 
     def checkpoint(self, **kwargs):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Commit any outstanding brushwork
         
         Like `leave()`, this commits the currently recording Brushwork
@@ -1189,6 +1213,7 @@ class SingleClickMode(InteractionMode):
         self._button_pressed = None
 
     def enter(self, doc, **kwds):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -1209,6 +1234,7 @@ class SingleClickMode(InteractionMode):
             )
 
     def leave(self, **kwds):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -1224,6 +1250,7 @@ class SingleClickMode(InteractionMode):
         super(SingleClickMode, self).leave(**kwds)
 
     def button_press_cb(self, tdw, event):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -1242,6 +1269,7 @@ class SingleClickMode(InteractionMode):
             return super(SingleClickMode, self).button_press_cb(tdw, event)
 
     def button_release_cb(self, tdw, event):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -1261,6 +1289,7 @@ class SingleClickMode(InteractionMode):
             return super(SingleClickMode, self).button_press_cb(tdw, event)
 
     def clicked_cb(self, tdw, event):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -1344,6 +1373,7 @@ class DragMode(InteractionMode):
             self._tdw_grab_broken_conninfo = None
 
     def _stop_drag(self, t=Gdk.CURRENT_TIME):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -1367,6 +1397,7 @@ class DragMode(InteractionMode):
         self._reset_drag_state()
 
     def _start_drag(self, tdw, event):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -1479,6 +1510,7 @@ class DragMode(InteractionMode):
         GLib.idle_add(self._bailout_idle_cb, app.doc.modes)
 
     def _bailout_idle_cb(self, modestack):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Bail out of this mode if it's anywhere in the mode stack
 
         Args:
@@ -1496,6 +1528,7 @@ class DragMode(InteractionMode):
         return False
 
     def _tdw_grab_broken_cb(self, tdw, event):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -1524,6 +1557,7 @@ class DragMode(InteractionMode):
         return self._in_drag
 
     def enter(self, doc, **kwds):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Enter the mode, recording the held modifier keys the 1st time
         
         The attribute `self.initial_modifiers` is set the first time the
@@ -1579,6 +1613,7 @@ class DragMode(InteractionMode):
         return False
 
     def leave(self, **kwds):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -1595,6 +1630,7 @@ class DragMode(InteractionMode):
         super(DragMode, self).leave(**kwds)
 
     def button_press_cb(self, tdw, event):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -1621,6 +1657,7 @@ class DragMode(InteractionMode):
         return super(DragMode, self).button_press_cb(tdw, event)
 
     def button_release_cb(self, tdw, event):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -1638,6 +1675,7 @@ class DragMode(InteractionMode):
         return super(DragMode, self).button_release_cb(tdw, event)
 
     def motion_notify_cb(self, tdw, event):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -1662,6 +1700,7 @@ class DragMode(InteractionMode):
         return super(DragMode, self).motion_notify_cb(tdw, event)
 
     def key_press_cb(self, win, tdw, event):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -1688,6 +1727,7 @@ class DragMode(InteractionMode):
         return super(DragMode, self).key_press_cb(win, tdw, event)
 
     def key_release_cb(self, win, tdw, event):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -1749,6 +1789,7 @@ class OneshotDragMode(DragMode):
         self.temporary_activation = temporary_activation
 
     def stackable_on(self, mode):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Oneshot modes return to the mode the user came from on exit
 
         Args:
@@ -1762,6 +1803,7 @@ class OneshotDragMode(DragMode):
         return not isinstance(mode, OneshotDragMode)
 
     def drag_stop_cb(self, tdw):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -1830,10 +1872,11 @@ class ModeStack:
         self.default_mode_class = _NullMode
 
     def _sync_pending_changes_cb(self, model, **kwargs):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Syncs pending changes with the model
 
         Args:
-            model (Document): the requesting model
+            model: the requesting model
             **kwargs: 
 
         Returns:
@@ -1849,6 +1892,7 @@ class ModeStack:
 
     @event
     def changed(self, old, new):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Event: emitted when the active mode changes
 
         Args:
@@ -1929,10 +1973,11 @@ class ModeStack:
         self.changed(old=old_mode, new=top_mode)
 
     def push(self, mode):
+        # type: (InteractionMode) -> Types.NONE
         """Pushes a mode, and enters it.
 
         Args:
-            mode (InteractionMode): Mode to be stacked and made active
+            mode: Mode to be stacked and made active
 
         Returns:
 

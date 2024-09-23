@@ -149,6 +149,7 @@ class AccelMapEditor(Gtk.Grid):
         )
 
     def _entry_changed(self, widget):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -163,6 +164,7 @@ class AccelMapEditor(Gtk.Grid):
         self._filter.refilter()
 
     def _show_cb(self, widget):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -256,6 +258,7 @@ class AccelMapEditor(Gtk.Grid):
                 self._store.append(row)
 
     def _populate_row(self, row, path, action_label, action_desc, accel_label):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Write correctly formatted row data into a list-like obj.
 
         Args:
@@ -292,6 +295,7 @@ class AccelMapEditor(Gtk.Grid):
         row[self._SEARCH_TEXT_COLUMN] = accel_label
 
     def _fmt_accel_label(self, label):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -346,6 +350,7 @@ class AccelMapEditor(Gtk.Grid):
     ## Search
 
     def _view_search_equal_cb(self, model, col, key, it):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -365,6 +370,7 @@ class AccelMapEditor(Gtk.Grid):
     # Filter
 
     def _filter_check(self, model, iter, search_key):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -420,6 +426,7 @@ class AccelMapEditor(Gtk.Grid):
     ## Editing
 
     def _accel_edited_cb(self, cell, path, newname):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Arrange for list updates to happen after editing is done
 
         Args:
@@ -435,6 +442,7 @@ class AccelMapEditor(Gtk.Grid):
         self._update_from_accel_map()
 
     def _accel_editing_started_cb(self, cell, editable, treepath):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Begin editing by showing a key capture dialog
 
         Args:
@@ -547,6 +555,7 @@ class AccelMapEditor(Gtk.Grid):
         dialog.show()
 
     def _edit_dialog_set_hint(self, dialog, markup):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Sets the hint message label in the capture dialog
 
         Args:
@@ -561,6 +570,7 @@ class AccelMapEditor(Gtk.Grid):
         dialog.hint_widget.set_markup(markup)
 
     def _edit_dialog_set_standard_hint(self, dialog):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Set the boring how-to message in capture dialog
 
         Args:
@@ -579,6 +589,7 @@ class AccelMapEditor(Gtk.Grid):
         self._edit_dialog_set_hint(dialog, markup)
 
     def _edit_dialog_key_press_cb(self, dialog, event, editable):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -678,6 +689,7 @@ class AccelMapEditor(Gtk.Grid):
         return True
 
     def _edit_dialog_response_cb(self, dialog, response_id, editable, path):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -709,6 +721,7 @@ class AccelMapEditor(Gtk.Grid):
 
     @classmethod
     def _delete_clashing_accelmap_entries(cls, keyval, mods, path_to_keep):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -738,6 +751,7 @@ class AccelMapEditor(Gtk.Grid):
 
     @classmethod
     def _set_accelmap_entry(cls, path, keyval, mods):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -762,6 +776,7 @@ class AccelMapEditor(Gtk.Grid):
 
 
 def _udecode(s, enc="utf-8"):
+    # type: (Types.ELLIPSIS) -> Types.NONE
     """The APIs sometimes return Unicode strings as bytes objects.
     
     This is more often a Python2 thing, and is sometimes OK back then,
@@ -814,6 +829,7 @@ if __name__ == "__main__":
     orig_excepthook = sys.excepthook
 
     def _excepthook(*args):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:

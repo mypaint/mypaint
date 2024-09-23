@@ -97,10 +97,11 @@ class TiledDrawWidget(Gtk.EventBox):
 
     @classmethod
     def get_tdw_under_device(cls, device):
+        # type: (Gdk.Device) -> Types.NONE
         """Get the TDW directly under a device's pointer
 
         Args:
-            device (Gdk.Device): the device to look up
+            device: the device to look up
         :rtype: tuple
 
         Returns:
@@ -188,6 +189,7 @@ class TiledDrawWidget(Gtk.EventBox):
         self.renderer.transformation_updated += forwarder
 
     def _announce_transformation_updated(self, *args):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -205,6 +207,7 @@ class TiledDrawWidget(Gtk.EventBox):
         """Forwarded event: transformation was updated"""
 
     def _size_allocate_cb(self, widget, alloc):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Allow for allocation changes under certain circumstances
         
         We need to allow for changes like toolbars or sidebars appearing or
@@ -239,6 +242,7 @@ class TiledDrawWidget(Gtk.EventBox):
             self.renderer.scroll(dx, dy, ongoing=False)
 
     def _realize_cb(self, widget):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -254,6 +258,7 @@ class TiledDrawWidget(Gtk.EventBox):
         win.set_event_compression(False)
 
     def set_model(self, model):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -277,6 +282,7 @@ class TiledDrawWidget(Gtk.EventBox):
         self.renderer.queue_draw()
 
     def enter_notify_cb(self, widget, event):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -305,6 +311,7 @@ class TiledDrawWidget(Gtk.EventBox):
 
     @scale.setter
     def scale(self, n):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -324,6 +331,7 @@ class TiledDrawWidget(Gtk.EventBox):
 
     @zoom_min.setter
     def zoom_min(self, n):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -343,6 +351,7 @@ class TiledDrawWidget(Gtk.EventBox):
 
     @zoom_max.setter
     def zoom_max(self, n):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -372,6 +381,7 @@ class TiledDrawWidget(Gtk.EventBox):
 
     @pixelize_threshold.setter
     def pixelize_threshold(self, n):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -401,6 +411,7 @@ class TiledDrawWidget(Gtk.EventBox):
 
     @overlay_layer.setter
     def overlay_layer(self, l):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -438,6 +449,7 @@ class TiledDrawWidget(Gtk.EventBox):
         return self.last_painting_pos
 
     def set_last_painting_pos(self, value):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -571,6 +583,7 @@ turn this into a bounding box in model-space.: Corners [TL, TR, BR, BL] as (x, y
         self.renderer.queue_draw()
 
     def zoom(self, zoom_step, center=None, ongoing=True):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Multiply the current scale factor
 
         Args:
@@ -587,6 +600,7 @@ turn this into a bounding box in model-space.: Corners [TL, TR, BR, BL] as (x, y
             self.renderer.scale *= zoom_step
 
     def set_zoom(self, zoom, center=None, ongoing=False):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Set the zoom to an exact value
 
         Args:
@@ -604,6 +618,7 @@ turn this into a bounding box in model-space.: Corners [TL, TR, BR, BL] as (x, y
         self.renderer.update_cursor()
 
     def rotate(self, angle_step, center=None, ongoing=True):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Rotate the view by a step
 
         Args:
@@ -622,6 +637,7 @@ turn this into a bounding box in model-space.: Corners [TL, TR, BR, BL] as (x, y
             self.renderer.rotation += angle_step
 
     def set_rotation(self, angle, ongoing=False):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Set the rotation to an exact value
 
         Args:
@@ -644,6 +660,7 @@ turn this into a bounding box in model-space.: Corners [TL, TR, BR, BL] as (x, y
             self.renderer.mirrored = not self.renderer.mirrored
 
     def set_mirrored(self, mirrored):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Set mirroring to a discrete state
 
         Args:
@@ -668,6 +685,7 @@ turn this into a bounding box in model-space.: Corners [TL, TR, BR, BL] as (x, y
         return tr
 
     def set_transformation(self, transformation):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Sets the current transformation, and redraws.
 
         Args:
@@ -773,6 +791,7 @@ class DrawCursorMixin:
         self._first_map_cb_id = self.connect("map", self._first_map_cb)
 
     def _first_map_cb(self, widget, *a):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Updates the cursor on the first map
 
         Args:
@@ -827,6 +846,7 @@ class DrawCursorMixin:
         window.set_cursor(c)
 
     def set_override_cursor(self, cursor):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Set a cursor which will always be used.
         
         Used by the color picker. The override cursor will be used regardless
@@ -859,6 +879,7 @@ class DrawCursorMixin:
         return r, style
 
     def brush_modified_cb(self, settings):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Handles brush modifications: set up by the main TDW.
 
         Args:
@@ -885,6 +906,7 @@ class DrawCursorMixin:
 def calculate_transformation_matrix(
     scale, rotation, translation_x, translation_y, mirrored
 ):
+    # type: (Types.ELLIPSIS) -> Types.NONE
     """
 
     Args:
@@ -1063,6 +1085,7 @@ class CanvasRenderer(Gtk.DrawingArea, DrawCursorMixin):
         return self._translation_x
 
     def _set_x(self, val):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -1083,6 +1106,7 @@ class CanvasRenderer(Gtk.DrawingArea, DrawCursorMixin):
         return self._translation_y
 
     def _set_y(self, val):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -1103,6 +1127,7 @@ class CanvasRenderer(Gtk.DrawingArea, DrawCursorMixin):
         return self._scale
 
     def _set_scale(self, val):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -1123,6 +1148,7 @@ class CanvasRenderer(Gtk.DrawingArea, DrawCursorMixin):
         return self._rotation
 
     def _set_rotation(self, val):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -1143,6 +1169,7 @@ class CanvasRenderer(Gtk.DrawingArea, DrawCursorMixin):
         return self._mirrored
 
     def _set_mirrored(self, val):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -1159,6 +1186,7 @@ class CanvasRenderer(Gtk.DrawingArea, DrawCursorMixin):
     mirrored = property(_get_mirrored, _set_mirrored)
 
     def _state_changed_cb(self, widget, oldstate):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Handle the sensitivity state changing
         
         Saving and loading images toggles the sensitivity state on all
@@ -1190,6 +1218,7 @@ class CanvasRenderer(Gtk.DrawingArea, DrawCursorMixin):
     ## Redrawing
 
     def canvas_modified_cb(self, model, x, y, w, h):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Handles area redraw notifications from the underlying model
 
         Args:
@@ -1231,6 +1260,7 @@ class CanvasRenderer(Gtk.DrawingArea, DrawCursorMixin):
         self._queue_idle_redraw(None)
 
     def queue_draw_area(self, x, y, w, h):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -1251,6 +1281,7 @@ class CanvasRenderer(Gtk.DrawingArea, DrawCursorMixin):
         self._queue_idle_redraw(bbox)
 
     def _queue_idle_redraw(self, bbox):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -1298,6 +1329,7 @@ class CanvasRenderer(Gtk.DrawingArea, DrawCursorMixin):
     ## Redraw events
 
     def current_layer_changed_cb(self, rootstack, path):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -1312,6 +1344,7 @@ class CanvasRenderer(Gtk.DrawingArea, DrawCursorMixin):
         self.update_cursor()
 
     def layer_props_changed_cb(self, rootstack, path, layer, changed):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -1328,6 +1361,7 @@ class CanvasRenderer(Gtk.DrawingArea, DrawCursorMixin):
         self.update_cursor()
 
     def frame_enabled_changed_cb(self, model, enabled):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -1342,6 +1376,7 @@ class CanvasRenderer(Gtk.DrawingArea, DrawCursorMixin):
         self.queue_draw()
 
     def frame_updated_cb(self, model, old_frame, new_frame):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -1360,6 +1395,7 @@ class CanvasRenderer(Gtk.DrawingArea, DrawCursorMixin):
     ## Transformations and coords
 
     def display_to_model(self, disp_x, disp_y):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Converts display coordinates to model coordinates.
 
         Args:
@@ -1377,6 +1413,7 @@ class CanvasRenderer(Gtk.DrawingArea, DrawCursorMixin):
         return view_model.transform_point(disp_x, disp_y)
 
     def model_to_display(self, model_x, model_y):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Converts model coordinates to display coordinates.
 
         Args:
@@ -1408,6 +1445,7 @@ class CanvasRenderer(Gtk.DrawingArea, DrawCursorMixin):
         return self.cached_transformation_matrix
 
     def _configure_event_cb(self, widget, event):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -1548,6 +1586,7 @@ within the sampling square.: The colour sampled.
         return self.app.preferences["view.real_alpha_checks"]
 
     def _draw_cb(self, widget, cr):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Draw handler
 
         Args:
@@ -1635,6 +1674,7 @@ within the sampling square.: The colour sampled.
         return True
 
     def _render_get_clip_region(self, cr, device_bbox):
+        # type: (cairo.Context, tuple) -> tuple
         """Get the area that needs to be updated, in device coords.
         
         Called when handling "draw" events.  This uses Cairo's clip
@@ -1645,11 +1685,8 @@ within the sampling square.: The colour sampled.
         redraw, and the area corresponds to the entire display.
 
         Args:
-            cr (cairo.Context): as passed to the "draw" event handler.
-            device_bbox (tuple): (x,y,w,h) widget extents
-
-        Returns:
-            tuple
+            cr: as passed to the "draw" event handler.
+            device_bbox: (x,y,w,h) widget extents
 
 The clip region return value is a lib.helpers.Rect containing
 the area to redraw in display coordinates, or None.
@@ -1712,6 +1749,7 @@ device bbox.: clipregion, sparse)
         return rect, sparse
 
     def _tile_is_visible(self, tx, ty, transformation, clip_rect, translation_only):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Tests whether an individual tile is visible.
         
         This is sometimes worth doing during rendering, but not always.
@@ -1758,6 +1796,7 @@ device bbox.: clipregion, sparse)
         return clip_rect.overlaps(tile_rect)
 
     def _render_prepare(self, cr):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Prepares a blank pixbuf & other details for later rendering.
         
         Called when handling "draw" events. The size and shape of the
@@ -1835,6 +1874,7 @@ device bbox.: clipregion, sparse)
         clip_rect,
         filter=None,
     ):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Renders tiles into a prepared pixbufsurface, then blits it.
 
         Args:
@@ -1898,6 +1938,7 @@ device bbox.: clipregion, sparse)
         cr.paint()
 
     def scroll(self, dx, dy, ongoing=True):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -1947,6 +1988,7 @@ device bbox.: clipregion, sparse)
         self.recenter_on_model_coords(cx, cy)
 
     def recenter_on_model_coords(self, cx, cy):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Recentres the view to a specified point, in model coordinates.
 
         Args:
@@ -1962,6 +2004,7 @@ device bbox.: clipregion, sparse)
         self.recenter_on_display_coords(dcx, dcy)
 
     def recenter_on_display_coords(self, cx, cy):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:

@@ -20,6 +20,7 @@ from lib import brush
 
 
 def migrate_brushes_to_json(dirpath):
+    # type: (Types.ELLIPSIS) -> Types.NONE
     """
 
     Args:

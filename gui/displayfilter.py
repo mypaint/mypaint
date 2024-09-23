@@ -44,6 +44,7 @@ _SIM_TRITANOPIA_B_COEFFS = (-0.063, 0.881, 0.182)
 
 
 def luma_only(dst):
+    # type: (Types.ELLIPSIS) -> Types.NONE
     """Convert an NxNx3 array to show only luma (brightness)
 
     Args:
@@ -59,6 +60,7 @@ def luma_only(dst):
 
 
 def invert_colors(dst):
+    # type: (Types.ELLIPSIS) -> Types.NONE
     """Invert each RGB channel in an RGB array
 
     Args:
@@ -73,6 +75,7 @@ def invert_colors(dst):
 
 
 def sim_deuteranopia(dst):
+    # type: (Types.ELLIPSIS) -> Types.NONE
     """Simulate deuteranopia (insensitivity to red)
 
     Args:
@@ -92,6 +95,7 @@ def sim_deuteranopia(dst):
 
 
 def sim_protanopia(dst):
+    # type: (Types.ELLIPSIS) -> Types.NONE
     """Simulate protanopia (insensitivity to green)
 
     Args:
@@ -111,6 +115,7 @@ def sim_protanopia(dst):
 
 
 def sim_tritanopia(dst):
+    # type: (Types.ELLIPSIS) -> Types.NONE
     """Simulate tritanopia (insensitivity to green)
 
     Args:

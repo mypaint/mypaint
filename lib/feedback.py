@@ -132,6 +132,7 @@ class Progress:
 
     @items.setter
     def items(self, n):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -156,6 +157,7 @@ class Progress:
         """Event: fires when "fraction" changes."""
 
     def _child_changed_cb(self, sprog):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Handles changes to an open child Progress.
 
         Args:
@@ -219,6 +221,7 @@ class Progress:
         return self
 
     def completed(self, c):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Try to mark up to item c as completed.
         
         You cannot mark as complete more than ``items`` minus the

@@ -39,6 +39,7 @@ def XYZ_to_spectral(
     illuminant=sd_ones(),
     max_refl=1.0,
 ):
+    # type: (Types.ELLIPSIS) -> Types.NONE
     """
 
     Args:
@@ -63,6 +64,7 @@ def XYZ_to_spectral(
     spd = sd_zeros(shape)
 
     def function_objective(a):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Objective function.
 
         Args:
@@ -77,6 +79,7 @@ def XYZ_to_spectral(
         return np.sum(np.diff(a) ** 2)
 
     def function_constraint(a):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Function defining the constraint for XYZ=XYZ.
 
         Args:
@@ -95,6 +98,7 @@ def XYZ_to_spectral(
         )
 
     def function_constraint2(a):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Function defining constraint on emission/reflectance
 
         Args:

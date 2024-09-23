@@ -35,6 +35,7 @@ def borderless_button(
     size=Gtk.IconSize.SMALL_TOOLBAR,
     tooltip=None,
 ):
+    # type: (Types.ELLIPSIS) -> Types.NONE
     """
 
     Args:

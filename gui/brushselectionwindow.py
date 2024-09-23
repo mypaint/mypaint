@@ -39,6 +39,7 @@ logger = logging.getLogger(__name__)
 
 
 def managedbrush_idfunc(managedbrush):
+    # type: (Types.ELLIPSIS) -> Types.NONE
     """Returns the id of a ManagedBrush.
 
     Args:
@@ -53,6 +54,7 @@ def managedbrush_idfunc(managedbrush):
 
 
 def managedbrush_namefunc(managedbrush):
+    # type: (Types.ELLIPSIS) -> Types.NONE
     """Returns tooltip of a ManagedBrush.
 
     Args:
@@ -73,6 +75,7 @@ def managedbrush_namefunc(managedbrush):
 
 
 def managedbrush_pixbuffunc(managedbrush):
+    # type: (Types.ELLIPSIS) -> Types.NONE
     """Returns pixbuf preview of a ManagedBrush.
 
     Args:
@@ -149,6 +152,7 @@ class BrushList(pixbuflist.PixbufList):
         )
 
     def do_get_preferred_height_for_width(self, width):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -167,6 +171,7 @@ class BrushList(pixbuflist.PixbufList):
         return (icons_tall * self.ICON_SIZE, icons_tall * self.ICON_SIZE)
 
     def _groups_changed_cb(self, bm):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -185,6 +190,7 @@ class BrushList(pixbuflist.PixbufList):
         # See https://github.com/mypaint/mypaint/issues/654
 
     def _brushes_changed_cb(self, bm, brushes):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -204,6 +210,7 @@ class BrushList(pixbuflist.PixbufList):
             self.update()
 
     def _brush_selected_cb(self, bm, managed_brush, brushinfo):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -219,6 +226,7 @@ class BrushList(pixbuflist.PixbufList):
         self.set_selected(managed_brush)
 
     def remove_brush(self, brush):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -233,6 +241,7 @@ class BrushList(pixbuflist.PixbufList):
         self.bm.brushes_changed(self.brushes)
 
     def insert_brush(self, idx, brush):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -248,6 +257,7 @@ class BrushList(pixbuflist.PixbufList):
         self.bm.brushes_changed(self.brushes)
 
     def button_press_cb(self, widget, event):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -264,6 +274,7 @@ class BrushList(pixbuflist.PixbufList):
         return super(BrushList, self).button_press_cb(widget, event)
 
     def drag_begin_cb(self, widget, context):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -285,6 +296,7 @@ class BrushList(pixbuflist.PixbufList):
         super(BrushList, self).drag_begin_cb(widget, context)
 
     def on_drag_data(self, copy, source_widget, brush_dragid, target_idx):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -321,6 +333,7 @@ class BrushList(pixbuflist.PixbufList):
         return True
 
     def _item_selected_cb(self, self_, brush):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -339,6 +352,7 @@ class BrushList(pixbuflist.PixbufList):
         self.bm.select_brush(brush)
 
     def _item_popup_cb(self, self_, brush):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -421,6 +435,7 @@ class BrushPopupMenu(Gtk.Menu):
             self.append(item)
 
     def _favorite_cb(self, menuitem):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -449,6 +464,7 @@ class BrushPopupMenu(Gtk.Menu):
         bl.bm.select_brush(brush)
 
     def _unfavorite_cb(self, menuitem):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -470,6 +486,7 @@ class BrushPopupMenu(Gtk.Menu):
         bl.bm.save_brushorder()
 
     def _clone_cb(self, menuitem):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -509,6 +526,7 @@ class BrushPopupMenu(Gtk.Menu):
         bl.bm.select_brush(brush_copy)
 
     def _edit_cb(self, menuitem):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -526,6 +544,7 @@ class BrushPopupMenu(Gtk.Menu):
         brush_editor.show_all()
 
     def _remove_cb(self, menuitem):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -608,6 +627,7 @@ class BrushGroupTool(SizedVBoxToolWidget):
         return "mypaint-brushes-symbolic"  # fallback only
 
     def tool_widget_get_icon_pixbuf(self, size):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -679,6 +699,7 @@ class BrushGroupTool(SizedVBoxToolWidget):
     ## Properties dialog action callbacks
 
     def _rename_cb(self, widget):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Properties dialog rename callback
 
         Args:
@@ -719,6 +740,7 @@ class BrushGroupTool(SizedVBoxToolWidget):
             )
 
     def _delete_cb(self, widget):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Properties dialog delete callback
 
         Args:
@@ -760,6 +782,7 @@ class BrushGroupTool(SizedVBoxToolWidget):
         dialogs.error(self, msg)
 
     def _remove_panel_idle_cb(self, typespec, paramspec):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -775,6 +798,7 @@ class BrushGroupTool(SizedVBoxToolWidget):
         return False
 
     def _export_cb(self, widget):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Properties dialog export callback
 
         Args:
@@ -831,6 +855,7 @@ class BrushGroupsMenu(Gtk.Menu):
         bm.groups_changed += self._update
 
     def _new_brush_group_cb(self, widget):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -856,6 +881,7 @@ class BrushGroupsMenu(Gtk.Menu):
             bm.create_group(name)
 
     def _update(self, bm):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Update dynamic items in response to the groups list changing
 
         Args:
@@ -888,6 +914,7 @@ class BrushGroupsMenu(Gtk.Menu):
         self.show_all()
 
     def _brush_group_item_activate_cb(self, menuitem, group_name):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:

@@ -38,6 +38,7 @@ except:
 
 
 def ora_thumbnail(infile, outfile, size):
+    # type: (Types.ELLIPSIS) -> Types.NONE
     """Extracts an OpenRaster file's thumbnail to PNG, with scaling.
 
     Args:

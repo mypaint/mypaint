@@ -119,6 +119,7 @@ def original_environ():
 
 
 def restore_env(ctx):
+    # type: (Types.ELLIPSIS) -> Types.NONE
     """Clear existing envvars in context & use the given envvars instead
     
     This is used to restore the original environment when starting
@@ -257,6 +258,7 @@ class OpenWithDialog(Gtk.Dialog):
         self.selected_appinfo = default_app  #: The app the user chose
 
     def _show_cb(self, dialog):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -271,6 +273,7 @@ class OpenWithDialog(Gtk.Dialog):
         content_box.show_all()
 
     def _app_name_datafunc(self, col, cell, model, it, data):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -300,6 +303,7 @@ class OpenWithDialog(Gtk.Dialog):
         cell.set_property("markup", markup)
 
     def _app_icon_datafunc(self, col, cell, model, it, data):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -320,6 +324,7 @@ class OpenWithDialog(Gtk.Dialog):
         cell.set_property("stock-size", self.ICON_SIZE)
 
     def _row_activated_cb(self, view, treepath, column):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -340,6 +345,7 @@ class OpenWithDialog(Gtk.Dialog):
             self.response(Gtk.ResponseType.OK)
 
     def _selection_changed_cb(self, selection):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -376,10 +382,11 @@ class LayerEditManager:
         self._active_edits = []
 
     def begin(self, layer):
+        # type: (LayerBase) -> Types.NONE
         """Begin editing a layer in an external application
 
         Args:
-            layer (LayerBase): Layer to start editing
+            layer: Layer to start editing
         
         This starts the edit procedure by launching a chosen
         application for a tempfile requested from the layer. The file is
@@ -411,6 +418,7 @@ class LayerEditManager:
         self._begin_file_monitoring_using_gio(file_path, layer)
 
     def _begin_file_edit_using_startfile(self, file_path, layer):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -432,6 +440,7 @@ class LayerEditManager:
         )
 
     def _begin_file_edit_using_gio(self, file_path, layer):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -500,6 +509,7 @@ class LayerEditManager:
         )
 
     def _begin_file_monitoring_using_gio(self, file_path, layer):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -520,6 +530,7 @@ class LayerEditManager:
         self._active_edits.append(edit_info)
 
     def commit(self, layer):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Commit a layer's ongoing external edit
 
         Args:
@@ -562,6 +573,7 @@ class LayerEditManager:
             return
 
     def _file_changed_cb(self, mon, file1, file2, event_type):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -589,6 +601,7 @@ class LayerEditManager:
                     return
 
     def _cleanup_stale_monitors(self, added_layer=None, deleted_file=None):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:

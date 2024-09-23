@@ -31,6 +31,7 @@ class PixbufList(Gtk.DrawingArea):
     """ """
 
     def on_drag_data(self, copy, source_widget, brush_name, target_idx):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -47,6 +48,7 @@ class PixbufList(Gtk.DrawingArea):
         return False
 
     def drag_begin_cb(self, widget, context):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -61,6 +63,7 @@ class PixbufList(Gtk.DrawingArea):
         widget.drag_insertion_index = None
 
     def drag_end_cb(self, widget, context):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -134,6 +137,7 @@ class PixbufList(Gtk.DrawingArea):
         self.update()
 
     def on_realize(self, widget):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -168,6 +172,7 @@ class PixbufList(Gtk.DrawingArea):
             self.drag_source_sensitive = False
 
     def set_itemlist(self, items):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -182,6 +187,7 @@ class PixbufList(Gtk.DrawingArea):
         self.update()
 
     def set_size(self, item_w, item_h):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -198,6 +204,7 @@ class PixbufList(Gtk.DrawingArea):
         self.thumbnails = {}
 
     def motion_notify_cb(self, widget, event):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -248,6 +255,7 @@ class PixbufList(Gtk.DrawingArea):
                     self.drag_source_sensitive = False
 
     def drag_motion_cb(self, widget, context, x, y, time):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -283,6 +291,7 @@ class PixbufList(Gtk.DrawingArea):
                 self.drag_insertion_index = i
 
     def drag_leave_cb(self, widget, context, time):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -302,6 +311,7 @@ class PixbufList(Gtk.DrawingArea):
             widget.queue_draw()
 
     def drag_data_get_cb(self, widget, context, selection, info, time):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Gets the selected brush's drag id into `selection` when requested
 
         Args:
@@ -335,6 +345,7 @@ class PixbufList(Gtk.DrawingArea):
         return True
 
     def drag_data_received_cb(self, widget, context, x, y, selection, info, time):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -370,6 +381,7 @@ class PixbufList(Gtk.DrawingArea):
         return True
 
     def update(self, width=None, height=None):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Redraws the widget from scratch.
 
         Args:
@@ -435,6 +447,7 @@ class PixbufList(Gtk.DrawingArea):
         self.queue_draw()
 
     def set_selected(self, item):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -449,6 +462,7 @@ class PixbufList(Gtk.DrawingArea):
         self.queue_draw()
 
     def index(self, x, y):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -472,6 +486,7 @@ class PixbufList(Gtk.DrawingArea):
         return i
 
     def point_is_inside(self, x, y):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -489,6 +504,7 @@ class PixbufList(Gtk.DrawingArea):
         return x >= 0 and y >= 0 and x < w and y < h
 
     def button_press_cb(self, widget, event):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -525,6 +541,7 @@ class PixbufList(Gtk.DrawingArea):
 
     @event
     def item_selected(self, item):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Event: the user selected an item in the list
 
         Args:
@@ -538,6 +555,7 @@ class PixbufList(Gtk.DrawingArea):
 
     @event
     def item_popup(self, item):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Event: the user brought up the popup menu for an item in the list
 
         Args:
@@ -550,6 +568,7 @@ class PixbufList(Gtk.DrawingArea):
         """
 
     def button_release_cb(self, widget, event):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -564,6 +583,7 @@ class PixbufList(Gtk.DrawingArea):
         self.in_potential_drag = False
 
     def configure_event_cb(self, widget, size):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -581,6 +601,7 @@ class PixbufList(Gtk.DrawingArea):
         self.update(size.width, size.height)
 
     def draw_cb(self, widget, cr):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:

@@ -29,6 +29,7 @@ _DEFAULT_MODE = lib.mypaintlib.CombineSpectralWGM
 
 
 def set_default_mode(mode):
+    # type: (Types.ELLIPSIS) -> Types.NONE
     """
 
     Args:

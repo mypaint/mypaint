@@ -47,6 +47,7 @@ class BrushModifier:
         self.bm.mode_changed += self.update_blendmodes
 
     def update_blendmodes(self, bm, old, new):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -67,6 +68,7 @@ class BrushModifier:
             self.set_override_setting(new.setting_name, True)
 
     def set_override_setting(self, setting_name, override):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Overrides a boolean setting currently in effect.
         
         If `override` is true, the named setting will be forced to a base value
@@ -118,6 +120,7 @@ class BrushModifier:
         self.app.brush.set_color_hsv(c)
 
     def brush_selected_cb(self, bm, managed_brush, brushinfo):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Responds to the user changing their brush.
         
         This observer callback is responsible for allocating the current brush
@@ -190,6 +193,7 @@ class BrushModifier:
         return self.unmodified_brushinfo.is_eraser()
 
     def brush_modified_cb(self, changed_settings):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Responds to changes of the brush settings.
 
         Args:

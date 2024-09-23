@@ -203,6 +203,7 @@ class InkingMode(
         self._dragged_node_start_pos = None
 
     def _ensure_overlay_for_tdw(self, tdw):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -235,6 +236,7 @@ class InkingMode(
         self._overlays.clear()
 
     def enter(self, doc, **kwds):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Enters the mode: called by `ModeStack.push()` etc.
 
         Args:
@@ -260,6 +262,7 @@ class InkingMode(
         )
 
     def leave(self, **kwds):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Leaves the mode: called by `ModeStack.pop()` etc.
 
         Args:
@@ -276,6 +279,7 @@ class InkingMode(
         super(InkingMode, self).leave(**kwds)  # supercall will commit
 
     def checkpoint(self, flush=True, **kwargs):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Sync pending changes from (and to) the model
         
         If called with flush==False, this is an override which just
@@ -308,6 +312,7 @@ class InkingMode(
             self._queue_redraw_curve()
 
     def _start_new_capture_phase(self, rollback=False):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Let the user capture a new ink stroke
 
         Args:
@@ -335,6 +340,7 @@ class InkingMode(
     ## Raw event handling (prelight & zone selection in adjust phase)
 
     def button_press_cb(self, tdw, event):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -388,6 +394,7 @@ class InkingMode(
         return super(InkingMode, self).button_press_cb(tdw, event)
 
     def button_release_cb(self, tdw, event):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -438,6 +445,7 @@ class InkingMode(
         return super(InkingMode, self).button_release_cb(tdw, event)
 
     def motion_notify_cb(self, tdw, event):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -471,6 +479,7 @@ class InkingMode(
 
     @lib.observable.event
     def current_node_changed(self, index):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Event: current_node_index was changed
 
         Args:
@@ -483,6 +492,7 @@ class InkingMode(
         """
 
     def _update_zone_and_target(self, tdw, x, y):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Update the zone and target node under a cursor position
 
         Args:
@@ -575,6 +585,7 @@ class InkingMode(
                 tdw.queue_draw_area(x - r, y - r, (2 * r) + 1, (2 * r) + 1)
 
     def _queue_draw_node(self, i):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Redraws a specific control node on all known view TDWs
 
         Args:
@@ -631,6 +642,7 @@ class InkingMode(
         self._start_task_queue_runner()
 
     def _draw_curve_segment(self, model, p_1, p0, p1, p2, state):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Draw the curve segment between the middle two points
 
         Args:
@@ -691,6 +703,7 @@ class InkingMode(
         state["t_abs"] = last_t_abs
 
     def _queue_task(self, callback, *args, **kwargs):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Append a task to be done later in an idle cycle
 
         Args:
@@ -713,6 +726,7 @@ class InkingMode(
         self._task_queue_runner_id = idler_id
 
     def _stop_task_queue_runner(self, complete=True):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Halts processing of the task queue, and clears it
 
         Args:
@@ -746,6 +760,7 @@ class InkingMode(
     ## Drag handling (both capture and adjust phases)
 
     def drag_start_cb(self, tdw, event):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -782,6 +797,7 @@ class InkingMode(
             raise NotImplementedError("Unknown phase %r" % self.phase)
 
     def drag_update_cb(self, tdw, event, ev_x, ev_y, dx, dy):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -837,6 +853,7 @@ class InkingMode(
             raise NotImplementedError("Unknown phase %r" % self.phase)
 
     def drag_stop_cb(self, tdw):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -876,6 +893,7 @@ class InkingMode(
     ## Interrogating events
 
     def _get_event_data(self, tdw, event, x, y):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -904,6 +922,7 @@ class InkingMode(
         )
 
     def _get_event_pressure(self, event):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -941,6 +960,7 @@ class InkingMode(
         return pressure
 
     def _get_event_tilt(self, tdw, event):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -995,6 +1015,7 @@ class InkingMode(
         return self.options_presenter.widget
 
     def update_node(self, i, **kwargs):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Updates properties of a node, and redraws it
 
         Args:
@@ -1020,6 +1041,7 @@ class InkingMode(
             self._queue_draw_node(i)
 
     def get_node_dtime(self, i):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -1039,6 +1061,7 @@ class InkingMode(
         return dtime
 
     def set_node_dtime(self, i, dtime):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -1061,6 +1084,7 @@ class InkingMode(
             self.update_node(j, time=new_time)
 
     def can_delete_node(self, i):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -1076,6 +1100,7 @@ class InkingMode(
         return 0 < i < len(self.nodes) - 1
 
     def delete_node(self, i):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Delete a node, and issue redraws & updates
 
         Args:
@@ -1114,6 +1139,7 @@ class InkingMode(
             self.target_node_index = None
 
     def can_insert_node(self, i):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -1129,6 +1155,7 @@ class InkingMode(
         return 0 <= i < (len(self.nodes) - 1)
 
     def insert_node(self, i):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Insert a node, and issue redraws & updates
 
         Args:
@@ -1171,6 +1198,7 @@ class InkingMode(
             self.insert_node(self.current_node_index)
 
     def _simplify_nodes(self, tolerance):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Internal method of simplify nodes.
         
         Algorithm: Reumann-Witkam.
@@ -1225,6 +1253,7 @@ class InkingMode(
         return curcnt - len(self.nodes)
 
     def _nodes_deletion_operation(self, func, args):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Internal method for delete-related operation of multiple nodes.
 
         Args:
@@ -1375,6 +1404,7 @@ class Overlay(gui.overlays.Overlay):
         self.reject_button_pos = reject_button.x, reject_button.y
 
     def _get_button_pixbuf(self, name):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Loads the pixbuf corresponding to a button name (cached)
 
         Args:
@@ -1413,6 +1443,7 @@ class Overlay(gui.overlays.Overlay):
                 yield (i, node, x, y)
 
     def paint(self, cr):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Draw adjustable nodes to the screen
 
         Args:
@@ -1590,6 +1621,7 @@ class _LayoutNode:
         return self
 
     def constrain_position(self, x0, x1, y0, y1):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -1664,6 +1696,7 @@ instance.: a pair of the form (inkmode, node_idx)
 
     @target.setter
     def target(self, targ):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -1715,6 +1748,7 @@ instance.: a pair of the form (inkmode, node_idx)
 
     @gui.mvp.model_updater
     def _pressure_adj_value_changed_cb(self, adj):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -1730,6 +1764,7 @@ instance.: a pair of the form (inkmode, node_idx)
 
     @gui.mvp.model_updater
     def _dtime_adj_value_changed_cb(self, adj):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -1745,6 +1780,7 @@ instance.: a pair of the form (inkmode, node_idx)
 
     @gui.mvp.model_updater
     def _xtilt_adj_value_changed_cb(self, adj):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -1761,6 +1797,7 @@ instance.: a pair of the form (inkmode, node_idx)
 
     @gui.mvp.model_updater
     def _ytilt_adj_value_changed_cb(self, adj):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -1777,6 +1814,7 @@ instance.: a pair of the form (inkmode, node_idx)
 
     @gui.mvp.model_updater
     def _insert_point_button_clicked_cb(self, button):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -1793,6 +1831,7 @@ instance.: a pair of the form (inkmode, node_idx)
 
     @gui.mvp.model_updater
     def _delete_point_button_clicked_cb(self, button):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -1809,6 +1848,7 @@ instance.: a pair of the form (inkmode, node_idx)
 
     @gui.mvp.model_updater
     def _simplify_points_button_clicked_cb(self, button):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -1825,6 +1865,7 @@ instance.: a pair of the form (inkmode, node_idx)
 
     @gui.mvp.model_updater
     def _cull_points_button_clicked_cb(self, button):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:

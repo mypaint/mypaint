@@ -18,6 +18,7 @@ logger = logging.getLogger(__file__)
 
 
 def debug_locale_data(locale, locale_categories):
+    # type: (Types.ELLIPSIS) -> Types.NONE
     """
 
     Args:
@@ -42,6 +43,7 @@ def debug_locale_data(locale, locale_categories):
 
 
 def init_gettext(localepath):
+    # type: (Types.ELLIPSIS) -> Types.NONE
     """Initialize locales and gettext.
     
     This must be done before importing any translated python modules

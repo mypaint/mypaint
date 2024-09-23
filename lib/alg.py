@@ -24,6 +24,7 @@ class LineType:
 
 
 def convex_hull(points):
+    # type: (Types.ELLIPSIS) -> Types.NONE
     """Returns the convex hull of a set of points, in clockwise order.
     
     
@@ -57,6 +58,7 @@ def convex_hull(points):
     # p0->p makes with the X axis. Or just the cosine, which suffices since
     # p0 has the lowest Y value and the angle is therefore in (0, pi).
     def p0cos(p):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -88,6 +90,7 @@ def convex_hull(points):
 
 
 def det(p, q, r):
+    # type: (Types.ELLIPSIS) -> Types.NONE
     """Determinant of the vector pq:qr
     
     If pq:qr is a clockwise turn, result is negative. If the points
@@ -109,6 +112,7 @@ def det(p, q, r):
 
 
 def poly_area(poly):
+    # type: (Types.ELLIPSIS) -> Types.NONE
     """Calculates the area of a (non-self-intersecting) polygon.
 
     Args:
@@ -129,6 +133,7 @@ def poly_area(poly):
 
 
 def poly_centroid(poly):
+    # type: (Types.ELLIPSIS) -> Types.NONE
     """Calculates the centroid of a (non-self-intersecting) polygon.
 
     Args:
@@ -164,6 +169,7 @@ def poly_centroid(poly):
 
 
 def point_in_convex_poly(point, poly):
+    # type: (Types.ELLIPSIS) -> Types.NONE
     """True if a point is inside a convex polygon.
     
     
@@ -207,6 +213,7 @@ def point_in_convex_poly(point, poly):
 
 
 def nearest_point_in_segment(seg_start, seg_end, point):
+    # type: (Types.ELLIPSIS) -> Types.NONE
     """Intersection of a segment & the line perpendicular to it through a point
     
     The points `seg_start` and `seg_end` bound the line segment. The return
@@ -244,6 +251,7 @@ def nearest_point_in_segment(seg_start, seg_end, point):
 
 
 def nearest_point_on_segment(seg_start, seg_end, point):
+    # type: (Types.ELLIPSIS) -> Types.NONE
     """Get the point on a segment closest to the given point
     
     The points `seg_start` and `seg_end` bound the line segment. The return
@@ -275,6 +283,7 @@ def nearest_point_on_segment(seg_start, seg_end, point):
 
 
 def nearest_point_in_poly(poly, point):
+    # type: (Types.ELLIPSIS) -> Types.NONE
     """
 
     Args:
@@ -317,6 +326,7 @@ def nearest_point_in_poly(poly, point):
 
 
 def nearest_point_on_line(p1, p2, point, unidirectional=False):
+    # type: (Types.ELLIPSIS) -> Types.NONE
     """For a line l and a point p, return the point on l closest to p
     
     The line is defined by two pairs of coordinates, and is either considered
@@ -353,6 +363,7 @@ def _nearest_point(
     inclusive=False,
     line_type=LineType.SEGMENT,
 ):
+    # type: (Types.ELLIPSIS) -> Types.NONE
     """Generic impl, supporting non-perpendicular shortest distance
 
     Args:
@@ -422,6 +433,7 @@ def _nearest_point(
 
 
 def intersection_of_vector_and_poly(poly, p1, p2, line_type=LineType.LINE):
+    # type: (Types.ELLIPSIS) -> Types.NONE
     """Intersection of a vector and a convex polygon
     
     Returns two coordinate pairs indicating the section of the line that
@@ -509,6 +521,7 @@ def intersection_of_vector_and_poly(poly, p1, p2, line_type=LineType.LINE):
 
 
 def _intersects(line_type, k):
+    # type: (Types.ELLIPSIS) -> Types.NONE
     """Helper function used to distinguish handling of segment/line types
 
     Args:
@@ -536,6 +549,7 @@ def intersection_of_vectors(
     a_type=LineType.LINE,
     b_type=LineType.LINE,
 ):
+    # type: (Types.ELLIPSIS) -> Types.NONE
     """Intersection of two vectors, interpreted as segments or lines
     
     The two vectors are defined by four coordinate pairs, and each can be
@@ -624,13 +638,14 @@ def intersection_of_vectors(
 
 
 def intersection_of_segments(p1, p2, p3, p4):
+    # type: (tuple, tuple, tuple, tuple) -> Types.NONE
     """Intersection of two segments
 
     Args:
-        p1 (tuple): point on segment A, ``(x, y)``
-        p2 (tuple): point on segment A, ``(x, y)``
-        p3 (tuple): point on segment B, ``(x, y)``
-        p4 (tuple): point on segment B, ``(x, y)``
+        p1: point on segment A, ``(x, y)``
+        p2: point on segment A, ``(x, y)``
+        p3: point on segment B, ``(x, y)``
+        p4: point on segment B, ``(x, y)``
 
     Returns:
         tuple or None
@@ -704,6 +719,7 @@ Ref: https://en.wikipedia.org/wiki/Line-line_intersection: The point of intersec
 
 
 def pairwise(seq):
+    # type: (Types.ELLIPSIS) -> Types.NONE
     """Pairwise sequence iterator.
     
     

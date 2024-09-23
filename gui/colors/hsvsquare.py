@@ -64,6 +64,7 @@ class HSVSquarePage(CombinedAdjusterPage, IconRenderable):
         return self.__table
 
     def set_color_manager(self, manager):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -78,6 +79,7 @@ class HSVSquarePage(CombinedAdjusterPage, IconRenderable):
         self.__adj.set_color_manager(manager)
 
     def render_as_icon(self, cr, size):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Renders as an icon into a Cairo context.
 
         Args:
@@ -148,6 +150,7 @@ class HSVSquare(Gtk.VBox, ColorAdjuster):
         self.pack_start(self.__ring, True, True, 0)
 
     def set_color_manager(self, manager):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -179,6 +182,7 @@ class _HSVSquareOuterRing(HueSaturationWheelAdjuster):
         self.__cube = cube
 
     def get_pos_for_color(self, col):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -205,6 +209,7 @@ class _HSVSquareOuterRing(HueSaturationWheelAdjuster):
         return x, y
 
     def get_color_at_position(self, x, y):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Gets the color at a position, for `ColorAdjusterWidget` impls.
 
         Args:
@@ -236,6 +241,7 @@ class _HSVSquareOuterRing(HueSaturationWheelAdjuster):
         return self.color_at_normalized_polar_pos(r, theta)
 
     def get_normalized_polar_pos_for_color(self, col):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -250,6 +256,7 @@ class _HSVSquareOuterRing(HueSaturationWheelAdjuster):
         return col.s, col.h
 
     def color_at_normalized_polar_pos(self, r, theta):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -272,6 +279,7 @@ class _HSVSquareOuterRing(HueSaturationWheelAdjuster):
         return f0, getattr(col, f0)
 
     def render_background_cb(self, cr, wd, ht, icon_border=None):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Renders the offscreen bg, for `ColorAdjusterWidget` impls.
 
         Args:
@@ -370,6 +378,7 @@ class _HSVSquareOuterRing(HueSaturationWheelAdjuster):
         cr.stroke()
 
     def paint_foreground_cb(self, cr, wd, ht):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Fg marker painting, for `ColorAdjusterWidget` impls.
 
         Args:
@@ -417,6 +426,7 @@ class _HSVSquareInnerSquare(IconRenderableColorAdjusterWidget):
         self.connect("button-press-event", self.stop_fallthrough)
 
     def stop_fallthrough(self, widget, event):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -438,6 +448,7 @@ class _HSVSquareInnerSquare(IconRenderableColorAdjusterWidget):
         return f1, f2
 
     def render_background_cb(self, cr, wd, ht, icon_border=None):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -503,6 +514,7 @@ class _HSVSquareInnerSquare(IconRenderableColorAdjusterWidget):
         return f0, getattr(col, f0)
 
     def get_color_at_position(self, x, y):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -530,6 +542,7 @@ class _HSVSquareInnerSquare(IconRenderableColorAdjusterWidget):
         return col
 
     def get_position_for_color(self, col):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -556,6 +569,7 @@ class _HSVSquareInnerSquare(IconRenderableColorAdjusterWidget):
         return x, y
 
     def paint_foreground_cb(self, cr, wd, ht):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:

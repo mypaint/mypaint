@@ -72,6 +72,7 @@ logger = logging.getLogger(__name__)
 
 
 def _device_name_uuid(device_name):
+    # type: (Types.ELLIPSIS) -> Types.NONE
     """
 
     Args:
@@ -92,6 +93,7 @@ def _device_name_uuid(device_name):
 
 
 def _quote_device_name(device_name):
+    # type: (Types.ELLIPSIS) -> Types.NONE
     """Converts a device name to something safely storable on the disk
     
     Quotes an arbitrary device name for use as the basename of a
@@ -128,6 +130,7 @@ def _quote_device_name(device_name):
 
 
 def translate_group_name(name):
+    # type: (Types.ELLIPSIS) -> Types.NONE
     """Translates a group name from a disk name to a display name.
 
     Args:
@@ -156,10 +159,11 @@ def translate_group_name(name):
 
 
 def _parse_order_conf(file_content):
+    # type: (bytes) -> Types.NONE
     """Parse order.conf file data.
 
     Args:
-        file_content (bytes): data from an order.conf (encoded UTF-8)
+        file_content: data from an order.conf (encoded UTF-8)
 
     Returns:
         a group dict
@@ -301,6 +305,7 @@ class BrushManager:
             rmtree(tmp_user_brushes)
 
     def _load_brush(self, brush_cache, name, **kwargs):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Load a ManagedBrush from disk by name, via a cache.
 
         Args:
@@ -319,6 +324,7 @@ class BrushManager:
         return brush_cache[name]
 
     def _load_ordered_groups(self, brush_cache, filename):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -337,6 +343,7 @@ class BrushManager:
             return {}
 
     def _load_ordered_groups_inner(self, brush_cache, filename):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Load a groups dict from an order.conf file.
 
         Args:
@@ -366,6 +373,7 @@ class BrushManager:
         return groups
 
     def _init_ordered_groups(self, brush_cache):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Initialize the ordered subset of available brush groups.
         
         The ordered subset consists of those brushes which are listed in
@@ -427,6 +435,7 @@ class BrushManager:
             shutil.copy(their_order_conf, base_order_conf)
 
     def _list_brushes(self, path):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Recursively list the brushes within a directory.
 
         Args:
@@ -451,6 +460,7 @@ class BrushManager:
         return result
 
     def _init_unordered_groups(self, brush_cache):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Initialize the unordered subset of available brushes+groups.
         
         The unordered subset consists of all brushes that are not listed
@@ -606,6 +616,7 @@ class BrushManager:
 
     @event
     def brush_selected(self, brush, info):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Event: a different brush was selected.
         
         Observer callbacks are invoked with the newly selected ManagedBrush and
@@ -651,6 +662,7 @@ class BrushManager:
         favored_group=_DEFAULT_STARTUP_GROUP,
         fallback_eraser=0.0,
     ):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Gets a brush robustly by name, by partial name, or a default.
         
         If a brush named `name` exists, use that. Otherwise search though all
@@ -704,6 +716,7 @@ class BrushManager:
         )
 
     def set_pigment_by_default(self, pigment_by_default):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Change the default pigment setting to on/off
         
         This updates loaded managed brushes as well, if they
@@ -724,6 +737,7 @@ class BrushManager:
             self._reset_pigment_setting()
 
     def default_pigment_setting(self, setting_info):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Pigment (paint_mode) setting override
 
         Args:
@@ -978,11 +992,12 @@ toplevel to attach the dialogs to.: Set of imported group names
         return imported_groups
 
     def export_group(self, group, filename):
+        # type: (str, str) -> Types.NONE
         """Exports a group to a brushpack zipfile.
 
         Args:
-            group (str): Name of the group to save.
-            filename (str): Path to a .zip file to create.
+            group: Name of the group to save.
+            filename: Path to a .zip file to create.
 
         Returns:
 
@@ -1013,6 +1028,7 @@ toplevel to attach the dialogs to.: Set of imported group names
     ## Brush lookup / access
 
     def get_brush_by_name(self, name):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Gets a ManagedBrush by its name.
         
         Slow method, should not be called too often.
@@ -1036,6 +1052,7 @@ toplevel to attach the dialogs to.: Set of imported group names
                     return b
 
     def is_in_brushlist(self, brush):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Returns whether this brush is in some brush group's list.
 
         Args:
@@ -1052,6 +1069,7 @@ toplevel to attach the dialogs to.: Set of imported group names
         return False
 
     def get_parent_brush(self, brush=None, brushinfo=None):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Gets the parent `ManagedBrush` for a brush or a `BrushInfo`.
 
         Args:
@@ -1079,6 +1097,7 @@ toplevel to attach the dialogs to.: Set of imported group names
     ## Brush order within groups, order.conf
 
     def _brushes_modified_cb(self, bm, brushes):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Saves the brush order when it changes.
 
         Args:
@@ -1106,10 +1125,11 @@ toplevel to attach the dialogs to.: Set of imported group names
     ## The selected brush
 
     def select_brush(self, brush):
+        # type: (BrushInfo) -> Types.NONE
         """Selects a ManagedBrush, highlights it, & updates the live brush.
 
         Args:
-            brush (BrushInfo): brush to select
+            brush: brush to select
 
         Returns:
 
@@ -1135,6 +1155,7 @@ toplevel to attach the dialogs to.: Set of imported group names
         self.brush_selected(brush, brushinfo)
 
     def clone_selected_brush(self, name):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Clones the current and selected brush into a new `BrushInfo`.
         
         Creates a new ManagedBrush based on the selected brush in the brushlist
@@ -1160,6 +1181,7 @@ toplevel to attach the dialogs to.: Set of imported group names
         return clone
 
     def _brush_selected_cb(self, bm, brush, brushinfo):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Internal callback: User just picked a brush preset.
         
         Called when the user changes to a brush preset somehow (e.g.
@@ -1184,11 +1206,12 @@ toplevel to attach the dialogs to.: Set of imported group names
     ## Device-specific brushes
 
     def store_brush_for_device(self, device_name, managed_brush):
+        # type: (str, ManagedBrush) -> Types.NONE
         """Records a brush as associated with an input device.
 
         Args:
-            device_name (str): name of an input device
-            managed_brush (ManagedBrush): the brush to associate
+            device_name: name of an input device
+            managed_brush: the brush to associate
         
         Normally the brush will be cloned first, since it will be given a new
         name. However, if the brush has a 'name' attribute of None, it will
@@ -1206,6 +1229,7 @@ toplevel to attach the dialogs to.: Set of imported group names
         self._brush_by_device[device_name] = brush
 
     def fetch_brush_for_device(self, device_name):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Fetches the brush associated with an input device.
 
         Args:
@@ -1258,6 +1282,7 @@ toplevel to attach the dialogs to.: Set of imported group names
     ## Brush history
 
     def _input_stroke_ended_cb(self, doc, event):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Update brush usage history at the end of an input stroke.
 
         Args:
@@ -1311,15 +1336,13 @@ toplevel to attach the dialogs to.: Set of imported group names
     ## Brush groups
 
     def get_group_brushes(self, group):
+        # type: (str) -> list
         """Get a group's active brush list.
         
         If the group does not exist, it will be created.
 
         Args:
-            group (str): Name of the group to fetch
-
-        Returns:
-            list
+            group: Name of the group to fetch
 
 The returned list is owned by the BrushManager. You can modify
 it, but you'll have to do your own notifications.
@@ -1337,6 +1360,7 @@ See also: groups_changed(), brushes_changed().: The active list of `ManagedBrush
         return self.groups[group]
 
     def create_group(self, new_group):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Creates a new brush group
 
         Args:
@@ -1350,11 +1374,12 @@ See also: groups_changed(), brushes_changed().: The active list of `ManagedBrush
         return self.get_group_brushes(new_group)
 
     def rename_group(self, old_group, new_group):
+        # type: (str, str) -> Types.NONE
         """Renames a group.
 
         Args:
-            old_group (str): Name of the group to assign the new name to.
-            new_group (str): New name for the group.
+            old_group: Name of the group to assign the new name to.
+            new_group: New name for the group.
 
         Returns:
 
@@ -1366,10 +1391,11 @@ See also: groups_changed(), brushes_changed().: The active list of `ManagedBrush
         self.delete_group(old_group)
 
     def delete_group(self, group):
+        # type: (str) -> Types.NONE
         """Deletes a group.
 
         Args:
-            group (str): Name of the group to delete
+            group: Name of the group to delete
         
         Orphaned brushes will be placed into `DELETED_BRUSH_GROUP`, which
         will be created if necessary.
@@ -1510,6 +1536,7 @@ class ManagedBrush:
         return self._preview
 
     def set_preview(self, pixbuf):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -1533,6 +1560,7 @@ class ManagedBrush:
 
     @description.setter
     def description(self, s):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -1552,6 +1580,7 @@ class ManagedBrush:
 
     @notes.setter
     def notes(self, s):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -1572,6 +1601,7 @@ class ManagedBrush:
         return self._brushinfo
 
     def set_brushinfo(self, brushinfo):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -1608,6 +1638,7 @@ class ManagedBrush:
     ## Cloning
 
     def clone(self, name):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Clone this brush, and give it a new name.
         
         Creates a new brush with all the settings of this brush,
@@ -1626,6 +1657,7 @@ class ManagedBrush:
         return clone
 
     def clone_into(self, target, name):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:

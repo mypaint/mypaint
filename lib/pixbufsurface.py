@@ -148,6 +148,7 @@ class Surface(TileAccessible, TileBlittable):
 
     @contextlib.contextmanager
     def tile_request(self, tx, ty, readonly):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Access memory by tile (lib.surface.TileAccessible impl.)
 
         Args:
@@ -165,6 +166,7 @@ class Surface(TileAccessible, TileBlittable):
         self._set_tile_numpy(tx, ty, numpy_tile, readonly)
 
     def _get_tile_numpy(self, tx, ty, readonly):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -180,6 +182,7 @@ class Surface(TileAccessible, TileBlittable):
         return self.tile_memory_dict[(tx, ty)]
 
     def _set_tile_numpy(self, tx, ty, arr, readonly):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:
@@ -196,6 +199,7 @@ class Surface(TileAccessible, TileBlittable):
         pass  # Data can be modified directly, no action needed
 
     def blit_tile_into(self, dst, dst_has_alpha, tx, ty):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """
 
         Args:

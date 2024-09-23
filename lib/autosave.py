@@ -29,6 +29,7 @@ class Autosaveable(metaclass=abc.ABCMeta):
 
     @autosave_dirty.setter
     def autosave_dirty(self, value):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Setter for the dirty flag
 
         Args:
@@ -65,6 +66,7 @@ class Autosaveable(metaclass=abc.ABCMeta):
 
     @abc.abstractmethod
     def queue_autosave(self, oradir, taskproc, manifest, bbox, **kwargs):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Queue tasks for auto-recovery saving
         
         This kind of save updates a directory structure resembling the
@@ -74,10 +76,10 @@ class Autosaveable(metaclass=abc.ABCMeta):
         be skipped.
 
         Args:
-            oradir (str): Root of OpenRaster-like structure
-            taskproc (lib.idletask.Processor): Output: queue of tasks
-            manifest (set): Output: files in data/ to retain afterward
-            bbox (tuple): frame bounding box, (x,y,w,h)
+            oradir: Root of OpenRaster-like structure
+            taskproc: Output: queue of tasks
+            manifest: Output: files in data/ to retain afterward
+            bbox: frame bounding box, (x,y,w,h)
             **kwargs: 
 
         Returns:

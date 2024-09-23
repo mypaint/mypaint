@@ -14,6 +14,7 @@ import math
 
 
 def clamp(v, bottom, top):
+    # type: (Types.ELLIPSIS) -> Types.NONE
     """Returns `v`, clamped to within a particular range.
 
     Args:
@@ -34,6 +35,7 @@ def clamp(v, bottom, top):
 
 
 def add_distance_fade_stops(gr, rgb, nstops=3, gamma=2, alpha=1.0):
+    # type: (Types.ELLIPSIS) -> Types.NONE
     """Adds rgba stops to a Cairo gradient approximating a power law fade.
     
     The stops have even spacing between the 0 and 1 positions, and alpha
@@ -62,6 +64,7 @@ def add_distance_fade_stops(gr, rgb, nstops=3, gamma=2, alpha=1.0):
 
 
 def draw_marker_circle(cr, x, y, size=2):
+    # type: (Types.ELLIPSIS) -> Types.NONE
     """Draws an outlined circular marker.
 
     Args:
