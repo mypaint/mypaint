@@ -8,8 +8,8 @@ msgstr ""
 "Project-Id-Version: mypaint v1.2.0-beta.3-43-g9e683e2\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-04-17 23:27+0200\n"
-"PO-Revision-Date: 2024-09-22 21:45+0000\n"
-"Last-Translator: JY3 <GeeyunJY3@gmail.com>\n"
+"PO-Revision-Date: 2024-11-12 02:00+0000\n"
+"Last-Translator: 大学没毕业 <ziweidao@foxmail.com>\n"
 "Language-Team: Chinese (Simplified Han script) <https://hosted.weblate.org/"
 "projects/mypaint/mypaint/zh_Hans/>\n"
 "Language: zh_CN\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 5.8-dev\n"
+"X-Generator: Weblate 5.8.2\n"
 
 #: ../gui/accelmap.py:86
 msgctxt "placeholder for keymap filtering"
@@ -4087,11 +4087,11 @@ msgstr "简化点"
 
 #: ../gui/inktool.glade:257
 msgid "Simplify the curve using the Reumann-Witkam algorithm."
-msgstr ""
+msgstr "用 Reumann-Witkam 算法简化曲线。"
 
 #: ../gui/inktool.glade:269 ../gui/resources.xml:918
 msgid "Cull Points"
-msgstr ""
+msgstr "剔除点"
 
 #: ../gui/inktool.glade:273
 msgid "Cull every other point from the curve."
