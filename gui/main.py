@@ -16,7 +16,6 @@ import sys
 import logging
 import warnings
 
-from lib.gibindings import GdkPixbuf
 from optparse import OptionParser
 
 import lib.config
@@ -33,26 +32,7 @@ logger = logging.getLogger(__name__)
 
 def _init_gtk_workarounds():
     """Initialize some workarounds for unoptimal GTK behavior"""
-    # Via https://code.google.com/p/quodlibet/source/browse/quodlibet/
     logger.debug("Adding GTK workarounds...")
-
-    # On windows the default variants only do ANSI paths, so replace them.
-    # In some typelibs they are replaced by default, in some don't..
-    if os.name == "nt":
-        for name in [
-            "new_from_file_at_scale",
-            "new_from_file_at_size",
-            "new_from_file",
-        ]:
-            cls = GdkPixbuf.Pixbuf
-            func = getattr(cls, name + "_utf8", None)
-            if func:
-                logger.debug(
-                    "Monkeypatching GdkPixbuf.Pixbuf.%s with %r",
-                    name,
-                    func,
-                )
-                setattr(cls, name, func)
 
     # Wayland "workaround" to avoid input freeze on pointer grabs.
     # Respect existing envvars for testing (and general courtesy).
