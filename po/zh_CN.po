@@ -8,8 +8,8 @@ msgstr ""
 "Project-Id-Version: mypaint v1.2.0-beta.3-43-g9e683e2\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-04-17 23:27+0200\n"
-"PO-Revision-Date: 2025-01-23 18:01+0000\n"
-"Last-Translator: 大学没毕业 <ziweidao@foxmail.com>\n"
+"PO-Revision-Date: 2025-02-05 11:03+0000\n"
+"Last-Translator: ZHAO20060708 <zxybbb7892020@outlook.com>\n"
 "Language-Team: Chinese (Simplified Han script) <https://hosted.weblate.org/"
 "projects/mypaint/mypaint/zh_Hans/>\n"
 "Language: zh_CN\n"
@@ -1044,10 +1044,9 @@ msgstr "填补空白 (HCY)"
 
 #. TRANSLATORS: Color interpolations
 #: ../gui/colors/paletteview.py:825
-#, fuzzy
 msgctxt "palette view: context menu"
 msgid "Fill Gap (HSV)"
-msgstr "过渡色差 (HSV)"
+msgstr "填补空白 (HSV)"
 
 #: ../gui/colors/paletteview.py:1283
 msgctxt "palette load dialog: filters"
@@ -1550,7 +1549,7 @@ msgstr "粘贴 {w}×{h} 图片。"
 #, python-brace-format
 msgctxt "Statusbar message: vacuum document"
 msgid "Vacuum: discarded {removed} of {total} tiles."
-msgstr ""
+msgstr "清理：在总共{total}个图块中，丢弃了{removed}个。"
 
 #. TRANSLATORS: window title for use with a filename
 #: ../gui/drawwindow.py:275
@@ -2314,7 +2313,7 @@ msgstr "压力："
 #. TRANSLATORS: This is used on the options panel.
 #: ../gui/freehand.py:617
 msgid "Twist:"
-msgstr ""
+msgstr "扭转："
 
 #: ../gui/gtkexcepthook.py:163
 msgid "Bug Detected"
@@ -3367,7 +3366,7 @@ msgstr "完成"
 #: ../lib/floodfill.py:138
 msgctxt "uniform square region of pixels, plural noun"
 msgid "tiles"
-msgstr ""
+msgstr "图块"
 
 #. TRANSLATORS: Assumption for all "Time period abbreviations":
 #. TRANSLATORS: they don't need ngettext (to support plural/singular)
@@ -3470,7 +3469,7 @@ msgstr ", "
 #: ../lib/layer/tree.py:2243
 msgctxt "layer default names: refactor: name of the common areas layer"
 msgid "Common"
-msgstr ""
+msgstr "公共区域"
 
 #: ../lib/layervis.py:44
 msgctxt "layer visibility sets: default name for a user-managed view"
