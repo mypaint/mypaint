@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: mypaint v2.0.0-alpha.12-343-g82b4fc5\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-04-17 23:27+0200\n"
-"PO-Revision-Date: 2024-05-01 18:07+0000\n"
+"PO-Revision-Date: 2025-02-05 11:03+0000\n"
 "Last-Translator: Marek Ľach <graweeld@googlemail.com>\n"
 "Language-Team: Slovak <https://hosted.weblate.org/projects/mypaint/mypaint/"
 "sk/>\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
-"X-Generator: Weblate 5.5.3-dev\n"
+"X-Generator: Weblate 5.10-dev\n"
 
 #: ../gui/accelmap.py:86
 msgctxt "placeholder for keymap filtering"
@@ -5832,7 +5832,7 @@ msgstr ""
 #: ../gui/resources.xml:919
 msgctxt "Accel Editor (descriptions)"
 msgid "Delete every other point on the ink stroke."
-msgstr ""
+msgstr "Vymazať každý ďalší bod na atramentovom ťahu."
 
 #: ../gui/resources.xml:933
 msgctxt "Menu→Brush (labels)"
@@ -6147,7 +6147,7 @@ msgstr "Importovať štetce…"
 #: ../gui/resources.xml:1222
 msgctxt "Accel Editor (descriptions)"
 msgid "Load a brushpack from disk."
-msgstr "Načíta balík štetcov z disku."
+msgstr "Načítať balík štetcov z disku."
 
 #: ../gui/resources.xml:1231
 msgctxt "Menu (labels)"
