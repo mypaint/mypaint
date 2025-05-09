@@ -10,7 +10,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-04-17 23:27+0200\n"
 "PO-Revision-Date: 2025-05-09 20:10+0000\n"
-"Last-Translator: Dream X <nodem49316@daupload.com>\n"
+"Last-Translator: toure youssouf <tourenco@free.fr>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/mypaint/mypaint/"
 "fr/>\n"
 "Language: fr\n"
@@ -6654,7 +6654,7 @@ msgstr "Anneaux concentriques"
 #: ../gui/resources.xml:1452
 msgctxt "Accel Editor (descriptions)"
 msgid "Dockable color selector with concentric HSV rings."
-msgstr "sélecteur de couleur ancrable avec des anneaux concentriques HSV ."
+msgstr "Palette concentrique TSV"
 
 #: ../gui/resources.xml:1459
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
@@ -6664,9 +6664,7 @@ msgstr "Mélangeur orthonormé"
 #: ../gui/resources.xml:1460
 msgctxt "Accel Editor (descriptions)"
 msgid "Dockable color selector with HSV ramps crossing a radial bowl of color."
-msgstr ""
-"Sélecteur de couleur ancrable avec des rampes HSV au travers d'une palette "
-"de couleurs radiale."
+msgstr "Palette TSV orthonormée"
 
 #: ../gui/resources.xml:1469
 #, fuzzy
