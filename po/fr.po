@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: mypaint v2.0.0-alpha.8-1-g4490f06\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-04-17 23:27+0200\n"
-"PO-Revision-Date: 2025-05-09 20:07+0000\n"
+"PO-Revision-Date: 2025-05-09 20:10+0000\n"
 "Last-Translator: Dream X <nodem49316@daupload.com>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/mypaint/mypaint/"
 "fr/>\n"
@@ -2451,7 +2451,7 @@ msgstr ""
 "\n"
 "\tDonnez à ce rapport un titre descriptif court\n"
 "\tUtilisez quelque chose comme\n"
-"\t\"[fonctionnalité-qui-a-cassé]: [qu'est-ce-qui-a-mal tourné]\"\n"
+"\t\"[fonctionnalité-qui-a-cassé] : [qu'est-ce-qui-a-mal tourné]\"\n"
 "\tpour le titre, si vous pouvez\n"
 "        "
 
@@ -2547,7 +2547,6 @@ msgid "?layer"
 msgstr "Calque"
 
 #: ../gui/layers.py:959
-#, fuzzy
 msgctxt "Layers: description parts: unknown mode (fallback str!)"
 msgid "?mode"
 msgstr "?mode"
@@ -4149,9 +4148,8 @@ msgstr "{info-bulle}"
 
 #. field name (template)
 #: ../gui/brusheditor.glade:809
-#, fuzzy
 msgid "{dname}:"
-msgstr "{«Délégation d'enregistrement de Nom» (dname)}:"
+msgstr "{« Délégation d'enregistrement de Nom » (dname)}:"
 
 #: ../gui/brusheditor.glade:841
 msgid "Brush dynamics are not available for this setting."
@@ -4710,7 +4708,7 @@ msgstr "Afficher le viseur pour les petites brosses"
 #: ../gui/preferenceswindow.glade:1149
 msgctxt "Prefs Dialog|View|Interface"
 msgid "Radius threshold:"
-msgstr "Seuil du Rayon:"
+msgstr "Seuil du Rayon :"
 
 #. Description of the "Radius threshold" spinbox/spinner - the referenced "lines" are part of the brush cursor.
 #: ../gui/preferenceswindow.glade:1162
@@ -6149,7 +6147,7 @@ msgstr "Couleur suivante de la palette"
 #: ../gui/resources.xml:1036
 msgctxt "Accel Editor (descriptions)"
 msgid "Set painting color to the next color in the palette."
-msgstr "Ajuster la couleur à la couleur suivante dans la palette"
+msgstr "Ajuster la couleur à la couleur suivante dans la palette."
 
 #: ../gui/resources.xml:1042
 #, fuzzy
@@ -6160,7 +6158,7 @@ msgstr "Couleur de la palette précédente"
 #: ../gui/resources.xml:1043
 msgctxt "Accel Editor (descriptions)"
 msgid "Set painting color to the previous color in the palette."
-msgstr "Ajuster la couleur à la couleur précédente dans la palette"
+msgstr "Ajuster la couleur à la couleur précédente dans la palette."
 
 #: ../gui/resources.xml:1049
 #, fuzzy
@@ -6171,7 +6169,7 @@ msgstr "Ajouter une couleur à la palette"
 #: ../gui/resources.xml:1050
 msgctxt "Accel Editor (descriptions)"
 msgid "Append the current painting color to the palette."
-msgstr "Ajouter la couleur actuelle à la palette"
+msgstr "Ajouter la couleur actuelle à la palette."
 
 #: ../gui/resources.xml:1058
 msgctxt "Menu (labels)"
@@ -6646,7 +6644,7 @@ msgstr "Délavé"
 #: ../gui/resources.xml:1444
 msgctxt "Accel Editor (descriptions)"
 msgid "Dockable color selector showing a liquid-like wash of nearby colors."
-msgstr "Palette de délavés avoisinants"
+msgstr "Palette de délavés avoisinants."
 
 #: ../gui/resources.xml:1451
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
