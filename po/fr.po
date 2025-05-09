@@ -10,7 +10,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-04-17 23:27+0200\n"
 "PO-Revision-Date: 2025-05-09 20:10+0000\n"
-"Last-Translator: toure youssouf <tourenco@free.fr>\n"
+"Last-Translator: Andrew Chadwick <a.t.chadwick@gmail.com>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/mypaint/mypaint/"
 "fr/>\n"
 "Language: fr\n"
@@ -6831,7 +6831,7 @@ msgstr ""
 #: ../gui/resources.xml:1611
 msgctxt "Menu→View→Display Filter (labels), Accel Editor (labels)"
 msgid "Display Colors with Simulated Insensitivity to Green"
-msgstr "Affiche les couleurs avec une simulation du vert plus intense"
+msgstr "Afficher les couleurs avec une simulation du vert moins intense"
 
 #: ../gui/resources.xml:1612
 msgctxt "Accel Editor (descriptions)"
