@@ -9,8 +9,8 @@ msgstr ""
 "Project-Id-Version: mypaint v2.0.0-alpha.8-1-g4490f06\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-04-17 23:27+0200\n"
-"PO-Revision-Date: 2025-05-09 20:10+0000\n"
-"Last-Translator: Andrew Chadwick <a.t.chadwick@gmail.com>\n"
+"PO-Revision-Date: 2025-05-10 05:40+0000\n"
+"Last-Translator: Dream X <nodem49316@daupload.com>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/mypaint/mypaint/"
 "fr/>\n"
 "Language: fr\n"
@@ -6654,7 +6654,7 @@ msgstr "Anneaux concentriques"
 #: ../gui/resources.xml:1452
 msgctxt "Accel Editor (descriptions)"
 msgid "Dockable color selector with concentric HSV rings."
-msgstr "Palette concentrique TSV"
+msgstr "Palette concentrique TSV."
 
 #: ../gui/resources.xml:1459
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
@@ -6664,7 +6664,7 @@ msgstr "Mélangeur orthonormé"
 #: ../gui/resources.xml:1460
 msgctxt "Accel Editor (descriptions)"
 msgid "Dockable color selector with HSV ramps crossing a radial bowl of color."
-msgstr "Palette TSV orthonormée"
+msgstr "Palette TSV orthonormée."
 
 #: ../gui/resources.xml:1469
 #, fuzzy
@@ -6705,7 +6705,7 @@ msgstr "Prévisualisation"
 #: ../gui/resources.xml:1498
 msgctxt "Accel Editor (descriptions)"
 msgid "Reveal the Preview dockpanel (overview of the whole drawing area)."
-msgstr "Révèle l'Aperçu (Aperçu de l'ensemble de la zone de dessin)."
+msgstr "Révèle l'aperçu (vue d'ensemble de la zone de dessin)."
 
 #: ../gui/resources.xml:1508
 msgctxt "Menu→Window (labels), Toolbar (labels), Accel Editor (labels)"
