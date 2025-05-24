@@ -8,16 +8,16 @@ msgstr ""
 "Project-Id-Version: mypaint v1.2.0-586-g70ce73d\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-04-17 23:27+0200\n"
-"PO-Revision-Date: 2024-05-29 05:09+0000\n"
-"Last-Translator: hugoalh <hugoalh@users.noreply.hosted.weblate.org>\n"
-"Language-Team: Chinese (Traditional) <https://hosted.weblate.org/projects/"
-"mypaint/mypaint/zh_Hant/>\n"
+"PO-Revision-Date: 2025-05-24 02:57+0000\n"
+"Last-Translator: taijuin Lee <taijuin@gmail.com>\n"
+"Language-Team: Chinese (Traditional Han script) <https://hosted.weblate.org/"
+"projects/mypaint/mypaint/zh_Hant/>\n"
 "Language: zh_TW\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 5.6-dev\n"
+"X-Generator: Weblate 5.12-dev\n"
 
 #: ../gui/accelmap.py:86
 msgctxt "placeholder for keymap filtering"
@@ -233,7 +233,7 @@ msgstr "色彩"
 #: ../gui/brusheditor.py:451
 msgctxt "brush settings list: setting group"
 msgid "GridMap"
-msgstr ""
+msgstr "網格圖"
 
 #: ../gui/brusheditor.py:462
 msgctxt "brush settings list: setting group"
@@ -1275,7 +1275,7 @@ msgstr "都是使用2.x格式版本開啟"
 #: ../gui/compatibility.py:215
 msgctxt "Prefs Dialog|Compatibility"
 msgid "Open in 1.x mode unless file contains pigment layers"
-msgstr "除非有包含 pigment 圖層，否則就使用1.x的格式版本開啟"
+msgstr "除非檔案包含顏料圖層，否則以 1.x 模式開啟"
 
 #. TRANSLATORS: This is a label for a dropdown menu in the
 #. TRANSLATORS: file chooser dialog when loading .ora files.
@@ -1918,7 +1918,7 @@ msgstr "開啟便條紙…"
 #: ../gui/filehandling.py:1126
 msgctxt "Layers→Import Layers: files-chooser dialog: title"
 msgid "Import Layers"
-msgstr "匯入筆刷"
+msgstr "匯入圖層"
 
 #: ../gui/filehandling.py:1433
 msgctxt "File→Open Recent→* confirm dialog: title"
@@ -1963,35 +1963,31 @@ msgstr "開啟(_O)"
 #: ../gui/filehandling.py:1512
 msgctxt "File→Revert: status message: canvas has no filename yet"
 msgid "Cannot revert: canvas has not been saved to a file yet."
-msgstr ""
+msgstr "無法還原：畫布尚未儲存至檔案。"
 
 #: ../gui/filehandling.py:1519
 msgctxt "File→Revert confirm dialog: title"
 msgid "Revert Changes?"
-msgstr ""
+msgstr "還原變更？"
 
 #: ../gui/filehandling.py:1524
-#, fuzzy
 msgctxt "File→Revert confirm dialog: continue button"
 msgid "_Revert"
-msgstr "回復"
+msgstr "還原(_R)"
 
 #: ../gui/fill.py:123
-#, fuzzy
 msgctxt ""
 "Name of the fill mode\n"
 "In other software, 'Flood Fill' is also known as 'Bucket Fill' or just 'Fill'"
 msgid "Flood Fill"
-msgstr "填充"
+msgstr "洪水填充"
 
 #: ../gui/fill.py:129
-#, fuzzy
 msgctxt "Usage description of the Flood Fill mode"
 msgid "Fill areas with color"
-msgstr "在區域中填充顏色"
+msgstr "用顏色填充區域"
 
 #: ../gui/fill.py:505
-#, fuzzy
 msgctxt ""
 "fill options: numeric value that determines whether tested pixels will be "
 "included in the fill, based on color difference"
@@ -2806,7 +2802,7 @@ msgstr "增益："
 #. TRANSLATORS:"Paint Pigment Mode" for the options panel. Short.
 #: ../gui/mode.py:600
 msgid "Pigment:"
-msgstr ""
+msgstr "顏料："
 
 #: ../gui/optionspanel.py:47
 msgctxt "options panel: tab tooltip: title"
@@ -3107,9 +3103,8 @@ msgid "Normalize Layer Mode"
 msgstr "標準化圖層模式"
 
 #: ../lib/command.py:955
-#, fuzzy
 msgid "Import Layers"
-msgstr "匯入的筆刷"
+msgstr "匯入圖層"
 
 #: ../lib/command.py:957
 #, python-brace-format
@@ -3314,10 +3309,9 @@ msgstr ""
 "不明檔案格式的檔案副檔名: “{ext}”"
 
 #: ../lib/document.py:1590
-#, fuzzy
 msgctxt "Document IO: group name for Import Layers"
 msgid "Imported layers"
-msgstr "匯入的筆刷"
+msgstr "匯入的圖層"
 
 #: ../lib/document.py:1757
 #, python-brace-format
@@ -3449,10 +3443,9 @@ msgid "Unknown Data"
 msgstr "不明數據圖層"
 
 #: ../lib/layer/data.py:1314
-#, fuzzy
 msgctxt "layer type descriptions"
 msgid "Painting Layer"
-msgstr "新增繪畫圖層"
+msgstr "繪畫圖層"
 
 #. TRANSLATORS: Short default name for layer groups.
 #: ../lib/layer/group.py:67
@@ -3542,12 +3535,12 @@ msgstr "僅頂圖層，不混合色彩。"
 
 #: ../lib/modes.py:54
 msgid "Pigment"
-msgstr ""
+msgstr "顏料"
 
 #: ../lib/modes.py:55
 msgid ""
 "Similar to mixing actual pigments by upsampling to 10 spectral channels."
-msgstr ""
+msgstr "類似於透過上取樣至 10 個光譜通道來混合實際的顏料。"
 
 #: ../lib/modes.py:58
 msgid "Multiply"
@@ -4739,7 +4732,8 @@ msgid ""
 "When creating new documents, use the legacy 1.x compatibility mode by "
 "default. In this mode 1.x .ora files will look the same as they did in older "
 "versions, but pigment blending will not work well."
-msgstr ""
+msgstr "建立新文件時，預設使用傳統 1.x 相容模式。在此模式下，1.x .ora "
+"檔案的外觀與舊版本相同，但顏料混合效果不佳。"
 
 #: ../gui/preferenceswindow.glade:1690
 msgctxt "Prefs Dialog|Compatibility"
@@ -4868,10 +4862,9 @@ msgid "Reload the file your current work was loaded from."
 msgstr "重新載入您正在進行作業的檔案。"
 
 #: ../gui/resources.xml:111
-#, fuzzy
 msgctxt "Menu→File (labels), Accel Editor (labels)"
 msgid "Import Layers…"
-msgstr "匯入筆刷…"
+msgstr "匯入圖層…"
 
 #: ../gui/resources.xml:112
 msgctxt "Accel Editor (descriptions)"
@@ -6257,22 +6250,22 @@ msgctxt ""
 "Menu→Layer (labels), Menu→Window (labels), Toolbar (labels), Accel Editor "
 "(labels)"
 msgid "Layers Panel"
-msgstr "圖層控制板"
+msgstr "圖層面板"
 
 #: ../gui/resources.xml:1374
 msgctxt "Accel Editor (descriptions)"
 msgid "Dockable panel for managing layers."
-msgstr "管理圖層用的控制面板。"
+msgstr "管理圖層用的可停靠面板。"
 
 #: ../gui/resources.xml:1382
 msgctxt "Menu→Layers (labels), Accel Editor (labels)"
 msgid "Show Layers Panel"
-msgstr "顯示圖層控制板"
+msgstr "顯示圖層面板"
 
 #: ../gui/resources.xml:1383
 msgctxt "Accel Editor (descriptions)"
 msgid "Reveal the Layers dockpanel (arrange layers, or assign modes)."
-msgstr "展示圖層停駐控制板 (排列圖層，或選定模式) 。"
+msgstr "顯示圖層停靠面板（排列圖層或分配模式）。"
 
 #: ../gui/resources.xml:1394
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
