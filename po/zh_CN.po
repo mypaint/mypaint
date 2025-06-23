@@ -8,8 +8,8 @@ msgstr ""
 "Project-Id-Version: mypaint v1.2.0-beta.3-43-g9e683e2\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-04-17 23:27+0200\n"
-"PO-Revision-Date: 2025-02-05 11:03+0000\n"
-"Last-Translator: ZHAO20060708 <zxybbb7892020@outlook.com>\n"
+"PO-Revision-Date: 2025-06-23 13:51+0000\n"
+"Last-Translator: 大学没毕业 <ziweidao@foxmail.com>\n"
 "Language-Team: Chinese (Simplified Han script) <https://hosted.weblate.org/"
 "projects/mypaint/mypaint/zh_Hans/>\n"
 "Language: zh_CN\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 5.10-dev\n"
+"X-Generator: Weblate 5.13-dev\n"
 
 #: ../gui/accelmap.py:86
 msgctxt "placeholder for keymap filtering"
@@ -2553,7 +2553,7 @@ msgstr "安排图层并指定效果"
 #: ../gui/layerswindow.py:102
 #, python-format
 msgid "Layer opacity: %d%%"
-msgstr "图层不透明度：%d％"
+msgstr "图层不透明度：%d%%"
 
 #. TRANSLATORS: label for the opacity slider (text)
 #. TRANSLATORS: note that "%%" turns into "%"
