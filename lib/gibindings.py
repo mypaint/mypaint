@@ -32,13 +32,6 @@ from gi.repository import GObject  # noqa
 from gi.repository import Pango  # noqa
 from gi.repository import PangoCairo  # noqa
 
-# This may look pointless, but is required to set up types
-# prior to their use, in dynamic property creation. See
-# gui/sliderwidget.py for an instance of this.
-for i in dir(Gdk):
-    getattr(Gdk, i)
-
-
 # The import of the actual Gtk bindings needs to be deferred until the locale
 # has been configured, in order for locale-specific layouts to be respected
 # (right-to-left layouts).
