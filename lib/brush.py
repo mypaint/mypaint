@@ -11,18 +11,12 @@ import logging
 import copy
 import math
 import json
+from urllib.parse import unquote
 
 from lib import mypaintlib
 from lib import helpers
 from lib import brushsettings
 from lib.eotf import eotf
-from lib.pycompat import unicode
-from lib.pycompat import PY3
-
-if PY3:
-    from urllib.parse import unquote
-else:
-    from urllib import unquote
 
 logger = logging.getLogger(__name__)
 
@@ -57,20 +51,16 @@ _BRUSHINFO_MATCH_IGNORES = [
 def brushinfo_unquote(quoted):
     """Unquote a serialised string value from a brush field.
 
-    >>> f = str if PY3 else bytes
-    >>> brushinfo_unquote(f("foo")) == u'foo'
+    >>> brushinfo_unquote("foo") == u'foo'
     True
-    >>> brushinfo_unquote(f("foo%2fbar%20blah")) == u'foo/bar blah'
+    >>> brushinfo_unquote("foo%2fbar%20blah") == u'foo/bar blah'
     True
     >>> expected = u'Have a nice day \u263A'
-    >>> brushinfo_unquote(f('Have%20a%20nice%20day%20%E2%98%BA')) == expected
+    >>> brushinfo_unquote("Have%20a%20nice%20day%20%E2%98%BA") == expected
     True
 
     """
-    if PY3:
-        return unquote(quoted)
-    else:
-        return unicode(unquote(quoted).decode("utf-8"))
+    return unquote(quoted)
 
 
 # Exceptions raised during brush parsing:
@@ -176,7 +166,7 @@ def _oldfmt_transform_y(valuepair, func):
 # Class defs:
 
 
-class BrushInfo(object):
+class BrushInfo:
     """Fully parsed description of a brush."""
 
     def __init__(self, string=None, default_overrides=None):
@@ -291,17 +281,13 @@ class BrushInfo(object):
 
         See also load_from_string(), which can handle the old v2 format.
 
-        Accepts both unicode and byte strings. Byte strings are assumed
+        Accepts both str and bytes. Byte strings are assumed
         to be encoded as UTF-8 when any decoding's needed.
 
         """
 
-        # Py3: Ubuntu Trusty's 3.4.3 json.loads() requires unicode strs.
-        # Layer Py3, and Py2 is OK with either.
-        if not isinstance(json_string, unicode):
-            if not isinstance(json_string, bytes):
-                raise ValueError("Need either a str or a bytes object")
-            json_string = json_string.decode("utf-8")
+        if not isinstance(json_string, (str, bytes)):
+            raise ValueError("Need either a str or a bytes object")
 
         brush_def = json.loads(json_string)
         if brush_def.get("version", 0) < 3:
@@ -335,8 +321,6 @@ class BrushInfo(object):
 
     @staticmethod
     def brush_string_inverted_eotf(brush_string):
-        if isinstance(brush_string, bytes):
-            brush_string = brush_string.decode("utf-8")
         try:
             brush = json.loads(brush_string)
             bsett = brush["settings"]
@@ -351,29 +335,29 @@ class BrushInfo(object):
             logger.exception("Failed to invert color in brush string")
             return brush_string
 
-    def load_from_string(self, settings_str):
+    def load_from_string(self, settings_bytes):
         """Load a setting string, overwriting all current settings."""
 
-        settings_unicode = settings_str
-        if not isinstance(settings_unicode, unicode):
-            if not isinstance(settings_unicode, bytes):
+        settings = settings_bytes
+        if not isinstance(settings, str):
+            if not isinstance(settings, bytes):
                 raise ValueError("Need either a str or a bytes object")
-            settings_unicode = settings_unicode.decode("utf-8")
+            settings = settings.decode("utf-8")
 
-        if settings_unicode.startswith("{"):
+        if settings.startswith("{"):
             # new json-based brush format
-            self.from_json(settings_str)
-        elif settings_unicode.startswith("#"):
+            self.from_json(settings_bytes)
+        elif settings.startswith("#"):
             # old brush format
-            self._load_old_format(settings_str)
+            self._load_old_format(settings_bytes)
         else:
             raise BrushInfo.ParseError("brush format not recognized")
 
         for f in self.observers:
             f(ALL_SETTINGS)
-        self.cache_str = settings_str
+        self.cache_str = settings_bytes
 
-    def _load_old_format(self, settings_str):
+    def _load_old_format(self, settings_bytes):
         """Loads brush settings in the old (v2) format.
 
         >>> from glob import glob
@@ -396,17 +380,16 @@ class BrushInfo(object):
         # keys can be compared sensibly with stuff written by other
         # code.
 
-        if not isinstance(settings_str, unicode):
-            if not isinstance(settings_str, bytes):
+        if not isinstance(settings_bytes, str):
+            if not isinstance(settings_bytes, bytes):
                 raise ValueError("Need either a str or a bytes object")
-            if PY3:
-                settings_str = settings_str.decode("utf-8")
+            settings_bytes = settings_bytes.decode("utf-8")
 
         # Split out the raw settings and grab the version we're dealing with
         rawsettings = []
         errors = []
         version = 1  # for files without a 'version' field
-        for line in settings_str.split("\n"):
+        for line in settings_bytes.split("\n"):
             try:
                 line = line.strip()
                 if not line or line.startswith("#"):
@@ -530,15 +513,15 @@ class BrushInfo(object):
         value = self.settings.get(name, None)
         if value is None:
             return None
-        return unicode(value)
+        return str(value)
 
     def set_string_property(self, name, value):
         assert name in STRING_VALUE_SETTINGS
         if value is None:
             self.settings.pop(name, None)
         else:
-            assert isinstance(value, str) or isinstance(value, unicode)
-            self.settings[name] = unicode(value)
+            assert isinstance(value, str) or isinstance(value, str)
+            self.settings[name] = str(value)
         for f in self.observers:
             f(set([name]))
 

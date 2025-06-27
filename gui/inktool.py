@@ -27,7 +27,6 @@ import lib.helpers
 import gui.cursor
 import lib.observable
 import gui.mvp
-from lib.pycompat import xrange
 
 
 ## Module constants
@@ -476,7 +475,7 @@ class InkingMode(
 
     def _queue_redraw_all_nodes(self):
         """Redraws all nodes on all known view TDWs"""
-        for i in xrange(len(self.nodes)):
+        for i in range(len(self.nodes)):
             self._queue_draw_node(i)
 
     def _queue_redraw_curve(self):
@@ -514,7 +513,7 @@ class InkingMode(
         dist_p1_p2 = math.hypot(p1[0] - p2[0], p1[1] - p2[1])
         steps_d = dist_p1_p2 / self.INTERPOLATION_MAX_SLICE_DISTANCE
         steps = math.ceil(min(self.INTERPOLATION_MAX_SLICES, max(2, steps_t, steps_d)))
-        for i in xrange(int(steps) + 1):
+        for i in range(int(steps) + 1):
             t = i / steps
             point = gui.drawutils.spline_4p(t, p_1, p0, p1, p2)
             (
@@ -1039,7 +1038,7 @@ class Overlay(gui.overlays.Overlay):
         k_attract = 0.05
 
         # Let the buttons bounce around until they've settled.
-        for iter_i in xrange(100):
+        for _i in range(100):
             accept_button.add_forces_inverse_square(
                 fixed, k=k_repel
             ).add_forces_inverse_square([reject_button], k=k_repel).add_forces_linear(
@@ -1141,7 +1140,7 @@ class Overlay(gui.overlays.Overlay):
                 )
 
 
-class _LayoutNode(object):
+class _LayoutNode:
     """Vertex/point for the button layout algorithm."""
 
     def __init__(self, x, y, force=(0.0, 0.0), velocity=(0.0, 0.0)):

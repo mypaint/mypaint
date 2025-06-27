@@ -125,8 +125,6 @@ class BuildTranslations(Command):
                 # msgfmt creates the .mo file even if the checks fail.
                 # It is removed here so further tests aren't skipped
                 shutil.rmtree(os.path.dirname(mo_path))
-                if not isinstance(e.output, str):
-                    e.output = e.output.decode("utf-8")
                 po_failures.append((po_path, e.output))
         if po_failures:
             paths, errors = map(list, zip(*po_failures))
@@ -169,7 +167,7 @@ class BuildTranslations(Command):
             else:
                 self.announce("running %s" % (" ".join(cmd),), level=2)
                 self.mkpath(os.path.dirname(mo_file_path))
-                subprocess.check_output(cmd, stderr=subprocess.STDOUT)
+                subprocess.check_output(cmd, stderr=subprocess.STDOUT, encoding="utf-8")
 
                 assert os.path.exists(mo_file_path)
 
@@ -303,9 +301,7 @@ class BuildConfig(Command):
                 if not template:
                     cmd.extend(["--translated", "--no-fuzzy", "--no-obsolete"])
                 cmd.append(path)
-                result = subprocess.check_output(cmd)
-                if not isinstance(result, str):
-                    result = result.decode("utf-8")
+                result = subprocess.check_output(cmd, encoding="utf-8")
                 return result.count("\nmsgstr")
 
             return msgattrib_completion

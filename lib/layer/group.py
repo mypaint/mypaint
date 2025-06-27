@@ -31,7 +31,6 @@ import lib.autosave
 import lib.feedback
 import lib.layer.core
 from .rendering import Opcode
-from lib.pycompat import unicode
 
 logger = logging.getLogger(__name__)
 
@@ -116,7 +115,7 @@ class LayerStack(core.LayerBase, lib.autosave.Autosaveable):
         # The only combination which can result in a non-isolated mode
         # under the OpenRaster and W3C definition. Represented
         # internally with a special mode to make the UI prettier.
-        isolated_flag = unicode(elem.attrib.get("isolation", "auto"))
+        isolated_flag = str(elem.attrib.get("isolation", "auto"))
         # TODO: Check if this applies to CombineSpectralWGM as well
         is_pass_through = (
             self.mode == lib.mypaintlib.CombineNormal
@@ -161,7 +160,7 @@ class LayerStack(core.LayerBase, lib.autosave.Autosaveable):
         x += int(elem.attrib.get("x", 0))
         y += int(elem.attrib.get("y", 0))
         # Convert normal+nonisolated to the internal pass-thru mode
-        isolated_flag = unicode(elem.attrib.get("isolation", "auto"))
+        isolated_flag = str(elem.attrib.get("isolation", "auto"))
         # TODO: Check if this applies to CombineSpectralWGM as well
         is_pass_through = (
             self.mode == lib.mypaintlib.CombineNormal
@@ -592,7 +591,7 @@ class LayerStackSnapshot(core.LayerBaseSnapshot):
             layer.append(child)
 
 
-class LayerStackMove(object):
+class LayerStackMove:
     """Move object wrapper for layer stacks"""
 
     def __init__(self, layers, x, y):

@@ -46,7 +46,7 @@ class Opcode:
 # Classes and interfaces:
 
 
-class Spec(object):
+class Spec:
     """Selection criteria for Renderable.get_render_ops()."""
 
     def __init__(self, **kwargs):
@@ -104,10 +104,8 @@ class Spec(object):
         return result
 
 
-class Renderable:
+class Renderable(metaclass=abc.ABCMeta):
     """Abstract interface for elements that can be rendered."""
-
-    __metaclass__ = abc.ABCMeta
 
     @abc.abstractmethod
     def get_render_ops(self, spec):

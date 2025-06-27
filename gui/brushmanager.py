@@ -19,6 +19,7 @@ from os.path import basename
 from warnings import warn
 import logging
 import shutil
+import urllib.parse
 import uuid
 import contextlib
 
@@ -36,15 +37,6 @@ import lib.pixbuf
 from . import drawutils
 import gui.mode
 import lib.config
-from lib.pycompat import unicode
-from lib.pycompat import xrange
-from lib.pycompat import PY3
-
-if PY3:
-    import urllib.parse
-else:
-    import urllib
-
 
 ## Public module constants
 
@@ -89,9 +81,7 @@ def _device_name_uuid(device_name):
     True
 
     """
-    if not PY3:
-        device_name = utf8(unicode(device_name))
-    return unicode(uuid.uuid5(_DEVICE_NAME_NAMESPACE, device_name))
+    return str(uuid.uuid5(_DEVICE_NAME_NAMESPACE, device_name))
 
 
 def _quote_device_name(device_name):
@@ -113,17 +103,13 @@ def _quote_device_name(device_name):
 
     Hopefully this is OK for Windows, UNIX and Mac OS X names.
     """
-    device_name = unicode(device_name)
-    if PY3:
-        quoted = urllib.parse.quote_plus(
-            device_name,
-            safe="",
-            encoding="utf-8",
-        )
-    else:
-        u8bytes = device_name.encode("utf-8")
-        quoted = urllib.quote_plus(u8bytes, safe="")
-    return unicode(quoted)
+    device_name = str(device_name)
+    quoted = urllib.parse.quote_plus(
+        device_name,
+        safe="",
+        encoding="utf-8",
+    )
+    return quoted
 
 
 def translate_group_name(name):
@@ -188,7 +174,7 @@ def _parse_order_conf(file_content):
 ## Class definitions
 
 
-class BrushManager(object):
+class BrushManager:
     """Brush manager, responsible for groups of brushes."""
 
     ## Initialization
@@ -196,8 +182,8 @@ class BrushManager(object):
     def __init__(self, stock_brushpath, user_brushpath, app=None):
         """Initialize, with paths and a ref to the main app.
 
-        :param unicode|str stock_brushpath: MyPaint install's RO brushes.
-        :param unicode|str user_brushpath: User-writable brush library.
+        :param str stock_brushpath: MyPaint install's RO brushes.
+        :param str user_brushpath: User-writable brush library.
         :param gui.application.Application app: Main app (use None for test).
 
         The user_brushpath folder will be created if it does not yet exist.
@@ -208,7 +194,7 @@ class BrushManager(object):
         >>> bm = BrushManager(lib.config.mypaint_brushdir, tmpdir, app=None)
         >>> len(bm.groups) > 0
         True
-        >>> all([isinstance(k, unicode) for k in bm.groups.keys()])
+        >>> all([isinstance(k, str) for k in bm.groups.keys()])
         True
         >>> all([isinstance(v, list) for v in bm.groups.values()])
         True
@@ -375,9 +361,9 @@ class BrushManager(object):
         """
         path += "/"
         result = []
-        assert isinstance(path, unicode)  # make sure we get unicode filenames
+        assert isinstance(path, str)  # make sure we get str filenames
         for name in os.listdir(path):
-            assert isinstance(name, unicode)
+            assert isinstance(name, str)
             if name.endswith(".myb"):
                 result.append(name[:-4])
             elif os.path.isdir(path + name):
@@ -455,18 +441,18 @@ class BrushManager(object):
             _len, _name, default_group = groups_by_len[-1]
 
         # Populate blank entries.
-        for i in xrange(_NUM_BRUSHKEYS):
+        for i in range(_NUM_BRUSHKEYS):
             if self.contexts[i] is None:
                 idx = (i + 9) % 10  # keyboard order
-                c_name = unicode("context%02d") % i
+                c_name = "context%02d" % i
                 c = ManagedBrush(self, name=c_name, persistent=False)
                 group_idx = idx % len(default_group)
                 b = default_group[group_idx]
                 b.clone_into(c, c_name)
                 self.contexts[i] = c
-        for i in xrange(_BRUSH_HISTORY_SIZE):
+        for i in range(_BRUSH_HISTORY_SIZE):
             if self.history[i] is None:
-                h_name = unicode("%s%d") % (_BRUSH_HISTORY_NAME_PREFIX, i)
+                h_name = "%s%d" % (_BRUSH_HISTORY_NAME_PREFIX, i)
                 h = ManagedBrush(self, name=h_name, persistent=False)
                 group_i = i % len(default_group)
                 b = default_group[group_i]
@@ -476,8 +462,8 @@ class BrushManager(object):
     def _init_groups(self):
         """Initialize brush groups, loading them from disk."""
 
-        self.contexts = [None for i in xrange(_NUM_BRUSHKEYS)]
-        self.history = [None for i in xrange(_BRUSH_HISTORY_SIZE)]
+        self.contexts = [None] * _NUM_BRUSHKEYS
+        self.history = [None] * _BRUSH_HISTORY_SIZE
 
         brush_cache = {}
         self._init_ordered_groups(brush_cache)
@@ -673,7 +659,7 @@ class BrushManager(object):
         with zipfile.ZipFile(path) as zf:
 
             # In Py2, when the entry was saved without the 0x800 flag
-            # namelist() will return it as bytes, not unicode.  We only
+            # namelist() will return it as bytes, not str.  We only
             # want Unicode strings.
             names = []
             for name in zf.namelist():
@@ -710,7 +696,7 @@ class BrushManager(object):
 
             # Validate file content. The names in order.conf and the
             # brushes found in the zip must match. This should catch
-            # encoding screwups, everything should be a unicode object.
+            # encoding screwups, everything should be a str object.
             for brush in new_brushes:
                 if brush + ".myb" not in names:
                     raise InvalidBrushpack(
@@ -852,8 +838,8 @@ class BrushManager(object):
     def export_group(self, group, filename):
         """Exports a group to a brushpack zipfile.
 
-        :param unicode|str group: Name of the group to save.
-        :param unicode|str filename: Path to a .zip file to create.
+        :param str group: Name of the group to save.
+        :param str filename: Path to a .zip file to create.
 
         >>> with BrushManager._mock() as (bm, tmpdir):
         ...     group = list(bm.groups)[0]
@@ -1017,7 +1003,7 @@ class BrushManager(object):
         brush = managed_brush
         if brush.name is not None:
             brush = brush.clone()
-        brush.name = unicode(_DEVBRUSH_NAME_PREFIX + _device_name_uuid(device_name))
+        brush.name = _DEVBRUSH_NAME_PREFIX + _device_name_uuid(device_name)
         self._brush_by_device[device_name] = brush
 
     def fetch_brush_for_device(self, device_name):
@@ -1042,7 +1028,7 @@ class BrushManager(object):
                 try:
                     b = ManagedBrush(
                         self,
-                        unicode(_DEVBRUSH_NAME_PREFIX + name),
+                        _DEVBRUSH_NAME_PREFIX + name,
                         persistent=True,
                     )
                 except IOError as e:
@@ -1182,7 +1168,7 @@ class BrushManager(object):
         self.save_brushorder()
 
 
-class ManagedBrush(object):
+class ManagedBrush:
     """User-facing representation of a brush's settings.
 
     Managed brushes have a name, a preview image, and brush settings.
@@ -1294,9 +1280,9 @@ class ManagedBrush(object):
         >>> with BrushManager._mock() as (bm, tmpdir):
         ...     for gn, gbs in bm.groups.items():
         ...         for b in gbs:
-        ...             assert isinstance(b.description, unicode)
+        ...             assert isinstance(b.description, str)
         ...             b.description = u"junk"
-        ...             assert isinstance(b.description, unicode)
+        ...             assert isinstance(b.description, str)
         ...             b.save()
 
         """
@@ -1314,9 +1300,9 @@ class ManagedBrush(object):
         ...     imp = bm.import_brushpack(_TEST_BRUSHPACK_PY27)
         ...     imp_g = list(imp)[0]
         ...     for b in bm.groups[imp_g]:
-        ...         assert isinstance(b.notes, unicode)
+        ...         assert isinstance(b.notes, str)
         ...         b.notes = u"junk note"
-        ...         assert isinstance(b.notes, unicode)
+        ...         assert isinstance(b.notes, str)
         ...         b.save()
 
         """
@@ -1388,7 +1374,7 @@ class ManagedBrush(object):
 
         :param saving: caller wants a prefix to save to
         :type saving: bool
-        :rtype: unicode
+        :rtype: str
 
         This assigns ``self.name`` if it isn't defined.
 
@@ -1422,7 +1408,7 @@ class ManagedBrush(object):
                 if not os.path.isfile(a) and not os.path.isfile(b):
                     break
                 i += 1
-        assert isinstance(self.name, unicode)
+        assert isinstance(self.name, str)
 
         # Always save to the user brush path.
         prefix = os.path.join(self.bm.user_brushpath, self.name)

@@ -11,7 +11,7 @@ from collections import OrderedDict
 DEFAULT_CACHE_SIZE = 16384
 
 
-class LRUCache(object):
+class LRUCache:
     """Least-recently-used cache with dict-like usage"""
 
     # The idea for using an OrderedDict comes from Kun Xi -

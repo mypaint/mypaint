@@ -40,8 +40,6 @@ from .adjbases import ColorManager
 from .adjbases import DATAPATH_PALETTES_SUBDIR
 from .combined import CombinedAdjusterPage
 
-from lib.pycompat import unicode
-
 
 logger = logging.getLogger(__name__)
 
@@ -301,7 +299,7 @@ class PaletteEditorDialog(Gtk.Dialog):
         if not name:
             name = ""  # note: not None (it'll be stringified)
         pal = self._mgr.palette
-        pal.name = unicode(name)
+        pal.name = name
 
     def _columns_changed_cb(self, adj):
         ncolumns = int(adj.get_value())

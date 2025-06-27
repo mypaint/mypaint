@@ -131,7 +131,7 @@ class ScrollAction:
     }
 
 
-class Settings(object):
+class Settings:
     """A device's settings"""
 
     DEFAULT_USAGE = AllowedUsage.VALUES[0]
@@ -198,7 +198,7 @@ class Settings(object):
 ## Main class defs
 
 
-class Monitor(object):
+class Monitor:
     """Monitors device use & plugging, and manages their configuration
 
     An instance resides in the main application. It is responsible for

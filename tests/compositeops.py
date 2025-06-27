@@ -11,7 +11,6 @@ from . import paths
 from lib import mypaintlib
 from lib.tiledsurface import N
 from lib.modes import MODE_STRINGS
-from lib.pycompat import xrange
 
 
 ALPHA_VALUES = (0.0, 0.5, 1.0)
@@ -43,7 +42,7 @@ class Ops(unittest.TestCase):
         assert len(self.sample_data) < N
 
         # What the hell, have some random junk too
-        for i in xrange(len(self.sample_data), N):
+        for i in range(len(self.sample_data), N):
             fuzz = (random(), random(), random(), random())
             self.sample_data.append(fuzz)
         assert len(self.sample_data) == N
@@ -69,14 +68,14 @@ class Ops(unittest.TestCase):
             assert r1 <= a1
             assert g1 <= a1
             assert b1 <= a1
-            for j in xrange(len(self.sample_data)):
+            for j in range(len(self.sample_data)):
                 self.src[i, j, :] = (r1, g1, b1, a1)
                 self.dst_orig[j, i, :] = (r1, g1, b1, a1)
 
     def test_all_modes_correctness(self):
         """Test that all modes work the way they advertise"""
         # Test each mode in turn
-        for mode in xrange(mypaintlib.NumCombineModes):
+        for mode in range(mypaintlib.NumCombineModes):
             mode_info = mypaintlib.combine_mode_get_info(mode)
             mode_name = mode_info["name"]
 
@@ -91,8 +90,8 @@ class Ops(unittest.TestCase):
             zero_alpha_has_effect = False
             zero_alpha_clears_backdrop = True  # means: "*always* clears b."
             can_decrease_alpha = False
-            for i in xrange(len(self.sample_data)):
-                for j in xrange(len(self.sample_data)):
+            for i in range(len(self.sample_data)):
+                for j in range(len(self.sample_data)):
                     old = tuple(self.dst_orig[i, j])
                     new = tuple(dst[i, j])
                     if src[i][j][3] == 0:

@@ -21,7 +21,6 @@ import lib.helpers
 from lib.errors import FileHandlingError
 from lib.gettext import C_
 import lib.feedback
-from lib.pycompat import xrange
 
 
 logger = logging.getLogger(__name__)
@@ -32,10 +31,8 @@ N = mypaintlib.TILE_SIZE
 TILES_PER_CALLBACK = 256
 
 
-class Bounded(object):
+class Bounded(metaclass=abc.ABCMeta):
     """Interface for objects with an inherent size"""
-
-    __metaclass__ = abc.ABCMeta
 
     @abc.abstractmethod
     def get_bbox(self):
@@ -47,10 +44,8 @@ class Bounded(object):
         """
 
 
-class TileAccessible(Bounded):
+class TileAccessible(Bounded, metaclass=abc.ABCMeta):
     """Interface for objects whose memory is accessible by tile"""
-
-    __metaclass__ = abc.ABCMeta
 
     @abc.abstractmethod
     def tile_request(self, tx, ty, readonly):
@@ -72,10 +67,8 @@ class TileAccessible(Bounded):
         """
 
 
-class TileBlittable(Bounded):
+class TileBlittable(Bounded, metaclass=abc.ABCMeta):
     """Interface for unconditional copying by tile"""
-
-    __metaclass__ = abc.ABCMeta
 
     @abc.abstractmethod
     def blit_tile_into(self, dst, dst_has_alpha, tx, ty, *args, **kwargs):
@@ -104,10 +97,8 @@ class TileBlittable(Bounded):
         """
 
 
-class TileCompositable(Bounded):
+class TileCompositable(Bounded, metaclass=abc.ABCMeta):
     """Interface for compositing by tile, with modes/opacities/flags"""
-
-    __metaclass__ = abc.ABCMeta
 
     @abc.abstractmethod
     def composite_tile(
@@ -197,7 +188,7 @@ def scanline_strips_iter(
             if ty != first_row:
                 skip_rendering = True
 
-        for tx_rel in xrange(render_tw):
+        for tx_rel in range(render_tw):
             # render one tile
             dst = arr[:, tx_rel * N : (tx_rel + 1) * N, :]
             if not skip_rendering:
@@ -221,7 +212,7 @@ def save_as_png(surface, filename, *rect, **kwargs):
     """Saves a tile-blittable surface to a file in PNG format
 
     :param TileBlittable surface: Surface to save
-    :param unicode filename: The file to write
+    :param str filename: The file to write
     :param tuple \*rect: Rectangle (x, y, w, h) to save
     :param bool alpha: If true, write a PNG with alpha
     :param progress: Updates a UI every scanline strip.

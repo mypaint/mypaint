@@ -289,7 +289,7 @@ class OpenWithDialog(Gtk.Dialog):
             self.set_default_response(Gtk.ResponseType.CANCEL)
 
 
-class LayerEditManager(object):
+class LayerEditManager:
     """Launch external apps to edit layers, monitoring file changes"""
 
     def __init__(self, doc):

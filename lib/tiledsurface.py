@@ -32,8 +32,6 @@ import lib.fileutils
 import lib.modes
 import lib.feedback
 import lib.floodfill
-from lib.pycompat import xrange
-from lib.pycompat import PY3, itervalues
 
 logger = logging.getLogger(__name__)
 
@@ -57,7 +55,7 @@ for sym_type in SYMMETRY_TYPES:
 ## Tile class and marker tile constants
 
 
-class _Tile(object):
+class _Tile:
     """Internal tile storage, with readonly flag
 
     Note: pixels are stored with premultiplied alpha.
@@ -91,7 +89,7 @@ del mipmap_dirty_tile.rgba
 ## Class defs: surfaces
 
 
-class _SurfaceSnapshot(object):
+class _SurfaceSnapshot:
     pass
 
 
@@ -299,8 +297,8 @@ class MyPaintSurface(TileAccessible, TileBlittable, TileCompositable):
         self.tiledict[(tx, ty)] = t
         empty = True
 
-        for x in xrange(2):
-            for y in xrange(2):
+        for x in range(2):
+            for y in range(2):
                 src = self.parent.tiledict.get(
                     (tx * 2 + x, ty * 2 + y), transparent_tile
                 )
@@ -467,7 +465,7 @@ class MyPaintSurface(TileAccessible, TileBlittable, TileCompositable):
 
         """
         sshot = _SurfaceSnapshot()
-        for t in itervalues(self.tiledict):
+        for t in self.tiledict.values():
             t.readonly = True
         sshot.tiledict = self.tiledict.copy()
         return sshot
@@ -607,7 +605,7 @@ class MyPaintSurface(TileAccessible, TileBlittable, TileCompositable):
 
         def consume_buf():
             ty = state["ty"] - 1
-            for i in xrange(state["buf"].shape[1] // N):
+            for i in range(state["buf"].shape[1] // N):
                 tx = x // N + i
                 src = state["buf"][:, i * N : (i + 1) * N, :]
                 if src[:, :, 3].any():
@@ -626,9 +624,8 @@ class MyPaintSurface(TileAccessible, TileBlittable, TileCompositable):
             filename_sys = filename.encode(sys.getfilesystemencoding())
             # FIXME: should not do that, should use open(unicode_object)
 
-        if PY3:
-            filename_sys = filename_sys.decode()
-            # FIXME: https://github.com/mypaint/mypaint/issues/906
+        filename_sys = filename_sys.decode()
+        # FIXME: https://github.com/mypaint/mypaint/issues/906
 
         try:
             flags = mypaintlib.load_png_fast_progressive(
@@ -684,8 +681,7 @@ class MyPaintSurface(TileAccessible, TileBlittable, TileCompositable):
         removed = 0
         for surf in self._mipmaps:
             tmp_items_list = surf.tiledict.items()
-            if PY3:
-                tmp_items_list = list(tmp_items_list)
+            tmp_items_list = list(tmp_items_list)
             for pos, data in tmp_items_list:
                 total += 1
                 try:
@@ -852,7 +848,7 @@ class MyPaintSurface(TileAccessible, TileBlittable, TileCompositable):
         self.notify_observers(*bbox)
 
 
-class _TiledSurfaceMove(object):
+class _TiledSurfaceMove:
     """Ongoing move state for a tiled surface, processed in chunks
 
     Tile move processing involves slicing and copying data from a
@@ -1261,7 +1257,7 @@ def flood_fill(src, fill_args, dst):
     return lib.floodfill.flood_fill(src, fill_args, dst)
 
 
-class PNGFileUpdateTask(object):
+class PNGFileUpdateTask:
     """Piecemeal callable: writes to or replaces a PNG file
 
     See lib.autosave.Autosaveable.
@@ -1349,7 +1345,7 @@ class PNGFileUpdateTask(object):
             self._png_writer = None
             self._strips_iter = None
             self._tmp_fp.close()
-            lib.fileutils.replace(
+            os.replace(
                 self._tmp_filename,
                 self._final_filename,
             )

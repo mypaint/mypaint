@@ -56,7 +56,7 @@ logger = logging.getLogger(__name__)
 ## Class definitions
 
 
-class CanvasController(object):
+class CanvasController:
     """Minimal canvas controller using a stack of modes.
 
     Basic CanvasController objects can be set up to handle scroll events
