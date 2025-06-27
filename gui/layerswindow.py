@@ -262,7 +262,17 @@ class LayersTool(SizedVBoxToolWidget):
         # Initial update
         self.connect("show", self._show_cb)
 
-    def _show_cb(self, event):
+    def _show_cb(self, event: Types.ELLIPSIS) -> Types.NONE:
+        """
+
+        Args:
+            event: 
+
+        Returns:
+
+        Raises:
+
+        """
         self._processing_model_updates = True
         self._update_all()
         self._processing_model_updates = False
@@ -270,12 +280,37 @@ class LayersTool(SizedVBoxToolWidget):
     ## Updates from the model
 
     def _current_path_updated_cb(self, rootstack, layerpath):
-        """Respond to the current layer changing in the doc-model"""
+        # type: (Types.ELLIPSIS) -> Types.NONE
+        """Respond to the current layer changing in the doc-model
+
+        Args:
+            rootstack: 
+            layerpath: 
+
+        Returns:
+
+        Raises:
+
+        """
         self._processing_model_updates = True
         self._update_all()
         self._processing_model_updates = False
 
     def _layer_propchange_cb(self, rootstack, path, layer, changed):
+        # type: (Types.ELLIPSIS) -> Types.NONE
+        """
+
+        Args:
+            rootstack: 
+            path: 
+            layer: 
+            changed: 
+
+        Returns:
+
+        Raises:
+
+        """
         if self._processing_model_updates:
             logger.debug(
                 "Property change skipped: already processing "
@@ -293,6 +328,7 @@ class LayersTool(SizedVBoxToolWidget):
     ## Model update processing
 
     def _update_all(self):
+        """ """
         assert self._processing_model_updates
         self._update_context_menu()
         self._update_layer_mode_combo()
@@ -360,6 +396,7 @@ class LayersTool(SizedVBoxToolWidget):
         label.set_text(text)
 
     def _update_context_menu(self):
+        """ """
         assert self._processing_model_updates
         layer = self.app.doc.model.layer_stack.current
         layer_class = layer.__class__
@@ -380,27 +417,77 @@ class LayersTool(SizedVBoxToolWidget):
 
     ## Updates from the user
 
-    def _layer_properties_cb(self, view):
+    def _layer_properties_cb(self, view: Types.ELLIPSIS) -> Types.NONE:
+        """
+
+        Args:
+            view: 
+
+        Returns:
+
+        Raises:
+
+        """
         action = self.app.find_action("LayerProperties")
         action.activate()
 
-    def _blink_current_layer_cb(self, view):
+    def _blink_current_layer_cb(self, view: Types.ELLIPSIS) -> Types.NONE:
+        """
+
+        Args:
+            view: 
+
+        Returns:
+
+        Raises:
+
+        """
         self.app.doc.blink_layer()
 
-    def _view_drag_began_cb(self, view):
+    def _view_drag_began_cb(self, view: Types.ELLIPSIS) -> Types.NONE:
+        """
+
+        Args:
+            view: 
+
+        Returns:
+
+        Raises:
+
+        """
         self._treeview_in_drag = True
         statusbar = self.app.statusbar
         statusbar_cid = self._drag_statusbar_context_id
         statusbar.remove_all(statusbar_cid)
         statusbar.push(statusbar_cid, self.STATUSBAR_DRAG_MSG)
 
-    def _view_drag_ended_cb(self, view):
+    def _view_drag_ended_cb(self, view: Types.ELLIPSIS) -> Types.NONE:
+        """
+
+        Args:
+            view: 
+
+        Returns:
+
+        Raises:
+
+        """
         self._treeview_in_drag = False
         statusbar = self.app.statusbar
         statusbar_cid = self._drag_statusbar_context_id
         statusbar.remove_all(statusbar_cid)
 
-    def _opacity_adj_changed_cb(self, *ignore):
+    def _opacity_adj_changed_cb(self, *ignore: Types.ELLIPSIS) -> Types.NONE:
+        """
+
+        Args:
+            *ignore: 
+
+        Returns:
+
+        Raises:
+
+        """
         if self._processing_model_updates:
             return
         opacity = self._opacity_adj.get_value() / 100.0
@@ -408,8 +495,17 @@ class LayersTool(SizedVBoxToolWidget):
         docmodel.set_current_layer_opacity(opacity)
         self._treeview.scroll_to_current_layer()
 
-    def _layer_mode_combo_changed_cb(self, *ignored):
-        """Propagate the user's choice of layer mode to the model"""
+    def _layer_mode_combo_changed_cb(self, *ignored: Types.ELLIPSIS) -> Types.NONE:
+        """Propagate the user's choice of layer mode to the model
+
+        Args:
+            *ignored: 
+
+        Returns:
+
+        Raises:
+
+        """
         if self._processing_model_updates:
             return
         docmodel = self.app.doc.model
@@ -423,8 +519,17 @@ class LayersTool(SizedVBoxToolWidget):
 
     ## Utility methods
 
-    def _popup_context_menu(self, event=None):
-        """Display the popup context menu"""
+    def _popup_context_menu(self, event: Types.ELLIPSIS = None) -> Types.NONE:
+        """Display the popup context menu
+
+        Args:
+            event:  (Default value = None)
+
+        Returns:
+
+        Raises:
+
+        """
         if event is None:
             time = Gtk.get_current_event_time()
             button = 0
@@ -434,6 +539,17 @@ class LayersTool(SizedVBoxToolWidget):
         self._menu.popup(None, None, None, None, button, time)
 
     def _popup_menu_cb(self, widget, event=None):
-        """Handler for "popup-menu" GtkEvents, and the view's @event"""
+        # type: (Types.ELLIPSIS) -> Types.NONE
+        """Handler for "popup-menu" GtkEvents, and the view's @event
+
+        Args:
+            widget: 
+            event:  (Default value = None)
+
+        Returns:
+
+        Raises:
+
+        """
         self._popup_context_menu(event=event)
         return True

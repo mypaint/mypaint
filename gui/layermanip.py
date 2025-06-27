@@ -24,11 +24,17 @@ import gui.cursor
 
 class LayerMoveMode(gui.mode.ScrollableModeMixin, gui.mode.DragMode):
     """Moving a layer interactively
-
+    
     MyPaint is tile-based, and tiles must align between layers.
     Therefore moving layers involves copying data around. This is slow
     for very large layers, so the work is broken into chunks and
     processed in the idle phase of the GUI for greater responsiveness.
+
+    Args:
+
+    Returns:
+
+    Raises:
 
     """
 
@@ -41,13 +47,16 @@ class LayerMoveMode(gui.mode.ScrollableModeMixin, gui.mode.DragMode):
 
     @classmethod
     def get_name(cls):
+        """ """
         return _("Move Layer")
 
     def get_usage(self):
+        """ """
         return _("Move the current layer")
 
     @property
     def active_cursor(self):
+        """ """
         cursor_name = gui.cursor.Name.HAND_CLOSED
         if not self._move_possible:
             cursor_name = gui.cursor.Name.FORBIDDEN_EVERYWHERE
@@ -58,6 +67,7 @@ class LayerMoveMode(gui.mode.ScrollableModeMixin, gui.mode.DragMode):
 
     @property
     def inactive_cursor(self):
+        """ """
         cursor_name = gui.cursor.Name.HAND_OPEN
         if not self._move_possible:
             cursor_name = gui.cursor.Name.FORBIDDEN_EVERYWHERE
@@ -89,6 +99,18 @@ class LayerMoveMode(gui.mode.ScrollableModeMixin, gui.mode.DragMode):
     ## Layer stacking API
 
     def enter(self, doc, **kwds):
+        # type: (Types.ELLIPSIS) -> Types.NONE
+        """
+
+        Args:
+            doc: 
+            **kwds: 
+
+        Returns:
+
+        Raises:
+
+        """
         super(LayerMoveMode, self).enter(doc, **kwds)
         self.final_modifiers = self.initial_modifiers
         rootstack = self.doc.model.layer_stack
@@ -96,7 +118,17 @@ class LayerMoveMode(gui.mode.ScrollableModeMixin, gui.mode.DragMode):
         rootstack.layer_properties_changed += self._update_ui
         self._update_ui()
 
-    def leave(self, **kwds):
+    def leave(self, **kwds: Types.ELLIPSIS) -> Types.NONE:
+        """
+
+        Args:
+            **kwds: 
+
+        Returns:
+
+        Raises:
+
+        """
         if self._cmd is not None:
             while self._finalize_move_idler():
                 pass
@@ -105,8 +137,17 @@ class LayerMoveMode(gui.mode.ScrollableModeMixin, gui.mode.DragMode):
         rootstack.layer_properties_changed -= self._update_ui
         return super(LayerMoveMode, self).leave(**kwds)
 
-    def checkpoint(self, **kwds):
-        """Commits any pending work to the command stack"""
+    def checkpoint(self, **kwds: Types.ELLIPSIS) -> Types.NONE:
+        """Commits any pending work to the command stack
+
+        Args:
+            **kwds: 
+
+        Returns:
+
+        Raises:
+
+        """
         if self._cmd is not None:
             while self._finalize_move_idler():
                 pass
@@ -115,7 +156,18 @@ class LayerMoveMode(gui.mode.ScrollableModeMixin, gui.mode.DragMode):
     ## Drag-mode API
 
     def drag_start_cb(self, tdw, event):
-        """Drag initialization"""
+        # type: (Types.ELLIPSIS) -> Types.NONE
+        """Drag initialization
+
+        Args:
+            tdw: 
+            event: 
+
+        Returns:
+
+        Raises:
+
+        """
         if self._move_possible and self._cmd is None:
             model = tdw.doc
             layer_path = model.layer_stack.current_path
@@ -127,7 +179,22 @@ class LayerMoveMode(gui.mode.ScrollableModeMixin, gui.mode.DragMode):
         return super(LayerMoveMode, self).drag_start_cb(tdw, event)
 
     def drag_update_cb(self, tdw, event, ev_x, ev_y, dx, dy):
-        """UI and model updates during a drag"""
+        # type: (Types.ELLIPSIS) -> Types.NONE
+        """UI and model updates during a drag
+
+        Args:
+            tdw: 
+            event: 
+            ev_x: 
+            ev_y: 
+            dx: 
+            dy: 
+
+        Returns:
+
+        Raises:
+
+        """
         if self._cmd:
             assert tdw is self._drag_active_tdw
             xm, ym = tdw.display_to_model(ev_x, ev_y)
@@ -152,8 +219,17 @@ class LayerMoveMode(gui.mode.ScrollableModeMixin, gui.mode.DragMode):
         self._drag_update_idler_srcid = None
         return False
 
-    def drag_stop_cb(self, tdw):
-        """UI and model updates at the end of a drag"""
+    def drag_stop_cb(self, tdw: Types.ELLIPSIS) -> Types.NONE:
+        """UI and model updates at the end of a drag
+
+        Args:
+            tdw: 
+
+        Returns:
+
+        Raises:
+
+        """
         # Stop the update idler running on its next scheduling
         self._drag_update_idler_srcid = None
         # This will leave a non-cleaned-up move if one is still active,
@@ -194,8 +270,17 @@ class LayerMoveMode(gui.mode.ScrollableModeMixin, gui.mode.DragMode):
 
     ## Helpers
 
-    def _update_ui(self, *_ignored):
-        """Updates the cursor, and the internal move-possible flag"""
+    def _update_ui(self, *_ignored: Types.ELLIPSIS) -> Types.NONE:
+        """Updates the cursor, and the internal move-possible flag
+
+        Args:
+            *_ignored: 
+
+        Returns:
+
+        Raises:
+
+        """
         layer = self.doc.model.layer_stack.current
         self._move_possible = (
             layer.visible

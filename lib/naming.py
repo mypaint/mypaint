@@ -11,7 +11,6 @@
 import re
 
 from lib.gettext import C_
-from lib.pycompat import unicode
 
 UNIQUE_NAME_TEMPLATE = C_(
     "unique names: serial number needed: template",
@@ -36,13 +35,21 @@ UNIQUE_NAME_REGEX = re.compile(
 def make_unique_name(name, existing, start=1, always_number=None):
     """Ensures that a name is unique.
 
-    :param unicode name: Name to be made unique.
-    :param existing: An existing list or set of names.
-    :type existing: anything supporting ``in``
-    :param int start: starting number for numbering.
-    :param unicode always_number: always number if name is this value.
-    :returns: A unique name.
-    :rtype: unicode
+    Args:
+        name (str): Name to be made unique.
+        existing (anything supporting ``in``): An existing list or set of names.
+        start (int, optional): starting number for numbering. (Default value = 1)
+        always_number (str, optional): always number if name is this value. (Default value = None)
+
+    Returns:
+        str
+
+
+Sometimes you may want a serial number every time if the given name
+is some specific value, normally a default. This allows your first
+item to be, for example, "Widget 1", not "Widget".: A unique name.
+
+    Raises:
 
     >>> existing = set([u"abc 1", u"abc 2", u"abc"])
     >>> expected = u'abc 3'
@@ -52,20 +59,15 @@ def make_unique_name(name, existing, start=1, always_number=None):
     True
     >>> make_unique_name(u"abc 1", existing) == expected  # still
     True
-
-    Sometimes you may want a serial number every time if the given name
-    is some specific value, normally a default. This allows your first
-    item to be, for example, "Widget 1", not "Widget".
-
+    
     >>> x1 = u'xyz 1'
     >>> make_unique_name(u"xyz", {}, start=1, always_number=u"xyz") == x1
     True
     >>> x2 = u'xyz 2'
     >>> make_unique_name(u"xyz", {}, start=2, always_number=u"xyz") == x2
     True
-
     """
-    name = unicode(name)
+    name = str(name)
     match = UNIQUE_NAME_REGEX.match(name)
     if match:
         base = match.group("name")

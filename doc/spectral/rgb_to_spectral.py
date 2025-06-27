@@ -39,6 +39,23 @@ def XYZ_to_spectral(
     illuminant=sd_ones(),
     max_refl=1.0,
 ):
+    # type: (Types.ELLIPSIS) -> Types.NONE
+    """
+
+    Args:
+        XYZ: 
+        cmfs:  (Default value = STANDARD_OBSERVERS_CMFS["CIE 1931 2 Degree Standard Observer"])
+        interval:  (Default value = 5)
+        tolerance:  (Default value = 1e-10)
+        maximum_iterations:  (Default value = 5000)
+        illuminant:  (Default value = sd_ones())
+        max_refl:  (Default value = 1.0)
+
+    Returns:
+
+    Raises:
+
+    """
 
     XYZ = to_domain_1(XYZ)
     shape = SpectralShape(cmfs.shape.start, cmfs.shape.end, interval)
@@ -47,15 +64,31 @@ def XYZ_to_spectral(
     spd = sd_zeros(shape)
 
     def function_objective(a):
-        """
-        Objective function.
+        # type: (Types.ELLIPSIS) -> Types.NONE
+        """Objective function.
+
+        Args:
+            a: 
+
+        Returns:
+
+        Raises:
+
         """
 
         return np.sum(np.diff(a) ** 2)
 
     def function_constraint(a):
-        """
-        Function defining the constraint for XYZ=XYZ.
+        # type: (Types.ELLIPSIS) -> Types.NONE
+        """Function defining the constraint for XYZ=XYZ.
+
+        Args:
+            a: 
+
+        Returns:
+
+        Raises:
+
         """
 
         spd[:] = np.exp(a)
@@ -65,8 +98,16 @@ def XYZ_to_spectral(
         )
 
     def function_constraint2(a):
-        """
-        Function defining constraint on emission/reflectance
+        # type: (Types.ELLIPSIS) -> Types.NONE
+        """Function defining constraint on emission/reflectance
+
+        Args:
+            a: 
+
+        Returns:
+
+        Raises:
+
         """
         if max_refl <= 0.0:
             return 0.0

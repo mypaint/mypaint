@@ -18,7 +18,6 @@ from lib.gibindings import Gdk
 from lib.gibindings import GLib
 
 from lib.helpers import clamp, Rect
-from lib.pycompat import xrange
 
 logger = logging.getLogger(__name__)
 
@@ -28,10 +27,16 @@ logger = logging.getLogger(__name__)
 
 class Dialog(Gtk.Dialog):
     """Base dialog accepting all keyboard input.
-
+    
     Dialogs hide when closed. By default, they accept all keyboard input and
     are not modal. They can (and should) be kept around as references, and can
     be freely hidden and shown after construction.
+
+    Args:
+
+    Returns:
+
+    Raises:
 
     """
 
@@ -45,9 +50,15 @@ class Dialog(Gtk.Dialog):
 
 class SubWindow(Gtk.Window):
     """A subwindow in the GUI.
-
+    
     SubWindows don't accept keyboard input by default, but if your subclass
     requires it, pass key_input to the constructor.
+
+    Args:
+
+    Returns:
+
+    Raises:
 
     """
 
@@ -77,6 +88,7 @@ class SubWindow(Gtk.Window):
             self.set_transient_for(app.drawWindow)
 
     def show_all(self):
+        """ """
         pos = self.pre_hide_pos
         Gtk.Window.show_all(self)
         if pos:
@@ -87,14 +99,21 @@ class SubWindow(Gtk.Window):
         # https://bugs.launchpad.net/ubuntu/+source/compiz/+bug/155101
 
     def hide(self):
+        """ """
         self.pre_hide_pos = self.get_position()
         Gtk.Window.hide(self)
 
 
 class PopupWindow(Gtk.Window):
-    """
-    A popup window, with no decoration. Popups always appear centred under the
+    """A popup window, with no decoration. Popups always appear centred under the
     mouse, and don't accept keyboard input.
+
+    Args:
+
+    Returns:
+
+    Raises:
+
     """
 
     def __init__(self, app):
@@ -107,27 +126,33 @@ class PopupWindow(Gtk.Window):
 
 class ChooserPopup(Gtk.Window):
     """A resizable popup window used for making fast choices
-
+    
     Chooser popups can be used for fast selection of items
     from a list of alternatives.
     They normally appear under the mouse pointer,
     but can be popped up next to another on-screen widget
     to provide a menu-like response.
-
+    
     The popup can be resized using its edges.
     To cancel and hide the popup without making a choice,
     move the pointer outside the window beyond a certain distance or
     click outside the window.
-
+    
     Code using this class should also hide() the popup
     when the user has made a definite, complete choice
     from what's on offer.
-
+    
     Popup choosers theoretically permit keyboard input as far as the WM
     is concerned, but eat most keypresses except those whose actions
     have been nominated to be dispatched via ``app.kbm``. As such,
     they're not suited for keyboard data entry, but are fine for
     clicking on brushes, colours etc.
+
+    Args:
+
+    Returns:
+
+    Raises:
 
     """
 
@@ -230,6 +255,18 @@ class ChooserPopup(Gtk.Window):
         Gtk.Window.add(self, self._frame)
 
     def _crossing_cb(self, widget, event):
+        # type: (Types.ELLIPSIS) -> Types.NONE
+        """
+
+        Args:
+            widget: 
+            event: 
+
+        Returns:
+
+        Raises:
+
+        """
         if self._resize_info:
             return
         if event.mode != Gdk.CrossingMode.NORMAL:
@@ -255,6 +292,18 @@ class ChooserPopup(Gtk.Window):
             )
 
     def _grab_pointer_outside(self, device, time):
+        # type: (Types.ELLIPSIS) -> Types.NONE
+        """
+
+        Args:
+            device: 
+            time: 
+
+        Returns:
+
+        Raises:
+
+        """
         if self._outside_grab_active:
             logger.warning("grab: outside-popup grab already active: " "regrabbing")
             self._ungrab_pointer_outside(device, time)
@@ -285,6 +334,18 @@ class ChooserPopup(Gtk.Window):
             )
 
     def _ungrab_pointer_outside(self, device, time):
+        # type: (Types.ELLIPSIS) -> Types.NONE
+        """
+
+        Args:
+            device: 
+            time: 
+
+        Returns:
+
+        Raises:
+
+        """
         if not self._outside_grab_active:
             logger.debug("ungrab: outside-popup grab not active")
         device.ungrab(time_=time)
@@ -292,7 +353,18 @@ class ChooserPopup(Gtk.Window):
         self._outside_grab_active = False
 
     def _configure_cb(self, widget, event):
-        """Internal: Update size and prefs when window is adjusted"""
+        # type: (Types.ELLIPSIS) -> Types.NONE
+        """Internal: Update size and prefs when window is adjusted
+
+        Args:
+            widget: 
+            event: 
+
+        Returns:
+
+        Raises:
+
+        """
         # Constrain window to fit on its current monitor, if possible.
         screen = event.get_screen()
         mon = screen.get_monitor_at_point(event.x, event.y)
@@ -324,6 +396,7 @@ class ChooserPopup(Gtk.Window):
         self.app.preferences[self._prefs_size_key] = (w, h)
 
     def _get_size(self):
+        """ """
         if not self._size:
             # From time to time, popups presented in fullscreen don't
             # receive configure events. Why?
@@ -335,17 +408,33 @@ class ChooserPopup(Gtk.Window):
             self._size = (x, y, w, h)
         return self._size
 
-    def _realize_cb(self, widget):
+    def _realize_cb(self, widget: Types.ELLIPSIS) -> Types.NONE:
+        """
+
+        Args:
+            widget: 
+
+        Returns:
+
+        Raises:
+
+        """
         gdk_window = self.get_window()
         gdk_window.set_type_hint(Gdk.WindowTypeHint.POPUP_MENU)
 
     def popup(self, widget=None, above=False, textwards=True, event=None):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Display, with an optional position relative to a widget
 
-        :param widget: The widget defining the pop-up position
-        :param above: If true, pop up above from `widget`
-        :param textwards: If true, pop up in the text direction from `widget`
-        :param event: the originating event
+        Args:
+            widget: The widget defining the pop-up position (Default value = None)
+            above: If true, pop up above from `widget` (Default value = False)
+            textwards: If true, pop up in the text direction from `widget` (Default value = True)
+            event: the originating event (Default value = None)
+
+        Returns:
+
+        Raises:
 
         """
         if not widget:
@@ -387,6 +476,7 @@ class ChooserPopup(Gtk.Window):
         self.present()
 
     def _do_initial_move(self):
+        """ """
         x, y, w, h = self._get_size()
         x, y = self._initial_move_pos
         grav = self.get_gravity()
@@ -396,8 +486,17 @@ class ChooserPopup(Gtk.Window):
             x -= w
         self.move(x, y)
 
-    def _show_cb(self, widget):
-        """Internal: show child widgets, grab, start the motion handler"""
+    def _show_cb(self, widget: Types.ELLIPSIS) -> Types.NONE:
+        """Internal: show child widgets, grab, start the motion handler
+
+        Args:
+            widget: 
+
+        Returns:
+
+        Raises:
+
+        """
         self._frame.show_all()
         if not self._motion_handler_id:
             h_id = self.connect("motion-notify-event", self._motion_cb)
@@ -416,8 +515,17 @@ class ChooserPopup(Gtk.Window):
                 time=time,
             )
 
-    def _hide_cb(self, widget):
-        """Internal: reset during-show state when the window is hidden"""
+    def _hide_cb(self, widget: Types.ELLIPSIS) -> Types.NONE:
+        """Internal: reset during-show state when the window is hidden
+
+        Args:
+            widget: 
+
+        Returns:
+
+        Raises:
+
+        """
         if self._motion_handler_id is not None:
             self.disconnect(self._motion_handler_id)
         self._motion_handler_id = None
@@ -427,16 +535,45 @@ class ChooserPopup(Gtk.Window):
         self._resize_info = None
         self._outside_grab_active = False
 
-    def add(self, child):
-        """Override: add() adds the child widget to an internal alignment"""
+    def add(self, child: Types.ELLIPSIS) -> Types.NONE:
+        """Override: add() adds the child widget to an internal alignment
+
+        Args:
+            child: 
+
+        Returns:
+
+        Raises:
+
+        """
         return self._align.add(child)
 
-    def remove(self, child):
-        """Override: remove() removes the child from an internal alignment"""
+    def remove(self, child: Types.ELLIPSIS) -> Types.NONE:
+        """Override: remove() removes the child from an internal alignment
+
+        Args:
+            child: 
+
+        Returns:
+
+        Raises:
+
+        """
         return self._align.remove(child)
 
     def _get_edge(self, px, py):
-        """Internal: returns which window edge the pointer is pointing at"""
+        # type: (Types.ELLIPSIS) -> Types.NONE
+        """Internal: returns which window edge the pointer is pointing at
+
+        Args:
+            px: 
+            py: 
+
+        Returns:
+
+        Raises:
+
+        """
         size = self._get_size()
         if size is None:
             return None
@@ -476,6 +613,18 @@ class ChooserPopup(Gtk.Window):
             return None
 
     def _get_cursor(self, px, py):
+        # type: (Types.ELLIPSIS) -> Types.NONE
+        """
+
+        Args:
+            px: 
+            py: 
+
+        Returns:
+
+        Raises:
+
+        """
         x, y, w, h = self._get_size()
         edge = self._get_edge(px, py)
         outside_window = px < x or py < y or px > x + w or py > y + h
@@ -485,7 +634,18 @@ class ChooserPopup(Gtk.Window):
             return self._edge_cursors.get(edge, None)
 
     def _button_press_cb(self, widget, event):
-        """Internal: starts resizing if the pointer is at the edge"""
+        # type: (Types.ELLIPSIS) -> Types.NONE
+        """Internal: starts resizing if the pointer is at the edge
+
+        Args:
+            widget: 
+            event: 
+
+        Returns:
+
+        Raises:
+
+        """
         win = self.get_window()
         if not win:
             return False
@@ -510,7 +670,18 @@ class ChooserPopup(Gtk.Window):
         return False
 
     def _button_release_cb(self, widget, event):
-        """Internal: stops any active resize"""
+        # type: (Types.ELLIPSIS) -> Types.NONE
+        """Internal: stops any active resize
+
+        Args:
+            widget: 
+            event: 
+
+        Returns:
+
+        Raises:
+
+        """
         if event.button != 1:
             return False
         if not self.get_visible():
@@ -521,7 +692,18 @@ class ChooserPopup(Gtk.Window):
         return True
 
     def _motion_cb(self, widget, event):
-        """Internal: handle motions: resizing, or leave checks"""
+        # type: (Types.ELLIPSIS) -> Types.NONE
+        """Internal: handle motions: resizing, or leave checks
+
+        Args:
+            widget: 
+            event: 
+
+        Returns:
+
+        Raises:
+
+        """
 
         # Ensure that at some point the user started inside a visible window
         if not self.get_visible():
@@ -635,13 +817,21 @@ class ChooserPopup(Gtk.Window):
 # General window-related helper functions
 
 
-def clear_focus(window):
+def clear_focus(window: Types.ELLIPSIS) -> Types.NONE:
     """Clear focus and any selection in widget with focus
-
+    
     Immediately after calling this, there should be no widget with focus in the
     window, and if the previously focused widget had an active selection (such
     as a selection in a textbox, or an editable spinbutton), the selection will
     be cleared (the selection is removed, the content is not).
+
+    Args:
+        window: 
+
+    Returns:
+
+    Raises:
+
     """
     focus = window.get_focus()
     # If the current focused widget is an Entry, deselect any active selection.
@@ -656,7 +846,24 @@ def clear_focus(window):
 
 
 def _final_rectangle(x, y, w, h, screen_w, screen_h, targ_geom, min_usable_size):
-    """Tries to create sensible (x, y, w, h) window pos/dim"""
+    # type: (Types.ELLIPSIS) -> Types.NONE
+    """Tries to create sensible (x, y, w, h) window pos/dim
+
+    Args:
+        x: 
+        y: 
+        w: 
+        h: 
+        screen_w: 
+        screen_h: 
+        targ_geom: 
+        min_usable_size: 
+
+    Returns:
+
+    Raises:
+
+    """
     # Generate a sensible, positive x and y position
     final_x, final_y, final_w, final_h = None, None, None, None
     if x is not None and y is not None:
@@ -699,38 +906,46 @@ def _final_rectangle(x, y, w, h, screen_w, screen_h, targ_geom, min_usable_size)
     return final_x, final_y, final_w, final_h
 
 
-def set_initial_window_position(win, pos):
+def set_initial_window_position(win, pos: Types.ELLIPSIS) -> Types.NONE:
     """Set the position of a Gtk.Window, used during initial positioning.
-
+    
     This is used both for restoring a saved window position, and for the
     application-wide defaults. The ``pos`` argument is a dict containing the
     following optional keys
-
+    
         "w": <int>
         "h": <int>
             If positive, the size of the window.
             If negative, size is calculated based on the size of the
             monitor with the pointer on it, and x (or y) if given, e.g.
-
+    
                 width = mouse_mon_w -  abs(x) + abs(w)   # or (if no x)
                 width = mouse_mon_w - (2 * abs(w))
-
+    
             The same is true of calculated heights.
-
+    
         "x": <int>
         "y": <int>
             If positive, the left/top of the window.
             If negative, the bottom/right of the window on the monitor
             with the pointer on it: you MUST provide a positive w and h
             if you do this.
-
+    
     If the window's calculated top-left would place it offscreen, it will be
     placed in its default, window manager provided position. If its calculated
     size is larger than the screen, the window will be given its natural size
     instead.
-
+    
     Returns the final, chosen (x, y) pair for forcing the window position on
     first map, or None if defaults are being used.
+
+    Args:
+        win: 
+        pos: 
+
+    Returns:
+
+    Raises:
 
     """
 
@@ -774,7 +989,7 @@ def set_initial_window_position(win, pos):
     # exists. Users change display layouts...
     if None not in (final_x, final_y):
         onscreen = False
-        for mon_num in xrange(screen.get_n_monitors()):
+        for mon_num in range(screen.get_n_monitors()):
             targ_geom = _get_target_area_geometry(screen, mon_num)
             in_targ_geom = (
                 final_x < (targ_geom.x + targ_geom.w)
@@ -810,21 +1025,22 @@ def set_initial_window_position(win, pos):
     return None
 
 
-def _get_target_area_geometry(screen, mon_num):
+def _get_target_area_geometry(screen: Gdk.Screen, mon_num: int) -> Rect:
     """Get a rect for putting windows in: normally based on monitor.
 
-    :param Gdk.Screen screen: Target screen.
-    :param int mon_num: Monitor number, e.g. that of the pointer.
-    :returns: A hopefully usable target area.
-    :rtype: Rect
+    Args:
+        screen: Target screen.
+        mon_num: Monitor number, e.g. that of the pointer.
 
-    This function operates like gdk_screen_get_monitor_geometry(), but
-    falls back to the screen geometry for cases when that returns NULL.
-    It also returns a type which has (around GTK 3.18.x) fewer weird
-    typelib issues with construction or use.
+This function operates like gdk_screen_get_monitor_geometry(), but
+falls back to the screen geometry for cases when that returns NULL.
+It also returns a type which has (around GTK 3.18.x) fewer weird
+typelib issues with construction or use.
 
-    Ref: https://github.com/mypaint/mypaint/issues/424
-    Ref: https://github.com/mypaint/mypaint/issues/437
+Ref: https://github.com/mypaint/mypaint/issues/424
+Ref: https://github.com/mypaint/mypaint/issues/437: A hopefully usable target area.
+
+    Raises:
 
     """
     geom = None

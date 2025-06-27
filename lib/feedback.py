@@ -18,22 +18,43 @@ import lib.helpers
 # Class defs:
 
 
-class Progress(object):
+class Progress:
     """Itemized progress report with hierarchy.
-
+    
     A top-level GUI process can create one of these objects, and connect
     to its .changed event to get real-time reports from calls it passes
     the Progress down to.
-
-    >>> prog0 = Progress()
-    >>> feedback = []
-    >>> prog0.changed += lambda p: feedback.append(p.fraction())
-
+    
+    
     If the number of items is unset, the fraction is None.  Code that
     doesn't know how much work it has to do can call changed() to notify
     observers, however. This may cause a pulse in GUI progress bars, for
     example.
+    
+    
+    Progress report objects are only really useful if each stage
+    declares how many items it expects to be filling in. You can't set
+    the item count to less than its current value, and each change to ie
+    emits the changed() event.
+    
+    
+    You can increment the progress report to mark items complete,
+    or explicitly declare how many items are now complete.
+    
+    
+    If a stage is more fine-grained, you can open() a sub-progress
+    report and pass that around or fill it in.
 
+    Args:
+
+    Returns:
+
+    Raises:
+
+    >>> prog0 = Progress()
+    >>> feedback = []
+    >>> prog0.changed += lambda p: feedback.append(p.fraction())
+    
     >>> prog0.fraction() is None
     True
     >>> prog0.changed()
@@ -42,21 +63,13 @@ class Progress(object):
     True
     >>> feedback
     [None, None]
-
-    Progress report objects are only really useful if each stage
-    declares how many items it expects to be filling in. You can't set
-    the item count to less than its current value, and each change to ie
-    emits the changed() event.
-
+    
     >>> prog0.items = 10
     >>> prog0.fraction()
     0.0
     >>> feedback
     [None, None, 0.0]
-
-    You can increment the progress report to mark items complete,
-    or explicitly declare how many items are now complete.
-
+    
     >>> prog0 += 1
     >>> prog0 += 2
     >>> feedback
@@ -64,10 +77,7 @@ class Progress(object):
     >>> prog0.completed(5)
     >>> feedback
     [None, None, 0.0, 0.1, 0.3, 0.5]
-
-    If a stage is more fine-grained, you can open() a sub-progress
-    report and pass that around or fill it in.
-
+    
     >>> p1 = prog0.open()
     >>> p2 = prog0.open()
     >>> p1.items = 2
@@ -82,7 +92,6 @@ class Progress(object):
     0.575
     >>> feedback
     [None, None, 0.0, 0.1, 0.3, 0.5, 0.5, 0.5, 0.55, 0.575]
-
     """
 
     # Initialization and basic fields:
@@ -102,9 +111,15 @@ class Progress(object):
     @property
     def items(self):
         """The number of open items (read, write once).
-
+        
         An attempt to set the number of items after it has already been
         set results in an exception.
+
+        Args:
+
+        Returns:
+
+        Raises:
 
         >>> p = Progress()
         >>> p.items = 10
@@ -112,12 +127,21 @@ class Progress(object):
         Traceback (most recent call last):
         ...
         ValueError: ...
-
         """
         return self._items
 
     @items.setter
-    def items(self, n):
+    def items(self, n: Types.ELLIPSIS) -> Types.NONE:
+        """
+
+        Args:
+            n: 
+
+        Returns:
+
+        Raises:
+
+        """
         if self._items is not None:
             raise ValueError("Progress.items has already been set.")
         n = max(0, int(n))
@@ -131,8 +155,17 @@ class Progress(object):
     def changed(self):
         """Event: fires when "fraction" changes."""
 
-    def _child_changed_cb(self, sprog):
-        """Handles changes to an open child Progress."""
+    def _child_changed_cb(self, sprog: Types.ELLIPSIS) -> Types.NONE:
+        """Handles changes to an open child Progress.
+
+        Args:
+            sprog: 
+
+        Returns:
+
+        Raises:
+
+        """
         if sprog not in self._open:
             return
         if self._items is None:
@@ -185,12 +218,19 @@ class Progress(object):
         self.completed(c)
         return self
 
-    def completed(self, c):
+    def completed(self, c: Types.ELLIPSIS) -> Types.NONE:
         """Try to mark up to item c as completed.
-
+        
         You cannot mark as complete more than ``items`` minus the
         combined weight of all the currently open child Progress
         objects.
+
+        Args:
+            c: 
+
+        Returns:
+
+        Raises:
 
         """
         if self._items is None:
@@ -203,16 +243,22 @@ class Progress(object):
 
     def close(self):
         """Mark this Progress as complete.
-
+        
         If you set the size of a Progress object in a given function,
         and start marking its items as complete, it's normal to close()
         the Progress object later on.
-
+        
         Or to put it another way, parent function calls male new,
         unsized Progress objects with open(), and pass those to
         functions they invoke. The child functions set sizes, declare
         that work is done in an incremental fashion, and finally call
         close() on what they're passed.
+
+        Args:
+
+        Returns:
+
+        Raises:
 
         """
         if self._items is not None:
@@ -271,13 +317,17 @@ class Progress(object):
     def open(self, weight=1):
         """Open a new monitored child Progress.
 
-        :param int weight: Number of items represented by the child.
-        :returns: A new, unsized Progress object.
-        :rtype: Progress
+        Args:
+            weight (int, optional): Number of items represented by the child. (Default value = 1)
 
-        A child Progress object cannot represent more items than are
-        currently available. If you try, the returned Progress object
-        will work, but it won't be monitored.
+        Returns:
+            Progress
+
+A child Progress object cannot represent more items than are
+currently available. If you try, the returned Progress object
+will work, but it won't be monitored.: A new, unsized Progress object.
+
+        Raises:
 
         >>> p = Progress()
         >>> p.items = 10
@@ -289,7 +339,6 @@ class Progress(object):
         >>> p1.close()
         >>> p
         <Progress 4.0/10>
-
         """
         sprog_weight = max(1, int(weight))
         sprog = Progress()

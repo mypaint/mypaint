@@ -38,9 +38,9 @@ _PRESS_EVENTS = {Gdk.EventType.BUTTON_PRESS, Gdk.EventType.TOUCH_BEGIN}
 ## Class definitions
 
 
-class PickingGrabPresenter(object):
+class PickingGrabPresenter(metaclass=abc.ABCMeta):
     """Picking something via a grab (abstract base, MVP presenter)
-
+    
     This presenter mediates between passive GTK view widgets
     accessed via the central app,
     and a model consisting of some drawing state within the application.
@@ -48,11 +48,15 @@ class PickingGrabPresenter(object):
     updates the thing being grabbed zero or more times,
     then exits making sure that the grab is cleaned up correctly.
 
+    Args:
+
+    Returns:
+
+    Raises:
+
     """
 
     ## Class configuration
-
-    __metaclass__ = abc.ABCMeta
 
     _GRAB_MASK = (
         Gdk.EventMask.BUTTON_RELEASE_MASK
@@ -84,7 +88,17 @@ class PickingGrabPresenter(object):
         return self._app
 
     @app.setter
-    def app(self, app):
+    def app(self, app: Types.ELLIPSIS) -> Types.NONE:
+        """
+
+        Args:
+            app: 
+
+        Returns:
+
+        Raises:
+
+        """
         self._app = app
         self._statusbar_info_cache = None
 
@@ -116,19 +130,26 @@ class PickingGrabPresenter(object):
 
     ## Activation
 
-    def activate_from_button_event(self, event):
+    def activate_from_button_event(self, event: Types.ELLIPSIS) -> Types.NONE:
         """Activate during handling of a GdkEventButton (press/release)
-
+        
         If the event is a button press, then the grab will start
         immediately, begin updating immediately, and will terminate by
         the release of the initiating button.
-
+        
         If the event is a button release, then the grab start will be
         deferred to start in an idle handler. When the grab starts, it
         won't begin updating until the user clicks button 1 (and only
         button 1), and it will only be terminated with a button1
         release. This covers the case of events delivered to "clicked"
         signal handlers
+
+        Args:
+            event: 
+
+        Returns:
+
+        Raises:
 
         """
         if event.type in _PRESS_EVENTS:
@@ -152,11 +173,15 @@ class PickingGrabPresenter(object):
     def picking_cursor(self):
         """The cursor to use while picking.
 
-        :returns: The cursor to use during the picking grab.
-        :rtype: Gdk.Cursor
+        Args:
 
-        This abstract property must be overridden with an implementation
-        giving an appropriate cursor to display during the picking grab.
+        Returns:
+            Gdk.Cursor
+
+This abstract property must be overridden with an implementation
+giving an appropriate cursor to display during the picking grab.: The cursor to use during the picking grab.
+
+        Raises:
 
         """
 
@@ -165,38 +190,48 @@ class PickingGrabPresenter(object):
         """The statusbar text to use during the grab."""
 
     @abc.abstractmethod
-    def picking_update(self, device, x_root, y_root):
+    def picking_update(self, device: Gdk.Device, x_root: int, y_root: int) -> Types.NONE:
         """Update whatever's being picked during & after picking.
 
-        :param Gdk.Device device: Pointer device currently grabbed
-        :param int x_root: Absolute screen X coordinate
-        :param int y_root: Absolute screen Y coordinate
-
+        Args:
+            device: Pointer device currently grabbed
+            x_root: Absolute screen X coordinate
+            y_root: Absolute screen Y coordinate
+        
         This abstract method must be overridden with an implementation
         which updates the model object being picked.
         It is always called at the end of the picking grab
         when button1 is released,
         and may be called several times during the grab
         while button1 is held.
-
+        
         See gui.tileddrawwidget.TiledDrawWidget.get_tdw_under_device()
         for details of how to get canvas widgets
         and their related document models and controllers.
+
+        Returns:
+
+        Raises:
 
         """
 
     ## Internals
 
-    def _start_grab(self, device, time, inibutton):
+    def _start_grab(self, device: Gdk.Device, time: int, inibutton: int) -> Types.NONE:
         """Start the pointer grab, and enter the picking state.
 
-        :param Gdk.Device device: Initiating pointer device.
-        :param int time: The grab start timestamp.
-        :param int inibutton: Initiating pointer button.
-
+        Args:
+            device: Initiating pointer device.
+            time: The grab start timestamp.
+            inibutton: Initiating pointer button.
+        
         The associated keyboard device is grabbed too.
         This method assumes that inibutton is currently held. The grab
         terminates when inibutton is released.
+
+        Returns:
+
+        Raises:
 
         """
         logger.debug("Starting picking grab...")
@@ -312,6 +347,18 @@ class PickingGrabPresenter(object):
         return False  # don't requeue
 
     def _in_grab_button_press_cb(self, widget, event):
+        # type: (Types.ELLIPSIS) -> Types.NONE
+        """
+
+        Args:
+            widget: 
+            event: 
+
+        Returns:
+
+        Raises:
+
+        """
         assert self._grab_button_num is None
         if event.type not in _PRESS_EVENTS:
             return False
@@ -326,6 +373,18 @@ class PickingGrabPresenter(object):
         return True
 
     def _in_grab_button_release_cb(self, widget, event):
+        # type: (Types.ELLIPSIS) -> Types.NONE
+        """
+
+        Args:
+            widget: 
+            event: 
+
+        Returns:
+
+        Raises:
+
+        """
         assert self._grab_button_num is not None
         if event.type not in _RELEASE_EVENTS:
             return False
@@ -343,6 +402,18 @@ class PickingGrabPresenter(object):
         return True
 
     def _in_grab_motion_cb(self, widget, event):
+        # type: (Types.ELLIPSIS) -> Types.NONE
+        """
+
+        Args:
+            widget: 
+            event: 
+
+        Returns:
+
+        Raises:
+
+        """
         assert self._grabbed_pointer_dev is not None
         if not self._check_event_devices_still_grabbed(event):
             return True
@@ -363,12 +434,33 @@ class PickingGrabPresenter(object):
         return True
 
     def _in_grab_grab_broken_cb(self, widget, event):
+        # type: (Types.ELLIPSIS) -> Types.NONE
+        """
+
+        Args:
+            widget: 
+            event: 
+
+        Returns:
+
+        Raises:
+
+        """
         logger.debug("Grab broken, cleaning up.")
         self._ungrab_grabbed_devices()
         return False
 
-    def _end_grab(self, event):
-        """Finishes the picking grab normally."""
+    def _end_grab(self, event: Types.ELLIPSIS) -> Types.NONE:
+        """Finishes the picking grab normally.
+
+        Args:
+            event: 
+
+        Returns:
+
+        Raises:
+
+        """
         if not self._check_event_devices_still_grabbed(event):
             return
         device = event.device
@@ -377,12 +469,19 @@ class PickingGrabPresenter(object):
         finally:
             self._ungrab_grabbed_devices(time=event.time)
 
-    def _check_event_devices_still_grabbed(self, event):
+    def _check_event_devices_still_grabbed(self, event: Types.ELLIPSIS) -> Types.NONE:
         """Abandon picking if devices aren't still grabbed.
-
+        
         This can happen if the escape key is pressed during the grab -
         the gui.keyboard handler is still invoked in the normal way,
         and Escape just does an ungrab.
+
+        Args:
+            event: 
+
+        Returns:
+
+        Raises:
 
         """
         cleanup_needed = False
@@ -401,8 +500,17 @@ class PickingGrabPresenter(object):
             self._ungrab_grabbed_devices(time=event.time)
         return not cleanup_needed
 
-    def _ungrab_grabbed_devices(self, time=Gdk.CURRENT_TIME):
-        """Ungrabs devices thought to be grabbed, and cleans up."""
+    def _ungrab_grabbed_devices(self, time: Types.ELLIPSIS = Gdk.CURRENT_TIME) -> Types.NONE:
+        """Ungrabs devices thought to be grabbed, and cleans up.
+
+        Args:
+            time:  (Default value = Gdk.CURRENT_TIME)
+
+        Returns:
+
+        Raises:
+
+        """
         for dev in (self._grabbed_pointer_dev, self._grabbed_keyboard_dev):
             if not dev:
                 continue
@@ -422,14 +530,24 @@ class PickingGrabPresenter(object):
         self._hide_status_message()
 
     def _delayed_picking_update_cb(self, ptrdev, x_root, y_root):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Delayed picking updates during grab.
-
+        
         Some picking operations can be CPU-intensive, so this is called
         by an idle handler. If the user clicks and releases immediately,
         this never gets called, so a final call to picking_update() is
         made separately after the grab finishes.
-
+        
         See: picking_update().
+
+        Args:
+            ptrdev: 
+            x_root: 
+            y_root: 
+
+        Returns:
+
+        Raises:
 
         """
         try:
@@ -463,7 +581,19 @@ class ContextPickingGrabPresenter(PickingGrabPresenter):
         )
 
     def picking_update(self, device, x_root, y_root):
-        """Update brush and layer during & after picking."""
+        # type: (Types.ELLIPSIS) -> Types.NONE
+        """Update brush and layer during & after picking.
+
+        Args:
+            device: 
+            x_root: 
+            y_root: 
+
+        Returns:
+
+        Raises:
+
+        """
         # Can only pick from TDWs
         tdw, x, y = TiledDrawWidget.get_tdw_under_device(device)
         if tdw is None:
@@ -502,7 +632,19 @@ class ColorPickingGrabPresenter(PickingGrabPresenter):
         )
 
     def picking_update(self, device, x_root, y_root):
-        """Update brush and layer during & after picking."""
+        # type: (Types.ELLIPSIS) -> Types.NONE
+        """Update brush and layer during & after picking.
+
+        Args:
+            device: 
+            x_root: 
+            y_root: 
+
+        Returns:
+
+        Raises:
+
+        """
         tdw, x, y = TiledDrawWidget.get_tdw_under_device(device)
         if tdw is None:
             return
@@ -511,12 +653,18 @@ class ColorPickingGrabPresenter(PickingGrabPresenter):
         cm.set_color(color)
 
 
-class ButtonPresenter(object):
+class ButtonPresenter:
     """Picking behaviour for a button (MVP presenter)
-
+    
     This presenter mediates between a passive view consisting of a
     button, and a peer PickingGrabPresenter instance which does the
     actual work after the button is clicked.
+
+    Args:
+
+    Returns:
+
+    Raises:
 
     """
 
@@ -529,13 +677,28 @@ class ButtonPresenter(object):
         self._button = None
         self._grab = None
 
-    def set_picking_grab(self, grab):
+    def set_picking_grab(self, grab: Types.ELLIPSIS) -> Types.NONE:
+        """
+
+        Args:
+            grab: 
+
+        Returns:
+
+        Raises:
+
+        """
         self._grab = grab
 
-    def set_button(self, button):
+    def set_button(self, button: Gtk.Button) -> Types.NONE:
         """Connect view button.
 
-        :param Gtk.Button button: the initiator button
+        Args:
+            button: the initiator button
+
+        Returns:
+
+        Raises:
 
         """
         button.connect("clicked", self._clicked_cb)
@@ -543,8 +706,17 @@ class ButtonPresenter(object):
 
     ## Event handling
 
-    def _clicked_cb(self, button):
-        """Handle click events on the initiator button."""
+    def _clicked_cb(self, button: Types.ELLIPSIS) -> Types.NONE:
+        """Handle click events on the initiator button.
+
+        Args:
+            button: 
+
+        Returns:
+
+        Raises:
+
+        """
         event = Gtk.get_current_event()
         assert event is not None
         assert event.type in _RELEASE_EVENTS, (

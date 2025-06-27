@@ -23,19 +23,23 @@ from lib.gettext import C_
 from . import mypaintlib
 import lib.pixbuf
 import lib.glib
-from lib.pycompat import PY2
-from lib.pycompat import unicode
 
 logger = logging.getLogger(__name__)
 
 
-class Rect(object):
+class Rect:
     """Representation of a rectangular area.
-
+    
     We use our own class here because (around GTK 3.18.x, at least) it's
     less subject to typelib omissions than Gdk.Rectangle.
-
+    
     Ref: https://github.com/mypaint/mypaint/issues/437
+
+    Args:
+
+    Returns:
+
+    Raises:
 
     >>> big = Rect(-3, 2, 180, 222)
     >>> a = Rect(0, 10, 5, 15)
@@ -55,7 +59,7 @@ class Rect(object):
     True
     >>> (not a.overlaps(c)) and (not c.overlaps(a))
     True
-
+    
     >>> r1 = Rect(-40, -40, 5, 5)
     >>> r2 = Rect(-40 - 1, - 40 + 5, 5, 500)
     >>> assert not r1.overlaps(r2)
@@ -71,7 +75,6 @@ class Rect(object):
     >>> r1.x += 999
     >>> assert not r1.overlaps(r2)
     >>> assert not r2.overlaps(r1)
-
     """
 
     def __init__(self, x=0, y=0, w=0, h=0):
@@ -83,8 +86,17 @@ class Rect(object):
         self.h = h
 
     @classmethod
-    def new_from_gdk_rectangle(cls, gdk_rect):
-        """Creates a new Rect based on a Gdk.Rectangle."""
+    def new_from_gdk_rectangle(cls, gdk_rect: Types.ELLIPSIS) -> Types.NONE:
+        """Creates a new Rect based on a Gdk.Rectangle.
+
+        Args:
+            gdk_rect: 
+
+        Returns:
+
+        Raises:
+
+        """
         return Rect(
             x=gdk_rect.x,
             y=gdk_rect.y,
@@ -109,21 +121,49 @@ class Rect(object):
         """Copies and returns the Rect."""
         return Rect(self.x, self.y, self.w, self.h)
 
-    def expand(self, border):
-        """Expand the area by a fixed border size."""
+    def expand(self, border: Types.ELLIPSIS) -> Types.NONE:
+        """Expand the area by a fixed border size.
+
+        Args:
+            border: 
+
+        Returns:
+
+        Raises:
+
+        """
         self.w += 2 * border
         self.h += 2 * border
         self.x -= border
         self.y -= border
 
-    def expanded(self, border):
-        """Return a copy of this rectangle, expanded by a fixed border size."""
+    def expanded(self, border: Types.ELLIPSIS) -> Types.NONE:
+        """
+
+        Args:
+            border: 
+
+        Returns:
+            
+
+        Raises:
+
+        """
         copy = self.copy()
         copy.expand(border)
         return copy
 
-    def contains(self, other):
-        """Returns true if this rectangle entirely contains another."""
+    def contains(self, other: Types.ELLIPSIS) -> Types.NONE:
+        """Returns true if this rectangle entirely contains another.
+
+        Args:
+            other: 
+
+        Returns:
+
+        Raises:
+
+        """
         return (
             other.x >= self.x
             and other.y >= self.y
@@ -132,11 +172,33 @@ class Rect(object):
         )
 
     def contains_pixel(self, x, y):
-        """Checks if pixel coordinates lie inside this rectangle"""
+        # type: (Types.ELLIPSIS) -> Types.NONE
+        """Checks if pixel coordinates lie inside this rectangle
+
+        Args:
+            x: 
+            y: 
+
+        Returns:
+
+        Raises:
+
+        """
         return self.x <= x <= self.x + self.w - 1 and self.y <= y <= self.y + self.h - 1
 
     def clamped_point(self, x, y):
-        """Returns the given point, clamped to the area of this rectangle"""
+        # type: (Types.ELLIPSIS) -> Types.NONE
+        """Returns the given point, clamped to the area of this rectangle
+
+        Args:
+            x: 
+            y: 
+
+        Returns:
+
+        Raises:
+
+        """
         cx = clamp(x, self.x, self.x + self.w)
         cy = clamp(y, self.y, self.y + self.h)
         return cx, cy
@@ -148,8 +210,17 @@ class Rect(object):
         except TypeError:  # e.g. comparison to None
             return False
 
-    def overlaps(self, r2):
-        """Returns true if this rectangle intersects another."""
+    def overlaps(self, r2: Types.ELLIPSIS) -> Types.NONE:
+        """Returns true if this rectangle intersects another.
+
+        Args:
+            r2: 
+
+        Returns:
+
+        Raises:
+
+        """
         if max(self.x, r2.x) >= min(self.x + self.w, r2.x + r2.w):
             return False
         if max(self.y, r2.y) >= min(self.y + self.h, r2.y + r2.h):
@@ -157,6 +228,18 @@ class Rect(object):
         return True
 
     def expand_to_include_point(self, x, y):
+        # type: (Types.ELLIPSIS) -> Types.NONE
+        """
+
+        Args:
+            x: 
+            y: 
+
+        Returns:
+
+        Raises:
+
+        """
         if self.w == 0 or self.h == 0:
             self.x = x
             self.y = y
@@ -174,7 +257,17 @@ class Rect(object):
         if y > self.y + self.h - 1:
             self.h += y - (self.y + self.h - 1)
 
-    def expand_to_include_rect(self, other):
+    def expand_to_include_rect(self, other: Types.ELLIPSIS) -> Types.NONE:
+        """
+
+        Args:
+            other: 
+
+        Returns:
+
+        Raises:
+
+        """
         if other.empty():
             return
         self.expand_to_include_point(other.x, other.y)
@@ -183,10 +276,17 @@ class Rect(object):
             other.y + other.h - 1,
         )
 
-    def intersection(self, other):
+    def intersection(self, other: Types.ELLIPSIS) -> Types.NONE:
         """Creates new Rect for the intersection with another
         If the rectangles do not intersect, None is returned
-        :rtype: Rect
+
+        Args:
+            other: 
+
+        Returns:
+
+        Raises:
+
         """
         if not self.overlaps(other):
             return None
@@ -203,11 +303,16 @@ class Rect(object):
 
 def coordinate_bounds(tile_coords):
     """Find min/max x, y bounds of (x, y) pairs
-
+    
     If the input iterable's length is 0, None is returned
-    :param iterable tile_coords: iterable of (x, y)
-    :returns: (min x, min y, max x, max y) or None
-    :rtype: (int, int, int, int) | None
+
+    Args:
+        tile_coords (iterable): iterable of (x, y)
+
+    Returns:
+        int, int, int, int) | None: min x, min y, max x, max y) or None
+
+    Raises:
 
     >>> coordinate_bounds([])
     >>> coordinate_bounds([(0, 0)])
@@ -231,7 +336,17 @@ def coordinate_bounds(tile_coords):
         return min_x, min_y, max_x, max_y
 
 
-def rotated_rectangle_bbox(corners):
+def rotated_rectangle_bbox(corners: Types.ELLIPSIS) -> Types.NONE:
+    """
+
+    Args:
+        corners: 
+
+    Returns:
+
+    Raises:
+
+    """
     list_y = [y for (x, y) in corners]
     list_x = [x for (x, y) in corners]
     x1 = int(floor(min(list_x)))
@@ -242,6 +357,19 @@ def rotated_rectangle_bbox(corners):
 
 
 def clamp(x, lo, hi):
+    # type: (Types.ELLIPSIS) -> Types.NONE
+    """
+
+    Args:
+        x: 
+        lo: 
+        hi: 
+
+    Returns:
+
+    Raises:
+
+    """
     if x < lo:
         return lo
     if x > hi:
@@ -249,7 +377,17 @@ def clamp(x, lo, hi):
     return x
 
 
-def gdkpixbuf2numpy(pixbuf):
+def gdkpixbuf2numpy(pixbuf: Types.ELLIPSIS) -> Types.NONE:
+    """
+
+    Args:
+        pixbuf: 
+
+    Returns:
+
+    Raises:
+
+    """
     # gdk.Pixbuf.get_pixels_array() is no longer wrapped; use our own
     # implementation.
     return mypaintlib.gdkpixbuf_get_pixels_array(pixbuf)
@@ -265,21 +403,26 @@ def gdkpixbuf2numpy(pixbuf):
 
 def freedesktop_thumbnail(filename, pixbuf=None, force=False):
     """Fetch or (re-)generate the thumbnail in $XDG_CACHE_HOME/thumbnails.
-
+    
     If there is no thumbnail for the specified filename, a new
     thumbnail will be generated and stored according to the FDO spec.
     A thumbnail will also get regenerated if the file modification times
     of thumbnail and original image do not match.
 
-    :param GdkPixbuf.Pixbuf pixbuf: Thumbnail to save, optional.
-    :param bool force: Force rengeneration (skip mtime checks).
-    :returns: the large (256x256) thumbnail, or None.
-    :rtype: GdkPixbuf.Pixbuf
+    Args:
+        filename: 
+        pixbuf (GdkPixbuf.Pixbuf, optional): Thumbnail to save, optional. (Default value = None)
+        force (bool, optional): Force rengeneration (skip mtime checks). (Default value = False)
 
-    When pixbuf is given, it will be scaled and used as thumbnail
-    instead of reading the file itself. In this case the file is still
-    accessed to get its mtime, so this method must not be called if
-    the file is still open.
+    Returns:
+        GdkPixbuf.Pixbuf
+
+When pixbuf is given, it will be scaled and used as thumbnail
+instead of reading the file itself. In this case the file is still
+accessed to get its mtime, so this method must not be called if
+the file is still open.: the large (256x256) thumbnail, or None.
+
+    Raises:
 
     >>> image = "svg/thumbnail-test-input.svg"
     >>> p1 = freedesktop_thumbnail(image, force=True)
@@ -292,7 +435,6 @@ def freedesktop_thumbnail(filename, pixbuf=None, force=False):
     True
     >>> p2.get_width() == p2.get_height() == 256
     True
-
     """
 
     uri = lib.glib.filename_to_uri(os.path.abspath(filename))
@@ -339,7 +481,7 @@ def freedesktop_thumbnail(filename, pixbuf=None, force=False):
             logger.warning(
                 "thumb: cache file %r looks corrupt (%r). " "It will be regenerated.",
                 fn,
-                unicode(e),
+                str(e),
             )
             pixbuf = None
         else:
@@ -381,12 +523,16 @@ def freedesktop_thumbnail(filename, pixbuf=None, force=False):
     return pixbuf
 
 
-def get_pixbuf(filename):
+def get_pixbuf(filename: Types.ELLIPSIS) -> GdkPixbuf.Pixbuf:
     """Loads a thumbnail pixbuf loaded from a file.
 
-    :param filename: File to get a thumbnail image from.
-    :returns: Thumbnail puixbuf, or None.
-    :rtype: GdkPixbuf.Pixbuf
+    Args:
+        filename: File to get a thumbnail image from.
+
+    Returns:
+        Thumbnail puixbuf, or None.
+
+    Raises:
 
     >>> p = get_pixbuf("pixmaps/mypaint_logo.png")
     >>> isinstance(p, GdkPixbuf.Pixbuf)
@@ -398,7 +544,6 @@ def get_pixbuf(filename):
     True
     >>> get_pixbuf("pixmaps/nonexistent.foo") is None
     True
-
     """
     if not os.path.isfile(filename):
         logger.debug("No thumb pixbuf for %r: not a file", filename)
@@ -441,6 +586,20 @@ def get_pixbuf(filename):
 
 
 def scale_proportionally(pixbuf, w, h, shrink_only=True):
+    # type: (Types.ELLIPSIS) -> Types.NONE
+    """
+
+    Args:
+        pixbuf: 
+        w: 
+        h: 
+        shrink_only:  (Default value = True)
+
+    Returns:
+
+    Raises:
+
+    """
     width, height = pixbuf.get_width(), pixbuf.get_height()
     scale = min(w / width, h / height)
     if shrink_only and scale >= 1:
@@ -452,7 +611,20 @@ def scale_proportionally(pixbuf, w, h, shrink_only=True):
 
 
 def pixbuf_thumbnail(src, w, h, alpha=False):
-    """Creates a centered thumbnail of a GdkPixbuf."""
+    # type: (Types.ELLIPSIS) -> Types.NONE
+    """Creates a centered thumbnail of a GdkPixbuf.
+
+    Args:
+        src: 
+        w: 
+        h: 
+        alpha:  (Default value = False)
+
+    Returns:
+
+    Raises:
+
+    """
     src2 = scale_proportionally(src, w, h)
     w2, h2 = src2.get_width(), src2.get_height()
     dst = GdkPixbuf.Pixbuf.new(GdkPixbuf.Colorspace.RGB, alpha, 8, w, h)
@@ -477,6 +649,19 @@ def pixbuf_thumbnail(src, w, h, alpha=False):
 
 
 def rgb_to_hsv(r, g, b):
+    # type: (Types.ELLIPSIS) -> Types.NONE
+    """
+
+    Args:
+        r: 
+        g: 
+        b: 
+
+    Returns:
+
+    Raises:
+
+    """
     assert not isnan(r)
     r = clamp(r, 0.0, 1.0)
     g = clamp(g, 0.0, 1.0)
@@ -487,28 +672,57 @@ def rgb_to_hsv(r, g, b):
 
 
 def hsv_to_rgb(h, s, v):
+    # type: (Types.ELLIPSIS) -> Types.NONE
+    """
+
+    Args:
+        h: 
+        s: 
+        v: 
+
+    Returns:
+
+    Raises:
+
+    """
     h = clamp(h, 0.0, 1.0)
     s = clamp(s, 0.0, 1.0)
     v = clamp(v, 0.0, 1.0)
     return colorsys.hsv_to_rgb(h, s, v)
 
 
-def transform_hsv(hsv, eotf):
+def transform_hsv(hsv, eotf: Types.ELLIPSIS) -> Types.NONE:
+    """
+
+    Args:
+        hsv: 
+        eotf: 
+
+    Returns:
+
+    Raises:
+
+    """
     r, g, b = hsv_to_rgb(*hsv)
     return rgb_to_hsv(r**eotf, g**eotf, b**eotf)
 
 
-def zipfile_writestr(z, arcname, data):
+def zipfile_writestr(z: zipfile.ZipFile, arcname: str, data: bytes) -> Types.NONE:
     """Write a string into a zipfile entry, with standard permissions
 
-    :param zipfile.ZipFile z: A zip file open for write.
-    :param unicode arcname: Name of the file entry to add.
-    :param bytes data: Content to add.
-
+    Args:
+        z: A zip file open for write.
+        arcname: Name of the file entry to add.
+        data: Content to add.
+    
     Work around bad permissions with the standard
     `zipfile.Zipfile.writestr`: http://bugs.python.org/issue3394. The
     original zero-permissions defect was fixed upstream, but do we want
     more public permissions than the fix's 0600?
+
+    Returns:
+
+    Raises:
 
     """
     zi = zipfile.ZipInfo(arcname)
@@ -518,6 +732,7 @@ def zipfile_writestr(z, arcname, data):
 
 
 def run_garbage_collector():
+    """ """
     logger.info("MEM: garbage collector run, collected %d objects", gc.collect())
     logger.info(
         "MEM: gc.garbage contains %d items of uncollectible garbage",
@@ -528,7 +743,17 @@ def run_garbage_collector():
 old_stats = []
 
 
-def record_memory_leak_status(print_diff=False):
+def record_memory_leak_status(print_diff: Types.ELLIPSIS = False) -> Types.NONE:
+    """
+
+    Args:
+        print_diff:  (Default value = False)
+
+    Returns:
+
+    Raises:
+
+    """
     run_garbage_collector()
     logger.info("MEM: collecting info (can take some time)...")
     new_stats = []
@@ -553,20 +778,31 @@ def record_memory_leak_status(print_diff=False):
     old_stats = new_stats
 
 
-def utf8(string):
-    """Return the input as bytes encoded by utf-8"""
+def utf8(string: Types.ELLIPSIS) -> Types.NONE:
+    """
+
+    Args:
+        string: 
+
+    Returns:
+        
+
+    Raises:
+
+    """
     return string.encode("utf-8")
 
 
-def fmt_time_period_abbr(t):
+def fmt_time_period_abbr(t: int) -> str:
     """Get a localized abbreviated minutes+seconds string
 
-    :param int t: A positive number of seconds
-    :returns: short localized string
-    :rtype: unicode
+    Args:
+        t: A positive number of seconds
 
-    The result looks like like "<minutes>m<seconds>s",
-    or just "<seconds>s".
+The result looks like like "<minutes>m<seconds>s",
+or just "<seconds>s".: short localized string
+
+    Raises:
 
     """
     if t < 0:
@@ -596,11 +832,15 @@ def fmt_time_period_abbr(t):
 def grouper(iterable, n, fillvalue=None):
     """Collect data into fixed-length chunks or blocks
 
-    :param iterable: An iterable
-    :param int n: How many items to chunk the iterator by
-    :param fillvalue: Filler value when iterable length isn't a multiple of n
-    :returns: An iterable with tuples n items from the source iterable
-    :rtype: iterable
+    Args:
+        iterable: An iterable
+        n (int): How many items to chunk the iterator by
+        fillvalue: Filler value when iterable length isn't a multiple of n (Default value = None)
+
+    Returns:
+        iterable: An iterable with tuples n items from the source iterable
+
+    Raises:
 
     >>> actual = grouper('ABCDEFG', 3, fillvalue='x')
     >>> expected = [('A', 'B', 'C'), ('D', 'E', 'F'), ('G', 'x', 'x')]
@@ -608,35 +848,11 @@ def grouper(iterable, n, fillvalue=None):
     [True, True, True]
     """
     args = [iter(iterable)] * n
-    if PY2:
-        return itertools.izip_longest(*args, fillvalue=fillvalue)
-    else:
-        return itertools.zip_longest(*args, fillvalue=fillvalue)
-
-
-def casefold(s):
-    """Converts a unicode string into a case-insensitively comparable form.
-
-    Forward-compat marker for things that should be .casefold() in
-    Python 3, but which need to be .lower() in Python2.
-
-    :param str s: The string to convert.
-    :rtype: str
-    :returns: The converted string.
-
-    >>> casefold("Xyz") == u'xyz'
-    True
-
-    """
-    if sys.version_info <= (3, 0, 0):
-        s = unicode(s)
-        return s.lower()
-    else:
-        s = str(s)
-        return s.casefold()
+    return itertools.zip_longest(*args, fillvalue=fillvalue)
 
 
 def _test():
+    """ """
     import doctest
 
     doctest.testmod()

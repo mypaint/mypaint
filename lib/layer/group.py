@@ -31,7 +31,6 @@ import lib.autosave
 import lib.feedback
 import lib.layer.core
 from .rendering import Opcode
-from lib.pycompat import unicode
 
 logger = logging.getLogger(__name__)
 
@@ -41,13 +40,13 @@ logger = logging.getLogger(__name__)
 
 class LayerStack(core.LayerBase, lib.autosave.Autosaveable):
     """Ordered stack of layers, linear but nestable
-
+    
     A stack's sub-layers are stored in the reverse order to that used by
     rendering: the first element in the sequence, index ``0``, is the
     topmost layer. As it happens, this makes both interoperability with
     GTK tree paths and loading from OpenRaster simpler: both use the
     same top-to-bottom order.
-
+    
     Layer stacks support list-like access to their child layers.  Using
     the `insert()`, `pop()`, `remove()` methods or index-based access
     and assignment maintains the root stack reference sensibly (most of
@@ -55,6 +54,12 @@ class LayerStack(core.LayerBase, lib.autosave.Autosaveable):
     which is part of a tree structure. Permuting the structure this way
     announces the changes to any registered observer methods for these
     events.
+
+    Args:
+
+    Returns:
+
+    Raises:
 
     """
 
@@ -97,7 +102,23 @@ class LayerStack(core.LayerBase, lib.autosave.Autosaveable):
     def load_from_openraster(
         self, orazip, elem, cache_dir, progress, x=0, y=0, **kwargs
     ):
-        """Load this layer from an open .ora file"""
+        # type: (Types.ELLIPSIS) -> Types.NONE
+        """Load this layer from an open .ora file
+
+        Args:
+            orazip: 
+            elem: 
+            cache_dir: 
+            progress: 
+            x:  (Default value = 0)
+            y:  (Default value = 0)
+            **kwargs: 
+
+        Returns:
+
+        Raises:
+
+        """
         if elem.tag != "stack":
             raise lib.layer.error.LoadingFailed("<stack/> expected")
 
@@ -116,7 +137,7 @@ class LayerStack(core.LayerBase, lib.autosave.Autosaveable):
         # The only combination which can result in a non-isolated mode
         # under the OpenRaster and W3C definition. Represented
         # internally with a special mode to make the UI prettier.
-        isolated_flag = unicode(elem.attrib.get("isolation", "auto"))
+        isolated_flag = str(elem.attrib.get("isolation", "auto"))
         # TODO: Check if this applies to CombineSpectralWGM as well
         is_pass_through = (
             self.mode == lib.mypaintlib.CombineNormal
@@ -138,7 +159,23 @@ class LayerStack(core.LayerBase, lib.autosave.Autosaveable):
     def _load_child_layer_from_orazip(
         self, orazip, elem, cache_dir, progress, x=0, y=0, **kwargs
     ):
-        """Loads a single child layer element from an open .ora file"""
+        # type: (Types.ELLIPSIS) -> Types.NONE
+        """Loads a single child layer element from an open .ora file
+
+        Args:
+            orazip: 
+            elem: 
+            cache_dir: 
+            progress: 
+            x:  (Default value = 0)
+            y:  (Default value = 0)
+            **kwargs: 
+
+        Returns:
+
+        Raises:
+
+        """
         try:
             child = _layer_new_from_orazip(
                 orazip, elem, cache_dir, progress, self.root, x=x, y=y, **kwargs
@@ -151,7 +188,23 @@ class LayerStack(core.LayerBase, lib.autosave.Autosaveable):
     def load_from_openraster_dir(
         self, oradir, elem, cache_dir, progress, x=0, y=0, **kwargs
     ):
-        """Loads layer flags and data from an OpenRaster-style dir"""
+        # type: (Types.ELLIPSIS) -> Types.NONE
+        """Loads layer flags and data from an OpenRaster-style dir
+
+        Args:
+            oradir: 
+            elem: 
+            cache_dir: 
+            progress: 
+            x:  (Default value = 0)
+            y:  (Default value = 0)
+            **kwargs: 
+
+        Returns:
+
+        Raises:
+
+        """
         if elem.tag != "stack":
             raise lib.layer.error.LoadingFailed("<stack/> expected")
         super(LayerStack, self).load_from_openraster_dir(
@@ -161,7 +214,7 @@ class LayerStack(core.LayerBase, lib.autosave.Autosaveable):
         x += int(elem.attrib.get("x", 0))
         y += int(elem.attrib.get("y", 0))
         # Convert normal+nonisolated to the internal pass-thru mode
-        isolated_flag = unicode(elem.attrib.get("isolation", "auto"))
+        isolated_flag = str(elem.attrib.get("isolation", "auto"))
         # TODO: Check if this applies to CombineSpectralWGM as well
         is_pass_through = (
             self.mode == lib.mypaintlib.CombineNormal
@@ -180,10 +233,24 @@ class LayerStack(core.LayerBase, lib.autosave.Autosaveable):
     def _load_child_layer_from_oradir(
         self, oradir, elem, cache_dir, progress, x=0, y=0, **kwargs
     ):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Loads a single child layer element from an open .ora file
-
+        
         Child classes can override this, but otherwise it's an internal
         method.
+
+        Args:
+            oradir: 
+            elem: 
+            cache_dir: 
+            progress: 
+            x:  (Default value = 0)
+            y:  (Default value = 0)
+            **kwargs: 
+
+        Returns:
+
+        Raises:
 
         """
         try:
@@ -221,7 +288,18 @@ class LayerStack(core.LayerBase, lib.autosave.Autosaveable):
     ## Notification
 
     def _notify_disown(self, orphan, oldindex):
-        """Recursively process a removed child (root reset, notify)"""
+        # type: (Types.ELLIPSIS) -> Types.NONE
+        """Recursively process a removed child (root reset, notify)
+
+        Args:
+            orphan: 
+            oldindex: 
+
+        Returns:
+
+        Raises:
+
+        """
         # Reset root and notify. No actual tree permutations.
         orphan.group = None
         root = self.root
@@ -235,7 +313,18 @@ class LayerStack(core.LayerBase, lib.autosave.Autosaveable):
             root._notify_layer_deleted(self, orphan, oldindex)
 
     def _notify_adopt(self, adoptee, newindex):
-        """Recursively process an added child (set root, notify)"""
+        # type: (Types.ELLIPSIS) -> Types.NONE
+        """Recursively process an added child (set root, notify)
+
+        Args:
+            adoptee: 
+            newindex: 
+
+        Returns:
+
+        Raises:
+
+        """
         # Set root and notify. No actual tree permutations.
         adoptee.group = self
         root = self.root
@@ -267,15 +356,33 @@ class LayerStack(core.LayerBase, lib.autosave.Autosaveable):
         """Iterates across child layers in the order used by append()"""
         return iter(self._layers)
 
-    def append(self, layer):
-        """Appends a layer (notifies root)"""
+    def append(self, layer: Types.ELLIPSIS) -> Types.NONE:
+        """Appends a layer (notifies root)
+
+        Args:
+            layer: 
+
+        Returns:
+
+        Raises:
+
+        """
         newindex = len(self)
         self._layers.append(layer)
         self._notify_adopt(layer, newindex)
         self._content_changed(*layer.get_full_redraw_bbox())
 
-    def remove(self, layer):
-        """Removes a layer by equality (notifies root)"""
+    def remove(self, layer: Types.ELLIPSIS) -> Types.NONE:
+        """Removes a layer by equality (notifies root)
+
+        Args:
+            layer: 
+
+        Returns:
+
+        Raises:
+
+        """
         oldindex = self._layers.index(layer)
         assert oldindex is not None
         removed = self._layers.pop(oldindex)
@@ -283,8 +390,17 @@ class LayerStack(core.LayerBase, lib.autosave.Autosaveable):
         self._notify_disown(removed, oldindex)
         self._content_changed(*removed.get_full_redraw_bbox())
 
-    def pop(self, index=None):
-        """Removes a layer by index (notifies root)"""
+    def pop(self, index: Types.ELLIPSIS = None) -> Types.NONE:
+        """Removes a layer by index (notifies root)
+
+        Args:
+            index:  (Default value = None)
+
+        Returns:
+
+        Raises:
+
+        """
         if index is None:
             index = len(self._layers) - 1
             removed = self._layers.pop()
@@ -296,7 +412,16 @@ class LayerStack(core.LayerBase, lib.autosave.Autosaveable):
         return removed
 
     def _normidx(self, i, insert=False):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Normalize an index for array-like access
+
+        Args:
+            i: 
+            insert:  (Default value = False)
+
+        Returns:
+
+        Raises:
 
         >>> group = LayerStack()
         >>> group.append(data.PaintingLayer())
@@ -318,7 +443,18 @@ class LayerStack(core.LayerBase, lib.autosave.Autosaveable):
         return i
 
     def insert(self, index, layer):
-        """Adds a layer before an index (notifies root)"""
+        # type: (Types.ELLIPSIS) -> Types.NONE
+        """Adds a layer before an index (notifies root)
+
+        Args:
+            index: 
+            layer: 
+
+        Returns:
+
+        Raises:
+
+        """
         index = self._normidx(index, insert=True)
         self._layers.insert(index, layer)
         self._notify_adopt(layer, index)
@@ -339,8 +475,17 @@ class LayerStack(core.LayerBase, lib.autosave.Autosaveable):
         """Fetches the layer at an index"""
         return self._layers[index]
 
-    def index(self, layer):
-        """Fetches the index of a child layer, by equality"""
+    def index(self, layer: Types.ELLIPSIS) -> Types.NONE:
+        """Fetches the index of a child layer, by equality
+
+        Args:
+            layer: 
+
+        Returns:
+
+        Raises:
+
+        """
         return self._layers.index(layer)
 
     ## Info methods
@@ -365,6 +510,7 @@ class LayerStack(core.LayerBase, lib.autosave.Autosaveable):
         return result
 
     def is_empty(self):
+        """ """
         return len(self._layers) == 0
 
     @property
@@ -377,8 +523,17 @@ class LayerStack(core.LayerBase, lib.autosave.Autosaveable):
 
     ## Renderable implementation
 
-    def get_render_ops(self, spec):
-        """Get rendering instructions."""
+    def get_render_ops(self, spec: Types.ELLIPSIS) -> Types.NONE:
+        """Get rendering instructions.
+
+        Args:
+            spec: 
+
+        Returns:
+
+        Raises:
+
+        """
 
         # Defaults, which might be overridden
         visible = self.visible
@@ -436,11 +591,20 @@ class LayerStack(core.LayerBase, lib.autosave.Autosaveable):
     ## Flood fill
 
     def flood_fill(self, fill_args, dst_layer=None):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Fills a point on the surface with a color (into other only!)
-
+        
         See `PaintingLayer.flood_fill() for parameters and semantics. Layer
         stacks only support flood-filling into other layers because they are
         not surface backed.
+
+        Args:
+            fill_args: 
+            dst_layer:  (Default value = None)
+
+        Returns:
+
+        Raises:
 
         """
         assert dst_layer is not self
@@ -463,17 +627,38 @@ class LayerStack(core.LayerBase, lib.autosave.Autosaveable):
     ## Moving
 
     def get_move(self, x, y):
-        """Get a translation/move object for this layer"""
+        # type: (Types.ELLIPSIS) -> Types.NONE
+        """Get a translation/move object for this layer
+
+        Args:
+            x: 
+            y: 
+
+        Returns:
+
+        Raises:
+
+        """
         return LayerStackMove(self, x, y)
 
     ## Saving
 
     @lib.fileutils.via_tempfile
     def save_as_png(self, filename, *rect, **kwargs):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Save to a named PNG file.
-
+        
         For a layer stack (including the special root one), this works
         by rendering the stack and its contents in solo mode.
+
+        Args:
+            filename: 
+            *rect: 
+            **kwargs: 
+
+        Returns:
+
+        Raises:
 
         """
         root = self.root
@@ -487,7 +672,23 @@ class LayerStack(core.LayerBase, lib.autosave.Autosaveable):
     def save_to_openraster(
         self, orazip, tmpdir, path, canvas_bbox, frame_bbox, progress=None, **kwargs
     ):
-        """Saves the stack's data into an open OpenRaster ZipFile"""
+        # type: (Types.ELLIPSIS) -> Types.NONE
+        """Saves the stack's data into an open OpenRaster ZipFile
+
+        Args:
+            orazip: 
+            tmpdir: 
+            path: 
+            canvas_bbox: 
+            frame_bbox: 
+            progress:  (Default value = None)
+            **kwargs: 
+
+        Returns:
+
+        Raises:
+
+        """
 
         if not progress:
             progress = lib.feedback.Progress()
@@ -530,7 +731,21 @@ class LayerStack(core.LayerBase, lib.autosave.Autosaveable):
         return stack_elem
 
     def queue_autosave(self, oradir, taskproc, manifest, bbox, **kwargs):
-        """Queues the layer for auto-saving"""
+        # type: (Types.ELLIPSIS) -> Types.NONE
+        """Queues the layer for auto-saving
+
+        Args:
+            oradir: 
+            taskproc: 
+            manifest: 
+            bbox: 
+            **kwargs: 
+
+        Returns:
+
+        Raises:
+
+        """
         # Build a layers.xml element: no x or y for stacks
         stack_elem = self._get_stackxml_element("stack")
         for layer in self._layers:
@@ -556,14 +771,24 @@ class LayerStack(core.LayerBase, lib.autosave.Autosaveable):
 
     ## Trimming
 
-    def trim(self, rect):
-        """Trim the layer to a rectangle, discarding data outside it"""
+    def trim(self, rect: Types.ELLIPSIS) -> Types.NONE:
+        """Trim the layer to a rectangle, discarding data outside it
+
+        Args:
+            rect: 
+
+        Returns:
+
+        Raises:
+
+        """
         for layer in self:
             layer.trim(rect)
 
     ## Type-specific action
 
     def activate_layertype_action(self):
+        """ """
         root = self.root
         if root is None:
             return
@@ -572,6 +797,7 @@ class LayerStack(core.LayerBase, lib.autosave.Autosaveable):
             root.expand_layer(path)
 
     def get_icon_name(self):
+        """ """
         return "mypaint-layer-group-symbolic"
 
 
@@ -583,7 +809,17 @@ class LayerStackSnapshot(core.LayerBaseSnapshot):
         self.layer_snaps = [l.save_snapshot() for l in layer]
         self.layer_classes = [l.__class__ for l in layer]
 
-    def restore_to_layer(self, layer):
+    def restore_to_layer(self, layer: Types.ELLIPSIS) -> Types.NONE:
+        """
+
+        Args:
+            layer: 
+
+        Returns:
+
+        Raises:
+
+        """
         super(LayerStackSnapshot, self).restore_to_layer(layer)
         layer.clear()
         for layer_class, snap in zip(self.layer_classes, self.layer_snaps):
@@ -592,7 +828,7 @@ class LayerStackSnapshot(core.LayerBaseSnapshot):
             layer.append(child)
 
 
-class LayerStackMove(object):
+class LayerStackMove:
     """Move object wrapper for layer stacks"""
 
     def __init__(self, layers, x, y):
@@ -602,14 +838,37 @@ class LayerStackMove(object):
             self._moves.append(layer.get_move(x, y))
 
     def update(self, dx, dy):
+        # type: (Types.ELLIPSIS) -> Types.NONE
+        """
+
+        Args:
+            dx: 
+            dy: 
+
+        Returns:
+
+        Raises:
+
+        """
         for move in self._moves:
             move.update(dx, dy)
 
     def cleanup(self):
+        """ """
         for move in self._moves:
             move.cleanup()
 
-    def process(self, n=200):
+    def process(self, n: Types.ELLIPSIS = 200) -> Types.NONE:
+        """
+
+        Args:
+            n:  (Default value = 200)
+
+        Returns:
+
+        Raises:
+
+        """
         if len(self._moves) < 1:
             return False
         n = max(20, int(n // len(self._moves)))
@@ -631,7 +890,24 @@ _LAYER_LOADER_CLASS_ORDER = [
 
 
 def _layer_new_from_orazip(orazip, elem, cache_dir, progress, root, x=0, y=0, **kwargs):
-    """New layer from an OpenRaster zipfile (factory)"""
+    # type: (Types.ELLIPSIS) -> Types.NONE
+    """New layer from an OpenRaster zipfile (factory)
+
+    Args:
+        orazip: 
+        elem: 
+        cache_dir: 
+        progress: 
+        root: 
+        x:  (Default value = 0)
+        y:  (Default value = 0)
+        **kwargs: 
+
+    Returns:
+
+    Raises:
+
+    """
     for layer_class in _LAYER_LOADER_CLASS_ORDER:
         try:
             return layer_class.new_from_openraster(
@@ -645,7 +921,24 @@ def _layer_new_from_orazip(orazip, elem, cache_dir, progress, root, x=0, y=0, **
 
 
 def _layer_new_from_oradir(oradir, elem, cache_dir, progress, root, x=0, y=0, **kwargs):
-    """New layer from a dir with an OpenRaster-like layout (factory)"""
+    # type: (Types.ELLIPSIS) -> Types.NONE
+    """New layer from a dir with an OpenRaster-like layout (factory)
+
+    Args:
+        oradir: 
+        elem: 
+        cache_dir: 
+        progress: 
+        root: 
+        x:  (Default value = 0)
+        y:  (Default value = 0)
+        **kwargs: 
+
+    Returns:
+
+    Raises:
+
+    """
     for layer_class in _LAYER_LOADER_CLASS_ORDER:
         try:
             return layer_class.new_from_openraster_dir(

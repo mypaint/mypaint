@@ -42,11 +42,18 @@ MERGEABLE_XML = [
 ## Class definitions
 
 
-class ToolbarManager(object):
+class ToolbarManager:
     """Manager for toolbars, currently just the main one.
-
+    
     The main toolbar, /toolbar1, contains a menu button and quick
     access to the painting tools.
+
+    Args:
+
+    Returns:
+
+    Raises:
+
     """
 
     def __init__(self, draw_window):
@@ -85,6 +92,7 @@ class ToolbarManager(object):
             action.toggled()
 
     def init_actions(self):
+        """ """
         ag = self.draw_window.action_group
         actions = []
 
@@ -99,15 +107,51 @@ class ToolbarManager(object):
             ag.add_action(action)
 
     def on_toolbar1_popup_context_menu(self, toolbar, x, y, button):
+        # type: (Types.ELLIPSIS) -> Types.NONE
+        """
+
+        Args:
+            toolbar: 
+            x: 
+            y: 
+            button: 
+
+        Returns:
+
+        Raises:
+
+        """
         menu = self.toolbar1_popup
 
         def _posfunc(*a):
+            """
+
+            Args:
+                *a: 
+
+            Returns:
+
+            Raises:
+
+            """
             return x, y, True
 
         time = Gtk.get_current_event_time()
         menu.popup(None, None, _posfunc, None, button, time)
 
     def on_settings_toggle(self, toggleaction, ui_xml_file):
+        # type: (Types.ELLIPSIS) -> Types.NONE
+        """
+
+        Args:
+            toggleaction: 
+            ui_xml_file: 
+
+        Returns:
+
+        Raises:
+
+        """
         name = toggleaction.get_property("name")
         merge_id = self.toolbar1_ui_loaded.get(name, None)
         if toggleaction.get_active():

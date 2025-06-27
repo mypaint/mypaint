@@ -87,11 +87,6 @@ installed before you can build it.
 - librsvg2 (and its svg gdk-pixbuf loader)
 - pycairo (>= 1.4)
 
-Some dependencies have specific versions for Python 2 and Python 3.
-Install the ones for the Python version you will use to build MyPaint.
-Apart from the use of disk space, there is usually no harm in installing
-both sets.
-
 ### Debian and derivatives
 
 For Debian, Mint, or Ubuntu, issue the following commands to install the
@@ -100,14 +95,7 @@ external dependencies.
     sudo apt-get install -y \
     git swig gettext g++ gir1.2-gtk-3.0 libgtk-3-dev \
     libpng-dev liblcms2-dev libjson-c-dev python-gi-dev \
-    librsvg2-common
-
-    # For python 2
-    sudo apt-get install -y \
-    python-setuptools python-dev python-numpy python-gi-cairo
-
-    # For python 3
-    sudo apt-get install -y \
+    librsvg2-common \
     python3-setuptools python3-dev python3-numpy python3-gi-cairo
 
 If this doesn't work, try older names for the development packages, such
@@ -120,13 +108,7 @@ on a minimal CentOS 7.3 install, and Fedora 30.
 
     sudo yum install -y git swig gettext gcc-c++ libpng-devel lcms2-devel \
     json-c-devel gtk3 gtk3-devel gobject-introspection pygobject3-devel \
-    librsvg2
-
-    # For python 2
-    sudo yum install -y python-setuptools python-devel numpy
-
-    # For python 3
-    sudo yum install -y python3-setuptools python3-devel python3-numpy
+    librsvg2 python3-setuptools python3-devel python3-numpy
 
 ### OpenSUSE
 
@@ -135,10 +117,7 @@ Issue  the following commands to install the external dependencies.
     sudo zypper install \
     git swig gcc-c++ gobject-introspection gtk3-devel \
     libpng16-devel liblcms2-devel libjson-c-devel \
-    librsvg-2-2 gettext-tools
-
-    # For python3
-    sudo zypper install \
+    librsvg-2-2 gettext-tools \
     python311-setuptools python311-devel python311-numpy-devel \
     python311-pycairo python311-gobject-devel \
 
@@ -151,30 +130,30 @@ For 32-bit targets, use "i686" in place of the "x86_64".
     pacman -S --noconfirm --needed  \
       mingw-w64-x86_64-toolchain     \
       mingw-w64-x86_64-pkg-config     \
-      mingw-w64-x86_64-python2-numpy   \
+      mingw-w64-x86_64-python3-numpy   \
       mingw-w64-x86_64-gtk3            \
       mingw-w64-x86_64-pygobject-devel \
       mingw-w64-x86_64-lcms2           \
       mingw-w64-x86_64-json-c           \
       mingw-w64-x86_64-librsvg           \
       mingw-w64-x86_64-hicolor-icon-theme \
-      mingw-w64-x86_64-python2-cairo      \
-      mingw-w64-x86_64-python2-gobject    \
+      mingw-w64-x86_64-python3-cairo      \
+      mingw-w64-x86_64-python3-gobject    \
       mingw-w64-x86_64-mypaint-brushes2
 
 ### OSX MacPorts
 
-To use Frameworks Python (currently 2.7.8) while satisfying the other
+To use Frameworks Python (currently 3.12.4) while satisfying the other
 dependencies from Macports, use:
 
-    export PKG_CONFIG_PATH=/opt/local/Library/Frameworks/Python.framework/Versions/2.7/lib/pkgconfig/
+    export PKG_CONFIG_PATH=/opt/local/Library/Frameworks/Python.framework/Versions/3.12/lib/pkgconfig/
     export CFLAGS="-I/opt/local/include"
 
     sudo port install gtk3
-    sudo port install py27-numpy
-    sudo port install py27-scipy
-    sudo port install py27-pyobjc-cocoa    # optional, for i18n support
-    sudo port install py27-gobject3
+    sudo port install py38-numpy
+    sudo port install py38-scipy
+    sudo port install py38-pyobjc-cocoa    # optional, for i18n support
+    sudo port install py38-gobject3
     sudo port install json-c
     sudo port install lcms2
     sudo port install hicolor-icon-theme

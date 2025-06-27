@@ -22,23 +22,24 @@ from gui.compatconfig import DEFAULT_CONFIG as COMPAT_CONFIG
 logger = logging.getLogger(__name__)
 
 
-def get_json_config(conf_path):
+def get_json_config(conf_path: str) -> Types.NONE:
     """Return user settings read from the settings file
-    :param conf_path: The path to the directory containing settings.json
-    :type conf_path: str
-    :returns: Dict with settings, or the empty dict if the settings file
-    cannot be found/read or parsed.
+
+    Args:
+        conf_path: The path to the directory containing settings.json
+
+    Returns:
+        Dict with settings, or the empty dict if the settings file
+        cannot be found/read or parsed.
+
+    Raises:
+
     """
     settingspath = os.path.join(conf_path, "settings.json")
     logger.debug("Reading app settings from %r", settingspath)
     try:
-        # Py3: settings.json has always been UTF-8 even in Py2.
-        #
-        # The Travis-CI json.loads() from Python 3.4.0 needs
-        # unicode strings, always. Later and earlier versions,
-        # including Py2 do not need that, if bytes are UTF-8.
         with open(settingspath, "rb") as fp:
-            return json.loads(fp.read().decode("utf-8"))
+            return json.loads(fp.read())
     except IOError:
         logger.warning("Failed to load settings file: %s", settingspath)
     except Exception as e:
@@ -48,8 +49,15 @@ def get_json_config(conf_path):
 
 
 def default_configuration():
-    """Return the default settings
-    A subset of these settings are platform dependent.
+    """
+
+    Args:
+
+    Returns:
+        A subset of these settings are platform dependent.
+
+    Raises:
+
     """
     if sys.platform == "win32":
         ud_docs = lib.glib.get_user_special_dir(

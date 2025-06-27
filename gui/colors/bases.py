@@ -18,12 +18,19 @@ import cairo
 logger = logging.getLogger(__name__)
 
 
-class CachedBgWidgetMixin(object):
+class CachedBgWidgetMixin:
     """Provides widgets with a cached background and drawing callbacks
-
+    
     The background is invalidated whenever the size changes,
     or when the overridable background-validity method
     returns something new.
+
+    Args:
+
+    Returns:
+
+    Raises:
+
     """
 
     def __init__(self):
@@ -55,6 +62,7 @@ class CachedBgWidgetMixin(object):
         self.__rerender_background()
 
     def _get_background_size(self):
+        """ """
         alloc = self.get_allocation()
         return alloc.width, alloc.height
 
@@ -68,20 +76,52 @@ class CachedBgWidgetMixin(object):
 
     def get_background_validity(self):
         """Get a validity token for the cached background
-
+        
         :return: a value which, if changed, means the bg must be redrawn
-
+        
         Validity tokens may be anything comparable by ``==``, and
         should be simpler to compute than re-rendering the background.
+
+        Args:
+
+        Returns:
+
+        Raises:
+
         """
         raise NotImplementedError
 
     def render_background_cb(self, cr, w, h, *kw):
-        """Render the background when needed"""
+        # type: (Types.ELLIPSIS) -> Types.NONE
+        """Render the background when needed
+
+        Args:
+            cr: 
+            w: 
+            h: 
+            *kw: 
+
+        Returns:
+
+        Raises:
+
+        """
         raise NotImplementedError
 
     def paint_foreground_cb(self, cr, w, h):
-        """Paints the foreground over the background"""
+        # type: (Types.ELLIPSIS) -> Types.NONE
+        """Paints the foreground over the background
+
+        Args:
+            cr: 
+            w: 
+            h: 
+
+        Returns:
+
+        Raises:
+
+        """
         raise NotImplementedError
 
     def clear_background(self):
@@ -100,24 +140,52 @@ class CachedBgDrawingArea(CachedBgWidgetMixin, Gtk.EventBox):
         CachedBgWidgetMixin.__init__(self)
 
 
-class IconRenderable(object):
+class IconRenderable:
     """Mixin for objects that can be rendered as a XDG icons
-
+    
     Typically a cached icon file from disk will be quicker
     and more convenient than rendering the icon
     each time a tab needs to be drawn, so this mixin
     can be used for saving icons to disk too.
+
+    Args:
+
+    Returns:
+
+    Raises:
+
     """
 
     def render_as_icon(self, cr, size):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Renders as an icon into a Cairo context (unimplemented)
-
+        
         The icon pixel size, `size`, is one of 48, 32, 24, 22 or 16.
+
+        Args:
+            cr: 
+            size: 
+
+        Returns:
+
+        Raises:
+
         """
         raise NotImplementedError
 
     def save_icon_tree(self, dir_name, icon_name):
-        """Saves a full set of XDG icons into a given root directory"""
+        # type: (Types.ELLIPSIS) -> Types.NONE
+        """Saves a full set of XDG icons into a given root directory
+
+        Args:
+            dir_name: 
+            icon_name: 
+
+        Returns:
+
+        Raises:
+
+        """
         import os
 
         dpi = 90.0

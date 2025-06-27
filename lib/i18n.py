@@ -25,7 +25,7 @@ USER_LOCALE_PREF = "lib.i18n.userlocale"
 
 
 def getdefaultlocale():
-    """Return default locale or None"""
+    """ """
     try:
         return locale.getdefaultlocale()
     except Exception:
@@ -33,10 +33,18 @@ def getdefaultlocale():
         return None
 
 
-def bcp47_to_language(code):
+def bcp47_to_language(code: Types.ELLIPSIS) -> Types.NONE:
     """Takes a BCP 47 language identifier and returns a value suitable for the
     LANGUAGE env var.
     Only supports a small set of inputs and might return garbage..
+
+    Args:
+        code: 
+
+    Returns:
+
+    Raises:
+
     """
 
     if code == "zh-Hans":
@@ -62,12 +70,31 @@ def bcp47_to_language(code):
     return lang_subtag
 
 
-def _is_iso_639_1(s):
+def _is_iso_639_1(s: Types.ELLIPSIS) -> Types.NONE:
+    """
+
+    Args:
+        s: 
+
+    Returns:
+
+    Raises:
+
+    """
     return len(s) == 2 and s.isalpha()
 
 
-def osx_locale_id_to_lang(id_):
-    """Converts a NSLocale identifier to something suitable for LANG"""
+def osx_locale_id_to_lang(id_: Types.ELLIPSIS) -> Types.NONE:
+    """Converts a NSLocale identifier to something suitable for LANG
+
+    Args:
+        id_: 
+
+    Returns:
+
+    Raises:
+
+    """
 
     if "_" not in id_:
         return id_
@@ -80,10 +107,16 @@ def osx_locale_id_to_lang(id_):
 
 def set_i18n_envvars():
     """Set the LANG/LANGUAGE environment variables if not set.
-
+    
     Covers the cases where the current platform doesn't use them by
     default (OS X, Windows). In these systems, it will pick up defaults
     by other OS-specific means.
+
+    Args:
+
+    Returns:
+
+    Raises:
 
     """
 
@@ -167,11 +200,17 @@ def set_i18n_envvars():
 
 def fixup_i18n_envvars():
     """Sanitizes env vars before gettext can use them.
-
+    
     LANGUAGE should support a priority list of languages with fallbacks,
     but doesn't work due to "en" not being known to gettext (This could
     be solved by providing a en.po in [QuodLibet] but all other
     libraries don't define it either). This tries to fix that.
+
+    Args:
+
+    Returns:
+
+    Raises:
 
     """
 

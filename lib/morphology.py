@@ -21,19 +21,36 @@ N = myplib.TILE_SIZE
 logger = logging.getLogger(__name__)
 
 
-def adjacent_tiles(tile_coord, filled):
-    """Return a tuple of tiles adjacent to the input tile coordinate.
-    Adjacent tiles that are not in the tileset are replaced by the empty tile.
+def adjacent_tiles(tile_coord, filled: Types.ELLIPSIS) -> Types.NONE:
+    """
+
+    Args:
+        tile_coord: 
+        filled: 
+
+    Returns:
+        Adjacent tiles that are not in the tileset are replaced by the empty tile.
+
+    Raises:
+
     """
     return tuple([filled.get(c, _EMPTY_TILE) for c in fc.adjacent(tile_coord)])
 
 
-def complement_adjacent(tiles):
+def complement_adjacent(tiles: Types.ELLIPSIS) -> Types.NONE:
     """Ensure that each tile in the input tileset has a full neighbourhood
     of eight tiles, setting missing tiles to the empty tile.
-
+    
     The new set should only be used as input to tile operations, as the empty
     tile is readonly.
+
+    Args:
+        tiles: 
+
+    Returns:
+
+    Raises:
+
     """
     new = {}
     for tile_coord in tiles.keys():
@@ -43,12 +60,23 @@ def complement_adjacent(tiles):
     tiles.update(new)
 
 
-def directly_below(coord1, coord2):
-    """Return true if the first coordinate is directly below the second"""
+def directly_below(coord1, coord2: Types.ELLIPSIS) -> Types.NONE:
+    """
+
+    Args:
+        coord1: 
+        coord2: 
+
+    Returns:
+        
+
+    Raises:
+
+    """
     return coord1[0] == coord2[0] and coord1[1] == coord2[1] + 1
 
 
-def strand_partition(tiles, dilating=False):
+def strand_partition(tiles, dilating: Types.ELLIPSIS = False) -> Types.NONE:
     """Partition input tiles for easier processing
     This function partitions a tile dictionary into
     two parts: one dictionary containing tiles that
@@ -56,12 +84,21 @@ def strand_partition(tiles, dilating=False):
     and list of coordinate lists, where each list
     contains vertically contiguous coordinates,
     ordered from low to high.
-
+    
     note: Tiles that never need further processing are
     those that are fully opaque and with a full neighbourhood
     of identical tiles. If the "dilating" parameter is set
     to true, just being fully opaque is enough.
     :return: (final_dict, strands_list)
+
+    Args:
+        tiles: 
+        dilating:  (Default value = False)
+
+    Returns:
+
+    Raises:
+
     """
     # Dict of coord->tile for tiles that need no further processing
     final_tiles = {}
@@ -93,8 +130,19 @@ def strand_partition(tiles, dilating=False):
 
 
 def morph(handler, offset, tiles):
+    # type: (Types.ELLIPSIS) -> Types.NONE
     """Either dilate or erode the given set of alpha tiles, depending
     on the sign of the offset, returning the set of morphed tiles.
+
+    Args:
+        handler: 
+        offset: 
+        tiles: 
+
+    Returns:
+
+    Raises:
+
     """
     # When dilating, create new tiles to account for edge overflow
     # (without checking if they are actually needed)
@@ -112,7 +160,20 @@ def morph(handler, offset, tiles):
 
 
 def blur(handler, radius, tiles):
-    """Return the set of blurred tiles based on the input tiles."""
+    # type: (Types.ELLIPSIS) -> Types.NONE
+    """
+
+    Args:
+        handler: 
+        radius: 
+        tiles: 
+
+    Returns:
+        
+
+    Raises:
+
+    """
     complement_adjacent(tiles)
 
     handler.set_stage(handler.BLUR, len(tiles))
@@ -122,5 +183,16 @@ def blur(handler, radius, tiles):
     return blurred
 
 
-def adj_full(coord, tiles):
+def adj_full(coord, tiles: Types.ELLIPSIS) -> Types.NONE:
+    """
+
+    Args:
+        coord: 
+        tiles: 
+
+    Returns:
+
+    Raises:
+
+    """
     return all(t is _FULL_TILE for t in adjacent_tiles(coord, tiles))

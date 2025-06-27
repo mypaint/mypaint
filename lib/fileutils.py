@@ -20,9 +20,6 @@ import logging
 import shutil
 import unicodedata
 
-import lib.helpers
-from lib.pycompat import unicode
-
 from lib.gibindings import GLib
 from lib.gibindings import Gio
 
@@ -39,23 +36,24 @@ VIA_TEMPFILE_BACKUP_COPY_SUFFIX = "~"
 ## Utility funcs
 
 
-def expanduser_unicode(s):
-    """Expands a ~/ on the front of a unicode path, where meaningful.
+def expanduser_str(s: Types.ELLIPSIS) -> str:
+    """Expands a ~/ on the front of a path, where meaningful.
 
-    :param s: path to expand, coercable to unicode
-    :returns: The expanded path
-    :rtype: unicode
+    Args:
+        s: path to expand, coercable to str
 
-    This doesn't do anything on the Windows platform other than coerce
-    its argument to unicode. On other platforms, it converts a "~"
-    component on the front of a relative path to the user's absolute
-    home, like os.expanduser().
+This doesn't do anything on the Windows platform other than coerce
+its argument to str. On other platforms, it converts a "~"
+component on the front of a relative path to the user's absolute
+home, like os.expanduser().
 
-    Certain workarounds for OS and filesystem encoding issues are
-    implemented here too.
+Certain workarounds for OS and filesystem encoding issues are
+implemented here too.: The expanded path
+
+    Raises:
 
     """
-    s = unicode(s)
+    s = str(s)
     # The sys.getfilesystemencoding() on Win32 (mbcs) is for encode
     # only, and isn't roundtrippable. Luckily ~ is not meaningful on
     # Windows, and MyPaint uses a better default for the scrap prefix on
@@ -73,21 +71,39 @@ def expanduser_unicode(s):
 def via_tempfile(save_method):
     """Filename save method decorator: write via a tempfile
 
-    :param callable save_method: A valid save method to be wrapped
-    :returns: a new decorated method
+    Args:
+        save_method (callable): A valid save method to be wrapped
 
-    This decorator wraps save methods which operate only on filenames
-    to write to tempfiles in the same location. Rename is then used to
-    atomically overwrite the original file, where possible.
+    Returns:
+        a new decorated method
+        
+        This decorator wraps save methods which operate only on filenames
+        to write to tempfiles in the same location. Rename is then used to
+        atomically overwrite the original file, where possible.
+        
+        Any method with a filename as its first non-self parameter which
+        creates a file of that name can be wrapped by this decorator. Other
+        args passed to the decorated method are passed on to the save method
+        itself.
 
-    Any method with a filename as its first non-self parameter which
-    creates a file of that name can be wrapped by this decorator. Other
-    args passed to the decorated method are passed on to the save method
-    itself.
+    Raises:
+
     """
 
     @functools.wraps(save_method)
     def _wrapped_save_method(self, filename, *args, **kwds):
+        """
+
+        Args:
+            filename: 
+            *args: 
+            **kwds: 
+
+        Returns:
+
+        Raises:
+
+        """
         # Where the user told us to save into.
         # Any backup files are written to this folder.
         user_specified_dirname = os.path.dirname(filename)
@@ -133,84 +149,32 @@ def via_tempfile(save_method):
                 assert os.path.exists(backup_path)
         # Finally, replace the original
         logger.debug("Replacing %r with %r", target_path, temp_path)
-        replace(temp_path, target_path)
+        os.replace(temp_path, target_path)
         assert os.path.exists(target_path)
         return save_result
 
     return _wrapped_save_method
 
 
-try:
-    _replace = os.replace  # python 3
-except AttributeError:
-    if sys.platform == "win32":
-        try:
-            import win32api
-            import win32con
-
-            def _replace(s, d):
-                win32api.MoveFileEx(
-                    s,
-                    d,
-                    win32con.MOVEFILE_REPLACE_EXISTING,
-                )
-
-        except ImportError:
-            import ctypes
-
-            _MoveFileEx = ctypes.windll.kernel32.MoveFileExW
-            _MoveFileEx.argtypes = (
-                ctypes.c_wchar_p,
-                ctypes.c_wchar_p,
-                ctypes.c_uint32,
-            )
-            _MoveFileEx.restype = ctypes.c_bool
-
-            def _replace(s, d):
-                if not _MoveFileEx(s, d, 1):  # MOVEFILE_REPLACE_EXISTING
-                    raise OSError("_MoveFileEx(%r, %r)" % (s, d))
-
-    else:
-        _replace = os.rename
-
-
-def replace(src, dst):
-    """os.replace compat wrapper
-
-    This has the semantics of a simple os.replace in Python3.
-
-    >>> import tempfile, shutil
-    >>> t = tempfile.mkdtemp()
-    >>> f1 = os.path.join(t, "f1");
-    >>> f2 = os.path.join(t, "f2");
-    >>> for i, f in enumerate([f1, f2]):
-    ...     with open(f, "w") as fp:
-    ...         pass
-    >>> assert os.path.isfile(f1)
-    >>> assert os.path.isfile(f2)
-    >>> replace(f1, f2)
-    >>> assert not os.path.isfile(f1)
-    >>> assert os.path.isfile(f2)
-    >>> shutil.rmtree(t)
-
-    Idea adapted from <http://stupidpythonideas.blogspot.co.uk/2014/07/
-    getting-atomic-writes-right.html>.
-
-    """
-    _replace(src, dst)
-
-
-def startfile(filepath, operation="open"):
+def startfile(filepath, operation: Types.ELLIPSIS = "open") -> Types.NONE:
     """os.startfile / g_app_info_launch_default_for_uri compat
-
+    
     This has the similar semantics to os.startfile, where it's
     supported: it launches the given file or folder path with the
     default app. On Windows, operation can be set to "edit" to use the
     default editor for a file. The operation parameter is ignored on
     other systems, and GIO's equivalent routine is used.
-
+    
     The relevant app is started in the background, and there are no
     means for getting its pid.
+
+    Args:
+        filepath: 
+        operation:  (Default value = "open")
+
+    Returns:
+
+    Raises:
 
     """
     try:
@@ -237,23 +201,32 @@ def _test():
 
 
 def safename(s, fragment=False):
-    """Returns a safe filename based on its unicode-string argument.
-
+    """Returns a safe filename based on its argument.
+    
     Returns a safe filename or filename fragment based on an arbitrary
     string. The name generated in this way should be good for all OSes.
-
+    
     Slashes, colons and other special characters will be stripped. The
     string will have its leading and trailing whitespace trimmed.
 
-    :param unicode s: The string to convert.
-    :param bool fragment: Name will never be used as a complete file name.
-
+    Args:
+        s (str): The string to convert.
+        fragment (bool, optional): Name will never be used as a complete file name.
+    
     Normally, extra checks are applied that assume the returned name
     will be used for a complete file basename, including extension.  If
     the "fragment" parameter is True, these additional safety
     conversions will be ignored, and its is the caller's responsibility
     to make the name safe. Appending other safe fragments or an
     extension will make the combined name safe again.
+    
+    
+    Note that fragments can be blank.  Whole names cannot.
+    A completely blank name is treated like the reserved words. (Default value = False)
+
+    Returns:
+
+    Raises:
 
     >>> safename("test 1/4") == u'test 1_4'
     True
@@ -264,18 +237,14 @@ def safename(s, fragment=False):
     True
     >>> safename("lpt3", fragment=True) == u'lpt3'
     True
-
-    Note that fragments can be blank.  Whole names cannot.
-    A completely blank name is treated like the reserved words.
-
+    
     >>> safename("   ", fragment=True) == u''
     True
     >>> safename("   ", fragment=False) == u'_'
     True
-
     """
     # A little cleanup first
-    s = unicode(s)
+    s = str(s)
     s = unicodedata.normalize("NFKC", s)
     s = s.strip()
 
@@ -288,20 +257,18 @@ def safename(s, fragment=False):
     if not fragment:
         # Certain whole-filenames are reserved on Windows.
         reserved = (
-            lib.helpers.casefold(
-                """
+            """
             NUL CON PRN AUX
             COM1 COM2 COM3 COM4 COM5 COM6 COM7 COM8 COM9
             LPT1 LPT2 LPT3 LPT4 LPT5 LPT6 LPT7 LPT8 LPT9
-        """
-            )
+            """.casefold()
             .strip()
             .split()
         )
 
         # A blank name is invalid for all systems.
         reserved += [""]
-        if lib.helpers.casefold(s) in reserved:
+        if s.casefold() in reserved:
             s = "_" + s
 
         # Windows file names cannot end with a dot or a space.

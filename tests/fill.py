@@ -17,16 +17,23 @@ from lib import document
 from lib import floodfill
 from lib import fill_common
 from lib import morphology
+from lib.layer import SimplePaintingLayer
 
 N = mypaintlib.TILE_SIZE
 
 
-def exact_bbox(layer):
+def exact_bbox(layer: SimplePaintingLayer) -> Types.NONE:
     """Expensively determine the bounding box
     coordinates of the actual pixel data
-    :param layer: Layer to calculate bbox of
-    :type layer: lib.layer.SimplePaintingLayer
+
+    Args:
+        layer: Layer to calculate bbox of
     :rtype: lib.helpers.Rect
+
+    Returns:
+
+    Raises:
+
     """
     bbox = layer.get_bbox().copy()
     _x, _y, w, h = bbox
@@ -38,6 +45,20 @@ def exact_bbox(layer):
     # The x and y bound searches are very similar,
     # but much more legible when written separately
     def y_bound(ty, bound, base, offset):
+        # type: (Types.ELLIPSIS) -> Types.NONE
+        """
+
+        Args:
+            ty: 
+            bound: 
+            base: 
+            offset: 
+
+        Returns:
+
+        Raises:
+
+        """
         for tx in range(min_tx, max_tx + 1):
             if (tx, ty) not in tile_coordinates:
                 continue
@@ -49,6 +70,20 @@ def exact_bbox(layer):
         return bound
 
     def x_bound(tx, bound, base, offset):
+        # type: (Types.ELLIPSIS) -> Types.NONE
+        """
+
+        Args:
+            tx: 
+            bound: 
+            base: 
+            offset: 
+
+        Returns:
+
+        Raises:
+
+        """
         for ty in range(min_ty, max_ty + 1):
             if (tx, ty) not in tile_coordinates:
                 continue
@@ -72,10 +107,30 @@ def exact_bbox(layer):
     return bbox
 
 
-def fill_test(test_func):
-    """Decorator for fill tests; clears fill layers between tests"""
+def fill_test(test_func: Types.ELLIPSIS) -> Types.NONE:
+    """Decorator for fill tests; clears fill layers between tests
+
+    Args:
+        test_func: 
+
+    Returns:
+
+    Raises:
+
+    """
 
     def inner(self, *args, **kwargs):
+        """
+
+        Args:
+            *args: 
+            **kwargs: 
+
+        Returns:
+
+        Raises:
+
+        """
         assert isinstance(self, FillTestsBase)
         self.clear_fill_layers()
         test_func(self, *args, **kwargs)
@@ -85,23 +140,54 @@ def fill_test(test_func):
 
 
 class FillTestsBase(unittest.TestCase):
+    """ """
 
     GAP_GROUP_PATH = (1,)
     FILL_GROUP_PATH = (3,)
 
     # Helpers
     @staticmethod
-    def center(bbox):
+    def center(bbox: Types.ELLIPSIS) -> Types.NONE:
+        """
+
+        Args:
+            bbox: 
+
+        Returns:
+
+        Raises:
+
+        """
         x, y, w, h = bbox
         return x + w // 2, y + h // 2
 
     @staticmethod
-    def area(bbox):
+    def area(bbox: Types.ELLIPSIS) -> Types.NONE:
+        """
+
+        Args:
+            bbox: 
+
+        Returns:
+
+        Raises:
+
+        """
         return bbox.w * bbox.h
 
     @staticmethod
-    def layers_identical(l1, l2):
-        """Check the layers are tile-for-tile identical"""
+    def layers_identical(l1, l2: Types.ELLIPSIS) -> Types.NONE:
+        """Check the layers are tile-for-tile identical
+
+        Args:
+            l1: 
+            l2: 
+
+        Returns:
+
+        Raises:
+
+        """
         if l1 is l2:
             return True
         s1, s2 = l1._surface, l2._surface
@@ -128,19 +214,22 @@ class FillTestsBase(unittest.TestCase):
         framed=False,
     ):
         """
-        :param src: Outline goes here
-        :type src: lib.layer.LayerStack
-        :param dst: Fill goes here
-        :type dst: lib.layer.LayerStack
-        :param bbox: Bounding box limiting fill (default: root stack bbox)
-        :param init_xy: Starting point of fill (default: src bbox center)
-        :param tol: tolerance
-        :param offset: Grow/Shrink fill by this amount [-64, 64]
-        :param feather: Blur fill by this amount
-        :param gc: gap closing parameters
-        :type gc: lib.floodfill.GapClosingOptions
-        :param framed: To be or not to be (framed)
-        :type framed: bool
+
+        Args:
+            src (lib.layer.LayerStack): Outline goes here
+            dst (lib.layer.LayerStack): Fill goes here
+            bbox: Bounding box limiting fill (default: root stack bbox)
+            init_xy: Starting point of fill (default: src bbox center)
+            tol: tolerance (Default value = 0.2)
+            offset: Grow/Shrink fill by this amount [-64, 64] (Default value = 0)
+            feather: Blur fill by this amount (Default value = 0)
+            gc (lib.floodfill.GapClosingOptions, optional): gap closing parameters (Default value = None)
+            framed (bool, optional): To be or not to be (framed) (Default value = False)
+
+        Returns:
+
+        Raises:
+
         """
         if bbox:
             x, y = self.center(bbox)
@@ -173,6 +262,7 @@ class FillTestsBase(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
+        """ """
         # Load test data
         doc = document.Document()
         doc.load(join(paths.TESTS_DIR, "fill_outlines.ora"))
@@ -215,8 +305,15 @@ class FillTestsBase(unittest.TestCase):
 
     @contextlib.contextmanager
     def fill_layers(self):
-        """Return the fill layers, guaranteeing
-        they are clear before and after being used for testing.
+        """
+
+        Args:
+
+        Returns:
+            they are clear before and after being used for testing.
+
+        Raises:
+
         """
         self.clear_fill_layers()
         yield self._fill_layers
@@ -224,9 +321,11 @@ class FillTestsBase(unittest.TestCase):
 
 
 class CorrectnessTests(FillTestsBase):
+    """ """
 
     @fill_test
     def test_fill_bbox(self):
+        """ """
         offsets = ((21, 17), (-21, 13), (-35, -59))
         dimensions = ((32, 32), (64, 64), (134, 367), (411, 631))
         bbox = self.empty_layer.get_bbox()
@@ -246,6 +345,7 @@ class CorrectnessTests(FillTestsBase):
 
     @fill_test
     def test_basic_properties(self):
+        """ """
         for src in self.small:
             src_bb = exact_bbox(src)
             with self.fill_layers() as (f1, f2):
@@ -282,6 +382,7 @@ class CorrectnessTests(FillTestsBase):
 
     @fill_test
     def test_gap_closing_fill(self):
+        """ """
         gap_size = 7
         avoid_seeping = False
         options = floodfill.GapClosingOptions(gap_size, avoid_seeping)
@@ -317,6 +418,7 @@ class CorrectnessTests(FillTestsBase):
 
     @fill_test
     def test_translation_invariant(self):
+        """ """
         offsets = (
             (0, 63),
             (-35, -77),
@@ -344,6 +446,7 @@ class CorrectnessTests(FillTestsBase):
 
     @fill_test
     def test_erosion(self):
+        """ """
         # The SmallComplex outline has thin protrusions and internal
         # structures; hence we test it with a small offset
         offsets = (33, 1)
@@ -363,6 +466,7 @@ class CorrectnessTests(FillTestsBase):
 
     @fill_test
     def test_dilation(self):
+        """ """
         offsets = (1, 21, 64)
         for src in self.small:
             with self.fill_layers() as (f1, f2):
@@ -390,10 +494,16 @@ class CorrectnessTests(FillTestsBase):
     os.getenv("RUN_PERF"), "Set RUN_PERF envvar to run performance tests"
 )
 class PerformanceTests(FillTestsBase):
-    """
-    Performance tests for fill functions
-
+    """Performance tests for fill functions
+    
     Tests performance for fill algorithms and morphological operations
+
+    Args:
+
+    Returns:
+
+    Raises:
+
     """
 
     def fill_perf(
@@ -405,8 +515,21 @@ class PerformanceTests(FillTestsBase):
         tolerance=0.2,
         gap_closing_options=None,
     ):
-        """
-        Run only the fill step, not the compositing step, n times
+        # type: (Types.ELLIPSIS) -> Types.NONE
+        """Run only the fill step, not the compositing step, n times
+
+        Args:
+            src: 
+            n: 
+            bbox:  (Default value = None)
+            init_xy:  (Default value = None)
+            tolerance:  (Default value = 0.2)
+            gap_closing_options:  (Default value = None)
+
+        Returns:
+
+        Raises:
+
         """
         if bbox:
             x, y = self.center(bbox)
@@ -446,9 +569,15 @@ class PerformanceTests(FillTestsBase):
 
     @fill_test
     def test_fill_full(self):
-        """
-        Test performance of regular filling, including
+        """Test performance of regular filling, including
         final compositing into the destination layer
+
+        Args:
+
+        Returns:
+
+        Raises:
+
         """
         n_small = 10
         n_large = 5
@@ -466,9 +595,15 @@ class PerformanceTests(FillTestsBase):
 
     @fill_test
     def test_gc_fill_full(self):
-        """
-        Test performance of gap closing regular filling, including
+        """Test performance of gap closing regular filling, including
         final compositing into the destination layer
+
+        Args:
+
+        Returns:
+
+        Raises:
+
         """
         repeats = 30
         gap_size = 7
@@ -512,9 +647,15 @@ class PerformanceTests(FillTestsBase):
         os.getenv("MORPH_FULL"), "This is a fairly heavy test, run separately"
     )
     def test_morph_full(self):
-        """
-        Test performance of fill + morphing, including
+        """Test performance of fill + morphing, including
         final compositing into the destination layer
+
+        Args:
+
+        Returns:
+
+        Raises:
+
         """
         n_small = 10
         n_large = 10
@@ -533,6 +674,7 @@ class PerformanceTests(FillTestsBase):
         dst.clear()
 
     def test_morph_only(self):
+        """ """
         offset = 64
         srcs = (self.closed_small_s, self.closed_large_s, self.closed_large_c)
         handler = floodfill.FillHandler()
@@ -545,6 +687,7 @@ class PerformanceTests(FillTestsBase):
             print(src.name, "morph time (ms)", 1000 * t)
 
     def test_blur_only(self):
+        """ """
         offset = 40
         srcs = (self.closed_small_s, self.closed_large_s, self.closed_large_c)
         handler = floodfill.FillHandler()

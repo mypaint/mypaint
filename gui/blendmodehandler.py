@@ -9,7 +9,7 @@
 from lib.observable import event
 
 
-class BlendMode(object):
+class BlendMode:
     """A local on-off switch for a blend mode, with a change event"""
 
     def __init__(self, name, setting_name, active=False):
@@ -20,10 +20,21 @@ class BlendMode(object):
 
     @property
     def active(self):
+        """ """
         return self._active
 
     @active.setter
-    def active(self, active):
+    def active(self, active: Types.ELLIPSIS) -> Types.NONE:
+        """
+
+        Args:
+            active: 
+
+        Returns:
+
+        Raises:
+
+        """
         old_active = self._active
         self._active = active
         if old_active != active:
@@ -32,22 +43,37 @@ class BlendMode(object):
     @event
     def changed(self):
         """Event dispatched triggered by a
-        change in activation status"""
+        change in activation status
+
+        Args:
+
+        Returns:
+
+        Raises:
+
+        """
 
 
-class BlendModes(object):
+class BlendModes:
     """Proxy values for tools with individual blend mode states
-
+    
     Used by tool modes to maintain their own instances of active
     blend modes and blend mode history.
-
+    
     In order to enable individual blend modes for a tool mode,
     simply create its own BlendModes instance in a property named
     blend_modes and bind any listeners to it as needed.
-
+    
     This class ensures that only a single mode is active at any one time
     and maintains a stack of modes to determine which it should switch to
     on deactivation.
+
+    Args:
+
+    Returns:
+
+    Raises:
+
     """
 
     NORMAL = 0
@@ -79,7 +105,17 @@ class BlendModes(object):
         for m in self.modes:
             m.changed += self._update
 
-    def _push_history(self, mode):
+    def _push_history(self, mode: Types.ELLIPSIS) -> Types.NONE:
+        """
+
+        Args:
+            mode: 
+
+        Returns:
+
+        Raises:
+
+        """
         if mode is self.normal_mode:
             del self.history[:]
             return
@@ -87,7 +123,17 @@ class BlendModes(object):
             self.history.remove(mode)
         self.history.append(mode)
 
-    def _pop_history(self, removed):
+    def _pop_history(self, removed: Types.ELLIPSIS) -> Types.NONE:
+        """
+
+        Args:
+            removed: 
+
+        Returns:
+
+        Raises:
+
+        """
         while len(self.history) > 0:
             mode = self.history.pop()
             if mode is not removed:
@@ -95,7 +141,17 @@ class BlendModes(object):
                 return
         self.normal_mode.active = True
 
-    def _update(self, mode):
+    def _update(self, mode: Types.ELLIPSIS) -> Types.NONE:
+        """
+
+        Args:
+            mode: 
+
+        Returns:
+
+        Raises:
+
+        """
         old = self.active_mode
         old._active = False
         if mode.active:
@@ -107,21 +163,39 @@ class BlendModes(object):
 
     @event
     def mode_changed(self, old_mode, new_mode):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Triggers when a mode changes,
-        passing an instance of the changed mode"""
+        passing an instance of the changed mode
+
+        Args:
+            old_mode: 
+            new_mode: 
+
+        Returns:
+
+        Raises:
+
+        """
 
 
-class BlendModeManager(object):
+class BlendModeManager:
     """Manages blend mode actions by updating and redirecting
     callbacks based on BlendModes state models.
-
+    
     A single instance "blendmodemanager" of this class is
     accessible from the Application singleton.
-
+    
     This class allows multiple tool modes to make use of the same
     blend mode actions (same hotkeys etc.) by maintaining their
     own state in a BlendModes object, and taking control of the actions
     by registering that state when necessary.
+
+    Args:
+
+    Returns:
+
+    Raises:
+
     """
 
     def __init__(self, app):
@@ -146,14 +220,35 @@ class BlendModeManager(object):
 
         self._bm = None
 
-    def register(self, bm):
-        """Connect the blend mode actions to the given BlendModes object"""
+    def register(self, bm: Types.ELLIPSIS) -> Types.NONE:
+        """Connect the blend mode actions to the given BlendModes object
+
+        Args:
+            bm: 
+
+        Returns:
+
+        Raises:
+
+        """
         assert isinstance(bm, BlendModes)
         self.delegates.insert(0, bm)
         self._setup(bm)
 
     def update(self, bm, old, new):
-        """Update actions without triggering change listeners"""
+        # type: (Types.ELLIPSIS) -> Types.NONE
+        """Update actions without triggering change listeners
+
+        Args:
+            bm: 
+            old: 
+            new: 
+
+        Returns:
+
+        Raises:
+
+        """
         old_action = self.actions[old.name]
         old_action.block_activate()
         old_action.set_active(False)
@@ -164,9 +259,18 @@ class BlendModeManager(object):
         new_action.set_active(True)
         new_action.unblock_activate()
 
-    def _setup(self, bm):
+    def _setup(self, bm: Types.ELLIPSIS) -> Types.NONE:
         """Set up listener and controls for new model and
-        remove listener for old model"""
+        remove listener for old model
+
+        Args:
+            bm: 
+
+        Returns:
+
+        Raises:
+
+        """
         # Deregister old change listener
         if self._bm:
             self._bm.mode_changed -= self.update
@@ -181,12 +285,20 @@ class BlendModeManager(object):
             action.set_sensitive(mode.enabled)
             action.unblock_activate()
 
-    def deregister(self, bm):
+    def deregister(self, bm: Types.ELLIPSIS) -> Types.NONE:
         """Disconnect the blend mode actions from the given BlendModes
         if it is active.
-
+        
         Remove the object from the stack and connect the next object in
         line for control, if such an object exists.
+
+        Args:
+            bm: 
+
+        Returns:
+
+        Raises:
+
         """
         assert isinstance(bm, BlendModes)
         if bm in self.delegates:
@@ -201,18 +313,58 @@ class BlendModeManager(object):
                 action.set_active(False)
                 action.set_enabled(False)
 
-    def blend_mode_normal_cb(self, action):
+    def blend_mode_normal_cb(self, action: Types.ELLIPSIS) -> Types.NONE:
+        """
+
+        Args:
+            action: 
+
+        Returns:
+
+        Raises:
+
+        """
         if self._bm:
             self._bm.normal_mode.active = action.get_active()
 
-    def blend_mode_eraser_cb(self, action):
+    def blend_mode_eraser_cb(self, action: Types.ELLIPSIS) -> Types.NONE:
+        """
+
+        Args:
+            action: 
+
+        Returns:
+
+        Raises:
+
+        """
         if self._bm:
             self._bm.eraser_mode.active = action.get_active()
 
-    def blend_mode_lock_alpha_cb(self, action):
+    def blend_mode_lock_alpha_cb(self, action: Types.ELLIPSIS) -> Types.NONE:
+        """
+
+        Args:
+            action: 
+
+        Returns:
+
+        Raises:
+
+        """
         if self._bm:
             self._bm.lock_alpha_mode.active = action.get_active()
 
-    def blend_mode_colorize_cb(self, action):
+    def blend_mode_colorize_cb(self, action: Types.ELLIPSIS) -> Types.NONE:
+        """
+
+        Args:
+            action: 
+
+        Returns:
+
+        Raises:
+
+        """
         if self._bm:
             self._bm.colorize_mode.active = action.get_active()

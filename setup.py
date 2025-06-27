@@ -43,18 +43,46 @@ LIBMYPAINT = "libmypaint-2.0"
 # Helper classes and routines:
 
 
-def print_err(msg):
+def print_err(msg: Types.ELLIPSIS) -> Types.NONE:
+    """
+
+    Args:
+        msg: 
+
+    Returns:
+
+    Raises:
+
+    """
     print(msg, file=sys.stderr)
 
 
 def pkgconf():
     """Returns the name used to execute pkg-config
     Uses the value of the PKG_CONFIG environment variable if it is set.
+
+    Args:
+
+    Returns:
+
+    Raises:
+
     """
     return os.getenv("PKG_CONFIG", "pkg-config")
 
 
-def pkgconfig_variable(package, variable_name):
+def pkgconfig_variable(package, variable_name: Types.ELLIPSIS) -> Types.NONE:
+    """
+
+    Args:
+        package: 
+        variable_name: 
+
+    Returns:
+
+    Raises:
+
+    """
     try:
         cmd = [pkgconf(), "--variable=%s" % variable_name, package]
         return subprocess.check_output(cmd).decode().strip()
@@ -71,26 +99,42 @@ def msgfmt():
 
 class BuildTranslations(Command):
     """Builds binary message catalogs for installation.
-
+    
     This is declared as a subcommand of "build", but it can be invoked
     in its own right. The generated message catalogs are later installed
     as data files.
+
+    Args:
+
+    Returns:
+
+    Raises:
 
     """
 
     @staticmethod
     def all_locales():
+        """ """
         return [f[:-3] for f in os.listdir("./po/") if f.endswith(".po")]
 
     @staticmethod
-    def get_translation_paths(command, lang_codes=None):
+    def get_translation_paths(command, lang_codes: Types.ELLIPSIS = None) -> Types.NONE:
         """Returns paths for building and installing message catalogs
-
+        
         The returned data is a tuple with two lists.
         The first contains (source, destination) pairs for building
         *.mo files from *.po files (relative paths).
         The second contains (gen_mo_src_dir, [mo_target_path]) tuples
         that are used by the 'install' command.
+
+        Args:
+            command: 
+            lang_codes:  (Default value = None)
+
+        Returns:
+
+        Raises:
+
         """
         lang_codes = lang_codes or BuildTranslations.all_locales()
         tmpdir = command.get_finalized_command("build").build_temp
@@ -110,12 +154,15 @@ class BuildTranslations(Command):
     user_options = []
 
     def initialize_options(self):
+        """ """
         pass
 
     def finalize_options(self):
+        """ """
         pass
 
     def run(self):
+        """ """
         msg_paths = BuildTranslations.get_translation_paths(self)[0]
         po_failures = []
         for po_path, mo_path in msg_paths:
@@ -125,8 +172,6 @@ class BuildTranslations(Command):
                 # msgfmt creates the .mo file even if the checks fail.
                 # It is removed here so further tests aren't skipped
                 shutil.rmtree(os.path.dirname(mo_path))
-                if not isinstance(e.output, str):
-                    e.output = e.output.decode("utf-8")
                 po_failures.append((po_path, e.output))
         if po_failures:
             paths, errors = map(list, zip(*po_failures))
@@ -157,6 +202,18 @@ class BuildTranslations(Command):
             print_err(msg.format(symlink=symlink))
 
     def _compile_message_catalog(self, po_file_path, mo_file_path):
+        # type: (Types.ELLIPSIS) -> Types.NONE
+        """
+
+        Args:
+            po_file_path: 
+            mo_file_path: 
+
+        Returns:
+
+        Raises:
+
+        """
         needs_update = not (
             os.path.exists(mo_file_path)
             and os.stat(mo_file_path).st_mtime >= os.stat(po_file_path).st_mtime
@@ -169,23 +226,30 @@ class BuildTranslations(Command):
             else:
                 self.announce("running %s" % (" ".join(cmd),), level=2)
                 self.mkpath(os.path.dirname(mo_file_path))
-                subprocess.check_output(cmd, stderr=subprocess.STDOUT)
+                subprocess.check_output(cmd, stderr=subprocess.STDOUT, encoding="utf-8")
 
                 assert os.path.exists(mo_file_path)
 
 
 class BuildConfig(Command):
     """Builds configuration file config.py.
-
+    
     This allows python files to know where to find data when it is
     provided as a separate package, i.e. the brushes.
-
+    
     It also handles which translation files will be included
     (all of them, for non-release builds)
-
+    
     It can also be used to set the directory where message catalogs
     for the libmypaint translations should be found, if they don't
     share the same prefix as the mypaint installation.
+
+    Args:
+
+    Returns:
+
+    Raises:
+
     """
 
     description = "generate lib/config.py using fetched or provided values"
@@ -230,18 +294,21 @@ class BuildConfig(Command):
     )
 
     def initialize_options(self):
+        """ """
         self.brushdir_path = None
         self.libmypaint_locale_path_from_pkgconf = False
         self.libmypaint_locale_path = None
         self.translation_threshold = 0
 
     def finalize_options(self):
+        """ """
         if self.brushdir_path and self.brushdir_path.strip()[0] == "/":
             print("WARNING: supplied brush directory path is not relative")
         self.translation_threshold = int(self.translation_threshold)
         assert 0 <= self.translation_threshold <= 100
 
     def run(self):
+        """ """
         # Determine path to the brushes directory
         brushdir = self.brushdir_path or BuildConfig.pkgconf_brushdir_path()
 
@@ -260,6 +327,7 @@ class BuildConfig(Command):
         self.instantiate_template("config.py.in", "lib/config.py", conf_vars)
 
     def get_libmypaint_locale_dir(self):
+        """ """
         path = self.libmypaint_locale_path
         use_pkgconf = self.libmypaint_locale_path_from_pkgconf
         if path is not None and use_pkgconf:
@@ -278,16 +346,34 @@ class BuildConfig(Command):
     @staticmethod
     def translation_completion_func():
         """Get a function for calculating translation completeness
-
+        
         Tries to use polib if possible, but falls back to a shell script
         that only uses existing dependencies if polib is not installed.
-
+        
         :return: Function calculating po translation completeness
+
+        Args:
+
+        Returns:
+
+        Raises:
+
         """
         try:
             import polib
 
             def py_completion(path, template=False):
+                """
+
+                Args:
+                    path: 
+                    template:  (Default value = False)
+
+                Returns:
+
+                Raises:
+
+                """
                 po = polib.pofile(path)
                 if template:
                     return len(po)
@@ -299,26 +385,41 @@ class BuildConfig(Command):
             print("polib not installed, falling back to shellscript!")
 
             def msgattrib_completion(path, template=False):
+                """
+
+                Args:
+                    path: 
+                    template:  (Default value = False)
+
+                Returns:
+
+                Raises:
+
+                """
                 cmd = ["msgattrib"]
                 if not template:
                     cmd.extend(["--translated", "--no-fuzzy", "--no-obsolete"])
                 cmd.append(path)
-                result = subprocess.check_output(cmd)
-                if not isinstance(result, str):
-                    result = result.decode("utf-8")
+                result = subprocess.check_output(cmd, encoding="utf-8")
                 return result.count("\nmsgstr")
 
             return msgattrib_completion
 
     def _get_locales(self):
-        """Return a list of locales to use/install
+        """
 
-        If no limitation is set (default) all locales are based solely on
-        the existing *.po-files in the po directory. If limitation is enabled,
-        the list is filtered based on the percentage of strings translated
-        for each translation file.
+        Args:
 
-        :return: A list of locales
+        Returns:
+            If no limitation is set (default) all locales are based solely on
+            the existing *.po-files in the po directory. If limitation is enabled,
+            the list is filtered based on the percentage of strings translated
+            for each translation file.
+            
+            :return: A list of locales
+
+        Raises:
+
         """
         locales = BuildTranslations.all_locales()
         if not self.translation_threshold:
@@ -356,11 +457,18 @@ class BuildConfig(Command):
     @contextmanager
     def _get_locale_data_cache(self):
         """Retrieve/update locale info cache
-
+        
         The locale cache holds cached information about the
         level of completion for individual locales, along
         with a timestamp for when this completion was last
         calculated.
+
+        Args:
+
+        Returns:
+
+        Raises:
+
         """
         # Place the cache file directly under the build dir
         # to share it between python versions.
@@ -389,15 +497,23 @@ class BuildConfig(Command):
 
     @staticmethod
     def pkgconf_brushdir_path():
+        """ """
         return pkgconfig_variable("mypaint-brushes-2.0", "brushesdir")
 
     def instantiate_template(self, template_path, output_path, substitutions):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Instantiate a template and write result to a file
 
-        :param template_path: The path of the template file
-        :param output_path: The path of the instantiated output file
-        :param substitutions: A dictionary of substitutions that fully
-            cover the {keyword} instances in the template file contents.
+        Args:
+            template_path: The path of the template file
+            output_path: The path of the instantiated output file
+            substitutions: A dictionary of substitutions that fully
+        cover the {keyword} instances in the template file contents.
+
+        Returns:
+
+        Raises:
+
         """
         warning = self.WARNING_TEMPLATE.format(
             input=template_path, cmd=self.__class__.__name__, script=__file__
@@ -421,14 +537,20 @@ class BuildConfig(Command):
 
 class Build(build):
     """Custom build (build_ext 1st for swig, run build_translations)
-
+    
     distutils.command.build.build doesn't generate the extension.py for
     an _extension.so, unless the build_ext is done first or you install
     twice. The fix is to do the build_ext subcommand before build_py.
     In our case, swig runs first. Still needed as of Python 2.7.13.
     Fix adapted from https://stackoverflow.com/questions/17666018>.
-
+    
     This build also ensures that build_translations is run.
+
+    Args:
+
+    Returns:
+
+    Raises:
 
     """
 
@@ -445,6 +567,13 @@ class BuildExt(build_ext):
     Adds additional behaviour to --debug option and
     adds an option to amend the rpath with library paths
     from dependencies found via pkg-config
+
+    Args:
+
+    Returns:
+
+    Raises:
+
     """
 
     user_options = [
@@ -462,11 +591,13 @@ class BuildExt(build_ext):
     ] + build_ext.user_options
 
     def initialize_options(self):
+        """ """
         self.set_rpath = False
         self.disable_openmp = False
         build_ext.initialize_options(self)
 
     def finalize_options(self):
+        """ """
         build_ext.finalize_options(self)
         if self.set_rpath and (
             sys.platform.startswith("linux") or "bsd" in sys.platform
@@ -479,7 +610,17 @@ class BuildExt(build_ext):
                 # Retain original list reference, just in case
                 ext.runtime_library_dirs[:] = rt_libs
 
-    def build_extension(self, ext):
+    def build_extension(self, ext: Types.ELLIPSIS) -> Types.NONE:
+        """
+
+        Args:
+            ext: 
+
+        Returns:
+
+        Raises:
+
+        """
         ccflags = ext.extra_compile_args
         linkflags = ext.extra_link_args
 
@@ -512,6 +653,13 @@ class BuildExt(build_ext):
 class Install(install):
     """Custom install to handle translation files
     Same options as the regular install command.
+
+    Args:
+
+    Returns:
+
+    Raises:
+
     """
 
     # Holds installation directory paths
@@ -520,6 +668,7 @@ class Install(install):
     INSTALLATION_PATHS = {}
 
     def run(self):
+        """ """
         # Store installation paths, to be used by `install_scripts`
         rel_to = functools.partial(rel_to_path, self.install_scripts)
         path_dict = {
@@ -542,13 +691,21 @@ class Install(install):
         install.run(self)
 
 
-def rel_to_path(src_path, dst_path):
-    """Return the relative path to dst_path from src_path
+def rel_to_path(src_path, dst_path: Types.ELLIPSIS) -> Types.NONE:
+    """
 
-    Example:
-    src_path = /a/b/c/d/
-    dst_path = /a/b/f/g/
-    result = ../../f/g
+    Args:
+        src_path: 
+        dst_path: 
+
+    Returns:
+        Example:
+        src_path = /a/b/c/d/
+        dst_path = /a/b/f/g/
+        result = ../../f/g
+
+    Raises:
+
     """
     abs_src = abspath(normpath(src_path))
     abs_dst = abspath(normpath(dst_path))
@@ -562,14 +719,21 @@ def rel_to_path(src_path, dst_path):
 
 class Clean(clean):
     """Custom clean: also remove swig-generated wrappers.
-
+    
     distutils's clean has always left these lying around in the source,
     and they're a perpetual trip hazard when sharing the same source
     tree with a Windows VM.
 
+    Args:
+
+    Returns:
+
+    Raises:
+
     """
 
     def run(self):
+        """ """
         build_temp_files = glob.glob("lib/mypaintlib_wrap.c*")
         for file in build_temp_files:
             self.announce("removing %r" % (file,), level=2)
@@ -591,13 +755,16 @@ class Demo(Command):
     ]
 
     def initialize_options(self):
+        """ """
         self.args = None
         self.temp_root = None
 
     def finalize_options(self):
+        """ """
         pass
 
     def run(self):
+        """ """
         if self.dry_run:
             self.announce(
                 "The demo command can't do anything in dry-run mode",
@@ -654,13 +821,20 @@ class Demo(Command):
 
 class InstallScripts(install_scripts):
     """Install scripts with ".py" suffix removal and version headers.
-
+    
     Bakes version information into each installed script.
     The .py suffix is also removed on most platforms we support.
+
+    Args:
+
+    Returns:
+
+    Raises:
 
     """
 
     def run(self):
+        """ """
         paths = Install.INSTALLATION_PATHS
         if not paths:
             raise RuntimeError(
@@ -701,6 +875,18 @@ class InstallScripts(install_scripts):
             self.outfiles.extend(outfiles)
 
     def _install_script(self, src, header):
+        # type: (Types.ELLIPSIS) -> Types.NONE
+        """
+
+        Args:
+            src: 
+            header: 
+
+        Returns:
+
+        Raises:
+
+        """
         strip_ext = True
         set_mode = False
         if sys.platform == "win32":
@@ -746,9 +932,11 @@ class _ManagedInstBase(Command):
     ]
 
     def initialize_options(self):
+        """ """
         self.prefix = "/usr/local"
 
     def finalize_options(self):
+        """ """
         self.prefix = os.path.abspath(self.prefix)
 
     # Utility methods for subclasses:
@@ -799,14 +987,32 @@ class _ManagedInstBase(Command):
             ), "path %r does not end in mypaint" % (path,)
             self.rmtree(path)
 
-    def rmtree(self, path):
-        """Remove a tree recursively."""
+    def rmtree(self, path: Types.ELLIPSIS) -> Types.NONE:
+        """Remove a tree recursively.
+
+        Args:
+            path: 
+
+        Returns:
+
+        Raises:
+
+        """
         self.announce("recursively removing %r" % (path,), level=2)
         if not self.dry_run:
             shutil.rmtree(path, ignore_errors=True)
 
-    def rm(self, path):
-        """Remove a single file."""
+    def rm(self, path: Types.ELLIPSIS) -> Types.NONE:
+        """Remove a single file.
+
+        Args:
+            path: 
+
+        Returns:
+
+        Raises:
+
+        """
         self.announce("removing %r" % (path,), level=2)
         if not self.dry_run:
             if os.path.isfile(path):
@@ -821,17 +1027,24 @@ class _ManagedInstBase(Command):
 
 class ManagedInstall(_ManagedInstBase):
     """Simplified "install" with a list of installed files.
-
+    
     This command and ManagedUninstall are temporary hacks which we have
     to use because `pip {install,uninstall}` doesn't work yet. Once we
     have proper namespacing (prefixed `mypaint.{lib,gui}` modules), we
     may be able to drop these commands and use standard ones.
+
+    Args:
+
+    Returns:
+
+    Raises:
 
     """
 
     description = "[MyPaint] like install, but allow managed_uninstall"
 
     def run(self):
+        """ """
 
         if self.is_installed():
             self.announce("Already installed, uninstalling first...", level=2)
@@ -867,17 +1080,29 @@ class ManagedUninstall(_ManagedInstBase):
     ]
 
     def initialize_options(self):
+        """ """
         self.prefix = "/usr/local"
 
     def finalize_options(self):
+        """ """
         self.prefix = os.path.abspath(self.prefix)
 
     def run(self):
+        """ """
         self.uninstall()
 
 
-def uniq(items):
-    """Order-preserving uniq()"""
+def uniq(items: Types.ELLIPSIS) -> Types.NONE:
+    """Order-preserving uniq()
+
+    Args:
+        items: 
+
+    Returns:
+
+    Raises:
+
+    """
     seen = set()
     result = []
     for i in items:
@@ -888,11 +1113,19 @@ def uniq(items):
     return result
 
 
-def pkgconfig(packages, **kwopts):
+def pkgconfig(packages, **kwopts: Types.ELLIPSIS) -> Types.NONE:
     """Runs pkgconfig to update its args.
-
+    
     Also returns the modified args dict. Recipe adapted from
     http://code.activestate.com/recipes/502261/
+
+    Args:
+        packages: 
+        **kwopts: 
+
+    Returns:
+
+    Raises:
 
     """
     flag_map = {
@@ -926,7 +1159,17 @@ def pkgconfig(packages, **kwopts):
     return kwopts
 
 
-def check_dependencies(deps):
+def check_dependencies(deps: Types.ELLIPSIS) -> Types.NONE:
+    """
+
+    Args:
+        deps: 
+
+    Returns:
+
+    Raises:
+
+    """
     with open(os.devnull, "w") as devnull:
         # Check with a single invocation in case everything is available
         if subprocess.call([pkgconf(), "--libs"] + deps, stdout=devnull):
@@ -939,7 +1182,7 @@ def check_dependencies(deps):
 
 
 def get_ext_modules():
-    """Return a list of binary Extensions for setup() to process."""
+    """ """
 
     import numpy
 
@@ -1020,7 +1263,7 @@ def get_ext_modules():
 
 
 def get_data_files():
-    """Return a list of data_files entries for setup() to process."""
+    """ """
 
     # Target paths are relative to $base/share, assuming setup.py's
     # default value for install-data.
