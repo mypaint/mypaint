@@ -119,7 +119,7 @@ class InputTestWindow(windowing.SubWindow):
         t = str(getattr(event, "time", "-"))
         msg = "% 6s % 15s" % (
             t[-6:],
-            event.type.value_name.replace("GDK_", ""),
+            event.type.name.replace("GDK_", ""),
         )
 
         if hasattr(event, "x") and hasattr(event, "y"):
