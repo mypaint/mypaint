@@ -33,7 +33,7 @@ from .windowing import SubWindow
 from . import curve as notuseddirectly  # noqa - needed for interactive testing
 
 # The widget class needs to be in scope before it is
-# instantiated via the loading of the glade file.
+# instantiated via the loading of the XML file.
 from .sliderwidget import InputSlider  # noqa
 
 logger = logging.getLogger(__name__)
@@ -58,7 +58,7 @@ class BrushEditorWindow(SubWindow):
 
     # Class constants:
 
-    _UI_DEFINITION_FILE = "brusheditor.glade"
+    _UI_DEFINITION_FILE = "brusheditor.xml"
     _LISTVIEW_CNAME_COLUMN = 0
     _LISTVIEW_DISPLAYNAME_COLUMN = 1
     _LISTVIEW_IS_SELECTABLE_COLUMN = 2
@@ -202,7 +202,7 @@ class BrushEditorWindow(SubWindow):
             self._input_xmax_adj[name] = adj
 
     def _build_ui(self):
-        """Builds the UI from ``brusheditor.glade``"""
+        """Builds the UI from ``brusheditor.xml``"""
         ui_dir = os.path.dirname(os.path.abspath(__file__))
         ui_path = os.path.join(ui_dir, self._UI_DEFINITION_FILE)
         with open(ui_path, "r") as ui_fp:

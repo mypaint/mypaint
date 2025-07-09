@@ -28,7 +28,7 @@ class ScaleDelegator(type(Gtk.Bin)):
 
     The purpose of this is to allow setting properties on InputSlider
     instances as if they were Gtk.Scale. In turn, this is to allow use of
-    glade/xml to create and set up such instances.
+    XML to create and set up such instances.
     """
 
     def __init__(cls, name, bases, dict):
@@ -61,7 +61,7 @@ class InputSlider(with_metaclass(ScaleDelegator, Gtk.Bin)):
     The metaclass creates copies of the properties from GtkScale +
     superclasses to this class (excepting pre-existing properties
     through shared ancestry). This is so that instances of this class
-    can be constructed from glade/XML files. The property values are
+    can be constructed from XML files. The property values are
     delegated to the instance of GtkScale.
 
     Going by the old saying: "Magic is an abomination", it would be
@@ -77,7 +77,7 @@ class InputSlider(with_metaclass(ScaleDelegator, Gtk.Bin)):
     to the newly created spin button.
     """
 
-    # Needed for instantiation via glade/xml
+    # Needed for instantiation via XML
     __gtype_name__ = "InputSlider"
 
     # If the scale/slider does not define a limit on precision, this

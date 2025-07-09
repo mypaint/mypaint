@@ -46,10 +46,10 @@ class Presenter:
     -----------------------
 
     In MyPaint, a Presenter's View is a hierarchy of basic GTK objects
-    that are typically laid out with the Glade UI designer and stored as
-    an XML file. View observation is done with GTK signal callback
-    methods, which are named in the XML UI definition, and which are
-    expected to be implemented by the corresponding Presenter object.
+    stored as an XML file. View observation is done with GTK signal
+    callback methods, which are named in the XML UI definition, and
+    which are expected to be implemented by the corresponding Presenter
+    object.
 
     In MyPaint, a Presenter's Model can be anything. It's normally one
     or more objects from lib, for example a layer or a whole layers
@@ -202,7 +202,7 @@ class BuiltUIPresenter(Presenter):
 
     """
 
-    _UI_FILE_EXTENSIONS = [".ui", ".glade", ".xml"]
+    _UI_FILE_EXTENSIONS = [".ui", ".xml"]
 
     @property
     def view(self):
@@ -216,7 +216,7 @@ class BuiltUIPresenter(Presenter):
         GTK objects from a UI XML file.
 
         The file is expected to reside in the same directory as
-        self.__class__.__file___, and to be named after it (*.glade).
+        self.__class__.__file___, and to be named after it (*.xml).
         However, if self.__ui_xml__ is defined, that will be used for
         the basename instead.
 
@@ -231,7 +231,7 @@ class BuiltUIPresenter(Presenter):
         except AttributeError:
             pass
 
-        # Select a .glade file
+        # Select an .xml file
         class_defn_file = inspect.getfile(self.__class__)
         mod_dirname = os.path.dirname(class_defn_file)
         try:
