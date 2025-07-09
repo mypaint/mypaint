@@ -277,7 +277,7 @@ class Monitor (object):
                 "New device %r"
                 " (%s, axes:%d, class=%s, vendor=%r, product=%r)",
                 device.get_name(),
-                source.value_name,
+                source.name,
                 num_axes,
                 device.__class__.__name__,
                 vendor_id,
@@ -354,7 +354,8 @@ class Monitor (object):
 
         logger.debug(
             "Device change: name=%r source=%s",
-            new_device.name, new_device.source.value_name,
+            new_device.name,
+            new_device.source.name,
         )
 
         # When editing brush settings, it is often more convenient to use the
