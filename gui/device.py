@@ -276,7 +276,7 @@ class Monitor(object):
             logger.info(
                 "New device %r" " (%s, axes:%d, class=%s, vendor=%r, product=%r)",
                 device.get_name(),
-                source.name,
+                source.value_name,
                 num_axes,
                 device.__class__.__name__,
                 vendor_id,
