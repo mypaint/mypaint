@@ -373,7 +373,7 @@ msgid "Use the default icon"
 msgstr "Remettre à la valeur par défaut pour l'icône"
 
 #. TRANSLATORS: save edits to a brush icon
-#: ../gui/brushiconeditor.py:190 ../gui/brusheditor.glade:111
+#: ../gui/brushiconeditor.py:190 ../gui/brusheditor.xml:111
 msgid "Save"
 msgstr "Enregistrer"
 
@@ -1222,13 +1222,13 @@ msgstr "Basé sur le fichier"
 
 #. This refers to a version of MyPaint like 1.0, 1.1, 1.2 etc
 #: ../gui/compatibility.py:35 ../gui/drawwindow.py:281
-#: ../gui/preferenceswindow.glade:1667
+#: ../gui/preferenceswindow.xml:1667
 msgctxt "Prefs Dialog|Compatibility"
 msgid "1.x"
 msgstr "1.x"
 
 #. This refers to a version of MyPaint like 1.0, 1.1, 1.2 etc
-#: ../gui/compatibility.py:36 ../gui/preferenceswindow.glade:1686
+#: ../gui/compatibility.py:36 ../gui/preferenceswindow.xml:1686
 msgctxt "Prefs Dialog|Compatibility"
 msgid "2.x"
 msgstr "2.x"
@@ -1432,7 +1432,7 @@ msgstr "Remplacer la brosse ?"
 msgid "Replace"
 msgstr "Remplacer"
 
-#: ../gui/dialogs.py:137 ../gui/dialogs.py:207 ../gui/brusheditor.glade:189
+#: ../gui/dialogs.py:137 ../gui/dialogs.py:207 ../gui/brusheditor.xml:189
 msgid "Rename"
 msgstr "Renommer"
 
@@ -1598,7 +1598,7 @@ msgid "%s - MyPaint"
 msgstr "%s - MyPaint"
 
 #. TRANSLATORS: window title for use without a filename
-#: ../gui/drawwindow.py:278 ../gui/mypaint.glade:8
+#: ../gui/drawwindow.py:278 ../gui/mypaint.xml:8
 msgid "MyPaint"
 msgstr "MyPaint"
 
@@ -3906,17 +3906,17 @@ msgstr "Flocon de neige"
 msgid "PNG reader failed: %s"
 msgstr "Le lecteur de PNG a échoué : %s"
 
-#: ../gui/autorecover.glade:18
+#: ../gui/autorecover.xml:18
 msgid "Recover interrupted work?"
 msgstr "Récupérer le travail interrompu ?"
 
 #. Whether to show the dialog when MyPaint starts
-#: ../gui/autorecover.glade:38
+#: ../gui/autorecover.xml:38
 msgctxt "Autosave Recovery dialog|"
 msgid "_Look for backups at startup"
 msgstr "Rechercher des sauvegardes au démarrage"
 
-#: ../gui/autorecover.glade:42
+#: ../gui/autorecover.xml:42
 msgctxt "Autosave Recovery dialog|Show Dialog at Startup checkbutton|"
 msgid ""
 "Run this autosave recovery dialog when MyPaint starts, if there are files to "
@@ -3932,24 +3932,24 @@ msgstr ""
 "‘Fichier’ lorsque MyPaint est en cours d'exécution."
 
 #. Deletes the selected autosave backup file.
-#: ../gui/autorecover.glade:60
+#: ../gui/autorecover.xml:60
 msgctxt "Autosave Recovery dialog|"
 msgid "_Delete…"
 msgstr "_Supprimer…"
 
-#: ../gui/autorecover.glade:66
+#: ../gui/autorecover.xml:66
 msgctxt "Autosave Recovery dialog|Delete button|"
 msgid "Delete this backup from the disk."
 msgstr "Supprimer cette sauvegarde du disque."
 
 #. Recover in the sense or retrieval or salvage from a backup file. The user is asked to save the retrieved file immediately afterwards, hence the ellipsis.
-#: ../gui/autorecover.glade:78
+#: ../gui/autorecover.xml:78
 #, fuzzy
 msgctxt "Autosave Recovery dialog|"
 msgid "_Recover & Save…"
 msgstr "_Récupérer et Enregistrer…"
 
-#: ../gui/autorecover.glade:84
+#: ../gui/autorecover.xml:84
 #, fuzzy
 msgctxt "Autosave Recovery dialog|Recover button|"
 msgid "Save this backup to disk, then continue working on it."
@@ -3957,19 +3957,19 @@ msgstr ""
 "Enregistrer cette sauvegarde sur le disque, puis continuer à travailler."
 
 #. Do not recover any autosaves; take no action.
-#: ../gui/autorecover.glade:95
+#: ../gui/autorecover.xml:95
 msgctxt "Autosave Recovery dialog|"
 msgid "Decide _Later"
 msgstr "Décider plus tard"
 
-#: ../gui/autorecover.glade:101
+#: ../gui/autorecover.xml:101
 msgctxt "Autosave Recovery dialog|Cancel button|"
 msgid "Start work on a new canvas. These backups will be retained."
 msgstr ""
 "Commencer à travailler sur un nouveau canevas. Ces sauvegardes seront "
 "conservés."
 
-#: ../gui/autorecover.glade:122
+#: ../gui/autorecover.xml:122
 #, fuzzy
 msgctxt "Autosave Recovery dialog|"
 msgid ""
@@ -3981,19 +3981,19 @@ msgstr ""
 "fait des fichiers de sauvegarde. Vous pouvez récupérer un fichier maintenant "
 "ou lorsque vous relancerez MyPaint."
 
-#: ../gui/autorecover.glade:157
+#: ../gui/autorecover.xml:157
 msgid "Thumbnail"
 msgstr "Vignette"
 
-#: ../gui/autorecover.glade:171
+#: ../gui/autorecover.xml:171
 msgid "Description"
 msgstr "Déscription"
 
-#: ../gui/brusheditor.glade:88
+#: ../gui/brusheditor.xml:88
 msgid "Live update"
 msgstr "Mise à jour automatique"
 
-#: ../gui/brusheditor.glade:93
+#: ../gui/brusheditor.xml:93
 msgid ""
 "Update the last stroke on the canvas with the settings in this window, in "
 "real time"
@@ -4001,15 +4001,15 @@ msgstr ""
 "Mettre à jour en direct le dernier tracé sur la toile avec les paramètres de "
 "cette fenêtre"
 
-#: ../gui/brusheditor.glade:116
+#: ../gui/brusheditor.xml:116
 msgid "Save these settings to the brush"
 msgstr "Enregistrer ces réglages à la brosse"
 
-#: ../gui/brusheditor.glade:132
+#: ../gui/brusheditor.xml:132
 msgid "Edit Icon"
 msgstr "Éditer l'icône"
 
-#: ../gui/brusheditor.glade:137
+#: ../gui/brusheditor.xml:137
 msgid ""
 "Edit this brush's icon in a separate window (you will be able to use any "
 "brush to draw it)"
@@ -4017,55 +4017,55 @@ msgstr ""
 "Éditer l'icône de cette brosse dans une nouvelle fenêtre (vous pourrez "
 "utiliser n'importe quelle brosse pour la dessiner)"
 
-#: ../gui/brusheditor.glade:151
+#: ../gui/brusheditor.xml:151
 msgid "Delete"
 msgstr "Supprimer"
 
-#: ../gui/brusheditor.glade:156
+#: ../gui/brusheditor.xml:156
 msgid "Delete this brush from the disk"
 msgstr "Supprimer cette brosse du disque"
 
-#: ../gui/brusheditor.glade:170
+#: ../gui/brusheditor.xml:170
 msgid "Copy to New"
 msgstr "Copier vers Nouveau"
 
-#: ../gui/brusheditor.glade:175
+#: ../gui/brusheditor.xml:175
 msgid "Copy these settings and the current brush's icon to a new brush"
 msgstr ""
 "Copie les paramètres et l'icône actuelle de la brosse dans une nouvelle "
 "brosse"
 
-#: ../gui/brusheditor.glade:194
+#: ../gui/brusheditor.xml:194
 msgid "Rename this brush"
 msgstr "Renommer cette brosse"
 
-#: ../gui/brusheditor.glade:239
+#: ../gui/brusheditor.xml:239
 msgid "Brush Setting"
 msgstr "Réglages de la brosse"
 
-#: ../gui/brusheditor.glade:340
+#: ../gui/brusheditor.xml:340
 msgctxt "brush editor|metadata settings|labels for widgets|tooltips|"
 msgid "Short description for use in tooltips"
 msgstr "Courte description pour les infobulles"
 
 #. Description for user tooltips
-#: ../gui/brusheditor.glade:343
+#: ../gui/brusheditor.xml:343
 msgctxt "brush editor|metadata settings|labels|"
 msgid "Description:"
 msgstr "Description :"
 
-#: ../gui/brusheditor.glade:355
+#: ../gui/brusheditor.xml:355
 msgctxt "brush editor|metadata settings|labels for widgets|tooltips|"
 msgid "Brush developer's notes"
 msgstr "Notes du développeur de la brosse"
 
 #. Notes for developers
-#: ../gui/brusheditor.glade:358
+#: ../gui/brusheditor.xml:358
 msgctxt "brush editor|metadata settings|labels|"
 msgid "Notes:"
 msgstr "Notes :"
 
-#: ../gui/brusheditor.glade:420
+#: ../gui/brusheditor.xml:420
 msgid ""
 "Starting value for this brush setting. The brush dynamics below act on this."
 msgstr ""
@@ -4073,16 +4073,16 @@ msgstr ""
 "interagissent avec."
 
 #. field label
-#: ../gui/brusheditor.glade:426
+#: ../gui/brusheditor.xml:426
 msgid "Value:"
 msgstr "Valeur :"
 
-#: ../gui/brusheditor.glade:491
+#: ../gui/brusheditor.xml:491
 msgid "Reset this input to have no effect on the setting"
 msgstr ""
 "Réinitialiser cette entrée pour qu'elle n'aie aucun effet sur le réglage"
 
-#: ../gui/brusheditor.glade:521
+#: ../gui/brusheditor.xml:521
 #, fuzzy
 msgid ""
 "Minimum value for the output axis.\n"
@@ -4091,7 +4091,7 @@ msgstr ""
 "Valeur minimale pour l'axe de sortie.\n"
 "Cela peut être défini à l'aide du curseur principal pour {dname}."
 
-#: ../gui/brusheditor.glade:540
+#: ../gui/brusheditor.xml:540
 msgid ""
 "Maximum value for the output axis.\n"
 "This can be set using the main slider for {dname}."
@@ -4099,75 +4099,75 @@ msgstr ""
 "Valeur maximale pour l'axe de sortie.\n"
 "Cela peut être défini à l'aide du curseur principal pour {dname}."
 
-#: ../gui/brusheditor.glade:562
+#: ../gui/brusheditor.xml:562
 msgid "Output"
 msgstr "Sortie du stylet"
 
-#: ../gui/brusheditor.glade:583
+#: ../gui/brusheditor.xml:583
 msgid "Input"
 msgstr "Entrée"
 
-#: ../gui/brusheditor.glade:601
+#: ../gui/brusheditor.xml:601
 msgid "Adjusts the maximum value"
 msgstr "Ajuster la valeur maximale"
 
-#: ../gui/brusheditor.glade:634
+#: ../gui/brusheditor.xml:634
 msgid "Adjusts the minimum value"
 msgstr "Ajuster la valeur minimale"
 
-#: ../gui/brusheditor.glade:666
+#: ../gui/brusheditor.xml:666
 msgid ""
 "Minimum value for the input axis.\n"
 "Use the popup scale to adjust this."
 msgstr ""
 
-#: ../gui/brusheditor.glade:684
+#: ../gui/brusheditor.xml:684
 msgid ""
 "Maximum value for the input axis.\n"
 "Use the popup scale to adjust this."
 msgstr ""
 
-#: ../gui/brusheditor.glade:739
+#: ../gui/brusheditor.xml:739
 #, fuzzy
 msgid "Variation of the base value by stylus input and other criteria"
 msgstr ""
 "Variation de la valeur de base en fonction de la saisie au stylet et "
 "d'autres critères"
 
-#: ../gui/brusheditor.glade:746
+#: ../gui/brusheditor.xml:746
 msgid "Brush Dynamics"
 msgstr "Dynamique de la brosse"
 
-#: ../gui/brusheditor.glade:780
+#: ../gui/brusheditor.xml:780
 #, fuzzy
 msgid "Adjust this input mapping in detail"
 msgstr "Ajuster cette cartographie d'entrée en détail"
 
-#: ../gui/brusheditor.glade:802
+#: ../gui/brusheditor.xml:802
 msgid "{tooltip}"
 msgstr "{info-bulle}"
 
 #. field name (template)
-#: ../gui/brusheditor.glade:809
+#: ../gui/brusheditor.xml:809
 #, fuzzy
 msgid "{dname}:"
 msgstr "{«Délégation d'enregistrement de Nom» (dname)}:"
 
-#: ../gui/brusheditor.glade:841
+#: ../gui/brusheditor.xml:841
 msgid "Brush dynamics are not available for this setting."
 msgstr "Les dynamiques de brosses ne sont pas disponibles pour ce réglage."
 
-#: ../gui/brusheditor.glade:851
+#: ../gui/brusheditor.xml:851
 #, fuzzy
 msgid "<big><b>No Brush Dynamics</b></big>"
 msgstr "<big><b>{accel_label}</b></big>"
 
-#: ../gui/inktool.glade:44
+#: ../gui/inktool.xml:44
 msgctxt "Inking tool options: point value sliders: labels: tooltips"
 msgid "Pressure value for the current point"
 msgstr "Valeur de pression pour le point actuel"
 
-#: ../gui/inktool.glade:49
+#: ../gui/inktool.xml:49
 #, fuzzy
 msgctxt "Inking tool options: point value sliders: labels"
 msgid "Press:"
@@ -4176,7 +4176,7 @@ msgstr "Pression :"
 #. The meaning of negative values is *not* affected by text direction.
 #. The widget's RTL/LTR layout, however, *is* affected.
 #. The value (and signs) *is* shown.
-#: ../gui/inktool.glade:83 ../gui/inktool.glade:103
+#: ../gui/inktool.xml:83 ../gui/inktool.xml:103
 #, fuzzy
 msgctxt "Inking tool options: point value sliders: labels: tooltips"
 msgid ""
@@ -4188,217 +4188,217 @@ msgstr ""
 "Une valeur de 0 signifie que le stylet est vertical.\n"
 "Des valeurs négatives signifient que le stylet est incliné à gauche."
 
-#: ../gui/inktool.glade:90
+#: ../gui/inktool.xml:90
 msgctxt "Inking tool options: point value sliders: labels"
 msgid "X-tilt:"
 msgstr "Inclinaison sur X :"
 
-#: ../gui/inktool.glade:110
+#: ../gui/inktool.xml:110
 msgctxt "Inking tool options: point value sliders: labels"
 msgid "Y-tilt:"
 msgstr "Inclinaison sur Y :"
 
-#: ../gui/inktool.glade:145
+#: ../gui/inktool.xml:145
 msgid "Tilt in the canvas Y axis"
 msgstr "Inclinaison sur l’axe Y du dessin"
 
-#: ../gui/inktool.glade:167
+#: ../gui/inktool.xml:167
 msgctxt "Inking tool options: point value sliders: labels: tooltips"
 msgid "Time since the previous point, in seconds"
 msgstr "Temps depuis le point précédent, en secondes"
 
-#: ../gui/inktool.glade:172
+#: ../gui/inktool.xml:172
 msgctxt "Inking tool options: point value sliders: labels"
 msgid "Time:"
 msgstr "Temps :"
 
-#: ../gui/inktool.glade:205
+#: ../gui/inktool.xml:205
 msgctxt "Inking tool options: node delete button: label"
 msgid "Delete Point"
 msgstr "Supprimer le point"
 
-#: ../gui/inktool.glade:209
+#: ../gui/inktool.xml:209
 msgctxt "Inking tool options: node delete button: tooltip"
 msgid "Delete the currently selected point"
 msgstr "Supprimer le point sélectionné"
 
-#: ../gui/inktool.glade:221 ../gui/resources.xml:897
+#: ../gui/inktool.xml:221 ../gui/resources.xml:897
 msgid "Insert Point"
 msgstr "Insérer un point"
 
-#: ../gui/inktool.glade:253 ../gui/resources.xml:911
+#: ../gui/inktool.xml:253 ../gui/resources.xml:911
 msgid "Simplify Points"
 msgstr "Simplifier les points"
 
-#: ../gui/inktool.glade:257
+#: ../gui/inktool.xml:257
 msgid "Simplify the curve using the Reumann-Witkam algorithm."
 msgstr "Simplifier la courbe en utilisant l'algorithme de Reumann-Witkam."
 
-#: ../gui/inktool.glade:269 ../gui/resources.xml:918
+#: ../gui/inktool.xml:269 ../gui/resources.xml:918
 msgid "Cull Points"
 msgstr "Retirer des points"
 
-#: ../gui/inktool.glade:273
+#: ../gui/inktool.xml:273
 msgid "Cull every other point from the curve."
 msgstr "Retirer un point sur deux de la courbe."
 
-#: ../gui/layervis.glade:15
+#: ../gui/layervis.xml:15
 msgctxt "Layers window: view list controls: tooltips"
 msgid "The currently active view."
 msgstr "La vue actuellement active."
 
-#: ../gui/layervis.glade:36
+#: ../gui/layervis.xml:36
 msgctxt "Layers window: view list controls: tooltips"
 msgid "Rename the active view."
 msgstr "Renommer la vue active."
 
-#: ../gui/layervis.glade:57
+#: ../gui/layervis.xml:57
 msgctxt "Layers window: view list controls: tooltips"
 msgid "Remove the active view."
 msgstr "Supprimer la vue active."
 
-#: ../gui/layervis.glade:78
+#: ../gui/layervis.xml:78
 msgctxt "Layers window: view list controls: tooltips"
 msgid "Snapshot visible layers as a new view."
 msgstr "Prendre un instantané des calques visibles comme nouvelle vue."
 
-#: ../gui/layervis.glade:99
+#: ../gui/layervis.xml:99
 msgctxt "Layers window: view list controls: tooltips"
 msgid "Lock or unlock the active view."
 msgstr "Verrouiller ou déverrouiller la vue active."
 
-#: ../gui/mypaint.glade:65
+#: ../gui/mypaint.xml:65
 #, fuzzy
 msgctxt "footer: color picker button: tooltip"
 msgid "Pick color"
 msgstr "Pipette à couleur"
 
-#: ../gui/mypaint.glade:102
+#: ../gui/mypaint.xml:102
 #, fuzzy
 msgctxt "Footerbar|"
 msgid "Edit the current color in detail"
 msgstr "Régler la couleur actuelle"
 
-#: ../gui/mypaint.glade:126
+#: ../gui/mypaint.xml:126
 msgctxt "Footerbar|"
 msgid "Add the current color to the palette"
 msgstr "Ajoute la couleur actuelle à la palette"
 
-#: ../gui/mypaint.glade:161
+#: ../gui/mypaint.xml:161
 #, fuzzy
 msgctxt "Footerbar|"
 msgid "Canvas scale and rotation"
 msgstr "Échelle et rotation de la toile"
 
 #. str.format() template
-#: ../gui/mypaint.glade:163
+#: ../gui/mypaint.xml:163
 msgctxt "Footerbar|"
 msgid ""
 "Z: {scale:.1f}%\n"
 "R: {rotation:+.1f}°"
 msgstr ""
 
-#: ../gui/mypaint.glade:249
+#: ../gui/mypaint.xml:249
 msgctxt "footer: context picker button: tooltip"
 msgid "Pick brushstroke settings, stroke color, and layer"
 msgstr ""
 "Récupérer les paramètres du tracé de brosse, couleur du tracé et calque"
 
-#: ../gui/preferenceswindow.glade:24
+#: ../gui/preferenceswindow.xml:24
 msgctxt "Prefs Dialog|Saving|Save Formats and Locations|Default|"
 msgid "OpenRaster (*.ora)"
 msgstr "OpenRaster (*.ora)"
 
-#: ../gui/preferenceswindow.glade:28
+#: ../gui/preferenceswindow.xml:28
 #, fuzzy
 msgctxt "Prefs Dialog|Saving|Save Formats and Locations|Default|"
 msgid "PNG solid with background (*.png)"
 msgstr "PNG avec fond non transparent (*.png)"
 
-#: ../gui/preferenceswindow.glade:32
+#: ../gui/preferenceswindow.xml:32
 #, fuzzy
 msgctxt "Prefs Dialog|Saving|Save Formats and Locations|Default|"
 msgid "JPEG 90% quality (*.jpg; *.jpeg)"
 msgstr "JPEG qualité 90% (*.jpg, *.jpeg)"
 
-#: ../gui/preferenceswindow.glade:46
+#: ../gui/preferenceswindow.xml:46
 msgctxt "Prefs Dialog|View|Zoom|Default|"
 msgid "25%"
 msgstr "25%"
 
-#: ../gui/preferenceswindow.glade:50
+#: ../gui/preferenceswindow.xml:50
 msgctxt "Prefs Dialog|View|Zoom|Default|"
 msgid "50%"
 msgstr "50%"
 
-#: ../gui/preferenceswindow.glade:54
+#: ../gui/preferenceswindow.xml:54
 msgctxt "Prefs Dialog|View|Zoom|Default|"
 msgid "100%"
 msgstr "100%"
 
-#: ../gui/preferenceswindow.glade:58
+#: ../gui/preferenceswindow.xml:58
 msgctxt "Prefs Dialog|View|Zoom|Default|"
 msgid "200%"
 msgstr "200%"
 
-#: ../gui/preferenceswindow.glade:72
+#: ../gui/preferenceswindow.xml:72
 msgctxt "Prefs Dialog|View|Cursors|Freehand Cursor|Type|"
 msgid "Circle with light outline"
 msgstr "Cercle avec bordure légère"
 
-#: ../gui/preferenceswindow.glade:76
+#: ../gui/preferenceswindow.xml:76
 msgctxt "Prefs Dialog|View|Cursors|Freehand Cursor|Type|"
 msgid "Circle with medium outline"
 msgstr "Cercle avec bordure moyenne"
 
-#: ../gui/preferenceswindow.glade:80
+#: ../gui/preferenceswindow.xml:80
 msgctxt "Prefs Dialog|View|Cursors|Freehand Cursor|Type|"
 msgid "Circle with heavy outline"
 msgstr "Cercle avec bordure épaisse"
 
-#: ../gui/preferenceswindow.glade:84
+#: ../gui/preferenceswindow.xml:84
 msgctxt "Prefs Dialog|View|Cursors|Freehand Cursor|Type|"
 msgid "Crosshair"
 msgstr "Réticule"
 
 #. Graph x-axis label
-#: ../gui/preferenceswindow.glade:145
+#: ../gui/preferenceswindow.xml:145
 #, fuzzy
 msgctxt "Prefs Dialog|Pen Input|Input Device Settings|Pressure Mapping|"
 msgid "Input Pressure"
 msgstr "Pression d'entrée"
 
 #. Graph y-axis label
-#: ../gui/preferenceswindow.glade:159
+#: ../gui/preferenceswindow.xml:159
 #, fuzzy
 msgctxt "Prefs Dialog|Pen Input|Input Device Settings|Pressure Mapping|"
 msgid "Brush Pressure"
 msgstr "Pression de la brosse"
 
 #. Graph label, range (0...1)
-#: ../gui/preferenceswindow.glade:174 ../gui/preferenceswindow.glade:202
+#: ../gui/preferenceswindow.xml:174 ../gui/preferenceswindow.xml:202
 msgctxt "Prefs Dialog|Pen Input|Input Device Settings|Pressure Mapping|"
 msgid "0.0"
 msgstr "0.0"
 
 #. Graph label, range (0...1)
-#: ../gui/preferenceswindow.glade:188 ../gui/preferenceswindow.glade:217
+#: ../gui/preferenceswindow.xml:188 ../gui/preferenceswindow.xml:217
 msgctxt "Prefs Dialog|Pen Input|Input Device Settings|Pressure Mapping|"
 msgid "1.0"
 msgstr "1.0"
 
-#: ../gui/preferenceswindow.glade:251
+#: ../gui/preferenceswindow.xml:251
 msgctxt "Prefs Dialog|Pen Input|"
 msgid "<b>Global Pressure Mapping</b>"
 msgstr ""
 
 #. Tab label in preferences dialog
-#: ../gui/preferenceswindow.glade:261
+#: ../gui/preferenceswindow.xml:261
 msgctxt "Prefs Dialog|"
 msgid "Pressure"
 msgstr "Pression"
 
-#: ../gui/preferenceswindow.glade:302
+#: ../gui/preferenceswindow.xml:302
 msgctxt "Prefs Dialog|Devices|"
 msgid ""
 "Here you can restrict pointing devices to specific tasks on the canvas, or "
@@ -4408,17 +4408,17 @@ msgstr ""
 "spécifique sur la toile, ou faire en sorte qu'ils soient complètement "
 "ignorés si ils perturbent votre dessin."
 
-#: ../gui/preferenceswindow.glade:324
+#: ../gui/preferenceswindow.xml:324
 #, fuzzy
 msgctxt "Prefs Dialog|Button|"
 msgid "<b>Device Usage</b>"
 msgstr "<b>Périphérique d'entrée</b>"
 
-#: ../gui/preferenceswindow.glade:337
+#: ../gui/preferenceswindow.xml:337
 msgid "Devices"
 msgstr "Périphériques"
 
-#: ../gui/preferenceswindow.glade:380
+#: ../gui/preferenceswindow.xml:380
 msgctxt "Prefs Dialog|Button|Pointer Button Mappings|"
 msgid ""
 "• The space bar can be used like Button2.\n"
@@ -4428,13 +4428,13 @@ msgstr ""
 "• Notez que certaines tablettes ont des boutons qui ne peuvent rester "
 "pressés."
 
-#: ../gui/preferenceswindow.glade:401
+#: ../gui/preferenceswindow.xml:401
 msgctxt "Prefs Dialog|Button|"
 msgid "<b>Pointer Button Mappings</b>"
 msgstr "<b>Assignation du Stylet et des boutons de la souris</b>"
 
 #. Tab label in preferences dialog
-#: ../gui/preferenceswindow.glade:414
+#: ../gui/preferenceswindow.xml:414
 msgctxt "Prefs Dialog|"
 msgid "Buttons"
 msgstr "Boutons"
@@ -4442,12 +4442,12 @@ msgstr "Boutons"
 #. Label for a checkbox in the keyboard mappings preferences.
 #. A fallback binding is a static built-in key binding that is used
 #. unless its key is bound to something else.
-#: ../gui/preferenceswindow.glade:453
+#: ../gui/preferenceswindow.xml:453
 msgid "Disable fallback key bindings"
 msgstr "Désactiver les raccourcis clavier de secours"
 
 #. Tooltip for checkbox in the keyboard mappings preferences.
-#: ../gui/preferenceswindow.glade:457
+#: ../gui/preferenceswindow.xml:457
 msgid ""
 "The fallback key bindings are static built-in bindings that are only used if "
 "their key combinations are not bound to anything else."
@@ -4456,49 +4456,49 @@ msgstr ""
 "utilisés uniquement si leurs combinaisons de touches ne sont pas liées à "
 "autre chose."
 
-#: ../gui/preferenceswindow.glade:476
+#: ../gui/preferenceswindow.xml:476
 msgctxt "Prefs Dialog|Button|"
 msgid "<b>Keyboard Mappings</b>"
 msgstr "<b>Assignation des touches du clavier</b>"
 
-#: ../gui/preferenceswindow.glade:489
+#: ../gui/preferenceswindow.xml:489
 msgid "Keys"
 msgstr "Touches"
 
-#: ../gui/preferenceswindow.glade:509
+#: ../gui/preferenceswindow.xml:509
 msgctxt "Prefs Dialog|Load & Save|Saving|"
 msgid "Default file format:"
 msgstr "Format de fichier par défaut :"
 
-#: ../gui/preferenceswindow.glade:524
+#: ../gui/preferenceswindow.xml:524
 #, fuzzy
 msgctxt "Prefs Dialog|Load & Save|Saving|"
 msgid "Prefix when saving scraps:"
 msgstr "Préfixe lors de la sauvegarde des rebuts :"
 
-#: ../gui/preferenceswindow.glade:575
+#: ../gui/preferenceswindow.xml:575
 msgctxt "Prefs Dialog|Load & Save|"
 msgid "<b>Saving</b>"
 msgstr "<b>Enregistrer</b>"
 
-#: ../gui/preferenceswindow.glade:592
+#: ../gui/preferenceswindow.xml:592
 msgctxt "Prefs Dialog|Load & Save|"
 msgid "<b>Color Management</b>"
 msgstr "<b>Géstion des couleurs</b>"
 
-#: ../gui/preferenceswindow.glade:608
+#: ../gui/preferenceswindow.xml:608
 msgctxt "Prefs Dialog|Load & Save|Color Management|"
 msgid "Color space conversions:"
 msgstr "Conversion des espaces de couleur :"
 
-#: ../gui/preferenceswindow.glade:626
+#: ../gui/preferenceswindow.xml:626
 msgctxt "Prefs Dialog|Load & Save|Color Management|"
 msgid "Convert to sRGB when loading; mark as sRGB when saving"
 msgstr ""
 "Convertion en sRGB lors du chargement, marque comme sRGB lors de la "
 "sauvegarde"
 
-#: ../gui/preferenceswindow.glade:630
+#: ../gui/preferenceswindow.xml:630
 msgctxt "Prefs Dialog|Load & Save|Color Management|"
 msgid ""
 "Images containing <i>full</i> colorspace information will be converted to "
@@ -4522,12 +4522,12 @@ msgstr ""
 "radicalement différent de cela, utilisez plutôt le paramètre \"pas de "
 "conversions ou de marquage automatique\"."
 
-#: ../gui/preferenceswindow.glade:648
+#: ../gui/preferenceswindow.xml:648
 msgctxt "Prefs Dialog|Load & Save|Color Management|"
 msgid "No automatic conversions or tagging"
 msgstr "Pas de conversions automatiques ou de marquage"
 
-#: ../gui/preferenceswindow.glade:652
+#: ../gui/preferenceswindow.xml:652
 msgctxt "Prefs Dialog|Load & Save|Color Management|"
 msgid ""
 "No color conversions are performed when loading, and files are saved without "
@@ -4542,24 +4542,24 @@ msgstr ""
 "C’est l’ancien comportement de MyPaint, et cela peut être utilisé comme un "
 "palliatif pour un travail non RVB."
 
-#: ../gui/preferenceswindow.glade:680
+#: ../gui/preferenceswindow.xml:680
 msgctxt "Prefs Dialog|Load & Save|"
 msgid "<b>Automated Backups</b>"
 msgstr "<b>Sauvegardes Automatiques</b>"
 
-#: ../gui/preferenceswindow.glade:698
+#: ../gui/preferenceswindow.xml:698
 msgctxt "Prefs Dialog|Load & Save|Automated Backups|switch label"
 msgid "Back up unsaved work:"
 msgstr "Sauvegarder le travail non enregistré :"
 
 #. In seconds. Lowest value is 5, highest is 300 (5 minutes). Only matters when enabled.
-#: ../gui/preferenceswindow.glade:733
+#: ../gui/preferenceswindow.xml:733
 msgctxt ""
 "Prefs Dialog|Load & Save|Automated Backups|interval spinbox units suffix"
 msgid "seconds of inactivity"
 msgstr "secondes d'inactivité"
 
-#: ../gui/preferenceswindow.glade:746
+#: ../gui/preferenceswindow.xml:746
 msgctxt "Prefs Dialog|Load & Save|Automated Backups|switch tooltip"
 msgid ""
 "Backs up work incrementally in the background to MyPaint's disk cache. If "
@@ -4570,53 +4570,53 @@ msgstr ""
 "cache de MyPaint. Si le programme plante, vous aurez une chance de restaurer "
 "ce sur quoi vous travailliez."
 
-#: ../gui/preferenceswindow.glade:768
+#: ../gui/preferenceswindow.xml:768
 msgctxt "Prefs Dialog|Load & Save|Automated Backups|interval label"
 msgid "Time between backups:"
 msgstr "Intervalle entre les sauvegardes :"
 
 #. Tab label in preferences dialog
-#: ../gui/preferenceswindow.glade:786
+#: ../gui/preferenceswindow.xml:786
 #, fuzzy
 msgctxt "Prefs Dialog|"
 msgid "Load & Save"
 msgstr "Charger le calque"
 
-#: ../gui/preferenceswindow.glade:807
+#: ../gui/preferenceswindow.xml:807
 msgctxt "Prefs Dialog|View|"
 msgid "<b>Zoom and Rendering</b>"
 msgstr "<b>Zoom et rendu</b>"
 
-#: ../gui/preferenceswindow.glade:824
+#: ../gui/preferenceswindow.xml:824
 msgid "Default zoom level:"
 msgstr "Zoom par défaut :"
 
-#: ../gui/preferenceswindow.glade:862
+#: ../gui/preferenceswindow.xml:862
 msgctxt "Prefs Dialog|View|"
 msgid "<b>Interface</b>"
 msgstr "<b>Interface</b>"
 
-#: ../gui/preferenceswindow.glade:879
+#: ../gui/preferenceswindow.xml:879
 msgctxt "Prefs Dialog|View|Interface|"
 msgid "Toolbar icon size:"
 msgstr "Taille des icône de la barre d'outils :"
 
-#: ../gui/preferenceswindow.glade:895
+#: ../gui/preferenceswindow.xml:895
 msgctxt "Prefs Dialog|View|Interface|"
 msgid "Freehand cursor type:"
 msgstr "Type de curseur à main levée :"
 
-#: ../gui/preferenceswindow.glade:911
+#: ../gui/preferenceswindow.xml:911
 msgctxt "Prefs Dialog|View|Interface|"
 msgid "Dark theme variant:"
 msgstr "Variante de thème sombre :"
 
-#: ../gui/preferenceswindow.glade:921
+#: ../gui/preferenceswindow.xml:921
 msgctxt "Prefs Dialog|View|Interface|Dark theme variant|"
 msgid "If available in GTK3 theme (needs restart)"
 msgstr "Si disponible dans le thème GTK3 (redémarrage nécessaire)"
 
-#: ../gui/preferenceswindow.glade:925
+#: ../gui/preferenceswindow.xml:925
 msgctxt "Prefs Dialog|View|Interface|Dark theme variant|checkbox tooltip"
 msgid ""
 "Use a light-on-dark theme variant, when it's supported by the GTK theme. "
@@ -4626,26 +4626,26 @@ msgstr ""
 "charge par le thème GTK. Ceci est généralement utile pour les éditeurs "
 "d’images et les lecteurs de contenu multimédia."
 
-#: ../gui/preferenceswindow.glade:946
+#: ../gui/preferenceswindow.xml:946
 msgid "Some of these settings require MyPaint to be restarted."
 msgstr "Certains de ces paramètres exige un redémarrage de MyPaint."
 
-#: ../gui/preferenceswindow.glade:969
+#: ../gui/preferenceswindow.xml:969
 msgctxt "Prefs Dialog|View|Interface|Icon size|"
 msgid "Large (requires recent GTK3)"
 msgstr "Grande (nécessite une version récente de GTK3)"
 
-#: ../gui/preferenceswindow.glade:986
+#: ../gui/preferenceswindow.xml:986
 msgctxt "Prefs Dialog|View|Interface|Icon size|"
 msgid "Small"
 msgstr "Petit"
 
-#: ../gui/preferenceswindow.glade:1011
+#: ../gui/preferenceswindow.xml:1011
 msgctxt "Prefs Dialog|View|Zoom|"
 msgid "Use a real checkerboard pattern"
 msgstr "Utiliser un véritable motif de damier"
 
-#: ../gui/preferenceswindow.glade:1015
+#: ../gui/preferenceswindow.xml:1015
 msgctxt "Prefs Dialog|View|Zoom|"
 msgid ""
 "Draw a real checkerboard pattern to show transparency.\n"
@@ -4654,22 +4654,22 @@ msgstr ""
 "Dessine un véritable motif de damier pour afficher la transparence.\n"
 "Cela ralentit l’affichage, mais peut être moins déstabilisant."
 
-#: ../gui/preferenceswindow.glade:1036
+#: ../gui/preferenceswindow.xml:1036
 msgid "When showing transparency:"
 msgstr "Quand on voit la transparence :"
 
-#: ../gui/preferenceswindow.glade:1051
+#: ../gui/preferenceswindow.xml:1051
 msgctxt "Prefs Dialog|View|Interface|"
 msgid "Handle smooth scrolling events:"
 msgstr "Gérer les événements de défilement fluide :"
 
-#: ../gui/preferenceswindow.glade:1061
+#: ../gui/preferenceswindow.xml:1061
 msgctxt ""
 "Prefs Dialog|View|Interface|Handle smooth scrolling events|checkbox label"
 msgid "When devices send them (needs restart)"
 msgstr "Quand les appareils les envoient (nécessite un redémarrage)"
 
-#: ../gui/preferenceswindow.glade:1065
+#: ../gui/preferenceswindow.xml:1065
 msgctxt ""
 "Prefs Dialog|View|Interface|Handle smooth scrolling events|checkbox tooltip"
 msgid ""
@@ -4696,24 +4696,24 @@ msgstr ""
 "et que votre appareil soit configuré pour envoyer des évènements de "
 "défilement bidirectionnel."
 
-#: ../gui/preferenceswindow.glade:1112
+#: ../gui/preferenceswindow.xml:1112
 msgid "Hide cursor while painting"
 msgstr "Cacher le curseur tant que vous peignez"
 
 #. Label for a toggle that is part of the "Freehand cursor type" settings. Crosshair refers to lines which are either horizontal, vertical, both (cross) or crossed in an x, depending on the brush cursor type.
-#: ../gui/preferenceswindow.glade:1132
+#: ../gui/preferenceswindow.xml:1132
 msgctxt "Prefs Dialog|View|Interface"
 msgid "Show crosshair for small brush cursors"
 msgstr ""
 
 #. Label for a spinbutton that is part of the "crosshair for small brush cursors" setting. Radius refers to the visual brush cursor radius.
-#: ../gui/preferenceswindow.glade:1149
+#: ../gui/preferenceswindow.xml:1149
 msgctxt "Prefs Dialog|View|Interface"
 msgid "Radius threshold:"
 msgstr ""
 
 #. Description of the "Radius threshold" spinbox/spinner - the referenced "lines" are part of the brush cursor.
-#: ../gui/preferenceswindow.glade:1162
+#: ../gui/preferenceswindow.xml:1162
 msgctxt "Prefs Dialog|View|Interface"
 msgid ""
 "Lines will be shown when the brush circle radius is smaller than this value."
@@ -4721,14 +4721,14 @@ msgstr ""
 "Les lignes seront affichées lorsque le rayon de la brosse est inférieur à "
 "cette valeur."
 
-#: ../gui/preferenceswindow.glade:1192
+#: ../gui/preferenceswindow.xml:1192
 #, fuzzy
 msgctxt ""
 "Prefs Dialog|View|Interface|Blink layers on creation/selection|checkbox label"
 msgid "Enabled"
 msgstr "Activé"
 
-#: ../gui/preferenceswindow.glade:1196
+#: ../gui/preferenceswindow.xml:1196
 msgctxt ""
 "Prefs Dialog|View|Interface|Blink layers on creation/selection|checkbox "
 "tooltip"
@@ -4739,29 +4739,29 @@ msgstr ""
 "Lorsqu’un calque est créé ou sélectionné, montrer seulement ce calque durant "
 "un court moment."
 
-#: ../gui/preferenceswindow.glade:1216
+#: ../gui/preferenceswindow.xml:1216
 msgctxt "Prefs Dialog|View|Interface|"
 msgid "Blink layers on creation/selection:"
 msgstr "Faire clignoter les calques à la création/sélection :"
 
-#: ../gui/preferenceswindow.glade:1251
+#: ../gui/preferenceswindow.xml:1251
 msgctxt "Prefs Dialog|View|Interface|"
 msgid "Language:"
 msgstr "Langue :"
 
-#: ../gui/preferenceswindow.glade:1266
+#: ../gui/preferenceswindow.xml:1266
 msgctxt "Prefs Dialog|View|Interface|"
 msgid "(needs restart)"
 msgstr "Nécessite un redémarrage"
 
 #. Tab label in preferences dialog
-#: ../gui/preferenceswindow.glade:1283
+#: ../gui/preferenceswindow.xml:1283
 #, fuzzy
 msgctxt "Prefs Dialog|"
 msgid "View"
 msgstr "Affichage"
 
-#: ../gui/preferenceswindow.glade:1315
+#: ../gui/preferenceswindow.xml:1315
 msgctxt "Prefs Dialog|Color|Color Wheel|Primaries|"
 msgid ""
 "The set of colors to show as primary on disk-style color wheels.\n"
@@ -4772,17 +4772,17 @@ msgstr ""
 "Les différentes traditions ont des harmonies de couleurs différentes."
 
 #. Arrangement of MyPaint's custom colour wheels
-#: ../gui/preferenceswindow.glade:1317
+#: ../gui/preferenceswindow.xml:1317
 msgctxt "Prefs Dialog|Color|Color Wheel|"
 msgid "Primaries are:"
 msgstr "Les couleurs primaires sont :"
 
-#: ../gui/preferenceswindow.glade:1334
+#: ../gui/preferenceswindow.xml:1334
 msgctxt "Prefs Dialog|Color|Color Wheel|Primaries|"
 msgid "Standard digital Red/Green/Blue"
 msgstr "Standards numériques Rouge/Vert/Bleu"
 
-#: ../gui/preferenceswindow.glade:1339
+#: ../gui/preferenceswindow.xml:1339
 msgid ""
 "The red, green, and blue &apos;computer monitor&apos; primaries, evenly "
 "arranged around the circle. Green is opposite magenta."
@@ -4790,7 +4790,7 @@ msgstr ""
 "Le rouge, vert et bleu &apos;écran d'ordinateur&apos; primaire sont disposés "
 "uniformément autour du cercle. Le vert est l’opposé du magenta."
 
-#: ../gui/preferenceswindow.glade:1340
+#: ../gui/preferenceswindow.xml:1340
 msgctxt "Prefs Dialog|Color|Color Wheel|Primaries|RGB|"
 msgid ""
 "The red, green, and blue 'computer monitor' primaries, evenly arranged "
@@ -4799,12 +4799,12 @@ msgstr ""
 "Le rouge, vert et bleu 'écran d'ordinateur' primaire, sont disposés autour "
 "d'un cercle. Le vert est l'opposé du magenta."
 
-#: ../gui/preferenceswindow.glade:1356
+#: ../gui/preferenceswindow.xml:1356
 msgctxt "Prefs Dialog|Color|Color Wheel|Primaries|"
 msgid "Traditional artist's Red/Yellow/Blue"
 msgstr "Rouge/Jaune/Bleu artistique traditionnel"
 
-#: ../gui/preferenceswindow.glade:1361
+#: ../gui/preferenceswindow.xml:1361
 msgid ""
 "The traditionally arranged red/yellow/blue wheel as used by many artists "
 "since the 18th century, approximated with pure display colors evenly "
@@ -4815,7 +4815,7 @@ msgstr ""
 "l'affichage des couleurs pures disposées uniformément autour du cercle. Le "
 "vert est opposé au rouge."
 
-#: ../gui/preferenceswindow.glade:1362
+#: ../gui/preferenceswindow.xml:1362
 msgctxt "Prefs Dialog|Color|Color Wheel|Primaries|RYB|"
 msgid ""
 "The traditionally arranged red/yellow/blue wheel as used by many artists "
@@ -4827,13 +4827,13 @@ msgstr ""
 "faites avec les couleurs d'affichage pure arrangées uniformément autour du "
 "cercle. Le Vert est en opposition au Rouge."
 
-#: ../gui/preferenceswindow.glade:1378
+#: ../gui/preferenceswindow.xml:1378
 #, fuzzy
 msgctxt "Prefs Dialog|Color|Color Wheel|Primaries|"
 msgid "Red-Green and Blue-Yellow opponent pairs"
 msgstr "Changer les composantes Rouge, Verte et Bleue"
 
-#: ../gui/preferenceswindow.glade:1383
+#: ../gui/preferenceswindow.xml:1383
 msgid ""
 "Quick and dirty approximation of wheels informed by theories of  color which "
 "use four &apos;psychological primaries&apos; or &apos;unique hues&apos; "
@@ -4848,7 +4848,7 @@ msgstr ""
 "CIECAM02 et le NCS présentent un modèle similaire. Ici nous utilisons un "
 "affichage du rouge, jaune, etc comme les quatre couleurs primaires."
 
-#: ../gui/preferenceswindow.glade:1384
+#: ../gui/preferenceswindow.xml:1384
 msgctxt "Prefs Dialog|Color|Color Wheel|Primaries|RYGB|"
 msgid ""
 "Quick and dirty approximation of wheels informed by theories of  color which "
@@ -4865,48 +4865,48 @@ msgstr ""
 "les quatre primaires."
 
 #. Options affecting color wheels
-#: ../gui/preferenceswindow.glade:1412
+#: ../gui/preferenceswindow.xml:1412
 msgctxt "Prefs Dialog|Color|"
 msgid "<b>Color Wheel</b>"
 msgstr "<b>Cercle Chromatique</b>"
 
 #. Tab label in preferences dialog
-#: ../gui/preferenceswindow.glade:1425
+#: ../gui/preferenceswindow.xml:1425
 msgctxt "Prefs Dialog|"
 msgid "Color"
 msgstr "Couleur"
 
-#: ../gui/preferenceswindow.glade:1458
+#: ../gui/preferenceswindow.xml:1458
 msgctxt "Prefs Dialog|Compatibility"
 msgid "Default Compatibility Mode:"
 msgstr "Mode de compatibilité par défaut :"
 
-#: ../gui/preferenceswindow.glade:1483
+#: ../gui/preferenceswindow.xml:1483
 #, fuzzy
 msgctxt "Prefs Dialog|Compatibility"
 msgid "<b>1.x Settings</b>"
 msgstr "<b>Enregistrer</b>"
 
 #. Make sure to be consistent w. other occurences of 2.x
-#: ../gui/preferenceswindow.glade:1497
+#: ../gui/preferenceswindow.xml:1497
 #, fuzzy
 msgctxt "Prefs Dialog|Compatibility"
 msgid "<b>2.x Settings</b>"
 msgstr "<b>Enregistrer</b>"
 
-#: ../gui/preferenceswindow.glade:1535 ../gui/preferenceswindow.glade:1609
+#: ../gui/preferenceswindow.xml:1535 ../gui/preferenceswindow.xml:1609
 msgctxt "Prefs Dialog|Compatibility"
 msgid "Default New Layer Type:"
 msgstr "Nouveau type de calque par défaut :"
 
-#: ../gui/preferenceswindow.glade:1581 ../gui/preferenceswindow.glade:1595
+#: ../gui/preferenceswindow.xml:1581 ../gui/preferenceswindow.xml:1595
 #, fuzzy
 msgctxt "Prefs Dialog|Compatibility"
 msgid "Default Pigment Brush Setting:"
 msgstr "Réglage Pigment par défaut de la Brosse :"
 
 #. Label description for the 1.x compatibility-mode-by-default setting
-#: ../gui/preferenceswindow.glade:1671
+#: ../gui/preferenceswindow.xml:1671
 #, fuzzy
 msgctxt "Prefs Dialog|Compatibility"
 msgid ""
@@ -4919,7 +4919,7 @@ msgstr ""
 "les versions plus anciennes, mais le mélange de pigment ne fonctionnera pas "
 "bien."
 
-#: ../gui/preferenceswindow.glade:1690
+#: ../gui/preferenceswindow.xml:1690
 msgctxt "Prefs Dialog|Compatibility"
 msgid ""
 "When creating new documents, use the regular 2.x compatibility mode by "
@@ -4929,7 +4929,7 @@ msgstr ""
 "normal 2.x par défaut. Les anciens documents seront souvent différents dans "
 "ce mode."
 
-#: ../gui/preferenceswindow.glade:1722
+#: ../gui/preferenceswindow.xml:1722
 #, fuzzy
 msgctxt "Prefs Dialog|Compatibility"
 msgid "Show warning for files that may be partially incompatible"
@@ -4938,12 +4938,12 @@ msgstr ""
 "incompatibles"
 
 #. Label for a set of options
-#: ../gui/preferenceswindow.glade:1739
+#: ../gui/preferenceswindow.xml:1739
 msgctxt "Prefs Dialog|Compatibility"
 msgid "File compatibility warnings:"
 msgstr "Avertissements de compatibilité de fichiers :"
 
-#: ../gui/preferenceswindow.glade:1751
+#: ../gui/preferenceswindow.xml:1751
 msgctxt "Prefs Dialog|Compatibility"
 msgid "Show warning for files that may be fully incompatible"
 msgstr ""
@@ -4951,7 +4951,7 @@ msgstr ""
 "incompatibles"
 
 #. This is a tooltip for the file behavior options label.
-#: ../gui/preferenceswindow.glade:1767
+#: ../gui/preferenceswindow.xml:1767
 msgctxt "Prefs|Compatibility"
 msgid ""
 "This will only apply to files saved with versions of MyPaint older than 2.0. "
@@ -4960,40 +4960,40 @@ msgid ""
 msgstr ""
 
 #. Label to the options for how to handle files which do not have a compatibility mode specified (whether they should be opened in 1.x compatibility mode, or 2.x mode)
-#: ../gui/preferenceswindow.glade:1769
+#: ../gui/preferenceswindow.xml:1769
 msgctxt "Prefs Dialog|Compatibility"
 msgid "When Mode is Unspecified:"
 msgstr ""
 
 #. This label indicates a subsection of the compatibility settings related to loading files.
-#: ../gui/preferenceswindow.glade:1796
+#: ../gui/preferenceswindow.xml:1796
 #, fuzzy
 msgctxt "Prefs|Compatibility"
 msgid "<b>File loading</b>"
 msgstr "<b>Enregistrer</b>"
 
-#: ../gui/preferenceswindow.glade:1816
+#: ../gui/preferenceswindow.xml:1816
 msgid "<b>Compatibility settings</b>"
 msgstr ""
 
 #. Tab label in preferences dialog
-#: ../gui/preferenceswindow.glade:1832
+#: ../gui/preferenceswindow.xml:1832
 #, fuzzy
 msgctxt "Prefs Dialog|"
 msgid "Compatibility"
 msgstr "portabilité"
 
-#: ../gui/preferenceswindow.glade:1850
+#: ../gui/preferenceswindow.xml:1850
 msgctxt "Prefs Dialog|Pen Input|Mode|"
 msgid "Screen (normal)"
 msgstr "Écran (normal)"
 
-#: ../gui/preferenceswindow.glade:1854
+#: ../gui/preferenceswindow.xml:1854
 msgctxt "Prefs Dialog|Pen Input|Mode|"
 msgid "Disabled (no pressure sensitivity)"
 msgstr "Désactivé (pas de sensibilité à la pression)"
 
-#: ../gui/preferenceswindow.glade:1858
+#: ../gui/preferenceswindow.xml:1858
 msgctxt "Prefs Dialog|Pen Input|Mode|"
 msgid "Window (not recommended)"
 msgstr "Fenêtre (peu recommandé)"

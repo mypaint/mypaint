@@ -60,7 +60,7 @@ class LayerPropertiesUI(gui.mvp.BuiltUIPresenter, object):
 
     The View part is an opaque GTK widget that can be plugged into the
     rest of the UI anywhere.  It's instantiated on demand: its
-    corresponding UI XML can be found in layerprops.glade in the same
+    corresponding UI XML can be found in layerprops.xml in the same
     directory as this one.
 
     """
@@ -262,7 +262,7 @@ class LayerPropertiesUI(gui.mvp.BuiltUIPresenter, object):
         btn = self.view.layer_hidden_togglebutton
         btn.set_sensitive(sensitive)
 
-    # View monitoring and response (callback names defined in .glade XML):
+    # View monitoring and response (callback names defined in XML):
 
     def _v_layer_mode_combo_query_tooltip_cb(self, combo, x, y, kbd, tooltip):
 

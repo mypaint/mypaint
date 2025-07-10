@@ -312,7 +312,7 @@ class Application(object):
         self.color_grab.app = self
 
         # Load the main interface
-        mypaint_main_xml = join(ui_dir, "mypaint.glade")
+        mypaint_main_xml = join(ui_dir, "mypaint.xml")
         self.builder.add_from_file(mypaint_main_xml)
 
         # Main drawing window
