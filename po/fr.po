@@ -9,8 +9,8 @@ msgstr ""
 "Project-Id-Version: mypaint v2.0.0-alpha.8-1-g4490f06\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-04-17 23:27+0200\n"
-"PO-Revision-Date: 2023-04-23 12:52+0000\n"
-"Last-Translator: Jean-Christophe Sekinger <jc.sekinger@gmail.com>\n"
+"PO-Revision-Date: 2025-05-10 05:40+0000\n"
+"Last-Translator: Dream X <nodem49316@daupload.com>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/mypaint/mypaint/"
 "fr/>\n"
 "Language: fr\n"
@@ -18,7 +18,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n > 1;\n"
-"X-Generator: Weblate 4.18-dev\n"
+"X-Generator: Weblate 5.12-dev\n"
 
 #: ../gui/accelmap.py:86
 msgctxt "placeholder for keymap filtering"
@@ -1053,7 +1053,7 @@ msgstr "Ajouter un emplacement vide"
 #: ../gui/colors/paletteview.py:796
 msgctxt "palette view: context menu"
 msgid "Insert Row"
-msgstr "Insérer une colonne"
+msgstr "Insérer une ligne"
 
 #. TRANSLATORS: inserting gaps (empty color swatches)
 #: ../gui/colors/paletteview.py:803
@@ -2338,7 +2338,7 @@ msgstr "px"
 
 #: ../gui/framewindow.py:916
 msgid "in"
-msgstr "Pouce"
+msgstr "au"
 
 #: ../gui/framewindow.py:917
 msgid "cm"
@@ -2451,7 +2451,7 @@ msgstr ""
 "\n"
 "\tDonnez à ce rapport un titre descriptif court\n"
 "\tUtilisez quelque chose comme\n"
-"\t\"[fonctionnalité-qui-a-cassé]: [qu'est-ce-qui-a-mal tourné]\"\n"
+"\t\"[fonctionnalité-qui-a-cassé] : [qu'est-ce-qui-a-mal tourné]\"\n"
 "\tpour le titre, si vous pouvez\n"
 "        "
 
@@ -2547,7 +2547,6 @@ msgid "?layer"
 msgstr "Calque"
 
 #: ../gui/layers.py:959
-#, fuzzy
 msgctxt "Layers: description parts: unknown mode (fallback str!)"
 msgid "?mode"
 msgstr "?mode"
@@ -4149,9 +4148,8 @@ msgstr "{info-bulle}"
 
 #. field name (template)
 #: ../gui/brusheditor.glade:809
-#, fuzzy
 msgid "{dname}:"
-msgstr "{«Délégation d'enregistrement de Nom» (dname)}:"
+msgstr "{« Délégation d'enregistrement de Nom » (dname)}:"
 
 #: ../gui/brusheditor.glade:841
 msgid "Brush dynamics are not available for this setting."
@@ -4390,7 +4388,7 @@ msgstr "1.0"
 #: ../gui/preferenceswindow.glade:251
 msgctxt "Prefs Dialog|Pen Input|"
 msgid "<b>Global Pressure Mapping</b>"
-msgstr ""
+msgstr "<b>Pression globale</b>"
 
 #. Tab label in preferences dialog
 #: ../gui/preferenceswindow.glade:261
@@ -4704,13 +4702,13 @@ msgstr "Cacher le curseur tant que vous peignez"
 #: ../gui/preferenceswindow.glade:1132
 msgctxt "Prefs Dialog|View|Interface"
 msgid "Show crosshair for small brush cursors"
-msgstr ""
+msgstr "Afficher le viseur pour les petites brosses"
 
 #. Label for a spinbutton that is part of the "crosshair for small brush cursors" setting. Radius refers to the visual brush cursor radius.
 #: ../gui/preferenceswindow.glade:1149
 msgctxt "Prefs Dialog|View|Interface"
 msgid "Radius threshold:"
-msgstr ""
+msgstr "Seuil du Rayon :"
 
 #. Description of the "Radius threshold" spinbox/spinner - the referenced "lines" are part of the brush cursor.
 #: ../gui/preferenceswindow.glade:1162
@@ -6149,7 +6147,7 @@ msgstr "Couleur suivante de la palette"
 #: ../gui/resources.xml:1036
 msgctxt "Accel Editor (descriptions)"
 msgid "Set painting color to the next color in the palette."
-msgstr "Ajuster la couleur à la couleur suivante dans la palette"
+msgstr "Ajuster la couleur à la couleur suivante dans la palette."
 
 #: ../gui/resources.xml:1042
 #, fuzzy
@@ -6160,7 +6158,7 @@ msgstr "Couleur de la palette précédente"
 #: ../gui/resources.xml:1043
 msgctxt "Accel Editor (descriptions)"
 msgid "Set painting color to the previous color in the palette."
-msgstr "Ajuster la couleur à la couleur précédente dans la palette"
+msgstr "Ajuster la couleur à la couleur précédente dans la palette."
 
 #: ../gui/resources.xml:1049
 #, fuzzy
@@ -6171,7 +6169,7 @@ msgstr "Ajouter une couleur à la palette"
 #: ../gui/resources.xml:1050
 msgctxt "Accel Editor (descriptions)"
 msgid "Append the current painting color to the palette."
-msgstr "Ajouter la couleur actuelle à la palette"
+msgstr "Ajouter la couleur actuelle à la palette."
 
 #: ../gui/resources.xml:1058
 msgctxt "Menu (labels)"
@@ -6646,7 +6644,7 @@ msgstr "Délavé"
 #: ../gui/resources.xml:1444
 msgctxt "Accel Editor (descriptions)"
 msgid "Dockable color selector showing a liquid-like wash of nearby colors."
-msgstr "Palette de délavés avoisinants"
+msgstr "Palette de délavés avoisinants."
 
 #: ../gui/resources.xml:1451
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
@@ -6656,7 +6654,7 @@ msgstr "Anneaux concentriques"
 #: ../gui/resources.xml:1452
 msgctxt "Accel Editor (descriptions)"
 msgid "Dockable color selector with concentric HSV rings."
-msgstr "sélecteur de couleur ancrable avec des anneaux concentriques HSV ."
+msgstr "Palette concentrique TSV."
 
 #: ../gui/resources.xml:1459
 msgctxt "Menu→Color (labels), Accel Editor (labels)"
@@ -6666,9 +6664,7 @@ msgstr "Mélangeur orthonormé"
 #: ../gui/resources.xml:1460
 msgctxt "Accel Editor (descriptions)"
 msgid "Dockable color selector with HSV ramps crossing a radial bowl of color."
-msgstr ""
-"Sélecteur de couleur ancrable avec des rampes HSV au travers d'une palette "
-"de couleurs radiale."
+msgstr "Palette TSV orthonormée."
 
 #: ../gui/resources.xml:1469
 #, fuzzy
@@ -6709,7 +6705,7 @@ msgstr "Prévisualisation"
 #: ../gui/resources.xml:1498
 msgctxt "Accel Editor (descriptions)"
 msgid "Reveal the Preview dockpanel (overview of the whole drawing area)."
-msgstr "Révèle l'Aperçu (Aperçu de l'ensemble de la zone de dessin)."
+msgstr "Révèle l'aperçu (vue d'ensemble de la zone de dessin)."
 
 #: ../gui/resources.xml:1508
 msgctxt "Menu→Window (labels), Toolbar (labels), Accel Editor (labels)"
@@ -6835,7 +6831,7 @@ msgstr ""
 #: ../gui/resources.xml:1611
 msgctxt "Menu→View→Display Filter (labels), Accel Editor (labels)"
 msgid "Display Colors with Simulated Insensitivity to Green"
-msgstr "Affiche les couleurs avec une simulation du vert plus intense"
+msgstr "Afficher les couleurs avec une simulation du vert moins intense"
 
 #: ../gui/resources.xml:1612
 msgctxt "Accel Editor (descriptions)"

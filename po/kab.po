@@ -7,8 +7,8 @@ msgstr ""
 "Project-Id-Version: mypaint v2.0.0-alpha.12-342-gc134f1a\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-04-17 23:27+0200\n"
-"PO-Revision-Date: 2020-10-13 15:27+0000\n"
-"Last-Translator: Yacine Bouklif <yacinebouklif@gmail.com>\n"
+"PO-Revision-Date: 2025-06-15 10:01+0000\n"
+"Last-Translator: ButterflyOfFire <boffire@users.noreply.hosted.weblate.org>\n"
 "Language-Team: Kabyle <https://hosted.weblate.org/projects/mypaint/mypaint/"
 "kab/>\n"
 "Language: kab\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n > 1;\n"
-"X-Generator: Weblate 4.3-dev\n"
+"X-Generator: Weblate 5.12-dev\n"
 
 #: ../gui/accelmap.py:86
 msgctxt "placeholder for keymap filtering"
@@ -5690,7 +5690,7 @@ msgstr "Ffeɣ"
 #: ../gui/resources.xml:990
 msgctxt "Accel Editor (descriptions)"
 msgid "Close main window and exit the app."
-msgstr "Mdel asfaylu agejdan sakin ffeγ seg usnas."
+msgstr "Mdel asfaylu agejdan sakin ffeɣ seg usnas."
 
 #: ../gui/resources.xml:1000
 msgctxt "Menu (labels)"
@@ -5964,7 +5964,7 @@ msgstr ""
 #: ../gui/resources.xml:1246
 msgctxt "Menu→Help (labels), Accel Editor (labels)"
 msgid "About MyPaint"
-msgstr "Γef MyPaint"
+msgstr "Ɣef MyPaint"
 
 #: ../gui/resources.xml:1247
 msgctxt "Accel Editor (descriptions)"
