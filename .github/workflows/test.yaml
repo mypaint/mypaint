@@ -33,7 +33,7 @@ jobs:
                   xvfb
             - name: "Install libmypaint"
               run: |
-                git clone https://github.com/mypaint/libmypaint
+                git clone https://github.com/mypaint/libmypaint --branch libmypaint-v1
                 pushd libmypaint
                 ./autogen.sh
                 ./configure --prefix=/usr
