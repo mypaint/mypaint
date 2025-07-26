@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: mypaint v2.0.0-alpha.8-1-g4490f06\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-04-17 23:27+0200\n"
-"PO-Revision-Date: 2025-06-21 17:01+0000\n"
+"PO-Revision-Date: 2025-07-27 17:04+0000\n"
 "Last-Translator: தமிழ்நேரம் <anishprabu.t@gmail.com>\n"
 "Language-Team: Tamil <https://hosted.weblate.org/projects/mypaint/mypaint/ta/"
 ">\n"
@@ -1578,7 +1578,7 @@ msgstr "ஒட்டப்பட்ட {w} × {h} படம்."
 #, python-brace-format
 msgctxt "Statusbar message: vacuum document"
 msgid "Vacuum: discarded {removed} of {total} tiles."
-msgstr "வெற்றிடம்: {removed} ஓடுகளின் நிராகரிக்கப்பட்டது."
+msgstr "வெற்றிடம்: {total}இல் {removed} ஓடுகளின் நிராகரிக்கப்பட்டது."
 
 #. TRANSLATORS: window title for use with a filename
 #: ../gui/drawwindow.py:275
@@ -1629,7 +1629,7 @@ msgstr "உண்மையில் வெளியேறுகிறீர்�
 #: ../gui/drawwindow.py:691
 msgctxt "Quit confirm dialog: continue button"
 msgid "_Quit"
-msgstr "_Quit"
+msgstr "வெளியேறு"
 
 #: ../gui/drawwindow.py:709
 msgid "Import brush package…"
@@ -1652,7 +1652,7 @@ msgstr "“{layer_name}” அடுக்கைத் திருத்த {ap
 #: ../gui/externalapp.py:45
 #, python-brace-format
 msgid "Error: failed to launch {app_name} to edit layer “{layer_name}”"
-msgstr "பிழை: “{app_name}” அடுக்கை திருத்த {app_name ஐ தொடங்குவதில் தோல்வி"
+msgstr "பிழை: “{layer_name}” அடுக்கைத் திருத்த {app_name} ஐ தொடங்குவதில் தோல்வி"
 
 #. TRANSLATORS: Statusbar message for when an "Edit in External App"
 #. TRANSLATORS: operation is cancelled by the user before it starts.
@@ -1719,7 +1719,7 @@ msgstr "ஏற்றுகிறது {files_summary}…"
 #, python-brace-format
 msgctxt "Document I/O: message shown while working"
 msgid "Importing layers from {files_summary}…"
-msgstr "{Files_summary இருந்து இலிருந்து அடுக்குகளை இறக்குமதி செய்தல்…"
+msgstr "{files_summary} இலிருந்து அடுக்குகளை இறக்குமதி செய்தல்…"
 
 #: ../gui/filehandling.py:135
 #, python-brace-format
@@ -1731,13 +1731,13 @@ msgstr "சேமித்தல் {files_summary}…"
 #, python-brace-format
 msgctxt "Document I/O: message shown while working"
 msgid "Exporting to {files_summary}…"
-msgstr "{Files_summary க்கு க்கு ஏற்றுமதி செய்தல்…"
+msgstr "{files_summary} க்கு ஏற்றுமதி செய்தல்…"
 
 #: ../gui/filehandling.py:146
 #, python-brace-format
 msgctxt "Document I/O: fail message"
 msgid "Failed to export to {files_summary}."
-msgstr "{Files_summary க்கு க்கு ஏற்றுமதி செய்யத் தவறிவிட்டது."
+msgstr "{files_summary} க்கு ஏற்றுமதி செய்யத் தவறிவிட்டது."
 
 #: ../gui/filehandling.py:150
 #, python-brace-format
@@ -1749,8 +1749,7 @@ msgstr "{files_summary} சேமிப்பதில் தோல்வி."
 #, python-brace-format
 msgctxt "Document I/O: fail message"
 msgid "Could not import layers from {files_summary}."
-msgstr ""
-"{Files_summary இருந்து இலிருந்து அடுக்குகளை இறக்குமதி செய்ய முடியவில்லை."
+msgstr "{files_summary} இலிருந்து அடுக்குகளை இறக்குமதி செய்ய முடியவில்லை."
 
 #: ../gui/filehandling.py:158
 #, python-brace-format
@@ -1794,7 +1793,7 @@ msgstr "சேமிக்கப்பட்டது {files_summary} வெற�
 #, python-brace-format
 msgctxt "Document I/O: success"
 msgid "Imported layers from {files_summary}."
-msgstr "{Files_summary இருந்து இலிருந்து இறக்குமதி செய்யப்பட்ட அடுக்குகள்."
+msgstr "{files_summary} இலிருந்து இறக்குமதி செய்யப்பட்ட அடுக்குகள்."
 
 #: ../gui/filehandling.py:196
 #, python-brace-format
@@ -1825,7 +1824,7 @@ msgstr "அனைத்து அங்கீகரிக்கப்பட்�
 #: ../gui/filehandling.py:437
 msgctxt "save/load dialogs: filter patterns"
 msgid "OpenRaster (*.ora)"
-msgstr "OpenRaster (*.ora)"
+msgstr "ஓபன்ராஸ்டர் (*.ora)"
 
 #: ../gui/filehandling.py:442
 msgctxt "save/load dialogs: filter patterns"
@@ -1845,7 +1844,7 @@ msgstr "நீட்டிப்பு மூலம் (இயல்புநி
 #: ../gui/filehandling.py:499
 msgctxt "save dialogs: save formats and options"
 msgid "OpenRaster (*.ora)"
-msgstr "OpenRaster (*.ora)"
+msgstr "ஓபன்ராஸ்டர் (*.ora)"
 
 #: ../gui/filehandling.py:503
 msgctxt "save dialogs: save formats and options"
@@ -2400,7 +2399,7 @@ msgstr "விவரங்கள்…"
 
 #: ../gui/gtkexcepthook.py:219 ../gui/gtkexcepthook.py:222
 msgid "Exception while analyzing the exception."
-msgstr "விதிவிலக்கு விதிவிலக்கு பகுப்பாய்வு செய்யும் போது."
+msgstr "விதிவிலக்கை பகுப்பாய்வு செய்யும் போது விதிவிலக்கு."
 
 #. TRANSLATORS: Crash report template for github, preceding a traceback.
 #. TRANSLATORS: Please ask users kindly to supply at least an English
@@ -2559,7 +2558,7 @@ msgstr "பூட்டப்பட்டுள்ளது"
 #: ../gui/layers.py:989
 msgctxt "Layers: description parts: unknown type (fallback str!)"
 msgid "?type"
-msgstr "?"
+msgstr "?வகை"
 
 #: ../gui/layers.py:996
 msgctxt "Layers dockable: description parts joiner text"
@@ -2579,8 +2578,8 @@ msgid ""
 "<span size=\"smaller\">{layer_name}\n"
 "<span size=\"smaller\">{layer_description}</span></span>"
 msgstr ""
-"<span அளவு = \"சிறியது\"> {layer_name}\n"
-" <span அளவு = \"சிறியது\"> {layer_description} </span> </span>"
+"<span size=\"smaller\">{layer_name}\n"
+"<span size=\"smaller\">{layer_description}</span></span>"
 
 #: ../gui/layerswindow.py:95
 msgid "Layers"
@@ -2739,11 +2738,11 @@ msgid ""
 "This program is distributed in the hope that it will be useful, but WITHOUT "
 "ANY WARRANTY. See the COPYING file for more details."
 msgstr ""
-"இந்த நிரல் இலவச மென்பொருள்; இலவச மென்பொருள் அறக்கட்டளையால் வெளியிடப்பட்ட குனு பொது பொது "
-"உரிமத்தின் விதிமுறைகளின் கீழ் நீங்கள் அதை மறுபகிர்வு செய்யலாம் மற்றும்/அல்லது மாற்றலாம்; "
-"உரிமத்தின் பதிப்பு 2, அல்லது (உங்கள் விருப்பத்தில்) பின்னர் எந்த பதிப்பும்.\n"
+"இந்த நிரல் இலவச மென்பொருள்; இலவச மென்பொருள் அறக்கட்டளையால் வெளியிடப்பட்ட குனு பொது "
+"பொதுமக்கள் உரிமத்தின் விதிமுறைகளின் கீழ் நீங்கள் அதை மறுபகிர்வு செய்யலாம் மற்றும்/அல்லது "
+"மாற்றலாம்; உரிமத்தின் பதிப்பு 2, அல்லது (உங்கள் விருப்பத்தில்) பின்னர் எந்தப் பதிப்பும்.\n"
 "\n"
-" இந்த திட்டம் பயனுள்ளதாக இருக்கும் என்ற நம்பிக்கையில் விநியோகிக்கப்படுகிறது, ஆனால் எந்த "
+" இந்தத் திட்டம் பயனுள்ளதாக இருக்கும் என்ற நம்பிக்கையில் விநியோகிக்கப்படுகிறது, ஆனால் எந்த "
 "உத்தரவாதமும் இல்லாமல். மேலும் விவரங்களுக்கு நகலெடுக்கும் கோப்பைப் பார்க்கவும்."
 
 #: ../gui/meta.py:60
@@ -3098,7 +3097,7 @@ msgstr "வரையறுக்கப்படாதது (கட்டளை 
 #: ../lib/command.py:327
 #, python-brace-format
 msgid "{seconds:.01f}s of painting with {brush_name}"
-msgstr "{விநாடிகள்:."
+msgstr "{brush_name} உடன் {seconds:.01f} வினாடிகள் வரைந்தேன்"
 
 #: ../lib/command.py:525
 msgid "Flood Fill"
@@ -4130,7 +4129,7 @@ msgstr "எக்ச்-டில்:"
 #: ../gui/inktool.glade:110
 msgctxt "Inking tool options: point value sliders: labels"
 msgid "Y-tilt:"
-msgstr "Y-tilt:"
+msgstr "ஒ-சாய்:"
 
 #: ../gui/inktool.glade:145
 msgid "Tilt in the canvas Y axis"
@@ -4228,8 +4227,8 @@ msgid ""
 "Z: {scale:.1f}%\n"
 "R: {rotation:+.1f}°"
 msgstr ""
-"Z: {scale:.1f}%\n"
-" R: {சுழற்சி:+. 1f} °"
+"ஔ: {scale:.1f}%\n"
+"ஆர்: {rotation:+.1f}°"
 
 #: ../gui/mypaint.glade:249
 msgctxt "footer: context picker button: tooltip"
