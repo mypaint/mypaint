@@ -32,8 +32,6 @@ import lib.fileutils
 import lib.modes
 import lib.feedback
 import lib.floodfill
-from lib.pycompat import xrange
-from lib.pycompat import PY3, itervalues
 
 logger = logging.getLogger(__name__)
 
@@ -57,13 +55,19 @@ for sym_type in SYMMETRY_TYPES:
 ## Tile class and marker tile constants
 
 
-class _Tile(object):
+class _Tile:
     """Internal tile storage, with readonly flag
-
+    
     Note: pixels are stored with premultiplied alpha.
     15 bits are used, but fully opaque or white is stored as 2**15
     (requiring 16 bits). This is to allow many calculations to divide by
     2**15 instead of (2**16-1).
+
+    Args:
+
+    Returns:
+
+    Raises:
 
     """
 
@@ -76,6 +80,7 @@ class _Tile(object):
         self.readonly = False
 
     def copy(self):
+        """ """
         return _Tile(copy_from=self)
 
 
@@ -91,7 +96,8 @@ del mipmap_dirty_tile.rgba
 ## Class defs: surfaces
 
 
-class _SurfaceSnapshot(object):
+class _SurfaceSnapshot:
+    """ """
     pass
 
 
@@ -99,8 +105,15 @@ class _SurfaceSnapshot(object):
 # - move the tile storage from MyPaintSurface to a separate class
 class MyPaintSurface(TileAccessible, TileBlittable, TileCompositable):
     """Tile-based surface
-
+    
     The C++ part of this class is in tiledsurface.hpp
+
+    Args:
+
+    Returns:
+
+    Raises:
+
     """
 
     def __init__(
@@ -158,9 +171,16 @@ class MyPaintSurface(TileAccessible, TileBlittable, TileCompositable):
 
     def _create_mipmap_surfaces(self):
         """Internal: initializes an internal mipmap lookup table
-
+        
         Overridable to avoid unnecessary work when initializing the background
         surface subclass.
+
+        Args:
+
+        Returns:
+
+        Raises:
+
         """
         assert self.mipmap_level == 0
         mipmaps = [self]
@@ -181,6 +201,7 @@ class MyPaintSurface(TileAccessible, TileBlittable, TileCompositable):
         return mipmaps
 
     def end_atomic(self):
+        """ """
         bboxes = self._backend.end_atomic()
         for bbox in bboxes:
             if bbox[2] > 0 and bbox[3] > 0:
@@ -188,13 +209,25 @@ class MyPaintSurface(TileAccessible, TileBlittable, TileCompositable):
 
     @property
     def backend(self):
+        """ """
         return self._backend
 
-    def notify_observers(self, *args):
+    def notify_observers(self, *args: Types.ELLIPSIS) -> Types.NONE:
+        """
+
+        Args:
+            *args: 
+
+        Returns:
+
+        Raises:
+
+        """
         for f in self.observers:
             f(*args)
 
     def clear(self):
+        """ """
         tiles = self.tiledict.keys()
         self.tiledict = {}
         self.notify_observers(*lib.surface.get_tiles_bbox(tiles))
@@ -204,13 +237,18 @@ class MyPaintSurface(TileAccessible, TileBlittable, TileCompositable):
     def trim(self, rect):
         """Trim the layer to a rectangle, discarding data outside it
 
-        :param rect: A trimming rectangle in model coordinates
-        :type rect: tuple (x, y, w, h)
-
+        Args:
+            rect (tuple (x, y, w, h)): A trimming rectangle in model coordinates
+        
         Only complete tiles are discarded by this method.
         If a tile is neither fully inside nor fully outside the
         rectangle, the part of the tile outside the rectangle will be
         cleared.
+
+        Returns:
+
+        Raises:
+
         """
         x, y, w, h = rect
         logger.info("Trim %dx%d%+d%+d", w, h, x, y)
@@ -250,37 +288,45 @@ class MyPaintSurface(TileAccessible, TileBlittable, TileCompositable):
         self.notify_observers(*lib.surface.get_tiles_bbox(trimmed))
 
     @contextlib.contextmanager
-    def tile_request(self, tx, ty, readonly):
+    def tile_request(self, tx: int, ty: int, readonly: bool) -> Types.NONE:
         """Get a tile as a NumPy array, then put it back
 
-        :param int tx: Tile X coord (multiply by TILE_SIZE for pixels)
-        :param int ty: Tile Y coord (multiply by TILE_SIZE for pixels)
-        :param bool readonly: get a read-only tile
-
+        Args:
+            tx: Tile X coord (multiply by TILE_SIZE for pixels)
+            ty: Tile Y coord (multiply by TILE_SIZE for pixels)
+            readonly: get a read-only tile
+        
         Context manager that fetches a tile as a NumPy array,
         and then puts the potentially modified tile back into the
         tile backing store. To be used with the 'with' statement.
         Read/write tile requests on empty slots get you a new
         writeable tile::
-
-            >>> surf = MyPaintSurface()
-            >>> with surf.tile_request(1, 2, readonly=False) as t1:
-            ...     t1[...] = (1<<15)
-
-            >>> with surf.tile_request(1, 2, readonly=False) as t2:
-            ...     assert t2 is t1
-            ...     assert (t2 == t1).all()
-
+        
+        
+        
         Read-only tile requests on empty addresses yield the special
         transparent tile, which is marked as read-only::
-
-            >>> with surf.tile_request(666, 666, readonly=True) as tr:
-            ...     assert tr is transparent_tile.rgba
-
+        
+        
         Snapshotting a surface makes all its tiles read-only as a side
         effect, so the next read/write tile request will yield a copy
         for you to work on::
 
+        Returns:
+
+        Raises:
+
+        >>> surf = MyPaintSurface()
+            >>> with surf.tile_request(1, 2, readonly=False) as t1:
+            ...     t1[...] = (1<<15)
+        
+            >>> with surf.tile_request(1, 2, readonly=False) as t2:
+            ...     assert t2 is t1
+            ...     assert (t2 == t1).all()
+        
+            >>> with surf.tile_request(666, 666, readonly=True) as tr:
+            ...     assert tr is transparent_tile.rgba
+        
             >>> sshot = surf.save_snapshot()
             >>> with surf.tile_request(1, 2, readonly=True) as t3:
             ...     assert t3 is t1
@@ -288,19 +334,31 @@ class MyPaintSurface(TileAccessible, TileBlittable, TileCompositable):
             >>> with surf.tile_request(1, 2, readonly=False) as t4:
             ...     assert t4 is not t1
             ...     assert (t4 == t1).all()
-
         """
         numpy_tile = self._get_tile_numpy(tx, ty, readonly)
         yield numpy_tile
         self._set_tile_numpy(tx, ty, numpy_tile, readonly)
 
     def _regenerate_mipmap(self, t, tx, ty):
+        # type: (Types.ELLIPSIS) -> Types.NONE
+        """
+
+        Args:
+            t: 
+            tx: 
+            ty: 
+
+        Returns:
+
+        Raises:
+
+        """
         t = _Tile()
         self.tiledict[(tx, ty)] = t
         empty = True
 
-        for x in xrange(2):
-            for y in xrange(2):
+        for x in range(2):
+            for y in range(2):
                 src = self.parent.tiledict.get(
                     (tx * 2 + x, ty * 2 + y), transparent_tile
                 )
@@ -322,6 +380,19 @@ class MyPaintSurface(TileAccessible, TileBlittable, TileCompositable):
         return t
 
     def _get_tile_numpy(self, tx, ty, readonly):
+        # type: (Types.ELLIPSIS) -> Types.NONE
+        """
+
+        Args:
+            tx: 
+            ty: 
+            readonly: 
+
+        Returns:
+
+        Raises:
+
+        """
         # OPTIMIZE: do some profiling to check if this function is a bottleneck
         #           yes it is
         # Note: we must return memory that stays valid for writing until the
@@ -350,9 +421,35 @@ class MyPaintSurface(TileAccessible, TileBlittable, TileCompositable):
         return t.rgba
 
     def _set_tile_numpy(self, tx, ty, obj, readonly):
+        # type: (Types.ELLIPSIS) -> Types.NONE
+        """
+
+        Args:
+            tx: 
+            ty: 
+            obj: 
+            readonly: 
+
+        Returns:
+
+        Raises:
+
+        """
         pass  # Data can be modified directly, no action needed
 
     def _mark_mipmap_dirty(self, tx, ty):
+        # type: (Types.ELLIPSIS) -> Types.NONE
+        """
+
+        Args:
+            tx: 
+            ty: 
+
+        Returns:
+
+        Raises:
+
+        """
         # assert self.mipmap_level == 0
         if not self._mipmaps:
             return
@@ -368,11 +465,22 @@ class MyPaintSurface(TileAccessible, TileBlittable, TileCompositable):
         self, dst, dst_has_alpha, tx, ty, mipmap_level=0, *args, **kwargs
     ):
         """Copy one tile from this object into a destination array
-
+        
         See lib.surface.TileBlittable for the parameters. This
         implementation adds an extra param:
 
-        :param int mipmap_level: layer mipmap level to use
+        Args:
+            dst: 
+            dst_has_alpha: 
+            tx: 
+            ty: 
+            mipmap_level (int, optional): layer mipmap level to use (Default value = 0)
+            *args: 
+            **kwargs: 
+
+        Returns:
+
+        Raises:
 
         """
 
@@ -417,12 +525,24 @@ class MyPaintSurface(TileAccessible, TileBlittable, TileCompositable):
         **kwargs
     ):
         """Composite one tile of this surface over a NumPy array.
-
+        
         See lib.surface.TileCompositable for the parameters. This
         implementation adds two further ones:
 
-        :param float opacity: opacity multiplier
-        :param int mode: mode to use when compositing
+        Args:
+            dst: 
+            dst_has_alpha: 
+            tx: 
+            ty: 
+            mipmap_level:  (Default value = 0)
+            opacity (float, optional): opacity multiplier (Default value = 1.0)
+            mode (int, optional): mode to use when compositing (Default value = mypaintlib.CombineNormal)
+            *args: 
+            **kwargs: 
+
+        Returns:
+
+        Raises:
 
         """
 
@@ -460,24 +580,48 @@ class MyPaintSurface(TileAccessible, TileBlittable, TileCompositable):
 
     def save_snapshot(self):
         """Creates and returns a snapshot of the surface
-
+        
         Snapshotting marks all the tiles of the surface as read-only,
         then just shallow-copes the tiledict. It's quick. See
         tile_request() for how new read/write tiles can be unlocked.
 
+        Args:
+
+        Returns:
+
+        Raises:
+
         """
         sshot = _SurfaceSnapshot()
-        for t in itervalues(self.tiledict):
+        for t in self.tiledict.values():
             t.readonly = True
         sshot.tiledict = self.tiledict.copy()
         return sshot
 
-    def load_snapshot(self, sshot):
-        """Loads a saved snapshot, replacing the internal tiledict"""
+    def load_snapshot(self, sshot: Types.ELLIPSIS) -> Types.NONE:
+        """Loads a saved snapshot, replacing the internal tiledict
+
+        Args:
+            sshot: 
+
+        Returns:
+
+        Raises:
+
+        """
         self._load_tiledict(sshot.tiledict)
 
-    def _load_tiledict(self, d):
-        """Efficiently loads a tiledict, and notifies the observers"""
+    def _load_tiledict(self, d: Types.ELLIPSIS) -> Types.NONE:
+        """Efficiently loads a tiledict, and notifies the observers
+
+        Args:
+            d: 
+
+        Returns:
+
+        Raises:
+
+        """
         if d == self.tiledict:
             # common case optimization, called via stroke.redo()
             # testcase: comparison above (if equal) takes 0.6ms,
@@ -495,11 +639,30 @@ class MyPaintSurface(TileAccessible, TileBlittable, TileCompositable):
 
     ## Loading tile data
 
-    def load_from_surface(self, other):
-        """Loads tile data from another surface, via a snapshot"""
+    def load_from_surface(self, other: Types.ELLIPSIS) -> Types.NONE:
+        """Loads tile data from another surface, via a snapshot
+
+        Args:
+            other: 
+
+        Returns:
+
+        Raises:
+
+        """
         self.load_snapshot(other.save_snapshot())
 
-    def _load_from_pixbufsurface(self, s):
+    def _load_from_pixbufsurface(self, s: Types.ELLIPSIS) -> Types.NONE:
+        """
+
+        Args:
+            s: 
+
+        Returns:
+
+        Raises:
+
+        """
         dirty_tiles = set(self.tiledict.keys())
         self.tiledict = {}
 
@@ -514,11 +677,15 @@ class MyPaintSurface(TileAccessible, TileBlittable, TileCompositable):
     def load_from_numpy(self, arr, x, y):
         """Loads tile data from a numpy array
 
-        :param arr: Array containing the pixel data
-        :type arr: numpy.ndarray of uint8, dimensions HxWx3 or HxWx4
-        :param x: X coordinate for the array
-        :param y: Y coordinate for the array
-        :returns: the dimensions of the loaded surface, as (x,y,w,h)
+        Args:
+            arr (numpy.ndarray of uint8, dimensions HxWx3 or HxWx4): Array containing the pixel data
+            x: X coordinate for the array
+            y: Y coordinate for the array
+
+        Returns:
+            the dimensions of the loaded surface, as (x,y,w,h)
+
+        Raises:
 
         """
         h, w, channels = arr.shape
@@ -538,16 +705,17 @@ class MyPaintSurface(TileAccessible, TileBlittable, TileCompositable):
     ):
         """Load from a PNG, one tilerow at a time, discarding empty tiles.
 
-        :param str filename: The file to load
-        :param int x: X-coordinate at which to load the replacement data
-        :param int y: Y-coordinate at which to load the replacement data
-        :param bool convert_to_srgb: If True, convert to sRGB
-        :param progress: Unsized UI feedback obj.
-        :type progress: lib.feedback.Progress or None
-        :param dict \*\*kwargs: Ignored
+        Args:
+            filename (str): The file to load
+            x (int): X-coordinate at which to load the replacement data
+            y (int): Y-coordinate at which to load the replacement data
+            progress (lib.feedback.Progress or None, optional): Unsized UI feedback obj. (Default value = None)
+            convert_to_srgb (bool, optional): If True, convert to sRGB (Default value = True)
+            **kwargs: 
 
-        Raises a `lib.errors.FileHandlingError` with a descriptive
-        string when conversion or PNG reading fails.
+        Returns:
+
+        Raises:
 
         """
         if not progress:
@@ -568,6 +736,17 @@ class MyPaintSurface(TileAccessible, TileBlittable, TileCompositable):
         state["progress"] = progress
 
         def get_buffer(png_w, png_h):
+            """
+
+            Args:
+                png_w: 
+                png_h: 
+
+            Returns:
+
+            Raises:
+
+            """
             if state["frame_size"] is None:
                 if state["progress"]:
                     ty_final = int((y + png_h) // N)
@@ -606,8 +785,9 @@ class MyPaintSurface(TileAccessible, TileBlittable, TileCompositable):
             return subbuf
 
         def consume_buf():
+            """ """
             ty = state["ty"] - 1
-            for i in xrange(state["buf"].shape[1] // N):
+            for i in range(state["buf"].shape[1] // N):
                 tx = x // N + i
                 src = state["buf"][:, i * N : (i + 1) * N, :]
                 if src[:, :, 3].any():
@@ -626,9 +806,8 @@ class MyPaintSurface(TileAccessible, TileBlittable, TileCompositable):
             filename_sys = filename.encode(sys.getfilesystemencoding())
             # FIXME: should not do that, should use open(unicode_object)
 
-        if PY3:
-            filename_sys = filename_sys.decode()
-            # FIXME: https://github.com/mypaint/mypaint/issues/906
+        filename_sys = filename_sys.decode()
+        # FIXME: https://github.com/mypaint/mypaint/issues/906
 
         try:
             flags = mypaintlib.load_png_fast_progressive(
@@ -650,6 +829,18 @@ class MyPaintSurface(TileAccessible, TileBlittable, TileCompositable):
         return state["frame_size"]
 
     def render_as_pixbuf(self, *args, **kwargs):
+        # type: (Types.ELLIPSIS) -> Types.NONE
+        """
+
+        Args:
+            *args: 
+            **kwargs: 
+
+        Returns:
+
+        Raises:
+
+        """
         if not self.tiledict:
             logger.warning("empty surface")
         t0 = time.time()
@@ -659,6 +850,19 @@ class MyPaintSurface(TileAccessible, TileBlittable, TileCompositable):
         return res
 
     def save_as_png(self, filename, *args, **kwargs):
+        # type: (Types.ELLIPSIS) -> Types.NONE
+        """
+
+        Args:
+            filename: 
+            *args: 
+            **kwargs: 
+
+        Returns:
+
+        Raises:
+
+        """
         if "alpha" not in kwargs:
             kwargs["alpha"] = True
 
@@ -667,12 +871,15 @@ class MyPaintSurface(TileAccessible, TileBlittable, TileCompositable):
         lib.surface.save_as_png(self, filename, *args, **kwargs)
 
     def get_bbox(self):
+        """ """
         return lib.surface.get_tiles_bbox(self.tiledict)
 
     def get_tiles(self):
+        """ """
         return self.tiledict
 
     def is_empty(self):
+        """ """
         return not self.tiledict
 
     def remove_empty_tiles(self):
@@ -684,8 +891,7 @@ class MyPaintSurface(TileAccessible, TileBlittable, TileCompositable):
         removed = 0
         for surf in self._mipmaps:
             tmp_items_list = surf.tiledict.items()
-            if PY3:
-                tmp_items_list = list(tmp_items_list)
+            tmp_items_list = list(tmp_items_list)
             for pos, data in tmp_items_list:
                 total += 1
                 try:
@@ -698,8 +904,17 @@ class MyPaintSurface(TileAccessible, TileBlittable, TileCompositable):
                 removed += 1
         return removed, total
 
-    def remove_tiles(self, indices):
-        """Removes a set of tiles from the surface by tile index."""
+    def remove_tiles(self, indices: Types.ELLIPSIS) -> Types.NONE:
+        """Removes a set of tiles from the surface by tile index.
+
+        Args:
+            indices: 
+
+        Returns:
+
+        Raises:
+
+        """
         if self.mipmap_level != 0:
             raise ValueError("Only call this on the top-level surface.")
 
@@ -716,47 +931,81 @@ class MyPaintSurface(TileAccessible, TileBlittable, TileCompositable):
         self.notify_observers(*bbox)
 
     def get_move(self, x, y, sort=True):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Returns a move object for this surface
 
-        :param x: Start position for the move, X coord
-        :param y: Start position for the move, X coord
-        :param sort: If true, sort tiles to move by distance from (x,y)
+        Args:
+            x: Start position for the move, X coord
+            y: Start position for the move, X coord
+            sort: If true, sort tiles to move by distance from (x,y)
         :rtype: _TiledSurfaceMove
-
+        
         It's up to the caller to ensure that only one move is active at a
-        any single instant in time.
+        any single instant in time. (Default value = True)
+
+        Returns:
+
+        Raises:
+
         """
         if self.mipmap_level != 0:
             raise ValueError("Only call this on the top-level surface.")
         return _TiledSurfaceMove(self, x, y, sort=sort)
 
-    def flood_fill(self, fill_args, dst):
+    def flood_fill(self, fill_args: lib.floodfill.FloodFillArguments, dst: MyPaintSurface) -> Types.NONE:
         """Fills connected areas of this surface into another
 
-        :param fill_args: fill arguments object
-        :type fill_args: lib.floodfill.FloodFillArguments
-        :param dst: Target surface
-        :type dst: MyPaintSurface
+        Args:
+            fill_args: fill arguments object
+            dst: Target surface
+
+        Returns:
+
+        Raises:
+
         """
 
         return flood_fill(self, fill_args, dst)
 
     @contextlib.contextmanager
     def cairo_request(self, x, y, w, h, mode=lib.modes.default_mode):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Get a Cairo context for a given area, then put back changes.
 
-        :param int x: Request area's X coordinate.
-        :param int y: Request area's Y coordinate.
-        :param int w: Request area's width.
-        :param int h: Request area's height.
-        :param mode: Combine mode for the put-back.
-        :rtype: contextlib.GeneratorContextManager
-        :returns: cairo.Context (via with-statement)
+        Args:
+            x: Request area's X coordinate.
+            y: Request area's Y coordinate.
+            w: Request area's width.
+            h: Request area's height.
+            mode: Combine mode for the put-back.
+        :rtype: contextlib.GeneratorContextManager (Default value = lib.modes.default_mode)
 
-        This context manager works by constructing and managing a
-        temporary 8bpp Cairo imagesurface and yielding up a Cairo
-        context that points at it. Call the method as part of a
-        with-statement:
+        Returns:
+            cairo.Context (via with-statement)
+            
+            This context manager works by constructing and managing a
+            temporary 8bpp Cairo imagesurface and yielding up a Cairo
+            context that points at it. Call the method as part of a
+            with-statement:
+            
+            
+            If the mode is specified, it must be a layer/surface combine
+            mode listed in `lib.modes.STACK_MODES`. In this case, The
+            temporary cairo ImageSurface object is initially completely
+            transparent, and anything you draw to it is composited back over
+            the surface using the mode you requested.
+            
+            If you pass mode=None (or mode=lib.modes.PASS_THROUGH_MODE),
+            Cairo operates directly on the surface. This means that you can
+            use Cairo operators and primitives which erase tile data.
+            
+            
+            See also:
+            
+            * lib.pixbufsurface.Surface.cairo_request()
+            * lib.layer.data.SimplePaintingMode.cairo_request()
+
+        Raises:
 
         >>> s = MyPaintSurface()
         >>> n = TILE_SIZE
@@ -767,17 +1016,7 @@ class MyPaintSurface(TileAccessible, TileBlittable, TileCompositable):
         ...     cr.fill()
         >>> list(sorted(s.tiledict.keys()))
         [(0, 0), (0, 1), (1, 0), (1, 1)]
-
-        If the mode is specified, it must be a layer/surface combine
-        mode listed in `lib.modes.STACK_MODES`. In this case, The
-        temporary cairo ImageSurface object is initially completely
-        transparent, and anything you draw to it is composited back over
-        the surface using the mode you requested.
-
-        If you pass mode=None (or mode=lib.modes.PASS_THROUGH_MODE),
-        Cairo operates directly on the surface. This means that you can
-        use Cairo operators and primitives which erase tile data.
-
+        
         >>> import cairo
         >>> with s.cairo_request(0, 0, n, n, mode=None) as cr:
         ...     cr.set_operator(cairo.OPERATOR_CLEAR)
@@ -793,12 +1032,6 @@ class MyPaintSurface(TileAccessible, TileBlittable, TileCompositable):
         >>> _ignored = s.remove_empty_tiles()
         >>> list(sorted(s.tiledict.keys()))
         [(0, 1), (1, 0)]
-
-        See also:
-
-        * lib.pixbufsurface.Surface.cairo_request()
-        * lib.layer.data.SimplePaintingMode.cairo_request()
-
         """
 
         # Normalize and validate args
@@ -852,56 +1085,71 @@ class MyPaintSurface(TileAccessible, TileBlittable, TileCompositable):
         self.notify_observers(*bbox)
 
 
-class _TiledSurfaceMove(object):
+class _TiledSurfaceMove:
     """Ongoing move state for a tiled surface, processed in chunks
-
+    
     Tile move processing involves slicing and copying data from a
     snapshot of the surface's original tile arrays into an active
     surface within the model document. It's therefore potentially very
     slow for huge layers: doing this interactively requires the move to
     be processed in chunks in idle routines.
-
+    
     Moves are created by a surface's get_move() method starting at a
     particular point in model coordinates.
+    
+    
+    During an interactive move, the move object is typically updated in
+    response to the user moving the pointer,
+    
+    
+    while being processed in chunks of a few hundred tiles in an idle
+    routine.
+    
+    
+    When the user is done moving things and releases the layer, or quits
+    the layer moving mode, the conventional way of finalizing things is
+    
+    
+    After the cleanup, the move should not be updated or processed any
+    further.
+    
+    Moves which are not an exact multiple of the tile size generally
+    make more tiles due to slicing and recombining.
+    
+    
+    Moves which are an exact multiple of the tile size are processed
+    faster (and never add tiles to the layer).
+    
+    
+    Moves can be processed non-interactively by calling all the
+    different phases together, as above.
 
-        >>> surf = MyPaintSurface()
+    Args:
+
+    Returns:
+
+    Raises:
+
+    >>> surf = MyPaintSurface()
         >>> with surf.tile_request(10, 10, readonly=False) as a:
         ...     a[...] = 1<<15
         >>> len(surf.tiledict)
         1
         >>> move = surf.get_move(N/2, N/2, sort=True)
-
-    During an interactive move, the move object is typically updated in
-    response to the user moving the pointer,
-
+    
         >>> move.update(N/2, N/2)
         >>> move.update(N/2 + 1, N/2 + 3)
-
-    while being processed in chunks of a few hundred tiles in an idle
-    routine.
-
+    
         >>> while move.process():
         ...     pass
-
-    When the user is done moving things and releases the layer, or quits
-    the layer moving mode, the conventional way of finalizing things is
-
+    
         >>> move.process(n=-1)
         False
         >>> move.cleanup()
-
-    After the cleanup, the move should not be updated or processed any
-    further.
-
-    Moves which are not an exact multiple of the tile size generally
-    make more tiles due to slicing and recombining.
-
+    
         >>> len(surf.tiledict)
         4
-
-    Moves which are an exact multiple of the tile size are processed
-    faster (and never add tiles to the layer).
-
+    
         >>> surf = MyPaintSurface()
         >>> with surf.tile_request(-3, 2, readonly=False) as a:
         ...     a[...] = 1<<15
@@ -916,10 +1164,6 @@ class _TiledSurfaceMove(object):
         [(0, 0)]
         >>> # Please excuse the doctest for this special case
         >>> # just regression-proofing.
-
-    Moves can be processed non-interactively by calling all the
-    different phases together, as above.
-
     """
 
     def __init__(self, surface, x, y, sort=True):
@@ -958,12 +1202,19 @@ class _TiledSurfaceMove(object):
         self.slices_y = calc_translation_slices(0)
 
     def update(self, dx, dy):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Updates the offset during a move
 
-        :param dx: New move offset: relative to the constructor x.
-        :param dy: New move offset: relative to the constructor y.
-
+        Args:
+            dx: New move offset: relative to the constructor x.
+            dy: New move offset: relative to the constructor y.
+        
         This causes all the move's work to be re-queued.
+
+        Returns:
+
+        Raises:
+
         """
         # Nothing has been written in this pass yet
         self.written = set()
@@ -985,10 +1236,16 @@ class _TiledSurfaceMove(object):
 
     def cleanup(self):
         """Cleans up after processing the move.
-
+        
         This must be called after the move has been processed fully, and
         should only be called after `process()` indicates that all tiles have
         been sliced and moved.
+
+        Args:
+
+        Returns:
+
+        Raises:
 
         """
         # Process any remaining work. Caller should have done this already.
@@ -1016,11 +1273,15 @@ class _TiledSurfaceMove(object):
     def process(self, n=200):
         """Process a number of pending tile moves
 
-        :param int n: The number of source tiles to process in this call
-        :returns: whether there are any more tiles to process
-        :rtype: bool
+        Args:
+            n (int, optional): The number of source tiles to process in this call (Default value = 200)
 
-        Specify zero or negative `n` to process all remaining tiles.
+        Returns:
+            bool
+
+Specify zero or negative `n` to process all remaining tiles.: whether there are any more tiles to process
+
+        Raises:
 
         """
         updated = set()
@@ -1032,13 +1293,17 @@ class _TiledSurfaceMove(object):
         self.surface.notify_observers(*bbox)
         return blanks_remaining or moves_remaining
 
-    def _process_moves(self, n, updated):
+    def _process_moves(self, n: int, updated: set) -> bool:
         """Internal: process pending tile moves
 
-        :param int n: as for process()
-        :param set updated: Set of tile indices to be redrawn (in+out)
-        :returns: Whether moves need to be processed
-        :rtype: bool
+        Args:
+            n: as for process()
+            updated: Set of tile indices to be redrawn (in+out)
+
+        Returns:
+            Whether moves need to be processed
+
+        Raises:
 
         """
         if self.chunks_i > len(self.chunks):
@@ -1089,13 +1354,17 @@ class _TiledSurfaceMove(object):
         self.chunks_i += n
         return self.chunks_i < len(self.chunks)
 
-    def _process_blanks(self, n, updated):
+    def _process_blanks(self, n: int, updated: set) -> bool:
         """Internal: process blanking-out queue
 
-        :param int n: as for process()
-        :param set updated: Set of tile indices to be redrawn (in+out)
-        :returns: Whether the blanking queue is empty
-        :rtype: bool
+        Args:
+            n: as for process()
+            updated: Set of tile indices to be redrawn (in+out)
+
+        Returns:
+            Whether the blanking queue is empty
+
+        Raises:
 
         """
         if n <= 0:
@@ -1109,38 +1378,43 @@ class _TiledSurfaceMove(object):
         return len(self.blank_queue) > 0
 
 
-def calc_translation_slices(dc):
+def calc_translation_slices(dc: int) -> Types.NONE:
     """Returns a list of offsets and slice extents for a translation
 
-    :param dc: translation amount along the axis of interest (pixels)
-    :type dc: int
-    :returns: list of offsets and slice extents
+    Args:
+        dc: translation amount along the axis of interest (pixels)
 
-    The returned slice list's members are of the form
-
+    Returns:
+        list of offsets and slice extents
+        
+        The returned slice list's members are of the form
+        
         ((src_c0, src_c1), (targ_tdc, targ_c0, targ_c1))
+        
+        where ``src_c0`` and ``src_c1`` determine the extents of the source
+        slice within a tile, their ``targ_`` equivalents specify where to
+        put that slice in the target tile, and ``targ_tdc`` is the tile
+        offset. For example,
+        
+        
+        This indicates that all data from each tile is to be put exactly two
+        tiles after the current tile index. In this case, a simple copy will
+        suffice. Normally though, translations require slices.
+        
+        
+        Two slices are needed for each tile: one strip of 16 pixels at the
+        start to be copied to the end of output tile immediately before the
+        current tile, and one strip of 48px to be copied to the start of the
+        output tile having the same as the input.
 
-    where ``src_c0`` and ``src_c1`` determine the extents of the source
-    slice within a tile, their ``targ_`` equivalents specify where to
-    put that slice in the target tile, and ``targ_tdc`` is the tile
-    offset. For example,
+    Raises:
 
-        >>> assert N == 64, "FIXME: test only valid for 64 pixel tiles"
+    >>> assert N == 64, "FIXME: test only valid for 64 pixel tiles"
         >>> calc_translation_slices(N*2)
         [((0, 64), (2, 0, 64))]
-
-    This indicates that all data from each tile is to be put exactly two
-    tiles after the current tile index. In this case, a simple copy will
-    suffice. Normally though, translations require slices.
-
+    
         >>> calc_translation_slices(-16)
         [((0, 16), (-1, 48, 64)), ((16, 64), (0, 0, 48))]
-
-    Two slices are needed for each tile: one strip of 16 pixels at the
-    start to be copied to the end of output tile immediately before the
-    current tile, and one strip of 48px to be copied to the start of the
-    output tile having the same as the input.
-
     """
     dcr = dc % N
     tdc = dc // N
@@ -1159,10 +1433,16 @@ Surface = MyPaintSurface
 
 def _new_backend_surface():
     """Fetches a new backend surface object for C test code to use.
-
+    
     Used by mypaintlib internals during tests: see lib/tiledsurface.hpp.
     The resultant pointer, after swizzling with SWIG_ConvertPtr(),
     exposes the libmypaint "MyPaintSurface" interface.
+
+    Args:
+
+    Returns:
+
+    Raises:
 
     """
     surface = Surface()
@@ -1221,10 +1501,20 @@ class Background(Surface):
         return None
 
     def load_from_numpy(self, arr, x, y):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Loads tile data from a numpy array
-
+        
         This extends the base class's implementation with additional support
         for tile-aligned uint16 data.
+
+        Args:
+            arr: 
+            x: 
+            y: 
+
+        Returns:
+
+        Raises:
 
         """
         h, w, channels = arr.shape
@@ -1247,24 +1537,32 @@ class Background(Surface):
 def flood_fill(src, fill_args, dst):
     """Fills connected areas of one surface into another
 
-    :param src: Source surface-like object
-    :type src: Anything supporting readonly tile_request()
-    :param fill_args: fill arguments object
-    :type fill_args: lib.floodfill.FloodFillArguments
-    :param dst: Target surface
-    :type dst: MyPaintSurface
-
+    Args:
+        src (Anything supporting readonly tile_request()): Source surface-like object
+        fill_args (lib.floodfill.FloodFillArguments): fill arguments object
+        dst (MyPaintSurface): Target surface
+    
     See also `lib.layer.Layer.flood_fill()`.
+
+    Returns:
+
+    Raises:
 
     """
     lib.floodfill._EMPTY_RGBA = transparent_tile.rgba
     return lib.floodfill.flood_fill(src, fill_args, dst)
 
 
-class PNGFileUpdateTask(object):
+class PNGFileUpdateTask:
     """Piecemeal callable: writes to or replaces a PNG file
-
+    
     See lib.autosave.Autosaveable.
+
+    Args:
+
+    Returns:
+
+    Raises:
 
     >>> from tempfile import mkdtemp
     >>> from shutil import rmtree
@@ -1280,7 +1578,6 @@ class PNGFileUpdateTask(object):
     ...     assert os.path.getsize(tmpfile) > 0
     ... finally:
     ...     rmtree(tmpdir)
-
     """
 
     def __init__(
@@ -1349,7 +1646,7 @@ class PNGFileUpdateTask(object):
             self._png_writer = None
             self._strips_iter = None
             self._tmp_fp.close()
-            lib.fileutils.replace(
+            os.replace(
                 self._tmp_filename,
                 self._final_filename,
             )

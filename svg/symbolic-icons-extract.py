@@ -43,29 +43,56 @@ SUFFIX24 = ":24"
 class FakeFile:
     """String wrapper providing a subset of the file interface
     Used for the call to scour's optimizer for both input and output.
+
+    Args:
+
+    Returns:
+
+    Raises:
+
     """
 
     def __init__(self, string):
         self.string = string
 
-    def write(self, newstring):
+    def write(self, newstring: Types.ELLIPSIS) -> Types.NONE:
+        """
+
+        Args:
+            newstring: 
+
+        Returns:
+
+        Raises:
+
+        """
         self.string = newstring
 
     def read(
         self,
     ):
+        """ """
         return self.string
 
     def close(self):
+        """ """
         pass
 
     def name(self):
+        """ """
         return ""
 
 
 class FakeOptions:
     """Stand-in for values normally returned from an OptionParser
     Used for the call to scour's optimizer
+
+    Args:
+
+    Returns:
+
+    Raises:
+
     """
 
     def __init__(self, **kwargs):
@@ -73,19 +100,49 @@ class FakeOptions:
             setattr(self, k, v)
 
 
-def get_by_attrib(parent, pred):
-    """
-    Utility function for retrieving child elements by attribute predicates
+def get_by_attrib(parent, pred: Types.ELLIPSIS) -> Types.NONE:
+    """Utility function for retrieving child elements by attribute predicates
+
+    Args:
+        parent: 
+        pred: 
+
+    Returns:
+
+    Raises:
+
     """
     return [c for c in parent.getchildren() if pred(c.attrib)]
 
 
 def by_attrib(parent, attr, attr_pred):
+    # type: (Types.ELLIPSIS) -> Types.NONE
     """Retrieves the elements matching an attribute predicate
     The predicate is only evaluated if the attribute is present.
+
+    Args:
+        parent: 
+        attr: 
+        attr_pred: 
+
+    Returns:
+
+    Raises:
+
     """
 
     def pred(attribs):
+        # type: (Types.ELLIPSIS) -> Types.NONE
+        """
+
+        Args:
+            attribs: 
+
+        Returns:
+
+        Raises:
+
+        """
         if attr in attribs:
             return attr_pred(attribs[attr])
         else:
@@ -97,13 +154,35 @@ def by_attrib(parent, attr, attr_pred):
 # This reference resolution only handles simple cases
 # and does not produce optimal (or even correct) results
 # in the general case, but is sufficient for the current icons.
-def resolve_references(refsvg, base):
+def resolve_references(refsvg, base: Types.ELLIPSIS) -> Types.NONE:
     """Resolve external references in ``base``
     Any <use> tag in base will be replaced with the element it refers
     to unless that element is already a part of base. Assumes valid svg.
+
+    Args:
+        refsvg: 
+        base: 
+
+    Returns:
+
+    Raises:
+
     """
 
     def deref(parent, child, index):
+        # type: (Types.ELLIPSIS) -> Types.NONE
+        """
+
+        Args:
+            parent: 
+            child: 
+            index: 
+
+        Returns:
+
+        Raises:
+
+        """
         if child.tag.endswith("use"):
             refid = gethref(child)
             el = base.find('.//*[@id="%s"]' % refid)
@@ -125,7 +204,20 @@ def resolve_references(refsvg, base):
 
 
 def extract_icon(svg, icon_elem, output_dir, output_svg):
-    """Extract one icon"""
+    # type: (Types.ELLIPSIS) -> Types.NONE
+    """Extract one icon
+
+    Args:
+        svg: 
+        icon_elem: 
+        output_dir: 
+        output_svg: 
+
+    Returns:
+
+    Raises:
+
+    """
     group_id = icon_elem.attrib["id"]
     logger.info("Extracting %s", group_id)
     if not os.path.exists(output_dir):
@@ -172,19 +264,45 @@ def extract_icon(svg, icon_elem, output_dir, output_svg):
         f.write(svgstr.read())
 
 
-def parse_style(string):
-    """Given a well-formed style string, return the corresponding dict"""
+def parse_style(string: Types.ELLIPSIS) -> Types.NONE:
+    """Given a well-formed style string, return the corresponding dict
+
+    Args:
+        string: 
+
+    Returns:
+
+    Raises:
+
+    """
     return {k: v for k, v in (p.split(":") for p in string.split(";") if ":" in p)}
 
 
-def serialize_style(style_dict):
-    """Serialize a dict to a well-formed style string"""
+def serialize_style(style_dict: Types.ELLIPSIS) -> Types.NONE:
+    """Serialize a dict to a well-formed style string
+
+    Args:
+        style_dict: 
+
+    Returns:
+
+    Raises:
+
+    """
     return ";".join([k + ":" + v for k, v in style_dict.items()])
 
 
-def clean_styles(elem):
+def clean_styles(elem: Types.ELLIPSIS) -> Types.NONE:
     """Recursively remove useless style attributes
     Also moves common fill declarations to the topmost element.
+
+    Args:
+        elem: 
+
+    Returns:
+
+    Raises:
+
     """
     fill_cols = clean_style(elem)
     for child in elem:
@@ -207,16 +325,34 @@ def clean_styles(elem):
     return fill_cols
 
 
-def gethref(icon):
+def gethref(icon: Types.ELLIPSIS) -> Types.NONE:
+    """
+
+    Args:
+        icon: 
+
+    Returns:
+
+    Raises:
+
+    """
     return icon.attrib["{%s}href" % XLINK][1:]
 
 
-def clean_style(elem):
+def clean_style(elem: Types.ELLIPSIS) -> Types.NONE:
     """Remove unused style attributes based on a fixed list
     A style attribute is removed if:
     1. it is not in the list
     2. it is in the list, but with a default value
     Expand the list as is necessary.
+
+    Args:
+        elem: 
+
+    Returns:
+
+    Raises:
+
     """
     # Remove unused stuff from <use> elements - split out
     if elem.tag.endswith("use"):
@@ -232,7 +368,18 @@ def clean_style(elem):
     useful = ["opacity", "fill"]
     defaults = {"opacity": (float, 1.0)}
 
-    def is_default(k, v):
+    def is_default(k, v: Types.ELLIPSIS) -> Types.NONE:
+        """
+
+        Args:
+            k: 
+            v: 
+
+        Returns:
+
+        Raises:
+
+        """
         if k in defaults:
             conv, default = defaults[k]
             return conv(v) == default
@@ -252,17 +399,49 @@ def clean_style(elem):
     return {v for k, v in (styles or dict()).items() if k == "fill"}
 
 
-def is_icon(e):
+def is_icon(e: Types.ELLIPSIS) -> Types.NONE:
+    """
+
+    Args:
+        e: 
+
+    Returns:
+
+    Raises:
+
+    """
     valid_tag = e.tag in {s % SVG for s in ("{%s}g", "{%s}use")}
     return valid_tag and e.get("id") and e.get("id").startswith("mypaint-")
 
 
-def get_icon_layer(svg):
+def get_icon_layer(svg: Types.ELLIPSIS) -> Types.NONE:
+    """
+
+    Args:
+        svg: 
+
+    Returns:
+
+    Raises:
+
+    """
     return svg.find('svg:g[@id="icons"]', NAMESPACES)
 
 
 def extract_icons(svg, basedir, *ids):
-    """Extract icon groups using Inkscape, both 16px scalable & 24x24"""
+    # type: (Types.ELLIPSIS) -> Types.NONE
+    """Extract icon groups using Inkscape, both 16px scalable & 24x24
+
+    Args:
+        svg: 
+        basedir: 
+        *ids: 
+
+    Returns:
+
+    Raises:
+
+    """
 
     # Make a copy of the tree
     base = deepcopy(svg)
@@ -288,17 +467,46 @@ def extract_icons(svg, basedir, *ids):
     logger.info("Finished extracting %d icons" % num_extracted)
 
 
-def get_icon_ids(svg):
-    """Returns the ids of elements marked as being icons"""
+def get_icon_ids(svg: Types.ELLIPSIS) -> Types.NONE:
+    """Returns the ids of elements marked as being icons
+
+    Args:
+        svg: 
+
+    Returns:
+
+    Raises:
+
+    """
     return (e.get("id") for e in get_icon_layer(svg) if is_icon(e))
 
 
-def invalid_ids(svg, ids):
+def invalid_ids(svg, ids: Types.ELLIPSIS) -> Types.NONE:
+    """
+
+    Args:
+        svg: 
+        ids: 
+
+    Returns:
+
+    Raises:
+
+    """
     return ids.difference(ids.intersection(set(get_icon_ids(svg))))
 
 
-def main(options):
-    """Main function for the tool"""
+def main(options: Types.ELLIPSIS) -> Types.NONE:
+    """Main function for the tool
+
+    Args:
+        options: 
+
+    Returns:
+
+    Raises:
+
+    """
     logging.basicConfig(level=logging.INFO)
     for prefix, uri in NAMESPACES.items():
         ET.register_namespace(prefix, uri)

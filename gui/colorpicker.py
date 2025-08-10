@@ -24,24 +24,30 @@ from lib.gibindings import GLib
 
 class ColorPickMode(gui.mode.OneshotDragMode):
     """Mode for picking colors from the screen, with a preview
-
+    
     This can be invoked in quite a number of ways:
-
+    
     * The keyboard hotkey ("R" by default)
     * Modifier and pointer button: (Ctrl+Button1 by default)
     * From the toolbar or menu
-
+    
     The first two methods pick immediately. Moving the mouse with the
     initial keys or buttons held down keeps picking with a little
     preview square appearing.
-
+    
     The third method doesn't pick immediately: you have to click on the
     canvas to start picking.
-
+    
     While the preview square is visible, it's possible to pick outside
     the window. This "hidden" functionality may not work at all with
     more modern window managers and DEs, and may be removed if it proves
     slow or faulty.
+
+    Args:
+
+    Returns:
+
+    Raises:
 
     """
 
@@ -59,13 +65,16 @@ class ColorPickMode(gui.mode.OneshotDragMode):
 
     @property
     def inactive_cursor(self):
+        """ """
         return self.doc.app.cursor_color_picker
 
     @classmethod
     def get_name(cls):
+        """ """
         return _("Pick Color")
 
     def get_usage(self):
+        """ """
         return _("Set the color used for painting")
 
     def __init__(self, ignore_modifiers=False, **kwds):
@@ -78,7 +87,18 @@ class ColorPickMode(gui.mode.OneshotDragMode):
         self._timeout_id = None
 
     def enter(self, doc, **kwds):
-        """Enters the mode, arranging for necessary grabs ASAP"""
+        # type: (Types.ELLIPSIS) -> Types.NONE
+        """Enters the mode, arranging for necessary grabs ASAP
+
+        Args:
+            doc: 
+            **kwds: 
+
+        Returns:
+
+        Raises:
+
+        """
         super(ColorPickMode, self).enter(doc, **kwds)
         self._color = doc.app.brush_color_manager.get_color()
         if self._started_from_key_press:
@@ -91,48 +111,136 @@ class ColorPickMode(gui.mode.OneshotDragMode):
             # Start the drag when possible
             self._start_drag_on_next_motion_event = True
 
-    def leave(self, **kwds):
+    def leave(self, **kwds: Types.ELLIPSIS) -> Types.NONE:
+        """
+
+        Args:
+            **kwds: 
+
+        Returns:
+
+        Raises:
+
+        """
         if self._queued_data and not self._timeout_id:
             self._change_color()
         self._remove_overlay()
         super(ColorPickMode, self).leave(**kwds)
 
     def button_press_cb(self, tdw, event):
+        # type: (Types.ELLIPSIS) -> Types.NONE
+        """
+
+        Args:
+            tdw: 
+            event: 
+
+        Returns:
+
+        Raises:
+
+        """
         self._pick_color(tdw, event.x, event.y, direct=True)
         # Supercall will start the drag normally
         self._start_drag_on_next_motion_event = False
         return super(ColorPickMode, self).button_press_cb(tdw, event)
 
     def motion_notify_cb(self, tdw, event):
+        # type: (Types.ELLIPSIS) -> Types.NONE
+        """
+
+        Args:
+            tdw: 
+            event: 
+
+        Returns:
+
+        Raises:
+
+        """
         if self._start_drag_on_next_motion_event:
             self._start_drag(tdw, event)
             self._start_drag_on_next_motion_event = False
         return super(ColorPickMode, self).motion_notify_cb(tdw, event)
 
-    def drag_stop_cb(self, tdw):
+    def drag_stop_cb(self, tdw: Types.ELLIPSIS) -> Types.NONE:
+        """
+
+        Args:
+            tdw: 
+
+        Returns:
+
+        Raises:
+
+        """
         self._remove_overlay()
         super(ColorPickMode, self).drag_stop_cb(tdw)
 
     def drag_update_cb(self, tdw, event, ev_x, ev_y, dx, dy):
+        # type: (Types.ELLIPSIS) -> Types.NONE
+        """
+
+        Args:
+            tdw: 
+            event: 
+            ev_x: 
+            ev_y: 
+            dx: 
+            dy: 
+
+        Returns:
+
+        Raises:
+
+        """
         self._pick_color(tdw, ev_x, ev_y)
         self._update_overlay(tdw, ev_x, ev_y, self._color)
         return super(ColorPickMode, self).drag_update_cb(tdw, event, ev_x, ev_y, dx, dy)
 
     def _update_overlay(self, tdw, x, y, col):
+        # type: (Types.ELLIPSIS) -> Types.NONE
+        """
+
+        Args:
+            tdw: 
+            x: 
+            y: 
+            col: 
+
+        Returns:
+
+        Raises:
+
+        """
         if self._overlay is None:
             self._overlay = ColorPickPreviewOverlay(self.doc, tdw, x, y, col)
         else:
             self._overlay.update(x, y, col)
 
     def _remove_overlay(self):
+        """ """
         if self._overlay is not None:
             self._overlay.cleanup()
             self._overlay = None
 
     def get_options_widget(self):
+        """ """
         return None
 
     def get_new_color(self, pick_color, brush_color):
+        # type: (Types.ELLIPSIS) -> Types.NONE
+        """
+
+        Args:
+            pick_color: 
+            brush_color: 
+
+        Returns:
+
+        Raises:
+
+        """
         # Normal pick mode, but preserve hue for achromatic colors.
         pick_h, pick_s, pick_v = pick_color.get_hsv()
         if pick_s == 0 or pick_v == 0:
@@ -141,6 +249,20 @@ class ColorPickMode(gui.mode.OneshotDragMode):
             return pick_color
 
     def _pick_color(self, tdw, x, y, direct=False):
+        # type: (Types.ELLIPSIS) -> Types.NONE
+        """
+
+        Args:
+            tdw: 
+            x: 
+            y: 
+            direct:  (Default value = False)
+
+        Returns:
+
+        Raises:
+
+        """
         cm = self.doc.app.brush_color_manager
         pick_color = tdw.pick_color(x, y)
         if pick_color != self._color:
@@ -152,6 +274,18 @@ class ColorPickMode(gui.mode.OneshotDragMode):
                 self._queue_color_change(new_color, cm)
 
     def _queue_color_change(self, new_col, cm):
+        # type: (Types.ELLIPSIS) -> Types.NONE
+        """
+
+        Args:
+            new_col: 
+            cm: 
+
+        Returns:
+
+        Raises:
+
+        """
         self._queued_data = new_col, cm
         if not self._timeout_id:
             self._timeout_id = GLib.timeout_add(
@@ -160,6 +294,7 @@ class ColorPickMode(gui.mode.OneshotDragMode):
             )
 
     def _change_color(self):
+        """ """
         if self._queued_data:
             col, cm = self._queued_data
             self._queued_data = None
@@ -175,8 +310,21 @@ _Y_MAX = 0.9999
 
 
 class ColorPickModeHCYBase(ColorPickMode):
+    """ """
 
     def get_new_color(self, pick_color, brush_color):
+        # type: (Types.ELLIPSIS) -> Types.NONE
+        """
+
+        Args:
+            pick_color: 
+            brush_color: 
+
+        Returns:
+
+        Raises:
+
+        """
         new_col_hcy = self.get_new_hcy_color(
             HCYColor(color=pick_color), HCYColor(color=brush_color)
         )
@@ -184,77 +332,141 @@ class ColorPickModeHCYBase(ColorPickMode):
         new_col_hcy.y = min(_Y_MAX, max(_Y_MIN, new_col_hcy.y))
         return new_col_hcy
 
-    def get_new_hcy_color(self, *args):
+    def get_new_hcy_color(self, *args: Types.ELLIPSIS) -> Types.NONE:
+        """
+
+        Args:
+            *args: 
+
+        Returns:
+
+        Raises:
+
+        """
         raise NotImplementedError
 
 
 class ColorPickModeH(ColorPickModeHCYBase):
+    """ """
 
     # Class configuration
     ACTION_NAME = "ColorPickModeH"
 
     @property
     def inactive_cursor(self):
+        """ """
         return self.doc.app.cursor_color_picker_h
 
     @classmethod
     def get_name(cls):
+        """ """
         return _("Pick Hue")
 
     def get_usage(self):
+        """ """
         return _("Set the color Hue used for painting")
 
     def get_new_hcy_color(self, pick_hcy, brush_hcy):
+        # type: (Types.ELLIPSIS) -> Types.NONE
+        """
+
+        Args:
+            pick_hcy: 
+            brush_hcy: 
+
+        Returns:
+
+        Raises:
+
+        """
         if pick_hcy.c >= _C_MIN and pick_hcy.y >= _Y_MIN:
             brush_hcy.h = pick_hcy.h
         return brush_hcy
 
 
 class ColorPickModeC(ColorPickModeHCYBase):
+    """ """
     # Class configuration
     ACTION_NAME = "ColorPickModeC"
 
     @property
     def inactive_cursor(self):
+        """ """
         return self.doc.app.cursor_color_picker_c
 
     @classmethod
     def get_name(cls):
+        """ """
         return _("Pick Chroma")
 
     def get_usage(self):
+        """ """
         return _("Set the color Chroma used for painting")
 
     def get_new_hcy_color(self, pick_hcy, brush_hcy):
+        # type: (Types.ELLIPSIS) -> Types.NONE
+        """
+
+        Args:
+            pick_hcy: 
+            brush_hcy: 
+
+        Returns:
+
+        Raises:
+
+        """
         brush_hcy.c = pick_hcy.c
         return brush_hcy
 
 
 class ColorPickModeY(ColorPickModeHCYBase):
+    """ """
     # Class configuration
     ACTION_NAME = "ColorPickModeY"
 
     @property
     def inactive_cursor(self):
+        """ """
         return self.doc.app.cursor_color_picker_y
 
     @classmethod
     def get_name(cls):
+        """ """
         return _("Pick Luma")
 
     def get_usage(self):
+        """ """
         return _("Set the color Luma used for painting")
 
     def get_new_hcy_color(self, pick_hcy, brush_hcy):
+        # type: (Types.ELLIPSIS) -> Types.NONE
+        """
+
+        Args:
+            pick_hcy: 
+            brush_hcy: 
+
+        Returns:
+
+        Raises:
+
+        """
         brush_hcy.y = pick_hcy.y
         return brush_hcy
 
 
 class ColorPickPreviewOverlay(Overlay):
     """Preview overlay during color picker mode.
-
+    
     This is only shown when dragging the pointer with a button or the
     hotkey held down, to avoid flashing and distraction.
+
+    Args:
+
+    Returns:
+
+    Raises:
 
     """
 
@@ -288,13 +500,26 @@ class ColorPickPreviewOverlay(Overlay):
         self._queue_tdw_redraw()
 
     def update(self, x, y, color):
-        """Update the overlay's position and color"""
+        # type: (Types.ELLIPSIS) -> Types.NONE
+        """Update the overlay's position and color
+
+        Args:
+            x: 
+            y: 
+            color: 
+
+        Returns:
+
+        Raises:
+
+        """
         self._x = int(x) + 0.5
         self._y = int(y) + 0.5
         self._color = color
         self._queue_tdw_redraw()
 
     def _queue_tdw_redraw(self):
+        """ """
         if self._previous_area is not None:
             self._tdw.queue_draw_area(*self._previous_area)
             self._previous_area = None
@@ -303,6 +528,7 @@ class ColorPickPreviewOverlay(Overlay):
             self._tdw.queue_draw_area(*area)
 
     def _get_area(self):
+        """ """
         # Returns the drawing area for the square
         size = self.PREVIEW_SIZE
 
@@ -344,7 +570,17 @@ class ColorPickPreviewOverlay(Overlay):
 
         return (int(x), int(y), size, size)
 
-    def paint(self, cr):
+    def paint(self, cr: Types.ELLIPSIS) -> Types.NONE:
+        """
+
+        Args:
+            cr: 
+
+        Returns:
+
+        Raises:
+
+        """
         area = self._get_area()
         if area is not None:
             x, y, w, h = area

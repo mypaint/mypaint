@@ -17,12 +17,19 @@ from lib.gibindings import GLib
 logger = logging.getLogger(__name__)
 
 
-class StateGroup(object):
+class StateGroup:
     """Supervisor instance for GUI states.
-
+    
     This class mainly deals with the various ways how the user can
     leave such a mode, eg. if the mode is entered by holding down a
     key long enough, it will be left when the key is released.
+
+    Args:
+
+    Returns:
+
+    Raises:
+
     """
 
     def __init__(self):
@@ -32,9 +39,23 @@ class StateGroup(object):
 
     @property
     def active_states(self):
+        """ """
         return [s for s in self.states if s.active]
 
     def create_state(self, enter, leave, popup=None):
+        # type: (Types.ELLIPSIS) -> Types.NONE
+        """
+
+        Args:
+            enter: 
+            leave: 
+            popup:  (Default value = None)
+
+        Returns:
+
+        Raises:
+
+        """
         s = State(self, popup)
         s.popup = None  # FIXME: who uses this? hack?
         s.on_enter = enter
@@ -42,17 +63,34 @@ class StateGroup(object):
         self.states.append(s)
         return s
 
-    def create_popup_state(self, popup):
+    def create_popup_state(self, popup: Types.ELLIPSIS) -> Types.NONE:
+        """
+
+        Args:
+            popup: 
+
+        Returns:
+
+        Raises:
+
+        """
         return self.create_state(popup.enter, popup.leave, popup)
 
 
-class State(object):
+class State:
     """A GUI state.
-
+    
     A GUI state is a mode which the GUI is in, for example an active
     popup window or a special (usually short-lived) view on the
     document. The application defines functions to be called when the
     state is entered or left.
+
+    Args:
+
+    Returns:
+
+    Raises:
+
     """
 
     ## Class consts and instance defaults
@@ -99,7 +137,17 @@ class State(object):
             popup.popup_state = self  # FIXME: hacky?
             self.outside_popup_timeout = popup.outside_popup_timeout
 
-    def enter(self, **kwargs):
+    def enter(self, **kwargs: Types.ELLIPSIS) -> Types.NONE:
+        """
+
+        Args:
+            **kwargs: 
+
+        Returns:
+
+        Raises:
+
+        """
         logger.debug("Entering State, calling %s", self.on_enter.__name__)
         assert not self.active
         self.active = True
@@ -111,7 +159,17 @@ class State(object):
             raise
         self._restart_autoleave_timeout()
 
-    def leave(self, reason=None):
+    def leave(self, reason: Types.ELLIPSIS = None) -> Types.NONE:
+        """
+
+        Args:
+            reason:  (Default value = None)
+
+        Returns:
+
+        Raises:
+
+        """
         logger.debug(
             "Leaving State (reason=%r), calling %s",
             reason,
@@ -129,19 +187,16 @@ class State(object):
             raise
 
     def activate(self, action_or_event=None, **kwargs):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Activate a State from an action or a button press event.
 
-        :param action_or_event: A Gtk.Action, or a Gdk.Event.
-        :param \*\*kwargs: passed to enter().
+        Args:
+            action_or_event: A Gtk.Action, or a Gdk.Event. (Default value = None)
+            **kwargs: 
 
-        For events, only button press events are supported by this code.
+        Returns:
 
-        When a Gtk.Action is activated, custom attributes are used to
-        figure out whether the action was invoked from a menu, or using
-        a keypress.  This requires the action to have been registered
-        with the app's keyboard manager.
-
-        See also `keyboard.KeyboardManager.takeover_event()`.
+        Raises:
 
         """
         if self.active:
@@ -187,7 +242,17 @@ class State(object):
         )  # FIXME: should probably be renamed (mouse button possible)
         self.enter(**kwargs)
 
-    def toggle(self, action=None):
+    def toggle(self, action: Types.ELLIPSIS = None) -> Types.NONE:
+        """
+
+        Args:
+            action:  (Default value = None)
+
+        Returns:
+
+        Raises:
+
+        """
         if isinstance(action, Gtk.ToggleAction):
             want_active = action.get_active()
         else:
@@ -200,6 +265,18 @@ class State(object):
                 self.leave()
 
     def _keyup_cb(self, widget, event):
+        # type: (Types.ELLIPSIS) -> Types.NONE
+        """
+
+        Args:
+            widget: 
+            event: 
+
+        Returns:
+
+        Raises:
+
+        """
         if not self.active:
             return
         self.keydown = False
@@ -214,12 +291,14 @@ class State(object):
     ## Auto-leave timeout
 
     def _stop_autoleave_timeout(self):
+        """ """
         if not self._autoleave_timeout_id:
             return
         GLib.source_remove(self._autoleave_timeout_id)
         self._autoleave_timeout_id = None
 
     def _restart_autoleave_timeout(self):
+        """ """
         if not self.autoleave_timeout:
             return
         self._stop_autoleave_timeout()
@@ -229,6 +308,7 @@ class State(object):
         )
 
     def _autoleave_timeout_cb(self):
+        """ """
         if not self.keydown:
             self.leave("timeout")
         return False
@@ -236,12 +316,14 @@ class State(object):
     ## Outside-popup timer
 
     def _stop_outside_popup_timeout(self):
+        """ """
         if not self._outside_popup_timeout_id:
             return
         GLib.source_remove(self._outside_popup_timeout_id)
         self._outside_popup_timeout_id = None
 
     def _restart_outside_popup_timeout(self):
+        """ """
         if not self.outside_popup_timeout:
             return
         self._stop_outside_popup_timeout()
@@ -251,6 +333,7 @@ class State(object):
         )
 
     def _outside_popup_timeout_cb(self):
+        """ """
         if not self._outside_popup_timeout_id:
             return False
         self._outside_popup_timeout_id = None
@@ -259,6 +342,18 @@ class State(object):
         return False
 
     def _popup_enter_notify_cb(self, widget, event):
+        # type: (Types.ELLIPSIS) -> Types.NONE
+        """
+
+        Args:
+            widget: 
+            event: 
+
+        Returns:
+
+        Raises:
+
+        """
         if not self.active:
             return
         if self._outside_popup_timeout_id:
@@ -266,6 +361,18 @@ class State(object):
             self._outside_popup_timeout_id = None
 
     def _popup_leave_notify_cb(self, widget, event):
+        # type: (Types.ELLIPSIS) -> Types.NONE
+        """
+
+        Args:
+            widget: 
+            event: 
+
+        Returns:
+
+        Raises:
+
+        """
         if not self.active:
             return
         # allow to leave the window for a short time

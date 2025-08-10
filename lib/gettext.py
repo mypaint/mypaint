@@ -27,14 +27,6 @@ still uses a relative import, however.
 from warnings import warn
 from lib.gibindings import GLib
 
-# Set the default encoding like PyGTK
-from lib.pycompat import PY3
-import sys
-
-if not PY3:
-    reload(sys)  # noqa: F821
-    sys.setdefaultencoding("utf-8")
-
 # Older code in lib imports these as "from gettext import gettext as _".
 # Pull them in for backwards compat.
 # Might change these to _Glib.dgettext/ngettext instead.
@@ -47,22 +39,23 @@ from gettext import ngettext  # noqa: F401 E402
 # for translators.
 
 
-def C_(context, msgid):  # noqa: N802
+def C_(context: str, msgid: str) -> str:  # noqa: N802
     """Mark a string for translation, with supplied context.
 
-    :param str context: Disambiguating context.
-    :param str msgid: String to translate.
-    :returns: the translated Unicode string
-    :rtype: str
+    Args:
+        context: Disambiguating context.
+        msgid: String to translate.
 
-    Convenience wrapper around g_dpgettext2. It's a function not a
-    macro, but use it as if it was a C macro only: in other words, only
-    use string literals so that the strings marked for translation can
-    be extracted.
+Convenience wrapper around g_dpgettext2. It's a function not a
+macro, but use it as if it was a C macro only: in other words, only
+use string literals so that the strings marked for translation can
+be extracted.
 
-    Writing the context as a regular string literal and the string
-    marked for translation as an explicit unicode lteral makes the fake
-    macro easier to read in the code.
+Writing the context as a regular string literal and the string
+marked for translation as an explicit unicode lteral makes the fake
+macro easier to read in the code.: the translated Unicode string
+
+    Raises:
 
     """
     g_dpgettext2 = GLib.dpgettext2

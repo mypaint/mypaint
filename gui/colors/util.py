@@ -12,11 +12,21 @@
 
 import math
 
-from lib.pycompat import xrange
-
 
 def clamp(v, bottom, top):
-    """Returns `v`, clamped to within a particular range."""
+    # type: (Types.ELLIPSIS) -> Types.NONE
+    """Returns `v`, clamped to within a particular range.
+
+    Args:
+        v: 
+        bottom: 
+        top: 
+
+    Returns:
+
+    Raises:
+
+    """
     if v > top:
         return top
     if v < bottom:
@@ -25,23 +35,49 @@ def clamp(v, bottom, top):
 
 
 def add_distance_fade_stops(gr, rgb, nstops=3, gamma=2, alpha=1.0):
+    # type: (Types.ELLIPSIS) -> Types.NONE
     """Adds rgba stops to a Cairo gradient approximating a power law fade.
-
+    
     The stops have even spacing between the 0 and 1 positions, and alpha
     values diminishing from 1 to 0. When `gamma` is greater than 1, the
     generated fades or glow diminishes faster than a linear gradient. This
     seems to reduce halo artifacts on some LCD backlit displays.
+
+    Args:
+        gr: 
+        rgb: 
+        nstops:  (Default value = 3)
+        gamma:  (Default value = 2)
+        alpha:  (Default value = 1.0)
+
+    Returns:
+
+    Raises:
+
     """
     red, green, blue = rgb
     nstops = int(nstops) + 2
-    for s in xrange(nstops + 1):
+    for s in range(nstops + 1):
         a = alpha * (((nstops - s) / nstops) ** gamma)
         stop = s / nstops
         gr.add_color_stop_rgba(stop, red, green, blue, a)
 
 
 def draw_marker_circle(cr, x, y, size=2):
-    """Draws an outlined circular marker."""
+    # type: (Types.ELLIPSIS) -> Types.NONE
+    """Draws an outlined circular marker.
+
+    Args:
+        cr: 
+        x: 
+        y: 
+        size:  (Default value = 2)
+
+    Returns:
+
+    Raises:
+
+    """
     cr.save()
     cr.set_source_rgb(0, 0, 0)
     cr.set_line_width(size + 2)

@@ -56,17 +56,23 @@ logger = logging.getLogger(__name__)
 ## Class definitions
 
 
-class CanvasController(object):
+class CanvasController:
     """Minimal canvas controller using a stack of modes.
-
+    
     Basic CanvasController objects can be set up to handle scroll events
     like zooming or rotation only, pointer events like drawing only, or
     both.
-
+    
     The actual interpretation of each event is delegated to the top item
     on the controller's modes stack: see `gui.mode` for details.
     Simpler modes may assume the basic CanvasController interface, more
     complex ones may require the full Document interface.
+
+    Args:
+
+    Returns:
+
+    Raises:
 
     """
 
@@ -101,52 +107,131 @@ class CanvasController(object):
     ## Low-level GTK event handlers: delegated to the current mode
 
     def button_press_cb(self, tdw, event):
-        """Delegate a button-press-event to the current mode"""
+        """Delegate a button-press-event to the current mode
+
+        Args:
+            tdw: 
+            event: 
+
+        Returns:
+
+        Raises:
+
+        """
         mode = self.modes.top
         result = mode.button_press_cb(tdw, event)
         self._update_last_event_info(tdw, event)
         return result
 
     def button_release_cb(self, tdw, event):
-        """Delegate a button-release-event to the current mode"""
+        """Delegate a button-release-event to the current mode
+
+        Args:
+            tdw: 
+            event: 
+
+        Returns:
+
+        Raises:
+
+        """
         mode = self.modes.top
         result = mode.button_release_cb(tdw, event)
         self._update_last_event_info(tdw, event)
         return result
 
     def motion_notify_cb(self, tdw, event, mode=None):
-        """Delegate a motion-notify-event to the current mode"""
+        """Delegate a motion-notify-event to the current mode
+
+        Args:
+            tdw: 
+            event: 
+            mode:  (Default value = None)
+
+        Returns:
+
+        Raises:
+
+        """
         mode = mode or self.modes.top
         result = mode.motion_notify_cb(tdw, event)
         self._update_last_event_info(tdw, event)
         return result
 
     def scroll_cb(self, tdw, event):
-        """Delegate a scroll-event to the current mode"""
+        """Delegate a scroll-event to the current mode
+
+        Args:
+            tdw: 
+            event: 
+
+        Returns:
+
+        Raises:
+
+        """
         mode = self.modes.top
         result = mode.scroll_cb(tdw, event)
         self._update_last_event_info(tdw, event)
         return result
 
     def key_press_cb(self, win, tdw, event):
-        """Delegate a key-press-event to the current mode"""
+        """Delegate a key-press-event to the current mode
+
+        Args:
+            win: 
+            tdw: 
+            event: 
+
+        Returns:
+
+        Raises:
+
+        """
         mode = self.modes.top
         return mode.key_press_cb(win, tdw, event)
 
     def key_release_cb(self, win, tdw, event):
-        """Delegate a key-release-event to the current mode"""
+        """Delegate a key-release-event to the current mode
+
+        Args:
+            win: 
+            tdw: 
+            event: 
+
+        Returns:
+
+        Raises:
+
+        """
         mode = self.modes.top
         return mode.key_release_cb(win, tdw, event)
 
     def _update_last_event_info(self, tdw, event):
+        """
+
+        Args:
+            tdw: 
+            event: 
+
+        Returns:
+
+        Raises:
+
+        """
         # Update the stored details of the last event delegated.
         tdw.last_tdw_event_info = event.time, event.x, event.y
 
     def get_last_event_info(self, tdw):
         """Get details of the last event delegated to a mode in the stack.
 
-        :rtype: tuple
-        :returns: event details: ``(time, x, y)``
+        Args:
+            tdw: 
+
+        Returns:
+            event details: ``(time, x, y)``
+
+        Raises:
 
         """
         info = tdw.last_tdw_event_info
@@ -160,29 +245,42 @@ class CanvasController(object):
     @lib.observable.event
     def input_stroke_ended(self, event):
         """Event: input stroke just ended
-
+        
         An input stroke is a single button-down, move, button-up action. This
         sort of stroke is not the same as a brush engine stroke (see
         ``lib.document``). It is possible that the visible stroke starts
         earlier and ends later, depending on how the operating system maps
         pressure to button up/down events.
 
-        :param self: Passed on to registered observers
-        :param event: The button release event which ended the input stroke
-
+        Args:
+            event: The button release event which ended the input stroke
+        
         Observer functions and methods are called with the originating Document
         Controller and the GTK event as arguments. This is a good place to
         listen for "just painted something" events in some cases; ``app.brush``
         will contain everything needed about the input stroke which is ending.
+
+        Returns:
+
+        Raises:
+
         """
         pass
 
     @lib.observable.event
     def input_stroke_started(self, event):
         """Event: input stroke just started
-
+        
         Callbacks interested in the start of an input stroke should be attached
         here. See `input_stroke_ended()`.
+
+        Args:
+            event: 
+
+        Returns:
+
+        Raises:
+
         """
         pass
 
@@ -247,11 +345,16 @@ class Document(CanvasController):  # TODO: rename to "DocumentController"
 
     @classmethod
     def get_instances(cls):
-        """Iterates across all Document instances
+    """Iterates across all Document instances
 
-        :returns: All Document instances registered
-        :rtype: iterable
-        """
+    Args:
+
+    Returns:
+        iterable: All Document instances registered
+
+    Raises:
+
+    """
         for instance_ref in cls._INSTANCE_REFS:
             instance = instance_ref()
             if not instance:
@@ -260,7 +363,7 @@ class Document(CanvasController):  # TODO: rename to "DocumentController"
 
     @classmethod
     def get_primary_instance(cls):
-        """Return the main application working doc"""
+        """ """
         primary_instance = None
         for instance in cls.get_instances():
             primary_instance = instance
@@ -505,10 +608,17 @@ class Document(CanvasController):  # TODO: rename to "DocumentController"
 
     def _init_extra_keys(self):
         """Internal: initializes secondary keyboard shortcuts
-
+        
         The keyboard shortcuts here are not visible in the menu.
         Shortcuts assigned through the menu will take precedence.
         If we assign the same key twice, the last one will work.
+
+        Args:
+
+        Returns:
+
+        Raises:
+
         """
         k = self.app.kbm.add_extra_key
 
@@ -550,14 +660,33 @@ class Document(CanvasController):  # TODO: rename to "DocumentController"
     ## Command history traversal actions
 
     def undo_cb(self, action):
-        """Undo action callback"""
+        """Undo action callback
+
+        Args:
+            action: 
+
+        Returns:
+
+        Raises:
+
+        """
         self.model.undo()
 
     def redo_cb(self, action):
-        """Redo action callback"""
+        """Redo action callback
+
+        Args:
+            action: 
+
+        Returns:
+
+        Raises:
+
+        """
         self.model.redo()
 
     def _init_undo_redo_actions(self):
+        """ """
         ag = self.action_group
 
         # Icon names
@@ -580,7 +709,19 @@ class Document(CanvasController):  # TODO: rename to "DocumentController"
         self._redo_action = redo_action
 
     def _update_undo_redo(self, action, stack, cmd_str, plain_str):
-        """Set label, tooltip and sensitivity"""
+        """Set label, tooltip and sensitivity
+
+        Args:
+            action: 
+            stack: 
+            cmd_str: 
+            plain_str: 
+
+        Returns:
+
+        Raises:
+
+        """
         if len(stack) > 0:
             cmd = stack[-1]
             desc = cmd_str % cmd.display_name
@@ -591,7 +732,16 @@ class Document(CanvasController):  # TODO: rename to "DocumentController"
         action.set_sensitive(len(stack) > 0)
 
     def _update_command_stack_actions(self, *_ignored):
-        """Update the undo and redo actions"""
+        """Update the undo and redo actions
+
+        Args:
+            *_ignored: 
+
+        Returns:
+
+        Raises:
+
+        """
         stack = self.model.command_stack
         self._update_undo_redo(
             self._undo_action, stack.undo_stack, UNDO_CMD, UNDO_PLAIN
@@ -603,7 +753,17 @@ class Document(CanvasController):  # TODO: rename to "DocumentController"
     ## Event handling
 
     def button_press_cb(self, tdw, event):
-        """Handles button press events received on a canvas"""
+        """Handles button press events received on a canvas
+
+        Args:
+            tdw: 
+            event: 
+
+        Returns:
+
+        Raises:
+
+        """
         # User-configurable switching between modes, menu popups etc.
         mode = self.modes.top
         consider_mode_switch = (
@@ -647,7 +807,17 @@ class Document(CanvasController):  # TODO: rename to "DocumentController"
         return CanvasController.button_press_cb(self, tdw, event)
 
     def button_release_cb(self, tdw, event):
-        """Handles button release events received on a canvas"""
+        """Handles button release events received on a canvas
+
+        Args:
+            tdw: 
+            event: 
+
+        Returns:
+
+        Raises:
+
+        """
         # User-configurable forbidding of particular devices
         mode = self.modes.top
         mon = self.app.device_monitor
@@ -660,7 +830,17 @@ class Document(CanvasController):  # TODO: rename to "DocumentController"
         return CanvasController.button_release_cb(self, tdw, event)
 
     def motion_notify_cb(self, tdw, event):
-        """Handles motion-notify events received on a canvas"""
+        """Handles motion-notify events received on a canvas
+
+        Args:
+            tdw: 
+            event: 
+
+        Returns:
+
+        Raises:
+
+        """
         mode = self._top_mode
         mon = self.app.device_monitor
         dev = event.get_source_device()
@@ -673,7 +853,17 @@ class Document(CanvasController):  # TODO: rename to "DocumentController"
         return False  # XXX don't consume motions to allow workspace autohide
 
     def scroll_cb(self, tdw, event):
-        """Handles scroll events received on a canvas"""
+        """Handles scroll events received on a canvas
+
+        Args:
+            tdw: 
+            event: 
+
+        Returns:
+
+        Raises:
+
+        """
         mode = self.modes.top
         mon = self.app.device_monitor
         dev = event.get_source_device()
@@ -684,7 +874,18 @@ class Document(CanvasController):  # TODO: rename to "DocumentController"
         CanvasController.scroll_cb(self, tdw, event)
 
     def key_press_cb(self, win, tdw, event):
-        """Handles key-press events received on the main window"""
+        """Handles key-press events received on the main window
+
+        Args:
+            win: 
+            tdw: 
+            event: 
+
+        Returns:
+
+        Raises:
+
+        """
         # User-configurable switching between modes, menu popups etc.
         mode = self.modes.top
         consider_mode_switch = mode.supports_button_switching and not getattr(
@@ -748,11 +949,35 @@ class Document(CanvasController):  # TODO: rename to "DocumentController"
         return CanvasController.key_press_cb(self, win, tdw, event)
 
     def key_release_cb(self, win, tdw, event):
+        """
+
+        Args:
+            win: 
+            tdw: 
+            event: 
+
+        Returns:
+
+        Raises:
+
+        """
         self._update_key_pressed_status_message()
         return CanvasController.key_release_cb(self, win, tdw, event)
 
     def _dispatch_named_action(self, win, tdw, event, action_name):
-        """Dispatch an action looked up via the buttonmap"""
+        """Dispatch an action looked up via the buttonmap
+
+        Args:
+            win: 
+            tdw: 
+            event: 
+            action_name: 
+
+        Returns:
+
+        Raises:
+
+        """
         app = self.app
         drawwindow = app.drawWindow
         if action_name == "ShowPopupMenu":
@@ -806,6 +1031,7 @@ class Document(CanvasController):  # TODO: rename to "DocumentController"
             return False
 
     def _get_key_pressed_status_message_context_id(self):
+        """ """
         statusbar = self.app.statusbar
         try:
             context_id = self.__key_pressed_msg_statusbar_context
@@ -817,19 +1043,23 @@ class Document(CanvasController):  # TODO: rename to "DocumentController"
     def get_current_modifiers(self):
         """Returns the current set of modifier keys as a Gdk bitmask.
 
-        :returns: The current set of modifier keys.
-        :rtype: Gdk.ModifierType
+        Args:
 
-        This method should only be used in
+        Returns:
+            Gdk.ModifierType
 
-        * Handlers for keypress events
-          when the key in question is itself a modifier,
-        * Handlers of multiple types of event (both key and pointer),
-        * When the triggering event simply isn't available.
+This method should only be used in
 
-        Normal pointer button event handling should use
-        ``event.state & Gtk.accelerator_get_default_mod_mask()``
-        instead.
+* Handlers for keypress events
+  when the key in question is itself a modifier,
+* Handlers of multiple types of event (both key and pointer),
+* When the triggering event simply isn't available.
+
+Normal pointer button event handling should use
+``event.state & Gtk.accelerator_get_default_mod_mask()``
+instead.: The current set of modifier keys.
+
+        Raises:
 
         """
         win = self.tdw.get_window()
@@ -908,7 +1138,16 @@ class Document(CanvasController):  # TODO: rename to "DocumentController"
         return cb
 
     def copy_cb(self, action):
-        """``CopyLayer`` GtkAction callback: copy layer to clipboard"""
+        """``CopyLayer`` GtkAction callback: copy layer to clipboard
+
+        Args:
+            action: 
+
+        Returns:
+
+        Raises:
+
+        """
         # use the full document bbox, so we can paste layers back to the
         # correct position
         rootstack = self.model.layer_stack
@@ -942,7 +1181,16 @@ class Document(CanvasController):  # TODO: rename to "DocumentController"
         )
 
     def paste_cb(self, action):
-        """``PasteLayer`` GtkAction callback: replace layer with clipboard"""
+        """``PasteLayer`` GtkAction callback: replace layer with clipboard
+
+        Args:
+            action: 
+
+        Returns:
+
+        Raises:
+
+        """
         clipboard = self._get_clipboard()
         # Windows requires the available targets to be polled first.
         # Ensure that happens fully before polling for image data.
@@ -1005,11 +1253,29 @@ class Document(CanvasController):  # TODO: rename to "DocumentController"
     ## Frame manipulation actions
 
     def trim_layer_cb(self, action):
-        """Trim Layer action: discard tiles outside the frame"""
+        """Trim Layer action: discard tiles outside the frame
+
+        Args:
+            action: 
+
+        Returns:
+
+        Raises:
+
+        """
         self.model.trim_current_layer()
 
     def _update_trim_layer_action(self, *_ignored):
-        """Updates the Trim Layer action's sensitivity"""
+        """Updates the Trim Layer action's sensitivity
+
+        Args:
+            *_ignored: 
+
+        Returns:
+
+        Raises:
+
+        """
         app = self.app
         rootstack = self.model.layer_stack
         current = rootstack.current
@@ -1020,26 +1286,71 @@ class Document(CanvasController):  # TODO: rename to "DocumentController"
 
     @with_wait_cursor
     def uniq_layer_tiles_cb(self, action):
-        """Discard tiles that don't change the backdrop"""
+        """Discard tiles that don't change the backdrop
+
+        Args:
+            action: 
+
+        Returns:
+
+        Raises:
+
+        """
         self.model.uniq_current_layer(pixels=False)
 
     @with_wait_cursor
     def uniq_layer_pixels_cb(self, action):
-        """Discard tiles and pixels that don't change the backdrop"""
+        """Discard tiles and pixels that don't change the backdrop
+
+        Args:
+            action: 
+
+        Returns:
+
+        Raises:
+
+        """
         self.model.uniq_current_layer(pixels=True)
 
     @with_wait_cursor
     def refactor_layer_group_tiles_cb(self, action):
-        """Extract common tiles to a new sublayer & delete from all others."""
+        """Extract common tiles to a new sublayer & delete from all others.
+
+        Args:
+            action: 
+
+        Returns:
+
+        Raises:
+
+        """
         self.model.refactor_current_layer_group(pixels=False)
 
     @with_wait_cursor
     def refactor_layer_group_pixels_cb(self, action):
-        """Extract common pixels to a new sublayer & delete from all others."""
+        """Extract common pixels to a new sublayer & delete from all others.
+
+        Args:
+            action: 
+
+        Returns:
+
+        Raises:
+
+        """
         self.model.refactor_current_layer_group(pixels=True)
 
     def _update_layer_slice_actions(self, *_ignored):
-        """Updates the layer-slice actions' sensitivities."""
+        """Updates the layer-slice actions' sensitivities.
+
+        Args:
+            *_ignored: 
+
+        Returns:
+
+        Raises:
+
+        """
         app = self.app
         rootstack = self.model.layer_stack
         current = rootstack.current
@@ -1064,7 +1375,16 @@ class Document(CanvasController):  # TODO: rename to "DocumentController"
             app.find_action(act).set_sensitive(can_refactor)
 
     def toggle_frame_cb(self, action):
-        """Frame Enabled toggle callback"""
+        """Frame Enabled toggle callback
+
+        Args:
+            action: 
+
+        Returns:
+
+        Raises:
+
+        """
         model = self.model
         enabled = bool(model.frame_enabled)
         desired = bool(action.get_active())
@@ -1072,7 +1392,17 @@ class Document(CanvasController):  # TODO: rename to "DocumentController"
             model.set_frame_enabled(desired, user_initiated=True)
 
     def _frame_enabled_changed_cb(self, model, enabled):
-        """Invoked when the frame changes"""
+        """Invoked when the frame changes
+
+        Args:
+            model: 
+            enabled: 
+
+        Returns:
+
+        Raises:
+
+        """
         action = self.app.find_action("FrameToggle")
         if bool(action.get_active()) != bool(enabled):
             action.set_active(enabled)
@@ -1080,6 +1410,16 @@ class Document(CanvasController):  # TODO: rename to "DocumentController"
     ## Layer and stroke picking
 
     def blink_layer(self, action=None):
+        """
+
+        Args:
+            action:  (Default value = None)
+
+        Returns:
+
+        Raises:
+
+        """
         if self.app.preferences.get("ui.blink_layers", True):
             self.layerblink_state.activate(action)
         elif self.model.layer_stack.current_layer_solo:
@@ -1088,16 +1428,21 @@ class Document(CanvasController):  # TODO: rename to "DocumentController"
     def pick_context(self, x, y, action=None):
         """Picks layer and brush
 
-        :param int x: X coord for pick, in the model's coordinate space
-        :param int y: Y coord for pick, in the model's coordinate space
-        :param Gdk.Action action: initiating action
-
+        Args:
+            x (int): X coord for pick, in the model's coordinate space
+            y (int): Y coord for pick, in the model's coordinate space
+            action (Gdk.Action, optional): initiating action
+        
         If the document has a pickable layer which has a brushstroke
         under the pick position, that layer is selected, and the
         brushstroke's settings are assigned to the current brush.
-
+        
         The initiating action is used for coordinating keyboard releases
-        ending the state. See gui.stategroup.
+        ending the state. See gui.stategroup. (Default value = None)
+
+        Returns:
+
+        Raises:
 
         """
         layers = self.model.layer_stack
@@ -1125,16 +1470,21 @@ class Document(CanvasController):  # TODO: rename to "DocumentController"
     def pick_layer(self, x, y, action=None):
         """Picks layer only
 
-        :param int x: X coord for pick, in the model's coordinate space
-        :param int y: Y coord for pick, in the model's coordinate space
-        :param Gdk.Action action: initiating action
-
+        Args:
+            x (int): X coord for pick, in the model's coordinate space
+            y (int): Y coord for pick, in the model's coordinate space
+            action (Gdk.Action, optional): initiating action
+        
         If the document has a pickable layer under the pick position,
         that layer is selected. Fn no layer is pickable there, the
         bottom layer is selected instead.
-
+        
         The initiating action is used for coordinating keyboard releases
-        ending the state. See gui.stategroup if you dare.
+        ending the state. See gui.stategroup if you dare. (Default value = None)
+
+        Returns:
+
+        Raises:
 
         """
         for p_path, p_layer in self._layer_picking_iter():
@@ -1149,8 +1499,14 @@ class Document(CanvasController):  # TODO: rename to "DocumentController"
     def _layer_is_pickable(self, path, pos=None):
         """True if a (leaf) layer can be picked
 
-        :param path: Layer path to the layer to be tested.
-        :param pos: Optional (x,y) position to test for opacity.
+        Args:
+            path: Layer path to the layer to be tested.
+            pos: Optional (x,y) position to test for opacity. (Default value = None)
+
+        Returns:
+
+        Raises:
+
         """
         stack = self.model.layer_stack
         while len(path) > 0:
@@ -1187,15 +1543,42 @@ class Document(CanvasController):  # TODO: rename to "DocumentController"
     ## Layer action callbacks
 
     def clear_layer_cb(self, action):
-        """``ClearLayer`` GtkAction callback"""
+        """``ClearLayer`` GtkAction callback
+
+        Args:
+            action: 
+
+        Returns:
+
+        Raises:
+
+        """
         self.model.clear_current_layer()
 
     def remove_layer_cb(self, action):
-        """``RemoveLayer`` GtkAction callback"""
+        """``RemoveLayer`` GtkAction callback
+
+        Args:
+            action: 
+
+        Returns:
+
+        Raises:
+
+        """
         self.model.remove_current_layer()
 
     def _update_current_layer_actions(self, *_ignored):
-        """Update sensitivity of actions working on the current layer"""
+        """Update sensitivity of actions working on the current layer
+
+        Args:
+            *_ignored: 
+
+        Returns:
+
+        Raises:
+
+        """
         app = self.app
         rootstack = self.model.layer_stack
         have_current = bool(rootstack.current_path)
@@ -1217,11 +1600,29 @@ class Document(CanvasController):  # TODO: rename to "DocumentController"
             app.find_action(name).set_sensitive(have_current)
 
     def normalize_layer_mode_cb(self, action):
-        """``NormalizeLayerMode`` GtkAction callback"""
+        """``NormalizeLayerMode`` GtkAction callback
+
+        Args:
+            action: 
+
+        Returns:
+
+        Raises:
+
+        """
         self.model.normalize_layer_mode()
 
     def _update_normalize_layer_action(self, *_ignored):
-        """Updates the Normalize Layer Mode action's sensitivity"""
+        """Updates the Normalize Layer Mode action's sensitivity
+
+        Args:
+            *_ignored: 
+
+        Returns:
+
+        Raises:
+
+        """
         app = self.app
         rootstack = self.model.layer_stack
         current = rootstack.current
@@ -1231,7 +1632,16 @@ class Document(CanvasController):  # TODO: rename to "DocumentController"
     ## Layer selection (current layer path in the tree)
 
     def select_layer_below_cb(self, action):
-        """``SelectLayerBelow`` GtkAction callback"""
+        """``SelectLayerBelow`` GtkAction callback
+
+        Args:
+            action: 
+
+        Returns:
+
+        Raises:
+
+        """
         layers = self.model.layer_stack
         path = layers.get_current_path()
         path = layers.path_below(path)
@@ -1244,7 +1654,16 @@ class Document(CanvasController):  # TODO: rename to "DocumentController"
             self.blink_layer(action)
 
     def select_layer_above_cb(self, action):
-        """``SelectLayerAbove`` GtkAction callback"""
+        """``SelectLayerAbove`` GtkAction callback
+
+        Args:
+            action: 
+
+        Returns:
+
+        Raises:
+
+        """
         layers = self.model.layer_stack
         path = layers.get_current_path()
         path = layers.path_above(path)
@@ -1257,7 +1676,16 @@ class Document(CanvasController):  # TODO: rename to "DocumentController"
             self.blink_layer(action)
 
     def _update_layer_select_actions(self, *_ignored):
-        """Updates the Select Layer Above/Below actions"""
+        """Updates the Select Layer Above/Below actions
+
+        Args:
+            *_ignored: 
+
+        Returns:
+
+        Raises:
+
+        """
         app = self.app
         root = self.model.layer_stack
         current_path = root.current_path
@@ -1273,7 +1701,16 @@ class Document(CanvasController):  # TODO: rename to "DocumentController"
     ## Current layer's opacity
 
     def layer_increase_opacity(self, action):
-        """``IncreaseLayerOpacity`` GtkAction callback"""
+        """``IncreaseLayerOpacity`` GtkAction callback
+
+        Args:
+            action: 
+
+        Returns:
+
+        Raises:
+
+        """
         rootstack = self.model.layer_stack
         if rootstack.current is rootstack:
             return
@@ -1282,7 +1719,16 @@ class Document(CanvasController):  # TODO: rename to "DocumentController"
         self.model.set_current_layer_opacity(opacity)
 
     def layer_decrease_opacity(self, action):
-        """``DecreaseLayerOpacity`` GtkAction callback"""
+        """``DecreaseLayerOpacity`` GtkAction callback
+
+        Args:
+            action: 
+
+        Returns:
+
+        Raises:
+
+        """
         rootstack = self.model.layer_stack
         if rootstack.current is rootstack:
             return
@@ -1294,14 +1740,31 @@ class Document(CanvasController):  # TODO: rename to "DocumentController"
 
     def current_layer_solo_toggled_cb(self, action):
         """``SoloLayer`` GtkToggleAction callback
-
+        
         Toggles between showing just the current layer (regardless of its
         visibility flag) and all visible layers.
+
+        Args:
+            action: 
+
+        Returns:
+
+        Raises:
+
         """
         self.model.layer_stack.current_layer_solo = action.get_active()
 
     def _update_layer_solo_toggle(self, *_ignored):
-        """Updates the Layer Solo toggle action from the model"""
+        """Updates the Layer Solo toggle action from the model
+
+        Args:
+            *_ignored: 
+
+        Returns:
+
+        Raises:
+
+        """
         root = self.model.layer_stack
         action = self.app.find_action("SoloLayer")
         state = root.current_layer_solo
@@ -1309,13 +1772,31 @@ class Document(CanvasController):  # TODO: rename to "DocumentController"
             action.set_active(state)
 
     def show_background_toggle_cb(self, action):
-        """``ShowBackgroundToggle`` GtkToggleAction callback"""
+        """``ShowBackgroundToggle`` GtkToggleAction callback
+
+        Args:
+            action: 
+
+        Returns:
+
+        Raises:
+
+        """
         layers = self.model.layer_stack
         if bool(layers.background_visible) != bool(action.get_active()):
             layers.background_visible = action.get_active()
 
     def _update_show_background_toggle(self, *_ignored):
-        """Updates the Show Background toggle action from the model"""
+        """Updates the Show Background toggle action from the model
+
+        Args:
+            *_ignored: 
+
+        Returns:
+
+        Raises:
+
+        """
         root = self.model.layer_stack
         action = self.app.find_action("ShowBackgroundToggle")
         state = root.background_visible
@@ -1380,9 +1861,17 @@ class Document(CanvasController):  # TODO: rename to "DocumentController"
 
     def reorder_layer_cb(self, action):
         """Changes the z-order of a layer (GtkAction callback)
-
+        
         The direction the layer moves depends on the action name:
         "RaiseLayerInStack" or "LowerLayerInStack".
+
+        Args:
+            action: 
+
+        Returns:
+
+        Raises:
+
         """
         if action.get_name() == "RaiseLayerInStack":
             self.model.bubble_current_layer_up()
@@ -1390,7 +1879,16 @@ class Document(CanvasController):  # TODO: rename to "DocumentController"
             self.model.bubble_current_layer_down()
 
     def _update_layer_bubble_actions(self, *_ignored):
-        """Update bubble up/down actions from the model"""
+        """Update bubble up/down actions from the model
+
+        Args:
+            *_ignored: 
+
+        Returns:
+
+        Raises:
+
+        """
         app = self.app
         root = self.model.layer_stack
         current_path = root.current_path
@@ -1408,9 +1906,16 @@ class Document(CanvasController):  # TODO: rename to "DocumentController"
 
     def new_layer_cb(self, action):
         """Callback: new layer
-
+        
         Where the new layer is created, and the layer's type, depends on
         the action's name.
+
+        Args:
+            action: 
+
+        Returns:
+
+        Raises:
 
         """
         layers = self.model.layer_stack
@@ -1449,22 +1954,58 @@ class Document(CanvasController):  # TODO: rename to "DocumentController"
             self._begin_external_layer_edit()
 
     def merge_layer_down_cb(self, action):
-        """Action callback: squash current layer into the one below it"""
+        """Action callback: squash current layer into the one below it
+
+        Args:
+            action: 
+
+        Returns:
+
+        Raises:
+
+        """
         if self.model.merge_current_layer_down():
             self.blink_layer(action)
 
     def merge_visible_layers_cb(self, action):
-        """Action callback: squash all visible layers into one"""
+        """Action callback: squash all visible layers into one
+
+        Args:
+            action: 
+
+        Returns:
+
+        Raises:
+
+        """
         self.model.merge_visible_layers()
         self.blink_layer(action)
 
     def new_layer_merged_from_visible_cb(self, action):
-        """Action callback: combine all visible layers into a new one"""
+        """Action callback: combine all visible layers into a new one
+
+        Args:
+            action: 
+
+        Returns:
+
+        Raises:
+
+        """
         self.model.new_layer_merged_from_visible()
         self.blink_layer(action)
 
     def _update_merge_layer_down_action(self, *_ignored):
-        """Updates the layer Merge Down action's sensitivity"""
+        """Updates the layer Merge Down action's sensitivity
+
+        Args:
+            *_ignored: 
+
+        Returns:
+
+        Raises:
+
+        """
         # This may change in response to the path changing *or* the
         # mode property of the current or underlying layer changing.
         app = self.app
@@ -1476,11 +2017,29 @@ class Document(CanvasController):  # TODO: rename to "DocumentController"
         app.find_action("MergeLayerDown").set_sensitive(can_merge)
 
     def duplicate_layer_cb(self, action):
-        """``DuplicateLayer`` GtkAction callback: clone the current layer"""
+        """``DuplicateLayer`` GtkAction callback: clone the current layer
+
+        Args:
+            action: 
+
+        Returns:
+
+        Raises:
+
+        """
         self.model.duplicate_current_layer()
 
     def layer_properties_cb(self, action):
-        """LayerProperties GtkAction callback: layer properties dialog"""
+        """LayerProperties GtkAction callback: layer properties dialog
+
+        Args:
+            action: 
+
+        Returns:
+
+        Raises:
+
+        """
         layer = self.model.layer_stack.get_current()
         if layer is self.model.layer_stack:
             return
@@ -1494,19 +2053,46 @@ class Document(CanvasController):  # TODO: rename to "DocumentController"
     ## Per-layer flag toggles
 
     def layer_lock_toggle_cb(self, action):
-        """``LayerLockedToggle`` GtkAction callback"""
+        """``LayerLockedToggle`` GtkAction callback
+
+        Args:
+            action: 
+
+        Returns:
+
+        Raises:
+
+        """
         layer = self.model.layer_stack.get_current()
         if bool(layer.locked) != bool(action.get_active()):
             self.model.set_layer_locked(action.get_active(), layer)
 
     def layer_visible_toggle_cb(self, action):
-        """``LayerVisibleToggle`` GtkAction callback"""
+        """``LayerVisibleToggle`` GtkAction callback
+
+        Args:
+            action: 
+
+        Returns:
+
+        Raises:
+
+        """
         layer = self.model.layer_stack.get_current()
         if bool(layer.visible) != bool(action.get_active()):
             self.model.set_layer_visibility(action.get_active(), layer)
 
     def _update_layer_flag_toggles(self, *_ignored):
-        """Updates ToggleActions reflecting the current layer's flags"""
+        """Updates ToggleActions reflecting the current layer's flags
+
+        Args:
+            *_ignored: 
+
+        Returns:
+
+        Raises:
+
+        """
         rootstack = self.model.layer_stack
         current_layer = rootstack.current
         action_updates = [
@@ -1521,7 +2107,16 @@ class Document(CanvasController):  # TODO: rename to "DocumentController"
     ## Brush settings callbacks
 
     def fakepressure_increase_cb(self, action):
-        """``Fake Pressure Harder`` GtkAction callback"""
+        """``Fake Pressure Harder`` GtkAction callback
+
+        Args:
+            action: 
+
+        Returns:
+
+        Raises:
+
+        """
         fp = self.app.fakepressure
         self.app.fakepressure = fp * 1.1
         current_mode = self.modes.top
@@ -1533,7 +2128,16 @@ class Document(CanvasController):  # TODO: rename to "DocumentController"
             return
 
     def fakepressure_decrease_cb(self, action):
-        """``Fake Pressure Softer`` GtkAction callback"""
+        """``Fake Pressure Softer`` GtkAction callback
+
+        Args:
+            action: 
+
+        Returns:
+
+        Raises:
+
+        """
         fp = self.app.fakepressure
         self.app.fakepressure = fp / 1.1
         current_mode = self.modes.top
@@ -1545,7 +2149,16 @@ class Document(CanvasController):  # TODO: rename to "DocumentController"
             return
 
     def fakerotation_increase_cb(self, action):
-        """``Fake Rotation Twist Right`` GtkAction callback"""
+        """``Fake Rotation Twist Right`` GtkAction callback
+
+        Args:
+            action: 
+
+        Returns:
+
+        Raises:
+
+        """
         fr = self.app.fakerotation
         self.app.fakerotation = (fr + 0.0625) % 1.0
         current_mode = self.modes.top
@@ -1557,7 +2170,16 @@ class Document(CanvasController):  # TODO: rename to "DocumentController"
             return
 
     def fakerotation_decrease_cb(self, action):
-        """``Fake Rotation Twist Left`` GtkAction callback"""
+        """``Fake Rotation Twist Left`` GtkAction callback
+
+        Args:
+            action: 
+
+        Returns:
+
+        Raises:
+
+        """
         fr = self.app.fakerotation
         self.app.fakerotation = (fr - 0.0625) % 1.0
         current_mode = self.modes.top
@@ -1569,28 +2191,73 @@ class Document(CanvasController):  # TODO: rename to "DocumentController"
             return
 
     def brush_bigger_cb(self, action):
-        """``Bigger`` GtkAction callback"""
+        """``Bigger`` GtkAction callback
+
+        Args:
+            action: 
+
+        Returns:
+
+        Raises:
+
+        """
         adj = self.app.brush_adjustment["radius_logarithmic"]
         adj.set_value(adj.get_value() + 0.3)
 
     def brush_smaller_cb(self, action):
-        """``Smaller`` GtkAction callback"""
+        """``Smaller`` GtkAction callback
+
+        Args:
+            action: 
+
+        Returns:
+
+        Raises:
+
+        """
         adj = self.app.brush_adjustment["radius_logarithmic"]
         adj.set_value(adj.get_value() - 0.3)
 
     def more_opaque_cb(self, action):
-        """``MoreOpaque`` GtkAction callback"""
+        """``MoreOpaque`` GtkAction callback
+
+        Args:
+            action: 
+
+        Returns:
+
+        Raises:
+
+        """
         # FIXME: hm, looks this slider should be logarithmic?
         adj = self.app.brush_adjustment["opaque"]
         adj.set_value(adj.get_value() * 1.8)
 
     def less_opaque_cb(self, action):
-        """``MoreOpaque`` GtkAction callback"""
+        """``MoreOpaque`` GtkAction callback
+
+        Args:
+            action: 
+
+        Returns:
+
+        Raises:
+
+        """
         adj = self.app.brush_adjustment["opaque"]
         adj.set_value(adj.get_value() / 1.8)
 
     def brighter_cb(self, action):
-        """``Brighter`` GtkAction callback: lighten the brush color"""
+        """``Brighter`` GtkAction callback: lighten the brush color
+
+        Args:
+            action: 
+
+        Returns:
+
+        Raises:
+
+        """
         # TODO: use HCY?
         h, s, v = self.app.brush.get_color_hsv()
         v += 0.08
@@ -1599,7 +2266,16 @@ class Document(CanvasController):  # TODO: rename to "DocumentController"
         self.app.brush.set_color_hsv((h, s, v))
 
     def darker_cb(self, action):
-        """``Darker`` GtkAction callback: darken the brush color"""
+        """``Darker`` GtkAction callback: darken the brush color
+
+        Args:
+            action: 
+
+        Returns:
+
+        Raises:
+
+        """
         # TODO: use HCY?
         h, s, v = self.app.brush.get_color_hsv()
         v -= 0.08
@@ -1609,7 +2285,16 @@ class Document(CanvasController):  # TODO: rename to "DocumentController"
         self.app.brush.set_color_hsv((h, s, v))
 
     def increase_hue_cb(self, action):
-        """Clockwise hue rotation ("IncreaseHue" action)."""
+        """Clockwise hue rotation ("IncreaseHue" action).
+
+        Args:
+            action: 
+
+        Returns:
+
+        Raises:
+
+        """
         # TODO: use HCY?
         h, s, v = self.app.brush.get_color_hsv()
         e = 0.015
@@ -1617,7 +2302,16 @@ class Document(CanvasController):  # TODO: rename to "DocumentController"
         self.app.brush.set_color_hsv((h, s, v))
 
     def decrease_hue_cb(self, action):
-        """Anticlockwise hue rotation ("DecreaseHue" action)."""
+        """Anticlockwise hue rotation ("DecreaseHue" action).
+
+        Args:
+            action: 
+
+        Returns:
+
+        Raises:
+
+        """
         # TODO: use HCY?
         h, s, v = self.app.brush.get_color_hsv()
         e = 0.015
@@ -1625,7 +2319,16 @@ class Document(CanvasController):  # TODO: rename to "DocumentController"
         self.app.brush.set_color_hsv((h, s, v))
 
     def purer_cb(self, action):
-        """``Purer`` GtkAction callback: make the brush color less grey"""
+        """``Purer`` GtkAction callback: make the brush color less grey
+
+        Args:
+            action: 
+
+        Returns:
+
+        Raises:
+
+        """
         # TODO: use HCY?
         h, s, v = self.app.brush.get_color_hsv()
         s += 0.08
@@ -1634,7 +2337,16 @@ class Document(CanvasController):  # TODO: rename to "DocumentController"
         self.app.brush.set_color_hsv((h, s, v))
 
     def grayer_cb(self, action):
-        """``Grayer`` GtkAction callback: make the brush color more grey"""
+        """``Grayer`` GtkAction callback: make the brush color more grey
+
+        Args:
+            action: 
+
+        Returns:
+
+        Raises:
+
+        """
         # TODO: use HCY?
         h, s, v = self.app.brush.get_color_hsv()
         s -= 0.08
@@ -1648,8 +2360,13 @@ class Document(CanvasController):  # TODO: rename to "DocumentController"
     def brush_reload_settings(self, cnames=None):
         """Reset some or all brush settings to their saved values
 
-        :param cname: Setting names to reset; default is all settings
-        :type cname: Iterable of setting cnames.
+        Args:
+            cnames:  (Default value = None)
+
+        Returns:
+
+        Raises:
+
         """
         app = self.app
         bm = app.brushmanager
@@ -1666,7 +2383,16 @@ class Document(CanvasController):  # TODO: rename to "DocumentController"
                 adj.set_value(parent_value)
 
     def brush_reload_cb(self, action):
-        """``BrushReload`` GtkAction callback. Reload all brush settings."""
+        """``BrushReload`` GtkAction callback. Reload all brush settings.
+
+        Args:
+            action: 
+
+        Returns:
+
+        Raises:
+
+        """
         self.brush_reload_settings()
 
     def brush_is_modified(self):
@@ -1678,7 +2404,16 @@ class Document(CanvasController):  # TODO: rename to "DocumentController"
         return not parent_b.brushinfo.matches(current_bi)
 
     def _brush_settings_changed_cb(self, *a):
-        """Internal callback: updates the UI when brush settings change"""
+        """Internal callback: updates the UI when brush settings change
+
+        Args:
+            *a: 
+
+        Returns:
+
+        Raises:
+
+        """
         reset_action = self.app.find_action("BrushReload")
         if self.brush_is_modified():
             if not reset_action.get_sensitive():
@@ -1690,7 +2425,16 @@ class Document(CanvasController):  # TODO: rename to "DocumentController"
     ## Brushkey callbacks
 
     def context_cb(self, action):
-        """GtkAction callback for various brushkey operations"""
+        """GtkAction callback for various brushkey operations
+
+        Args:
+            action: 
+
+        Returns:
+
+        Raises:
+
+        """
         name = action.get_name()
         store = False
         bm = self.app.brushmanager
@@ -1719,14 +2463,34 @@ class Document(CanvasController):  # TODO: rename to "DocumentController"
                 self.app.brushmodifier.restore_context_of_selected_brush()
 
     def context_toggle_color_cb(self, action):
-        """GtkToggleAction callback for whether brushkeys restore color"""
+        """GtkToggleAction callback for whether brushkeys restore color
+
+        Args:
+            action: 
+
+        Returns:
+
+        Raises:
+
+        """
         value = bool(action.get_active())
         self.app.preferences["misc.context_restores_color"] = value
 
     ## UI feedback for current layer/stroke
 
     def strokeblink_state_enter(self, strokeshape, bbox, center):
-        """`gui.stategroup.State` entry callback for blinking a stroke"""
+        """`gui.stategroup.State` entry callback for blinking a stroke
+
+        Args:
+            strokeshape: 
+            bbox: 
+            center: 
+
+        Returns:
+
+        Raises:
+
+        """
         overlay = lib.layer.SurfaceBackedLayer()
         overlay.load_from_strokeshape(strokeshape, bbox=bbox, center=center)
         self.tdw.overlay_layer = overlay
@@ -1734,7 +2498,16 @@ class Document(CanvasController):  # TODO: rename to "DocumentController"
         self.model.canvas_area_modified(*bbox)
 
     def strokeblink_state_leave(self, reason):
-        """`gui.stategroup.State` leave callback for blinking a stroke"""
+        """`gui.stategroup.State` leave callback for blinking a stroke
+
+        Args:
+            reason: 
+
+        Returns:
+
+        Raises:
+
+        """
         if self.tdw.overlay_layer is None:
             return
         bbox = self.tdw.overlay_layer.get_bbox()
@@ -1747,7 +2520,16 @@ class Document(CanvasController):  # TODO: rename to "DocumentController"
         layers.current_layer_previewing = True
 
     def layerblink_state_leave(self, reason):
-        """`gui.stategroup.State` leave callback for blinking a layer"""
+        """`gui.stategroup.State` leave callback for blinking a layer
+
+        Args:
+            reason: 
+
+        Returns:
+
+        Raises:
+
+        """
         layers = self.model.layer_stack
         layers.current_layer_previewing = False
 
@@ -1756,8 +2538,13 @@ class Document(CanvasController):  # TODO: rename to "DocumentController"
     def pan(self, direction):
         """Handles panning (scrolling) in increments.
 
-        :param direction: direction of panning
-        :type direction: `PAN_LEFT`, `PAN_RIGHT`, `PAN_UP`, or `PAN_DOWN`
+        Args:
+            direction (`PAN_LEFT`, `PAN_RIGHT`, `PAN_UP`, or `PAN_DOWN`): direction of panning
+
+        Returns:
+
+        Raises:
+
         """
         allocation = self.tdw.get_allocation()
         step = min((allocation.width, allocation.height)) * self.PAN_STEP
@@ -1775,14 +2562,18 @@ class Document(CanvasController):  # TODO: rename to "DocumentController"
 
     def zoom(self, direction, center=CENTER_ON_POINTER):
         """Handles zoom in increments.
-
+        
         Zooms the doc's TDW by a set amount, either in or out.
 
-        :param direction: direction of zoom
-        :type direction: `ZOOM_INWARDS` or `ZOOM_OUTWARDS`
-        :param center: zoom center
-        :type center: tuple ``(x, y)`` in model coords, or `CENTER_ON_POINTER`
-            or `CENTER_ON_VIEWPORT`
+        Args:
+            direction (`ZOOM_INWARDS` or `ZOOM_OUTWARDS`): direction of zoom
+            center (tuple ``(x, y)`` in model coords, or `CENTER_ON_POINTER`, optional): zoom center
+        or `CENTER_ON_VIEWPORT` (Default value = CENTER_ON_POINTER)
+
+        Returns:
+
+        Raises:
+
         """
 
         if center == self.CENTER_ON_POINTER:
@@ -1817,14 +2608,18 @@ class Document(CanvasController):  # TODO: rename to "DocumentController"
 
     def rotate(self, direction, center=CENTER_ON_POINTER):
         """Handles rotation in increments.
-
+        
         Rotates the doc's TDW by a set amount, either left or right.
 
-        :param direction: direction of rotation
-        :type direction: `ROTATE_CLOCKWISE` or `ROTATE_ANTICLOCKWISE`
-        :param center: rotation center
-        :type center: tuple ``(x, y)`` in model coords, or `CENTER_ON_POINTER`
-            or `CENTER_ON_VIEWPORT`
+        Args:
+            direction (`ROTATE_CLOCKWISE` or `ROTATE_ANTICLOCKWISE`): direction of rotation
+            center (tuple ``(x, y)`` in model coords, or `CENTER_ON_POINTER`, optional): rotation center
+        or `CENTER_ON_VIEWPORT` (Default value = CENTER_ON_POINTER)
+
+        Returns:
+
+        Raises:
+
         """
         if center == self.CENTER_ON_POINTER:
             etime, ex, ey = self.get_last_event_info(self.tdw)
@@ -1846,21 +2641,48 @@ class Document(CanvasController):  # TODO: rename to "DocumentController"
         self.notify_view_changed()
 
     def zoom_cb(self, action):
-        """Callback for Zoom{In,Out} GtkActions"""
+        """Callback for Zoom{In,Out} GtkActions
+
+        Args:
+            action: 
+
+        Returns:
+
+        Raises:
+
+        """
         direction = self.ZOOM_INWARDS
         if action.get_name() == "ZoomOut":
             direction = self.ZOOM_OUTWARDS
         self.zoom(direction)
 
     def zoom_centered_cb(self, action):
-        """Callback for Zoom{In,Out}Centered GtkActions"""
+        """Callback for Zoom{In,Out}Centered GtkActions
+
+        Args:
+            action: 
+
+        Returns:
+
+        Raises:
+
+        """
         direction = self.ZOOM_INWARDS
         if action.get_name() == "ZoomOutCentered":
             direction = self.ZOOM_OUTWARDS
         self.zoom(direction, center=self.CENTER_ON_VIEWPORT)
 
     def pan_cb(self, action):
-        """Callback for Pan{Left,Right,Up,Down} GtkActions"""
+        """Callback for Pan{Left,Right,Up,Down} GtkActions
+
+        Args:
+            action: 
+
+        Returns:
+
+        Raises:
+
+        """
         direction = self.PAN_LEFT
         if action.get_name() == "PanRight":
             direction = self.PAN_RIGHT
@@ -1871,14 +2693,33 @@ class Document(CanvasController):  # TODO: rename to "DocumentController"
         self.pan(direction)
 
     def rotate_cb(self, action):
-        """Callback for Rotate{Left,Right} GtkActions"""
+        """Callback for Rotate{Left,Right} GtkActions
+
+        Args:
+            action: 
+
+        Returns:
+
+        Raises:
+
+        """
         direction = self.ROTATE_CLOCKWISE
         if action.get_name() == "RotateRight":
             direction = self.ROTATE_ANTICLOCKWISE
         self.rotate(direction)
 
     def rotate_centered_cb(self, action, *test):
-        """Callback for Rotate{Left,Right}Centered GtkActions"""
+        """Callback for Rotate{Left,Right}Centered GtkActions
+
+        Args:
+            action: 
+            *test: 
+
+        Returns:
+
+        Raises:
+
+        """
         direction = self.ROTATE_CLOCKWISE
         if action.get_name() == "RotateRightCentered":
             direction = self.ROTATE_ANTICLOCKWISE
@@ -1887,7 +2728,16 @@ class Document(CanvasController):  # TODO: rename to "DocumentController"
     ## Symmetry
 
     def symmetry_active_toggled_cb(self, action):
-        """Handle changes to the SymmetryActive toggle"""
+        """Handle changes to the SymmetryActive toggle
+
+        Args:
+            action: 
+
+        Returns:
+
+        Raises:
+
+        """
         stack = self.model.layer_stack
         center = None
         want_active = bool(action.get_active())
@@ -1907,7 +2757,21 @@ class Document(CanvasController):  # TODO: rename to "DocumentController"
     def _symmetry_state_changed_cb(
         self, stack, active, center, sym_type, sym_lines, sym_angle
     ):
-        """Update the SymmetryActive toggle on model state changes"""
+        """Update the SymmetryActive toggle on model state changes
+
+        Args:
+            stack: 
+            active: 
+            center: 
+            sym_type: 
+            sym_lines: 
+            sym_angle: 
+
+        Returns:
+
+        Raises:
+
+        """
         if active is not None:
             symm_toggle = self.action_group.get_action("SymmetryActive")
             symm_toggle_active = bool(symm_toggle.get_active())
@@ -1918,20 +2782,46 @@ class Document(CanvasController):  # TODO: rename to "DocumentController"
     ## More viewport manipulation
 
     def mirror_horizontal_cb(self, action):
-        """Flips the viewport from left to right"""
+        """Flips the viewport from left to right
+
+        Args:
+            action: 
+
+        Returns:
+
+        Raises:
+
+        """
         self.tdw.mirror()
         self.notify_view_changed()
 
     def mirror_vertical_cb(self, action):
-        """Flips the viewport from top to bottom"""
+        """Flips the viewport from top to bottom
+
+        Args:
+            action: 
+
+        Returns:
+
+        Raises:
+
+        """
         self.tdw.rotate(math.pi)
         self.tdw.mirror()
         self.notify_view_changed()
 
     def reset_view_cb(self, action):
         """Action callback: resets various aspects of the view.
-
+        
         The reset chosen depends on the action's name.
+
+        Args:
+            action: 
+
+        Returns:
+
+        Raises:
+
         """
         if action is None:
             action_name = None
@@ -1952,9 +2842,15 @@ class Document(CanvasController):  # TODO: rename to "DocumentController"
     def reset_view(self, rotation=False, zoom=False, mirror=False):
         """Programmatically resets the view to the defaults.
 
-        :param rotation: Reset rotation to zero.
-        :param zoom: Reset rotation to the prefs default zoom.
-        :param mirror: Turn mirroring off
+        Args:
+            rotation: Reset rotation to zero. (Default value = False)
+            zoom: Reset rotation to the prefs default zoom.
+            mirror: Turn mirroring off (Default value = False)
+
+        Returns:
+
+        Raises:
+
         """
         if rotation:
             self.tdw.set_rotation(0.0)
@@ -1970,10 +2866,18 @@ class Document(CanvasController):  # TODO: rename to "DocumentController"
 
     def fit_view_toggled_cb(self, action):
         """Callback: toggles between fit-document and the current view.
-
+        
         This callback saves to and restores from the saved view. If the action
         is toggled off when there is a saved view, the saved view will be
         restored.
+
+        Args:
+            action: 
+
+        Returns:
+
+        Raises:
+
         """
         # Note: saved_view must be set to None before notify_view_changed() is
         # called by anything - we use it as an interlock.
@@ -2032,16 +2936,25 @@ class Document(CanvasController):  # TODO: rename to "DocumentController"
 
     def notify_view_changed(self, prioritize=False, immediate=False):
         """Notifies all parties interested in the view having changed.
-
+        
         These can be slightly expensive, so the callbacks are rate limited
         using an idle routine when called with default args. All callbacks in
         `self.view_changed_observers` are guaranteed to be called shortly after
         this method is called, with a ref to this Document.
-
+        
         The default idle priority is intentionally very low. To raise it, set
         `prioritize` to true. This is designed to be used only when this
         notification indirectly updates a graphical element which is directly
         under the pointer, or otherwise where the user is looking.
+
+        Args:
+            prioritize:  (Default value = False)
+            immediate:  (Default value = False)
+
+        Returns:
+
+        Raises:
+
         """
         if immediate:
             if self._view_changed_notification_srcid:
@@ -2066,7 +2979,16 @@ class Document(CanvasController):  # TODO: rename to "DocumentController"
         return False
 
     def _view_changed_cb(self, doc):
-        """Callback: clear saved view and reset toggles on viewport changes"""
+        """Callback: clear saved view and reset toggles on viewport changes
+
+        Args:
+            doc: 
+
+        Returns:
+
+        Raises:
+
+        """
         if not self.saved_view:
             return
         # Clear saved view first...
@@ -2081,19 +3003,55 @@ class Document(CanvasController):  # TODO: rename to "DocumentController"
     ## Debugging
 
     def print_inputs_cb(self, action):
-        """Toggles brush input printing"""
+        """Toggles brush input printing
+
+        Args:
+            action: 
+
+        Returns:
+
+        Raises:
+
+        """
         self.model.brush.set_print_inputs(action.get_active())
 
     def visualize_rendering_cb(self, action):
-        """Toggles highlighting of each redraw"""
+        """Toggles highlighting of each redraw
+
+        Args:
+            action: 
+
+        Returns:
+
+        Raises:
+
+        """
         self.tdw.renderer.visualize_rendering = action.get_active()
 
     def no_double_buffering_cb(self, action):
-        """Toggles double buffering"""
+        """Toggles double buffering
+
+        Args:
+            action: 
+
+        Returns:
+
+        Raises:
+
+        """
         self.tdw.renderer.set_double_buffered(not action.get_active())
 
     def vacuum_document_cb(self, action):
-        """Discards empty (all-zeros) tiles."""
+        """Discards empty (all-zeros) tiles.
+
+        Args:
+            action: 
+
+        Returns:
+
+        Raises:
+
+        """
         r, t = self.model.layer_stack.remove_empty_tiles()
         self.app.show_transient_message(
             C_(
@@ -2108,7 +3066,17 @@ class Document(CanvasController):  # TODO: rename to "DocumentController"
     ## Model state reflection
 
     def _input_stroke_ended_cb(self, self_again, event):
-        """Invoked after a pen-down, draw, pen-up 'input stroke'"""
+        """Invoked after a pen-down, draw, pen-up 'input stroke'
+
+        Args:
+            self_again: 
+            event: 
+
+        Returns:
+
+        Raises:
+
+        """
         # Store device-specific brush settings at the end of the stroke,
         # not when the device changes because the user can change brush
         # radii etc. in the middle of a stroke, and because
@@ -2131,8 +3099,9 @@ class Document(CanvasController):  # TODO: rename to "DocumentController"
     def mode_flip_action_activated_cb(self, flip_action):
         """Callback: a mode "flip" action was activated.
 
-        :param flip_action: the Gtk.Action which was activated
-
+        Args:
+            flip_action: the Gtk.Action which was activated
+        
         Mode classes are looked up via `gui.mode.ModeRegistry` based
         on the name of the action: flip actions are named after the
         RadioActions they nominally control, with "Flip" prepended.
@@ -2140,10 +3109,14 @@ class Document(CanvasController):  # TODO: rename to "DocumentController"
         it is currently active, or on if another mode is active. Mode
         flip actions are the usual actions bound to keypresses since
         being able to toggle off with the same key is useful.
-
+        
         Because these modes are intended for keyboard activation, they
         are instructed to ignore the initial keyboard modifier state
         when entered.  See also: `gui.mode.DragMode`.
+
+        Returns:
+
+        Raises:
 
         """
         # If this is not the active document, dispatch the action to it.
@@ -2187,6 +3160,16 @@ class Document(CanvasController):  # TODO: rename to "DocumentController"
                     GLib.timeout_add(timeout, cb, mode, flip_action, ev)
 
                     def _continue_mode_early_keyup_cb(*a):
+                        """
+
+                        Args:
+                            *a: 
+
+                        Returns:
+
+                        Raises:
+
+                        """
                         # Record early keyup, but otherwise keep in mode
                         flip_action.__pressed = False
 
@@ -2194,6 +3177,16 @@ class Document(CanvasController):  # TODO: rename to "DocumentController"
                 else:
                     # Key-up exits immediately
                     def _exit_mode_early_keyup_cb(*a):
+                        """
+
+                        Args:
+                            *a: 
+
+                        Returns:
+
+                        Raises:
+
+                        """
                         if mode is self.modes.top:
                             self.modes.pop()
 
@@ -2201,7 +3194,18 @@ class Document(CanvasController):  # TODO: rename to "DocumentController"
             self.modes.context_push(mode)
 
     def _modeflip_change_keyup_callback(self, mode, flip_action, ev):
-        """Changes what happens when a flip-action key is released"""
+        """Changes what happens when a flip-action key is released
+
+        Args:
+            mode: 
+            flip_action: 
+            ev: 
+
+        Returns:
+
+        Raises:
+
+        """
         # Changes the keyup handler to one which will pop the mode stack
         # if the mode instance is still at the top.
         if not flip_action.__pressed:
@@ -2210,6 +3214,16 @@ class Document(CanvasController):  # TODO: rename to "DocumentController"
         if mode is self.modes.top:
 
             def _exit_mode_late_keyup_cb(*a):
+                """
+
+                Args:
+                    *a: 
+
+                Returns:
+
+                Raises:
+
+                """
                 if mode is self.modes.top:
                     self.modes.pop()
 
@@ -2225,13 +3239,18 @@ class Document(CanvasController):  # TODO: rename to "DocumentController"
     def mode_radioaction_changed_cb(self, action, current_action):
         """Callback: radio action controlling the modes stack activated
 
-        :param action: the lead Gtk.RadioAction
-        :param current_action: the newly active Gtk.RadioAction
-
+        Args:
+            action: the lead Gtk.RadioAction
+            current_action: the newly active Gtk.RadioAction
+        
         Mode classes are looked up via `gui.mode.ModeRegistry` based
         on the name of the action. This action instantiates the mode and
         pushes it onto the mode stack unless the active mode is already
         an instance of the mode class.
+
+        Returns:
+
+        Raises:
 
         """
         # Update the mode stack so that its top element matches the
@@ -2250,7 +3269,18 @@ class Document(CanvasController):  # TODO: rename to "DocumentController"
             self.modes.context_push(mode)
 
     def _modestack_changed_cb(self, modestack, old, new):
-        """Callback: make actions follow changes to the mode stack"""
+        """Callback: make actions follow changes to the mode stack
+
+        Args:
+            modestack: 
+            old: 
+            new: 
+
+        Returns:
+
+        Raises:
+
+        """
         # Activate the action corresponding to the current top mode.
         logger.debug("Mode changed: %r", self.modes)
         self._top_mode = new
@@ -2266,26 +3296,52 @@ class Document(CanvasController):  # TODO: rename to "DocumentController"
     ## External layer editing support
 
     def begin_external_layer_edit_cb(self, action):
-        """Callback: edit the current layer in an external app"""
+        """Callback: edit the current layer in an external app
+
+        Args:
+            action: 
+
+        Returns:
+
+        Raises:
+
+        """
         self._begin_external_layer_edit()
 
     def _begin_external_layer_edit(self):
+        """ """
         layer = self.model.layer_stack.current
         self._layer_edit_manager.begin(layer)
 
     def commit_external_layer_edit_cb(self, action):
         """Callback: Commit the current layer's ongoing external edit
-
+        
         Exposed as an extra action just in case automatic monitoring
         fails on a particular platform. Normally the manager commits
         saved changes automatically.
+
+        Args:
+            action: 
+
+        Returns:
+
+        Raises:
 
         """
         layer = self.model.layer_stack.current
         self._layer_edit_manager.commit(layer)
 
     def _update_external_layer_edit_actions(self, *_ignored):
-        """Update the External Layer Edit actions' sensitivities"""
+        """Update the External Layer Edit actions' sensitivities
+
+        Args:
+            *_ignored: 
+
+        Returns:
+
+        Raises:
+
+        """
         app = self.app
         rootstack = self.model.layer_stack
         current = rootstack.current
@@ -2296,6 +3352,16 @@ class Document(CanvasController):  # TODO: rename to "DocumentController"
     ## Layer views, and their locked flag
 
     def _update_layer_visible_toggle_from_current_view(self, *_ignored):
+        """
+
+        Args:
+            *_ignored: 
+
+        Returns:
+
+        Raises:
+
+        """
         app = self.app
         lvm = self.model.layer_view_manager
         view_locked = lvm.current_view_locked
@@ -2304,25 +3370,61 @@ class Document(CanvasController):  # TODO: rename to "DocumentController"
     ## Inking tool node manipulation
 
     def insert_current_node_cb(self, action):
-        """Insert a node before the currently selected node (keyboard)"""
+        """Insert a node before the currently selected node (keyboard)
+
+        Args:
+            action: 
+
+        Returns:
+
+        Raises:
+
+        """
         mode = self.modes.top
         if getattr(mode, "insert_current_node", False):
             mode.insert_current_node()
 
     def delete_current_node_cb(self, action):
-        """Delete the currently selected node (from keyboard)"""
+        """Delete the currently selected node (from keyboard)
+
+        Args:
+            action: 
+
+        Returns:
+
+        Raises:
+
+        """
         mode = self.modes.top
         if getattr(mode, "delete_current_node", False):
             mode.delete_current_node()
 
     def simplify_nodes_cb(self, action):
-        """Simplify the current inktool stroke (from keyboard)"""
+        """Simplify the current inktool stroke (from keyboard)
+
+        Args:
+            action: 
+
+        Returns:
+
+        Raises:
+
+        """
         mode = self.modes.top
         if getattr(mode, "simplify_nodes", False):
             mode.simplify_nodes()
 
     def cull_nodes_cb(self, action):
-        """Callback: cull current inktool nodes (from keyboard)"""
+        """Callback: cull current inktool nodes (from keyboard)
+
+        Args:
+            action: 
+
+        Returns:
+
+        Raises:
+
+        """
         mode = self.modes.top
         if getattr(mode, "cull_nodes", False):
             mode.cull_nodes()

@@ -38,7 +38,19 @@ except:
 
 
 def ora_thumbnail(infile, outfile, size):
-    """Extracts an OpenRaster file's thumbnail to PNG, with scaling."""
+    # type: (Types.ELLIPSIS) -> Types.NONE
+    """Extracts an OpenRaster file's thumbnail to PNG, with scaling.
+
+    Args:
+        infile: 
+        outfile: 
+        size: 
+
+    Returns:
+
+    Raises:
+
+    """
 
     # Extract a GdkPixbuf from the OpenRaster file
     with zipfile.ZipFile(infile) as zf:

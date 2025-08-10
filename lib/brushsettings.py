@@ -51,12 +51,29 @@ settings_migrate = {
 
 class BrushInputInfo:
     """Information about an input known by the libmypaint brush engine.
-
+    
     Inputs are reflections of the data your tablet pen sends, and
     include things like tilt, pressure, and position. There are special
     inputs too, such as the speed and direction of drawing, a random
     input, and one which can be specified by the user to contain the
     effect of one or more settings.
+    
+    
+    :ivar str name: Internal setting name.
+    :ivar float hard_min:
+    :ivar float soft_min:
+    :ivar float normal:
+    :ivar float hard_max:
+    :ivar float soft_max:
+    :ivar str dname: Localized human-readable name.
+    :ivar str tooltip: Localized short technical description.
+    :ivar int index: Index of the object in `inputs`.
+
+    Args:
+
+    Returns:
+
+    Raises:
 
     >>> for bi in inputs:
     ...     assert 0 <= bi.index < len(inputs)
@@ -67,17 +84,6 @@ class BrushInputInfo:
     ...     assert bi.soft_max > bi.soft_min
     ...     assert bi.hard_max >= bi.soft_max
     ...     assert bi.hard_min <= bi.soft_min
-
-    :ivar str name: Internal setting name.
-    :ivar float hard_min:
-    :ivar float soft_min:
-    :ivar float normal:
-    :ivar float hard_max:
-    :ivar float soft_max:
-    :ivar unicode dname: Localized human-readable name.
-    :ivar unicode tooltip: Localized short technical description.
-    :ivar int index: Index of the object in `inputs`.
-
     """
 
     _FIELDS = (
@@ -105,11 +111,27 @@ class BrushInputInfo:
 
 class BrushSettingInfo:
     """Representation of a brush setting known to libmypaint.
-
+    
     Settings are what the user tweaks in the brush editor. They include
     things like the radius or the smudge factor. Think of them as
     user-defined functions that use the current value of zero or more
     BrushInputs to form a single output value.
+    
+    
+    :ivar str cname: Internal name.
+    :ivar str name: Localized, short, human-readable name.
+    :ivar bool constant:
+    :ivar float min:
+    :ivar float default:
+    :ivar float max:
+    :ivar str tooltip: Localized, human-readable technical description.
+    :ivar int index: Index of the object in `settings`.
+
+    Args:
+
+    Returns:
+
+    Raises:
 
     >>> for bs in settings:
     ...      assert 0 <= bs.index < len(settings)
@@ -117,16 +139,6 @@ class BrushSettingInfo:
     ...      for f in BrushSettingInfo._FIELDS:
     ...          assert getattr(bs, f) is not None
     ...      assert bs.max > bs.min
-
-    :ivar str cname: Internal name.
-    :ivar str name: Localized, short, human-readable name.
-    :ivar bool constant:
-    :ivar float min:
-    :ivar float default:
-    :ivar float max:
-    :ivar unicode tooltip: Localized, human-readable technical description.
-    :ivar int index: Index of the object in `settings`.
-
     """
 
     _FIELDS = [
@@ -170,6 +182,7 @@ for s in settings:
 
 
 def _test():
+    """ """
     import doctest
 
     doctest.testmod()

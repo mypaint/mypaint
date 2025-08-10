@@ -20,15 +20,20 @@ from lib.gibindings import Gtk
 import lib.document
 import lib.helpers
 import lib.errors
-from lib.pycompat import unicode
 
 logger = logging.getLogger(__name__)
 
 
-class Presenter(object):
+class Presenter:
     """Shows and runs a dialog, allowing the user to resume autosaves.
-
+    
     See also: lib.document.Document.resume_from_autosave().
+
+    Args:
+
+    Returns:
+
+    Raises:
 
     """
 
@@ -62,11 +67,22 @@ class Presenter(object):
 
     @property
     def check_at_startup(self):
+        """ """
         prefs = self._app.preferences
         return bool(prefs.get(self._CHECK_AT_STARTUP_PREFS_KEY, True))
 
     @check_at_startup.setter
-    def check_at_startup(self, value):
+    def check_at_startup(self, value: Types.ELLIPSIS) -> Types.NONE:
+        """
+
+        Args:
+            value: 
+
+        Returns:
+
+        Raises:
+
+        """
         prefs = self._app.preferences
         prefs[self._CHECK_AT_STARTUP_PREFS_KEY] = bool(value)
 
@@ -113,15 +129,20 @@ class Presenter(object):
                 thumb = lib.helpers.scale_proportionally(thumb, s, s)
                 thumb = lib.helpers.pixbuf_thumbnail(thumb, s, s, alpha=True)
             desc = autosave.get_description()
-            assert isinstance(desc, unicode)
-            assert isinstance(autosave.path, unicode)
+            assert isinstance(desc, str)
+            assert isinstance(autosave.path, str)
             self._liststore.append((thumb, desc, autosave.path))
         return autosaves
 
     def run(self, startup=False):
         """Show and run the dialog, and possibly resume an autosave.
 
-        :param bool startup: indicates that MyPaint is starting up.
+        Args:
+            startup (bool, optional): indicates that MyPaint is starting up. (Default value = False)
+
+        Returns:
+
+        Raises:
 
         """
         # Don't run at startup if asked not to.
@@ -165,7 +186,7 @@ class Presenter(object):
         # They'll be given a new working doc & cache automatically.
         if error:
             self._app.message_dialog(
-                unicode(error),
+                str(error),
                 title=_("Backup Recovery Failed"),
                 investigate_dir=error.investigate_dir,
                 investigate_str=_("Open the Backup’s Folder…"),
@@ -184,14 +205,36 @@ class Presenter(object):
             fh.save_as_dialog(fh.save_file, suggested_filename=sugg_name)
 
     def _recovery_treeview_row_activated_cb(self, treeview, treepath, column):
-        """When a row's double-clicked, resume work on that doc."""
+        # type: (Types.ELLIPSIS) -> Types.NONE
+        """When a row's double-clicked, resume work on that doc.
+
+        Args:
+            treeview: 
+            treepath: 
+            column: 
+
+        Returns:
+
+        Raises:
+
+        """
         self._dialog.response(self._RESPONSE_CONTINUE)
 
-    def _recovery_tree_selection_changed_cb(self, sel):
-        """When a row's clicked, update button sensitivities etc."""
+    def _recovery_tree_selection_changed_cb(self, sel: Types.ELLIPSIS) -> Types.NONE:
+        """When a row's clicked, update button sensitivities etc.
+
+        Args:
+            sel: 
+
+        Returns:
+
+        Raises:
+
+        """
         self._update_buttons()
 
     def _update_buttons(self):
+        """ """
         autosave = self._get_selected_autosave()
         sensitive = False
         if autosave is not None:
@@ -200,19 +243,30 @@ class Presenter(object):
         self._delete_button.set_sensitive(sensitive)
 
     def _get_selected_autosave(self):
+        """ """
         sel = self._treeview.get_selection()
         model, iter = sel.get_selected()
         if iter is None:
             return None
         path = model.get_value(iter, self._LISTSTORE_PATH_COLUMN)
-        if not isinstance(path, unicode):
+        if not isinstance(path, str):
             path = path.decode("utf-8")
-        assert isinstance(path, unicode)
+        assert isinstance(path, str)
         if not os.path.isdir(path):
             return None
         return lib.document.AutosaveInfo.new_for_path(path)
 
-    def _delete_autosave_button_clicked_cb(self, button):
+    def _delete_autosave_button_clicked_cb(self, button: Types.ELLIPSIS) -> Types.NONE:
+        """
+
+        Args:
+            button: 
+
+        Returns:
+
+        Raises:
+
+        """
         autosave = self._get_selected_autosave()
         if (
             autosave is None
@@ -229,5 +283,15 @@ class Presenter(object):
             logger.info("Deleted %r successfully.", autosave.path)
         self._reload_liststore()
 
-    def _at_startup_checkbutton_toggled_cb(self, toggle):
+    def _at_startup_checkbutton_toggled_cb(self, toggle: Types.ELLIPSIS) -> Types.NONE:
+        """
+
+        Args:
+            toggle: 
+
+        Returns:
+
+        Raises:
+
+        """
         self.check_at_startup = bool(toggle.get_active())

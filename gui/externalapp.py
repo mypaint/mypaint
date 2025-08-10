@@ -77,6 +77,7 @@ if _MYP_ENV_NAME in os.environ:
     _Popen = subprocess.Popen
 
     class AppImagePopen(_Popen):
+        """ """
         def __init__(self, cmd, *args, **kwargs):
             kwargs["env"] = original_environ()
             super(AppImagePopen, self).__init__(cmd, *args, **kwargs)
@@ -86,9 +87,16 @@ if _MYP_ENV_NAME in os.environ:
 
 def original_environ():
     """Reads the outer environment and returns it as a dict
-
+    
     This is only used by the appimage builds, where the outer
     environment is stored with null separators in a temp file.
+
+    Args:
+
+    Returns:
+
+    Raises:
+
     """
     global _ORIGINAL_ENV
 
@@ -110,22 +118,27 @@ def original_environ():
     return _ORIGINAL_ENV
 
 
-def restore_env(ctx):
+def restore_env(ctx: Types.ELLIPSIS) -> Types.NONE:
     """Clear existing envvars in context & use the given envvars instead
-
+    
     This is used to restore the original environment when starting
     external editing with an environment that may lead to e.g.
     incompatible or non-existing versions of libraries being linked
     by the external application, instead of the correct ones.
-
+    
     Relies on the existence of an environment variable named
     ``MYPAINT_ENV_CLEAN``; if it is undefined, this is a no-op.
     If it is defined, it should contain a string of K=V statements
     separated by newlines.
-
+    
     Currently this is only used by (and necessary for) appimages.
 
-    :param ctx: a launch context
+    Args:
+        ctx: a launch context
+
+    Returns:
+
+    Raises:
 
     """
     clean = os.environ.get(_MYP_ENV_NAME, None)
@@ -243,11 +256,36 @@ class OpenWithDialog(Gtk.Dialog):
         # Results go here
         self.selected_appinfo = default_app  #: The app the user chose
 
-    def _show_cb(self, dialog):
+    def _show_cb(self, dialog: Types.ELLIPSIS) -> Types.NONE:
+        """
+
+        Args:
+            dialog: 
+
+        Returns:
+
+        Raises:
+
+        """
         content_box = self.get_content_area()
         content_box.show_all()
 
     def _app_name_datafunc(self, col, cell, model, it, data):
+        # type: (Types.ELLIPSIS) -> Types.NONE
+        """
+
+        Args:
+            col: 
+            cell: 
+            model: 
+            it: 
+            data: 
+
+        Returns:
+
+        Raises:
+
+        """
         app = model.get_value(it, 0)
         name = app.get_display_name()
         desc = app.get_description()
@@ -263,12 +301,40 @@ class OpenWithDialog(Gtk.Dialog):
         cell.set_property("markup", markup)
 
     def _app_icon_datafunc(self, col, cell, model, it, data):
+        # type: (Types.ELLIPSIS) -> Types.NONE
+        """
+
+        Args:
+            col: 
+            cell: 
+            model: 
+            it: 
+            data: 
+
+        Returns:
+
+        Raises:
+
+        """
         app = model.get_value(it, 0)
         icon = app.get_icon()
         cell.set_property("gicon", icon)
         cell.set_property("stock-size", self.ICON_SIZE)
 
     def _row_activated_cb(self, view, treepath, column):
+        # type: (Types.ELLIPSIS) -> Types.NONE
+        """
+
+        Args:
+            view: 
+            treepath: 
+            column: 
+
+        Returns:
+
+        Raises:
+
+        """
         model = view.get_model()
         treeiter = model.get_iter(treepath)
         if treeiter:
@@ -276,7 +342,17 @@ class OpenWithDialog(Gtk.Dialog):
             self.selected_appinfo = appinfo
             self.response(Gtk.ResponseType.OK)
 
-    def _selection_changed_cb(self, selection):
+    def _selection_changed_cb(self, selection: Types.ELLIPSIS) -> Types.NONE:
+        """
+
+        Args:
+            selection: 
+
+        Returns:
+
+        Raises:
+
+        """
         model, selected_iter = selection.get_selected()
         if selected_iter:
             appinfo = model.get_value(selected_iter, 0)
@@ -289,7 +365,7 @@ class OpenWithDialog(Gtk.Dialog):
             self.set_default_response(Gtk.ResponseType.CANCEL)
 
 
-class LayerEditManager(object):
+class LayerEditManager:
     """Launch external apps to edit layers, monitoring file changes"""
 
     def __init__(self, doc):
@@ -302,20 +378,25 @@ class LayerEditManager(object):
         self._doc = doc
         self._active_edits = []
 
-    def begin(self, layer):
+    def begin(self, layer: LayerBase) -> Types.NONE:
         """Begin editing a layer in an external application
 
-        :param LayerBase layer: Layer to start editing
-
+        Args:
+            layer: Layer to start editing
+        
         This starts the edit procedure by launching a chosen
         application for a tempfile requested from the layer. The file is
         monitored for changes, which are loaded back into the associated
         layer automatically.
-
+        
         Each invocation of this callback from ``EditLayerExternally``
         creates a new tempfile for editing the layer, and launches a new
         instance of the external app. Previous tempfiles are removed
         from monitoring in favour of the new one.
+
+        Returns:
+
+        Raises:
 
         """
         logger.info("Starting external edit for %r...", layer.name)
@@ -333,6 +414,18 @@ class LayerEditManager(object):
         self._begin_file_monitoring_using_gio(file_path, layer)
 
     def _begin_file_edit_using_startfile(self, file_path, layer):
+        # type: (Types.ELLIPSIS) -> Types.NONE
+        """
+
+        Args:
+            file_path: 
+            layer: 
+
+        Returns:
+
+        Raises:
+
+        """
         logger.info("Using os.startfile() to edit %r", file_path)
         os.startfile(file_path, "edit")
         self._doc.app.show_transient_message(
@@ -343,6 +436,18 @@ class LayerEditManager(object):
         )
 
     def _begin_file_edit_using_gio(self, file_path, layer):
+        # type: (Types.ELLIPSIS) -> Types.NONE
+        """
+
+        Args:
+            file_path: 
+            layer: 
+
+        Returns:
+
+        Raises:
+
+        """
         logger.info("Using OpenWithDialog and GIO to open %r", file_path)
         logger.debug("Querying file path for info")
         file = Gio.File.new_for_path(file_path)
@@ -400,6 +505,18 @@ class LayerEditManager(object):
         )
 
     def _begin_file_monitoring_using_gio(self, file_path, layer):
+        # type: (Types.ELLIPSIS) -> Types.NONE
+        """
+
+        Args:
+            file_path: 
+            layer: 
+
+        Returns:
+
+        Raises:
+
+        """
         self._cleanup_stale_monitors(added_layer=layer)
         logger.debug("Begin monitoring %r for changes (layer=%r)", file_path, layer)
         file = Gio.File.new_for_path(file_path)
@@ -408,8 +525,17 @@ class LayerEditManager(object):
         edit_info = (file_mon, weakref.ref(layer), file, file_path)
         self._active_edits.append(edit_info)
 
-    def commit(self, layer):
-        """Commit a layer's ongoing external edit"""
+    def commit(self, layer: Types.ELLIPSIS) -> Types.NONE:
+        """Commit a layer's ongoing external edit
+
+        Args:
+            layer: 
+
+        Returns:
+
+        Raises:
+
+        """
         logger.debug("Commit %r's current tempfile", layer)
         self._cleanup_stale_monitors()
         for mon, layer_ref, file, file_path in self._active_edits:
@@ -442,6 +568,20 @@ class LayerEditManager(object):
             return
 
     def _file_changed_cb(self, mon, file1, file2, event_type):
+        # type: (Types.ELLIPSIS) -> Types.NONE
+        """
+
+        Args:
+            mon: 
+            file1: 
+            file2: 
+            event_type: 
+
+        Returns:
+
+        Raises:
+
+        """
         self._cleanup_stale_monitors()
         if event_type == Gio.FileMonitorEvent.DELETED:
             logger.debug("File %r was deleted", file1.get_path())
@@ -456,6 +596,18 @@ class LayerEditManager(object):
                     return
 
     def _cleanup_stale_monitors(self, added_layer=None, deleted_file=None):
+        # type: (Types.ELLIPSIS) -> Types.NONE
+        """
+
+        Args:
+            added_layer:  (Default value = None)
+            deleted_file:  (Default value = None)
+
+        Returns:
+
+        Raises:
+
+        """
         for i in reversed(range(len(self._active_edits))):
             mon, layer_ref, file, file_path = self._active_edits[i]
             layer = layer_ref()

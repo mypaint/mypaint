@@ -15,13 +15,20 @@ from .widgets import borderless_button
 
 class ItemSpinBox(Gtk.HBox):
     """Control for selecting one of a small number of text items.
-
+    
     Somewhat like a `Gtk.SpinButton`, but with a textual ``(value,
     display_value)`` list model, and with the buttons positioned at either
     end of the central label. Hopefully nothing too unusual.
-
+    
     Intended as an alternative to `Gtk.ComboBox` which doesn't involve any
     pointer grab breaking, which makes it more useful for dropdown panels.
+
+    Args:
+
+    Returns:
+
+    Raises:
+
     """
 
     __gtype_name__ = "ItemSpinBox"
@@ -48,22 +55,40 @@ class ItemSpinBox(Gtk.HBox):
         self._model_index = None
         self.set_model(model, value)
 
-    def set_changed_callback(self, changed_cb):
+    def set_changed_callback(self, changed_cb: Types.ELLIPSIS) -> Types.NONE:
         """Set the value-changed callback.
-
+        
         `changed_cb` will be called each time the user chooses a different item
         in the list, with the ``value`` member from the model (see
         `set_model()`).
+
+        Args:
+            changed_cb: 
+
+        Returns:
+
+        Raises:
+
         """
         self._changed_cb = changed_cb
 
     def set_model(self, model, value=None):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Set the model.
-
+        
         The `model` argument is either `None`, or a list of pairs of the form
         ``[(value, text), ...]``. The ``value``s must be unique and testable by
         equality. The ``text`` values are what is displayed in the label area
         of the `ItemSpinBox` widget.
+
+        Args:
+            model: 
+            value:  (Default value = None)
+
+        Returns:
+
+        Raises:
+
         """
         old_index = self._model_index
         old_value = None
@@ -83,6 +108,7 @@ class ItemSpinBox(Gtk.HBox):
         self._right_button.set_sensitive(buttons_sensitive)
 
     def _is_model_valid(self):
+        """ """
         if self._model is None:
             return False
         if not self._model:
@@ -96,6 +122,7 @@ class ItemSpinBox(Gtk.HBox):
         return True
 
     def _update_label(self):
+        """ """
         if not self._is_model_valid():
             text = _("(Nothing to show)")
             self._label.set_sensitive(False)
@@ -105,12 +132,25 @@ class ItemSpinBox(Gtk.HBox):
         self._label.set_text(text)
 
     def get_value(self):
+        """ """
         if not self._is_model_valid():
             return None
         value, text = self._model[self._model_index]
         return value
 
     def set_value(self, value, notify=False):
+        # type: (Types.ELLIPSIS) -> Types.NONE
+        """
+
+        Args:
+            value: 
+            notify:  (Default value = False)
+
+        Returns:
+
+        Raises:
+
+        """
         new_value = None
         if not self._model:
             self._model_index = None
@@ -134,9 +174,31 @@ class ItemSpinBox(Gtk.HBox):
             self._changed_cb(new_value)
 
     def _spin_button_clicked(self, widget, delta):
+        # type: (Types.ELLIPSIS) -> Types.NONE
+        """
+
+        Args:
+            widget: 
+            delta: 
+
+        Returns:
+
+        Raises:
+
+        """
         self._spin(delta)
 
-    def _spin(self, delta):
+    def _spin(self, delta: Types.ELLIPSIS) -> Types.NONE:
+        """
+
+        Args:
+            delta: 
+
+        Returns:
+
+        Raises:
+
+        """
         if not self._is_model_valid():
             return
         i = self._model_index + delta
@@ -165,7 +227,17 @@ if __name__ == "__main__":
     vbox = Gtk.VBox()
     win.add(vbox)
 
-    def changed_cb(new_value):
+    def changed_cb(new_value: Types.ELLIPSIS) -> Types.NONE:
+        """
+
+        Args:
+            new_value: 
+
+        Returns:
+
+        Raises:
+
+        """
         print("SSB changed:", new_value)
 
     sb0 = ItemSpinBox(None, changed_cb)

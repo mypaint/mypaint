@@ -12,7 +12,7 @@
 
 MyPaint is strict about using Unicode internally for everything, but
 when GLib returns a filename, all hell can break loose (the data isn't
-unicode, and may not even be UTF-8). This module works around that.
+str, and may not even be UTF-8). This module works around that.
 
 """
 
@@ -22,9 +22,6 @@ unicode, and may not even be UTF-8). This module works around that.
 import logging
 import sys
 
-from lib.pycompat import PY3
-from lib.pycompat import unicode
-
 from lib.gibindings import GLib
 
 logger = logging.getLogger(__name__)
@@ -33,39 +30,40 @@ logger = logging.getLogger(__name__)
 ## File path getter functions
 
 
-def filename_to_unicode(opsysstring):
-    """Converts a str representing a filename from GLib to unicode.
+def filename_to_str(opsysstring: bytes) -> str:
+    """Converts a bytes representing a filename from GLib to str.
 
-    :param bytes opsysstring: a string in the (GLib) encoding for filenames
-    :returns: the converted filename
-    :rtype: unicode|str
+    Args:
+        opsysstring: a string in the (GLib) encoding for filenames
 
-    >>> filename_to_unicode(b'/ascii/only/path') == u'/ascii/only/path'
+
+This is just a more Pythonic wrapper around g_filename_to_utf8() for
+now, which works around a ton of weird bugs and corner cases with
+the typelib annotations for it. It is intended for cleaning up the
+output of certain GLib functions.
+
+Currently, if you're using Python 3 and the input is already str
+then this function assumes that GLib+GI have already done the work,
+and that the str string was correct. You get the same string
+back.
+
+For Python 2, this accepts only "bytes" string input. If we find a
+corner case where GLib functions return degenerate unicode, we can
+adapt it for that case (those funcs need their own wrappers though).: the converted filename
+
+    Raises:
+
+    >>> filename_to_str(b'/ascii/only/path') == u'/ascii/only/path'
     True
-    >>> filename_to_unicode(None) is None
+    >>> filename_to_str(None) is None
     True
-
-    This is just a more Pythonic wrapper around g_filename_to_utf8() for
-    now, which works around a ton of weird bugs and corner cases with
-    the typelib annotations for it. It is intended for cleaning up the
-    output of certain GLib functions.
-
-    Currently, if you're using Python 3 and the input is already unicode
-    then this function assumes that GLib+GI have already done the work,
-    and that the unicode string was correct. You get the same string
-    back.
-
-    For Python 2, this accepts only "bytes" string input. If we find a
-    corner case where GLib functions return degenerate unicode, we can
-    adapt it for that case (those funcs need their own wrappers though).
-
     """
     if opsysstring is None:
         return None
 
-    # Let's assume that if the string is already unicode under Python 3,
+    # Let's assume that if the string is already str under Python 3,
     # then it's already correct.
-    if PY3 and isinstance(opsysstring, unicode):
+    if isinstance(opsysstring, str):
         return opsysstring
 
     # On Windows, they're always UTF-8 regardless.
@@ -82,7 +80,7 @@ def filename_to_unicode(opsysstring):
     # See https://github.com/mypaint/mypaint/issues/634
     ustring = None
 
-    # The sensible, modern case! Byte strings in, unicode strings
+    # The sensible, modern case! Byte strings in, str strings
     # out hopefully, and the C func's arguments are correctly
     # [out]-annotated. It works like this as of...
     #
@@ -141,27 +139,36 @@ def filename_to_unicode(opsysstring):
 
 
 def get_user_config_dir():
-    """Like g_get_user_config_dir(), but always unicode"""
+    """Like g_get_user_config_dir(), but always str"""
     d_fs = GLib.get_user_config_dir()
-    return filename_to_unicode(d_fs)
+    return filename_to_str(d_fs)
 
 
 def get_user_data_dir():
-    """Like g_get_user_data_dir(), but always unicode"""
+    """Like g_get_user_data_dir(), but always str"""
     d_fs = GLib.get_user_data_dir()
-    return filename_to_unicode(d_fs)
+    return filename_to_str(d_fs)
 
 
 def get_user_cache_dir():
-    """Like g_get_user_cache_dir(), but always unicode"""
+    """Like g_get_user_cache_dir(), but always str"""
     d_fs = GLib.get_user_cache_dir()
-    return filename_to_unicode(d_fs)
+    return filename_to_str(d_fs)
 
 
-def get_user_special_dir(d_id):
-    """Like g_get_user_special_dir(), but always unicode"""
+def get_user_special_dir(d_id: Types.ELLIPSIS) -> Types.NONE:
+    """Like g_get_user_special_dir(), but always str
+
+    Args:
+        d_id: 
+
+    Returns:
+
+    Raises:
+
+    """
     d_fs = GLib.get_user_special_dir(d_id)
-    return filename_to_unicode(d_fs)
+    return filename_to_str(d_fs)
 
 
 ## First-import cache forcing
@@ -169,18 +176,24 @@ def get_user_special_dir(d_id):
 
 def init_user_dir_caches():
     """Caches the GLib user directories
-
-    >>> init_user_dir_caches()
-
+    
+    
     The first time this module is imported is from a particular point in
     the launch script, after all the i18n setup is done and before
     lib.mypaintlib is imported. If they're not cached up-front in this
     manner, get_user_config_dir() & friends may return literal "?"s in
     place of non-ASCII characters (Windows systems with non-ASCII user
     profile dirs are known to trigger this).
-
+    
     The debugging prints may be useful too.
 
+    Args:
+
+    Returns:
+
+    Raises:
+
+    >>> init_user_dir_caches()
     """
     logger.debug("Init g_get_user_config_dir(): %r", get_user_config_dir())
     logger.debug("Init g_get_user_data_dir(): %r", get_user_data_dir())
@@ -198,8 +211,16 @@ def init_user_dir_caches():
 ## Filename <-> URI conversion
 
 
-def filename_to_uri(abspath, hostname=None):
+def filename_to_uri(abspath, hostname: Types.ELLIPSIS = None) -> Types.NONE:
     """More Pythonic & stable g_filename_to_uri(), with OS workarounds.
+
+    Args:
+        abspath: 
+        hostname:  (Default value = None)
+
+    Returns:
+
+    Raises:
 
     >>> import os.path
     >>> relpath = os.path.join(u'tmp', u'smile (\u263a).ora')
@@ -211,7 +232,6 @@ def filename_to_uri(abspath, hostname=None):
     True
     >>> uri.startswith('file:///')
     True
-
     """
     if hostname:
         raise ValueError("Only NULL hostnames are supported")
@@ -229,21 +249,25 @@ def filename_to_uri(abspath, hostname=None):
     return g_filename_to_uri(abspath, hostname)
 
 
-def filename_from_uri(uri):
+def filename_from_uri(uri: Types.ELLIPSIS) -> Types.NONE:
     """More Pythonic & stable g_filename_from_uri(), with OS workarounds.
+
+    Args:
+        uri: 
+
+    Returns:
+
+    Raises:
 
     >>> import os.path
     >>> relpath = os.path.join(u'tmp', u'smile (\u263a).ora')
     >>> abspath1 = os.path.abspath(relpath)
     >>> uri = filename_to_uri(abspath1)
     >>> abspath2, hostname = filename_from_uri(uri)
-    >>> if PY3:
-    ...     unicode = str
-    >>> isinstance(abspath2, unicode)
+    >>> isinstance(abspath2, str)
     True
     >>> abspath2.replace('\\\\', "/") == abspath1.replace('\\\\', "/")
     True
-
     """
     # First find the right g_filename_from_uri.
     # See the note above.
@@ -262,13 +286,14 @@ def filename_from_uri(uri):
         abspath = g_filename_from_uri(uri, "")
         hostname = None
     assert not hostname, "Only URIs without hostnames are supported."
-    return (filename_to_unicode(abspath), None)
+    return (filename_to_str(abspath), None)
 
 
 ## Module testing
 
 
 def _test():
+    """ """
     import doctest
 
     doctest.testmod()

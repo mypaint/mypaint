@@ -67,11 +67,19 @@ OPEN_ANYWAY = C_("file compatibility question", "Do you want to open this file a
 _PIGMENT_OP = combine_mode_get_info(CombineSpectralWGM)["name"]
 
 
-def has_pigment_layers(elem):
+def has_pigment_layers(elem: Types.ELLIPSIS) -> Types.NONE:
     """Check if the layer stack xml contains a pigment layer
-
+    
     Has to be done before any layers are loaded, since the
     correct eotf value needs to set before loading the tiles.
+
+    Args:
+        elem: 
+
+    Returns:
+
+    Raises:
+
     """
     # Ignore the composite op of the background.
     # We only need to check for the namespaced attribute, as
@@ -84,13 +92,34 @@ def has_pigment_layers(elem):
     return op == _PIGMENT_OP or any([has_pigment_layers(c) for c in elem])
 
 
-def incompatible_ora_cb(app):
-    def cb(comp_type, prerel, filename, target_version):
-        """Internal: callback that may show a confirmation/warning dialog
+def incompatible_ora_cb(app: Types.ELLIPSIS) -> Types.NONE:
+    """
 
+    Args:
+        app: 
+
+    Returns:
+
+    Raises:
+
+    """
+    def cb(comp_type, prerel, filename, target_version):
+        # type: (Types.ELLIPSIS) -> Types.NONE
+        """Internal: callback that may show a confirmation/warning dialog
+        
         Unless disabled in settings, when a potentially
         incompatible ora is opened, a warning dialog is
         shown, allowing users to cancel the loading.
+
+        Args:
+            comp_type: 
+            prerel: 
+            filename: 
+            target_version: 
+
+        Returns:
+
+        Raises:
 
         """
         if comp_type == Compatibility.FULLY:
@@ -115,6 +144,21 @@ def incompatible_ora_cb(app):
 
 
 def incompatible_ora_warning_dialog(comp_type, prerel, filename, target_version, app):
+    # type: (Types.ELLIPSIS) -> Types.NONE
+    """
+
+    Args:
+        comp_type: 
+        prerel: 
+        filename: 
+        target_version: 
+        app: 
+
+    Returns:
+
+    Raises:
+
+    """
     # Skip the dialog if the user has disabled the warning
     # for this level of incompatibility
     warn = app.preferences.get(FILE_WARNINGS[comp_type], True)
@@ -140,6 +184,17 @@ def incompatible_ora_warning_dialog(comp_type, prerel, filename, target_version,
     skip_warning_button.set_can_focus(False)
 
     def skip_warning_toggled(checkbut):
+        # type: (Types.ELLIPSIS) -> Types.NONE
+        """
+
+        Args:
+            checkbut: 
+
+        Returns:
+
+        Raises:
+
+        """
         app.preferences[FILE_WARNINGS[comp_type]] = not checkbut.get_active()
         app.preferences_window.compat_preferences.update_ui()
 
@@ -174,6 +229,17 @@ def incompatible_ora_warning_dialog(comp_type, prerel, filename, target_version,
 
     # Without this, the check button takes initial focus
     def show_checkbut(*args):
+        # type: (Types.ELLIPSIS) -> Types.NONE
+        """
+
+        Args:
+            *args: 
+
+        Returns:
+
+        Raises:
+
+        """
         skip_warning_button.show()
         skip_warning_button.set_can_focus(True)
 
@@ -239,18 +305,40 @@ class CompatFileBehavior(config.CompatFileBehaviorConfig):
         combobox.connect("changed", self.changed_cb)
 
     def update_ui(self):
+        """ """
         self.combo.set_active_id(self.prefs[self.SETTING])
 
-    def changed_cb(self, combo):
+    def changed_cb(self, combo: Types.ELLIPSIS) -> Types.NONE:
+        """
+
+        Args:
+            combo: 
+
+        Returns:
+
+        Raises:
+
+        """
         active_id = self.combo.get_active_id()
         self.prefs[self.SETTING] = active_id
 
     @staticmethod
     def get_compat_mode(setting, root_elem, default):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Get the compat mode to use for a file
-
+        
         The decision is based on the given file behavior setting
         and the layer stack xml.
+
+        Args:
+            setting: 
+            root_elem: 
+            default: 
+
+        Returns:
+
+        Raises:
+
         """
         # If more options are added, rewrite to use separate classes.
         if setting == CompatFileBehavior.ALWAYS_1X:
@@ -271,9 +359,16 @@ class CompatFileBehavior(config.CompatFileBehaviorConfig):
 
 class CompatibilityPreferences:
     """A single instance should be a part of the preference window
-
+    
     This class handles preferences related to the compatibility modes
     and their settings.
+
+    Args:
+
+    Returns:
+
+    Raises:
+
     """
 
     def __init__(self, app, builder):
@@ -294,7 +389,27 @@ class CompatibilityPreferences:
         self.normal_radio_2_x = getobj("def_new_layer_normal_2_x")
 
         def file_warning_cb(level):
+            """
+
+            Args:
+                level: 
+
+            Returns:
+
+            Raises:
+
+            """
             def cb(checkbut):
+                """
+
+                Args:
+                    checkbut: 
+
+                Returns:
+
+                Raises:
+
+                """
                 app.preferences[FILE_WARNINGS[level]] = checkbut.get_active()
 
             return cb
@@ -322,7 +437,28 @@ class CompatibilityPreferences:
         # Convenience wrapper - here it is enough to act when toggling on,
         # so ignore callbacks triggered by radio buttons being toggled off.
         def ignore_detoggle(cb_func):
+            """
+
+            Args:
+                cb_func: 
+
+            Returns:
+
+            Raises:
+
+            """
             def cb(btn, *args):
+                """
+
+                Args:
+                    btn: 
+                    *args: 
+
+                Returns:
+
+                Raises:
+
+                """
                 if btn.get_active():
                     cb_func(btn, *args)
 
@@ -347,6 +483,18 @@ class CompatibilityPreferences:
         """Replace the placeholder labels and add tooltips"""
 
         def string_setup(widget, label, tooltip):
+            """
+
+            Args:
+                widget: 
+                label: 
+                tooltip: 
+
+            Returns:
+
+            Raises:
+
+            """
             widget.set_label(label)
             widget.set_tooltip_text(tooltip)
 
@@ -358,6 +506,7 @@ class CompatibilityPreferences:
         string_setup(self.pigment_radio_2_x, pigment_label, pigment_tooltip)
 
     def update_ui(self):
+        """ """
         prefs = self.app.preferences
         # File warnings update (can be changed from confirmation dialogs)
         self.file_warning_mild.set_active(
@@ -392,25 +541,97 @@ class CompatibilityPreferences:
             self.normal_radio_2_x.set_active(True)
 
     def _update_prefs(self, mode, setting, value):
+        # type: (Types.ELLIPSIS) -> Types.NONE
+        """
+
+        Args:
+            mode: 
+            setting: 
+            value: 
+
+        Returns:
+
+        Raises:
+
+        """
         prefs = self.app.preferences
         prefs[COMPAT_SETTINGS][mode].update({setting: value})
 
     # Widget callbacks
 
     def set_default_compat_mode_cb(self, radiobutton, compat_mode):
+        # type: (Types.ELLIPSIS) -> Types.NONE
+        """
+
+        Args:
+            radiobutton: 
+            compat_mode: 
+
+        Returns:
+
+        Raises:
+
+        """
         self.app.preferences[DEFAULT_COMPAT] = compat_mode
 
     def set_compat_layer_type_cb(self, btn, mode, use_pigment):
+        # type: (Types.ELLIPSIS) -> Types.NONE
+        """
+
+        Args:
+            btn: 
+            mode: 
+            use_pigment: 
+
+        Returns:
+
+        Raises:
+
+        """
         self._update_prefs(mode, config.PIGMENT_LAYER_BY_DEFAULT, use_pigment)
         update_default_layer_type(self.app)
 
     def default_pigment_changed_cb(self, switch, use_pigment, mode):
+        # type: (Types.ELLIPSIS) -> Types.NONE
+        """
+
+        Args:
+            switch: 
+            use_pigment: 
+            mode: 
+
+        Returns:
+
+        Raises:
+
+        """
         self._update_prefs(mode, config.PIGMENT_BY_DEFAULT, use_pigment)
         update_default_pigment_setting(self.app)
 
 
-def ora_compat_handler(app):
-    def handler(eotf_value, root_stack_elem):
+def ora_compat_handler(app: Types.ELLIPSIS) -> Types.NONE:
+    """
+
+    Args:
+        app: 
+
+    Returns:
+
+    Raises:
+
+    """
+    def handler(eotf_value, root_stack_elem: Types.ELLIPSIS) -> Types.NONE:
+        """
+
+        Args:
+            eotf_value: 
+            root_stack_elem: 
+
+        Returns:
+
+        Raises:
+
+        """
         default = app.preferences[DEFAULT_COMPAT]
         if eotf_value is not None:
             try:
@@ -435,15 +656,27 @@ def ora_compat_handler(app):
 
 
 def set_compat_mode(app, compat_mode, custom_eotf=None, update=True):
+    # type: (Types.ELLIPSIS) -> Types.NONE
     """Set compatibility mode
-
+    
     Set compatibility mode and update associated settings;
     default pigment brush setting and default layer type.
     If the "update" keyword is set to False, the settings
     are not updated.
-
+    
     If the compatibility mode is changed, the scratchpad is
     saved and reloaded under the new mode settings.
+
+    Args:
+        app: 
+        compat_mode: 
+        custom_eotf:  (Default value = None)
+        update:  (Default value = True)
+
+    Returns:
+
+    Raises:
+
     """
     if compat_mode not in {C1X, C2X}:
         compat_mode = C2X
@@ -470,8 +703,17 @@ def set_compat_mode(app, compat_mode, custom_eotf=None, update=True):
         update_default_pigment_setting(app)
 
 
-def update_default_layer_type(app):
-    """Update default layer type from settings"""
+def update_default_layer_type(app: Types.ELLIPSIS) -> Types.NONE:
+    """Update default layer type from settings
+
+    Args:
+        app: 
+
+    Returns:
+
+    Raises:
+
+    """
     prefs = app.preferences
     mode_settings = prefs[COMPAT_SETTINGS][app.compat_mode]
     if mode_settings[config.PIGMENT_LAYER_BY_DEFAULT]:
@@ -482,8 +724,17 @@ def update_default_layer_type(app):
         set_default_mode(CombineNormal)
 
 
-def update_default_pigment_setting(app):
-    """Update default pigment brush setting value"""
+def update_default_pigment_setting(app: Types.ELLIPSIS) -> Types.NONE:
+    """Update default pigment brush setting value
+
+    Args:
+        app: 
+
+    Returns:
+
+    Raises:
+
+    """
     prefs = app.preferences
     mode_settings = prefs[COMPAT_SETTINGS][app.compat_mode]
     app.brushmanager.set_pigment_by_default(mode_settings[config.PIGMENT_BY_DEFAULT])
@@ -491,9 +742,16 @@ def update_default_pigment_setting(app):
 
 class CompatSelector:
     """A dropdown menu with file loading compatibility options
-
+    
     If a file was accidentally set to use the wrong mode, these
     options are used to force opening in a particular mode.
+
+    Args:
+
+    Returns:
+
+    Raises:
+
     """
 
     def __init__(self, app):
@@ -524,15 +782,34 @@ class CompatSelector:
         combo.connect("changed", self._combo_changed_cb)
         self._widget = hbox
 
-    def _combo_changed_cb(self, combo):
+    def _combo_changed_cb(self, combo: Types.ELLIPSIS) -> Types.NONE:
+        """
+
+        Args:
+            combo: 
+
+        Returns:
+
+        Raises:
+
+        """
         idx = combo.get_active()
         if idx >= 0:
             self._compat_override = _FILE_OPEN_OPTIONS[idx][0]
         else:
             self._compat_override = None
 
-    def file_selection_changed_cb(self, chooser):
-        """Show/hide widget and enable/disable override"""
+    def file_selection_changed_cb(self, chooser: Types.ELLIPSIS) -> Types.NONE:
+        """Show/hide widget and enable/disable override
+
+        Args:
+            chooser: 
+
+        Returns:
+
+        Raises:
+
+        """
         fn = chooser.get_filename()
         applicable = fn is not None and fn.endswith(".ora")
         self.widget.set_visible(applicable)
@@ -543,6 +820,7 @@ class CompatSelector:
 
     @property
     def widget(self):
+        """ """
         return self._widget
 
     @property

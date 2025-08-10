@@ -14,8 +14,6 @@ from lib.gibindings import Gtk
 from lib.gibindings import Gdk
 from lib.gibindings import GObject
 
-from lib.pycompat import with_metaclass
-
 from lib.observable import event
 
 
@@ -25,10 +23,17 @@ _DOUBLE_CLICK = getattr(Gdk.EventType, "2BUTTON_PRESS")
 
 class ScaleDelegator(type(Gtk.Bin)):
     """Metaclass automatically copying properties from Gtk.Scale
-
+    
     The purpose of this is to allow setting properties on InputSlider
     instances as if they were Gtk.Scale. In turn, this is to allow use of
     glade/xml to create and set up such instances.
+
+    Args:
+
+    Returns:
+
+    Raises:
+
     """
 
     def __init__(cls, name, bases, dict):
@@ -51,27 +56,34 @@ class ScaleDelegator(type(Gtk.Bin)):
         super(ScaleDelegator, cls).__init__(name, bases, dict)
 
 
-class InputSlider(with_metaclass(ScaleDelegator, Gtk.Bin)):
+class InputSlider(Gtk.Bin, metaclass=ScaleDelegator):
     """Custom container widget switching between slider and spinner box
-
+    
     This widget is a container with a single child - normally a slider, but
     which can be toggled to a spin button to allow manual adjustment of the
     value by entering a number.
-
+    
     The metaclass creates copies of the properties from GtkScale + superclasses
     to this class (excepting pre-existing properties through shared ancestry).
     This is so that instances of this class can be constructed from glade/xml
     files. The property values are delegated to the instance of GtkScale.
-
+    
     Going by the old saying: "Magic is an abomination", it would be preferable
     to have a widget deriving either GtkScale or GtkSpinButton, complementing
     their existing functionality to produce a similar result as this widget,
     without having to use a container and class-init/delegation magic.
-
+    
     The spin button is created when needed, and not retained when switching
     back to the slider. To change the properties of the spinbutton when it is
     created, set the modify_spinbutton hook, which is called with a reference
     to the slider and a weak reference to the newly created spin button.
+
+    Args:
+
+    Returns:
+
+    Raises:
+
     """
 
     # Needed for instantiation via glade/xml
@@ -84,7 +96,18 @@ class InputSlider(with_metaclass(ScaleDelegator, Gtk.Bin)):
     _REAL_MAX_DIGITS = 20
 
     def _notify(self, _, prop):
-        """Delegate property changes to the scale instance"""
+        # type: (Types.ELLIPSIS) -> Types.NONE
+        """Delegate property changes to the scale instance
+
+        Args:
+            _: 
+            prop: 
+
+        Returns:
+
+        Raises:
+
+        """
         name = prop.name
         if name in self._scale_props:
             self._scale.set_property(name, self.get_property(name))
@@ -111,10 +134,21 @@ class InputSlider(with_metaclass(ScaleDelegator, Gtk.Bin)):
 
     @property
     def dynamic_tooltip(self):
+        """ """
         return self._tooltip_cb_id is not None
 
     @dynamic_tooltip.setter
-    def dynamic_tooltip(self, enabled):
+    def dynamic_tooltip(self, enabled: Types.ELLIPSIS) -> Types.NONE:
+        """
+
+        Args:
+            enabled: 
+
+        Returns:
+
+        Raises:
+
+        """
         if enabled and self._tooltip_cb_id is None:
             self._scale.set_has_tooltip(True)
             self._tooltip_cb_id = self._scale.connect(
@@ -126,6 +160,21 @@ class InputSlider(with_metaclass(ScaleDelegator, Gtk.Bin)):
             self._tooltip_cb_id = None
 
     def _dynamic_tooltip(self, scale, x, y, kb_mode, tooltip):
+        # type: (Types.ELLIPSIS) -> Types.NONE
+        """
+
+        Args:
+            scale: 
+            x: 
+            y: 
+            kb_mode: 
+            tooltip: 
+
+        Returns:
+
+        Raises:
+
+        """
         if kb_mode:
             return False
         else:
@@ -136,18 +185,41 @@ class InputSlider(with_metaclass(ScaleDelegator, Gtk.Bin)):
 
     @property
     def scale(self):
+        """ """
         return self._scale
 
     @event
     def spin_button_created(self, scale, button_weakref):
-        """Event allowing users of this class to modify spinbutton setup"""
+        # type: (Types.ELLIPSIS) -> Types.NONE
+        """Event allowing users of this class to modify spinbutton setup
+
+        Args:
+            scale: 
+            button_weakref: 
+
+        Returns:
+
+        Raises:
+
+        """
 
     def __getattr__(self, attr):
         """Delegate attribute access to the scale instance"""
         return getattr(self._scale, attr)
 
     def _bin_button_press_cb(self, widget, event):
-        """Trigger mode switch o double click"""
+        # type: (Types.ELLIPSIS) -> Types.NONE
+        """Trigger mode switch o double click
+
+        Args:
+            widget: 
+            event: 
+
+        Returns:
+
+        Raises:
+
+        """
         if self._scale_mode and event.type == _DOUBLE_CLICK:
             self._swap_out()
         # Absorb all button press events - this is to prevent unconsumed
@@ -196,19 +268,50 @@ class InputSlider(with_metaclass(ScaleDelegator, Gtk.Bin)):
         self.spin_button_created(scale, weakref.ref(spin_button))
         return spin_button
 
-    def _scale_precision(self, scale):
+    def _scale_precision(self, scale: Types.ELLIPSIS) -> Types.NONE:
+        """
+
+        Args:
+            scale: 
+
+        Returns:
+
+        Raises:
+
+        """
         precision = scale.get_round_digits()
         if precision == -1:
             upper = min(self.MAX_SPIN_BUTTON_DIGITS, self._REAL_MAX_DIGITS)
             precision = max(1, upper)
         return precision
 
-    def _spin_button_focus_out(self, *args):
-        """Return to scale mode & treat changes to the value as intentional"""
+    def _spin_button_focus_out(self, *args: Types.ELLIPSIS) -> Types.NONE:
+        """
+
+        Args:
+            *args: 
+
+        Returns:
+            
+
+        Raises:
+
+        """
         self._swap_back()
 
     def _spin_button_key_event(self, spinbut, event):
-        """Switch back on return/enter/escape - reset old value on escape"""
+        # type: (Types.ELLIPSIS) -> Types.NONE
+        """Switch back on return/enter/escape - reset old value on escape
+
+        Args:
+            spinbut: 
+            event: 
+
+        Returns:
+
+        Raises:
+
+        """
         if event.keyval in {Gdk.KEY_Return, Gdk.KEY_KP_Enter}:
             self._swap_back()
             return True
@@ -221,8 +324,18 @@ class InputSlider(with_metaclass(ScaleDelegator, Gtk.Bin)):
             return True
         return False
 
-    def _swap_back(self, reset_value=False):
-        """Return to scale mode, optionally resetting the value"""
+    def _swap_back(self, reset_value: Types.ELLIPSIS = False) -> Types.NONE:
+        """
+
+        Args:
+            reset_value:  (Default value = False)
+
+        Returns:
+            
+
+        Raises:
+
+        """
         spin_button = self.get_child()
         spin_button.disconnect(self._focus_cb_id)
         self.remove(spin_button)
@@ -234,9 +347,16 @@ class InputSlider(with_metaclass(ScaleDelegator, Gtk.Bin)):
 
     def trigger_box_resize(self):
         """Remove & add back scale to trigger resizing of the value box
-
+        
         Only needed for the sliders with the value box enabled (brush editor)
         There is probably a better way of doing this.
+
+        Args:
+
+        Returns:
+
+        Raises:
+
         """
         self.remove(self._scale)
         self.add(self._scale)

@@ -35,6 +35,20 @@ def borderless_button(
     size=Gtk.IconSize.SMALL_TOOLBAR,
     tooltip=None,
 ):
+    # type: (Types.ELLIPSIS) -> Types.NONE
+    """
+
+    Args:
+        stock_id:  (Default value = None)
+        icon_name:  (Default value = None)
+        size:  (Default value = Gtk.IconSize.SMALL_TOOLBAR)
+        tooltip:  (Default value = None)
+
+    Returns:
+
+    Raises:
+
+    """
     button = Gtk.Button()
     if stock_id is not None:
         image = Gtk.Image()

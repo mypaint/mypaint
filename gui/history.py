@@ -52,9 +52,22 @@ class BrushHistoryView(Gtk.HBox):
         self._update_history_images()
 
     def _stroke_ended_cb(self, doc, event):
+        # type: (Types.ELLIPSIS) -> Types.NONE
+        """
+
+        Args:
+            doc: 
+            event: 
+
+        Returns:
+
+        Raises:
+
+        """
         GLib.idle_add(self._update_history_images)
 
     def _update_history_images(self):
+        """ """
         bm = self._app.brushmanager
         assert self._history_images is not None
         assert len(bm.history) == len(self._history_images)
@@ -62,6 +75,18 @@ class BrushHistoryView(Gtk.HBox):
             image.set_from_managed_brush(brush)
 
     def _history_button_clicked_cb(self, button, i):
+        # type: (Types.ELLIPSIS) -> Types.NONE
+        """
+
+        Args:
+            button: 
+            i: 
+
+        Returns:
+
+        Raises:
+
+        """
         bm = self._app.brushmanager
         try:
             brush = bm.history[i]
@@ -94,7 +119,17 @@ class ManagedBrushPreview(Gtk.Image):
         self.connect("query-tooltip", self.on_query_tooltip)
         self.set_property("has-tooltip", True)
 
-    def set_from_managed_brush(self, brush):
+    def set_from_managed_brush(self, brush: Types.ELLIPSIS) -> Types.NONE:
+        """
+
+        Args:
+            brush: 
+
+        Returns:
+
+        Raises:
+
+        """
         if brush is None:
             return
         self.pixbuf = brush.preview.copy()
@@ -102,6 +137,18 @@ class ManagedBrushPreview(Gtk.Image):
         self._update()
 
     def on_size_allocate(self, widget, alloc):
+        # type: (Types.ELLIPSIS) -> Types.NONE
+        """
+
+        Args:
+            widget: 
+            alloc: 
+
+        Returns:
+
+        Raises:
+
+        """
         # if new_size != self.image_size:
         if self.image_size is None:
             # XXX dubious fix: what if the preview receives a new size in the
@@ -111,7 +158,17 @@ class ManagedBrushPreview(Gtk.Image):
             self.image_size = alloc.width, alloc.height
             self._update()
 
-    def _get_scaled_pixbuf(self, size):
+    def _get_scaled_pixbuf(self, size: Types.ELLIPSIS) -> Types.NONE:
+        """
+
+        Args:
+            size: 
+
+        Returns:
+
+        Raises:
+
+        """
         if self.pixbuf is None:
             pixbuf = GdkPixbuf.Pixbuf.new(
                 GdkPixbuf.Colorspace.RGB,
@@ -127,6 +184,21 @@ class ManagedBrushPreview(Gtk.Image):
             return self.pixbuf.scale_simple(size, size, interp)
 
     def on_query_tooltip(self, widget, x, y, keyboard_mode, tooltip):
+        # type: (Types.ELLIPSIS) -> Types.NONE
+        """
+
+        Args:
+            widget: 
+            x: 
+            y: 
+            keyboard_mode: 
+            tooltip: 
+
+        Returns:
+
+        Raises:
+
+        """
         s = self.TOOLTIP_ICON_SIZE
         scaled_pixbuf = self._get_scaled_pixbuf(s)
         tooltip.set_icon(scaled_pixbuf)
@@ -135,6 +207,7 @@ class ManagedBrushPreview(Gtk.Image):
         return True
 
     def _update(self):
+        """ """
         if not self.image_size:
             return
         w, h = self.image_size
@@ -170,7 +243,18 @@ class ColorHistoryView(Gtk.HBox, ColorAdjuster):
             preview.color = color
 
     def _button_clicked_cb(self, button, i):
-        """Internal: on history button clicks, set the current color"""
+        # type: (Types.ELLIPSIS) -> Types.NONE
+        """Internal: on history button clicks, set the current color
+
+        Args:
+            button: 
+            i: 
+
+        Returns:
+
+        Raises:
+
+        """
         mgr = self.get_color_manager()
         history = mgr.get_history()
         try:
@@ -203,21 +287,45 @@ class ColorPreview(Gtk.AspectFrame):
         self.drawingarea.set_size_request(8, 8)
         self.drawingarea.connect("draw", self._draw_cb)
 
-    def set_color(self, color):
+    def set_color(self, color: Types.ELLIPSIS) -> Types.NONE:
+        """
+
+        Args:
+            color: 
+
+        Returns:
+
+        Raises:
+
+        """
         self._color = color
         self.drawingarea.queue_draw()
 
     def get_color(self):
+        """ """
         return self._color
 
     color = property(get_color, set_color)
 
     def _draw_cb(self, widget, cr):
+        # type: (Types.ELLIPSIS) -> Types.NONE
+        """
+
+        Args:
+            widget: 
+            cr: 
+
+        Returns:
+
+        Raises:
+
+        """
         cr.set_source_rgb(*self._color.get_rgb())
         cr.paint()
 
 
 class HistoryPanel(Gtk.VBox):
+    """ """
 
     __gtype_name__ = "MyPaintHistoryPanel"
 

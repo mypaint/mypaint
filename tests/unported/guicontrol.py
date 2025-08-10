@@ -16,9 +16,7 @@ except:
 
 
 class GUI:
-    """
-    Class for driving the MyPaint GUI.
-    """
+    """Class for driving the MyPaint GUI."""
 
     def __init__(self):
         self.app = None
@@ -31,6 +29,7 @@ class GUI:
             os.system("rm -rf " + self.tempdir)
 
     def setup(self):
+        """ """
         self.tempdir = tempfile.mkdtemp()
         from gui import application
 
@@ -39,8 +38,8 @@ class GUI:
         app_statedirs = application.StateDirs(
             app_data="..",
             app_icons="../desktop",
-            user_data=unicode(self.tempdir),
-            user_config=unicode(self.tempdir),
+            user_data=str(self.tempdir),
+            user_config=str(self.tempdir),
         )
         self.app = application.Application(
             filenames=[],
@@ -50,21 +49,46 @@ class GUI:
 
         # ignore mouse movements during testing (creating extra strokes)
         def motion_ignore_cb(*junk1, **junk2):
+            """
+
+            Args:
+                *junk1: 
+                **junk2: 
+
+            Returns:
+
+            Raises:
+
+            """
             pass
 
         self.app.doc.tdw.motion_notify_cb = motion_ignore_cb
 
         # fatal exceptions, please
         def excepthook(exctyp, value, tb):
+            """
+
+            Args:
+                exctyp: 
+                value: 
+                tb: 
+
+            Returns:
+
+            Raises:
+
+            """
             traceback.print_exception(exctyp, value, tb, None, sys.stderr)
             sys.exit(1)
 
         sys.excepthook = excepthook
 
     def signal_cb(self):
+        """ """
         self.waiting = False
 
     def wait_for_idle(self):
+        """ """
         "wait until the last mypaint idle handler has finished"
         if not self.app:
             self.setup()
@@ -75,6 +99,7 @@ class GUI:
             Gtk.main_iteration()
 
     def wait_for_gui(self):
+        """ """
         "wait until all GUI updates are done, but don't wait for bg tasks"
         if not self.app:
             self.setup()
@@ -87,7 +112,17 @@ class GUI:
         while self.waiting:
             Gtk.main_iteration()
 
-    def wait_for_duration(self, duration):
+    def wait_for_duration(self, duration: Types.ELLIPSIS) -> Types.NONE:
+        """
+
+        Args:
+            duration: 
+
+        Returns:
+
+        Raises:
+
+        """
         if not self.app:
             self.setup()
         self.signal = False
@@ -96,7 +131,17 @@ class GUI:
         while self.waiting:
             Gtk.main_iteration()
 
-    def scroll(self, N=20):
+    def scroll(self, N: Types.ELLIPSIS = 20) -> Types.NONE:
+        """
+
+        Args:
+            N:  (Default value = 20)
+
+        Returns:
+
+        Raises:
+
+        """
         tdw = self.app.doc.tdw
         dx = np.linspace(-30, 30, N)
         dy = np.linspace(-10, 60, N)
@@ -104,10 +149,20 @@ class GUI:
             tdw.scroll(int(dx[i]), int(dy[i]))
             self.wait_for_idle()
         # jump back to the start
-        for i in xrange(N):
+        for i in range(N):
             tdw.scroll(-int(dx[i]), -int(dy[i]))
 
-    def zoom_out(self, steps):
+    def zoom_out(self, steps: Types.ELLIPSIS) -> Types.NONE:
+        """
+
+        Args:
+            steps: 
+
+        Returns:
+
+        Raises:
+
+        """
         doc = self.app.doc
         for i in range(steps):
             doc.zoom(doc.ZOOM_OUTWARDS)

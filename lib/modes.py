@@ -28,13 +28,24 @@ STACK_MODES = (PASS_THROUGH_MODE,)
 _DEFAULT_MODE = lib.mypaintlib.CombineSpectralWGM
 
 
-def set_default_mode(mode):
+def set_default_mode(mode: Types.ELLIPSIS) -> Types.NONE:
+    """
+
+    Args:
+        mode: 
+
+    Returns:
+
+    Raises:
+
+    """
     assert mode in STANDARD_MODES
     global _DEFAULT_MODE
     _DEFAULT_MODE = mode
 
 
 def default_mode():
+    """ """
     return _DEFAULT_MODE
 
 

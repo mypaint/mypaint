@@ -19,41 +19,80 @@ from .adjbases import ColorAdjuster
 
 class CombinedAdjusterPage(ColorAdjuster):
     """Interface for multitab page content.
-
+    
     Page instances are expected to distribute `set_color_manager()` to each of
     their component controls, and also to implement the methods defined in this
     interface.
+
+    Args:
+
+    Returns:
+
+    Raises:
 
     """
 
     @classmethod
     def get_page_icon_name(class_):
-        """Returns the page's icon name."""
+        """Returns the page's icon name.
+
+        Args:
+            class_: 
+
+        Returns:
+
+        Raises:
+
+        """
         raise NotImplementedError
 
     @classmethod
     def get_page_title(class_):
         """Returns the title for the page.
-
+        
         Word as "this page/tab contains a [...]", in titlecase.
+
+        Args:
+            class_: 
+
+        Returns:
+
+        Raises:
+
         """
         raise NotImplementedError
 
     @classmethod
     def get_page_description(class_):
         """Returns the descriptive text for the page.
-
+        
         Word as "this page/tab lets you [...]", in titlecase.
+
+        Args:
+            class_: 
+
+        Returns:
+
+        Raises:
+
         """
         raise NotImplementedError
 
     @classmethod
     def get_properties_description(class_):
         """Override & return a string if `show_properties()` is implemented.
-
+        
         The returned string should explain what the properties button does. The
         default implemented here returns None, which also indicates that no
         properties dialog is implemented.
+
+        Args:
+            class_: 
+
+        Returns:
+
+        Raises:
+
         """
         return None
 

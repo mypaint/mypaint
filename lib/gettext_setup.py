@@ -17,7 +17,18 @@ import lib.config as config
 logger = logging.getLogger(__file__)
 
 
-def debug_locale_data(locale, locale_categories):
+def debug_locale_data(locale, locale_categories: Types.ELLIPSIS) -> Types.NONE:
+    """
+
+    Args:
+        locale: 
+        locale_categories: 
+
+    Returns:
+
+    Raises:
+
+    """
     for category in sorted(locale_categories):
         try:
             logger.debug(
@@ -30,11 +41,18 @@ def debug_locale_data(locale, locale_categories):
             logger.exception("Problem when getting locale (upstream)")
 
 
-def init_gettext(localepath):
+def init_gettext(localepath: Types.ELLIPSIS) -> Types.NONE:
     """Initialize locales and gettext.
-
+    
     This must be done before importing any translated python modules
     (to get global strings translated, especially brushsettings.py).
+
+    Args:
+        localepath: 
+
+    Returns:
+
+    Raises:
 
     """
 

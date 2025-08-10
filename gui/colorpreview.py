@@ -28,7 +28,17 @@ class BrushColorIndicator(PreviousCurrentColorAdjuster):
         self._app = None
         self.clicked += self._clicked_cb
 
-    def _init_color_manager(self, widget):
+    def _init_color_manager(self, widget: Types.ELLIPSIS) -> Types.NONE:
+        """
+
+        Args:
+            widget: 
+
+        Returns:
+
+        Raises:
+
+        """
         from gui.application import get_app
 
         self._app = get_app()
@@ -37,6 +47,19 @@ class BrushColorIndicator(PreviousCurrentColorAdjuster):
         self.set_color_manager(mgr)
 
     def _clicked_cb(self, adj, event, pos):
+        # type: (Types.ELLIPSIS) -> Types.NONE
+        """
+
+        Args:
+            adj: 
+            event: 
+            pos: 
+
+        Returns:
+
+        Raises:
+
+        """
         x0, y0 = pos
         w = self.get_allocated_width()
         if x0 > w // 2:

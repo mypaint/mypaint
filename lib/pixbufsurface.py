@@ -46,12 +46,18 @@ _POSSIBLE_OOM_USERTEXT = C_(
 
 class Surface(TileAccessible, TileBlittable):
     """Wrapper for a GdkPixbuf, with memory accessible by tile.
-
+    
     Wraps a GdkPixbuf.Pixbuf (8 bit RGBU or RGBA data) with memory also
     accessible per-tile, compatible with tiledsurface.Surface.
-
+    
     This class converts between linear 8bit RGB(A) and tiled RGBA storage. It
     is used for rendering updates, but also for save/load.
+
+    Args:
+
+    Returns:
+
+    Raises:
 
     """
 
@@ -133,25 +139,80 @@ class Surface(TileAccessible, TileBlittable):
                 self.tile_memory_dict[(self.tx + tx, self.ty + ty)] = buf
 
     def get_bbox(self):
+        """ """
         return lib.surface.get_tiles_bbox(self.get_tiles())
 
     def get_tiles(self):
+        """ """
         return self.tile_memory_dict
 
     @contextlib.contextmanager
     def tile_request(self, tx, ty, readonly):
-        """Access memory by tile (lib.surface.TileAccessible impl.)"""
+        # type: (Types.ELLIPSIS) -> Types.NONE
+        """Access memory by tile (lib.surface.TileAccessible impl.)
+
+        Args:
+            tx: 
+            ty: 
+            readonly: 
+
+        Returns:
+
+        Raises:
+
+        """
         numpy_tile = self._get_tile_numpy(tx, ty, readonly)
         yield numpy_tile
         self._set_tile_numpy(tx, ty, numpy_tile, readonly)
 
     def _get_tile_numpy(self, tx, ty, readonly):
+        # type: (Types.ELLIPSIS) -> Types.NONE
+        """
+
+        Args:
+            tx: 
+            ty: 
+            readonly: 
+
+        Returns:
+
+        Raises:
+
+        """
         return self.tile_memory_dict[(tx, ty)]
 
     def _set_tile_numpy(self, tx, ty, arr, readonly):
+        # type: (Types.ELLIPSIS) -> Types.NONE
+        """
+
+        Args:
+            tx: 
+            ty: 
+            arr: 
+            readonly: 
+
+        Returns:
+
+        Raises:
+
+        """
         pass  # Data can be modified directly, no action needed
 
     def blit_tile_into(self, dst, dst_has_alpha, tx, ty):
+        # type: (Types.ELLIPSIS) -> Types.NONE
+        """
+
+        Args:
+            dst: 
+            dst_has_alpha: 
+            tx: 
+            ty: 
+
+        Returns:
+
+        Raises:
+
+        """
         # (used mainly for loading transparent PNGs)
         assert dst_has_alpha is True
         assert dst.dtype == "uint16", "16 bit dst expected"
@@ -162,9 +223,15 @@ class Surface(TileAccessible, TileBlittable):
     @contextlib.contextmanager
     def cairo_request(self):
         """Access via a temporary Cairo context.
-
+        
         Modifications are copied back into the backing pixbuf when the
         context manager finishes.
+
+        Args:
+
+        Returns:
+
+        Raises:
 
         """
         # Make a Cairo surface copy of the subpixbuf
@@ -200,19 +267,21 @@ def render_as_pixbuf(
 ):
     """Renders a surface within a given rectangle as a GdkPixbuf
 
-    :param lib.surface.TileBlittable surface: source surface
-    :param int x:
-    :patrm int y:
-    :param int w:
-    :param int h: coords of the rendering rectangle. Must all be set.
-    :param bool alpha:
-    :param int mipmap_level:
-    :param progress: Unsized UI progress feedback obj.
-    :type progress: lib.feedback.Progress or None
-    :param **kwargs: Keyword args are passed to ``surface.blit_tile_into()``
+    Args:
+        surface (lib.surface.TileBlittable): source surface
+        x (int, optional): :patrm int y: (Default value = None)
+        y:  (Default value = None)
+        w (int, optional):  (Default value = None)
+        h (int, optional): coords of the rendering rectangle. Must all be set. (Default value = None)
+        alpha (bool, optional):  (Default value = False)
+        mipmap_level (int, optional):  (Default value = 0)
+        progress (lib.feedback.Progress or None, optional): Unsized UI progress feedback obj. (Default value = None)
+        **kwargs: Keyword args are passed to ``surface.blit_tile_into()``
     :rtype: GdkPixbuf
-    :raises: lib.errors.AllocationError
-    :raises: MemoryError
+
+    Returns:
+
+    Raises:
 
     """
     if None in (x, y, w, h):

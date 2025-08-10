@@ -34,7 +34,6 @@ import lib.modes
 import lib.xml
 import lib.tiledsurface
 from .rendering import Renderable
-from lib.pycompat import unicode
 
 logger = logging.getLogger(__name__)
 
@@ -44,15 +43,21 @@ logger = logging.getLogger(__name__)
 
 class LayerBase(Renderable):
     """Base class defining the layer API
-
+    
     Layers support the Renderable interface, and are rendered with the
     "render_*()" methods of their root layer stack.
-
+    
     Layers are minimally aware of the tree structure they reside in, in
     that they contain a reference to the root of their tree for
     signalling purposes.  Updates to the tree structure and to layers'
     graphical contents are announced via the RootLayerStack object
     representing the base of the tree.
+
+    Args:
+
+    Returns:
+
+    Raises:
 
     """
 
@@ -97,11 +102,27 @@ class LayerBase(Renderable):
     def new_from_openraster(
         cls, orazip, elem, cache_dir, progress, root, x=0, y=0, **kwargs
     ):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Reads and returns a layer from an OpenRaster zipfile
-
+        
         This implementation just creates a new instance of its class and
         calls `load_from_openraster()` on it. This should suffice for
         all subclasses which support parameterless construction.
+
+        Args:
+            orazip: 
+            elem: 
+            cache_dir: 
+            progress: 
+            root: 
+            x:  (Default value = 0)
+            y:  (Default value = 0)
+            **kwargs: 
+
+        Returns:
+
+        Raises:
+
         """
 
         layer = cls()
@@ -114,11 +135,26 @@ class LayerBase(Renderable):
     def new_from_openraster_dir(
         cls, oradir, elem, cache_dir, progress, root, x=0, y=0, **kwargs
     ):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Reads and returns a layer from an OpenRaster-like folder
-
+        
         This implementation just creates a new instance of its class and
         calls `load_from_openraster_dir()` on it. This should suffice
         for all subclasses which support parameterless construction.
+
+        Args:
+            oradir: 
+            elem: 
+            cache_dir: 
+            progress: 
+            root: 
+            x:  (Default value = 0)
+            y:  (Default value = 0)
+            **kwargs: 
+
+        Returns:
+
+        Raises:
 
         """
         layer = cls()
@@ -132,40 +168,65 @@ class LayerBase(Renderable):
     ):
         """Loads layer data from an open OpenRaster zipfile
 
-        :param orazip: An OpenRaster zipfile, opened for extracting
-        :type orazip: zipfile.ZipFile
-        :param elem: <layer/> or <stack/> element to load (stack.xml)
-        :type elem: xml.etree.ElementTree.Element
-        :param cache_dir: Cache root dir for this document
-        :param progress: Provides feedback to the user.
-        :type progress: lib.feedback.Progress or None
-        :param x: X offset of the top-left point for image data
-        :param y: Y offset of the top-left point for image data
-        :param **kwargs: Extensibility
-
+        Args:
+            orazip (zipfile.ZipFile): An OpenRaster zipfile, opened for extracting
+            elem (xml.etree.ElementTree.Element): <layer/> or <stack/> element to load (stack.xml)
+            cache_dir: Cache root dir for this document
+            progress (lib.feedback.Progress or None): Provides feedback to the user.
+            x: X offset of the top-left point for image data (Default value = 0)
+            y: Y offset of the top-left point for image data (Default value = 0)
+            **kwargs: Extensibility
+        
         The base implementation loads the common layer flags from a `<layer/>`
         or `<stack/>` element, but does nothing more than that. Loading layer
         data from the zipfile or recursing into stack contents is deferred to
         subclasses.
+
+        Returns:
+
+        Raises:
+
         """
         self._load_common_flags_from_ora_elem(elem)
 
     def load_from_openraster_dir(
         self, oradir, elem, cache_dir, progress, x=0, y=0, **kwargs
     ):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Loads layer data from an OpenRaster-style folder.
-
+        
         Parameters are the same as for load_from_openraster, with the
         following exception (replacing ``orazip``):
 
-        :param unicode/str oradir: Folder with a .ORA-like tree structure.
+        Args:
+            oradir: Folder with a .ORA-like tree structure.
+            elem: 
+            cache_dir: 
+            progress: 
+            x:  (Default value = 0)
+            y:  (Default value = 0)
+            **kwargs: 
+
+        Returns:
+
+        Raises:
 
         """
         self._load_common_flags_from_ora_elem(elem)
 
-    def _load_common_flags_from_ora_elem(self, elem):
+    def _load_common_flags_from_ora_elem(self, elem: Types.ELLIPSIS) -> Types.NONE:
+        """
+
+        Args:
+            elem: 
+
+        Returns:
+
+        Raises:
+
+        """
         attrs = elem.attrib
-        self.name = unicode(attrs.get("name", ""))
+        self.name = str(attrs.get("name", ""))
         compop = str(attrs.get("composite-op", ""))
         self.mode = ORA_MODES_BY_OPNAME.get(compop, lib.modes.default_mode())
         self.opacity = helpers.clamp(float(attrs.get("opacity", "1.0")), 0.0, 1.0)
@@ -204,8 +265,14 @@ class LayerBase(Renderable):
     @property
     def group(self):
         """The group of the current layer.
-
+        
         Returns None if the layer is not in a group.
+
+        Args:
+
+        Returns:
+
+        Raises:
 
         >>> from . import group
         >>> outer = group.LayerStack()
@@ -225,7 +292,17 @@ class LayerBase(Renderable):
         return None
 
     @group.setter
-    def group(self, group):
+    def group(self, group: Types.ELLIPSIS) -> Types.NONE:
+        """
+
+        Args:
+            group: 
+
+        Returns:
+
+        Raises:
+
+        """
         if group is None:
             self._group_ref = None
         else:
@@ -234,12 +311,18 @@ class LayerBase(Renderable):
     @property
     def root(self):
         """The root of the layer tree structure
-
+        
         Only RootLayerStack instances or None are permitted.
         You won't normally need to adjust this unless you're doing
         something fancy: it's automatically maintained by intermediate
         and root `LayerStack` elements in the tree whenever layers are
         added or removed from a rooted tree structure.
+
+        Args:
+
+        Returns:
+
+        Raises:
 
         >>> from . import tree
         >>> root = tree.RootLayerStack(doc=None)
@@ -249,14 +332,23 @@ class LayerBase(Renderable):
         <RootLayerStack...>
         >>> layer.root is root
         True
-
         """
         if self._root_ref is not None:
             return self._root_ref()
         return None
 
     @root.setter
-    def root(self, newroot):
+    def root(self, newroot: Types.ELLIPSIS) -> Types.NONE:
+        """
+
+        Args:
+            newroot: 
+
+        Returns:
+
+        Raises:
+
+        """
         if newroot is None:
             self._root_ref = None
         else:
@@ -265,21 +357,38 @@ class LayerBase(Renderable):
     @property
     def opacity(self):
         """Opacity multiplier for the layer.
-
+        
         Values must permit conversion to a `float` in [0, 1].
         Changing this property issues ``layer_properties_changed`` and
         appropriate ``layer_content_changed`` notifications via the root
         layer stack if the layer is within a tree structure.
-
+        
         Layers with a `mode` of `PASS_THROUGH_MODE` have immutable
         opacities: the value is always 100%. This restriction only
         applies to `LayerStack`s - i.e. layer groups - because those are
         the only kinds of layer which can be put into pass-through mode.
+
+        Args:
+
+        Returns:
+
+        Raises:
+
         """
         return self._opacity
 
     @opacity.setter
-    def opacity(self, opacity):
+    def opacity(self, opacity: Types.ELLIPSIS) -> Types.NONE:
+        """
+
+        Args:
+            opacity: 
+
+        Returns:
+
+        Raises:
+
+        """
         opacity = helpers.clamp(float(opacity), 0.0, 1.0)
         if opacity == self._opacity:
             return
@@ -305,19 +414,36 @@ class LayerBase(Renderable):
     @property
     def name(self):
         """The layer's name, for display purposes
-
-        Values must permit conversion to a unicode string.  If the
+        
+        Values must permit conversion to a str.  If the
         layer is part of a tree structure, ``layer_properties_changed``
         notifications will be issued via the root layer stack. In
         addition, assigned names may be corrected to be unique within
         the tree.
+
+        Args:
+
+        Returns:
+
+        Raises:
+
         """
         return self._name
 
     @name.setter
-    def name(self, name):
+    def name(self, name: Types.ELLIPSIS) -> Types.NONE:
+        """
+
+        Args:
+            name: 
+
+        Returns:
+
+        Raises:
+
+        """
         if name is not None:
-            name = unicode(name)
+            name = str(name)
         else:
             name = self.DEFAULT_NAME
         oldname = self._name
@@ -331,19 +457,36 @@ class LayerBase(Renderable):
     @property
     def visible(self):
         """Whether the layer has a visible effect on its backdrop.
-
+        
         Some layer modes normally have an effect even if the calculated
         alpha of a pixel is zero. This switch turns that off too.
-
+        
         Values must permit conversion to a `bool`.
         Changing this property issues ``layer_properties_changed`` and
         appropriate ``layer_content_changed`` notifications via the root
         layer stack if the layer is within a tree structure.
+
+        Args:
+
+        Returns:
+
+        Raises:
+
         """
         return self._visible
 
     @visible.setter
-    def visible(self, visible):
+    def visible(self, visible: Types.ELLIPSIS) -> Types.NONE:
+        """
+
+        Args:
+            visible: 
+
+        Returns:
+
+        Raises:
+
+        """
         visible = bool(visible)
         if visible == self._visible:
             return
@@ -358,11 +501,17 @@ class LayerBase(Renderable):
     @property
     def branch_visible(self):
         """Check whether the layer's branch is visible.
-
+        
         Returns True if the layer's group and all of its parents are visible,
         False otherwise.
-
+        
         Returns True if the layer is not in a group.
+
+        Args:
+
+        Returns:
+
+        Raises:
 
         >>> from . import group
         >>> outer = group.LayerStack()
@@ -393,16 +542,32 @@ class LayerBase(Renderable):
     @property
     def locked(self):
         """Whether the layer is locked (immutable).
-
+        
         Values must permit conversion to a `bool`.
         Changing this property issues `layer_properties_changed` via the
         root layer stack if the layer is within a tree structure.
+
+        Args:
+
+        Returns:
+
+        Raises:
 
         """
         return self._locked
 
     @locked.setter
-    def locked(self, locked):
+    def locked(self, locked: Types.ELLIPSIS) -> Types.NONE:
+        """
+
+        Args:
+            locked: 
+
+        Returns:
+
+        Raises:
+
+        """
         locked = bool(locked)
         if locked != self._locked:
             self._locked = locked
@@ -411,11 +576,17 @@ class LayerBase(Renderable):
     @property
     def branch_locked(self):
         """Check whether the layer's branch is locked.
-
+        
         Returns True if the layer's group or at least one of its parents
         is locked, False otherwise.
-
+        
         Returns False if the layer is not in a group.
+
+        Args:
+
+        Returns:
+
+        Raises:
 
         >>> from . import group
         >>> outer = group.LayerStack()
@@ -446,32 +617,48 @@ class LayerBase(Renderable):
     @property
     def mode(self):
         """How this layer combines with its backdrop.
-
+        
         Values must permit conversion to an int, and must be permitted
         for the mode's class.
-
+        
         Changing this property issues ``layer_properties_changed`` and
         appropriate ``layer_content_changed`` notifications via the root
         layer stack if the layer is within a tree structure.
-
+        
         In addition to the modes supported by the base implementation,
         layer groups permit `lib.modes.PASS_THROUGH_MODE`, an
         additional mode where group contents are rendered as if their
         group were not present. Setting the mode to this value also
         sets the opacity to 100%.
-
+        
         For layer groups, "Normal" mode implies group isolation
         internally. These semantics differ from those of OpenRaster and
         the W3C, but saving and loading applies the appropriate
         transformation.
-
+        
         See also: PERMITTED_MODES.
+
+        Args:
+
+        Returns:
+
+        Raises:
 
         """
         return self._mode
 
     @mode.setter
-    def mode(self, mode):
+    def mode(self, mode: Types.ELLIPSIS) -> Types.NONE:
+        """
+
+        Args:
+            mode: 
+
+        Returns:
+
+        Raises:
+
+        """
         mode = int(mode)
         if mode not in self.PERMITTED_MODES:
             mode = lib.modes.default_mode()
@@ -495,27 +682,39 @@ class LayerBase(Renderable):
 
     ## Notifications
 
-    def _content_changed(self, *args):
+    def _content_changed(self, *args: Types.ELLIPSIS) -> Types.NONE:
         """Notifies the root's content observers
-
+        
         If this layer's root stack is defined, i.e. if it is part of a
         tree structure, the root's `layer_content_changed()` event
         method will be invoked with this layer and the supplied
-        arguments. This reflects a region of pixels in the document
-        changing.
+
+        Args:
+            *args: 
+
+        Returns:
+
+        Raises:
+
         """
         root = self.root
         if root is not None:
             root.layer_content_changed(self, *args)
 
-    def _properties_changed(self, properties):
+    def _properties_changed(self, properties: Types.ELLIPSIS) -> Types.NONE:
         """Notifies the root's layer properties observers
-
+        
         If this layer's root stack is defined, i.e. if it is part of a
         tree structure, the root's `layer_properties_changed()` event
         method will be invoked with the layer and the supplied
-        arguments. This reflects details about the layer like its name
-        or its locked status changing.
+
+        Args:
+            properties: 
+
+        Returns:
+
+        Raises:
+
         """
         root = self.root
         if root is not None:
@@ -525,76 +724,66 @@ class LayerBase(Renderable):
 
     def get_icon_name(self):
         """The name of the icon to display for the layer
-
+        
         Ideally symbolic. A value of `None` means that no icon should be
         displayed.
+
+        Args:
+
+        Returns:
+
+        Raises:
+
         """
         return None
 
     @property
     def effective_opacity(self):
         """The opacity used when rendering a layer: zero if invisible
-
+        
         This must match the appearance produced by the layer's
         Renderable.get_render_ops() implementation when it is called
         with no explicit "layers" specification. The base class's
         effective opacity is zero because the base get_render_ops() is
         unimplemented.
 
+        Args:
+
+        Returns:
+
+        Raises:
+
         """
         return 0.0
 
     def get_alpha(self, x, y, radius):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Gets the average alpha within a certain radius at a point
 
-        :param x: model X coordinate
-        :param y: model Y coordinate
-        :param radius: radius over which to average
+        Args:
+            x: model X coordinate
+            y: model Y coordinate
+            radius: radius over which to average
         :rtype: float
-
+        
         The return value is not affected by the layer opacity, effective or
         otherwise. This is used by `Document.pick_layer()` and friends to test
         whether there's anything significant present at a particular point.
         The default alpha at a point is zero.
+
+        Returns:
+
+        Raises:
+
         """
         return 0.0
 
     def get_bbox(self):
-        """Returns the inherent (data) bounding box of the layer
-
-        :rtype: lib.helpers.Rect
-
-        The returned rectangle is generally tile-aligned, but isn't
-        required to be. In this base implementation, the returned bbox
-        is a zero-size default Rect, which is also how a full redraw is
-        signalled. Subclasses should override this with a better
-        implementation.
-
-        The data bounding box is used for certain classes of redraws.
-        See also get_full_redraw_bbox().
-
-        """
+        """Returns the inherent (data) bounding box of the layer"""
         return helpers.Rect()
 
     def get_full_redraw_bbox(self):
-        """Gets the full update notification bounding box of the layer
-
-        :rtype: lib.helpers.Rect
-
-        This is the appropriate bounding box for redraws if a layer-wide
-        property like visibility or combining mode changes.
-
-        Normally this is the layer's inherent data bounding box, which
-        allows the GUI to skip outlying empty tiles when redrawing the
-        layer stack.  If instead the layer's compositing mode dictates
-        that a calculated pixel alpha of zero would affect the backdrop
-        regardless - something that's true of certain masking modes -
-        then the returned bbox is a zero-size rectangle, which is the
-        signal for a full redraw.
-
-        See also get_bbox().
-
-        """
+        """Gets the full update notification bounding box of the layer"""
         if self.mode in MODES_EFFECTIVE_AT_ZERO_ALPHA:
             return helpers.Rect()
         else:
@@ -602,43 +791,66 @@ class LayerBase(Renderable):
 
     def is_empty(self):
         """Tests whether the surface is empty
-
+        
         Always true in the base implementation.
+
+        Args:
+
+        Returns:
+
+        Raises:
+
         """
         return True
 
     def get_paintable(self):
         """True if this layer currently accepts painting brushstrokes
-
+        
         Always false in the base implementation.
+
+        Args:
+
+        Returns:
+
+        Raises:
+
         """
         return False
 
     def get_fillable(self):
         """True if this layer currently accepts flood fill
-
+        
         Always false in the base implementation.
+
+        Args:
+
+        Returns:
+
+        Raises:
+
         """
         return False
 
     def get_stroke_info_at(self, x, y):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Return the brushstroke at a given point
 
-        :param x: X coordinate to pick from, in model space.
-        :param y: Y coordinate to pick from, in model space.
+        Args:
+            x: X coordinate to pick from, in model space.
+            y: Y coordinate to pick from, in model space.
         :rtype: lib.strokemap.StrokeShape or None
-
+        
         Returns None for the base class.
+
+        Returns:
+
+        Raises:
+
         """
         return None
 
     def get_last_stroke_info(self):
-        """Return the most recently painted stroke
-
-        :rtype lib.strokemap.StrokeShape or None
-
-        Returns None for the base class.
-        """
+        """Return the most recently painted stroke"""
         return None
 
     def get_mode_normalizable(self):
@@ -655,11 +867,18 @@ class LayerBase(Renderable):
 
     def has_interesting_name(self):
         """True if the layer looks as if it has a user-assigned name
-
+        
         Interesting means non-blank, and not the default name or a
         numbered version of it. This is used when merging layers: Merge
         Down is used on temporary layers a lot, and those probably have
         boring names.
+
+        Args:
+
+        Returns:
+
+        Raises:
+
         """
         name = self._name
         if name is None or name.strip() == "":
@@ -668,7 +887,7 @@ class LayerBase(Renderable):
             return False
         match = lib.naming.UNIQUE_NAME_REGEX.match(name)
         if match is not None:
-            base = unicode(match.group("name"))
+            base = match.group("name")
             if base == self.DEFAULT_NAME:
                 return False
         return True
@@ -676,10 +895,19 @@ class LayerBase(Renderable):
     ## Flood fill
 
     def flood_fill(self, fill_args, dst_layer=None):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Fills a point on the surface with a color
-
+        
         See PaintingLayer.flood_fill() for parameters and semantics.
         The base implementation does nothing.
+
+        Args:
+            fill_args: 
+            dst_layer:  (Default value = None)
+
+        Returns:
+
+        Raises:
 
         """
         pass
@@ -689,39 +917,54 @@ class LayerBase(Renderable):
     def get_tile_coords(self):
         """Returns all data tiles in this layer
 
-        :returns: All tiles with data
-        :rtype: sequence
+        Args:
 
-        This method should return a sequence listing the coordinates for
-        all tiles with data in this layer.
+        Returns:
+            sequence
 
-        It is used when computing layer merges.  Tile coordinates must
-        be returned as ``(tx, ty)`` pairs.
+This method should return a sequence listing the coordinates for
+all tiles with data in this layer.
 
-        The base implementation returns an empty sequence.
+It is used when computing layer merges.  Tile coordinates must
+be returned as ``(tx, ty)`` pairs.
+
+The base implementation returns an empty sequence.: All tiles with data
+
+        Raises:
+
         """
         return []
 
     ## Translation
 
     def get_move(self, x, y):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Get a translation/move object for this layer
 
-        :param x: Model X position of the start of the move
-        :param y: Model X position of the start of the move
-        :returns: A move object
+        Args:
+            x: Model X position of the start of the move
+            y: Model X position of the start of the move
+
+        Returns:
+            A move object
+
+        Raises:
+
         """
         raise NotImplementedError
 
     def translate(self, dx, dy):
+        # type: (Types.ELLIPSIS) -> list
         """Translate a layer non-interactively
 
-        :param dx: Horizontal offset in model coordinates
-        :param dy: Vertical offset in model coordinates
-        :returns: full redraw bboxes for the move: ``[before, after]``
-        :rtype: list
+        Args:
+            dx: Horizontal offset in model coordinates
+            dy: Vertical offset in model coordinates
 
-        The base implementation uses `get_move()` and the object it returns.
+The base implementation uses `get_move()` and the object it returns.: full redraw bboxes for the move: ``[before, after]``
+
+        Raises:
+
         """
         update_bboxes = [self.get_full_redraw_bbox()]
         move = self.get_move(0, 0)
@@ -740,12 +983,8 @@ class LayerBase(Renderable):
         else:
             return "<%s>" % (self.__class__.__name__)
 
-    def __nonzero__(self):
-        """Layers are never false in Py2."""
-        return self.__bool__()
-
     def __bool__(self):
-        """Layers are never false in Py3.
+        """Layers are never false.
 
         >>> sample = _StubLayerBase()
         >>> bool(sample)
@@ -769,14 +1008,21 @@ class LayerBase(Renderable):
     ## Saving
 
     def save_as_png(self, filename, *rect, **kwargs):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Save to a named PNG file
 
-        :param filename: filename to save to
-        :param *rect: rectangle to save, as a 4-tuple
-        :param **kwargs: passthrough opts for underlying implementations
+        Args:
+            filename: filename to save to
+            *rect: rectangle to save, as a 4-tuple
+            **kwargs: passthrough opts for underlying implementations
         :rtype: Gdk.Pixbuf
-
+        
         The base implementation does nothing.
+
+        Returns:
+
+        Raises:
+
         """
         pass
 
@@ -785,40 +1031,54 @@ class LayerBase(Renderable):
     ):
         """Saves the layer's data into an open OpenRaster ZipFile
 
-        :param orazip: a `zipfile.ZipFile` open for write
-        :param tmpdir: path to a temp dir, removed after the save
-        :param path: Unique path of the layer, for encoding in filenames
-        :type path: tuple of ints
-        :param canvas_bbox: Bounding box of all layers, absolute coords
-        :type canvas_bbox: tuple
-        :param frame_bbox: Bounding box of the image being saved
-        :type frame_bbox: tuple
-        :param **kwargs: Keyword args used by the save implementation
-        :returns: element describing data written
-        :rtype: xml.etree.ElementTree.Element
+        Args:
+            orazip: a `zipfile.ZipFile` open for write
+            tmpdir: path to a temp dir, removed after the save
+            path (tuple of ints): Unique path of the layer, for encoding in filenames
+            canvas_bbox (tuple): Bounding box of all layers, absolute coords
+            frame_bbox (tuple): Bounding box of the image being saved
+            **kwargs: Keyword args used by the save implementation
 
-        There are three bounding boxes which need to considered. The
-        inherent bbox of the layer as returned by `get_bbox()` is always
-        tile aligned and refers to absolute model coordinates, as is
-        `canvas_bbox`.
+        Returns:
+            xml.etree.ElementTree.Element
 
-        All of the above bbox's coordinates are defined relative to the
-        canvas origin. However, when saving, the data written must be
-        translated so that `frame_bbox`'s top left corner defines the
-        origin (0, 0), of the saved OpenRaster file. The width and
-        height of `frame_bbox` determine the saved image's dimensions.
+There are three bounding boxes which need to considered. The
+inherent bbox of the layer as returned by `get_bbox()` is always
+tile aligned and refers to absolute model coordinates, as is
+`canvas_bbox`.
 
-        More than one file may be written to the zipfile. The etree
-        element returned should describe everything that was written.
+All of the above bbox's coordinates are defined relative to the
+canvas origin. However, when saving, the data written must be
+translated so that `frame_bbox`'s top left corner defines the
+origin (0, 0), of the saved OpenRaster file. The width and
+height of `frame_bbox` determine the saved image's dimensions.
 
-        Paths must be unique sequences of ints, but are not necessarily
-        valid RootLayerStack paths. It's faked for the normally
-        unaddressable background layer right now, for example.
+More than one file may be written to the zipfile. The etree
+element returned should describe everything that was written.
+
+Paths must be unique sequences of ints, but are not necessarily
+valid RootLayerStack paths. It's faked for the normally
+unaddressable background layer right now, for example.: element describing data written
+
+        Raises:
+
         """
         raise NotImplementedError
 
     def _get_stackxml_element(self, tag, x=None, y=None):
-        """Internal: get a basic etree Element for .ora saving"""
+        # type: (Types.ELLIPSIS) -> Types.NONE
+        """Internal: get a basic etree Element for .ora saving
+
+        Args:
+            tag: 
+            x:  (Default value = None)
+            y:  (Default value = None)
+
+        Returns:
+
+        Raises:
+
+        """
 
         elem = ET.Element(tag)
         attrs = elem.attrib
@@ -851,21 +1111,27 @@ class LayerBase(Renderable):
     def set_symmetry_state(self, active, center, symmetry_type, symmetry_lines, angle):
         """Set the surface's painting symmetry axis and active flag.
 
-        :param bool active: Whether painting should be symmetrical.
-        :param tuple center: (x, y) coordinates of the center of symmetry
-        :param int symmetry_type: symmetry type that will be applied if active
-        :param int symmetry_lines: number of rotational
-            symmetry lines for angle dependent symmetry modes.
-        :param float angle: The angle of the symmetry line(s)
-
+        Args:
+            active (bool): Whether painting should be symmetrical.
+            center (tuple): (x, y) coordinates of the center of symmetry
+            symmetry_type (int): symmetry type that will be applied if active
+            symmetry_lines (int): number of rotational
+        symmetry lines for angle dependent symmetry modes.
+            angle (float): The angle of the symmetry line(s)
+        
         The symmetry axis is only meaningful to paintable layers.
         Received strokes are reflected along the line ``x=center_x``
         when symmetrical painting is active.
-
+        
         This method is used by RootLayerStack only,
         propagating a central shared flag and value to all layers.
-
+        
         The base implementation does nothing.
+
+        Returns:
+
+        Raises:
+
         """
         pass
 
@@ -873,42 +1139,55 @@ class LayerBase(Renderable):
 
     def save_snapshot(self):
         """Snapshots the state of the layer, for undo purposes
-
+        
         The returned data should be considered opaque, useful only as a
         memento to be restored with load_snapshot().
+
+        Args:
+
+        Returns:
+
+        Raises:
+
         """
         return LayerBaseSnapshot(self)
 
-    def load_snapshot(self, sshot):
-        """Restores the layer from snapshot data"""
+    def load_snapshot(self, sshot: Types.ELLIPSIS) -> Types.NONE:
+        """Restores the layer from snapshot data
+
+        Args:
+            sshot: 
+
+        Returns:
+
+        Raises:
+
+        """
         sshot.restore_to_layer(self)
 
     ## Thumbnails
 
     @property
     def thumbnail(self):
-        """The layer's cached preview thumbnail.
-
-        :rtype: GdkPixbuf.Pixbuf or None
-
-        Thumbnail pixbufs are always 256x256 pixels, and correspond to
-        the data bounding box of the layer only.
-
-        See also: render_thumbnail().
-
-        """
+        """The layer's cached preview thumbnail."""
         return self._thumbnail
 
     def update_thumbnail(self):
         """Safely updates the cached preview thumbnail.
-
+        
         This method updates self.thumbnail using render_thumbnail() and
         the data bounding box, and eats any NotImplementedErrors.
-
+        
         This is used by the layer stack to keep the preview thumbnail up
         to date. It is called automatically after layer data is changed
         and stable for a bit, so there is normally no need to call it in
         client code.
+
+        Args:
+
+        Returns:
+
+        Raises:
 
         """
         try:
@@ -920,16 +1199,22 @@ class LayerBase(Renderable):
             self._thumbnail = None
 
     def render_thumbnail(self, bbox, **options):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Renders a 256x256 thumb of the layer in an arbitrary bbox.
 
-        :param tuple bbox: Bounding box to make a thumbnail of.
-        :param **options: Passed to RootLayerStack.render_layer_preview().
+        Args:
+            bbox: Bounding box to make a thumbnail of.
+            **options: Passed to RootLayerStack.render_layer_preview().
         :rtype: GtkPixbuf or None
-
+        
         Use the thumbnail property if you just want a reasonably
         up-to-date preview thumbnail for a single layer.
-
+        
         See also: RootLayerStack.render_layer_preview().
+
+        Returns:
+
+        Raises:
 
         """
         root = self.root
@@ -942,10 +1227,15 @@ class LayerBase(Renderable):
     def trim(self, rect):
         """Trim the layer to a rectangle, discarding data outside it
 
-        :param rect: A trimming rectangle in model coordinates
-        :type rect: tuple (x, y, w, h)
-
+        Args:
+            rect (tuple (x, y, w, h)): A trimming rectangle in model coordinates
+        
         The base implementation does nothing.
+
+        Returns:
+
+        Raises:
+
         """
         pass
 
@@ -954,16 +1244,35 @@ class _StubLayerBase(LayerBase):
     """An instantiable (but broken) LayerBase, for testing."""
 
     def get_render_ops(self, *argv, **kwargs):
+        # type: (Types.ELLIPSIS) -> Types.NONE
+        """
+
+        Args:
+            *argv: 
+            **kwargs: 
+
+        Returns:
+
+        Raises:
+
+        """
         pass
 
 
-class LayerBaseSnapshot(object):
+class LayerBaseSnapshot:
     """Base snapshot implementation
-
+    
     Snapshots are stored in commands, and used to implement undo and redo.
     They must be independent copies of the data, although copy-on-write
     semantics are fine. Snapshot objects must be complete enough clones of the
     layer's data for duplication to work.
+
+    Args:
+
+    Returns:
+
+    Raises:
+
     """
 
     def __init__(self, layer):
@@ -974,7 +1283,17 @@ class LayerBaseSnapshot(object):
         self.visible = layer.visible
         self.locked = layer.locked
 
-    def restore_to_layer(self, layer):
+    def restore_to_layer(self, layer: Types.ELLIPSIS) -> Types.NONE:
+        """
+
+        Args:
+            layer: 
+
+        Returns:
+
+        Raises:
+
+        """
         layer.name = self.name
         layer.mode = self.mode
         layer.opacity = self.opacity
@@ -982,29 +1301,37 @@ class LayerBaseSnapshot(object):
         layer.locked = self.locked
 
 
-class ExternallyEditable:
+class ExternallyEditable(metaclass=abc.ABCMeta):
     """Interface for layers which can be edited in an external app"""
 
-    __metaclass__ = abc.ABCMeta
     _EDITS_SUBDIR = "edits"
 
     @abc.abstractmethod
     def new_external_edit_tempfile(self):
         """Get a tempfile for editing in an external app
 
-        :rtype: unicode/str
-        :returns: Absolute path to a newly-created tempfile for editing
+        Args:
 
-        The returned tempfiles are only expected to persist on disk
-        until a subsequent call to this method is made.
+        Returns:
+            Absolute path to a newly-created tempfile for editing
+            
+            The returned tempfiles are only expected to persist on disk
+            until a subsequent call to this method is made.
+
+        Raises:
 
         """
 
     @abc.abstractmethod
-    def load_from_external_edit_tempfile(self, tempfile_path):
+    def load_from_external_edit_tempfile(self, tempfile_path: str) -> Types.NONE:
         """Load content from an external-edit tempfile
 
-        :param unicode/str tempfile_path: Tempfile to load.
+        Args:
+            tempfile_path: Tempfile to load.
+
+        Returns:
+
+        Raises:
 
         """
 
@@ -1024,17 +1351,21 @@ class ExternallyEditable:
 def combine_redraws(bboxes):
     """Combine multiple rectangles representing redraw areas into one
 
-    :param iterable bboxes: Sequence of redraw bboxes (lib.helpers.Rect)
-    :returns: A single redraw bbox.
-    :rtype: lib.helpers.Rect
+    Args:
+        bboxes (iterable): Sequence of redraw bboxes (lib.helpers.Rect)
 
-    This is best used for small, related redraws, since the GUI may have
-    better ways of combining rectangles into update regions.  Pairs of
-    before and after states are good candidates for using this.
+    Returns:
+        lib.helpers.Rect
 
-    If any of the input bboxes have zero size, the first such bbox is
-    returned. Zero-size update bboxes are the conventional way of
-    requesting a full-screen update.
+This is best used for small, related redraws, since the GUI may have
+better ways of combining rectangles into update regions.  Pairs of
+before and after states are good candidates for using this.
+
+If any of the input bboxes have zero size, the first such bbox is
+returned. Zero-size update bboxes are the conventional way of
+requesting a full-screen update.: A single redraw bbox.
+
+    Raises:
 
     """
     redraw_bbox = helpers.Rect()

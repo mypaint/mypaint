@@ -48,7 +48,6 @@ import lib.xml
 import lib.glib
 import lib.feedback
 import lib.layervis
-from lib.pycompat import unicode
 
 logger = logging.getLogger(__name__)
 
@@ -111,8 +110,8 @@ _AUTOSAVE_INFO_FIELDS = (
 
 class AutosaveInfo(namedtuple("AutosaveInfo", _AUTOSAVE_INFO_FIELDS)):
     """Information about an autosave dir.
-
-    :ivar unicode path: Full path to the autosave directory itself
+    
+    :ivar str path: Full path to the autosave directory itself
     :ivar datetime.datetime last_modified: When its data was last changed
     :ivar GdkPixbuf.Pixbuf thumbnail: 256x256 pixel thumbnail, or None
     :ivar int num_layers: how many data layers exist in the doc
@@ -122,12 +121,28 @@ class AutosaveInfo(namedtuple("AutosaveInfo", _AUTOSAVE_INFO_FIELDS)):
     :ivar bool valid: True if the directory looks structurally valid
     :ivar bool cache_in_use: True if the directory is possibly in use
 
+    Args:
+
+    Returns:
+
+    Raises:
+
     """
 
     @classmethod
-    def new_for_path(cls, path):
-        if not isinstance(path, unicode):
-            raise ValueError("path argument must be unicode")
+    def new_for_path(cls, path: Types.ELLIPSIS) -> Types.NONE:
+        """
+
+        Args:
+            path: 
+
+        Returns:
+
+        Raises:
+
+        """
+        if not isinstance(path, str):
+            raise ValueError("path argument must be str")
         if not os.path.isdir(path):
             raise ValueError("Autosave folder %r does not exist", path)
         has_data = os.path.isdir(os.path.join(path, "data"))
@@ -187,11 +202,7 @@ class AutosaveInfo(namedtuple("AutosaveInfo", _AUTOSAVE_INFO_FIELDS)):
         )
 
     def get_description(self):
-        """Human-readable description of the autosave
-
-        :rtype: unicode
-
-        """
+        """Human-readable description of the autosave"""
         fmt_time = lib.helpers.fmt_time_period_abbr
         unsaved_time_str = fmt_time(self.unsaved_painting_time)
         last_modif_dt = (datetime.now() - self.last_modified).seconds
@@ -244,17 +255,17 @@ class AutosaveInfo(namedtuple("AutosaveInfo", _AUTOSAVE_INFO_FIELDS)):
         )
 
 
-class Document(object):
+class Document:
     """In-memory representation of everything to be worked on & saved
-
+    
     This is the "model" in the Model-View-Controller design for the
     drawing canvas. The View mostly resides in `gui.tileddrawwidget`,
     and the Controller is mostly in `gui.document` and `gui.mode`.
-
+    
     The model contains everything that the user would want to save. It
     is possible to use the model without any GUI attached (see
     ``../tests/``).
-
+    
     Please note the following difficulty with the command stack: many
     uses of the working Document model rely on altering the model
     directly, then writing an undoable record of the changes to the
@@ -262,6 +273,12 @@ class Document(object):
     source of these pending changes. See `sync_pending_changes()` for
     details of how sources of pending changes are asked to synchronize
     their state with the model and its command stack.
+
+    Args:
+
+    Returns:
+
+    Raises:
 
     """
 
@@ -364,8 +381,15 @@ class Document(object):
     @property
     def layer_stack(self):
         """The root of the layer stack tree
-
+        
         See also `lib.layer.RootLayerStack`.
+
+        Args:
+
+        Returns:
+
+        Raises:
+
         """
         # TODO: rename or alias this to just "layers" one day.
         return self._layers
@@ -393,7 +417,7 @@ class Document(object):
             prefix=CACHE_DOC_SUBDIR_PREFIX,
             dir=app_cache_root,
         )
-        if not isinstance(doc_cache_dir, unicode):
+        if not isinstance(doc_cache_dir, str):
             doc_cache_dir = doc_cache_dir.decode(sys.getfilesystemencoding())
         logger.debug("Created working-doc cache dir %r", doc_cache_dir)
         self._cache_dir = doc_cache_dir
@@ -411,8 +435,14 @@ class Document(object):
 
     def _cleanup_cache_dir(self):
         """Internal: recursively delete the working-document cache_dir if OK.
-
+        
         Also stops any background tasks which update it.
+
+        Args:
+
+        Returns:
+
+        Raises:
 
         """
         if self._painting_only or not self._owns_cache_dir:
@@ -436,9 +466,16 @@ class Document(object):
 
     def cleanup(self):
         """Cleans up any persistent state belonging to the document.
-
+        
         This method is called by the main app's exit routine
         after confirmation.
+
+        Args:
+
+        Returns:
+
+        Raises:
+
         """
         self._cleanup_cache_dir()
 
@@ -448,12 +485,19 @@ class Document(object):
     def settings(self):
         """The document-specific settings dict.
 
-        :returns: dict-like object that can be monitored for simple changes.
-        :rtype: lib.observable.ObservableDict
+        Args:
 
-        The settings dict is conserved when saving and loading
-        OpenRaster files. Note however that a round-trip converts
-        strings and dict keys to unicode objects.
+        Returns:
+            lib.observable.ObservableDict
+
+The settings dict is conserved when saving and loading
+OpenRaster files. Note however that a round-trip converts
+strings and dict keys to str objects.
+
+
+See also: ``json``.: dict-like object that can be monitored for simple changes.
+
+        Raises:
 
         >>> import tempfile, shutil, os.path
         >>> tmpdir = tempfile.mkdtemp()
@@ -482,9 +526,6 @@ class Document(object):
         True
         >>> doc2.cleanup()
         >>> shutil.rmtree(tmpdir)
-
-        See also: ``json``.
-
         """
         return self._settings
 
@@ -526,10 +567,21 @@ class Document(object):
 
     @property
     def autosave_backups(self):
+        """ """
         return self._autosave_backups
 
     @autosave_backups.setter
-    def autosave_backups(self, newval):
+    def autosave_backups(self, newval: Types.ELLIPSIS) -> Types.NONE:
+        """
+
+        Args:
+            newval: 
+
+        Returns:
+
+        Raises:
+
+        """
         newval = bool(newval)
         oldval = bool(self._autosave_backups)
         self._autosave_backups = newval
@@ -543,9 +595,15 @@ class Document(object):
 
     def _restart_autosave_countdown(self):
         """Stop and then start the countdown to an automatic backup
-
+        
         Should be called in response to any user activity which might
         have changed the document's data or its structure.
+
+        Args:
+
+        Returns:
+
+        Raises:
 
         """
         assert not self._painting_only
@@ -554,9 +612,15 @@ class Document(object):
 
     def _start_autosave_countdown(self):
         """Start the countdown to an automatic backup, if it isn't already.
-
+        
         This does nothing if the countdown has already been started, or
         if the autosave writes are in progress.
+
+        Args:
+
+        Returns:
+
+        Raises:
 
         """
         assert not self._painting_only
@@ -600,10 +664,16 @@ class Document(object):
 
     def _queue_autosave_writes(self):
         """Add autosaved backup tasks to the background processor
-
+        
         These tasks consist of nicely chunked writes for all layers
         whose data has changed, plus a few extra structural and
         bookkeeping ones.
+
+        Args:
+
+        Returns:
+
+        Raises:
 
         """
         if not self._cache_dir:
@@ -696,25 +766,44 @@ class Document(object):
         )
 
     def _autosave_thumbnail_cb(self, rootstack, bbox, filename):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Autosaved backup task: write Thumbnails/thumbnail.png
-
+        
         This runs every time currently for the same reason we rewrite
         stack.xml each time. It would be a big win if we didn't have to
         do this though.
+
+        Args:
+            rootstack: 
+            bbox: 
+            filename: 
+
+        Returns:
+
+        Raises:
 
         """
         assert not self._painting_only
         thumbnail = rootstack.render_thumbnail(bbox)
         tmpname = filename + ".TMP"
         lib.pixbuf.save(thumbnail, tmpname)
-        lib.fileutils.replace(tmpname, filename)
+        os.replace(tmpname, filename)
         return False
 
     def _autosave_stackxml_cb(self, image_elem, filename):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Autosaved backup task: write stack.xml
-
+        
         This runs every time because the document's layer structure can
         change without data layers being aware of it.
+
+        Args:
+            image_elem: 
+            filename: 
+
+        Returns:
+
+        Raises:
 
         """
         assert not self._painting_only
@@ -723,26 +812,44 @@ class Document(object):
         with open(tmpname, "wb") as xml_fp:
             xml = ET.tostring(image_elem, encoding="UTF-8")
             xml_fp.write(xml)
-        lib.fileutils.replace(tmpname, filename)
+        os.replace(tmpname, filename)
         return False
 
     def _autosave_settings_cb(self, settings, filename):
-        """Autosaved backup task: save the doc-specific settings dict"""
+        # type: (Types.ELLIPSIS) -> Types.NONE
+        """Autosaved backup task: save the doc-specific settings dict
+
+        Args:
+            settings: 
+            filename: 
+
+        Returns:
+
+        Raises:
+
+        """
         assert not self._painting_only
 
-        # Py2/Py3: always feed print() a UTF-8 encoded byte string.
         json_data = json.dumps(settings, indent=2)
-        if isinstance(json_data, unicode):
-            json_data = json_data.encode("utf-8")
-        assert isinstance(json_data, bytes)
 
         tmpname = filename + ".TMP"
-        with open(tmpname, "wb") as fp:
+        with open(tmpname, "w", encoding="utf-8") as fp:
             fp.write(json_data)
-        lib.fileutils.replace(tmpname, filename)
+        os.replace(tmpname, filename)
 
     def _autosave_cleanup_cb(self, oradir, manifest):
-        """Autosaved backup task: final cleanup task"""
+        # type: (Types.ELLIPSIS) -> Types.NONE
+        """Autosaved backup task: final cleanup task
+
+        Args:
+            oradir: 
+            manifest: 
+
+        Returns:
+
+        Raises:
+
+        """
         assert not self._painting_only
         surplus_files = []
         for dirpath, dirnames, filenames in os.walk(oradir):
@@ -774,11 +881,22 @@ class Document(object):
         return False
 
     def _stop_autosave_writes(self):
+        """ """
         assert not self._painting_only
         logger.debug("autosave stopped: clearing task queue")
         self._autosave_processor.stop()
 
-    def _command_stack_updated_cb(self, cmdstack):
+    def _command_stack_updated_cb(self, cmdstack: Types.ELLIPSIS) -> Types.NONE:
+        """
+
+        Args:
+            cmdstack: 
+
+        Returns:
+
+        Raises:
+
+        """
         assert not self._painting_only
         if not self.autosave_backups:
             return
@@ -790,32 +908,47 @@ class Document(object):
 
     def get_resolution(self):
         """Returns the document model's nominal resolution
-
+        
         The OpenRaster format saves resolution information in both vertical and
         horizontal resolutions, but MyPaint does not support this at present.
         This method returns the a unidirectional document resolution in pixels
         per inch; this is the user-chosen factor that UI controls should use
         when converting real-world measurements in frames, fonts, and other
         objects to document pixels.
-
+        
         Note that the document resolution has no direct relation to screen
         pixels or printed dots.
+
+        Args:
+
+        Returns:
+
+        Raises:
+
         """
         if self._xres and self._yres:
             return max(1, max(self._xres, self._yres))
         else:
             return DEFAULT_RESOLUTION
 
-    def set_resolution(self, res):
+    def set_resolution(self, res: Types.ELLIPSIS) -> Types.NONE:
         """Sets the document model's nominal resolution
-
+        
         The OpenRaster format saves resolution information in both vertical and
         horizontal resolutions, but MyPaint does not support this at present.
         This method sets the document resolution in pixels per inch in both
         directions.
-
+        
         Note that the document resolution has no direct relation to screen
         pixels or printed dots.
+
+        Args:
+            res: 
+
+        Returns:
+
+        Raises:
+
         """
         if res is not None:
             res = int(res)
@@ -824,9 +957,22 @@ class Document(object):
         self._yres = res
 
     def get_frame(self):
+        """ """
         return self._frame
 
     def set_frame(self, frame, user_initiated=False):
+        # type: (Types.ELLIPSIS) -> Types.NONE
+        """
+
+        Args:
+            frame: 
+            user_initiated:  (Default value = False)
+
+        Returns:
+
+        Raises:
+
+        """
         x, y, w, h = frame
         self.update_frame(x=x, y=y, width=w, height=h, user_initiated=user_initiated)
 
@@ -835,7 +981,21 @@ class Document(object):
     def update_frame(
         self, x=None, y=None, width=None, height=None, user_initiated=False
     ):
-        """Update parts of the frame"""
+        # type: (Types.ELLIPSIS) -> Types.NONE
+        """Update parts of the frame
+
+        Args:
+            x:  (Default value = None)
+            y:  (Default value = None)
+            width:  (Default value = None)
+            height:  (Default value = None)
+            user_initiated:  (Default value = False)
+
+        Returns:
+
+        Raises:
+
+        """
         frame = [x, y, width, height]
         if user_initiated:
             if isinstance(self.get_last_command(), command.UpdateFrame):
@@ -856,15 +1016,36 @@ class Document(object):
 
     @event
     def frame_updated(self, old_frame, new_frame):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Event: the frame's dimensions were updated
 
-        :param tuple frame: the new frame extents (x, y, w, h)
+        Args:
+            old_frame: 
+            new_frame: 
+
+        Returns:
+
+        Raises:
+
         """
 
     def get_frame_enabled(self):
+        """ """
         return self._frame_enabled
 
     def set_frame_enabled(self, enabled, user_initiated=False):
+        # type: (Types.ELLIPSIS) -> Types.NONE
+        """
+
+        Args:
+            enabled: 
+            user_initiated:  (Default value = False)
+
+        Returns:
+
+        Raises:
+
+        """
         enabled = bool(enabled)
         if self._frame_enabled == enabled:
             return
@@ -878,41 +1059,104 @@ class Document(object):
     frame_enabled = property(get_frame_enabled)
 
     @event
-    def frame_enabled_changed(self, enabled):
-        """Event: the frame_enabled field changed value"""
+    def frame_enabled_changed(self, enabled: Types.ELLIPSIS) -> Types.NONE:
+        """Event: the frame_enabled field changed value
 
-    def set_frame_to_current_layer(self, user_initiated=False):
+        Args:
+            enabled: 
+
+        Returns:
+
+        Raises:
+
+        """
+
+    def set_frame_to_current_layer(self, user_initiated: Types.ELLIPSIS = False) -> Types.NONE:
+        """
+
+        Args:
+            user_initiated:  (Default value = False)
+
+        Returns:
+
+        Raises:
+
+        """
         current = self.layer_stack.current
         x, y, w, h = current.get_bbox()
         self.update_frame(x, y, w, h, user_initiated=user_initiated)
 
-    def set_frame_to_document(self, user_initiated=False):
+    def set_frame_to_document(self, user_initiated: Types.ELLIPSIS = False) -> Types.NONE:
+        """
+
+        Args:
+            user_initiated:  (Default value = False)
+
+        Returns:
+
+        Raises:
+
+        """
         x, y, w, h = self.get_bbox()
         self.update_frame(x, y, w, h, user_initiated=user_initiated)
 
     def trim_current_layer(self):
         """Trim the current layer to the extent of the document frame
-
+        
         This has no effect if the frame is not currently enabled.
+
+        Args:
+
+        Returns:
+
+        Raises:
 
         """
         if not self._frame_enabled:
             return
         self.do(command.TrimLayer(self))
 
-    def uniq_current_layer(self, pixels=False):
-        """Udoably remove non-unique tiles or pixels from the current layer."""
+    def uniq_current_layer(self, pixels: Types.ELLIPSIS = False) -> Types.NONE:
+        """Udoably remove non-unique tiles or pixels from the current layer.
+
+        Args:
+            pixels:  (Default value = False)
+
+        Returns:
+
+        Raises:
+
+        """
         self.do(command.UniqLayer(self, pixels=pixels))
 
-    def refactor_current_layer_group(self, pixels=False):
-        """Undoably factor out common parts of child layers to a new child."""
+    def refactor_current_layer_group(self, pixels: Types.ELLIPSIS = False) -> Types.NONE:
+        """Undoably factor out common parts of child layers to a new child.
+
+        Args:
+            pixels:  (Default value = False)
+
+        Returns:
+
+        Raises:
+
+        """
         self.do(command.RefactorGroup(self, pixels=pixels))
 
     @event
     def effective_bbox_changed(self):
         """Event: the effective bounding box was changed"""
 
-    def _effective_bbox_changed_cb(self, *_ignored):
+    def _effective_bbox_changed_cb(self, *_ignored: Types.ELLIPSIS) -> Types.NONE:
+        """
+
+        Args:
+            *_ignored: 
+
+        Returns:
+
+        Raises:
+
+        """
         # Background layer's autosaved data files depend on the
         # frame's position and size. No other layers need this.
         assert not self._painting_only
@@ -923,15 +1167,21 @@ class Document(object):
     def clear(self, new_cache=True):
         """Clears everything, and resets the command stack
 
-        :param bool new_cache: False to *not* create a new cache dir
-
+        Args:
+            new_cache (bool, optional): False to *not* create a new cache dir
+        
         This results in a document consisting of
         one newly created blank drawing layer,
         an empty undo history, and unless `new_cache` is False,
         a new empty working-document temp directory.
         Clearing the document also generates a full redraw,
         and resets the frame, the stored resolution,
-        and the document-specific settings.
+        and the document-specific settings. (Default value = True)
+
+        Returns:
+
+        Raises:
+
         """
         self.sync_pending_changes()
         self.layer_view_manager.clear()
@@ -961,11 +1211,33 @@ class Document(object):
         self._settings.clear()
         self.canvas_area_modified(*prev_area)
 
-    def brushsettings_changed_cb(self, settings):
+    def brushsettings_changed_cb(self, settings: Types.ELLIPSIS) -> Types.NONE:
+        """
+
+        Args:
+            settings: 
+
+        Returns:
+
+        Raises:
+
+        """
         self.sync_pending_changes(flush=False)
 
     def select_layer(self, index=None, path=None, layer=None):
-        """Selects a layer undoably"""
+        # type: (Types.ELLIPSIS) -> Types.NONE
+        """Selects a layer undoably
+
+        Args:
+            index:  (Default value = None)
+            path:  (Default value = None)
+            layer:  (Default value = None)
+
+        Returns:
+
+        Raises:
+
+        """
         layers = self.layer_stack
         sel_path = layers.canonpath(
             index=index,
@@ -978,15 +1250,21 @@ class Document(object):
 
     ## Layer stack (z-order and grouping)
 
-    def restack_layer(self, src_path, targ_path):
+    def restack_layer(self, src_path: tuple, targ_path: tuple) -> Types.NONE:
         """Moves a layer within the layer stack by path, undoably
 
-        :param tuple src_path: path of the layer to be moved
-        :param tuple targ_path: target insert path
-
+        Args:
+            src_path: path of the layer to be moved
+            targ_path: target insert path
+        
         The source path must identify an existing layer. The target
         path must be a valid insertion path at the time this method is
         called.
+
+        Returns:
+
+        Raises:
+
         """
         logger.debug("Restack layer at %r to %r", src_path, targ_path)
         cmd = command.RestackLayer(self, src_path, targ_path)
@@ -1020,7 +1298,17 @@ class Document(object):
 
     ## Drawing/painting strokes
 
-    def redo_last_stroke_with_different_brush(self, brushinfo):
+    def redo_last_stroke_with_different_brush(self, brushinfo: Types.ELLIPSIS) -> Types.NONE:
+        """
+
+        Args:
+            brushinfo: 
+
+        Returns:
+
+        Raises:
+
+        """
         cmd = self.get_last_command()
         if not isinstance(cmd, command.Brushwork):
             return
@@ -1039,27 +1327,28 @@ class Document(object):
     ):
         """Flood-fills a point on the current layer with a color
 
-        :param fill_args: fill arguments object
-        :type fill_args: lib.floodfill.FloodFillArguments
-        :param view_bbox: Bounding box of the view, restricts fill if present
-        :type view_bbox: lib.helpers.Rect
-        :param sample_merged: Use all visible layers when sampling
-        :type sample_merged: bool
-        :param src_path: Path to layer used as reference (if not active layer)
-        :type src_path: tuple or None
-        :param make_new_layer: Write output to a new layer on top
-        :type make_new_layer: bool
-        :param status_cb: Gui status/cancellation setup callback
-
+        Args:
+            fill_args (lib.floodfill.FloodFillArguments): fill arguments object
+            view_bbox (lib.helpers.Rect, optional): Bounding box of the view, restricts fill if present (Default value = None)
+            sample_merged (bool, optional): Use all visible layers when sampling (Default value = False)
+            src_path (tuple or None, optional): Path to layer used as reference (if not active layer) (Default value = None)
+            make_new_layer (bool, optional): Write output to a new layer on top (Default value = False)
+            status_cb: Gui status/cancellation setup callback
+        
         Filling an infinite canvas requires limits. If the frame is
         enabled, this limits the maximum size of the fill, and filling
         outside the frame is not possible.
-
+        
         Otherwise, if the entire document is empty, the limits are
         dynamic.  Initially only a single tile will be filled. This can
         then form one corner for the next fill's limiting rectangle.
         This is a little quirky, but allows big areas to be filled
-        rapidly as needed on blank layers.
+        rapidly as needed on blank layers. (Default value = None)
+
+        Returns:
+
+        Raises:
+
         """
         bbox = helpers.Rect(*tuple(self.get_effective_bbox()))
         if not self.layer_stack.current.get_fillable():
@@ -1095,25 +1384,47 @@ class Document(object):
     ## Graphical refresh
 
     def _canvas_modified_cb(self, root, layer, x, y, w, h):
-        """Internal callback: forwards redraw nofifications"""
+        # type: (Types.ELLIPSIS) -> Types.NONE
+        """Internal callback: forwards redraw nofifications
+
+        Args:
+            root: 
+            layer: 
+            x: 
+            y: 
+            w: 
+            h: 
+
+        Returns:
+
+        Raises:
+
+        """
         self.canvas_area_modified(x, y, w, h)
 
     @event
     def canvas_area_modified(self, x, y, w, h):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Event: canvas was updated, either within a rectangle or fully
 
-        :param x: top-left x coordinate for the redraw bounding box
-        :param y: top-left y coordinate for the redraw bounding box
-        :param w: width of the redraw bounding box, or 0 for full redraw
-        :param h: height of the redraw bounding box, or 0 for full redraw
-
+        Args:
+            x: top-left x coordinate for the redraw bounding box
+            y: top-left y coordinate for the redraw bounding box
+            w: width of the redraw bounding box, or 0 for full redraw
+            h: height of the redraw bounding box, or 0 for full redraw
+        
         This event method is invoked to notify observers about needed redraws
         originating from within the model, e.g. painting, fills, or layer
         moves. It is also used to notify about the entire canvas needing to be
         redrawn. In the latter case, the `w` or `h` args forwarded to
         registered observers is zero.
-
+        
         See also: `invalidate_all()`.
+
+        Returns:
+
+        Raises:
+
         """
         pass
 
@@ -1126,31 +1437,43 @@ class Document(object):
     @event
     def sync_pending_changes(self, flush=True, **kwargs):
         """Ask for pending changes to be synchronized (updated/flushed)
-
+        
         This event is called to signal sources of pending changes that
         they need to synchronize their changes with the document and its
         command stack. Synchronizing normally means that registered
         observers with pending changes:
-
+        
         * may optionally update their pending changes if needed,
         * must flush their pending changes to the observed model's
           command stack.
-
+        
         By default, the request to flush changes is non-optional.
 
-        :param bool flush: if this is False, the flush is optional too
-        :param \*\*kwargs: passed through to observers
+        Args:
+            flush (bool, optional): if this is False, the flush is optional too (Default value = True)
+            **kwargs: 
 
-        See: `lib.observable.event` for details of the signalling
-        mechanism.
+        Returns:
+
+        Raises:
 
         """
 
     def _settings_sync_pending_changes_cb(self, doc, flush=True, **kwargs):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Make sure the settings get synced when the doc is synced.
-
+        
         In addition to this, there are times when the doc settings need
         syncing by themselves, e.g. autosave.
+
+        Args:
+            doc: 
+            flush:  (Default value = True)
+            **kwargs: 
+
+        Returns:
+
+        Raises:
 
         """
         self._settings.sync_pending_changes(flush=flush, **kwargs)
@@ -1171,13 +1494,31 @@ class Document(object):
             if not cmd or not cmd.automatic_undo:
                 return cmd
 
-    def do(self, cmd):
-        """Do a command"""
+    def do(self, cmd: Types.ELLIPSIS) -> Types.NONE:
+        """Do a command
+
+        Args:
+            cmd: 
+
+        Returns:
+
+        Raises:
+
+        """
         self.sync_pending_changes()
         self.command_stack.do(cmd)
 
-    def update_last_command(self, **kwargs):
-        """Updates the most recently done command"""
+    def update_last_command(self, **kwargs: Types.ELLIPSIS) -> Types.NONE:
+        """Updates the most recently done command
+
+        Args:
+            **kwargs: 
+
+        Returns:
+
+        Raises:
+
+        """
         self.sync_pending_changes()
         return self.command_stack.update_last_command(**kwargs)
 
@@ -1190,9 +1531,15 @@ class Document(object):
 
     def get_bbox(self):
         """Returns the data bounding box of the document
-
+        
         This is currently the union of all the data bounding boxes of all of
         the layers. It disregards the user-chosen frame.
+
+        Args:
+
+        Returns:
+
+        Raises:
 
         """
         res = helpers.Rect()
@@ -1204,9 +1551,16 @@ class Document(object):
 
     def get_full_redraw_bbox(self):
         """Returns the full-redraw bounding box of the document
-
+        
         This is the same concept as `layer.BaseLayer.get_full_redraw_bbox()`,
         and is built up from the full-redraw bounding boxes of all layers.
+
+        Args:
+
+        Returns:
+
+        Raises:
+
         """
         res = helpers.Rect()
         for l in self.layer_stack.deepiter():
@@ -1218,24 +1572,35 @@ class Document(object):
         return res
 
     def get_effective_bbox(self):
-        """Return the effective bounding box of the document.
+        """
 
-        If the frame is enabled, this is the bounding box of the frame,
-        else the (dynamic) bounding box of the document.
+        Args:
+
+        Returns:
+            If the frame is enabled, this is the bounding box of the frame,
+            else the (dynamic) bounding box of the document.
+
+        Raises:
 
         """
         return self.get_frame() if self.frame_enabled else self.get_bbox()
 
     def get_user_bbox(self):
-        """Return the bounding box expected by the user.
+        """
 
-        If the frame is enabled, this is the bounding box of the frame.
+        Args:
 
-        If the frame is disabled, this is a rectangle multiple of the size
-        of the current background image, big enough to cover the dynamic
-        bounding box of the document. Width and height will always be
-        greater than zero, that is, the minimum size is the size of the
-        background image.
+        Returns:
+            If the frame is enabled, this is the bounding box of the frame.
+            
+            If the frame is disabled, this is a rectangle multiple of the size
+            of the current background image, big enough to cover the dynamic
+            bounding box of the document. Width and height will always be
+            greater than zero, that is, the minimum size is the size of the
+            background image.
+
+        Raises:
+
         """
         if self.frame_enabled:
             return self.get_frame()
@@ -1285,13 +1650,19 @@ class Document(object):
     def add_layer(self, path, layer_class=layer.PaintingLayer, **kwds):
         """Undoably adds a new layer at a specified path
 
-        :param path: Path for the new layer
-        :param callable layer_class: constructor for the new layer
-        :param **kwds: Constructor args
-
+        Args:
+            path: Path for the new layer
+            layer_class (callable, optional): constructor for the new layer (Default value = layer.PaintingLayer)
+            **kwds: Constructor args
+        
         By default, a normal painting layer is added.
-
+        
         See: `lib.command.AddLayer`
+
+        Returns:
+
+        Raises:
+
         """
         cmd = command.AddLayer(self, path, name=None, layer_class=layer_class, **kwds)
         self.do(cmd)
@@ -1302,8 +1673,17 @@ class Document(object):
             return
         self.do(command.RemoveLayer(self))
 
-    def rename_current_layer(self, name):
-        """Rename the current layer"""
+    def rename_current_layer(self, name: Types.ELLIPSIS) -> Types.NONE:
+        """Rename the current layer
+
+        Args:
+            name: 
+
+        Returns:
+
+        Raises:
+
+        """
         if not self.layer_stack.current_path:
             return
         cmd_class = command.RenameLayer
@@ -1345,6 +1725,20 @@ class Document(object):
     ## Layer import/export
 
     def load_layer_from_pixbuf(self, pixbuf, x=0, y=0, to_new_layer=False):
+        # type: (Types.ELLIPSIS) -> Types.NONE
+        """
+
+        Args:
+            pixbuf: 
+            x:  (Default value = 0)
+            y:  (Default value = 0)
+            to_new_layer:  (Default value = False)
+
+        Returns:
+
+        Raises:
+
+        """
         arr = helpers.gdkpixbuf2numpy(pixbuf)
         s = tiledsurface.Surface()
         bbox = s.load_from_numpy(arr, x, y)
@@ -1352,13 +1746,39 @@ class Document(object):
         return bbox
 
     def load_layer_from_png(self, filename, x, y, progress=None, **kwargs):
+        # type: (Types.ELLIPSIS) -> Types.NONE
+        """
+
+        Args:
+            filename: 
+            x: 
+            y: 
+            progress:  (Default value = None)
+            **kwargs: 
+
+        Returns:
+
+        Raises:
+
+        """
         s = tiledsurface.Surface()
         bbox = s.load_from_png(filename, x, y, progress, **kwargs)
         self.do(command.LoadLayer(self, s))
         return bbox
 
     def update_layer_from_external_edit_tempfile(self, layer, file_path):
-        """Update a layer after external edits to its tempfile"""
+        # type: (Types.ELLIPSIS) -> Types.NONE
+        """Update a layer after external edits to its tempfile
+
+        Args:
+            layer: 
+            file_path: 
+
+        Returns:
+
+        Raises:
+
+        """
         assert hasattr(layer, "load_from_external_edit_tempfile")
         cmd = command.ExternalLayerEdit(self, layer, file_path)
         self.do(cmd)
@@ -1366,7 +1786,18 @@ class Document(object):
     ## Even more layer command frontends
 
     def set_layer_visibility(self, visible, layer):
-        """Sets the visibility of a layer."""
+        # type: (Types.ELLIPSIS) -> Types.NONE
+        """Sets the visibility of a layer.
+
+        Args:
+            visible: 
+            layer: 
+
+        Returns:
+
+        Raises:
+
+        """
         if layer is self.layer_stack:
             return
         cmd_class = command.SetLayerVisibility
@@ -1378,7 +1809,18 @@ class Document(object):
             self.do(cmd)
 
     def set_layer_locked(self, locked, layer):
-        """Sets the input-locked status of a layer."""
+        # type: (Types.ELLIPSIS) -> Types.NONE
+        """Sets the input-locked status of a layer.
+
+        Args:
+            locked: 
+            layer: 
+
+        Returns:
+
+        Raises:
+
+        """
         if layer is self.layer_stack:
             return
         cmd_class = command.SetLayerLocked
@@ -1389,10 +1831,16 @@ class Document(object):
             cmd = cmd_class(self, locked, layer)
             self.do(cmd)
 
-    def set_current_layer_opacity(self, opacity):
+    def set_current_layer_opacity(self, opacity: float) -> Types.NONE:
         """Sets the opacity of the current layer
 
-        :param float opacity: New layer opacity
+        Args:
+            opacity: New layer opacity
+
+        Returns:
+
+        Raises:
+
         """
         current = self.layer_stack.current
         if current is self.layer_stack:
@@ -1409,10 +1857,16 @@ class Document(object):
             cmd = cmd_class(self, opacity, layer=current)
             self.do(cmd)
 
-    def set_current_layer_mode(self, mode):
+    def set_current_layer_mode(self, mode: int) -> Types.NONE:
         """Sets the mode for the current layer
 
-        :param int mode: New layer mode to use
+        Args:
+            mode: New layer mode to use
+
+        Returns:
+
+        Raises:
+
         """
         current = self.layer_stack.current
         if current is self.layer_stack:
@@ -1424,7 +1878,18 @@ class Document(object):
     ## Saving and loading
 
     def load_from_pixbuf(self, pixbuf, to_new_layer=False):
-        """Load a document from a pixbuf."""
+        # type: (Types.ELLIPSIS) -> Types.NONE
+        """Load a document from a pixbuf.
+
+        Args:
+            pixbuf: 
+            to_new_layer:  (Default value = False)
+
+        Returns:
+
+        Raises:
+
+        """
         self.clear()
         bbox = self.load_layer_from_pixbuf(pixbuf, to_new_layer=to_new_layer)
         self.set_frame(bbox, user_initiated=False)
@@ -1432,15 +1897,18 @@ class Document(object):
     def save(self, filename, **kwargs):
         """Save the document to a file.
 
-        :param str filename: The filename to save to.
-        :param dict kwargs: Passed on to the chosen save method.
-        :raise lib.error.FileHandlingError: with a good user-facing string
-        :raise lib.error.AllocationError: with a good user-facing string
-        :returns: A thumbnail pixbuf, or None if not supported
-        :rtype: GdkPixbuf
+        Args:
+            filename (str): The filename to save to.
+            **kwargs: 
 
-        The filename's extension is used to determine the save format, and a
-        ``save_*()`` method is chosen to perform the save.
+        Returns:
+            GdkPixbuf
+
+The filename's extension is used to determine the save format, and a
+``save_*()`` method is chosen to perform the save.: A thumbnail pixbuf, or None if not supported
+
+        Raises:
+
         """
         self.sync_pending_changes(flush=True)
         junk, ext = os.path.splitext(filename)
@@ -1488,18 +1956,19 @@ class Document(object):
     def load(self, filename, **kwargs):
         """Load the document from a file.
 
-        :param str filename:
-            The filename to load from. The extension is used to determine
-            format, and a ``load_*()`` method is chosen to perform the load.
-        :param dict kwargs:
-            Passed on to the chosen loader method.
-        :raise FileHandlingError: with a suitable string
+        Args:
+            filename (str): The filename to load from. The extension is used to determine
+        format, and a ``load_*()`` method is chosen to perform the load.
+            **kwargs: 
+
+        Returns:
+
+        Raises:
 
         >>> doc = Document()
         >>> doc.load("tests/smallimage.ora")
         True
         >>> doc.cleanup()
-
         """
         error_kwargs = {
             "error_loading_common": _LOAD_FAILED_COMMON_TEMPLATE_LINE.format(
@@ -1540,14 +2009,14 @@ class Document(object):
             result = load_method(filename, **kwargs)
         except (GObject.GError, IOError) as e:
             logger.exception("Error when loading %r", filename)
-            error_str = unicode(e)
+            error_str = str(e)
         except Exception as e:
             logger.exception("Failed to load %r", filename)
             tmpl = C_(
                 "Document IO: loading errors",
                 "{error_loading_common}\n\n" "Reason: {reason}\n\n" "{see_logs}",
             )
-            error_kwargs["reason"] = unicode(e)
+            error_kwargs["reason"] = str(e)
             error_str = tmpl.format(**error_kwargs)
         if error_str:
             raise FileHandlingError(error_str)
@@ -1556,6 +2025,19 @@ class Document(object):
         return result
 
     def _unsupported(self, filename, *args, **kwargs):
+        # type: (Types.ELLIPSIS) -> Types.NONE
+        """
+
+        Args:
+            filename: 
+            *args: 
+            **kwargs: 
+
+        Returns:
+
+        Raises:
+
+        """
         stemname, ext = os.path.splitext(filename)
         error_kwargs = {
             "error_loading_common": _LOAD_FAILED_COMMON_TEMPLATE_LINE.format(
@@ -1573,7 +2055,17 @@ class Document(object):
         raise FileHandlingError(tmpl.format(**error_kwargs))
 
     def import_layers(self, filenames, progress=None, **kwargs):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Imports layers at the current position from files.
+
+        Args:
+            filenames: 
+            progress:  (Default value = None)
+            **kwargs: 
+
+        Returns:
+
+        Raises:
 
         >>> doc = Document()
         >>> len(doc.layer_stack)
@@ -1585,7 +2077,6 @@ class Document(object):
         >>> len(doc.layer_stack)
         2
         >>> doc.cleanup()
-
         """
         if progress is None:
             progress = lib.feedback.Progress()
@@ -1635,8 +2126,17 @@ class Document(object):
         self.do(cmd)
         progress.close()
 
-    def render_thumbnail(self, **kwargs):
-        """Renders a thumbnail for the user bbox"""
+    def render_thumbnail(self, **kwargs: Types.ELLIPSIS) -> Types.NONE:
+        """Renders a thumbnail for the user bbox
+
+        Args:
+            **kwargs: 
+
+        Returns:
+
+        Raises:
+
+        """
         t0 = time.time()
         bbox = self.get_user_bbox()
         pixbuf = self.layer_stack.render_thumbnail(bbox, **kwargs)
@@ -1644,7 +2144,21 @@ class Document(object):
         return pixbuf
 
     def save_png(self, filename, alpha=None, multifile=None, progress=None, **kwargs):
-        """Save to one or more PNG files"""
+        # type: (Types.ELLIPSIS) -> Types.NONE
+        """Save to one or more PNG files
+
+        Args:
+            filename: 
+            alpha:  (Default value = None)
+            multifile:  (Default value = None)
+            progress:  (Default value = None)
+            **kwargs: 
+
+        Returns:
+
+        Raises:
+
+        """
         if progress is None:
             progress = lib.feedback.Progress()
 
@@ -1664,7 +2178,20 @@ class Document(object):
             self._save_single_file_png(filename, alpha, progress, **kwargs)
 
     def _save_single_file_png(self, filename, alpha, progress, **kwargs):
-        """Save to a single PNG, with optional alpha."""
+        # type: (Types.ELLIPSIS) -> Types.NONE
+        """Save to a single PNG, with optional alpha.
+
+        Args:
+            filename: 
+            alpha: 
+            progress: 
+            **kwargs: 
+
+        Returns:
+
+        Raises:
+
+        """
         x, y, w, h = self.get_user_bbox()
 
         self.layer_stack.save_as_png(
@@ -1680,7 +2207,20 @@ class Document(object):
         )
 
     def _save_layers_to_numbered_pngs(self, filename, alpha, progress, **kwargs):
-        """Save layers to multiple number-suffixed PNG files."""
+        # type: (Types.ELLIPSIS) -> Types.NONE
+        """Save layers to multiple number-suffixed PNG files.
+
+        Args:
+            filename: 
+            alpha: 
+            progress: 
+            **kwargs: 
+
+        Returns:
+
+        Raises:
+
+        """
         prefix, ext = os.path.splitext(filename)
 
         # if we have a number already, strip it
@@ -1699,7 +2239,20 @@ class Document(object):
             )
 
     def _save_layer_views_to_named_pngs(self, filename, alpha, progress, **kwargs):
-        """Save the layer-views to multiple name-suffixed PNG files."""
+        # type: (Types.ELLIPSIS) -> Types.NONE
+        """Save the layer-views to multiple name-suffixed PNG files.
+
+        Args:
+            filename: 
+            alpha: 
+            progress: 
+            **kwargs: 
+
+        Returns:
+
+        Raises:
+
+        """
         prefix, ext = os.path.splitext(filename)
 
         lvm = self.layer_view_manager
@@ -1730,13 +2283,37 @@ class Document(object):
                 lvm.activate_view_by_name(old_active_view)
 
     def load_png(self, filename, progress=None, **kwargs):
-        """Load (speedily) from a PNG file"""
+        # type: (Types.ELLIPSIS) -> Types.NONE
+        """Load (speedily) from a PNG file
+
+        Args:
+            filename: 
+            progress:  (Default value = None)
+            **kwargs: 
+
+        Returns:
+
+        Raises:
+
+        """
         self.clear()
         bbox = self.load_layer_from_png(filename, 0, 0, progress, **kwargs)
         self.set_frame(bbox, user_initiated=False)
 
     def load_from_pixbuf_file(self, filename, progress=None, **kwargs):
-        """Load from a file which GdkPixbuf can open"""
+        # type: (Types.ELLIPSIS) -> Types.NONE
+        """Load from a file which GdkPixbuf can open
+
+        Args:
+            filename: 
+            progress:  (Default value = None)
+            **kwargs: 
+
+        Returns:
+
+        Raises:
+
+        """
         pixbuf = lib.pixbuf.load_from_file(filename, progress)
         self.load_from_pixbuf(pixbuf)
 
@@ -1745,6 +2322,19 @@ class Document(object):
 
     @fileutils.via_tempfile
     def save_jpg(self, filename, quality=90, **kwargs):
+        # type: (Types.ELLIPSIS) -> Types.NONE
+        """
+
+        Args:
+            filename: 
+            quality:  (Default value = 90)
+            **kwargs: 
+
+        Returns:
+
+        Raises:
+
+        """
         bbox = self.get_user_bbox()
         root = self.layer_stack
         try:
@@ -1768,7 +2358,19 @@ class Document(object):
 
     @fileutils.via_tempfile
     def save_ora(self, filename, options=None, **kwargs):
-        """Saves OpenRaster data to a file"""
+        # type: (Types.ELLIPSIS) -> Types.NONE
+        """Saves OpenRaster data to a file
+
+        Args:
+            filename: 
+            options:  (Default value = None)
+            **kwargs: 
+
+        Returns:
+
+        Raises:
+
+        """
         logger.info("save_ora: %r (%r, %r)", filename, options, kwargs)
         t0 = time.time()
         self.sync_pending_changes(flush=True)
@@ -1787,6 +2389,19 @@ class Document(object):
 
     @staticmethod
     def _compat_check(image_elem, filename, **kwargs):
+        # type: (Types.ELLIPSIS) -> Types.NONE
+        """
+
+        Args:
+            image_elem: 
+            filename: 
+            **kwargs: 
+
+        Returns:
+
+        Raises:
+
+        """
         target_version = image_elem.attrib.get(_ORA_MYPAINT_VERSION, None)
         if not target_version:
             return True
@@ -1796,13 +2411,36 @@ class Document(object):
         compat_type, prerel = result
 
         def ignore(*a, **kw):
+            """
+
+            Args:
+                *a: 
+                **kw: 
+
+            Returns:
+
+            Raises:
+
+            """
             return True
 
         cb = kwargs.get("incompatible_ora_cb", ignore)
         return cb(compat_type, prerel, filename, target_version)
 
     def load_ora(self, filename, progress=None, **kwargs):
-        """Loads from an OpenRaster file"""
+        # type: (Types.ELLIPSIS) -> Types.NONE
+        """Loads from an OpenRaster file
+
+        Args:
+            filename: 
+            progress:  (Default value = None)
+            **kwargs: 
+
+        Returns:
+
+        Raises:
+
+        """
         logger.info("load_ora: %r", filename)
         t0 = time.time()
         self.clear()
@@ -1870,14 +2508,7 @@ class Document(object):
         if json_entry is not None:
             new_settings = {}
             try:
-                # Py3: on our Travis-CI, they're using Ubuntu Trusty's
-                # ancient Python 3.4.0, and that has a regression. Need
-                # to always feed that version unicode strings.
-                # Normally json.loads() doesn't care, provided that any
-                # bytes it sees are UTF-8. Which they always have been.
                 json_str = orazip.read(json_entry)
-                if isinstance(json_str, bytes):
-                    json_str = json_str.decode("utf-8")
                 new_settings = json.loads(json_str)
             except Exception:
                 logger.exception(
@@ -1892,7 +2523,18 @@ class Document(object):
         return True
 
     def resume_from_autosave(self, autosave_dir, progress=None):
-        """Resume using an autosave dir (and its parent cache dir)"""
+        # type: (Types.ELLIPSIS) -> Types.NONE
+        """Resume using an autosave dir (and its parent cache dir)
+
+        Args:
+            autosave_dir: 
+            progress:  (Default value = None)
+
+        Returns:
+
+        Raises:
+
+        """
         assert os.path.isdir(autosave_dir)
         assert os.path.basename(autosave_dir) == CACHE_DOC_AUTOSAVE_SUBDIR
         doc_cache_dir = os.path.dirname(autosave_dir)
@@ -1925,7 +2567,7 @@ class Document(object):
             raise FileHandlingError(
                 tmpl.format(
                     app_cache_root=app_cache_dir,
-                    reason=unicode(e),
+                    reason=str(e),
                     see_logs=_ERROR_SEE_LOGS_LINE,
                 ),
                 investigate_dir=doc_cache_dir,
@@ -1938,14 +2580,16 @@ class Document(object):
     ):
         """Load from an OpenRaster-style folder.
 
-        :param unicode oradir: Directory with a .ORA-like structure
-        :param unicode cache_dir: Doc cache for storing layer revs etc.
-        :param progress: Unsized progress object: updates UI.
-        :type progress: lib.feedback.Progress or None
-        :param bool retain_autosave_info: Restore unsaved time etc.
-        :param \*\*kwargs: Passed through to layer loader methods.
+        Args:
+            oradir (str): Directory with a .ORA-like structure
+            cache_dir (str): Doc cache for storing layer revs etc.
+            progress (lib.feedback.Progress or None, optional): Unsized progress object: updates UI. (Default value = None)
+            retain_autosave_info (bool, optional): Restore unsaved time etc. (Default value = False)
+            **kwargs: 
 
-        The oradir folder is treated as read-only during this operation.
+        Returns:
+
+        Raises:
 
         """
         self.clear()
@@ -1993,8 +2637,6 @@ class Document(object):
             try:
                 with open(json_path, "rb") as fp:
                     json_data = fp.read()
-                    json_data = json_data.decode("utf-8")
-                    # Py3: see note in load_ora().
                     new_settings = json.loads(json_data)
             except Exception:
                 logger.exception(
@@ -2024,17 +2666,21 @@ def _save_layers_to_new_orazip(
 ):
     """Save a root layer stack to a new OpenRaster zipfile
 
-    :param lib.layer.RootLayerStack root_stack: what to save
-    :param unicode filename: where to save
-    :param tuple bbox: area to save, None to use the inherent data bbox
-    :param int xres: nominal X resolution for the doc
-    :param int yres: nominal Y resolution for the doc
-    :param frame_active: True if the frame is enabled
-    :param progress: Unsized UI feedback object
-    :type progress: lib.feedback.Progress or None
-    :param \*\*kwargs: Passed through to root_stack.save_to_openraster()
-    :rtype: GdkPixbuf
-    :returns: Thumbnail preview image (256x256 max) of what was saved
+    Args:
+        root_stack (lib.layer.RootLayerStack): what to save
+        filename (str): where to save
+        bbox (tuple, optional): area to save, None to use the inherent data bbox (Default value = None)
+        xres (int, optional): nominal X resolution for the doc (Default value = None)
+        yres (int, optional): nominal Y resolution for the doc (Default value = None)
+        frame_active: True if the frame is enabled (Default value = False)
+        progress (lib.feedback.Progress or None, optional): Unsized UI feedback object (Default value = None)
+        settings:  (Default value = None)
+        **kwargs: 
+
+    Returns:
+        Thumbnail preview image (256x256 max) of what was saved
+
+    Raises:
 
     >>> from lib.gibindings import GdkPixbuf
     >>> from lib.layer.test import make_test_stack
@@ -2051,7 +2697,6 @@ def _save_layers_to_new_orazip(
     >>> assert os.path.isfile(orafile)
     >>> shutil.rmtree(tmpdir)
     >>> assert not os.path.exists(tmpdir)
-
     """
 
     if not progress:
@@ -2059,7 +2704,7 @@ def _save_layers_to_new_orazip(
     progress.items = 100
 
     tempdir = tempfile.mkdtemp(suffix="mypaint", prefix="save")
-    if not isinstance(tempdir, unicode):
+    if not isinstance(tempdir, str):
         tempdir = tempdir.decode(sys.getfilesystemencoding())
 
     orazip = zipfile.ZipFile(
@@ -2106,12 +2751,7 @@ def _save_layers_to_new_orazip(
 
     # Document-specific settings dict.
     if settings is not None:
-
-        # Py2/Py3: always feed writestr() a UTF-8 encoded byte string.
         json_data = json.dumps(dict(settings), indent=2)
-        if isinstance(json_data, unicode):
-            json_data = json_data.encode("utf-8")
-        assert isinstance(json_data, bytes)
 
         zip_path = _ORA_JSON_SETTINGS_ZIP_PATH
         helpers.zipfile_writestr(orazip, zip_path, json_data)
@@ -2168,10 +2808,14 @@ def _save_layers_to_new_orazip(
 def get_app_cache_root():
     """Get the app-specific cache root dir, creating it if needed.
 
-    :returns: The cache folder root for the app.
-    :rtype: unicode
+    Args:
 
-    Document-specific cache folders go inside this.
+    Returns:
+        str
+
+Document-specific cache folders go inside this.: The cache folder root for the app.
+
+    Raises:
 
     """
     cache_root = lib.glib.get_user_cache_dir()
@@ -2179,19 +2823,23 @@ def get_app_cache_root():
     if not os.path.exists(app_cache_root):
         logger.debug("Creating %r", app_cache_root)
         os.makedirs(app_cache_root)
-    assert isinstance(app_cache_root, unicode)
+    assert isinstance(app_cache_root, str)
     return app_cache_root
 
 
 def get_available_autosaves():
     """Get all known autosaves
 
-    :returns: a sequence of AutosaveInfo instances
-    :rtype: iterable
+    Args:
 
-    For use with autosave recovery dialogs.
+    Returns:
+        iterable
 
-    See: Document.resume_from_autosave().
+For use with autosave recovery dialogs.
+
+See: Document.resume_from_autosave().: a sequence of AutosaveInfo instances
+
+    Raises:
 
     """
     app_cache_root = get_app_cache_root()
@@ -2208,5 +2856,15 @@ def get_available_autosaves():
         yield AutosaveInfo.new_for_path(autosave_path)
 
 
-def _get_path_mtime(path):
+def _get_path_mtime(path: Types.ELLIPSIS) -> Types.NONE:
+    """
+
+    Args:
+        path: 
+
+    Returns:
+
+    Raises:
+
+    """
     return datetime.fromtimestamp(os.stat(path).st_mtime)

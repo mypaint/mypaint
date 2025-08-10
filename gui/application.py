@@ -95,7 +95,6 @@ import gui.factoryaction  # registration only
 import gui.autorecover
 import lib.xml
 import gui.profiling
-from lib.pycompat import unicode
 
 logger = logging.getLogger(__name__)
 
@@ -109,8 +108,18 @@ def get_app():
     return Application._INSTANCE
 
 
-def _init_icons(icon_path, default_icon="org.mypaint.MyPaint"):
-    """Set the icon theme search path, and GTK default window icon"""
+def _init_icons(icon_path, default_icon: Types.ELLIPSIS = "org.mypaint.MyPaint") -> Types.NONE:
+    """Set the icon theme search path, and GTK default window icon
+
+    Args:
+        icon_path: 
+        default_icon:  (Default value = "org.mypaint.MyPaint")
+
+    Returns:
+
+    Raises:
+
+    """
     # Default location for our icons. The user's theme can override these.
     icon_theme = Gtk.IconTheme.get_default()
     icon_theme.append_search_path(icon_path)
@@ -160,42 +169,54 @@ _STATEDIRS_FIELDS = (
 
 class StateDirs(namedtuple("StateDirs", _STATEDIRS_FIELDS)):
     """Where MyPaint stores its config, read-only data etc.
-
+    
     This caches some special paths that will never change for the
     lifetime of the application. An instance resides in the main
     Application object as `app.state_dirs`.
-
-    :ivar unicode app_data:
+    
+    :ivar str app_data:
         App-specific read-only data area.
         Path used for UI definition XML, and the default sets of
         backgrounds, palettes, and brush definitions.
         Often $PREFIX/share/.
-    :ivar unicode app_icons:
+    :ivar str app_icons:
         Extra search path for read-only themeable UI icons.
         This will be used in addition to $XDG_DATA_DIRS for the purposes of
         icon lookup. Normally it's $PREFIX/share/icons.
-    :ivar unicode user_data:
+    :ivar str user_data:
         Read-write location of the user's app-specific data.
         For MyPaint, this means the user's brushes, backgrounds, and
         scratchpads. Commonly $XDG_DATA_HOME/mypaint, i.e.
         ~/.local/share/mypaint
-    :ivar unicode user_config:
+    :ivar str user_config:
         Location of the user's app-specific config area.
         This is where MyPaint will save user preferences data and the
         keyboard accelerator map.
         Commonly $XDG_CONFIG_HOME/mypaint, i.e. ~/.config/mypaint
 
+    Args:
+
+    Returns:
+
+    Raises:
+
     """
 
 
-class Application(object):
+class Application:
     """Main application singleton.
-
+    
     This class serves as a global container for everything that needs
     to be shared in the GUI. Its constructor is the last part of the
     initialization, called by main.py or by the testing scripts.
-
+    
     Access via `gui.application.get_app()`.
+
+    Args:
+
+    Returns:
+
+    Raises:
 
     """
 
@@ -205,9 +226,9 @@ class Application(object):
     def __init__(self, filenames, state_dirs, version, fullscreen=False):
         """Construct, but do not run.
 
-        :param list filenames: The list of files to load (unicode required)
+        :param list filenames: The list of files to load (str required)
         :param StateDirs state_dirs: static special paths.
-        :param unicode version: Version string for the about dialog.
+        :param str version: Version string for the about dialog.
         :param bool fullscreen: Go fullscreen after starting.
 
         Only the first filename listed will be loaded. If no files are
@@ -447,14 +468,22 @@ class Application(object):
 
     @property
     def preferences(self):
-        """Application-level settings, as an observable dict object.
-
-        :rtype: lib.observable.ObservableDict
-
-        """
+        """Application-level settings, as an observable dict object."""
         return self._preferences
 
     def _at_application_start(self, filenames, fullscreen):
+        # type: (Types.ELLIPSIS) -> Types.NONE
+        """
+
+        Args:
+            filenames: 
+            fullscreen: 
+
+        Returns:
+
+        Raises:
+
+        """
         col = self.brush_color_manager.get_color()
         self.brushmanager.select_initial_brush()
         self.brush_color_manager.set_color(col)
@@ -503,18 +532,20 @@ class Application(object):
         settingspath = join(self.user_confpath, "settings.json")
         logger.debug("Writing app settings to %r", settingspath)
         json_data = json.dumps(self.preferences, indent=2)
-        if isinstance(json_data, unicode):
-            # Py3. Let's write UTF-8 bytes, just like the stuff Py2's
-            # json.dumps() with a default encoding arg does.
-            json_data = json_data.encode("utf-8")
-        assert isinstance(json_data, bytes)
-        with open(settingspath, "wb") as f:
+        with open(settingspath, "w", encoding="utf-8") as f:
             f.write(json_data)
 
     def apply_settings(self):
         """Applies the current settings.
-
+        
         Called at startup and from the prefs dialog.
+
+        Args:
+
+        Returns:
+
+        Raises:
+
         """
         self._apply_pressure_mapping_settings()
         self._apply_button_mapping_settings()
@@ -523,8 +554,14 @@ class Application(object):
 
     def load_settings(self):
         """Loads the settings from persistent storage.
-
+        
         Uses defaults if not explicitly configured.
+
+        Args:
+
+        Returns:
+
+        Raises:
 
         """
         default_config = gui.userconfig.default_configuration()
@@ -538,16 +575,45 @@ class Application(object):
             # end up with Ctrl-Click color picker broken after upgrade
             self.preferences[key] = default_config[key]
 
-    def reset_compat_mode(self, update=True):
-        """Reset compatibility mode to configured default"""
+    def reset_compat_mode(self, update: Types.ELLIPSIS = True) -> Types.NONE:
+        """Reset compatibility mode to configured default
+
+        Args:
+            update:  (Default value = True)
+
+        Returns:
+
+        Raises:
+
+        """
         compat.set_compat_mode(
             self, self.preferences[compat.DEFAULT_COMPAT], update=update
         )
 
-    def add_action_group(self, ag):
+    def add_action_group(self, ag: Types.ELLIPSIS) -> Types.NONE:
+        """
+
+        Args:
+            ag: 
+
+        Returns:
+
+        Raises:
+
+        """
         self.ui_manager.insert_action_group(ag, -1)
 
-    def find_action(self, name):
+    def find_action(self, name: Types.ELLIPSIS) -> Types.NONE:
+        """
+
+        Args:
+            name: 
+
+        Returns:
+
+        Raises:
+
+        """
         for ag in self.ui_manager.get_action_groups():
             result = ag.get_action(name)
             if result is not None:
@@ -572,13 +638,33 @@ class Application(object):
         self.brush.observers.append(self._brush_modified_cb)
 
     def _brush_adjustment_value_changed_cb(self, adj, cname):
-        """Updates a brush setting when the user tweaks it using a scale"""
+        # type: (Types.ELLIPSIS) -> Types.NONE
+        """Updates a brush setting when the user tweaks it using a scale
+
+        Args:
+            adj: 
+            cname: 
+
+        Returns:
+
+        Raises:
+
+        """
         newvalue = adj.get_value()
         if self.brush.get_base_value(cname) != newvalue:
             self.brush.set_base_value(cname, newvalue)
 
-    def _brush_modified_cb(self, settings):
-        """Updates the brush's base setting adjustments on brush changes"""
+    def _brush_modified_cb(self, settings: Types.ELLIPSIS) -> Types.NONE:
+        """Updates the brush's base setting adjustments on brush changes
+
+        Args:
+            settings: 
+
+        Returns:
+
+        Raises:
+
+        """
         for cname in settings:
             adj = self.brush_adjustment.get(cname, None)
             if adj is None:
@@ -589,9 +675,11 @@ class Application(object):
     ## Button mappings, global pressure curve
 
     def _apply_button_mapping_settings(self):
+        """ """
         self.button_mapping.update(self.preferences["input.button_mapping"])
 
     def _apply_pressure_mapping_settings(self):
+        """ """
         p = self.preferences["input.global_pressure_mapping"]
         if len(p) == 2 and abs(p[0][1] - 1.0) + abs(p[1][1] - 0.0) < 0.0001:
             # 1:1 mapping (mapping disabled)
@@ -605,11 +693,22 @@ class Application(object):
                 m.set_point(0, i, x, 1.0 - y)
 
             def mapping(pressure):
+                """
+
+                Args:
+                    pressure: 
+
+                Returns:
+
+                Raises:
+
+                """
                 return m.calculate_single_input(pressure)
 
             self.pressure_mapping = mapping
 
     def _apply_autosave_settings(self):
+        """ """
         active = self.preferences["document.autosave_backups"]
         interval = self.preferences["document.autosave_interval"]
         logger.debug(
@@ -622,6 +721,7 @@ class Application(object):
         model.autosave_interval = interval
 
     def save_gui_config(self):
+        """ """
         Gtk.AccelMap.save(join(self.user_confpath, "accelmap.conf"))
         wkspace = self.workspace
         self.preferences["workspace.layout"] = wkspace.get_layout()
@@ -637,7 +737,23 @@ class Application(object):
         investigate_str=None,
         **kwds
     ):
-        """Utility function to show a message/information dialog"""
+        # type: (Types.ELLIPSIS) -> Types.NONE
+        """Utility function to show a message/information dialog
+
+        Args:
+            text: 
+            secondary_text:  (Default value = None)
+            long_text:  (Default value = None)
+            title:  (Default value = None)
+            investigate_dir:  (Default value = None)
+            investigate_str:  (Default value = None)
+            **kwds: 
+
+        Returns:
+
+        Raises:
+
+        """
         d = Gtk.MessageDialog(
             transient_for=self.drawWindow, buttons=Gtk.ButtonsType.NONE, **kwds
         )
@@ -653,16 +769,16 @@ class Application(object):
         # dialog (reversed for rtl scripts), where the eye ends up
         # naturally at the end of the flow.
         d.add_button(_("OK"), Gtk.ResponseType.OK)
-        markup = lib.xml.escape(unicode(text))
+        markup = lib.xml.escape(str(text))
         d.set_markup(markup)
         if title is not None:
-            d.set_title(unicode(title))
+            d.set_title(str(title))
         if secondary_text is not None:
-            secondary_markup = lib.xml.escape(unicode(secondary_text))
+            secondary_markup = lib.xml.escape(str(secondary_text))
             d.format_secondary_markup(secondary_markup)
         if long_text is not None:
             buf = Gtk.TextBuffer()
-            buf.set_text(unicode(long_text))
+            buf.set_text(str(long_text))
             tv = Gtk.TextView.new_with_buffer(buf)
             tv.show()
             tv.set_editable(False)
@@ -680,10 +796,21 @@ class Application(object):
             lib.fileutils.startfile(investigate_dir, "open")
 
     def show_transient_message(self, text, seconds=5):
-        """Display a brief, impermanent status message"""
+        # type: (Types.ELLIPSIS) -> Types.NONE
+        """Display a brief, impermanent status message
+
+        Args:
+            text: 
+            seconds:  (Default value = 5)
+
+        Returns:
+
+        Raises:
+
+        """
         context_id = self._transient_msg_context_id
         self.statusbar.remove_all(context_id)
-        self.statusbar.push(context_id, unicode(text))
+        self.statusbar.push(context_id, str(text))
         timeout_id = self._transient_msg_remove_timeout_id
         if timeout_id is not None:
             GLib.source_remove(timeout_id)
@@ -693,7 +820,17 @@ class Application(object):
         )
         self._transient_msg_remove_timeout_id = timeout_id
 
-    def _transient_msg_remove_timer_cb(self, *_ignored):
+    def _transient_msg_remove_timer_cb(self, *_ignored: Types.ELLIPSIS) -> Types.NONE:
+        """
+
+        Args:
+            *_ignored: 
+
+        Returns:
+
+        Raises:
+
+        """
         context_id = self._transient_msg_context_id
         self.statusbar.remove_all(context_id)
         self._transient_msg_remove_timeout_id = None
@@ -731,8 +868,17 @@ class Application(object):
         """The input test window."""
         return self.get_subwindow("InputTestWindow")
 
-    def get_subwindow(self, name):
-        """Get a subwindow by its name."""
+    def get_subwindow(self, name: Types.ELLIPSIS) -> Types.NONE:
+        """Get a subwindow by its name.
+
+        Args:
+            name: 
+
+        Returns:
+
+        Raises:
+
+        """
         if name in self._subwindows:
             window = self._subwindows[name]
         elif name in self._subwindow_classes:
@@ -745,35 +891,79 @@ class Application(object):
             raise ValueError("Unknown subwindow %r" % name)
         return window
 
-    def has_subwindow(self, name):
-        """True if the named subwindow is known."""
+    def has_subwindow(self, name: Types.ELLIPSIS) -> Types.NONE:
+        """True if the named subwindow is known.
+
+        Args:
+            name: 
+
+        Returns:
+
+        Raises:
+
+        """
         return name in self._subwindow_classes
 
-    def _subwindow_hide_cb(self, subwindow):
-        """Toggles off a subwindow's related action when it's hidden."""
+    def _subwindow_hide_cb(self, subwindow: Types.ELLIPSIS) -> Types.NONE:
+        """Toggles off a subwindow's related action when it's hidden.
+
+        Args:
+            subwindow: 
+
+        Returns:
+
+        Raises:
+
+        """
         action = subwindow.__toggle_action
         if action and action.get_active():
             action.set_active(False)
 
-    def autorecover_cb(self, action):
+    def autorecover_cb(self, action: Types.ELLIPSIS) -> Types.NONE:
+        """
+
+        Args:
+            action: 
+
+        Returns:
+
+        Raises:
+
+        """
         autosave_recovery = gui.autorecover.Presenter(self)
         autosave_recovery.run(startup=False)
 
     ## Workspace callbacks
 
     def _floating_window_created_cb(self, wkspace, floatwin):
-        """Adds newly created `workspace.ToolStackWindow`s to the kbm."""
+        # type: (Types.ELLIPSIS) -> Types.NONE
+        """Adds newly created `workspace.ToolStackWindow`s to the kbm.
+
+        Args:
+            wkspace: 
+            floatwin: 
+
+        Returns:
+
+        Raises:
+
+        """
         self.kbm.add_window(floatwin)
 
     ## Stroke loading support
 
     # App-wide, while the single painting brush still lives here.
 
-    def restore_brush_from_stroke_info(self, strokeinfo):
+    def restore_brush_from_stroke_info(self, strokeinfo: lib.strokemap.StrokeShape) -> Types.NONE:
         """Restores the app brush from a stroke
 
-        :param strokeinfo: Stroke details from the stroke map
-        :type strokeinfo: lib.strokemap.StrokeShape
+        Args:
+            strokeinfo: Stroke details from the stroke map
+
+        Returns:
+
+        Raises:
+
         """
         mb = brushmanager.ManagedBrush(self.brushmanager)
         mb.brushinfo.load_from_string(strokeinfo.brush_string)
@@ -799,22 +989,61 @@ class Application(object):
 
     ## Profiling and debugging
 
-    def start_profiling_cb(self, action):
-        """Starts profiling, or stops it (and tries to show the results)"""
+    def start_profiling_cb(self, action: Types.ELLIPSIS) -> Types.NONE:
+        """Starts profiling, or stops it (and tries to show the results)
+
+        Args:
+            action: 
+
+        Returns:
+
+        Raises:
+
+        """
         self.profiler.toggle_profiling()
 
-    def print_memory_leak_cb(self, action):
+    def print_memory_leak_cb(self, action: Types.ELLIPSIS) -> Types.NONE:
+        """
+
+        Args:
+            action: 
+
+        Returns:
+
+        Raises:
+
+        """
         helpers.record_memory_leak_status(print_diff=True)
 
-    def run_garbage_collector_cb(self, action):
+    def run_garbage_collector_cb(self, action: Types.ELLIPSIS) -> Types.NONE:
+        """
+
+        Args:
+            action: 
+
+        Returns:
+
+        Raises:
+
+        """
         helpers.run_garbage_collector()
 
-    def crash_program_cb(self, action):
-        """Tests exception handling."""
+    def crash_program_cb(self, action: Types.ELLIPSIS) -> Types.NONE:
+        """Tests exception handling.
+
+        Args:
+            action: 
+
+        Returns:
+
+        Raises:
+
+        """
         raise Exception("This is a crash caused by the user.")
 
 
-class PixbufDirectory(object):
+class PixbufDirectory:
+    """ """
 
     def __init__(self, dirname):
         super(PixbufDirectory, self).__init__()
@@ -832,14 +1061,20 @@ class PixbufDirectory(object):
         return self.cache[name]
 
 
-class CallbackFinder(object):
+class CallbackFinder:
     """Finds callbacks amongst a list of objects.
-
+    
     It's not possible to call `GtkBuilder.connect_signals()` more than once,
     but we use more tnan one backend object. Thus, this little workaround is
     necessary during construction.
-
+    
     See http://stackoverflow.com/questions/4637792
+
+    Args:
+
+    Returns:
+
+    Raises:
 
     """
 

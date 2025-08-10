@@ -9,6 +9,7 @@
 
 
 class CompatFileBehaviorConfig:
+    """ """
 
     # Key for the behavior setting in user preferences
     SETTING = "compat_behavior_when_unknown"

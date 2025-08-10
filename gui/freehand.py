@@ -39,15 +39,21 @@ class FreehandMode(
     gui.mode.InteractionMode,
 ):
     """Freehand drawing mode
-
+    
     To improve application responsiveness, this mode uses an internal
     queue for capturing input data. The raw motion data from the stylus
     is queued; an idle routine then tidies up this data and feeds it
     onward. The presence of an input capture queue means that long
     queued strokes can be terminated by entering a new mode, or by
     pressing Escape.
-
+    
     This is the default mode in MyPaint.
+
+    Args:
+
+    Returns:
+
+    Raises:
 
     """
 
@@ -88,18 +94,27 @@ class FreehandMode(
 
     @classmethod
     def get_name(cls):
+        """ """
         return _("Freehand Drawing")
 
     def get_usage(self):
+        """ """
         return _("Paint free-form brush strokes")
 
     ## Per-TDW drawing state
 
-    class _DrawingState(object):
+    class _DrawingState:
         """Per-canvas drawing state
-
+        
         Various kinds of queue for raw data capture or interpolation of
         pressure and tilt.
+
+        Args:
+
+        Returns:
+
+        Raises:
+
         """
 
         def __init__(self):
@@ -147,12 +162,12 @@ class FreehandMode(
             self.last_good_raw_viewrotation = 0.0
             self.last_good_raw_barrel_rotation = 0.0
 
-        def queue_motion(self, event_data):
+        def queue_motion(self, event_data: tuple) -> Types.NONE:
             """Append one raw motion event to the motion queue
 
-            :param event_data: Extracted data from an event.
-            :type event_data: tuple
-
+            Args:
+                event_data: Extracted data from an event.
+            
             Events are tuples of the form ``(time, x, y, pressure,
             xtilt, ytilt, viewzoom, viewrotation, barrel_rotation)``.
             Times are in milliseconds, and are expressed as ints. ``x``
@@ -161,8 +176,12 @@ class FreehandMode(
             assigned to them by GDK; if ```pressure`` is None, pressure
             and tilt values will be interpolated from surrounding
             defined values.
-
+            
             Zero-dtime events are detected and cleaned up here.
+
+            Returns:
+
+            Raises:
 
             """
 
@@ -242,7 +261,17 @@ class FreehandMode(
         """Resets all per-TDW drawing state"""
         self._drawing_state = {}
 
-    def _get_drawing_state(self, tdw):
+    def _get_drawing_state(self, tdw: Types.ELLIPSIS) -> Types.NONE:
+        """
+
+        Args:
+            tdw: 
+
+        Returns:
+
+        Raises:
+
+        """
         drawstate = self._drawing_state.get(tdw, None)
         if drawstate is None:
             drawstate = self._DrawingState()
@@ -252,25 +281,49 @@ class FreehandMode(
     ## Mode stack & current mode
 
     def enter(self, doc, **kwds):
-        """Enter freehand mode"""
+        # type: (Types.ELLIPSIS) -> Types.NONE
+        """Enter freehand mode
+
+        Args:
+            doc: 
+            **kwds: 
+
+        Returns:
+
+        Raises:
+
+        """
         super(FreehandMode, self).enter(doc, **kwds)
         self._drawing_state = {}
         self._reset_drawing_state()
         self._debug = logger.getEffectiveLevel() == logging.DEBUG
 
-    def leave(self, **kwds):
-        """Leave freehand mode"""
+    def leave(self, **kwds: Types.ELLIPSIS) -> Types.NONE:
+        """Leave freehand mode
+
+        Args:
+            **kwds: 
+
+        Returns:
+
+        Raises:
+
+        """
         self._reset_drawing_state()
         self._reinstate_drawing_cursor(tdw=None)
         super(FreehandMode, self).leave(**kwds)
 
     ## Special cursor state while there's pressure
 
-    def _hide_drawing_cursor(self, tdw):
+    def _hide_drawing_cursor(self, tdw: TiledDrawWidget) -> Types.NONE:
         """Hide the cursor while painting, if configured to.
 
-        :param tdw: Canvas widget to hide the cursor on.
-        :type tdw: TiledDrawWidget
+        Args:
+            tdw: Canvas widget to hide the cursor on.
+
+        Returns:
+
+        Raises:
 
         """
         if tdw in self._cursor_hidden_tdws:
@@ -291,8 +344,12 @@ class FreehandMode(
     def _reinstate_drawing_cursor(self, tdw=None):
         """Un-hide any hidden cursors.
 
-        :param tdw: Canvas widget to reset. None means all affected.
-        :type tdw: TiledDrawWidget
+        Args:
+            tdw (TiledDrawWidget, optional): Canvas widget to reset. None means all affected. (Default value = None)
+
+        Returns:
+
+        Raises:
 
         """
         if tdw is None:
@@ -306,6 +363,18 @@ class FreehandMode(
     ## Input handlers
 
     def button_press_cb(self, tdw, event):
+        # type: (Types.ELLIPSIS) -> Types.NONE
+        """
+
+        Args:
+            tdw: 
+            event: 
+
+        Returns:
+
+        Raises:
+
+        """
         result = False
         current_layer = tdw.doc.layer_stack.current
         if (
@@ -341,6 +410,18 @@ class FreehandMode(
         return super(FreehandMode, self).button_press_cb(tdw, event) or result
 
     def button_release_cb(self, tdw, event):
+        # type: (Types.ELLIPSIS) -> Types.NONE
+        """
+
+        Args:
+            tdw: 
+            event: 
+
+        Returns:
+
+        Raises:
+
+        """
         result = False
         current_layer = tdw.doc.layer_stack.current
         if current_layer.get_paintable() and event.button == 1:
@@ -363,14 +444,20 @@ class FreehandMode(
         return super(FreehandMode, self).button_release_cb(tdw, event) or result
 
     def motion_notify_cb(self, tdw, event, fakepressure=None):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Motion event handler: queues raw input and returns
 
-        :param tdw: The TiledDrawWidget receiving the event
-        :param event: the MotionNotify event being handled
-        :param fakepressure: fake pressure to use if no real pressure
-
+        Args:
+            tdw: The TiledDrawWidget receiving the event
+            event: the MotionNotify event being handled
+            fakepressure: fake pressure to use if no real pressure
+        
         Fake pressure is passed with faked motion events, e.g.
-        button-press and button-release handlers for mouse events.
+        button-press and button-release handlers for mouse events. (Default value = None)
+
+        Returns:
+
+        Raises:
 
         """
 
@@ -530,8 +617,17 @@ class FreehandMode(
 
     ## Motion queue processing
 
-    def _motion_queue_idle_cb(self, tdw):
-        """Idle callback; processes each queued event"""
+    def _motion_queue_idle_cb(self, tdw: Types.ELLIPSIS) -> Types.NONE:
+        """Idle callback; processes each queued event
+
+        Args:
+            tdw: 
+
+        Returns:
+
+        Raises:
+
+        """
         drawstate = self._get_drawing_state(tdw)
         # Stop if asked to stop
         if drawstate.motion_processing_cbid is None:
@@ -548,7 +644,18 @@ class FreehandMode(
         return True
 
     def _process_queued_event(self, tdw, event_data):
-        """Process one motion event from the motion queue"""
+        # type: (Types.ELLIPSIS) -> Types.NONE
+        """Process one motion event from the motion queue
+
+        Args:
+            tdw: 
+            event_data: 
+
+        Returns:
+
+        Raises:
+
+        """
         drawstate = self._get_drawing_state(tdw)
         (
             time,
@@ -630,7 +737,17 @@ class FreehandMode(
 class FreehandOptionsWidget(gui.mode.PaintingModeOptionsWidgetBase):
     """Configuration widget for freehand mode"""
 
-    def init_specialized_widgets(self, row):
+    def init_specialized_widgets(self, row: Types.ELLIPSIS) -> Types.NONE:
+        """
+
+        Args:
+            row: 
+
+        Returns:
+
+        Raises:
+
+        """
         cname = "slow_tracking"
         label = Gtk.Label()
         # TRANSLATORS: Short alias for "Slow position tracking". This is
@@ -694,38 +811,80 @@ class FreehandOptionsWidget(gui.mode.PaintingModeOptionsWidgetBase):
         row += 1
         return row
 
-    def _fakepressure_value_changed_cb(self, adj):
-        """Updates fakepressure when the user tweaks it using a scale"""
+    def _fakepressure_value_changed_cb(self, adj: Types.ELLIPSIS) -> Types.NONE:
+        """Updates fakepressure when the user tweaks it using a scale
+
+        Args:
+            adj: 
+
+        Returns:
+
+        Raises:
+
+        """
         newvalue = adj.get_value()
         self.app.fakepressure = newvalue
 
-    def fakepressure_modified_cb(self, value):
-        """Updates the fakepressure slider when changed elsewhere"""
+    def fakepressure_modified_cb(self, value: Types.ELLIPSIS) -> Types.NONE:
+        """Updates the fakepressure slider when changed elsewhere
+
+        Args:
+            value: 
+
+        Returns:
+
+        Raises:
+
+        """
         adj = self.app.fake_adjustment.get("fakepressure", None)
         if adj is not None:
             adj.set_value(value)
 
-    def _fakerotation_value_changed_cb(self, adj):
-        """Updates fakerotation when the user tweaks it using a scale"""
+    def _fakerotation_value_changed_cb(self, adj: Types.ELLIPSIS) -> Types.NONE:
+        """Updates fakerotation when the user tweaks it using a scale
+
+        Args:
+            adj: 
+
+        Returns:
+
+        Raises:
+
+        """
         newvalue = adj.get_value()
         self.app.fakerotation = newvalue
 
-    def fakerotation_modified_cb(self, value):
-        """Updates the fakerotation slider when changed elsewhere"""
+    def fakerotation_modified_cb(self, value: Types.ELLIPSIS) -> Types.NONE:
+        """Updates the fakerotation slider when changed elsewhere
+
+        Args:
+            value: 
+
+        Returns:
+
+        Raises:
+
+        """
         adj = self.app.fake_adjustment.get("fakerotation", None)
         if adj is not None:
             adj.set_value(value)
 
 
-class PressureAndTiltInterpolator(object):
+class PressureAndTiltInterpolator:
     """Interpolates event sequences, filling in null pressure/tilt data
-
+    
     The interpolator operates almost as a filter. Feed the interpolator
     an extra zero-pressure event at button-release time to generate a
     nice tailoff for mouse users. The interpolator is sensitive to
     transitions between nonzero and zero effective pressure in both
     directions. These transitions clear out just enough history to avoid
     hook-off and lead-in artifacts.
+
+    Args:
+
+    Returns:
+
+    Raises:
 
     >>> interp = PressureAndTiltInterpolator()
     >>> raw_data = interp._TEST_DATA
@@ -748,7 +907,6 @@ class PressureAndTiltInterpolator(object):
     False
     >>> len([t for t in cooked_data if t[0] in (70, 110)]) == 2
     True
-
     """
 
     # Test data:
@@ -908,23 +1066,28 @@ class PressureAndTiltInterpolator(object):
         viewrotation,
         barrel_rotation,
     ):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Feed in an event, yielding zero or more interpolated events
 
-        :param time: event timestamp, integer number of milliseconds
-        :param x: Horizontal coordinate of the event, in model space
-        :type x: float
-        :param y: Vertical coordinate of the event, in model space
-        :type y: float
-        :param pressure: Effective pen pressure, [0.0, 1.0]
-        :param xtilt: Pen tilt in the model X direction, [-1.0, 1.0]
-        :param ytilt: Pen tilt in the model's Y direction, [-1.0, 1.0]
-        :param viewzoom: The view's current zoom level, [0, 64]
-        :param viewrotation: The view's current rotation, [-180.0, 180.0]
-        :param barrel_rotation: The stylus barrel rotation, [0.0, 1.0]
-        :returns: Iterator of event tuples
+        Args:
+            time: event timestamp, integer number of milliseconds
+            x: Horizontal coordinate of the event, in model space
+            y: Vertical coordinate of the event, in model space
+            pressure: Effective pen pressure, [0.0, 1.0]
+            xtilt: Pen tilt in the model X direction, [-1.0, 1.0]
+            ytilt: Pen tilt in the model's Y direction, [-1.0, 1.0]
+            viewzoom: The view's current zoom level, [0, 64]
+            viewrotation: The view's current rotation, [-180.0, 180.0]
+            barrel_rotation: The stylus barrel rotation, [0.0, 1.0]
 
-        Event tuples have the form (TIME, X, Y, PRESSURE, XTILT, YTILT,
-        VIEWZOOM, VIEWROTATION, BARREL_ROTATION).
+        Returns:
+            Iterator of event tuples
+            
+            Event tuples have the form (TIME, X, Y, PRESSURE, XTILT, YTILT,
+            VIEWZOOM, VIEWROTATION, BARREL_ROTATION).
+
+        Raises:
+
         """
         if None in (
             pressure,
@@ -967,6 +1130,7 @@ class PressureAndTiltInterpolator(object):
 
 
 def _test():
+    """ """
     import doctest
 
     doctest.testmod()

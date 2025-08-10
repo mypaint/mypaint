@@ -46,11 +46,33 @@ class HSVHueSaturationWheel(HueSaturationWheelAdjuster):
             self.set_managed_color(col)
         return True
 
-    def get_normalized_polar_pos_for_color(self, col):
+    def get_normalized_polar_pos_for_color(self, col: Types.ELLIPSIS) -> Types.NONE:
+        """
+
+        Args:
+            col: 
+
+        Returns:
+
+        Raises:
+
+        """
         col = HSVColor(color=col)
         return col.s, col.h
 
     def color_at_normalized_polar_pos(self, r, theta):
+        # type: (Types.ELLIPSIS) -> Types.NONE
+        """
+
+        Args:
+            r: 
+            theta: 
+
+        Returns:
+
+        Raises:
+
+        """
         col = HSVColor(color=self.get_managed_color())
         col.h = theta
         col.s = r
@@ -80,23 +102,37 @@ class HSVAdjusterPage(CombinedAdjusterPage):
 
     @classmethod
     def get_page_icon_name(self):
+        """ """
         return "mypaint-tool-hsvwheel"
 
     @classmethod
     def get_page_title(self):
+        """ """
         return _("HSV Wheel")
 
     @classmethod
     def get_page_description(self):
+        """ """
         return _("Saturation and Value color changer.")
 
     def get_page_widget(self):
+        """ """
         frame = Gtk.AspectFrame(obey_child=True)
         frame.set_shadow_type(Gtk.ShadowType.NONE)
         frame.add(self.__table)
         return frame
 
-    def set_color_manager(self, manager):
+    def set_color_manager(self, manager: Types.ELLIPSIS) -> Types.NONE:
+        """
+
+        Args:
+            manager: 
+
+        Returns:
+
+        Raises:
+
+        """
         CombinedAdjusterPage.set_color_manager(self, manager)
         self.__v_adj.set_color_manager(manager)
         self.__hs_adj.set_color_manager(manager)

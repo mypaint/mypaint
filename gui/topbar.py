@@ -25,16 +25,22 @@ logger = logging.getLogger(__name__)
 
 class TopBar(Gtk.Grid):
     """Combined menubar and toolbars which compacts when fullscreened.
-
+    
     This is a container widget for two horizontal toolbars and a menubar
     with specialized behaviour when its parent window is fullscreened:
     the menubar is repacked into the toolbar, and temporary CSS styles
     are applied in order to attempt greater Fitts's Law compliance (and
     a nicer look).
-
+    
     The toolbars and menubar are presented as properties for greater
     flexibility in construction. All of these properties must be set up
     at the time the widget is realized.
+
+    Args:
+
+    Returns:
+
+    Raises:
 
     """
 
@@ -90,8 +96,17 @@ class TopBar(Gtk.Grid):
         self._fs_menubutton = FakeMenuButton(_("<b>MyPaint</b>"), fs_menu)
         self._fs_toolitem = Gtk.ToolItem()
 
-    def _realize_cb(self, widget):
-        """Assorted setup when the widget is realized"""
+    def _realize_cb(self, widget: Types.ELLIPSIS) -> Types.NONE:
+        """Assorted setup when the widget is realized
+
+        Args:
+            widget: 
+
+        Returns:
+
+        Raises:
+
+        """
         assert self.menubar is not None
         assert self.toolbar1 is not None
         assert self.toolbar2 is not None
@@ -127,7 +142,18 @@ class TopBar(Gtk.Grid):
     ## Event handling
 
     def _toplevel_state_event_cb(self, toplevel, event):
-        """Repacks widgets when the toplevel changes fullsceen state"""
+        # type: (Types.ELLIPSIS) -> Types.NONE
+        """Repacks widgets when the toplevel changes fullsceen state
+
+        Args:
+            toplevel: 
+            event: 
+
+        Returns:
+
+        Raises:
+
+        """
         if not event.changed_mask & Gdk.WindowState.FULLSCREEN:
             return
         menubar = self.menubar
@@ -232,19 +258,51 @@ class FakeMenuButton(Gtk.EventBox):
             menu.connect(sig, self._menu_dismiss_cb)
 
     def _enter_cb(self, widget, event):
-        """Prelight the button when hovered"""
+        # type: (Types.ELLIPSIS) -> Types.NONE
+        """Prelight the button when hovered
+
+        Args:
+            widget: 
+            event: 
+
+        Returns:
+
+        Raises:
+
+        """
         self.togglebutton.set_state_flags(Gtk.StateFlags.PRELIGHT, False)
 
     def _leave_cb(self, widget, event):
-        """Un-prelight the button when the pointer leaves"""
+        # type: (Types.ELLIPSIS) -> Types.NONE
+        """Un-prelight the button when the pointer leaves
+
+        Args:
+            widget: 
+            event: 
+
+        Returns:
+
+        Raises:
+
+        """
         self.togglebutton.unset_state_flags(Gtk.StateFlags.PRELIGHT)
 
     def _button_press_cb(self, widget, event):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Post the menmu when clicked
-
+        
         Menu operation is much more convincing if we call popup() with event
         details here rather than leaving it to the child button's "toggled"
         event handler.
+
+        Args:
+            widget: 
+            event: 
+
+        Returns:
+
+        Raises:
+
         """
         pos_func = self._get_popup_menu_position
         self.menu.popup(
@@ -257,10 +315,19 @@ class FakeMenuButton(Gtk.EventBox):
         )
         self.togglebutton.set_active(True)
 
-    def _togglebutton_toggled_cb(self, togglebutton):
+    def _togglebutton_toggled_cb(self, togglebutton: Types.ELLIPSIS) -> Types.NONE:
         """Post the menu from a keypress activating the toggle
+        
+        The menu dismiss handler untoggles it.
 
-        The menu dismiss handler untoggles it."""
+        Args:
+            togglebutton: 
+
+        Returns:
+
+        Raises:
+
+        """
         if togglebutton.get_active():
             if not self.menu.get_property("visible"):
                 pos_func = self._get_popup_menu_position
@@ -274,17 +341,38 @@ class FakeMenuButton(Gtk.EventBox):
                 )
 
     def _menu_dismiss_cb(self, *a, **kw):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Reset the button state when the user's finished
+        
+        Also transfer focus back to the menu button.
 
-        Also transfer focus back to the menu button."""
+        Args:
+            *a: 
+            **kw: 
+
+        Returns:
+
+        Raises:
+
+        """
         self.unset_state_flags(Gtk.StateFlags.PRELIGHT)
         self.togglebutton.set_active(False)
         self.togglebutton.grab_focus()
 
     def _get_popup_menu_position(self, menu, *junk):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Position function for menu popup
-
+        
         This places the menu underneath the button, at the same x position.
+
+        Args:
+            menu: 
+            *junk: 
+
+        Returns:
+
+        Raises:
+
         """
         win = self.get_window()
         x, y = win.get_origin()[1:]
@@ -313,7 +401,18 @@ def _test():
         Gtk.STOCK_FULLSCREEN,
     )
 
-    def _fullscreen_cb(action, toplevel):
+    def _fullscreen_cb(action, toplevel: Types.ELLIPSIS) -> Types.NONE:
+        """
+
+        Args:
+            action: 
+            toplevel: 
+
+        Returns:
+
+        Raises:
+
+        """
         if action.get_active():
             toplevel.fullscreen()
         else:

@@ -11,7 +11,7 @@ from collections import OrderedDict
 DEFAULT_CACHE_SIZE = 16384
 
 
-class LRUCache(object):
+class LRUCache:
     """Least-recently-used cache with dict-like usage"""
 
     # The idea for using an OrderedDict comes from Kun Xi -
@@ -40,6 +40,7 @@ class LRUCache(object):
         )
 
     def clear(self):
+        """ """
         self._cache.clear()
         self._hits = 0
         self._misses = 0
@@ -57,6 +58,18 @@ class LRUCache(object):
         return item
 
     def get(self, key, default=None):
+        # type: (Types.ELLIPSIS) -> Types.NONE
+        """
+
+        Args:
+            key: 
+            default:  (Default value = None)
+
+        Returns:
+
+        Raises:
+
+        """
         try:
             item = self._cache.pop(key)
             self._cache[key] = item
@@ -67,6 +80,18 @@ class LRUCache(object):
             return default
 
     def pop(self, key, default=_SENTINEL):
+        # type: (Types.ELLIPSIS) -> Types.NONE
+        """
+
+        Args:
+            key: 
+            default:  (Default value = _SENTINEL)
+
+        Returns:
+
+        Raises:
+
+        """
         try:
             item = self._cache.pop(key)
             self._hits += 1

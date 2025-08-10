@@ -23,7 +23,6 @@ from lib.gibindings import GdkPixbuf
 
 from lib.gettext import C_
 from lib import brushsettings
-from lib.pycompat import iteritems, itervalues
 
 import lib.brush
 from . import dialogs
@@ -133,14 +132,31 @@ class BrushEditorWindow(SubWindow):
         self._updating_metadata_ui = False
         self.set_default_size(1000, 800)
 
-    def _clear_focus(self, *args):
+    def _clear_focus(self, *args: Types.ELLIPSIS) -> Types.NONE:
+        """
+
+        Args:
+            *args: 
+
+        Returns:
+
+        Raises:
+
+        """
         self.set_focus(None)
 
     def _init_adjustments(self):
         """Initializes adjustments for the scales used internally
-
+        
         When running as part of the MyPaint app, the brush setting ones are
         shared with it.
+
+        Args:
+
+        Returns:
+
+        Raises:
+
         """
         # Brush setting base values
         if self.app:
@@ -159,7 +175,7 @@ class BrushEditorWindow(SubWindow):
                 )
                 self._base_adj[s.cname] = adj
             changed_cb = self._testmode_base_value_adj_changed_cb
-            for cname, adj in iteritems(self._base_adj):
+            for cname, adj in self._base_adj.items():
                 adj.connect("value-changed", changed_cb, cname)
         # Per-input scale maxima and minima
         for inp in brushsettings.inputs:
@@ -217,6 +233,17 @@ class BrushEditorWindow(SubWindow):
             curve = self._builder.get_object("by%s_curve" % inp.name)
 
             def _curve_changed_cb(curve, i=inp):
+                """
+
+                Args:
+                    curve: 
+                    i:  (Default value = inp)
+
+                Returns:
+
+                Raises:
+
+                """
                 self._update_brush_from_input_widgets(i)
 
             curve.changed_cb = _curve_changed_cb
@@ -236,7 +263,17 @@ class BrushEditorWindow(SubWindow):
                 w = self._builder.get_object(b_name)
                 w.set_sensitive(False)
 
-    def _populate_inputs(self, ui_xml):
+    def _populate_inputs(self, ui_xml: Types.ELLIPSIS) -> Types.NONE:
+        """
+
+        Args:
+            ui_xml: 
+
+        Returns:
+
+        Raises:
+
+        """
         # Grid repacking magic for the templated stuff
 
         # XXX FRAGILE
@@ -307,13 +344,27 @@ class BrushEditorWindow(SubWindow):
             sbut.set_adjustment(sbut_adj)
 
     def _update_axis_label(self, adj, label, strfmt, negate):
-        """Updates a label widget with an adjustment value when it changes"""
+        # type: (Types.ELLIPSIS) -> Types.NONE
+        """Updates a label widget with an adjustment value when it changes
+
+        Args:
+            adj: 
+            label: 
+            strfmt: 
+            negate: 
+
+        Returns:
+
+        Raises:
+
+        """
         value = adj.get_value()
         if negate:
             value *= -1
         label.set_text(strfmt % (value,))
 
     def _populate_settings_treestore(self):
+        """ """
         # Populate the treestore
         store = self._builder.get_object("settings_treestore")
         root_iter = store.get_iter_first()
@@ -538,7 +589,17 @@ class BrushEditorWindow(SubWindow):
         for path in open_paths:
             v.expand_to_path(Gtk.TreePath(path))
 
-    def _post_show_cb(self, widget):
+    def _post_show_cb(self, widget: Types.ELLIPSIS) -> Types.NONE:
+        """
+
+        Args:
+            widget: 
+
+        Returns:
+
+        Raises:
+
+        """
         self._current_setting_changed()
         self._update_brush_header()
         self._update_setting_ui(expanders=True)
@@ -546,8 +607,17 @@ class BrushEditorWindow(SubWindow):
 
     # Main action buttons:
 
-    def save_button_clicked_cb(self, button):
-        """Save the current brush settings (overwrites)"""
+    def save_button_clicked_cb(self, button: Types.ELLIPSIS) -> Types.NONE:
+        """Save the current brush settings (overwrites)
+
+        Args:
+            button: 
+
+        Returns:
+
+        Raises:
+
+        """
         bm = self.app.brushmanager
         b = bm.selected_brush
         if not b.name:
@@ -562,17 +632,45 @@ class BrushEditorWindow(SubWindow):
         self._mark_all_settings_unmodified_in_treeview()
         self._update_brush_header(modified=False)
 
-    def live_update_checkbutton_toggled_cb(self, checkbutton):
-        """Realtime update of last stroke with the current brush settings"""
+    def live_update_checkbutton_toggled_cb(self, checkbutton: Types.ELLIPSIS) -> Types.NONE:
+        """Realtime update of last stroke with the current brush settings
+
+        Args:
+            checkbutton: 
+
+        Returns:
+
+        Raises:
+
+        """
         self._queue_live_update()
 
-    def edit_icon_button_clicked_cb(self, button):
+    def edit_icon_button_clicked_cb(self, button: Types.ELLIPSIS) -> Types.NONE:
+        """
+
+        Args:
+            button: 
+
+        Returns:
+
+        Raises:
+
+        """
         logger.info("Editing icon for current brush")
         action = self.app.find_action("BrushIconEditorWindow")
         action.activate()
 
-    def rename_button_clicked_cb(self, button):
-        """Rename the current brush; user is prompted for a new name"""
+    def rename_button_clicked_cb(self, button: Types.ELLIPSIS) -> Types.NONE:
+        """Rename the current brush; user is prompted for a new name
+
+        Args:
+            button: 
+
+        Returns:
+
+        Raises:
+
+        """
         bm = self.app.brushmanager
         src_brush = bm.selected_brush
         if not src_brush.name:
@@ -600,7 +698,7 @@ class BrushEditorWindow(SubWindow):
         # ensure we don't overwrite an existing brush by accident
         dst_deleted = None
 
-        for group, brushes in iteritems(bm.groups):
+        for group, brushes in bm.groups.items():
             for b2 in brushes:
                 if b2.name == dst_name:
                     if group == brushmanager.DELETED_BRUSH_GROUP:
@@ -635,8 +733,17 @@ class BrushEditorWindow(SubWindow):
 
         bm.select_brush(dst_brush)
 
-    def delete_button_clicked_cb(self, button):
-        """Deletes the current brush, with a confirmation dialog"""
+    def delete_button_clicked_cb(self, button: Types.ELLIPSIS) -> Types.NONE:
+        """Deletes the current brush, with a confirmation dialog
+
+        Args:
+            button: 
+
+        Returns:
+
+        Raises:
+
+        """
         bm = self.app.brushmanager
         b = bm.selected_brush
         if not b.name:
@@ -660,8 +767,17 @@ class BrushEditorWindow(SubWindow):
         bm.select_brush(None)
         self._delete_brush(b, replacement=None)
 
-    def clone_button_clicked_cb(self, button):
-        """Create and save a new brush based on the current working brush"""
+    def clone_button_clicked_cb(self, button: Types.ELLIPSIS) -> Types.NONE:
+        """Create and save a new brush based on the current working brush
+
+        Args:
+            button: 
+
+        Returns:
+
+        Raises:
+
+        """
         bm = self.app.brushmanager
         # First, clone and save to disk. Set a null name to avoid a
         # mis-highlight in brush selectors.
@@ -687,7 +803,17 @@ class BrushEditorWindow(SubWindow):
 
     # Utility functions for managing curves:
 
-    def _get_brushpoints_from_curvewidget(self, inp):
+    def _get_brushpoints_from_curvewidget(self, inp: Types.ELLIPSIS) -> Types.NONE:
+        """
+
+        Args:
+            inp: 
+
+        Returns:
+
+        Raises:
+
+        """
         scale_y_adj = self._input_y_adj[inp.name]
         curve_widget = self._builder.get_object("by%s_curve" % inp.name)
         scale_y = scale_y_adj.get_value()
@@ -700,6 +826,18 @@ class BrushEditorWindow(SubWindow):
         return brush_points
 
     def _point_widget2real(self, p, inp):
+        # type: (Types.ELLIPSIS) -> Types.NONE
+        """
+
+        Args:
+            p: 
+            inp: 
+
+        Returns:
+
+        Raises:
+
+        """
         x, y = p
         scale_y_adj = self._input_y_adj[inp.name]
         xmax_adj = self._input_xmax_adj[inp.name]
@@ -713,6 +851,18 @@ class BrushEditorWindow(SubWindow):
         return (x, y)
 
     def _point_real2widget(self, p, inp):
+        # type: (Types.ELLIPSIS) -> Types.NONE
+        """
+
+        Args:
+            p: 
+            inp: 
+
+        Returns:
+
+        Raises:
+
+        """
         x, y = p
         scale_y_adj = self._input_y_adj[inp.name]
         xmax_adj = self._input_xmax_adj[inp.name]
@@ -729,17 +879,47 @@ class BrushEditorWindow(SubWindow):
         x = (x - xmin) / scale_x
         return (x, y)
 
-    def _get_x_normal(self, inp):
-        """Returns the x coordinate of the 'normal' value of the input"""
+    def _get_x_normal(self, inp: Types.ELLIPSIS) -> Types.NONE:
+        """Returns the x coordinate of the 'normal' value of the input
+
+        Args:
+            inp: 
+
+        Returns:
+
+        Raises:
+
+        """
         return self._point_real2widget((inp.normal, 0.0), inp)[0]
 
-    def _update_graypoint(self, inp):
+    def _update_graypoint(self, inp: Types.ELLIPSIS) -> Types.NONE:
+        """
+
+        Args:
+            inp: 
+
+        Returns:
+
+        Raises:
+
+        """
         curve_widget = self._builder.get_object("by%s_curve" % inp.name)
         curve_widget.graypoint = (self._get_x_normal(inp), 0.5)
         curve_widget.queue_draw()
 
     @staticmethod
-    def _points_equal(points_a, points_b):
+    def _points_equal(points_a, points_b: Types.ELLIPSIS) -> Types.NONE:
+        """
+
+        Args:
+            points_a: 
+            points_b: 
+
+        Returns:
+
+        Raises:
+
+        """
         if len(points_a) != len(points_b):
             return False
         for a, b in zip(points_a, points_b):
@@ -751,14 +931,35 @@ class BrushEditorWindow(SubWindow):
     # Brush event handling:
 
     def brush_selected_cb(self, bm, managed_brush, brushinfo):
-        """Update GUI when a new brush is selected via the brush manager"""
+        # type: (Types.ELLIPSIS) -> Types.NONE
+        """Update GUI when a new brush is selected via the brush manager
+
+        Args:
+            bm: 
+            managed_brush: 
+            brushinfo: 
+
+        Returns:
+
+        Raises:
+
+        """
         self._update_brush_header(modified=False)
         self._mark_all_settings_unmodified_in_treeview()
         self._update_setting_ui(expanders=True)
         self._update_metadata_ui()
 
-    def _update_brush_header(self, modified=False):
-        """Updates the header strip with the current brush's icon and name"""
+    def _update_brush_header(self, modified: Types.ELLIPSIS = False) -> Types.NONE:
+        """Updates the header strip with the current brush's icon and name
+
+        Args:
+            modified:  (Default value = False)
+
+        Returns:
+
+        Raises:
+
+        """
         mb = None
         if self.app:
             mb = self.app.brushmanager.selected_brush
@@ -798,8 +999,17 @@ class BrushEditorWindow(SubWindow):
 
     # GUI updating from the brush:
 
-    def _mark_setting_modified_in_treeview(self, setting_cname):
-        """Updates the TreeView to show a single setting as modified"""
+    def _mark_setting_modified_in_treeview(self, setting_cname: Types.ELLIPSIS) -> Types.NONE:
+        """Updates the TreeView to show a single setting as modified
+
+        Args:
+            setting_cname: 
+
+        Returns:
+
+        Raises:
+
+        """
         setting_path = self._setting_treepath.get(setting_cname)
         group_id = self._setting_group.get(setting_cname)
         group_path = self._group_treepath.get(group_id)
@@ -826,7 +1036,18 @@ class BrushEditorWindow(SubWindow):
             )
 
     def brush_modified_cb(self, settings, expanders=False):
-        """Update gui when the brush has been modified"""
+        # type: (Types.ELLIPSIS) -> Types.NONE
+        """Update gui when the brush has been modified
+
+        Args:
+            settings: 
+            expanders:  (Default value = False)
+
+        Returns:
+
+        Raises:
+
+        """
         # Category and setting labels
         for setting_cname in settings:
             self._mark_setting_modified_in_treeview(setting_cname)
@@ -839,8 +1060,17 @@ class BrushEditorWindow(SubWindow):
         # Live update
         self._queue_live_update()
 
-    def _update_setting_ui(self, expanders=False):
-        """Updates all the UI elements for the current setting"""
+    def _update_setting_ui(self, expanders: Types.ELLIPSIS = False) -> Types.NONE:
+        """Updates all the UI elements for the current setting
+
+        Args:
+            expanders:  (Default value = False)
+
+        Returns:
+
+        Raises:
+
+        """
         # Update base value adjuster and slider
         if self._setting is None:
             return
@@ -873,7 +1103,18 @@ class BrushEditorWindow(SubWindow):
         self._updating_metadata_ui = False
 
     def _update_input_curve(self, inp, expander=False):
-        """Update curve scale adjustments to fit the curve into view"""
+        # type: (Types.ELLIPSIS) -> Types.NONE
+        """Update curve scale adjustments to fit the curve into view
+
+        Args:
+            inp: 
+            expander:  (Default value = False)
+
+        Returns:
+
+        Raises:
+
+        """
         scale_y_adj = self._input_y_adj[inp.name]
         xmax_adj = self._input_xmax_adj[inp.name]
         xmin_adj = self._input_xmin_adj[inp.name]
@@ -963,13 +1204,39 @@ class BrushEditorWindow(SubWindow):
     # Settings treeview management and change callbacks:
 
     def _settings_treeview_selectfunc(self, seln, model, path, is_seld, data):
-        """Determines whether settings listview rows can be selected"""
+        # type: (Types.ELLIPSIS) -> Types.NONE
+        """Determines whether settings listview rows can be selected
+
+        Args:
+            seln: 
+            model: 
+            path: 
+            is_seld: 
+            data: 
+
+        Returns:
+
+        Raises:
+
+        """
         i = model.get_iter(path)
         is_leaf = model.get_value(i, self._LISTVIEW_IS_SELECTABLE_COLUMN)
         return is_leaf
 
     def settings_treeview_row_activated_cb(self, view, path, column):
-        """Double clicking opens expander rows"""
+        # type: (Types.ELLIPSIS) -> Types.NONE
+        """Double clicking opens expander rows
+
+        Args:
+            view: 
+            path: 
+            column: 
+
+        Returns:
+
+        Raises:
+
+        """
         model = view.get_model()
         i = model.get_iter(path)
         is_leaf = model.get_value(i, self._LISTVIEW_IS_SELECTABLE_COLUMN)
@@ -980,8 +1247,17 @@ class BrushEditorWindow(SubWindow):
         else:
             view.expand_row(path, True)
 
-    def settings_treeview_cursor_changed_cb(self, view):
-        """User has chosen a different setting using the treeview"""
+    def settings_treeview_cursor_changed_cb(self, view: Types.ELLIPSIS) -> Types.NONE:
+        """User has chosen a different setting using the treeview
+
+        Args:
+            view: 
+
+        Returns:
+
+        Raises:
+
+        """
         sel = view.get_selection()
         if sel is None:
             return
@@ -1036,19 +1312,50 @@ class BrushEditorWindow(SubWindow):
     # Adjuster change callbacks:
 
     def _testmode_base_value_adj_changed_cb(self, adj, cname):
-        """User adjusted the setting's base value using the scale (test only)"""
+        # type: (Types.ELLIPSIS) -> Types.NONE
+        """User adjusted the setting's base value using the scale (test only)
+
+        Args:
+            adj: 
+            cname: 
+
+        Returns:
+
+        Raises:
+
+        """
         value = adj.get_value()
         self._brush.set_base_value(cname, value)
 
-    def base_value_reset_button_clicked_cb(self, button):
-        """User reset the setting's base value using the button"""
+    def base_value_reset_button_clicked_cb(self, button: Types.ELLIPSIS) -> Types.NONE:
+        """User reset the setting's base value using the button
+
+        Args:
+            button: 
+
+        Returns:
+
+        Raises:
+
+        """
         # Bound by Gtk.Builder.connect_signals()
         s = self._setting
         adj = self._base_adj[s.cname]
         adj.set_value(s.default)
 
     def input_adj_changed_cb(self, adj, inp):
-        """User adjusted one of the curve extent scales or scalebuttons"""
+        # type: (Types.ELLIPSIS) -> Types.NONE
+        """User adjusted one of the curve extent scales or scalebuttons
+
+        Args:
+            adj: 
+            inp: 
+
+        Returns:
+
+        Raises:
+
+        """
         if self._disable_input_adj_changed_cb:
             return
         assert self._setting is not None
@@ -1074,7 +1381,18 @@ class BrushEditorWindow(SubWindow):
         self._update_brush_from_input_widgets(inp)
 
     def input_adj_reset_button_clicked_cb(self, btn, inp):
-        """User reset an input mapping by clicking its reset button"""
+        # type: (Types.ELLIPSIS) -> Types.NONE
+        """User reset an input mapping by clicking its reset button
+
+        Args:
+            btn: 
+            inp: 
+
+        Returns:
+
+        Raises:
+
+        """
         assert self._setting is not None
         assert self._brush is not None
         scale_y_adj = self._input_y_adj[inp.name]
@@ -1083,14 +1401,36 @@ class BrushEditorWindow(SubWindow):
 
     # Brush updating:
 
-    def _update_brush_from_input_widgets(self, inp):
+    def _update_brush_from_input_widgets(self, inp: Types.ELLIPSIS) -> Types.NONE:
+        """
+
+        Args:
+            inp: 
+
+        Returns:
+
+        Raises:
+
+        """
         # update the brush dynamics with the points from the curve_widget
         points = self._get_brushpoints_from_curvewidget(inp)
         self._brush.set_points(self._setting.cname, inp.name, points)
 
     def _delete_brush(self, b, replacement=None):
+        # type: (Types.ELLIPSIS) -> Types.NONE
+        """
+
+        Args:
+            b: 
+            replacement:  (Default value = None)
+
+        Returns:
+
+        Raises:
+
+        """
         bm = self.app.brushmanager
-        for brushes in itervalues(bm.groups):
+        for brushes in bm.groups.values():
             if b in brushes:
                 idx = brushes.index(b)
                 if replacement:
@@ -1140,7 +1480,17 @@ class BrushEditorWindow(SubWindow):
 
     # Expander button callbacks:
 
-    def byname_expander_button_clicked_cb(self, button):
+    def byname_expander_button_clicked_cb(self, button: Types.ELLIPSIS) -> Types.NONE:
+        """
+
+        Args:
+            button: 
+
+        Returns:
+
+        Raises:
+
+        """
         inp = button.__input
         grid = self._builder.get_object("by%s_curve_grid" % inp.name)
         self._set_input_expanded(inp, not grid.get_visible())
@@ -1148,6 +1498,19 @@ class BrushEditorWindow(SubWindow):
     # UI utility functions:
 
     def _set_input_expanded(self, inp, expand, scroll=True):
+        # type: (Types.ELLIPSIS) -> Types.NONE
+        """
+
+        Args:
+            inp: 
+            expand: 
+            scroll:  (Default value = True)
+
+        Returns:
+
+        Raises:
+
+        """
         getobj = self._builder.get_object
         arrow = getobj("by%s_expander_arrow" % (inp.name,))
         grid = getobj("by%s_curve_grid" % (inp.name,))
@@ -1160,7 +1523,17 @@ class BrushEditorWindow(SubWindow):
             arrow.set_property("arrow-type", Gtk.ArrowType.RIGHT)
             grid.hide()
 
-    def _scroll_setting_editor(self, widget=None):
+    def _scroll_setting_editor(self, widget: Types.ELLIPSIS = None) -> Types.NONE:
+        """
+
+        Args:
+            widget:  (Default value = None)
+
+        Returns:
+
+        Raises:
+
+        """
         scrolls = self._builder.get_object("setting_editor_scrolls")
         adj = scrolls.get_vadjustment()
         if widget is None:
@@ -1179,13 +1552,35 @@ class BrushEditorWindow(SubWindow):
 
     # Metadata UI ("About" texts):
 
-    def description_entry_changed_cb(self, entry):
+    def description_entry_changed_cb(self, entry: Types.ELLIPSIS) -> Types.NONE:
+        """
+
+        Args:
+            entry: 
+
+        Returns:
+
+        Raises:
+
+        """
         if self._updating_metadata_ui:
             return
         text = entry.get_text()
         self._brush.set_string_property("description", text)
 
     def notes_textbuffer_changed_cb(self, buffer, *a):
+        # type: (Types.ELLIPSIS) -> Types.NONE
+        """
+
+        Args:
+            buffer: 
+            *a: 
+
+        Returns:
+
+        Raises:
+
+        """
         if self._updating_metadata_ui:
             return
         start = buffer.get_start_iter()

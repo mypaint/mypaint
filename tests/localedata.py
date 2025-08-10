@@ -4,6 +4,7 @@ from lib import localecodes as lc
 
 
 class LocaleTest(unittest.TestCase):
+    """ """
 
     def test_langcodes(self):
         """Verify existence of ui strings for all codes"""

@@ -21,7 +21,7 @@ from . import mypaintlib
 from . import idletask
 import lib.tiledsurface as tiledsurface
 from lib.surface import TileAccessible  # noqa
-from lib.pycompat import PY3, iteritems
+from tiledsurface import _TiledSurfaceSnapshot
 
 logger = getLogger(__name__)
 TILE_SIZE = N = mypaintlib.TILE_SIZE
@@ -30,12 +30,18 @@ TILE_SIZE = N = mypaintlib.TILE_SIZE
 ## Class defs
 
 
-class StrokeShape(object):
+class StrokeShape:
     """The shape of a single brushstroke.
-
+    
     This class stores the shape of a stroke in as a 1-bit bitmap. The
     information is stored in compressed memory blocks of the size of a
     tile (for fast lookup).
+
+    Args:
+
+    Returns:
+
+    Raises:
 
     """
 
@@ -48,6 +54,7 @@ class StrokeShape(object):
 
     @classmethod
     def _mock(cls):
+        """ """
         surf = tiledsurface.MyPaintSurface._mock()
         snap2 = surf.save_snapshot()
         surf.clear()
@@ -55,17 +62,20 @@ class StrokeShape(object):
         return StrokeShape.new_from_snapshots(snap1, snap2)
 
     @classmethod
-    def new_from_snapshots(cls, before, after):
+    def new_from_snapshots(cls, before: _TiledSurfaceSnapshot, after: _TiledSurfaceSnapshot) -> Types.NONE:
         """Build a new StrokeShape from before+after pair of snapshots.
 
-        :param before: snapshot of the layer before the stroke
-        :type before: tiledsurface._TiledSurfaceSnapshot
-        :param after: snapshot of the layer after the stroke
-        :type after: tiledsurface._TiledSurfaceSnapshot
-        :returns: A new StrokeShape, or None.
+        Args:
+            before: snapshot of the layer before the stroke
+            after: snapshot of the layer after the stroke
 
-        If the snapshots haven't changed, None is returned. In this
-        case, no StrokeShape should be recorded.
+        Returns:
+            A new StrokeShape, or None.
+            
+            If the snapshots haven't changed, None is returned. In this
+            case, no StrokeShape should be recorded.
+
+        Raises:
 
         """
         before_dict = before.tiledict
@@ -90,10 +100,20 @@ class StrokeShape(object):
         return shape
 
     def init_from_string(self, data, translate_x, translate_y):
+        # type: (Types.ELLIPSIS) -> Types.NONE
         """Initialize from a saved compressed byte string.
-
+        
         See lib.layer.data.PaintingLayer.load_from_openraster().
         Format: "v2" strokemap format.
+
+        Args:
+            data: 
+            translate_x: 
+            translate_y: 
+
+        Returns:
+
+        Raises:
 
         """
         if not isinstance(data, bytes):
@@ -111,18 +131,26 @@ class StrokeShape(object):
             data = data[size + 3 * 4 :]
 
     def save_to_string(self, translate_x, translate_y):
-        """Return a compressed bytes string representing the stroke shape.
+        # type: (Types.ELLIPSIS) -> Types.NONE
+        """
 
-        This can be used with init_from_string on subsequent file loads.
+        Args:
+            translate_x: 
+            translate_y: 
+
+        Returns:
+            This can be used with init_from_string on subsequent file loads.
+            
+            
+            See lib.layer.data.PaintingLayer.save_to_openraster().
+            Format: "v2" strokemap format.
+
+        Raises:
 
         >>> shape = StrokeShape._mock()
         >>> bstr = shape.save_to_string(-N, 2*N)
         >>> isinstance(bstr, bytes)
         True
-
-        See lib.layer.data.PaintingLayer.save_to_openraster().
-        Format: "v2" strokemap format.
-
         """
         assert translate_x % N == 0
         assert translate_y % N == 0
@@ -130,8 +158,8 @@ class StrokeShape(object):
         translate_y = int(translate_y // N)
         self.tasks.finish_all()
         data = b""
-        for (tx, ty), tile in iteritems(self.strokemap):
-            compressed_bitmap = tile.to_bytes()
+        for (tx, ty), tile in self.strokemap.items():
+            compressed_bitmap = bytes(tile)
             tx = int(tx + translate_x)
             ty = int(ty + translate_y)
             data += struct.pack(">iiI", tx, ty, len(compressed_bitmap))
@@ -141,11 +169,16 @@ class StrokeShape(object):
     def _complete_tile_tasks(self, pred):
         """Complete all queued work on a subset of tiles.
 
-        :param callable pred: Tile index predicate, f((tx,ty)) -> bool
-
+        Args:
+            pred (callable): Tile index predicate, f((tx,ty)) -> bool
+        
         This will cause only a predicate-limited subset of the work in
         the task queue to be forced to completion, if possible. If not,
         the entire task queue is completed.
+
+        Returns:
+
+        Raises:
 
         """
         tileproc_methods = []
@@ -163,13 +196,17 @@ class StrokeShape(object):
         else:
             self.tasks.finish_all()
 
-    def touches_pixel(self, x, y):
+    def touches_pixel(self, x: int, y: int) -> bool:
         """Returns whether the stroke shape hits a specific pixel
 
-        :param int x: Pixel X position.
-        :param int y: Pixel Y position.
-        :returns: True if (x, y) is a set pixel in this shape's bitmap.
-        :rtype: bool
+        Args:
+            x: Pixel X position.
+            y: Pixel Y position.
+
+        Returns:
+            True if (x, y) is a set pixel in this shape's bitmap.
+
+        Raises:
 
         """
         x = int(x)
@@ -185,11 +222,17 @@ class StrokeShape(object):
     def render_to_surface(self, surf, bbox=None, center=None):
         """Draw all or part of the shape to a tile-accessible surface.
 
-        :param TileAccessible surf: target surface
-        :param tuple bbox: pixel bounding box (x,y,w,h) to render
-
+        Args:
+            surf (TileAccessible): target surface
+            bbox (tuple, optional): pixel bounding box (x,y,w,h) to render
+        
         If the bbox parameter is specified, only tiles within the
-        bounding box will be rendered.
+        bounding box will be rendered. (Default value = None)
+            center:  (Default value = None)
+
+        Returns:
+
+        Raises:
 
         """
         pred = _TileIndexPredicate(
@@ -210,7 +253,18 @@ class StrokeShape(object):
                 diff_tile.write_to_surface_tile_array(surf_arr)
 
     def translate(self, dx, dy):
-        """Translate the shape by (dx, dy)"""
+        # type: (Types.ELLIPSIS) -> Types.NONE
+        """Translate the shape by (dx, dy)
+
+        Args:
+            dx: 
+            dy: 
+
+        Returns:
+
+        Raises:
+
+        """
         self.tasks.finish_all()
         tmp = {}
         self.tasks.add_work(_TileTranslateTask(self.strokemap, tmp, dx, dy))
@@ -219,12 +273,16 @@ class StrokeShape(object):
     def trim(self, rect):
         """Trim the shape to a rectangle, discarding data outside it
 
-        :param rect: A trimming rectangle in model coordinates
-        :type rect: tuple (x, y, w, h)
-        :returns: Whether anything remains after the trim
-        :rtype: bool
+        Args:
+            rect (tuple (x, y, w, h)): A trimming rectangle in model coordinates
 
-        Only complete tiles are discarded by this method.
+        Returns:
+            bool
+
+Only complete tiles are discarded by this method.: Whether anything remains after the trim
+
+        Raises:
+
         """
         self.tasks.finish_all()
         x, y, w, h = rect
@@ -237,8 +295,14 @@ class StrokeShape(object):
 
 class _TileDiffUpdateTask:
     """Idle task: update strokemap with tile & pixel diffs of snapshots.
-
+    
     This task is used during initialization of the StrokeShape.
+
+    Args:
+
+    Returns:
+
+    Raises:
 
     """
 
@@ -271,8 +335,17 @@ class _TileDiffUpdateTask:
         self._update_tile(ti)
         return bool(self._remaining)
 
-    def process_tile_subset(self, pred):
-        """Diff and update a subset of queued tiles now."""
+    def process_tile_subset(self, pred: Types.ELLIPSIS) -> Types.NONE:
+        """Diff and update a subset of queued tiles now.
+
+        Args:
+            pred: 
+
+        Returns:
+
+        Raises:
+
+        """
         processed = set()
         for ti in self._remaining:
             if not pred(ti):
@@ -281,8 +354,17 @@ class _TileDiffUpdateTask:
             processed.add(ti)
         self._remaining -= processed
 
-    def _update_tile(self, ti):
-        """Diff and update the tile at a specified position."""
+    def _update_tile(self, ti: Types.ELLIPSIS) -> Types.NONE:
+        """Diff and update the tile at a specified position.
+
+        Args:
+            ti: 
+
+        Returns:
+
+        Raises:
+
+        """
         transparent = tiledsurface.transparent_tile
         data_before = self._before_dict.get(ti, transparent).rgba
         data_after = self._after_dict.get(ti, transparent).rgba
@@ -291,14 +373,20 @@ class _TileDiffUpdateTask:
 
 class _TileTranslateTask:
     """Translate/move tiles (compressed strokemap -> uncompressed tmp)
-
+    
     Calling this task is destructive to the source strokemap, so it must
     be paired with a _TileRecompressTask queued up to fire when it has
     completely finished.
-
+    
     Tiles are translated by slicing and recombining, so this task must
     be called to completion before the output tiledict will be ready for
     recompression.
+
+    Args:
+
+    Returns:
+
+    Raises:
 
     """
 
@@ -374,14 +462,19 @@ class _TileRecompressTask:
         self._compress_tile(ti, array)
         return len(self._src_dict) > 0
 
-    def process_tile_subset(self, pred):
-        """Compress & store a subset of queued tiles' data now."""
+    def process_tile_subset(self, pred: Types.ELLIPSIS) -> Types.NONE:
+        """Compress & store a subset of queued tiles' data now.
+
+        Args:
+            pred: 
+
+        Returns:
+
+        Raises:
+
+        """
         processed = []
-        if PY3:
-            ti_iter = self._src_dict.keys()
-        else:
-            ti_iter = self._src_dict.iterkeys()
-        for ti in ti_iter:
+        for ti in self._src_dict.keys():
             if not pred(ti):
                 continue
             self._compress_tile(ti, self._src_dict[ti])
@@ -390,6 +483,18 @@ class _TileRecompressTask:
             self._src_dict.pop(ti)
 
     def _compress_tile(self, ti, array):
+        # type: (Types.ELLIPSIS) -> Types.NONE
+        """
+
+        Args:
+            ti: 
+            array: 
+
+        Returns:
+
+        Raises:
+
+        """
         if not array.any():
             if ti in self._targ_dict:
                 self._targ_dict.pop(ti)
@@ -405,8 +510,14 @@ class _TileRecompressTask:
 
 class _Tile:
     """One strokemap tile containing perceptual stroke differences.
-
+    
     Stored in memory in a compressed and efficient form.
+
+    Args:
+
+    Returns:
+
+    Raises:
 
     """
 
@@ -419,7 +530,7 @@ class _Tile:
 
     @classmethod
     def _mocks(cls):
-        """Return mockup tiles for testing."""
+        """ """
         ar = np.ones((N, N), "uint8")
         m = int(N // 2)
         ar[0:m, 0:m] = 0
@@ -432,7 +543,18 @@ class _Tile:
 
     @classmethod
     def new_from_diff(cls, before, after):
-        """Initialize from a diff or two RGBA arrays."""
+        # type: (Types.ELLIPSIS) -> Types.NONE
+        """Initialize from a diff or two RGBA arrays.
+
+        Args:
+            before: 
+            after: 
+
+        Returns:
+
+        Raises:
+
+        """
         differences = np.empty((N, N), "uint8")
         mypaintlib.tile_perceptual_change_strokemap(
             before,
@@ -442,8 +564,17 @@ class _Tile:
         return cls.new_from_array(differences)
 
     @classmethod
-    def new_from_array(cls, array):
-        """Initialize from a single uncompressed diff array."""
+    def new_from_array(cls, array: Types.ELLIPSIS) -> Types.NONE:
+        """Initialize from a single uncompressed diff array.
+
+        Args:
+            array: 
+
+        Returns:
+
+        Raises:
+
+        """
         tile = cls()
         if array.all():
             tile._all = True
@@ -454,13 +585,19 @@ class _Tile:
         return tile
 
     @classmethod
-    def new_from_compressed_bitmap(cls, zdata):
+    def new_from_compressed_bitmap(cls, zdata: Types.ELLIPSIS) -> Types.NONE:
         """Initialize from raw compressed zlib bitmap data.
 
-        >>> for i, m in enumerate(_Tile._mocks()):
-        ...     logger.debug("Restoring from to_bytes() of mock tile %d", i)
-        ...     t = _Tile.new_from_compressed_bitmap(m.to_bytes())
+        Args:
+            zdata: 
 
+        Returns:
+
+        Raises:
+
+        >>> for i, m in enumerate(_Tile._mocks()):
+        ...     logger.debug("Restoring from bytes() of mock tile %d", i)
+        ...     t = _Tile.new_from_compressed_bitmap(bytes(m))
         """
         tile = cls()
         if zdata == cls._ZDATA_ONES:
@@ -485,13 +622,13 @@ class _Tile:
         # Can this result always be treated as read-only?
         return array
 
-    def to_bytes(self):
+    def __bytes__(self):
         """Convert to a bytestring which is storable in "v2" strokemaps.
 
         >>> for i, m in enumerate(_Tile._mocks()):
-        ...     s = m.to_bytes()
+        ...     s = bytes(m)
         ...     assert isinstance(s, bytes), \\
-        ...         "item i=%r to_bytes() is %r, not bytes" % (i, type(s))
+        ...         "item i=%r bytes() is %r, not bytes" % (i, type(s))
 
         """
         if self._all:
@@ -499,13 +636,20 @@ class _Tile:
         else:
             return self._zdata
 
-    def to_string(self):
-        """Deprecated alias for to_bytes()."""
-        warn("Please use to_bytes() instead here.", DeprecationWarning)
-        return self.to_bytes()
-
     def write_to_surface_tile_array(self, rgba, _c=(1 << 15) / 4, _a=(1 << 15) / 2):
-        """Write to a surface's RGBA tile."""
+        # type: (Types.ELLIPSIS) -> Types.NONE
+        """Write to a surface's RGBA tile.
+
+        Args:
+            rgba: 
+            _c:  (Default value = (1 << 15) / 4)
+            _a:  (Default value = (1 << 15) / 2)
+
+        Returns:
+
+        Raises:
+
+        """
         # neutral gray, 50% opaque
         if self._all:
             rgba[:] = (_c, _c, _c, _a)
@@ -515,18 +659,6 @@ class _Tile:
             rgba[:, :, 0] = rgba[:, :, 3] // 2
             rgba[:, :, 1] = rgba[:, :, 3] // 2
             rgba[:, :, 2] = rgba[:, :, 3] // 2
-
-    def __str__(self):
-        """Deprecated stringification. Do not use.
-
-        Do not use this method, because in Py3 you get unicode strings.
-        In Py2, the returned value is a bytes string.
-
-        """
-        warn("Do not use str(). Use to_bytes() instead.", DeprecationWarning)
-        bstr = self.to_bytes()
-        if PY3:
-            return bstr.decode("utf-8")
 
     def __repr__(self):
         """String representation (summary only)
@@ -549,16 +681,27 @@ class _Tile:
 ## Helper funcs
 
 
-class _TileIndexPredicate(object):
+class _TileIndexPredicate:
     """Tile index tester callable for processing subsets of tiles.
-
+    
     This predicate encodes a simple bbox and distance based metric for
     deciding whether to show a tile in the tilemap.
-
+    
     :ivar set hits: A cache of (tx, ty) indices which were matched.
-
+    
     Construct one of these for each fresh pass through a tilemap.
     They have internal state.
+    
+    
+    The interest radius thing is tricky to define. Basically, it's where
+    the user is looking, with a modulo-arithmetic dither pattern outside
+    it based on concentric rings around the center.
+
+    Args:
+
+    Returns:
+
+    Raises:
 
     >>> tilep = _TileIndexPredicate(
     ...    bbox=(0, 10*N, 20*N, 20*N),
@@ -572,11 +715,6 @@ class _TileIndexPredicate(object):
     False
     >>> list(sorted(tilep.hits))
     [(0, 10)]
-
-    The interest radius thing is tricky to define. Basically, it's where
-    the user is looking, with a modulo-arithmetic dither pattern outside
-    it based on concentric rings around the center.
-
     """
 
     def __init__(self, bbox=None, center=None, radius=None, maxhits=None):
@@ -651,14 +789,21 @@ class _TileIndexPredicate(object):
         return True
 
 
-def _pixel_bbox_to_tile_range(bbox):
+def _pixel_bbox_to_tile_range(bbox: tuple) -> tuple:
     """Convert a pixel area to testable ranges of tiles.
 
-    :param tuple bbox: The area to complete, as pixel (x, y, w, h)
-    :returns: Tile ranges, as (txmin, txmax, tymin, tymax).
-    :rtype: tuple
+    Args:
+        bbox: The area to complete, as pixel (x, y, w, h)
 
-    The returned ranges allow tile indices to be tested as, e.g.,
+The returned ranges allow tile indices to be tested as, e.g.,
+
+
+As the name suggests, the returned ranges can be used with the
+builtin range() function.
+
+See also `_tile_in_ranges()`.: Tile ranges, as (txmin, txmax, tymin, tymax).
+
+    Raises:
 
     >>> bbox = (63, 64, 1, 1)
     >>> txa, txb, tya, tyb = _pixel_bbox_to_tile_range(bbox)
@@ -670,12 +815,6 @@ def _pixel_bbox_to_tile_range(bbox):
     True
     >>> tya <= 0 < tyb
     False
-
-    As the name suggests, the returned ranges can be used with the
-    builtin range() function.
-
-    See also `_tile_in_ranges()`.
-
     """
     x, y, w, h = bbox
     n = float(N)
@@ -686,15 +825,20 @@ def _pixel_bbox_to_tile_range(bbox):
     return (txmin, txmax, tymin, tymax)
 
 
-def _tile_in_range(ti, trange):
+def _tile_in_range(ti: tuple, trange: tuple) -> Types.NONE:
     """Tests whether a tile index is within a range.
 
-    :param tuple ti: tile index, as (tx, ty).
-    :param tuple trange: ranges, as (txmin, txmax, tymin, tymax).
+    Args:
+        ti: tile index, as (tx, ty).
+        trange: ranges, as (txmin, txmax, tymin, tymax).
     :rtype: bool
-
+    
     This function expects the kinds of ranges returned by
     _pixel_bbox_to_tile_range().
+
+    Returns:
+
+    Raises:
 
     >>> bbox = (63, 64, 1, 1)
     >>> range = _pixel_bbox_to_tile_range(bbox)
@@ -702,7 +846,6 @@ def _tile_in_range(ti, trange):
     False
     >>> _tile_in_range((0, 1), range)
     True
-
     """
     tx, ty = ti
     txa, txb, tya, tyb = trange
