@@ -1,12 +1,12 @@
-#!/usr/bin/env python
+#@python_path@
+
 # This file is part of MyPaint.
 # Copyright (C) 2007-2013 by Martin Renold <martinxyz@gmx.ch>
-# Copyright (C) 2013-2020 by the MyPaint Development Team.
+# Copyright (C) 2013-2024 by the MyPaint Development Team.
 #
-# This program is free software; you can redistribute it and/or modify
-# it under the terms of the GNU General Public License as published by
-# the Free Software Foundation; either version 2 of the License, or
-# (at your option) any later version.
+# This program is free software; you can redistribute it and/or modify it under the terms of the GNU General Public
+# License as published by the Free Software Foundation; either version 2 of the License, or (at your option) any later
+# version.
 
 """Platform-dependent setup, and program launch.
 
@@ -26,6 +26,19 @@ import os.path
 from os.path import join, isdir, dirname, abspath
 import re
 import logging
+
+## Variables configured at buildtime
+MYPAINT_VERSION_BASE='@mypaint_version_base@'
+MYPAINT_VERSION_FORMAL='@mypaint_version_formal@'
+MYPAINT_VERSION_CEREMONIAL='@mypaint_version_ceremonial@'
+
+MYPAINT_DIR_PATHS = {
+    'data': '@os_datadir@',
+    'headers': '@os_includedir@',
+    'platlib': '@platlibdir@',
+    'purelib': '@purelibdir@',
+    'scripts': '@os_bindir@'
+}
 
 logger = logging.getLogger("mypaint")
 if sys.version_info >= (3,):

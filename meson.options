@@ -1,0 +1,47 @@
+# This file is part of MyPaint.
+# Copyright (C) 2024 the MyPaint project
+#
+# This program is free software; you can redistribute it and/or modify it under the terms of the GNU General Public
+# License as published by the Free Software Foundation; either version 2 of the License, or (at your option) any later
+# version.
+
+# /meson.options
+
+# Options for configuring the install
+option('libdir_noarch', type : 'string',
+  description : 'Platform independent library directory (for Python code). Defaults to the value of libdir if not ' +
+  'supplied')
+
+# Options for configuring config.py
+option('brushes_dir', type : 'string', description : 'use the provided argument as brush directory path')
+
+option('libmypaint_locale_dir', type : 'string',
+  description : 'Set the location of the libmypaint message catalogs. If libmypaint_locale_pkgconf is true, using ' +
+  'this flag will raise an error. If neither flag is used, or the value passed is the empty string, the directory ' +
+  'used for mypaint\'s own locale data is used for libmypaint\'s as well.')
+
+option('libmypaint_locale_pkgconfig', type : 'boolean', value : false,
+  description: 'Set the location of libmypaint\'s message catalogs using pkg-config. The path is set to ' +
+  '{prefix}/share/locale, where "prefix" is fetched from libmypaint\'s pkg-config data.')
+
+option('translation_threshold', type : 'integer', min : 0, max : 100, value : 0,
+  description : 'Limit translations to those with a completion percentage at or above the given threshold. Argument ' +
+  'range: [0..100]')
+
+# Options for configuring C++ extensions
+option('disable_openmp', type : 'boolean', value : false,
+  description : 'Don\'t use openmp, even if the platform supports it.')
+
+option('openmp_cflag', type : 'string', value : '-fopenmp',
+  description : 'Some versions of clang require different openmp flags than gcc to link correctly, use this to ' +
+  'change the openmp flag used during compilation')
+
+option('openmp_ldflag', type : 'string', value : '-fopenmp',
+  description : 'Like the \'openmp_cflag\' option, but for the linking step')
+
+option('use_optimisations', type : 'boolean', value : true,
+  description : 'Enable autovectorisation and other compiler optimisations. It is recommended that this is disabled ' +
+  'if libmypaint was not built using compiler optimisations.')
+
+option('debug_optimisations', type : 'boolean', value : false,
+  description : 'Enable optimisations for debug builds (see \'use_optimisations\' option')

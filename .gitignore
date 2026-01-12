@@ -1,38 +1,20 @@
-*.swp
-*.pyc
-*.pyd
-_mypaintlib.def
-*.so
-*.a
-*.o
-*.os
+# Ignore build artefacts and leftovers. We recommend setting _build as your meson setup directory
+/_build
+flatpak/.flatpak-builder/
+
+# Potential code editor files
 *~
 *#
+.#*
 .emacs.*
-.sconsign.dblite
+*.swp
 TAGS
 tags
-brushlib/*-gen.h
-brushlib/mypaint-config.h
-desktop/mypaint-ora-thumbnailer
-lib/config.py
-lib/test-python-surface
-lib/mypaintlib.py
-lib/mypaintlib_wrap.cc
-lib/mypaintlib_wrap.cpp
-mypaint
+
+# MyPaint now uses out of source builds, so the source tree usually shouldn't be modified when building. Most of the
+# obvious within source build artefacts have been removed, but I'm not sure about these ones -- Aesara Binder
 options.cache
-*.mo
-POTFILES.in
-.#*
 *.pstats
-*.pc
 *.autosave
 *.gir
 *.typelib
-po/tmp
-build
-flatpak/.flatpak-builder/
-MyPaint.egg-info
-config.log
-config.py
