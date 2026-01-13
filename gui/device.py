@@ -276,7 +276,7 @@ class Monitor(object):
             logger.info(
                 "New device %r" " (%s, axes:%d, class=%s, vendor=%r, product=%r)",
                 device.get_name(),
-                source.name,
+                str(source).split('.')[-1],
                 num_axes,
                 device.__class__.__name__,
                 vendor_id,
@@ -355,7 +355,7 @@ class Monitor(object):
         logger.debug(
             "Device change: name=%r source=%s",
             new_device.name,
-            new_device.source.name,
+            str(new_device.source).split('.')[-1],
         )
 
         # When editing brush settings, it is often more convenient to use the
