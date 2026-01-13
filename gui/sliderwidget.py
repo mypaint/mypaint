@@ -43,7 +43,7 @@ class ScaleDelegator(type(Gtk.Bin)):
                 prop.name.replace("-", "_"),
                 GObject.Property(
                     type=val_type.pytype if val_type.pytype else val_type,
-                    default=prop.get_default_value(),
+                    default=prop.default_value,
                 ),
             )
         # Store newly created property names to determine which to delegate
