@@ -25,6 +25,7 @@ import numpy as np
 
 from lib import helpers, tiledsurface, pixbufsurface
 from lib.observable import event
+
 import lib.layer
 from . import cursor
 from .drawutils import render_checks
@@ -32,7 +33,6 @@ from .windowing import clear_focus
 import gui.style
 import lib.color
 import lib.alg
-from lib.pycompat import xrange
 
 logger = logging.getLogger(__name__)
 
@@ -515,7 +515,7 @@ class TiledDrawWidget(Gtk.EventBox):
             return cursor.get_move_cursor_name_for_angle(edge_angle_perp)
 
 
-class CanvasTransformation(object):
+class CanvasTransformation:
     """Record of a TiledDrawWidget's canvas (view) transformation."""
 
     translation_x = 0.0
@@ -535,7 +535,7 @@ class CanvasTransformation(object):
         )
 
 
-class DrawCursorMixin(object):
+class DrawCursorMixin:
     """Mixin for renderer widgets needing a managed drawing cursor.
 
     Required members: self.doc, self.scale, Gtk.Widget stuff.
@@ -758,8 +758,8 @@ class CanvasRenderer(Gtk.DrawingArea, DrawCursorMixin):
         col1 = [int(f * c) for c in gui.style.ALPHA_CHECK_COLOR_1] + [f]
         col2 = [int(f * c) for c in gui.style.ALPHA_CHECK_COLOR_2] + [f]
         tile[:] = col1
-        for i in xrange(nchecks):
-            for j in xrange(nchecks):
+        for i in range(nchecks):
+            for j in range(nchecks):
                 if (i + j) % 2 == 0:
                     continue
                 ia, ib = (i * size), ((i + 1) * size)

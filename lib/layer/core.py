@@ -34,7 +34,6 @@ import lib.modes
 import lib.xml
 import lib.tiledsurface
 from .rendering import Renderable
-from lib.pycompat import unicode
 
 logger = logging.getLogger(__name__)
 
@@ -158,14 +157,14 @@ class LayerBase(Renderable):
         Parameters are the same as for load_from_openraster, with the
         following exception (replacing ``orazip``):
 
-        :param unicode/str oradir: Folder with a .ORA-like tree structure.
+        :param str oradir: Folder with a .ORA-like tree structure.
 
         """
         self._load_common_flags_from_ora_elem(elem)
 
     def _load_common_flags_from_ora_elem(self, elem):
         attrs = elem.attrib
-        self.name = unicode(attrs.get("name", ""))
+        self.name = str(attrs.get("name", ""))
         compop = str(attrs.get("composite-op", ""))
         self.mode = ORA_MODES_BY_OPNAME.get(compop, lib.modes.default_mode())
         self.opacity = helpers.clamp(float(attrs.get("opacity", "1.0")), 0.0, 1.0)
@@ -306,7 +305,7 @@ class LayerBase(Renderable):
     def name(self):
         """The layer's name, for display purposes
 
-        Values must permit conversion to a unicode string.  If the
+        Values must permit conversion to a str.  If the
         layer is part of a tree structure, ``layer_properties_changed``
         notifications will be issued via the root layer stack. In
         addition, assigned names may be corrected to be unique within
@@ -317,7 +316,7 @@ class LayerBase(Renderable):
     @name.setter
     def name(self, name):
         if name is not None:
-            name = unicode(name)
+            name = str(name)
         else:
             name = self.DEFAULT_NAME
         oldname = self._name
@@ -668,7 +667,7 @@ class LayerBase(Renderable):
             return False
         match = lib.naming.UNIQUE_NAME_REGEX.match(name)
         if match is not None:
-            base = unicode(match.group("name"))
+            base = match.group("name")
             if base == self.DEFAULT_NAME:
                 return False
         return True
@@ -740,12 +739,8 @@ class LayerBase(Renderable):
         else:
             return "<%s>" % (self.__class__.__name__)
 
-    def __nonzero__(self):
-        """Layers are never false in Py2."""
-        return self.__bool__()
-
     def __bool__(self):
-        """Layers are never false in Py3.
+        """Layers are never false.
 
         >>> sample = _StubLayerBase()
         >>> bool(sample)
@@ -957,7 +952,7 @@ class _StubLayerBase(LayerBase):
         pass
 
 
-class LayerBaseSnapshot(object):
+class LayerBaseSnapshot:
     """Base snapshot implementation
 
     Snapshots are stored in commands, and used to implement undo and redo.
@@ -982,17 +977,16 @@ class LayerBaseSnapshot(object):
         layer.locked = self.locked
 
 
-class ExternallyEditable:
+class ExternallyEditable(metaclass=abc.ABCMeta):
     """Interface for layers which can be edited in an external app"""
 
-    __metaclass__ = abc.ABCMeta
     _EDITS_SUBDIR = "edits"
 
     @abc.abstractmethod
     def new_external_edit_tempfile(self):
         """Get a tempfile for editing in an external app
 
-        :rtype: unicode/str
+        :rtype: str
         :returns: Absolute path to a newly-created tempfile for editing
 
         The returned tempfiles are only expected to persist on disk
@@ -1004,7 +998,7 @@ class ExternallyEditable:
     def load_from_external_edit_tempfile(self, tempfile_path):
         """Load content from an external-edit tempfile
 
-        :param unicode/str tempfile_path: Tempfile to load.
+        :param str tempfile_path: Tempfile to load.
 
         """
 

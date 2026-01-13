@@ -18,7 +18,7 @@ import lib.helpers
 # Class defs:
 
 
-class Progress(object):
+class Progress:
     """Itemized progress report with hierarchy.
 
     A top-level GUI process can create one of these objects, and connect

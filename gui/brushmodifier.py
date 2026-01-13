@@ -12,7 +12,7 @@ from lib.helpers import rgb_to_hsv, hsv_to_rgb
 import gui.blendmodehandler
 
 
-class BrushModifier(object):
+class BrushModifier:
     """Applies changed brush settings to the active brush, with overrides.
 
     A single instance of this lives within the main `application.Application`

@@ -21,7 +21,6 @@ from lib.gettext import gettext as _
 from lib.gettext import C_
 
 import lib.xml
-from lib.pycompat import unicode
 
 logger = logging.getLogger(__name__)
 
@@ -606,7 +605,7 @@ def _udecode(s, enc="utf-8"):
     """
     if s is None:
         return None
-    if not isinstance(s, unicode):
+    if not isinstance(s, str):
         s = s.decode(enc)
     return s
 

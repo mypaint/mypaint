@@ -23,13 +23,11 @@ from lib.gettext import C_
 from . import mypaintlib
 import lib.pixbuf
 import lib.glib
-from lib.pycompat import PY2
-from lib.pycompat import unicode
 
 logger = logging.getLogger(__name__)
 
 
-class Rect(object):
+class Rect:
     """Representation of a rectangular area.
 
     We use our own class here because (around GTK 3.18.x, at least) it's
@@ -339,7 +337,7 @@ def freedesktop_thumbnail(filename, pixbuf=None, force=False):
             logger.warning(
                 "thumb: cache file %r looks corrupt (%r). " "It will be regenerated.",
                 fn,
-                unicode(e),
+                str(e),
             )
             pixbuf = None
         else:
@@ -502,7 +500,7 @@ def zipfile_writestr(z, arcname, data):
     """Write a string into a zipfile entry, with standard permissions
 
     :param zipfile.ZipFile z: A zip file open for write.
-    :param unicode arcname: Name of the file entry to add.
+    :param str arcname: Name of the file entry to add.
     :param bytes data: Content to add.
 
     Work around bad permissions with the standard
@@ -563,7 +561,7 @@ def fmt_time_period_abbr(t):
 
     :param int t: A positive number of seconds
     :returns: short localized string
-    :rtype: unicode
+    :rtype: str
 
     The result looks like like "<minutes>m<seconds>s",
     or just "<seconds>s".
@@ -608,32 +606,7 @@ def grouper(iterable, n, fillvalue=None):
     [True, True, True]
     """
     args = [iter(iterable)] * n
-    if PY2:
-        return itertools.izip_longest(*args, fillvalue=fillvalue)
-    else:
-        return itertools.zip_longest(*args, fillvalue=fillvalue)
-
-
-def casefold(s):
-    """Converts a unicode string into a case-insensitively comparable form.
-
-    Forward-compat marker for things that should be .casefold() in
-    Python 3, but which need to be .lower() in Python2.
-
-    :param str s: The string to convert.
-    :rtype: str
-    :returns: The converted string.
-
-    >>> casefold("Xyz") == u'xyz'
-    True
-
-    """
-    if sys.version_info <= (3, 0, 0):
-        s = unicode(s)
-        return s.lower()
-    else:
-        s = str(s)
-        return s.casefold()
+    return itertools.zip_longest(*args, fillvalue=fillvalue)
 
 
 def _test():

@@ -18,7 +18,7 @@ import cairo
 logger = logging.getLogger(__name__)
 
 
-class CachedBgWidgetMixin(object):
+class CachedBgWidgetMixin:
     """Provides widgets with a cached background and drawing callbacks
 
     The background is invalidated whenever the size changes,
@@ -100,7 +100,7 @@ class CachedBgDrawingArea(CachedBgWidgetMixin, Gtk.EventBox):
         CachedBgWidgetMixin.__init__(self)
 
 
-class IconRenderable(object):
+class IconRenderable:
     """Mixin for objects that can be rendered as a XDG icons
 
     Typically a cached icon file from disk will be quicker

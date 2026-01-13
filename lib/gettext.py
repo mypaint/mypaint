@@ -27,14 +27,6 @@ still uses a relative import, however.
 from warnings import warn
 from lib.gibindings import GLib
 
-# Set the default encoding like PyGTK
-from lib.pycompat import PY3
-import sys
-
-if not PY3:
-    reload(sys)  # noqa: F821
-    sys.setdefaultencoding("utf-8")
-
 # Older code in lib imports these as "from gettext import gettext as _".
 # Pull them in for backwards compat.
 # Might change these to _Glib.dgettext/ngettext instead.

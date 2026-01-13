@@ -28,7 +28,6 @@ from lib.gibindings import GLib
 from .curve import CurveWidget
 import gui.mode
 import gui.cursor
-from lib.pycompat import xrange
 
 
 logger = logging.getLogger(__name__)
@@ -88,7 +87,7 @@ _LINE_MODE_SETTINGS_LIST = [
 ## Line pressure settings
 
 
-class LineModeSettings(object):
+class LineModeSettings:
     """Manage GtkAdjustments for tweaking LineMode settings.
 
     An instance resides in the main application singleton. Changes to the
@@ -650,16 +649,16 @@ class LineModeBase(
         self._stroke_to(sx + mx, sy + my, entry_p)
         pressure = abs(1 / head * prange1 + entry_p)
         self._stroke_to(sx + px, sy + py, pressure)
-        for degree in xrange(2, head_range):
+        for degree in range(2, head_range):
             px, py = point_in_ellipse(x1, y1, sin, cos, degree)
             pressure = abs(degree / head * prange1 + entry_p)
             self._stroke_to(sx + px, sy + py, pressure)
         # Middle
-        for degree in xrange(head_range, tail_range):
+        for degree in range(head_range, tail_range):
             px, py = point_in_ellipse(x1, y1, sin, cos, degree)
             self._stroke_to(sx + px, sy + py, midpoint_p)
         # End
-        for degree in xrange(tail_range, points_in_curve + 1):
+        for degree in range(tail_range, points_in_curve + 1):
             px, py = point_in_ellipse(x1, y1, sin, cos, degree)
             pressure = abs((degree - tail) / tail_length * prange2 + midpoint_p)
             self._stroke_to(sx + px, sy + py, pressure)
@@ -695,16 +694,16 @@ class LineModeBase(
         self._stroke_to(bx, by, entry_p)
         pressure = abs(1 / head * prange1 + entry_p)
         self._stroke_to(px, py, pressure)
-        for i in xrange(2, head_range):
+        for i in range(2, head_range):
             px, py = point_on_curve_1(i, cx, cy, sx, sy, x1, y1, x2, y2)
             pressure = abs(i / head * prange1 + entry_p)
             self._stroke_to(px, py, pressure)
         # Middle
-        for i in xrange(head_range, tail_range):
+        for i in range(head_range, tail_range):
             px, py = point_on_curve_1(i, cx, cy, sx, sy, x1, y1, x2, y2)
             self._stroke_to(px, py, midpoint_p)
         # End
-        for i in xrange(tail_range, points_in_curve + 1):
+        for i in range(tail_range, points_in_curve + 1):
             px, py = point_on_curve_1(i, cx, cy, sx, sy, x1, y1, x2, y2)
             pressure = abs((i - tail) / tail_length * prange2 + midpoint_p)
             self._stroke_to(px, py, pressure)
@@ -733,16 +732,16 @@ class LineModeBase(
         self._stroke_to(bx, by, entry_p)
         pressure = abs(1 / head * prange1 + entry_p)
         self._stroke_to(px, py, pressure)
-        for i in xrange(2, head_range):
+        for i in range(2, head_range):
             px, py = point_on_curve_2(i, cx, cy, sx, sy, kx, ky, x1, y1, x2, y2, x3, y3)
             pressure = abs(i / head * prange1 + entry_p)
             self._stroke_to(px, py, pressure)
         # Middle
-        for i in xrange(head_range, tail_range):
+        for i in range(head_range, tail_range):
             px, py = point_on_curve_2(i, cx, cy, sx, sy, kx, ky, x1, y1, x2, y2, x3, y3)
             self._stroke_to(px, py, midpoint_p)
         # End
-        for i in xrange(tail_range, points_in_curve + 1):
+        for i in range(tail_range, points_in_curve + 1):
             px, py = point_on_curve_2(i, cx, cy, sx, sy, kx, ky, x1, y1, x2, y2, x3, y3)
             pressure = abs((i - tail) / tail_length * prange2 + midpoint_p)
             self._stroke_to(px, py, pressure)

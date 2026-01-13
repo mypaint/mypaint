@@ -22,7 +22,6 @@ from . import spinbox
 from . import windowing
 from lib.observable import event
 import gui.colortools
-from lib.pycompat import add_metaclass
 
 
 ## Module consts
@@ -33,8 +32,7 @@ _DEFAULT_PREFS_ID = "default"
 ## Interfaces
 
 
-@add_metaclass(abc.ABCMeta)
-class Advanceable:
+class Advanceable(metaclass=abc.ABCMeta):
     """Interface for choosers which can be advanced by pressing keys.
 
     Advancing happens if the chooser is already visible and its key is
@@ -171,7 +169,7 @@ class BrushChooserPopup(windowing.ChooserPopup):
         """Initialize.
 
         :param gui.application.Application app: main app instance
-        :param unicode prefs_id: prefs identifier for the chooser
+        :param str prefs_id: prefs identifier for the chooser
 
         The prefs identifier forms part of preferences key which store
         layout and which page of the chooser is selected. It should
@@ -312,7 +310,7 @@ class ColorChooserPopup(windowing.ChooserPopup):
         """Initialize.
 
         :param gui.application.Application app: main app instance
-        :param unicode prefs_id: prefs identifier for the chooser
+        :param str prefs_id: prefs identifier for the chooser
         :param bool single_click: limit to just the single-click adjusters
 
         The prefs identifier forms part of preferences key which store

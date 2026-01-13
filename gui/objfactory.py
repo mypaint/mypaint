@@ -49,7 +49,7 @@ class ConstructError(Exception):
     """
 
 
-class ObjFactory(object):
+class ObjFactory:
     """Pythonic cached factory for GObjects.
 
     Objects are constructable from their GObject type name and a simple tuple

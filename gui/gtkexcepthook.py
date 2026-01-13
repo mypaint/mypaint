@@ -17,14 +17,14 @@
 # - fix lockup with dialog.run(), return to mainloop instead
 # see also http://faq.pygtk.org/index.py?req=show&file=faq20.010.htp
 # (The license is still whatever you want.)
-from lib.pycompat import PY3
-
 import inspect
 import linecache
 import pydoc
 import sys
 import traceback
 from gettext import gettext as _
+from io import StringIO
+from urllib.parse import quote_plus
 import textwrap
 
 from lib.gibindings import Gtk
@@ -32,13 +32,6 @@ from lib.gibindings import Gdk
 from lib.gibindings import Pango
 
 import lib.meta
-
-if PY3:
-    from io import StringIO
-    from urllib.parse import quote_plus
-else:
-    from cStringIO import StringIO
-    from urllib import quote_plus
 
 
 # Function that will be called when the user presses "Quit"

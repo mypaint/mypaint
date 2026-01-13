@@ -12,8 +12,6 @@
 
 import math
 
-from lib.pycompat import xrange
-
 
 def clamp(v, bottom, top):
     """Returns `v`, clamped to within a particular range."""
@@ -34,7 +32,7 @@ def add_distance_fade_stops(gr, rgb, nstops=3, gamma=2, alpha=1.0):
     """
     red, green, blue = rgb
     nstops = int(nstops) + 2
-    for s in xrange(nstops + 1):
+    for s in range(nstops + 1):
         a = alpha * (((nstops - s) / nstops) ** gamma)
         stop = s / nstops
         gr.add_color_stop_rgba(stop, red, green, blue, a)

@@ -20,6 +20,7 @@ import time
 import tempfile
 import shutil
 from copy import deepcopy
+from io import BytesIO, StringIO
 from random import randint
 import uuid
 import struct
@@ -41,14 +42,6 @@ import lib.autosave
 import lib.xml
 import lib.feedback
 from . import rendering
-from lib.pycompat import PY3
-from lib.pycompat import unicode
-
-if PY3:
-    from io import StringIO
-    from io import BytesIO
-else:
-    from cStringIO import StringIO
 
 
 logger = logging.getLogger(__name__)
@@ -549,7 +542,7 @@ class SurfaceBackedLayer(core.LayerBase, lib.autosave.Autosaveable):
         return (removed, total)
 
 
-class SurfaceBackedLayerMove(object):
+class SurfaceBackedLayerMove:
     """Move object wrapper for surface-backed layers
 
     Layer Subclasses should extend this minimal implementation to
@@ -690,7 +683,7 @@ class FileBackedLayer(SurfaceBackedLayer, core.ExternallyEditable):
         if not os.path.isdir(revisions_dir):
             os.makedirs(revisions_dir)
         self._workfile = _ManagedFile(
-            unicode(tmp_filename),
+            str(tmp_filename),
             move=True,
             dir=revisions_dir,
         )
@@ -719,7 +712,7 @@ class FileBackedLayer(SurfaceBackedLayer, core.ExternallyEditable):
         if not os.path.isdir(revisions_dir):
             os.makedirs(revisions_dir)
         self._workfile = _ManagedFile(
-            unicode(os.path.join(oradir, src)),
+            str(os.path.join(oradir, src)),
             copy=True,
             dir=revisions_dir,
         )
@@ -766,7 +759,7 @@ class FileBackedLayer(SurfaceBackedLayer, core.ExternallyEditable):
         elem = self._get_stackxml_element("layer", x, y)
         # Pick a suitable name to store under.
         self._ensure_valid_working_file()
-        src_path = unicode(self._workfile)
+        src_path = str(self._workfile)
         src_rootname, src_ext = os.path.splitext(src_path)
         src_ext = src_ext.lower()
         storename = self._make_refname("layer", path, src_ext)
@@ -774,7 +767,7 @@ class FileBackedLayer(SurfaceBackedLayer, core.ExternallyEditable):
         # Archive (but do not remove) the managed tempfile
         orazip.write(src_path, storepath)
         # Return details of what was written.
-        elem.attrib["src"] = unicode(storepath)
+        elem.attrib["src"] = str(storepath)
         return elem
 
     def queue_autosave(self, oradir, taskproc, manifest, bbox, **kwargs):
@@ -786,7 +779,7 @@ class FileBackedLayer(SurfaceBackedLayer, core.ExternallyEditable):
         elem = self._get_stackxml_element("layer", x, y)
         # Pick a suitable name to store under.
         self._ensure_valid_working_file()
-        src_path = unicode(self._workfile)
+        src_path = str(self._workfile)
         src_rootname, src_ext = os.path.splitext(src_path)
         src_ext = src_ext.lower()
         final_basename = self.autosave_uuid + src_ext
@@ -807,11 +800,11 @@ class FileBackedLayer(SurfaceBackedLayer, core.ExternallyEditable):
             with open(src_path, "rb") as src_fp:
                 shutil.copyfileobj(src_fp, tmp_fp)
             tmp_fp.close()
-            lib.fileutils.replace(tmp_path, final_path)
+            os.replace(tmp_path, final_path)
             self.autosave_dirty = False
         # Return details of what gets written.
         manifest.add(final_relpath)
-        elem.attrib["src"] = unicode(final_relpath)
+        elem.attrib["src"] = str(final_relpath)
         return elem
 
     ## Editing via external apps
@@ -822,11 +815,11 @@ class FileBackedLayer(SurfaceBackedLayer, core.ExternallyEditable):
             return
         self._ensure_valid_working_file()
         self._edit_tempfile = _ManagedFile(
-            unicode(self._workfile),
+            str(self._workfile),
             copy=True,
             dir=self.external_edits_dir,
         )
-        return unicode(self._edit_tempfile)
+        return str(self._edit_tempfile)
 
     def load_from_external_edit_tempfile(self, tempfile_path):
         """Load content from an external-edit tempfile"""
@@ -884,7 +877,7 @@ class FileBackedLayerMove(SurfaceBackedLayerMove):
 ## Utility classes
 
 
-class _ManagedFile(object):
+class _ManagedFile:
     """Working copy of a file, as used by file-backed layers
 
     Managed files take control of an unmanaged file on disk when they
@@ -892,17 +885,17 @@ class _ManagedFile(object):
     destroyed. If you need a fresh copy to work on, the standard copy()
     implementation handles that in the way you'd expect.
 
-    The underlying filename can be accessed by converting to `unicode`.
+    The underlying filename can be accessed by converting to `str`.
 
     """
 
     def __init__(self, file_path, copy=False, move=False, dir=None):
         """Initialize, taking control of an unmanaged file or a copy
 
-        :param unicode file_path: File to manage or manage a copy of
+        :param str file_path: File to manage or manage a copy of
         :param bool copy: Copy first, and manage the copy
         :param bool move: Move first, and manage under the new name
-        :param unicode dir: Target folder for move or copy.
+        :param str dir: Target folder for move or copy.
 
         The file can be automatically copied or renamed first,
         in which case the new file is managed instead of the original.
@@ -915,7 +908,7 @@ class _ManagedFile(object):
         attempted from the main thread.
 
         """
-        assert isinstance(file_path, unicode)
+        assert isinstance(file_path, str)
         assert os.path.isfile(file_path)
         if dir:
             assert os.path.isdir(dir)
@@ -936,7 +929,7 @@ class _ManagedFile(object):
 
     def __deepcopy__(self, memo):
         """Deep-copying a _ManagedFile copies the file"""
-        orig_path = unicode(self)
+        orig_path = str(self)
         clone_path = self._get_file_to_manage(orig_path, copy=True)
         logger.debug(
             "_ManagedFile: cloned %r as %r within %r",
@@ -966,7 +959,7 @@ class _ManagedFile(object):
             dir = orig_dir
         new_unique_path = None
         while new_unique_path is None:
-            new_rootname = unicode(uuid.uuid4())
+            new_rootname = str(uuid.uuid4())
             new_basename = new_rootname + orig_ext
             new_path = os.path.join(dir, new_basename)
             if os.path.exists(new_path):  # yeah, paranoia
@@ -981,17 +974,14 @@ class _ManagedFile(object):
         return new_unique_path
 
     def __str__(self):
-        if PY3:
-            return self.__unicode__()
-        else:
-            return self.__bytes__()  # Always an error under Py2
+        return self.__unicode__()
 
     def __bytes__(self):
-        raise NotImplementedError("Use unicode strings for file names.")
+        raise NotImplementedError("Use str strings for file names.")
 
     def __unicode__(self):
         file_path = os.path.join(self._dir, self._basename)
-        assert isinstance(file_path, unicode)
+        assert isinstance(file_path, str)
         return file_path
 
     def __repr__(self):
@@ -999,7 +989,7 @@ class _ManagedFile(object):
 
     def __del__(self):
         try:
-            file_path = unicode(self)
+            file_path = str(self)
         except Exception:
             logger.exception(
                 "_ManagedFile: cleanup of incomplete object. "
@@ -1550,11 +1540,7 @@ class StrokemappedPaintingLayer(SimplePaintingLayer):
         # attribute and the eotf attribute. This support will be temporary.
         invert = invert and not attrs.get(self._ORA_STROKEMAP_LEGACY_ATTR)
         if orazip:
-            if PY3:
-                ioclass = BytesIO
-            else:
-                ioclass = StringIO
-            sio = ioclass(orazip.read(strokemap_name))
+            sio = BytesIO(orazip.read(strokemap_name))
             self._load_strokemap_from_file(sio, x, y, invert)
             sio.close()
         elif oradir:
@@ -1684,10 +1670,7 @@ class StrokemappedPaintingLayer(SimplePaintingLayer):
         )
         # Store stroke shape data too
         x, y, w, h = self.get_bbox()
-        if PY3:
-            sio = BytesIO()
-        else:
-            sio = StringIO()
+        sio = BytesIO()
         t0 = time.time()
         _write_strokemap(sio, self.strokes, -x, -y)
         t1 = time.time()
@@ -1743,7 +1726,7 @@ class PaintingLayer(StrokemappedPaintingLayer, core.ExternallyEditable):
             return
         tmp_filename = os.path.join(
             self.external_edits_dir,
-            "%s%s" % (unicode(uuid.uuid4()), ".png"),
+            "%s%s" % (str(uuid.uuid4()), ".png"),
         )
         # Overwrite, saving only the data area.
         # Record the data area for later.
@@ -1792,7 +1775,7 @@ def _write_strokemap_stroke(f, stroke, brush2id, dx, dy):
     b = stroke.brush_string
     if b not in brush2id:
         brush2id[b] = len(brush2id)
-        if isinstance(b, unicode):
+        if isinstance(b, str):
             b = b.encode("utf-8")
         b = zlib.compress(b)
         f.write(b"b")
@@ -1806,7 +1789,7 @@ def _write_strokemap_stroke(f, stroke, brush2id, dx, dy):
     f.write(s)
 
 
-class _StrokemapFileUpdateTask(object):
+class _StrokemapFileUpdateTask:
     """Updates a strokemap file in chunked calls (for autosave)"""
 
     def __init__(self, strokes, filename, dx, dy):
@@ -1843,7 +1826,7 @@ class _StrokemapFileUpdateTask(object):
         else:
             self._tmp.write(b"}")
             self._tmp.close()
-            lib.fileutils.replace(self._tmp.name, self._final_name)
+            os.replace(self._tmp.name, self._final_name)
             logger.debug("autosave: updated %r", self._final_name)
             return False
 

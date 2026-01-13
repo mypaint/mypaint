@@ -26,7 +26,7 @@ logger = logging.getLogger(__name__)
 # Main API classes:
 
 
-class Presenter:
+class Presenter(metaclass=abc.ABCMeta):
     """Abstract interface for standardized MVP presenters.
 
     What's MVP?
@@ -118,8 +118,6 @@ class Presenter:
     needed: this can keep GTK+ signals happier.
 
     """
-
-    __metaclass__ = abc.ABCMeta
 
     @abc.abstractproperty
     def widget(self):

@@ -37,8 +37,6 @@ from .paletteview import palette_load_via_dialog
 from .paletteview import palette_save_via_dialog
 from lib.gettext import C_
 
-from lib.pycompat import xrange
-
 
 PREFS_MASK_KEY = "colors.hcywheel.mask.gamuts"
 PREFS_ACTIVE_KEY = "colors.hcywheel.mask.active"
@@ -48,7 +46,7 @@ MASK_EDITOR_HELP_URI = C_(
 )
 
 
-class MaskableWheelMixin(object):
+class MaskableWheelMixin:
     """Provides wheel widgets with maskable areas.
 
     For use with implementations of `HueSaturationWheelAdjusterMixin`.
@@ -139,7 +137,7 @@ class MaskableWheelMixin(object):
             return
         mask_id_re = re.compile(r"\bmask\s*#?\s*(\d+)\b")
         mask_shapes = {}
-        for i in xrange(len(pal)):
+        for i in range(len(pal)):
             color = pal.get_color(i)
             if color is None:
                 continue
@@ -317,7 +315,7 @@ class MaskableWheelMixin(object):
         HueSaturationWheelMixin.paint_foreground_cb(self, cr, wd, ht)
 
 
-class HCYHueChromaWheelMixin(object):
+class HCYHueChromaWheelMixin:
     """Mixin for wheel-style adjusters to display the H+C from the HCY model.
 
     For use with implementations of `HueSaturationWheelAdjusterMixin`; make
@@ -461,7 +459,7 @@ class HCYMaskEditorWheel(HCYHueChromaWheel):
 
         # Possible mask void manipulations
         mask = self.get_mask()
-        for mask_idx in xrange(len(mask)):
+        for mask_idx in range(len(mask)):
             colors = mask[mask_idx]
             if len(colors) < 3:
                 continue
@@ -469,7 +467,7 @@ class HCYMaskEditorWheel(HCYHueChromaWheel):
             # If the pointer is near an existing control point, clicking and
             # dragging will move it.
             void = []
-            for col_idx in xrange(len(colors)):
+            for col_idx in range(len(colors)):
                 col = colors[col_idx]
                 px, py = self.get_pos_for_color(col)
                 dp = math.sqrt((x - px) ** 2 + (y - py) ** 2)
@@ -724,7 +722,7 @@ class HCYMaskEditorWheel(HCYHueChromaWheel):
         nsides = 3 + len(self.get_mask())
         psi = math.atan2(dy, dx) + (math.pi / nsides)
         psi += math.pi
-        for i in xrange(nsides):
+        for i in range(nsides):
             theta = 2.0 * math.pi * i / nsides
             theta += psi
             px = int(x + size * math.cos(theta))

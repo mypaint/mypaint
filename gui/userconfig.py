@@ -32,13 +32,8 @@ def get_json_config(conf_path):
     settingspath = os.path.join(conf_path, "settings.json")
     logger.debug("Reading app settings from %r", settingspath)
     try:
-        # Py3: settings.json has always been UTF-8 even in Py2.
-        #
-        # The Travis-CI json.loads() from Python 3.4.0 needs
-        # unicode strings, always. Later and earlier versions,
-        # including Py2 do not need that, if bytes are UTF-8.
         with open(settingspath, "rb") as fp:
-            return json.loads(fp.read().decode("utf-8"))
+            return json.loads(fp.read())
     except IOError:
         logger.warning("Failed to load settings file: %s", settingspath)
     except Exception as e:

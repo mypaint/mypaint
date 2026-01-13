@@ -74,8 +74,8 @@ class BrushInputInfo:
     :ivar float normal:
     :ivar float hard_max:
     :ivar float soft_max:
-    :ivar unicode dname: Localized human-readable name.
-    :ivar unicode tooltip: Localized short technical description.
+    :ivar str dname: Localized human-readable name.
+    :ivar str tooltip: Localized short technical description.
     :ivar int index: Index of the object in `inputs`.
 
     """
@@ -124,7 +124,7 @@ class BrushSettingInfo:
     :ivar float min:
     :ivar float default:
     :ivar float max:
-    :ivar unicode tooltip: Localized, human-readable technical description.
+    :ivar str tooltip: Localized, human-readable technical description.
     :ivar int index: Index of the object in `settings`.
 
     """

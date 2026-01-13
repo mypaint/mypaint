@@ -25,8 +25,6 @@ from lib.brushsettings import settings_dict
 from lib.document import Document
 from lib.layer.data import SimplePaintingLayer
 from lib.observable import event
-from lib.pycompat import add_metaclass
-from lib.pycompat import unicode
 
 import gui.cursor
 
@@ -147,8 +145,7 @@ class ModeRegistry(type):
 ## Mode base classes
 
 
-@add_metaclass(ModeRegistry)
-class InteractionMode(object):
+class InteractionMode(metaclass=ModeRegistry):
     """Required base class for temporary interaction modes.
 
     Active interaction mode objects process input events, and can manipulate
@@ -212,7 +209,7 @@ class InteractionMode(object):
     def get_name(cls):
         """Returns a short human-readable description of the mode.
 
-        :rtype: unicode
+        :rtype: str
 
         This is used for status bar messages, and potentially elsewhere before
         the mode has been instantiated.  All concrete subclasses should
@@ -224,12 +221,12 @@ class InteractionMode(object):
         words).  Do not use trailing punctuation.
 
         """
-        return unicode(cls.__name__)
+        return str(cls.__name__)
 
     def get_usage(self):
         """Returns a medium-length usage message for the mode.
 
-        :rtype: unicode
+        :rtype: str
 
         This is used for status bar messages.  All concrete subclasses should
         override this.  The default return value is an empty string.
@@ -687,7 +684,7 @@ class BrushworkModeMixin(InteractionMode):
         """Begins a new segment of active brushwork for a model
 
         :param Document model: The model to begin work on
-        :param unicode description: Optional description of the work
+        :param str description: Optional description of the work
         :param bool abrupt: Tail out/in abruptly with faked zero pressure.
         :param SimplePaintingLayer layer: explicit target layer.
 
@@ -1324,7 +1321,7 @@ class _NullMode(InteractionMode):
     """A mode that does nothing (placeholder only)"""
 
 
-class ModeStack(object):
+class ModeStack:
     """A stack of InteractionModes. The top mode is the active one.
 
     Mode stacks can never be empty. If the final element is popped, it
@@ -1518,7 +1515,7 @@ class ModeStack(object):
         """Returns the number of modes on the stack."""
         return len(self._stack)
 
-    def __nonzero__(self):
+    def __bool__(self):
         """Mode stacks never test false, regardless of length."""
         return True
 

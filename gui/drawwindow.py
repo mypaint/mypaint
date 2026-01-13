@@ -296,7 +296,7 @@ class DrawWindow(Gtk.Window):
             # Perhaps these should be handled as layers instead now?
             # Though .ORA files should probably still replace the entire
             # working file.
-            uri = lib.glib.filename_to_unicode(rawdata).split("\r\n")[0]
+            uri = lib.glib.filename_to_str(rawdata).split("\r\n")[0]
             file_path, _h = lib.glib.filename_from_uri(uri)
             if os.path.exists(file_path):
                 ok_to_open = self.app.filehandler.confirm_destructive_action(

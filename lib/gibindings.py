@@ -39,7 +39,7 @@ from gi.repository import PangoCairo  # noqa
 # import when an attribute of the module is requested.
 
 
-class GtkWrapper(object):
+class GtkWrapper:
 
     _initialized = False
 

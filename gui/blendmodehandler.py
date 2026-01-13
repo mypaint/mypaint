@@ -9,7 +9,7 @@
 from lib.observable import event
 
 
-class BlendMode(object):
+class BlendMode:
     """A local on-off switch for a blend mode, with a change event"""
 
     def __init__(self, name, setting_name, active=False):
@@ -35,7 +35,7 @@ class BlendMode(object):
         change in activation status"""
 
 
-class BlendModes(object):
+class BlendModes:
     """Proxy values for tools with individual blend mode states
 
     Used by tool modes to maintain their own instances of active
@@ -111,7 +111,7 @@ class BlendModes(object):
         passing an instance of the changed mode"""
 
 
-class BlendModeManager(object):
+class BlendModeManager:
     """Manages blend mode actions by updating and redirecting
     callbacks based on BlendModes state models.
 

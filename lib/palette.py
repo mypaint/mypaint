@@ -23,9 +23,6 @@ from lib.observable import event
 from lib.color import RGBColor
 from lib.color import YCbCrColor
 from lib.color import UIColor  # noqa
-from lib.pycompat import unicode
-from lib.pycompat import xrange
-from lib.pycompat import PY3
 from io import open
 
 logger = logging.getLogger(__name__)
@@ -33,7 +30,7 @@ logger = logging.getLogger(__name__)
 ## Class and function defs
 
 
-class Palette(object):
+class Palette:
     """A flat list of color swatches, compatible with the GIMP
 
     As a (sideways-compatible) extension to the GIMP's format, MyPaint supports
@@ -45,7 +42,7 @@ class Palette(object):
     highlighting the user concept of the "current color" in the GUI.
 
     Palette objects can be serialized in the GIMP's file format (the regular
-    `unicode()` function on a Palette will do this too), or converted to and
+    `str()` function on a Palette will do this too), or converted to and
     from a simpler JSON-ready representation for storing in the MyPaint prefs.
     Support for loading and saving via modal dialogs is defined here too.
 
@@ -200,16 +197,12 @@ class Palette(object):
 
         :param filehandle: File-like object (.write suffices)
 
-        >>> from lib.pycompat import PY3
-        >>> if PY3:
-        ...     from io import StringIO
-        ... else:
-        ...     from cStringIO import StringIO
+        >>> from io import StringIO
         >>> fp = StringIO()
         >>> cols = RGBColor(1,.7,0).interpolate(RGBColor(.1,.1,.5), 16)
         >>> pal = Palette(colors=cols)
         >>> pal.save(fp)
-        >>> fp.getvalue() == unicode(pal)
+        >>> fp.getvalue() == str(pal)
         True
 
         The file handle is not flushed, and is left open after the
@@ -219,7 +212,7 @@ class Palette(object):
         >>> fp.close()
 
         """
-        filehandle.write(unicode(self))
+        filehandle.write(str(self))
 
     def update(self, other):
         """Updates all details of this palette from another palette.
@@ -255,7 +248,7 @@ class Palette(object):
     def set_name(self, name):
         """Sets the palette's name."""
         if name is not None:
-            name = unicode(name)
+            name = str(name)
         self._name = name
         self.info_changed()
 
@@ -272,10 +265,6 @@ class Palette(object):
     def __len__(self):
         """Palette length is the number of color slots within it."""
         return len(self._colors)
-
-    ## PY2/PY3 compat
-
-    __nonzero__ = __bool__
 
     ## Match position marker
 
@@ -354,7 +343,7 @@ class Palette(object):
         elif self.match_position is not None:
             search_order = _outwards_from(len(self), self.match_position)
         else:
-            search_order = xrange(len(self))
+            search_order = range(len(self))
         bestmatch_i = None
         bestmatch_d = None
         is_approx = True
@@ -513,7 +502,7 @@ class Palette(object):
                 except AttributeError:
                     pass
             if name is not None:
-                name = unicode(name)
+                name = str(name)
             result = RGBColor(color=col)
             result.__name = name
         return result
@@ -531,7 +520,7 @@ class Palette(object):
         col = self._copy_color_in(col, name)
         if unique:
             # Find the final exact match, if one is present
-            for i in xrange(len(self._colors) - 1, -1, -1):
+            for i in range(len(self._colors) - 1, -1, -1):
                 if col == self._colors[i]:
                     if match:
                         self._match_position = i
@@ -773,12 +762,7 @@ class Palette(object):
 
     ## Dumping and cloning
 
-    def __unicode__(self):
-        """Py2-era serialization as a Unicode string.
-
-        Used by the Py3 __str__() while we are in transition.
-
-        """
+    def __str__(self):
         result = "GIMP Palette\n"
         if self._name is not None:
             result += "Name: %s\n" % self._name
@@ -797,13 +781,6 @@ class Palette(object):
             else:
                 result += "%d %d %d    %s\n" % (r, g, b, col_name)
         return result
-
-    def __str__(self):
-        """Py3: serialize as str (=Unicode). Py2: as bytes (lossy!)."""
-        s = self.__unicode__()
-        if not PY3:
-            s = s.encode("utf-8", errors="replace")
-        return s
 
     def __copy__(self):
         clone = Palette()
@@ -869,7 +846,7 @@ def _outwards_from(n, i):
     """
     assert i < n and i >= 0
     yield i
-    for j in xrange(n):
+    for j in range(n):
         exhausted = True
         if i - j >= 0:
             yield i - j

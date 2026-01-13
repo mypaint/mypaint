@@ -44,7 +44,7 @@ def save(pixbuf, filename, type="png", **kwargs):
     """Save pixbuf to a named file (compatibility wrapper)
 
     :param GdkPixbuf.Pixbuf pixbuf: the pixbuf to save
-    :param unicode filename: file path to save as
+    :param str filename: file path to save as
     :param str type: type to save as: 'jpeg'/'png'/...
     :param \*\*kwargs: passed through to GdkPixbuf
     :rtype: bool
@@ -91,7 +91,7 @@ def save(pixbuf, filename, type="png", **kwargs):
 def load_from_file(filename, progress=None, image_type=None):
     """Load a pixbuf from a named file
 
-    :param unicode filename: name of the file to open and read
+    :param str filename: name of the file to open and read
     :param progress: Provides UI feedback. Must be unsized or None.
     :type progress: lib.feedback.Progress or None
     :param image_type: type of image expected from the file
@@ -160,7 +160,7 @@ def load_from_zipfile(datazip, filename, progress=None, image_type=None):
     """Extract and return a pixbuf from a zipfile entry
 
     :param zipfile.ZipFile datazip: ZipFile object opened for extracting
-    :param unicode filename: pixbuf entry (file name) in the zipfile
+    :param str filename: pixbuf entry (file name) in the zipfile
     :param progress: Provides UI feedback. Must be unsized or None.
     :type progress: lib.feedback.Progress or None
     :param image_type: type of image expected from the file
