@@ -22,6 +22,7 @@ jobs:
                   libjson-c-dev \
                   liblcms2-dev \
                   libpng-dev \
+                  librsvg2-common \
                   python3-dev \
                   python-gi-dev \
                   python3-gi-cairo \
