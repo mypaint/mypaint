@@ -188,9 +188,16 @@ def init_user_dir_caches():
     # It doesn't matter if some of these are None
     for i in range(GLib.UserDirectory.N_DIRECTORIES):
         k = GLib.UserDirectory(i)
+
+        try:
+            dir_kind = k.name
+        except AttributeError:
+            # Compatibility with PyGObject < 3.51
+            dir_kind = k.value_name
+
         logger.debug(
             "Init g_get_user_special_dir(%s): %r",
-            k.name,
+            dir_kind,
             get_user_special_dir(k),
         )
 
