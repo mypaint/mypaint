@@ -33,21 +33,21 @@ class ScaleDelegator(type(Gtk.Bin)):
 
     def __init__(cls, name, bases, dict):
         # Existing properties from shared ancestry
-        base = {p.get_name() for p in Gtk.Bin.list_properties()}
+        base = {p.name for p in Gtk.Bin.list_properties()}
         # Properties in GtkScale, but not GtkBin
-        to_add = [p for p in Gtk.Scale.list_properties() if p.get_name() not in base]
+        to_add = [p for p in Gtk.Scale.list_properties() if p.name not in base]
         for prop in to_add:
             val_type = prop.value_type
             setattr(
                 cls,
-                prop.get_name().replace("-", "_"),
+                prop.name.replace("-", "_"),
                 GObject.Property(
                     type=val_type.pytype if val_type.pytype else val_type,
                     default=prop.get_default_value(),
                 ),
             )
         # Store newly created property names to determine which to delegate
-        cls._scale_props = {p.get_name() for p in to_add}
+        cls._scale_props = {p.name for p in to_add}
         super(ScaleDelegator, cls).__init__(name, bases, dict)
 
 
@@ -85,7 +85,7 @@ class InputSlider(with_metaclass(ScaleDelegator, Gtk.Bin)):
 
     def _notify(self, _, prop):
         """Delegate property changes to the scale instance"""
-        name = prop.get_name()
+        name = prop.name
         if name in self._scale_props:
             self._scale.set_property(name, self.get_property(name))
 
