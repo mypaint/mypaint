@@ -190,7 +190,7 @@ def init_user_dir_caches():
         k = GLib.UserDirectory(i)
         logger.debug(
             "Init g_get_user_special_dir(%s): %r",
-            k.name,
+            i,
             get_user_special_dir(k),
         )
 
