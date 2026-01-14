@@ -38,9 +38,9 @@ Dependencies installed for MSYSTEM=$MSYSTEM.
 You should now be able to run the following commands to build and
 test MyPaint from within this folder.
 
-    python setup.py build
-    python setup.py nosetests
-    python setup.py test
+    python setup.py build --inplace
+    pytest --doctest-modules lib
+    pytest -rP
     python setup.py clean --all
 
     python setup.py demo
