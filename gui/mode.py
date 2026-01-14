@@ -664,7 +664,7 @@ class BrushworkModeMixin (InteractionMode):
     def __init__(self, **kwds):
         """Cooperative init (this mixin initializes some private fields)
 
-        :param bool \*\*kwds: Passed through to other __init__s.
+        :param bool **kwds: Passed through to other __init__s.
 
         """
         super(BrushworkModeMixin, self).__init__(**kwds)
@@ -1233,7 +1233,7 @@ class OneshotDragMode (DragMode):
                  **kwargs):
         """
         :param bool unmodified_persist: Stay active if entered without modkeys
-        :param bool \*\*kwargs: Passed through to other __init__s.
+        :param bool **kwargs: Passed through to other __init__s.
 
         If unmodified_persist is true, and drag mode is spring-loaded, the
         tool will stay active if no modifiers were held initially. This means
@@ -1305,7 +1305,7 @@ class ModeStack (object):
         """Syncs pending changes with the model
 
         :param Document model: the requesting model
-        :param \*\*kwargs: passed through to checkpoint()
+        :param **kwargs: passed through to checkpoint()
 
         This issues a `checkpoint()` on the current InteractionMode.
         """
