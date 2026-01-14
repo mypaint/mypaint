@@ -26,7 +26,7 @@ jobs:
                   python3-dev \
                   python-gi-dev \
                   python3-gi-cairo \
-                  python3-nose \
+                  python3-pytest \
                   python3-numpy \
                   python3-setuptools \
                   swig \
@@ -61,8 +61,8 @@ jobs:
                 python3 setup.py build
             - name: "Run tests"
               run: |
-                python3 setup.py nosetests --tests lib
-                python3 setup.py test
+                pytest --doctest-modules lib
+                pytest -rP
                 python3 setup.py clean --all
                 MYPAINT_DEBUG=1 xvfb-run -a python setup.py demo --args='--run-and-quit'
                 sudo python3 setup.py managed_install

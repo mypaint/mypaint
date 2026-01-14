@@ -466,6 +466,9 @@ class BuildExt(build_ext):
         self.disable_openmp = False
         build_ext.initialize_options(self)
 
+        # Required for tests to find .so without installation.
+        self.inplace = True
+
     def finalize_options(self):
         build_ext.finalize_options(self)
         if self.set_rpath and (
@@ -1080,6 +1083,5 @@ setup(
         "mypaint.py",
         "desktop/mypaint-ora-thumbnailer.py",
     ],
-    test_suite="tests",
     ext_modules=get_ext_modules(),
 )

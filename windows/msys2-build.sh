@@ -88,7 +88,7 @@ install_dependencies() {
         ${PKG_PREFIX}-hicolor-icon-theme \
         ${PKG_PREFIX}-librsvg \
         ${PKG_PREFIX}-gobject-introspection \
-        ${PKG_PREFIX}-python3-nose \
+        ${PKG_PREFIX}-python3-pytest \
         ${PKG_PREFIX}-python3-setuptools \
         ${PKG_PREFIX}-swig \
         ${PKG_PREFIX}-gsettings-desktop-schemas \
@@ -298,7 +298,7 @@ install_test(){
 
 run_doctest() {
     loginfo "Running unit tests."
-    python3 setup.py nosetests --tests lib
+    pytest --doctest-modules lib
     logok "Unit tests done."
 }
 
@@ -306,7 +306,7 @@ run_tests() {
     loginfo "Running startup/shutdown test"
     MYPAINT_DEBUG=1 python setup.py demo --args='--run-and-quit'
     loginfo "Running conformance tests."
-    python3 setup.py test
+    pytest -rP
     logok "Tests done."
 }
 
