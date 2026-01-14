@@ -117,9 +117,14 @@ class InputTestWindow(windowing.SubWindow):
 
     def event2str(self, widget, event):
         t = str(getattr(event, "time", "-"))
+        try:
+            event_name = event.type.name
+        except AttributeError:
+            # Compatibility with PyGObject < 3.51
+            event_name = event.type.value_name
         msg = "% 6s % 15s" % (
             t[-6:],
-            event.type.name.replace("GDK_", ""),
+            event_name.replace("GDK_", ""),
         )
 
         if hasattr(event, "x") and hasattr(event, "y"):

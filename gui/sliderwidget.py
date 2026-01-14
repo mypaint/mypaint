@@ -23,6 +23,22 @@ from lib.observable import event
 _DOUBLE_CLICK = getattr(Gdk.EventType, "2BUTTON_PRESS")
 
 
+def _prop_name(prop: GObject.ParamSpec) -> str:
+    try:
+        return prop.get_name()
+    except AttributeError:
+        # Compatibility with PyGObject < 3.51
+        return prop.name
+
+
+def _prop_default_value(prop: GObject.ParamSpec) -> GObject.Value:
+    try:
+        return prop.get_default_value()
+    except AttributeError:
+        # Compatibility with PyGObject < 3.51
+        return prop.default_value
+
+
 class ScaleDelegator(type(Gtk.Bin)):
     """Metaclass automatically copying properties from Gtk.Scale
 
@@ -33,21 +49,21 @@ class ScaleDelegator(type(Gtk.Bin)):
 
     def __init__(cls, name, bases, dict):
         # Existing properties from shared ancestry
-        base = {p.get_name() for p in Gtk.Bin.list_properties()}
+        base = {_prop_name(p) for p in Gtk.Bin.list_properties()}
         # Properties in GtkScale, but not GtkBin
-        to_add = [p for p in Gtk.Scale.list_properties() if p.get_name() not in base]
+        to_add = [p for p in Gtk.Scale.list_properties() if _prop_name(p) not in base]
         for prop in to_add:
             val_type = prop.value_type
             setattr(
                 cls,
-                prop.get_name().replace("-", "_"),
+                _prop_name(prop).replace("-", "_"),
                 GObject.Property(
                     type=val_type.pytype if val_type.pytype else val_type,
-                    default=prop.get_default_value(),
+                    default=_prop_default_value(prop),
                 ),
             )
         # Store newly created property names to determine which to delegate
-        cls._scale_props = {p.get_name() for p in to_add}
+        cls._scale_props = {_prop_name(p) for p in to_add}
         super(ScaleDelegator, cls).__init__(name, bases, dict)
 
 
@@ -85,7 +101,7 @@ class InputSlider(with_metaclass(ScaleDelegator, Gtk.Bin)):
 
     def _notify(self, _, prop):
         """Delegate property changes to the scale instance"""
-        name = prop.get_name()
+        name = _prop_name(prop)
         if name in self._scale_props:
             self._scale.set_property(name, self.get_property(name))
 

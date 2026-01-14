@@ -266,6 +266,13 @@ class Monitor(object):
             return
         settings = self._device_settings.get(device)
         if not settings:
+
+            try:
+                source_kind = source.name
+            except AttributeError:
+                # Compatibility with PyGObject < 3.51
+                source_kind = source.value_name
+
             try:
                 vendor_id = device.get_vendor_id()
                 product_id = device.get_product_id()
@@ -276,7 +283,7 @@ class Monitor(object):
             logger.info(
                 "New device %r" " (%s, axes:%d, class=%s, vendor=%r, product=%r)",
                 device.get_name(),
-                source.name,
+                source_kind,
                 num_axes,
                 device.__class__.__name__,
                 vendor_id,
@@ -352,10 +359,16 @@ class Monitor(object):
         new_device.name = new_device.props.name
         new_device.source = new_device.props.input_source
 
+        try:
+            source_kind = new_device.source.name
+        except AttributeError:
+            # Compatibility with PyGObject < 3.51
+            source_kind = new_device.source.value_name
+
         logger.debug(
             "Device change: name=%r source=%s",
             new_device.name,
-            new_device.source.name,
+            source_kind,
         )
 
         # When editing brush settings, it is often more convenient to use the
