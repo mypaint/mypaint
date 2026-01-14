@@ -85,8 +85,8 @@ class TileBlittable(Bounded):
         :param bool dst_has_alpha: destination has an alpha channel
         :param int tx: Tile X coord (multiply by TILE_SIZE for pixels)
         :param int ty: Tile Y coord (multiply by TILE_SIZE for pixels)
-        :param \*args: Implementation may extend this interface
-        :param \*\*kwargs: Implementation may extend this interface
+        :param *args: Implementation may extend this interface
+        :param **kwargs: Implementation may extend this interface
 
         The destination is typically of dimensions NxNx4, and is
         typically of type uint16 or uint8. Implementations are expected
@@ -120,8 +120,8 @@ class TileCompositable(Bounded):
         :param int tx: Tile X coord (multiply by TILE_SIZE for pixels)
         :param int ty: Tile Y coord (multiply by TILE_SIZE for pixels)
         :param int mode: mode to use when compositing
-        :param \*args: Implementation may extend this interface
-        :param \*\*kwargs: Implementation may extend this interface
+        :param *args: Implementation may extend this interface
+        :param **kwargs: Implementation may extend this interface
 
         Composite one tile of this surface over the array dst, modifying
         only dst. Unlike `blit_tile_into()`, this method must respect
@@ -161,7 +161,7 @@ def scanline_strips_iter(
     :param TileBlittable surface: Surface to iterate over
     :param bool alpha: If true, write a PNG with alpha
     :param bool single_tile_pattern: True if surface is a one tile only.
-    :param tuple \*\*kwargs: Passed to blit_tile_into.
+    :param tuple **kwargs: Passed to blit_tile_into.
 
     The `alpha` parameter is passed to the surface's `blit_tile_into()`.
     Rendering is skipped for all but the first line of single-tile patterns.
@@ -222,13 +222,13 @@ def save_as_png(surface, filename, *rect, **kwargs):
 
     :param TileBlittable surface: Surface to save
     :param unicode filename: The file to write
-    :param tuple \*rect: Rectangle (x, y, w, h) to save
+    :param tuple *rect: Rectangle (x, y, w, h) to save
     :param bool alpha: If true, write a PNG with alpha
     :param progress: Updates a UI every scanline strip.
     :type progress: lib.feedback.Progress or None
     :param bool single_tile_pattern: True if surface is one tile only.
     :param bool save_srgb_chunks: Set to False to not save sRGB flags.
-    :param tuple \*\*kwargs: Passed to blit_tile_into (minus the above)
+    :param tuple **kwargs: Passed to blit_tile_into (minus the above)
 
     The `alpha` parameter is passed to the surface's `blit_tile_into()`
     method, as well as to the PNG writer.  Rendering is

@@ -287,8 +287,8 @@ class _IOProgressUI:
         """Call a save or load callable and watch its progress.
 
         :param callable func: The IO function to be called.
-        :param \*args: Passed to func.
-        :param \*\*kwargs: Passed to func.
+        :param *args: Passed to func.
+        :param **kwargs: Passed to func.
         :returns: The return value of func.
 
         Messages about the operation in progress may be shown to the

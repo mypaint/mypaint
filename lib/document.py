@@ -1139,7 +1139,7 @@ class Document(object):
         By default, the request to flush changes is non-optional.
 
         :param bool flush: if this is False, the flush is optional too
-        :param \*\*kwargs: passed through to observers
+        :param **kwargs: passed through to observers
 
         See: `lib.observable.event` for details of the signalling
         mechanism.
@@ -1943,7 +1943,7 @@ class Document(object):
         :param progress: Unsized progress object: updates UI.
         :type progress: lib.feedback.Progress or None
         :param bool retain_autosave_info: Restore unsaved time etc.
-        :param \*\*kwargs: Passed through to layer loader methods.
+        :param **kwargs: Passed through to layer loader methods.
 
         The oradir folder is treated as read-only during this operation.
 
@@ -2032,7 +2032,7 @@ def _save_layers_to_new_orazip(
     :param frame_active: True if the frame is enabled
     :param progress: Unsized UI feedback object
     :type progress: lib.feedback.Progress or None
-    :param \*\*kwargs: Passed through to root_stack.save_to_openraster()
+    :param **kwargs: Passed through to root_stack.save_to_openraster()
     :rtype: GdkPixbuf
     :returns: Thumbnail preview image (256x256 max) of what was saved
 

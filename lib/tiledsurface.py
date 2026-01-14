@@ -544,7 +544,7 @@ class MyPaintSurface(TileAccessible, TileBlittable, TileCompositable):
         :param bool convert_to_srgb: If True, convert to sRGB
         :param progress: Unsized UI feedback obj.
         :type progress: lib.feedback.Progress or None
-        :param dict \*\*kwargs: Ignored
+        :param dict **kwargs: Ignored
 
         Raises a `lib.errors.FileHandlingError` with a descriptive
         string when conversion or PNG reading fails.
