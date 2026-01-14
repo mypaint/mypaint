@@ -132,7 +132,7 @@ class State(object):
         """Activate a State from an action or a button press event.
 
         :param action_or_event: A Gtk.Action, or a Gdk.Event.
-        :param \*\*kwargs: passed to enter().
+        :param **kwargs: passed to enter().
 
         For events, only button press events are supported by this code.
 

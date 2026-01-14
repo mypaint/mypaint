@@ -655,7 +655,7 @@ class ObservableDict(dict):
         default, the request to flush changes is non-optional.
 
         :param bool flush: if this is False, the flush is optional too
-        :param \*\*kwargs: passed through to observers
+        :param **kwargs: passed through to observers
 
         See: `lib.observable.event` for details of the signalling
         mechanism.

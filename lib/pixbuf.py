@@ -46,7 +46,7 @@ def save(pixbuf, filename, type="png", **kwargs):
     :param GdkPixbuf.Pixbuf pixbuf: the pixbuf to save
     :param unicode filename: file path to save as
     :param str type: type to save as: 'jpeg'/'png'/...
-    :param \*\*kwargs: passed through to GdkPixbuf
+    :param **kwargs: passed through to GdkPixbuf
     :rtype: bool
     :returns: whether the file was saved fully
 

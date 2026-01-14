@@ -73,7 +73,7 @@ class Autosaveable:
         :param lib.idletask.Processor taskproc: Output: queue of tasks
         :param set manifest: Output: files in data/ to retain afterward
         :param tuple bbox: frame bounding box, (x,y,w,h)
-        :param \*\*kwargs: To be passed to underlying save routines.
+        :param **kwargs: To be passed to underlying save routines.
         :rtype: xml.etree.ElementTree.Element
         :returns: Element indexing files when written (for stack.xml)
 
