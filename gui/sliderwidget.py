@@ -44,7 +44,7 @@ class ScaleDelegator(type(Gtk.Bin)):
 
     The purpose of this is to allow setting properties on InputSlider
     instances as if they were Gtk.Scale. In turn, this is to allow use of
-    glade/xml to create and set up such instances.
+    XML to create and set up such instances.
     """
 
     def __init__(cls, name, bases, dict):
@@ -70,27 +70,30 @@ class ScaleDelegator(type(Gtk.Bin)):
 class InputSlider(with_metaclass(ScaleDelegator, Gtk.Bin)):
     """Custom container widget switching between slider and spinner box
 
-    This widget is a container with a single child - normally a slider, but
-    which can be toggled to a spin button to allow manual adjustment of the
-    value by entering a number.
+    This widget is a container with a single child - normally a slider,
+    but which can be toggled to a spin button to allow manual
+    adjustment of the value by entering a number.
 
-    The metaclass creates copies of the properties from GtkScale + superclasses
-    to this class (excepting pre-existing properties through shared ancestry).
-    This is so that instances of this class can be constructed from glade/xml
-    files. The property values are delegated to the instance of GtkScale.
+    The metaclass creates copies of the properties from GtkScale +
+    superclasses to this class (excepting pre-existing properties
+    through shared ancestry). This is so that instances of this class
+    can be constructed from XML files. The property values are
+    delegated to the instance of GtkScale.
 
-    Going by the old saying: "Magic is an abomination", it would be preferable
-    to have a widget deriving either GtkScale or GtkSpinButton, complementing
-    their existing functionality to produce a similar result as this widget,
-    without having to use a container and class-init/delegation magic.
+    Going by the old saying: "Magic is an abomination", it would be
+    preferable to have a widget deriving either GtkScale or
+    GtkSpinButton, complementing their existing functionality to
+    produce a similar result as this widget, without having to use a
+    container and class-init/delegation magic.
 
-    The spin button is created when needed, and not retained when switching
-    back to the slider. To change the properties of the spinbutton when it is
-    created, set the modify_spinbutton hook, which is called with a reference
-    to the slider and a weak reference to the newly created spin button.
+    The spin button is created when needed, and not retained when
+    switching back to the slider. To change the properties of the
+    spinbutton when it is created, set the modify_spinbutton hook,
+    which is called with a reference to the slider and a weak reference
+    to the newly created spin button.
     """
 
-    # Needed for instantiation via glade/xml
+    # Needed for instantiation via XML
     __gtype_name__ = "InputSlider"
 
     # If the scale/slider does not define a limit on precision, this

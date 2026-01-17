@@ -368,7 +368,7 @@ msgid "Use the default icon"
 msgstr "기본 아이콘 사용하기"
 
 #. TRANSLATORS: save edits to a brush icon
-#: ../gui/brushiconeditor.py:190 ../gui/brusheditor.glade:111
+#: ../gui/brushiconeditor.py:190 ../gui/brusheditor.xml:111
 msgid "Save"
 msgstr "저장"
 
@@ -1201,13 +1201,13 @@ msgstr "파일 기반"
 
 #. This refers to a version of MyPaint like 1.0, 1.1, 1.2 etc
 #: ../gui/compatibility.py:35 ../gui/drawwindow.py:281
-#: ../gui/preferenceswindow.glade:1667
+#: ../gui/preferenceswindow.xml:1667
 msgctxt "Prefs Dialog|Compatibility"
 msgid "1.x"
 msgstr "1.x"
 
 #. This refers to a version of MyPaint like 1.0, 1.1, 1.2 etc
-#: ../gui/compatibility.py:36 ../gui/preferenceswindow.glade:1686
+#: ../gui/compatibility.py:36 ../gui/preferenceswindow.xml:1686
 msgctxt "Prefs Dialog|Compatibility"
 msgid "2.x"
 msgstr "2.x"
@@ -1408,7 +1408,7 @@ msgstr "브러시를 덮어쓰시겠습니까?"
 msgid "Replace"
 msgstr "교체"
 
-#: ../gui/dialogs.py:137 ../gui/dialogs.py:207 ../gui/brusheditor.glade:189
+#: ../gui/dialogs.py:137 ../gui/dialogs.py:207 ../gui/brusheditor.xml:189
 msgid "Rename"
 msgstr "이름 바꾸기"
 
@@ -1570,7 +1570,7 @@ msgid "%s - MyPaint"
 msgstr "%s - MyPaint"
 
 #. TRANSLATORS: window title for use without a filename
-#: ../gui/drawwindow.py:278 ../gui/mypaint.glade:8
+#: ../gui/drawwindow.py:278 ../gui/mypaint.xml:8
 msgid "MyPaint"
 msgstr "MyPaint"
 
@@ -3802,17 +3802,17 @@ msgstr "스노우플릭"
 msgid "PNG reader failed: %s"
 msgstr "PNG 읽기 실패함: %s"
 
-#: ../gui/autorecover.glade:18
+#: ../gui/autorecover.xml:18
 msgid "Recover interrupted work?"
 msgstr "중단된 작업을 복구합니까?"
 
 #. Whether to show the dialog when MyPaint starts
-#: ../gui/autorecover.glade:38
+#: ../gui/autorecover.xml:38
 msgctxt "Autosave Recovery dialog|"
 msgid "_Look for backups at startup"
 msgstr "시작시 백업을 찾기(_L)"
 
-#: ../gui/autorecover.glade:42
+#: ../gui/autorecover.xml:42
 msgctxt "Autosave Recovery dialog|Show Dialog at Startup checkbutton|"
 msgid ""
 "Run this autosave recovery dialog when MyPaint starts, if there are files to "
@@ -3828,39 +3828,39 @@ msgstr ""
 "니다."
 
 #. Deletes the selected autosave backup file.
-#: ../gui/autorecover.glade:60
+#: ../gui/autorecover.xml:60
 msgctxt "Autosave Recovery dialog|"
 msgid "_Delete…"
 msgstr "삭제(_D)…"
 
-#: ../gui/autorecover.glade:66
+#: ../gui/autorecover.xml:66
 msgctxt "Autosave Recovery dialog|Delete button|"
 msgid "Delete this backup from the disk."
 msgstr "디스크에서이 백업을 삭제."
 
 #. Recover in the sense or retrieval or salvage from a backup file. The user is asked to save the retrieved file immediately afterwards, hence the ellipsis.
-#: ../gui/autorecover.glade:78
+#: ../gui/autorecover.xml:78
 msgctxt "Autosave Recovery dialog|"
 msgid "_Recover & Save…"
 msgstr "복구 및 저장(_R)…"
 
-#: ../gui/autorecover.glade:84
+#: ../gui/autorecover.xml:84
 msgctxt "Autosave Recovery dialog|Recover button|"
 msgid "Save this backup to disk, then continue working on it."
 msgstr "이 백업을 디스크에 저장 한 다음 작업을 계속."
 
 #. Do not recover any autosaves; take no action.
-#: ../gui/autorecover.glade:95
+#: ../gui/autorecover.xml:95
 msgctxt "Autosave Recovery dialog|"
 msgid "Decide _Later"
 msgstr "나중에 결정(_L)"
 
-#: ../gui/autorecover.glade:101
+#: ../gui/autorecover.xml:101
 msgctxt "Autosave Recovery dialog|Cancel button|"
 msgid "Start work on a new canvas. These backups will be retained."
 msgstr "새로운 캔버스에서 작업을 시작합니다. 현재 백업은 유지됩니다."
 
-#: ../gui/autorecover.glade:122
+#: ../gui/autorecover.xml:122
 msgctxt "Autosave Recovery dialog|"
 msgid ""
 "MyPaint crashed with unsaved work, but it makes rolling backups. You can "
@@ -3871,101 +3871,101 @@ msgstr ""
 "한 자동 백업 중 하나에서 작업 파일을 복구 할 수 있습니다. 계속하기 전에 저장"
 "할 위치를 묻는 메시지가 나타납니다."
 
-#: ../gui/autorecover.glade:157
+#: ../gui/autorecover.xml:157
 msgid "Thumbnail"
 msgstr "썸네일"
 
-#: ../gui/autorecover.glade:171
+#: ../gui/autorecover.xml:171
 msgid "Description"
 msgstr "설명"
 
-#: ../gui/brusheditor.glade:88
+#: ../gui/brusheditor.xml:88
 msgid "Live update"
 msgstr "실시간 업데이트"
 
-#: ../gui/brusheditor.glade:93
+#: ../gui/brusheditor.xml:93
 msgid ""
 "Update the last stroke on the canvas with the settings in this window, in "
 "real time"
 msgstr "실시간으로, 이 창의 설정으로 캔버스의 마지막 자획 업데이트"
 
-#: ../gui/brusheditor.glade:116
+#: ../gui/brusheditor.xml:116
 msgid "Save these settings to the brush"
 msgstr "브러시에 설정을 저장"
 
-#: ../gui/brusheditor.glade:132
+#: ../gui/brusheditor.xml:132
 msgid "Edit Icon"
 msgstr "아이콘을 편집"
 
-#: ../gui/brusheditor.glade:137
+#: ../gui/brusheditor.xml:137
 msgid ""
 "Edit this brush's icon in a separate window (you will be able to use any "
 "brush to draw it)"
 msgstr ""
 "별도의 창에서 이 브러시의 아이콘을 편집 (어떤 브러시라도 편집에 사용 가능)"
 
-#: ../gui/brusheditor.glade:151
+#: ../gui/brusheditor.xml:151
 msgid "Delete"
 msgstr "삭제"
 
-#: ../gui/brusheditor.glade:156
+#: ../gui/brusheditor.xml:156
 msgid "Delete this brush from the disk"
 msgstr "디스크에서 이 브러시 삭제하기"
 
-#: ../gui/brusheditor.glade:170
+#: ../gui/brusheditor.xml:170
 msgid "Copy to New"
 msgstr "새로 복사"
 
-#: ../gui/brusheditor.glade:175
+#: ../gui/brusheditor.xml:175
 msgid "Copy these settings and the current brush's icon to a new brush"
 msgstr "새로운 브러시에 현재 설정과 현재의 브러시의 아이콘을 복사"
 
-#: ../gui/brusheditor.glade:194
+#: ../gui/brusheditor.xml:194
 msgid "Rename this brush"
 msgstr "이 브러시의 이름을 바꿉니다"
 
-#: ../gui/brusheditor.glade:239
+#: ../gui/brusheditor.xml:239
 msgid "Brush Setting"
 msgstr "브러시 설정"
 
-#: ../gui/brusheditor.glade:340
+#: ../gui/brusheditor.xml:340
 msgctxt "brush editor|metadata settings|labels for widgets|tooltips|"
 msgid "Short description for use in tooltips"
 msgstr "툴팁에 사용되는 간단한 설명"
 
 #. Description for user tooltips
-#: ../gui/brusheditor.glade:343
+#: ../gui/brusheditor.xml:343
 msgctxt "brush editor|metadata settings|labels|"
 msgid "Description:"
 msgstr "설명:"
 
-#: ../gui/brusheditor.glade:355
+#: ../gui/brusheditor.xml:355
 msgctxt "brush editor|metadata settings|labels for widgets|tooltips|"
 msgid "Brush developer's notes"
 msgstr "브러시 개발자의 노트"
 
 #. Notes for developers
-#: ../gui/brusheditor.glade:358
+#: ../gui/brusheditor.xml:358
 msgctxt "brush editor|metadata settings|labels|"
 msgid "Notes:"
 msgstr "참고:"
 
-#: ../gui/brusheditor.glade:420
+#: ../gui/brusheditor.xml:420
 msgid ""
 "Starting value for this brush setting. The brush dynamics below act on this."
 msgstr ""
 "이 브러시 설정의 시작 값입니다. 아래의 브러시 역학이 이에 따라 행동합니다."
 
 #. field label
-#: ../gui/brusheditor.glade:426
+#: ../gui/brusheditor.xml:426
 msgid "Value:"
 msgstr "값:"
 
-#: ../gui/brusheditor.glade:491
+#: ../gui/brusheditor.xml:491
 msgid "Reset this input to have no effect on the setting"
 msgstr "설정에 영향을 미치지 않음 이 입력을 재설정"
 
-#: ../gui/brusheditor.glade:521
+#: ../gui/brusheditor.xml:521
 msgid ""
 "Minimum value for the output axis.\n"
 "This can be set using the main slider for {dname}."
@@ -3973,7 +3973,7 @@ msgstr ""
 "출력 축의 최소값입니다.\n"
 "{dname}의 메인 슬라이더를 사용하여 설정할 수 있습니다."
 
-#: ../gui/brusheditor.glade:540
+#: ../gui/brusheditor.xml:540
 msgid ""
 "Maximum value for the output axis.\n"
 "This can be set using the main slider for {dname}."
@@ -3981,23 +3981,23 @@ msgstr ""
 "출력 축의 최대값입니다.\n"
 "{dname}의 메인 슬라이더를 사용하여 설정할 수 있습니다."
 
-#: ../gui/brusheditor.glade:562
+#: ../gui/brusheditor.xml:562
 msgid "Output"
 msgstr "출력"
 
-#: ../gui/brusheditor.glade:583
+#: ../gui/brusheditor.xml:583
 msgid "Input"
 msgstr "입력"
 
-#: ../gui/brusheditor.glade:601
+#: ../gui/brusheditor.xml:601
 msgid "Adjusts the maximum value"
 msgstr "최대 값을 조절합니다"
 
-#: ../gui/brusheditor.glade:634
+#: ../gui/brusheditor.xml:634
 msgid "Adjusts the minimum value"
 msgstr "최소 값을 조절합니다"
 
-#: ../gui/brusheditor.glade:666
+#: ../gui/brusheditor.xml:666
 msgid ""
 "Minimum value for the input axis.\n"
 "Use the popup scale to adjust this."
@@ -4005,7 +4005,7 @@ msgstr ""
 "입력 축의 최소값입니다.\n"
 "팝업 스케일을 사용하여 이를 조절합니다."
 
-#: ../gui/brusheditor.glade:684
+#: ../gui/brusheditor.xml:684
 msgid ""
 "Maximum value for the input axis.\n"
 "Use the popup scale to adjust this."
@@ -4013,41 +4013,41 @@ msgstr ""
 "입력 축의 최대값입니다.\n"
 "팝업 스케일을 사용하여 이를 조절합니다."
 
-#: ../gui/brusheditor.glade:739
+#: ../gui/brusheditor.xml:739
 msgid "Variation of the base value by stylus input and other criteria"
 msgstr "스타일러스 입력 및 기타 기준에 따른 베이스 값의 변화"
 
-#: ../gui/brusheditor.glade:746
+#: ../gui/brusheditor.xml:746
 msgid "Brush Dynamics"
 msgstr "브러시 역학"
 
-#: ../gui/brusheditor.glade:780
+#: ../gui/brusheditor.xml:780
 msgid "Adjust this input mapping in detail"
 msgstr "세부 사항에서 이 입력 매핑을 조절하기"
 
-#: ../gui/brusheditor.glade:802
+#: ../gui/brusheditor.xml:802
 msgid "{tooltip}"
 msgstr "{tooltip}"
 
 #. field name (template)
-#: ../gui/brusheditor.glade:809
+#: ../gui/brusheditor.xml:809
 msgid "{dname}:"
 msgstr "{dname}:"
 
-#: ../gui/brusheditor.glade:841
+#: ../gui/brusheditor.xml:841
 msgid "Brush dynamics are not available for this setting."
 msgstr "이 설정에서는 브러시 역학을 사용할 수 없습니다."
 
-#: ../gui/brusheditor.glade:851
+#: ../gui/brusheditor.xml:851
 msgid "<big><b>No Brush Dynamics</b></big>"
 msgstr "<big><b>브러시 역학 없음</b></big>"
 
-#: ../gui/inktool.glade:44
+#: ../gui/inktool.xml:44
 msgctxt "Inking tool options: point value sliders: labels: tooltips"
 msgid "Pressure value for the current point"
 msgstr "현재 포인트에 대한 압력 값"
 
-#: ../gui/inktool.glade:49
+#: ../gui/inktool.xml:49
 msgctxt "Inking tool options: point value sliders: labels"
 msgid "Press:"
 msgstr "누르기:"
@@ -4055,7 +4055,7 @@ msgstr "누르기:"
 #. The meaning of negative values is *not* affected by text direction.
 #. The widget's RTL/LTR layout, however, *is* affected.
 #. The value (and signs) *is* shown.
-#: ../gui/inktool.glade:83 ../gui/inktool.glade:103
+#: ../gui/inktool.xml:83 ../gui/inktool.xml:103
 msgctxt "Inking tool options: point value sliders: labels: tooltips"
 msgid ""
 "Tilt in the direction of the canvas’s X axis.\n"
@@ -4066,107 +4066,107 @@ msgstr ""
 "값이 0이면 펜이 수직임을 나타냅니다.\n"
 "음수 값은 왼쪽 기울기를 의미합니다."
 
-#: ../gui/inktool.glade:90
+#: ../gui/inktool.xml:90
 msgctxt "Inking tool options: point value sliders: labels"
 msgid "X-tilt:"
 msgstr "X-기울기:"
 
-#: ../gui/inktool.glade:110
+#: ../gui/inktool.xml:110
 msgctxt "Inking tool options: point value sliders: labels"
 msgid "Y-tilt:"
 msgstr "Y-기울기:"
 
-#: ../gui/inktool.glade:145
+#: ../gui/inktool.xml:145
 msgid "Tilt in the canvas Y axis"
 msgstr "캔버스 Y 축에 기울기"
 
-#: ../gui/inktool.glade:167
+#: ../gui/inktool.xml:167
 msgctxt "Inking tool options: point value sliders: labels: tooltips"
 msgid "Time since the previous point, in seconds"
 msgstr "이전 지점으로부터의 시간 (초)"
 
-#: ../gui/inktool.glade:172
+#: ../gui/inktool.xml:172
 msgctxt "Inking tool options: point value sliders: labels"
 msgid "Time:"
 msgstr "시간:"
 
-#: ../gui/inktool.glade:205
+#: ../gui/inktool.xml:205
 msgctxt "Inking tool options: node delete button: label"
 msgid "Delete Point"
 msgstr "포인트 삭제하기"
 
-#: ../gui/inktool.glade:209
+#: ../gui/inktool.xml:209
 msgctxt "Inking tool options: node delete button: tooltip"
 msgid "Delete the currently selected point"
 msgstr "현재 선택된 포인트을 삭제"
 
-#: ../gui/inktool.glade:221 ../gui/resources.xml:897
+#: ../gui/inktool.xml:221 ../gui/resources.xml:897
 msgid "Insert Point"
 msgstr "포인트 삽입하기"
 
-#: ../gui/inktool.glade:253 ../gui/resources.xml:911
+#: ../gui/inktool.xml:253 ../gui/resources.xml:911
 msgid "Simplify Points"
 msgstr "포인트 단순화하기"
 
-#: ../gui/inktool.glade:257
+#: ../gui/inktool.xml:257
 msgid "Simplify the curve using the Reumann-Witkam algorithm."
 msgstr "Reumann-Witkam 알고리즘을 사용하여 곡선을 단순화합니다."
 
-#: ../gui/inktool.glade:269 ../gui/resources.xml:918
+#: ../gui/inktool.xml:269 ../gui/resources.xml:918
 msgid "Cull Points"
 msgstr "포인트 추려내기"
 
-#: ../gui/inktool.glade:273
+#: ../gui/inktool.xml:273
 msgid "Cull every other point from the curve."
 msgstr "곡선에서 다른 모든 점을 추려냅니다."
 
-#: ../gui/layervis.glade:15
+#: ../gui/layervis.xml:15
 msgctxt "Layers window: view list controls: tooltips"
 msgid "The currently active view."
 msgstr "현재 활성화된 보기입니다."
 
-#: ../gui/layervis.glade:36
+#: ../gui/layervis.xml:36
 msgctxt "Layers window: view list controls: tooltips"
 msgid "Rename the active view."
 msgstr "활성 보기의 이름을 바꿉니다."
 
-#: ../gui/layervis.glade:57
+#: ../gui/layervis.xml:57
 msgctxt "Layers window: view list controls: tooltips"
 msgid "Remove the active view."
 msgstr "활성 보기를 제거합니다."
 
-#: ../gui/layervis.glade:78
+#: ../gui/layervis.xml:78
 msgctxt "Layers window: view list controls: tooltips"
 msgid "Snapshot visible layers as a new view."
 msgstr "보이는 레이어를 새 보기로 스냅숏합니다."
 
-#: ../gui/layervis.glade:99
+#: ../gui/layervis.xml:99
 msgctxt "Layers window: view list controls: tooltips"
 msgid "Lock or unlock the active view."
 msgstr "활성 보기를 잠그거나 잠금 해제합니다."
 
-#: ../gui/mypaint.glade:65
+#: ../gui/mypaint.xml:65
 msgctxt "footer: color picker button: tooltip"
 msgid "Pick color"
 msgstr "색상을 선택"
 
-#: ../gui/mypaint.glade:102
+#: ../gui/mypaint.xml:102
 msgctxt "Footerbar|"
 msgid "Edit the current color in detail"
 msgstr "디테일에서 현재의 색상을 편집"
 
-#: ../gui/mypaint.glade:126
+#: ../gui/mypaint.xml:126
 msgctxt "Footerbar|"
 msgid "Add the current color to the palette"
 msgstr "현재의 색상을 팔레트에 추가"
 
-#: ../gui/mypaint.glade:161
+#: ../gui/mypaint.xml:161
 msgctxt "Footerbar|"
 msgid "Canvas scale and rotation"
 msgstr "캔버스 규모와 회전"
 
 #. str.format() template
-#: ../gui/mypaint.glade:163
+#: ../gui/mypaint.xml:163
 msgctxt "Footerbar|"
 msgid ""
 "Z: {scale:.1f}%\n"
@@ -4175,102 +4175,102 @@ msgstr ""
 "Z: {scale:.1f}%\n"
 "R: {rotation:+.1f}°"
 
-#: ../gui/mypaint.glade:249
+#: ../gui/mypaint.xml:249
 msgctxt "footer: context picker button: tooltip"
 msgid "Pick brushstroke settings, stroke color, and layer"
 msgstr "브러시 자획 설정, 자획 색상 및 레이어 고르기"
 
-#: ../gui/preferenceswindow.glade:24
+#: ../gui/preferenceswindow.xml:24
 msgctxt "Prefs Dialog|Saving|Save Formats and Locations|Default|"
 msgid "OpenRaster (*.ora)"
 msgstr "OpenRaster (*.ora)"
 
-#: ../gui/preferenceswindow.glade:28
+#: ../gui/preferenceswindow.xml:28
 msgctxt "Prefs Dialog|Saving|Save Formats and Locations|Default|"
 msgid "PNG solid with background (*.png)"
 msgstr "배경과 그림이 하나인 이미지 (*.png)"
 
-#: ../gui/preferenceswindow.glade:32
+#: ../gui/preferenceswindow.xml:32
 msgctxt "Prefs Dialog|Saving|Save Formats and Locations|Default|"
 msgid "JPEG 90% quality (*.jpg; *.jpeg)"
 msgstr "90% 품질의 JPEG 이미지 (*.jpg; *.jpeg)"
 
-#: ../gui/preferenceswindow.glade:46
+#: ../gui/preferenceswindow.xml:46
 msgctxt "Prefs Dialog|View|Zoom|Default|"
 msgid "25%"
 msgstr "25%"
 
-#: ../gui/preferenceswindow.glade:50
+#: ../gui/preferenceswindow.xml:50
 msgctxt "Prefs Dialog|View|Zoom|Default|"
 msgid "50%"
 msgstr "50%"
 
-#: ../gui/preferenceswindow.glade:54
+#: ../gui/preferenceswindow.xml:54
 msgctxt "Prefs Dialog|View|Zoom|Default|"
 msgid "100%"
 msgstr "100%"
 
-#: ../gui/preferenceswindow.glade:58
+#: ../gui/preferenceswindow.xml:58
 msgctxt "Prefs Dialog|View|Zoom|Default|"
 msgid "200%"
 msgstr "200%"
 
-#: ../gui/preferenceswindow.glade:72
+#: ../gui/preferenceswindow.xml:72
 msgctxt "Prefs Dialog|View|Cursors|Freehand Cursor|Type|"
 msgid "Circle with light outline"
 msgstr "얇은 아웃라인을 가진 원형"
 
-#: ../gui/preferenceswindow.glade:76
+#: ../gui/preferenceswindow.xml:76
 msgctxt "Prefs Dialog|View|Cursors|Freehand Cursor|Type|"
 msgid "Circle with medium outline"
 msgstr "중간 아웃라인을 가진 원형"
 
-#: ../gui/preferenceswindow.glade:80
+#: ../gui/preferenceswindow.xml:80
 msgctxt "Prefs Dialog|View|Cursors|Freehand Cursor|Type|"
 msgid "Circle with heavy outline"
 msgstr "굵은 아웃라인을 가진 원형"
 
-#: ../gui/preferenceswindow.glade:84
+#: ../gui/preferenceswindow.xml:84
 msgctxt "Prefs Dialog|View|Cursors|Freehand Cursor|Type|"
 msgid "Crosshair"
 msgstr "십자선"
 
 #. Graph x-axis label
-#: ../gui/preferenceswindow.glade:145
+#: ../gui/preferenceswindow.xml:145
 msgctxt "Prefs Dialog|Pen Input|Input Device Settings|Pressure Mapping|"
 msgid "Input Pressure"
 msgstr "입력 압력"
 
 #. Graph y-axis label
-#: ../gui/preferenceswindow.glade:159
+#: ../gui/preferenceswindow.xml:159
 msgctxt "Prefs Dialog|Pen Input|Input Device Settings|Pressure Mapping|"
 msgid "Brush Pressure"
 msgstr "브러시 압력"
 
 #. Graph label, range (0...1)
-#: ../gui/preferenceswindow.glade:174 ../gui/preferenceswindow.glade:202
+#: ../gui/preferenceswindow.xml:174 ../gui/preferenceswindow.xml:202
 msgctxt "Prefs Dialog|Pen Input|Input Device Settings|Pressure Mapping|"
 msgid "0.0"
 msgstr "0.0"
 
 #. Graph label, range (0...1)
-#: ../gui/preferenceswindow.glade:188 ../gui/preferenceswindow.glade:217
+#: ../gui/preferenceswindow.xml:188 ../gui/preferenceswindow.xml:217
 msgctxt "Prefs Dialog|Pen Input|Input Device Settings|Pressure Mapping|"
 msgid "1.0"
 msgstr "1.0"
 
-#: ../gui/preferenceswindow.glade:251
+#: ../gui/preferenceswindow.xml:251
 msgctxt "Prefs Dialog|Pen Input|"
 msgid "<b>Global Pressure Mapping</b>"
 msgstr "<b>글로벌 압력 매핑</b>"
 
 #. Tab label in preferences dialog
-#: ../gui/preferenceswindow.glade:261
+#: ../gui/preferenceswindow.xml:261
 msgctxt "Prefs Dialog|"
 msgid "Pressure"
 msgstr "압력"
 
-#: ../gui/preferenceswindow.glade:302
+#: ../gui/preferenceswindow.xml:302
 msgctxt "Prefs Dialog|Devices|"
 msgid ""
 "Here you can restrict pointing devices to specific tasks on the canvas, or "
@@ -4279,16 +4279,16 @@ msgstr ""
 "여기서 당신은 마우스 포인터를 캔버스의 특정 지역만 사용가능하게 제한하거나 포"
 "인터가 드로잉에 작은 문제가 된다면 무시하게 만들 수 있습니다."
 
-#: ../gui/preferenceswindow.glade:324
+#: ../gui/preferenceswindow.xml:324
 msgctxt "Prefs Dialog|Button|"
 msgid "<b>Device Usage</b>"
 msgstr "<b>장치 사용</b>"
 
-#: ../gui/preferenceswindow.glade:337
+#: ../gui/preferenceswindow.xml:337
 msgid "Devices"
 msgstr "장치"
 
-#: ../gui/preferenceswindow.glade:380
+#: ../gui/preferenceswindow.xml:380
 msgctxt "Prefs Dialog|Button|Pointer Button Mappings|"
 msgid ""
 "• The space bar can be used like Button2.\n"
@@ -4297,13 +4297,13 @@ msgstr ""
 "• 스페이스바를 button2 처럼 사용할 수 있습니다. \n"
 "• 몇몇의 타블랫 패드의 버튼은 눌렀어도 작동이 되지 않을 수 있습니다."
 
-#: ../gui/preferenceswindow.glade:401
+#: ../gui/preferenceswindow.xml:401
 msgctxt "Prefs Dialog|Button|"
 msgid "<b>Pointer Button Mappings</b>"
 msgstr "<b>포인터 버튼 매핑</b>"
 
 #. Tab label in preferences dialog
-#: ../gui/preferenceswindow.glade:414
+#: ../gui/preferenceswindow.xml:414
 msgctxt "Prefs Dialog|"
 msgid "Buttons"
 msgstr "버튼"
@@ -4311,58 +4311,58 @@ msgstr "버튼"
 #. Label for a checkbox in the keyboard mappings preferences.
 #. A fallback binding is a static built-in key binding that is used
 #. unless its key is bound to something else.
-#: ../gui/preferenceswindow.glade:453
+#: ../gui/preferenceswindow.xml:453
 msgid "Disable fallback key bindings"
 msgstr "폴백 키 바인딩 비활성화"
 
 #. Tooltip for checkbox in the keyboard mappings preferences.
-#: ../gui/preferenceswindow.glade:457
+#: ../gui/preferenceswindow.xml:457
 msgid ""
 "The fallback key bindings are static built-in bindings that are only used if "
 "their key combinations are not bound to anything else."
 msgstr "폴백 키 바인딩은 키 조합이 다른 것에 바인딩되지 않은 경우에만 사용되는 정적 "
 "기본 제공 바인딩입니다."
 
-#: ../gui/preferenceswindow.glade:476
+#: ../gui/preferenceswindow.xml:476
 msgctxt "Prefs Dialog|Button|"
 msgid "<b>Keyboard Mappings</b>"
 msgstr "<b>키보드 매핑</b>"
 
-#: ../gui/preferenceswindow.glade:489
+#: ../gui/preferenceswindow.xml:489
 msgid "Keys"
 msgstr "키"
 
-#: ../gui/preferenceswindow.glade:509
+#: ../gui/preferenceswindow.xml:509
 msgctxt "Prefs Dialog|Load & Save|Saving|"
 msgid "Default file format:"
 msgstr "기본 파일 형식:"
 
-#: ../gui/preferenceswindow.glade:524
+#: ../gui/preferenceswindow.xml:524
 msgctxt "Prefs Dialog|Load & Save|Saving|"
 msgid "Prefix when saving scraps:"
 msgstr "저장하는 스크랩 접두사:"
 
-#: ../gui/preferenceswindow.glade:575
+#: ../gui/preferenceswindow.xml:575
 msgctxt "Prefs Dialog|Load & Save|"
 msgid "<b>Saving</b>"
 msgstr "<b>저장하기</b>"
 
-#: ../gui/preferenceswindow.glade:592
+#: ../gui/preferenceswindow.xml:592
 msgctxt "Prefs Dialog|Load & Save|"
 msgid "<b>Color Management</b>"
 msgstr "<b>색상 관리</b>"
 
-#: ../gui/preferenceswindow.glade:608
+#: ../gui/preferenceswindow.xml:608
 msgctxt "Prefs Dialog|Load & Save|Color Management|"
 msgid "Color space conversions:"
 msgstr "색 공간 변환:"
 
-#: ../gui/preferenceswindow.glade:626
+#: ../gui/preferenceswindow.xml:626
 msgctxt "Prefs Dialog|Load & Save|Color Management|"
 msgid "Convert to sRGB when loading; mark as sRGB when saving"
 msgstr "불러 올 때 sRGB로 변환; 저장할 때 sRGB로 마크"
 
-#: ../gui/preferenceswindow.glade:630
+#: ../gui/preferenceswindow.xml:630
 msgctxt "Prefs Dialog|Load & Save|Color Management|"
 msgid ""
 "Images containing <i>full</i> colorspace information will be converted to "
@@ -4383,12 +4383,12 @@ msgstr ""
 "때문입니다. 사용하는 디스플레이가 이와 완전히 다른 경우 \"자동 전환 또는 태"
 "그 없음\" 설정을 대신 사용하십시오."
 
-#: ../gui/preferenceswindow.glade:648
+#: ../gui/preferenceswindow.xml:648
 msgctxt "Prefs Dialog|Load & Save|Color Management|"
 msgid "No automatic conversions or tagging"
 msgstr "자동 변환하거나 태그하지 않음"
 
-#: ../gui/preferenceswindow.glade:652
+#: ../gui/preferenceswindow.xml:652
 msgctxt "Prefs Dialog|Load & Save|Color Management|"
 msgid ""
 "No color conversions are performed when loading, and files are saved without "
@@ -4403,24 +4403,24 @@ msgstr ""
 "이것은 MyPaint의 오래된 방식이며, 비 sRGB 작업에 대한 임시방편으로 사용될 수 "
 "있습니다."
 
-#: ../gui/preferenceswindow.glade:680
+#: ../gui/preferenceswindow.xml:680
 msgctxt "Prefs Dialog|Load & Save|"
 msgid "<b>Automated Backups</b>"
 msgstr "<b>자동 백업</b>"
 
-#: ../gui/preferenceswindow.glade:698
+#: ../gui/preferenceswindow.xml:698
 msgctxt "Prefs Dialog|Load & Save|Automated Backups|switch label"
 msgid "Back up unsaved work:"
 msgstr "저장하지 않은 작업을 백업:"
 
 #. In seconds. Lowest value is 5, highest is 300 (5 minutes). Only matters when enabled.
-#: ../gui/preferenceswindow.glade:733
+#: ../gui/preferenceswindow.xml:733
 msgctxt ""
 "Prefs Dialog|Load & Save|Automated Backups|interval spinbox units suffix"
 msgid "seconds of inactivity"
 msgstr "비활성 초"
 
-#: ../gui/preferenceswindow.glade:746
+#: ../gui/preferenceswindow.xml:746
 msgctxt "Prefs Dialog|Load & Save|Automated Backups|switch tooltip"
 msgid ""
 "Backs up work incrementally in the background to MyPaint's disk cache. If "
@@ -4430,52 +4430,52 @@ msgstr ""
 "백그라운드에서 MyPaint의 디스크 캐시에 작업을 순차적으로 백업합니다. 만약 프"
 "로그램이 충돌할 경우, 현재 작업하고 있는 작업물을 재 저장할 수 있게 됩니다."
 
-#: ../gui/preferenceswindow.glade:768
+#: ../gui/preferenceswindow.xml:768
 msgctxt "Prefs Dialog|Load & Save|Automated Backups|interval label"
 msgid "Time between backups:"
 msgstr "백업 간 시간:"
 
 #. Tab label in preferences dialog
-#: ../gui/preferenceswindow.glade:786
+#: ../gui/preferenceswindow.xml:786
 msgctxt "Prefs Dialog|"
 msgid "Load & Save"
 msgstr "불러오기 & 저장하기"
 
-#: ../gui/preferenceswindow.glade:807
+#: ../gui/preferenceswindow.xml:807
 msgctxt "Prefs Dialog|View|"
 msgid "<b>Zoom and Rendering</b>"
 msgstr "<b>줌 및 렌더링</b>"
 
-#: ../gui/preferenceswindow.glade:824
+#: ../gui/preferenceswindow.xml:824
 msgid "Default zoom level:"
 msgstr "기본 줌 레벨:"
 
-#: ../gui/preferenceswindow.glade:862
+#: ../gui/preferenceswindow.xml:862
 msgctxt "Prefs Dialog|View|"
 msgid "<b>Interface</b>"
 msgstr "<b>인터페이스</b>"
 
-#: ../gui/preferenceswindow.glade:879
+#: ../gui/preferenceswindow.xml:879
 msgctxt "Prefs Dialog|View|Interface|"
 msgid "Toolbar icon size:"
 msgstr "툴바 아이콘의 크기:"
 
-#: ../gui/preferenceswindow.glade:895
+#: ../gui/preferenceswindow.xml:895
 msgctxt "Prefs Dialog|View|Interface|"
 msgid "Freehand cursor type:"
 msgstr "자유형 커서 유형:"
 
-#: ../gui/preferenceswindow.glade:911
+#: ../gui/preferenceswindow.xml:911
 msgctxt "Prefs Dialog|View|Interface|"
 msgid "Dark theme variant:"
 msgstr "어둠운 테마 변형:"
 
-#: ../gui/preferenceswindow.glade:921
+#: ../gui/preferenceswindow.xml:921
 msgctxt "Prefs Dialog|View|Interface|Dark theme variant|"
 msgid "If available in GTK3 theme (needs restart)"
 msgstr "GTK3 테마에서 사용 가능한 경우 (다시 시작해야 함)"
 
-#: ../gui/preferenceswindow.glade:925
+#: ../gui/preferenceswindow.xml:925
 msgctxt "Prefs Dialog|View|Interface|Dark theme variant|checkbox tooltip"
 msgid ""
 "Use a light-on-dark theme variant, when it's supported by the GTK theme. "
@@ -4484,26 +4484,26 @@ msgstr ""
 "GTK 테마가 지원할 때 light-on-dark 테마 변형을 사용하십시오. 이 작업은 일반적"
 "으로 이미지 편집자와 미디어 뷰어에게 추천합니다."
 
-#: ../gui/preferenceswindow.glade:946
+#: ../gui/preferenceswindow.xml:946
 msgid "Some of these settings require MyPaint to be restarted."
 msgstr "현재 설정 중 일부는 MyPaint를 다시 시작해야 합니다."
 
-#: ../gui/preferenceswindow.glade:969
+#: ../gui/preferenceswindow.xml:969
 msgctxt "Prefs Dialog|View|Interface|Icon size|"
 msgid "Large (requires recent GTK3)"
 msgstr "큰 (최신 GTK3 필요)"
 
-#: ../gui/preferenceswindow.glade:986
+#: ../gui/preferenceswindow.xml:986
 msgctxt "Prefs Dialog|View|Interface|Icon size|"
 msgid "Small"
 msgstr "작은"
 
-#: ../gui/preferenceswindow.glade:1011
+#: ../gui/preferenceswindow.xml:1011
 msgctxt "Prefs Dialog|View|Zoom|"
 msgid "Use a real checkerboard pattern"
 msgstr "실제 바둑판 패턴을 사용"
 
-#: ../gui/preferenceswindow.glade:1015
+#: ../gui/preferenceswindow.xml:1015
 msgctxt "Prefs Dialog|View|Zoom|"
 msgid ""
 "Draw a real checkerboard pattern to show transparency.\n"
@@ -4512,22 +4512,22 @@ msgstr ""
 "실제 격자무늬를 그려 투명도를 표시합니다.\n"
 "이 작업으로 디스플래이의 속도 저하가 생기지만, 혼란이 줄어듭니다."
 
-#: ../gui/preferenceswindow.glade:1036
+#: ../gui/preferenceswindow.xml:1036
 msgid "When showing transparency:"
 msgstr "투명도을 표시 할 때:"
 
-#: ../gui/preferenceswindow.glade:1051
+#: ../gui/preferenceswindow.xml:1051
 msgctxt "Prefs Dialog|View|Interface|"
 msgid "Handle smooth scrolling events:"
 msgstr "부드러운 스크롤 이벤트 처리:"
 
-#: ../gui/preferenceswindow.glade:1061
+#: ../gui/preferenceswindow.xml:1061
 msgctxt ""
 "Prefs Dialog|View|Interface|Handle smooth scrolling events|checkbox label"
 msgid "When devices send them (needs restart)"
 msgstr "장치에서 보낼 때 (다시 시작해야 함)"
 
-#: ../gui/preferenceswindow.glade:1065
+#: ../gui/preferenceswindow.xml:1065
 msgctxt ""
 "Prefs Dialog|View|Interface|Handle smooth scrolling events|checkbox tooltip"
 msgid ""
@@ -4551,36 +4551,36 @@ msgstr ""
 "화면 이동을 위해 스크롤하려면 이 설정이 켜져 있어야하고 장치가 양방향 스크롤 "
 "이벤트를 보내도록 구성되어 있어야합니다."
 
-#: ../gui/preferenceswindow.glade:1112
+#: ../gui/preferenceswindow.xml:1112
 msgid "Hide cursor while painting"
 msgstr "페인팅하는 동안 커서 숨기기"
 
 #. Label for a toggle that is part of the "Freehand cursor type" settings. Crosshair refers to lines which are either horizontal, vertical, both (cross) or crossed in an x, depending on the brush cursor type.
-#: ../gui/preferenceswindow.glade:1132
+#: ../gui/preferenceswindow.xml:1132
 msgctxt "Prefs Dialog|View|Interface"
 msgid "Show crosshair for small brush cursors"
 msgstr "작은 브러시 커서에 대한 십자선 표시하기"
 
 #. Label for a spinbutton that is part of the "crosshair for small brush cursors" setting. Radius refers to the visual brush cursor radius.
-#: ../gui/preferenceswindow.glade:1149
+#: ../gui/preferenceswindow.xml:1149
 msgctxt "Prefs Dialog|View|Interface"
 msgid "Radius threshold:"
 msgstr "반지름 임계값:"
 
 #. Description of the "Radius threshold" spinbox/spinner - the referenced "lines" are part of the brush cursor.
-#: ../gui/preferenceswindow.glade:1162
+#: ../gui/preferenceswindow.xml:1162
 msgctxt "Prefs Dialog|View|Interface"
 msgid ""
 "Lines will be shown when the brush circle radius is smaller than this value."
 msgstr "브러시 원 반지름이 이 값보다 작으면 선이 표시됩니다."
 
-#: ../gui/preferenceswindow.glade:1192
+#: ../gui/preferenceswindow.xml:1192
 msgctxt ""
 "Prefs Dialog|View|Interface|Blink layers on creation/selection|checkbox label"
 msgid "Enabled"
 msgstr "사용"
 
-#: ../gui/preferenceswindow.glade:1196
+#: ../gui/preferenceswindow.xml:1196
 msgctxt ""
 "Prefs Dialog|View|Interface|Blink layers on creation/selection|checkbox "
 "tooltip"
@@ -4589,28 +4589,28 @@ msgid ""
 "period."
 msgstr "레이어를 만들거나 선택하면 짧은 시간 동안 해당 레이어 만 표시합니다."
 
-#: ../gui/preferenceswindow.glade:1216
+#: ../gui/preferenceswindow.xml:1216
 msgctxt "Prefs Dialog|View|Interface|"
 msgid "Blink layers on creation/selection:"
 msgstr "작성/선택시 레이어 깜박임:"
 
-#: ../gui/preferenceswindow.glade:1251
+#: ../gui/preferenceswindow.xml:1251
 msgctxt "Prefs Dialog|View|Interface|"
 msgid "Language:"
 msgstr "언어:"
 
-#: ../gui/preferenceswindow.glade:1266
+#: ../gui/preferenceswindow.xml:1266
 msgctxt "Prefs Dialog|View|Interface|"
 msgid "(needs restart)"
 msgstr "(다시 시작해야 함)"
 
 #. Tab label in preferences dialog
-#: ../gui/preferenceswindow.glade:1283
+#: ../gui/preferenceswindow.xml:1283
 msgctxt "Prefs Dialog|"
 msgid "View"
 msgstr "보기"
 
-#: ../gui/preferenceswindow.glade:1315
+#: ../gui/preferenceswindow.xml:1315
 msgctxt "Prefs Dialog|Color|Color Wheel|Primaries|"
 msgid ""
 "The set of colors to show as primary on disk-style color wheels.\n"
@@ -4620,17 +4620,17 @@ msgstr ""
 "다른 전통은 다른 색상 조화를 가지고 있습니다."
 
 #. Arrangement of MyPaint's custom colour wheels
-#: ../gui/preferenceswindow.glade:1317
+#: ../gui/preferenceswindow.xml:1317
 msgctxt "Prefs Dialog|Color|Color Wheel|"
 msgid "Primaries are:"
 msgstr "원색:"
 
-#: ../gui/preferenceswindow.glade:1334
+#: ../gui/preferenceswindow.xml:1334
 msgctxt "Prefs Dialog|Color|Color Wheel|Primaries|"
 msgid "Standard digital Red/Green/Blue"
 msgstr "표준 디지털 레드/그린/ 블루"
 
-#: ../gui/preferenceswindow.glade:1339
+#: ../gui/preferenceswindow.xml:1339
 msgid ""
 "The red, green, and blue &apos;computer monitor&apos; primaries, evenly "
 "arranged around the circle. Green is opposite magenta."
@@ -4638,7 +4638,7 @@ msgstr ""
 "레드, 그린 및 블루 &apos;컴퓨터 모니터&apos;기본, 원 주위에 균일하게 배열되어"
 "있다. 그린은 마젠타 반대입니다."
 
-#: ../gui/preferenceswindow.glade:1340
+#: ../gui/preferenceswindow.xml:1340
 msgctxt "Prefs Dialog|Color|Color Wheel|Primaries|RGB|"
 msgid ""
 "The red, green, and blue 'computer monitor' primaries, evenly arranged "
@@ -4647,12 +4647,12 @@ msgstr ""
 "레드, 그린 및 블루 '컴퓨터 모니터' 원색이 원 주위에 고르게 배열되어 있습니"
 "다. 그린은 마젠타의 보색입니다."
 
-#: ../gui/preferenceswindow.glade:1356
+#: ../gui/preferenceswindow.xml:1356
 msgctxt "Prefs Dialog|Color|Color Wheel|Primaries|"
 msgid "Traditional artist's Red/Yellow/Blue"
 msgstr "전통 아티스트의 레드/옐로우/블루"
 
-#: ../gui/preferenceswindow.glade:1361
+#: ../gui/preferenceswindow.xml:1361
 msgid ""
 "The traditionally arranged red/yellow/blue wheel as used by many artists "
 "since the 18th century, approximated with pure display colors evenly "
@@ -4662,7 +4662,7 @@ msgstr ""
 "주위에 균등하게 배열된 순수한 표시 색상으로 근사됩니다. 그린은 레드의 보색입"
 "니다."
 
-#: ../gui/preferenceswindow.glade:1362
+#: ../gui/preferenceswindow.xml:1362
 msgctxt "Prefs Dialog|Color|Color Wheel|Primaries|RYB|"
 msgid ""
 "The traditionally arranged red/yellow/blue wheel as used by many artists "
@@ -4673,12 +4673,12 @@ msgstr ""
 "주위에 균등하게 배열된 순수한 표시 색상으로 근사됩니다. 그린은 레드의 보색입"
 "니다."
 
-#: ../gui/preferenceswindow.glade:1378
+#: ../gui/preferenceswindow.xml:1378
 msgctxt "Prefs Dialog|Color|Color Wheel|Primaries|"
 msgid "Red-Green and Blue-Yellow opponent pairs"
 msgstr "레드-그린 및 블루-엘로우 상대 쌍"
 
-#: ../gui/preferenceswindow.glade:1383
+#: ../gui/preferenceswindow.xml:1383
 msgid ""
 "Quick and dirty approximation of wheels informed by theories of  color which "
 "use four &apos;psychological primaries&apos; or &apos;unique hues&apos; "
@@ -4692,7 +4692,7 @@ msgstr ""
 "한 모델을 제시합니다. 여기서는 순수한 디스플레이 레드, 예로우 등을 네 개의 기"
 "본으로 사용합니다."
 
-#: ../gui/preferenceswindow.glade:1384
+#: ../gui/preferenceswindow.xml:1384
 msgctxt "Prefs Dialog|Color|Color Wheel|Primaries|RYGB|"
 msgid ""
 "Quick and dirty approximation of wheels informed by theories of  color which "
@@ -4708,45 +4708,45 @@ msgstr ""
 "다."
 
 #. Options affecting color wheels
-#: ../gui/preferenceswindow.glade:1412
+#: ../gui/preferenceswindow.xml:1412
 msgctxt "Prefs Dialog|Color|"
 msgid "<b>Color Wheel</b>"
 msgstr "<b>컬러 원형</b>"
 
 #. Tab label in preferences dialog
-#: ../gui/preferenceswindow.glade:1425
+#: ../gui/preferenceswindow.xml:1425
 msgctxt "Prefs Dialog|"
 msgid "Color"
 msgstr "색상"
 
-#: ../gui/preferenceswindow.glade:1458
+#: ../gui/preferenceswindow.xml:1458
 msgctxt "Prefs Dialog|Compatibility"
 msgid "Default Compatibility Mode:"
 msgstr "기본 호환성 모드:"
 
-#: ../gui/preferenceswindow.glade:1483
+#: ../gui/preferenceswindow.xml:1483
 msgctxt "Prefs Dialog|Compatibility"
 msgid "<b>1.x Settings</b>"
 msgstr "<b>1.x 설정</b>"
 
 #. Make sure to be consistent w. other occurences of 2.x
-#: ../gui/preferenceswindow.glade:1497
+#: ../gui/preferenceswindow.xml:1497
 msgctxt "Prefs Dialog|Compatibility"
 msgid "<b>2.x Settings</b>"
 msgstr "<b>2.x 설정</b>"
 
-#: ../gui/preferenceswindow.glade:1535 ../gui/preferenceswindow.glade:1609
+#: ../gui/preferenceswindow.xml:1535 ../gui/preferenceswindow.xml:1609
 msgctxt "Prefs Dialog|Compatibility"
 msgid "Default New Layer Type:"
 msgstr "기본 새 레이어 유형:"
 
-#: ../gui/preferenceswindow.glade:1581 ../gui/preferenceswindow.glade:1595
+#: ../gui/preferenceswindow.xml:1581 ../gui/preferenceswindow.xml:1595
 msgctxt "Prefs Dialog|Compatibility"
 msgid "Default Pigment Brush Setting:"
 msgstr "기본 안료 브러시 설정:"
 
 #. Label description for the 1.x compatibility-mode-by-default setting
-#: ../gui/preferenceswindow.glade:1671
+#: ../gui/preferenceswindow.xml:1671
 msgctxt "Prefs Dialog|Compatibility"
 msgid ""
 "When creating new documents, use the legacy 1.x compatibility mode by "
@@ -4757,7 +4757,7 @@ msgstr ""
 "ora 파일은 이전 버전에서와 동일하게 보이지만 안료 혼합은 제대로 작동하지 않습"
 "니다."
 
-#: ../gui/preferenceswindow.glade:1690
+#: ../gui/preferenceswindow.xml:1690
 msgctxt "Prefs Dialog|Compatibility"
 msgid ""
 "When creating new documents, use the regular 2.x compatibility mode by "
@@ -4766,24 +4766,24 @@ msgstr ""
 "새 문서를 만들 때는 기본적으로 일반 2.x 호환 모드를 사용. 이 모드에서는 오래"
 "된 문서가 다르게 보일 수 있습니다."
 
-#: ../gui/preferenceswindow.glade:1722
+#: ../gui/preferenceswindow.xml:1722
 msgctxt "Prefs Dialog|Compatibility"
 msgid "Show warning for files that may be partially incompatible"
 msgstr "부분적으로 호환되지 않는 파일에 대한 경고 표시하기"
 
 #. Label for a set of options
-#: ../gui/preferenceswindow.glade:1739
+#: ../gui/preferenceswindow.xml:1739
 msgctxt "Prefs Dialog|Compatibility"
 msgid "File compatibility warnings:"
 msgstr "파일 호환성 경고:"
 
-#: ../gui/preferenceswindow.glade:1751
+#: ../gui/preferenceswindow.xml:1751
 msgctxt "Prefs Dialog|Compatibility"
 msgid "Show warning for files that may be fully incompatible"
 msgstr "완전히 호환되지 않는 파일에 대한 경고 표시"
 
 #. This is a tooltip for the file behavior options label.
-#: ../gui/preferenceswindow.glade:1767
+#: ../gui/preferenceswindow.xml:1767
 msgctxt "Prefs|Compatibility"
 msgid ""
 "This will only apply to files saved with versions of MyPaint older than 2.0. "
@@ -4794,38 +4794,38 @@ msgstr ""
 "상으로 OpenRaster 파일을 저장하면 활성 호환성 모드가 파일에 기록됩니다."
 
 #. Label to the options for how to handle files which do not have a compatibility mode specified (whether they should be opened in 1.x compatibility mode, or 2.x mode)
-#: ../gui/preferenceswindow.glade:1769
+#: ../gui/preferenceswindow.xml:1769
 msgctxt "Prefs Dialog|Compatibility"
 msgid "When Mode is Unspecified:"
 msgstr "모드가 지정되지 않은 경우:"
 
 #. This label indicates a subsection of the compatibility settings related to loading files.
-#: ../gui/preferenceswindow.glade:1796
+#: ../gui/preferenceswindow.xml:1796
 msgctxt "Prefs|Compatibility"
 msgid "<b>File loading</b>"
 msgstr "<b>파일 로딩</b>"
 
-#: ../gui/preferenceswindow.glade:1816
+#: ../gui/preferenceswindow.xml:1816
 msgid "<b>Compatibility settings</b>"
 msgstr "<b>호환성 설정</b>"
 
 #. Tab label in preferences dialog
-#: ../gui/preferenceswindow.glade:1832
+#: ../gui/preferenceswindow.xml:1832
 msgctxt "Prefs Dialog|"
 msgid "Compatibility"
 msgstr "호환성"
 
-#: ../gui/preferenceswindow.glade:1850
+#: ../gui/preferenceswindow.xml:1850
 msgctxt "Prefs Dialog|Pen Input|Mode|"
 msgid "Screen (normal)"
 msgstr "스크린 (노멀)"
 
-#: ../gui/preferenceswindow.glade:1854
+#: ../gui/preferenceswindow.xml:1854
 msgctxt "Prefs Dialog|Pen Input|Mode|"
 msgid "Disabled (no pressure sensitivity)"
 msgstr "비활성화 (압력 감도 없음)"
 
-#: ../gui/preferenceswindow.glade:1858
+#: ../gui/preferenceswindow.xml:1858
 msgctxt "Prefs Dialog|Pen Input|Mode|"
 msgid "Window (not recommended)"
 msgstr "창 (권장하지 않음)"

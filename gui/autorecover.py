@@ -47,7 +47,7 @@ class Presenter(object):
         """Initialize for the main app and its working doc."""
         super(Presenter, self).__init__(**kwargs)
         self._app = weakref.proxy(app)
-        builder_xml = os.path.splitext(__file__)[0] + ".glade"
+        builder_xml = os.path.splitext(__file__)[0] + ".xml"
         builder = Gtk.Builder()
         builder.set_translation_domain("mypaint")
         builder.add_from_file(builder_xml)
