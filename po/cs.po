@@ -8,8 +8,8 @@ msgstr ""
 "Project-Id-Version: mypaint v1.2.0-636-g046ec8f\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-04-17 23:27+0200\n"
-"PO-Revision-Date: 2022-09-02 14:22+0000\n"
-"Last-Translator: Pavel Fric <pavelfric@yahoo.com>\n"
+"PO-Revision-Date: 2025-11-06 00:51+0000\n"
+"Last-Translator: Pavel Borecki <pavel.borecki@gmail.com>\n"
 "Language-Team: Czech <https://hosted.weblate.org/projects/mypaint/mypaint/cs/"
 ">\n"
 "Language: cs\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
-"X-Generator: Weblate 4.14.1-dev\n"
+"X-Generator: Weblate 5.15-dev\n"
 "X-Poedit-Country: CZECH REPUBLIC\n"
 "X-Poedit-Language: Czech\n"
 
@@ -44,7 +44,7 @@ msgstr "Spojení kláves"
 #: ../gui/accelmap.py:369
 #, python-format
 msgid "Edit Key for '%s'"
-msgstr "Upravit klávesovou zkratku pro '%s'"
+msgstr "Upravit klávesu pro „%s“"
 
 #. TRANSLATORS: Part of interface when adding a new button map binding.
 #. TRANSLATORS: It's a label for the action part of the combination.
