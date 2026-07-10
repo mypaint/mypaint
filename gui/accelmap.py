@@ -22,6 +22,7 @@ from lib.gettext import C_
 
 import lib.xml
 from lib.pycompat import unicode
+import gui.keyboardutils
 
 logger = logging.getLogger(__name__)
 
@@ -479,28 +480,10 @@ class AccelMapEditor(Gtk.Grid):
                 dialog.response(Gtk.ResponseType.REJECT)
                 return True
 
-        # Stolen from GTK 2.24's gtk/gtkmenu.c (gtk_menu_key_press())
-        # Figure out what modifiers went into determining the key symbol
-        keymap = Gdk.Keymap.get_default()
-        bound, keyval, effective_group, level, consumed_modifiers = (
-            keymap.translate_keyboard_state(
-                event.hardware_keycode,
-                event.state,
-                # https://github.com/mypaint/mypaint/issues/974
-                # event.group
-                1,
-            )
-        )
-        keyval = Gdk.keyval_to_lower(keyval)
-        mods = Gdk.ModifierType(
-            event.state & Gtk.accelerator_get_default_mod_mask() & ~consumed_modifiers
-        )
-
-        # If lowercasing affects the keysym, then we need to include
-        # SHIFT in the modifiers. We re-upper case when we match against
-        # the keyval, but display and save in caseless form.
-        if keyval != event.keyval:
-            mods |= Gdk.ModifierType.SHIFT_MASK
+        accelerators = gui.keyboardutils.get_key_event_accelerators(event)
+        if not accelerators:
+            return True
+        keyval, mods = accelerators[0]
         accel_label = Gtk.accelerator_get_label(keyval, mods)
         # So we get (<Shift>j, Shift+J) but just (plus, +). As I
         # understand it.

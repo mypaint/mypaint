@@ -21,6 +21,7 @@ from lib.gibindings import Gtk
 from lib.gibindings import Gdk
 
 import gui.document
+import gui.keyboardutils
 import gui.tileddrawwidget
 
 logger = logging.getLogger(__name__)
@@ -99,21 +100,8 @@ class KeyboardManager:
             return True
         if not self.enabled:
             return
-        # See gtk sourcecode in gtkmenu.c function gtk_menu_key_press,
-        # which uses the same code as below when changing an accelerator.
-        keymap = Gdk.Keymap.get_default()
-
-        # Instead of using event.keyval, we do it the lowlevel way.
-        # Reason: ignoring CAPSLOCK and checking if SHIFT was pressed
-        state = Gdk.ModifierType(event.state & ~Gdk.ModifierType.LOCK_MASK)
-        res = keymap.translate_keyboard_state(
-            event.hardware_keycode,
-            state,
-            # https://github.com/mypaint/mypaint/issues/974
-            # event.group)
-            1,
-        )
-        if not res:
+        accelerators = gui.keyboardutils.get_key_event_accelerators(event)
+        if not accelerators:
             # PyGTK returns None when gdk_keymap_translate_keyboard_state()
             # returns false.  Not sure if this is a bug or a feature - the only
             # time I have seen this happen is when I put my laptop into sleep
@@ -123,23 +111,14 @@ class KeyboardManager:
             )
             return
 
-        keyval = res[1]
-        consumed_modifiers = res[4]
-
-        # We want to ignore irrelevant modifiers like ScrollLock.  The stored
-        # key binding does not include modifiers that affected its keyval.
-        modifiers = (
-            event.state & Gtk.accelerator_get_default_mod_mask() & ~consumed_modifiers
-        )
-
-        # Except that key bindings are always stored in lowercase.
-        keyval_lower = Gdk.keyval_to_lower(keyval)
-        if keyval_lower != keyval:
-            modifiers |= Gdk.ModifierType.SHIFT_MASK
-        action = self.keymap.get((keyval_lower, modifiers))
-        if not action and not self.fallbacks_disabled():
-            # try hardcoded keys
-            action = self.keymap2.get((keyval_lower, modifiers))
+        action = None
+        for accelerator in accelerators:
+            action = self.keymap.get(accelerator)
+            if not action and not self.fallbacks_disabled():
+                # try hardcoded keys
+                action = self.keymap2.get(accelerator)
+            if action:
+                break
 
         # Don't dispatch if the window is only sensitive to a subset of
         # actions, and the action is not in that set.
