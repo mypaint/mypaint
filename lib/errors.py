@@ -23,7 +23,7 @@ class FileHandlingError(Exception):
 
     In general, if one of these is raised as a response to another
     exception, log that error with (yourmodule.logger.exception()) with
-    programmer-focussed diagnostic info, and favour user-presentable
+    programmer-focused diagnostic info, and favour user-presentable
     info for the message string.
 
     """
@@ -47,7 +47,7 @@ class AllocationError(Exception):
 
     In general, if one of these is raised as a response to another
     exception, log that error with (yourmodule.logger.exception()) with
-    programmer-focussed diagnostic info, and favour user-presentable
+    programmer-focused diagnostic info, and favour user-presentable
     info for the message string.
 
     """
