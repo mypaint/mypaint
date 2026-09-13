@@ -1061,7 +1061,7 @@ setup(
     author="Andrew Chadwick",
     author_email="a.t.chadwick@gmail.com",
     license="GPLv2+",
-    url="http://mypaint.org",
+    url="https://www.mypaint.app/",
     packages=["lib", "lib.layer", "gui", "gui.colors"],
     package_data={
         "gui": ["*.xml", "*.glade"],

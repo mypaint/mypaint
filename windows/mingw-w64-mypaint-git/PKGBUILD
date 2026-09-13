@@ -39,7 +39,7 @@ makedepends=(
 )
 options=('!strip' 'debug' 'staticlibs')
 license=("GPL2")
-url="http://mypaint.org"
+url="https://www.mypaint.app/"
 install=mypaint-${CARCH}.install
 source=("${_realname}::git+https://github.com/mypaint/mypaint.git")
 sha256sums=('SKIP')

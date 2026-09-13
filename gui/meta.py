@@ -36,7 +36,7 @@ COPYRIGHT_STRING = C_(
     "About dialog: copyright statement",
     "Copyright (C) 2005-2020\n" "Martin Renold and the MyPaint Development Team",
 )
-WEBSITE_URI = "http://mypaint.org"
+WEBSITE_URI = "https://www.mypaint.app/"
 LICENSE_SUMMARY = C_(
     "About dialog: license summary",
     "This program is free software; you can redistribute it and/or modify "
