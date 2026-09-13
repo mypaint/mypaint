@@ -532,11 +532,6 @@ class Application(object):
         self.preferences.update(default_config.copy())
         user_config = gui.userconfig.get_json_config(self.user_confpath)
         self.preferences.update(user_config)
-        key = "input.button_mapping"
-        if "ColorPickerPopup" in self.preferences[key].values():
-            # old config file; users who never assigned any buttons would
-            # end up with Ctrl-Click color picker broken after upgrade
-            self.preferences[key] = default_config[key]
 
     def reset_compat_mode(self, update=True):
         """Reset compatibility mode to configured default"""
