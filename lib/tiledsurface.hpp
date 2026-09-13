@@ -133,7 +133,7 @@ private:
 static PyObject *
 get_module(char *name)
 {
-    PyObject *pName = PyString_FromString(name);
+    PyObject *pName = PyUnicode_FromString(name);
     PyObject *pModule = PyImport_Import(pName);
     Py_DECREF(pName);
 

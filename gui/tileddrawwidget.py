@@ -587,8 +587,7 @@ class DrawCursorMixin(object):
         elif not layer.get_paintable():
             # Cursor to represent that one cannot draw.
             # Often a red circle with a diagonal bar through it.
-            c = Gdk.Cursor.new_for_display(
-                window.get_display(), Gdk.CursorType.CIRCLE)
+            c = Gdk.Cursor.new_from_name(window.get_display(), "not-allowed")
         elif app is None:
             logger.error("update_cursor: no app")
             return

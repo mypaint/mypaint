@@ -285,8 +285,8 @@ class _IOProgressUI:
         """Call a save or load callable and watch its progress.
 
         :param callable func: The IO function to be called.
-        :param \*args: Passed to func.
-        :param \*\*kwargs: Passed to func.
+        :param *args: Passed to func.
+        :param **kwargs: Passed to func.
         :returns: The return value of func.
 
         Messages about the operation in progress may be shown to the
@@ -607,7 +607,7 @@ class FileHandler (object):
         ))
         label.set_alignment(0.0, 0.5)
         combo = Gtk.ComboBoxText()
-        for (name, ext, opt) in self.saveformats.values():
+        for name, _ext, _opt in self.saveformats.values():
             combo.append_text(name)
         combo.set_active(0)
         combo.connect('changed', self.selected_save_format_changed_cb)

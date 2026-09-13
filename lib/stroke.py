@@ -43,7 +43,7 @@ class Stroke (object):
 
         states = brush.get_states_as_array()
         assert states.dtype == 'float32'
-        self.brush_state = states.tostring()
+        self.brush_state = states.tobytes()
 
         self.brush = brush
         self.brush.new_stroke()  # resets the stroke_* members of the brush
@@ -63,7 +63,7 @@ class Stroke (object):
         # - for space: just gzip? use integer datatypes?
         # - for time: maybe already use array storage while recording?
         data = np.array(self.tmp_event_list, dtype='float64')
-        data = data.tostring()
+        data = data.tobytes()
         version = b'2'
         self.stroke_data = version + data
 

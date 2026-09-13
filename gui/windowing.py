@@ -146,14 +146,14 @@ class ChooserPopup (Gtk.Window):
     EDGE_SIZE = 12
     EDGE_CURSORS = {
         None: None,
-        Gdk.WindowEdge.NORTH_EAST: Gdk.CursorType.TOP_RIGHT_CORNER,
-        Gdk.WindowEdge.NORTH_WEST: Gdk.CursorType.TOP_LEFT_CORNER,
-        Gdk.WindowEdge.SOUTH_EAST: Gdk.CursorType.BOTTOM_RIGHT_CORNER,
-        Gdk.WindowEdge.SOUTH_WEST: Gdk.CursorType.BOTTOM_LEFT_CORNER,
-        Gdk.WindowEdge.WEST: Gdk.CursorType.LEFT_SIDE,
-        Gdk.WindowEdge.EAST: Gdk.CursorType.RIGHT_SIDE,
-        Gdk.WindowEdge.SOUTH: Gdk.CursorType.BOTTOM_SIDE,
-        Gdk.WindowEdge.NORTH: Gdk.CursorType.TOP_SIDE,
+        Gdk.WindowEdge.NORTH_EAST: "ne-resize",
+        Gdk.WindowEdge.NORTH_WEST: "nw-resize",
+        Gdk.WindowEdge.SOUTH_EAST: "se-resize",
+        Gdk.WindowEdge.SOUTH_WEST: "sw-resize",
+        Gdk.WindowEdge.WEST: "w-resize",
+        Gdk.WindowEdge.EAST: "e-resize",
+        Gdk.WindowEdge.SOUTH: "s-resize",
+        Gdk.WindowEdge.NORTH: "n-resize",
     }
 
     ## Method defs
@@ -181,7 +181,8 @@ class ChooserPopup (Gtk.Window):
         self._prefs_size_key = "%s.window_size" % (config_name,)
         self._resize_info = None   # state during an edge resize
         self._outside_grab_active = False
-        self._outside_cursor = Gdk.Cursor(Gdk.CursorType.LEFT_PTR)
+        self._outside_cursor = Gdk.Cursor.new_from_name(
+            self.get_display(), "default")
         self._popup_info = None
 
         # Initial positioning
@@ -192,7 +193,7 @@ class ChooserPopup (Gtk.Window):
         self._edge_cursors = {}
         for edge, cursor in self.EDGE_CURSORS.items():
             if cursor is not None:
-                cursor = Gdk.Cursor(cursor)
+                cursor = Gdk.Cursor.new_from_name(self.get_display(), cursor)
             self._edge_cursors[edge] = cursor
 
         # Default size

@@ -411,7 +411,7 @@ class _Tile:
 
     """
 
-    _ZDATA_ONES = zlib.compress(np.ones((N, N), 'uint8').tostring())
+    _ZDATA_ONES = zlib.compress(np.ones((N, N), 'uint8').tobytes())
 
     def __init__(self):
         """Initialize, as a tile filled with all ones."""
@@ -451,7 +451,7 @@ class _Tile:
             tile._zdata = None
         else:
             tile._all = False
-            tile._zdata = zlib.compress(array.tostring())
+            tile._zdata = zlib.compress(array.tobytes())
         return tile
 
     @classmethod

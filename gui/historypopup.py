@@ -99,8 +99,7 @@ class HistoryPopup (windowing.PopupWindow):
         self.show_all()
 
         window = self.get_window()
-        cursor = Gdk.Cursor.new_for_display(
-            window.get_display(), Gdk.CursorType.CROSSHAIR)
+        cursor = Gdk.Cursor.new_from_name(window.get_display(), "crosshair")
         window.set_cursor(cursor)
 
     def leave(self, reason):

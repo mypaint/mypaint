@@ -843,7 +843,11 @@ class BrushManager (object):
         """
         brushes = self.get_group_brushes(group)
         order_conf = b'Group: %s\n' % utf8(group)
-        with zipfile.ZipFile(filename, mode='w') as zf:
+        with zipfile.ZipFile(
+            filename,
+            mode='w',
+            strict_timestamps=False,
+        ) as zf:
             for brush in brushes:
                 prefix = brush._get_fileprefix()
                 zf.write(prefix + u'.myb', brush.name + u'.myb')

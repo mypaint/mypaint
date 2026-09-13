@@ -80,7 +80,7 @@ installed before you can build it.
 - setuptools
 - pygobject
 - gtk3 (>= 3.12)
-- python (>= 2.7.4)
+- python (>= 3.8)
 - swig (>= 3)
 - numpy
 - librsvg2 (and its svg gdk-pixbuf loader)
@@ -233,13 +233,13 @@ between runs when you do this.
 
 Please run the doctests before committing new code.
 
-    sudo apt-get install python-nose
-    python setup.py nosetests
+    sudo apt-get install python3-pytest
+    pytest --doctest-modules lib
 
 We have some heavier conformance tests for the C++ parts too. These take
 longer to run.
 
-    python setup.py test
+    pytest -rP
 
 You should write doctests for important new Python code. Please consider
 writing tests in the `tests` folder too, if you make any changes to the
