@@ -1,7 +1,7 @@
 Format: http://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
 Upstream-Name: MyPaint
 Upstream-Contact: Andrew Chadwick <a.t.chadwick@gmail.com>
-Source: http://mypaint.org/
+Source: https://www.mypaint.app/
 Comment: This is a machine-readable copyrights coverage file.
 
 Files: *

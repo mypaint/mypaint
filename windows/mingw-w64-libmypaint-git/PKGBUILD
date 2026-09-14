@@ -11,7 +11,7 @@ conflicts=(
 pkgrel=2
 pkgdesc="Brush engine used by MyPaint (git) (mingw-w64)"
 arch=('any')
-url="http://mypaint.org"
+url="https://www.mypaint.app/"
 license=("ISC")
 makedepends=(
     "${MINGW_PACKAGE_PREFIX}-gcc"

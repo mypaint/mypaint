@@ -1201,7 +1201,7 @@ class VectorLayer(FileBackedLayer):
             outline = [(0, 0), (0, N), (N, N), (N, 0)]
         svg = (
             '<?xml version="1.0" encoding="UTF-8" standalone="no"?>'
-            "<!-- Created by MyPaint (http://mypaint.org/) -->"
+            "<!-- Created by MyPaint (https://www.mypaint.app/) -->"
             '<svg version="1.1" width="{w}" height="{h}">'
             '<path d="M '
         ).format(**kwargs)
