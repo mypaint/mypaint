@@ -326,7 +326,7 @@ class LineModeBase(
     def drag_start_cb(self, tdw, event):
         super(LineModeBase, self).drag_start_cb(tdw, event)
         if self._line_possible:
-            self.start_command(self.initial_modifiers)
+            self.start_command(self.initial_modifiers, event=event)
 
     def drag_update_cb(self, tdw, event, ev_x, ev_y, dx, dy):
         if self._line_possible:
@@ -368,7 +368,7 @@ class LineModeBase(
 
     ### Draw dynamic Line, Curve, or Ellipse
 
-    def start_command(self, modifier):
+    def start_command(self, modifier, event=None):
         # :param modifier: the keyboard modifiers which ere in place
         #                   when the mode was created
 
@@ -386,7 +386,11 @@ class LineModeBase(
         self.brushwork_begin(self.model, abrupt=False, description=self.get_name())
         layer = self.model.layer_stack.current
 
-        x, y, kbmods = self.local_mouse_state()
+        if event is not None:
+            x, y = self.tdw.display_to_model(event.x, event.y)
+            kbmods = event.state
+        else:
+            x, y, kbmods = self.local_mouse_state()
         # ignore the modifier used to start this action (don't make it
         # change the action)
         self.invert_kbmods = modifier
