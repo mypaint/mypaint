@@ -1,4 +1,4 @@
-Unreleased (2.1.0):
+## [Unreleased] (2.1.0)
 ### Fixed
 * Fixed drag-n-drop file opening (Python 3)
 * Fixed loading svg data where the opening tag is not placed at the start of the data
@@ -32,8 +32,7 @@ Unreleased (2.1.0):
 * Paste now pastes to a new layer instead of replacing the content in the active layer
 * Pasted content is now placed relative to the mouse cursor, or centered in the viewport
 
-
-Version 2.0.1:
+## [2.0.1] - 2020-05-29
 * libmypaint requirement bumped to >= 1.6.
 * HSV/HCY brush dynamics in 2.x mode fixed.
 * Undo/Redo stack size made configurable and more efficient.
@@ -51,8 +50,7 @@ Version 2.0.1:
 * Size of Windows install bundle significantly reduced.
 * Typos in documentation fixed.
 
-
-Version 2.0.0:
+## [2.0.0] - 2020-02-15
 * Full Python3 support
 * Tons of style consistency updates (flake8).
 * Switch to PyGI
@@ -100,8 +98,7 @@ Version 2.0.0:
 * Bundled backgrounds optimized for size.
 * Lots of bugs, crashers and other annoyances fixed.
 
-
-Version 1.2.1:
+## [1.2.1] - 2017-01-21
 * Fix failure to start under GLib 2.48.
 * Fix failure to start when config and user data dirs are missing.
 * GNOME: Update mypaint.appdata.xml.
@@ -129,8 +126,7 @@ Version 1.2.1:
 * Windows: drop support for floating windows till upstream support's OK.
 * Wayland: remove references to cursors that don't exist.
 
-
-Version 1.2.0:
+## [1.2.0] - 2016-01-15
 * New intuitive Inking tool for smooth strokes.
 * New Flood Fill tool.
 * Automated backups of your working docs, with recovery on startup.
@@ -156,8 +152,7 @@ Version 1.2.0:
 * Accelerator map editor has moved to preferences.
 * Many other bugfixes, translations, and code quality improvements.
 
-
-Version 1.1.0:
+## [1.1.0] - 2012-12-31
 * geometry tools: sequence of lines, curved lines, ellipses
 * new brush and layer blending modes; different layer merging
 * new color dialog: palette and gamut mapping
@@ -169,8 +164,7 @@ Version 1.1.0:
 * better separation of mypaint's brush library; json brush file format
 * translations, performance improvements, bugfixes, and more
 
-
-Version 1.0.0:
+## [1.0.0] - 2011-11-22
 * toolbar with color, brush selector and brush settings dropdown
 * tool windows can be docked instead of floating
 * locked alpha brush mode
@@ -178,8 +172,7 @@ Version 1.0.0:
 * new scratchpad area
 * lots of other improvements (about 500 commits)
 
-
-Version 0.9.1:
+## [0.9.1] - 2011-03-04
 * several fixes for non-ascii file names, directories, layer names
 * workaround for tablets reporting invalid tilt values
 * rotation: fix direction while mirrored, change steps to 22.5 degrees
@@ -191,8 +184,7 @@ Version 0.9.1:
 * windows: use AppData folder for settings
 * some other minor fixes
 
-
-Version 0.9.0:
+## [0.9.0] - 2010-11-02
 * brush collection: updated better and smaller collection
 * brushset import and export
 * improvement for jaggy lines on Windows (might also fix saving problems)
@@ -211,13 +203,11 @@ Version 0.9.0:
 * usability improvements for brush selector and brush settings dialog
 * added file->export action
 
-
-Version 0.8.2:
+## [0.8.2] - 2010-02-28
 * fix regression in 0.8.1 causing temporary layers to stick
 * complain about unsupported pygtk version
 
-
-Version 0.8.1:
+## [0.8.1] - 2010-02-21
 * fixed memory leak: layer data was never freed, eg. when opening a new image
 * fixed loading of layer names
 * respect layer visibility when saving to PNG
@@ -226,8 +216,7 @@ Version 0.8.1:
 * Korean translation
 * some minor gui fixes
 
-
-Version 0.8.0:
+## [0.8.0] - 2010-01-29
 * many new brushes contributed by various artists
 * brushes organized into groups
 * straight lines are possible (hold shift)
@@ -242,9 +231,8 @@ Version 0.8.0:
 * can save all layers as numbered PNGs
 * some drag&drop support
 * many other minor enhancements and bugfixes
-
-
-Version 0.7.1:
+	
+## [0.7.1] - 2009-07-22
 * bugfixes for win32 build
 * limit the cursor size (problem on Windows, and X11 with Compiz)
 * fixed brushes that lead to save problems (Windows only?)
@@ -253,8 +241,7 @@ Version 0.7.1:
 * new brushes: splatter and marker
 * other minor fixes
 
-
-Version 0.7.0:
+## [0.7.0] - 2009-06-06
 * color history popup
 * merge layer down
 * layer solo
@@ -272,8 +259,7 @@ Version 0.7.0:
 * fixed build problem with some distributions
 * many other GUI tweaks and bugfixes
 
-
-Version 0.6.0:
+## [0.6.0] - 2009-01-25
 * Layers, transparency and eraser mode
 * Background color and pattterns
 * Save OpenRaster
@@ -281,8 +267,7 @@ Version 0.6.0:
 * Canvas rotation (via keyboard shortcuts) and mirroring
 * A few great new brushes
 
-
-Version 0.5.1:
+## [0.5.1] - 2008-06-12
 * Fullscreen mode was implemented.
 * Streamlined "Save" and "Save As". Also added error handling.
 * Added "Save Next" as a dialog-free non-destructive alternative.
@@ -295,6 +280,22 @@ Version 0.5.1:
 * Fixed compilation for some systems.
 * New brushes were added (and some removed).
 
-
-Before 0.5.0:
+## Before [0.5.0] - 2007-06-10
 * no changelog available
+
+[Unreleased]: https://github.com/mypaint/mypaint/compare/v2.0.1...HEAD
+[2.0.1]: https://github.com/mypaint/mypaint/compare/v2.0.0...v2.0.1
+[2.0.0]: https://github.com/mypaint/mypaint/compare/v1.2.1...v2.0.0
+[1.2.1]: https://github.com/mypaint/mypaint/compare/v1.2.0...v1.2.1
+[1.2.0]: https://github.com/mypaint/mypaint/compare/v1.1.0...v1.2.0
+[1.1.0]: https://github.com/mypaint/mypaint/compare/v1.0.0...v1.1.0
+[1.0.0]: https://github.com/mypaint/mypaint/compare/v0.9.1...v1.0.0
+[0.9.1]: https://github.com/mypaint/mypaint/compare/v0.9.0...v0.9.1
+[0.9.0]: https://github.com/mypaint/mypaint/compare/v0.8.2...v0.9.0
+[0.8.2]: https://github.com/mypaint/mypaint/compare/v0.8.1...v0.8.2
+[0.8.1]: https://github.com/mypaint/mypaint/compare/v0.8.0...v0.8.1
+[0.8.0]: https://github.com/mypaint/mypaint/compare/v0.7.1...v0.8.0
+[0.7.1]: https://github.com/mypaint/mypaint/compare/v0.7.0...v0.7.1
+[0.7.0]: https://github.com/mypaint/mypaint/compare/v0.6.0...v0.7.0
+[0.6.0]: https://github.com/mypaint/mypaint/compare/v0.5.1...v0.6.0
+[0.5.1]: https://github.com/mypaint/mypaint/compare/v0.5.0...v0.5.1
